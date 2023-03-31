@@ -33,3 +33,4 @@ export type PointIdentity = {
   point_id: number;
   nature: NatureEnum;
 };
+export type Line = { id: number | null; stops: PointIdentity[] };
