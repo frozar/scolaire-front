@@ -8,6 +8,7 @@ import { buildMapL7 } from "./l7MapBuilder";
 import { buildMapLeafletPostCode } from "./leafletMapPostCodeBuilder";
 import { buildMapLeafletRouteRaw } from "./leafletMapRouteRawBuilder";
 import LineUnderConstruction from "./LineUnderConstruction";
+import BusLines from "./BusLines";
 
 function buildMap(div: HTMLDivElement) {
   const option: string = "l7";
@@ -35,6 +36,7 @@ function Map() {
       <div ref={mapDiv} id="main-map" />
       <PointsRamassageAndEtablissement />
       <LineUnderConstruction />
+      <BusLines />
     </>
   );
 }
