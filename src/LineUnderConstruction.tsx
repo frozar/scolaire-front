@@ -10,13 +10,9 @@ import LineDisplay from "./LineDisplay";
 const [stateAction] = useStateAction();
 
 export default function LineUnderConstruction() {
-  // Draw line under construction between circles/points
-  //let lineUnderConstruction: L.Polyline;
-
   // Draw the tip of the line under construction between
   // the last selected circle and the mouse position
   let lineUnderConstructionTip: L.Polyline | undefined;
-
   createEffect(() => {
     const leafletMap = getLeafletMap();
     if (!leafletMap) {
