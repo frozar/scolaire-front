@@ -1,16 +1,8 @@
 import { createSignal, onMount, For, onCleanup } from "solid-js";
 
-import {
-  NatureEnum,
-  PointRamassageType,
-  PointEtablissementType,
-  Line,
-  PointIdentity,
-} from "./type";
-import Point from "./Point";
+import { Line, PointIdentity } from "./type";
 import LineDisplay from "./LineDisplay";
 import { points } from "./signaux";
-import { map } from "lodash";
 
 export default function BusLines() {
   const [busLines, setbusLines] = createSignal<Line[]>([]);
@@ -41,27 +33,8 @@ export default function BusLines() {
           };
           return myline;
         });
-
         setbusLines(lines);
       });
-    //   .then((data: PointRamassageType[]) => {
-    //     data = data.map((pointRamassage) => ({
-    //       ...pointRamassage,
-    //       nature: NatureEnum.ramassage,
-    //     }));
-    //     setPoints((dataArray) => [...dataArray, ...data]);
-    //   });
-    // fetch(import.meta.env.VITE_BACK_URL + "/points_etablissement")
-    //   .then((res) => {
-    //     return res.json();
-    //   })
-    //   .then((data: PointEtablissementType[]) => {
-    //     data = data.map((pointEtablissement) => ({
-    //       ...pointEtablissement,
-    //       nature: NatureEnum.etablissement,
-    //     }));
-    //     setPoints((dataArray) => [...dataArray, ...data]);
-    //   });
   }
 
   onMount(() => {

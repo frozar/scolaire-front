@@ -5,32 +5,18 @@ import { useStateAction } from "./StateAction";
 import { linkMap } from "./global/linkPointIdentityCircle";
 import { getLeafletMap } from "./global/leafletMap";
 import { lineUnderConstructionState } from "./signaux";
+import LineDisplay from "./LineDisplay";
 
 const [stateAction] = useStateAction();
 
 export default function LineUnderConstruction() {
   // Draw line under construction between circles/points
-  let lineUnderConstruction: L.Polyline;
-  createEffect(() => {
-    // Take care of undo/redo
-    lineUnderConstruction?.remove();
-
-    const latlngs = [];
-    for (const pointIdentity of stateAction.lineUnderConstruction.stops) {
-      const circle = linkMap.get(pointIdentity);
-      if (circle) {
-        latlngs.push(circle.getLatLng());
-      }
-    }
-
-    lineUnderConstruction = L.polyline(latlngs, { color: "blue" }).addTo(
-      getLeafletMap()
-    );
-  });
+  //let lineUnderConstruction: L.Polyline;
 
   // Draw the tip of the line under construction between
   // the last selected circle and the mouse position
   let lineUnderConstructionTip: L.Polyline | undefined;
+
   createEffect(() => {
     const leafletMap = getLeafletMap();
     if (!leafletMap) {
@@ -74,7 +60,7 @@ export default function LineUnderConstruction() {
   });
 
   onCleanup(() => {
-    lineUnderConstruction.remove();
+    lineUnderConstructionTip!.remove();
     const leafletMap = getLeafletMap();
     if (!leafletMap) {
       return;
@@ -82,5 +68,5 @@ export default function LineUnderConstruction() {
     leafletMap.off("mousemove");
   });
 
-  return <></>;
+  return <LineDisplay line={stateAction.lineUnderConstruction} />;
 }
