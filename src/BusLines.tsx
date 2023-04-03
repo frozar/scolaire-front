@@ -1,8 +1,7 @@
 import { createSignal, onMount, For, onCleanup } from "solid-js";
 
-import { Line, PointIdentity } from "./type";
+import { Line, NatureEnum, PointIdentity } from "./type";
 import LineDisplay from "./LineDisplay";
-import { points } from "./signaux";
 
 export default function BusLines() {
   const [busLines, setBusLines] = createSignal<Line[]>([]);
@@ -12,30 +11,59 @@ export default function BusLines() {
       .then((res) => {
         return res.json();
       })
-      .then((res: { id_bus_line: number; id_points: number[] }[]) => {
-        const lines = res.map((line) => {
-          const busStops = line.id_points
-            .map((line_id_point) => {
-              const point = points().find(
-                (point) => point.point_id === line_id_point
-              );
-              if (point) {
-                const { id, point_id, nature } = point;
-                return { id, point_id, nature } as PointIdentity;
-              } else {
-                return null;
-              }
-            })
-            .filter((pointOrNull) => pointOrNull) as PointIdentity[];
+      .then(
+        (
+          res: {
+            id_bus_line: number;
+            id: number;
+            point_id: number;
+            nature: string;
+          }[]
+        ) => {
+          if (res.length === 0) {
+            return [];
+          }
 
-          const myLine: Line = {
-            id: line.id_bus_line,
-            stops: busStops,
+          // Reconstruct the stop with the NatureEnum
+          const piecesOfLine: { id_bus_line: number; stop: PointIdentity }[] =
+            res.map((pieceOfLine) => {
+              const { id_bus_line, id, point_id, nature } = pieceOfLine;
+              const enumNature =
+                nature === "ramassage"
+                  ? NatureEnum.ramassage
+                  : NatureEnum.etablissement;
+
+              return {
+                id_bus_line,
+                stop: {
+                  id,
+                  point_id,
+                  nature: enumNature,
+                } as PointIdentity,
+              };
+            });
+
+          // Aggregate the different stop by id_bus_line
+          let lines: Line[] = [];
+          const firstElt = piecesOfLine[0];
+          let currentLine: Line = {
+            id: firstElt.id_bus_line,
+            stops: [firstElt.stop],
           };
-          return myLine;
-        });
-        setBusLines(lines);
-      });
+          for (const elt of piecesOfLine.slice(1)) {
+            const currentIdBusLine = currentLine.id;
+            if (elt.id_bus_line === currentIdBusLine) {
+              currentLine.stops.push(elt.stop);
+            } else {
+              lines.push(currentLine);
+              currentLine = { id: elt.id_bus_line, stops: [elt.stop] };
+            }
+          }
+          lines.push(currentLine);
+
+          setBusLines(lines);
+        }
+      );
   }
 
   onMount(() => {
