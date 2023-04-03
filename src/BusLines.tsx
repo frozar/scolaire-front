@@ -5,7 +5,7 @@ import LineDisplay from "./LineDisplay";
 import { points } from "./signaux";
 
 export default function BusLines() {
-  const [busLines, setbusLines] = createSignal<Line[]>([]);
+  const [busLines, setBusLines] = createSignal<Line[]>([]);
 
   function fetchBusLines() {
     fetch(import.meta.env.VITE_BACK_URL + "/bus_lines")
@@ -14,26 +14,27 @@ export default function BusLines() {
       })
       .then((res: { id_bus_line: number; id_points: number[] }[]) => {
         const lines = res.map((line) => {
-          const myline: Line = {
-            id: line.id_bus_line,
-            stops: line.id_points.map((line_point) => {
+          const busStops = line.id_points
+            .map((line_id_point) => {
               const point = points().find(
-                (point) => point.point_id === line_point
+                (point) => point.point_id === line_id_point
               );
-              let pointIdentity: PointIdentity = null;
-              if (point != null) {
-                pointIdentity = {
-                  id: point.id,
-                  point_id: point.point_id,
-                  nature: point.nature,
-                };
+              if (point) {
+                const { id, point_id, nature } = point;
+                return { id, point_id, nature } as PointIdentity;
+              } else {
+                return null;
               }
-              return pointIdentity;
-            }),
+            })
+            .filter((pointOrNull) => pointOrNull) as PointIdentity[];
+
+          const myLine: Line = {
+            id: line.id_bus_line,
+            stops: busStops,
           };
-          return myline;
+          return myLine;
         });
-        setbusLines(lines);
+        setBusLines(lines);
       });
   }
 
@@ -42,7 +43,7 @@ export default function BusLines() {
   });
 
   onCleanup(() => {
-    setbusLines([]);
+    setBusLines([]);
   });
 
   return <For each={busLines()}>{(line) => <LineDisplay line={line} />}</For>;

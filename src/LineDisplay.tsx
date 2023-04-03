@@ -6,11 +6,12 @@ import { getLeafletMap } from "./global/leafletMap";
 import { Line } from "./type";
 
 export default function LineDisplay(props: any) {
-  // Draw line under construction between circles/points
+  // Draw line circles/points
   const line: Line = props.line;
 
   let busLine: L.Polyline;
-  const color = "#" + ((Math.random() * 0xffffff) << 0).toString(16);
+  const color = "#" + Math.floor(Math.random() * 0xffffff).toString(16);
+
   createEffect(() => {
     // Take care of undo/redo
     busLine?.remove();
@@ -27,9 +28,6 @@ export default function LineDisplay(props: any) {
       color: color,
     }).addTo(getLeafletMap());
   });
-
-  // Draw the tip of the line under construction between
-  // the last selected circle and the mouse position
 
   onCleanup(() => {
     busLine.remove();
