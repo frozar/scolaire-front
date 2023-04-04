@@ -1,8 +1,7 @@
 import { createSignal, onMount, For, onCleanup } from "solid-js";
 
-import { Line, PointIdentity } from "./type";
+import { Line, NatureEnum, PointIdentity } from "./type";
 import LineDisplay from "./LineDisplay";
-import { points } from "./signaux";
 
 export default function BusLines() {
   const [busLines, setBusLines] = createSignal<Line[]>([]);
@@ -12,30 +11,34 @@ export default function BusLines() {
       .then((res) => {
         return res.json();
       })
-      .then((res: { id_bus_line: number; id_points: number[] }[]) => {
-        const lines = res.map((line) => {
-          const busStops = line.id_points
-            .map((line_id_point) => {
-              const point = points().find(
-                (point) => point.point_id === line_id_point
-              );
-              if (point) {
-                const { id, point_id, nature } = point;
-                return { id, point_id, nature } as PointIdentity;
-              } else {
-                return null;
-              }
-            })
-            .filter((pointOrNull) => pointOrNull) as PointIdentity[];
+      .then(
+        (
+          res: {
+            id_bus_line: number;
+            stops: {
+              id: number;
+              point_id: number;
+              nature: string;
+            }[];
+          }[]
+        ) => {
+          let lines: Line[] = res.map((line) => {
+            const stopsWithNatureEnum = line.stops.map(
+              (stop) =>
+                ({
+                  ...stop,
+                  nature:
+                    stop["nature"] === "ramassage"
+                      ? NatureEnum.ramassage
+                      : NatureEnum.etablissement,
+                } as PointIdentity)
+            );
+            return { ...line, stops: stopsWithNatureEnum };
+          });
 
-          const myLine: Line = {
-            id: line.id_bus_line,
-            stops: busStops,
-          };
-          return myLine;
-        });
-        setBusLines(lines);
-      });
+          setBusLines(lines);
+        }
+      );
   }
 
   onMount(() => {
