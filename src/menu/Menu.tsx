@@ -1,6 +1,7 @@
 import { Dynamic } from "solid-js/web";
 import { createEffect, For } from "solid-js";
 import MenuDraw from "./MenuDraw";
+import MenuDelete from "./MenuDelete";
 
 import InformationContent from "../InformationContent";
 
@@ -169,6 +170,7 @@ export default function Menu() {
       <MenuToggler />
       <MenuContent />
       <MenuDraw />
+      <MenuDelete />
     </>
   );
 }
