@@ -1,7 +1,12 @@
 import { Show } from "solid-js";
 
-import { getRemoveConfirmation, setRemoveConfirmation } from "../signaux";
+import {
+  getRemoveConfirmation,
+  setRemoveConfirmation,
+  setUserInformation,
+} from "../signaux";
 import { Transition } from "solid-transition-group";
+import { MessageLevelEnum } from "../type";
 
 export default function RemoveConfirmation() {
   const displayed = () => getRemoveConfirmation()["displayed"];
@@ -126,6 +131,63 @@ export default function RemoveConfirmation() {
                     <button
                       type="button"
                       class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
+                      onClick={() => {
+                        console.log(
+                          "Suppression",
+                          getRemoveConfirmation()["id_bus_line"]
+                        );
+                        let headers = new Headers();
+                        fetch(import.meta.env.VITE_BACK_URL + "/bus_line", {
+                          method: "DELETE",
+                          body: JSON.stringify({
+                            id: getRemoveConfirmation()["id_bus_line"],
+                          }),
+                          headers: headers,
+                        })
+                          .then((res) => {
+                            return res.json();
+                          })
+                          .then((res: any) => {
+                            console.log("res", res);
+                            const nbDelete = res.split(" ").at(-1);
+                            if (nbDelete != "0") {
+                              setUserInformation({
+                                level: MessageLevelEnum.success,
+                                content: `Suppression de la ligne ${
+                                  getRemoveConfirmation()["id_bus_line"]
+                                }`,
+                              });
+                              setRemoveConfirmation({
+                                displayed: false,
+                                id_bus_line: null,
+                              });
+                            } else {
+                              setUserInformation({
+                                level: MessageLevelEnum.error,
+                                content: `Echec de la suppression de la ligne ${
+                                  getRemoveConfirmation()["id_bus_line"]
+                                }`,
+                              });
+                              setRemoveConfirmation({
+                                displayed: false,
+                                id_bus_line: null,
+                              });
+                            }
+                          })
+                          .catch((error) => {
+                            console.log("error", error);
+                            setUserInformation({
+                              level: MessageLevelEnum.error,
+                              content: `Impossible de supprimer la ligne ${
+                                getRemoveConfirmation()["id_bus_line"]
+                              }`,
+                            });
+                            setRemoveConfirmation({
+                              displayed: false,
+                              id_bus_line: null,
+                            });
+                          });
+                      }}
                     >
                       Valider
                     </button>

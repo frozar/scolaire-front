@@ -35,7 +35,7 @@ export default function LineDisplay(props: any) {
       .addTo(getLeafletMap())
       .on("mouseover", () => {
         if (getMode() === ModeEnum.removeLine) {
-          console.log("mouseover", line);
+          // console.log("mouseover", line);
           busLine.setStyle({ color: "#FFF", weight: 8 });
         }
       })
@@ -46,12 +46,12 @@ export default function LineDisplay(props: any) {
       })
       .on("click", () => {
         if (getMode() === ModeEnum.removeLine) {
-          console.log("mouseclick", line);
+          // console.log("mouseclick", line);
           setRemoveConfirmation({
             displayed: true,
             id_bus_line: line["id_bus_line"],
           });
-          console.log("getRemoveConfirmation()", getRemoveConfirmation());
+          // console.log("getRemoveConfirmation()", getRemoveConfirmation());
         }
       });
   });
