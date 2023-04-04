@@ -1,15 +1,15 @@
 import { Dynamic } from "solid-js/web";
 import { createEffect, createSignal, For, Show } from "solid-js";
-import InformationContent from "./InformationContent";
+import InformationContent from "../InformationContent";
 
-import { useStateAction } from "./StateAction";
-import { useStateGui } from "./StateGui";
-import { setLineUnderConstructionState } from "./signaux";
+import { useStateAction } from "../StateAction";
+import { useStateGui } from "../StateGui";
+import { setLineUnderConstructionState } from "../signaux";
 import ClickOutside from "./ClickOutside";
-import { assertIsNode } from "./utils";
+import { assertIsNode } from "../utils";
 import { Transition } from "solid-transition-group";
 
-import "./Menu.css";
+import "./menu.css";
 
 const [stateAction, { toggleAltimetryAnimation }] = useStateAction();
 const [stateGui, { toggleDisplayedMenu, setSelectedTab }] = useStateGui();

@@ -2,7 +2,7 @@ import { Component, on, onCleanup, onMount } from "solid-js";
 import styles from "./App.module.css";
 import SpinningWheel from "./SpinningWheel";
 import Map from "./Map";
-import Menu from "./Menu";
+import Menu from "./menu/Menu";
 import { useStateAction } from "./StateAction";
 import {
   lineUnderConstructionState,
