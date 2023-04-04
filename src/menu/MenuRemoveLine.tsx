@@ -1,5 +1,10 @@
 import { FaRegularTrashCan } from "solid-icons/fa";
-import InfoBox from "../userInformation/InfoBox";
+
+import { useStateAction } from "../StateAction";
+import { MessageLevelEnum } from "../type";
+import { setUserInformation } from "../signaux";
+
+const [, { setModeRemoveLine }] = useStateAction();
 
 export default function MenuDraw() {
   return (
@@ -7,15 +12,21 @@ export default function MenuDraw() {
       <label
         tabIndex={0}
         class="btn btn-circle"
-        onClick={() => console.log("Click trash")}
+        onClick={() => {
+          const content = () => (
+            <span>
+              <kbd class="kbd">Echap</kbd> pour sortir du mode Suppression
+            </span>
+          );
+          setModeRemoveLine();
+          setUserInformation({
+            level: MessageLevelEnum.info,
+            content: content(),
+          });
+        }}
       >
         <FaRegularTrashCan class="w-6 h-6" stroke="none" fill="#ffffffca" />
       </label>
-      <InfoBox>
-        <span>
-          <kbd class="kbd">Echap</kbd> pour sortir du mode Suppression
-        </span>
-      </InfoBox>
     </div>
   );
 }

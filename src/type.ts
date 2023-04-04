@@ -41,3 +41,10 @@ export enum ModeEnum {
   addLine,
   removeLine,
 }
+
+export enum MessageLevelEnum {
+  info,
+  success,
+  warning,
+  error,
+}
