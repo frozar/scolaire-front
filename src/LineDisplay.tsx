@@ -3,7 +3,7 @@ import L from "leaflet";
 
 import { linkMap } from "./global/linkPointIdentityCircle";
 import { getLeafletMap } from "./global/leafletMap";
-import { Line, PointKey } from "./type";
+import { Line } from "./type";
 
 export default function LineDisplay(props: any) {
   // Draw line circles/points
@@ -18,11 +18,7 @@ export default function LineDisplay(props: any) {
 
     const latlngs = [];
     for (const pointIdentity of line.stops) {
-      const key: PointKey = {
-        id: pointIdentity.id,
-        nature: pointIdentity.nature,
-      };
-      const circle = linkMap.get(key);
+      const circle = linkMap.get(pointIdentity.point_id);
       if (circle) {
         latlngs.push(circle.getLatLng());
       }

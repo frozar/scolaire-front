@@ -19,12 +19,8 @@ export default function InfoPointName(props: {
       class="prevent-select"
       style="cursor: grab;"
       onClick={() => {
-        const key = {
-          id: point.id,
-          nature: point.nature,
-        };
         let element;
-        if ((element = linkMap.get(key)?.getElement())) {
+        if ((element = linkMap.get(point.id)?.getElement())) {
           renderAnimation(element);
         }
       }}

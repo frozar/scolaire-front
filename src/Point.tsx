@@ -13,7 +13,6 @@ import {
   PointIdentity,
   PointRamassageType,
   PointEtablissementType,
-  PointKey,
 } from "./type";
 
 import { useStateAction } from "./StateAction";
@@ -79,9 +78,14 @@ export default function Point(props: any) {
                 nature === NatureEnum.ramassage
                   ? NatureEnum.etablissement
                   : NatureEnum.ramassage;
+              const id_point =
+                associatedNature === NatureEnum.etablissement
+                  ? elt.etablissement_id_point
+                  : elt.ramassage_id_point;
+
               return {
                 id: associatedId,
-                point_id: point.point_id,
+                point_id: id_point,
                 nature: associatedNature,
               };
             })
@@ -146,11 +150,7 @@ export default function Point(props: any) {
         // Highlight point ramassage
         for (const associatedPoint of associatedPoints()) {
           let element;
-          const key: PointKey = {
-            id: associatedPoint.id,
-            nature: associatedPoint.nature,
-          };
-          if ((element = linkMap.get(key)?.getElement())) {
+          if ((element = linkMap.get(associatedPoint.point_id)?.getElement())) {
             renderAnimation(element);
           }
         }
@@ -160,11 +160,7 @@ export default function Point(props: any) {
       })
       .on("mouseover", () => {
         for (const associatedPoint of associatedPoints()) {
-          const key: PointKey = {
-            id: associatedPoint.id,
-            nature: associatedPoint.nature,
-          };
-          const element = linkMap.get(key)?.getElement();
+          const element = linkMap.get(associatedPoint.point_id)?.getElement();
           const { nature } = associatedPoint;
           const className =
             nature === NatureEnum.ramassage
@@ -177,11 +173,7 @@ export default function Point(props: any) {
       })
       .on("mouseout", () => {
         for (const associatedPoint of associatedPoints()) {
-          const key: PointKey = {
-            id: associatedPoint.id,
-            nature: associatedPoint.nature,
-          };
-          const element = linkMap.get(key)?.getElement();
+          const element = linkMap.get(associatedPoint.point_id)?.getElement();
           const { nature } = associatedPoint;
           const className =
             nature === NatureEnum.ramassage
@@ -223,11 +215,7 @@ export default function Point(props: any) {
 
     const element = circle.getElement();
     if (element) {
-      const key: PointKey = {
-        id: point.id,
-        nature: point.nature,
-      };
-      linkMap.set(key, circle);
+      linkMap.set(point.point_id, circle);
     }
 
     // Fetch associated points (ramassage or etablissement) and
@@ -236,13 +224,7 @@ export default function Point(props: any) {
   });
 
   onCleanup(() => {
-    // Delete shape from 'linkMap'
-    const key: PointIdentity = {
-      id: point.id,
-      point_id: point.point_id,
-      nature: point.nature,
-    };
-    linkMap.delete(key);
+    linkMap.delete(point.point_id);
 
     circle.remove();
   });

@@ -1,5 +1,4 @@
 import hash from "object-hash";
-import { PointKey } from "../type";
 
 class ObjectMap<K extends object, V> extends Map<K, V> {
   constructor() {
@@ -28,4 +27,4 @@ class ObjectMap<K extends object, V> extends Map<K, V> {
   }
 }
 
-export const linkMap = new ObjectMap<PointKey, L.Circle>();
+export const linkMap = new ObjectMap<Number, L.Circle>();
