@@ -1,11 +1,11 @@
-import { createEffect, Show } from "solid-js";
+import { Show } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
-import { getUserInformation } from "./signaux";
-import { useStateAction } from "./StateAction";
-import { ModeEnum, MessageLevelEnum } from "./type";
-import InfoBox from "./userInformation/InfoBox";
-import SuccessBox from "./userInformation/SuccessBox";
+import { getUserInformation } from "../signaux";
+import { useStateAction } from "../StateAction";
+import { ModeEnum, MessageLevelEnum } from "../type";
+import InfoBox from "./InfoBox";
+import SuccessBox from "./SuccessBox";
 
 const [, { getMode }] = useStateAction();
 
@@ -17,14 +17,14 @@ const options = {
 };
 
 export default function DisplayUserInformation() {
-  createEffect(() => {
-    console.log("getUserInformation TOTO", getUserInformation());
-  });
+  //   createEffect(() => {
+  //     console.log("getUserInformation TOTO", getUserInformation());
+  //   });
 
-  createEffect(() => {
-    console.log("getMode", getMode());
-    console.log("ModeRemoveLine ?", getMode() === ModeEnum.removeLine);
-  });
+  //   createEffect(() => {
+  //     console.log("getMode", getMode());
+  //     console.log("ModeRemoveLine ?", getMode() === ModeEnum.removeLine);
+  //   });
 
   const show = () => getMode() === ModeEnum.removeLine;
   return (

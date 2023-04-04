@@ -8,7 +8,8 @@ import {
   lineUnderConstructionState,
   setLineUnderConstructionState,
 } from "./signaux";
-import DisplayUserInformation from "./DisplayUserInformation";
+import DisplayUserInformation from "./userInformation/DisplayUserInformation";
+import RemoveConfirmation from "./userInformation/RemoveConfirmation";
 
 const [, { setModeRead }, history] = useStateAction();
 
@@ -95,6 +96,7 @@ const App: Component = () => {
   return (
     <div class={styles.App} ref={refApp}>
       <DisplayUserInformation />
+      <RemoveConfirmation />
       <Menu />
       <Map />
       <SpinningWheel />

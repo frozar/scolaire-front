@@ -58,3 +58,11 @@ export const [getUserInformation, setUserInformation] = createSignal({
   | { level: MessageLevelEnum; content: string }
   | { level: MessageLevelEnum; content: JSX.Element }
 >;
+
+export const [getRemoveConfirmation, setRemoveConfirmation] = createSignal({
+  displayed: false,
+  id_bus_line: null,
+}) as Signal<
+  | { displayed: boolean; id_bus_line: null }
+  | { displayed: boolean; id_bus_line: number }
+>;

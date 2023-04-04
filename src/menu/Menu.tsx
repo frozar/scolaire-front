@@ -8,8 +8,6 @@ import InformationContent from "../InformationContent";
 import { useStateAction } from "../StateAction";
 import { useStateGui } from "../StateGui";
 
-import "./menu.css";
-
 const [stateAction, { toggleAltimetryAnimation }] = useStateAction();
 const [stateGui, { toggleDisplayedMenu, setSelectedTab }] = useStateGui();
 
