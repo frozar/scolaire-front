@@ -6,6 +6,7 @@ import { linkMap } from "./global/linkPointIdentityCircle";
 import { getLeafletMap } from "./global/leafletMap";
 import { lineUnderConstructionState } from "./signaux";
 import LineDisplay from "./LineDisplay";
+import { PointKey } from "./type";
 
 const [stateAction] = useStateAction();
 
@@ -28,7 +29,12 @@ export default function LineUnderConstruction() {
         return;
       }
 
-      const circle = linkMap.get(lastPointIdentity);
+      const key: PointKey = {
+        id: lastPointIdentity.id,
+        nature: lastPointIdentity.nature,
+      };
+
+      const circle = linkMap.get(key);
 
       if (!circle) {
         lineUnderConstructionTip = undefined;

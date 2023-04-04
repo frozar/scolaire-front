@@ -13,6 +13,7 @@ import {
   PointIdentity,
   PointRamassageType,
   PointEtablissementType,
+  PointKey,
 } from "./type";
 
 import { useStateAction } from "./StateAction";
@@ -145,7 +146,11 @@ export default function Point(props: any) {
         // Highlight point ramassage
         for (const associatedPoint of associatedPoints()) {
           let element;
-          if ((element = linkMap.get(associatedPoint)?.getElement())) {
+          const key: PointKey = {
+            id: associatedPoint.id,
+            nature: associatedPoint.nature,
+          };
+          if ((element = linkMap.get(key)?.getElement())) {
             renderAnimation(element);
           }
         }
@@ -155,7 +160,11 @@ export default function Point(props: any) {
       })
       .on("mouseover", () => {
         for (const associatedPoint of associatedPoints()) {
-          const element = linkMap.get(associatedPoint)?.getElement();
+          const key: PointKey = {
+            id: associatedPoint.id,
+            nature: associatedPoint.nature,
+          };
+          const element = linkMap.get(key)?.getElement();
           const { nature } = associatedPoint;
           const className =
             nature === NatureEnum.ramassage
@@ -168,7 +177,11 @@ export default function Point(props: any) {
       })
       .on("mouseout", () => {
         for (const associatedPoint of associatedPoints()) {
-          const element = linkMap.get(associatedPoint)?.getElement();
+          const key: PointKey = {
+            id: associatedPoint.id,
+            nature: associatedPoint.nature,
+          };
+          const element = linkMap.get(key)?.getElement();
           const { nature } = associatedPoint;
           const className =
             nature === NatureEnum.ramassage
@@ -210,9 +223,8 @@ export default function Point(props: any) {
 
     const element = circle.getElement();
     if (element) {
-      const key: PointIdentity = {
+      const key: PointKey = {
         id: point.id,
-        point_id: point.point_id,
         nature: point.nature,
       };
       linkMap.set(key, circle);

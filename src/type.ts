@@ -34,4 +34,9 @@ export type PointIdentity = {
   nature: NatureEnum;
 };
 
+export type PointKey = {
+  id: number;
+  nature: NatureEnum;
+};
+
 export type Line = { id_bus_line: number; stops: PointIdentity[] };
