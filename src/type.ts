@@ -35,3 +35,9 @@ export type PointIdentity = {
 };
 
 export type Line = { id_bus_line: number; stops: PointIdentity[] };
+
+export enum ModeEnum {
+  read,
+  addLine,
+  removeLine,
+}
