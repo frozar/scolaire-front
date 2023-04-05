@@ -18,8 +18,8 @@ export default function InformationContent() {
       return null;
     }
 
-    const { id, point_id, nature } = wkSelectedElement;
-    return { id, point_id, nature };
+    const { id, id_point, nature } = wkSelectedElement;
+    return { id, id_point, nature };
   });
 
   const fetchAssociatedPointsParameters = (): {

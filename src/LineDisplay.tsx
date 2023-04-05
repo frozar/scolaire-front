@@ -18,7 +18,7 @@ export default function LineDisplay(props: any) {
 
     const latlngs = [];
     for (const pointIdentity of line.stops) {
-      const circle = linkMap.get(pointIdentity.point_id);
+      const circle = linkMap.get(pointIdentity.id_point);
       if (circle) {
         latlngs.push(circle.getLatLng());
       }

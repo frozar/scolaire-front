@@ -28,7 +28,7 @@ export default function LineUnderConstruction() {
         return;
       }
 
-      const circle = linkMap.get(lastPointIdentity.point_id);
+      const circle = linkMap.get(lastPointIdentity.id_point);
 
       if (!circle) {
         lineUnderConstructionTip = undefined;

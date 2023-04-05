@@ -14,7 +14,7 @@ export enum NatureEnum {
 
 export type PointRamassageType = {
   id: number;
-  point_id: number;
+  id_point: number;
   nature: NatureEnum;
   location: string;
   name: string;
@@ -32,7 +32,7 @@ export function isPointEtablissement(pt: { nature: NatureEnum }) {
 
 export type PointIdentity = {
   id: number;
-  point_id: number;
+  id_point: number;
   nature: NatureEnum;
 };
 
