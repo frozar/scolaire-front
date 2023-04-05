@@ -1,4 +1,3 @@
-import { setUserInformation } from "../signaux";
 import CrossButton from "./CrossButton";
 
 function WarningIcon() {

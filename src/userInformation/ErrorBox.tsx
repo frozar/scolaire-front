@@ -1,4 +1,3 @@
-import { getRemoveConfirmation, setUserInformation } from "../signaux";
 import CrossButton from "./CrossButton";
 
 function ErrorIcon() {
