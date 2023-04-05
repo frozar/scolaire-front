@@ -152,6 +152,7 @@ export default function RemoveConfirmation() {
                             const nbDelete = res.split(" ").at(-1);
                             if (nbDelete != "0") {
                               setUserInformation({
+                                displayed: true,
                                 level: MessageLevelEnum.success,
                                 content: `Suppression de la ligne ${
                                   getRemoveConfirmation()["id_bus_line"]
@@ -163,6 +164,7 @@ export default function RemoveConfirmation() {
                               });
                             } else {
                               setUserInformation({
+                                displayed: true,
                                 level: MessageLevelEnum.error,
                                 content: `Echec de la suppression de la ligne ${
                                   getRemoveConfirmation()["id_bus_line"]
@@ -177,6 +179,7 @@ export default function RemoveConfirmation() {
                           .catch((error) => {
                             console.log("error", error);
                             setUserInformation({
+                              displayed: true,
                               level: MessageLevelEnum.error,
                               content: `Impossible de supprimer la ligne ${
                                 getRemoveConfirmation()["id_bus_line"]

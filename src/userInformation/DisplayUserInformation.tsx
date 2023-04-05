@@ -16,10 +16,8 @@ const options = {
 };
 
 export default function DisplayUserInformation() {
-  const show = () => getUserInformation()["content"] !== null;
-
   return (
-    <Show when={show()}>
+    <Show when={getUserInformation()["displayed"]}>
       <div class="absolute top-[20px] z-[999] w-full flex justify-center">
         <Dynamic component={options[getUserInformation()["level"]]}>
           {getUserInformation()["content"]}

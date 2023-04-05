@@ -1,8 +1,10 @@
-import { JSX, Signal, createSignal } from "solid-js";
+import { Signal, createSignal } from "solid-js";
 import {
   MessageLevelEnum,
   PointEtablissementType,
   PointRamassageType,
+  removeConfirmationType,
+  userInformationType,
 } from "./type";
 import { deepCopy } from "./utils";
 
@@ -52,17 +54,12 @@ export const [points, setPoints] = createSignal<
 >([]);
 
 export const [getUserInformation, setUserInformation] = createSignal({
+  displayed: false,
   level: MessageLevelEnum.info,
   content: "",
-}) as Signal<
-  | { level: MessageLevelEnum; content: string }
-  | { level: MessageLevelEnum; content: JSX.Element }
->;
+}) as Signal<userInformationType>;
 
 export const [getRemoveConfirmation, setRemoveConfirmation] = createSignal({
   displayed: false,
   id_bus_line: null,
-}) as Signal<
-  | { displayed: boolean; id_bus_line: null }
-  | { displayed: boolean; id_bus_line: number }
->;
+}) as Signal<removeConfirmationType>;

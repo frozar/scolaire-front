@@ -1,3 +1,5 @@
+import { JSX } from "solid-js";
+
 export type EleveVersEtablissementType = {
   id: number;
   quantity: number;
@@ -48,3 +50,14 @@ export enum MessageLevelEnum {
   warning,
   error,
 }
+
+export type userInformationType = {
+  displayed: boolean;
+  level: MessageLevelEnum;
+  content: string | JSX.Element;
+};
+
+export type removeConfirmationType = {
+  displayed: boolean;
+  id_bus_line: number | null;
+};
