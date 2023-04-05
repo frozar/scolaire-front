@@ -5,7 +5,7 @@ import { PointIdentity } from "./type";
 import { selectedElement } from "./signaux";
 
 type PointToDisplayType = {
-  id: number;
+  id_point: number;
   name: string;
   nature: NatureEnum;
   quantity: number;
