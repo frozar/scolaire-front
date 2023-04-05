@@ -1,3 +1,5 @@
+import CrossButton from "./CrossButton";
+
 function InfoIcon() {
   return (
     <svg
@@ -23,6 +25,7 @@ export default function InfoBox(props: any) {
         <InfoIcon />
         {props.children}
       </div>
+      <CrossButton />
     </div>
   );
 }

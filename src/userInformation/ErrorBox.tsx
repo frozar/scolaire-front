@@ -1,3 +1,5 @@
+import CrossButton from "./CrossButton";
+
 function ErrorIcon() {
   return (
     <svg
@@ -23,6 +25,7 @@ export default function InfoBox(props: any) {
         <ErrorIcon />
         {props.children}
       </div>
+      <CrossButton />
     </div>
   );
 }

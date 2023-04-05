@@ -1,3 +1,5 @@
+import CrossButton from "./CrossButton";
+
 function SuccessIcon() {
   return (
     <svg
@@ -23,6 +25,7 @@ export default function SuccessBox(props: any) {
         <SuccessIcon />
         {props.children}
       </div>
+      <CrossButton />
     </div>
   );
 }
