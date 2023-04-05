@@ -1,7 +1,6 @@
-import { Component } from "solid-js";
 import { setUserInformation } from "../signaux";
 
-const CrossButton: Component = () => {
+export default function CrossButton() {
 
     return (
         <button onClick={() => {
@@ -18,5 +17,3 @@ const CrossButton: Component = () => {
         </button>
     );
 };
-
-export default CrossButton;
