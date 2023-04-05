@@ -7,7 +7,7 @@ import { linkMap } from "./global/linkPointIdentityCircle";
 
 export default function InfoPointName(props: {
   point: {
-    id: number;
+    id_point: number;
     name: string;
     nature: NatureEnum;
   };
@@ -19,12 +19,8 @@ export default function InfoPointName(props: {
       class="prevent-select"
       style="cursor: grab;"
       onClick={() => {
-        const key = {
-          id: point.id,
-          nature: point.nature,
-        };
         let element;
-        if ((element = linkMap.get(key)?.getElement())) {
+        if ((element = linkMap.get(point.id_point)?.getElement())) {
           renderAnimation(element);
         }
       }}

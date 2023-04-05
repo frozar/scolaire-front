@@ -5,6 +5,8 @@ export type EleveVersEtablissementType = {
   quantity: number;
   ramassage_id: number;
   etablissement_id: number;
+  etablissement_id_point: number;
+  ramassage_id_point: number;
 };
 
 export enum NatureEnum {
@@ -14,7 +16,7 @@ export enum NatureEnum {
 
 export type PointRamassageType = {
   id: number;
-  point_id: number;
+  id_point: number;
   nature: NatureEnum;
   location: string;
   name: string;
@@ -32,7 +34,7 @@ export function isPointEtablissement(pt: { nature: NatureEnum }) {
 
 export type PointIdentity = {
   id: number;
-  point_id: number;
+  id_point: number;
   nature: NatureEnum;
 };
 

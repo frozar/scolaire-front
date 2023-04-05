@@ -5,7 +5,7 @@ import { PointIdentity } from "./type";
 import { selectedElement } from "./signaux";
 
 type PointToDisplayType = {
-  id: number;
+  id_point: number;
   name: string;
   nature: NatureEnum;
   quantity: number;
@@ -18,8 +18,8 @@ export default function InformationContent() {
       return null;
     }
 
-    const { id, point_id, nature } = wkSelectedElement;
-    return { id, point_id, nature };
+    const { id, id_point, nature } = wkSelectedElement;
+    return { id, id_point, nature };
   });
 
   const fetchAssociatedPointsParameters = (): {

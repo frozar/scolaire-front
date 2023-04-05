@@ -17,7 +17,7 @@ export default function BusLines() {
             id_bus_line: number;
             stops: {
               id: number;
-              point_id: number;
+              id_point: number;
               nature: string;
             }[];
           }[]
