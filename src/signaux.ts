@@ -1,5 +1,11 @@
-import { createSignal } from "solid-js";
-import { PointEtablissementType, PointRamassageType } from "./type";
+import { Signal, createSignal } from "solid-js";
+import {
+  MessageLevelEnum,
+  PointEtablissementType,
+  PointRamassageType,
+  removeConfirmationType,
+  userInformationType,
+} from "./type";
 import { deepCopy } from "./utils";
 
 const [getDisplayedSpinningWheel, setDisplayedSpinningWheel] =
@@ -44,5 +50,16 @@ export function setSelectedElement(
   setterSelectedElement(deepCopy(value));
 }
 export const [points, setPoints] = createSignal<
-    PointRamassageType[] | PointEtablissementType[]
-  >([]);
+  PointRamassageType[] | PointEtablissementType[]
+>([]);
+
+export const [getUserInformation, setUserInformation] = createSignal({
+  displayed: false,
+  level: MessageLevelEnum.info,
+  content: "",
+}) as Signal<userInformationType>;
+
+export const [getRemoveConfirmation, setRemoveConfirmation] = createSignal({
+  displayed: false,
+  id_bus_line: null,
+}) as Signal<removeConfirmationType>;

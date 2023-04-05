@@ -1,19 +1,21 @@
-import { Component, on, onCleanup, onMount } from "solid-js";
+import { createEffect, Component, onCleanup, onMount } from "solid-js";
 import styles from "./App.module.css";
 import SpinningWheel from "./SpinningWheel";
 import Map from "./Map";
-import Menu from "./Menu";
+import Menu from "./menu/Menu";
 import { useStateAction } from "./StateAction";
 import {
   lineUnderConstructionState,
   setLineUnderConstructionState,
+  setUserInformation,
 } from "./signaux";
-import { createEffect } from "solid-js";
+import DisplayUserInformation from "./userInformation/DisplayUserInformation";
+import RemoveConfirmation from "./userInformation/RemoveConfirmation";
+
+const [, { setModeRead }, history] = useStateAction();
 
 // Handler the Undo/Redo from the user
 function undoRedoHandler({ ctrlKey, shiftKey, code }: KeyboardEvent) {
-  const [, , history] = useStateAction();
-
   if (ctrlKey) {
     // @ts-expect-error
     const keyboard = navigator.keyboard;
@@ -32,6 +34,11 @@ function undoRedoHandler({ ctrlKey, shiftKey, code }: KeyboardEvent) {
 }
 
 function escapeHandler({ code }: KeyboardEvent) {
+  setModeRead();
+  setUserInformation((currentUserInformation) => ({
+    ...currentUserInformation,
+    displayed: false,
+  }));
   if (code === "Escape" || code === "Enter") {
     setLineUnderConstructionState((lineState) =>
       lineState.active ? { ...lineState, active: false } : lineState
@@ -93,6 +100,8 @@ const App: Component = () => {
 
   return (
     <div class={styles.App} ref={refApp}>
+      <DisplayUserInformation />
+      <RemoveConfirmation />
       <Menu />
       <Map />
       <SpinningWheel />

@@ -4,6 +4,11 @@ import L from "leaflet";
 import { linkMap } from "./global/linkPointIdentityCircle";
 import { getLeafletMap } from "./global/leafletMap";
 import { Line } from "./type";
+import { useStateAction } from "./StateAction";
+import { ModeEnum } from "./type";
+import { getRemoveConfirmation, setRemoveConfirmation } from "./signaux";
+
+const [, { getMode }] = useStateAction();
 
 export default function LineDisplay(props: any) {
   // Draw line circles/points
@@ -26,7 +31,26 @@ export default function LineDisplay(props: any) {
 
     busLine = L.polyline(latlngs, {
       color: color,
-    }).addTo(getLeafletMap());
+    })
+      .addTo(getLeafletMap())
+      .on("mouseover", () => {
+        if (getMode() === ModeEnum.removeLine) {
+          busLine.setStyle({ color: "#FFF", weight: 8 });
+        }
+      })
+      .on("mouseout", () => {
+        if (getMode() === ModeEnum.removeLine) {
+          busLine.setStyle({ color: color, weight: 2 });
+        }
+      })
+      .on("click", () => {
+        if (getMode() === ModeEnum.removeLine) {
+          setRemoveConfirmation({
+            displayed: true,
+            id_bus_line: line["id_bus_line"],
+          });
+        }
+      });
   });
 
   onCleanup(() => {
