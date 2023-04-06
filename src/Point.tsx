@@ -133,11 +133,9 @@ export default function Point(props: any) {
               return value["id_point"];
             }),
           };
-          let headers = new Headers();
           fetch(import.meta.env.VITE_BACK_URL + "/bus_line", {
             method: "POST",
             body: JSON.stringify(data),
-            headers: headers,
           })
             .then((res) => {
               return res.json();
