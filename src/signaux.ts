@@ -53,13 +53,33 @@ export const [points, setPoints] = createSignal<
   PointRamassageType[] | PointEtablissementType[]
 >([]);
 
-export const [getUserInformation, setUserInformation] = createSignal({
+
+export const [getUserInformations, setUserInformations] = createSignal([{
+  id: -1,
   displayed: false,
   level: MessageLevelEnum.info,
   content: "",
-}) as Signal<userInformationType>;
+}]) as Signal<userInformationType[]>;
 
 export const [getRemoveConfirmation, setRemoveConfirmation] = createSignal({
   displayed: false,
   id_bus_line: null,
 }) as Signal<removeConfirmationType>;
+
+function generateUniqueID(): number {
+  const id = Math.random();
+  if (getUserInformations().filter((userInformation) => userInformation.id === id).length === 0) {
+    return id;
+  }
+  return generateUniqueID();
+}
+
+export function addNewUserInformation(userInformation: userInformationType) {
+  const id = generateUniqueID();
+  setUserInformations((currentArray) => {
+    return [...currentArray, {
+      ...userInformation,
+      id: id
+    }];
+  });
+}

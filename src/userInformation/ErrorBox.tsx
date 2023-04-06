@@ -20,12 +20,14 @@ function ErrorIcon() {
 
 export default function InfoBox(props: any) {
   return (
-    <div class="alert alert-error shadow-lg" style="width: max-content">
+    <div class="alert alert-error shadow-lg mt-2" style="width: max-content">
       <div>
         <ErrorIcon />
         {props.children}
       </div>
-      <CrossButton />
+      <CrossButton 
+        id={props.id}
+      />
     </div>
   );
 }

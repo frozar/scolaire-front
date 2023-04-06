@@ -1,10 +1,10 @@
 import { FaRegularTrashCan } from "solid-icons/fa";
 
 import { useStateAction } from "../StateAction";
-import { MessageLevelEnum } from "../type";
-import { setUserInformation } from "../signaux";
+import { MessageLevelEnum, ModeEnum } from "../type";
+import { addNewUserInformation, setUserInformations } from "../signaux";
 
-const [, { setModeRemoveLine }] = useStateAction();
+const [, { setModeRemoveLine, getMode, setModeRead }] = useStateAction();
 
 export default function MenuDraw() {
   return (
@@ -12,14 +12,21 @@ export default function MenuDraw() {
       <label
         tabIndex={0}
         class="btn btn-circle"
+        classList={{"bg-blue-600 hover:bg-blue-600": getMode() === ModeEnum.removeLine}}
         onClick={() => {
+          if (getMode() === ModeEnum.removeLine) {
+            setUserInformations([]);
+            setModeRead();
+            return;
+          }
           const content = () => (
             <span>
               <kbd class="kbd">Echap</kbd> pour sortir du mode Suppression
             </span>
           );
           setModeRemoveLine();
-          setUserInformation({
+          addNewUserInformation({
+            id: -1,
             displayed: true,
             level: MessageLevelEnum.info,
             content: content(),

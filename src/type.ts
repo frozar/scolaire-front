@@ -52,6 +52,7 @@ export enum MessageLevelEnum {
 }
 
 export type userInformationType = {
+  id: number;
   displayed: boolean;
   level: MessageLevelEnum;
   content: string | JSX.Element;

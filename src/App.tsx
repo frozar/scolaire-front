@@ -7,7 +7,7 @@ import { useStateAction } from "./StateAction";
 import {
   lineUnderConstructionState,
   setLineUnderConstructionState,
-  setUserInformation,
+  setUserInformations,
 } from "./signaux";
 import DisplayUserInformation from "./userInformation/DisplayUserInformation";
 import RemoveConfirmation from "./userInformation/RemoveConfirmation";
@@ -35,10 +35,7 @@ function undoRedoHandler({ ctrlKey, shiftKey, code }: KeyboardEvent) {
 
 function escapeHandler({ code }: KeyboardEvent) {
   setModeRead();
-  setUserInformation((currentUserInformation) => ({
-    ...currentUserInformation,
-    displayed: false,
-  }));
+  setUserInformations([]);
   if (code === "Escape" || code === "Enter") {
     setLineUnderConstructionState((lineState) =>
       lineState.active ? { ...lineState, active: false } : lineState
