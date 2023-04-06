@@ -1,4 +1,4 @@
-import { onCleanup, createEffect, createSignal } from "solid-js";
+import { onCleanup, createEffect } from "solid-js";
 import L from "leaflet";
 
 import { linkMap } from "./global/linkPointIdentityCircle";
@@ -15,26 +15,15 @@ export default function LineDisplay(props: any) {
   const line: Line = props.line;
 
   let busLine: L.Polyline;
-  console.log("New Line ", props.line);
-
   const color_alea = "#" + Math.floor(Math.random() * 0xffffff).toString(16);
-  const [color, setcolor] = createSignal<string>(color_alea);
+
   createEffect(() => {
     // Take care of undo/redo
     busLine?.remove();
-    console.log("Update");
-    setcolor(
-      line === stateAction.lineUnderConstruction ? "#0000FF" : color_alea
-    );
-    console.log(
-      "line === stateAction.lineUnderConstruction ",
-      line === stateAction.lineUnderConstruction
-    );
-    console.log("line ", line);
-    console.log(
-      "stateAction.lineUnderConstruction ",
-      stateAction.lineUnderConstruction
-    );
+
+    const color =
+      line === stateAction.lineUnderConstruction ? "#0000FF" : color_alea;
+
     const latlngs = [];
     for (const pointIdentity of line.stops) {
       const circle = linkMap.get(pointIdentity.id_point);
@@ -42,8 +31,9 @@ export default function LineDisplay(props: any) {
         latlngs.push(circle.getLatLng());
       }
     }
+
     busLine = L.polyline(latlngs, {
-      color: color(),
+      color: color,
     })
       .addTo(getLeafletMap())
       .on("mouseover", () => {

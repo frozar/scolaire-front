@@ -136,11 +136,6 @@ export default function Point(props: any) {
               return value["id_point"];
             }),
           };
-<<<<<<< HEAD
-=======
-
-          let headers = new Headers();
->>>>>>> 515cd0d (Fetch and redraw all bus lines when use the enter key)
           fetch(import.meta.env.VITE_BACK_URL + "/bus_line", {
             method: "POST",
             body: JSON.stringify(data),

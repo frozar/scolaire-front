@@ -6,7 +6,12 @@ import Menu from "./menu/Menu";
 import { useStateAction } from "./StateAction";
 import DisplayUserInformation from "./userInformation/DisplayUserInformation";
 import RemoveConfirmation from "./userInformation/RemoveConfirmation";
-import { fetchBusLines, setUserInformations } from "./signaux";
+import {
+  fetchBusLines,
+  lineUnderConstructionState,
+  setLineUnderConstructionState,
+  setUserInformations,
+} from "./signaux";
 
 const [
   ,
@@ -43,17 +48,10 @@ function escapeHandler({ code }: KeyboardEvent) {
   if (code === "Escape" || code === "Enter") {
     setModeRead();
     setUserInformations([]);
-    // setLineUnderConstruction((lineState) =>
-    //   lineState.active ? { ...lineState, active: false } : lineState
-    // );
+    setLineUnderConstructionState((lineState) =>
+      lineState.active ? { ...lineState, active: false } : lineState
+    );
     fetchBusLines();
-    // const lineTmp = getLineUnderConstruction();
-    // if (lineTmp.id_bus_line) {
-    //   setBusLines([
-    //     ...busLines(),
-    //     { id_bus_line: lineTmp.id_bus_line, stops: lineTmp.stops },
-    //   ]);
-    // }
     setLineUnderConstruction({ id_bus_line: null, stops: [] });
   }
 }
