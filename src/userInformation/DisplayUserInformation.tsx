@@ -1,7 +1,7 @@
-import { Show } from "solid-js";
+import { For, Show } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
-import { getUserInformation } from "../signaux";
+import { getUserInformations } from "../signaux";
 import { MessageLevelEnum } from "../type";
 import InfoBox from "./InfoBox";
 import SuccessBox from "./SuccessBox";
@@ -17,12 +17,18 @@ const options = {
 
 export default function DisplayUserInformation() {
   return (
-    <Show when={getUserInformation()["displayed"]}>
-      <div class="absolute top-[20px] z-[999] w-full flex justify-center">
-        <Dynamic component={options[getUserInformation()["level"]]}>
-          {getUserInformation()["content"]}
-        </Dynamic>
-      </div>
-    </Show>
+    <div class="absolute top-[20px] z-[999] w-full flex flex-col items-center">
+      <For each={getUserInformations()}>
+        {(item, i) => (
+          <Show when={item.displayed}>
+            <Dynamic component={options[item.level]}
+              id={item.id}
+            >
+              {item.content}
+            </Dynamic>
+          </Show>
+        )}
+      </For>
+    </div>
   );
 }

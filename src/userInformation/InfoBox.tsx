@@ -20,12 +20,14 @@ function InfoIcon() {
 
 export default function InfoBox(props: any) {
   return (
-    <div class="alert alert-info shadow-lg" style="width: max-content">
+    <div class="alert alert-info shadow-lg mt-2" style="width: max-content">
       <div>
         <InfoIcon />
         {props.children}
       </div>
-      <CrossButton />
+      <CrossButton 
+        id={props.id}
+      />
     </div>
   );
 }

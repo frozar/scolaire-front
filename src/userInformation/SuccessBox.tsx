@@ -20,12 +20,14 @@ function SuccessIcon() {
 
 export default function SuccessBox(props: any) {
   return (
-    <div class="alert alert-success shadow-lg" style="width: max-content">
+    <div class="alert alert-success shadow-lg mt-2" style="width: max-content">
       <div>
         <SuccessIcon />
         {props.children}
       </div>
-      <CrossButton />
+      <CrossButton 
+        id={props.id}
+      />
     </div>
   );
 }

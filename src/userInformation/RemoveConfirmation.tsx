@@ -1,9 +1,9 @@
 import { Show } from "solid-js";
 
 import {
+  addNewUserInformation,
   getRemoveConfirmation,
   setRemoveConfirmation,
-  setUserInformation,
 } from "../signaux";
 import { Transition } from "solid-transition-group";
 import { MessageLevelEnum } from "../type";
@@ -151,24 +151,22 @@ export default function RemoveConfirmation() {
                             console.log("res", res);
                             const nbDelete = res.split(" ").at(-1);
                             if (nbDelete != "0") {
-                              setUserInformation({
+                              addNewUserInformation({
                                 displayed: true,
                                 level: MessageLevelEnum.success,
-                                content: `Suppression de la ligne ${
-                                  getRemoveConfirmation()["id_bus_line"]
-                                }`,
-                              });
+                                content: `La ligne ${getRemoveConfirmation()["id_bus_line"]
+                                  } a bien été supprimée`,
+                              })
                               setRemoveConfirmation({
                                 displayed: false,
                                 id_bus_line: null,
                               });
                             } else {
-                              setUserInformation({
+                              addNewUserInformation({
                                 displayed: true,
                                 level: MessageLevelEnum.error,
-                                content: `Echec de la suppression de la ligne ${
-                                  getRemoveConfirmation()["id_bus_line"]
-                                }`,
+                                content: `Echec de la suppression de la ligne ${getRemoveConfirmation()["id_bus_line"]
+                                  }`,
                               });
                               setRemoveConfirmation({
                                 displayed: false,
@@ -178,12 +176,11 @@ export default function RemoveConfirmation() {
                           })
                           .catch((error) => {
                             console.log("error", error);
-                            setUserInformation({
+                            addNewUserInformation({
                               displayed: true,
                               level: MessageLevelEnum.error,
-                              content: `Impossible de supprimer la ligne ${
-                                getRemoveConfirmation()["id_bus_line"]
-                              }`,
+                              content: `Impossible de supprimer la ligne ${getRemoveConfirmation()["id_bus_line"]
+                                }`,
                             });
                             setRemoveConfirmation({
                               displayed: false,
