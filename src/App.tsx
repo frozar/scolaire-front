@@ -34,9 +34,9 @@ function undoRedoHandler({ ctrlKey, shiftKey, code }: KeyboardEvent) {
 }
 
 function escapeHandler({ code }: KeyboardEvent) {
-  setModeRead();
-  setUserInformations([]);
   if (code === "Escape" || code === "Enter") {
+    setModeRead();
+    setUserInformations([]);  
     setLineUnderConstructionState((lineState) =>
       lineState.active ? { ...lineState, active: false } : lineState
     );

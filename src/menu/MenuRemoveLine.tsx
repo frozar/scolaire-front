@@ -26,7 +26,6 @@ export default function MenuDraw() {
           );
           setModeRemoveLine();
           addNewUserInformation({
-            id: -1,
             displayed: true,
             level: MessageLevelEnum.info,
             content: content(),

@@ -54,12 +54,8 @@ export const [points, setPoints] = createSignal<
 >([]);
 
 
-export const [getUserInformations, setUserInformations] = createSignal([{
-  id: -1,
-  displayed: false,
-  level: MessageLevelEnum.info,
-  content: "",
-}]) as Signal<userInformationType[]>;
+export const [getUserInformations, setUserInformations] =
+  createSignal([]) as Signal<userInformationType[]>;
 
 export const [getRemoveConfirmation, setRemoveConfirmation] = createSignal({
   displayed: false,
@@ -74,7 +70,7 @@ function generateUniqueID(): number {
   return generateUniqueID();
 }
 
-export function addNewUserInformation(userInformation: userInformationType) {
+export function addNewUserInformation(userInformation: Omit<userInformationType, "id">) {
   const id = generateUniqueID();
   setUserInformations((currentArray) => {
     return [...currentArray, {
