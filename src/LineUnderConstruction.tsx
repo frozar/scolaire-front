@@ -4,10 +4,9 @@ import L from "leaflet";
 import { useStateAction } from "./StateAction";
 import { linkMap } from "./global/linkPointIdentityCircle";
 import { getLeafletMap } from "./global/leafletMap";
-import { lineUnderConstructionState } from "./signaux";
 import LineDisplay from "./LineDisplay";
 
-const [stateAction] = useStateAction();
+const [stateAction, { isInAddLineMode }] = useStateAction();
 
 export default function LineUnderConstruction() {
   // Draw the tip of the line under construction between
@@ -23,7 +22,7 @@ export default function LineUnderConstruction() {
 
       const lastPointIdentity = stateAction.lineUnderConstruction.stops.at(-1);
 
-      if (!lineUnderConstructionState().active || !lastPointIdentity) {
+      if (!isInAddLineMode() || !lastPointIdentity) {
         lineUnderConstructionTip = undefined;
         return;
       }

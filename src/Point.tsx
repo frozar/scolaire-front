@@ -13,13 +13,14 @@ import {
   PointIdentity,
   PointRamassageType,
   PointEtablissementType,
+  ModeEnum,
 } from "./type";
 
 import { useStateAction } from "./StateAction";
 import { renderAnimation } from "./animation";
 import { linkMap } from "./global/linkPointIdentityCircle";
 import { getLeafletMap } from "./global/leafletMap";
-import { lineUnderConstructionState, setSelectedElement } from "./signaux";
+import { setSelectedElement } from "./signaux";
 
 const [
   ,
@@ -27,6 +28,8 @@ const [
     addPointToLineUnderConstruction,
     getLineUnderConstruction,
     setLineUnderConstructionId,
+    getMode,
+    isInAddLineMode,
   },
 ] = useStateAction();
 
@@ -120,7 +123,7 @@ export default function Point(props: any) {
       .on("click", () => {
         // Select the current element to display information
         setSelectedElement(point);
-        if (lineUnderConstructionState().active) {
+        if (isInAddLineMode()) {
           const pointIdentity: PointIdentity = {
             id: point.id,
             id_point: point.id_point,
@@ -187,11 +190,11 @@ export default function Point(props: any) {
 
   // If a line is under construction, show a pencil when the mouse is over a circle
   createEffect(
-    on(lineUnderConstructionState, (lineState) => {
+    on(getMode, (mode) => {
       if (circle) {
         const element = circle.getElement() as SVGElement;
         if (element) {
-          if (lineState.active) {
+          if (mode === ModeEnum.addLine) {
             if (String(element.style) !== "cursor: url('/pencil.png'), auto;") {
               // @ts-expect-error
               element.style = "cursor: url('/pencil.png'), auto;";

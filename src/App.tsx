@@ -4,15 +4,11 @@ import SpinningWheel from "./SpinningWheel";
 import Map from "./Map";
 import Menu from "./menu/Menu";
 import { useStateAction } from "./StateAction";
-import {
-  lineUnderConstructionState,
-  setLineUnderConstructionState,
-  setUserInformations,
-} from "./signaux";
 import DisplayUserInformation from "./userInformation/DisplayUserInformation";
 import RemoveConfirmation from "./userInformation/RemoveConfirmation";
 
-const [, { setModeRead }, history] = useStateAction();
+const [, { setModeRead, setModeAddLine, isInAddLineMode }, history] =
+  useStateAction();
 
 // Handler the Undo/Redo from the user
 function undoRedoHandler({ ctrlKey, shiftKey, code }: KeyboardEvent) {
@@ -36,10 +32,6 @@ function undoRedoHandler({ ctrlKey, shiftKey, code }: KeyboardEvent) {
 function escapeHandler({ code }: KeyboardEvent) {
   if (code === "Escape" || code === "Enter") {
     setModeRead();
-    setUserInformations([]);  
-    setLineUnderConstructionState((lineState) =>
-      lineState.active ? { ...lineState, active: false } : lineState
-    );
   }
 }
 
@@ -50,10 +42,7 @@ function toggleLineUnderConstruction({ code }: KeyboardEvent) {
   keyboard.getLayoutMap().then((keyboardLayoutMap) => {
     const upKey = keyboardLayoutMap.get(code);
     if (upKey === "l") {
-      setLineUnderConstructionState((lineState) => ({
-        ...lineState,
-        active: !lineState.active,
-      }));
+      setModeAddLine();
     }
   });
 }
@@ -63,10 +52,7 @@ let refApp: HTMLDivElement | undefined;
 createEffect(() => {
   const [, { getLineUnderConstruction }] = useStateAction();
 
-  if (
-    lineUnderConstructionState().active &&
-    0 < getLineUnderConstruction().stops.length
-  ) {
+  if (isInAddLineMode() && 0 < getLineUnderConstruction().stops.length) {
     if (
       refApp &&
       String(refApp.style) !== "cursor: url('/pencil.png'), auto;"

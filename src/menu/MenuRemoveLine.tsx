@@ -1,10 +1,11 @@
 import { FaRegularTrashCan } from "solid-icons/fa";
 
 import { useStateAction } from "../StateAction";
-import { MessageLevelEnum, ModeEnum } from "../type";
-import { addNewUserInformation, setUserInformations } from "../signaux";
+import { MessageLevelEnum } from "../type";
+import { addNewUserInformation } from "../signaux";
 
-const [, { setModeRemoveLine, getMode, setModeRead }] = useStateAction();
+const [, { setModeRemoveLine, isInRemoveLineMode, setModeRead }] =
+  useStateAction();
 
 export default function MenuDraw() {
   return (
@@ -12,10 +13,9 @@ export default function MenuDraw() {
       <label
         tabIndex={0}
         class="btn btn-circle"
-        classList={{"bg-blue-600 hover:bg-blue-600": getMode() === ModeEnum.removeLine}}
+        classList={{ "bg-blue-600 hover:bg-blue-600": isInRemoveLineMode() }}
         onClick={() => {
-          if (getMode() === ModeEnum.removeLine) {
-            setUserInformations([]);
+          if (isInRemoveLineMode()) {
             setModeRead();
             return;
           }

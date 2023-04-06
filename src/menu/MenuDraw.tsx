@@ -1,9 +1,11 @@
 import { createSignal, Show } from "solid-js";
 
-import { setLineUnderConstructionState } from "../signaux";
-import ClickOutside from "./ClickOutside";
+import { useStateAction } from "../StateAction";
 import { assertIsNode } from "../utils";
 import { Transition } from "solid-transition-group";
+import ClickOutside from "./ClickOutside";
+
+const [, { setModeAddLine, isInAddLineMode }] = useStateAction();
 
 export default function MenuDraw() {
   const [show, setShow] = createSignal(false);
@@ -21,6 +23,9 @@ export default function MenuDraw() {
         ref={refLabelMenu}
         tabIndex={0}
         class="btn btn-circle"
+        classList={{
+          "bg-blue-600 hover:bg-blue-600": isInAddLineMode(),
+        }}
         onClick={() => {
           toggleShow();
         }}
@@ -72,11 +77,7 @@ export default function MenuDraw() {
                 class="menu-link-shortcut"
                 onClick={() => {
                   toggleShow();
-                  setLineUnderConstructionState((lineState) =>
-                    !lineState.active
-                      ? { ...lineState, active: true }
-                      : lineState
-                  );
+                  setModeAddLine();
                 }}
               >
                 Ligne
