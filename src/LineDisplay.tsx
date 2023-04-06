@@ -7,7 +7,8 @@ import { Line } from "./type";
 import { useStateAction } from "./StateAction";
 import { setRemoveConfirmation } from "./signaux";
 
-const [, { isInRemoveLineMode, getMode }] = useStateAction();
+const [, { isInRemoveLineMode, getMode, isLineUnderConstruction }] =
+  useStateAction();
 const [stateAction] = useStateAction();
 
 export default function LineDisplay(props: any) {
@@ -15,14 +16,13 @@ export default function LineDisplay(props: any) {
   const line: Line = props.line;
 
   let busLine: L.Polyline;
-  const color_alea = "#" + Math.floor(Math.random() * 0xffffff).toString(16);
+  const randomColor = "#" + Math.floor(Math.random() * 0xffffff).toString(16);
 
   createEffect(() => {
     // Take care of undo/redo
     busLine?.remove();
 
-    const color =
-      line === stateAction.lineUnderConstruction ? "#0000FF" : color_alea;
+    const color = isLineUnderConstruction(line) ? "#0000FF" : randomColor;
 
     const latlngs = [];
     for (const pointIdentity of line.stops) {

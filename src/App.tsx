@@ -6,12 +6,7 @@ import Menu from "./menu/Menu";
 import { useStateAction } from "./StateAction";
 import DisplayUserInformation from "./userInformation/DisplayUserInformation";
 import RemoveConfirmation from "./userInformation/RemoveConfirmation";
-import {
-  fetchBusLines,
-  lineUnderConstructionState,
-  setLineUnderConstructionState,
-  setUserInformations,
-} from "./signaux";
+import { fetchBusLines, setUserInformations } from "./signaux";
 
 const [
   ,
@@ -48,9 +43,10 @@ function escapeHandler({ code }: KeyboardEvent) {
   if (code === "Escape" || code === "Enter") {
     setModeRead();
     setUserInformations([]);
-    setLineUnderConstructionState((lineState) =>
-      lineState.active ? { ...lineState, active: false } : lineState
-    );
+    //TODO à checker
+    // setLineUnderConstructionState((lineState) =>
+    //   lineState.active ? { ...lineState, active: false } : lineState
+    // );
     fetchBusLines();
     setLineUnderConstruction({ id_bus_line: null, stops: [] });
   }

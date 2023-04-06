@@ -43,6 +43,9 @@ const makeStateActionContext = () => {
   function setLineUnderConstruction(line: Line) {
     setState("lineUnderConstruction", line);
   }
+  function isLineUnderConstruction(line: Line) {
+    return line === state.lineUnderConstruction;
+  }
 
   function setLineUnderConstructionId(id: number) {
     setState("lineUnderConstruction", (line: Line) => {
@@ -107,6 +110,7 @@ const makeStateActionContext = () => {
       getLineUnderConstruction,
       setLineUnderConstruction,
       setLineUnderConstructionId,
+      isLineUnderConstruction,
       setModeRemoveLine,
       setModeAddLine,
       setModeRead,
