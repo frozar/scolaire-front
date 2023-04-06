@@ -131,11 +131,16 @@ export default function Point(props: any) {
           };
           addPointToLineUnderConstruction(pointIdentity);
           let data = {
-            id_bus_line: getLineUnderConstruction().id,
+            id_bus_line: getLineUnderConstruction().id_bus_line,
             ids_point: getLineUnderConstruction().stops.map(function (value) {
               return value["id_point"];
             }),
           };
+<<<<<<< HEAD
+=======
+
+          let headers = new Headers();
+>>>>>>> 515cd0d (Fetch and redraw all bus lines when use the enter key)
           fetch(import.meta.env.VITE_BACK_URL + "/bus_line", {
             method: "POST",
             body: JSON.stringify(data),

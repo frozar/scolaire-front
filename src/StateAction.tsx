@@ -3,7 +3,7 @@ import { createContext, useContext } from "solid-js";
 import { createStore } from "solid-js/store";
 import { createHistory, record } from "solid-record";
 
-import { PointIdentity, ModeEnum } from "./type";
+import { PointIdentity, ModeEnum, Line } from "./type";
 import { setUserInformations } from "./signaux";
 
 const history = createHistory();
@@ -11,14 +11,14 @@ const history = createHistory();
 type StateActionType = {
   // Field which keep the select circle on the map
   altimetry: { animation: boolean };
-  lineUnderConstruction: { id: number | null; stops: PointIdentity[] };
+  lineUnderConstruction: Line;
   mode: ModeEnum;
 };
 
 const makeStateActionContext = () => {
   const defaultState: StateActionType = {
     altimetry: { animation: true },
-    lineUnderConstruction: { id: null, stops: [] },
+    lineUnderConstruction: { id_bus_line: null, stops: [] },
     mode: ModeEnum.read,
   };
 
@@ -40,8 +40,14 @@ const makeStateActionContext = () => {
     });
   }
 
+  function setLineUnderConstruction(line: Line) {
+    setState("lineUnderConstruction", line);
+  }
+
   function setLineUnderConstructionId(id: number) {
-    setState("lineUnderConstruction", "id", id);
+    setState("lineUnderConstruction", (line: Line) => {
+      return { id_bus_line: id, stops: line.stops };
+    });
   }
 
   function getLineUnderConstruction() {
@@ -99,6 +105,7 @@ const makeStateActionContext = () => {
       toggleAltimetryAnimation,
       addPointToLineUnderConstruction,
       getLineUnderConstruction,
+      setLineUnderConstruction,
       setLineUnderConstructionId,
       setModeRemoveLine,
       setModeAddLine,

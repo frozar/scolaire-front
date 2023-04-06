@@ -12,6 +12,7 @@ export default function LineUnderConstruction() {
   // Draw the tip of the line under construction between
   // the last selected circle and the mouse position
   let lineUnderConstructionTip: L.Polyline | undefined;
+
   createEffect(() => {
     const leafletMap = getLeafletMap();
     if (!leafletMap) {
@@ -19,7 +20,6 @@ export default function LineUnderConstruction() {
     }
     leafletMap.on("mousemove", ({ latlng: mouseLatLon }) => {
       lineUnderConstructionTip?.remove();
-
       const lastPointIdentity = stateAction.lineUnderConstruction.stops.at(-1);
 
       if (!isInAddLineMode() || !lastPointIdentity) {
