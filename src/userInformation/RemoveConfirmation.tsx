@@ -2,6 +2,7 @@ import { Show } from "solid-js";
 
 import {
   addNewUserInformation,
+  fetchBusLines,
   getRemoveConfirmation,
   setRemoveConfirmation,
 } from "../signaux";
@@ -10,6 +11,71 @@ import { MessageLevelEnum } from "../type";
 
 export default function RemoveConfirmation() {
   const displayed = () => getRemoveConfirmation()["displayed"];
+
+  function handlerOnClickValider() {
+    const idToCheck = getRemoveConfirmation()["id_bus_line"];
+    if (!idToCheck) {
+      return;
+    }
+
+    const idToRemove: number = idToCheck;
+    fetch(import.meta.env.VITE_BACK_URL + "/bus_line", {
+      method: "DELETE",
+      body: JSON.stringify({
+        id: idToRemove,
+      }),
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((res: any) => {
+        const nbDelete = res.split(" ").at(-1);
+        if (nbDelete != "0") {
+          addNewUserInformation({
+            displayed: true,
+            level: MessageLevelEnum.success,
+            content: `La ligne ${idToRemove} a bien été supprimée`,
+          });
+          setRemoveConfirmation({
+            displayed: false,
+            id_bus_line: null,
+          });
+        } else {
+          addNewUserInformation({
+            displayed: true,
+            level: MessageLevelEnum.error,
+            content: `Echec de la suppression de la ligne ${idToRemove}`,
+          });
+          setRemoveConfirmation({
+            displayed: false,
+            id_bus_line: null,
+          });
+        }
+        fetchBusLines();
+      })
+      .catch((error) => {
+        console.error("Error during suppression", error);
+        addNewUserInformation({
+          displayed: true,
+          level: MessageLevelEnum.error,
+          content: `Impossible de supprimer la ligne ${
+            getRemoveConfirmation()["id_bus_line"]
+          }`,
+        });
+        setRemoveConfirmation({
+          displayed: false,
+          id_bus_line: null,
+        });
+        fetchBusLines();
+      });
+  }
+
+  function handlerOnClickAnnuler() {
+    setRemoveConfirmation({
+      displayed: false,
+      id_bus_line: null,
+    });
+  }
 
   return (
     <Show when={displayed()}>
@@ -131,69 +197,14 @@ export default function RemoveConfirmation() {
                     <button
                       type="button"
                       class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-                      onClick={() => {
-                        const idToCheck =
-                          getRemoveConfirmation()["id_bus_line"];
-                        if (!idToCheck) {
-                          return;
-                        }
-
-                        const idToRemove: number = idToCheck;
-                        fetch(import.meta.env.VITE_BACK_URL + "/bus_line", {
-                          method: "DELETE",
-                          body: JSON.stringify({
-                            id: idToRemove,
-                          }),
-                        })
-                          .then((res) => {
-                            return res.json();
-                          })
-                          .then((res: any) => {
-                            console.log("res", res);
-                            const nbDelete = res.split(" ").at(-1);
-                            if (nbDelete != "0") {
-                              addNewUserInformation({
-                                displayed: true,
-                                level: MessageLevelEnum.success,
-                                content: `La ligne ${idToRemove} a bien été supprimée`,
-                              });
-                              setRemoveConfirmation({
-                                displayed: false,
-                                id_bus_line: null,
-                              });
-                            } else {
-                              addNewUserInformation({
-                                displayed: true,
-                                level: MessageLevelEnum.error,
-                                content: `Echec de la suppression de la ligne ${idToRemove}`,
-                              });
-                              setRemoveConfirmation({
-                                displayed: false,
-                                id_bus_line: null,
-                              });
-                            }
-                          })
-                          .catch((error) => {
-                            console.error("Error during suppression", error);
-                            addNewUserInformation({
-                              displayed: true,
-                              level: MessageLevelEnum.error,
-                              content: `Impossible de supprimer la ligne ${
-                                getRemoveConfirmation()["id_bus_line"]
-                              }`,
-                            });
-                            setRemoveConfirmation({
-                              displayed: false,
-                              id_bus_line: null,
-                            });
-                          });
-                      }}
+                      onClick={handlerOnClickValider}
                     >
                       Valider
                     </button>
                     <button
                       type="button"
                       class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                      onClick={handlerOnClickAnnuler}
                     >
                       Annuler
                     </button>

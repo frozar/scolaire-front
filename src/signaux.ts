@@ -1,7 +1,9 @@
 import { Signal, createSignal } from "solid-js";
 import {
-  MessageLevelEnum,
+  Line,
+  NatureEnum,
   PointEtablissementType,
+  PointIdentity,
   PointRamassageType,
   removeConfirmationType,
   userInformationType,
@@ -53,9 +55,9 @@ export const [points, setPoints] = createSignal<
   PointRamassageType[] | PointEtablissementType[]
 >([]);
 
-
-export const [getUserInformations, setUserInformations] =
-  createSignal([]) as Signal<userInformationType[]>;
+export const [getUserInformations, setUserInformations] = createSignal(
+  []
+) as Signal<userInformationType[]>;
 
 export const [getRemoveConfirmation, setRemoveConfirmation] = createSignal({
   displayed: false,
@@ -64,18 +66,63 @@ export const [getRemoveConfirmation, setRemoveConfirmation] = createSignal({
 
 function generateUniqueID(): number {
   const id = Math.random();
-  if (getUserInformations().filter((userInformation) => userInformation.id === id).length === 0) {
+  if (
+    getUserInformations().filter((userInformation) => userInformation.id === id)
+      .length === 0
+  ) {
     return id;
   }
   return generateUniqueID();
 }
 
-export function addNewUserInformation(userInformation: Omit<userInformationType, "id">) {
+export function addNewUserInformation(
+  userInformation: Omit<userInformationType, "id">
+) {
   const id = generateUniqueID();
   setUserInformations((currentArray) => {
-    return [...currentArray, {
-      ...userInformation,
-      id: id
-    }];
+    return [
+      ...currentArray,
+      {
+        ...userInformation,
+        id: id,
+      },
+    ];
   });
+}
+
+export const [busLines, setBusLines] = createSignal<Line[]>([]);
+
+export function fetchBusLines() {
+  fetch(import.meta.env.VITE_BACK_URL + "/bus_lines")
+    .then((res) => {
+      return res.json();
+    })
+    .then(
+      (
+        res: {
+          id_bus_line: number;
+          stops: {
+            id: number;
+            id_point: number;
+            nature: string;
+          }[];
+        }[]
+      ) => {
+        let lines: Line[] = res.map((line) => {
+          const stopsWithNatureEnum = line.stops.map(
+            (stop) =>
+              ({
+                ...stop,
+                nature:
+                  stop["nature"] === "ramassage"
+                    ? NatureEnum.ramassage
+                    : NatureEnum.etablissement,
+              } as PointIdentity)
+          );
+          return { ...line, stops: stopsWithNatureEnum };
+        });
+
+        setBusLines(lines);
+      }
+    );
 }
