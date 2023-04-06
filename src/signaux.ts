@@ -85,6 +85,10 @@ export function addNewUserInformation(
 
 export const [busLines, setBusLines] = createSignal<Line[]>([]);
 
+function randColor() {
+  return "#" + Math.floor(Math.random() * 0xffffff).toString(16);
+}
+
 export function fetchBusLines() {
   fetch(import.meta.env.VITE_BACK_URL + "/bus_lines")
     .then((res) => {
@@ -94,6 +98,7 @@ export function fetchBusLines() {
       (
         res: {
           id_bus_line: number;
+          color: string | null;
           stops: {
             id: number;
             id_point: number;
@@ -102,6 +107,7 @@ export function fetchBusLines() {
         }[]
       ) => {
         let lines: Line[] = res.map((line) => {
+          const color = line.color ? "#" + line.color : randColor();
           const stopsWithNatureEnum = line.stops.map(
             (stop) =>
               ({
@@ -112,7 +118,7 @@ export function fetchBusLines() {
                     : NatureEnum.etablissement,
               } as PointIdentity)
           );
-          return { ...line, stops: stopsWithNatureEnum };
+          return { ...line, color, stops: stopsWithNatureEnum };
         });
 
         setBusLines(lines);

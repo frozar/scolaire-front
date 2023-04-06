@@ -14,13 +14,10 @@ export default function LineDisplay(props: any) {
   const line: Line = props.line;
 
   let busLine: L.Polyline;
-  const randomColor = "#" + Math.floor(Math.random() * 0xffffff).toString(16);
 
   createEffect(() => {
     // Take care of undo/redo
     busLine?.remove();
-
-    const color = isLineUnderConstruction(line) ? "#0000FF" : randomColor;
 
     const latlngs = [];
     for (const pointIdentity of line.stops) {
@@ -31,13 +28,13 @@ export default function LineDisplay(props: any) {
     }
 
     busLine = L.polyline(latlngs, {
-      color: color,
+      color: line.color,
     })
       .addTo(getLeafletMap())
       .on("mouseover", () => {
         createEffect(() => {
           if (!isInRemoveLineMode()) {
-            busLine.setStyle({ color: color, weight: 3 });
+            busLine.setStyle({ color: line.color, weight: 3 });
           }
         });
         if (isInRemoveLineMode()) {
@@ -46,7 +43,7 @@ export default function LineDisplay(props: any) {
       })
       .on("mouseout", () => {
         if (isInRemoveLineMode()) {
-          busLine.setStyle({ color: color, weight: 3 });
+          busLine.setStyle({ color: line.color, weight: 3 });
         }
       })
       .on("click", () => {

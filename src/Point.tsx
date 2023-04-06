@@ -130,12 +130,14 @@ export default function Point(props: any) {
             nature: point.nature,
           };
           addPointToLineUnderConstruction(pointIdentity);
+
           let data = {
             id_bus_line: getLineUnderConstruction().id_bus_line,
             ids_point: getLineUnderConstruction().stops.map(function (value) {
               return value["id_point"];
             }),
           };
+
           fetch(import.meta.env.VITE_BACK_URL + "/bus_line", {
             method: "POST",
             body: JSON.stringify(data),
@@ -144,7 +146,8 @@ export default function Point(props: any) {
               return res.json();
             })
             .then((res) => {
-              setLineUnderConstructionId(res);
+              const { id } = res;
+              setLineUnderConstructionId(id);
             });
         }
 
