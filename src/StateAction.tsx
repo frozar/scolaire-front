@@ -4,6 +4,7 @@ import { createStore } from "solid-js/store";
 import { createHistory, record } from "solid-record";
 
 import { PointIdentity, ModeEnum } from "./type";
+import { setUserInformations } from "./signaux";
 
 const history = createHistory();
 
@@ -56,13 +57,36 @@ const makeStateActionContext = () => {
     });
   }
 
+  function setModeAddLine() {
+    setUserInformations([]);
+    setState("mode", (currentMode) => {
+      if (currentMode !== ModeEnum.addLine) {
+        return ModeEnum.addLine;
+      }
+      return currentMode;
+    });
+  }
+
   function setModeRead() {
+    setUserInformations([]);
     setState("mode", (currentMode) => {
       if (currentMode !== ModeEnum.read) {
         return ModeEnum.read;
       }
       return currentMode;
     });
+  }
+
+  function isInAddLineMode() {
+    return state.mode === ModeEnum.addLine;
+  }
+
+  function isInRemoveLineMode() {
+    return state.mode === ModeEnum.removeLine;
+  }
+
+  function isInReadMode() {
+    return state.mode === ModeEnum.read;
   }
 
   function getMode() {
@@ -77,7 +101,11 @@ const makeStateActionContext = () => {
       getLineUnderConstruction,
       setLineUnderConstructionId,
       setModeRemoveLine,
+      setModeAddLine,
       setModeRead,
+      isInAddLineMode,
+      isInRemoveLineMode,
+      isInReadMode,
       getMode,
     },
     history,

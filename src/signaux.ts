@@ -33,13 +33,6 @@ export function disableSpinningWheel() {
   });
 }
 
-type LineUnderConstructionType = { active: boolean };
-
-export const [lineUnderConstructionState, setLineUnderConstructionState] =
-  createSignal<LineUnderConstructionType>({
-    active: false,
-  });
-
 const [getSelectedElement, setterSelectedElement] = createSignal<
   PointRamassageType | PointEtablissementType
 >();

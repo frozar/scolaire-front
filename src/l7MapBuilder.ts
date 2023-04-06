@@ -10,12 +10,11 @@ import { getLeafletMap, setLeafletMap } from "./global/leafletMap";
 import {
   enableSpinningWheel,
   disableSpinningWheel,
-  lineUnderConstructionState,
 } from "./signaux";
 
 import { useStateAction } from "./StateAction";
 
-const [stateAction] = useStateAction();
+const [stateAction, { isInAddLineMode }] = useStateAction();
 
 function handleDataFormatL7(
   dataFormatL7: any,
@@ -177,7 +176,7 @@ export function buildMapL7(div: HTMLDivElement) {
   createEffect(() => {
     const dragging = getLeafletMap().dragging;
     if (dragging) {
-      if (lineUnderConstructionState().active) {
+      if (isInAddLineMode()) {
         dragging.disable();
       } else {
         dragging.enable();

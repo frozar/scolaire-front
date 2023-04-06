@@ -5,10 +5,9 @@ import { linkMap } from "./global/linkPointIdentityCircle";
 import { getLeafletMap } from "./global/leafletMap";
 import { Line } from "./type";
 import { useStateAction } from "./StateAction";
-import { ModeEnum } from "./type";
 import { setRemoveConfirmation } from "./signaux";
 
-const [, { getMode }] = useStateAction();
+const [, { isInRemoveLineMode }] = useStateAction();
 
 export default function LineDisplay(props: any) {
   // Draw line circles/points
@@ -35,21 +34,21 @@ export default function LineDisplay(props: any) {
       .addTo(getLeafletMap())
       .on("mouseover", () => {
         createEffect(() => {
-          if (getMode() !== ModeEnum.removeLine) {            
+          if (!isInRemoveLineMode()) {
             busLine.setStyle({ color: color, weight: 3 });
           }
         });
-        if (getMode() === ModeEnum.removeLine) {
+        if (isInRemoveLineMode()) {
           busLine.setStyle({ color: "#FFF", weight: 8 });
         }
       })
       .on("mouseout", () => {
-        if (getMode() === ModeEnum.removeLine) {
+        if (isInRemoveLineMode()) {
           busLine.setStyle({ color: color, weight: 3 });
         }
       })
       .on("click", () => {
-        if (getMode() === ModeEnum.removeLine) {
+        if (isInRemoveLineMode()) {
           setRemoveConfirmation({
             displayed: true,
             id_bus_line: line["id_bus_line"],
