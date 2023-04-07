@@ -43,6 +43,7 @@ const makeStateActionContext = () => {
   function setLineUnderConstruction(line: Line) {
     setState("lineUnderConstruction", line);
   }
+
   function isLineUnderConstruction(line: Line) {
     return line === state.lineUnderConstruction;
   }

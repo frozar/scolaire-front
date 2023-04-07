@@ -7,9 +7,7 @@ import { Line } from "./type";
 import { useStateAction } from "./StateAction";
 import { setRemoveConfirmation } from "./signaux";
 
-const [, { isInRemoveLineMode, getMode, isLineUnderConstruction }] =
-  useStateAction();
-const [stateAction] = useStateAction();
+const [, { isInRemoveLineMode, isLineUnderConstruction }] = useStateAction();
 
 export default function LineDisplay(props: any) {
   // Draw line circles/points

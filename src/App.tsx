@@ -10,13 +10,7 @@ import { fetchBusLines, setUserInformations } from "./signaux";
 
 const [
   ,
-  {
-    setModeRead,
-    setModeAddLine,
-    isInAddLineMode,
-    setLineUnderConstruction,
-    getLineUnderConstruction,
-  },
+  { setModeRead, setModeAddLine, isInAddLineMode, setLineUnderConstruction },
   history,
 ] = useStateAction();
 
@@ -42,11 +36,6 @@ function undoRedoHandler({ ctrlKey, shiftKey, code }: KeyboardEvent) {
 function escapeHandler({ code }: KeyboardEvent) {
   if (code === "Escape" || code === "Enter") {
     setModeRead();
-    setUserInformations([]);
-    //TODO à checker
-    // setLineUnderConstructionState((lineState) =>
-    //   lineState.active ? { ...lineState, active: false } : lineState
-    // );
     fetchBusLines();
     setLineUnderConstruction({ id_bus_line: null, stops: [] });
   }
