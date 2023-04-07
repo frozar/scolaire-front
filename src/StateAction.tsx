@@ -15,10 +15,18 @@ type StateActionType = {
   mode: ModeEnum;
 };
 
+function defaultLineUnderConstruction() {
+  return {
+    id_bus_line: null,
+    color: "#000000",
+    stops: [],
+  };
+}
+
 const makeStateActionContext = () => {
   const defaultState: StateActionType = {
     altimetry: { animation: true },
-    lineUnderConstruction: { id_bus_line: null, stops: [] },
+    lineUnderConstruction: defaultLineUnderConstruction(),
     mode: ModeEnum.read,
   };
 
@@ -40,12 +48,16 @@ const makeStateActionContext = () => {
     });
   }
 
+  function resetLineUnderConstruction() {
+    setState("lineUnderConstruction", defaultLineUnderConstruction());
+  }
+
   function setLineUnderConstruction(line: Line) {
     setState("lineUnderConstruction", line);
   }
 
   function isLineUnderConstruction(line: Line) {
-    return line === state.lineUnderConstruction;
+    return line.id_bus_line === state.lineUnderConstruction.id_bus_line;
   }
 
   function setLineUnderConstructionId(id: number) {
@@ -109,6 +121,7 @@ const makeStateActionContext = () => {
       toggleAltimetryAnimation,
       addPointToLineUnderConstruction,
       getLineUnderConstruction,
+      resetLineUnderConstruction,
       setLineUnderConstruction,
       setLineUnderConstructionId,
       isLineUnderConstruction,

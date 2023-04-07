@@ -4,14 +4,31 @@ import L from "leaflet";
 import { useStateAction } from "./StateAction";
 import { linkMap } from "./global/linkPointIdentityCircle";
 import { getLeafletMap } from "./global/leafletMap";
-import LineDisplay from "./LineDisplay";
 
 const [stateAction, { isInAddLineMode }] = useStateAction();
 
-export default function LineUnderConstruction() {
-  // Draw the tip of the line under construction between
-  // the last selected circle and the mouse position
+//TODO: rename to lineUnderConstructionTip
+// Draw the tip of the line under construction between
+// the last selected circle and the mouse position
+export default function LineUnderConstructionTip() {
   let lineUnderConstructionTip: L.Polyline | undefined;
+
+  function onCleanupHandler() {
+    lineUnderConstructionTip?.remove();
+    const leafletMap = getLeafletMap();
+    if (!leafletMap) {
+      return;
+    }
+    leafletMap.off("mousemove");
+  }
+
+  // When the user leave the add line mode, clean up the line tip
+  createEffect(() => {
+    if (lineUnderConstructionTip && !isInAddLineMode()) {
+      onCleanupHandler();
+    }
+  });
+
   createEffect(() => {
     const leafletMap = getLeafletMap();
     if (!leafletMap) {
@@ -55,13 +72,8 @@ export default function LineUnderConstruction() {
   });
 
   onCleanup(() => {
-    lineUnderConstructionTip!.remove();
-    const leafletMap = getLeafletMap();
-    if (!leafletMap) {
-      return;
-    }
-    leafletMap.off("mousemove");
+    onCleanupHandler();
   });
 
-  return <LineDisplay line={stateAction.lineUnderConstruction} />;
+  return <></>;
 }

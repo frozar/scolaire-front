@@ -6,11 +6,11 @@ import Menu from "./menu/Menu";
 import { useStateAction } from "./StateAction";
 import DisplayUserInformation from "./userInformation/DisplayUserInformation";
 import RemoveConfirmation from "./userInformation/RemoveConfirmation";
-import { fetchBusLines, setUserInformations } from "./signaux";
+import { fetchBusLines } from "./signaux";
 
 const [
   ,
-  { setModeRead, setModeAddLine, isInAddLineMode, setLineUnderConstruction },
+  { setModeRead, setModeAddLine, isInAddLineMode, resetLineUnderConstruction },
   history,
 ] = useStateAction();
 
@@ -35,9 +35,9 @@ function undoRedoHandler({ ctrlKey, shiftKey, code }: KeyboardEvent) {
 
 function escapeHandler({ code }: KeyboardEvent) {
   if (code === "Escape" || code === "Enter") {
+    resetLineUnderConstruction();
     setModeRead();
     fetchBusLines();
-    setLineUnderConstruction({ id_bus_line: null, stops: [] });
   }
 }
 

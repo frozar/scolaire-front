@@ -1,3 +1,5 @@
+import { DEAD_COLOR } from "./constant";
+
 function componentToHex(c: number) {
   var hex = c.toString(16);
   return hex.length == 1 ? "0" + hex : hex;
@@ -12,8 +14,6 @@ type RGB = {
 type RGBA = RGB & {
   a: number;
 };
-
-const DEAD_COLOR = "#000000FF";
 
 function rgbaToHex(color: RGBA): string {
   return (
@@ -81,7 +81,9 @@ function hexToRgba(hex: string): RGBA {
   }
 }
 
+// @ts-expect-error
 if (import.meta.vitest) {
+  // @ts-expect-error
   const { it, expect } = import.meta.vitest;
   it("hexToRgba8", () => {
     expect(hexToRgba("#000000FF")).toStrictEqual({
@@ -174,7 +176,9 @@ function nextRGBShade(color: RGB): RGB {
   }
 }
 
+// @ts-expect-error
 if (import.meta.vitest) {
+  // @ts-expect-error
   const { it, expect } = import.meta.vitest;
   it("nextB", () => {
     expect(
@@ -311,9 +315,11 @@ function convertToRGBShade(interValue: number): RGB {
   return allColors[idx];
 }
 
+// @ts-expect-error
 if (import.meta.vitest) {
   const eps = 1e-6;
   const h = 1 / 1021;
+  // @ts-expect-error
   const { it, expect } = import.meta.vitest;
   it("zero", () => {
     expect(convertToRGBShade(0)).toStrictEqual({

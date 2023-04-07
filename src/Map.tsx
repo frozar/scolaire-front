@@ -7,7 +7,7 @@ import PointsRamassageAndEtablissement from "./PointsRamassageAndEtablissement";
 import { buildMapL7 } from "./l7MapBuilder";
 import { buildMapLeafletPostCode } from "./leafletMapPostCodeBuilder";
 import { buildMapLeafletRouteRaw } from "./leafletMapRouteRawBuilder";
-import LineUnderConstruction from "./LineUnderConstruction";
+import LineUnderConstructionTip from "./LineUnderConstructionTip";
 import BusLines from "./BusLines";
 
 function buildMap(div: HTMLDivElement) {
@@ -35,7 +35,7 @@ function Map() {
     <>
       <div ref={mapDiv} id="main-map" />
       <PointsRamassageAndEtablissement />
-      <LineUnderConstruction />
+      <LineUnderConstructionTip />
       <BusLines />
     </>
   );

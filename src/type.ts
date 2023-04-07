@@ -38,7 +38,11 @@ export type PointIdentity = {
   nature: NatureEnum;
 };
 
-export type Line = { id_bus_line: number | null; stops: PointIdentity[] };
+export type Line = {
+  id_bus_line: number | null;
+  color: string;
+  stops: PointIdentity[];
+};
 
 export enum ModeEnum {
   read,
