@@ -1,7 +1,7 @@
 import { onMount, For, onCleanup } from "solid-js";
 
 import LineDisplay from "./LineDisplay";
-import { busLines, fetchBusLines, setBusLines } from "./signaux";
+import { fetchBusLines, setBusLines, busLines } from "../signaux";
 
 export default function BusLines() {
   onMount(() => {

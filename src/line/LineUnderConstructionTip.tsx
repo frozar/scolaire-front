@@ -1,9 +1,8 @@
 import { onCleanup, createEffect } from "solid-js";
 import L from "leaflet";
-
-import { useStateAction } from "./StateAction";
-import { linkMap } from "./global/linkPointIdentityCircle";
-import { getLeafletMap } from "./global/leafletMap";
+import { useStateAction } from "../StateAction";
+import { getLeafletMap } from "../global/leafletMap";
+import { linkMap } from "../global/linkPointIdentityCircle";
 
 const [stateAction, { isInAddLineMode }] = useStateAction();
 
