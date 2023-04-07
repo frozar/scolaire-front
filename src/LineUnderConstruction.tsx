@@ -8,10 +8,27 @@ import { getLeafletMap } from "./global/leafletMap";
 const [stateAction, { isInAddLineMode }] = useStateAction();
 
 //TODO: rename to lineUnderConstructionTip
+// Draw the tip of the line under construction between
+// the last selected circle and the mouse position
 export default function LineUnderConstruction() {
-  // Draw the tip of the line under construction between
-  // the last selected circle and the mouse position
   let lineUnderConstructionTip: L.Polyline | undefined;
+
+  function onCleanupHandler() {
+    lineUnderConstructionTip?.remove();
+    const leafletMap = getLeafletMap();
+    if (!leafletMap) {
+      return;
+    }
+    leafletMap.off("mousemove");
+  }
+
+  // When the user leave the add line mode, clean up the line tip
+  createEffect(() => {
+    if (lineUnderConstructionTip && !isInAddLineMode()) {
+      onCleanupHandler();
+    }
+  });
+
   createEffect(() => {
     const leafletMap = getLeafletMap();
     if (!leafletMap) {
@@ -20,8 +37,6 @@ export default function LineUnderConstruction() {
     leafletMap.on("mousemove", ({ latlng: mouseLatLon }) => {
       lineUnderConstructionTip?.remove();
 
-      // TODO
-      // console.log("stateAction.lineUnderConstruction", stateAction.lineUnderConstruction)
       const lastPointIdentity = stateAction.lineUnderConstruction.stops.at(-1);
 
       if (!isInAddLineMode() || !lastPointIdentity) {
@@ -57,12 +72,7 @@ export default function LineUnderConstruction() {
   });
 
   onCleanup(() => {
-    lineUnderConstructionTip?.remove();
-    const leafletMap = getLeafletMap();
-    if (!leafletMap) {
-      return;
-    }
-    leafletMap.off("mousemove");
+    onCleanupHandler();
   });
 
   return <></>;

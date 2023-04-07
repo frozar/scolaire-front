@@ -21,11 +21,6 @@ export default function LineDisplay(props: any) {
     // Take care of undo/redo
     busLine?.remove();
 
-    if (isLineUnderConstruction(line)) {
-      console.log("line under construction");
-      console.dir(JSON.stringify(unwrap(line)));
-    }
-
     const latlngs = [];
     for (const pointIdentity of line.stops) {
       const circle = linkMap.get(pointIdentity.id_point);
