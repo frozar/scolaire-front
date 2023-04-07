@@ -7,7 +7,7 @@ import PointsRamassageAndEtablissement from "./PointsRamassageAndEtablissement";
 import { buildMapL7 } from "./l7MapBuilder";
 import { buildMapLeafletPostCode } from "./leafletMapPostCodeBuilder";
 import { buildMapLeafletRouteRaw } from "./leafletMapRouteRawBuilder";
-import LineUnderConstructionTip from "./LineUnderConstruction";
+import LineUnderConstructionTip from "./LineUnderConstructionTip";
 import BusLines from "./BusLines";
 
 function buildMap(div: HTMLDivElement) {
