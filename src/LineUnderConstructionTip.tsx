@@ -7,7 +7,6 @@ import { getLeafletMap } from "./global/leafletMap";
 
 const [stateAction, { isInAddLineMode }] = useStateAction();
 
-//TODO: rename to lineUnderConstructionTip
 // Draw the tip of the line under construction between
 // the last selected circle and the mouse position
 export default function LineUnderConstructionTip() {
