@@ -1,12 +1,11 @@
 import { onCleanup, createEffect } from "solid-js";
 import L from "leaflet";
-
-import { linkMap } from "./global/linkPointIdentityCircle";
-import { getLeafletMap } from "./global/leafletMap";
-import { Line } from "./type";
-import { useStateAction } from "./StateAction";
-import { setRemoveConfirmation } from "./signaux";
-import { COLOR_LINE_UNDER_CONSTRUCTION } from "./constant";
+import { useStateAction } from "../StateAction";
+import { COLOR_LINE_UNDER_CONSTRUCTION } from "../constant";
+import { getLeafletMap } from "../global/leafletMap";
+import { linkMap } from "../global/linkPointIdentityCircle";
+import { setRemoveConfirmation } from "../signaux";
+import { Line } from "../type";
 
 const [, { isInRemoveLineMode, isLineUnderConstruction }] = useStateAction();
 

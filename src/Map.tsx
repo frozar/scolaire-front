@@ -7,8 +7,8 @@ import PointsRamassageAndEtablissement from "./PointsRamassageAndEtablissement";
 import { buildMapL7 } from "./l7MapBuilder";
 import { buildMapLeafletPostCode } from "./leafletMapPostCodeBuilder";
 import { buildMapLeafletRouteRaw } from "./leafletMapRouteRawBuilder";
-import LineUnderConstructionTip from "./LineUnderConstructionTip";
-import BusLines from "./BusLines";
+import BusLines from "./line/BusLines";
+import LineUnderConstructionTip from "./line/LineUnderConstructionTip";
 
 function buildMap(div: HTMLDivElement) {
   const option: string = "l7";
