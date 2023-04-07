@@ -1,7 +1,7 @@
 import { FaRegularTrashCan } from "solid-icons/fa";
 
 import { useStateAction } from "../StateAction";
-import { MessageLevelEnum } from "../type";
+import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { addNewUserInformation } from "../signaux";
 
 const [, { setModeRemoveLine, isInRemoveLineMode, setModeRead }] =
@@ -28,6 +28,7 @@ export default function MenuDraw() {
           addNewUserInformation({
             displayed: true,
             level: MessageLevelEnum.info,
+            type: MessageTypeEnum.enterRemoveLine,
             content: content(),
           });
         }}

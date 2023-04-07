@@ -50,6 +50,14 @@ export enum ModeEnum {
   removeLine,
 }
 
+export enum MessageTypeEnum {
+  enterRemoveLine,
+  enterAddLine,
+  removeLine,
+  addLine,
+  global,
+}
+
 export enum MessageLevelEnum {
   info,
   success,
@@ -61,6 +69,7 @@ export type userInformationType = {
   id: number;
   displayed: boolean;
   level: MessageLevelEnum;
+  type: MessageTypeEnum;
   content: string | JSX.Element;
 };
 
