@@ -10,7 +10,13 @@ import { fetchBusLines } from "./signaux";
 
 const [
   ,
-  { setModeRead, setModeAddLine, isInAddLineMode, resetLineUnderConstruction },
+  {
+    setModeRead,
+    setModeAddLine,
+    isInAddLineMode,
+    resetLineUnderConstruction,
+    getLineUnderConstructionId,
+  },
   history,
 ] = useStateAction();
 
@@ -34,10 +40,31 @@ function undoRedoHandler({ ctrlKey, shiftKey, code }: KeyboardEvent) {
 }
 
 function escapeHandler({ code }: KeyboardEvent) {
-  if (code === "Escape" || code === "Enter") {
+  if (!getLineUnderConstructionId()) {
     resetLineUnderConstruction();
     setModeRead();
     fetchBusLines();
+    return;
+  }
+  switch (code) {
+    case "Escape":
+      const idToRemove: number | null = getLineUnderConstructionId();
+      fetch(import.meta.env.VITE_BACK_URL + "/bus_line", {
+        method: "DELETE",
+        body: JSON.stringify({
+          id: idToRemove,
+        }),
+      }).then(() => {
+        resetLineUnderConstruction();
+        setModeRead();
+        fetchBusLines();
+      });
+      break;
+    case "Enter":
+      resetLineUnderConstruction();
+      setModeRead();
+      fetchBusLines();
+      break;
   }
 }
 

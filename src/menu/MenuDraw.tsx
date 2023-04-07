@@ -4,6 +4,8 @@ import { useStateAction } from "../StateAction";
 import { assertIsNode } from "../utils";
 import { Transition } from "solid-transition-group";
 import ClickOutside from "./ClickOutside";
+import { addNewUserInformation } from "../signaux";
+import { MessageLevelEnum, MessageTypeEnum } from "../type";
 
 const [, { setModeAddLine, isInAddLineMode }] = useStateAction();
 
@@ -76,8 +78,32 @@ export default function MenuDraw() {
               <a
                 class="menu-link-shortcut"
                 onClick={() => {
-                  toggleShow();
+                  const content = () => (
+                    <div>
+                      {/* <div>
+                        <kbd class="kbd">Echap</kbd> pour sortir du mode Ajout
+                        sans sauvegarder
+                      </div>
+                      <div>
+                        <kbd class="kbd">Entrée</kbd> pour sortir du mode Ajout
+                        en sauvegardant
+                      </div> */}
+                      <div>
+                        <kbd class="kbd">Entrée</kbd> Sauvegarder
+                        <kbd class="kbd ml-2">Echap</kbd> Abandonner les
+                        modifications
+                      </div>
+                    </div>
+                  );
                   setModeAddLine();
+                  addNewUserInformation({
+                    displayed: true,
+                    level: MessageLevelEnum.info,
+                    type: MessageTypeEnum.enterRemoveLine,
+                    content: content(),
+                  });
+                  console.log("je click");
+                  toggleShow();
                 }}
               >
                 Ligne

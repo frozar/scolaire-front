@@ -59,6 +59,9 @@ const makeStateActionContext = () => {
   function isLineUnderConstruction(line: Line) {
     return line.id_bus_line === state.lineUnderConstruction.id_bus_line;
   }
+  function getLineUnderConstructionId() {
+    return state.lineUnderConstruction.id_bus_line;
+  }
 
   function setLineUnderConstructionId(id: number) {
     setState("lineUnderConstruction", (line: Line) => {
@@ -145,6 +148,7 @@ const makeStateActionContext = () => {
       isInRemoveLineMode,
       isInReadMode,
       getMode,
+      getLineUnderConstructionId,
     },
     history,
   ] as const;
