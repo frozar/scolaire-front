@@ -6,7 +6,6 @@ import { getLeafletMap } from "./global/leafletMap";
 import { Line } from "./type";
 import { useStateAction } from "./StateAction";
 import { setRemoveConfirmation } from "./signaux";
-import { unwrap } from "solid-js/store";
 import { COLOR_LINE_UNDER_CONSTRUCTION } from "./constant";
 
 const [, { isInRemoveLineMode, isLineUnderConstruction }] = useStateAction();

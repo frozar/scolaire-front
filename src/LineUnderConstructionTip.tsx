@@ -10,7 +10,7 @@ const [stateAction, { isInAddLineMode }] = useStateAction();
 //TODO: rename to lineUnderConstructionTip
 // Draw the tip of the line under construction between
 // the last selected circle and the mouse position
-export default function LineUnderConstruction() {
+export default function LineUnderConstructionTip() {
   let lineUnderConstructionTip: L.Polyline | undefined;
 
   function onCleanupHandler() {
