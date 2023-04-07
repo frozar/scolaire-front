@@ -131,7 +131,7 @@ export default function Point(props: any) {
           };
           addPointToLineUnderConstruction(pointIdentity);
           let data = {
-            id_bus_line: getLineUnderConstruction().id,
+            id_bus_line: getLineUnderConstruction().id_bus_line,
             ids_point: getLineUnderConstruction().stops.map(function (value) {
               return value["id_point"];
             }),

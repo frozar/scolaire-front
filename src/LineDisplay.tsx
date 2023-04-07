@@ -7,18 +7,20 @@ import { Line } from "./type";
 import { useStateAction } from "./StateAction";
 import { setRemoveConfirmation } from "./signaux";
 
-const [, { isInRemoveLineMode }] = useStateAction();
+const [, { isInRemoveLineMode, isLineUnderConstruction }] = useStateAction();
 
 export default function LineDisplay(props: any) {
   // Draw line circles/points
   const line: Line = props.line;
 
   let busLine: L.Polyline;
-  const color = "#" + Math.floor(Math.random() * 0xffffff).toString(16);
+  const randomColor = "#" + Math.floor(Math.random() * 0xffffff).toString(16);
 
   createEffect(() => {
     // Take care of undo/redo
     busLine?.remove();
+
+    const color = isLineUnderConstruction(line) ? "#0000FF" : randomColor;
 
     const latlngs = [];
     for (const pointIdentity of line.stops) {
