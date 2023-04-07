@@ -20,7 +20,7 @@ import { useStateAction } from "./StateAction";
 import { renderAnimation } from "./animation";
 import { linkMap } from "./global/linkPointIdentityCircle";
 import { getLeafletMap } from "./global/leafletMap";
-import { setSelectedElement } from "./signaux";
+import { fetchBusLines, setSelectedElement } from "./signaux";
 
 const [
   ,
@@ -148,6 +148,7 @@ export default function Point(props: any) {
             .then((res) => {
               const { id } = res;
               setLineUnderConstructionId(id);
+              fetchBusLines();
             });
         }
 

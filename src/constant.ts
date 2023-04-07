@@ -1,0 +1,1 @@
+export const COLOR_LINE_UNDER_CONSTRUCTION = "#0000FF";

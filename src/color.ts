@@ -13,6 +13,7 @@ type RGBA = RGB & {
   a: number;
 };
 
+// TODO : move to constant
 const DEAD_COLOR = "#000000FF";
 
 function rgbaToHex(color: RGBA): string {

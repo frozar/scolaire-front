@@ -4,10 +4,10 @@ import L from "leaflet";
 import { useStateAction } from "./StateAction";
 import { linkMap } from "./global/linkPointIdentityCircle";
 import { getLeafletMap } from "./global/leafletMap";
-import LineDisplay from "./LineDisplay";
 
 const [stateAction, { isInAddLineMode }] = useStateAction();
 
+//TODO: rename to lineUnderConstructionTip
 export default function LineUnderConstruction() {
   // Draw the tip of the line under construction between
   // the last selected circle and the mouse position
@@ -20,6 +20,8 @@ export default function LineUnderConstruction() {
     leafletMap.on("mousemove", ({ latlng: mouseLatLon }) => {
       lineUnderConstructionTip?.remove();
 
+      // TODO
+      // console.log("stateAction.lineUnderConstruction", stateAction.lineUnderConstruction)
       const lastPointIdentity = stateAction.lineUnderConstruction.stops.at(-1);
 
       if (!isInAddLineMode() || !lastPointIdentity) {
@@ -55,7 +57,7 @@ export default function LineUnderConstruction() {
   });
 
   onCleanup(() => {
-    lineUnderConstructionTip!.remove();
+    lineUnderConstructionTip?.remove();
     const leafletMap = getLeafletMap();
     if (!leafletMap) {
       return;
@@ -63,5 +65,5 @@ export default function LineUnderConstruction() {
     leafletMap.off("mousemove");
   });
 
-  return <LineDisplay line={stateAction.lineUnderConstruction} />;
+  return <></>;
 }
