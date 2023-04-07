@@ -137,19 +137,20 @@ export default function Point(props: any) {
               return value["id_point"];
             }),
           };
-
-          fetch(import.meta.env.VITE_BACK_URL + "/bus_line", {
-            method: "POST",
-            body: JSON.stringify(data),
-          })
-            .then((res) => {
-              return res.json();
+          if (getLineUnderConstruction().stops.length > 1) {
+            fetch(import.meta.env.VITE_BACK_URL + "/bus_line", {
+              method: "POST",
+              body: JSON.stringify(data),
             })
-            .then((res) => {
-              const { id } = res;
-              setLineUnderConstructionId(id);
-              fetchBusLines();
-            });
+              .then((res) => {
+                return res.json();
+              })
+              .then((res) => {
+                const { id } = res;
+                setLineUnderConstructionId(id);
+                fetchBusLines();
+              });
+          }
         }
 
         // Highlight point ramassage
