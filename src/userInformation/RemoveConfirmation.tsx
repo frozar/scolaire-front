@@ -7,7 +7,7 @@ import {
   setRemoveConfirmation,
 } from "../signaux";
 import { Transition } from "solid-transition-group";
-import { MessageLevelEnum } from "../type";
+import { MessageLevelEnum, MessageTypeEnum } from "../type";
 
 export default function RemoveConfirmation() {
   const displayed = () => getRemoveConfirmation()["displayed"];
@@ -34,6 +34,7 @@ export default function RemoveConfirmation() {
           addNewUserInformation({
             displayed: true,
             level: MessageLevelEnum.success,
+            type: MessageTypeEnum.removeLine,
             content: `La ligne ${idToRemove} a bien été supprimée`,
           });
           setRemoveConfirmation({
@@ -44,6 +45,7 @@ export default function RemoveConfirmation() {
           addNewUserInformation({
             displayed: true,
             level: MessageLevelEnum.error,
+            type: MessageTypeEnum.removeLine,
             content: `Echec de la suppression de la ligne ${idToRemove}`,
           });
           setRemoveConfirmation({
@@ -58,6 +60,7 @@ export default function RemoveConfirmation() {
         addNewUserInformation({
           displayed: true,
           level: MessageLevelEnum.error,
+          type: MessageTypeEnum.removeLine,
           content: `Impossible de supprimer la ligne ${
             getRemoveConfirmation()["id_bus_line"]
           }`,

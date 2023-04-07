@@ -3,7 +3,7 @@ import { createContext, useContext } from "solid-js";
 import { createStore } from "solid-js/store";
 import { createHistory, record } from "solid-record";
 
-import { PointIdentity, ModeEnum, Line } from "./type";
+import { PointIdentity, ModeEnum, MessageTypeEnum, Line } from "./type";
 import { setUserInformations } from "./signaux";
 
 const history = createHistory();
@@ -70,33 +70,46 @@ const makeStateActionContext = () => {
     return state.lineUnderConstruction;
   }
 
-  function setModeRemoveLine() {
+  const types: { [key in ModeEnum]: MessageTypeEnum[] } = {
+    [ModeEnum.read]: [MessageTypeEnum.global],
+    [ModeEnum.addLine]: [MessageTypeEnum.addLine, MessageTypeEnum.enterAddLine],
+    [ModeEnum.removeLine]: [
+      MessageTypeEnum.removeLine,
+      MessageTypeEnum.enterRemoveLine,
+    ],
+  };
+
+  function clearMessage(mode: ModeEnum) {
+    const messageTypesToKeep = types[mode];
+    setUserInformations((userInformations) =>
+      userInformations.filter(
+        (userInformation) =>
+          messageTypesToKeep.includes(userInformation.type) ||
+          userInformation.type === MessageTypeEnum.global
+      )
+    );
+  }
+
+  function changeMode(mode: ModeEnum) {
+    clearMessage(mode);
     setState("mode", (currentMode) => {
-      if (currentMode !== ModeEnum.removeLine) {
-        return ModeEnum.removeLine;
+      if (currentMode !== mode) {
+        return mode;
       }
       return currentMode;
     });
+  }
+
+  function setModeRemoveLine() {
+    changeMode(ModeEnum.removeLine);
   }
 
   function setModeAddLine() {
-    setUserInformations([]);
-    setState("mode", (currentMode) => {
-      if (currentMode !== ModeEnum.addLine) {
-        return ModeEnum.addLine;
-      }
-      return currentMode;
-    });
+    changeMode(ModeEnum.addLine);
   }
 
   function setModeRead() {
-    setUserInformations([]);
-    setState("mode", (currentMode) => {
-      if (currentMode !== ModeEnum.read) {
-        return ModeEnum.read;
-      }
-      return currentMode;
-    });
+    changeMode(ModeEnum.read);
   }
 
   function isInAddLineMode() {
