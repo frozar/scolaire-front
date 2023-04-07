@@ -22,7 +22,7 @@ export default function LineUnderConstructionTip() {
 
   // When the user leave the add line mode, clean up the line tip
   createEffect(() => {
-    if (lineUnderConstructionTip && !isInAddLineMode()) {
+    if (!isInAddLineMode() && lineUnderConstructionTip) {
       onCleanupHandler();
     }
   });
