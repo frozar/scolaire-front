@@ -28,21 +28,10 @@ export default function LineDisplay(props: any) {
 
     const latlngs = [];
     for (const pointIdentity of line.stops) {
-      if (isLineUnderConstruction(line)) {
-        console.log("pointIdentity", pointIdentity);
-        console.log("pointIdentity.id_point", pointIdentity.id_point);
-      }
       const circle = linkMap.get(pointIdentity.id_point);
-      if (isLineUnderConstruction(line)) {
-        console.log("circle", circle);
-      }
       if (circle) {
         latlngs.push(circle.getLatLng());
       }
-    }
-
-    if (isLineUnderConstruction(line)) {
-      console.log("latlngs", latlngs);
     }
 
     let displayedColor = line.color;

@@ -82,6 +82,7 @@ function hexToRgba(hex: string): RGBA {
   }
 }
 
+// TODO : ts error ignore
 if (import.meta.vitest) {
   const { it, expect } = import.meta.vitest;
   it("hexToRgba8", () => {

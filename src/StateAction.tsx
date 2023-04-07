@@ -15,16 +15,18 @@ type StateActionType = {
   mode: ModeEnum;
 };
 
-const makeStateActionContext = () => {
-  const defaultLineUnderConstruction = {
+function defaultLineUnderConstruction() {
+  return {
     id_bus_line: null,
     color: "#000000",
     stops: [],
   };
+}
 
+const makeStateActionContext = () => {
   const defaultState: StateActionType = {
     altimetry: { animation: true },
-    lineUnderConstruction: defaultLineUnderConstruction,
+    lineUnderConstruction: defaultLineUnderConstruction(),
     mode: ModeEnum.read,
   };
 
@@ -47,7 +49,7 @@ const makeStateActionContext = () => {
   }
 
   function resetLineUnderConstruction() {
-    setState("lineUnderConstruction", defaultLineUnderConstruction);
+    setState("lineUnderConstruction", defaultLineUnderConstruction());
   }
 
   function setLineUnderConstruction(line: Line) {
