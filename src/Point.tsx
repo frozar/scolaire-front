@@ -123,34 +123,40 @@ export default function Point(props: any) {
       .on("click", () => {
         // Select the current element to display information
         setSelectedElement(point);
-        if (isInAddLineMode()) {
-          const pointIdentity: PointIdentity = {
-            id: point.id,
-            id_point: point.id_point,
-            nature: point.nature,
-          };
-          addPointToLineUnderConstruction(pointIdentity);
-
-          let data = {
-            id_bus_line: getLineUnderConstruction().id_bus_line,
-            ids_point: getLineUnderConstruction().stops.map(function (value) {
-              return value["id_point"];
-            }),
-          };
-
-          fetch(import.meta.env.VITE_BACK_URL + "/bus_line", {
-            method: "POST",
-            body: JSON.stringify(data),
-          })
-            .then((res) => {
-              return res.json();
-            })
-            .then((res) => {
-              const { id } = res;
-              setLineUnderConstructionId(id);
-              fetchBusLines();
-            });
+        if (!isInAddLineMode()) {
+          return;
         }
+
+        const pointIdentity: PointIdentity = {
+          id: point.id,
+          id_point: point.id_point,
+          nature: point.nature,
+        };
+        addPointToLineUnderConstruction(pointIdentity);
+        if (!(1 < getLineUnderConstruction().stops.length)) {
+          return;
+        }
+
+        let data = {
+          id_bus_line: getLineUnderConstruction().id_bus_line,
+          ids_point: getLineUnderConstruction().stops.map(function (value) {
+            return value["id_point"];
+          }),
+        };
+
+        fetch(import.meta.env.VITE_BACK_URL + "/bus_line", {
+          method: "POST",
+          body: JSON.stringify(data),
+        })
+          .then((res) => {
+            return res.json();
+          })
+          .then((res) => {
+            const { id } = res;
+            console.log(id);
+            setLineUnderConstructionId(id);
+            fetchBusLines();
+          });
 
         // Highlight point ramassage
         for (const associatedPoint of associatedPoints()) {
