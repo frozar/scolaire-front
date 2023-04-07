@@ -3,7 +3,7 @@ import { createContext, useContext } from "solid-js";
 import { createStore } from "solid-js/store";
 import { createHistory, record } from "solid-record";
 
-import { PointIdentity, ModeEnum, MessageTypeEnum, Line } from "./type";
+import { PointIdentity, ModeEnum, Line, MessageTypeEnum } from "./type";
 import { setUserInformations } from "./signaux";
 
 const history = createHistory();
