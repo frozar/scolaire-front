@@ -293,3 +293,7 @@ code {
 .menu-link-shortcut {
   justify-content: space-between;
 }
+
+.logo-container{
+  padding: 10px 8px;
+}
