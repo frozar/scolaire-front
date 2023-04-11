@@ -40,23 +40,21 @@ function undoRedoHandler({ ctrlKey, shiftKey, code }: KeyboardEvent) {
 }
 
 function escapeHandler({ code }: KeyboardEvent) {
-  if (!getLineUnderConstructionId()) {
-    resetLineUnderConstruction();
-    setModeRead();
-    fetchBusLines();
-    return;
-  }
   switch (code) {
     case "Escape":
       const idToRemove: number | null = getLineUnderConstructionId();
+      resetLineUnderConstruction();
+      setModeRead();
+      if (idToRemove === null) {
+        fetchBusLines();
+        break;
+      }
       fetch(import.meta.env.VITE_BACK_URL + "/bus_line", {
         method: "DELETE",
         body: JSON.stringify({
           id: idToRemove,
         }),
       }).then(() => {
-        resetLineUnderConstruction();
-        setModeRead();
         fetchBusLines();
       });
       break;

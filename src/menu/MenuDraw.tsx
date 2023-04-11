@@ -1,21 +1,42 @@
-import { createSignal, Show } from "solid-js";
+import { createEffect, createSignal, on, Show } from "solid-js";
 
 import { useStateAction } from "../StateAction";
 import { assertIsNode } from "../utils";
 import { Transition } from "solid-transition-group";
 import ClickOutside from "./ClickOutside";
 import { addNewUserInformation } from "../signaux";
-import { MessageLevelEnum, MessageTypeEnum } from "../type";
+import { MessageLevelEnum, MessageTypeEnum, ModeEnum } from "../type";
 
-const [, { setModeAddLine, isInAddLineMode }] = useStateAction();
+const [, { setModeAddLine, isInAddLineMode, getMode }] = useStateAction();
+
+const [show, setShow] = createSignal(false);
+
+function toggleShow() {
+  setShow((show) => !show);
+}
+
+createEffect(
+  on(getMode, (a) => {
+    if (getMode() === ModeEnum.addLine) {
+      const content = () => (
+        <div>
+          <div>
+            <kbd class="kbd">Entrée</kbd> Sauvegarder
+            <kbd class="kbd ml-2">Echap</kbd> Abandonner les modifications
+          </div>
+        </div>
+      );
+      addNewUserInformation({
+        displayed: true,
+        level: MessageLevelEnum.info,
+        type: MessageTypeEnum.enterAddLine,
+        content: content(),
+      });
+    }
+  })
+);
 
 export default function MenuDraw() {
-  const [show, setShow] = createSignal(false);
-
-  function toggleShow() {
-    setShow((show) => !show);
-  }
-
   let refDrawnMenu: HTMLUListElement | undefined;
   let refLabelMenu: HTMLLabelElement | undefined;
 
@@ -78,32 +99,8 @@ export default function MenuDraw() {
               <a
                 class="menu-link-shortcut"
                 onClick={() => {
-                  const content = () => (
-                    <div>
-                      {/* <div>
-                        <kbd class="kbd">Echap</kbd> pour sortir du mode Ajout
-                        sans sauvegarder
-                      </div>
-                      <div>
-                        <kbd class="kbd">Entrée</kbd> pour sortir du mode Ajout
-                        en sauvegardant
-                      </div> */}
-                      <div>
-                        <kbd class="kbd">Entrée</kbd> Sauvegarder
-                        <kbd class="kbd ml-2">Echap</kbd> Abandonner les
-                        modifications
-                      </div>
-                    </div>
-                  );
-                  setModeAddLine();
-                  addNewUserInformation({
-                    displayed: true,
-                    level: MessageLevelEnum.info,
-                    type: MessageTypeEnum.enterRemoveLine,
-                    content: content(),
-                  });
-                  console.log("je click");
                   toggleShow();
+                  setModeAddLine();
                 }}
               >
                 Ligne
