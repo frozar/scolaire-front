@@ -104,7 +104,7 @@ export default function RemoveConfirmation() {
           https://github.com/reactjs/react-transition-group/issues/558 */}
           <Transition
             name="slide-fade"
-            enterActiveClass="ease-out duration-200"
+            enterActiveClass="ease-out duration-300"
             enterClass="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             enterToClass="opacity-100 translate-y-0 sm:scale-100"
             exitActiveClass="ease-in duration-200"
