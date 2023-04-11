@@ -13,6 +13,8 @@ import {
 } from "./signaux";
 
 import { useStateAction } from "./StateAction";
+import MapLogo from "./MapLogo";
+
 
 const [stateAction, { isInAddLineMode }] = useStateAction();
 
@@ -152,6 +154,18 @@ function addLegend(map: L.Map) {
   legend.addTo(map);
 }
 
+function addLogo(map: L.Map) {
+  const logoControl = L.Control.extend({
+    //control position - allowed: 'topleft', 'topright', 'bottomleft', 'bottomright'
+    options: {
+      position: "bottomleft",
+    },
+
+    onAdd: MapLogo,
+  });
+  new logoControl().addTo(map);
+}
+
 export function buildMapL7(div: HTMLDivElement) {
   enableSpinningWheel();
 
@@ -170,7 +184,7 @@ export function buildMapL7(div: HTMLDivElement) {
   }).addTo(getLeafletMap());
 
   addLegend(getLeafletMap());
-
+  addLogo(getLeafletMap())
   // If a line is under construction, disable the possibility
   // to pan the map
   createEffect(() => {
