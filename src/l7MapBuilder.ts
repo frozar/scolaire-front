@@ -190,6 +190,10 @@ export function buildMapL7(div: HTMLDivElement) {
   l7layer.addTo(getLeafletMap());
 
   const scene = l7layer.getScene();
+
+  // Remove the L7 logo
+  scene.removeControl(scene.getControlByName("logo"));
+
   // To retrieve control over the cursor, remove the 'l7-interactive' class
   scene.getMapCanvasContainer().classList.remove("l7-interactive");
 
