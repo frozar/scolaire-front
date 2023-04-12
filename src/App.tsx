@@ -84,7 +84,15 @@ function toggleLineUnderConstruction({ code }: KeyboardEvent) {
     const upKey = keyboardLayoutMap.get(code);
     if (upKey === "l") {
       setModeAddLine();
-      displayAddLineMessage();
+      const content = () => (
+        <div>
+          <div>
+            <kbd class="kbd">Entrée</kbd> Sauvegarder
+            <kbd class="kbd ml-2">Echap</kbd> Abandonner les modifications
+          </div>
+        </div>
+      );
+      displayAddLineMessage(content);
     }
   });
 }
