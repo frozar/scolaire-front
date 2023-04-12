@@ -109,16 +109,18 @@ export default function Point(props: any) {
 
     const [color, fillColor, radius] =
       nature === NatureEnum.ramassage
-        ? ["red", "#f03", 50]
+        ? ["red", "white", 50]
         : nature === NatureEnum.etablissement
-        ? ["green", "#0f3", 100]
+        ? ["green", "white", 100]
         : ["white", "#000", 150];
 
     return L.circle([lat, lon], {
       color,
       fillColor,
       radius,
-      fillOpacity: 0.5,
+      fillOpacity: 1,
+      pane: "shadowPane",
+      weight: 4,
     })
       .on("click", () => {
         // Select the current element to display information
