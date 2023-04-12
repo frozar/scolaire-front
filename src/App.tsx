@@ -7,6 +7,8 @@ import { useStateAction } from "./StateAction";
 import DisplayUserInformation from "./userInformation/DisplayUserInformation";
 import RemoveConfirmation from "./userInformation/RemoveConfirmation";
 import { fetchBusLines } from "./signaux";
+import { ModeEnum } from "./type";
+import { displayAddLineMessage } from "./userInformation/utils";
 
 const [
   ,
@@ -16,6 +18,7 @@ const [
     isInAddLineMode,
     resetLineUnderConstruction,
     getLineUnderConstructionId,
+    getMode,
   },
   history,
 ] = useStateAction();
@@ -42,6 +45,9 @@ function undoRedoHandler({ ctrlKey, shiftKey, code }: KeyboardEvent) {
 function escapeHandler({ code }: KeyboardEvent) {
   switch (code) {
     case "Escape":
+      if (getMode() != ModeEnum.addLine) {
+        break;
+      }
       const idToRemove: number | null = getLineUnderConstructionId();
       resetLineUnderConstruction();
       setModeRead();
@@ -59,11 +65,15 @@ function escapeHandler({ code }: KeyboardEvent) {
       });
       break;
     case "Enter":
-      resetLineUnderConstruction();
-      setModeRead();
-      fetchBusLines();
+      enterHandler();
       break;
   }
+}
+
+function enterHandler() {
+  resetLineUnderConstruction();
+  setModeRead();
+  fetchBusLines();
 }
 
 function toggleLineUnderConstruction({ code }: KeyboardEvent) {
@@ -74,6 +84,7 @@ function toggleLineUnderConstruction({ code }: KeyboardEvent) {
     const upKey = keyboardLayoutMap.get(code);
     if (upKey === "l") {
       setModeAddLine();
+      displayAddLineMessage();
     }
   });
 }

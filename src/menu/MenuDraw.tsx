@@ -1,40 +1,18 @@
-import { createEffect, createSignal, on, Show } from "solid-js";
+import { createSignal, Show } from "solid-js";
 
 import { useStateAction } from "../StateAction";
 import { assertIsNode } from "../utils";
 import { Transition } from "solid-transition-group";
 import ClickOutside from "./ClickOutside";
-import { addNewUserInformation } from "../signaux";
-import { MessageLevelEnum, MessageTypeEnum, ModeEnum } from "../type";
+import { displayAddLineMessage } from "../userInformation/utils";
 
-const [, { setModeAddLine, isInAddLineMode, getMode }] = useStateAction();
+const [, { setModeAddLine, isInAddLineMode }] = useStateAction();
 
 const [show, setShow] = createSignal(false);
 
 function toggleShow() {
   setShow((show) => !show);
 }
-
-createEffect(
-  on(getMode, (a) => {
-    if (getMode() === ModeEnum.addLine) {
-      const content = () => (
-        <div>
-          <div>
-            <kbd class="kbd">Entrée</kbd> Sauvegarder
-            <kbd class="kbd ml-2">Echap</kbd> Abandonner les modifications
-          </div>
-        </div>
-      );
-      addNewUserInformation({
-        displayed: true,
-        level: MessageLevelEnum.info,
-        type: MessageTypeEnum.enterAddLine,
-        content: content(),
-      });
-    }
-  })
-);
 
 export default function MenuDraw() {
   let refDrawnMenu: HTMLUListElement | undefined;
@@ -101,6 +79,7 @@ export default function MenuDraw() {
                 onClick={() => {
                   toggleShow();
                   setModeAddLine();
+                  displayAddLineMessage();
                 }}
               >
                 Ligne
