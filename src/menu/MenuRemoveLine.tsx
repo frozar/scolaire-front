@@ -1,8 +1,6 @@
 import { FaRegularTrashCan } from "solid-icons/fa";
 
 import { useStateAction } from "../StateAction";
-import { MessageLevelEnum, MessageTypeEnum } from "../type";
-import { addNewUserInformation } from "../signaux";
 import { displayRemoveLineMessage } from "../userInformation/utils";
 
 const [, { setModeRemoveLine, isInRemoveLineMode, setModeRead }] =

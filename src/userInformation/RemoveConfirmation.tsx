@@ -1,4 +1,4 @@
-import { Show, createSignal, onMount } from "solid-js";
+import { Show, createEffect, createSignal } from "solid-js";
 import {
   addNewUserInformation,
   fetchBusLines,
@@ -79,12 +79,12 @@ export default function RemoveConfirmation() {
     });
   }
 
-  const [buttonRef, setButtonRef] = createSignal(null);
+  const [buttonRef, setButtonRef] = createSignal<
+    HTMLButtonElement | undefined
+  >();
 
-  onMount(() => {
-    if (buttonRef()) {
-      buttonRef()!.focus();
-    }
+  createEffect(() => {
+    buttonRef()?.focus();
   });
   return (
     <Transition

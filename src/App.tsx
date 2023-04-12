@@ -72,9 +72,11 @@ function escapeHandler({ code }: KeyboardEvent) {
 
 function enterHandler({ code }: KeyboardEvent) {
   if (code === "Enter") {
-    resetLineUnderConstruction();
-    setModeRead();
-    fetchBusLines();
+    if (isInAddLineMode()) {
+      resetLineUnderConstruction();
+      setModeRead();
+      fetchBusLines();
+    }
   }
 }
 
