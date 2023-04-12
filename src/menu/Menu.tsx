@@ -82,7 +82,7 @@ function SettingsHorizontalIcon(props: any) {
         d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75"
       />
     </svg>
-    );
+  );
 }
 
 export function InformationCircleIcon(props: any) {
@@ -106,15 +106,11 @@ export function InformationCircleIcon(props: any) {
 }
 
 function InformationName() {
-  return (
-    <span>Informations</span>
-  );
+  return <span>Informations</span>;
 }
 
 function SettingsName() {
-  return (
-    <span>Paramètres</span>
-  );
+  return <span>Paramètres</span>;
 }
 
 function MenuContent() {
@@ -132,15 +128,15 @@ function MenuContent() {
   };
 
   const tabs: TabType = {
-    info: { 
+    info: {
       tabLabel: InformationCircleIcon,
       tabContent: InformationContent,
-      tabName : InformationName
+      tabName: InformationName,
     },
     settings: {
       tabLabel: SettingsHorizontalIcon,
       tabContent: SettingsContent,
-      tabName : SettingsName
+      tabName: SettingsName,
     },
   };
   type TabKey = keyof typeof tabs;
@@ -159,7 +155,10 @@ function MenuContent() {
       <div>
         <div class="hidden sm:block">
           <div class="border-b border-gray-300">
-            <nav class="-mb-px flex space-x-8 border-indigo-500 text-indigo-600 tabs" aria-label="Tabs">
+            <nav
+              class="-mb-px flex space-x-8 border-indigo-500 text-indigo-600 tabs"
+              aria-label="Tabs"
+            >
               <For each={Object.keys(tabs)}>
                 {(value: string) => {
                   validateTabKey(value);
@@ -168,12 +167,16 @@ function MenuContent() {
                   const TabNameComponent = tabs[tabKey].tabName;
                   return (
                     <button
-                      classList={{ "border-indigo-500 text-indigo-600 group inline-flex items-center border-b-2 py-4 px-1 text-sm font-medium": stateGui.selectedTab === tabKey ,
-                      "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 group inline-flex items-center border-b-2 py-4 px-1 text-sm font-medium": stateGui.selectedTab != tabKey }}
+                      classList={{
+                        "border-indigo-500 text-indigo-600 group inline-flex items-center border-b-2 py-4 px-1 text-sm font-medium":
+                          stateGui.selectedTab === tabKey,
+                        "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 group inline-flex items-center border-b-2 py-4 px-1 text-sm font-medium":
+                          stateGui.selectedTab != tabKey,
+                      }}
                       onClick={() => setSelectedTab(tabKey)}
                     >
                       <TabLabelComponent width="24px" />
-                      <TabNameComponent/>
+                      <TabNameComponent />
                     </button>
                   );
                 }}
