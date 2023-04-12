@@ -119,7 +119,6 @@ export default function Point(props: any) {
       fillColor,
       radius,
       fillOpacity: 1,
-      pane: "shadowPane",
       weight: 4,
     })
       .on("click", () => {
