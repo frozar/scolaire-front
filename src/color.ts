@@ -1,5 +1,8 @@
 import { DEAD_COLOR } from "./constant";
 
+// WARNING:
+// This file is kept for the tests exemples it contains
+
 function componentToHex(c: number) {
   var hex = c.toString(16);
   return hex.length == 1 ? "0" + hex : hex;
