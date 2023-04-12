@@ -8,13 +8,13 @@ import { displayAddLineMessage } from "../userInformation/utils";
 
 const [, { setModeAddLine, isInAddLineMode }] = useStateAction();
 
-const [show, setShow] = createSignal(false);
-
-function toggleShow() {
-  setShow((show) => !show);
-}
-
 export default function MenuDraw() {
+  const [show, setShow] = createSignal(false);
+
+  function toggleShow() {
+    setShow((show) => !show);
+  }
+
   let refDrawnMenu: HTMLUListElement | undefined;
   let refLabelMenu: HTMLLabelElement | undefined;
 
