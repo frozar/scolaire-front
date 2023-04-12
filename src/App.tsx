@@ -8,17 +8,22 @@ import DisplayUserInformation from "./userInformation/DisplayUserInformation";
 import RemoveConfirmation from "./userInformation/RemoveConfirmation";
 import { fetchBusLines } from "./signaux";
 import { ModeEnum } from "./type";
-import { displayAddLineMessage } from "./userInformation/utils";
+import {
+  displayAddLineMessage,
+  displayRemoveLineMessage,
+} from "./userInformation/utils";
 
 const [
   ,
   {
     setModeRead,
     setModeAddLine,
+    setModeRemoveLine,
     isInAddLineMode,
     resetLineUnderConstruction,
     getLineUnderConstructionId,
     getMode,
+    isInRemoveLineMode,
   },
   history,
 ] = useStateAction();
@@ -82,6 +87,14 @@ function toggleLineUnderConstruction({ code }: KeyboardEvent) {
     if (upKey === "l") {
       setModeAddLine();
       displayAddLineMessage();
+    }
+    if (upKey === "d") {
+      if (isInRemoveLineMode()) {
+        setModeRead();
+        return;
+      }
+      setModeRemoveLine();
+      displayRemoveLineMessage();
     }
   });
 }
