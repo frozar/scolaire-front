@@ -258,14 +258,14 @@ code {
 
 @keyframes circle-animation-ramassage {
   0% {
-    stroke: white;
+    stroke: red;
     fill: #fff;
     fill-opacity: 1;
   }
   100% {
     stroke: red;
-    fill: #f03;
-    fill-opacity: 0.5;
+    fill: red;
+    fill-opacity: 1;
   }
 }
 
@@ -275,14 +275,14 @@ code {
 
 @keyframes circle-animation-etablissement {
   0% {
-    stroke: white;
+    stroke: green;
     fill: #fff;
     fill-opacity: 1;
   }
   100% {
     stroke: green;
-    fill: #0f3;
-    fill-opacity: 0.5;
+    fill: green;
+    fill-opacity: 1;
   }
 }
 
