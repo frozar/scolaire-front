@@ -1,6 +1,7 @@
 import { Signal, createSignal } from "solid-js";
 import {
   Line,
+  MessageTypeEnum,
   NatureEnum,
   PointEtablissementType,
   PointIdentity,
@@ -73,6 +74,14 @@ export function addNewUserInformation(
 ) {
   const id = generateUniqueID();
   setUserInformations((currentArray) => {
+    if (userInformation.type === MessageTypeEnum.enterAddLine) {
+      const doesContainEnterAddline =
+        currentArray.filter((elt) => elt.type === MessageTypeEnum.enterAddLine)
+          .length != 0;
+      if (doesContainEnterAddline) {
+        return currentArray;
+      }
+    }
     return [
       ...currentArray,
       {
