@@ -1,8 +1,7 @@
 import { FaRegularTrashCan } from "solid-icons/fa";
 
 import { useStateAction } from "../StateAction";
-import { MessageLevelEnum, MessageTypeEnum } from "../type";
-import { addNewUserInformation } from "../signaux";
+import { displayRemoveLineMessage } from "../userInformation/utils";
 
 const [, { setModeRemoveLine, isInRemoveLineMode, setModeRead }] =
   useStateAction();
@@ -19,18 +18,8 @@ export default function MenuDraw() {
             setModeRead();
             return;
           }
-          const content = () => (
-            <span>
-              <kbd class="kbd">Echap</kbd> pour sortir du mode Suppression
-            </span>
-          );
           setModeRemoveLine();
-          addNewUserInformation({
-            displayed: true,
-            level: MessageLevelEnum.info,
-            type: MessageTypeEnum.enterRemoveLine,
-            content: content(),
-          });
+          displayRemoveLineMessage();
         }}
       >
         <FaRegularTrashCan class="w-6 h-6" stroke="none" fill="#ffffffca" />
