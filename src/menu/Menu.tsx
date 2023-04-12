@@ -66,7 +66,7 @@ function SettingsContent(props: any) {
 }
 
 function SettingsHorizontalIcon(props: any) {
-  return (<>
+  return (
     <svg
       fill="none"
       stroke="currentColor"
@@ -82,12 +82,11 @@ function SettingsHorizontalIcon(props: any) {
         d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75"
       />
     </svg>
-    <span>Paramètres</span>
-    </>);
+    );
 }
 
 export function InformationCircleIcon(props: any) {
-  return (<>
+  return (
     <svg
       fill="none"
       stroke="currentColor"
@@ -103,8 +102,19 @@ export function InformationCircleIcon(props: any) {
         d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z"
       />
     </svg>
+  );
+}
+
+function InformationName() {
+  return (
     <span>Informations</span>
-  </>);
+  );
+}
+
+function SettingsName() {
+  return (
+    <span>Paramètres</span>
+  );
 }
 
 function MenuContent() {
@@ -113,6 +123,8 @@ function MenuContent() {
     tabLabel: (props: any) => JSX.Element;
     // @ts-expect-error
     tabContent: (props: any) => JSX.Element;
+    // @ts-expect-error
+    tabName: (props: any) => JSX.Element;
   };
   type TabType = {
     info: TabValueType;
@@ -120,10 +132,15 @@ function MenuContent() {
   };
 
   const tabs: TabType = {
-    info: { tabLabel: InformationCircleIcon, tabContent: InformationContent },
+    info: { 
+      tabLabel: InformationCircleIcon,
+      tabContent: InformationContent,
+      tabName : InformationName
+    },
     settings: {
       tabLabel: SettingsHorizontalIcon,
       tabContent: SettingsContent,
+      tabName : SettingsName
     },
   };
   type TabKey = keyof typeof tabs;
@@ -148,6 +165,7 @@ function MenuContent() {
                   validateTabKey(value);
                   const tabKey = value as keyof typeof tabs;
                   const TabLabelComponent = tabs[tabKey].tabLabel;
+                  const TabNameComponent = tabs[tabKey].tabName;
                   return (
                     <button
                       classList={{ "border-indigo-500 text-indigo-600 group inline-flex items-center border-b-2 py-4 px-1 text-sm font-medium": stateGui.selectedTab === tabKey ,
@@ -155,6 +173,7 @@ function MenuContent() {
                       onClick={() => setSelectedTab(tabKey)}
                     >
                       <TabLabelComponent width="24px" />
+                      <TabNameComponent/>
                     </button>
                   );
                 }}
