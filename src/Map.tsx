@@ -1,6 +1,6 @@
 import "leaflet/dist/leaflet.css";
 
-import { onMount } from "solid-js";
+import { Show, onMount } from "solid-js";
 
 import PointsRamassageAndEtablissement from "./PointsRamassageAndEtablissement";
 
@@ -9,6 +9,8 @@ import { buildMapLeafletPostCode } from "./leafletMapPostCodeBuilder";
 import { buildMapLeafletRouteRaw } from "./leafletMapRouteRawBuilder";
 import BusLines from "./line/BusLines";
 import LineUnderConstructionTip from "./line/LineUnderConstructionTip";
+import { useStateAction } from "./StateAction";
+const [, { isInAddLineMode }] = useStateAction();
 
 function buildMap(div: HTMLDivElement) {
   const option: string = "l7";
@@ -35,7 +37,9 @@ function Map() {
     <>
       <div ref={mapDiv} id="main-map" />
       <PointsRamassageAndEtablissement />
-      <LineUnderConstructionTip />
+      <Show when={isInAddLineMode()}>
+        <LineUnderConstructionTip />
+      </Show>
       <BusLines />
     </>
   );
