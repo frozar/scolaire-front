@@ -7,10 +7,19 @@ import { useStateAction } from "./StateAction";
 import DisplayUserInformation from "./userInformation/DisplayUserInformation";
 import RemoveConfirmation from "./userInformation/RemoveConfirmation";
 import { fetchBusLines } from "./signaux";
+import { ModeEnum } from "./type";
+import { displayAddLineMessage } from "./userInformation/utils";
 
 const [
   ,
-  { setModeRead, setModeAddLine, isInAddLineMode, resetLineUnderConstruction },
+  {
+    setModeRead,
+    setModeAddLine,
+    isInAddLineMode,
+    resetLineUnderConstruction,
+    getLineUnderConstructionId,
+    getMode,
+  },
   history,
 ] = useStateAction();
 
@@ -34,7 +43,30 @@ function undoRedoHandler({ ctrlKey, shiftKey, code }: KeyboardEvent) {
 }
 
 function escapeHandler({ code }: KeyboardEvent) {
-  if (code === "Escape" || code === "Enter") {
+  if (code === "Escape") {
+    if (getMode() != ModeEnum.addLine) {
+      return;
+    }
+    const idToRemove: number | null = getLineUnderConstructionId();
+    resetLineUnderConstruction();
+    setModeRead();
+    if (idToRemove === null) {
+      fetchBusLines();
+      return;
+    }
+    fetch(import.meta.env.VITE_BACK_URL + "/bus_line", {
+      method: "DELETE",
+      body: JSON.stringify({
+        id: idToRemove,
+      }),
+    }).then(() => {
+      fetchBusLines();
+    });
+  }
+}
+
+function enterHandler({ code }: KeyboardEvent) {
+  if (code === "Enter") {
     resetLineUnderConstruction();
     setModeRead();
     fetchBusLines();
@@ -49,6 +81,7 @@ function toggleLineUnderConstruction({ code }: KeyboardEvent) {
     const upKey = keyboardLayoutMap.get(code);
     if (upKey === "l") {
       setModeAddLine();
+      displayAddLineMessage();
     }
   });
 }
@@ -78,12 +111,14 @@ const App: Component = () => {
   onMount(() => {
     document.addEventListener("keydown", undoRedoHandler);
     document.addEventListener("keydown", escapeHandler);
+    document.addEventListener("keydown", enterHandler);
     document.addEventListener("keydown", toggleLineUnderConstruction);
   });
 
   onCleanup(() => {
     document.removeEventListener("keydown", undoRedoHandler);
     document.removeEventListener("keydown", escapeHandler);
+    document.removeEventListener("keydown", enterHandler);
     document.removeEventListener("keydown", toggleLineUnderConstruction);
   });
 

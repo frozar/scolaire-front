@@ -4,6 +4,7 @@ import { useStateAction } from "../StateAction";
 import { assertIsNode } from "../utils";
 import { Transition } from "solid-transition-group";
 import ClickOutside from "./ClickOutside";
+import { displayAddLineMessage } from "../userInformation/utils";
 
 const [, { setModeAddLine, isInAddLineMode }] = useStateAction();
 
@@ -78,6 +79,7 @@ export default function MenuDraw() {
                 onClick={() => {
                   toggleShow();
                   setModeAddLine();
+                  displayAddLineMessage();
                 }}
               >
                 Ligne

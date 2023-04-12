@@ -153,7 +153,6 @@ export default function Point(props: any) {
           })
           .then((res) => {
             const { id } = res;
-            console.log(id);
             setLineUnderConstructionId(id);
             fetchBusLines();
           });
