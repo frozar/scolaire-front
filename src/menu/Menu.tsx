@@ -105,12 +105,22 @@ export function InformationCircleIcon(props: any) {
   );
 }
 
+function InformationName() {
+  return <span>Informations</span>;
+}
+
+function SettingsName() {
+  return <span>Paramètres</span>;
+}
+
 function MenuContent() {
   type TabValueType = {
     // @ts-expect-error
     tabLabel: (props: any) => JSX.Element;
     // @ts-expect-error
     tabContent: (props: any) => JSX.Element;
+    // @ts-expect-error
+    tabName: (props: any) => JSX.Element;
   };
   type TabType = {
     info: TabValueType;
@@ -118,10 +128,15 @@ function MenuContent() {
   };
 
   const tabs: TabType = {
-    info: { tabLabel: InformationCircleIcon, tabContent: InformationContent },
+    info: {
+      tabLabel: InformationCircleIcon,
+      tabContent: InformationContent,
+      tabName: InformationName,
+    },
     settings: {
       tabLabel: SettingsHorizontalIcon,
       tabContent: SettingsContent,
+      tabName: SettingsName,
     },
   };
   type TabKey = keyof typeof tabs;
@@ -137,23 +152,38 @@ function MenuContent() {
       ref={refMenuContent}
       class="menu__custom p-2 w-80 bg-base-100 text-base-content text-left"
     >
-      <div class="tabs mb-2">
-        <For each={Object.keys(tabs)}>
-          {(value: string) => {
-            validateTabKey(value);
-            const tabKey = value as keyof typeof tabs;
-            const TabLabelComponent = tabs[tabKey].tabLabel;
-            return (
-              <a
-                class="tab tab-lifted capitalize"
-                classList={{ "tab-active": stateGui.selectedTab === tabKey }}
-                onClick={() => setSelectedTab(tabKey)}
-              >
-                <TabLabelComponent width="24px" />
-              </a>
-            );
-          }}
-        </For>
+      <div>
+        <div class="hidden sm:block">
+          <div class="border-b border-gray-300">
+            <nav
+              class="-mb-px flex space-x-8 border-indigo-500 text-indigo-600 tabs"
+              aria-label="Tabs"
+            >
+              <For each={Object.keys(tabs)}>
+                {(value: string) => {
+                  validateTabKey(value);
+                  const tabKey = value as keyof typeof tabs;
+                  const TabLabelComponent = tabs[tabKey].tabLabel;
+                  const TabNameComponent = tabs[tabKey].tabName;
+                  return (
+                    <button
+                      classList={{
+                        "border-indigo-500 text-indigo-600 group inline-flex items-center border-b-2 py-4 px-1 text-sm font-medium":
+                          stateGui.selectedTab === tabKey,
+                        "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 group inline-flex items-center border-b-2 py-4 px-1 text-sm font-medium":
+                          stateGui.selectedTab != tabKey,
+                      }}
+                      onClick={() => setSelectedTab(tabKey)}
+                    >
+                      <TabLabelComponent width="24px" />
+                      <TabNameComponent />
+                    </button>
+                  );
+                }}
+              </For>
+            </nav>
+          </div>
+        </div>
       </div>
       <Dynamic
         component={tabs[stateGui.selectedTab as keyof typeof tabs].tabContent}
