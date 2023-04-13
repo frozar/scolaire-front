@@ -20,6 +20,8 @@ export type PointRamassageType = {
   nature: NatureEnum;
   location: string;
   name: string;
+  pupils_qty: number;
+  circle_size: number;
 };
 
 export type PointEtablissementType = PointRamassageType;

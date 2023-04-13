@@ -104,12 +104,13 @@ export default function Point(props: any) {
     const lonlat = location.split("(")[1].split(")")[0];
     const lon = Number(lonlat.split(" ")[0]);
     const lat = Number(lonlat.split(" ")[1]);
+    const circle_size = point.circle_size;
 
     const { nature } = point;
 
     const [color, fillColor, radius] =
       nature === NatureEnum.ramassage
-        ? ["red", "white", 50]
+        ? ["red", "white", circle_size]
         : nature === NatureEnum.etablissement
         ? ["green", "white", 100]
         : ["white", "#000", 150];
