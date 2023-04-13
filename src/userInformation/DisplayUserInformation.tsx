@@ -1,4 +1,4 @@
-import { For, Show } from "solid-js";
+import { For, Show, createEffect, createSignal } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 import { getUserInformations } from "../signaux";
@@ -15,20 +15,35 @@ const options = {
   [MessageLevelEnum.error]: ErrorBox,
 };
 
+const [divRef, setDivRef] = createSignal<HTMLElement | undefined>();
+let refDivMessage: HTMLDivElement | undefined;
+createEffect(() => {
+  divRef()?.addEventListener(
+    "animationend",
+    () => {
+      refDivMessage?.remove();
+    },
+    false
+  );
+});
+
 export default function DisplayUserInformation() {
   return (
-    <div class="absolute top-[20px] z-[999] w-full flex flex-col items-center">
-      <For each={getUserInformations()}>
-        {(item, i) => (
-          <Show when={item.displayed}>
-            <Dynamic component={options[item.level]}
-              id={item.id}
-            >
-              {item.content}
-            </Dynamic>
-          </Show>
-        )}
-      </For>
+    <div
+      class="absolute top-[20lpx] z-[999] w-full flex flex-col items-center nav-notify v-snack--active"
+      ref={refDivMessage}
+    >
+      <div class="v-snack__wrapper" ref={setDivRef}>
+        <For each={getUserInformations()}>
+          {(item, i) => (
+            <Show when={item.displayed}>
+              <Dynamic component={options[item.level]} id={item.id}>
+                {item.content}
+              </Dynamic>
+            </Show>
+          )}
+        </For>
+      </div>
     </div>
   );
 }
