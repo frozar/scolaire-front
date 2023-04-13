@@ -138,7 +138,7 @@ const App: Component = () => {
   });
 
   return (
-    <div class={styles.App} ref={refApp}>
+    <div ref={refApp}>
       <DisplayUserInformation />
       <RemoveConfirmation />
       <Menu />
