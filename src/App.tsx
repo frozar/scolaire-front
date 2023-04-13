@@ -12,6 +12,7 @@ import {
   displayAddLineMessage,
   displayRemoveLineMessage,
 } from "./userInformation/utils";
+import { deleteBusLine } from "./request";
 
 const [
   ,
@@ -59,15 +60,7 @@ function escapeHandler({ code }: KeyboardEvent) {
       fetchBusLines();
       return;
     }
-    fetch(import.meta.env.VITE_BACK_URL + "/bus_line", {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        id: idToRemove,
-      }),
-    }).then(() => {
+    deleteBusLine(idToRemove).then(() => {
       fetchBusLines();
     });
   }
