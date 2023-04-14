@@ -1,3 +1,4 @@
+import { createSignal, createEffect } from "solid-js";
 import CrossButton from "./CrossButton";
 
 function SuccessIcon() {
@@ -17,17 +18,35 @@ function SuccessIcon() {
     </svg>
   );
 }
+const [divRef, setDivRef] = createSignal<HTMLElement | undefined>();
+let refDivMessage: HTMLDivElement | undefined;
 
-export default function SuccessBox(props: any) {
+createEffect(() => {
+  divRef()?.addEventListener(
+    "animationend",
+    () => {
+      refDivMessage?.remove();
+    },
+    false
+  );
+});
+
+export default function InfoBox(props: any) {
   return (
-    <div class="alert alert-success shadow-lg mt-2" style="width: max-content">
-      <div>
+    <div
+      class="alert alert-success shadow-lg mt-2 nav-notify "
+      ref={refDivMessage}
+      style="width: max-content"
+    >
+      <div class="">
         <SuccessIcon />
-        {props.children}
+        <div class="nav-notify v-snack--active">
+          <div class="v-snack__wrapper" ref={setDivRef}>
+            {props.children}
+          </div>
+        </div>
+        <CrossButton id={props.id} />
       </div>
-      <CrossButton 
-        id={props.id}
-      />
     </div>
   );
 }

@@ -1,3 +1,4 @@
+import { createSignal, createEffect } from "solid-js";
 import CrossButton from "./CrossButton";
 
 function WarningIcon() {
@@ -18,16 +19,35 @@ function WarningIcon() {
   );
 }
 
+const [divRef, setDivRef] = createSignal<HTMLElement | undefined>();
+let refDivMessage: HTMLDivElement | undefined;
+
+createEffect(() => {
+  divRef()?.addEventListener(
+    "animationend",
+    () => {
+      refDivMessage?.remove();
+    },
+    false
+  );
+});
+
 export default function InfoBox(props: any) {
   return (
-    <div class="alert alert-warning shadow-lg mt-2" style="width: max-content">
-      <div>
+    <div
+      class="alert alert-warning shadow-lg mt-2 nav-notify "
+      ref={refDivMessage}
+      style="width: max-content"
+    >
+      <div class="">
         <WarningIcon />
-        {props.children}
+        <div class="nav-notify v-snack--active">
+          <div class="v-snack__wrapper" ref={setDivRef}>
+            {props.children}
+          </div>
+        </div>
+        <CrossButton id={props.id} />
       </div>
-      <CrossButton 
-        id={props.id}
-      />
     </div>
   );
 }
