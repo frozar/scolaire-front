@@ -33,7 +33,7 @@ const [
   },
 ] = useStateAction();
 
-const minSizeValue = 25;
+const minSizeValue = 30;
 const maxSizeValue = 75;
 const range = maxSizeValue - minSizeValue;
 
@@ -114,20 +114,19 @@ export default function Point(props: any) {
       minSizeValue;
 
     const { nature } = point;
-
-    const [color, fillColor, radius] =
+    const [color, fillColor, radius, weight] =
       nature === NatureEnum.ramassage
-        ? ["red", "white", radiusValue]
+        ? ["red", "white", radiusValue, 2]
         : nature === NatureEnum.etablissement
-        ? ["green", "white", 100]
-        : ["white", "#000", 150];
+        ? ["green", "white", 100, 4]
+        : ["white", "#000", 150, 4];
 
     return L.circle([lat, lon], {
       color,
       fillColor,
       radius,
       fillOpacity: 1,
-      weight: 4,
+      weight,
     })
       .on("click", () => {
         // Select the current element to display information
