@@ -1,4 +1,4 @@
-import { createSignal, createEffect } from "solid-js";
+import { createSignal, createEffect, onMount, onCleanup } from "solid-js";
 import CrossButton from "./CrossButton";
 
 function SuccessIcon() {
@@ -18,20 +18,21 @@ function SuccessIcon() {
     </svg>
   );
 }
-const [divRef, setDivRef] = createSignal<HTMLElement | undefined>();
-let refDivMessage: HTMLDivElement | undefined;
-
-createEffect(() => {
-  divRef()?.addEventListener(
-    "animationend",
-    () => {
-      refDivMessage?.remove();
-    },
-    false
-  );
-});
 
 export default function InfoBox(props: any) {
+  const [divRef, setDivRef] = createSignal<HTMLElement | undefined>();
+
+  let refDivMessage: HTMLDivElement | undefined;
+  createEffect(() => {
+    divRef()?.addEventListener(
+      "animationend",
+      () => {
+        refDivMessage?.remove();
+      },
+      false
+    );
+  });
+
   return (
     <div
       class="alert alert-success shadow-lg mt-2 nav-notify "

@@ -19,20 +19,20 @@ function ErrorIcon() {
   );
 }
 
-const [divRef, setDivRef] = createSignal<HTMLElement | undefined>();
-let refDivMessage: HTMLDivElement | undefined;
-
-createEffect(() => {
-  divRef()?.addEventListener(
-    "animationend",
-    () => {
-      refDivMessage?.remove();
-    },
-    false
-  );
-});
-
 export default function InfoBox(props: any) {
+  const [divRef, setDivRef] = createSignal<HTMLElement | undefined>();
+  let refDivMessage: HTMLDivElement | undefined;
+
+  createEffect(() => {
+    divRef()?.addEventListener(
+      "animationend",
+      () => {
+        refDivMessage?.remove();
+      },
+      false
+    );
+  });
+
   return (
     <div
       class="alert alert-error shadow-lg mt-2 nav-notify "
