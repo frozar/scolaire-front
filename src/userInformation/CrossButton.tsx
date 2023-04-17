@@ -1,16 +1,8 @@
-import { setUserInformations } from "../signaux";
+import { removeUserInformation, setUserInformations } from "../signaux";
 
 export default function CrossButton(props: any) {
   return (
-    <button
-      onClick={() => {
-        setUserInformations((prevUserInformations) =>
-          prevUserInformations.filter(
-            (userInformation) => userInformation.id !== props.id
-          )
-        );
-      }}
-    >
+    <button onClick={() => removeUserInformation(props.id)}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         class="stroke-current h-6 w-6"

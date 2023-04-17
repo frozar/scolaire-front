@@ -297,3 +297,25 @@ code {
 .logo-container{
   padding: 10px 8px;
 }
+
+.v-snack__wrapper {
+  position: relative;
+}
+
+.v-snack__wrapper:after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 2px;
+  background-color: hsla(0,0%,100%,.4);
+  animation: nav-notify-anim 6s linear
+}
+
+@keyframes nav-notify-anim {
+  0% {
+      width: 100%
+  }
+  to {
+      width: 0
+  }
+}

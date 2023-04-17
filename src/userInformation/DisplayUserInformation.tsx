@@ -21,9 +21,7 @@ export default function DisplayUserInformation() {
       <For each={getUserInformations()}>
         {(item, i) => (
           <Show when={item.displayed}>
-            <Dynamic component={options[item.level]}
-              id={item.id}
-            >
+            <Dynamic component={options[item.level]} id={item.id}>
               {item.content}
             </Dynamic>
           </Show>

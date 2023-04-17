@@ -1,4 +1,6 @@
+import { createSignal, createEffect } from "solid-js";
 import CrossButton from "./CrossButton";
+import { removeUserInformation } from "../signaux";
 
 function ErrorIcon() {
   return (
@@ -19,15 +21,27 @@ function ErrorIcon() {
 }
 
 export default function InfoBox(props: any) {
+  const [divRef, setDivRef] = createSignal<HTMLElement | undefined>();
+
+  createEffect(() => {
+    divRef()?.addEventListener(
+      "animationend",
+      () => {
+        removeUserInformation(props.id);
+      },
+      false
+    );
+  });
+
   return (
     <div class="alert alert-error shadow-lg mt-2" style="width: max-content">
-      <div>
-        <ErrorIcon />
-        {props.children}
+      <ErrorIcon />
+      <div class="v-snack--active">
+        <div class="v-snack__wrapper" ref={setDivRef}>
+          <div style="padding-bottom: 2%;">{props.children}</div>
+        </div>
       </div>
-      <CrossButton 
-        id={props.id}
-      />
+      <CrossButton id={props.id} />
     </div>
   );
 }
