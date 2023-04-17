@@ -120,7 +120,7 @@ export default function Point(props: any) {
         : nature === NatureEnum.etablissement
         ? ["green", "white", 100, 4]
         : ["white", "#000", 150, 4];
-
+    console.log("point crée=>", point.id_point, point.nature);
     return L.circle([lat, lon], {
       color,
       fillColor,

@@ -59,6 +59,7 @@ export default function LineDisplay(props: any) {
           });
         }
       });
+    console.log("ligne crée");
   });
 
   onCleanup(() => {
