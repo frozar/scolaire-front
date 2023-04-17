@@ -35,19 +35,17 @@ export default function InfoBox(props: any) {
 
   return (
     <div
-      class="alert alert-info shadow-lg mt-2nav-notify "
+      class="alert alert-info shadow-lg mt-2"
       ref={refDivMessage}
       style="width: max-content"
     >
-      <div class="">
-        <InfoIcon />
-        <div class="nav-notify v-snack--active">
-          <div class="v-snack__wrapper" ref={setDivRef}>
-            {props.children}
-          </div>
+      <InfoIcon />
+      <div class="v-snack--active">
+        <div class="v-snack__wrapper" ref={setDivRef}>
+          <div style="padding-bottom: 2%;">{props.children}</div>
         </div>
-        <CrossButton id={props.id} />
       </div>
+      <CrossButton id={props.id} />
     </div>
   );
 }
