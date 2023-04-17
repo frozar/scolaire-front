@@ -1,6 +1,6 @@
 import { useStateAction } from "../StateAction";
 import { addNewUserInformation } from "../signaux";
-import { ModeEnum, MessageLevelEnum, MessageTypeEnum } from "../type";
+import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import DisplayAddLineMessageContent from "./DisplayAddLineMessageContent";
 import DisplayRemoveLineMessageContent from "./DisplayRemoveLineMessageContent";
 const [, { isInAddLineMode, isInRemoveLineMode }] = useStateAction();
@@ -21,7 +21,7 @@ export function displayRemoveLineMessage() {
     addNewUserInformation({
       displayed: true,
       level: MessageLevelEnum.info,
-      type: MessageTypeEnum.enterAddLine,
+      type: MessageTypeEnum.enterRemoveLine,
       content: DisplayRemoveLineMessageContent(),
     });
   }
