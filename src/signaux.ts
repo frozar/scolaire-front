@@ -127,6 +127,7 @@ export function fetchBusLines() {
                     : NatureEnum.etablissement,
               } as PointIdentity)
           );
+          console.log("fetch bus line fait");
           return { ...line, color, stops: stopsWithNatureEnum };
         });
 

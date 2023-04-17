@@ -21,7 +21,8 @@ export default function PointsRamassageAndEtablissement() {
           Math.min(...data.map((value) => value.quantity)),
           Math.max(...data.map((value) => value.quantity)),
         ]);
-        setPoints(() => [...data]);
+        setPoints((dataArray) => [...dataArray, ...data]);
+        console.log("fetch ramassage fait");
       });
     fetch(import.meta.env.VITE_BACK_URL + "/points_etablissement")
       .then((res) => {
@@ -33,6 +34,7 @@ export default function PointsRamassageAndEtablissement() {
           nature: NatureEnum.etablissement,
         }));
         setPoints((dataArray) => [...dataArray, ...data]);
+        console.log("fetch etablissement fait");
       });
   }
 
