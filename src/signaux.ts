@@ -92,6 +92,12 @@ export function addNewUserInformation(
   });
 }
 
+export function removeUserInformation(id: number) {
+  setUserInformations((prevUserInformations) =>
+    prevUserInformations.filter((userInformation) => userInformation.id !== id)
+  );
+}
+
 export const [busLines, setBusLines] = createSignal<Line[]>([]);
 
 function randColor() {

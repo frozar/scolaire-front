@@ -1,5 +1,6 @@
 import { createSignal, createEffect } from "solid-js";
 import CrossButton from "./CrossButton";
+import { removeUserInformation } from "../signaux";
 
 function SuccessIcon() {
   return (
@@ -22,23 +23,18 @@ function SuccessIcon() {
 export default function InfoBox(props: any) {
   const [divRef, setDivRef] = createSignal<HTMLElement | undefined>();
 
-  let refDivMessage: HTMLDivElement | undefined;
   createEffect(() => {
     divRef()?.addEventListener(
       "animationend",
       () => {
-        refDivMessage?.remove();
+        removeUserInformation(props.id);
       },
       false
     );
   });
 
   return (
-    <div
-      class="alert alert-success shadow-lg mt-2"
-      ref={refDivMessage}
-      style="width: max-content"
-    >
+    <div class="alert alert-success shadow-lg mt-2" style="width: max-content">
       <SuccessIcon />
       <div class="v-snack--active">
         <div class="v-snack__wrapper" ref={setDivRef}>
