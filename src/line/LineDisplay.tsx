@@ -26,7 +26,6 @@ export default function LineDisplay(props: any) {
         latlngs.push(circle.getLatLng());
       }
     }
-
     let displayedColor = line.color;
     if (isLineUnderConstruction(line)) {
       displayedColor = COLOR_LINE_UNDER_CONSTRUCTION;

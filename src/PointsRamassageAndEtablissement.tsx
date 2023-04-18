@@ -4,6 +4,9 @@ import { NatureEnum, PointRamassageType, PointEtablissementType } from "./type";
 import Point from "./Point";
 import { setPoints, points } from "./signaux";
 
+export const [minMaxQty, setMinMaxQty] = createSignal([1, 100]);
+export const [pointsReady, setPointsReady] = createSignal(false);
+
 export default function PointsRamassageAndEtablissement() {
   function fetchPointsRamassage() {
     fetch(import.meta.env.VITE_BACK_URL + "/points_ramassage")
@@ -15,6 +18,10 @@ export default function PointsRamassageAndEtablissement() {
           ...pointRamassage,
           nature: NatureEnum.ramassage,
         }));
+        setMinMaxQty([
+          Math.min(...data.map((value) => value.quantity)),
+          Math.max(...data.map((value) => value.quantity)),
+        ]);
         setPoints((dataArray) => [...dataArray, ...data]);
       });
     fetch(import.meta.env.VITE_BACK_URL + "/points_etablissement")
@@ -27,6 +34,7 @@ export default function PointsRamassageAndEtablissement() {
           nature: NatureEnum.etablissement,
         }));
         setPoints((dataArray) => [...dataArray, ...data]);
+        setPointsReady(true);
       });
   }
 

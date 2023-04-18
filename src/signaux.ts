@@ -135,7 +135,6 @@ export function fetchBusLines() {
           );
           return { ...line, color, stops: stopsWithNatureEnum };
         });
-
         setBusLines(lines);
       }
     );
