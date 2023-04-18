@@ -22,11 +22,13 @@ export default function LineDisplay(props: any) {
     const latlngs = [];
     for (const pointIdentity of line.stops) {
       const circle = linkMap.get(pointIdentity.id_point);
+      console.log("pointIdentity", pointIdentity);
+      console.log("circle", circle);
       if (circle) {
         latlngs.push(circle.getLatLng());
       }
     }
-
+    console.log(line);
     let displayedColor = line.color;
     if (isLineUnderConstruction(line)) {
       displayedColor = COLOR_LINE_UNDER_CONSTRUCTION;
