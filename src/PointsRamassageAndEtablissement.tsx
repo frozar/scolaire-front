@@ -5,6 +5,7 @@ import Point from "./Point";
 import { setPoints, points } from "./signaux";
 
 export const [minMaxQty, setMinMaxQty] = createSignal([1, 100]);
+export const [done, setDone] = createSignal(false);
 
 export default function PointsRamassageAndEtablissement() {
   function fetchPointsRamassage() {
@@ -35,6 +36,7 @@ export default function PointsRamassageAndEtablissement() {
         }));
         setPoints((dataArray) => [...dataArray, ...data]);
         console.log("fetch etablissement fait");
+        setDone(true);
       });
   }
 
