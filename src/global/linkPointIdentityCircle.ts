@@ -27,4 +27,4 @@ class ObjectMap<K extends object, V> extends Map<K, V> {
   }
 }
 
-export const linkMap = new ObjectMap<Number, L.Circle>();
+export const linkMap = new ObjectMap<Number, L.CircleMarker>();
