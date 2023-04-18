@@ -1,16 +1,12 @@
-import { onMount, For, onCleanup, createEffect } from "solid-js";
+import { For, onCleanup, createEffect } from "solid-js";
 
 import LineDisplay from "./LineDisplay";
 import { fetchBusLines, setBusLines, busLines } from "../signaux";
-import { done } from "../PointsRamassageAndEtablissement";
+import { pointsReady } from "../PointsRamassageAndEtablissement";
 export default function BusLines() {
-  // onMount(() => {
-  //   fetchBusLines();
-  // });
   createEffect(() => {
-    if (done()) {
+    if (pointsReady()) {
       fetchBusLines();
-      console.log("done");
     }
   });
 

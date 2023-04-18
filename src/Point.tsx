@@ -36,7 +36,6 @@ const [
 const minSizeValue = 30;
 const maxSizeValue = 75;
 const range = maxSizeValue - minSizeValue;
-
 export default function Point(props: any) {
   const point = props.point;
 
@@ -112,7 +111,6 @@ export default function Point(props: any) {
       ((point.quantity - minMaxQty()[0]) / (minMaxQty()[1] - minMaxQty()[0])) *
         range +
       minSizeValue;
-
     const { nature } = point;
     const [color, fillColor, radius, weight] =
       nature === NatureEnum.ramassage
@@ -120,7 +118,6 @@ export default function Point(props: any) {
         : nature === NatureEnum.etablissement
         ? ["green", "white", 100, 4]
         : ["white", "#000", 150, 4];
-    console.log("point crée=>", point.id_point, point.nature);
     return L.circle([lat, lon], {
       color,
       fillColor,

@@ -5,7 +5,7 @@ import Point from "./Point";
 import { setPoints, points } from "./signaux";
 
 export const [minMaxQty, setMinMaxQty] = createSignal([1, 100]);
-export const [done, setDone] = createSignal(false);
+export const [pointsReady, setPointsReady] = createSignal(false);
 
 export default function PointsRamassageAndEtablissement() {
   function fetchPointsRamassage() {
@@ -23,7 +23,6 @@ export default function PointsRamassageAndEtablissement() {
           Math.max(...data.map((value) => value.quantity)),
         ]);
         setPoints((dataArray) => [...dataArray, ...data]);
-        console.log("fetch ramassage fait");
       });
     fetch(import.meta.env.VITE_BACK_URL + "/points_etablissement")
       .then((res) => {
@@ -35,8 +34,7 @@ export default function PointsRamassageAndEtablissement() {
           nature: NatureEnum.etablissement,
         }));
         setPoints((dataArray) => [...dataArray, ...data]);
-        console.log("fetch etablissement fait");
-        setDone(true);
+        setPointsReady(true);
       });
   }
 

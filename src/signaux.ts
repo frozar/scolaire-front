@@ -127,10 +127,8 @@ export function fetchBusLines() {
                     : NatureEnum.etablissement,
               } as PointIdentity)
           );
-
           return { ...line, color, stops: stopsWithNatureEnum };
         });
-        console.log("fetch bus line fait");
         setBusLines(lines);
       }
     );
