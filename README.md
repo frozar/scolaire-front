@@ -1,5 +1,11 @@
 This application has been initiated by this command `npx degit solidjs/templates/ts front`.
 
+## Dependencies
+
+```sh
+npm i -f
+```
+
 ## Usage
 
 Those templates dependencies are maintained via [pnpm](https://pnpm.io) via `pnpm up -Lri`.
