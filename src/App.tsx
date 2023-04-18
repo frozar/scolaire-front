@@ -13,9 +13,10 @@ import {
   displayRemoveLineMessage,
 } from "./userInformation/utils";
 import { deleteBusLine } from "./request";
+import { unwrap } from "solid-js/store";
 
 const [
-  ,
+  state,
   {
     setModeRead,
     setModeAddLine,
@@ -31,6 +32,22 @@ const [
 
 // Handler the Undo/Redo from the user
 function undoRedoHandler({ ctrlKey, shiftKey, code }: KeyboardEvent) {
+  // @ts-expect-error
+  const keyboard = navigator.keyboard;
+  // @ts-expect-error
+  keyboard.getLayoutMap().then((keyboardLayoutMap) => {
+    const upKey = keyboardLayoutMap.get(code);
+    if (upKey === "x") {
+      console.log("undos", history.undos);
+      if (history.undos && history.undos[0] && history.undos[0][0]) {
+        const anUndo = history.undos[0][0];
+        console.log("anUndo", anUndo);
+        console.log("anUndo.hasChanged()", anUndo.hasChanged());
+        console.log("anUndo.new()", anUndo.new());
+      }
+    }
+  });
+
   if (ctrlKey) {
     // @ts-expect-error
     const keyboard = navigator.keyboard;
@@ -38,10 +55,15 @@ function undoRedoHandler({ ctrlKey, shiftKey, code }: KeyboardEvent) {
     keyboard.getLayoutMap().then((keyboardLayoutMap) => {
       const upKey = keyboardLayoutMap.get(code);
       if (upKey === "z") {
+        console.log("history.isUndoable()", history.isUndoable());
         if (!shiftKey && history.isUndoable()) {
+          console.log("BEFORE UNDO state", JSON.stringify(unwrap(state)));
           history.undo();
+          console.log("AFTER  UNDO state", JSON.stringify(unwrap(state)));
         } else if (shiftKey && history.isRedoable()) {
+          console.log("BEFORE REDO state", JSON.stringify(unwrap(state)));
           history.redo();
+          console.log("AFTER  REDO state", JSON.stringify(unwrap(state)));
         }
       }
     });
