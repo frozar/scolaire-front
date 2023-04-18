@@ -33,8 +33,8 @@ const [
   },
 ] = useStateAction();
 
-const minSizeValue = 30;
-const maxSizeValue = 75;
+const minSizeValue = 5;
+const maxSizeValue = 10;
 const range = maxSizeValue - minSizeValue;
 export default function Point(props: any) {
   const point = props.point;
@@ -100,9 +100,9 @@ export default function Point(props: any) {
     }
   }
 
-  let circle: L.Circle<any>;
+  let circle: L.CircleMarker<any>;
 
-  function buildCircle(point: PointEtablissementType): L.Circle<any> {
+  function buildCircle(point: PointEtablissementType): L.CircleMarker<any> {
     const location = point.location;
     const lonlat = location.split("(")[1].split(")")[0];
     const lon = Number(lonlat.split(" ")[0]);
@@ -116,9 +116,9 @@ export default function Point(props: any) {
       nature === NatureEnum.ramassage
         ? ["red", "white", radiusValue, 2]
         : nature === NatureEnum.etablissement
-        ? ["green", "white", 100, 4]
-        : ["white", "#000", 150, 4];
-    return L.circle([lat, lon], {
+        ? ["green", "white", 12, 4]
+        : ["white", "#000", 18, 4];
+    return L.circleMarker([lat, lon], {
       color,
       fillColor,
       radius,
