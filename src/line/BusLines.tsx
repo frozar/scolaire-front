@@ -3,7 +3,11 @@ import { onMount, onCleanup, createEffect } from "solid-js";
 
 import { fetchBusLines, setBusLines, busLines } from "../signaux";
 import { pointsReady } from "../PointsRamassageAndEtablissement";
-import { getBusLinePolyline, getLatLngs } from "./BusLinesFunction";
+import {
+  getBusLinePolyline,
+  getLatLngs,
+  busLinePolylineAttachEvent,
+} from "./BusLinesFunction";
 import { getLeafletMap } from "../global/leafletMap";
 
 import { useStateAction } from "../StateAction";
@@ -29,12 +33,16 @@ export default function () {
       let busLinePolyline: L.Polyline = new L.Polyline([]);
 
       busLinePolyline = getBusLinePolyline(
+        busLine.color,
+        getLatLngs(busLine.stops)
+      ).addTo(getLeafletMap());
+
+      busLinePolylineAttachEvent(
         busLinePolyline,
         busLine.id_bus_line,
         busLine.color,
-        getLatLngs(busLine.stops),
         isInRemoveLineMode
-      ).addTo(getLeafletMap());
+      );
     }
   });
 

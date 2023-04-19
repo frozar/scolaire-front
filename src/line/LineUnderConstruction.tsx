@@ -18,23 +18,37 @@ export default function () {
     };
   };
 
-  let busLine: L.Polyline;
+  let busLinePolyline: L.Polyline;
 
   createEffect(() => {
     // Take care of undo/redo
-    busLine?.remove();
+    busLinePolyline?.remove();
 
-    busLine = getBusLinePolyline(
-      busLine,
-      line().id_bus_line,
+    busLinePolyline = getBusLinePolyline(
+      // busLinePolyline,
+      // line().id_bus_line,
       line().color,
-      getLatLngs(line().stops),
-      isInRemoveLineMode
+      getLatLngs(line().stops)
+      // isInRemoveLineMode
     ).addTo(getLeafletMap());
+
+    // busLinePolyline = getBusLinePolyline(
+    //   busLinePolyline,
+    //   busLine.id_bus_line,
+    //   busLine.color,
+    //   getLatLngs(busLine.stops),
+    //   isInRemoveLineMode
+    // ).addTo(getLeafletMap());
+    // busLinePolylineAttachEvent(
+    //   busLinePolyline,
+    //   busLine.id_bus_line,
+    //   busLine.color,
+    //   isInRemoveLineMode
+    // );
   });
 
   onCleanup(() => {
-    busLine?.remove();
+    busLinePolyline?.remove();
   });
 
   return <></>;

@@ -16,40 +16,40 @@ export function getLatLngs(stops: PointIdentity[]): L.LatLng[] {
   return latlngs;
 }
 
-export function getBusLinePolyline(
-  busLine: L.Polyline,
+export function getBusLinePolyline(color: string, latlngs: L.LatLng[]) {
+  return L.polyline(latlngs, {
+    color: color,
+  });
+}
+
+export function busLinePolylineAttachEvent(
+  self: L.Polyline,
   id_bus_line: number,
   color: string,
-  latlngs: L.LatLng[],
   isInRemoveLineMode: () => boolean
-) {
-  return (
-    L.polyline(latlngs, {
-      color: color,
+): void {
+  self
+    .on("mouseover", () => {
+      createEffect(() => {
+        if (!isInRemoveLineMode()) {
+          self.setStyle({ color: color, weight: 3 });
+        }
+      });
+      if (isInRemoveLineMode()) {
+        self.setStyle({ color: "#FFF", weight: 8 });
+      }
     })
-      // .addTo(getLeafletMap())
-      .on("mouseover", () => {
-        createEffect(() => {
-          if (!isInRemoveLineMode()) {
-            busLine.setStyle({ color: color, weight: 3 });
-          }
+    .on("mouseout", () => {
+      if (isInRemoveLineMode()) {
+        self.setStyle({ color: color, weight: 3 });
+      }
+    })
+    .on("click", () => {
+      if (isInRemoveLineMode()) {
+        setRemoveConfirmation({
+          displayed: true,
+          id_bus_line: id_bus_line,
         });
-        if (isInRemoveLineMode()) {
-          busLine.setStyle({ color: "#FFF", weight: 8 });
-        }
-      })
-      .on("mouseout", () => {
-        if (isInRemoveLineMode()) {
-          busLine.setStyle({ color: color, weight: 3 });
-        }
-      })
-      .on("click", () => {
-        if (isInRemoveLineMode()) {
-          setRemoveConfirmation({
-            displayed: true,
-            id_bus_line: id_bus_line,
-          });
-        }
-      })
-  );
+      }
+    });
 }
