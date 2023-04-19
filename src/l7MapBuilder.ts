@@ -8,7 +8,7 @@ import { enableSpinningWheel, disableSpinningWheel } from "./signaux";
 import { useStateAction } from "./StateAction";
 import FlaxibMapLogo from "./FlaxibMapLogo";
 
-const [, { isInAddLineMode }] = useStateAction();
+const [, { isInReadMode, isInAddLineMode }] = useStateAction();
 
 function addLogoFlaxib(map: L.Map) {
   const logoControl = L.Control.extend({
@@ -34,10 +34,38 @@ export function buildMapL7(div: HTMLDivElement) {
     }).setView([-20.930746, 55.527503], 13)
   );
 
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    attribution:
-      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-  }).addTo(getLeafletMap());
+  let tileLayer = L.tileLayer(
+    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    {
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    }
+  );
+
+  tileLayer.addTo(getLeafletMap());
+
+  createEffect(() => {
+    tileLayer.remove();
+    if (isInReadMode()) {
+      tileLayer = L.tileLayer(
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        {
+          attribution:
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        }
+      );
+    } else {
+      tileLayer = L.tileLayer(
+        "https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png",
+        {
+          maxZoom: 20,
+          attribution:
+            '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
+        }
+      );
+    }
+    tileLayer.addTo(getLeafletMap());
+  });
 
   // addLegend(getLeafletMap());
   addLogoFlaxib(getLeafletMap());
