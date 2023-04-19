@@ -39,10 +39,13 @@ export type PointIdentityType = {
   nature: NatureEnum;
 };
 
-export type LineType = {
-  id_bus_line: number;
+export type LineUnderConstructionType = {
   color: string;
   stops: PointIdentityType[];
+};
+
+export type LineType = LineUnderConstructionType & {
+  id_bus_line: number;
 };
 
 export enum ModeEnum {

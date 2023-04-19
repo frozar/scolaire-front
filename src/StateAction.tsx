@@ -3,7 +3,12 @@ import { createContext, useContext } from "solid-js";
 import { createStore } from "solid-js/store";
 import { createHistory, record } from "solid-record";
 
-import { PointIdentityType, ModeEnum, LineType, MessageTypeEnum } from "./type";
+import {
+  PointIdentityType,
+  ModeEnum,
+  LineUnderConstructionType,
+  MessageTypeEnum,
+} from "./type";
 import { setUserInformations } from "./signaux";
 
 const history = createHistory();
@@ -11,7 +16,7 @@ const history = createHistory();
 type StateActionType = {
   // Field which keep the select circle on the map
   altimetry: { animation: boolean };
-  lineUnderConstruction: LineType;
+  lineUnderConstruction: LineUnderConstructionType;
   mode: ModeEnum;
 };
 
@@ -52,22 +57,8 @@ const makeStateActionContext = () => {
     setState("lineUnderConstruction", defaultLineUnderConstruction());
   }
 
-  function setLineUnderConstruction(line: LineType) {
+  function setLineUnderConstruction(line: LineUnderConstructionType) {
     setState("lineUnderConstruction", line);
-  }
-
-  function isLineUnderConstruction(line: LineType) {
-    return line.id_bus_line === state.lineUnderConstruction.id_bus_line;
-  }
-
-  function getLineUnderConstructionId() {
-    return state.lineUnderConstruction.id_bus_line;
-  }
-
-  function setLineUnderConstructionId(id: number) {
-    setState("lineUnderConstruction", (line: LineType) => {
-      return { id_bus_line: id, stops: line.stops };
-    });
   }
 
   function getLineUnderConstruction() {
@@ -140,8 +131,6 @@ const makeStateActionContext = () => {
       getLineUnderConstruction,
       resetLineUnderConstruction,
       setLineUnderConstruction,
-      setLineUnderConstructionId,
-      isLineUnderConstruction,
       setModeRemoveLine,
       setModeAddLine,
       setModeRead,
@@ -149,7 +138,6 @@ const makeStateActionContext = () => {
       isInRemoveLineMode,
       isInReadMode,
       getMode,
-      getLineUnderConstructionId,
     },
     history,
   ] as const;
