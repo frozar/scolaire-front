@@ -25,7 +25,7 @@ export default function () {
   createEffect(() => {
     // Anytime busLines() change the bus lines are redrawn
     for (const busLinePolyline of busLinesPolyline) {
-      busLinePolyline?.remove();
+      busLinePolyline.remove();
     }
     busLinesPolyline = [];
 
@@ -43,10 +43,17 @@ export default function () {
         busLine.color,
         isInRemoveLineMode
       );
+
+      busLinesPolyline.push(busLinePolyline);
     }
   });
 
   onCleanup(() => {
+    for (const busLinePolyline of busLinesPolyline) {
+      busLinePolyline.remove();
+    }
+    busLinesPolyline = [];
+
     setBusLines([]);
   });
 

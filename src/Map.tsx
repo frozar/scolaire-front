@@ -6,7 +6,6 @@ import PointsRamassageAndEtablissement from "./PointsRamassageAndEtablissement";
 
 import { buildMapL7 } from "./l7MapBuilder";
 import BusLines from "./line/BusLines";
-import LineUnderConstructionTip from "./line/LineUnderConstructionTip";
 import { useStateAction } from "./StateAction";
 import LineUnderConstruction from "./line/LineUnderConstruction";
 const [, { isInAddLineMode }] = useStateAction();
@@ -30,7 +29,6 @@ export default function () {
       <PointsRamassageAndEtablissement />
       <Show when={isInAddLineMode()}>
         <LineUnderConstruction />
-        <LineUnderConstructionTip />
       </Show>
       <BusLines />
     </>
