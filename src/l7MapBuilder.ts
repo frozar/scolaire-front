@@ -34,41 +34,39 @@ export function buildMapL7(div: HTMLDivElement) {
     }).setView([-20.930746, 55.527503], 13)
   );
 
-  let tileLayer = L.tileLayer(
+  // Manage map ground
+  const readTile = L.tileLayer(
     "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
     {
       attribution:
         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     }
   );
+  const editTile = L.tileLayer(
+    "https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png",
+    {
+      maxZoom: 20,
+      attribution:
+        '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
+    }
+  );
+
+  let tileLayer = readTile;
 
   tileLayer.addTo(getLeafletMap());
 
   createEffect(() => {
     tileLayer.remove();
     if (isInReadMode()) {
-      tileLayer = L.tileLayer(
-        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-        {
-          attribution:
-            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-        }
-      );
+      tileLayer = readTile;
     } else {
-      tileLayer = L.tileLayer(
-        "https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png",
-        {
-          maxZoom: 20,
-          attribution:
-            '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
-        }
-      );
+      tileLayer = editTile;
     }
     tileLayer.addTo(getLeafletMap());
   });
 
-  // addLegend(getLeafletMap());
   addLogoFlaxib(getLeafletMap());
+
   // If a line is under construction, disable the possibility
   // to pan the map
   createEffect(() => {
