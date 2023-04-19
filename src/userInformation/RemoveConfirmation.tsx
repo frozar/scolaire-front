@@ -7,6 +7,7 @@ import {
   fetchBusLines,
   getRemoveConfirmation,
   setRemoveConfirmation,
+  closeRemoveConfirmationBox,
 } from "../signaux";
 
 import { deleteBusLine } from "../request";
@@ -23,9 +24,10 @@ declare module "solid-js" {
 
 export default function () {
   const displayed = () => getRemoveConfirmation()["displayed"];
+  const id_bus_line = () => getRemoveConfirmation()["id_bus_line"];
 
   function handlerOnClickValider() {
-    const idToCheck = getRemoveConfirmation()["id_bus_line"];
+    const idToCheck = id_bus_line();
     if (!idToCheck) {
       return;
     }
@@ -44,10 +46,7 @@ export default function () {
             type: MessageTypeEnum.removeLine,
             content: `La ligne ${idToRemove} a bien été supprimée`,
           });
-          setRemoveConfirmation({
-            displayed: false,
-            id_bus_line: null,
-          });
+          closeRemoveConfirmationBox();
         } else {
           addNewUserInformation({
             displayed: true,
@@ -55,10 +54,7 @@ export default function () {
             type: MessageTypeEnum.removeLine,
             content: `Echec de la suppression de la ligne ${idToRemove}`,
           });
-          setRemoveConfirmation({
-            displayed: false,
-            id_bus_line: null,
-          });
+          closeRemoveConfirmationBox();
         }
         fetchBusLines();
       })
@@ -68,23 +64,11 @@ export default function () {
           displayed: true,
           level: MessageLevelEnum.error,
           type: MessageTypeEnum.removeLine,
-          content: `Impossible de supprimer la ligne ${
-            getRemoveConfirmation()["id_bus_line"]
-          }`,
+          content: `Impossible de supprimer la ligne ${id_bus_line()}`,
         });
-        setRemoveConfirmation({
-          displayed: false,
-          id_bus_line: null,
-        });
+        closeRemoveConfirmationBox();
         fetchBusLines();
       });
-  }
-
-  function handlerOnClickAnnuler() {
-    setRemoveConfirmation({
-      displayed: false,
-      id_bus_line: null,
-    });
   }
 
   const [buttonRef, setButtonRef] = createSignal<
@@ -146,7 +130,7 @@ export default function () {
 
                     assertIsNode(e.target);
                     if (!refDialogueBox.contains(e.target)) {
-                      handlerOnClickAnnuler();
+                      closeRemoveConfirmationBox();
                     }
                   }}
                 >
@@ -154,12 +138,7 @@ export default function () {
                     <button
                       type="button"
                       class="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                      onClick={() => {
-                        setRemoveConfirmation({
-                          displayed: false,
-                          id_bus_line: null,
-                        });
-                      }}
+                      onClick={closeRemoveConfirmationBox}
                     >
                       <span class="sr-only">Close</span>
                       <svg
@@ -205,7 +184,7 @@ export default function () {
                       <div class="mt-2">
                         <p class="text-sm text-gray-500">
                           Etes-vous sûr de vouloir supprimer la ligne de bus
-                          numéro {getRemoveConfirmation()["id_bus_line"]} ?
+                          numéro {id_bus_line()} ?
                         </p>
                       </div>
                     </div>
@@ -222,7 +201,7 @@ export default function () {
                     <button
                       type="button"
                       class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
-                      onClick={handlerOnClickAnnuler}
+                      onClick={closeRemoveConfirmationBox}
                     >
                       Annuler
                     </button>

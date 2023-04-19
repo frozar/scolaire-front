@@ -58,6 +58,13 @@ export const [getRemoveConfirmation, setRemoveConfirmation] = createSignal({
   id_bus_line: null,
 }) as Signal<removeConfirmationType>;
 
+export function closeRemoveConfirmationBox() {
+  setRemoveConfirmation({
+    displayed: false,
+    id_bus_line: null,
+  });
+}
+
 function generateUniqueID(): number {
   const id = Math.random();
   if (

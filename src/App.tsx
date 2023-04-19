@@ -6,7 +6,7 @@ import Menu from "./menu/Menu";
 import { useStateAction } from "./StateAction";
 import DisplayUserInformation from "./userInformation/DisplayUserInformation";
 import RemoveConfirmation from "./userInformation/RemoveConfirmation";
-import { fetchBusLines } from "./signaux";
+import { closeRemoveConfirmationBox, fetchBusLines } from "./signaux";
 import { ModeEnum } from "./type";
 import {
   displayAddLineMessage,
@@ -38,12 +38,8 @@ function undoRedoHandler({ ctrlKey, shiftKey, code }: KeyboardEvent) {
   keyboard.getLayoutMap().then((keyboardLayoutMap) => {
     const upKey = keyboardLayoutMap.get(code);
     if (upKey === "x") {
-      console.log("undos", history.undos);
       if (history.undos && history.undos[0] && history.undos[0][0]) {
         const anUndo = history.undos[0][0];
-        console.log("anUndo", anUndo);
-        console.log("anUndo.hasChanged()", anUndo.hasChanged());
-        console.log("anUndo.new()", anUndo.new());
       }
     }
   });
@@ -55,15 +51,10 @@ function undoRedoHandler({ ctrlKey, shiftKey, code }: KeyboardEvent) {
     keyboard.getLayoutMap().then((keyboardLayoutMap) => {
       const upKey = keyboardLayoutMap.get(code);
       if (upKey === "z") {
-        console.log("history.isUndoable()", history.isUndoable());
         if (!shiftKey && history.isUndoable()) {
-          console.log("BEFORE UNDO state", JSON.stringify(unwrap(state)));
           history.undo();
-          console.log("AFTER  UNDO state", JSON.stringify(unwrap(state)));
         } else if (shiftKey && history.isRedoable()) {
-          console.log("BEFORE REDO state", JSON.stringify(unwrap(state)));
           history.redo();
-          console.log("AFTER  REDO state", JSON.stringify(unwrap(state)));
         }
       }
     });
@@ -110,12 +101,14 @@ function toggleLineUnderConstruction({ code }: KeyboardEvent) {
       displayAddLineMessage();
     }
     if (upKey === "d") {
-      if (isInRemoveLineMode()) {
+      // Toggle behavior
+      if (!isInRemoveLineMode()) {
+        setModeRemoveLine();
+        displayRemoveLineMessage();
+      } else {
         setModeRead();
-        return;
+        closeRemoveConfirmationBox();
       }
-      setModeRemoveLine();
-      displayRemoveLineMessage();
     }
   });
 }
