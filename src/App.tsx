@@ -7,24 +7,22 @@ import { useStateAction } from "./StateAction";
 import DisplayUserInformation from "./userInformation/DisplayUserInformation";
 import RemoveConfirmation from "./userInformation/RemoveConfirmation";
 import { closeRemoveConfirmationBox, fetchBusLines } from "./signaux";
-import { ModeEnum } from "./type";
 import {
   displayAddLineMessage,
   displayRemoveLineMessage,
 } from "./userInformation/utils";
-import { addBusLine, deleteBusLine } from "./request";
-import { unwrap } from "solid-js/store";
+import { addBusLine } from "./request";
 
 const [
-  state,
+  ,
   {
     setModeRead,
     setModeAddLine,
     setModeRemoveLine,
     isInAddLineMode,
+    isInReadMode,
     resetLineUnderConstruction,
     getLineUnderConstruction,
-    getMode,
     isInRemoveLineMode,
   },
   history,
@@ -63,7 +61,7 @@ function undoRedoHandler({ ctrlKey, shiftKey, code }: KeyboardEvent) {
 
 function escapeHandler({ code }: KeyboardEvent) {
   if (code === "Escape") {
-    if (!isInAddLineMode()) {
+    if (isInReadMode()) {
       return;
     }
 

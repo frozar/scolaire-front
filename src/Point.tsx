@@ -13,7 +13,6 @@ import {
   PointIdentityType,
   PointRamassageType,
   PointEtablissementType,
-  ModeEnum,
 } from "./type";
 
 import { useStateAction } from "./StateAction";
@@ -28,7 +27,6 @@ const [
   {
     addPointToLineUnderConstruction,
     getLineUnderConstruction,
-    getMode,
     isInAddLineMode,
   },
 ] = useStateAction();
@@ -184,11 +182,11 @@ export default function (props: any) {
 
   // If a line is under construction, show a pencil when the mouse is over a circle
   createEffect(
-    on(getMode, (mode) => {
+    on(isInAddLineMode, (isInAddLineMode) => {
       if (circle) {
         const element = circle.getElement() as SVGElement;
         if (element) {
-          if (mode === ModeEnum.addLine) {
+          if (isInAddLineMode) {
             if (String(element.style) !== "cursor: url('/pencil.png'), auto;") {
               // @ts-expect-error
               element.style = "cursor: url('/pencil.png'), auto;";
