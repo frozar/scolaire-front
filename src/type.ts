@@ -39,7 +39,7 @@ export type PointIdentityType = {
   nature: NatureEnum;
 };
 
-export type Line = {
+export type LineType = {
   id_bus_line: number;
   color: string;
   stops: PointIdentityType[];

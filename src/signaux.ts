@@ -1,6 +1,6 @@
 import { Signal, createSignal } from "solid-js";
 import {
-  Line,
+  LineType,
   MessageTypeEnum,
   NatureEnum,
   PointEtablissementType,
@@ -105,7 +105,7 @@ export function removeUserInformation(id: number) {
   );
 }
 
-export const [busLines, setBusLines] = createSignal<Line[]>([]);
+export const [busLines, setBusLines] = createSignal<LineType[]>([]);
 
 function randColor() {
   return "#" + Math.floor(Math.random() * 0xffffff).toString(16);
@@ -128,7 +128,7 @@ export function fetchBusLines() {
           }[];
         }[]
       ) => {
-        let lines: Line[] = res.map((line) => {
+        let lines: LineType[] = res.map((line) => {
           const color = line.color ? "#" + line.color : randColor();
           const stopsWithNatureEnum = line.stops.map(
             (stop) =>
