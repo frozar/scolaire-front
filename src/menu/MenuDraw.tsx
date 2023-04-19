@@ -3,10 +3,18 @@ import { createSignal, Show } from "solid-js";
 import { useStateAction } from "../StateAction";
 import { assertIsNode } from "../utils";
 import { Transition } from "solid-transition-group";
-import ClickOutside from "./ClickOutside";
+import ClickOutside from "../ClickOutside";
 import { displayAddLineMessage } from "../userInformation/utils";
 
 const [, { setModeAddLine, isInAddLineMode }] = useStateAction();
+
+declare module "solid-js" {
+  namespace JSX {
+    interface Directives {
+      ClickOutside: (e: MouseEvent) => void;
+    }
+  }
+}
 
 export default function () {
   const [show, setShow] = createSignal(false);

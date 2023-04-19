@@ -1,13 +1,25 @@
 import { Show, createEffect, createSignal } from "solid-js";
+import { Transition } from "solid-transition-group";
+
+import ClickOutside from "../ClickOutside";
 import {
   addNewUserInformation,
   fetchBusLines,
   getRemoveConfirmation,
   setRemoveConfirmation,
 } from "../signaux";
-import { Transition } from "solid-transition-group";
-import { MessageLevelEnum, MessageTypeEnum } from "../type";
+
 import { deleteBusLine } from "../request";
+import { MessageLevelEnum, MessageTypeEnum } from "../type";
+import { assertIsNode } from "../utils";
+
+declare module "solid-js" {
+  namespace JSX {
+    interface Directives {
+      ClickOutside: (e: MouseEvent) => void;
+    }
+  }
+}
 
 export default function () {
   const displayed = () => getRemoveConfirmation()["displayed"];
@@ -82,6 +94,9 @@ export default function () {
   createEffect(() => {
     buttonRef()?.focus();
   });
+
+  let refDialogueBox: HTMLDivElement | undefined;
+
   return (
     <Transition
       name="slide-fade"
@@ -115,7 +130,26 @@ export default function () {
           >
             <div class="fixed inset-0 z-10 overflow-y-auto">
               <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-                <div class="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
+                <div
+                  class="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6"
+                  ref={refDialogueBox}
+                  use:ClickOutside={(e: MouseEvent) => {
+                    if (!refDialogueBox || !e.target) {
+                      return;
+                    }
+
+                    // If the target element is an SVG element => exit
+                    const targetType = e.target.constructor.name;
+                    if (targetType.slice(0, 3) === "SVG") {
+                      return;
+                    }
+
+                    assertIsNode(e.target);
+                    if (!refDialogueBox.contains(e.target)) {
+                      handlerOnClickAnnuler();
+                    }
+                  }}
+                >
                   <div class="absolute right-0 top-0 hidden pr-4 pt-4 sm:block">
                     <button
                       type="button"
