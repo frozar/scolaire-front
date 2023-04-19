@@ -3,7 +3,12 @@ import { createContext, useContext } from "solid-js";
 import { createStore } from "solid-js/store";
 import { createHistory, record } from "solid-record";
 
-import { PointIdentity, ModeEnum, Line, MessageTypeEnum } from "./type";
+import {
+  PointIdentityType,
+  ModeEnum,
+  LineUnderConstructionType,
+  MessageTypeEnum,
+} from "./type";
 import { setUserInformations } from "./signaux";
 
 const history = createHistory();
@@ -11,13 +16,13 @@ const history = createHistory();
 type StateActionType = {
   // Field which keep the select circle on the map
   altimetry: { animation: boolean };
-  lineUnderConstruction: Line;
+  lineUnderConstruction: LineUnderConstructionType;
   mode: ModeEnum;
 };
 
 function defaultLineUnderConstruction() {
   return {
-    id_bus_line: null,
+    id_bus_line: -1,
     color: "#000000",
     stops: [],
   };
@@ -36,8 +41,8 @@ const makeStateActionContext = () => {
     setState("altimetry", "animation", (animation: boolean) => !animation);
   }
 
-  function addPointToLineUnderConstruction(point: PointIdentity) {
-    setState("lineUnderConstruction", "stops", (line: PointIdentity[]) => {
+  function addPointToLineUnderConstruction(point: PointIdentityType) {
+    setState("lineUnderConstruction", "stops", (line: PointIdentityType[]) => {
       if (line.length === 0) {
         return [point];
       } else if (_.isEqual(line.at(-1)!, point)) {
@@ -52,22 +57,8 @@ const makeStateActionContext = () => {
     setState("lineUnderConstruction", defaultLineUnderConstruction());
   }
 
-  function setLineUnderConstruction(line: Line) {
+  function setLineUnderConstruction(line: LineUnderConstructionType) {
     setState("lineUnderConstruction", line);
-  }
-
-  function isLineUnderConstruction(line: Line) {
-    return line.id_bus_line === state.lineUnderConstruction.id_bus_line;
-  }
-
-  function getLineUnderConstructionId() {
-    return state.lineUnderConstruction.id_bus_line;
-  }
-
-  function setLineUnderConstructionId(id: number) {
-    setState("lineUnderConstruction", (line: Line) => {
-      return { id_bus_line: id, stops: line.stops };
-    });
   }
 
   function getLineUnderConstruction() {
@@ -140,8 +131,6 @@ const makeStateActionContext = () => {
       getLineUnderConstruction,
       resetLineUnderConstruction,
       setLineUnderConstruction,
-      setLineUnderConstructionId,
-      isLineUnderConstruction,
       setModeRemoveLine,
       setModeAddLine,
       setModeRead,
@@ -149,7 +138,6 @@ const makeStateActionContext = () => {
       isInRemoveLineMode,
       isInReadMode,
       getMode,
-      getLineUnderConstructionId,
     },
     history,
   ] as const;

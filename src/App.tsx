@@ -6,23 +6,24 @@ import Menu from "./menu/Menu";
 import { useStateAction } from "./StateAction";
 import DisplayUserInformation from "./userInformation/DisplayUserInformation";
 import RemoveConfirmation from "./userInformation/RemoveConfirmation";
-import { fetchBusLines } from "./signaux";
+import { closeRemoveConfirmationBox, fetchBusLines } from "./signaux";
 import { ModeEnum } from "./type";
 import {
   displayAddLineMessage,
   displayRemoveLineMessage,
 } from "./userInformation/utils";
-import { deleteBusLine } from "./request";
+import { addBusLine, deleteBusLine } from "./request";
+import { unwrap } from "solid-js/store";
 
 const [
-  ,
+  state,
   {
     setModeRead,
     setModeAddLine,
     setModeRemoveLine,
     isInAddLineMode,
     resetLineUnderConstruction,
-    getLineUnderConstructionId,
+    getLineUnderConstruction,
     getMode,
     isInRemoveLineMode,
   },
@@ -31,6 +32,18 @@ const [
 
 // Handler the Undo/Redo from the user
 function undoRedoHandler({ ctrlKey, shiftKey, code }: KeyboardEvent) {
+  // @ts-expect-error
+  const keyboard = navigator.keyboard;
+  // @ts-expect-error
+  keyboard.getLayoutMap().then((keyboardLayoutMap) => {
+    const upKey = keyboardLayoutMap.get(code);
+    if (upKey === "x") {
+      if (history.undos && history.undos[0] && history.undos[0][0]) {
+        const anUndo = history.undos[0][0];
+      }
+    }
+  });
+
   if (ctrlKey) {
     // @ts-expect-error
     const keyboard = navigator.keyboard;
@@ -50,29 +63,30 @@ function undoRedoHandler({ ctrlKey, shiftKey, code }: KeyboardEvent) {
 
 function escapeHandler({ code }: KeyboardEvent) {
   if (code === "Escape") {
-    if (getMode() != ModeEnum.addLine) {
+    if (!isInAddLineMode()) {
       return;
     }
-    const idToRemove: number | null = getLineUnderConstructionId();
+
     resetLineUnderConstruction();
     setModeRead();
-    if (idToRemove === null) {
-      fetchBusLines();
-      return;
-    }
-    deleteBusLine(idToRemove).then(() => {
-      fetchBusLines();
-    });
   }
 }
 
 function enterHandler({ code }: KeyboardEvent) {
   if (code === "Enter") {
-    if (isInAddLineMode()) {
+    if (!isInAddLineMode()) {
+      return;
+    }
+    const ids_point = getLineUnderConstruction().stops.map(function (value) {
+      return value["id_point"];
+    });
+
+    addBusLine(ids_point).then(async (res) => {
+      await res.json();
       resetLineUnderConstruction();
       setModeRead();
       fetchBusLines();
-    }
+    });
   }
 }
 
@@ -87,12 +101,14 @@ function toggleLineUnderConstruction({ code }: KeyboardEvent) {
       displayAddLineMessage();
     }
     if (upKey === "d") {
-      if (isInRemoveLineMode()) {
+      // Toggle behavior
+      if (!isInRemoveLineMode()) {
+        setModeRemoveLine();
+        displayRemoveLineMessage();
+      } else {
         setModeRead();
-        return;
+        closeRemoveConfirmationBox();
       }
-      setModeRemoveLine();
-      displayRemoveLineMessage();
     }
   });
 }
@@ -118,7 +134,7 @@ createEffect(() => {
   }
 });
 
-const App: Component = () => {
+export default () => {
   onMount(() => {
     document.addEventListener("keydown", undoRedoHandler);
     document.addEventListener("keydown", escapeHandler);
@@ -143,5 +159,3 @@ const App: Component = () => {
     </div>
   );
 };
-
-export default App;

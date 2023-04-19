@@ -1,7 +1,7 @@
 import { onCleanup } from "solid-js";
-import { assertIsNode } from "../utils";
+import { assertIsNode } from "./utils";
 
-export default function ClickOutside(
+export default function (
   el: HTMLElement,
   accessor: () => (e: MouseEvent) => void
 ) {

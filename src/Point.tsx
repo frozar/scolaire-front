@@ -10,7 +10,7 @@ import {
 import {
   EleveVersEtablissementType,
   NatureEnum,
-  PointIdentity,
+  PointIdentityType,
   PointRamassageType,
   PointEtablissementType,
   ModeEnum,
@@ -20,14 +20,14 @@ import { useStateAction } from "./StateAction";
 import { renderAnimation } from "./animation";
 import { linkMap } from "./global/linkPointIdentityCircle";
 import { getLeafletMap } from "./global/leafletMap";
-import { fetchBusLines, setSelectedElement } from "./signaux";
+import { setSelectedElement } from "./signaux";
 import { minMaxQty } from "./PointsRamassageAndEtablissement";
+
 const [
   ,
   {
     addPointToLineUnderConstruction,
     getLineUnderConstruction,
-    setLineUnderConstructionId,
     getMode,
     isInAddLineMode,
   },
@@ -36,12 +36,12 @@ const [
 const minSizeValue = 5;
 const maxSizeValue = 10;
 const range = maxSizeValue - minSizeValue;
-export default function Point(props: any) {
+export default function (props: any) {
   const point = props.point;
 
-  const [associatedPoints, setAssociatedPoints] = createSignal<PointIdentity[]>(
-    []
-  );
+  const [associatedPoints, setAssociatedPoints] = createSignal<
+    PointIdentityType[]
+  >([]);
 
   // For an etablissement, fetch every ramassage points which
   // contain student toward etablissement.
@@ -49,7 +49,7 @@ export default function Point(props: any) {
   // some student goes from this ramassage point.
   function fetchAssociatedPoints(
     point: PointEtablissementType | PointRamassageType,
-    setter: Setter<PointIdentity[]>
+    setter: Setter<PointIdentityType[]>
   ) {
     const { id, nature } = point;
 
@@ -132,7 +132,7 @@ export default function Point(props: any) {
           return;
         }
 
-        const pointIdentity: PointIdentity = {
+        const pointIdentity: PointIdentityType = {
           id: point.id,
           id_point: point.id_point,
           nature: point.nature,
@@ -141,29 +141,6 @@ export default function Point(props: any) {
         if (!(1 < getLineUnderConstruction().stops.length)) {
           return;
         }
-
-        let data = {
-          id_bus_line: getLineUnderConstruction().id_bus_line,
-          ids_point: getLineUnderConstruction().stops.map(function (value) {
-            return value["id_point"];
-          }),
-        };
-
-        fetch(import.meta.env.VITE_BACK_URL + "/bus_line", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        })
-          .then((res) => {
-            return res.json();
-          })
-          .then((res) => {
-            const { id } = res;
-            setLineUnderConstructionId(id);
-            fetchBusLines();
-          });
 
         // Highlight point ramassage
         for (const associatedPoint of associatedPoints()) {

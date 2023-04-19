@@ -7,7 +7,7 @@ import { setPoints, points } from "./signaux";
 export const [minMaxQty, setMinMaxQty] = createSignal([1, 100]);
 export const [pointsReady, setPointsReady] = createSignal(false);
 
-export default function PointsRamassageAndEtablissement() {
+export default function () {
   function fetchPointsRamassage() {
     fetch(import.meta.env.VITE_BACK_URL + "/points_ramassage")
       .then((res) => {

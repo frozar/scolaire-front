@@ -1,10 +1,10 @@
 import { Signal, createSignal } from "solid-js";
 import {
-  Line,
+  LineType,
   MessageTypeEnum,
   NatureEnum,
   PointEtablissementType,
-  PointIdentity,
+  PointIdentityType,
   PointRamassageType,
   removeConfirmationType,
   userInformationType,
@@ -58,6 +58,13 @@ export const [getRemoveConfirmation, setRemoveConfirmation] = createSignal({
   id_bus_line: null,
 }) as Signal<removeConfirmationType>;
 
+export function closeRemoveConfirmationBox() {
+  setRemoveConfirmation({
+    displayed: false,
+    id_bus_line: null,
+  });
+}
+
 function generateUniqueID(): number {
   const id = Math.random();
   if (
@@ -98,7 +105,7 @@ export function removeUserInformation(id: number) {
   );
 }
 
-export const [busLines, setBusLines] = createSignal<Line[]>([]);
+export const [busLines, setBusLines] = createSignal<LineType[]>([]);
 
 function randColor() {
   return "#" + Math.floor(Math.random() * 0xffffff).toString(16);
@@ -121,7 +128,7 @@ export function fetchBusLines() {
           }[];
         }[]
       ) => {
-        let lines: Line[] = res.map((line) => {
+        let lines: LineType[] = res.map((line) => {
           const color = line.color ? "#" + line.color : randColor();
           const stopsWithNatureEnum = line.stops.map(
             (stop) =>
@@ -131,7 +138,7 @@ export function fetchBusLines() {
                   stop["nature"] === "ramassage"
                     ? NatureEnum.ramassage
                     : NatureEnum.etablissement,
-              } as PointIdentity)
+              } as PointIdentityType)
           );
           return { ...line, color, stops: stopsWithNatureEnum };
         });

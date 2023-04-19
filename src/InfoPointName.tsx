@@ -5,7 +5,7 @@ import { renderAnimation } from "./animation";
 
 import { linkMap } from "./global/linkPointIdentityCircle";
 
-export default function InfoPointName(props: {
+export default function (props: {
   point: {
     id_point: number;
     name: string;

@@ -1,6 +1,6 @@
 import { removeUserInformation, setUserInformations } from "../signaux";
 
-export default function CrossButton(props: any) {
+export default function (props: any) {
   return (
     <button onClick={() => removeUserInformation(props.id)}>
       <svg

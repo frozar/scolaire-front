@@ -3,7 +3,7 @@ import { Show } from "solid-js";
 import logoAnimated from "./assets/logo-animated.svg";
 import { displayedSpinningWheel } from "./signaux";
 
-export default function SpinningWheel() {
+export default function () {
   return (
     <Show when={displayedSpinningWheel()}>
       <div id="spinning-wheel-container">

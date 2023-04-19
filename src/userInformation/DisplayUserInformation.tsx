@@ -15,7 +15,7 @@ const options = {
   [MessageLevelEnum.error]: ErrorBox,
 };
 
-export default function DisplayUserInformation() {
+export default function () {
   return (
     <div class="absolute top-[20px] z-[999] w-full flex flex-col items-center">
       <For each={getUserInformations()}>

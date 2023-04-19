@@ -1,19 +1,33 @@
 import { Show, createEffect, createSignal } from "solid-js";
+import { Transition } from "solid-transition-group";
+
+import ClickOutside from "../ClickOutside";
 import {
   addNewUserInformation,
   fetchBusLines,
   getRemoveConfirmation,
   setRemoveConfirmation,
+  closeRemoveConfirmationBox,
 } from "../signaux";
-import { Transition } from "solid-transition-group";
-import { MessageLevelEnum, MessageTypeEnum } from "../type";
-import { deleteBusLine } from "../request";
 
-export default function RemoveConfirmation() {
+import { deleteBusLine } from "../request";
+import { MessageLevelEnum, MessageTypeEnum } from "../type";
+import { assertIsNode } from "../utils";
+
+declare module "solid-js" {
+  namespace JSX {
+    interface Directives {
+      ClickOutside: (e: MouseEvent) => void;
+    }
+  }
+}
+
+export default function () {
   const displayed = () => getRemoveConfirmation()["displayed"];
+  const id_bus_line = () => getRemoveConfirmation()["id_bus_line"];
 
   function handlerOnClickValider() {
-    const idToCheck = getRemoveConfirmation()["id_bus_line"];
+    const idToCheck = id_bus_line();
     if (!idToCheck) {
       return;
     }
@@ -32,10 +46,7 @@ export default function RemoveConfirmation() {
             type: MessageTypeEnum.removeLine,
             content: `La ligne ${idToRemove} a bien été supprimée`,
           });
-          setRemoveConfirmation({
-            displayed: false,
-            id_bus_line: null,
-          });
+          closeRemoveConfirmationBox();
         } else {
           addNewUserInformation({
             displayed: true,
@@ -43,10 +54,7 @@ export default function RemoveConfirmation() {
             type: MessageTypeEnum.removeLine,
             content: `Echec de la suppression de la ligne ${idToRemove}`,
           });
-          setRemoveConfirmation({
-            displayed: false,
-            id_bus_line: null,
-          });
+          closeRemoveConfirmationBox();
         }
         fetchBusLines();
       })
@@ -56,23 +64,11 @@ export default function RemoveConfirmation() {
           displayed: true,
           level: MessageLevelEnum.error,
           type: MessageTypeEnum.removeLine,
-          content: `Impossible de supprimer la ligne ${
-            getRemoveConfirmation()["id_bus_line"]
-          }`,
+          content: `Impossible de supprimer la ligne ${id_bus_line()}`,
         });
-        setRemoveConfirmation({
-          displayed: false,
-          id_bus_line: null,
-        });
+        closeRemoveConfirmationBox();
         fetchBusLines();
       });
-  }
-
-  function handlerOnClickAnnuler() {
-    setRemoveConfirmation({
-      displayed: false,
-      id_bus_line: null,
-    });
   }
 
   const [buttonRef, setButtonRef] = createSignal<
@@ -82,6 +78,9 @@ export default function RemoveConfirmation() {
   createEffect(() => {
     buttonRef()?.focus();
   });
+
+  let refDialogueBox: HTMLDivElement | undefined;
+
   return (
     <Transition
       name="slide-fade"
@@ -115,17 +114,31 @@ export default function RemoveConfirmation() {
           >
             <div class="fixed inset-0 z-10 overflow-y-auto">
               <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-                <div class="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
+                <div
+                  class="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6"
+                  ref={refDialogueBox}
+                  use:ClickOutside={(e: MouseEvent) => {
+                    if (!refDialogueBox || !e.target) {
+                      return;
+                    }
+
+                    // If the target element is an SVG element => exit
+                    const targetType = e.target.constructor.name;
+                    if (targetType.slice(0, 3) === "SVG") {
+                      return;
+                    }
+
+                    assertIsNode(e.target);
+                    if (!refDialogueBox.contains(e.target)) {
+                      closeRemoveConfirmationBox();
+                    }
+                  }}
+                >
                   <div class="absolute right-0 top-0 hidden pr-4 pt-4 sm:block">
                     <button
                       type="button"
                       class="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                      onClick={() => {
-                        setRemoveConfirmation({
-                          displayed: false,
-                          id_bus_line: null,
-                        });
-                      }}
+                      onClick={closeRemoveConfirmationBox}
                     >
                       <span class="sr-only">Close</span>
                       <svg
@@ -171,7 +184,7 @@ export default function RemoveConfirmation() {
                       <div class="mt-2">
                         <p class="text-sm text-gray-500">
                           Etes-vous sûr de vouloir supprimer la ligne de bus
-                          numéro {getRemoveConfirmation()["id_bus_line"]} ?
+                          numéro {id_bus_line()} ?
                         </p>
                       </div>
                     </div>
@@ -188,7 +201,7 @@ export default function RemoveConfirmation() {
                     <button
                       type="button"
                       class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
-                      onClick={handlerOnClickAnnuler}
+                      onClick={closeRemoveConfirmationBox}
                     >
                       Annuler
                     </button>

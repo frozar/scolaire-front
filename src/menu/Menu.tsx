@@ -38,14 +38,6 @@ function MenuToggler() {
   );
 }
 
-declare module "solid-js" {
-  namespace JSX {
-    interface Directives {
-      ClickOutside: (e: MouseEvent) => void;
-    }
-  }
-}
-
 function SettingsContent(props: any) {
   return (
     <div>
@@ -192,7 +184,7 @@ function MenuContent() {
   );
 }
 
-export default function Menu() {
+export default function () {
   return (
     <>
       <MenuToggler />
