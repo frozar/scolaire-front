@@ -192,7 +192,7 @@ function MenuContent() {
   );
 }
 
-export default function Menu() {
+export default function () {
   return (
     <>
       <MenuToggler />

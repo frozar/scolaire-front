@@ -11,7 +11,7 @@ type PointToDisplayType = {
   quantity: number;
 };
 
-export default function InformationContent() {
+export default function () {
   const selectedIdentity = createMemo<PointIdentity | null>(() => {
     const wkSelectedElement = selectedElement();
     if (!wkSelectedElement) {

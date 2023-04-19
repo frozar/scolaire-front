@@ -8,7 +8,7 @@ import { getBusLinePolyline, getLatLngs } from "./BusLinesFunction";
 
 const [, { isInRemoveLineMode, getLineUnderConstruction }] = useStateAction();
 
-export default function LineUnderConstruction() {
+export default function () {
   const line = () => {
     const pointIdentities = getLineUnderConstruction().stops;
     return {

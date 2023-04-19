@@ -3,7 +3,7 @@ import { onMount } from "solid-js";
 
 import logoWithBaseline from "./assets/logo-baseline.svg";
 
-export default function FlaxibMapLogo() {
+export default function () {
   let componentRef: HTMLDivElement = document.createElement("div");
 
   onMount(() => {

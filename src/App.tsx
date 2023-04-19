@@ -141,7 +141,7 @@ createEffect(() => {
   }
 });
 
-const App: Component = () => {
+export default () => {
   onMount(() => {
     document.addEventListener("keydown", undoRedoHandler);
     document.addEventListener("keydown", escapeHandler);
@@ -166,5 +166,3 @@ const App: Component = () => {
     </div>
   );
 };
-
-export default App;

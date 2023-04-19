@@ -21,7 +21,7 @@ function buildMap(div: HTMLDivElement) {
   }
 }
 
-function Map() {
+export default function () {
   let mapDiv: any;
   onMount(() => buildMap(mapDiv));
   return (
@@ -36,5 +36,3 @@ function Map() {
     </>
   );
 }
-
-export default Map;

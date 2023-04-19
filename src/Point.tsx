@@ -36,7 +36,7 @@ const [
 const minSizeValue = 5;
 const maxSizeValue = 10;
 const range = maxSizeValue - minSizeValue;
-export default function Point(props: any) {
+export default function (props: any) {
   const point = props.point;
 
   const [associatedPoints, setAssociatedPoints] = createSignal<PointIdentity[]>(

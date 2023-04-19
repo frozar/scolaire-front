@@ -6,7 +6,7 @@ import { displayRemoveLineMessage } from "../userInformation/utils";
 const [, { setModeRemoveLine, isInRemoveLineMode, setModeRead }] =
   useStateAction();
 
-export default function MenuDraw() {
+export default function () {
   return (
     <div class="absolute top-[20px] left-[140px] z-[999] outline-none cursor-pointer">
       <label

@@ -2,7 +2,7 @@
 import { defineConfig } from "vitest/config";
 import solidPlugin from "vite-plugin-solid";
 
-export default defineConfig({
+export default {
   plugins: [solidPlugin()],
   server: {
     port: 3000,
@@ -15,4 +15,4 @@ export default defineConfig({
     // globals: true,
     includeSource: ["src/**/*.{js,ts}"],
   },
-});
+};

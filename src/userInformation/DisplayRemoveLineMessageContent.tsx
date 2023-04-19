@@ -1,4 +1,4 @@
-export default function DisplayAddLineMessageContent() {
+export default function () {
   return (
     <div>
       <div>

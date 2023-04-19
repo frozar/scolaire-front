@@ -9,7 +9,7 @@ import { getLeafletMap } from "../global/leafletMap";
 import { useStateAction } from "../StateAction";
 const [, { isInRemoveLineMode }] = useStateAction();
 
-export default function BusLines() {
+export default function () {
   createEffect(() => {
     if (pointsReady()) {
       fetchBusLines();

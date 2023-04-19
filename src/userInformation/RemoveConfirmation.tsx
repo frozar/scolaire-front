@@ -9,7 +9,7 @@ import { Transition } from "solid-transition-group";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { deleteBusLine } from "../request";
 
-export default function RemoveConfirmation() {
+export default function () {
   const displayed = () => getRemoveConfirmation()["displayed"];
 
   function handlerOnClickValider() {

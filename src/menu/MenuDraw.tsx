@@ -8,7 +8,7 @@ import { displayAddLineMessage } from "../userInformation/utils";
 
 const [, { setModeAddLine, isInAddLineMode }] = useStateAction();
 
-export default function MenuDraw() {
+export default function () {
   const [show, setShow] = createSignal(false);
 
   function toggleShow() {

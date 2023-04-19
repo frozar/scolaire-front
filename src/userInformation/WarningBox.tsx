@@ -20,7 +20,7 @@ function WarningIcon() {
   );
 }
 
-export default function InfoBox(props: any) {
+export default function (props: any) {
   const [divRef, setDivRef] = createSignal<HTMLElement | undefined>();
 
   createEffect(() => {
