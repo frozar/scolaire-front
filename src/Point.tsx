@@ -20,14 +20,14 @@ import { useStateAction } from "./StateAction";
 import { renderAnimation } from "./animation";
 import { linkMap } from "./global/linkPointIdentityCircle";
 import { getLeafletMap } from "./global/leafletMap";
-import { fetchBusLines, setSelectedElement } from "./signaux";
+import { setSelectedElement } from "./signaux";
 import { minMaxQty } from "./PointsRamassageAndEtablissement";
+
 const [
   ,
   {
     addPointToLineUnderConstruction,
     getLineUnderConstruction,
-    setLineUnderConstructionId,
     getMode,
     isInAddLineMode,
   },
@@ -141,29 +141,6 @@ export default function Point(props: any) {
         if (!(1 < getLineUnderConstruction().stops.length)) {
           return;
         }
-
-        let data = {
-          id_bus_line: getLineUnderConstruction().id_bus_line,
-          ids_point: getLineUnderConstruction().stops.map(function (value) {
-            return value["id_point"];
-          }),
-        };
-
-        fetch(import.meta.env.VITE_BACK_URL + "/bus_line", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        })
-          .then((res) => {
-            return res.json();
-          })
-          .then((res) => {
-            const { id } = res;
-            setLineUnderConstructionId(id);
-            fetchBusLines();
-          });
 
         // Highlight point ramassage
         for (const associatedPoint of associatedPoints()) {

@@ -12,7 +12,7 @@ import {
   displayAddLineMessage,
   displayRemoveLineMessage,
 } from "./userInformation/utils";
-import { deleteBusLine } from "./request";
+import { addBusLine, deleteBusLine } from "./request";
 import { unwrap } from "solid-js/store";
 
 const [
@@ -23,7 +23,7 @@ const [
     setModeRemoveLine,
     isInAddLineMode,
     resetLineUnderConstruction,
-    getLineUnderConstructionId,
+    getLineUnderConstruction,
     getMode,
     isInRemoveLineMode,
   },
@@ -72,29 +72,30 @@ function undoRedoHandler({ ctrlKey, shiftKey, code }: KeyboardEvent) {
 
 function escapeHandler({ code }: KeyboardEvent) {
   if (code === "Escape") {
-    if (getMode() != ModeEnum.addLine) {
+    if (!isInAddLineMode()) {
       return;
     }
-    const idToRemove: number | null = getLineUnderConstructionId();
+
     resetLineUnderConstruction();
     setModeRead();
-    if (idToRemove === null) {
-      fetchBusLines();
-      return;
-    }
-    deleteBusLine(idToRemove).then(() => {
-      fetchBusLines();
-    });
   }
 }
 
 function enterHandler({ code }: KeyboardEvent) {
   if (code === "Enter") {
-    if (isInAddLineMode()) {
+    if (!isInAddLineMode()) {
+      return;
+    }
+    const ids_point = getLineUnderConstruction().stops.map(function (value) {
+      return value["id_point"];
+    });
+
+    addBusLine(ids_point).then(async (res) => {
+      await res.json();
       resetLineUnderConstruction();
       setModeRead();
       fetchBusLines();
-    }
+    });
   }
 }
 

@@ -17,7 +17,7 @@ type StateActionType = {
 
 function defaultLineUnderConstruction() {
   return {
-    id_bus_line: null,
+    id_bus_line: -1,
     color: "#000000",
     stops: [],
   };

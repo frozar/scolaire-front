@@ -40,7 +40,7 @@ export type PointIdentity = {
 };
 
 export type Line = {
-  id_bus_line: number | null;
+  id_bus_line: number;
   color: string;
   stops: PointIdentity[];
 };
