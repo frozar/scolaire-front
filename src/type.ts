@@ -33,7 +33,7 @@ export function isPointEtablissement(pt: { nature: NatureEnum }) {
   return pt.nature === NatureEnum.etablissement;
 }
 
-export type PointIdentity = {
+export type PointIdentityType = {
   id: number;
   id_point: number;
   nature: NatureEnum;
@@ -42,7 +42,7 @@ export type PointIdentity = {
 export type Line = {
   id_bus_line: number;
   color: string;
-  stops: PointIdentity[];
+  stops: PointIdentityType[];
 };
 
 export enum ModeEnum {

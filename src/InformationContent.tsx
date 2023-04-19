@@ -1,7 +1,7 @@
 import { createMemo, Show, For, createResource } from "solid-js";
 import InfoPointName from "./InfoPointName";
 import { NatureEnum, isPointRamassage } from "./type";
-import { PointIdentity } from "./type";
+import { PointIdentityType } from "./type";
 import { selectedElement } from "./signaux";
 
 type PointToDisplayType = {
@@ -12,7 +12,7 @@ type PointToDisplayType = {
 };
 
 export default function () {
-  const selectedIdentity = createMemo<PointIdentity | null>(() => {
+  const selectedIdentity = createMemo<PointIdentityType | null>(() => {
     const wkSelectedElement = selectedElement();
     if (!wkSelectedElement) {
       return null;

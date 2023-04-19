@@ -3,7 +3,7 @@ import { createContext, useContext } from "solid-js";
 import { createStore } from "solid-js/store";
 import { createHistory, record } from "solid-record";
 
-import { PointIdentity, ModeEnum, Line, MessageTypeEnum } from "./type";
+import { PointIdentityType, ModeEnum, Line, MessageTypeEnum } from "./type";
 import { setUserInformations } from "./signaux";
 
 const history = createHistory();
@@ -36,8 +36,8 @@ const makeStateActionContext = () => {
     setState("altimetry", "animation", (animation: boolean) => !animation);
   }
 
-  function addPointToLineUnderConstruction(point: PointIdentity) {
-    setState("lineUnderConstruction", "stops", (line: PointIdentity[]) => {
+  function addPointToLineUnderConstruction(point: PointIdentityType) {
+    setState("lineUnderConstruction", "stops", (line: PointIdentityType[]) => {
       if (line.length === 0) {
         return [point];
       } else if (_.isEqual(line.at(-1)!, point)) {

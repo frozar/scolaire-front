@@ -4,7 +4,7 @@ import {
   MessageTypeEnum,
   NatureEnum,
   PointEtablissementType,
-  PointIdentity,
+  PointIdentityType,
   PointRamassageType,
   removeConfirmationType,
   userInformationType,
@@ -138,7 +138,7 @@ export function fetchBusLines() {
                   stop["nature"] === "ramassage"
                     ? NatureEnum.ramassage
                     : NatureEnum.etablissement,
-              } as PointIdentity)
+              } as PointIdentityType)
           );
           return { ...line, color, stops: stopsWithNatureEnum };
         });

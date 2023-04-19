@@ -10,7 +10,7 @@ import {
 import {
   EleveVersEtablissementType,
   NatureEnum,
-  PointIdentity,
+  PointIdentityType,
   PointRamassageType,
   PointEtablissementType,
   ModeEnum,
@@ -39,9 +39,9 @@ const range = maxSizeValue - minSizeValue;
 export default function (props: any) {
   const point = props.point;
 
-  const [associatedPoints, setAssociatedPoints] = createSignal<PointIdentity[]>(
-    []
-  );
+  const [associatedPoints, setAssociatedPoints] = createSignal<
+    PointIdentityType[]
+  >([]);
 
   // For an etablissement, fetch every ramassage points which
   // contain student toward etablissement.
@@ -49,7 +49,7 @@ export default function (props: any) {
   // some student goes from this ramassage point.
   function fetchAssociatedPoints(
     point: PointEtablissementType | PointRamassageType,
-    setter: Setter<PointIdentity[]>
+    setter: Setter<PointIdentityType[]>
   ) {
     const { id, nature } = point;
 
@@ -132,7 +132,7 @@ export default function (props: any) {
           return;
         }
 
-        const pointIdentity: PointIdentity = {
+        const pointIdentity: PointIdentityType = {
           id: point.id,
           id_point: point.id_point,
           nature: point.nature,

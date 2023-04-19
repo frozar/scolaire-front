@@ -4,7 +4,7 @@ import { useStateAction } from "../StateAction";
 import { getLeafletMap } from "../global/leafletMap";
 import { linkMap } from "../global/linkPointIdentityCircle";
 import { COLOR_LINE_UNDER_CONSTRUCTION } from "../constant";
-import { PointIdentity } from "../type";
+import { PointIdentityType } from "../type";
 
 const [, { isInAddLineMode, getLineUnderConstruction }] = useStateAction();
 
@@ -35,7 +35,7 @@ export default function () {
   let lastLatLng: L.LatLng;
 
   function drawLineTip(
-    lastPointIdentity: PointIdentity | undefined,
+    lastPointIdentity: PointIdentityType | undefined,
     latlng: L.LatLng,
     leafletMap: L.Map | null
   ) {

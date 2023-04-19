@@ -2,10 +2,10 @@ import L from "leaflet";
 
 import { createEffect } from "solid-js";
 import { setRemoveConfirmation } from "../signaux";
-import { PointIdentity } from "../type";
+import { PointIdentityType } from "../type";
 import { linkMap } from "../global/linkPointIdentityCircle";
 
-export function getLatLngs(stops: PointIdentity[]): L.LatLng[] {
+export function getLatLngs(stops: PointIdentityType[]): L.LatLng[] {
   const latlngs: L.LatLng[] = [];
   for (const pointIdentity of stops) {
     const circle = linkMap.get(pointIdentity.id_point);
