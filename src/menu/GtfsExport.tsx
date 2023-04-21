@@ -14,7 +14,11 @@ function handleDownloadClick() {
         return response.blob();
       }
     })
-    .then((blob) => {
+    .then((blob: Blob | undefined) => {
+      if (!blob) {
+        displayDownloadErrorMessage();
+        return;
+      }
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
@@ -32,13 +36,13 @@ function handleDownloadClick() {
 export default function () {
   return (
     <>
-      <div class="fixed bottom-0 right-0 p-2 m-4 mr-1 z-[999]">
+      <div class="fixed bottom-0 right-0 p-2 m-4 mr-1 z-[999] w-64">
         <button
           class="bg-white bg-opacity-90 border-none text-black
           hover:bg-white font-bold py-2 px-4 rounded btn"
           onClick={handleDownloadClick}
         >
-          Exporter données GTFS
+          Export
         </button>
       </div>
     </>
