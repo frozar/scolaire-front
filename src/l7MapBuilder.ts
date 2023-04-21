@@ -8,7 +8,7 @@ import { enableSpinningWheel, disableSpinningWheel } from "./signaux";
 import { useStateAction } from "./StateAction";
 import FlaxibMapLogo from "./FlaxibMapLogo";
 
-const [, { isInAddLineMode }] = useStateAction();
+const [, { isInReadMode, isInAddLineMode }] = useStateAction();
 
 function addLogoFlaxib(map: L.Map) {
   const logoControl = L.Control.extend({
@@ -34,13 +34,106 @@ export function buildMapL7(div: HTMLDivElement) {
     }).setView([-20.930746, 55.527503], 13)
   );
 
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    attribution:
-      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-  }).addTo(getLeafletMap());
+  // Manage map ground
+  const OpenStreetMap_Mapnik = L.tileLayer(
+    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    {
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    }
+  );
+  const Stadia_AlidadeSmooth = L.tileLayer(
+    "https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png",
+    {
+      maxZoom: 20,
+      attribution:
+        '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
+    }
+  );
+  const Stadia_Outdoors = L.tileLayer(
+    "https://tiles.stadiamaps.com/tiles/outdoors/{z}/{x}/{y}{r}.png",
+    {
+      maxZoom: 20,
+      attribution:
+        '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
+    }
+  );
+  const Esri_WorldTopoMap = L.tileLayer(
+    "https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}",
+    {
+      attribution:
+        "Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community",
+    }
+  );
+  const CyclOSM = L.tileLayer(
+    "https://{s}.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png",
+    {
+      maxZoom: 20,
+      attribution: "CyclOSM | Map data: © OpenStreetMap contributors",
+    }
+  );
+  const OpenStreetMap_CH = L.tileLayer(
+    "https://tile.osm.ch/switzerland/{z}/{x}/{y}.png",
+    {
+      maxZoom: 18,
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    }
+  );
+  const OpenStreetMap_HOT = L.tileLayer(
+    "https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png",
+    {
+      maxZoom: 18,
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Tiles style by <a href="https://www.hotosm.org/" target="_blank">Humanitarian OpenStreetMap Team</a> hosted by <a href="https://openstreetmap.fr/" target="_blank">OpenStreetMap France</a>',
+    }
+  );
+  const OpenStreetMap_France = L.tileLayer(
+    "https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png",
+    {
+      maxZoom: 20,
+      attribution:
+        '&copy; OpenStreetMap France | &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    }
+  );
 
-  // addLegend(getLeafletMap());
+  // TODO: give the choice of different ground map to the user.
+  // https://wiki.openstreetmap.org/wiki/Raster_tile_providers
+  // https://leaflet-extras.github.io/leaflet-providers/preview/
+  // const readTile = OpenStreetMap_Mapnik;
+  const readTile = Stadia_AlidadeSmooth;
+  // const readTile = Stadia_Outdoors;
+  // const readTile = Esri_WorldTopoMap;
+  // const readTile = CyclOSM;
+  // const readTile = OpenStreetMap_CH;
+  // const readTile = OpenStreetMap_HOT;
+  // const readTile = OpenStreetMap_France;
+
+  const editTile = L.tileLayer(
+    "https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png",
+    {
+      maxZoom: 20,
+      attribution:
+        '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
+    }
+  );
+
+  let tileLayer = readTile;
+
+  tileLayer.addTo(getLeafletMap());
+
+  createEffect(() => {
+    tileLayer.remove();
+    if (isInReadMode()) {
+      tileLayer = readTile;
+    } else {
+      tileLayer = editTile;
+    }
+    tileLayer.addTo(getLeafletMap());
+  });
+
   addLogoFlaxib(getLeafletMap());
+
   // If a line is under construction, disable the possibility
   // to pan the map
   createEffect(() => {

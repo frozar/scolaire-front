@@ -119,10 +119,6 @@ const makeStateActionContext = () => {
     return state.mode === ModeEnum.read;
   }
 
-  function getMode() {
-    return state.mode;
-  }
-
   return [
     state,
     {
@@ -137,7 +133,6 @@ const makeStateActionContext = () => {
       isInAddLineMode,
       isInRemoveLineMode,
       isInReadMode,
-      getMode,
     },
     history,
   ] as const;
