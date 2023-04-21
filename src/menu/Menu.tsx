@@ -2,7 +2,7 @@ import { Dynamic } from "solid-js/web";
 import { createEffect, For } from "solid-js";
 import MenuDraw from "./MenuDraw";
 import MenuDelete from "./MenuRemoveLine";
-
+import GtfsExport from "./GtfsExport";
 import InformationContent from "../InformationContent";
 
 import { useStateAction } from "../StateAction";
@@ -199,6 +199,7 @@ export default function Menu() {
       <MenuContent />
       <MenuDraw />
       <MenuDelete />
+      <GtfsExport />
     </>
   );
 }

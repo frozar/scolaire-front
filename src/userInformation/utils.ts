@@ -26,3 +26,30 @@ export function displayRemoveLineMessage() {
     });
   }
 }
+
+export function displayDownloadErrorMessage() {
+  addNewUserInformation({
+    displayed: true,
+    level: MessageLevelEnum.error,
+    type: MessageTypeEnum.global,
+    content: "Erreur lors du téléchargement",
+  });
+}
+
+export function displayOnGoingDownloadMessage() {
+  addNewUserInformation({
+    displayed: true,
+    level: MessageLevelEnum.info,
+    type: MessageTypeEnum.global,
+    content: "Téléchargement en cours",
+  });
+}
+
+export function displayDownloadSuccessMessage() {
+  addNewUserInformation({
+    displayed: true,
+    level: MessageLevelEnum.success,
+    type: MessageTypeEnum.global,
+    content: "Téléchargement réussi",
+  });
+}
