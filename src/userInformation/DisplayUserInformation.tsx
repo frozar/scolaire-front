@@ -17,7 +17,7 @@ const options = {
 
 export default function () {
   return (
-    <div class="absolute top-[20px] z-[999] w-full flex flex-col items-center">
+    <div class="d-user-informations">
       <For each={getUserInformations()}>
         {(item, i) => (
           <Show when={item.displayed}>

@@ -28,7 +28,7 @@ function MenuToggler() {
   return (
     <div
       ref={refMenuToggler}
-      class="menu__toggler btn btn-circle"
+      class="menu__toggler"
       onClick={toggleDisplayedMenu}
     >
       <div>
@@ -140,43 +140,29 @@ function MenuContent() {
   }
 
   return (
-    <div
-      ref={refMenuContent}
-      class="menu__custom p-2 w-80 bg-base-100 text-base-content text-left"
-    >
-      <div>
-        <div class="hidden sm:block">
-          <div class="border-b border-gray-300">
-            <nav
-              class="-mb-px flex space-x-8 border-indigo-500 text-indigo-600 tabs"
-              aria-label="Tabs"
-            >
-              <For each={Object.keys(tabs)}>
-                {(value: string) => {
-                  validateTabKey(value);
-                  const tabKey = value as keyof typeof tabs;
-                  const TabLabelComponent = tabs[tabKey].tabLabel;
-                  const TabNameComponent = tabs[tabKey].tabName;
-                  return (
-                    <button
-                      classList={{
-                        "border-indigo-500 text-indigo-600 group inline-flex items-center border-b-2 py-4 px-1 text-sm font-medium":
-                          stateGui.selectedTab === tabKey,
-                        "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 group inline-flex items-center border-b-2 py-4 px-1 text-sm font-medium":
-                          stateGui.selectedTab != tabKey,
-                      }}
-                      onClick={() => setSelectedTab(tabKey)}
-                    >
-                      <TabLabelComponent width="24px" />
-                      <TabNameComponent />
-                    </button>
-                  );
+    <div ref={refMenuContent} class="menu__custom" >
+      <nav aria-label="Tabs" >
+        <For each={Object.keys(tabs)}>
+          {(value: string) => {
+            validateTabKey(value);
+            const tabKey = value as keyof typeof tabs;
+            const TabLabelComponent = tabs[tabKey].tabLabel;
+            const TabNameComponent = tabs[tabKey].tabName;
+            return (
+              <button
+                classList={{
+                  "group active": stateGui.selectedTab === tabKey,
+                  "group": stateGui.selectedTab != tabKey,
                 }}
-              </For>
-            </nav>
-          </div>
-        </div>
-      </div>
+                onClick={() => setSelectedTab(tabKey)}
+              >
+                <TabLabelComponent width="24px" />
+                <TabNameComponent />
+              </button>
+            );
+          }}
+        </For>
+      </nav>
       <Dynamic
         component={tabs[stateGui.selectedTab as keyof typeof tabs].tabContent}
       />

@@ -27,7 +27,7 @@ export default function () {
   let refLabelMenu: HTMLLabelElement | undefined;
 
   return (
-    <div class="absolute top-[20px] left-[80px] z-[999] outline-none cursor-pointer">
+    <div class="menu-btn left-[80px]">
       <label
         ref={refLabelMenu}
         tabIndex={0}
