@@ -30,9 +30,15 @@ export function buildMapL7(div: HTMLDivElement) {
       zoomControl: false,
       zoomSnap: 0.1,
       zoomDelta: 0.1,
+      minZoom: 10,
       wheelPxPerZoomLevel: 200,
     }).setView([-20.930746, 55.527503], 13)
   );
+
+  setLeafletMap(getLeafletMap().setMaxBounds([
+    [-20.79470809955418, 55.87654918250451],
+    [-21.454888464989377, 55.13054515975808]
+  ]))
 
   // Manage map ground
   const OpenStreetMap_Mapnik = L.tileLayer(
