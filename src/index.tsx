@@ -3,7 +3,7 @@ import { render } from "solid-js/web";
 import { StateActionProvider } from "./StateAction";
 import { StateGuiProvider } from "./StateGui";
 
-import "./index.css";
+import "./css/index.css";
 import App from "./App";
 
 render(

@@ -8,7 +8,7 @@ const [, { setModeRemoveLine, isInRemoveLineMode, setModeRead }] =
 
 export default function () {
   return (
-    <div class="absolute top-[20px] left-[140px] z-[999] outline-none cursor-pointer">
+    <div class="menu-btn left-[140px]">
       <label
         tabIndex={0}
         class="btn btn-circle"
