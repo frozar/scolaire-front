@@ -13,6 +13,17 @@ const exportHandlers = {
   [ExportTypeEnum.image]: exportMapImage,
 };
 
+function download(fileame: string, blob: Blob) {
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = fileame;
+  a.click();
+  window.URL.revokeObjectURL(url);
+  a.remove();
+  displayDownloadSuccessMessage();
+}
+
 function exportGtfs() {
   displayOnGoingDownloadMessage();
   fetch(import.meta.env.VITE_BACK_URL + "/gtfs.zip")
@@ -28,34 +39,32 @@ function exportGtfs() {
         displayDownloadErrorMessage();
         return;
       }
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "gtfs.zip";
-      a.click();
-      window.URL.revokeObjectURL(url);
-      a.remove();
-      displayDownloadSuccessMessage();
+      download("gtfs.zip", blob);
     })
     .catch(() => {
       displayDownloadErrorMessage();
     });
 }
 
-function exportMapImage() {
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+async function exportMapImage() {
+  displayOnGoingDownloadMessage();
   const screenshoter = getScreenshoter();
   const map = getLeafletMap();
-  map.setView([-20.930746, 55.527503], 13);
-  screenshoter?.takeScreen("blob").then((blob: Blob) => {
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "map.png";
-    a.click();
-  }).catch(() => {
-    displayDownloadErrorMessage();
-  });
 
+  map.once("moveend", async () => {
+    await sleep(500);
+    screenshoter
+      ?.takeScreen("blob")
+      .then((blob: Blob) => {
+        download("map.png", blob);
+      })
+      .catch(() => {
+        displayDownloadErrorMessage();
+      });
+  });
+  map.setView([-20.930746, 55.527503], 13);
 }
 
 export function exportData() {

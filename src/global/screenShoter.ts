@@ -7,7 +7,12 @@ let pluginOptions: PluginOptions = {
   cropImageByInnerWH: false, // crop blank opacity from image borders
   hidden: true, // hide screen icon
   preventDownload: false, // prevent download on button click
-  domtoimageOptions: {}, // see options for dom-to-image
+  domtoimageOptions: {
+    filter: (node: any) => {
+        return node.className !== "leaflet-control-container";
+    }
+
+  }, // see options for dom-to-image
   position: "topleft", // position of take screen icon
   screenName: "screen", // string or function
   iconUrl: "", // string or function
