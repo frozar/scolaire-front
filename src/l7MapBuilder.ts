@@ -12,6 +12,7 @@ import { useStateAction } from "./StateAction";
 import FlaxibMapLogo from "./FlaxibMapLogo";
 import { useStateGui } from "./StateGui";
 import { getTileById } from "./tileUtils";
+import { setScreenshoter } from "./global/screenShoter";
 
 const [, { getSelectedReadModeTile, getSelectedEditModeTile }] = useStateGui();
 const [, { isInReadMode, isInAddLineMode }] = useStateAction();
@@ -70,6 +71,7 @@ export function buildMapL7(div: HTMLDivElement) {
   });
 
   addLogoFlaxib(leafletMap);
+  setScreenshoter();
 
   // If a line is under construction, disable the possibility
   // to pan the map

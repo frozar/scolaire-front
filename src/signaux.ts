@@ -7,6 +7,7 @@ import {
   PointEtablissementType,
   PointIdentityType,
   PointRamassageType,
+  exportConfirmationType,
   removeConfirmationType,
   userInformationType,
 } from "./type";
@@ -59,10 +60,31 @@ export const [getRemoveConfirmation, setRemoveConfirmation] = createSignal({
   id_bus_line: null,
 }) as Signal<removeConfirmationType>;
 
+export function openExportConfirmationBox() {
+  console.log("openExportConfirmationBox");
+  
+  setExportConfirmation((prev) => ({
+    ...prev,
+    displayed: true,
+    }));
+}
+
 export function closeRemoveConfirmationBox() {
   setRemoveConfirmation({
     displayed: false,
     id_bus_line: null,
+  });
+}
+
+export const [getExportConfirmation, setExportConfirmation] = createSignal({
+  displayed: false,
+  exportType: null,
+}) as Signal<exportConfirmationType>;
+
+export function closeExportConfirmationBox() {
+  setExportConfirmation({
+    displayed: false,
+    exportType: null,
   });
 }
 

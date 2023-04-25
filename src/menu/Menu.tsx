@@ -2,7 +2,7 @@ import { Dynamic } from "solid-js/web";
 import { createEffect, For } from "solid-js";
 import MenuDraw from "./MenuDraw";
 import MenuDelete from "./MenuRemoveLine";
-import GtfsExport from "./GtfsExport";
+import GtfsExport from "../export/GtfsExport";
 import InformationContent from "../InformationContent";
 import SideMapMenu from "./SideMenuMap";
 

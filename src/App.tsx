@@ -6,6 +6,7 @@ import Menu from "./menu/Menu";
 import { useStateAction } from "./StateAction";
 import DisplayUserInformation from "./userInformation/DisplayUserInformation";
 import RemoveConfirmation from "./userInformation/RemoveConfirmation";
+import ExportConfirmation from "./export/ExportModal";
 import { closeRemoveConfirmationBox, fetchBusLines } from "./signaux";
 import {
   displayAddLineMessage,
@@ -151,6 +152,7 @@ export default () => {
     <div ref={refApp}>
       <DisplayUserInformation />
       <RemoveConfirmation />
+      <ExportConfirmation />
       <Menu />
       <Map />
       <SpinningWheel />
