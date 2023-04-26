@@ -3,7 +3,7 @@ import { createEffect } from "solid-js";
 import L from "leaflet";
 import { L7Layer } from "@antv/l7-leaflet";
 import { getLeafletMap, setLeafletMap } from "./global/leafletMap";
-import { enableSpinningWheel, disableSpinningWheel } from "./signaux";
+import { enableSpinningWheel, disableSpinningWheel, setOnTiles } from "./signaux";
 
 import { useStateAction } from "./StateAction";
 import FlaxibMapLogo from "./FlaxibMapLogo";
@@ -114,6 +114,8 @@ export function buildMapL7(div: HTMLDivElement) {
   // https://leaflet-extras.github.io/leaflet-providers/preview/
   // const readTile = OpenStreetMap_Mapnik;
   const readTile = Stadia_AlidadeSmooth;
+  setOnTiles('Stadia_AlidadeSmooth')
+  
   // const readTile = Stadia_Outdoors;
   // const readTile = Esri_WorldTopoMap;
   // const readTile = CyclOSM;

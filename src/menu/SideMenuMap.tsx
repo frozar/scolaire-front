@@ -3,6 +3,7 @@ import L from "leaflet";
 import { getLeafletMap } from "../global/leafletMap";
 
 import { OpenStreetMap_Mapnik, layerTilesList, Stadia_AlidadeSmooth, Stadia_Outdoors } from "../constant";
+import { onTiles } from "../signaux";
 
 var ref_side_menu_close_toggler_btn: HTMLDivElement;
 var ref_side_menu_toggler_btn: SVGSVGElement;
@@ -52,6 +53,11 @@ export default function SideMapMenu() {
 
             map_container.appendChild(text)
             map_layer_tiles_list.appendChild(map_container)
+
+            if(onTiles() == tile.tile_name){
+                console.log('on tile:', onTiles());
+                
+            }
         })
 
     })
