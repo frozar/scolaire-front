@@ -1,14 +1,15 @@
-import { Show } from "solid-js";
+import { Match, Show, Switch, createSignal } from "solid-js";
 import ClickOutside from "../ClickOutside";
 import {
   closeExportConfirmationBox,
   getExportConfirmation,
-  setExportConfirmation,
+  setExportType,
 } from "../signaux";
 import { Transition } from "solid-transition-group";
 import { assertIsNode } from "../utils";
 import { ExportTypeEnum } from "../type";
 import { exportData } from "./export";
+import { GtfsExportLogo, ImageExportLogo } from "./Logos";
 
 declare module "solid-js" {
   namespace JSX {
@@ -20,33 +21,50 @@ declare module "solid-js" {
 
 let refDialogueBox: HTMLDivElement | undefined;
 
+const [selected, setSelected] = createSignal<string | null>(null);
+
 function ExportTypeSelect() {
   return (
-    <select
-      class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 rounded shadow leading-tight focus:outline-none focus:border-blue-500"
-      onChange={(e) => {
-        console.log("e.target.value", e.target.value);
-
-        const exportType = e.target.value;
-        setExportConfirmation((prev) => ({
-          ...prev,
-          exportType: ExportTypeEnum[exportType as keyof typeof ExportTypeEnum],
-        }));
-      }}
-    >
-      <option value="">Sélectionnez un type d'export</option>
+    <div class="w-full flex flex-row flex-wrap justify-evenly">
       {Object.values(ExportTypeEnum)
         .filter((exportType) => typeof exportType === "string")
         .map((exportType) => {
-          return <option value={exportType}>{exportType}</option>;
+          return (
+            <div
+              class="card shadow-lg border rounded-lg border-gray-300 shadow-black-20 duration-200 p-2 flex flex-col items-center justify-center sm:w-1/3 sm:m-3 w-full hover:scale-105 cursor-pointer"
+              onClick={() => {
+                if (selected() !== null && selected() === exportType) {
+                  setSelected(null);
+                } else {
+                  setSelected(exportType as string);
+                }
+              }}
+              classList={{
+                "bg-green-300": selected() === exportType,
+              }}
+            >
+              <div class="mb-4">
+                <Switch fallback={null}>
+                  <Match when={exportType === "gtfs"}>
+                    <GtfsExportLogo />
+                  </Match>
+                  <Match when={exportType === "image"}>
+                    <ImageExportLogo />
+                  </Match>
+                </Switch>
+              </div>
+              <div class="text-center text-base">
+                {exportType}
+              </div>
+            </div>
+          );
         })}
-    </select>
+    </div>
   );
 }
 
 export default function () {
   const displayed = () => getExportConfirmation()["displayed"];
-  const exportType = () => getExportConfirmation()["exportType"];
   return (
     <Transition
       name="slide-fade"
@@ -92,6 +110,7 @@ export default function () {
 
                     assertIsNode(e.target);
                     if (!refDialogueBox.contains(e.target)) {
+                      setSelected(null);
                       closeExportConfirmationBox();
                     }
                   }}
@@ -103,15 +122,10 @@ export default function () {
                           class="text-base font-semibold leading-6 text-gray-900"
                           id="modal-title"
                         >
-                          Exporter les données
+                          Choisissez le type d'export :
                         </h3>
                         <div class="mt-2 w-full flex">
-                          <div class="w-2/5">
-                            Sélectionnez le type d'export:
-                          </div>
-                          <div class="w-3/5 flex">
-                            <ExportTypeSelect />
-                          </div>
+                          <ExportTypeSelect />
                         </div>
                       </div>
                     </div>
@@ -119,10 +133,12 @@ export default function () {
                   <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                     <button
                       type="button"
-                      class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
+                      class="inline-flex w-full justify-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 sm:ml-3 sm:w-auto"
                       onClick={() => {
-                        if (exportType() !== null && exportType() !== undefined) {
+                        if (selected() !== null && selected() !== undefined) {
+                          setExportType(selected());
                           exportData();
+                          setSelected(null);
                           closeExportConfirmationBox();
                         }
                       }}
@@ -132,7 +148,10 @@ export default function () {
                     <button
                       type="button"
                       class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
-                      onClick={() => closeExportConfirmationBox()}
+                      onClick={() => {
+                        setSelected(null);
+                        closeExportConfirmationBox();
+                      }}
                     >
                       Annuler
                     </button>

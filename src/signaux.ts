@@ -1,6 +1,7 @@
 import { Signal, createSignal } from "solid-js";
 import L from "leaflet";
 import {
+  ExportTypeEnum,
   LineType,
   MessageTypeEnum,
   NatureEnum,
@@ -61,12 +62,10 @@ export const [getRemoveConfirmation, setRemoveConfirmation] = createSignal({
 }) as Signal<removeConfirmationType>;
 
 export function openExportConfirmationBox() {
-  console.log("openExportConfirmationBox");
-  
   setExportConfirmation((prev) => ({
     ...prev,
     displayed: true,
-    }));
+  }));
 }
 
 export function closeRemoveConfirmationBox() {
@@ -74,6 +73,14 @@ export function closeRemoveConfirmationBox() {
     displayed: false,
     id_bus_line: null,
   });
+}
+
+export function setExportType(exportType: string | null) {
+  const type = ExportTypeEnum[exportType as keyof typeof ExportTypeEnum];
+  setExportConfirmation((prev) => ({
+    ...prev,
+    exportType: type,
+  }));
 }
 
 export const [getExportConfirmation, setExportConfirmation] = createSignal({

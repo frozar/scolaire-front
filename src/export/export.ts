@@ -1,5 +1,8 @@
+import { LatLng } from "leaflet";
 import { getLeafletMap } from "../global/leafletMap";
-import { getScreenshoter } from "../global/screenShoter";
+import {
+  getScreenshoter, setOnLoadEvent, unsetOnLoadEvent, waitTileLoading,
+} from "../global/screenShoter";
 import { getExportConfirmation } from "../signaux";
 import { ExportTypeEnum } from "../type";
 import {
@@ -12,6 +15,9 @@ const exportHandlers = {
   [ExportTypeEnum.gtfs]: exportGtfs,
   [ExportTypeEnum.image]: exportMapImage,
 };
+
+let currentViewPos: LatLng | null = null;
+let currentViewZoom: number | null = null;
 
 function download(fileame: string, blob: Blob) {
   const url = window.URL.createObjectURL(blob);
@@ -46,24 +52,34 @@ function exportGtfs() {
     });
 }
 
-const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
-async function exportMapImage() {
+function exportMapImage() {
   displayOnGoingDownloadMessage();
   const screenshoter = getScreenshoter();
   const map = getLeafletMap();
+  // setOnLoadEvent();
 
   map.once("moveend", async () => {
-    await sleep(500);
+    // await waitTileLoading();
+    await wait(250);
+    // unsetOnLoadEvent();
     screenshoter
       ?.takeScreen("blob")
       .then((blob: Blob) => {
+        if (!blob) {
+          displayDownloadErrorMessage();
+          return;
+        }
         download("map.png", blob);
+        map.setView([currentViewPos?.lat ?? 0, currentViewPos?.lng ?? 0], currentViewZoom ?? 0);
       })
       .catch(() => {
         displayDownloadErrorMessage();
       });
   });
+  currentViewPos = map.getCenter();
+  currentViewZoom = map.getZoom();
   map.setView([-20.930746, 55.527503], 13);
 }
 
@@ -72,7 +88,6 @@ export function exportData() {
   const type = exportType();
 
   if (type === null || type === undefined) {
-    console.log("no type");
     return;
   }
 
