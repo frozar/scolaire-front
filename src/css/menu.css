@@ -73,6 +73,7 @@
     @apply bg-white bg-opacity-90 border-none text-black hover:bg-white font-bold py-2 px-4 rounded btn;
   }
 }
+
 /*
 * SLIDING MENU PANEL
 */
@@ -121,4 +122,83 @@
 
 .menu-link-shortcut {
   justify-content: space-between;
+}
+
+/* Right menu toggler */
+.side-map-menu{
+  @apply absolute right-5  top-6 bg-[#252525] p-2 z-[999] rounded-lg;
+  transition-duration: 300ms;
+  
+  &.active{
+    @apply translate-x-[-250px];
+  }
+}
+
+#side-map-toggler{
+  transition-duration: 300ms;
+  position: absolute;
+  top: 0px;
+  right: -30%;
+  z-index: 998;
+  color: #005c9c;
+  background: rgba(250, 250, 250, 0.7);
+  width: 250px;
+  height: 100%;
+  padding: 10px;
+  padding-top: 5rem;
+
+  &.active{
+    @apply translate-x-[-250px];
+  }
+
+  > header {
+    > span.close-toggler{
+      position: absolute;
+      right: 32px;
+      top: 32px;
+      width: 32px;
+      height: 32px;
+      opacity: 1;
+    }
+
+    > span.close-toggler::before, .close-toggler::after{  
+      position: absolute;
+      left: 15px;
+      content: ' ';
+      height: 33px;
+      width: 2px;
+      background-color: #333;
+    }
+
+    > .close-toggler::before{
+      transform: rotate(45deg);
+    }
+
+    > .close-toggler::after{
+      transform: rotate(-45deg);
+    }
+  }
+}
+
+.tiles-map{
+  width: 100%;
+  height: 150px;
+  overflow: hidden;
+
+  z-index: 999;
+
+  margin: 15px 0;
+  border-radius: 15px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  display: flex;
+  @apply items-end;
+
+  > p{
+    width: 100%;
+    background: gray;
+    @apply text-center py-1;
+  }
 }
