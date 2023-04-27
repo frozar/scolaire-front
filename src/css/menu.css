@@ -181,8 +181,8 @@
 }
 
 .tiles-map{
-  width: 100%;
-  height: 150px;
+  width: 90%;
+  height: auto;
   overflow: hidden;
 
   z-index: 999;
@@ -193,12 +193,22 @@
   background-position: center;
   background-repeat: no-repeat;
 
-  display: flex;
+  cursor: pointer;
   @apply items-end;
 
   > p{
     width: 100%;
     background: gray;
-    @apply text-center py-1 text-white;
+    @apply text-center py-1 text-white flex justify-center;
   }
+
+  >.leaflet-control-minimap{
+    cursor: pointer !important;
+    width: 100% !important;
+  }
+}
+
+#map-layer-tiles-list{
+  overflow-y: auto;
+  height: 85vh;
 }
