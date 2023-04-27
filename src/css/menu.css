@@ -205,6 +205,14 @@
   >.leaflet-control-minimap{
     cursor: pointer !important;
     width: 100% !important;
+
+    > div.leaflet-pane.leaflet-map-pane {
+      > div.leaflet-pane.leaflet-overlay-pane {
+        > svg {
+          display: none;
+        }
+      }
+    }
   }
 }
 
