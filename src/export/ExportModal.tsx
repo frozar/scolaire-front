@@ -135,7 +135,7 @@ export default function () {
                       type="button"
                       class="inline-flex w-full justify-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 sm:ml-3 sm:w-auto"
                       onClick={() => {
-                        if (selected() !== null && selected() !== undefined) {
+                        if (selected()) {
                           setExportType(selected());
                           exportData();
                           setSelected(null);
