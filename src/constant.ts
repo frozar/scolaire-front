@@ -2,6 +2,7 @@ export const COLOR_LINE_UNDER_CONSTRUCTION = "#0000FF";
 export const DEAD_COLOR = "#000000FF";
 
 import L from 'leaflet' 
+import { TileEnum } from './type';
 
 // Manage map ground
 export const OpenStreetMap_Mapnik = L.tileLayer(
@@ -69,21 +70,45 @@ export const OpenStreetMap_France = L.tileLayer(
 
 export const layerTilesList = [
     {
-        tile_name: 'OpenStreetMap_Mapnik',
-        tile: OpenStreetMap_Mapnik,
-        src: '/map_tiles/openstreermap_mapnik.png'
+        tile_name: TileEnum.OpenStreetMap_Mapnik,
+        tile: OpenStreetMap_Mapnik
     },
 
     {
-        tile_name: 'Stadia_AlidadeSmooth',
-        tile: Stadia_AlidadeSmooth,
-        src:  '/map_tiles/stadia_alidadesmooth.png'
+        tile_name: TileEnum.Stadia_AlidadeSmooth,
+        tile: Stadia_AlidadeSmooth
     },
 
     {
-        tile_name: 'Stadia_Outdoors',
-        tile: Stadia_Outdoors,
-        src: '/map_tiles/stadia_outdoors.png'
+        tile_name: TileEnum.Stadia_Outdoors,
+        tile: Stadia_Outdoors
     },
     
+    {
+        tile_name: TileEnum.Esri_WorldTopoMap,
+        tile: Esri_WorldTopoMap
+    },
+
+    {
+        tile_name: TileEnum.CyclOSM,
+        tile: CyclOSM
+    },
+
+
+    {
+        tile_name: TileEnum.OpenStreetMap_CH,
+        tile: OpenStreetMap_CH
+    },
+
+    {
+        tile_name: TileEnum.OpenStreetMap_HOT,
+        tile: OpenStreetMap_HOT
+    },
+
+    {
+        tile_name: TileEnum.OpenStreetMap_France,
+        tile: OpenStreetMap_France
+    },
+
+
 ]
