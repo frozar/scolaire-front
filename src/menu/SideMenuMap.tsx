@@ -64,7 +64,17 @@ export default function SideMapMenu() {
         map_title.innerText = tile.tile_name
        
         if(state.onTile != tile.tile_name){
-            const minimap = new MiniMap(tile.tile, {}).addTo(getLeafletMap());
+
+            // console.log(getLeafletMap().getBounds());
+            
+            const minimap = new MiniMap(tile.tile, {
+                zoomLevelOffset: -3.5,
+            }).addTo(getLeafletMap());
+            minimap._map.fitBounds(getLeafletMap().getBounds())
+            
+            
+            
+            // minimap.fitBounds(getLeafletMap().getBounds())
             const minimap_container = minimap.getContainer()
 
             map_container.appendChild(minimap_container)
