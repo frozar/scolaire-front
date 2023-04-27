@@ -3,13 +3,15 @@ import { createEffect } from "solid-js";
 import L from "leaflet";
 import { L7Layer } from "@antv/l7-leaflet";
 import { getLeafletMap, setLeafletMap } from "./global/leafletMap";
-import { enableSpinningWheel, disableSpinningWheel, setOnTiles } from "./signaux";
+import { enableSpinningWheel, disableSpinningWheel } from "./signaux";
 
 import { useStateAction } from "./StateAction";
 import FlaxibMapLogo from "./FlaxibMapLogo";
 import { Stadia_AlidadeSmooth } from "./constant";
+import { useStateGui } from "./StateGui";
+import { getTileByName } from "./TileUtils";
 
-
+const [state, {setOnTile}] = useStateGui()
 const [, { isInReadMode, isInAddLineMode }] = useStateAction();
 
 
@@ -113,8 +115,16 @@ export function buildMapL7(div: HTMLDivElement) {
   // https://wiki.openstreetmap.org/wiki/Raster_tile_providers
   // https://leaflet-extras.github.io/leaflet-providers/preview/
   // const readTile = OpenStreetMap_Mapnik;
-  const readTile = Stadia_AlidadeSmooth;
-  setOnTiles('Stadia_AlidadeSmooth')
+  var readTile = Stadia_AlidadeSmooth;
+  let tileLayer = readTile;
+
+  if(!state.onTile || state.onTile == '' || state.onTile === undefined){
+    setOnTile('Stadia_AlidadeSmooth')
+  }else{
+    tileLayer = getTileByName(state.onTile).tile
+    readTile = getTileByName(state.onTile).tile
+
+  }
   
   // const readTile = Stadia_Outdoors;
   // const readTile = Esri_WorldTopoMap;
@@ -132,8 +142,8 @@ export function buildMapL7(div: HTMLDivElement) {
     }
   );
 
-  let tileLayer = readTile;
-
+  
+  getLeafletMap().removeLayer(tileLayer)
   tileLayer.addTo(getLeafletMap());
 
   createEffect(() => {
