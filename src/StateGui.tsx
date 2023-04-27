@@ -3,6 +3,7 @@ import { createContext, useContext } from "solid-js";
 import { createStore, SetStoreFunction } from "solid-js/store";
 
 type StateGuiType = {
+  onTile: string;
   displayedMenu: boolean;
   selectedTab: string;
 };
@@ -37,11 +38,17 @@ const makeStateGuiContext = () => {
     setStateWrapper("selectedTab", tabName);
   }
 
+  function setOnTile(tileName: string){
+    setStateWrapper('onTile', tileName)
+  }
+
+
   return [
     state,
     {
       toggleDisplayedMenu,
       setSelectedTab,
+      setOnTile
     },
   ] as const;
 };
