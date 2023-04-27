@@ -1,9 +1,9 @@
-import { createEffect, onMount } from "solid-js"
-import L from "leaflet";
 import { getLeafletMap } from "../global/leafletMap";
 
-import { OpenStreetMap_Mapnik, layerTilesList, Stadia_AlidadeSmooth, Stadia_Outdoors } from "../constant";
-import { onTiles } from "../signaux";
+import { layerTilesList, OpenStreetMap_France, CyclOSM } from "../constant";
+import { getTileByName } from "../TileUtils";
+import {useStateGui} from '../StateGui'
+import MiniMap from 'leaflet-minimap';
 
 var ref_side_menu_close_toggler_btn: HTMLDivElement;
 var ref_side_menu_toggler_btn: SVGSVGElement;
@@ -11,11 +11,10 @@ var map_layer_tiles_list: HTMLElement;
 var side_menu_toggler: HTMLElement;
 var toggle_active: Boolean;
 
-
-
 export default function SideMapMenu() {
     toggle_active = false
-
+    const [state, {setOnTile}] = useStateGui()
+    
     const openCloseToggler = () => {
         if(toggle_active) {
             side_menu_toggler?.classList.remove('active');
@@ -26,47 +25,73 @@ export default function SideMapMenu() {
             ref_side_menu_toggler_btn.parentElement?.classList.add('active')
         }
 
-        
         toggle_active = !toggle_active;
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
+    /**
+     * Get tile name from HTML map container attributes 
+     * Set new map title with the current tile name
+     * remove current basemap tile
+     * change minimap layer tile with the basemap tile  
+     * 
+     * set new attributes "data-tile-name" to map_container
+     * 
+     * @param map_container 
+     * @param minimap 
+     */
+    const tileChangeOnClick = (map_container: HTMLDivElement, minimap: MiniMap) => {
+        // Will be the new tile of basemap
+        const tile = getTileByName(map_container.attributes['data-tile-name'].value)
+        map_container.children[1].innerHTML = state.onTile 
+
+        getLeafletMap().removeLayer(getTileByName(state.onTile).tile)
+        minimap.changeLayer(getTileByName(state.onTile).tile)
+
+
+        map_container.setAttribute('data-tile-name', getTileByName(state.onTile).tile_name)
+        setOnTile(tile.tile_name)                
+        getLeafletMap().addLayer(tile.tile)  
+    }
+
+    const buildMinimaps = (tile: any) => {
+        const map_container = document.createElement('div')
+        const map_title     = document.createElement('p')
         
-        Stadia_Outdoors.addTo(getLeafletMap());
+        map_container.id = 'map-' + tile.tile_name
+        map_container.classList.add('tiles-map')      
+        map_container.setAttribute('data-tile-name', tile.tile_name)
         
-    })
+        map_title.innerText = tile.tile_name
+       
+        if(state.onTile != tile.tile_name){
+            const minimap = new MiniMap(tile.tile, {}).addTo(getLeafletMap());
+            const minimap_container = minimap.getContainer()
 
-    onMount(function(){
-        ref_side_menu_toggler_btn?.addEventListener('click', () => { openCloseToggler() })
-        ref_side_menu_close_toggler_btn?.addEventListener('click', () => { openCloseToggler() })
-
-        layerTilesList.forEach(tile => {
-            const map_container = document.createElement('div')
-            const text = document.createElement('p')
-
-
-            map_container.id = 'map-' + tile.tile_name
-            map_container.classList.add('tiles-map')
-            map_container.style.backgroundImage = 'url("' + tile.src  + '")'          
-            
-            text.innerHTML = tile.tile_name
-
-            map_container.appendChild(text)
+            map_container.appendChild(minimap_container)
+            map_container.appendChild(map_title)
             map_layer_tiles_list.appendChild(map_container)
 
-            if(onTiles() == tile.tile_name){
-                console.log('on tile:', onTiles());
-                
-            }
-        })
+            map_container.addEventListener('click', (e) => tileChangeOnClick(map_container, minimap))
+        }
+    }
 
+    document.addEventListener('DOMContentLoaded', () => {
+        layerTilesList.forEach(tile => buildMinimaps(tile))
+        ref_side_menu_toggler_btn?.addEventListener('click', () => { openCloseToggler() })
+        ref_side_menu_close_toggler_btn?.addEventListener('click', () => { openCloseToggler() })
     })
-    
 
     return <>
         <nav class="side-map-menu min-w-[40px]">
-            <svg ref={ref_side_menu_toggler_btn} id="map-settings" class="cursor-pointer" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M13.875 22H10.125C9.87497 22 9.6583 21.9167 9.47497 21.75C9.29164 21.5833 9.1833 21.375 9.14997 21.125L8.84997 18.8C8.6333 18.7167 8.42897 18.6167 8.23697 18.5C8.04497 18.3833 7.85764 18.2583 7.67497 18.125L5.49997 19.025C5.26664 19.1083 5.0333 19.1167 4.79997 19.05C4.56664 18.9833 4.3833 18.8417 4.24997 18.625L2.39997 15.4C2.26664 15.1833 2.22497 14.95 2.27497 14.7C2.32497 14.45 2.44997 14.25 2.64997 14.1L4.52497 12.675C4.5083 12.5583 4.49997 12.4457 4.49997 12.337V11.663C4.49997 11.5543 4.5083 11.4417 4.52497 11.325L2.64997 9.9C2.44997 9.75 2.32497 9.55 2.27497 9.3C2.22497 9.05 2.26664 8.81667 2.39997 8.6L4.24997 5.375C4.36664 5.14167 4.54564 4.99567 4.78697 4.937C5.0283 4.87833 5.26597 4.891 5.49997 4.975L7.67497 5.875C7.8583 5.74167 8.04997 5.61667 8.24997 5.5C8.44997 5.38333 8.64997 5.28333 8.84997 5.2L9.14997 2.875C9.1833 2.625 9.29164 2.41667 9.47497 2.25C9.6583 2.08333 9.87497 2 10.125 2H13.875C14.125 2 14.3416 2.08333 14.525 2.25C14.7083 2.41667 14.8166 2.625 14.85 2.875L15.15 5.2C15.3666 5.28333 15.571 5.38333 15.763 5.5C15.955 5.61667 16.1423 5.74167 16.325 5.875L18.5 4.975C18.7333 4.89167 18.9666 4.88333 19.2 4.95C19.4333 5.01667 19.6166 5.15833 19.75 5.375L21.6 8.6C21.7333 8.81667 21.775 9.05 21.725 9.3C21.675 9.55 21.55 9.75 21.35 9.9L19.475 11.325C19.4916 11.4417 19.5 11.5543 19.5 11.663V12.337C19.5 12.4457 19.4833 12.5583 19.45 12.675L21.325 14.1C21.525 14.25 21.65 14.45 21.7 14.7C21.75 14.95 21.7083 15.1833 21.575 15.4L19.725 18.6C19.5916 18.8167 19.404 18.9627 19.162 19.038C18.92 19.1133 18.6826 19.109 18.45 19.025L16.325 18.125C16.1416 18.2583 15.95 18.3833 15.75 18.5C15.55 18.6167 15.35 18.7167 15.15 18.8L14.85 21.125C14.8166 21.375 14.7083 21.5833 14.525 21.75C14.3416 21.9167 14.125 22 13.875 22ZM12.05 15.5C13.0166 15.5 13.8416 15.1583 14.525 14.475C15.2083 13.7917 15.55 12.9667 15.55 12C15.55 11.0333 15.2083 10.2083 14.525 9.525C13.8416 8.84167 13.0166 8.5 12.05 8.5C11.0666 8.5 10.2373 8.84167 9.56197 9.525C8.88664 10.2083 8.5493 11.0333 8.54997 12C8.54997 12.9667 8.8873 13.7917 9.56197 14.475C10.2366 15.1583 11.066 15.5 12.05 15.5Z" fill="white"/>
+            <svg id="map-settings" class="cursor-pointer" ref={ref_side_menu_toggler_btn} viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g clip-path="url(#clip0_501_2)">
+                <path d="M50.0491 9.51002C49.4203 9.50653 48.7966 9.57196 48.2145 9.70246C47.6324 9.83297 47.1036 10.0259 46.6591 10.27L1.3821 35.115C0.943081 35.3558 0.594822 35.6417 0.357217 35.9564C0.119611 36.2711 -0.00268555 36.6084 -0.00268555 36.949C-0.00268555 37.2897 0.119611 37.6269 0.357217 37.9416C0.594822 38.2563 0.943081 38.5422 1.3821 38.783L46.6581 63.63C47.0969 63.871 47.6179 64.0621 48.1913 64.1925C48.7647 64.3229 49.3794 64.39 50.0001 64.39C50.6208 64.39 51.2354 64.3229 51.8089 64.1925C52.3823 64.0621 52.9033 63.871 53.3421 63.63L98.6171 38.784C99.0561 38.5432 99.4044 38.2573 99.642 37.9426C99.8796 37.6279 100.002 37.2906 100.002 36.95C100.002 36.6094 99.8796 36.2721 99.642 35.9574C99.4044 35.6427 99.0561 35.3568 98.6171 35.116L53.3421 10.27C52.468 9.78996 51.2857 9.5171 50.0491 9.51002ZM4.7271 46.332L1.3831 48.166C0.944081 48.4068 0.595822 48.6927 0.358217 49.0074C0.120611 49.3221 -0.00168555 49.6594 -0.00168555 50C-0.00168555 50.3406 0.120611 50.6779 0.358217 50.9926C0.595822 51.3073 0.944081 51.5932 1.3831 51.834L46.6581 76.68C47.0969 76.921 47.6179 77.1121 48.1913 77.2425C48.7647 77.3729 49.3794 77.44 50.0001 77.44C50.6208 77.44 51.2354 77.3729 51.8089 77.2425C52.3823 77.1121 52.9033 76.921 53.3421 76.68L98.6171 51.834C99.056 51.5931 99.4041 51.3072 99.6415 50.9925C99.879 50.6777 100.001 50.3404 100.001 49.9998C100.001 49.6592 99.8782 49.3219 99.6404 49.0072C99.4027 48.6926 99.0542 48.4067 98.6151 48.166L95.2731 46.332L88.5901 49.998L88.5941 50L50.0001 71.18L11.4041 50L11.4081 49.998L4.7271 46.332ZM4.7271 59.382L1.3831 61.217C0.944081 61.4578 0.595822 61.7437 0.358217 62.0584C0.120611 62.3731 -0.00168555 62.7104 -0.00168555 63.051C-0.00168555 63.3916 0.120611 63.7289 0.358217 64.0436C0.595822 64.3583 0.944081 64.6442 1.3831 64.885L46.6581 89.73C47.0969 89.971 47.6179 90.1621 48.1913 90.2925C48.7647 90.4229 49.3794 90.49 50.0001 90.49C50.6208 90.49 51.2354 90.4229 51.8089 90.2925C52.3823 90.1621 52.9033 89.971 53.3421 89.73L98.6171 64.885C99.056 64.6441 99.4041 64.3582 99.6415 64.0435C99.879 63.7287 100.001 63.3914 100.001 63.0508C100.001 62.7102 99.8782 62.3729 99.6404 62.0582C99.4027 61.7436 99.0542 61.4577 98.6151 61.217L95.2731 59.383L88.5901 63.049L88.5941 63.051L50.0001 84.23L11.4041 63.05L11.4081 63.048L4.7271 59.382Z" fill="white"/>
+                </g>
+                <defs>
+                    <clipPath id="clip0_501_2">
+                        <rect width="100" height="100" fill="white"/>
+                    </clipPath>
+                </defs>
             </svg>
         </nav>
 
