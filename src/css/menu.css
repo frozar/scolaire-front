@@ -99,7 +99,11 @@
   }
 
   > nav {
+<<<<<<< HEAD
     @apply mb-3 isolate divide-x divide-gray-300 rounded-lg shadow hidden sm:flex border-b  text-indigo-600 tabs;
+=======
+    @apply isolate divide-x divide-gray-300 rounded-lg shadow hidden sm:flex -mb-px border-b  text-indigo-600 tabs;
+>>>>>>> 0a56c31 (reduce color shade for border of nav bar)
 
     > button {
       @apply border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center  py-4 px-4 text-sm font-medium;
