@@ -1,4 +1,8 @@
+<<<<<<< HEAD:src/css/index.css
 @import './menu.css';
+=======
+@import './assets/css/menu.css';
+>>>>>>> 5503415 (Export des classes du menu dans menu.css):src/index.css
 
 @tailwind base;
 @tailwind components;
