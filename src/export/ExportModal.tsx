@@ -53,9 +53,7 @@ function ExportTypeSelect() {
                   </Match>
                 </Switch>
               </div>
-              <div class="text-center text-base">
-                {exportType}
-              </div>
+              <div class="text-center text-base">{exportType}</div>
             </div>
           );
         })}

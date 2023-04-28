@@ -10,8 +10,7 @@ let pluginOptions: PluginOptions = {
   cropImageByInnerWH: false,
   hidden: true,
   preventDownload: false,
-  domtoimageOptions: {
-  },
+  domtoimageOptions: {},
   position: "topleft",
   screenName: "screen",
   iconUrl: "",
@@ -23,14 +22,11 @@ let pluginOptions: PluginOptions = {
   captionColor: "",
   captionBgColor: "",
   captionOffset: 5,
+
+  //handle size of the image
 };
 
 export function setScreenshoter() {
-  const map = getLeafletMap();
-  if (map === null || map === undefined) {
-    console.log("map is null or undefined");
-  }
-
   screenshoter = new SimpleMapScreenshoter(pluginOptions);
   screenshoter.addTo(getLeafletMap());
 }
