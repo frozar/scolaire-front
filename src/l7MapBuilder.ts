@@ -7,8 +7,11 @@ import { enableSpinningWheel, disableSpinningWheel } from "./signaux";
 
 import { useStateAction } from "./StateAction";
 import FlaxibMapLogo from "./FlaxibMapLogo";
+import { Stadia_AlidadeSmooth } from "./constant";
+
 
 const [, { isInReadMode, isInAddLineMode }] = useStateAction();
+
 
 function addLogoFlaxib(map: L.Map) {
   const logoControl = L.Control.extend({
@@ -35,6 +38,7 @@ export function buildMapL7(div: HTMLDivElement) {
     }).setView([-20.930746, 55.527503], 13)
   );
 
+<<<<<<< HEAD
   setLeafletMap(getLeafletMap().setMaxBounds([
     [-20.79470809955418, 55.87654918250451],
     [-21.454888464989377, 55.13054515975808]
@@ -103,6 +107,8 @@ export function buildMapL7(div: HTMLDivElement) {
     }
   );
 
+=======
+>>>>>>> 37cd1e8 (tiles exorted to constant)
   // TODO: give the choice of different ground map to the user.
   // https://wiki.openstreetmap.org/wiki/Raster_tile_providers
   // https://leaflet-extras.github.io/leaflet-providers/preview/
