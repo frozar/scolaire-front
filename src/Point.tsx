@@ -18,8 +18,7 @@ import {
 import { useStateAction } from "./StateAction";
 import { renderAnimation } from "./animation";
 import { linkMap } from "./global/linkPointIdentityCircle";
-import { getLeafletMap } from "./leafletMap";
-import { setSelectedElement } from "./signaux";
+import { getLeafletMap, setSelectedElement } from "./signaux";
 import { minMaxQty } from "./PointsRamassageAndEtablissement";
 
 const [
@@ -203,8 +202,13 @@ export default function (props: any) {
   );
 
   onMount(() => {
+    const leafletMap = getLeafletMap();
+    if (!leafletMap) {
+      return;
+    }
+
     circle = buildCircle(point);
-    circle.addTo(getLeafletMap());
+    circle.addTo(leafletMap);
 
     const element = circle.getElement();
     if (element) {

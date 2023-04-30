@@ -2,8 +2,11 @@ import { createEffect } from "solid-js";
 
 import L from "leaflet";
 import { L7Layer } from "@antv/l7-leaflet";
-import { getLeafletMap, setLeafletMap } from "./leafletMap";
-import { enableSpinningWheel, disableSpinningWheel } from "./signaux";
+import {
+  setLeafletMap,
+  enableSpinningWheel,
+  disableSpinningWheel,
+} from "./signaux";
 
 import { useStateAction } from "./StateAction";
 import FlaxibMapLogo from "./FlaxibMapLogo";
@@ -29,20 +32,17 @@ function addLogoFlaxib(map: L.Map) {
 export function buildMapL7(div: HTMLDivElement) {
   enableSpinningWheel();
 
-  setLeafletMap(
-    L.map(div, {
-      zoomControl: false,
-      zoomSnap: 0.1,
-      zoomDelta: 0.1,
-      minZoom: 10,
-      wheelPxPerZoomLevel: 200,
-    }).setView([-20.930746, 55.527503], 13)
-  );
+  const leafletMap = L.map(div, {
+    zoomControl: false,
+    zoomSnap: 0.1,
+    zoomDelta: 0.1,
+    minZoom: 10,
+    wheelPxPerZoomLevel: 200,
+  }).setView([-20.930746, 55.527503], 13);
 
-  // TODO: give the choice of different ground map to the user.
-  // https://wiki.openstreetmap.org/wiki/Raster_tile_providers
-  // https://leaflet-extras.github.io/leaflet-providers/preview/
-  // const readTile = OpenStreetMap_Mapnik;
+  setLeafletMap(leafletMap);
+
+  // Give the choice of different ground map to the user.
   var readTile = Stadia_AlidadeSmooth;
   let tileLayer = readTile;
 
@@ -53,13 +53,6 @@ export function buildMapL7(div: HTMLDivElement) {
     readTile = getTileByName(state.onTile).tile;
   }
 
-  // const readTile = Stadia_Outdoors;
-  // const readTile = Esri_WorldTopoMap;
-  // const readTile = CyclOSM;
-  // const readTile = OpenStreetMap_CH;
-  // const readTile = OpenStreetMap_HOT;
-  // const readTile = OpenStreetMap_France;
-
   const editTile = L.tileLayer(
     "https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png",
     {
@@ -69,8 +62,8 @@ export function buildMapL7(div: HTMLDivElement) {
     }
   );
 
-  getLeafletMap().removeLayer(tileLayer);
-  tileLayer.addTo(getLeafletMap());
+  leafletMap.removeLayer(tileLayer);
+  tileLayer.addTo(leafletMap);
 
   createEffect(() => {
     tileLayer.remove();
@@ -79,15 +72,15 @@ export function buildMapL7(div: HTMLDivElement) {
     } else {
       tileLayer = editTile;
     }
-    tileLayer.addTo(getLeafletMap());
+    tileLayer.addTo(leafletMap);
   });
 
-  addLogoFlaxib(getLeafletMap());
+  addLogoFlaxib(leafletMap);
 
   // If a line is under construction, disable the possibility
   // to pan the map
   createEffect(() => {
-    const dragging = getLeafletMap().dragging;
+    const dragging = leafletMap.dragging;
     if (dragging) {
       if (isInAddLineMode()) {
         dragging.disable();
@@ -100,7 +93,7 @@ export function buildMapL7(div: HTMLDivElement) {
   // The argument in the constructor of the 'L7Layer' is simply pass to
   // Leaflet Layer as options for the constructor
   const l7layer = new L7Layer({});
-  l7layer.addTo(getLeafletMap());
+  l7layer.addTo(leafletMap);
 
   const scene = l7layer.getScene();
 

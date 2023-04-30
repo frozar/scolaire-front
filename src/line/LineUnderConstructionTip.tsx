@@ -1,7 +1,7 @@
 import { onCleanup, createEffect } from "solid-js";
 import L from "leaflet";
 import { useStateAction } from "../StateAction";
-import { getLeafletMap } from "../leafletMap";
+import { getLeafletMap } from "../signaux";
 import { linkMap } from "../global/linkPointIdentityCircle";
 import { COLOR_LINE_UNDER_CONSTRUCTION } from "../constant";
 import { PointIdentityType } from "../type";
@@ -15,6 +15,10 @@ export default function () {
 
   function onCleanupHandler() {
     const leafletMap = getLeafletMap();
+    if (!leafletMap) {
+      return;
+    }
+
     if (leafletMap.hasEventListeners("mousemove")) {
       lineUnderConstructionTip?.remove();
       if (!leafletMap) {
@@ -83,9 +87,13 @@ export default function () {
     drawLineTip(lastPointIdentity, lastLatLng, leafletMap);
 
     leafletMap.on("mousemove", ({ latlng }) => {
+      const leafletMap = getLeafletMap();
+      if (!leafletMap) {
+        return;
+      }
+
       lastLatLng = latlng;
       // Draw line tip
-      const leafletMap = getLeafletMap();
       const lastPointIdentity = stops().at(-1);
       drawLineTip(lastPointIdentity, latlng, leafletMap);
     });

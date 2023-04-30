@@ -1,11 +1,11 @@
 // @ts-expect-error
 import MiniMap from "leaflet-minimap";
 
-import { getLeafletMap } from "../leafletMap";
+import { getLeafletMap } from "../signaux";
 import { layerTilesList } from "../constant";
 import { getTileByName } from "../tileUtils";
 import { useStateGui } from "../StateGui";
-import { on } from "solid-js";
+import { createEffect, on } from "solid-js";
 
 function LayerLogo() {
   return (
@@ -52,7 +52,8 @@ export default function () {
    */
   const tileChangeOnClick = (
     map_container: HTMLDivElement,
-    minimap: MiniMap
+    minimap: MiniMap,
+    leafletMap: L.Map
   ) => {
     // Will be the new tile of basemap
     const tile = getTileByName(
@@ -63,7 +64,7 @@ export default function () {
     // TODO: Don't access directly to "state.onTile": create a getter
     map_container.children[1].innerHTML = state.onTile;
 
-    getLeafletMap().removeLayer(getTileByName(state.onTile).tile);
+    leafletMap.removeLayer(getTileByName(state.onTile).tile);
     minimap.changeLayer(getTileByName(state.onTile).tile);
 
     map_container.setAttribute(
@@ -71,10 +72,10 @@ export default function () {
       getTileByName(state.onTile).tile_name
     );
     setOnTile(tile.tile_name);
-    getLeafletMap().addLayer(tile.tile);
+    leafletMap.addLayer(tile.tile);
   };
 
-  const buildMinimaps = (tile: any) => {
+  const buildMinimaps = (tile: any, leafletMap: L.Map) => {
     const mapContainer = document.createElement("div");
     const mapTitle = document.createElement("p");
 
@@ -94,10 +95,11 @@ export default function () {
         return;
       }
 
+      // TODO: doin't change the zoom of the map
       const minimap = new MiniMap(tile.tile, {
         zoomLevelOffset: -3.5,
-      }).addTo(getLeafletMap());
-      minimap._map.fitBounds(getLeafletMap().getBounds());
+      }).addTo(leafletMap);
+      minimap._map.fitBounds(leafletMap?.getBounds());
 
       // minimap.fitBounds(getLeafletMap().getBounds())
       const minimap_container = minimap.getContainer();
@@ -107,26 +109,20 @@ export default function () {
       refMapLayerTilesList?.appendChild(mapContainer);
 
       mapContainer.addEventListener("click", (e) =>
-        tileChangeOnClick(mapContainer, minimap)
+        tileChangeOnClick(mapContainer, minimap, leafletMap)
       );
     }
   };
 
-  // TODO: getLeafletMap() must return a signal to rely on
-  // on(getLeafletMap, () => {
-  //   console.log("ON getLeafletMap()", getLeafletMap());
-  //   if (getLeafletMap()) {
-  //     layerTilesList.forEach((tile) => buildMinimaps(tile));
-  //   }
-  // });
-
-  // TODO: to delete
-  setTimeout(() => {
-    console.log("ON getLeafletMap()", getLeafletMap());
-    if (getLeafletMap()) {
-      layerTilesList.forEach((tile) => buildMinimaps(tile));
+  createEffect(() => {
+    const leafletMap = getLeafletMap();
+    console.log("createEffect leafletMap", leafletMap);
+    if (!leafletMap) {
+      return;
     }
-  }, 1000);
+
+    layerTilesList.forEach((tile) => buildMinimaps(tile, leafletMap));
+  });
 
   return (
     <>

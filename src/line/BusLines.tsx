@@ -8,7 +8,7 @@ import {
   getLatLngs,
   busLinePolylineAttachEvent,
 } from "./BusLinesFunction";
-import { getLeafletMap } from "../leafletMap";
+import { getLeafletMap } from "../signaux";
 
 import { useStateAction } from "../StateAction";
 const [, { isInRemoveLineMode }] = useStateAction();
@@ -32,10 +32,15 @@ export default function () {
     for (const busLine of busLines()) {
       let busLinePolyline: L.Polyline = new L.Polyline([]);
 
+      const leafletMap = getLeafletMap();
+      if (!leafletMap) {
+        return;
+      }
+
       busLinePolyline = getBusLinePolyline(
         busLine.color,
         getLatLngs(busLine.stops)
-      ).addTo(getLeafletMap());
+      ).addTo(leafletMap);
 
       busLinePolylineAttachEvent(
         busLinePolyline,
