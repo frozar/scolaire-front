@@ -63,14 +63,14 @@ export default function () {
       mapContainer.attributes["data-tile-name"].value
     );
     // TODO: Don't access directly to "state.onTile": create a getter
-    mapContainer.children[1].innerHTML = state.onTile;
+    mapContainer.children[1].innerHTML = state.selectedTile;
 
-    leafletMap.removeLayer(getTileByName(state.onTile).tileContent);
-    minimap.changeLayer(getTileByName(state.onTile).tileContent);
+    leafletMap.removeLayer(getTileByName(state.selectedTile).tileContent);
+    minimap.changeLayer(getTileByName(state.selectedTile).tileContent);
 
     mapContainer.setAttribute(
       "data-tile-name",
-      getTileByName(state.onTile).tileId
+      getTileByName(state.selectedTile).tileId
     );
     setOnTile(tile.tileId);
     leafletMap.addLayer(tile.tileContent);
@@ -88,7 +88,7 @@ export default function () {
     // TODO: Don't rely on the innerText DOM field
     mapTitle.innerText = tile.tileTitle;
 
-    if (state.onTile != tile.tileId) {
+    if (state.selectedTile != tile.tileId) {
       // TODO: don't change the zoom of the map
       const minimap = new MiniMap(tile.tileContent, {
         zoomLevelOffset: -3.5,

@@ -46,11 +46,15 @@ export function buildMapL7(div: HTMLDivElement) {
   var readTile = Stadia_AlidadeSmooth;
   let tileLayer = readTile;
 
-  if (!state.onTile || state.onTile == "" || state.onTile === undefined) {
+  if (
+    !state.selectedTile ||
+    state.selectedTile == "" ||
+    state.selectedTile === undefined
+  ) {
     setOnTile("Stadia_AlidadeSmooth");
   } else {
-    tileLayer = getTileByName(state.onTile).tileContent;
-    readTile = getTileByName(state.onTile).tileContent;
+    tileLayer = getTileByName(state.selectedTile).tileContent;
+    readTile = getTileByName(state.selectedTile).tileContent;
   }
 
   const editTile = L.tileLayer(

@@ -4,18 +4,18 @@ import { createStore } from "solid-js/store";
 
 // TODO: use onTile: enum;
 type StateGuiType = {
-  onTile: string;
   displayedMenu: boolean;
   selectedTab: string;
   displayedRightMenu: boolean;
+  selectedTile: string;
 };
 
 const makeStateGuiContext = () => {
   const defaultStateGui: StateGuiType = {
-    onTile: "OpenStreetMap_Mapnik",
     displayedMenu: false,
     selectedTab: "info",
     displayedRightMenu: false,
+    selectedTile: "OpenStreetMap_Mapnik",
   };
 
   const stateGuiString = localStorage.getItem("stateGui");
