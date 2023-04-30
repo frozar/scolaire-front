@@ -5,7 +5,7 @@ import { getLeafletMap } from "../signaux";
 import { layerTilesList } from "../constant";
 import { getTileByName } from "../tileUtils";
 import { useStateGui } from "../StateGui";
-import { createEffect, on } from "solid-js";
+import { createEffect } from "solid-js";
 
 function LayerLogo() {
   return (
@@ -88,14 +88,7 @@ export default function () {
     mapTitle.innerText = tile.tile_name;
 
     if (state.onTile != tile.tile_name) {
-      // console.log(getLeafletMap().getBounds());
-
-      console.log("buildMinimaps getLeafletMap()", getLeafletMap());
-      if (!getLeafletMap()) {
-        return;
-      }
-
-      // TODO: doin't change the zoom of the map
+      // TODO: don't change the zoom of the map
       const minimap = new MiniMap(tile.tile, {
         zoomLevelOffset: -3.5,
       }).addTo(leafletMap);
@@ -116,7 +109,6 @@ export default function () {
 
   createEffect(() => {
     const leafletMap = getLeafletMap();
-    console.log("createEffect leafletMap", leafletMap);
     if (!leafletMap) {
       return;
     }

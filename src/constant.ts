@@ -77,6 +77,7 @@ export const OpenStreetMap_France = L.tileLayer(
   }
 );
 
+// TODO: add a type to check the content of this list
 export const layerTilesList = [
   {
     tile_name: TileEnum.OpenStreetMap_Mapnik,
