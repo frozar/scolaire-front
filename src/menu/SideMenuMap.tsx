@@ -1,30 +1,31 @@
-import { getLeafletMap } from "../global/leafletMap";
-
-import { layerTilesList, OpenStreetMap_France, CyclOSM } from "../constant";
-import { getTileByName } from "../tileUtils";
-import { useStateGui } from "../StateGui";
+// @ts-expect-error
 import MiniMap from "leaflet-minimap";
 
-var ref_side_menu_close_toggler_btn: HTMLDivElement;
-var ref_side_menu_toggler_btn: SVGSVGElement;
-var map_layer_tiles_list: HTMLElement;
-var side_menu_toggler: HTMLElement;
-var toggle_active: Boolean;
+import { getLeafletMap } from "../global/leafletMap";
+import { layerTilesList } from "../constant";
+import { getTileByName } from "../tileUtils";
+import { useStateGui } from "../StateGui";
+import { on, onMount } from "solid-js";
 
 export default function SideMapMenu() {
-  toggle_active = false;
+  let refSideMenuCloseTogglerBtn: HTMLDivElement | undefined = undefined;
+  let refMapLayerTilesList: HTMLElement | undefined = undefined;
+  let refSideMenuToggler: HTMLElement | undefined = undefined;
+  let refNav: HTMLElement | undefined = undefined;
+
+  let toggleActive = false;
   const [state, { setOnTile }] = useStateGui();
 
   const openCloseToggler = () => {
-    if (toggle_active) {
-      side_menu_toggler?.classList.remove("active");
-      ref_side_menu_toggler_btn.parentElement?.classList.remove("active");
+    if (toggleActive) {
+      refSideMenuToggler?.classList.remove("active");
+      refNav?.classList.remove("active");
     } else {
-      side_menu_toggler?.classList.add("active");
-      ref_side_menu_toggler_btn.parentElement?.classList.add("active");
+      refSideMenuToggler?.classList.add("active");
+      refNav?.classList.add("active");
     }
 
-    toggle_active = !toggle_active;
+    toggleActive = !toggleActive;
   };
 
   /**
@@ -44,8 +45,11 @@ export default function SideMapMenu() {
   ) => {
     // Will be the new tile of basemap
     const tile = getTileByName(
+      // TODO: don't rely on custom attribut in the DOM
+      // @ts-expect-error
       map_container.attributes["data-tile-name"].value
     );
+    // TODO: Don't access directly to "state.onTile": create a getter
     map_container.children[1].innerHTML = state.onTile;
 
     getLeafletMap().removeLayer(getTileByName(state.onTile).tile);
@@ -60,17 +64,24 @@ export default function SideMapMenu() {
   };
 
   const buildMinimaps = (tile: any) => {
-    const map_container = document.createElement("div");
-    const map_title = document.createElement("p");
+    const mapContainer = document.createElement("div");
+    const mapTitle = document.createElement("p");
 
-    map_container.id = "map-" + tile.tile_name;
-    map_container.classList.add("tiles-map");
-    map_container.setAttribute("data-tile-name", tile.tile_name);
+    // TODO: Don't rely on a string concatenation
+    mapContainer.id = "map-" + tile.tile_name;
+    mapContainer.classList.add("tiles-map");
+    mapContainer.setAttribute("data-tile-name", tile.tile_name);
 
-    map_title.innerText = tile.tile_name;
+    // TODO: Don't rely on the innerText DOM field
+    mapTitle.innerText = tile.tile_name;
 
     if (state.onTile != tile.tile_name) {
       // console.log(getLeafletMap().getBounds());
+
+      console.log("buildMinimaps getLeafletMap()", getLeafletMap());
+      if (!getLeafletMap()) {
+        return;
+      }
 
       const minimap = new MiniMap(tile.tile, {
         zoomLevelOffset: -3.5,
@@ -80,33 +91,40 @@ export default function SideMapMenu() {
       // minimap.fitBounds(getLeafletMap().getBounds())
       const minimap_container = minimap.getContainer();
 
-      map_container.appendChild(minimap_container);
-      map_container.appendChild(map_title);
-      map_layer_tiles_list.appendChild(map_container);
+      mapContainer.appendChild(minimap_container);
+      mapContainer.appendChild(mapTitle);
+      refMapLayerTilesList?.appendChild(mapContainer);
 
-      map_container.addEventListener("click", (e) =>
-        tileChangeOnClick(map_container, minimap)
+      mapContainer.addEventListener("click", (e) =>
+        tileChangeOnClick(mapContainer, minimap)
       );
     }
   };
 
-  document.addEventListener("DOMContentLoaded", () => {
+  onMount(() => {
     layerTilesList.forEach((tile) => buildMinimaps(tile));
-    ref_side_menu_toggler_btn?.addEventListener("click", () => {
+    refNav?.addEventListener("click", () => {
       openCloseToggler();
     });
-    ref_side_menu_close_toggler_btn?.addEventListener("click", () => {
+    refSideMenuCloseTogglerBtn?.addEventListener("click", () => {
       openCloseToggler();
     });
   });
 
+  // TODO: getLeafletMap() must return a signal to rely on
+  on(getLeafletMap, () => {
+    console.log("ON getLeafletMap()", getLeafletMap());
+    if (getLeafletMap()) {
+      layerTilesList.forEach((tile) => buildMinimaps(tile));
+    }
+  });
+
   return (
     <>
-      <nav class="side-map-menu min-w-[40px]">
+      <button class="side-map-menu min-w-[40px]" ref={refNav}>
         <svg
           id="map-settings"
           class="cursor-pointer"
-          ref={ref_side_menu_toggler_btn}
           viewBox="0 0 100 100"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
@@ -123,22 +141,19 @@ export default function SideMapMenu() {
             </clipPath>
           </defs>
         </svg>
-      </nav>
+      </button>
 
-      <section ref={side_menu_toggler} id="side-map-toggler">
+      <section ref={refSideMenuToggler} id="side-map-toggler">
         <header class="flex">
           Réglages du fond de carte
-          <div
-            class="menu__toggler active"
-            ref={ref_side_menu_close_toggler_btn}
-          >
+          <div class="menu__toggler active" ref={refSideMenuCloseTogglerBtn}>
             <div>
               <span></span>
             </div>
           </div>
         </header>
 
-        <section id="map-layer-tiles-list" ref={map_layer_tiles_list}></section>
+        <section id="map-layer-tiles-list" ref={refMapLayerTilesList}></section>
       </section>
     </>
   );

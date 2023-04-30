@@ -1,7 +1,8 @@
 import _ from "lodash";
 import { createContext, useContext } from "solid-js";
-import { createStore, SetStoreFunction } from "solid-js/store";
+import { createStore } from "solid-js/store";
 
+// TODO: use onTile: enum;
 type StateGuiType = {
   onTile: string;
   displayedMenu: boolean;
@@ -10,6 +11,7 @@ type StateGuiType = {
 
 const makeStateGuiContext = () => {
   const defaultStateGui: StateGuiType = {
+    onTile: "OpenStreetMap_Mapnik",
     displayedMenu: false,
     selectedTab: "info",
   };
@@ -38,17 +40,16 @@ const makeStateGuiContext = () => {
     setStateWrapper("selectedTab", tabName);
   }
 
-  function setOnTile(tileName: string){
-    setStateWrapper('onTile', tileName)
+  function setOnTile(tileName: string) {
+    setStateWrapper("onTile", tileName);
   }
-
 
   return [
     state,
     {
       toggleDisplayedMenu,
       setSelectedTab,
-      setOnTile
+      setOnTile,
     },
   ] as const;
 };
