@@ -13,8 +13,9 @@ import FlaxibMapLogo from "./FlaxibMapLogo";
 import { Stadia_AlidadeSmooth } from "./constant";
 import { useStateGui } from "./StateGui";
 import { getTileByName } from "./tileUtils";
+import { TileEnum } from "./type";
 
-const [state, { setOnTile }] = useStateGui();
+const [state, { setSelectedTile }] = useStateGui();
 const [, { isInReadMode, isInAddLineMode }] = useStateAction();
 
 function addLogoFlaxib(map: L.Map) {
@@ -46,12 +47,8 @@ export function buildMapL7(div: HTMLDivElement) {
   var readTile = Stadia_AlidadeSmooth;
   let tileLayer = readTile;
 
-  if (
-    !state.selectedTile ||
-    state.selectedTile == "" ||
-    state.selectedTile === undefined
-  ) {
-    setOnTile("Stadia_AlidadeSmooth");
+  if (!state.selectedTile || state.selectedTile === undefined) {
+    setSelectedTile(TileEnum.Stadia_AlidadeSmooth);
   } else {
     tileLayer = getTileByName(state.selectedTile).tileContent;
     readTile = getTileByName(state.selectedTile).tileContent;

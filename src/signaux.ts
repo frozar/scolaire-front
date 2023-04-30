@@ -148,6 +148,4 @@ export function fetchBusLines() {
     );
 }
 
-export const [onTiles, setOnTiles] = createSignal();
-
 export const [getLeafletMap, setLeafletMap] = createSignal<L.Map>();

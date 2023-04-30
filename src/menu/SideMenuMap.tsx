@@ -37,7 +37,7 @@ export default function () {
 
   const [
     state,
-    { setOnTile, toggleDisplayedRightMenu, getDisplayedRightMenu },
+    { setSelectedTile, toggleDisplayedRightMenu, getDisplayedRightMenu },
   ] = useStateGui();
 
   /**
@@ -72,7 +72,7 @@ export default function () {
       "data-tile-name",
       getTileByName(state.selectedTile).tileId
     );
-    setOnTile(tile.tileId);
+    setSelectedTile(tile.tileId);
     leafletMap.addLayer(tile.tileContent);
   };
 
@@ -80,15 +80,13 @@ export default function () {
     const mapContainer = document.createElement("div");
     const mapTitle = document.createElement("p");
 
-    // TODO: Don't rely on a string concatenation
-    mapContainer.id = "map-" + tile.tileId;
     mapContainer.classList.add("tiles-map");
-    mapContainer.setAttribute("data-tile-name", tile.tileId);
+    mapContainer.setAttribute("data-tile-name", tile.tileTitle);
 
     // TODO: Don't rely on the innerText DOM field
     mapTitle.innerText = tile.tileTitle;
 
-    if (state.selectedTile != tile.tileId) {
+    if (state.selectedTile != tile.tileTitle) {
       // TODO: don't change the zoom of the map
       const minimap = new MiniMap(tile.tileContent, {
         zoomLevelOffset: -3.5,
@@ -108,13 +106,20 @@ export default function () {
     }
   };
 
+  let initialised = false;
+
   createEffect(() => {
+    if (initialised) {
+      return;
+    }
+
     const leafletMap = getLeafletMap();
     if (!leafletMap) {
       return;
     }
 
     layerTilesList.forEach((tile) => buildMinimaps(tile, leafletMap));
+    initialised = true;
   });
 
   return (
