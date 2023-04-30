@@ -82,14 +82,18 @@ export type removeConfirmationType = {
   id_bus_line: number | null;
 };
 
-
-export enum TileEnum{
-  OpenStreetMap_Mapnik = 'OpenStreetMap_Mapnik',
-  Stadia_AlidadeSmooth = 'Stadia_AlidadeSmooth',
-  Stadia_Outdoors      = 'Stadia_Outdoors',
-  Esri_WorldTopoMap    = 'Esri_WorldTopoMap',
-  CyclOSM              = 'CyclOSM',
-  OpenStreetMap_CH     = 'OpenStreetMap_CH',
-  OpenStreetMap_HOT    = 'OpenStreetMap_HOT',
-  OpenStreetMap_France = 'OpenStreetMap_France'
+export enum TileEnum {
+  OpenStreetMap_Mapnik = "OpenStreetMap_Mapnik",
+  Stadia_AlidadeSmooth = "Stadia_AlidadeSmooth",
+  Stadia_Outdoors = "Stadia_Outdoors",
+  Esri_WorldTopoMap = "Esri_WorldTopoMap",
+  CyclOSM = "CyclOSM",
+  OpenStreetMap_CH = "OpenStreetMap_CH",
+  OpenStreetMap_HOT = "OpenStreetMap_HOT",
+  OpenStreetMap_France = "OpenStreetMap_France",
 }
+
+export type TileType = {
+  tileId: TileEnum;
+  tileContent: L.TileLayer;
+};

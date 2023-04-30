@@ -2,7 +2,7 @@ export const COLOR_LINE_UNDER_CONSTRUCTION = "#0000FF";
 export const DEAD_COLOR = "#000000FF";
 
 import L from "leaflet";
-import { TileEnum } from "./type";
+import { TileEnum, TileType } from "./type";
 
 // https://wiki.openstreetmap.org/wiki/Raster_tile_providers
 // https://leaflet-extras.github.io/leaflet-providers/preview/
@@ -77,45 +77,44 @@ export const OpenStreetMap_France = L.tileLayer(
   }
 );
 
-// TODO: add a type to check the content of this list
-export const layerTilesList = [
+export const layerTilesList: TileType[] = [
   {
-    tile_name: TileEnum.OpenStreetMap_Mapnik,
-    tile: OpenStreetMap_Mapnik,
+    tileId: TileEnum.OpenStreetMap_Mapnik,
+    tileContent: OpenStreetMap_Mapnik,
   },
 
   {
-    tile_name: TileEnum.Stadia_AlidadeSmooth,
-    tile: Stadia_AlidadeSmooth,
+    tileId: TileEnum.Stadia_AlidadeSmooth,
+    tileContent: Stadia_AlidadeSmooth,
   },
 
   {
-    tile_name: TileEnum.Stadia_Outdoors,
-    tile: Stadia_Outdoors,
+    tileId: TileEnum.Stadia_Outdoors,
+    tileContent: Stadia_Outdoors,
   },
 
   {
-    tile_name: TileEnum.Esri_WorldTopoMap,
-    tile: Esri_WorldTopoMap,
+    tileId: TileEnum.Esri_WorldTopoMap,
+    tileContent: Esri_WorldTopoMap,
   },
 
   {
-    tile_name: TileEnum.CyclOSM,
-    tile: CyclOSM,
+    tileId: TileEnum.CyclOSM,
+    tileContent: CyclOSM,
   },
 
   {
-    tile_name: TileEnum.OpenStreetMap_CH,
-    tile: OpenStreetMap_CH,
+    tileId: TileEnum.OpenStreetMap_CH,
+    tileContent: OpenStreetMap_CH,
   },
 
   {
-    tile_name: TileEnum.OpenStreetMap_HOT,
-    tile: OpenStreetMap_HOT,
+    tileId: TileEnum.OpenStreetMap_HOT,
+    tileContent: OpenStreetMap_HOT,
   },
 
   {
-    tile_name: TileEnum.OpenStreetMap_France,
-    tile: OpenStreetMap_France,
+    tileId: TileEnum.OpenStreetMap_France,
+    tileContent: OpenStreetMap_France,
   },
 ];

@@ -64,15 +64,15 @@ export default function () {
     // TODO: Don't access directly to "state.onTile": create a getter
     map_container.children[1].innerHTML = state.onTile;
 
-    leafletMap.removeLayer(getTileByName(state.onTile).tile);
-    minimap.changeLayer(getTileByName(state.onTile).tile);
+    leafletMap.removeLayer(getTileByName(state.onTile).tileContent);
+    minimap.changeLayer(getTileByName(state.onTile).tileContent);
 
     map_container.setAttribute(
       "data-tile-name",
-      getTileByName(state.onTile).tile_name
+      getTileByName(state.onTile).tileId
     );
-    setOnTile(tile.tile_name);
-    leafletMap.addLayer(tile.tile);
+    setOnTile(tile.tileId);
+    leafletMap.addLayer(tile.tileContent);
   };
 
   const buildMinimaps = (tile: any, leafletMap: L.Map) => {

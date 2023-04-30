@@ -49,8 +49,8 @@ export function buildMapL7(div: HTMLDivElement) {
   if (!state.onTile || state.onTile == "" || state.onTile === undefined) {
     setOnTile("Stadia_AlidadeSmooth");
   } else {
-    tileLayer = getTileByName(state.onTile).tile;
-    readTile = getTileByName(state.onTile).tile;
+    tileLayer = getTileByName(state.onTile).tileContent;
+    readTile = getTileByName(state.onTile).tileContent;
   }
 
   const editTile = L.tileLayer(
