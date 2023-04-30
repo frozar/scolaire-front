@@ -9,11 +9,10 @@ import { useStateAction } from "./StateAction";
 import FlaxibMapLogo from "./FlaxibMapLogo";
 import { Stadia_AlidadeSmooth } from "./constant";
 import { useStateGui } from "./StateGui";
-import { getTileByName } from "./TileUtils";
+import { getTileByName } from "./tileUtils";
 
-const [state, {setOnTile}] = useStateGui()
+const [state, { setOnTile }] = useStateGui();
 const [, { isInReadMode, isInAddLineMode }] = useStateAction();
-
 
 function addLogoFlaxib(map: L.Map) {
   const logoControl = L.Control.extend({
@@ -47,14 +46,13 @@ export function buildMapL7(div: HTMLDivElement) {
   var readTile = Stadia_AlidadeSmooth;
   let tileLayer = readTile;
 
-  if(!state.onTile || state.onTile == '' || state.onTile === undefined){
-    setOnTile('Stadia_AlidadeSmooth')
-  }else{
-    tileLayer = getTileByName(state.onTile).tile
-    readTile = getTileByName(state.onTile).tile
-
+  if (!state.onTile || state.onTile == "" || state.onTile === undefined) {
+    setOnTile("Stadia_AlidadeSmooth");
+  } else {
+    tileLayer = getTileByName(state.onTile).tile;
+    readTile = getTileByName(state.onTile).tile;
   }
-  
+
   // const readTile = Stadia_Outdoors;
   // const readTile = Esri_WorldTopoMap;
   // const readTile = CyclOSM;
@@ -71,8 +69,7 @@ export function buildMapL7(div: HTMLDivElement) {
     }
   );
 
-  
-  getLeafletMap().removeLayer(tileLayer)
+  getLeafletMap().removeLayer(tileLayer);
   tileLayer.addTo(getLeafletMap());
 
   createEffect(() => {
