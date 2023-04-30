@@ -5,7 +5,7 @@ import { getLeafletMap } from "../global/leafletMap";
 import { layerTilesList } from "../constant";
 import { getTileByName } from "../tileUtils";
 import { useStateGui } from "../StateGui";
-import { createEffect, on, onMount } from "solid-js";
+import { on } from "solid-js";
 
 function LayerLogo() {
   return (
@@ -32,7 +32,6 @@ function LayerLogo() {
 }
 
 export default function () {
-  let refSideMenuCloseTogglerBtn: HTMLDivElement | undefined = undefined;
   let refMapLayerTilesList: HTMLElement | undefined = undefined;
 
   const [
@@ -112,12 +111,6 @@ export default function () {
       );
     }
   };
-
-  onMount(() => {
-    refSideMenuCloseTogglerBtn?.addEventListener("click", () => {
-      toggleDisplayedRightMenu();
-    });
-  });
 
   // TODO: getLeafletMap() must return a signal to rely on
   // on(getLeafletMap, () => {
