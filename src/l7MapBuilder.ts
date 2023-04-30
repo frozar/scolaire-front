@@ -2,7 +2,7 @@ import { createEffect } from "solid-js";
 
 import L from "leaflet";
 import { L7Layer } from "@antv/l7-leaflet";
-import { getLeafletMap, setLeafletMap } from "./global/leafletMap";
+import { getLeafletMap, setLeafletMap } from "./leafletMap";
 import { enableSpinningWheel, disableSpinningWheel } from "./signaux";
 
 import { useStateAction } from "./StateAction";

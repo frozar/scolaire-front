@@ -1,7 +1,7 @@
 import { onCleanup, createEffect } from "solid-js";
 import L from "leaflet";
 import { useStateAction } from "../StateAction";
-import { getLeafletMap } from "../global/leafletMap";
+import { getLeafletMap } from "../leafletMap";
 import { linkMap } from "../global/linkPointIdentityCircle";
 import { COLOR_LINE_UNDER_CONSTRUCTION } from "../constant";
 import { PointIdentityType } from "../type";

@@ -1,7 +1,7 @@
 // @ts-expect-error
 import MiniMap from "leaflet-minimap";
 
-import { getLeafletMap } from "../global/leafletMap";
+import { getLeafletMap } from "../leafletMap";
 import { layerTilesList } from "../constant";
 import { getTileByName } from "../tileUtils";
 import { useStateGui } from "../StateGui";

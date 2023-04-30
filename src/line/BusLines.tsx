@@ -8,7 +8,7 @@ import {
   getLatLngs,
   busLinePolylineAttachEvent,
 } from "./BusLinesFunction";
-import { getLeafletMap } from "../global/leafletMap";
+import { getLeafletMap } from "../leafletMap";
 
 import { useStateAction } from "../StateAction";
 const [, { isInRemoveLineMode }] = useStateAction();

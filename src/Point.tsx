@@ -18,7 +18,7 @@ import {
 import { useStateAction } from "./StateAction";
 import { renderAnimation } from "./animation";
 import { linkMap } from "./global/linkPointIdentityCircle";
-import { getLeafletMap } from "./global/leafletMap";
+import { getLeafletMap } from "./leafletMap";
 import { setSelectedElement } from "./signaux";
 import { minMaxQty } from "./PointsRamassageAndEtablissement";
 
