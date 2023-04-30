@@ -7,6 +7,7 @@ type StateGuiType = {
   onTile: string;
   displayedMenu: boolean;
   selectedTab: string;
+  displayedRightMenu: boolean;
 };
 
 const makeStateGuiContext = () => {
@@ -14,6 +15,7 @@ const makeStateGuiContext = () => {
     onTile: "OpenStreetMap_Mapnik",
     displayedMenu: false,
     selectedTab: "info",
+    displayedRightMenu: false,
   };
 
   const stateGuiString = localStorage.getItem("stateGui");
@@ -44,12 +46,25 @@ const makeStateGuiContext = () => {
     setStateWrapper("onTile", tileName);
   }
 
+  function toggleDisplayedRightMenu() {
+    setStateWrapper(
+      "displayedRightMenu",
+      (currentValue: boolean) => !currentValue
+    );
+  }
+
+  function getDisplayedRightMenu() {
+    return state.displayedRightMenu;
+  }
+
   return [
     state,
     {
       toggleDisplayedMenu,
       setSelectedTab,
       setOnTile,
+      toggleDisplayedRightMenu,
+      getDisplayedRightMenu,
     },
   ] as const;
 };

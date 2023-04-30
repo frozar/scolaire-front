@@ -139,7 +139,7 @@
   width: 250px;
   height: 100%;
   padding: 10px;
-  padding-top: 5rem;
+  padding-top: 1rem;
 
   &.active{
     @apply translate-x-[-250px];
@@ -212,5 +212,5 @@
 
 #map-layer-tiles-list{
   overflow-y: auto;
-  height: 85vh;
+  height: 87vh;
 }
