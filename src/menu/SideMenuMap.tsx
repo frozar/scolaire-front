@@ -6,6 +6,7 @@ import { layerTilesList } from "../constant";
 import { getTileByName } from "../tileUtils";
 import { useStateGui } from "../StateGui";
 import { createEffect } from "solid-js";
+import { TileType } from "../type";
 
 function LayerLogo() {
   return (
@@ -47,11 +48,11 @@ export default function () {
    *
    * set new attributes "data-tile-name" to map_container
    *
-   * @param map_container
+   * @param mapContainer
    * @param minimap
    */
   const tileChangeOnClick = (
-    map_container: HTMLDivElement,
+    mapContainer: HTMLDivElement,
     minimap: MiniMap,
     leafletMap: L.Map
   ) => {
@@ -59,15 +60,15 @@ export default function () {
     const tile = getTileByName(
       // TODO: don't rely on custom attribut in the DOM
       // @ts-expect-error
-      map_container.attributes["data-tile-name"].value
+      mapContainer.attributes["data-tile-name"].value
     );
     // TODO: Don't access directly to "state.onTile": create a getter
-    map_container.children[1].innerHTML = state.onTile;
+    mapContainer.children[1].innerHTML = state.onTile;
 
     leafletMap.removeLayer(getTileByName(state.onTile).tileContent);
     minimap.changeLayer(getTileByName(state.onTile).tileContent);
 
-    map_container.setAttribute(
+    mapContainer.setAttribute(
       "data-tile-name",
       getTileByName(state.onTile).tileId
     );
@@ -75,29 +76,29 @@ export default function () {
     leafletMap.addLayer(tile.tileContent);
   };
 
-  const buildMinimaps = (tile: any, leafletMap: L.Map) => {
+  const buildMinimaps = (tile: TileType, leafletMap: L.Map) => {
     const mapContainer = document.createElement("div");
     const mapTitle = document.createElement("p");
 
     // TODO: Don't rely on a string concatenation
-    mapContainer.id = "map-" + tile.tile_name;
+    mapContainer.id = "map-" + tile.tileId;
     mapContainer.classList.add("tiles-map");
-    mapContainer.setAttribute("data-tile-name", tile.tile_name);
+    mapContainer.setAttribute("data-tile-name", tile.tileId);
 
     // TODO: Don't rely on the innerText DOM field
-    mapTitle.innerText = tile.tile_name;
+    mapTitle.innerText = tile.tileTitle;
 
-    if (state.onTile != tile.tile_name) {
+    if (state.onTile != tile.tileId) {
       // TODO: don't change the zoom of the map
-      const minimap = new MiniMap(tile.tile, {
+      const minimap = new MiniMap(tile.tileContent, {
         zoomLevelOffset: -3.5,
       }).addTo(leafletMap);
       minimap._map.fitBounds(leafletMap?.getBounds());
 
       // minimap.fitBounds(getLeafletMap().getBounds())
-      const minimap_container = minimap.getContainer();
+      const minimapContainer = minimap.getContainer();
 
-      mapContainer.appendChild(minimap_container);
+      mapContainer.appendChild(minimapContainer);
       mapContainer.appendChild(mapTitle);
       refMapLayerTilesList?.appendChild(mapContainer);
 
