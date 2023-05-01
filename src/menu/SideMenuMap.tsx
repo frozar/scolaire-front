@@ -5,8 +5,18 @@ import { getLeafletMap } from "../signaux";
 import { layerTilesList } from "../constant";
 import { getTileByName } from "../tileUtils";
 import { useStateGui } from "../StateGui";
-import { createEffect } from "solid-js";
+import { For, createEffect, createSignal } from "solid-js";
 import { TileType } from "../type";
+
+const [
+  state,
+  {
+    setSelectedTile,
+    toggleDisplayedRightMenu,
+    getDisplayedRightMenu,
+    getSelectedTile,
+  },
+] = useStateGui();
 
 function LayerLogo() {
   return (
@@ -34,11 +44,6 @@ function LayerLogo() {
 
 export default function () {
   let refMapLayerTilesList: HTMLElement | undefined = undefined;
-
-  const [
-    state,
-    { setSelectedTile, toggleDisplayedRightMenu, getDisplayedRightMenu },
-  ] = useStateGui();
 
   /**
    * Get tile name from HTML map container attributes
@@ -81,29 +86,32 @@ export default function () {
     const mapTitle = document.createElement("p");
 
     mapContainer.classList.add("tiles-map");
+    // Onclick event
     mapContainer.setAttribute("data-tile-name", tile.tileId);
 
     // TODO: Don't rely on the innerText DOM field
     mapTitle.innerText = tile.tileId;
 
-    if (state.selectedTile != tile.tileId) {
-      // TODO: don't change the zoom of the map
-      const minimap = new MiniMap(tile.tileContent, {
-        zoomLevelOffset: -3.5,
-      }).addTo(leafletMap);
-      minimap._map.fitBounds(leafletMap?.getBounds());
-
-      // minimap.fitBounds(getLeafletMap().getBounds())
-      const minimapContainer = minimap.getContainer();
-
-      mapContainer.appendChild(minimapContainer);
-      mapContainer.appendChild(mapTitle);
-      refMapLayerTilesList?.appendChild(mapContainer);
-
-      mapContainer.addEventListener("click", (e) =>
-        tileChangeOnClick(mapContainer, minimap, leafletMap)
-      );
+    if (state.selectedTile == tile.tileId) {
+      return;
     }
+
+    // TODO: don't change the zoom of the map
+    const minimap = new MiniMap(tile.tileContent, {
+      zoomLevelOffset: -3.5,
+    }).addTo(leafletMap);
+    minimap._map.fitBounds(leafletMap?.getBounds());
+
+    // minimap.fitBounds(getLeafletMap().getBounds())
+    const minimapContainer = minimap.getContainer();
+
+    mapContainer.appendChild(minimapContainer);
+    mapContainer.appendChild(mapTitle);
+    refMapLayerTilesList?.appendChild(mapContainer);
+
+    mapContainer.addEventListener("click", (e) =>
+      tileChangeOnClick(mapContainer, minimap, leafletMap)
+    );
   };
 
   let initialised = false;
@@ -118,7 +126,7 @@ export default function () {
       return;
     }
 
-    layerTilesList.forEach((tile) => buildMinimaps(tile, leafletMap));
+    // layerTilesList.forEach((tile) => buildMinimaps(tile, leafletMap));
     initialised = true;
   });
 
@@ -138,8 +146,65 @@ export default function () {
       >
         <header>Réglages du fond de carte</header>
 
-        <section id="map-layer-tiles-list" ref={refMapLayerTilesList}></section>
+        <section id="map-layer-tiles-list" ref={refMapLayerTilesList}>
+          <For each={layerTilesList}>{(tile) => <Minimap tile={tile} />}</For>
+        </section>
       </section>
     </>
   );
+}
+
+function Minimap(props: { tile: TileType }) {
+  const { tile } = props;
+  let mapContainer: HTMLDivElement | undefined;
+
+  // const [miniMap, setMiniMap] = createSignal();
+
+  let init = false;
+  createEffect(() => {
+    console.log(tile.tileId);
+    const leafletMap = getLeafletMap();
+    console.log("leafletMap", leafletMap);
+    if (!leafletMap) {
+      return;
+    }
+
+    if (init) {
+      return;
+    }
+
+    const minimap = new MiniMap(tile.tileContent, {
+      zoomLevelOffset: -1,
+      width: 207,
+      height: 150,
+    });
+
+    // minimap.addTo(leafletMap);
+    if (tile.tileId != getSelectedTile()) {
+      minimap.addTo(leafletMap);
+    }
+
+    minimap._map?.fitBounds(leafletMap?.getBounds());
+
+    const minimapContainer = minimap.getContainer();
+
+    mapContainer?.prepend(minimapContainer);
+
+    init = true;
+  });
+
+  // return (
+  //   <div ref={mapContainer} class="tiles-map">
+  //     <p>{tile.tileId}</p>
+  //   </div>
+  // );
+  if (tile.tileId != getSelectedTile()) {
+    return (
+      <div ref={mapContainer} class="tiles-map">
+        <p>{tile.tileId}</p>
+      </div>
+    );
+  } else {
+    return "";
+  }
 }

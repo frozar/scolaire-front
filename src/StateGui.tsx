@@ -47,6 +47,10 @@ const makeStateGuiContext = () => {
     setStateWrapper("selectedTile", tileId);
   }
 
+  function getSelectedTile() {
+    return state.selectedTile;
+  }
+
   function toggleDisplayedRightMenu() {
     setStateWrapper(
       "displayedRightMenu",
@@ -64,6 +68,7 @@ const makeStateGuiContext = () => {
       toggleDisplayedMenu,
       setSelectedTab,
       setSelectedTile,
+      getSelectedTile,
       toggleDisplayedRightMenu,
       getDisplayedRightMenu,
     },

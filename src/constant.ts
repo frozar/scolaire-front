@@ -93,28 +93,28 @@ export const layerTilesList: TileType[] = [
     tileContent: Stadia_Outdoors,
   },
 
-  {
-    tileId: TileEnum.Esri_WorldTopoMap,
-    tileContent: Esri_WorldTopoMap,
-  },
+  //   {
+  //     tileId: TileEnum.Esri_WorldTopoMap,
+  //     tileContent: Esri_WorldTopoMap,
+  //   },
 
-  {
-    tileId: TileEnum.CyclOSM,
-    tileContent: CyclOSM,
-  },
+  //   {
+  //     tileId: TileEnum.CyclOSM,
+  //     tileContent: CyclOSM,
+  //   },
 
-  {
-    tileId: TileEnum.OpenStreetMap_CH,
-    tileContent: OpenStreetMap_CH,
-  },
+  //   {
+  //     tileId: TileEnum.OpenStreetMap_CH,
+  //     tileContent: OpenStreetMap_CH,
+  //   },
 
-  {
-    tileId: TileEnum.OpenStreetMap_HOT,
-    tileContent: OpenStreetMap_HOT,
-  },
+  //   {
+  //     tileId: TileEnum.OpenStreetMap_HOT,
+  //     tileContent: OpenStreetMap_HOT,
+  //   },
 
-  {
-    tileId: TileEnum.OpenStreetMap_France,
-    tileContent: OpenStreetMap_France,
-  },
+  //   {
+  //     tileId: TileEnum.OpenStreetMap_France,
+  //     tileContent: OpenStreetMap_France,
+  //   },
 ];
