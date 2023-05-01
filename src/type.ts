@@ -96,5 +96,4 @@ export enum TileEnum {
 export type TileType = {
   tileId: TileEnum;
   tileContent: L.TileLayer;
-  tileTitle: string;
 };

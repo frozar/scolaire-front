@@ -81,48 +81,40 @@ export const layerTilesList: TileType[] = [
   {
     tileId: TileEnum.OpenStreetMap_Mapnik,
     tileContent: OpenStreetMap_Mapnik,
-    tileTitle: "OpenStreetMap_Mapnik",
   },
 
   {
     tileId: TileEnum.Stadia_AlidadeSmooth,
     tileContent: Stadia_AlidadeSmooth,
-    tileTitle: "Stadia_AlidadeSmooth",
   },
 
   {
     tileId: TileEnum.Stadia_Outdoors,
     tileContent: Stadia_Outdoors,
-    tileTitle: "Stadia_Outdoors",
   },
 
   {
     tileId: TileEnum.Esri_WorldTopoMap,
     tileContent: Esri_WorldTopoMap,
-    tileTitle: "Esri_WorldTopoMap",
   },
 
   {
     tileId: TileEnum.CyclOSM,
     tileContent: CyclOSM,
-    tileTitle: "CyclOSM",
   },
 
   {
     tileId: TileEnum.OpenStreetMap_CH,
     tileContent: OpenStreetMap_CH,
-    tileTitle: "OpenStreetMap_CH",
   },
 
   {
     tileId: TileEnum.OpenStreetMap_HOT,
     tileContent: OpenStreetMap_HOT,
-    tileTitle: "OpenStreetMap_HOT",
   },
 
   {
     tileId: TileEnum.OpenStreetMap_France,
     tileContent: OpenStreetMap_France,
-    tileTitle: "OpenStreetMap_France",
   },
 ];

@@ -81,12 +81,12 @@ export default function () {
     const mapTitle = document.createElement("p");
 
     mapContainer.classList.add("tiles-map");
-    mapContainer.setAttribute("data-tile-name", tile.tileTitle);
+    mapContainer.setAttribute("data-tile-name", tile.tileId);
 
     // TODO: Don't rely on the innerText DOM field
-    mapTitle.innerText = tile.tileTitle;
+    mapTitle.innerText = tile.tileId;
 
-    if (state.selectedTile != tile.tileTitle) {
+    if (state.selectedTile != tile.tileId) {
       // TODO: don't change the zoom of the map
       const minimap = new MiniMap(tile.tileContent, {
         zoomLevelOffset: -3.5,
