@@ -4,17 +4,41 @@ import { SimpleMapScreenshoter } from "leaflet-simple-map-screenshoter";
 import { displayDownloadSuccessMessage } from "../userInformation/utils";
 import { getScreenshoter } from "../global/screenShoter";
 import { getLeafletMap } from "../global/leafletMap";
-import {
-  getRemainingExport,
-  setExportLoadingFalse,
-  setExportLoadingTrue,
-  setRemainingExport,
-} from "../signaux";
 import { saveAs } from "file-saver";
+import { enableSpinningWheel } from "../signaux";
+import { disableSpinningWheel } from "../signaux";
 
 let zip: JSZip;
 
 const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+let i = 0;
+
+function addImageProcess(image: Blob): Promise<void> {
+  return new Promise<void>((resolve) => {
+    var img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      const ctx: CanvasRenderingContext2D = canvas.getContext(
+        "2d"
+      ) as CanvasRenderingContext2D;
+      const imgWidth = window.innerWidth;
+      const imgHeight = window.innerHeight;
+
+      canvas.width = imgWidth;
+      canvas.height = imgHeight;
+
+      ctx.drawImage(img, 0, 0, imgWidth, imgHeight, 0, 0, imgWidth, imgHeight);
+
+      canvas.toBlob(function (blob) {
+        zip.file("line" + i++ + ".png", blob as Blob);
+        canvas.remove();
+        resolve();
+      });
+    };
+    img.src = image as unknown as string;
+  });
+}
 
 function moveEndEvent(
   map: L.Map,
@@ -24,17 +48,12 @@ function moveEndEvent(
   return new Promise((resolve) => {
     map.once("moveend", async () => {
       //TODO : change the way we wait for the map to be loaded
-      await wait(1000);
-      screenShoter
-        ?.takeScreen("blob")
-        .then((blob: Blob | Error | L.ErrorEvent) => {
-          //TODO : Change the name by the name of the line
-          zip.file("map.png" + getRemainingExport(), blob as Blob);
-        })
-        .then(() => {
-          setRemainingExport(getRemainingExport() - 1);
+      await wait(500);
+      screenShoter?.takeScreen("image").then(async (image) => {
+        addImageProcess(image as Blob).then(() => {
           resolve();
         });
+      });
     });
     map.fitBounds(bounds, { padding: [30, 30] });
   });
@@ -56,18 +75,12 @@ async function exportLinesImages(
   lines: L.Polyline[],
   map: L.Map
 ) {
-  const currentViewPos: LatLng = map.getCenter();
-  const currentViewZoom: number = map.getZoom();
   for (const line of lines) {
     line.getElement()?.classList.remove("hidden");
     await exportLine(line, map, screenshoter);
     line.getElement()?.classList.add("hidden");
   }
   lines.map((line) => line.getElement()?.classList.remove("hidden"));
-  map.setView(
-    [currentViewPos?.lat ?? 0, currentViewPos?.lng ?? 0],
-    currentViewZoom ?? 0
-  );
 }
 
 async function exportMapImage(
@@ -91,6 +104,8 @@ export async function exportImages() {
   const map = getLeafletMap();
   let lineBoundBox: LatLngBounds = new LatLngBounds([0, 0], [0, 0]);
   const polylines: Polyline[] = [];
+  const currentViewPos: LatLng = map.getCenter();
+  const currentViewZoom: number = map.getZoom();
 
   zip = new JSZip();
   map.eachLayer((layer) => {
@@ -99,14 +114,17 @@ export async function exportImages() {
     }
   });
   lineBoundBox = getLinesBoundBox(polylines);
-  setExportLoadingTrue();
-  setRemainingExport(polylines.length + 1);
+  enableSpinningWheel()
   await exportMapImage(screenShoter, map, lineBoundBox);
   polylines.map((line) => line.getElement()?.classList.add("hidden"));
   await exportLinesImages(screenShoter, polylines, map);
   zip.generateAsync({ type: "blob" }).then((content) => {
-    saveAs(content, "images.zip");
+    saveAs(content, "bus_lines.zip");
     displayDownloadSuccessMessage();
   });
-  setExportLoadingFalse();
+  disableSpinningWheel()
+  map.setView(
+    [currentViewPos?.lat ?? 0, currentViewPos?.lng ?? 0],
+    currentViewZoom ?? 0
+  );
 }

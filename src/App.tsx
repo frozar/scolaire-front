@@ -13,7 +13,6 @@ import {
   displayRemoveLineMessage,
 } from "./userInformation/utils";
 import { addBusLine } from "./request";
-import LoadingExport from "./export/LoadingExport";
 
 const [
   ,
@@ -156,7 +155,6 @@ export default () => {
       <ExportConfirmation />
       <Menu />
       <Map />
-      <LoadingExport />
       <SpinningWheel />
     </div>
   );

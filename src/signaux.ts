@@ -17,8 +17,6 @@ import { deepCopy } from "./utils";
 const [getDisplayedSpinningWheel, setDisplayedSpinningWheel] =
   createSignal(false);
 
-export const [getExportLoading, setExportLoading] = createSignal(false);
-
 export const displayedSpinningWheel = getDisplayedSpinningWheel;
 
 export function enableSpinningWheel() {
@@ -37,16 +35,6 @@ export function disableSpinningWheel() {
     }
     return currentBool;
   });
-}
-
-export function setExportLoadingTrue() {
-  enableSpinningWheel();
-  setExportLoading(true);
-}
-
-export function setExportLoadingFalse() {
-  disableSpinningWheel();
-  setExportLoading(false);
 }
 
 const [getSelectedElement, setterSelectedElement] = createSignal<
@@ -88,7 +76,6 @@ export function closeRemoveConfirmationBox() {
 }
 
 export const [getRemainingExport, setRemainingExport] = createSignal(0);
-
 export function setExportType(exportType: string | null) {
   const type = ExportTypeEnum[exportType as keyof typeof ExportTypeEnum];
   setExportConfirmation((prev) => ({
