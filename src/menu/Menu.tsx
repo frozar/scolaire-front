@@ -2,12 +2,12 @@ import { Dynamic } from "solid-js/web";
 import { createEffect, For } from "solid-js";
 import MenuDraw from "./MenuDraw";
 import MenuDelete from "./MenuRemoveLine";
-import GtfsExport from "../export/ExportButton";
 import InformationContent from "../InformationContent";
 import SideMapMenu from "./SideMenuMap";
 
 import { useStateAction } from "../StateAction";
 import { useStateGui } from "../StateGui";
+import ExportButton from "../export/ExportButton";
 
 const [stateAction, { toggleAltimetryAnimation }] = useStateAction();
 const [stateGui, { toggleDisplayedMenu, setSelectedTab }] = useStateGui();
@@ -141,8 +141,8 @@ function MenuContent() {
   }
 
   return (
-    <div ref={refMenuContent} class="menu__custom" >
-      <nav aria-label="Tabs" >
+    <div ref={refMenuContent} class="menu__custom">
+      <nav aria-label="Tabs">
         <For each={Object.keys(tabs)}>
           {(value: string) => {
             validateTabKey(value);
@@ -153,7 +153,7 @@ function MenuContent() {
               <button
                 classList={{
                   "group active": stateGui.selectedTab === tabKey,
-                  "group": stateGui.selectedTab != tabKey,
+                  group: stateGui.selectedTab != tabKey,
                 }}
                 onClick={() => setSelectedTab(tabKey)}
               >
@@ -178,8 +178,7 @@ export default function () {
       <MenuContent />
       <MenuDraw />
       <MenuDelete />
-      <GtfsExport />
-
+      <ExportButton />
       <SideMapMenu />
     </>
   );
