@@ -14,29 +14,14 @@ const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 let i = 0;
 
-function addImageProcess(image: Blob): Promise<void> {
+function addImageProcess(c: any): Promise<void> {
   return new Promise<void>((resolve) => {
-    var img = new Image();
-    img.onload = () => {
-      const canvas = document.createElement("canvas");
-      const ctx: CanvasRenderingContext2D = canvas.getContext(
-        "2d"
-      ) as CanvasRenderingContext2D;
-      const imgWidth = window.innerWidth;
-      const imgHeight = window.innerHeight;
+    let canvas = c as HTMLCanvasElement;
 
-      canvas.width = imgWidth;
-      canvas.height = imgHeight;
-
-      ctx.drawImage(img, 0, 0, imgWidth, imgHeight, 0, 0, imgWidth, imgHeight);
-
-      canvas.toBlob(function (blob) {
-        zip.file("line" + i++ + ".png", blob as Blob);
-        canvas.remove();
-        resolve();
-      });
-    };
-    img.src = image as unknown as string;
+    canvas.toBlob(function (blob) {
+      zip.file("line" + i++ + ".png", blob as Blob);
+      resolve();
+    });
   });
 }
 
@@ -49,8 +34,8 @@ function moveEndEvent(
     map.once("moveend", async () => {
       //TODO : change the way we wait for the map to be loaded
       await wait(500);
-      screenShoter?.takeScreen("image").then(async (image) => {
-        addImageProcess(image as Blob).then(() => {
+      screenShoter?.takeScreen("canvas").then(async (canvas) => {
+        addImageProcess(canvas as Blob).then(() => {
           resolve();
         });
       });
@@ -114,7 +99,7 @@ export async function exportImages() {
     }
   });
   lineBoundBox = getLinesBoundBox(polylines);
-  enableSpinningWheel()
+  enableSpinningWheel();
   await exportMapImage(screenShoter, map, lineBoundBox);
   polylines.map((line) => line.getElement()?.classList.add("hidden"));
   await exportLinesImages(screenShoter, polylines, map);
@@ -122,7 +107,7 @@ export async function exportImages() {
     saveAs(content, "bus_lines.zip");
     displayDownloadSuccessMessage();
   });
-  disableSpinningWheel()
+  disableSpinningWheel();
   map.setView(
     [currentViewPos?.lat ?? 0, currentViewPos?.lng ?? 0],
     currentViewZoom ?? 0
