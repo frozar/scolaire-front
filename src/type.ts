@@ -69,6 +69,11 @@ export enum MessageLevelEnum {
   error,
 }
 
+export enum ExportTypeEnum {
+  gtfs,
+  image,
+}
+
 export type userInformationType = {
   id: number;
   displayed: boolean;
@@ -96,4 +101,9 @@ export type TileId =
 export type TileType = {
   tileId: TileId;
   tileContent: L.TileLayer;
+};
+
+export type exportConfirmationType = {
+  displayed: boolean;
+  exportType: ExportTypeEnum | null;
 };

@@ -1,10 +1,21 @@
 import {
-  displayOnGoingDownloadMessage,
   displayDownloadErrorMessage,
   displayDownloadSuccessMessage,
+  displayOnGoingDownloadMessage,
 } from "../userInformation/utils";
+import { getExportDate } from "./export";
 
-function handleDownloadClick() {
+function download(fileame: string, blob: Blob) {
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = fileame;
+  a.click();
+  window.URL.revokeObjectURL(url);
+  a.remove();
+}
+
+export function exportGtfs() {
   displayOnGoingDownloadMessage();
   fetch(import.meta.env.VITE_BACK_URL + "/gtfs.zip")
     .then((response) => {
@@ -19,30 +30,12 @@ function handleDownloadClick() {
         displayDownloadErrorMessage();
         return;
       }
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "gtfs.zip";
-      a.click();
-      window.URL.revokeObjectURL(url);
-      a.remove();
+      const { year, month, day, hour, minute } = getExportDate();
+      const fileName = `${year}-${month}-${day}_${hour}-${minute}_gtfs.zip`;
+      download(fileName, blob);
       displayDownloadSuccessMessage();
     })
     .catch(() => {
       displayDownloadErrorMessage();
     });
-}
-
-export default function () {
-  return (
-    <>
-      <div class="export-btn">
-        <button
-          onClick={handleDownloadClick}
-        >
-          Export
-        </button>
-      </div>
-    </>
-  );
 }

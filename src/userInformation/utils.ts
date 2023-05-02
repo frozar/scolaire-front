@@ -16,6 +16,15 @@ export function displayAddLineMessage() {
   }
 }
 
+export function displayNoLineMessage() {
+  addNewUserInformation({
+    displayed: true,
+    level: MessageLevelEnum.error,
+    type: MessageTypeEnum.global,
+    content: "Aucune ligne de bus à exporter",
+  });
+}
+
 export function displayRemoveLineMessage() {
   if (isInRemoveLineMode()) {
     addNewUserInformation({

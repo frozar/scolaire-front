@@ -20,6 +20,13 @@ body {
   overflow-x: hidden;
 }
 
+#main-map *, #main-map::before, #main-map::after {
+  box-sizing: border-box;
+  border-width: 0;
+  border-style: none;
+  border-color: #e5e7eb;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
