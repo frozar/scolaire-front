@@ -2,7 +2,7 @@ import {
   PluginOptions,
   SimpleMapScreenshoter,
 } from "leaflet-simple-map-screenshoter";
-import { getLeafletMap } from "./leafletMap";
+import { getLeafletMap } from "../signaux";
 
 let screenshoter: SimpleMapScreenshoter | null = null;
 
@@ -14,7 +14,12 @@ let pluginOptions: PluginOptions = {
 
 export function setScreenshoter() {
   screenshoter = new SimpleMapScreenshoter(pluginOptions);
-  screenshoter.addTo(getLeafletMap());
+  const leafletMap = getLeafletMap();
+
+  if(!leafletMap) {
+    return;
+  }
+  screenshoter.addTo(leafletMap);
 }
 
 export function getScreenshoter(): SimpleMapScreenshoter | null {

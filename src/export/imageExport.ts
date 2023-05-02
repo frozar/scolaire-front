@@ -3,7 +3,7 @@ import { LatLng, LatLngBounds, Polyline } from "leaflet";
 import { SimpleMapScreenshoter } from "leaflet-simple-map-screenshoter";
 import { displayDownloadSuccessMessage } from "../userInformation/utils";
 import { getScreenshoter } from "../global/screenShoter";
-import { getLeafletMap } from "../global/leafletMap";
+import { getLeafletMap } from "../signaux";
 import { saveAs } from "file-saver";
 import { enableSpinningWheel } from "../signaux";
 import { disableSpinningWheel } from "../signaux";
@@ -87,6 +87,9 @@ function getLinesBoundBox(lines: L.Polyline[]): LatLngBounds {
 export async function exportImages() {
   const screenShoter = getScreenshoter() as SimpleMapScreenshoter;
   const map = getLeafletMap();
+  if (!map) {
+    return;
+  }
   let lineBoundBox: LatLngBounds = new LatLngBounds([0, 0], [0, 0]);
   const polylines: Polyline[] = [];
   const currentViewPos: LatLng = map.getCenter();
