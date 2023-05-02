@@ -3,12 +3,12 @@ import { createContext, useContext } from "solid-js";
 import { createStore } from "solid-js/store";
 import { TileId } from "./type";
 
-// TODO: use onTile: enum;
 type StateGuiType = {
   displayedMenu: boolean;
   selectedTab: string;
   displayedRightMenu: boolean;
-  selectedTile: TileId;
+  selectedReadModeTile: TileId;
+  selectedEditModeTile: TileId;
 };
 
 const makeStateGuiContext = () => {
@@ -16,7 +16,8 @@ const makeStateGuiContext = () => {
     displayedMenu: false,
     selectedTab: "info",
     displayedRightMenu: false,
-    selectedTile: "OpenStreetMap_Mapnik",
+    selectedReadModeTile: "OpenStreetMap_Mapnik",
+    selectedEditModeTile: "Stadia_AlidadeSmoothDark",
   };
 
   const stateGuiString = localStorage.getItem("stateGui");
@@ -43,12 +44,20 @@ const makeStateGuiContext = () => {
     setStateWrapper("selectedTab", tabName);
   }
 
-  function setSelectedTile(tileId: TileId) {
-    setStateWrapper("selectedTile", tileId);
+  function setSelectedReadModeTile(tileId: TileId) {
+    setStateWrapper("selectedReadModeTile", tileId);
   }
 
-  function getSelectedTile() {
-    return state.selectedTile;
+  function getSelectedReadModeTile() {
+    return state.selectedReadModeTile;
+  }
+
+  function setSelectedEditModeTile(tileId: TileId) {
+    setStateWrapper("selectedEditModeTile", tileId);
+  }
+
+  function getSelectedEditModeTile() {
+    return state.selectedEditModeTile;
   }
 
   function toggleDisplayedRightMenu() {
@@ -67,8 +76,10 @@ const makeStateGuiContext = () => {
     {
       toggleDisplayedMenu,
       setSelectedTab,
-      setSelectedTile,
-      getSelectedTile,
+      setSelectedReadModeTile,
+      getSelectedReadModeTile,
+      setSelectedEditModeTile,
+      getSelectedEditModeTile,
       toggleDisplayedRightMenu,
       getDisplayedRightMenu,
     },

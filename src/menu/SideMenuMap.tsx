@@ -4,18 +4,23 @@ import MiniMap from "leaflet-minimap";
 import { getLeafletMap } from "../signaux";
 import { layerTilesList } from "../constant";
 import { useStateGui } from "../StateGui";
+import { useStateAction } from "../StateAction";
 import { For, createEffect } from "solid-js";
 import { TileType } from "../type";
 
 const [
   ,
   {
-    setSelectedTile,
+    setSelectedReadModeTile,
+    getSelectedReadModeTile,
+    setSelectedEditModeTile,
+    getSelectedEditModeTile,
     toggleDisplayedRightMenu,
     getDisplayedRightMenu,
-    getSelectedTile,
   },
 ] = useStateGui();
+
+const [, { isInReadMode }] = useStateAction();
 
 function LayerLogo() {
   return (
@@ -43,7 +48,15 @@ function LayerLogo() {
 
 export default function () {
   const layerTilesListToRender = () => {
-    return layerTilesList.filter((tile) => tile.tileId != getSelectedTile());
+    if (isInReadMode()) {
+      return layerTilesList.filter(
+        (tile) => tile.tileId != getSelectedReadModeTile()
+      );
+    } else {
+      return layerTilesList.filter(
+        (tile) => tile.tileId != getSelectedEditModeTile()
+      );
+    }
   };
 
   return (
@@ -106,7 +119,11 @@ function Minimap(props: { tile: TileType }) {
       ref={mapContainer}
       class="tiles-map"
       onClick={() => {
-        setSelectedTile(tile.tileId);
+        if (isInReadMode()) {
+          setSelectedReadModeTile(tile.tileId);
+        } else {
+          setSelectedEditModeTile(tile.tileId);
+        }
       }}
     >
       <p>{tile.tileId}</p>

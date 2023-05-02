@@ -13,7 +13,7 @@ import FlaxibMapLogo from "./FlaxibMapLogo";
 import { useStateGui } from "./StateGui";
 import { getTileById } from "./tileUtils";
 
-const [, { getSelectedTile }] = useStateGui();
+const [, { getSelectedReadModeTile, getSelectedEditModeTile }] = useStateGui();
 const [, { isInReadMode, isInAddLineMode }] = useStateAction();
 
 function addLogoFlaxib(map: L.Map) {
@@ -41,13 +41,13 @@ export function buildMapL7(div: HTMLDivElement) {
 
   setLeafletMap(leafletMap);
 
-  // TODO: be able to choice different map in function of mode
+  // Check which map ground must be displayed
   const readTile = () => {
-    return getTileById(getSelectedTile()).tileContent;
+    return getTileById(getSelectedReadModeTile()).tileContent;
   };
 
   const editTile = () => {
-    return getTileById(getSelectedTile()).tileContent;
+    return getTileById(getSelectedEditModeTile()).tileContent;
   };
 
   const [currentTileLayer, setCurrentTileLayer] = createSignal<
