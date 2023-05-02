@@ -12,11 +12,11 @@ let pluginOptions: PluginOptions = {
   mimeType: "image/png",
 };
 
-export function setScreenshoter() {
+export function initScreenshoter() {
   screenshoter = new SimpleMapScreenshoter(pluginOptions);
   const leafletMap = getLeafletMap();
 
-  if(!leafletMap) {
+  if (!leafletMap) {
     return;
   }
   screenshoter.addTo(leafletMap);
