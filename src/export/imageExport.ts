@@ -1,7 +1,7 @@
 import JSZip from "jszip";
-import { Canvas, LatLng, LatLngBounds, Polyline } from "leaflet";
+import { LatLng, LatLngBounds, Polyline } from "leaflet";
 import { SimpleMapScreenshoter } from "leaflet-simple-map-screenshoter";
-import { displayDownloadSuccessMessage } from "../userInformation/utils";
+import { displayDownloadSuccessMessage, displayNoLineMessage } from "../userInformation/utils";
 import { getScreenshoter } from "../menu/screenShoter";
 import { getLeafletMap } from "../signaux";
 import { saveAs } from "file-saver";
@@ -33,7 +33,10 @@ function moveEndEvent(
     leafletMap.once("moveend", async () => {
       await wait(2000);
       const canvasCandidate = await screenShoter?.takeScreen("canvas");
+      console.log("yo");
+      
       if (canvasCandidate instanceof HTMLCanvasElement) {
+        console.log("lo");
         const canvas = canvasCandidate as any as HTMLCanvasElement;
         await addImageProcess(canvas);
         resolve();
@@ -83,6 +86,21 @@ function getLinesBoundBox(lines: L.Polyline[]): LatLngBounds {
   return linesBoundBox;
 }
 
+function getPolylines(leafletMap: L.Map): L.Polyline[] | null {
+  const polylines: L.Polyline[] = [];
+
+  leafletMap.eachLayer((layer) => {
+    if (layer instanceof Polyline) {
+      polylines.push(layer);
+    }
+  });
+  if (polylines.length === 0) {
+    displayNoLineMessage();
+    return null;
+  }
+  return polylines;
+}
+
 export async function exportImages() {
   const screenShoter = getScreenshoter() as SimpleMapScreenshoter;
   const leafletMap = getLeafletMap();
@@ -90,19 +108,18 @@ export async function exportImages() {
     return;
   }
   let lineBoundBox: LatLngBounds = new LatLngBounds([0, 0], [0, 0]);
-  const polylines: Polyline[] = [];
   const currentViewPos: LatLng = leafletMap.getCenter();
   const currentViewZoom: number = leafletMap.getZoom();
-
   zip = new JSZip();
-  leafletMap.eachLayer((layer) => {
-    if (layer instanceof Polyline) {
-      polylines.push(layer);
-    }
-  });
+  const polylines: Polyline[] | null = getPolylines(leafletMap);
+  if (!polylines) {
+    return;
+  }
+  
   lineBoundBox = getLinesBoundBox(polylines);
   enableSpinningWheel();
   await exportMapImage(screenShoter, leafletMap, lineBoundBox);
+  console.log(polylines);
   polylines.map((line) => line.getElement()?.classList.add("hidden"));
   await exportLinesImages(screenShoter, polylines, leafletMap);
   zip.generateAsync({ type: "blob" }).then((content) => {
