@@ -1,16 +1,23 @@
 import _ from "lodash";
 import { createContext, useContext } from "solid-js";
-import { createStore, SetStoreFunction } from "solid-js/store";
+import { createStore } from "solid-js/store";
+import { TileId } from "./type";
 
 type StateGuiType = {
   displayedMenu: boolean;
   selectedTab: string;
+  displayedRightMenu: boolean;
+  selectedReadModeTile: TileId;
+  selectedEditModeTile: TileId;
 };
 
 const makeStateGuiContext = () => {
   const defaultStateGui: StateGuiType = {
     displayedMenu: false,
     selectedTab: "info",
+    displayedRightMenu: false,
+    selectedReadModeTile: "OpenStreetMap_Mapnik",
+    selectedEditModeTile: "Stadia_AlidadeSmoothDark",
   };
 
   const stateGuiString = localStorage.getItem("stateGui");
@@ -37,11 +44,44 @@ const makeStateGuiContext = () => {
     setStateWrapper("selectedTab", tabName);
   }
 
+  function setSelectedReadModeTile(tileId: TileId) {
+    setStateWrapper("selectedReadModeTile", tileId);
+  }
+
+  function getSelectedReadModeTile() {
+    return state.selectedReadModeTile;
+  }
+
+  function setSelectedEditModeTile(tileId: TileId) {
+    setStateWrapper("selectedEditModeTile", tileId);
+  }
+
+  function getSelectedEditModeTile() {
+    return state.selectedEditModeTile;
+  }
+
+  function toggleDisplayedRightMenu() {
+    setStateWrapper(
+      "displayedRightMenu",
+      (currentValue: boolean) => !currentValue
+    );
+  }
+
+  function getDisplayedRightMenu() {
+    return state.displayedRightMenu;
+  }
+
   return [
     state,
     {
       toggleDisplayedMenu,
       setSelectedTab,
+      setSelectedReadModeTile,
+      getSelectedReadModeTile,
+      setSelectedEditModeTile,
+      getSelectedEditModeTile,
+      toggleDisplayedRightMenu,
+      getDisplayedRightMenu,
     },
   ] as const;
 };

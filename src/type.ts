@@ -81,3 +81,19 @@ export type removeConfirmationType = {
   displayed: boolean;
   id_bus_line: number | null;
 };
+
+export type TileId =
+  | "OpenStreetMap_Mapnik"
+  | "Stadia_AlidadeSmooth"
+  | "Stadia_AlidadeSmoothDark"
+  | "Stadia_Outdoors"
+  | "Esri_WorldTopoMap"
+  | "CyclOSM"
+  | "OpenStreetMap_CH"
+  | "OpenStreetMap_HOT"
+  | "OpenStreetMap_France";
+
+export type TileType = {
+  tileId: TileId;
+  tileContent: L.TileLayer;
+};

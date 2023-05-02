@@ -4,6 +4,7 @@ import MenuDraw from "./MenuDraw";
 import MenuDelete from "./MenuRemoveLine";
 import GtfsExport from "./GtfsExport";
 import InformationContent from "../InformationContent";
+import SideMapMenu from "./SideMenuMap";
 
 import { useStateAction } from "../StateAction";
 import { useStateGui } from "../StateGui";
@@ -178,6 +179,8 @@ export default function () {
       <MenuDraw />
       <MenuDelete />
       <GtfsExport />
+
+      <SideMapMenu />
     </>
   );
 }

@@ -1,4 +1,5 @@
 import { Signal, createSignal } from "solid-js";
+import L from "leaflet";
 import {
   LineType,
   MessageTypeEnum,
@@ -146,3 +147,5 @@ export function fetchBusLines() {
       }
     );
 }
+
+export const [getLeafletMap, setLeafletMap] = createSignal<L.Map>();
