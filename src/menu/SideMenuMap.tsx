@@ -3,13 +3,12 @@ import MiniMap from "leaflet-minimap";
 
 import { getLeafletMap } from "../signaux";
 import { layerTilesList } from "../constant";
-import { getTileByName } from "../tileUtils";
 import { useStateGui } from "../StateGui";
-import { For, createEffect, createSignal } from "solid-js";
+import { For, createEffect } from "solid-js";
 import { TileType } from "../type";
 
 const [
-  state,
+  ,
   {
     setSelectedTile,
     toggleDisplayedRightMenu,
@@ -43,92 +42,9 @@ function LayerLogo() {
 }
 
 export default function () {
-  let refMapLayerTilesList: HTMLElement | undefined = undefined;
-
-  /**
-   * Get tile name from HTML map container attributes
-   * Set new map title with the current tile name
-   * remove current basemap tile
-   * change minimap layer tile with the basemap tile
-   *
-   * set new attributes "data-tile-name" to map_container
-   *
-   * @param mapContainer
-   * @param minimap
-   */
-  const tileChangeOnClick = (
-    mapContainer: HTMLDivElement,
-    minimap: MiniMap,
-    leafletMap: L.Map
-  ) => {
-    // Will be the new tile of basemap
-    const tile = getTileByName(
-      // TODO: don't rely on custom attribut in the DOM
-      // @ts-expect-error
-      mapContainer.attributes["data-tile-name"].value
-    );
-    // TODO: Don't access directly to "state.onTile": create a getter
-    mapContainer.children[1].innerHTML = state.selectedTile;
-
-    leafletMap.removeLayer(getTileByName(state.selectedTile).tileContent);
-    minimap.changeLayer(getTileByName(state.selectedTile).tileContent);
-
-    mapContainer.setAttribute(
-      "data-tile-name",
-      getTileByName(state.selectedTile).tileId
-    );
-    setSelectedTile(tile.tileId);
-    leafletMap.addLayer(tile.tileContent);
+  const layerTilesListToRender = () => {
+    return layerTilesList.filter((tile) => tile.tileId != getSelectedTile());
   };
-
-  const buildMinimaps = (tile: TileType, leafletMap: L.Map) => {
-    const mapContainer = document.createElement("div");
-    const mapTitle = document.createElement("p");
-
-    mapContainer.classList.add("tiles-map");
-    // Onclick event
-    mapContainer.setAttribute("data-tile-name", tile.tileId);
-
-    // TODO: Don't rely on the innerText DOM field
-    mapTitle.innerText = tile.tileId;
-
-    if (state.selectedTile == tile.tileId) {
-      return;
-    }
-
-    // TODO: don't change the zoom of the map
-    const minimap = new MiniMap(tile.tileContent, {
-      zoomLevelOffset: -3.5,
-    }).addTo(leafletMap);
-    minimap._map.fitBounds(leafletMap?.getBounds());
-
-    // minimap.fitBounds(getLeafletMap().getBounds())
-    const minimapContainer = minimap.getContainer();
-
-    mapContainer.appendChild(minimapContainer);
-    mapContainer.appendChild(mapTitle);
-    refMapLayerTilesList?.appendChild(mapContainer);
-
-    mapContainer.addEventListener("click", (e) =>
-      tileChangeOnClick(mapContainer, minimap, leafletMap)
-    );
-  };
-
-  let initialised = false;
-
-  createEffect(() => {
-    if (initialised) {
-      return;
-    }
-
-    const leafletMap = getLeafletMap();
-    if (!leafletMap) {
-      return;
-    }
-
-    // layerTilesList.forEach((tile) => buildMinimaps(tile, leafletMap));
-    initialised = true;
-  });
 
   return (
     <>
@@ -146,8 +62,12 @@ export default function () {
       >
         <header>Réglages du fond de carte</header>
 
-        <section id="map-layer-tiles-list" ref={refMapLayerTilesList}>
-          <For each={layerTilesList}>{(tile) => <Minimap tile={tile} />}</For>
+        <section id="map-layer-tiles-list">
+          <For each={layerTilesListToRender()}>
+            {(tile) => {
+              return <Minimap tile={tile} />;
+            }}
+          </For>
         </section>
       </section>
     </>
@@ -158,53 +78,38 @@ function Minimap(props: { tile: TileType }) {
   const { tile } = props;
   let mapContainer: HTMLDivElement | undefined;
 
-  // const [miniMap, setMiniMap] = createSignal();
+  const minimap = new MiniMap(tile.tileContent, {
+    zoomLevelOffset: -1,
+    width: 207,
+    height: 150,
+  });
 
-  let init = false;
   createEffect(() => {
-    console.log(tile.tileId);
     const leafletMap = getLeafletMap();
-    console.log("leafletMap", leafletMap);
     if (!leafletMap) {
       return;
     }
 
-    if (init) {
-      return;
-    }
-
-    const minimap = new MiniMap(tile.tileContent, {
-      zoomLevelOffset: -1,
-      width: 207,
-      height: 150,
-    });
-
-    // minimap.addTo(leafletMap);
-    if (tile.tileId != getSelectedTile()) {
-      minimap.addTo(leafletMap);
-    }
+    minimap.remove();
+    leafletMap.removeLayer(tile.tileContent);
+    minimap.addTo(leafletMap);
 
     minimap._map?.fitBounds(leafletMap?.getBounds());
 
     const minimapContainer = minimap.getContainer();
 
     mapContainer?.prepend(minimapContainer);
-
-    init = true;
   });
 
-  // return (
-  //   <div ref={mapContainer} class="tiles-map">
-  //     <p>{tile.tileId}</p>
-  //   </div>
-  // );
-  if (tile.tileId != getSelectedTile()) {
-    return (
-      <div ref={mapContainer} class="tiles-map">
-        <p>{tile.tileId}</p>
-      </div>
-    );
-  } else {
-    return "";
-  }
+  return (
+    <div
+      ref={mapContainer}
+      class="tiles-map"
+      onClick={() => {
+        setSelectedTile(tile.tileId);
+      }}
+    >
+      <p>{tile.tileId}</p>
+    </div>
+  );
 }

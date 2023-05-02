@@ -1,6 +1,7 @@
 import { layerTilesList } from "./constant";
+import { TileId } from "./type";
 
-export const getTileByName = (tile_name: string) => {
-  const tile = layerTilesList.filter((_tile) => _tile.tileId == tile_name);
+export const getTileById = (tileId: TileId) => {
+  const tile = layerTilesList.filter((tile) => tile.tileId == tileId);
   return tile[0];
 };

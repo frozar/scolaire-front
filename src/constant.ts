@@ -2,7 +2,7 @@ export const COLOR_LINE_UNDER_CONSTRUCTION = "#0000FF";
 export const DEAD_COLOR = "#000000FF";
 
 import L from "leaflet";
-import { TileEnum, TileType } from "./type";
+import { TileId, TileType } from "./type";
 
 // https://wiki.openstreetmap.org/wiki/Raster_tile_providers
 // https://leaflet-extras.github.io/leaflet-providers/preview/
@@ -18,6 +18,15 @@ export const OpenStreetMap_Mapnik = L.tileLayer(
 
 export const Stadia_AlidadeSmooth = L.tileLayer(
   "https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png",
+  {
+    maxZoom: 20,
+    attribution:
+      '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
+  }
+);
+
+export const Stadia_AlidadeSmoothDark = L.tileLayer(
+  "https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png",
   {
     maxZoom: 20,
     attribution:
@@ -79,42 +88,47 @@ export const OpenStreetMap_France = L.tileLayer(
 
 export const layerTilesList: TileType[] = [
   {
-    tileId: TileEnum.OpenStreetMap_Mapnik,
+    tileId: "OpenStreetMap_Mapnik",
     tileContent: OpenStreetMap_Mapnik,
   },
 
   {
-    tileId: TileEnum.Stadia_AlidadeSmooth,
+    tileId: "Stadia_AlidadeSmooth",
     tileContent: Stadia_AlidadeSmooth,
   },
 
   {
-    tileId: TileEnum.Stadia_Outdoors,
+    tileId: "Stadia_AlidadeSmoothDark",
+    tileContent: Stadia_AlidadeSmoothDark,
+  },
+
+  {
+    tileId: "Stadia_Outdoors",
     tileContent: Stadia_Outdoors,
   },
 
-  //   {
-  //     tileId: TileEnum.Esri_WorldTopoMap,
-  //     tileContent: Esri_WorldTopoMap,
-  //   },
+  {
+    tileId: "Esri_WorldTopoMap",
+    tileContent: Esri_WorldTopoMap,
+  },
 
-  //   {
-  //     tileId: TileEnum.CyclOSM,
-  //     tileContent: CyclOSM,
-  //   },
+  {
+    tileId: "CyclOSM",
+    tileContent: CyclOSM,
+  },
 
-  //   {
-  //     tileId: TileEnum.OpenStreetMap_CH,
-  //     tileContent: OpenStreetMap_CH,
-  //   },
+  {
+    tileId: "OpenStreetMap_CH",
+    tileContent: OpenStreetMap_CH,
+  },
 
-  //   {
-  //     tileId: TileEnum.OpenStreetMap_HOT,
-  //     tileContent: OpenStreetMap_HOT,
-  //   },
+  {
+    tileId: "OpenStreetMap_HOT",
+    tileContent: OpenStreetMap_HOT,
+  },
 
-  //   {
-  //     tileId: TileEnum.OpenStreetMap_France,
-  //     tileContent: OpenStreetMap_France,
-  //   },
+  {
+    tileId: "OpenStreetMap_France",
+    tileContent: OpenStreetMap_France,
+  },
 ];

@@ -1,4 +1,4 @@
-import { createEffect } from "solid-js";
+import { createEffect, createSignal } from "solid-js";
 
 import L from "leaflet";
 import { L7Layer } from "@antv/l7-leaflet";
@@ -10,12 +10,10 @@ import {
 
 import { useStateAction } from "./StateAction";
 import FlaxibMapLogo from "./FlaxibMapLogo";
-import { Stadia_AlidadeSmooth } from "./constant";
 import { useStateGui } from "./StateGui";
-import { getTileByName } from "./tileUtils";
-import { TileEnum } from "./type";
+import { getTileById } from "./tileUtils";
 
-const [state, { setSelectedTile }] = useStateGui();
+const [, { getSelectedTile }] = useStateGui();
 const [, { isInReadMode, isInAddLineMode }] = useStateAction();
 
 function addLogoFlaxib(map: L.Map) {
@@ -43,37 +41,32 @@ export function buildMapL7(div: HTMLDivElement) {
 
   setLeafletMap(leafletMap);
 
-  // Give the choice of different ground map to the user.
-  var readTile = Stadia_AlidadeSmooth;
-  let tileLayer = readTile;
+  // TODO: be able to choice different map in function of mode
+  const readTile = () => {
+    return getTileById(getSelectedTile()).tileContent;
+  };
 
-  if (!state.selectedTile || state.selectedTile === undefined) {
-    setSelectedTile(TileEnum.Stadia_AlidadeSmooth);
-  } else {
-    tileLayer = getTileByName(state.selectedTile).tileContent;
-    readTile = getTileByName(state.selectedTile).tileContent;
-  }
+  const editTile = () => {
+    return getTileById(getSelectedTile()).tileContent;
+  };
 
-  const editTile = L.tileLayer(
-    "https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png",
-    {
-      maxZoom: 20,
-      attribution:
-        '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
-    }
-  );
-
-  leafletMap.removeLayer(tileLayer);
-  tileLayer.addTo(leafletMap);
+  const [currentTileLayer, setCurrentTileLayer] = createSignal<
+    L.TileLayer | undefined
+  >();
 
   createEffect(() => {
-    tileLayer.remove();
-    if (isInReadMode()) {
-      tileLayer = readTile;
-    } else {
-      tileLayer = editTile;
-    }
-    tileLayer.addTo(leafletMap);
+    setCurrentTileLayer(() => {
+      if (isInReadMode()) {
+        return readTile();
+      } else {
+        return editTile();
+      }
+    });
+  });
+
+  createEffect(() => {
+    currentTileLayer()?.remove();
+    currentTileLayer()?.addTo(leafletMap);
   });
 
   addLogoFlaxib(leafletMap);

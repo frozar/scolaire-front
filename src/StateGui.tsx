@@ -1,14 +1,14 @@
 import _ from "lodash";
 import { createContext, useContext } from "solid-js";
 import { createStore } from "solid-js/store";
-import { TileEnum } from "./type";
+import { TileId } from "./type";
 
 // TODO: use onTile: enum;
 type StateGuiType = {
   displayedMenu: boolean;
   selectedTab: string;
   displayedRightMenu: boolean;
-  selectedTile: TileEnum;
+  selectedTile: TileId;
 };
 
 const makeStateGuiContext = () => {
@@ -16,7 +16,7 @@ const makeStateGuiContext = () => {
     displayedMenu: false,
     selectedTab: "info",
     displayedRightMenu: false,
-    selectedTile: TileEnum.OpenStreetMap_Mapnik,
+    selectedTile: "OpenStreetMap_Mapnik",
   };
 
   const stateGuiString = localStorage.getItem("stateGui");
@@ -43,7 +43,7 @@ const makeStateGuiContext = () => {
     setStateWrapper("selectedTab", tabName);
   }
 
-  function setSelectedTile(tileId: TileEnum) {
+  function setSelectedTile(tileId: TileId) {
     setStateWrapper("selectedTile", tileId);
   }
 
