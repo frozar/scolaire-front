@@ -3,6 +3,7 @@ import {
   displayDownloadSuccessMessage,
   displayOnGoingDownloadMessage,
 } from "../userInformation/utils";
+import { getExportDate } from "./export";
 
 function download(fileame: string, blob: Blob) {
   const url = window.URL.createObjectURL(blob);
@@ -29,7 +30,9 @@ export function exportGtfs() {
         displayDownloadErrorMessage();
         return;
       }
-      download("gtfs.zip", blob);
+      const { year, month, day, hour, minute } = getExportDate();
+      const fileName = `${year}-${month}-${day}_${hour}-${minute}_gtfs.zip`;
+      download(fileName, blob);
       displayDownloadSuccessMessage();
     })
     .catch(() => {

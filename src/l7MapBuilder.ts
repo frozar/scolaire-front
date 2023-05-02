@@ -12,7 +12,7 @@ import { useStateAction } from "./StateAction";
 import FlaxibMapLogo from "./FlaxibMapLogo";
 import { useStateGui } from "./StateGui";
 import { getTileById } from "./tileUtils";
-import { setScreenshoter } from "./global/screenShoter";
+import { setScreenshoter } from "./menu/screenShoter";
 
 const [, { getSelectedReadModeTile, getSelectedEditModeTile }] = useStateGui();
 const [, { isInReadMode, isInAddLineMode }] = useStateAction();
