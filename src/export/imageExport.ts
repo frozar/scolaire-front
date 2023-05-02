@@ -32,8 +32,7 @@ function moveEndEvent(
 ): Promise<void> {
   return new Promise((resolve) => {
     map.once("moveend", async () => {
-      //TODO : change the way we wait for the map to be loaded
-      await wait(500);
+      await wait(2000);
       screenShoter?.takeScreen("canvas").then(async (canvas) => {
         addImageProcess(canvas as Blob).then(() => {
           resolve();
@@ -107,7 +106,9 @@ export async function exportImages() {
   polylines.map((line) => line.getElement()?.classList.add("hidden"));
   await exportLinesImages(screenShoter, polylines, map);
   zip.generateAsync({ type: "blob" }).then((content) => {
-    saveAs(content, "bus_lines.zip");
+    const date = new Date();
+    const fileName = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}_${date.getHours()}-${date.getMinutes()}_bus-lines.zip`;
+    saveAs(content, fileName);
     displayDownloadSuccessMessage();
   });
   disableSpinningWheel();
