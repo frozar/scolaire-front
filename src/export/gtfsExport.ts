@@ -27,7 +27,6 @@ export function exportGtfs() {
     })
     .then((blob: Blob | undefined) => {
       if (!blob) {
-        displayDownloadErrorMessage();
         return;
       }
       const { year, month, day, hour, minute } = getExportDate();
