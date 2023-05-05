@@ -282,3 +282,7 @@ code {
   position: absolute;
   z-index: 1000;
 }
+.scrollit {
+  overflow: scroll;
+  height: 100px;
+}

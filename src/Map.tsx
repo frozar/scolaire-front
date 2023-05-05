@@ -10,7 +10,13 @@ import { buildMapL7 } from "./l7MapBuilder";
 import BusLines from "./line/BusLines";
 import { useStateAction } from "./StateAction";
 import LineUnderConstruction from "./line/LineUnderConstruction";
-import { setPoints } from "./signaux";
+import {
+  addNewUserInformation,
+  setDragAndDropConfirmation,
+  setPoints,
+} from "./signaux";
+import { MessageLevelEnum, MessageTypeEnum, ReturnMessage } from "./type";
+import DisplayListMessageContent from "./userInformation/DisplayListMessageContent";
 const [, { isInAddLineMode }] = useStateAction();
 
 function buildMap(div: HTMLDivElement) {
@@ -78,16 +84,35 @@ export default function () {
           fetch(import.meta.env.VITE_BACK_URL + "/uploadfile/", {
             method: "POST",
             body: formData,
-          });
-          if (true) {
-            const reader = new FileReader();
-            reader.onload = function (e) {
-              // get file content
-              const text = e.target.result;
-              console.log(text);
-            };
-            reader.readAsText(file);
-          }
+          })
+            .then((res) => {
+              return res.json();
+            })
+            .then((res: ReturnMessage) => {
+              console.log(res.error);
+              setDragAndDropConfirmation({
+                displayed: true,
+                error: {
+                  etablissement: res.error.etablissement,
+                  ramassage: res.error.ramassage,
+                },
+              });
+              // addNewUserInformation({
+              //   displayed: true,
+              //   level: MessageLevelEnum.warning,
+              //   type: MessageTypeEnum.global,
+              //   content: DisplayListMessageContent(res.error.etablissement),
+              // });
+            });
+          // if (true) {
+          //   const reader = new FileReader();
+          //   reader.onload = function (e) {
+          //     // get file content
+          //     const text = e.target.result;
+          //     console.log(text);
+          //   };
+          //   reader.readAsText(file);
+          // }
         }
         mapDiv2.classList.remove("highlight");
         fetchPointsRamassage();

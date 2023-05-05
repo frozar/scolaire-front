@@ -11,6 +11,7 @@ import {
   exportConfirmationType,
   removeConfirmationType,
   userInformationType,
+  ReturnMessage,
 } from "./type";
 import { deepCopy } from "./utils";
 
@@ -60,6 +61,19 @@ export const [getRemoveConfirmation, setRemoveConfirmation] = createSignal({
   displayed: false,
   id_bus_line: null,
 }) as Signal<removeConfirmationType>;
+
+export const [getDragAndDropConfirmation, setDragAndDropConfirmation] =
+  createSignal({
+    displayed: false,
+    error: { etablissement: [], ramassage: [] },
+  }) as Signal<ReturnMessage>;
+
+export function closeDragAndDropConfirmationBox() {
+  setDragAndDropConfirmation({
+    displayed: false,
+    error: { etablissement: [], ramassage: [] },
+  });
+}
 
 export function openExportConfirmationBox() {
   setExportConfirmation((prev) => ({
