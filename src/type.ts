@@ -9,6 +9,7 @@ export type EleveVersEtablissementType = {
   ramassage_id_point: number;
 };
 
+// TODO: Use string as value for enum
 export enum NatureEnum {
   ramassage,
   etablissement,
