@@ -83,7 +83,7 @@ export default function () {
 
                     assertIsNode(e.target);
                     if (!refDialogueBox.contains(e.target)) {
-                      closeRemoveConfirmationBox();
+                      closeDragAndDropConfirmationBox();
                     }
                   }}
                 >
@@ -91,7 +91,7 @@ export default function () {
                     <button
                       type="button"
                       class="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                      onClick={closeRemoveConfirmationBox}
+                      onClick={closeDragAndDropConfirmationBox}
                     >
                       <span class="sr-only">Close</span>
                       <svg
