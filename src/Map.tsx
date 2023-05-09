@@ -10,13 +10,8 @@ import { buildMapL7 } from "./l7MapBuilder";
 import BusLines from "./line/BusLines";
 import { useStateAction } from "./StateAction";
 import LineUnderConstruction from "./line/LineUnderConstruction";
-import {
-  addNewUserInformation,
-  setDragAndDropConfirmation,
-  setPoints,
-} from "./signaux";
-import { MessageLevelEnum, MessageTypeEnum, ReturnMessage } from "./type";
-import DisplayListMessageContent from "./userInformation/DisplayListMessageContent";
+import { setDragAndDropConfirmation, setPoints } from "./signaux";
+import { ReturnMessage } from "./type";
 const [, { isInAddLineMode }] = useStateAction();
 
 function buildMap(div: HTMLDivElement) {
@@ -29,49 +24,40 @@ function buildMap(div: HTMLDivElement) {
   }
 }
 
-function handleDrop(e) {
-  const dt = e.dataTransfer;
-  const files = dt.files;
-  console.log("dt ", dt, "files ", files);
-}
 export default function () {
   let mapDiv: HTMLDivElement;
-  let mapDiv2: HTMLDivElement;
+  let mapDragDropDiv: HTMLDivElement;
   onMount(() => {
     mapDiv.addEventListener(
       "dragenter",
       (e) => {
         e.preventDefault();
-        mapDiv2.classList.remove("dropbox-none");
-        mapDiv2.classList.add("highlight");
+        mapDragDropDiv.classList.add("highlight");
       },
       false
     );
-
-    mapDiv2.addEventListener(
+    mapDragDropDiv.addEventListener(
       "dragleave",
       () => {
-        mapDiv2.classList.remove("highlight");
+        mapDragDropDiv.classList.remove("highlight");
       },
       false
     );
-    mapDiv2.addEventListener(
+    mapDragDropDiv.addEventListener(
       "dragend",
-      (e) => {
-        const data = e.dataTransfer.getData("text/html");
-        mapDiv2.classList.remove("highlight");
-        console.log("test end, ", data);
+      () => {
+        mapDragDropDiv.classList.remove("highlight");
       },
       false
     );
-    mapDiv2.addEventListener(
+    mapDragDropDiv.addEventListener(
       "dragover",
       (e) => {
         e.preventDefault();
       },
       false
     );
-    mapDiv2.addEventListener(
+    mapDragDropDiv.addEventListener(
       "drop",
       (e) => {
         e.preventDefault();
@@ -89,32 +75,22 @@ export default function () {
               return res.json();
             })
             .then((res: ReturnMessage) => {
-              console.log(res.error);
               setDragAndDropConfirmation({
                 displayed: true,
+                message: res.message,
                 error: {
                   etablissement: res.error.etablissement,
                   ramassage: res.error.ramassage,
                 },
+                success: {
+                  etablissement: res.success.etablissement,
+                  ramassage: res.success.ramassage,
+                },
               });
-              // addNewUserInformation({
-              //   displayed: true,
-              //   level: MessageLevelEnum.warning,
-              //   type: MessageTypeEnum.global,
-              //   content: DisplayListMessageContent(res.error.etablissement),
-              // });
             });
-          // if (true) {
-          //   const reader = new FileReader();
-          //   reader.onload = function (e) {
-          //     // get file content
-          //     const text = e.target.result;
-          //     console.log(text);
-          //   };
-          //   reader.readAsText(file);
-          // }
         }
-        mapDiv2.classList.remove("highlight");
+        mapDragDropDiv.classList.remove("highlight");
+        setPoints([]);
         fetchPointsRamassage();
       },
       false
@@ -123,8 +99,8 @@ export default function () {
   });
   return (
     <>
-      <div ref={mapDiv2}>
-        <div class="child">Drop here</div>
+      <div ref={mapDragDropDiv}>
+        <div class="child">Drop your file here</div>
       </div>
       <div ref={mapDiv} id="main-map" />
       <PointsRamassageAndEtablissement />

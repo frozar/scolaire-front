@@ -21,7 +21,6 @@ export default function () {
   const displayed = () => getDragAndDropConfirmation()["displayed"];
 
   function handlerOnClickValider() {
-    console.log("valider");
     closeDragAndDropConfirmationBox();
   }
 
@@ -52,7 +51,7 @@ export default function () {
           role="dialog"
           aria-modal="true"
         >
-          <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+          <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
 
           {/* Forum github pour les nested transitions
           https://github.com/reactjs/react-transition-group/issues/558 */}
@@ -133,22 +132,77 @@ export default function () {
                         class="text-base font-semibold leading-6 text-gray-900"
                         id="modal-title"
                       >
-                        Erreurs lors de l'importation
+                        Importation
                       </h3>
-                      <div class="mt-2">
-                        Établissements manquants :
-                        <p class="text-sm text-gray-500">
-                          {getDragAndDropConfirmation().error.etablissement.join(
-                            ", "
-                          )}
-                        </p>
-                        Lieux de ramassage manquants :
-                        <p class="text-sm text-gray-500">
-                          {getDragAndDropConfirmation().error.ramassage.join(
-                            ", "
-                          )}
-                        </p>
-                      </div>
+                      <Show when={getDragAndDropConfirmation().message != ""}>
+                        <div class="mt-2">
+                          <p class="text-sm text-gray-500">
+                            {getDragAndDropConfirmation().message}
+                          </p>
+                        </div>
+                      </Show>
+                      <Show
+                        when={
+                          getDragAndDropConfirmation().success.etablissement
+                            .length != 0
+                        }
+                      >
+                        <div class="mt-2">
+                          <p class="text-sm text-gray-500">
+                            Nombre d'établissement traité :
+                            {
+                              getDragAndDropConfirmation().success.etablissement
+                                .length
+                            }
+                          </p>
+                        </div>
+                      </Show>
+                      <Show
+                        when={
+                          getDragAndDropConfirmation().error.etablissement
+                            .length != 0
+                        }
+                      >
+                        <div class="mt-2">
+                          Établissements non-traités :
+                          <p class="text-sm text-gray-500">
+                            {getDragAndDropConfirmation().error.etablissement.join(
+                              ", "
+                            )}
+                          </p>
+                        </div>
+                      </Show>
+                      <Show
+                        when={
+                          getDragAndDropConfirmation().success.ramassage
+                            .length != 0
+                        }
+                      >
+                        <div class="mt-2">
+                          <p class="text-sm text-gray-500">
+                            Nombre de point de ramassage traité :
+                            {
+                              getDragAndDropConfirmation().success.ramassage
+                                .length
+                            }
+                          </p>
+                        </div>
+                      </Show>
+                      <Show
+                        when={
+                          getDragAndDropConfirmation().error.ramassage.length !=
+                          0
+                        }
+                      >
+                        <div class="mt-2">
+                          Lieux de ramassage non-traités :
+                          <p class="text-sm text-gray-500">
+                            {getDragAndDropConfirmation().error.ramassage.join(
+                              ", "
+                            )}
+                          </p>
+                        </div>
+                      </Show>
                     </div>
                   </div>
                   <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
@@ -160,13 +214,6 @@ export default function () {
                     >
                       OK
                     </button>
-                    {/* <button
-                      type="button"
-                      class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
-                      onClick={closeRemoveConfirmationBox}
-                    >
-                      Annuler
-                    </button> */}
                   </div>
                 </div>
               </div>

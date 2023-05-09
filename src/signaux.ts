@@ -65,13 +65,17 @@ export const [getRemoveConfirmation, setRemoveConfirmation] = createSignal({
 export const [getDragAndDropConfirmation, setDragAndDropConfirmation] =
   createSignal({
     displayed: false,
+    message: "",
     error: { etablissement: [], ramassage: [] },
+    success: { etablissement: [], ramassage: [] },
   }) as Signal<ReturnMessage>;
 
 export function closeDragAndDropConfirmationBox() {
   setDragAndDropConfirmation({
     displayed: false,
+    message: "",
     error: { etablissement: [], ramassage: [] },
+    success: { etablissement: [], ramassage: [] },
   });
 }
 

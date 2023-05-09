@@ -108,5 +108,7 @@ export type exportConfirmationType = {
   exportType: ExportTypeEnum | null;
 };
 export type ReturnMessage = {
+  message: string;
   error: { etablissement: string[]; ramassage: string[] };
+  success: { etablissement: string[]; ramassage: string[] };
 };
