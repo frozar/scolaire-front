@@ -78,6 +78,10 @@ export default function () {
               setDragAndDropConfirmation({
                 displayed: true,
                 message: res.message,
+                metrics: {
+                  total: res.metrics.total,
+                  success: res.metrics.success,
+                },
                 error: {
                   etablissement: res.error.etablissement,
                   ramassage: res.error.ramassage,

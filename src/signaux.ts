@@ -66,6 +66,7 @@ export const [getDragAndDropConfirmation, setDragAndDropConfirmation] =
   createSignal({
     displayed: false,
     message: "",
+    metrics: { total: 0, success: 0 },
     error: { etablissement: [], ramassage: [] },
     success: { etablissement: [], ramassage: [] },
   }) as Signal<ReturnMessage>;

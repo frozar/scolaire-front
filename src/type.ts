@@ -109,6 +109,7 @@ export type exportConfirmationType = {
 };
 export type ReturnMessage = {
   message: string;
+  metrics: { total: number; success: number };
   error: { etablissement: string[]; ramassage: string[] };
   success: { etablissement: string[]; ramassage: string[] };
 };

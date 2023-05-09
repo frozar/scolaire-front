@@ -141,18 +141,14 @@ export default function () {
                         </div>
                       </Show>
                       <Show
-                        when={
-                          getDragAndDropConfirmation().success.etablissement
-                            .length != 0
-                        }
+                        when={getDragAndDropConfirmation().metrics.total > 0}
                       >
                         <div class="mt-2">
                           <p class="text-sm text-gray-500">
-                            Nombre d'établissement traité :
-                            {
-                              getDragAndDropConfirmation().success.etablissement
-                                .length
-                            }
+                            Nombre d'éléments traités :
+                            {getDragAndDropConfirmation().metrics.success +
+                              "/" +
+                              getDragAndDropConfirmation().metrics.total}
                           </p>
                         </div>
                       </Show>
@@ -168,22 +164,6 @@ export default function () {
                             {getDragAndDropConfirmation().error.etablissement.join(
                               ", "
                             )}
-                          </p>
-                        </div>
-                      </Show>
-                      <Show
-                        when={
-                          getDragAndDropConfirmation().success.ramassage
-                            .length != 0
-                        }
-                      >
-                        <div class="mt-2">
-                          <p class="text-sm text-gray-500">
-                            Nombre de point de ramassage traité :
-                            {
-                              getDragAndDropConfirmation().success.ramassage
-                                .length
-                            }
                           </p>
                         </div>
                       </Show>
