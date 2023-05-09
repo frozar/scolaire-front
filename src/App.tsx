@@ -13,6 +13,7 @@ import {
   displayRemoveLineMessage,
 } from "./userInformation/utils";
 import { addBusLine } from "./request";
+import DragAndDrop from "./userInformation/DragAndDrop";
 
 const [
   ,
@@ -151,6 +152,7 @@ export default () => {
   return (
     <div ref={refApp}>
       <DisplayUserInformation />
+      <DragAndDrop />
       <RemoveConfirmation />
       <ExportConfirmation />
       <Menu />

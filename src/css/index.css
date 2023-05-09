@@ -1,4 +1,4 @@
-@import './menu.css';
+@import "./menu.css";
 
 @tailwind base;
 @tailwind components;
@@ -20,7 +20,9 @@ body {
   overflow-x: hidden;
 }
 
-#main-map *, #main-map::before, #main-map::after {
+#main-map *,
+#main-map::before,
+#main-map::after {
   box-sizing: border-box;
   border-width: 0;
   border-style: none;
@@ -183,12 +185,9 @@ code {
   font-weight: bold;
 }
 
-
-.d-user-informations{
+.d-user-informations {
   @apply absolute top-[20px] z-[999] w-full flex flex-col items-center;
 }
-
-
 
 @keyframes circle-animation-ramassage {
   0% {
@@ -224,8 +223,7 @@ code {
   animation: circle-animation-etablissement 1s infinite ease;
 }
 
-
-.logo-container{
+.logo-container {
   padding: 10px 8px;
 }
 
@@ -238,18 +236,39 @@ code {
   display: block;
   width: 100%;
   height: 2px;
-  background-color: hsla(0,0%,100%,.4);
-  animation: nav-notify-anim 6s linear
+  background-color: hsla(0, 0%, 100%, 0.4);
+  animation: nav-notify-anim 6s linear;
 }
 
 @keyframes nav-notify-anim {
   0% {
-      width: 100%
+    width: 100%;
   }
   to {
-      width: 0
+    width: 0;
   }
 }
 
+.dropbox {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  opacity: 0%;
+}
 
-
+.child {
+  background: rgb(145, 101, 21);
+  opacity: 1;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  pointer-events: none;
+}
+.highlight {
+  opacity: 100%;
+  background-color: hsl(180, 3%, 23%, 50%);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 1000;
+}

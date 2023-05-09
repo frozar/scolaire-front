@@ -107,3 +107,9 @@ export type exportConfirmationType = {
   displayed: boolean;
   exportType: ExportTypeEnum | null;
 };
+export type ReturnMessageType = {
+  message: string;
+  metrics: { total: number; success: number };
+  error: { etablissement: string[]; ramassage: string[] };
+  success: { etablissement: string[]; ramassage: string[] };
+};
