@@ -10,8 +10,13 @@ import { buildMapL7 } from "./l7MapBuilder";
 import BusLines from "./line/BusLines";
 import { useStateAction } from "./StateAction";
 import LineUnderConstruction from "./line/LineUnderConstruction";
-import { setDragAndDropConfirmation, setPoints } from "./signaux";
-import { ReturnMessage } from "./type";
+import {
+  disableSpinningWheel,
+  enableSpinningWheel,
+  setDragAndDropConfirmation,
+  setPoints,
+} from "./signaux";
+import { ReturnMessageType } from "./type";
 const [, { isInAddLineMode }] = useStateAction();
 
 function buildMap(div: HTMLDivElement) {
@@ -61,6 +66,7 @@ export default function () {
       "drop",
       (e) => {
         e.preventDefault();
+        enableSpinningWheel();
         const files = e.target.files || e.dataTransfer.files;
 
         // process all File objects
@@ -74,7 +80,7 @@ export default function () {
             .then((res) => {
               return res.json();
             })
-            .then((res: ReturnMessage) => {
+            .then((res: ReturnMessageType) => {
               setDragAndDropConfirmation({
                 displayed: true,
                 message: res.message,
@@ -93,6 +99,7 @@ export default function () {
               });
               setPoints([]);
               fetchPointsRamassage();
+              disableSpinningWheel();
             });
         }
         mapDragDropDiv.classList.remove("highlight");

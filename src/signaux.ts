@@ -11,7 +11,7 @@ import {
   exportConfirmationType,
   removeConfirmationType,
   userInformationType,
-  ReturnMessage,
+  ReturnMessageType,
 } from "./type";
 import { deepCopy } from "./utils";
 
@@ -69,7 +69,7 @@ export const [getDragAndDropConfirmation, setDragAndDropConfirmation] =
     metrics: { total: 0, success: 0 },
     error: { etablissement: [], ramassage: [] },
     success: { etablissement: [], ramassage: [] },
-  }) as Signal<ReturnMessage>;
+  }) as Signal<ReturnMessageType>;
 
 export function closeDragAndDropConfirmationBox() {
   setDragAndDropConfirmation({

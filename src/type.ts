@@ -107,7 +107,7 @@ export type exportConfirmationType = {
   displayed: boolean;
   exportType: ExportTypeEnum | null;
 };
-export type ReturnMessage = {
+export type ReturnMessageType = {
   message: string;
   metrics: { total: number; success: number };
   error: { etablissement: string[]; ramassage: string[] };
