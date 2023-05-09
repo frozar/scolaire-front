@@ -3,7 +3,6 @@ import { Transition } from "solid-transition-group";
 
 import ClickOutside from "../ClickOutside";
 import {
-  closeRemoveConfirmationBox,
   getDragAndDropConfirmation,
   closeDragAndDropConfirmationBox,
 } from "../signaux";

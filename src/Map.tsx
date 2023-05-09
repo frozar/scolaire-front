@@ -87,11 +87,11 @@ export default function () {
                   ramassage: res.success.ramassage,
                 },
               });
+              setPoints([]);
+              fetchPointsRamassage();
             });
         }
         mapDragDropDiv.classList.remove("highlight");
-        setPoints([]);
-        fetchPointsRamassage();
       },
       false
     );
