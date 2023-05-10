@@ -17,6 +17,8 @@ import {
   setPoints,
 } from "./signaux";
 import { ReturnMessageType } from "./type";
+import ControlMapMenu from "./components/ControlMapMenu";
+
 const [, { isInAddLineMode }] = useStateAction();
 
 function buildMap(div: HTMLDivElement) {
@@ -119,6 +121,7 @@ export default function () {
         <LineUnderConstruction />
       </Show>
       <BusLines />
+      <ControlMapMenu />
     </>
   );
 }
