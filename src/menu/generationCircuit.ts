@@ -95,25 +95,43 @@ export function generateCircuit(nbVehicles: number) {
       etablissement_ids: etablissementIds,
       num_vehicles: nbVehicles,
     }),
-  }).then(async (res) => {
-    const data = await res.json();
-    for (const route of data) {
-      const idsPoint = route["steps"].map(
-        (step: {
-          load: number;
-          distance: number;
-          id: number;
-          id_point: number;
-          nature: string;
-        }) => step["id_point"]
-      );
+  })
+    .then(async (res) => {
+      const data = await res.json();
+      for (const route of data) {
+        const idsPoint = route["steps"].map(
+          (step: {
+            load: number;
+            distance: number;
+            id: number;
+            id_point: number;
+            nature: string;
+          }) => step["id_point"]
+        );
 
-      const res = await addBusLine(idsPoint);
+        const res = await addBusLine(idsPoint);
 
-      await res.json();
-      setModeRead();
-      fetchBusLines();
+        await res.json();
+        setModeRead();
+        fetchBusLines();
+        disableSpinningWheel();
+      }
+    })
+    .catch((e) => {
+      const nbRamassage = ramassageIds.length;
+      const nbEtablissement = etablissementIds.length;
+      addNewUserInformation({
+        displayed: true,
+        level: MessageLevelEnum.error,
+        type: MessageTypeEnum.global,
+        content:
+          "Erreur lors de la génération de circuit. [ramassage:" +
+          String(nbRamassage) +
+          ", etablissement:" +
+          String(nbEtablissement) +
+          "]",
+      });
+      console.error("Error:", e);
       disableSpinningWheel();
-    }
-  });
+    });
 }
