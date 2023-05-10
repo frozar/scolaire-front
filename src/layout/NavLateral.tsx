@@ -10,28 +10,34 @@ import {
   LateralMenuSettingsLogo,
   LateralMenuSupportLogo,
 } from "../export/Logos";
-import { Show } from "solid-js";
+import { Show, createEffect, onMount } from "solid-js";
 import { useStateGui } from "../StateGui";
 import { For } from "solid-js";
 
-const [stateGui, { toggleDisplayedMenu }] = useStateGui();
+const [stateGui, { toggleDisplayedMenu, setOnWindow }] = useStateGui();
 
 function MenuItems(props: any) {
   const { title, logo, url } = props;
+
   const MenuOnClick = () => {
-    window.location.href = url;
+    setOnWindow(url);
   };
 
-  let url_basename = location.pathname.split("/");
-  url_basename = url_basename[url_basename.length - 1];
+  document.addEventListener("DOMContentLoaded", function () {
+    const item_el = document.getElementById("window_" + url);
+    console.log(item_el);
 
-  let _class = "lateral-nav-item";
-  if (url_basename == url) {
-    _class += " active";
-  }
+    createEffect(() => {
+      if (stateGui.onWindow == url) {
+        item_el?.classList.add("active");
+      } else {
+        item_el?.classList.remove("active");
+      }
+    });
+  });
 
   return (
-    <li class={_class} onclick={MenuOnClick}>
+    <li id={"window_" + url} class="lateral-nav-item" onclick={MenuOnClick}>
       {logo}
       <Show when={stateGui.displayedMenu == true}>{title}</Show>
       {/* <Show when={url_basename == url}>
@@ -45,12 +51,12 @@ export default function () {
   // [ComponentsLogo, title, url]
   const menu_items = [
     // [LateralMenuDashboardLogo, "Dashboard", "dashboard"],
-    [LateralMenuGraphicageLogo, "Graphicage", ""],
-    // [LateralMenuVoirieLogo, "Voirie", "voirie"],
-    // [LateralMenuEtablissementLogo, "Établissements", "etablissements"],
-    // [LateralMenuArretsLogo, "Arrêts", "arrets"],
-    // [LateralMenuSettingsLogo, "Paramètres", "parametres"],
-    // [LateralMenuSupportLogo, "Support", "support"],
+    [LateralMenuGraphicageLogo, "Graphicage", "graphicage"],
+    [LateralMenuVoirieLogo, "Voirie", "voirie"],
+    [LateralMenuEtablissementLogo, "Établissements", "etablissements"],
+    [LateralMenuArretsLogo, "Arrêts", "arrets"],
+    [LateralMenuSettingsLogo, "Paramètres", "parametres"],
+    [LateralMenuSupportLogo, "Support", "support"],
   ];
 
   return (
