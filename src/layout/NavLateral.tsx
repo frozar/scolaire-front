@@ -25,7 +25,6 @@ function MenuItems(props: any) {
 
   document.addEventListener("DOMContentLoaded", function () {
     const item_el = document.getElementById("window_" + url);
-    console.log(item_el);
 
     createEffect(() => {
       if (stateGui.onWindow == url) {
@@ -40,9 +39,6 @@ function MenuItems(props: any) {
     <li id={"window_" + url} class="lateral-nav-item" onclick={MenuOnClick}>
       {logo}
       <Show when={stateGui.displayedMenu == true}>{title}</Show>
-      {/* <Show when={url_basename == url}>
-        <div className="bubble-menu"></div>
-      </Show> */}
     </li>
   );
 }
@@ -74,7 +70,11 @@ export default function () {
         </For>
       </ul>
 
-      <button id="lateral-close" onclick={toggleDisplayedMenu}>
+      <button
+        id="lateral-close"
+        onclick={toggleDisplayedMenu}
+        class={stateGui.displayedMenu}
+      >
         <Show when={stateGui.displayedMenu} fallback={<OpenLateralMenuLogo />}>
           <CloseLateralMenuLogo />
         </Show>
