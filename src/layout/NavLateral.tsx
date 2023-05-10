@@ -48,7 +48,7 @@ export default function () {
 
       <ul class="lateral-nav-list">
         <For each={menu_items}>
-          {(item, i) => <MenuItems title={item[1]} logo={item[0]} />}
+          {(item) => <MenuItems title={item[1]} logo={item[0]} />}
         </For>
       </ul>
 
