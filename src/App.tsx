@@ -157,21 +157,24 @@ export default () => {
       <NavTop />
 
       <div id="app-content">
-        <NavLateral />
-
         <Router>
+          <NavLateral />
           <Routes>
             <Route path="/graphicage" component={Map} />
             <Route path="/graphicage" component={Map} />
           </Routes>
         </Router>
       </div>
+
+      <RemoveConfirmation />
+      <ExportConfirmation />
+      <SpinningWheel />
     </div>
 
     // <div ref={refApp}>
     //   {/* <DisplayUserInformation />
-    //   <RemoveConfirmation />
-    //   <ExportConfirmation />
+    //
+    //
     //   <Menu />
     //   <Map />
     //   <SpinningWheel /> */}
