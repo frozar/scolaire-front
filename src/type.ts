@@ -71,6 +71,7 @@ export enum MessageLevelEnum {
 
 export enum ExportTypeEnum {
   gtfs,
+  csv,
   image,
 }
 

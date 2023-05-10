@@ -1,4 +1,4 @@
-import { Match, Show, Switch, createSignal } from "solid-js";
+import { For, Match, Show, Switch, createSignal } from "solid-js";
 import ClickOutside from "../ClickOutside";
 import {
   closeExportConfirmationBox,
@@ -26,9 +26,12 @@ const [selected, setSelected] = createSignal<string | null>(null);
 function ExportTypeSelect() {
   return (
     <div class="export-select">
-      {Object.values(ExportTypeEnum)
-        .filter((exportType) => typeof exportType === "string")
-        .map((exportType) => {
+      <For
+        each={Object.values(ExportTypeEnum).filter(
+          (exportType) => typeof exportType === "string"
+        )}
+      >
+        {(exportType) => {
           return (
             <div
               id="export-type"
@@ -48,6 +51,9 @@ function ExportTypeSelect() {
                   <Match when={exportType === "gtfs"}>
                     <GtfsExportLogo />
                   </Match>
+                  <Match when={exportType === "csv"}>
+                    <GtfsExportLogo />
+                  </Match>
                   <Match when={exportType === "image"}>
                     <ImageExportLogo />
                   </Match>
@@ -56,7 +62,8 @@ function ExportTypeSelect() {
               <div class="text-center text-base">{exportType}</div>
             </div>
           );
-        })}
+        }}
+      </For>
     </div>
   );
 }
