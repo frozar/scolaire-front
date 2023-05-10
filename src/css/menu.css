@@ -65,14 +65,14 @@
 }
 
 .menu-btn {
-  @apply absolute top-[20px]  z-[999] outline-none cursor-pointer;
+  @apply top-[20px]  z-[999] outline-none cursor-pointer;
 }
 
 .export-btn {
-  @apply fixed bottom-0 right-0 p-2 m-4 mr-1 z-[999];
+  @apply bottom-0 right-0 menu-btn;
 
   > button {
-    @apply bg-white bg-opacity-90 border-none text-black hover:bg-white font-bold py-2 px-4 rounded btn;
+    @apply bg-white bg-opacity-90 border-none text-black hover:bg-white font-bold  rounded btn-circle;
   }
 }
 
@@ -278,7 +278,7 @@
     }
 
     > .lateral-nav-list {
-      margin-top: 10px;
+      margin: auto 0;
 
       > .lateral-nav-item {
         @apply gap-2 px-4 py-[15px];
@@ -286,6 +286,21 @@
         display: flex;
         align-items: center;
         cursor: pointer;
+
+        &.active {
+          background-color: #083d52;
+        }
+
+        > .bubble-menu {
+          position: absolute;
+          content: " ";
+          background-color: red;
+          width: 26px;
+          height: 26px;
+          border-radius: 50%;
+          transform: translateX(160px);
+          z-index: 999;
+        }
       }
 
       > .lateral-nav-item:hover {
@@ -297,4 +312,18 @@
       bottom: 10px;
     }
   }
+}
+
+#control-map-menu {
+  position: absolute;
+  top: 45%;
+  right: 15px;
+  z-index: 999;
+  background-color: #aeb8b4;
+  padding: 10px 15px;
+  border-radius: 5px;
+  color: #062f3f;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
