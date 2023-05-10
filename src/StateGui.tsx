@@ -5,6 +5,7 @@ import { TileId } from "./type";
 
 type StateGuiType = {
   displayedMenu: boolean;
+  onWindow: string;
   selectedTab: string;
   displayedRightMenu: boolean;
   selectedReadModeTile: TileId;
@@ -14,6 +15,7 @@ type StateGuiType = {
 const makeStateGuiContext = () => {
   const defaultStateGui: StateGuiType = {
     displayedMenu: false,
+    onWindow: "graphicage",
     selectedTab: "info",
     displayedRightMenu: false,
     selectedReadModeTile: "OpenStreetMap_Mapnik",
@@ -71,6 +73,10 @@ const makeStateGuiContext = () => {
     return state.displayedRightMenu;
   }
 
+  function setOnWindow(window: string) {
+    setState("onWindow", window);
+  }
+
   return [
     state,
     {
@@ -82,6 +88,7 @@ const makeStateGuiContext = () => {
       getSelectedEditModeTile,
       toggleDisplayedRightMenu,
       getDisplayedRightMenu,
+      setOnWindow,
     },
   ] as const;
 };
