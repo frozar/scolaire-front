@@ -14,6 +14,8 @@ import { Show, createEffect, onMount } from "solid-js";
 import { useStateGui } from "../StateGui";
 import { For } from "solid-js";
 
+import logo from "../assets/favicon.ico";
+
 const [stateGui, { toggleDisplayedMenu, setOnWindow }] = useStateGui();
 
 function MenuItems(props: any) {
@@ -59,6 +61,7 @@ export default function () {
     <nav id="lateral-nav" class={stateGui.displayedMenu}>
       <div class="lateral-nav-header">
         <EnterpriseLogo />
+        <img src={logo} alt="Flaxib logo" />
         <Show when={stateGui.displayedMenu}>
           <strong>FLAXIB</strong>
         </Show>
