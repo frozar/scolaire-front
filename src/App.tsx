@@ -14,6 +14,8 @@ import {
 } from "./userInformation/utils";
 import { addBusLine } from "./request";
 import DragAndDrop from "./userInformation/DragAndDrop";
+import NavTop from "./layout/NavTop";
+import NavLateral from "./layout/NavLateral";
 
 const [
   ,
@@ -151,13 +153,21 @@ export default () => {
 
   return (
     <div ref={refApp}>
-      <DisplayUserInformation />
-      <DragAndDrop />
-      <RemoveConfirmation />
-      <ExportConfirmation />
-      <Menu />
-      <Map />
-      <SpinningWheel />
+      <NavTop />
+
+      <div id="app-content">
+        <NavLateral />
+        content of app
+      </div>
     </div>
+
+    // <div ref={refApp}>
+    //   {/* <DisplayUserInformation />
+    //   <RemoveConfirmation />
+    //   <ExportConfirmation />
+    //   <Menu />
+    //   <Map />
+    //   <SpinningWheel /> */}
+    // </div>
   );
 };
