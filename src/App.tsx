@@ -16,6 +16,7 @@ import { addBusLine } from "./request";
 import DragAndDrop from "./userInformation/DragAndDrop";
 import NavTop from "./layout/NavTop";
 import NavLateral from "./layout/NavLateral";
+import { Router, Route, Routes } from "@solidjs/router";
 
 const [
   ,
@@ -157,7 +158,13 @@ export default () => {
 
       <div id="app-content">
         <NavLateral />
-        content of app
+
+        <Router>
+          <Routes>
+            <Route path="/graphicage" component={Map} />
+            <Route path="/graphicage" component={Map} />
+          </Routes>
+        </Router>
       </div>
     </div>
 
