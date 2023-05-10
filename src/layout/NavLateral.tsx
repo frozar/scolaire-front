@@ -52,11 +52,11 @@ export default function () {
   const menu_items = [
     // [LateralMenuDashboardLogo, "Dashboard", "dashboard"],
     [LateralMenuGraphicageLogo, "Graphicage", "graphicage"],
-    [LateralMenuVoirieLogo, "Voirie", "voirie"],
-    [LateralMenuEtablissementLogo, "Établissements", "etablissements"],
-    [LateralMenuArretsLogo, "Arrêts", "arrets"],
-    [LateralMenuSettingsLogo, "Paramètres", "parametres"],
-    [LateralMenuSupportLogo, "Support", "support"],
+    // [LateralMenuVoirieLogo, "Voirie", "voirie"],
+    // [LateralMenuEtablissementLogo, "Établissements", "etablissements"],
+    // [LateralMenuArretsLogo, "Arrêts", "arrets"],
+    // [LateralMenuSettingsLogo, "Paramètres", "parametres"],
+    // [LateralMenuSupportLogo, "Support", "support"],
   ];
 
   return (
