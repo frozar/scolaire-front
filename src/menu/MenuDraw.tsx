@@ -27,7 +27,7 @@ export default function () {
   let refLabelMenu: HTMLLabelElement | undefined;
 
   return (
-    <div class="menu-btn left-[80px]">
+    <div class="menu-btn">
       <label
         ref={refLabelMenu}
         tabIndex={0}
@@ -67,7 +67,7 @@ export default function () {
           <ul
             ref={refDrawnMenu}
             tabIndex={0}
-            class="absolute menu p-2 shadow bg-base-100 rounded-box w-52"
+            class="absolute menu p-2 shadow bg-base-100 rounded-box w-52 translate-x-[-200px] translate-y-[-120px] text-white"
             use:ClickOutside={(e: MouseEvent) => {
               if (!refLabelMenu || !refDrawnMenu || !e.target) {
                 return;
