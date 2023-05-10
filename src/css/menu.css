@@ -267,7 +267,7 @@
 
 @layer components {
   #lateral-nav {
-    @apply bg-[#062F3F] text-white h-[100vh] w-[70px]  translate-y-[-60px] mr-3 flex-col flex items-center pt-3;
+    @apply bg-[#062F3F] text-white h-[100vh] w-[70px]  translate-y-[-60px]  flex-col flex items-center pt-3;
     transition-duration: 400ms;
     &.true {
       width: 200px;
