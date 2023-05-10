@@ -60,7 +60,6 @@ export default function () {
   return (
     <nav id="lateral-nav" class={stateGui.displayedMenu}>
       <div class="lateral-nav-header">
-        <EnterpriseLogo />
         <img src={logo} alt="Flaxib logo" />
         <Show when={stateGui.displayedMenu}>
           <strong>FLAXIB</strong>
