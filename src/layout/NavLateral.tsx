@@ -44,13 +44,13 @@ function MenuItems(props: any) {
 export default function () {
   // [ComponentsLogo, title, url]
   const menu_items = [
-    [LateralMenuDashboardLogo, "Dashboard", "dashboard"],
-    [LateralMenuGraphicageLogo, "Graphicage", "graphicage"],
-    [LateralMenuVoirieLogo, "Voirie", "voirie"],
-    [LateralMenuEtablissementLogo, "Établissements", "etablissements"],
-    [LateralMenuArretsLogo, "Arrêts", "arrets"],
-    [LateralMenuSettingsLogo, "Paramètres", "parametres"],
-    [LateralMenuSupportLogo, "Support", "support"],
+    // [LateralMenuDashboardLogo, "Dashboard", "dashboard"],
+    [LateralMenuGraphicageLogo, "Graphicage", ""],
+    // [LateralMenuVoirieLogo, "Voirie", "voirie"],
+    // [LateralMenuEtablissementLogo, "Établissements", "etablissements"],
+    // [LateralMenuArretsLogo, "Arrêts", "arrets"],
+    // [LateralMenuSettingsLogo, "Paramètres", "parametres"],
+    // [LateralMenuSupportLogo, "Support", "support"],
   ];
 
   return (
