@@ -10,7 +10,8 @@
   user-select: none; /* Standard syntax */
 }
 
-body, html{
+body,
+html {
   overflow-y: hidden;
 }
 
@@ -40,7 +41,7 @@ code {
 
 #main-map {
   width: 100vw;
-  height: 100vh;
+  height: calc(100vh - 60px);
 }
 
 #app-content {
