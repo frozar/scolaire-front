@@ -173,20 +173,12 @@ export default () => {
             <Map />
           </Match>
         </Switch>
+
+        <DisplayUserInformation />
+        <RemoveConfirmation />
+        <ExportConfirmation />
+        <SpinningWheel />
       </div>
-
-      <RemoveConfirmation />
-      <ExportConfirmation />
-      <SpinningWheel />
     </div>
-
-    // <div ref={refApp}>
-    //   {/* <DisplayUserInformation />
-    //
-    //
-    //   <Menu />
-    //   <Map />
-    //   <SpinningWheel /> */}
-    // </div>
   );
 };
