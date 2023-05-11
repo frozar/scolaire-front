@@ -17,7 +17,7 @@ function download(fileame: string, blob: Blob) {
 
 export function exportCsv() {
   displayOnGoingDownloadMessage();
-  fetch(import.meta.env.VITE_BACK_URL + "/input.zip")
+  fetch(import.meta.env.VITE_BACK_URL + "/export/input")
     .then((response) => {
       if (!response.ok) {
         displayDownloadErrorMessage();
