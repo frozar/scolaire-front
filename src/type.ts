@@ -117,7 +117,6 @@ export type ReturnMessageType = {
 export type selectedMenuType = "graphicage";
 
 export type menuItemType = {
-  Logo: () => JSX.Element;
   title: string;
   menuItem: selectedMenuType;
 };

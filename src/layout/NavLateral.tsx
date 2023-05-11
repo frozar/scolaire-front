@@ -2,15 +2,15 @@ import {
   EnterpriseLogo,
   OpenLateralMenuLogo,
   CloseLateralMenuLogo,
-  // LateralMenuDashboardLogo,
   LateralMenuGraphicageLogo,
+  // LateralMenuDashboardLogo,
   // LateralMenuVoirieLogo,
   // LateralMenuEtablissementLogo,
   // LateralMenuArretsLogo,
   // LateralMenuSettingsLogo,
   // LateralMenuSupportLogo,
 } from "../export/Logos";
-import { Show } from "solid-js";
+import { Match, Show, Switch } from "solid-js";
 import { useStateGui } from "../StateGui";
 import { For } from "solid-js";
 
@@ -22,20 +22,21 @@ const [
 ] = useStateGui();
 
 function MenuItems(props: menuItemType) {
-  const { Logo, title, menuItem: url } = props;
-
-  const onClickHandler = () => {
-    setSelectedMenu(url);
-  };
-
   return (
     <li
       class="lateral-nav-item"
-      classList={{ active: getSelectedMenu() === url }}
-      onClick={onClickHandler}
+      classList={{ active: getSelectedMenu() === props.menuItem }}
+      onClick={() => {
+        setSelectedMenu(props.menuItem);
+      }}
     >
-      <Logo />
-      <Show when={getDisplayedMenu() == true}>{title}</Show>
+      <Switch fallback={<p>Page not found</p>}>
+        <Match when={getSelectedMenu() == "graphicage"}>
+          <LateralMenuGraphicageLogo />
+        </Match>
+      </Switch>
+
+      <Show when={getDisplayedMenu() == true}>{props.title}</Show>
     </li>
   );
 }
@@ -43,10 +44,15 @@ function MenuItems(props: menuItemType) {
 export default function () {
   const menuItems: menuItemType[] = [
     {
-      Logo: LateralMenuGraphicageLogo,
       title: "Graphicage",
       menuItem: "graphicage",
     },
+    // const menuItems: menuItemTypeMock[] = [
+    //   {
+    //     Logo: "toto",
+    //     title: "toto",
+    //     menuItem: "toto",
+    //   },
     // [LateralMenuDashboardLogo, "Dashboard", "dashboard"],
     // [LateralMenuVoirieLogo, "Voirie", "voirie"],
     // [LateralMenuEtablissementLogo, "Établissements", "etablissements"],
@@ -64,8 +70,8 @@ export default function () {
       <ul class="lateral-nav-list">
         <For each={menuItems}>
           {(menuItemArg) => {
-            const { Logo, title, menuItem } = menuItemArg;
-            return <MenuItems Logo={Logo} title={title} menuItem={menuItem} />;
+            const { title, menuItem } = menuItemArg;
+            return <MenuItems title={title} menuItem={menuItem} />;
           }}
         </For>
       </ul>
