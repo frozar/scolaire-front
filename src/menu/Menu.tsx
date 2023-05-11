@@ -114,7 +114,7 @@ function SettingsName() {
   return <span>Paramètres</span>;
 }
 
-export function MenuContent() {
+export function InformationBoard() {
   type TabValueType = {
     // @ts-expect-error
     tabLabel: (props: any) => JSX.Element;
