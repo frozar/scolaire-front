@@ -11,6 +11,68 @@ type PointToDisplayType = {
   quantity: number;
 };
 
+type Item = {
+  hour: string;
+  name: string;
+  caption: string | null;
+};
+
+function Timeline_item(props: Item) {
+  return (
+    <div
+      class="v-timeline-item"
+      style="--v-timeline-dot-size:30px; --v-timeline-line-inset:0px;"
+    >
+      <div class="v-timeline-item__body">
+        <div class="d-flex">
+          <strong class="me-4">{props.hour}</strong>
+          <div>
+            <strong>{props.name}</strong>
+            <Show when={props.caption != null}>
+              <div class="text-caption"> {props.caption} </div>
+            </Show>
+          </div>
+        </div>
+      </div>
+      <div class="v-timeline-divider">
+        <div class="v-timeline-divider__before"></div>
+        <div class="v-timeline-divider__dot v-timeline-divider__dot--size-small">
+          <div class="v-timeline-divider__inner-dot bg-pink">
+            <i class="" aria-hidden="true"></i>
+          </div>
+        </div>
+        <div class="v-timeline-divider__after"></div>
+      </div>
+    </div>
+  );
+}
+
+function Timeline(stopsName: any) {
+  console.log(stopsName.stopsName);
+  return (
+    <div class="pa-4">
+      <div
+        class="v-timeline v-timeline--align-start v-timeline--justify-auto v-timeline--side-end v-timeline--vertical"
+        style="--v-timeline-line-thickness:2px;"
+      >
+        <For each={stopsName.stopsName}>
+          {(stop) => (
+            <Timeline_item hour="heure" name={stop} caption="description" />
+          )}
+        </For>
+        {/* <Timeline_item hour="5pm" name="New Icon" caption="Mobile app" />
+        <Timeline_item hour="12pm" name="Lunch break" caption={null} />
+        <Timeline_item hour="5pm" name="New Icon" caption={null} />
+        <Timeline_item
+          hour="9-11am"
+          name="Finish Home Screen"
+          caption="Web App"
+        /> */}
+      </div>
+    </div>
+  );
+}
+
 export default function () {
   const selectedIdentity = createMemo<PointIdentityType | null>(() => {
     const wkSelectedElement = selectedElement();
@@ -128,24 +190,25 @@ export default function () {
     // console.log(stops[0].stops);
     // console.log(busLines());
 
-    console.log(points());
+    // console.log(points());
     // Recup nom des arrêts dans points()
-    console.log(listeStops);
+    // console.log(listeStops);
     const stopsName = points().filter((point) =>
       listeStops.includes(point.id_point)
     );
     const stopNameList = mapFunction2(stopsName, lenStops);
-    console.log(stopsName);
+    // console.log(stopsName);
     console.log(stopNameList);
     return stopNameList;
 
-    // Mettre en place un createEffect()
+    // Mettre en place un composant
   };
   return (
     <div style="display: flex; flex-direction: column; align-items: center;">
       <Show when={busLineSelected()}>
         <div>{String(getPointRamassageName(busLineSelected()))}</div>
         <div>test</div>
+        <Timeline stopsName={getPointRamassageName(busLineSelected())} />
       </Show>
       <Show
         when={selectedElement()}
