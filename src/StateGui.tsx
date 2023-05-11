@@ -10,6 +10,7 @@ type StateGuiType = {
   displayedRightMenu: boolean;
   selectedReadModeTile: TileId;
   selectedEditModeTile: TileId;
+  displayedInformationBoard: boolean;
 };
 
 const makeStateGuiContext = () => {
@@ -20,6 +21,7 @@ const makeStateGuiContext = () => {
     displayedRightMenu: false,
     selectedReadModeTile: "OpenStreetMap_Mapnik",
     selectedEditModeTile: "Stadia_AlidadeSmoothDark",
+    displayedInformationBoard: false,
   };
 
   const stateGuiString = localStorage.getItem("stateGui");
@@ -85,6 +87,17 @@ const makeStateGuiContext = () => {
     return state.displayedMenu;
   }
 
+  function getDisplayedInformationBoard() {
+    return state.displayedInformationBoard;
+  }
+
+  function toggleDisplayedInformationBoard() {
+    setStateWrapper(
+      "displayedInformationBoard",
+      (currentValue: boolean) => !currentValue
+    );
+  }
+
   return [
     state,
     {
@@ -99,6 +112,8 @@ const makeStateGuiContext = () => {
       setSelectedMenu,
       getSelectedMenu,
       getDisplayedMenu,
+      getDisplayedInformationBoard,
+      toggleDisplayedInformationBoard,
     },
   ] as const;
 };
