@@ -113,3 +113,11 @@ export type ReturnMessageType = {
   error: { etablissement: string[]; ramassage: string[] };
   success: { etablissement: string[]; ramassage: string[] };
 };
+
+export type selectedMenuType = "graphicage";
+
+export type menuItemType = {
+  Logo: () => JSX.Element;
+  title: string;
+  menuItem: selectedMenuType;
+};

@@ -1,11 +1,11 @@
 import _ from "lodash";
 import { createContext, useContext } from "solid-js";
 import { createStore } from "solid-js/store";
-import { TileId } from "./type";
+import { TileId, selectedMenuType } from "./type";
 
 type StateGuiType = {
   displayedMenu: boolean;
-  selectedMenu: string;
+  selectedMenu: selectedMenuType;
   selectedTab: string;
   displayedRightMenu: boolean;
   selectedReadModeTile: TileId;
@@ -33,7 +33,7 @@ const makeStateGuiContext = () => {
   const [state, setState] = createStore(initStateGui);
 
   function setStateWrapper(...args: any[]): void {
-    // @ts-expect-error
+    // eslint-disable-next-line prefer-spread
     setState.apply(null, args);
     localStorage.setItem("stateGui", JSON.stringify(state));
   }
@@ -73,8 +73,8 @@ const makeStateGuiContext = () => {
     return state.displayedRightMenu;
   }
 
-  function setSelectedMenu(window: string) {
-    setState("selectedMenu", window);
+  function setSelectedMenu(itemMenu: selectedMenuType) {
+    setState("selectedMenu", itemMenu);
   }
 
   function getSelectedMenu() {
