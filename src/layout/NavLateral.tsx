@@ -68,11 +68,7 @@ export default function () {
         </For>
       </ul>
 
-      <button
-        id="lateral-close"
-        onclick={toggleDisplayedMenu}
-        class={getDisplayedMenu()}
-      >
+      <button id="lateral-close" onclick={toggleDisplayedMenu}>
         <Show when={getDisplayedMenu()} fallback={<OpenLateralMenuLogo />}>
           <CloseLateralMenuLogo />
         </Show>
