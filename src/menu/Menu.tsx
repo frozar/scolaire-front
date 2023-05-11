@@ -1,20 +1,15 @@
 import { Dynamic } from "solid-js/web";
-import { createEffect, For } from "solid-js";
-import MenuDraw from "./MenuDraw";
-import MenuDelete from "./MenuRemoveLine";
+import { For } from "solid-js";
 import InformationContent from "../InformationContent";
-import SideMapMenu from "./SideMenuMap";
 
 import { useStateAction } from "../StateAction";
 import { useStateGui } from "../StateGui";
-import ExportButton from "../export/ExportButton";
 import { ControlMapMenuInformationBoardLogo } from "../export/Logos";
 
 const [stateAction, { toggleAltimetryAnimation }] = useStateAction();
 const [
   stateGui,
   {
-    toggleDisplayedMenu,
     setSelectedTab,
     getDisplayedInformationBoard,
     getDisplayedMenu,
@@ -170,16 +165,3 @@ export function InformationBoard() {
     </div>
   );
 }
-
-// export default function () {
-//   return (
-//     <>
-//       <MenuToggler />
-//       <MenuContent />
-//       <MenuDraw />
-//       <MenuDelete />
-//       <ExportButton />
-//       <SideMapMenu />
-//     </>
-//   );
-// }
