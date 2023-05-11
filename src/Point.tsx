@@ -104,10 +104,11 @@ export default function (props: any) {
     const lonlat = location.split("(")[1].split(")")[0];
     const lon = Number(lonlat.split(" ")[0]);
     const lat = Number(lonlat.split(" ")[1]);
-    const radiusValue =
-      ((point.quantity - minMaxQty()[0]) / (minMaxQty()[1] - minMaxQty()[0])) *
-        range +
-      minSizeValue;
+    const coef =
+      minMaxQty()[0] == minMaxQty()[1]
+        ? 0
+        : (point.quantity - minMaxQty()[0]) / (minMaxQty()[1] - minMaxQty()[0]);
+    const radiusValue = coef * range + minSizeValue;
     const { nature } = point;
     const [color, fillColor, radius, weight] =
       nature === NatureEnum.ramassage
