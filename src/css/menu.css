@@ -286,7 +286,7 @@
 
     > .lateral-nav-list {
       margin: 20vh 0;
-
+      width: 100%;
       > .lateral-nav-item {
         @apply gap-2 px-4 py-[15px];
         border-radius: 5px;
@@ -295,7 +295,7 @@
         cursor: pointer;
         position: relative;
         padding-right: 13px;
-
+        width: 100%;
         &::after {
           content: "";
           width: 13px;
@@ -308,7 +308,7 @@
         }
 
         &.active {
-          background-color: #083d52;
+          color: #0cc683;
         }
       }
 
@@ -319,11 +319,7 @@
     > #lateral-close {
       position: absolute;
       bottom: 10px;
-      left: 70%;
-
-      &.false {
-        left: 40%;
-      }
+      right: 10%;
     }
   }
 }
