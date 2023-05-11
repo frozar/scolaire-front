@@ -24,24 +24,17 @@ const [
 function MenuItems(props: any) {
   const { title, logo, url } = props;
 
-  const MenuOnClick = () => {
+  const onClickHandler = () => {
     setSelectedMenu(url);
   };
 
-  document.addEventListener("DOMContentLoaded", function () {
-    const item_el = document.getElementById("window_" + url);
-
-    createEffect(() => {
-      if (getSelectedMenu() == url) {
-        item_el?.classList.add("active");
-      } else {
-        item_el?.classList.remove("active");
-      }
-    });
-  });
-
   return (
-    <li id={"window_" + url} class="lateral-nav-item" onclick={MenuOnClick}>
+    <li
+      id={"window_" + url}
+      class="lateral-nav-item"
+      classList={{ active: getSelectedMenu() === url }}
+      onClick={onClickHandler}
+    >
       {logo}
       <Show when={getDisplayedMenu() == true}>{title}</Show>
     </li>
