@@ -8,6 +8,7 @@ import SideMapMenu from "./SideMenuMap";
 import { useStateAction } from "../StateAction";
 import { useStateGui } from "../StateGui";
 import ExportButton from "../export/ExportButton";
+import { ControlMapMenuInformationBoardLogo } from "../export/Logos";
 
 const [stateAction, { toggleAltimetryAnimation }] = useStateAction();
 const [
@@ -17,33 +18,17 @@ const [
     setSelectedTab,
     getDisplayedInformationBoard,
     getDisplayedMenu,
+    toggleDisplayedInformationBoard,
   },
 ] = useStateGui();
 
 let refMenuContent: any;
-let refMenuToggler: any;
 
-function MenuToggler() {
-  createEffect(() => {
-    if (stateGui.displayedMenu) {
-      refMenuToggler?.classList.add("active");
-      refMenuContent?.classList.add("active");
-    } else {
-      refMenuToggler?.classList.remove("active");
-      refMenuContent?.classList.remove("active");
-    }
-  });
-
+export function TogglerInformationBoard() {
   return (
-    <div
-      ref={refMenuToggler}
-      class="menu__toggler"
-      onClick={toggleDisplayedMenu}
-    >
-      <div>
-        <span></span>
-      </div>
-    </div>
+    <button onClick={toggleDisplayedInformationBoard}>
+      <ControlMapMenuInformationBoardLogo />
+    </button>
   );
 }
 
@@ -153,8 +138,8 @@ export function InformationBoard() {
       ref={refMenuContent}
       class="menu__custom"
       classList={{
-        active: getDisplayedInformationBoard(),
         _active: getDisplayedMenu(),
+        active: getDisplayedInformationBoard(),
       }}
     >
       <nav aria-label="Tabs">
