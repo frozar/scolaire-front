@@ -1,4 +1,4 @@
-import { FaRegularTrashCan } from "solid-icons/fa";
+import { FaSolidMinus } from "solid-icons/fa";
 
 import { useStateAction } from "../StateAction";
 import { displayRemoveLineMessage } from "../userInformation/utils";
@@ -22,7 +22,7 @@ export default function () {
           displayRemoveLineMessage();
         }}
       >
-        <FaRegularTrashCan class="w-6 h-6" stroke="none" fill="#ffffffca" />
+        <FaSolidMinus class="w-6 h-6" stroke="none" fill="#ffffffca" />
       </label>
     </div>
   );

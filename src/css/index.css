@@ -281,3 +281,10 @@ code {
   position: absolute;
   z-index: 1000;
 }
+.standard-list {
+  list-style-type: none;
+}
+.standard-list li:before {
+  padding: 0px 8px;
+  content: "  - ";
+}
