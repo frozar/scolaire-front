@@ -53,13 +53,20 @@ export default function () {
     // [LateralMenuSupportLogo, "Support", "support"],
   ];
 
+  createEffect(() => {
+    const logo = document.getElementById("enterprise-logo-text");
+    if (stateGui.displayedMenu) {
+      logo.style.display = "block";
+      console.log("okok", logo);
+    } else {
+      logo.style.display = "none";
+    }
+  });
+
   return (
     <nav id="lateral-nav" class={getDisplayedMenu()}>
       <div class="lateral-nav-header">
-        <img src={logo} alt="Flaxib logo" />
-        <Show when={getDisplayedMenu()}>
-          <strong>FLAXIB</strong>
-        </Show>
+        <EnterpriseLogo />
       </div>
 
       <ul class="lateral-nav-list">
