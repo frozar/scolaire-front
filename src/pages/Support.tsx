@@ -1,3 +1,3 @@
-export default function PageSupport() {
+export default function () {
   return <div class=""></div>;
 }

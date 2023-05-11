@@ -1,3 +1,3 @@
-export default function PageSettings() {
+export default function () {
   return <div class=""></div>;
 }

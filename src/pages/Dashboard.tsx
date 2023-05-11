@@ -1,3 +1,3 @@
-export default function PageDashboard() {
+export default function () {
   return <div class=""></div>;
 }

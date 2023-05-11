@@ -1,3 +1,3 @@
-export default function PageVoirie() {
+export default function () {
   return <div class=""></div>;
 }

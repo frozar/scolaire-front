@@ -1,3 +1,3 @@
-export default function PageArrets() {
+export default function () {
   return <div class=""></div>;
 }
