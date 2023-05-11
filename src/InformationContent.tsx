@@ -2,7 +2,7 @@ import { createMemo, Show, For, createResource } from "solid-js";
 import InfoPointName from "./InfoPointName";
 import { NatureEnum, isPointRamassage } from "./type";
 import { PointIdentityType } from "./type";
-import { selectedElement } from "./signaux";
+import { selectedElement, busLineSelected, busLines, points } from "./signaux";
 
 type PointToDisplayType = {
   id_point: number;
@@ -104,9 +104,49 @@ export default function () {
       return "Ramassage";
     }
   };
+  const getPointRamassageName = (id_bus_line: any) => {
+    // Recup les id point dans busLines()
+    const stops = busLines().filter(
+      (busLine) => busLine.id_bus_line == id_bus_line
+    );
+    function mapFunction(stops: any, len: number) {
+      const listeStops = [];
+      for (let i = 0; i < len; i++) {
+        listeStops.push(stops[0].stops[i].id_point);
+      }
+      return listeStops;
+    }
+    function mapFunction2(stops: any, len: number) {
+      const listeStops = [];
+      for (let i = 0; i < len; i++) {
+        listeStops.push(stops[i].name);
+      }
+      return listeStops;
+    }
+    const lenStops = stops.map((stops) => stops.stops.length)[0];
+    const listeStops = mapFunction(stops, lenStops);
+    // console.log(stops[0].stops);
+    // console.log(busLines());
 
+    console.log(points());
+    // Recup nom des arrêts dans points()
+    console.log(listeStops);
+    const stopsName = points().filter((point) =>
+      listeStops.includes(point.id_point)
+    );
+    const stopNameList = mapFunction2(stopsName, lenStops);
+    console.log(stopsName);
+    console.log(stopNameList);
+    return stopNameList;
+
+    // Mettre en place un createEffect()
+  };
   return (
     <div style="display: flex; flex-direction: column; align-items: center;">
+      <Show when={busLineSelected()}>
+        <div>{String(getPointRamassageName(busLineSelected()))}</div>
+        <div>test</div>
+      </Show>
       <Show
         when={selectedElement()}
         fallback={<span>No element selected</span>}

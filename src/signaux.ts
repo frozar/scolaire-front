@@ -231,3 +231,5 @@ export function fetchBusLines() {
 }
 
 export const [getLeafletMap, setLeafletMap] = createSignal<L.Map>();
+
+export const [busLineSelected, setBusLineSelected] = createSignal();

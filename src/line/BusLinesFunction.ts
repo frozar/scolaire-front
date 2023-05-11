@@ -1,7 +1,7 @@
 import L from "leaflet";
 
 import { createEffect } from "solid-js";
-import { setRemoveConfirmation } from "../signaux";
+import { setRemoveConfirmation, setBusLineSelected } from "../signaux";
 import { PointIdentityType } from "../type";
 import { linkMap } from "../global/linkPointIdentityCircle";
 
@@ -51,5 +51,7 @@ export function busLinePolylineAttachEvent(
           id_bus_line: id_bus_line,
         });
       }
+      // console.log(e, id_bus_line);
+      setBusLineSelected(id_bus_line);
     });
 }
