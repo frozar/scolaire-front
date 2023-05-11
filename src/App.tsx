@@ -40,7 +40,7 @@ const [
   history,
 ] = useStateAction();
 
-const [stateGui, {}] = useStateGui();
+const [stateGui, { getSelectedMenu }] = useStateGui();
 
 // Handler the Undo/Redo from the user
 function undoRedoHandler({ ctrlKey, shiftKey, code }: KeyboardEvent) {
@@ -169,7 +169,7 @@ export default () => {
         <NavLateral />
 
         <Switch fallback={<p>Page not found</p>}>
-          <Match when={stateGui.onWindow == "graphicage"}>
+          <Match when={getSelectedMenu() == "graphicage"}>
             <Map />
           </Match>
         </Switch>

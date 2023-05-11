@@ -16,20 +16,23 @@ import { For } from "solid-js";
 
 import logo from "../assets/favicon.ico";
 
-const [stateGui, { toggleDisplayedMenu, setOnWindow }] = useStateGui();
+const [
+  stateGui,
+  { toggleDisplayedMenu, setSelectedMenu, getSelectedMenu, getDisplayedMenu },
+] = useStateGui();
 
 function MenuItems(props: any) {
   const { title, logo, url } = props;
 
   const MenuOnClick = () => {
-    setOnWindow(url);
+    setSelectedMenu(url);
   };
 
   document.addEventListener("DOMContentLoaded", function () {
     const item_el = document.getElementById("window_" + url);
 
     createEffect(() => {
-      if (stateGui.onWindow == url) {
+      if (getSelectedMenu() == url) {
         item_el?.classList.add("active");
       } else {
         item_el?.classList.remove("active");
@@ -40,7 +43,7 @@ function MenuItems(props: any) {
   return (
     <li id={"window_" + url} class="lateral-nav-item" onclick={MenuOnClick}>
       {logo}
-      <Show when={stateGui.displayedMenu == true}>{title}</Show>
+      <Show when={getDisplayedMenu() == true}>{title}</Show>
     </li>
   );
 }
@@ -58,10 +61,10 @@ export default function () {
   ];
 
   return (
-    <nav id="lateral-nav" class={stateGui.displayedMenu}>
+    <nav id="lateral-nav" class={getDisplayedMenu()}>
       <div class="lateral-nav-header">
         <img src={logo} alt="Flaxib logo" />
-        <Show when={stateGui.displayedMenu}>
+        <Show when={getDisplayedMenu()}>
           <strong>FLAXIB</strong>
         </Show>
       </div>
@@ -75,9 +78,9 @@ export default function () {
       <button
         id="lateral-close"
         onclick={toggleDisplayedMenu}
-        class={stateGui.displayedMenu}
+        class={getDisplayedMenu()}
       >
-        <Show when={stateGui.displayedMenu} fallback={<OpenLateralMenuLogo />}>
+        <Show when={getDisplayedMenu()} fallback={<OpenLateralMenuLogo />}>
           <CloseLateralMenuLogo />
         </Show>
       </button>
