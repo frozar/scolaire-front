@@ -10,7 +10,15 @@ import { useStateGui } from "../StateGui";
 import ExportButton from "../export/ExportButton";
 
 const [stateAction, { toggleAltimetryAnimation }] = useStateAction();
-const [stateGui, { toggleDisplayedMenu, setSelectedTab }] = useStateGui();
+const [
+  stateGui,
+  {
+    toggleDisplayedMenu,
+    setSelectedTab,
+    getDisplayedInformationBoard,
+    getDisplayedMenu,
+  },
+] = useStateGui();
 
 let refMenuContent: any;
 let refMenuToggler: any;
@@ -106,7 +114,7 @@ function SettingsName() {
   return <span>Paramètres</span>;
 }
 
-function MenuContent() {
+export function MenuContent() {
   type TabValueType = {
     // @ts-expect-error
     tabLabel: (props: any) => JSX.Element;
@@ -141,7 +149,14 @@ function MenuContent() {
   }
 
   return (
-    <div ref={refMenuContent} class="menu__custom">
+    <div
+      ref={refMenuContent}
+      class="menu__custom"
+      classList={{
+        active: getDisplayedInformationBoard(),
+        _active: getDisplayedMenu(),
+      }}
+    >
       <nav aria-label="Tabs">
         <For each={Object.keys(tabs)}>
           {(value: string) => {
@@ -171,15 +186,15 @@ function MenuContent() {
   );
 }
 
-export default function () {
-  return (
-    <>
-      <MenuToggler />
-      <MenuContent />
-      <MenuDraw />
-      <MenuDelete />
-      <ExportButton />
-      <SideMapMenu />
-    </>
-  );
-}
+// export default function () {
+//   return (
+//     <>
+//       <MenuToggler />
+//       <MenuContent />
+//       <MenuDraw />
+//       <MenuDelete />
+//       <ExportButton />
+//       <SideMapMenu />
+//     </>
+//   );
+// }
