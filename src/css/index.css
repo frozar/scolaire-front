@@ -10,6 +10,11 @@
   user-select: none; /* Standard syntax */
 }
 
+body,
+html {
+  overflow-y: hidden;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
@@ -36,7 +41,11 @@ code {
 
 #main-map {
   width: 100vw;
-  height: 100vh;
+  height: calc(100vh - 60px);
+}
+
+#app-content {
+  display: flex;
 }
 
 .legend {

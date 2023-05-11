@@ -1,4 +1,11 @@
-import { createEffect, Component, onCleanup, onMount } from "solid-js";
+import {
+  createEffect,
+  Component,
+  onCleanup,
+  onMount,
+  Switch,
+  Match,
+} from "solid-js";
 import styles from "./App.module.css";
 import SpinningWheel from "./SpinningWheel";
 import Map from "./Map";
@@ -14,6 +21,9 @@ import {
 } from "./userInformation/utils";
 import { addBusLine } from "./request";
 import DragAndDrop from "./userInformation/DragAndDrop";
+import NavTop from "./layout/NavTop";
+import NavLateral from "./layout/NavLateral";
+import { useStateGui } from "./StateGui";
 
 const [
   ,
@@ -29,6 +39,8 @@ const [
   },
   history,
 ] = useStateAction();
+
+const [stateGui, { getSelectedMenu }] = useStateGui();
 
 // Handler the Undo/Redo from the user
 function undoRedoHandler({ ctrlKey, shiftKey, code }: KeyboardEvent) {
@@ -151,13 +163,22 @@ export default () => {
 
   return (
     <div ref={refApp}>
-      <DisplayUserInformation />
-      <DragAndDrop />
-      <RemoveConfirmation />
-      <ExportConfirmation />
-      <Menu />
-      <Map />
-      <SpinningWheel />
+      <NavTop />
+
+      <div id="app-content">
+        <NavLateral />
+
+        <Switch fallback={<p>Page not found</p>}>
+          <Match when={getSelectedMenu() == "graphicage"}>
+            <Map />
+          </Match>
+        </Switch>
+
+        <DisplayUserInformation />
+        <RemoveConfirmation />
+        <ExportConfirmation />
+        <SpinningWheel />
+      </div>
     </div>
   );
 };

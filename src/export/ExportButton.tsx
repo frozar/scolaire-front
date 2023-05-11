@@ -1,17 +1,19 @@
 import { openExportConfirmationBox } from "../signaux";
+import { ControlMapMenuExport } from "./Logos";
 
 export default function () {
   return (
     <>
-      <div class="export-btn">
-        <button
-          onClick={() => {
-            openExportConfirmationBox();
-          }}
-        >
-          Export
-        </button>
-      </div>
+      <button
+        class="menu-btn"
+        onClick={() => {
+          openExportConfirmationBox();
+        }}
+      >
+        <label class="btn btn-circle text-white">
+          <ControlMapMenuExport />
+        </label>
+      </button>
     </>
   );
 }

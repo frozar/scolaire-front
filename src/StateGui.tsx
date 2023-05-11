@@ -1,10 +1,11 @@
 import _ from "lodash";
 import { createContext, useContext } from "solid-js";
 import { createStore } from "solid-js/store";
-import { TileId } from "./type";
+import { TileId, SelectedMenuType } from "./type";
 
 type StateGuiType = {
   displayedMenu: boolean;
+  selectedMenu: SelectedMenuType;
   selectedTab: string;
   displayedRightMenu: boolean;
   selectedReadModeTile: TileId;
@@ -14,6 +15,7 @@ type StateGuiType = {
 const makeStateGuiContext = () => {
   const defaultStateGui: StateGuiType = {
     displayedMenu: false,
+    selectedMenu: "graphicage",
     selectedTab: "info",
     displayedRightMenu: false,
     selectedReadModeTile: "OpenStreetMap_Mapnik",
@@ -31,7 +33,7 @@ const makeStateGuiContext = () => {
   const [state, setState] = createStore(initStateGui);
 
   function setStateWrapper(...args: any[]): void {
-    // @ts-expect-error
+    // eslint-disable-next-line prefer-spread
     setState.apply(null, args);
     localStorage.setItem("stateGui", JSON.stringify(state));
   }
@@ -71,6 +73,18 @@ const makeStateGuiContext = () => {
     return state.displayedRightMenu;
   }
 
+  function setSelectedMenu(itemMenu: SelectedMenuType) {
+    setState("selectedMenu", itemMenu);
+  }
+
+  function getSelectedMenu() {
+    return state.selectedMenu;
+  }
+
+  function getDisplayedMenu() {
+    return state.displayedMenu;
+  }
+
   return [
     state,
     {
@@ -82,6 +96,9 @@ const makeStateGuiContext = () => {
       getSelectedEditModeTile,
       toggleDisplayedRightMenu,
       getDisplayedRightMenu,
+      setSelectedMenu,
+      getSelectedMenu,
+      getDisplayedMenu,
     },
   ] as const;
 };
