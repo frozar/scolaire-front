@@ -2,21 +2,21 @@
 * MENU BUTTON
 */
 .menu__toggler {
-  position: absolute;
+  /* position: absolute; */
   top: 20px;
   left: 20px;
   z-index: 999;
   outline: none;
   cursor: pointer;
+
   @apply btn btn-circle;
 
   > div {
     > span,
     span::before,
     span::after {
-      position: absolute;
-      left: 9px;
-      top: 21px;
+      position: relative;
+      top: 10px;
       display: block;
       content: "";
       width: 28px;
@@ -27,12 +27,10 @@
     }
 
     > span::before {
-      left: 0px;
       top: -8px;
     }
 
     > span::after {
-      left: 0px;
       top: 8px;
     }
   }
