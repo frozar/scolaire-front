@@ -14,14 +14,14 @@ import { Match, Show, Switch } from "solid-js";
 import { useStateGui } from "../StateGui";
 import { For } from "solid-js";
 
-import { menuItemType } from "../type";
+import { MenuItemType } from "../type";
 
 const [
   ,
   { toggleDisplayedMenu, setSelectedMenu, getSelectedMenu, getDisplayedMenu },
 ] = useStateGui();
 
-function MenuItems(props: menuItemType) {
+function MenuItems(props: MenuItemType) {
   return (
     <li
       class="lateral-nav-item"
@@ -42,17 +42,11 @@ function MenuItems(props: menuItemType) {
 }
 
 export default function () {
-  const menuItems: menuItemType[] = [
+  const menuItems: MenuItemType[] = [
     {
       title: "Graphicage",
       menuItem: "graphicage",
     },
-    // const menuItems: menuItemTypeMock[] = [
-    //   {
-    //     Logo: "toto",
-    //     title: "toto",
-    //     menuItem: "toto",
-    //   },
     // [LateralMenuDashboardLogo, "Dashboard", "dashboard"],
     // [LateralMenuVoirieLogo, "Voirie", "voirie"],
     // [LateralMenuEtablissementLogo, "Établissements", "etablissements"],

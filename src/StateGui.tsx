@@ -1,11 +1,11 @@
 import _ from "lodash";
 import { createContext, useContext } from "solid-js";
 import { createStore } from "solid-js/store";
-import { TileId, selectedMenuType } from "./type";
+import { TileId, SelectedMenuType } from "./type";
 
 type StateGuiType = {
   displayedMenu: boolean;
-  selectedMenu: selectedMenuType;
+  selectedMenu: SelectedMenuType;
   selectedTab: string;
   displayedRightMenu: boolean;
   selectedReadModeTile: TileId;
@@ -73,7 +73,7 @@ const makeStateGuiContext = () => {
     return state.displayedRightMenu;
   }
 
-  function setSelectedMenu(itemMenu: selectedMenuType) {
+  function setSelectedMenu(itemMenu: SelectedMenuType) {
     setState("selectedMenu", itemMenu);
   }
 

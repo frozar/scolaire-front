@@ -114,9 +114,9 @@ export type ReturnMessageType = {
   success: { etablissement: string[]; ramassage: string[] };
 };
 
-export type selectedMenuType = "graphicage";
+export type SelectedMenuType = "graphicage";
 
-export type menuItemType = {
+export type MenuItemType = {
   title: string;
-  menuItem: selectedMenuType;
+  menuItem: SelectedMenuType;
 };
