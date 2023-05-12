@@ -88,7 +88,8 @@ export type removeConfirmationType = {
   displayed: boolean;
   id_bus_line: number | null;
 };
-export type cleanConfirmationType = {
+
+export type clearConfirmationType = {
   displayed: boolean;
 };
 
