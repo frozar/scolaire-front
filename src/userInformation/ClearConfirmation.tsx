@@ -1,6 +1,7 @@
 import { Show, createEffect, createSignal } from "solid-js";
 import { Transition } from "solid-transition-group";
 
+import { NatureEnum } from "../type";
 import ClickOutside from "../ClickOutside";
 import {
   addNewUserInformation,
@@ -9,7 +10,9 @@ import {
   enableSpinningWheel,
   fetchBusLines,
   getClearConfirmation,
+  points,
   setPoints,
+  busLines,
 } from "../signaux";
 
 import { clear } from "../request";
@@ -40,7 +43,7 @@ export default function () {
             displayed: true,
             level: MessageLevelEnum.info,
             type: MessageTypeEnum.removeLine,
-            content: "La carte a bien été supprimée",
+            content: "La carte a bien été vidée",
           });
           setPoints([]);
           fetchPointsRamassage();
@@ -52,7 +55,7 @@ export default function () {
             displayed: true,
             level: MessageLevelEnum.error,
             type: MessageTypeEnum.removeLine,
-            content: "Echec de la suppression de la carte : \n" + res.message,
+            content: "Impossible de vider la carte : \n" + res.message,
           });
           setPoints([]);
           fetchPointsRamassage();
@@ -67,7 +70,7 @@ export default function () {
           displayed: true,
           level: MessageLevelEnum.error,
           type: MessageTypeEnum.removeLine,
-          content: "Impossible de supprimer la carte",
+          content: "Impossible de vider la carte : \n" + error,
         });
         setPoints([]);
         fetchPointsRamassage();
@@ -185,20 +188,40 @@ export default function () {
                         class="text-base font-semibold leading-6 text-gray-900"
                         id="modal-title"
                       >
-                        Etes-vous sûr de vouloir vider la carte ?
+                        Êtes-vous sûr de vouloir vider la carte ?
                       </h3>
                       <div class="mt-2">
                         <p class="text-sm text-gray-500">
                           Cette action supprimera :
-                          <ul class="text-sm text-gray-500 standard-list">
-                            <li>les arrêts de bus,</li>
-                            <li>les établissements,</li>
-                            <li>
-                              le nombre d'élève allant vers un établissement,
-                            </li>
-                            <li>les lignes qui sont présentes sur la carte.</li>
-                          </ul>
                         </p>
+                        <ul class="text-sm text-gray-500 standard-list">
+                          <li>
+                            <span class="font-semibold text-sm text-gray-900">
+                              {points().filter(
+                                (value) => value.nature == NatureEnum.ramassage
+                              ).length + " "}
+                            </span>
+                            arrêt(s) de bus,
+                          </li>
+                          <li>
+                            <span class="font-semibold text-sm text-gray-900">
+                              {points().filter(
+                                (value) =>
+                                  value.nature == NatureEnum.etablissement
+                              ).length + " "}
+                            </span>
+                            établissement(s),
+                          </li>
+                          <li>
+                            <span class="font-semibold text-sm text-gray-900">
+                              {busLines().length + " "}
+                            </span>
+                            ligne(s) présente(s) sur la carte,
+                          </li>
+                          <li>
+                            le nombre d'élèves allant vers un établissement.
+                          </li>
+                        </ul>
                       </div>
                     </div>
                   </div>
