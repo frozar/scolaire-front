@@ -10,7 +10,7 @@ export default function () {
         Montré le panneau d'information des arrêts
       </span>
       <label class="btn btn-circle" onClick={toggleDisplayedInformationBoard}>
-        <IoInformation class="w-full p-0 h-2/3" />
+        <IoInformation class="w-full h-2/3" />
       </label>
     </div>
   );
