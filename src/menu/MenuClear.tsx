@@ -8,7 +8,7 @@ export default function () {
       <span class="tooltip group-hover:scale-100">Nettoyer la map</span>
       <label
         tabIndex={0}
-        class="custom-btn btn-circle"
+        class="custom-btn btn-circle hover:bg-[#062F3F] hover:text-[#0cc683]"
         onClick={() => {
           openClearConfirmationBox();
         }}

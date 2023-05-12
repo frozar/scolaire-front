@@ -12,8 +12,8 @@ export default function () {
       <span class="tooltip group-hover:scale-100">Supprimer des lignes</span>
       <label
         tabIndex={0}
-        class="custom-btn btn-circle"
-        classList={{ "bg-blue-600 hover:bg-blue-600": isInRemoveLineMode() }}
+        class="custom-btn btn-circle hover:bg-[#062F3F] hover:text-[#0cc683]"
+        classList={{ "bg-[#062F3F] text-[#0cc683]": isInRemoveLineMode() }}
         onClick={() => {
           if (isInRemoveLineMode()) {
             setModeRead();
