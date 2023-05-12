@@ -4,28 +4,14 @@ import InformationContent from "../InformationContent";
 
 import { useStateAction } from "../StateAction";
 import { useStateGui } from "../StateGui";
-import { ControlMapMenuInformationBoardLogo } from "../export/Logos";
 
 const [stateAction, { toggleAltimetryAnimation }] = useStateAction();
 const [
   stateGui,
-  {
-    setSelectedTab,
-    getDisplayedInformationBoard,
-    getDisplayedMenu,
-    toggleDisplayedInformationBoard,
-  },
+  { setSelectedTab, getDisplayedInformationBoard, getDisplayedMenu },
 ] = useStateGui();
 
 let refMenuContent: any;
-
-export function TogglerInformationBoard() {
-  return (
-    <button onClick={toggleDisplayedInformationBoard}>
-      <ControlMapMenuInformationBoardLogo />
-    </button>
-  );
-}
 
 function SettingsContent(props: any) {
   return (
