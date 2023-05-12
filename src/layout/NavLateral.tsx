@@ -10,7 +10,7 @@ import {
   // LateralMenuSettingsLogo,
   // LateralMenuSupportLogo,
 } from "../export/Logos";
-import { Match, Show, Switch } from "solid-js";
+import { Show } from "solid-js";
 import { useStateGui } from "../StateGui";
 import { For } from "solid-js";
 
