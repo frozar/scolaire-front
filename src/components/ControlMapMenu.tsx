@@ -7,7 +7,7 @@ import MenuRemoveLine from "../menu/MenuRemoveLine";
 export default function () {
   return (
     <div id="control-map-menu">
-      <MenuInformationsBoard />
+      {/* <MenuInformationsBoard /> */}
       <MenuDraw />
       <MenuRemoveLine />
       <MenuClear />
