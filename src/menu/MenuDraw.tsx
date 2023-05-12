@@ -5,7 +5,7 @@ import { assertIsNode } from "../utils";
 import { Transition } from "solid-transition-group";
 import ClickOutside from "../ClickOutside";
 import { displayAddLineMessage } from "../userInformation/utils";
-
+import { FaSolidPlus } from "solid-icons/fa";
 const [, { setModeAddLine, isInAddLineMode }] = useStateAction();
 
 declare module "solid-js" {
@@ -27,11 +27,14 @@ export default function () {
   let refLabelMenu: HTMLLabelElement | undefined;
 
   return (
-    <div class="menu-btn">
+    <div class="menu-btn group">
+      <span class="tooltip group-hover:scale-100">
+        Montré le panneau d'information des arrêts
+      </span>
       <label
         ref={refLabelMenu}
         tabIndex={0}
-        class="btn btn-circle"
+        class="custom-btn btn-circle"
         classList={{
           "bg-blue-600 hover:bg-blue-600": isInAddLineMode(),
         }}
@@ -39,20 +42,7 @@ export default function () {
           toggleShow();
         }}
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="currentColor"
-          class="w-6 h-6"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M12 4.5v15m7.5-7.5h-15"
-          />
-        </svg>
+        <FaSolidPlus class="w-full p-0 h-2/3" />
       </label>
       <Transition
         name="slide-fade"

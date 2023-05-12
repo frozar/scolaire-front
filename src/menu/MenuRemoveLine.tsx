@@ -8,10 +8,11 @@ const [, { setModeRemoveLine, isInRemoveLineMode, setModeRead }] =
 
 export default function () {
   return (
-    <div class="menu-btn left-[140px]">
+    <div class="menu-btn left-[140px] group">
+      <span class="tooltip group-hover:scale-100">Supprimer des lignes</span>
       <label
         tabIndex={0}
-        class="btn btn-circle"
+        class="custom-btn btn-circle"
         classList={{ "bg-blue-600 hover:bg-blue-600": isInRemoveLineMode() }}
         onClick={() => {
           if (isInRemoveLineMode()) {
@@ -22,7 +23,7 @@ export default function () {
           displayRemoveLineMessage();
         }}
       >
-        <FaSolidMinus class="w-6 h-6" stroke="none" fill="#ffffffca" />
+        <FaSolidMinus class="w-full h-2/3" />
       </label>
     </div>
   );

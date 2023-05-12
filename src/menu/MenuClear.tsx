@@ -4,15 +4,16 @@ import { openClearConfirmationBox } from "../signaux";
 
 export default function () {
   return (
-    <div class="menu-btn left-[140px]">
+    <div class="menu-btn left-[140px] group">
+      <span class="tooltip group-hover:scale-100">Nettoyer la map</span>
       <label
         tabIndex={0}
-        class="btn btn-circle"
+        class="custom-btn btn-circle"
         onClick={() => {
           openClearConfirmationBox();
         }}
       >
-        <FaRegularTrashCan class="w-6 h-6" stroke="none" fill="#ffffffca" />
+        <FaRegularTrashCan class="w-full h-2/3" />
       </label>
     </div>
   );
