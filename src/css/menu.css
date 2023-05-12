@@ -2,13 +2,11 @@
 * MENU BUTTON
 */
 .menu__toggler {
-  /* position: absolute; */
   top: 20px;
   left: 20px;
   z-index: 999;
   outline: none;
   cursor: pointer;
-
   @apply btn btn-circle;
 
   > div {
@@ -125,7 +123,6 @@
 .menu__custom {
   @apply p-2 w-80 text-base-content text-left;
   position: absolute;
-
   z-index: 997;
   color: #005c9c;
   background: rgba(250, 250, 250, 0.7);
