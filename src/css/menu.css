@@ -349,10 +349,6 @@
           color: #0cc683;
         }
       }
-
-      > .lateral-nav-item:hover {
-        background-color: #083d52;
-      }
     }
     > #lateral-close {
       position: absolute;
