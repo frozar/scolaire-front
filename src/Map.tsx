@@ -116,7 +116,6 @@ export default function () {
       <div ref={mapDragDropDiv}>
         <div class="child">Drop your file here</div>
       </div>
-
       <InformationBoard />
       <div ref={mapDiv} id="main-map" />
       <PointsRamassageAndEtablissement />

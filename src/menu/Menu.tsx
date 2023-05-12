@@ -22,11 +22,11 @@ function SettingsContent(props: any) {
         class="mr-2"
         value="animation"
         checked={stateAction.altimetry.animation}
-        onChange={(e: any) => {
+        onChange={() => {
           toggleAltimetryAnimation();
         }}
         {...props}
-      ></input>
+      />
       <label for="animation-setting">Animations</label>
     </div>
   );
@@ -82,11 +82,8 @@ function SettingsName() {
 
 export function InformationBoard() {
   type TabValueType = {
-    // @ts-expect-error
     tabLabel: (props: any) => JSX.Element;
-    // @ts-expect-error
     tabContent: (props: any) => JSX.Element;
-    // @ts-expect-error
     tabName: (props: any) => JSX.Element;
   };
   type TabType = {

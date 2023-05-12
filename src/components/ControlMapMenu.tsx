@@ -1,6 +1,5 @@
 import ExportButton from "../export/ExportButton";
 import MenuClear from "../menu/MenuClear";
-import InformationsBoard from "../menu/InformationsBoard";
 import MenuInformationsBoard from "../menu/MenuInformationsBoard";
 import MenuDraw from "../menu/MenuDraw";
 import MenuRemoveLine from "../menu/MenuRemoveLine";
