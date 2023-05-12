@@ -367,8 +367,8 @@
   right: 15px;
   z-index: 999;
   background-color: #aeb8b4;
-  padding: 10px 15px;
-  border-radius: 5px;
+  padding: 20px 15px;
+  border-radius: 50px;
   color: #062f3f;
   display: flex;
   flex-direction: column;
