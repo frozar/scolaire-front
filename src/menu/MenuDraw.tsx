@@ -32,9 +32,9 @@ export default function () {
       <label
         ref={refLabelMenu}
         tabIndex={0}
-        class="custom-btn btn-circle"
+        class="custom-btn btn-circle hover:bg-[#062F3F] hover:text-[#0cc683]"
         classList={{
-          "bg-blue-600 hover:bg-blue-600": isInAddLineMode(),
+          "bg-[#062F3F] text-[#0cc683]": isInAddLineMode(),
         }}
         onClick={() => {
           toggleShow();
@@ -53,9 +53,9 @@ export default function () {
       >
         <Show when={show()}>
           <ul
+            id="draw-line-options"
             ref={refDrawnMenu}
             tabIndex={0}
-            class="absolute menu p-2 shadow bg-base-100 rounded-box w-52 translate-x-[-200px] translate-y-[-120px] "
             use:ClickOutside={(e: MouseEvent) => {
               if (!refLabelMenu || !refDrawnMenu || !e.target) {
                 return;

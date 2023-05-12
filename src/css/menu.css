@@ -367,7 +367,7 @@
   right: 15px;
   z-index: 999;
   background-color: #aeb8b4;
-  padding: 20px 15px;
+  padding: 20px 5px;
   border-radius: 50px;
   color: #062f3f;
   display: flex;
@@ -377,4 +377,8 @@
 
 .fill-green {
   fill: #0cc683;
+}
+
+#draw-line-options {
+  @apply absolute menu p-2 shadow bg-base-100 rounded-box w-52 translate-x-[-200px] translate-y-[-120px];
 }
