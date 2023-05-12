@@ -120,9 +120,10 @@ export type ReturnMessageType = {
   success: { etablissement: string[]; ramassage: string[] };
 };
 
-export type SelectedMenuType = "graphicage";
+export type SelectedMenuType = "graphicage" | "dashboard" | "arrets";
 
 export type MenuItemType = {
   title: string;
   menuItem: SelectedMenuType;
+  JSX: () => JSX.Element;
 };
