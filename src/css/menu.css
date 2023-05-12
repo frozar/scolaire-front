@@ -60,8 +60,48 @@
   }
 }
 
+.custom-btn {
+  display: inline-flex;
+  flex-shrink: 0;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  transition-property: color, background-color, border-color,
+    text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter,
+    -webkit-backdrop-filter;
+  transition-property: color, background-color, border-color,
+    text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter,
+    backdrop-filter;
+  transition-property: color, background-color, border-color,
+    text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter,
+    backdrop-filter, -webkit-backdrop-filter;
+  transition-duration: 200ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  height: 3rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  line-height: 1em;
+  min-height: 3rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  text-decoration-line: none;
+  animation: button-pop var(--animation-btn, 0.25s) ease-out;
+  color: #062f3f;
+}
 .menu-btn {
-  @apply top-[20px]  z-[999] outline-none cursor-pointer;
+  @apply top-[20px] z-[999] outline-none cursor-pointer;
+
+  & > span.tooltip {
+    @apply absolute left-[-150px] w-[150px]  scale-0 rounded bg-gray-800 p-2 text-xs text-white;
+    pointer-events: none;
+  }
 }
 
 .export-btn {
@@ -328,8 +368,8 @@
   right: 15px;
   z-index: 999;
   background-color: #aeb8b4;
-  padding: 10px 15px;
-  border-radius: 5px;
+  padding: 20px 5px;
+  border-radius: 50px;
   color: #062f3f;
   display: flex;
   flex-direction: column;
@@ -338,4 +378,8 @@
 
 .fill-green {
   fill: #0cc683;
+}
+
+#draw-line-options {
+  @apply absolute menu p-2 shadow bg-base-100 rounded-box w-52 translate-x-[-200px] translate-y-[-120px];
 }
