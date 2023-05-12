@@ -176,6 +176,7 @@ export default () => {
         </Switch>
 
         <DisplayUserInformation />
+        <DragAndDrop />
         <RemoveConfirmation />
         <ClearConfirmation />
         <ExportConfirmation />
