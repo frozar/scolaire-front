@@ -61,7 +61,11 @@
 }
 
 .menu-btn {
-  @apply top-[20px]  z-[999] outline-none cursor-pointer;
+  @apply top-[20px] z-[999] outline-none cursor-pointer;
+
+  & > span.tooltip {
+    @apply absolute left-[-240px] w-[250px] top-4 scale-0 rounded bg-gray-800 p-2 text-xs text-white;
+  }
 }
 
 .export-btn {
