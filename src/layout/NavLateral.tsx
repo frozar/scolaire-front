@@ -6,7 +6,7 @@ import {
   // LateralMenuDashboardLogo,
   // LateralMenuVoirieLogo,
   // LateralMenuEtablissementLogo,
-  // LateralMenuArretsLogo,
+  LateralMenuArretsLogo,
   // LateralMenuSettingsLogo,
   // LateralMenuSupportLogo,
 } from "../export/Logos";
@@ -22,21 +22,19 @@ const [
 ] = useStateGui();
 
 function MenuItems(props: MenuItemType) {
+  // eslint-disable-next-line solid/reactivity
+  const { menuItem, title, JSX } = props;
   return (
     <li
       class="lateral-nav-item"
-      classList={{ active: getSelectedMenu() === props.menuItem }}
+      classList={{ active: getSelectedMenu() === menuItem }}
       onClick={() => {
-        setSelectedMenu(props.menuItem);
+        setSelectedMenu(menuItem);
       }}
     >
-      <Switch fallback={<p>Page not found</p>}>
-        <Match when={getSelectedMenu() == "graphicage"}>
-          <LateralMenuGraphicageLogo />
-        </Match>
-      </Switch>
+      <JSX />
 
-      <Show when={getDisplayedMenu() == true}>{props.title}</Show>
+      <Show when={getDisplayedMenu() == true}>{title}</Show>
     </li>
   );
 }
@@ -46,6 +44,12 @@ export default function () {
     {
       title: "Graphicage",
       menuItem: "graphicage",
+      JSX: LateralMenuGraphicageLogo,
+    },
+    {
+      title: "Arrêts",
+      menuItem: "arrets",
+      JSX: LateralMenuArretsLogo,
     },
     // [LateralMenuDashboardLogo, "Dashboard", "dashboard"],
     // [LateralMenuVoirieLogo, "Voirie", "voirie"],
@@ -65,7 +69,13 @@ export default function () {
         <For each={menuItems}>
           {(menuItemArg) => {
             const { title, menuItem } = menuItemArg;
-            return <MenuItems title={title} menuItem={menuItem} />;
+            return (
+              <MenuItems
+                title={title}
+                menuItem={menuItem}
+                JSX={menuItemArg.JSX}
+              />
+            );
           }}
         </For>
       </ul>
