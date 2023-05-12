@@ -140,4 +140,6 @@ export type MenuItemType = {
 export enum LastSelectionEnum {
   point,
   line,
+  edition,
+  nothing,
 }

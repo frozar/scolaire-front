@@ -6,6 +6,9 @@ import { Transition } from "solid-transition-group";
 import ClickOutside from "../../../ClickOutside";
 import { displayAddLineMessage } from "../../../userInformation/utils";
 import { FaSolidPlus } from "solid-icons/fa";
+import { LastSelectionEnum } from "../type";
+import { setLastSelectedInfo, setEditionStopNames } from "../signaux";
+
 const [, { setModeAddLine, isInAddLineMode }] = useStateAction();
 
 declare module "solid-js" {
@@ -76,6 +79,7 @@ export default function () {
                   toggleShow();
                   setModeAddLine();
                   displayAddLineMessage();
+                  setLastSelectedInfo(LastSelectionEnum.edition);
                 }}
               >
                 Ligne

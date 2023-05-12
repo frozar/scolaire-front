@@ -1,4 +1,13 @@
-import { createMemo, Show, For, createResource, Switch, Match } from "solid-js";
+import {
+  createMemo,
+  Show,
+  For,
+  createResource,
+  Switch,
+  Match,
+  createEffect,
+  createSignal,
+} from "solid-js";
 import InfoPointName from "./InfoPointName";
 import {
   NatureEnum,
@@ -14,8 +23,10 @@ import {
   busLines,
   points,
   lastSelectedInfo,
+  editionStopId,
 } from "./signaux";
-
+import { useStateAction } from "./StateAction";
+const [, { isInAddLineMode, getLineUnderConstruction }] = useStateAction();
 type PointToDisplayType = {
   id_point: number;
   name: string;
@@ -28,6 +39,8 @@ type Item = {
   name: string;
   caption: string | null;
 };
+
+const [localEditionStopNames, setLocalEditionStopNames] = createSignal<any>([]);
 
 function Timeline_item(props: Item) {
   return (
@@ -61,9 +74,23 @@ function Timeline_item(props: Item) {
     </div>
   );
 }
-
+function EditionTimeline() {
+  return (
+    <div class="pa-4">
+      <div
+        class="v-timeline v-timeline--align-start v-timeline--justify-auto v-timeline--side-end v-timeline--vertical"
+        style={{ "--v-timeline-line-thickness": "2px" }}
+      >
+        <For each={localEditionStopNames()}>
+          {(stop) => (
+            <Timeline_item hour="heure" name={stop} caption="description" />
+          )}
+        </For>
+      </div>
+    </div>
+  );
+}
 function Timeline(stopsName: any) {
-  // console.log(stopsName);
   return (
     <div class="pa-4">
       <div
@@ -81,6 +108,20 @@ function Timeline(stopsName: any) {
 }
 
 export default function () {
+  createEffect(() => {
+    // console.log("mode edition=>", isInAddLineMode());
+    // console.log(getLineUnderConstruction());
+
+    console.log("editionStopId", editionStopId());
+    // Recup nom des arrêts dans points()
+    const stopsName = points()
+      .filter((point) => editionStopId().includes(point.id_point))
+      .map((stopName) => stopName.name);
+    console.log("points", points());
+    console.log("stopsName", stopsName);
+    setLocalEditionStopNames(stopsName);
+    // setLocalEditionStopNames((names) => [...names, stopsName]);
+  });
   const selectedIdentity = createMemo<PointIdentityType | null>(() => {
     const wkSelectedElement = selectedElement();
     if (!wkSelectedElement) {
@@ -191,6 +232,7 @@ export default function () {
     );
     const lenBusLine = busLine[0].stops.length;
     const stopIds = getStopIds(busLine, lenBusLine);
+    console.log(stopIds);
 
     // Recup nom des arrêts dans points()
     const stopsName = points().filter((point) =>
@@ -261,6 +303,10 @@ export default function () {
         </Match>
         <Match when={lastSelectedInfo() == LastSelectionEnum.line}>
           <Timeline stopsName={getPointRamassageName(busLineSelected())} />
+        </Match>
+        <Match when={lastSelectedInfo() == LastSelectionEnum.edition}>
+          <span>Mode édition</span>
+          <EditionTimeline />
         </Match>
       </Switch>
     </div>

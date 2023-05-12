@@ -237,3 +237,5 @@ export const [busLineSelected, setBusLineSelected] = createSignal<number>();
 
 export const [lastSelectedInfo, setLastSelectedInfo] =
   createSignal<LastSelectionEnum>();
+
+export const [editionStopId, setEditionStopId] = createSignal<any>([]);

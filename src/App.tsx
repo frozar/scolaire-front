@@ -13,7 +13,12 @@ import { useStateAction } from "./StateAction";
 import DisplayUserInformation from "./userInformation/DisplayUserInformation";
 import RemoveConfirmation from "./userInformation/RemoveConfirmation";
 import ExportConfirmation from "./views/graphicage/rightMapMenu/export/ExportModal";
-import { closeRemoveConfirmationBox, fetchBusLines } from "./signaux";
+import {
+  closeRemoveConfirmationBox,
+  fetchBusLines,
+  setLastSelectedInfo,
+  setEditionStopId,
+} from "./signaux";
 import {
   displayAddLineMessage,
   displayRemoveLineMessage,
@@ -26,6 +31,7 @@ import { useStateGui } from "./StateGui";
 import ClearConfirmation from "./userInformation/ClearConfirmation";
 import GeneratorDialogueBox from "./userInformation/GeneratorDialogueBox";
 
+import { LastSelectionEnum } from "./type";
 const [
   ,
   {
@@ -82,6 +88,8 @@ function escapeHandler({ code }: KeyboardEvent) {
 
     resetLineUnderConstruction();
     setModeRead();
+    setLastSelectedInfo(LastSelectionEnum.nothing);
+    setEditionStopId([]);
   }
 }
 
@@ -98,6 +106,8 @@ function enterHandler({ code }: KeyboardEvent) {
       await res.json();
       resetLineUnderConstruction();
       setModeRead();
+      setLastSelectedInfo(LastSelectionEnum.nothing);
+      setEditionStopId([]);
       fetchBusLines();
     });
   }
@@ -111,6 +121,7 @@ function toggleLineUnderConstruction({ code }: KeyboardEvent) {
     const upKey = keyboardLayoutMap.get(code);
     if (upKey === "l") {
       setModeAddLine();
+      setLastSelectedInfo(LastSelectionEnum.nothing); // ??
       displayAddLineMessage();
     }
     if (upKey === "d") {
@@ -120,6 +131,8 @@ function toggleLineUnderConstruction({ code }: KeyboardEvent) {
         displayRemoveLineMessage();
       } else {
         setModeRead();
+        setLastSelectedInfo(LastSelectionEnum.nothing);
+        setEditionStopId([]);
         closeRemoveConfirmationBox();
       }
     }

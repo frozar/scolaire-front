@@ -23,6 +23,7 @@ import {
   getLeafletMap,
   setSelectedElement,
   setLastSelectedInfo,
+  setEditionStopId,
 } from "./signaux";
 import { minMaxQty } from "./PointsRamassageAndEtablissement";
 
@@ -131,8 +132,8 @@ export default function (props: any) {
       .on("click", () => {
         // Select the current element to display information
         setSelectedElement(point);
-        setLastSelectedInfo(LastSelectionEnum.point);
         if (!isInAddLineMode()) {
+          setLastSelectedInfo(LastSelectionEnum.point);
           return;
         }
 
@@ -142,6 +143,8 @@ export default function (props: any) {
           nature: point.nature,
         };
         addPointToLineUnderConstruction(pointIdentity);
+        console.log("pointIdentity", pointIdentity);
+        setEditionStopId((ids) => [...ids, pointIdentity.id_point]);
         if (!(1 < getLineUnderConstruction().stops.length)) {
           return;
         }
