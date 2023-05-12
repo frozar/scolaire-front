@@ -18,6 +18,7 @@ import {
 } from "./signaux";
 import { ReturnMessageType } from "./type";
 import ControlMapMenu from "./components/ControlMapMenu";
+import { InformationBoard } from "./menu/Menu";
 
 const [, { isInAddLineMode }] = useStateAction();
 
@@ -115,6 +116,7 @@ export default function () {
       <div ref={mapDragDropDiv}>
         <div class="child">Drop your file here</div>
       </div>
+      <InformationBoard />
       <div ref={mapDiv} id="main-map" />
       <PointsRamassageAndEtablissement />
       <Show when={isInAddLineMode()}>

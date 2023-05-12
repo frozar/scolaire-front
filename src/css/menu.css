@@ -2,7 +2,6 @@
 * MENU BUTTON
 */
 .menu__toggler {
-  position: absolute;
   top: 20px;
   left: 20px;
   z-index: 999;
@@ -14,9 +13,8 @@
     > span,
     span::before,
     span::after {
-      position: absolute;
-      left: 9px;
-      top: 21px;
+      position: relative;
+      top: 10px;
       display: block;
       content: "";
       width: 28px;
@@ -27,12 +25,10 @@
     }
 
     > span::before {
-      left: 0px;
       top: -8px;
     }
 
     > span::after {
-      left: 0px;
       top: 8px;
     }
   }
@@ -127,18 +123,21 @@
 .menu__custom {
   @apply p-2 w-80 text-base-content text-left;
   position: absolute;
-  top: 0px;
-  left: -30%;
-  z-index: 998;
+  z-index: 997;
   color: #005c9c;
   background: rgba(250, 250, 250, 0.7);
   width: 30%;
   height: 100%;
   padding-top: 5rem;
   transition: 300ms left cubic-bezier(0.77, 0, 0.175, 1);
+  left: -30%;
 
   &.active {
-    left: 0;
+    left: 70px;
+
+    &._active {
+      left: 180px;
+    }
   }
 
   > p {
@@ -272,6 +271,7 @@
 
   #lateral-nav {
     @apply bg-[#062F3F] text-white h-[100vh] w-[70px]  translate-y-[-60px]  flex-col flex items-start pt-3;
+    z-index: 999;
     transition-duration: 400ms;
     &.active {
       width: 200px;

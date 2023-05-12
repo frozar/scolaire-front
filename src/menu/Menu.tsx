@@ -1,43 +1,17 @@
 import { Dynamic } from "solid-js/web";
-import { createEffect, For } from "solid-js";
-import MenuDraw from "./MenuDraw";
-import MenuDelete from "./MenuRemoveLine";
+import { For } from "solid-js";
 import InformationContent from "../InformationContent";
-import SideMapMenu from "./SideMenuMap";
 
 import { useStateAction } from "../StateAction";
 import { useStateGui } from "../StateGui";
-import ExportButton from "../export/ExportButton";
 
 const [stateAction, { toggleAltimetryAnimation }] = useStateAction();
-const [stateGui, { toggleDisplayedMenu, setSelectedTab }] = useStateGui();
+const [
+  stateGui,
+  { setSelectedTab, getDisplayedInformationBoard, getDisplayedMenu },
+] = useStateGui();
 
 let refMenuContent: any;
-let refMenuToggler: any;
-
-function MenuToggler() {
-  createEffect(() => {
-    if (stateGui.displayedMenu) {
-      refMenuToggler?.classList.add("active");
-      refMenuContent?.classList.add("active");
-    } else {
-      refMenuToggler?.classList.remove("active");
-      refMenuContent?.classList.remove("active");
-    }
-  });
-
-  return (
-    <div
-      ref={refMenuToggler}
-      class="menu__toggler"
-      onClick={toggleDisplayedMenu}
-    >
-      <div>
-        <span></span>
-      </div>
-    </div>
-  );
-}
 
 function SettingsContent(props: any) {
   return (
@@ -48,11 +22,11 @@ function SettingsContent(props: any) {
         class="mr-2"
         value="animation"
         checked={stateAction.altimetry.animation}
-        onChange={(e: any) => {
+        onChange={() => {
           toggleAltimetryAnimation();
         }}
         {...props}
-      ></input>
+      />
       <label for="animation-setting">Animations</label>
     </div>
   );
@@ -106,13 +80,10 @@ function SettingsName() {
   return <span>Paramètres</span>;
 }
 
-function MenuContent() {
+export function InformationBoard() {
   type TabValueType = {
-    // @ts-expect-error
     tabLabel: (props: any) => JSX.Element;
-    // @ts-expect-error
     tabContent: (props: any) => JSX.Element;
-    // @ts-expect-error
     tabName: (props: any) => JSX.Element;
   };
   type TabType = {
@@ -141,7 +112,14 @@ function MenuContent() {
   }
 
   return (
-    <div ref={refMenuContent} class="menu__custom">
+    <div
+      ref={refMenuContent}
+      class="menu__custom"
+      classList={{
+        _active: getDisplayedMenu(),
+        active: getDisplayedInformationBoard(),
+      }}
+    >
       <nav aria-label="Tabs">
         <For each={Object.keys(tabs)}>
           {(value: string) => {
@@ -168,18 +146,5 @@ function MenuContent() {
         component={tabs[stateGui.selectedTab as keyof typeof tabs].tabContent}
       />
     </div>
-  );
-}
-
-export default function () {
-  return (
-    <>
-      <MenuToggler />
-      <MenuContent />
-      <MenuDraw />
-      <MenuDelete />
-      <ExportButton />
-      <SideMapMenu />
-    </>
   );
 }
