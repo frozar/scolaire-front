@@ -136,3 +136,8 @@ export type MenuItemType = {
   Logo: () => JSX.Element;
   displayText: boolean;
 };
+
+export enum LastSelectionEnum {
+  point,
+  line,
+}

@@ -1,8 +1,20 @@
-import { createMemo, Show, For, createResource } from "solid-js";
+import { createMemo, Show, For, createResource, Switch, Match } from "solid-js";
 import InfoPointName from "./InfoPointName";
-import { NatureEnum, isPointRamassage } from "./type";
-import { PointIdentityType } from "./type";
-import { selectedElement, busLineSelected, busLines, points } from "./signaux";
+import {
+  NatureEnum,
+  isPointRamassage,
+  PointEtablissementType,
+  PointRamassageType,
+  LastSelectionEnum,
+} from "./type";
+import { PointIdentityType, LineType } from "./type";
+import {
+  selectedElement,
+  busLineSelected,
+  busLines,
+  points,
+  lastSelectedInfo,
+} from "./signaux";
 
 type PointToDisplayType = {
   id_point: number;
@@ -162,93 +174,116 @@ export default function () {
     }
   };
   const getPointRamassageName = (id_bus_line: number) => {
+    function mapFunction(busLine: LineType[], len: number) {
+      const listStops = [];
+      for (let i = 0; i < len; i++) {
+        listStops.push(busLine[0].stops[i].id_point);
+      }
+      return listStops;
+    }
+
+    function mapFunction2(
+      stops: PointRamassageType[] | PointEtablissementType[],
+      len: number
+    ) {
+      const listStops = [];
+      for (let i = 0; i < len; i++) {
+        listStops.push(stops[i].name);
+      }
+      return listStops;
+    }
+
     // Recup les id point dans busLines()
-    const stops = busLines().filter(
+    const busLine = busLines().filter(
       (busLine) => busLine.id_bus_line == id_bus_line
     );
-    function mapFunction(stops: any, len: number) {
-      const listeStops = [];
-      for (let i = 0; i < len; i++) {
-        listeStops.push(stops[0].stops[i].id_point);
-      }
-      return listeStops;
-    }
-    function mapFunction2(stops: any, len: number) {
-      const listeStops = [];
-      for (let i = 0; i < len; i++) {
-        listeStops.push(stops[i].name);
-      }
-      return listeStops;
-    }
-    const lenStops = stops.map((stops) => stops.stops.length)[0];
-    const listeStops = mapFunction(stops, lenStops);
+
+    // console.log("buslines");
+    // console.log(busLines());
+    // console.log(busLine);
+
+    const lenBusLine = busLine.map((busLine) => busLine.stops.length)[0];
+    const listStops = mapFunction(busLine, lenBusLine);
+
+    // console.log("listStops");
+    // console.log(listStops);
+    // console.log("point()");
+    // console.log(points());
+
     // Recup nom des arrêts dans points()
     const stopsName = points().filter((point) =>
-      listeStops.includes(point.id_point)
+      listStops.includes(point.id_point)
     );
-    console.log(Array.from(stopsName));
-    const stopNameList = mapFunction2(stopsName, lenStops);
+
+    // console.log("stopsName");
+    // console.log(stopsName);
+
+    const stopNameList = mapFunction2(stopsName, lenBusLine);
     return stopNameList;
   };
   return (
-    <div style="display: flex; flex-direction: column; align-items: center;">
-      <Show when={busLineSelected()}>
-        <Timeline stopsName={getPointRamassageName(busLineSelected())} />
-      </Show>
-      <Show
-        when={selectedElement()}
-        fallback={<span>No element selected</span>}
-      >
-        <h2>{selectedElement()?.name}</h2>
-
-        <Show
-          when={0 < ptToDisplay().length}
-          fallback={<span>No element to display</span>}
-        >
-          <div class="px-4 sm:px-6 lg:px-8">
-            <div class="mt-4 flex flex-col">
-              <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-                  <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
-                    <table class="min-w-full divide-y divide-gray-300">
-                      <thead class="bg-gray-50">
-                        <tr>
-                          <th
-                            scope="col"
-                            class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                          >
-                            {firstColumnTitle()}
-                          </th>
-                          <th
-                            scope="col"
-                            class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                          >
-                            Quantité
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <For each={ptToDisplay()}>
-                          {(pt) => (
-                            <tr>
-                              <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                                <InfoPointName point={pt} />
-                              </td>
-                              <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                                {pt.quantity}
-                              </td>
-                            </tr>
-                          )}
-                        </For>
-                      </tbody>
-                    </table>
+    <div
+      style={{
+        display: "flex",
+        "flex-direction": "column",
+        "align-items": "center",
+      }}
+    >
+      <Switch fallback={<span>No element selected</span>}>
+        <Match when={lastSelectedInfo() == LastSelectionEnum.point}>
+          <h2>{selectedElement()?.name}</h2>
+          <Show
+            when={0 < ptToDisplay().length}
+            fallback={<span>No element to display</span>}
+          >
+            <div class="px-4 sm:px-6 lg:px-8">
+              <div class="mt-8 flex flex-col">
+                <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                  <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+                    <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+                      <table class="min-w-full divide-y divide-gray-300">
+                        <thead class="bg-gray-50">
+                          <tr>
+                            <th
+                              scope="col"
+                              class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                            >
+                              {firstColumnTitle()}
+                            </th>
+                            <th
+                              scope="col"
+                              class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                            >
+                              Quantité
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <For each={ptToDisplay()}>
+                            {(pt) => (
+                              <tr>
+                                <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                                  <InfoPointName point={pt} />
+                                </td>
+                                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                                  {pt.quantity}
+                                </td>
+                              </tr>
+                            )}
+                          </For>
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </Show>
-      </Show>
+          </Show>
+        </Match>
+        <Match when={lastSelectedInfo() == LastSelectionEnum.line}>
+          <Timeline stopsName={getPointRamassageName(busLineSelected())} />
+        </Match>
+      </Switch>
     </div>
   );
 }

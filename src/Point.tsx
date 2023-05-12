@@ -13,12 +13,17 @@ import {
   PointIdentityType,
   PointRamassageType,
   PointEtablissementType,
+  LastSelectionEnum,
 } from "./type";
 
 import { useStateAction } from "./StateAction";
 import { renderAnimation } from "./animation";
 import { linkMap } from "./global/linkPointIdentityCircle";
-import { getLeafletMap, setSelectedElement } from "./signaux";
+import {
+  getLeafletMap,
+  setSelectedElement,
+  setLastSelectedInfo,
+} from "./signaux";
 import { minMaxQty } from "./PointsRamassageAndEtablissement";
 
 const [
@@ -126,6 +131,7 @@ export default function (props: any) {
       .on("click", () => {
         // Select the current element to display information
         setSelectedElement(point);
+        setLastSelectedInfo(LastSelectionEnum.point);
         if (!isInAddLineMode()) {
           return;
         }

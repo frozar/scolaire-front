@@ -13,6 +13,7 @@ import {
   userInformationType,
   ReturnMessageType,
   clearConfirmationType,
+  LastSelectionEnum,
 } from "./type";
 import { deepCopy } from "./utils";
 
@@ -232,4 +233,7 @@ export function fetchBusLines() {
 
 export const [getLeafletMap, setLeafletMap] = createSignal<L.Map>();
 
-export const [busLineSelected, setBusLineSelected] = createSignal();
+export const [busLineSelected, setBusLineSelected] = createSignal<number>();
+
+export const [lastSelectedInfo, setLastSelectedInfo] =
+  createSignal<LastSelectionEnum>();

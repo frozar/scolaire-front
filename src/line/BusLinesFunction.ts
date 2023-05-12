@@ -1,8 +1,12 @@
 import L from "leaflet";
 
 import { createEffect } from "solid-js";
-import { setRemoveConfirmation, setBusLineSelected } from "../signaux";
-import { PointIdentityType } from "../type";
+import {
+  setRemoveConfirmation,
+  setBusLineSelected,
+  setLastSelectedInfo,
+} from "../signaux";
+import { PointIdentityType, LastSelectionEnum } from "../type";
 import { linkMap } from "../global/linkPointIdentityCircle";
 
 export function getLatLngs(stops: PointIdentityType[]): L.LatLng[] {
@@ -53,5 +57,6 @@ export function busLinePolylineAttachEvent(
       }
       // console.log(e, id_bus_line);
       setBusLineSelected(id_bus_line);
+      setLastSelectedInfo(LastSelectionEnum.line);
     });
 }
