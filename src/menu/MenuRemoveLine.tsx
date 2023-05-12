@@ -9,7 +9,7 @@ const [, { setModeRemoveLine, isInRemoveLineMode, setModeRead }] =
 export default function () {
   return (
     <div class="menu-btn left-[140px] group">
-      <span class="tooltip group-hover:scale-100">Supprimer des lignes</span>
+      <span class="tooltip group-hover:scale-100">Supprimer une ligne</span>
       <label
         tabIndex={0}
         class="custom-btn btn-circle hover:bg-[#062F3F] hover:text-[#0cc683]"
