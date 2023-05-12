@@ -1,4 +1,5 @@
 import ExportButton from "../export/ExportButton";
+import MenuClear from "../menu/MenuClear";
 import MenuDraw from "../menu/MenuDraw";
 import MenuRemoveLine from "../menu/MenuRemoveLine";
 
@@ -7,6 +8,7 @@ export default function () {
     <div id="control-map-menu">
       <MenuDraw />
       <MenuRemoveLine />
+      <MenuClear />
       <ExportButton />
     </div>
   );

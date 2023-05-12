@@ -24,6 +24,7 @@ import DragAndDrop from "./userInformation/DragAndDrop";
 import NavTop from "./layout/NavTop";
 import NavLateral from "./layout/NavLateral";
 import { useStateGui } from "./StateGui";
+import ClearConfirmation from "./userInformation/ClearConfirmation";
 
 const [
   ,
@@ -175,7 +176,9 @@ export default () => {
         </Switch>
 
         <DisplayUserInformation />
+        <DragAndDrop />
         <RemoveConfirmation />
+        <ClearConfirmation />
         <ExportConfirmation />
         <SpinningWheel />
       </div>

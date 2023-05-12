@@ -60,6 +60,7 @@ export enum MessageTypeEnum {
   removeLine,
   addLine,
   global,
+  clear,
 }
 
 export enum MessageLevelEnum {
@@ -86,6 +87,10 @@ export type userInformationType = {
 export type removeConfirmationType = {
   displayed: boolean;
   id_bus_line: number | null;
+};
+
+export type clearConfirmationType = {
+  displayed: boolean;
 };
 
 export type TileId =
