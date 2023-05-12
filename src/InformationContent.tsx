@@ -174,23 +174,15 @@ export default function () {
     }
   };
   const getPointRamassageName = (id_bus_line: number) => {
-    function mapFunction(busLine: LineType[], len: number) {
-      const listStops = [];
-      for (let i = 0; i < len; i++) {
-        listStops.push(busLine[0].stops[i].id_point);
-      }
-      return listStops;
+    function getStopsId(busLine: LineType[], len: number) {
+      return busLine[0].stops.slice(0, len).map((stop) => stop.id_point);
     }
 
-    function mapFunction2(
+    function getStopsName(
       stops: PointRamassageType[] | PointEtablissementType[],
       len: number
     ) {
-      const listStops = [];
-      for (let i = 0; i < len; i++) {
-        listStops.push(stops[i].name);
-      }
-      return listStops;
+      return stops.slice(0, len).map((stop) => stop.name);
     }
 
     // Recup les id point dans busLines()
@@ -203,7 +195,7 @@ export default function () {
     // console.log(busLine);
 
     const lenBusLine = busLine.map((busLine) => busLine.stops.length)[0];
-    const listStops = mapFunction(busLine, lenBusLine);
+    const listStops = getStopsId(busLine, lenBusLine);
 
     // console.log("listStops");
     // console.log(listStops);
@@ -218,7 +210,7 @@ export default function () {
     // console.log("stopsName");
     // console.log(stopsName);
 
-    const stopNameList = mapFunction2(stopsName, lenBusLine);
+    const stopNameList = getStopsName(stopsName, lenBusLine);
     return stopNameList;
   };
   return (
