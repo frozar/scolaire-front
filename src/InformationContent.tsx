@@ -24,9 +24,11 @@ import {
   points,
   lastSelectedInfo,
   editionStopId,
+  setEditionStopId,
 } from "./signaux";
 import { useStateAction } from "./StateAction";
-const [, { isInAddLineMode, getLineUnderConstruction }] = useStateAction();
+const [, { isInAddLineMode, getLineUnderConstruction, isInReadMode }] =
+  useStateAction();
 type PointToDisplayType = {
   id_point: number;
   name: string;
@@ -111,17 +113,37 @@ export default function () {
   createEffect(() => {
     // console.log("mode edition=>", isInAddLineMode());
     // console.log(getLineUnderConstruction());
-
-    console.log("editionStopId", editionStopId());
-    // Recup nom des arrêts dans points()
-    const stopsName = points()
-      .filter((point) => editionStopId().includes(point.id_point))
-      .map((stopName) => stopName.name);
-    console.log("points", points());
-    console.log("stopsName", stopsName);
-    setLocalEditionStopNames(stopsName);
-    // setLocalEditionStopNames((names) => [...names, stopsName]);
+    if (editionStopId().length != 0) {
+      console.log("editionStopId()[-1]", editionStopId().at(-1));
+      console.log("editionStopId", editionStopId());
+      console.log("points()", points());
+      console.log("arrayed", [editionStopId().at(-1)]);
+      console.log(
+        "laa=>",
+        points().filter((point) =>
+          [editionStopId().at(-1)].includes(point.id_point)
+        )
+      );
+      // Recup nom des arrêts dans points()
+      const stopsName = points()
+        .filter((point) => [editionStopId().at(-1)].includes(point.id_point))
+        .map((stopName) => stopName.name);
+      // console.log("points", points());
+      // console.log("stopsName", stopsName);
+      // setLocalEditionStopNames(stopsName);
+      setLocalEditionStopNames((names) => [...names, stopsName]);
+      // console.log("localEditionStopNames()", localEditionStopNames());
+    }
   });
+
+  createEffect(() => {
+    if (isInReadMode() == true) {
+      console.log("READ MODE");
+      setLocalEditionStopNames([]);
+      setEditionStopId([]);
+    }
+  });
+
   const selectedIdentity = createMemo<PointIdentityType | null>(() => {
     const wkSelectedElement = selectedElement();
     if (!wkSelectedElement) {
