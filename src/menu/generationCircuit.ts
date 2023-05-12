@@ -98,6 +98,25 @@ export function generateCircuit(nbVehicles: number) {
   })
     .then(async (res) => {
       const data = await res.json();
+      console.log("data:", data);
+      if (!data) {
+        const nbRamassage = ramassageIds.length;
+        const nbEtablissement = etablissementIds.length;
+        addNewUserInformation({
+          displayed: true,
+          level: MessageLevelEnum.error,
+          type: MessageTypeEnum.global,
+          content:
+            "Erreur lors de la génération de circuit. [ramassage:" +
+            String(nbRamassage) +
+            ", etablissement:" +
+            String(nbEtablissement) +
+            "]",
+        });
+        console.error("Error: data", data);
+        disableSpinningWheel();
+        return;
+      }
       for (const route of data) {
         const idsPoint = route["steps"].map(
           (step: {
