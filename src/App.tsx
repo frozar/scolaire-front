@@ -18,6 +18,7 @@ import NavLateral from "./layout/NavLateral";
 import { useStateGui } from "./StateGui";
 import ClearConfirmation from "./userInformation/ClearConfirmation";
 import GeneratorDialogueBox from "./userInformation/GeneratorDialogueBox";
+import Arret from "./views/Arret";
 
 const [
   ,
@@ -165,6 +166,10 @@ export default () => {
         <Switch fallback={<p>Page not found</p>}>
           <Match when={getSelectedMenu() == "graphicage"}>
             <Map />
+          </Match>
+
+          <Match when={getSelectedMenu() == "arrets"}>
+            <Arret />
           </Match>
         </Switch>
 
