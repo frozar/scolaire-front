@@ -1,12 +1,10 @@
-import {
-  LateralMenuArretsLogo,
-  LateralMenuDashboardLogo,
-  LateralMenuEtablissementLogo,
-  LateralMenuGraphicageLogo,
-  LateralMenuSettingsLogo,
-  LateralMenuSupportLogo,
-  LateralMenuVoirieLogo,
-} from "../views/graphicage/rightMapMenu/export/Logos";
+import LateralMenuArretsLogo from "./logo/LateralMenuArretsLogo";
+import LateralMenuDashboardLogo from "./logo/LateralMenuDashboardLogo";
+import LateralMenuEtablissementLogo from "./logo/LateralMenuEtablissementLogo";
+import LateralMenuGraphicageLogo from "./logo/LateralMenuGraphicageLogo";
+import LateralMenuSettingsLogo from "./logo/LateralMenuSettingsLogo";
+import LateralMenuSupportLogo from "./logo/LateralMenuSupportLogo";
+import LateralMenuVoirieLogo from "./logo/LateralMenuVoirieLogo";
 import { MenuItemType } from "../type";
 
 export default function (displayText: boolean) {

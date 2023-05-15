@@ -1,8 +1,6 @@
-import {
-  EnterpriseLogo,
-  OpenLateralMenuLogo,
-  CloseLateralMenuLogo,
-} from "../views/graphicage/rightMapMenu/export/Logos";
+import EnterpriseLogo from "./logo/EnterpriseLogo";
+import OpenLateralMenuLogo from "./logo/OpenLateralMenuLogo";
+import CloseLateralMenuLogo from "./logo/CloseLateralMenuLogo";
 import { Show, createEffect, createSignal } from "solid-js";
 import { useStateGui } from "../StateGui";
 import { For } from "solid-js";
