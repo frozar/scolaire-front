@@ -25,7 +25,9 @@ const [
 function MenuItems(props: MenuItemType) {
   const title = () => props.title;
   const menuItem = () => props.menuItem;
-  const Logo = () => props.Logo;
+  const Logo = () => {
+    return <>{props.Logo}</>;
+  };
 
   return (
     <li
@@ -35,7 +37,7 @@ function MenuItems(props: MenuItemType) {
         setSelectedMenu(menuItem());
       }}
     >
-      {Logo}
+      <Logo />
       <Show when={getDisplayedMenu() == true}>{title()}</Show>
     </li>
   );
