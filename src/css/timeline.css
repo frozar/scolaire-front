@@ -1,5 +1,7 @@
 .timeline {
   box-sizing: border-box;
+  /* width: 100%; */
+  /* margin-left: 10%; */
   /* overflow-y: scroll; */
   -webkit-text-size-adjust: 100%;
   word-break: normal;
@@ -38,6 +40,7 @@
   display: grid;
   grid-auto-flow: dense;
   position: relative;
+  width: 300px;
 }
 
 .v-timeline--align-start {

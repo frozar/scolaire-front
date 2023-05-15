@@ -95,6 +95,9 @@ function Timeline_item(props: Item) {
         </div>
         <div class="v-timeline-divider__after" />
       </div>
+      {/* <div class="v-timeline-item__opposite" style={{ width: "0px" }}>
+        test
+      </div> */}
     </div>
   );
 }
