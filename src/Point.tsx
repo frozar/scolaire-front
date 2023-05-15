@@ -144,14 +144,8 @@ export default function (props: any) {
           nature: point.nature,
         };
         addPointToLineUnderConstruction(pointIdentity);
-        console.log("pointIdentity", pointIdentity);
         if (pointIdentity.id_point != editionStopId().at(-1)) {
           setEditionStopId((ids) => [...ids, pointIdentity.id_point]);
-          console.log("click");
-          console.log(
-            "getLineUnderConstruction()",
-            getLineUnderConstruction().stops
-          );
         }
         if (!(1 < getLineUnderConstruction().stops.length)) {
           return;

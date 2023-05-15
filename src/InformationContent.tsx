@@ -143,16 +143,6 @@ export default function () {
       setEditionStopId([]);
     }
   });
-  createEffect(() => {
-    // setEditionStopId((ids) => [...ids, getLineUnderConstruction().stops.slice().filter((stop) => stop.id_point)]);
-    // console.log(
-    //   "getLinePoints",
-    //   getLineUnderConstruction()
-    //     .stops.slice()
-    //     .filter((stop) => stop.id_point)
-    // );
-    console.log("test", getLineUnderConstruction().stops); // WIP
-  });
   // createEffect(() => {
   //   if (lastSelectedInfo() == LastSelectionEnum.edition) {
   //     if (localEditionStopNames()) {
