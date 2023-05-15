@@ -1,7 +1,6 @@
-import { createEffect } from "solid-js";
 import { useStateGui } from "../StateGui";
 
-const [, { getDisplayedMenu, getSelectedMenu }] = useStateGui();
+const [, { getDisplayedMenu }] = useStateGui();
 
 export function ImageExportLogo() {
   return (
@@ -314,7 +313,6 @@ export function LateralMenuSettingsLogo() {
       width="30"
       height="30"
       viewBox="0 0 30 30"
-      fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
       <path d="M29.6071 24.3728L17.2166 11.9823C18.442 8.85061 17.7612 5.17429 15.1742 2.58725C12.451 -0.135944 8.36617 -0.680584 5.09833 0.817175L10.9532 6.67205L6.86841 10.7568L0.877378 4.90197C-0.756541 8.16981 -0.0757417 12.2546 2.64746 14.9778C5.23449 17.5648 8.91081 18.2456 12.0425 17.0202L24.433 29.4108C24.9777 29.9554 25.7946 29.9554 26.3393 29.4108L29.471 26.2791C30.1518 25.7344 30.1518 24.7813 29.6071 24.3728Z" />
@@ -328,7 +326,6 @@ export function LateralMenuSupportLogo() {
       width="30"
       height="27"
       viewBox="0 0 30 27"
-      fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
       <path d="M28.5 13.83C28.5 5.595 22.11 0 15 0C7.965 0 1.5 5.475 1.5 13.92C0.6 14.43 0 15.39 0 16.5V19.5C0 21.15 1.35 22.5 3 22.5H4.5V13.35C4.5 7.545 9.195 2.85 15 2.85C20.805 2.85 25.5 7.545 25.5 13.35V24H13.5V27H25.5C27.15 27 28.5 25.65 28.5 24V22.17C29.385 21.705 30 20.79 30 19.71V16.26C30 15.21 29.385 14.295 28.5 13.83Z" />
