@@ -7,7 +7,7 @@ import ClickOutside from "../../../ClickOutside";
 import { displayAddLineMessage } from "../../../userInformation/utils";
 import { FaSolidPlus } from "solid-icons/fa";
 import { LastSelectionEnum } from "../type";
-import { setLastSelectedInfo, setEditionStopNames } from "../signaux";
+import { setInfoToDisplay, setEditionStopNames } from "../signaux";
 import { setLocalEditionStopNames } from "../signaux";
 
 const [, { setModeAddLine, isInAddLineMode }] = useStateAction();
@@ -80,7 +80,6 @@ export default function () {
                   toggleShow();
                   setModeAddLine();
                   displayAddLineMessage();
-                  setLastSelectedInfo(LastSelectionEnum.edition);
                   setLocalEditionStopNames([]);
                 }}
               >

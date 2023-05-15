@@ -4,7 +4,7 @@ import { createEffect } from "solid-js";
 import {
   setRemoveConfirmation,
   setBusLineSelected,
-  setLastSelectedInfo,
+  setInfoToDisplay,
   busLineSelected,
 } from "../signaux";
 import { PointIdentityType, LastSelectionEnum } from "../type";
@@ -63,7 +63,7 @@ export function busLinePolylineAttachEvent(
         setBusLineSelected(id_bus_line);
         console.log("ligne enregistré dans signal=>", id_bus_line);
         console.log("busLineSelected()", busLineSelected());
-        setLastSelectedInfo(LastSelectionEnum.line);
+        setInfoToDisplay(LastSelectionEnum.line);
       }
     });
 }

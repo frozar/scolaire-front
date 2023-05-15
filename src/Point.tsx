@@ -22,7 +22,7 @@ import { linkMap } from "./global/linkPointIdentityCircle";
 import {
   getLeafletMap,
   setSelectedElement,
-  setLastSelectedInfo,
+  setInfoToDisplay,
   setEditionStopId,
   editionStopId,
 } from "./signaux";
@@ -134,7 +134,7 @@ export default function (props: any) {
         // Select the current element to display information
         setSelectedElement(point);
         if (!isInAddLineMode()) {
-          setLastSelectedInfo(LastSelectionEnum.point);
+          setInfoToDisplay(LastSelectionEnum.point);
           return;
         }
 

@@ -235,10 +235,11 @@ export const [getLeafletMap, setLeafletMap] = createSignal<L.Map>();
 
 export const [busLineSelected, setBusLineSelected] = createSignal<number>();
 
-export const [lastSelectedInfo, setLastSelectedInfo] =
+export const [infoToDisplay, setInfoToDisplay] =
   createSignal<LastSelectionEnum>();
 
-export const [editionStopId, setEditionStopId] = createSignal<any>([]);
+export const [editionStopId, setEditionStopId] = createSignal<number[]>([]);
 
-export const [localEditionStopNames, setLocalEditionStopNames] =
-  createSignal<any>([]);
+export const [localEditionStopNames, setLocalEditionStopNames] = createSignal<
+  string[]
+>([]);

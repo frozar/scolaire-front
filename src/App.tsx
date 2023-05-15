@@ -19,6 +19,7 @@ import {
   setLastSelectedInfo,
   setEditionStopId,
 } from "./signaux";
+
 import {
   displayAddLineMessage,
   displayRemoveLineMessage,
@@ -88,8 +89,6 @@ function escapeHandler({ code }: KeyboardEvent) {
 
     resetLineUnderConstruction();
     setModeRead();
-    setLastSelectedInfo(LastSelectionEnum.nothing);
-    setEditionStopId([]);
   }
 }
 
@@ -106,8 +105,6 @@ function enterHandler({ code }: KeyboardEvent) {
       await res.json();
       resetLineUnderConstruction();
       setModeRead();
-      setLastSelectedInfo(LastSelectionEnum.nothing);
-      setEditionStopId([]);
       fetchBusLines();
     });
   }
@@ -121,7 +118,6 @@ function toggleLineUnderConstruction({ code }: KeyboardEvent) {
     const upKey = keyboardLayoutMap.get(code);
     if (upKey === "l") {
       setModeAddLine();
-      setLastSelectedInfo(LastSelectionEnum.nothing); // ??
       displayAddLineMessage();
     }
     if (upKey === "d") {
@@ -131,8 +127,6 @@ function toggleLineUnderConstruction({ code }: KeyboardEvent) {
         displayRemoveLineMessage();
       } else {
         setModeRead();
-        setLastSelectedInfo(LastSelectionEnum.nothing);
-        setEditionStopId([]);
         closeRemoveConfirmationBox();
       }
     }

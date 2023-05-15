@@ -22,7 +22,8 @@ import {
   busLineSelected,
   busLines,
   points,
-  lastSelectedInfo,
+  infoToDisplay,
+  setInfoToDisplay,
   editionStopId,
   setEditionStopId,
   setBusLineSelected,
@@ -40,16 +41,15 @@ type PointToDisplayType = {
 };
 
 type Item = {
-  hour: string;
+  hour: string | undefined;
   name: string;
-  caption: string | null;
+  caption: string | undefined;
 };
 
 const displayTimeline = (id_bus_line: number) => {
   function getStopIds(busLine: LineType[], len: number) {
     return busLine[0].stops.slice(0, len).map((stop) => stop.id_point);
   }
-  // Ne pas utiliser de fonction ici!?
   function getStopsName(
     stops: PointRamassageType[] | PointEtablissementType[],
     len: number
@@ -108,7 +108,9 @@ function Timeline() {
         style={{ "--v-timeline-line-thickness": "2px" }}
       >
         <For each={localEditionStopNames()}>
-          {(stop) => <Timeline_item name={stop} />}
+          {(stop) => (
+            <Timeline_item hour={undefined} name={stop} caption={undefined} />
+          )}
         </For>
       </div>
     </div>
@@ -117,9 +119,9 @@ function Timeline() {
 
 export default function () {
   createEffect(() => {
-    // console.log("mode edition=>", isInAddLineMode());
-    // console.log(getLineUnderConstruction());
+    // AddLine mode
     if (editionStopId().length != 0) {
+      console.log("editionStopId()", editionStopId());
       // Recup nom des arrêts dans points()
       const stopsName = points()
         .filter((point) => [editionStopId().at(-1)].includes(point.id_point))
@@ -138,23 +140,16 @@ export default function () {
   createEffect(() => {
     if (isInReadMode()) {
       console.log("READ MODE");
+      setInfoToDisplay(LastSelectionEnum.nothing);
       setBusLineSelected(undefined);
       setLocalEditionStopNames([]);
       setEditionStopId([]);
     }
+    if (isInAddLineMode()) {
+      console.log("Addline mode");
+      setInfoToDisplay(LastSelectionEnum.edition);
+    }
   });
-  // createEffect(() => {
-  //   if (lastSelectedInfo() == LastSelectionEnum.edition) {
-  //     if (localEditionStopNames()) {
-  //       return;
-  //     }
-  //     setLocalEditionStopNames([]);
-  //     console.log(
-  //       "mode edition=> local edition names=>",
-  //       localEditionStopNames()
-  //     );
-  //   }
-  // });
 
   const selectedIdentity = createMemo<PointIdentityType | null>(() => {
     const wkSelectedElement = selectedElement();
@@ -257,7 +252,7 @@ export default function () {
       }}
     >
       <Switch fallback={<span>No element selected</span>}>
-        <Match when={lastSelectedInfo() == LastSelectionEnum.point}>
+        <Match when={infoToDisplay() == LastSelectionEnum.point}>
           <h2>{selectedElement()?.name}</h2>
           <Show
             when={0 < ptToDisplay().length}
@@ -307,13 +302,13 @@ export default function () {
             </div>
           </Show>
         </Match>
-        <Match when={lastSelectedInfo() == LastSelectionEnum.line}>
+        <Match when={infoToDisplay() == LastSelectionEnum.line}>
           <div>ligne selectionné</div>
           <Timeline />
         </Match>
         <Match
           when={
-            lastSelectedInfo() == LastSelectionEnum.edition &&
+            infoToDisplay() == LastSelectionEnum.edition &&
             localEditionStopNames().length != 0
           }
         >
