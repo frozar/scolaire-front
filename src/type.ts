@@ -125,5 +125,5 @@ export type SelectedMenuType = "graphicage" | "dashboard" | "arrets";
 export type MenuItemType = {
   title: string;
   menuItem: SelectedMenuType;
-  JSX: () => JSX.Element;
+  Logo: () => JSX.Element;
 };
