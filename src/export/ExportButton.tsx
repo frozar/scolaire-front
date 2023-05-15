@@ -10,7 +10,7 @@ export default function () {
         class="custom-btn btn-circle hover:bg-[#062F3F] hover:text-[#0cc683]"
         onClick={openExportConfirmationBox}
       >
-        <CgExport class="w-full h-2/3" />
+        <CgExport class="h-10 w-10 pb-[5px]" />
       </label>
     </div>
   );
