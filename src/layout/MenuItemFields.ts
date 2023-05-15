@@ -12,19 +12,14 @@ import { MenuItemType } from "../type";
 export default function () {
   const menuItems: MenuItemType[] = [
     {
-      title: "Graphicage",
-      menuItem: "graphicage",
-      Logo: LateralMenuGraphicageLogo,
-    },
-    {
-      title: "Arrêts",
-      menuItem: "arrets",
-      Logo: LateralMenuArretsLogo,
-    },
-    {
       title: "Dashboard",
       menuItem: "dashboard",
       Logo: LateralMenuDashboardLogo,
+    },
+    {
+      title: "Graphicage",
+      menuItem: "graphicage",
+      Logo: LateralMenuGraphicageLogo,
     },
     {
       title: "Voirie",
@@ -35,6 +30,11 @@ export default function () {
       title: "Établissements",
       menuItem: "etablissements",
       Logo: LateralMenuEtablissementLogo,
+    },
+    {
+      title: "Arrêts",
+      menuItem: "arrets",
+      Logo: LateralMenuArretsLogo,
     },
     {
       title: "Paramètres",
