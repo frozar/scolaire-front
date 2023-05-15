@@ -438,23 +438,3 @@ export function LateralMenuSupportLogo() {
     </svg>
   );
 }
-
-export function ControlMapMenuExport() {
-  return (
-    <svg
-      width="24"
-      height="24"
-      viewBox="0 0 32 32"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M1 23.5V25.375C1 26.8668 1.59263 28.2976 2.64752 29.3525C3.70242 30.4074 5.13316 31 6.625 31H25.375C26.8668 31 28.2976 30.4074 29.3525 29.3525C30.4074 28.2976 31 26.8668 31 25.375V23.5M23.5 8.5L16 1M16 1L8.5 8.5M16 1V23.5"
-        stroke="white"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      />
-    </svg>
-  );
-}

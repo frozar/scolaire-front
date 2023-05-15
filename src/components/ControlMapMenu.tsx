@@ -1,4 +1,5 @@
 import ExportButton from "../export/ExportButton";
+import GenerateButton from "../menu/GenerateButton";
 import MenuClear from "../menu/MenuClear";
 import MenuDraw from "../menu/MenuDraw";
 import MenuRemoveLine from "../menu/MenuRemoveLine";
@@ -9,6 +10,7 @@ export default function () {
       <MenuDraw />
       <MenuRemoveLine />
       <MenuClear />
+      <GenerateButton />
       <ExportButton />
     </div>
   );

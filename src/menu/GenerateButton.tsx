@@ -1,15 +1,16 @@
-// import { openExportConfirmationBox } from "../signaux";
-
 import { openGeneratorDialogueBox } from "../signaux";
-
-// import { onClickHandler } from "./generationCircuit";
+import { FiArrowUpCircle } from "solid-icons/fi";
 
 export default function () {
   return (
-    <>
-      <div class="generate-btn">
-        <button onClick={openGeneratorDialogueBox}>Generate</button>
-      </div>
-    </>
+    <div class="menu-btn left-[140px] group">
+      <span class="tooltip group-hover:scale-100">Exporter</span>
+      <label
+        class="custom-btn btn-circle hover:bg-[#062F3F] hover:text-[#0cc683]"
+        onClick={openGeneratorDialogueBox}
+      >
+        <FiArrowUpCircle class="h-10 w-10" />
+      </label>
+    </div>
   );
 }

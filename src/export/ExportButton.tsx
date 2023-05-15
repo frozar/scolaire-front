@@ -1,5 +1,4 @@
 import { openExportConfirmationBox } from "../signaux";
-import { ControlMapMenuExport } from "./Logos";
 import { CgExport } from "solid-icons/cg";
 
 export default function () {
