@@ -8,7 +8,7 @@ import { displayAddLineMessage } from "../../../userInformation/utils";
 import { FaSolidPlus } from "solid-icons/fa";
 import { LastSelectionEnum } from "../type";
 import { setLastSelectedInfo, setEditionStopNames } from "../signaux";
-import { setLocalEditionStopNames } from "../InformationContent";
+import { setLocalEditionStopNames } from "../signaux";
 
 const [, { setModeAddLine, isInAddLineMode }] = useStateAction();
 

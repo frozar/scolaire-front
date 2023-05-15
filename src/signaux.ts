@@ -239,3 +239,6 @@ export const [lastSelectedInfo, setLastSelectedInfo] =
   createSignal<LastSelectionEnum>();
 
 export const [editionStopId, setEditionStopId] = createSignal<any>([]);
+
+export const [localEditionStopNames, setLocalEditionStopNames] =
+  createSignal<any>([]);

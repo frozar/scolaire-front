@@ -24,6 +24,7 @@ import {
   setSelectedElement,
   setLastSelectedInfo,
   setEditionStopId,
+  editionStopId,
 } from "./signaux";
 import { minMaxQty } from "./PointsRamassageAndEtablissement";
 
@@ -144,8 +145,14 @@ export default function (props: any) {
         };
         addPointToLineUnderConstruction(pointIdentity);
         console.log("pointIdentity", pointIdentity);
-        setEditionStopId((ids) => [...ids, pointIdentity.id_point]);
-        console.log("click");
+        if (pointIdentity.id_point != editionStopId().at(-1)) {
+          setEditionStopId((ids) => [...ids, pointIdentity.id_point]);
+          console.log("click");
+          console.log(
+            "getLineUnderConstruction()",
+            getLineUnderConstruction().stops
+          );
+        }
         if (!(1 < getLineUnderConstruction().stops.length)) {
           return;
         }

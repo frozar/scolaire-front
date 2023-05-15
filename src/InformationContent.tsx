@@ -26,6 +26,8 @@ import {
   editionStopId,
   setEditionStopId,
   setBusLineSelected,
+  localEditionStopNames,
+  setLocalEditionStopNames,
 } from "./signaux";
 import { useStateAction } from "./StateAction";
 const [, { isInAddLineMode, getLineUnderConstruction, isInReadMode }] =
@@ -43,16 +45,11 @@ type Item = {
   caption: string | null;
 };
 
-export const [localEditionStopNames, setLocalEditionStopNames] =
-  createSignal<any>([]);
-
-const getPointRamassageName = (id_bus_line: number) => {
-  console.log("id_bus_line");
-  console.log(id_bus_line);
+const displayTimeline = (id_bus_line: number) => {
   function getStopIds(busLine: LineType[], len: number) {
     return busLine[0].stops.slice(0, len).map((stop) => stop.id_point);
   }
-
+  // Ne pas utiliser de fonction ici!?
   function getStopsName(
     stops: PointRamassageType[] | PointEtablissementType[],
     len: number
@@ -66,16 +63,10 @@ const getPointRamassageName = (id_bus_line: number) => {
   );
   const lenBusLine = busLine[0].stops.length;
   const stopIds = getStopIds(busLine, lenBusLine);
-  // console.log(stopIds);
 
   // Recup nom des arrêts dans points()
-  const stopsName = points().filter((point) =>
-    stopIds.includes(point.id_point)
-  );
-
-  const stopNameList = getStopsName(stopsName, lenBusLine);
-  console.log("stopNameList");
-  console.log(stopNameList);
+  const stops = points().filter((point) => stopIds.includes(point.id_point));
+  const stopNameList = getStopsName(stops, lenBusLine);
   return stopNameList;
 };
 
@@ -90,12 +81,10 @@ function Timeline_item(props: Item) {
     >
       <div class="v-timeline-item__body">
         <div class="d-flex">
-          <strong class="me-4">{props.hour}</strong>
+          {/* <strong class="me-4">{props.hour}</strong> */}
           <div>
             <strong>{props.name}</strong>
-            <Show when={props.caption != null}>
-              <div class="text-caption"> {props.caption} </div>
-            </Show>
+            {/* <div class="text-caption"> {props.caption} </div> */}
           </div>
         </div>
       </div>
@@ -119,9 +108,7 @@ function Timeline() {
         style={{ "--v-timeline-line-thickness": "2px" }}
       >
         <For each={localEditionStopNames()}>
-          {(stop) => (
-            <Timeline_item hour="heure" name={stop} caption="description" />
-          )}
+          {(stop) => <Timeline_item name={stop} />}
         </For>
       </div>
     </div>
@@ -133,35 +120,19 @@ export default function () {
     // console.log("mode edition=>", isInAddLineMode());
     // console.log(getLineUnderConstruction());
     if (editionStopId().length != 0) {
-      console.log("editionStopId()[-1]", editionStopId().at(-1));
-      console.log("editionStopId", editionStopId());
-      console.log("points()", points());
-      console.log("arrayed", [editionStopId().at(-1)]);
-      console.log(
-        "laa=>",
-        points().filter((point) =>
-          [editionStopId().at(-1)].includes(point.id_point)
-        )
-      );
       // Recup nom des arrêts dans points()
-      // ----
       const stopsName = points()
         .filter((point) => [editionStopId().at(-1)].includes(point.id_point))
         .map((stopName) => stopName.name)[0];
-      // ---------
-      // console.log("points", points());
-      // console.log("stopsName", stopsName);
-      // setLocalEditionStopNames(stopsName);
-      // --------
+
       setLocalEditionStopNames((names) => [...names, stopsName]);
-      console.log("localEditionStopNames()", localEditionStopNames());
     }
   });
   createEffect(() => {
     console.log("iciAvant");
     if (busLineSelected() != undefined) {
       console.log("ici");
-      setLocalEditionStopNames(getPointRamassageName(busLineSelected()));
+      setLocalEditionStopNames(displayTimeline(busLineSelected()));
     }
   });
   createEffect(() => {
@@ -171,6 +142,16 @@ export default function () {
       setLocalEditionStopNames([]);
       setEditionStopId([]);
     }
+  });
+  createEffect(() => {
+    // setEditionStopId((ids) => [...ids, getLineUnderConstruction().stops.slice().filter((stop) => stop.id_point)]);
+    // console.log(
+    //   "getLinePoints",
+    //   getLineUnderConstruction()
+    //     .stops.slice()
+    //     .filter((stop) => stop.id_point)
+    // );
+    console.log("test", getLineUnderConstruction().stops); // WIP
   });
   // createEffect(() => {
   //   if (lastSelectedInfo() == LastSelectionEnum.edition) {

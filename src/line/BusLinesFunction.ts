@@ -60,7 +60,6 @@ export function busLinePolylineAttachEvent(
       }
       if (isInReadMode()) {
         console.log("ligne séléctionné");
-        // setBusLineSelected(undefined); //Temporaire
         setBusLineSelected(id_bus_line);
         console.log("ligne enregistré dans signal=>", id_bus_line);
         console.log("busLineSelected()", busLineSelected());
