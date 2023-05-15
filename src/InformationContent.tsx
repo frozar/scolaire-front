@@ -6,7 +6,6 @@ import {
   Switch,
   Match,
   createEffect,
-  createSignal,
 } from "solid-js";
 import InfoPointName from "./InfoPointName";
 import {
@@ -97,7 +96,7 @@ function Timeline_item(props: Item) {
 }
 function Timeline() {
   return (
-    <div class="pa-4">
+    <div class="timeline">
       <div
         class="v-timeline v-timeline--align-start v-timeline--justify-auto v-timeline--side-end v-timeline--vertical"
         style={{ "--v-timeline-line-thickness": "2px" }}
