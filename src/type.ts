@@ -133,4 +133,5 @@ export type MenuItemType = {
   title: string;
   menuItem: SelectedMenuType;
   Logo: () => JSX.Element;
+  displayText: boolean;
 };
