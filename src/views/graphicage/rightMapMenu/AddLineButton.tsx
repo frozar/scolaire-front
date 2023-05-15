@@ -1,10 +1,10 @@
 import { createSignal, Show } from "solid-js";
 
-import { useStateAction } from "../StateAction";
-import { assertIsNode } from "../utils";
+import { useStateAction } from "../../../StateAction";
+import { assertIsNode } from "../../../utils";
 import { Transition } from "solid-transition-group";
-import ClickOutside from "../ClickOutside";
-import { displayAddLineMessage } from "../userInformation/utils";
+import ClickOutside from "../../../ClickOutside";
+import { displayAddLineMessage } from "../../../userInformation/utils";
 import { FaSolidPlus } from "solid-icons/fa";
 const [, { setModeAddLine, isInAddLineMode }] = useStateAction();
 

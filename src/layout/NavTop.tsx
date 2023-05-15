@@ -1,4 +1,4 @@
-import { CurrentUserLogo } from "../export/Logos";
+import CurrentUserLogo from "./logo/CurrentUserLogo";
 
 export default function () {
   return (

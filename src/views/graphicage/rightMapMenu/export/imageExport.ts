@@ -1,12 +1,15 @@
 import JSZip from "jszip";
 import { LatLng, LatLngBounds, Polyline } from "leaflet";
 import { SimpleMapScreenshoter } from "leaflet-simple-map-screenshoter";
-import { displayDownloadSuccessMessage, displayNoLineMessage } from "../userInformation/utils";
-import { getScreenshoter } from "../menu/screenShoter";
-import { getLeafletMap } from "../signaux";
+import {
+  displayDownloadSuccessMessage,
+  displayNoLineMessage,
+} from "../../../../userInformation/utils";
+import { getScreenshoter } from "./screenShoter";
+import { getLeafletMap } from "../../../../signaux";
 import { saveAs } from "file-saver";
-import { enableSpinningWheel } from "../signaux";
-import { disableSpinningWheel } from "../signaux";
+import { enableSpinningWheel } from "../../../../signaux";
+import { disableSpinningWheel } from "../../../../signaux";
 import { getExportDate } from "./export";
 
 let zip: JSZip;
@@ -34,7 +37,7 @@ function moveEndEvent(
       await wait(2000);
       const canvasCandidate = await screenShoter?.takeScreen("canvas");
       console.log("yo");
-      
+
       if (canvasCandidate instanceof HTMLCanvasElement) {
         console.log("lo");
         const canvas = canvasCandidate as any as HTMLCanvasElement;
@@ -115,7 +118,7 @@ export async function exportImages() {
   if (!polylines) {
     return;
   }
-  
+
   lineBoundBox = getLinesBoundBox(polylines);
   enableSpinningWheel();
   await exportMapImage(screenShoter, leafletMap, lineBoundBox);

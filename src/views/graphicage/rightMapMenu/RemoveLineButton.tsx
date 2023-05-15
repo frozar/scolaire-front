@@ -1,7 +1,7 @@
 import { FaSolidMinus } from "solid-icons/fa";
 
-import { useStateAction } from "../StateAction";
-import { displayRemoveLineMessage } from "../userInformation/utils";
+import { useStateAction } from "../../../StateAction";
+import { displayRemoveLineMessage } from "../../../userInformation/utils";
 
 const [, { setModeRemoveLine, isInRemoveLineMode, setModeRead }] =
   useStateAction();
