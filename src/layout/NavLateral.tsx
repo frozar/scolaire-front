@@ -15,6 +15,7 @@ import { useStateGui } from "../StateGui";
 import { For } from "solid-js";
 
 import { MenuItemType } from "../type";
+import MenuItemsFields from "./MenuItemFields";
 
 const [
   ,
@@ -35,31 +36,12 @@ function MenuItems(props: MenuItemType) {
       }}
     >
       {Logo}
-      <Show when={getDisplayedMenu() == true}>{title}</Show>
+      <Show when={getDisplayedMenu() == true}>{title()}</Show>
     </li>
   );
 }
 
 export default function () {
-  const menuItems: MenuItemType[] = [
-    {
-      title: "Graphicage",
-      menuItem: "graphicage",
-      Logo: LateralMenuGraphicageLogo,
-    },
-    {
-      title: "Arrêts",
-      menuItem: "arrets",
-      Logo: LateralMenuArretsLogo,
-    },
-    // [LateralMenuDashboardLogo, "Dashboard", "dashboard"],
-    // [LateralMenuVoirieLogo, "Voirie", "voirie"],
-    // [LateralMenuEtablissementLogo, "Établissements", "etablissements"],
-    // [LateralMenuArretsLogo, "Arrêts", "arrets"],
-    // [LateralMenuSettingsLogo, "Paramètres", "parametres"],
-    // [LateralMenuSupportLogo, "Support", "support"],
-  ];
-
   return (
     <nav id="lateral-nav" classList={{ active: getDisplayedMenu() }}>
       <div class="lateral-nav-header">
@@ -67,7 +49,7 @@ export default function () {
       </div>
 
       <ul class="lateral-nav-list">
-        <For each={menuItems}>
+        <For each={MenuItemsFields()}>
           {(menuItemArg) => {
             const { title, menuItem } = menuItemArg;
             return (
