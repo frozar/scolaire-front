@@ -238,8 +238,8 @@ export const [busLineSelected, setBusLineSelected] = createSignal<number>();
 export const [infoToDisplay, setInfoToDisplay] =
   createSignal<LastSelectionEnum>();
 
-export const [editionStopId, setEditionStopId] = createSignal<number[]>([]);
+export const [stopIds, setStopIds] = createSignal<number[]>([]);
 
-export const [localEditionStopNames, setLocalEditionStopNames] = createSignal<
-  string[]
->([]);
+export const [timelineStopNames, setTimelineStopNames] = createSignal<string[]>(
+  []
+);

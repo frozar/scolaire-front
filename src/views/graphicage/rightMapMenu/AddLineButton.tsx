@@ -8,7 +8,7 @@ import { displayAddLineMessage } from "../../../userInformation/utils";
 import { FaSolidPlus } from "solid-icons/fa";
 import { LastSelectionEnum } from "../type";
 import { setInfoToDisplay, setEditionStopNames } from "../signaux";
-import { setLocalEditionStopNames } from "../signaux";
+import { setTimelineStopNames } from "../signaux";
 
 const [, { setModeAddLine, isInAddLineMode }] = useStateAction();
 
@@ -80,7 +80,7 @@ export default function () {
                   toggleShow();
                   setModeAddLine();
                   displayAddLineMessage();
-                  setLocalEditionStopNames([]);
+                  setTimelineStopNames([]);
                 }}
               >
                 Ligne

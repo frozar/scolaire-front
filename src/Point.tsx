@@ -23,8 +23,8 @@ import {
   getLeafletMap,
   setSelectedElement,
   setInfoToDisplay,
-  setEditionStopId,
-  editionStopId,
+  setStopIds,
+  stopIds,
 } from "./signaux";
 import { minMaxQty } from "./PointsRamassageAndEtablissement";
 
@@ -144,8 +144,8 @@ export default function (props: any) {
           nature: point.nature,
         };
         addPointToLineUnderConstruction(pointIdentity);
-        if (pointIdentity.id_point != editionStopId().at(-1)) {
-          setEditionStopId((ids) => [...ids, pointIdentity.id_point]);
+        if (pointIdentity.id_point != stopIds().at(-1)) {
+          setStopIds((ids) => [...ids, pointIdentity.id_point]);
         }
         if (!(1 < getLineUnderConstruction().stops.length)) {
           return;

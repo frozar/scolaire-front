@@ -24,11 +24,11 @@ import {
   points,
   infoToDisplay,
   setInfoToDisplay,
-  editionStopId,
-  setEditionStopId,
+  stopIds,
+  setStopIds,
   setBusLineSelected,
-  localEditionStopNames,
-  setLocalEditionStopNames,
+  timelineStopNames,
+  setTimelineStopNames,
 } from "./signaux";
 import { useStateAction } from "./StateAction";
 const [, { isInAddLineMode, getLineUnderConstruction, isInReadMode }] =
@@ -107,7 +107,7 @@ function Timeline() {
         class="v-timeline v-timeline--align-start v-timeline--justify-auto v-timeline--side-end v-timeline--vertical"
         style={{ "--v-timeline-line-thickness": "2px" }}
       >
-        <For each={localEditionStopNames()}>
+        <For each={timelineStopNames()}>
           {(stop) => (
             <Timeline_item hour={undefined} name={stop} caption={undefined} />
           )}
@@ -120,21 +120,21 @@ function Timeline() {
 export default function () {
   createEffect(() => {
     // AddLine mode
-    if (editionStopId().length != 0) {
-      console.log("editionStopId()", editionStopId());
+    if (stopIds().length != 0) {
+      console.log("stopIds()", stopIds());
       // Recup nom des arrêts dans points()
       const stopsName = points()
-        .filter((point) => [editionStopId().at(-1)].includes(point.id_point))
+        .filter((point) => [stopIds().at(-1)].includes(point.id_point))
         .map((stopName) => stopName.name)[0];
 
-      setLocalEditionStopNames((names) => [...names, stopsName]);
+      setTimelineStopNames((names) => [...names, stopsName]);
     }
   });
   createEffect(() => {
     console.log("iciAvant");
     if (busLineSelected() != undefined) {
       console.log("ici");
-      setLocalEditionStopNames(displayTimeline(busLineSelected()));
+      setTimelineStopNames(displayTimeline(busLineSelected()));
     }
   });
   createEffect(() => {
@@ -142,12 +142,13 @@ export default function () {
       console.log("READ MODE");
       setInfoToDisplay(LastSelectionEnum.nothing);
       setBusLineSelected(undefined);
-      setLocalEditionStopNames([]);
-      setEditionStopId([]);
+      setTimelineStopNames([]);
+      setStopIds([]);
     }
     if (isInAddLineMode()) {
       console.log("Addline mode");
       setInfoToDisplay(LastSelectionEnum.edition);
+      setTimelineStopNames([]);
     }
   });
 
@@ -309,7 +310,7 @@ export default function () {
         <Match
           when={
             infoToDisplay() == LastSelectionEnum.edition &&
-            localEditionStopNames().length != 0
+            timelineStopNames().length != 0
           }
         >
           <span>Mode édition</span>
