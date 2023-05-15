@@ -22,18 +22,19 @@ const [
 ] = useStateGui();
 
 function MenuItems(props: MenuItemType) {
-  // eslint-disable-next-line solid/reactivity
-  const { menuItem, title, JSX } = props;
+  const title = () => props.title;
+  const menuItem = () => props.menuItem;
+  const Logo = () => props.Logo;
+
   return (
     <li
       class="lateral-nav-item"
-      classList={{ active: getSelectedMenu() === menuItem }}
+      classList={{ active: getSelectedMenu() === menuItem() }}
       onClick={() => {
-        setSelectedMenu(menuItem);
+        setSelectedMenu(menuItem());
       }}
     >
-      <JSX />
-
+      {Logo}
       <Show when={getDisplayedMenu() == true}>{title}</Show>
     </li>
   );
@@ -44,12 +45,12 @@ export default function () {
     {
       title: "Graphicage",
       menuItem: "graphicage",
-      JSX: LateralMenuGraphicageLogo,
+      Logo: LateralMenuGraphicageLogo,
     },
     {
       title: "Arrêts",
       menuItem: "arrets",
-      JSX: LateralMenuArretsLogo,
+      Logo: LateralMenuArretsLogo,
     },
     // [LateralMenuDashboardLogo, "Dashboard", "dashboard"],
     // [LateralMenuVoirieLogo, "Voirie", "voirie"],
@@ -73,7 +74,7 @@ export default function () {
               <MenuItems
                 title={title}
                 menuItem={menuItem}
-                JSX={menuItemArg.JSX}
+                Logo={menuItemArg.Logo}
               />
             );
           }}
