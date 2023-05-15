@@ -5,9 +5,8 @@ import {
   setRemoveConfirmation,
   setBusLineSelected,
   setInfoToDisplay,
-  busLineSelected,
 } from "../signaux";
-import { PointIdentityType, LastSelectionEnum } from "../type";
+import { PointIdentityType, InfoPanelEnum } from "../type";
 import { linkMap } from "../global/linkPointIdentityCircle";
 import { useStateAction } from "../StateAction";
 
@@ -59,11 +58,8 @@ export function busLinePolylineAttachEvent(
         });
       }
       if (isInReadMode()) {
-        console.log("ligne séléctionné");
         setBusLineSelected(id_bus_line);
-        console.log("ligne enregistré dans signal=>", id_bus_line);
-        console.log("busLineSelected()", busLineSelected());
-        setInfoToDisplay(LastSelectionEnum.line);
+        setInfoToDisplay(InfoPanelEnum.line);
       }
     });
 }

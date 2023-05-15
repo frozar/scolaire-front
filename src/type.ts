@@ -137,7 +137,7 @@ export type MenuItemType = {
   displayText: boolean;
 };
 
-export enum LastSelectionEnum {
+export enum InfoPanelEnum {
   point,
   line,
   edition,

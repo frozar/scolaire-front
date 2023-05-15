@@ -13,7 +13,7 @@ import {
   PointIdentityType,
   PointRamassageType,
   PointEtablissementType,
-  LastSelectionEnum,
+  InfoPanelEnum,
 } from "./type";
 
 import { useStateAction } from "./StateAction";
@@ -134,7 +134,7 @@ export default function (props: any) {
         // Select the current element to display information
         setSelectedElement(point);
         if (!isInAddLineMode()) {
-          setInfoToDisplay(LastSelectionEnum.point);
+          setInfoToDisplay(InfoPanelEnum.point);
           return;
         }
 

@@ -14,7 +14,7 @@ import {
   isPointRamassage,
   PointEtablissementType,
   PointRamassageType,
-  LastSelectionEnum,
+  InfoPanelEnum,
 } from "./type";
 import { PointIdentityType, LineType } from "./type";
 import {
@@ -31,8 +31,7 @@ import {
   setTimelineStopNames,
 } from "./signaux";
 import { useStateAction } from "./StateAction";
-const [, { isInAddLineMode, getLineUnderConstruction, isInReadMode }] =
-  useStateAction();
+const [, { isInAddLineMode, isInReadMode }] = useStateAction();
 type PointToDisplayType = {
   id_point: number;
   name: string;
@@ -47,8 +46,8 @@ type Item = {
 };
 
 const displayTimeline = (id_bus_line: number) => {
-  function getStopIds(busLine: LineType[], len: number) {
-    return busLine[0].stops.slice(0, len).map((stop) => stop.id_point);
+  function getStopIds(busLineId: LineType[], len: number) {
+    return busLineId[0].stops.slice(0, len).map((stop) => stop.id_point);
   }
   function getStopsName(
     stops: PointRamassageType[] | PointEtablissementType[],
@@ -56,15 +55,11 @@ const displayTimeline = (id_bus_line: number) => {
   ) {
     return stops.slice(0, len).map((stop) => stop.name);
   }
-
-  // Recup les id point dans busLines()
   const busLine = busLines().filter(
     (busLine) => busLine.id_bus_line == id_bus_line
   );
   const lenBusLine = busLine[0].stops.length;
   const stopIds = getStopIds(busLine, lenBusLine);
-
-  // Recup nom des arrêts dans points()
   const stops = points().filter((point) => stopIds.includes(point.id_point));
   const stopNameList = getStopsName(stops, lenBusLine);
   return stopNameList;
@@ -121,8 +116,6 @@ export default function () {
   createEffect(() => {
     // AddLine mode
     if (stopIds().length != 0) {
-      console.log("stopIds()", stopIds());
-      // Recup nom des arrêts dans points()
       const stopsName = points()
         .filter((point) => [stopIds().at(-1)].includes(point.id_point))
         .map((stopName) => stopName.name)[0];
@@ -131,23 +124,20 @@ export default function () {
     }
   });
   createEffect(() => {
-    console.log("iciAvant");
-    if (busLineSelected() != undefined) {
-      console.log("ici");
+    // Read mode
+    if (busLineSelected() != -1) {
       setTimelineStopNames(displayTimeline(busLineSelected()));
     }
   });
   createEffect(() => {
     if (isInReadMode()) {
-      console.log("READ MODE");
-      setInfoToDisplay(LastSelectionEnum.nothing);
-      setBusLineSelected(undefined);
+      setInfoToDisplay(InfoPanelEnum.nothing);
+      setBusLineSelected(-1);
       setTimelineStopNames([]);
       setStopIds([]);
     }
     if (isInAddLineMode()) {
-      console.log("Addline mode");
-      setInfoToDisplay(LastSelectionEnum.edition);
+      setInfoToDisplay(InfoPanelEnum.edition);
       setTimelineStopNames([]);
     }
   });
@@ -253,7 +243,7 @@ export default function () {
       }}
     >
       <Switch fallback={<span>No element selected</span>}>
-        <Match when={infoToDisplay() == LastSelectionEnum.point}>
+        <Match when={infoToDisplay() == InfoPanelEnum.point}>
           <h2>{selectedElement()?.name}</h2>
           <Show
             when={0 < ptToDisplay().length}
@@ -303,17 +293,15 @@ export default function () {
             </div>
           </Show>
         </Match>
-        <Match when={infoToDisplay() == LastSelectionEnum.line}>
-          <div>ligne selectionné</div>
+        <Match when={infoToDisplay() == InfoPanelEnum.line}>
           <Timeline />
         </Match>
         <Match
           when={
-            infoToDisplay() == LastSelectionEnum.edition &&
+            infoToDisplay() == InfoPanelEnum.edition &&
             timelineStopNames().length != 0
           }
         >
-          <span>Mode édition</span>
           <Timeline />
         </Match>
       </Switch>
