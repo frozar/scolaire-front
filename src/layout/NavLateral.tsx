@@ -3,7 +3,7 @@ import {
   OpenLateralMenuLogo,
   CloseLateralMenuLogo,
 } from "../export/Logos";
-import { Show } from "solid-js";
+import { Show, createEffect, createSignal } from "solid-js";
 import { useStateGui } from "../StateGui";
 import { For } from "solid-js";
 
@@ -16,6 +16,7 @@ const [
 ] = useStateGui();
 
 function MenuItems(props: MenuItemType) {
+  const displayText = () => props.displayText;
   const title = () => props.title;
   const menuItem = () => props.menuItem;
   const Logo = () => {
@@ -31,20 +32,37 @@ function MenuItems(props: MenuItemType) {
       }}
     >
       <Logo />
-      <Show when={getDisplayedMenu() == true}>{title()}</Show>
+      <Show when={getDisplayedMenu() == true && displayText() == true}>
+        {title()}
+      </Show>
     </li>
   );
 }
 
 export default function () {
+  const [divRef, setDivRef] = createSignal<HTMLElement | undefined>();
+  const [waitingToDisplayText, SetWaitingToDisplayText] = createSignal(
+    getDisplayedMenu()
+  );
+
+  createEffect(() => {
+    divRef()?.addEventListener("transitionend", () => {
+      SetWaitingToDisplayText(!waitingToDisplayText());
+    });
+  });
+
   return (
-    <nav id="lateral-nav" classList={{ active: getDisplayedMenu() }}>
+    <nav
+      id="lateral-nav"
+      classList={{ active: getDisplayedMenu() }}
+      ref={setDivRef}
+    >
       <div class="lateral-nav-header">
         <EnterpriseLogo />
       </div>
 
       <ul class="lateral-nav-list">
-        <For each={MenuItemsFields()}>
+        <For each={MenuItemsFields(waitingToDisplayText())}>
           {(menuItemArg) => {
             const { title, menuItem } = menuItemArg;
             return (
@@ -52,6 +70,7 @@ export default function () {
                 title={title}
                 menuItem={menuItem}
                 Logo={menuItemArg.Logo}
+                displayText={waitingToDisplayText()}
               />
             );
           }}
