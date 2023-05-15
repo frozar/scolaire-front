@@ -120,7 +120,14 @@ export type ReturnMessageType = {
   success: { etablissement: string[]; ramassage: string[] };
 };
 
-export type SelectedMenuType = "graphicage" | "dashboard" | "arrets";
+export type SelectedMenuType =
+  | "graphicage"
+  | "dashboard"
+  | "arrets"
+  | "voirie"
+  | "etablissements"
+  | "parametres"
+  | "support";
 
 export type MenuItemType = {
   title: string;
