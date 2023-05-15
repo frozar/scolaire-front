@@ -92,6 +92,21 @@ export function openExportConfirmationBox() {
   }));
 }
 
+const [displayedGeneratorDialogueBox, setDisplayedGeneratorDialogueBox] =
+  createSignal(false);
+
+export function openGeneratorDialogueBox() {
+  setDisplayedGeneratorDialogueBox(true);
+}
+
+export function closeGeneratorDialogueBox() {
+  setDisplayedGeneratorDialogueBox(false);
+}
+
+export function getDisplayedGeneratorDialogueBox() {
+  return displayedGeneratorDialogueBox();
+}
+
 export function closeRemoveConfirmationBox() {
   setRemoveConfirmation({
     displayed: false,
@@ -196,7 +211,7 @@ export function fetchBusLines() {
           }[];
         }[]
       ) => {
-        let lines: LineType[] = res.map((line) => {
+        const lines: LineType[] = res.map((line) => {
           const color = line.color ? "#" + line.color : randColor();
           const stopsWithNatureEnum = line.stops.map(
             (stop) =>

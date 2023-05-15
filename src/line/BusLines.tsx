@@ -1,5 +1,5 @@
 import L from "leaflet";
-import { onMount, onCleanup, createEffect } from "solid-js";
+import { onCleanup, createEffect } from "solid-js";
 
 import { fetchBusLines, setBusLines, busLines } from "../signaux";
 import { pointsReady } from "../PointsRamassageAndEtablissement";

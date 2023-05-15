@@ -9,7 +9,6 @@ import {
 import styles from "./App.module.css";
 import SpinningWheel from "./SpinningWheel";
 import Map from "./Map";
-import Menu from "./menu/Menu";
 import { useStateAction } from "./StateAction";
 import DisplayUserInformation from "./userInformation/DisplayUserInformation";
 import RemoveConfirmation from "./userInformation/RemoveConfirmation";
@@ -25,6 +24,7 @@ import NavTop from "./layout/NavTop";
 import NavLateral from "./layout/NavLateral";
 import { useStateGui } from "./StateGui";
 import ClearConfirmation from "./userInformation/ClearConfirmation";
+import GeneratorDialogueBox from "./userInformation/GeneratorDialogueBox";
 
 const [
   ,
@@ -45,22 +45,22 @@ const [stateGui, { getSelectedMenu }] = useStateGui();
 
 // Handler the Undo/Redo from the user
 function undoRedoHandler({ ctrlKey, shiftKey, code }: KeyboardEvent) {
-  // @ts-expect-error
-  const keyboard = navigator.keyboard;
-  // @ts-expect-error
-  keyboard.getLayoutMap().then((keyboardLayoutMap) => {
-    const upKey = keyboardLayoutMap.get(code);
-    if (upKey === "x") {
-      if (history.undos && history.undos[0] && history.undos[0][0]) {
-        const anUndo = history.undos[0][0];
-      }
-    }
-  });
+  // // @ts-expect-error
+  // const keyboard = navigator.keyboard;
+  // // @ts-expect-error
+  // keyboard.getLayoutMap().then((keyboardLayoutMap) => {
+  //   const upKey = keyboardLayoutMap.get(code);
+  //   if (upKey === "x") {
+  //     if (history.undos && history.undos[0] && history.undos[0][0]) {
+  //       const anUndo = history.undos[0][0];
+  //     }
+  //   }
+  // });
 
   if (ctrlKey) {
-    // @ts-expect-error
+    // @ts-expect-error: Currently the 'keyboard' field doesn't exist on 'navigator'
     const keyboard = navigator.keyboard;
-    // @ts-expect-error
+    // @ts-expect-error: The type 'KeyboardLayoutMap' is not available
     keyboard.getLayoutMap().then((keyboardLayoutMap) => {
       const upKey = keyboardLayoutMap.get(code);
       if (upKey === "z") {
@@ -104,9 +104,9 @@ function enterHandler({ code }: KeyboardEvent) {
 }
 
 function toggleLineUnderConstruction({ code }: KeyboardEvent) {
-  // @ts-expect-error
+  // @ts-expect-error: Currently the 'keyboard' field doesn't exist on 'navigator'
   const keyboard = navigator.keyboard;
-  // @ts-expect-error
+  // @ts-expect-error: The type 'KeyboardLayoutMap' is not available
   keyboard.getLayoutMap().then((keyboardLayoutMap) => {
     const upKey = keyboardLayoutMap.get(code);
     if (upKey === "l") {
@@ -136,12 +136,12 @@ createEffect(() => {
       refApp &&
       String(refApp.style) !== "cursor: url('/pencil.png'), auto;"
     ) {
-      // @ts-expect-error
+      // @ts-expect-error: 'style' field should not be assigned
       refApp.style = "cursor: url('/pencil.png'), auto;";
     }
   } else {
     if (refApp && String(refApp.style) !== "") {
-      // @ts-expect-error
+      // @ts-expect-error: 'style' field should not be assigned
       refApp.style = "";
     }
   }
@@ -180,6 +180,7 @@ export default () => {
         <RemoveConfirmation />
         <ClearConfirmation />
         <ExportConfirmation />
+        <GeneratorDialogueBox />
         <SpinningWheel />
       </div>
     </div>
