@@ -334,24 +334,22 @@
         position: relative;
         padding-right: 13px;
         width: 100%;
-        &::after {
-          content: "";
-          width: 13px;
-          height: 13px;
-          border-radius: 50%;
-          position: absolute;
-          background-color: #0cc683;
-          right: -13px;
-          outline: solid 13px #062f3f;
-        }
-
+        fill: white;
+        color: white;
         &.active {
           color: #0cc683;
+          fill: #0cc683;
+          &::after {
+            content: "";
+            width: 13px;
+            height: 13px;
+            border-radius: 50%;
+            position: absolute;
+            background-color: #0cc683;
+            right: -5px;
+            outline: solid 13px #062f3f;
+          }
         }
-      }
-
-      > .lateral-nav-item:hover {
-        background-color: #083d52;
       }
     }
     > #lateral-close {
