@@ -25,6 +25,7 @@ import {
   lastSelectedInfo,
   editionStopId,
   setEditionStopId,
+  setBusLineSelected,
 } from "./signaux";
 import { useStateAction } from "./StateAction";
 const [, { isInAddLineMode, getLineUnderConstruction, isInReadMode }] =
@@ -42,7 +43,41 @@ type Item = {
   caption: string | null;
 };
 
-const [localEditionStopNames, setLocalEditionStopNames] = createSignal<any>([]);
+export const [localEditionStopNames, setLocalEditionStopNames] =
+  createSignal<any>([]);
+
+const getPointRamassageName = (id_bus_line: number) => {
+  console.log("id_bus_line");
+  console.log(id_bus_line);
+  function getStopIds(busLine: LineType[], len: number) {
+    return busLine[0].stops.slice(0, len).map((stop) => stop.id_point);
+  }
+
+  function getStopsName(
+    stops: PointRamassageType[] | PointEtablissementType[],
+    len: number
+  ) {
+    return stops.slice(0, len).map((stop) => stop.name);
+  }
+
+  // Recup les id point dans busLines()
+  const busLine = busLines().filter(
+    (busLine) => busLine.id_bus_line == id_bus_line
+  );
+  const lenBusLine = busLine[0].stops.length;
+  const stopIds = getStopIds(busLine, lenBusLine);
+  // console.log(stopIds);
+
+  // Recup nom des arrêts dans points()
+  const stopsName = points().filter((point) =>
+    stopIds.includes(point.id_point)
+  );
+
+  const stopNameList = getStopsName(stopsName, lenBusLine);
+  console.log("stopNameList");
+  console.log(stopNameList);
+  return stopNameList;
+};
 
 function Timeline_item(props: Item) {
   return (
@@ -76,7 +111,7 @@ function Timeline_item(props: Item) {
     </div>
   );
 }
-function EditionTimeline() {
+function Timeline() {
   return (
     <div class="pa-4">
       <div
@@ -84,22 +119,6 @@ function EditionTimeline() {
         style={{ "--v-timeline-line-thickness": "2px" }}
       >
         <For each={localEditionStopNames()}>
-          {(stop) => (
-            <Timeline_item hour="heure" name={stop} caption="description" />
-          )}
-        </For>
-      </div>
-    </div>
-  );
-}
-function Timeline(stopsName: any) {
-  return (
-    <div class="pa-4">
-      <div
-        class="v-timeline v-timeline--align-start v-timeline--justify-auto v-timeline--side-end v-timeline--vertical"
-        style={{ "--v-timeline-line-thickness": "2px" }}
-      >
-        <For each={stopsName.stopsName}>
           {(stop) => (
             <Timeline_item hour="heure" name={stop} caption="description" />
           )}
@@ -125,24 +144,46 @@ export default function () {
         )
       );
       // Recup nom des arrêts dans points()
+      // ----
       const stopsName = points()
         .filter((point) => [editionStopId().at(-1)].includes(point.id_point))
-        .map((stopName) => stopName.name);
+        .map((stopName) => stopName.name)[0];
+      // ---------
       // console.log("points", points());
       // console.log("stopsName", stopsName);
       // setLocalEditionStopNames(stopsName);
+      // --------
       setLocalEditionStopNames((names) => [...names, stopsName]);
-      // console.log("localEditionStopNames()", localEditionStopNames());
+      console.log("localEditionStopNames()", localEditionStopNames());
     }
   });
-
   createEffect(() => {
-    if (isInReadMode() == true) {
+    console.log("iciAvant");
+    if (busLineSelected() != undefined) {
+      console.log("ici");
+      setLocalEditionStopNames(getPointRamassageName(busLineSelected()));
+    }
+  });
+  createEffect(() => {
+    if (isInReadMode()) {
       console.log("READ MODE");
+      setBusLineSelected(undefined);
       setLocalEditionStopNames([]);
       setEditionStopId([]);
     }
   });
+  // createEffect(() => {
+  //   if (lastSelectedInfo() == LastSelectionEnum.edition) {
+  //     if (localEditionStopNames()) {
+  //       return;
+  //     }
+  //     setLocalEditionStopNames([]);
+  //     console.log(
+  //       "mode edition=> local edition names=>",
+  //       localEditionStopNames()
+  //     );
+  //   }
+  // });
 
   const selectedIdentity = createMemo<PointIdentityType | null>(() => {
     const wkSelectedElement = selectedElement();
@@ -236,34 +277,6 @@ export default function () {
       return "Ramassage";
     }
   };
-  const getPointRamassageName = (id_bus_line: number) => {
-    function getStopIds(busLine: LineType[], len: number) {
-      return busLine[0].stops.slice(0, len).map((stop) => stop.id_point);
-    }
-
-    function getStopsName(
-      stops: PointRamassageType[] | PointEtablissementType[],
-      len: number
-    ) {
-      return stops.slice(0, len).map((stop) => stop.name);
-    }
-
-    // Recup les id point dans busLines()
-    const busLine = busLines().filter(
-      (busLine) => busLine.id_bus_line == id_bus_line
-    );
-    const lenBusLine = busLine[0].stops.length;
-    const stopIds = getStopIds(busLine, lenBusLine);
-    console.log(stopIds);
-
-    // Recup nom des arrêts dans points()
-    const stopsName = points().filter((point) =>
-      stopIds.includes(point.id_point)
-    );
-
-    const stopNameList = getStopsName(stopsName, lenBusLine);
-    return stopNameList;
-  };
   return (
     <div
       style={{
@@ -324,11 +337,17 @@ export default function () {
           </Show>
         </Match>
         <Match when={lastSelectedInfo() == LastSelectionEnum.line}>
-          <Timeline stopsName={getPointRamassageName(busLineSelected())} />
+          <div>ligne selectionné</div>
+          <Timeline />
         </Match>
-        <Match when={lastSelectedInfo() == LastSelectionEnum.edition}>
+        <Match
+          when={
+            lastSelectedInfo() == LastSelectionEnum.edition &&
+            localEditionStopNames().length != 0
+          }
+        >
           <span>Mode édition</span>
-          <EditionTimeline />
+          <Timeline />
         </Match>
       </Switch>
     </div>

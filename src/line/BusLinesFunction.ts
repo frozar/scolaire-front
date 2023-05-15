@@ -5,10 +5,13 @@ import {
   setRemoveConfirmation,
   setBusLineSelected,
   setLastSelectedInfo,
+  busLineSelected,
 } from "../signaux";
 import { PointIdentityType, LastSelectionEnum } from "../type";
 import { linkMap } from "../global/linkPointIdentityCircle";
+import { useStateAction } from "../StateAction";
 
+const [, { isInReadMode }] = useStateAction();
 export function getLatLngs(stops: PointIdentityType[]): L.LatLng[] {
   const latlngs: L.LatLng[] = [];
   for (const pointIdentity of stops) {
@@ -55,8 +58,13 @@ export function busLinePolylineAttachEvent(
           id_bus_line: id_bus_line,
         });
       }
-      // console.log(e, id_bus_line);
-      setBusLineSelected(id_bus_line);
-      setLastSelectedInfo(LastSelectionEnum.line);
+      if (isInReadMode()) {
+        console.log("ligne séléctionné");
+        // setBusLineSelected(undefined); //Temporaire
+        setBusLineSelected(id_bus_line);
+        console.log("ligne enregistré dans signal=>", id_bus_line);
+        console.log("busLineSelected()", busLineSelected());
+        setLastSelectedInfo(LastSelectionEnum.line);
+      }
     });
 }

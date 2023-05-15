@@ -145,6 +145,7 @@ export default function (props: any) {
         addPointToLineUnderConstruction(pointIdentity);
         console.log("pointIdentity", pointIdentity);
         setEditionStopId((ids) => [...ids, pointIdentity.id_point]);
+        console.log("click");
         if (!(1 < getLineUnderConstruction().stops.length)) {
           return;
         }

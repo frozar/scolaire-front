@@ -8,6 +8,7 @@ import { displayAddLineMessage } from "../../../userInformation/utils";
 import { FaSolidPlus } from "solid-icons/fa";
 import { LastSelectionEnum } from "../type";
 import { setLastSelectedInfo, setEditionStopNames } from "../signaux";
+import { setLocalEditionStopNames } from "../InformationContent";
 
 const [, { setModeAddLine, isInAddLineMode }] = useStateAction();
 
@@ -80,6 +81,7 @@ export default function () {
                   setModeAddLine();
                   displayAddLineMessage();
                   setLastSelectedInfo(LastSelectionEnum.edition);
+                  setLocalEditionStopNames([]);
                 }}
               >
                 Ligne
