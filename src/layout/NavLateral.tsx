@@ -2,13 +2,6 @@ import {
   EnterpriseLogo,
   OpenLateralMenuLogo,
   CloseLateralMenuLogo,
-  LateralMenuGraphicageLogo,
-  // LateralMenuDashboardLogo,
-  // LateralMenuVoirieLogo,
-  // LateralMenuEtablissementLogo,
-  LateralMenuArretsLogo,
-  // LateralMenuSettingsLogo,
-  // LateralMenuSupportLogo,
 } from "../export/Logos";
 import { Show } from "solid-js";
 import { useStateGui } from "../StateGui";
