@@ -75,10 +75,14 @@ function Timeline_item(props: Item) {
     >
       <div class="v-timeline-item__body">
         <div class="d-flex">
-          {/* <strong class="me-4">{props.hour}</strong> */}
+          <Show when={props.hour != undefined}>
+            <strong class="me-4">{props.hour}</strong>
+          </Show>
           <div>
             <strong>{props.name}</strong>
-            {/* <div class="text-caption"> {props.caption} </div> */}
+            <Show when={props.caption != undefined}>
+              <div class="text-caption"> {props.caption} </div>
+            </Show>
           </div>
         </div>
       </div>
@@ -233,6 +237,7 @@ export default function () {
       return "Ramassage";
     }
   };
+
   return (
     <div
       style={{
