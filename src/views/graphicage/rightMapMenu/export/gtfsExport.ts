@@ -2,7 +2,7 @@ import {
   displayDownloadErrorMessage,
   displayDownloadSuccessMessage,
   displayOnGoingDownloadMessage,
-} from "../userInformation/utils";
+} from "../../../../userInformation/utils";
 import { getExportDate } from "./export";
 
 function download(fileame: string, blob: Blob) {

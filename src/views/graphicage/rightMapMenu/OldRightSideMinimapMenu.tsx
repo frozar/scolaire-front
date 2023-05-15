@@ -1,12 +1,12 @@
 // @ts-expect-error
 import MiniMap from "leaflet-minimap";
 
-import { getLeafletMap } from "../signaux";
-import { layerTilesList } from "../constant";
-import { useStateGui } from "../StateGui";
-import { useStateAction } from "../StateAction";
+import { getLeafletMap } from "../../../signaux";
+import { layerTilesList } from "../../../constant";
+import { useStateGui } from "../../../StateGui";
+import { useStateAction } from "../../../StateAction";
 import { For, createEffect } from "solid-js";
-import { TileType } from "../type";
+import { TileType } from "../../../type";
 
 const [
   ,

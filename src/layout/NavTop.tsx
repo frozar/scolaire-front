@@ -1,4 +1,4 @@
-import { CurrentUserLogo } from "../export/Logos";
+import { CurrentUserLogo } from "../views/graphicage/rightMapMenu/export/Logos";
 
 export default function () {
   return (

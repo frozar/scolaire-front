@@ -8,7 +8,7 @@ import {
 } from "../signaux";
 
 import { assertIsNode } from "../utils";
-import { generateCircuit } from "../menu/generationCircuit";
+import { generateCircuit } from "../views/graphicage/generationCircuit";
 
 declare module "solid-js" {
   namespace JSX {

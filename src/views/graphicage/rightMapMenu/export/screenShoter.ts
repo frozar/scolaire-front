@@ -2,7 +2,7 @@ import {
   PluginOptions,
   SimpleMapScreenshoter,
 } from "leaflet-simple-map-screenshoter";
-import { getLeafletMap } from "../signaux";
+import { getLeafletMap } from "../../../../signaux";
 
 let screenshoter: SimpleMapScreenshoter | null = null;
 

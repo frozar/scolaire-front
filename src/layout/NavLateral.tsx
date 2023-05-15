@@ -2,7 +2,7 @@ import {
   EnterpriseLogo,
   OpenLateralMenuLogo,
   CloseLateralMenuLogo,
-} from "../export/Logos";
+} from "../views/graphicage/rightMapMenu/export/Logos";
 import { Show, createEffect, createSignal } from "solid-js";
 import { useStateGui } from "../StateGui";
 import { For } from "solid-js";

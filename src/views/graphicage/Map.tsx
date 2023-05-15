@@ -4,21 +4,21 @@ import { Show, onMount } from "solid-js";
 
 import PointsRamassageAndEtablissement, {
   fetchPointsRamassage,
-} from "./PointsRamassageAndEtablissement";
+} from "../../PointsRamassageAndEtablissement";
 
-import { buildMapL7 } from "./l7MapBuilder";
-import BusLines from "./line/BusLines";
-import { useStateAction } from "./StateAction";
-import LineUnderConstruction from "./line/LineUnderConstruction";
+import { buildMapL7 } from "../../l7MapBuilder";
+import BusLines from "../../line/BusLines";
+import { useStateAction } from "../../StateAction";
+import LineUnderConstruction from "../../line/LineUnderConstruction";
 import {
   disableSpinningWheel,
   enableSpinningWheel,
   setDragAndDropConfirmation,
   setPoints,
-} from "./signaux";
-import { ReturnMessageType } from "./type";
-import ControlMapMenu from "./components/ControlMapMenu";
-import { InformationBoard } from "./menu/Menu";
+} from "../../signaux";
+import { ReturnMessageType } from "../../type";
+import ControlMapMenu from "./rightMapMenu/RightMapMenu";
+import { InformationBoard } from "./rightMapMenu/InformationBoard";
 
 const [, { isInAddLineMode }] = useStateAction();
 

@@ -6,7 +6,7 @@ import {
   LateralMenuSettingsLogo,
   LateralMenuSupportLogo,
   LateralMenuVoirieLogo,
-} from "../export/Logos";
+} from "../views/graphicage/rightMapMenu/export/Logos";
 import { MenuItemType } from "../type";
 
 export default function (displayText: boolean) {

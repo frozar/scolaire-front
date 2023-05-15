@@ -1,13 +1,13 @@
 import { For, Match, Show, Switch, createSignal } from "solid-js";
-import ClickOutside from "../ClickOutside";
+import ClickOutside from "../../../../ClickOutside";
 import {
   closeExportConfirmationBox,
   getExportConfirmation,
   setExportType,
-} from "../signaux";
+} from "../../../../signaux";
 import { Transition } from "solid-transition-group";
-import { assertIsNode } from "../utils";
-import { ExportTypeEnum } from "../type";
+import { assertIsNode } from "../../../../utils";
+import { ExportTypeEnum } from "../../../../type";
 import { exportData } from "./export";
 import { GtfsExportLogo, ImageExportLogo } from "./Logos";
 

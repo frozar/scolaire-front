@@ -1,6 +1,6 @@
 import { IoInformation } from "solid-icons/io";
 
-import { useStateGui } from "../StateGui";
+import { useStateGui } from "../../../StateGui";
 const [, { toggleDisplayedInformationBoard }] = useStateGui();
 
 export default function () {
