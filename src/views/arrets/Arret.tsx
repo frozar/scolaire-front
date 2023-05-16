@@ -2,8 +2,9 @@ import { createStore } from "solid-js/store";
 import { AiOutlineSearch } from "solid-icons/ai";
 import Addmodal from "./AddStopModal";
 import { For } from "solid-js";
+import { StopLineItem } from "../../type";
 
-function StopLineBoard(props: any) {
+function StopLineBoard(props: StopLineItem) {
   return (
     <tr>
       <td class="flex items-center">
@@ -17,8 +18,8 @@ function StopLineBoard(props: any) {
         {props.name}
       </td>
       <td>{props.quantity}</td>
-      <td>{props.nb_etablissement}</td>
-      <td>{props.nb_line}</td>
+      <td>{props.nbEtablissement}</td>
+      <td>{props.nbLine}</td>
       <td>
         <a href="#" class="text-[#0CC683] mr-2">
           Editer
@@ -31,7 +32,7 @@ function StopLineBoard(props: any) {
     </tr>
   );
 }
-export default function (props: any) {
+export default function () {
   const [stop] = createStore([
     {
       name: "Arret du stade",
@@ -111,8 +112,8 @@ export default function (props: any) {
                     <StopLineBoard
                       name={fields.name}
                       quantity={fields.quantity}
-                      nb_etablissement={fields.nb_etablissement}
-                      nb_line={fields.nb_line}
+                      nbEtablissement={fields.nb_etablissement}
+                      nbLine={fields.nb_line}
                     />
                   )}
                 </For>
