@@ -4,7 +4,9 @@ import EditStop, { setDataToEdit, toggleEditStop } from "./EditStop";
 import { For, createEffect, createSignal, onMount } from "solid-js";
 import StopItems from "./StopItem";
 import { StopItemType } from "../../type";
-
+import { displayDownloadErrorMessage } from "../../userInformation/utils";
+import { getExportDate } from "../graphicage/rightMapMenu/export/export";
+import { download } from "../graphicage/rightMapMenu/export/csvExport";
 export const [selected, setSelected] = createSignal<StopLineItem[]>([]);
 export const [stop, setStop] = createStore([]);
 
@@ -152,7 +154,34 @@ export default function () {
               </div>
 
               <div class="right">
-                <button class="btn-arret-export-import">Exporter</button>
+                <button
+                  class="btn-arret-export-import"
+                  onClick={() => {
+                    fetch(import.meta.env.VITE_BACK_URL + "/export/input")
+                      .then((response) => {
+                        if (!response.ok) {
+                          displayDownloadErrorMessage();
+                        } else {
+                          return response.blob();
+                        }
+                      })
+                      .then((blob: Blob | undefined) => {
+                        if (!blob) {
+                          return;
+                        }
+
+                        const { year, month, day, hour, minute } =
+                          getExportDate();
+                        const fileName = `${year}-${month}-${day}_${hour}-${minute}_input.zip`;
+                        download(fileName, blob);
+                      })
+                      .catch(() => {
+                        displayDownloadErrorMessage();
+                      });
+                  }}
+                >
+                  Exporter
+                </button>
                 <button class="btn-arret-export-import">Importer</button>
               </div>
             </div>
@@ -183,14 +212,14 @@ export default function () {
                 </thead>
                 <tbody>
                   <For each={stop}>
-                    {(fields) => <StopLineBoard item={fields} />}
+                    {(fields) => <StopItems item={fields} />}
                   </For>
                 </tbody>
               </table>
             </div>
           </div>
+          <EditStop />
         </div>
-        <EditStop />
       </div>
     );
   });
