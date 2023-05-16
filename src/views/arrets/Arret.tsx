@@ -1,7 +1,7 @@
 import { createStore } from "solid-js/store";
 import { AiOutlineSearch } from "solid-icons/ai";
 import Addmodal from "./AddStopModal";
-import { For } from "solid-js";
+import { For, createSignal } from "solid-js";
 import { StopLineItem } from "../../type";
 
 function StopLineBoard(props: StopLineItem) {
@@ -46,8 +46,178 @@ export default function () {
       nb_etablissement: 3,
       nb_line: 3,
     },
+    {
+      name: "Arret du stade",
+      quantity: 74,
+      nb_etablissement: 3,
+      nb_line: 3,
+    },
+    {
+      name: "Arret du stade",
+      quantity: 74,
+      nb_etablissement: 3,
+      nb_line: 3,
+    },
+    {
+      name: "Arret du stade",
+      quantity: 74,
+      nb_etablissement: 3,
+      nb_line: 3,
+    },
+    {
+      name: "Arret du stade",
+      quantity: 74,
+      nb_etablissement: 3,
+      nb_line: 3,
+    },
+    {
+      name: "Arret du stade",
+      quantity: 74,
+      nb_etablissement: 3,
+      nb_line: 3,
+    },
+    {
+      name: "Arret du stade",
+      quantity: 74,
+      nb_etablissement: 3,
+      nb_line: 3,
+    },
+    {
+      name: "Arret du stade",
+      quantity: 74,
+      nb_etablissement: 3,
+      nb_line: 3,
+    },
+    {
+      name: "Arret du stade",
+      quantity: 74,
+      nb_etablissement: 3,
+      nb_line: 3,
+    },
+    {
+      name: "Arret du stade",
+      quantity: 74,
+      nb_etablissement: 3,
+      nb_line: 3,
+    },
+    {
+      name: "Arret du stade",
+      quantity: 74,
+      nb_etablissement: 3,
+      nb_line: 3,
+    },
+    {
+      name: "Arret du stade",
+      quantity: 74,
+      nb_etablissement: 3,
+      nb_line: 3,
+    },
+    {
+      name: "Arret du stade",
+      quantity: 74,
+      nb_etablissement: 3,
+      nb_line: 3,
+    },
+    {
+      name: "Arret du stade",
+      quantity: 74,
+      nb_etablissement: 3,
+      nb_line: 3,
+    },
+    {
+      name: "Arret du stade",
+      quantity: 74,
+      nb_etablissement: 3,
+      nb_line: 3,
+    },
+    {
+      name: "Arret du stade",
+      quantity: 74,
+      nb_etablissement: 3,
+      nb_line: 3,
+    },
+    {
+      name: "Arret du stade",
+      quantity: 74,
+      nb_etablissement: 3,
+      nb_line: 3,
+    },
+    {
+      name: "Arret du stade",
+      quantity: 74,
+      nb_etablissement: 3,
+      nb_line: 3,
+    },
+    {
+      name: "Arret du stade",
+      quantity: 74,
+      nb_etablissement: 3,
+      nb_line: 3,
+    },
+    {
+      name: "Arret du stade",
+      quantity: 74,
+      nb_etablissement: 3,
+      nb_line: 3,
+    },
+    {
+      name: "Arret du stade",
+      quantity: 74,
+      nb_etablissement: 3,
+      nb_line: 3,
+    },
+    {
+      name: "Arret du stade",
+      quantity: 74,
+      nb_etablissement: 3,
+      nb_line: 3,
+    },
+    {
+      name: "Arret du stade",
+      quantity: 74,
+      nb_etablissement: 3,
+      nb_line: 3,
+    },
+    {
+      name: "Arret du stade",
+      quantity: 74,
+      nb_etablissement: 3,
+      nb_line: 3,
+    },
+    {
+      name: "Arret du stade",
+      quantity: 74,
+      nb_etablissement: 3,
+      nb_line: 3,
+    },
+    {
+      name: "Arret du stade",
+      quantity: 74,
+      nb_etablissement: 3,
+      nb_line: 3,
+    },
+    {
+      name: "Arret du stade",
+      quantity: 74,
+      nb_etablissement: 3,
+      nb_line: 3,
+    },
+    {
+      name: "Arret du stade",
+      quantity: 74,
+      nb_etablissement: 3,
+      nb_line: 3,
+    },
+    {
+      name: "Arret du stade",
+      quantity: 74,
+      nb_etablissement: 3,
+      nb_line: 3,
+    },
   ]);
 
+  const [toggledModal, setToggledModal] = createSignal(false);
+  const toggleModal = () => setToggledModal(!toggledModal());
   return (
     <div class="flex w-full">
       <div id="arrets-board">
@@ -59,7 +229,11 @@ export default function () {
                 <option selected>Colone</option>
               </select>
 
-              <button type="button" class="btn-arret-add">
+              <button
+                type="button"
+                class="btn-arret-add"
+                onClick={() => setToggledModal(!toggledModal())}
+              >
                 Ajouter
               </button>
 
@@ -72,7 +246,7 @@ export default function () {
                   name="email"
                   id="email"
                   class=""
-                  placeholder="you@example.com"
+                  placeholder="Recherche"
                 />
               </div>
             </div>
@@ -84,8 +258,8 @@ export default function () {
           </div>
         </header>
         <div class="board-content">
-          <div>
-            <table>
+          <div class="h-[84vh]">
+            <table class="min-w-full">
               <thead>
                 <tr>
                   <th scope="col" class="pl-4 pr-3 sm:pl-0 flex items-center">
@@ -122,7 +296,7 @@ export default function () {
           </div>
         </div>
       </div>
-      <Addmodal />
+      <Addmodal toggledModal={toggledModal} toggleModal={toggleModal} />
     </div>
   );
 }
