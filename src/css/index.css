@@ -13,7 +13,7 @@
 
 body,
 html {
-  overflow-y: hidden;
+  overflow: hidden;
 }
 
 body {
@@ -373,6 +373,9 @@ code {
 
         > tbody {
           @apply divide-y divide-gray-200;
+          overflow-y: visible;
+          overflow-y: scroll;
+          scroll-behavior: smooth;
 
           > tr > td {
             @apply whitespace-nowrap px-3 py-4 text-sm text-gray-500;
@@ -386,8 +389,12 @@ code {
 #stop-modal {
   width: 400px;
   height: calc(100vh - 60px);
-  position: relative;
-  background-color: red;
   position: absolute;
+  background-color: red;
   right: -400px;
+  transition-duration: 400ms;
+  padding: 10px;
+  &.active {
+    transform: translateX(-400px);
+  }
 }
