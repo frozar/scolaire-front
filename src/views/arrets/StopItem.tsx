@@ -1,6 +1,12 @@
 import { StopLineItem } from "../../type";
+import { setDataToEdit, toggleEditStop } from "./EditStop";
 
 export default function (props: StopLineItem) {
+  const handleClickEdit = () => {
+    setDataToEdit({ ...props });
+    toggleEditStop();
+  };
+
   return (
     <tr>
       <td class="flex items-center">
@@ -17,7 +23,7 @@ export default function (props: StopLineItem) {
       <td>{props.nbEtablissement}</td>
       <td>{props.nbLine}</td>
       <td>
-        <a href="#" class="text-[#0CC683] mr-2">
+        <a onClick={handleClickEdit} href="#" class="text-[#0CC683] mr-2">
           Editer
         </a>
 
