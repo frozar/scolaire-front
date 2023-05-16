@@ -123,72 +123,79 @@ export default function (props: any) {
         : nature === NatureEnum.etablissement
         ? ["green", "white", 12, 4]
         : ["white", "#000", 18, 4];
-    return L.circleMarker([lat, lon], {
-      color,
-      fillColor,
-      radius,
-      fillOpacity: 1,
-      weight,
-    })
-      .on("click", () => {
-        // Select the current element to display information
-        setSelectedElement(point);
-        if (!isInAddLineMode()) {
-          setInfoToDisplay(InfoPanelEnum.point);
-          return;
-        }
-
-        const pointIdentity: PointIdentityType = {
-          id: point.id,
-          id_point: point.id_point,
-          nature: point.nature,
-        };
-        addPointToLineUnderConstruction(pointIdentity);
-        if (pointIdentity.id_point != stopIds().at(-1)) {
-          setStopIds((ids) => [...ids, pointIdentity.id_point]);
-        }
-        if (!(1 < getLineUnderConstruction().stops.length)) {
-          return;
-        }
-
-        // Highlight point ramassage
-        for (const associatedPoint of associatedPoints()) {
-          let element;
-          if ((element = linkMap.get(associatedPoint.id_point)?.getElement())) {
-            renderAnimation(element);
-          }
-        }
+    return (
+      L.circleMarker([lat, lon], {
+        color,
+        fillColor,
+        radius,
+        fillOpacity: 1,
+        weight,
       })
-      .on("dblclick", (event: LeafletMouseEvent) => {
-        L.DomEvent.stopPropagation(event);
-      })
-      .on("mouseover", () => {
-        for (const associatedPoint of associatedPoints()) {
-          const element = linkMap.get(associatedPoint.id_point)?.getElement();
-          const { nature } = associatedPoint;
-          const className =
-            nature === NatureEnum.ramassage
-              ? "circle-animation-ramassage"
-              : "circle-animation-etablissement";
-          if (element) {
-            element.classList.add(className);
+        // eslint-disable-next-line solid/reactivity
+        .on("click", () => {
+          // Select the current element to display information
+          setSelectedElement(point);
+          if (!isInAddLineMode()) {
+            setInfoToDisplay(InfoPanelEnum.point);
+            return;
           }
-        }
-      })
-      .on("mouseout", () => {
-        for (const associatedPoint of associatedPoints()) {
-          const element = linkMap.get(associatedPoint.id_point)?.getElement();
-          const { nature } = associatedPoint;
-          const className =
-            nature === NatureEnum.ramassage
-              ? "circle-animation-ramassage"
-              : "circle-animation-etablissement";
 
-          if (element) {
-            element.classList.remove(className);
+          const pointIdentity: PointIdentityType = {
+            id: point.id,
+            id_point: point.id_point,
+            nature: point.nature,
+          };
+          addPointToLineUnderConstruction(pointIdentity);
+          if (pointIdentity.id_point != stopIds().at(-1)) {
+            setStopIds((ids) => [...ids, pointIdentity.id_point]);
           }
-        }
-      });
+          if (!(1 < getLineUnderConstruction().stops.length)) {
+            return;
+          }
+
+          // Highlight point ramassage
+          for (const associatedPoint of associatedPoints()) {
+            let element;
+            if (
+              (element = linkMap.get(associatedPoint.id_point)?.getElement())
+            ) {
+              renderAnimation(element);
+            }
+          }
+        })
+        .on("dblclick", (event: LeafletMouseEvent) => {
+          L.DomEvent.stopPropagation(event);
+        })
+        // eslint-disable-next-line solid/reactivity
+        .on("mouseover", () => {
+          for (const associatedPoint of associatedPoints()) {
+            const element = linkMap.get(associatedPoint.id_point)?.getElement();
+            const { nature } = associatedPoint;
+            const className =
+              nature === NatureEnum.ramassage
+                ? "circle-animation-ramassage"
+                : "circle-animation-etablissement";
+            if (element) {
+              element.classList.add(className);
+            }
+          }
+        })
+        // eslint-disable-next-line solid/reactivity
+        .on("mouseout", () => {
+          for (const associatedPoint of associatedPoints()) {
+            const element = linkMap.get(associatedPoint.id_point)?.getElement();
+            const { nature } = associatedPoint;
+            const className =
+              nature === NatureEnum.ramassage
+                ? "circle-animation-ramassage"
+                : "circle-animation-etablissement";
+
+            if (element) {
+              element.classList.remove(className);
+            }
+          }
+        })
+    );
   }
 
   // If a line is under construction, show a pencil when the mouse is over a circle
