@@ -292,7 +292,7 @@ code {
 
 #arrets-board {
   @apply w-full mx-16 mt-5;
-  header {
+  & > header {
     > h1 {
       @apply text-2xl;
     }
