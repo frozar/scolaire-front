@@ -230,7 +230,7 @@ export default function () {
           </div>
         </header>
         <div class="board-content">
-          <div class="h-[84vh]">
+          <div class="h-[78vh]">
             <table class="min-w-full">
               <thead>
                 <tr>
