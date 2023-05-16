@@ -40,8 +40,10 @@ const [
 const minSizeValue = 5;
 const maxSizeValue = 10;
 const range = maxSizeValue - minSizeValue;
-export default function (props: any) {
-  const point = props.point;
+export default function (props: {
+  point: PointRamassageType | PointEtablissementType;
+}) {
+  const point = () => props.point;
 
   const [associatedPoints, setAssociatedPoints] = createSignal<
     PointIdentityType[]
@@ -104,9 +106,9 @@ export default function (props: any) {
     }
   }
 
-  let circle: L.CircleMarker<any>;
+  let circle: L.CircleMarker;
 
-  function buildCircle(point: PointEtablissementType): L.CircleMarker<any> {
+  function buildCircle(point: PointEtablissementType): L.CircleMarker {
     const location = point.location;
     const lonlat = location.split("(")[1].split(")")[0];
     const lon = Number(lonlat.split(" ")[0]);
@@ -226,21 +228,21 @@ export default function (props: any) {
       return;
     }
 
-    circle = buildCircle(point);
+    circle = buildCircle(point());
     circle.addTo(leafletMap);
 
     const element = circle.getElement();
     if (element) {
-      linkMap.set(point.id_point, circle);
+      linkMap.set(point().id_point, circle);
     }
 
     // Fetch associated points (ramassage or etablissement) and
     // store them in the associatedPoints() signal (used is the on'click' event)
-    fetchAssociatedPoints(point, setAssociatedPoints);
+    fetchAssociatedPoints(point(), setAssociatedPoints);
   });
 
   onCleanup(() => {
-    linkMap.delete(point.id_point);
+    linkMap.delete(point().id_point);
 
     circle.remove();
   });
