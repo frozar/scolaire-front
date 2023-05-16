@@ -1,4 +1,3 @@
-import { createEffect } from "solid-js";
 import { CgCloseO } from "solid-icons/cg";
 
 export default function (props: any) {
