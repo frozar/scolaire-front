@@ -1,7 +1,12 @@
 import L from "leaflet";
 import { onCleanup, createEffect } from "solid-js";
 
-import { fetchBusLines, setBusLines, busLines } from "../signaux";
+import {
+  fetchBusLines,
+  setBusLines,
+  busLines,
+  fetchPolyline,
+} from "../signaux";
 import { pointsReady } from "../PointsRamassageAndEtablissement";
 import {
   getBusLinePolyline,
@@ -23,24 +28,43 @@ export default function () {
   let busLinesPolyline: L.Polyline[] = [];
 
   createEffect(() => {
+    console.log("busLines()", busLines());
+
     // Anytime busLines() change the bus lines are redrawn
     for (const busLinePolyline of busLinesPolyline) {
       busLinePolyline.remove();
     }
     busLinesPolyline = [];
 
+    // x Récup liste des latlng
+    // les utiliser dans la requête
+    // utiliser réponse de la requête pour construire new L.Polyline
+    // addTo(leafletMap())
+
     for (const busLine of busLines()) {
       let busLinePolyline: L.Polyline = new L.Polyline([]);
 
+      // ?
       const leafletMap = getLeafletMap();
       if (!leafletMap) {
         return;
       }
+      // Récup liste des latlng pour une busLine
+      const latlng = getLatLngs(busLine.stops);
+      const lnglat = latlng.slice().map((prev) => [prev.lng, prev.lat]);
+      console.log("latlongs", latlng);
+      console.log("lnglat", lnglat);
+
+      // les utiliser dans la requête
+      console.log("url long lat", fetchPolyline(lnglat));
 
       busLinePolyline = getBusLinePolyline(
         busLine.color,
         getLatLngs(busLine.stops)
       ).addTo(leafletMap);
+
+      console.log("busLine.stops", busLine.stops);
+      console.log("getLatLngs(busLine.stops)", getLatLngs(busLine.stops));
 
       busLinePolylineAttachEvent(
         busLinePolyline,
@@ -50,9 +74,12 @@ export default function () {
       );
 
       busLinesPolyline.push(busLinePolyline);
+
+      console.log("busLinePolyline", busLinePolyline);
     }
+    console.log("busLinesPolyline", busLinesPolyline);
+    // ----
     // À suppr: exemple d'affichage de route
-    console.log("route test");
     const latlngsTest = [
       [55.517841, -20.95572],
       [55.517585, -20.955422],

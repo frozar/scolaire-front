@@ -246,6 +246,22 @@ export function fetchBusLines() {
     });
 }
 
+export function fetchPolyline(lnglat: number[][]) {
+  // formater données pour l'url
+  let urlLnglat = "";
+  for (const elt of lnglat) {
+    const toAdd = elt[0] + "," + elt[1] + ";";
+    urlLnglat += toAdd;
+  }
+  fetch(
+    "https://osrm.fly.dev/route/v1/car/" +
+      urlLnglat +
+      "?geometries=geojson&overview=full"
+  ).then((res) => {
+    return res.json();
+  });
+}
+
 export const [getLeafletMap, setLeafletMap] = createSignal<L.Map>();
 
 export const [busLineSelected, setBusLineSelected] = createSignal<number>(-1);
