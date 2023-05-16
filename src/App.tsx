@@ -1,24 +1,11 @@
-import {
-  createEffect,
-  Component,
-  onCleanup,
-  onMount,
-  Switch,
-  Match,
-} from "solid-js";
-import styles from "./App.module.css";
+import { createEffect, onCleanup, onMount, Switch, Match } from "solid-js";
 import SpinningWheel from "./SpinningWheel";
 import Map from "./views/graphicage/Map";
 import { useStateAction } from "./StateAction";
 import DisplayUserInformation from "./userInformation/DisplayUserInformation";
 import RemoveConfirmation from "./userInformation/RemoveConfirmation";
 import ExportConfirmation from "./views/graphicage/rightMapMenu/export/ExportModal";
-import {
-  closeRemoveConfirmationBox,
-  fetchBusLines,
-  setLastSelectedInfo,
-  setEditionStopId,
-} from "./signaux";
+import { closeRemoveConfirmationBox, fetchBusLines } from "./signaux";
 
 import {
   displayAddLineMessage,
@@ -32,7 +19,6 @@ import { useStateGui } from "./StateGui";
 import ClearConfirmation from "./userInformation/ClearConfirmation";
 import GeneratorDialogueBox from "./userInformation/GeneratorDialogueBox";
 
-import { LastSelectionEnum } from "./type";
 const [
   ,
   {
@@ -48,7 +34,7 @@ const [
   history,
 ] = useStateAction();
 
-const [stateGui, { getSelectedMenu }] = useStateGui();
+const [, { getSelectedMenu }] = useStateGui();
 
 // Handler the Undo/Redo from the user
 function undoRedoHandler({ ctrlKey, shiftKey, code }: KeyboardEvent) {
