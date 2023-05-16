@@ -6,7 +6,7 @@ import {
 } from "../../../../userInformation/utils";
 import { getExportDate } from "./export";
 
-function download(fileame: string, blob: Blob) {
+export function download(fileame: string, blob: Blob) {
   const url = window.URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
