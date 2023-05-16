@@ -37,7 +37,7 @@ export default function (props: any) {
       name: "Arret du stade",
       quantity: 74,
       nb_etablissement: 3,
-      nbLine: 3,
+      nb_line: 3,
     },
     {
       name: "Arret du stade",
@@ -110,9 +110,9 @@ export default function (props: any) {
                   {(fields) => (
                     <StopLineBoard
                       name={fields.name}
-                      nbStudent={fields.quantity}
-                      nbEstablishmentDiserved={fields.nb_etablissement}
-                      nbLine={fields.nb_line}
+                      quantity={fields.quantity}
+                      nb_etablissement={fields.nb_etablissement}
+                      nb_line={fields.nb_line}
                     />
                   )}
                 </For>
