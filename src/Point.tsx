@@ -13,12 +13,19 @@ import {
   PointIdentityType,
   PointRamassageType,
   PointEtablissementType,
+  InfoPanelEnum,
 } from "./type";
 
 import { useStateAction } from "./StateAction";
 import { renderAnimation } from "./animation";
 import { linkMap } from "./global/linkPointIdentityCircle";
-import { getLeafletMap, setSelectedElement } from "./signaux";
+import {
+  getLeafletMap,
+  setSelectedElement,
+  setInfoToDisplay,
+  setStopIds,
+  stopIds,
+} from "./signaux";
 import { minMaxQty } from "./PointsRamassageAndEtablissement";
 
 const [
@@ -33,8 +40,10 @@ const [
 const minSizeValue = 5;
 const maxSizeValue = 10;
 const range = maxSizeValue - minSizeValue;
-export default function (props: any) {
-  const point = props.point;
+export default function (props: {
+  point: PointRamassageType | PointEtablissementType;
+}) {
+  const point = () => props.point;
 
   const [associatedPoints, setAssociatedPoints] = createSignal<
     PointIdentityType[]
@@ -97,9 +106,9 @@ export default function (props: any) {
     }
   }
 
-  let circle: L.CircleMarker<any>;
+  let circle: L.CircleMarker;
 
-  function buildCircle(point: PointEtablissementType): L.CircleMarker<any> {
+  function buildCircle(point: PointEtablissementType): L.CircleMarker {
     const location = point.location;
     const lonlat = location.split("(")[1].split(")")[0];
     const lon = Number(lonlat.split(" ")[0]);
@@ -116,68 +125,79 @@ export default function (props: any) {
         : nature === NatureEnum.etablissement
         ? ["green", "white", 12, 4]
         : ["white", "#000", 18, 4];
-    return L.circleMarker([lat, lon], {
-      color,
-      fillColor,
-      radius,
-      fillOpacity: 1,
-      weight,
-    })
-      .on("click", () => {
-        // Select the current element to display information
-        setSelectedElement(point);
-        if (!isInAddLineMode()) {
-          return;
-        }
-
-        const pointIdentity: PointIdentityType = {
-          id: point.id,
-          id_point: point.id_point,
-          nature: point.nature,
-        };
-        addPointToLineUnderConstruction(pointIdentity);
-        if (!(1 < getLineUnderConstruction().stops.length)) {
-          return;
-        }
-
-        // Highlight point ramassage
-        for (const associatedPoint of associatedPoints()) {
-          let element;
-          if ((element = linkMap.get(associatedPoint.id_point)?.getElement())) {
-            renderAnimation(element);
-          }
-        }
+    return (
+      L.circleMarker([lat, lon], {
+        color,
+        fillColor,
+        radius,
+        fillOpacity: 1,
+        weight,
       })
-      .on("dblclick", (event: LeafletMouseEvent) => {
-        L.DomEvent.stopPropagation(event);
-      })
-      .on("mouseover", () => {
-        for (const associatedPoint of associatedPoints()) {
-          const element = linkMap.get(associatedPoint.id_point)?.getElement();
-          const { nature } = associatedPoint;
-          const className =
-            nature === NatureEnum.ramassage
-              ? "circle-animation-ramassage"
-              : "circle-animation-etablissement";
-          if (element) {
-            element.classList.add(className);
+        // eslint-disable-next-line solid/reactivity
+        .on("click", () => {
+          // Select the current element to display information
+          setSelectedElement(point);
+          if (!isInAddLineMode()) {
+            setInfoToDisplay(InfoPanelEnum.point);
+            return;
           }
-        }
-      })
-      .on("mouseout", () => {
-        for (const associatedPoint of associatedPoints()) {
-          const element = linkMap.get(associatedPoint.id_point)?.getElement();
-          const { nature } = associatedPoint;
-          const className =
-            nature === NatureEnum.ramassage
-              ? "circle-animation-ramassage"
-              : "circle-animation-etablissement";
 
-          if (element) {
-            element.classList.remove(className);
+          const pointIdentity: PointIdentityType = {
+            id: point.id,
+            id_point: point.id_point,
+            nature: point.nature,
+          };
+          addPointToLineUnderConstruction(pointIdentity);
+          if (pointIdentity.id_point != stopIds().at(-1)) {
+            setStopIds((ids) => [...ids, pointIdentity.id_point]);
           }
-        }
-      });
+          if (!(1 < getLineUnderConstruction().stops.length)) {
+            return;
+          }
+
+          // Highlight point ramassage
+          for (const associatedPoint of associatedPoints()) {
+            let element;
+            if (
+              (element = linkMap.get(associatedPoint.id_point)?.getElement())
+            ) {
+              renderAnimation(element);
+            }
+          }
+        })
+        .on("dblclick", (event: LeafletMouseEvent) => {
+          L.DomEvent.stopPropagation(event);
+        })
+        // eslint-disable-next-line solid/reactivity
+        .on("mouseover", () => {
+          for (const associatedPoint of associatedPoints()) {
+            const element = linkMap.get(associatedPoint.id_point)?.getElement();
+            const { nature } = associatedPoint;
+            const className =
+              nature === NatureEnum.ramassage
+                ? "circle-animation-ramassage"
+                : "circle-animation-etablissement";
+            if (element) {
+              element.classList.add(className);
+            }
+          }
+        })
+        // eslint-disable-next-line solid/reactivity
+        .on("mouseout", () => {
+          for (const associatedPoint of associatedPoints()) {
+            const element = linkMap.get(associatedPoint.id_point)?.getElement();
+            const { nature } = associatedPoint;
+            const className =
+              nature === NatureEnum.ramassage
+                ? "circle-animation-ramassage"
+                : "circle-animation-etablissement";
+
+            if (element) {
+              element.classList.remove(className);
+            }
+          }
+        })
+    );
   }
 
   // If a line is under construction, show a pencil when the mouse is over a circle
@@ -188,12 +208,12 @@ export default function (props: any) {
         if (element) {
           if (isInAddLineMode) {
             if (String(element.style) !== "cursor: url('/pencil.png'), auto;") {
-              // @ts-expect-error
+              // @ts-expect-error: 'style' field should not be assigned
               element.style = "cursor: url('/pencil.png'), auto;";
             }
           } else {
             if (String(element.style) !== "") {
-              // @ts-expect-error
+              // @ts-expect-error: 'style' field should not be assigned
               element.style = "";
             }
           }
@@ -208,21 +228,21 @@ export default function (props: any) {
       return;
     }
 
-    circle = buildCircle(point);
+    circle = buildCircle(point());
     circle.addTo(leafletMap);
 
     const element = circle.getElement();
     if (element) {
-      linkMap.set(point.id_point, circle);
+      linkMap.set(point().id_point, circle);
     }
 
     // Fetch associated points (ramassage or etablissement) and
     // store them in the associatedPoints() signal (used is the on'click' event)
-    fetchAssociatedPoints(point, setAssociatedPoints);
+    fetchAssociatedPoints(point(), setAssociatedPoints);
   });
 
   onCleanup(() => {
-    linkMap.delete(point.id_point);
+    linkMap.delete(point().id_point);
 
     circle.remove();
   });

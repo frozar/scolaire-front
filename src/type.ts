@@ -115,6 +115,7 @@ export type exportConfirmationType = {
   exportType: ExportTypeEnum | null;
 };
 export type ReturnMessageType = {
+  displayed: boolean;
   message: string;
   metrics: { total: number; success: number };
   error: { etablissement: string[]; ramassage: string[] };
@@ -136,3 +137,10 @@ export type MenuItemType = {
   Logo: () => JSX.Element;
   displayText: boolean;
 };
+
+export enum InfoPanelEnum {
+  point,
+  line,
+  edition,
+  nothing,
+}

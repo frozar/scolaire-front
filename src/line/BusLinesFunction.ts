@@ -1,10 +1,16 @@
 import L from "leaflet";
 
 import { createEffect } from "solid-js";
-import { setRemoveConfirmation } from "../signaux";
-import { PointIdentityType } from "../type";
+import {
+  setRemoveConfirmation,
+  setBusLineSelected,
+  setInfoToDisplay,
+} from "../signaux";
+import { PointIdentityType, InfoPanelEnum } from "../type";
 import { linkMap } from "../global/linkPointIdentityCircle";
+import { useStateAction } from "../StateAction";
 
+const [, { isInReadMode }] = useStateAction();
 export function getLatLngs(stops: PointIdentityType[]): L.LatLng[] {
   const latlngs: L.LatLng[] = [];
   for (const pointIdentity of stops) {
@@ -50,6 +56,10 @@ export function busLinePolylineAttachEvent(
           displayed: true,
           id_bus_line: id_bus_line,
         });
+      }
+      if (isInReadMode()) {
+        setBusLineSelected(id_bus_line);
+        setInfoToDisplay(InfoPanelEnum.line);
       }
     });
 }

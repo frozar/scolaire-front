@@ -6,9 +6,11 @@ import { Transition } from "solid-transition-group";
 import ClickOutside from "../../../ClickOutside";
 import { displayAddLineMessage } from "../../../userInformation/utils";
 import { FaSolidPlus } from "solid-icons/fa";
+
 const [, { setModeAddLine, isInAddLineMode }] = useStateAction();
 
 declare module "solid-js" {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace JSX {
     interface Directives {
       ClickOutside: (e: MouseEvent) => void;

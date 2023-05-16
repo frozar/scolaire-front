@@ -1,4 +1,5 @@
 @import "./menu.css";
+@import "./timeline.css";
 
 @tailwind base;
 @tailwind components;
