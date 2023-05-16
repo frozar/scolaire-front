@@ -145,8 +145,12 @@ export enum InfoPanelEnum {
   nothing,
 }
 export type StopLineItem = {
+  id: number;
   name: string;
   quantity: number;
   nbLine: number;
   nbEtablissement: number;
+  lon: Float32Array;
+  lat: Float32Array;
+  // setDataToEdit: ;
 };
