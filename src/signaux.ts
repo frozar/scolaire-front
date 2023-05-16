@@ -13,7 +13,6 @@ import {
   userInformationType,
   ReturnMessageType,
   clearConfirmationType,
-  LastSelectionEnum,
   InfoPanelEnum,
 } from "./type";
 import { deepCopy } from "./utils";
@@ -69,22 +68,19 @@ export const [getClearConfirmation, setClearConfirmation] = createSignal({
   displayed: false,
 }) as Signal<clearConfirmationType>;
 
+const initialDragAndDropMessage: ReturnMessageType = {
+  displayed: false,
+  message: "",
+  metrics: { total: 0, success: 0 },
+  error: { etablissement: [], ramassage: [] },
+  success: { etablissement: [], ramassage: [] },
+};
+
 export const [getDragAndDropConfirmation, setDragAndDropConfirmation] =
-  createSignal({
-    displayed: false,
-    message: "",
-    metrics: { total: 0, success: 0 },
-    error: { etablissement: [], ramassage: [] },
-    success: { etablissement: [], ramassage: [] },
-  }) as Signal<ReturnMessageType>;
+  createSignal<ReturnMessageType>(initialDragAndDropMessage);
 
 export function closeDragAndDropConfirmationBox() {
-  setDragAndDropConfirmation({
-    displayed: false,
-    message: "",
-    error: { etablissement: [], ramassage: [] },
-    success: { etablissement: [], ramassage: [] },
-  });
+  setDragAndDropConfirmation(initialDragAndDropMessage);
 }
 
 export function openExportConfirmationBox() {
