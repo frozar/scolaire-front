@@ -18,7 +18,7 @@ import NavLateral from "./layout/NavLateral";
 import { useStateGui } from "./StateGui";
 import ClearConfirmation from "./userInformation/ClearConfirmation";
 import GeneratorDialogueBox from "./userInformation/GeneratorDialogueBox";
-import Arret from "./views/Arret";
+import Arret from "./views/arrets/Arret";
 
 const [
   ,
