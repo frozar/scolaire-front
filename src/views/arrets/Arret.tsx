@@ -5,7 +5,7 @@ import EditStop, {
   toggleEditStop,
   toggledEditStop,
 } from "./EditStop";
-import { For, createSignal } from "solid-js";
+import { For } from "solid-js";
 import StopItems from "./StopItem";
 
 export default function () {
