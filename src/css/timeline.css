@@ -49,7 +49,7 @@
 }
 
 .v-timeline--vertical.v-timeline--justify-auto {
-  grid-template-columns: auto min-content auto;
+  grid-template-columns: 0px min-content auto;
 }
 
 .v-timeline--vertical.v-timeline.v-timeline--side-end
