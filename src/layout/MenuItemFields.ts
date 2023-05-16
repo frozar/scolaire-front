@@ -33,12 +33,12 @@ export default function (displayText: boolean) {
     //   Logo: LateralMenuEtablissementLogo,
     //   displayText: displayText,
     // },
-    // {
-    //   title: "Arrêts",
-    //   menuItem: "arrets",
-    //   Logo: LateralMenuArretsLogo,
-    //   displayText: displayText,
-    // },
+    {
+      title: "Arrêts",
+      menuItem: "arrets",
+      Logo: LateralMenuArretsLogo,
+      displayText: displayText,
+    },
     // {
     //   title: "Paramètres",
     //   menuItem: "parametres",
