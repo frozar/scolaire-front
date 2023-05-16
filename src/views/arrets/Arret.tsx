@@ -1,6 +1,6 @@
 import { createStore } from "solid-js/store";
 import { AiOutlineSearch } from "solid-icons/ai";
-import Addmodal from "./AddStopModal";
+import EditStop, { toggleEditStop, toggledEditStop } from "./EditStop";
 import { For, createSignal } from "solid-js";
 import StopItems from "./StopItem";
 
@@ -188,8 +188,6 @@ export default function () {
     },
   ]);
 
-  const [toggledModal, setToggledModal] = createSignal(false);
-  const toggleModal = () => setToggledModal(!toggledModal());
   return (
     <div class="flex w-full">
       <div id="arrets-board">
@@ -204,7 +202,7 @@ export default function () {
               <button
                 type="button"
                 class="btn-arret-add"
-                onClick={() => setToggledModal(!toggledModal())}
+                onClick={toggleEditStop}
               >
                 Ajouter
               </button>
@@ -268,7 +266,10 @@ export default function () {
           </div>
         </div>
       </div>
-      <Addmodal toggledModal={toggledModal} toggleModal={toggleModal} />
+      <EditStop
+        toggleModal={toggleEditStop}
+        toogledEditStop={toggledEditStop}
+      />
     </div>
   );
 }
