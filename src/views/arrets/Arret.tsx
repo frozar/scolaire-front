@@ -1,6 +1,10 @@
 import { createStore } from "solid-js/store";
 import { AiOutlineSearch } from "solid-icons/ai";
-import EditStop, { toggleEditStop, toggledEditStop } from "./EditStop";
+import EditStop, {
+  setDataToEdit,
+  toggleEditStop,
+  toggledEditStop,
+} from "./EditStop";
 import { For, createSignal } from "solid-js";
 import StopItems from "./StopItem";
 
@@ -202,7 +206,10 @@ export default function () {
               <button
                 type="button"
                 class="btn-arret-add"
-                onClick={toggleEditStop}
+                onClick={() => {
+                  setDataToEdit();
+                  toggleEditStop();
+                }}
               >
                 Ajouter
               </button>
