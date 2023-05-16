@@ -148,6 +148,8 @@ export default function (props: {
       })
         // eslint-disable-next-line solid/reactivity
         .on("click", () => {
+          console.log("lat", lat);
+          console.log("lon", lon);
           // Select the current element to display information
           setSelectedElement(point);
           if (!isInAddLineMode()) {
