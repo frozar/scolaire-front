@@ -1,15 +1,9 @@
 .timeline {
-  box-sizing: border-box;
-  /* width: 100%; */
-  /* margin-left: 10%; */
-  /* overflow-y: scroll; */
+  width: 100%;
   -webkit-text-size-adjust: 100%;
   word-break: normal;
   -moz-tab-size: 4;
   tab-size: 4;
-}
-
-.timeline {
   font-family: Roboto, sans-serif;
   line-height: 1.5;
   font-size: 1rem;
@@ -40,7 +34,6 @@
   display: grid;
   grid-auto-flow: dense;
   position: relative;
-  width: 300px;
 }
 
 .v-timeline--align-start {
