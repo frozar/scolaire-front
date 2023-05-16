@@ -185,8 +185,9 @@ export default function () {
   }): Promise<PointToDisplayType[]> => {
     const { id, nature } = urlParameters;
 
+    // TODO: simplify this condition
     if (!(id != -1 && nature != null)) {
-      return await new Promise((resolve, reject) => {
+      return await new Promise((resolve) => {
         resolve([]);
       });
     } else {
