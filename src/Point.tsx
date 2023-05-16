@@ -199,12 +199,12 @@ export default function (props: any) {
         if (element) {
           if (isInAddLineMode) {
             if (String(element.style) !== "cursor: url('/pencil.png'), auto;") {
-              // @ts-expect-error
+              // @ts-expect-error: 'style' field should not be assigned
               element.style = "cursor: url('/pencil.png'), auto;";
             }
           } else {
             if (String(element.style) !== "") {
-              // @ts-expect-error
+              // @ts-expect-error: 'style' field should not be assigned
               element.style = "";
             }
           }

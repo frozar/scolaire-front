@@ -38,10 +38,8 @@ type PointToDisplayType = {
   quantity: number;
 };
 
-type Item = {
-  hour: string | undefined;
+type TimelineItemType = {
   name: string;
-  caption: string | undefined;
 };
 
 const displayTimeline = (id_bus_line: number) => {
@@ -64,25 +62,13 @@ const displayTimeline = (id_bus_line: number) => {
   return stopNameList;
 };
 
-function Timeline_item(props: Item) {
+function TimelineItem(props: TimelineItemType) {
   return (
-    <div
-      class="v-timeline-item"
-      style={{
-        "--v-timeline-dot-size": "30px",
-        "--v-timeline-line-inset": "0px",
-      }}
-    >
+    <div class="v-timeline-item">
       <div class="v-timeline-item__body">
         <div class="d-flex">
-          <Show when={props.hour != undefined}>
-            <strong class="me-4">{props.hour}</strong>
-          </Show>
           <div>
             <strong>{props.name}</strong>
-            <Show when={props.caption != undefined}>
-              <div class="text-caption"> {props.caption} </div>
-            </Show>
           </div>
         </div>
       </div>
@@ -95,9 +81,6 @@ function Timeline_item(props: Item) {
         </div>
         <div class="v-timeline-divider__after" />
       </div>
-      {/* <div class="v-timeline-item__opposite" style={{ width: "0px" }}>
-        test
-      </div> */}
     </div>
   );
 }
@@ -109,9 +92,7 @@ function Timeline() {
         style={{ "--v-timeline-line-thickness": "2px" }}
       >
         <For each={timelineStopNames()}>
-          {(stop) => (
-            <Timeline_item hour={undefined} name={stop} caption={undefined} />
-          )}
+          {(stop) => <TimelineItem name={stop} />}
         </For>
       </div>
     </div>
