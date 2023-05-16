@@ -37,9 +37,7 @@ export default function (props: any) {
           <input
             type="text"
             id="Latitude"
-            value={
-              dataToEdit()?.lat ? String(dataToEdit()?.lat) : "Pas de latitude"
-            }
+            value={dataToEdit()?.lat ? String(dataToEdit()?.lat) : ""}
           />
         </div>
         <div class="group inline-grid w-full">
@@ -47,9 +45,7 @@ export default function (props: any) {
           <input
             type="text"
             id="Longitude"
-            value={
-              dataToEdit()?.lat ? String(dataToEdit()?.lon) : "Pas de longitude"
-            }
+            value={dataToEdit()?.lat ? String(dataToEdit()?.lon) : ""}
           />
         </div>
       </section>
