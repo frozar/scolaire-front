@@ -2,7 +2,7 @@ import { createStore } from "solid-js/store";
 import { AiOutlineSearch } from "solid-icons/ai";
 import Addmodal from "./AddStopModal";
 import { For, createSignal } from "solid-js";
-import StopItems from "./StopItems";
+import StopItems from "./StopItem";
 
 export default function () {
   const [stop] = createStore([
