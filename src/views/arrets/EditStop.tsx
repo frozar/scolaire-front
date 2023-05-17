@@ -1,6 +1,6 @@
 import { CgCloseO } from "solid-icons/cg";
 import { HiSolidLocationMarker } from "solid-icons/hi";
-import { createSignal } from "solid-js";
+import { Show, createSignal } from "solid-js";
 import { StopLineItem } from "../../type";
 
 export const [toggledEditStop, setToggledEditStop] = createSignal(false);
@@ -8,13 +8,11 @@ export const toggleEditStop = () => setToggledEditStop(!toggledEditStop());
 export const [dataToEdit, setDataToEdit] = createSignal<StopLineItem>();
 
 export default function (props: any) {
-  console.log(dataToEdit());
-
   return (
-    <div id="stop-modal" classList={{ active: toggledEditStop() == true }}>
+    <div id="edit-stop" classList={{ active: toggledEditStop() == true }}>
       <header>
-        <button onClick={toggleEditStop} class="h-[30px] w-[30px] ">
-          <CgCloseO class="w-full h-full fill-green " />
+        <button onClick={toggleEditStop} class="">
+          <CgCloseO class="" />
         </button>
 
         <h1>
@@ -47,6 +45,16 @@ export default function (props: any) {
             id="Longitude"
             value={dataToEdit()?.lat ? String(dataToEdit()?.lon) : ""}
           />
+        </div>
+
+        <div class="action">
+          <Show
+            when={dataToEdit() == undefined}
+            fallback={<button class="green">Editer</button>}
+          >
+            <button class="green">Ajouter</button>
+          </Show>
+          <button>Annuler</button>
         </div>
       </section>
     </div>
