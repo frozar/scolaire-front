@@ -28,14 +28,17 @@ export default function () {
   });
 
   let busLinesPolyline: L.Polyline[] = [];
+  let busLinesDrawn: L.Polyline[] = [];
 
   createEffect(() => {
     if (polylineRoute() != undefined) {
+      let busLineDrawn: L.Polyline = new L.Polyline([]);
       const leafletMap = getLeafletMap();
       // console.log("polylineRoute()", polylineRoute());
       const color = polylineRoute()[1];
       const polyL = polylineRoute()[0];
-      getBusLinePolyline(color, polyL).addTo(leafletMap);
+      busLineDrawn = getBusLinePolyline(color, polyL).addTo(leafletMap);
+      busLinesDrawn.push(busLineDrawn);
     }
   });
   createEffect(() => {
@@ -44,6 +47,9 @@ export default function () {
     // Anytime busLines() change the bus lines are redrawn
     for (const busLinePolyline of busLinesPolyline) {
       busLinePolyline.remove();
+    }
+    for (const busLineDrawn of busLinesDrawn) {
+      busLineDrawn.remove();
     }
     busLinesPolyline = [];
 
@@ -68,7 +74,7 @@ export default function () {
         fetchPolyline(lnglat, busLine.color);
       }
 
-      if (isInAddLineMode()) {
+      if (isInAddLineMode() || isInRemoveLineMode()) {
         console.log("AddLine MODE");
         // trajet à vol d'oiseau
         busLinePolyline = getBusLinePolyline(
