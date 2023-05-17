@@ -7,7 +7,15 @@ export const [toggledEditStop, setToggledEditStop] = createSignal(false);
 export const toggleEditStop = () => setToggledEditStop(!toggledEditStop());
 export const [dataToEdit, setDataToEdit] = createSignal<StopLineItem>();
 
-export default function (props: any) {
+export default function () {
+  const handleClickAddStop = () => {
+    console.log("Send request to back to add new stop");
+  };
+
+  const handleClickEditStop = () => {
+    console.log("Send request to back to edit stop");
+  };
+
   return (
     <div id="edit-stop" classList={{ active: toggledEditStop() == true }}>
       <header>
@@ -50,11 +58,17 @@ export default function (props: any) {
         <div class="action">
           <Show
             when={dataToEdit() == undefined}
-            fallback={<button class="green">Editer</button>}
+            fallback={
+              <button class="green" onClick={handleClickEditStop}>
+                Editer
+              </button>
+            }
           >
-            <button class="green">Ajouter</button>
+            <button class="green" onClick={handleClickAddStop}>
+              Ajouter
+            </button>
           </Show>
-          <button>Annuler</button>
+          <button onClick={toggleEditStop}>Annuler</button>
         </div>
       </section>
     </div>
