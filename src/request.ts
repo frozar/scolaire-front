@@ -10,6 +10,18 @@ export function deleteBusLine(idToRemove: number) {
   });
 }
 
+export function deleteRamassage(idToRemove: number) {
+  return fetch(import.meta.env.VITE_BACK_URL + "/point_ramassage", {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      id: idToRemove,
+    }),
+  });
+}
+
 export function clear() {
   return fetch(import.meta.env.VITE_BACK_URL + "/clear", {
     method: "DELETE",
