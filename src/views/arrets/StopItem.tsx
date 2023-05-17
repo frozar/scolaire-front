@@ -1,11 +1,49 @@
+import { createEffect, createSignal, on, onMount } from "solid-js";
 import { StopLineItem } from "../../type";
 import { setDataToEdit, toggleEditStop } from "./EditStop";
+import { addSelected, removeSelected, selected, setStop } from "./Arret";
+import { isChecked } from "./Arret";
 
 export default function (props: StopLineItem) {
+  let checkbox!: HTMLInputElement;
+
   const handleClickEdit = () => {
     setDataToEdit({ ...props });
     toggleEditStop();
   };
+
+  onMount(() => {
+    checkbox?.addEventListener("change", () => {
+      setStop(
+        (stop) => stop.id == props.id,
+        "selected",
+        (selected) => !selected
+      );
+
+      const exist = selected().filter((stop) => stop.id == props.id);
+
+      if (exist.length == 0) {
+        addSelected(props);
+      } else {
+        removeSelected(props);
+      }
+    });
+  });
+
+  createEffect(
+    on(
+      () => isChecked(),
+      () => {
+        if (isChecked()) {
+          checkbox.checked = true;
+          addSelected(props);
+        } else {
+          checkbox.checked = false;
+          removeSelected(props);
+        }
+      }
+    )
+  );
 
   return (
     <tr>
@@ -16,6 +54,7 @@ export default function (props: StopLineItem) {
           name="comments"
           type="checkbox"
           class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600 relative right-2"
+          ref={checkbox}
         />
         {props.name}
       </td>
