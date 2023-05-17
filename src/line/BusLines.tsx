@@ -6,6 +6,7 @@ import {
   setBusLines,
   busLines,
   fetchPolyline,
+  polylineRoute,
 } from "../signaux";
 import { pointsReady } from "../PointsRamassageAndEtablissement";
 import {
@@ -28,7 +29,10 @@ export default function () {
   let busLinesPolyline: L.Polyline[] = [];
 
   createEffect(() => {
-    console.log("busLines()", busLines());
+    console.log(polylineRoute());
+  });
+  createEffect(() => {
+    // console.log("busLines()", busLines());
 
     // Anytime busLines() change the bus lines are redrawn
     for (const busLinePolyline of busLinesPolyline) {
@@ -52,8 +56,8 @@ export default function () {
       // Récup liste des latlng pour une busLine
       const latlng = getLatLngs(busLine.stops);
       const lnglat = latlng.slice().map((prev) => [prev.lng, prev.lat]);
-      console.log("latlongs", latlng);
-      console.log("lnglat", lnglat);
+      // console.log("latlongs", latlng);
+      // console.log("lnglat", lnglat);
 
       // les utiliser dans la requête
       console.log("url long lat", fetchPolyline(lnglat));
@@ -63,8 +67,8 @@ export default function () {
         getLatLngs(busLine.stops)
       ).addTo(leafletMap);
 
-      console.log("busLine.stops", busLine.stops);
-      console.log("getLatLngs(busLine.stops)", getLatLngs(busLine.stops));
+      // console.log("busLine.stops", busLine.stops);
+      // console.log("getLatLngs(busLine.stops)", getLatLngs(busLine.stops));
 
       busLinePolylineAttachEvent(
         busLinePolyline,
@@ -75,9 +79,9 @@ export default function () {
 
       busLinesPolyline.push(busLinePolyline);
 
-      console.log("busLinePolyline", busLinePolyline);
+      // console.log("busLinePolyline", busLinePolyline);
     }
-    console.log("busLinesPolyline", busLinesPolyline);
+    // console.log("busLinesPolyline", busLinesPolyline);
     // ----
     // À suppr: exemple d'affichage de route
     const latlngsTest = [

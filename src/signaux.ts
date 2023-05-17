@@ -253,13 +253,22 @@ export function fetchPolyline(lnglat: number[][]) {
     const toAdd = elt[0] + "," + elt[1] + ";";
     urlLnglat += toAdd;
   }
+  urlLnglat = urlLnglat.slice(0, -1);
   fetch(
     "https://osrm.fly.dev/route/v1/car/" +
       urlLnglat +
       "?geometries=geojson&overview=full"
-  ).then((res) => {
-    return res.json();
-  });
+  )
+    .then((res) => {
+      // console.log(res.json());
+      return res.json();
+      // setPolylineRoute(res.json());
+    })
+    .then((res) =>
+      setPolylineRoute(res.routes[0].geometry.coordinates).map((elt) =>
+        elt.sort()
+      )
+    );
 }
 
 export const [getLeafletMap, setLeafletMap] = createSignal<L.Map>();
@@ -273,3 +282,5 @@ export const [stopIds, setStopIds] = createSignal<number[]>([]);
 export const [timelineStopNames, setTimelineStopNames] = createSignal<string[]>(
   []
 );
+
+export const [polylineRoute, setPolylineRoute] = createSignal();
