@@ -152,5 +152,4 @@ export type StopLineItem = {
   nbEtablissement: number;
   lon: Float32Array;
   lat: Float32Array;
-  // setDataToEdit: ;
 };
