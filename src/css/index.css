@@ -428,6 +428,7 @@ code {
         border: 1.5px solid rgba(128, 128, 128, 0.649);
         border-radius: 5px;
         height: 45px;
+        padding-left: 10px;
       }
     }
 
