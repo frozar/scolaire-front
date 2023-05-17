@@ -42,8 +42,6 @@ export default function () {
   });
 
   createEffect(() => {
-    console.log("effect on selected");
-
     if (selected().length == stop.length) {
       refCheckbox.checked = true;
     } else {
@@ -53,7 +51,6 @@ export default function () {
 
   createEffect(() => {
     refCheckbox?.addEventListener("change", () => {
-      console.log("ok1");
       setIsChecked(!isChecked());
     });
   });
