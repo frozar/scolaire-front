@@ -1,5 +1,6 @@
 @import "./menu.css";
 @import "./timeline.css";
+@import "./var.css";
 
 @tailwind base;
 @tailwind components;
@@ -386,15 +387,63 @@ code {
   }
 }
 
-#stop-modal {
+#edit-stop {
   width: 400px;
   height: calc(100vh - 60px);
   position: absolute;
-  background-color: red;
+  background-color: #ffffff;
   right: -400px;
   transition-duration: 400ms;
   padding: 10px;
+  border-left: 1px solid rgb(26, 26, 26);
   &.active {
     transform: translateX(-400px);
+  }
+
+  > header {
+    > h1 {
+      @apply text-2xl;
+    }
+
+    > button {
+      width: 30px;
+      height: 30px;
+      color: var(--green-base);
+      > svg {
+        @apply w-full h-full;
+      }
+    }
+  }
+
+  > section {
+    > h3 {
+      @apply text-xl;
+    }
+    > div {
+      > label {
+        color: #062f3f;
+      }
+
+      > input {
+        border: 1.5px solid rgba(128, 128, 128, 0.649);
+        border-radius: 5px;
+        height: 45px;
+      }
+    }
+
+    > div.action {
+      display: flex;
+      gap: 1em;
+      > button {
+        padding: 10px 20px;
+        border-radius: 5px;
+        color: white;
+        background-color: var(--red-base);
+      }
+
+      > button.green {
+        background-color: var(--green-base);
+      }
+    }
   }
 }
