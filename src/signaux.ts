@@ -245,12 +245,7 @@ export function fetchBusLines() {
       console.log(err);
     });
 }
-
-export function fetchPolyline(
-  lnglat: number[][],
-  color: string,
-  id_bus_line: number
-) {
+export function fetchPolyline(lnglat: number[][], busLine: LineType) {
   // formater données pour l'url
   let urlLnglat = "";
   for (const elt of lnglat) {
@@ -264,16 +259,15 @@ export function fetchPolyline(
       "?geometries=geojson&overview=full"
   )
     .then((res) => {
-      // console.log(res.json());
       return res.json();
-      // setPolylineRoute(res.json());
     })
     .then((res) =>
-      setPolylineRoute([
-        res.routes[0].geometry.coordinates.map((elt) => elt.sort()),
-        color,
-        id_bus_line,
-      ])
+      setPolylineRoute({
+        latlngs: res.routes[0].geometry.coordinates.map((elt: number[]) =>
+          elt.reverse()
+        ),
+        busLine: busLine,
+      })
     );
 }
 
@@ -288,5 +282,10 @@ export const [stopIds, setStopIds] = createSignal<number[]>([]);
 export const [timelineStopNames, setTimelineStopNames] = createSignal<string[]>(
   []
 );
+type PolylineRouteType = {
+  latlngs: number[][];
+  busLine: LineType;
+};
 
-export const [polylineRoute, setPolylineRoute] = createSignal();
+export const [polylineRoute, setPolylineRoute] =
+  createSignal<PolylineRouteType>();

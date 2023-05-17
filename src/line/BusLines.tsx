@@ -28,19 +28,24 @@ export default function () {
   });
 
   let busLinesPolyline: L.Polyline[] = [];
-  let busLinesDrawn: L.Polyline[] = [];
+  const busLinesDrawn: L.Polyline[] = [];
 
   createEffect(() => {
-    if (polylineRoute() != undefined) {
+    if (polylineRoute()) {
+      console.log("polylineRoute()", polylineRoute());
       let busLineDrawn: L.Polyline = new L.Polyline([]);
       const leafletMap = getLeafletMap();
-      // console.log("polylineRoute()", polylineRoute());
-      const color = polylineRoute()[1];
-      const polyL = polylineRoute()[0];
-      const idBusLine = polylineRoute()[2];
-      busLineDrawn = getBusLinePolyline(color, polyL).addTo(leafletMap);
-      // event
-      busLinePolylineAttachEvent(polyL, idBusLine, color, isInRemoveLineMode);
+
+      const busLine = polylineRoute()?.busLine;
+      const polyL = polylineRoute()?.latlngs;
+      busLineDrawn = getBusLinePolyline(busLine.color, polyL).addTo(leafletMap);
+      // events
+      busLinePolylineAttachEvent(
+        busLineDrawn,
+        busLine.id_bus_line,
+        busLine.color,
+        isInRemoveLineMode
+      );
       busLinesDrawn.push(busLineDrawn);
     }
   });
@@ -65,18 +70,18 @@ export default function () {
       if (!leafletMap) {
         return;
       }
+
+      // polyline "dessiné"
       if (isInReadMode()) {
         console.log("READ MODE");
         // Récup liste des latlng pour une busLine
         const latlng = getLatLngs(busLine.stops);
         const lnglat = latlng.slice().map((prev) => [prev.lng, prev.lat]);
-        // console.log("latlongs", latlng);
-        // console.log("lnglat", lnglat);
-
         // les utiliser dans la requête
-        fetchPolyline(lnglat, busLine.color, busLine.id_bus_line);
+        fetchPolyline(lnglat, busLine);
       }
 
+      // polyline vols d'oiseau
       if (isInAddLineMode() || isInRemoveLineMode()) {
         console.log("AddLine MODE");
         // trajet à vol d'oiseau
@@ -154,7 +159,7 @@ export default function () {
       [55.51868, -20.942226],
       [55.518419, -20.941714],
     ];
-    latlngsTest.map((elt) => elt.sort());
+    latlngsTest.map((elt) => elt.reverse());
     let polylineTest = new L.Polyline(latlngsTest, { color: "red" }).addTo(
       getLeafletMap()
     );
