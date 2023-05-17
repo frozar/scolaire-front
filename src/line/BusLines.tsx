@@ -37,7 +37,10 @@ export default function () {
       // console.log("polylineRoute()", polylineRoute());
       const color = polylineRoute()[1];
       const polyL = polylineRoute()[0];
+      const idBusLine = polylineRoute()[2];
       busLineDrawn = getBusLinePolyline(color, polyL).addTo(leafletMap);
+      // event
+      busLinePolylineAttachEvent(polyL, idBusLine, color, isInRemoveLineMode);
       busLinesDrawn.push(busLineDrawn);
     }
   });
@@ -71,7 +74,7 @@ export default function () {
         // console.log("lnglat", lnglat);
 
         // les utiliser dans la requête
-        fetchPolyline(lnglat, busLine.color);
+        fetchPolyline(lnglat, busLine.color, busLine.id_bus_line);
       }
 
       if (isInAddLineMode() || isInRemoveLineMode()) {
