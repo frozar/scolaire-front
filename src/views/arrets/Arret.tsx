@@ -22,7 +22,7 @@ export default function () {
     <div class="flex w-full">
       <div id="arrets-board">
         <header>
-          <h1>Gérer les arrets</h1>
+          <h1>Gérer les arrêts</h1>
           <div id="filters">
             <div class="left">
               <select>
@@ -76,7 +76,7 @@ export default function () {
                     Nom
                   </th>
                   <th scope="col">Nombre d'élèves</th>
-                  <th scope="col">Nombre d’établissements desservi</th>
+                  <th scope="col">Nombre d’établissements desservis</th>
                   <th scope="col">Nombre de lignes</th>
                   <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-0">
                     <span class="">Actions</span>
