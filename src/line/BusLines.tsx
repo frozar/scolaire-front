@@ -29,7 +29,13 @@ export default function () {
   let busLinesPolyline: L.Polyline[] = [];
 
   createEffect(() => {
-    console.log(polylineRoute());
+    if (polylineRoute() != undefined) {
+      const leafletMap = getLeafletMap();
+      console.log("polylineRoute()", polylineRoute());
+      const color = polylineRoute()[1];
+      const polyL = polylineRoute()[0];
+      getBusLinePolyline(color, polyL).addTo(leafletMap);
+    }
   });
   createEffect(() => {
     // console.log("busLines()", busLines());
@@ -40,13 +46,9 @@ export default function () {
     }
     busLinesPolyline = [];
 
-    // x Récup liste des latlng
-    // les utiliser dans la requête
-    // utiliser réponse de la requête pour construire new L.Polyline
-    // addTo(leafletMap())
-
     for (const busLine of busLines()) {
       let busLinePolyline: L.Polyline = new L.Polyline([]);
+      console.log("busLine", busLine);
 
       // ?
       const leafletMap = getLeafletMap();
@@ -60,8 +62,9 @@ export default function () {
       // console.log("lnglat", lnglat);
 
       // les utiliser dans la requête
-      console.log("url long lat", fetchPolyline(lnglat));
+      fetchPolyline(lnglat, busLine.color);
 
+      // trajet à vol d'oiseau
       busLinePolyline = getBusLinePolyline(
         busLine.color,
         getLatLngs(busLine.stops)

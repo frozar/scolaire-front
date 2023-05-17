@@ -246,7 +246,7 @@ export function fetchBusLines() {
     });
 }
 
-export function fetchPolyline(lnglat: number[][]) {
+export function fetchPolyline(lnglat: number[][], color: string) {
   // formater données pour l'url
   let urlLnglat = "";
   for (const elt of lnglat) {
@@ -265,9 +265,10 @@ export function fetchPolyline(lnglat: number[][]) {
       // setPolylineRoute(res.json());
     })
     .then((res) =>
-      setPolylineRoute(res.routes[0].geometry.coordinates).map((elt) =>
-        elt.sort()
-      )
+      setPolylineRoute([
+        res.routes[0].geometry.coordinates.map((elt) => elt.sort()),
+        color,
+      ])
     );
 }
 
