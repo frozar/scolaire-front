@@ -448,3 +448,8 @@ code {
     }
   }
 }
+
+.fill-red {
+  background-color: var(--red-base);
+  color: white;
+}
