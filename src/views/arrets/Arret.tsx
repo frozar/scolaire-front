@@ -16,18 +16,6 @@ export default function () {
       nb_etablissement: 3,
       nb_line: 3,
     },
-    {
-      name: "Arret du stade",
-      quantity: 74,
-      nb_etablissement: 3,
-      nb_line: 3,
-    },
-    {
-      name: "Arret du stade",
-      quantity: 74,
-      nb_etablissement: 3,
-      nb_line: 3,
-    },
   ]);
 
   return (
