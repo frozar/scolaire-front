@@ -19,37 +19,50 @@ export const removeSelected = (item: StopItemType) => {
 };
 
 export const [isChecked, setIsChecked] = createSignal(false);
-
-function StopLineBoard(props: { item: StopLineItem }) {
-  const item = props.item;
-  return (
-    <tr>
-      <td class="flex items-center">
-        <input
-          id="comments"
-          aria-describedby="comments-description"
-          name="comments"
-          type="checkbox"
-          class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600 relative right-2"
-        />
-        {item.name}
-      </td>
-      <td>{item.quantity}</td>
-      <td>{item.nbEtablissement}</td>
-      <td>{item.nbLine}</td>
-      <td>
-        <a href="#" class="text-[#0CC683] mr-2">
-          Editer
-        </a>
-
-        <a href="#" class="text-[#F44434]">
-          Supprimer
-        </a>
-      </td>
-    </tr>
-  );
-}
 export default function () {
+  const [stop, setStop] = createStore<StopLineItem[]>([]);
+  onMount(() => {
+    fetch(
+      import.meta.env.VITE_BACK_URL + "/ramassages_associated_bus_lines_info",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((res) => {
+        return res.json();
+      })
+      .then(
+        (
+          res: {
+            id: number;
+            name: string;
+            quantity: number;
+            nb_etablissement: number;
+            nb_line: number;
+            lon: number;
+            lat: number;
+          }[]
+        ) => {
+          setStop(
+            res.map((elt) => {
+              return {
+                id: elt.id,
+                name: elt.name,
+                quantity: elt.quantity,
+                nbLine: elt.nb_line,
+                nbEtablissement: elt.nb_etablissement,
+                lon: elt.lon,
+                lat: elt.lat,
+              };
+            })
+          );
+        }
+      );
+  });
+
   const [refSelect, setRefSelect] = createSignal<HTMLSelectElement>();
   let refCheckbox!: HTMLInputElement;
 
