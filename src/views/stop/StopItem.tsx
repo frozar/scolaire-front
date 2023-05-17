@@ -3,6 +3,7 @@ import { StopItemType } from "../../type";
 import { setDataToEdit, toggleEditStop } from "./EditStop";
 import { addSelected, removeSelected, selected, setStop } from "./Stop";
 import { isChecked } from "./Stop";
+import { setRemoveRamassageConfirmation } from "../../signaux";
 
 export default function (props: { item: StopItemType }) {
   let checkbox!: HTMLInputElement;
@@ -11,7 +12,12 @@ export default function (props: { item: StopItemType }) {
     setDataToEdit({ ...item });
     toggleEditStop();
   };
-
+  const handleClickDelete = () => {
+    setRemoveRamassageConfirmation({
+      displayed: true,
+      item: item,
+    });
+  };
   onMount(() => {
     checkbox?.addEventListener("change", () => {
       setStop(
@@ -66,7 +72,7 @@ export default function (props: { item: StopItemType }) {
           Editer
         </a>
 
-        <a href="#" class="text-[#F44434]">
+        <a onClick={handleClickDelete} href="#" class="text-[#F44434]">
           Supprimer
         </a>
       </td>

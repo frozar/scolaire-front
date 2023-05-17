@@ -14,7 +14,11 @@ import {
   ReturnMessageType,
   clearConfirmationType,
   InfoPanelEnum,
+<<<<<<< HEAD
   PolylineRouteType,
+=======
+  removeRamassageConfirmationType,
+>>>>>>> b1ea404 (WIP)
 } from "./type";
 import { deepCopy } from "./utils";
 import { User } from "@auth0/auth0-spa-js";
@@ -72,6 +76,12 @@ export const [getRemoveConfirmation, setRemoveConfirmation] = createSignal({
   id_bus_line: null,
 }) as Signal<removeConfirmationType>;
 
+export const [getRemoveRamassageConfirmation, setRemoveRamassageConfirmation] =
+  createSignal({
+    displayed: false,
+    item: null,
+  }) as Signal<removeRamassageConfirmationType>;
+
 export const [getClearConfirmation, setClearConfirmation] = createSignal({
   displayed: false,
 }) as Signal<clearConfirmationType>;
@@ -117,6 +127,12 @@ export function closeRemoveConfirmationBox() {
   setRemoveConfirmation({
     displayed: false,
     id_bus_line: null,
+  });
+}
+export function closeRemoveRamassageConfirmationBox() {
+  setRemoveRamassageConfirmation({
+    displayed: false,
+    item: null,
   });
 }
 

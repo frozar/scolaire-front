@@ -35,6 +35,21 @@ export async function clear() {
     });
 }
 
+export async function deleteRamassage(idToRemove: number) {
+  return getToken().then((token) => {
+    fetch(import.meta.env.VITE_BACK_URL + "/point_ramassage", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        id: idToRemove,
+      }),
+    });
+  });
+}
+
 export async function addBusLine(idsPoint: number[]) {
   return getToken()
     .then((token) => {

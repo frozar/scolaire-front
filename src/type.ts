@@ -90,6 +90,11 @@ export type removeConfirmationType = {
   id_bus_line: number | null;
 };
 
+export type removeRamassageConfirmationType = {
+  displayed: boolean;
+  item: StopLineItem | null;
+};
+
 export type clearConfirmationType = {
   displayed: boolean;
 };
