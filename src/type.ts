@@ -150,6 +150,6 @@ export type StopLineItem = {
   quantity: number;
   nbLine: number;
   nbEtablissement: number;
-  lon: Float32Array;
-  lat: Float32Array;
+  lon: number;
+  lat: number;
 };
