@@ -27,12 +27,12 @@ export default function (displayText: boolean) {
     //   Logo: LateralMenuVoirieLogo,
     //   displayText: displayText,
     // },
-    // {
-    //   title: "Établissements",
-    //   menuItem: "etablissements",
-    //   Logo: LateralMenuEtablissementLogo,
-    //   displayText: displayText,
-    // },
+    {
+      title: "Établissements",
+      menuItem: "etablissements",
+      Logo: LateralMenuEtablissementLogo,
+      displayText: displayText,
+    },
     {
       title: "Arrêts",
       menuItem: "arrets",
