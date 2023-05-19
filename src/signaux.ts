@@ -223,7 +223,7 @@ export function fetchBusLines() {
               }[];
             }[]
           ) => {
-            let lines: LineType[] = res.map((line) => {
+            const lines: LineType[] = res.map((line) => {
               const color = line.color ? "#" + line.color : randColor();
               const stopsWithNatureEnum = line.stops.map(
                 (stop) =>
