@@ -262,14 +262,12 @@ export function fetchPolyline(lnglat: number[][], busLine: LineType) {
       return res.json();
     })
     .then((res) =>
-      setPolylineRoute([
-        {
-          latlngs: res.routes[0].geometry.coordinates.map((elt: number[]) =>
-            elt.reverse()
-          ),
-          busLine: busLine,
-        },
-      ])
+      setPolylineRoute({
+        latlngs: res.routes[0].geometry.coordinates.map((elt: number[]) =>
+          elt.reverse()
+        ),
+        busLine: busLine,
+      })
     );
 }
 
@@ -290,6 +288,5 @@ type PolylineRouteType = {
   busLine: LineType;
 };
 
-export const [polylineRoute, setPolylineRoute] = createSignal<
-  PolylineRouteType[]
->([]);
+export const [polylineRoute, setPolylineRoute] =
+  createSignal<PolylineRouteType>();
