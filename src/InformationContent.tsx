@@ -30,9 +30,9 @@ import {
   setTimelineStopNames,
 } from "./signaux";
 import { useStateAction } from "./StateAction";
-const [, { isInAddLineMode, isInReadMode }] = useStateAction();
 import { getToken } from "./auth/auth";
-
+const [, { isInAddLineMode, isInReadMode, resetLineUnderConstruction }] =
+  useStateAction();
 type PointToDisplayType = {
   id_point: number;
   name: string;
@@ -121,9 +121,12 @@ export default function () {
     }
   });
   createEffect(() => {
-    if (isInReadMode()) {
+    if (!isInAddLineMode()) {
+      resetLineUnderConstruction();
       setInfoToDisplay(InfoPanelEnum.nothing);
       setBusLineSelected(-1);
+    }
+    if (isInReadMode()) {
       setTimelineStopNames([]);
       setStopIds([]);
     }
