@@ -158,3 +158,13 @@ export type StopItemType = {
   lon: number;
   lat: number;
 };
+
+export type EtablissementItemType = {
+  id: number;
+  name: string;
+  quantity: number;
+  nbLine: number;
+  lon: number;
+  lat: number;
+  selected: boolean;
+};
