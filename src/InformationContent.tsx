@@ -31,6 +31,8 @@ import {
 } from "./signaux";
 import { useStateAction } from "./StateAction";
 const [, { isInAddLineMode, isInReadMode }] = useStateAction();
+import { auth0Client } from "./auth/auth";
+
 type PointToDisplayType = {
   id_point: number;
   name: string;
@@ -179,8 +181,21 @@ export default function () {
         id +
         "&nature=" +
         nature;
-
-      return (await fetch(URL)).json();
+      auth0Client
+        .getTokenSilently()
+        .then(async (token) => {
+          return fetch(URL, {
+            headers: {
+              "Content-Type": "application/json",
+              authorization: `Bearer ${token}`,
+            },
+          }).then((res) => {
+            return res.json();
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   };
 

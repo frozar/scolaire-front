@@ -1,3 +1,4 @@
+import { auth0Client } from "../../../../auth/auth";
 import {
   displayDownloadErrorMessage,
   displayDownloadSuccessMessage,
@@ -17,25 +18,38 @@ function download(fileame: string, blob: Blob) {
 
 export function exportCsv() {
   displayOnGoingDownloadMessage();
-  fetch(import.meta.env.VITE_BACK_URL + "/export/input")
-    .then((response) => {
-      if (!response.ok) {
-        displayDownloadErrorMessage();
-      } else {
-        return response.blob();
-      }
-    })
-    .then((blob: Blob | undefined) => {
-      if (!blob) {
-        return;
-      }
+  auth0Client
+    .getTokenSilently()
+    .then((token) => {
+      fetch(import.meta.env.VITE_BACK_URL + "/export/input", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((response) => {
+          if (!response.ok) {
+            displayDownloadErrorMessage();
+          } else {
+            return response.blob();
+          }
+        })
+        .then((blob: Blob | undefined) => {
+          if (!blob) {
+            return;
+          }
 
-      const { year, month, day, hour, minute } = getExportDate();
-      const fileName = `${year}-${month}-${day}_${hour}-${minute}_input.zip`;
-      download(fileName, blob);
-      displayDownloadSuccessMessage();
+          const { year, month, day, hour, minute } = getExportDate();
+          const fileName = `${year}-${month}-${day}_${hour}-${minute}_input.zip`;
+          download(fileName, blob);
+          displayDownloadSuccessMessage();
+        })
+        .catch(() => {
+          displayDownloadErrorMessage();
+        });
     })
-    .catch(() => {
+    .catch((err) => {
+      console.log(err);
       displayDownloadErrorMessage();
     });
 }
