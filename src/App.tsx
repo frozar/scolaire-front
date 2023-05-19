@@ -19,7 +19,7 @@ import { useStateGui } from "./StateGui";
 import ClearConfirmation from "./userInformation/ClearConfirmation";
 import GeneratorDialogueBox from "./userInformation/GeneratorDialogueBox";
 import Arret from "./views/stop/Stop";
-
+import Etablissement from "./views/etablissement/Etablissement";
 const [
   ,
   {
@@ -170,6 +170,10 @@ export default () => {
 
           <Match when={getSelectedMenu() == "arrets"}>
             <Arret />
+          </Match>
+
+          <Match when={getSelectedMenu() == "etablissements"}>
+            <Etablissement />
           </Match>
         </Switch>
 
