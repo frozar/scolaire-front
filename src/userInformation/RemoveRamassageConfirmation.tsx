@@ -11,7 +11,7 @@ import {
 import { deleteBusLine, deleteRamassage } from "../request";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { assertIsNode } from "../utils";
-import { displayArret } from "../views/arrets/Arret";
+import { displayArret } from "../views/stop/Stop";
 
 declare module "solid-js" {
   namespace JSX {
