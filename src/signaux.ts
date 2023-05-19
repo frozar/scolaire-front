@@ -252,7 +252,7 @@ export function fetchPolyline(lnglat: number[][], busLine: LineType) {
   }
   urlLnglat = urlLnglat.slice(0, -1);
   fetch(
-    "https://osrm.fly.dev/route/v1/car/" +
+    import.meta.env.VITE_API_OSRM_URL +
       urlLnglat +
       "?geometries=geojson&overview=full"
   )
