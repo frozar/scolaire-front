@@ -246,11 +246,9 @@ export function fetchBusLines() {
     });
 }
 export function fetchPolyline(lnglat: number[][], busLine: LineType) {
-  // formater données pour l'url
   let urlLnglat = "";
   for (const elt of lnglat) {
-    const toAdd = elt[0] + "," + elt[1] + ";";
-    urlLnglat += toAdd;
+    urlLnglat += elt[0] + "," + elt[1] + ";";
   }
   urlLnglat = urlLnglat.slice(0, -1);
   fetch(
@@ -271,6 +269,11 @@ export function fetchPolyline(lnglat: number[][], busLine: LineType) {
     );
 }
 
+type PolylineRouteType = {
+  latlngs: L.LatLng[];
+  busLine: LineType;
+};
+
 export const [getLeafletMap, setLeafletMap] = createSignal<L.Map>();
 
 export const [busLineSelected, setBusLineSelected] = createSignal<number>(-1);
@@ -282,11 +285,6 @@ export const [stopIds, setStopIds] = createSignal<number[]>([]);
 export const [timelineStopNames, setTimelineStopNames] = createSignal<string[]>(
   []
 );
-type PolylineRouteType = {
-  // latlngs: number[][];
-  latlngs: L.LatLng[];
-  busLine: LineType;
-};
 
 export const [polylineRoute, setPolylineRoute] =
   createSignal<PolylineRouteType>();

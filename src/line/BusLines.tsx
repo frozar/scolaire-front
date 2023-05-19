@@ -31,8 +31,8 @@ export default function () {
   const busLinesDrawn: L.Polyline[] = [];
 
   createEffect(() => {
-    const polylineRouteTest = polylineRoute();
-    if (polylineRouteTest) {
+    const drawnPolylineRoute = polylineRoute();
+    if (drawnPolylineRoute) {
       let busLineDrawn: L.Polyline = new L.Polyline([]);
 
       const leafletMap = getLeafletMap();
@@ -40,10 +40,11 @@ export default function () {
         return;
       }
 
-      const busLine = polylineRouteTest.busLine;
-      const polyL = polylineRouteTest.latlngs;
-      busLineDrawn = getBusLinePolyline(busLine.color, polyL).addTo(leafletMap);
-      // events
+      const busLine = drawnPolylineRoute.busLine;
+      const polyline = drawnPolylineRoute.latlngs;
+      busLineDrawn = getBusLinePolyline(busLine.color, polyline).addTo(
+        leafletMap
+      );
       busLinePolylineAttachEvent(
         busLineDrawn,
         busLine.id_bus_line,
@@ -51,37 +52,29 @@ export default function () {
         isInRemoveLineMode
       );
       busLinesDrawn.push(busLineDrawn);
-      // console.log("busLinesDrawn", busLinesDrawn);
     }
   });
   createEffect(() => {
     // Anytime busLines() change the bus lines are redrawn
     busLinesPolyline.map((busLinePolyline) => busLinePolyline.remove());
     busLinesDrawn.map((line) => line.remove());
-    // console.log("busLinesPolyline", busLinesPolyline);
-    // console.log("busLinesDrawn", busLinesDrawn);
 
     for (const busLine of busLines()) {
-      let busLinePolyline: L.Polyline = new L.Polyline([]);
-
-      const leafletMap = getLeafletMap();
-      if (!leafletMap) {
-        return;
-      }
-
-      // polyline "dessiné"
+      // drawn routes
       if (isInReadMode()) {
-        console.log("READ MODE");
-        // Récup liste des latlng pour une busLine
         const latlng = getLatLngs(busLine.stops);
         const lnglat = latlng.slice().map((prev) => [prev.lng, prev.lat]);
-        // les utiliser dans la requête
         fetchPolyline(lnglat, busLine);
       }
 
-      // polyline vols d'oiseau
+      // straight routes
       if (isInAddLineMode() || isInRemoveLineMode()) {
-        console.log("AddLine MODE or remove line mode");
+        let busLinePolyline: L.Polyline = new L.Polyline([]);
+
+        const leafletMap = getLeafletMap();
+        if (!leafletMap) {
+          return;
+        }
         busLinePolyline = getBusLinePolyline(
           busLine.color,
           getLatLngs(busLine.stops)
@@ -96,10 +89,7 @@ export default function () {
 
         busLinesPolyline.push(busLinePolyline);
       }
-
-      // console.log("busLinePolyline", busLinePolyline);
     }
-    // console.log("busLinesPolyline", busLinesPolyline);
   });
 
   onCleanup(() => {
