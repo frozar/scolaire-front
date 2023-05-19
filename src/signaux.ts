@@ -16,6 +16,8 @@ import {
   InfoPanelEnum,
 } from "./type";
 import { deepCopy } from "./utils";
+import { User } from "@auth0/auth0-spa-js";
+import { auth0Client } from "./auth/auth";
 
 const [getDisplayedSpinningWheel, setDisplayedSpinningWheel] =
   createSignal(false);
@@ -58,6 +60,11 @@ export const [points, setPoints] = createSignal<
 export const [getUserInformations, setUserInformations] = createSignal(
   []
 ) as Signal<userInformationType[]>;
+
+export const [getAuthtenticatedUser, setAuthtenticatedUser] =
+  createSignal<User>();
+
+export const [authenticated, setAuthenticated] = createSignal(false);
 
 export const [getRemoveConfirmation, setRemoveConfirmation] = createSignal({
   displayed: false,
@@ -193,39 +200,51 @@ function randColor() {
 }
 
 export function fetchBusLines() {
-  fetch(import.meta.env.VITE_BACK_URL + "/bus_lines")
-    .then((res) => {
-      return res.json();
+  auth0Client
+    .getTokenSilently()
+    .then((token) => {
+      fetch(import.meta.env.VITE_BACK_URL + "/bus_lines", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((res) => {
+          return res.json();
+        })
+        .then(
+          (
+            res: {
+              id_bus_line: number;
+              color: string | null;
+              stops: {
+                id: number;
+                id_point: number;
+                nature: string;
+              }[];
+            }[]
+          ) => {
+            let lines: LineType[] = res.map((line) => {
+              const color = line.color ? "#" + line.color : randColor();
+              const stopsWithNatureEnum = line.stops.map(
+                (stop) =>
+                  ({
+                    ...stop,
+                    nature:
+                      stop["nature"] === "ramassage"
+                        ? NatureEnum.ramassage
+                        : NatureEnum.etablissement,
+                  } as PointIdentityType)
+              );
+              return { ...line, color, stops: stopsWithNatureEnum };
+            });
+            setBusLines(lines);
+          }
+        );
     })
-    .then(
-      (
-        res: {
-          id_bus_line: number;
-          color: string | null;
-          stops: {
-            id: number;
-            id_point: number;
-            nature: string;
-          }[];
-        }[]
-      ) => {
-        const lines: LineType[] = res.map((line) => {
-          const color = line.color ? "#" + line.color : randColor();
-          const stopsWithNatureEnum = line.stops.map(
-            (stop) =>
-              ({
-                ...stop,
-                nature:
-                  stop["nature"] === "ramassage"
-                    ? NatureEnum.ramassage
-                    : NatureEnum.etablissement,
-              } as PointIdentityType)
-          );
-          return { ...line, color, stops: stopsWithNatureEnum };
-        });
-        setBusLines(lines);
-      }
-    );
+    .catch((err) => {
+      console.log(err);
+    });
 }
 
 export const [getLeafletMap, setLeafletMap] = createSignal<L.Map>();

@@ -19,6 +19,7 @@ import {
 import { ReturnMessageType } from "../../type";
 import ControlMapMenu from "./rightMapMenu/RightMapMenu";
 import { InformationBoard } from "./rightMapMenu/InformationBoard";
+import { auth0Client } from "../../auth/auth";
 
 const [, { isInAddLineMode }] = useStateAction();
 
@@ -76,33 +77,43 @@ export default function () {
         for (let i = 0, file; (file = files[i]); i++) {
           const formData = new FormData();
           formData.append("file", file, file.name);
-          fetch(import.meta.env.VITE_BACK_URL + "/uploadfile/", {
-            method: "POST",
-            body: formData,
-          })
-            .then((res) => {
-              return res.json();
+          auth0Client
+            .getTokenSilently()
+            .then((token) => {
+              fetch(import.meta.env.VITE_BACK_URL + "/uploadfile/", {
+                method: "POST",
+                headers: {
+                  authorization: `Bearer ${token}`,
+                },
+                body: formData,
+              })
+                .then((res) => {
+                  return res.json();
+                })
+                .then((res: ReturnMessageType) => {
+                  setDragAndDropConfirmation({
+                    displayed: true,
+                    message: res.message,
+                    metrics: {
+                      total: res.metrics.total,
+                      success: res.metrics.success,
+                    },
+                    error: {
+                      etablissement: res.error.etablissement,
+                      ramassage: res.error.ramassage,
+                    },
+                    success: {
+                      etablissement: res.success.etablissement,
+                      ramassage: res.success.ramassage,
+                    },
+                  });
+                  setPoints([]);
+                  fetchPointsRamassage();
+                  disableSpinningWheel();
+                });
             })
-            .then((res: ReturnMessageType) => {
-              setDragAndDropConfirmation({
-                displayed: true,
-                message: res.message,
-                metrics: {
-                  total: res.metrics.total,
-                  success: res.metrics.success,
-                },
-                error: {
-                  etablissement: res.error.etablissement,
-                  ramassage: res.error.ramassage,
-                },
-                success: {
-                  etablissement: res.success.etablissement,
-                  ramassage: res.success.ramassage,
-                },
-              });
-              setPoints([]);
-              fetchPointsRamassage();
-              disableSpinningWheel();
+            .catch((err) => {
+              console.log(err);
             });
         }
         mapDragDropDiv.classList.remove("highlight");

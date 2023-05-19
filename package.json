@@ -16,6 +16,7 @@
     "@antv/l7": "^2.11.4",
     "@antv/l7-leaflet": "^0.0.3",
     "@antv/l7-maps": "^2.11.4",
+    "@auth0/auth0-spa-js": "^2.0.4",
     "@tailwindcss/forms": "^0.5.3",
     "@types/file-saver": "^2.0.5",
     "@types/geojson": "^7946.0.10",
