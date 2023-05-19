@@ -163,3 +163,13 @@ export type PolylineRouteType = {
   latlngs: L.LatLng[];
   busLine: LineType;
 };
+
+export type EtablissementItemType = {
+  id: number;
+  name: string;
+  quantity: number;
+  nbLine: number;
+  lon: number;
+  lat: number;
+  selected: boolean;
+};

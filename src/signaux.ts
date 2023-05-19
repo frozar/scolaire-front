@@ -14,11 +14,8 @@ import {
   ReturnMessageType,
   clearConfirmationType,
   InfoPanelEnum,
-<<<<<<< HEAD
   PolylineRouteType,
-=======
   removeRamassageConfirmationType,
->>>>>>> b1ea404 (WIP)
 } from "./type";
 import { deepCopy } from "./utils";
 import { User } from "@auth0/auth0-spa-js";
