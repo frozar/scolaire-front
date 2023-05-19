@@ -3,11 +3,16 @@ import { AiOutlineSearch } from "solid-icons/ai";
 import EditStop, { setDataToEdit, toggleEditStop } from "./EditStop";
 import { For, createEffect, createSignal, onMount } from "solid-js";
 import StopItems from "./StopItem";
-import { StopItemType } from "../../type";
+import { ReturnMessageType, StopItemType } from "../../type";
 import { displayDownloadErrorMessage } from "../../userInformation/utils";
 import { getExportDate } from "../graphicage/rightMapMenu/export/export";
 import { download } from "../graphicage/rightMapMenu/export/csvExport";
 import RemoveRamassageConfirmation from "../../userInformation/RemoveRamassageConfirmation";
+import {
+  enableSpinningWheel,
+  setDragAndDropConfirmation,
+  disableSpinningWheel,
+} from "../../signaux";
 
 export const [selected, setSelected] = createSignal<StopItemType[]>([]);
 export const [stop, setStop] = createStore<StopItemType[]>([]);
@@ -100,11 +105,99 @@ export default function () {
       displayArret();
     });
   });
+  let DragDropDiv: HTMLDivElement;
+  let etablissementDiv: HTMLDivElement;
+  let DragDropChild: HTMLDivElement;
 
+  onMount(() => {
+    etablissementDiv.addEventListener(
+      "dragenter",
+      (e) => {
+        e.preventDefault();
+        DragDropDiv.classList.add("highlight");
+        DragDropChild.classList.replace("invisible_child", "child");
+      },
+      false
+    );
+    DragDropDiv.addEventListener(
+      "dragleave",
+      () => {
+        DragDropDiv.classList.remove("highlight");
+        DragDropChild.classList.replace("child", "invisible_child");
+      },
+      false
+    );
+    DragDropDiv.addEventListener(
+      "dragend",
+      () => {
+        DragDropDiv.classList.remove("highlight");
+
+        DragDropChild.classList.replace("child", "invisible_child");
+      },
+      false
+    );
+    DragDropDiv.addEventListener(
+      "dragover",
+      (e) => {
+        e.preventDefault();
+      },
+      false
+    );
+    DragDropDiv.addEventListener(
+      "drop",
+      (e) => {
+        e.preventDefault();
+        enableSpinningWheel();
+        const files = e.target.files || e.dataTransfer.files;
+
+        // process all File objects
+        for (let i = 0, file; (file = files[i]); i++) {
+          const formData = new FormData();
+          formData.append("file", file, file.name);
+          fetch(import.meta.env.VITE_BACK_URL + "/uploadfile/", {
+            method: "POST",
+            body: formData,
+          })
+            .then((res) => {
+              return res.json();
+            })
+            .then((res: ReturnMessageType) => {
+              setDragAndDropConfirmation({
+                displayed: true,
+                message: res.message,
+                metrics: {
+                  total: res.metrics.total,
+                  success: res.metrics.success,
+                },
+                error: {
+                  etablissement: res.error.etablissement,
+                  ramassage: res.error.ramassage,
+                },
+                success: {
+                  etablissement: res.success.etablissement,
+                  ramassage: res.success.ramassage,
+                },
+              });
+              displayArret();
+              disableSpinningWheel();
+            });
+        }
+        DragDropDiv.classList.remove("highlight");
+
+        DragDropChild.classList.replace("child", "invisible_child");
+      },
+      false
+    );
+  });
   return (
     <>
+      <div ref={DragDropDiv}>
+        <div ref={DragDropChild} class="invisible_child">
+          Drop your file here
+        </div>
+      </div>
       <RemoveRamassageConfirmation />
-      <div class="flex w-full">
+      <div class="flex w-full" ref={etablissementDiv}>
         <div id="arrets-board">
           <header>
             <h1>Gérer les arrêts</h1>
