@@ -64,7 +64,7 @@ export default function () {
             displayed: true,
             level: MessageLevelEnum.success,
             type: MessageTypeEnum.global,
-            content: "L'établissement a été crée",
+            content: "L'arrêt a été crée",
           });
           toggleEditStop();
         } else {
@@ -132,7 +132,7 @@ export default function () {
             displayed: true,
             level: MessageLevelEnum.success,
             type: MessageTypeEnum.global,
-            content: "L'établissement a été modifié",
+            content: "L'arrêt a été modifié",
           });
           toggleEditStop();
         } else {

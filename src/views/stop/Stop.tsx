@@ -11,6 +11,9 @@ import RemoveRamassageConfirmation from "../../userInformation/RemoveRamassageCo
 
 export const [selected, setSelected] = createSignal<StopItemType[]>([]);
 export const [stop, setStop] = createStore<StopItemType[]>([]);
+export const [displaystop, setDisplayStop] = createStore<StopItemType[]>([]);
+
+const [keyword, setkeyword] = createSignal<string>("");
 
 export const addSelected = (item: StopItemType) =>
   setSelected([...selected(), item]);
@@ -93,47 +96,8 @@ export default function () {
     refCheckbox?.addEventListener("change", () => {
       setIsChecked(!isChecked());
     });
-    const [stop, setStop] = createStore<StopItemType[]>([]);
     onMount(() => {
-      fetch(
-        import.meta.env.VITE_BACK_URL + "/ramassages_associated_bus_lines_info",
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      )
-        .then((res) => {
-          return res.json();
-        })
-        .then(
-          (
-            res: {
-              id: number;
-              name: string;
-              quantity: number;
-              nb_etablissement: number;
-              nb_line: number;
-              lon: number;
-              lat: number;
-            }[]
-          ) => {
-            setStop(
-              res.map((elt) => {
-                return {
-                  id: elt.id,
-                  name: elt.name,
-                  quantity: elt.quantity,
-                  nbLine: elt.nb_line,
-                  nbEtablissement: elt.nb_etablissement,
-                  lon: elt.lon,
-                  lat: elt.lat,
-                };
-              })
-            );
-          }
-        );
+      displayArret();
     });
   });
 
@@ -176,6 +140,9 @@ export default function () {
                     id="email"
                     class=""
                     placeholder="Recherche"
+                    onInput={(e) => {
+                      setkeyword(e.currentTarget.value);
+                    }}
                   />
                 </div>
               </div>
@@ -185,8 +152,7 @@ export default function () {
                   class="btn-arret-export-import"
                   onClick={() => {
                     fetch(
-                      import.meta.env.VITE_BACK_URL +
-                        "/export/etablissement_input"
+                      import.meta.env.VITE_BACK_URL + "/export/ramassages_input"
                     )
                       .then((response) => {
                         if (!response.ok) {
@@ -202,7 +168,7 @@ export default function () {
 
                         const { year, month, day, hour, minute } =
                           getExportDate();
-                        const fileName = `${year}-${month}-${day}_${hour}-${minute}_etablissements.csv`;
+                        const fileName = `${year}-${month}-${day}_${hour}-${minute}_ramassages.csv`;
                         download(fileName, blob);
                       })
                       .catch(() => {
@@ -241,7 +207,11 @@ export default function () {
                   </tr>
                 </thead>
                 <tbody>
-                  <For each={stop}>
+                  <For
+                    each={stop.filter((e) =>
+                      e.name.toUpperCase().includes(keyword().toUpperCase())
+                    )}
+                  >
                     {(fields) => <StopItems item={fields} />}
                   </For>
                 </tbody>

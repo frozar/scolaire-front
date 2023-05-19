@@ -1,8 +1,8 @@
 import { createStore } from "solid-js/store";
 import { AiOutlineSearch } from "solid-icons/ai";
-import EditStop, { setDataToEdit, toggleEditStop } from "./EtablissementStop";
+import EditStop, { setDataToEdit, toggleEditStop } from "./EditEtablissement";
 import { For, createEffect, createSignal, onMount } from "solid-js";
-import StopItems from "./EtablissementItem";
+import EtablissementItem from "./EtablissementItem";
 import { EtablissementItemType } from "../../type";
 import { displayDownloadErrorMessage } from "../../userInformation/utils";
 import { getExportDate } from "../graphicage/rightMapMenu/export/export";
@@ -12,8 +12,13 @@ import RemoveRamassageConfirmation from "../../userInformation/RemoveRamassageCo
 export const [selected, setSelected] = createSignal<EtablissementItemType[]>(
   []
 );
-export const [stop, setStop] = createStore<EtablissementItemType[]>([]);
 
+const [keyword, setkeyword] = createSignal<string>("");
+
+export const [stop, setStop] = createStore<EtablissementItemType[]>([]);
+export const [displaystop, setDisplayStop] = createStore<
+  EtablissementItemType[]
+>([]);
 export const addSelected = (item: EtablissementItemType) =>
   setSelected([...selected(), item]);
 
@@ -24,9 +29,9 @@ export const removeSelected = (item: EtablissementItemType) => {
 
 export const [isChecked, setIsChecked] = createSignal(false);
 
-export function displayArret() {
+export function displayEtablissement() {
   fetch(
-    import.meta.env.VITE_BACK_URL + "/ramassages_associated_bus_lines_info",
+    import.meta.env.VITE_BACK_URL + "/etablissements_associated_bus_lines_info",
     {
       method: "GET",
       headers: {
@@ -48,6 +53,7 @@ export function displayArret() {
           lat: number;
         }[]
       ) => {
+        console.log("res ", res);
         setStop(
           res
             .map((elt) => {
@@ -69,7 +75,7 @@ export function displayArret() {
 
 export default function () {
   createEffect(() => {
-    displayArret();
+    displayEtablissement();
   });
   const [refSelect, setRefSelect] = createSignal<HTMLSelectElement>();
   let refCheckbox!: HTMLInputElement;
@@ -94,48 +100,9 @@ export default function () {
     refCheckbox?.addEventListener("change", () => {
       setIsChecked(!isChecked());
     });
-    const [stop, setStop] = createStore<EtablissementItemType[]>([]);
+
     onMount(() => {
-      fetch(
-        import.meta.env.VITE_BACK_URL + "/ramassages_associated_bus_lines_info",
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      )
-        .then((res) => {
-          return res.json();
-        })
-        .then(
-          (
-            res: {
-              id: number;
-              name: string;
-              quantity: number;
-              nb_etablissement: number;
-              nb_line: number;
-              lon: number;
-              lat: number;
-            }[]
-          ) => {
-            setStop(
-              res.map((elt) => {
-                return {
-                  id: elt.id,
-                  name: elt.name,
-                  quantity: elt.quantity,
-                  nbLine: elt.nb_line,
-                  nbEtablissement: elt.nb_etablissement,
-                  lon: elt.lon,
-                  lat: elt.lat,
-                  selected: false,
-                };
-              })
-            );
-          }
-        );
+      displayEtablissement();
     });
   });
 
@@ -178,6 +145,9 @@ export default function () {
                     id="email"
                     class=""
                     placeholder="Recherche"
+                    onInput={(e) => {
+                      setkeyword(e.currentTarget.value);
+                    }}
                   />
                 </div>
               </div>
@@ -242,8 +212,14 @@ export default function () {
                   </tr>
                 </thead>
                 <tbody>
-                  <For each={stop}>
-                    {(fields) => <StopItems item={fields} />}
+                  <For
+                    each={stop.filter((e) =>
+                      e.name.toUpperCase().includes(keyword().toUpperCase())
+                    )}
+                  >
+                    {(fields) => {
+                      return <EtablissementItem item={fields} />;
+                    }}
                   </For>
                 </tbody>
               </table>
