@@ -144,7 +144,7 @@ export enum InfoPanelEnum {
   edition,
   nothing,
 }
-export type StopLineItem = {
+export type StopItemType = {
   id: number;
   name: string;
   quantity: number;

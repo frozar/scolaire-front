@@ -3,9 +3,9 @@ import { AiOutlineSearch } from "solid-icons/ai";
 import EditStop, { setDataToEdit, toggleEditStop } from "./EditStop";
 import { For, createEffect, createSignal } from "solid-js";
 import StopItems from "./StopItem";
-import { StopLineItem } from "../../type";
+import { StopItemType } from "../../type";
 
-export const [selected, setSelected] = createSignal<StopLineItem[]>([]);
+export const [selected, setSelected] = createSignal<StopItemType[]>([]);
 export const [stop, setStop] = createStore([
   {
     id: 1,
@@ -19,10 +19,10 @@ export const [stop, setStop] = createStore([
   },
 ]);
 
-export const addSelected = (item: StopLineItem) =>
+export const addSelected = (item: StopItemType) =>
   setSelected([...selected(), item]);
 
-export const removeSelected = (item: StopLineItem) => {
+export const removeSelected = (item: StopItemType) => {
   const items = selected().filter((stop) => stop.id != item.id);
   setSelected(items);
 };

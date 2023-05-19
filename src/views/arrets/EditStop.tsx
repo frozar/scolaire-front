@@ -1,11 +1,11 @@
 import { CgCloseO } from "solid-icons/cg";
 import { HiSolidLocationMarker } from "solid-icons/hi";
 import { Show, createSignal } from "solid-js";
-import { StopLineItem } from "../../type";
+import { StopItemType } from "../../type";
 
 export const [toggledEditStop, setToggledEditStop] = createSignal(false);
 export const toggleEditStop = () => setToggledEditStop(!toggledEditStop());
-export const [dataToEdit, setDataToEdit] = createSignal<StopLineItem>();
+export const [dataToEdit, setDataToEdit] = createSignal<StopItemType>();
 
 export default function () {
   const handleClickAddStop = () => {

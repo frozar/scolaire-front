@@ -1,10 +1,10 @@
 import { createEffect, createSignal, on, onMount } from "solid-js";
-import { StopLineItem } from "../../type";
+import { StopItemType } from "../../type";
 import { setDataToEdit, toggleEditStop } from "./EditStop";
 import { addSelected, removeSelected, selected, setStop } from "./Arret";
 import { isChecked } from "./Arret";
 
-export default function (props: StopLineItem) {
+export default function (props: StopItemType) {
   let checkbox!: HTMLInputElement;
 
   const handleClickEdit = () => {
