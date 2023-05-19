@@ -1,8 +1,8 @@
 import { createEffect, createSignal, on, onMount } from "solid-js";
 import { StopItemType } from "../../type";
 import { setDataToEdit, toggleEditStop } from "./EditStop";
-import { addSelected, removeSelected, selected, setStop } from "./Arret";
-import { isChecked } from "./Arret";
+import { addSelected, removeSelected, selected, setStop } from "./Stop";
+import { isChecked } from "./Stop";
 
 export default function (props: StopItemType) {
   let checkbox!: HTMLInputElement;
