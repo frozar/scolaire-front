@@ -9,8 +9,8 @@ import { getExportDate } from "../graphicage/rightMapMenu/export/export";
 import { download } from "../graphicage/rightMapMenu/export/csvExport";
 import RemoveRamassageConfirmation from "../../userInformation/RemoveRamassageConfirmation";
 
-export const [selected, setSelected] = createSignal<StopLineItem[]>([]);
-export const [stop, setStop] = createStore<StopLineItem[]>([]);
+export const [selected, setSelected] = createSignal<StopItemType[]>([]);
+export const [stop, setStop] = createStore<StopItemType[]>([]);
 
 export const addSelected = (item: StopItemType) =>
   setSelected([...selected(), item]);
@@ -93,7 +93,7 @@ export default function () {
     refCheckbox?.addEventListener("change", () => {
       setIsChecked(!isChecked());
     });
-    const [stop, setStop] = createStore<StopLineItem[]>([]);
+    const [stop, setStop] = createStore<StopItemType[]>([]);
     onMount(() => {
       fetch(
         import.meta.env.VITE_BACK_URL + "/ramassages_associated_bus_lines_info",
