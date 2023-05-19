@@ -31,14 +31,24 @@ export default function () {
   const busLinesDrawn: L.Polyline[] = [];
 
   createEffect(() => {
-    if (polylineRoute()) {
+    if (polylineRoute().length > 0) {
       console.log("polylineRoute()", polylineRoute());
       let busLineDrawn: L.Polyline = new L.Polyline([]);
       const leafletMap = getLeafletMap();
 
-      const busLine = polylineRoute()?.busLine;
-      const polyL = polylineRoute()?.latlngs;
+      // const busLine = polylineRoute()?.busLine;
+      const busLineBad = polylineRoute()[0].busLine;
+      const busLine = busLines().filter(
+        (busLine) => busLine.id_bus_line == busLineBad?.id_bus_line
+      )[0];
+      const polyL = polylineRoute()[0].latlngs;
+      // polyL?.map((line) => L.latLng(line));
       busLineDrawn = getBusLinePolyline(busLine.color, polyL).addTo(leafletMap);
+      // busLineDrawn = getBusLinePolyline(busLine.color, polyL).addTo(leafletMap);
+      // const polyLTest = [L.latLng({ lat: 45, lng: 56 })];
+      // busLineDrawn = getBusLinePolyline(busLine.color, polyLTest).addTo(
+      //   leafletMap
+      // );
       // events
       busLinePolylineAttachEvent(
         busLineDrawn,
@@ -56,9 +66,10 @@ export default function () {
     for (const busLinePolyline of busLinesPolyline) {
       busLinePolyline.remove();
     }
-    for (const busLineDrawn of busLinesDrawn) {
-      busLineDrawn.remove();
-    }
+    // for (const busLineDrawn of busLinesDrawn) {
+    //   busLineDrawn.remove();
+    // }
+    busLinesDrawn.map((line) => line.remove());
     busLinesPolyline = [];
 
     for (const busLine of busLines()) {
