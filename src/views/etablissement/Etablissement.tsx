@@ -60,7 +60,6 @@ export function displayEtablissement() {
           lat: number;
         }[]
       ) => {
-        console.log("res ", res);
         setStop(
           res
             .map((elt) => {
