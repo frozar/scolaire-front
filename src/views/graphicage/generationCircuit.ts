@@ -27,7 +27,7 @@ function compute_unplanned_stops(
   return _.differenceWith(all_pois, planned_stops, _.isEqual);
 }
 
-export function generateCircuit(nbVehicles: number) {
+export function generateCircuit(nbVehicles: number, vehiculesCapacity: number) {
   const all_pois = points().map(
     (elt: PointRamassageType): PointIdentityType => {
       const { id, id_point, nature } = elt;
@@ -94,6 +94,7 @@ export function generateCircuit(nbVehicles: number) {
       ramassage_ids: ramassageIds,
       etablissement_ids: etablissementIds,
       num_vehicles: nbVehicles,
+      vehicules_capacity: vehiculesCapacity,
     }),
   })
     .then(async (res) => {
