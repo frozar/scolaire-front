@@ -7,8 +7,7 @@ import ClickOutside from "../../../ClickOutside";
 import { displayAddLineMessage } from "../../../userInformation/utils";
 import { FaSolidPlus } from "solid-icons/fa";
 
-const [, { setModeAddLine, isInAddLineMode, isInReadMode, setModeRead }] =
-  useStateAction();
+const [, { setModeAddLine, isInAddLineMode, setModeRead }] = useStateAction();
 
 declare module "solid-js" {
   // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -40,13 +39,13 @@ export default function () {
           "bg-[#062F3F] text-[#0cc683]": isInAddLineMode(),
         }}
         onClick={() => {
-          if (!isInReadMode()) {
+          if (isInAddLineMode()) {
             setModeRead();
           } else {
-            toggleShow();
             setModeAddLine();
             displayAddLineMessage();
           }
+          toggleShow();
         }}
       >
         <FaSolidPlus class="w-full p-0 h-2/3" />
