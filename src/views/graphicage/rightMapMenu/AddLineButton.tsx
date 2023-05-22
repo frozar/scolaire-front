@@ -7,7 +7,8 @@ import ClickOutside from "../../../ClickOutside";
 import { displayAddLineMessage } from "../../../userInformation/utils";
 import { FaSolidPlus } from "solid-icons/fa";
 
-const [, { setModeAddLine, isInAddLineMode }] = useStateAction();
+const [, { setModeAddLine, isInAddLineMode, isInReadMode, setModeRead }] =
+  useStateAction();
 
 declare module "solid-js" {
   // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -39,54 +40,17 @@ export default function () {
           "bg-[#062F3F] text-[#0cc683]": isInAddLineMode(),
         }}
         onClick={() => {
-          toggleShow();
+          if (!isInReadMode()) {
+            setModeRead();
+          } else {
+            toggleShow();
+            setModeAddLine();
+            displayAddLineMessage();
+          }
         }}
       >
         <FaSolidPlus class="w-full p-0 h-2/3" />
       </label>
-      <Transition
-        name="slide-fade"
-        enterActiveClass="transition ease-out duration-200"
-        enterClass="opacity-0 translate-y-1"
-        enterToClass="opacity-100 translate-y-0"
-        exitActiveClass="transition ease-in duration-150"
-        exitClass="opacity-100 translate-y-0"
-        exitToClass="opacity-0 translate-y-1"
-      >
-        <Show when={show()}>
-          <ul
-            id="draw-line-options"
-            ref={refDrawnMenu}
-            tabIndex={0}
-            use:ClickOutside={(e: MouseEvent) => {
-              if (!refLabelMenu || !refDrawnMenu || !e.target) {
-                return;
-              }
-              assertIsNode(e.target);
-              if (
-                !refLabelMenu.contains(e.target) &&
-                !refDrawnMenu.contains(e.target)
-              ) {
-                toggleShow();
-              }
-            }}
-          >
-            <li>
-              <a
-                class="menu-link-shortcut"
-                onClick={() => {
-                  toggleShow();
-                  setModeAddLine();
-                  displayAddLineMessage();
-                }}
-              >
-                Ligne
-                <kbd class="kbd">L</kbd>
-              </a>
-            </li>
-          </ul>
-        </Show>
-      </Transition>
     </div>
   );
 }
