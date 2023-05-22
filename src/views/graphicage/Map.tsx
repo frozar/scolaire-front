@@ -13,7 +13,7 @@ import LineUnderConstruction from "../../line/LineUnderConstruction";
 import {
   disableSpinningWheel,
   enableSpinningWheel,
-  setDragAndDropConfirmation,
+  setImportConfirmation,
   setPoints,
 } from "../../signaux";
 import { ReturnMessageType } from "../../type";
@@ -90,7 +90,7 @@ export default function () {
                   return res.json();
                 })
                 .then((res: ReturnMessageType) => {
-                  setDragAndDropConfirmation({
+                  setImportConfirmation({
                     displayed: true,
                     message: res.message,
                     metrics: {

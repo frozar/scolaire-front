@@ -11,10 +11,12 @@ import RemoveRamassageConfirmation from "../../userInformation/RemoveRamassageCo
 import { fetchPointsRamassage } from "../../PointsRamassageAndEtablissement";
 import {
   enableSpinningWheel,
-  setDragAndDropConfirmation,
+  setImportConfirmation,
   setPoints,
   disableSpinningWheel,
+  openRemoveImportCsvBox,
 } from "../../signaux";
+import ImportCsv from "../../userInformation/ImportCsv";
 
 export const [selected, setSelected] = createSignal<EtablissementItemType[]>(
   []
@@ -169,7 +171,7 @@ export default function () {
               return res.json();
             })
             .then((res: ReturnMessageType) => {
-              setDragAndDropConfirmation({
+              setImportConfirmation({
                 displayed: true,
                 message: res.message,
                 metrics: {
@@ -198,6 +200,7 @@ export default function () {
   });
   return (
     <>
+      <ImportCsv />
       <div ref={DragDropDiv}>
         <div ref={DragDropChild} class="invisible_child">
           Drop your file here
@@ -279,7 +282,12 @@ export default function () {
                 >
                   Exporter
                 </button>
-                <button class="btn-arret-export-import">Importer</button>
+                <button
+                  class="btn-arret-export-import"
+                  onClick={openRemoveImportCsvBox}
+                >
+                  Importer
+                </button>
               </div>
             </div>
           </header>

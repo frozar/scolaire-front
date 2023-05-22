@@ -99,6 +99,9 @@ export type clearConfirmationType = {
   displayed: boolean;
 };
 
+export type ImportCsvBoxType = {
+  displayed: boolean;
+};
 export type TileId =
   | "OpenStreetMap_Mapnik"
   | "Stadia_AlidadeSmooth"

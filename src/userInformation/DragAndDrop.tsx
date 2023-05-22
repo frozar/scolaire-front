@@ -3,7 +3,7 @@ import { Transition } from "solid-transition-group";
 
 import ClickOutside from "../ClickOutside";
 import {
-  getDragAndDropConfirmation,
+  getImportConfirmation,
   closeDragAndDropConfirmationBox,
 } from "../signaux";
 import { assertIsNode } from "../utils";
@@ -17,7 +17,7 @@ declare module "solid-js" {
 }
 
 export default function () {
-  const displayed = () => getDragAndDropConfirmation()["displayed"];
+  const displayed = () => getImportConfirmation()["displayed"];
 
   function handlerOnClickValider() {
     closeDragAndDropConfirmationBox();
@@ -112,7 +112,7 @@ export default function () {
                   <div class="sm:flex sm:items-start">
                     <div class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
                       <Show
-                        when={getDragAndDropConfirmation().metrics.total == 0}
+                        when={getImportConfirmation().metrics.total == 0}
                         fallback={
                           <svg
                             class="h-6 w-6 text-green-600"
@@ -153,36 +153,34 @@ export default function () {
                       >
                         Importation
                       </h3>
-                      <Show when={getDragAndDropConfirmation().message != ""}>
+                      <Show when={getImportConfirmation().message != ""}>
                         <div class="mt-2">
                           <p class="text-sm text-gray-500">
-                            {getDragAndDropConfirmation().message}
+                            {getImportConfirmation().message}
                           </p>
                         </div>
                       </Show>
-                      <Show
-                        when={getDragAndDropConfirmation().metrics.total > 0}
-                      >
+                      <Show when={getImportConfirmation().metrics.total > 0}>
                         <div class="mt-2">
                           <p class="text-sm text-gray-500">
                             Nombre d'éléments traités :
                             {" " +
-                              getDragAndDropConfirmation().metrics.success +
+                              getImportConfirmation().metrics.success +
                               "/" +
-                              getDragAndDropConfirmation().metrics.total}
+                              getImportConfirmation().metrics.total}
                           </p>
                         </div>
                       </Show>
                       <Show
                         when={
-                          getDragAndDropConfirmation().error.etablissement
-                            .length != 0
+                          getImportConfirmation().error.etablissement.length !=
+                          0
                         }
                       >
                         <div class="mt-2">
                           Établissements non-traités :
                           <p class="text-sm text-gray-500">
-                            {getDragAndDropConfirmation().error.etablissement.join(
+                            {getImportConfirmation().error.etablissement.join(
                               ", "
                             )}
                           </p>
@@ -190,16 +188,13 @@ export default function () {
                       </Show>
                       <Show
                         when={
-                          getDragAndDropConfirmation().error.ramassage.length !=
-                          0
+                          getImportConfirmation().error.ramassage.length != 0
                         }
                       >
                         <div class="mt-2">
                           Lieux de ramassage non-traités :
                           <p class="text-sm text-gray-500">
-                            {getDragAndDropConfirmation().error.ramassage.join(
-                              ", "
-                            )}
+                            {getImportConfirmation().error.ramassage.join(", ")}
                           </p>
                         </div>
                       </Show>

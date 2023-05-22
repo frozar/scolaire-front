@@ -16,6 +16,7 @@ import {
   InfoPanelEnum,
   PolylineRouteType,
   removeRamassageConfirmationType,
+  ImportCsvBoxType,
 } from "./type";
 import { deepCopy } from "./utils";
 import { User } from "@auth0/auth0-spa-js";
@@ -73,6 +74,10 @@ export const [getRemoveConfirmation, setRemoveConfirmation] = createSignal({
   id_bus_line: null,
 }) as Signal<removeConfirmationType>;
 
+export const [getImportCsvBox, setImportCsvBox] = createSignal({
+  displayed: false,
+}) as Signal<ImportCsvBoxType>;
+
 export const [getRemoveRamassageConfirmation, setRemoveRamassageConfirmation] =
   createSignal({
     displayed: false,
@@ -83,7 +88,7 @@ export const [getClearConfirmation, setClearConfirmation] = createSignal({
   displayed: false,
 }) as Signal<clearConfirmationType>;
 
-const initialDragAndDropMessage: ReturnMessageType = {
+const initialImportCsvMessage: ReturnMessageType = {
   displayed: false,
   message: "",
   metrics: { total: 0, success: 0 },
@@ -91,11 +96,11 @@ const initialDragAndDropMessage: ReturnMessageType = {
   success: { etablissement: [], ramassage: [] },
 };
 
-export const [getDragAndDropConfirmation, setDragAndDropConfirmation] =
-  createSignal<ReturnMessageType>(initialDragAndDropMessage);
+export const [getImportConfirmation, setImportConfirmation] =
+  createSignal<ReturnMessageType>(initialImportCsvMessage);
 
 export function closeDragAndDropConfirmationBox() {
-  setDragAndDropConfirmation(initialDragAndDropMessage);
+  setImportConfirmation(initialImportCsvMessage);
 }
 
 export function openExportConfirmationBox() {
@@ -118,6 +123,17 @@ export function closeGeneratorDialogueBox() {
 
 export function getDisplayedGeneratorDialogueBox() {
   return displayedGeneratorDialogueBox();
+}
+
+export function closeRemoveImportCsvBox() {
+  setImportCsvBox({
+    displayed: false,
+  });
+}
+export function openRemoveImportCsvBox() {
+  setImportCsvBox({
+    displayed: true,
+  });
 }
 
 export function closeRemoveConfirmationBox() {
