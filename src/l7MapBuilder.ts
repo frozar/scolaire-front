@@ -58,14 +58,17 @@ export function buildMapL7(div: HTMLDivElement) {
   createEffect(() => {
     setCurrentTileLayer(() => {
       if (isInReadMode()) {
+        console.log("isInReadMode=> readTile()");
         return readTile();
       } else {
+        console.log("isInEditMode=> editTile()");
         return editTile();
       }
     });
   });
 
   createEffect(() => {
+    console.log("currentTileLayer()", currentTileLayer());
     currentTileLayer()?.remove();
     currentTileLayer()?.addTo(leafletMap);
   });
