@@ -2,3 +2,6 @@ node_modules
 dist
 tmp
 PRIVATE.md
+.env
+.env.development
+.env.production
