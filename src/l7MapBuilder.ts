@@ -68,8 +68,12 @@ export function buildMapL7(div: HTMLDivElement) {
   });
 
   createEffect(() => {
-    console.log("currentTileLayer()", currentTileLayer());
-    currentTileLayer()?.remove();
+    console.log("active");
+    leafletMap.eachLayer(function (layer) {
+      if (layer instanceof L.TileLayer) {
+        layer.remove();
+      }
+    });
     currentTileLayer()?.addTo(leafletMap);
   });
 
