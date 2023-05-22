@@ -1,0 +1,6 @@
+@import "../../../../../css/tailwind.css";
+@import "../../../../../css/var.css";
+
+.map-card-preview {
+  border-radius: inherit;
+}

@@ -1,0 +1,22 @@
+import { Meta, StoryObj } from "storybook-solidjs";
+import ButtonComponent from "./Button";
+
+const meta = {
+  title: "Generic/Button",
+  component: ButtonComponent,
+  tags: ["autodocs"],
+} satisfies Meta<typeof ButtonComponent>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Button: Story = {
+  args: {
+    children: () => <span>Storybook test</span>,
+    label: "Storybook test",
+    onClickHandler: () => {
+      console.log("call onClickHandler");
+    },
+    isDisabled: false,
+  },
+};

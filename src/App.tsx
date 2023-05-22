@@ -1,8 +1,6 @@
 import { createEffect, Switch, Match } from "solid-js";
-
 import { useStateAction } from "./StateAction";
 import { useStateGui } from "./StateGui";
-import SpinningWheel from "./component/SpinningWheel";
 
 // User information
 import DisplayUserInformation from "./userInformation/DisplayUserInformation";
@@ -23,6 +21,9 @@ import Graphicage from "./views/content/graphicage/Graphicage";
 import Etablissement from "./views/content/etablissement/Etablissement";
 import Ramassage from "./views/content/ramassage/Ramassage";
 import { setPointsReady } from "./views/content/graphicage/PointsRamassageAndEtablissement";
+
+import SpinningWheel from "./component/SpinningWheel";
+import Dashboard from "./views/content/dashboard/Dashboard";
 
 const [, { isInAddLineMode }] = useStateAction();
 const [, { getSelectedMenu }] = useStateGui();
@@ -61,6 +62,10 @@ export default () => {
 
       <div id="app-content">
         <Switch fallback={<p>Page not found</p>}>
+          <Match when={getSelectedMenu() == "dashboard"}>
+            <Dashboard />
+          </Match>
+
           <Match when={getSelectedMenu() == "graphicage"}>
             <Graphicage />
           </Match>
@@ -80,8 +85,8 @@ export default () => {
         <ClearConfirmationDialogBox />
         <ExportConfirmationDialogBox />
         <GeneratorDialogBox />
-        <SpinningWheel />
       </div>
+      <SpinningWheel />
     </div>
   );
 };

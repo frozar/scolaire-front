@@ -26,7 +26,7 @@ function createLocalStore<T extends object>(
     try {
       const stateGuiFromLocalStorage: StateGuiType = JSON.parse(stateGuiString);
       const mergeState = _.merge(initState, stateGuiFromLocalStorage);
-
+      mergeState.selectedMenu = "dashboard";
       setState(mergeState);
     } catch (error) {
       setState(() => initState);
@@ -42,7 +42,7 @@ function createLocalStore<T extends object>(
 
 const makeStateGuiContext = () => {
   const defaultStateGui: StateGuiType = {
-    selectedMenu: "graphicage",
+    selectedMenu: "dashboard",
     selectedTab: "info",
     displayedLeftMenu: false,
     displayedRightMenu: false,

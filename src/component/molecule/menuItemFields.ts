@@ -12,7 +12,7 @@ const menuItems: MenuItemType[] = [
     menuItem: "dashboard",
     Logo: DashboardLogo,
     label: "Dashboard",
-    isDisabled: true,
+    isDisabled: false,
   },
   {
     menuItem: "graphicage",

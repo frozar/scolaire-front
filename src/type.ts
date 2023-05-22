@@ -176,3 +176,9 @@ export type EtablissementItemType = {
   lat: number;
   selected: boolean;
 };
+
+export type UserMapType = {
+  id: number;
+  name: string;
+  selected: boolean;
+};
