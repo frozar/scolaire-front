@@ -128,6 +128,7 @@ export function generateCircuit(nbVehicles: number) {
           }) => step["id_point"]
         );
 
+        // TODO: differ add line with a dialog box
         const res = await addBusLine(idsPoint);
 
         await res.json();
