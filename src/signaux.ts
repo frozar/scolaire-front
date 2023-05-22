@@ -14,6 +14,7 @@ import {
   ReturnMessageType,
   clearConfirmationType,
   InfoPanelEnum,
+  PolylineRouteType,
 } from "./type";
 import { deepCopy } from "./utils";
 import { User } from "@auth0/auth0-spa-js";
@@ -269,11 +270,6 @@ export function fetchPolyline(lnglat: number[][], busLine: LineType) {
     );
 }
 
-type PolylineRouteType = {
-  latlngs: L.LatLng[];
-  busLine: LineType;
-};
-
 export const [getLeafletMap, setLeafletMap] = createSignal<L.Map>();
 
 export const [busLineSelected, setBusLineSelected] = createSignal<number>(-1);
@@ -287,4 +283,7 @@ export const [timelineStopNames, setTimelineStopNames] = createSignal<string[]>(
 );
 
 export const [polylineRoute, setPolylineRoute] =
-  createSignal<PolylineRouteType>();
+  createSignal<PolylineRouteType>({
+    latlngs: [],
+    busLine: { id_bus_line: -1, color: "", stops: [] },
+  });

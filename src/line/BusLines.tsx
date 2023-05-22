@@ -32,7 +32,7 @@ export default function () {
 
   createEffect(() => {
     const drawnPolylineRoute = polylineRoute();
-    if (drawnPolylineRoute) {
+    if (drawnPolylineRoute.busLine.id_bus_line != -1) {
       let busLineDrawn: L.Polyline = new L.Polyline([]);
 
       const leafletMap = getLeafletMap();
