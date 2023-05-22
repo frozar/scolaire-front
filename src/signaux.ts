@@ -14,6 +14,7 @@ import {
   ReturnMessageType,
   clearConfirmationType,
   InfoPanelEnum,
+  PolylineRouteType,
 } from "./type";
 import { deepCopy } from "./utils";
 import { User } from "@auth0/auth0-spa-js";
@@ -223,7 +224,7 @@ export function fetchBusLines() {
               }[];
             }[]
           ) => {
-            let lines: LineType[] = res.map((line) => {
+            const lines: LineType[] = res.map((line) => {
               const color = line.color ? "#" + line.color : randColor();
               const stopsWithNatureEnum = line.stops.map(
                 (stop) =>
@@ -245,6 +246,29 @@ export function fetchBusLines() {
       console.log(err);
     });
 }
+export function fetchPolyline(lnglat: number[][], busLine: LineType) {
+  let urlLnglat = "";
+  for (const elt of lnglat) {
+    urlLnglat += elt[0] + "," + elt[1] + ";";
+  }
+  urlLnglat = urlLnglat.slice(0, -1);
+  fetch(
+    import.meta.env.VITE_API_OSRM_URL +
+      urlLnglat +
+      "?geometries=geojson&overview=full"
+  )
+    .then((res) => {
+      return res.json();
+    })
+    .then((res) =>
+      setPolylineRoute({
+        latlngs: res.routes[0].geometry.coordinates.map((elt: number[]) =>
+          elt.reverse()
+        ),
+        busLine: busLine,
+      })
+    );
+}
 
 export const [getLeafletMap, setLeafletMap] = createSignal<L.Map>();
 
@@ -257,3 +281,9 @@ export const [stopIds, setStopIds] = createSignal<number[]>([]);
 export const [timelineStopNames, setTimelineStopNames] = createSignal<string[]>(
   []
 );
+
+export const [polylineRoute, setPolylineRoute] =
+  createSignal<PolylineRouteType>({
+    latlngs: [],
+    busLine: { id_bus_line: -1, color: "", stops: [] },
+  });

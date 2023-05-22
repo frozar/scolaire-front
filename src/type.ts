@@ -153,3 +153,8 @@ export type StopItemType = {
   lon: number;
   lat: number;
 };
+
+export type PolylineRouteType = {
+  latlngs: L.LatLng[];
+  busLine: LineType;
+};
