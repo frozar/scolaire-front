@@ -1,8 +1,7 @@
-import { auth0Client } from "./auth/auth";
+import { getToken } from "./auth/auth";
 
 export async function deleteBusLine(idToRemove: number) {
-  return auth0Client
-    .getTokenSilently()
+  return getToken()
     .then((token) => {
       return fetch(import.meta.env.VITE_BACK_URL + "/bus_line", {
         method: "DELETE",
@@ -21,8 +20,7 @@ export async function deleteBusLine(idToRemove: number) {
 }
 
 export async function clear() {
-  return auth0Client
-    .getTokenSilently()
+  return getToken()
     .then((token) => {
       return fetch(import.meta.env.VITE_BACK_URL + "/clear", {
         method: "DELETE",
@@ -38,8 +36,7 @@ export async function clear() {
 }
 
 export async function addBusLine(idsPoint: number[]) {
-  return auth0Client
-    .getTokenSilently()
+  return getToken()
     .then((token) => {
       return fetch(import.meta.env.VITE_BACK_URL + "/bus_line", {
         method: "POST",

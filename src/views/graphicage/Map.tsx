@@ -19,7 +19,7 @@ import {
 import { ReturnMessageType } from "../../type";
 import ControlMapMenu from "./rightMapMenu/RightMapMenu";
 import { InformationBoard } from "./rightMapMenu/InformationBoard";
-import { auth0Client } from "../../auth/auth";
+import { getToken } from "../../auth/auth";
 
 const [, { isInAddLineMode }] = useStateAction();
 
@@ -77,8 +77,7 @@ export default function () {
         for (let i = 0, file; (file = files[i]); i++) {
           const formData = new FormData();
           formData.append("file", file, file.name);
-          auth0Client
-            .getTokenSilently()
+          getToken()
             .then((token) => {
               fetch(import.meta.env.VITE_BACK_URL + "/uploadfile/", {
                 method: "POST",

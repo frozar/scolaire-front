@@ -27,7 +27,7 @@ import {
   stopIds,
 } from "./signaux";
 import { minMaxQty } from "./PointsRamassageAndEtablissement";
-import { auth0Client } from "./auth/auth";
+import { getToken } from "./auth/auth";
 
 const [
   ,
@@ -68,8 +68,7 @@ export default function (props: {
         : [null, null];
 
     if (getEndPoint && getParameter) {
-      auth0Client
-        .getTokenSilently()
+      getToken()
         .then((token) => {
           fetch(
             import.meta.env.VITE_BACK_URL +

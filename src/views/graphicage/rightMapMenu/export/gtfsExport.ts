@@ -1,4 +1,4 @@
-import { auth0Client } from "../../../../auth/auth";
+import { getToken } from "../../../../auth/auth";
 import {
   displayDownloadErrorMessage,
   displayDownloadSuccessMessage,
@@ -18,8 +18,7 @@ function download(fileame: string, blob: Blob) {
 
 export function exportGtfs() {
   displayOnGoingDownloadMessage();
-  auth0Client
-    .getTokenSilently()
+  getToken()
     .then((token) => {
       fetch(import.meta.env.VITE_BACK_URL + "/gtfs.zip", {
         headers: {

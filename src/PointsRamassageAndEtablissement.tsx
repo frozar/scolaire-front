@@ -3,14 +3,13 @@ import { createSignal, onMount, For, onCleanup } from "solid-js";
 import { NatureEnum, PointRamassageType, PointEtablissementType } from "./type";
 import Point from "./Point";
 import { setPoints, points } from "./signaux";
-import { auth0Client } from "./auth/auth";
+import { getToken } from "./auth/auth";
 
 export const [minMaxQty, setMinMaxQty] = createSignal([1, 100]);
 export const [pointsReady, setPointsReady] = createSignal(false);
 
 export function fetchPointsRamassage() {
-  auth0Client
-    .getTokenSilently()
+  getToken()
     .then((token) => {
       fetch(import.meta.env.VITE_BACK_URL + "/points_ramassage", {
         headers: {
