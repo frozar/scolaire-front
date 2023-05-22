@@ -1,4 +1,4 @@
-import { createEffect, createSignal, on, onMount } from "solid-js";
+import { createEffect, on, onMount } from "solid-js";
 import { StopItemType } from "../../type";
 import { setDataToEdit, toggleEditStop } from "./EditStop";
 import { addSelected, removeSelected, selected, setStop } from "./Stop";
