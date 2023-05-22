@@ -8,7 +8,7 @@ import {
   closeRemoveRamassageConfirmationBox,
 } from "../signaux";
 
-import { deleteBusLine, deleteRamassage } from "../request";
+import { deleteRamassage } from "../request";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { assertIsNode } from "../utils";
 import { displayArret } from "../views/stop/Stop";

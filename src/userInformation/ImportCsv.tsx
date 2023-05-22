@@ -1,7 +1,6 @@
-import { Show, createEffect, createSignal, onMount } from "solid-js";
+import { Show, createEffect, createSignal } from "solid-js";
 import { Transition } from "solid-transition-group";
 
-import ClickOutside from "../ClickOutside";
 import {
   addNewUserInformation,
   closeRemoveImportCsvBox,
@@ -13,7 +12,7 @@ import { assertIsNode } from "../utils";
 import { MessageLevelEnum, MessageTypeEnum, ReturnMessageType } from "../type";
 import { useStateGui } from "../StateGui";
 import { displayEtablissement } from "../views/etablissement/Etablissement";
-import { displayArret, displaystop } from "../views/stop/Stop";
+import { displayArret } from "../views/stop/Stop";
 const [, { getSelectedMenu }] = useStateGui();
 declare module "solid-js" {
   namespace JSX {

@@ -6,17 +6,15 @@ import EtablissementItem from "./EtablissementItem";
 import { EtablissementItemType, ReturnMessageType } from "../../type";
 import { displayDownloadErrorMessage } from "../../userInformation/utils";
 import { getExportDate } from "../graphicage/rightMapMenu/export/export";
-import { download } from "../graphicage/rightMapMenu/export/csvExport";
 import RemoveRamassageConfirmation from "../../userInformation/RemoveRamassageConfirmation";
-import { fetchPointsRamassage } from "../../PointsRamassageAndEtablissement";
 import {
   enableSpinningWheel,
   setImportConfirmation,
-  setPoints,
   disableSpinningWheel,
   openRemoveImportCsvBox,
 } from "../../signaux";
 import ImportCsv from "../../userInformation/ImportCsv";
+import { download } from "../../utils";
 
 export const [selected, setSelected] = createSignal<EtablissementItemType[]>(
   []

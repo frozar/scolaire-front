@@ -1,4 +1,4 @@
-import { createEffect, createSignal, on, onMount } from "solid-js";
+import { createEffect, on, onMount } from "solid-js";
 import { EtablissementItemType } from "../../type";
 import { setDataToEdit, toggleEditStop } from "./EditEtablissement";
 import {

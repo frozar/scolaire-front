@@ -6,7 +6,6 @@ import StopItems from "./StopItem";
 import { ReturnMessageType, StopItemType } from "../../type";
 import { displayDownloadErrorMessage } from "../../userInformation/utils";
 import { getExportDate } from "../graphicage/rightMapMenu/export/export";
-import { download } from "../graphicage/rightMapMenu/export/csvExport";
 import RemoveRamassageConfirmation from "../../userInformation/RemoveRamassageConfirmation";
 import {
   enableSpinningWheel,
@@ -15,6 +14,7 @@ import {
   openRemoveImportCsvBox,
 } from "../../signaux";
 import ImportCsv from "../../userInformation/ImportCsv";
+import { download } from "../../utils";
 
 export const [selected, setSelected] = createSignal<StopItemType[]>([]);
 export const [stop, setStop] = createStore<StopItemType[]>([]);
