@@ -31,7 +31,7 @@ import {
 } from "./signaux";
 import { useStateAction } from "./StateAction";
 const [, { isInAddLineMode, isInReadMode }] = useStateAction();
-import { auth0Client } from "./auth/auth";
+import { getToken } from "./auth/auth";
 
 type PointToDisplayType = {
   id_point: number;
@@ -181,8 +181,7 @@ export default function () {
         id +
         "&nature=" +
         nature;
-      auth0Client
-        .getTokenSilently()
+      getToken()
         .then(async (token) => {
           return fetch(URL, {
             headers: {

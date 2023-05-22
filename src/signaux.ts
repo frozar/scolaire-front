@@ -17,7 +17,7 @@ import {
 } from "./type";
 import { deepCopy } from "./utils";
 import { User } from "@auth0/auth0-spa-js";
-import { auth0Client } from "./auth/auth";
+import { getToken } from "./auth/auth";
 
 const [getDisplayedSpinningWheel, setDisplayedSpinningWheel] =
   createSignal(false);
@@ -200,8 +200,7 @@ function randColor() {
 }
 
 export function fetchBusLines() {
-  auth0Client
-    .getTokenSilently()
+  getToken()
     .then((token) => {
       fetch(import.meta.env.VITE_BACK_URL + "/bus_lines", {
         headers: {

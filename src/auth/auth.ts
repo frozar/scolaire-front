@@ -74,6 +74,18 @@ export function getProfilePic() {
   return user.picture;
 }
 
+export async function getToken() {
+  if (import.meta.env.VITE_AUTH0_DEV_MODE === "true") {
+    return "fakeToken";
+  }
+  try {
+    const token = await auth0Client.getTokenSilently();
+    return token;
+  } catch (err) {
+    throw new Error("Could not get token");
+  }
+}
+
 window.onload = async () => {
   const query = window.location.search;
   const shouldParseResult = query.includes("code=") && query.includes("state=");
