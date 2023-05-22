@@ -59,7 +59,9 @@ const displayTimeline = (id_bus_line: number) => {
   );
   const lenBusLine = busLine[0].stops.length;
   const stopIds = getStopIds(busLine, lenBusLine);
-  const stops = points().filter((point) => stopIds.includes(point.id_point));
+  const stops = stopIds.map(
+    (stopId) => points().filter((point) => point.id_point === stopId)[0]
+  );
   const stopNameList = getStopsName(stops, lenBusLine);
   return stopNameList;
 };
