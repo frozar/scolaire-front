@@ -181,7 +181,7 @@ export default function () {
         id +
         "&nature=" +
         nature;
-      getToken()
+      return getToken()
         .then(async (token) => {
           return fetch(URL, {
             headers: {
