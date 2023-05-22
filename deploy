@@ -1,0 +1,8 @@
+#!/bin/bash
+
+echo "****** Deploy over fly io *********"
+
+script_directory=$(dirname $(readlink -f $0))
+cd $script_directory
+npm run build
+fly deploy
