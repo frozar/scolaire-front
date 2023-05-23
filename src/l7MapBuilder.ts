@@ -58,17 +58,14 @@ export function buildMapL7(div: HTMLDivElement) {
   createEffect(() => {
     setCurrentTileLayer(() => {
       if (isInReadMode()) {
-        console.log("isInReadMode=> readTile()");
         return readTile();
       } else {
-        console.log("isInEditMode=> editTile()");
         return editTile();
       }
     });
   });
 
   createEffect(() => {
-    console.log("active");
     leafletMap.eachLayer(function (layer) {
       if (layer instanceof L.TileLayer) {
         layer.remove();
