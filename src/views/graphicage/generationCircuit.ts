@@ -130,9 +130,11 @@ export function generateCircuit(nbVehicles: number, vehiculesCapacity: number) {
         );
 
         // TODO: differ add line with a dialog box
-        const res = await addBusLine(idsPoint);
+        // const res = await addBusLine(idsPoint);
+        await addBusLine(idsPoint);
 
-        await res.json();
+        // TODO: Deal case of error
+        // await res.json();
         setModeRead();
         fetchBusLines();
         disableSpinningWheel();

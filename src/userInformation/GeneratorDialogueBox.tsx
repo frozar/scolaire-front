@@ -22,6 +22,7 @@ export default function () {
   const displayed = () => getDisplayedGeneratorDialogueBox();
   const [nbVehicules, setNbVehicules] = createSignal(1);
   const [vehiculesCapacity, setVehiculesCapacity] = createSignal(50);
+  const [maximumTravelDistance, setMaximumTravelDistance] = createSignal(100);
 
   function handlerOnClickSoumettre() {
     closeGeneratorDialogueBox();
@@ -168,6 +169,40 @@ export default function () {
                             setVehiculesCapacity(parseInt(target.value));
                           }}
                           value={vehiculesCapacity()}
+                        />
+                      </div>
+                    </form>
+                  </div>
+
+                  <h4 class="text-sm text-left font-semibold leading-6 text-gray-500 mt-5">
+                    Paramètres avancé du solveur de circuit
+                  </h4>
+                  <div class="sm:flex sm:items-start justify-center">
+                    <div class="mt-7 mr-2 max-w-xl text-sm text-gray-500 w-1/2">
+                      <p class="text-right">
+                        Distance maximale parcourue (km) :
+                      </p>
+                    </div>
+                    <form class="mt-5 sm:flex sm:items-center">
+                      <div class="w-full sm:max-w-xs w-1/2">
+                        <label for="maximum_travel_distance" class="sr-only">
+                          Distance maximale parcourue
+                        </label>
+                        <input
+                          type="number"
+                          name="maximum_travel_distance"
+                          id="maximum_travel_distance"
+                          class="block w-40 rounded-md border-0 py-1.5 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          step={5}
+                          min={10}
+                          onChange={(evt: Event) => {
+                            if (!evt.target) {
+                              return;
+                            }
+                            const target = evt.target as HTMLInputElement;
+                            setMaximumTravelDistance(parseInt(target.value));
+                          }}
+                          value={maximumTravelDistance()}
                         />
                       </div>
                     </form>
