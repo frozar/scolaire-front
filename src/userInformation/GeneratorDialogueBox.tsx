@@ -26,7 +26,11 @@ export default function () {
 
   function handlerOnClickSoumettre() {
     closeGeneratorDialogueBox();
-    generateCircuit(nbVehicules(), vehiculesCapacity());
+    generateCircuit(
+      nbVehicules(),
+      vehiculesCapacity(),
+      maximumTravelDistance()
+    );
   }
 
   const [buttonRef, setButtonRef] = createSignal<
