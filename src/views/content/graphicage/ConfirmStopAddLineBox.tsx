@@ -3,6 +3,7 @@ import { Transition } from "solid-transition-group";
 import { assertIsNode } from "../../../utils";
 import { useStateAction } from "../../../StateAction";
 import ClickOutside from "../../../component/ClickOutside";
+import { fetchBusLines } from "../../../signaux";
 
 const [, { isInAddLineMode, getLineUnderConstruction, setModeRead }] =
   useStateAction();
@@ -46,6 +47,7 @@ function exitModal({ code }: KeyboardEvent) {
 export default function () {
   const confirmStopingEdition = () => {
     setModeRead();
+    fetchBusLines();
     toggleConfirmStopAddLine();
     modalToOpen();
   };
@@ -75,7 +77,7 @@ export default function () {
           role="dialog"
           aria-modal="true"
         >
-          <div class="export-modal-background"></div>
+          <div class="export-modal-background" />
           <Transition
             name="slide-fade"
             enterActiveClass="ease-out duration-300"
@@ -114,7 +116,7 @@ export default function () {
                         <h3 id="modal-title">
                           Ête vous sure de vouloir quitter l'édition de ligne ?
                         </h3>
-                        <div class="mt-2 w-full flex"></div>
+                        <div class="mt-2 w-full flex" />
                       </div>
                     </div>
                   </div>

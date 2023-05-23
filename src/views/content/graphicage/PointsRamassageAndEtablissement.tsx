@@ -54,6 +54,7 @@ export function fetchPointsRamassage() {
           setPoints((dataArray) => [...dataArray, ...data]);
           setPointsRamassageReady(true);
         });
+
       fetch(import.meta.env.VITE_BACK_URL + "/points_etablissement", {
         headers: {
           "Content-Type": "application/json",

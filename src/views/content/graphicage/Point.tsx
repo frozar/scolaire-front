@@ -151,6 +151,7 @@ export default function (props: {
         radius,
         fillOpacity: 1,
         weight,
+        pane: "markerPane",
       })
         // eslint-disable-next-line solid/reactivity
         .on("click", () => {

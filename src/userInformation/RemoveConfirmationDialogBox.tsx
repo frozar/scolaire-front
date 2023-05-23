@@ -4,32 +4,41 @@ import { Transition } from "solid-transition-group";
 import ClickOutside from "../component/ClickOutside";
 import {
   addNewUserInformation,
-  fetchBusLines,
   getRemoveConfirmation,
   closeRemoveConfirmationBox,
+  // setRoutes,
+  // routes,
+  fetchBusLines,
+  // busLines,
 } from "../signaux";
 
 import { deleteBusLine } from "../request";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { assertIsNode } from "../utils";
+// import { removeRoute } from "../views/content/graphicage/line/BusLines";
 
 export default function () {
   const displayed = () => getRemoveConfirmation()["displayed"];
-  const id_bus_line = () => getRemoveConfirmation()["id_bus_line"];
+  const idBusLine = () => getRemoveConfirmation()["idBusLine"];
 
   function handlerOnClickValider() {
-    const idToCheck = id_bus_line();
+    const idToCheck = idBusLine();
     if (!idToCheck) {
       return;
     }
 
     const idToRemove: number = idToCheck;
+
     deleteBusLine(idToRemove)
       .then((res) => {
+        if (!res) {
+          return;
+        }
         return res.json();
       })
-      .then((res: any) => {
+      .then((res: string) => {
         const nbDelete = res.split(" ").at(-1);
+
         if (nbDelete != "0") {
           addNewUserInformation({
             displayed: true,
@@ -37,6 +46,19 @@ export default function () {
             type: MessageTypeEnum.removeLine,
             content: `La ligne ${idToRemove} a bien été supprimée`,
           });
+          // // remove() et suppr de la route correspondante
+          // const routeToDelete = routes().find(
+          //   (route) => route.busLine.idBusLine == idToCheck
+          // );
+
+          // if (!routeToDelete) {
+          //   return;
+          // }
+
+          // removeRoute(routeToDelete, true, true);
+          // setRoutes(
+          //   routes().filter((route) => route.busLine.idBusLine != idToCheck)
+          // );
           closeRemoveConfirmationBox();
         } else {
           addNewUserInformation({
@@ -47,6 +69,7 @@ export default function () {
           });
           closeRemoveConfirmationBox();
         }
+
         fetchBusLines();
       })
       .catch((error) => {
@@ -55,7 +78,7 @@ export default function () {
           displayed: true,
           level: MessageLevelEnum.error,
           type: MessageTypeEnum.removeLine,
-          content: `Impossible de supprimer la ligne ${id_bus_line()}`,
+          content: `Impossible de supprimer la ligne ${idBusLine()}`,
         });
         closeRemoveConfirmationBox();
         fetchBusLines();
@@ -70,7 +93,7 @@ export default function () {
     buttonRef()?.focus();
   });
 
-  let refDialogueBox: HTMLDivElement | undefined;
+  let refDialogBox!: HTMLDivElement;
 
   return (
     <Transition
@@ -89,7 +112,7 @@ export default function () {
           role="dialog"
           aria-modal="true"
         >
-          <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+          <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
 
           {/* Forum github pour les nested transitions
           https://github.com/reactjs/react-transition-group/issues/558 */}
@@ -107,9 +130,9 @@ export default function () {
               <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
                 <div
                   class="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6"
-                  ref={refDialogueBox}
+                  ref={refDialogBox}
                   use:ClickOutside={(e: MouseEvent) => {
-                    if (!refDialogueBox || !e.target) {
+                    if (!refDialogBox || !e.target) {
                       return;
                     }
 
@@ -120,7 +143,7 @@ export default function () {
                     }
 
                     assertIsNode(e.target);
-                    if (!refDialogueBox.contains(e.target)) {
+                    if (!refDialogBox.contains(e.target)) {
                       closeRemoveConfirmationBox();
                     }
                   }}
@@ -175,7 +198,7 @@ export default function () {
                       <div class="mt-2">
                         <p class="text-sm text-gray-500">
                           Etes-vous sûr de vouloir supprimer la ligne de bus
-                          numéro {id_bus_line()} ?
+                          numéro {idBusLine()} ?
                         </p>
                       </div>
                     </div>

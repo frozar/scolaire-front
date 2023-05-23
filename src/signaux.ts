@@ -14,13 +14,20 @@ import {
   ReturnMessageType,
   clearConfirmationType,
   InfoPanelEnum,
-  PolylineRouteType,
   removeRamassageConfirmationType,
   ImportCsvBoxType,
 } from "./type";
 import { deepCopy } from "./utils";
 import { User } from "@auth0/auth0-spa-js";
 import { getToken } from "./views/layout/topMenu/authentication";
+
+import { LineString, MultiLineString } from "geojson";
+import {
+  arrowAttachEvent,
+  busLinePolylineAttachEvent,
+  computeArrows,
+  computePolyline,
+} from "./views/content/graphicage/line/BusLinesFunction";
 
 const [getDisplayedSpinningWheel, setDisplayedSpinningWheel] =
   createSignal(false);
@@ -76,7 +83,7 @@ export const [authenticated, setAuthenticated] = createSignal(false);
 
 export const [getRemoveConfirmation, setRemoveConfirmation] = createSignal({
   displayed: false,
-  id_bus_line: null,
+  idBusLine: null,
 }) as Signal<removeConfirmationType>;
 
 export const [getImportCsvBox, setImportCsvBox] =
@@ -148,7 +155,7 @@ export function openImportCsvBox() {
 export function closeRemoveConfirmationBox() {
   setRemoveConfirmation({
     displayed: false,
-    id_bus_line: null,
+    idBusLine: null,
   });
 }
 export function closeRemoveRamassageConfirmationBox() {
@@ -239,6 +246,21 @@ function randColor() {
   return "#" + Math.floor(Math.random() * 0xffffff).toString(16);
 }
 
+export const [onLine, setOnLine] = createSignal<{
+  line: L.Polyline<LineString | MultiLineString>;
+  idBusLine: number;
+}>({ line: L.polyline([{ lat: 0, lng: 0 }]), idBusLine: -1 });
+
+export const [onArrows, setOnArrows] = createSignal<L.Marker[]>([]);
+
+// TODO: Add color field
+export const linkBusLinePolyline: {
+  [idBusLine: number]: {
+    polyline: L.Polyline;
+    arrows: L.Marker[];
+  };
+} = {};
+
 export function fetchBusLines() {
   getToken()
     .then((token) => {
@@ -263,9 +285,11 @@ export function fetchBusLines() {
               }[];
             }[]
           ) => {
-            const lines: LineType[] = res.map((line) => {
-              const color = line.color ? "#" + line.color : randColor();
-              const stopsWithNatureEnum = line.stops.map(
+            // TODO: remove eslint exception
+            // eslint-disable-next-line solid/reactivity
+            const lines: LineType[] = res.map((resLine) => {
+              const color = resLine.color ? "#" + resLine.color : randColor();
+              const stopsWithNatureEnum = resLine.stops.map(
                 (stop) =>
                   ({
                     ...stop,
@@ -275,37 +299,92 @@ export function fetchBusLines() {
                         : NatureEnum.etablissement,
                   } as PointIdentityType)
               );
-              return { ...line, color, stops: stopsWithNatureEnum };
+
+              const lineWk: LineType = {
+                idBusLine: resLine.id_bus_line,
+                color: color,
+                stops: stopsWithNatureEnum,
+              };
+
+              return lineWk;
             });
-            setBusLines(lines);
+
+            setBusLines((previousLines) => {
+              // Remove existing polylines and arrows
+              const idLines = lines.map((line) => line.idBusLine);
+              for (const previousLine of previousLines) {
+                if (!(previousLine.idBusLine in idLines)) {
+                  const { polyline: previousPolyline, arrows: previousArrows } =
+                    linkBusLinePolyline[previousLine.idBusLine];
+                  previousPolyline.remove();
+                  previousArrows.map((arrow) => arrow.remove());
+
+                  delete linkBusLinePolyline[previousLine.idBusLine];
+                }
+              }
+
+              for (const line of lines) {
+                // 1. Calcul de la polilyne, à vol d'oiseau ou sur route
+                computePolyline(line.color, line.stops).then(
+                  (busLinePolyline) => {
+                    const polylineLatLngs =
+                      busLinePolyline.getLatLngs() as L.LatLng[];
+                    // 2. Calcul des fléches
+                    const arrows = computeArrows(polylineLatLngs, line.color);
+
+                    // 3.Attacher les events
+                    busLinePolylineAttachEvent(
+                      busLinePolyline,
+                      line.idBusLine,
+                      arrows
+                    );
+
+                    for (const arrow of arrows) {
+                      arrowAttachEvent(
+                        arrow,
+                        busLinePolyline,
+                        line.idBusLine,
+                        arrows
+                      );
+                    }
+
+                    // 4. Manage the display of buslines
+                    if (line.idBusLine in linkBusLinePolyline) {
+                      const {
+                        polyline: previousPolyline,
+                        arrows: previousArrows,
+                      } = linkBusLinePolyline[line.idBusLine];
+                      previousPolyline.remove();
+                      previousArrows.map((arrow) => arrow.remove());
+                    }
+
+                    const leafletMap = getLeafletMap();
+                    if (!leafletMap) {
+                      delete linkBusLinePolyline[line.idBusLine];
+                      return;
+                    }
+
+                    busLinePolyline.addTo(leafletMap);
+                    for (const arrow of arrows) {
+                      arrow.addTo(leafletMap);
+                    }
+
+                    // 5. Enregistrer dans linkBusLinePolyline
+                    linkBusLinePolyline[line.idBusLine] = {
+                      polyline: busLinePolyline,
+                      arrows: arrows,
+                    };
+                  }
+                );
+              }
+
+              return lines;
+            });
           }
         );
     })
     .catch((err) => {
       console.log(err);
-    });
-}
-export function fetchPolyline(lnglat: number[][], busLine: LineType) {
-  let urlLnglat = "";
-  for (const elt of lnglat) {
-    urlLnglat += elt[0] + "," + elt[1] + ";";
-  }
-  urlLnglat = urlLnglat.slice(0, -1);
-  fetch(
-    import.meta.env.VITE_API_OSRM_URL +
-      urlLnglat +
-      "?geometries=geojson&overview=full"
-  )
-    .then((res) => {
-      return res.json();
-    })
-    .then((res) => {
-      setPolylineRoute({
-        latlngs: res.routes[0].geometry.coordinates.map((elt: number[]) =>
-          elt.reverse()
-        ),
-        busLine: busLine,
-      });
     });
 }
 
@@ -320,9 +399,3 @@ export const [stopIds, setStopIds] = createSignal<number[]>([]);
 export const [timelineStopNames, setTimelineStopNames] = createSignal<string[]>(
   []
 );
-
-export const [polylineRoute, setPolylineRoute] =
-  createSignal<PolylineRouteType>({
-    latlngs: [],
-    busLine: { id_bus_line: -1, color: "", stops: [] },
-  });

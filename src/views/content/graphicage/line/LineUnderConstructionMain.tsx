@@ -11,7 +11,7 @@ const [, { getLineUnderConstruction }] = useStateAction();
 export default function () {
   const line = () => {
     return {
-      id_bus_line: -1,
+      idBusLine: -1,
       color: COLOR_LINE_UNDER_CONSTRUCTION,
       stops: getLineUnderConstruction().stops,
     };
@@ -30,7 +30,8 @@ export default function () {
 
     busLinePolyline = getBusLinePolyline(
       line().color,
-      getLatLngs(line().stops)
+      getLatLngs(line().stops),
+      1
     ).addTo(leafletMap);
   });
 

@@ -9,7 +9,7 @@ import DisplayUserInformation from "./userInformation/DisplayUserInformation";
 import DragAndDropSummary from "./userInformation/DragAndDropSummary";
 
 // Dialogue box
-import RemoveConfirmation from "./userInformation/RemoveConfirmation";
+import RemoveConfirmationDialogBox from "./userInformation/RemoveConfirmationDialogBox";
 import ClearConfirmationDialogBox from "./userInformation/ClearConfirmationDialogBox";
 import GeneratorDialogBox from "./userInformation/GeneratorDialogBox";
 import ExportConfirmationDialogBox from "./views/content/graphicage/rightMapMenu/export/ExportConfirmationDialogBox";
@@ -76,7 +76,7 @@ export default () => {
 
         <DisplayUserInformation />
         <DragAndDropSummary />
-        <RemoveConfirmation />
+        <RemoveConfirmationDialogBox />
         <ClearConfirmationDialogBox />
         <ExportConfirmationDialogBox />
         <GeneratorDialogBox />

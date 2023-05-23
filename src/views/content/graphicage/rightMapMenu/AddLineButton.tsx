@@ -1,4 +1,5 @@
 import { useStateAction } from "../../../../StateAction";
+import { fetchBusLines } from "../../../../signaux";
 import { displayAddLineMessage } from "../../../../userInformation/utils";
 import { FaSolidPlus } from "solid-icons/fa";
 
@@ -10,8 +11,10 @@ export default function () {
   const handleClick = () => {
     if (isInAddLineMode()) {
       setModeRead();
+      fetchBusLines();
     } else {
       setModeAddLine();
+      fetchBusLines();
       displayAddLineMessage();
     }
   };

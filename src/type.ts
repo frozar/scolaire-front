@@ -46,7 +46,7 @@ export type LineUnderConstructionType = {
 };
 
 export type LineType = LineUnderConstructionType & {
-  id_bus_line: number;
+  idBusLine: number;
 };
 
 export enum ModeEnum {
@@ -87,7 +87,7 @@ export type userInformationType = {
 
 export type removeConfirmationType = {
   displayed: boolean;
-  id_bus_line: number | null;
+  idBusLine: number | null;
 };
 
 export type removeRamassageConfirmationType = {
@@ -162,11 +162,6 @@ export type StopItemType = {
   lon: number;
   lat: number;
   selected: boolean;
-};
-
-export type PolylineRouteType = {
-  latlngs: L.LatLng[];
-  busLine: LineType;
 };
 
 export type EtablissementItemType = {
