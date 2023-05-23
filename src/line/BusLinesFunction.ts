@@ -1,6 +1,6 @@
 import L from "leaflet";
 
-import { createEffect } from "solid-js";
+import { createEffect, createSignal } from "solid-js";
 import {
   setRemoveConfirmation,
   setBusLineSelected,
@@ -9,6 +9,7 @@ import {
 import { PointIdentityType, InfoPanelEnum } from "../type";
 import { linkMap } from "../global/linkPointIdentityCircle";
 import { useStateAction } from "../StateAction";
+import { setPickerColor } from "../InformationContent";
 
 const [, { isInReadMode }] = useStateAction();
 export function getLatLngs(stops: PointIdentityType[]): L.LatLng[] {
@@ -27,6 +28,8 @@ export function getBusLinePolyline(color: string, latlngs: L.LatLng[]) {
     color: color,
   });
 }
+
+export const [onLine, setOnLine] = createSignal();
 
 export function busLinePolylineAttachEvent(
   self: L.Polyline,
@@ -50,7 +53,9 @@ export function busLinePolylineAttachEvent(
         self.setStyle({ color: color, weight: 3 });
       }
     })
-    .on("click", () => {
+    .on("click", (e) => {
+      setPickerColor(e.sourceTarget.options.color);
+
       if (isInRemoveLineMode()) {
         setRemoveConfirmation({
           displayed: true,
@@ -61,5 +66,7 @@ export function busLinePolylineAttachEvent(
         setBusLineSelected(id_bus_line);
         setInfoToDisplay(InfoPanelEnum.line);
       }
+
+      setOnLine({ line: self, id_bus_line: id_bus_line });
     });
 }
