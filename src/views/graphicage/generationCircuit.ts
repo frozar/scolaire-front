@@ -30,7 +30,8 @@ function compute_unplanned_stops(
 export function generateCircuit(
   nbVehicles: number,
   vehiculesCapacity: number,
-  maximumTravelDistance: number
+  maximumTravelDistance: number,
+  globalSpanCostCoefficient: number
 ) {
   const all_pois = points().map(
     (elt: PointRamassageType): PointIdentityType => {
@@ -100,6 +101,7 @@ export function generateCircuit(
       num_vehicles: nbVehicles,
       vehicules_capacity: vehiculesCapacity,
       maximum_travel_distance: maximumTravelDistance,
+      global_span_cost_coefficient: globalSpanCostCoefficient,
     }),
   })
     .then(async (res) => {

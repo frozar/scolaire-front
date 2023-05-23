@@ -20,16 +20,19 @@ declare module "solid-js" {
 
 export default function () {
   const displayed = () => getDisplayedGeneratorDialogueBox();
-  const [nbVehicules, setNbVehicules] = createSignal(1);
+  const [nbVehicules, setNbVehicules] = createSignal(2);
   const [vehiculesCapacity, setVehiculesCapacity] = createSignal(50);
-  const [maximumTravelDistance, setMaximumTravelDistance] = createSignal(100);
+  const [maximumTravelDistance, setMaximumTravelDistance] = createSignal(200);
+  const [globalSpanCostCoefficient, setGlobalSpanCostCoefficient] =
+    createSignal(10);
 
   function handlerOnClickSoumettre() {
     closeGeneratorDialogueBox();
     generateCircuit(
       nbVehicules(),
       vehiculesCapacity(),
-      maximumTravelDistance()
+      maximumTravelDistance(),
+      globalSpanCostCoefficient()
     );
   }
 
@@ -124,7 +127,7 @@ export default function () {
                     Paramètres de la génération de circuit
                   </h3>
                   <div class="sm:flex sm:items-start justify-center">
-                    <div class="mt-7 mr-2 max-w-xl text-sm text-gray-500 w-1/3">
+                    <div class="mt-7 mr-2 max-w-xl text-sm text-gray-900 w-1/3">
                       <p class="text-right">Nombre de véhicules :</p>
                     </div>
                     <form class="mt-5 sm:flex sm:items-center">
@@ -151,7 +154,7 @@ export default function () {
                     </form>
                   </div>
                   <div class="sm:flex sm:items-start justify-center">
-                    <div class="mt-7 mr-2 max-w-xl text-sm text-gray-500 w-1/3">
+                    <div class="mt-7 mr-2 max-w-xl text-sm text-gray-900 w-1/3">
                       <p class="text-right">Capacité des véhicules :</p>
                     </div>
                     <form class="mt-5 sm:flex sm:items-center">
@@ -178,11 +181,11 @@ export default function () {
                     </form>
                   </div>
 
-                  <h4 class="text-sm text-left font-semibold leading-6 text-gray-500 mt-5">
+                  <h4 class="text-sm text-left font-semibold leading-6 text-gray-500 mt-7">
                     Paramètres avancé du solveur de circuit
                   </h4>
                   <div class="sm:flex sm:items-start justify-center">
-                    <div class="mt-7 mr-2 max-w-xl text-sm text-gray-500 w-1/2">
+                    <div class="mt-7 mr-2 max-w-xl text-sm text-gray-900 w-1/2">
                       <p class="text-right">
                         Distance maximale parcourue (km) :
                       </p>
@@ -207,6 +210,42 @@ export default function () {
                             setMaximumTravelDistance(parseInt(target.value));
                           }}
                           value={maximumTravelDistance()}
+                        />
+                      </div>
+                    </form>
+                  </div>
+                  <div class="sm:flex sm:items-start justify-center">
+                    <div class="mt-6 mr-2 max-w-xl text-sm text-gray-900 w-1/2">
+                      <p class="text-right">Paramétre homogénisation :</p>
+                      <p class="text-right text-xs text-gray-500">
+                        GlobalSpanCostCoefficient (x100 000 000)
+                      </p>
+                    </div>
+                    <form class="mt-5 sm:flex sm:items-center">
+                      <div class="w-full sm:max-w-xs w-1/2">
+                        <label
+                          for="global_span_cost_coefficient"
+                          class="sr-only"
+                        >
+                          Distance maximale parcourue
+                        </label>
+                        <input
+                          type="number"
+                          name="global_span_cost_coefficient"
+                          id="global_span_cost_coefficient"
+                          class="block w-40 rounded-md border-0 py-1.5 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          step={1}
+                          min={1}
+                          onChange={(evt: Event) => {
+                            if (!evt.target) {
+                              return;
+                            }
+                            const target = evt.target as HTMLInputElement;
+                            setGlobalSpanCostCoefficient(
+                              parseInt(target.value)
+                            );
+                          }}
+                          value={globalSpanCostCoefficient()}
                         />
                       </div>
                     </form>
