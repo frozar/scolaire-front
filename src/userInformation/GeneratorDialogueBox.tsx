@@ -25,6 +25,7 @@ export default function () {
   const [maximumTravelDistance, setMaximumTravelDistance] = createSignal(200);
   const [globalSpanCostCoefficient, setGlobalSpanCostCoefficient] =
     createSignal(10);
+  const [timeLimitSeconds, setTimeLimitSeconds] = createSignal(40);
 
   function handlerOnClickSoumettre() {
     closeGeneratorDialogueBox();
@@ -32,7 +33,8 @@ export default function () {
       nbVehicules(),
       vehiculesCapacity(),
       maximumTravelDistance(),
-      globalSpanCostCoefficient()
+      globalSpanCostCoefficient(),
+      timeLimitSeconds()
     );
   }
 
@@ -185,12 +187,42 @@ export default function () {
                     Paramètres avancé du solveur de circuit
                   </h4>
                   <div class="sm:flex sm:items-start justify-center">
-                    <div class="mt-7 mr-2 max-w-xl text-sm text-gray-900 w-1/2">
+                    <div class="mt-5 mr-2 max-w-xl text-sm text-gray-900 w-1/2">
+                      <p class="text-right">
+                        Temps maximum de génération (s) :
+                      </p>
+                    </div>
+                    <form class="mt-3 sm:flex sm:items-center">
+                      <div class="w-full sm:max-w-xs w-1/2">
+                        <label for="time_limit_seconds" class="sr-only">
+                          Temps maximum de génération
+                        </label>
+                        <input
+                          type="number"
+                          name="time_limit_seconds"
+                          id="time_limit_seconds"
+                          class="block w-40 rounded-md border-0 py-1.5 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          step={1}
+                          min={10}
+                          onChange={(evt: Event) => {
+                            if (!evt.target) {
+                              return;
+                            }
+                            const target = evt.target as HTMLInputElement;
+                            setTimeLimitSeconds(parseInt(target.value));
+                          }}
+                          value={timeLimitSeconds()}
+                        />
+                      </div>
+                    </form>
+                  </div>
+                  <div class="sm:flex sm:items-start justify-center">
+                    <div class="mt-5 mr-2 max-w-xl text-sm text-gray-900 w-1/2">
                       <p class="text-right">
                         Distance maximale parcourue (km) :
                       </p>
                     </div>
-                    <form class="mt-5 sm:flex sm:items-center">
+                    <form class="mt-3 sm:flex sm:items-center">
                       <div class="w-full sm:max-w-xs w-1/2">
                         <label for="maximum_travel_distance" class="sr-only">
                           Distance maximale parcourue
@@ -215,19 +247,19 @@ export default function () {
                     </form>
                   </div>
                   <div class="sm:flex sm:items-start justify-center">
-                    <div class="mt-6 mr-2 max-w-xl text-sm text-gray-900 w-1/2">
-                      <p class="text-right">Paramétre homogénisation :</p>
+                    <div class="mt-4 mr-2 max-w-xl text-sm text-gray-900 w-1/2">
+                      <p class="text-right">Paramétre d'homogénisation :</p>
                       <p class="text-right text-xs text-gray-500">
                         GlobalSpanCostCoefficient (x100 000 000)
                       </p>
                     </div>
-                    <form class="mt-5 sm:flex sm:items-center">
+                    <form class="mt-3 sm:flex sm:items-center">
                       <div class="w-full sm:max-w-xs w-1/2">
                         <label
                           for="global_span_cost_coefficient"
                           class="sr-only"
                         >
-                          Distance maximale parcourue
+                          Paramétre d'homogénisation
                         </label>
                         <input
                           type="number"

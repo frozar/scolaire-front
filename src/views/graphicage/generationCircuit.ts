@@ -31,7 +31,8 @@ export function generateCircuit(
   nbVehicles: number,
   vehiculesCapacity: number,
   maximumTravelDistance: number,
-  globalSpanCostCoefficient: number
+  globalSpanCostCoefficient: number,
+  timeLimitSeconds: number
 ) {
   const all_pois = points().map(
     (elt: PointRamassageType): PointIdentityType => {
@@ -102,6 +103,7 @@ export function generateCircuit(
       vehicules_capacity: vehiculesCapacity,
       maximum_travel_distance: maximumTravelDistance,
       global_span_cost_coefficient: globalSpanCostCoefficient,
+      time_limit_seconds: timeLimitSeconds,
     }),
   })
     .then(async (res) => {
