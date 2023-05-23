@@ -20,11 +20,12 @@ declare module "solid-js" {
 
 export default function () {
   const displayed = () => getDisplayedGeneratorDialogueBox();
-  const [nbVehicule, setNbVehicule] = createSignal(1);
+  const [nbVehicules, setNbVehicules] = createSignal(1);
+  const [vehiculesCapacity, setVehiculesCapacity] = createSignal(50);
 
   function handlerOnClickSoumettre() {
     closeGeneratorDialogueBox();
-    generateCircuit(nbVehicule());
+    generateCircuit(nbVehicules(), vehiculesCapacity());
   }
 
   const [buttonRef, setButtonRef] = createSignal<
@@ -118,13 +119,13 @@ export default function () {
                     Paramètres de la génération de circuit
                   </h3>
                   <div class="sm:flex sm:items-start justify-center">
-                    <div class="mt-7 mr-2 max-w-xl text-sm text-gray-500">
-                      <p>Nb véhicule :</p>
+                    <div class="mt-7 mr-2 max-w-xl text-sm text-gray-500 w-1/3">
+                      <p class="text-right">Nombre de véhicules :</p>
                     </div>
                     <form class="mt-5 sm:flex sm:items-center">
-                      <div class="w-full sm:max-w-xs">
+                      <div class="w-full sm:max-w-xs w-1/2">
                         <label for="nb_vehicule" class="sr-only">
-                          Nb véhicule
+                          Nombre de véhicules
                         </label>
                         <input
                           type="number"
@@ -137,13 +138,41 @@ export default function () {
                               return;
                             }
                             const target = evt.target as HTMLInputElement;
-                            setNbVehicule(parseInt(target.value));
+                            setNbVehicules(parseInt(target.value));
                           }}
-                          value={nbVehicule()}
+                          value={nbVehicules()}
                         />
                       </div>
                     </form>
                   </div>
+                  <div class="sm:flex sm:items-start justify-center">
+                    <div class="mt-7 mr-2 max-w-xl text-sm text-gray-500 w-1/3">
+                      <p class="text-right">Capacité des véhicules :</p>
+                    </div>
+                    <form class="mt-5 sm:flex sm:items-center">
+                      <div class="w-full sm:max-w-xs w-1/2">
+                        <label for="vehicule_capacity" class="sr-only">
+                          Capacité des véhicules
+                        </label>
+                        <input
+                          type="number"
+                          name="vehicule_capacity"
+                          id="vehicule_capacity"
+                          class="block w-40 rounded-md border-0 py-1.5 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          min={1}
+                          onChange={(evt: Event) => {
+                            if (!evt.target) {
+                              return;
+                            }
+                            const target = evt.target as HTMLInputElement;
+                            setVehiculesCapacity(parseInt(target.value));
+                          }}
+                          value={vehiculesCapacity()}
+                        />
+                      </div>
+                    </form>
+                  </div>
+
                   <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
                     <button
                       ref={setButtonRef}
