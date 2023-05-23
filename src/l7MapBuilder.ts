@@ -66,7 +66,11 @@ export function buildMapL7(div: HTMLDivElement) {
   });
 
   createEffect(() => {
-    currentTileLayer()?.remove();
+    leafletMap.eachLayer(function (layer) {
+      if (layer instanceof L.TileLayer) {
+        layer.remove();
+      }
+    });
     currentTileLayer()?.addTo(leafletMap);
   });
 
