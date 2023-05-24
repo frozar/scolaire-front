@@ -29,7 +29,7 @@ function compute_unplanned_stops(
 
 export function generateCircuit(
   nbVehicles: number,
-  vehiculesCapacity: number,
+  vehiclesCapacity: number,
   maximumTravelDistance: number,
   globalSpanCostCoefficient: number,
   timeLimitSeconds: number
@@ -104,7 +104,7 @@ export function generateCircuit(
       ramassage_ids: ramassageIds,
       etablissement_ids: etablissementIds,
       num_vehicles: nbVehicles,
-      vehicules_capacity: vehiculesCapacity,
+      vehicles_capacity: vehiclesCapacity,
       maximum_travel_distance: maximumTravelDistance,
       global_span_cost_coefficient: globalSpanCostCoefficient,
       time_limit_seconds: timeLimitSeconds,

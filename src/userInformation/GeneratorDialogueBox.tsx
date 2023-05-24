@@ -21,8 +21,8 @@ declare module "solid-js" {
 
 export default function () {
   const displayed = () => getDisplayedGeneratorDialogueBox();
-  const [nbVehicules, setNbVehicules] = createSignal(2);
-  const [vehiculesCapacity, setVehiculesCapacity] = createSignal(50);
+  const [nbVehicles, setNbVehicles] = createSignal(2);
+  const [vehiclesCapacity, setVehiclesCapacity] = createSignal(50);
   const [maximumTravelDistance, setMaximumTravelDistance] = createSignal(200);
   const [globalSpanCostCoefficient, setGlobalSpanCostCoefficient] =
     createSignal(10);
@@ -31,8 +31,8 @@ export default function () {
   function handlerOnClickSoumettre() {
     closeGeneratorDialogueBox();
     generateCircuit(
-      nbVehicules(),
-      vehiculesCapacity(),
+      nbVehicles(),
+      vehiclesCapacity(),
       maximumTravelDistance(),
       globalSpanCostCoefficient(),
       timeLimitSeconds()
@@ -135,13 +135,13 @@ export default function () {
                     </div>
                     <form class="mt-5 sm:flex sm:items-center">
                       <div class="w-full sm:max-w-xs w-1/2">
-                        <label for="nb_vehicule" class="sr-only">
+                        <label for="nb_vehicle" class="sr-only">
                           Nombre de véhicules
                         </label>
                         <input
                           type="number"
-                          name="nb_vehicule"
-                          id="nb_vehicule"
+                          name="nb_vehicle"
+                          id="nb_vehicle"
                           class="block w-40 rounded-md border-0 py-1.5 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                           min={1}
                           onChange={(evt: Event) => {
@@ -149,9 +149,9 @@ export default function () {
                               return;
                             }
                             const target = evt.target as HTMLInputElement;
-                            setNbVehicules(parseInt(target.value));
+                            setNbVehicles(parseInt(target.value));
                           }}
-                          value={nbVehicules()}
+                          value={nbVehicles()}
                         />
                       </div>
                     </form>
@@ -162,13 +162,13 @@ export default function () {
                     </div>
                     <form class="mt-5 sm:flex sm:items-center">
                       <div class="w-full sm:max-w-xs w-1/2">
-                        <label for="vehicule_capacity" class="sr-only">
+                        <label for="vehicle_capacity" class="sr-only">
                           Capacité des véhicules
                         </label>
                         <input
                           type="number"
-                          name="vehicule_capacity"
-                          id="vehicule_capacity"
+                          name="vehicle_capacity"
+                          id="vehicle_capacity"
                           class="block w-40 rounded-md border-0 py-1.5 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                           min={1}
                           onChange={(evt: Event) => {
@@ -176,9 +176,9 @@ export default function () {
                               return;
                             }
                             const target = evt.target as HTMLInputElement;
-                            setVehiculesCapacity(parseInt(target.value));
+                            setVehiclesCapacity(parseInt(target.value));
                           }}
-                          value={vehiculesCapacity()}
+                          value={vehiclesCapacity()}
                         />
                       </div>
                     </form>
