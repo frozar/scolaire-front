@@ -23,10 +23,10 @@ export default function () {
   const displayed = () => getDisplayedGeneratorDialogueBox();
   const [nbVehicles, setNbVehicles] = createSignal(2);
   const [vehiclesCapacity, setVehiclesCapacity] = createSignal(50);
+  const [timeLimitSeconds, setTimeLimitSeconds] = createSignal(40);
   const [maximumTravelDistance, setMaximumTravelDistance] = createSignal(200);
   const [globalSpanCostCoefficient, setGlobalSpanCostCoefficient] =
     createSignal(10);
-  const [timeLimitSeconds, setTimeLimitSeconds] = createSignal(40);
 
   function handlerOnClickSoumettre() {
     closeGeneratorDialogueBox();
@@ -205,6 +205,7 @@ export default function () {
                           class="block w-40 rounded-md border-0 py-1.5 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                           step={1}
                           min={10}
+                          max={50}
                           onChange={(evt: Event) => {
                             if (!evt.target) {
                               return;
