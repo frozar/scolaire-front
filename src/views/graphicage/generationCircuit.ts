@@ -34,6 +34,8 @@ export function generateCircuit(
   globalSpanCostCoefficient: number,
   timeLimitSeconds: number
 ) {
+  // TODO: This must be rewrite. The existing lines should drive the sanity check.
+  // Which students are not already taken by a bus?
   const all_pois = points().map(
     (elt: PointRamassageType): PointIdentityType => {
       const { id, id_point, nature } = elt;
@@ -74,6 +76,8 @@ export function generateCircuit(
     return;
   }
 
+  // Even if some lin arrive to an etablissement, it doesn't mean the etablissement
+  // doesn't expect more student to come
   if (unplanned_etablissement.length == 0) {
     addNewUserInformation({
       displayed: true,

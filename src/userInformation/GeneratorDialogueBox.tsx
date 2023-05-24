@@ -11,6 +11,7 @@ import { assertIsNode } from "../utils";
 import { generateCircuit } from "../views/graphicage/generationCircuit";
 
 declare module "solid-js" {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace JSX {
     interface Directives {
       ClickOutside: (e: MouseEvent) => void;
