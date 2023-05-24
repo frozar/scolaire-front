@@ -251,9 +251,10 @@ export default function () {
   };
 
   const handleColorPicker = (event: any) => {
-    onLine()?.line.setStyle({
+    onLine()?.line?.setStyle({
       color: event.target.value,
     });
+    onLine()?.line?.redraw();
   };
 
   const handleColorChanged = (e) => {
