@@ -6,6 +6,7 @@ import {
   Switch,
   Match,
   createEffect,
+  createSignal,
 } from "solid-js";
 import InfoPointName from "./InfoPointName";
 import {
@@ -14,6 +15,8 @@ import {
   PointEtablissementType,
   PointRamassageType,
   InfoPanelEnum,
+  MessageLevelEnum,
+  MessageTypeEnum,
 } from "./type";
 import { PointIdentityType, LineType } from "./type";
 import {
@@ -28,9 +31,14 @@ import {
   setBusLineSelected,
   timelineStopNames,
   setTimelineStopNames,
+  addNewUserInformation,
 } from "./signaux";
 import { useStateAction } from "./StateAction";
 import { getToken } from "./auth/auth";
+import { onLine } from "./line/BusLinesFunction";
+
+export const [pickerColor, setPickerColor] = createSignal("");
+
 const [, { isInAddLineMode, isInReadMode, resetLineUnderConstruction }] =
   useStateAction();
 type PointToDisplayType = {
@@ -242,6 +250,39 @@ export default function () {
     }
   };
 
+  const handleColorPicker = (e) => {
+    onLine().line.setStyle({
+      color: e.target.value,
+    });
+    onLine().line.redraw();
+  };
+
+  const handleColorChanged = (e) => {
+    const id = onLine().id_bus_line;
+    const color = e.target.value;
+
+    getToken()
+      .then((token) => {
+        fetch(import.meta.env.VITE_BACK_URL + "/line/color", {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          method: "PATCH",
+          body: JSON.stringify({ id: id, color: color }),
+        });
+      })
+      .catch((err) => {
+        addNewUserInformation({
+          displayed: true,
+          level: MessageLevelEnum.error,
+          type: MessageTypeEnum.global,
+          content:
+            "Désoler une erreur est survenue lors de la mise à jour de la couleur pour la ligne",
+        });
+      });
+  };
+
   return (
     <div
       style={{
@@ -302,6 +343,17 @@ export default function () {
           </Show>
         </Match>
         <Match when={infoToDisplay() == InfoPanelEnum.line}>
+          <div class="flex items-center gap-3">
+            Couleur de la ligne
+            <input
+              id="nativeColorPicker1"
+              type="color"
+              class="border-[0.5px] p-0 border-slate-400"
+              value={pickerColor()}
+              onInput={handleColorPicker}
+              onChange={handleColorChanged}
+            />
+          </div>
           <Timeline />
         </Match>
         <Match
