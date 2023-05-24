@@ -250,15 +250,15 @@ export default function () {
     }
   };
 
-  const handleColorPicker = (event: any) => {
-    onLine()?.line?.setStyle({
-      color: event.target.value,
+  const handleColorPicker = (e) => {
+    onLine().line.setStyle({
+      color: e.target.value,
     });
-    onLine()?.line?.redraw();
+    onLine().line.redraw();
   };
 
   const handleColorChanged = (e) => {
-    const id = onLine()?.id_bus_line;
+    const id = onLine().id_bus_line;
     const color = e.target.value;
 
     getToken()
