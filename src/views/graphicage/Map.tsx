@@ -1,6 +1,6 @@
 import "leaflet/dist/leaflet.css";
 
-import { Show, onMount } from "solid-js";
+import { Show, onCleanup, onMount } from "solid-js";
 
 import PointsRamassageAndEtablissement, {
   fetchPointsRamassage,
@@ -12,9 +12,12 @@ import { useStateAction } from "../../StateAction";
 import LineUnderConstruction from "../../line/LineUnderConstruction";
 import {
   addNewUserInformation,
+  closeRemoveConfirmationBox,
   disableSpinningWheel,
   enableSpinningWheel,
   setImportConfirmation,
+  fetchBusLines,
+  setDragAndDropConfirmation,
   setPoints,
 } from "../../signaux";
 import {
@@ -25,11 +28,28 @@ import {
 import ControlMapMenu from "./rightMapMenu/RightMapMenu";
 import { InformationBoard } from "./rightMapMenu/InformationBoard";
 import { getToken } from "../../auth/auth";
-
-const [, { isInAddLineMode }] = useStateAction();
+import { addBusLine } from "../../request";
+import {
+  displayAddLineMessage,
+  displayRemoveLineMessage,
+} from "../../userInformation/utils";
+const [
+  ,
+  {
+    setModeAddLine,
+    setModeRemoveLine,
+    isInAddLineMode,
+    isInReadMode,
+    resetLineUnderConstruction,
+    getLineUnderConstruction,
+    setModeRead,
+    isInRemoveLineMode,
+  },
+  history,
+] = useStateAction();
 
 function buildMap(div: HTMLDivElement) {
-  const option: string = "l7";
+  const option = "l7";
   switch (option) {
     case "l7": {
       buildMapL7(div);
@@ -38,6 +58,88 @@ function buildMap(div: HTMLDivElement) {
   }
 }
 
+// Handler the Undo/Redo from the user
+function undoRedoHandler({ ctrlKey, shiftKey, code }: KeyboardEvent) {
+  // // @ts-expect-error
+  // const keyboard = navigator.keyboard;
+  // // @ts-expect-error
+  // keyboard.getLayoutMap().then((keyboardLayoutMap) => {
+  //   const upKey = keyboardLayoutMap.get(code);
+  //   if (upKey === "x") {
+  //     if (history.undos && history.undos[0] && history.undos[0][0]) {
+  //       const anUndo = history.undos[0][0];
+  //     }
+  //   }
+  // });
+
+  if (ctrlKey) {
+    // @ts-expect-error: Currently the 'keyboard' field doesn't exist on 'navigator'
+    const keyboard = navigator.keyboard;
+    // @ts-expect-error: The type 'KeyboardLayoutMap' is not available
+    keyboard.getLayoutMap().then((keyboardLayoutMap) => {
+      const upKey = keyboardLayoutMap.get(code);
+      if (upKey === "z") {
+        if (!shiftKey && history.isUndoable()) {
+          history.undo();
+        } else if (shiftKey && history.isRedoable()) {
+          history.redo();
+        }
+      }
+    });
+  }
+}
+
+function escapeHandler({ code }: KeyboardEvent) {
+  if (code === "Escape") {
+    if (isInReadMode()) {
+      return;
+    }
+
+    resetLineUnderConstruction();
+    setModeRead();
+  }
+}
+
+function enterHandler({ code }: KeyboardEvent) {
+  if (code === "Enter") {
+    if (!isInAddLineMode()) {
+      return;
+    }
+    const ids_point = getLineUnderConstruction().stops.map(function (value) {
+      return value["id_point"];
+    });
+
+    addBusLine(ids_point).then(async (res) => {
+      await res.json();
+      resetLineUnderConstruction();
+      setModeRead();
+      fetchBusLines();
+    });
+  }
+}
+
+function toggleLineUnderConstruction({ code }: KeyboardEvent) {
+  // @ts-expect-error: Currently the 'keyboard' field doesn't exist on 'navigator'
+  const keyboard = navigator.keyboard;
+  // @ts-expect-error: The type 'KeyboardLayoutMap' is not available
+  keyboard.getLayoutMap().then((keyboardLayoutMap) => {
+    const upKey = keyboardLayoutMap.get(code);
+    if (upKey === "l") {
+      setModeAddLine();
+      displayAddLineMessage();
+    }
+    if (upKey === "d") {
+      // Toggle behavior
+      if (!isInRemoveLineMode()) {
+        setModeRemoveLine();
+        displayRemoveLineMessage();
+      } else {
+        setModeRead();
+        closeRemoveConfirmationBox();
+      }
+    }
+  });
+}
 export default function () {
   let mapDiv: HTMLDivElement;
   let mapDragDropDiv: HTMLDivElement;
@@ -139,8 +241,20 @@ export default function () {
       },
       false
     );
-    return buildMap(mapDiv);
+    document.addEventListener("keydown", undoRedoHandler);
+    document.addEventListener("keydown", escapeHandler);
+    document.addEventListener("keydown", enterHandler);
+    document.addEventListener("keydown", toggleLineUnderConstruction);
+    buildMap(mapDiv);
   });
+
+  onCleanup(() => {
+    document.removeEventListener("keydown", undoRedoHandler);
+    document.removeEventListener("keydown", escapeHandler);
+    document.removeEventListener("keydown", enterHandler);
+    document.removeEventListener("keydown", toggleLineUnderConstruction);
+  });
+
   return (
     <>
       <div ref={mapDragDropDiv}>
