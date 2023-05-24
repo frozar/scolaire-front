@@ -90,10 +90,18 @@ export type removeConfirmationType = {
   id_bus_line: number | null;
 };
 
+export type removeRamassageConfirmationType = {
+  displayed: boolean;
+  item: StopLineItem | null;
+};
+
 export type clearConfirmationType = {
   displayed: boolean;
 };
 
+export type ImportCsvBoxType = {
+  displayed: boolean;
+};
 export type TileId =
   | "OpenStreetMap_Mapnik"
   | "Stadia_AlidadeSmooth"
@@ -157,4 +165,14 @@ export type StopItemType = {
 export type PolylineRouteType = {
   latlngs: L.LatLng[];
   busLine: LineType;
+};
+
+export type EtablissementItemType = {
+  id: number;
+  name: string;
+  quantity: number;
+  nbLine: number;
+  lon: number;
+  lat: number;
+  selected: boolean;
 };

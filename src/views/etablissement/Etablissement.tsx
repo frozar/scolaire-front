@@ -1,9 +1,9 @@
 import { createStore } from "solid-js/store";
 import { AiOutlineSearch } from "solid-icons/ai";
-import EditStop, { setDataToEdit, toggleEditStop } from "./EditStop";
+import EditStop, { setDataToEdit, toggleEditStop } from "./EditEtablissement";
 import { For, createEffect, createSignal, onMount } from "solid-js";
-import StopItems from "./StopItem";
-import { ReturnMessageType, StopItemType } from "../../type";
+import EtablissementItem from "./EtablissementItem";
+import { EtablissementItemType, ReturnMessageType } from "../../type";
 import { displayDownloadErrorMessage } from "../../userInformation/utils";
 import { getExportDate } from "../graphicage/rightMapMenu/export/export";
 import RemoveRamassageConfirmation from "../../userInformation/RemoveRamassageConfirmation";
@@ -16,25 +16,29 @@ import {
 import ImportCsv from "../../userInformation/ImportCsv";
 import { download } from "../../utils";
 
-export const [selected, setSelected] = createSignal<StopItemType[]>([]);
-export const [stop, setStop] = createStore<StopItemType[]>([]);
-export const [displaystop, setDisplayStop] = createStore<StopItemType[]>([]);
+export const [selected, setSelected] = createSignal<EtablissementItemType[]>(
+  []
+);
 
 const [keyword, setkeyword] = createSignal<string>("");
 
-export const addSelected = (item: StopItemType) =>
+export const [stop, setStop] = createStore<EtablissementItemType[]>([]);
+export const [displaystop, setDisplayStop] = createStore<
+  EtablissementItemType[]
+>([]);
+export const addSelected = (item: EtablissementItemType) =>
   setSelected([...selected(), item]);
 
-export const removeSelected = (item: StopItemType) => {
+export const removeSelected = (item: EtablissementItemType) => {
   const items = selected().filter((stop) => stop.id != item.id);
   setSelected(items);
 };
 
 export const [isChecked, setIsChecked] = createSignal(false);
 
-export function displayArret() {
+export function displayEtablissement() {
   fetch(
-    import.meta.env.VITE_BACK_URL + "/ramassages_associated_bus_lines_info",
+    import.meta.env.VITE_BACK_URL + "/etablissements_associated_bus_lines_info",
     {
       method: "GET",
       headers: {
@@ -51,7 +55,6 @@ export function displayArret() {
           id: number;
           name: string;
           quantity: number;
-          nb_etablissement: number;
           nb_line: number;
           lon: number;
           lat: number;
@@ -65,9 +68,9 @@ export function displayArret() {
                 name: elt.name,
                 quantity: elt.quantity,
                 nbLine: elt.nb_line,
-                nbEtablissement: elt.nb_etablissement,
                 lon: elt.lon,
                 lat: elt.lat,
+                selected: false,
               };
             })
             .sort((a, b) => a.name.localeCompare(b.name))
@@ -78,7 +81,7 @@ export function displayArret() {
 
 export default function () {
   createEffect(() => {
-    displayArret();
+    displayEtablissement();
   });
   const [refSelect, setRefSelect] = createSignal<HTMLSelectElement>();
   let refCheckbox!: HTMLInputElement;
@@ -103,8 +106,9 @@ export default function () {
     refCheckbox?.addEventListener("change", () => {
       setIsChecked(!isChecked());
     });
+
     onMount(() => {
-      displayArret();
+      displayEtablissement();
     });
   });
   let DragDropDiv: HTMLDivElement;
@@ -180,7 +184,7 @@ export default function () {
                   ramassage: res.success.ramassage,
                 },
               });
-              displayArret();
+              displayEtablissement();
               disableSpinningWheel();
             });
         }
@@ -203,7 +207,7 @@ export default function () {
       <div class="flex w-full" ref={etablissementDiv}>
         <div id="arrets-board">
           <header>
-            <h1>Gérer les arrêts</h1>
+            <h1>Gérer les établissements</h1>
             <div id="filters">
               <div class="left">
                 <select ref={setRefSelect}>
@@ -248,7 +252,8 @@ export default function () {
                   class="btn-arret-export-import"
                   onClick={() => {
                     fetch(
-                      import.meta.env.VITE_BACK_URL + "/export/ramassages_input"
+                      import.meta.env.VITE_BACK_URL +
+                        "/export/etablissement_input"
                     )
                       .then((response) => {
                         if (!response.ok) {
@@ -264,7 +269,7 @@ export default function () {
 
                         const { year, month, day, hour, minute } =
                           getExportDate();
-                        const fileName = `${year}-${month}-${day}_${hour}-${minute}_ramassages.csv`;
+                        const fileName = `${year}-${month}-${day}_${hour}-${minute}_etablissements.csv`;
                         download(fileName, blob);
                       })
                       .catch(() => {
@@ -300,7 +305,6 @@ export default function () {
                       Nom
                     </th>
                     <th scope="col">Nombre d'élèves</th>
-                    <th scope="col">Nombre d’établissements desservis</th>
                     <th scope="col">Nombre de lignes</th>
                     <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-0">
                       <span class="">Actions</span>
@@ -313,7 +317,9 @@ export default function () {
                       e.name.toUpperCase().includes(keyword().toUpperCase())
                     )}
                   >
-                    {(fields) => <StopItems item={fields} />}
+                    {(fields) => {
+                      return <EtablissementItem item={fields} />;
+                    }}
                   </For>
                 </tbody>
               </table>

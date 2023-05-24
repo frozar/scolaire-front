@@ -1,17 +1,24 @@
 import { createEffect, on, onMount } from "solid-js";
-import { StopItemType } from "../../type";
-import { setDataToEdit, toggleEditStop } from "./EditStop";
-import { addSelected, removeSelected, selected, setStop } from "./Stop";
-import { isChecked } from "./Stop";
+import { EtablissementItemType } from "../../type";
+import { setDataToEdit, toggleEditStop } from "./EditEtablissement";
+import {
+  addSelected,
+  removeSelected,
+  selected,
+  setStop,
+} from "./Etablissement";
+import { isChecked } from "./Etablissement";
 import { setRemoveRamassageConfirmation } from "../../signaux";
 
-export default function (props: { item: StopItemType }) {
+export default function (props: { item: EtablissementItemType }) {
   let checkbox!: HTMLInputElement;
   const item = props.item;
+
   const handleClickEdit = () => {
     setDataToEdit({ ...item });
     toggleEditStop();
   };
+
   const handleClickDelete = () => {
     setRemoveRamassageConfirmation({
       displayed: true,
@@ -65,7 +72,6 @@ export default function (props: { item: StopItemType }) {
         {item.name}
       </td>
       <td>{item.quantity}</td>
-      <td>{item.nbEtablissement}</td>
       <td>{item.nbLine}</td>
       <td>
         <a onClick={handleClickEdit} href="#" class="text-[#0CC683] mr-2">

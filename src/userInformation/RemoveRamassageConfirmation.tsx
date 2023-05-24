@@ -3,10 +3,15 @@ import { Transition } from "solid-transition-group";
 
 import ClickOutside from "../ClickOutside";
 import {
-  getImportConfirmation,
-  closeDragAndDropConfirmationBox,
+  addNewUserInformation,
+  getRemoveRamassageConfirmation,
+  closeRemoveRamassageConfirmationBox,
 } from "../signaux";
+
+import { deleteRamassage } from "../request";
+import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { assertIsNode } from "../utils";
+import { displayArret } from "../views/stop/Stop";
 
 declare module "solid-js" {
   namespace JSX {
@@ -17,10 +22,54 @@ declare module "solid-js" {
 }
 
 export default function () {
-  const displayed = () => getImportConfirmation()["displayed"];
+  const displayed = () => getRemoveRamassageConfirmation()["displayed"];
+  const id_ramassage = () => getRemoveRamassageConfirmation().item?.id;
+  const name_ramassage = () => getRemoveRamassageConfirmation().item?.name;
 
   function handlerOnClickValider() {
-    closeDragAndDropConfirmationBox();
+    const idToCheck = id_ramassage();
+    if (!idToCheck) {
+      return;
+    }
+
+    const idToRemove: number = idToCheck;
+    deleteRamassage(idToRemove)
+      .then((res) => {
+        return res.json();
+      })
+      .then((res: any) => {
+        console.log(res);
+        const nbDelete = res.split(" ").at(-1);
+        if (nbDelete != "0") {
+          addNewUserInformation({
+            displayed: true,
+            level: MessageLevelEnum.success,
+            type: MessageTypeEnum.removeLine,
+            content: `Le  ${idToRemove} a bien été supprimée`,
+          });
+          closeRemoveRamassageConfirmationBox();
+        } else {
+          addNewUserInformation({
+            displayed: true,
+            level: MessageLevelEnum.error,
+            type: MessageTypeEnum.removeLine,
+            content: `Echec de la suppression de la ligne ${idToRemove}`,
+          });
+          closeRemoveRamassageConfirmationBox();
+        }
+        displayArret();
+      })
+      .catch((error) => {
+        console.error("Error during suppression", error);
+        addNewUserInformation({
+          displayed: true,
+          level: MessageLevelEnum.error,
+          type: MessageTypeEnum.removeLine,
+          content: `Impossible de supprimer la ligne ${id_ramassage()}`,
+        });
+        closeRemoveRamassageConfirmationBox();
+        displayArret();
+      });
   }
 
   const [buttonRef, setButtonRef] = createSignal<
@@ -50,7 +99,7 @@ export default function () {
           role="dialog"
           aria-modal="true"
         >
-          <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+          <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
 
           {/* Forum github pour les nested transitions
           https://github.com/reactjs/react-transition-group/issues/558 */}
@@ -82,7 +131,7 @@ export default function () {
 
                     assertIsNode(e.target);
                     if (!refDialogueBox.contains(e.target)) {
-                      closeDragAndDropConfirmationBox();
+                      closeRemoveRamassageConfirmationBox();
                     }
                   }}
                 >
@@ -90,7 +139,7 @@ export default function () {
                     <button
                       type="button"
                       class="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                      onClick={closeDragAndDropConfirmationBox}
+                      onClick={closeRemoveRamassageConfirmationBox}
                     >
                       <span class="sr-only">Close</span>
                       <svg
@@ -111,93 +160,44 @@ export default function () {
                   </div>
                   <div class="sm:flex sm:items-start">
                     <div class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
-                      <Show
-                        when={getImportConfirmation().metrics.total == 0}
-                        fallback={
-                          <svg
-                            class="h-6 w-6 text-green-600"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke-width="1.5"
-                            stroke="currentColor"
-                            aria-hidden="true"
-                          >
-                            <path
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              d="M4.5 12.75l6 6 9-13.5"
-                            />
-                          </svg>
-                        }
+                      <svg
+                        class="h-6 w-6 text-red-600"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.5"
+                        stroke="currentColor"
+                        aria-hidden="true"
                       >
-                        <svg
-                          class="h-6 w-6 text-red-600"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke-width="1.5"
-                          stroke="currentColor"
-                          aria-hidden="true"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"
-                          />
-                        </svg>
-                      </Show>
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"
+                        />
+                      </svg>
                     </div>
                     <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
                       <h3
                         class="text-base font-semibold leading-6 text-gray-900"
                         id="modal-title"
                       >
-                        Importation
+                        Etes-vous sûr de vouloir supprimer le point de ramassage{" "}
+                        {name_ramassage()}
                       </h3>
-                      <Show when={getImportConfirmation().message != ""}>
-                        <div class="mt-2">
-                          <p class="text-sm text-gray-500">
-                            {getImportConfirmation().message}
-                          </p>
-                        </div>
-                      </Show>
-                      <Show when={getImportConfirmation().metrics.total > 0}>
-                        <div class="mt-2">
-                          <p class="text-sm text-gray-500">
-                            Nombre d'éléments traités :
-                            {" " +
-                              getImportConfirmation().metrics.success +
-                              "/" +
-                              getImportConfirmation().metrics.total}
-                          </p>
-                        </div>
-                      </Show>
-                      <Show
-                        when={
-                          getImportConfirmation().error.etablissement.length !=
-                          0
-                        }
-                      >
-                        <div class="mt-2">
-                          Établissements non-traités :
-                          <p class="text-sm text-gray-500">
-                            {getImportConfirmation().error.etablissement.join(
-                              ", "
-                            )}
-                          </p>
-                        </div>
-                      </Show>
-                      <Show
-                        when={
-                          getImportConfirmation().error.ramassage.length != 0
-                        }
-                      >
-                        <div class="mt-2">
-                          Lieux de ramassage non-traités :
-                          <p class="text-sm text-gray-500">
-                            {getImportConfirmation().error.ramassage.join(", ")}
-                          </p>
-                        </div>
-                      </Show>
+                      <div class="mt-2">
+                        <p class="text-sm text-gray-500">
+                          Cette action supprimera :
+                        </p>
+
+                        <ul class="text-sm text-gray-500 standard-list">
+                          <li>
+                            le nombre d'élèves allant vers un établissement (
+                            <span class="font-semibold text-sm text-gray-900">
+                              {getRemoveRamassageConfirmation().item?.quantity}
+                            </span>{" "}
+                            élève(s))
+                          </li>
+                        </ul>
+                      </div>
                     </div>
                   </div>
                   <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
@@ -207,7 +207,14 @@ export default function () {
                       class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
                       onClick={handlerOnClickValider}
                     >
-                      OK
+                      Valider
+                    </button>
+                    <button
+                      type="button"
+                      class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                      onClick={closeRemoveRamassageConfirmationBox}
+                    >
+                      Annuler
                     </button>
                   </div>
                 </div>

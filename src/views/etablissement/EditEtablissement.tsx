@@ -1,13 +1,18 @@
 import { CgCloseO } from "solid-icons/cg";
 import { HiSolidLocationMarker } from "solid-icons/hi";
 import { Show, createSignal } from "solid-js";
-import { MessageLevelEnum, MessageTypeEnum, StopItemType } from "../../type";
-import { displayArret } from "./Stop";
+import {
+  MessageLevelEnum,
+  MessageTypeEnum,
+  EtablissementItemType,
+} from "../../type";
 import { addNewUserInformation } from "../../signaux";
+import { displayEtablissement } from "./Etablissement";
 
 export const [toggledEditStop, setToggledEditStop] = createSignal(false);
 export const toggleEditStop = () => setToggledEditStop(!toggledEditStop());
-export const [dataToEdit, setDataToEdit] = createSignal<StopItemType>();
+export const [dataToEdit, setDataToEdit] =
+  createSignal<EtablissementItemType>();
 
 export default function () {
   let name!: HTMLInputElement;
@@ -43,7 +48,7 @@ export default function () {
       });
       return;
     }
-    fetch(import.meta.env.VITE_BACK_URL + "/point_ramassage", {
+    fetch(import.meta.env.VITE_BACK_URL + "/point_etablissement", {
       method: "post",
       headers: {
         "Content-Type": "application/json",
@@ -64,7 +69,7 @@ export default function () {
             displayed: true,
             level: MessageLevelEnum.success,
             type: MessageTypeEnum.global,
-            content: "L'arrêt a été crée",
+            content: "L'établissement a été crée",
           });
           toggleEditStop();
         } else {
@@ -77,7 +82,7 @@ export default function () {
               "Erreur lors de la modification : \n" + res.message.split(":")[1],
           });
         }
-        displayArret();
+        displayEtablissement();
       });
   };
 
@@ -111,7 +116,7 @@ export default function () {
       });
       return;
     }
-    fetch(import.meta.env.VITE_BACK_URL + "/point_ramassage", {
+    fetch(import.meta.env.VITE_BACK_URL + "/point_etablissement", {
       method: "put",
       headers: {
         "Content-Type": "application/json",
@@ -132,7 +137,7 @@ export default function () {
             displayed: true,
             level: MessageLevelEnum.success,
             type: MessageTypeEnum.global,
-            content: "L'arrêt a été modifié",
+            content: "L'établissement a été modifié",
           });
           toggleEditStop();
         } else {
@@ -143,7 +148,7 @@ export default function () {
             content: "Erreur lors de la modification : " + res,
           });
         }
-        displayArret();
+        displayEtablissement();
       });
   };
 
@@ -155,7 +160,9 @@ export default function () {
         </button>
 
         <h1>
-          {dataToEdit() === undefined ? "Ajouter un arrêt" : "Éditer un arrêt"}
+          {dataToEdit() === undefined
+            ? "Ajouter un établissement"
+            : "Éditer un établissement"}
         </h1>
       </header>
 
