@@ -111,8 +111,7 @@ export function openExportConfirmationBox() {
 }
 
 const [displayedGeneratorDialogueBox, setDisplayedGeneratorDialogueBox] =
-  // createSignal(false);
-  createSignal(true);
+  createSignal(false);
 
 export function openGeneratorDialogueBox() {
   setDisplayedGeneratorDialogueBox(true);
