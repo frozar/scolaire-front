@@ -10,6 +10,7 @@ import { PointIdentityType, InfoPanelEnum } from "../type";
 import { linkMap } from "../global/linkPointIdentityCircle";
 import { useStateAction } from "../StateAction";
 import { setPickerColor } from "../InformationContent";
+import { LineString, MultiLineString } from "geojson";
 
 const [, { isInReadMode }] = useStateAction();
 export function getLatLngs(stops: PointIdentityType[]): L.LatLng[] {
@@ -29,7 +30,10 @@ export function getBusLinePolyline(color: string, latlngs: L.LatLng[]) {
   });
 }
 
-export const [onLine, setOnLine] = createSignal();
+export const [onLine, setOnLine] = createSignal<{
+  line: L.Polyline<LineString | MultiLineString, any> | undefined;
+  id_bus_line: number | undefined;
+}>();
 
 export function busLinePolylineAttachEvent(
   self: L.Polyline,
