@@ -31,9 +31,9 @@ export function getBusLinePolyline(color: string, latlngs: L.LatLng[]) {
 }
 
 export const [onLine, setOnLine] = createSignal<{
-  line: L.Polyline<LineString | MultiLineString, any> | undefined;
-  id_bus_line: number | undefined;
-}>();
+  line: L.Polyline<LineString | MultiLineString>;
+  id_bus_line: number;
+}>({ line: L.polyline([{ lat: 0, lng: 0 }]), id_bus_line: 0 });
 
 export function busLinePolylineAttachEvent(
   self: L.Polyline,
