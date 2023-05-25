@@ -1,0 +1,7 @@
+#!/bin/bash
+
+echo "****** Launch front server *********"
+
+script_directory=$(dirname $(readlink -f $0))
+cd $script_directory
+npm run dev
