@@ -9,6 +9,7 @@ import {
 
 import { assertIsNode } from "../utils";
 import { generateCircuit } from "../views/graphicage/generationCircuit";
+import { mapDiv } from "../views/graphicage/Map";
 
 declare module "solid-js" {
   // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -47,7 +48,23 @@ export default function () {
     buttonRef()?.focus();
   });
 
-  let refDialogueBox: HTMLDivElement | undefined;
+  const [refDialogueBox, setRefDialogBox] = createSignal<HTMLDivElement>(
+    document.createElement("div")
+  );
+
+  document.addEventListener("click", () => {
+    refDialogueBox().focus();
+  });
+
+  createEffect(() => {
+    refDialogueBox().focus();
+    refDialogueBox().addEventListener("keyup", (e) => {
+      if (e.key == "Escape") {
+        closeGeneratorDialogueBox();
+        mapDiv().focus();
+      }
+    });
+  });
 
   return (
     <Transition
@@ -84,9 +101,9 @@ export default function () {
               <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
                 <div
                   class="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6"
-                  ref={refDialogueBox}
+                  ref={setRefDialogBox}
                   use:ClickOutside={(e: MouseEvent) => {
-                    if (!refDialogueBox || !e.target) {
+                    if (!refDialogueBox() || !e.target) {
                       return;
                     }
 
@@ -97,7 +114,7 @@ export default function () {
                     }
 
                     assertIsNode(e.target);
-                    if (!refDialogueBox.contains(e.target)) {
+                    if (!refDialogueBox().contains(e.target)) {
                       closeGeneratorDialogueBox();
                     }
                   }}
