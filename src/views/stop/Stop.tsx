@@ -15,6 +15,7 @@ import {
 } from "../../signaux";
 import ImportCsv from "../../userInformation/ImportCsv";
 import { download } from "../../utils";
+import { getToken } from "../../auth/auth";
 
 export const [selected, setSelected] = createSignal<StopItemType[]>([]);
 export const [stop, setStop] = createStore<StopItemType[]>([]);
@@ -33,47 +34,54 @@ export const removeSelected = (item: StopItemType) => {
 export const [isChecked, setIsChecked] = createSignal(false);
 
 export function displayArret() {
-  fetch(
-    import.meta.env.VITE_BACK_URL + "/ramassages_associated_bus_lines_info",
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  )
-    .then((res) => {
-      return res.json();
-    })
-    .then(
-      (
-        res: {
-          id: number;
-          name: string;
-          quantity: number;
-          nb_etablissement: number;
-          nb_line: number;
-          lon: number;
-          lat: number;
-        }[]
-      ) => {
-        setStop(
-          res
-            .map((elt) => {
-              return {
-                id: elt.id,
-                name: elt.name,
-                quantity: elt.quantity,
-                nbLine: elt.nb_line,
-                nbEtablissement: elt.nb_etablissement,
-                lon: elt.lon,
-                lat: elt.lat,
-              };
-            })
-            .sort((a, b) => a.name.localeCompare(b.name))
+  getToken()
+    .then((token) => {
+      fetch(
+        import.meta.env.VITE_BACK_URL + "/ramassages_associated_bus_lines_info",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${token}`,
+          },
+        }
+      )
+        .then((res) => {
+          return res.json();
+        })
+        .then(
+          (
+            res: {
+              id: number;
+              name: string;
+              quantity: number;
+              nb_etablissement: number;
+              nb_line: number;
+              lon: number;
+              lat: number;
+            }[]
+          ) => {
+            setStop(
+              res
+                .map((elt) => {
+                  return {
+                    id: elt.id,
+                    name: elt.name,
+                    quantity: elt.quantity,
+                    nbLine: elt.nb_line,
+                    nbEtablissement: elt.nb_etablissement,
+                    lon: elt.lon,
+                    lat: elt.lat,
+                  };
+                })
+                .sort((a, b) => a.name.localeCompare(b.name))
+            );
+          }
         );
-      }
-    );
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 }
 
 export default function () {
