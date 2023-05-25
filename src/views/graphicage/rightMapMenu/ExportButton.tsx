@@ -1,24 +1,15 @@
 import { useStateAction } from "../../../StateAction";
 import { openExportConfirmationBox } from "../../../signaux";
 import { CgExport } from "solid-icons/cg";
-import { toggleConfirmStopAddLine } from "../ConfirmStopAddLine";
-
-const [, { isInAddLineMode, getLineUnderConstruction, setModeRead }] =
-  useStateAction();
+import {
+  defineModalToOpen,
+  ConfirmAbortEditionNeedToBeCall,
+} from "../ConfirmStopAddLine";
 
 export default function () {
   const handleClick = () => {
-    const lineInBuild = getLineUnderConstruction().stops.length > 0;
-
-    if (isInAddLineMode() && lineInBuild) {
-      toggleConfirmStopAddLine();
-    } else if (isInAddLineMode()) {
-      setModeRead();
-      openExportConfirmationBox();
-    } else {
-      openExportConfirmationBox();
-    }
-    //
+    defineModalToOpen(openExportConfirmationBox);
+    ConfirmAbortEditionNeedToBeCall();
   };
 
   return (
