@@ -38,50 +38,54 @@ export const removeSelected = (item: EtablissementItemType) => {
 export const [isChecked, setIsChecked] = createSignal(false);
 
 export function displayEtablissement() {
-  getToken().then((token) => {
-    fetch(
-      import.meta.env.VITE_BACK_URL +
-        "/etablissements_associated_bus_lines_info",
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          authorization: `Bearer ${token}`,
-        },
-      }
-    )
-      .then((res) => {
-        return res.json();
-      })
-      .then(
-        (
-          res: {
-            id: number;
-            name: string;
-            quantity: number;
-            nb_line: number;
-            lon: number;
-            lat: number;
-          }[]
-        ) => {
-          setStop(
-            res
-              .map((elt) => {
-                return {
-                  id: elt.id,
-                  name: elt.name,
-                  quantity: elt.quantity,
-                  nbLine: elt.nb_line,
-                  lon: elt.lon,
-                  lat: elt.lat,
-                  selected: false,
-                };
-              })
-              .sort((a, b) => a.name.localeCompare(b.name))
-          );
+  getToken()
+    .then((token) => {
+      fetch(
+        import.meta.env.VITE_BACK_URL +
+          "/etablissements_associated_bus_lines_info",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${token}`,
+          },
         }
-      );
-  });
+      )
+        .then((res) => {
+          return res.json();
+        })
+        .then(
+          (
+            res: {
+              id: number;
+              name: string;
+              quantity: number;
+              nb_line: number;
+              lon: number;
+              lat: number;
+            }[]
+          ) => {
+            setStop(
+              res
+                .map((elt) => {
+                  return {
+                    id: elt.id,
+                    name: elt.name,
+                    quantity: elt.quantity,
+                    nbLine: elt.nb_line,
+                    lon: elt.lon,
+                    lat: elt.lat,
+                    selected: false,
+                  };
+                })
+                .sort((a, b) => a.name.localeCompare(b.name))
+            );
+          }
+        );
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 }
 
 export default function () {
