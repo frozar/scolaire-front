@@ -457,3 +457,7 @@ code {
   background-color: var(--red-base);
   color: white;
 }
+
+*:focus {
+  outline: 0px solid transparent;
+}
