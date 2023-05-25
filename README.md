@@ -6,6 +6,12 @@ This application has been initiated by this command `npx degit solidjs/templates
 npm i -f
 ```
 
+## Deployement
+
+```sh
+./deploy
+```
+
 ## Usage
 
 Those templates dependencies are maintained via [pnpm](https://pnpm.io) via `pnpm up -Lri`.

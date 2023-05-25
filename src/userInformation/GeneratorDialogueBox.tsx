@@ -11,6 +11,7 @@ import { assertIsNode } from "../utils";
 import { generateCircuit } from "../views/graphicage/generationCircuit";
 
 declare module "solid-js" {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace JSX {
     interface Directives {
       ClickOutside: (e: MouseEvent) => void;
@@ -20,12 +21,22 @@ declare module "solid-js" {
 
 export default function () {
   const displayed = () => getDisplayedGeneratorDialogueBox();
-  const [nbVehicules, setNbVehicules] = createSignal(1);
-  const [vehiculesCapacity, setVehiculesCapacity] = createSignal(50);
+  const [nbVehicles, setNbVehicles] = createSignal(1);
+  const [vehiclesCapacity, setVehiclesCapacity] = createSignal(50);
+  const [timeLimitSeconds, setTimeLimitSeconds] = createSignal(40);
+  const [maximumTravelDistance, setMaximumTravelDistance] = createSignal(200);
+  const [globalSpanCostCoefficient, setGlobalSpanCostCoefficient] =
+    createSignal(10);
 
   function handlerOnClickSoumettre() {
     closeGeneratorDialogueBox();
-    generateCircuit(nbVehicules(), vehiculesCapacity());
+    generateCircuit(
+      nbVehicles(),
+      vehiclesCapacity(),
+      maximumTravelDistance(),
+      globalSpanCostCoefficient(),
+      timeLimitSeconds()
+    );
   }
 
   const [buttonRef, setButtonRef] = createSignal<
@@ -119,45 +130,47 @@ export default function () {
                     Paramètres de la génération de circuit
                   </h3>
                   <div class="sm:flex sm:items-start justify-center">
-                    <div class="mt-7 mr-2 max-w-xl text-sm text-gray-500 w-1/3">
+                    <div class="mt-7 mr-2 max-w-xl text-sm text-gray-900 w-1/3">
                       <p class="text-right">Nombre de véhicules :</p>
                     </div>
                     <form class="mt-5 sm:flex sm:items-center">
                       <div class="w-full sm:max-w-xs w-1/2">
-                        <label for="nb_vehicule" class="sr-only">
+                        <label for="nb_vehicle" class="sr-only">
                           Nombre de véhicules
                         </label>
                         <input
                           type="number"
-                          name="nb_vehicule"
-                          id="nb_vehicule"
+                          name="nb_vehicle"
+                          id="nb_vehicle"
                           class="block w-40 rounded-md border-0 py-1.5 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          disabled={true}
                           min={1}
+                          max={1}
                           onChange={(evt: Event) => {
                             if (!evt.target) {
                               return;
                             }
                             const target = evt.target as HTMLInputElement;
-                            setNbVehicules(parseInt(target.value));
+                            setNbVehicles(parseInt(target.value));
                           }}
-                          value={nbVehicules()}
+                          value={nbVehicles()}
                         />
                       </div>
                     </form>
                   </div>
                   <div class="sm:flex sm:items-start justify-center">
-                    <div class="mt-7 mr-2 max-w-xl text-sm text-gray-500 w-1/3">
+                    <div class="mt-7 mr-2 max-w-xl text-sm text-gray-900 w-1/3">
                       <p class="text-right">Capacité des véhicules :</p>
                     </div>
                     <form class="mt-5 sm:flex sm:items-center">
                       <div class="w-full sm:max-w-xs w-1/2">
-                        <label for="vehicule_capacity" class="sr-only">
+                        <label for="vehicle_capacity" class="sr-only">
                           Capacité des véhicules
                         </label>
                         <input
                           type="number"
-                          name="vehicule_capacity"
-                          id="vehicule_capacity"
+                          name="vehicle_capacity"
+                          id="vehicle_capacity"
                           class="block w-40 rounded-md border-0 py-1.5 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                           min={1}
                           onChange={(evt: Event) => {
@@ -165,9 +178,110 @@ export default function () {
                               return;
                             }
                             const target = evt.target as HTMLInputElement;
-                            setVehiculesCapacity(parseInt(target.value));
+                            setVehiclesCapacity(parseInt(target.value));
                           }}
-                          value={vehiculesCapacity()}
+                          value={vehiclesCapacity()}
+                        />
+                      </div>
+                    </form>
+                  </div>
+
+                  <h4 class="text-sm text-left font-semibold leading-6 text-gray-500 mt-7">
+                    Paramètres avancé du solveur de circuit
+                  </h4>
+                  <div class="sm:flex sm:items-start justify-center">
+                    <div class="mt-5 mr-2 max-w-xl text-sm text-gray-900 w-1/2">
+                      <p class="text-right">
+                        Temps maximum de génération (s) :
+                      </p>
+                    </div>
+                    <form class="mt-3 sm:flex sm:items-center">
+                      <div class="w-full sm:max-w-xs w-1/2">
+                        <label for="time_limit_seconds" class="sr-only">
+                          Temps maximum de génération
+                        </label>
+                        <input
+                          type="number"
+                          name="time_limit_seconds"
+                          id="time_limit_seconds"
+                          class="block w-40 rounded-md border-0 py-1.5 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          step={1}
+                          min={10}
+                          max={50}
+                          onChange={(evt: Event) => {
+                            if (!evt.target) {
+                              return;
+                            }
+                            const target = evt.target as HTMLInputElement;
+                            setTimeLimitSeconds(parseInt(target.value));
+                          }}
+                          value={timeLimitSeconds()}
+                        />
+                      </div>
+                    </form>
+                  </div>
+                  <div class="sm:flex sm:items-start justify-center">
+                    <div class="mt-5 mr-2 max-w-xl text-sm text-gray-900 w-1/2">
+                      <p class="text-right">
+                        Distance maximale parcourue (km) :
+                      </p>
+                    </div>
+                    <form class="mt-3 sm:flex sm:items-center">
+                      <div class="w-full sm:max-w-xs w-1/2">
+                        <label for="maximum_travel_distance" class="sr-only">
+                          Distance maximale parcourue
+                        </label>
+                        <input
+                          type="number"
+                          name="maximum_travel_distance"
+                          id="maximum_travel_distance"
+                          class="block w-40 rounded-md border-0 py-1.5 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          step={5}
+                          min={10}
+                          onChange={(evt: Event) => {
+                            if (!evt.target) {
+                              return;
+                            }
+                            const target = evt.target as HTMLInputElement;
+                            setMaximumTravelDistance(parseInt(target.value));
+                          }}
+                          value={maximumTravelDistance()}
+                        />
+                      </div>
+                    </form>
+                  </div>
+                  <div class="sm:flex sm:items-start justify-center">
+                    <div class="mt-4 mr-2 max-w-xl text-sm text-gray-900 w-1/2">
+                      <p class="text-right">Paramétre d'homogénisation :</p>
+                      <p class="text-right text-xs text-gray-500">
+                        GlobalSpanCostCoefficient (x100 000 000)
+                      </p>
+                    </div>
+                    <form class="mt-3 sm:flex sm:items-center">
+                      <div class="w-full sm:max-w-xs w-1/2">
+                        <label
+                          for="global_span_cost_coefficient"
+                          class="sr-only"
+                        >
+                          Paramétre d'homogénisation
+                        </label>
+                        <input
+                          type="number"
+                          name="global_span_cost_coefficient"
+                          id="global_span_cost_coefficient"
+                          class="block w-40 rounded-md border-0 py-1.5 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          step={1}
+                          min={1}
+                          onChange={(evt: Event) => {
+                            if (!evt.target) {
+                              return;
+                            }
+                            const target = evt.target as HTMLInputElement;
+                            setGlobalSpanCostCoefficient(
+                              parseInt(target.value)
+                            );
+                          }}
+                          value={globalSpanCostCoefficient()}
                         />
                       </div>
                     </form>
