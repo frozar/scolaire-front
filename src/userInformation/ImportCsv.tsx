@@ -11,7 +11,7 @@ import {
 import { assertIsNode } from "../utils";
 import { MessageLevelEnum, MessageTypeEnum, ReturnMessageType } from "../type";
 import { useStateGui } from "../StateGui";
-import { displayEtablissement } from "../views/etablissement/Etablissement";
+import { fetchEtablissement } from "../views/etablissement/Etablissement";
 import { displayArret } from "../views/stop/Stop";
 import { getToken } from "../auth/auth";
 
@@ -96,7 +96,7 @@ export default function () {
     formData.append("file", file, file.name);
     getToken()
       .then((token) => {
-        fetch(import.meta.env.VITE_BACK_URL + "/uploadfile/", {
+        fetch(import.meta.env.VITE_BACK_URL + "/uploadfile", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -128,7 +128,7 @@ export default function () {
           .finally(() => {
             switch (getSelectedMenu()) {
               case "etablissements":
-                displayEtablissement();
+                fetchEtablissement();
                 break;
               case "arrets":
                 displayArret();

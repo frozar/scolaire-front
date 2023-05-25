@@ -7,7 +7,7 @@ import {
   EtablissementItemType,
 } from "../../type";
 import { addNewUserInformation } from "../../signaux";
-import { displayEtablissement } from "./Etablissement";
+import { fetchEtablissement } from "./Etablissement";
 import { getToken } from "../../auth/auth";
 
 export const [toggledEditStop, setToggledEditStop] = createSignal(false);
@@ -87,7 +87,7 @@ export default function () {
                   res.message.split(":")[1],
               });
             }
-            displayEtablissement();
+            fetchEtablissement();
           });
       })
       .catch((err) => {
@@ -160,7 +160,7 @@ export default function () {
                 content: "Erreur lors de la modification : " + res,
               });
             }
-            displayEtablissement();
+            fetchEtablissement();
           });
       })
       .catch((err) => {
