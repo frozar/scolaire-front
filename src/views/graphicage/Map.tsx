@@ -129,8 +129,12 @@ function toggleLineUnderConstruction({ code }: KeyboardEvent) {
   keyboard.getLayoutMap().then((keyboardLayoutMap) => {
     const upKey = keyboardLayoutMap.get(code);
     if (upKey === "l") {
-      setModeAddLine();
-      displayAddLineMessage();
+      if (isInAddLineMode()) {
+        setModeRead();
+      } else {
+        setModeAddLine();
+        displayAddLineMessage();
+      }
     }
     if (upKey === "d") {
       // Toggle behavior
