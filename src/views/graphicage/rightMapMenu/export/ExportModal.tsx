@@ -1,6 +1,7 @@
-import { For, Match, Show, Switch, createSignal } from "solid-js";
+import { For, Match, Show, Switch, createEffect, createSignal } from "solid-js";
 import ClickOutside from "../../../../ClickOutside";
 import {
+  closeDragAndDropConfirmationBox,
   closeExportConfirmationBox,
   getExportConfirmation,
   setExportType,
@@ -10,6 +11,7 @@ import { assertIsNode } from "../../../../utils";
 import { ExportTypeEnum } from "../../../../type";
 import { exportData } from "./export";
 import { GtfsExportLogo, ImageExportLogo } from "./Logos";
+import { mapDiv } from "../../Map";
 
 declare module "solid-js" {
   namespace JSX {
@@ -19,7 +21,9 @@ declare module "solid-js" {
   }
 }
 
-let refDialogueBox: HTMLDivElement | undefined;
+const [refDialogBox, setRefDialog] = createSignal<HTMLElement>(
+  document.createElement("div")
+);
 
 const [selected, setSelected] = createSignal<string | null>(null);
 
@@ -67,9 +71,23 @@ function ExportTypeSelect() {
     </div>
   );
 }
-
 export default function () {
   const displayed = () => getExportConfirmation()["displayed"];
+
+  document.addEventListener("click", () => {
+    refDialogBox().focus();
+  });
+
+  createEffect(() => {
+    refDialogBox().focus();
+    refDialogBox().addEventListener("keyup", (e) => {
+      if (e.key == "Escape") {
+        closeExportConfirmationBox();
+        mapDiv().focus();
+      }
+    });
+  });
+
   return (
     <Transition
       name="slide-fade"
@@ -102,9 +120,10 @@ export default function () {
               <div class="export-modal-box">
                 <div
                   class="dialog-box"
-                  ref={refDialogueBox}
+                  ref={setRefDialog}
+                  tabindex="-1"
                   use:ClickOutside={(e: MouseEvent) => {
-                    if (!refDialogueBox || !e.target) {
+                    if (!refDialogBox() || !e.target) {
                       return;
                     }
 
@@ -114,7 +133,7 @@ export default function () {
                     }
 
                     assertIsNode(e.target);
-                    if (!refDialogueBox.contains(e.target)) {
+                    if (!refDialogBox().contains(e.target)) {
                       setSelected(null);
                       closeExportConfirmationBox();
                     }
