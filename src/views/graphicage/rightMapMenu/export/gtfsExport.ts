@@ -11,7 +11,7 @@ export function exportGtfs() {
   displayOnGoingDownloadMessage();
   getToken()
     .then((token) => {
-      fetch(import.meta.env.VITE_BACK_URL + "/gtfs.zip", {
+      fetch(import.meta.env.VITE_BACK_URL + "/export/gtfs", {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
