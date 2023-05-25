@@ -19,6 +19,7 @@ import { clear } from "../request";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { assertIsNode } from "../utils";
 import { fetchPointsRamassage } from "../PointsRamassageAndEtablissement";
+import { mapDiv } from "../views/graphicage/Map";
 
 declare module "solid-js" {
   namespace JSX {
@@ -88,8 +89,22 @@ export default function () {
     buttonRef()?.focus();
   });
 
-  let refDialogueBox: HTMLDivElement | undefined;
+  const [refDialogueBox, setRefDialogueBox] = createSignal<HTMLDivElement>(
+    document.createElement("div")
+  );
+  document.addEventListener("click", () => {
+    refDialogueBox().focus();
+  });
 
+  createEffect(() => {
+    refDialogueBox().focus();
+    refDialogueBox().addEventListener("keyup", (e) => {
+      if (e.key == "Escape") {
+        closeClearConfirmationBox();
+        mapDiv().focus();
+      }
+    });
+  });
   return (
     <Transition
       name="slide-fade"
@@ -125,9 +140,9 @@ export default function () {
               <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
                 <div
                   class="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6"
-                  ref={refDialogueBox}
+                  ref={setRefDialogueBox}
                   use:ClickOutside={(e: MouseEvent) => {
-                    if (!refDialogueBox || !e.target) {
+                    if (!refDialogueBox() || !e.target) {
                       return;
                     }
 
@@ -138,7 +153,7 @@ export default function () {
                     }
 
                     assertIsNode(e.target);
-                    if (!refDialogueBox.contains(e.target)) {
+                    if (!refDialogueBox().contains(e.target)) {
                       closeClearConfirmationBox();
                     }
                   }}
