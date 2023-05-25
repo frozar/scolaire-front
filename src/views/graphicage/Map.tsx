@@ -19,6 +19,7 @@ import {
   setImportConfirmation,
   fetchBusLines,
   setPoints,
+  getClearConfirmation,
 } from "../../signaux";
 import {
   MessageLevelEnum,
@@ -36,6 +37,9 @@ import {
 import { useStateGui } from "../../StateGui";
 import { getExportConfirmation } from "../../signaux";
 import { getDisplayedGeneratorDialogueBox } from "../../signaux";
+import ConfirmStopAddLine, {
+  dialogConfirmStopAddLine,
+} from "./ConfirmStopAddLine";
 
 const [
   ,
@@ -152,7 +156,6 @@ function toggleLineUnderConstruction({ code }: KeyboardEvent) {
 export const [mapDiv, setMapDiv] = createSignal<HTMLDivElement>(
   document.createElement("div")
 );
-
 export default function () {
   // let mapDiv: HTMLDivElement;
   let mapDragDropDiv: HTMLDivElement;
@@ -163,7 +166,9 @@ export default function () {
     document.addEventListener("click", () => {
       if (
         !getExportConfirmation().displayed &&
-        !getDisplayedGeneratorDialogueBox()
+        !getDisplayedGeneratorDialogueBox() &&
+        !getClearConfirmation().displayed &&
+        !dialogConfirmStopAddLine
       ) {
         mapDiv().focus();
       }
@@ -293,6 +298,7 @@ export default function () {
       </Show>
       <BusLines />
       <ControlMapMenu />
+      <ConfirmStopAddLine />
     </>
   );
 }
