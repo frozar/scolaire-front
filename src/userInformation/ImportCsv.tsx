@@ -13,6 +13,7 @@ import { MessageLevelEnum, MessageTypeEnum, ReturnMessageType } from "../type";
 import { useStateGui } from "../StateGui";
 import { displayEtablissement } from "../views/etablissement/Etablissement";
 import { displayArret } from "../views/stop/Stop";
+import { getToken } from "../auth/auth";
 const [, { getSelectedMenu }] = useStateGui();
 declare module "solid-js" {
   namespace JSX {
@@ -67,49 +68,59 @@ export default function () {
       }
       const formData = new FormData();
       formData.append("file", file, file.name);
-      fetch(import.meta.env.VITE_BACK_URL + "/uploadfile/", {
-        method: "POST",
-        body: formData,
-      })
-        .then((res) => {
-          return res.json();
-        })
-        .then((res: ReturnMessageType) => {
-          setImportConfirmation({
-            displayed: true,
-            message: res.message,
-            metrics: {
-              total: res.metrics.total,
-              success: res.metrics.success,
+      getToken()
+        .then((token) => {
+          fetch(import.meta.env.VITE_BACK_URL + "/uploadfile/", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              authorization: `Bearer ${token}`,
             },
-            error: {
-              etablissement: res.error.etablissement,
-              ramassage: res.error.ramassage,
-            },
-            success: {
-              etablissement: res.success.etablissement,
-              ramassage: res.success.ramassage,
-            },
-          });
+            body: formData,
+          })
+            .then((res) => {
+              return res.json();
+            })
+            .then((res: ReturnMessageType) => {
+              setImportConfirmation({
+                displayed: true,
+                message: res.message,
+                metrics: {
+                  total: res.metrics.total,
+                  success: res.metrics.success,
+                },
+                error: {
+                  etablissement: res.error.etablissement,
+                  ramassage: res.error.ramassage,
+                },
+                success: {
+                  etablissement: res.success.etablissement,
+                  ramassage: res.success.ramassage,
+                },
+              });
+            })
+            .finally(() => {
+              switch (getSelectedMenu()) {
+                case "etablissements":
+                  displayEtablissement();
+                  break;
+                case "arrets":
+                  displayArret();
+                  break;
+              }
+            })
+            .catch((e) => {
+              closeRemoveImportCsvBox();
+              addNewUserInformation({
+                displayed: true,
+                level: MessageLevelEnum.error,
+                type: MessageTypeEnum.removeLine,
+                content: `Une erreur est survenue : ${e}.`,
+              });
+            });
         })
-        .finally(() => {
-          switch (getSelectedMenu()) {
-            case "etablissements":
-              displayEtablissement();
-              break;
-            case "arrets":
-              displayArret();
-              break;
-          }
-        })
-        .catch((e) => {
-          closeRemoveImportCsvBox();
-          addNewUserInformation({
-            displayed: true,
-            level: MessageLevelEnum.error,
-            type: MessageTypeEnum.removeLine,
-            content: `Une erreur est survenue : ${e}.`,
-          });
+        .catch((err) => {
+          console.log(err);
         });
     }
 

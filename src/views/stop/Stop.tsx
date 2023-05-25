@@ -164,32 +164,42 @@ export default function () {
         for (let i = 0, file; (file = files[i]); i++) {
           const formData = new FormData();
           formData.append("file", file, file.name);
-          fetch(import.meta.env.VITE_BACK_URL + "/uploadfile/", {
-            method: "POST",
-            body: formData,
-          })
-            .then((res) => {
-              return res.json();
+          getToken()
+            .then((token) => {
+              fetch(import.meta.env.VITE_BACK_URL + "/uploadfile/", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  authorization: `Bearer ${token}`,
+                },
+                body: formData,
+              })
+                .then((res) => {
+                  return res.json();
+                })
+                .then((res: ReturnMessageType) => {
+                  setImportConfirmation({
+                    displayed: true,
+                    message: res.message,
+                    metrics: {
+                      total: res.metrics.total,
+                      success: res.metrics.success,
+                    },
+                    error: {
+                      etablissement: res.error.etablissement,
+                      ramassage: res.error.ramassage,
+                    },
+                    success: {
+                      etablissement: res.success.etablissement,
+                      ramassage: res.success.ramassage,
+                    },
+                  });
+                  displayArret();
+                  disableSpinningWheel();
+                });
             })
-            .then((res: ReturnMessageType) => {
-              setImportConfirmation({
-                displayed: true,
-                message: res.message,
-                metrics: {
-                  total: res.metrics.total,
-                  success: res.metrics.success,
-                },
-                error: {
-                  etablissement: res.error.etablissement,
-                  ramassage: res.error.ramassage,
-                },
-                success: {
-                  etablissement: res.success.etablissement,
-                  ramassage: res.success.ramassage,
-                },
-              });
-              displayArret();
-              disableSpinningWheel();
+            .catch((err) => {
+              console.log(err);
             });
         }
         DragDropDiv.classList.remove("highlight");
@@ -255,28 +265,42 @@ export default function () {
                 <button
                   class="btn-arret-export-import"
                   onClick={() => {
-                    fetch(
-                      import.meta.env.VITE_BACK_URL + "/export/ramassages_input"
-                    )
-                      .then((response) => {
-                        if (!response.ok) {
-                          displayDownloadErrorMessage();
-                        } else {
-                          return response.blob();
-                        }
-                      })
-                      .then((blob: Blob | undefined) => {
-                        if (!blob) {
-                          return;
-                        }
+                    getToken()
+                      .then((token) => {
+                        fetch(
+                          import.meta.env.VITE_BACK_URL +
+                            "/export/ramassages_input",
+                          {
+                            method: "GET",
+                            headers: {
+                              "Content-Type": "application/json",
+                              authorization: `Bearer ${token}`,
+                            },
+                          }
+                        )
+                          .then((response) => {
+                            if (!response.ok) {
+                              displayDownloadErrorMessage();
+                            } else {
+                              return response.blob();
+                            }
+                          })
+                          .then((blob: Blob | undefined) => {
+                            if (!blob) {
+                              return;
+                            }
 
-                        const { year, month, day, hour, minute } =
-                          getExportDate();
-                        const fileName = `${year}-${month}-${day}_${hour}-${minute}_ramassages.csv`;
-                        download(fileName, blob);
+                            const { year, month, day, hour, minute } =
+                              getExportDate();
+                            const fileName = `${year}-${month}-${day}_${hour}-${minute}_ramassages.csv`;
+                            download(fileName, blob);
+                          })
+                          .catch(() => {
+                            displayDownloadErrorMessage();
+                          });
                       })
-                      .catch(() => {
-                        displayDownloadErrorMessage();
+                      .catch((err) => {
+                        console.log(err);
                       });
                   }}
                 >
