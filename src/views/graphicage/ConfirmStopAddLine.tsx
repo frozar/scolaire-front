@@ -1,10 +1,9 @@
 import { Show, createEffect, createSignal } from "solid-js";
 import { Transition } from "solid-transition-group";
 import { assertIsNode } from "../../utils";
-import ClickOutside from "../../ClickOutside";
-import { openExportConfirmationBox } from "../../signaux";
 import { useStateAction } from "../../StateAction";
-const [, { setModeRead }] = useStateAction();
+const [, { isInAddLineMode, getLineUnderConstruction, setModeRead }] =
+  useStateAction();
 
 export const [dialogConfirmStopAddLine, setDialogConfirmStopAddLine] =
   createSignal<boolean>(false);
@@ -16,11 +15,29 @@ const [refDialog, setRefDialog] = createSignal<HTMLDivElement>(
   document.createElement("div")
 );
 
+let modalToOpen: () => void;
+export const defineModalToOpen = (obj: () => void) => {
+  modalToOpen = obj;
+};
+
+export const ConfirmAbortEditionNeedToBeCall = () => {
+  const lineInBuild = getLineUnderConstruction().stops.length > 0;
+
+  if (isInAddLineMode() && lineInBuild) {
+    toggleConfirmStopAddLine();
+  } else if (isInAddLineMode()) {
+    setModeRead();
+    modalToOpen();
+  } else {
+    modalToOpen();
+  }
+};
+
 export default function () {
   const confirmStopingEdition = () => {
     setModeRead();
     toggleConfirmStopAddLine();
-    openExportConfirmationBox();
+    modalToOpen();
   };
 
   document.addEventListener("click", () => {
@@ -35,6 +52,7 @@ export default function () {
       }
     });
   });
+
   return (
     <Transition
       name="slide-fade"
@@ -89,7 +107,7 @@ export default function () {
                     <div class="sm:flex sm:items-start w-full">
                       <div class="card-container-title">
                         <h3 id="modal-title">
-                          Ête vous sure de vouloir quiter l'édition de ligne ?
+                          Ête vous sure de vouloir quitter l'édition de ligne ?
                         </h3>
                         <div class="mt-2 w-full flex"></div>
                       </div>
