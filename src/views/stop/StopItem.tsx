@@ -72,9 +72,7 @@ export default function (props: { item: StopItemType }) {
           Editer
         </a>
 
-        <a onClick={handleClickDelete} href="#" class="text-[#F44434]">
-          Supprimer
-        </a>
+        <a href="#">Supprimer</a>
       </td>
     </tr>
   );
