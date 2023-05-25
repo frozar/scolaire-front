@@ -8,6 +8,7 @@ import {
 } from "../../type";
 import { addNewUserInformation } from "../../signaux";
 import { displayEtablissement } from "./Etablissement";
+import { getToken } from "../../auth/auth";
 
 export const [toggledEditStop, setToggledEditStop] = createSignal(false);
 export const toggleEditStop = () => setToggledEditStop(!toggledEditStop());
@@ -48,41 +49,49 @@ export default function () {
       });
       return;
     }
-    fetch(import.meta.env.VITE_BACK_URL + "/point_etablissement", {
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        id: dataToEdit()?.id,
-        name: nameStop,
-        lon: lonStop,
-        lat: latStop,
-      }),
-    })
-      .then((res) => {
-        return res.json();
+    getToken()
+      .then((token) => {
+        fetch(import.meta.env.VITE_BACK_URL + "/point_etablissement", {
+          method: "post",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            id: dataToEdit()?.id,
+            name: nameStop,
+            lon: lonStop,
+            lat: latStop,
+          }),
+        })
+          .then((res) => {
+            return res.json();
+          })
+          .then((res) => {
+            if (!isNaN(res)) {
+              addNewUserInformation({
+                displayed: true,
+                level: MessageLevelEnum.success,
+                type: MessageTypeEnum.global,
+                content: "L'établissement a été crée",
+              });
+              toggleEditStop();
+            } else {
+              console.error(res.message.split(":").join("\n"));
+              addNewUserInformation({
+                displayed: true,
+                level: MessageLevelEnum.error,
+                type: MessageTypeEnum.global,
+                content:
+                  "Erreur lors de la modification : \n" +
+                  res.message.split(":")[1],
+              });
+            }
+            displayEtablissement();
+          });
       })
-      .then((res) => {
-        if (!isNaN(res)) {
-          addNewUserInformation({
-            displayed: true,
-            level: MessageLevelEnum.success,
-            type: MessageTypeEnum.global,
-            content: "L'établissement a été crée",
-          });
-          toggleEditStop();
-        } else {
-          console.error(res.message.split(":").join("\n"));
-          addNewUserInformation({
-            displayed: true,
-            level: MessageLevelEnum.error,
-            type: MessageTypeEnum.global,
-            content:
-              "Erreur lors de la modification : \n" + res.message.split(":")[1],
-          });
-        }
-        displayEtablissement();
+      .catch((err) => {
+        console.log(err);
       });
   };
 
@@ -116,39 +125,46 @@ export default function () {
       });
       return;
     }
-    fetch(import.meta.env.VITE_BACK_URL + "/point_etablissement", {
-      method: "put",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        id: dataToEdit()?.id,
-        name: nameStop,
-        lon: lonStop,
-        lat: latStop,
-      }),
-    })
-      .then((res) => {
-        return res.json();
+    getToken()
+      .then((token) => {
+        fetch(import.meta.env.VITE_BACK_URL + "/point_etablissement", {
+          method: "put",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            id: dataToEdit()?.id,
+            name: nameStop,
+            lon: lonStop,
+            lat: latStop,
+          }),
+        })
+          .then((res) => {
+            return res.json();
+          })
+          .then((res) => {
+            if (res === "UPDATE 1") {
+              addNewUserInformation({
+                displayed: true,
+                level: MessageLevelEnum.success,
+                type: MessageTypeEnum.global,
+                content: "L'établissement a été modifié",
+              });
+              toggleEditStop();
+            } else {
+              addNewUserInformation({
+                displayed: true,
+                level: MessageLevelEnum.error,
+                type: MessageTypeEnum.global,
+                content: "Erreur lors de la modification : " + res,
+              });
+            }
+            displayEtablissement();
+          });
       })
-      .then((res) => {
-        if (res === "UPDATE 1") {
-          addNewUserInformation({
-            displayed: true,
-            level: MessageLevelEnum.success,
-            type: MessageTypeEnum.global,
-            content: "L'établissement a été modifié",
-          });
-          toggleEditStop();
-        } else {
-          addNewUserInformation({
-            displayed: true,
-            level: MessageLevelEnum.error,
-            type: MessageTypeEnum.global,
-            content: "Erreur lors de la modification : " + res,
-          });
-        }
-        displayEtablissement();
+      .catch((err) => {
+        console.log(err);
       });
   };
 
