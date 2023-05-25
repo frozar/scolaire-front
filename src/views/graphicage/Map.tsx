@@ -1,6 +1,6 @@
 import "leaflet/dist/leaflet.css";
 
-import { Show, onCleanup, onMount } from "solid-js";
+import { Show, createSignal, onCleanup, onMount } from "solid-js";
 
 import PointsRamassageAndEtablissement, {
   fetchPointsRamassage,
@@ -9,6 +9,7 @@ import PointsRamassageAndEtablissement, {
 import { buildMapL7 } from "../../l7MapBuilder";
 import BusLines from "../../line/BusLines";
 import { useStateAction } from "../../StateAction";
+
 import LineUnderConstruction from "../../line/LineUnderConstruction";
 import {
   addNewUserInformation,
@@ -17,7 +18,6 @@ import {
   enableSpinningWheel,
   setImportConfirmation,
   fetchBusLines,
-  setDragAndDropConfirmation,
   setPoints,
 } from "../../signaux";
 import {
@@ -33,6 +33,10 @@ import {
   displayAddLineMessage,
   displayRemoveLineMessage,
 } from "../../userInformation/utils";
+import { useStateGui } from "../../StateGui";
+import { getExportConfirmation } from "../../signaux";
+import { getDisplayedGeneratorDialogueBox } from "../../signaux";
+
 const [
   ,
   {
@@ -140,11 +144,28 @@ function toggleLineUnderConstruction({ code }: KeyboardEvent) {
     }
   });
 }
+
+export const [mapDiv, setMapDiv] = createSignal<HTMLDivElement>(
+  document.createElement("div")
+);
+
 export default function () {
-  let mapDiv: HTMLDivElement;
+  // let mapDiv: HTMLDivElement;
   let mapDragDropDiv: HTMLDivElement;
+
   onMount(() => {
-    mapDiv.addEventListener(
+    mapDiv().focus();
+
+    document.addEventListener("click", () => {
+      if (
+        !getExportConfirmation().displayed &&
+        !getDisplayedGeneratorDialogueBox()
+      ) {
+        mapDiv().focus();
+      }
+    });
+
+    mapDiv().addEventListener(
       "dragenter",
       (e) => {
         e.preventDefault();
@@ -241,18 +262,18 @@ export default function () {
       },
       false
     );
-    document.addEventListener("keydown", undoRedoHandler);
-    document.addEventListener("keydown", escapeHandler);
-    document.addEventListener("keydown", enterHandler);
-    document.addEventListener("keydown", toggleLineUnderConstruction);
-    buildMap(mapDiv);
+    mapDiv().addEventListener("keydown", undoRedoHandler);
+    mapDiv().addEventListener("keydown", escapeHandler);
+    mapDiv().addEventListener("keydown", enterHandler);
+    mapDiv().addEventListener("keydown", toggleLineUnderConstruction);
+    buildMap(mapDiv());
   });
 
   onCleanup(() => {
-    document.removeEventListener("keydown", undoRedoHandler);
-    document.removeEventListener("keydown", escapeHandler);
-    document.removeEventListener("keydown", enterHandler);
-    document.removeEventListener("keydown", toggleLineUnderConstruction);
+    mapDiv().removeEventListener("keydown", undoRedoHandler);
+    mapDiv().removeEventListener("keydown", escapeHandler);
+    mapDiv().removeEventListener("keydown", enterHandler);
+    mapDiv().removeEventListener("keydown", toggleLineUnderConstruction);
   });
 
   return (
@@ -261,7 +282,7 @@ export default function () {
         <div class="child">Drop your file here</div>
       </div>
       <InformationBoard />
-      <div ref={mapDiv} id="main-map" />
+      <div ref={setMapDiv} id="main-map" tabindex="-1" />
       <PointsRamassageAndEtablissement />
       <Show when={isInAddLineMode()}>
         <LineUnderConstruction />
