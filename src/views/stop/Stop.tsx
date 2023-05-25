@@ -224,7 +224,7 @@ export default function () {
             <h1>Gérer les arrêts</h1>
             <div id="filters">
               <div class="left">
-                <select ref={setRefSelect}>
+                <select ref={setRefSelect} disabled>
                   <option selected value="null">
                     Action
                   </option>
