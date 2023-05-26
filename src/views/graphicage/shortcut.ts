@@ -1,4 +1,5 @@
 import { useStateAction } from "../../StateAction";
+import { useStateGui } from "../../StateGui";
 import { addBusLine } from "../../request";
 import {
   closeRemoveConfirmationBox,
@@ -34,9 +35,14 @@ const isOpenedModal = () =>
   getClearConfirmation().displayed ||
   dialogConfirmStopAddLine();
 
+const [, { getSelectedMenu }] = useStateGui();
+
+const disable_shortcut = () =>
+  getSelectedMenu() != "graphicage" || isOpenedModal();
+
 // Handler the Undo/Redo from the user
 function undoRedoHandler({ ctrlKey, shiftKey, code }: KeyboardEvent) {
-  if (isOpenedModal()) {
+  if (disable_shortcut()) {
     return;
   }
 
@@ -58,7 +64,7 @@ function undoRedoHandler({ ctrlKey, shiftKey, code }: KeyboardEvent) {
 }
 
 function escapeHandler({ code }: KeyboardEvent) {
-  if (isOpenedModal()) {
+  if (disable_shortcut()) {
     return;
   }
 
@@ -73,7 +79,7 @@ function escapeHandler({ code }: KeyboardEvent) {
 }
 
 function enterHandler({ code }: KeyboardEvent) {
-  if (isOpenedModal()) {
+  if (disable_shortcut()) {
     return;
   }
 
@@ -101,7 +107,7 @@ function enterHandler({ code }: KeyboardEvent) {
 }
 
 function toggleLineUnderConstruction({ code }: KeyboardEvent) {
-  if (isOpenedModal()) {
+  if (disable_shortcut()) {
     return;
   }
 
