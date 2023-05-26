@@ -3,7 +3,7 @@ import { FiArrowUpCircle } from "solid-icons/fi";
 import {
   confirmAbortEditionNeedToBeCall,
   defineModalToOpen,
-} from "../ConfirmStopAddLine";
+} from "../ConfirmStopAddLineBox";
 
 export default function () {
   const handleClick = () => {

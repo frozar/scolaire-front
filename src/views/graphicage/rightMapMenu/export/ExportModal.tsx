@@ -59,6 +59,7 @@ function ExportTypeSelect() {
     </div>
   );
 }
+
 export default function () {
   const displayed = () => getExportConfirmation()["displayed"];
 

@@ -12,7 +12,7 @@ import {
   displayAddLineMessage,
   displayRemoveLineMessage,
 } from "../../userInformation/utils";
-import { dialogConfirmStopAddLine } from "./ConfirmStopAddLine";
+import { dialogConfirmStopAddLine } from "./ConfirmStopAddLineBox";
 
 const [
   ,

@@ -3,7 +3,7 @@ import { openClearConfirmationBox } from "../../../signaux";
 import {
   confirmAbortEditionNeedToBeCall,
   defineModalToOpen,
-} from "../ConfirmStopAddLine";
+} from "../ConfirmStopAddLineBox";
 
 export default function () {
   const handleClick = () => {

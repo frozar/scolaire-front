@@ -62,7 +62,7 @@ export default () => {
   });
 
   return (
-    <div tabindex="0" ref={refApp}>
+    <div tabindex="-1" ref={refApp}>
       <NavTop />
 
       <div id="app-content">

@@ -10,6 +10,8 @@ import {
 import { assertIsNode } from "../utils";
 import { generateCircuit } from "../views/graphicage/generationCircuit";
 
+let refDialogueBox: HTMLDivElement;
+
 export default function () {
   const displayed = () => getDisplayedGeneratorDialogueBox();
   const [nbVehicles, setNbVehicles] = createSignal(1);
@@ -30,33 +32,13 @@ export default function () {
     );
   }
 
-  const [buttonRef, setButtonRef] = createSignal<
+  const [refButton, setRefButton] = createSignal<
     HTMLButtonElement | undefined
   >();
 
   createEffect(() => {
-    buttonRef()?.focus();
+    refButton()?.focus();
   });
-
-  let refDialogueBox: HTMLDivElement | undefined;
-
-  // const [refDialogueBox, setRe
-  //   let refDialogueBox: HTMLDivElement | undefined;fDialogBox] = createSignal<HTMLDivElement>(
-  //   document.createElement("div")
-  // );
-
-  // document.addEventListener("click", () => {
-  //   refDialogueBox().focus();
-  // });
-
-  // createEffect(() => {
-  //   refDialogueBox().focus();
-  //   refDialogueBox().addEventListener("keyup", (e) => {
-  //     if (e.key == "Escape") {
-  //       closeGeneratorDialogueBox();
-  //     }
-  //   });
-  // });
 
   return (
     <Transition
@@ -298,7 +280,7 @@ export default function () {
 
                   <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
                     <button
-                      ref={setButtonRef}
+                      ref={setRefButton}
                       type="button"
                       class="inline-flex w-full justify-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 sm:ml-3 sm:w-auto"
                       onClick={handlerOnClickSoumettre}

@@ -3,7 +3,7 @@ import { CgExport } from "solid-icons/cg";
 import {
   defineModalToOpen,
   confirmAbortEditionNeedToBeCall,
-} from "../ConfirmStopAddLine";
+} from "../ConfirmStopAddLineBox";
 
 export default function () {
   const handleClick = () => {

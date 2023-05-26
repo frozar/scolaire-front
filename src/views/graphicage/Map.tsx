@@ -26,7 +26,7 @@ import {
 import ControlMapMenu from "./rightMapMenu/RightMapMenu";
 import { InformationBoard } from "./rightMapMenu/InformationBoard";
 import { getToken } from "../../auth/auth";
-import ConfirmStopAddLine from "./ConfirmStopAddLine";
+import ConfirmStopAddLine from "./ConfirmStopAddLineBox";
 import { listHandlerLMap } from "./shortcut";
 
 const [, { isInAddLineMode }] = useStateAction();
