@@ -237,6 +237,7 @@ export default function (props: {
 
   onMount(() => {
     const leafletMap = getLeafletMap();
+    console.log("onMount");
     if (!leafletMap) {
       return;
     }
@@ -256,7 +257,7 @@ export default function (props: {
 
   onCleanup(() => {
     linkMap.delete(point().id_point);
-
+    console.log("onCleanup");
     circle.remove();
   });
 
