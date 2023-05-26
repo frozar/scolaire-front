@@ -1,16 +1,12 @@
 import { Setter, createEffect, onMount } from "solid-js";
-import { getToken } from "../../auth/auth";
-import {
-  MessageLevelEnum,
-  MessageTypeEnum,
-  ReturnMessageType,
-} from "../../type";
+import { getToken } from "../auth/auth";
+import { MessageLevelEnum, MessageTypeEnum, ReturnMessageType } from "../type";
 import {
   addNewUserInformation,
   disableSpinningWheel,
   setImportConfirmation,
-} from "../../signaux";
-import { fetchEtablissement } from "./Etablissement";
+} from "../signaux";
+import { fetchEtablissement } from "../views/etablissement/Etablissement";
 
 let DragDropDiv: HTMLDivElement;
 let DragDropChild: HTMLDivElement;
