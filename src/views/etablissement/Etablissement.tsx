@@ -16,12 +16,13 @@ export const [selected, setSelected] = createSignal<EtablissementItemType[]>(
   []
 );
 
-const [keyword, setkeyword] = createSignal<string>("");
+const [keyword, setKeyword] = createSignal("");
 
 export const [stop, setStop] = createStore<EtablissementItemType[]>([]);
 export const [displaystop, setDisplayStop] = createStore<
   EtablissementItemType[]
 >([]);
+
 export const addSelected = (item: EtablissementItemType) =>
   setSelected([...selected(), item]);
 
@@ -193,13 +194,11 @@ export default function () {
                     <AiOutlineSearch />
                   </div>
                   <input
-                    type="email"
-                    name="email"
-                    id="email"
-                    class=""
+                    type="text"
+                    name="search"
                     placeholder="Recherche"
                     onInput={(e) => {
-                      setkeyword(e.currentTarget.value);
+                      setKeyword(e.currentTarget.value);
                     }}
                   />
                 </div>
