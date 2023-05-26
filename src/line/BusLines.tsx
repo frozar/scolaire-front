@@ -68,6 +68,7 @@ export default function () {
       console.log("Bus line" + busLine);
       if (isInReadMode()) {
         const latlng = getLatLngs(busLine.stops);
+        console.log("latlng" + latlng);
         const lnglat = latlng.slice().map((prev) => [prev.lng, prev.lat]);
         console.log("lnglat" + lnglat);
         fetchPolyline(lnglat, busLine);
