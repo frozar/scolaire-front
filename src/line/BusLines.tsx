@@ -7,7 +7,6 @@ import {
   busLines,
   fetchPolyline,
   polylineRoute,
-  isPointReady,
 } from "../signaux";
 import { pointsReady } from "../PointsRamassageAndEtablissement";
 import {
@@ -60,7 +59,7 @@ export default function () {
     busLinesPolyline.map((busLinePolyline) => busLinePolyline.remove());
     busLinesDrawn.map((line) => line.remove());
 
-    if (busLines().length == 0 || isPointReady() == false) {
+    if (busLines().length == 0 || pointsReady() == false) {
       console.log("No bus lines");
       return;
     }
