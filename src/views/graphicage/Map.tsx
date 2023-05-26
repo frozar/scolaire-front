@@ -47,6 +47,11 @@ export default function () {
   let mapDragDropDiv: HTMLDivElement;
 
   onMount(() => {
+    // Manage shortcut keyboard event
+    for (const handler of listHandlerLMap) {
+      document.body.addEventListener("keydown", handler);
+    }
+
     mapDiv.addEventListener(
       "dragenter",
       (e) => {
@@ -151,8 +156,9 @@ export default function () {
   });
 
   onCleanup(() => {
+    // Manage shortcut keyboard event
     for (const handler of listHandlerLMap) {
-      mapDiv.removeEventListener("keydown", handler);
+      document.body.removeEventListener("keydown", handler);
     }
   });
 
