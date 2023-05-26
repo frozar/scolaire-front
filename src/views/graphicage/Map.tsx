@@ -28,6 +28,7 @@ import { InformationBoard } from "./rightMapMenu/InformationBoard";
 import { getToken } from "../../auth/auth";
 import ConfirmStopAddLine from "./ConfirmStopAddLineBox";
 import { listHandlerLMap } from "./shortcut";
+import { uploadLine } from "../../request";
 
 const [, { isInAddLineMode }] = useStateAction();
 
@@ -107,39 +108,40 @@ export default function () {
         // process all File objects
         const formData = new FormData();
         formData.append("file", file, file.name);
-        getToken()
-          .then((token) => {
-            fetch(import.meta.env.VITE_BACK_URL + "/uploadfile/", {
-              method: "POST",
-              headers: {
-                authorization: `Bearer ${token}`,
-              },
-              body: formData,
-            })
-              .then((res) => {
-                return res.json();
-              })
-              .then((res: ReturnMessageType) => {
-                setImportConfirmation({
-                  displayed: true,
-                  message: res.message,
-                  metrics: {
-                    total: res.metrics.total,
-                    success: res.metrics.success,
-                  },
-                  error: {
-                    etablissement: res.error.etablissement,
-                    ramassage: res.error.ramassage,
-                  },
-                  success: {
-                    etablissement: res.success.etablissement,
-                    ramassage: res.success.ramassage,
-                  },
-                });
-                setPoints([]);
-                fetchPointsRamassage();
-                disableSpinningWheel();
+
+        uploadLine(formData)
+          .then(async (res) => {
+            if (!res) {
+              addNewUserInformation({
+                displayed: true,
+                level: MessageLevelEnum.error,
+                type: MessageTypeEnum.global,
+                content: "Echec de l'import de fichier",
               });
+              return;
+            }
+
+            const body: ReturnMessageType = await res.json();
+
+            setImportConfirmation({
+              displayed: true,
+              message: body.message,
+              metrics: {
+                total: body.metrics.total,
+                success: body.metrics.success,
+              },
+              error: {
+                etablissement: body.error.etablissement,
+                ramassage: body.error.ramassage,
+              },
+              success: {
+                etablissement: body.success.etablissement,
+                ramassage: body.success.ramassage,
+              },
+            });
+            setPoints([]);
+            fetchPointsRamassage();
+            disableSpinningWheel();
           })
           .catch((err) => {
             console.log(err);

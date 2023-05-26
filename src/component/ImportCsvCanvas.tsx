@@ -1,5 +1,4 @@
 import { Setter, createEffect, onMount } from "solid-js";
-import { getToken } from "../auth/auth";
 import { MessageLevelEnum, MessageTypeEnum, ReturnMessageType } from "../type";
 import {
   addNewUserInformation,
@@ -7,6 +6,7 @@ import {
   setImportConfirmation,
 } from "../signaux";
 import { fetchEtablissement } from "../views/etablissement/Etablissement";
+import { uploadLine } from "../request";
 
 let DragDropDiv: HTMLDivElement;
 let DragDropChild: HTMLDivElement;
@@ -81,66 +81,65 @@ export default function (props: {
         const formData = new FormData();
         formData.append("file", file, file.name);
 
-        getToken()
-          .then((token) => {
-            fetch(import.meta.env.VITE_BACK_URL + "/uploadfile", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                authorization: `Bearer ${token}`,
-              },
-              body: formData,
-            })
-              .then((res) => {
-                return res.json();
-              })
-              .then((res: ReturnMessageType) => {
-                console.log("res", res);
-
-                if (res.message === "Pas de fichier envoyé.") {
-                  setImportConfirmation({
-                    displayed: true,
-                    message: res.message,
-                    metrics: {
-                      total: 0,
-                      success: 0,
-                    },
-                    error: {
-                      etablissement: res.error.etablissement,
-                      ramassage: res.error.ramassage,
-                    },
-                    success: {
-                      etablissement: res.success.etablissement,
-                      ramassage: res.success.ramassage,
-                    },
-                  });
-                } else {
-                  setImportConfirmation({
-                    displayed: true,
-                    message: res.message,
-                    metrics: {
-                      total: res.metrics.total,
-                      success: res.metrics.success,
-                    },
-                    error: {
-                      etablissement: res.error.etablissement,
-                      ramassage: res.error.ramassage,
-                    },
-                    success: {
-                      etablissement: res.success.etablissement,
-                      ramassage: res.success.ramassage,
-                    },
-                  });
-                }
-
-                fetchEtablissement();
-                disableSpinningWheel();
+        uploadLine(formData)
+          .then(async (res) => {
+            if (!res) {
+              addNewUserInformation({
+                displayed: true,
+                level: MessageLevelEnum.error,
+                type: MessageTypeEnum.global,
+                content: "Echec de l'import de fichier",
               });
+              return;
+            }
+
+            const body: ReturnMessageType = await res.json();
+
+            console.log("body", body);
+
+            if (body.message === "Pas de fichier envoyé.") {
+              setImportConfirmation({
+                displayed: true,
+                message: body.message,
+                metrics: {
+                  total: 0,
+                  success: 0,
+                },
+                error: {
+                  etablissement: body.error.etablissement,
+                  ramassage: body.error.ramassage,
+                },
+                success: {
+                  etablissement: body.success.etablissement,
+                  ramassage: body.success.ramassage,
+                },
+              });
+            } else {
+              setImportConfirmation({
+                displayed: true,
+                message: body.message,
+                metrics: {
+                  total: body.metrics.total,
+                  success: body.metrics.success,
+                },
+                error: {
+                  etablissement: body.error.etablissement,
+                  ramassage: body.error.ramassage,
+                },
+                success: {
+                  etablissement: body.success.etablissement,
+                  ramassage: body.success.ramassage,
+                },
+              });
+            }
+
+            fetchEtablissement();
+            disableSpinningWheel();
           })
           .catch((err) => {
             console.log(err);
           });
-        // }
+
         props.setDisplay(false);
         DragDropDiv.classList.remove("highlight");
         DragDropChild.classList.replace("child", "invisible_child");
