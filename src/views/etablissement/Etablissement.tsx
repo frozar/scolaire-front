@@ -19,9 +19,6 @@ export const [selected, setSelected] = createSignal<EtablissementItemType[]>(
 const [keyword, setKeyword] = createSignal("");
 
 export const [stop, setStop] = createStore<EtablissementItemType[]>([]);
-export const [displaystop, setDisplayStop] = createStore<
-  EtablissementItemType[]
->([]);
 
 export const addSelected = (item: EtablissementItemType) =>
   setSelected([...selected(), item]);
@@ -113,9 +110,7 @@ export default function () {
       setIsChecked(!isChecked());
     });
 
-    onMount(() => {
-      fetchEtablissement();
-    });
+    fetchEtablissement();
   });
 
   // eslint-disable-next-line prefer-const

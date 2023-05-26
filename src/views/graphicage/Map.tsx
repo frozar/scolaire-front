@@ -2,33 +2,18 @@ import "leaflet/dist/leaflet.css";
 
 import { Show, createSignal, onCleanup, onMount } from "solid-js";
 
-import PointsRamassageAndEtablissement, {
-  fetchPointsRamassage,
-} from "../../PointsRamassageAndEtablissement";
+import PointsRamassageAndEtablissement from "../../PointsRamassageAndEtablissement";
 
 import { buildMapL7 } from "../../l7MapBuilder";
 import BusLines from "../../line/BusLines";
 import { useStateAction } from "../../StateAction";
 
 import LineUnderConstruction from "../../line/LineUnderConstruction";
-import {
-  addNewUserInformation,
-  disableSpinningWheel,
-  enableSpinningWheel,
-  setImportConfirmation,
-  setPoints,
-} from "../../signaux";
-import {
-  MessageLevelEnum,
-  MessageTypeEnum,
-  ReturnMessageType,
-} from "../../type";
 import ControlMapMenu from "./rightMapMenu/RightMapMenu";
 import { InformationBoard } from "./rightMapMenu/InformationBoard";
-import { getToken } from "../../auth/auth";
 import ConfirmStopAddLine from "./ConfirmStopAddLineBox";
 import { listHandlerLMap } from "./shortcut";
-import { uploadLine } from "../../request";
+import ImportCsvCanvasMap from "../../component/ImportCsvCanvasMap";
 
 const [, { isInAddLineMode }] = useStateAction();
 
@@ -45,7 +30,8 @@ function buildMap(div: HTMLDivElement) {
 let mapDiv: HTMLDivElement;
 
 export default function () {
-  let mapDragDropDiv: HTMLDivElement;
+  const [displayImportCsvCanvas, setDisplayImportCsvCanvas] =
+    createSignal(false);
 
   onMount(() => {
     // Manage shortcut keyboard event
@@ -57,97 +43,7 @@ export default function () {
       "dragenter",
       (e) => {
         e.preventDefault();
-        mapDragDropDiv.classList.add("highlight");
-      },
-      false
-    );
-    mapDragDropDiv.addEventListener(
-      "dragleave",
-      (e) => {
-        e.preventDefault();
-        mapDragDropDiv.classList.remove("highlight");
-      },
-      false
-    );
-    mapDragDropDiv.addEventListener(
-      "dragend",
-      (e) => {
-        e.preventDefault();
-        mapDragDropDiv.classList.remove("highlight");
-      },
-      false
-    );
-    mapDragDropDiv.addEventListener(
-      "dragover",
-      (e) => {
-        e.preventDefault();
-      },
-      false
-    );
-    mapDragDropDiv.addEventListener(
-      "drop",
-      (e) => {
-        e.preventDefault();
-        enableSpinningWheel();
-        const files = e.target.files || e.dataTransfer.files;
-
-        if (files.length != 1) {
-          disableSpinningWheel();
-          mapDragDropDiv.classList.remove("highlight");
-          addNewUserInformation({
-            displayed: true,
-            level: MessageLevelEnum.warning,
-            type: MessageTypeEnum.global,
-            content: "Importer un fichier à la fois svp",
-          });
-          return;
-        }
-
-        const file = files[0];
-
-        // process all File objects
-        const formData = new FormData();
-        formData.append("file", file, file.name);
-
-        uploadLine(formData)
-          .then(async (res) => {
-            if (!res) {
-              addNewUserInformation({
-                displayed: true,
-                level: MessageLevelEnum.error,
-                type: MessageTypeEnum.global,
-                content: "Echec de l'import de fichier",
-              });
-              return;
-            }
-
-            const body: ReturnMessageType = await res.json();
-
-            setImportConfirmation({
-              displayed: true,
-              message: body.message,
-              metrics: {
-                total: body.metrics.total,
-                success: body.metrics.success,
-              },
-              error: {
-                etablissement: body.error.etablissement,
-                ramassage: body.error.ramassage,
-              },
-              success: {
-                etablissement: body.success.etablissement,
-                ramassage: body.success.ramassage,
-              },
-            });
-            setPoints([]);
-            fetchPointsRamassage();
-            disableSpinningWheel();
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-
-        mapDragDropDiv.classList.remove("highlight");
+        setDisplayImportCsvCanvas(true);
       },
       false
     );
@@ -164,9 +60,10 @@ export default function () {
 
   return (
     <>
-      <div ref={mapDragDropDiv}>
-        <div class="child">Drop your file here</div>
-      </div>
+      <ImportCsvCanvasMap
+        display={displayImportCsvCanvas()}
+        setDisplay={setDisplayImportCsvCanvas}
+      />
       <InformationBoard />
       <div ref={mapDiv} id="main-map" />
       <PointsRamassageAndEtablissement />

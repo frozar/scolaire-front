@@ -12,7 +12,7 @@ import { assertIsNode } from "../utils";
 import { MessageLevelEnum, MessageTypeEnum, ReturnMessageType } from "../type";
 import { useStateGui } from "../StateGui";
 import { fetchEtablissement } from "../views/etablissement/Etablissement";
-import { displayArret } from "../views/stop/Stop";
+import { fetchRamassage } from "../views/stop/Stop";
 import { uploadLine } from "../request";
 
 const [, { getSelectedMenu }] = useStateGui();
@@ -136,7 +136,7 @@ export default function (props: { doesCheckInputFilenameFormat: boolean }) {
             fetchEtablissement();
             break;
           case "arrets":
-            displayArret();
+            fetchRamassage();
             break;
         }
       })

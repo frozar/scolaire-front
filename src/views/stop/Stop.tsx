@@ -14,7 +14,6 @@ import { getToken } from "../../auth/auth";
 
 export const [selected, setSelected] = createSignal<StopItemType[]>([]);
 export const [stop, setStop] = createStore<StopItemType[]>([]);
-export const [displaystop, setDisplayStop] = createStore<StopItemType[]>([]);
 
 const [keyword, setKeyword] = createSignal("");
 
@@ -28,7 +27,7 @@ export const removeSelected = (item: StopItemType) => {
 
 export const [isChecked, setIsChecked] = createSignal(false);
 
-export function displayArret() {
+export function fetchRamassage() {
   getToken()
     .then((token) => {
       fetch(
@@ -81,7 +80,7 @@ export function displayArret() {
 
 export default function () {
   createEffect(() => {
-    displayArret();
+    fetchRamassage();
   });
   // const [refSelect, setRefSelect] = createSignal<HTMLSelectElement>();
   // eslint-disable-next-line prefer-const
@@ -107,9 +106,8 @@ export default function () {
     refCheckbox?.addEventListener("change", () => {
       setIsChecked(!isChecked());
     });
-    onMount(() => {
-      displayArret();
-    });
+
+    fetchRamassage();
   });
 
   // eslint-disable-next-line prefer-const

@@ -55,6 +55,7 @@ export default function (props: {
       (e: DragEvent) => {
         e.preventDefault();
         if (!e.dataTransfer) {
+          props.setDisplay(false);
           DragDropDiv.classList.remove("highlight");
           DragDropChild.classList.replace("child", "invisible_child");
           return;
@@ -65,6 +66,7 @@ export default function (props: {
         console.log("files", files);
 
         if (files.length != 1) {
+          props.setDisplay(false);
           DragDropDiv.classList.remove("highlight");
           DragDropChild.classList.replace("child", "invisible_child");
           addNewUserInformation({
