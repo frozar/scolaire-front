@@ -1,22 +1,12 @@
 import { createSignal, Show } from "solid-js";
 
 import { useStateAction } from "../../../StateAction";
-import { assertIsNode } from "../../../utils";
-import { Transition } from "solid-transition-group";
 import ClickOutside from "../../../ClickOutside";
 import { displayAddLineMessage } from "../../../userInformation/utils";
 import { FaSolidPlus } from "solid-icons/fa";
+import { mapDiv } from "../Map";
 
 const [, { setModeAddLine, isInAddLineMode, setModeRead }] = useStateAction();
-
-declare module "solid-js" {
-  // eslint-disable-next-line @typescript-eslint/no-namespace
-  namespace JSX {
-    interface Directives {
-      ClickOutside: (e: MouseEvent) => void;
-    }
-  }
-}
 
 export default function () {
   const [show, setShow] = createSignal(false);
@@ -25,7 +15,6 @@ export default function () {
     setShow((show) => !show);
   }
 
-  let refDrawnMenu: HTMLUListElement | undefined;
   let refLabelMenu: HTMLLabelElement | undefined;
 
   return (
@@ -46,6 +35,7 @@ export default function () {
             displayAddLineMessage();
           }
           toggleShow();
+          mapDiv().focus();
         }}
       >
         <FaSolidPlus class="w-full p-0 h-2/3" />

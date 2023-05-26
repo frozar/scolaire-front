@@ -1,6 +1,7 @@
 import { BsInfoCircle } from "solid-icons/bs";
 
 import { useStateGui } from "../../../StateGui";
+import { mapDiv } from "../Map";
 
 const [, { getDisplayedInformationBoard, toggleDisplayedInformationBoard }] =
   useStateGui();
@@ -16,7 +17,10 @@ export default function () {
         classList={{
           "bg-[#062F3F] text-[#0cc683]": getDisplayedInformationBoard(),
         }}
-        onClick={toggleDisplayedInformationBoard}
+        onClick={() => {
+          toggleDisplayedInformationBoard();
+          mapDiv().focus();
+        }}
       >
         <BsInfoCircle class="h-10 w-10" />
       </label>
