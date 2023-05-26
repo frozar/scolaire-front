@@ -1,6 +1,6 @@
 import "leaflet/dist/leaflet.css";
 
-import { Show, onMount } from "solid-js";
+import { Show, createSignal, onCleanup, onMount } from "solid-js";
 
 import PointsRamassageAndEtablissement, {
   fetchPointsRamassage,
@@ -9,6 +9,7 @@ import PointsRamassageAndEtablissement, {
 import { buildMapL7 } from "../../l7MapBuilder";
 import BusLines from "../../line/BusLines";
 import { useStateAction } from "../../StateAction";
+
 import LineUnderConstruction from "../../line/LineUnderConstruction";
 import {
   addNewUserInformation,
@@ -25,11 +26,13 @@ import {
 import ControlMapMenu from "./rightMapMenu/RightMapMenu";
 import { InformationBoard } from "./rightMapMenu/InformationBoard";
 import { getToken } from "../../auth/auth";
+import ConfirmStopAddLine from "./ConfirmStopAddLineBox";
+import { listHandlerLMap } from "./shortcut";
 
 const [, { isInAddLineMode }] = useStateAction();
 
 function buildMap(div: HTMLDivElement) {
-  const option: string = "l7";
+  const option = "l7";
   switch (option) {
     case "l7": {
       buildMapL7(div);
@@ -38,10 +41,17 @@ function buildMap(div: HTMLDivElement) {
   }
 }
 
+let mapDiv: HTMLDivElement;
+
 export default function () {
-  let mapDiv: HTMLDivElement;
   let mapDragDropDiv: HTMLDivElement;
+
   onMount(() => {
+    // Manage shortcut keyboard event
+    for (const handler of listHandlerLMap) {
+      document.body.addEventListener("keydown", handler);
+    }
+
     mapDiv.addEventListener(
       "dragenter",
       (e) => {
@@ -139,8 +149,17 @@ export default function () {
       },
       false
     );
-    return buildMap(mapDiv);
+
+    buildMap(mapDiv);
   });
+
+  onCleanup(() => {
+    // Manage shortcut keyboard event
+    for (const handler of listHandlerLMap) {
+      document.body.removeEventListener("keydown", handler);
+    }
+  });
+
   return (
     <>
       <div ref={mapDragDropDiv}>
@@ -154,6 +173,7 @@ export default function () {
       </Show>
       <BusLines />
       <ControlMapMenu />
+      <ConfirmStopAddLine />
     </>
   );
 }

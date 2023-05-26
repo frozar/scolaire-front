@@ -1,4 +1,4 @@
-import { Show, createEffect, createSignal } from "solid-js";
+import { Show, createEffect, createSignal, onCleanup, onMount } from "solid-js";
 import { Transition } from "solid-transition-group";
 
 import ClickOutside from "../ClickOutside";
@@ -10,16 +10,30 @@ import {
 import { assertIsNode } from "../utils";
 import { generateCircuit } from "../views/graphicage/generationCircuit";
 
-declare module "solid-js" {
-  // eslint-disable-next-line @typescript-eslint/no-namespace
-  namespace JSX {
-    interface Directives {
-      ClickOutside: (e: MouseEvent) => void;
+let refDialogueBox: HTMLDivElement;
+
+function exitModal({ code }: KeyboardEvent) {
+  // @ts-expect-error: Currently the 'keyboard' field doesn't exist on 'navigator'
+  const keyboard = navigator.keyboard;
+  // eslint-disable-next-line solid/reactivity
+  keyboard.getLayoutMap().then(() => {
+    if (code === "Escape") {
+      if (getDisplayedGeneratorDialogueBox()) {
+        closeGeneratorDialogueBox();
+      }
     }
-  }
+  });
 }
 
 export default function () {
+  onMount(() => {
+    document.addEventListener("keyup", exitModal);
+  });
+
+  onCleanup(() => {
+    document.removeEventListener("keyup", exitModal);
+  });
+
   const displayed = () => getDisplayedGeneratorDialogueBox();
   const [nbVehicles, setNbVehicles] = createSignal(1);
   const [vehiclesCapacity, setVehiclesCapacity] = createSignal(50);
@@ -39,15 +53,13 @@ export default function () {
     );
   }
 
-  const [buttonRef, setButtonRef] = createSignal<
+  const [refButton, setRefButton] = createSignal<
     HTMLButtonElement | undefined
   >();
 
   createEffect(() => {
-    buttonRef()?.focus();
+    refButton()?.focus();
   });
-
-  let refDialogueBox: HTMLDivElement | undefined;
 
   return (
     <Transition
@@ -142,7 +154,7 @@ export default function () {
                           type="number"
                           name="nb_vehicle"
                           id="nb_vehicle"
-                          class="block w-40 rounded-md border-0 py-1.5 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          class="block w-40 rounded-md border-0 py-1.5 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 disabled:bg-gray-300"
                           disabled={true}
                           min={1}
                           max={1}
@@ -289,7 +301,7 @@ export default function () {
 
                   <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
                     <button
-                      ref={setButtonRef}
+                      ref={setRefButton}
                       type="button"
                       class="inline-flex w-full justify-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 sm:ml-3 sm:w-auto"
                       onClick={handlerOnClickSoumettre}

@@ -1,17 +1,11 @@
-import { createEffect, onCleanup, onMount, Switch, Match } from "solid-js";
+import { createEffect, Switch, Match, onMount, onCleanup } from "solid-js";
 import SpinningWheel from "./SpinningWheel";
 import Map from "./views/graphicage/Map";
 import { useStateAction } from "./StateAction";
 import DisplayUserInformation from "./userInformation/DisplayUserInformation";
 import RemoveConfirmation from "./userInformation/RemoveConfirmation";
 import ExportConfirmation from "./views/graphicage/rightMapMenu/export/ExportModal";
-import { closeRemoveConfirmationBox, fetchBusLines } from "./signaux";
 
-import {
-  displayAddLineMessage,
-  displayRemoveLineMessage,
-} from "./userInformation/utils";
-import { addBusLine } from "./request";
 import DragAndDrop from "./userInformation/DragAndDrop";
 import NavTop from "./layout/NavTop";
 import NavLateral from "./layout/NavLateral";
@@ -20,107 +14,12 @@ import ClearConfirmation from "./userInformation/ClearConfirmation";
 import GeneratorDialogueBox from "./userInformation/GeneratorDialogueBox";
 import Arret from "./views/stop/Stop";
 import Etablissement from "./views/etablissement/Etablissement";
-const [
-  ,
-  {
-    setModeRead,
-    setModeAddLine,
-    setModeRemoveLine,
-    isInAddLineMode,
-    isInReadMode,
-    resetLineUnderConstruction,
-    getLineUnderConstruction,
-    isInRemoveLineMode,
-  },
-  history,
-] = useStateAction();
+import { listHandlerLMap } from "./views/graphicage/shortcut";
 
+const [, { isInAddLineMode }] = useStateAction();
 const [, { getSelectedMenu }] = useStateGui();
 
-// Handler the Undo/Redo from the user
-function undoRedoHandler({ ctrlKey, shiftKey, code }: KeyboardEvent) {
-  // // @ts-expect-error
-  // const keyboard = navigator.keyboard;
-  // // @ts-expect-error
-  // keyboard.getLayoutMap().then((keyboardLayoutMap) => {
-  //   const upKey = keyboardLayoutMap.get(code);
-  //   if (upKey === "x") {
-  //     if (history.undos && history.undos[0] && history.undos[0][0]) {
-  //       const anUndo = history.undos[0][0];
-  //     }
-  //   }
-  // });
-
-  if (ctrlKey) {
-    // @ts-expect-error: Currently the 'keyboard' field doesn't exist on 'navigator'
-    const keyboard = navigator.keyboard;
-    // @ts-expect-error: The type 'KeyboardLayoutMap' is not available
-    keyboard.getLayoutMap().then((keyboardLayoutMap) => {
-      const upKey = keyboardLayoutMap.get(code);
-      if (upKey === "z") {
-        if (!shiftKey && history.isUndoable()) {
-          history.undo();
-        } else if (shiftKey && history.isRedoable()) {
-          history.redo();
-        }
-      }
-    });
-  }
-}
-
-function escapeHandler({ code }: KeyboardEvent) {
-  if (code === "Escape") {
-    if (isInReadMode()) {
-      return;
-    }
-
-    resetLineUnderConstruction();
-    setModeRead();
-  }
-}
-
-function enterHandler({ code }: KeyboardEvent) {
-  if (code === "Enter") {
-    if (!isInAddLineMode()) {
-      return;
-    }
-    const ids_point = getLineUnderConstruction().stops.map(function (value) {
-      return value["id_point"];
-    });
-
-    addBusLine(ids_point).then(async (res) => {
-      await res.json();
-      resetLineUnderConstruction();
-      setModeRead();
-      fetchBusLines();
-    });
-  }
-}
-
-function toggleLineUnderConstruction({ code }: KeyboardEvent) {
-  // @ts-expect-error: Currently the 'keyboard' field doesn't exist on 'navigator'
-  const keyboard = navigator.keyboard;
-  // @ts-expect-error: The type 'KeyboardLayoutMap' is not available
-  keyboard.getLayoutMap().then((keyboardLayoutMap) => {
-    const upKey = keyboardLayoutMap.get(code);
-    if (upKey === "l") {
-      setModeAddLine();
-      displayAddLineMessage();
-    }
-    if (upKey === "d") {
-      // Toggle behavior
-      if (!isInRemoveLineMode()) {
-        setModeRemoveLine();
-        displayRemoveLineMessage();
-      } else {
-        setModeRead();
-        closeRemoveConfirmationBox();
-      }
-    }
-  });
-}
-
-let refApp: HTMLDivElement | undefined;
+let refApp: HTMLDivElement;
 
 createEffect(() => {
   const [, { getLineUnderConstruction }] = useStateAction();
@@ -142,20 +41,6 @@ createEffect(() => {
 });
 
 export default () => {
-  onMount(() => {
-    document.addEventListener("keydown", undoRedoHandler);
-    document.addEventListener("keydown", escapeHandler);
-    document.addEventListener("keydown", enterHandler);
-    document.addEventListener("keydown", toggleLineUnderConstruction);
-  });
-
-  onCleanup(() => {
-    document.removeEventListener("keydown", undoRedoHandler);
-    document.removeEventListener("keydown", escapeHandler);
-    document.removeEventListener("keydown", enterHandler);
-    document.removeEventListener("keydown", toggleLineUnderConstruction);
-  });
-
   return (
     <div ref={refApp}>
       <NavTop />

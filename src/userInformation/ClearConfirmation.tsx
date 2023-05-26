@@ -1,4 +1,4 @@
-import { Show, createEffect, createSignal } from "solid-js";
+import { Show, createEffect, createSignal, onCleanup, onMount } from "solid-js";
 import { Transition } from "solid-transition-group";
 
 import { NatureEnum } from "../type";
@@ -20,24 +20,42 @@ import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { assertIsNode } from "../utils";
 import { fetchPointsRamassage } from "../PointsRamassageAndEtablissement";
 
-declare module "solid-js" {
-  namespace JSX {
-    interface Directives {
-      ClickOutside: (e: MouseEvent) => void;
+function exitModal({ code }: KeyboardEvent) {
+  // @ts-expect-error: Currently the 'keyboard' field doesn't exist on 'navigator'
+  const keyboard = navigator.keyboard;
+  // eslint-disable-next-line solid/reactivity
+  keyboard.getLayoutMap().then(() => {
+    if (code === "Escape") {
+      if (getClearConfirmation()["displayed"]) {
+        closeClearConfirmationBox();
+      }
     }
-  }
+  });
 }
 
 export default function () {
   const displayed = () => getClearConfirmation()["displayed"];
 
+  onMount(() => {
+    document.addEventListener("keyup", exitModal);
+  });
+
+  onCleanup(() => {
+    document.removeEventListener("keyup", exitModal);
+  });
+
   function handlerOnClickValider() {
     clear()
       .then((res) => {
         enableSpinningWheel();
+        if (!res) {
+          disableSpinningWheel();
+          console.error("clear failed.");
+          return;
+        }
         return res.json();
       })
-      .then((res: any) => {
+      .then((res: { message: string }) => {
         if (res.message == "OK") {
           addNewUserInformation({
             displayed: true,
