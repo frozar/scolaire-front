@@ -155,7 +155,7 @@ export default function () {
 
   return (
     <>
-      <ImportCsv />
+      <ImportCsv doesCheckInputFilenameFormat={false} />
       {/* TODO: uncomment the ImportCsvCanvas */}
       {/* <ImportCsvCanvas
         display={displayImportCsvCanvas()}
@@ -235,7 +235,7 @@ export default function () {
 
                             const { year, month, day, hour, minute } =
                               getExportDate();
-                            const fileName = `${year}-${month}-${day}_${hour}-${minute}_etablissements.csv`;
+                            const fileName = `${year}-${month}-${day}_${hour}-${minute}_etablissement.csv`;
                             download(fileName, blob);
                           })
                           .catch(() => {
@@ -250,8 +250,9 @@ export default function () {
                   Exporter
                 </button>
                 <button
-                  class="btn-arret-export-import"
+                  class="btn-arret-export-import disabled:bg-gray-300 disabled:opacity-75"
                   onClick={openRemoveImportCsvBox}
+                  disabled
                 >
                   Importer
                 </button>

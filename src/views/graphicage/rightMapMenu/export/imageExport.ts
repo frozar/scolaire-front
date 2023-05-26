@@ -127,7 +127,7 @@ export async function exportImages() {
   await exportLinesImages(screenShoter, polylines, leafletMap);
   zip.generateAsync({ type: "blob" }).then((content) => {
     const { year, month, day, hour, minute } = getExportDate();
-    const fileName = `${year}-${month}-${day}_${hour}-${minute}_bus-lines.zip`;
+    const fileName = `${year}-${month}-${day}_${hour}-${minute}_bus-line.zip`;
     saveAs(content, fileName);
     displayDownloadSuccessMessage();
   });

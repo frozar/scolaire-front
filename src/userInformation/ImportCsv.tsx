@@ -38,7 +38,7 @@ createEffect(() => {
   }
 });
 
-export default function () {
+export default function (props: { doesCheckInputFilenameFormat: boolean }) {
   const displayed = () => getImportCsvBox()["displayed"];
 
   let refDialogueBox: HTMLDivElement | undefined;
@@ -46,6 +46,7 @@ export default function () {
 
   function handlerOnClickValider() {
     if (!refInputCsv) {
+      closeRemoveImportCsvBox();
       addNewUserInformation({
         displayed: true,
         level: MessageLevelEnum.warning,
@@ -83,7 +84,18 @@ export default function () {
 
     const file = files[0];
 
-    if (!file.name.toLowerCase().includes(fileType.toLowerCase())) {
+    // console.log("file.name.toLowerCase()", file.name.toLowerCase());
+    // console.log("fileType.toLowerCase()", fileType.toLowerCase());
+    // console.log(
+    //   "file.name.toLowerCase().includes(fileType.toLowerCase())",
+    //   file.name.toLowerCase().includes(fileType.toLowerCase())
+    // );
+
+    if (
+      props.doesCheckInputFilenameFormat &&
+      !file.name.toLowerCase().includes(fileType.toLowerCase())
+    ) {
+      closeRemoveImportCsvBox();
       addNewUserInformation({
         displayed: true,
         level: MessageLevelEnum.error,
@@ -92,8 +104,10 @@ export default function () {
       });
       return;
     }
+
     const formData = new FormData();
     formData.append("file", file, file.name);
+
     getToken()
       .then((token) => {
         fetch(import.meta.env.VITE_BACK_URL + "/uploadfile", {
@@ -108,6 +122,8 @@ export default function () {
             return res.json();
           })
           .then((res: ReturnMessageType) => {
+            // TODO: handle error return by the backend
+            // console.log("res", res);
             setImportConfirmation({
               displayed: true,
               message: res.message,
