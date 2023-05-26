@@ -257,7 +257,7 @@ export default function (props: {
     // Fetch associated points (ramassage or etablissement) and
     // store them in the associatedPoints() signal (used is the on'click' event)
     fetchAssociatedPoints(point(), setAssociatedPoints);
-    if (points().length === nb()) {
+    if (points().length - 1 === nb()) {
       setIsPointReady(true);
     }
   });
