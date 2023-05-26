@@ -15,7 +15,9 @@ import { LineString, MultiLineString } from "geojson";
 const [, { isInReadMode }] = useStateAction();
 export function getLatLngs(stops: PointIdentityType[]): L.LatLng[] {
   const latlngs: L.LatLng[] = [];
+
   for (const pointIdentity of stops) {
+    console.log("pointIdentity", pointIdentity);
     const circle = linkMap.get(pointIdentity.id_point);
     if (circle) {
       latlngs.push(circle.getLatLng());
