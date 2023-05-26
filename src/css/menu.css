@@ -361,6 +361,7 @@
             height: 13px;
             border-radius: 50%;
             position: absolute;
+            z-index: -1;
             background-color: #0cc683;
             right: -5px;
             outline: solid 13px #062f3f;
