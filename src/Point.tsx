@@ -25,6 +25,8 @@ import {
   setInfoToDisplay,
   setStopIds,
   stopIds,
+  setIsRamassageReady,
+  setIsEtablissementReady,
 } from "./signaux";
 import { minMaxQty } from "./PointsRamassageAndEtablissement";
 import { getToken } from "./auth/auth";
@@ -43,8 +45,12 @@ const maxSizeValue = 10;
 const range = maxSizeValue - minSizeValue;
 export default function (props: {
   point: PointRamassageType | PointEtablissementType;
+  isLast: boolean;
+  nature: NatureEnum;
 }) {
   const point = () => props.point;
+  const isLast = () => props.isLast;
+  const nature = () => props.nature;
 
   const [associatedPoints, setAssociatedPoints] = createSignal<
     PointIdentityType[]
@@ -252,11 +258,17 @@ export default function (props: {
     // Fetch associated points (ramassage or etablissement) and
     // store them in the associatedPoints() signal (used is the on'click' event)
     fetchAssociatedPoints(point(), setAssociatedPoints);
+    if (isLast()) {
+      if (nature() === NatureEnum.ramassage) {
+        setIsRamassageReady(true);
+      } else {
+        setIsEtablissementReady(true);
+      }
+    }
   });
 
   onCleanup(() => {
     linkMap.delete(point().id_point);
-
     circle.remove();
   });
 

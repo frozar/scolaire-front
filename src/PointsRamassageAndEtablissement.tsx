@@ -2,7 +2,12 @@ import { createSignal, onMount, For, onCleanup } from "solid-js";
 
 import { NatureEnum, PointRamassageType, PointEtablissementType } from "./type";
 import Point from "./Point";
-import { setPoints, points } from "./signaux";
+import {
+  setPoints,
+  points,
+  setIsRamassageReady,
+  setIsEtablissementReady,
+} from "./signaux";
 import { getToken } from "./auth/auth";
 
 export const [minMaxQty, setMinMaxQty] = createSignal([1, 100]);
@@ -60,7 +65,19 @@ export default function () {
 
   onCleanup(() => {
     setPoints([]);
+    setIsRamassageReady(false);
+    setIsEtablissementReady(false);
   });
 
-  return <For each={points()}>{(point) => <Point point={point} />}</For>;
+  return (
+    <For each={points()}>
+      {(point, i) => (
+        <Point
+          point={point}
+          isLast={i() === points().length - 1}
+          nature={point.nature}
+        />
+      )}
+    </For>
+  );
 }

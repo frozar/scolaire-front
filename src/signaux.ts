@@ -25,6 +25,11 @@ import { getToken } from "./auth/auth";
 const [getDisplayedSpinningWheel, setDisplayedSpinningWheel] =
   createSignal(false);
 
+export const [isRamassageReady, setIsRamassageReady] = createSignal(false);
+
+export const [isEtablissementReady, setIsEtablissementReady] =
+  createSignal(false);
+
 export const displayedSpinningWheel = getDisplayedSpinningWheel;
 
 export function enableSpinningWheel() {
@@ -290,14 +295,14 @@ export function fetchPolyline(lnglat: number[][], busLine: LineType) {
     .then((res) => {
       return res.json();
     })
-    .then((res) =>
+    .then((res) => {
       setPolylineRoute({
         latlngs: res.routes[0].geometry.coordinates.map((elt: number[]) =>
           elt.reverse()
         ),
         busLine: busLine,
-      })
-    );
+      });
+    });
 }
 
 export const [getLeafletMap, setLeafletMap] = createSignal<L.Map>();
