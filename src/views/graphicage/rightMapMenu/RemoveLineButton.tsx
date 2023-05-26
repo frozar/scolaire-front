@@ -2,7 +2,6 @@ import { FaSolidMinus } from "solid-icons/fa";
 
 import { useStateAction } from "../../../StateAction";
 import { displayRemoveLineMessage } from "../../../userInformation/utils";
-import { mapDiv } from "../Map";
 
 const [, { setModeRemoveLine, isInRemoveLineMode, setModeRead }] =
   useStateAction();
@@ -22,7 +21,6 @@ export default function () {
           }
           setModeRemoveLine();
           displayRemoveLineMessage();
-          mapDiv().focus();
         }}
       >
         <FaSolidMinus class="w-full h-2/3" />

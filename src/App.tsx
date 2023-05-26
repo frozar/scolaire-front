@@ -1,14 +1,6 @@
-import {
-  createEffect,
-  Switch,
-  Match,
-  onMount,
-  children,
-  on,
-  JSX,
-} from "solid-js";
+import { createEffect, Switch, Match, onMount } from "solid-js";
 import SpinningWheel from "./SpinningWheel";
-import Map, { mapDiv } from "./views/graphicage/Map";
+import Map from "./views/graphicage/Map";
 import { useStateAction } from "./StateAction";
 import DisplayUserInformation from "./userInformation/DisplayUserInformation";
 import RemoveConfirmation from "./userInformation/RemoveConfirmation";
@@ -22,12 +14,6 @@ import ClearConfirmation from "./userInformation/ClearConfirmation";
 import GeneratorDialogueBox from "./userInformation/GeneratorDialogueBox";
 import Arret from "./views/stop/Stop";
 import Etablissement from "./views/etablissement/Etablissement";
-import {
-  getClearConfirmation,
-  getDisplayedGeneratorDialogueBox,
-  getExportConfirmation,
-} from "./signaux";
-import { dialogConfirmStopAddLine } from "./views/graphicage/ConfirmStopAddLine";
 import { listHandlerLMap } from "./views/graphicage/shortcut";
 
 const [, { isInAddLineMode }] = useStateAction();
@@ -54,49 +40,27 @@ createEffect(() => {
 });
 
 export default () => {
-  // Manage keyboard event
-  const setupKeyEvent = () => {
-    let itemToListen: (({ ctrlKey, shiftKey, code }: KeyboardEvent) => void)[] =
-      [];
-
-    if (getSelectedMenu() == "graphicage") {
-      if (
-        !getExportConfirmation().displayed &&
-        !getDisplayedGeneratorDialogueBox() &&
-        !getClearConfirmation().displayed &&
-        !dialogConfirmStopAddLine
-      ) {
-        itemToListen = listHandlerLMap;
-      }
-
-      itemToListen = listHandlerLMap;
-    }
-
-    for (const handler of itemToListen) {
-      refApp?.addEventListener("keydown", handler);
-    }
-  };
-
   onMount(() => {
-    setupKeyEvent();
+    if (!refApp) {
+      return;
+    }
+
+    refApp.focus();
+
+    // Manage shortcut keyboard event
+    for (const handler of listHandlerLMap) {
+      refApp.addEventListener("keydown", handler);
+    }
+
     console.log(document.activeElement, getSelectedMenu());
 
     document.addEventListener("click", () => {
       console.log(document.activeElement);
     });
-
-    createEffect(
-      on(
-        () => getSelectedMenu(),
-        () => {
-          setupKeyEvent();
-        }
-      )
-    );
   });
 
   return (
-    <div ref={refApp}>
+    <div tabindex="0" ref={refApp}>
       <NavTop />
 
       <div id="app-content">

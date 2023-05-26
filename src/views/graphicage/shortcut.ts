@@ -1,10 +1,17 @@
 import { useStateAction } from "../../StateAction";
 import { addBusLine } from "../../request";
-import { closeRemoveConfirmationBox, fetchBusLines } from "../../signaux";
+import {
+  closeRemoveConfirmationBox,
+  fetchBusLines,
+  getClearConfirmation,
+  getDisplayedGeneratorDialogueBox,
+  getExportConfirmation,
+} from "../../signaux";
 import {
   displayAddLineMessage,
   displayRemoveLineMessage,
 } from "../../userInformation/utils";
+import { dialogConfirmStopAddLine } from "./ConfirmStopAddLine";
 
 const [
   ,
@@ -21,8 +28,18 @@ const [
   history,
 ] = useStateAction();
 
+const isOpenedModal = () =>
+  getExportConfirmation().displayed ||
+  getDisplayedGeneratorDialogueBox() ||
+  getClearConfirmation().displayed ||
+  dialogConfirmStopAddLine();
+
 // Handler the Undo/Redo from the user
 function undoRedoHandler({ ctrlKey, shiftKey, code }: KeyboardEvent) {
+  if (isOpenedModal()) {
+    return;
+  }
+
   if (ctrlKey) {
     // @ts-expect-error: Currently the 'keyboard' field doesn't exist on 'navigator'
     const keyboard = navigator.keyboard;
@@ -41,6 +58,10 @@ function undoRedoHandler({ ctrlKey, shiftKey, code }: KeyboardEvent) {
 }
 
 function escapeHandler({ code }: KeyboardEvent) {
+  if (isOpenedModal()) {
+    return;
+  }
+
   if (code === "Escape") {
     if (isInReadMode()) {
       return;
@@ -52,6 +73,10 @@ function escapeHandler({ code }: KeyboardEvent) {
 }
 
 function enterHandler({ code }: KeyboardEvent) {
+  if (isOpenedModal()) {
+    return;
+  }
+
   if (code === "Enter") {
     if (!isInAddLineMode()) {
       return;
@@ -61,7 +86,13 @@ function enterHandler({ code }: KeyboardEvent) {
     });
 
     addBusLine(ids_point).then(async (res) => {
+      if (!res) {
+        console.error("addBusLine failed");
+        return;
+      }
+
       await res.json();
+
       resetLineUnderConstruction();
       setModeRead();
       fetchBusLines();
@@ -70,6 +101,10 @@ function enterHandler({ code }: KeyboardEvent) {
 }
 
 function toggleLineUnderConstruction({ code }: KeyboardEvent) {
+  if (isOpenedModal()) {
+    return;
+  }
+
   // @ts-expect-error: Currently the 'keyboard' field doesn't exist on 'navigator'
   const keyboard = navigator.keyboard;
   // @ts-expect-error: The type 'KeyboardLayoutMap' is not available

@@ -1,22 +1,12 @@
-import { createSignal, Show } from "solid-js";
-
 import { useStateAction } from "../../../StateAction";
-import ClickOutside from "../../../ClickOutside";
 import { displayAddLineMessage } from "../../../userInformation/utils";
 import { FaSolidPlus } from "solid-icons/fa";
-import { mapDiv } from "../Map";
 
 const [, { setModeAddLine, isInAddLineMode, setModeRead }] = useStateAction();
 
+let refLabelMenu: HTMLLabelElement;
+
 export default function () {
-  const [show, setShow] = createSignal(false);
-
-  function toggleShow() {
-    setShow((show) => !show);
-  }
-
-  let refLabelMenu: HTMLLabelElement | undefined;
-
   return (
     <div class="menu-btn group">
       <span class="tooltip group-hover:scale-100">Ajouter une ligne</span>
@@ -34,8 +24,6 @@ export default function () {
             setModeAddLine();
             displayAddLineMessage();
           }
-          toggleShow();
-          mapDiv().focus();
         }}
       >
         <FaSolidPlus class="w-full p-0 h-2/3" />

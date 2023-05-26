@@ -9,7 +9,6 @@ import {
 
 import { assertIsNode } from "../utils";
 import { generateCircuit } from "../views/graphicage/generationCircuit";
-import { mapDiv } from "../views/graphicage/Map";
 
 declare module "solid-js" {
   // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -61,7 +60,6 @@ export default function () {
     refDialogueBox().addEventListener("keyup", (e) => {
       if (e.key == "Escape") {
         closeGeneratorDialogueBox();
-        mapDiv().focus();
       }
     });
   });

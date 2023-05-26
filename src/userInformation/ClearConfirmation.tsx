@@ -19,9 +19,9 @@ import { clear } from "../request";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { assertIsNode } from "../utils";
 import { fetchPointsRamassage } from "../PointsRamassageAndEtablissement";
-import { mapDiv } from "../views/graphicage/Map";
 
 declare module "solid-js" {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace JSX {
     interface Directives {
       ClickOutside: (e: MouseEvent) => void;
@@ -36,9 +36,14 @@ export default function () {
     clear()
       .then((res) => {
         enableSpinningWheel();
+        if (!res) {
+          disableSpinningWheel();
+          console.error("clear failed.");
+          return;
+        }
         return res.json();
       })
-      .then((res: any) => {
+      .then((res: { message: string }) => {
         if (res.message == "OK") {
           addNewUserInformation({
             displayed: true,
@@ -98,7 +103,6 @@ export default function () {
     refDialogueBox().addEventListener("keyup", (e) => {
       if (e.key == "Escape") {
         closeClearConfirmationBox();
-        mapDiv().focus();
       }
     });
   });

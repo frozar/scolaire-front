@@ -13,13 +13,10 @@ import { useStateAction } from "../../StateAction";
 import LineUnderConstruction from "../../line/LineUnderConstruction";
 import {
   addNewUserInformation,
-  closeRemoveConfirmationBox,
   disableSpinningWheel,
   enableSpinningWheel,
   setImportConfirmation,
-  fetchBusLines,
   setPoints,
-  getClearConfirmation,
 } from "../../signaux";
 import {
   MessageLevelEnum,
@@ -29,16 +26,7 @@ import {
 import ControlMapMenu from "./rightMapMenu/RightMapMenu";
 import { InformationBoard } from "./rightMapMenu/InformationBoard";
 import { getToken } from "../../auth/auth";
-import { addBusLine } from "../../request";
-import {
-  displayAddLineMessage,
-  displayRemoveLineMessage,
-} from "../../userInformation/utils";
-import { getExportConfirmation } from "../../signaux";
-import { getDisplayedGeneratorDialogueBox } from "../../signaux";
-import ConfirmStopAddLine, {
-  dialogConfirmStopAddLine,
-} from "./ConfirmStopAddLine";
+import ConfirmStopAddLine from "./ConfirmStopAddLine";
 import { listHandlerLMap } from "./shortcut";
 
 const [, { isInAddLineMode }] = useStateAction();

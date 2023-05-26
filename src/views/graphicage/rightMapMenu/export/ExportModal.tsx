@@ -10,7 +10,6 @@ import { assertIsNode } from "../../../../utils";
 import { ExportTypeEnum } from "../../../../type";
 import { exportData } from "./export";
 import { GtfsExportLogo, ImageExportLogo } from "./Logos";
-import { mapDiv } from "../../Map";
 
 const [refDialogBox, setRefDialog] = createSignal<HTMLElement>(
   document.createElement("div")
@@ -75,7 +74,6 @@ export default function () {
     refDialogBox().addEventListener("keyup", (e) => {
       if (e.key == "Escape") {
         closeExportConfirmationBox();
-        mapDiv().focus();
       }
     });
   });
