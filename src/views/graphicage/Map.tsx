@@ -150,8 +150,6 @@ export default function () {
       false
     );
 
-    // Déplacer dans app.tsx dans un createEffect sur le menuSelected
-
     buildMap(mapDiv);
   });
 
