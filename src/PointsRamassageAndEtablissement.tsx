@@ -63,6 +63,14 @@ export default function () {
   });
 
   return (
-    <For each={points()}>{(point, i) => <Point point={point} nb={i()} />}</For>
+    <For each={points()}>
+      {(point, i) => (
+        <Point
+          point={point}
+          isLast={i() === points().length - 1}
+          nature={point.nature}
+        />
+      )}
+    </For>
   );
 }

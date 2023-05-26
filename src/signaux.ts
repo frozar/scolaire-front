@@ -25,7 +25,10 @@ import { getToken } from "./auth/auth";
 const [getDisplayedSpinningWheel, setDisplayedSpinningWheel] =
   createSignal(false);
 
-export const [isPointReady, setIsPointReady] = createSignal(false);
+export const [isRamassageReady, setIsRamassageReady] = createSignal(false);
+
+export const [isEtablissementReady, setIsEtablissementReady] =
+  createSignal(false);
 
 export const displayedSpinningWheel = getDisplayedSpinningWheel;
 
