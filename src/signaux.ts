@@ -291,7 +291,7 @@ export function fetchPolyline(lnglat: number[][], busLine: LineType) {
       return res.json();
     })
     .then((res) => {
-      console.log("OSRM Res" + res);
+      console.log("OSRM Res" + res.routes[0].geometry.coordinates);
       setPolylineRoute({
         latlngs: res.routes[0].geometry.coordinates.map((elt: number[]) =>
           elt.reverse()
