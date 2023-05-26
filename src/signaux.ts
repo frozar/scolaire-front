@@ -276,18 +276,19 @@ export function fetchBusLines() {
       console.log(err);
     });
 }
-export async function fetchPolyline(lnglat: number[][], busLine: LineType) {
+export function fetchPolyline(lnglat: number[][], busLine: LineType) {
   let urlLnglat = "";
   for (const elt of lnglat) {
     urlLnglat += elt[0] + "," + elt[1] + ";";
   }
   urlLnglat = urlLnglat.slice(0, -1);
-  await fetch(
+  fetch(
     import.meta.env.VITE_API_OSRM_URL +
       urlLnglat +
       "?geometries=geojson&overview=full"
   )
     .then((res) => {
+      console.log("OSRM json");
       return res.json();
     })
     .then((res) => {
