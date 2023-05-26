@@ -25,6 +25,8 @@ import {
   setInfoToDisplay,
   setStopIds,
   stopIds,
+  points,
+  setIsPointReady,
 } from "./signaux";
 import { minMaxQty } from "./PointsRamassageAndEtablissement";
 import { getToken } from "./auth/auth";
@@ -43,8 +45,10 @@ const maxSizeValue = 10;
 const range = maxSizeValue - minSizeValue;
 export default function (props: {
   point: PointRamassageType | PointEtablissementType;
+  nb: number;
 }) {
   const point = () => props.point;
+  const nb = () => props.nb;
 
   const [associatedPoints, setAssociatedPoints] = createSignal<
     PointIdentityType[]
@@ -253,6 +257,9 @@ export default function (props: {
     // Fetch associated points (ramassage or etablissement) and
     // store them in the associatedPoints() signal (used is the on'click' event)
     fetchAssociatedPoints(point(), setAssociatedPoints);
+    if (points().length === nb()) {
+      setIsPointReady(true);
+    }
   });
 
   onCleanup(() => {

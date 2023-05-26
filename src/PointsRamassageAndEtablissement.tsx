@@ -56,12 +56,13 @@ export function fetchPointsRamassage() {
 export default function () {
   onMount(async () => {
     fetchPointsRamassage();
-    console.log("points", points());
   });
 
   onCleanup(() => {
     setPoints([]);
   });
 
-  return <For each={points()}>{(point, i) => <Point point={point} />}</For>;
+  return (
+    <For each={points()}>{(point, i) => <Point point={point} nb={i()} />}</For>
+  );
 }
