@@ -164,6 +164,8 @@ export default function () {
     mapDiv().focus();
 
     document.addEventListener("click", () => {
+      console.log(document.activeElement);
+
       if (
         !getExportConfirmation().displayed &&
         !getDisplayedGeneratorDialogueBox() &&
