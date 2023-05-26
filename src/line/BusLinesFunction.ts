@@ -17,14 +17,9 @@ export function getLatLngs(stops: PointIdentityType[]): L.LatLng[] {
   const latlngs: L.LatLng[] = [];
 
   for (const pointIdentity of stops) {
-    console.log("pointIdentity", pointIdentity);
     const circle = linkMap.get(pointIdentity.id_point);
     if (circle) {
-      console.log("circle", circle);
-      console.log("circle.getLatLng()", circle.getLatLng());
       latlngs.push(circle.getLatLng());
-    } else {
-      console.log("circle not found");
     }
   }
   return latlngs;
