@@ -287,23 +287,15 @@ export function fetchPolyline(lnglat: number[][], busLine: LineType) {
     urlLnglat += elt[0] + "," + elt[1] + ";";
   }
   urlLnglat = urlLnglat.slice(0, -1);
-  console.log(
-    "OSRM url: " +
-      import.meta.env.VITE_API_OSRM_URL +
-      urlLnglat +
-      "?geometries=geojson&overview=full"
-  );
   fetch(
     import.meta.env.VITE_API_OSRM_URL +
       urlLnglat +
       "?geometries=geojson&overview=full"
   )
     .then((res) => {
-      console.log("OSRM json");
       return res.json();
     })
     .then((res) => {
-      console.log("OSRM Res" + res.routes[0].geometry.coordinates.length);
       setPolylineRoute({
         latlngs: res.routes[0].geometry.coordinates.map((elt: number[]) =>
           elt.reverse()
