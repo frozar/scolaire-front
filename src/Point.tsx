@@ -258,6 +258,7 @@ export default function (props: {
     fetchAssociatedPoints(point(), setAssociatedPoints);
 
     if (isLast()) {
+      console.log("last");
       setIsPointReady(true);
     }
   });
