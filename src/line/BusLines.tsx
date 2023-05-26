@@ -9,6 +9,7 @@ import {
   polylineRoute,
   isRamassageReady,
   isEtablissementReady,
+  points,
 } from "../signaux";
 import { pointsReady } from "../PointsRamassageAndEtablissement";
 import {
@@ -19,6 +20,7 @@ import {
 import { getLeafletMap } from "../signaux";
 
 import { useStateAction } from "../StateAction";
+import { linkMap } from "../global/linkPointIdentityCircle";
 const [, { isInRemoveLineMode, isInAddLineMode, isInReadMode }] =
   useStateAction();
 
@@ -61,11 +63,7 @@ export default function () {
     busLinesPolyline.map((busLinePolyline) => busLinePolyline.remove());
     busLinesDrawn.map((line) => line.remove());
 
-    if (
-      busLines().length == 0 ||
-      isRamassageReady() == false ||
-      isEtablissementReady() == false
-    ) {
+    if (busLines().length == 0 || linkMap.size != points().length) {
       return;
     }
     for (const busLine of busLines()) {

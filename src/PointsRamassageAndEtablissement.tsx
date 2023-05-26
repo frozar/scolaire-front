@@ -59,7 +59,7 @@ export function fetchPointsRamassage() {
     });
 }
 export default function () {
-  onMount(async () => {
+  onMount(() => {
     fetchPointsRamassage();
   });
 
