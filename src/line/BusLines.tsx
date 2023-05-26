@@ -60,10 +60,12 @@ export default function () {
     busLinesDrawn.map((line) => line.remove());
 
     if (busLines().length == 0) {
+      console.log("No bus lines");
       return;
     }
     for (const busLine of busLines()) {
       // drawn routes
+      console.log("Bus line" + busLine);
       if (isInReadMode()) {
         const latlng = getLatLngs(busLine.stops);
         const lnglat = latlng.slice().map((prev) => [prev.lng, prev.lat]);
