@@ -258,6 +258,7 @@ export default function (props: {
     // store them in the associatedPoints() signal (used is the on'click' event)
     fetchAssociatedPoints(point(), setAssociatedPoints);
     if (points().length - 1 === nb()) {
+      console.log("onMount: points().length - 1 === nb()");
       setIsPointReady(true);
     }
   });
@@ -266,6 +267,7 @@ export default function (props: {
     linkMap.delete(point().id_point);
     console.log("onCleanup");
     circle.remove();
+    setIsPointReady(false);
   });
 
   return <></>;
