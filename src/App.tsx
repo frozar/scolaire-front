@@ -42,7 +42,7 @@ createEffect(() => {
 
 export default () => {
   return (
-    <div tabindex="-1" ref={refApp}>
+    <div ref={refApp}>
       <NavTop />
 
       <div id="app-content">

@@ -166,7 +166,7 @@ export default function () {
         <div class="child">Drop your file here</div>
       </div>
       <InformationBoard />
-      <div ref={mapDiv} id="main-map" tabindex="-1" />
+      <div ref={mapDiv} id="main-map" />
       <PointsRamassageAndEtablissement />
       <Show when={isInAddLineMode()}>
         <LineUnderConstruction />
