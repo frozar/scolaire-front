@@ -7,7 +7,6 @@ import {
   busLines,
   fetchPolyline,
   polylineRoute,
-  isPointReady,
   isRamassageReady,
   isEtablissementReady,
 } from "../signaux";

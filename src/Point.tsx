@@ -25,7 +25,6 @@ import {
   setInfoToDisplay,
   setStopIds,
   stopIds,
-  points,
   setIsRamassageReady,
   setIsEtablissementReady,
 } from "./signaux";
@@ -262,8 +261,10 @@ export default function (props: {
     fetchAssociatedPoints(point(), setAssociatedPoints);
     if (isLast()) {
       if (nature() === NatureEnum.ramassage) {
+        console.log("isLast ramassage");
         setIsRamassageReady(true);
       } else {
+        console.log("isLast etablissement");
         setIsEtablissementReady(true);
       }
     }
