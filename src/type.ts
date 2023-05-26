@@ -92,7 +92,7 @@ export type removeConfirmationType = {
 
 export type removeRamassageConfirmationType = {
   displayed: boolean;
-  item: StopLineItem | null;
+  item: StopItemType | null;
 };
 
 export type clearConfirmationType = {
@@ -102,6 +102,7 @@ export type clearConfirmationType = {
 export type ImportCsvBoxType = {
   displayed: boolean;
 };
+
 export type TileId =
   | "OpenStreetMap_Mapnik"
   | "Stadia_AlidadeSmooth"

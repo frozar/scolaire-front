@@ -3,16 +3,11 @@ import { AiOutlineSearch } from "solid-icons/ai";
 import EditStop, { setDataToEdit, toggleEditStop } from "./EditEtablissement";
 import { For, createEffect, createSignal, onMount } from "solid-js";
 import EtablissementItem from "./EtablissementItem";
-import { EtablissementItemType, ReturnMessageType } from "../../type";
+import { EtablissementItemType } from "../../type";
 import { displayDownloadErrorMessage } from "../../userInformation/utils";
 import { getExportDate } from "../graphicage/rightMapMenu/export/export";
 import RemoveRamassageConfirmation from "../../userInformation/RemoveRamassageConfirmation";
-import {
-  enableSpinningWheel,
-  setImportConfirmation,
-  disableSpinningWheel,
-  openRemoveImportCsvBox,
-} from "../../signaux";
+import { openRemoveImportCsvBox } from "../../signaux";
 import ImportCsv from "../../userInformation/ImportCsv";
 import { download } from "../../utils";
 import { getToken } from "../../auth/auth";
@@ -21,12 +16,13 @@ export const [selected, setSelected] = createSignal<EtablissementItemType[]>(
   []
 );
 
-const [keyword, setkeyword] = createSignal<string>("");
+const [keyword, setKeyword] = createSignal("");
 
 export const [stop, setStop] = createStore<EtablissementItemType[]>([]);
 export const [displaystop, setDisplayStop] = createStore<
   EtablissementItemType[]
 >([]);
+
 export const addSelected = (item: EtablissementItemType) =>
   setSelected([...selected(), item]);
 
@@ -37,7 +33,7 @@ export const removeSelected = (item: EtablissementItemType) => {
 
 export const [isChecked, setIsChecked] = createSignal(false);
 
-export function displayEtablissement() {
+export function fetchEtablissement() {
   getToken()
     .then((token) => {
       fetch(
@@ -90,18 +86,19 @@ export function displayEtablissement() {
 
 export default function () {
   createEffect(() => {
-    displayEtablissement();
+    fetchEtablissement();
   });
-  const [refSelect, setRefSelect] = createSignal<HTMLSelectElement>();
-  let refCheckbox!: HTMLInputElement;
+  // const [refSelect, setRefSelect] = createSignal<HTMLSelectElement>();
+  // eslint-disable-next-line prefer-const
+  let refCheckbox: HTMLInputElement = document.createElement("input");
 
-  createEffect(() => {
-    refSelect()?.addEventListener("change", (e) => {
-      if (e.target?.value == "delete") {
-        console.log("Send request to delete all selected item: ", selected());
-      }
-    });
-  });
+  // createEffect(() => {
+  //   refSelect()?.addEventListener("change", (e) => {
+  //     if (e.target?.value == "delete") {
+  //       console.log("Send request to delete all selected item: ", selected());
+  //     }
+  //   });
+  // });
 
   createEffect(() => {
     if (selected().length == stop.length) {
@@ -117,112 +114,53 @@ export default function () {
     });
 
     onMount(() => {
-      displayEtablissement();
+      fetchEtablissement();
     });
   });
-  let DragDropDiv: HTMLDivElement;
-  let etablissementDiv: HTMLDivElement;
-  let DragDropChild: HTMLDivElement;
+
+  // eslint-disable-next-line prefer-const
+  let etablissementDiv: HTMLDivElement = document.createElement("div");
+
+  // TODO: uncomment the ImportCsvCanvas
+  // const [displayImportCsvCanvas, setDisplayImportCsvCanvas] =
+  //   createSignal(false);
 
   onMount(() => {
     etablissementDiv.addEventListener(
       "dragenter",
       (e) => {
         e.preventDefault();
-        DragDropDiv.classList.add("highlight");
-        DragDropChild.classList.replace("invisible_child", "child");
+        // TODO: uncomment the ImportCsvCanvas
+        // setDisplayImportCsvCanvas(true);
       },
       false
     );
-    DragDropDiv.addEventListener(
+    etablissementDiv.addEventListener("drop", (e) => e.preventDefault(), false);
+    etablissementDiv.addEventListener(
       "dragleave",
-      () => {
-        DragDropDiv.classList.remove("highlight");
-        DragDropChild.classList.replace("child", "invisible_child");
-      },
+      (e) => e.preventDefault(),
       false
     );
-    DragDropDiv.addEventListener(
+    etablissementDiv.addEventListener(
       "dragend",
-      () => {
-        DragDropDiv.classList.remove("highlight");
-
-        DragDropChild.classList.replace("child", "invisible_child");
-      },
+      (e) => e.preventDefault(),
       false
     );
-    DragDropDiv.addEventListener(
+    etablissementDiv.addEventListener(
       "dragover",
-      (e) => {
-        e.preventDefault();
-      },
-      false
-    );
-    DragDropDiv.addEventListener(
-      "drop",
-      (e) => {
-        e.preventDefault();
-        enableSpinningWheel();
-        const files = e.target.files || e.dataTransfer.files;
-
-        // process all File objects
-        for (let i = 0, file; (file = files[i]); i++) {
-          const formData = new FormData();
-          formData.append("file", file, file.name);
-
-          getToken()
-            .then((token) => {
-              fetch(import.meta.env.VITE_BACK_URL + "/uploadfile/", {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                  authorization: `Bearer ${token}`,
-                },
-                body: formData,
-              })
-                .then((res) => {
-                  return res.json();
-                })
-                .then((res: ReturnMessageType) => {
-                  setImportConfirmation({
-                    displayed: true,
-                    message: res.message,
-                    metrics: {
-                      total: res.metrics.total,
-                      success: res.metrics.success,
-                    },
-                    error: {
-                      etablissement: res.error.etablissement,
-                      ramassage: res.error.ramassage,
-                    },
-                    success: {
-                      etablissement: res.success.etablissement,
-                      ramassage: res.success.ramassage,
-                    },
-                  });
-                  displayEtablissement();
-                  disableSpinningWheel();
-                });
-            })
-            .catch((err) => {
-              console.log(err);
-            });
-        }
-        DragDropDiv.classList.remove("highlight");
-
-        DragDropChild.classList.replace("child", "invisible_child");
-      },
+      (e) => e.preventDefault(),
       false
     );
   });
+
   return (
     <>
-      <ImportCsv />
-      <div ref={DragDropDiv}>
-        <div ref={DragDropChild} class="invisible_child">
-          Drop your file here
-        </div>
-      </div>
+      <ImportCsv doesCheckInputFilenameFormat={false} />
+      {/* TODO: uncomment the ImportCsvCanvas */}
+      {/* <ImportCsvCanvas
+        display={displayImportCsvCanvas()}
+        setDisplay={setDisplayImportCsvCanvas}
+      /> */}
       <RemoveRamassageConfirmation />
       <div class="flex w-full" ref={etablissementDiv}>
         <div id="arrets-board">
@@ -230,7 +168,8 @@ export default function () {
             <h1>Gérer les établissements</h1>
             <div id="filters">
               <div class="left">
-                <select ref={setRefSelect} disabled>
+                {/* <select ref={setRefSelect} disabled> */}
+                <select disabled>
                   <option selected value="null">
                     Action
                   </option>
@@ -255,13 +194,11 @@ export default function () {
                     <AiOutlineSearch />
                   </div>
                   <input
-                    type="email"
-                    name="email"
-                    id="email"
-                    class=""
+                    type="text"
+                    name="search"
                     placeholder="Recherche"
                     onInput={(e) => {
-                      setkeyword(e.currentTarget.value);
+                      setKeyword(e.currentTarget.value);
                     }}
                   />
                 </div>
@@ -298,7 +235,7 @@ export default function () {
 
                             const { year, month, day, hour, minute } =
                               getExportDate();
-                            const fileName = `${year}-${month}-${day}_${hour}-${minute}_etablissements.csv`;
+                            const fileName = `${year}-${month}-${day}_${hour}-${minute}_etablissement.csv`;
                             download(fileName, blob);
                           })
                           .catch(() => {
@@ -313,8 +250,9 @@ export default function () {
                   Exporter
                 </button>
                 <button
-                  class="btn-arret-export-import"
+                  class="btn-arret-export-import disabled:bg-gray-300 disabled:opacity-75"
                   onClick={openRemoveImportCsvBox}
+                  disabled
                 >
                   Importer
                 </button>

@@ -3,16 +3,11 @@ import { AiOutlineSearch } from "solid-icons/ai";
 import EditStop, { setDataToEdit, toggleEditStop } from "./EditStop";
 import { For, createEffect, createSignal, onMount } from "solid-js";
 import StopItems from "./StopItem";
-import { ReturnMessageType, StopItemType } from "../../type";
+import { StopItemType } from "../../type";
 import { displayDownloadErrorMessage } from "../../userInformation/utils";
 import { getExportDate } from "../graphicage/rightMapMenu/export/export";
 import RemoveRamassageConfirmation from "../../userInformation/RemoveRamassageConfirmation";
-import {
-  enableSpinningWheel,
-  setImportConfirmation,
-  disableSpinningWheel,
-  openRemoveImportCsvBox,
-} from "../../signaux";
+import { openRemoveImportCsvBox } from "../../signaux";
 import ImportCsv from "../../userInformation/ImportCsv";
 import { download } from "../../utils";
 import { getToken } from "../../auth/auth";
@@ -21,7 +16,7 @@ export const [selected, setSelected] = createSignal<StopItemType[]>([]);
 export const [stop, setStop] = createStore<StopItemType[]>([]);
 export const [displaystop, setDisplayStop] = createStore<StopItemType[]>([]);
 
-const [keyword, setkeyword] = createSignal<string>("");
+const [keyword, setKeyword] = createSignal("");
 
 export const addSelected = (item: StopItemType) =>
   setSelected([...selected(), item]);
@@ -88,16 +83,17 @@ export default function () {
   createEffect(() => {
     displayArret();
   });
-  const [refSelect, setRefSelect] = createSignal<HTMLSelectElement>();
-  let refCheckbox!: HTMLInputElement;
+  // const [refSelect, setRefSelect] = createSignal<HTMLSelectElement>();
+  // eslint-disable-next-line prefer-const
+  let refCheckbox: HTMLInputElement = document.createElement("input");
 
-  createEffect(() => {
-    refSelect()?.addEventListener("change", (e) => {
-      if (e.target?.value == "delete") {
-        console.log("Send request to delete all selected item: ", selected());
-      }
-    });
-  });
+  // createEffect(() => {
+  //   refSelect()?.addEventListener("change", (e) => {
+  //     if (e.target?.value == "delete") {
+  //       console.log("Send request to delete all selected item: ", selected());
+  //     }
+  //   });
+  // });
 
   createEffect(() => {
     if (selected().length == stop.length) {
@@ -115,116 +111,48 @@ export default function () {
       displayArret();
     });
   });
-  let DragDropDiv: HTMLDivElement;
-  let etablissementDiv: HTMLDivElement;
-  let DragDropChild: HTMLDivElement;
+
+  // eslint-disable-next-line prefer-const
+  let stopDiv: HTMLDivElement = document.createElement("div");
+
+  // TODO: uncomment the ImportCsvCanvas
+  // const [displayImportCsvCanvas, setDisplayImportCsvCanvas] =
+  //   createSignal(false);
 
   onMount(() => {
-    etablissementDiv.addEventListener(
+    stopDiv.addEventListener(
       "dragenter",
       (e) => {
         e.preventDefault();
-        DragDropDiv.classList.add("highlight");
-        DragDropChild.classList.replace("invisible_child", "child");
+        // TODO: uncomment the ImportCsvCanvas
+        // setDisplayImportCsvCanvas(true);
       },
       false
     );
-    DragDropDiv.addEventListener(
-      "dragleave",
-      () => {
-        DragDropDiv.classList.remove("highlight");
-        DragDropChild.classList.replace("child", "invisible_child");
-      },
-      false
-    );
-    DragDropDiv.addEventListener(
-      "dragend",
-      () => {
-        DragDropDiv.classList.remove("highlight");
 
-        DragDropChild.classList.replace("child", "invisible_child");
-      },
-      false
-    );
-    DragDropDiv.addEventListener(
-      "dragover",
-      (e) => {
-        e.preventDefault();
-      },
-      false
-    );
-    DragDropDiv.addEventListener(
-      "drop",
-      (e) => {
-        e.preventDefault();
-        enableSpinningWheel();
-        const files = e.target.files || e.dataTransfer.files;
-
-        // process all File objects
-        for (let i = 0, file; (file = files[i]); i++) {
-          const formData = new FormData();
-          formData.append("file", file, file.name);
-          getToken()
-            .then((token) => {
-              fetch(import.meta.env.VITE_BACK_URL + "/uploadfile/", {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                  authorization: `Bearer ${token}`,
-                },
-                body: formData,
-              })
-                .then((res) => {
-                  return res.json();
-                })
-                .then((res: ReturnMessageType) => {
-                  setImportConfirmation({
-                    displayed: true,
-                    message: res.message,
-                    metrics: {
-                      total: res.metrics.total,
-                      success: res.metrics.success,
-                    },
-                    error: {
-                      etablissement: res.error.etablissement,
-                      ramassage: res.error.ramassage,
-                    },
-                    success: {
-                      etablissement: res.success.etablissement,
-                      ramassage: res.success.ramassage,
-                    },
-                  });
-                  displayArret();
-                  disableSpinningWheel();
-                });
-            })
-            .catch((err) => {
-              console.log(err);
-            });
-        }
-        DragDropDiv.classList.remove("highlight");
-
-        DragDropChild.classList.replace("child", "invisible_child");
-      },
-      false
-    );
+    stopDiv.addEventListener("drop", (e) => e.preventDefault(), false);
+    stopDiv.addEventListener("dragleave", (e) => e.preventDefault(), false);
+    stopDiv.addEventListener("dragend", (e) => e.preventDefault(), false);
+    stopDiv.addEventListener("dragover", (e) => e.preventDefault(), false);
   });
+
   return (
     <>
-      <ImportCsv />
-      <div ref={DragDropDiv}>
-        <div ref={DragDropChild} class="invisible_child">
-          Drop your file here
-        </div>
-      </div>
+      <ImportCsv doesCheckInputFilenameFormat={false} />
+      {/* TODO: uncomment the ImportCsvCanvas */}
+      {/* <ImportCsvCanvas
+        display={displayImportCsvCanvas()}
+        setDisplay={setDisplayImportCsvCanvas}
+      /> */}
       <RemoveRamassageConfirmation />
-      <div class="flex w-full" ref={etablissementDiv}>
+      <div class="flex w-full" ref={stopDiv}>
         <div id="arrets-board">
           <header>
             <h1>Gérer les arrêts</h1>
             <div id="filters">
               <div class="left">
-                <select ref={setRefSelect} disabled>
+                {/* <select ref={setRefSelect} disabled> */}
+                <select disabled>
                   <option selected value="null">
                     Action
                   </option>
@@ -249,13 +177,11 @@ export default function () {
                     <AiOutlineSearch />
                   </div>
                   <input
-                    type="email"
-                    name="email"
-                    id="email"
-                    class=""
+                    type="text"
+                    name="search"
                     placeholder="Recherche"
                     onInput={(e) => {
-                      setkeyword(e.currentTarget.value);
+                      setKeyword(e.currentTarget.value);
                     }}
                   />
                 </div>
@@ -292,7 +218,7 @@ export default function () {
 
                             const { year, month, day, hour, minute } =
                               getExportDate();
-                            const fileName = `${year}-${month}-${day}_${hour}-${minute}_ramassages.csv`;
+                            const fileName = `${year}-${month}-${day}_${hour}-${minute}_ramassage.csv`;
                             download(fileName, blob);
                           })
                           .catch(() => {
@@ -307,8 +233,9 @@ export default function () {
                   Exporter
                 </button>
                 <button
-                  class="btn-arret-export-import"
+                  class="btn-arret-export-import disabled:bg-gray-300 disabled:opacity-75"
                   onClick={openRemoveImportCsvBox}
+                  disabled
                 >
                   Importer
                 </button>
@@ -332,7 +259,7 @@ export default function () {
                       Nom
                     </th>
                     <th scope="col">Nombre d'élèves</th>
-                    <th scope="col">Nombre d’établissements desservis</th>
+                    <th scope="col">Nombre d'établissements desservis</th>
                     <th scope="col">Nombre de lignes</th>
                     <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-0">
                       <span class="">Actions</span>

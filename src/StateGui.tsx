@@ -76,7 +76,7 @@ const makeStateGuiContext = () => {
   }
 
   function setSelectedMenu(itemMenu: SelectedMenuType) {
-    setState("selectedMenu", itemMenu);
+    setStateWrapper("selectedMenu", itemMenu);
   }
 
   function getSelectedMenu() {

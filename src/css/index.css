@@ -284,7 +284,7 @@ code {
   width: 100%;
   height: 100%;
   position: absolute;
-  z-index: 1000;
+  z-index: 1002;
   display: block;
 }
 .standard-list {
@@ -311,7 +311,7 @@ code {
         @apply flex w-1/2 gap-3;
 
         > select {
-          @apply block rounded-md border-0 py-1.5 px-3 pr-10 text-gray-900 ring-1 ring-inset focus:ring-2  sm:text-sm bg-white;
+          @apply block rounded-md border-0 py-1.5 px-3 pr-10 text-gray-900 ring-1 ring-inset focus:ring-2  sm:text-sm bg-white disabled:bg-gray-300 disabled:opacity-75;
         }
 
         > .btn-arret-add {

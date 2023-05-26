@@ -11,17 +11,21 @@ import {
 import { assertIsNode } from "../utils";
 import { MessageLevelEnum, MessageTypeEnum, ReturnMessageType } from "../type";
 import { useStateGui } from "../StateGui";
-import { displayEtablissement } from "../views/etablissement/Etablissement";
+import { fetchEtablissement } from "../views/etablissement/Etablissement";
 import { displayArret } from "../views/stop/Stop";
 import { getToken } from "../auth/auth";
+
 const [, { getSelectedMenu }] = useStateGui();
+
 declare module "solid-js" {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace JSX {
     interface Directives {
       ClickOutside: (e: MouseEvent) => void;
     }
   }
 }
+
 let fileType = "";
 createEffect(() => {
   switch (getSelectedMenu()) {
@@ -34,95 +38,132 @@ createEffect(() => {
   }
 });
 
-export default function () {
+export default function (props: { doesCheckInputFilenameFormat: boolean }) {
   const displayed = () => getImportCsvBox()["displayed"];
 
   let refDialogueBox: HTMLDivElement | undefined;
   let refInputCsv: HTMLInputElement | undefined;
 
   function handlerOnClickValider() {
-    const files = refInputCsv?.files;
-    console.log(getSelectedMenu());
-    // process all File objects
-
-    if (files?.length == 0) {
+    if (!refInputCsv) {
       closeRemoveImportCsvBox();
       addNewUserInformation({
         displayed: true,
         level: MessageLevelEnum.warning,
-        type: MessageTypeEnum.removeLine,
+        type: MessageTypeEnum.global,
+        content: "Composant 'inputCsv' pas encore monté.",
+      });
+      return;
+    }
+
+    const files = refInputCsv.files;
+    console.log(getSelectedMenu());
+    // process all File objects
+
+    if (!files) {
+      closeRemoveImportCsvBox();
+      addNewUserInformation({
+        displayed: true,
+        level: MessageLevelEnum.warning,
+        type: MessageTypeEnum.global,
         content: "Aucun fichier sélectionné",
       });
       return;
     }
 
-    for (let i = 0, file; (file = files[i]); i++) {
-      if (!file.name.toUpperCase().includes(fileType.toUpperCase())) {
-        addNewUserInformation({
-          displayed: true,
-          level: MessageLevelEnum.error,
-          type: MessageTypeEnum.removeLine,
-          content: `Format incorrect : ${file.name}.`,
-        });
-        continue;
-      }
-      const formData = new FormData();
-      formData.append("file", file, file.name);
-      getToken()
-        .then((token) => {
-          fetch(import.meta.env.VITE_BACK_URL + "/uploadfile/", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              authorization: `Bearer ${token}`,
-            },
-            body: formData,
-          })
-            .then((res) => {
-              return res.json();
-            })
-            .then((res: ReturnMessageType) => {
-              setImportConfirmation({
-                displayed: true,
-                message: res.message,
-                metrics: {
-                  total: res.metrics.total,
-                  success: res.metrics.success,
-                },
-                error: {
-                  etablissement: res.error.etablissement,
-                  ramassage: res.error.ramassage,
-                },
-                success: {
-                  etablissement: res.success.etablissement,
-                  ramassage: res.success.ramassage,
-                },
-              });
-            })
-            .finally(() => {
-              switch (getSelectedMenu()) {
-                case "etablissements":
-                  displayEtablissement();
-                  break;
-                case "arrets":
-                  displayArret();
-                  break;
-              }
-            })
-            .catch((e) => {
-              closeRemoveImportCsvBox();
-              addNewUserInformation({
-                displayed: true,
-                level: MessageLevelEnum.error,
-                type: MessageTypeEnum.removeLine,
-                content: `Une erreur est survenue : ${e}.`,
-              });
-            });
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+    if (files.length != 1) {
+      closeRemoveImportCsvBox();
+      addNewUserInformation({
+        displayed: true,
+        level: MessageLevelEnum.warning,
+        type: MessageTypeEnum.global,
+        content: "Importer un fichier à la fois svp",
+      });
+      return;
     }
+
+    const file = files[0];
+
+    // console.log("file.name.toLowerCase()", file.name.toLowerCase());
+    // console.log("fileType.toLowerCase()", fileType.toLowerCase());
+    // console.log(
+    //   "file.name.toLowerCase().includes(fileType.toLowerCase())",
+    //   file.name.toLowerCase().includes(fileType.toLowerCase())
+    // );
+
+    if (
+      props.doesCheckInputFilenameFormat &&
+      !file.name.toLowerCase().includes(fileType.toLowerCase())
+    ) {
+      closeRemoveImportCsvBox();
+      addNewUserInformation({
+        displayed: true,
+        level: MessageLevelEnum.error,
+        type: MessageTypeEnum.global,
+        content: `Format incorrect : ${file.name}.`,
+      });
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", file, file.name);
+
+    getToken()
+      .then((token) => {
+        fetch(import.meta.env.VITE_BACK_URL + "/uploadfile", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        })
+          .then((res) => {
+            return res.json();
+          })
+          .then((res: ReturnMessageType) => {
+            // TODO: handle error return by the backend
+            // console.log("res", res);
+            setImportConfirmation({
+              displayed: true,
+              message: res.message,
+              metrics: {
+                total: res.metrics.total,
+                success: res.metrics.success,
+              },
+              error: {
+                etablissement: res.error.etablissement,
+                ramassage: res.error.ramassage,
+              },
+              success: {
+                etablissement: res.success.etablissement,
+                ramassage: res.success.ramassage,
+              },
+            });
+          })
+          .finally(() => {
+            switch (getSelectedMenu()) {
+              case "etablissements":
+                fetchEtablissement();
+                break;
+              case "arrets":
+                displayArret();
+                break;
+            }
+          })
+          .catch((e) => {
+            closeRemoveImportCsvBox();
+            addNewUserInformation({
+              displayed: true,
+              level: MessageLevelEnum.error,
+              type: MessageTypeEnum.removeLine,
+              content: `Une erreur est survenue : ${e}.`,
+            });
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
 
     closeRemoveImportCsvBox();
   }

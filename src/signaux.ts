@@ -74,9 +74,10 @@ export const [getRemoveConfirmation, setRemoveConfirmation] = createSignal({
   id_bus_line: null,
 }) as Signal<removeConfirmationType>;
 
-export const [getImportCsvBox, setImportCsvBox] = createSignal({
-  displayed: false,
-}) as Signal<ImportCsvBoxType>;
+export const [getImportCsvBox, setImportCsvBox] =
+  createSignal<ImportCsvBoxType>({
+    displayed: false,
+  });
 
 export const [getRemoveRamassageConfirmation, setRemoveRamassageConfirmation] =
   createSignal({
