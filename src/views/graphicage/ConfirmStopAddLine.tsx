@@ -22,7 +22,7 @@ export const defineModalToOpen = (obj: () => void) => {
   modalToOpen = obj;
 };
 
-export const ConfirmAbortEditionNeedToBeCall = () => {
+export const confirmAbortEditionNeedToBeCall = () => {
   const lineInBuild = getLineUnderConstruction().stops.length > 0;
 
   if (isInAddLineMode() && lineInBuild) {

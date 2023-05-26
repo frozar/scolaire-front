@@ -1,15 +1,14 @@
-import { useStateAction } from "../../../StateAction";
 import { openExportConfirmationBox } from "../../../signaux";
 import { CgExport } from "solid-icons/cg";
 import {
   defineModalToOpen,
-  ConfirmAbortEditionNeedToBeCall,
+  confirmAbortEditionNeedToBeCall,
 } from "../ConfirmStopAddLine";
 
 export default function () {
   const handleClick = () => {
     defineModalToOpen(openExportConfirmationBox);
-    ConfirmAbortEditionNeedToBeCall();
+    confirmAbortEditionNeedToBeCall();
   };
 
   return (

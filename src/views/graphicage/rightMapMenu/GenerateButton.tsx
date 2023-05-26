@@ -1,14 +1,14 @@
 import { openGeneratorDialogueBox } from "../../../signaux";
 import { FiArrowUpCircle } from "solid-icons/fi";
 import {
-  ConfirmAbortEditionNeedToBeCall,
+  confirmAbortEditionNeedToBeCall,
   defineModalToOpen,
 } from "../ConfirmStopAddLine";
 
 export default function () {
   const handleClick = () => {
     defineModalToOpen(openGeneratorDialogueBox);
-    ConfirmAbortEditionNeedToBeCall();
+    confirmAbortEditionNeedToBeCall();
   };
   return (
     <div class="menu-btn left-[140px] group">

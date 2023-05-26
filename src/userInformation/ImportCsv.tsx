@@ -17,15 +17,6 @@ import { getToken } from "../auth/auth";
 
 const [, { getSelectedMenu }] = useStateGui();
 
-declare module "solid-js" {
-  // eslint-disable-next-line @typescript-eslint/no-namespace
-  namespace JSX {
-    interface Directives {
-      ClickOutside: (e: MouseEvent) => void;
-    }
-  }
-}
-
 let fileType = "";
 createEffect(() => {
   switch (getSelectedMenu()) {

@@ -13,14 +13,6 @@ import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { assertIsNode } from "../utils";
 import { displayArret } from "../views/stop/Stop";
 
-declare module "solid-js" {
-  namespace JSX {
-    interface Directives {
-      ClickOutside: (e: MouseEvent) => void;
-    }
-  }
-}
-
 export default function () {
   const displayed = () => getRemoveRamassageConfirmation()["displayed"];
   const id_ramassage = () => getRemoveRamassageConfirmation().item?.id;

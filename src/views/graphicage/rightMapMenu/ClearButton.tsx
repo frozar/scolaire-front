@@ -1,14 +1,14 @@
 import { FaRegularTrashCan } from "solid-icons/fa";
 import { openClearConfirmationBox } from "../../../signaux";
 import {
-  ConfirmAbortEditionNeedToBeCall,
+  confirmAbortEditionNeedToBeCall,
   defineModalToOpen,
 } from "../ConfirmStopAddLine";
 
 export default function () {
   const handleClick = () => {
     defineModalToOpen(openClearConfirmationBox);
-    ConfirmAbortEditionNeedToBeCall();
+    confirmAbortEditionNeedToBeCall();
   };
 
   return (

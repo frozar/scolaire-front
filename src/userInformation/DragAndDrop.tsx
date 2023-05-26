@@ -8,14 +8,6 @@ import {
 } from "../signaux";
 import { assertIsNode } from "../utils";
 
-declare module "solid-js" {
-  namespace JSX {
-    interface Directives {
-      ClickOutside: (e: MouseEvent) => void;
-    }
-  }
-}
-
 export default function () {
   const displayed = () => getImportConfirmation()["displayed"];
 

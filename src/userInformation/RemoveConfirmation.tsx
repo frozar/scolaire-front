@@ -6,21 +6,12 @@ import {
   addNewUserInformation,
   fetchBusLines,
   getRemoveConfirmation,
-  setRemoveConfirmation,
   closeRemoveConfirmationBox,
 } from "../signaux";
 
 import { deleteBusLine } from "../request";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { assertIsNode } from "../utils";
-
-declare module "solid-js" {
-  namespace JSX {
-    interface Directives {
-      ClickOutside: (e: MouseEvent) => void;
-    }
-  }
-}
 
 export default function () {
   const displayed = () => getRemoveConfirmation()["displayed"];

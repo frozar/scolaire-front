@@ -10,15 +10,6 @@ import {
 import { assertIsNode } from "../utils";
 import { generateCircuit } from "../views/graphicage/generationCircuit";
 
-declare module "solid-js" {
-  // eslint-disable-next-line @typescript-eslint/no-namespace
-  namespace JSX {
-    interface Directives {
-      ClickOutside: (e: MouseEvent) => void;
-    }
-  }
-}
-
 export default function () {
   const displayed = () => getDisplayedGeneratorDialogueBox();
   const [nbVehicles, setNbVehicles] = createSignal(1);
@@ -47,22 +38,25 @@ export default function () {
     buttonRef()?.focus();
   });
 
-  const [refDialogueBox, setRefDialogBox] = createSignal<HTMLDivElement>(
-    document.createElement("div")
-  );
+  let refDialogueBox: HTMLDivElement | undefined;
 
-  document.addEventListener("click", () => {
-    refDialogueBox().focus();
-  });
+  // const [refDialogueBox, setRe
+  //   let refDialogueBox: HTMLDivElement | undefined;fDialogBox] = createSignal<HTMLDivElement>(
+  //   document.createElement("div")
+  // );
 
-  createEffect(() => {
-    refDialogueBox().focus();
-    refDialogueBox().addEventListener("keyup", (e) => {
-      if (e.key == "Escape") {
-        closeGeneratorDialogueBox();
-      }
-    });
-  });
+  // document.addEventListener("click", () => {
+  //   refDialogueBox().focus();
+  // });
+
+  // createEffect(() => {
+  //   refDialogueBox().focus();
+  //   refDialogueBox().addEventListener("keyup", (e) => {
+  //     if (e.key == "Escape") {
+  //       closeGeneratorDialogueBox();
+  //     }
+  //   });
+  // });
 
   return (
     <Transition
@@ -99,9 +93,9 @@ export default function () {
               <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
                 <div
                   class="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6"
-                  ref={setRefDialogBox}
+                  ref={refDialogueBox}
                   use:ClickOutside={(e: MouseEvent) => {
-                    if (!refDialogueBox() || !e.target) {
+                    if (!refDialogueBox || !e.target) {
                       return;
                     }
 
@@ -112,7 +106,7 @@ export default function () {
                     }
 
                     assertIsNode(e.target);
-                    if (!refDialogueBox().contains(e.target)) {
+                    if (!refDialogueBox.contains(e.target)) {
                       closeGeneratorDialogueBox();
                     }
                   }}
@@ -157,7 +151,7 @@ export default function () {
                           type="number"
                           name="nb_vehicle"
                           id="nb_vehicle"
-                          class="block w-40 rounded-md border-0 py-1.5 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          class="block w-40 rounded-md border-0 py-1.5 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 disabled:bg-gray-300"
                           disabled={true}
                           min={1}
                           max={1}

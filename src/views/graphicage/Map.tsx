@@ -41,16 +41,13 @@ function buildMap(div: HTMLDivElement) {
   }
 }
 
-export const [mapDiv, setMapDiv] = createSignal<HTMLDivElement>(
-  document.createElement("div")
-);
+let mapDiv: HTMLDivElement;
 
 export default function () {
-  // let mapDiv: HTMLDivElement;
   let mapDragDropDiv: HTMLDivElement;
 
   onMount(() => {
-    mapDiv().addEventListener(
+    mapDiv.addEventListener(
       "dragenter",
       (e) => {
         e.preventDefault();
@@ -150,12 +147,12 @@ export default function () {
 
     // Déplacer dans app.tsx dans un createEffect sur le menuSelected
 
-    buildMap(mapDiv());
+    buildMap(mapDiv);
   });
 
   onCleanup(() => {
     for (const handler of listHandlerLMap) {
-      mapDiv().removeEventListener("keydown", handler);
+      mapDiv.removeEventListener("keydown", handler);
     }
   });
 
@@ -165,7 +162,7 @@ export default function () {
         <div class="child">Drop your file here</div>
       </div>
       <InformationBoard />
-      <div ref={setMapDiv} id="main-map" tabindex="-1" />
+      <div ref={mapDiv} id="main-map" tabindex="-1" />
       <PointsRamassageAndEtablissement />
       <Show when={isInAddLineMode()}>
         <LineUnderConstruction />

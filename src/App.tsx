@@ -1,4 +1,4 @@
-import { createEffect, Switch, Match, onMount } from "solid-js";
+import { createEffect, Switch, Match, onMount, onCleanup } from "solid-js";
 import SpinningWheel from "./SpinningWheel";
 import Map from "./views/graphicage/Map";
 import { useStateAction } from "./StateAction";
@@ -19,7 +19,8 @@ import { listHandlerLMap } from "./views/graphicage/shortcut";
 const [, { isInAddLineMode }] = useStateAction();
 const [, { getSelectedMenu }] = useStateGui();
 
-let refApp: HTMLDivElement | undefined;
+let refApp: HTMLDivElement;
+
 createEffect(() => {
   const [, { getLineUnderConstruction }] = useStateAction();
 
@@ -45,18 +46,19 @@ export default () => {
       return;
     }
 
+    // Enable shortcut at startup of the application
     refApp.focus();
 
     // Manage shortcut keyboard event
     for (const handler of listHandlerLMap) {
       refApp.addEventListener("keydown", handler);
     }
+  });
 
-    console.log(document.activeElement, getSelectedMenu());
-
-    document.addEventListener("click", () => {
-      console.log(document.activeElement);
-    });
+  onCleanup(() => {
+    for (const handler of listHandlerLMap) {
+      refApp.removeEventListener("keydown", handler);
+    }
   });
 
   return (
@@ -90,7 +92,4 @@ export default () => {
       </div>
     </div>
   );
-
-  // 1 pb : le montage démontage des éléments -> être à l'extérieur du match
-  // 2 pb : changer les raccourcis en fonction du match "getSelectedMenu()""
 };

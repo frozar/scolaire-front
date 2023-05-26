@@ -1,4 +1,4 @@
-import { For, Match, Show, Switch, createEffect, createSignal } from "solid-js";
+import { For, Match, Show, Switch, createSignal } from "solid-js";
 import ClickOutside from "../../../../ClickOutside";
 import {
   closeExportConfirmationBox,
@@ -11,9 +11,7 @@ import { ExportTypeEnum } from "../../../../type";
 import { exportData } from "./export";
 import { GtfsExportLogo, ImageExportLogo } from "./Logos";
 
-const [refDialogBox, setRefDialog] = createSignal<HTMLElement>(
-  document.createElement("div")
-);
+let refDialogueBox: HTMLDivElement | undefined;
 
 const [selected, setSelected] = createSignal<string | null>(null);
 
@@ -64,20 +62,6 @@ function ExportTypeSelect() {
 export default function () {
   const displayed = () => getExportConfirmation()["displayed"];
 
-  document.addEventListener("click", () => {
-    refDialogBox().focus();
-    console.log("okok export");
-  });
-
-  createEffect(() => {
-    refDialogBox().focus();
-    refDialogBox().addEventListener("keyup", (e) => {
-      if (e.key == "Escape") {
-        closeExportConfirmationBox();
-      }
-    });
-  });
-
   return (
     <Transition
       name="slide-fade"
@@ -110,10 +94,10 @@ export default function () {
               <div class="export-modal-box">
                 <div
                   class="dialog-box"
-                  ref={setRefDialog}
+                  ref={refDialogueBox}
                   tabindex="-1"
                   use:ClickOutside={(e: MouseEvent) => {
-                    if (!refDialogBox() || !e.target) {
+                    if (!refDialogueBox || !e.target) {
                       return;
                     }
 
@@ -123,7 +107,7 @@ export default function () {
                     }
 
                     assertIsNode(e.target);
-                    if (!refDialogBox().contains(e.target)) {
+                    if (!refDialogueBox.contains(e.target)) {
                       setSelected(null);
                       closeExportConfirmationBox();
                     }
