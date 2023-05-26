@@ -59,6 +59,9 @@ export default function () {
     busLinesPolyline.map((busLinePolyline) => busLinePolyline.remove());
     busLinesDrawn.map((line) => line.remove());
 
+    if (busLines().length == 0) {
+      return;
+    }
     for (const busLine of busLines()) {
       // drawn routes
       if (isInReadMode()) {
