@@ -71,6 +71,7 @@ export function buildMapL7(div: HTMLDivElement) {
         layer.remove();
       }
     });
+    currentTileLayer()?.remove();
     currentTileLayer()?.addTo(leafletMap);
   });
 
