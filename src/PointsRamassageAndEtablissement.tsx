@@ -54,13 +54,21 @@ export function fetchPointsRamassage() {
     });
 }
 export default function () {
+  let pointCount = 0;
+
   onMount(() => {
     fetchPointsRamassage();
+    pointCount = points().length;
   });
 
   onCleanup(() => {
     setPoints([]);
+    pointCount = 0;
   });
 
-  return <For each={points()}>{(point) => <Point point={point} />}</For>;
+  return (
+    <For each={points()}>
+      {(point, i) => <Point point={point} isLast={pointCount === i()} />}
+    </For>
+  );
 }
