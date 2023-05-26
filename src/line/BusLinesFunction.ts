@@ -23,6 +23,8 @@ export function getLatLngs(stops: PointIdentityType[]): L.LatLng[] {
       console.log("circle", circle);
       console.log("circle.getLatLng()", circle.getLatLng());
       latlngs.push(circle.getLatLng());
+    } else {
+      console.log("circle not found");
     }
   }
   return latlngs;
