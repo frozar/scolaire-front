@@ -1,4 +1,4 @@
-import { Show, createEffect, createSignal } from "solid-js";
+import { Show, createSignal, onCleanup, onMount } from "solid-js";
 import { Transition } from "solid-transition-group";
 import { assertIsNode } from "../../utils";
 import { useStateAction } from "../../StateAction";
@@ -7,33 +7,41 @@ import ClickOutside from "../../ClickOutside";
 const [, { isInAddLineMode, getLineUnderConstruction, setModeRead }] =
   useStateAction();
 
-export const [dialogConfirmStopAddLine, setDialogConfirmStopAddLine] =
-  createSignal<boolean>(false);
+export const [displayedConfirmStopAddLine, setDisplayedConfirmStopAddLine] =
+  createSignal(false);
 
-export const toggleConfirmStopAddLine = () =>
-  setDialogConfirmStopAddLine(!dialogConfirmStopAddLine());
+const toggleConfirmStopAddLine = () =>
+  setDisplayedConfirmStopAddLine(!displayedConfirmStopAddLine());
 
-const [refDialog, setRefDialog] = createSignal<HTMLDivElement>(
-  document.createElement("div")
-);
+let refDialogue: HTMLDivElement;
 
 let modalToOpen: () => void;
-export const defineModalToOpen = (obj: () => void) => {
+export function defineModalToOpen(obj: () => void) {
   modalToOpen = obj;
-};
+}
 
 export const confirmAbortEditionNeedToBeCall = () => {
-  const lineInBuild = getLineUnderConstruction().stops.length > 0;
+  const hasLineUnderConstruction = getLineUnderConstruction().stops.length > 0;
 
-  if (isInAddLineMode() && lineInBuild) {
+  if (isInAddLineMode() && hasLineUnderConstruction) {
     toggleConfirmStopAddLine();
-  } else if (isInAddLineMode()) {
-    setModeRead();
-    modalToOpen();
   } else {
     modalToOpen();
   }
 };
+
+function exitModal({ code }: KeyboardEvent) {
+  // @ts-expect-error: Currently the 'keyboard' field doesn't exist on 'navigator'
+  const keyboard = navigator.keyboard;
+  // eslint-disable-next-line solid/reactivity
+  keyboard.getLayoutMap().then(() => {
+    if (code === "Escape") {
+      if (displayedConfirmStopAddLine()) {
+        setDisplayedConfirmStopAddLine(false);
+      }
+    }
+  });
+}
 
 export default function () {
   const confirmStopingEdition = () => {
@@ -42,18 +50,12 @@ export default function () {
     modalToOpen();
   };
 
-  document.addEventListener("click", () => {
-    refDialog().focus();
-    console.log("ok confirm");
+  onMount(() => {
+    document.addEventListener("keyup", exitModal);
   });
 
-  createEffect(() => {
-    refDialog().focus();
-    refDialog().addEventListener("keyup", (e) => {
-      if (e.key == "Escape") {
-        toggleConfirmStopAddLine();
-      }
-    });
+  onCleanup(() => {
+    document.removeEventListener("keyup", exitModal);
   });
 
   return (
@@ -66,7 +68,7 @@ export default function () {
       exitClass="opacity-100"
       exitToClass="opacity-0"
     >
-      <Show when={dialogConfirmStopAddLine()}>
+      <Show when={displayedConfirmStopAddLine()}>
         <div
           class="relative z-[1400]"
           aria-labelledby="modal-title"
@@ -88,10 +90,10 @@ export default function () {
               <div class="export-modal-box">
                 <div
                   class="dialog-box"
-                  ref={setRefDialog}
+                  ref={refDialogue}
                   tabindex="-1"
                   use:ClickOutside={(e: MouseEvent) => {
-                    if (!refDialog() || !e.target) {
+                    if (!refDialogue || !e.target) {
                       return;
                     }
 
@@ -101,8 +103,8 @@ export default function () {
                     }
 
                     assertIsNode(e.target);
-                    if (!refDialog().contains(e.target)) {
-                      setDialogConfirmStopAddLine(false);
+                    if (!refDialogue.contains(e.target)) {
+                      setDisplayedConfirmStopAddLine(false);
                     }
                   }}
                 >

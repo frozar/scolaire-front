@@ -1,4 +1,4 @@
-import { Show, createEffect, createSignal } from "solid-js";
+import { Show, createEffect, createSignal, onCleanup, onMount } from "solid-js";
 import { Transition } from "solid-transition-group";
 
 import ClickOutside from "../ClickOutside";
@@ -12,7 +12,28 @@ import { generateCircuit } from "../views/graphicage/generationCircuit";
 
 let refDialogueBox: HTMLDivElement;
 
+function exitModal({ code }: KeyboardEvent) {
+  // @ts-expect-error: Currently the 'keyboard' field doesn't exist on 'navigator'
+  const keyboard = navigator.keyboard;
+  // eslint-disable-next-line solid/reactivity
+  keyboard.getLayoutMap().then(() => {
+    if (code === "Escape") {
+      if (getDisplayedGeneratorDialogueBox()) {
+        closeGeneratorDialogueBox();
+      }
+    }
+  });
+}
+
 export default function () {
+  onMount(() => {
+    document.addEventListener("keyup", exitModal);
+  });
+
+  onCleanup(() => {
+    document.removeEventListener("keyup", exitModal);
+  });
+
   const displayed = () => getDisplayedGeneratorDialogueBox();
   const [nbVehicles, setNbVehicles] = createSignal(1);
   const [vehiclesCapacity, setVehiclesCapacity] = createSignal(50);

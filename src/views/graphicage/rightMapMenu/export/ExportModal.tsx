@@ -1,4 +1,12 @@
-import { For, Match, Show, Switch, createSignal } from "solid-js";
+import {
+  For,
+  Match,
+  Show,
+  Switch,
+  createSignal,
+  onCleanup,
+  onMount,
+} from "solid-js";
 import ClickOutside from "../../../../ClickOutside";
 import {
   closeExportConfirmationBox,
@@ -60,7 +68,28 @@ function ExportTypeSelect() {
   );
 }
 
+function exitModal({ code }: KeyboardEvent) {
+  // @ts-expect-error: Currently the 'keyboard' field doesn't exist on 'navigator'
+  const keyboard = navigator.keyboard;
+  // eslint-disable-next-line solid/reactivity
+  keyboard.getLayoutMap().then(() => {
+    if (code === "Escape") {
+      if (getExportConfirmation()["displayed"]) {
+        closeExportConfirmationBox();
+      }
+    }
+  });
+}
+
 export default function () {
+  onMount(() => {
+    document.addEventListener("keyup", exitModal);
+  });
+
+  onCleanup(() => {
+    document.removeEventListener("keyup", exitModal);
+  });
+
   const displayed = () => getExportConfirmation()["displayed"];
 
   return (

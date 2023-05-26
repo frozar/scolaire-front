@@ -40,24 +40,31 @@ createEffect(() => {
   }
 });
 
+// // If, anyhow the focus get back to body, redirect to div app
+// document.body.addEventListener("focusout", () => {
+//   if (document.activeElement == document.body) {
+//     refApp.focus();
+//   }
+// });
+
 export default () => {
   onMount(() => {
-    if (!refApp) {
-      return;
-    }
+    // if (!refApp) {
+    //   return;
+    // }
 
-    // Enable shortcut at startup of the application
-    refApp.focus();
+    // // Enable shortcut at startup of the application
+    // refApp.focus();
 
     // Manage shortcut keyboard event
     for (const handler of listHandlerLMap) {
-      refApp.addEventListener("keydown", handler);
+      document.body.addEventListener("keydown", handler);
     }
   });
 
   onCleanup(() => {
     for (const handler of listHandlerLMap) {
-      refApp.removeEventListener("keydown", handler);
+      document.body.removeEventListener("keydown", handler);
     }
   });
 

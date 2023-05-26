@@ -12,7 +12,7 @@ import {
   displayAddLineMessage,
   displayRemoveLineMessage,
 } from "../../userInformation/utils";
-import { dialogConfirmStopAddLine } from "./ConfirmStopAddLineBox";
+import { displayedConfirmStopAddLine } from "./ConfirmStopAddLineBox";
 
 const [
   ,
@@ -33,7 +33,7 @@ const isOpenedModal = () =>
   getExportConfirmation().displayed ||
   getDisplayedGeneratorDialogueBox() ||
   getClearConfirmation().displayed ||
-  dialogConfirmStopAddLine();
+  displayedConfirmStopAddLine();
 
 const [, { getSelectedMenu }] = useStateGui();
 
