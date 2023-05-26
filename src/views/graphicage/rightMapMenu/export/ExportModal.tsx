@@ -1,7 +1,6 @@
 import { For, Match, Show, Switch, createEffect, createSignal } from "solid-js";
 import ClickOutside from "../../../../ClickOutside";
 import {
-  closeDragAndDropConfirmationBox,
   closeExportConfirmationBox,
   getExportConfirmation,
   setExportType,
@@ -12,14 +11,6 @@ import { ExportTypeEnum } from "../../../../type";
 import { exportData } from "./export";
 import { GtfsExportLogo, ImageExportLogo } from "./Logos";
 import { mapDiv } from "../../Map";
-
-declare module "solid-js" {
-  namespace JSX {
-    interface Directives {
-      ClickOutside: (e: MouseEvent) => void;
-    }
-  }
-}
 
 const [refDialogBox, setRefDialog] = createSignal<HTMLElement>(
   document.createElement("div")
@@ -76,6 +67,7 @@ export default function () {
 
   document.addEventListener("click", () => {
     refDialogBox().focus();
+    console.log("okok export");
   });
 
   createEffect(() => {

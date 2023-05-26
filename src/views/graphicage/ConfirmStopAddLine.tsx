@@ -2,6 +2,8 @@ import { Show, createEffect, createSignal } from "solid-js";
 import { Transition } from "solid-transition-group";
 import { assertIsNode } from "../../utils";
 import { useStateAction } from "../../StateAction";
+import ClickOutside from "../../ClickOutside";
+
 const [, { isInAddLineMode, getLineUnderConstruction, setModeRead }] =
   useStateAction();
 
@@ -42,6 +44,7 @@ export default function () {
 
   document.addEventListener("click", () => {
     refDialog().focus();
+    console.log("ok confirm");
   });
 
   createEffect(() => {

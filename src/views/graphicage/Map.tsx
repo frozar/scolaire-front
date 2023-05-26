@@ -34,27 +34,14 @@ import {
   displayAddLineMessage,
   displayRemoveLineMessage,
 } from "../../userInformation/utils";
-import { useStateGui } from "../../StateGui";
 import { getExportConfirmation } from "../../signaux";
 import { getDisplayedGeneratorDialogueBox } from "../../signaux";
 import ConfirmStopAddLine, {
   dialogConfirmStopAddLine,
 } from "./ConfirmStopAddLine";
+import { listHandlerLMap } from "./shortcut";
 
-const [
-  ,
-  {
-    setModeAddLine,
-    setModeRemoveLine,
-    isInAddLineMode,
-    isInReadMode,
-    resetLineUnderConstruction,
-    getLineUnderConstruction,
-    setModeRead,
-    isInRemoveLineMode,
-  },
-  history,
-] = useStateAction();
+const [, { isInAddLineMode }] = useStateAction();
 
 function buildMap(div: HTMLDivElement) {
   const option = "l7";
@@ -66,116 +53,15 @@ function buildMap(div: HTMLDivElement) {
   }
 }
 
-// Handler the Undo/Redo from the user
-function undoRedoHandler({ ctrlKey, shiftKey, code }: KeyboardEvent) {
-  // // @ts-expect-error
-  // const keyboard = navigator.keyboard;
-  // // @ts-expect-error
-  // keyboard.getLayoutMap().then((keyboardLayoutMap) => {
-  //   const upKey = keyboardLayoutMap.get(code);
-  //   if (upKey === "x") {
-  //     if (history.undos && history.undos[0] && history.undos[0][0]) {
-  //       const anUndo = history.undos[0][0];
-  //     }
-  //   }
-  // });
-
-  if (ctrlKey) {
-    // @ts-expect-error: Currently the 'keyboard' field doesn't exist on 'navigator'
-    const keyboard = navigator.keyboard;
-    // @ts-expect-error: The type 'KeyboardLayoutMap' is not available
-    keyboard.getLayoutMap().then((keyboardLayoutMap) => {
-      const upKey = keyboardLayoutMap.get(code);
-      if (upKey === "z") {
-        if (!shiftKey && history.isUndoable()) {
-          history.undo();
-        } else if (shiftKey && history.isRedoable()) {
-          history.redo();
-        }
-      }
-    });
-  }
-}
-
-function escapeHandler({ code }: KeyboardEvent) {
-  if (code === "Escape") {
-    if (isInReadMode()) {
-      return;
-    }
-
-    resetLineUnderConstruction();
-    setModeRead();
-  }
-}
-
-function enterHandler({ code }: KeyboardEvent) {
-  if (code === "Enter") {
-    if (!isInAddLineMode()) {
-      return;
-    }
-    const ids_point = getLineUnderConstruction().stops.map(function (value) {
-      return value["id_point"];
-    });
-
-    addBusLine(ids_point).then(async (res) => {
-      await res.json();
-      resetLineUnderConstruction();
-      setModeRead();
-      fetchBusLines();
-    });
-  }
-}
-
-function toggleLineUnderConstruction({ code }: KeyboardEvent) {
-  // @ts-expect-error: Currently the 'keyboard' field doesn't exist on 'navigator'
-  const keyboard = navigator.keyboard;
-  // @ts-expect-error: The type 'KeyboardLayoutMap' is not available
-  keyboard.getLayoutMap().then((keyboardLayoutMap) => {
-    const upKey = keyboardLayoutMap.get(code);
-    if (upKey === "l") {
-      if (isInAddLineMode()) {
-        setModeRead();
-      } else {
-        setModeAddLine();
-        displayAddLineMessage();
-      }
-    }
-    if (upKey === "d") {
-      // Toggle behavior
-      if (!isInRemoveLineMode()) {
-        setModeRemoveLine();
-        displayRemoveLineMessage();
-      } else {
-        setModeRead();
-        closeRemoveConfirmationBox();
-      }
-    }
-  });
-}
-
 export const [mapDiv, setMapDiv] = createSignal<HTMLDivElement>(
   document.createElement("div")
 );
+
 export default function () {
   // let mapDiv: HTMLDivElement;
   let mapDragDropDiv: HTMLDivElement;
 
   onMount(() => {
-    mapDiv().focus();
-
-    document.addEventListener("click", () => {
-      console.log(document.activeElement);
-
-      if (
-        !getExportConfirmation().displayed &&
-        !getDisplayedGeneratorDialogueBox() &&
-        !getClearConfirmation().displayed &&
-        !dialogConfirmStopAddLine
-      ) {
-        mapDiv().focus();
-      }
-    });
-
     mapDiv().addEventListener(
       "dragenter",
       (e) => {
@@ -273,18 +159,16 @@ export default function () {
       },
       false
     );
-    mapDiv().addEventListener("keydown", undoRedoHandler);
-    mapDiv().addEventListener("keydown", escapeHandler);
-    mapDiv().addEventListener("keydown", enterHandler);
-    mapDiv().addEventListener("keydown", toggleLineUnderConstruction);
+
+    // Déplacer dans app.tsx dans un createEffect sur le menuSelected
+
     buildMap(mapDiv());
   });
 
   onCleanup(() => {
-    mapDiv().removeEventListener("keydown", undoRedoHandler);
-    mapDiv().removeEventListener("keydown", escapeHandler);
-    mapDiv().removeEventListener("keydown", enterHandler);
-    mapDiv().removeEventListener("keydown", toggleLineUnderConstruction);
+    for (const handler of listHandlerLMap) {
+      mapDiv().removeEventListener("keydown", handler);
+    }
   });
 
   return (

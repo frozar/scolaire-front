@@ -92,9 +92,6 @@ export default function () {
   const [refDialogueBox, setRefDialogueBox] = createSignal<HTMLDivElement>(
     document.createElement("div")
   );
-  document.addEventListener("click", () => {
-    refDialogueBox().focus();
-  });
 
   createEffect(() => {
     refDialogueBox().focus();
