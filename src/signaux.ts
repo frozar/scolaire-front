@@ -282,6 +282,12 @@ export function fetchPolyline(lnglat: number[][], busLine: LineType) {
     urlLnglat += elt[0] + "," + elt[1] + ";";
   }
   urlLnglat = urlLnglat.slice(0, -1);
+  console.log(
+    "OSRM url: " +
+      import.meta.env.VITE_API_OSRM_URL +
+      urlLnglat +
+      "?geometries=geojson&overview=full"
+  );
   fetch(
     import.meta.env.VITE_API_OSRM_URL +
       urlLnglat +
