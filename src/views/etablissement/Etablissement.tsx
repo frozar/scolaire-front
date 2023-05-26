@@ -3,20 +3,14 @@ import { AiOutlineSearch } from "solid-icons/ai";
 import EditStop, { setDataToEdit, toggleEditStop } from "./EditEtablissement";
 import { For, createEffect, createSignal, onMount } from "solid-js";
 import EtablissementItem from "./EtablissementItem";
-import { EtablissementItemType, ReturnMessageType } from "../../type";
+import { EtablissementItemType } from "../../type";
 import { displayDownloadErrorMessage } from "../../userInformation/utils";
 import { getExportDate } from "../graphicage/rightMapMenu/export/export";
 import RemoveRamassageConfirmation from "../../userInformation/RemoveRamassageConfirmation";
-import {
-  enableSpinningWheel,
-  setImportConfirmation,
-  disableSpinningWheel,
-  openRemoveImportCsvBox,
-} from "../../signaux";
+import { openRemoveImportCsvBox } from "../../signaux";
 import ImportCsv from "../../userInformation/ImportCsv";
 import { download } from "../../utils";
 import { getToken } from "../../auth/auth";
-import ImportCsvCanvas from "./ImportCsvCanvas";
 
 export const [selected, setSelected] = createSignal<EtablissementItemType[]>(
   []
