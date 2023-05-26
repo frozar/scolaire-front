@@ -11,12 +11,17 @@ import BusLines from "../../line/BusLines";
 import { useStateAction } from "../../StateAction";
 import LineUnderConstruction from "../../line/LineUnderConstruction";
 import {
+  addNewUserInformation,
   disableSpinningWheel,
   enableSpinningWheel,
   setImportConfirmation,
   setPoints,
 } from "../../signaux";
-import { ReturnMessageType } from "../../type";
+import {
+  MessageLevelEnum,
+  MessageTypeEnum,
+  ReturnMessageType,
+} from "../../type";
 import ControlMapMenu from "./rightMapMenu/RightMapMenu";
 import { InformationBoard } from "./rightMapMenu/InformationBoard";
 import { getToken } from "../../auth/auth";
@@ -47,14 +52,16 @@ export default function () {
     );
     mapDragDropDiv.addEventListener(
       "dragleave",
-      () => {
+      (e) => {
+        e.preventDefault();
         mapDragDropDiv.classList.remove("highlight");
       },
       false
     );
     mapDragDropDiv.addEventListener(
       "dragend",
-      () => {
+      (e) => {
+        e.preventDefault();
         mapDragDropDiv.classList.remove("highlight");
       },
       false
@@ -73,48 +80,61 @@ export default function () {
         enableSpinningWheel();
         const files = e.target.files || e.dataTransfer.files;
 
-        // process all File objects
-        for (let i = 0, file; (file = files[i]); i++) {
-          const formData = new FormData();
-          formData.append("file", file, file.name);
-          getToken()
-            .then((token) => {
-              fetch(import.meta.env.VITE_BACK_URL + "/uploadfile/", {
-                method: "POST",
-                headers: {
-                  authorization: `Bearer ${token}`,
-                },
-                body: formData,
-              })
-                .then((res) => {
-                  return res.json();
-                })
-                .then((res: ReturnMessageType) => {
-                  setImportConfirmation({
-                    displayed: true,
-                    message: res.message,
-                    metrics: {
-                      total: res.metrics.total,
-                      success: res.metrics.success,
-                    },
-                    error: {
-                      etablissement: res.error.etablissement,
-                      ramassage: res.error.ramassage,
-                    },
-                    success: {
-                      etablissement: res.success.etablissement,
-                      ramassage: res.success.ramassage,
-                    },
-                  });
-                  setPoints([]);
-                  fetchPointsRamassage();
-                  disableSpinningWheel();
-                });
-            })
-            .catch((err) => {
-              console.log(err);
-            });
+        if (files.length != 1) {
+          disableSpinningWheel();
+          mapDragDropDiv.classList.remove("highlight");
+          addNewUserInformation({
+            displayed: true,
+            level: MessageLevelEnum.warning,
+            type: MessageTypeEnum.global,
+            content: "Importer un fichier à la fois svp",
+          });
+          return;
         }
+
+        const file = files[0];
+
+        // process all File objects
+        const formData = new FormData();
+        formData.append("file", file, file.name);
+        getToken()
+          .then((token) => {
+            fetch(import.meta.env.VITE_BACK_URL + "/uploadfile/", {
+              method: "POST",
+              headers: {
+                authorization: `Bearer ${token}`,
+              },
+              body: formData,
+            })
+              .then((res) => {
+                return res.json();
+              })
+              .then((res: ReturnMessageType) => {
+                setImportConfirmation({
+                  displayed: true,
+                  message: res.message,
+                  metrics: {
+                    total: res.metrics.total,
+                    success: res.metrics.success,
+                  },
+                  error: {
+                    etablissement: res.error.etablissement,
+                    ramassage: res.error.ramassage,
+                  },
+                  success: {
+                    etablissement: res.success.etablissement,
+                    ramassage: res.success.ramassage,
+                  },
+                });
+                setPoints([]);
+                fetchPointsRamassage();
+                disableSpinningWheel();
+              });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+
         mapDragDropDiv.classList.remove("highlight");
       },
       false
