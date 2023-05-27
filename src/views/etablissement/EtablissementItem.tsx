@@ -22,8 +22,8 @@ export default function (props: {
     <tr>
       <td class="flex items-center">
         <input
-          aria-describedby="comments-description"
-          name="comments"
+          aria-describedby="etablissement-item"
+          name="etablissement"
           type="checkbox"
           class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600 relative right-2"
           onChange={(e) => {
