@@ -54,14 +54,17 @@ export default function (props: {
       (e) => {
         e.preventDefault();
         enableSpinningWheel();
-        // const files = e.target.files || e.dataTransfer.files;
 
         if (!e.dataTransfer) {
           props.setDisplay(false);
           disableSpinningWheel();
           mapDragDropDiv.classList.remove("highlight");
-          // DragDropDiv.classList.remove("highlight");
-          // DragDropChild.classList.replace("child", "invisible_child");
+          addNewUserInformation({
+            displayed: true,
+            level: MessageLevelEnum.warning,
+            type: MessageTypeEnum.global,
+            content: "Pas de fichier à importer",
+          });
           return;
         }
 
@@ -82,7 +85,6 @@ export default function (props: {
 
         const file = files[0];
 
-        // process all File objects
         const formData = new FormData();
         formData.append("file", file, file.name);
 
@@ -100,22 +102,42 @@ export default function (props: {
 
             const body: ReturnMessageType = await res.json();
 
-            setImportConfirmation({
-              displayed: true,
-              message: body.message,
-              metrics: {
-                total: body.metrics.total,
-                success: body.metrics.success,
-              },
-              error: {
-                etablissement: body.error.etablissement,
-                ramassage: body.error.ramassage,
-              },
-              success: {
-                etablissement: body.success.etablissement,
-                ramassage: body.success.ramassage,
-              },
-            });
+            if (body.message === "Pas de fichier envoyé.") {
+              setImportConfirmation({
+                displayed: true,
+                message: body.message,
+                metrics: {
+                  total: 0,
+                  success: 0,
+                },
+                error: {
+                  etablissement: body.error.etablissement,
+                  ramassage: body.error.ramassage,
+                },
+                success: {
+                  etablissement: body.success.etablissement,
+                  ramassage: body.success.ramassage,
+                },
+              });
+            } else {
+              setImportConfirmation({
+                displayed: true,
+                message: body.message,
+                metrics: {
+                  total: body.metrics.total,
+                  success: body.metrics.success,
+                },
+                error: {
+                  etablissement: body.error.etablissement,
+                  ramassage: body.error.ramassage,
+                },
+                success: {
+                  etablissement: body.success.etablissement,
+                  ramassage: body.success.ramassage,
+                },
+              });
+            }
+
             setPoints([]);
             fetchPointsRamassage();
             disableSpinningWheel();
