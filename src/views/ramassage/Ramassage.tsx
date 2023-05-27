@@ -1,8 +1,7 @@
-import { createStore } from "solid-js/store";
 import { AiOutlineSearch } from "solid-icons/ai";
-import EditStop, { setDataToEdit, toggleEditStop } from "./EditStop";
+import EditStop, { setDataToEdit, toggleEditStop } from "./EditRamassage";
 import { For, createEffect, createSignal, onCleanup, onMount } from "solid-js";
-import StopItems from "./StopItem";
+import StopItems from "./RamassageItem";
 import { StopItemType } from "../../type";
 import { displayDownloadErrorMessage } from "../../userInformation/utils";
 import { getExportDate } from "../graphicage/rightMapMenu/export/export";
@@ -123,7 +122,7 @@ export default function () {
       />
       <RemoveRamassageConfirmation />
       <div class="flex w-full" ref={stopDiv}>
-        <div id="arrets-board">
+        <div id="ramassages-board">
           <header>
             <h1>Points de ramassage</h1>
             <div id="filters">

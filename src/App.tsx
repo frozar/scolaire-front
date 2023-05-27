@@ -12,7 +12,7 @@ import NavLateral from "./layout/NavLateral";
 import { useStateGui } from "./StateGui";
 import ClearConfirmation from "./userInformation/ClearConfirmation";
 import GeneratorDialogueBox from "./userInformation/GeneratorDialogueBox";
-import Arret from "./views/stop/Stop";
+import Arret from "./views/ramassage/Ramassage";
 import Etablissement from "./views/etablissement/Etablissement";
 
 const [, { isInAddLineMode }] = useStateAction();
@@ -52,7 +52,7 @@ export default () => {
             <Map />
           </Match>
 
-          <Match when={getSelectedMenu() == "arrets"}>
+          <Match when={getSelectedMenu() == "ramassages"}>
             <Arret />
           </Match>
 

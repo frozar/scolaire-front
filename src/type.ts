@@ -134,7 +134,7 @@ export type ReturnMessageType = {
 export type SelectedMenuType =
   | "graphicage"
   | "dashboard"
-  | "arrets"
+  | "ramassages"
   | "voirie"
   | "etablissements"
   | "parametres"

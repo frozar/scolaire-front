@@ -295,7 +295,7 @@ code {
   content: "  - ";
 }
 
-#arrets-board {
+#ramassages-board {
   @apply w-full mx-16 mt-5;
   & > header {
     > h1 {

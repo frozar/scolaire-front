@@ -12,7 +12,7 @@ import { assertIsNode } from "../utils";
 import { MessageLevelEnum, MessageTypeEnum, ReturnMessageType } from "../type";
 import { useStateGui } from "../StateGui";
 import { fetchEtablissement } from "../views/etablissement/Etablissement";
-import { fetchRamassage } from "../views/stop/Stop";
+import { fetchRamassage } from "../views/ramassage/Ramassage";
 import { uploadLine } from "../request";
 
 const [, { getSelectedMenu }] = useStateGui();
@@ -23,7 +23,7 @@ createEffect(() => {
     case "etablissements":
       fileType = "etablissements.csv";
       break;
-    case "arrets":
+    case "ramassages":
       fileType = "ramassages.csv";
       break;
   }
@@ -135,7 +135,7 @@ export default function (props: { doesCheckInputFilenameFormat: boolean }) {
           case "etablissements":
             fetchEtablissement();
             break;
-          case "arrets":
+          case "ramassages":
             fetchRamassage();
             break;
         }
