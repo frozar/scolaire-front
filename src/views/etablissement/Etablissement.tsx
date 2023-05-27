@@ -1,7 +1,7 @@
 import { createStore } from "solid-js/store";
 import { AiOutlineSearch } from "solid-icons/ai";
 import EditStop, { setDataToEdit, toggleEditStop } from "./EditEtablissement";
-import { For, createEffect, createSignal, onMount } from "solid-js";
+import { For, createEffect, createSignal, onCleanup, onMount } from "solid-js";
 import EtablissementItem from "./EtablissementItem";
 import { EtablissementItemType } from "../../type";
 import { displayDownloadErrorMessage } from "../../userInformation/utils";
@@ -11,6 +11,7 @@ import { openRemoveImportCsvBox } from "../../signaux";
 import ImportCsv from "../../userInformation/ImportCsv";
 import { download } from "../../utils";
 import { getToken } from "../../auth/auth";
+import ImportCsvCanvas from "../../component/ImportCsvCanvas";
 
 export const [selected, setSelected] = createSignal<EtablissementItemType[]>(
   []
@@ -18,7 +19,9 @@ export const [selected, setSelected] = createSignal<EtablissementItemType[]>(
 
 const [keyword, setKeyword] = createSignal("");
 
-export const [stop, setStop] = createStore<EtablissementItemType[]>([]);
+export const [etablissements, setEtablissements] = createStore<
+  EtablissementItemType[]
+>([]);
 
 export const addSelected = (item: EtablissementItemType) =>
   setSelected([...selected(), item]);
@@ -58,7 +61,7 @@ export function fetchEtablissement() {
               lat: number;
             }[]
           ) => {
-            setStop(
+            setEtablissements(
               res
                 .map((elt) => {
                   return {
@@ -81,10 +84,13 @@ export function fetchEtablissement() {
     });
 }
 
+function preventDefaultHandler(e: DragEvent) {
+  e.preventDefault();
+}
+
+let etablissementDiv: HTMLDivElement;
+
 export default function () {
-  createEffect(() => {
-    fetchEtablissement();
-  });
   // const [refSelect, setRefSelect] = createSignal<HTMLSelectElement>();
   // eslint-disable-next-line prefer-const
   let refCheckbox: HTMLInputElement = document.createElement("input");
@@ -98,7 +104,7 @@ export default function () {
   // });
 
   createEffect(() => {
-    if (selected().length == stop.length) {
+    if (selected().length == etablissements.length) {
       refCheckbox.checked = true;
     } else {
       refCheckbox.checked = false;
@@ -113,49 +119,41 @@ export default function () {
     fetchEtablissement();
   });
 
-  // eslint-disable-next-line prefer-const
-  let etablissementDiv: HTMLDivElement = document.createElement("div");
+  const [displayImportCsvCanvas, setDisplayImportCsvCanvas] =
+    createSignal(false);
 
-  // TODO: uncomment the ImportCsvCanvas
-  // const [displayImportCsvCanvas, setDisplayImportCsvCanvas] =
-  //   createSignal(false);
+  function dragEnterHandler(e: DragEvent) {
+    e.preventDefault();
+    setDisplayImportCsvCanvas(true);
+  }
 
   onMount(() => {
-    etablissementDiv.addEventListener(
-      "dragenter",
-      (e) => {
-        e.preventDefault();
-        // TODO: uncomment the ImportCsvCanvas
-        // setDisplayImportCsvCanvas(true);
-      },
-      false
-    );
-    etablissementDiv.addEventListener("drop", (e) => e.preventDefault(), false);
-    etablissementDiv.addEventListener(
-      "dragleave",
-      (e) => e.preventDefault(),
-      false
-    );
-    etablissementDiv.addEventListener(
-      "dragend",
-      (e) => e.preventDefault(),
-      false
-    );
-    etablissementDiv.addEventListener(
-      "dragover",
-      (e) => e.preventDefault(),
-      false
-    );
+    fetchEtablissement();
+    etablissementDiv.addEventListener("dragenter", dragEnterHandler);
+    etablissementDiv.addEventListener("drop", preventDefaultHandler);
+    etablissementDiv.addEventListener("dragleave", preventDefaultHandler);
+    etablissementDiv.addEventListener("dragend", preventDefaultHandler);
+    etablissementDiv.addEventListener("dragover", preventDefaultHandler);
+  });
+
+  onCleanup(() => {
+    etablissementDiv.removeEventListener("dragenter", dragEnterHandler);
+    etablissementDiv.removeEventListener("drop", preventDefaultHandler);
+    etablissementDiv.removeEventListener("dragleave", preventDefaultHandler);
+    etablissementDiv.removeEventListener("dragend", preventDefaultHandler);
+    etablissementDiv.removeEventListener("dragover", preventDefaultHandler);
   });
 
   return (
     <>
       <ImportCsv doesCheckInputFilenameFormat={false} />
-      {/* TODO: uncomment the ImportCsvCanvas */}
-      {/* <ImportCsvCanvas
+      <ImportCsvCanvas
         display={displayImportCsvCanvas()}
         setDisplay={setDisplayImportCsvCanvas}
-      /> */}
+        callback={() => {
+          fetchEtablissement();
+        }}
+      />
       <RemoveRamassageConfirmation />
       <div class="flex w-full" ref={etablissementDiv}>
         <div id="arrets-board">
@@ -279,7 +277,7 @@ export default function () {
                 </thead>
                 <tbody>
                   <For
-                    each={stop.filter((e) =>
+                    each={etablissements.filter((e) =>
                       e.name.toUpperCase().includes(keyword().toUpperCase())
                     )}
                   >

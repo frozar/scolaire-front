@@ -1,7 +1,7 @@
 import { createStore } from "solid-js/store";
 import { AiOutlineSearch } from "solid-icons/ai";
 import EditStop, { setDataToEdit, toggleEditStop } from "./EditStop";
-import { For, createEffect, createSignal, onMount } from "solid-js";
+import { For, createEffect, createSignal, onCleanup, onMount } from "solid-js";
 import StopItems from "./StopItem";
 import { StopItemType } from "../../type";
 import { displayDownloadErrorMessage } from "../../userInformation/utils";
@@ -11,6 +11,7 @@ import { openRemoveImportCsvBox } from "../../signaux";
 import ImportCsv from "../../userInformation/ImportCsv";
 import { download } from "../../utils";
 import { getToken } from "../../auth/auth";
+import ImportCsvCanvas from "../../component/ImportCsvCanvas";
 
 export const [selected, setSelected] = createSignal<StopItemType[]>([]);
 export const [stop, setStop] = createStore<StopItemType[]>([]);
@@ -78,10 +79,13 @@ export function fetchRamassage() {
     });
 }
 
+function preventDefaultHandler(e: DragEvent) {
+  e.preventDefault();
+}
+
+let stopDiv: HTMLDivElement;
+
 export default function () {
-  createEffect(() => {
-    fetchRamassage();
-  });
   // const [refSelect, setRefSelect] = createSignal<HTMLSelectElement>();
   // eslint-disable-next-line prefer-const
   let refCheckbox: HTMLInputElement = document.createElement("input");
@@ -110,38 +114,41 @@ export default function () {
     fetchRamassage();
   });
 
-  // eslint-disable-next-line prefer-const
-  let stopDiv: HTMLDivElement = document.createElement("div");
+  const [displayImportCsvCanvas, setDisplayImportCsvCanvas] =
+    createSignal(false);
 
-  // TODO: uncomment the ImportCsvCanvas
-  // const [displayImportCsvCanvas, setDisplayImportCsvCanvas] =
-  //   createSignal(false);
+  function dragEnterHandler(e: DragEvent) {
+    e.preventDefault();
+    setDisplayImportCsvCanvas(true);
+  }
 
   onMount(() => {
-    stopDiv.addEventListener(
-      "dragenter",
-      (e) => {
-        e.preventDefault();
-        // TODO: uncomment the ImportCsvCanvas
-        // setDisplayImportCsvCanvas(true);
-      },
-      false
-    );
+    fetchRamassage();
+    stopDiv.addEventListener("dragenter", dragEnterHandler);
+    stopDiv.addEventListener("drop", preventDefaultHandler);
+    stopDiv.addEventListener("dragleave", preventDefaultHandler);
+    stopDiv.addEventListener("dragend", preventDefaultHandler);
+    stopDiv.addEventListener("dragover", preventDefaultHandler);
+  });
 
-    stopDiv.addEventListener("drop", (e) => e.preventDefault(), false);
-    stopDiv.addEventListener("dragleave", (e) => e.preventDefault(), false);
-    stopDiv.addEventListener("dragend", (e) => e.preventDefault(), false);
-    stopDiv.addEventListener("dragover", (e) => e.preventDefault(), false);
+  onCleanup(() => {
+    stopDiv.removeEventListener("dragenter", dragEnterHandler);
+    stopDiv.removeEventListener("drop", preventDefaultHandler);
+    stopDiv.removeEventListener("dragleave", preventDefaultHandler);
+    stopDiv.removeEventListener("dragend", preventDefaultHandler);
+    stopDiv.removeEventListener("dragover", preventDefaultHandler);
   });
 
   return (
     <>
       <ImportCsv doesCheckInputFilenameFormat={false} />
-      {/* TODO: uncomment the ImportCsvCanvas */}
-      {/* <ImportCsvCanvas
+      <ImportCsvCanvas
         display={displayImportCsvCanvas()}
         setDisplay={setDisplayImportCsvCanvas}
-      /> */}
+        callback={() => {
+          fetchRamassage();
+        }}
+      />
       <RemoveRamassageConfirmation />
       <div class="flex w-full" ref={stopDiv}>
         <div id="arrets-board">

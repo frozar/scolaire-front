@@ -1,158 +1,174 @@
-import { Setter, createEffect, onMount } from "solid-js";
-import { MessageLevelEnum, MessageTypeEnum, ReturnMessageType } from "../type";
+import { Setter, onCleanup, onMount } from "solid-js";
 import {
   addNewUserInformation,
   disableSpinningWheel,
+  enableSpinningWheel,
   setImportConfirmation,
+  setPoints,
 } from "../signaux";
-import { fetchEtablissement } from "../views/etablissement/Etablissement";
+import { MessageLevelEnum, MessageTypeEnum, ReturnMessageType } from "../type";
 import { uploadLine } from "../request";
+import { fetchPointsRamassage } from "../PointsRamassageAndEtablissement";
 
-let DragDropDiv: HTMLDivElement;
-let DragDropChild: HTMLDivElement;
+let mapDragDropDiv: HTMLDivElement;
+
+function dragLeaveHandler(e: DragEvent, setDisplay: Setter<boolean>) {
+  // console.log("dragleave");
+  e.preventDefault();
+  setDisplay(false);
+}
+
+function dragEndHandler(e: DragEvent, setDisplay: Setter<boolean>) {
+  // console.log("dragend");
+  e.preventDefault();
+  setDisplay(false);
+}
+
+function dragOverHandler(e: DragEvent) {
+  // console.log("dragover");
+  e.preventDefault();
+}
+
+function dropHandler(
+  e: DragEvent,
+  setDisplay: Setter<boolean>,
+  callback?: () => void
+) {
+  // console.log("drop");
+  e.preventDefault();
+
+  enableSpinningWheel();
+
+  if (!e.dataTransfer) {
+    setDisplay(false);
+    disableSpinningWheel();
+    addNewUserInformation({
+      displayed: true,
+      level: MessageLevelEnum.warning,
+      type: MessageTypeEnum.global,
+      content: "Pas de fichier à importer",
+    });
+    return;
+  }
+
+  const files = e.dataTransfer.files;
+
+  if (files.length != 1) {
+    setDisplay(false);
+    disableSpinningWheel();
+    addNewUserInformation({
+      displayed: true,
+      level: MessageLevelEnum.warning,
+      type: MessageTypeEnum.global,
+      content: "Importer un fichier à la fois svp",
+    });
+    return;
+  }
+
+  const file = files[0];
+
+  const formData = new FormData();
+  formData.append("file", file, file.name);
+
+  uploadLine(formData)
+    .then(async (res) => {
+      if (!res) {
+        addNewUserInformation({
+          displayed: true,
+          level: MessageLevelEnum.error,
+          type: MessageTypeEnum.global,
+          content: "Echec de l'import de fichier",
+        });
+        return;
+      }
+
+      const body: ReturnMessageType = await res.json();
+
+      if (body.message === "Pas de fichier envoyé.") {
+        setImportConfirmation({
+          displayed: true,
+          message: body.message,
+          metrics: {
+            total: 0,
+            success: 0,
+          },
+          error: {
+            etablissement: body.error.etablissement,
+            ramassage: body.error.ramassage,
+          },
+          success: {
+            etablissement: body.success.etablissement,
+            ramassage: body.success.ramassage,
+          },
+        });
+      } else {
+        setImportConfirmation({
+          displayed: true,
+          message: body.message,
+          metrics: {
+            total: body.metrics.total,
+            success: body.metrics.success,
+          },
+          error: {
+            etablissement: body.error.etablissement,
+            ramassage: body.error.ramassage,
+          },
+          success: {
+            etablissement: body.success.etablissement,
+            ramassage: body.success.ramassage,
+          },
+        });
+      }
+
+      setPoints([]);
+      fetchPointsRamassage();
+      disableSpinningWheel();
+
+      if (callback && typeof callback === "function") {
+        callback();
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+
+  setDisplay(false);
+}
 
 export default function (props: {
   display: boolean;
   setDisplay: Setter<boolean>;
+  callback?: () => void;
 }) {
-  createEffect(() => {
-    if (props.display) {
-      DragDropDiv.classList.add("highlight");
-      DragDropChild.classList.replace("invisible_child", "child");
-    }
-  });
+  function dragLeaveHandlerAux(e: DragEvent) {
+    dragLeaveHandler(e, props.setDisplay);
+  }
+
+  function dragEndHandlerAux(e: DragEvent) {
+    dragEndHandler(e, props.setDisplay);
+  }
+
+  function dropHandlerAux(e: DragEvent) {
+    dropHandler(e, props.setDisplay, props.callback);
+  }
 
   onMount(() => {
-    DragDropDiv.addEventListener(
-      "dragleave",
-      () => {
-        DragDropDiv.classList.remove("highlight");
-        DragDropChild.classList.replace("child", "invisible_child");
-      },
-      false
-    );
+    mapDragDropDiv.addEventListener("dragleave", dragLeaveHandlerAux);
+    mapDragDropDiv.addEventListener("dragend", dragEndHandlerAux);
+    mapDragDropDiv.addEventListener("dragover", dragOverHandler);
+    mapDragDropDiv.addEventListener("drop", dropHandlerAux);
+  });
 
-    DragDropDiv.addEventListener(
-      "dragend",
-      () => {
-        DragDropDiv.classList.remove("highlight");
-
-        DragDropChild.classList.replace("child", "invisible_child");
-      },
-      false
-    );
-
-    DragDropDiv.addEventListener(
-      "dragover",
-      (e) => {
-        e.preventDefault();
-      },
-      false
-    );
-
-    DragDropDiv.addEventListener(
-      "drop",
-      (e: DragEvent) => {
-        e.preventDefault();
-        if (!e.dataTransfer) {
-          props.setDisplay(false);
-          DragDropDiv.classList.remove("highlight");
-          DragDropChild.classList.replace("child", "invisible_child");
-          return;
-        }
-
-        const files = e.dataTransfer.files;
-
-        console.log("files", files);
-
-        if (files.length != 1) {
-          props.setDisplay(false);
-          DragDropDiv.classList.remove("highlight");
-          DragDropChild.classList.replace("child", "invisible_child");
-          addNewUserInformation({
-            displayed: true,
-            level: MessageLevelEnum.warning,
-            type: MessageTypeEnum.global,
-            content: "Importer un fichier à la fois svp",
-          });
-          return;
-        }
-
-        const file = files[0];
-
-        const formData = new FormData();
-        formData.append("file", file, file.name);
-
-        uploadLine(formData)
-          .then(async (res) => {
-            if (!res) {
-              addNewUserInformation({
-                displayed: true,
-                level: MessageLevelEnum.error,
-                type: MessageTypeEnum.global,
-                content: "Echec de l'import de fichier",
-              });
-              return;
-            }
-
-            const body: ReturnMessageType = await res.json();
-
-            console.log("body", body);
-
-            if (body.message === "Pas de fichier envoyé.") {
-              setImportConfirmation({
-                displayed: true,
-                message: body.message,
-                metrics: {
-                  total: 0,
-                  success: 0,
-                },
-                error: {
-                  etablissement: body.error.etablissement,
-                  ramassage: body.error.ramassage,
-                },
-                success: {
-                  etablissement: body.success.etablissement,
-                  ramassage: body.success.ramassage,
-                },
-              });
-            } else {
-              setImportConfirmation({
-                displayed: true,
-                message: body.message,
-                metrics: {
-                  total: body.metrics.total,
-                  success: body.metrics.success,
-                },
-                error: {
-                  etablissement: body.error.etablissement,
-                  ramassage: body.error.ramassage,
-                },
-                success: {
-                  etablissement: body.success.etablissement,
-                  ramassage: body.success.ramassage,
-                },
-              });
-            }
-
-            fetchEtablissement();
-            disableSpinningWheel();
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-
-        props.setDisplay(false);
-        DragDropDiv.classList.remove("highlight");
-        DragDropChild.classList.replace("child", "invisible_child");
-      },
-      false
-    );
+  onCleanup(() => {
+    mapDragDropDiv.removeEventListener("dragleave", dragLeaveHandlerAux);
+    mapDragDropDiv.removeEventListener("dragend", dragEndHandlerAux);
+    mapDragDropDiv.removeEventListener("dragover", dragOverHandler);
+    mapDragDropDiv.removeEventListener("drop", dropHandlerAux);
   });
 
   return (
-    <div ref={DragDropDiv}>
-      <div ref={DragDropChild} class="invisible_child">
+    <div ref={mapDragDropDiv} classList={{ highlight: props.display }}>
+      <div class="child" classList={{ invisible: !props.display }}>
         Drop your file here
       </div>
     </div>

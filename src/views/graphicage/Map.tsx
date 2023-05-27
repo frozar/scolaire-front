@@ -13,7 +13,7 @@ import ControlMapMenu from "./rightMapMenu/RightMapMenu";
 import { InformationBoard } from "./rightMapMenu/InformationBoard";
 import ConfirmStopAddLine from "./ConfirmStopAddLineBox";
 import { listHandlerLMap } from "./shortcut";
-import ImportCsvCanvasMap from "../../component/ImportCsvCanvasMap";
+import ImportCsvCanvas from "../../component/ImportCsvCanvas";
 
 const [, { isInAddLineMode }] = useStateAction();
 
@@ -60,7 +60,7 @@ export default function () {
 
   return (
     <>
-      <ImportCsvCanvasMap
+      <ImportCsvCanvas
         display={displayImportCsvCanvas()}
         setDisplay={setDisplayImportCsvCanvas}
       />

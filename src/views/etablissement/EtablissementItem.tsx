@@ -5,7 +5,7 @@ import {
   addSelected,
   removeSelected,
   selected,
-  setStop,
+  setEtablissements,
 } from "./Etablissement";
 import { isChecked } from "./Etablissement";
 import { setRemoveRamassageConfirmation } from "../../signaux";
@@ -27,7 +27,7 @@ export default function (props: { item: EtablissementItemType }) {
   };
   onMount(() => {
     checkbox?.addEventListener("change", () => {
-      setStop(
+      setEtablissements(
         (stop) => stop.id == item.id,
         "selected",
         (selected) => !selected
