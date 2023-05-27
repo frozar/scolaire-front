@@ -1,4 +1,3 @@
-import { createStore } from "solid-js/store";
 import { AiOutlineSearch } from "solid-icons/ai";
 import EditStop, { setDataToEdit, toggleEditStop } from "./EditStop";
 import { For, createEffect, createSignal, onCleanup, onMount } from "solid-js";
