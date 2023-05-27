@@ -1,4 +1,4 @@
-import { createEffect, Switch, Match, onMount, onCleanup } from "solid-js";
+import { createEffect, Switch, Match } from "solid-js";
 import SpinningWheel from "./SpinningWheel";
 import Map from "./views/graphicage/Map";
 import { useStateAction } from "./StateAction";
@@ -14,7 +14,6 @@ import ClearConfirmation from "./userInformation/ClearConfirmation";
 import GeneratorDialogueBox from "./userInformation/GeneratorDialogueBox";
 import Arret from "./views/stop/Stop";
 import Etablissement from "./views/etablissement/Etablissement";
-import { listHandlerLMap } from "./views/graphicage/shortcut";
 
 const [, { isInAddLineMode }] = useStateAction();
 const [, { getSelectedMenu }] = useStateGui();
