@@ -124,7 +124,7 @@ export default function () {
       />
       <RemoveRamassageConfirmation />
       <div class="flex w-full" ref={etablissementDiv}>
-        <div id="arrets-board">
+        <div id="ramassages-board">
           <header>
             <h1>Etablissements</h1>
             <div id="filters">

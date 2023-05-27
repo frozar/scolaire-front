@@ -35,7 +35,7 @@ export default function (displayText: boolean) {
     },
     {
       title: "Arrêts",
-      menuItem: "arrets",
+      menuItem: "ramassages",
       Logo: LateralMenuArretsLogo,
       displayText: displayText,
     },

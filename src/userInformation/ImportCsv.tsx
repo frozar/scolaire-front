@@ -23,7 +23,7 @@ createEffect(() => {
     case "etablissements":
       fileType = "etablissements.csv";
       break;
-    case "arrets":
+    case "ramassages":
       fileType = "ramassages.csv";
       break;
   }
@@ -135,7 +135,7 @@ export default function (props: { doesCheckInputFilenameFormat: boolean }) {
           case "etablissements":
             fetchEtablissement();
             break;
-          case "arrets":
+          case "ramassages":
             fetchRamassage();
             break;
         }

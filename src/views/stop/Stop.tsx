@@ -123,7 +123,7 @@ export default function () {
       />
       <RemoveRamassageConfirmation />
       <div class="flex w-full" ref={stopDiv}>
-        <div id="arrets-board">
+        <div id="ramassages-board">
           <header>
             <h1>Points de ramassage</h1>
             <div id="filters">

@@ -52,7 +52,7 @@ export default () => {
             <Map />
           </Match>
 
-          <Match when={getSelectedMenu() == "arrets"}>
+          <Match when={getSelectedMenu() == "ramassages"}>
             <Arret />
           </Match>
 
