@@ -1,4 +1,3 @@
-import { createStore } from "solid-js/store";
 import { AiOutlineSearch } from "solid-icons/ai";
 import EditStop, { setDataToEdit, toggleEditStop } from "./EditEtablissement";
 import { For, createEffect, createSignal, onCleanup, onMount } from "solid-js";
@@ -13,25 +12,9 @@ import { download } from "../../utils";
 import { getToken } from "../../auth/auth";
 import ImportCsvCanvas from "../../component/ImportCsvCanvas";
 
-export const [selected, setSelected] = createSignal<EtablissementItemType[]>(
-  []
-);
-
-const [keyword, setKeyword] = createSignal("");
-
-export const [etablissements, setEtablissements] = createStore<
+const [etablissements, setEtablissements] = createSignal<
   EtablissementItemType[]
 >([]);
-
-export const addSelected = (item: EtablissementItemType) =>
-  setSelected([...selected(), item]);
-
-export const removeSelected = (item: EtablissementItemType) => {
-  const items = selected().filter((stop) => stop.id != item.id);
-  setSelected(items);
-};
-
-export const [isChecked, setIsChecked] = createSignal(false);
 
 export function fetchEtablissement() {
   getToken()
@@ -65,12 +48,8 @@ export function fetchEtablissement() {
               res
                 .map((elt) => {
                   return {
-                    id: elt.id,
-                    name: elt.name,
-                    quantity: elt.quantity,
+                    ...elt,
                     nbLine: elt.nb_line,
-                    lon: elt.lon,
-                    lat: elt.lat,
                     selected: false,
                   };
                 })
@@ -88,35 +67,24 @@ function preventDefaultHandler(e: DragEvent) {
   e.preventDefault();
 }
 
-let etablissementDiv: HTMLDivElement;
-
 export default function () {
-  // const [refSelect, setRefSelect] = createSignal<HTMLSelectElement>();
-  // eslint-disable-next-line prefer-const
-  let refCheckbox: HTMLInputElement = document.createElement("input");
+  let etablissementDiv!: HTMLDivElement;
+  let refCheckbox!: HTMLInputElement;
 
-  // createEffect(() => {
-  //   refSelect()?.addEventListener("change", (e) => {
-  //     if (e.target?.value == "delete") {
-  //       console.log("Send request to delete all selected item: ", selected());
-  //     }
-  //   });
-  // });
+  const [keyword, setKeyword] = createSignal("");
 
-  createEffect(() => {
-    if (selected().length == etablissements.length) {
-      refCheckbox.checked = true;
-    } else {
-      refCheckbox.checked = false;
-    }
-  });
+  const filteredEtablissements = () =>
+    etablissements().filter((e) =>
+      e.name.toLowerCase().includes(keyword().toLowerCase())
+    );
+
+  const selectedEtablissements = () =>
+    etablissements().filter((eta) => eta.selected);
 
   createEffect(() => {
-    refCheckbox?.addEventListener("change", () => {
-      setIsChecked(!isChecked());
-    });
-
-    fetchEtablissement();
+    refCheckbox.checked =
+      filteredEtablissements().length != 0 &&
+      selectedEtablissements().length == filteredEtablissements().length;
   });
 
   const [displayImportCsvCanvas, setDisplayImportCsvCanvas] =
@@ -158,7 +126,7 @@ export default function () {
       <div class="flex w-full" ref={etablissementDiv}>
         <div id="arrets-board">
           <header>
-            <h1>Gérer les établissements</h1>
+            <h1>Etablissements</h1>
             <div id="filters">
               <div class="left">
                 {/* <select ref={setRefSelect} disabled> */}
@@ -264,6 +232,14 @@ export default function () {
                         name="comments"
                         type="checkbox"
                         class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600 relative right-2"
+                        onChange={(e) => {
+                          setEtablissements((etablissements) =>
+                            etablissements.map((eta) => ({
+                              ...eta,
+                              selected: e.target.checked,
+                            }))
+                          );
+                        }}
                         ref={refCheckbox}
                       />
                       Nom
@@ -276,13 +252,14 @@ export default function () {
                   </tr>
                 </thead>
                 <tbody>
-                  <For
-                    each={etablissements.filter((e) =>
-                      e.name.toUpperCase().includes(keyword().toUpperCase())
-                    )}
-                  >
+                  <For each={filteredEtablissements()}>
                     {(fields) => {
-                      return <EtablissementItem item={fields} />;
+                      return (
+                        <EtablissementItem
+                          item={fields}
+                          setEtablissements={setEtablissements}
+                        />
+                      );
                     }}
                   </For>
                 </tbody>

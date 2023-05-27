@@ -161,6 +161,7 @@ export type StopItemType = {
   nbEtablissement: number;
   lon: number;
   lat: number;
+  selected: boolean;
 };
 
 export type PolylineRouteType = {

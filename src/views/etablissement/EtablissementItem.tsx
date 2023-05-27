@@ -1,78 +1,47 @@
-import { createEffect, on, onMount } from "solid-js";
+import { Setter, createEffect } from "solid-js";
 import { EtablissementItemType } from "../../type";
 import { setDataToEdit, toggleEditStop } from "./EditEtablissement";
-import {
-  addSelected,
-  removeSelected,
-  selected,
-  setEtablissements,
-} from "./Etablissement";
-import { isChecked } from "./Etablissement";
-import { setRemoveRamassageConfirmation } from "../../signaux";
+// import { setRemoveRamassageConfirmation } from "../../signaux";
 
-export default function (props: { item: EtablissementItemType }) {
+export default function (props: {
+  item: EtablissementItemType;
+  setEtablissements: Setter<EtablissementItemType[]>;
+}) {
   let checkbox!: HTMLInputElement;
-  const item = props.item;
 
   const handleClickEdit = () => {
-    setDataToEdit({ ...item });
+    setDataToEdit({ ...props.item });
     toggleEditStop();
   };
 
-  const handleClickDelete = () => {
-    setRemoveRamassageConfirmation({
-      displayed: true,
-      item: item,
-    });
-  };
-  onMount(() => {
-    checkbox?.addEventListener("change", () => {
-      setEtablissements(
-        (stop) => stop.id == item.id,
-        "selected",
-        (selected) => !selected
-      );
-
-      const exist = selected().filter((stop) => stop.id == item.id);
-
-      if (exist.length == 0) {
-        addSelected(item);
-      } else {
-        removeSelected(item);
-      }
-    });
+  createEffect(() => {
+    checkbox.checked = props.item.selected;
   });
-
-  createEffect(
-    on(
-      () => isChecked(),
-      () => {
-        if (isChecked()) {
-          checkbox.checked = true;
-          addSelected(item);
-        } else {
-          checkbox.checked = false;
-          removeSelected(item);
-        }
-      }
-    )
-  );
 
   return (
     <tr>
       <td class="flex items-center">
         <input
-          id="comments"
           aria-describedby="comments-description"
           name="comments"
           type="checkbox"
           class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600 relative right-2"
+          onChange={(e) => {
+            const isItemChecked = e.target.checked;
+            const itemId = props.item.id;
+
+            props.setEtablissements((etablissements) =>
+              etablissements.map((eta) =>
+                eta.id === itemId ? { ...eta, selected: isItemChecked } : eta
+              )
+            );
+          }}
           ref={checkbox}
         />
-        {item.name}
+        {props.item.name}
       </td>
-      <td>{item.quantity}</td>
-      <td>{item.nbLine}</td>
+      <td>{props.item.quantity}</td>
+      <td>{props.item.nbLine}</td>
       <td>
         <a onClick={handleClickEdit} href="#" class="text-[#0CC683] mr-2">
           Editer
