@@ -2,7 +2,7 @@ import { CgCloseO } from "solid-icons/cg";
 import { HiSolidLocationMarker } from "solid-icons/hi";
 import { Show, createSignal } from "solid-js";
 import { MessageLevelEnum, MessageTypeEnum, StopItemType } from "../../type";
-import { fetchRamassage } from "./Stop";
+import { fetchRamassage } from "./Ramassage";
 import { addNewUserInformation } from "../../signaux";
 import { getToken } from "../../auth/auth";
 

@@ -1,7 +1,7 @@
 import { AiOutlineSearch } from "solid-icons/ai";
-import EditStop, { setDataToEdit, toggleEditStop } from "./EditStop";
+import EditStop, { setDataToEdit, toggleEditStop } from "./EditRamassage";
 import { For, createEffect, createSignal, onCleanup, onMount } from "solid-js";
-import StopItems from "./StopItem";
+import StopItems from "./RamassageItem";
 import { StopItemType } from "../../type";
 import { displayDownloadErrorMessage } from "../../userInformation/utils";
 import { getExportDate } from "../graphicage/rightMapMenu/export/export";

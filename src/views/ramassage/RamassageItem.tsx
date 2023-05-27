@@ -1,6 +1,6 @@
 import { Setter, createEffect } from "solid-js";
 import { StopItemType } from "../../type";
-import { setDataToEdit, toggleEditStop } from "./EditStop";
+import { setDataToEdit, toggleEditStop } from "./EditRamassage";
 // import { setRemoveRamassageConfirmation } from "../../signaux";
 
 export default function (props: {
