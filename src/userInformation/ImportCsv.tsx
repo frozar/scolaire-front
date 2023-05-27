@@ -12,8 +12,8 @@ import { assertIsNode } from "../utils";
 import { MessageLevelEnum, MessageTypeEnum, ReturnMessageType } from "../type";
 import { useStateGui } from "../StateGui";
 import { fetchEtablissement } from "../views/etablissement/Etablissement";
-import { displayArret } from "../views/stop/Stop";
-import { getToken } from "../auth/auth";
+import { fetchRamassage } from "../views/stop/Stop";
+import { uploadLine } from "../request";
 
 const [, { getSelectedMenu }] = useStateGui();
 
@@ -99,61 +99,55 @@ export default function (props: { doesCheckInputFilenameFormat: boolean }) {
     const formData = new FormData();
     formData.append("file", file, file.name);
 
-    getToken()
-      .then((token) => {
-        fetch(import.meta.env.VITE_BACK_URL + "/uploadfile", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            authorization: `Bearer ${token}`,
-          },
-          body: formData,
-        })
-          .then((res) => {
-            return res.json();
-          })
-          .then((res: ReturnMessageType) => {
-            // TODO: handle error return by the backend
-            // console.log("res", res);
-            setImportConfirmation({
-              displayed: true,
-              message: res.message,
-              metrics: {
-                total: res.metrics.total,
-                success: res.metrics.success,
-              },
-              error: {
-                etablissement: res.error.etablissement,
-                ramassage: res.error.ramassage,
-              },
-              success: {
-                etablissement: res.success.etablissement,
-                ramassage: res.success.ramassage,
-              },
-            });
-          })
-          .finally(() => {
-            switch (getSelectedMenu()) {
-              case "etablissements":
-                fetchEtablissement();
-                break;
-              case "arrets":
-                displayArret();
-                break;
-            }
-          })
-          .catch((e) => {
-            closeRemoveImportCsvBox();
-            addNewUserInformation({
-              displayed: true,
-              level: MessageLevelEnum.error,
-              type: MessageTypeEnum.removeLine,
-              content: `Une erreur est survenue : ${e}.`,
-            });
+    uploadLine(formData)
+      .then(async (res) => {
+        if (!res) {
+          addNewUserInformation({
+            displayed: true,
+            level: MessageLevelEnum.error,
+            type: MessageTypeEnum.global,
+            content: "Echec de l'import de fichier",
           });
+          return;
+        }
+
+        const body: ReturnMessageType = await res.json();
+
+        setImportConfirmation({
+          displayed: true,
+          message: body.message,
+          metrics: {
+            total: body.metrics.total,
+            success: body.metrics.success,
+          },
+          error: {
+            etablissement: body.error.etablissement,
+            ramassage: body.error.ramassage,
+          },
+          success: {
+            etablissement: body.success.etablissement,
+            ramassage: body.success.ramassage,
+          },
+        });
       })
-      .catch((err) => {
-        console.log(err);
+      .finally(() => {
+        switch (getSelectedMenu()) {
+          case "etablissements":
+            fetchEtablissement();
+            break;
+          case "arrets":
+            fetchRamassage();
+            break;
+        }
+      })
+      .catch((e) => {
+        closeRemoveImportCsvBox();
+        addNewUserInformation({
+          displayed: true,
+          level: MessageLevelEnum.error,
+          type: MessageTypeEnum.removeLine,
+          content: `Une erreur est survenue : ${e}.`,
+        });
       });
 
     closeRemoveImportCsvBox();
@@ -184,7 +178,7 @@ export default function (props: { doesCheckInputFilenameFormat: boolean }) {
           role="dialog"
           aria-modal="true"
         >
-          <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+          {/* <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div> */}
 
           {/* Forum github pour les nested transitions
           https://github.com/reactjs/react-transition-group/issues/558 */}

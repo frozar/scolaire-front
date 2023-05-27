@@ -11,7 +11,7 @@ import {
 import { deleteRamassage } from "../request";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { assertIsNode } from "../utils";
-import { displayArret } from "../views/stop/Stop";
+import { fetchRamassage } from "../views/stop/Stop";
 
 export default function () {
   const displayed = () => getRemoveRamassageConfirmation()["displayed"];
@@ -49,7 +49,7 @@ export default function () {
           });
           closeRemoveRamassageConfirmationBox();
         }
-        displayArret();
+        fetchRamassage();
       })
       .catch((error) => {
         console.error("Error during suppression", error);
@@ -60,7 +60,7 @@ export default function () {
           content: `Impossible de supprimer la ligne ${id_ramassage()}`,
         });
         closeRemoveRamassageConfirmationBox();
-        displayArret();
+        fetchRamassage();
       });
   }
 

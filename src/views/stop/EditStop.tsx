@@ -2,7 +2,7 @@ import { CgCloseO } from "solid-icons/cg";
 import { HiSolidLocationMarker } from "solid-icons/hi";
 import { Show, createSignal } from "solid-js";
 import { MessageLevelEnum, MessageTypeEnum, StopItemType } from "../../type";
-import { displayArret } from "./Stop";
+import { fetchRamassage } from "./Stop";
 import { addNewUserInformation } from "../../signaux";
 import { getToken } from "../../auth/auth";
 
@@ -82,7 +82,7 @@ export default function () {
                   res.message.split(":")[1],
               });
             }
-            displayArret();
+            fetchRamassage();
           });
       })
       .catch((err) => {
@@ -155,7 +155,7 @@ export default function () {
                 content: "Erreur lors de la modification : " + res,
               });
             }
-            displayArret();
+            fetchRamassage();
           });
       })
       .catch((err) => {

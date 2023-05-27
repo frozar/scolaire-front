@@ -1,15 +1,16 @@
 import { Setter, createEffect, onMount } from "solid-js";
-import { MessageLevelEnum, MessageTypeEnum, ReturnMessageType } from "../type";
 import {
   addNewUserInformation,
   disableSpinningWheel,
+  enableSpinningWheel,
   setImportConfirmation,
+  setPoints,
 } from "../signaux";
-import { fetchEtablissement } from "../views/etablissement/Etablissement";
+import { MessageLevelEnum, MessageTypeEnum, ReturnMessageType } from "../type";
 import { uploadLine } from "../request";
+import { fetchPointsRamassage } from "../PointsRamassageAndEtablissement";
 
-let DragDropDiv: HTMLDivElement;
-let DragDropChild: HTMLDivElement;
+let mapDragDropDiv: HTMLDivElement;
 
 export default function (props: {
   display: boolean;
@@ -17,32 +18,30 @@ export default function (props: {
 }) {
   createEffect(() => {
     if (props.display) {
-      DragDropDiv.classList.add("highlight");
-      DragDropChild.classList.replace("invisible_child", "child");
+      mapDragDropDiv.classList.add("highlight");
     }
   });
 
   onMount(() => {
-    DragDropDiv.addEventListener(
+    mapDragDropDiv.addEventListener(
       "dragleave",
-      () => {
-        DragDropDiv.classList.remove("highlight");
-        DragDropChild.classList.replace("child", "invisible_child");
+      (e) => {
+        e.preventDefault();
+        mapDragDropDiv.classList.remove("highlight");
       },
       false
     );
 
-    DragDropDiv.addEventListener(
+    mapDragDropDiv.addEventListener(
       "dragend",
-      () => {
-        DragDropDiv.classList.remove("highlight");
-
-        DragDropChild.classList.replace("child", "invisible_child");
+      (e) => {
+        e.preventDefault();
+        mapDragDropDiv.classList.remove("highlight");
       },
       false
     );
 
-    DragDropDiv.addEventListener(
+    mapDragDropDiv.addEventListener(
       "dragover",
       (e) => {
         e.preventDefault();
@@ -50,25 +49,31 @@ export default function (props: {
       false
     );
 
-    DragDropDiv.addEventListener(
+    mapDragDropDiv.addEventListener(
       "drop",
-      (e: DragEvent) => {
+      (e) => {
         e.preventDefault();
+        enableSpinningWheel();
+
         if (!e.dataTransfer) {
           props.setDisplay(false);
-          DragDropDiv.classList.remove("highlight");
-          DragDropChild.classList.replace("child", "invisible_child");
+          disableSpinningWheel();
+          mapDragDropDiv.classList.remove("highlight");
+          addNewUserInformation({
+            displayed: true,
+            level: MessageLevelEnum.warning,
+            type: MessageTypeEnum.global,
+            content: "Pas de fichier à importer",
+          });
           return;
         }
 
         const files = e.dataTransfer.files;
 
-        console.log("files", files);
-
         if (files.length != 1) {
           props.setDisplay(false);
-          DragDropDiv.classList.remove("highlight");
-          DragDropChild.classList.replace("child", "invisible_child");
+          disableSpinningWheel();
+          mapDragDropDiv.classList.remove("highlight");
           addNewUserInformation({
             displayed: true,
             level: MessageLevelEnum.warning,
@@ -96,8 +101,6 @@ export default function (props: {
             }
 
             const body: ReturnMessageType = await res.json();
-
-            console.log("body", body);
 
             if (body.message === "Pas de fichier envoyé.") {
               setImportConfirmation({
@@ -135,7 +138,8 @@ export default function (props: {
               });
             }
 
-            fetchEtablissement();
+            setPoints([]);
+            fetchPointsRamassage();
             disableSpinningWheel();
           })
           .catch((err) => {
@@ -143,18 +147,15 @@ export default function (props: {
           });
 
         props.setDisplay(false);
-        DragDropDiv.classList.remove("highlight");
-        DragDropChild.classList.replace("child", "invisible_child");
+        mapDragDropDiv.classList.remove("highlight");
       },
       false
     );
   });
 
   return (
-    <div ref={DragDropDiv}>
-      <div ref={DragDropChild} class="invisible_child">
-        Drop your file here
-      </div>
+    <div ref={mapDragDropDiv}>
+      <div class="child">Drop your file here</div>
     </div>
   );
 }
