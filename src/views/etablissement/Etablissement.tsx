@@ -1,7 +1,6 @@
-import { createStore } from "solid-js/store";
 import { AiOutlineSearch } from "solid-icons/ai";
 import EditStop, { setDataToEdit, toggleEditStop } from "./EditEtablissement";
-import { For, createEffect, createSignal, onMount } from "solid-js";
+import { For, createEffect, createSignal, onCleanup, onMount } from "solid-js";
 import EtablissementItem from "./EtablissementItem";
 import { EtablissementItemType } from "../../type";
 import { displayDownloadErrorMessage } from "../../userInformation/utils";
@@ -11,24 +10,11 @@ import { openRemoveImportCsvBox } from "../../signaux";
 import ImportCsv from "../../userInformation/ImportCsv";
 import { download } from "../../utils";
 import { getToken } from "../../auth/auth";
+import ImportCsvCanvas from "../../component/ImportCsvCanvas";
 
-export const [selected, setSelected] = createSignal<EtablissementItemType[]>(
-  []
-);
-
-const [keyword, setKeyword] = createSignal("");
-
-export const [stop, setStop] = createStore<EtablissementItemType[]>([]);
-
-export const addSelected = (item: EtablissementItemType) =>
-  setSelected([...selected(), item]);
-
-export const removeSelected = (item: EtablissementItemType) => {
-  const items = selected().filter((stop) => stop.id != item.id);
-  setSelected(items);
-};
-
-export const [isChecked, setIsChecked] = createSignal(false);
+const [etablissements, setEtablissements] = createSignal<
+  EtablissementItemType[]
+>([]);
 
 export function fetchEtablissement() {
   getToken()
@@ -58,16 +44,12 @@ export function fetchEtablissement() {
               lat: number;
             }[]
           ) => {
-            setStop(
+            setEtablissements(
               res
                 .map((elt) => {
                   return {
-                    id: elt.id,
-                    name: elt.name,
-                    quantity: elt.quantity,
+                    ...elt,
                     nbLine: elt.nb_line,
-                    lon: elt.lon,
-                    lat: elt.lat,
                     selected: false,
                   };
                 })
@@ -81,86 +63,70 @@ export function fetchEtablissement() {
     });
 }
 
+function preventDefaultHandler(e: DragEvent) {
+  e.preventDefault();
+}
+
 export default function () {
-  createEffect(() => {
-    fetchEtablissement();
-  });
-  // const [refSelect, setRefSelect] = createSignal<HTMLSelectElement>();
-  // eslint-disable-next-line prefer-const
-  let refCheckbox: HTMLInputElement = document.createElement("input");
+  let etablissementDiv!: HTMLDivElement;
+  let refCheckbox!: HTMLInputElement;
 
-  // createEffect(() => {
-  //   refSelect()?.addEventListener("change", (e) => {
-  //     if (e.target?.value == "delete") {
-  //       console.log("Send request to delete all selected item: ", selected());
-  //     }
-  //   });
-  // });
+  const [keyword, setKeyword] = createSignal("");
+
+  const filteredEtablissements = () =>
+    etablissements().filter((e) =>
+      e.name.toLowerCase().includes(keyword().toLowerCase())
+    );
+
+  const selectedEtablissements = () =>
+    etablissements().filter((eta) => eta.selected);
 
   createEffect(() => {
-    if (selected().length == stop.length) {
-      refCheckbox.checked = true;
-    } else {
-      refCheckbox.checked = false;
-    }
+    refCheckbox.checked =
+      filteredEtablissements().length != 0 &&
+      selectedEtablissements().length == filteredEtablissements().length;
   });
 
-  createEffect(() => {
-    refCheckbox?.addEventListener("change", () => {
-      setIsChecked(!isChecked());
-    });
+  const [displayImportCsvCanvas, setDisplayImportCsvCanvas] =
+    createSignal(false);
 
-    fetchEtablissement();
-  });
-
-  // eslint-disable-next-line prefer-const
-  let etablissementDiv: HTMLDivElement = document.createElement("div");
-
-  // TODO: uncomment the ImportCsvCanvas
-  // const [displayImportCsvCanvas, setDisplayImportCsvCanvas] =
-  //   createSignal(false);
+  function dragEnterHandler(e: DragEvent) {
+    e.preventDefault();
+    setDisplayImportCsvCanvas(true);
+  }
 
   onMount(() => {
-    etablissementDiv.addEventListener(
-      "dragenter",
-      (e) => {
-        e.preventDefault();
-        // TODO: uncomment the ImportCsvCanvas
-        // setDisplayImportCsvCanvas(true);
-      },
-      false
-    );
-    etablissementDiv.addEventListener("drop", (e) => e.preventDefault(), false);
-    etablissementDiv.addEventListener(
-      "dragleave",
-      (e) => e.preventDefault(),
-      false
-    );
-    etablissementDiv.addEventListener(
-      "dragend",
-      (e) => e.preventDefault(),
-      false
-    );
-    etablissementDiv.addEventListener(
-      "dragover",
-      (e) => e.preventDefault(),
-      false
-    );
+    fetchEtablissement();
+    etablissementDiv.addEventListener("dragenter", dragEnterHandler);
+    etablissementDiv.addEventListener("drop", preventDefaultHandler);
+    etablissementDiv.addEventListener("dragleave", preventDefaultHandler);
+    etablissementDiv.addEventListener("dragend", preventDefaultHandler);
+    etablissementDiv.addEventListener("dragover", preventDefaultHandler);
+  });
+
+  onCleanup(() => {
+    etablissementDiv.removeEventListener("dragenter", dragEnterHandler);
+    etablissementDiv.removeEventListener("drop", preventDefaultHandler);
+    etablissementDiv.removeEventListener("dragleave", preventDefaultHandler);
+    etablissementDiv.removeEventListener("dragend", preventDefaultHandler);
+    etablissementDiv.removeEventListener("dragover", preventDefaultHandler);
   });
 
   return (
     <>
       <ImportCsv doesCheckInputFilenameFormat={false} />
-      {/* TODO: uncomment the ImportCsvCanvas */}
-      {/* <ImportCsvCanvas
+      <ImportCsvCanvas
         display={displayImportCsvCanvas()}
         setDisplay={setDisplayImportCsvCanvas}
-      /> */}
+        callback={() => {
+          fetchEtablissement();
+        }}
+      />
       <RemoveRamassageConfirmation />
       <div class="flex w-full" ref={etablissementDiv}>
         <div id="arrets-board">
           <header>
-            <h1>Gérer les établissements</h1>
+            <h1>Etablissements</h1>
             <div id="filters">
               <div class="left">
                 {/* <select ref={setRefSelect} disabled> */}
@@ -266,6 +232,14 @@ export default function () {
                         name="comments"
                         type="checkbox"
                         class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600 relative right-2"
+                        onChange={(e) => {
+                          setEtablissements((etablissements) =>
+                            etablissements.map((eta) => ({
+                              ...eta,
+                              selected: e.target.checked,
+                            }))
+                          );
+                        }}
                         ref={refCheckbox}
                       />
                       Nom
@@ -278,13 +252,14 @@ export default function () {
                   </tr>
                 </thead>
                 <tbody>
-                  <For
-                    each={stop.filter((e) =>
-                      e.name.toUpperCase().includes(keyword().toUpperCase())
-                    )}
-                  >
+                  <For each={filteredEtablissements()}>
                     {(fields) => {
-                      return <EtablissementItem item={fields} />;
+                      return (
+                        <EtablissementItem
+                          item={fields}
+                          setEtablissements={setEtablissements}
+                        />
+                      );
                     }}
                   </For>
                 </tbody>

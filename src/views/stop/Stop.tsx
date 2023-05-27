@@ -1,7 +1,7 @@
 import { createStore } from "solid-js/store";
 import { AiOutlineSearch } from "solid-icons/ai";
 import EditStop, { setDataToEdit, toggleEditStop } from "./EditStop";
-import { For, createEffect, createSignal, onMount } from "solid-js";
+import { For, createEffect, createSignal, onCleanup, onMount } from "solid-js";
 import StopItems from "./StopItem";
 import { StopItemType } from "../../type";
 import { displayDownloadErrorMessage } from "../../userInformation/utils";
@@ -11,21 +11,9 @@ import { openRemoveImportCsvBox } from "../../signaux";
 import ImportCsv from "../../userInformation/ImportCsv";
 import { download } from "../../utils";
 import { getToken } from "../../auth/auth";
+import ImportCsvCanvas from "../../component/ImportCsvCanvas";
 
-export const [selected, setSelected] = createSignal<StopItemType[]>([]);
-export const [stop, setStop] = createStore<StopItemType[]>([]);
-
-const [keyword, setKeyword] = createSignal("");
-
-export const addSelected = (item: StopItemType) =>
-  setSelected([...selected(), item]);
-
-export const removeSelected = (item: StopItemType) => {
-  const items = selected().filter((stop) => stop.id != item.id);
-  setSelected(items);
-};
-
-export const [isChecked, setIsChecked] = createSignal(false);
+const [ramassages, setRamassages] = createSignal<StopItemType[]>([]);
 
 export function fetchRamassage() {
   getToken()
@@ -55,17 +43,14 @@ export function fetchRamassage() {
               lat: number;
             }[]
           ) => {
-            setStop(
+            setRamassages(
               res
                 .map((elt) => {
                   return {
-                    id: elt.id,
-                    name: elt.name,
-                    quantity: elt.quantity,
-                    nbLine: elt.nb_line,
+                    ...elt,
                     nbEtablissement: elt.nb_etablissement,
-                    lon: elt.lon,
-                    lat: elt.lat,
+                    nbLine: elt.nb_line,
+                    selected: false,
                   };
                 })
                 .sort((a, b) => a.name.localeCompare(b.name))
@@ -78,75 +63,69 @@ export function fetchRamassage() {
     });
 }
 
+function preventDefaultHandler(e: DragEvent) {
+  e.preventDefault();
+}
+
 export default function () {
-  createEffect(() => {
-    fetchRamassage();
-  });
-  // const [refSelect, setRefSelect] = createSignal<HTMLSelectElement>();
-  // eslint-disable-next-line prefer-const
-  let refCheckbox: HTMLInputElement = document.createElement("input");
+  let stopDiv!: HTMLDivElement;
+  let refCheckbox!: HTMLInputElement;
 
-  // createEffect(() => {
-  //   refSelect()?.addEventListener("change", (e) => {
-  //     if (e.target?.value == "delete") {
-  //       console.log("Send request to delete all selected item: ", selected());
-  //     }
-  //   });
-  // });
+  const [keyword, setKeyword] = createSignal("");
 
-  createEffect(() => {
-    if (selected().length == stop.length) {
-      refCheckbox.checked = true;
-    } else {
-      refCheckbox.checked = false;
-    }
-  });
-
-  createEffect(() => {
-    refCheckbox?.addEventListener("change", () => {
-      setIsChecked(!isChecked());
-    });
-
-    fetchRamassage();
-  });
-
-  // eslint-disable-next-line prefer-const
-  let stopDiv: HTMLDivElement = document.createElement("div");
-
-  // TODO: uncomment the ImportCsvCanvas
-  // const [displayImportCsvCanvas, setDisplayImportCsvCanvas] =
-  //   createSignal(false);
-
-  onMount(() => {
-    stopDiv.addEventListener(
-      "dragenter",
-      (e) => {
-        e.preventDefault();
-        // TODO: uncomment the ImportCsvCanvas
-        // setDisplayImportCsvCanvas(true);
-      },
-      false
+  const filteredRamassages = () =>
+    ramassages().filter((e) =>
+      e.name.toLowerCase().includes(keyword().toLowerCase())
     );
 
-    stopDiv.addEventListener("drop", (e) => e.preventDefault(), false);
-    stopDiv.addEventListener("dragleave", (e) => e.preventDefault(), false);
-    stopDiv.addEventListener("dragend", (e) => e.preventDefault(), false);
-    stopDiv.addEventListener("dragover", (e) => e.preventDefault(), false);
+  const selectedRamassages = () => ramassages().filter((ram) => ram.selected);
+
+  createEffect(() => {
+    refCheckbox.checked =
+      filteredRamassages().length != 0 &&
+      selectedRamassages().length == filteredRamassages().length;
+  });
+
+  const [displayImportCsvCanvas, setDisplayImportCsvCanvas] =
+    createSignal(false);
+
+  function dragEnterHandler(e: DragEvent) {
+    e.preventDefault();
+    setDisplayImportCsvCanvas(true);
+  }
+
+  onMount(() => {
+    fetchRamassage();
+    stopDiv.addEventListener("dragenter", dragEnterHandler);
+    stopDiv.addEventListener("drop", preventDefaultHandler);
+    stopDiv.addEventListener("dragleave", preventDefaultHandler);
+    stopDiv.addEventListener("dragend", preventDefaultHandler);
+    stopDiv.addEventListener("dragover", preventDefaultHandler);
+  });
+
+  onCleanup(() => {
+    stopDiv.removeEventListener("dragenter", dragEnterHandler);
+    stopDiv.removeEventListener("drop", preventDefaultHandler);
+    stopDiv.removeEventListener("dragleave", preventDefaultHandler);
+    stopDiv.removeEventListener("dragend", preventDefaultHandler);
+    stopDiv.removeEventListener("dragover", preventDefaultHandler);
   });
 
   return (
     <>
       <ImportCsv doesCheckInputFilenameFormat={false} />
-      {/* TODO: uncomment the ImportCsvCanvas */}
-      {/* <ImportCsvCanvas
+      <ImportCsvCanvas
         display={displayImportCsvCanvas()}
         setDisplay={setDisplayImportCsvCanvas}
-      /> */}
+        callback={() => {
+          fetchRamassage();
+        }}
+      />
       <RemoveRamassageConfirmation />
       <div class="flex w-full" ref={stopDiv}>
         <div id="arrets-board">
           <header>
-            <h1>Gérer les arrêts</h1>
+            <h1>Points de ramassage</h1>
             <div id="filters">
               <div class="left">
                 {/* <select ref={setRefSelect} disabled> */}
@@ -252,6 +231,14 @@ export default function () {
                         name="comments"
                         type="checkbox"
                         class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600 relative right-2"
+                        onChange={(e) => {
+                          setRamassages((ramassages) =>
+                            ramassages.map((eta) => ({
+                              ...eta,
+                              selected: e.target.checked,
+                            }))
+                          );
+                        }}
                         ref={refCheckbox}
                       />
                       Nom
@@ -265,12 +252,10 @@ export default function () {
                   </tr>
                 </thead>
                 <tbody>
-                  <For
-                    each={stop.filter((e) =>
-                      e.name.toUpperCase().includes(keyword().toUpperCase())
+                  <For each={filteredRamassages()}>
+                    {(fields) => (
+                      <StopItems item={fields} setRamassages={setRamassages} />
                     )}
-                  >
-                    {(fields) => <StopItems item={fields} />}
                   </For>
                 </tbody>
               </table>
