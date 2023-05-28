@@ -43,7 +43,7 @@ export default function () {
   const displayed = () => getImportCsvBox()["displayed"];
 
   const strFileToImport = () => {
-    let res = "etablissements.csv";
+    let res = "etablissements";
     switch (getSelectedMenu()) {
       case "etablissements":
         res = "etablissements";
@@ -63,7 +63,7 @@ export default function () {
 
     const files = constRefInputCsv.files;
 
-    if (!files || files.length == 0) {
+    if (!files || files.length === 0) {
       closeImportCsvBox();
       addNewUserInformation({
         displayed: true,
@@ -74,7 +74,7 @@ export default function () {
       return;
     }
 
-    if (files.length != 1) {
+    if (files.length !== 1) {
       closeImportCsvBox();
       addNewUserInformation({
         displayed: true,
