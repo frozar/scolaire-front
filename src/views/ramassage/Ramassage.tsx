@@ -112,7 +112,7 @@ export default function () {
 
   return (
     <>
-      <ImportCsvModal doesCheckInputFilenameFormat={false} />
+      <ImportCsvModal />
       <ImportCsvCanvas
         display={displayImportCsvCanvas()}
         setDisplay={setDisplayImportCsvCanvas}
