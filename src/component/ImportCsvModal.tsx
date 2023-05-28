@@ -3,7 +3,7 @@ import { Transition } from "solid-transition-group";
 import ClickOutside from "../ClickOutside";
 import {
   addNewUserInformation,
-  closeRemoveImportCsvBox,
+  closeImportCsvBox,
   getImportCsvBox,
   setImportConfirmation,
 } from "../signaux";
@@ -37,7 +37,7 @@ export default function (props: { doesCheckInputFilenameFormat: boolean }) {
 
   function handlerOnClickValider() {
     if (!refInputCsv) {
-      closeRemoveImportCsvBox();
+      closeImportCsvBox();
       addNewUserInformation({
         displayed: true,
         level: MessageLevelEnum.warning,
@@ -52,7 +52,7 @@ export default function (props: { doesCheckInputFilenameFormat: boolean }) {
     // process all File objects
 
     if (!files) {
-      closeRemoveImportCsvBox();
+      closeImportCsvBox();
       addNewUserInformation({
         displayed: true,
         level: MessageLevelEnum.warning,
@@ -63,7 +63,7 @@ export default function (props: { doesCheckInputFilenameFormat: boolean }) {
     }
 
     if (files.length != 1) {
-      closeRemoveImportCsvBox();
+      closeImportCsvBox();
       addNewUserInformation({
         displayed: true,
         level: MessageLevelEnum.warning,
@@ -86,7 +86,7 @@ export default function (props: { doesCheckInputFilenameFormat: boolean }) {
       props.doesCheckInputFilenameFormat &&
       !file.name.toLowerCase().includes(fileType.toLowerCase())
     ) {
-      closeRemoveImportCsvBox();
+      closeImportCsvBox();
       addNewUserInformation({
         displayed: true,
         level: MessageLevelEnum.error,
@@ -141,7 +141,7 @@ export default function (props: { doesCheckInputFilenameFormat: boolean }) {
         }
       })
       .catch((e) => {
-        closeRemoveImportCsvBox();
+        closeImportCsvBox();
         addNewUserInformation({
           displayed: true,
           level: MessageLevelEnum.error,
@@ -150,7 +150,7 @@ export default function (props: { doesCheckInputFilenameFormat: boolean }) {
         });
       });
 
-    closeRemoveImportCsvBox();
+    closeImportCsvBox();
   }
 
   const [buttonRef, setButtonRef] = createSignal<
@@ -210,7 +210,7 @@ export default function (props: { doesCheckInputFilenameFormat: boolean }) {
 
                     assertIsNode(e.target);
                     if (!refDialogueBox.contains(e.target)) {
-                      closeRemoveImportCsvBox();
+                      closeImportCsvBox();
                     }
                   }}
                 >
@@ -218,7 +218,7 @@ export default function (props: { doesCheckInputFilenameFormat: boolean }) {
                     <button
                       type="button"
                       class="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                      onClick={closeRemoveImportCsvBox}
+                      onClick={closeImportCsvBox}
                     >
                       <span class="sr-only">Close</span>
                       <svg
@@ -292,7 +292,7 @@ export default function (props: { doesCheckInputFilenameFormat: boolean }) {
                     <button
                       type="button"
                       class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
-                      onClick={closeRemoveImportCsvBox}
+                      onClick={closeImportCsvBox}
                     >
                       Annuler
                     </button>
