@@ -53,6 +53,18 @@ function dropHandler(
 
   const files = e.dataTransfer.files;
 
+  if (!files || files.length == 0) {
+    setDisplay(false);
+    disableSpinningWheel();
+    addNewUserInformation({
+      displayed: true,
+      level: MessageLevelEnum.warning,
+      type: MessageTypeEnum.global,
+      content: "Aucun fichier sélectionné",
+    });
+    return;
+  }
+
   if (files.length != 1) {
     setDisplay(false);
     disableSpinningWheel();
@@ -60,7 +72,7 @@ function dropHandler(
       displayed: true,
       level: MessageLevelEnum.warning,
       type: MessageTypeEnum.global,
-      content: "Importer un fichier à la fois svp",
+      content: "Importez un fichier à la fois svp",
     });
     return;
   }

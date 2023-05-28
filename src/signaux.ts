@@ -131,12 +131,12 @@ export function getDisplayedGeneratorDialogueBox() {
   return displayedGeneratorDialogueBox();
 }
 
-export function closeRemoveImportCsvBox() {
+export function closeImportCsvBox() {
   setImportCsvBox({
     displayed: false,
   });
 }
-export function openRemoveImportCsvBox() {
+export function openImportCsvBox() {
   setImportCsvBox({
     displayed: true,
   });

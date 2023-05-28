@@ -6,11 +6,11 @@ import { StopItemType } from "../../type";
 import { displayDownloadErrorMessage } from "../../userInformation/utils";
 import { getExportDate } from "../graphicage/rightMapMenu/export/export";
 import RemoveRamassageConfirmation from "../../userInformation/RemoveRamassageConfirmation";
-import { openRemoveImportCsvBox } from "../../signaux";
-import ImportCsv from "../../userInformation/ImportCsv";
+import ImportCsvModal from "../../component/ImportCsvModal";
 import { download } from "../../utils";
 import { getToken } from "../../auth/auth";
 import ImportCsvCanvas from "../../component/ImportCsvCanvas";
+import ImportCsvButton from "../../component/ImportCsvButton";
 
 const [ramassages, setRamassages] = createSignal<StopItemType[]>([]);
 
@@ -112,7 +112,7 @@ export default function () {
 
   return (
     <>
-      <ImportCsv doesCheckInputFilenameFormat={false} />
+      <ImportCsvModal />
       <ImportCsvCanvas
         display={displayImportCsvCanvas()}
         setDisplay={setDisplayImportCsvCanvas}
@@ -208,13 +208,7 @@ export default function () {
                 >
                   Exporter
                 </button>
-                <button
-                  class="btn-arret-export-import disabled:bg-gray-300 disabled:opacity-75"
-                  onClick={openRemoveImportCsvBox}
-                  disabled
-                >
-                  Importer
-                </button>
+                <ImportCsvButton />
               </div>
             </div>
           </header>
