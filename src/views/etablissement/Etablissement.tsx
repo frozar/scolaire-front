@@ -6,7 +6,7 @@ import { EtablissementItemType } from "../../type";
 import { displayDownloadErrorMessage } from "../../userInformation/utils";
 import { getExportDate } from "../graphicage/rightMapMenu/export/export";
 import RemoveRamassageConfirmation from "../../userInformation/RemoveRamassageConfirmation";
-import ImportCsvModal from "../../component/ImportCsvModal";
+import ImportCsvDialogBox from "../../component/ImportCsvDialogBox";
 import { download } from "../../utils";
 import { getToken } from "../../auth/auth";
 import ImportCsvCanvas from "../../component/ImportCsvCanvas";
@@ -114,7 +114,7 @@ export default function () {
 
   return (
     <>
-      <ImportCsvModal />
+      <ImportCsvDialogBox />
       <ImportCsvCanvas
         display={displayImportCsvCanvas()}
         setDisplay={setDisplayImportCsvCanvas}
