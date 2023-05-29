@@ -165,7 +165,8 @@ export default function () {
 
               <div class="right">
                 <button
-                  class="btn-arret-export-import"
+                  class="btn-arret-export-import disabled:bg-gray-300 disabled:opacity-75"
+                  disabled
                   onClick={() => {
                     getToken()
                       .then((token) => {
