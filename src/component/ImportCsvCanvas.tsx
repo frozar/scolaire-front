@@ -32,16 +32,20 @@ function dragOverHandler(e: DragEvent) {
 function dropHandler(
   e: DragEvent,
   setDisplay: Setter<boolean>,
-  callback?: () => void
+  callbackSuccess?: () => void
 ) {
   // console.log("drop");
   e.preventDefault();
 
   enableSpinningWheel();
 
-  if (!e.dataTransfer) {
+  function exitCanvas() {
     setDisplay(false);
     disableSpinningWheel();
+  }
+
+  if (!e.dataTransfer) {
+    exitCanvas();
     addNewUserInformation({
       displayed: true,
       level: MessageLevelEnum.warning,
@@ -54,8 +58,7 @@ function dropHandler(
   const files = e.dataTransfer.files;
 
   if (!files || files.length == 0) {
-    setDisplay(false);
-    disableSpinningWheel();
+    exitCanvas();
     addNewUserInformation({
       displayed: true,
       level: MessageLevelEnum.warning,
@@ -66,8 +69,7 @@ function dropHandler(
   }
 
   if (files.length != 1) {
-    setDisplay(false);
-    disableSpinningWheel();
+    exitCanvas();
     addNewUserInformation({
       displayed: true,
       level: MessageLevelEnum.warning,
@@ -85,6 +87,7 @@ function dropHandler(
   uploadLine(formData)
     .then(async (res) => {
       if (!res) {
+        exitCanvas();
         addNewUserInformation({
           displayed: true,
           level: MessageLevelEnum.error,
@@ -94,63 +97,75 @@ function dropHandler(
         return;
       }
 
+      if (res.status != 200) {
+        const body = await res.json();
+        exitCanvas();
+        addNewUserInformation({
+          displayed: true,
+          level: MessageLevelEnum.error,
+          type: MessageTypeEnum.global,
+          content: body.message,
+        });
+        return;
+      }
+
       const body: ReturnMessageType = await res.json();
 
-      if (body.message === "Pas de fichier envoyé.") {
-        setImportConfirmation({
-          displayed: true,
-          message: body.message,
-          metrics: {
-            total: 0,
-            success: 0,
-          },
-          error: {
-            etablissement: body.error.etablissement,
-            ramassage: body.error.ramassage,
-          },
-          success: {
-            etablissement: body.success.etablissement,
-            ramassage: body.success.ramassage,
-          },
-        });
-      } else {
-        setImportConfirmation({
-          displayed: true,
-          message: body.message,
-          metrics: {
-            total: body.metrics.total,
-            success: body.metrics.success,
-          },
-          error: {
-            etablissement: body.error.etablissement,
-            ramassage: body.error.ramassage,
-          },
-          success: {
-            etablissement: body.success.etablissement,
-            ramassage: body.success.ramassage,
-          },
-        });
-      }
+      // TODO: manage eror above, with maybe an import coinfirmaiton
+      //       dialogue box
+      // if (body.message === "Pas de fichier envoyé.") {
+      //   setImportConfirmation({
+      //     displayed: true,
+      //     message: body.message,
+      //     metrics: {
+      //       total: 0,
+      //       success: 0,
+      //     },
+      //     error: {
+      //       etablissement: body.error.etablissement,
+      //       ramassage: body.error.ramassage,
+      //     },
+      //     success: {
+      //       etablissement: body.success.etablissement,
+      //       ramassage: body.success.ramassage,
+      //     },
+      //   });
+      // } else {
+      setImportConfirmation({
+        displayed: true,
+        message: body.message,
+        metrics: {
+          total: body.metrics.total,
+          success: body.metrics.success,
+        },
+        error: {
+          etablissement: body.error.etablissement,
+          ramassage: body.error.ramassage,
+        },
+        success: {
+          etablissement: body.success.etablissement,
+          ramassage: body.success.ramassage,
+        },
+      });
+      // }
 
       setPoints([]);
       fetchPointsRamassage();
-      disableSpinningWheel();
+      exitCanvas();
 
-      if (callback && typeof callback === "function") {
-        callback();
+      if (callbackSuccess && typeof callbackSuccess === "function") {
+        callbackSuccess();
       }
     })
     .catch((err) => {
       console.log(err);
     });
-
-  setDisplay(false);
 }
 
 export default function (props: {
   display: boolean;
   setDisplay: Setter<boolean>;
-  callback?: () => void;
+  callbackSuccess?: () => void;
 }) {
   function dragLeaveHandlerAux(e: DragEvent) {
     dragLeaveHandler(e, props.setDisplay);
@@ -161,7 +176,7 @@ export default function (props: {
   }
 
   function dropHandlerAux(e: DragEvent) {
-    dropHandler(e, props.setDisplay, props.callback);
+    dropHandler(e, props.setDisplay, props.callbackSuccess);
   }
 
   onMount(() => {

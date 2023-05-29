@@ -102,6 +102,17 @@ export default function () {
           return;
         }
 
+        if (res.status != 200) {
+          const body = await res.json();
+          addNewUserInformation({
+            displayed: true,
+            level: MessageLevelEnum.error,
+            type: MessageTypeEnum.global,
+            content: body.message,
+          });
+          return;
+        }
+
         const body: ReturnMessageType = await res.json();
 
         setImportConfirmation({
