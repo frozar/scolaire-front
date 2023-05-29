@@ -54,7 +54,7 @@ export default function () {
                     toggleShow();
                   }}
                 >
-                  {authenticated() ? "Logout" : "Login"}
+                  {authenticated() ? "Se déconnecter" : "Se connecter"}
                 </a>
               </div>
             </div>

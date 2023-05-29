@@ -199,7 +199,7 @@ export default function () {
                   </div>
 
                   <h4 class="text-sm text-left font-semibold leading-6 text-gray-500 mt-7">
-                    Paramètres avancé du solveur de circuit
+                    Paramètres avancés du solveur de circuit
                   </h4>
                   <div class="sm:flex sm:items-start justify-center">
                     <div class="mt-5 mr-2 max-w-xl text-sm text-gray-900 w-1/2">
@@ -264,7 +264,7 @@ export default function () {
                   </div>
                   <div class="sm:flex sm:items-start justify-center">
                     <div class="mt-4 mr-2 max-w-xl text-sm text-gray-900 w-1/2">
-                      <p class="text-right">Paramétre d'homogénisation :</p>
+                      <p class="text-right">Paramétre d'homogénéisation :</p>
                       <p class="text-right text-xs text-gray-500">
                         GlobalSpanCostCoefficient (x100 000 000)
                       </p>
@@ -275,7 +275,7 @@ export default function () {
                           for="global_span_cost_coefficient"
                           class="sr-only"
                         >
-                          Paramétre d'homogénisation
+                          Paramétre d'homogénéisation
                         </label>
                         <input
                           type="number"

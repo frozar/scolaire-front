@@ -9,7 +9,7 @@ export default function () {
   return (
     <div class="menu-btn left-[140px] group">
       <span class="tooltip group-hover:scale-100">
-        Montré le panneau d'information des arrêts
+        Afficher le panneau d'information
       </span>
       <label
         class="custom-btn btn-circle hover:bg-[#062F3F] hover:text-[#0cc683]"
