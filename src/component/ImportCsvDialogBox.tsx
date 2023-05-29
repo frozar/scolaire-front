@@ -80,7 +80,7 @@ export default function () {
         displayed: true,
         level: MessageLevelEnum.warning,
         type: MessageTypeEnum.global,
-        content: "Importez un fichier à la fois svp",
+        content: "Veuillez importer un fichier à la fois",
       });
       return;
     }

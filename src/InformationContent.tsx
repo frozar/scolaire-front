@@ -278,7 +278,7 @@ export default function () {
           level: MessageLevelEnum.error,
           type: MessageTypeEnum.global,
           content:
-            "Désoler une erreur est survenue lors de la mise à jour de la couleur pour la ligne",
+            "Une erreur est survenue lors de la modification de couleur de la ligne",
         });
       });
   };
@@ -291,12 +291,12 @@ export default function () {
         "align-items": "center",
       }}
     >
-      <Switch fallback={<span>No element selected</span>}>
+      <Switch fallback={<span>Aucun élément sélectionné</span>}>
         <Match when={infoToDisplay() == InfoPanelEnum.point}>
           <h2>{selectedElement()?.name}</h2>
           <Show
             when={0 < ptToDisplay().length}
-            fallback={<span>No element to display</span>}
+            fallback={<span>Aucun élément à afficher</span>}
           >
             <div class="px-4 sm:px-6 lg:px-8">
               <div class="mt-8 flex flex-col">

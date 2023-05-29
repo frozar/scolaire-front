@@ -68,7 +68,7 @@ export default function () {
                 displayed: true,
                 level: MessageLevelEnum.success,
                 type: MessageTypeEnum.global,
-                content: "L'arrêt a été crée",
+                content: "L'arrêt a été créé",
               });
               toggleEditStop();
             } else {
