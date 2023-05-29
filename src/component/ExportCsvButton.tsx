@@ -4,10 +4,10 @@ import { displayDownloadErrorMessage } from "../userInformation/utils";
 import { download } from "../utils";
 import { getTimestamp } from "../views/graphicage/rightMapMenu/export/utils";
 
-function onClickHandler() {
+function onClickHandler(exportRoute: string) {
   getToken()
     .then((token) => {
-      fetch(import.meta.env.VITE_BACK_URL + "/export/etablissement_input", {
+      fetch(import.meta.env.VITE_BACK_URL + exportRoute, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -39,6 +39,10 @@ function onClickHandler() {
     });
 }
 
-export default function () {
-  return <Button onClickHandler={onClickHandler}>Exporter</Button>;
+export default function (props: { exportRoute: string }) {
+  return (
+    <Button onClickHandler={() => onClickHandler(props.exportRoute)}>
+      Exporter
+    </Button>
+  );
 }

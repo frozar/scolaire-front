@@ -3,11 +3,8 @@ import EditStop, { setDataToEdit, toggleEditStop } from "./EditEtablissement";
 import { For, createEffect, createSignal, onCleanup, onMount } from "solid-js";
 import EtablissementItem from "./EtablissementItem";
 import { EtablissementItemType } from "../../type";
-import { displayDownloadErrorMessage } from "../../userInformation/utils";
-import { getTimestamp } from "../graphicage/rightMapMenu/export/utils";
 import RemoveRamassageConfirmation from "../../userInformation/RemoveRamassageConfirmation";
 import ImportCsvDialogBox from "../../component/ImportCsvDialogBox";
-import { download } from "../../utils";
 import { getToken } from "../../auth/auth";
 import ImportCsvCanvas from "../../component/ImportCsvCanvas";
 import ImportCsvButton from "../../component/ImportCsvButton";
@@ -168,7 +165,7 @@ export default function () {
               </div>
 
               <div class="right">
-                <ExportCsvButton />
+                <ExportCsvButton exportRoute="/export/etablissement_input" />
                 <ImportCsvButton />
               </div>
             </div>
