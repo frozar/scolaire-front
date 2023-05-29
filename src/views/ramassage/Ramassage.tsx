@@ -116,7 +116,7 @@ export default function () {
       <ImportCsvCanvas
         display={displayImportCsvCanvas()}
         setDisplay={setDisplayImportCsvCanvas}
-        callback={() => {
+        callbackSuccess={() => {
           fetchRamassage();
         }}
       />
