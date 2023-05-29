@@ -16,7 +16,7 @@ import {
 import { Transition } from "solid-transition-group";
 import { assertIsNode } from "../../../../utils";
 import { ExportTypeEnum } from "../../../../type";
-import { exportData } from "./export";
+import { exportData } from "./utils";
 import { GtfsExportLogo, ImageExportLogo } from "./Logos";
 
 let refDialogueBox: HTMLDivElement | undefined;

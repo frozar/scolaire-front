@@ -3,14 +3,12 @@ import EditStop, { setDataToEdit, toggleEditStop } from "./EditEtablissement";
 import { For, createEffect, createSignal, onCleanup, onMount } from "solid-js";
 import EtablissementItem from "./EtablissementItem";
 import { EtablissementItemType } from "../../type";
-import { displayDownloadErrorMessage } from "../../userInformation/utils";
-import { getExportDate } from "../graphicage/rightMapMenu/export/export";
 import RemoveRamassageConfirmation from "../../userInformation/RemoveRamassageConfirmation";
 import ImportCsvDialogBox from "../../component/ImportCsvDialogBox";
-import { download } from "../../utils";
 import { getToken } from "../../auth/auth";
 import ImportCsvCanvas from "../../component/ImportCsvCanvas";
 import ImportCsvButton from "../../component/ImportCsvButton";
+import ExportCsvButton from "../../component/ExportCsvButton";
 
 const [etablissements, setEtablissements] = createSignal<
   EtablissementItemType[]
@@ -167,51 +165,7 @@ export default function () {
               </div>
 
               <div class="right">
-                <button
-                  class="btn-arret-export-import disabled:bg-gray-300 disabled:opacity-75"
-                  disabled
-                  onClick={() => {
-                    getToken()
-                      .then((token) => {
-                        fetch(
-                          import.meta.env.VITE_BACK_URL +
-                            "/export/etablissement_input",
-                          {
-                            method: "GET",
-                            headers: {
-                              "Content-Type": "application/json",
-                              authorization: `Bearer ${token}`,
-                            },
-                          }
-                        )
-                          .then((response) => {
-                            if (!response.ok) {
-                              displayDownloadErrorMessage();
-                            } else {
-                              return response.blob();
-                            }
-                          })
-                          .then((blob: Blob | undefined) => {
-                            if (!blob) {
-                              return;
-                            }
-
-                            const { year, month, day, hour, minute } =
-                              getExportDate();
-                            const fileName = `${year}-${month}-${day}_${hour}-${minute}_etablissement.csv`;
-                            download(fileName, blob);
-                          })
-                          .catch(() => {
-                            displayDownloadErrorMessage();
-                          });
-                      })
-                      .catch((err) => {
-                        console.log(err);
-                      });
-                  }}
-                >
-                  Exporter
-                </button>
+                <ExportCsvButton exportRoute="/export/etablissement_input" />
                 <ImportCsvButton />
               </div>
             </div>

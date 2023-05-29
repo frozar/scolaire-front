@@ -10,7 +10,7 @@ import { getLeafletMap } from "../../../../signaux";
 import { saveAs } from "file-saver";
 import { enableSpinningWheel } from "../../../../signaux";
 import { disableSpinningWheel } from "../../../../signaux";
-import { getExportDate } from "./export";
+import { getTimestamp } from "./utils";
 
 let zip: JSZip;
 
@@ -126,7 +126,7 @@ export async function exportImages() {
   polylines.map((line) => line.getElement()?.classList.add("hidden"));
   await exportLinesImages(screenShoter, polylines, leafletMap);
   zip.generateAsync({ type: "blob" }).then((content) => {
-    const { year, month, day, hour, minute } = getExportDate();
+    const { year, month, day, hour, minute } = getTimestamp();
     const fileName = `${year}-${month}-${day}_${hour}-${minute}_bus-line.zip`;
     saveAs(content, fileName);
     displayDownloadSuccessMessage();
