@@ -37,7 +37,7 @@ export default function () {
   const displayed = () => getDisplayedGeneratorDialogueBox();
   const [nbVehicles, setNbVehicles] = createSignal(1);
   const [vehiclesCapacity, setVehiclesCapacity] = createSignal(50);
-  const [timeLimitSeconds, setTimeLimitSeconds] = createSignal(40);
+  const [timeLimitSeconds, setTimeLimitSeconds] = createSignal(10);
   const [maximumTravelDistance, setMaximumTravelDistance] = createSignal(200);
   const [globalSpanCostCoefficient, setGlobalSpanCostCoefficient] =
     createSignal(10);
