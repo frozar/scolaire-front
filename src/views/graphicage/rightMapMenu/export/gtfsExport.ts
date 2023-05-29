@@ -5,7 +5,7 @@ import {
   displayOnGoingDownloadMessage,
 } from "../../../../userInformation/utils";
 import { download } from "../../../../utils";
-import { getExportDate } from "./export";
+import { getTimestamp } from "./utils";
 
 export function exportGtfs() {
   displayOnGoingDownloadMessage();
@@ -28,7 +28,7 @@ export function exportGtfs() {
           if (!blob) {
             return;
           }
-          const { year, month, day, hour, minute } = getExportDate();
+          const { year, month, day, hour, minute } = getTimestamp();
           const fileName = `${year}-${month}-${day}_${hour}-${minute}_gtfs.zip`;
           download(fileName, blob);
           displayDownloadSuccessMessage();

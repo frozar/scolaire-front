@@ -10,7 +10,7 @@ const exportHandlers = {
   [ExportTypeEnum.image]: exportImages,
 };
 
-export function getExportDate() {
+export function getTimestamp() {
   const date = new Date();
   const zeroPad = (num: number, places: number) =>
     String(num).padStart(places, "0");
@@ -19,8 +19,9 @@ export function getExportDate() {
   const day = zeroPad(date.getDate(), 2);
   const hour = zeroPad(date.getHours(), 2);
   const minute = zeroPad(date.getMinutes(), 2);
+  const second = zeroPad(date.getSeconds(), 2);
 
-  return { year, month, day, hour, minute };
+  return { year, month, day, hour, minute, second };
 }
 
 export function exportData() {

@@ -4,7 +4,7 @@ import { For, createEffect, createSignal, onCleanup, onMount } from "solid-js";
 import StopItems from "./RamassageItem";
 import { StopItemType } from "../../type";
 import { displayDownloadErrorMessage } from "../../userInformation/utils";
-import { getExportDate } from "../graphicage/rightMapMenu/export/export";
+import { getTimestamp } from "../graphicage/rightMapMenu/export/utils";
 import RemoveRamassageConfirmation from "../../userInformation/RemoveRamassageConfirmation";
 import ImportCsvDialogBox from "../../component/ImportCsvDialogBox";
 import { download } from "../../utils";
@@ -195,7 +195,7 @@ export default function () {
                             }
 
                             const { year, month, day, hour, minute } =
-                              getExportDate();
+                              getTimestamp();
                             const fileName = `${year}-${month}-${day}_${hour}-${minute}_ramassage.csv`;
                             download(fileName, blob);
                           })
