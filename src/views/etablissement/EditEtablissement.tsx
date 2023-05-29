@@ -186,6 +186,7 @@ export default function () {
         <div class="group inline-grid w-full">
           <label for="name">Nom</label>
           <input
+            class="bg-white"
             ref={name}
             type="text"
             id="name"
@@ -200,6 +201,7 @@ export default function () {
         <div class="group inline-grid w-full">
           <label for="Latitude">Latitude</label>
           <input
+            class="bg-white"
             ref={lat}
             type="text"
             id="Latitude"
@@ -209,6 +211,7 @@ export default function () {
         <div class="group inline-grid w-full">
           <label for="Longitude">Longitude</label>
           <input
+            class="bg-white"
             ref={lon}
             type="text"
             id="Longitude"

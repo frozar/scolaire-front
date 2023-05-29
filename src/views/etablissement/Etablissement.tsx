@@ -123,7 +123,7 @@ export default function () {
         }}
       />
       <RemoveRamassageConfirmation />
-      <div class="flex w-full" ref={etablissementDiv}>
+      <div class="flex w-full bg-white" ref={etablissementDiv}>
         <div id="ramassages-board">
           <header>
             <h1>Etablissements</h1>
@@ -155,6 +155,7 @@ export default function () {
                     <AiOutlineSearch />
                   </div>
                   <input
+                    class="bg-white"
                     type="text"
                     name="search"
                     placeholder="Recherche"

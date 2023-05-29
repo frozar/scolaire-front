@@ -7,7 +7,7 @@ export default function (props: {
   item: EtablissementItemType;
   setEtablissements: Setter<EtablissementItemType[]>;
 }) {
-  let checkbox!: HTMLInputElement;
+  let refCheckbox!: HTMLInputElement;
 
   const handleClickEdit = () => {
     setDataToEdit({ ...props.item });
@@ -15,7 +15,7 @@ export default function (props: {
   };
 
   createEffect(() => {
-    checkbox.checked = props.item.selected;
+    refCheckbox.checked = props.item.selected;
   });
 
   return (
@@ -36,7 +36,7 @@ export default function (props: {
               )
             );
           }}
-          ref={checkbox}
+          ref={refCheckbox}
         />
         {props.item.name}
       </td>
