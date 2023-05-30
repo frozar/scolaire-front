@@ -19,8 +19,6 @@ import { ExportTypeEnum } from "../../../../type";
 import { exportData } from "./utils";
 import { GtfsExportLogo, ImageExportLogo } from "./Logos";
 
-let refDialogueBox: HTMLDivElement | undefined;
-
 const [selected, setSelected] = createSignal<string | null>(null);
 
 function ExportTypeSelect() {
@@ -82,6 +80,8 @@ function exitModal({ code }: KeyboardEvent) {
 }
 
 export default function () {
+  let refDialogueBox!: HTMLDivElement;
+
   onMount(() => {
     document.addEventListener("keyup", exitModal);
   });
@@ -109,7 +109,7 @@ export default function () {
           role="dialog"
           aria-modal="true"
         >
-          <div class="export-modal-background"></div>
+          <div class="export-modal-background" />
           <Transition
             name="slide-fade"
             enterActiveClass="ease-out duration-300"
