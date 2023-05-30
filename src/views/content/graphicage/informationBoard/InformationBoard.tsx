@@ -1,5 +1,5 @@
 import { Dynamic } from "solid-js/web";
-import { For } from "solid-js";
+import { For, JSX } from "solid-js";
 import InformationContent from "./InformationContent";
 
 import { useStateAction } from "../../../../StateAction";
@@ -8,12 +8,10 @@ import { useStateGui } from "../../../../StateGui";
 const [stateAction, { toggleAltimetryAnimation }] = useStateAction();
 const [
   stateGui,
-  { setSelectedTab, getDisplayedInformationBoard, getDisplayedMenu },
+  { setSelectedTab, getDisplayedInformationBoard, getDisplayedLeftMenu },
 ] = useStateGui();
 
-let refMenuContent: any;
-
-function SettingsContent(props: any) {
+function SettingsContent(props: object) {
   return (
     <div>
       <input
@@ -32,12 +30,12 @@ function SettingsContent(props: any) {
   );
 }
 
-function SettingsHorizontalIcon(props: any) {
+function SettingsHorizontalIcon(props: object) {
   return (
     <svg
       fill="none"
       stroke="currentColor"
-      strokeWidth={1.5}
+      stroke-width={1.5}
       viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
@@ -52,12 +50,12 @@ function SettingsHorizontalIcon(props: any) {
   );
 }
 
-export function InformationCircleIcon(props: any) {
+export function InformationCircleIcon(props: object) {
   return (
     <svg
       fill="none"
       stroke="currentColor"
-      strokeWidth={1.5}
+      stroke-width={1.5}
       viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
@@ -81,10 +79,12 @@ function SettingsName() {
 }
 
 export function InformationBoard() {
+  let refMenuContent!: HTMLDivElement;
+
   type TabValueType = {
-    tabLabel: (props: any) => JSX.Element;
-    tabContent: (props: any) => JSX.Element;
-    tabName: (props: any) => JSX.Element;
+    tabLabel: (props: object & { width: string }) => JSX.Element;
+    tabContent: (props: object) => JSX.Element;
+    tabName: (props: object) => JSX.Element;
   };
   type TabType = {
     info: TabValueType;
@@ -116,7 +116,7 @@ export function InformationBoard() {
       ref={refMenuContent}
       class="menu__custom"
       classList={{
-        _active: getDisplayedMenu(),
+        _active: getDisplayedLeftMenu(),
         active: getDisplayedInformationBoard(),
       }}
     >

@@ -1,55 +1,68 @@
 import _ from "lodash";
-import { createContext, useContext } from "solid-js";
-import { createStore } from "solid-js/store";
+import { JSX, createContext, createEffect, useContext } from "solid-js";
+import { SetStoreFunction, Store, createStore } from "solid-js/store";
 import { TileId, SelectedMenuType } from "./type";
 
 type StateGuiType = {
-  displayedMenu: boolean;
   selectedMenu: SelectedMenuType;
   selectedTab: string;
+  displayedLeftMenu: boolean;
   displayedRightMenu: boolean;
   selectedReadModeTile: TileId;
   selectedEditModeTile: TileId;
   displayedInformationBoard: boolean;
 };
 
+// Documentation link:
+// https://stackoverflow.com/questions/70030144/how-to-update-local-storage-values-in-solidjs-using-hooks#answer-72339551
+function createLocalStore<T extends object>(
+  initState: T
+): [Store<T>, SetStoreFunction<T>] {
+  const [state, setState] = createStore<T>(initState);
+
+  const stateGuiString = localStorage.getItem("stateGui");
+
+  if (stateGuiString) {
+    try {
+      const stateGuiFromLocalStorage: StateGuiType = JSON.parse(stateGuiString);
+      const mergeState = _.merge(initState, stateGuiFromLocalStorage);
+
+      setState(mergeState);
+    } catch (error) {
+      setState(() => initState);
+    }
+  }
+
+  createEffect(() => {
+    localStorage.stateGui = JSON.stringify(state);
+  });
+
+  return [state, setState];
+}
+
 const makeStateGuiContext = () => {
   const defaultStateGui: StateGuiType = {
-    displayedMenu: false,
     selectedMenu: "graphicage",
     selectedTab: "info",
+    displayedLeftMenu: false,
     displayedRightMenu: false,
     selectedReadModeTile: "OpenStreetMap_Mapnik",
     selectedEditModeTile: "Stadia_AlidadeSmoothDark",
     displayedInformationBoard: false,
   };
 
-  const stateGuiString = localStorage.getItem("stateGui");
-  let initStateGui = defaultStateGui;
+  const [state, setState] = createLocalStore(defaultStateGui);
 
-  if (stateGuiString) {
-    const stateGuiFromLocalStorage: StateGuiType = JSON.parse(stateGuiString);
-    initStateGui = _.merge(defaultStateGui, stateGuiFromLocalStorage);
-  }
-
-  const [state, setState] = createStore(initStateGui);
-
-  function setStateWrapper(...args: any[]): void {
-    // eslint-disable-next-line prefer-spread
-    setState.apply(null, args);
-    localStorage.setItem("stateGui", JSON.stringify(state));
-  }
-
-  function toggleDisplayedMenu() {
-    setStateWrapper("displayedMenu", (currentValue: boolean) => !currentValue);
+  function toggleDisplayedLeftMenu() {
+    setState("displayedLeftMenu", (currentValue: boolean) => !currentValue);
   }
 
   function setSelectedTab(tabName: string) {
-    setStateWrapper("selectedTab", tabName);
+    setState("selectedTab", tabName);
   }
 
   function setSelectedReadModeTile(tileId: TileId) {
-    setStateWrapper("selectedReadModeTile", tileId);
+    setState("selectedReadModeTile", tileId);
   }
 
   function getSelectedReadModeTile() {
@@ -57,7 +70,7 @@ const makeStateGuiContext = () => {
   }
 
   function setSelectedEditModeTile(tileId: TileId) {
-    setStateWrapper("selectedEditModeTile", tileId);
+    setState("selectedEditModeTile", tileId);
   }
 
   function getSelectedEditModeTile() {
@@ -65,10 +78,7 @@ const makeStateGuiContext = () => {
   }
 
   function toggleDisplayedRightMenu() {
-    setStateWrapper(
-      "displayedRightMenu",
-      (currentValue: boolean) => !currentValue
-    );
+    setState("displayedRightMenu", (currentValue: boolean) => !currentValue);
   }
 
   function getDisplayedRightMenu() {
@@ -76,15 +86,15 @@ const makeStateGuiContext = () => {
   }
 
   function setSelectedMenu(itemMenu: SelectedMenuType) {
-    setStateWrapper("selectedMenu", itemMenu);
+    setState("selectedMenu", itemMenu);
   }
 
   function getSelectedMenu() {
     return state.selectedMenu;
   }
 
-  function getDisplayedMenu() {
-    return state.displayedMenu;
+  function getDisplayedLeftMenu() {
+    return state.displayedLeftMenu;
   }
 
   function getDisplayedInformationBoard() {
@@ -92,7 +102,7 @@ const makeStateGuiContext = () => {
   }
 
   function toggleDisplayedInformationBoard() {
-    setStateWrapper(
+    setState(
       "displayedInformationBoard",
       (currentValue: boolean) => !currentValue
     );
@@ -101,7 +111,6 @@ const makeStateGuiContext = () => {
   return [
     state,
     {
-      toggleDisplayedMenu,
       setSelectedTab,
       setSelectedReadModeTile,
       getSelectedReadModeTile,
@@ -111,7 +120,8 @@ const makeStateGuiContext = () => {
       getDisplayedRightMenu,
       setSelectedMenu,
       getSelectedMenu,
-      getDisplayedMenu,
+      getDisplayedLeftMenu,
+      toggleDisplayedLeftMenu,
       getDisplayedInformationBoard,
       toggleDisplayedInformationBoard,
     },
@@ -123,7 +133,7 @@ const StateGuiContext = createContext<StateGuiContextType>(
   makeStateGuiContext()
 );
 
-export function StateGuiProvider(props: any) {
+export function StateGuiProvider(props: { children: JSX.Element }) {
   return (
     <StateGuiContext.Provider value={makeStateGuiContext()}>
       {props.children}

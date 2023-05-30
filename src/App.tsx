@@ -4,17 +4,21 @@ import { useStateAction } from "./StateAction";
 import { useStateGui } from "./StateGui";
 import SpinningWheel from "./component/SpinningWheel";
 
+// User information
 import DisplayUserInformation from "./userInformation/DisplayUserInformation";
 import RemoveConfirmation from "./userInformation/RemoveConfirmation";
-import ExportConfirmation from "./views/content/graphicage/rightMapMenu/export/ExportModal";
-
 import DragAndDrop from "./userInformation/DragAndDrop";
-import TopMenu from "./views/layout/topMenu/TopMenu";
-import LeftMenu from "./views/layout/leftMenu/LeftMenu";
 import ClearConfirmation from "./userInformation/ClearConfirmation";
 import GeneratorDialogueBox from "./userInformation/GeneratorDialogueBox";
 
+// Layout
+import TopMenu from "./views/layout/topMenu/TopMenu";
+import LeftMenu from "./views/layout/leftMenu/LeftMenu";
+
+// Graphicage
 import Graphicage from "./views/content/graphicage/Graphicage";
+import ExportConfirmation from "./views/content/graphicage/rightMapMenu/export/ExportModal";
+
 import Etablissement from "./views/content/etablissement/Etablissement";
 import Ramassage from "./views/content/ramassage/Ramassage";
 
@@ -49,7 +53,6 @@ export default () => {
 
       <div id="app-content">
         <LeftMenu />
-
         <Switch fallback={<p>Page not found</p>}>
           <Match when={getSelectedMenu() == "graphicage"}>
             <Graphicage />
