@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+set -eo pipefail
+
+CHANGED_FILES=$(git diff --name-only --cached --diff-filter=ACMR)
+
+get_pattern_files() {
+    pattern=$(echo "$*" | sed "s/ /\$\\\|/g")
+    echo "$CHANGED_FILES" | { grep "$pattern$" || true; }
+}
+
+TS_FILES=$(get_pattern_files ".ts .tsx")
+
+if [[ -n "$TS_FILES" ]]
+then
+	npm run eslint -- --fix $TS_FILES
+
+else
+	echo "No typescript files changed, skipping pre-commit checks..."
+fi

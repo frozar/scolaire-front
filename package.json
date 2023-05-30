@@ -9,7 +9,7 @@
     "serve": "vite preview",
     "test": "vitest",
     "coverage": "vitest run --coverage",
-    "eslint": "eslint '**/*.{ts,tsx}'"
+    "eslint": "eslint"
   },
   "license": "MIT",
   "devDependencies": {
