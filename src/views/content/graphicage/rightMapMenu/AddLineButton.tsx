@@ -1,5 +1,5 @@
-import { useStateAction } from "../../../StateAction";
-import { displayAddLineMessage } from "../../../userInformation/utils";
+import { useStateAction } from "../../../../StateAction";
+import { displayAddLineMessage } from "../../../../userInformation/utils";
 import { FaSolidPlus } from "solid-icons/fa";
 
 const [, { setModeAddLine, isInAddLineMode, setModeRead }] = useStateAction();

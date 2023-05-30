@@ -1,17 +1,17 @@
-import { useStateAction } from "../../StateAction";
-import { useStateGui } from "../../StateGui";
-import { addBusLine } from "../../request";
+import { useStateAction } from "../../../StateAction";
+import { useStateGui } from "../../../StateGui";
+import { addBusLine } from "../../../request";
 import {
   closeRemoveConfirmationBox,
   fetchBusLines,
   getClearConfirmation,
   getDisplayedGeneratorDialogueBox,
   getExportConfirmation,
-} from "../../signaux";
+} from "../../../signaux";
 import {
   displayAddLineMessage,
   displayRemoveLineMessage,
-} from "../../userInformation/utils";
+} from "../../../userInformation/utils";
 import { displayedConfirmStopAddLine } from "./ConfirmStopAddLineBox";
 
 const [

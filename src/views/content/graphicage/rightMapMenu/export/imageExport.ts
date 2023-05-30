@@ -4,12 +4,14 @@ import { SimpleMapScreenshoter } from "leaflet-simple-map-screenshoter";
 import {
   displayDownloadSuccessMessage,
   displayNoLineMessage,
-} from "../../../../userInformation/utils";
+} from "../../../../../userInformation/utils";
 import { getScreenshoter } from "./screenShoter";
-import { getLeafletMap } from "../../../../signaux";
+import { getLeafletMap } from "../../../../../signaux";
 import { saveAs } from "file-saver";
-import { enableSpinningWheel } from "../../../../signaux";
-import { disableSpinningWheel } from "../../../../signaux";
+import {
+  enableSpinningWheel,
+  disableSpinningWheel,
+} from "../../../../../signaux";
 import { getTimestamp } from "./utils";
 
 let zip: JSZip;

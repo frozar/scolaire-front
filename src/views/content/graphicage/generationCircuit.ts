@@ -6,7 +6,7 @@ import {
   enableSpinningWheel,
   fetchBusLines,
   points,
-} from "../../signaux";
+} from "../../../signaux";
 import {
   LineType,
   MessageLevelEnum,
@@ -14,10 +14,10 @@ import {
   NatureEnum,
   PointIdentityType,
   PointRamassageType,
-} from "../../type";
-import { addBusLine } from "../../request";
-import { useStateAction } from "../../StateAction";
-import { getToken } from "../../layout/topMenu/authentication";
+} from "../../../type";
+import { addBusLine } from "../../../request";
+import { useStateAction } from "../../../StateAction";
+import { getToken } from "../../../layout/topMenu/authentication";
 
 const [, { setModeRead }] = useStateAction();
 

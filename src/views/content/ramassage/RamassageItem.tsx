@@ -1,11 +1,11 @@
 import { Setter, createEffect } from "solid-js";
-import { EtablissementItemType } from "../../type";
-import { setDataToEdit, toggleEditStop } from "./EditEtablissement";
+import { StopItemType } from "../../../type";
+import { setDataToEdit, toggleEditStop } from "./EditRamassage";
 // import { setRemoveRamassageConfirmation } from "../../signaux";
 
 export default function (props: {
-  item: EtablissementItemType;
-  setEtablissements: Setter<EtablissementItemType[]>;
+  item: StopItemType;
+  setRamassages: Setter<StopItemType[]>;
 }) {
   let refCheckbox!: HTMLInputElement;
 
@@ -22,16 +22,16 @@ export default function (props: {
     <tr>
       <td class="flex items-center">
         <input
-          aria-describedby="etablissement-item"
-          name="etablissement"
+          aria-describedby="ramassage-item"
+          name="ramassage"
           type="checkbox"
           class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600 relative right-2"
           onChange={(e) => {
             const isItemChecked = e.target.checked;
             const itemId = props.item.id;
 
-            props.setEtablissements((etablissements) =>
-              etablissements.map((eta) =>
+            props.setRamassages((ramassage) =>
+              ramassage.map((eta) =>
                 eta.id === itemId ? { ...eta, selected: isItemChecked } : eta
               )
             );
@@ -41,6 +41,7 @@ export default function (props: {
         {props.item.name}
       </td>
       <td>{props.item.quantity}</td>
+      <td>{props.item.nbEtablissement}</td>
       <td>{props.item.nbLine}</td>
       <td>
         <a onClick={handleClickEdit} href="#" class="text-[#0CC683] mr-2">

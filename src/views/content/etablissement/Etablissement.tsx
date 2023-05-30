@@ -1,23 +1,26 @@
 import { AiOutlineSearch } from "solid-icons/ai";
-import EditStop, { setDataToEdit, toggleEditStop } from "./EditRamassage";
+import EditStop, { setDataToEdit, toggleEditStop } from "./EditEtablissement";
 import { For, createEffect, createSignal, onCleanup, onMount } from "solid-js";
-import StopItems from "./RamassageItem";
-import { StopItemType } from "../../type";
-import RemoveRamassageConfirmation from "../../userInformation/RemoveRamassageConfirmation";
-import ImportCsvDialogBox from "../../component/ImportCsvDialogBox";
-import { getToken } from "../../layout/topMenu/authentication";
-import ImportCsvCanvas from "../../component/ImportCsvCanvas";
-import ImportCsvButton from "../../component/ImportCsvButton";
-import ExportCsvButton from "../../component/ExportCsvButton";
-import ActionSelect from "../../component/ActionSelect";
+import EtablissementItem from "./EtablissementItem";
+import { EtablissementItemType } from "../../../type";
+import RemoveRamassageConfirmation from "../../../userInformation/RemoveRamassageConfirmation";
+import ImportCsvDialogBox from "../../../component/ImportCsvDialogBox";
+import { getToken } from "../../../layout/topMenu/authentication";
+import ImportCsvCanvas from "../../../component/ImportCsvCanvas";
+import ImportCsvButton from "../../../component/ImportCsvButton";
+import ExportCsvButton from "../../../component/ExportCsvButton";
+import ActionSelect from "../../../component/ActionSelect";
 
-const [ramassages, setRamassages] = createSignal<StopItemType[]>([]);
+const [etablissements, setEtablissements] = createSignal<
+  EtablissementItemType[]
+>([]);
 
-export function fetchRamassage() {
+export function fetchEtablissement() {
   getToken()
     .then((token) => {
       fetch(
-        import.meta.env.VITE_BACK_URL + "/ramassages_associated_bus_lines_info",
+        import.meta.env.VITE_BACK_URL +
+          "/etablissements_associated_bus_lines_info",
         {
           method: "GET",
           headers: {
@@ -35,18 +38,16 @@ export function fetchRamassage() {
               id: number;
               name: string;
               quantity: number;
-              nb_etablissement: number;
               nb_line: number;
               lon: number;
               lat: number;
             }[]
           ) => {
-            setRamassages(
+            setEtablissements(
               res
                 .map((elt) => {
                   return {
                     ...elt,
-                    nbEtablissement: elt.nb_etablissement,
                     nbLine: elt.nb_line,
                     selected: false,
                   };
@@ -66,22 +67,23 @@ function preventDefaultHandler(e: DragEvent) {
 }
 
 export default function () {
-  let ramassageDiv!: HTMLDivElement;
+  let etablissementDiv!: HTMLDivElement;
   let refCheckbox!: HTMLInputElement;
 
   const [keyword, setKeyword] = createSignal("");
 
-  const filteredRamassages = () =>
-    ramassages().filter((e) =>
+  const filteredEtablissements = () =>
+    etablissements().filter((e) =>
       e.name.toLowerCase().includes(keyword().toLowerCase())
     );
 
-  const selectedRamassages = () => ramassages().filter((ram) => ram.selected);
+  const selectedEtablissements = () =>
+    etablissements().filter((eta) => eta.selected);
 
   createEffect(() => {
     refCheckbox.checked =
-      filteredRamassages().length != 0 &&
-      selectedRamassages().length == filteredRamassages().length;
+      filteredEtablissements().length != 0 &&
+      selectedEtablissements().length == filteredEtablissements().length;
   });
 
   const [displayImportCsvCanvas, setDisplayImportCsvCanvas] =
@@ -93,20 +95,20 @@ export default function () {
   }
 
   onMount(() => {
-    fetchRamassage();
-    ramassageDiv.addEventListener("dragenter", dragEnterHandler);
-    ramassageDiv.addEventListener("drop", preventDefaultHandler);
-    ramassageDiv.addEventListener("dragleave", preventDefaultHandler);
-    ramassageDiv.addEventListener("dragend", preventDefaultHandler);
-    ramassageDiv.addEventListener("dragover", preventDefaultHandler);
+    fetchEtablissement();
+    etablissementDiv.addEventListener("dragenter", dragEnterHandler);
+    etablissementDiv.addEventListener("drop", preventDefaultHandler);
+    etablissementDiv.addEventListener("dragleave", preventDefaultHandler);
+    etablissementDiv.addEventListener("dragend", preventDefaultHandler);
+    etablissementDiv.addEventListener("dragover", preventDefaultHandler);
   });
 
   onCleanup(() => {
-    ramassageDiv.removeEventListener("dragenter", dragEnterHandler);
-    ramassageDiv.removeEventListener("drop", preventDefaultHandler);
-    ramassageDiv.removeEventListener("dragleave", preventDefaultHandler);
-    ramassageDiv.removeEventListener("dragend", preventDefaultHandler);
-    ramassageDiv.removeEventListener("dragover", preventDefaultHandler);
+    etablissementDiv.removeEventListener("dragenter", dragEnterHandler);
+    etablissementDiv.removeEventListener("drop", preventDefaultHandler);
+    etablissementDiv.removeEventListener("dragleave", preventDefaultHandler);
+    etablissementDiv.removeEventListener("dragend", preventDefaultHandler);
+    etablissementDiv.removeEventListener("dragover", preventDefaultHandler);
   });
 
   return (
@@ -116,18 +118,17 @@ export default function () {
         display={displayImportCsvCanvas()}
         setDisplay={setDisplayImportCsvCanvas}
         callbackSuccess={() => {
-          fetchRamassage();
+          fetchEtablissement();
         }}
       />
       <RemoveRamassageConfirmation />
-      <div class="flex w-full bg-white" ref={ramassageDiv}>
+      <div class="flex w-full bg-white" ref={etablissementDiv}>
         <div id="ramassages-board">
           <header>
-            <h1>Points de ramassage</h1>
+            <h1>Etablissements</h1>
             <div id="filters">
               <div class="left">
                 <ActionSelect />
-
                 <button
                   type="button"
                   class="btn-arret-add"
@@ -156,7 +157,7 @@ export default function () {
               </div>
 
               <div class="right">
-                <ExportCsvButton exportRoute="/export/ramassages_input" />
+                <ExportCsvButton exportRoute="/export/etablissement_input" />
                 <ImportCsvButton />
               </div>
             </div>
@@ -174,8 +175,8 @@ export default function () {
                         type="checkbox"
                         class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600 relative right-2"
                         onChange={(e) => {
-                          setRamassages((ramassages) =>
-                            ramassages.map((eta) => ({
+                          setEtablissements((etablissements) =>
+                            etablissements.map((eta) => ({
                               ...eta,
                               selected: e.target.checked,
                             }))
@@ -186,7 +187,6 @@ export default function () {
                       Nom
                     </th>
                     <th scope="col">Nombre d'élèves</th>
-                    <th scope="col">Nombre d'établissements desservis</th>
                     <th scope="col">Nombre de lignes</th>
                     <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-0">
                       <span class="">Actions</span>
@@ -194,10 +194,15 @@ export default function () {
                   </tr>
                 </thead>
                 <tbody>
-                  <For each={filteredRamassages()}>
-                    {(fields) => (
-                      <StopItems item={fields} setRamassages={setRamassages} />
-                    )}
+                  <For each={filteredEtablissements()}>
+                    {(fields) => {
+                      return (
+                        <EtablissementItem
+                          item={fields}
+                          setEtablissements={setEtablissements}
+                        />
+                      );
+                    }}
                   </For>
                 </tbody>
               </table>

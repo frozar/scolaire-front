@@ -1,19 +1,14 @@
 import { CgCloseO } from "solid-icons/cg";
 import { HiSolidLocationMarker } from "solid-icons/hi";
 import { Show, createSignal } from "solid-js";
-import {
-  MessageLevelEnum,
-  MessageTypeEnum,
-  EtablissementItemType,
-} from "../../type";
-import { addNewUserInformation } from "../../signaux";
-import { fetchEtablissement } from "./Etablissement";
-import { getToken } from "../../layout/topMenu/authentication";
+import { MessageLevelEnum, MessageTypeEnum, StopItemType } from "../../../type";
+import { fetchRamassage } from "./Ramassage";
+import { addNewUserInformation } from "../../../signaux";
+import { getToken } from "../../../layout/topMenu/authentication";
 
 export const [toggledEditStop, setToggledEditStop] = createSignal(false);
 export const toggleEditStop = () => setToggledEditStop(!toggledEditStop());
-export const [dataToEdit, setDataToEdit] =
-  createSignal<EtablissementItemType>();
+export const [dataToEdit, setDataToEdit] = createSignal<StopItemType>();
 
 export default function () {
   let name!: HTMLInputElement;
@@ -51,7 +46,7 @@ export default function () {
     }
     getToken()
       .then((token) => {
-        fetch(import.meta.env.VITE_BACK_URL + "/point_etablissement", {
+        fetch(import.meta.env.VITE_BACK_URL + "/point_ramassage", {
           method: "post",
           headers: {
             "Content-Type": "application/json",
@@ -73,7 +68,7 @@ export default function () {
                 displayed: true,
                 level: MessageLevelEnum.success,
                 type: MessageTypeEnum.global,
-                content: "L'établissement a été crée",
+                content: "L'arrêt a été créé",
               });
               toggleEditStop();
             } else {
@@ -87,7 +82,7 @@ export default function () {
                   res.message.split(":")[1],
               });
             }
-            fetchEtablissement();
+            fetchRamassage();
           });
       })
       .catch((err) => {
@@ -127,7 +122,7 @@ export default function () {
     }
     getToken()
       .then((token) => {
-        fetch(import.meta.env.VITE_BACK_URL + "/point_etablissement", {
+        fetch(import.meta.env.VITE_BACK_URL + "/point_ramassage", {
           method: "put",
           headers: {
             "Content-Type": "application/json",
@@ -149,7 +144,7 @@ export default function () {
                 displayed: true,
                 level: MessageLevelEnum.success,
                 type: MessageTypeEnum.global,
-                content: "L'établissement a été modifié",
+                content: "L'arrêt a été modifié",
               });
               toggleEditStop();
             } else {
@@ -160,7 +155,7 @@ export default function () {
                 content: "Erreur lors de la modification : " + res,
               });
             }
-            fetchEtablissement();
+            fetchRamassage();
           });
       })
       .catch((err) => {
@@ -176,9 +171,7 @@ export default function () {
         </button>
 
         <h1>
-          {dataToEdit() === undefined
-            ? "Ajouter un établissement"
-            : "Éditer un établissement"}
+          {dataToEdit() === undefined ? "Ajouter un arrêt" : "Éditer un arrêt"}
         </h1>
       </header>
 

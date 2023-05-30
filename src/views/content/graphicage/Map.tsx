@@ -2,18 +2,18 @@ import "leaflet/dist/leaflet.css";
 
 import { Show, createSignal, onCleanup, onMount } from "solid-js";
 
-import PointsRamassageAndEtablissement from "../../PointsRamassageAndEtablissement";
+import PointsRamassageAndEtablissement from "../../../PointsRamassageAndEtablissement";
 
-import { buildMapL7 } from "../../l7MapBuilder";
-import BusLines from "../../line/BusLines";
-import { useStateAction } from "../../StateAction";
+import { buildMapL7 } from "../../../l7MapBuilder";
+import BusLines from "../../../line/BusLines";
+import { useStateAction } from "../../../StateAction";
 
-import LineUnderConstruction from "../../line/LineUnderConstruction";
+import LineUnderConstruction from "../../../line/LineUnderConstruction";
 import ControlMapMenu from "./rightMapMenu/RightMapMenu";
 import { InformationBoard } from "./rightMapMenu/InformationBoard";
 import ConfirmStopAddLine from "./ConfirmStopAddLineBox";
 import { listHandlerLMap } from "./shortcut";
-import ImportCsvCanvas from "../../component/ImportCsvCanvas";
+import ImportCsvCanvas from "../../../component/ImportCsvCanvas";
 
 const [, { isInAddLineMode }] = useStateAction();
 

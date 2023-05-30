@@ -1,6 +1,6 @@
 import { BsInfoCircle } from "solid-icons/bs";
 
-import { useStateGui } from "../../../StateGui";
+import { useStateGui } from "../../../../StateGui";
 
 const [, { getDisplayedInformationBoard, toggleDisplayedInformationBoard }] =
   useStateGui();

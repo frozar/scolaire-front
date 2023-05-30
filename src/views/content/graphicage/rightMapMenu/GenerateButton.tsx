@@ -1,24 +1,23 @@
-import { openExportConfirmationBox } from "../../../signaux";
-import { CgExport } from "solid-icons/cg";
+import { openGeneratorDialogueBox } from "../../../../signaux";
+import { FiArrowUpCircle } from "solid-icons/fi";
 import {
-  defineModalToOpen,
   confirmAbortEditionNeedToBeCall,
+  defineModalToOpen,
 } from "../ConfirmStopAddLineBox";
 
 export default function () {
   const handleClick = () => {
-    defineModalToOpen(openExportConfirmationBox);
+    defineModalToOpen(openGeneratorDialogueBox);
     confirmAbortEditionNeedToBeCall();
   };
-
   return (
     <div class="menu-btn left-[140px] group">
-      <span class="tooltip group-hover:scale-100">Exporter</span>
+      <span class="tooltip group-hover:scale-100">Générer des trajets</span>
       <label
         class="custom-btn btn-circle hover:bg-[#062F3F] hover:text-[#0cc683]"
         onClick={handleClick}
       >
-        <CgExport class="h-10 w-10 pb-[5px]" />
+        <FiArrowUpCircle class="h-10 w-10" />
       </label>
     </div>
   );

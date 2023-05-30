@@ -8,7 +8,7 @@ import {
 } from "../signaux";
 
 import { assertIsNode } from "../utils";
-import { generateCircuit } from "../views/graphicage/generationCircuit";
+import { generateCircuit } from "../views/content/graphicage/generationCircuit";
 
 let refDialogueBox: HTMLDivElement;
 

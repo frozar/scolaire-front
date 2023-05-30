@@ -1,9 +1,9 @@
 import { Dynamic } from "solid-js/web";
 import { For } from "solid-js";
-import InformationContent from "../../../InformationContent";
+import InformationContent from "../../../../InformationContent";
 
-import { useStateAction } from "../../../StateAction";
-import { useStateGui } from "../../../StateGui";
+import { useStateAction } from "../../../../StateAction";
+import { useStateGui } from "../../../../StateGui";
 
 const [stateAction, { toggleAltimetryAnimation }] = useStateAction();
 const [
