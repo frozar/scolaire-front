@@ -1,7 +1,7 @@
 import { Show, createEffect, createSignal } from "solid-js";
 import { Transition } from "solid-transition-group";
 
-import ClickOutside from "../ClickOutside";
+import ClickOutside from "../component/ClickOutside";
 import {
   addNewUserInformation,
   getRemoveRamassageConfirmation,

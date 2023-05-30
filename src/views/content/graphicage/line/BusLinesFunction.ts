@@ -5,11 +5,11 @@ import {
   setRemoveConfirmation,
   setBusLineSelected,
   setInfoToDisplay,
-} from "../signaux";
-import { PointIdentityType, InfoPanelEnum } from "../type";
-import { linkMap } from "../global/linkPointIdentityCircle";
-import { useStateAction } from "../StateAction";
-import { setPickerColor } from "../InformationContent";
+} from "../../../../signaux";
+import { PointIdentityType, InfoPanelEnum } from "../../../../type";
+import { linkMap } from "../../../../global/linkPointIdentityCircle";
+import { useStateAction } from "../../../../StateAction";
+import { setPickerColor } from "../../../../views/content/graphicage/informationBoard/InformationContent";
 import { LineString, MultiLineString } from "geojson";
 
 const [, { isInReadMode }] = useStateAction();

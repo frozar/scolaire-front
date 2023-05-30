@@ -6,13 +6,13 @@ import {
   setLeafletMap,
   enableSpinningWheel,
   disableSpinningWheel,
-} from "./signaux";
+} from "../../../signaux";
 
-import { useStateAction } from "./StateAction";
+import { useStateAction } from "../../../StateAction";
 import FlaxibMapLogo from "./FlaxibMapLogo";
-import { useStateGui } from "./StateGui";
+import { useStateGui } from "../../../StateGui";
 import { getTileById } from "./tileUtils";
-import { initScreenshoter } from "./views/content/graphicage/rightMapMenu/export/screenShoter";
+import { initScreenshoter } from "./rightMapMenu/export/screenShoter";
 
 const [, { getSelectedReadModeTile, getSelectedEditModeTile }] = useStateGui();
 const [, { isInReadMode, isInAddLineMode }] = useStateAction();

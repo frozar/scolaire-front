@@ -1,14 +1,18 @@
 import { createSignal, onMount, For, onCleanup } from "solid-js";
 
-import { NatureEnum, PointRamassageType, PointEtablissementType } from "./type";
+import {
+  NatureEnum,
+  PointRamassageType,
+  PointEtablissementType,
+} from "../../../type";
 import Point from "./Point";
 import {
   setPoints,
   points,
   setIsRamassageReady,
   setIsEtablissementReady,
-} from "./signaux";
-import { getToken } from "./views/layout/topMenu/authentication";
+} from "../../../signaux";
+import { getToken } from "../../layout/topMenu/authentication";
 
 export const [minMaxQty, setMinMaxQty] = createSignal([1, 100]);
 export const [pointsReady, setPointsReady] = createSignal(false);

@@ -17,8 +17,8 @@ import {
   InfoPanelEnum,
   MessageLevelEnum,
   MessageTypeEnum,
-} from "./type";
-import { PointIdentityType, LineType } from "./type";
+} from "../../../../type";
+import { PointIdentityType, LineType } from "../../../../type";
 import {
   selectedElement,
   busLineSelected,
@@ -32,10 +32,10 @@ import {
   timelineStopNames,
   setTimelineStopNames,
   addNewUserInformation,
-} from "./signaux";
-import { useStateAction } from "./StateAction";
-import { getToken } from "./views/layout/topMenu/authentication";
-import { onLine } from "./line/BusLinesFunction";
+} from "../../../../signaux";
+import { useStateAction } from "../../../../StateAction";
+import { getToken } from "../../../layout/topMenu/authentication";
+import { onLine } from "../line/BusLinesFunction";
 
 export const [pickerColor, setPickerColor] = createSignal("");
 

@@ -2,7 +2,7 @@ import { Show, createEffect, createSignal, onCleanup, onMount } from "solid-js";
 import { Transition } from "solid-transition-group";
 
 import { NatureEnum } from "../type";
-import ClickOutside from "../ClickOutside";
+import ClickOutside from "../component/ClickOutside";
 import {
   addNewUserInformation,
   closeClearConfirmationBox,
@@ -18,7 +18,7 @@ import {
 import { clear } from "../request";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { assertIsNode } from "../utils";
-import { fetchPointsRamassage } from "../PointsRamassageAndEtablissement";
+import { fetchPointsRamassage } from "../views/content/graphicage/PointsRamassageAndEtablissement";
 
 function exitModal({ code }: KeyboardEvent) {
   // @ts-expect-error: Currently the 'keyboard' field doesn't exist on 'navigator'

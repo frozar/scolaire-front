@@ -9,16 +9,16 @@ import {
   polylineRoute,
   isRamassageReady,
   isEtablissementReady,
-} from "../signaux";
-import { pointsReady } from "../PointsRamassageAndEtablissement";
+} from "../../../../signaux";
+import { pointsReady } from "../../../../views/content/graphicage/PointsRamassageAndEtablissement";
 import {
   getBusLinePolyline,
   getLatLngs,
   busLinePolylineAttachEvent,
 } from "./BusLinesFunction";
-import { getLeafletMap } from "../signaux";
+import { getLeafletMap } from "../../../../signaux";
 
-import { useStateAction } from "../StateAction";
+import { useStateAction } from "../../../../StateAction";
 const [, { isInRemoveLineMode, isInAddLineMode, isInReadMode }] =
   useStateAction();
 

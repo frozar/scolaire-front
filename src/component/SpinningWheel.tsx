@@ -1,7 +1,7 @@
 import { Show } from "solid-js";
 
-import logoAnimated from "./assets/logo-animated.svg";
-import { displayedSpinningWheel } from "./signaux";
+import logoAnimated from "../assets/logo-animated.svg";
+import { displayedSpinningWheel } from "../signaux";
 
 export default function () {
   return (

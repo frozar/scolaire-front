@@ -1,7 +1,7 @@
 import { onCleanup, createEffect } from "solid-js";
 import L from "leaflet";
-import { useStateAction } from "../StateAction";
-import { getLeafletMap } from "../signaux";
+import { useStateAction } from "../../../../StateAction";
+import { getLeafletMap } from "../../../../signaux";
 import { COLOR_LINE_UNDER_CONSTRUCTION } from "../constant";
 
 import { getBusLinePolyline, getLatLngs } from "./BusLinesFunction";

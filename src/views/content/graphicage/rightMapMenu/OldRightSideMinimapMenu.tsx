@@ -1,8 +1,8 @@
-// @ts-expect-error
+// @ts-expect-error leaflet-minimap is untyped
 import MiniMap from "leaflet-minimap";
 
 import { getLeafletMap } from "../../../../signaux";
-import { layerTilesList } from "../../../../constant";
+import { layerTilesList } from "../constant";
 import { useStateGui } from "../../../../StateGui";
 import { useStateAction } from "../../../../StateAction";
 import { For, createEffect } from "solid-js";
@@ -89,7 +89,7 @@ export default function () {
 
 function Minimap(props: { tile: TileType }) {
   const { tile } = props;
-  let mapContainer: HTMLDivElement | undefined;
+  let mapContainer!: HTMLDivElement;
 
   const minimap = new MiniMap(tile.tileContent, {
     zoomLevelOffset: -1,
@@ -111,7 +111,7 @@ function Minimap(props: { tile: TileType }) {
 
     const minimapContainer = minimap.getContainer();
 
-    mapContainer?.prepend(minimapContainer);
+    mapContainer.prepend(minimapContainer);
   });
 
   return (
