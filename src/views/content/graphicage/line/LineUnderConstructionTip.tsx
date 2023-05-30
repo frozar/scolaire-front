@@ -3,7 +3,7 @@ import L from "leaflet";
 import { useStateAction } from "../../../../StateAction";
 import { getLeafletMap } from "../../../../signaux";
 import { linkMap } from "../../../../global/linkPointIdentityCircle";
-import { COLOR_LINE_UNDER_CONSTRUCTION } from "../../../../constant";
+import { COLOR_LINE_UNDER_CONSTRUCTION } from "../constant";
 import { PointIdentityType } from "../../../../type";
 
 const [, { isInAddLineMode, getLineUnderConstruction }] = useStateAction();

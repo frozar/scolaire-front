@@ -35,6 +35,7 @@ const makeStateActionContext = () => {
     mode: ModeEnum.read,
   };
 
+  // eslint-disable-next-line solid/reactivity
   const [state, setState] = record(createStore(defaultState), history);
 
   function toggleAltimetryAnimation() {
@@ -45,6 +46,7 @@ const makeStateActionContext = () => {
     setState("lineUnderConstruction", "stops", (line: PointIdentityType[]) => {
       if (line.length === 0) {
         return [point];
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       } else if (_.isEqual(line.at(-1)!, point)) {
         return line;
       } else {

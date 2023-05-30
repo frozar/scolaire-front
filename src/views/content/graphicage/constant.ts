@@ -1,7 +1,7 @@
 export const COLOR_LINE_UNDER_CONSTRUCTION = "#0000FF";
 
 import L from "leaflet";
-import { TileType } from "./type";
+import { TileType } from "../../../type";
 
 // https://wiki.openstreetmap.org/wiki/Raster_tile_providers
 // https://leaflet-extras.github.io/leaflet-providers/preview/

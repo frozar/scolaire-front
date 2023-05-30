@@ -1,4 +1,4 @@
-import { layerTilesList } from "../../../constant";
+import { layerTilesList } from "./constant";
 import { TileId } from "../../../type";
 
 export const getTileById = (tileId: TileId) => {

@@ -15,31 +15,31 @@ import GeneratorDialogueBox from "./userInformation/GeneratorDialogueBox";
 import Arret from "./views/content/ramassage/Ramassage";
 import Etablissement from "./views/content/etablissement/Etablissement";
 
-const [, { isInAddLineMode }] = useStateAction();
-const [, { getSelectedMenu }] = useStateGui();
-
-let refApp: HTMLDivElement;
-
-createEffect(() => {
-  const [, { getLineUnderConstruction }] = useStateAction();
-
-  if (isInAddLineMode() && 0 < getLineUnderConstruction().stops.length) {
-    if (
-      refApp &&
-      String(refApp.style) !== "cursor: url('/pencil.png'), auto;"
-    ) {
-      // @ts-expect-error: 'style' field should not be assigned
-      refApp.style = "cursor: url('/pencil.png'), auto;";
-    }
-  } else {
-    if (refApp && String(refApp.style) !== "") {
-      // @ts-expect-error: 'style' field should not be assigned
-      refApp.style = "";
-    }
-  }
-});
-
 export default () => {
+  const [, { isInAddLineMode }] = useStateAction();
+  const [, { getSelectedMenu }] = useStateGui();
+
+  let refApp!: HTMLDivElement;
+
+  createEffect(() => {
+    const [, { getLineUnderConstruction }] = useStateAction();
+
+    if (isInAddLineMode() && 0 < getLineUnderConstruction().stops.length) {
+      if (
+        refApp &&
+        String(refApp.style) !== "cursor: url('/pencil.png'), auto;"
+      ) {
+        // @ts-expect-error: 'style' field should not be assigned
+        refApp.style = "cursor: url('/pencil.png'), auto;";
+      }
+    } else {
+      if (refApp && String(refApp.style) !== "") {
+        // @ts-expect-error: 'style' field should not be assigned
+        refApp.style = "";
+      }
+    }
+  });
+
   return (
     <div ref={refApp}>
       <TopMenu />
