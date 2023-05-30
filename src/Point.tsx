@@ -29,7 +29,7 @@ import {
   setIsEtablissementReady,
 } from "./signaux";
 import { minMaxQty } from "./PointsRamassageAndEtablissement";
-import { getToken } from "./auth/auth";
+import { getToken } from "./views/layout/topMenu/authentication";
 
 const [
   ,

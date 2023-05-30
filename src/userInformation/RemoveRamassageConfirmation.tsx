@@ -11,7 +11,7 @@ import {
 import { deleteRamassage } from "../request";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { assertIsNode } from "../utils";
-import { fetchRamassage } from "../views/ramassage/Ramassage";
+import { fetchRamassage } from "../views/content/ramassage/Ramassage";
 
 export default function () {
   const displayed = () => getRemoveRamassageConfirmation()["displayed"];

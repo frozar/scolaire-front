@@ -1,19 +1,19 @@
 import { createEffect, Switch, Match } from "solid-js";
 import SpinningWheel from "./SpinningWheel";
-import Map from "./views/graphicage/Map";
+import Map from "./views/content/graphicage/Map";
 import { useStateAction } from "./StateAction";
 import DisplayUserInformation from "./userInformation/DisplayUserInformation";
 import RemoveConfirmation from "./userInformation/RemoveConfirmation";
-import ExportConfirmation from "./views/graphicage/rightMapMenu/export/ExportModal";
+import ExportConfirmation from "./views/content/graphicage/rightMapMenu/export/ExportModal";
 
 import DragAndDrop from "./userInformation/DragAndDrop";
-import NavTop from "./layout/NavTop";
-import NavLateral from "./layout/NavLateral";
+import TopMenu from "./views/layout/topMenu/TopMenu";
+import LeftMenu from "./views/layout/leftMenu/LeftMenu";
 import { useStateGui } from "./StateGui";
 import ClearConfirmation from "./userInformation/ClearConfirmation";
 import GeneratorDialogueBox from "./userInformation/GeneratorDialogueBox";
-import Arret from "./views/ramassage/Ramassage";
-import Etablissement from "./views/etablissement/Etablissement";
+import Arret from "./views/content/ramassage/Ramassage";
+import Etablissement from "./views/content/etablissement/Etablissement";
 
 const [, { isInAddLineMode }] = useStateAction();
 const [, { getSelectedMenu }] = useStateGui();
@@ -42,10 +42,10 @@ createEffect(() => {
 export default () => {
   return (
     <div ref={refApp}>
-      <NavTop />
+      <TopMenu />
 
       <div id="app-content">
-        <NavLateral />
+        <LeftMenu />
 
         <Switch fallback={<p>Page not found</p>}>
           <Match when={getSelectedMenu() == "graphicage"}>

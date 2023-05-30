@@ -1,4 +1,4 @@
-import { getToken } from "./auth/auth";
+import { getToken } from "./views/layout/topMenu/authentication";
 
 export async function deleteBusLine(idToRemove: number) {
   return getToken()
