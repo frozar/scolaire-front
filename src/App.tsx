@@ -50,9 +50,9 @@ export default () => {
   return (
     <div ref={refApp}>
       <TopMenu />
+      <LeftMenu />
 
       <div id="app-content">
-        <LeftMenu />
         <Switch fallback={<p>Page not found</p>}>
           <Match when={getSelectedMenu() == "graphicage"}>
             <Graphicage />
