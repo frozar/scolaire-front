@@ -9,8 +9,7 @@
     "serve": "vite preview",
     "test": "vitest",
     "coverage": "vitest run --coverage",
-    "eslint": "eslint '**/*.{ts,tsx}'",
-    "prepare": "husky install"
+    "eslint": "eslint"
   },
   "license": "MIT",
   "devDependencies": {
@@ -36,7 +35,6 @@
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-solid": "^0.12.1",
     "file-saver": "^2.0.5",
-    "husky": "^8.0.0",
     "jszip": "^3.10.1",
     "leaflet": "^1.9.3",
     "leaflet-minimap": "^3.6.1",
