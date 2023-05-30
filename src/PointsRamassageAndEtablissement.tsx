@@ -8,7 +8,7 @@ import {
   setIsRamassageReady,
   setIsEtablissementReady,
 } from "./signaux";
-import { getToken } from "./auth/auth";
+import { getToken } from "./layout/topMenu/authentication";
 
 export const [minMaxQty, setMinMaxQty] = createSignal([1, 100]);
 export const [pointsReady, setPointsReady] = createSignal(false);

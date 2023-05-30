@@ -4,7 +4,7 @@ import { Show, createSignal } from "solid-js";
 import { MessageLevelEnum, MessageTypeEnum, StopItemType } from "../../type";
 import { fetchRamassage } from "./Ramassage";
 import { addNewUserInformation } from "../../signaux";
-import { getToken } from "../../auth/auth";
+import { getToken } from "../../layout/topMenu/authentication";
 
 export const [toggledEditStop, setToggledEditStop] = createSignal(false);
 export const toggleEditStop = () => setToggledEditStop(!toggledEditStop());

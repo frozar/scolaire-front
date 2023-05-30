@@ -34,7 +34,7 @@ import {
   addNewUserInformation,
 } from "./signaux";
 import { useStateAction } from "./StateAction";
-import { getToken } from "./auth/auth";
+import { getToken } from "./layout/topMenu/authentication";
 import { onLine } from "./line/BusLinesFunction";
 
 export const [pickerColor, setPickerColor] = createSignal("");

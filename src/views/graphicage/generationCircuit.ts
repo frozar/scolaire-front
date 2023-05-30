@@ -17,7 +17,7 @@ import {
 } from "../../type";
 import { addBusLine } from "../../request";
 import { useStateAction } from "../../StateAction";
-import { getToken } from "../../auth/auth";
+import { getToken } from "../../layout/topMenu/authentication";
 
 const [, { setModeRead }] = useStateAction();
 

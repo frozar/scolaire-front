@@ -1,4 +1,4 @@
-import { getProfilePic } from "../../../auth/auth";
+import { getProfilePic } from "../authentication";
 
 export default function () {
   const path = getProfilePic();

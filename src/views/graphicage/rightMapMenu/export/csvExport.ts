@@ -1,4 +1,4 @@
-import { getToken } from "../../../../auth/auth";
+import { getToken } from "../../../../layout/topMenu/authentication";
 import {
   displayDownloadErrorMessage,
   displayDownloadSuccessMessage,

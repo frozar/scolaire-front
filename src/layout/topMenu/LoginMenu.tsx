@@ -2,7 +2,12 @@ import { Show, createSignal, onMount } from "solid-js";
 import CurrentUserLogo from "./logo/CurrentUserLogo";
 import LoggedInUserLogo from "./logo/LoggedInUserLogo";
 import { Transition } from "solid-transition-group";
-import { getProfilePic, isAuthenticated, login, logout } from "../../auth/auth";
+import {
+  getProfilePic,
+  isAuthenticated,
+  login,
+  logout,
+} from "./authentication";
 import { authenticated, setAuthenticated } from "../../signaux";
 
 export default function () {

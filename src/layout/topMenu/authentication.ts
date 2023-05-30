@@ -8,7 +8,7 @@ import {
   getAuthtenticatedUser,
   setAuthenticated,
   setAuthtenticatedUser,
-} from "../signaux";
+} from "../../signaux";
 
 export const auth0Client: Auth0Client = await createAuth0Client({
   domain: import.meta.env.VITE_AUTH0_DOMAIN,

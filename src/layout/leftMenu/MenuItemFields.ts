@@ -1,10 +1,10 @@
 import ArretsLogo from "./logo/ArretsLogo";
-// import LateralMenuDashboardLogo from "./logo/LateralMenuDashboardLogo";
+// import DashboardLogo from "./logo/DashboardLogo";
 import EtablissementLogo from "./logo/EtablissementLogo";
 import GraphicageLogo from "./logo/GraphicageLogo";
-// import LateralMenuSettingsLogo from "./logo/LateralMenuSettingsLogo";
-// import LateralMenuSupportLogo from "./logo/LateralMenuSupportLogo";
-// import LateralMenuVoirieLogo from "./logo/LateralMenuVoirieLogo";
+// import SettingsLogo from "./logo/SettingsLogo";
+// import SupportLogo from "./logo/SupportLogo";
+// import VoirieLogo from "./logo/VoirieLogo";
 import { MenuItemType } from "../../type";
 
 export default function (displayText: boolean) {
@@ -12,7 +12,7 @@ export default function (displayText: boolean) {
     // {
     //   title: "Dashboard",
     //   menuItem: "dashboard",
-    //   Logo: LateralMenuDashboardLogo,
+    //   Logo: DashboardLogo,
     //   displayText: displayText,
     // },
     {
@@ -24,7 +24,7 @@ export default function (displayText: boolean) {
     // {
     //   title: "Voirie",
     //   menuItem: "voirie",
-    //   Logo: LateralMenuVoirieLogo,
+    //   Logo: VoirieLogo,
     //   displayText: displayText,
     // },
     {
@@ -42,13 +42,13 @@ export default function (displayText: boolean) {
     // {
     //   title: "Paramètres",
     //   menuItem: "parametres",
-    //   Logo: LateralMenuSettingsLogo,
+    //   Logo: SettingsLogo,
     //   displayText: displayText,
     // },
     // {
     //   title: "Support",
     //   menuItem: "support",
-    //   Logo: LateralMenuSupportLogo,
+    //   Logo: SupportLogo,
     //   displayText: displayText,
     // },
   ];

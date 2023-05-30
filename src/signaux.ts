@@ -20,7 +20,7 @@ import {
 } from "./type";
 import { deepCopy } from "./utils";
 import { User } from "@auth0/auth0-spa-js";
-import { getToken } from "./auth/auth";
+import { getToken } from "./layout/topMenu/authentication";
 
 const [getDisplayedSpinningWheel, setDisplayedSpinningWheel] =
   createSignal(false);

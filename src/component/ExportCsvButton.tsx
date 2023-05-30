@@ -1,5 +1,5 @@
 import Button from "./atom/Button";
-import { getToken } from "../auth/auth";
+import { getToken } from "../layout/topMenu/authentication";
 import { displayDownloadErrorMessage } from "../userInformation/utils";
 import { download } from "../utils";
 import { getTimestamp } from "../views/graphicage/rightMapMenu/export/utils";

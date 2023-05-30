@@ -1,4 +1,4 @@
-import MenuUser from "./MenuUser";
+import MenuUser from "./LoginMenu";
 
 export default function () {
   return (
