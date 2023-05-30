@@ -9,6 +9,7 @@ import { getToken } from "../../auth/auth";
 import ImportCsvCanvas from "../../component/ImportCsvCanvas";
 import ImportCsvButton from "../../component/ImportCsvButton";
 import ExportCsvButton from "../../component/ExportCsvButton";
+import ActionSelect from "../../component/ActionSelect";
 
 const [ramassages, setRamassages] = createSignal<StopItemType[]>([]);
 
@@ -125,15 +126,7 @@ export default function () {
             <h1>Points de ramassage</h1>
             <div id="filters">
               <div class="left">
-                {/* <select ref={setRefSelect} disabled> */}
-                <select disabled>
-                  <option selected value="null">
-                    Action
-                  </option>
-                  <option class="fill-red" value="delete">
-                    Supprimer
-                  </option>
-                </select>
+                <ActionSelect />
 
                 <button
                   type="button"
