@@ -1,5 +1,5 @@
 import { createEffect, Switch, Match } from "solid-js";
-import SpinningWheel from "./SpinningWheel";
+import SpinningWheel from "./component/SpinningWheel";
 import Map from "./views/content/graphicage/Map";
 import { useStateAction } from "./StateAction";
 import DisplayUserInformation from "./userInformation/DisplayUserInformation";

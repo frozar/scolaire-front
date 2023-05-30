@@ -14,11 +14,11 @@ import {
   PointRamassageType,
   PointEtablissementType,
   InfoPanelEnum,
-} from "./type";
+} from "../../../type";
 
-import { useStateAction } from "./StateAction";
+import { useStateAction } from "../../../StateAction";
 import { renderAnimation } from "./animation";
-import { linkMap } from "./global/linkPointIdentityCircle";
+import { linkMap } from "../../../global/linkPointIdentityCircle";
 import {
   getLeafletMap,
   setSelectedElement,
@@ -27,9 +27,9 @@ import {
   stopIds,
   setIsRamassageReady,
   setIsEtablissementReady,
-} from "./signaux";
+} from "../../../signaux";
 import { minMaxQty } from "./PointsRamassageAndEtablissement";
-import { getToken } from "./views/layout/topMenu/authentication";
+import { getToken } from "../../layout/topMenu/authentication";
 
 const [
   ,

@@ -2,7 +2,7 @@ import { Show, createSignal, onCleanup, onMount } from "solid-js";
 import { Transition } from "solid-transition-group";
 import { assertIsNode } from "../../../utils";
 import { useStateAction } from "../../../StateAction";
-import ClickOutside from "../../../ClickOutside";
+import ClickOutside from "../../../component/ClickOutside";
 
 const [, { isInAddLineMode, getLineUnderConstruction, setModeRead }] =
   useStateAction();

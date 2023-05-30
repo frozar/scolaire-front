@@ -1,10 +1,10 @@
 import { onCleanup, createEffect } from "solid-js";
 import L from "leaflet";
-import { useStateAction } from "../StateAction";
-import { getLeafletMap } from "../signaux";
-import { linkMap } from "../global/linkPointIdentityCircle";
-import { COLOR_LINE_UNDER_CONSTRUCTION } from "../constant";
-import { PointIdentityType } from "../type";
+import { useStateAction } from "../../../../StateAction";
+import { getLeafletMap } from "../../../../signaux";
+import { linkMap } from "../../../../global/linkPointIdentityCircle";
+import { COLOR_LINE_UNDER_CONSTRUCTION } from "../../../../constant";
+import { PointIdentityType } from "../../../../type";
 
 const [, { isInAddLineMode, getLineUnderConstruction }] = useStateAction();
 
@@ -72,7 +72,7 @@ export default function () {
     // The line tip must not catch mouse event like click, hover, etc...
     const element = lineUnderConstructionTip?.getElement() as SVGElement;
     if (element && String(element.style) !== "pointer-events: none;") {
-      // @ts-expect-error
+      // @ts-expect-error style affectation
       element.style = "pointer-events: none;";
     }
   }

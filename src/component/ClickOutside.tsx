@@ -1,5 +1,5 @@
 import { onCleanup } from "solid-js";
-import { assertIsNode } from "./utils";
+import { assertIsNode } from "../utils";
 
 declare module "solid-js" {
   // eslint-disable-next-line @typescript-eslint/no-namespace

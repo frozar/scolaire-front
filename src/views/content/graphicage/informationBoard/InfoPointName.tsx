@@ -1,9 +1,7 @@
-import hash from "object-hash";
+import { NatureEnum } from "../../../../type";
+import { renderAnimation } from "../animation";
 
-import { NatureEnum } from "./type";
-import { renderAnimation } from "./animation";
-
-import { linkMap } from "./global/linkPointIdentityCircle";
+import { linkMap } from "../../../../global/linkPointIdentityCircle";
 
 export default function (props: {
   point: {
@@ -12,20 +10,19 @@ export default function (props: {
     nature: NatureEnum;
   };
 }) {
-  const point = props.point;
-
   return (
     <a
       class="prevent-select"
+      // eslint-disable-next-line solid/style-prop
       style="cursor: grab;"
       onClick={() => {
         let element;
-        if ((element = linkMap.get(point.id_point)?.getElement())) {
+        if ((element = linkMap.get(props.point.id_point)?.getElement())) {
           renderAnimation(element);
         }
       }}
     >
-      {point.name}
+      {props.point.name}
     </a>
   );
 }

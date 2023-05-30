@@ -8,7 +8,7 @@ import {
 } from "../signaux";
 import { MessageLevelEnum, MessageTypeEnum, ReturnMessageType } from "../type";
 import { uploadLine } from "../request";
-import { fetchPointsRamassage } from "../PointsRamassageAndEtablissement";
+import { fetchPointsRamassage } from "../views/content/graphicage/PointsRamassageAndEtablissement";
 
 let mapDragDropDiv: HTMLDivElement;
 

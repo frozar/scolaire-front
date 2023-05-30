@@ -1,5 +1,4 @@
 export const COLOR_LINE_UNDER_CONSTRUCTION = "#0000FF";
-export const DEAD_COLOR = "#000000FF";
 
 import L from "leaflet";
 import { TileType } from "./type";

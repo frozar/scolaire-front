@@ -1,7 +1,7 @@
 import { Show, createEffect, createSignal, onCleanup, onMount } from "solid-js";
 import { Transition } from "solid-transition-group";
 
-import ClickOutside from "../ClickOutside";
+import ClickOutside from "../component/ClickOutside";
 import {
   closeGeneratorDialogueBox,
   getDisplayedGeneratorDialogueBox,

@@ -1,10 +1,10 @@
 import L from "leaflet";
 import { onMount } from "solid-js";
 
-import logoWithBaseline from "./assets/logo-baseline.svg";
+import logoWithBaseline from "../../../assets/logo-baseline.svg";
 
 export default function () {
-  let componentRef: HTMLDivElement = document.createElement("div");
+  let componentRef!: HTMLDivElement;
 
   onMount(() => {
     L.DomEvent.disableClickPropagation(componentRef);
@@ -17,6 +17,7 @@ export default function () {
       id="map-logo"
       ref={componentRef}
       class="leaflet-bar leaflet-control logo-control"
+      // eslint-disable-next-line solid/style-prop
       style="border: none;"
     >
       <a

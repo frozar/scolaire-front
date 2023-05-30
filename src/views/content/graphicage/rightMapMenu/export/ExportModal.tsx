@@ -7,7 +7,7 @@ import {
   onCleanup,
   onMount,
 } from "solid-js";
-import ClickOutside from "../../../../../ClickOutside";
+import ClickOutside from "../../../../../component/ClickOutside";
 import {
   closeExportConfirmationBox,
   getExportConfirmation,
