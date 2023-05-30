@@ -1,7 +1,7 @@
 import EnterpriseLogo from "./logo/EnterpriseLogo";
 import OpenPictogram from "./logo/OpenPictogram";
 import ClosePictogram from "./logo/ClosePictogram";
-import { Show, createEffect, createSignal } from "solid-js";
+import { Show, createEffect, createSignal, onMount } from "solid-js";
 import { useStateGui } from "../../../StateGui";
 import { For } from "solid-js";
 
@@ -44,13 +44,14 @@ function MenuItems(props: MenuItemType) {
 }
 
 export default function () {
-  const [divRef, setDivRef] = createSignal<HTMLElement | undefined>();
   const [waitingToDisplayText, SetWaitingToDisplayText] = createSignal(
     getDisplayedLeftMenu()
   );
 
-  createEffect(() => {
-    divRef()?.addEventListener("transitionend", () => {
+  let refDivLeftMenu!: HTMLElement;
+
+  onMount(() => {
+    refDivLeftMenu.addEventListener("transitionend", () => {
       SetWaitingToDisplayText(!waitingToDisplayText());
     });
   });
@@ -59,7 +60,7 @@ export default function () {
     <nav
       id="lateral-nav"
       classList={{ active: getDisplayedLeftMenu() }}
-      ref={setDivRef}
+      ref={refDivLeftMenu}
     >
       <div class="lateral-nav-header">
         <EnterpriseLogo />
