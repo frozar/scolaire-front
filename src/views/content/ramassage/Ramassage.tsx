@@ -5,7 +5,7 @@ import StopItems from "./RamassageItem";
 import { StopItemType } from "../../../type";
 import RemoveRamassageConfirmation from "../../../userInformation/RemoveRamassageConfirmation";
 import ImportCsvDialogBox from "../../../component/ImportCsvDialogBox";
-import { getToken } from "../../../layout/topMenu/authentication";
+import { getToken } from "../../layout/topMenu/authentication";
 import ImportCsvCanvas from "../../../component/ImportCsvCanvas";
 import ImportCsvButton from "../../../component/ImportCsvButton";
 import ExportCsvButton from "../../../component/ExportCsvButton";

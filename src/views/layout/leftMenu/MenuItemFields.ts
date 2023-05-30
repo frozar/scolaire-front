@@ -5,7 +5,7 @@ import GraphicageLogo from "./logo/GraphicageLogo";
 // import SettingsLogo from "./logo/SettingsLogo";
 // import SupportLogo from "./logo/SupportLogo";
 // import VoirieLogo from "./logo/VoirieLogo";
-import { MenuItemType } from "../../type";
+import { MenuItemType } from "../../../type";
 
 export default function (displayText: boolean) {
   const menuItems: MenuItemType[] = [

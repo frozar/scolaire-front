@@ -8,7 +8,7 @@ import {
   login,
   logout,
 } from "./authentication";
-import { authenticated, setAuthenticated } from "../../signaux";
+import { authenticated, setAuthenticated } from "../../../signaux";
 
 export default function () {
   const [show, setShow] = createSignal(false);

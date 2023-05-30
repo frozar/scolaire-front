@@ -8,7 +8,7 @@ import {
 } from "../../../type";
 import { addNewUserInformation } from "../../../signaux";
 import { fetchEtablissement } from "./Etablissement";
-import { getToken } from "../../../layout/topMenu/authentication";
+import { getToken } from "../../layout/topMenu/authentication";
 
 export const [toggledEditStop, setToggledEditStop] = createSignal(false);
 export const toggleEditStop = () => setToggledEditStop(!toggledEditStop());

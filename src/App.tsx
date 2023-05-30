@@ -7,8 +7,8 @@ import RemoveConfirmation from "./userInformation/RemoveConfirmation";
 import ExportConfirmation from "./views/content/graphicage/rightMapMenu/export/ExportModal";
 
 import DragAndDrop from "./userInformation/DragAndDrop";
-import TopMenu from "./layout/topMenu/TopMenu";
-import LeftMenu from "./layout/leftMenu/LeftMenu";
+import TopMenu from "./views/layout/topMenu/TopMenu";
+import LeftMenu from "./views/layout/leftMenu/LeftMenu";
 import { useStateGui } from "./StateGui";
 import ClearConfirmation from "./userInformation/ClearConfirmation";
 import GeneratorDialogueBox from "./userInformation/GeneratorDialogueBox";
