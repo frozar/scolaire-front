@@ -1,11 +1,11 @@
 import EnterpriseLogo from "./logo/EnterpriseLogo";
-import OpenLateralMenuLogo from "./logo/OpenLateralMenuLogo";
+import OpenPictogram from "./logo/OpenPictogram";
 import CloseLateralMenuLogo from "./logo/CloseLateralMenuLogo";
 import { Show, createEffect, createSignal } from "solid-js";
-import { useStateGui } from "../StateGui";
+import { useStateGui } from "../../StateGui";
 import { For } from "solid-js";
 
-import { MenuItemType } from "../type";
+import { MenuItemType } from "../../type";
 import MenuItemsFields from "./MenuItemFields";
 
 const [
@@ -76,7 +76,7 @@ export default function () {
       </ul>
 
       <button id="lateral-close" onClick={toggleDisplayedMenu}>
-        <Show when={getDisplayedMenu()} fallback={<OpenLateralMenuLogo />}>
+        <Show when={getDisplayedMenu()} fallback={<OpenPictogram />}>
           <CloseLateralMenuLogo />
         </Show>
       </button>

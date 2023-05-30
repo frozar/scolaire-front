@@ -1,11 +1,11 @@
-import LateralMenuArretsLogo from "./logo/LateralMenuArretsLogo";
+import ArretsLogo from "./logo/ArretsLogo";
 // import LateralMenuDashboardLogo from "./logo/LateralMenuDashboardLogo";
-import LateralMenuEtablissementLogo from "./logo/LateralMenuEtablissementLogo";
-import LateralMenuGraphicageLogo from "./logo/LateralMenuGraphicageLogo";
+import EtablissementLogo from "./logo/EtablissementLogo";
+import GraphicageLogo from "./logo/GraphicageLogo";
 // import LateralMenuSettingsLogo from "./logo/LateralMenuSettingsLogo";
 // import LateralMenuSupportLogo from "./logo/LateralMenuSupportLogo";
 // import LateralMenuVoirieLogo from "./logo/LateralMenuVoirieLogo";
-import { MenuItemType } from "../type";
+import { MenuItemType } from "../../type";
 
 export default function (displayText: boolean) {
   const menuItems: MenuItemType[] = [
@@ -18,7 +18,7 @@ export default function (displayText: boolean) {
     {
       title: "Graphicage",
       menuItem: "graphicage",
-      Logo: LateralMenuGraphicageLogo,
+      Logo: GraphicageLogo,
       displayText: displayText,
     },
     // {
@@ -30,13 +30,13 @@ export default function (displayText: boolean) {
     {
       title: "Établissements",
       menuItem: "etablissements",
-      Logo: LateralMenuEtablissementLogo,
+      Logo: EtablissementLogo,
       displayText: displayText,
     },
     {
       title: "Arrêts",
       menuItem: "ramassages",
-      Logo: LateralMenuArretsLogo,
+      Logo: ArretsLogo,
       displayText: displayText,
     },
     // {

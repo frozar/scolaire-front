@@ -7,8 +7,8 @@ import RemoveConfirmation from "./userInformation/RemoveConfirmation";
 import ExportConfirmation from "./views/graphicage/rightMapMenu/export/ExportModal";
 
 import DragAndDrop from "./userInformation/DragAndDrop";
-import NavTop from "./layout/NavTop";
-import NavLateral from "./layout/NavLateral";
+import TopMenu from "./layout/topMenu/TopMenu";
+import LeftMenu from "./layout/leftMenu/LeftMenu";
 import { useStateGui } from "./StateGui";
 import ClearConfirmation from "./userInformation/ClearConfirmation";
 import GeneratorDialogueBox from "./userInformation/GeneratorDialogueBox";
@@ -42,10 +42,10 @@ createEffect(() => {
 export default () => {
   return (
     <div ref={refApp}>
-      <NavTop />
+      <TopMenu />
 
       <div id="app-content">
-        <NavLateral />
+        <LeftMenu />
 
         <Switch fallback={<p>Page not found</p>}>
           <Match when={getSelectedMenu() == "graphicage"}>
