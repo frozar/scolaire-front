@@ -1,7 +1,9 @@
 import { createEffect, Switch, Match } from "solid-js";
-import SpinningWheel from "./component/SpinningWheel";
-import Map from "./views/content/graphicage/Map";
+
 import { useStateAction } from "./StateAction";
+import { useStateGui } from "./StateGui";
+import SpinningWheel from "./component/SpinningWheel";
+
 import DisplayUserInformation from "./userInformation/DisplayUserInformation";
 import RemoveConfirmation from "./userInformation/RemoveConfirmation";
 import ExportConfirmation from "./views/content/graphicage/rightMapMenu/export/ExportModal";
@@ -9,11 +11,12 @@ import ExportConfirmation from "./views/content/graphicage/rightMapMenu/export/E
 import DragAndDrop from "./userInformation/DragAndDrop";
 import TopMenu from "./views/layout/topMenu/TopMenu";
 import LeftMenu from "./views/layout/leftMenu/LeftMenu";
-import { useStateGui } from "./StateGui";
 import ClearConfirmation from "./userInformation/ClearConfirmation";
 import GeneratorDialogueBox from "./userInformation/GeneratorDialogueBox";
-import Arret from "./views/content/ramassage/Ramassage";
+
+import Graphicage from "./views/content/graphicage/Graphicage";
 import Etablissement from "./views/content/etablissement/Etablissement";
+import Ramassage from "./views/content/ramassage/Ramassage";
 
 const [, { isInAddLineMode }] = useStateAction();
 const [, { getSelectedMenu }] = useStateGui();
@@ -49,11 +52,11 @@ export default () => {
 
         <Switch fallback={<p>Page not found</p>}>
           <Match when={getSelectedMenu() == "graphicage"}>
-            <Map />
+            <Graphicage />
           </Match>
 
           <Match when={getSelectedMenu() == "ramassages"}>
-            <Arret />
+            <Ramassage />
           </Match>
 
           <Match when={getSelectedMenu() == "etablissements"}>
