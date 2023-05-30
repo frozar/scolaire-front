@@ -1,8 +1,9 @@
 import { Show, createSignal, onMount } from "solid-js";
-import { CurrentUserLogo, LoggedInUserLogo } from "../export/Logos";
+import CurrentUserLogo from "./logo/CurrentUserLogo";
+import LoggedInUserLogo from "./logo/LoggedInUserLogo";
 import { Transition } from "solid-transition-group";
-import { getProfilePic, isAuthenticated, login, logout } from "../auth/auth";
-import { authenticated, setAuthenticated } from "../signaux";
+import { getProfilePic, isAuthenticated, login, logout } from "../../auth/auth";
+import { authenticated, setAuthenticated } from "../../signaux";
 
 export default function () {
   const [show, setShow] = createSignal(false);

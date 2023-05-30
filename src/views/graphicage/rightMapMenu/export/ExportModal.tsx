@@ -17,7 +17,8 @@ import { Transition } from "solid-transition-group";
 import { assertIsNode } from "../../../../utils";
 import { ExportTypeEnum } from "../../../../type";
 import { exportData } from "./utils";
-import { GtfsExportLogo, ImageExportLogo } from "./Logos";
+import GtfsExportLogo from "./logo/GtfsExportLogo";
+import ImageExportLogo from "./logo/ImageExportLogo";
 
 const [selected, setSelected] = createSignal<string | null>(null);
 
