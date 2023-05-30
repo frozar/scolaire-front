@@ -1,6 +1,6 @@
 import EnterpriseLogo from "./logo/EnterpriseLogo";
 import OpenPictogram from "./logo/OpenPictogram";
-import CloseLateralMenuLogo from "./logo/CloseLateralMenuLogo";
+import ClosePictogram from "./logo/ClosePictogram";
 import { Show, createEffect, createSignal } from "solid-js";
 import { useStateGui } from "../../../StateGui";
 import { For } from "solid-js";
@@ -77,7 +77,7 @@ export default function () {
 
       <button id="lateral-close" onClick={toggleDisplayedMenu}>
         <Show when={getDisplayedMenu()} fallback={<OpenPictogram />}>
-          <CloseLateralMenuLogo />
+          <ClosePictogram />
         </Show>
       </button>
     </nav>
