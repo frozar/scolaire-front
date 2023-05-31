@@ -7,7 +7,7 @@ import SpinningWheel from "./component/SpinningWheel";
 // User information
 import DisplayUserInformation from "./userInformation/DisplayUserInformation";
 import RemoveConfirmation from "./userInformation/RemoveConfirmation";
-import DragAndDrop from "./userInformation/DragAndDrop";
+import DragAndDropSummary from "./userInformation/DragAndDropSummary";
 import ClearConfirmation from "./userInformation/ClearConfirmation";
 import GeneratorDialogueBox from "./userInformation/GeneratorDialogueBox";
 
@@ -66,7 +66,7 @@ export default () => {
         </Switch>
 
         <DisplayUserInformation />
-        <DragAndDrop />
+        <DragAndDropSummary />
         <RemoveConfirmation />
         <ClearConfirmation />
         <ExportConfirmation />
