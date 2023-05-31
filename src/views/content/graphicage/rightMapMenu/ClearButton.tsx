@@ -4,7 +4,7 @@ import {
   confirmAbortEditionNeedToBeCall,
   defineModalToOpen,
 } from "../ConfirmStopAddLineBox";
-import ButtonMap from "../../../../component/atom/ButtonMap";
+import ButtonMap from "../../../../component/atom/ButtonGraphicageRightMenu";
 
 export default function () {
   const handleClick = () => {

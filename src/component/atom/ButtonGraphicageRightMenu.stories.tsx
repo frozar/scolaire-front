@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "storybook-solidjs";
-import ButtonMap from "./ButtonMap";
+import ButtonMap from "./ButtonGraphicageRightMenu";
 import { FaRegularTrashCan, FaSolidMinus, FaSolidPlus } from "solid-icons/fa";
 import { CgExport } from "solid-icons/cg";
 import { FiArrowUpCircle } from "solid-icons/fi";
