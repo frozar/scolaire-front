@@ -4,7 +4,7 @@ import { addBusLine } from "../../../request";
 import {
   closeRemoveConfirmationBox,
   fetchBusLines,
-  getClearConfirmation,
+  displayedClearConfirmationDialogBox,
   getDisplayedGeneratorDialogBox,
   getExportConfirmation,
 } from "../../../signaux";
@@ -32,7 +32,7 @@ const [
 const isOpenedModal = () =>
   getExportConfirmation().displayed ||
   getDisplayedGeneratorDialogBox() ||
-  getClearConfirmation().displayed ||
+  displayedClearConfirmationDialogBox().displayed ||
   displayedConfirmStopAddLine();
 
 const [, { getSelectedMenu }] = useStateGui();

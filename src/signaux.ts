@@ -90,9 +90,12 @@ export const [getRemoveRamassageConfirmation, setRemoveRamassageConfirmation] =
     item: null,
   }) as Signal<removeRamassageConfirmationType>;
 
-export const [getClearConfirmation, setClearConfirmation] = createSignal({
+export const [
+  displayedClearConfirmationDialogBox,
+  setDisplayedClearConfirmationDialogBox,
+] = createSignal<clearConfirmationType>({
   displayed: false,
-}) as Signal<clearConfirmationType>;
+});
 
 const initialImportCsvMessage: ReturnMessageType = {
   displayed: false,
@@ -156,14 +159,14 @@ export function closeRemoveRamassageConfirmationBox() {
 }
 
 export function openClearConfirmationBox() {
-  setClearConfirmation((prev) => ({
+  setDisplayedClearConfirmationDialogBox((prev) => ({
     ...prev,
     displayed: true,
   }));
 }
 
 export function closeClearConfirmationBox() {
-  setClearConfirmation({
+  setDisplayedClearConfirmationDialogBox({
     displayed: false,
   });
 }

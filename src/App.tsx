@@ -8,7 +8,7 @@ import SpinningWheel from "./component/SpinningWheel";
 import DisplayUserInformation from "./userInformation/DisplayUserInformation";
 import RemoveConfirmation from "./userInformation/RemoveConfirmation";
 import DragAndDropSummary from "./userInformation/DragAndDropSummary";
-import ClearConfirmation from "./userInformation/ClearConfirmation";
+import ClearConfirmationDialogBox from "./userInformation/ClearConfirmationDialogBox";
 import GeneratorDialogBox from "./userInformation/GeneratorDialogBox";
 
 // Layout
@@ -68,7 +68,7 @@ export default () => {
         <DisplayUserInformation />
         <DragAndDropSummary />
         <RemoveConfirmation />
-        <ClearConfirmation />
+        <ClearConfirmationDialogBox />
         <ExportConfirmation />
         <GeneratorDialogBox />
         <SpinningWheel />
