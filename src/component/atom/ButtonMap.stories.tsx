@@ -1,13 +1,9 @@
 import type { Meta, StoryObj } from "storybook-solidjs";
 import ButtonMap from "./ButtonMap";
-import {
-  AddLineIcon,
-  ClearMapIcon,
-  ExportIcon,
-  GenerateIcon,
-  InformationIcon,
-  RemoveLineIcon,
-} from "./ButtonMapIcons";
+import { FaRegularTrashCan, FaSolidMinus, FaSolidPlus } from "solid-icons/fa";
+import { CgExport } from "solid-icons/cg";
+import { FiArrowUpCircle } from "solid-icons/fi";
+import { BsInfoCircle } from "solid-icons/bs";
 
 const meta = {
   title: "Map/RightMenu/Button",
@@ -24,7 +20,7 @@ type Story = StoryObj<typeof meta>;
 export const addLineDisable: Story = {
   args: {
     tooltip: "Ajouter une ligne",
-    icon: <AddLineIcon />,
+    icon: <FaSolidPlus class="w-full p-0 h-2/3" />,
     _class: false,
   },
 };
@@ -32,7 +28,7 @@ export const addLineDisable: Story = {
 export const addLineEnable: Story = {
   args: {
     tooltip: "Ajouter une ligne",
-    icon: <AddLineIcon />,
+    icon: <FaSolidPlus class="w-full p-0 h-2/3" />,
     _class: true,
   },
 };
@@ -40,7 +36,7 @@ export const addLineEnable: Story = {
 export const RemoveLineDisable: Story = {
   args: {
     tooltip: "Supprimer une ligne",
-    icon: <RemoveLineIcon />,
+    icon: <FaSolidMinus class="w-full p-0 h-2/3" />,
     _class: false,
   },
 };
@@ -48,7 +44,7 @@ export const RemoveLineDisable: Story = {
 export const RemoveLineEnable: Story = {
   args: {
     tooltip: "Supprimer une ligne",
-    icon: <RemoveLineIcon />,
+    icon: <FaSolidMinus class="w-full p-0 h-2/3" />,
     _class: true,
   },
 };
@@ -56,7 +52,7 @@ export const RemoveLineEnable: Story = {
 export const ClearMapDisable: Story = {
   args: {
     tooltip: "Vider la carte",
-    icon: <ClearMapIcon />,
+    icon: <FaRegularTrashCan class="w-full p-0 h-2/3" />,
     _class: false,
   },
 };
@@ -64,7 +60,7 @@ export const ClearMapDisable: Story = {
 export const ClearMapEnable: Story = {
   args: {
     tooltip: "Vider la carte",
-    icon: <ClearMapIcon />,
+    icon: <FaRegularTrashCan class="w-full p-0 h-2/3" />,
     _class: true,
   },
 };
@@ -72,7 +68,7 @@ export const ClearMapEnable: Story = {
 export const ExportMapDisable: Story = {
   args: {
     tooltip: "Vider la carte",
-    icon: <ExportIcon />,
+    icon: <CgExport class="w-full p-0 h-2/3" />,
     _class: false,
   },
 };
@@ -80,7 +76,7 @@ export const ExportMapDisable: Story = {
 export const ExportMapEnable: Story = {
   args: {
     tooltip: "Vider la carte",
-    icon: <ExportIcon />,
+    icon: <CgExport class="w-full p-0 h-2/3" />,
     _class: true,
   },
 };
@@ -88,7 +84,7 @@ export const ExportMapEnable: Story = {
 export const GenerateMapDisable: Story = {
   args: {
     tooltip: "Vider la carte",
-    icon: <GenerateIcon />,
+    icon: <FiArrowUpCircle class="w-full p-0 h-2/3" />,
     _class: false,
   },
 };
@@ -96,7 +92,7 @@ export const GenerateMapDisable: Story = {
 export const GenerateMapEnable: Story = {
   args: {
     tooltip: "Vider la carte",
-    icon: <GenerateIcon />,
+    icon: <FiArrowUpCircle class="w-full p-0 h-2/3" />,
     _class: true,
   },
 };
@@ -104,7 +100,7 @@ export const GenerateMapEnable: Story = {
 export const InformationMapDisable: Story = {
   args: {
     tooltip: "Vider la carte",
-    icon: <InformationIcon />,
+    icon: <BsInfoCircle class="w-full p-0 h-2/3" />,
     _class: false,
   },
 };
@@ -112,7 +108,7 @@ export const InformationMapDisable: Story = {
 export const InformationMapEnable: Story = {
   args: {
     tooltip: "Vider la carte",
-    icon: <InformationIcon />,
+    icon: <BsInfoCircle class="w-full p-0 h-2/3" />,
     _class: true,
   },
 };
