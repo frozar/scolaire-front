@@ -1,5 +1,5 @@
 import "../src/component/atom/button.css";
-import "../src/css/index.css";
+import "./index.css";
 
 const preview: Preview = {
   parameters: {
