@@ -47,7 +47,8 @@ code {
 }
 
 #app-content {
-  display: flex;
+  @apply absolute flex left-[70px];
+  width: calc(100% - 70px);
 }
 
 .legend {

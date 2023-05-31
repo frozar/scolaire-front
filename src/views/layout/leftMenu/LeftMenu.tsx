@@ -1,7 +1,7 @@
 import EnterpriseLogo from "./logo/EnterpriseLogo";
 import OpenPictogram from "./logo/OpenPictogram";
 import ClosePictogram from "./logo/ClosePictogram";
-import { Show, createEffect, createSignal } from "solid-js";
+import { Show, createSignal, onMount } from "solid-js";
 import { useStateGui } from "../../../StateGui";
 import { For } from "solid-js";
 
@@ -10,13 +10,19 @@ import MenuItemsFields from "./MenuItemFields";
 
 const [
   ,
-  { toggleDisplayedMenu, setSelectedMenu, getSelectedMenu, getDisplayedMenu },
+  {
+    setSelectedMenu,
+    getSelectedMenu,
+    toggleDisplayedLeftMenu,
+    getDisplayedLeftMenu,
+  },
 ] = useStateGui();
 
 function MenuItems(props: MenuItemType) {
   const displayText = () => props.displayText;
   const title = () => props.title;
   const menuItem = () => props.menuItem;
+
   const Logo = () => {
     return <>{props.Logo}</>;
   };
@@ -30,7 +36,7 @@ function MenuItems(props: MenuItemType) {
       }}
     >
       <Logo />
-      <Show when={getDisplayedMenu() == true && displayText() == true}>
+      <Show when={getDisplayedLeftMenu() == true && displayText() == true}>
         {title()}
       </Show>
     </li>
@@ -38,13 +44,14 @@ function MenuItems(props: MenuItemType) {
 }
 
 export default function () {
-  const [divRef, setDivRef] = createSignal<HTMLElement | undefined>();
   const [waitingToDisplayText, SetWaitingToDisplayText] = createSignal(
-    getDisplayedMenu()
+    getDisplayedLeftMenu()
   );
 
-  createEffect(() => {
-    divRef()?.addEventListener("transitionend", () => {
+  let refDivLeftMenu!: HTMLElement;
+
+  onMount(() => {
+    refDivLeftMenu.addEventListener("transitionend", () => {
       SetWaitingToDisplayText(!waitingToDisplayText());
     });
   });
@@ -52,8 +59,8 @@ export default function () {
   return (
     <nav
       id="lateral-nav"
-      classList={{ active: getDisplayedMenu() }}
-      ref={setDivRef}
+      classList={{ active: getDisplayedLeftMenu() }}
+      ref={refDivLeftMenu}
     >
       <div class="lateral-nav-header">
         <EnterpriseLogo />
@@ -75,8 +82,8 @@ export default function () {
         </For>
       </ul>
 
-      <button id="lateral-close" onClick={toggleDisplayedMenu}>
-        <Show when={getDisplayedMenu()} fallback={<OpenPictogram />}>
+      <button id="lateral-close" onClick={toggleDisplayedLeftMenu}>
+        <Show when={getDisplayedLeftMenu()} fallback={<OpenPictogram />}>
           <ClosePictogram />
         </Show>
       </button>

@@ -1,6 +1,6 @@
 import { useStateGui } from "../../../../StateGui";
 
-const [, { getDisplayedMenu }] = useStateGui();
+const [, { getDisplayedLeftMenu }] = useStateGui();
 
 export default function () {
   return (
@@ -13,7 +13,10 @@ export default function () {
       <g clip-path="url(#clip0_39_820)">
         <g
           id="enterprise-logo-text"
-          classList={{ block: getDisplayedMenu(), hidden: !getDisplayedMenu() }}
+          classList={{
+            block: getDisplayedLeftMenu(),
+            hidden: !getDisplayedLeftMenu(),
+          }}
           class="title fill-white"
         >
           <path d="M254.73 5.07581C247.936 5.01164 242.255 4.98145 237.684 4.98145C234 4.98145 230.256 5.49102 226.447 6.50639C222.639 7.52177 219.143 9.23922 215.973 11.6474C212.798 14.0594 210.258 17.3622 208.355 21.552C206.449 25.7419 205.498 30.9509 205.498 37.1714V145.93H233.687V91.8356L289.495 90.3106V68.0252L233.687 66.5003V42.5012C233.687 39.0739 234.668 36.3108 236.639 34.2159C238.605 32.121 241.557 31.0754 245.494 31.0754H298.633V7.4576C291.518 6.6989 284.123 6.12516 276.442 5.74392C268.761 5.36268 261.521 5.14375 254.73 5.07581V5.07581Z" />

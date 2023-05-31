@@ -1,19 +1,25 @@
 import { createEffect, Switch, Match } from "solid-js";
-import SpinningWheel from "./component/SpinningWheel";
-import Map from "./views/content/graphicage/Map";
+
 import { useStateAction } from "./StateAction";
+import { useStateGui } from "./StateGui";
+import SpinningWheel from "./component/SpinningWheel";
+
+// User information
 import DisplayUserInformation from "./userInformation/DisplayUserInformation";
 import RemoveConfirmation from "./userInformation/RemoveConfirmation";
-import ExportConfirmation from "./views/content/graphicage/rightMapMenu/export/ExportModal";
-
-import DragAndDrop from "./userInformation/DragAndDrop";
-import TopMenu from "./views/layout/topMenu/TopMenu";
-import LeftMenu from "./views/layout/leftMenu/LeftMenu";
-import { useStateGui } from "./StateGui";
+import DragAndDropSummary from "./userInformation/DragAndDropSummary";
 import ClearConfirmation from "./userInformation/ClearConfirmation";
 import GeneratorDialogueBox from "./userInformation/GeneratorDialogueBox";
-import Arret from "./views/content/ramassage/Ramassage";
+
+// Layout
+import Layout from "./views/layout/Layout";
+
+// Graphicage
+import Graphicage from "./views/content/graphicage/Graphicage";
+import ExportConfirmation from "./views/content/graphicage/rightMapMenu/export/ExportModal";
+
 import Etablissement from "./views/content/etablissement/Etablissement";
+import Ramassage from "./views/content/ramassage/Ramassage";
 
 const [, { isInAddLineMode }] = useStateAction();
 const [, { getSelectedMenu }] = useStateGui();
@@ -42,18 +48,16 @@ export default () => {
 
   return (
     <div ref={refApp}>
-      <TopMenu />
+      <Layout />
 
       <div id="app-content">
-        <LeftMenu />
-
         <Switch fallback={<p>Page not found</p>}>
           <Match when={getSelectedMenu() == "graphicage"}>
-            <Map />
+            <Graphicage />
           </Match>
 
           <Match when={getSelectedMenu() == "ramassages"}>
-            <Arret />
+            <Ramassage />
           </Match>
 
           <Match when={getSelectedMenu() == "etablissements"}>
@@ -62,7 +66,7 @@ export default () => {
         </Switch>
 
         <DisplayUserInformation />
-        <DragAndDrop />
+        <DragAndDropSummary />
         <RemoveConfirmation />
         <ClearConfirmation />
         <ExportConfirmation />
