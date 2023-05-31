@@ -12,8 +12,7 @@ import ClearConfirmation from "./userInformation/ClearConfirmation";
 import GeneratorDialogueBox from "./userInformation/GeneratorDialogueBox";
 
 // Layout
-import TopMenu from "./views/layout/topMenu/TopMenu";
-import LeftMenu from "./views/layout/leftMenu/LeftMenu";
+import Layout from "./views/layout/Layout";
 
 // Graphicage
 import Graphicage from "./views/content/graphicage/Graphicage";
@@ -21,7 +20,6 @@ import ExportConfirmation from "./views/content/graphicage/rightMapMenu/export/E
 
 import Etablissement from "./views/content/etablissement/Etablissement";
 import Ramassage from "./views/content/ramassage/Ramassage";
-import Layout from "./views/layout/Layout";
 
 const [, { isInAddLineMode }] = useStateAction();
 const [, { getSelectedMenu }] = useStateGui();
