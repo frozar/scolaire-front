@@ -5,7 +5,7 @@ import {
   closeRemoveConfirmationBox,
   fetchBusLines,
   getClearConfirmation,
-  getDisplayedGeneratorDialogueBox,
+  getDisplayedGeneratorDialogBox,
   getExportConfirmation,
 } from "../../../signaux";
 import {
@@ -31,7 +31,7 @@ const [
 
 const isOpenedModal = () =>
   getExportConfirmation().displayed ||
-  getDisplayedGeneratorDialogueBox() ||
+  getDisplayedGeneratorDialogBox() ||
   getClearConfirmation().displayed ||
   displayedConfirmStopAddLine();
 

@@ -116,19 +116,19 @@ export function openExportConfirmationBox() {
   }));
 }
 
-const [displayedGeneratorDialogueBox, setDisplayedGeneratorDialogueBox] =
+const [displayedGeneratorDialogBox, setDisplayedGeneratorDialogBox] =
   createSignal(false);
 
-export function openGeneratorDialogueBox() {
-  setDisplayedGeneratorDialogueBox(true);
+export function openGeneratorDialogBox() {
+  setDisplayedGeneratorDialogBox(true);
 }
 
-export function closeGeneratorDialogueBox() {
-  setDisplayedGeneratorDialogueBox(false);
+export function closeGeneratorDialogBox() {
+  setDisplayedGeneratorDialogBox(false);
 }
 
-export function getDisplayedGeneratorDialogueBox() {
-  return displayedGeneratorDialogueBox();
+export function getDisplayedGeneratorDialogBox() {
+  return displayedGeneratorDialogBox();
 }
 
 export function closeImportCsvBox() {

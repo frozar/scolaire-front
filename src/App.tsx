@@ -9,7 +9,7 @@ import DisplayUserInformation from "./userInformation/DisplayUserInformation";
 import RemoveConfirmation from "./userInformation/RemoveConfirmation";
 import DragAndDropSummary from "./userInformation/DragAndDropSummary";
 import ClearConfirmation from "./userInformation/ClearConfirmation";
-import GeneratorDialogueBox from "./userInformation/GeneratorDialogueBox";
+import GeneratorDialogBox from "./userInformation/GeneratorDialogBox";
 
 // Layout
 import Layout from "./views/layout/Layout";
@@ -70,7 +70,7 @@ export default () => {
         <RemoveConfirmation />
         <ClearConfirmation />
         <ExportConfirmation />
-        <GeneratorDialogueBox />
+        <GeneratorDialogBox />
         <SpinningWheel />
       </div>
     </div>
