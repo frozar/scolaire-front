@@ -19,7 +19,7 @@ export default function () {
 
   return (
     <ButtonMap
-      click={handleClick}
+      onClick={handleClick}
       tooltip="Ajouter une ligne"
       _class={isInAddLineMode()}
       icon={Icon}
