@@ -146,7 +146,7 @@ export default function () {
                       <p class="text-right">Nombre de véhicules :</p>
                     </div>
                     <form class="mt-5 sm:flex sm:items-center">
-                      <div class="w-full sm:max-w-xs w-1/2">
+                      <div class="w-full sm:max-w-xs">
                         <label for="nb_vehicle" class="sr-only">
                           Nombre de véhicules
                         </label>
@@ -175,7 +175,7 @@ export default function () {
                       <p class="text-right">Capacité des véhicules :</p>
                     </div>
                     <form class="mt-5 sm:flex sm:items-center">
-                      <div class="w-full sm:max-w-xs w-1/2">
+                      <div class="w-full sm:max-w-xs">
                         <label for="vehicle_capacity" class="sr-only">
                           Capacité des véhicules
                         </label>
@@ -208,7 +208,7 @@ export default function () {
                       </p>
                     </div>
                     <form class="mt-3 sm:flex sm:items-center">
-                      <div class="w-full sm:max-w-xs w-1/2">
+                      <div class="w-full sm:max-w-xs">
                         <label for="time_limit_seconds" class="sr-only">
                           Temps maximum de génération
                         </label>
@@ -239,7 +239,7 @@ export default function () {
                       </p>
                     </div>
                     <form class="mt-3 sm:flex sm:items-center">
-                      <div class="w-full sm:max-w-xs w-1/2">
+                      <div class="w-full sm:max-w-xs">
                         <label for="maximum_travel_distance" class="sr-only">
                           Distance maximale parcourue
                         </label>
@@ -270,7 +270,7 @@ export default function () {
                       </p>
                     </div>
                     <form class="mt-3 sm:flex sm:items-center">
-                      <div class="w-full sm:max-w-xs w-1/2">
+                      <div class="w-full sm:max-w-xs">
                         <label
                           for="global_span_cost_coefficient"
                           class="sr-only"
