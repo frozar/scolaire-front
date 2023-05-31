@@ -1,4 +1,3 @@
-import { IconTypes } from "solid-icons";
 import { JSX } from "solid-js";
 
 export interface ButtonMapProps {
