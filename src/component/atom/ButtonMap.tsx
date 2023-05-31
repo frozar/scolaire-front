@@ -4,7 +4,7 @@ export interface ButtonMapProps {
   onClick: () => void;
   tooltip: string;
   icon: JSX.Element;
-  _class?: boolean;
+  isActive?: boolean;
 }
 
 export default function (props: ButtonMapProps) {
@@ -20,7 +20,7 @@ export default function (props: ButtonMapProps) {
         tabIndex={0}
         class="custom-btn btn-circle hover:bg-[#062F3F] hover:text-[#0cc683]"
         classList={{
-          "bg-[#062F3F] text-[#0cc683]": props._class,
+          "bg-[#062F3F] text-[#0cc683]": props.isActive,
         }}
         onClick={handleClick}
       >
