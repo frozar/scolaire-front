@@ -20,7 +20,7 @@ export default function () {
     <ButtonMap
       onClick={handleClick}
       tooltip="Ajouter une ligne"
-      _class={isInAddLineMode()}
+      isActive={isInAddLineMode()}
       icon={<FaSolidPlus class="w-full p-0 h-2/3" />}
     />
   );
