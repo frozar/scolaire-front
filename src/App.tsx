@@ -5,9 +5,11 @@ import { useStateGui } from "./StateGui";
 import SpinningWheel from "./component/SpinningWheel";
 
 // User information
-import RemoveConfirmation from "./userInformation/RemoveConfirmation";
 import DisplayUserInformation from "./userInformation/DisplayUserInformation";
 import DragAndDropSummary from "./userInformation/DragAndDropSummary";
+
+// Dialogue box
+import RemoveConfirmation from "./userInformation/RemoveConfirmation";
 import ClearConfirmationDialogBox from "./userInformation/ClearConfirmationDialogBox";
 import GeneratorDialogBox from "./userInformation/GeneratorDialogBox";
 import ExportConfirmationDialogBox from "./views/content/graphicage/rightMapMenu/export/ExportConfirmationDialogBox";
