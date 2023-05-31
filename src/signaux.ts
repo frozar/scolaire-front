@@ -113,7 +113,7 @@ export function closeDragAndDropConfirmationBox() {
 }
 
 export function openExportConfirmationBox() {
-  setExportConfirmation((prev) => ({
+  setExportConfirmationDialogBox((prev) => ({
     ...prev,
     displayed: true,
   }));
@@ -174,19 +174,20 @@ export function closeClearConfirmationBox() {
 export const [getRemainingExport, setRemainingExport] = createSignal(0);
 export function setExportType(exportType: string | null) {
   const type = ExportTypeEnum[exportType as keyof typeof ExportTypeEnum];
-  setExportConfirmation((prev) => ({
+  setExportConfirmationDialogBox((prev) => ({
     ...prev,
     exportType: type,
   }));
 }
 
-export const [getExportConfirmation, setExportConfirmation] = createSignal({
-  displayed: false,
-  exportType: null,
-}) as Signal<exportConfirmationType>;
+export const [getExportConfirmationDialogBox, setExportConfirmationDialogBox] =
+  createSignal({
+    displayed: false,
+    exportType: null,
+  }) as Signal<exportConfirmationType>;
 
 export function closeExportConfirmationBox() {
-  setExportConfirmation({
+  setExportConfirmationDialogBox({
     displayed: false,
     exportType: null,
   });

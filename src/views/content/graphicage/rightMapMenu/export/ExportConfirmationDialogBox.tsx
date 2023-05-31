@@ -10,7 +10,7 @@ import {
 import ClickOutside from "../../../../../component/ClickOutside";
 import {
   closeExportConfirmationBox,
-  getExportConfirmation,
+  getExportConfirmationDialogBox,
   setExportType,
 } from "../../../../../signaux";
 import { Transition } from "solid-transition-group";
@@ -73,7 +73,7 @@ function exitModal({ code }: KeyboardEvent) {
   // eslint-disable-next-line solid/reactivity
   keyboard.getLayoutMap().then(() => {
     if (code === "Escape") {
-      if (getExportConfirmation()["displayed"]) {
+      if (getExportConfirmationDialogBox()["displayed"]) {
         closeExportConfirmationBox();
       }
     }
@@ -91,7 +91,7 @@ export default function () {
     document.removeEventListener("keyup", exitModal);
   });
 
-  const displayed = () => getExportConfirmation()["displayed"];
+  const displayed = () => getExportConfirmationDialogBox()["displayed"];
 
   return (
     <Transition

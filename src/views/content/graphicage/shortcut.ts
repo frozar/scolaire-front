@@ -6,7 +6,7 @@ import {
   fetchBusLines,
   displayedClearConfirmationDialogBox,
   getDisplayedGeneratorDialogBox,
-  getExportConfirmation,
+  getExportConfirmationDialogBox,
 } from "../../../signaux";
 import {
   displayAddLineMessage,
@@ -30,7 +30,7 @@ const [
 ] = useStateAction();
 
 const isOpenedModal = () =>
-  getExportConfirmation().displayed ||
+  getExportConfirmationDialogBox().displayed ||
   getDisplayedGeneratorDialogBox() ||
   displayedClearConfirmationDialogBox().displayed ||
   displayedConfirmStopAddLine();

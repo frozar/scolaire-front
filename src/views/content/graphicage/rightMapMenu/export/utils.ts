@@ -1,4 +1,4 @@
-import { getExportConfirmation } from "../../../../../signaux";
+import { getExportConfirmationDialogBox } from "../../../../../signaux";
 import { ExportTypeEnum } from "../../../../../type";
 import { exportCsv } from "./csvExport";
 import { exportGtfs } from "./gtfsExport";
@@ -25,7 +25,7 @@ export function getTimestamp() {
 }
 
 export function exportData() {
-  const exportType = getExportConfirmation()["exportType"];
+  const exportType = getExportConfirmationDialogBox()["exportType"];
   if (exportType == null) {
     return;
   }
