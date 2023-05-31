@@ -183,7 +183,7 @@ export default function () {
                           type="number"
                           name="vehicle_capacity"
                           id="vehicle_capacity"
-                          class="block w-40 rounded-md border-0 py-1.5 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          class="block w-40 rounded-md border-0 py-1.5 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 bg-white"
                           min={1}
                           onChange={(evt: Event) => {
                             if (!evt.target) {
@@ -216,7 +216,7 @@ export default function () {
                           type="number"
                           name="time_limit_seconds"
                           id="time_limit_seconds"
-                          class="block w-40 rounded-md border-0 py-1.5 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          class="block w-40 rounded-md border-0 py-1.5 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 bg-white"
                           step={1}
                           min={10}
                           max={50}
@@ -247,7 +247,7 @@ export default function () {
                           type="number"
                           name="maximum_travel_distance"
                           id="maximum_travel_distance"
-                          class="block w-40 rounded-md border-0 py-1.5 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          class="block w-40 rounded-md border-0 py-1.5 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 bg-white"
                           step={5}
                           min={10}
                           onChange={(evt: Event) => {
@@ -281,7 +281,7 @@ export default function () {
                           type="number"
                           name="global_span_cost_coefficient"
                           id="global_span_cost_coefficient"
-                          class="block w-40 rounded-md border-0 py-1.5 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          class="block w-40 rounded-md border-0 py-1.5 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 bg-white"
                           step={1}
                           min={1}
                           onChange={(evt: Event) => {
