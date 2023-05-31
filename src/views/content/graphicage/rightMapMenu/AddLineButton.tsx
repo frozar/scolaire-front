@@ -5,7 +5,6 @@ import { FaSolidPlus } from "solid-icons/fa";
 import ButtonMap from "../../../../component/atom/ButtonMap";
 
 const [, { setModeAddLine, isInAddLineMode, setModeRead }] = useStateAction();
-const Icon = <FaSolidPlus class="w-full p-0 h-2/3" />;
 
 export default function () {
   const handleClick = () => {
@@ -22,7 +21,7 @@ export default function () {
       onClick={handleClick}
       tooltip="Ajouter une ligne"
       _class={isInAddLineMode()}
-      icon={Icon}
+      icon={<FaSolidPlus class="w-full p-0 h-2/3" />}
     />
   );
 }
