@@ -5,18 +5,18 @@ import { useStateGui } from "./StateGui";
 import SpinningWheel from "./component/SpinningWheel";
 
 // User information
-import DisplayUserInformation from "./userInformation/DisplayUserInformation";
 import RemoveConfirmation from "./userInformation/RemoveConfirmation";
+import DisplayUserInformation from "./userInformation/DisplayUserInformation";
 import DragAndDropSummary from "./userInformation/DragAndDropSummary";
-import ClearConfirmation from "./userInformation/ClearConfirmation";
-import GeneratorDialogueBox from "./userInformation/GeneratorDialogueBox";
+import ClearConfirmationDialogBox from "./userInformation/ClearConfirmationDialogBox";
+import GeneratorDialogBox from "./userInformation/GeneratorDialogBox";
+import ExportConfirmationDialogBox from "./views/content/graphicage/rightMapMenu/export/ExportConfirmationDialogBox";
 
 // Layout
 import Layout from "./views/layout/Layout";
 
 // Graphicage
 import Graphicage from "./views/content/graphicage/Graphicage";
-import ExportConfirmation from "./views/content/graphicage/rightMapMenu/export/ExportModal";
 
 import Etablissement from "./views/content/etablissement/Etablissement";
 import Ramassage from "./views/content/ramassage/Ramassage";
@@ -68,9 +68,9 @@ export default () => {
         <DisplayUserInformation />
         <DragAndDropSummary />
         <RemoveConfirmation />
-        <ClearConfirmation />
-        <ExportConfirmation />
-        <GeneratorDialogueBox />
+        <ClearConfirmationDialogBox />
+        <ExportConfirmationDialogBox />
+        <GeneratorDialogBox />
         <SpinningWheel />
       </div>
     </div>

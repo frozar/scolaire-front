@@ -9,7 +9,7 @@ import {
   disableSpinningWheel,
   enableSpinningWheel,
   fetchBusLines,
-  getClearConfirmation,
+  displayedClearConfirmationDialogBox,
   points,
   setPoints,
   busLines,
@@ -26,7 +26,7 @@ function exitModal({ code }: KeyboardEvent) {
   // eslint-disable-next-line solid/reactivity
   keyboard.getLayoutMap().then(() => {
     if (code === "Escape") {
-      if (getClearConfirmation()["displayed"]) {
+      if (displayedClearConfirmationDialogBox()["displayed"]) {
         closeClearConfirmationBox();
       }
     }
@@ -34,7 +34,7 @@ function exitModal({ code }: KeyboardEvent) {
 }
 
 export default function () {
-  const displayed = () => getClearConfirmation()["displayed"];
+  const displayed = () => displayedClearConfirmationDialogBox()["displayed"];
 
   onMount(() => {
     document.addEventListener("keyup", exitModal);
@@ -106,7 +106,7 @@ export default function () {
     buttonRef()?.focus();
   });
 
-  let refDialogueBox: HTMLDivElement | undefined;
+  let refDialogueBox!: HTMLDivElement;
 
   return (
     <Transition
@@ -125,7 +125,7 @@ export default function () {
           role="dialog"
           aria-modal="true"
         >
-          <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+          <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
 
           {/* Forum github pour les nested transitions
           https://github.com/reactjs/react-transition-group/issues/558 */}

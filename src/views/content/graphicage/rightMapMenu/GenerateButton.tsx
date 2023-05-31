@@ -1,4 +1,4 @@
-import { openGeneratorDialogueBox } from "../../../../signaux";
+import { openGeneratorDialogBox } from "../../../../signaux";
 import { FiArrowUpCircle } from "solid-icons/fi";
 import {
   confirmAbortEditionNeedToBeCall,
@@ -7,7 +7,7 @@ import {
 
 export default function () {
   const handleClick = () => {
-    defineModalToOpen(openGeneratorDialogueBox);
+    defineModalToOpen(openGeneratorDialogBox);
     confirmAbortEditionNeedToBeCall();
   };
   return (

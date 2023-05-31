@@ -3,8 +3,8 @@ import { Transition } from "solid-transition-group";
 
 import ClickOutside from "../component/ClickOutside";
 import {
-  closeGeneratorDialogueBox,
-  getDisplayedGeneratorDialogueBox,
+  closeGeneratorDialogBox,
+  getDisplayedGeneratorDialogBox,
 } from "../signaux";
 
 import { assertIsNode } from "../utils";
@@ -18,8 +18,8 @@ function exitModal({ code }: KeyboardEvent) {
   // eslint-disable-next-line solid/reactivity
   keyboard.getLayoutMap().then(() => {
     if (code === "Escape") {
-      if (getDisplayedGeneratorDialogueBox()) {
-        closeGeneratorDialogueBox();
+      if (getDisplayedGeneratorDialogBox()) {
+        closeGeneratorDialogBox();
       }
     }
   });
@@ -34,7 +34,7 @@ export default function () {
     document.removeEventListener("keyup", exitModal);
   });
 
-  const displayed = () => getDisplayedGeneratorDialogueBox();
+  const displayed = () => getDisplayedGeneratorDialogBox();
   const [nbVehicles, setNbVehicles] = createSignal(1);
   const [vehiclesCapacity, setVehiclesCapacity] = createSignal(50);
   const [timeLimitSeconds, setTimeLimitSeconds] = createSignal(10);
@@ -43,7 +43,7 @@ export default function () {
     createSignal(10);
 
   function handlerOnClickSoumettre() {
-    closeGeneratorDialogueBox();
+    closeGeneratorDialogBox();
     generateCircuit(
       nbVehicles(),
       vehiclesCapacity(),
@@ -110,7 +110,7 @@ export default function () {
 
                     assertIsNode(e.target);
                     if (!refDialogueBox.contains(e.target)) {
-                      closeGeneratorDialogueBox();
+                      closeGeneratorDialogBox();
                     }
                   }}
                 >
@@ -118,7 +118,7 @@ export default function () {
                     <button
                       type="button"
                       class="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                      onClick={closeGeneratorDialogueBox}
+                      onClick={closeGeneratorDialogBox}
                     >
                       <span class="sr-only">Close</span>
                       <svg
@@ -146,7 +146,7 @@ export default function () {
                       <p class="text-right">Nombre de véhicules :</p>
                     </div>
                     <form class="mt-5 sm:flex sm:items-center">
-                      <div class="w-full sm:max-w-xs w-1/2">
+                      <div class="w-full sm:max-w-xs">
                         <label for="nb_vehicle" class="sr-only">
                           Nombre de véhicules
                         </label>
@@ -175,7 +175,7 @@ export default function () {
                       <p class="text-right">Capacité des véhicules :</p>
                     </div>
                     <form class="mt-5 sm:flex sm:items-center">
-                      <div class="w-full sm:max-w-xs w-1/2">
+                      <div class="w-full sm:max-w-xs">
                         <label for="vehicle_capacity" class="sr-only">
                           Capacité des véhicules
                         </label>
@@ -208,7 +208,7 @@ export default function () {
                       </p>
                     </div>
                     <form class="mt-3 sm:flex sm:items-center">
-                      <div class="w-full sm:max-w-xs w-1/2">
+                      <div class="w-full sm:max-w-xs">
                         <label for="time_limit_seconds" class="sr-only">
                           Temps maximum de génération
                         </label>
@@ -239,7 +239,7 @@ export default function () {
                       </p>
                     </div>
                     <form class="mt-3 sm:flex sm:items-center">
-                      <div class="w-full sm:max-w-xs w-1/2">
+                      <div class="w-full sm:max-w-xs">
                         <label for="maximum_travel_distance" class="sr-only">
                           Distance maximale parcourue
                         </label>
@@ -270,7 +270,7 @@ export default function () {
                       </p>
                     </div>
                     <form class="mt-3 sm:flex sm:items-center">
-                      <div class="w-full sm:max-w-xs w-1/2">
+                      <div class="w-full sm:max-w-xs">
                         <label
                           for="global_span_cost_coefficient"
                           class="sr-only"
@@ -311,7 +311,7 @@ export default function () {
                     <button
                       type="button"
                       class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
-                      onClick={closeGeneratorDialogueBox}
+                      onClick={closeGeneratorDialogBox}
                     >
                       Annuler
                     </button>

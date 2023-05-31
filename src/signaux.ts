@@ -90,9 +90,12 @@ export const [getRemoveRamassageConfirmation, setRemoveRamassageConfirmation] =
     item: null,
   }) as Signal<removeRamassageConfirmationType>;
 
-export const [getClearConfirmation, setClearConfirmation] = createSignal({
+export const [
+  displayedClearConfirmationDialogBox,
+  setDisplayedClearConfirmationDialogBox,
+] = createSignal<clearConfirmationType>({
   displayed: false,
-}) as Signal<clearConfirmationType>;
+});
 
 const initialImportCsvMessage: ReturnMessageType = {
   displayed: false,
@@ -110,25 +113,25 @@ export function closeDragAndDropConfirmationBox() {
 }
 
 export function openExportConfirmationBox() {
-  setExportConfirmation((prev) => ({
+  setExportConfirmationDialogBox((prev) => ({
     ...prev,
     displayed: true,
   }));
 }
 
-const [displayedGeneratorDialogueBox, setDisplayedGeneratorDialogueBox] =
+const [displayedGeneratorDialogBox, setDisplayedGeneratorDialogBox] =
   createSignal(false);
 
-export function openGeneratorDialogueBox() {
-  setDisplayedGeneratorDialogueBox(true);
+export function openGeneratorDialogBox() {
+  setDisplayedGeneratorDialogBox(true);
 }
 
-export function closeGeneratorDialogueBox() {
-  setDisplayedGeneratorDialogueBox(false);
+export function closeGeneratorDialogBox() {
+  setDisplayedGeneratorDialogBox(false);
 }
 
-export function getDisplayedGeneratorDialogueBox() {
-  return displayedGeneratorDialogueBox();
+export function getDisplayedGeneratorDialogBox() {
+  return displayedGeneratorDialogBox();
 }
 
 export function closeImportCsvBox() {
@@ -156,14 +159,14 @@ export function closeRemoveRamassageConfirmationBox() {
 }
 
 export function openClearConfirmationBox() {
-  setClearConfirmation((prev) => ({
+  setDisplayedClearConfirmationDialogBox((prev) => ({
     ...prev,
     displayed: true,
   }));
 }
 
 export function closeClearConfirmationBox() {
-  setClearConfirmation({
+  setDisplayedClearConfirmationDialogBox({
     displayed: false,
   });
 }
@@ -171,19 +174,20 @@ export function closeClearConfirmationBox() {
 export const [getRemainingExport, setRemainingExport] = createSignal(0);
 export function setExportType(exportType: string | null) {
   const type = ExportTypeEnum[exportType as keyof typeof ExportTypeEnum];
-  setExportConfirmation((prev) => ({
+  setExportConfirmationDialogBox((prev) => ({
     ...prev,
     exportType: type,
   }));
 }
 
-export const [getExportConfirmation, setExportConfirmation] = createSignal({
-  displayed: false,
-  exportType: null,
-}) as Signal<exportConfirmationType>;
+export const [getExportConfirmationDialogBox, setExportConfirmationDialogBox] =
+  createSignal({
+    displayed: false,
+    exportType: null,
+  }) as Signal<exportConfirmationType>;
 
 export function closeExportConfirmationBox() {
-  setExportConfirmation({
+  setExportConfirmationDialogBox({
     displayed: false,
     exportType: null,
   });
