@@ -2,14 +2,14 @@ import { IconTypes } from "solid-icons";
 import { JSX } from "solid-js";
 
 export interface ButtonMapProps {
-  click: () => void;
+  onClick: () => void;
   tooltip: string;
   icon: JSX.Element;
   _class?: boolean;
 }
 
 export default function (props: ButtonMapProps) {
-  const handleClick = () => props.click();
+  const handleClick = () => props.onClick();
   const Icon = () => {
     return <>{props.icon}</>;
   };
