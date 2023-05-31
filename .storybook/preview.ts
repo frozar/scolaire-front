@@ -1,5 +1,6 @@
 //import "../src/component/atom/button.css";
 //import "./index.css";
+// bizarre
 
 const preview: Preview = {
   parameters: {
