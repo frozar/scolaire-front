@@ -21,6 +21,7 @@ import ExportConfirmation from "./views/content/graphicage/rightMapMenu/export/E
 
 import Etablissement from "./views/content/etablissement/Etablissement";
 import Ramassage from "./views/content/ramassage/Ramassage";
+import Layout from "./views/layout/Layout";
 
 const [, { isInAddLineMode }] = useStateAction();
 const [, { getSelectedMenu }] = useStateGui();
@@ -49,8 +50,7 @@ export default () => {
 
   return (
     <div ref={refApp}>
-      <TopMenu />
-      <LeftMenu />
+      <Layout />
 
       <div id="app-content">
         <Switch fallback={<p>Page not found</p>}>
