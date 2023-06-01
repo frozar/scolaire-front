@@ -1,0 +1,48 @@
+.menu-btn {
+  @apply top-[20px] z-[999] outline-none cursor-pointer;
+
+  & > span.tooltip {
+    @apply absolute left-[-150px] w-[150px]  scale-0 rounded bg-gray-800 p-2 text-xs text-white;
+    pointer-events: none;
+  }
+}
+.export-btn {
+  @apply bottom-0 right-0 menu-btn;
+
+  > button {
+    @apply bg-white bg-opacity-90 border-none text-black hover:bg-white font-bold  rounded btn-circle;
+  }
+}
+
+.custom-btn {
+  display: inline-flex;
+  flex-shrink: 0;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  transition-property: color, background-color, border-color,
+    text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter,
+    -webkit-backdrop-filter;
+  transition-property: color, background-color, border-color,
+    text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter,
+    backdrop-filter;
+  transition-property: color, background-color, border-color,
+    text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter,
+    backdrop-filter, -webkit-backdrop-filter;
+  transition-duration: 200ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  line-height: 1em;
+  min-height: 3rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  text-decoration-line: none;
+  animation: button-pop var(--animation-btn, 0.25s) ease-out;
+  color: #062f3f;
+}
