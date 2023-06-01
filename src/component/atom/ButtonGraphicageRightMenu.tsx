@@ -15,11 +15,11 @@ export default function (props: ButtonMapProps) {
   };
 
   return (
-    <div class="menu-btn group">
+    <div class="group menu-btn">
       <span class="tooltip group-hover:scale-100">{props.tooltip}</span>
       <div
         tabIndex={0}
-        class="custom-btn btn-circle"
+        class="custom-btn btn-circle-fla"
         classList={{ active: props.isActive }}
         onClick={handleClick}
       >
