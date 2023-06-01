@@ -1,4 +1,5 @@
 @import "../../css/tailwind.css";
+@import "../../css/var.css";
 .menu-btn {
   @apply top-[20px] z-[999] outline-none cursor-pointer;
 
@@ -16,43 +17,22 @@
 }
 
 .custom-btn {
-  display: inline-flex;
-  flex-shrink: 0;
-  cursor: pointer;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  user-select: none;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  transition-property: color, background-color, border-color,
-    text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter,
-    -webkit-backdrop-filter;
-  transition-property: color, background-color, border-color,
-    text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter,
-    backdrop-filter;
-  transition-property: color, background-color, border-color,
-    text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter,
-    backdrop-filter, -webkit-backdrop-filter;
-  transition-duration: 200ms;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  line-height: 1em;
-  min-height: 3rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  text-decoration-line: none;
+  @apply inline-flex flex-shrink cursor-pointer select-none flex-wrap items-center justify-center text-center transition-all text-[0.875rem] leading-[1em] min-h-[3rem] uppercase font-[600] no-underline	text-[var(--dark-teal)];
+
   animation: button-pop var(--animation-btn, 0.25s) ease-out;
-  color: #062f3f;
 
   &.active {
-    background-color: #062f3f;
-    color: #0cc683;
+    @apply bg-[var(--dark-teal)] text-[var(--green-base)];
   }
 }
+
+.custom-btn.active:hover {
+  @apply bg-[var(--dark-shade-teal)];
+}
 .custom-btn:hover {
-  background-color: #062f3f;
-  color: #0cc683;
+  @apply bg-[var(--dark-teal)] text-[var(--green-base)];
+}
+
+.btn-circle-fla {
+  @apply h-[3rem] w-[3rem] rounded-[9999px] p-0;
 }
