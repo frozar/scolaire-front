@@ -1,4 +1,5 @@
 import { FaSolidMinus } from "solid-icons/fa";
+
 import { useStateAction } from "../../../../StateAction";
 import { displayRemoveLineMessage } from "../../../../userInformation/utils";
 import ButtonGraphicageRightMenu from "../../../../component/atom/ButtonGraphicageRightMenu";
