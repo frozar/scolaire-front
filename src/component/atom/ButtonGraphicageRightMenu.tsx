@@ -17,16 +17,14 @@ export default function (props: ButtonMapProps) {
   return (
     <div class="menu-btn group">
       <span class="tooltip group-hover:scale-100">{props.tooltip}</span>
-      <label
+      <div
         tabIndex={0}
-        class="custom-btn btn-circle hover:bg-[#062F3F] hover:text-[#0cc683]"
-        classList={{
-          "bg-[#062F3F] text-[#0cc683]": props.isActive,
-        }}
+        class="custom-btn btn-circle"
+        classList={{ active: props.isActive }}
         onClick={handleClick}
       >
         <Icon />
-      </label>
+      </div>
     </div>
   );
 }

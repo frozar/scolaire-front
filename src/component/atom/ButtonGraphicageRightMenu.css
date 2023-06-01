@@ -46,4 +46,13 @@
   text-decoration-line: none;
   animation: button-pop var(--animation-btn, 0.25s) ease-out;
   color: #062f3f;
+
+  &.active {
+    background-color: #062f3f;
+    color: #0cc683;
+  }
+}
+.custom-btn:hover {
+  background-color: #062f3f;
+  color: #0cc683;
 }
