@@ -4,7 +4,7 @@ import {
   confirmAbortEditionNeedToBeCall,
   defineModalToOpen,
 } from "../ConfirmStopAddLineBox";
-import ButtonMap from "../../../../component/atom/ButtonGraphicageRightMenu";
+import ButtonGraphicageRightMenu from "../../../../component/atom/ButtonGraphicageRightMenu";
 
 export default function () {
   const handleClick = () => {
@@ -13,7 +13,7 @@ export default function () {
   };
 
   return (
-    <ButtonMap
+    <ButtonGraphicageRightMenu
       onClick={handleClick}
       tooltip="Vider la carte"
       icon={<FaRegularTrashCan class="w-full p-0 h-2/3" />}

@@ -2,7 +2,7 @@ import { useStateAction } from "../../../../StateAction";
 import { displayAddLineMessage } from "../../../../userInformation/utils";
 import { FaSolidPlus } from "solid-icons/fa";
 
-import ButtonMap from "../../../../component/atom/ButtonGraphicageRightMenu";
+import ButtonGraphicageRightMenu from "../../../../component/atom/ButtonGraphicageRightMenu";
 
 const [, { setModeAddLine, isInAddLineMode, setModeRead }] = useStateAction();
 
@@ -17,7 +17,7 @@ export default function () {
   };
 
   return (
-    <ButtonMap
+    <ButtonGraphicageRightMenu
       onClick={handleClick}
       tooltip="Ajouter une ligne"
       isActive={isInAddLineMode()}
