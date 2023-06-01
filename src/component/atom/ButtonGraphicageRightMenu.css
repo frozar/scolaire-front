@@ -4,8 +4,7 @@
   @apply top-[20px] z-[999] outline-none cursor-pointer;
 
   & > span.tooltip {
-    @apply absolute left-[-150px] w-[150px]  scale-0 rounded bg-gray-800 p-2 text-xs text-white;
-    pointer-events: none;
+    @apply absolute left-[-150px] w-[150px]  scale-0 rounded bg-gray-800 p-2 text-xs text-white pointer-events-none;
   }
 }
 .export-btn {
