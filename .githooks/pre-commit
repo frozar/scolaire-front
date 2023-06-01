@@ -13,7 +13,7 @@ TS_FILES=$(get_pattern_files ".ts .tsx")
 
 if [[ -n "$TS_FILES" ]]
 then
-	npm run eslint -- --fix $TS_FILES
+	npm run eslint -- --fix --max-warnings=0 $TS_FILES
 
 else
 	echo "No typescript files changed, skipping pre-commit checks..."
