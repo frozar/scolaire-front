@@ -17,98 +17,68 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const addLineDisable: Story = {
+export const AddLine: Story = {
   args: {
     tooltip: "Ajouter une ligne",
     icon: <FaSolidPlus class="w-full p-0 h-2/3" />,
     isActive: false,
   },
-};
-
-export const addLineEnable: Story = {
-  args: {
-    tooltip: "Ajouter une ligne",
-    icon: <FaSolidPlus class="w-full p-0 h-2/3" />,
-    isActive: true,
+  argTypes: {
+    onClick: { action: "Ajout de ligne" },
   },
 };
 
-export const RemoveLineDisable: Story = {
+export const RemoveLine: Story = {
   args: {
     tooltip: "Supprimer une ligne",
     icon: <FaSolidMinus class="w-full p-0 h-2/3" />,
     isActive: false,
   },
-};
-
-export const RemoveLineEnable: Story = {
-  args: {
-    tooltip: "Supprimer une ligne",
-    icon: <FaSolidMinus class="w-full p-0 h-2/3" />,
-    isActive: true,
+  argTypes: {
+    onClick: { action: "Suppression de ligne" },
   },
 };
 
-export const ClearMapDisable: Story = {
+export const ClearMap: Story = {
   args: {
     tooltip: "Vider la carte",
     icon: <FaRegularTrashCan class="w-full p-0 h-2/3" />,
     isActive: false,
   },
-};
-
-export const ClearMapEnable: Story = {
-  args: {
-    tooltip: "Vider la carte",
-    icon: <FaRegularTrashCan class="w-full p-0 h-2/3" />,
-    isActive: true,
+  argTypes: {
+    onClick: { action: "Vider la carte" },
   },
 };
 
-export const ExportMapDisable: Story = {
+export const ExportMap: Story = {
   args: {
-    tooltip: "Vider la carte",
+    tooltip: "Exporter la carte",
     icon: <CgExport class="w-full p-0 h-2/3" />,
     isActive: false,
   },
-};
-
-export const ExportMapEnable: Story = {
-  args: {
-    tooltip: "Vider la carte",
-    icon: <CgExport class="w-full p-0 h-2/3" />,
-    isActive: true,
+  argTypes: {
+    onClick: { action: "Exporter la carte" },
   },
 };
 
-export const GenerateMapDisable: Story = {
+export const GenerateMap: Story = {
   args: {
-    tooltip: "Vider la carte",
+    tooltip: "Génération de lignes",
     icon: <FiArrowUpCircle class="w-full p-0 h-2/3" />,
     isActive: false,
   },
-};
-
-export const GenerateMapEnable: Story = {
-  args: {
-    tooltip: "Vider la carte",
-    icon: <FiArrowUpCircle class="w-full p-0 h-2/3" />,
-    isActive: true,
+  argTypes: {
+    onClick: { action: "Génération de ligne" },
   },
 };
 
-export const InformationMapDisable: Story = {
+export const InformationMap: Story = {
   args: {
-    tooltip: "Vider la carte",
+    tooltip: "Ouvrir de panneau d'information",
     icon: <BsInfoCircle class="w-full p-0 h-2/3" />,
     isActive: false,
   },
-};
-
-export const InformationMapEnable: Story = {
-  args: {
-    tooltip: "Vider la carte",
-    icon: <BsInfoCircle class="w-full p-0 h-2/3" />,
-    isActive: true,
+  argTypes: {
+    onClick: { action: "Ouverture panneau d'information" },
   },
 };
