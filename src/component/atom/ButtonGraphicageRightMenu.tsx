@@ -19,7 +19,7 @@ export default function (props: ButtonMapProps) {
       <span class="tooltip group-hover:scale-100">{props.tooltip}</span>
       <div
         tabIndex={0}
-        class="custom-btn btn-circle-fla"
+        class="btn-fla btn-circle-fla"
         classList={{ active: props.isActive }}
         onClick={handleClick}
       >
