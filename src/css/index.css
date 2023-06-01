@@ -1,10 +1,7 @@
+@import "./tailwind.css";
 @import "./menu.css";
 @import "./timeline.css";
 @import "./var.css";
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 .prevent-select {
   -webkit-user-select: none; /* Safari */

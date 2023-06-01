@@ -1,3 +1,4 @@
+@import "../../css/tailwind.css";
 .menu-btn {
   @apply top-[20px] z-[999] outline-none cursor-pointer;
 
