@@ -114,7 +114,7 @@
   z-index: 1001;
   color: #005c9c;
   background: rgba(250, 250, 250, 0.7);
-  transition: 300ms left cubic-bezier(0.77, 0, 0.175, 1);
+  transition: 400ms left;
   left: -20rem;
   height: 100%;
   overflow-y: auto;
