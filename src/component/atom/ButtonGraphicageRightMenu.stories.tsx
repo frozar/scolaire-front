@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "storybook-solidjs";
-import ButtonMap from "./ButtonGraphicageRightMenu";
+import ButtonGraphicageRightMenu from "./ButtonGraphicageRightMenu";
 import { FaRegularTrashCan, FaSolidMinus, FaSolidPlus } from "solid-icons/fa";
 import { CgExport } from "solid-icons/cg";
 import { FiArrowUpCircle } from "solid-icons/fi";
@@ -7,12 +7,12 @@ import { BsInfoCircle } from "solid-icons/bs";
 
 const meta = {
   title: "Graphicage/RightMenu/ButtonGraphicageRightMenu",
-  component: ButtonMap,
+  component: ButtonGraphicageRightMenu,
   tags: ["autodocs"],
   argTypes: {
     onClick: { action: "clicked action" },
   },
-} satisfies Meta<typeof ButtonMap>;
+} satisfies Meta<typeof ButtonGraphicageRightMenu>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
