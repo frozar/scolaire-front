@@ -1,4 +1,5 @@
 import { JSX } from "solid-js";
+import "./ButtonGraphicageRightMenu.css";
 
 export interface ButtonMapProps {
   onClick: () => void;
