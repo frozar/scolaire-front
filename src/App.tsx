@@ -22,6 +22,7 @@ import Graphicage from "./views/content/graphicage/Graphicage";
 
 import Etablissement from "./views/content/etablissement/Etablissement";
 import Ramassage from "./views/content/ramassage/Ramassage";
+import { setPointsReady } from "./views/content/graphicage/PointsRamassageAndEtablissement";
 
 const [, { isInAddLineMode }] = useStateAction();
 const [, { getSelectedMenu }] = useStateGui();
@@ -45,6 +46,12 @@ export default () => {
         // @ts-expect-error: 'style' field should not be assigned
         refApp.style = "";
       }
+    }
+  });
+
+  createEffect(() => {
+    if (getSelectedMenu() !== "graphicage") {
+      setPointsReady(false);
     }
   });
 

@@ -1,4 +1,4 @@
-import { createSignal, onMount, For, onCleanup } from "solid-js";
+import { createSignal, onMount, For, onCleanup, createEffect } from "solid-js";
 
 import {
   NatureEnum,
@@ -17,9 +17,22 @@ import { getToken } from "../../layout/topMenu/authentication";
 export const [minMaxQty, setMinMaxQty] = createSignal([1, 100]);
 export const [pointsReady, setPointsReady] = createSignal(false);
 
+const [pointsRamassageReady, setPointsRamassageReady] = createSignal(false);
+const [pointsEtablssementReady, setPointsEtablssementReady] =
+  createSignal(false);
+
+createEffect(() => {
+  if (pointsRamassageReady() && pointsEtablssementReady()) {
+    setPointsReady(true);
+  }
+});
+
 export function fetchPointsRamassage() {
   getToken()
     .then((token) => {
+      setPointsRamassageReady(false);
+      setPointsEtablssementReady(false);
+
       fetch(import.meta.env.VITE_BACK_URL + "/points_ramassage", {
         headers: {
           "Content-Type": "application/json",
@@ -39,6 +52,7 @@ export function fetchPointsRamassage() {
             Math.max(...data.map((value) => value.quantity)),
           ]);
           setPoints((dataArray) => [...dataArray, ...data]);
+          setPointsRamassageReady(true);
         });
       fetch(import.meta.env.VITE_BACK_URL + "/points_etablissement", {
         headers: {
@@ -55,13 +69,14 @@ export function fetchPointsRamassage() {
             nature: NatureEnum.etablissement,
           }));
           setPoints((dataArray) => [...dataArray, ...data]);
-          setPointsReady(true);
+          setPointsEtablssementReady(true);
         });
     })
     .catch((err) => {
       console.log(err);
     });
 }
+
 export default function () {
   onMount(() => {
     fetchPointsRamassage();
