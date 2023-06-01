@@ -1,4 +1,5 @@
 import { BsInfoCircle } from "solid-icons/bs";
+
 import { useStateGui } from "../../../../StateGui";
 import ButtonGraphicageRightMenu from "../../../../component/atom/ButtonGraphicageRightMenu";
 
