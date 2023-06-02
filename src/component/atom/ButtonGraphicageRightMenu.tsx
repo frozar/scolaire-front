@@ -15,10 +15,9 @@ export default function (props: ButtonMapProps) {
   };
 
   return (
-    <button class="group menu-btn">
+    <button class="group menu-btn" {...rest}>
       <span class="tooltip group-hover:scale-100">{local.tooltip}</span>
       <div
-        {...rest}
         class="btn-fla btn-circle-fla"
         classList={{ active: local.isActive }}
       >
