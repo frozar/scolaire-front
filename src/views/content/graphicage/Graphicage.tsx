@@ -14,6 +14,7 @@ import { InformationBoard } from "./informationBoard/InformationBoard";
 import ConfirmStopAddLine from "./ConfirmStopAddLineBox";
 import { listHandlerLMap } from "./shortcut";
 import ImportCsvCanvas from "../../../component/ImportCsvCanvas";
+import LayerChoiceMenu from "./layerChoice/LayerChoiceMenu";
 
 const [, { isInAddLineMode }] = useStateAction();
 
@@ -73,6 +74,7 @@ export default function () {
       <BusLines />
       <ControlMapMenu />
       <ConfirmStopAddLine />
+      <LayerChoiceMenu />
     </>
   );
 }
