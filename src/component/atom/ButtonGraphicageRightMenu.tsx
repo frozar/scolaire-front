@@ -15,7 +15,7 @@ export default function (props: ButtonMapProps) {
   };
 
   return (
-    <div class="group menu-btn">
+    <button class="group menu-btn">
       <span class="tooltip group-hover:scale-100">{props.tooltip}</span>
       <div
         tabIndex={0}
@@ -25,6 +25,6 @@ export default function (props: ButtonMapProps) {
       >
         <Icon />
       </div>
-    </div>
+    </button>
   );
 }
