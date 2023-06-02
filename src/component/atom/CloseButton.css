@@ -1,0 +1,10 @@
+@import "../../css/tailwind.css";
+@import "../../css/var.css";
+
+.btn-close {
+  @apply text-[var(--green-base)] w-[35px] h-[35px];
+
+  > svg {
+    @apply h-full w-full;
+  }
+}
