@@ -1,0 +1,8 @@
+#layer-choice-menu {
+  @apply z-[1000]  absolute right-[-200px] bg-white border-l border-l-black w-[200px] duration-[400ms] px-3;
+
+  height: calc(100vh - 60px);
+  &.active {
+    right: 0;
+  }
+}
