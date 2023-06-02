@@ -11,6 +11,7 @@ type StateGuiType = {
   selectedReadModeTile: TileId;
   selectedEditModeTile: TileId;
   displayedInformationBoard: boolean;
+  displayedLayerChoiceMenu: boolean;
 };
 
 // Documentation link:
@@ -49,9 +50,21 @@ const makeStateGuiContext = () => {
     selectedReadModeTile: "OpenStreetMap_Mapnik",
     selectedEditModeTile: "Stadia_AlidadeSmoothDark",
     displayedInformationBoard: false,
+    displayedLayerChoiceMenu: false,
   };
 
   const [state, setState] = createLocalStore(defaultStateGui);
+
+  function toggleDisplayedLayerChoiceMenu() {
+    setState(
+      "displayedLayerChoiceMenu",
+      (currentValue: boolean) => !currentValue
+    );
+  }
+
+  function getDisplayedLayerChoiceMenu() {
+    return state.displayedLayerChoiceMenu;
+  }
 
   function toggleDisplayedLeftMenu() {
     setState("displayedLeftMenu", (currentValue: boolean) => !currentValue);
@@ -124,6 +137,8 @@ const makeStateGuiContext = () => {
       toggleDisplayedLeftMenu,
       getDisplayedInformationBoard,
       toggleDisplayedInformationBoard,
+      toggleDisplayedLayerChoiceMenu,
+      getDisplayedLayerChoiceMenu,
     },
   ] as const;
 };
