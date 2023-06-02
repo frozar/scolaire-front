@@ -1,30 +1,28 @@
-import { JSX } from "solid-js";
+import { JSX, splitProps } from "solid-js";
 import "./ButtonGraphicageRightMenu.css";
 
 export interface ButtonMapProps {
-  onClick: () => void;
+  onClick?: () => void;
   tooltip: string;
   icon: JSX.Element;
   isActive?: boolean;
 }
 
 export default function (props: ButtonMapProps) {
-  const handleClick = () => props.onClick();
+  const [local, rest] = splitProps(props, ["tooltip", "icon", "isActive"]);
   const Icon = () => {
-    return <>{props.icon}</>;
+    return <>{local.icon}</>;
   };
 
   return (
-    <div class="group menu-btn">
-      <span class="tooltip group-hover:scale-100">{props.tooltip}</span>
+    <button class="group menu-btn" {...rest}>
+      <span class="tooltip group-hover:scale-100">{local.tooltip}</span>
       <div
-        tabIndex={0}
         class="btn-fla btn-circle-fla"
-        classList={{ active: props.isActive }}
-        onClick={handleClick}
+        classList={{ active: local.isActive }}
       >
         <Icon />
       </div>
-    </div>
+    </button>
   );
 }
