@@ -3,6 +3,7 @@ import { FaSolidMinus } from "solid-icons/fa";
 import { useStateAction } from "../../../../StateAction";
 import { displayRemoveLineMessage } from "../../../../userInformation/utils";
 import ButtonGraphicageRightMenu from "../../../../component/atom/ButtonGraphicageRightMenu";
+import { fetchBusLines } from "../../../../signaux";
 
 const [, { setModeRemoveLine, isInRemoveLineMode, setModeRead }] =
   useStateAction();
@@ -11,9 +12,11 @@ export default function () {
   const handleClick = () => {
     if (isInRemoveLineMode()) {
       setModeRead();
+      fetchBusLines();
       return;
     }
     setModeRemoveLine();
+    fetchBusLines();
     displayRemoveLineMessage();
   };
 

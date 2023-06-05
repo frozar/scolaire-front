@@ -75,6 +75,7 @@ function escapeHandler({ code }: KeyboardEvent) {
 
     resetLineUnderConstruction();
     setModeRead();
+    fetchBusLines();
   }
 }
 
@@ -119,8 +120,10 @@ function toggleLineUnderConstruction({ code }: KeyboardEvent) {
     if (upKey === "l") {
       if (isInAddLineMode()) {
         setModeRead();
+        fetchBusLines();
       } else {
         setModeAddLine();
+        fetchBusLines();
         displayAddLineMessage();
       }
     }
@@ -128,9 +131,11 @@ function toggleLineUnderConstruction({ code }: KeyboardEvent) {
       // Toggle behavior
       if (!isInRemoveLineMode()) {
         setModeRemoveLine();
+        fetchBusLines();
         displayRemoveLineMessage();
       } else {
         setModeRead();
+        fetchBusLines();
         closeRemoveConfirmationBox();
       }
     }

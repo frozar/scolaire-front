@@ -61,6 +61,7 @@ export default function () {
     if (!lineUnderConstructionTip) {
       lineUnderConstructionTip = L.polyline(latlngs, {
         color: COLOR_LINE_UNDER_CONSTRUCTION,
+        pane: "markerPane",
       });
       lineUnderConstructionTip.addTo(leafletMap);
     }
@@ -72,7 +73,7 @@ export default function () {
     // The line tip must not catch mouse event like click, hover, etc...
     const element = lineUnderConstructionTip?.getElement() as SVGElement;
     if (element && String(element.style) !== "pointer-events: none;") {
-      // @ts-expect-error style affectation
+      // @ts-expect-error: 'style' field should not be assigned
       element.style = "pointer-events: none;";
     }
   }

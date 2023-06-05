@@ -32,15 +32,19 @@ import {
   timelineStopNames,
   setTimelineStopNames,
   addNewUserInformation,
+  onLine,
+  linkBusLinePolyline,
 } from "../../../../signaux";
 import { useStateAction } from "../../../../StateAction";
 import { getToken } from "../../../layout/topMenu/authentication";
-import { onLine } from "../line/BusLinesFunction";
-
-export const [pickerColor, setPickerColor] = createSignal("");
 
 const [, { isInAddLineMode, isInReadMode, resetLineUnderConstruction }] =
   useStateAction();
+
+// TODO: to remove 'eslint-disable-next-line'
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const [pickerColor, setPickerColor] = createSignal("");
+
 type PointToDisplayType = {
   id_point: number;
   name: string;
@@ -52,7 +56,7 @@ type TimelineItemType = {
   name: string;
 };
 
-const displayTimeline = (id_bus_line: number) => {
+const displayTimeline = (idBusLine: number) => {
   function getStopIds(busLineId: LineType[], len: number) {
     return busLineId[0].stops.slice(0, len).map((stop) => stop.id_point);
   }
@@ -63,7 +67,7 @@ const displayTimeline = (id_bus_line: number) => {
     return stops.slice(0, len).map((stop) => stop.name);
   }
   const busLine = busLines().filter(
-    (busLine) => busLine.id_bus_line == id_bus_line
+    (busLine) => busLine.idBusLine == idBusLine
   );
   const lenBusLine = busLine[0].stops.length;
   const stopIds = getStopIds(busLine, lenBusLine);
@@ -250,29 +254,62 @@ export default function () {
     }
   };
 
-  const handleColorPicker = (e) => {
-    onLine().line.setStyle({
-      color: e.target.value,
-    });
-    onLine().line.redraw();
+  const handleColorPicker = (e: InputEvent) => {
+    if (!e.target) {
+      return;
+    }
+
+    const inputElement = e.target as HTMLInputElement;
+    const newColor = inputElement.value;
+    const routeSelected = busLines().filter(
+      (route) => route.idBusLine == onLine().idBusLine
+    )[0];
+
+    const polyline = linkBusLinePolyline[routeSelected.idBusLine].polyline;
+    polyline.setStyle({ color: newColor });
+
+    const arrows = linkBusLinePolyline[routeSelected.idBusLine].arrows;
+    for (const arrow of arrows) {
+      const arrowHTML = arrow.getElement();
+      if (!arrowHTML) {
+        return;
+      }
+
+      const iconHTMLorNull = arrowHTML.firstElementChild;
+      if (!iconHTMLorNull) {
+        return;
+      }
+
+      const iconHTML = iconHTMLorNull as SVGElement;
+      iconHTML.setAttribute("fill", newColor);
+    }
   };
 
-  const handleColorChanged = (e) => {
-    const id = onLine().id_bus_line;
-    const color = e.target.value;
+  const handleColorChanged = (e: Event) => {
+    if (!e.target) {
+      return;
+    }
+
+    const inputElement = e.target as HTMLInputElement;
+    const id = onLine().idBusLine;
+    const color = inputElement.value;
 
     getToken()
       .then((token) => {
+        // TODO: Update the URL of the PATCH method : "/line/${line_id}"
         fetch(import.meta.env.VITE_BACK_URL + "/line/color", {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
           method: "PATCH",
+          // TODO: Keep 'color' only
           body: JSON.stringify({ id: id, color: color }),
         });
+        // TODO: after fetch, update bus lines 'color' of 'linkBusLinePolyline' in a then
+        // TODO: catch error in a fetch
       })
-      .catch((err) => {
+      .catch(() => {
         addNewUserInformation({
           displayed: true,
           level: MessageLevelEnum.error,

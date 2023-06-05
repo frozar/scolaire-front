@@ -22,7 +22,7 @@ type StateActionType = {
 
 function defaultLineUnderConstruction() {
   return {
-    id_bus_line: -1,
+    idBusLine: -1,
     color: "#000000",
     stops: [],
   };
@@ -145,6 +145,8 @@ const StateActionContext = createContext<StateActionContextType>(
   makeStateActionContext()
 );
 
+// TODO: remove eslint exception
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function StateActionProvider(props: any) {
   return (
     <StateActionContext.Provider value={makeStateActionContext()}>
