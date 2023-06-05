@@ -4,16 +4,17 @@ import ClearButton from "./ClearButton";
 import GenerateButton from "./GenerateButton";
 import ExportButton from "./ExportButton";
 import InformationBoardButton from "./InformationBoardButton";
+import RightMapMenu from "../../../../component/molecule/RightMapMenu";
 
 export default function () {
   return (
-    <div id="control-map-menu">
+    <RightMapMenu>
       <InformationBoardButton />
       <AddLineButton />
       <RemoveLineButton />
       <ClearButton />
       <GenerateButton />
       <ExportButton />
-    </div>
+    </RightMapMenu>
   );
 }
