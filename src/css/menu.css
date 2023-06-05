@@ -325,20 +325,6 @@
   }
 }
 
-#control-map-menu {
-  position: absolute;
-  top: 45%;
-  right: 15px;
-  z-index: 1001;
-  background-color: #aeb8b4;
-  padding: 20px 5px;
-  border-radius: 50px;
-  color: #062f3f;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
 .fill-green {
   fill: #0cc683;
 }
