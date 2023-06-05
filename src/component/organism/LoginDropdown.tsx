@@ -1,19 +1,18 @@
 import { Show, createSignal, splitProps } from "solid-js";
 import { Transition } from "solid-transition-group";
-
-import CurrentUserLogo from "../../views/layout/topMenu/logo/CurrentUserLogo";
-import LoggedInUserLogo from "../../views/layout/topMenu/logo/LoggedInUserLogo";
 import LoginMenu from "../atom/LoginMenu";
 
 import "./LoginDropdown.css";
+import { authenticated } from "../../signaux";
+import LoginAvatar from "../atom/LoginAvatar";
 
 export interface LoginDropdownProps {
   // Props button parent
-  getProfilePicture: () => boolean | string | undefined;
+  getProfilePicture: () => string;
   // Shared props
-  authenticated: () => boolean;
+  authenticated?: () => boolean;
   // Props sub component
-  handleLogin: () => void;
+  handleLogin: () => Promise<void>;
   xOffset?: number;
 }
 
@@ -31,6 +30,15 @@ export default function (props: LoginDropdownProps) {
     "handleLogin",
   ]);
 
+  // Props check
+  const Authenticated = () => {
+    if (local.authenticated === undefined) {
+      return authenticated();
+    } else {
+      return local.authenticated();
+    }
+  };
+
   return (
     <button
       id="login-btn"
@@ -38,12 +46,11 @@ export default function (props: LoginDropdownProps) {
       aria-expanded="false"
       onClick={toggleSubComponentDisplayed}
     >
-      <Show
-        when={!local.authenticated()}
-        fallback={<LoggedInUserLogo path={local.getProfilePicture()} />}
-      >
-        <CurrentUserLogo />
-      </Show>
+      <LoginAvatar
+        authenticated={Authenticated}
+        profilePicture={local.getProfilePicture}
+      />
+
       <Transition
         enterActiveClass="transition ease-out duration-200"
         enterClass="opacity-0 translate-y-1"
@@ -54,7 +61,7 @@ export default function (props: LoginDropdownProps) {
       >
         <Show when={displayedSubComponent()}>
           <LoginMenu
-            authenticated={local.authenticated()}
+            authenticated={Authenticated()}
             xOffset={local.xOffset}
             onClick={local.handleLogin}
           />

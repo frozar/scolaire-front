@@ -1,0 +1,3 @@
+#nav-top {
+  @apply w-full bg-[#062F3F] text-white h-[60px] flex  justify-end items-center pr-5;
+}

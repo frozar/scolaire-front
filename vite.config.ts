@@ -15,4 +15,9 @@ export default defineConfig({
     // globals: true,
     includeSource: ["src/**/*.{js,ts}"],
   },
+  esbuild: {
+    supported: {
+      "top-level-await": true, //browsers can handle top-level-await features
+    },
+  },
 });
