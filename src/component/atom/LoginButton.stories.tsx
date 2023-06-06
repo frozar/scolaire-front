@@ -2,7 +2,7 @@ import { Meta, StoryObj } from "storybook-solidjs";
 import LoginButton from "./LoginButton";
 
 const meta = {
-  title: "TopNav/Login",
+  title: "TopNav/LoginButton",
   component: LoginButton,
   tags: ["autodocs"],
 } satisfies Meta<typeof LoginButton>;
