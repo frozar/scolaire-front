@@ -10,11 +10,14 @@ export interface LoginProps {
 
 export default function (props: LoginProps) {
   const [local, rest] = splitProps(props, ["getProfilePic"]);
-
+  const profile = () => local.getProfilePic();
   return (
     <>
       <button id="login-btn" type="button" aria-expanded="false" {...rest}>
-        <Show when={!local.getProfilePic()} fallback={<LoggedInUserLogo />}>
+        <Show
+          when={!profile()}
+          fallback={<LoggedInUserLogo path={profile()} />}
+        >
           <CurrentUserLogo />
         </Show>
       </button>
