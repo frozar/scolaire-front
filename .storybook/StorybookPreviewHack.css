@@ -1,0 +1,5 @@
+/* This file is setup to add css only for preview of storybook cause some elements is out of preview and need to be replaced */
+
+#login-dialog {
+  transform: translateX(10px);
+}
