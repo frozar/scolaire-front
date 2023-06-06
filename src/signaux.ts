@@ -253,11 +253,13 @@ export const [onLine, setOnLine] = createSignal<{
 
 export const [onArrows, setOnArrows] = createSignal<L.Marker[]>([]);
 
-// TODO: Add color field
+export const [pickerColor, setPickerColor] = createSignal("");
+
 export const linkBusLinePolyline: {
   [idBusLine: number]: {
     polyline: L.Polyline;
     arrows: L.Marker[];
+    color: string;
   };
 } = {};
 
@@ -373,6 +375,7 @@ export function fetchBusLines() {
                     linkBusLinePolyline[line.idBusLine] = {
                       polyline: busLinePolyline,
                       arrows: arrows,
+                      color: line.color,
                     };
                   }
                 );

@@ -10,10 +10,12 @@ import { linkMap } from "../../../../global/linkPointIdentityCircle";
 import { useStateAction } from "../../../../StateAction";
 import {
   busLines,
+  linkBusLinePolyline,
   setBusLineSelected,
   setInfoToDisplay,
   setOnArrows,
   setOnLine,
+  setPickerColor,
   setRemoveConfirmation,
 } from "../../../../signaux";
 import { LineString } from "geojson";
@@ -139,8 +141,7 @@ export function busLinePolylineAttachEvent(
       }
     })
     .on("click", () => {
-      // TODO: retrieve the color from 'linkBusLinePolyline'
-      // setPickerColor(e.sourceTarget.options.color);
+      setPickerColor(linkBusLinePolyline[idBusLine].color);
 
       if (isInRemoveLineMode()) {
         setRemoveConfirmation({
@@ -188,10 +189,7 @@ export function arrowAttachEvent(
       }
     })
     .on("click", () => {
-      // TODO: retrieve the color from 'linkBusLinePolyline'
-      // setPickerColor(
-      //   e.sourceTarget.getElement().firstElementChild.getAttribute("fill")
-      // );
+      setPickerColor(linkBusLinePolyline[idBusLine].color);
 
       if (isInRemoveLineMode()) {
         setRemoveConfirmation({
