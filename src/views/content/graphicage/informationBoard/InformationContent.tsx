@@ -6,7 +6,6 @@ import {
   Switch,
   Match,
   createEffect,
-  createSignal,
 } from "solid-js";
 import InfoPointName from "./InfoPointName";
 import {
@@ -34,16 +33,13 @@ import {
   addNewUserInformation,
   onLine,
   linkBusLinePolyline,
+  pickerColor,
 } from "../../../../signaux";
 import { useStateAction } from "../../../../StateAction";
 import { getToken } from "../../../layout/topMenu/authentication";
 
 const [, { isInAddLineMode, isInReadMode, resetLineUnderConstruction }] =
   useStateAction();
-
-// TODO: to remove 'eslint-disable-next-line'
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const [pickerColor, setPickerColor] = createSignal("");
 
 type PointToDisplayType = {
   id_point: number;
