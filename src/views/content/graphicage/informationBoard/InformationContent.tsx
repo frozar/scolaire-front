@@ -292,18 +292,18 @@ export default function () {
 
     getToken()
       .then((token) => {
-        // TODO: Update the URL of the PATCH method : "/line/${line_id}"
-        fetch(import.meta.env.VITE_BACK_URL + "/line/color", {
+        fetch(import.meta.env.VITE_BACK_URL + `/line/${id}`, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
           method: "PATCH",
-          // TODO: Keep 'color' only
-          body: JSON.stringify({ id: id, color: color }),
-        });
-        // TODO: after fetch, update bus lines 'color' of 'linkBusLinePolyline' in a then
-        // TODO: catch error in a fetch
+          body: JSON.stringify({ color: color }),
+        })
+          .then(() => {
+            linkBusLinePolyline[id].color = color;
+          })
+          .catch((err) => console.log(err));
       })
       .catch(() => {
         addNewUserInformation({
