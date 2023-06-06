@@ -4,3 +4,15 @@
 #login-btn {
   @apply inline-flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900;
 }
+
+#login-dialog {
+  @apply absolute flex w-screen max-w-min -translate-x-44 px-1 z-[1400];
+
+  > div {
+    @apply w-56 shrink rounded-xl bg-white text-sm leading-6 text-gray-900 shadow-lg ring-1 ring-gray-900/5;
+
+    > button {
+      @apply block p-2 hover:text-indigo-600;
+    }
+  }
+}
