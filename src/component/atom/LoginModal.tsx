@@ -1,5 +1,6 @@
 import { Show, splitProps } from "solid-js";
 import { Transition } from "solid-transition-group";
+import "./Login.css";
 
 export interface LoginModalProps {
   onClick: () => void;
@@ -20,9 +21,9 @@ export default function (props: LoginModalProps) {
       exitToClass="opacity-0 translate-y-1"
     >
       <Show when={local.show()}>
-        <div class="absolute flex w-screen max-w-min -translate-x-44 px-1 z-[1400]">
-          <div class="w-56 shrink rounded-xl bg-white text-sm leading-6 text-gray-900 shadow-lg ring-1 ring-gray-900/5">
-            <button class="block p-2 hover:text-indigo-600" {...rest}>
+        <div id="login-dialog">
+          <div>
+            <button {...rest}>
               {local.authenticated() ? "Se déconnecter" : "Se connecter"}
             </button>
           </div>
