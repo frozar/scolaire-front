@@ -300,23 +300,46 @@ export function fetchBusLines() {
 
               return lineWk;
             });
+            // console.log("linkBusLinePolyline", linkBusLinePolyline);
 
             setBusLines((previousLines) => {
               // Remove existing polylines and arrows
+              console.log("linkBusLinePolyline", linkBusLinePolyline);
+
               const idLines = lines.map((line) => line.idBusLine);
               for (const previousLine of previousLines) {
                 if (!(previousLine.idBusLine in idLines)) {
-                  const { polyline: previousPolyline, arrows: previousArrows } =
-                    linkBusLinePolyline[previousLine.idBusLine];
-                  previousPolyline.remove();
-                  previousArrows.map((arrow) => arrow.remove());
+                  // console.log("linkBusLinePolyline", linkBusLinePolyline);
 
-                  delete linkBusLinePolyline[previousLine.idBusLine];
+                  // console.log(
+                  //   "linkBusLinePolyline[previousLine.idBusLine]",
+                  //   linkBusLinePolyline[previousLine.idBusLine]
+                  // );
+
+                  // Remonter plus haut ?
+                  // Pas completement undefined ?
+                  if (linkBusLinePolyline[previousLine.idBusLine]) {
+                    const {
+                      polyline: previousPolyline,
+                      arrows: previousArrows,
+                    } = linkBusLinePolyline[previousLine.idBusLine];
+
+                    previousPolyline.remove();
+                    previousArrows.map((arrow) => arrow.remove());
+
+                    delete linkBusLinePolyline[previousLine.idBusLine];
+                  }
+                  // const { polyline: previousPolyline, arrows: previousArrows } =
+                  //   linkBusLinePolyline[previousLine.idBusLine];
+                  // previousPolyline.remove();
+                  // previousArrows.map((arrow) => arrow.remove());
+
+                  // delete linkBusLinePolyline[previousLine.idBusLine];
                 }
               }
 
               for (const line of lines) {
-                // 1. Calcul de la polilyne, à vol d'oiseau ou sur route
+                // 1. Calcul de la polyline, à vol d'oiseau ou sur route
                 computePolyline(line.color, line.stops).then(
                   (busLinePolyline) => {
                     const polylineLatLngs =
@@ -370,6 +393,7 @@ export function fetchBusLines() {
                   }
                 );
               }
+              // console.log("linkBusLinePolyline", linkBusLinePolyline);
 
               return lines;
             });

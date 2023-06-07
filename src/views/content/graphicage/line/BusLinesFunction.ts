@@ -230,7 +230,16 @@ export async function computePolyline(
   let opacity = 1;
   if (isInReadMode()) {
     polylineLatLngs = (await fetchOnRoadPolyline(polylineLatLngs)).latlngs;
+    // if (!isInReadMode()) {
+    //   return;
+    // }
+    // console.log("still in readMode?");
+
     opacity = 0.8;
+  }
+  if (!isInReadMode()) {
+    polylineLatLngs = getLatLngs(stops);
+    opacity = 1;
   }
 
   const busLinePolyline = getBusLinePolyline(color, polylineLatLngs, opacity);
