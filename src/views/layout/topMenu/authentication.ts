@@ -9,7 +9,6 @@ import {
   setAuthenticated,
   setAuthenticatedUser,
 } from "../../../signaux";
-import { createEffect } from "solid-js";
 
 export const auth0Client: Auth0Client = await createAuth0Client({
   domain: import.meta.env.VITE_AUTH0_DOMAIN,
@@ -74,10 +73,6 @@ export const getProfilePicture = () => {
   }
   return user.picture;
 };
-
-createEffect(() => {
-  console.log("getProfilePicture", getProfilePicture());
-});
 
 export async function getToken() {
   if (import.meta.env.VITE_AUTH0_DEV_MODE === "true") {
