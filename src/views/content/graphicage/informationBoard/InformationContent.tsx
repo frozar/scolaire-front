@@ -53,24 +53,25 @@ type TimelineItemType = {
 };
 
 const displayTimeline = (idBusLine: number) => {
-  function getStopIds(busLineId: LineType[], len: number) {
-    return busLineId[0].stops.slice(0, len).map((stop) => stop.id_point);
+  function getStopIds(busLineId: LineType[]) {
+    return busLineId[0].stops.map((stop) => stop.id_point);
   }
+
   function getStopsName(
-    stops: PointRamassageType[] | PointEtablissementType[],
-    len: number
+    stops: PointRamassageType[] | PointEtablissementType[]
   ) {
-    return stops.slice(0, len).map((stop) => stop.name);
+    return stops.map((stop) => stop.name);
   }
+
   const busLine = busLines().filter(
     (busLine) => busLine.idBusLine == idBusLine
   );
-  const lenBusLine = busLine[0].stops.length;
-  const stopIds = getStopIds(busLine, lenBusLine);
+  const stopIds = getStopIds(busLine);
   const stops = stopIds.map(
     (stopId) => points().filter((point) => point.id_point === stopId)[0]
   );
-  const stopNameList = getStopsName(stops, lenBusLine);
+  const stopNameList = getStopsName(stops);
+
   return stopNameList;
 };
 
