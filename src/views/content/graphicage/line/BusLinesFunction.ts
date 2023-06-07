@@ -112,7 +112,6 @@ function getBusLineColor(busLines: LineType[], idBusLine: number) {
   return busLine.color;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function busLinePolylineAttachEvent(
   self: L.Polyline,
   idBusLine: number,
@@ -126,8 +125,6 @@ export function busLinePolylineAttachEvent(
         arrowRemoveModeStyle(arrowsLinked, "white", "scale(4,4) ");
       }
     })
-    // TODO: remove eslint exception ?
-    // eslint-disable-next-line solid/reactivity
     .on("mouseout", () => {
       if (isInRemoveLineMode()) {
         const routeColor = getBusLineColor(busLines(), idBusLine);
@@ -155,7 +152,6 @@ export function busLinePolylineAttachEvent(
     });
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function arrowAttachEvent(
   arrow: L.Marker,
   polyline: L.Polyline,
@@ -170,8 +166,6 @@ export function arrowAttachEvent(
         arrowRemoveModeStyle(arrowsLinked, "white", "scale(4,4) ");
       }
     })
-    // TODO: remove eslint exception ?
-    // eslint-disable-next-line solid/reactivity
     .on("mouseout", () => {
       if (isInRemoveLineMode()) {
         const routeColor = getBusLineColor(busLines(), idBusLine);

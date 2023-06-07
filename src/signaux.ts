@@ -279,8 +279,6 @@ export function fetchBusLines() {
               }[];
             }[]
           ) => {
-            // TODO: remove eslint exception
-            // eslint-disable-next-line solid/reactivity
             const lines: LineType[] = res.map((resLine) => {
               const color = resLine.color ? "#" + resLine.color : randColor();
               const stopsWithNatureEnum = resLine.stops.map(
