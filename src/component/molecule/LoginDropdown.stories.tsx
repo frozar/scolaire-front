@@ -16,7 +16,16 @@ type Story = StoryObj<typeof meta>;
 
 export const LoginDropdown: Story = {
   args: {
-    authenticated: false,
+    authenticated: () => false,
+  },
+  argTypes: {
+    onClick: { action: "Clicked" },
+  },
+};
+
+export const LogoutDropdown: Story = {
+  args: {
+    authenticated: () => true,
   },
   argTypes: {
     onClick: { action: "Clicked" },

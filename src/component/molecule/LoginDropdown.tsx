@@ -11,7 +11,7 @@ export interface LoginDropdownProps {
   // Props button parent
   getProfilePicture: () => boolean | string | undefined;
   // Shared props
-  authenticated: boolean;
+  authenticated: () => boolean;
   // Props modal
   handleLogin: () => void;
   xOffset?: number;
@@ -30,7 +30,6 @@ export default function (props: LoginDropdownProps) {
     "xOffset",
     "handleLogin",
   ]);
-  const profile = () => local.getProfilePicture();
 
   return (
     <button
@@ -40,8 +39,8 @@ export default function (props: LoginDropdownProps) {
       onClick={toggleSubComponentDisplayed}
     >
       <Show
-        when={!local.authenticated}
-        fallback={<LoggedInUserLogo path={profile()} />}
+        when={!local.authenticated()}
+        fallback={<LoggedInUserLogo path={local.getProfilePicture()} />}
       >
         <CurrentUserLogo />
       </Show>
@@ -55,7 +54,7 @@ export default function (props: LoginDropdownProps) {
       >
         <Show when={displayedSubComponent()}>
           <LoginMenu
-            authenticated={local.authenticated}
+            authenticated={local.authenticated()}
             xOffset={local.xOffset}
             onClick={local.handleLogin}
           />

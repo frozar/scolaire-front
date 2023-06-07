@@ -24,7 +24,7 @@ export default function () {
   return (
     <LoginDropdown
       getProfilePicture={getProfilePicture}
-      authenticated={authenticated()}
+      authenticated={authenticated}
       handleLogin={handleLogin}
       xOffset={-11}
     />
