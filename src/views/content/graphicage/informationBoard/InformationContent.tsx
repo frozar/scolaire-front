@@ -255,8 +255,7 @@ export default function () {
       return;
     }
 
-    const inputElement = e.target as HTMLInputElement;
-    const newColor = inputElement.value;
+    const newColor = (e.target as HTMLInputElement).value;
     const idBusLine = busLineSelected();
 
     const polyline = linkBusLinePolyline[idBusLine].polyline;
@@ -285,9 +284,8 @@ export default function () {
       return;
     }
 
-    const inputElement = e.target as HTMLInputElement;
     const id = busLineSelected();
-    const color = inputElement.value;
+    const color = (e.target as HTMLInputElement).value;
 
     getToken()
       .then((token) => {
