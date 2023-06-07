@@ -6,10 +6,20 @@ export interface LoginModalProps {
   onClick: () => void;
   authenticated: () => boolean;
   show: () => boolean;
+  xOffset?: () => number;
 }
 
 export default function (props: LoginModalProps) {
-  const [local, rest] = splitProps(props, ["authenticated", "show"]);
+  const [local, rest] = splitProps(props, ["authenticated", "show", "xOffset"]);
+
+  const defaultXOffset = 0;
+  const xOffsetClassName = () => {
+    let res = defaultXOffset;
+    if (local.xOffset) {
+      res = local.xOffset();
+    }
+    return "translate-x-[" + String(res) + "rem]";
+  };
 
   return (
     <Transition
@@ -21,7 +31,7 @@ export default function (props: LoginModalProps) {
       exitToClass="opacity-0 translate-y-1"
     >
       <Show when={local.show()}>
-        <div id="login-dialog">
+        <div id="login-dialog" class={xOffsetClassName()}>
           <div>
             <button {...rest}>
               {local.authenticated() ? "Se déconnecter" : "Se connecter"}

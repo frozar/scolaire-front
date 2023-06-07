@@ -1,6 +1,5 @@
 import { Meta, StoryObj } from "storybook-solidjs";
 import LoginModal from "./LoginModal";
-import "../../../.storybook/StorybookPreviewHack.css";
 
 const meta = {
   title: "TopNav/LoginModal",
