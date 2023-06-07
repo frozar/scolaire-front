@@ -1,16 +1,16 @@
 import { Meta, StoryObj } from "storybook-solidjs";
-import LoginModal from "./LoginModal";
+import LoginMenu from "./LoginMenu";
 
 const meta = {
-  title: "TopNav/LoginModal",
-  component: LoginModal,
+  title: "TopNav/LoginMenu",
+  component: LoginMenu,
   tags: ["autodocs"],
-} satisfies Meta<typeof LoginModal>;
+} satisfies Meta<typeof LoginMenu>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const NotLoggedModal: Story = {
+export const NotLoggedMenu: Story = {
   args: {
     authenticated: () => false,
     show: () => true,

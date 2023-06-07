@@ -1,5 +1,4 @@
-import LoginButton from "../atom/LoginButton";
-import LoginModal from "../atom/LoginModal";
+import LoginButton from "../atom/LoginDropdown";
 import { splitProps } from "solid-js";
 
 export interface LoginProps {
@@ -8,6 +7,7 @@ export interface LoginProps {
   handleLogin: () => void;
   getProfilePic: () => boolean | string | undefined;
   authenticated: () => boolean;
+  xOffset: () => number;
 }
 
 export default function (props: LoginProps) {
@@ -17,6 +17,7 @@ export default function (props: LoginProps) {
     "toggleShow",
     "show",
     "authenticated",
+    "xOffset",
   ]);
 
   return (
@@ -24,11 +25,10 @@ export default function (props: LoginProps) {
       <LoginButton
         getProfilePic={local.getProfilePic}
         onClick={local.toggleShow}
-      />
-      <LoginModal
         show={local.show}
         authenticated={local.authenticated}
-        onClick={local.handleLogin}
+        handleLogin={local.handleLogin}
+        xOffset={local.xOffset}
       />
     </div>
   );

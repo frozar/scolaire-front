@@ -1,15 +1,15 @@
 import { Show, splitProps } from "solid-js";
 import { Transition } from "solid-transition-group";
-import "./Login.css";
+import "./LoginMenu.css";
 
-export interface LoginModalProps {
+export interface LoginMenuProps {
   onClick: () => void;
   authenticated: () => boolean;
   show: () => boolean;
   xOffset?: () => number;
 }
 
-export default function (props: LoginModalProps) {
+export default function (props: LoginMenuProps) {
   const [local, rest] = splitProps(props, ["authenticated", "show", "xOffset"]);
 
   const defaultXOffset = 0;

@@ -31,6 +31,7 @@ export default function () {
       handleLogin={handleLogin}
       getProfilePic={getProfilePic}
       authenticated={authenticated}
+      xOffset={() => -11}
     />
   );
 }
