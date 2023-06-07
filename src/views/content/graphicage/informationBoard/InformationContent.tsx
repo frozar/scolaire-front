@@ -258,12 +258,12 @@ export default function () {
     const inputElement = e.target as HTMLInputElement;
     const newColor = inputElement.value;
     const idBusLine = busLineSelected();
-    // console.log("idBusLine", idBusLine);
 
     const polyline = linkBusLinePolyline[idBusLine].polyline;
     polyline.setStyle({ color: newColor });
 
     const arrows = linkBusLinePolyline[idBusLine].arrows;
+
     for (const arrow of arrows) {
       const arrowHTML = arrow.getElement();
       if (!arrowHTML) {
@@ -284,11 +284,9 @@ export default function () {
     if (!e.target) {
       return;
     }
-    console.log("handleColorChanged");
 
     const inputElement = e.target as HTMLInputElement;
     const id = busLineSelected();
-    // console.log("id", id);
     const color = inputElement.value;
 
     getToken()
