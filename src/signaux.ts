@@ -21,7 +21,6 @@ import { deepCopy } from "./utils";
 import { User } from "@auth0/auth0-spa-js";
 import { getToken } from "./views/layout/topMenu/authentication";
 
-import { LineString, MultiLineString } from "geojson";
 import {
   arrowAttachEvent,
   busLinePolylineAttachEvent,
@@ -245,13 +244,6 @@ export const [busLines, setBusLines] = createSignal<LineType[]>([]);
 function randColor() {
   return "#" + Math.floor(Math.random() * 0xffffff).toString(16);
 }
-
-export const [onLine, setOnLine] = createSignal<{
-  line: L.Polyline<LineString | MultiLineString>;
-  idBusLine: number;
-}>({ line: L.polyline([{ lat: 0, lng: 0 }]), idBusLine: -1 });
-
-export const [onArrows, setOnArrows] = createSignal<L.Marker[]>([]);
 
 export const [pickerColor, setPickerColor] = createSignal("");
 

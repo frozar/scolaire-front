@@ -31,7 +31,6 @@ import {
   timelineStopNames,
   setTimelineStopNames,
   addNewUserInformation,
-  onLine,
   linkBusLinePolyline,
   pickerColor,
 } from "../../../../signaux";
@@ -258,14 +257,13 @@ export default function () {
 
     const inputElement = e.target as HTMLInputElement;
     const newColor = inputElement.value;
-    const routeSelected = busLines().filter(
-      (route) => route.idBusLine == onLine().idBusLine
-    )[0];
+    const idBusLine = busLineSelected();
+    // console.log("idBusLine", idBusLine);
 
-    const polyline = linkBusLinePolyline[routeSelected.idBusLine].polyline;
+    const polyline = linkBusLinePolyline[idBusLine].polyline;
     polyline.setStyle({ color: newColor });
 
-    const arrows = linkBusLinePolyline[routeSelected.idBusLine].arrows;
+    const arrows = linkBusLinePolyline[idBusLine].arrows;
     for (const arrow of arrows) {
       const arrowHTML = arrow.getElement();
       if (!arrowHTML) {
@@ -286,9 +284,11 @@ export default function () {
     if (!e.target) {
       return;
     }
+    console.log("handleColorChanged");
 
     const inputElement = e.target as HTMLInputElement;
-    const id = onLine().idBusLine;
+    const id = busLineSelected();
+    // console.log("id", id);
     const color = inputElement.value;
 
     getToken()
