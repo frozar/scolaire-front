@@ -9,9 +9,9 @@ export interface LoginDropdownProps {
   getProfilePic: () => boolean | string | undefined;
   onClick: () => void;
   // Props modal
-  authenticated: () => boolean;
-  show: () => boolean;
-  xOffset?: () => number;
+  authenticated: boolean;
+  show: boolean;
+  xOffset?: number;
   handleLogin: () => void;
 }
 
@@ -33,15 +33,20 @@ export default function (props: LoginDropdownProps) {
       aria-expanded="false"
       onClick={() => local.onClick()}
     >
-      <Show when={!profile()} fallback={<LoggedInUserLogo path={profile()} />}>
+      <Show
+        when={!local.authenticated}
+        fallback={<LoggedInUserLogo path={profile()} />}
+      >
         <CurrentUserLogo />
       </Show>
-      <LoginModal
-        authenticated={local.authenticated}
-        show={local.show}
-        xOffset={local.xOffset}
-        onClick={local.handleLogin}
-      />
+      <Show when={local.show}>
+        <LoginModal
+          authenticated={local.authenticated}
+          // show={local.show}
+          xOffset={local.xOffset}
+          onClick={local.handleLogin}
+        />
+      </Show>
     </button>
   );
 }
