@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { createContext, useContext } from "solid-js";
+import { JSXElement, createContext, useContext } from "solid-js";
 import { createStore } from "solid-js/store";
 import { createHistory, record } from "solid-record";
 
@@ -145,9 +145,7 @@ const StateActionContext = createContext<StateActionContextType>(
   makeStateActionContext()
 );
 
-// TODO: remove eslint exception
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function StateActionProvider(props: any) {
+export function StateActionProvider(props: { children: JSXElement }) {
   return (
     <StateActionContext.Provider value={makeStateActionContext()}>
       {props.children}
