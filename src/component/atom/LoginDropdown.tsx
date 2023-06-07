@@ -1,13 +1,14 @@
-import { Show, splitProps } from "solid-js";
+import { Show, createSignal, splitProps } from "solid-js";
 import CurrentUserLogo from "../../views/layout/topMenu/logo/CurrentUserLogo";
 import LoggedInUserLogo from "../../views/layout/topMenu/logo/LoggedInUserLogo";
-import LoginModal from "./LoginMenu";
+import LoginMenu from "./LoginMenu";
 import "./LoginDropdown.css";
+import { Transition } from "solid-transition-group";
 
 export interface LoginDropdownProps {
   // Props button parent
   getProfilePic: () => boolean | string | undefined;
-  onClick: () => void;
+  onClick: (arg: MouseEvent | undefined) => void;
   // Props modal
   authenticated: boolean;
   show: boolean;
@@ -16,6 +17,12 @@ export interface LoginDropdownProps {
 }
 
 export default function (props: LoginDropdownProps) {
+  const [displayedSubComponent, setDisplayedSubComponent] = createSignal(false);
+
+  function toggleSubComponentDisplayed() {
+    setDisplayedSubComponent((bool) => !bool);
+  }
+
   const [local] = splitProps(props, [
     "getProfilePic",
     "onClick",
@@ -31,7 +38,10 @@ export default function (props: LoginDropdownProps) {
       id="login-btn"
       type="button"
       aria-expanded="false"
-      onClick={() => local.onClick()}
+      onClick={(e: MouseEvent) => {
+        toggleSubComponentDisplayed();
+        local.onClick(e);
+      }}
     >
       <Show
         when={!local.authenticated}
@@ -39,14 +49,23 @@ export default function (props: LoginDropdownProps) {
       >
         <CurrentUserLogo />
       </Show>
-      <Show when={local.show}>
-        <LoginModal
-          authenticated={local.authenticated}
-          // show={local.show}
-          xOffset={local.xOffset}
-          onClick={local.handleLogin}
-        />
-      </Show>
+      <Transition
+        enterActiveClass="transition ease-out duration-200"
+        enterClass="opacity-0 translate-y-1"
+        enterToClass="opacity-100 translate-y-0"
+        exitActiveClass="transition ease-in duration-150"
+        exitClass="opacity-100 translate-y-0"
+        exitToClass="opacity-0 translate-y-1"
+      >
+        <Show when={displayedSubComponent()}>
+          <LoginMenu
+            authenticated={local.authenticated}
+            xOffset={local.xOffset}
+            onClick={local.handleLogin}
+            // show={displayedSubComponent()}
+          />
+        </Show>
+      </Transition>
     </button>
   );
 }

@@ -2,12 +2,12 @@ import LoginButton from "../atom/LoginDropdown";
 import { splitProps } from "solid-js";
 
 export interface LoginProps {
-  show: () => boolean;
+  show: boolean;
   toggleShow: () => void;
   handleLogin: () => void;
   getProfilePic: () => boolean | string | undefined;
-  authenticated: () => boolean;
-  xOffset: () => number;
+  authenticated: boolean;
+  xOffset: number;
 }
 
 export default function (props: LoginProps) {

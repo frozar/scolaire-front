@@ -23,10 +23,3 @@ export const LoginDropDown: Story = {
     onClick: { action: "Clicked" },
   },
 };
-
-// export const LoggedInDropdown: Story = {
-//   args: {
-//     show: true,
-//     authenticated: true,
-//   },
-// };

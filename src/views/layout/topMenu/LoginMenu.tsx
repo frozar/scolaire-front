@@ -26,12 +26,12 @@ export default function () {
 
   return (
     <Login
-      show={show}
+      show={show()}
       toggleShow={toggleShow}
       handleLogin={handleLogin}
       getProfilePic={getProfilePic}
-      authenticated={authenticated}
-      xOffset={() => -11}
+      authenticated={authenticated()}
+      xOffset={-11}
     />
   );
 }

@@ -13,5 +13,6 @@ type Story = StoryObj<typeof meta>;
 export const LoginMenu_: Story = {
   args: {
     authenticated: false,
+    show: true,
   },
 };
