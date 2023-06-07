@@ -13,8 +13,6 @@ import {
   linkBusLinePolyline,
   setBusLineSelected,
   setInfoToDisplay,
-  setOnArrows,
-  setOnLine,
   setPickerColor,
   setRemoveConfirmation,
 } from "../../../../signaux";
@@ -154,10 +152,6 @@ export function busLinePolylineAttachEvent(
         setBusLineSelected(idBusLine);
         setInfoToDisplay(InfoPanelEnum.line);
       }
-
-      // TODO: replace by use of busLine object
-      setOnLine({ line: self, idBusLine: idBusLine });
-      setOnArrows(arrowsLinked);
     });
 }
 
@@ -202,9 +196,6 @@ export function arrowAttachEvent(
         setBusLineSelected(idBusLine);
         setInfoToDisplay(InfoPanelEnum.line);
       }
-
-      setOnLine({ line: polyline, idBusLine: idBusLine });
-      setOnArrows(arrowsLinked);
     });
 }
 
