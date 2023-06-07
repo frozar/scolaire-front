@@ -10,16 +10,8 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const NotLoggedMenu: Story = {
+export const LoginMenu_: Story = {
   args: {
-    authenticated: () => false,
-    show: () => true,
-  },
-};
-
-export const LoggedInButtonIcon: Story = {
-  args: {
-    authenticated: () => true,
-    show: () => true,
+    authenticated: false,
   },
 };
