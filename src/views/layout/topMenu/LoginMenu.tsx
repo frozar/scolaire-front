@@ -1,23 +1,20 @@
-import { createSignal, onMount } from "solid-js";
+import { onMount } from "solid-js";
 import {
-  getProfilePic,
+  getProfilePicture,
   isAuthenticated,
   login,
   logout,
 } from "./authentication";
 import { authenticated, setAuthenticated } from "../../../signaux";
-import Login from "../../../component/molecule/Login";
+import LoginDropdown from "../../../component/molecule/LoginDropdown";
 
 export default function () {
-  const [show, setShow] = createSignal(false);
-  const toggleShow = () => setShow((show) => !show);
   const handleLogin = async () => {
     if (!authenticated()) {
       await login();
     } else {
       await logout();
     }
-    toggleShow();
   };
 
   onMount(async () => {
@@ -25,12 +22,10 @@ export default function () {
   });
 
   return (
-    <Login
-      show={show()}
-      toggleShow={toggleShow}
-      handleLogin={handleLogin}
-      getProfilePic={getProfilePic}
+    <LoginDropdown
+      getProfilePicture={getProfilePicture}
       authenticated={authenticated()}
+      handleLogin={handleLogin}
       xOffset={-11}
     />
   );

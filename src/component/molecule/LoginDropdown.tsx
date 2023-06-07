@@ -1,10 +1,11 @@
 import { Show, createSignal, splitProps } from "solid-js";
+import { Transition } from "solid-transition-group";
+
 import CurrentUserLogo from "../../views/layout/topMenu/logo/CurrentUserLogo";
 import LoggedInUserLogo from "../../views/layout/topMenu/logo/LoggedInUserLogo";
-// import LoginMenu from "./LoginMenu";
+import LoginMenu from "../atom/LoginMenu";
+
 import "./LoginDropdown.css";
-import { Transition } from "solid-transition-group";
-import LoginMenu from "./LoginMenu";
 
 export interface LoginDropdownProps {
   // Props button parent

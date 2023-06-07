@@ -66,7 +66,7 @@ export async function isAuthenticated() {
   return true;
 }
 
-export function getProfilePic() {
+export function getProfilePicture() {
   const user = getAuthtenticatedUser();
   if (!user || !user.sub) {
     return false;
