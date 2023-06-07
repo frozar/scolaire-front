@@ -5,10 +5,11 @@ import {
   LogoutOptions,
 } from "@auth0/auth0-spa-js";
 import {
-  getAuthtenticatedUser,
+  getAuthenticatedUser,
   setAuthenticated,
-  setAuthtenticatedUser,
+  setAuthenticatedUser,
 } from "../../../signaux";
+import { createEffect } from "solid-js";
 
 export const auth0Client: Auth0Client = await createAuth0Client({
   domain: import.meta.env.VITE_AUTH0_DOMAIN,
@@ -27,7 +28,7 @@ export async function logout() {
       },
     };
     auth0Client.logout(options);
-    setAuthtenticatedUser(undefined);
+    setAuthenticatedUser(undefined);
   } catch (err) {
     console.log("Log out failed", err);
   }
@@ -48,31 +49,35 @@ export async function login() {
 }
 
 export async function tryConnection() {
-  const user = getAuthtenticatedUser();
+  const user = getAuthenticatedUser();
   if (!user || !user.sub) {
     if (await auth0Client.isAuthenticated()) {
       const user = await auth0Client.getUser();
-      setAuthtenticatedUser(user);
+      setAuthenticatedUser(user);
     }
   }
 }
 
 export async function isAuthenticated() {
   await tryConnection();
-  const user = getAuthtenticatedUser();
+  const user = getAuthenticatedUser();
   if (!user || !user.sub) {
     return false;
   }
   return true;
 }
 
-export function getProfilePicture() {
-  const user = getAuthtenticatedUser();
+export const getProfilePicture = () => {
+  const user = getAuthenticatedUser();
   if (!user || !user.sub) {
     return false;
   }
   return user.picture;
-}
+};
+
+createEffect(() => {
+  console.log("getProfilePicture", getProfilePicture());
+});
 
 export async function getToken() {
   if (import.meta.env.VITE_AUTH0_DEV_MODE === "true") {
@@ -94,7 +99,7 @@ window.onload = async () => {
     try {
       await auth0Client.handleRedirectCallback();
       const user = await auth0Client.getUser();
-      setAuthtenticatedUser(user);
+      setAuthenticatedUser(user);
       setAuthenticated(true);
     } catch (err) {
       console.log("Error parsing redirect:", err);
