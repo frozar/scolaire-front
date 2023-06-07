@@ -23,7 +23,7 @@ export default function (props: LoginProps) {
   return (
     <div>
       <LoginButton
-        getProfilePic={local.getProfilePic}
+        getProfilePicture={local.getProfilePic}
         onClick={local.toggleShow}
         show={local.show}
         authenticated={local.authenticated}

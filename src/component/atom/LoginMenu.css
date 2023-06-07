@@ -2,13 +2,5 @@
 @import "../../css/var.css";
 
 #login-dialog {
-  @apply absolute flex w-screen max-w-min px-1 z-[1400] mt-2;
-
-  > div {
-    @apply w-56 shrink rounded-xl bg-white text-sm leading-6 text-gray-900 shadow-lg ring-1 ring-gray-900/5;
-
-    > button {
-      @apply block p-2 hover:text-indigo-600;
-    }
-  }
+  @apply absolute flex w-56  z-[1400] mt-2 rounded-xl bg-white text-sm leading-6 text-gray-900 shadow-lg ring-1 ring-gray-900/5 p-2 shrink hover:text-indigo-600;
 }

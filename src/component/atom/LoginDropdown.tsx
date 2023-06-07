@@ -1,19 +1,19 @@
 import { Show, createSignal, splitProps } from "solid-js";
 import CurrentUserLogo from "../../views/layout/topMenu/logo/CurrentUserLogo";
 import LoggedInUserLogo from "../../views/layout/topMenu/logo/LoggedInUserLogo";
-import LoginMenu from "./LoginMenu";
+// import LoginMenu from "./LoginMenu";
 import "./LoginDropdown.css";
 import { Transition } from "solid-transition-group";
+import LoginMenu from "./LoginMenu";
 
 export interface LoginDropdownProps {
   // Props button parent
-  getProfilePic: () => boolean | string | undefined;
-  onClick: (arg: MouseEvent | undefined) => void;
-  // Props modal
+  getProfilePicture: () => boolean | string | undefined;
+  // Shared props
   authenticated: boolean;
-  show: boolean;
-  xOffset?: number;
+  // Props modal
   handleLogin: () => void;
+  xOffset?: number;
 }
 
 export default function (props: LoginDropdownProps) {
@@ -24,24 +24,19 @@ export default function (props: LoginDropdownProps) {
   }
 
   const [local] = splitProps(props, [
-    "getProfilePic",
-    "onClick",
+    "getProfilePicture",
     "authenticated",
-    "show",
     "xOffset",
     "handleLogin",
   ]);
-  const profile = () => local.getProfilePic();
+  const profile = () => local.getProfilePicture();
 
   return (
     <button
       id="login-btn"
       type="button"
       aria-expanded="false"
-      onClick={(e: MouseEvent) => {
-        toggleSubComponentDisplayed();
-        local.onClick(e);
-      }}
+      onClick={toggleSubComponentDisplayed}
     >
       <Show
         when={!local.authenticated}
@@ -62,7 +57,6 @@ export default function (props: LoginDropdownProps) {
             authenticated={local.authenticated}
             xOffset={local.xOffset}
             onClick={local.handleLogin}
-            // show={displayedSubComponent()}
           />
         </Show>
       </Transition>

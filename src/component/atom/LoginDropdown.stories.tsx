@@ -1,22 +1,21 @@
 import { Meta, StoryObj } from "storybook-solidjs";
-import LoginDropdown from "./LoginDropdown";
+import LoginDropdownComponent from "./LoginDropdown";
 
 const meta = {
   title: "TopNav/LoginDropdown",
-  component: LoginDropdown,
+  component: LoginDropdownComponent,
   tags: ["autodocs"],
   args: {
-    getProfilePic: () =>
+    getProfilePicture: () =>
       "https://raw.githubusercontent.com/frozar/scolaire-front/main/public/profile-picture.jpeg",
   },
-} satisfies Meta<typeof LoginDropdown>;
+} satisfies Meta<typeof LoginDropdownComponent>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const LoginDropDown: Story = {
+export const LoginDropdown: Story = {
   args: {
-    show: true,
     authenticated: false,
   },
   argTypes: {
