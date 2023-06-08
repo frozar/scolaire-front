@@ -75,7 +75,7 @@ export const [getUserInformations, setUserInformations] = createSignal(
   []
 ) as Signal<userInformationType[]>;
 
-export const [getAuthtenticatedUser, setAuthtenticatedUser] =
+export const [getAuthenticatedUser, setAuthenticatedUser] =
   createSignal<User>();
 
 export const [authenticated, setAuthenticated] = createSignal(false);
