@@ -300,7 +300,6 @@ export function fetchBusLines() {
 
               return lineWk;
             });
-            // console.log("linkBusLinePolyline", linkBusLinePolyline);
 
             setBusLines((previousLines) => {
               // Remove existing polylines and arrows
