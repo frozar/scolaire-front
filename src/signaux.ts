@@ -392,7 +392,7 @@ export const [busLineSelected, setBusLineSelected] = createSignal<number>(-1);
 
 export const [infoToDisplay, setInfoToDisplay] = createSignal<InfoPanelEnum>();
 
-export const [stopIds, setStopIds] = createSignal<number[]>([]);
+// export const [stopIds, setStopIds] = createSignal<number[]>([]);
 
 export const [timelineStopNames, setTimelineStopNames] = createSignal<string[]>(
   []

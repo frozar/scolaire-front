@@ -23,8 +23,8 @@ import {
   points,
   infoToDisplay,
   setInfoToDisplay,
-  stopIds,
-  setStopIds,
+  // stopIds,
+  // setStopIds,
   setBusLineSelected,
   timelineStopNames,
   setTimelineStopNames,
@@ -125,16 +125,16 @@ function Timeline() {
 }
 
 export default function () {
-  createEffect(() => {
-    // AddLine mode
-    if (stopIds().length != 0) {
-      const stopsName = points()
-        .filter((point) => [stopIds().at(-1)].includes(point.id_point))
-        .map((stopName) => stopName.name)[0];
+  // createEffect(() => {
+  //   // AddLine mode
+  //   if (stopIds().length != 0) {
+  //     const stopsName = points()
+  //       .filter((point) => [stopIds().at(-1)].includes(point.id_point))
+  //       .map((stopName) => stopName.name)[0];
 
-      setTimelineStopNames((names) => [...names, stopsName]);
-    }
-  });
+  //     setTimelineStopNames((names) => [...names, stopsName]);
+  //   }
+  // });
 
   createEffect(() => {
     // Read mode
@@ -156,7 +156,7 @@ export default function () {
     } else {
       resetLineUnderConstruction();
       setInfoToDisplay(InfoPanelEnum.nothing);
-      setStopIds([]);
+      // setStopIds([]);
     }
   });
 

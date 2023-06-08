@@ -23,10 +23,12 @@ import {
   getLeafletMap,
   setSelectedElement,
   setInfoToDisplay,
-  setStopIds,
-  stopIds,
+  // setStopIds,
+  // stopIds,
   setIsRamassageReady,
   setIsEtablissementReady,
+  points,
+  setTimelineStopNames,
 } from "../../../signaux";
 import { minMaxQty } from "./PointsRamassageAndEtablissement";
 import { getToken } from "../../layout/topMenu/authentication";
@@ -167,10 +169,46 @@ export default function (props: {
             id_point: point.id_point,
             nature: point.nature,
           };
-          addPointToLineUnderConstruction(pointIdentity);
-          if (pointIdentity.id_point != stopIds().at(-1)) {
-            setStopIds((ids) => [...ids, pointIdentity.id_point]);
+
+          // working --
+          // addPointToLineUnderConstruction(pointIdentity);
+
+          // if (pointIdentity.id_point != stopIds().at(-1)) {
+          //   setStopIds((ids) => [...ids, pointIdentity.id_point]);
+          // }
+
+          // TODO: Gérer autrement le undefined
+
+          // get last id_point from getLineUnderConstruction
+          // if different than pointIdentity.id_point or undefined (first point)
+          // => get stop name from points() with pointIdentity.id_point
+          // => add stop name to timelineStopName()
+          // addPointToLineUnderConstruction
+
+          // console.log("getLineUnderConstruction()", getLineUnderConstruction());
+          // console.log(
+          //   "id_point from getLineUnderConstruction()",
+          //   getLineUnderConstruction().stops.at(-1)?.id_point
+          // );
+
+          const lastPointIdOfLineUnderConstruction =
+            getLineUnderConstruction().stops.at(-1)?.id_point;
+          const idPointSelected = pointIdentity.id_point;
+
+          if (
+            lastPointIdOfLineUnderConstruction != idPointSelected ||
+            lastPointIdOfLineUnderConstruction == undefined
+          ) {
+            const stopName = points().filter(
+              (point) => idPointSelected == point.id_point
+            )[0].name;
+            setTimelineStopNames((names) => [...names, stopName]);
           }
+
+          addPointToLineUnderConstruction(pointIdentity);
+          // faire encore plus simple et écraser timelineStopNames() avec les stopName récup de getLineUnderConstruction
+          // working --
+
           if (!(1 < getLineUnderConstruction().stops.length)) {
             return;
           }
