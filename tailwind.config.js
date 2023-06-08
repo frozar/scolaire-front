@@ -5,5 +5,10 @@ module.exports = {
   theme: {
     extend: {},
   },
+  purge: {
+    options: {
+      safelist: ["translate-x-[-11rem]"],
+    },
+  },
   plugins: [require("daisyui"), "@tailwindcss/forms"],
 };
