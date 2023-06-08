@@ -23,8 +23,6 @@ import {
   getLeafletMap,
   setSelectedElement,
   setInfoToDisplay,
-  // setStopIds,
-  // stopIds,
   setIsRamassageReady,
   setIsEtablissementReady,
   points,
@@ -172,11 +170,6 @@ export default function (props: {
 
           addPointToLineUnderConstruction(pointIdentity);
 
-          // get all ids from getLineUnderConstruction
-          // get all corresponding stopNames (être sûr que c'est dans le bon ordre)
-          // erase timelineStopNames()
-          // addPointToLineUnderConstruction => NON avant !!
-
           const ids = getLineUnderConstruction().stops.map(
             (stop) => stop.id_point
           );
@@ -186,8 +179,6 @@ export default function (props: {
           );
 
           setTimelineStopNames(stopNames);
-
-          // working --
 
           if (!(1 < getLineUnderConstruction().stops.length)) {
             return;

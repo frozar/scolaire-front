@@ -23,8 +23,6 @@ import {
   points,
   infoToDisplay,
   setInfoToDisplay,
-  // stopIds,
-  // setStopIds,
   setBusLineSelected,
   timelineStopNames,
   setTimelineStopNames,
@@ -47,30 +45,6 @@ type PointToDisplayType = {
 type TimelineItemType = {
   name: string;
 };
-
-// const displayTimeline = (idBusLine: number) => {
-//   function getStopIds(busLine: LineType[]) {
-//     return busLine[0].stops.map((stop) => stop.id_point);
-//   }
-
-//   function getStopsName(
-//     stops: PointRamassageType[] | PointEtablissementType[]
-//   ) {
-//     return stops.map((stop) => stop.name);
-//   }
-
-//   const busLine = busLines().filter(
-//     (busLine) => busLine.idBusLine == idBusLine
-//   );
-
-//   const stopIds = getStopIds(busLine);
-//   const stops = stopIds.map(
-//     (stopId) => points().filter((point) => point.id_point === stopId)[0]
-//   );
-//   const stopNameList = getStopsName(stops);
-
-//   return stopNameList;
-// };
 
 const getStopsName = (idBusLine: number) => {
   const busLine = busLines().filter(
@@ -125,23 +99,9 @@ function Timeline() {
 }
 
 export default function () {
-  // createEffect(() => {
-  //   // AddLine mode
-  //   if (stopIds().length != 0) {
-  //     const stopsName = points()
-  //       .filter((point) => [stopIds().at(-1)].includes(point.id_point))
-  //       .map((stopName) => stopName.name)[0];
-
-  //     setTimelineStopNames((names) => [...names, stopsName]);
-  //   }
-  // });
-
   createEffect(() => {
     // Read mode
     if (busLineSelected() != -1) {
-      //&& isInReadMode()
-      console.log("read mode ?");
-
       setTimelineStopNames(getStopsName(busLineSelected()));
     }
   });
@@ -156,60 +116,8 @@ export default function () {
     } else {
       resetLineUnderConstruction();
       setInfoToDisplay(InfoPanelEnum.nothing);
-      // setStopIds([]);
     }
   });
-
-  // createEffect(() => {
-  //   setBusLineSelected(-1);
-  //   setTimelineStopNames([]);
-  //   if (!isInAddLineMode()) {
-  //     // readMode or removeLineMode
-  //     resetLineUnderConstruction();
-  //     setInfoToDisplay(InfoPanelEnum.nothing);
-  //     // setBusLineSelected(-1);
-  //     // setTimelineStopNames([]);
-  //     setStopIds([]);
-  //   } else {
-  //     // addLineMode
-  //     setInfoToDisplay(InfoPanelEnum.edition);
-  //     // setTimelineStopNames([]);
-  //     // setBusLineSelected(-1);
-  //   }
-  // });
-
-  // createEffect(() => {
-  //   if (!isInAddLineMode()) {
-  //     // readMode or removeLineMode
-  //     resetLineUnderConstruction();
-  //     setInfoToDisplay(InfoPanelEnum.nothing);
-  //     setBusLineSelected(-1);
-  //     setTimelineStopNames([]);
-  //     setStopIds([]);
-  //   } else {
-  //     // addLineMode
-  //     setInfoToDisplay(InfoPanelEnum.edition);
-  //     setTimelineStopNames([]);
-  //     setBusLineSelected(-1);
-  //   }
-  // });
-
-  // createEffect(() => {
-  //   if (!isInAddLineMode()) {
-  //     resetLineUnderConstruction();
-  //     setInfoToDisplay(InfoPanelEnum.nothing);
-  //     setBusLineSelected(-1);
-  //   }
-  //   if (isInReadMode()) {
-  //     setTimelineStopNames([]);
-  //     setStopIds([]);
-  //   }
-  //   if (isInAddLineMode()) {
-  //     setInfoToDisplay(InfoPanelEnum.edition);
-  //     setTimelineStopNames([]);
-  //     // setBusLineSelected(-1);
-  //   }
-  // });
 
   const selectedIdentity = createMemo<PointIdentityType | null>(() => {
     const wkSelectedElement = selectedElement();
