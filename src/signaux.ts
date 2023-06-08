@@ -304,37 +304,20 @@ export function fetchBusLines() {
 
             setBusLines((previousLines) => {
               // Remove existing polylines and arrows
-              console.log("linkBusLinePolyline", linkBusLinePolyline);
-
               const idLines = lines.map((line) => line.idBusLine);
+
               for (const previousLine of previousLines) {
-                if (!(previousLine.idBusLine in idLines)) {
-                  // console.log("linkBusLinePolyline", linkBusLinePolyline);
+                if (
+                  !(previousLine.idBusLine in idLines) &&
+                  linkBusLinePolyline[previousLine.idBusLine]
+                ) {
+                  const { polyline: previousPolyline, arrows: previousArrows } =
+                    linkBusLinePolyline[previousLine.idBusLine];
 
-                  // console.log(
-                  //   "linkBusLinePolyline[previousLine.idBusLine]",
-                  //   linkBusLinePolyline[previousLine.idBusLine]
-                  // );
+                  previousPolyline.remove();
+                  previousArrows.map((arrow) => arrow.remove());
 
-                  // Remonter plus haut ?
-                  // Pas completement undefined ?
-                  if (linkBusLinePolyline[previousLine.idBusLine]) {
-                    const {
-                      polyline: previousPolyline,
-                      arrows: previousArrows,
-                    } = linkBusLinePolyline[previousLine.idBusLine];
-
-                    previousPolyline.remove();
-                    previousArrows.map((arrow) => arrow.remove());
-
-                    delete linkBusLinePolyline[previousLine.idBusLine];
-                  }
-                  // const { polyline: previousPolyline, arrows: previousArrows } =
-                  //   linkBusLinePolyline[previousLine.idBusLine];
-                  // previousPolyline.remove();
-                  // previousArrows.map((arrow) => arrow.remove());
-
-                  // delete linkBusLinePolyline[previousLine.idBusLine];
+                  delete linkBusLinePolyline[previousLine.idBusLine];
                 }
               }
 
