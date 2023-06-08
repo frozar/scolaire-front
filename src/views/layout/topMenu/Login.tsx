@@ -1,4 +1,4 @@
-import { createEffect, onMount } from "solid-js";
+import { onMount } from "solid-js";
 import {
   getProfilePicture,
   isAuthenticated,
@@ -19,10 +19,6 @@ export default function () {
 
   onMount(async () => {
     setAuthenticated(await isAuthenticated());
-  });
-
-  createEffect(() => {
-    console.log("getProfilePicture", getProfilePicture());
   });
 
   return (
