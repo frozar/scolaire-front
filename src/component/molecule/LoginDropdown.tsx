@@ -12,7 +12,7 @@ export interface LoginDropdownProps {
   getProfilePicture: () => boolean | string | undefined;
   // Shared props
   authenticated: () => boolean;
-  // Props modal
+  // Props sub component
   handleLogin: () => void;
   xOffset?: number;
 }
