@@ -304,10 +304,15 @@ export function fetchBusLines() {
             setBusLines((previousLines) => {
               // Remove existing polylines and arrows
               const idLines = lines.map((line) => line.idBusLine);
+
               for (const previousLine of previousLines) {
-                if (!(previousLine.idBusLine in idLines)) {
+                if (
+                  !(previousLine.idBusLine in idLines) &&
+                  linkBusLinePolyline[previousLine.idBusLine]
+                ) {
                   const { polyline: previousPolyline, arrows: previousArrows } =
                     linkBusLinePolyline[previousLine.idBusLine];
+
                   previousPolyline.remove();
                   previousArrows.map((arrow) => arrow.remove());
 
@@ -316,7 +321,7 @@ export function fetchBusLines() {
               }
 
               for (const line of lines) {
-                // 1. Calcul de la polilyne, à vol d'oiseau ou sur route
+                // 1. Calcul de la polyline, à vol d'oiseau ou sur route
                 computePolyline(line.color, line.stops).then(
                   (busLinePolyline) => {
                     const polylineLatLngs =

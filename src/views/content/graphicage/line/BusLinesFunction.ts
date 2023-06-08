@@ -228,9 +228,17 @@ export async function computePolyline(
 
   let polylineLatLngs = getLatLngs(stops);
   let opacity = 1;
+
   if (isInReadMode()) {
-    polylineLatLngs = (await fetchOnRoadPolyline(polylineLatLngs)).latlngs;
-    opacity = 0.8;
+    const readModePolylineLatLngs = (await fetchOnRoadPolyline(polylineLatLngs))
+      .latlngs;
+    const readModeOpacity = 0.8;
+
+    // Need to check if is still in readMode because of await
+    if (isInReadMode()) {
+      polylineLatLngs = readModePolylineLatLngs;
+      opacity = readModeOpacity;
+    }
   }
 
   const busLinePolyline = getBusLinePolyline(color, polylineLatLngs, opacity);
