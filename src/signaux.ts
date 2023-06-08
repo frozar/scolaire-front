@@ -375,7 +375,6 @@ export function fetchBusLines() {
                   }
                 );
               }
-              // console.log("linkBusLinePolyline", linkBusLinePolyline);
 
               return lines;
             });
