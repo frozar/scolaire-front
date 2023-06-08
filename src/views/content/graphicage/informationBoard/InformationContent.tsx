@@ -52,8 +52,8 @@ type TimelineItemType = {
 };
 
 const displayTimeline = (idBusLine: number) => {
-  function getStopIds(busLineId: LineType[]) {
-    return busLineId[0].stops.map((stop) => stop.id_point);
+  function getStopIds(busLine: LineType[]) {
+    return busLine[0].stops.map((stop) => stop.id_point);
   }
 
   function getStopsName(
@@ -65,6 +65,8 @@ const displayTimeline = (idBusLine: number) => {
   const busLine = busLines().filter(
     (busLine) => busLine.idBusLine == idBusLine
   );
+  console.log("busLine", busLine);
+
   const stopIds = getStopIds(busLine);
   const stops = stopIds.map(
     (stopId) => points().filter((point) => point.id_point === stopId)[0]
@@ -122,12 +124,16 @@ export default function () {
       setTimelineStopNames((names) => [...names, stopsName]);
     }
   });
+
   createEffect(() => {
     // Read mode
-    if (busLineSelected() != -1) {
+    if (busLineSelected() != -1 && isInReadMode()) {
+      console.log("read mode ?");
+
       setTimelineStopNames(displayTimeline(busLineSelected()));
     }
   });
+
   createEffect(() => {
     if (!isInAddLineMode()) {
       resetLineUnderConstruction();
