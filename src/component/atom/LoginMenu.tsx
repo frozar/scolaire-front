@@ -1,6 +1,5 @@
 import { splitProps } from "solid-js";
 import "./LoginMenu.css";
-import { authenticated } from "../../signaux";
 
 export interface LoginMenuProps {
   onClick: () => void;
