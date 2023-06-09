@@ -5,7 +5,7 @@ import StopItems from "./RamassageItem";
 import { StopItemType } from "../../../type";
 import RemoveRamassageConfirmation from "../../../userInformation/RemoveRamassageConfirmation";
 import ImportCsvDialogBox from "../../../component/ImportCsvDialogBox";
-import { getToken } from "../../layout/topMenu/authentication";
+import { authenticateWrap } from "../../layout/topMenu/authentication";
 import ImportCsvCanvas from "../../../component/ImportCsvCanvas";
 import ImportCsvButton from "../../../component/ImportCsvButton";
 import ExportCsvButton from "../../../component/ExportCsvButton";
@@ -14,51 +14,44 @@ import ActionSelect from "../../../component/ActionSelect";
 const [ramassages, setRamassages] = createSignal<StopItemType[]>([]);
 
 export function fetchRamassage() {
-  getToken()
-    .then((token) => {
-      fetch(
-        import.meta.env.VITE_BACK_URL + "/ramassages_associated_bus_lines_info",
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            authorization: `Bearer ${token}`,
-          },
+  authenticateWrap((headers) => {
+    fetch(
+      import.meta.env.VITE_BACK_URL + "/ramassages_associated_bus_lines_info",
+      {
+        method: "GET",
+        headers,
+      }
+    )
+      .then((res) => {
+        return res.json();
+      })
+      .then(
+        (
+          res: {
+            id: number;
+            name: string;
+            quantity: number;
+            nb_etablissement: number;
+            nb_line: number;
+            lon: number;
+            lat: number;
+          }[]
+        ) => {
+          setRamassages(
+            res
+              .map((elt) => {
+                return {
+                  ...elt,
+                  nbEtablissement: elt.nb_etablissement,
+                  nbLine: elt.nb_line,
+                  selected: false,
+                };
+              })
+              .sort((a, b) => a.name.localeCompare(b.name))
+          );
         }
-      )
-        .then((res) => {
-          return res.json();
-        })
-        .then(
-          (
-            res: {
-              id: number;
-              name: string;
-              quantity: number;
-              nb_etablissement: number;
-              nb_line: number;
-              lon: number;
-              lat: number;
-            }[]
-          ) => {
-            setRamassages(
-              res
-                .map((elt) => {
-                  return {
-                    ...elt,
-                    nbEtablissement: elt.nb_etablissement,
-                    nbLine: elt.nb_line,
-                    selected: false,
-                  };
-                })
-                .sort((a, b) => a.name.localeCompare(b.name))
-            );
-          }
-        );
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+      );
+  });
 }
 
 function preventDefaultHandler(e: DragEvent) {

@@ -5,7 +5,7 @@ import EtablissementItem from "./EtablissementItem";
 import { EtablissementItemType } from "../../../type";
 import RemoveRamassageConfirmation from "../../../userInformation/RemoveRamassageConfirmation";
 import ImportCsvDialogBox from "../../../component/ImportCsvDialogBox";
-import { getToken } from "../../layout/topMenu/authentication";
+import { authenticateWrap } from "../../layout/topMenu/authentication";
 import ImportCsvCanvas from "../../../component/ImportCsvCanvas";
 import ImportCsvButton from "../../../component/ImportCsvButton";
 import ExportCsvButton from "../../../component/ExportCsvButton";
@@ -16,50 +16,43 @@ const [etablissements, setEtablissements] = createSignal<
 >([]);
 
 export function fetchEtablissement() {
-  getToken()
-    .then((token) => {
-      fetch(
-        import.meta.env.VITE_BACK_URL +
-          "/etablissements_associated_bus_lines_info",
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            authorization: `Bearer ${token}`,
-          },
+  authenticateWrap((headers) => {
+    fetch(
+      import.meta.env.VITE_BACK_URL +
+        "/etablissements_associated_bus_lines_info",
+      {
+        method: "GET",
+        headers,
+      }
+    )
+      .then((res) => {
+        return res.json();
+      })
+      .then(
+        (
+          res: {
+            id: number;
+            name: string;
+            quantity: number;
+            nb_line: number;
+            lon: number;
+            lat: number;
+          }[]
+        ) => {
+          setEtablissements(
+            res
+              .map((elt) => {
+                return {
+                  ...elt,
+                  nbLine: elt.nb_line,
+                  selected: false,
+                };
+              })
+              .sort((a, b) => a.name.localeCompare(b.name))
+          );
         }
-      )
-        .then((res) => {
-          return res.json();
-        })
-        .then(
-          (
-            res: {
-              id: number;
-              name: string;
-              quantity: number;
-              nb_line: number;
-              lon: number;
-              lat: number;
-            }[]
-          ) => {
-            setEtablissements(
-              res
-                .map((elt) => {
-                  return {
-                    ...elt,
-                    nbLine: elt.nb_line,
-                    selected: false,
-                  };
-                })
-                .sort((a, b) => a.name.localeCompare(b.name))
-            );
-          }
-        );
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+      );
+  });
 }
 
 function preventDefaultHandler(e: DragEvent) {

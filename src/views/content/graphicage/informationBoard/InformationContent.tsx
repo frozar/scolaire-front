@@ -31,7 +31,10 @@ import {
   pickerColor,
 } from "../../../../signaux";
 import { useStateAction } from "../../../../StateAction";
-import { getToken } from "../../../layout/topMenu/authentication";
+import {
+  authenticateWrap,
+  getToken,
+} from "../../../layout/topMenu/authentication";
 
 const [, { isInAddLineMode, resetLineUnderConstruction }] = useStateAction();
 
@@ -155,11 +158,8 @@ export default function () {
   }): Promise<PointToDisplayType[]> => {
     const { id, nature } = urlParameters;
 
-    // TODO: simplify this condition
-    if (!(id != -1 && nature != null)) {
-      return await new Promise((resolve) => {
-        resolve([]);
-      });
+    if (id == -1 || nature == null) {
+      return [];
     } else {
       const URL =
         import.meta.env.VITE_BACK_URL +
@@ -168,6 +168,9 @@ export default function () {
         id +
         "&nature=" +
         nature;
+
+      // TODO:
+      // Attemp to use authenticateWrap failed => Don't use the 'createResource' from solidjs
       return getToken()
         .then(async (token) => {
           return fetch(URL, {
@@ -185,6 +188,7 @@ export default function () {
     }
   };
 
+  // TODO: Don't use the 'createResource' from solidjs
   const [associatedPoints] = createResource(
     fetchAssociatedPointsParameters,
     fetchAssociatedPoints
@@ -200,6 +204,7 @@ export default function () {
       ? NatureEnum.etablissement
       : NatureEnum.ramassage;
   };
+
   const ptToDisplay = () => {
     const wkAssociatedPoints = associatedPoints();
     if (!wkAssociatedPoints) {
@@ -261,30 +266,25 @@ export default function () {
     const id = busLineSelected();
     const color = (e.target as HTMLInputElement).value;
 
-    getToken()
-      .then((token) => {
-        fetch(import.meta.env.VITE_BACK_URL + `/line/${id}`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          method: "PATCH",
-          body: JSON.stringify({ color: color }),
-        })
-          .then(() => {
-            linkBusLinePolyline[id].color = color;
-          })
-          .catch((err) => console.log(err));
+    authenticateWrap((headers) => {
+      fetch(import.meta.env.VITE_BACK_URL + `/line/${id}`, {
+        headers,
+        method: "PATCH",
+        body: JSON.stringify({ color: color }),
       })
-      .catch(() => {
-        addNewUserInformation({
-          displayed: true,
-          level: MessageLevelEnum.error,
-          type: MessageTypeEnum.global,
-          content:
-            "Une erreur est survenue lors de la modification de couleur de la ligne",
-        });
+        .then(() => {
+          linkBusLinePolyline[id].color = color;
+        })
+        .catch((err) => console.log(err));
+    }).catch(() => {
+      addNewUserInformation({
+        displayed: true,
+        level: MessageLevelEnum.error,
+        type: MessageTypeEnum.global,
+        content:
+          "Une erreur est survenue lors de la modification de couleur de la ligne",
       });
+    });
   };
 
   return (

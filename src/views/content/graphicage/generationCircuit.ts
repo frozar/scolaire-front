@@ -17,7 +17,7 @@ import {
 } from "../../../type";
 import { addBusLine } from "../../../request";
 import { useStateAction } from "../../../StateAction";
-import { getToken } from "../../layout/topMenu/authentication";
+import { authenticateWrap } from "../../layout/topMenu/authentication";
 
 const [, { setModeRead }] = useStateAction();
 
@@ -96,68 +96,24 @@ export function generateCircuit(
   );
 
   enableSpinningWheel();
-  getToken()
-    .then(async (token) => {
-      fetch(import.meta.env.VITE_BACK_URL + "/generator/school_bus_circuit", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          ramassage_ids: ramassageIds,
-          etablissement_ids: etablissementIds,
-          num_vehicles: nbVehicles,
-          vehicles_capacity: vehiclesCapacity,
-          maximum_travel_distance: maximumTravelDistance,
-          global_span_cost_coefficient: globalSpanCostCoefficient,
-          time_limit_seconds: timeLimitSeconds,
-        }),
-      })
-        .then(async (res) => {
-          const data = await res.json();
-          console.log("data:", data);
-          if (!data) {
-            const nbRamassage = ramassageIds.length;
-            const nbEtablissement = etablissementIds.length;
-            addNewUserInformation({
-              displayed: true,
-              level: MessageLevelEnum.error,
-              type: MessageTypeEnum.global,
-              content:
-                "Erreur lors de la génération de circuit. [ramassage:" +
-                String(nbRamassage) +
-                ", etablissement:" +
-                String(nbEtablissement) +
-                "]",
-            });
-            console.error("Error: data", data);
-            disableSpinningWheel();
-            return;
-          }
-          for (const route of data) {
-            const idsPoint = route["steps"].map(
-              (step: {
-                load: number;
-                distance: number;
-                id: number;
-                id_point: number;
-                nature: string;
-              }) => step["id_point"]
-            );
-
-            // TODO: differ add line with a dialog box
-            // const res = await addBusLine(idsPoint);
-            await addBusLine(idsPoint);
-
-            // TODO: Deal case of error
-            // await res.json();
-            setModeRead();
-            fetchBusLines();
-            disableSpinningWheel();
-          }
-        })
-        .catch((e) => {
+  authenticateWrap((headers) => {
+    fetch(import.meta.env.VITE_BACK_URL + "/generator/school_bus_circuit", {
+      method: "POST",
+      headers,
+      body: JSON.stringify({
+        ramassage_ids: ramassageIds,
+        etablissement_ids: etablissementIds,
+        num_vehicles: nbVehicles,
+        vehicles_capacity: vehiclesCapacity,
+        maximum_travel_distance: maximumTravelDistance,
+        global_span_cost_coefficient: globalSpanCostCoefficient,
+        time_limit_seconds: timeLimitSeconds,
+      }),
+    })
+      .then(async (res) => {
+        const data = await res.json();
+        console.log("data:", data);
+        if (!data) {
           const nbRamassage = ramassageIds.length;
           const nbEtablissement = etablissementIds.length;
           addNewUserInformation({
@@ -171,11 +127,48 @@ export function generateCircuit(
               String(nbEtablissement) +
               "]",
           });
-          console.error("Error:", e);
+          console.error("Error: data", data);
           disableSpinningWheel();
+          return;
+        }
+        for (const route of data) {
+          const idsPoint = route["steps"].map(
+            (step: {
+              load: number;
+              distance: number;
+              id: number;
+              id_point: number;
+              nature: string;
+            }) => step["id_point"]
+          );
+
+          // TODO: differ add line with a dialog box
+          // const res = await addBusLine(idsPoint);
+          await addBusLine(idsPoint);
+
+          // TODO: Deal case of error
+          // await res.json();
+          setModeRead();
+          fetchBusLines();
+          disableSpinningWheel();
+        }
+      })
+      .catch((e) => {
+        const nbRamassage = ramassageIds.length;
+        const nbEtablissement = etablissementIds.length;
+        addNewUserInformation({
+          displayed: true,
+          level: MessageLevelEnum.error,
+          type: MessageTypeEnum.global,
+          content:
+            "Erreur lors de la génération de circuit. [ramassage:" +
+            String(nbRamassage) +
+            ", etablissement:" +
+            String(nbEtablissement) +
+            "]",
         });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+        console.error("Error:", e);
+        disableSpinningWheel();
+      });
+  });
 }
