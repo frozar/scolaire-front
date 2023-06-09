@@ -19,8 +19,8 @@ import { PointIdentityType } from "../../../../type";
 import {
   selectedElement,
   busLineSelected,
-  busLines,
-  points,
+  // busLines,
+  // points,
   infoToDisplay,
   setInfoToDisplay,
   setBusLineSelected,
@@ -49,19 +49,19 @@ type TimelineItemType = {
   name: string;
 };
 
-function getStopsName(idBusLine: number) {
-  const busLine = busLines().filter(
-    (busLine) => busLine.idBusLine == idBusLine
-  );
-  const stopIds = busLine[0].stops.map((stop) => stop.id_point);
-  const stops = stopIds.map(
-    (stopId) => points().filter((point) => point.id_point === stopId)[0]
-  );
+// function getStopsName(idBusLine: number) {
+//   const busLine = busLines().filter(
+//     (busLine) => busLine.idBusLine == idBusLine
+//   );
+//   const stopIds = busLine[0].stops.map((stop) => stop.id_point);
+//   const stops = stopIds.map(
+//     (stopId) => points().filter((point) => point.id_point === stopId)[0]
+//   );
 
-  const stopNameList = stops.map((stop) => stop.name);
+//   const stopNameList = stops.map((stop) => stop.name);
 
-  return stopNameList;
-}
+//   return stopNameList;
+// }
 
 function TimelineItem(props: TimelineItemType) {
   return (
@@ -101,12 +101,12 @@ function Timeline() {
 }
 
 export default function () {
-  createEffect(() => {
-    // Read mode
-    if (busLineSelected() != -1) {
-      setTimelineStopNames(getStopsName(busLineSelected()));
-    }
-  });
+  // createEffect(() => {
+  //   // Read mode
+  //   if (busLineSelected() != -1) {
+  //     setTimelineStopNames(getStopsName(busLineSelected()));
+  //   }
+  // });
 
   createEffect(() => {
     // When switching mode

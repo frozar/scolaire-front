@@ -17,14 +17,17 @@ import {
   busLines,
   getLeafletMap,
   linkBusLinePolyline,
-  setBusLineSelected,
+  // setBusLineSelected,
   setBusLines,
+  points,
   setInfoToDisplay,
   setPickerColor,
   setRemoveConfirmation,
+  setTimelineStopNames,
 } from "../../../../signaux";
 import { LineString } from "geojson";
 import { getToken } from "../../../layout/topMenu/authentication";
+// import { getStopsName } from "../informationBoard/InformationContent";
 
 export function getLatLngs(stops: PointIdentityType[]): L.LatLng[] {
   const latlngs: L.LatLng[] = [];
@@ -120,6 +123,20 @@ function getBusLineColor(busLines: LineType[], idBusLine: number) {
   return busLine.color;
 }
 
+function getStopsName(idBusLine: number) {
+  const busLine = busLines().filter(
+    (busLine) => busLine.idBusLine == idBusLine
+  );
+  const stopIds = busLine[0].stops.map((stop) => stop.id_point);
+  const stops = stopIds.map(
+    (stopId) => points().filter((point) => point.id_point === stopId)[0]
+  );
+
+  const stopNameList = stops.map((stop) => stop.name);
+
+  return stopNameList;
+}
+
 export function busLinePolylineAttachEvent(
   self: L.Polyline,
   idBusLine: number,
@@ -154,7 +171,9 @@ export function busLinePolylineAttachEvent(
       }
 
       if (isInReadMode()) {
-        setBusLineSelected(idBusLine);
+        // setBusLineSelected(idBusLine);
+        // contenu createEffect à mettre içi
+        setTimelineStopNames(getStopsName(idBusLine));
         setInfoToDisplay(InfoPanelEnum.line);
       }
     });
@@ -195,7 +214,9 @@ export function arrowAttachEvent(
       }
 
       if (isInReadMode()) {
-        setBusLineSelected(idBusLine);
+        // setBusLineSelected(idBusLine);
+        // contenu createEffect à mettre içi
+        setTimelineStopNames(getStopsName(idBusLine));
         setInfoToDisplay(InfoPanelEnum.line);
       }
     });
