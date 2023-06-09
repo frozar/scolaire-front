@@ -8,7 +8,6 @@ import {
   closeClearConfirmationBox,
   disableSpinningWheel,
   enableSpinningWheel,
-  fetchBusLines,
   displayedClearConfirmationDialogBox,
   points,
   setPoints,
@@ -19,6 +18,7 @@ import { clear } from "../request";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { assertIsNode } from "../utils";
 import { fetchPointsRamassage } from "../views/content/graphicage/PointsRamassageAndEtablissement";
+import { fetchBusLines } from "../views/content/graphicage/line/BusLinesFunction";
 
 function exitModal({ code }: KeyboardEvent) {
   // @ts-expect-error: Currently the 'keyboard' field doesn't exist on 'navigator'

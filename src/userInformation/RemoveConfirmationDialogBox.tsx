@@ -8,13 +8,13 @@ import {
   closeRemoveConfirmationBox,
   // setRoutes,
   // routes,
-  fetchBusLines,
   // busLines,
 } from "../signaux";
 
 import { deleteBusLine } from "../request";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { assertIsNode } from "../utils";
+import { fetchBusLines } from "../views/content/graphicage/line/BusLinesFunction";
 // import { removeRoute } from "../views/content/graphicage/line/BusLines";
 
 export default function () {

@@ -1,6 +1,7 @@
 import { onCleanup, createEffect } from "solid-js";
-import { fetchBusLines, setBusLines } from "../../../../signaux";
+import { setBusLines } from "../../../../signaux";
 import { pointsReady } from "../../../../views/content/graphicage/PointsRamassageAndEtablissement";
+import { fetchBusLines } from "./BusLinesFunction";
 
 export default function () {
   createEffect(() => {

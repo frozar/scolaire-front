@@ -3,7 +3,6 @@ import { useStateGui } from "../../../StateGui";
 import { addBusLine } from "../../../request";
 import {
   closeRemoveConfirmationBox,
-  fetchBusLines,
   displayedClearConfirmationDialogBox,
   getDisplayedGeneratorDialogBox,
   getExportConfirmationDialogBox,
@@ -13,6 +12,7 @@ import {
   displayRemoveLineMessage,
 } from "../../../userInformation/utils";
 import { displayedConfirmStopAddLine } from "./ConfirmStopAddLineBox";
+import { fetchBusLines } from "./line/BusLinesFunction";
 
 const [
   ,

@@ -4,7 +4,6 @@ import {
   busLines,
   disableSpinningWheel,
   enableSpinningWheel,
-  fetchBusLines,
   points,
 } from "../../../signaux";
 import {
@@ -17,7 +16,8 @@ import {
 } from "../../../type";
 import { addBusLine } from "../../../request";
 import { useStateAction } from "../../../StateAction";
-import { authenticateWrap } from "../../layout/topMenu/authentication";
+import { getToken } from "../../layout/topMenu/authentication";
+import { fetchBusLines } from "./line/BusLinesFunction";
 
 const [, { setModeRead }] = useStateAction();
 
