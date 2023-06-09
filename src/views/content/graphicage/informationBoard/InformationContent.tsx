@@ -46,11 +46,10 @@ type TimelineItemType = {
   name: string;
 };
 
-const getStopsName = (idBusLine: number) => {
+function getStopsName(idBusLine: number) {
   const busLine = busLines().filter(
     (busLine) => busLine.idBusLine == idBusLine
   );
-
   const stopIds = busLine[0].stops.map((stop) => stop.id_point);
   const stops = stopIds.map(
     (stopId) => points().filter((point) => point.id_point === stopId)[0]
@@ -59,7 +58,7 @@ const getStopsName = (idBusLine: number) => {
   const stopNameList = stops.map((stop) => stop.name);
 
   return stopNameList;
-};
+}
 
 function TimelineItem(props: TimelineItemType) {
   return (
