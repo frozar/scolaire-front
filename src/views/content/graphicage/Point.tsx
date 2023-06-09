@@ -23,10 +23,10 @@ import {
   getLeafletMap,
   setSelectedElement,
   setInfoToDisplay,
-  setStopIds,
-  stopIds,
   setIsRamassageReady,
   setIsEtablissementReady,
+  points,
+  setTimelineStopNames,
 } from "../../../signaux";
 import { minMaxQty } from "./PointsRamassageAndEtablissement";
 import { getToken } from "../../layout/topMenu/authentication";
@@ -167,10 +167,19 @@ export default function (props: {
             id_point: point.id_point,
             nature: point.nature,
           };
+
           addPointToLineUnderConstruction(pointIdentity);
-          if (pointIdentity.id_point != stopIds().at(-1)) {
-            setStopIds((ids) => [...ids, pointIdentity.id_point]);
-          }
+
+          const ids = getLineUnderConstruction().stops.map(
+            (stop) => stop.id_point
+          );
+
+          const stopNames = ids.map(
+            (id) => points().filter((point) => id == point.id_point)[0].name
+          );
+
+          setTimelineStopNames(stopNames);
+
           if (!(1 < getLineUnderConstruction().stops.length)) {
             return;
           }

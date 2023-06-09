@@ -11,13 +11,11 @@ import InfoPointName from "./InfoPointName";
 import {
   NatureEnum,
   isPointRamassage,
-  PointEtablissementType,
-  PointRamassageType,
   InfoPanelEnum,
   MessageLevelEnum,
   MessageTypeEnum,
 } from "../../../../type";
-import { PointIdentityType, LineType } from "../../../../type";
+import { PointIdentityType } from "../../../../type";
 import {
   selectedElement,
   busLineSelected,
@@ -25,8 +23,6 @@ import {
   points,
   infoToDisplay,
   setInfoToDisplay,
-  stopIds,
-  setStopIds,
   setBusLineSelected,
   timelineStopNames,
   setTimelineStopNames,
@@ -37,8 +33,7 @@ import {
 import { useStateAction } from "../../../../StateAction";
 import { getToken } from "../../../layout/topMenu/authentication";
 
-const [, { isInAddLineMode, isInReadMode, resetLineUnderConstruction }] =
-  useStateAction();
+const [, { isInAddLineMode, resetLineUnderConstruction }] = useStateAction();
 
 type PointToDisplayType = {
   id_point: number;
@@ -51,28 +46,19 @@ type TimelineItemType = {
   name: string;
 };
 
-const displayTimeline = (idBusLine: number) => {
-  function getStopIds(busLineId: LineType[]) {
-    return busLineId[0].stops.map((stop) => stop.id_point);
-  }
-
-  function getStopsName(
-    stops: PointRamassageType[] | PointEtablissementType[]
-  ) {
-    return stops.map((stop) => stop.name);
-  }
-
+function getStopsName(idBusLine: number) {
   const busLine = busLines().filter(
     (busLine) => busLine.idBusLine == idBusLine
   );
-  const stopIds = getStopIds(busLine);
+  const stopIds = busLine[0].stops.map((stop) => stop.id_point);
   const stops = stopIds.map(
     (stopId) => points().filter((point) => point.id_point === stopId)[0]
   );
-  const stopNameList = getStopsName(stops);
+
+  const stopNameList = stops.map((stop) => stop.name);
 
   return stopNameList;
-};
+}
 
 function TimelineItem(props: TimelineItemType) {
   return (
@@ -113,34 +99,22 @@ function Timeline() {
 
 export default function () {
   createEffect(() => {
-    // AddLine mode
-    if (stopIds().length != 0) {
-      const stopsName = points()
-        .filter((point) => [stopIds().at(-1)].includes(point.id_point))
-        .map((stopName) => stopName.name)[0];
-
-      setTimelineStopNames((names) => [...names, stopsName]);
-    }
-  });
-  createEffect(() => {
     // Read mode
     if (busLineSelected() != -1) {
-      setTimelineStopNames(displayTimeline(busLineSelected()));
+      setTimelineStopNames(getStopsName(busLineSelected()));
     }
   });
+
   createEffect(() => {
-    if (!isInAddLineMode()) {
-      resetLineUnderConstruction();
-      setInfoToDisplay(InfoPanelEnum.nothing);
-      setBusLineSelected(-1);
-    }
-    if (isInReadMode()) {
-      setTimelineStopNames([]);
-      setStopIds([]);
-    }
+    // When switching mode
+    setBusLineSelected(-1);
+    setTimelineStopNames([]);
+
     if (isInAddLineMode()) {
       setInfoToDisplay(InfoPanelEnum.edition);
-      setTimelineStopNames([]);
+    } else {
+      resetLineUnderConstruction();
+      setInfoToDisplay(InfoPanelEnum.nothing);
     }
   });
 
