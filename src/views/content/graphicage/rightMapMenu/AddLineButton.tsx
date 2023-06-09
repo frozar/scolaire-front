@@ -3,7 +3,7 @@ import { displayAddLineMessage } from "../../../../userInformation/utils";
 import { FaSolidPlus } from "solid-icons/fa";
 
 import ButtonGraphicageRightMenu from "../../../../component/atom/ButtonGraphicageRightMenu";
-import { fetchBusLines } from "../line/BusLines";
+import { fetchBusLines } from "../line/BusLinesFunction";
 
 const [, { setModeAddLine, isInAddLineMode, setModeRead }] = useStateAction();
 
