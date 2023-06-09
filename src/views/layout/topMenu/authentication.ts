@@ -81,9 +81,29 @@ export async function getToken() {
   try {
     const token = await auth0Client.getTokenSilently();
     return token;
-  } catch (err) {
-    throw new Error("Could not get token");
+  } catch (error) {
+    console.error("ERROR: getToken");
+    console.error(error);
+    return "errorToken";
   }
+}
+
+export function authenticateWrap(
+  callback: (headers: HeadersInit) => Response | PromiseLike<Response> | void
+) {
+  return getToken()
+    .then((token) => {
+      const headers: HeadersInit = {
+        "Content-Type": "application/json",
+        authorization: "Bearer " + token,
+      };
+
+      return callback(headers);
+    })
+    .catch((error) => {
+      console.error("ERROR: authenticateWrap");
+      console.error(error);
+    });
 }
 
 window.onload = async () => {

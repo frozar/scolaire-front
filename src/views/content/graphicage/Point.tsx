@@ -29,7 +29,7 @@ import {
   setTimelineStopNames,
 } from "../../../signaux";
 import { minMaxQty } from "./PointsRamassageAndEtablissement";
-import { getToken } from "../../layout/topMenu/authentication";
+import { authenticateWrap } from "../../layout/topMenu/authentication";
 
 const [
   ,
@@ -74,54 +74,47 @@ export default function (props: {
         : [null, null];
 
     if (getEndPoint && getParameter) {
-      getToken()
-        .then((token) => {
-          fetch(
-            import.meta.env.VITE_BACK_URL +
-              "/" +
-              getEndPoint +
-              "?" +
-              getParameter +
-              "=" +
-              id,
-            {
-              headers: {
-                "Content-Type": "application/json",
-                authorization: `Bearer ${token}`,
-              },
-            }
-          )
-            .then((res) => {
-              return res.json();
-            })
-            .then((data: EleveVersEtablissementType[]) => {
-              setter(
-                data.map((elt) => {
-                  const associatedId =
-                    nature === NatureEnum.ramassage
-                      ? elt.etablissement_id
-                      : elt.ramassage_id;
-                  const associatedNature =
-                    nature === NatureEnum.ramassage
-                      ? NatureEnum.etablissement
-                      : NatureEnum.ramassage;
-                  const id_point =
-                    associatedNature === NatureEnum.etablissement
-                      ? elt.etablissement_id_point
-                      : elt.ramassage_id_point;
+      authenticateWrap((headers) => {
+        fetch(
+          import.meta.env.VITE_BACK_URL +
+            "/" +
+            getEndPoint +
+            "?" +
+            getParameter +
+            "=" +
+            id,
+          {
+            headers,
+          }
+        )
+          .then((res) => {
+            return res.json();
+          })
+          .then((data: EleveVersEtablissementType[]) => {
+            setter(
+              data.map((elt) => {
+                const associatedId =
+                  nature === NatureEnum.ramassage
+                    ? elt.etablissement_id
+                    : elt.ramassage_id;
+                const associatedNature =
+                  nature === NatureEnum.ramassage
+                    ? NatureEnum.etablissement
+                    : NatureEnum.ramassage;
+                const id_point =
+                  associatedNature === NatureEnum.etablissement
+                    ? elt.etablissement_id_point
+                    : elt.ramassage_id_point;
 
-                  return {
-                    id: associatedId,
-                    id_point: id_point,
-                    nature: associatedNature,
-                  };
-                })
-              );
-            });
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+                return {
+                  id: associatedId,
+                  id_point: id_point,
+                  nature: associatedNature,
+                };
+              })
+            );
+          });
+      });
     }
   }
 
