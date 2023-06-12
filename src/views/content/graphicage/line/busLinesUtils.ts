@@ -367,6 +367,7 @@ function computeArrowsInReadMode(latLngs: L.LatLng[], color: string) {
     const arrow = new L.Marker([latArrow, lngArrow], {
       icon: arrowIcon,
       pane: "overlayPane",
+      keyboard: false,
     });
 
     arrows.push(arrow);
