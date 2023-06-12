@@ -1,7 +1,3 @@
-// import L from "leaflet";
-
-// import { PointIdentityType } from "../../../../type";
-// import { linkMap } from "../../../../global/linkPointIdentityCircle";
 import L from "leaflet";
 
 import {
@@ -27,7 +23,6 @@ import {
 import { LineString } from "geojson";
 import { authenticateWrap } from "../../../layout/topMenu/authentication";
 import { createSignal } from "solid-js";
-// import { getStopsName } from "../informationBoard/InformationContent";
 
 export function getLatLngs(stops: PointIdentityType[]): L.LatLng[] {
   const latlngs: L.LatLng[] = [];
@@ -288,7 +283,6 @@ export async function computePolyline(
 
   const busLinePolyline = getBusLinePolyline(color, polylineLatLngs, opacity);
 
-  // return [polylineLatLngs, busLinePolylineData];
   return busLinePolyline;
 }
 
