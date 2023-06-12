@@ -26,7 +26,7 @@ import {
   setTimelineStopNames,
 } from "../../../../signaux";
 import { LineString } from "geojson";
-import { getToken } from "../../../layout/topMenu/authentication";
+import { authenticateWrap } from "../../../layout/topMenu/authentication";
 // import { getStopsName } from "../informationBoard/InformationContent";
 
 export function getLatLngs(stops: PointIdentityType[]): L.LatLng[] {
