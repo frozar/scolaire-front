@@ -104,9 +104,8 @@ function arrowApplyStyle(arrows: L.Marker[], color: string, transform: string) {
   });
 }
 
-// TODO: refactor
 function getBusLineColor(busLines: LineType[], idBusLine: number) {
-  const busLine = busLines.find((route) => route.idBusLine == idBusLine);
+  const busLine = getBusLineById(busLines, idBusLine);
 
   if (!busLine) {
     return;
@@ -120,6 +119,18 @@ function getBusLineById(
   idBusLine: number
 ): LineType | undefined {
   return busLines.find((route) => route.idBusLine == idBusLine);
+}
+
+function deselectBusLinesAux(busLines: LineType[]) {
+  for (const busLine of busLines) {
+    busLine.setSelected((previousBool) => {
+      return previousBool ? false : previousBool;
+    });
+  }
+}
+
+export function deselectBusLines() {
+  return deselectBusLinesAux(busLines());
 }
 
 function getStopsName(idBusLine: number) {
