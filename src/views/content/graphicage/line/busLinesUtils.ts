@@ -319,8 +319,7 @@ function computeArrowsInReadMode(latLngs: L.LatLng[], color: string) {
   return arrows;
 }
 
-// TODO: rename
-function computeArrowsInOtherMode(latLngs: L.LatLng[], color: string) {
+function computeArrowsInNotReadMode(latLngs: L.LatLng[], color: string) {
   const increment = 1;
   const iStart = 0;
 
@@ -357,7 +356,7 @@ export function computeArrows(latLngs: L.LatLng[], color: string) {
   if (isInReadMode()) {
     return computeArrowsInReadMode(latLngs, color);
   } else {
-    return computeArrowsInOtherMode(latLngs, color);
+    return computeArrowsInNotReadMode(latLngs, color);
   }
 }
 
