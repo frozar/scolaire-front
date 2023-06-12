@@ -17,7 +17,6 @@ import {
   busLines,
   getLeafletMap,
   linkBusLinePolyline,
-  // setBusLineSelected,
   setBusLines,
   points,
   setInfoToDisplay,
@@ -191,8 +190,6 @@ export function busLinePolylineAttachEvent(
 
       if (isInReadMode()) {
         selectBusLineById(idBusLine);
-        // setBusLineSelected(idBusLine);
-        // contenu createEffect à mettre içi
         setTimelineStopNames(getStopsName(idBusLine));
         setInfoToDisplay(InfoPanelEnum.line);
       }
@@ -235,8 +232,6 @@ export function arrowAttachEvent(
 
       if (isInReadMode()) {
         selectBusLineById(idBusLine);
-        // setBusLineSelected(idBusLine);
-        // contenu createEffect à mettre içi
         setTimelineStopNames(getStopsName(idBusLine));
         setInfoToDisplay(InfoPanelEnum.line);
       }

@@ -18,12 +18,8 @@ import {
 import { PointIdentityType } from "../../../../type";
 import {
   selectedElement,
-  // busLineSelected,
-  // busLines,
-  // points,
   infoToDisplay,
   setInfoToDisplay,
-  // setBusLineSelected,
   timelineStopNames,
   setTimelineStopNames,
   addNewUserInformation,
@@ -102,17 +98,8 @@ function Timeline() {
 }
 
 export default function () {
-  // createEffect(() => {
-  //   // Read mode
-  //   if (busLineSelected() != -1) {
-  //     setTimelineStopNames(getStopsName(busLineSelected()));
-  //   }
-  // });
-
   createEffect(() => {
     // When switching mode
-    // TODO: passer tout les selected en false qd changement de mode
-    // setBusLineSelected(-1);
     setTimelineStopNames([]);
 
     if (isInAddLineMode()) {
@@ -238,7 +225,6 @@ export default function () {
 
     const newColor = (e.target as HTMLInputElement).value;
 
-    // const idBusLine = busLineSelected();
     const idBusLine = busLines().find(
       (busLine) => busLine.selected() == true
     )?.idBusLine;
@@ -274,8 +260,6 @@ export default function () {
     if (!e.target) {
       return;
     }
-
-    // const id = busLineSelected();
 
     const idBusLine = busLines().find(
       (busLine) => busLine.selected() == true
