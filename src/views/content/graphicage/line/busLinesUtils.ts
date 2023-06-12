@@ -150,45 +150,98 @@ function selectBusLineById(idBusLine: number) {
   }
 }
 
+const [, { isInReadMode, isInRemoveLineMode }] = useStateAction();
+
+function handleMouseOver(arrowsLinked: L.Marker[], polyline: L.Polyline) {
+  if (isInRemoveLineMode()) {
+    polyline.setStyle({ color: "#FFF", weight: 8 });
+    arrowRemoveModeStyle(arrowsLinked, "white", "scale(4,4) ");
+  }
+}
+
+function handleMouseOut(
+  idBusLine: number,
+  polyline: L.Polyline,
+  arrowsLinked: L.Marker[]
+) {
+  if (isInRemoveLineMode()) {
+    const routeColor = getBusLineColor(busLines(), idBusLine);
+    if (!routeColor) {
+      return;
+    }
+    polyline.setStyle({ color: routeColor, weight: 3 });
+    arrowRemoveModeStyle(arrowsLinked, routeColor, "scale(2,2) ");
+  }
+}
+
+function handleClick(idBusLine: number) {
+  setPickerColor(linkBusLinePolyline[idBusLine].color);
+
+  if (isInRemoveLineMode()) {
+    setRemoveConfirmation({
+      displayed: true,
+      idBusLine: idBusLine,
+    });
+  }
+
+  if (isInReadMode()) {
+    selectBusLineById(idBusLine);
+    setTimelineStopNames(getStopsName(idBusLine));
+    setInfoToDisplay(InfoPanelEnum.line);
+  }
+}
+
 // TODO: refactor
 export function busLinePolylineAttachEvent(
   self: L.Polyline,
   idBusLine: number,
   arrowsLinked: L.Marker[]
 ): void {
-  const [, { isInReadMode, isInRemoveLineMode }] = useStateAction();
   self
+    // .on("mouseover", () => {
+    //   // console.log("mouseover isInRemoveLineMode()", isInRemoveLineMode());
+    //   // // createEffect(() => {
+    //   //   console.log("isInRemoveLineMode()", isInRemoveLineMode());
+    //   // });
+    //   if (isInRemoveLineMode()) {
+    //     self.setStyle({ color: "#FFF", weight: 8 });
+    //     arrowRemoveModeStyle(arrowsLinked, "white", "scale(4,4) ");
+    //   }
+    // })
     .on("mouseover", () => {
-      if (isInRemoveLineMode()) {
-        self.setStyle({ color: "#FFF", weight: 8 });
-        arrowRemoveModeStyle(arrowsLinked, "white", "scale(4,4) ");
-      }
+      handleMouseOver(arrowsLinked, self);
     })
+    // .on("mouseout", () => {
+    //   if (isInRemoveLineMode()) {
+    //     const routeColor = getBusLineColor(busLines(), idBusLine);
+    //     if (!routeColor) {
+    //       return;
+    //     }
+    //     self.setStyle({ color: routeColor, weight: 3 });
+    //     arrowRemoveModeStyle(arrowsLinked, routeColor, "scale(2,2) ");
+    //   }
+    // })
     .on("mouseout", () => {
-      if (isInRemoveLineMode()) {
-        const routeColor = getBusLineColor(busLines(), idBusLine);
-        if (!routeColor) {
-          return;
-        }
-        self.setStyle({ color: routeColor, weight: 3 });
-        arrowRemoveModeStyle(arrowsLinked, routeColor, "scale(2,2) ");
-      }
+      handleMouseOut(idBusLine, self, arrowsLinked);
     })
+    // .on("click", () => {
+    //   setPickerColor(linkBusLinePolyline[idBusLine].color);
+
+    //   if (isInRemoveLineMode()) {
+    //     setRemoveConfirmation({
+    //       displayed: true,
+    //       idBusLine: idBusLine,
+    //     });
+    //   }
+
+    //   if (isInReadMode()) {
+    //     selectBusLineById(idBusLine);
+    //     setTimelineStopNames(getStopsName(idBusLine));
+    //     setInfoToDisplay(InfoPanelEnum.line);
+    //   }
+    // });
     .on("click", () => {
-      setPickerColor(linkBusLinePolyline[idBusLine].color);
-
-      if (isInRemoveLineMode()) {
-        setRemoveConfirmation({
-          displayed: true,
-          idBusLine: idBusLine,
-        });
-      }
-
-      if (isInReadMode()) {
-        selectBusLineById(idBusLine);
-        setTimelineStopNames(getStopsName(idBusLine));
-        setInfoToDisplay(InfoPanelEnum.line);
-      }
+      handleClick(idBusLine);
     });
 }
 
@@ -199,39 +252,47 @@ export function arrowAttachEvent(
   idBusLine: number,
   arrowsLinked: L.Marker[]
 ): void {
-  const [, { isInReadMode, isInRemoveLineMode }] = useStateAction();
   arrow
+    // .on("mouseover", () => {
+    //   if (isInRemoveLineMode()) {
+    //     polyline.setStyle({ color: "#FFF", weight: 8 });
+    //     arrowRemoveModeStyle(arrowsLinked, "white", "scale(4,4) ");
+    //   }
+    // })
     .on("mouseover", () => {
-      if (isInRemoveLineMode()) {
-        polyline.setStyle({ color: "#FFF", weight: 8 });
-        arrowRemoveModeStyle(arrowsLinked, "white", "scale(4,4) ");
-      }
+      handleMouseOver(arrowsLinked, polyline);
     })
+    // .on("mouseout", () => {
+    //   if (isInRemoveLineMode()) {
+    //     const routeColor = getBusLineColor(busLines(), idBusLine);
+    //     if (!routeColor) {
+    //       return;
+    //     }
+    //     polyline.setStyle({ color: routeColor, weight: 3 });
+    //     arrowRemoveModeStyle(arrowsLinked, routeColor, "scale(2,2) ");
+    //   }
+    // })
     .on("mouseout", () => {
-      if (isInRemoveLineMode()) {
-        const routeColor = getBusLineColor(busLines(), idBusLine);
-        if (!routeColor) {
-          return;
-        }
-        polyline.setStyle({ color: routeColor, weight: 3 });
-        arrowRemoveModeStyle(arrowsLinked, routeColor, "scale(2,2) ");
-      }
+      handleMouseOut(idBusLine, polyline, arrowsLinked);
     })
+    // .on("click", () => {
+    //   setPickerColor(linkBusLinePolyline[idBusLine].color);
+
+    //   if (isInRemoveLineMode()) {
+    //     setRemoveConfirmation({
+    //       displayed: true,
+    //       idBusLine: idBusLine,
+    //     });
+    //   }
+
+    //   if (isInReadMode()) {
+    //     selectBusLineById(idBusLine);
+    //     setTimelineStopNames(getStopsName(idBusLine));
+    //     setInfoToDisplay(InfoPanelEnum.line);
+    //   }
+    // });
     .on("click", () => {
-      setPickerColor(linkBusLinePolyline[idBusLine].color);
-
-      if (isInRemoveLineMode()) {
-        setRemoveConfirmation({
-          displayed: true,
-          idBusLine: idBusLine,
-        });
-      }
-
-      if (isInReadMode()) {
-        selectBusLineById(idBusLine);
-        setTimelineStopNames(getStopsName(idBusLine));
-        setInfoToDisplay(InfoPanelEnum.line);
-      }
+      handleClick(idBusLine);
     });
 }
 
