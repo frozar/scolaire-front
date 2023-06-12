@@ -31,7 +31,10 @@ import {
   authenticateWrap,
   getToken,
 } from "../../../layout/topMenu/authentication";
-import { getSelectedBusLineId } from "../line/busLinesUtils";
+import {
+  getSelectedBusLineId,
+  selectedBusLineStopNames,
+} from "../line/busLinesUtils";
 import Timeline from "./Timeline";
 
 const [, { isInAddLineMode, resetLineUnderConstruction }] = useStateAction();
@@ -304,7 +307,7 @@ export default function () {
               onChange={handleColorChanged}
             />
           </div>
-          <Timeline stopNames={timelineStopNames()} />
+          <Timeline stopNames={selectedBusLineStopNames()} />
         </Match>
         <Match
           when={

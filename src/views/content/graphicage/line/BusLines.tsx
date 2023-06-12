@@ -1,5 +1,4 @@
 import { onCleanup, createEffect, createSignal } from "solid-js";
-// import { setBusLines } from "../../../../signaux";
 import { pointsReady } from "../../../../views/content/graphicage/PointsRamassageAndEtablissement";
 import { fetchBusLines } from "./busLinesUtils";
 import { LineType } from "../../../../type";

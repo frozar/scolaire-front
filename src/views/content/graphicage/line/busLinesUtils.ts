@@ -132,7 +132,7 @@ export function deselectBusLines() {
   return deselectBusLinesAux(busLines());
 }
 
-function getStopsName(idBusLine: number) {
+export function getStopsName(idBusLine: number) {
   const busLine = busLines().filter(
     (busLine) => busLine.idBusLine == idBusLine
   );
@@ -549,6 +549,29 @@ export function fetchBusLines() {
   });
 }
 
+const getSelectedBusLine = (): LineType | undefined => {
+  const busLinesWk = busLines();
+  if (busLinesWk.length == 0) {
+    return;
+  }
+  return busLinesWk.find((busLine) => busLine.selected());
+};
+
 export const getSelectedBusLineId = (): number | undefined => {
-  return busLines().find((busLine) => busLine.selected() == true)?.idBusLine;
+  const selectedBusLine = getSelectedBusLine();
+
+  if (!selectedBusLine) {
+    return;
+  }
+
+  return selectedBusLine.idBusLine;
+};
+
+export const selectedBusLineStopNames = () => {
+  const selectedBusLineId = getSelectedBusLineId();
+  if (!selectedBusLineId) {
+    return [];
+  }
+
+  return getStopsName(selectedBusLineId);
 };
