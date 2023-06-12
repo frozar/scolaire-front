@@ -150,6 +150,7 @@ function selectBusLineById(idBusLine: number) {
   }
 }
 
+// TODO: refactor
 export function busLinePolylineAttachEvent(
   self: L.Polyline,
   idBusLine: number,
@@ -191,6 +192,7 @@ export function busLinePolylineAttachEvent(
     });
 }
 
+// TODO: refactor
 export function arrowAttachEvent(
   arrow: L.Marker,
   polyline: L.Polyline,
@@ -317,6 +319,7 @@ function computeArrowsInReadMode(latLngs: L.LatLng[], color: string) {
   return arrows;
 }
 
+// TODO: rename
 function computeArrowsInOtherMode(latLngs: L.LatLng[], color: string) {
   const increment = 1;
   const iStart = 0;
@@ -469,3 +472,7 @@ export function fetchBusLines() {
     });
   });
 }
+
+export const getSelectedBusLineId = (): number | undefined => {
+  return busLines().find((busLine) => busLine.selected() == true)?.idBusLine;
+};
