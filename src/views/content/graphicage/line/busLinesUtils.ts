@@ -138,6 +138,24 @@ function getStopsName(idBusLine: number) {
   return stopNameList;
 }
 
+function selectBusLineById(idBusLine: number) {
+  for (const busLine of busLines()) {
+    const currentIdBusLine = busLine.idBusLine;
+
+    if (currentIdBusLine == idBusLine) {
+      const currentSetSelected = busLine.setSelected;
+      currentSetSelected((previousSelected) => {
+        return previousSelected ? previousSelected : true;
+      });
+    } else {
+      const currentSetSelected = busLine.setSelected;
+      currentSetSelected((previousSelected) => {
+        return previousSelected ? false : previousSelected;
+      });
+    }
+  }
+}
+
 export function busLinePolylineAttachEvent(
   self: L.Polyline,
   idBusLine: number,
@@ -172,6 +190,7 @@ export function busLinePolylineAttachEvent(
       }
 
       if (isInReadMode()) {
+        selectBusLineById(idBusLine);
         // setBusLineSelected(idBusLine);
         // contenu createEffect à mettre içi
         setTimelineStopNames(getStopsName(idBusLine));
@@ -215,6 +234,7 @@ export function arrowAttachEvent(
       }
 
       if (isInReadMode()) {
+        selectBusLineById(idBusLine);
         // setBusLineSelected(idBusLine);
         // contenu createEffect à mettre içi
         setTimelineStopNames(getStopsName(idBusLine));
@@ -357,126 +377,106 @@ export function fetchBusLines() {
   authenticateWrap((headers) => {
     fetch(import.meta.env.VITE_BACK_URL + "/bus_lines", {
       headers,
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .then(
-        (
-          res: {
-            id_bus_line: number;
-            color: string | null;
-            stops: {
-              id: number;
-              id_point: number;
-              nature: string;
-            }[];
-          }[]
-        ) => {
-          const lines: LineType[] = res.map((resLine) => {
-            const color = resLine.color ? "#" + resLine.color : randColor();
-            const stopsWithNatureEnum = resLine.stops.map(
-              (stop) =>
-                ({
-                  ...stop,
-                  nature:
-                    stop["nature"] === "ramassage"
-                      ? NatureEnum.ramassage
-                      : NatureEnum.etablissement,
-                } as PointIdentityType)
-            );
+    }).then(async (res) => {
+      const data: {
+        id_bus_line: number;
+        color: string | null;
+        stops: {
+          id: number;
+          id_point: number;
+          nature: string;
+        }[];
+      }[] = await res.json();
 
-            const [selected, setSelected] = createSignal(false);
+      const lines: LineType[] = data.map((resLine) => {
+        const color = resLine.color ? "#" + resLine.color : randColor();
+        const stopsWithNatureEnum = resLine.stops.map(
+          (stop) =>
+            ({
+              ...stop,
+              nature:
+                stop["nature"] === "ramassage"
+                  ? NatureEnum.ramassage
+                  : NatureEnum.etablissement,
+            } as PointIdentityType)
+        );
 
-            const lineWk: LineType = {
-              idBusLine: resLine.id_bus_line,
-              color: color,
-              stops: stopsWithNatureEnum,
-              selected,
-              setSelected,
+        const [selected, setSelected] = createSignal(false);
+
+        const lineWk: LineType = {
+          idBusLine: resLine.id_bus_line,
+          color: color,
+          stops: stopsWithNatureEnum,
+          selected,
+          setSelected,
+        };
+
+        return lineWk;
+      });
+
+      setBusLines((previousLines) => {
+        // Remove existing polylines and arrows
+        const idLines = lines.map((line) => line.idBusLine);
+
+        for (const previousLine of previousLines) {
+          if (
+            !(previousLine.idBusLine in idLines) &&
+            linkBusLinePolyline[previousLine.idBusLine]
+          ) {
+            const { polyline: previousPolyline, arrows: previousArrows } =
+              linkBusLinePolyline[previousLine.idBusLine];
+
+            previousPolyline.remove();
+            previousArrows.map((arrow) => arrow.remove());
+
+            delete linkBusLinePolyline[previousLine.idBusLine];
+          }
+        }
+
+        for (const line of lines) {
+          // 1. Calcul de la polyline, à vol d'oiseau ou sur route
+          computePolyline(line.color, line.stops).then((busLinePolyline) => {
+            const polylineLatLngs = busLinePolyline.getLatLngs() as L.LatLng[];
+            // 2. Calcul des fléches
+            const arrows = computeArrows(polylineLatLngs, line.color);
+
+            // 3.Attacher les events
+            busLinePolylineAttachEvent(busLinePolyline, line.idBusLine, arrows);
+
+            for (const arrow of arrows) {
+              arrowAttachEvent(arrow, busLinePolyline, line.idBusLine, arrows);
+            }
+
+            // 4. Manage the display of buslines
+            if (line.idBusLine in linkBusLinePolyline) {
+              const { polyline: previousPolyline, arrows: previousArrows } =
+                linkBusLinePolyline[line.idBusLine];
+              previousPolyline.remove();
+              previousArrows.map((arrow) => arrow.remove());
+            }
+
+            const leafletMap = getLeafletMap();
+            if (!leafletMap) {
+              delete linkBusLinePolyline[line.idBusLine];
+              return;
+            }
+
+            busLinePolyline.addTo(leafletMap);
+            for (const arrow of arrows) {
+              arrow.addTo(leafletMap);
+            }
+
+            // 5. Enregistrer dans linkBusLinePolyline
+            linkBusLinePolyline[line.idBusLine] = {
+              polyline: busLinePolyline,
+              arrows: arrows,
+              color: line.color,
             };
-
-            return lineWk;
-          });
-
-          setBusLines((previousLines) => {
-            // Remove existing polylines and arrows
-            const idLines = lines.map((line) => line.idBusLine);
-
-            for (const previousLine of previousLines) {
-              if (
-                !(previousLine.idBusLine in idLines) &&
-                linkBusLinePolyline[previousLine.idBusLine]
-              ) {
-                const { polyline: previousPolyline, arrows: previousArrows } =
-                  linkBusLinePolyline[previousLine.idBusLine];
-
-                previousPolyline.remove();
-                previousArrows.map((arrow) => arrow.remove());
-
-                delete linkBusLinePolyline[previousLine.idBusLine];
-              }
-            }
-
-            for (const line of lines) {
-              // 1. Calcul de la polyline, à vol d'oiseau ou sur route
-              computePolyline(line.color, line.stops).then(
-                (busLinePolyline) => {
-                  const polylineLatLngs =
-                    busLinePolyline.getLatLngs() as L.LatLng[];
-                  // 2. Calcul des fléches
-                  const arrows = computeArrows(polylineLatLngs, line.color);
-
-                  // 3.Attacher les events
-                  busLinePolylineAttachEvent(
-                    busLinePolyline,
-                    line.idBusLine,
-                    arrows
-                  );
-
-                  for (const arrow of arrows) {
-                    arrowAttachEvent(
-                      arrow,
-                      busLinePolyline,
-                      line.idBusLine,
-                      arrows
-                    );
-                  }
-
-                  // 4. Manage the display of buslines
-                  if (line.idBusLine in linkBusLinePolyline) {
-                    const {
-                      polyline: previousPolyline,
-                      arrows: previousArrows,
-                    } = linkBusLinePolyline[line.idBusLine];
-                    previousPolyline.remove();
-                    previousArrows.map((arrow) => arrow.remove());
-                  }
-
-                  const leafletMap = getLeafletMap();
-                  if (!leafletMap) {
-                    delete linkBusLinePolyline[line.idBusLine];
-                    return;
-                  }
-
-                  busLinePolyline.addTo(leafletMap);
-                  for (const arrow of arrows) {
-                    arrow.addTo(leafletMap);
-                  }
-
-                  // 5. Enregistrer dans linkBusLinePolyline
-                  linkBusLinePolyline[line.idBusLine] = {
-                    polyline: busLinePolyline,
-                    arrows: arrows,
-                    color: line.color,
-                  };
-                }
-              );
-            }
-
-            return lines;
           });
         }
-      );
+
+        return lines;
+      });
+    });
   });
 }
