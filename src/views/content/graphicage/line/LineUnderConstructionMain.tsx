@@ -4,7 +4,7 @@ import { useStateAction } from "../../../../StateAction";
 import { getLeafletMap } from "../../../../signaux";
 import { COLOR_LINE_UNDER_CONSTRUCTION } from "../constant";
 
-import { getBusLinePolyline, getLatLngs } from "./BusLinesFunction";
+import { getBusLinePolyline, getLatLngs } from "./busLinesUtils";
 
 const [, { getLineUnderConstruction }] = useStateAction();
 

@@ -12,7 +12,7 @@ import {
   displayRemoveLineMessage,
 } from "../../../userInformation/utils";
 import { displayedConfirmStopAddLine } from "./ConfirmStopAddLineBox";
-import { fetchBusLines } from "./line/BusLinesFunction";
+import { fetchBusLines } from "./line/busLinesUtils";
 
 const [
   ,

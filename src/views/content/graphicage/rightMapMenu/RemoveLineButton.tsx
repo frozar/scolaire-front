@@ -3,7 +3,7 @@ import { FaSolidMinus } from "solid-icons/fa";
 import { useStateAction } from "../../../../StateAction";
 import { displayRemoveLineMessage } from "../../../../userInformation/utils";
 import ButtonGraphicageRightMenu from "../../../../component/atom/ButtonGraphicageRightMenu";
-import { fetchBusLines } from "../line/BusLinesFunction";
+import { fetchBusLines } from "../line/busLinesUtils";
 
 const [, { setModeRemoveLine, isInRemoveLineMode, setModeRead }] =
   useStateAction();
