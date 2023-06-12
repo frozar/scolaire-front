@@ -104,6 +104,7 @@ function arrowApplyStyle(arrows: L.Marker[], color: string, transform: string) {
   });
 }
 
+// TODO: refactor
 function getBusLineColor(busLines: LineType[], idBusLine: number) {
   const busLine = busLines.find((route) => route.idBusLine == idBusLine);
 
@@ -112,6 +113,13 @@ function getBusLineColor(busLines: LineType[], idBusLine: number) {
   }
 
   return busLine.color;
+}
+
+function getBusLineById(
+  busLines: LineType[],
+  idBusLine: number
+): LineType | undefined {
+  return busLines.find((route) => route.idBusLine == idBusLine);
 }
 
 function getStopsName(idBusLine: number) {
@@ -182,8 +190,19 @@ export function buslineSetNormalStyle(
   arrowsSetNormalStyle(arrowsLinked, color);
 }
 
-function handleMouseOver(polyline: L.Polyline, arrowsLinked: L.Marker[]) {
-  if (isInRemoveLineMode() || isInReadMode()) {
+function handleMouseOver(
+  polyline: L.Polyline,
+  arrowsLinked: L.Marker[],
+  idBusLine: number
+) {
+  const busLine = getBusLineById(busLines(), idBusLine);
+  if (!busLine) {
+    return;
+  }
+
+  const isSelected = busLine.selected();
+
+  if (!isSelected && (isInRemoveLineMode() || isInReadMode())) {
     buslineSetBoldStyle(polyline, arrowsLinked, "white");
   }
 }
@@ -193,7 +212,14 @@ function handleMouseOut(
   arrowsLinked: L.Marker[],
   idBusLine: number
 ) {
-  if (isInRemoveLineMode() || isInReadMode()) {
+  const busLine = getBusLineById(busLines(), idBusLine);
+  if (!busLine) {
+    return;
+  }
+
+  const isSelected = busLine.selected();
+
+  if (!isSelected && (isInRemoveLineMode() || isInReadMode())) {
     const routeColor = getBusLineColor(busLines(), idBusLine);
     if (!routeColor) {
       return;
@@ -227,7 +253,7 @@ export function attachEvent(
 ) {
   self
     .on("mouseover", () => {
-      handleMouseOver(polyline, arrowsLinked);
+      handleMouseOver(polyline, arrowsLinked, idBusLine);
     })
     .on("mouseout", () => {
       handleMouseOut(polyline, arrowsLinked, idBusLine);
@@ -414,18 +440,23 @@ export function fetchBusLines() {
         const [selected, setSelected] = createSignal(false);
 
         createEffect(() => {
-          if (selected()) {
-            console.log("resLine.id_bus_line", resLine.id_bus_line);
+          const selectedWk = selected();
 
-            if (!linkBusLinePolyline[resLine.id_bus_line]) {
-              return;
-            }
+          if (!linkBusLinePolyline[resLine.id_bus_line]) {
+            return;
+          }
 
-            const { polyline, arrows } =
-              linkBusLinePolyline[resLine.id_bus_line];
+          const { polyline, arrows } = linkBusLinePolyline[resLine.id_bus_line];
 
-            console.log(polyline);
-            console.log(arrows);
+          const routeColor = getBusLineColor(busLines(), resLine.id_bus_line);
+          if (!routeColor) {
+            return;
+          }
+
+          if (selectedWk) {
+            buslineSetBoldStyle(polyline, arrows, routeColor);
+          } else {
+            buslineSetNormalStyle(polyline, arrows, routeColor);
           }
         });
 
