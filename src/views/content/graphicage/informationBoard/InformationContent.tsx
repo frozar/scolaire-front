@@ -295,7 +295,7 @@ export default function () {
             </div>
           </Show>
         </Match>
-        <Match when={infoToDisplay() == InfoPanelEnum.line}>
+        <Match when={getSelectedBusLineId()}>
           <div class="flex items-center gap-3">
             Couleur de la ligne
             <input
