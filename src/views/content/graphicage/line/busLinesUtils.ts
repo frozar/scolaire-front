@@ -9,11 +9,10 @@ import {
 import { linkMap } from "../../../../global/linkPointIdentityCircle";
 
 import { useStateAction } from "../../../../StateAction";
+import { busLines, setBusLines } from "./BusLines";
 import {
-  busLines,
   getLeafletMap,
   linkBusLinePolyline,
-  setBusLines,
   points,
   setInfoToDisplay,
   setPickerColor,
