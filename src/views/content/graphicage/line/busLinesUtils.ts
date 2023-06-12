@@ -152,7 +152,7 @@ function selectBusLineById(idBusLine: number) {
 
 const [, { isInReadMode, isInRemoveLineMode }] = useStateAction();
 
-function handleMouseOver(arrowsLinked: L.Marker[], polyline: L.Polyline) {
+function handleMouseOver(polyline: L.Polyline, arrowsLinked: L.Marker[]) {
   if (isInRemoveLineMode()) {
     polyline.setStyle({ color: "#FFF", weight: 8 });
     arrowRemoveModeStyle(arrowsLinked, "white", "scale(4,4) ");
@@ -160,9 +160,9 @@ function handleMouseOver(arrowsLinked: L.Marker[], polyline: L.Polyline) {
 }
 
 function handleMouseOut(
-  idBusLine: number,
   polyline: L.Polyline,
-  arrowsLinked: L.Marker[]
+  arrowsLinked: L.Marker[],
+  idBusLine: number
 ) {
   if (isInRemoveLineMode()) {
     const routeColor = getBusLineColor(busLines(), idBusLine);
@@ -191,109 +191,39 @@ function handleClick(idBusLine: number) {
   }
 }
 
-// TODO: refactor
-export function busLinePolylineAttachEvent(
-  self: L.Polyline,
-  idBusLine: number,
-  arrowsLinked: L.Marker[]
-): void {
+export function attachEvent(
+  self: L.Polyline | L.Marker,
+  polyline: L.Polyline,
+  arrowsLinked: L.Marker[],
+  idBusLine: number
+) {
   self
-    // .on("mouseover", () => {
-    //   // console.log("mouseover isInRemoveLineMode()", isInRemoveLineMode());
-    //   // // createEffect(() => {
-    //   //   console.log("isInRemoveLineMode()", isInRemoveLineMode());
-    //   // });
-    //   if (isInRemoveLineMode()) {
-    //     self.setStyle({ color: "#FFF", weight: 8 });
-    //     arrowRemoveModeStyle(arrowsLinked, "white", "scale(4,4) ");
-    //   }
-    // })
     .on("mouseover", () => {
-      handleMouseOver(arrowsLinked, self);
+      handleMouseOver(polyline, arrowsLinked);
     })
-    // .on("mouseout", () => {
-    //   if (isInRemoveLineMode()) {
-    //     const routeColor = getBusLineColor(busLines(), idBusLine);
-    //     if (!routeColor) {
-    //       return;
-    //     }
-    //     self.setStyle({ color: routeColor, weight: 3 });
-    //     arrowRemoveModeStyle(arrowsLinked, routeColor, "scale(2,2) ");
-    //   }
-    // })
     .on("mouseout", () => {
-      handleMouseOut(idBusLine, self, arrowsLinked);
+      handleMouseOut(polyline, arrowsLinked, idBusLine);
     })
-    // .on("click", () => {
-    //   setPickerColor(linkBusLinePolyline[idBusLine].color);
-
-    //   if (isInRemoveLineMode()) {
-    //     setRemoveConfirmation({
-    //       displayed: true,
-    //       idBusLine: idBusLine,
-    //     });
-    //   }
-
-    //   if (isInReadMode()) {
-    //     selectBusLineById(idBusLine);
-    //     setTimelineStopNames(getStopsName(idBusLine));
-    //     setInfoToDisplay(InfoPanelEnum.line);
-    //   }
-    // });
     .on("click", () => {
       handleClick(idBusLine);
     });
 }
 
-// TODO: refactor
+export function busLinePolylineAttachEvent(
+  polyline: L.Polyline,
+  idBusLine: number,
+  arrowsLinked: L.Marker[]
+): void {
+  attachEvent(polyline, polyline, arrowsLinked, idBusLine);
+}
+
 export function arrowAttachEvent(
   arrow: L.Marker,
   polyline: L.Polyline,
   idBusLine: number,
   arrowsLinked: L.Marker[]
 ): void {
-  arrow
-    // .on("mouseover", () => {
-    //   if (isInRemoveLineMode()) {
-    //     polyline.setStyle({ color: "#FFF", weight: 8 });
-    //     arrowRemoveModeStyle(arrowsLinked, "white", "scale(4,4) ");
-    //   }
-    // })
-    .on("mouseover", () => {
-      handleMouseOver(arrowsLinked, polyline);
-    })
-    // .on("mouseout", () => {
-    //   if (isInRemoveLineMode()) {
-    //     const routeColor = getBusLineColor(busLines(), idBusLine);
-    //     if (!routeColor) {
-    //       return;
-    //     }
-    //     polyline.setStyle({ color: routeColor, weight: 3 });
-    //     arrowRemoveModeStyle(arrowsLinked, routeColor, "scale(2,2) ");
-    //   }
-    // })
-    .on("mouseout", () => {
-      handleMouseOut(idBusLine, polyline, arrowsLinked);
-    })
-    // .on("click", () => {
-    //   setPickerColor(linkBusLinePolyline[idBusLine].color);
-
-    //   if (isInRemoveLineMode()) {
-    //     setRemoveConfirmation({
-    //       displayed: true,
-    //       idBusLine: idBusLine,
-    //     });
-    //   }
-
-    //   if (isInReadMode()) {
-    //     selectBusLineById(idBusLine);
-    //     setTimelineStopNames(getStopsName(idBusLine));
-    //     setInfoToDisplay(InfoPanelEnum.line);
-    //   }
-    // });
-    .on("click", () => {
-      handleClick(idBusLine);
-    });
+  attachEvent(arrow, polyline, arrowsLinked, idBusLine);
 }
 
 // fetchOnRoadPolyline() is called in readMode only
