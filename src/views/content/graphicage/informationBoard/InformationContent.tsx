@@ -46,20 +46,6 @@ type TimelineItemType = {
   name: string;
 };
 
-// function getStopsName(idBusLine: number) {
-//   const busLine = busLines().filter(
-//     (busLine) => busLine.idBusLine == idBusLine
-//   );
-//   const stopIds = busLine[0].stops.map((stop) => stop.id_point);
-//   const stops = stopIds.map(
-//     (stopId) => points().filter((point) => point.id_point === stopId)[0]
-//   );
-
-//   const stopNameList = stops.map((stop) => stop.name);
-
-//   return stopNameList;
-// }
-
 function TimelineItem(props: TimelineItemType) {
   return (
     <div class="v-timeline-item">
@@ -218,6 +204,10 @@ export default function () {
     }
   };
 
+  function getBusLineSelectedId(): number | undefined {
+    return busLines().find((busLine) => busLine.selected() == true)?.idBusLine;
+  }
+
   const handleColorPicker = (e: InputEvent) => {
     if (!e.target) {
       return;
@@ -225,17 +215,12 @@ export default function () {
 
     const newColor = (e.target as HTMLInputElement).value;
 
-    const idBusLine = busLines().find(
-      (busLine) => busLine.selected() == true
-    )?.idBusLine;
+    const idBusLine = getBusLineSelectedId();
 
     if (!idBusLine) {
       return;
     }
 
-    // simplifier
-    // const polyline = linkBusLinePolyline[idBusLine].polyline;
-    // polyline.setStyle({ color: newColor });
     linkBusLinePolyline[idBusLine].polyline.setStyle({ color: newColor });
 
     const arrows = linkBusLinePolyline[idBusLine].arrows;
@@ -261,9 +246,7 @@ export default function () {
       return;
     }
 
-    const idBusLine = busLines().find(
-      (busLine) => busLine.selected() == true
-    )?.idBusLine;
+    const idBusLine = getBusLineSelectedId();
 
     if (!idBusLine) {
       return;
