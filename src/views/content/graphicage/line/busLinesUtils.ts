@@ -153,7 +153,7 @@ function selectBusLineById(idBusLine: number) {
 const [, { isInReadMode, isInRemoveLineMode }] = useStateAction();
 
 function handleMouseOver(polyline: L.Polyline, arrowsLinked: L.Marker[]) {
-  if (isInRemoveLineMode()) {
+  if (isInRemoveLineMode() || isInReadMode()) {
     polyline.setStyle({ color: "#FFF", weight: 8 });
     arrowRemoveModeStyle(arrowsLinked, "white", "scale(4,4) ");
   }
@@ -164,7 +164,7 @@ function handleMouseOut(
   arrowsLinked: L.Marker[],
   idBusLine: number
 ) {
-  if (isInRemoveLineMode()) {
+  if (isInRemoveLineMode() || isInReadMode()) {
     const routeColor = getBusLineColor(busLines(), idBusLine);
     if (!routeColor) {
       return;
