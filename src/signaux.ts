@@ -2,7 +2,6 @@ import { Signal, createSignal } from "solid-js";
 import L from "leaflet";
 import {
   ExportTypeEnum,
-  LineType,
   MessageTypeEnum,
   PointEtablissementType,
   PointRamassageType,
@@ -57,6 +56,7 @@ export function setSelectedElement(
 ) {
   setterSelectedElement(deepCopy(value));
 }
+
 export const [points, setPoints] = createSignal<
   PointRamassageType[] | PointEtablissementType[]
 >([]);
@@ -229,10 +229,10 @@ export function removeUserInformation(id: number) {
   );
 }
 
-export const [busLines, setBusLines] = createSignal<LineType[]>([]);
-
+// TODO: move to BusLines.tsx
 export const [pickerColor, setPickerColor] = createSignal("");
 
+// TODO: move to BusLines.tsx
 export const linkBusLinePolyline: {
   [idBusLine: number]: {
     polyline: L.Polyline;
@@ -243,8 +243,10 @@ export const linkBusLinePolyline: {
 
 export const [getLeafletMap, setLeafletMap] = createSignal<L.Map>();
 
+// TODO:
 export const [infoToDisplay, setInfoToDisplay] = createSignal<InfoPanelEnum>();
 
+// TODO:
 export const [timelineStopNames, setTimelineStopNames] = createSignal<string[]>(
   []
 );

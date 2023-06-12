@@ -25,8 +25,6 @@ import {
   setInfoToDisplay,
   setIsRamassageReady,
   setIsEtablissementReady,
-  points,
-  setTimelineStopNames,
 } from "../../../signaux";
 import { minMaxQty } from "./PointsRamassageAndEtablissement";
 import { authenticateWrap } from "../../layout/topMenu/authentication";
@@ -149,6 +147,7 @@ export default function (props: {
         // eslint-disable-next-line solid/reactivity
         .on("click", () => {
           // Select the current element to display information
+          // TODO: to delete
           setSelectedElement(point);
           if (!isInAddLineMode()) {
             setInfoToDisplay(InfoPanelEnum.point);
@@ -162,16 +161,6 @@ export default function (props: {
           };
 
           addPointToLineUnderConstruction(pointIdentity);
-
-          const ids = getLineUnderConstruction().stops.map(
-            (stop) => stop.id_point
-          );
-
-          const stopNames = ids.map(
-            (id) => points().filter((point) => id == point.id_point)[0].name
-          );
-
-          setTimelineStopNames(stopNames);
 
           if (!(1 < getLineUnderConstruction().stops.length)) {
             return;

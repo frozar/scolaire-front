@@ -20,7 +20,6 @@ import {
   selectedElement,
   infoToDisplay,
   setInfoToDisplay,
-  timelineStopNames,
   setTimelineStopNames,
   addNewUserInformation,
   linkBusLinePolyline,
@@ -31,7 +30,12 @@ import {
   authenticateWrap,
   getToken,
 } from "../../../layout/topMenu/authentication";
-import { getSelectedBusLineId } from "../line/busLinesUtils";
+import {
+  getSelectedBusLineId,
+  selectedBusLineStopNames,
+  lineUnderConstructionStopNames,
+} from "../line/busLinesUtils";
+import Timeline from "./Timeline";
 
 const [, { isInAddLineMode, resetLineUnderConstruction }] = useStateAction();
 
@@ -42,56 +46,12 @@ type PointToDisplayType = {
   quantity: number;
 };
 
-type TimelineItemType = {
-  name: string;
-};
-
-function TimelineItem(props: TimelineItemType) {
-  return (
-    <div class="v-timeline-item">
-      <div class="v-timeline-item__body">
-        <div class="d-flex">
-          <div>
-            <strong>{props.name}</strong>
-          </div>
-        </div>
-      </div>
-      <div class="v-timeline-divider">
-        <div class="v-timeline-divider__before" />
-        <div class="v-timeline-divider__dot v-timeline-divider__dot--size-small">
-          <div class="v-timeline-divider__inner-dot bg-pink">
-            <i class="" aria-hidden="true" />
-          </div>
-        </div>
-        <div class="v-timeline-divider__after" />
-      </div>
-    </div>
-  );
-}
-
-function Timeline() {
-  return (
-    <div class="timeline">
-      <div
-        class="v-timeline v-timeline--align-start v-timeline--justify-auto v-timeline--side-end v-timeline--vertical"
-        style={{ "--v-timeline-line-thickness": "2px" }}
-      >
-        <For each={timelineStopNames()}>
-          {(stop) => <TimelineItem name={stop} />}
-        </For>
-      </div>
-    </div>
-  );
-}
-
 export default function () {
   createEffect(() => {
     // When switching mode
     setTimelineStopNames([]);
 
-    if (isInAddLineMode()) {
-      setInfoToDisplay(InfoPanelEnum.edition);
-    } else {
+    if (!isInAddLineMode()) {
       resetLineUnderConstruction();
       setInfoToDisplay(InfoPanelEnum.nothing);
     }
@@ -333,7 +293,7 @@ export default function () {
             </div>
           </Show>
         </Match>
-        <Match when={infoToDisplay() == InfoPanelEnum.line}>
+        <Match when={getSelectedBusLineId()}>
           <div class="flex items-center gap-3">
             Couleur de la ligne
             <input
@@ -345,15 +305,14 @@ export default function () {
               onChange={handleColorChanged}
             />
           </div>
-          <Timeline />
+          <Timeline stopNames={selectedBusLineStopNames()} />
         </Match>
         <Match
           when={
-            infoToDisplay() == InfoPanelEnum.edition &&
-            timelineStopNames().length != 0
+            isInAddLineMode() && lineUnderConstructionStopNames().length != 0
           }
         >
-          <Timeline />
+          <Timeline stopNames={lineUnderConstructionStopNames()} />
         </Match>
       </Switch>
     </div>

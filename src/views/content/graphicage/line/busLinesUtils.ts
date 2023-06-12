@@ -1,24 +1,21 @@
 import L from "leaflet";
 
 import {
-  InfoPanelEnum,
   LineType,
+  LineUnderConstructionType,
   NatureEnum,
   PointIdentityType,
 } from "../../../../type";
 import { linkMap } from "../../../../global/linkPointIdentityCircle";
 
 import { useStateAction } from "../../../../StateAction";
+import { busLines, setBusLines } from "./BusLines";
 import {
-  busLines,
   getLeafletMap,
   linkBusLinePolyline,
-  setBusLines,
   points,
-  setInfoToDisplay,
   setPickerColor,
   setRemoveConfirmation,
-  setTimelineStopNames,
 } from "../../../../signaux";
 import { LineString } from "geojson";
 import { authenticateWrap } from "../../../layout/topMenu/authentication";
@@ -133,20 +130,6 @@ export function deselectBusLines() {
   return deselectBusLinesAux(busLines());
 }
 
-function getStopsName(idBusLine: number) {
-  const busLine = busLines().filter(
-    (busLine) => busLine.idBusLine == idBusLine
-  );
-  const stopIds = busLine[0].stops.map((stop) => stop.id_point);
-  const stops = stopIds.map(
-    (stopId) => points().filter((point) => point.id_point === stopId)[0]
-  );
-
-  const stopNameList = stops.map((stop) => stop.name);
-
-  return stopNameList;
-}
-
 function selectBusLineById(idBusLine: number) {
   for (const busLine of busLines()) {
     const currentIdBusLine = busLine.idBusLine;
@@ -165,7 +148,8 @@ function selectBusLineById(idBusLine: number) {
   }
 }
 
-const [, { isInReadMode, isInRemoveLineMode }] = useStateAction();
+const [, { isInReadMode, isInRemoveLineMode, getLineUnderConstruction }] =
+  useStateAction();
 
 function polylineSetBoldStyle(polyline: L.Polyline, color: string) {
   polyline.setStyle({ color, weight: 8 });
@@ -251,8 +235,6 @@ function handleClick(idBusLine: number) {
 
   if (isInReadMode()) {
     selectBusLineById(idBusLine);
-    setTimelineStopNames(getStopsName(idBusLine));
-    setInfoToDisplay(InfoPanelEnum.line);
   }
 }
 
@@ -550,6 +532,42 @@ export function fetchBusLines() {
   });
 }
 
+const getSelectedBusLine = (): LineType | undefined => {
+  const busLinesWk = busLines();
+  if (busLinesWk.length == 0) {
+    return;
+  }
+  return busLinesWk.find((busLine) => busLine.selected());
+};
+
 export const getSelectedBusLineId = (): number | undefined => {
-  return busLines().find((busLine) => busLine.selected() == true)?.idBusLine;
+  const selectedBusLine = getSelectedBusLine();
+
+  if (!selectedBusLine) {
+    return;
+  }
+
+  return selectedBusLine.idBusLine;
+};
+
+function getStopNames(busLine: LineUnderConstructionType) {
+  const stopIds = busLine.stops.map((stop) => stop.id_point);
+
+  return stopIds.map(
+    (stopId) => points().filter((point) => point.id_point === stopId)[0].name
+  );
+}
+
+export const selectedBusLineStopNames = () => {
+  const selectedBusLine = getSelectedBusLine();
+
+  if (!selectedBusLine) {
+    return [];
+  }
+
+  return getStopNames(selectedBusLine);
+};
+
+export const lineUnderConstructionStopNames = () => {
+  return getStopNames(getLineUnderConstruction());
 };
