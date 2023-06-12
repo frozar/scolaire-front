@@ -20,7 +20,6 @@ import {
   selectedElement,
   infoToDisplay,
   setInfoToDisplay,
-  timelineStopNames,
   setTimelineStopNames,
   addNewUserInformation,
   linkBusLinePolyline,
@@ -34,6 +33,7 @@ import {
 import {
   getSelectedBusLineId,
   selectedBusLineStopNames,
+  lineUnderConstructionStopNames,
 } from "../line/busLinesUtils";
 import Timeline from "./Timeline";
 
@@ -51,9 +51,7 @@ export default function () {
     // When switching mode
     setTimelineStopNames([]);
 
-    if (isInAddLineMode()) {
-      setInfoToDisplay(InfoPanelEnum.edition);
-    } else {
+    if (!isInAddLineMode()) {
       resetLineUnderConstruction();
       setInfoToDisplay(InfoPanelEnum.nothing);
     }
@@ -311,11 +309,10 @@ export default function () {
         </Match>
         <Match
           when={
-            infoToDisplay() == InfoPanelEnum.edition &&
-            timelineStopNames().length != 0
+            isInAddLineMode() && lineUnderConstructionStopNames().length != 0
           }
         >
-          <Timeline stopNames={timelineStopNames()} />
+          <Timeline stopNames={lineUnderConstructionStopNames()} />
         </Match>
       </Switch>
     </div>

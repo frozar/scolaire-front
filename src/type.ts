@@ -151,10 +151,9 @@ export type MenuItemType = {
 
 export enum InfoPanelEnum {
   point,
-  line,
-  edition,
   nothing,
 }
+
 export type StopItemType = {
   id: number;
   name: string;

@@ -1,8 +1,8 @@
 import L from "leaflet";
 
 import {
-  InfoPanelEnum,
   LineType,
+  LineUnderConstructionType,
   NatureEnum,
   PointIdentityType,
 } from "../../../../type";
@@ -14,10 +14,8 @@ import {
   getLeafletMap,
   linkBusLinePolyline,
   points,
-  setInfoToDisplay,
   setPickerColor,
   setRemoveConfirmation,
-  setTimelineStopNames,
 } from "../../../../signaux";
 import { LineString } from "geojson";
 import { authenticateWrap } from "../../../layout/topMenu/authentication";
@@ -132,20 +130,6 @@ export function deselectBusLines() {
   return deselectBusLinesAux(busLines());
 }
 
-export function getStopsName(idBusLine: number) {
-  const busLine = busLines().filter(
-    (busLine) => busLine.idBusLine == idBusLine
-  );
-  const stopIds = busLine[0].stops.map((stop) => stop.id_point);
-  const stops = stopIds.map(
-    (stopId) => points().filter((point) => point.id_point === stopId)[0]
-  );
-
-  const stopNameList = stops.map((stop) => stop.name);
-
-  return stopNameList;
-}
-
 function selectBusLineById(idBusLine: number) {
   for (const busLine of busLines()) {
     const currentIdBusLine = busLine.idBusLine;
@@ -164,7 +148,8 @@ function selectBusLineById(idBusLine: number) {
   }
 }
 
-const [, { isInReadMode, isInRemoveLineMode }] = useStateAction();
+const [, { isInReadMode, isInRemoveLineMode, getLineUnderConstruction }] =
+  useStateAction();
 
 function polylineSetBoldStyle(polyline: L.Polyline, color: string) {
   polyline.setStyle({ color, weight: 8 });
@@ -250,8 +235,6 @@ function handleClick(idBusLine: number) {
 
   if (isInReadMode()) {
     selectBusLineById(idBusLine);
-    setTimelineStopNames(getStopsName(idBusLine));
-    setInfoToDisplay(InfoPanelEnum.line);
   }
 }
 
@@ -567,11 +550,24 @@ export const getSelectedBusLineId = (): number | undefined => {
   return selectedBusLine.idBusLine;
 };
 
+function getStopNames(busLine: LineUnderConstructionType) {
+  const stopIds = busLine.stops.map((stop) => stop.id_point);
+
+  return stopIds.map(
+    (stopId) => points().filter((point) => point.id_point === stopId)[0].name
+  );
+}
+
 export const selectedBusLineStopNames = () => {
-  const selectedBusLineId = getSelectedBusLineId();
-  if (!selectedBusLineId) {
+  const selectedBusLine = getSelectedBusLine();
+
+  if (!selectedBusLine) {
     return [];
   }
 
-  return getStopsName(selectedBusLineId);
+  return getStopNames(selectedBusLine);
+};
+
+export const lineUnderConstructionStopNames = () => {
+  return getStopNames(getLineUnderConstruction());
 };

@@ -56,6 +56,7 @@ export function setSelectedElement(
 ) {
   setterSelectedElement(deepCopy(value));
 }
+
 export const [points, setPoints] = createSignal<
   PointRamassageType[] | PointEtablissementType[]
 >([]);
