@@ -18,17 +18,18 @@ import {
 import { PointIdentityType } from "../../../../type";
 import {
   selectedElement,
-  busLineSelected,
+  // busLineSelected,
   // busLines,
   // points,
   infoToDisplay,
   setInfoToDisplay,
-  setBusLineSelected,
+  // setBusLineSelected,
   timelineStopNames,
   setTimelineStopNames,
   addNewUserInformation,
   linkBusLinePolyline,
   pickerColor,
+  busLines,
 } from "../../../../signaux";
 import { useStateAction } from "../../../../StateAction";
 import {
@@ -110,7 +111,8 @@ export default function () {
 
   createEffect(() => {
     // When switching mode
-    setBusLineSelected(-1);
+    // TODO: passer tout les selected en false qd changement de mode
+    // setBusLineSelected(-1);
     setTimelineStopNames([]);
 
     if (isInAddLineMode()) {
@@ -235,10 +237,20 @@ export default function () {
     }
 
     const newColor = (e.target as HTMLInputElement).value;
-    const idBusLine = busLineSelected();
 
-    const polyline = linkBusLinePolyline[idBusLine].polyline;
-    polyline.setStyle({ color: newColor });
+    // const idBusLine = busLineSelected();
+    const idBusLine = busLines().find(
+      (busLine) => busLine.selected() == true
+    )?.idBusLine;
+
+    if (!idBusLine) {
+      return;
+    }
+
+    // simplifier
+    // const polyline = linkBusLinePolyline[idBusLine].polyline;
+    // polyline.setStyle({ color: newColor });
+    linkBusLinePolyline[idBusLine].polyline.setStyle({ color: newColor });
 
     const arrows = linkBusLinePolyline[idBusLine].arrows;
 
@@ -263,17 +275,26 @@ export default function () {
       return;
     }
 
-    const id = busLineSelected();
+    // const id = busLineSelected();
+
+    const idBusLine = busLines().find(
+      (busLine) => busLine.selected() == true
+    )?.idBusLine;
+
+    if (!idBusLine) {
+      return;
+    }
+
     const color = (e.target as HTMLInputElement).value;
 
     authenticateWrap((headers) => {
-      fetch(import.meta.env.VITE_BACK_URL + `/line/${id}`, {
+      fetch(import.meta.env.VITE_BACK_URL + `/line/${idBusLine}`, {
         headers,
         method: "PATCH",
         body: JSON.stringify({ color: color }),
       })
         .then(() => {
-          linkBusLinePolyline[id].color = color;
+          linkBusLinePolyline[idBusLine].color = color;
         })
         .catch((err) => console.log(err));
     }).catch(() => {
