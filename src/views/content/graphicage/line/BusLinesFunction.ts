@@ -27,6 +27,7 @@ import {
 } from "../../../../signaux";
 import { LineString } from "geojson";
 import { authenticateWrap } from "../../../layout/topMenu/authentication";
+import { createSignal } from "solid-js";
 // import { getStopsName } from "../informationBoard/InformationContent";
 
 export function getLatLngs(stops: PointIdentityType[]): L.LatLng[] {
@@ -385,10 +386,14 @@ export function fetchBusLines() {
                 } as PointIdentityType)
             );
 
+            const [selected, setSelected] = createSignal(false);
+
             const lineWk: LineType = {
               idBusLine: resLine.id_bus_line,
               color: color,
               stops: stopsWithNatureEnum,
+              selected,
+              setSelected,
             };
 
             return lineWk;
