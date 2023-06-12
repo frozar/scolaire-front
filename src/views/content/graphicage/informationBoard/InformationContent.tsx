@@ -32,6 +32,7 @@ import {
   getToken,
 } from "../../../layout/topMenu/authentication";
 import { getSelectedBusLineId } from "../line/busLinesUtils";
+import Timeline from "./Timeline";
 
 const [, { isInAddLineMode, resetLineUnderConstruction }] = useStateAction();
 
@@ -41,48 +42,6 @@ type PointToDisplayType = {
   nature: NatureEnum;
   quantity: number;
 };
-
-type TimelineItemType = {
-  name: string;
-};
-
-function TimelineItem(props: TimelineItemType) {
-  return (
-    <div class="v-timeline-item">
-      <div class="v-timeline-item__body">
-        <div class="d-flex">
-          <div>
-            <strong>{props.name}</strong>
-          </div>
-        </div>
-      </div>
-      <div class="v-timeline-divider">
-        <div class="v-timeline-divider__before" />
-        <div class="v-timeline-divider__dot v-timeline-divider__dot--size-small">
-          <div class="v-timeline-divider__inner-dot bg-pink">
-            <i class="" aria-hidden="true" />
-          </div>
-        </div>
-        <div class="v-timeline-divider__after" />
-      </div>
-    </div>
-  );
-}
-
-function Timeline() {
-  return (
-    <div class="timeline">
-      <div
-        class="v-timeline v-timeline--align-start v-timeline--justify-auto v-timeline--side-end v-timeline--vertical"
-        style={{ "--v-timeline-line-thickness": "2px" }}
-      >
-        <For each={timelineStopNames()}>
-          {(stop) => <TimelineItem name={stop} />}
-        </For>
-      </div>
-    </div>
-  );
-}
 
 export default function () {
   createEffect(() => {
@@ -345,7 +304,7 @@ export default function () {
               onChange={handleColorChanged}
             />
           </div>
-          <Timeline />
+          <Timeline stopNames={timelineStopNames()} />
         </Match>
         <Match
           when={
@@ -353,7 +312,7 @@ export default function () {
             timelineStopNames().length != 0
           }
         >
-          <Timeline />
+          <Timeline stopNames={timelineStopNames()} />
         </Match>
       </Switch>
     </div>
