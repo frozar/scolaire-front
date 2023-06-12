@@ -243,8 +243,6 @@ export const linkBusLinePolyline: {
 
 export const [getLeafletMap, setLeafletMap] = createSignal<L.Map>();
 
-export const [busLineSelected, setBusLineSelected] = createSignal<number>(-1);
-
 export const [infoToDisplay, setInfoToDisplay] = createSignal<InfoPanelEnum>();
 
 export const [timelineStopNames, setTimelineStopNames] = createSignal<string[]>(

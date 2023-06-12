@@ -18,12 +18,8 @@ import {
 import { PointIdentityType } from "../../../../type";
 import {
   selectedElement,
-  busLineSelected,
-  busLines,
-  points,
   infoToDisplay,
   setInfoToDisplay,
-  setBusLineSelected,
   timelineStopNames,
   setTimelineStopNames,
   addNewUserInformation,
@@ -35,6 +31,7 @@ import {
   authenticateWrap,
   getToken,
 } from "../../../layout/topMenu/authentication";
+import { getSelectedBusLineId } from "../line/busLinesUtils";
 
 const [, { isInAddLineMode, resetLineUnderConstruction }] = useStateAction();
 
@@ -48,20 +45,6 @@ type PointToDisplayType = {
 type TimelineItemType = {
   name: string;
 };
-
-function getStopsName(idBusLine: number) {
-  const busLine = busLines().filter(
-    (busLine) => busLine.idBusLine == idBusLine
-  );
-  const stopIds = busLine[0].stops.map((stop) => stop.id_point);
-  const stops = stopIds.map(
-    (stopId) => points().filter((point) => point.id_point === stopId)[0]
-  );
-
-  const stopNameList = stops.map((stop) => stop.name);
-
-  return stopNameList;
-}
 
 function TimelineItem(props: TimelineItemType) {
   return (
@@ -85,6 +68,7 @@ function TimelineItem(props: TimelineItemType) {
     </div>
   );
 }
+
 function Timeline() {
   return (
     <div class="timeline">
@@ -102,15 +86,7 @@ function Timeline() {
 
 export default function () {
   createEffect(() => {
-    // Read mode
-    if (busLineSelected() != -1) {
-      setTimelineStopNames(getStopsName(busLineSelected()));
-    }
-  });
-
-  createEffect(() => {
     // When switching mode
-    setBusLineSelected(-1);
     setTimelineStopNames([]);
 
     if (isInAddLineMode()) {
@@ -235,12 +211,18 @@ export default function () {
     }
 
     const newColor = (e.target as HTMLInputElement).value;
-    const idBusLine = busLineSelected();
 
-    const polyline = linkBusLinePolyline[idBusLine].polyline;
-    polyline.setStyle({ color: newColor });
+    const selectedBusLineId = getSelectedBusLineId();
 
-    const arrows = linkBusLinePolyline[idBusLine].arrows;
+    if (!selectedBusLineId) {
+      return;
+    }
+
+    linkBusLinePolyline[selectedBusLineId].polyline.setStyle({
+      color: newColor,
+    });
+
+    const arrows = linkBusLinePolyline[selectedBusLineId].arrows;
 
     for (const arrow of arrows) {
       const arrowHTML = arrow.getElement();
@@ -263,17 +245,22 @@ export default function () {
       return;
     }
 
-    const id = busLineSelected();
+    const selectedBusLineId = getSelectedBusLineId();
+
+    if (!selectedBusLineId) {
+      return;
+    }
+
     const color = (e.target as HTMLInputElement).value;
 
     authenticateWrap((headers) => {
-      fetch(import.meta.env.VITE_BACK_URL + `/line/${id}`, {
+      fetch(import.meta.env.VITE_BACK_URL + `/line/${selectedBusLineId}`, {
         headers,
         method: "PATCH",
         body: JSON.stringify({ color: color }),
       })
         .then(() => {
-          linkBusLinePolyline[id].color = color;
+          linkBusLinePolyline[selectedBusLineId].color = color;
         })
         .catch((err) => console.log(err));
     }).catch(() => {

@@ -1,4 +1,4 @@
-import { JSX } from "solid-js";
+import { Accessor, JSX, Setter } from "solid-js";
 
 export type EleveVersEtablissementType = {
   id: number;
@@ -47,6 +47,8 @@ export type LineUnderConstructionType = {
 
 export type LineType = LineUnderConstructionType & {
   idBusLine: number;
+  selected: Accessor<boolean>;
+  setSelected: Setter<boolean>;
 };
 
 export enum ModeEnum {
