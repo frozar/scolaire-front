@@ -22,7 +22,7 @@ import {
 } from "../../../../signaux";
 import { LineString } from "geojson";
 import { authenticateWrap } from "../../../layout/topMenu/authentication";
-import { createSignal } from "solid-js";
+import { createEffect, createSignal } from "solid-js";
 
 export function getLatLngs(stops: PointIdentityType[]): L.LatLng[] {
   const latlngs: L.LatLng[] = [];
@@ -59,11 +59,7 @@ function getArrowSVG(color: string, angle: number) {
   );
 }
 
-function arrowRemoveModeStyle(
-  arrows: L.Marker[],
-  color: string,
-  transform: string
-) {
+function arrowApplyStyle(arrows: L.Marker[], color: string, transform: string) {
   // Change color
   arrows.map((arrow) => {
     const element = arrow.getElement();
@@ -109,13 +105,32 @@ function arrowRemoveModeStyle(
 }
 
 function getBusLineColor(busLines: LineType[], idBusLine: number) {
-  const busLine = busLines.find((route) => route.idBusLine == idBusLine);
+  const busLine = getBusLineById(busLines, idBusLine);
 
   if (!busLine) {
     return;
   }
 
   return busLine.color;
+}
+
+function getBusLineById(
+  busLines: LineType[],
+  idBusLine: number
+): LineType | undefined {
+  return busLines.find((route) => route.idBusLine == idBusLine);
+}
+
+function deselectBusLinesAux(busLines: LineType[]) {
+  for (const busLine of busLines) {
+    busLine.setSelected((previousBool) => {
+      return previousBool ? false : previousBool;
+    });
+  }
+}
+
+export function deselectBusLines() {
+  return deselectBusLinesAux(busLines());
 }
 
 function getStopsName(idBusLine: number) {
@@ -152,25 +167,75 @@ function selectBusLineById(idBusLine: number) {
 
 const [, { isInReadMode, isInRemoveLineMode }] = useStateAction();
 
-function handleMouseOver(arrowsLinked: L.Marker[], polyline: L.Polyline) {
-  if (isInRemoveLineMode()) {
-    polyline.setStyle({ color: "#FFF", weight: 8 });
-    arrowRemoveModeStyle(arrowsLinked, "white", "scale(4,4) ");
+function polylineSetBoldStyle(polyline: L.Polyline, color: string) {
+  polyline.setStyle({ color, weight: 8 });
+}
+
+function polylineSetNormalStyle(polyline: L.Polyline, color: string) {
+  polyline.setStyle({ color, weight: 3 });
+}
+
+function arrowsSetBoldStyle(arrows: L.Marker[], color: string) {
+  arrowApplyStyle(arrows, color, "scale(4,4) ");
+}
+
+function arrowsSetNormalStyle(arrows: L.Marker[], color: string) {
+  arrowApplyStyle(arrows, color, "scale(2,2) ");
+}
+
+export function buslineSetBoldStyle(
+  polyline: L.Polyline,
+  arrowsLinked: L.Marker[],
+  color: string
+) {
+  polylineSetBoldStyle(polyline, color);
+  arrowsSetBoldStyle(arrowsLinked, color);
+}
+
+export function buslineSetNormalStyle(
+  polyline: L.Polyline,
+  arrowsLinked: L.Marker[],
+  color: string
+) {
+  polylineSetNormalStyle(polyline, color);
+  arrowsSetNormalStyle(arrowsLinked, color);
+}
+
+function handleMouseOver(
+  polyline: L.Polyline,
+  arrowsLinked: L.Marker[],
+  idBusLine: number
+) {
+  const busLine = getBusLineById(busLines(), idBusLine);
+  if (!busLine) {
+    return;
+  }
+
+  const isSelected = busLine.selected();
+
+  if (!isSelected && (isInRemoveLineMode() || isInReadMode())) {
+    buslineSetBoldStyle(polyline, arrowsLinked, "white");
   }
 }
 
 function handleMouseOut(
-  idBusLine: number,
   polyline: L.Polyline,
-  arrowsLinked: L.Marker[]
+  arrowsLinked: L.Marker[],
+  idBusLine: number
 ) {
-  if (isInRemoveLineMode()) {
+  const busLine = getBusLineById(busLines(), idBusLine);
+  if (!busLine) {
+    return;
+  }
+
+  const isSelected = busLine.selected();
+
+  if (!isSelected && (isInRemoveLineMode() || isInReadMode())) {
     const routeColor = getBusLineColor(busLines(), idBusLine);
     if (!routeColor) {
       return;
     }
-    polyline.setStyle({ color: routeColor, weight: 3 });
-    arrowRemoveModeStyle(arrowsLinked, routeColor, "scale(2,2) ");
+    buslineSetNormalStyle(polyline, arrowsLinked, routeColor);
   }
 }
 
@@ -191,109 +256,39 @@ function handleClick(idBusLine: number) {
   }
 }
 
-// TODO: refactor
-export function busLinePolylineAttachEvent(
-  self: L.Polyline,
-  idBusLine: number,
-  arrowsLinked: L.Marker[]
-): void {
+export function attachEvent(
+  self: L.Polyline | L.Marker,
+  polyline: L.Polyline,
+  arrowsLinked: L.Marker[],
+  idBusLine: number
+) {
   self
-    // .on("mouseover", () => {
-    //   // console.log("mouseover isInRemoveLineMode()", isInRemoveLineMode());
-    //   // // createEffect(() => {
-    //   //   console.log("isInRemoveLineMode()", isInRemoveLineMode());
-    //   // });
-    //   if (isInRemoveLineMode()) {
-    //     self.setStyle({ color: "#FFF", weight: 8 });
-    //     arrowRemoveModeStyle(arrowsLinked, "white", "scale(4,4) ");
-    //   }
-    // })
     .on("mouseover", () => {
-      handleMouseOver(arrowsLinked, self);
+      handleMouseOver(polyline, arrowsLinked, idBusLine);
     })
-    // .on("mouseout", () => {
-    //   if (isInRemoveLineMode()) {
-    //     const routeColor = getBusLineColor(busLines(), idBusLine);
-    //     if (!routeColor) {
-    //       return;
-    //     }
-    //     self.setStyle({ color: routeColor, weight: 3 });
-    //     arrowRemoveModeStyle(arrowsLinked, routeColor, "scale(2,2) ");
-    //   }
-    // })
     .on("mouseout", () => {
-      handleMouseOut(idBusLine, self, arrowsLinked);
+      handleMouseOut(polyline, arrowsLinked, idBusLine);
     })
-    // .on("click", () => {
-    //   setPickerColor(linkBusLinePolyline[idBusLine].color);
-
-    //   if (isInRemoveLineMode()) {
-    //     setRemoveConfirmation({
-    //       displayed: true,
-    //       idBusLine: idBusLine,
-    //     });
-    //   }
-
-    //   if (isInReadMode()) {
-    //     selectBusLineById(idBusLine);
-    //     setTimelineStopNames(getStopsName(idBusLine));
-    //     setInfoToDisplay(InfoPanelEnum.line);
-    //   }
-    // });
     .on("click", () => {
       handleClick(idBusLine);
     });
 }
 
-// TODO: refactor
+export function busLinePolylineAttachEvent(
+  polyline: L.Polyline,
+  idBusLine: number,
+  arrowsLinked: L.Marker[]
+): void {
+  attachEvent(polyline, polyline, arrowsLinked, idBusLine);
+}
+
 export function arrowAttachEvent(
   arrow: L.Marker,
   polyline: L.Polyline,
   idBusLine: number,
   arrowsLinked: L.Marker[]
 ): void {
-  arrow
-    // .on("mouseover", () => {
-    //   if (isInRemoveLineMode()) {
-    //     polyline.setStyle({ color: "#FFF", weight: 8 });
-    //     arrowRemoveModeStyle(arrowsLinked, "white", "scale(4,4) ");
-    //   }
-    // })
-    .on("mouseover", () => {
-      handleMouseOver(arrowsLinked, polyline);
-    })
-    // .on("mouseout", () => {
-    //   if (isInRemoveLineMode()) {
-    //     const routeColor = getBusLineColor(busLines(), idBusLine);
-    //     if (!routeColor) {
-    //       return;
-    //     }
-    //     polyline.setStyle({ color: routeColor, weight: 3 });
-    //     arrowRemoveModeStyle(arrowsLinked, routeColor, "scale(2,2) ");
-    //   }
-    // })
-    .on("mouseout", () => {
-      handleMouseOut(idBusLine, polyline, arrowsLinked);
-    })
-    // .on("click", () => {
-    //   setPickerColor(linkBusLinePolyline[idBusLine].color);
-
-    //   if (isInRemoveLineMode()) {
-    //     setRemoveConfirmation({
-    //       displayed: true,
-    //       idBusLine: idBusLine,
-    //     });
-    //   }
-
-    //   if (isInReadMode()) {
-    //     selectBusLineById(idBusLine);
-    //     setTimelineStopNames(getStopsName(idBusLine));
-    //     setInfoToDisplay(InfoPanelEnum.line);
-    //   }
-    // });
-    .on("click", () => {
-      handleClick(idBusLine);
-    });
+  attachEvent(arrow, polyline, arrowsLinked, idBusLine);
 }
 
 // fetchOnRoadPolyline() is called in readMode only
@@ -372,6 +367,7 @@ function computeArrowsInReadMode(latLngs: L.LatLng[], color: string) {
     const arrow = new L.Marker([latArrow, lngArrow], {
       icon: arrowIcon,
       pane: "overlayPane",
+      keyboard: false,
     });
 
     arrows.push(arrow);
@@ -454,6 +450,27 @@ export function fetchBusLines() {
         );
 
         const [selected, setSelected] = createSignal(false);
+
+        createEffect(() => {
+          const selectedWk = selected();
+
+          if (!linkBusLinePolyline[resLine.id_bus_line]) {
+            return;
+          }
+
+          const { polyline, arrows } = linkBusLinePolyline[resLine.id_bus_line];
+
+          const routeColor = getBusLineColor(busLines(), resLine.id_bus_line);
+          if (!routeColor) {
+            return;
+          }
+
+          if (selectedWk) {
+            buslineSetBoldStyle(polyline, arrows, routeColor);
+          } else {
+            buslineSetNormalStyle(polyline, arrows, routeColor);
+          }
+        });
 
         const lineWk: LineType = {
           idBusLine: resLine.id_bus_line,
