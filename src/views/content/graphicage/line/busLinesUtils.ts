@@ -22,7 +22,7 @@ import {
 } from "../../../../signaux";
 import { LineString } from "geojson";
 import { authenticateWrap } from "../../../layout/topMenu/authentication";
-import { createSignal } from "solid-js";
+import { createEffect, createSignal } from "solid-js";
 
 export function getLatLngs(stops: PointIdentityType[]): L.LatLng[] {
   const latlngs: L.LatLng[] = [];
@@ -59,11 +59,7 @@ function getArrowSVG(color: string, angle: number) {
   );
 }
 
-function arrowRemoveModeStyle(
-  arrows: L.Marker[],
-  color: string,
-  transform: string
-) {
+function arrowApplyStyle(arrows: L.Marker[], color: string, transform: string) {
   // Change color
   arrows.map((arrow) => {
     const element = arrow.getElement();
@@ -152,10 +148,43 @@ function selectBusLineById(idBusLine: number) {
 
 const [, { isInReadMode, isInRemoveLineMode }] = useStateAction();
 
+function polylineSetBoldStyle(polyline: L.Polyline, color: string) {
+  polyline.setStyle({ color, weight: 8 });
+}
+
+function polylineSetNormalStyle(polyline: L.Polyline, color: string) {
+  polyline.setStyle({ color, weight: 3 });
+}
+
+function arrowsSetBoldStyle(arrows: L.Marker[], color: string) {
+  arrowApplyStyle(arrows, color, "scale(4,4) ");
+}
+
+function arrowsSetNormalStyle(arrows: L.Marker[], color: string) {
+  arrowApplyStyle(arrows, color, "scale(2,2) ");
+}
+
+export function buslineSetBoldStyle(
+  polyline: L.Polyline,
+  arrowsLinked: L.Marker[],
+  color: string
+) {
+  polylineSetBoldStyle(polyline, color);
+  arrowsSetBoldStyle(arrowsLinked, color);
+}
+
+export function buslineSetNormalStyle(
+  polyline: L.Polyline,
+  arrowsLinked: L.Marker[],
+  color: string
+) {
+  polylineSetNormalStyle(polyline, color);
+  arrowsSetNormalStyle(arrowsLinked, color);
+}
+
 function handleMouseOver(polyline: L.Polyline, arrowsLinked: L.Marker[]) {
   if (isInRemoveLineMode() || isInReadMode()) {
-    polyline.setStyle({ color: "#FFF", weight: 8 });
-    arrowRemoveModeStyle(arrowsLinked, "white", "scale(4,4) ");
+    buslineSetBoldStyle(polyline, arrowsLinked, "white");
   }
 }
 
@@ -169,8 +198,7 @@ function handleMouseOut(
     if (!routeColor) {
       return;
     }
-    polyline.setStyle({ color: routeColor, weight: 3 });
-    arrowRemoveModeStyle(arrowsLinked, routeColor, "scale(2,2) ");
+    buslineSetNormalStyle(polyline, arrowsLinked, routeColor);
   }
 }
 
@@ -384,6 +412,22 @@ export function fetchBusLines() {
         );
 
         const [selected, setSelected] = createSignal(false);
+
+        createEffect(() => {
+          if (selected()) {
+            console.log("resLine.id_bus_line", resLine.id_bus_line);
+
+            if (!linkBusLinePolyline[resLine.id_bus_line]) {
+              return;
+            }
+
+            const { polyline, arrows } =
+              linkBusLinePolyline[resLine.id_bus_line];
+
+            console.log(polyline);
+            console.log(arrows);
+          }
+        });
 
         const lineWk: LineType = {
           idBusLine: resLine.id_bus_line,
