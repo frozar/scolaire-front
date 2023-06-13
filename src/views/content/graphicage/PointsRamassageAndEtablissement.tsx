@@ -40,14 +40,23 @@ export function fetchPointsRamassage() {
       })
       .then((data: PointRamassageType[]) => {
         // TODO: refactor
-        const [selected, setSelected] = createSignal(false);
+        // const [selected, setSelected] = createSignal(false);
 
-        data = data.map((pointRamassage) => ({
-          ...pointRamassage,
-          nature: NatureEnum.ramassage,
-          selected,
-          setSelected,
-        }));
+        // data = data.map((pointRamassage) => ({
+        //   ...pointRamassage,
+        //   nature: NatureEnum.ramassage,
+        //   selected,
+        //   setSelected,
+        // }));
+        data = data.map((pointRamassage) => {
+          const [selected, setSelected] = createSignal(false);
+          return {
+            ...pointRamassage,
+            nature: NatureEnum.ramassage,
+            selected,
+            setSelected,
+          };
+        });
         setMinMaxQty([
           Math.min(...data.map((value) => value.quantity)),
           Math.max(...data.map((value) => value.quantity)),
@@ -64,14 +73,23 @@ export function fetchPointsRamassage() {
       })
       .then((data: PointEtablissementType[]) => {
         // TODO: refactor
-        const [selected, setSelected] = createSignal(false);
+        // const [selected, setSelected] = createSignal(false);
 
-        data = data.map((pointEtablissement) => ({
-          ...pointEtablissement,
-          nature: NatureEnum.etablissement,
-          selected,
-          setSelected,
-        }));
+        // data = data.map((pointEtablissement) => ({
+        //   ...pointEtablissement,
+        //   nature: NatureEnum.etablissement,
+        //   selected,
+        //   setSelected,
+        // }));
+        data = data.map((pointEtablissement) => {
+          const [selected, setSelected] = createSignal(false);
+          return {
+            ...pointEtablissement,
+            nature: NatureEnum.etablissement,
+            selected,
+            setSelected,
+          };
+        });
 
         setPoints((dataArray) => [...dataArray, ...data]);
         setPointsEtablssementReady(true);

@@ -34,7 +34,6 @@ import {
   getSelectedBusLineId,
   selectedBusLineStopNames,
   lineUnderConstructionStopNames,
-  getPointSelected,
 } from "../line/busLinesUtils";
 import Timeline from "./Timeline";
 
@@ -246,8 +245,8 @@ export default function () {
       <Switch fallback={<span>Aucun élément sélectionné</span>}>
         <Match when={infoToDisplay() == InfoPanelEnum.point}>
           {/* <Match when={getPointSelected()}> */}
-          {/* <h2>{selectedElement()?.name}</h2> */}
-          <h2>{getPointSelected()}</h2>
+          <h2>{selectedElement()?.name}</h2>
+          {/* <h2>{getPointSelected()}</h2> */}
           <Show
             when={0 < ptToDisplay().length}
             fallback={<span>Aucun élément à afficher</span>}

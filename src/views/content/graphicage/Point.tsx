@@ -79,6 +79,10 @@ function selectPointById(idPoint: number) {
       });
     }
   }
+  console.log(
+    "laaa=>",
+    points().filter((point) => point.selected())
+  );
 }
 
 const minSizeValue = 5;
