@@ -18,7 +18,6 @@ import {
 import { PointIdentityType } from "../../../../type";
 import {
   selectedElement,
-  infoToDisplay,
   setInfoToDisplay,
   setTimelineStopNames,
   addNewUserInformation,
@@ -34,6 +33,7 @@ import {
   getSelectedBusLineId,
   selectedBusLineStopNames,
   lineUnderConstructionStopNames,
+  getPointSelected,
 } from "../line/busLinesUtils";
 import Timeline from "./Timeline";
 
@@ -153,17 +153,17 @@ export default function () {
     }
   };
 
-  const firstColumnTitle = () => {
-    const wkSelectedElement = selectedElement();
-    if (!wkSelectedElement) {
-      return "";
-    }
-    if (isPointRamassage(wkSelectedElement)) {
-      return "Etablissement";
-    } else {
-      return "Ramassage";
-    }
-  };
+  // const firstColumnTitle = () => {
+  //   const wkSelectedElement = selectedElement();
+  //   if (!wkSelectedElement) {
+  //     return "";
+  //   }
+  //   if (isPointRamassage(wkSelectedElement)) {
+  //     return "Etablissement";
+  //   } else {
+  //     return "Ramassage";
+  //   }
+  // };
 
   const handleColorPicker = (e: InputEvent) => {
     if (!e.target) {
@@ -243,10 +243,11 @@ export default function () {
       }}
     >
       <Switch fallback={<span>Aucun élément sélectionné</span>}>
-        <Match when={infoToDisplay() == InfoPanelEnum.point}>
-          {/* <Match when={getPointSelected()}> */}
-          <h2>{selectedElement()?.name}</h2>
-          {/* <h2>{getPointSelected()}</h2> */}
+        {/* <Match when={infoToDisplay() == InfoPanelEnum.point}> */}
+        <Match when={getPointSelected()}>
+          {/* <h2>{selectedElement()?.name}</h2> */}
+          {/* TODO: Remplacer pas l'affichage du nom de l'arrêt */}
+          <h2>{getPointSelected()?.name}</h2>
           <Show
             when={0 < ptToDisplay().length}
             fallback={<span>Aucun élément à afficher</span>}
@@ -263,7 +264,8 @@ export default function () {
                               scope="col"
                               class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                             >
-                              {firstColumnTitle()}
+                              {/* {firstColumnTitle()} */}
+                              {getPointSelected()?.nature}
                             </th>
                             <th
                               scope="col"
