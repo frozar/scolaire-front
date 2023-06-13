@@ -118,6 +118,7 @@ function getBusLineById(
 ): LineType | undefined {
   return busLines.find((route) => route.idBusLine == idBusLine);
 }
+
 // TODO: rename
 function deselectElementAux(elements: LineType[] | PointRamassageType[]) {
   for (const element of elements) {
@@ -126,6 +127,7 @@ function deselectElementAux(elements: LineType[] | PointRamassageType[]) {
     });
   }
 }
+
 // TODO: déplacer ?
 export function deselectPoint() {
   return deselectElementAux(points());
@@ -134,19 +136,6 @@ export function deselectPoint() {
 export function deselectBusLines() {
   return deselectElementAux(busLines());
 }
-
-// TODO: refactor
-// function deselectBusLinesAux(busLines: LineType[]) {
-//   for (const busLine of busLines) {
-//     busLine.setSelected((previousBool) => {
-//       return previousBool ? false : previousBool;
-//     });
-//   }
-// }
-// TODO: refactor
-// export function deselectBusLines() {
-//   return deselectBusLinesAux(busLines());
-// }
 
 export function selectElementByIdAux(
   element: LineType | PointRamassageType,
@@ -172,23 +161,6 @@ function selectBusLineById(idBusLine: number) {
     selectElementByIdAux(busLine, currentIdBusLine, idBusLine);
   }
 }
-
-// function selectBusLineById(idBusLine: number) {
-//   for (const busLine of busLines()) {
-//     const currentIdBusLine = busLine.idBusLine; //.id_point
-//     //TODO: refactor
-//     const currentSetSelected = busLine.setSelected;
-//     if (currentIdBusLine == idBusLine) {
-//       currentSetSelected((previousSelected) => {
-//         return previousSelected ? previousSelected : true;
-//       });
-//     } else {
-//       currentSetSelected((previousSelected) => {
-//         return previousSelected ? false : previousSelected;
-//       });
-//     }
-//   }
-// }
 
 const [, { isInReadMode, isInRemoveLineMode, getLineUnderConstruction }] =
   useStateAction();
@@ -276,9 +248,7 @@ function handleClick(idBusLine: number) {
   }
 
   if (isInReadMode()) {
-    // deselect les points
     deselectPoint();
-
     selectBusLineById(idBusLine);
   }
 }
@@ -594,21 +564,14 @@ export const getSelectedBusLineId = (): number | undefined => {
 
   return selectedBusLine.idBusLine;
 };
-// TODO: getPointSelected necessaire ? ou juste isPointSelected
-// export const getPointSelected = (): number | undefined => {
+
 export const getPointSelected = (): PointRamassageType | undefined => {
-  const pointsWk = points(); //
+  const pointsWk = points();
   // if (pointsWk.length == 0) {
   //   return;
   // }
   const selectedPoint = pointsWk.find((point) => point.selected());
-  if (!selectedPoint) {
-    return;
-  }
-  console.log("(3) selectedPoint", selectedPoint);
-  console.log("(4) selectedPoint.id_point", selectedPoint.id_point);
 
-  // return selectedPoint.id_point;
   return selectedPoint;
 };
 

@@ -13,7 +13,7 @@ import {
   PointIdentityType,
   PointRamassageType,
   PointEtablissementType,
-  InfoPanelEnum,
+  // InfoPanelEnum,
 } from "../../../type";
 
 import { useStateAction } from "../../../StateAction";
@@ -22,7 +22,7 @@ import { linkMap } from "../../../global/linkPointIdentityCircle";
 import {
   getLeafletMap,
   setSelectedElement,
-  setInfoToDisplay,
+  // setInfoToDisplay,
   setIsRamassageReady,
   setIsEtablissementReady,
   points,
@@ -30,7 +30,6 @@ import {
 import { minMaxQty } from "./PointsRamassageAndEtablissement";
 import { authenticateWrap } from "../../layout/topMenu/authentication";
 import { deselectBusLines, selectElementByIdAux } from "./line/busLinesUtils";
-// import { busLines } from "./line/BusLines";
 
 const [
   ,
@@ -41,50 +40,6 @@ const [
   },
 ] = useStateAction();
 
-//test
-createEffect(() => {
-  if (points()) {
-    console.log(
-      "(effect) => selected points",
-      points().filter((point) => point.selected())
-    );
-  }
-});
-
-// createEffect(() => {
-//   console.log("getPointSelected()", getPointSelected());
-// });
-
-// TODO: déplacer
-// faire un aux ??
-// refactoriser avec selectBusLineById
-// function selectPointById(idPoint: number) {
-//   for (const point of points()) {
-//     const currentIdPoint = point.id_point;
-
-//     const currentSetSelected = point.setSelected;
-//     if (currentIdPoint == idPoint) {
-//       console.log("(2) currentIdPoint", currentIdPoint, "idPoint", idPoint);
-
-//       // const currentSetSelected = point.setSelected;
-//       currentSetSelected((previousSelected) => {
-//         return previousSelected ? previousSelected : true;
-//       });
-//     } else {
-//       console.log("(2bis)");
-
-//       // const currentSetSelected = point.setSelected;
-//       currentSetSelected((previousSelected) => {
-//         return previousSelected ? false : previousSelected;
-//       });
-//     }
-//   }
-//   console.log(
-//     "laaa=>",
-//     points().filter((point) => point.selected())
-//   );
-// }
-
 function selectPointById(idPoint: number) {
   for (const point of points()) {
     const currentIdPoint = point.id_point;
@@ -92,7 +47,7 @@ function selectPointById(idPoint: number) {
     selectElementByIdAux(point, currentIdPoint, idPoint);
   }
   console.log(
-    "laaa=>",
+    "points().filter((point) => point.selected()) => ",
     points().filter((point) => point.selected())
   );
 }
@@ -208,16 +163,12 @@ export default function (props: {
           // Select the current element to display information
           // TODO: to delete
           setSelectedElement(point);
+
           if (!isInAddLineMode()) {
-            setInfoToDisplay(InfoPanelEnum.point);
+            // setInfoToDisplay(InfoPanelEnum.point);
 
             // TODO: déplacer
-            // désélect les lines
             deselectBusLines();
-
-            // select le bon point
-            console.log("(1) point.id_point, juste au clic", point.id_point);
-
             selectPointById(point.id_point);
             return;
           }

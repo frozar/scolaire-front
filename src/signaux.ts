@@ -10,7 +10,7 @@ import {
   userInformationType,
   ReturnMessageType,
   clearConfirmationType,
-  InfoPanelEnum,
+  // InfoPanelEnum,
   removeRamassageConfirmationType,
   ImportCsvBoxType,
 } from "./type";
@@ -244,7 +244,7 @@ export const linkBusLinePolyline: {
 export const [getLeafletMap, setLeafletMap] = createSignal<L.Map>();
 
 // TODO:
-export const [infoToDisplay, setInfoToDisplay] = createSignal<InfoPanelEnum>();
+// export const [infoToDisplay, setInfoToDisplay] = createSignal<InfoPanelEnum>();
 
 // TODO:
 export const [timelineStopNames, setTimelineStopNames] = createSignal<string[]>(

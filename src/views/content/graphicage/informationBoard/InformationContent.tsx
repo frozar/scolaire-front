@@ -11,14 +11,14 @@ import InfoPointName from "./InfoPointName";
 import {
   NatureEnum,
   isPointRamassage,
-  InfoPanelEnum,
+  // InfoPanelEnum,
   MessageLevelEnum,
   MessageTypeEnum,
 } from "../../../../type";
 import { PointIdentityType } from "../../../../type";
 import {
   selectedElement,
-  setInfoToDisplay,
+  // setInfoToDisplay,
   setTimelineStopNames,
   addNewUserInformation,
   linkBusLinePolyline,
@@ -53,7 +53,7 @@ export default function () {
 
     if (!isInAddLineMode()) {
       resetLineUnderConstruction();
-      setInfoToDisplay(InfoPanelEnum.nothing);
+      // setInfoToDisplay(InfoPanelEnum.nothing);
     }
   });
 

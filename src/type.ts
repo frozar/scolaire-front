@@ -11,8 +11,8 @@ export type EleveVersEtablissementType = {
 
 // TODO: Use string as value for enum
 export enum NatureEnum {
-  ramassage,
-  etablissement,
+  ramassage = "Ramassage",
+  etablissement = "Etablissement",
 }
 
 export type PointRamassageType = {
@@ -151,10 +151,10 @@ export type MenuItemType = {
   displayText: boolean;
 };
 
-export enum InfoPanelEnum {
-  point,
-  nothing,
-}
+// export enum InfoPanelEnum {
+//   point,
+//   nothing,
+// }
 
 export type StopItemType = {
   id: number;
