@@ -22,6 +22,8 @@ export type PointRamassageType = {
   location: string;
   name: string;
   quantity: number;
+  selected: Accessor<boolean>;
+  setSelected: Setter<boolean>;
 };
 
 export type PointEtablissementType = PointRamassageType;

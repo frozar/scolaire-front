@@ -5,6 +5,7 @@ import {
   LineUnderConstructionType,
   NatureEnum,
   PointIdentityType,
+  PointRamassageType,
 } from "../../../../type";
 import { linkMap } from "../../../../global/linkPointIdentityCircle";
 
@@ -117,7 +118,24 @@ function getBusLineById(
 ): LineType | undefined {
   return busLines.find((route) => route.idBusLine == idBusLine);
 }
+// TODO: rename
+function deselectElementAux(elements: LineType[] | PointRamassageType[]) {
+  for (const element of elements) {
+    element.setSelected((previousBool) => {
+      return previousBool ? false : previousBool;
+    });
+  }
+}
+// TODO: déplacer ?
+export function deselectPoint() {
+  return deselectElementAux(points());
+}
 
+// export function deselectBusLines() {
+//   return deselectElementAux(busLines());
+// }
+
+// TODO: refactor
 function deselectBusLinesAux(busLines: LineType[]) {
   for (const busLine of busLines) {
     busLine.setSelected((previousBool) => {
@@ -125,7 +143,7 @@ function deselectBusLinesAux(busLines: LineType[]) {
     });
   }
 }
-
+// TODO: refactor
 export function deselectBusLines() {
   return deselectBusLinesAux(busLines());
 }
@@ -133,7 +151,8 @@ export function deselectBusLines() {
 function selectBusLineById(idBusLine: number) {
   for (const busLine of busLines()) {
     const currentIdBusLine = busLine.idBusLine;
-
+    //TODO:
+    // const currentSetSelected = busLine.setSelected;
     if (currentIdBusLine == idBusLine) {
       const currentSetSelected = busLine.setSelected;
       currentSetSelected((previousSelected) => {
@@ -234,6 +253,9 @@ function handleClick(idBusLine: number) {
   }
 
   if (isInReadMode()) {
+    // deselect les points
+    deselectPoint();
+
     selectBusLineById(idBusLine);
   }
 }

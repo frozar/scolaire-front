@@ -39,9 +39,14 @@ export function fetchPointsRamassage() {
         return res.json();
       })
       .then((data: PointRamassageType[]) => {
+        // TODO: refactor
+        const [selected, setSelected] = createSignal(false);
+
         data = data.map((pointRamassage) => ({
           ...pointRamassage,
           nature: NatureEnum.ramassage,
+          selected,
+          setSelected,
         }));
         setMinMaxQty([
           Math.min(...data.map((value) => value.quantity)),
@@ -58,10 +63,16 @@ export function fetchPointsRamassage() {
         return res.json();
       })
       .then((data: PointEtablissementType[]) => {
+        // TODO: refactor
+        const [selected, setSelected] = createSignal(false);
+
         data = data.map((pointEtablissement) => ({
           ...pointEtablissement,
           nature: NatureEnum.etablissement,
+          selected,
+          setSelected,
         }));
+
         setPoints((dataArray) => [...dataArray, ...data]);
         setPointsEtablssementReady(true);
       });

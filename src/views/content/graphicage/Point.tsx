@@ -25,9 +25,11 @@ import {
   setInfoToDisplay,
   setIsRamassageReady,
   setIsEtablissementReady,
+  points,
 } from "../../../signaux";
 import { minMaxQty } from "./PointsRamassageAndEtablissement";
 import { authenticateWrap } from "../../layout/topMenu/authentication";
+import { deselectBusLines } from "./line/busLinesUtils";
 
 const [
   ,
@@ -37,6 +39,27 @@ const [
     isInAddLineMode,
   },
 ] = useStateAction();
+
+// TODO: déplacer
+// faire un aux ??
+// refactoriser avec selectBusLineById
+function selectPointById(idPoint: number) {
+  for (const point of points()) {
+    const currentIdPoint = point.id_point;
+
+    const currentSetSelected = point.setSelected;
+    if (currentIdPoint == idPoint) {
+      // const currentSetSelected = point.setSelected;
+      currentSetSelected((previousSelected) => {
+        return previousSelected ? previousSelected : true;
+      });
+    } else {
+      currentSetSelected((previousSelected) => {
+        return previousSelected ? false : previousSelected;
+      });
+    }
+  }
+}
 
 const minSizeValue = 5;
 const maxSizeValue = 10;
@@ -151,6 +174,13 @@ export default function (props: {
           setSelectedElement(point);
           if (!isInAddLineMode()) {
             setInfoToDisplay(InfoPanelEnum.point);
+
+            // TODO: déplacer
+            // désélect les lines
+            deselectBusLines();
+
+            // select le bon point
+            selectPointById(point.id_point);
             return;
           }
 
