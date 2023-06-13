@@ -12,7 +12,11 @@ import {
   displayRemoveLineMessage,
 } from "../../../userInformation/utils";
 import { displayedConfirmStopAddLine } from "./ConfirmStopAddLineBox";
-import { deselectBusLines, fetchBusLines } from "./line/busLinesUtils";
+import {
+  deselectBusLines,
+  deselectPoint,
+  fetchBusLines,
+} from "./line/busLinesUtils";
 
 const [
   ,
@@ -71,6 +75,7 @@ function escapeHandler({ code }: KeyboardEvent) {
   if (code === "Escape") {
     if (isInReadMode()) {
       deselectBusLines();
+      deselectPoint();
       return;
     }
 
