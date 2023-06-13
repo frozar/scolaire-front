@@ -29,7 +29,7 @@ import {
 } from "../../../signaux";
 import { minMaxQty } from "./PointsRamassageAndEtablissement";
 import { authenticateWrap } from "../../layout/topMenu/authentication";
-import { deselectBusLines } from "./line/busLinesUtils";
+import { deselectBusLines, selectElementByIdAux } from "./line/busLinesUtils";
 // import { busLines } from "./line/BusLines";
 
 const [
@@ -58,26 +58,38 @@ createEffect(() => {
 // TODO: déplacer
 // faire un aux ??
 // refactoriser avec selectBusLineById
+// function selectPointById(idPoint: number) {
+//   for (const point of points()) {
+//     const currentIdPoint = point.id_point;
+
+//     const currentSetSelected = point.setSelected;
+//     if (currentIdPoint == idPoint) {
+//       console.log("(2) currentIdPoint", currentIdPoint, "idPoint", idPoint);
+
+//       // const currentSetSelected = point.setSelected;
+//       currentSetSelected((previousSelected) => {
+//         return previousSelected ? previousSelected : true;
+//       });
+//     } else {
+//       console.log("(2bis)");
+
+//       // const currentSetSelected = point.setSelected;
+//       currentSetSelected((previousSelected) => {
+//         return previousSelected ? false : previousSelected;
+//       });
+//     }
+//   }
+//   console.log(
+//     "laaa=>",
+//     points().filter((point) => point.selected())
+//   );
+// }
+
 function selectPointById(idPoint: number) {
   for (const point of points()) {
     const currentIdPoint = point.id_point;
 
-    const currentSetSelected = point.setSelected;
-    if (currentIdPoint == idPoint) {
-      console.log("(2) currentIdPoint", currentIdPoint, "idPoint", idPoint);
-
-      // const currentSetSelected = point.setSelected;
-      currentSetSelected((previousSelected) => {
-        return previousSelected ? previousSelected : true;
-      });
-    } else {
-      console.log("(2bis)");
-
-      // const currentSetSelected = point.setSelected;
-      currentSetSelected((previousSelected) => {
-        return previousSelected ? false : previousSelected;
-      });
-    }
+    selectElementByIdAux(point, currentIdPoint, idPoint);
   }
   console.log(
     "laaa=>",

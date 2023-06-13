@@ -148,22 +148,47 @@ export function deselectBusLines() {
 //   return deselectBusLinesAux(busLines());
 // }
 
+export function selectElementByIdAux(
+  element: LineType | PointRamassageType,
+  currentId: number,
+  targetId: number
+) {
+  const currentSetSelected = element.setSelected;
+  if (currentId == targetId) {
+    currentSetSelected((previousSelected) => {
+      return previousSelected ? previousSelected : true;
+    });
+  } else {
+    currentSetSelected((previousSelected) => {
+      return previousSelected ? false : previousSelected;
+    });
+  }
+}
+
 function selectBusLineById(idBusLine: number) {
   for (const busLine of busLines()) {
     const currentIdBusLine = busLine.idBusLine;
-    //TODO: refactor
-    const currentSetSelected = busLine.setSelected;
-    if (currentIdBusLine == idBusLine) {
-      currentSetSelected((previousSelected) => {
-        return previousSelected ? previousSelected : true;
-      });
-    } else {
-      currentSetSelected((previousSelected) => {
-        return previousSelected ? false : previousSelected;
-      });
-    }
+
+    selectElementByIdAux(busLine, currentIdBusLine, idBusLine);
   }
 }
+
+// function selectBusLineById(idBusLine: number) {
+//   for (const busLine of busLines()) {
+//     const currentIdBusLine = busLine.idBusLine; //.id_point
+//     //TODO: refactor
+//     const currentSetSelected = busLine.setSelected;
+//     if (currentIdBusLine == idBusLine) {
+//       currentSetSelected((previousSelected) => {
+//         return previousSelected ? previousSelected : true;
+//       });
+//     } else {
+//       currentSetSelected((previousSelected) => {
+//         return previousSelected ? false : previousSelected;
+//       });
+//     }
+//   }
+// }
 
 const [, { isInReadMode, isInRemoveLineMode, getLineUnderConstruction }] =
   useStateAction();
