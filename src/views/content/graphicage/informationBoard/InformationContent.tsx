@@ -246,7 +246,6 @@ export default function () {
         {/* <Match when={infoToDisplay() == InfoPanelEnum.point}> */}
         <Match when={getPointSelected()}>
           {/* <h2>{selectedElement()?.name}</h2> */}
-          {/* TODO: Remplacer pas l'affichage du nom de l'arrêt */}
           <h2>{getPointSelected()?.name}</h2>
           <Show
             when={0 < ptToDisplay().length}

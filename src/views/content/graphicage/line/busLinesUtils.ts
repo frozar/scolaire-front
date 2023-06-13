@@ -131,35 +131,33 @@ export function deselectPoint() {
   return deselectElementAux(points());
 }
 
-// export function deselectBusLines() {
-//   return deselectElementAux(busLines());
-// }
+export function deselectBusLines() {
+  return deselectElementAux(busLines());
+}
 
 // TODO: refactor
-function deselectBusLinesAux(busLines: LineType[]) {
-  for (const busLine of busLines) {
-    busLine.setSelected((previousBool) => {
-      return previousBool ? false : previousBool;
-    });
-  }
-}
+// function deselectBusLinesAux(busLines: LineType[]) {
+//   for (const busLine of busLines) {
+//     busLine.setSelected((previousBool) => {
+//       return previousBool ? false : previousBool;
+//     });
+//   }
+// }
 // TODO: refactor
-export function deselectBusLines() {
-  return deselectBusLinesAux(busLines());
-}
+// export function deselectBusLines() {
+//   return deselectBusLinesAux(busLines());
+// }
 
 function selectBusLineById(idBusLine: number) {
   for (const busLine of busLines()) {
     const currentIdBusLine = busLine.idBusLine;
-    //TODO:
-    // const currentSetSelected = busLine.setSelected;
+    //TODO: refactor
+    const currentSetSelected = busLine.setSelected;
     if (currentIdBusLine == idBusLine) {
-      const currentSetSelected = busLine.setSelected;
       currentSetSelected((previousSelected) => {
         return previousSelected ? previousSelected : true;
       });
     } else {
-      const currentSetSelected = busLine.setSelected;
       currentSetSelected((previousSelected) => {
         return previousSelected ? false : previousSelected;
       });
