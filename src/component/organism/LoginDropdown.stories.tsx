@@ -1,7 +1,6 @@
 import { Meta, StoryObj } from "storybook-solidjs";
 import LoginDropdownComponent from "./LoginDropdown";
 import { createSignal } from "solid-js";
-import { AvatarLoggedIn } from "../atom/LoginAvatar.stories";
 
 const meta = {
   title: "TopNav/LoginDropdown",
@@ -12,16 +11,17 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const [fakeAuth, setFakeAuth] = createSignal(false);
+const [fakeAuthenticated, setFakeAuthenticated] = createSignal(false);
 
-function FakeLogin() {
-  setFakeAuth((bool) => !bool);
+function toggleFakeAuthenticated() {
+  setFakeAuthenticated((bool) => !bool);
 }
 
 export const LoginDropdown: Story = {
   args: {
-    authenticated: fakeAuth,
-    handleLogin: FakeLogin,
-    getProfilePicture: () => AvatarLoggedIn.args.profilePicture(),
+    authenticated: fakeAuthenticated,
+    handleLogin: toggleFakeAuthenticated,
+    getProfilePicture: () =>
+      "https://raw.githubusercontent.com/frozar/scolaire-front/main/public/profile-picture.jpeg",
   },
 };

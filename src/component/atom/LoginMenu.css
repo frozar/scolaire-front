@@ -1,6 +1,6 @@
 @import "../../css/tailwind.css";
 @import "../../css/var.css";
 
-#login-dialog {
-  @apply absolute flex w-56  z-[1400] mt-2 rounded-xl bg-white text-sm leading-6 text-gray-900 shadow-lg ring-1 ring-gray-900/5 p-2 shrink hover:text-indigo-600;
+#login-menu {
+  @apply w-40 rounded-xl bg-white text-sm leading-6 text-gray-900 shadow-lg ring-1 ring-gray-900/5 p-2 hover:text-indigo-600;
 }

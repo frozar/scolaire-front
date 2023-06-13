@@ -1,26 +1,18 @@
 import { Meta, StoryObj } from "storybook-solidjs";
-import LoginAvatar from "./LoginAvatar";
+import LoginAvatarComponent from "./LoginAvatar";
 
 const meta = {
   title: "TopNav/Avatar",
-  component: LoginAvatar,
+  component: LoginAvatarComponent,
   tags: ["autodocs"],
-} satisfies Meta<typeof LoginAvatar>;
+} satisfies Meta<typeof LoginAvatarComponent>;
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const AvatarLoggedOut: Story = {
+export const LoginAvatar: Story = {
   args: {
-    authenticated: () => false,
-    profilePicture: () =>
-      "https://raw.githubusercontent.com/frozar/scolaire-front/main/public/profile-picture.jpeg",
-  },
-};
-
-export const AvatarLoggedIn: Story = {
-  args: {
-    authenticated: () => true,
-    profilePicture: () =>
+    authenticated: false,
+    profilePicture:
       "https://raw.githubusercontent.com/frozar/scolaire-front/main/public/profile-picture.jpeg",
   },
 };

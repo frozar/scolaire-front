@@ -4,23 +4,13 @@ import "./LoginMenu.css";
 export interface LoginMenuProps {
   onClick: () => void;
   authenticated: boolean;
-  xOffset?: number;
 }
 
 export default function (props: LoginMenuProps) {
-  const [local, rest] = splitProps(props, ["authenticated", "xOffset"]);
-
-  const defaultXOffset = 0;
-  const xOffsetClassName = () => {
-    let res = defaultXOffset;
-    if (local.xOffset) {
-      res = local.xOffset;
-    }
-    return "translate-x-[" + String(res) + "rem]";
-  };
+  const [local, rest] = splitProps(props, ["authenticated"]);
 
   return (
-    <button id="login-dialog" class={xOffsetClassName()} {...rest}>
+    <button id="login-menu" {...rest}>
       {local.authenticated ? "Se déconnecter" : "Se connecter"}
     </button>
   );

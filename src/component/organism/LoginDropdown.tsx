@@ -1,43 +1,64 @@
-import { Show, createSignal, splitProps } from "solid-js";
+import { Show, createSignal, mergeProps, onMount, splitProps } from "solid-js";
 import { Transition } from "solid-transition-group";
-import LoginMenu from "../atom/LoginMenu";
 
-import "./LoginDropdown.css";
-import { authenticated } from "../../signaux";
+import { authenticated, setAuthenticated } from "../../signaux";
+
+import LoginMenu from "../atom/LoginMenu";
 import LoginAvatar from "../atom/LoginAvatar";
 
+import "./LoginDropdown.css";
+import {
+  getProfilePicture,
+  isAuthenticated,
+  login,
+  logout,
+} from "../../views/layout/topMenu/authentication";
+
 export interface LoginDropdownProps {
-  // Props button parent
-  getProfilePicture: () => string;
   // Shared props
+  getProfilePicture?: () => string;
   authenticated?: () => boolean;
   // Props sub component
-  handleLogin: () => Promise<void>;
+  handleLogin?: () => Promise<void>;
   xOffset?: number;
 }
 
 export default function (props: LoginDropdownProps) {
+  const handleLogin = async () => {
+    if (!authenticated()) {
+      await login();
+    } else {
+      await logout();
+    }
+  };
+
+  onMount(async () => {
+    setAuthenticated(await isAuthenticated());
+  });
+
+  // Local signal
   const [displayedSubComponent, setDisplayedSubComponent] = createSignal(false);
 
   function toggleSubComponentDisplayed() {
     setDisplayedSubComponent((bool) => !bool);
   }
 
-  const [local] = splitProps(props, [
-    "getProfilePicture",
+  // Merged props
+  const defaultXOffset = 0;
+  const mergedProps = mergeProps(
+    { authenticated, handleLogin, getProfilePicture, xOffset: defaultXOffset },
+    props
+  );
+
+  const [local] = splitProps(mergedProps, [
     "authenticated",
+    "getProfilePicture",
     "xOffset",
     "handleLogin",
   ]);
 
-  // Props check
-  const Authenticated = () => {
-    if (local.authenticated === undefined) {
-      return authenticated();
-    } else {
-      return local.authenticated();
-    }
-  };
+  const xOffsetClassName = () =>
+    "translate-x-[" + String(local.xOffset) + "rem]";
 
   return (
     <button
@@ -47,8 +68,8 @@ export default function (props: LoginDropdownProps) {
       onClick={toggleSubComponentDisplayed}
     >
       <LoginAvatar
-        authenticated={Authenticated}
-        profilePicture={local.getProfilePicture}
+        authenticated={local.authenticated()}
+        profilePicture={local.getProfilePicture()}
       />
 
       <Transition
@@ -60,11 +81,12 @@ export default function (props: LoginDropdownProps) {
         exitToClass="opacity-0 translate-y-1"
       >
         <Show when={displayedSubComponent()}>
-          <LoginMenu
-            authenticated={Authenticated()}
-            xOffset={local.xOffset}
-            onClick={local.handleLogin}
-          />
+          <div id="login-menu-container" class={xOffsetClassName()}>
+            <LoginMenu
+              authenticated={local.authenticated()}
+              onClick={local.handleLogin}
+            />
+          </div>
         </Show>
       </Transition>
     </button>
