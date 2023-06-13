@@ -30,6 +30,7 @@ import {
 import { minMaxQty } from "./PointsRamassageAndEtablissement";
 import { authenticateWrap } from "../../layout/topMenu/authentication";
 import { deselectBusLines } from "./line/busLinesUtils";
+// import { busLines } from "./line/BusLines";
 
 const [
   ,
@@ -40,6 +41,20 @@ const [
   },
 ] = useStateAction();
 
+//test
+createEffect(() => {
+  if (points()) {
+    console.log(
+      "(effect) => selected points",
+      points().filter((point) => point.selected())
+    );
+  }
+});
+
+// createEffect(() => {
+//   console.log("getPointSelected()", getPointSelected());
+// });
+
 // TODO: déplacer
 // faire un aux ??
 // refactoriser avec selectBusLineById
@@ -49,11 +64,16 @@ function selectPointById(idPoint: number) {
 
     const currentSetSelected = point.setSelected;
     if (currentIdPoint == idPoint) {
+      console.log("(2) currentIdPoint", currentIdPoint, "idPoint", idPoint);
+
       // const currentSetSelected = point.setSelected;
       currentSetSelected((previousSelected) => {
         return previousSelected ? previousSelected : true;
       });
     } else {
+      console.log("(2bis)");
+
+      // const currentSetSelected = point.setSelected;
       currentSetSelected((previousSelected) => {
         return previousSelected ? false : previousSelected;
       });
@@ -180,6 +200,8 @@ export default function (props: {
             deselectBusLines();
 
             // select le bon point
+            console.log("(1) point.id_point, juste au clic", point.id_point);
+
             selectPointById(point.id_point);
             return;
           }

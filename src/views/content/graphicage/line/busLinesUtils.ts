@@ -571,6 +571,21 @@ export const getSelectedBusLineId = (): number | undefined => {
 
   return selectedBusLine.idBusLine;
 };
+// TODO: getPointSelected necessaire ? ou juste isPointSelected
+export const getPointSelected = (): number | undefined => {
+  const pointsWk = points(); //
+  // if (pointsWk.length == 0) {
+  //   return;
+  // }
+  const selectedPoint = pointsWk.find((point) => point.selected());
+  if (!selectedPoint) {
+    return;
+  }
+  console.log("(3) selectedPoint", selectedPoint);
+  console.log("(4) selectedPoint.id_point", selectedPoint.id_point);
+
+  return selectedPoint.id_point;
+};
 
 function getStopNames(busLine: LineUnderConstructionType) {
   const stopIds = busLine.stops.map((stop) => stop.id_point);
