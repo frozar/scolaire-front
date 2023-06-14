@@ -1,5 +1,5 @@
 import { JSXElement, mergeProps } from "solid-js";
-import DashboardLogo from "../../views/layout/leftMenu/logo/DashboardLogo";
+import DashboardLogo from "./DashboardLogo";
 import "./LeftMenuButtonLogo.css";
 
 export interface LeftMenuButtonLogoProps {
