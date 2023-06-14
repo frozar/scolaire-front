@@ -5,7 +5,9 @@ echo "****** Launch test *********"
 script_directory=$(dirname $(readlink -f $0))
 cd $script_directory
 
-pid_storybook_server=$(netstat -ltnp 2>/dev/null | grep ":6006" | awk 'NF>1{print $NF}' | cut -d"/" -f1)
+pid_storybook_server() {
+    echo $(netstat -ltnp 2>/dev/null | grep ":6006" | awk 'NF>1{print $NF}' | cut -d"/" -f1)
+}
 
 does_test_failed=0
 
@@ -18,7 +20,7 @@ run_test() {
     fi
 }
 
-if [ "${pid_storybook_server}" != "" ]; then
+if [ "$(pid_storybook_server)" != "" ]; then
     run_test
 else
     npm run storybook -- --ci &
@@ -26,7 +28,7 @@ else
     sleep 10
     run_test
 
-    kill $(netstat -ltnp 2>/dev/null | grep :6006 | awk 'NF>1{print $NF}' | cut -d"/" -f1)
+    kill $(pid_storybook_server)
 fi
 
 if [ $does_test_failed -eq 1 ]; then
