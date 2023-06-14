@@ -39,10 +39,10 @@ import { setBusLines } from "../line/BusLines";
 
 const [, { isInAddLineMode, resetLineUnderConstruction }] = useStateAction();
 
-type PointToDisplayType = {
+export type PointToDisplayType = {
   id_point: number;
   name: string;
-  nature: NatureEnum;
+  // nature: NatureEnum;
   quantity: number;
 };
 
@@ -130,27 +130,29 @@ export default function () {
   );
 
   // TODO: toujours necessaire ?? peut être delete ?
-  const natureOfOpposite = () => {
-    const wkSelectedElement = getPointSelected();
-    if (!wkSelectedElement) {
-      return NatureEnum.ramassage;
-    }
+  // const natureOfOpposite = () => {
+  //   const wkSelectedElement = getPointSelected();
+  //   if (!wkSelectedElement) {
+  //     return NatureEnum.ramassage;
+  //   }
 
-    return isPointRamassage(wkSelectedElement)
-      ? NatureEnum.etablissement
-      : NatureEnum.ramassage;
-  };
+  //   return isPointRamassage(wkSelectedElement)
+  //     ? NatureEnum.etablissement
+  //     : NatureEnum.ramassage;
+  // };
 
   const ptToDisplay = () => {
     const wkAssociatedPoints = associatedPoints();
+    console.log("wkAssociatedPoints", wkAssociatedPoints);
 
     if (!wkAssociatedPoints) {
       return [];
     } else {
-      return wkAssociatedPoints.map((elt: PointToDisplayType) => ({
-        ...elt,
-        nature: natureOfOpposite(), // utilisé null part ?
-      }));
+      return wkAssociatedPoints;
+      // return wkAssociatedPoints.map((elt: PointToDisplayType) => ({
+      //   ...elt,
+      //   // nature: natureOfOpposite(), // utilisé null part ?
+      // }));
     }
   };
 

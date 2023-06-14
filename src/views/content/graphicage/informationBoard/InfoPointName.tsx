@@ -1,14 +1,16 @@
-import { NatureEnum } from "../../../../type";
+// import { NatureEnum } from "../../../../type";
 import { renderAnimation } from "../animation";
 
 import { linkMap } from "../../../../global/linkPointIdentityCircle";
+import { PointToDisplayType } from "./InformationContent";
 
 export default function (props: {
-  point: {
-    id_point: number;
-    name: string;
-    nature: NatureEnum; // utilisé null part ?
-  };
+  // point: {
+  //   id_point: number;
+  //   name: string;
+  //   // nature: NatureEnum; // utilisé null part ?
+  // };
+  point: PointToDisplayType;
 }) {
   return (
     <a
