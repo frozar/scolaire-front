@@ -8,23 +8,23 @@ cd $script_directory
 pid_storybook_server=$(netstat -ltnp 2>/dev/null | grep ":6006" | awk 'NF>1{print $NF}' | cut -d"/" -f1)
 
 does_test_failed=0
-if [ "${pid_storybook_server}" != "" ]; then
+
+run_test() {
     npm run test-storybook -- --no-cache
 
     res=$?
     if [ $res -ne 0 ]; then
         does_test_failed=1
     fi
+}
+
+if [ "${pid_storybook_server}" != "" ]; then
+    run_test
 else
     npm run storybook -- --ci &
 
     sleep 10
-    npm run test-storybook -- --no-cache
-
-    res=$?
-    if [ $res -ne 0 ]; then
-        does_test_failed=1
-    fi
+    run_test
 
     kill $(netstat -ltnp 2>/dev/null | grep :6006 | awk 'NF>1{print $NF}' | cut -d"/" -f1)
 fi
