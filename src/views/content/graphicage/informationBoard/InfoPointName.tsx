@@ -7,7 +7,7 @@ export default function (props: {
   point: {
     id_point: number;
     name: string;
-    nature: NatureEnum;
+    nature: NatureEnum; // utilisé null part ?
   };
 }) {
   return (

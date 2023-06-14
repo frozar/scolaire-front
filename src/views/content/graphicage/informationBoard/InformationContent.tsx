@@ -17,7 +17,7 @@ import {
 } from "../../../../type";
 import { PointIdentityType } from "../../../../type";
 import {
-  selectedElement,
+  // selectedElement,
   // setInfoToDisplay,
   setTimelineStopNames,
   addNewUserInformation,
@@ -58,7 +58,9 @@ export default function () {
   });
 
   const selectedIdentity = createMemo<PointIdentityType | null>(() => {
-    const wkSelectedElement = selectedElement();
+    // TODO: remplacer par getPointSelected()
+    // const wkSelectedElement = selectedElement();
+    const wkSelectedElement = getPointSelected();
     if (!wkSelectedElement) {
       return null;
     }
@@ -130,8 +132,11 @@ export default function () {
     fetchAssociatedPoints
   );
 
+  // TODO: toujours necessaire ?? peut être delete ?
   const natureOfOpposite = () => {
-    const wkSelectedElement = selectedElement();
+    // TODO: replace:
+    // const wkSelectedElement = selectedElement();
+    const wkSelectedElement = getPointSelected();
     if (!wkSelectedElement) {
       return NatureEnum.ramassage;
     }
@@ -143,12 +148,14 @@ export default function () {
 
   const ptToDisplay = () => {
     const wkAssociatedPoints = associatedPoints();
+    console.log("associatedPoints()", associatedPoints());
+
     if (!wkAssociatedPoints) {
       return [];
     } else {
       return wkAssociatedPoints.map((elt: PointToDisplayType) => ({
         ...elt,
-        nature: natureOfOpposite(),
+        nature: natureOfOpposite(), // utilisé null part ?
       }));
     }
   };
@@ -264,6 +271,7 @@ export default function () {
                               class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                             >
                               {/* {firstColumnTitle()} */}
+                              {/* TODO: mettre en place l'affichage de la "nature" opposé (signal dérivé ?) */}
                               {getPointSelected()?.nature}
                             </th>
                             <th

@@ -21,7 +21,7 @@ import { renderAnimation } from "./animation";
 import { linkMap } from "../../../global/linkPointIdentityCircle";
 import {
   getLeafletMap,
-  setSelectedElement,
+  // setSelectedElement,
   // setInfoToDisplay,
   setIsRamassageReady,
   setIsEtablissementReady,
@@ -162,7 +162,7 @@ export default function (props: {
         .on("click", () => {
           // Select the current element to display information
           // TODO: to delete
-          setSelectedElement(point);
+          // setSelectedElement(point);
 
           if (!isInAddLineMode()) {
             // setInfoToDisplay(InfoPanelEnum.point);

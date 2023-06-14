@@ -14,7 +14,7 @@ import {
   removeRamassageConfirmationType,
   ImportCsvBoxType,
 } from "./type";
-import { deepCopy } from "./utils";
+// import { deepCopy } from "./utils";
 import { User } from "@auth0/auth0-spa-js";
 
 const [getDisplayedSpinningWheel, setDisplayedSpinningWheel] =
@@ -45,17 +45,17 @@ export function disableSpinningWheel() {
   });
 }
 
-const [getSelectedElement, setterSelectedElement] = createSignal<
-  PointRamassageType | PointEtablissementType
->();
+// const [getSelectedElement, setterSelectedElement] = createSignal<
+//   PointRamassageType | PointEtablissementType
+// >();
 
-export const selectedElement = getSelectedElement;
+// export const selectedElement = getSelectedElement;
 
-export function setSelectedElement(
-  value: PointRamassageType | PointEtablissementType
-) {
-  setterSelectedElement(deepCopy(value));
-}
+// export function setSelectedElement(
+//   value: PointRamassageType | PointEtablissementType
+// ) {
+//   setterSelectedElement(deepCopy(value));
+// }
 
 export const [points, setPoints] = createSignal<
   PointRamassageType[] | PointEtablissementType[]
