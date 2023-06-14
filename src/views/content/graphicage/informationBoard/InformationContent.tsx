@@ -16,12 +16,7 @@ import {
   LineType,
 } from "../../../../type";
 import { PointIdentityType } from "../../../../type";
-import {
-  setTimelineStopNames,
-  addNewUserInformation,
-  linkBusLinePolyline,
-  pickerColor,
-} from "../../../../signaux";
+import { addNewUserInformation } from "../../../../signaux";
 import { useStateAction } from "../../../../StateAction";
 import {
   authenticateWrap,
@@ -31,25 +26,27 @@ import {
   getSelectedBusLineId,
   selectedBusLineStopNames,
   lineUnderConstructionStopNames,
-  getPointSelected,
+  getSelectedPoint,
   getSelectedBusLine,
 } from "../line/busLinesUtils";
 import Timeline from "./Timeline";
-import { setBusLines } from "../line/BusLines";
+import {
+  linkBusLinePolyline,
+  pickerColor,
+  setBusLines,
+} from "../line/BusLines";
 
 const [, { isInAddLineMode, resetLineUnderConstruction }] = useStateAction();
 
 export type PointToDisplayType = {
   id_point: number;
   name: string;
-  // nature: NatureEnum;
   quantity: number;
 };
 
 export default function () {
   createEffect(() => {
     // When switching mode
-    setTimelineStopNames([]);
 
     if (!isInAddLineMode()) {
       resetLineUnderConstruction();
@@ -57,7 +54,7 @@ export default function () {
   });
 
   const selectedIdentity = createMemo<PointIdentityType | null>(() => {
-    const wkSelectedElement = getPointSelected();
+    const wkSelectedElement = getSelectedPoint();
     if (!wkSelectedElement) {
       return null;
     }
@@ -129,35 +126,14 @@ export default function () {
     fetchAssociatedPoints
   );
 
-  // TODO: toujours necessaire ?? peut être delete ?
-  // const natureOfOpposite = () => {
-  //   const wkSelectedElement = getPointSelected();
-  //   if (!wkSelectedElement) {
-  //     return NatureEnum.ramassage;
-  //   }
-
-  //   return isPointRamassage(wkSelectedElement)
-  //     ? NatureEnum.etablissement
-  //     : NatureEnum.ramassage;
-  // };
-
   const ptToDisplay = () => {
     const wkAssociatedPoints = associatedPoints();
-    console.log("wkAssociatedPoints", wkAssociatedPoints);
 
-    if (!wkAssociatedPoints) {
-      return [];
-    } else {
-      return wkAssociatedPoints;
-      // return wkAssociatedPoints.map((elt: PointToDisplayType) => ({
-      //   ...elt,
-      //   // nature: natureOfOpposite(), // utilisé null part ?
-      // }));
-    }
+    return wkAssociatedPoints ? wkAssociatedPoints : [];
   };
 
   const firstColumnTitle = () => {
-    const wkSelectedElement = getPointSelected();
+    const wkSelectedElement = getSelectedPoint();
     if (!wkSelectedElement) {
       return "";
     }
@@ -204,14 +180,13 @@ export default function () {
     if (!e.target) {
       return;
     }
-    const selectedBusLine = getSelectedBusLine();
-    // const selectedBusLineId = getSelectedBusLineId();
-    const selectedBusLineId = selectedBusLine?.idBusLine;
 
-    if (!selectedBusLineId) {
+    const selectedBusLine = getSelectedBusLine();
+    if (!selectedBusLine) {
       return;
     }
 
+    const selectedBusLineId = selectedBusLine?.idBusLine;
     const color = (e.target as HTMLInputElement).value;
 
     authenticateWrap((headers) => {
@@ -221,27 +196,15 @@ export default function () {
         body: JSON.stringify({ color: color }),
       })
         .then(() => {
-          // todo: suppr la propriété color de linkBusLinePolyline
-          // linkBusLinePolyline[selectedBusLineId].color = color;
-
           setBusLines((prevBusLines) => {
-            // TODO: rename
             const busLinesWithoutSelectedBusLine = prevBusLines.filter(
               (busLine) => busLine.idBusLine != selectedBusLineId
             );
-
-            // const correspondingBusLine = prevBusLines.find(
-            //   (busLine) => busLine.idBusLine == selectedBusLineId
-            // );
-            // if (!correspondingBusLine) {
-            //   return prevBusLines;
-            // }
 
             const busLineWithNewColor: LineType = {
               ...selectedBusLine,
               color,
             };
-            console.log("busLineWithNewColor", busLineWithNewColor);
 
             return [...busLinesWithoutSelectedBusLine, busLineWithNewColor];
           });
@@ -267,8 +230,8 @@ export default function () {
       }}
     >
       <Switch fallback={<span>Aucun élément sélectionné</span>}>
-        <Match when={getPointSelected()}>
-          <h2>{getPointSelected()?.name}</h2>
+        <Match when={getSelectedPoint()}>
+          <h2>{getSelectedPoint()?.name}</h2>
           <Show
             when={0 < ptToDisplay().length}
             fallback={<span>Aucun élément à afficher</span>}

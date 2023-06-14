@@ -10,12 +10,15 @@ import {
 import { linkMap } from "../../../../global/linkPointIdentityCircle";
 
 import { useStateAction } from "../../../../StateAction";
-import { busLines, setBusLines } from "./BusLines";
+import {
+  busLines,
+  linkBusLinePolyline,
+  setBusLines,
+  setPickerColor,
+} from "./BusLines";
 import {
   getLeafletMap,
-  linkBusLinePolyline,
   points,
-  setPickerColor,
   setRemoveConfirmation,
 } from "../../../../signaux";
 import { LineString } from "geojson";
@@ -127,7 +130,6 @@ function deselectElementAux(elements: LineType[] | PointRamassageType[]) {
   }
 }
 
-// TODO: déplacer ?
 export function deselectPoints() {
   return deselectElementAux(points());
 }
@@ -153,11 +155,11 @@ export function selectElementByIdAux(
   }
 }
 
-function selectBusLineById(idBusLine: number) {
+function selectBusLineById(targetIdBusLine: number) {
   for (const busLine of busLines()) {
     const currentIdBusLine = busLine.idBusLine;
 
-    selectElementByIdAux(busLine, currentIdBusLine, idBusLine);
+    selectElementByIdAux(busLine, currentIdBusLine, targetIdBusLine);
   }
 }
 
@@ -237,10 +239,6 @@ function handleMouseOut(
 }
 
 function handleClick(idBusLine: number) {
-  // setPickerColor(linkBusLinePolyline[idBusLine].color);
-  // recup couleur depuis busLines()
-  // soit avec busLines() et l'id OU avec getBusLineSelected
-
   if (isInRemoveLineMode()) {
     setRemoveConfirmation({
       displayed: true,
@@ -257,7 +255,7 @@ function handleClick(idBusLine: number) {
   if (!color) {
     return;
   }
-  console.log("color", color);
+
   setPickerColor(color);
 }
 
@@ -544,7 +542,6 @@ export function fetchBusLines() {
             linkBusLinePolyline[line.idBusLine] = {
               polyline: busLinePolyline,
               arrows: arrows,
-              // color: line.color,
             };
           });
         }
@@ -573,14 +570,8 @@ export const getSelectedBusLineId = (): number | undefined => {
   return selectedBusLine.idBusLine;
 };
 
-export const getPointSelected = (): PointRamassageType | undefined => {
-  const pointsWk = points();
-  // if (pointsWk.length == 0) {
-  //   return;
-  // }
-  const selectedPoint = pointsWk.find((point) => point.selected());
-
-  return selectedPoint;
+export const getSelectedPoint = (): PointRamassageType | undefined => {
+  return points().find((point) => point.selected());
 };
 
 function getStopNames(busLine: LineUnderConstructionType) {

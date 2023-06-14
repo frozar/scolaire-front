@@ -215,21 +215,4 @@ export function removeUserInformation(id: number) {
   );
 }
 
-// TODO: move to BusLines.tsx
-export const [pickerColor, setPickerColor] = createSignal("");
-
-// TODO: move to BusLines.tsx
-export const linkBusLinePolyline: {
-  [idBusLine: number]: {
-    polyline: L.Polyline;
-    arrows: L.Marker[];
-    // color: string;
-  };
-} = {};
-
 export const [getLeafletMap, setLeafletMap] = createSignal<L.Map>();
-
-// TODO: move
-export const [timelineStopNames, setTimelineStopNames] = createSignal<string[]>(
-  []
-);

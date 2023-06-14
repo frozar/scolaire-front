@@ -37,16 +37,12 @@ const [
   },
 ] = useStateAction();
 
-function selectPointById(idPoint: number) {
+function selectPointById(targerIdPoint: number) {
   for (const point of points()) {
     const currentIdPoint = point.id_point;
 
-    selectElementByIdAux(point, currentIdPoint, idPoint);
+    selectElementByIdAux(point, currentIdPoint, targerIdPoint);
   }
-  console.log(
-    "points().filter((point) => point.selected()) => ",
-    points().filter((point) => point.selected())
-  );
 }
 
 const minSizeValue = 5;
@@ -160,7 +156,6 @@ export default function (props: {
           // Select the current element to display information
 
           if (!isInAddLineMode()) {
-            // TODO: déplacer
             deselectBusLines();
             selectPointById(point.id_point);
             return;

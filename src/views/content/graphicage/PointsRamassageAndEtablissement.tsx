@@ -28,6 +28,12 @@ createEffect(() => {
 });
 
 export function fetchPointsRamassage() {
+  function addToPoints(data: PointRamassageType[], nature: NatureEnum) {
+    const points = mapDataAux(data, nature);
+
+    setPoints((dataArray) => [...dataArray, ...points]);
+  }
+
   authenticateWrap((headers) => {
     setPointsRamassageReady(false);
     setPointsEtablissementReady(false);
@@ -39,16 +45,14 @@ export function fetchPointsRamassage() {
         return res.json();
       })
       .then((data: PointRamassageType[]) => {
-        // refactor ??
         setMinMaxQty([
-          Math.min(...data.map((value) => value.quantity)), // diff
-          Math.max(...data.map((value) => value.quantity)), // diff
+          Math.min(...data.map((value) => value.quantity)),
+          Math.max(...data.map((value) => value.quantity)),
         ]);
 
-        const points = mapData(data, NatureEnum.ramassage);
-        setPoints((dataArray) => [...dataArray, ...points]);
+        addToPoints(data, NatureEnum.ramassage);
 
-        setPointsRamassageReady(true); // diff
+        setPointsRamassageReady(true);
       });
 
     fetch(import.meta.env.VITE_BACK_URL + "/points_etablissement", {
@@ -58,17 +62,14 @@ export function fetchPointsRamassage() {
         return res.json();
       })
       .then((data: PointEtablissementType[]) => {
-        // refactor
-        const points = mapData(data, NatureEnum.etablissement);
-        setPoints((dataArray) => [...dataArray, ...points]);
+        addToPoints(data, NatureEnum.etablissement);
 
         setPointsEtablissementReady(true);
       });
   });
 }
 
-// rename
-function mapData(data: PointRamassageType[], nature: NatureEnum) {
+function mapDataAux(data: PointRamassageType[], nature: NatureEnum) {
   const points = data.map((point) => {
     const [selected, setSelected] = createSignal(false);
     return {
