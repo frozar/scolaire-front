@@ -160,17 +160,21 @@ export default function () {
     }
   };
 
-  // const firstColumnTitle = () => {
-  //   const wkSelectedElement = selectedElement();
-  //   if (!wkSelectedElement) {
-  //     return "";
-  //   }
-  //   if (isPointRamassage(wkSelectedElement)) {
-  //     return "Etablissement";
-  //   } else {
-  //     return "Ramassage";
-  //   }
-  // };
+  const firstColumnTitle = () => {
+    // const wkSelectedElement = selectedElement();
+    const wkSelectedElement = getPointSelected();
+    if (!wkSelectedElement) {
+      return "";
+    }
+
+    return isPointRamassage(wkSelectedElement) ? "Etablissement" : "Ramassage";
+
+    // if (isPointRamassage(wkSelectedElement)) {
+    //   return "Etablissement";
+    // } else {
+    //   return "Ramassage";
+    // }
+  };
 
   const handleColorPicker = (e: InputEvent) => {
     if (!e.target) {
@@ -270,9 +274,9 @@ export default function () {
                               scope="col"
                               class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                             >
-                              {/* {firstColumnTitle()} */}
+                              {firstColumnTitle()}
                               {/* TODO: mettre en place l'affichage de la "nature" opposé (signal dérivé ?) */}
-                              {getPointSelected()?.nature}
+                              {/* {getPointSelected()?.nature} */}
                             </th>
                             <th
                               scope="col"
