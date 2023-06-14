@@ -223,7 +223,7 @@ export const linkBusLinePolyline: {
   [idBusLine: number]: {
     polyline: L.Polyline;
     arrows: L.Marker[];
-    color: string;
+    // color: string;
   };
 } = {};
 

@@ -237,7 +237,9 @@ function handleMouseOut(
 }
 
 function handleClick(idBusLine: number) {
-  setPickerColor(linkBusLinePolyline[idBusLine].color);
+  // setPickerColor(linkBusLinePolyline[idBusLine].color);
+  // recup couleur depuis busLines()
+  // soit avec busLines() et l'id OU avec getBusLineSelected
 
   if (isInRemoveLineMode()) {
     setRemoveConfirmation({
@@ -250,6 +252,13 @@ function handleClick(idBusLine: number) {
     deselectPoints();
     selectBusLineById(idBusLine);
   }
+
+  const color = getSelectedBusLine()?.color;
+  if (!color) {
+    return;
+  }
+  console.log("color", color);
+  setPickerColor(color);
 }
 
 export function attachEvent(
@@ -535,7 +544,7 @@ export function fetchBusLines() {
             linkBusLinePolyline[line.idBusLine] = {
               polyline: busLinePolyline,
               arrows: arrows,
-              color: line.color,
+              // color: line.color,
             };
           });
         }

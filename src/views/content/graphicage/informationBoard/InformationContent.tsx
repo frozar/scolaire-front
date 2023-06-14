@@ -220,7 +220,7 @@ export default function () {
       })
         .then(() => {
           // todo: suppr la propriété color de linkBusLinePolyline
-          linkBusLinePolyline[selectedBusLineId].color = color;
+          // linkBusLinePolyline[selectedBusLineId].color = color;
 
           setBusLines((prevBusLines) => {
             // TODO: rename
