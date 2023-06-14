@@ -1,6 +1,6 @@
 import { Show, splitProps } from "solid-js";
-import CurrentUserLogo from "../../views/layout/topMenu/logo/CurrentUserLogo";
-import LoggedInUserLogo from "../../views/layout/topMenu/logo/LoggedInUserLogo";
+import CurrentUserLogo from "./NoUserLogo";
+import LoggedInUserLogo from "./LoggedInUserLogo";
 
 export interface LoginAvatarProps {
   authenticated: boolean;
