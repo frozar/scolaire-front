@@ -546,7 +546,7 @@ export function fetchBusLines() {
   });
 }
 
-const getSelectedBusLine = (): LineType | undefined => {
+export const getSelectedBusLine = (): LineType | undefined => {
   const busLinesWk = busLines();
   if (busLinesWk.length == 0) {
     return;

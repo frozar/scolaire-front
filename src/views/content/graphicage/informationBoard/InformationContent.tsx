@@ -13,6 +13,7 @@ import {
   isPointRamassage,
   MessageLevelEnum,
   MessageTypeEnum,
+  LineType,
 } from "../../../../type";
 import { PointIdentityType } from "../../../../type";
 import {
@@ -31,8 +32,10 @@ import {
   selectedBusLineStopNames,
   lineUnderConstructionStopNames,
   getPointSelected,
+  getSelectedBusLine,
 } from "../line/busLinesUtils";
 import Timeline from "./Timeline";
+import { setBusLines } from "../line/BusLines";
 
 const [, { isInAddLineMode, resetLineUnderConstruction }] = useStateAction();
 
@@ -199,8 +202,9 @@ export default function () {
     if (!e.target) {
       return;
     }
-
-    const selectedBusLineId = getSelectedBusLineId();
+    const selectedBusLine = getSelectedBusLine();
+    // const selectedBusLineId = getSelectedBusLineId();
+    const selectedBusLineId = selectedBusLine?.idBusLine;
 
     if (!selectedBusLineId) {
       return;
@@ -215,7 +219,30 @@ export default function () {
         body: JSON.stringify({ color: color }),
       })
         .then(() => {
+          // todo: suppr la propriété color de linkBusLinePolyline
           linkBusLinePolyline[selectedBusLineId].color = color;
+
+          setBusLines((prevBusLines) => {
+            // TODO: rename
+            const busLinesWithoutSelectedBusLine = prevBusLines.filter(
+              (busLine) => busLine.idBusLine != selectedBusLineId
+            );
+
+            // const correspondingBusLine = prevBusLines.find(
+            //   (busLine) => busLine.idBusLine == selectedBusLineId
+            // );
+            // if (!correspondingBusLine) {
+            //   return prevBusLines;
+            // }
+
+            const busLineWithNewColor: LineType = {
+              ...selectedBusLine,
+              color,
+            };
+            console.log("busLineWithNewColor", busLineWithNewColor);
+
+            return [...busLinesWithoutSelectedBusLine, busLineWithNewColor];
+          });
         })
         .catch((err) => console.log(err));
     }).catch(() => {
