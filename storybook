@@ -1,0 +1,16 @@
+#!/bin/bash
+
+script_directory=$(dirname $(readlink -f $0))
+cd $script_directory
+
+pid_storybook_server() {
+    echo $(netstat -ltnp 2>/dev/null | grep ":6006" | awk 'NF>1{print $NF}' | cut -d"/" -f1)
+}
+
+if [ "$(pid_storybook_server)" != "" ]; then
+    echo "****** Open the page of the storybook server *********"
+    open "http://localhost:6006"
+else
+    echo "****** Launch storybook server *********"
+    npm run storybook
+fi

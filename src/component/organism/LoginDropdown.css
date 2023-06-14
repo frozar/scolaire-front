@@ -2,5 +2,9 @@
 @import "../../css/var.css";
 
 #login-btn {
-  @apply items-center gap-x-1 text-sm leading-6 text-gray-900;
+  z-index: inherit;
+}
+
+#login-menu-container {
+  @apply absolute mt-2;
 }

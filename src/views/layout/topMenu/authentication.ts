@@ -68,10 +68,8 @@ export async function isAuthenticated() {
 
 export const getProfilePicture = () => {
   const user = getAuthenticatedUser();
-  if (!user || !user.sub) {
-    return false;
-  }
-  return user.picture;
+  if (user && user.sub) return user.picture;
+  else return "";
 };
 
 export async function getToken() {
