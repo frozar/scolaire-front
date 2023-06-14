@@ -4,7 +4,7 @@ import { Transition } from "solid-transition-group";
 import { authenticated, setAuthenticated } from "../../signaux";
 
 import LoginMenu from "../atom/LoginMenu";
-import LoginAvatar from "../atom/LoginAvatar";
+import LoginAvatar from "../molecule/LoginAvatar";
 
 import "./LoginDropdown.css";
 import {

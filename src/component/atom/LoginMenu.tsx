@@ -1,4 +1,3 @@
-import { splitProps } from "solid-js";
 import "./LoginMenu.css";
 
 export interface LoginMenuProps {
@@ -7,11 +6,9 @@ export interface LoginMenuProps {
 }
 
 export default function (props: LoginMenuProps) {
-  const [local, rest] = splitProps(props, ["authenticated"]);
-
   return (
-    <button id="login-menu" {...rest}>
-      {local.authenticated ? "Se déconnecter" : "Se connecter"}
+    <button id="login-menu" onClick={() => props.onClick()}>
+      {props.authenticated ? "Se déconnecter" : "Se connecter"}
     </button>
   );
 }
