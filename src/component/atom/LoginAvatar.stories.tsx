@@ -12,7 +12,14 @@ type Story = StoryObj<typeof meta>;
 export const LoginAvatar: Story = {
   args: {
     authenticated: false,
-    profilePicture:
-      "https://raw.githubusercontent.com/frozar/scolaire-front/main/public/profile-picture.jpeg",
+  },
+  argTypes: {
+    profilePicture: {
+      control: "select",
+      options: [
+        "https://raw.githubusercontent.com/frozar/scolaire-front/main/public/profile-picture.jpeg",
+        "https://via.placeholder.com/600/92c952",
+      ],
+    },
   },
 };
