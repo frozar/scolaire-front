@@ -128,6 +128,7 @@ function toggleLineUnderConstruction({ code }: KeyboardEvent) {
         setModeRead();
         fetchBusLines();
       } else {
+        deselectPoints();
         setModeAddLine();
         fetchBusLines();
         displayAddLineMessage();
@@ -136,10 +137,12 @@ function toggleLineUnderConstruction({ code }: KeyboardEvent) {
     if (upKey === "d") {
       // Toggle behavior
       if (!isInRemoveLineMode()) {
+        deselectPoints();
         setModeRemoveLine();
         fetchBusLines();
         displayRemoveLineMessage();
       } else {
+        deselectPoints();
         setModeRead();
         fetchBusLines();
         closeRemoveConfirmationBox();
