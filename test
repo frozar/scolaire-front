@@ -1,0 +1,37 @@
+#!/bin/bash
+
+echo "****** Launch test *********"
+
+script_directory=$(dirname $(readlink -f $0))
+cd $script_directory
+
+pid_storybook_server=$(netstat -ltnp 2>/dev/null | grep ":6006" | awk 'NF>1{print $NF}' | cut -d"/" -f1)
+
+does_test_failed=0
+if [ "${pid_storybook_server}" != "" ]; then
+    npm run test-storybook -- --no-cache
+
+    res=$?
+    if [ $res -ne 0 ]; then
+        does_test_failed=1
+    fi
+else
+    npm run storybook -- --ci &
+
+    sleep 10
+    npm run test-storybook -- --no-cache
+
+    res=$?
+    if [ $res -ne 0 ]; then
+        does_test_failed=1
+    fi
+
+    kill $(netstat -ltnp 2>/dev/null | grep :6006 | awk 'NF>1{print $NF}' | cut -d"/" -f1)
+fi
+
+if [ $does_test_failed -eq 1 ]; then
+    echo "****** Test failed *********"
+    exit 1
+fi
+
+echo "****** Test succeed *********"
