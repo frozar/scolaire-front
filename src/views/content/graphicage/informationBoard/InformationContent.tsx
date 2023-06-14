@@ -11,14 +11,11 @@ import InfoPointName from "./InfoPointName";
 import {
   NatureEnum,
   isPointRamassage,
-  // InfoPanelEnum,
   MessageLevelEnum,
   MessageTypeEnum,
 } from "../../../../type";
 import { PointIdentityType } from "../../../../type";
 import {
-  // selectedElement,
-  // setInfoToDisplay,
   setTimelineStopNames,
   addNewUserInformation,
   linkBusLinePolyline,
@@ -53,13 +50,10 @@ export default function () {
 
     if (!isInAddLineMode()) {
       resetLineUnderConstruction();
-      // setInfoToDisplay(InfoPanelEnum.nothing);
     }
   });
 
   const selectedIdentity = createMemo<PointIdentityType | null>(() => {
-    // TODO: remplacer par getPointSelected()
-    // const wkSelectedElement = selectedElement();
     const wkSelectedElement = getPointSelected();
     if (!wkSelectedElement) {
       return null;
@@ -134,8 +128,6 @@ export default function () {
 
   // TODO: toujours necessaire ?? peut être delete ?
   const natureOfOpposite = () => {
-    // TODO: replace:
-    // const wkSelectedElement = selectedElement();
     const wkSelectedElement = getPointSelected();
     if (!wkSelectedElement) {
       return NatureEnum.ramassage;
@@ -148,7 +140,6 @@ export default function () {
 
   const ptToDisplay = () => {
     const wkAssociatedPoints = associatedPoints();
-    console.log("associatedPoints()", associatedPoints());
 
     if (!wkAssociatedPoints) {
       return [];
@@ -161,19 +152,12 @@ export default function () {
   };
 
   const firstColumnTitle = () => {
-    // const wkSelectedElement = selectedElement();
     const wkSelectedElement = getPointSelected();
     if (!wkSelectedElement) {
       return "";
     }
 
     return isPointRamassage(wkSelectedElement) ? "Etablissement" : "Ramassage";
-
-    // if (isPointRamassage(wkSelectedElement)) {
-    //   return "Etablissement";
-    // } else {
-    //   return "Ramassage";
-    // }
   };
 
   const handleColorPicker = (e: InputEvent) => {
@@ -254,9 +238,7 @@ export default function () {
       }}
     >
       <Switch fallback={<span>Aucun élément sélectionné</span>}>
-        {/* <Match when={infoToDisplay() == InfoPanelEnum.point}> */}
         <Match when={getPointSelected()}>
-          {/* <h2>{selectedElement()?.name}</h2> */}
           <h2>{getPointSelected()?.name}</h2>
           <Show
             when={0 < ptToDisplay().length}
@@ -275,8 +257,6 @@ export default function () {
                               class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                             >
                               {firstColumnTitle()}
-                              {/* TODO: mettre en place l'affichage de la "nature" opposé (signal dérivé ?) */}
-                              {/* {getPointSelected()?.nature} */}
                             </th>
                             <th
                               scope="col"

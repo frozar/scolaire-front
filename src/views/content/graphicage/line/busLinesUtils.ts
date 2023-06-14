@@ -119,7 +119,6 @@ function getBusLineById(
   return busLines.find((route) => route.idBusLine == idBusLine);
 }
 
-// TODO: rename
 function deselectElementAux(elements: LineType[] | PointRamassageType[]) {
   for (const element of elements) {
     element.setSelected((previousBool) => {
@@ -129,7 +128,7 @@ function deselectElementAux(elements: LineType[] | PointRamassageType[]) {
 }
 
 // TODO: déplacer ?
-export function deselectPoint() {
+export function deselectPoints() {
   return deselectElementAux(points());
 }
 
@@ -248,7 +247,7 @@ function handleClick(idBusLine: number) {
   }
 
   if (isInReadMode()) {
-    deselectPoint();
+    deselectPoints();
     selectBusLineById(idBusLine);
   }
 }

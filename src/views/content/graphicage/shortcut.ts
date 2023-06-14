@@ -14,7 +14,7 @@ import {
 import { displayedConfirmStopAddLine } from "./ConfirmStopAddLineBox";
 import {
   deselectBusLines,
-  deselectPoint,
+  deselectPoints,
   fetchBusLines,
 } from "./line/busLinesUtils";
 
@@ -75,7 +75,7 @@ function escapeHandler({ code }: KeyboardEvent) {
   if (code === "Escape") {
     if (isInReadMode()) {
       deselectBusLines();
-      deselectPoint();
+      deselectPoints();
       return;
     }
 

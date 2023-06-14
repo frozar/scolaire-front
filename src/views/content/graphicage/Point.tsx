@@ -13,7 +13,6 @@ import {
   PointIdentityType,
   PointRamassageType,
   PointEtablissementType,
-  // InfoPanelEnum,
 } from "../../../type";
 
 import { useStateAction } from "../../../StateAction";
@@ -21,8 +20,6 @@ import { renderAnimation } from "./animation";
 import { linkMap } from "../../../global/linkPointIdentityCircle";
 import {
   getLeafletMap,
-  // setSelectedElement,
-  // setInfoToDisplay,
   setIsRamassageReady,
   setIsEtablissementReady,
   points,
@@ -161,12 +158,8 @@ export default function (props: {
         // eslint-disable-next-line solid/reactivity
         .on("click", () => {
           // Select the current element to display information
-          // TODO: to delete
-          // setSelectedElement(point);
 
           if (!isInAddLineMode()) {
-            // setInfoToDisplay(InfoPanelEnum.point);
-
             // TODO: déplacer
             deselectBusLines();
             selectPointById(point.id_point);

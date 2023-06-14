@@ -38,28 +38,9 @@ export function fetchPointsRamassage() {
       .then((res) => {
         return res.json();
       })
-      // .then((data: PointRamassageType[]) => {
-      //   // diff
-      //   // TODO: refactor
-      //   data = data.map((pointRamassage) => {
-      //     const [selected, setSelected] = createSignal(false);
-      //     return {
-      //       ...pointRamassage,
-      //       nature: NatureEnum.ramassage, // diff
-      //       selected,
-      //       setSelected,
-      //     };
-      //   });
-      //   setMinMaxQty([
-      //     // diff => prob d'être fait après setPoints()
-      //     Math.min(...data.map((value) => value.quantity)), // diff
-      //     Math.max(...data.map((value) => value.quantity)), // diff
-      //   ]);
-      //   setPoints((dataArray) => [...dataArray, ...data]);
-      //   setPointsRamassageReady(true); // diff
-      // });
       .then((data: PointRamassageType[]) => {
         // refactor ??
+        // setMinMaxQty avant "const points" et tout le reste à refactor
         const points = mapData(data, NatureEnum.ramassage);
         setMinMaxQty([
           Math.min(...points.map((value) => value.quantity)), // diff
@@ -75,21 +56,6 @@ export function fetchPointsRamassage() {
       .then((res) => {
         return res.json();
       })
-      // .then((data: PointEtablissementType[]) => {
-      //   // TODO: refactor
-      //   data = data.map((pointEtablissement) => {
-      //     const [selected, setSelected] = createSignal(false);
-      //     return {
-      //       ...pointEtablissement,
-      //       nature: NatureEnum.etablissement,
-      //       selected,
-      //       setSelected,
-      //     };
-      //   });
-
-      //   setPoints((dataArray) => [...dataArray, ...data]);
-      //   setPointsEtablssementReady(true);
-      // });
       .then((data: PointEtablissementType[]) => {
         // refactor
         const points = mapData(data, NatureEnum.etablissement);
