@@ -47,10 +47,13 @@ export default function (props: LeftMenuItemProps) {
       //   setSelectedMenu(mergedProps.menuItem);
       // }}
     >
-      <LeftMenuButtonLogo
-        logo={mergedProps.logo}
-        isActive={mergedProps.isActiveItem}
-      />
+      {/* <LeftMenuButtonLogo
+      logo={mergedProps.logo}
+      isActive={mergedProps.isActiveItem}
+    /> */}
+      <LeftMenuButtonLogo isActive={mergedProps.isActiveItem}>
+        {mergedProps.logo()}
+      </LeftMenuButtonLogo>
 
       <Show when={mergedProps.isActiveText}>{mergedProps.title}</Show>
     </li>

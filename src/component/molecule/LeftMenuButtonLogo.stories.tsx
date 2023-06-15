@@ -32,9 +32,11 @@ type Story = StoryObj<typeof meta>;
 export const LeftMenuButtonLogo: Story = {
   args: {
     isActive: false,
+    isDisabled: false,
   },
   argTypes: {
-    logo: {
+    // logo: {
+    children: {
       options: Object.keys(logos),
       mapping: logos,
       control: {

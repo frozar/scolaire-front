@@ -1,7 +1,7 @@
 import { For, createSignal, onMount } from "solid-js";
 import LeftMenuItem from "../molecule/LeftMenuItem";
 import { useStateGui } from "../../StateGui";
-import MenuItemsFields from "../molecule/MenuItemFields";
+import MenuItemsFields from "../molecule/menuItemFields";
 const [
   ,
   {

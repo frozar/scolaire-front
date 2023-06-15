@@ -1,6 +1,15 @@
 @import "../../css/tailwind.css";
 @import "../../css/var.css";
 
+.left-menu-button-logo {
+  @apply p-1 rounded-lg inline-block;
+}
+
 .left-menu-button-logo.active {
   fill: var(--green-base);
+}
+
+.left-menu-button-logo.disabled {
+  fill: white;
+  background: var(--gray-base);
 }

@@ -1,24 +1,26 @@
-import { JSXElement, mergeProps } from "solid-js";
-import DashboardLogo from "../atom/DashboardLogo";
+import { JSXElement, children, mergeProps } from "solid-js";
 import "./LeftMenuButtonLogo.css";
 
 export interface LeftMenuButtonLogoProps {
-  logo: () => JSXElement;
   isActive?: boolean;
+  isDisabled?: boolean;
+  children: JSXElement;
 }
 
 export default function (props: LeftMenuButtonLogoProps) {
-  const mergedProps = mergeProps(
-    { logo: DashboardLogo, isActive: false },
-    props
-  );
+  const logo = children(() => props.children);
+
+  const mergedProps = mergeProps({ isActive: false, isDisabled: false }, props);
 
   return (
-    <div
+    <span
       class="left-menu-button-logo"
-      classList={{ active: mergedProps.isActive == true }}
+      classList={{
+        disabled: mergedProps.isDisabled,
+        active: !mergedProps.isDisabled && mergedProps.isActive,
+      }}
     >
-      {mergedProps.logo()}
-    </div>
+      {logo()}
+    </span>
   );
 }
