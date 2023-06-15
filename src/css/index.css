@@ -3,6 +3,8 @@
 @import "./timeline.css";
 @import "./var.css";
 
+/* Class 'prevent-select' has been move in 'var.css'
+  TODO: remove 'prevent-select' from index.css */
 .prevent-select {
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */

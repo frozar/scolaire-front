@@ -1,61 +1,49 @@
-import { JSXElement, Show, mergeProps } from "solid-js";
+import { JSXElement, Show } from "solid-js";
 
-import GraphicageLogo from "../atom/GraphicageLogo";
-import { SelectedMenuType } from "../../type";
-// import { useStateGui } from "../../StateGui";
-
+import LeftMenuItemLabel from "../atom/LeftMenuItemLabel";
 import LeftMenuButtonLogo from "./LeftMenuButtonLogo";
 
 import "./LeftMenuItem.css";
 
-// const [, { getSelectedMenu, getDisplayedLeftMenu }] = useStateGui();
-
 export interface LeftMenuItemProps {
-  // Molecul props
-  title: string;
-  menuItem: SelectedMenuType;
-  isActiveText: boolean;
-  onClick: () => void;
+  isDisabled: boolean;
+  label: string;
+  displayedLabel: boolean;
 
-  // Shared props
-  isActiveItem: boolean;
-  logo: () => JSXElement;
+  isSelected: () => boolean;
+  Logo: () => JSXElement;
+
+  onClick: () => void;
 }
 
 export default function (props: LeftMenuItemProps) {
-  const mergedProps = mergeProps(
-    {
-      title: "Graphicage",
-      menuItem: "graphicage",
-      logo: () => GraphicageLogo,
-      isActiveText: true,
-      isActiveItem: true,
-    },
-    props
-  );
-
-  // const isActiveItem = () => getSelectedMenu() === mergedProps.menuItem;
-  // const isActiveText = () =>
-  //   getDisplayedLeftMenu() == true && mergedProps.displayText == true;
-
   return (
     <li
       class="lateral-nav-item"
-      classList={{ active: mergedProps.isActiveItem }}
-      onClick={() => mergedProps.onClick()}
-      // onClick={() => {
-      //   setSelectedMenu(mergedProps.menuItem);
-      // }}
+      classList={{
+        active: !props.isDisabled && props.isSelected(),
+        disable: props.isDisabled,
+      }}
+      onClick={() => {
+        if (!props.isDisabled) {
+          props.onClick();
+        }
+      }}
     >
-      {/* <LeftMenuButtonLogo
-      logo={mergedProps.logo}
-      isActive={mergedProps.isActiveItem}
-    /> */}
-      <LeftMenuButtonLogo isActive={mergedProps.isActiveItem}>
-        {mergedProps.logo()}
+      <LeftMenuButtonLogo
+        isActive={props.isSelected()}
+        isDisabled={props.isDisabled}
+      >
+        {props.Logo()}
       </LeftMenuButtonLogo>
 
-      <Show when={mergedProps.isActiveText}>{mergedProps.title}</Show>
+      <Show when={props.displayedLabel}>
+        <LeftMenuItemLabel
+          isActive={props.isSelected()}
+          isDisabled={props.isDisabled}
+          label={props.label}
+        />
+      </Show>
     </li>
   );
 }

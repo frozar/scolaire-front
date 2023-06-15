@@ -37,11 +37,10 @@ export default function () {
 
           return (
             <LeftMenuItem
-              title={title}
-              menuItem={menuItem}
+              label={title}
               logo={Logo}
-              isActiveItem={isActiveItem()}
-              isActiveText={isActiveText()}
+              isSelected={isActiveItem()}
+              displayedLabel={isActiveText()}
               onClick={() => setSelectedMenu(menuItem)}
             />
           );

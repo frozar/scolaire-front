@@ -2,7 +2,7 @@
 @import "../../css/var.css";
 
 .left-menu-item-label {
-  @apply inline-block p-1;
+  @apply inline-block p-1 prevent-select;
 }
 
 .left-menu-item-label.active {
@@ -11,5 +11,4 @@
 
 .left-menu-item-label.disabled {
   color: white;
-  background: var(--gray-base);
 }

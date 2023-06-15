@@ -1,4 +1,5 @@
 import { mergeProps } from "solid-js";
+
 import "./LeftMenuItemLabel.css";
 
 export interface LeftMenuItemLabelProps {
