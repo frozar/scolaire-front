@@ -181,7 +181,7 @@ export default function () {
       return;
     }
 
-    const selectedBusLineId = selectedBusLine?.idBusLine;
+    const selectedBusLineId = selectedBusLine.idBusLine;
     const color = (e.target as HTMLInputElement).value;
 
     authenticateWrap((headers) => {
