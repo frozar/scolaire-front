@@ -9,7 +9,7 @@ import { authenticateWrap } from "../../layout/topMenu/authentication";
 import ImportCsvCanvas from "../../../component/ImportCsvCanvas";
 import ImportCsvButton from "../../../component/ImportCsvButton";
 import ExportCsvButton from "../../../component/ExportCsvButton";
-import ActionSelect from "../../../component/ActionSelect";
+import ActionSelector from "../../../component/atom/ActionSelector";
 
 const [ramassages, setRamassages] = createSignal<StopItemType[]>([]);
 
@@ -119,7 +119,7 @@ export default function () {
             <h1>Points de ramassage</h1>
             <div id="filters">
               <div class="left">
-                <ActionSelect />
+                <ActionSelector isDisabled={true} />
 
                 <button
                   type="button"

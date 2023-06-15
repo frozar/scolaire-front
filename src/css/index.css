@@ -308,10 +308,6 @@ code {
       > .left {
         @apply flex w-1/2 gap-3;
 
-        > select {
-          @apply block rounded-md border-0 py-1.5 px-3 pr-10 text-gray-900 ring-1 ring-inset focus:ring-2  sm:text-sm bg-white disabled:bg-gray-300 disabled:opacity-75;
-        }
-
         > .btn-arret-add {
           width: 92px;
           height: 45px;
@@ -432,9 +428,4 @@ code {
       }
     }
   }
-}
-
-.fill-red {
-  background-color: var(--red-base);
-  color: white;
 }
