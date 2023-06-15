@@ -1,7 +1,7 @@
+import DashboardLogo from "../atom/DashboardLogo";
 import GraphicageLogo from "../atom/GraphicageLogo";
 import EtablissementLogo from "../atom/EtablissementLogo";
 import ArretsLogo from "../atom/ArretsLogo";
-import DashboardLogo from "../atom/DashboardLogo";
 import SettingsLogo from "../atom/SettingsLogo";
 import SupportLogo from "../atom/SupportLogo";
 import VoirieLogo from "../atom/VoirieLogo";
@@ -9,6 +9,12 @@ import { MenuItemType } from "../../type";
 
 // export default function () {
 const menuItems: MenuItemType[] = [
+  {
+    menuItem: "dashboard",
+    Logo: DashboardLogo,
+    label: "Dashboard",
+    isDisabled: true,
+  },
   {
     menuItem: "graphicage",
     Logo: GraphicageLogo,
@@ -26,12 +32,6 @@ const menuItems: MenuItemType[] = [
     Logo: ArretsLogo,
     label: "Arrêts",
     isDisabled: false,
-  },
-  {
-    menuItem: "dashboard",
-    Logo: DashboardLogo,
-    label: "Dashboard",
-    isDisabled: true,
   },
   {
     menuItem: "voirie",

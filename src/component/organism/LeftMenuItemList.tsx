@@ -1,17 +1,12 @@
 import { For, mergeProps } from "solid-js";
-import LeftMenuItem from "../molecule/LeftMenuItem";
+
 import { useStateGui } from "../../StateGui";
-import menuItems from "../molecule/menuItemFields";
 import { SelectedMenuType } from "../../type";
-const [
-  ,
-  {
-    setSelectedMenu,
-    getSelectedMenu,
-    // toggleDisplayedLeftMenu,
-    // getDisplayedLeftMenu,
-  },
-] = useStateGui();
+
+import LeftMenuItem from "../molecule/LeftMenuItem";
+import menuItems from "../molecule/menuItemFields";
+
+const [, { setSelectedMenu, getSelectedMenu }] = useStateGui();
 
 export interface LeftMenuItemProps {
   displayedLabel: boolean;
@@ -21,23 +16,6 @@ export interface LeftMenuItemProps {
 
 export default function (props: LeftMenuItemProps) {
   const mergedProps = mergeProps({ getSelectedMenu, setSelectedMenu }, props);
-
-  // const [waitingToDisplayText, SetWaitingToDisplayText] = createSignal(
-  //   getDisplayedLeftMenu()
-  // );
-
-  // let refDivLeftMenu!: HTMLElement;
-
-  // onMount(() => {
-  //   if (!refDivLeftMenu) {
-  //     return;
-  //   }
-
-  //   refDivLeftMenu.addEventListener("transitionend", () => {
-  //     SetWaitingToDisplayText((bool) => !bool);
-  //   });
-  // });
-
   return (
     <ul>
       <For each={menuItems}>
