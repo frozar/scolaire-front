@@ -27,6 +27,12 @@ export type PointRamassageType = {
 
 export type PointEtablissementType = PointRamassageType;
 
+export type PointToDisplayType = {
+  id_point: number;
+  name: string;
+  quantity: number;
+};
+
 export function isPointRamassage(pt: { nature: NatureEnum }) {
   return pt.nature === NatureEnum.ramassage;
 }

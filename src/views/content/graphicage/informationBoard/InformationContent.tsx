@@ -14,6 +14,7 @@ import {
   MessageLevelEnum,
   MessageTypeEnum,
   LineType,
+  PointToDisplayType,
 } from "../../../../type";
 import { PointIdentityType } from "../../../../type";
 import { addNewUserInformation } from "../../../../signaux";
@@ -37,12 +38,6 @@ import {
 import { getSelectedPoint } from "../Point";
 
 const [, { isInAddLineMode, resetLineUnderConstruction }] = useStateAction();
-
-export type PointToDisplayType = {
-  id_point: number;
-  name: string;
-  quantity: number;
-};
 
 export default function () {
   createEffect(() => {
