@@ -70,9 +70,9 @@ function escapeHandler({ code }: KeyboardEvent) {
   }
 
   if (code === "Escape") {
+    deselectAllPoints();
     if (isInReadMode()) {
       deselectAllBusLines();
-      deselectAllPoints();
       return;
     }
 
