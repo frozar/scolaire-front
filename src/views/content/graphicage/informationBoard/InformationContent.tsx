@@ -26,7 +26,6 @@ import {
   getSelectedBusLineId,
   selectedBusLineStopNames,
   lineUnderConstructionStopNames,
-  getSelectedPoint,
   getSelectedBusLine,
 } from "../line/busLinesUtils";
 import Timeline from "./Timeline";
@@ -35,6 +34,7 @@ import {
   pickerColor,
   setBusLines,
 } from "../line/BusLines";
+import { getSelectedPoint } from "../Point";
 
 const [, { isInAddLineMode, resetLineUnderConstruction }] = useStateAction();
 

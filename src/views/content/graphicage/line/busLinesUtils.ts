@@ -24,6 +24,7 @@ import {
 import { LineString } from "geojson";
 import { authenticateWrap } from "../../../layout/topMenu/authentication";
 import { createEffect, createSignal } from "solid-js";
+import { unselectAllPoints } from "../Point";
 
 export function getLatLngs(stops: PointIdentityType[]): L.LatLng[] {
   const latlngs: L.LatLng[] = [];
@@ -122,28 +123,26 @@ function getBusLineById(
   return busLines.find((route) => route.idBusLine == idBusLine);
 }
 
-function deselectElementAux(elements: LineType[] | PointRamassageType[]) {
-  for (const element of elements) {
+export function unselectMapItemAux(
+  mapItems: LineType[] | PointRamassageType[]
+) {
+  for (const element of mapItems) {
     element.setSelected((previousBool) => {
       return previousBool ? false : previousBool;
     });
   }
 }
 
-export function deselectPoints() {
-  return deselectElementAux(points());
-}
-
-export function deselectBusLines() {
-  return deselectElementAux(busLines());
+export function unselectAllBusLines() {
+  return unselectMapItemAux(busLines());
 }
 
 export function selectElementByIdAux(
-  element: LineType | PointRamassageType,
+  mapItems: LineType | PointRamassageType,
   currentId: number,
   targetId: number
 ) {
-  const currentSetSelected = element.setSelected;
+  const currentSetSelected = mapItems.setSelected;
   if (currentId == targetId) {
     currentSetSelected((previousSelected) => {
       return previousSelected ? previousSelected : true;
@@ -247,7 +246,7 @@ function handleClick(idBusLine: number) {
   }
 
   if (isInReadMode()) {
-    deselectPoints();
+    unselectAllPoints();
     selectBusLineById(idBusLine);
   }
 
@@ -568,10 +567,6 @@ export const getSelectedBusLineId = (): number | undefined => {
   }
 
   return selectedBusLine.idBusLine;
-};
-
-export const getSelectedPoint = (): PointRamassageType | undefined => {
-  return points().find((point) => point.selected());
 };
 
 function getStopNames(busLine: LineUnderConstructionType) {
