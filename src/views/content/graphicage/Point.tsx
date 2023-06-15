@@ -29,7 +29,6 @@ import { authenticateWrap } from "../../layout/topMenu/authentication";
 import {
   unselectAllBusLines,
   setSelectedMapItemAux,
-  unselectMapItemAux,
 } from "./line/busLinesUtils";
 
 const [
@@ -54,7 +53,7 @@ export const getSelectedPoint = (): PointRamassageType | undefined => {
 };
 
 export function unselectAllPoints() {
-  return unselectMapItemAux(points());
+  return points().map((point) => setSelectedMapItemAux(point, false));
 }
 
 const minSizeValue = 5;

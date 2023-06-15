@@ -123,16 +123,8 @@ function getBusLineById(
   return busLines.find((route) => route.idBusLine == idBusLine);
 }
 
-export function unselectMapItemAux(
-  mapItems: LineType[] | PointRamassageType[]
-) {
-  for (const mapItem of mapItems) {
-    setSelectedMapItemAux(mapItem, false);
-  }
-}
-
 export function unselectAllBusLines() {
-  return unselectMapItemAux(busLines());
+  return busLines().map((busLine) => setSelectedMapItemAux(busLine, false));
 }
 
 export function setSelectedMapItemAux(
