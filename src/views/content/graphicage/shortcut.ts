@@ -12,8 +12,8 @@ import {
   displayRemoveLineMessage,
 } from "../../../userInformation/utils";
 import { displayedConfirmStopAddLine } from "./ConfirmStopAddLineBox";
-import { unselectAllPoints } from "./Point";
-import { unselectAllBusLines, fetchBusLines } from "./line/busLinesUtils";
+import { deselectAllPoints } from "./Point";
+import { deselectAllBusLines, fetchBusLines } from "./line/busLinesUtils";
 
 const [
   ,
@@ -71,8 +71,8 @@ function escapeHandler({ code }: KeyboardEvent) {
 
   if (code === "Escape") {
     if (isInReadMode()) {
-      unselectAllBusLines();
-      unselectAllPoints();
+      deselectAllBusLines();
+      deselectAllPoints();
       return;
     }
 
@@ -125,7 +125,7 @@ function toggleLineUnderConstruction({ code }: KeyboardEvent) {
         setModeRead();
         fetchBusLines();
       } else {
-        unselectAllPoints();
+        deselectAllPoints();
         setModeAddLine();
         fetchBusLines();
         displayAddLineMessage();
@@ -133,13 +133,13 @@ function toggleLineUnderConstruction({ code }: KeyboardEvent) {
     }
     if (upKey === "d") {
       // Toggle behavior
+      deselectAllPoints();
+
       if (!isInRemoveLineMode()) {
-        unselectAllPoints();
         setModeRemoveLine();
         fetchBusLines();
         displayRemoveLineMessage();
       } else {
-        unselectAllPoints();
         setModeRead();
         fetchBusLines();
         closeRemoveConfirmationBox();

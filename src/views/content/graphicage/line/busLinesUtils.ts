@@ -23,7 +23,7 @@ import {
 import { LineString } from "geojson";
 import { authenticateWrap } from "../../../layout/topMenu/authentication";
 import { createEffect, createSignal } from "solid-js";
-import { unselectAllPoints } from "../Point";
+import { deselectAllPoints } from "../Point";
 
 export function getLatLngs(stops: PointIdentityType[]): L.LatLng[] {
   const latlngs: L.LatLng[] = [];
@@ -122,16 +122,14 @@ function getBusLineById(
   return busLines.find((route) => route.idBusLine == idBusLine);
 }
 
-export function unselectAllBusLines() {
+export function deselectAllBusLines() {
   return busLines().map((busLine) => busLine.setSelected(false));
 }
 
 function selectBusLineById(targetIdBusLine: number) {
-  for (const busLine of busLines()) {
-    const isTarget = targetIdBusLine == busLine.idBusLine;
-
-    busLine.setSelected(isTarget);
-  }
+  busLines().map((busLine) =>
+    busLine.setSelected(targetIdBusLine == busLine.idBusLine)
+  );
 }
 
 const [, { isInReadMode, isInRemoveLineMode, getLineUnderConstruction }] =
@@ -218,7 +216,7 @@ function handleClick(idBusLine: number) {
   }
 
   if (isInReadMode()) {
-    unselectAllPoints();
+    deselectAllPoints();
     selectBusLineById(idBusLine);
   }
 

@@ -26,7 +26,7 @@ import {
 } from "../../../signaux";
 import { minMaxQty } from "./PointsRamassageAndEtablissement";
 import { authenticateWrap } from "../../layout/topMenu/authentication";
-import { unselectAllBusLines } from "./line/busLinesUtils";
+import { deselectAllBusLines } from "./line/busLinesUtils";
 
 const [
   ,
@@ -38,18 +38,14 @@ const [
 ] = useStateAction();
 
 function selectPointById(targerIdPoint: number) {
-  for (const point of points()) {
-    const isTarget = targerIdPoint == point.id_point;
-
-    point.setSelected(isTarget);
-  }
+  points().map((point) => point.setSelected(targerIdPoint == point.id_point));
 }
 
 export const getSelectedPoint = (): PointRamassageType | undefined => {
   return points().find((point) => point.selected());
 };
 
-export function unselectAllPoints() {
+export function deselectAllPoints() {
   return points().map((point) => point.setSelected(false));
 }
 
@@ -164,7 +160,7 @@ export default function (props: {
           // Select the current element to display information
 
           if (!isInAddLineMode()) {
-            unselectAllBusLines();
+            deselectAllBusLines();
             selectPointById(point.id_point);
             return;
           }

@@ -4,7 +4,7 @@ import { FaSolidPlus } from "solid-icons/fa";
 
 import ButtonGraphicageRightMenu from "../../../../component/atom/ButtonGraphicageRightMenu";
 import { fetchBusLines } from "../line/busLinesUtils";
-import { unselectAllPoints } from "../Point";
+import { deselectAllPoints } from "../Point";
 
 const [, { setModeAddLine, isInAddLineMode, setModeRead }] = useStateAction();
 
@@ -14,7 +14,7 @@ export default function () {
       setModeRead();
       fetchBusLines();
     } else {
-      unselectAllPoints();
+      deselectAllPoints();
       setModeAddLine();
       fetchBusLines();
       displayAddLineMessage();

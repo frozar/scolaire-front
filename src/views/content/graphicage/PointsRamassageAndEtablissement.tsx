@@ -28,7 +28,10 @@ createEffect(() => {
 });
 
 export function fetchPointsRamassage() {
-  function addToPoints(data: PointRamassageType[], nature: NatureEnum) {
+  function addToPoints(
+    data: PointRamassageType[] | PointEtablissementType[],
+    nature: NatureEnum
+  ) {
     const points = data.map((point) => {
       const [selected, setSelected] = createSignal(false);
       return {
