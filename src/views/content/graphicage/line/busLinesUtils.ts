@@ -126,10 +126,8 @@ function getBusLineById(
 export function unselectMapItemAux(
   mapItems: LineType[] | PointRamassageType[]
 ) {
-  for (const element of mapItems) {
-    element.setSelected((previousBool) => {
-      return previousBool ? false : previousBool;
-    });
+  for (const mapItem of mapItems) {
+    setSelectedMapItemAux(mapItem, false);
   }
 }
 
