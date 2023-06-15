@@ -7,7 +7,6 @@ import SupportLogo from "../atom/SupportLogo";
 import VoirieLogo from "../atom/VoirieLogo";
 import { MenuItemType } from "../../type";
 
-// export default function () {
 const menuItems: MenuItemType[] = [
   {
     menuItem: "dashboard",
@@ -52,7 +51,5 @@ const menuItems: MenuItemType[] = [
     isDisabled: true,
   },
 ];
-// return menuItems;
-//
 
 export default menuItems;
