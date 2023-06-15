@@ -46,7 +46,7 @@ export const getSelectedPoint = (): PointRamassageType | undefined => {
 };
 
 export function deselectAllPoints() {
-  return points().map((point) => point.setSelected(false));
+  points().map((point) => point.setSelected(false));
 }
 
 const minSizeValue = 5;

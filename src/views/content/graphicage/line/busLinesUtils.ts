@@ -123,7 +123,7 @@ function getBusLineById(
 }
 
 export function deselectAllBusLines() {
-  return busLines().map((busLine) => busLine.setSelected(false));
+  busLines().map((busLine) => busLine.setSelected(false));
 }
 
 function selectBusLineById(targetIdBusLine: number) {
