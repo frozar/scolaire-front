@@ -1,56 +1,28 @@
-import ArretsLogo from "./logo/ArretsLogo";
-// import DashboardLogo from "./logo/DashboardLogo";
-import EtablissementLogo from "./logo/EtablissementLogo";
-import GraphicageLogo from "./logo/GraphicageLogo";
-// import SettingsLogo from "./logo/SettingsLogo";
-// import SupportLogo from "./logo/SupportLogo";
-// import VoirieLogo from "./logo/VoirieLogo";
+import ArretsLogo from "../../../component/atom/ArretsLogo";
+import EtablissementLogo from "../../../component/atom/EtablissementLogo";
+import GraphicageLogo from "../../../component/atom/GraphicageLogo";
 import { MenuItemType } from "../../../type";
 
 export default function (displayText: boolean) {
   const menuItems: MenuItemType[] = [
-    // {
-    //   title: "Dashboard",
-    //   menuItem: "dashboard",
-    //   Logo: DashboardLogo,
-    //   displayText: displayText,
-    // },
     {
-      title: "Graphicage",
+      label: "Graphicage",
       menuItem: "graphicage",
       Logo: GraphicageLogo,
-      displayText: displayText,
+      displayedLabel: displayText,
     },
-    // {
-    //   title: "Voirie",
-    //   menuItem: "voirie",
-    //   Logo: VoirieLogo,
-    //   displayText: displayText,
-    // },
     {
-      title: "Établissements",
+      label: "Établissements",
       menuItem: "etablissements",
       Logo: EtablissementLogo,
-      displayText: displayText,
+      displayedLabel: displayText,
     },
     {
-      title: "Arrêts",
+      label: "Arrêts",
       menuItem: "ramassages",
       Logo: ArretsLogo,
-      displayText: displayText,
+      displayedLabel: displayText,
     },
-    // {
-    //   title: "Paramètres",
-    //   menuItem: "parametres",
-    //   Logo: SettingsLogo,
-    //   displayText: displayText,
-    // },
-    // {
-    //   title: "Support",
-    //   menuItem: "support",
-    //   Logo: SupportLogo,
-    //   displayText: displayText,
-    // },
   ];
   return menuItems;
 }
