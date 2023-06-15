@@ -1,56 +1,58 @@
-import ArretsLogo from "../atom/ArretsLogo";
-// import DashboardLogo from "./logo/DashboardLogo";
-import EtablissementLogo from "../atom/EtablissementLogo";
 import GraphicageLogo from "../atom/GraphicageLogo";
-// import SettingsLogo from "./logo/SettingsLogo";
-// import SupportLogo from "./logo/SupportLogo";
-// import VoirieLogo from "./logo/VoirieLogo";
+import EtablissementLogo from "../atom/EtablissementLogo";
+import ArretsLogo from "../atom/ArretsLogo";
+import DashboardLogo from "../atom/DashboardLogo";
+import SettingsLogo from "../atom/SettingsLogo";
+import SupportLogo from "../atom/SupportLogo";
+import VoirieLogo from "../atom/VoirieLogo";
 import { MenuItemType } from "../../type";
 
-export default function (displayText: boolean) {
-  const menuItems: MenuItemType[] = [
-    // {
-    //   title: "Dashboard",
-    //   menuItem: "dashboard",
-    //   Logo: DashboardLogo,
-    //   displayText: displayText,
-    // },
-    {
-      title: "Graphicage",
-      menuItem: "graphicage",
-      Logo: GraphicageLogo,
-      displayText: displayText,
-    },
-    // {
-    //   title: "Voirie",
-    //   menuItem: "voirie",
-    //   Logo: VoirieLogo,
-    //   displayText: displayText,
-    // },
-    {
-      title: "Établissements",
-      menuItem: "etablissements",
-      Logo: EtablissementLogo,
-      displayText: displayText,
-    },
-    {
-      title: "Arrêts",
-      menuItem: "ramassages",
-      Logo: ArretsLogo,
-      displayText: displayText,
-    },
-    // {
-    //   title: "Paramètres",
-    //   menuItem: "parametres",
-    //   Logo: SettingsLogo,
-    //   displayText: displayText,
-    // },
-    // {
-    //   title: "Support",
-    //   menuItem: "support",
-    //   Logo: SupportLogo,
-    //   displayText: displayText,
-    // },
-  ];
-  return menuItems;
-}
+// export default function () {
+const menuItems: MenuItemType[] = [
+  {
+    menuItem: "graphicage",
+    Logo: GraphicageLogo,
+    label: "Graphicage",
+    isDisabled: false,
+  },
+  {
+    menuItem: "etablissements",
+    Logo: EtablissementLogo,
+    label: "Établissements",
+    isDisabled: false,
+  },
+  {
+    menuItem: "ramassages",
+    Logo: ArretsLogo,
+    label: "Arrêts",
+    isDisabled: false,
+  },
+  {
+    menuItem: "dashboard",
+    Logo: DashboardLogo,
+    label: "Dashboard",
+    isDisabled: true,
+  },
+  {
+    menuItem: "voirie",
+    Logo: VoirieLogo,
+    label: "Voirie",
+    isDisabled: true,
+  },
+  {
+    menuItem: "parametres",
+    Logo: SettingsLogo,
+    label: "Paramètres",
+    isDisabled: true,
+  },
+  {
+    menuItem: "support",
+    Logo: SupportLogo,
+    label: "Support",
+    isDisabled: true,
+  },
+];
+// return menuItems;
+//
+
+export default menuItems;

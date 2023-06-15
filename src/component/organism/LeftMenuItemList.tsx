@@ -1,47 +1,59 @@
-import { For, createSignal, onMount } from "solid-js";
+import { For, mergeProps } from "solid-js";
 import LeftMenuItem from "../molecule/LeftMenuItem";
 import { useStateGui } from "../../StateGui";
-import MenuItemsFields from "../molecule/menuItemFields";
+import menuItems from "../molecule/menuItemFields";
+import { SelectedMenuType } from "../../type";
 const [
   ,
   {
     setSelectedMenu,
     getSelectedMenu,
     // toggleDisplayedLeftMenu,
-    getDisplayedLeftMenu,
+    // getDisplayedLeftMenu,
   },
 ] = useStateGui();
 
-export default function () {
-  const [waitingToDisplayText, SetWaitingToDisplayText] = createSignal(
-    getDisplayedLeftMenu()
-  );
+export interface LeftMenuItemProps {
+  displayedLabel: boolean;
+  getSelectedMenu?: () => SelectedMenuType;
+  setSelectedMenu?: (itemMenu: SelectedMenuType) => void;
+}
 
-  let refDivLeftMenu!: HTMLElement;
+export default function (props: LeftMenuItemProps) {
+  const mergedProps = mergeProps({ getSelectedMenu, setSelectedMenu }, props);
 
-  onMount(() => {
-    refDivLeftMenu.addEventListener("transitionend", () => {
-      SetWaitingToDisplayText(!waitingToDisplayText());
-    });
-  });
+  // const [waitingToDisplayText, SetWaitingToDisplayText] = createSignal(
+  //   getDisplayedLeftMenu()
+  // );
+
+  // let refDivLeftMenu!: HTMLElement;
+
+  // onMount(() => {
+  //   if (!refDivLeftMenu) {
+  //     return;
+  //   }
+
+  //   refDivLeftMenu.addEventListener("transitionend", () => {
+  //     SetWaitingToDisplayText((bool) => !bool);
+  //   });
+  // });
 
   return (
     <ul class="lateral-nav-list">
-      <For each={MenuItemsFields(waitingToDisplayText())}>
+      <For each={menuItems}>
         {(menuItemArg) => {
-          const { title, menuItem, Logo } = menuItemArg;
+          const { label, menuItem, Logo, isDisabled } = menuItemArg;
 
-          const isActiveItem = () => getSelectedMenu() === menuItem;
-          const isActiveText = () =>
-            getDisplayedLeftMenu() == true && waitingToDisplayText() == true;
+          const isSelected = () => mergedProps.getSelectedMenu() === menuItem;
 
           return (
             <LeftMenuItem
-              label={title}
-              logo={Logo}
-              isSelected={isActiveItem()}
-              displayedLabel={isActiveText()}
-              onClick={() => setSelectedMenu(menuItem)}
+              isDisabled={isDisabled}
+              Logo={Logo}
+              label={label}
+              displayedLabel={props.displayedLabel}
+              isSelected={isSelected()}
+              onClick={() => mergedProps.setSelectedMenu(menuItem)}
             />
           );
         }}

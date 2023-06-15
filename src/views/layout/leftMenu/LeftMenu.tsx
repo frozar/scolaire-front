@@ -19,8 +19,8 @@ const [
 ] = useStateGui();
 
 function MenuItems(props: MenuItemType) {
-  const displayText = () => props.displayText;
-  const title = () => props.title;
+  const displayText = () => props.displayedLabel;
+  const title = () => props.label;
   const menuItem = () => props.menuItem;
 
   const Logo = () => {
@@ -69,13 +69,13 @@ export default function () {
       <ul class="lateral-nav-list">
         <For each={MenuItemsFields(waitingToDisplayText())}>
           {(menuItemArg) => {
-            const { title, menuItem } = menuItemArg;
+            const { label: title, menuItem } = menuItemArg;
             return (
               <MenuItems
-                title={title}
+                label={title}
                 menuItem={menuItem}
                 Logo={menuItemArg.Logo}
-                displayText={waitingToDisplayText()}
+                displayedLabel={waitingToDisplayText()}
               />
             );
           }}

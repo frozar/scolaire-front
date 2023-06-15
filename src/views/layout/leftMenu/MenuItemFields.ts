@@ -16,10 +16,10 @@ export default function (displayText: boolean) {
     //   displayText: displayText,
     // },
     {
-      title: "Graphicage",
+      label: "Graphicage",
       menuItem: "graphicage",
       Logo: GraphicageLogo,
-      displayText: displayText,
+      displayedLabel: displayText,
     },
     // {
     //   title: "Voirie",
@@ -28,16 +28,16 @@ export default function (displayText: boolean) {
     //   displayText: displayText,
     // },
     {
-      title: "Établissements",
+      label: "Établissements",
       menuItem: "etablissements",
       Logo: EtablissementLogo,
-      displayText: displayText,
+      displayedLabel: displayText,
     },
     {
-      title: "Arrêts",
+      label: "Arrêts",
       menuItem: "ramassages",
       Logo: ArretsLogo,
-      displayText: displayText,
+      displayedLabel: displayText,
     },
     // {
     //   title: "Paramètres",

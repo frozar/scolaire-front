@@ -150,10 +150,10 @@ export type SelectedMenuType =
   | "support";
 
 export type MenuItemType = {
-  title: string;
   menuItem: SelectedMenuType;
   Logo: () => JSX.Element;
-  displayText: boolean;
+  label: string;
+  isDisabled: boolean;
 };
 
 export type StopItemType = {
