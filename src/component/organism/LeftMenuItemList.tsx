@@ -39,7 +39,7 @@ export default function (props: LeftMenuItemProps) {
   // });
 
   return (
-    <ul class="lateral-nav-list">
+    <ul>
       <For each={menuItems}>
         {(menuItemArg) => {
           const { label, menuItem, Logo, isDisabled } = menuItemArg;

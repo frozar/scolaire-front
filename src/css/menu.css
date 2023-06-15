@@ -267,7 +267,7 @@
 }
 
 /* -------------------------------------- redesign --------------------------------- */
-
+/* 
 @layer components {
   #lateral-nav {
     @apply bg-[#062F3F] text-white h-[100vh] w-[70px]  translate-y-[-60px]  flex-col flex items-start pt-3 fixed;
@@ -319,10 +319,10 @@
       right: 10%;
     }
   }
-}
+} */
 
-.fill-green {
-  fill: #0cc683;
+#left-menu-container {
+  @apply z-[1400] fixed translate-y-[-60px] w-fit;
 }
 
 #draw-line-options {
