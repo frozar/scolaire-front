@@ -1,7 +1,4 @@
-// import { useStateGui } from "../../StateGui";
 import "./EnterpriseLogo.css";
-
-// const [, { getDisplayedLeftMenu }] = useStateGui();
 
 export interface EntrepriseLogoProps {
   displayedLeftMenu: boolean;
