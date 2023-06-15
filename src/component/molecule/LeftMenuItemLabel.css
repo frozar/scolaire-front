@@ -1,0 +1,15 @@
+@import "../../css/tailwind.css";
+@import "../../css/var.css";
+
+.left-menu-item-label {
+  @apply inline-block p-1;
+}
+
+.left-menu-item-label.active {
+  color: var(--green-base);
+}
+
+.left-menu-item-label.disabled {
+  color: white;
+  background: var(--gray-base);
+}

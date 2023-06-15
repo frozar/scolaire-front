@@ -21,7 +21,7 @@ const logos = {
 };
 
 const meta = {
-  title: "LeftNav/ButtonLogo",
+  title: "LeftNav/Item/Logo",
   component: LeftMenuButtonLogoComponent,
   tags: ["autodocs"],
 } satisfies Meta<typeof LeftMenuButtonLogoComponent>;

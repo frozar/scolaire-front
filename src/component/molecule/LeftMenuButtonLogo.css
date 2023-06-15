@@ -2,7 +2,7 @@
 @import "../../css/var.css";
 
 .left-menu-button-logo {
-  @apply p-1 rounded-lg inline-block;
+  @apply inline-block p-1 rounded-lg;
 }
 
 .left-menu-button-logo.active {
