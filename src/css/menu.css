@@ -267,59 +267,6 @@
 }
 
 /* -------------------------------------- redesign --------------------------------- */
-/* 
-@layer components {
-  #lateral-nav {
-    @apply bg-[#062F3F] text-white h-[100vh] w-[70px]  translate-y-[-60px]  flex-col flex items-start pt-3 fixed;
-    z-index: 1002;
-    transition-duration: 400ms;
-    &.active {
-      width: 200px;
-    }
-
-    > .lateral-nav-header {
-      @apply mx-5;
-      width: 140px;
-    }
-
-    > .lateral-nav-list {
-      margin: 20vh 0;
-      width: 100%;
-      > .lateral-nav-item {
-        @apply gap-2 px-4 py-[15px];
-        border-radius: 5px;
-        display: flex;
-        align-items: center;
-        cursor: pointer;
-        position: relative;
-        padding-right: 13px;
-        width: 100%;
-        fill: white;
-        color: white;
-        &.active {
-          color: #0cc683;
-          fill: #0cc683;
-          &::after {
-            content: "";
-            width: 13px;
-            height: 13px;
-            border-radius: 50%;
-            position: absolute;
-            z-index: -1;
-            background-color: #0cc683;
-            right: -5px;
-            outline: solid 13px #062f3f;
-          }
-        }
-      }
-    }
-    > #lateral-close {
-      position: absolute;
-      bottom: 10px;
-      right: 10%;
-    }
-  }
-} */
 
 #left-menu-container {
   @apply z-[1400] fixed translate-y-[-60px] w-fit;
