@@ -137,13 +137,12 @@ export function unselectAllBusLines() {
   return unselectMapItemAux(busLines());
 }
 
-export function selectElementByIdAux(
+export function setSelectedMapItemAux(
   mapItems: LineType | PointRamassageType,
-  currentId: number,
-  targetId: number
+  isTarget: boolean
 ) {
   const currentSetSelected = mapItems.setSelected;
-  if (currentId == targetId) {
+  if (isTarget) {
     currentSetSelected((previousSelected) => {
       return previousSelected ? previousSelected : true;
     });
@@ -156,9 +155,9 @@ export function selectElementByIdAux(
 
 function selectBusLineById(targetIdBusLine: number) {
   for (const busLine of busLines()) {
-    const currentIdBusLine = busLine.idBusLine;
+    const isTarget = targetIdBusLine == busLine.idBusLine;
 
-    selectElementByIdAux(busLine, currentIdBusLine, targetIdBusLine);
+    setSelectedMapItemAux(busLine, isTarget);
   }
 }
 

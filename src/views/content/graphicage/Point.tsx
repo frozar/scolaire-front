@@ -28,7 +28,7 @@ import { minMaxQty } from "./PointsRamassageAndEtablissement";
 import { authenticateWrap } from "../../layout/topMenu/authentication";
 import {
   unselectAllBusLines,
-  selectElementByIdAux,
+  setSelectedMapItemAux,
   unselectMapItemAux,
 } from "./line/busLinesUtils";
 
@@ -43,9 +43,9 @@ const [
 
 function selectPointById(targerIdPoint: number) {
   for (const point of points()) {
-    const currentIdPoint = point.id_point;
+    const isTarget = targerIdPoint == point.id_point;
 
-    selectElementByIdAux(point, currentIdPoint, targerIdPoint);
+    setSelectedMapItemAux(point, isTarget);
   }
 }
 
