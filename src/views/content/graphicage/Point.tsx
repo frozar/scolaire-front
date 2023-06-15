@@ -26,10 +26,7 @@ import {
 } from "../../../signaux";
 import { minMaxQty } from "./PointsRamassageAndEtablissement";
 import { authenticateWrap } from "../../layout/topMenu/authentication";
-import {
-  unselectAllBusLines,
-  setSelectedMapItemAux,
-} from "./line/busLinesUtils";
+import { unselectAllBusLines } from "./line/busLinesUtils";
 
 const [
   ,
@@ -44,7 +41,7 @@ function selectPointById(targerIdPoint: number) {
   for (const point of points()) {
     const isTarget = targerIdPoint == point.id_point;
 
-    setSelectedMapItemAux(point, isTarget);
+    point.setSelected(isTarget);
   }
 }
 
@@ -53,7 +50,7 @@ export const getSelectedPoint = (): PointRamassageType | undefined => {
 };
 
 export function unselectAllPoints() {
-  return points().map((point) => setSelectedMapItemAux(point, false));
+  return points().map((point) => point.setSelected(false));
 }
 
 const minSizeValue = 5;

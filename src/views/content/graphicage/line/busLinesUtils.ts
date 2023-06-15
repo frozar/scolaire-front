@@ -5,7 +5,6 @@ import {
   LineUnderConstructionType,
   NatureEnum,
   PointIdentityType,
-  PointRamassageType,
 } from "../../../../type";
 import { linkMap } from "../../../../global/linkPointIdentityCircle";
 
@@ -124,30 +123,14 @@ function getBusLineById(
 }
 
 export function unselectAllBusLines() {
-  return busLines().map((busLine) => setSelectedMapItemAux(busLine, false));
-}
-
-export function setSelectedMapItemAux(
-  mapItems: LineType | PointRamassageType,
-  isTarget: boolean
-) {
-  const currentSetSelected = mapItems.setSelected;
-  if (isTarget) {
-    currentSetSelected((previousSelected) => {
-      return previousSelected ? previousSelected : true;
-    });
-  } else {
-    currentSetSelected((previousSelected) => {
-      return previousSelected ? false : previousSelected;
-    });
-  }
+  return busLines().map((busLine) => busLine.setSelected(false));
 }
 
 function selectBusLineById(targetIdBusLine: number) {
   for (const busLine of busLines()) {
     const isTarget = targetIdBusLine == busLine.idBusLine;
 
-    setSelectedMapItemAux(busLine, isTarget);
+    busLine.setSelected(isTarget);
   }
 }
 
