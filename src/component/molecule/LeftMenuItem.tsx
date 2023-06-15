@@ -1,6 +1,6 @@
 import { JSXElement, Show, mergeProps } from "solid-js";
 
-import GraphicageLogo from "../../views/layout/leftMenu/logo/GraphicageLogo";
+import GraphicageLogo from "../atom/GraphicageLogo";
 import { SelectedMenuType } from "../../type";
 // import { useStateGui } from "../../StateGui";
 

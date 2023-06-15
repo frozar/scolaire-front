@@ -1,6 +1,6 @@
-import EnterpriseLogo from "./logo/EnterpriseLogo";
-import OpenPictogram from "./logo/OpenPictogram";
-import ClosePictogram from "./logo/ClosePictogram";
+import EnterpriseLogo from "../../../component/atom/EnterpriseLogo";
+import OpenPictogram from "../../../component/atom/OpenPictogram";
+import ClosePictogram from "../../../component/atom/ClosePictogram";
 import { Show, createSignal, onMount } from "solid-js";
 import { useStateGui } from "../../../StateGui";
 import { For } from "solid-js";

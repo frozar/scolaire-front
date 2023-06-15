@@ -1,7 +1,7 @@
-import ArretsLogo from "./logo/ArretsLogo";
+import ArretsLogo from "../../../component/atom/ArretsLogo";
 // import DashboardLogo from "./logo/DashboardLogo";
-import EtablissementLogo from "./logo/EtablissementLogo";
-import GraphicageLogo from "./logo/GraphicageLogo";
+import EtablissementLogo from "../../../component/atom/EtablissementLogo";
+import GraphicageLogo from "../../../component/atom/GraphicageLogo";
 // import SettingsLogo from "./logo/SettingsLogo";
 // import SupportLogo from "./logo/SupportLogo";
 // import VoirieLogo from "./logo/VoirieLogo";

@@ -1,4 +1,4 @@
-import { useStateGui } from "../../../../StateGui";
+import { useStateGui } from "../../StateGui";
 
 const [, { getDisplayedLeftMenu }] = useStateGui();
 
