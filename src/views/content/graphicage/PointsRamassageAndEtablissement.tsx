@@ -18,18 +18,26 @@ export const [minMaxQty, setMinMaxQty] = createSignal([1, 100]);
 export const [pointsReady, setPointsReady] = createSignal(false);
 
 const [pointsRamassageReady, setPointsRamassageReady] = createSignal(false);
-const [pointsEtablssementReady, setPointsEtablissementReady] =
+const [pointsEtablissementReady, setPointsEtablissementReady] =
   createSignal(false);
 
 createEffect(() => {
-  if (pointsRamassageReady() && pointsEtablssementReady()) {
+  if (pointsRamassageReady() && pointsEtablissementReady()) {
     setPointsReady(true);
   }
 });
 
 export function fetchPointsRamassage() {
   function addToPoints(data: PointRamassageType[], nature: NatureEnum) {
-    const points = mapDataAux(data, nature);
+    const points = data.map((point) => {
+      const [selected, setSelected] = createSignal(false);
+      return {
+        ...point,
+        nature,
+        selected,
+        setSelected,
+      };
+    });
 
     setPoints((dataArray) => [...dataArray, ...points]);
   }
@@ -67,19 +75,6 @@ export function fetchPointsRamassage() {
         setPointsEtablissementReady(true);
       });
   });
-}
-
-function mapDataAux(data: PointRamassageType[], nature: NatureEnum) {
-  const points = data.map((point) => {
-    const [selected, setSelected] = createSignal(false);
-    return {
-      ...point,
-      nature,
-      selected,
-      setSelected,
-    };
-  });
-  return points;
 }
 
 export default function () {
