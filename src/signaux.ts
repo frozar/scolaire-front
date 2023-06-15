@@ -10,11 +10,9 @@ import {
   userInformationType,
   ReturnMessageType,
   clearConfirmationType,
-  InfoPanelEnum,
   removeRamassageConfirmationType,
   ImportCsvBoxType,
 } from "./type";
-import { deepCopy } from "./utils";
 import { User } from "@auth0/auth0-spa-js";
 
 const [getDisplayedSpinningWheel, setDisplayedSpinningWheel] =
@@ -43,18 +41,6 @@ export function disableSpinningWheel() {
     }
     return currentBool;
   });
-}
-
-const [getSelectedElement, setterSelectedElement] = createSignal<
-  PointRamassageType | PointEtablissementType
->();
-
-export const selectedElement = getSelectedElement;
-
-export function setSelectedElement(
-  value: PointRamassageType | PointEtablissementType
-) {
-  setterSelectedElement(deepCopy(value));
 }
 
 export const [points, setPoints] = createSignal<
@@ -229,24 +215,4 @@ export function removeUserInformation(id: number) {
   );
 }
 
-// TODO: move to BusLines.tsx
-export const [pickerColor, setPickerColor] = createSignal("");
-
-// TODO: move to BusLines.tsx
-export const linkBusLinePolyline: {
-  [idBusLine: number]: {
-    polyline: L.Polyline;
-    arrows: L.Marker[];
-    color: string;
-  };
-} = {};
-
 export const [getLeafletMap, setLeafletMap] = createSignal<L.Map>();
-
-// TODO:
-export const [infoToDisplay, setInfoToDisplay] = createSignal<InfoPanelEnum>();
-
-// TODO:
-export const [timelineStopNames, setTimelineStopNames] = createSignal<string[]>(
-  []
-);

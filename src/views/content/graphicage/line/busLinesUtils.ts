@@ -9,17 +9,21 @@ import {
 import { linkMap } from "../../../../global/linkPointIdentityCircle";
 
 import { useStateAction } from "../../../../StateAction";
-import { busLines, setBusLines } from "./BusLines";
+import {
+  busLines,
+  linkBusLinePolyline,
+  setBusLines,
+  setPickerColor,
+} from "./BusLines";
 import {
   getLeafletMap,
-  linkBusLinePolyline,
   points,
-  setPickerColor,
   setRemoveConfirmation,
 } from "../../../../signaux";
 import { LineString } from "geojson";
 import { authenticateWrap } from "../../../layout/topMenu/authentication";
 import { createEffect, createSignal } from "solid-js";
+import { deselectAllPoints } from "../Point";
 
 export function getLatLngs(stops: PointIdentityType[]): L.LatLng[] {
   const latlngs: L.LatLng[] = [];
@@ -118,34 +122,14 @@ function getBusLineById(
   return busLines.find((route) => route.idBusLine == idBusLine);
 }
 
-function deselectBusLinesAux(busLines: LineType[]) {
-  for (const busLine of busLines) {
-    busLine.setSelected((previousBool) => {
-      return previousBool ? false : previousBool;
-    });
-  }
+export function deselectAllBusLines() {
+  busLines().map((busLine) => busLine.setSelected(false));
 }
 
-export function deselectBusLines() {
-  return deselectBusLinesAux(busLines());
-}
-
-function selectBusLineById(idBusLine: number) {
-  for (const busLine of busLines()) {
-    const currentIdBusLine = busLine.idBusLine;
-
-    if (currentIdBusLine == idBusLine) {
-      const currentSetSelected = busLine.setSelected;
-      currentSetSelected((previousSelected) => {
-        return previousSelected ? previousSelected : true;
-      });
-    } else {
-      const currentSetSelected = busLine.setSelected;
-      currentSetSelected((previousSelected) => {
-        return previousSelected ? false : previousSelected;
-      });
-    }
-  }
+function selectBusLineById(targetIdBusLine: number) {
+  busLines().map((busLine) =>
+    busLine.setSelected(targetIdBusLine == busLine.idBusLine)
+  );
 }
 
 const [, { isInReadMode, isInRemoveLineMode, getLineUnderConstruction }] =
@@ -224,8 +208,6 @@ function handleMouseOut(
 }
 
 function handleClick(idBusLine: number) {
-  setPickerColor(linkBusLinePolyline[idBusLine].color);
-
   if (isInRemoveLineMode()) {
     setRemoveConfirmation({
       displayed: true,
@@ -234,8 +216,16 @@ function handleClick(idBusLine: number) {
   }
 
   if (isInReadMode()) {
+    deselectAllPoints();
     selectBusLineById(idBusLine);
   }
+
+  const color = getSelectedBusLine()?.color;
+  if (!color) {
+    return;
+  }
+
+  setPickerColor(color);
 }
 
 export function attachEvent(
@@ -521,7 +511,6 @@ export function fetchBusLines() {
             linkBusLinePolyline[line.idBusLine] = {
               polyline: busLinePolyline,
               arrows: arrows,
-              color: line.color,
             };
           });
         }
@@ -532,7 +521,7 @@ export function fetchBusLines() {
   });
 }
 
-const getSelectedBusLine = (): LineType | undefined => {
+export const getSelectedBusLine = (): LineType | undefined => {
   const busLinesWk = busLines();
   if (busLinesWk.length == 0) {
     return;

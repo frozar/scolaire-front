@@ -11,20 +11,13 @@ import InfoPointName from "./InfoPointName";
 import {
   NatureEnum,
   isPointRamassage,
-  InfoPanelEnum,
   MessageLevelEnum,
   MessageTypeEnum,
+  LineType,
+  PointToDisplayType,
 } from "../../../../type";
 import { PointIdentityType } from "../../../../type";
-import {
-  selectedElement,
-  infoToDisplay,
-  setInfoToDisplay,
-  setTimelineStopNames,
-  addNewUserInformation,
-  linkBusLinePolyline,
-  pickerColor,
-} from "../../../../signaux";
+import { addNewUserInformation } from "../../../../signaux";
 import { useStateAction } from "../../../../StateAction";
 import {
   authenticateWrap,
@@ -34,31 +27,29 @@ import {
   getSelectedBusLineId,
   selectedBusLineStopNames,
   lineUnderConstructionStopNames,
+  getSelectedBusLine,
 } from "../line/busLinesUtils";
 import Timeline from "./Timeline";
+import {
+  linkBusLinePolyline,
+  pickerColor,
+  setBusLines,
+} from "../line/BusLines";
+import { getSelectedPoint } from "../Point";
 
 const [, { isInAddLineMode, resetLineUnderConstruction }] = useStateAction();
-
-type PointToDisplayType = {
-  id_point: number;
-  name: string;
-  nature: NatureEnum;
-  quantity: number;
-};
 
 export default function () {
   createEffect(() => {
     // When switching mode
-    setTimelineStopNames([]);
 
     if (!isInAddLineMode()) {
       resetLineUnderConstruction();
-      setInfoToDisplay(InfoPanelEnum.nothing);
     }
   });
 
   const selectedIdentity = createMemo<PointIdentityType | null>(() => {
-    const wkSelectedElement = selectedElement();
+    const wkSelectedElement = getSelectedPoint();
     if (!wkSelectedElement) {
       return null;
     }
@@ -130,39 +121,19 @@ export default function () {
     fetchAssociatedPoints
   );
 
-  const natureOfOpposite = () => {
-    const wkSelectedElement = selectedElement();
-    if (!wkSelectedElement) {
-      return NatureEnum.ramassage;
-    }
-
-    return isPointRamassage(wkSelectedElement)
-      ? NatureEnum.etablissement
-      : NatureEnum.ramassage;
-  };
-
   const ptToDisplay = () => {
     const wkAssociatedPoints = associatedPoints();
-    if (!wkAssociatedPoints) {
-      return [];
-    } else {
-      return wkAssociatedPoints.map((elt: PointToDisplayType) => ({
-        ...elt,
-        nature: natureOfOpposite(),
-      }));
-    }
+
+    return wkAssociatedPoints ? wkAssociatedPoints : [];
   };
 
   const firstColumnTitle = () => {
-    const wkSelectedElement = selectedElement();
+    const wkSelectedElement = getSelectedPoint();
     if (!wkSelectedElement) {
       return "";
     }
-    if (isPointRamassage(wkSelectedElement)) {
-      return "Etablissement";
-    } else {
-      return "Ramassage";
-    }
+
+    return isPointRamassage(wkSelectedElement) ? "Etablissement" : "Ramassage";
   };
 
   const handleColorPicker = (e: InputEvent) => {
@@ -205,12 +176,12 @@ export default function () {
       return;
     }
 
-    const selectedBusLineId = getSelectedBusLineId();
-
-    if (!selectedBusLineId) {
+    const selectedBusLine = getSelectedBusLine();
+    if (!selectedBusLine) {
       return;
     }
 
+    const selectedBusLineId = selectedBusLine.idBusLine;
     const color = (e.target as HTMLInputElement).value;
 
     authenticateWrap((headers) => {
@@ -220,7 +191,18 @@ export default function () {
         body: JSON.stringify({ color: color }),
       })
         .then(() => {
-          linkBusLinePolyline[selectedBusLineId].color = color;
+          setBusLines((prevBusLines) => {
+            const busLinesWithoutSelectedBusLine = prevBusLines.filter(
+              (busLine) => busLine.idBusLine != selectedBusLineId
+            );
+
+            const busLineWithNewColor: LineType = {
+              ...selectedBusLine,
+              color,
+            };
+
+            return [...busLinesWithoutSelectedBusLine, busLineWithNewColor];
+          });
         })
         .catch((err) => console.log(err));
     }).catch(() => {
@@ -243,8 +225,8 @@ export default function () {
       }}
     >
       <Switch fallback={<span>Aucun élément sélectionné</span>}>
-        <Match when={infoToDisplay() == InfoPanelEnum.point}>
-          <h2>{selectedElement()?.name}</h2>
+        <Match when={getSelectedPoint()}>
+          <h2>{getSelectedPoint()?.name}</h2>
           <Show
             when={0 < ptToDisplay().length}
             fallback={<span>Aucun élément à afficher</span>}

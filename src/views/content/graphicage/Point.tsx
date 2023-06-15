@@ -13,7 +13,6 @@ import {
   PointIdentityType,
   PointRamassageType,
   PointEtablissementType,
-  InfoPanelEnum,
 } from "../../../type";
 
 import { useStateAction } from "../../../StateAction";
@@ -21,13 +20,13 @@ import { renderAnimation } from "./animation";
 import { linkMap } from "../../../global/linkPointIdentityCircle";
 import {
   getLeafletMap,
-  setSelectedElement,
-  setInfoToDisplay,
   setIsRamassageReady,
   setIsEtablissementReady,
+  points,
 } from "../../../signaux";
 import { minMaxQty } from "./PointsRamassageAndEtablissement";
 import { authenticateWrap } from "../../layout/topMenu/authentication";
+import { deselectAllBusLines } from "./line/busLinesUtils";
 
 const [
   ,
@@ -37,6 +36,18 @@ const [
     isInAddLineMode,
   },
 ] = useStateAction();
+
+function selectPointById(targerIdPoint: number) {
+  points().map((point) => point.setSelected(targerIdPoint == point.id_point));
+}
+
+export const getSelectedPoint = (): PointRamassageType | undefined => {
+  return points().find((point) => point.selected());
+};
+
+export function deselectAllPoints() {
+  points().map((point) => point.setSelected(false));
+}
 
 const minSizeValue = 5;
 const maxSizeValue = 10;
@@ -147,10 +158,10 @@ export default function (props: {
         // eslint-disable-next-line solid/reactivity
         .on("click", () => {
           // Select the current element to display information
-          // TODO: to delete
-          setSelectedElement(point);
+
           if (!isInAddLineMode()) {
-            setInfoToDisplay(InfoPanelEnum.point);
+            deselectAllBusLines();
+            selectPointById(point.id_point);
             return;
           }
 

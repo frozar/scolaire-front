@@ -1,20 +1,13 @@
-import { NatureEnum } from "../../../../type";
 import { renderAnimation } from "../animation";
 
 import { linkMap } from "../../../../global/linkPointIdentityCircle";
+import { PointToDisplayType } from "../../../../type";
 
-export default function (props: {
-  point: {
-    id_point: number;
-    name: string;
-    nature: NatureEnum;
-  };
-}) {
+export default function (props: { point: PointToDisplayType }) {
   return (
     <a
       class="prevent-select"
-      // eslint-disable-next-line solid/style-prop
-      style="cursor: grab;"
+      style={{ cursor: "grab" }}
       onClick={() => {
         let element;
         if ((element = linkMap.get(props.point.id_point)?.getElement())) {

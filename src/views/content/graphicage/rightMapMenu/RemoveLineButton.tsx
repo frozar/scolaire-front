@@ -4,12 +4,14 @@ import { useStateAction } from "../../../../StateAction";
 import { displayRemoveLineMessage } from "../../../../userInformation/utils";
 import ButtonGraphicageRightMenu from "../../../../component/atom/ButtonGraphicageRightMenu";
 import { fetchBusLines } from "../line/busLinesUtils";
+import { deselectAllPoints } from "../Point";
 
 const [, { setModeRemoveLine, isInRemoveLineMode, setModeRead }] =
   useStateAction();
 
 export default function () {
   const handleClick = () => {
+    deselectAllPoints();
     if (isInRemoveLineMode()) {
       setModeRead();
       fetchBusLines();

@@ -9,10 +9,9 @@ export type EleveVersEtablissementType = {
   ramassage_id_point: number;
 };
 
-// TODO: Use string as value for enum
 export enum NatureEnum {
-  ramassage,
-  etablissement,
+  ramassage = "Ramassage",
+  etablissement = "Etablissement",
 }
 
 export type PointRamassageType = {
@@ -22,9 +21,17 @@ export type PointRamassageType = {
   location: string;
   name: string;
   quantity: number;
+  selected: Accessor<boolean>;
+  setSelected: Setter<boolean>;
 };
 
 export type PointEtablissementType = PointRamassageType;
+
+export type PointToDisplayType = {
+  id_point: number;
+  name: string;
+  quantity: number;
+};
 
 export function isPointRamassage(pt: { nature: NatureEnum }) {
   return pt.nature === NatureEnum.ramassage;
@@ -148,11 +155,6 @@ export type MenuItemType = {
   Logo: () => JSX.Element;
   displayText: boolean;
 };
-
-export enum InfoPanelEnum {
-  point,
-  nothing,
-}
 
 export type StopItemType = {
   id: number;
