@@ -20,9 +20,6 @@ export default function () {
     }
     for (const event of ["mousemove", "mousedown"]) {
       if (leafletMap.hasEventListeners(event)) {
-        if (!leafletMap) {
-          return;
-        }
         leafletMap.off(event);
       }
     }
@@ -37,7 +34,6 @@ export default function () {
   });
 
   const stops = () => getLineUnderConstruction().stops;
-  let lastLatLng: L.LatLng;
 
   function drawLineTip(
     lastPointIdentity: PointIdentityType | undefined,
@@ -79,53 +75,13 @@ export default function () {
     }
   }
 
-  // function getMouseLatLong(latlng: L.LatLng) {
-  //   const leafletMap = getLeafletMap();
-  //   if (!leafletMap) {
-  //     return;
-  //   }
-  //   lastLatLng = latlng;
-  //   // Draw line tip
-  //   const lastPointIdentity = stops().at(-1);
-  //   drawLineTip(lastPointIdentity, latlng, leafletMap);
-  // }
-
   const leafletMap = getLeafletMap();
 
-  // leafletMap?.on("mousedown", ({ latlng }) => {
-  //   lastLatLng = latlng;
-
   leafletMap?.on("mousemove", ({ latlng }) => {
-    // const leafletMap = getLeafletMap();
-    // if (!leafletMap) {
-    //   return;
-    // }
-    lastLatLng = latlng;
     // Draw line tip
     const lastPointIdentity = stops().at(-1);
-    drawLineTip(lastPointIdentity, lastLatLng, leafletMap);
+    drawLineTip(lastPointIdentity, latlng, leafletMap);
   });
-  // });
-
-  // createEffect(() => {
-  //   console.log("createEffect 11");
-
-  //   const leafletMap = getLeafletMap();
-  //   if (!leafletMap) {
-  //     return;
-  //   }
-
-  // const lastPointIdentity = stops().at(-1);
-
-  // drawLineTip(lastPointIdentity, lastLatLng, leafletMap);
-
-  // leafletMap.on("mousedown", ({ latlng }) => getMouseLatLong(latlng));
-
-  // leafletMap.on("mousemove", ({ latlng }) => {
-  //   console.log("mousemove");
-  //   getMouseLatLong(latlng);
-  // });
-  // });
 
   onCleanup(() => {
     onCleanupHandler();
