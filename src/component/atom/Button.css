@@ -1,0 +1,14 @@
+@import "../../css/tailwind.css";
+@import "../../css/var.css";
+
+.btn-generic {
+  @apply inline-flex w-full justify-center rounded-md bg-green-500 px-3 py-2 text-sm font-semibold text-white shadow-sm sm:ml-3 sm:w-auto duration-150;
+}
+
+.btn-generic:not([disabled]):hover {
+  @apply bg-green-600;
+}
+
+.btn-generic:disabled {
+  @apply bg-gray-300 opacity-75;
+}

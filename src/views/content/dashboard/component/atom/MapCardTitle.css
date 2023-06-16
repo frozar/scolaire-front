@@ -1,0 +1,6 @@
+@import "../../../../../css/tailwind";
+@import "../../../../../css/var";
+
+.map-card-title {
+  @apply text-center uppercase text-lg font-medium text-gray-800;
+}

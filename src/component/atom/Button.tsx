@@ -1,16 +1,25 @@
-import { JSX } from "solid-js";
-import "./button.css";
+import { mergeProps } from "solid-js";
+import "./Button.css";
 
-export default function (props: {
+export interface ButtonProps {
   onClickHandler: () => void;
-  children?: JSX.Element;
-}) {
-  // eslint-disable-next-line solid/reactivity
-  const onClickHandler = props.onClickHandler;
+  label: string;
+  isDisabled?: boolean;
+}
+
+export default function (props: ButtonProps) {
+  const mergedProps = mergeProps(
+    { label: "NO LABEL", isDisabled: false },
+    props
+  );
 
   return (
-    <button class="btn-generic" onClick={onClickHandler}>
-      {props.children}
+    <button
+      class="btn-generic"
+      onClick={() => mergedProps.onClickHandler()}
+      disabled={mergedProps.isDisabled}
+    >
+      {mergedProps.label}
     </button>
   );
 }

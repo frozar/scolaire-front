@@ -1,0 +1,46 @@
+@import "../../../../../css/tailwind.css";
+@import "../../../../../css/var.css";
+
+.map-card-container {
+  @apply bg-white rounded-md px-2 py-2 max-w-xs duration-150 shadow-lg ring-1 ring-gray-900/5 cursor-pointer;
+}
+
+.map-card-container:hover {
+  @apply bg-gray-100;
+}
+
+/* Button DELETE container */
+.button-delete-container {
+  @apply absolute bottom-0 right-0;
+  border-bottom-right-radius: inherit;
+}
+
+/* Button DELETE */
+.button-delete {
+  @apply p-2 bg-white bg-opacity-50 duration-150 rounded-tl-xl;
+  border-bottom-right-radius: inherit;
+}
+
+.button-delete:hover {
+  @apply bg-opacity-100;
+}
+
+.button-delete:hover > svg {
+  @apply fill-red-500;
+}
+
+/* Button EDIT */
+.button-edit {
+  @apply align-middle p-1 duration-150 bg-gray-100 border rounded-full disabled:bg-gray-300;
+}
+
+.button-edit:not([disabled]):hover {
+  @apply bg-white;
+}
+.button-edit > svg {
+  @apply scale-75;
+}
+
+.button-edit:not([disabled]):hover > svg > path {
+  @apply stroke-green-500;
+}
