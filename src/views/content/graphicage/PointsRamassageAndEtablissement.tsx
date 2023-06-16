@@ -1,10 +1,6 @@
 import { createSignal, onMount, For, onCleanup, createEffect } from "solid-js";
 
-import {
-  NatureEnum,
-  // PointRamassageType,
-  // PointEtablissementType,
-} from "../../../type";
+import { NatureEnum, PointRamassageType } from "../../../type";
 import Point from "./Point";
 import {
   setPoints,
@@ -31,8 +27,7 @@ export function fetchPointsRamassage() {
   function addToPoints(
     data: {
       id: number;
-      idPoint: number;
-      // nature: NatureEnum;
+      id_point: number;
       location: string;
       name: string;
       quantity: number;
@@ -41,12 +36,17 @@ export function fetchPointsRamassage() {
   ) {
     const points = data.map((point) => {
       const [selected, setSelected] = createSignal(false);
+
       return {
-        ...point,
+        id: point.id,
+        idPoint: point.id_point,
+        location: point.location,
+        name: point.name,
+        quantity: point.quantity,
         nature,
         selected,
         setSelected,
-      };
+      } as PointRamassageType;
     });
 
     setPoints((dataArray) => [...dataArray, ...points]);
@@ -73,27 +73,12 @@ export function fetchPointsRamassage() {
             quantity: number;
           }[]
         ) => {
-          console.log("res", res);
-
-          // const data = res.map((point) => ({
-          //   ...point,
-          //   idPoint: point.id_point,
-          // }));
-          const data = res.map((point) => ({
-            id: point.id,
-            idPoint: point.id_point,
-            location: point.location,
-            name: point.name,
-            quantity: point.quantity,
-          }));
-          console.log("data", data);
-
           setMinMaxQty([
-            Math.min(...data.map((value) => value.quantity)),
-            Math.max(...data.map((value) => value.quantity)),
+            Math.min(...res.map((value) => value.quantity)),
+            Math.max(...res.map((value) => value.quantity)),
           ]);
 
-          addToPoints(data, NatureEnum.ramassage);
+          addToPoints(res, NatureEnum.ramassage);
 
           setPointsRamassageReady(true);
         }
@@ -116,14 +101,7 @@ export function fetchPointsRamassage() {
             quantity: number;
           }[]
         ) => {
-          const data = res.map((point) => ({
-            id: point.id,
-            idPoint: point.id_point,
-            location: point.location,
-            name: point.name,
-            quantity: point.quantity,
-          }));
-          addToPoints(data, NatureEnum.etablissement);
+          addToPoints(res, NatureEnum.etablissement);
 
           setPointsEtablissementReady(true);
         }

@@ -82,7 +82,7 @@ export default function () {
   const fetchAssociatedPoints = async (urlParameters: {
     id: number;
     nature: string;
-    // TODO: remove eslint error
+    // TODO: fix eslint error
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   }): Promise<any> => {
     const { id, nature } = urlParameters;
@@ -113,6 +113,7 @@ export default function () {
               name: string;
               quantity: number;
             }[] = await res.json();
+
             const points: PointToDisplayType[] = data.map((point) => {
               return {
                 idPoint: point.id_point,
@@ -120,6 +121,7 @@ export default function () {
                 quantity: point.quantity,
               };
             });
+
             return points;
           });
         })

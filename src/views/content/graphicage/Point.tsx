@@ -255,8 +255,6 @@ export default function (props: {
 
     const element = circle.getElement();
     if (element) {
-      // console.log("point()", point());
-
       linkMap.set(point().idPoint, circle);
     }
 

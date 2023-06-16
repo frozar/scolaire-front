@@ -413,7 +413,7 @@ export function fetchBusLines() {
         const stopsWithNatureEnum = resLine.stops.map(
           (stop) =>
             ({
-              ...stop,
+              id: stop.id,
               idPoint: stop.id_point,
               nature:
                 stop["nature"] === "ramassage"
