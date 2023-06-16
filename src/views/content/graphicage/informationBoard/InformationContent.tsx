@@ -107,23 +107,27 @@ export default function () {
               "Content-Type": "application/json",
               authorization: `Bearer ${token}`,
             },
-          }).then(async (res) => {
-            const data: {
-              id_point: number;
-              name: string;
-              quantity: number;
-            }[] = await res.json();
+          })
+            .then((res) => res.json())
+            .then(
+              (
+                res: {
+                  id_point: number;
+                  name: string;
+                  quantity: number;
+                }[]
+              ) => {
+                const points: PointToDisplayType[] = res.map((point) => {
+                  return {
+                    idPoint: point.id_point,
+                    name: point.name,
+                    quantity: point.quantity,
+                  };
+                });
 
-            const points: PointToDisplayType[] = data.map((point) => {
-              return {
-                idPoint: point.id_point,
-                name: point.name,
-                quantity: point.quantity,
-              };
-            });
-
-            return points;
-          });
+                return points;
+              }
+            );
         })
         .catch((err) => {
           console.log(err);
