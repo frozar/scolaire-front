@@ -21,6 +21,8 @@ export default function () {
 
   createEffect(() => {
     // Take care of undo/redo
+    console.log("createEffect");
+
     busLinePolyline?.remove();
 
     const leafletMap = getLeafletMap();

@@ -37,19 +37,33 @@ const makeStateActionContext = () => {
 
   // eslint-disable-next-line solid/reactivity
   const [state, setState] = record(createStore(defaultState), history);
+  // console.log(state.lineUnderConstruction.stops);
 
   function toggleAltimetryAnimation() {
     setState("altimetry", "animation", (animation: boolean) => !animation);
   }
 
   function addPointToLineUnderConstruction(point: PointIdentityType) {
+    console.log("01.1");
+
     setState("lineUnderConstruction", "stops", (line: PointIdentityType[]) => {
+      console.log("state string", JSON.stringify(state.lineUnderConstruction));
+      console.log("state", state.lineUnderConstruction);
+      // console.log("stops", state.lineUnderConstruction.stops);
+      console.log("line", line);
+
+      console.log("01.2");
       if (line.length === 0) {
+        console.log("[point]", [point]);
+
+        console.log("01.3");
         return [point];
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       } else if (_.isEqual(line.at(-1)!, point)) {
+        console.log("01.4");
         return line;
       } else {
+        console.log("01.5");
         return [...line, point];
       }
     });

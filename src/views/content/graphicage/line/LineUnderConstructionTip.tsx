@@ -18,14 +18,15 @@ export default function () {
     if (!leafletMap) {
       return;
     }
-
-    if (leafletMap.hasEventListeners("mousemove")) {
-      lineUnderConstructionTip?.remove();
-      if (!leafletMap) {
-        return;
+    for (const event of ["mousemove", "mousedown"]) {
+      if (leafletMap.hasEventListeners(event)) {
+        if (!leafletMap) {
+          return;
+        }
+        leafletMap.off(event);
       }
-      leafletMap.off("mousemove");
     }
+    lineUnderConstructionTip?.remove();
   }
 
   // When the user leave the add line mode, clean up the line tip
@@ -78,27 +79,53 @@ export default function () {
     }
   }
 
-  createEffect(() => {
-    const leafletMap = getLeafletMap();
-    if (!leafletMap) {
-      return;
-    }
+  // function getMouseLatLong(latlng: L.LatLng) {
+  //   const leafletMap = getLeafletMap();
+  //   if (!leafletMap) {
+  //     return;
+  //   }
+  //   lastLatLng = latlng;
+  //   // Draw line tip
+  //   const lastPointIdentity = stops().at(-1);
+  //   drawLineTip(lastPointIdentity, latlng, leafletMap);
+  // }
 
+  const leafletMap = getLeafletMap();
+
+  // leafletMap?.on("mousedown", ({ latlng }) => {
+  //   lastLatLng = latlng;
+
+  leafletMap?.on("mousemove", ({ latlng }) => {
+    // const leafletMap = getLeafletMap();
+    // if (!leafletMap) {
+    //   return;
+    // }
+    lastLatLng = latlng;
+    // Draw line tip
     const lastPointIdentity = stops().at(-1);
     drawLineTip(lastPointIdentity, lastLatLng, leafletMap);
-
-    leafletMap.on("mousemove", ({ latlng }) => {
-      const leafletMap = getLeafletMap();
-      if (!leafletMap) {
-        return;
-      }
-
-      lastLatLng = latlng;
-      // Draw line tip
-      const lastPointIdentity = stops().at(-1);
-      drawLineTip(lastPointIdentity, latlng, leafletMap);
-    });
   });
+  // });
+
+  // createEffect(() => {
+  //   console.log("createEffect 11");
+
+  //   const leafletMap = getLeafletMap();
+  //   if (!leafletMap) {
+  //     return;
+  //   }
+
+  // const lastPointIdentity = stops().at(-1);
+
+  // drawLineTip(lastPointIdentity, lastLatLng, leafletMap);
+
+  // leafletMap.on("mousedown", ({ latlng }) => getMouseLatLong(latlng));
+
+  // leafletMap.on("mousemove", ({ latlng }) => {
+  //   console.log("mousemove");
+  //   getMouseLatLong(latlng);
+  // });
+  // });
 
   onCleanup(() => {
     onCleanupHandler();
