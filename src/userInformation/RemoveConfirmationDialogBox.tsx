@@ -42,19 +42,6 @@ export default function () {
             type: MessageTypeEnum.removeLine,
             content: `La ligne ${idToRemove} a bien été supprimée`,
           });
-          // // remove() et suppr de la route correspondante
-          // const routeToDelete = routes().find(
-          //   (route) => route.busLine.idBusLine == idToCheck
-          // );
-
-          // if (!routeToDelete) {
-          //   return;
-          // }
-
-          // removeRoute(routeToDelete, true, true);
-          // setRoutes(
-          //   routes().filter((route) => route.busLine.idBusLine != idToCheck)
-          // );
           closeRemoveConfirmationBox();
         } else {
           addNewUserInformation({
