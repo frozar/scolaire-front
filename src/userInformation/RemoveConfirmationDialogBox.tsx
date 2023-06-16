@@ -1,4 +1,4 @@
-import { Show, createEffect, createSignal } from "solid-js";
+import { Show, createEffect, createSignal, onCleanup, onMount } from "solid-js";
 import { Transition } from "solid-transition-group";
 
 import ClickOutside from "../component/ClickOutside";
@@ -6,16 +6,12 @@ import {
   addNewUserInformation,
   getRemoveConfirmation,
   closeRemoveConfirmationBox,
-  // setRoutes,
-  // routes,
-  // busLines,
 } from "../signaux";
 
 import { deleteBusLine } from "../request";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { assertIsNode } from "../utils";
 import { fetchBusLines } from "../views/content/graphicage/line/busLinesUtils";
-// import { removeRoute } from "../views/content/graphicage/line/BusLines";
 
 export default function () {
   const displayed = () => getRemoveConfirmation()["displayed"];
@@ -46,19 +42,6 @@ export default function () {
             type: MessageTypeEnum.removeLine,
             content: `La ligne ${idToRemove} a bien été supprimée`,
           });
-          // // remove() et suppr de la route correspondante
-          // const routeToDelete = routes().find(
-          //   (route) => route.busLine.idBusLine == idToCheck
-          // );
-
-          // if (!routeToDelete) {
-          //   return;
-          // }
-
-          // removeRoute(routeToDelete, true, true);
-          // setRoutes(
-          //   routes().filter((route) => route.busLine.idBusLine != idToCheck)
-          // );
           closeRemoveConfirmationBox();
         } else {
           addNewUserInformation({
@@ -84,6 +67,27 @@ export default function () {
         fetchBusLines();
       });
   }
+
+  function exitModal({ code }: KeyboardEvent) {
+    // @ts-expect-error: Currently the 'keyboard' field doesn't exist on 'navigator'
+    const keyboard = navigator.keyboard;
+    // eslint-disable-next-line solid/reactivity
+    keyboard.getLayoutMap().then(() => {
+      if (code === "Escape") {
+        if (getRemoveConfirmation().displayed) {
+          closeRemoveConfirmationBox();
+        }
+      }
+    });
+  }
+
+  onMount(() => {
+    document.addEventListener("keyup", exitModal);
+  });
+
+  onCleanup(() => {
+    document.removeEventListener("keyup", exitModal);
+  });
 
   const [buttonRef, setButtonRef] = createSignal<
     HTMLButtonElement | undefined

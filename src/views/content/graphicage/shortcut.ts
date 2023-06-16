@@ -6,6 +6,7 @@ import {
   displayedClearConfirmationDialogBox,
   getDisplayedGeneratorDialogBox,
   getExportConfirmationDialogBox,
+  getRemoveConfirmation,
 } from "../../../signaux";
 import {
   displayAddLineMessage,
@@ -34,6 +35,7 @@ const isOpenedModal = () =>
   getExportConfirmationDialogBox().displayed ||
   getDisplayedGeneratorDialogBox() ||
   displayedClearConfirmationDialogBox().displayed ||
+  getRemoveConfirmation().displayed ||
   displayedConfirmStopAddLine();
 
 const [, { getSelectedMenu }] = useStateGui();
