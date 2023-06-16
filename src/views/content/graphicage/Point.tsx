@@ -38,7 +38,7 @@ const [
 ] = useStateAction();
 
 function selectPointById(targerIdPoint: number) {
-  points().map((point) => point.setSelected(targerIdPoint == point.id_point));
+  points().map((point) => point.setSelected(targerIdPoint == point.idPoint));
 }
 
 export const getSelectedPoint = (): PointRamassageType | undefined => {
@@ -117,7 +117,7 @@ export default function (props: {
 
                 return {
                   id: associatedId,
-                  id_point: id_point,
+                  idPoint: id_point,
                   nature: associatedNature,
                 };
               })
@@ -161,13 +161,13 @@ export default function (props: {
 
           if (!isInAddLineMode()) {
             deselectAllBusLines();
-            selectPointById(point.id_point);
+            selectPointById(point.idPoint);
             return;
           }
 
           const pointIdentity: PointIdentityType = {
             id: point.id,
-            id_point: point.id_point,
+            idPoint: point.idPoint,
             nature: point.nature,
           };
 
@@ -181,7 +181,7 @@ export default function (props: {
           for (const associatedPoint of associatedPoints()) {
             let element;
             if (
-              (element = linkMap.get(associatedPoint.id_point)?.getElement())
+              (element = linkMap.get(associatedPoint.idPoint)?.getElement())
             ) {
               renderAnimation(element);
             }
@@ -193,7 +193,7 @@ export default function (props: {
         // eslint-disable-next-line solid/reactivity
         .on("mouseover", () => {
           for (const associatedPoint of associatedPoints()) {
-            const element = linkMap.get(associatedPoint.id_point)?.getElement();
+            const element = linkMap.get(associatedPoint.idPoint)?.getElement();
             const { nature } = associatedPoint;
             const className =
               nature === NatureEnum.ramassage
@@ -207,7 +207,7 @@ export default function (props: {
         // eslint-disable-next-line solid/reactivity
         .on("mouseout", () => {
           for (const associatedPoint of associatedPoints()) {
-            const element = linkMap.get(associatedPoint.id_point)?.getElement();
+            const element = linkMap.get(associatedPoint.idPoint)?.getElement();
             const { nature } = associatedPoint;
             const className =
               nature === NatureEnum.ramassage
@@ -255,7 +255,9 @@ export default function (props: {
 
     const element = circle.getElement();
     if (element) {
-      linkMap.set(point().id_point, circle);
+      // console.log("point()", point());
+
+      linkMap.set(point().idPoint, circle);
     }
 
     // Fetch associated points (ramassage or etablissement) and
@@ -271,7 +273,7 @@ export default function (props: {
   });
 
   onCleanup(() => {
-    linkMap.delete(point().id_point);
+    linkMap.delete(point().idPoint);
     circle.remove();
   });
 

@@ -2,8 +2,8 @@ import { createSignal, onMount, For, onCleanup, createEffect } from "solid-js";
 
 import {
   NatureEnum,
-  PointRamassageType,
-  PointEtablissementType,
+  // PointRamassageType,
+  // PointEtablissementType,
 } from "../../../type";
 import Point from "./Point";
 import {
@@ -29,7 +29,14 @@ createEffect(() => {
 
 export function fetchPointsRamassage() {
   function addToPoints(
-    data: PointRamassageType[] | PointEtablissementType[],
+    data: {
+      id: number;
+      idPoint: number;
+      // nature: NatureEnum;
+      location: string;
+      name: string;
+      quantity: number;
+    }[],
     nature: NatureEnum
   ) {
     const points = data.map((point) => {
@@ -55,16 +62,42 @@ export function fetchPointsRamassage() {
       .then((res) => {
         return res.json();
       })
-      .then((data: PointRamassageType[]) => {
-        setMinMaxQty([
-          Math.min(...data.map((value) => value.quantity)),
-          Math.max(...data.map((value) => value.quantity)),
-        ]);
+      .then(
+        (
+          res: {
+            id: number;
+            id_point: number;
+            nature: NatureEnum;
+            location: string;
+            name: string;
+            quantity: number;
+          }[]
+        ) => {
+          console.log("res", res);
 
-        addToPoints(data, NatureEnum.ramassage);
+          // const data = res.map((point) => ({
+          //   ...point,
+          //   idPoint: point.id_point,
+          // }));
+          const data = res.map((point) => ({
+            id: point.id,
+            idPoint: point.id_point,
+            location: point.location,
+            name: point.name,
+            quantity: point.quantity,
+          }));
+          console.log("data", data);
 
-        setPointsRamassageReady(true);
-      });
+          setMinMaxQty([
+            Math.min(...data.map((value) => value.quantity)),
+            Math.max(...data.map((value) => value.quantity)),
+          ]);
+
+          addToPoints(data, NatureEnum.ramassage);
+
+          setPointsRamassageReady(true);
+        }
+      );
 
     fetch(import.meta.env.VITE_BACK_URL + "/points_etablissement", {
       headers,
@@ -72,11 +105,29 @@ export function fetchPointsRamassage() {
       .then((res) => {
         return res.json();
       })
-      .then((data: PointEtablissementType[]) => {
-        addToPoints(data, NatureEnum.etablissement);
+      .then(
+        (
+          res: {
+            id: number;
+            id_point: number;
+            nature: NatureEnum;
+            location: string;
+            name: string;
+            quantity: number;
+          }[]
+        ) => {
+          const data = res.map((point) => ({
+            id: point.id,
+            idPoint: point.id_point,
+            location: point.location,
+            name: point.name,
+            quantity: point.quantity,
+          }));
+          addToPoints(data, NatureEnum.etablissement);
 
-        setPointsEtablissementReady(true);
-      });
+          setPointsEtablissementReady(true);
+        }
+      );
   });
 }
 

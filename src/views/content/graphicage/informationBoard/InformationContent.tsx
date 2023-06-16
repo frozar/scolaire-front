@@ -54,8 +54,8 @@ export default function () {
       return null;
     }
 
-    const { id, id_point, nature } = wkSelectedElement;
-    return { id, id_point, nature };
+    const { id, idPoint, nature } = wkSelectedElement;
+    return { id, idPoint, nature };
   });
 
   const fetchAssociatedPointsParameters = (): {
@@ -82,7 +82,7 @@ export default function () {
   const fetchAssociatedPoints = async (urlParameters: {
     id: number;
     nature: string;
-  }): Promise<PointToDisplayType[]> => {
+  }): Promise<any> => {
     const { id, nature } = urlParameters;
 
     if (id == -1 || nature == null) {
@@ -105,8 +105,20 @@ export default function () {
               "Content-Type": "application/json",
               authorization: `Bearer ${token}`,
             },
-          }).then((res) => {
-            return res.json();
+          }).then(async (res) => {
+            const data: {
+              id_point: number;
+              name: string;
+              quantity: number;
+            }[] = await res.json();
+            const points: PointToDisplayType[] = data.map((point) => {
+              return {
+                idPoint: point.id_point,
+                name: point.name,
+                quantity: point.quantity,
+              };
+            });
+            return points;
           });
         })
         .catch((err) => {

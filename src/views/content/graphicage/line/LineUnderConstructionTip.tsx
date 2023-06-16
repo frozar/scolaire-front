@@ -46,7 +46,7 @@ export default function () {
       return;
     }
 
-    const circle = linkMap.get(lastPointIdentity.id_point);
+    const circle = linkMap.get(lastPointIdentity.idPoint);
     if (!circle) {
       return;
     }

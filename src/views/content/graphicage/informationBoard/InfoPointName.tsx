@@ -10,7 +10,9 @@ export default function (props: { point: PointToDisplayType }) {
       style={{ cursor: "grab" }}
       onClick={() => {
         let element;
-        if ((element = linkMap.get(props.point.id_point)?.getElement())) {
+        console.log(props.point);
+
+        if ((element = linkMap.get(props.point.idPoint)?.getElement())) {
           renderAnimation(element);
         }
       }}

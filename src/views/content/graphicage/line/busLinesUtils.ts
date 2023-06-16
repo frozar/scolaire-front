@@ -29,7 +29,7 @@ export function getLatLngs(stops: PointIdentityType[]): L.LatLng[] {
   const latlngs: L.LatLng[] = [];
 
   for (const pointIdentity of stops) {
-    const circle = linkMap.get(pointIdentity.id_point);
+    const circle = linkMap.get(pointIdentity.idPoint);
     if (circle) {
       latlngs.push(circle.getLatLng());
     }
@@ -414,6 +414,7 @@ export function fetchBusLines() {
           (stop) =>
             ({
               ...stop,
+              idPoint: stop.id_point,
               nature:
                 stop["nature"] === "ramassage"
                   ? NatureEnum.ramassage
@@ -540,10 +541,10 @@ export const getSelectedBusLineId = (): number | undefined => {
 };
 
 function getStopNames(busLine: LineUnderConstructionType) {
-  const stopIds = busLine.stops.map((stop) => stop.id_point);
+  const stopIds = busLine.stops.map((stop) => stop.idPoint);
 
   return stopIds.map(
-    (stopId) => points().filter((point) => point.id_point === stopId)[0].name
+    (stopId) => points().filter((point) => point.idPoint === stopId)[0].name
   );
 }
 

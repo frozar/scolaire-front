@@ -39,8 +39,8 @@ export function generateCircuit(
   // Which students are not already taken by a bus?
   const all_pois = points().map(
     (elt: PointRamassageType): PointIdentityType => {
-      const { id, id_point, nature } = elt;
-      return { id, id_point, nature };
+      const { id, idPoint, nature } = elt;
+      return { id, idPoint, nature };
     }
   );
 
