@@ -324,7 +324,6 @@ function computeArrowsInReadMode(latLngs: L.LatLng[], color: string) {
 
   for (let i = iStart; i < latLngs.length - 1; i = i + increment) {
     // on road routes
-
     const latArrow = latLngs[i].lat;
     const lngArrow = latLngs[i].lng;
     const diffX = latLngs[i + 1].lng - latLngs[i - 1].lng;
@@ -357,7 +356,6 @@ function computeArrowsInNotReadMode(latLngs: L.LatLng[], color: string) {
 
   for (let i = iStart; i < latLngs.length - 1; i = i + increment) {
     // straight routes
-
     const latArrow = (latLngs[i + 1].lat - latLngs[i].lat) / 2 + latLngs[i].lat;
     const lngArrow = (latLngs[i + 1].lng - latLngs[i].lng) / 2 + latLngs[i].lng;
     const diffX = latLngs[i + 1].lng - latLngs[i].lng;

@@ -18,12 +18,11 @@ export default function () {
     if (!leafletMap) {
       return;
     }
-    for (const event of ["mousemove", "mousedown"]) {
-      if (leafletMap.hasEventListeners(event)) {
-        leafletMap.off(event);
-      }
+
+    if (leafletMap.hasEventListeners("mousemove")) {
+      lineUnderConstructionTip?.remove();
+      leafletMap.off("mousemove");
     }
-    lineUnderConstructionTip?.remove();
   }
 
   // When the user leave the add line mode, clean up the line tip

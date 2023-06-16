@@ -170,10 +170,8 @@ export default function (props: {
             id_point: point.id_point,
             nature: point.nature,
           };
-          console.log("01");
 
           addPointToLineUnderConstruction(pointIdentity);
-          console.log("02");
 
           if (!(1 < getLineUnderConstruction().stops.length)) {
             return;
