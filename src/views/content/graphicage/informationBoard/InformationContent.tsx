@@ -82,6 +82,8 @@ export default function () {
   const fetchAssociatedPoints = async (urlParameters: {
     id: number;
     nature: string;
+    // TODO: remove eslint error
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   }): Promise<any> => {
     const { id, nature } = urlParameters;
 
