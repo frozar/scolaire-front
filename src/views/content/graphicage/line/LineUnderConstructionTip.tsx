@@ -21,9 +21,6 @@ export default function () {
 
     if (leafletMap.hasEventListeners("mousemove")) {
       lineUnderConstructionTip?.remove();
-      if (!leafletMap) {
-        return;
-      }
       leafletMap.off("mousemove");
     }
   }
@@ -36,7 +33,6 @@ export default function () {
   });
 
   const stops = () => getLineUnderConstruction().stops;
-  let lastLatLng: L.LatLng;
 
   function drawLineTip(
     lastPointIdentity: PointIdentityType | undefined,
@@ -78,26 +74,12 @@ export default function () {
     }
   }
 
-  createEffect(() => {
-    const leafletMap = getLeafletMap();
-    if (!leafletMap) {
-      return;
-    }
+  const leafletMap = getLeafletMap();
 
+  leafletMap?.on("mousemove", ({ latlng }) => {
+    // Draw line tip
     const lastPointIdentity = stops().at(-1);
-    drawLineTip(lastPointIdentity, lastLatLng, leafletMap);
-
-    leafletMap.on("mousemove", ({ latlng }) => {
-      const leafletMap = getLeafletMap();
-      if (!leafletMap) {
-        return;
-      }
-
-      lastLatLng = latlng;
-      // Draw line tip
-      const lastPointIdentity = stops().at(-1);
-      drawLineTip(lastPointIdentity, latlng, leafletMap);
-    });
+    drawLineTip(lastPointIdentity, latlng, leafletMap);
   });
 
   onCleanup(() => {
