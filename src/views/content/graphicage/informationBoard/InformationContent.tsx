@@ -82,9 +82,7 @@ export default function () {
   const fetchAssociatedPoints = async (urlParameters: {
     id: number;
     nature: string;
-    // TODO: fix eslint error
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  }): Promise<any> => {
+  }): Promise<PointToDisplayType[]> => {
     const { id, nature } = urlParameters;
 
     if (id == -1 || nature == null) {
@@ -107,27 +105,22 @@ export default function () {
               "Content-Type": "application/json",
               authorization: `Bearer ${token}`,
             },
-          })
-            .then((res) => res.json())
-            .then(
-              (
-                res: {
-                  id_point: number;
-                  name: string;
-                  quantity: number;
-                }[]
-              ) => {
-                const points: PointToDisplayType[] = res.map((point) => {
-                  return {
-                    idPoint: point.id_point,
-                    name: point.name,
-                    quantity: point.quantity,
-                  };
-                });
+          });
+        })
+        .then(async (res) => {
+          const datas = await res.json();
 
-                return points;
-              }
-            );
+          // Rename "id_point" -> "idPoint"
+          return datas.map(
+            (data: { id_point: number; name: string; quantity: number }) => {
+              // eslint-disable-next-line @typescript-eslint/no-unused-vars
+              const { id_point: _, ...dataWk } = {
+                ...data,
+                idPoint: data.id_point,
+              };
+              return dataWk;
+            }
+          );
         })
         .catch((err) => {
           console.log(err);
