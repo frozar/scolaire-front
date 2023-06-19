@@ -1,12 +1,4 @@
-import {
-  createMemo,
-  Show,
-  For,
-  createResource,
-  Switch,
-  Match,
-  createEffect,
-} from "solid-js";
+import { Show, For, Switch, Match, createEffect, createSignal } from "solid-js";
 import InfoPointName from "./InfoPointName";
 import {
   NatureEnum,
@@ -15,14 +7,11 @@ import {
   MessageTypeEnum,
   LineType,
   PointToDisplayType,
+  PointRamassageType,
 } from "../../../../type";
-import { PointIdentityType } from "../../../../type";
-import { addNewUserInformation } from "../../../../signaux";
+import { addNewUserInformation, points } from "../../../../signaux";
 import { useStateAction } from "../../../../StateAction";
-import {
-  authenticateWrap,
-  getToken,
-} from "../../../layout/topMenu/authentication";
+import { authenticateWrap } from "../../../layout/topMenu/authentication";
 import {
   getSelectedBusLineId,
   selectedBusLineStopNames,
@@ -35,104 +24,95 @@ import {
   pickerColor,
   setBusLines,
 } from "../line/BusLines";
-import { getSelectedPoint } from "../Point";
 
 const [, { isInAddLineMode, resetLineUnderConstruction }] = useStateAction();
 
 export default function () {
+  const getSelectedPoint = (): PointRamassageType | null => {
+    const filteredArray = points().filter((point) => point.selected());
+    if (filteredArray.length === 0) {
+      return null;
+    } else {
+      return filteredArray[0];
+    }
+  };
+
   createEffect(() => {
     // When switching mode
-
     if (!isInAddLineMode()) {
       resetLineUnderConstruction();
     }
   });
 
-  const selectedIdentity = createMemo<PointIdentityType | null>(() => {
-    const wkSelectedElement = getSelectedPoint();
-    if (!wkSelectedElement) {
+  const selectedIdentity = () => {
+    const selectedPoint = getSelectedPoint();
+    if (!selectedPoint) {
       return null;
     }
-
-    const { id, idPoint, nature } = wkSelectedElement;
+    const { id, idPoint, nature } = selectedPoint;
     return { id, idPoint, nature };
-  });
-
-  const fetchAssociatedPointsParameters = (): {
-    id: number;
-    nature: string;
-  } => {
-    const wkSelectedIdentity = selectedIdentity();
-    if (!wkSelectedIdentity) {
-      return { id: -1, nature: "" };
-    }
-    switch (wkSelectedIdentity.nature) {
-      case NatureEnum.ramassage: {
-        return { id: wkSelectedIdentity.id, nature: "ramassage" };
-      }
-      case NatureEnum.etablissement: {
-        return { id: wkSelectedIdentity.id, nature: "etablissement" };
-      }
-      default: {
-        return { id: -1, nature: "ramassage" };
-      }
-    }
   };
 
-  const fetchAssociatedPoints = async (urlParameters: {
-    id: number;
-    nature: string;
-  }): Promise<PointToDisplayType[]> => {
-    const { id, nature } = urlParameters;
+  const fetchAssociatedPoints = async (
+    selectedIdentityWk: {
+      id: number;
+      nature: NatureEnum;
+    } | null
+  ) => {
+    if (!selectedIdentityWk) {
+      return;
+    }
+    const { id, nature } = selectedIdentityWk;
 
     if (id == -1 || nature == null) {
       return [];
     } else {
-      const URL =
-        import.meta.env.VITE_BACK_URL +
-        "/get_associated_points" +
-        "?id=" +
-        id +
-        "&nature=" +
-        nature;
+      const URL = import.meta.env.VITE_BACK_URL + "/get_associated_points";
 
       // TODO:
       // Attemp to use authenticateWrap failed => Don't use the 'createResource' from solidjs
-      return getToken()
-        .then(async (token) => {
-          return fetch(URL, {
-            headers: {
-              "Content-Type": "application/json",
-              authorization: `Bearer ${token}`,
-            },
-          });
-        })
-        .then(async (res) => {
-          const datas = await res.json();
+      authenticateWrap((headers) => {
+        fetch(
+          URL +
+            "?" +
+            new URLSearchParams({
+              id: String(id),
+              nature: nature.toLowerCase(),
+            }),
+          {
+            headers,
+          }
+        )
+          .then(async (res) => {
+            const datas = await res.json();
 
-          // Rename "id_point" -> "idPoint"
-          return datas.map(
-            (data: { id_point: number; name: string; quantity: number }) => {
-              // eslint-disable-next-line @typescript-eslint/no-unused-vars
-              const { id_point: _, ...dataWk } = {
-                ...data,
-                idPoint: data.id_point,
-              };
-              return dataWk;
-            }
-          );
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+            // Rename "id_point" -> "idPoint"
+            const datasWk = datas.map(
+              (data: { id_point: number; name: string; quantity: number }) => {
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                const { id_point: _, ...dataWk } = {
+                  ...data,
+                  idPoint: data.id_point,
+                };
+                return dataWk;
+              }
+            );
+            setAssociatedPoints(datasWk);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      });
     }
   };
 
-  // TODO: Don't use the 'createResource' from solidjs
-  const [associatedPoints] = createResource(
-    fetchAssociatedPointsParameters,
-    fetchAssociatedPoints
-  );
+  const [associatedPoints, setAssociatedPoints] = createSignal<
+    PointToDisplayType[]
+  >([]);
+
+  createEffect(() => {
+    fetchAssociatedPoints(selectedIdentity());
+  });
 
   const ptToDisplay = () => {
     const wkAssociatedPoints = associatedPoints();
@@ -141,12 +121,12 @@ export default function () {
   };
 
   const firstColumnTitle = () => {
-    const wkSelectedElement = getSelectedPoint();
-    if (!wkSelectedElement) {
+    const selectedPoint = getSelectedPoint();
+    if (!selectedPoint) {
       return "";
     }
 
-    return isPointRamassage(wkSelectedElement) ? "Etablissement" : "Ramassage";
+    return isPointRamassage(selectedPoint) ? "Etablissement" : "Ramassage";
   };
 
   const handleColorPicker = (e: InputEvent) => {

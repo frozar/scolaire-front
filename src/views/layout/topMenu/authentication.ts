@@ -72,7 +72,7 @@ export const getProfilePicture = () => {
   else return "";
 };
 
-export async function getToken() {
+async function getToken() {
   if (import.meta.env.VITE_AUTH0_DEV_MODE === "true") {
     return "fakeToken";
   }
