@@ -1,12 +1,4 @@
-import {
-  createMemo,
-  Show,
-  For,
-  Switch,
-  Match,
-  createEffect,
-  createSignal,
-} from "solid-js";
+import { Show, For, Switch, Match, createEffect, createSignal } from "solid-js";
 import InfoPointName from "./InfoPointName";
 import {
   NatureEnum,
@@ -15,9 +7,9 @@ import {
   MessageTypeEnum,
   LineType,
   PointToDisplayType,
+  PointRamassageType,
 } from "../../../../type";
-import { PointIdentityType } from "../../../../type";
-import { addNewUserInformation } from "../../../../signaux";
+import { addNewUserInformation, points } from "../../../../signaux";
 import { useStateAction } from "../../../../StateAction";
 import { authenticateWrap } from "../../../layout/topMenu/authentication";
 import {
@@ -32,28 +24,34 @@ import {
   pickerColor,
   setBusLines,
 } from "../line/BusLines";
-import { getSelectedPoint } from "../Point";
 
 const [, { isInAddLineMode, resetLineUnderConstruction }] = useStateAction();
 
 export default function () {
+  const getSelectedPoint = (): PointRamassageType | null => {
+    const filteredArray = points().filter((point) => point.selected());
+    if (filteredArray.length === 0) {
+      return null;
+    } else {
+      return filteredArray[0];
+    }
+  };
+
   createEffect(() => {
     // When switching mode
-
     if (!isInAddLineMode()) {
       resetLineUnderConstruction();
     }
   });
 
-  const selectedIdentity = createMemo<PointIdentityType | null>(() => {
-    const wkSelectedElement = getSelectedPoint();
-    if (!wkSelectedElement) {
+  const selectedIdentity = () => {
+    const selectedPoint = getSelectedPoint();
+    if (!selectedPoint) {
       return null;
     }
-
-    const { id, idPoint, nature } = wkSelectedElement;
+    const { id, idPoint, nature } = selectedPoint;
     return { id, idPoint, nature };
-  });
+  };
 
   const fetchAssociatedPoints = async (
     selectedIdentityWk: {
@@ -123,12 +121,12 @@ export default function () {
   };
 
   const firstColumnTitle = () => {
-    const wkSelectedElement = getSelectedPoint();
-    if (!wkSelectedElement) {
+    const selectedPoint = getSelectedPoint();
+    if (!selectedPoint) {
       return "";
     }
 
-    return isPointRamassage(wkSelectedElement) ? "Etablissement" : "Ramassage";
+    return isPointRamassage(selectedPoint) ? "Etablissement" : "Ramassage";
   };
 
   const handleColorPicker = (e: InputEvent) => {

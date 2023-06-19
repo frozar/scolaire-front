@@ -40,10 +40,6 @@ function selectPointById(targerIdPoint: number) {
   points().map((point) => point.setSelected(targerIdPoint == point.idPoint));
 }
 
-export const getSelectedPoint = (): PointRamassageType | undefined => {
-  return points().find((point) => point.selected());
-};
-
 export function deselectAllPoints() {
   points().map((point) => point.setSelected(false));
 }
