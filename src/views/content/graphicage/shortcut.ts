@@ -94,7 +94,7 @@ function enterHandler({ code }: KeyboardEvent) {
       return;
     }
     const ids_point = getLineUnderConstruction().stops.map(function (value) {
-      return value["id_point"];
+      return value["idPoint"];
     });
 
     addBusLine(ids_point).then(async (res) => {

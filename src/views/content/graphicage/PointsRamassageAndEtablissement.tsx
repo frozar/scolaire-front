@@ -2,8 +2,8 @@ import { createSignal, onMount, For, onCleanup, createEffect } from "solid-js";
 
 import {
   NatureEnum,
-  PointRamassageType,
   PointEtablissementType,
+  PointRamassageType,
 } from "../../../type";
 import Point from "./Point";
 import {
@@ -27,56 +27,89 @@ createEffect(() => {
   }
 });
 
+type PointRamassageDBType = {
+  id: number;
+  id_point: number;
+  nature: NatureEnum;
+  location: string;
+  name: string;
+  quantity: number;
+};
+
+type PointEtablissementDBType = PointRamassageDBType;
+
+type PointRamassageCoreType = Omit<PointRamassageDBType, "id_point"> & {
+  idPoint: number;
+};
+
+function PointBack2FrontIdPoint(
+  data: PointRamassageDBType
+): PointRamassageCoreType {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { id_point: _, ...dataWk } = { ...data, idPoint: data.id_point };
+  return dataWk;
+}
+
+function PointBack2Front<
+  T extends PointRamassageDBType | PointEtablissementDBType
+>(
+  datas: T[],
+  nature: NatureEnum
+): PointRamassageType[] | PointEtablissementType[] {
+  return (
+    datas
+      // Rename "id_point" -> "idPoint"
+      .map((data) => PointBack2FrontIdPoint(data))
+      // Add signal "selected"
+      .map((data) => {
+        const [selected, setSelected] = createSignal(false);
+        return { ...data, selected, setSelected } as PointRamassageType;
+      })
+      // Add "nature"
+      .map((data) => ({ ...data, nature }))
+  );
+}
+
 export function fetchPointsRamassage() {
-  function addToPoints(
-    data: PointRamassageType[] | PointEtablissementType[],
-    nature: NatureEnum
-  ) {
-    const points = data.map((point) => {
-      const [selected, setSelected] = createSignal(false);
-      return {
-        ...point,
-        nature,
-        selected,
-        setSelected,
-      };
-    });
-
-    setPoints((dataArray) => [...dataArray, ...points]);
-  }
-
   authenticateWrap((headers) => {
     setPointsRamassageReady(false);
     setPointsEtablissementReady(false);
 
     fetch(import.meta.env.VITE_BACK_URL + "/points_ramassage", {
       headers,
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .then((data: PointRamassageType[]) => {
-        setMinMaxQty([
-          Math.min(...data.map((value) => value.quantity)),
-          Math.max(...data.map((value) => value.quantity)),
-        ]);
+    }).then(async (res) => {
+      const datas: PointRamassageDBType[] = await res.json();
 
-        addToPoints(data, NatureEnum.ramassage);
+      const dataWk = PointBack2Front(
+        datas,
+        NatureEnum.ramassage
+      ) as PointRamassageType[];
 
-        setPointsRamassageReady(true);
-      });
+      setPoints((dataArray) => [...dataArray, ...dataWk]);
+
+      setPointsRamassageReady(true);
+
+      // TODO: Remove
+      setMinMaxQty([
+        Math.min(...datas.map((value) => value.quantity)),
+        Math.max(...datas.map((value) => value.quantity)),
+      ]);
+    });
 
     fetch(import.meta.env.VITE_BACK_URL + "/points_etablissement", {
       headers,
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .then((data: PointEtablissementType[]) => {
-        addToPoints(data, NatureEnum.etablissement);
+    }).then(async (res) => {
+      const datas: PointEtablissementDBType[] = await res.json();
 
-        setPointsEtablissementReady(true);
-      });
+      const dataWk = PointBack2Front(
+        datas,
+        NatureEnum.etablissement
+      ) as PointEtablissementType[];
+
+      setPoints((dataArray) => [...dataArray, ...dataWk]);
+
+      setPointsEtablissementReady(true);
+    });
   });
 }
 

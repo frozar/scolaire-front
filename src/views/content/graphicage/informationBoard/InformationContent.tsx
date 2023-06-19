@@ -54,8 +54,8 @@ export default function () {
       return null;
     }
 
-    const { id, id_point, nature } = wkSelectedElement;
-    return { id, id_point, nature };
+    const { id, idPoint, nature } = wkSelectedElement;
+    return { id, idPoint, nature };
   });
 
   const fetchAssociatedPointsParameters = (): {
@@ -105,9 +105,22 @@ export default function () {
               "Content-Type": "application/json",
               authorization: `Bearer ${token}`,
             },
-          }).then((res) => {
-            return res.json();
           });
+        })
+        .then(async (res) => {
+          const datas = await res.json();
+
+          // Rename "id_point" -> "idPoint"
+          return datas.map(
+            (data: { id_point: number; name: string; quantity: number }) => {
+              // eslint-disable-next-line @typescript-eslint/no-unused-vars
+              const { id_point: _, ...dataWk } = {
+                ...data,
+                idPoint: data.id_point,
+              };
+              return dataWk;
+            }
+          );
         })
         .catch((err) => {
           console.log(err);
