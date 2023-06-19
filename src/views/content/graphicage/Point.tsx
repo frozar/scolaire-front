@@ -24,7 +24,6 @@ import {
   setIsEtablissementReady,
   points,
 } from "../../../signaux";
-import { minMaxQty } from "./PointsRamassageAndEtablissement";
 import { authenticateWrap } from "../../layout/topMenu/authentication";
 import { deselectAllBusLines } from "./line/busLinesUtils";
 
@@ -53,15 +52,18 @@ const minSizeValue = 5;
 const maxSizeValue = 10;
 const range = maxSizeValue - minSizeValue;
 
-// TODO: Pass min/max quantity as props
 export default function (props: {
   point: PointRamassageType | PointEtablissementType;
   isLast: boolean;
   nature: NatureEnum;
+  minQuantity: number;
+  maxQuantity: number;
 }) {
   const point = () => props.point;
   const isLast = () => props.isLast;
   const nature = () => props.nature;
+  const minQuantity = () => props.minQuantity;
+  const maxQuantity = () => props.maxQuantity;
 
   const [associatedPoints, setAssociatedPoints] = createSignal<
     PointIdentityType[]
@@ -136,10 +138,11 @@ export default function (props: {
     const lonlat = location.split("(")[1].split(")")[0];
     const lon = Number(lonlat.split(" ")[0]);
     const lat = Number(lonlat.split(" ")[1]);
+
     const coef =
-      minMaxQty()[0] == minMaxQty()[1]
+      minQuantity() == maxQuantity()
         ? 0
-        : (point.quantity - minMaxQty()[0]) / (minMaxQty()[1] - minMaxQty()[0]);
+        : (point.quantity - minQuantity()) / (maxQuantity() - minQuantity());
     const radiusValue = coef * range + minSizeValue;
     const { nature } = point;
     const [color, fillColor, radius, weight] =

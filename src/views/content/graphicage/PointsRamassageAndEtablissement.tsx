@@ -14,7 +14,6 @@ import {
 } from "../../../signaux";
 import { authenticateWrap } from "../../layout/topMenu/authentication";
 
-export const [minMaxQty, setMinMaxQty] = createSignal([1, 100]);
 export const [pointsReady, setPointsReady] = createSignal(false);
 
 const [pointsRamassageReady, setPointsRamassageReady] = createSignal(false);
@@ -88,12 +87,6 @@ export function fetchPointsRamassage() {
       setPoints((dataArray) => [...dataArray, ...dataWk]);
 
       setPointsRamassageReady(true);
-
-      // TODO: Remove
-      setMinMaxQty([
-        Math.min(...datas.map((value) => value.quantity)),
-        Math.max(...datas.map((value) => value.quantity)),
-      ]);
     });
 
     fetch(import.meta.env.VITE_BACK_URL + "/points_etablissement", {
@@ -131,6 +124,8 @@ export default function () {
           point={point}
           isLast={i() === points().length - 1}
           nature={point.nature}
+          minQuantity={Math.min(...points().map((value) => value.quantity))}
+          maxQuantity={Math.max(...points().map((value) => value.quantity))}
         />
       )}
     </For>
