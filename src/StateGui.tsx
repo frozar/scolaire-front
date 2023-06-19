@@ -6,6 +6,7 @@ import { TileId, SelectedMenuType } from "./type";
 type StateGuiType = {
   selectedMenu: SelectedMenuType;
   selectedTab: string;
+  selectedCarteId: number | undefined;
   displayedLeftMenu: boolean;
   displayedRightMenu: boolean;
   selectedReadModeTile: TileId;
@@ -43,6 +44,7 @@ const makeStateGuiContext = () => {
   const defaultStateGui: StateGuiType = {
     selectedMenu: "dashboard",
     selectedTab: "info",
+    selectedCarteId: undefined,
     displayedLeftMenu: false,
     displayedRightMenu: false,
     selectedReadModeTile: "OpenStreetMap_Mapnik",
@@ -58,6 +60,10 @@ const makeStateGuiContext = () => {
 
   function setSelectedTab(tabName: string) {
     setState("selectedTab", tabName);
+  }
+
+  function setSelectedCarte(selectedCarteId: number) {
+    setState("selectedCarteId", selectedCarteId);
   }
 
   function setSelectedReadModeTile(tileId: TileId) {
@@ -111,6 +117,7 @@ const makeStateGuiContext = () => {
     state,
     {
       setSelectedTab,
+      setSelectedCarte,
       setSelectedReadModeTile,
       getSelectedReadModeTile,
       setSelectedEditModeTile,
