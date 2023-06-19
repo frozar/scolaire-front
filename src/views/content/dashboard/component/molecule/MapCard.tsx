@@ -9,6 +9,7 @@ export interface MapCardProps {
   title: string;
   openMap?: (id: number) => void;
   handleClickDelete: () => void;
+  isActive: boolean;
 }
 
 export default function (props: MapCardProps) {

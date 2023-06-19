@@ -1,0 +1,6 @@
+@import "../../css/tailwind.css";
+@import "../../css/var.css";
+
+.pellet {
+  @apply w-3 h-3 rounded-full bg-[var(--green-base)];
+}

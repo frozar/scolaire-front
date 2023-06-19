@@ -19,5 +19,6 @@ export const MapCard: Story = {
     editMapModal: () => {
       console.log("call editMapModal");
     },
+    isActive: true,
   },
 };
