@@ -52,6 +52,8 @@ export function deselectAllPoints() {
 const minSizeValue = 5;
 const maxSizeValue = 10;
 const range = maxSizeValue - minSizeValue;
+
+// TODO: Pass min/max quantity as props
 export default function (props: {
   point: PointRamassageType | PointEtablissementType;
   isLast: boolean;

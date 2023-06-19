@@ -1,6 +1,10 @@
 import { createSignal, onMount, For, onCleanup, createEffect } from "solid-js";
 
-import { NatureEnum, PointRamassageType } from "../../../type";
+import {
+  NatureEnum,
+  PointEtablissementType,
+  PointRamassageType,
+} from "../../../type";
 import Point from "./Point";
 import {
   setPoints,
@@ -23,89 +27,89 @@ createEffect(() => {
   }
 });
 
+type PointRamassageDBType = {
+  id: number;
+  id_point: number;
+  nature: NatureEnum;
+  location: string;
+  name: string;
+  quantity: number;
+};
+
+type PointEtablissementDBType = PointRamassageDBType;
+
+type PointRamassageCoreType = Omit<PointRamassageDBType, "id_point"> & {
+  idPoint: number;
+};
+
+function PointBack2FrontIdPoint(
+  data: PointRamassageDBType
+): PointRamassageCoreType {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { id_point: _, ...dataWk } = { ...data, idPoint: data.id_point };
+  return dataWk;
+}
+
+function PointBack2Front<
+  T extends PointRamassageDBType | PointEtablissementDBType
+>(
+  datas: T[],
+  nature: NatureEnum
+): PointRamassageType[] | PointEtablissementType[] {
+  return (
+    datas
+      // Rename "id_point" -> "idPoint"
+      .map((data) => PointBack2FrontIdPoint(data))
+      // Add signal "selected"
+      .map((data) => {
+        const [selected, setSelected] = createSignal(false);
+        return { ...data, selected, setSelected } as PointRamassageType;
+      })
+      // Add "nature"
+      .map((data) => ({ ...data, nature }))
+  );
+}
+
 export function fetchPointsRamassage() {
-  function addToPoints(
-    data: {
-      id: number;
-      id_point: number;
-      location: string;
-      name: string;
-      quantity: number;
-    }[],
-    nature: NatureEnum
-  ) {
-    const points = data.map((point) => {
-      const [selected, setSelected] = createSignal(false);
-
-      return {
-        id: point.id,
-        idPoint: point.id_point,
-        location: point.location,
-        name: point.name,
-        quantity: point.quantity,
-        nature,
-        selected,
-        setSelected,
-      } as PointRamassageType;
-    });
-
-    setPoints((dataArray) => [...dataArray, ...points]);
-  }
-
   authenticateWrap((headers) => {
     setPointsRamassageReady(false);
     setPointsEtablissementReady(false);
 
     fetch(import.meta.env.VITE_BACK_URL + "/points_ramassage", {
       headers,
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .then(
-        (
-          res: {
-            id: number;
-            id_point: number;
-            nature: NatureEnum;
-            location: string;
-            name: string;
-            quantity: number;
-          }[]
-        ) => {
-          setMinMaxQty([
-            Math.min(...res.map((value) => value.quantity)),
-            Math.max(...res.map((value) => value.quantity)),
-          ]);
+    }).then(async (res) => {
+      const datas: PointRamassageDBType[] = await res.json();
 
-          addToPoints(res, NatureEnum.ramassage);
+      const dataWk = PointBack2Front(
+        datas,
+        NatureEnum.ramassage
+      ) as PointRamassageType[];
 
-          setPointsRamassageReady(true);
-        }
-      );
+      setPoints((dataArray) => [...dataArray, ...dataWk]);
+
+      setPointsRamassageReady(true);
+
+      // TODO: Remove
+      setMinMaxQty([
+        Math.min(...datas.map((value) => value.quantity)),
+        Math.max(...datas.map((value) => value.quantity)),
+      ]);
+    });
 
     fetch(import.meta.env.VITE_BACK_URL + "/points_etablissement", {
       headers,
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .then(
-        (
-          res: {
-            id: number;
-            id_point: number;
-            nature: NatureEnum;
-            location: string;
-            name: string;
-            quantity: number;
-          }[]
-        ) => {
-          addToPoints(res, NatureEnum.etablissement);
+    }).then(async (res) => {
+      const datas: PointEtablissementDBType[] = await res.json();
 
-          setPointsEtablissementReady(true);
-        }
-      );
+      const dataWk = PointBack2Front(
+        datas,
+        NatureEnum.etablissement
+      ) as PointEtablissementType[];
+
+      setPoints((dataArray) => [...dataArray, ...dataWk]);
+
+      setPointsEtablissementReady(true);
+    });
   });
 }
 
