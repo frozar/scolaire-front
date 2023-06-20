@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from "storybook-solidjs";
 import MapCardComponent from "./MapCard";
 import { createSignal } from "solid-js";
+import { shouldExit } from "./MapGrid";
 
 const meta = {
   title: "Dashboard/Molecule/MapCard",
@@ -10,23 +11,6 @@ const meta = {
 
 export default meta;
 type Story = StoryObj<typeof meta>;
-
-function hasButtonAsParent(elt: HTMLElement) {
-  if (
-    !(elt.tagName === "DIV" && elt.classList.contains("map-card-container"))
-  ) {
-    if (elt.tagName === "BUTTON") {
-      return true;
-    } else {
-      if (!elt.parentElement) {
-        return false;
-      }
-      return hasButtonAsParent(elt.parentElement);
-    }
-  } else {
-    return false;
-  }
-}
 
 const [fakeIsActive, setFakeIsActive] = createSignal(false);
 const [fakeIsSelected, setFakeIsSelected] = createSignal(false);
@@ -51,34 +35,28 @@ export const MapCard: Story = {
       isSelected: fakeIsSelected,
       isActive: fakeIsActive,
     },
-    handleClick: (event: MouseEvent) => {
-      if (!event.target) {
+    select: (event: MouseEvent) => {
+      if (shouldExit(event)) {
         return;
       }
 
-      if (hasButtonAsParent(event.target as HTMLElement)) {
-        return;
-      }
       console.log("call handleClickDelete");
       selectFakeIsSelected();
     },
+    unselect: () => {
+      unselectFakeIsSelected();
+    },
     handleDblClick: (event: MouseEvent) => {
-      if (!event.target) {
+      if (shouldExit(event)) {
         return;
       }
 
-      if (hasButtonAsParent(event.target as HTMLElement)) {
-        return;
-      }
       console.log("call handleDblClickHandler");
       toggleFakeIsActive();
       console.log("fakeIsActive()", fakeIsActive());
     },
     handleClickDelete: () => {
       console.log("call handleClickDelete");
-    },
-    unselect: () => {
-      unselectFakeIsSelected();
     },
   },
 };

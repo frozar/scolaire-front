@@ -182,4 +182,6 @@ export type UserMapType = {
   name: string;
   isSelected: () => boolean;
   isActive: () => boolean;
+  setIsSelected: Setter<boolean>;
+  setIsActive: Setter<boolean>;
 };

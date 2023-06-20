@@ -13,10 +13,10 @@ import { assertIsNode } from "../../../../../utils";
 import "./MapCard.css";
 export interface MapCardProps {
   mapCard: UserMapType;
-  handleClick: (event: MouseEvent) => void;
+  select: (event: MouseEvent) => void;
+  unselect: () => void;
   handleDblClick: (event: MouseEvent) => void;
   handleClickDelete: () => void;
-  unselect: () => void;
 }
 
 export default function (props: MapCardProps) {
@@ -34,7 +34,7 @@ export default function (props: MapCardProps) {
       ref={refMapCard}
       class="map-card-container"
       classList={{ selected: props.mapCard.isSelected() }}
-      onClick={(event: MouseEvent) => props.handleClick(event)}
+      onClick={(event: MouseEvent) => props.select(event)}
       use:ClickOutside={(e: MouseEvent) => {
         if (!refMapCard || !e.target) {
           return;
