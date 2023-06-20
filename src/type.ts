@@ -181,4 +181,5 @@ export type UserMapType = {
   id: number;
   name: string;
   selected: boolean;
+  isActive: boolean;
 };

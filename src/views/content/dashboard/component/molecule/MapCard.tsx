@@ -4,6 +4,8 @@ import MapCardTitle from "../atom/MapCardTitle";
 import MapCardPreview from "../atom/MapCardPreview";
 
 import "./MapCard.css";
+import Pellet from "../../../../../component/atom/Pellet";
+import { Show } from "solid-js";
 
 export interface MapCardProps {
   title: string;
@@ -15,6 +17,11 @@ export interface MapCardProps {
 export default function (props: MapCardProps) {
   return (
     <div class="map-card-container">
+      <Show when={props.isActive}>
+        <div class="fixed">
+          <Pellet />
+        </div>
+      </Show>
       <div class="flex flex-row justify-between items-center">
         <div class="invisible">
           <IoPencil />

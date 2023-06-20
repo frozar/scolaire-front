@@ -24,6 +24,7 @@ export default function (props: MapGridProps) {
                   title: item.name,
                 });
               }}
+              isActive={item.isActive}
             />
           );
         }}
