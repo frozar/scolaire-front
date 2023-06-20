@@ -17,14 +17,16 @@ export default function (props: MapGridProps) {
         {(item) => {
           return (
             <MapCard
-              title={item.name}
+              mapCard={item}
               handleClickDelete={() => {
                 props.handleClickDelete({
                   id: item.id,
                   title: item.name,
                 });
               }}
-              isActive={item.isActive}
+              handleDblClick={() => {
+                // openMap(item.id);
+              }}
             />
           );
         }}

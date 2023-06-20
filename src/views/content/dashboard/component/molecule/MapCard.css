@@ -5,8 +5,16 @@
   @apply bg-white rounded-md px-2 py-2 max-w-xs duration-150 shadow-lg ring-1 ring-gray-900/5 cursor-pointer;
 }
 
-.map-card-container:hover {
+.map-card-container.selected {
+  @apply bg-green-200;
+}
+
+.map-card-container:not(.selected):hover {
   @apply bg-gray-100;
+}
+
+.map-card-container.selected:hover {
+  @apply bg-green-300;
 }
 
 /* Button DELETE container */
@@ -43,4 +51,9 @@
 
 .button-edit:not([disabled]):hover > svg > path {
   @apply stroke-green-500;
+}
+
+.pellet-container {
+  @apply fixed shadow-xl;
+  filter: drop-shadow(4px 2px 3px rgb(0 0 0 / 0.4));
 }

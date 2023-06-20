@@ -3,22 +3,51 @@ import { FaRegularTrashCan } from "solid-icons/fa";
 import MapCardTitle from "../atom/MapCardTitle";
 import MapCardPreview from "../atom/MapCardPreview";
 
-import "./MapCard.css";
 import Pellet from "../../../../../component/atom/Pellet";
-import { Show } from "solid-js";
+import { Show, onCleanup, onMount } from "solid-js";
+import { UserMapType } from "../../../../../type";
 
+import ClickOutside from "../../../../../component/ClickOutside";
+import { assertIsNode } from "../../../../../utils";
+
+import "./MapCard.css";
 export interface MapCardProps {
-  title: string;
-  openMap?: (id: number) => void;
+  mapCard: UserMapType;
+  handleClick: (event: MouseEvent) => void;
+  handleDblClick: (event: MouseEvent) => void;
   handleClickDelete: () => void;
-  isActive: boolean;
+  unselect: () => void;
 }
 
 export default function (props: MapCardProps) {
+  let refMapCard!: HTMLDivElement;
+  onMount(() => {
+    refMapCard.addEventListener("dblclick", props.handleDblClick);
+  });
+
+  onCleanup(() => {
+    refMapCard.removeEventListener("dblclick", props.handleDblClick);
+  });
+
   return (
-    <div class="map-card-container">
-      <Show when={props.isActive}>
-        <div class="fixed">
+    <div
+      ref={refMapCard}
+      class="map-card-container"
+      classList={{ selected: props.mapCard.isSelected() }}
+      onClick={(event: MouseEvent) => props.handleClick(event)}
+      use:ClickOutside={(e: MouseEvent) => {
+        if (!refMapCard || !e.target) {
+          return;
+        }
+
+        assertIsNode(e.target);
+        if (!refMapCard.contains(e.target)) {
+          props.unselect();
+        }
+      }}
+    >
+      <Show when={props.mapCard.isActive()}>
+        <div class="pellet-container">
           <Pellet />
         </div>
       </Show>
@@ -27,13 +56,13 @@ export default function (props: MapCardProps) {
           <IoPencil />
         </div>
         <div class="w-full">
-          <MapCardTitle title={props.title} />
+          <MapCardTitle title={props.mapCard.name} />
         </div>
         <button
           disabled
           class="button-edit"
           onClick={() => {
-            console.log("call editMapModal");
+            console.log("TODO: call editTitle");
           }}
         >
           <IoPencil />

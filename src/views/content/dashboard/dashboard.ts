@@ -27,7 +27,7 @@ export function fetchUserMaps() {
         const maps: UserMapType[] = content.map((userMap) => {
           return {
             ...userMap,
-            selected: false,
+            isSelected: false,
             isActive: false,
           } as UserMapType;
         });
