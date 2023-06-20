@@ -16,17 +16,29 @@ interface MapGridProps {
 }
 
 export let isCtrlPressed = false;
+export let isShiftPressed = false;
+const lastCardSelectedDefault = -1;
+let lastCardSelected = lastCardSelectedDefault;
+
+export function resetLastCardSelected() {
+  lastCardSelected = lastCardSelectedDefault;
+}
 
 // Handle multi-selection
-function ctrlHandler({ ctrlKey }: KeyboardEvent) {
+function keyboardHandler({ ctrlKey, shiftKey }: KeyboardEvent) {
   if (ctrlKey) {
     isCtrlPressed = true;
   } else {
     isCtrlPressed = false;
   }
+  if (shiftKey) {
+    isShiftPressed = true;
+  } else {
+    isShiftPressed = false;
+  }
 }
 
-const shortcuts = [ctrlHandler];
+const shortcuts = [keyboardHandler];
 
 export default function (props: MapGridProps) {
   onMount(() => {
@@ -46,7 +58,7 @@ export default function (props: MapGridProps) {
   return (
     <div class="map-grid">
       <For each={props.mapList}>
-        {(item) => {
+        {(item, index) => {
           return (
             <MapCard
               mapCard={item}
@@ -55,7 +67,27 @@ export default function (props: MapGridProps) {
                   return;
                 }
 
-                item.setIsSelected(true);
+                if (isShiftPressed) {
+                  if (lastCardSelected == lastCardSelectedDefault) {
+                    item.setIsSelected(true);
+                    lastCardSelected = index();
+                  } else {
+                    const start = Math.min(lastCardSelected, index());
+                    const end = Math.max(lastCardSelected, index());
+                    for (let i = 0; i < start; i++) {
+                      props.mapList[i].setIsSelected(false);
+                    }
+                    for (let i = start; i <= end; i++) {
+                      props.mapList[i].setIsSelected(true);
+                    }
+                    for (let i = end + 1; i < props.mapList.length; i++) {
+                      props.mapList[i].setIsSelected(false);
+                    }
+                  }
+                } else {
+                  item.setIsSelected(true);
+                  lastCardSelected = index();
+                }
               }}
               unselect={() => {
                 item.setIsSelected(false);
