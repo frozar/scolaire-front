@@ -10,7 +10,6 @@
 }
 
 .lateral-nav-item.disable {
-  /* @apply text-[var(--green-base)]; */
   fill: white;
   background: var(--gray-base);
 }
