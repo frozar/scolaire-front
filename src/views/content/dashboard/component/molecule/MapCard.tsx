@@ -16,7 +16,6 @@ import {
   isShiftPressed,
   resetLastCardSelected,
 } from "./MapGrid";
-// import { isCtrlPressed } from "../../shortcut";
 export interface MapCardProps {
   mapCard: UserMapType;
   select: (event: MouseEvent) => void;
