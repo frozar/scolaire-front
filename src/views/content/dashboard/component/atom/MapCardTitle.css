@@ -1,6 +1,5 @@
-@import "../../../../../css/tailwind";
-@import "../../../../../css/var";
+@import "../../../../../css/var.css";
 
 .map-card-title {
-  @apply text-center uppercase text-lg font-medium text-gray-800;
+  @apply text-center uppercase text-lg font-medium text-gray-800 prevent-select;
 }

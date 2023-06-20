@@ -4,6 +4,7 @@ import LeftMenuItemLabel from "../atom/LeftMenuItemLabel";
 import LeftMenuButtonLogo from "./LeftMenuButtonLogo";
 
 import "./LeftMenuItem.css";
+import Pellet from "../atom/Pellet";
 
 export interface LeftMenuItemProps {
   isDisabled?: boolean;
@@ -45,6 +46,11 @@ export default function (props: LeftMenuItemProps) {
           isDisabled={mergedProps.isDisabled}
           label={mergedProps.label}
         />
+      </Show>
+      <Show when={!mergedProps.isDisabled && mergedProps.isSelected}>
+        <div class="lateral-nav-item-pellet">
+          <Pellet />
+        </div>
       </Show>
     </li>
   );

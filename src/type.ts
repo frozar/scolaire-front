@@ -180,5 +180,8 @@ export type EtablissementItemType = {
 export type UserMapType = {
   id: number;
   name: string;
-  selected: boolean;
+  isSelected: Accessor<boolean>;
+  isActive: Accessor<boolean>;
+  setIsSelected: Setter<boolean>;
+  setIsActive: Setter<boolean>;
 };
