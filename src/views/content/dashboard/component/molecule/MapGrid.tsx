@@ -74,19 +74,17 @@ export default function (props: MapGridProps) {
                   } else {
                     const start = Math.min(lastCardSelected, index());
                     const end = Math.max(lastCardSelected, index());
-                    for (let i = 0; i < start; i++) {
-                      props.mapList[i].setIsSelected(false);
-                    }
-                    for (let i = start; i <= end; i++) {
-                      props.mapList[i].setIsSelected(true);
-                    }
-                    for (let i = end + 1; i < props.mapList.length; i++) {
-                      props.mapList[i].setIsSelected(false);
-                    }
+                    props.mapList.map((map, i) =>
+                      map.setIsSelected(start <= i && i <= end)
+                    );
                   }
                 } else {
-                  item.setIsSelected(true);
-                  lastCardSelected = index();
+                  if (isCtrlPressed) {
+                    item.setIsSelected((bool) => !bool);
+                  } else {
+                    item.setIsSelected(true);
+                    lastCardSelected = index();
+                  }
                 }
               }}
               unselect={() => {
