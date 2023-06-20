@@ -25,10 +25,15 @@ export function fetchUserMaps() {
         // TODO: check status
 
         const maps: UserMapType[] = content.map((userMap) => {
+          const [isActive, setIsActive] = createSignal(false);
+          const [isSelected, setIsSelected] = createSignal(false);
+
           return {
             ...userMap,
-            isSelected: false,
-            isActive: false,
+            isActive,
+            isSelected,
+            setIsSelected,
+            setIsActive,
           } as UserMapType;
         });
 

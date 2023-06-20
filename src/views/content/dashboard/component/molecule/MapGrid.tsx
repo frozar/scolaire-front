@@ -96,7 +96,8 @@ export default function (props: MapGridProps) {
                 if (shouldExit(event)) {
                   return;
                 }
-                item.setIsActive((bool) => !bool);
+
+                props.mapList.map((map) => map.setIsActive(map.id === item.id));
               }}
               handleClickDelete={() => {
                 props.handleClickDelete({
