@@ -11,6 +11,8 @@ import ClickOutside from "../../../../../component/ClickOutside";
 import { assertIsNode } from "../../../../../utils";
 
 import "./MapCard.css";
+import { isCtrlPressed } from "./MapGrid";
+// import { isCtrlPressed } from "../../shortcut";
 export interface MapCardProps {
   mapCard: UserMapType;
   select: (event: MouseEvent) => void;
@@ -36,7 +38,7 @@ export default function (props: MapCardProps) {
       classList={{ selected: props.mapCard.isSelected() }}
       onClick={(event: MouseEvent) => props.select(event)}
       use:ClickOutside={(e: MouseEvent) => {
-        if (!refMapCard || !e.target) {
+        if (!refMapCard || !e.target || isCtrlPressed) {
           return;
         }
 
