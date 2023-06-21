@@ -34,7 +34,6 @@ function dropHandler(
   setDisplay: Setter<boolean>,
   callbackSuccess?: () => void
 ) {
-  // console.log("drop");
   e.preventDefault();
 
   enableSpinningWheel();
@@ -82,6 +81,7 @@ function dropHandler(
   const file = files[0];
 
   const formData = new FormData();
+
   formData.append("file", file, file.name);
 
   uploadLine(formData)
@@ -99,12 +99,13 @@ function dropHandler(
 
       if (res.status != 200) {
         const body = await res.json();
+        // console.log("body", body);
         exitCanvas();
         addNewUserInformation({
           displayed: true,
           level: MessageLevelEnum.error,
           type: MessageTypeEnum.global,
-          content: body.message,
+          content: body.detail,
         });
         return;
       }

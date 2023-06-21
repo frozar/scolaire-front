@@ -50,5 +50,5 @@ export async function uploadLine(formData: FormData) {
       headers,
       body: formData,
     });
-  });
+  }, true);
 }

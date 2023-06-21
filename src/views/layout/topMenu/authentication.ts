@@ -86,15 +86,28 @@ async function getToken() {
   }
 }
 
+function headerJson(token: string): HeadersInit {
+  return {
+    ...headerAuthorization(token),
+    "Content-Type": "application/json",
+  };
+}
+
+function headerAuthorization(token: string): HeadersInit {
+  return {
+    authorization: "Bearer " + token,
+  };
+}
+
 export function authenticateWrap(
-  callback: (headers: HeadersInit) => Response | PromiseLike<Response> | void
+  callback: (headers: HeadersInit) => Response | PromiseLike<Response> | void,
+  authorizationOnly = false
 ) {
   return getToken()
     .then((token) => {
-      const headers: HeadersInit = {
-        "Content-Type": "application/json",
-        authorization: "Bearer " + token,
-      };
+      const headers: HeadersInit = authorizationOnly
+        ? headerAuthorization(token)
+        : headerJson(token);
 
       return callback(headers);
     })
