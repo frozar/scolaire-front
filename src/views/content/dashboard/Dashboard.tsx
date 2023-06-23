@@ -1,11 +1,11 @@
 import { Show, createSignal, onCleanup, onMount } from "solid-js";
-import { fetchUserMaps, setUserMaps, userMaps } from "./dashboard";
+import { Transition } from "solid-transition-group";
+import Modal from "../../../component/molecule/Moldal";
 import CreateMap from "./CreateMap";
 import DeleteMapConfirmation from "./DeleteMapConfirmation";
-import { Transition } from "solid-transition-group";
 import MapGrid from "./component/molecule/MapGrid";
 import MapGridHeader from "./component/molecule/MapGridHeader";
-import Modal from "../../../component/molecule/Moldal";
+import { fetchUserMaps, setUserMaps, userMaps } from "./dashboard";
 
 export type CarteToDeleteType =
   | {

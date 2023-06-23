@@ -4,18 +4,20 @@ import { Show, createSignal, onCleanup, onMount } from "solid-js";
 
 import PointsRamassageAndEtablissement from "./PointsRamassageAndEtablissement";
 
+import { useStateAction } from "../../../StateAction";
 import { buildMapL7 } from "./l7MapBuilder";
 import BusLines from "./line/BusLines";
-import { useStateAction } from "../../../StateAction";
 
+import { useStateGui } from "../../../StateGui";
+import ImportCsvCanvas from "../../../component/ImportCsvCanvas";
+import ConfirmStopAddLine from "./ConfirmStopAddLineBox";
+import { InformationBoard } from "./informationBoard/InformationBoard";
 import LineUnderConstruction from "./line/LineUnderConstruction";
 import ControlMapMenu from "./rightMapMenu/RightMapMenu";
-import { InformationBoard } from "./informationBoard/InformationBoard";
-import ConfirmStopAddLine from "./ConfirmStopAddLineBox";
 import { listHandlerLMap } from "./shortcut";
-import ImportCsvCanvas from "../../../component/ImportCsvCanvas";
 
 const [, { isInAddLineMode }] = useStateAction();
+const [, { getActiveMapId }] = useStateGui();
 
 function buildMap(div: HTMLDivElement) {
   const option = "l7";
@@ -59,7 +61,7 @@ export default function () {
   });
 
   return (
-    <>
+    <Show when={getActiveMapId()} fallback={<div>Sélectionner une carte</div>}>
       <ImportCsvCanvas
         display={displayImportCsvCanvas()}
         setDisplay={setDisplayImportCsvCanvas}
@@ -73,6 +75,6 @@ export default function () {
       <BusLines />
       <ControlMapMenu />
       <ConfirmStopAddLine />
-    </>
+    </Show>
   );
 }

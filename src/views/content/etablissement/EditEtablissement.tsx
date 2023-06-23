@@ -1,14 +1,17 @@
 import { CgCloseO } from "solid-icons/cg";
 import { HiSolidLocationMarker } from "solid-icons/hi";
 import { Show, createSignal } from "solid-js";
+import { useStateGui } from "../../../StateGui";
+import { addNewUserInformation } from "../../../signaux";
 import {
+  EtablissementItemType,
   MessageLevelEnum,
   MessageTypeEnum,
-  EtablissementItemType,
 } from "../../../type";
-import { addNewUserInformation } from "../../../signaux";
-import { fetchEtablissement } from "./Etablissement";
 import { authenticateWrap } from "../../layout/topMenu/authentication";
+import { fetchEtablissement } from "./Etablissement";
+
+const [, { getActiveMapId }] = useStateGui();
 
 export const [toggledEditStop, setToggledEditStop] = createSignal(false);
 
@@ -28,69 +31,65 @@ export default function () {
     const nameStop = name.value;
     const lonStop = lon.value;
     const latStop = lat.value;
-    if (
-      nameStop === null ||
-      lonStop === null ||
-      latStop === null ||
-      nameStop === "" ||
-      lonStop === "" ||
-      latStop === ""
-    ) {
-      const nameStr = nameStop === null || nameStop === "" ? "Nom" : "";
-      const lonStr = lonStop === null || lonStop === "" ? "Longitude" : "";
-      const latStr = latStop === null || latStop === "" ? "Latitude" : "";
+    if (!nameStop || !lonStop || !latStop) {
+      const nameStr = !nameStop ? "Nom" : "";
+      const lonStr = !lonStop ? "Longitude" : "";
+      const latStr = !latStop ? "Latitude" : "";
 
       addNewUserInformation({
         displayed: true,
         level: MessageLevelEnum.error,
         type: MessageTypeEnum.global,
-        content:
-          "Information(s) manquante(s) : " +
-          nameStr +
-          " " +
-          latStr +
-          " " +
-          lonStr,
+        content: `Information(s) manquante(s) : ${nameStr} ${latStr} ${lonStr}`,
       });
+
       return;
     }
 
-    // eslint-disable-next-line solid/reactivity
     authenticateWrap((headers) => {
-      fetch(import.meta.env.VITE_BACK_URL + "/point_etablissement", {
-        method: "post",
-        headers,
-        body: JSON.stringify({
-          id: dataToEdit()?.id,
-          name: nameStop,
-          lon: lonStop,
-          lat: latStop,
-        }),
-      })
-        .then((res) => {
-          return res.json();
-        })
-        .then((res) => {
-          if (!isNaN(res)) {
-            addNewUserInformation({
-              displayed: true,
-              level: MessageLevelEnum.success,
-              type: MessageTypeEnum.global,
-              content: "L'établissement a été crée",
-            });
-            toggleEditStop();
-          } else {
-            console.error(res.message.split(":").join("\n"));
+      console.log(getActiveMapId());
+      fetch(
+        import.meta.env.VITE_BACK_URL +
+          "/map/" +
+          getActiveMapId() +
+          "/etablissement",
+        {
+          method: "post",
+          headers,
+          body: JSON.stringify({
+            name: nameStop,
+            lon: lonStop,
+            lat: latStop,
+          }),
+        }
+      )
+        .then(async (res) => {
+          const json = await res.json();
+          console.log("json", json);
+
+          if (res.status !== 201) {
             addNewUserInformation({
               displayed: true,
               level: MessageLevelEnum.error,
               type: MessageTypeEnum.global,
-              content:
-                "Erreur lors de la modification : \n" +
-                res.message.split(":")[1],
+              content: json["detail"],
             });
+
+            return;
           }
+
+          addNewUserInformation({
+            displayed: true,
+            level: MessageLevelEnum.success,
+            type: MessageTypeEnum.global,
+            content: json.content,
+          });
+          toggleEditStop();
+
           fetchEtablissement();
+        })
+        .catch((err) => {
+          console.error(err);
         });
     });
   };
@@ -99,14 +98,7 @@ export default function () {
     const nameStop = name.value;
     const lonStop = lon.value;
     const latStop = lat.value;
-    if (
-      nameStop === null ||
-      lonStop === null ||
-      latStop === null ||
-      nameStop === "" ||
-      lonStop === "" ||
-      latStop === ""
-    ) {
+    if (!nameStop || !lonStop || !latStop) {
       const nameStr = nameStop === null || nameStop === "" ? "Nom" : "";
       const lonStr = lonStop === null || lonStop === "" ? "Longitude" : "";
       const latStr = latStop === null || latStop === "" ? "Latitude" : "";
@@ -128,38 +120,51 @@ export default function () {
 
     // eslint-disable-next-line solid/reactivity
     authenticateWrap((headers) => {
-      fetch(import.meta.env.VITE_BACK_URL + "/point_etablissement", {
-        method: "put",
-        headers,
-        body: JSON.stringify({
-          id: dataToEdit()?.id,
-          name: nameStop,
-          lon: lonStop,
-          lat: latStop,
-        }),
-      })
-        .then((res) => {
-          return res.json();
-        })
-        .then((res) => {
-          if (res === "UPDATE 1") {
-            addNewUserInformation({
-              displayed: true,
-              level: MessageLevelEnum.success,
-              type: MessageTypeEnum.global,
-              content: "L'établissement a été modifié",
-            });
-            toggleEditStop();
-          } else {
+      fetch(
+        import.meta.env.VITE_BACK_URL +
+          `/map/${getActiveMapId()}/etablissement/${dataToEdit()?.id}`,
+        {
+          method: "PATCH",
+          headers,
+          body: JSON.stringify({
+            name: nameStop,
+            lon: lonStop,
+            lat: latStop,
+          }),
+        }
+      )
+        .then(async (res: Response) => {
+          const json = await res.json();
+          console.log(json);
+
+          if (res.status != 200) {
             addNewUserInformation({
               displayed: true,
               level: MessageLevelEnum.error,
               type: MessageTypeEnum.global,
-              content: "Erreur lors de la modification : " + res,
+              content: json.detail,
             });
+            return;
           }
 
+          addNewUserInformation({
+            displayed: true,
+            level: MessageLevelEnum.success,
+            type: MessageTypeEnum.global,
+            content: json.message,
+          });
+
           fetchEtablissement();
+        })
+        .catch((err) => {
+          console.error(err);
+
+          addNewUserInformation({
+            displayed: true,
+            level: MessageLevelEnum.error,
+            type: MessageTypeEnum.global,
+            content: err.message,
+          });
         });
     });
   };

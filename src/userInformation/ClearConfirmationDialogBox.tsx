@@ -1,24 +1,29 @@
 import { Show, createEffect, createSignal, onCleanup, onMount } from "solid-js";
 import { Transition } from "solid-transition-group";
 
-import { NatureEnum } from "../type";
-import ClickOutside from "../component/ClickOutside";
 import {
   addNewUserInformation,
   closeClearConfirmationBox,
   disableSpinningWheel,
-  enableSpinningWheel,
   displayedClearConfirmationDialogBox,
+  enableSpinningWheel,
   points,
   setPoints,
 } from "../signaux";
+import { NatureEnum } from "../type";
 
 import { clear } from "../request";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { assertIsNode } from "../utils";
-import { fetchPointsRamassage } from "../views/content/graphicage/PointsRamassageAndEtablissement";
-import { fetchBusLines } from "../views/content/graphicage/line/busLinesUtils";
+
+import ClickOutside from "../component/ClickOutside";
+import { fetchPointsRamassageAndEtablissement } from "../views/content/graphicage/PointsRamassageAndEtablissement";
 import { busLines } from "../views/content/graphicage/line/BusLines";
+import { fetchBusLines } from "../views/content/graphicage/line/busLinesUtils";
+
+// HACK for the documentation to preserve the ClickOutside directive on save
+// https://www.solidjs.com/guides/typescript#use___
+false && ClickOutside;
 
 function exitModal({ code }: KeyboardEvent) {
   // @ts-expect-error: Currently the 'keyboard' field doesn't exist on 'navigator'
@@ -64,7 +69,7 @@ export default function () {
             content: "La carte a bien été vidée",
           });
           setPoints([]);
-          fetchPointsRamassage();
+          fetchPointsRamassageAndEtablissement();
           fetchBusLines();
           disableSpinningWheel();
           closeClearConfirmationBox();
@@ -76,7 +81,7 @@ export default function () {
             content: "Impossible de vider la carte : \n" + res.message,
           });
           setPoints([]);
-          fetchPointsRamassage();
+          fetchPointsRamassageAndEtablissement();
           fetchBusLines();
           disableSpinningWheel();
           closeClearConfirmationBox();
@@ -91,7 +96,7 @@ export default function () {
           content: "Impossible de vider la carte : \n" + error,
         });
         setPoints([]);
-        fetchPointsRamassage();
+        fetchPointsRamassageAndEtablissement();
         fetchBusLines();
         disableSpinningWheel();
         closeClearConfirmationBox();

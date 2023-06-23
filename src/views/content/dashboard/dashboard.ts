@@ -1,7 +1,10 @@
 import { createSignal } from "solid-js";
+import { useStateGui } from "../../../StateGui";
 import { UserMapType } from "../../../type";
 import { authenticateWrap } from "../../layout/topMenu/authentication";
 import { closeCreateMapModal, closeDeleteMapModal } from "./Dashboard";
+
+const [, { getActiveMapId }] = useStateGui();
 
 export const [userMaps, setUserMaps] = createSignal<UserMapType[]>([]);
 
@@ -27,6 +30,11 @@ export function fetchUserMaps() {
         const maps: UserMapType[] = content.map((userMap) => {
           const [isActive, setIsActive] = createSignal(false);
           const [isSelected, setIsSelected] = createSignal(false);
+
+          const userMapId = userMap.id;
+          if (getActiveMapId() === userMapId) {
+            setIsActive(true);
+          }
 
           return {
             ...userMap,

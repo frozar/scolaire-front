@@ -1,18 +1,21 @@
-import { createSignal, onMount, For, onCleanup, createEffect } from "solid-js";
+import { For, createEffect, createSignal, onCleanup, onMount } from "solid-js";
 
+import { useStateGui } from "../../../StateGui";
+import {
+  points,
+  setIsEtablissementReady,
+  setIsRamassageReady,
+  setPoints,
+} from "../../../signaux";
 import {
   NatureEnum,
   PointEtablissementType,
   PointRamassageType,
 } from "../../../type";
-import Point from "./Point";
-import {
-  setPoints,
-  points,
-  setIsRamassageReady,
-  setIsEtablissementReady,
-} from "../../../signaux";
 import { authenticateWrap } from "../../layout/topMenu/authentication";
+import Point from "./Point";
+
+const [, { getActiveMapId }] = useStateGui();
 
 export const [pointsReady, setPointsReady] = createSignal(false);
 
@@ -69,7 +72,7 @@ function PointBack2Front<
   );
 }
 
-export function fetchPointsRamassage() {
+export function fetchPointsRamassageAndEtablissement() {
   authenticateWrap((headers) => {
     setPointsRamassageReady(false);
     setPointsEtablissementReady(false);
@@ -89,26 +92,32 @@ export function fetchPointsRamassage() {
       setPointsRamassageReady(true);
     });
 
-    fetch(import.meta.env.VITE_BACK_URL + "/points_etablissement", {
-      headers,
-    }).then(async (res) => {
-      const datas: PointEtablissementDBType[] = await res.json();
+    const mapId = getActiveMapId();
+    if (mapId) {
+      fetch(import.meta.env.VITE_BACK_URL + `/map/${mapId}/etablissements`, {
+        headers,
+      }).then(async (res) => {
+        const json = await res.json();
 
-      const dataWk = PointBack2Front(
-        datas,
-        NatureEnum.etablissement
-      ) as PointEtablissementType[];
+        const datas: PointEtablissementDBType[] = json["content"];
 
-      setPoints((dataArray) => [...dataArray, ...dataWk]);
+        const dataWk = PointBack2Front(
+          datas,
+          NatureEnum.etablissement
+        ) as PointEtablissementType[];
 
-      setPointsEtablissementReady(true);
-    });
+        console.log("dataWk", dataWk);
+        setPoints((dataArray) => [...dataArray, ...dataWk]);
+
+        setPointsEtablissementReady(true);
+      });
+    }
   });
 }
 
 export default function () {
   onMount(() => {
-    fetchPointsRamassage();
+    fetchPointsRamassageAndEtablissement();
   });
 
   onCleanup(() => {

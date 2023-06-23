@@ -1,19 +1,19 @@
-import { Signal, createSignal } from "solid-js";
+import { User } from "@auth0/auth0-spa-js";
 import L from "leaflet";
+import { Signal, createSignal } from "solid-js";
 import {
   ExportTypeEnum,
+  ImportCsvBoxType,
   MessageTypeEnum,
   PointEtablissementType,
   PointRamassageType,
-  exportConfirmationType,
-  removeConfirmationType,
-  userInformationType,
   ReturnMessageType,
   clearConfirmationType,
+  exportConfirmationType,
+  removeConfirmationType,
   removeRamassageConfirmationType,
-  ImportCsvBoxType,
+  userInformationType,
 } from "./type";
-import { User } from "@auth0/auth0-spa-js";
 
 const [getDisplayedSpinningWheel, setDisplayedSpinningWheel] =
   createSignal(false);
@@ -190,22 +190,27 @@ export function addNewUserInformation(
   userInformation: Omit<userInformationType, "id">
 ) {
   const id = generateUniqueID();
+
   setUserInformations((currentArray) => {
     if (userInformation.type === MessageTypeEnum.enterAddLine) {
       const doesContainEnterAddline =
         currentArray.filter((elt) => elt.type === MessageTypeEnum.enterAddLine)
           .length != 0;
+
       if (doesContainEnterAddline) {
         return currentArray;
       }
     }
-    return [
+
+    const res = [
       ...currentArray,
       {
         ...userInformation,
         id: id,
       },
     ];
+
+    return res;
   });
 }
 

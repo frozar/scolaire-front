@@ -1,4 +1,5 @@
 import { Setter, onCleanup, onMount } from "solid-js";
+import { uploadLine } from "../request";
 import {
   addNewUserInformation,
   disableSpinningWheel,
@@ -7,8 +8,7 @@ import {
   setPoints,
 } from "../signaux";
 import { MessageLevelEnum, MessageTypeEnum, ReturnMessageType } from "../type";
-import { uploadLine } from "../request";
-import { fetchPointsRamassage } from "../views/content/graphicage/PointsRamassageAndEtablissement";
+import { fetchPointsRamassageAndEtablissement } from "../views/content/graphicage/PointsRamassageAndEtablissement";
 
 let mapDragDropDiv: HTMLDivElement;
 
@@ -98,14 +98,14 @@ function dropHandler(
       }
 
       if (res.status != 200) {
-        const body = await res.json();
+        const json = await res.json();
         // console.log("body", body);
         exitCanvas();
         addNewUserInformation({
           displayed: true,
           level: MessageLevelEnum.error,
           type: MessageTypeEnum.global,
-          content: body.detail,
+          content: json.detail,
         });
         return;
       }
@@ -151,7 +151,7 @@ function dropHandler(
       // }
 
       setPoints([]);
-      fetchPointsRamassage();
+      fetchPointsRamassageAndEtablissement();
       exitCanvas();
 
       if (callbackSuccess && typeof callbackSuccess === "function") {
