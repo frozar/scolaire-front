@@ -1,14 +1,17 @@
 import { For, onCleanup, onMount } from "solid-js";
-import MapCard from "./MapCard";
 import { UserMapType } from "../../../../../type";
 import { CarteToDeleteType } from "../../Dashboard";
+import MapCard from "./MapCard";
 
+import { useStateGui } from "../../../../../StateGui";
 import { clickOnButton } from "../../../../../utils";
 import "./MapGrid.css";
 
 export function shouldExit(event: MouseEvent) {
   return !event.target || clickOnButton(event.target as HTMLElement);
 }
+
+const [, { setActiveMapId }] = useStateGui();
 
 interface MapGridProps {
   mapList: UserMapType[];
@@ -96,6 +99,7 @@ export default function (props: MapGridProps) {
                 }
 
                 props.mapList.map((map) => map.setIsActive(map.id === item.id));
+                setActiveMapId(item.id);
               }}
               handleClickDelete={() => {
                 props.handleClickDelete({

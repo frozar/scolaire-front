@@ -1,11 +1,12 @@
 import _ from "lodash";
 import { JSX, createContext, createEffect, useContext } from "solid-js";
 import { SetStoreFunction, Store, createStore } from "solid-js/store";
-import { TileId, SelectedMenuType } from "./type";
+import { SelectedMenuType, TileId } from "./type";
 
 type StateGuiType = {
   selectedMenu: SelectedMenuType;
   selectedTab: string;
+  activeMapId: number | null;
   displayedLeftMenu: boolean;
   displayedRightMenu: boolean;
   selectedReadModeTile: TileId;
@@ -43,6 +44,7 @@ const makeStateGuiContext = () => {
   const defaultStateGui: StateGuiType = {
     selectedMenu: "dashboard",
     selectedTab: "info",
+    activeMapId: null,
     displayedLeftMenu: false,
     displayedRightMenu: false,
     selectedReadModeTile: "OpenStreetMap_Mapnik",
@@ -58,6 +60,14 @@ const makeStateGuiContext = () => {
 
   function setSelectedTab(tabName: string) {
     setState("selectedTab", tabName);
+  }
+
+  function getActiveMapId() {
+    return state.activeMapId;
+  }
+
+  function setActiveMapId(id: number) {
+    setState("activeMapId", id);
   }
 
   function setSelectedReadModeTile(tileId: TileId) {
@@ -111,6 +121,8 @@ const makeStateGuiContext = () => {
     state,
     {
       setSelectedTab,
+      getActiveMapId,
+      setActiveMapId,
       setSelectedReadModeTile,
       getSelectedReadModeTile,
       setSelectedEditModeTile,

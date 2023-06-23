@@ -1,18 +1,18 @@
 import { createEffect, createSignal } from "solid-js";
 
-import L from "leaflet";
 import { L7Layer } from "@antv/l7-leaflet";
+import L from "leaflet";
 import {
-  setLeafletMap,
-  enableSpinningWheel,
   disableSpinningWheel,
+  enableSpinningWheel,
+  setLeafletMap,
 } from "../../../signaux";
 
 import { useStateAction } from "../../../StateAction";
-import FlaxibMapLogo from "./FlaxibMapLogo";
 import { useStateGui } from "../../../StateGui";
-import { getTileById } from "./tileUtils";
+import FlaxibMapLogo from "./FlaxibMapLogo";
 import { initScreenshoter } from "./rightMapMenu/export/screenShoter";
+import { getTileById } from "./tileUtils";
 
 const [, { getSelectedReadModeTile, getSelectedEditModeTile }] = useStateGui();
 const [, { isInReadMode, isInAddLineMode }] = useStateAction();
@@ -36,7 +36,6 @@ export function buildMapL7(div: HTMLDivElement) {
     zoomControl: false,
     zoomSnap: 0.1,
     zoomDelta: 0.1,
-    minZoom: 10,
     wheelPxPerZoomLevel: 200,
   }).setView([-20.930746, 55.527503], 13);
 
