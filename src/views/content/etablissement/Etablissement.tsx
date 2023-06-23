@@ -1,15 +1,18 @@
 import { AiOutlineSearch } from "solid-icons/ai";
-import EditStop, { setDataToEdit, toggleEditStop } from "./EditEtablissement";
 import { For, createEffect, createSignal, onCleanup, onMount } from "solid-js";
-import EtablissementItem from "./EtablissementItem";
+import { useStateGui } from "../../../StateGui";
+import ExportCsvButton from "../../../component/ExportCsvButton";
+import ImportCsvButton from "../../../component/ImportCsvButton";
+import ImportCsvCanvas from "../../../component/ImportCsvCanvas";
+import ImportCsvDialogBox from "../../../component/ImportCsvDialogBox";
+import ActionSelector from "../../../component/atom/ActionSelector";
 import { EtablissementItemType } from "../../../type";
 import RemoveRamassageConfirmation from "../../../userInformation/RemoveRamassageConfirmation";
-import ImportCsvDialogBox from "../../../component/ImportCsvDialogBox";
 import { authenticateWrap } from "../../layout/topMenu/authentication";
-import ImportCsvCanvas from "../../../component/ImportCsvCanvas";
-import ImportCsvButton from "../../../component/ImportCsvButton";
-import ExportCsvButton from "../../../component/ExportCsvButton";
-import ActionSelector from "../../../component/atom/ActionSelector";
+import EditStop, { setDataToEdit, toggleEditStop } from "./EditEtablissement";
+import EtablissementItem from "./EtablissementItem";
+
+const [, { getActiveMapId }] = useStateGui();
 
 const [etablissements, setEtablissements] = createSignal<
   EtablissementItemType[]
@@ -19,7 +22,7 @@ export function fetchEtablissement() {
   authenticateWrap((headers) => {
     fetch(
       import.meta.env.VITE_BACK_URL +
-        "/etablissements_associated_bus_lines_info",
+        `/map/${getActiveMapId()}/etablissements_associated_bus_lines_info`,
       {
         method: "GET",
         headers,
