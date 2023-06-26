@@ -23,5 +23,6 @@ export const Layout: Story = {
   args: {
     getDisplayedLeftMenu: fakeGetDisplayedLeftMenu,
     toggleDisplayedLeftMenu: toggleFakeDisplayedLeftMenu,
+    yOffset: -60,
   },
 };
