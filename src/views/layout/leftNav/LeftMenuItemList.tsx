@@ -1,10 +1,10 @@
 import { For, mergeProps } from "solid-js";
 
-import { useStateGui } from "../../StateGui";
-import { SelectedMenuType } from "../../type";
+import { useStateGui } from "../../../StateGui";
+import { SelectedMenuType } from "../../../type";
 
-import LeftMenuItem from "../molecule/LeftMenuItem";
-import menuItems from "../molecule/menuItemFields";
+import LeftMenuItem from "../../../component/molecule/LeftMenuItem";
+import menuItems from "../../../component/molecule/menuItemFields";
 
 const [, { setSelectedMenu, getSelectedMenu }] = useStateGui();
 
