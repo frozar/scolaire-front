@@ -4,7 +4,7 @@ import { useStateGui } from "../../../StateGui";
 import { SelectedMenuType } from "../../../type";
 
 import LeftMenuItem from "./component/molecule/LeftMenuItem";
-import menuItems from "../../../component/molecule/menuItemFields";
+import menuItems from "./menuItemFields";
 
 const [, { setSelectedMenu, getSelectedMenu }] = useStateGui();
 
