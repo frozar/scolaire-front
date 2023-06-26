@@ -1,4 +1,4 @@
-import LoginDropdown from "../../../component/organism/LoginDropdown";
+import LoginDropdown from "./LoginDropdown";
 import "./TopNav.css";
 
 export default function () {
