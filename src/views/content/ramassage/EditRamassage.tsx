@@ -67,52 +67,41 @@ export default function () {
             lat: latStop,
           }),
         }
-      ).then(async (res) => {
-        // return res.json();
-        const json = await res.json();
+      )
+        .then(async (res) => {
+          const json = await res.json();
 
-        if (res.status !== 201) {
+          if (res.status !== 201) {
+            addNewUserInformation({
+              displayed: true,
+              level: MessageLevelEnum.error,
+              type: MessageTypeEnum.global,
+              content: json["detail"],
+            });
+
+            return;
+          }
+
+          addNewUserInformation({
+            displayed: true,
+            level: MessageLevelEnum.success,
+            type: MessageTypeEnum.global,
+            content: json["message"],
+          });
+          toggleEditStop();
+
+          fetchRamassage();
+        })
+        .catch((err) => {
+          console.error(err);
+
           addNewUserInformation({
             displayed: true,
             level: MessageLevelEnum.error,
             type: MessageTypeEnum.global,
-            content: json["detail"],
+            content: err.message,
           });
-
-          return;
-        }
-        addNewUserInformation({
-          displayed: true,
-          level: MessageLevelEnum.success,
-          type: MessageTypeEnum.global,
-          content: json.content,
         });
-        toggleEditStop();
-
-        fetchRamassage();
-      });
-      // .then((res) => {
-      //   if (!isNaN(res)) {
-      //     addNewUserInformation({
-      //       displayed: true,
-      //       level: MessageLevelEnum.success,
-      //       type: MessageTypeEnum.global,
-      //       content: "L'arrêt a été créé",
-      //     });
-      //     toggleEditStop();
-      //   } else {
-      //     console.error(res.message.split(":").join("\n"));
-      //     addNewUserInformation({
-      //       displayed: true,
-      //       level: MessageLevelEnum.error,
-      //       type: MessageTypeEnum.global,
-      //       content:
-      //         "Erreur lors de la modification : \n" +
-      //         res.message.split(":")[1],
-      //     });
-      //   }
-      //   fetchRamassage();
-      // });
     });
   };
 
@@ -149,37 +138,54 @@ export default function () {
 
     // eslint-disable-next-line solid/reactivity
     authenticateWrap((headers) => {
-      fetch(import.meta.env.VITE_BACK_URL + "/point_ramassage", {
-        method: "PATCH",
-        headers,
-        body: JSON.stringify({
-          id: dataToEdit()?.id,
-          name: nameStop,
-          lon: lonStop,
-          lat: latStop,
-        }),
-      })
-        .then((res) => {
-          return res.json();
-        })
-        .then((res) => {
-          if (res === "UPDATE 1") {
-            addNewUserInformation({
-              displayed: true,
-              level: MessageLevelEnum.success,
-              type: MessageTypeEnum.global,
-              content: "L'arrêt a été modifié",
-            });
-            toggleEditStop();
-          } else {
+      fetch(
+        import.meta.env.VITE_BACK_URL +
+          `/map/${getActiveMapId()}/ramassage/${dataToEdit()?.id}`,
+        // "/point_ramassage",
+        {
+          method: "PATCH",
+          headers,
+          body: JSON.stringify({
+            id: dataToEdit()?.id,
+            name: nameStop,
+            lon: lonStop,
+            lat: latStop,
+          }),
+        }
+      )
+        .then(async (res) => {
+          const json = await res.json();
+          console.log(json);
+
+          if (res.status !== 200) {
             addNewUserInformation({
               displayed: true,
               level: MessageLevelEnum.error,
               type: MessageTypeEnum.global,
-              content: "Erreur lors de la modification : " + res,
+              content: json["detail"],
             });
+
+            return;
           }
+
+          addNewUserInformation({
+            displayed: true,
+            level: MessageLevelEnum.success,
+            type: MessageTypeEnum.global,
+            content: json["message"],
+          });
+
           fetchRamassage();
+        })
+        .catch((err) => {
+          console.error(err);
+
+          addNewUserInformation({
+            displayed: true,
+            level: MessageLevelEnum.error,
+            type: MessageTypeEnum.global,
+            content: err.message,
+          });
         });
     });
   };
