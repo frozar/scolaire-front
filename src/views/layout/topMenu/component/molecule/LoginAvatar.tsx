@@ -1,5 +1,5 @@
 import { Show, splitProps } from "solid-js";
-import CurrentUserLogo from "../../../../../component/atom/NoUserLogo";
+import CurrentUserLogo from "../atom/NoUserLogo";
 import LoggedInUserLogo from "../../../../../component/atom/LoggedInUserLogo";
 
 export interface LoginAvatarProps {
