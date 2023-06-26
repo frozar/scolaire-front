@@ -65,32 +65,30 @@ export default function (props: LeftNavProps) {
   });
 
   return (
-    <div id="left-menu-container">
-      <nav
-        id="lateral-nav"
-        classList={{ active: mergedProps.getDisplayedLeftMenu() }}
-        ref={refDivLeftMenu}
+    <nav
+      id="lateral-nav"
+      classList={{ active: mergedProps.getDisplayedLeftMenu() }}
+      ref={refDivLeftMenu}
+    >
+      <div id="lateral-nav-header">
+        <EnterpriseLogo
+          displayedLeftMenu={mergedProps.getDisplayedLeftMenu()}
+        />
+      </div>
+
+      <LeftMenuItemList displayedLabel={displayedLabel()} />
+
+      <button
+        id="lateral-close"
+        onClick={() => mergedProps.toggleDisplayedLeftMenu()}
       >
-        <div id="lateral-nav-header">
-          <EnterpriseLogo
-            displayedLeftMenu={mergedProps.getDisplayedLeftMenu()}
-          />
-        </div>
-
-        <LeftMenuItemList displayedLabel={displayedLabel()} />
-
-        <button
-          id="lateral-close"
-          onClick={() => mergedProps.toggleDisplayedLeftMenu()}
+        <Show
+          when={mergedProps.getDisplayedLeftMenu()}
+          fallback={<OpenPictogram />}
         >
-          <Show
-            when={mergedProps.getDisplayedLeftMenu()}
-            fallback={<OpenPictogram />}
-          >
-            <ClosePictogram />
-          </Show>
-        </button>
-      </nav>
-    </div>
+          <ClosePictogram />
+        </Show>
+      </button>
+    </nav>
   );
 }

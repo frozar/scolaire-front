@@ -10,10 +10,12 @@ export default function (props: LayoutProps) {
   return (
     <div>
       <TopNav />
-      <LeftNav
-        getDisplayedLeftMenu={props.getDisplayedLeftMenu}
-        toggleDisplayedLeftMenu={props.toggleDisplayedLeftMenu}
-      />
+      <div id="left-menu-container">
+        <LeftNav
+          getDisplayedLeftMenu={props.getDisplayedLeftMenu}
+          toggleDisplayedLeftMenu={props.toggleDisplayedLeftMenu}
+        />
+      </div>
     </div>
   );
 }
