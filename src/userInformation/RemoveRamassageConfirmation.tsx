@@ -4,14 +4,36 @@ import { Transition } from "solid-transition-group";
 import ClickOutside from "../component/ClickOutside";
 import {
   addNewUserInformation,
-  getRemoveRamassageConfirmation,
   closeRemoveRamassageConfirmationBox,
+  getRemoveRamassageConfirmation,
 } from "../signaux";
 
-import { deleteRamassage } from "../request";
+// import { deleteRamassage } from "../request";
+import { useStateGui } from "../StateGui";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { assertIsNode } from "../utils";
 import { fetchRamassage } from "../views/content/ramassage/Ramassage";
+import { asyncAuthenticateWrap } from "../views/layout/topMenu/authentication";
+
+false && ClickOutside;
+
+const [, { getActiveMapId }] = useStateGui();
+
+async function deleteRamassage(idToRemove: number) {
+  const headers = await asyncAuthenticateWrap();
+
+  return fetch(
+    import.meta.env.VITE_BACK_URL +
+      `/map/${getActiveMapId()}/ramassage/${idToRemove}`,
+    {
+      method: "DELETE",
+      headers,
+      body: JSON.stringify({
+        id: idToRemove,
+      }),
+    }
+  );
+}
 
 export default function () {
   const displayed = () => getRemoveRamassageConfirmation()["displayed"];
@@ -26,29 +48,29 @@ export default function () {
 
     const idToRemove: number = idToCheck;
     deleteRamassage(idToRemove)
-      .then((res) => {
-        return res.json();
-      })
-      .then((res: any) => {
-        console.log(res);
-        const nbDelete = res.split(" ").at(-1);
-        if (nbDelete != "0") {
-          addNewUserInformation({
-            displayed: true,
-            level: MessageLevelEnum.success,
-            type: MessageTypeEnum.removeLine,
-            content: `Le  ${idToRemove} a bien été supprimée`,
-          });
-          closeRemoveRamassageConfirmationBox();
-        } else {
+      .then(async (res) => {
+        const json = await res.json();
+
+        if (res.status !== 200) {
           addNewUserInformation({
             displayed: true,
             level: MessageLevelEnum.error,
-            type: MessageTypeEnum.removeLine,
-            content: `Echec de la suppression de la ligne ${idToRemove}`,
+            type: MessageTypeEnum.global,
+            content: json["detail"],
           });
+
           closeRemoveRamassageConfirmationBox();
+          return;
         }
+
+        addNewUserInformation({
+          displayed: true,
+          level: MessageLevelEnum.success,
+          type: MessageTypeEnum.global,
+          content: json["message"],
+        });
+        closeRemoveRamassageConfirmationBox();
+
         fetchRamassage();
       })
       .catch((error) => {
@@ -59,7 +81,9 @@ export default function () {
           type: MessageTypeEnum.removeLine,
           content: `Impossible de supprimer la ligne ${id_ramassage()}`,
         });
+
         closeRemoveRamassageConfirmationBox();
+
         fetchRamassage();
       });
   }
@@ -72,7 +96,11 @@ export default function () {
     buttonRef()?.focus();
   });
 
-  let refDialogueBox: HTMLDivElement | undefined;
+  let refDialogueBox!: HTMLDivElement;
+
+  createEffect(() => {
+    console.log("displayed()", displayed());
+  });
 
   return (
     <Transition
@@ -91,7 +119,7 @@ export default function () {
           role="dialog"
           aria-modal="true"
         >
-          <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+          <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
 
           {/* Forum github pour les nested transitions
           https://github.com/reactjs/react-transition-group/issues/558 */}

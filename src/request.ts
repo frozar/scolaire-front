@@ -21,18 +21,6 @@ export async function clear() {
   });
 }
 
-export async function deleteRamassage(idToRemove: number) {
-  return authenticateWrap((headers) => {
-    fetch(import.meta.env.VITE_BACK_URL + "/point_ramassage", {
-      method: "DELETE",
-      headers,
-      body: JSON.stringify({
-        id: idToRemove,
-      }),
-    });
-  });
-}
-
 export async function addBusLine(idsPoint: number[]) {
   return authenticateWrap((headers) => {
     return fetch(import.meta.env.VITE_BACK_URL + "/bus_line", {
