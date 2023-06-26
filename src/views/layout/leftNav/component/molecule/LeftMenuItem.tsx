@@ -1,6 +1,6 @@
 import { JSXElement, Show, mergeProps } from "solid-js";
 
-import LeftMenuItemLabel from "../../../../../component/atom/LeftMenuItemLabel";
+import LeftMenuItemLabel from "../atom/LeftMenuItemLabel";
 import LeftMenuButtonLogo from "./LeftMenuButtonLogo";
 
 import "./LeftMenuItem.css";
