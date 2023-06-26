@@ -1,10 +1,10 @@
 import { JSXElement, Show, mergeProps } from "solid-js";
 
-import LeftMenuItemLabel from "../atom/LeftMenuItemLabel";
-import LeftMenuButtonLogo from "../../views/layout/leftNav/component/molecule/LeftMenuButtonLogo";
+import LeftMenuItemLabel from "../../../../../component/atom/LeftMenuItemLabel";
+import LeftMenuButtonLogo from "./LeftMenuButtonLogo";
 
 import "./LeftMenuItem.css";
-import Pellet from "../atom/Pellet";
+import Pellet from "../../../../../component/atom/Pellet";
 
 export interface LeftMenuItemProps {
   isDisabled?: boolean;

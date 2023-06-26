@@ -3,7 +3,7 @@ import { For, mergeProps } from "solid-js";
 import { useStateGui } from "../../../StateGui";
 import { SelectedMenuType } from "../../../type";
 
-import LeftMenuItem from "../../../component/molecule/LeftMenuItem";
+import LeftMenuItem from "./component/molecule/LeftMenuItem";
 import menuItems from "../../../component/molecule/menuItemFields";
 
 const [, { setSelectedMenu, getSelectedMenu }] = useStateGui();
