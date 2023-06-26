@@ -1,6 +1,6 @@
-import { removeUserInformation, setUserInformations } from "../signaux";
+import { removeUserInformation } from "../signaux";
 
-export default function (props: any) {
+export default function (props: { id: number }) {
   return (
     <button onClick={() => removeUserInformation(props.id)}>
       <svg
