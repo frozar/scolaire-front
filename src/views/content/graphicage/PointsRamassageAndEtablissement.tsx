@@ -97,7 +97,7 @@ export function fetchPointsRamassageAndEtablissement() {
           datas,
           NatureEnum.ramassage
         ) as PointRamassageType[];
-        // console.log("dataWk ramassage", dataWk);
+        console.log("Ramassage: dataWk", dataWk);
 
         setPoints((dataArray) => [...dataArray, ...dataWk]);
 
@@ -115,8 +115,8 @@ export function fetchPointsRamassageAndEtablissement() {
           datas,
           NatureEnum.etablissement
         ) as PointEtablissementType[];
+        console.log("Etablissement: dataWk", dataWk);
 
-        console.log("dataWk", dataWk);
         setPoints((dataArray) => [...dataArray, ...dataWk]);
 
         setPointsEtablissementReady(true);
@@ -136,17 +136,31 @@ export default function () {
     setIsEtablissementReady(false);
   });
 
+  const filteredPoints = () =>
+    points()
+      .filter((value) => Number.isFinite(value.quantity))
+      .map((value) => value.quantity);
+
+  const minQuantity = () => {
+    const minCandidat = Math.min(...filteredPoints());
+    return Number.isFinite(minCandidat) ? minCandidat : 0;
+  };
+
+  const maxQuantity = () => {
+    const maxCandidat = Math.max(...filteredPoints());
+    return Number.isFinite(maxCandidat) ? maxCandidat : 0;
+  };
+
   return (
     <For each={points()}>
       {(point, i) => {
-        // console.log("point", point);
         return (
           <Point
             point={point}
             isLast={i() === points().length - 1}
             nature={point.nature}
-            minQuantity={Math.min(...points().map((value) => value.quantity))}
-            maxQuantity={Math.max(...points().map((value) => value.quantity))}
+            minQuantity={minQuantity()}
+            maxQuantity={maxQuantity()}
           />
         );
       }}
