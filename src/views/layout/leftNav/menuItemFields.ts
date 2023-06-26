@@ -1,10 +1,10 @@
-import DashboardLogo from "../../../component/atom/DashboardLogo";
-import GraphicageLogo from "../../../component/atom/GraphicageLogo";
-import EtablissementLogo from "../../../component/atom/EtablissementLogo";
-import ArretsLogo from "../../../component/atom/ArretsLogo";
-import SettingsLogo from "../../../component/atom/SettingsLogo";
-import SupportLogo from "../../../component/atom/SupportLogo";
-import VoirieLogo from "../../../component/atom/VoirieLogo";
+import DashboardLogo from "./component/atom/DashboardLogo";
+import GraphicageLogo from "./component/atom/GraphicageLogo";
+import EtablissementLogo from "./component/atom/EtablissementLogo";
+import ArretsLogo from "./component/atom/ArretsLogo";
+import SettingsLogo from "./component/atom/SettingsLogo";
+import SupportLogo from "./component/atom/SupportLogo";
+import VoirieLogo from "./component/atom/VoirieLogo";
 import { MenuItemType } from "../../../type";
 
 const menuItems: MenuItemType[] = [
