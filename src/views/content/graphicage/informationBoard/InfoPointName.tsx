@@ -1,7 +1,7 @@
 import { renderAnimation } from "../animation";
 
-import { linkMap } from "../../../../global/linkPointIdentityCircle";
 import { PointToDisplayType } from "../../../../type";
+import { linkMap } from "../Point";
 
 export default function (props: { point: PointToDisplayType }) {
   return (

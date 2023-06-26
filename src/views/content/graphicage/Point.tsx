@@ -16,7 +16,6 @@ import {
 } from "../../../type";
 
 import { useStateAction } from "../../../StateAction";
-import { linkMap } from "../../../global/linkPointIdentityCircle";
 import {
   getLeafletMap,
   points,
@@ -26,6 +25,8 @@ import {
 import { authenticateWrap } from "../../layout/topMenu/authentication";
 import { renderAnimation } from "./animation";
 import { deselectAllBusLines } from "./line/busLinesUtils";
+
+export const linkMap = new Map<number, L.CircleMarker>();
 
 const [
   ,

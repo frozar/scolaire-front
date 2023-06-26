@@ -2,10 +2,9 @@ import { onCleanup, createEffect } from "solid-js";
 import L from "leaflet";
 import { useStateAction } from "../../../../StateAction";
 import { getLeafletMap } from "../../../../signaux";
-import { linkMap } from "../../../../global/linkPointIdentityCircle";
 import { COLOR_LINE_UNDER_CONSTRUCTION } from "../constant";
 import { PointIdentityType } from "../../../../type";
-
+import { linkMap } from "../Point";
 const [, { isInAddLineMode, getLineUnderConstruction }] = useStateAction();
 
 // Draw the tip of the line under construction between

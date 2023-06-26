@@ -42,7 +42,7 @@ function moveEndEvent(
 
       if (canvasCandidate instanceof HTMLCanvasElement) {
         console.log("lo");
-        const canvas = canvasCandidate as any as HTMLCanvasElement;
+        const canvas = canvasCandidate as HTMLCanvasElement;
         await addImageProcess(canvas);
         resolve();
       }
