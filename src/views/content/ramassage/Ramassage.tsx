@@ -1,22 +1,26 @@
 import { AiOutlineSearch } from "solid-icons/ai";
-import EditStop, { setDataToEdit, toggleEditStop } from "./EditRamassage";
 import { For, createEffect, createSignal, onCleanup, onMount } from "solid-js";
-import StopItems from "./RamassageItem";
+import { useStateGui } from "../../../StateGui";
+import ExportCsvButton from "../../../component/ExportCsvButton";
+import ImportCsvButton from "../../../component/ImportCsvButton";
+import ImportCsvCanvas from "../../../component/ImportCsvCanvas";
+import ImportCsvDialogBox from "../../../component/ImportCsvDialogBox";
+import ActionSelector from "../../../component/atom/ActionSelector";
 import { StopItemType } from "../../../type";
 import RemoveRamassageConfirmation from "../../../userInformation/RemoveRamassageConfirmation";
-import ImportCsvDialogBox from "../../../component/ImportCsvDialogBox";
 import { authenticateWrap } from "../../layout/topMenu/authentication";
-import ImportCsvCanvas from "../../../component/ImportCsvCanvas";
-import ImportCsvButton from "../../../component/ImportCsvButton";
-import ExportCsvButton from "../../../component/ExportCsvButton";
-import ActionSelector from "../../../component/atom/ActionSelector";
+import EditStop, { setDataToEdit, toggleEditStop } from "./EditRamassage";
+import StopItems from "./RamassageItem";
+
+const [, { getActiveMapId }] = useStateGui();
 
 const [ramassages, setRamassages] = createSignal<StopItemType[]>([]);
 
 export function fetchRamassage() {
   authenticateWrap((headers) => {
     fetch(
-      import.meta.env.VITE_BACK_URL + "/ramassages_associated_bus_lines_info",
+      import.meta.env.VITE_BACK_URL +
+        `/map/${getActiveMapId()}/dashboard/ramassages`,
       {
         method: "GET",
         headers,

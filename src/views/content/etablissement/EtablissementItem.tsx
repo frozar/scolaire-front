@@ -1,18 +1,23 @@
 import { Setter, createEffect } from "solid-js";
+// import { setRemoveRamassageConfirmation } from "../../../signaux";
 import { EtablissementItemType } from "../../../type";
 import { setDataToEdit, toggleEditStop } from "./EditEtablissement";
-// import { setRemoveRamassageConfirmation } from "../../signaux";
+
+function handleClickEdit(item: EtablissementItemType) {
+  setDataToEdit(item);
+  toggleEditStop();
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function handleClickSuppression(item: EtablissementItemType) {
+  // setRemoveEtablissementConfirmation({ displayed: true, item });
+}
 
 export default function (props: {
   item: EtablissementItemType;
   setEtablissements: Setter<EtablissementItemType[]>;
 }) {
   let refCheckbox!: HTMLInputElement;
-
-  const handleClickEdit = () => {
-    setDataToEdit({ ...props.item });
-    toggleEditStop();
-  };
 
   createEffect(() => {
     refCheckbox.checked = props.item.selected;
@@ -43,11 +48,20 @@ export default function (props: {
       <td>{props.item.quantity}</td>
       <td>{props.item.nbLine}</td>
       <td>
-        <a onClick={handleClickEdit} href="#" class="text-[#0CC683] mr-2">
+        <button
+          onClick={() => handleClickEdit(props.item)}
+          class="text-[#0CC683] hover:text-indigo-600 mr-2"
+        >
           Editer
-        </a>
+        </button>
 
-        <a href="#">Supprimer</a>
+        <button
+          disabled
+          // class="text-[#0CC683] hover:text-indigo-600"
+          onClick={() => handleClickSuppression(props.item)}
+        >
+          Supprimer
+        </button>
       </td>
     </tr>
   );

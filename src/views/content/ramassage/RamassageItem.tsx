@@ -10,7 +10,6 @@ function handleClickEdit(item: StopItemType) {
 
 function handleClickSuppression(item: StopItemType) {
   setRemoveRamassageConfirmation({ displayed: true, item });
-  // toggleEditStop();
 }
 
 export default function (props: {

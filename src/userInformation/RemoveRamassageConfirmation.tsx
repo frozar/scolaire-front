@@ -98,9 +98,9 @@ export default function () {
 
   let refDialogueBox!: HTMLDivElement;
 
-  createEffect(() => {
-    console.log("displayed()", displayed());
-  });
+  // createEffect(() => {
+  //   console.log("displayed()", displayed());
+  // });
 
   return (
     <Transition
