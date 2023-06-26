@@ -1,5 +1,5 @@
-import TopNav from "../../component/organism/TopNav";
-import LeftNav from "../../component/organism/LeftNav";
+import TopNav from "./topNav/TopNav";
+import LeftNav from "./leftNav/LeftNav";
 import { mergeProps } from "solid-js";
 
 export interface LayoutProps {
