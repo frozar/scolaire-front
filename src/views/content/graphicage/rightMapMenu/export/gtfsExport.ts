@@ -1,4 +1,4 @@
-import { authenticateWrap } from "../../../../layout/topMenu/authentication";
+import { authenticateWrap } from "../../../../layout/topNav/authentication";
 import {
   displayDownloadErrorMessage,
   displayDownloadSuccessMessage,

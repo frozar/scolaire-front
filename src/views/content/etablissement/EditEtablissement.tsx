@@ -8,7 +8,7 @@ import {
   MessageLevelEnum,
   MessageTypeEnum,
 } from "../../../type";
-import { authenticateWrap } from "../../layout/topMenu/authentication";
+import { authenticateWrap } from "../../layout/topNav/authentication";
 import { fetchEtablissement } from "./Etablissement";
 
 const [, { getActiveMapId }] = useStateGui();

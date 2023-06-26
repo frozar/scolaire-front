@@ -12,7 +12,7 @@ import {
   PointEtablissementType,
   PointRamassageType,
 } from "../../../type";
-import { authenticateWrap } from "../../layout/topMenu/authentication";
+import { authenticateWrap } from "../../layout/topNav/authentication";
 import Point from "./Point";
 
 const [, { getActiveMapId }] = useStateGui();
