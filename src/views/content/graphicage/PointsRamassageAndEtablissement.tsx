@@ -44,6 +44,7 @@ type PointRamassageCoreType = Omit<PointRamassageDBType, "id_point"> & {
   idPoint: number;
 };
 
+// Rename field 'id_point' to 'idPoint'
 function PointBack2FrontIdPoint(
   data: PointRamassageDBType
 ): PointRamassageCoreType {
@@ -77,23 +78,32 @@ export function fetchPointsRamassageAndEtablissement() {
     setPointsRamassageReady(false);
     setPointsEtablissementReady(false);
 
-    fetch(import.meta.env.VITE_BACK_URL + "/points_ramassage", {
-      headers,
-    }).then(async (res) => {
-      const datas: PointRamassageDBType[] = await res.json();
-
-      const dataWk = PointBack2Front(
-        datas,
-        NatureEnum.ramassage
-      ) as PointRamassageType[];
-
-      setPoints((dataArray) => [...dataArray, ...dataWk]);
-
-      setPointsRamassageReady(true);
-    });
-
     const mapId = getActiveMapId();
+
     if (mapId) {
+      fetch(
+        import.meta.env.VITE_BACK_URL + `/map/${mapId}/dashboard/ramassages`,
+        {
+          headers,
+        }
+      ).then(async (res) => {
+        const json = await res.json();
+        // console.log("json", json);
+
+        const datas: PointRamassageDBType[] = json["content"];
+        // console.log("datas", datas);
+
+        const dataWk = PointBack2Front(
+          datas,
+          NatureEnum.ramassage
+        ) as PointRamassageType[];
+        // console.log("dataWk ramassage", dataWk);
+
+        setPoints((dataArray) => [...dataArray, ...dataWk]);
+
+        setPointsRamassageReady(true);
+      });
+
       fetch(import.meta.env.VITE_BACK_URL + `/map/${mapId}/etablissements`, {
         headers,
       }).then(async (res) => {
@@ -128,15 +138,18 @@ export default function () {
 
   return (
     <For each={points()}>
-      {(point, i) => (
-        <Point
-          point={point}
-          isLast={i() === points().length - 1}
-          nature={point.nature}
-          minQuantity={Math.min(...points().map((value) => value.quantity))}
-          maxQuantity={Math.max(...points().map((value) => value.quantity))}
-        />
-      )}
+      {(point, i) => {
+        // console.log("point", point);
+        return (
+          <Point
+            point={point}
+            isLast={i() === points().length - 1}
+            nature={point.nature}
+            minQuantity={Math.min(...points().map((value) => value.quantity))}
+            maxQuantity={Math.max(...points().map((value) => value.quantity))}
+          />
+        );
+      }}
     </For>
   );
 }

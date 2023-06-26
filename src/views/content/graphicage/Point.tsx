@@ -1,30 +1,30 @@
 import L, { LeafletMouseEvent } from "leaflet";
 import {
-  createSignal,
-  onMount,
-  onCleanup,
   Setter,
   createEffect,
+  createSignal,
   on,
+  onCleanup,
+  onMount,
 } from "solid-js";
 import {
   EleveVersEtablissementType,
   NatureEnum,
+  PointEtablissementType,
   PointIdentityType,
   PointRamassageType,
-  PointEtablissementType,
 } from "../../../type";
 
 import { useStateAction } from "../../../StateAction";
-import { renderAnimation } from "./animation";
 import { linkMap } from "../../../global/linkPointIdentityCircle";
 import {
   getLeafletMap,
-  setIsRamassageReady,
-  setIsEtablissementReady,
   points,
+  setIsEtablissementReady,
+  setIsRamassageReady,
 } from "../../../signaux";
 import { authenticateWrap } from "../../layout/topMenu/authentication";
+import { renderAnimation } from "./animation";
 import { deselectAllBusLines } from "./line/busLinesUtils";
 
 const [
@@ -135,6 +135,14 @@ export default function (props: {
     const lon = Number(lonlat.split(" ")[0]);
     const lat = Number(lonlat.split(" ")[1]);
 
+    // console.log("location", location);
+    // console.log("lonlat", lonlat);
+    // console.log("lon", lon);
+    // console.log("lat", lat);
+
+    // console.log("minQuantity", minQuantity());
+    // console.log("maxQuantity", maxQuantity());
+
     const coef =
       minQuantity() == maxQuantity()
         ? 0
@@ -147,6 +155,8 @@ export default function (props: {
         : nature === NatureEnum.etablissement
         ? ["green", "white", 12, 4]
         : ["white", "#000", 18, 4];
+    // console.log("coef", coef);
+
     return (
       L.circleMarker([lat, lon], {
         color,
@@ -250,6 +260,8 @@ export default function (props: {
     if (!leafletMap) {
       return;
     }
+
+    console.log("point", point());
 
     circle = buildCircle(point());
     circle.addTo(leafletMap);
