@@ -13,7 +13,6 @@ import ImportCsvCanvas from "../../../component/ImportCsvCanvas";
 import ConfirmStopAddLine from "./ConfirmStopAddLineBox";
 import { InformationBoard } from "./informationBoard/InformationBoard";
 import LineUnderConstruction from "./line/LineUnderConstruction";
-// import ControlMapMenu from "./rightMapMenu/RightMapMenu";
 import RightMapMenu from "./component/organism/RightMapMenu";
 import { listHandlerLMap } from "./shortcut";
 import InformationBoardButton from "./component/organism/InformationBoardButton";
@@ -80,7 +79,6 @@ export default function () {
         <LineUnderConstruction />
       </Show>
       <BusLines />
-      {/* <ControlMapMenu /> */}
       <RightMapMenu>
         <InformationBoardButton />
         <AddLineButton />
