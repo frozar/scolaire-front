@@ -1,11 +1,11 @@
-import { openExportConfirmationBox } from "../../../../signaux";
+import { openExportConfirmationBox } from "../../../../../signaux";
 import { CgExport } from "solid-icons/cg";
 import {
   defineModalToOpen,
   confirmAbortEditionNeedToBeCall,
-} from "../ConfirmStopAddLineBox";
+} from "../../ConfirmStopAddLineBox";
 
-import ButtonGraphicageRightMenu from "./atom/ButtonGraphicageRightMenu";
+import ButtonGraphicageRightMenu from "../atom/ButtonGraphicageRightMenu";
 
 export default function () {
   const handleClick = () => {

@@ -16,12 +16,12 @@ import LineUnderConstruction from "./line/LineUnderConstruction";
 // import ControlMapMenu from "./rightMapMenu/RightMapMenu";
 import RightMapMenu from "./rightMapMenu/RightMapMenu";
 import { listHandlerLMap } from "./shortcut";
-import InformationBoardButton from "./rightMapMenu/InformationBoardButton";
-import AddLineButton from "./rightMapMenu/AddLineButton";
-import RemoveLineButton from "./rightMapMenu/RemoveLineButton";
-import ClearButton from "./rightMapMenu/ClearButton";
-import GenerateButton from "./rightMapMenu/GenerateButton";
-import ExportButton from "./rightMapMenu/ExportButton";
+import InformationBoardButton from "./rightMapMenu/molecule/InformationBoardButton";
+import AddLineButton from "./rightMapMenu/molecule/AddLineButton";
+import RemoveLineButton from "./rightMapMenu/molecule/RemoveLineButton";
+import ClearButton from "./rightMapMenu/molecule/ClearButton";
+import GenerateButton from "./rightMapMenu/molecule/GenerateButton";
+import ExportButton from "./rightMapMenu/molecule/ExportButton";
 
 const [, { isInAddLineMode }] = useStateAction();
 const [, { getActiveMapId }] = useStateGui();

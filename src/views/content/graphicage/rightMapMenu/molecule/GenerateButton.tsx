@@ -1,10 +1,10 @@
-import { openGeneratorDialogBox } from "../../../../signaux";
+import { openGeneratorDialogBox } from "../../../../../signaux";
 import { FiArrowUpCircle } from "solid-icons/fi";
 import {
   confirmAbortEditionNeedToBeCall,
   defineModalToOpen,
-} from "../ConfirmStopAddLineBox";
-import ButtonGraphicageRightMenu from "./atom/ButtonGraphicageRightMenu";
+} from "../../ConfirmStopAddLineBox";
+import ButtonGraphicageRightMenu from "../atom/ButtonGraphicageRightMenu";
 
 export default function () {
   const handleClick = () => {

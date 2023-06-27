@@ -1,10 +1,10 @@
 import { FaRegularTrashCan } from "solid-icons/fa";
-import { openClearConfirmationBox } from "../../../../signaux";
+import { openClearConfirmationBox } from "../../../../../signaux";
 import {
   confirmAbortEditionNeedToBeCall,
   defineModalToOpen,
-} from "../ConfirmStopAddLineBox";
-import ButtonGraphicageRightMenu from "./atom/ButtonGraphicageRightMenu";
+} from "../../ConfirmStopAddLineBox";
+import ButtonGraphicageRightMenu from "../atom/ButtonGraphicageRightMenu";
 
 export default function () {
   const handleClick = () => {
