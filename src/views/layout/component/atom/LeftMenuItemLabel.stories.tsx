@@ -3,7 +3,6 @@ import { Meta, StoryObj } from "storybook-solidjs";
 import LeftMenuItemLabelComponent from "./LeftMenuItemLabel";
 
 const meta = {
-  title: "LeftNav/Item/Label",
   component: LeftMenuItemLabelComponent,
   tags: ["autodocs"],
 } satisfies Meta<typeof LeftMenuItemLabelComponent>;

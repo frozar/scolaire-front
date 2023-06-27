@@ -2,7 +2,6 @@ import { Meta, StoryObj } from "storybook-solidjs";
 import ButtonComponent from "./Button";
 
 const meta = {
-  title: "Generic/Button",
   component: ButtonComponent,
   tags: ["autodocs"],
 } satisfies Meta<typeof ButtonComponent>;

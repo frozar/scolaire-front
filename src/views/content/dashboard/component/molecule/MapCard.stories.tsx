@@ -4,7 +4,6 @@ import { createSignal } from "solid-js";
 import { shouldExit } from "./MapGrid";
 
 const meta = {
-  title: "Dashboard/Molecule/MapCard",
   component: MapCardComponent,
   tags: ["autodocs"],
 } satisfies Meta<typeof MapCardComponent>;

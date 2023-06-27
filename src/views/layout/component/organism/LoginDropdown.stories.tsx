@@ -3,7 +3,6 @@ import LoginDropdownComponent from "./LoginDropdown";
 import { createSignal } from "solid-js";
 
 const meta = {
-  title: "TopNav/LoginDropdown",
   component: LoginDropdownComponent,
   tags: ["autodocs"],
 } satisfies Meta<typeof LoginDropdownComponent>;

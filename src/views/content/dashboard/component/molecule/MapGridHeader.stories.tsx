@@ -2,7 +2,6 @@ import { Meta, StoryObj } from "storybook-solidjs";
 import MapGridHeaderComponent from "./MapGridHeader";
 
 const meta = {
-  title: "Dashboard/Molecule/MapGridHeader",
   component: MapGridHeaderComponent,
   tags: ["autodocs"],
 } satisfies Meta<typeof MapGridHeaderComponent>;
