@@ -8,7 +8,7 @@ import ImportCsvDialogBox from "../../../component/ImportCsvDialogBox";
 import ActionSelector from "../../../component/atom/ActionSelector";
 import { EtablissementItemType } from "../../../type";
 import RemoveRamassageConfirmation from "../../../userInformation/RemoveRamassageConfirmation";
-import { authenticateWrap } from "../../layout/topMenu/authentication";
+import { authenticateWrap } from "../../layout/authentication";
 import EditStop, { setDataToEdit, toggleEditStop } from "./EditEtablissement";
 import EtablissementItem from "./EtablissementItem";
 

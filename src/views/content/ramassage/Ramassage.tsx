@@ -9,7 +9,7 @@ import ActionSelector from "../../../component/atom/ActionSelector";
 import { addNewUserInformation } from "../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum, StopItemType } from "../../../type";
 import RemoveRamassageConfirmation from "../../../userInformation/RemoveRamassageConfirmation";
-import { authenticateWrap } from "../../layout/topMenu/authentication";
+import { authenticateWrap } from "../../layout/authentication";
 import EditStop, { setDataToEdit, toggleEditStop } from "./EditRamassage";
 import StopItems from "./RamassageItem";
 

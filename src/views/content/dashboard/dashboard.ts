@@ -1,7 +1,7 @@
 import { createSignal } from "solid-js";
 import { useStateGui } from "../../../StateGui";
 import { UserMapType } from "../../../type";
-import { authenticateWrap } from "../../layout/topMenu/authentication";
+import { authenticateWrap } from "../../layout/authentication";
 import { closeCreateMapModal, closeDeleteMapModal } from "./Dashboard";
 
 const [, { getActiveMapId }] = useStateGui();

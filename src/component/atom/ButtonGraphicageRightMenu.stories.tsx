@@ -6,7 +6,6 @@ import { FiArrowUpCircle } from "solid-icons/fi";
 import { BsInfoCircle } from "solid-icons/bs";
 
 const meta = {
-  title: "Graphicage/RightMenu/ButtonGraphicageRightMenu",
   component: ButtonGraphicageRightMenu,
   tags: ["autodocs"],
   argTypes: {

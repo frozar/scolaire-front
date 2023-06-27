@@ -3,7 +3,6 @@ import LeftMenuItemComponent from "./LeftMenuItem";
 import GraphicageLogo from "../atom/GraphicageLogo";
 
 const meta = {
-  title: "LeftNav/Item/Item",
   component: LeftMenuItemComponent,
   tags: ["autodocs"],
 } satisfies Meta<typeof LeftMenuItemComponent>;

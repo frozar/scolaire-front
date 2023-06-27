@@ -2,7 +2,6 @@ import { Meta, StoryObj } from "storybook-solidjs";
 import LoginAvatarComponent from "./LoginAvatar";
 
 const meta = {
-  title: "TopNav/LoginAvatar",
   component: LoginAvatarComponent,
   tags: ["autodocs"],
 } satisfies Meta<typeof LoginAvatarComponent>;

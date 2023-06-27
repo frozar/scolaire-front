@@ -2,7 +2,6 @@ import { Meta, StoryObj } from "storybook-solidjs";
 import LoginMenuComponent from "./LoginMenu";
 
 const meta = {
-  title: "TopNav/LoginMenu",
   component: LoginMenuComponent,
   tags: ["autodocs"],
   argTypes: {

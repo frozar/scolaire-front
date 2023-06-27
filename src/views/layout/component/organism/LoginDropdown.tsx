@@ -1,7 +1,7 @@
 import { Show, createSignal, mergeProps, onMount, splitProps } from "solid-js";
 import { Transition } from "solid-transition-group";
 
-import { authenticated, setAuthenticated } from "../../signaux";
+import { authenticated, setAuthenticated } from "../../../../signaux";
 
 import LoginMenu from "../atom/LoginMenu";
 import LoginAvatar from "../molecule/LoginAvatar";
@@ -12,7 +12,7 @@ import {
   isAuthenticated,
   login,
   logout,
-} from "../../views/layout/topMenu/authentication";
+} from "../../authentication";
 
 export interface LoginDropdownProps {
   // Shared props

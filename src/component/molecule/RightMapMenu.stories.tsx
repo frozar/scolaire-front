@@ -8,7 +8,6 @@ import GenerateButton from "../../views/content/graphicage/rightMapMenu/Generate
 import ExportButton from "../../views/content/graphicage/rightMapMenu/ExportButton";
 
 const meta = {
-  title: "Graphicage/RightMenu/Menu",
   component: RightMapMenu,
   tags: ["autodocs"],
 } satisfies Meta<typeof RightMapMenu>;

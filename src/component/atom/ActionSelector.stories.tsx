@@ -2,7 +2,6 @@ import type { Meta, StoryObj } from "storybook-solidjs";
 import ActionSelectorComponent from "./ActionSelector";
 
 const meta = {
-  title: "Etablissement/ActionSelector",
   component: ActionSelectorComponent,
   tags: ["autodocs"],
 } satisfies Meta<typeof ActionSelectorComponent>;

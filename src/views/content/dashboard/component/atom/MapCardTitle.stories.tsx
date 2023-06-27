@@ -2,7 +2,6 @@ import { Meta, StoryObj } from "storybook-solidjs";
 import MapCardTitle from "./MapCardTitle";
 
 const meta = {
-  title: "Dashboard/Atom/MapCardTitle",
   component: MapCardTitle,
   tags: ["autodocs"],
   argTypes: {

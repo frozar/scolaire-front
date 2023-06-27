@@ -1,12 +1,13 @@
 import { Meta, StoryObj } from "storybook-solidjs";
-import PelletComponent from "./Pellet";
+
+import LayoutComponent from "./Layout";
 
 const meta = {
-  component: PelletComponent,
+  component: LayoutComponent,
   tags: ["autodocs"],
-} satisfies Meta<typeof PelletComponent>;
+} satisfies Meta<typeof LayoutComponent>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Pellet: Story = {};
+export const Layout: Story = {};

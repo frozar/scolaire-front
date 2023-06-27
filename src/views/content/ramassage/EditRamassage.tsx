@@ -4,7 +4,7 @@ import { Show, createSignal } from "solid-js";
 import { useStateGui } from "../../../StateGui";
 import { addNewUserInformation } from "../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum, StopItemType } from "../../../type";
-import { authenticateWrap } from "../../layout/topMenu/authentication";
+import { authenticateWrap } from "../../layout/authentication";
 import { fetchRamassage } from "./Ramassage";
 
 const [, { getActiveMapId }] = useStateGui();

@@ -268,10 +268,6 @@
 
 /* -------------------------------------- redesign --------------------------------- */
 
-#left-menu-container {
-  @apply z-[1400] fixed translate-y-[-60px] w-fit;
-}
-
 #draw-line-options {
   @apply absolute menu p-2 shadow bg-base-100 rounded-box w-52 translate-x-[-200px] translate-y-[-120px];
 }

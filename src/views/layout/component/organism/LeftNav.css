@@ -1,5 +1,5 @@
-@import "../../css/tailwind.css";
-@import "../../css/var.css";
+@import "../../../../css/tailwind.css";
+@import "../../../../css/var.css";
 
 #lateral-nav {
   @apply flex flex-col justify-between py-4 h-[100vh] w-[70px] bg-[var(--dark-teal)];

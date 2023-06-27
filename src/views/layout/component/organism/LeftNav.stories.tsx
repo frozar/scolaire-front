@@ -4,7 +4,6 @@ import { Meta, StoryObj } from "storybook-solidjs";
 import LeftNavComponent from "./LeftNav";
 
 const meta = {
-  title: "LeftNav/LeftNav",
   component: LeftNavComponent,
   tags: ["autodocs"],
 } satisfies Meta<typeof LeftNavComponent>;

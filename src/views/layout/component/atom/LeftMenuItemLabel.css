@@ -1,5 +1,5 @@
-@import "../../css/tailwind.css";
-@import "../../css/var.css";
+@import "../../../../css/tailwind.css";
+@import "../../../../css/var.css";
 
 .left-menu-item-label {
   @apply inline-block p-1 prevent-select;

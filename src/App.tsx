@@ -2,7 +2,7 @@ import { Match, Switch, createEffect } from "solid-js";
 import { useStateAction } from "./StateAction";
 import { useStateGui } from "./StateGui";
 
-import Layout from "./views/layout/Layout";
+import Layout from "./views/layout/component/template/Layout";
 
 import { setPointsReady } from "./views/content/graphicage/PointsRamassageAndEtablissement";
 

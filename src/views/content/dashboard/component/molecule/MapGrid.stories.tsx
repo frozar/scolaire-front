@@ -3,7 +3,6 @@ import MapGridComponent from "./MapGrid";
 import { createSignal } from "solid-js";
 
 const meta = {
-  title: "Dashboard/Molecule/MapGrid",
   component: MapGridComponent,
   tags: ["autodocs"],
 } satisfies Meta<typeof MapGridComponent>;
