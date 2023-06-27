@@ -44,6 +44,7 @@ type PointRamassageCoreType = Omit<PointRamassageDBType, "id_point"> & {
   idPoint: number;
 };
 
+// Rename field 'id_point' to 'idPoint'
 function PointBack2FrontIdPoint(
   data: PointRamassageDBType
 ): PointRamassageCoreType {
@@ -77,23 +78,32 @@ export function fetchPointsRamassageAndEtablissement() {
     setPointsRamassageReady(false);
     setPointsEtablissementReady(false);
 
-    fetch(import.meta.env.VITE_BACK_URL + "/points_ramassage", {
-      headers,
-    }).then(async (res) => {
-      const datas: PointRamassageDBType[] = await res.json();
-
-      const dataWk = PointBack2Front(
-        datas,
-        NatureEnum.ramassage
-      ) as PointRamassageType[];
-
-      setPoints((dataArray) => [...dataArray, ...dataWk]);
-
-      setPointsRamassageReady(true);
-    });
-
     const mapId = getActiveMapId();
+
     if (mapId) {
+      fetch(
+        import.meta.env.VITE_BACK_URL + `/map/${mapId}/dashboard/ramassages`,
+        {
+          headers,
+        }
+      ).then(async (res) => {
+        const json = await res.json();
+        // console.log("json", json);
+
+        const datas: PointRamassageDBType[] = json["content"];
+        // console.log("datas", datas);
+
+        const dataWk = PointBack2Front(
+          datas,
+          NatureEnum.ramassage
+        ) as PointRamassageType[];
+        console.log("Ramassage: dataWk", dataWk);
+
+        setPoints((dataArray) => [...dataArray, ...dataWk]);
+
+        setPointsRamassageReady(true);
+      });
+
       fetch(import.meta.env.VITE_BACK_URL + `/map/${mapId}/etablissements`, {
         headers,
       }).then(async (res) => {
@@ -105,8 +115,8 @@ export function fetchPointsRamassageAndEtablissement() {
           datas,
           NatureEnum.etablissement
         ) as PointEtablissementType[];
+        console.log("Etablissement: dataWk", dataWk);
 
-        console.log("dataWk", dataWk);
         setPoints((dataArray) => [...dataArray, ...dataWk]);
 
         setPointsEtablissementReady(true);
@@ -126,17 +136,34 @@ export default function () {
     setIsEtablissementReady(false);
   });
 
+  const filteredPoints = () =>
+    points()
+      .filter((value) => Number.isFinite(value.quantity))
+      .map((value) => value.quantity);
+
+  const minQuantity = () => {
+    const minCandidat = Math.min(...filteredPoints());
+    return Number.isFinite(minCandidat) ? minCandidat : 0;
+  };
+
+  const maxQuantity = () => {
+    const maxCandidat = Math.max(...filteredPoints());
+    return Number.isFinite(maxCandidat) ? maxCandidat : 0;
+  };
+
   return (
     <For each={points()}>
-      {(point, i) => (
-        <Point
-          point={point}
-          isLast={i() === points().length - 1}
-          nature={point.nature}
-          minQuantity={Math.min(...points().map((value) => value.quantity))}
-          maxQuantity={Math.max(...points().map((value) => value.quantity))}
-        />
-      )}
+      {(point, i) => {
+        return (
+          <Point
+            point={point}
+            isLast={i() === points().length - 1}
+            nature={point.nature}
+            minQuantity={minQuantity()}
+            maxQuantity={maxQuantity()}
+          />
+        );
+      }}
     </For>
   );
 }

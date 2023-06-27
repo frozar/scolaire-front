@@ -1,8 +1,8 @@
 import {
-  createAuth0Client,
   Auth0Client,
-  RedirectLoginOptions,
   LogoutOptions,
+  RedirectLoginOptions,
+  createAuth0Client,
 } from "@auth0/auth0-spa-js";
 import {
   getAuthenticatedUser,
@@ -115,6 +115,32 @@ export function authenticateWrap(
       console.error("ERROR: authenticateWrap");
       console.error(error);
     });
+}
+
+export async function asyncAuthenticateWrap(authorizationOnly = false) {
+  try {
+    const token = await getToken();
+    const headers: HeadersInit = authorizationOnly
+      ? headerAuthorization(token)
+      : headerJson(token);
+
+    return headers;
+  } catch (error) {
+    console.error("ERROR: authenticateWrap");
+    console.error(error);
+  }
+
+  // .then((token) => {
+  //   const headers: HeadersInit = authorizationOnly
+  //     ? headerAuthorization(token)
+  //     : headerJson(token);
+
+  //   callback(headers);
+  // })
+  // .catch((error) => {
+  //   console.error("ERROR: authenticateWrap");
+  //   console.error(error);
+  // });
 }
 
 window.onload = async () => {

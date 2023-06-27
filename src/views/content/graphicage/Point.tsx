@@ -1,30 +1,30 @@
 import L, { LeafletMouseEvent } from "leaflet";
 import {
-  createSignal,
-  onMount,
-  onCleanup,
   Setter,
   createEffect,
+  createSignal,
   on,
+  onCleanup,
+  onMount,
 } from "solid-js";
 import {
   EleveVersEtablissementType,
   NatureEnum,
+  PointEtablissementType,
   PointIdentityType,
   PointRamassageType,
-  PointEtablissementType,
 } from "../../../type";
 
 import { useStateAction } from "../../../StateAction";
-import { renderAnimation } from "./animation";
 import { linkMap } from "../../../global/linkPointIdentityCircle";
 import {
   getLeafletMap,
-  setIsRamassageReady,
-  setIsEtablissementReady,
   points,
+  setIsEtablissementReady,
+  setIsRamassageReady,
 } from "../../../signaux";
 import { authenticateWrap } from "../../layout/topMenu/authentication";
+import { renderAnimation } from "./animation";
 import { deselectAllBusLines } from "./line/busLinesUtils";
 
 const [
@@ -135,18 +135,41 @@ export default function (props: {
     const lon = Number(lonlat.split(" ")[0]);
     const lat = Number(lonlat.split(" ")[1]);
 
+    // console.log("location", location);
+    // console.log("lonlat", lonlat);
+    // console.log("lon", lon);
+    // console.log("lat", lat);
+
+    // console.log("minQuantity", minQuantity());
+    // console.log("maxQuantity", maxQuantity());
+
+    // console.log("point.quantity", point.quantity);
+    // console.log("minQuantity", minQuantity());
+    // console.log("maxQuantity", maxQuantity());
+
     const coef =
       minQuantity() == maxQuantity()
         ? 0
         : (point.quantity - minQuantity()) / (maxQuantity() - minQuantity());
+    // console.log("coef", coef);
+
     const radiusValue = coef * range + minSizeValue;
+    // console.log("radiusValue", radiusValue);
+
     const { nature } = point;
+    // console.log("nature", nature);
+
     const [color, fillColor, radius, weight] =
       nature === NatureEnum.ramassage
         ? ["red", "white", radiusValue, 2]
         : nature === NatureEnum.etablissement
         ? ["green", "white", 12, 4]
         : ["white", "#000", 18, 4];
+    // console.log("color", color);
+    // console.log("fillColor", fillColor);
+    // console.log("radius", radius);
+    // console.log("weight", weight);
+
     return (
       L.circleMarker([lat, lon], {
         color,
@@ -250,6 +273,8 @@ export default function (props: {
     if (!leafletMap) {
       return;
     }
+
+    // console.log("point", point());
 
     circle = buildCircle(point());
     circle.addTo(leafletMap);

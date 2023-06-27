@@ -82,7 +82,7 @@ export default function () {
             displayed: true,
             level: MessageLevelEnum.success,
             type: MessageTypeEnum.global,
-            content: json.content,
+            content: json["message"],
           });
           toggleEditStop();
 
@@ -142,7 +142,7 @@ export default function () {
               displayed: true,
               level: MessageLevelEnum.error,
               type: MessageTypeEnum.global,
-              content: json.detail,
+              content: json["detail"],
             });
             return;
           }
@@ -151,7 +151,7 @@ export default function () {
             displayed: true,
             level: MessageLevelEnum.success,
             type: MessageTypeEnum.global,
-            content: json.message,
+            content: json["message"],
           });
 
           fetchEtablissement();

@@ -1,56 +1,73 @@
 import { AiOutlineSearch } from "solid-icons/ai";
-import EditStop, { setDataToEdit, toggleEditStop } from "./EditRamassage";
 import { For, createEffect, createSignal, onCleanup, onMount } from "solid-js";
-import StopItems from "./RamassageItem";
-import { StopItemType } from "../../../type";
-import RemoveRamassageConfirmation from "../../../userInformation/RemoveRamassageConfirmation";
-import ImportCsvDialogBox from "../../../component/ImportCsvDialogBox";
-import { authenticateWrap } from "../../layout/topMenu/authentication";
-import ImportCsvCanvas from "../../../component/ImportCsvCanvas";
-import ImportCsvButton from "../../../component/ImportCsvButton";
+import { useStateGui } from "../../../StateGui";
 import ExportCsvButton from "../../../component/ExportCsvButton";
+import ImportCsvButton from "../../../component/ImportCsvButton";
+import ImportCsvCanvas from "../../../component/ImportCsvCanvas";
+import ImportCsvDialogBox from "../../../component/ImportCsvDialogBox";
 import ActionSelector from "../../../component/atom/ActionSelector";
+import { addNewUserInformation } from "../../../signaux";
+import { MessageLevelEnum, MessageTypeEnum, StopItemType } from "../../../type";
+import RemoveRamassageConfirmation from "../../../userInformation/RemoveRamassageConfirmation";
+import { authenticateWrap } from "../../layout/topMenu/authentication";
+import EditStop, { setDataToEdit, toggleEditStop } from "./EditRamassage";
+import StopItems from "./RamassageItem";
+
+const [, { getActiveMapId }] = useStateGui();
 
 const [ramassages, setRamassages] = createSignal<StopItemType[]>([]);
 
 export function fetchRamassage() {
   authenticateWrap((headers) => {
     fetch(
-      import.meta.env.VITE_BACK_URL + "/ramassages_associated_bus_lines_info",
+      import.meta.env.VITE_BACK_URL +
+        `/map/${getActiveMapId()}/dashboard/ramassages`,
       {
         method: "GET",
         headers,
       }
     )
-      .then((res) => {
-        return res.json();
-      })
-      .then(
-        (
-          res: {
-            id: number;
-            name: string;
-            quantity: number;
-            nb_etablissement: number;
-            nb_line: number;
-            lon: number;
-            lat: number;
-          }[]
-        ) => {
-          setRamassages(
-            res
-              .map((elt) => {
-                return {
-                  ...elt,
-                  nbEtablissement: elt.nb_etablissement,
-                  nbLine: elt.nb_line,
-                  selected: false,
-                };
-              })
-              .sort((a, b) => a.name.localeCompare(b.name))
-          );
+      .then(async (res) => {
+        const json = await res.json();
+
+        if (res.status !== 200) {
+          console.error(json["detail"]);
+          return;
         }
-      );
+
+        const data: {
+          id: number;
+          name: string;
+          quantity: number;
+          nb_etablissement: number;
+          nb_line: number;
+          lon: number;
+          lat: number;
+        }[] = json["content"];
+
+        setRamassages(
+          data
+            .map((elt) => {
+              return {
+                ...elt,
+                nbEtablissement: elt.nb_etablissement,
+                nbLine: elt.nb_line,
+                selected: false,
+              };
+            })
+            .sort((a, b) => a.name.localeCompare(b.name))
+        );
+      })
+      .catch((err) => {
+        console.error(err);
+
+        addNewUserInformation({
+          displayed: true,
+          level: MessageLevelEnum.error,
+          type: MessageTypeEnum.global,
+          content: err.message,
+        });
+      });
   });
 }
 
