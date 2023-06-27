@@ -6,8 +6,6 @@ import {
   NatureEnum,
   PointIdentityType,
 } from "../../../../type";
-import { linkMap } from "../../../../global/linkPointIdentityCircle";
-
 import { useStateAction } from "../../../../StateAction";
 import {
   busLines,
@@ -23,7 +21,7 @@ import {
 import { LineString } from "geojson";
 import { authenticateWrap } from "../../../layout/topMenu/authentication";
 import { createEffect, createSignal } from "solid-js";
-import { deselectAllPoints } from "../Point";
+import { deselectAllPoints, linkMap } from "../Point";
 
 export function getLatLngs(stops: PointIdentityType[]): L.LatLng[] {
   const latlngs: L.LatLng[] = [];

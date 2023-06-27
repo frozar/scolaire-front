@@ -19,7 +19,7 @@ export default function () {
   return (
     <div class="d-user-informations">
       <For each={getUserInformations()}>
-        {(item, i) => (
+        {(item) => (
           <Show when={item.displayed}>
             <Dynamic component={options[item.level]} id={item.id}>
               {item.content}

@@ -1,4 +1,4 @@
-import { createSignal, createEffect } from "solid-js";
+import { createSignal, createEffect, JSXElement } from "solid-js";
 import CrossButton from "./CrossButton";
 import { removeUserInformation } from "../signaux";
 
@@ -20,7 +20,7 @@ function ErrorIcon() {
   );
 }
 
-export default function (props: any) {
+export default function (props: { id: number; children: string | JSXElement }) {
   const [divRef, setDivRef] = createSignal<HTMLElement | undefined>();
 
   createEffect(() => {
@@ -34,11 +34,14 @@ export default function (props: any) {
   });
 
   return (
-    <div class="alert alert-error shadow-lg mt-2" style="width: max-content">
+    <div
+      class="alert alert-error shadow-lg mt-2"
+      style={{ width: "max-content" }}
+    >
       <ErrorIcon />
       <div class="v-snack--active">
         <div class="v-snack__wrapper" ref={setDivRef}>
-          <div style="padding-bottom: 2%;">{props.children}</div>
+          <div style={{ "padding-bottom": "2%" }}>{props.children}</div>
         </div>
       </div>
       <CrossButton id={props.id} />
