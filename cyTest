@@ -1,0 +1,5 @@
+#!/bin/bash
+
+echo "****** Launch test *********"
+
+npm run cypress -- run --component
