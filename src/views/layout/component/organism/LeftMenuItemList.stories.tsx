@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from "storybook-solidjs";
-import LeftMenuItemListComponent from "../component/organism/LeftMenuItemList";
+import LeftMenuItemListComponent from "./LeftMenuItemList";
 import { createSignal } from "solid-js";
-import { SelectedMenuType } from "../../../type";
+import { SelectedMenuType } from "../../../../type";
 
 const meta = {
   title: "LeftNav/LeftMenuItemList",
