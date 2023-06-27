@@ -1,5 +1,5 @@
-@import "../../css/tailwind.css";
-@import "../../css/var.css";
+@import "../../../../../css/tailwind.css";
+@import "../../../../../css/var.css";
 .menu-btn {
   @apply top-[20px] z-[999] outline-none cursor-pointer;
 

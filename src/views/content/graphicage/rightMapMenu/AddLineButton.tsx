@@ -2,7 +2,7 @@ import { useStateAction } from "../../../../StateAction";
 import { displayAddLineMessage } from "../../../../userInformation/utils";
 import { FaSolidPlus } from "solid-icons/fa";
 
-import ButtonGraphicageRightMenu from "../../../../component/atom/ButtonGraphicageRightMenu";
+import ButtonGraphicageRightMenu from "./atom/ButtonGraphicageRightMenu";
 import { fetchBusLines } from "../line/busLinesUtils";
 import { deselectAllPoints } from "../Point";
 

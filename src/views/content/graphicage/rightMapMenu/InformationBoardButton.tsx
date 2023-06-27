@@ -1,7 +1,7 @@
 import { BsInfoCircle } from "solid-icons/bs";
 
 import { useStateGui } from "../../../../StateGui";
-import ButtonGraphicageRightMenu from "../../../../component/atom/ButtonGraphicageRightMenu";
+import ButtonGraphicageRightMenu from "./atom/ButtonGraphicageRightMenu";
 
 const [, { getDisplayedInformationBoard, toggleDisplayedInformationBoard }] =
   useStateGui();

@@ -5,7 +5,7 @@ import {
   confirmAbortEditionNeedToBeCall,
 } from "../ConfirmStopAddLineBox";
 
-import ButtonGraphicageRightMenu from "../../../../component/atom/ButtonGraphicageRightMenu";
+import ButtonGraphicageRightMenu from "./atom/ButtonGraphicageRightMenu";
 
 export default function () {
   const handleClick = () => {
