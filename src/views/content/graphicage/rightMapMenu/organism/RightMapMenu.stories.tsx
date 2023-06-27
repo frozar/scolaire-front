@@ -1,11 +1,11 @@
 import { Meta, StoryObj } from "storybook-solidjs";
 import RightMapMenu from "./RightMapMenu";
-import InformationBoardButton from "../molecule/InformationBoardButton";
-import AddLineButton from "../molecule/AddLineButton";
-import RemoveLineButton from "../molecule/RemoveLineButton";
-import ClearButton from "../molecule/ClearButton";
-import GenerateButton from "../molecule/GenerateButton";
-import ExportButton from "../molecule/ExportButton";
+import InformationBoardButton from "../../component/organism/InformationBoardButton";
+import AddLineButton from "../../component/organism/AddLineButton";
+import RemoveLineButton from "../../component/organism/RemoveLineButton";
+import ClearButton from "../../component/organism/ClearButton";
+import GenerateButton from "../../component/organism/GenerateButton";
+import ExportButton from "../../component/organism/ExportButton";
 
 const meta = {
   component: RightMapMenu,
