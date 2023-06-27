@@ -19,7 +19,7 @@ import {
   setRemoveConfirmation,
 } from "../../../../signaux";
 import { LineString } from "geojson";
-import { authenticateWrap } from "../../../layout/topNav/authentication";
+import { authenticateWrap } from "../../../layout/authentication";
 import { createEffect, createSignal } from "solid-js";
 import { deselectAllPoints, linkMap } from "../Point";
 

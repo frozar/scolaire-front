@@ -1,4 +1,4 @@
-import { authenticateWrap } from "./views/layout/topNav/authentication";
+import { authenticateWrap } from "./views/layout/authentication";
 
 export async function deleteBusLine(idToRemove: number) {
   return authenticateWrap((headers) => {

@@ -22,7 +22,7 @@ import {
   setIsEtablissementReady,
   setIsRamassageReady,
 } from "../../../signaux";
-import { authenticateWrap } from "../../layout/topNav/authentication";
+import { authenticateWrap } from "../../layout/authentication";
 import { renderAnimation } from "./animation";
 import { deselectAllBusLines } from "./line/busLinesUtils";
 

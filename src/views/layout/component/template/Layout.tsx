@@ -1,5 +1,5 @@
-import LeftNav from "./component/organism/LeftNav";
-import TopNav from "./topNav/TopNav";
+import LeftNav from "../organism/LeftNav";
+import TopNav from "../organism/TopNav";
 
 import "./Layout.css";
 

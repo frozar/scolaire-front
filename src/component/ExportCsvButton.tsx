@@ -1,5 +1,5 @@
 import Button from "./atom/Button";
-import { authenticateWrap } from "../views/layout/topNav/authentication";
+import { authenticateWrap } from "../views/layout/authentication";
 import { displayDownloadErrorMessage } from "../userInformation/utils";
 import { download } from "../utils";
 import { getTimestamp } from "../views/content/graphicage/rightMapMenu/export/utils";

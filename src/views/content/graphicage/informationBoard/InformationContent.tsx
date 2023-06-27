@@ -11,7 +11,7 @@ import {
 } from "../../../../type";
 import { addNewUserInformation, points } from "../../../../signaux";
 import { useStateAction } from "../../../../StateAction";
-import { authenticateWrap } from "../../../layout/topNav/authentication";
+import { authenticateWrap } from "../../../layout/authentication";
 import {
   getSelectedBusLineId,
   selectedBusLineStopNames,
