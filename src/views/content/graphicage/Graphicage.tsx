@@ -13,8 +13,15 @@ import ImportCsvCanvas from "../../../component/ImportCsvCanvas";
 import ConfirmStopAddLine from "./ConfirmStopAddLineBox";
 import { InformationBoard } from "./informationBoard/InformationBoard";
 import LineUnderConstruction from "./line/LineUnderConstruction";
-import ControlMapMenu from "./rightMapMenu/RightMapMenu";
+// import ControlMapMenu from "./rightMapMenu/RightMapMenu";
+import RightMapMenu from "./rightMapMenu/RightMapMenu";
 import { listHandlerLMap } from "./shortcut";
+import InformationBoardButton from "./rightMapMenu/InformationBoardButton";
+import AddLineButton from "./rightMapMenu/AddLineButton";
+import RemoveLineButton from "./rightMapMenu/RemoveLineButton";
+import ClearButton from "./rightMapMenu/ClearButton";
+import GenerateButton from "./rightMapMenu/GenerateButton";
+import ExportButton from "./rightMapMenu/ExportButton";
 
 const [, { isInAddLineMode }] = useStateAction();
 const [, { getActiveMapId }] = useStateGui();
@@ -73,7 +80,15 @@ export default function () {
         <LineUnderConstruction />
       </Show>
       <BusLines />
-      <ControlMapMenu />
+      {/* <ControlMapMenu /> */}
+      <RightMapMenu>
+        <InformationBoardButton />
+        <AddLineButton />
+        <RemoveLineButton />
+        <ClearButton />
+        <GenerateButton />
+        <ExportButton />
+      </RightMapMenu>
       <ConfirmStopAddLine />
     </Show>
   );

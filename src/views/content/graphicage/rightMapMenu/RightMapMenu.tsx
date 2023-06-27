@@ -1,20 +1,11 @@
-import AddLineButton from "./AddLineButton";
-import RemoveLineButton from "./RemoveLineButton";
-import ClearButton from "./ClearButton";
-import GenerateButton from "./GenerateButton";
-import ExportButton from "./ExportButton";
-import InformationBoardButton from "./InformationBoardButton";
-import RightMapMenu from "../../../../component/molecule/RightMapMenu";
+import { children, JSXElement } from "solid-js";
+import "./RightMapMenu.css";
+export interface RightMapMenuProps {
+  children: JSXElement;
+}
 
-export default function () {
-  return (
-    <RightMapMenu>
-      <InformationBoardButton />
-      <AddLineButton />
-      <RemoveLineButton />
-      <ClearButton />
-      <GenerateButton />
-      <ExportButton />
-    </RightMapMenu>
-  );
+export default function (props: RightMapMenuProps) {
+  const buttons = children(() => props.children);
+
+  return <div id="control-map-menu">{buttons()}</div>;
 }
