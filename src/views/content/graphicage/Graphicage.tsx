@@ -14,7 +14,7 @@ import ConfirmStopAddLine from "./ConfirmStopAddLineBox";
 import { InformationBoard } from "./informationBoard/InformationBoard";
 import LineUnderConstruction from "./line/LineUnderConstruction";
 // import ControlMapMenu from "./rightMapMenu/RightMapMenu";
-import RightMapMenu from "./rightMapMenu/RightMapMenu";
+import RightMapMenu from "./rightMapMenu/organism/RightMapMenu";
 import { listHandlerLMap } from "./shortcut";
 import InformationBoardButton from "./rightMapMenu/molecule/InformationBoardButton";
 import AddLineButton from "./rightMapMenu/molecule/AddLineButton";
