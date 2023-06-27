@@ -1,27 +1,14 @@
-import TopNav from "./topNav/TopNav";
 import LeftNav from "./leftNav/LeftNav";
-import { mergeProps } from "solid-js";
+import TopNav from "./topNav/TopNav";
 
-export interface LayoutProps {
-  getDisplayedLeftMenu?: () => boolean;
-  toggleDisplayedLeftMenu?: () => void;
-  yOffset?: number;
-}
+import "./Layout.css";
 
-export default function (props: LayoutProps) {
-  const mergedProps = mergeProps({ yOffset: 0 }, props);
-
-  const yOffsetClassName = () =>
-    "translate-y-[" + String(mergedProps.yOffset) + "px]";
-
+export default function () {
   return (
     <div>
       <TopNav />
-      <div id="left-menu-container" class={yOffsetClassName()}>
-        <LeftNav
-          getDisplayedLeftMenu={props.getDisplayedLeftMenu}
-          toggleDisplayedLeftMenu={props.toggleDisplayedLeftMenu}
-        />
+      <div id="left-menu-container">
+        <LeftNav />
       </div>
     </div>
   );
