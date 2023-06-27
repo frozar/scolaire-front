@@ -6,7 +6,8 @@ import ImportCsvButton from "../../../component/ImportCsvButton";
 import ImportCsvCanvas from "../../../component/ImportCsvCanvas";
 import ImportCsvDialogBox from "../../../component/ImportCsvDialogBox";
 import ActionSelector from "../../../component/atom/ActionSelector";
-import { StopItemType } from "../../../type";
+import { addNewUserInformation } from "../../../signaux";
+import { MessageLevelEnum, MessageTypeEnum, StopItemType } from "../../../type";
 import RemoveRamassageConfirmation from "../../../userInformation/RemoveRamassageConfirmation";
 import { authenticateWrap } from "../../layout/topMenu/authentication";
 import EditStop, { setDataToEdit, toggleEditStop } from "./EditRamassage";
@@ -26,35 +27,47 @@ export function fetchRamassage() {
         headers,
       }
     )
-      .then((res) => {
-        return res.json();
-      })
-      .then(
-        (
-          res: {
-            id: number;
-            name: string;
-            quantity: number;
-            nb_etablissement: number;
-            nb_line: number;
-            lon: number;
-            lat: number;
-          }[]
-        ) => {
-          setRamassages(
-            res
-              .map((elt) => {
-                return {
-                  ...elt,
-                  nbEtablissement: elt.nb_etablissement,
-                  nbLine: elt.nb_line,
-                  selected: false,
-                };
-              })
-              .sort((a, b) => a.name.localeCompare(b.name))
-          );
+      .then(async (res) => {
+        const json = await res.json();
+
+        if (res.status !== 200) {
+          console.error(json["detail"]);
+          return;
         }
-      );
+
+        const data: {
+          id: number;
+          name: string;
+          quantity: number;
+          nb_etablissement: number;
+          nb_line: number;
+          lon: number;
+          lat: number;
+        }[] = json["content"];
+
+        setRamassages(
+          data
+            .map((elt) => {
+              return {
+                ...elt,
+                nbEtablissement: elt.nb_etablissement,
+                nbLine: elt.nb_line,
+                selected: false,
+              };
+            })
+            .sort((a, b) => a.name.localeCompare(b.name))
+        );
+      })
+      .catch((err) => {
+        console.error(err);
+
+        addNewUserInformation({
+          displayed: true,
+          level: MessageLevelEnum.error,
+          type: MessageTypeEnum.global,
+          content: err.message,
+        });
+      });
   });
 }
 
