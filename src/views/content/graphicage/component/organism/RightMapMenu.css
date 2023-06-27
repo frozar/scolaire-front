@@ -2,5 +2,5 @@
 @import "../../../../../css/var.css";
 
 #control-map-menu {
-  @apply absolute top-[45%] right-[15px] z-[1000] bg-[var(--gray-base)] py-[20px] px-[5px] rounded-[50px] text-[var(--dark-teal)] flex flex-col gap-2;
+  @apply inline-flex flex-col gap-2 bg-white py-[20px] px-[5px] rounded-[50px] text-[var(--dark-teal)];
 }

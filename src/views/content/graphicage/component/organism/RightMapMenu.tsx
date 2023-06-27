@@ -1,5 +1,6 @@
 import { children, JSXElement } from "solid-js";
 import "./RightMapMenu.css";
+
 export interface RightMapMenuProps {
   children: JSXElement;
 }

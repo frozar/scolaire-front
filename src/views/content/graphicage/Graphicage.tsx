@@ -11,16 +11,16 @@ import BusLines from "./line/BusLines";
 import { useStateGui } from "../../../StateGui";
 import ImportCsvCanvas from "../../../component/ImportCsvCanvas";
 import ConfirmStopAddLine from "./ConfirmStopAddLineBox";
+import AddLineButton from "./component/organism/AddLineButton";
+import ClearButton from "./component/organism/ClearButton";
+import ExportButton from "./component/organism/ExportButton";
+import GenerateButton from "./component/organism/GenerateButton";
+import InformationBoardButton from "./component/organism/InformationBoardButton";
+import RemoveLineButton from "./component/organism/RemoveLineButton";
+import RightMapMenu from "./component/organism/RightMapMenu";
 import { InformationBoard } from "./informationBoard/InformationBoard";
 import LineUnderConstruction from "./line/LineUnderConstruction";
-import RightMapMenu from "./component/organism/RightMapMenu";
 import { listHandlerLMap } from "./shortcut";
-import InformationBoardButton from "./component/organism/InformationBoardButton";
-import AddLineButton from "./component/organism/AddLineButton";
-import RemoveLineButton from "./component/organism/RemoveLineButton";
-import ClearButton from "./component/organism/ClearButton";
-import GenerateButton from "./component/organism/GenerateButton";
-import ExportButton from "./component/organism/ExportButton";
 
 const [, { isInAddLineMode }] = useStateAction();
 const [, { getActiveMapId }] = useStateGui();
@@ -79,14 +79,16 @@ export default function () {
         <LineUnderConstruction />
       </Show>
       <BusLines />
-      <RightMapMenu>
-        <InformationBoardButton />
-        <AddLineButton />
-        <RemoveLineButton />
-        <ClearButton />
-        <GenerateButton />
-        <ExportButton />
-      </RightMapMenu>
+      <div class="z-[1000] absolute top-[45%] right-[15px]">
+        <RightMapMenu>
+          <InformationBoardButton />
+          <AddLineButton />
+          <RemoveLineButton />
+          <ClearButton />
+          <GenerateButton />
+          <ExportButton />
+        </RightMapMenu>
+      </div>
       <ConfirmStopAddLine />
     </Show>
   );
