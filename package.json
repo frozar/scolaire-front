@@ -15,7 +15,8 @@
     "test-storybook": "test-storybook",
     "cypress-test": "cypress run --component",
     "cypress": "cypress",
-    "cypress-open": "cypress open"
+    "cypress-open": "cypress open",
+    "cypress-watch": "nodemon -e js,jsx,ts,tsx,css,scss --exec cypress run --component"
   },
   "license": "MIT",
   "devDependencies": {
@@ -69,6 +70,7 @@
   },
   "dependencies": {
     "@lmiller1990/cypress-ct-solid-js": "^0.1.0",
-    "cypress": "^12.16.0"
+    "cypress": "^12.16.0",
+    "nodemon": "^2.0.22"
   }
 }
