@@ -3,7 +3,6 @@ import { Meta, StoryObj } from "storybook-solidjs";
 import LayoutComponent from "./Layout";
 
 const meta = {
-  title: "Templates/Layout",
   component: LayoutComponent,
   tags: ["autodocs"],
 } satisfies Meta<typeof LayoutComponent>;

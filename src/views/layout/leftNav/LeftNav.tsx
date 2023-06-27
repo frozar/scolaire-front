@@ -1,9 +1,9 @@
 import { Show, createSignal, mergeProps, onCleanup, onMount } from "solid-js";
 
+import { useStateGui } from "../../../StateGui";
+import ClosePictogram from "./component/atom/ClosePictogram";
 import EnterpriseLogo from "./component/atom/EnterpriseLogo";
 import OpenPictogram from "./component/atom/OpenPictogram";
-import ClosePictogram from "./component/atom/ClosePictogram";
-import { useStateGui } from "../../../StateGui";
 
 import LeftMenuItemList from "./LeftMenuItemList";
 
@@ -71,9 +71,7 @@ export default function (props: LeftNavProps) {
       ref={refDivLeftMenu}
     >
       <div id="lateral-nav-header">
-        <EnterpriseLogo
-          displayedLeftMenu={mergedProps.getDisplayedLeftMenu()}
-        />
+        <EnterpriseLogo displayedLeftMenu={displayedLabel()} />
       </div>
 
       <LeftMenuItemList displayedLabel={displayedLabel()} />

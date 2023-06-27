@@ -13,7 +13,7 @@ import { useStateGui } from "../StateGui";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { assertIsNode } from "../utils";
 import { fetchRamassage } from "../views/content/ramassage/Ramassage";
-import { asyncAuthenticateWrap } from "../views/layout/topMenu/authentication";
+import { asyncAuthenticateWrap } from "../views/layout/topNav/authentication";
 
 false && ClickOutside;
 
