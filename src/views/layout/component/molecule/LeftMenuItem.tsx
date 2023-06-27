@@ -4,7 +4,7 @@ import LeftMenuItemLabel from "../atom/LeftMenuItemLabel";
 import LeftMenuButtonLogo from "./LeftMenuButtonLogo";
 
 import "./LeftMenuItem.css";
-import Pellet from "../../../../../component/atom/Pellet";
+import Pellet from "../../../../component/atom/Pellet";
 
 export interface LeftMenuItemProps {
   isDisabled?: boolean;

@@ -1,9 +1,9 @@
 import { Show, createSignal, mergeProps, onCleanup, onMount } from "solid-js";
 
-import { useStateGui } from "../../../StateGui";
-import ClosePictogram from "./component/atom/ClosePictogram";
-import EnterpriseLogo from "./component/atom/EnterpriseLogo";
-import OpenPictogram from "./component/atom/OpenPictogram";
+import { useStateGui } from "../../../../StateGui";
+import ClosePictogram from "../atom/ClosePictogram";
+import EnterpriseLogo from "../atom/EnterpriseLogo";
+import OpenPictogram from "../atom/OpenPictogram";
 
 import LeftMenuItemList from "./LeftMenuItemList";
 

@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from "storybook-solidjs";
-import LeftMenuItemListComponent from "./LeftMenuItemList";
+import LeftMenuItemListComponent from "../component/organism/LeftMenuItemList";
 import { createSignal } from "solid-js";
 import { SelectedMenuType } from "../../../type";
 
