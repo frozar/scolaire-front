@@ -13,7 +13,8 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "test-storybook": "test-storybook",
-    "cypress-test": "cypress run --component"
+    "cypress-test": "cypress run --component",
+    "cypress-open": "cypress open"
   },
   "license": "MIT",
   "devDependencies": {
