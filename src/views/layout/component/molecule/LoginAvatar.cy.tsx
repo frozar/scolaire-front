@@ -1,4 +1,5 @@
 import LoginAvatar from "./LoginAvatar";
+
 describe("LoginAvatar component", () => {
   it("When authenticated", () => {
     const props = {

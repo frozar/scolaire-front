@@ -2,4 +2,7 @@
 
 echo "****** Launch test *********"
 
-npm run cypress -- run --component
+script_directory=$(dirname $(readlink -f $0))
+cd $script_directory
+
+npm run cypress-watch
