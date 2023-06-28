@@ -71,6 +71,7 @@
   "dependencies": {
     "@lmiller1990/cypress-ct-solid-js": "^0.1.0",
     "cypress": "^12.16.0",
+    "cypress-image-diff-js": "^1.25.0",
     "nodemon": "^2.0.22"
   }
 }
