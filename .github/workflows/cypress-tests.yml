@@ -5,13 +5,22 @@ on:
   pull_request:
     branches:
       - "**"
-      
+
 jobs:
   cypress-run:
-    runs-on: ubuntu-22.04
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "16.x"
+      - name: Install dependencies
+        run: npm install -f
+      - name: Install Playwright
+        run: npx playwright install --with-deps
+        
+
       - name: Cypress run
         uses: cypress-io/github-action@v5
         with:
