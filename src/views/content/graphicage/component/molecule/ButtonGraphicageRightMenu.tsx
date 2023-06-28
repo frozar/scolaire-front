@@ -34,18 +34,20 @@ export default function (props: ButtonMapProps) {
 
   return (
     <button class="menu-btn" {...rest}>
-      <Show when={isTooltipDisplayed()}>
-        <div class={`absolute ${xOffset()} scale-100`}>
-          <Tooltip tooltip={local.tooltip} />
+      <div class="relative">
+        <Show when={isTooltipDisplayed()}>
+          <div class={`absolute ${xOffset()} top-[8px] scale-100`}>
+            <Tooltip tooltip={local.tooltip} />
+          </div>
+        </Show>
+        <div
+          class="btn-fla btn-circle-fla"
+          classList={{ active: local.isActive }}
+          onMouseOver={() => setIsTooltipDisplayed(true)}
+          onMouseLeave={() => setIsTooltipDisplayed(false)}
+        >
+          <Icon />
         </div>
-      </Show>
-      <div
-        class="btn-fla btn-circle-fla"
-        classList={{ active: local.isActive }}
-        onMouseOver={() => setIsTooltipDisplayed(true)}
-        onMouseLeave={() => setIsTooltipDisplayed(false)}
-      >
-        <Icon />
       </div>
     </button>
   );
