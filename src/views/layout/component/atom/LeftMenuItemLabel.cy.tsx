@@ -17,7 +17,7 @@ describe("LeftMenuItemLabel component", () => {
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
-    cy.get("span").compareSnapshot("defaultTestButton", 0.01);
+    cy.get("span").compareSnapshot("authenticated-label", 0.01);
     cy.get("span").contains(props.label);
   });
 
