@@ -6,7 +6,8 @@
 }
 
 /* Adjust position for a correct display in story book */
-#storybook-root > #control-map-menu,
+/* TODO: delete */
+/* #storybook-root > #control-map-menu,
 #storybook-docs #control-map-menu {
   @apply relative left-[150px];
-}
+} */

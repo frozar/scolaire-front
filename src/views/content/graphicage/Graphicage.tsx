@@ -83,12 +83,12 @@ export default function () {
       <BusLines />
       <div class="z-[1000] absolute top-[45%] right-[15px]">
         <RightMapMenu>
-          <InformationBoardButton />
-          <AddLineButton />
-          <RemoveLineButton />
-          <ClearButton />
-          <GenerateButton />
-          <ExportButton />
+          <InformationBoardButton xOffset="left" />
+          <AddLineButton xOffset="left" />
+          <RemoveLineButton xOffset="left" />
+          <ClearButton xOffset="left" />
+          <GenerateButton xOffset="left" />
+          <ExportButton xOffset="left" />
         </RightMapMenu>
       </div>
       <ConfirmStopAddLine />

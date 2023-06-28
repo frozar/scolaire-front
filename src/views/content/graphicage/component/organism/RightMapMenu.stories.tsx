@@ -1,32 +1,39 @@
 import { Meta, StoryObj } from "storybook-solidjs";
 
-import AddLineButton from "./AddLineButton";
-import ClearButton from "./ClearButton";
-import ExportButton from "./ExportButton";
-import GenerateButton from "./GenerateButton";
-import InformationBoardButton from "./InformationBoardButton";
-import RemoveLineButton from "./RemoveLineButton";
-import RightMapMenu from "./RightMapMenu";
+import RightMapMenuComponent from "./RightMapMenu";
+
+// const [, { getDisplayedInformationBoard, toggleDisplayedInformationBoard }] =
+//   useStateGui();
 
 const meta = {
-  component: RightMapMenu,
+  component: RightMapMenuComponent,
   tags: ["autodocs"],
-} satisfies Meta<typeof RightMapMenu>;
+} satisfies Meta<typeof RightMapMenuComponent>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const RightMenu: Story = {
+// const informationBoardProps = {
+//   icon: (() => BsInfoCircle({ class: "h-10 w-10" })) as Element,
+//   onClick: toggleDisplayedInformationBoard,
+//   tooltip: "Afficher le panneau d'information",
+//   isActive: getDisplayedInformationBoard(),
+//   xOffset: "left" as OffsetType,
+// };
+
+export const RightMapMenu: Story = {
   args: {
-    children: (
-      <>
-        <InformationBoardButton />
-        <AddLineButton />
-        <RemoveLineButton />
-        <ClearButton />
-        <GenerateButton />
-        <ExportButton />
-      </>
-    ),
+    xOffset: "right",
+    // children: (
+    //   <>
+    //     <InformationBoardButton xOffset="right" />
+    //     <ButtonGraphicageRightMenu {...informationBoardProps} />
+    //     {/* <AddLineButton xOffset="right" />
+    //     <RemoveLineButton xOffset="right" />
+    //     <ClearButton xOffset="right" />
+    //     <GenerateButton xOffset="right" />
+    //     <ExportButton xOffset="right" /> */}
+    //   </>
+    // ),
   },
 };

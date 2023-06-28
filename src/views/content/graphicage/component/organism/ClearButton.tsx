@@ -6,9 +6,20 @@ import {
   defineModalToOpen,
 } from "../../ConfirmStopAddLineBox";
 
-import ButtonGraphicageRightMenu from "../molecule/ButtonGraphicageRightMenu";
+import { mergeProps } from "solid-js";
+import ButtonGraphicageRightMenu, {
+  OffsetType,
+} from "../molecule/ButtonGraphicageRightMenu";
 
-export default function () {
+export interface ClearButtonProps {
+  xOffset?: OffsetType;
+}
+
+export default function (props: ClearButtonProps) {
+  const mergedProps = mergeProps({ xOffset: "left" as OffsetType }, props);
+
+  const xOffset = () => mergedProps.xOffset;
+
   const handleClick = () => {
     defineModalToOpen(openClearConfirmationBox);
     confirmAbortEditionNeedToBeCall();
@@ -19,7 +30,7 @@ export default function () {
       onClick={handleClick}
       tooltip="Vider la carte"
       icon={<FaRegularTrashCan class="w-full p-0 h-2/3" />}
-      xOffset="left"
+      xOffset={xOffset()}
     />
   );
 }

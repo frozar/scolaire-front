@@ -1,4 +1,4 @@
-import { JSX, Show, createSignal, splitProps } from "solid-js";
+import { JSX, Show, createSignal, mergeProps, splitProps } from "solid-js";
 import Tooltip from "../atom/Tooltip";
 
 import "./ButtonGraphicageRightMenu.css";
@@ -16,7 +16,9 @@ export interface ButtonMapProps {
 export default function (props: ButtonMapProps) {
   const [isTooltipDisplayed, setIsTooltipDisplayed] = createSignal(false);
 
-  const [local, rest] = splitProps(props, [
+  const mergedProps = mergeProps({ xOffset: "left" }, props);
+
+  const [local, rest] = splitProps(mergedProps, [
     "tooltip",
     "icon",
     "isActive",
