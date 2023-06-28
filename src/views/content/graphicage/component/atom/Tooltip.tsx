@@ -11,5 +11,3 @@ export default function (props: TooltipProps) {
 
   return <span class="tooltip ">{local.tooltip}</span>;
 }
-
-// group-hover:scale-100
