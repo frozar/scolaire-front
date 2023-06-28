@@ -27,34 +27,30 @@ export function fetchEtablissement() {
         method: "GET",
         headers,
       }
-    )
-      .then((res) => {
-        return res.json();
-      })
-      .then(
-        (
-          res: {
-            id: number;
-            name: string;
-            quantity: number;
-            nb_line: number;
-            lon: number;
-            lat: number;
-          }[]
-        ) => {
-          setEtablissements(
-            res
-              .map((elt) => {
-                return {
-                  ...elt,
-                  nbLine: elt.nb_line,
-                  selected: false,
-                };
-              })
-              .sort((a, b) => a.name.localeCompare(b.name))
-          );
-        }
+    ).then(async (res) => {
+      const json = await res.json();
+
+      const datas: {
+        id: number;
+        name: string;
+        quantity: number;
+        nb_line: number;
+        lon: number;
+        lat: number;
+      }[] = json["content"];
+
+      setEtablissements(
+        datas
+          .map((elt) => {
+            return {
+              ...elt,
+              nbLine: elt.nb_line,
+              selected: false,
+            };
+          })
+          .sort((a, b) => a.name.localeCompare(b.name))
       );
+    });
   });
 }
 

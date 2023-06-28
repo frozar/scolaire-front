@@ -166,7 +166,13 @@ export default function () {
                           </p>
                         </div>
                       </Show>
-                      <Show when={getImportConfirmation().error.etablissement}>
+                      <Show
+                        when={
+                          getImportConfirmation().error.etablissement &&
+                          getImportConfirmation().error.etablissement?.length !=
+                            0
+                        }
+                      >
                         <div class="mt-2">
                           Établissements non-traités :
                           <p class="text-sm text-gray-500">

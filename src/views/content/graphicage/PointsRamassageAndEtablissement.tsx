@@ -33,7 +33,9 @@ type PointRamassageDBType = {
   id: number;
   id_point: number;
   nature: NatureEnum;
-  location: string;
+  // location: string;
+  lon: number;
+  lat: number;
   name: string;
   quantity: number;
 };
@@ -48,6 +50,7 @@ type PointRamassageCoreType = Omit<PointRamassageDBType, "id_point"> & {
 function PointBack2FrontIdPoint(
   data: PointRamassageDBType
 ): PointRamassageCoreType {
+  // console.log("data", data);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { id_point: _, ...dataWk } = { ...data, idPoint: data.id_point };
   return dataWk;
@@ -104,9 +107,13 @@ export function fetchPointsRamassageAndEtablissement() {
         setPointsRamassageReady(true);
       });
 
-      fetch(import.meta.env.VITE_BACK_URL + `/map/${mapId}/etablissements`, {
-        headers,
-      }).then(async (res) => {
+      fetch(
+        import.meta.env.VITE_BACK_URL +
+          `/map/${mapId}/dashboard/etablissements`,
+        {
+          headers,
+        }
+      ).then(async (res) => {
         const json = await res.json();
 
         const datas: PointEtablissementDBType[] = json["content"];

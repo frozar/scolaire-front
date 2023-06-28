@@ -131,10 +131,13 @@ export default function (props: {
   let circle: L.CircleMarker;
 
   function buildCircle(point: PointEtablissementType): L.CircleMarker {
-    const location = point.location;
-    const lonlat = location.split("(")[1].split(")")[0];
-    const lon = Number(lonlat.split(" ")[0]);
-    const lat = Number(lonlat.split(" ")[1]);
+    // console.log("point", point);
+    // const location = point.location;
+    // const lonlat = location.split("(")[1].split(")")[0];
+    // const lon = Number(lonlat.split(" ")[0]);
+    // const lat = Number(lonlat.split(" ")[1]);
+    const lon = point.lon;
+    const lat = point.lat;
 
     // console.log("location", location);
     // console.log("lonlat", lonlat);
@@ -171,6 +174,8 @@ export default function (props: {
     // console.log("radius", radius);
     // console.log("weight", weight);
 
+    // console.log("lon", lon, "typeof lon", typeof lon);
+    // console.log("lat", lat);
     return (
       L.circleMarker([lat, lon], {
         color,

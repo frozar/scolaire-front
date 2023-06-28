@@ -18,7 +18,9 @@ export type PointRamassageType = {
   id: number;
   idPoint: number;
   nature: NatureEnum;
-  location: string;
+  // location: string;
+  lon: number;
+  lat: number;
   name: string;
   quantity: number;
   selected: Accessor<boolean>;
