@@ -1,9 +1,11 @@
 import { FaRegularTrashCan } from "solid-icons/fa";
+
 import { openClearConfirmationBox } from "../../../../../signaux";
 import {
   confirmAbortEditionNeedToBeCall,
   defineModalToOpen,
 } from "../../ConfirmStopAddLineBox";
+
 import ButtonGraphicageRightMenu from "../molecule/ButtonGraphicageRightMenu";
 
 export default function () {

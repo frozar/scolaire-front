@@ -30,7 +30,6 @@ export default function (props: ButtonMapProps) {
   const xOffset = () =>
     local.xOffset == "left" ? "-translate-x-[185px]" : "-translate-x-[-35px]";
 
-  // TODO creer un signal pour gérer l'affichage du tooltip
   return (
     <button class="menu-btn">
       <div class="relative">

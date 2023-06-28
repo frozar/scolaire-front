@@ -1,9 +1,11 @@
 import { FiArrowUpCircle } from "solid-icons/fi";
+
 import { openGeneratorDialogBox } from "../../../../../signaux";
 import {
   confirmAbortEditionNeedToBeCall,
   defineModalToOpen,
 } from "../../ConfirmStopAddLineBox";
+
 import ButtonGraphicageRightMenu from "../molecule/ButtonGraphicageRightMenu";
 
 export default function () {
