@@ -80,8 +80,8 @@ export default function () {
       </Show>
       <BusLines />
       <div class="z-[1000] absolute top-[45%] right-[15px]">
-        <RightMapMenu>
-          <InformationBoardButton />
+        <RightMapMenu storyMode={false}>
+          <InformationBoardButton xOffset="left" />
           <AddLineButton />
           <RemoveLineButton />
           <ClearButton />

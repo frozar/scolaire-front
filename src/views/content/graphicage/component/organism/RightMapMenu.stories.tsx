@@ -1,11 +1,11 @@
 import { Meta, StoryObj } from "storybook-solidjs";
-import RightMapMenu from "./RightMapMenu";
-import InformationBoardButton from "./InformationBoardButton";
 import AddLineButton from "./AddLineButton";
-import RemoveLineButton from "./RemoveLineButton";
 import ClearButton from "./ClearButton";
-import GenerateButton from "./GenerateButton";
 import ExportButton from "./ExportButton";
+import GenerateButton from "./GenerateButton";
+import InformationBoardButton from "./InformationBoardButton";
+import RemoveLineButton from "./RemoveLineButton";
+import RightMapMenu from "./RightMapMenu";
 
 const meta = {
   component: RightMapMenu,
@@ -17,9 +17,10 @@ type Story = StoryObj<typeof meta>;
 
 export const RightMenu: Story = {
   args: {
+    storyMode: true,
     children: (
       <>
-        <InformationBoardButton />
+        <InformationBoardButton xOffset="right" />
         <AddLineButton />
         <RemoveLineButton />
         <ClearButton />
