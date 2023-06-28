@@ -17,10 +17,9 @@ type Story = StoryObj<typeof meta>;
 
 export const RightMenu: Story = {
   args: {
-    storyMode: true,
     children: (
       <>
-        <InformationBoardButton xOffset="right" />
+        <InformationBoardButton />
         <AddLineButton />
         <RemoveLineButton />
         <ClearButton />

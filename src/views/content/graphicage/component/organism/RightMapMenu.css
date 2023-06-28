@@ -4,3 +4,9 @@
 #control-map-menu {
   @apply inline-flex flex-col gap-2 bg-white py-[20px] px-[5px] rounded-[50px] text-[var(--dark-teal)];
 }
+
+/* Adjust position for a correct display in story book */
+#storybook-root > #control-map-menu,
+#storybook-docs #control-map-menu {
+  @apply relative left-[150px];
+}
