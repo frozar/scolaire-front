@@ -13,6 +13,7 @@ export default function () {
       tooltip="Afficher le panneau d'information"
       icon={<BsInfoCircle class="h-10 w-10" />}
       isActive={getDisplayedInformationBoard()}
+      xOffset="left"
     />
   );
 }

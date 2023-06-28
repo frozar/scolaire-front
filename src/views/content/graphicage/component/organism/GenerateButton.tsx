@@ -1,5 +1,5 @@
-import { openGeneratorDialogBox } from "../../../../../signaux";
 import { FiArrowUpCircle } from "solid-icons/fi";
+import { openGeneratorDialogBox } from "../../../../../signaux";
 import {
   confirmAbortEditionNeedToBeCall,
   defineModalToOpen,
@@ -16,6 +16,7 @@ export default function () {
       onClick={handleClick}
       tooltip="Générer des trajets"
       icon={<FiArrowUpCircle class="h-10 w-10" />}
+      xOffset="left"
     />
   );
 }

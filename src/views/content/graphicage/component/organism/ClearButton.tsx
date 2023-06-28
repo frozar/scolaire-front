@@ -17,6 +17,7 @@ export default function () {
       onClick={handleClick}
       tooltip="Vider la carte"
       icon={<FaRegularTrashCan class="w-full p-0 h-2/3" />}
+      xOffset="left"
     />
   );
 }

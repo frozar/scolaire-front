@@ -1,8 +1,8 @@
-import { openExportConfirmationBox } from "../../../../../signaux";
 import { CgExport } from "solid-icons/cg";
+import { openExportConfirmationBox } from "../../../../../signaux";
 import {
-  defineModalToOpen,
   confirmAbortEditionNeedToBeCall,
+  defineModalToOpen,
 } from "../../ConfirmStopAddLineBox";
 
 import ButtonGraphicageRightMenu from "../molecule/ButtonGraphicageRightMenu";
@@ -18,6 +18,7 @@ export default function () {
       onClick={handleClick}
       icon={<CgExport class="h-10 w-10 pb-[5px]" />}
       tooltip="Exporter"
+      xOffset="left"
     />
   );
 }

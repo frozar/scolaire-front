@@ -1,11 +1,9 @@
+import { FaSolidPlus } from "solid-icons/fa";
 import { useStateAction } from "../../../../../StateAction";
 import { displayAddLineMessage } from "../../../../../userInformation/utils";
-import { FaSolidPlus } from "solid-icons/fa";
-
-import ButtonGraphicageRightMenu from "../molecule/ButtonGraphicageRightMenu";
-import { fetchBusLines } from "../../line/busLinesUtils";
 import { deselectAllPoints } from "../../Point";
-
+import { fetchBusLines } from "../../line/busLinesUtils";
+import ButtonGraphicageRightMenu from "../molecule/ButtonGraphicageRightMenu";
 const [, { setModeAddLine, isInAddLineMode, setModeRead }] = useStateAction();
 
 export default function () {
@@ -27,6 +25,7 @@ export default function () {
       tooltip="Ajouter une ligne"
       isActive={isInAddLineMode()}
       icon={<FaSolidPlus class="w-full p-0 h-2/3" />}
+      xOffset="left"
     />
   );
 }
