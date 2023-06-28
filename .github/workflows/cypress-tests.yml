@@ -19,9 +19,11 @@ jobs:
         run: npm install -f
       - name: Install Playwright
         run: npx playwright install --with-deps
-        
 
-      - name: Cypress run
-        uses: cypress-io/github-action@v5
-        with:
-          component: true
+      - name: Run Cypress tests
+        run: npm run cypress-test
+
+      # - name: Cypress run
+      #   uses: cypress-io/github-action@v5
+      #   with:
+      #     component: true
