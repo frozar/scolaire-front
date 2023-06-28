@@ -6,3 +6,4 @@ PRIVATE.md
 .env.production
 storybook-static
 cypress/videos
+cypress-visual-report
