@@ -2,13 +2,8 @@
 @import "../../../../../css/var.css";
 
 .menu-btn {
-  @apply top-[20px] z-[999] outline-none cursor-pointer;
+  @apply top-[20px] z-[999] outline-none cursor-default;
 }
-
-/* 
-.menu-btn > span.tooltip {
-  @apply absolute left-[-150px] w-[150px]  scale-0 rounded bg-gray-800 p-2 text-xs text-white pointer-events-none;
-} */
 
 .export-btn {
   @apply bottom-0 right-0 menu-btn;

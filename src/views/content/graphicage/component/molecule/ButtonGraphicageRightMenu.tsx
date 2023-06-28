@@ -28,12 +28,12 @@ export default function (props: ButtonMapProps) {
   };
 
   const xOffset = () =>
-    local.xOffset == "left" ? "left-[-150px]" : "left-[70px]";
+    local.xOffset == "left" ? "left-[-160px]" : "left-[70px]";
 
   // TODO creer un signal pour gérer l'affichage du tooltip
 
   return (
-    <button class="menu-btn" {...rest}>
+    <button class="menu-btn">
       <div class="relative">
         <Show when={isTooltipDisplayed()}>
           <div class={`absolute ${xOffset()} top-[8px] scale-100`}>
@@ -45,6 +45,7 @@ export default function (props: ButtonMapProps) {
           classList={{ active: local.isActive }}
           onMouseOver={() => setIsTooltipDisplayed(true)}
           onMouseLeave={() => setIsTooltipDisplayed(false)}
+          {...rest}
         >
           <Icon />
         </div>
