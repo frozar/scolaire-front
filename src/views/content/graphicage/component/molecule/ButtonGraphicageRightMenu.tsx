@@ -1,4 +1,4 @@
-import { JSX, splitProps } from "solid-js";
+import { JSX, Show, createSignal, splitProps } from "solid-js";
 import Tooltip from "../atom/Tooltip";
 
 import "./ButtonGraphicageRightMenu.css";
@@ -14,6 +14,8 @@ export interface ButtonMapProps {
 }
 
 export default function (props: ButtonMapProps) {
+  const [isTooltipDisplayed, setIsTooltipDisplayed] = createSignal(false);
+
   const [local, rest] = splitProps(props, [
     "tooltip",
     "icon",
@@ -32,12 +34,16 @@ export default function (props: ButtonMapProps) {
 
   return (
     <button class="menu-btn" {...rest}>
-      <div class={`absolute ${xOffset()} scale-100`}>
-        <Tooltip tooltip={local.tooltip} />
-      </div>
+      <Show when={isTooltipDisplayed()}>
+        <div class={`absolute ${xOffset()} scale-100`}>
+          <Tooltip tooltip={local.tooltip} />
+        </div>
+      </Show>
       <div
         class="btn-fla btn-circle-fla"
         classList={{ active: local.isActive }}
+        onMouseOver={() => setIsTooltipDisplayed(true)}
+        onMouseLeave={() => setIsTooltipDisplayed(false)}
       >
         <Icon />
       </div>
