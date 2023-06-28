@@ -2,9 +2,12 @@ import { Show, createEffect, createSignal } from "solid-js";
 import { Transition } from "solid-transition-group";
 
 import ClickOutside from "../component/ClickOutside";
+
+false && ClickOutside;
+
 import {
-  getImportConfirmation,
   closeDragAndDropConfirmationBox,
+  getImportConfirmation,
 } from "../signaux";
 import { assertIsNode } from "../utils";
 
@@ -163,16 +166,11 @@ export default function () {
                           </p>
                         </div>
                       </Show>
-                      <Show
-                        when={
-                          getImportConfirmation().error.etablissement.length !=
-                          0
-                        }
-                      >
+                      <Show when={getImportConfirmation().error.etablissement}>
                         <div class="mt-2">
                           Établissements non-traités :
                           <p class="text-sm text-gray-500">
-                            {getImportConfirmation().error.etablissement.join(
+                            {getImportConfirmation().error.etablissement?.join(
                               ", "
                             )}
                           </p>
@@ -180,13 +178,16 @@ export default function () {
                       </Show>
                       <Show
                         when={
-                          getImportConfirmation().error.ramassage.length != 0
+                          getImportConfirmation().error.ramassage &&
+                          getImportConfirmation().error.ramassage?.length != 0
                         }
                       >
                         <div class="mt-2">
                           Lieux de ramassage non-traités :
                           <p class="text-sm text-gray-500">
-                            {getImportConfirmation().error.ramassage.join(", ")}
+                            {getImportConfirmation().error.ramassage?.join(
+                              ", "
+                            )}
                           </p>
                         </div>
                       </Show>

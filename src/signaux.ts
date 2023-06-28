@@ -82,7 +82,7 @@ export const [
 const initialImportCsvMessage: ReturnMessageType = {
   displayed: false,
   message: "",
-  metrics: { total: 0, success: 0 },
+  metrics: { total: 0, success: 0, failed: 0 },
   error: { etablissement: [], ramassage: [] },
   success: { etablissement: [], ramassage: [] },
 };

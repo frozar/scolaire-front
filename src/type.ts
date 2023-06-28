@@ -135,9 +135,9 @@ export type exportConfirmationType = {
 export type ReturnMessageType = {
   displayed: boolean;
   message: string;
-  metrics: { total: number; success: number };
-  error: { etablissement: string[]; ramassage: string[] };
-  success: { etablissement: string[]; ramassage: string[] };
+  metrics: { total: number; success: number; failed: number };
+  error: { etablissement?: string[]; ramassage?: string[] };
+  success: { etablissement?: string[]; ramassage?: string[] };
 };
 
 export type SelectedMenuType =
