@@ -134,12 +134,30 @@ export type exportConfirmationType = {
   displayed: boolean;
   exportType: ExportTypeEnum | null;
 };
+
 export type ReturnMessageType = {
   displayed: boolean;
   message: string;
-  metrics: { total: number; success: number; failed: number };
-  error: { etablissement?: string[]; ramassage?: string[] };
-  success: { etablissement?: string[]; ramassage?: string[] };
+  metrics: {
+    etablissement?: {
+      total: number;
+      success: number;
+      failed: number;
+      detail: string[];
+    };
+    ramassage?: {
+      total: number;
+      success: number;
+      failed: number;
+      detail: string[];
+    };
+    eleve_vers_etablissement?: {
+      total: number;
+      success: number;
+      failed: number;
+      detail: string[];
+    };
+  };
 };
 
 export type SelectedMenuType =

@@ -79,19 +79,17 @@ export const [
   displayed: false,
 });
 
-const initialImportCsvMessage: ReturnMessageType = {
+const initialImportMessage: ReturnMessageType = {
   displayed: false,
   message: "",
-  metrics: { total: 0, success: 0, failed: 0 },
-  error: { etablissement: [], ramassage: [] },
-  success: { etablissement: [], ramassage: [] },
+  metrics: {},
 };
 
 export const [getImportConfirmation, setImportConfirmation] =
-  createSignal<ReturnMessageType>(initialImportCsvMessage);
+  createSignal<ReturnMessageType>(initialImportMessage);
 
 export function closeDragAndDropConfirmationBox() {
-  setImportConfirmation(initialImportCsvMessage);
+  setImportConfirmation(initialImportMessage);
 }
 
 export function openExportConfirmationBox() {
