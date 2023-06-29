@@ -38,7 +38,7 @@ VOLUME /code/src
 
 WORKDIR /code
 
-# Install dev packages
+# # Install dev packages
 COPY ./package.json .
 COPY ./package-lock.json .
 RUN npm install --force

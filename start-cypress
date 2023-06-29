@@ -3,8 +3,8 @@
 echo "****** Launch test *********"
 
 script_directory=$(dirname $(readlink -f $0))
-# TODO: exécuter les commande docker depuis le dossier ./cypress
-cd $script_directory
+
+cd $script_directory"/cypress"
 
 docker-compose build
 docker-compose up

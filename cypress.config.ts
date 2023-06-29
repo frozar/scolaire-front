@@ -11,7 +11,9 @@ export default defineConfig({
       bundler: "vite",
     },
     setupNodeEvents(on, config) {
-      getCompareSnapshotsPlugin(on, config);
+      getCompareSnapshotsPlugin(on, config, {
+        rootDir: "cypress/",
+      });
     },
   },
 });
