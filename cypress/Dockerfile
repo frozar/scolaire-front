@@ -39,8 +39,8 @@ VOLUME /code/src
 WORKDIR /code
 
 # Install dev packages
-COPY package.json .
-COPY package-lock.json .
+COPY ./package.json .
+COPY ./package-lock.json .
 RUN npm install --force
 
 CMD ["npm", "run", "cypress-test"]
