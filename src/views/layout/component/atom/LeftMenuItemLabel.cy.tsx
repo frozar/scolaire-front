@@ -3,7 +3,7 @@ describe("LeftMenuItemLabel component", () => {
   const props = {
     isActive: false,
     isDisabled: false,
-    label: "Se connect",
+    label: "Se connecter",
   };
 
   it("When not authenticated", () => {
