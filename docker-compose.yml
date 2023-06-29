@@ -5,6 +5,7 @@ services:
     build:
       context: .
       dockerfile: DockerfileCypress
+    command: npm run cypress-watch
     volumes:
       - ./cypress-visual-screenshots:/code/cypress-visual-screenshots
       - ./cypress-visual-report:/code/cypress-visual-report

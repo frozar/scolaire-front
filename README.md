@@ -46,3 +46,17 @@ Your app is ready to be deployed!
 ## Deployment
 
 You can deploy the `dist` folder to any static host provider (netlify, surge, now, etc.)
+
+
+## Run with Docker
+
+### Cypress test (watch)
+
+    ./cypress (Start the webserver to )
+
+
+### Webserver only
+
+    docker build -t webserver:latest -f DockerfileWeb .
+    docker run -p 80:8043 webserver:latest
+

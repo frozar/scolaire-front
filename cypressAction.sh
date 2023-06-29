@@ -7,5 +7,3 @@ cd $script_directory
 
 docker build -t cypress:latest -f DockerfileCypress .
 docker run cypress
-# docker-compose build
-# docker-compose up
