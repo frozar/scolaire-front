@@ -28,10 +28,20 @@ function fakeToggleDisplayedInformationBoard() {
   setFakeDisplayedInformationBoard((bool) => !bool);
 }
 
+const [fakeIsInAddLineMode, setFakeIsInAddLineMode] = createSignal(false);
+
+function fakeAddLineHandleClick() {
+  console.log("fakeAddLineHandleClick");
+
+  setFakeIsInAddLineMode((bool) => !bool);
+}
+
 export const RightMapMenu: Story = {
   args: {
     toggleDisplayedInformationBoard: fakeToggleDisplayedInformationBoard,
     getDisplayedInformationBoard: fakeGetDisplayedInformationBoard,
+    addLineButtonHandleClick: fakeAddLineHandleClick,
+    isInAddLineMode: fakeIsInAddLineMode,
     xOffset: "right",
   },
 };

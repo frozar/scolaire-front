@@ -9,16 +9,23 @@ import GenerateButton from "./GenerateButton";
 import InformationBoardButton from "./InformationBoardButton";
 import RemoveLineButton from "./RemoveLineButton";
 
+import { useStateAction } from "../../../../../StateAction";
 import { useStateGui } from "../../../../../StateGui";
+
+import { addLineButtonHandleClick } from "../../utils";
 
 import "./RightMapMenu.css";
 
 const [, { getDisplayedInformationBoard, toggleDisplayedInformationBoard }] =
   useStateGui();
 
+const [, { isInAddLineMode }] = useStateAction();
+
 export interface RightMapMenuProps {
   toggleDisplayedInformationBoard?: () => void;
   getDisplayedInformationBoard?: () => boolean;
+  addLineButtonHandleClick?: () => void;
+  isInAddLineMode?: () => boolean;
   xOffset?: OffsetType;
 }
 
@@ -27,6 +34,8 @@ export default function (props: RightMapMenuProps) {
     {
       toggleDisplayedInformationBoard,
       getDisplayedInformationBoard,
+      addLineButtonHandleClick,
+      isInAddLineMode,
       xOffset: "left" as OffsetType,
     },
     props
@@ -35,8 +44,14 @@ export default function (props: RightMapMenuProps) {
   const [local] = splitProps(mergedProps, [
     "toggleDisplayedInformationBoard",
     "getDisplayedInformationBoard",
+    "addLineButtonHandleClick",
+    "isInAddLineMode",
     "xOffset",
   ]);
+
+  // const [localAddLineButton] = splitProps(mergedProps, [
+  //   "addLineButtonHandleClick",
+  // ]);
 
   return (
     <div id="control-map-menu">
@@ -45,7 +60,11 @@ export default function (props: RightMapMenuProps) {
         toggleDisplayedInformationBoard={local.toggleDisplayedInformationBoard}
         getDisplayedInformationBoard={local.getDisplayedInformationBoard}
       />
-      <AddLineButton xOffset={mergedProps.xOffset} />
+      <AddLineButton
+        xOffset={local.xOffset}
+        handleClick={local.addLineButtonHandleClick}
+        isInAddLineMode={local.isInAddLineMode}
+      />
       <RemoveLineButton xOffset={mergedProps.xOffset} />
       <ClearButton xOffset={mergedProps.xOffset} />
       <GenerateButton xOffset={mergedProps.xOffset} />

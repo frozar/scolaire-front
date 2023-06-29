@@ -14,6 +14,8 @@ type Story = StoryObj<typeof meta>;
 const [fakeIsInAddLineMode, setFakeIsInAddLineMode] = createSignal(false);
 
 function fakeHandleClick() {
+  console.log("fakeAddLineHandleClick");
+
   setFakeIsInAddLineMode((bool) => !bool);
 }
 

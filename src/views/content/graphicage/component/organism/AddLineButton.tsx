@@ -1,42 +1,38 @@
 import { FaSolidPlus } from "solid-icons/fa";
 
-import { useStateAction } from "../../../../../StateAction";
-import { displayAddLineMessage } from "../../../../../userInformation/utils";
-import { deselectAllPoints } from "../../Point";
-import { fetchBusLines } from "../../line/busLinesUtils";
+import { splitProps } from "solid-js";
 
-import { mergeProps, splitProps } from "solid-js";
 import ButtonGraphicageRightMenu, {
   OffsetType,
 } from "../molecule/ButtonGraphicageRightMenu";
 
-const [, { setModeAddLine, isInAddLineMode, setModeRead }] = useStateAction();
+// const [, { setModeAddLine, isInAddLineMode, setModeRead }] = useStateAction();
 
 export interface AddLineButtonProps {
-  handleClick?: () => void;
-  isInAddLineMode?: () => boolean;
-  xOffset?: OffsetType;
+  handleClick: () => void;
+  isInAddLineMode: () => boolean;
+  xOffset: OffsetType;
 }
 
 export default function (props: AddLineButtonProps) {
-  const handleClick = () => {
-    if (isInAddLineMode()) {
-      setModeRead();
-      fetchBusLines();
-    } else {
-      deselectAllPoints();
-      setModeAddLine();
-      fetchBusLines();
-      displayAddLineMessage();
-    }
-  };
+  // const handleClick = () => {
+  //   if (isInAddLineMode()) {
+  //     setModeRead();
+  //     fetchBusLines();
+  //   } else {
+  //     deselectAllPoints();
+  //     setModeAddLine();
+  //     fetchBusLines();
+  //     displayAddLineMessage();
+  //   }
+  // };
 
-  const mergedProps = mergeProps(
-    { handleClick, isInAddLineMode, xOffset: "left" as OffsetType },
-    props
-  );
+  // const mergedProps = mergeProps(
+  //   { handleClick, isInAddLineMode, xOffset: "left" as OffsetType },
+  //   props
+  // );
 
-  const [local] = splitProps(mergedProps, [
+  const [local] = splitProps(props, [
     "handleClick",
     "isInAddLineMode",
     "xOffset",
