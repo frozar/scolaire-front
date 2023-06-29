@@ -44,4 +44,4 @@ VOLUME /code/cypress-visual-screenshots
 VOLUME /code/cypress-visual-report  
 VOLUME /code/src
 
-CMD ["npm", "run", "cypress-watch"]
+CMD ["npm", "run", "cypress-test"]
