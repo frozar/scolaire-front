@@ -15,6 +15,7 @@ import { useStateGui } from "../../../../../StateGui";
 import {
   addLineButtonHandleClick,
   clearButtonHandleClick,
+  exportButtonHandleClick,
   generateButtonHandleClick,
   removeLineButtonHandleClick,
 } from "../../utils";
@@ -40,6 +41,8 @@ export interface RightMapMenuProps {
 
   generateButtonHandleClick?: () => void;
 
+  exportButtonHandleClick?: () => void;
+
   xOffset?: OffsetType;
 }
 
@@ -59,6 +62,8 @@ export default function (props: RightMapMenuProps) {
 
       generateButtonHandleClick,
 
+      exportButtonHandleClick,
+
       xOffset: "left" as OffsetType,
     },
     props
@@ -73,6 +78,7 @@ export default function (props: RightMapMenuProps) {
     "isInRemoveLineMode",
     "clearButtonHandleClick",
     "generateButtonHandleClick",
+    "exportButtonHandleClick",
     "xOffset",
   ]);
 
@@ -105,7 +111,10 @@ export default function (props: RightMapMenuProps) {
         xOffset={local.xOffset}
         handleClick={local.generateButtonHandleClick}
       />
-      <ExportButton xOffset={mergedProps.xOffset} />
+      <ExportButton
+        xOffset={mergedProps.xOffset}
+        handleClick={local.exportButtonHandleClick}
+      />
     </div>
   );
 }

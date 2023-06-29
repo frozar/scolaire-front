@@ -1,6 +1,7 @@
 import { useStateAction } from "../../../StateAction";
 import {
   openClearConfirmationBox,
+  openExportConfirmationBox,
   openGeneratorDialogBox,
 } from "../../../signaux";
 
@@ -59,5 +60,10 @@ export const clearButtonHandleClick = () => {
 
 export const generateButtonHandleClick = () => {
   defineModalToOpen(openGeneratorDialogBox);
+  confirmAbortEditionNeedToBeCall();
+};
+
+export const exportButtonHandleClick = () => {
+  defineModalToOpen(openExportConfirmationBox);
   confirmAbortEditionNeedToBeCall();
 };

@@ -71,6 +71,12 @@ export const RightMapMenu: Story = {
       return;
     },
 
+    exportButtonHandleClick: () => {
+      console.log("fakeExportButtonHandleClick");
+
+      return;
+    },
+
     xOffset: "right",
   },
 };
