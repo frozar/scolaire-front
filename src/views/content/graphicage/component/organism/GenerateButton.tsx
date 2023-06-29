@@ -1,35 +1,34 @@
 import { FiArrowUpCircle } from "solid-icons/fi";
 
-import { openGeneratorDialogBox } from "../../../../../signaux";
-import {
-  confirmAbortEditionNeedToBeCall,
-  defineModalToOpen,
-} from "../../ConfirmStopAddLineBox";
+import { splitProps } from "solid-js";
 
-import { mergeProps } from "solid-js";
 import ButtonGraphicageRightMenu, {
   OffsetType,
 } from "../molecule/ButtonGraphicageRightMenu";
 
 export interface GenerateButtonProps {
-  xOffset?: OffsetType;
+  handleClick: () => void;
+  xOffset: OffsetType;
 }
 
 export default function (props: GenerateButtonProps) {
-  const mergedProps = mergeProps({ xOffset: "left" as OffsetType }, props);
+  // const mergedProps = mergeProps({ xOffset: "left" as OffsetType }, props);
 
-  const xOffset = () => mergedProps.xOffset;
+  // const xOffset = () => mergedProps.xOffset;
 
-  const handleClick = () => {
-    defineModalToOpen(openGeneratorDialogBox);
-    confirmAbortEditionNeedToBeCall();
-  };
+  // const handleClick = () => {
+  //   defineModalToOpen(openGeneratorDialogBox);
+  //   confirmAbortEditionNeedToBeCall();
+  // };
+
+  const [local] = splitProps(props, ["handleClick", "xOffset"]);
+
   return (
     <ButtonGraphicageRightMenu
-      onClick={handleClick}
+      onClick={local.handleClick}
       tooltip="Générer des trajets"
       icon={<FiArrowUpCircle class="h-10 w-10" />}
-      xOffset={xOffset()}
+      xOffset={local.xOffset}
     />
   );
 }

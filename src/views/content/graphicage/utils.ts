@@ -1,5 +1,8 @@
 import { useStateAction } from "../../../StateAction";
-import { openClearConfirmationBox } from "../../../signaux";
+import {
+  openClearConfirmationBox,
+  openGeneratorDialogBox,
+} from "../../../signaux";
 
 import {
   displayAddLineMessage,
@@ -51,5 +54,10 @@ export const clearButtonHandleClick = () => {
   console.log("no mock");
 
   defineModalToOpen(openClearConfirmationBox);
+  confirmAbortEditionNeedToBeCall();
+};
+
+export const generateButtonHandleClick = () => {
+  defineModalToOpen(openGeneratorDialogBox);
   confirmAbortEditionNeedToBeCall();
 };

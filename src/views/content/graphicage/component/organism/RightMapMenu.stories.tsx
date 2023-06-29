@@ -65,6 +65,12 @@ export const RightMapMenu: Story = {
 
     clearButtonHandleClick: fakeClearButtonHandleClick,
 
+    generateButtonHandleClick: () => {
+      console.log("fakeGenerateButtonHandleClick");
+
+      return;
+    },
+
     xOffset: "right",
   },
 };
