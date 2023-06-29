@@ -1,4 +1,5 @@
 import { JSX, Show, createSignal, splitProps } from "solid-js";
+
 import Tooltip from "../atom/Tooltip";
 
 import "./ButtonGraphicageRightMenu.css";
@@ -6,7 +7,7 @@ import "./ButtonGraphicageRightMenu.css";
 export type OffsetType = "left" | "right";
 
 export interface ButtonMapProps {
-  onClick?: () => void;
+  onClick: () => void;
   tooltip: string;
   icon: JSX.Element;
   xOffset: OffsetType;
@@ -16,9 +17,6 @@ export interface ButtonMapProps {
 export default function (props: ButtonMapProps) {
   const [isTooltipDisplayed, setIsTooltipDisplayed] = createSignal(false);
 
-  // const mergedProps = mergeProps({ xOffset: "left" }, props);
-
-  // const [local, rest] = splitProps(mergedProps, [
   const [local, rest] = splitProps(props, [
     "tooltip",
     "icon",

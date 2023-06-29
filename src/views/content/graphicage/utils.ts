@@ -14,6 +14,7 @@ import {
   defineModalToOpen,
 } from "./ConfirmStopAddLineBox";
 import { deselectAllPoints } from "./Point";
+
 import { fetchBusLines } from "./line/busLinesUtils";
 
 const [
@@ -52,8 +53,6 @@ export const removeLineButtonHandleClick = () => {
 };
 
 export const clearButtonHandleClick = () => {
-  console.log("no mock");
-
   defineModalToOpen(openClearConfirmationBox);
   confirmAbortEditionNeedToBeCall();
 };

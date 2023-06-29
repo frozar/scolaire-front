@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "storybook-solidjs";
+
 import TooltipComponent from "./Tooltip";
 
 const meta = {
