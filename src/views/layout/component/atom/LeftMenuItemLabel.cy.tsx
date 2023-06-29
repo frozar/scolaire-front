@@ -3,7 +3,7 @@ describe("LeftMenuItemLabel component", () => {
   const props = {
     isActive: false,
     isDisabled: false,
-    label: "Se connecter",
+    label: "Se connect",
   };
 
   it("When not authenticated", () => {
@@ -17,7 +17,7 @@ describe("LeftMenuItemLabel component", () => {
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
-    cy.get("span").compareSnapshot("authenticated-label", 0.1);
+    cy.get("span").compareSnapshot("authenticated-label", 0.01);
     cy.get("span").contains(props.label);
   });
 
