@@ -5,4 +5,5 @@ echo "****** Launch test *********"
 script_directory=$(dirname $(readlink -f $0))
 cd $script_directory
 
-npm run cypress-watch
+docker-compose build
+docker-compose up
