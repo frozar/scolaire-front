@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from "storybook-solidjs";
 
 import { createSignal } from "solid-js";
+
 import RightMapMenuComponent from "./RightMapMenu";
 
 const meta = {
@@ -45,6 +46,12 @@ function fakeRemoveLineButtonHandleClick() {
   setFakeIsInRemoveLineMode((bool) => !bool);
 }
 
+function fakeClearButtonHandleClick() {
+  console.log("fakeClearButtonHandleClick");
+
+  return;
+}
+
 export const RightMapMenu: Story = {
   args: {
     toggleDisplayedInformationBoard: fakeToggleDisplayedInformationBoard,
@@ -55,6 +62,8 @@ export const RightMapMenu: Story = {
 
     removeLineButtonHandleClick: fakeRemoveLineButtonHandleClick,
     isInRemoveLineMode: fakeIsInRemoveLineMode,
+
+    clearButtonHandleClick: fakeClearButtonHandleClick,
 
     xOffset: "right",
   },

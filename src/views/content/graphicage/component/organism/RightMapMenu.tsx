@@ -14,6 +14,7 @@ import { useStateGui } from "../../../../../StateGui";
 
 import {
   addLineButtonHandleClick,
+  clearButtonHandleClick,
   removeLineButtonHandleClick,
 } from "../../utils";
 
@@ -27,10 +28,15 @@ const [, { isInAddLineMode, isInRemoveLineMode }] = useStateAction();
 export interface RightMapMenuProps {
   toggleDisplayedInformationBoard?: () => void;
   getDisplayedInformationBoard?: () => boolean;
+
   addLineButtonHandleClick?: () => void;
   isInAddLineMode?: () => boolean;
+
   removeLineButtonHandleClick?: () => void;
   isInRemoveLineMode?: () => boolean;
+
+  clearButtonHandleClick?: () => void;
+
   xOffset?: OffsetType;
 }
 
@@ -39,10 +45,15 @@ export default function (props: RightMapMenuProps) {
     {
       toggleDisplayedInformationBoard,
       getDisplayedInformationBoard,
+
       addLineButtonHandleClick,
       isInAddLineMode,
+
       removeLineButtonHandleClick,
       isInRemoveLineMode,
+
+      clearButtonHandleClick,
+
       xOffset: "left" as OffsetType,
     },
     props
@@ -55,6 +66,7 @@ export default function (props: RightMapMenuProps) {
     "isInAddLineMode",
     "removeLineButtonHandleClick",
     "isInRemoveLineMode",
+    "clearButtonHandleClick",
     "xOffset",
   ]);
 
@@ -75,11 +87,14 @@ export default function (props: RightMapMenuProps) {
         isInAddLineMode={local.isInAddLineMode}
       />
       <RemoveLineButton
-        xOffset={mergedProps.xOffset}
+        xOffset={local.xOffset}
         handleClick={local.removeLineButtonHandleClick}
         isInRemoveLineMode={local.isInRemoveLineMode}
       />
-      <ClearButton xOffset={mergedProps.xOffset} />
+      <ClearButton
+        xOffset={local.xOffset}
+        handleClick={local.clearButtonHandleClick}
+      />
       <GenerateButton xOffset={mergedProps.xOffset} />
       <ExportButton xOffset={mergedProps.xOffset} />
     </div>

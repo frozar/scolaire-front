@@ -1,8 +1,14 @@
 import { useStateAction } from "../../../StateAction";
+import { openClearConfirmationBox } from "../../../signaux";
+
 import {
   displayAddLineMessage,
   displayRemoveLineMessage,
 } from "../../../userInformation/utils";
+import {
+  confirmAbortEditionNeedToBeCall,
+  defineModalToOpen,
+} from "./ConfirmStopAddLineBox";
 import { deselectAllPoints } from "./Point";
 import { fetchBusLines } from "./line/busLinesUtils";
 
@@ -39,4 +45,11 @@ export const removeLineButtonHandleClick = () => {
   setModeRemoveLine();
   fetchBusLines();
   displayRemoveLineMessage();
+};
+
+export const clearButtonHandleClick = () => {
+  console.log("no mock");
+
+  defineModalToOpen(openClearConfirmationBox);
+  confirmAbortEditionNeedToBeCall();
 };
