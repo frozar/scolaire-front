@@ -6,9 +6,20 @@ import {
   defineModalToOpen,
 } from "../../ConfirmStopAddLineBox";
 
-import ButtonGraphicageRightMenu from "../molecule/ButtonGraphicageRightMenu";
+import { mergeProps } from "solid-js";
+import ButtonGraphicageRightMenu, {
+  OffsetType,
+} from "../molecule/ButtonGraphicageRightMenu";
 
-export default function () {
+export interface ExportButtonProps {
+  xOffset?: OffsetType;
+}
+
+export default function (props: ExportButtonProps) {
+  const mergedProps = mergeProps({ xOffset: "left" as OffsetType }, props);
+
+  const xOffset = () => mergedProps.xOffset;
+
   const handleClick = () => {
     defineModalToOpen(openExportConfirmationBox);
     confirmAbortEditionNeedToBeCall();
@@ -19,7 +30,7 @@ export default function () {
       onClick={handleClick}
       icon={<CgExport class="h-10 w-10 pb-[5px]" />}
       tooltip="Exporter"
-      xOffset="left"
+      xOffset={xOffset()}
     />
   );
 }

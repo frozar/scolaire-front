@@ -12,12 +12,6 @@ import { useStateGui } from "../../../StateGui";
 import ImportCsvCanvas from "../../../component/ImportCsvCanvas";
 import ConfirmStopAddLine from "./ConfirmStopAddLineBox";
 
-import AddLineButton from "./component/organism/AddLineButton";
-import ClearButton from "./component/organism/ClearButton";
-import ExportButton from "./component/organism/ExportButton";
-import GenerateButton from "./component/organism/GenerateButton";
-import InformationBoardButton from "./component/organism/InformationBoardButton";
-import RemoveLineButton from "./component/organism/RemoveLineButton";
 import RightMapMenu from "./component/organism/RightMapMenu";
 
 import { InformationBoard } from "./informationBoard/InformationBoard";
@@ -82,14 +76,14 @@ export default function () {
       </Show>
       <BusLines />
       <div class="z-[1000] absolute top-[45%] right-[15px]">
-        <RightMapMenu>
-          <InformationBoardButton xOffset="left" />
+        <RightMapMenu />
+        {/* <InformationBoardButton xOffset="left" />
           <AddLineButton xOffset="left" />
           <RemoveLineButton xOffset="left" />
           <ClearButton xOffset="left" />
           <GenerateButton xOffset="left" />
-          <ExportButton xOffset="left" />
-        </RightMapMenu>
+          <ExportButton xOffset="left" /> */}
+        {/* </RightMapMenu> */}
       </div>
       <ConfirmStopAddLine />
     </Show>

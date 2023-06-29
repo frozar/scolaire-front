@@ -33,8 +33,6 @@ export default function (props: AddLineButtonProps) {
     }
   };
 
-  // const xOffset = () => props.xOffset;
-
   return (
     <ButtonGraphicageRightMenu
       onClick={handleClick}
