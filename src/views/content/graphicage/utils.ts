@@ -1,9 +1,21 @@
 import { useStateAction } from "../../../StateAction";
-import { displayAddLineMessage } from "../../../userInformation/utils";
+import {
+  displayAddLineMessage,
+  displayRemoveLineMessage,
+} from "../../../userInformation/utils";
 import { deselectAllPoints } from "./Point";
 import { fetchBusLines } from "./line/busLinesUtils";
 
-const [, { setModeAddLine, isInAddLineMode, setModeRead }] = useStateAction();
+const [
+  ,
+  {
+    setModeAddLine,
+    isInAddLineMode,
+    setModeRead,
+    isInRemoveLineMode,
+    setModeRemoveLine,
+  },
+] = useStateAction();
 
 export const addLineButtonHandleClick = () => {
   if (isInAddLineMode()) {
@@ -15,4 +27,16 @@ export const addLineButtonHandleClick = () => {
     fetchBusLines();
     displayAddLineMessage();
   }
+};
+
+export const removeLineButtonHandleClick = () => {
+  deselectAllPoints();
+  if (isInRemoveLineMode()) {
+    setModeRead();
+    fetchBusLines();
+    return;
+  }
+  setModeRemoveLine();
+  fetchBusLines();
+  displayRemoveLineMessage();
 };

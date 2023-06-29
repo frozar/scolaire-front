@@ -15,7 +15,7 @@ const [fakeGetDisplayedInformationBoard, setFakeDisplayedInformationBoard] =
   createSignal(false);
 
 function fakeToggleDisplayedInformationBoard() {
-  console.log("fake toggle displayed information board");
+  console.log("fakeToggleDisplayedInformationBoard");
 
   setFakeDisplayedInformationBoard((bool) => !bool);
 }

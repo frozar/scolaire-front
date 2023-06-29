@@ -14,6 +14,8 @@ type Story = StoryObj<typeof meta>;
 const [fakeIsInRemoveLineMode, setFakeIsInRemoveLineMode] = createSignal(false);
 
 function fakeHandleClick() {
+  console.log("fakeRemoveLineHandleClick");
+
   setFakeIsInRemoveLineMode((bool) => !bool);
 }
 

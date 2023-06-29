@@ -12,20 +12,25 @@ import RemoveLineButton from "./RemoveLineButton";
 import { useStateAction } from "../../../../../StateAction";
 import { useStateGui } from "../../../../../StateGui";
 
-import { addLineButtonHandleClick } from "../../utils";
+import {
+  addLineButtonHandleClick,
+  removeLineButtonHandleClick,
+} from "../../utils";
 
 import "./RightMapMenu.css";
 
 const [, { getDisplayedInformationBoard, toggleDisplayedInformationBoard }] =
   useStateGui();
 
-const [, { isInAddLineMode }] = useStateAction();
+const [, { isInAddLineMode, isInRemoveLineMode }] = useStateAction();
 
 export interface RightMapMenuProps {
   toggleDisplayedInformationBoard?: () => void;
   getDisplayedInformationBoard?: () => boolean;
   addLineButtonHandleClick?: () => void;
   isInAddLineMode?: () => boolean;
+  removeLineButtonHandleClick?: () => void;
+  isInRemoveLineMode?: () => boolean;
   xOffset?: OffsetType;
 }
 
@@ -36,6 +41,8 @@ export default function (props: RightMapMenuProps) {
       getDisplayedInformationBoard,
       addLineButtonHandleClick,
       isInAddLineMode,
+      removeLineButtonHandleClick,
+      isInRemoveLineMode,
       xOffset: "left" as OffsetType,
     },
     props
@@ -46,6 +53,8 @@ export default function (props: RightMapMenuProps) {
     "getDisplayedInformationBoard",
     "addLineButtonHandleClick",
     "isInAddLineMode",
+    "removeLineButtonHandleClick",
+    "isInRemoveLineMode",
     "xOffset",
   ]);
 
@@ -65,7 +74,11 @@ export default function (props: RightMapMenuProps) {
         handleClick={local.addLineButtonHandleClick}
         isInAddLineMode={local.isInAddLineMode}
       />
-      <RemoveLineButton xOffset={mergedProps.xOffset} />
+      <RemoveLineButton
+        xOffset={mergedProps.xOffset}
+        handleClick={local.removeLineButtonHandleClick}
+        isInRemoveLineMode={local.isInRemoveLineMode}
+      />
       <ClearButton xOffset={mergedProps.xOffset} />
       <GenerateButton xOffset={mergedProps.xOffset} />
       <ExportButton xOffset={mergedProps.xOffset} />
