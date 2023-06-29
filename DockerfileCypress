@@ -30,18 +30,17 @@ RUN apt-get install -y xvfb xdg-utils libgtk-3-0 lsb-release libappindicator3-1 
     && rm google-chrome-stable_${CHROME_VERSION}_amd64.deb \
     && google-chrome --version
 
+COPY . /code
+# Add volumes
+VOLUME /code/cypress-visual-screenshots
+VOLUME /code/cypress-visual-report  
+VOLUME /code/src
+
 WORKDIR /code
 
 # Install dev packages
 COPY package.json .
 COPY package-lock.json .
 RUN npm install --force
-
-COPY . /code
-
-# Add volumes
-VOLUME /code/cypress-visual-screenshots
-VOLUME /code/cypress-visual-report  
-VOLUME /code/src
 
 CMD ["npm", "run", "cypress-test"]
