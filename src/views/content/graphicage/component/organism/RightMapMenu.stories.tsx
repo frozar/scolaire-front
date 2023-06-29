@@ -1,5 +1,6 @@
 import { Meta, StoryObj } from "storybook-solidjs";
 
+import { createSignal } from "solid-js";
 import RightMapMenuComponent from "./RightMapMenu";
 
 // const [, { getDisplayedInformationBoard, toggleDisplayedInformationBoard }] =
@@ -20,9 +21,19 @@ type Story = StoryObj<typeof meta>;
 //   isActive: getDisplayedInformationBoard(),
 //   xOffset: "left" as OffsetType,
 // };
+const [fakeGetDisplayedInformationBoard, setFakeDisplayedInformationBoard] =
+  createSignal(false);
+
+function fakeToggleDisplayedInformationBoard() {
+  console.log("fake toggle displayed information board");
+
+  setFakeDisplayedInformationBoard((bool) => !bool);
+}
 
 export const RightMapMenu: Story = {
   args: {
+    toggleDisplayedInformationBoard: fakeToggleDisplayedInformationBoard,
+    getDisplayedInformationBoard: fakeGetDisplayedInformationBoard,
     xOffset: "right",
     // children: (
     //   <>

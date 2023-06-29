@@ -15,6 +15,8 @@ const [fakeGetDisplayedInformationBoard, setFakeDisplayedInformationBoard] =
   createSignal(false);
 
 function fakeToggleDisplayedInformationBoard() {
+  console.log("fake toggle displayed information board");
+
   setFakeDisplayedInformationBoard((bool) => !bool);
 }
 
@@ -35,3 +37,6 @@ export const InformationBoardButton: Story = {
     // ),
   },
 };
+// InformationBoardButton.story = {
+//   name: "InformationBoardButton", // Set a name for the story
+// };
