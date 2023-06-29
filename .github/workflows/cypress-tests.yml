@@ -16,19 +16,3 @@ jobs:
 
       - name: Build and run services
         run: ./cypressAction.sh
-      #   run: docker-compose -f docker-compose.yml up -d 
-
-      # - name: Stop and remove services
-      #   run: docker-compose -f docker-compose.yml down
-    # steps:
-    #   - uses: actions/checkout@v3
-    #   - uses: actions/setup-node@v3
-    #     with:
-    #       node-version: "16.x"
-    #   - name: Install dependencies
-    #     run: npm install -f
-    #   - name: Install Playwright
-    #     run: npx playwright install --with-deps
-
-    #   - name: Run Cypress tests
-    #     run: npm run cypress-test
