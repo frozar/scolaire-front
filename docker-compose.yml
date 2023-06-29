@@ -1,11 +1,15 @@
 version: '3.2'
+# TODO: move docker-compose.yml dans ./cypress
 
 services:
   cypress:
     build:
+      # TODO: context d'exécution à la racine du projet
       context: .
-      dockerfile: DockerfileCypress
+      dockerfile: cypress/Dockerfile
     command: npm run cypress-watch
+    # TODO: faire la sauvegarde des visual dans ./cypress/visual-screenshots
+    # TODO: ajuster les chemins par rapport au contexte
     volumes:
       - ./cypress-visual-screenshots:/code/cypress-visual-screenshots
       - ./cypress-visual-report:/code/cypress-visual-report
