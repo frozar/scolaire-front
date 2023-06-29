@@ -1,22 +1,20 @@
 import { BsInfoCircle } from "solid-icons/bs";
 
-import { useStateGui } from "../../../../../StateGui";
-
-import { mergeProps, splitProps } from "solid-js";
+import { splitProps } from "solid-js";
 import ButtonGraphicageRightMenu, {
   OffsetType,
 } from "../molecule/ButtonGraphicageRightMenu";
 
-const [, { getDisplayedInformationBoard, toggleDisplayedInformationBoard }] =
-  useStateGui();
+// const [, { getDisplayedInformationBoard, toggleDisplayedInformationBoard }] =
+//   useStateGui();
 
 export interface InformationBoardButtonProps {
   // onClick={toggleDisplayedInformationBoard},
-  toggleDisplayedInformationBoard?: () => void;
+  toggleDisplayedInformationBoard: () => void;
   // tooltip="Afficher le panneau d'information",
   // isActive?:,
-  getDisplayedInformationBoard?: () => boolean;
-  xOffset?: OffsetType;
+  getDisplayedInformationBoard: () => boolean;
+  xOffset: OffsetType;
 }
 
 // const informationBoardProps = {
@@ -28,21 +26,25 @@ export interface InformationBoardButtonProps {
 // };
 
 export default function (props: InformationBoardButtonProps) {
-  const mergedProps = mergeProps(
-    {
-      toggleDisplayedInformationBoard,
-      getDisplayedInformationBoard,
-      xOffset: "left" as OffsetType,
-    },
-    props
-  );
+  // const mergedProps = mergeProps(
+  //   {
+  //     toggleDisplayedInformationBoard,
+  //     getDisplayedInformationBoard,
+  //     xOffset: "left" as OffsetType,
+  //   },
+  //   props
+  // );
 
-  const [local] = splitProps(mergedProps, [
+  // const [local] = splitProps(mergedProps, [
+  //   "toggleDisplayedInformationBoard",
+  //   "getDisplayedInformationBoard",
+  //   "xOffset",
+  // ]);
+  const [local] = splitProps(props, [
     "toggleDisplayedInformationBoard",
     "getDisplayedInformationBoard",
     "xOffset",
   ]);
-  // const xOffset = () => mergedProps.xOffset;
 
   return (
     <ButtonGraphicageRightMenu
@@ -50,7 +52,6 @@ export default function (props: InformationBoardButtonProps) {
       onClick={local.toggleDisplayedInformationBoard}
       tooltip="Afficher le panneau d'information"
       isActive={local.getDisplayedInformationBoard()}
-      // xOffset={xOffset()}
       xOffset={local.xOffset}
     />
   );
