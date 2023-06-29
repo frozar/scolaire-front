@@ -1,5 +1,6 @@
 import { Meta, StoryObj } from "storybook-solidjs";
 
+import { createSignal } from "solid-js";
 import InformationBoardButtonComponent from "./InformationBoardButton";
 
 const meta = {
@@ -10,8 +11,18 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+const [fakeGetDisplayedInformationBoard, setFakeDisplayedInformationBoard] =
+  createSignal(false);
+
+function fakeToggleDisplayedInformationBoard() {
+  setFakeDisplayedInformationBoard((bool) => !bool);
+}
+
 export const InformationBoardButton: Story = {
   args: {
+    toggleDisplayedInformationBoard: fakeToggleDisplayedInformationBoard,
+    getDisplayedInformationBoard: fakeGetDisplayedInformationBoard,
+    xOffset: "right",
     // children: (
     //   <>
     //     <InformationBoardButtonComponent xOffset="right" />
