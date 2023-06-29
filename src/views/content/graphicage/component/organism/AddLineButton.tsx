@@ -5,7 +5,7 @@ import { displayAddLineMessage } from "../../../../../userInformation/utils";
 import { deselectAllPoints } from "../../Point";
 import { fetchBusLines } from "../../line/busLinesUtils";
 
-import { mergeProps } from "solid-js";
+import { mergeProps, splitProps } from "solid-js";
 import ButtonGraphicageRightMenu, {
   OffsetType,
 } from "../molecule/ButtonGraphicageRightMenu";
@@ -13,14 +13,12 @@ import ButtonGraphicageRightMenu, {
 const [, { setModeAddLine, isInAddLineMode, setModeRead }] = useStateAction();
 
 export interface AddLineButtonProps {
+  handleClick?: () => void;
+  isInAddLineMode?: () => boolean;
   xOffset?: OffsetType;
 }
 
 export default function (props: AddLineButtonProps) {
-  const mergedProps = mergeProps({ xOffset: "left" as OffsetType }, props);
-
-  const xOffset = () => mergedProps.xOffset;
-
   const handleClick = () => {
     if (isInAddLineMode()) {
       setModeRead();
@@ -33,13 +31,24 @@ export default function (props: AddLineButtonProps) {
     }
   };
 
+  const mergedProps = mergeProps(
+    { handleClick, isInAddLineMode, xOffset: "left" as OffsetType },
+    props
+  );
+
+  const [local] = splitProps(mergedProps, [
+    "handleClick",
+    "isInAddLineMode",
+    "xOffset",
+  ]);
+
   return (
     <ButtonGraphicageRightMenu
-      onClick={handleClick}
+      onClick={local.handleClick}
       tooltip="Ajouter une ligne"
-      isActive={isInAddLineMode()}
+      isActive={local.isInAddLineMode()}
       icon={<FaSolidPlus class="w-full p-0 h-2/3" />}
-      xOffset={xOffset()}
+      xOffset={local.xOffset}
     />
   );
 }
