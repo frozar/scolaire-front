@@ -7,8 +7,6 @@ services:
       dockerfile: cypress/Dockerfile
     command: npm run cypress-watch
 
-    # TODO: faire la sauvegarde des visual dans ./cypress/visual-screenshots
-    # TODO: ajuster les chemins par rapport au contexte
     volumes:
       - ./cypress-visual-screenshots:/code/cypress/cypress-visual-screenshots
       - ./cypress-visual-report:/code/cypress/cypress-visual-report
