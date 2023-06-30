@@ -22,7 +22,7 @@ export default function (props: ButtonGraphicageRightMenuProps) {
   };
 
   const xOffset = () =>
-    props.xOffset == "left" ? "-translate-x-[185px]" : "-translate-x-[-35px]";
+    props.xOffset == "left" ? "translate-x-[-185px]" : "translate-x-[35px]";
 
   return (
     <button class="menu-btn">

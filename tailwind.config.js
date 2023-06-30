@@ -9,8 +9,8 @@ module.exports = {
     options: {
       safelist: [
         "translate-x-[-7rem]",
-        "-translate-x-[185px]",
-        "-translate-x-[-35px]",
+        "translate-x-[-185px]",
+        "translate-x-[35px]",
       ],
     },
   },
