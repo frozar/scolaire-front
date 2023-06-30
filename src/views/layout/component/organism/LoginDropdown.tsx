@@ -1,4 +1,4 @@
-import { Show, createSignal, mergeProps, onMount, splitProps } from "solid-js";
+import { Show, createSignal, mergeProps, onMount } from "solid-js";
 import { Transition } from "solid-transition-group";
 
 import { authenticated, setAuthenticated } from "../../../../signaux";
@@ -6,13 +6,14 @@ import { authenticated, setAuthenticated } from "../../../../signaux";
 import LoginMenu from "../atom/LoginMenu";
 import LoginAvatar from "../molecule/LoginAvatar";
 
-import "./LoginDropdown.css";
 import {
   getProfilePicture,
   isAuthenticated,
   login,
   logout,
 } from "../../authentication";
+
+import "./LoginDropdown.css";
 
 export interface LoginDropdownProps {
   // Shared props
@@ -50,15 +51,8 @@ export default function (props: LoginDropdownProps) {
     props
   );
 
-  const [local] = splitProps(mergedProps, [
-    "authenticated",
-    "getProfilePicture",
-    "xOffset",
-    "handleLogin",
-  ]);
-
   const xOffsetClassName = () =>
-    "translate-x-[" + String(local.xOffset) + "rem]";
+    "translate-x-[" + String(mergedProps.xOffset) + "rem]";
 
   return (
     <button
@@ -68,8 +62,8 @@ export default function (props: LoginDropdownProps) {
       onClick={toggleSubComponentDisplayed}
     >
       <LoginAvatar
-        authenticated={local.authenticated()}
-        profilePicture={local.getProfilePicture()}
+        authenticated={mergedProps.authenticated()}
+        profilePicture={mergedProps.getProfilePicture()}
       />
 
       <Transition
@@ -83,8 +77,8 @@ export default function (props: LoginDropdownProps) {
         <Show when={displayedSubComponent()}>
           <div id="login-menu-container" class={xOffsetClassName()}>
             <LoginMenu
-              authenticated={local.authenticated()}
-              onClick={local.handleLogin}
+              authenticated={mergedProps.authenticated()}
+              onClick={mergedProps.handleLogin}
             />
           </div>
         </Show>

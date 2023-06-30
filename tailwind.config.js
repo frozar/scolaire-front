@@ -7,7 +7,11 @@ module.exports = {
   },
   purge: {
     options: {
-      safelist: ["translate-x-[-7rem]"],
+      safelist: [
+        "translate-x-[-7rem]",
+        "-translate-x-[185px]",
+        "-translate-x-[-35px]",
+      ],
     },
   },
   plugins: [require("daisyui"), "@tailwindcss/forms"],

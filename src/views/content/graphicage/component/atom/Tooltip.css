@@ -1,0 +1,3 @@
+.tooltip {
+  @apply w-[150px]  bg-gray-800 p-2 rounded text-xs text-white pointer-events-none;
+}

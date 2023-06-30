@@ -1,6 +1,7 @@
-import { Show, splitProps } from "solid-js";
-import CurrentUserLogo from "../atom/NoUserLogo";
+import { Show } from "solid-js";
+
 import LoggedInUserLogo from "../atom/LoggedInUserLogo";
+import CurrentUserLogo from "../atom/NoUserLogo";
 
 export interface LoginAvatarProps {
   authenticated: boolean;
@@ -8,13 +9,11 @@ export interface LoginAvatarProps {
 }
 
 export default function (props: LoginAvatarProps) {
-  const [local] = splitProps(props, ["authenticated", "profilePicture"]);
-
-  const logoPath = () => (local.profilePicture ? local.profilePicture : "");
+  const logoPath = () => (props.profilePicture ? props.profilePicture : "");
 
   return (
     <Show
-      when={!local.authenticated}
+      when={!props.authenticated}
       fallback={<LoggedInUserLogo path={logoPath()} />}
     >
       <CurrentUserLogo />

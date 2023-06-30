@@ -1,20 +1,24 @@
-import "leaflet/dist/leaflet.css";
-
 import { Show, createSignal, onCleanup, onMount } from "solid-js";
 
-import PointsRamassageAndEtablissement from "./PointsRamassageAndEtablissement";
-
 import { useStateAction } from "../../../StateAction";
-import { buildMapL7 } from "./l7MapBuilder";
-import BusLines from "./line/BusLines";
-
 import { useStateGui } from "../../../StateGui";
+
+import { buildMapL7 } from "./l7MapBuilder";
+
+import PointsRamassageAndEtablissement from "./PointsRamassageAndEtablissement";
+import BusLines from "./line/BusLines";
+import LineUnderConstruction from "./line/LineUnderConstruction";
+
 import ImportCsvCanvas from "../../../component/ImportCsvCanvas";
 import ConfirmStopAddLine from "./ConfirmStopAddLineBox";
+
 import { InformationBoard } from "./informationBoard/InformationBoard";
-import LineUnderConstruction from "./line/LineUnderConstruction";
-import ControlMapMenu from "./rightMapMenu/RightMapMenu";
+
+import RightMapMenu from "./component/organism/RightMapMenu";
+
 import { listHandlerLMap } from "./shortcut";
+
+import "leaflet/dist/leaflet.css";
 
 const [, { isInAddLineMode }] = useStateAction();
 const [, { getActiveMapId }] = useStateGui();
@@ -73,7 +77,9 @@ export default function () {
         <LineUnderConstruction />
       </Show>
       <BusLines />
-      <ControlMapMenu />
+      <div class="z-[1000] absolute top-[45%] right-[15px]">
+        <RightMapMenu />
+      </div>
       <ConfirmStopAddLine />
     </Show>
   );
