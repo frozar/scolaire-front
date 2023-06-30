@@ -27,6 +27,19 @@ image_tag="latest"
 
 have_build=false
 
+folders=(
+    "./cypress-visual-report"
+    "./cypress-visual-screenshots/baseline"
+    "./cypress-visual-screenshots/comparison"
+    "./cypress-visual-screenshots/diff"
+)
+
+for folder in "${folders[@]}"; do
+    if [ ! -d "$folder" ]; then
+        mkdir -p "$folder"
+    fi
+done
+
 if docker image inspect "$image_name:$image_tag" >/dev/null 2>&1; then
     have_build=true
 fi
