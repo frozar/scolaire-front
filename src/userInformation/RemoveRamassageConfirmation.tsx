@@ -15,6 +15,8 @@ import { assertIsNode } from "../utils";
 import { fetchRamassage } from "../views/content/ramassage/Ramassage";
 import { asyncAuthenticateWrap } from "../views/layout/authentication";
 
+// HACK for the documentation to preserve the ClickOutside directive on save
+// https://www.solidjs.com/guides/typescript#use___
 false && ClickOutside;
 
 const [, { getActiveMapId }] = useStateGui();

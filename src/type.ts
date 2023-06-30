@@ -18,7 +18,8 @@ export type PointRamassageType = {
   id: number;
   idPoint: number;
   nature: NatureEnum;
-  location: string;
+  lon: number;
+  lat: number;
   name: string;
   quantity: number;
   selected: Accessor<boolean>;
@@ -132,12 +133,30 @@ export type exportConfirmationType = {
   displayed: boolean;
   exportType: ExportTypeEnum | null;
 };
+
 export type ReturnMessageType = {
   displayed: boolean;
   message: string;
-  metrics: { total: number; success: number };
-  error: { etablissement: string[]; ramassage: string[] };
-  success: { etablissement: string[]; ramassage: string[] };
+  metrics: {
+    etablissement?: {
+      total: number;
+      success: number;
+      failed: number;
+      detail: string[];
+    };
+    ramassage?: {
+      total: number;
+      success: number;
+      failed: number;
+      detail: string[];
+    };
+    eleve_vers_etablissement?: {
+      total: number;
+      success: number;
+      failed: number;
+      detail: string[];
+    };
+  };
 };
 
 export type SelectedMenuType =

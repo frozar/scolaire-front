@@ -1,5 +1,5 @@
 import { Setter, onCleanup, onMount } from "solid-js";
-import { uploadLine } from "../request";
+import { uploadFile } from "../request";
 import {
   addNewUserInformation,
   disableSpinningWheel,
@@ -84,7 +84,7 @@ function dropHandler(
 
   formData.append("file", file, file.name);
 
-  uploadLine(formData)
+  uploadFile(formData)
     .then(async (res) => {
       if (!res) {
         exitCanvas();
@@ -99,7 +99,6 @@ function dropHandler(
 
       if (res.status != 200) {
         const json = await res.json();
-        // console.log("body", body);
         exitCanvas();
         addNewUserInformation({
           displayed: true,
@@ -112,43 +111,14 @@ function dropHandler(
 
       const body: ReturnMessageType = await res.json();
 
-      // TODO: manage eror above, with maybe an import coinfirmaiton
+      // TODO: manage eror above, with maybe an import confirmation
       //       dialogue box
-      // if (body.message === "Pas de fichier envoyé.") {
-      //   setImportConfirmation({
-      //     displayed: true,
-      //     message: body.message,
-      //     metrics: {
-      //       total: 0,
-      //       success: 0,
-      //     },
-      //     error: {
-      //       etablissement: body.error.etablissement,
-      //       ramassage: body.error.ramassage,
-      //     },
-      //     success: {
-      //       etablissement: body.success.etablissement,
-      //       ramassage: body.success.ramassage,
-      //     },
-      //   });
-      // } else {
+
       setImportConfirmation({
         displayed: true,
         message: body.message,
-        metrics: {
-          total: body.metrics.total,
-          success: body.metrics.success,
-        },
-        error: {
-          etablissement: body.error.etablissement,
-          ramassage: body.error.ramassage,
-        },
-        success: {
-          etablissement: body.success.etablissement,
-          ramassage: body.success.ramassage,
-        },
+        metrics: body.metrics,
       });
-      // }
 
       setPoints([]);
       fetchPointsRamassageAndEtablissement();

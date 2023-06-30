@@ -2,11 +2,16 @@ import { Show, createEffect, createSignal } from "solid-js";
 import { Transition } from "solid-transition-group";
 
 import ClickOutside from "../component/ClickOutside";
+
 import {
-  getImportConfirmation,
   closeDragAndDropConfirmationBox,
+  getImportConfirmation,
 } from "../signaux";
 import { assertIsNode } from "../utils";
+
+// HACK for the documentation to preserve the ClickOutside directive on save
+// https://www.solidjs.com/guides/typescript#use___
+false && ClickOutside;
 
 export default function () {
   const displayed = () => getImportConfirmation()["displayed"];
@@ -104,7 +109,14 @@ export default function () {
                   <div class="sm:flex sm:items-start">
                     <div class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
                       <Show
-                        when={getImportConfirmation().metrics.total == 0}
+                        when={
+                          getImportConfirmation().metrics.etablissement
+                            ?.total == 0 &&
+                          getImportConfirmation().metrics.ramassage?.total ==
+                            0 &&
+                          getImportConfirmation().metrics
+                            .eleve_vers_etablissement?.total == 0
+                        }
                         fallback={
                           <svg
                             class="h-6 w-6 text-green-600"
@@ -152,27 +164,18 @@ export default function () {
                           </p>
                         </div>
                       </Show>
-                      <Show when={getImportConfirmation().metrics.total > 0}>
-                        <div class="mt-2">
-                          <p class="text-sm text-gray-500">
-                            Nombre d'éléments traités :
-                            {" " +
-                              getImportConfirmation().metrics.success +
-                              "/" +
-                              getImportConfirmation().metrics.total}
-                          </p>
-                        </div>
-                      </Show>
+
                       <Show
                         when={
-                          getImportConfirmation().error.etablissement.length !=
-                          0
+                          getImportConfirmation().metrics.etablissement &&
+                          getImportConfirmation().metrics.etablissement
+                            ?.failed != 0
                         }
                       >
                         <div class="mt-2">
                           Établissements non-traités :
                           <p class="text-sm text-gray-500">
-                            {getImportConfirmation().error.etablissement.join(
+                            {getImportConfirmation().metrics.etablissement?.detail.join(
                               ", "
                             )}
                           </p>
@@ -180,14 +183,33 @@ export default function () {
                       </Show>
                       <Show
                         when={
-                          getImportConfirmation().error.ramassage.length != 0
+                          getImportConfirmation().metrics.ramassage &&
+                          getImportConfirmation().metrics.ramassage?.failed != 0
                         }
                       >
                         <div class="mt-2">
                           Lieux de ramassage non-traités :
                           <p class="text-sm text-gray-500">
-                            {getImportConfirmation().error.ramassage.join(", ")}
+                            {getImportConfirmation().metrics.ramassage?.detail.join(
+                              ", "
+                            )}
                           </p>
+                        </div>
+                      </Show>
+                      <Show
+                        when={
+                          getImportConfirmation().metrics
+                            .eleve_vers_etablissement &&
+                          getImportConfirmation().metrics
+                            .eleve_vers_etablissement?.failed != 0
+                        }
+                      >
+                        <div class="mt-2">
+                          Elèves vers établissements non-traités :{" "}
+                          {
+                            getImportConfirmation().metrics
+                              .eleve_vers_etablissement?.failed
+                          }
                         </div>
                       </Show>
                     </div>
