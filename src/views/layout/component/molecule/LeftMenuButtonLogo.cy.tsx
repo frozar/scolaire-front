@@ -1,5 +1,3 @@
-import LeftMenuButtonLogo from "./LeftMenuButtonLogo";
-
 import ArretsLogo from "../atom/ArretsLogo";
 import DashboardLogo from "../atom/DashboardLogo";
 import EtablissementLogo from "../atom/EtablissementLogo";
@@ -7,6 +5,7 @@ import GraphicageLogo from "../atom/GraphicageLogo";
 import SettingsLogo from "../atom/SettingsLogo";
 import SupportLogo from "../atom/SupportLogo";
 import VoirieLogo from "../atom/VoirieLogo";
+import LeftMenuButtonLogo from "./LeftMenuButtonLogo";
 
 describe("LeftMenuButtonLogo component", () => {
   const props = {
@@ -16,12 +15,9 @@ describe("LeftMenuButtonLogo component", () => {
   };
 
   it("LeftMenuButtonLogo check props working", () => {
-    props.children = <DashboardLogo />;
-    props.isActive = true;
-
     cy.mount(() => (
       <LeftMenuButtonLogo
-        isActive={props.isActive}
+        isActive={!props.isActive}
         isDisabled={props.isDisabled}
         children={props.children}
       />
@@ -30,7 +26,8 @@ describe("LeftMenuButtonLogo component", () => {
     cy.get(".left-menu-button-logo")
       .should("have.class", "active")
       .should("not.have.class", "disabled")
-      .contains("Logo Content");
+      .get("div")
+      .contains("Logo content");
   });
 
   it("LeftMenuButtonLogo check logo dashboard", () => {
