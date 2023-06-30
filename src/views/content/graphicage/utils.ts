@@ -1,10 +1,3 @@
-import { openExportConfirmationBox } from "../../../signaux";
-
-import {
-  confirmAbortEditionNeedToBeCall,
-  defineModalToOpen,
-} from "./ConfirmStopAddLineBox";
-
 // const [
 //   ,
 //   {
@@ -50,7 +43,7 @@ import {
 //   confirmAbortEditionNeedToBeCall();
 // };
 
-export const exportButtonHandleClick = () => {
-  defineModalToOpen(openExportConfirmationBox);
-  confirmAbortEditionNeedToBeCall();
-};
+// export const exportButtonHandleClick = () => {
+//   defineModalToOpen(openExportConfirmationBox);
+//   confirmAbortEditionNeedToBeCall();
+// };

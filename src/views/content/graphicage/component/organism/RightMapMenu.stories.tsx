@@ -69,11 +69,11 @@ export const RightMapMenu: Story = {
     //   return;
     // },
 
-    exportButtonHandleClick: () => {
-      console.log("fakeExportButtonHandleClick");
+    // exportButtonHandleClick: () => {
+    //   console.log("fakeExportButtonHandleClick");
 
-      return;
-    },
+    //   return;
+    // },
 
     xOffset: "right",
   },

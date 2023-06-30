@@ -11,7 +11,7 @@ import RemoveLineButton from "./RemoveLineButton";
 
 // import { useStateAction } from "../../../../../StateAction";
 
-import { exportButtonHandleClick } from "../../utils";
+// import { exportButtonHandleClick } from "../../utils";
 
 import "./RightMapMenu.css";
 
@@ -34,7 +34,7 @@ export interface RightMapMenuProps {
 
   // generateButtonHandleClick?: () => void;
 
-  exportButtonHandleClick?: () => void;
+  // exportButtonHandleClick?: () => void;
 
   xOffset?: OffsetType;
 }
@@ -55,7 +55,7 @@ export default function (props: RightMapMenuProps) {
 
       // generateButtonHandleClick,
 
-      exportButtonHandleClick,
+      // exportButtonHandleClick,
 
       xOffset: "left" as OffsetType,
     },
@@ -71,7 +71,7 @@ export default function (props: RightMapMenuProps) {
     // "isInRemoveLineMode",
     // "clearButtonHandleClick",
     // "generateButtonHandleClick",
-    "exportButtonHandleClick",
+    // "exportButtonHandleClick",
     "xOffset",
   ]);
 
@@ -106,7 +106,7 @@ export default function (props: RightMapMenuProps) {
       />
       <ExportButton
         xOffset={mergedProps.xOffset}
-        handleClick={local.exportButtonHandleClick}
+        // handleClick={local.exportButtonHandleClick}
       />
     </div>
   );

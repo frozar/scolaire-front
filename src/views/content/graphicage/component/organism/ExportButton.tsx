@@ -1,26 +1,34 @@
 import { CgExport } from "solid-icons/cg";
 
-import { splitProps } from "solid-js";
+import { mergeProps, splitProps } from "solid-js";
 
+import { openExportConfirmationBox } from "../../../../../signaux";
+import {
+  confirmAbortEditionNeedToBeCall,
+  defineModalToOpen,
+} from "../../ConfirmStopAddLineBox";
 import ButtonGraphicageRightMenu, {
   OffsetType,
 } from "../molecule/ButtonGraphicageRightMenu";
 
 export interface ExportButtonProps {
-  handleClick: () => void;
+  handleClick?: () => void;
   xOffset: OffsetType;
 }
 
 export default function (props: ExportButtonProps) {
-  // const mergedProps = mergeProps({ xOffset: "left" as OffsetType }, props);
-
   // const xOffset = () => mergedProps.xOffset;
 
-  // const handleClick = () => {
-  //   defineModalToOpen(openExportConfirmationBox);
-  //   confirmAbortEditionNeedToBeCall();
-  // };
-  const [local] = splitProps(props, ["handleClick", "xOffset"]);
+  const handleClick = () => {
+    defineModalToOpen(openExportConfirmationBox);
+    confirmAbortEditionNeedToBeCall();
+  };
+
+  const mergedProps = mergeProps(
+    { handleClick }, //, xOffset: "left" as OffsetType
+    props
+  );
+  const [local] = splitProps(mergedProps, ["handleClick", "xOffset"]);
 
   return (
     <ButtonGraphicageRightMenu
