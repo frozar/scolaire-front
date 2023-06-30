@@ -1,14 +1,15 @@
-import { FaSolidMinus } from "solid-icons/fa";
-
 import { mergeProps, splitProps } from "solid-js";
 
 import { useStateAction } from "../../../../../StateAction";
 import { displayRemoveLineMessage } from "../../../../../userInformation/utils";
 import { deselectAllPoints } from "../../Point";
 import { fetchBusLines } from "../../line/busLinesUtils";
+
 import ButtonGraphicageRightMenu, {
   OffsetType,
 } from "../molecule/ButtonGraphicageRightMenu";
+
+import { FaSolidMinus } from "solid-icons/fa";
 
 const [, { setModeRemoveLine, isInRemoveLineMode, setModeRead }] =
   useStateAction();
@@ -32,10 +33,7 @@ export default function (props: RemoveLineButtonProps) {
     displayRemoveLineMessage();
   };
 
-  const mergedProps = mergeProps(
-    { handleClick, isInRemoveLineMode }, //, xOffset: "left" as OffsetType
-    props
-  );
+  const mergedProps = mergeProps({ handleClick, isInRemoveLineMode }, props);
 
   const [local] = splitProps(mergedProps, [
     "handleClick",

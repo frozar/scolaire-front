@@ -1,14 +1,15 @@
-import { FaSolidPlus } from "solid-icons/fa";
-
 import { mergeProps, splitProps } from "solid-js";
 
 import { useStateAction } from "../../../../../StateAction";
 import { displayAddLineMessage } from "../../../../../userInformation/utils";
 import { deselectAllPoints } from "../../Point";
 import { fetchBusLines } from "../../line/busLinesUtils";
+
 import ButtonGraphicageRightMenu, {
   OffsetType,
 } from "../molecule/ButtonGraphicageRightMenu";
+
+import { FaSolidPlus } from "solid-icons/fa";
 
 const [, { setModeAddLine, isInAddLineMode, setModeRead }] = useStateAction();
 
@@ -31,10 +32,7 @@ export default function (props: AddLineButtonProps) {
     }
   };
 
-  const mergedProps = mergeProps(
-    { handleClick, isInAddLineMode }, //xOffset: "left" as OffsetType
-    props
-  );
+  const mergedProps = mergeProps({ handleClick, isInAddLineMode }, props);
 
   const [local] = splitProps(mergedProps, [
     "handleClick",

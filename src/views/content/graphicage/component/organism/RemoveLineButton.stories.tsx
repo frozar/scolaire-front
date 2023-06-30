@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from "storybook-solidjs";
 
 import { createSignal } from "solid-js";
+
 import RemoveLineButtonComponent from "./RemoveLineButton";
 
 const meta = {
@@ -13,15 +14,9 @@ type Story = StoryObj<typeof meta>;
 
 const [fakeIsInRemoveLineMode, setFakeIsInRemoveLineMode] = createSignal(false);
 
-function fakeHandleClick() {
-  console.log("fakeRemoveLineHandleClick");
-
-  setFakeIsInRemoveLineMode((bool) => !bool);
-}
-
 export const RemoveLineButton: Story = {
   args: {
-    handleClick: fakeHandleClick,
+    handleClick: () => setFakeIsInRemoveLineMode((bool) => !bool),
     isInRemoveLineMode: fakeIsInRemoveLineMode,
     xOffset: "right",
   },

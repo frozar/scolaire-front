@@ -15,7 +15,7 @@ export interface ButtonMapProps {
 }
 
 export default function (props: ButtonMapProps) {
-  const [isTooltipDisplayed, setIsTooltipDisplayed] = createSignal(false);
+  const [tooltipIsDisplayed, setTooltipIsDisplayed] = createSignal(false);
 
   const [local, rest] = splitProps(props, [
     "tooltip",
@@ -34,7 +34,7 @@ export default function (props: ButtonMapProps) {
   return (
     <button class="menu-btn">
       <div class="relative">
-        <Show when={isTooltipDisplayed()}>
+        <Show when={tooltipIsDisplayed()}>
           <div
             class={`absolute top-1/2 left-1/2 transform ${xOffset()} -translate-y-1/2`}
           >
@@ -44,8 +44,8 @@ export default function (props: ButtonMapProps) {
         <div
           class="btn-fla btn-circle-fla"
           classList={{ active: local.isActive }}
-          onMouseOver={() => setIsTooltipDisplayed(true)}
-          onMouseLeave={() => setIsTooltipDisplayed(false)}
+          onMouseOver={() => setTooltipIsDisplayed(true)}
+          onMouseLeave={() => setTooltipIsDisplayed(false)}
           {...rest}
         >
           <Icon />

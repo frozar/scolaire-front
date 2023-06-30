@@ -10,14 +10,8 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// function fakeHandleClick() {
-//   console.log("fakeExportButtonHandleClick");
-//   return;
-// }
-
 export const ExportButton: Story = {
   args: {
-    // handleClick: fakeHandleClick,
     handleClick: () => null,
     xOffset: "right",
   },

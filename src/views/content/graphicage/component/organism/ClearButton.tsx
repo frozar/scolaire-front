@@ -1,15 +1,17 @@
-import { FaRegularTrashCan } from "solid-icons/fa";
-
 import { mergeProps, splitProps } from "solid-js";
 
 import { openClearConfirmationBox } from "../../../../../signaux";
+
 import {
   confirmAbortEditionNeedToBeCall,
   defineModalToOpen,
 } from "../../ConfirmStopAddLineBox";
+
 import ButtonGraphicageRightMenu, {
   OffsetType,
 } from "../molecule/ButtonGraphicageRightMenu";
+
+import { FaRegularTrashCan } from "solid-icons/fa";
 
 export interface ClearButtonProps {
   handleClick?: () => void;
@@ -17,19 +19,13 @@ export interface ClearButtonProps {
 }
 
 export default function (props: ClearButtonProps) {
-  // const xOffset = () => mergedProps.xOffset;
-
   const handleClick = () => {
-    console.log("no mock");
-
     defineModalToOpen(openClearConfirmationBox);
     confirmAbortEditionNeedToBeCall();
   };
 
-  const mergedProps = mergeProps(
-    { handleClick }, //, xOffset: "left" as OffsetType
-    props
-  );
+  const mergedProps = mergeProps({ handleClick }, props);
+
   const [local] = splitProps(mergedProps, ["handleClick", "xOffset"]);
 
   return (

@@ -1,6 +1,7 @@
+import { createSignal } from "solid-js";
+
 import { Meta, StoryObj } from "storybook-solidjs";
 
-import { createSignal } from "solid-js";
 import AddLineButtonComponent from "./AddLineButton";
 
 const meta = {
@@ -13,15 +14,9 @@ type Story = StoryObj<typeof meta>;
 
 const [fakeIsInAddLineMode, setFakeIsInAddLineMode] = createSignal(false);
 
-function fakeHandleClick() {
-  console.log("fakeAddLineHandleClick");
-
-  setFakeIsInAddLineMode((bool) => !bool);
-}
-
 export const AddLineButton: Story = {
   args: {
-    handleClick: fakeHandleClick,
+    handleClick: () => setFakeIsInAddLineMode((bool) => !bool),
     isInAddLineMode: fakeIsInAddLineMode,
     xOffset: "right",
   },
