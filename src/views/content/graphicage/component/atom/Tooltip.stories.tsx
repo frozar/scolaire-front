@@ -12,6 +12,6 @@ type Story = StoryObj<typeof meta>;
 
 export const Tooltip: Story = {
   args: {
-    tooltip: "Un Tooltip D'Exemple",
+    tooltip: "Tooltip d'exemple",
   },
 };

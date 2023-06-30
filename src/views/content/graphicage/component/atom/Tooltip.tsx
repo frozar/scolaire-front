@@ -9,5 +9,5 @@ export interface TooltipProps {
 export default function (props: TooltipProps) {
   const [local] = splitProps(props, ["tooltip"]);
 
-  return <span class="tooltip ">{local.tooltip}</span>;
+  return <span class="tooltip">{local.tooltip}</span>;
 }

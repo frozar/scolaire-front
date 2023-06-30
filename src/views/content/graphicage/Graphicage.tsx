@@ -1,22 +1,24 @@
-import "leaflet/dist/leaflet.css";
-
 import { Show, createSignal, onCleanup, onMount } from "solid-js";
 
-import PointsRamassageAndEtablissement from "./PointsRamassageAndEtablissement";
-
 import { useStateAction } from "../../../StateAction";
-import { buildMapL7 } from "./l7MapBuilder";
-import BusLines from "./line/BusLines";
-
 import { useStateGui } from "../../../StateGui";
+
+import { buildMapL7 } from "./l7MapBuilder";
+
+import PointsRamassageAndEtablissement from "./PointsRamassageAndEtablissement";
+import BusLines from "./line/BusLines";
+import LineUnderConstruction from "./line/LineUnderConstruction";
+
 import ImportCsvCanvas from "../../../component/ImportCsvCanvas";
 import ConfirmStopAddLine from "./ConfirmStopAddLineBox";
 
+import { InformationBoard } from "./informationBoard/InformationBoard";
+
 import RightMapMenu from "./component/organism/RightMapMenu";
 
-import { InformationBoard } from "./informationBoard/InformationBoard";
-import LineUnderConstruction from "./line/LineUnderConstruction";
 import { listHandlerLMap } from "./shortcut";
+
+import "leaflet/dist/leaflet.css";
 
 const [, { isInAddLineMode }] = useStateAction();
 const [, { getActiveMapId }] = useStateGui();
