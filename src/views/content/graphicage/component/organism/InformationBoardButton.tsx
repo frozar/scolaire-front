@@ -1,19 +1,22 @@
 import { BsInfoCircle } from "solid-icons/bs";
 
-import { splitProps } from "solid-js";
+import { mergeProps, splitProps } from "solid-js";
+
+import { useStateGui } from "../../../../../StateGui";
+
 import ButtonGraphicageRightMenu, {
   OffsetType,
 } from "../molecule/ButtonGraphicageRightMenu";
 
-// const [, { getDisplayedInformationBoard, toggleDisplayedInformationBoard }] =
-//   useStateGui();
+const [, { getDisplayedInformationBoard, toggleDisplayedInformationBoard }] =
+  useStateGui();
 
 export interface InformationBoardButtonProps {
   // onClick={toggleDisplayedInformationBoard},
-  toggleDisplayedInformationBoard: () => void;
+  toggleDisplayedInformationBoard?: () => void;
   // tooltip="Afficher le panneau d'information",
   // isActive?:,
-  getDisplayedInformationBoard: () => boolean;
+  getDisplayedInformationBoard?: () => boolean;
   xOffset: OffsetType;
 }
 
@@ -26,25 +29,25 @@ export interface InformationBoardButtonProps {
 // };
 
 export default function (props: InformationBoardButtonProps) {
-  // const mergedProps = mergeProps(
-  //   {
-  //     toggleDisplayedInformationBoard,
-  //     getDisplayedInformationBoard,
-  //     xOffset: "left" as OffsetType,
-  //   },
-  //   props
-  // );
+  const mergedProps = mergeProps(
+    {
+      toggleDisplayedInformationBoard,
+      getDisplayedInformationBoard,
+      // xOffset: "left" as OffsetType,
+    },
+    props
+  );
 
-  // const [local] = splitProps(mergedProps, [
-  //   "toggleDisplayedInformationBoard",
-  //   "getDisplayedInformationBoard",
-  //   "xOffset",
-  // ]);
-  const [local] = splitProps(props, [
+  const [local] = splitProps(mergedProps, [
     "toggleDisplayedInformationBoard",
     "getDisplayedInformationBoard",
     "xOffset",
   ]);
+  // const [local] = splitProps(props, [
+  //   "toggleDisplayedInformationBoard",
+  //   "getDisplayedInformationBoard",
+  //   "xOffset",
+  // ]);
 
   return (
     <ButtonGraphicageRightMenu

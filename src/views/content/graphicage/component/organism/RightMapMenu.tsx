@@ -10,7 +10,6 @@ import InformationBoardButton from "./InformationBoardButton";
 import RemoveLineButton from "./RemoveLineButton";
 
 import { useStateAction } from "../../../../../StateAction";
-import { useStateGui } from "../../../../../StateGui";
 
 import {
   addLineButtonHandleClick,
@@ -22,14 +21,14 @@ import {
 
 import "./RightMapMenu.css";
 
-const [, { getDisplayedInformationBoard, toggleDisplayedInformationBoard }] =
-  useStateGui();
+// const [, { getDisplayedInformationBoard, toggleDisplayedInformationBoard }] =
+//   useStateGui();
 
 const [, { isInAddLineMode, isInRemoveLineMode }] = useStateAction();
 
 export interface RightMapMenuProps {
-  toggleDisplayedInformationBoard?: () => void;
-  getDisplayedInformationBoard?: () => boolean;
+  // toggleDisplayedInformationBoard?: () => void;
+  // getDisplayedInformationBoard?: () => boolean;
 
   addLineButtonHandleClick?: () => void;
   isInAddLineMode?: () => boolean;
@@ -49,8 +48,8 @@ export interface RightMapMenuProps {
 export default function (props: RightMapMenuProps) {
   const mergedProps = mergeProps(
     {
-      toggleDisplayedInformationBoard,
-      getDisplayedInformationBoard,
+      // toggleDisplayedInformationBoard,
+      // getDisplayedInformationBoard,
 
       addLineButtonHandleClick,
       isInAddLineMode,
@@ -70,8 +69,8 @@ export default function (props: RightMapMenuProps) {
   );
 
   const [local] = splitProps(mergedProps, [
-    "toggleDisplayedInformationBoard",
-    "getDisplayedInformationBoard",
+    // "toggleDisplayedInformationBoard",
+    // "getDisplayedInformationBoard",
     "addLineButtonHandleClick",
     "isInAddLineMode",
     "removeLineButtonHandleClick",
@@ -90,8 +89,8 @@ export default function (props: RightMapMenuProps) {
     <div id="control-map-menu">
       <InformationBoardButton
         xOffset={local.xOffset}
-        toggleDisplayedInformationBoard={local.toggleDisplayedInformationBoard}
-        getDisplayedInformationBoard={local.getDisplayedInformationBoard}
+        // toggleDisplayedInformationBoard={local.toggleDisplayedInformationBoard}
+        // getDisplayedInformationBoard={local.getDisplayedInformationBoard}
       />
       <AddLineButton
         xOffset={local.xOffset}

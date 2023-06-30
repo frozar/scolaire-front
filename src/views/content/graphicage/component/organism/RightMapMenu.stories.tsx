@@ -20,14 +20,14 @@ type Story = StoryObj<typeof meta>;
 //   xOffset: "left" as OffsetType,
 // };
 
-const [fakeGetDisplayedInformationBoard, setFakeDisplayedInformationBoard] =
-  createSignal(false);
+// const [fakeGetDisplayedInformationBoard, setFakeDisplayedInformationBoard] =
+//   createSignal(false);
 
-function fakeToggleDisplayedInformationBoard() {
-  console.log("fakeToggleDisplayedInformationBoard");
+// function fakeToggleDisplayedInformationBoard() {
+//   console.log("fakeToggleDisplayedInformationBoard");
 
-  setFakeDisplayedInformationBoard((bool) => !bool);
-}
+//   setFakeDisplayedInformationBoard((bool) => !bool);
+// }
 
 const [fakeIsInAddLineMode, setFakeIsInAddLineMode] = createSignal(false);
 const [fakeIsInRemoveLineMode, setFakeIsInRemoveLineMode] = createSignal(false);
@@ -54,8 +54,8 @@ function fakeClearButtonHandleClick() {
 
 export const RightMapMenu: Story = {
   args: {
-    toggleDisplayedInformationBoard: fakeToggleDisplayedInformationBoard,
-    getDisplayedInformationBoard: fakeGetDisplayedInformationBoard,
+    // toggleDisplayedInformationBoard: fakeToggleDisplayedInformationBoard,
+    // getDisplayedInformationBoard: fakeGetDisplayedInformationBoard,
 
     addLineButtonHandleClick: fakeAddLineButtonHandleClick,
     isInAddLineMode: fakeIsInAddLineMode,
