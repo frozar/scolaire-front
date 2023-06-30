@@ -16,7 +16,11 @@ const [fakeIsInAddLineMode, setFakeIsInAddLineMode] = createSignal(false);
 
 export const AddLineButton: Story = {
   args: {
-    handleClick: () => setFakeIsInAddLineMode((bool) => !bool),
+    handleClick: () => {
+      // map();
+      console.log("OnClip under AddLineButton");
+      return setFakeIsInAddLineMode((bool) => !bool);
+    },
     isInAddLineMode: fakeIsInAddLineMode,
     xOffset: "right",
   },

@@ -2,7 +2,7 @@
 @import "../../../../../css/var.css";
 
 .menu-btn {
-  @apply z-[999] cursor-default;
+  @apply z-[999] cursor-default relative;
 }
 
 .btn-fla {

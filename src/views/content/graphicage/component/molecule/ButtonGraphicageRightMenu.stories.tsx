@@ -17,7 +17,7 @@ const meta = {
   args: {
     xOffset: "right",
     isActive: false,
-    onClick: () => null,
+    onClick: () => console.log("ButtonGraphicageRightMenu"),
   },
 } satisfies Meta<typeof ButtonGraphicageRightMenu>;
 

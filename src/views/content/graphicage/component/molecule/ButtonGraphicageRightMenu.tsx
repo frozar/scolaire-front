@@ -1,4 +1,4 @@
-import { JSX, Show, createSignal, splitProps } from "solid-js";
+import { JSX, Show, createSignal } from "solid-js";
 
 import Tooltip from "../atom/Tooltip";
 
@@ -6,7 +6,7 @@ import "./ButtonGraphicageRightMenu.css";
 
 export type OffsetType = "left" | "right";
 
-export interface ButtonMapProps {
+export interface ButtonGraphicageRightMenuProps {
   onClick: () => void;
   tooltip: string;
   icon: JSX.Element;
@@ -14,42 +14,33 @@ export interface ButtonMapProps {
   isActive?: boolean;
 }
 
-export default function (props: ButtonMapProps) {
+export default function (props: ButtonGraphicageRightMenuProps) {
   const [tooltipIsDisplayed, setTooltipIsDisplayed] = createSignal(false);
 
-  const [local, rest] = splitProps(props, [
-    "tooltip",
-    "icon",
-    "isActive",
-    "xOffset",
-  ]);
-
   const Icon = () => {
-    return <>{local.icon}</>;
+    return <>{props.icon}</>;
   };
 
   const xOffset = () =>
-    local.xOffset == "left" ? "-translate-x-[185px]" : "-translate-x-[-35px]";
+    props.xOffset == "left" ? "-translate-x-[185px]" : "-translate-x-[-35px]";
 
   return (
     <button class="menu-btn">
-      <div class="relative">
-        <Show when={tooltipIsDisplayed()}>
-          <div
-            class={`absolute top-1/2 left-1/2 transform ${xOffset()} -translate-y-1/2`}
-          >
-            <Tooltip tooltip={local.tooltip} />
-          </div>
-        </Show>
+      <Show when={tooltipIsDisplayed()}>
         <div
-          class="btn-fla btn-circle-fla"
-          classList={{ active: local.isActive }}
-          onMouseOver={() => setTooltipIsDisplayed(true)}
-          onMouseLeave={() => setTooltipIsDisplayed(false)}
-          {...rest}
+          class={`absolute top-1/2 left-1/2 transform ${xOffset()} -translate-y-1/2`}
         >
-          <Icon />
+          <Tooltip tooltip={props.tooltip} />
         </div>
+      </Show>
+      <div
+        class="btn-fla btn-circle-fla"
+        classList={{ active: props.isActive }}
+        onMouseOver={() => setTooltipIsDisplayed(true)}
+        onMouseLeave={() => setTooltipIsDisplayed(false)}
+        onClick={() => props.onClick()}
+      >
+        <Icon />
       </div>
     </button>
   );
