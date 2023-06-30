@@ -10,5 +10,4 @@ services:
     volumes:
       - ./cypress-visual-screenshots:/code/cypress/cypress-visual-screenshots
       - ./cypress-visual-report:/code/cypress/cypress-visual-report
-      - ./cypress/videos:/code/cypress/videos
       - ../src:/code/src
