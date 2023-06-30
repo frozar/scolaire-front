@@ -63,11 +63,11 @@ export const RightMapMenu: Story = {
 
     // clearButtonHandleClick: fakeClearButtonHandleClick,
 
-    generateButtonHandleClick: () => {
-      console.log("fakeGenerateButtonHandleClick");
+    // generateButtonHandleClick: () => {
+    //   console.log("fakeGenerateButtonHandleClick");
 
-      return;
-    },
+    //   return;
+    // },
 
     exportButtonHandleClick: () => {
       console.log("fakeExportButtonHandleClick");

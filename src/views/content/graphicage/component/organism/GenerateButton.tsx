@@ -1,27 +1,33 @@
 import { FiArrowUpCircle } from "solid-icons/fi";
 
-import { splitProps } from "solid-js";
+import { mergeProps, splitProps } from "solid-js";
 
+import { openGeneratorDialogBox } from "../../../../../signaux";
+import {
+  confirmAbortEditionNeedToBeCall,
+  defineModalToOpen,
+} from "../../ConfirmStopAddLineBox";
 import ButtonGraphicageRightMenu, {
   OffsetType,
 } from "../molecule/ButtonGraphicageRightMenu";
 
 export interface GenerateButtonProps {
-  handleClick: () => void;
+  handleClick?: () => void;
   xOffset: OffsetType;
 }
 
 export default function (props: GenerateButtonProps) {
-  // const mergedProps = mergeProps({ xOffset: "left" as OffsetType }, props);
-
   // const xOffset = () => mergedProps.xOffset;
 
-  // const handleClick = () => {
-  //   defineModalToOpen(openGeneratorDialogBox);
-  //   confirmAbortEditionNeedToBeCall();
-  // };
-
-  const [local] = splitProps(props, ["handleClick", "xOffset"]);
+  const handleClick = () => {
+    defineModalToOpen(openGeneratorDialogBox);
+    confirmAbortEditionNeedToBeCall();
+  };
+  const mergedProps = mergeProps(
+    { handleClick }, // , xOffset: "left" as OffsetType
+    props
+  );
+  const [local] = splitProps(mergedProps, ["handleClick", "xOffset"]);
 
   return (
     <ButtonGraphicageRightMenu

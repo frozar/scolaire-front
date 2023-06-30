@@ -1,7 +1,4 @@
-import {
-  openExportConfirmationBox,
-  openGeneratorDialogBox,
-} from "../../../signaux";
+import { openExportConfirmationBox } from "../../../signaux";
 
 import {
   confirmAbortEditionNeedToBeCall,
@@ -48,10 +45,10 @@ import {
 //   confirmAbortEditionNeedToBeCall();
 // };
 
-export const generateButtonHandleClick = () => {
-  defineModalToOpen(openGeneratorDialogBox);
-  confirmAbortEditionNeedToBeCall();
-};
+// export const generateButtonHandleClick = () => {
+//   defineModalToOpen(openGeneratorDialogBox);
+//   confirmAbortEditionNeedToBeCall();
+// };
 
 export const exportButtonHandleClick = () => {
   defineModalToOpen(openExportConfirmationBox);
