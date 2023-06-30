@@ -12,6 +12,7 @@ import {
   login,
   logout,
 } from "../../authentication";
+
 import "./LoginDropdown.css";
 
 export interface LoginDropdownProps {
