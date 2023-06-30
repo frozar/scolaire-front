@@ -1,4 +1,4 @@
-import { mergeProps, splitProps } from "solid-js";
+import { mergeProps } from "solid-js";
 
 import { OffsetType } from "../molecule/ButtonGraphicageRightMenu";
 
@@ -18,15 +18,13 @@ export interface RightMapMenuProps {
 export default function (props: RightMapMenuProps) {
   const mergedProps = mergeProps({ xOffset: "left" as OffsetType }, props);
 
-  const [local] = splitProps(mergedProps, ["xOffset"]);
-
   return (
     <div id="right-map-menu">
-      <InformationBoardButton xOffset={local.xOffset} />
-      <AddLineButton xOffset={local.xOffset} />
-      <RemoveLineButton xOffset={local.xOffset} />
-      <ClearButton xOffset={local.xOffset} />
-      <GenerateButton xOffset={local.xOffset} />
+      <InformationBoardButton xOffset={mergedProps.xOffset} />
+      <AddLineButton xOffset={mergedProps.xOffset} />
+      <RemoveLineButton xOffset={mergedProps.xOffset} />
+      <ClearButton xOffset={mergedProps.xOffset} />
+      <GenerateButton xOffset={mergedProps.xOffset} />
       <ExportButton xOffset={mergedProps.xOffset} />
     </div>
   );

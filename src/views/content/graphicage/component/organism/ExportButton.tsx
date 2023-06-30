@@ -1,4 +1,4 @@
-import { mergeProps, splitProps } from "solid-js";
+import { mergeProps } from "solid-js";
 
 import { openExportConfirmationBox } from "../../../../../signaux";
 
@@ -26,14 +26,12 @@ export default function (props: ExportButtonProps) {
 
   const mergedProps = mergeProps({ handleClick }, props);
 
-  const [local] = splitProps(mergedProps, ["handleClick", "xOffset"]);
-
   return (
     <ButtonGraphicageRightMenu
-      onClick={local.handleClick}
+      onClick={mergedProps.handleClick}
       icon={<CgExport class="h-10 w-10 pb-[5px]" />}
       tooltip="Exporter"
-      xOffset={local.xOffset}
+      xOffset={mergedProps.xOffset}
     />
   );
 }

@@ -1,4 +1,4 @@
-import { mergeProps, splitProps } from "solid-js";
+import { mergeProps } from "solid-js";
 
 import { useStateAction } from "../../../../../StateAction";
 import { displayAddLineMessage } from "../../../../../userInformation/utils";
@@ -34,19 +34,13 @@ export default function (props: AddLineButtonProps) {
 
   const mergedProps = mergeProps({ handleClick, isInAddLineMode }, props);
 
-  const [local] = splitProps(mergedProps, [
-    "handleClick",
-    "isInAddLineMode",
-    "xOffset",
-  ]);
-
   return (
     <ButtonGraphicageRightMenu
-      onClick={local.handleClick}
+      onClick={mergedProps.handleClick}
       tooltip="Ajouter une ligne"
-      isActive={local.isInAddLineMode()}
+      isActive={mergedProps.isInAddLineMode()}
       icon={<FaSolidPlus class="w-full p-0 h-2/3" />}
-      xOffset={local.xOffset}
+      xOffset={mergedProps.xOffset}
     />
   );
 }

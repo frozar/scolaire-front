@@ -1,4 +1,4 @@
-import { mergeProps, splitProps } from "solid-js";
+import { mergeProps } from "solid-js";
 
 import { openClearConfirmationBox } from "../../../../../signaux";
 
@@ -26,14 +26,12 @@ export default function (props: ClearButtonProps) {
 
   const mergedProps = mergeProps({ handleClick }, props);
 
-  const [local] = splitProps(mergedProps, ["handleClick", "xOffset"]);
-
   return (
     <ButtonGraphicageRightMenu
-      onClick={local.handleClick}
+      onClick={mergedProps.handleClick}
       tooltip="Vider la carte"
       icon={<FaRegularTrashCan class="w-full p-0 h-2/3" />}
-      xOffset={local.xOffset}
+      xOffset={mergedProps.xOffset}
     />
   );
 }

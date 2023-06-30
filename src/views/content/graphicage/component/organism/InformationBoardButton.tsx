@@ -1,4 +1,4 @@
-import { mergeProps, splitProps } from "solid-js";
+import { mergeProps } from "solid-js";
 
 import { useStateGui } from "../../../../../StateGui";
 
@@ -26,19 +26,13 @@ export default function (props: InformationBoardButtonProps) {
     props
   );
 
-  const [local] = splitProps(mergedProps, [
-    "toggleDisplayedInformationBoard",
-    "getDisplayedInformationBoard",
-    "xOffset",
-  ]);
-
   return (
     <ButtonGraphicageRightMenu
       icon={<BsInfoCircle class="h-10 w-10" />}
-      onClick={local.toggleDisplayedInformationBoard}
+      onClick={mergedProps.toggleDisplayedInformationBoard}
       tooltip="Afficher le panneau d'information"
-      isActive={local.getDisplayedInformationBoard()}
-      xOffset={local.xOffset}
+      isActive={mergedProps.getDisplayedInformationBoard()}
+      xOffset={mergedProps.xOffset}
     />
   );
 }

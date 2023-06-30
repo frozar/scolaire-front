@@ -1,4 +1,4 @@
-import { mergeProps, splitProps } from "solid-js";
+import { mergeProps } from "solid-js";
 
 import { openGeneratorDialogBox } from "../../../../../signaux";
 
@@ -26,14 +26,12 @@ export default function (props: GenerateButtonProps) {
 
   const mergedProps = mergeProps({ handleClick }, props);
 
-  const [local] = splitProps(mergedProps, ["handleClick", "xOffset"]);
-
   return (
     <ButtonGraphicageRightMenu
-      onClick={local.handleClick}
+      onClick={mergedProps.handleClick}
       tooltip="Générer des trajets"
       icon={<FaSolidGears class="h-10 w-10" />}
-      xOffset={local.xOffset}
+      xOffset={mergedProps.xOffset}
     />
   );
 }

@@ -1,4 +1,4 @@
-import { mergeProps, splitProps } from "solid-js";
+import { mergeProps } from "solid-js";
 
 import { useStateAction } from "../../../../../StateAction";
 import { displayRemoveLineMessage } from "../../../../../userInformation/utils";
@@ -35,19 +35,13 @@ export default function (props: RemoveLineButtonProps) {
 
   const mergedProps = mergeProps({ handleClick, isInRemoveLineMode }, props);
 
-  const [local] = splitProps(mergedProps, [
-    "handleClick",
-    "isInRemoveLineMode",
-    "xOffset",
-  ]);
-
   return (
     <ButtonGraphicageRightMenu
-      onClick={local.handleClick}
+      onClick={mergedProps.handleClick}
       tooltip="Supprimer une ligne"
       icon={<FaSolidMinus class="w-full h-2/3" />}
-      isActive={local.isInRemoveLineMode()}
-      xOffset={local.xOffset}
+      isActive={mergedProps.isInRemoveLineMode()}
+      xOffset={mergedProps.xOffset}
     />
   );
 }
