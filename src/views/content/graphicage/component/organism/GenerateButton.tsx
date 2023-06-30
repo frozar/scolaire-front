@@ -1,4 +1,4 @@
-import { FiArrowUpCircle } from "solid-icons/fi";
+import { FaSolidGears } from "solid-icons/fa";
 
 import { mergeProps, splitProps } from "solid-js";
 
@@ -33,7 +33,7 @@ export default function (props: GenerateButtonProps) {
     <ButtonGraphicageRightMenu
       onClick={local.handleClick}
       tooltip="Générer des trajets"
-      icon={<FiArrowUpCircle class="h-10 w-10" />}
+      icon={<FaSolidGears class="h-10 w-10" />}
       xOffset={local.xOffset}
     />
   );
