@@ -5,10 +5,7 @@ import {
   openGeneratorDialogBox,
 } from "../../../signaux";
 
-import {
-  displayAddLineMessage,
-  displayRemoveLineMessage,
-} from "../../../userInformation/utils";
+import { displayRemoveLineMessage } from "../../../userInformation/utils";
 import {
   confirmAbortEditionNeedToBeCall,
   defineModalToOpen,
@@ -20,25 +17,25 @@ import { fetchBusLines } from "./line/busLinesUtils";
 const [
   ,
   {
-    setModeAddLine,
-    isInAddLineMode,
+    // setModeAddLine,
+    // isInAddLineMode,
     setModeRead,
     isInRemoveLineMode,
     setModeRemoveLine,
   },
 ] = useStateAction();
 
-export const addLineButtonHandleClick = () => {
-  if (isInAddLineMode()) {
-    setModeRead();
-    fetchBusLines();
-  } else {
-    deselectAllPoints();
-    setModeAddLine();
-    fetchBusLines();
-    displayAddLineMessage();
-  }
-};
+// export const addLineButtonHandleClick = () => {
+//   if (isInAddLineMode()) {
+//     setModeRead();
+//     fetchBusLines();
+//   } else {
+//     deselectAllPoints();
+//     setModeAddLine();
+//     fetchBusLines();
+//     displayAddLineMessage();
+//   }
+// };
 
 export const removeLineButtonHandleClick = () => {
   deselectAllPoints();

@@ -29,20 +29,20 @@ type Story = StoryObj<typeof meta>;
 //   setFakeDisplayedInformationBoard((bool) => !bool);
 // }
 
-const [fakeIsInAddLineMode, setFakeIsInAddLineMode] = createSignal(false);
+// const [fakeIsInAddLineMode, setFakeIsInAddLineMode] = createSignal(false);
 const [fakeIsInRemoveLineMode, setFakeIsInRemoveLineMode] = createSignal(false);
 
-function fakeAddLineButtonHandleClick() {
-  console.log("fakeAddLineHandleClick");
+// function fakeAddLineButtonHandleClick() {
+//   console.log("fakeAddLineHandleClick");
 
-  setFakeIsInRemoveLineMode((bool) => (bool ? !bool : bool));
-  setFakeIsInAddLineMode((bool) => !bool);
-}
+//   setFakeIsInRemoveLineMode((bool) => (bool ? !bool : bool));
+//   setFakeIsInAddLineMode((bool) => !bool);
+// }
 
 function fakeRemoveLineButtonHandleClick() {
   console.log("fakeRemoveLineHandleClick");
 
-  setFakeIsInAddLineMode((bool) => (bool ? !bool : bool));
+  // setFakeIsInAddLineMode((bool) => (bool ? !bool : bool));
   setFakeIsInRemoveLineMode((bool) => !bool);
 }
 
@@ -57,8 +57,8 @@ export const RightMapMenu: Story = {
     // toggleDisplayedInformationBoard: fakeToggleDisplayedInformationBoard,
     // getDisplayedInformationBoard: fakeGetDisplayedInformationBoard,
 
-    addLineButtonHandleClick: fakeAddLineButtonHandleClick,
-    isInAddLineMode: fakeIsInAddLineMode,
+    // addLineButtonHandleClick: fakeAddLineButtonHandleClick,
+    // isInAddLineMode: fakeIsInAddLineMode,
 
     removeLineButtonHandleClick: fakeRemoveLineButtonHandleClick,
     isInRemoveLineMode: fakeIsInRemoveLineMode,

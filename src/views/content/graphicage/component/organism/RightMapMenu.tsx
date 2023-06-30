@@ -12,7 +12,6 @@ import RemoveLineButton from "./RemoveLineButton";
 import { useStateAction } from "../../../../../StateAction";
 
 import {
-  addLineButtonHandleClick,
   clearButtonHandleClick,
   exportButtonHandleClick,
   generateButtonHandleClick,
@@ -24,14 +23,14 @@ import "./RightMapMenu.css";
 // const [, { getDisplayedInformationBoard, toggleDisplayedInformationBoard }] =
 //   useStateGui();
 
-const [, { isInAddLineMode, isInRemoveLineMode }] = useStateAction();
+const [, { isInRemoveLineMode }] = useStateAction();
 
 export interface RightMapMenuProps {
   // toggleDisplayedInformationBoard?: () => void;
   // getDisplayedInformationBoard?: () => boolean;
 
-  addLineButtonHandleClick?: () => void;
-  isInAddLineMode?: () => boolean;
+  // addLineButtonHandleClick?: () => void;
+  // isInAddLineMode?: () => boolean;
 
   removeLineButtonHandleClick?: () => void;
   isInRemoveLineMode?: () => boolean;
@@ -51,8 +50,8 @@ export default function (props: RightMapMenuProps) {
       // toggleDisplayedInformationBoard,
       // getDisplayedInformationBoard,
 
-      addLineButtonHandleClick,
-      isInAddLineMode,
+      // addLineButtonHandleClick,
+      // isInAddLineMode,
 
       removeLineButtonHandleClick,
       isInRemoveLineMode,
@@ -71,8 +70,8 @@ export default function (props: RightMapMenuProps) {
   const [local] = splitProps(mergedProps, [
     // "toggleDisplayedInformationBoard",
     // "getDisplayedInformationBoard",
-    "addLineButtonHandleClick",
-    "isInAddLineMode",
+    // "addLineButtonHandleClick",
+    // "isInAddLineMode",
     "removeLineButtonHandleClick",
     "isInRemoveLineMode",
     "clearButtonHandleClick",
@@ -94,8 +93,8 @@ export default function (props: RightMapMenuProps) {
       />
       <AddLineButton
         xOffset={local.xOffset}
-        handleClick={local.addLineButtonHandleClick}
-        isInAddLineMode={local.isInAddLineMode}
+        // handleClick={local.addLineButtonHandleClick}
+        // isInAddLineMode={local.isInAddLineMode}
       />
       <RemoveLineButton
         xOffset={local.xOffset}
