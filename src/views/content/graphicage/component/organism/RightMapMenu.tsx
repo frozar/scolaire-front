@@ -9,13 +9,12 @@ import GenerateButton from "./GenerateButton";
 import InformationBoardButton from "./InformationBoardButton";
 import RemoveLineButton from "./RemoveLineButton";
 
-import { useStateAction } from "../../../../../StateAction";
+// import { useStateAction } from "../../../../../StateAction";
 
 import {
   clearButtonHandleClick,
   exportButtonHandleClick,
   generateButtonHandleClick,
-  removeLineButtonHandleClick,
 } from "../../utils";
 
 import "./RightMapMenu.css";
@@ -23,7 +22,7 @@ import "./RightMapMenu.css";
 // const [, { getDisplayedInformationBoard, toggleDisplayedInformationBoard }] =
 //   useStateGui();
 
-const [, { isInRemoveLineMode }] = useStateAction();
+// const [, { isInRemoveLineMode }] = useStateAction();
 
 export interface RightMapMenuProps {
   // toggleDisplayedInformationBoard?: () => void;
@@ -32,8 +31,8 @@ export interface RightMapMenuProps {
   // addLineButtonHandleClick?: () => void;
   // isInAddLineMode?: () => boolean;
 
-  removeLineButtonHandleClick?: () => void;
-  isInRemoveLineMode?: () => boolean;
+  // removeLineButtonHandleClick?: () => void;
+  // isInRemoveLineMode?: () => boolean;
 
   clearButtonHandleClick?: () => void;
 
@@ -53,8 +52,8 @@ export default function (props: RightMapMenuProps) {
       // addLineButtonHandleClick,
       // isInAddLineMode,
 
-      removeLineButtonHandleClick,
-      isInRemoveLineMode,
+      // removeLineButtonHandleClick,
+      // isInRemoveLineMode,
 
       clearButtonHandleClick,
 
@@ -72,8 +71,8 @@ export default function (props: RightMapMenuProps) {
     // "getDisplayedInformationBoard",
     // "addLineButtonHandleClick",
     // "isInAddLineMode",
-    "removeLineButtonHandleClick",
-    "isInRemoveLineMode",
+    // "removeLineButtonHandleClick",
+    // "isInRemoveLineMode",
     "clearButtonHandleClick",
     "generateButtonHandleClick",
     "exportButtonHandleClick",
@@ -98,8 +97,8 @@ export default function (props: RightMapMenuProps) {
       />
       <RemoveLineButton
         xOffset={local.xOffset}
-        handleClick={local.removeLineButtonHandleClick}
-        isInRemoveLineMode={local.isInRemoveLineMode}
+        // handleClick={local.removeLineButtonHandleClick}
+        // isInRemoveLineMode={local.isInRemoveLineMode}
       />
       <ClearButton
         xOffset={local.xOffset}

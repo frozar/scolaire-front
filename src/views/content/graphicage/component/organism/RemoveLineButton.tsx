@@ -1,39 +1,43 @@
 import { FaSolidMinus } from "solid-icons/fa";
 
-import { splitProps } from "solid-js";
+import { mergeProps, splitProps } from "solid-js";
 
+import { useStateAction } from "../../../../../StateAction";
+import { displayRemoveLineMessage } from "../../../../../userInformation/utils";
+import { deselectAllPoints } from "../../Point";
+import { fetchBusLines } from "../../line/busLinesUtils";
 import ButtonGraphicageRightMenu, {
   OffsetType,
 } from "../molecule/ButtonGraphicageRightMenu";
 
-// const [, { setModeRemoveLine, isInRemoveLineMode, setModeRead }] =
-//   useStateAction();
+const [, { setModeRemoveLine, isInRemoveLineMode, setModeRead }] =
+  useStateAction();
 
 export interface RemoveLineButtonProps {
-  handleClick: () => void;
-  isInRemoveLineMode: () => boolean;
+  handleClick?: () => void;
+  isInRemoveLineMode?: () => boolean;
   xOffset: OffsetType;
 }
 
 export default function (props: RemoveLineButtonProps) {
-  // const handleClick = () => {
-  //   deselectAllPoints();
-  //   if (isInRemoveLineMode()) {
-  //     setModeRead();
-  //     fetchBusLines();
-  //     return;
-  //   }
-  //   setModeRemoveLine();
-  //   fetchBusLines();
-  //   displayRemoveLineMessage();
-  // };
+  const handleClick = () => {
+    deselectAllPoints();
+    if (isInRemoveLineMode()) {
+      setModeRead();
+      fetchBusLines();
+      return;
+    }
+    setModeRemoveLine();
+    fetchBusLines();
+    displayRemoveLineMessage();
+  };
 
-  // const mergedProps = mergeProps(
-  //   { handleClick, isInRemoveLineMode, xOffset: "left" as OffsetType },
-  //   props
-  // );
+  const mergedProps = mergeProps(
+    { handleClick, isInRemoveLineMode }, //, xOffset: "left" as OffsetType
+    props
+  );
 
-  const [local] = splitProps(props, [
+  const [local] = splitProps(mergedProps, [
     "handleClick",
     "isInRemoveLineMode",
     "xOffset",

@@ -1,7 +1,5 @@
 import { Meta, StoryObj } from "storybook-solidjs";
 
-import { createSignal } from "solid-js";
-
 import RightMapMenuComponent from "./RightMapMenu";
 
 const meta = {
@@ -30,7 +28,7 @@ type Story = StoryObj<typeof meta>;
 // }
 
 // const [fakeIsInAddLineMode, setFakeIsInAddLineMode] = createSignal(false);
-const [fakeIsInRemoveLineMode, setFakeIsInRemoveLineMode] = createSignal(false);
+// const [fakeIsInRemoveLineMode, setFakeIsInRemoveLineMode] = createSignal(false);
 
 // function fakeAddLineButtonHandleClick() {
 //   console.log("fakeAddLineHandleClick");
@@ -39,12 +37,12 @@ const [fakeIsInRemoveLineMode, setFakeIsInRemoveLineMode] = createSignal(false);
 //   setFakeIsInAddLineMode((bool) => !bool);
 // }
 
-function fakeRemoveLineButtonHandleClick() {
-  console.log("fakeRemoveLineHandleClick");
+// function fakeRemoveLineButtonHandleClick() {
+// console.log("fakeRemoveLineHandleClick");
 
-  // setFakeIsInAddLineMode((bool) => (bool ? !bool : bool));
-  setFakeIsInRemoveLineMode((bool) => !bool);
-}
+// setFakeIsInAddLineMode((bool) => (bool ? !bool : bool));
+// setFakeIsInRemoveLineMode((bool) => !bool);
+// }
 
 function fakeClearButtonHandleClick() {
   console.log("fakeClearButtonHandleClick");
@@ -60,8 +58,8 @@ export const RightMapMenu: Story = {
     // addLineButtonHandleClick: fakeAddLineButtonHandleClick,
     // isInAddLineMode: fakeIsInAddLineMode,
 
-    removeLineButtonHandleClick: fakeRemoveLineButtonHandleClick,
-    isInRemoveLineMode: fakeIsInRemoveLineMode,
+    // removeLineButtonHandleClick: fakeRemoveLineButtonHandleClick,
+    // isInRemoveLineMode: fakeIsInRemoveLineMode,
 
     clearButtonHandleClick: fakeClearButtonHandleClick,
 
