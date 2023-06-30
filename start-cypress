@@ -31,9 +31,7 @@ if docker image inspect "$image_name:$image_tag" >/dev/null 2>&1; then
     have_build=true
 fi
 
-if $have_build && [ "$arg" == "f" ]; then
-    docker-compose build
-elif ! $have_build; then
+if $have_build && [ "$arg" == "f" ] || ! $have_build; then
     docker-compose build
 fi
 
