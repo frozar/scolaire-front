@@ -1,5 +1,4 @@
 import {
-  openClearConfirmationBox,
   openExportConfirmationBox,
   openGeneratorDialogBox,
 } from "../../../signaux";
@@ -44,10 +43,10 @@ import {
 //   displayRemoveLineMessage();
 // };
 
-export const clearButtonHandleClick = () => {
-  defineModalToOpen(openClearConfirmationBox);
-  confirmAbortEditionNeedToBeCall();
-};
+// export const clearButtonHandleClick = () => {
+//   defineModalToOpen(openClearConfirmationBox);
+//   confirmAbortEditionNeedToBeCall();
+// };
 
 export const generateButtonHandleClick = () => {
   defineModalToOpen(openGeneratorDialogBox);

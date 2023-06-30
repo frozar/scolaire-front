@@ -44,11 +44,11 @@ type Story = StoryObj<typeof meta>;
 // setFakeIsInRemoveLineMode((bool) => !bool);
 // }
 
-function fakeClearButtonHandleClick() {
-  console.log("fakeClearButtonHandleClick");
+// function fakeClearButtonHandleClick() {
+//   console.log("fakeClearButtonHandleClick");
 
-  return;
-}
+//   return;
+// }
 
 export const RightMapMenu: Story = {
   args: {
@@ -61,7 +61,7 @@ export const RightMapMenu: Story = {
     // removeLineButtonHandleClick: fakeRemoveLineButtonHandleClick,
     // isInRemoveLineMode: fakeIsInRemoveLineMode,
 
-    clearButtonHandleClick: fakeClearButtonHandleClick,
+    // clearButtonHandleClick: fakeClearButtonHandleClick,
 
     generateButtonHandleClick: () => {
       console.log("fakeGenerateButtonHandleClick");

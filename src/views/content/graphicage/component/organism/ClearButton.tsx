@@ -1,29 +1,36 @@
 import { FaRegularTrashCan } from "solid-icons/fa";
 
-import { splitProps } from "solid-js";
+import { mergeProps, splitProps } from "solid-js";
 
+import { openClearConfirmationBox } from "../../../../../signaux";
+import {
+  confirmAbortEditionNeedToBeCall,
+  defineModalToOpen,
+} from "../../ConfirmStopAddLineBox";
 import ButtonGraphicageRightMenu, {
   OffsetType,
 } from "../molecule/ButtonGraphicageRightMenu";
 
 export interface ClearButtonProps {
-  handleClick: () => void;
+  handleClick?: () => void;
   xOffset: OffsetType;
 }
 
 export default function (props: ClearButtonProps) {
-  // const mergedProps = mergeProps({ xOffset: "left" as OffsetType }, props);
-
   // const xOffset = () => mergedProps.xOffset;
 
-  // const handleClick = () => {
-  //   console.log("no mock");
+  const handleClick = () => {
+    console.log("no mock");
 
-  //   defineModalToOpen(openClearConfirmationBox);
-  //   confirmAbortEditionNeedToBeCall();
-  // };
+    defineModalToOpen(openClearConfirmationBox);
+    confirmAbortEditionNeedToBeCall();
+  };
 
-  const [local] = splitProps(props, ["handleClick", "xOffset"]);
+  const mergedProps = mergeProps(
+    { handleClick }, //, xOffset: "left" as OffsetType
+    props
+  );
+  const [local] = splitProps(mergedProps, ["handleClick", "xOffset"]);
 
   return (
     <ButtonGraphicageRightMenu
