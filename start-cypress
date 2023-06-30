@@ -5,8 +5,22 @@ echo "****** Launch test *********"
 script_directory=$(dirname $(readlink -f $0))
 cd "${script_directory}/cypress"
 
-# Get first arg
-arg=$1
+# Set default values for options
+arg=""
+
+# Parse options
+while getopts "f" opt; do
+    echo "getopts a trouvé l'option $opt"
+    case "${opt}" in
+    f)
+        arg=$opt
+        ;;
+    \?)
+        echo "Invalid option: $OPTARG" >&2
+        exit 1
+        ;;
+    esac
+done
 
 image_name="cypress-cypress"
 image_tag="latest"
@@ -17,7 +31,7 @@ if docker image inspect "$image_name:$image_tag" >/dev/null 2>&1; then
     have_build=true
 fi
 
-if $have_build && [ "$arg" == "-f" ]; then
+if $have_build && [ "$arg" == "f" ]; then
     docker-compose build
 elif ! $have_build; then
     docker-compose build
