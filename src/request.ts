@@ -35,7 +35,7 @@ export async function addBusLine(idsPoint: number[]) {
   });
 }
 
-export async function uploadLine(formData: FormData) {
+export async function uploadFile(formData: FormData) {
   return authenticateWrap((headers) => {
     return fetch(
       import.meta.env.VITE_BACK_URL + `/map/${getActiveMapId()}/uploadfile`,

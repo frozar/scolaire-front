@@ -18,7 +18,6 @@ export type PointRamassageType = {
   id: number;
   idPoint: number;
   nature: NatureEnum;
-  // location: string;
   lon: number;
   lat: number;
   name: string;

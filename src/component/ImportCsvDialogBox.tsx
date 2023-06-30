@@ -1,6 +1,5 @@
 import { Show, createEffect, createSignal } from "solid-js";
 import { Transition } from "solid-transition-group";
-import ClickOutside from "./ClickOutside";
 import {
   addNewUserInformation,
   closeImportCsvBox,
@@ -8,12 +7,17 @@ import {
   setImportConfirmation,
 } from "../signaux";
 
-import { assertIsNode } from "../utils";
-import { MessageLevelEnum, MessageTypeEnum, ReturnMessageType } from "../type";
 import { useStateGui } from "../StateGui";
+import ClickOutside from "../component/ClickOutside";
+import { uploadFile } from "../request";
+import { MessageLevelEnum, MessageTypeEnum, ReturnMessageType } from "../type";
+import { assertIsNode } from "../utils";
 import { fetchEtablissement } from "../views/content/etablissement/Etablissement";
 import { fetchRamassage } from "../views/content/ramassage/Ramassage";
-import { uploadLine } from "../request";
+
+// HACK for the documentation to preserve the ClickOutside directive on save
+// https://www.solidjs.com/guides/typescript#use___
+false && ClickOutside;
 
 const [, { getSelectedMenu }] = useStateGui();
 
@@ -90,7 +94,7 @@ export default function () {
     const formData = new FormData();
     formData.append("file", file, file.name);
 
-    uploadLine(formData)
+    uploadFile(formData)
       .then(async (res) => {
         if (!res) {
           addNewUserInformation({
@@ -118,18 +122,7 @@ export default function () {
         setImportConfirmation({
           displayed: true,
           message: body.message,
-          metrics: {
-            total: body.metrics.total,
-            success: body.metrics.success,
-          },
-          error: {
-            etablissement: body.error.etablissement,
-            ramassage: body.error.ramassage,
-          },
-          success: {
-            etablissement: body.success.etablissement,
-            ramassage: body.success.ramassage,
-          },
+          metrics: body.metrics,
         });
       })
       .finally(() => {

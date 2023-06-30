@@ -3,13 +3,15 @@ import { Transition } from "solid-transition-group";
 
 import ClickOutside from "../component/ClickOutside";
 
-false && ClickOutside;
-
 import {
   closeDragAndDropConfirmationBox,
   getImportConfirmation,
 } from "../signaux";
 import { assertIsNode } from "../utils";
+
+// HACK for the documentation to preserve the ClickOutside directive on save
+// https://www.solidjs.com/guides/typescript#use___
+false && ClickOutside;
 
 export default function () {
   const displayed = () => getImportConfirmation()["displayed"];

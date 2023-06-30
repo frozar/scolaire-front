@@ -33,7 +33,6 @@ type PointRamassageDBType = {
   id: number;
   id_point: number;
   nature: NatureEnum;
-  // location: string;
   lon: number;
   lat: number;
   name: string;

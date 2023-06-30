@@ -1,5 +1,5 @@
 import { Setter, onCleanup, onMount } from "solid-js";
-import { uploadLine } from "../request";
+import { uploadFile } from "../request";
 import {
   addNewUserInformation,
   disableSpinningWheel,
@@ -84,7 +84,7 @@ function dropHandler(
 
   formData.append("file", file, file.name);
 
-  uploadLine(formData)
+  uploadFile(formData)
     .then(async (res) => {
       if (!res) {
         exitCanvas();
