@@ -1,2 +1,2 @@
 FROM pierrezemb/gostatic
-COPY ./dist/ /srv/http/
+COPY ./dist /srv/http

@@ -1,0 +1,14 @@
+version: '3.2'
+
+services:
+  cypress:
+    build:
+      context: ..
+      dockerfile: cypress/Dockerfile
+    command: npm run cypress-watch
+
+    volumes:
+      - ./cypress-visual-screenshots:/code/cypress/cypress-visual-screenshots
+      - ./cypress-visual-report:/code/cypress/cypress-visual-report
+      - ./cypress/videos:/code/cypress/videos
+      - ../src:/code/src

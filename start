@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source ~/.zshrc
+
 echo "****** Launch front server *********"
 
 script_directory=$(dirname $(readlink -f $0))
