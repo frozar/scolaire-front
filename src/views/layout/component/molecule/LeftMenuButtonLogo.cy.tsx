@@ -15,6 +15,24 @@ describe("LeftMenuButtonLogo component", () => {
     children: <div>Logo content</div>,
   };
 
+  it("LeftMenuButtonLogo check props working", () => {
+    props.children = <DashboardLogo />;
+    props.isActive = true;
+
+    cy.mount(() => (
+      <LeftMenuButtonLogo
+        isActive={props.isActive}
+        isDisabled={props.isDisabled}
+        children={props.children}
+      />
+    ));
+
+    cy.get(".left-menu-button-logo")
+      .should("have.class", "active")
+      .should("not.have.class", "disabled")
+      .contains("Logo Content");
+  });
+
   it("LeftMenuButtonLogo check logo dashboard", () => {
     props.children = <DashboardLogo />;
 
