@@ -5,6 +5,7 @@ import GraphicageLogo from "../atom/GraphicageLogo";
 import SettingsLogo from "../atom/SettingsLogo";
 import SupportLogo from "../atom/SupportLogo";
 import VoirieLogo from "../atom/VoirieLogo";
+
 import LeftMenuButtonLogo from "./LeftMenuButtonLogo";
 
 describe("LeftMenuButtonLogo component", () => {
