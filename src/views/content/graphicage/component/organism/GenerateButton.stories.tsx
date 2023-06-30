@@ -12,7 +12,7 @@ type Story = StoryObj<typeof meta>;
 
 export const GenerateButton: Story = {
   args: {
-    handleClick: () => null,
+    handleClick: () => console.log("onClick on GenerateButton"),
     xOffset: "right",
   },
 };

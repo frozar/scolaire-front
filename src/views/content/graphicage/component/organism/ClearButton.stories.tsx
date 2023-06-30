@@ -12,7 +12,7 @@ type Story = StoryObj<typeof meta>;
 
 export const ClearButton: Story = {
   args: {
-    handleClick: () => null,
+    handleClick: () => console.log("onClick on ClearButton"),
     xOffset: "right",
   },
 };

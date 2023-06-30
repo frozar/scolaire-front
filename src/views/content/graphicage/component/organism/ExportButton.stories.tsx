@@ -12,7 +12,7 @@ type Story = StoryObj<typeof meta>;
 
 export const ExportButton: Story = {
   args: {
-    handleClick: () => null,
+    handleClick: () => console.log("onClick on ExportButton"),
     xOffset: "right",
   },
 };

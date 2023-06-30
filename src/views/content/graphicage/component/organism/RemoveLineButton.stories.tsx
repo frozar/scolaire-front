@@ -16,7 +16,10 @@ const [fakeIsInRemoveLineMode, setFakeIsInRemoveLineMode] = createSignal(false);
 
 export const RemoveLineButton: Story = {
   args: {
-    handleClick: () => setFakeIsInRemoveLineMode((bool) => !bool),
+    handleClick: () => {
+      console.log("onClick on RemoveLineButton");
+      setFakeIsInRemoveLineMode((bool) => !bool);
+    },
     isInRemoveLineMode: fakeIsInRemoveLineMode,
     xOffset: "right",
   },

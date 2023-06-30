@@ -17,8 +17,10 @@ const [fakeGetDisplayedInformationBoard, setFakeDisplayedInformationBoard] =
 
 export const InformationBoardButton: Story = {
   args: {
-    toggleDisplayedInformationBoard: () =>
-      setFakeDisplayedInformationBoard((bool) => !bool),
+    toggleDisplayedInformationBoard: () => {
+      console.log("onClick on InformationBoardButton");
+      setFakeDisplayedInformationBoard((bool) => !bool);
+    },
 
     getDisplayedInformationBoard: fakeGetDisplayedInformationBoard,
     xOffset: "right",
