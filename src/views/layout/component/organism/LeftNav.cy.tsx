@@ -1,24 +1,44 @@
 import LeftNav from "./LeftNav";
 
 describe("LeftNav component", () => {
-  let displayedMenu = false;
   const props = {
-    getDisplayedLeftMenu: () => displayedMenu,
-    toggleDisplayedLeftMenu: () => (displayedMenu = !displayedMenu),
+    getDisplayedLeftMenu: () => false,
   };
 
-  it("LeftNav check props working", () => {
+  it("LeftNav check snapshot when nav is closed", () => {
     cy.mount(() => (
-      <LeftNav
-        getDisplayedLeftMenu={props.getDisplayedLeftMenu}
-        toggleDisplayedLeftMenu={props.toggleDisplayedLeftMenu}
-      />
+      <LeftNav getDisplayedLeftMenu={props.getDisplayedLeftMenu} />
     ));
 
-    cy.get(".left-menu-button-logo")
-      .should("have.class", "active")
-      .should("not.have.class", "disabled")
-      .get("div")
-      .contains("Logo content");
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
+    cy.get("#lateral-nav").compareSnapshot("LeftNav-closed", 0.01);
+  });
+
+  it("LeftNav check snapshot when nav is closed", () => {
+    cy.mount(() => (
+      <LeftNav getDisplayedLeftMenu={() => !props.getDisplayedLeftMenu()} />
+    ));
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
+    cy.get("#lateral-nav").compareSnapshot("LeftNav-open", 0.01);
+  });
+
+  it("LeftNav checking toggle working", () => {
+    cy.mount(() => (
+      <LeftNav getDisplayedLeftMenu={props.getDisplayedLeftMenu} />
+    ));
+
+    // Tried to test it with snapshot but when userAgent click on #lateral-close the item children have displayedLabel to false.
+
+    cy.get("#lateral-nav").should("not.have.class", "active");
+
+    cy.get("#lateral-close").click();
+
+    cy.get("#lateral-nav").should("have.class", "active");
+
+    cy.get("#lateral-close").click();
+
+    cy.get("#lateral-nav").should("not.have.class", "active");
   });
 });
