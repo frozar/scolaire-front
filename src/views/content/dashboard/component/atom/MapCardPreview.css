@@ -1,4 +1,5 @@
 @import "../../../../../css/var.css";
+@import "../../../../../css/utils.css";
 
 .map-card-preview {
   @apply prevent-select;

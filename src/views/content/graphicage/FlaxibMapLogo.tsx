@@ -3,6 +3,8 @@ import { onMount } from "solid-js";
 
 import logoWithBaseline from "../../../assets/logo-baseline.svg";
 
+import "../../../css/utils.css";
+
 export default function () {
   let componentRef!: HTMLDivElement;
 
