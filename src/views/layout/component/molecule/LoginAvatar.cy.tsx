@@ -23,7 +23,7 @@ describe("LoginAvatar component", () => {
     cy.mount(() => (
       <LoginAvatar
         authenticated={!props.authenticated}
-        profilePicture={props.profilePicture}
+        profilePicture={undefined}
       />
     ));
 
