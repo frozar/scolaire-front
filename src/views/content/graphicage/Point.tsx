@@ -195,6 +195,8 @@ export default function (props: {
             return;
           }
 
+          console.log("point", point);
+
           const pointIdentity: PointIdentityType = {
             id: point.id,
             idPoint: point.idPoint,
