@@ -1,13 +1,20 @@
+import { createSignal } from "solid-js";
 import LeftNav from "./LeftNav";
 
 describe("LeftNav component", () => {
+  const [displayMenu, setDisplayMenu] = createSignal(false);
+
   const props = {
-    getDisplayedLeftMenu: () => false,
+    getDisplayedLeftMenu: displayMenu,
+    toggleDisplayedLeftMenu: () => setDisplayMenu((bool) => !bool),
   };
 
   it("LeftNav check snapshot when nav is closed", () => {
     cy.mount(() => (
-      <LeftNav getDisplayedLeftMenu={props.getDisplayedLeftMenu} />
+      <LeftNav
+        getDisplayedLeftMenu={props.getDisplayedLeftMenu}
+        toggleDisplayedLeftMenu={props.toggleDisplayedLeftMenu}
+      />
     ));
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -17,7 +24,10 @@ describe("LeftNav component", () => {
 
   it("LeftNav check snapshot when nav is open", () => {
     cy.mount(() => (
-      <LeftNav getDisplayedLeftMenu={() => !props.getDisplayedLeftMenu()} />
+      <LeftNav
+        getDisplayedLeftMenu={() => !props.getDisplayedLeftMenu()}
+        toggleDisplayedLeftMenu={props.toggleDisplayedLeftMenu}
+      />
     ));
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
@@ -26,19 +36,28 @@ describe("LeftNav component", () => {
 
   it("LeftNav checking toggle working", () => {
     cy.mount(() => (
-      <LeftNav getDisplayedLeftMenu={props.getDisplayedLeftMenu} />
+      <LeftNav
+        getDisplayedLeftMenu={props.getDisplayedLeftMenu}
+        toggleDisplayedLeftMenu={props.toggleDisplayedLeftMenu}
+      />
     ));
 
-    // Tried to test it with snapshot but when userAgent click on #lateral-close the item children have displayedLabel to false.
-
-    cy.get("#lateral-nav").should("not.have.class", "active");
-
-    cy.get("#lateral-close").click();
-
-    cy.get("#lateral-nav").should("have.class", "active");
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
+    cy.get("#lateral-nav").compareSnapshot("LeftNav-closed", 0.01);
 
     cy.get("#lateral-close").click();
+    cy.wait(400);
 
-    cy.get("#lateral-nav").should("not.have.class", "active");
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
+    cy.get("#lateral-nav").compareSnapshot("LeftNav-open", 0.01);
+
+    cy.get("#lateral-close").click();
+    cy.wait(400);
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
+    cy.get("#lateral-nav").compareSnapshot("LeftNav-closed", 0.01);
   });
 });
