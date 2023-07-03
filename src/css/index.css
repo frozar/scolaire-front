@@ -2,7 +2,7 @@
 @import "./menu.css";
 @import "./timeline.css";
 
-/* TODO: delete */
+/* TODO: delete when useless*/
 @import "./var.css";
 
 body,
@@ -366,55 +366,51 @@ code {
   transition-duration: 400ms;
   padding: 10px;
   border-left: 1px solid rgb(26, 26, 26);
-  &.active {
-    transform: translateX(-400px);
-  }
+}
 
-  > header {
-    > h1 {
-      @apply text-2xl;
-    }
+#edit-stop.active {
+  transform: translateX(-400px);
+}
 
-    > button {
-      width: 30px;
-      height: 30px;
-      color: var(--green-base);
-      > svg {
-        @apply w-full h-full;
-      }
-    }
-  }
+#edit-stop > header > h1 {
+  @apply text-2xl;
+}
 
-  > section {
-    > h3 {
-      @apply text-xl;
-    }
-    > div {
-      > label {
-        color: #062f3f;
-      }
+#edit-stop > header > button {
+  width: 30px;
+  height: 30px;
+  color: var(--green-base);
+}
 
-      > input {
-        border: 1.5px solid rgba(128, 128, 128, 0.649);
-        border-radius: 5px;
-        height: 45px;
-        padding-left: 10px;
-      }
-    }
+#edit-stop > header > button > svg {
+  @apply w-full h-full;
+}
 
-    > div.action {
-      display: flex;
-      gap: 1em;
-      > button {
-        padding: 10px 20px;
-        border-radius: 5px;
-        color: white;
-        background-color: var(--red-base);
-      }
+#edit-stop > section > h3 {
+  @apply text-xl;
+}
+#edit-stop > section > div > label {
+  color: #062f3f;
+}
 
-      > button.green {
-        background-color: var(--green-base);
-      }
-    }
-  }
+#edit-stop > section > div > input {
+  border: 1.5px solid rgba(128, 128, 128, 0.649);
+  border-radius: 5px;
+  height: 45px;
+  padding-left: 10px;
+}
+
+#edit-stop > section > div.action {
+  display: flex;
+  gap: 1em;
+}
+#edit-stop > section > div.action > button {
+  padding: 10px 20px;
+  border-radius: 5px;
+  color: white;
+  background-color: var(--red-base);
+}
+
+#edit-stop > section > div.action > button.green {
+  background-color: var(--green-base);
 }
