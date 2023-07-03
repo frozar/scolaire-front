@@ -11,7 +11,7 @@ describe("LeftMenuItem component", () => {
   };
 
   it("Check props onClick called once", () => {
-    const onclick = cy.spy(props.onClick).as("onclickListener");
+    const onClickSpy = cy.spy(props.onClick).as("onclickListener");
     cy.mount(() => (
       <LeftMenuItem
         isDisabled={props.isDisabled}
@@ -19,13 +19,13 @@ describe("LeftMenuItem component", () => {
         displayedLabel={props.displayedLabel}
         isSelected={props.isSelected}
         Logo={props.Logo}
-        onClick={onclick}
+        onClick={onClickSpy}
       />
     ));
-    // Cliquez sur le menu item
+    // Click on element
     cy.get("li").click();
 
-    // Vérifiez que le callback onClick a été appelé une fois
+    // Check if callback onClick was been called one time
     cy.get("@onclickListener").should("have.been.calledOnce");
   });
 
@@ -72,7 +72,7 @@ describe("LeftMenuItem component", () => {
         isDisabled={!props.isDisabled}
         label={props.label}
         displayedLabel={props.displayedLabel}
-        isSelected={props.isSelected}
+        isSelected={!props.isSelected}
         Logo={props.Logo}
         onClick={onclick}
       />
@@ -83,7 +83,7 @@ describe("LeftMenuItem component", () => {
     cy.get("li").compareSnapshot("LeftMenuItem-disabled", 0.01);
   });
 
-  it("Check snapshot when not display label", () => {
+  it("Check snapshot when label not displayed", () => {
     const onclick = cy.spy(props.onClick).as("onclickListener");
     cy.mount(() => (
       <LeftMenuItem
@@ -98,6 +98,6 @@ describe("LeftMenuItem component", () => {
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
-    cy.get("li").compareSnapshot("LeftMenuItem-no-label-display", 0.01);
+    cy.get("li").compareSnapshot("LeftMenuItem-no-label-displayed", 0.01);
   });
 });
