@@ -30,7 +30,6 @@ describe("LeftMenuItem component", () => {
   });
 
   it("Check snapshot when selected", () => {
-    const onclick = cy.spy(props.onClick).as("onclickListener");
     cy.mount(() => (
       <LeftMenuItem
         isDisabled={props.isDisabled}
@@ -38,7 +37,7 @@ describe("LeftMenuItem component", () => {
         displayedLabel={props.displayedLabel}
         isSelected={props.isSelected}
         Logo={props.Logo}
-        onClick={onclick}
+        onClick={props.onClick}
       />
     ));
 
@@ -48,7 +47,6 @@ describe("LeftMenuItem component", () => {
   });
 
   it("Check snapshot when not selected", () => {
-    const onclick = cy.spy(props.onClick).as("onclickListener");
     cy.mount(() => (
       <LeftMenuItem
         isDisabled={props.isDisabled}
@@ -56,7 +54,7 @@ describe("LeftMenuItem component", () => {
         displayedLabel={props.displayedLabel}
         isSelected={!props.isSelected}
         Logo={props.Logo}
-        onClick={onclick}
+        onClick={props.onClick}
       />
     ));
 
@@ -66,7 +64,6 @@ describe("LeftMenuItem component", () => {
   });
 
   it("Check snapshot when disabled", () => {
-    const onclick = cy.spy(props.onClick).as("onclickListener");
     cy.mount(() => (
       <LeftMenuItem
         isDisabled={!props.isDisabled}
@@ -74,7 +71,7 @@ describe("LeftMenuItem component", () => {
         displayedLabel={props.displayedLabel}
         isSelected={!props.isSelected}
         Logo={props.Logo}
-        onClick={onclick}
+        onClick={props.onClick}
       />
     ));
 
@@ -84,7 +81,6 @@ describe("LeftMenuItem component", () => {
   });
 
   it("Check snapshot when label not displayed", () => {
-    const onclick = cy.spy(props.onClick).as("onclickListener");
     cy.mount(() => (
       <LeftMenuItem
         isDisabled={props.isDisabled}
@@ -92,7 +88,7 @@ describe("LeftMenuItem component", () => {
         displayedLabel={!props.displayedLabel}
         isSelected={props.isSelected}
         Logo={props.Logo}
-        onClick={onclick}
+        onClick={props.onClick}
       />
     ));
 
