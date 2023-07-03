@@ -1,3 +1,7 @@
+import { Preview } from "storybook-solidjs";
+
+import "../src/css/tailwind.css";
+
 const preview: Preview = {
   parameters: {
     actions: { argTypesRegex: "^on[A-Z].*" },
