@@ -15,7 +15,7 @@ describe("LeftNav component", () => {
     cy.get("#lateral-nav").compareSnapshot("LeftNav-closed", 0.01);
   });
 
-  it("LeftNav check snapshot when nav is closed", () => {
+  it("LeftNav check snapshot when nav is open", () => {
     cy.mount(() => (
       <LeftNav getDisplayedLeftMenu={() => !props.getDisplayedLeftMenu()} />
     ));
