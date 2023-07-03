@@ -1,5 +1,3 @@
-/* @import "../../../../../css/var.css"; */
-
 .map-card-container {
   @apply bg-white rounded-md px-2 py-2 max-w-xs duration-150 shadow-lg ring-1 ring-gray-900/5 cursor-pointer;
 }
