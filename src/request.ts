@@ -18,10 +18,13 @@ export async function deleteBusLine(idToRemove: number) {
 
 export async function clear() {
   return authenticateWrap((headers) => {
-    return fetch(import.meta.env.VITE_BACK_URL + "/clear", {
-      method: "DELETE",
-      headers,
-    });
+    return fetch(
+      import.meta.env.VITE_BACK_URL + `/map/${getActiveMapId()}/clear`,
+      {
+        method: "DELETE",
+        headers,
+      }
+    );
   });
 }
 
