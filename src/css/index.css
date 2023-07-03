@@ -1,7 +1,7 @@
 @import "./tailwind.css";
 @import "./menu.css";
 @import "./timeline.css";
-@import "./var.css";
+/* @import "./var.css"; */
 
 /* Class 'prevent-select' has been move in 'var.css'
   TODO: remove 'prevent-select' from index.css */
@@ -185,11 +185,12 @@ code {
   transition: stroke 1s ease, fill 1s ease, fill-opacity 1s ease;
 }
 
-.prevent-select {
+/* TODO: DELETE */
+/* .prevent-select {
   -webkit-user-select: none;
   -ms-user-select: none;
   user-select: none;
-}
+} */
 
 .label-point {
   color: white;

@@ -1,4 +1,4 @@
-@import "../../../../../css/var.css";
+/* @import "../../../../../css/var.css"; */
 
 .map-grid-header {
   @apply justify-between flex items-center text-3xl;

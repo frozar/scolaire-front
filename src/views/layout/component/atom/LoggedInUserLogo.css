@@ -1,4 +1,4 @@
-@import "../../../../css/var.css";
+/* @import "../../../../css/var.css"; */
 
 #logged-in-user {
   @apply w-10 h-10 rounded-full;
