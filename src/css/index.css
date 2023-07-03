@@ -285,77 +285,76 @@ code {
 
 #ramassages-board {
   @apply w-full mx-16 mt-5;
-  & > header {
-    > h1 {
-      @apply text-2xl;
-    }
+}
+#ramassages-board > header > h1 {
+  @apply text-2xl;
+}
 
-    > #filters {
-      display: flex;
-      justify-content: space-between;
-      width: 100%;
-      margin: 20px 0;
-      > .left {
-        @apply flex w-1/2 gap-3;
+#ramassages-board > header > #filters {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin: 20px 0;
+}
+#ramassages-board > header > #filters > .left {
+  @apply flex w-1/2 gap-3;
+}
+#ramassages-board > header > #filters > .left > .btn-arret-add {
+  width: 92px;
+  height: 45px;
+  color: white;
+  /* Green-base */
 
-        > .btn-arret-add {
-          width: 92px;
-          height: 45px;
-          color: white;
-          /* Green-base */
+  background: #0cc683;
+  border-radius: 5px;
+  transition-duration: 400ms;
+}
+#ramassages-board > header > #filters > .left > .btn-arret-add:hover {
+  background: #0cb778;
+}
 
-          background: #0cc683;
-          border-radius: 5px;
-          transition-duration: 400ms;
-          &:hover {
-            background: #0cb778;
-          }
-        }
+#ramassages-board > header > #filters > .left > .input-field {
+  @apply relative rounded-md shadow-sm;
+}
+#ramassages-board
+  > header
+  > #filters
+  > .left
+  > .input-field
+  > .input-search-logo {
+  @apply pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3;
+}
 
-        > .input-field {
-          @apply relative rounded-md shadow-sm;
-          > .input-search-logo {
-            @apply pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3;
-          }
+#ramassages-board > header > #filters > .left > .input-field > input {
+  @apply block w-full rounded-md border-0 py-1.5 pl-10 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset   sm:text-sm sm:leading-6;
+  height: 45px;
+}
 
-          > input {
-            @apply block w-full rounded-md border-0 py-1.5 pl-10 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset   sm:text-sm sm:leading-6;
-            height: 45px;
-          }
-        }
-      }
+#ramassages-board > header > #filters > .right {
+  @apply flex gap-3;
+}
 
-      > .right {
-        @apply flex gap-3;
-      }
-    }
-  }
+#ramassages-board > .board-content {
+  @apply mt-8 flow-root mx-8;
+}
+#ramassages-board > .board-content > div {
+  @apply -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8;
+}
+#ramassages-board > .board-content > div > table {
+  @apply min-w-full divide-y divide-gray-300;
+}
+#ramassages-board > .board-content > div > table > thead > tr > th {
+  @apply px-3 py-3.5 text-left text-sm font-semibold text-gray-900;
+}
 
-  > .board-content {
-    @apply mt-8 flow-root mx-8;
-
-    > div {
-      @apply -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8;
-      > table {
-        @apply min-w-full divide-y divide-gray-300;
-
-        > thead > tr > th {
-          @apply px-3 py-3.5 text-left text-sm font-semibold text-gray-900;
-        }
-
-        > tbody {
-          @apply divide-y divide-gray-200;
-          overflow-y: visible;
-          overflow-y: scroll;
-          scroll-behavior: smooth;
-
-          > tr > td {
-            @apply whitespace-nowrap px-3 py-4 text-sm text-gray-500;
-          }
-        }
-      }
-    }
-  }
+#ramassages-board > .board-content > div > table > tbody {
+  @apply divide-y divide-gray-200;
+  overflow-y: visible;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+}
+#ramassages-board > .board-content > div > table > tbody > tr > td {
+  @apply whitespace-nowrap px-3 py-4 text-sm text-gray-500;
 }
 
 #edit-stop {
