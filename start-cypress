@@ -3,8 +3,49 @@
 echo "****** Launch test *********"
 
 script_directory=$(dirname $(readlink -f $0))
+cd "${script_directory}/cypress"
 
-cd $script_directory"/cypress"
+# Set default values for options
+arg=""
 
-docker-compose build
+# Parse options
+while getopts "f" opt; do
+    echo "getopts a trouvé l'option $opt"
+    case "${opt}" in
+    f)
+        arg=$opt
+        ;;
+    \?)
+        echo "Invalid option: $OPTARG" >&2
+        exit 1
+        ;;
+    esac
+done
+
+image_name="cypress-cypress"
+image_tag="latest"
+
+have_build=false
+
+folders=(
+    "./cypress-visual-report"
+    "./cypress-visual-screenshots/baseline"
+    "./cypress-visual-screenshots/comparison"
+    "./cypress-visual-screenshots/diff"
+)
+
+for folder in "${folders[@]}"; do
+    if [ ! -d "$folder" ]; then
+        mkdir -p "$folder"
+    fi
+done
+
+if docker image inspect "$image_name:$image_tag" >/dev/null 2>&1; then
+    have_build=true
+fi
+
+if $have_build && [ "$arg" == "f" ] || ! $have_build; then
+    docker-compose build
+fi
+
 docker-compose up

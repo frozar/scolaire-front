@@ -52,7 +52,8 @@ You can deploy the `dist` folder to any static host provider (netlify, surge, no
 
 ### Cypress test (watch)
 
-    ./cypress (Start the webserver to )
+    ./start-cypress
+    ./start-cypress -f (to force build)
 
 
 ### Webserver only
