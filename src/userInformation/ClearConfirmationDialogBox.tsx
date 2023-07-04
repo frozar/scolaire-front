@@ -77,8 +77,6 @@ export default function () {
         const json: { message: string; detail?: string } = await res.json();
 
         if (!res.ok) {
-          console.log(json);
-
           clearUserInformation(
             "Impossible de vider la carte : \n" + json.detail,
             MessageLevelEnum.error
