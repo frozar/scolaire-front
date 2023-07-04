@@ -1,4 +1,7 @@
 import LeftMenuItemLabel from "./LeftMenuItemLabel";
+
+import "../../../../css/tailwind.css";
+
 describe("LeftMenuItemLabel component", () => {
   const props = {
     isActive: false,
