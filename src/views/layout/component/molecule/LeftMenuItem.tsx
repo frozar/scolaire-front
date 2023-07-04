@@ -9,7 +9,7 @@ import "./LeftMenuItem.css";
 export interface LeftMenuItemProps {
   isDisabled?: boolean;
   label: string;
-  displayedLabel: boolean;
+  // displayedLabel: boolean;
 
   isSelected: boolean;
   Logo: () => JSXElement;
@@ -40,13 +40,12 @@ export default function (props: LeftMenuItemProps) {
         {mergedProps.Logo()}
       </LeftMenuButtonLogo>
 
-      <Show when={mergedProps.displayedLabel}>
-        <LeftMenuItemLabel
-          isActive={mergedProps.isSelected}
-          isDisabled={mergedProps.isDisabled}
-          label={mergedProps.label}
-        />
-      </Show>
+      <LeftMenuItemLabel
+        isActive={mergedProps.isSelected}
+        isDisabled={mergedProps.isDisabled}
+        label={mergedProps.label}
+      />
+
       <Show when={!mergedProps.isDisabled && mergedProps.isSelected}>
         <div class="left-menu-item-pellet">
           <Pellet />
