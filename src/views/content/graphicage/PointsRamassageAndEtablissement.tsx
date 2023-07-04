@@ -49,9 +49,14 @@ type PointRamassageCoreType = Omit<PointRamassageDBType, "id_point"> & {
 function PointBack2FrontIdPoint(
   data: PointRamassageDBType
 ): PointRamassageCoreType {
-  // console.log("data", data);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { id_point: _, ...dataWk } = { ...data, idPoint: data.id_point };
+  const dataWk = {
+    ...data,
+    idPoint: data.id_point,
+  } as PointRamassageCoreType & { id_point?: number };
+  delete dataWk["id_point"];
+
+  console.assert(dataWk["idPoint"] != undefined, "idPoint is undefined");
+
   return dataWk;
 }
 
@@ -93,7 +98,7 @@ export function fetchPointsRamassageAndEtablissement() {
         // console.log("json", json);
 
         const datas: PointRamassageDBType[] = json["content"];
-        // console.log("datas", datas);
+        console.log("Ramassage datas", datas);
 
         const dataWk = PointBack2Front(
           datas,
@@ -116,6 +121,7 @@ export function fetchPointsRamassageAndEtablissement() {
         const json = await res.json();
 
         const datas: PointEtablissementDBType[] = json["content"];
+        console.log("Etablissement datas", datas);
 
         const dataWk = PointBack2Front(
           datas,
@@ -156,6 +162,10 @@ export default function () {
     const maxCandidat = Math.max(...filteredPoints());
     return Number.isFinite(maxCandidat) ? maxCandidat : 0;
   };
+
+  // createEffect(() => {
+  //   console.log("points()", points());
+  // });
 
   return (
     <For each={points()}>

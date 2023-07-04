@@ -1,6 +1,6 @@
 import { JSXElement, createEffect, createSignal } from "solid-js";
-import CrossButton from "./CrossButton";
 import { removeUserInformation } from "../signaux";
+import CrossButton from "./CrossButton";
 
 function InfoIcon() {
   return (
@@ -22,7 +22,7 @@ function InfoIcon() {
 
 export default function (props: { id: number; children: string | JSXElement }) {
   const [divRef, setDivRef] = createSignal<HTMLElement | undefined>();
-  console.log("props", props);
+  // console.log("props", props);
 
   createEffect(() => {
     divRef()?.addEventListener(

@@ -6,13 +6,14 @@ const [, { getActiveMapId }] = useStateGui();
 
 export async function deleteBusLine(idToRemove: number) {
   return authenticateWrap((headers) => {
-    return fetch(import.meta.env.VITE_BACK_URL + "/bus_line", {
-      method: "DELETE",
-      headers,
-      body: JSON.stringify({
-        id: idToRemove,
-      }),
-    });
+    return fetch(
+      import.meta.env.VITE_BACK_URL +
+        `/map/${getActiveMapId()}/bus_line/${idToRemove}`,
+      {
+        method: "DELETE",
+        headers,
+      }
+    );
   });
 }
 
@@ -27,11 +28,14 @@ export async function clear() {
 
 export async function addBusLine(idsPoint: number[]) {
   return authenticateWrap((headers) => {
-    return fetch(import.meta.env.VITE_BACK_URL + "/bus_line", {
-      method: "POST",
-      headers,
-      body: JSON.stringify({ ids_point: idsPoint }),
-    });
+    return fetch(
+      import.meta.env.VITE_BACK_URL + `/map/${getActiveMapId()}/bus_line`,
+      {
+        method: "POST",
+        headers,
+        body: JSON.stringify({ ids_point: idsPoint }),
+      }
+    );
   });
 }
 
@@ -46,4 +50,18 @@ export async function uploadFile(formData: FormData) {
       }
     );
   }, true);
+}
+
+export async function updateBusLine(selectedBusLineId: number, color: string) {
+  return authenticateWrap((headers) => {
+    return fetch(
+      import.meta.env.VITE_BACK_URL +
+        `/map/${getActiveMapId()}/bus_line/${selectedBusLineId}`,
+      {
+        headers,
+        method: "PATCH",
+        body: JSON.stringify({ color: color }),
+      }
+    );
+  });
 }

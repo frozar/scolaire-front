@@ -1,29 +1,30 @@
-import { Show, For, Switch, Match, createEffect, createSignal } from "solid-js";
-import InfoPointName from "./InfoPointName";
+import { For, Match, Show, Switch, createEffect, createSignal } from "solid-js";
+import { useStateAction } from "../../../../StateAction";
+import { updateBusLine } from "../../../../request";
+import { addNewUserInformation, points } from "../../../../signaux";
 import {
-  NatureEnum,
-  isPointRamassage,
+  LineType,
   MessageLevelEnum,
   MessageTypeEnum,
-  LineType,
-  PointToDisplayType,
+  NatureEnum,
   PointRamassageType,
+  PointToDisplayType,
+  isPointRamassage,
 } from "../../../../type";
-import { addNewUserInformation, points } from "../../../../signaux";
-import { useStateAction } from "../../../../StateAction";
 import { authenticateWrap } from "../../../layout/authentication";
-import {
-  getSelectedBusLineId,
-  selectedBusLineStopNames,
-  lineUnderConstructionStopNames,
-  getSelectedBusLine,
-} from "../line/busLinesUtils";
-import Timeline from "./Timeline";
 import {
   linkBusLinePolyline,
   pickerColor,
   setBusLines,
 } from "../line/BusLines";
+import {
+  getSelectedBusLine,
+  getSelectedBusLineId,
+  lineUnderConstructionStopNames,
+  selectedBusLineStopNames,
+} from "../line/busLinesUtils";
+import InfoPointName from "./InfoPointName";
+import Timeline from "./Timeline";
 
 const [, { isInAddLineMode, resetLineUnderConstruction }] = useStateAction();
 
@@ -177,36 +178,31 @@ export default function () {
     const selectedBusLineId = selectedBusLine.idBusLine;
     const color = (e.target as HTMLInputElement).value;
 
-    authenticateWrap((headers) => {
-      fetch(import.meta.env.VITE_BACK_URL + `/line/${selectedBusLineId}`, {
-        headers,
-        method: "PATCH",
-        body: JSON.stringify({ color: color }),
+    updateBusLine(selectedBusLineId, color)
+      .then(() => {
+        setBusLines((prevBusLines) => {
+          const busLinesWithoutSelectedBusLine = prevBusLines.filter(
+            (busLine) => busLine.idBusLine != selectedBusLineId
+          );
+
+          const busLineWithNewColor: LineType = {
+            ...selectedBusLine,
+            color,
+          };
+
+          return [...busLinesWithoutSelectedBusLine, busLineWithNewColor];
+        });
       })
-        .then(() => {
-          setBusLines((prevBusLines) => {
-            const busLinesWithoutSelectedBusLine = prevBusLines.filter(
-              (busLine) => busLine.idBusLine != selectedBusLineId
-            );
-
-            const busLineWithNewColor: LineType = {
-              ...selectedBusLine,
-              color,
-            };
-
-            return [...busLinesWithoutSelectedBusLine, busLineWithNewColor];
-          });
-        })
-        .catch((err) => console.log(err));
-    }).catch(() => {
-      addNewUserInformation({
-        displayed: true,
-        level: MessageLevelEnum.error,
-        type: MessageTypeEnum.global,
-        content:
-          "Une erreur est survenue lors de la modification de couleur de la ligne",
+      .catch((err) => {
+        console.log(err);
+        addNewUserInformation({
+          displayed: true,
+          level: MessageLevelEnum.error,
+          type: MessageTypeEnum.global,
+          content:
+            "Une erreur est survenue lors de la modification de couleur de la ligne",
+        });
       });
-    });
   };
 
   return (

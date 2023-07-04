@@ -1,37 +1,42 @@
 import L from "leaflet";
 
+import { LineString } from "geojson";
+import { createEffect, createSignal } from "solid-js";
+import { useStateAction } from "../../../../StateAction";
+import { useStateGui } from "../../../../StateGui";
+import {
+  getLeafletMap,
+  points,
+  setRemoveConfirmation,
+} from "../../../../signaux";
 import {
   LineType,
   LineUnderConstructionType,
   NatureEnum,
   PointIdentityType,
 } from "../../../../type";
-import { useStateAction } from "../../../../StateAction";
+import { authenticateWrap } from "../../../layout/authentication";
+import { deselectAllPoints, linkMap } from "../Point";
 import {
   busLines,
   linkBusLinePolyline,
   setBusLines,
   setPickerColor,
 } from "./BusLines";
-import {
-  getLeafletMap,
-  points,
-  setRemoveConfirmation,
-} from "../../../../signaux";
-import { LineString } from "geojson";
-import { authenticateWrap } from "../../../layout/authentication";
-import { createEffect, createSignal } from "solid-js";
-import { deselectAllPoints, linkMap } from "../Point";
+
+const [, { getActiveMapId }] = useStateGui();
 
 export function getLatLngs(stops: PointIdentityType[]): L.LatLng[] {
   const latlngs: L.LatLng[] = [];
 
+  // TODO: linkMap must be reactive => signal
   for (const pointIdentity of stops) {
     const circle = linkMap.get(pointIdentity.idPoint);
     if (circle) {
       latlngs.push(circle.getLatLng());
     }
   }
+
   return latlngs;
 }
 
@@ -263,10 +268,13 @@ export function arrowAttachEvent(
 
 // fetchOnRoadPolyline() is called in readMode only
 export async function fetchOnRoadPolyline(latlng: L.LatLng[]) {
+  // console.log("latlng", latlng);
   const lnglat = latlng.map((prev) => [prev.lng, prev.lat]);
   const urlLnglat = lnglat
     .map((couple) => couple[0] + "," + couple[1])
     .join(";");
+
+  // console.log("urlLnglat", urlLnglat);
 
   const parameters = { geometries: "geojson", overview: "full" };
   const urlParameters = Object.entries(parameters)
@@ -275,6 +283,9 @@ export async function fetchOnRoadPolyline(latlng: L.LatLng[]) {
 
   const urlToFetch =
     import.meta.env.VITE_API_OSRM_URL + "/" + urlLnglat + "?" + urlParameters;
+
+  // console.log("urlToFetch", urlToFetch);
+
   return await fetch(urlToFetch)
     .then((res) => {
       return res.json();
@@ -293,24 +304,19 @@ export async function computePolyline(
   stops: PointIdentityType[]
 ) {
   const [, { isInReadMode }] = useStateAction();
-
   let polylineLatLngs = getLatLngs(stops);
   let opacity = 1;
-
   if (isInReadMode()) {
     const readModePolylineLatLngs = (await fetchOnRoadPolyline(polylineLatLngs))
       .latlngs;
     const readModeOpacity = 0.8;
-
     // Need to check if is still in readMode because of await
     if (isInReadMode()) {
       polylineLatLngs = readModePolylineLatLngs;
       opacity = readModeOpacity;
     }
   }
-
   const busLinePolyline = getBusLinePolyline(color, polylineLatLngs, opacity);
-
   return busLinePolyline;
 }
 
@@ -393,9 +399,12 @@ function randColor() {
 
 export function fetchBusLines() {
   authenticateWrap((headers) => {
-    fetch(import.meta.env.VITE_BACK_URL + "/bus_lines", {
-      headers,
-    }).then(async (res) => {
+    fetch(
+      import.meta.env.VITE_BACK_URL + `/map/${getActiveMapId()}/bus_lines`,
+      {
+        headers,
+      }
+    ).then(async (res) => {
       const data: {
         id_bus_line: number;
         color: string | null;
@@ -473,10 +482,23 @@ export function fetchBusLines() {
           }
         }
 
+        // console.log("lines", lines);
+
+        // TODO: check why this part of the code breaks the hot reload
         for (const line of lines) {
           // 1. Calcul de la polyline, à vol d'oiseau ou sur route
+          // console.log("line.color", line.color);
+          // console.log("line.stops", line.stops);
           computePolyline(line.color, line.stops).then((busLinePolyline) => {
+            // console.log("busLinePolyline", busLinePolyline);
+
             const polylineLatLngs = busLinePolyline.getLatLngs() as L.LatLng[];
+            // console.log("polylineLatLngs", polylineLatLngs);
+
+            if (polylineLatLngs.length === 0) {
+              return;
+            }
+
             // 2. Calcul des fléches
             const arrows = computeArrows(polylineLatLngs, line.color);
 
