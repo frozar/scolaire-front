@@ -482,18 +482,18 @@ export function fetchBusLines() {
           }
         }
 
-        console.log("lines", lines);
+        // console.log("lines", lines);
 
         // TODO: check why this part of the code breaks the hot reload
         for (const line of lines) {
           // 1. Calcul de la polyline, à vol d'oiseau ou sur route
-          console.log("line.color", line.color);
-          console.log("line.stops", line.stops);
+          // console.log("line.color", line.color);
+          // console.log("line.stops", line.stops);
           computePolyline(line.color, line.stops).then((busLinePolyline) => {
-            console.log("busLinePolyline", busLinePolyline);
+            // console.log("busLinePolyline", busLinePolyline);
 
             const polylineLatLngs = busLinePolyline.getLatLngs() as L.LatLng[];
-            console.log("polylineLatLngs", polylineLatLngs);
+            // console.log("polylineLatLngs", polylineLatLngs);
 
             if (polylineLatLngs.length === 0) {
               return;
