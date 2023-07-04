@@ -38,6 +38,20 @@ function exitModal({ code }: KeyboardEvent) {
   });
 }
 
+function clearUserInformation(content: string, level: MessageLevelEnum) {
+  addNewUserInformation({
+    displayed: true,
+    level,
+    type: MessageTypeEnum.removeLine,
+    content,
+  });
+  setPoints([]);
+  fetchPointsRamassageAndEtablissement();
+  fetchBusLines();
+  disableSpinningWheel();
+  closeClearConfirmationBox();
+}
+
 export default function () {
   const displayed = () => displayedClearConfirmationDialogBox()["displayed"];
 
@@ -51,55 +65,36 @@ export default function () {
 
   function handlerOnClickValider() {
     clear()
-      .then((res) => {
+      .then(async (res) => {
         enableSpinningWheel();
+
         if (!res) {
           disableSpinningWheel();
           console.error("clear failed.");
           return;
         }
-        return res.json();
-      })
-      .then((res: { message: string }) => {
-        if (res.message == "OK") {
-          addNewUserInformation({
-            displayed: true,
-            level: MessageLevelEnum.info,
-            type: MessageTypeEnum.removeLine,
-            content: "La carte a bien été vidée",
-          });
-          setPoints([]);
-          fetchPointsRamassageAndEtablissement();
-          fetchBusLines();
-          disableSpinningWheel();
-          closeClearConfirmationBox();
-        } else {
-          addNewUserInformation({
-            displayed: true,
-            level: MessageLevelEnum.error,
-            type: MessageTypeEnum.removeLine,
-            content: "Impossible de vider la carte : \n" + res.message,
-          });
-          setPoints([]);
-          fetchPointsRamassageAndEtablissement();
-          fetchBusLines();
-          disableSpinningWheel();
-          closeClearConfirmationBox();
+
+        const json: { message: string; detail?: string } = await res.json();
+
+        if (!res.ok) {
+          console.log(json);
+
+          clearUserInformation(
+            "Impossible de vider la carte : \n" + json.detail,
+            MessageLevelEnum.error
+          );
+          return;
         }
+
+        clearUserInformation(json.message, MessageLevelEnum.success);
       })
       .catch((error) => {
         console.error("Error during suppression", error);
-        addNewUserInformation({
-          displayed: true,
-          level: MessageLevelEnum.error,
-          type: MessageTypeEnum.removeLine,
-          content: "Impossible de vider la carte : \n" + error,
-        });
-        setPoints([]);
-        fetchPointsRamassageAndEtablissement();
-        fetchBusLines();
-        disableSpinningWheel();
-        closeClearConfirmationBox();
+
+        clearUserInformation(
+          "Impossible de vider la carte : \n" + error,
+          MessageLevelEnum.error
+        );
       });
   }
 
