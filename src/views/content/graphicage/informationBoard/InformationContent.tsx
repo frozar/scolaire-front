@@ -1,6 +1,6 @@
 import { For, Match, Show, Switch, createEffect, createSignal } from "solid-js";
 import { useStateAction } from "../../../../StateAction";
-import { useStateGui } from "../../../../StateGui";
+import { updateBusLine } from "../../../../request";
 import { addNewUserInformation, points } from "../../../../signaux";
 import {
   LineType,
@@ -27,8 +27,6 @@ import InfoPointName from "./InfoPointName";
 import Timeline from "./Timeline";
 
 const [, { isInAddLineMode, resetLineUnderConstruction }] = useStateAction();
-
-const [, { getActiveMapId }] = useStateGui();
 
 export default function () {
   const getSelectedPoint = (): PointRamassageType | null => {
@@ -180,40 +178,31 @@ export default function () {
     const selectedBusLineId = selectedBusLine.idBusLine;
     const color = (e.target as HTMLInputElement).value;
 
-    authenticateWrap((headers) => {
-      fetch(
-        import.meta.env.VITE_BACK_URL +
-          `/map/${getActiveMapId()}/bus_line/${selectedBusLineId}`,
-        {
-          headers,
-          method: "PATCH",
-          body: JSON.stringify({ color: color }),
-        }
-      )
-        .then(() => {
-          setBusLines((prevBusLines) => {
-            const busLinesWithoutSelectedBusLine = prevBusLines.filter(
-              (busLine) => busLine.idBusLine != selectedBusLineId
-            );
+    updateBusLine(selectedBusLineId, color)
+      .then(() => {
+        setBusLines((prevBusLines) => {
+          const busLinesWithoutSelectedBusLine = prevBusLines.filter(
+            (busLine) => busLine.idBusLine != selectedBusLineId
+          );
 
-            const busLineWithNewColor: LineType = {
-              ...selectedBusLine,
-              color,
-            };
+          const busLineWithNewColor: LineType = {
+            ...selectedBusLine,
+            color,
+          };
 
-            return [...busLinesWithoutSelectedBusLine, busLineWithNewColor];
-          });
-        })
-        .catch((err) => console.log(err));
-    }).catch(() => {
-      addNewUserInformation({
-        displayed: true,
-        level: MessageLevelEnum.error,
-        type: MessageTypeEnum.global,
-        content:
-          "Une erreur est survenue lors de la modification de couleur de la ligne",
+          return [...busLinesWithoutSelectedBusLine, busLineWithNewColor];
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        addNewUserInformation({
+          displayed: true,
+          level: MessageLevelEnum.error,
+          type: MessageTypeEnum.global,
+          content:
+            "Une erreur est survenue lors de la modification de couleur de la ligne",
+        });
       });
-    });
   };
 
   return (

@@ -51,3 +51,17 @@ export async function uploadFile(formData: FormData) {
     );
   }, true);
 }
+
+export async function updateBusLine(selectedBusLineId: number, color: string) {
+  return authenticateWrap((headers) => {
+    return fetch(
+      import.meta.env.VITE_BACK_URL +
+        `/map/${getActiveMapId()}/bus_line/${selectedBusLineId}`,
+      {
+        headers,
+        method: "PATCH",
+        body: JSON.stringify({ color: color }),
+      }
+    );
+  });
+}
