@@ -304,34 +304,20 @@ export async function computePolyline(
   stops: PointIdentityType[]
 ) {
   const [, { isInReadMode }] = useStateAction();
-
-  function exit() {
-    const opacity = 0.8;
-    return Promise.resolve(getBusLinePolyline(color, [], opacity));
-  }
-
-  const polylineLatLngs = getLatLngs(stops);
-
-  // If polylineLatLngs is empty, return an empty polyline
-  if (polylineLatLngs.length === 0) {
-    return exit();
-  }
-
+  let polylineLatLngs = getLatLngs(stops);
+  let opacity = 1;
   if (isInReadMode()) {
-    const polylineLatLngsAwaited = (await fetchOnRoadPolyline(polylineLatLngs))
+    const readModePolylineLatLngs = (await fetchOnRoadPolyline(polylineLatLngs))
       .latlngs;
-
+    const readModeOpacity = 0.8;
     // Need to check if is still in readMode because of await
     if (isInReadMode()) {
-      const opacity = 0.8;
-
-      return getBusLinePolyline(color, polylineLatLngsAwaited, opacity);
-    } else {
-      return exit();
+      polylineLatLngs = readModePolylineLatLngs;
+      opacity = readModeOpacity;
     }
-  } else {
-    return exit();
   }
+  const busLinePolyline = getBusLinePolyline(color, polylineLatLngs, opacity);
+  return busLinePolyline;
 }
 
 function computeArrowsInReadMode(latLngs: L.LatLng[], color: string) {
@@ -496,18 +482,18 @@ export function fetchBusLines() {
           }
         }
 
-        // console.log("lines", lines);
+        console.log("lines", lines);
 
         // TODO: check why this part of the code breaks the hot reload
         for (const line of lines) {
           // 1. Calcul de la polyline, à vol d'oiseau ou sur route
-          // console.log("line.color", line.color);
-          // console.log("line.stops", line.stops);
+          console.log("line.color", line.color);
+          console.log("line.stops", line.stops);
           computePolyline(line.color, line.stops).then((busLinePolyline) => {
-            // console.log("busLinePolyline", busLinePolyline);
+            console.log("busLinePolyline", busLinePolyline);
 
             const polylineLatLngs = busLinePolyline.getLatLngs() as L.LatLng[];
-            // console.log("polylineLatLngs", polylineLatLngs);
+            console.log("polylineLatLngs", polylineLatLngs);
 
             if (polylineLatLngs.length === 0) {
               return;
