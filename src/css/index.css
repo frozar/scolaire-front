@@ -54,6 +54,7 @@ code {
   line-height: 24px;
   color: #555;
 }
+
 .legend h4 {
   text-align: center;
   font-size: 16px;
@@ -263,9 +264,11 @@ code {
   left: 50%;
   pointer-events: none;
 }
+
 .invisible_child {
   display: none;
 }
+
 .highlight {
   opacity: 100%;
   background-color: hsl(180, 3%, 23%, 50%);
@@ -275,9 +278,11 @@ code {
   z-index: 1002;
   display: block;
 }
+
 .standard-list {
   list-style-type: none;
 }
+
 .standard-list li:before {
   padding: 0px 8px;
   content: "  - ";
@@ -286,6 +291,7 @@ code {
 #ramassages-board {
   @apply w-full mx-16 mt-5;
 }
+
 #ramassages-board > header > h1 {
   @apply text-2xl;
 }
@@ -296,9 +302,11 @@ code {
   width: 100%;
   margin: 20px 0;
 }
+
 #ramassages-board > header > #filters > .left {
   @apply flex w-1/2 gap-3;
 }
+
 #ramassages-board > header > #filters > .left > .btn-arret-add {
   width: 92px;
   height: 45px;
@@ -309,6 +317,7 @@ code {
   border-radius: 5px;
   transition-duration: 400ms;
 }
+
 #ramassages-board > header > #filters > .left > .btn-arret-add:hover {
   background: #0cb778;
 }
@@ -316,6 +325,7 @@ code {
 #ramassages-board > header > #filters > .left > .input-field {
   @apply relative rounded-md shadow-sm;
 }
+
 #ramassages-board
   > header
   > #filters
@@ -337,12 +347,15 @@ code {
 #ramassages-board > .board-content {
   @apply mt-8 flow-root mx-8;
 }
+
 #ramassages-board > .board-content > div {
   @apply -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8;
 }
+
 #ramassages-board > .board-content > div > table {
   @apply min-w-full divide-y divide-gray-300;
 }
+
 #ramassages-board > .board-content > div > table > thead > tr > th {
   @apply px-3 py-3.5 text-left text-sm font-semibold text-gray-900;
 }
@@ -353,6 +366,7 @@ code {
   overflow-y: scroll;
   scroll-behavior: smooth;
 }
+
 #ramassages-board > .board-content > div > table > tbody > tr > td {
   @apply whitespace-nowrap px-3 py-4 text-sm text-gray-500;
 }
@@ -389,6 +403,7 @@ code {
 #edit-stop > section > h3 {
   @apply text-xl;
 }
+
 #edit-stop > section > div > label {
   color: #062f3f;
 }
@@ -404,6 +419,7 @@ code {
   display: flex;
   gap: 1em;
 }
+
 #edit-stop > section > div.action > button {
   padding: 10px 20px;
   border-radius: 5px;
