@@ -163,9 +163,9 @@ export default function () {
     return Number.isFinite(maxCandidat) ? maxCandidat : 0;
   };
 
-  createEffect(() => {
-    console.log("points()", points());
-  });
+  // createEffect(() => {
+  //   console.log("points()", points());
+  // });
 
   return (
     <For each={points()}>

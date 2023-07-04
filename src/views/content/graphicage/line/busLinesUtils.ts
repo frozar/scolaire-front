@@ -29,12 +29,14 @@ const [, { getActiveMapId }] = useStateGui();
 export function getLatLngs(stops: PointIdentityType[]): L.LatLng[] {
   const latlngs: L.LatLng[] = [];
 
+  // TODO: linkMap must be reactive => signal
   for (const pointIdentity of stops) {
     const circle = linkMap.get(pointIdentity.idPoint);
     if (circle) {
       latlngs.push(circle.getLatLng());
     }
   }
+
   return latlngs;
 }
 
@@ -303,10 +305,17 @@ export async function computePolyline(
 ) {
   const [, { isInReadMode }] = useStateAction();
 
-  // TODO: Check the behavior of this function of stop is empty
-  // console.log("stops", stops);
+  function exit() {
+    const opacity = 0.8;
+    return Promise.resolve(getBusLinePolyline(color, [], opacity));
+  }
 
   const polylineLatLngs = getLatLngs(stops);
+
+  // If polylineLatLngs is empty, return an empty polyline
+  if (polylineLatLngs.length === 0) {
+    return exit();
+  }
 
   if (isInReadMode()) {
     const polylineLatLngsAwaited = (await fetchOnRoadPolyline(polylineLatLngs))
@@ -317,7 +326,11 @@ export async function computePolyline(
       const opacity = 0.8;
 
       return getBusLinePolyline(color, polylineLatLngsAwaited, opacity);
+    } else {
+      return exit();
     }
+  } else {
+    return exit();
   }
 }
 
@@ -483,10 +496,23 @@ export function fetchBusLines() {
           }
         }
 
+        // console.log("lines", lines);
+
+        // TODO: check why this part of the code breaks the hot reload
         for (const line of lines) {
           // 1. Calcul de la polyline, à vol d'oiseau ou sur route
+          // console.log("line.color", line.color);
+          // console.log("line.stops", line.stops);
           computePolyline(line.color, line.stops).then((busLinePolyline) => {
+            // console.log("busLinePolyline", busLinePolyline);
+
             const polylineLatLngs = busLinePolyline.getLatLngs() as L.LatLng[];
+            // console.log("polylineLatLngs", polylineLatLngs);
+
+            if (polylineLatLngs.length === 0) {
+              return;
+            }
+
             // 2. Calcul des fléches
             const arrows = computeArrows(polylineLatLngs, line.color);
 

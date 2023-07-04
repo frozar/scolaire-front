@@ -1,5 +1,5 @@
-import { Dynamic } from "solid-js/web";
 import { For, JSX } from "solid-js";
+import { Dynamic } from "solid-js/web";
 import InformationContent from "./InformationContent";
 
 import { useStateAction } from "../../../../StateAction";
