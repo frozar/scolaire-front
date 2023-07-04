@@ -14,6 +14,8 @@ export default function (props: LeftMenuItemLabelProps) {
   return (
     <span
       class="left-menu-item-label"
+      // TODO Class aren't useful, the specific color are setted in LeftMenuItem.
+      //      Delete corresponding CSS here or in LeftMenuItem. Duplicate "active class" is may not be useful
       classList={{
         disabled: mergedProps.isDisabled,
         active: !mergedProps.isDisabled && mergedProps.isActive,
