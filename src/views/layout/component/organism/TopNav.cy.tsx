@@ -8,7 +8,7 @@ describe("TopNav component", () => {
     cy.get("button").compareSnapshot("TopNav", 0.01);
   });
 
-  it("TopNav check children", () => {
+  it("TopNav check login dropdown children", () => {
     cy.mount(() => <TopNav />);
 
     cy.get("#nav-top").find("button#login-btn").as("loginButton");
