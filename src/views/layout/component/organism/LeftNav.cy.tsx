@@ -38,6 +38,7 @@ describe("LeftNav component", () => {
       cy.wrap(component).invoke("css", "height", "700px");
     });
 
+    cy.wait(500);
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
     cy.get("#lateral-nav").compareSnapshot("LeftNav-open", 0.01);
