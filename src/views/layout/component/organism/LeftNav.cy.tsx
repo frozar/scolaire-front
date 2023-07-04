@@ -55,6 +55,10 @@ describe("LeftNav component", () => {
       cy.wrap(component).invoke("css", "height", "700px");
     });
 
+    cy.get("#lateral-close").then((component) => {
+      cy.wrap(component).invoke("css", "outline", "none");
+    });
+
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
     cy.get("#lateral-nav").compareSnapshot("LeftNav-closed", 0.01);
