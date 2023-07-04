@@ -17,6 +17,10 @@ describe("LeftNav component", () => {
       />
     ));
 
+    cy.get("#lateral-nav").then((component) => {
+      cy.wrap(component).invoke("css", "height", "700px");
+    });
+
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
     cy.get("#lateral-nav").compareSnapshot("LeftNav-closed", 0.01);
@@ -29,6 +33,11 @@ describe("LeftNav component", () => {
         toggleDisplayedLeftMenu={props.toggleDisplayedLeftMenu}
       />
     ));
+
+    cy.get("#lateral-nav").then((component) => {
+      cy.wrap(component).invoke("css", "height", "700px");
+    });
+
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
     cy.get("#lateral-nav").compareSnapshot("LeftNav-open", 0.01);
@@ -41,6 +50,10 @@ describe("LeftNav component", () => {
         toggleDisplayedLeftMenu={props.toggleDisplayedLeftMenu}
       />
     ));
+
+    cy.get("#lateral-nav").then((component) => {
+      cy.wrap(component).invoke("css", "height", "700px");
+    });
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
