@@ -11,6 +11,15 @@ export default defineConfig({
       bundler: "vite",
     },
     setupNodeEvents(on, config) {
+      on("task", {
+        // In the test file in the it callback use it like
+        // cy.task('log', msg)
+        log(message) {
+          console.log(message);
+          return null;
+        },
+      });
+
       getCompareSnapshotsPlugin(on, config, {
         rootDir: "cypress/",
       });
