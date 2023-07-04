@@ -1,0 +1,7 @@
+.lateral-nav-item {
+  font-size: x-large;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

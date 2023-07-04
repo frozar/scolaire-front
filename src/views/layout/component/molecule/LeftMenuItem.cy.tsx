@@ -1,7 +1,7 @@
 import LeftMenuItem from "./LeftMenuItem";
 
-import "../../../../css/tailwind.css";
-
+// import "../../../../css/tailwind.css";
+// import "../../../../css/testImport.css";
 describe("LeftMenuItem component", () => {
   const props = {
     isDisabled: false,
