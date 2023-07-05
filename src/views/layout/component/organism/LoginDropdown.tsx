@@ -69,11 +69,7 @@ export default function (props: LoginDropdownProps) {
       ref={refLoginButton}
       onClick={toggleSubComponentDisplayed}
       use:ClickOutside={(e: MouseEvent) => {
-        if (!e.target) {
-          return;
-        }
-
-        if (e.target != refLoginButton && displayedSubComponent()) {
+        if (e.target && e.target != refLoginButton && displayedSubComponent()) {
           toggleSubComponentDisplayed();
         }
       }}
