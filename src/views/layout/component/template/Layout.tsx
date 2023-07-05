@@ -5,7 +5,7 @@ import "./Layout.css";
 
 export default function () {
   return (
-    <div>
+    <div id="layout">
       <TopNav />
       <div id="left-menu-container">
         <LeftNav />
