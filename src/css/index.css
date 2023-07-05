@@ -1,15 +1,9 @@
 @import "./tailwind.css";
 @import "./menu.css";
 @import "./timeline.css";
-@import "./var.css";
 
-/* Class 'prevent-select' has been move in 'var.css'
-  TODO: remove 'prevent-select' from index.css */
-.prevent-select {
-  -webkit-user-select: none; /* Safari */
-  -ms-user-select: none; /* IE 10 and IE 11 */
-  user-select: none; /* Standard syntax */
-}
+/* TODO: to delete when useless (#edit-stop css no longer here)*/
+@import "./var.css";
 
 body,
 html {
@@ -60,6 +54,7 @@ code {
   line-height: 24px;
   color: #555;
 }
+
 .legend h4 {
   text-align: center;
   font-size: 16px;
@@ -185,12 +180,6 @@ code {
   transition: stroke 1s ease, fill 1s ease, fill-opacity 1s ease;
 }
 
-.prevent-select {
-  -webkit-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
 .label-point {
   color: white;
   font-weight: bold;
@@ -275,9 +264,11 @@ code {
   left: 50%;
   pointer-events: none;
 }
+
 .invisible_child {
   display: none;
 }
+
 .highlight {
   opacity: 100%;
   background-color: hsl(180, 3%, 23%, 50%);
@@ -287,9 +278,11 @@ code {
   z-index: 1002;
   display: block;
 }
+
 .standard-list {
   list-style-type: none;
 }
+
 .standard-list li:before {
   padding: 0px 8px;
   content: "  - ";
@@ -297,77 +290,85 @@ code {
 
 #ramassages-board {
   @apply w-full mx-16 mt-5;
-  & > header {
-    > h1 {
-      @apply text-2xl;
-    }
+}
 
-    > #filters {
-      display: flex;
-      justify-content: space-between;
-      width: 100%;
-      margin: 20px 0;
-      > .left {
-        @apply flex w-1/2 gap-3;
+#ramassages-board > header > h1 {
+  @apply text-2xl;
+}
 
-        > .btn-arret-add {
-          width: 92px;
-          height: 45px;
-          color: white;
-          /* Green-base */
+#ramassages-board > header > #filters {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin: 20px 0;
+}
 
-          background: #0cc683;
-          border-radius: 5px;
-          transition-duration: 400ms;
-          &:hover {
-            background: #0cb778;
-          }
-        }
+#ramassages-board > header > #filters > .left {
+  @apply flex w-1/2 gap-3;
+}
 
-        > .input-field {
-          @apply relative rounded-md shadow-sm;
-          > .input-search-logo {
-            @apply pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3;
-          }
+#ramassages-board > header > #filters > .left > .btn-arret-add {
+  width: 92px;
+  height: 45px;
+  color: white;
+  /* Green-base */
 
-          > input {
-            @apply block w-full rounded-md border-0 py-1.5 pl-10 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset   sm:text-sm sm:leading-6;
-            height: 45px;
-          }
-        }
-      }
+  background: #0cc683;
+  border-radius: 5px;
+  transition-duration: 400ms;
+}
 
-      > .right {
-        @apply flex gap-3;
-      }
-    }
-  }
+#ramassages-board > header > #filters > .left > .btn-arret-add:hover {
+  background: #0cb778;
+}
 
-  > .board-content {
-    @apply mt-8 flow-root mx-8;
+#ramassages-board > header > #filters > .left > .input-field {
+  @apply relative rounded-md shadow-sm;
+}
 
-    > div {
-      @apply -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8;
-      > table {
-        @apply min-w-full divide-y divide-gray-300;
+#ramassages-board
+  > header
+  > #filters
+  > .left
+  > .input-field
+  > .input-search-logo {
+  @apply pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3;
+}
 
-        > thead > tr > th {
-          @apply px-3 py-3.5 text-left text-sm font-semibold text-gray-900;
-        }
+#ramassages-board > header > #filters > .left > .input-field > input {
+  @apply block w-full rounded-md border-0 py-1.5 pl-10 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset   sm:text-sm sm:leading-6;
+  height: 45px;
+}
 
-        > tbody {
-          @apply divide-y divide-gray-200;
-          overflow-y: visible;
-          overflow-y: scroll;
-          scroll-behavior: smooth;
+#ramassages-board > header > #filters > .right {
+  @apply flex gap-3;
+}
 
-          > tr > td {
-            @apply whitespace-nowrap px-3 py-4 text-sm text-gray-500;
-          }
-        }
-      }
-    }
-  }
+#ramassages-board > .board-content {
+  @apply mt-8 flow-root mx-8;
+}
+
+#ramassages-board > .board-content > div {
+  @apply -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8;
+}
+
+#ramassages-board > .board-content > div > table {
+  @apply min-w-full divide-y divide-gray-300;
+}
+
+#ramassages-board > .board-content > div > table > thead > tr > th {
+  @apply px-3 py-3.5 text-left text-sm font-semibold text-gray-900;
+}
+
+#ramassages-board > .board-content > div > table > tbody {
+  @apply divide-y divide-gray-200;
+  overflow-y: visible;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+}
+
+#ramassages-board > .board-content > div > table > tbody > tr > td {
+  @apply whitespace-nowrap px-3 py-4 text-sm text-gray-500;
 }
 
 #edit-stop {
@@ -379,55 +380,53 @@ code {
   transition-duration: 400ms;
   padding: 10px;
   border-left: 1px solid rgb(26, 26, 26);
-  &.active {
-    transform: translateX(-400px);
-  }
+}
 
-  > header {
-    > h1 {
-      @apply text-2xl;
-    }
+#edit-stop.active {
+  transform: translateX(-400px);
+}
 
-    > button {
-      width: 30px;
-      height: 30px;
-      color: var(--green-base);
-      > svg {
-        @apply w-full h-full;
-      }
-    }
-  }
+#edit-stop > header > h1 {
+  @apply text-2xl;
+}
 
-  > section {
-    > h3 {
-      @apply text-xl;
-    }
-    > div {
-      > label {
-        color: #062f3f;
-      }
+#edit-stop > header > button {
+  width: 30px;
+  height: 30px;
+  color: var(--green-base);
+}
 
-      > input {
-        border: 1.5px solid rgba(128, 128, 128, 0.649);
-        border-radius: 5px;
-        height: 45px;
-        padding-left: 10px;
-      }
-    }
+#edit-stop > header > button > svg {
+  @apply w-full h-full;
+}
 
-    > div.action {
-      display: flex;
-      gap: 1em;
-      > button {
-        padding: 10px 20px;
-        border-radius: 5px;
-        color: white;
-        background-color: var(--red-base);
-      }
+#edit-stop > section > h3 {
+  @apply text-xl;
+}
 
-      > button.green {
-        background-color: var(--green-base);
-      }
-    }
-  }
+#edit-stop > section > div > label {
+  color: #062f3f;
+}
+
+#edit-stop > section > div > input {
+  border: 1.5px solid rgba(128, 128, 128, 0.649);
+  border-radius: 5px;
+  height: 45px;
+  padding-left: 10px;
+}
+
+#edit-stop > section > div.action {
+  display: flex;
+  gap: 1em;
+}
+
+#edit-stop > section > div.action > button {
+  padding: 10px 20px;
+  border-radius: 5px;
+  color: white;
+  background-color: var(--red-base);
+}
+
+#edit-stop > section > div.action > button.green {
+  background-color: var(--green-base);
 }

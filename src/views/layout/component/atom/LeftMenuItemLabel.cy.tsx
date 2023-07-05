@@ -1,4 +1,5 @@
 import LeftMenuItemLabel from "./LeftMenuItemLabel";
+
 describe("LeftMenuItemLabel component", () => {
   const props = {
     isActive: false,
