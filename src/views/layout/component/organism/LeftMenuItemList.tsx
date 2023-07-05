@@ -29,7 +29,6 @@ export default function (props: LeftMenuItemProps) {
               isDisabled={isDisabled}
               Logo={Logo}
               label={label}
-              // displayedLabel={props.displayedLabel}
               isSelected={isSelected()}
               onClick={() => mergedProps.setSelectedMenu(menuItem)}
             />
