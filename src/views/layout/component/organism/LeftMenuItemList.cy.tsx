@@ -9,10 +9,9 @@ describe("LeftMenuItemList component", () => {
 
   it("LeftMenuItemList check snapshot with displayed labels", () => {
     cy.mount(() => (
-      <LeftMenuItemList
-        displayedLabel={props.displayedLabel}
-        getSelectedMenu={props.getSelectedMenu}
-      />
+      <div id="lateral-nav" class="active">
+        <LeftMenuItemList getSelectedMenu={props.getSelectedMenu} />
+      </div>
     ));
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -22,10 +21,7 @@ describe("LeftMenuItemList component", () => {
 
   it("LeftMenuItemList check snapshot without displayed labels", () => {
     cy.mount(() => (
-      <LeftMenuItemList
-        displayedLabel={!props.displayedLabel}
-        getSelectedMenu={props.getSelectedMenu}
-      />
+      <LeftMenuItemList getSelectedMenu={props.getSelectedMenu} />
     ));
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -37,10 +33,9 @@ describe("LeftMenuItemList component", () => {
     props.getSelectedMenu = () => "graphicage";
 
     cy.mount(() => (
-      <LeftMenuItemList
-        displayedLabel={props.displayedLabel}
-        getSelectedMenu={props.getSelectedMenu}
-      />
+      <div id="lateral-nav" class="active">
+        <LeftMenuItemList getSelectedMenu={props.getSelectedMenu} />
+      </div>
     ));
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
