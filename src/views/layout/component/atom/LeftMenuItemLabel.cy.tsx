@@ -7,7 +7,24 @@ describe("LeftMenuItemLabel component", () => {
     label: "Se connecter",
   };
 
-  it("When not authenticated", () => {
+  it("Check snapshot", () => {
+    cy.mount(() => (
+      <div id="lateral-nav" class="active">
+        <LeftMenuItemLabel
+          isActive={props.isActive}
+          isDisabled={props.isDisabled}
+          label={props.label}
+        />
+      </div>
+    ));
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
+    cy.get("span").compareSnapshot("label", 0.01);
+    cy.get("span").contains(props.label);
+  });
+
+  it("Check snapshot hidden", () => {
     cy.mount(() => (
       <LeftMenuItemLabel
         isActive={props.isActive}
@@ -18,21 +35,6 @@ describe("LeftMenuItemLabel component", () => {
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
-    cy.get("span").compareSnapshot("authenticated-label", 0.01);
-    cy.get("span").contains(props.label);
-  });
-
-  it("When authenticated", () => {
-    props.label = "Se déconnecter";
-
-    cy.mount(() => (
-      <LeftMenuItemLabel
-        isActive={props.isActive}
-        isDisabled={props.isDisabled}
-        label={props.label}
-      />
-    ));
-
-    cy.get("span").contains(props.label);
+    cy.get("span").compareSnapshot("label-hidden", 0.01);
   });
 });

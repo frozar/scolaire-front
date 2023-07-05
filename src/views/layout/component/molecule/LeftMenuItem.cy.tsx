@@ -16,7 +16,6 @@ describe("LeftMenuItem component", () => {
       <LeftMenuItem
         isDisabled={props.isDisabled}
         label={props.label}
-        displayedLabel={props.displayedLabel}
         isSelected={props.isSelected}
         Logo={props.Logo}
         onClick={onClickSpy}
@@ -31,14 +30,15 @@ describe("LeftMenuItem component", () => {
 
   it("Check snapshot when selected", () => {
     cy.mount(() => (
-      <LeftMenuItem
-        isDisabled={props.isDisabled}
-        label={props.label}
-        displayedLabel={props.displayedLabel}
-        isSelected={props.isSelected}
-        Logo={props.Logo}
-        onClick={props.onClick}
-      />
+      <div id="lateral-nav" class="active">
+        <LeftMenuItem
+          isDisabled={props.isDisabled}
+          label={props.label}
+          isSelected={props.isSelected}
+          Logo={props.Logo}
+          onClick={props.onClick}
+        />
+      </div>
     ));
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -46,16 +46,33 @@ describe("LeftMenuItem component", () => {
     cy.get("li").compareSnapshot("LeftMenuItem-selected", 0.01);
   });
 
-  it("Check snapshot when not selected", () => {
+  it("Check snapshot hidden label", () => {
     cy.mount(() => (
       <LeftMenuItem
         isDisabled={props.isDisabled}
         label={props.label}
-        displayedLabel={props.displayedLabel}
         isSelected={!props.isSelected}
         Logo={props.Logo}
         onClick={props.onClick}
       />
+    ));
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
+    cy.get("li").compareSnapshot("LeftMenuItem-label-hidden", 0.01);
+  });
+
+  it("Check snapshot when not selected", () => {
+    cy.mount(() => (
+      <div id="lateral-nav" class="active">
+        <LeftMenuItem
+          isDisabled={props.isDisabled}
+          label={props.label}
+          isSelected={!props.isSelected}
+          Logo={props.Logo}
+          onClick={props.onClick}
+        />
+      </div>
     ));
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -65,14 +82,15 @@ describe("LeftMenuItem component", () => {
 
   it("Check snapshot when disabled", () => {
     cy.mount(() => (
-      <LeftMenuItem
-        isDisabled={!props.isDisabled}
-        label={props.label}
-        displayedLabel={props.displayedLabel}
-        isSelected={!props.isSelected}
-        Logo={props.Logo}
-        onClick={props.onClick}
-      />
+      <div id="lateral-nav" class="active">
+        <LeftMenuItem
+          isDisabled={!props.isDisabled}
+          label={props.label}
+          isSelected={!props.isSelected}
+          Logo={props.Logo}
+          onClick={props.onClick}
+        />
+      </div>
     ));
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -85,7 +103,6 @@ describe("LeftMenuItem component", () => {
       <LeftMenuItem
         isDisabled={props.isDisabled}
         label={props.label}
-        displayedLabel={!props.displayedLabel}
         isSelected={props.isSelected}
         Logo={props.Logo}
         onClick={props.onClick}
