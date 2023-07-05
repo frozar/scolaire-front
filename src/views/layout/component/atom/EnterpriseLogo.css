@@ -1,7 +1,11 @@
-.fill-white {
-  fill: white;
+.entreprise-logo-text {
+  @apply invisible fill-white opacity-0 transition-opacity delay-200;
 }
 
-.fill-green {
-  @apply fill-green-base;
+#left-nav.active .entreprise-logo-text {
+  @apply visible opacity-100;
+}
+
+.entreprise-logo-icon {
+  @apply fill-[var(--green-base)];
 }

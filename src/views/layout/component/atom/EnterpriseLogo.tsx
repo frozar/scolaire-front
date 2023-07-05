@@ -3,7 +3,7 @@ import "./EnterpriseLogo.css";
 export default function () {
   return (
     <svg
-      class="logo"
+      class="entreprise-logo"
       viewBox="0 0 726 148"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
