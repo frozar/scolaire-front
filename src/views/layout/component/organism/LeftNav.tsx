@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import { Show, mergeProps } from "solid-js";
-=======
-import { Show, mergeProps, onCleanup } from "solid-js";
->>>>>>> 376e44c (Clean the left menu transition for using only the CSS transition and limit the use of JS)
 
 import { useStateGui } from "../../../../StateGui";
 import ClosePictogram from "../atom/ClosePictogram";
