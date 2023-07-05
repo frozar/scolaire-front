@@ -1,4 +1,4 @@
-import { Show, mergeProps, onCleanup } from "solid-js";
+import { Show, mergeProps } from "solid-js";
 
 import { useStateGui } from "../../../../StateGui";
 import ClosePictogram from "../atom/ClosePictogram";
@@ -22,47 +22,7 @@ export default function (props: LeftNavProps) {
     props
   );
 
-  // const [displayedLabel, setDisplayedLabel] = createSignal(false);
-
   let refDivLeftMenu!: HTMLElement;
-
-  // function computeIsOpened(width: string) {
-  //   const widthNumber = parseFloat(width.replace("px", ""));
-  //   return 72 < widthNumber;
-  // }
-
-  // function handleTransitionStart() {
-  //   const isOpened = computeIsOpened(getComputedStyle(refDivLeftMenu).width);
-  //   if (isOpened) {
-  //     setDisplayedLabel(false);
-  //   }
-  // }
-
-  // function handleTransitionEnd() {
-  //   const isOpened = computeIsOpened(getComputedStyle(refDivLeftMenu).width);
-  //   if (isOpened) {
-  //     setDisplayedLabel(true);
-  //   }
-  // }
-
-  // onMount(() => {
-  //   setDisplayedLabel(mergedProps.getDisplayedLeftMenu());
-
-  //   if (!refDivLeftMenu) {
-  //     return;
-  //   }
-
-  //   refDivLeftMenu.addEventListener("transitionstart", handleTransitionStart);
-  //   refDivLeftMenu.addEventListener("transitionend", handleTransitionEnd);
-  // });
-
-  onCleanup(() => {
-    // refDivLeftMenu.removeEventListener(
-    //   "transitionstart",
-    //   handleTransitionStart
-    // );
-    // refDivLeftMenu.removeEventListener("transitionend", handleTransitionEnd);
-  });
 
   return (
     <div id="left-nav-container">

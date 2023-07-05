@@ -4,11 +4,11 @@
   @apply invisible fill-white opacity-0 transition-opacity delay-200;
 }
 
-.uncolapse .entreprise-logo-text {
+#lateral-nav.active .entreprise-logo-text {
   @apply visible opacity-100;
 }
 
 .entreprise-logo-icon {
   /* TODO Why do we use var.css and don't setup the colors (and vars) in tailwind.config.js ? */
-  fill: var(--green-base);
+  @apply fill-[var(--green-base)];
 }
