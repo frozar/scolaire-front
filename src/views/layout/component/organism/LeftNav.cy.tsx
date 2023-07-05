@@ -52,18 +52,18 @@ describe("LeftNav component", () => {
       cy.wrap(component).invoke("css", "height", "700px");
     });
 
-    cy.get("#left-close").then((component) => {
+    cy.get("#left-nav-btn-colapse").then((component) => {
       cy.wrap(component).invoke("css", "outline", "none");
     });
 
     cy.get("#left-nav").compareSnapshot("LeftNav-closed", 0.01);
 
-    cy.get("#left-close").click();
+    cy.get("#left-nav-btn-colapse").click();
     cy.wait(400);
 
     cy.get("#left-nav").compareSnapshot("LeftNav-open", 0.01);
 
-    cy.get("#left-close").click();
+    cy.get("#left-nav-btn-colapse").click();
     cy.wait(400);
 
     cy.get("#left-nav").compareSnapshot("LeftNav-closed", 0.01);
