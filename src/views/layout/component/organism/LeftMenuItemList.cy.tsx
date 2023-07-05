@@ -1,8 +1,6 @@
 import { SelectedMenuType } from "../../../../type";
 import LeftMenuItemList from "./LeftMenuItemList";
 
-import "../../../../css/tailwind.css";
-
 describe("LeftMenuItemList component", () => {
   const props = {
     displayedLabel: true,

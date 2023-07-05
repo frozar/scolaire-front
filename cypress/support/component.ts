@@ -17,19 +17,7 @@
 
 import "./commands";
 
-// import "tailwindcss/tailwind.css";
-
-// import "../../src/css/index.css";
-// import "../../src/css/var.css";
-
-import "./src/css/tailwind.css";
-// import "/code/cypress/support/testImport.css";
-
-// import "./support/testImport.css";
-
-// import "../../src/css/tailwind.css";
-// import "../../src/css/testImport.css";
-// import "./testImport.css";
+import "tailwindcss/tailwind.css";
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')

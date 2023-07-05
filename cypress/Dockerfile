@@ -31,14 +31,10 @@ RUN apt-get install -y xvfb xdg-utils libgtk-3-0 lsb-release libappindicator3-1 
     && google-chrome --version
 
 COPY . /code
-# Add volumes
-VOLUME /code/cypress-visual-screenshots
-VOLUME /code/cypress-visual-report  
-VOLUME /code/src
 
 WORKDIR /code
 
-# # Install dev packages
+# Install dev packages
 COPY ./package.json .
 COPY ./package-lock.json .
 RUN npm install --force
