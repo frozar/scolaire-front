@@ -174,10 +174,10 @@
 .side-map-menu {
   @apply absolute right-5  top-6 bg-[#252525] p-2 z-[999] rounded-lg;
   transition-duration: 300ms;
+}
 
-  &.active {
-    @apply translate-x-[-250px];
-  }
+.side-map-menu.active {
+  @apply translate-x-[-250px];
 }
 
 #side-map-toggler {
@@ -192,39 +192,37 @@
   height: 100%;
   padding: 10px;
   padding-top: 1rem;
+}
 
-  &.active {
-    @apply translate-x-[-250px];
-  }
+#side-map-toggler.active {
+  @apply translate-x-[-250px];
+}
 
-  > header {
-    > span.close-toggler {
-      position: absolute;
-      right: 32px;
-      top: 32px;
-      width: 32px;
-      height: 32px;
-      opacity: 1;
-    }
+#side-map-toggler > header > span.close-toggler {
+  position: absolute;
+  right: 32px;
+  top: 32px;
+  width: 32px;
+  height: 32px;
+  opacity: 1;
+}
 
-    > span.close-toggler::before,
-    .close-toggler::after {
-      position: absolute;
-      left: 15px;
-      content: " ";
-      height: 33px;
-      width: 2px;
-      background-color: #333;
-    }
+#side-map-toggler > header > span.close-toggler::before,
+#side-map-toggler > header > span.close-toggler::after {
+  position: absolute;
+  left: 15px;
+  content: " ";
+  height: 33px;
+  width: 2px;
+  background-color: #333;
+}
 
-    > .close-toggler::before {
-      transform: rotate(45deg);
-    }
+#side-map-toggler > header > .close-toggler::before {
+  transform: rotate(45deg);
+}
 
-    > .close-toggler::after {
-      transform: rotate(-45deg);
-    }
-  }
+#side-map-toggler > header > .close-toggler::after {
+  transform: rotate(-45deg);
 }
 
 .tiles-map {
@@ -243,6 +241,7 @@
   cursor: pointer;
   @apply items-end;
 }
+
 .tiles-map > p {
   width: 100%;
   background: gray;
