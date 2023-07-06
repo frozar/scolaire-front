@@ -421,7 +421,8 @@ code {
   padding: 10px 20px;
   border-radius: 5px;
   color: white;
-  background-color: var(--red-base);
+  /* background-color: var(--red-base); */
+  @apply bg-red-base;
 }
 
 #edit-stop > section > div.action > button.green {

@@ -5,6 +5,7 @@
 }
 
 .fill-red {
-  background-color: var(--red-base);
+  /* background-color: var(--red-base); */
   color: white;
+  @apply bg-red-base;
 }
