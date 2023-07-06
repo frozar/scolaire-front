@@ -2,7 +2,7 @@ import Layout from "./Layout";
 
 describe("Layout template", () => {
   beforeEach(() => {
-    cy.mount(Layout);
+    cy.mount(() => <Layout />);
 
     cy.get("#lateral-nav").then((lateralNav) => {
       cy.wrap(lateralNav).invoke("css", "height", "700px");
