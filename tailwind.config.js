@@ -9,6 +9,14 @@ module.exports = {
       layoutTop: "1400",
       layoutLeft: "1401",
     },
+    // colors: {
+    //   "green-base": "0cc683",
+    //   "red-base": "f44434",
+    //   "dark-teal": "062f3f",
+    //   "dark-shade-teal": "062f3fcc",
+    //   "gray-base": "aeb8b4",
+    //   "gray-shade-base": "ccd6d2",
+    // },
     extend: {},
   },
   purge: {
