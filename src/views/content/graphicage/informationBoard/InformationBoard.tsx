@@ -114,7 +114,6 @@ export function InformationBoard() {
       ref={refMenuContent}
       class="menu__custom"
       classList={{
-        // _active: getDisplayedLeftMenu(),
         active: getDisplayedInformationBoard(),
       }}
     >
