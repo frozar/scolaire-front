@@ -426,3 +426,18 @@ code {
 #edit-stop > section > div.action > button.green {
   background-color: var(--green-base);
 }
+
+.alert {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: 1rem;
+  /* to verify */
+  flex-direction: row;
+}
+
+.alert-info {
+  background-color: #3abff8;
+}
