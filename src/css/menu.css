@@ -87,24 +87,22 @@
 
 .export-modal-box {
   @apply flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0;
+}
 
-  > .dialog-box {
-    @apply relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg;
-  }
+.export-modal-box > .dialog-box {
+  @apply relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg;
+}
 
-  ,
-  .card-container {
-    @apply bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4 w-full;
+.export-modal-box .card-container {
+  @apply bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4 w-full;
+}
 
-    .card-container-title {
-      @apply mt-3 text-center sm:mt-0 sm:text-left w-full;
-    }
-  }
+.export-modal-box .card-container .card-container-title {
+  @apply mt-3 text-center sm:mt-0 sm:text-left w-full;
+}
 
-  ,
-  #modal-title {
-    @apply text-base font-semibold leading-6 text-gray-900;
-  }
+.export-modal-box #modal-title {
+  @apply text-base font-semibold leading-6 text-gray-900;
 }
 
 :root {
