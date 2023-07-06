@@ -2,20 +2,7 @@
   @apply flex flex-col flex-wrap w-[100vw] h-[100vh];
 }
 
-/* width: 100vw;
-    height: 100vh;
-    flex-wrap: wrap 
-    w-full
-    */
-
 #app-container {
   @apply relative;
   width: calc(100% - 70px);
 }
-
-/* TODO: to delete */
-/* Fixed property replaced with absolute, because "fixed" make problem with cypress snapshot it duplicate "list Items"  */
-/*
-#left-menu-container {
-  @apply z-[1400] absolute translate-y-[-60px] w-fit;
-} */

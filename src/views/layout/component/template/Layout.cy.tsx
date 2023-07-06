@@ -4,7 +4,11 @@ describe("Layout template", () => {
   beforeEach(() => {
     cy.mount(() => <Layout />);
 
-    cy.get("#lateral-nav").then((lateralNav) => {
+    cy.get("#left-nav-container").then((lateralNav) => {
+      cy.wrap(lateralNav).invoke("css", "height", "700px");
+    });
+
+    cy.get("#left-nav").then((lateralNav) => {
       cy.wrap(lateralNav).invoke("css", "height", "700px");
     });
 
@@ -12,7 +16,7 @@ describe("Layout template", () => {
       cy.wrap(layout).invoke("css", "height", "700px");
     });
 
-    cy.get("#lateral-close").then((closeLateralNavBtn) => {
+    cy.get("#left-close").then((closeLateralNavBtn) => {
       cy.wrap(closeLateralNavBtn).invoke("css", "outline", "none");
     });
 
@@ -56,7 +60,7 @@ describe("Layout template", () => {
   });
 
   it("Layout check lateral nav is open", () => {
-    cy.get("#lateral-close").click();
+    cy.get("#left-close").click();
     cy.wait(400);
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
