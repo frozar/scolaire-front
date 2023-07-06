@@ -38,6 +38,6 @@ module.exports = {
       ],
     },
   },
-  plugins: [require("daisyui"), "@tailwindcss/forms"],
-  // plugins: ["@tailwindcss/forms"],
+  // plugins: [require("daisyui"), "@tailwindcss/forms"],
+  plugins: ["@tailwindcss/forms"],
 };
