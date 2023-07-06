@@ -1,0 +1,14 @@
+/* TODO to delete after tailwind update realised (by Quentin) */
+@import "../../../../../../css/var.css";
+@import "../../../../../../css/utils.css";
+
+/* TODO revoir les couleurs en fonction de tailwind update */
+.information-board-tabs-item-label {
+  @apply text-gray-500;
+}
+
+.information-board-tabs-item-label.active {
+  @apply text-blue-600;
+}
+
+/* TODO ajouter le hover */

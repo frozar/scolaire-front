@@ -1,9 +1,12 @@
 import { For, JSX } from "solid-js";
-import { Dynamic } from "solid-js/web";
 import InformationContent from "./InformationContent";
 
 import { useStateAction } from "../../../../StateAction";
 import { useStateGui } from "../../../../StateGui";
+
+import InformationCircleIcon from "./component/atom/InformationCircleIcon";
+import SettingsIcon from "./component/atom/SettingsIcon";
+import InformationBoardTabsItem from "./component/molecule/InformationBoardTabsItem";
 
 const [stateAction, { toggleAltimetryAnimation }] = useStateAction();
 const [stateGui, { setSelectedTab, getDisplayedInformationBoard }] =
@@ -28,86 +31,27 @@ function SettingsContent(props: object) {
   );
 }
 
-function SettingsHorizontalIcon(props: object) {
-  return (
-    <svg
-      fill="none"
-      stroke="currentColor"
-      stroke-width={1.5}
-      viewBox="0 0 24 24"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
-      {...props}
-    >
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75"
-      />
-    </svg>
-  );
-}
-
-export function InformationCircleIcon(props: object) {
-  return (
-    <svg
-      fill="none"
-      stroke="currentColor"
-      stroke-width={1.5}
-      viewBox="0 0 24 24"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
-      {...props}
-    >
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z"
-      />
-    </svg>
-  );
-}
-
-function InformationName() {
-  return <span>Informations</span>;
-}
-
-function SettingsName() {
-  return <span>Paramètres</span>;
-}
-
 export function InformationBoard() {
   let refMenuContent!: HTMLDivElement;
 
-  type TabValueType = {
-    tabLabel: (props: object & { width: string }) => JSX.Element;
-    tabContent: (props: object) => JSX.Element;
-    tabName: (props: object) => JSX.Element;
-  };
-  type TabType = {
-    info: TabValueType;
-    settings: TabValueType;
+  type InformationBoardTabType = {
+    icon: () => JSX.Element;
+    label: string;
+    content: (props: object) => JSX.Element;
   };
 
-  const tabs: TabType = {
-    info: {
-      tabLabel: InformationCircleIcon,
-      tabContent: InformationContent,
-      tabName: InformationName,
+  const tabs: InformationBoardTabType[] = [
+    {
+      icon: InformationCircleIcon,
+      content: InformationContent,
+      label: "Informations",
     },
-    settings: {
-      tabLabel: SettingsHorizontalIcon,
-      tabContent: SettingsContent,
-      tabName: SettingsName,
+    {
+      icon: SettingsIcon,
+      content: SettingsContent,
+      label: "Paramètres",
     },
-  };
-  type TabKey = keyof typeof tabs;
-
-  function validateTabKey(value: string): asserts value is TabKey {
-    if (!(value in tabs)) {
-      throw Error("invalid tab key");
-    }
-  }
+  ];
 
   return (
     <div
@@ -118,30 +62,38 @@ export function InformationBoard() {
       }}
     >
       <nav aria-label="Tabs">
-        <For each={Object.keys(tabs)}>
-          {(value: string) => {
-            validateTabKey(value);
-            const tabKey = value as keyof typeof tabs;
-            const TabLabelComponent = tabs[tabKey].tabLabel;
-            const TabNameComponent = tabs[tabKey].tabName;
-            return (
-              <button
-                classList={{
-                  "group active": stateGui.selectedTab === tabKey,
-                  group: stateGui.selectedTab != tabKey,
-                }}
-                onClick={() => setSelectedTab(tabKey)}
-              >
-                <TabLabelComponent width="24px" />
-                <TabNameComponent />
-              </button>
-            );
-          }}
+        <For each={tabs}>
+          {
+            (tab, key) => (
+              <InformationBoardTabsItem
+                label={tab.label}
+                icon={tab.icon}
+                // TODO change the selectdTab for using the tabKey
+                isActive={stateGui.selectedTab === key()}
+                onClick={() => setSelectedTab(key())}
+              />
+            )
+
+            // validateTabKey(value);
+            // const tabKey = value as keyof typeof tabs;
+            // const TabLabelComponent = tabs[tabKey].tabLabel;
+            // const TabNameComponent = tabs[tabKey].tabName;
+            // return (
+            //   <button
+            //     classList={{
+            //       "group active": stateGui.selectedTab === tabKey,
+            //       group: stateGui.selectedTab != tabKey,
+            //     }}
+            //     onClick={() => setSelectedTab(tabKey)}
+            //   >
+            //     <TabLabelComponent width="24px" />
+            //     <TabNameComponent />
+            //   </button>
+            // );
+          }
         </For>
       </nav>
-      <Dynamic
-        component={tabs[stateGui.selectedTab as keyof typeof tabs].tabContent}
-      />
+      {/* <Dynamic component={tabs[stateGui.selectedTab].content} /> */}
     </div>
   );
 }
