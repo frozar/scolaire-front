@@ -389,7 +389,8 @@ code {
 #edit-stop > header > button {
   width: 30px;
   height: 30px;
-  color: var(--green-base);
+  /* color: var(--green-base); */
+  color: theme(colors.green-base);
 }
 
 #edit-stop > header > button > svg {
@@ -424,7 +425,8 @@ code {
 }
 
 #edit-stop > section > div.action > button.green {
-  background-color: var(--green-base);
+  /* background-color: var(--green-base); */
+  @apply bg-green-base;
 }
 
 /* Workging */

@@ -6,7 +6,8 @@
 }
 
 .left-menu-item-label.active {
-  color: var(--green-base);
+  /* color: var(--green-base); */
+  color: theme(colors.green-base);
 }
 
 .left-menu-item-label.disabled {

@@ -4,8 +4,9 @@
   @apply w-full relative px-4 py-[15px] flex items-center gap-2 cursor-pointer text-white fill-white rounded-[5px] bg-[var(--dark-teal)];
 }
 
-.left-menu-item.active {
-  @apply text-[var(--green-base)];
+.lateral-nav-item.active {
+  /* @apply text-[var(--green-base)]; */
+  @apply text-green-base;
 }
 
 .left-menu-item.disable {
