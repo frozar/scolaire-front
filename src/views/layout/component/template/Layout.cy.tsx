@@ -26,27 +26,27 @@ describe("Layout template", () => {
   });
 
   it("Default check of selected menu", () => {
-    cy.get(".lateral-nav-item").eq(0).click();
+    cy.get(".left-menu-item").eq(0).click();
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
     cy.get("#layout").compareSnapshot("Layout-dashbaord-selected", 0.01);
 
-    cy.get(".lateral-nav-item").eq(1).click();
+    cy.get(".left-menu-item").eq(1).click();
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
     cy.get("#layout").compareSnapshot("Layout-graphicage-selected", 0.01);
 
-    cy.get(".lateral-nav-item").eq(2).click();
+    cy.get(".left-menu-item").eq(2).click();
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
     cy.get("#layout").compareSnapshot("Layout-etablissement-selected", 0.01);
 
-    cy.get(".lateral-nav-item").eq(3).click();
+    cy.get(".left-menu-item").eq(3).click();
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
     cy.get("#layout").compareSnapshot("Layout-arrets-selected", 0.01);
 
-    cy.get(".lateral-nav-item").eq(4).click();
+    cy.get(".left-menu-item").eq(4).click();
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
     cy.get("#layout").compareSnapshot("Layout-voiri-selected-disabled", 0.01);
