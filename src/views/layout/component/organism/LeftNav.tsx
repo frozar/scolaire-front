@@ -66,18 +66,18 @@ export default function (props: LeftNavProps) {
 
   return (
     <nav
-      id="lateral-nav"
+      id="left-nav"
       classList={{ active: mergedProps.getDisplayedLeftMenu() }}
       ref={refDivLeftMenu}
     >
-      <div id="lateral-nav-header">
+      <div id="left-nav-header">
         <EnterpriseLogo displayedLeftMenu={displayedLabel()} />
       </div>
 
       <LeftMenuItemList displayedLabel={displayedLabel()} />
 
       <button
-        id="lateral-close"
+        id="left-close"
         onClick={() => mergedProps.toggleDisplayedLeftMenu()}
       >
         <Show

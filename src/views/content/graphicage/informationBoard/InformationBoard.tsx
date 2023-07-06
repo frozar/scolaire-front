@@ -6,10 +6,8 @@ import { useStateAction } from "../../../../StateAction";
 import { useStateGui } from "../../../../StateGui";
 
 const [stateAction, { toggleAltimetryAnimation }] = useStateAction();
-const [
-  stateGui,
-  { setSelectedTab, getDisplayedInformationBoard, getDisplayedLeftMenu },
-] = useStateGui();
+const [stateGui, { setSelectedTab, getDisplayedInformationBoard }] =
+  useStateGui();
 
 function SettingsContent(props: object) {
   return (
@@ -116,7 +114,7 @@ export function InformationBoard() {
       ref={refMenuContent}
       class="menu__custom"
       classList={{
-        _active: getDisplayedLeftMenu(),
+        // _active: getDisplayedLeftMenu(),
         active: getDisplayedInformationBoard(),
       }}
     >
