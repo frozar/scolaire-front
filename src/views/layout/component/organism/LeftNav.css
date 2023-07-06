@@ -1,19 +1,24 @@
 @import "../../../../css/var.css";
 
-#lateral-nav {
-  @apply flex flex-col justify-between py-4 h-[100vh] w-[70px] bg-[var(--dark-teal)];
+#left-nav-container {
+  @apply z-[1401] h-[100vh] w-[70px];
+}
+
+
+#left-nav {
+  @apply absolute flex flex-col justify-between py-4 h-[100vh] w-[70px] bg-[var(--dark-teal)];
   transition-duration: 400ms;
 }
 
-#lateral-nav.active {
+#left-nav.active {
   width: 200px;
 }
 
-#lateral-nav-header {
+#left-nav-header {
   @apply mx-5;
   width: 140px;
 }
 
-#lateral-close {
+#left-close {
   @apply inline-flex justify-end px-2;
 }

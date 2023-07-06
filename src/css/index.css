@@ -35,14 +35,10 @@ code {
 }
 
 #main-map {
-  width: 100vw;
+  width: calc(100vw - 70px);
   height: calc(100vh - 60px);
 }
 
-#app-content {
-  @apply absolute flex left-[70px];
-  width: calc(100% - 70px);
-}
 
 .legend {
   padding: 6px 8px;

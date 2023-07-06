@@ -1,4 +1,8 @@
-#left-menu-container {
-  /* Fixed property replaced with absolute, because "fixed" make problem with cypress snapshot it duplicate "list Items"  */
-  @apply z-[1400] absolute translate-y-[-60px] w-fit;
+#layout {
+  @apply flex flex-col flex-wrap w-[100vw] h-[100vh];
+}
+
+#app-container {
+  @apply relative;
+  width: calc(100% - 70px);
 }

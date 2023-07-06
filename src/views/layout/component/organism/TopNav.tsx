@@ -3,7 +3,7 @@ import "./TopNav.css";
 
 export default function () {
   return (
-    <nav id="nav-top">
+    <nav id="top-nav">
       <LoginDropdown xOffset={-7} />
     </nav>
   );

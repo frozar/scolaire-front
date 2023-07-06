@@ -3,8 +3,8 @@ import { JSXElement, Show, mergeProps } from "solid-js";
 import LeftMenuItemLabel from "../atom/LeftMenuItemLabel";
 import LeftMenuButtonLogo from "./LeftMenuButtonLogo";
 
-import "./LeftMenuItem.css";
 import Pellet from "../../../../component/atom/Pellet";
+import "./LeftMenuItem.css";
 
 export interface LeftMenuItemProps {
   isDisabled?: boolean;
@@ -22,7 +22,7 @@ export default function (props: LeftMenuItemProps) {
 
   return (
     <li
-      class="lateral-nav-item"
+      class="left-menu-item"
       classList={{
         active: !mergedProps.isDisabled && mergedProps.isSelected,
         disable: mergedProps.isDisabled,
@@ -48,7 +48,7 @@ export default function (props: LeftMenuItemProps) {
         />
       </Show>
       <Show when={!mergedProps.isDisabled && mergedProps.isSelected}>
-        <div class="lateral-nav-item-pellet">
+        <div class="left-menu-item-pellet">
           <Pellet />
         </div>
       </Show>

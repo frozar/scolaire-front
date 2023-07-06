@@ -17,13 +17,13 @@ describe("LeftNav component", () => {
       />
     ));
 
-    cy.get("#lateral-nav").then((component) => {
+    cy.get("#left-nav").then((component) => {
       cy.wrap(component).invoke("css", "height", "700px");
     });
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
-    cy.get("#lateral-nav").compareSnapshot("LeftNav-closed", 0.01);
+    cy.get("#left-nav").compareSnapshot("LeftNav-closed", 0.01);
   });
 
   it("LeftNav check snapshot when nav is open", () => {
@@ -34,14 +34,14 @@ describe("LeftNav component", () => {
       />
     ));
 
-    cy.get("#lateral-nav").then((component) => {
+    cy.get("#left-nav").then((component) => {
       cy.wrap(component).invoke("css", "height", "700px");
     });
 
     cy.wait(500);
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
-    cy.get("#lateral-nav").compareSnapshot("LeftNav-open", 0.01);
+    cy.get("#left-nav").compareSnapshot("LeftNav-open", 0.01);
   });
 
   it("LeftNav checking toggle working", () => {
@@ -52,30 +52,30 @@ describe("LeftNav component", () => {
       />
     ));
 
-    cy.get("#lateral-nav").then((component) => {
+    cy.get("#left-nav").then((component) => {
       cy.wrap(component).invoke("css", "height", "700px");
     });
 
-    cy.get("#lateral-close").then((component) => {
+    cy.get("#left-close").then((component) => {
       cy.wrap(component).invoke("css", "outline", "none");
     });
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
-    cy.get("#lateral-nav").compareSnapshot("LeftNav-closed", 0.01);
+    cy.get("#left-nav").compareSnapshot("LeftNav-closed", 0.01);
 
-    cy.get("#lateral-close").click();
+    cy.get("#left-close").click();
     cy.wait(400);
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
-    cy.get("#lateral-nav").compareSnapshot("LeftNav-open", 0.01);
+    cy.get("#left-nav").compareSnapshot("LeftNav-open", 0.01);
 
-    cy.get("#lateral-close").click();
+    cy.get("#left-close").click();
     cy.wait(400);
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
-    cy.get("#lateral-nav").compareSnapshot("LeftNav-closed", 0.01);
+    cy.get("#left-nav").compareSnapshot("LeftNav-closed", 0.01);
   });
 });

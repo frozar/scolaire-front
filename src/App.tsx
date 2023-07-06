@@ -4,8 +4,6 @@ import { useStateGui } from "./StateGui";
 
 import Layout from "./views/layout/component/template/Layout";
 
-import { setPointsReady } from "./views/content/graphicage/PointsRamassageAndEtablissement";
-
 import SpinningWheel from "./component/SpinningWheel";
 import ClearConfirmationDialogBox from "./userInformation/ClearConfirmationDialogBox";
 import DisplayUserInformation from "./userInformation/DisplayUserInformation";
@@ -15,6 +13,7 @@ import RemoveConfirmationDialogBox from "./userInformation/RemoveConfirmationDia
 import Dashboard from "./views/content/dashboard/Dashboard";
 import Etablissement from "./views/content/etablissement/Etablissement";
 import Graphicage from "./views/content/graphicage/Graphicage";
+import { setPointsReady } from "./views/content/graphicage/PointsRamassageAndEtablissement";
 import ExportConfirmationDialogBox from "./views/content/graphicage/rightMapMenu/export/ExportConfirmationDialogBox";
 import Ramassage from "./views/content/ramassage/Ramassage";
 
@@ -51,9 +50,7 @@ export default () => {
 
   return (
     <div ref={refApp}>
-      <Layout />
-
-      <div id="app-content">
+      <Layout>
         <Switch fallback={<p>Page not found</p>}>
           <Match when={getSelectedMenu() == "dashboard"}>
             <Dashboard />
@@ -78,7 +75,7 @@ export default () => {
         <ClearConfirmationDialogBox />
         <ExportConfirmationDialogBox />
         <GeneratorDialogBox />
-      </div>
+      </Layout>
       <SpinningWheel />
     </div>
   );

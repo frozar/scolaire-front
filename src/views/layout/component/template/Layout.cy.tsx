@@ -2,9 +2,13 @@ import Layout from "./Layout";
 
 describe("Layout template", () => {
   beforeEach(() => {
-    cy.mount(Layout);
+    cy.mount(() => <Layout />);
 
-    cy.get("#lateral-nav").then((lateralNav) => {
+    cy.get("#left-nav-container").then((lateralNav) => {
+      cy.wrap(lateralNav).invoke("css", "height", "700px");
+    });
+
+    cy.get("#left-nav").then((lateralNav) => {
       cy.wrap(lateralNav).invoke("css", "height", "700px");
     });
 
@@ -12,7 +16,7 @@ describe("Layout template", () => {
       cy.wrap(layout).invoke("css", "height", "700px");
     });
 
-    cy.get("#lateral-close").then((closeLateralNavBtn) => {
+    cy.get("#left-close").then((closeLateralNavBtn) => {
       cy.wrap(closeLateralNavBtn).invoke("css", "outline", "none");
     });
 
@@ -22,27 +26,27 @@ describe("Layout template", () => {
   });
 
   it("Default check of selected menu", () => {
-    cy.get(".lateral-nav-item").eq(0).click();
+    cy.get(".left-menu-item").eq(0).click();
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
     cy.get("#layout").compareSnapshot("Layout-dashbaord-selected", 0.01);
 
-    cy.get(".lateral-nav-item").eq(1).click();
+    cy.get(".left-menu-item").eq(1).click();
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
     cy.get("#layout").compareSnapshot("Layout-graphicage-selected", 0.01);
 
-    cy.get(".lateral-nav-item").eq(2).click();
+    cy.get(".left-menu-item").eq(2).click();
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
     cy.get("#layout").compareSnapshot("Layout-etablissement-selected", 0.01);
 
-    cy.get(".lateral-nav-item").eq(3).click();
+    cy.get(".left-menu-item").eq(3).click();
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
     cy.get("#layout").compareSnapshot("Layout-arrets-selected", 0.01);
 
-    cy.get(".lateral-nav-item").eq(4).click();
+    cy.get(".left-menu-item").eq(4).click();
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
     cy.get("#layout").compareSnapshot("Layout-voiri-selected-disabled", 0.01);
@@ -56,7 +60,7 @@ describe("Layout template", () => {
   });
 
   it("Layout check lateral nav is open", () => {
-    cy.get("#lateral-close").click();
+    cy.get("#left-close").click();
     cy.wait(400);
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore

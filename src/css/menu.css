@@ -105,17 +105,21 @@
   }
 }
 
+:root {
+  --information-board-width: 30rem;
+}
+
 /*
 * SLIDING MENU PANEL
 */
 .menu__custom {
-  @apply w-[30rem] p-2;
+  @apply w-[var(--information-board-width)] p-2;
   position: absolute;
   z-index: 1001;
   color: #005c9c;
   background: rgba(250, 250, 250, 0.7);
   transition: 400ms left;
-  left: -20rem;
+  left: calc(-1 * var(--information-board-width));
   height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
@@ -140,10 +144,6 @@
 
   &.active {
     left: 0px;
-
-    &._active {
-      left: 130px;
-    }
   }
 
   > p {

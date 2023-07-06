@@ -6,7 +6,7 @@ describe("TopNav component", () => {
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
-    cy.get("#nav-top").compareSnapshot("TopNav", 0.01);
+    cy.get("#top-nav").compareSnapshot("TopNav", 0.01);
   });
 
   it("TopNav check login dropdown children", () => {
@@ -16,26 +16,26 @@ describe("TopNav component", () => {
       cy.wrap(topNav).invoke("css", "outline", "none");
     });
 
-    cy.get("#nav-top").then((topNav) => {
+    cy.get("#top-nav").then((topNav) => {
       cy.wrap(topNav).invoke("css", "height", "150px");
     });
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
-    cy.get("#nav-top").compareSnapshot("TopNav-login-menu-close", 0.01);
+    cy.get("#top-nav").compareSnapshot("TopNav-login-menu-close", 0.01);
 
     // Open the login menu
     cy.get("#login-btn").click();
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
-    cy.get("#nav-top").compareSnapshot("TopNav-login-menu-open", 0.01);
+    cy.get("#top-nav").compareSnapshot("TopNav-login-menu-open", 0.01);
 
     // Close the menu login
     cy.get("#login-btn").click();
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
-    cy.get("#nav-top").compareSnapshot("TopNav-login-menu-close", 0.01);
+    cy.get("#top-nav").compareSnapshot("TopNav-login-menu-close", 0.01);
   });
 });
