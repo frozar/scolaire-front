@@ -1,5 +1,6 @@
 import LeftMenuItemLabel from "./LeftMenuItemLabel";
 
+// TODO: Fix test, it's not "authenticated"
 describe("LeftMenuItemLabel component", () => {
   const props = {
     isActive: false,

@@ -2,6 +2,7 @@
 @import "../../../../css/utils.css";
 
 .left-menu-item-label {
+  /* color: #2a323c; */
   @apply inline-block p-1 prevent-select;
 }
 
