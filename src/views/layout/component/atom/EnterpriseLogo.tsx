@@ -15,7 +15,6 @@ export default function (props: EntrepriseLogoProps) {
       <g clip-path="url(#clip0_39_820)">
         <g
           classList={{
-            block: props.displayedLeftMenu,
             hidden: !props.displayedLeftMenu,
           }}
           class="fill-white"
