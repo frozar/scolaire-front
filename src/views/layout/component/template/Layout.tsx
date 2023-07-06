@@ -21,12 +21,5 @@ export default function (props: LayoutProps) {
         {childs()}
       </div>
     </div>
-
-    // <div id="layout">
-    //   <TopNav />
-    //   <div id="left-menu-container">
-    //     <LeftNav />
-    //   </div>
-    // </div>
   );
 }

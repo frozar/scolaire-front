@@ -77,33 +77,6 @@ export default () => {
         <GeneratorDialogBox />
       </Layout>
       <SpinningWheel />
-      {/* <div id="app-content">
-        <Switch fallback={<p>Page not found</p>}>
-          <Match when={getSelectedMenu() == "dashboard"}>
-            <Dashboard />
-          </Match>
-
-          <Match when={getSelectedMenu() == "graphicage"}>
-            <Graphicage />
-          </Match>
-
-          <Match when={getSelectedMenu() == "etablissements"}>
-            <Etablissement />
-          </Match>
-
-          <Match when={getSelectedMenu() == "ramassages"}>
-            <Ramassage />
-          </Match>
-        </Switch>
-
-        <DisplayUserInformation />
-        <DragAndDropSummary />
-        <RemoveConfirmationDialogBox />
-        <ClearConfirmationDialogBox />
-        <ExportConfirmationDialogBox />
-        <GeneratorDialogBox />
-      </div>
-      <SpinningWheel /> */}
     </div>
   );
 };
