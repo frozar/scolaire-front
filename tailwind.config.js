@@ -2,6 +2,8 @@
 module.exports = {
   darkMode: "media",
   content: ["./src/**/*.{html,js,ts,jsx,tsx}"],
+
+  /* Rebuild cypress docker when this file get update */
   theme: {
     zIndex: {
       layoutTop: "1400",
