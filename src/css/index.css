@@ -427,6 +427,7 @@ code {
   background-color: var(--green-base);
 }
 
+/* Workging */
 .alert {
   display: flex;
   align-items: center;
@@ -442,6 +443,18 @@ code {
   background-color: #3abff8;
 }
 
+.alert-warnings {
+  background-color: #fabd23;
+}
+
+.alert-error {
+  background-color: #f87272;
+}
+
+.alert-succes {
+  background-color: #36d399;
+}
+
 .kbd {
   display: inline-flex;
   align-items: center;
@@ -454,6 +467,5 @@ code {
   border-bottom-width: 2px;
   min-height: 2.2em;
   min-width: 2.2em;
-
-  /* justify-content: center; */
 }
+/* justify-content: center; */
