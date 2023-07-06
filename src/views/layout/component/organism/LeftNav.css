@@ -4,7 +4,6 @@
   @apply z-[1401] h-[100vh] w-[70px];
 }
 
-/* z-[1401] */
 
 #left-nav {
   @apply absolute flex flex-col justify-between py-4 h-[100vh] w-[70px] bg-[var(--dark-teal)];
