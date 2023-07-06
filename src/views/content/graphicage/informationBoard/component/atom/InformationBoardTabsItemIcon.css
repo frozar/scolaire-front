@@ -4,10 +4,10 @@
 
 /* TODO revoir les couleurs en fonction de tailwind update */
 .information-board-tabs-item-icon {
-  @apply w-[24px] mr-3;
+  @apply w-[24px] mr-3 ;
 }
 
-.information-board-tabs-item-icon.active  svg{
+.information-board-tabs-item-icon.active{
     @apply text-red-700;
   }
   /* TODO ajouter le hover */

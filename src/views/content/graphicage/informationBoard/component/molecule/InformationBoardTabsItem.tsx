@@ -2,6 +2,8 @@ import { JSXElement } from "solid-js";
 import InformationBoardTabsItemIcon from "../atom/InformationBoardTabsItemIcon";
 import InformationBoardTabsItemLabel from "../atom/InformationBoardTabsItemLabel";
 
+import "./InformationBoardTabsItem.css";
+
 export interface InformationBoardTabsItem {
   label: string;
   icon: () => JSXElement;
@@ -11,7 +13,13 @@ export interface InformationBoardTabsItem {
 
 export default function (props: InformationBoardTabsItem) {
   return (
-    <button onClick={() => props.onClick()}>
+    <button
+      class="information-board-tabs-item"
+      classList={{
+        active: props.isActive,
+      }}
+      onClick={() => props.onClick()}
+    >
       <InformationBoardTabsItemIcon
         isActive={props.isActive}
         icon={props.icon}

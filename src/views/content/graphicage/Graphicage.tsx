@@ -12,7 +12,7 @@ import LineUnderConstruction from "./line/LineUnderConstruction";
 import ImportCsvCanvas from "../../../component/ImportCsvCanvas";
 import ConfirmStopAddLine from "./ConfirmStopAddLineBox";
 
-import { InformationBoard } from "./informationBoard/InformationBoard";
+import { LateralInformationBoard } from "./informationBoard/LateralInformationBoard";
 
 import RightMapMenu from "./component/organism/RightMapMenu";
 
@@ -70,7 +70,7 @@ export default function () {
         display={displayImportCsvCanvas()}
         setDisplay={setDisplayImportCsvCanvas}
       />
-      <InformationBoard />
+      <LateralInformationBoard />
       <div ref={mapDiv} id="main-map" />
       <PointsRamassageAndEtablissement />
       <Show when={isInAddLineMode()}>

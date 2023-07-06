@@ -1,25 +1,18 @@
-import { For, JSX } from "solid-js";
 import InformationContent from "./InformationContent";
 
 import { useStateGui } from "../../../../StateGui";
 
-import { Dynamic } from "solid-js/web";
+import { InformationBoardTabType } from "../../../../type";
 import InformationCircleIcon from "./component/atom/InformationCircleIcon";
 import SettingsIcon from "./component/atom/SettingsIcon";
 import InformationBoardSettings from "./component/molecule/InformationBoardSettings";
-import InformationBoardTabsItem from "./component/molecule/InformationBoardTabsItem";
+import { InformationBoard } from "./component/organisme/InformationBoard";
 
-const [stateGui, { setSelectedTab, getDisplayedInformationBoard }] =
+const [, { getDisplayedInformationBoard, getDisplayedLeftMenu }] =
   useStateGui();
 
-export function InformationBoard() {
+export function LateralInformationBoard() {
   let refMenuContent!: HTMLDivElement;
-
-  type InformationBoardTabType = {
-    icon: () => JSX.Element;
-    label: string;
-    content: (props: object) => JSX.Element;
-  };
 
   const tabs: InformationBoardTabType[] = [
     {
@@ -39,22 +32,11 @@ export function InformationBoard() {
       ref={refMenuContent}
       class="menu__custom"
       classList={{
+        _active: getDisplayedLeftMenu(),
         active: getDisplayedInformationBoard(),
       }}
     >
-      <nav aria-label="Tabs">
-        <For each={tabs}>
-          {(tab, key) => (
-            <InformationBoardTabsItem
-              label={tab.label}
-              icon={tab.icon}
-              isActive={stateGui.selectedTab === key()}
-              onClick={() => setSelectedTab(key())}
-            />
-          )}
-        </For>
-      </nav>
-      <Dynamic component={tabs[stateGui.selectedTab].content} />
+      <InformationBoard tabs={tabs} />
     </div>
   );
 }

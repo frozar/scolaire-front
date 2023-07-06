@@ -204,3 +204,9 @@ export type UserMapType = {
   setIsSelected: Setter<boolean>;
   setIsActive: Setter<boolean>;
 };
+
+export type InformationBoardTabType = {
+  icon: () => JSX.Element;
+  label: string;
+  content: (props: object) => JSX.Element;
+};

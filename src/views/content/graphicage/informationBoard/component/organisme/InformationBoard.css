@@ -1,0 +1,3 @@
+.information-board nav {
+    @apply mb-6 isolate divide-x divide-gray-300 rounded-lg shadow hidden sm:flex border-b  text-indigo-600 tabs;
+}
