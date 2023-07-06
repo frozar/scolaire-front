@@ -3,6 +3,10 @@
   @apply z-[1400] absolute translate-y-[-60px] w-fit;
 }
 
+#layout {
+  @apply flex;
+}
+
 #app-container {
   @apply w-full;
 }

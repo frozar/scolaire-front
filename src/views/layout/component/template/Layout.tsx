@@ -12,7 +12,7 @@ export default function (props: LayoutProps) {
   const childs = children(() => props.children);
 
   return (
-    <div id="layout" class="flex">
+    <div id="layout">
       <LeftNav />
 
       <div id="app-container">
