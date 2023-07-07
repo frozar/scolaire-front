@@ -40,8 +40,6 @@ import { mount } from "@lmiller1990/cypress-ct-solid-js";
 
 import compareSnapshotCommand from "cypress-image-diff-js/dist/command";
 
-// compareSnapshotCommand();
-
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {

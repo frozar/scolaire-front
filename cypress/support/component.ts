@@ -21,27 +21,10 @@ import "tailwindcss/tailwind.css";
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
 
-// import { mount } from "@lmiller1990/cypress-ct-solid-js";
-
-// import compareSnapshotCommand from "cypress-image-diff-js/dist/command";
-
 // Augment the Cypress namespace to include type definitions for
 // your custom command.
 // Alternatively, can be defined in cypress/support/component.d.ts
 // with a <reference path="./component" /> at the top of your spec.
-
-// declare global {
-//   // eslint-disable-next-line @typescript-eslint/no-namespace
-//   namespace Cypress {
-//     interface Chainable {
-//       mount: typeof mount;
-//       compareSnapshot: typeof compareSnapshotCommand;
-//     }
-//   }
-// }
-
-// Cypress.Commands.add("mount", mount);
-// Cypress.Commands.add("compareSnapshot", compareSnapshotCommand);
 
 after(() => {
   cy.task("generateReport");
