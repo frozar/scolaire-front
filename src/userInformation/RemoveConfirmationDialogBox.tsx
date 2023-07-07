@@ -4,14 +4,18 @@ import { Transition } from "solid-transition-group";
 import ClickOutside from "../component/ClickOutside";
 import {
   addNewUserInformation,
-  getRemoveConfirmation,
   closeRemoveConfirmationBox,
+  getRemoveConfirmation,
 } from "../signaux";
 
 import { deleteBusLine } from "../request";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { assertIsNode } from "../utils";
 import { fetchBusLines } from "../views/content/graphicage/line/busLinesUtils";
+
+// HACK for the documentation to preserve the ClickOutside directive on save
+// https://www.solidjs.com/guides/typescript#use___
+false && ClickOutside;
 
 export default function () {
   const displayed = () => getRemoveConfirmation()["displayed"];
@@ -26,32 +30,40 @@ export default function () {
     const idToRemove: number = idToCheck;
 
     deleteBusLine(idToRemove)
-      .then((res) => {
+      .then(async (res) => {
         if (!res) {
-          return;
-        }
-        return res.json();
-      })
-      .then((res: string) => {
-        const nbDelete = res.split(" ").at(-1);
-
-        if (nbDelete != "0") {
-          addNewUserInformation({
-            displayed: true,
-            level: MessageLevelEnum.success,
-            type: MessageTypeEnum.removeLine,
-            content: `La ligne ${idToRemove} a bien été supprimée`,
-          });
           closeRemoveConfirmationBox();
-        } else {
           addNewUserInformation({
             displayed: true,
             level: MessageLevelEnum.error,
-            type: MessageTypeEnum.removeLine,
-            content: `Echec de la suppression de la ligne ${idToRemove}`,
+            type: MessageTypeEnum.global,
+            content: `Impossible de supprimer la ligne ${idBusLine()}`,
           });
-          closeRemoveConfirmationBox();
+          return;
         }
+
+        if (res.status != 200) {
+          const json = await res.json();
+          closeRemoveConfirmationBox();
+          addNewUserInformation({
+            displayed: true,
+            level: MessageLevelEnum.error,
+            type: MessageTypeEnum.global,
+            content: json.detail,
+          });
+          return;
+        }
+
+        const json = await res.json();
+
+        console.log("json", json);
+        closeRemoveConfirmationBox();
+        addNewUserInformation({
+          displayed: true,
+          level: MessageLevelEnum.success,
+          type: MessageTypeEnum.global,
+          content: json.message,
+        });
 
         fetchBusLines();
       })
