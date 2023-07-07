@@ -30,7 +30,7 @@ describe("LeftMenuItem component", () => {
 
   it("Check snapshot when selected", () => {
     cy.mount(() => (
-      <div id="lateral-nav" class="active">
+      <div id="left-nav" class="active">
         <LeftMenuItem
           isDisabled={props.isDisabled}
           label={props.label}
@@ -61,7 +61,7 @@ describe("LeftMenuItem component", () => {
 
   it("Check snapshot when not selected", () => {
     cy.mount(() => (
-      <div id="lateral-nav" class="active">
+      <div id="left-nav" class="active">
         <LeftMenuItem
           isDisabled={props.isDisabled}
           label={props.label}
@@ -79,7 +79,7 @@ describe("LeftMenuItem component", () => {
 
   it("Check snapshot when disabled", () => {
     cy.mount(() => (
-      <div id="lateral-nav" class="active">
+      <div id="left-nav" class="active">
         <LeftMenuItem
           isDisabled={!props.isDisabled}
           label={props.label}

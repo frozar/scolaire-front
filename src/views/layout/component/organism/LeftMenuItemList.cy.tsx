@@ -9,7 +9,7 @@ describe("LeftMenuItemList component", () => {
 
   it("LeftMenuItemList check snapshot with displayed labels", () => {
     cy.mount(() => (
-      <div id="lateral-nav" class="active">
+      <div id="left-nav" class="active">
         <LeftMenuItemList getSelectedMenu={props.getSelectedMenu} />
       </div>
     ));
@@ -29,7 +29,7 @@ describe("LeftMenuItemList component", () => {
     props.getSelectedMenu = () => "graphicage";
 
     cy.mount(() => (
-      <div id="lateral-nav" class="active">
+      <div id="left-nav" class="active">
         <LeftMenuItemList getSelectedMenu={props.getSelectedMenu} />
       </div>
     ));
