@@ -1,22 +1,39 @@
-import { AiOutlineSearch } from "solid-icons/ai";
-import { For, createEffect, createSignal, onCleanup, onMount } from "solid-js";
+import { createSignal, onCleanup, onMount } from "solid-js";
 import { useStateGui } from "../../../StateGui";
-import ExportCsvButton from "../../../component/ExportCsvButton";
-import ImportCsvButton from "../../../component/ImportCsvButton";
 import ImportCsvCanvas from "../../../component/ImportCsvCanvas";
 import ImportCsvDialogBox from "../../../component/ImportCsvDialogBox";
-import ActionSelector from "../../../component/atom/ActionSelector";
 import { EtablissementItemType } from "../../../type";
 import RemoveRamassageConfirmation from "../../../userInformation/RemoveRamassageConfirmation";
 import { authenticateWrap } from "../../layout/authentication";
-import EditStop, { setDataToEdit, toggleEditStop } from "./EditEtablissement";
-import EtablissementItem from "./EtablissementItem";
+import EditStop from "./EditEtablissement";
+import EtablissementHeader from "./component/organism/EtablissementHeader";
+import EtablissementTable from "./component/organism/EtablissementTable";
+import "./etablissement.css";
 
 const [, { getActiveMapId }] = useStateGui();
 
-const [etablissements, setEtablissements] = createSignal<
+export const [etablissements, setEtablissements] = createSignal<
   EtablissementItemType[]
->([]);
+>([
+  {
+    id: 1,
+    name: "pio",
+    quantity: 1,
+    nbLine: 1,
+    lon: 1,
+    lat: 1,
+    selected: false,
+  },
+  {
+    id: 2,
+    name: "test",
+    quantity: 1,
+    nbLine: 1,
+    lon: 1,
+    lat: 1,
+    selected: false,
+  },
+]);
 
 export function fetchEtablissement() {
   authenticateWrap((headers) => {
@@ -60,23 +77,6 @@ function preventDefaultHandler(e: DragEvent) {
 
 export default function () {
   let etablissementDiv!: HTMLDivElement;
-  let refCheckbox!: HTMLInputElement;
-
-  const [keyword, setKeyword] = createSignal("");
-
-  const filteredEtablissements = () =>
-    etablissements().filter((e) =>
-      e.name.toLowerCase().includes(keyword().toLowerCase())
-    );
-
-  const selectedEtablissements = () =>
-    etablissements().filter((eta) => eta.selected);
-
-  createEffect(() => {
-    refCheckbox.checked =
-      filteredEtablissements().length != 0 &&
-      selectedEtablissements().length == filteredEtablissements().length;
-  });
 
   const [displayImportCsvCanvas, setDisplayImportCsvCanvas] =
     createSignal(false);
@@ -87,7 +87,7 @@ export default function () {
   }
 
   onMount(() => {
-    fetchEtablissement();
+    // fetchEtablissement();
     etablissementDiv.addEventListener("dragenter", dragEnterHandler);
     etablissementDiv.addEventListener("drop", preventDefaultHandler);
     etablissementDiv.addEventListener("dragleave", preventDefaultHandler);
@@ -104,7 +104,7 @@ export default function () {
   });
 
   return (
-    <>
+    <div>
       <ImportCsvDialogBox />
       <ImportCsvCanvas
         display={displayImportCsvCanvas()}
@@ -114,95 +114,23 @@ export default function () {
         }}
       />
       <RemoveRamassageConfirmation />
-      <div class="flex w-full bg-white" ref={etablissementDiv}>
+
+      <div
+        id="etablissement-board"
+        class="flex w-full bg-white"
+        ref={etablissementDiv}
+      >
         <div id="ramassages-board">
-          <header>
-            <h1>Etablissements</h1>
-            <div id="filters">
-              <div class="left">
-                <ActionSelector isDisabled={true} />
-                <button
-                  type="button"
-                  class="btn-arret-add"
-                  onClick={() => {
-                    setDataToEdit();
-                    toggleEditStop();
-                  }}
-                >
-                  Ajouter
-                </button>
+          <EtablissementHeader />
 
-                <div class="input-field">
-                  <div class="input-search-logo">
-                    <AiOutlineSearch />
-                  </div>
-                  <input
-                    class="bg-white"
-                    type="text"
-                    name="search"
-                    placeholder="Recherche"
-                    onInput={(e) => {
-                      setKeyword(e.currentTarget.value);
-                    }}
-                  />
-                </div>
-              </div>
-
-              <div class="right">
-                <ExportCsvButton exportRoute="/export/etablissement_input" />
-                <ImportCsvButton />
-              </div>
-            </div>
-          </header>
           <div class="board-content">
-            <div class="h-[78vh]">
-              <table class="min-w-full">
-                <thead>
-                  <tr>
-                    <th scope="col" class="pl-4 pr-3 sm:pl-0 flex items-center">
-                      <input
-                        id="comments"
-                        aria-describedby="comments-description"
-                        name="comments"
-                        type="checkbox"
-                        class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600 relative right-2"
-                        onChange={(e) => {
-                          setEtablissements((etablissements) =>
-                            etablissements.map((eta) => ({
-                              ...eta,
-                              selected: e.target.checked,
-                            }))
-                          );
-                        }}
-                        ref={refCheckbox}
-                      />
-                      Nom
-                    </th>
-                    <th scope="col">Nombre d'élèves</th>
-                    <th scope="col">Nombre de lignes</th>
-                    <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-0">
-                      <span class="">Actions</span>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <For each={filteredEtablissements()}>
-                    {(fields) => {
-                      return (
-                        <EtablissementItem
-                          item={fields}
-                          setEtablissements={setEtablissements}
-                        />
-                      );
-                    }}
-                  </For>
-                </tbody>
-              </table>
+            <div>
+              <EtablissementTable />
             </div>
           </div>
         </div>
         <EditStop />
       </div>
-    </>
+    </div>
   );
 }
