@@ -36,7 +36,6 @@ code {
   height: calc(100vh - 60px);
 }
 
-
 .legend {
   padding: 6px 8px;
   font: 14px Arial, Helvetica, sans-serif;
@@ -386,7 +385,7 @@ code {
 #edit-stop > header > button {
   width: 30px;
   height: 30px;
-  color: theme(colors.green-base);
+  @apply text-green-base;
 }
 
 #edit-stop > header > button > svg {

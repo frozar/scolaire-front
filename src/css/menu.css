@@ -7,8 +7,7 @@
 }
 
 .export-select > #export-type {
-  color: theme(colors.gray-base);
-  @apply shadow-lg border rounded-lg border-gray-300 duration-200 p-2 flex flex-col items-center justify-center sm:w-1/3 sm:m-3 w-full hover:scale-105 cursor-pointer;
+  @apply shadow-lg text-gray-base border rounded-lg border-gray-300 duration-200 p-2 flex flex-col items-center justify-center sm:w-1/3 sm:m-3 w-full hover:scale-105 cursor-pointer;
 }
 
 .export-modal-background {

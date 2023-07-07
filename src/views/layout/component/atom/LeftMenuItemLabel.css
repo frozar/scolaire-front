@@ -5,7 +5,7 @@
 }
 
 .left-menu-item-label.active {
-  color: theme(colors.green-base);
+  @apply text-green-base;
 }
 
 .left-menu-item-label.disabled {
