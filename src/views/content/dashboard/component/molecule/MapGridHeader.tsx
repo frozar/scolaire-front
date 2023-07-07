@@ -11,7 +11,7 @@ export default function (props: MapGridHeaderProps) {
     <div class="justify-between flex items-center text-3xl">
       <h1>Tableau de bord</h1>
       <Button
-        onClickHandler={() => props.openCreateMapModal()}
+        onClick={() => props.openCreateMapModal()}
         label="Nouvelle carte"
       />
     </div>
