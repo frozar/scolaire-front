@@ -1,8 +1,8 @@
-import Button from "./atom/Button";
-import { authenticateWrap } from "../views/layout/authentication";
 import { displayDownloadErrorMessage } from "../userInformation/utils";
 import { download } from "../utils";
 import { getTimestamp } from "../views/content/graphicage/rightMapMenu/export/utils";
+import { authenticateWrap } from "../views/layout/authentication";
+import Button from "./atom/Button";
 
 function onClickHandler(exportRoute: string) {
   authenticateWrap((headers) => {
@@ -35,7 +35,7 @@ function onClickHandler(exportRoute: string) {
 export default function (props: { exportRoute: string }) {
   return (
     <Button
-      onClickHandler={() => onClickHandler(props.exportRoute)}
+      onClick={() => onClickHandler(props.exportRoute)}
       label="Exporter"
     />
   );

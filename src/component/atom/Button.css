@@ -1,11 +1,23 @@
-.btn-generic {
+.btn-primary {
   @apply w-full justify-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm sm:w-auto duration-150;
 }
 
-.btn-generic:not([disabled]):hover {
+.btn-primary:not([disabled]):hover {
   @apply bg-green-500;
 }
 
-.btn-generic:disabled {
+.btn-primary:disabled {
   @apply bg-gray-300 opacity-75;
+}
+
+.btn-borderless {
+  @apply text-green-500 text-sm duration-150;
+}
+
+.btn-borderless:not([disabled]):hover {
+  @apply text-indigo-600;
+}
+
+.btn-borderless:disabled {
+  @apply text-gray-600 opacity-75;
 }

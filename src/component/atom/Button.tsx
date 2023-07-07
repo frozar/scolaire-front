@@ -2,21 +2,24 @@ import { mergeProps } from "solid-js";
 import "./Button.css";
 
 export interface ButtonProps {
-  onClickHandler: () => void;
+  onClick: () => void;
   label: string;
+  variant?: "primary" | "borderless";
   isDisabled?: boolean;
 }
 
 export default function (props: ButtonProps) {
   const mergedProps = mergeProps(
-    { label: "NO LABEL", isDisabled: false },
+    { label: "NO LABEL", isDisabled: false, variant: "primary" },
     props
   );
 
+  const className = () => `btn-${mergedProps.variant}`;
+
   return (
     <button
-      class="btn-generic"
-      onClick={() => mergedProps.onClickHandler()}
+      class={className()}
+      onClick={() => mergedProps.onClick()}
       disabled={mergedProps.isDisabled}
     >
       {mergedProps.label}
