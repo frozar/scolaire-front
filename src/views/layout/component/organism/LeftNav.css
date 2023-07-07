@@ -1,5 +1,3 @@
-/* @import "../../../../css/var.css"; */
-
 #left-nav-container {
   @apply z-layoutLeft h-[100vh] w-[70px];
 }

@@ -1,10 +1,7 @@
-/* @import "../../../../css/var.css"; */
-
 .fill-white {
   fill: white;
 }
 
 .fill-green {
-  /* fill: var(--green-base); */
   @apply fill-green-base;
 }

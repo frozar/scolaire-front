@@ -1,13 +1,10 @@
-/* @import "../../../../css/var.css"; */
 @import "../../../../css/utils.css";
 
 .left-menu-item-label {
-  /* color: #2a323c; */
   @apply inline-block p-1 prevent-select;
 }
 
 .left-menu-item-label.active {
-  /* color: var(--green-base); */
   color: theme(colors.green-base);
 }
 

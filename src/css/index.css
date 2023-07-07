@@ -2,9 +2,6 @@
 @import "./menu.css";
 @import "./timeline.css";
 
-/* TODO: to delete when useless (#edit-stop css no longer here)*/
-/* @import "./var.css"; */
-
 body,
 html {
   overflow: hidden;
@@ -389,7 +386,6 @@ code {
 #edit-stop > header > button {
   width: 30px;
   height: 30px;
-  /* color: var(--green-base); */
   color: theme(colors.green-base);
 }
 
@@ -421,16 +417,13 @@ code {
   padding: 10px 20px;
   border-radius: 5px;
   color: white;
-  /* background-color: var(--red-base); */
   @apply bg-red-base;
 }
 
 #edit-stop > section > div.action > button.green {
-  /* background-color: var(--green-base); */
   @apply bg-green-base;
 }
 
-/* Workging */
 .alert {
   display: flex;
   align-items: center;
@@ -438,7 +431,6 @@ code {
   gap: 1rem;
   padding: 1rem;
   border-radius: 1rem;
-  /* to verify */
   flex-direction: row;
 }
 
@@ -471,4 +463,3 @@ code {
   min-height: 2.2em;
   min-width: 2.2em;
 }
-/* justify-content: center; */
