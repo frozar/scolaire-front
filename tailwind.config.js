@@ -8,6 +8,7 @@ module.exports = {
     zIndex: {
       layoutTop: "1400",
       layoutLeft: "1401",
+      userInformations: "1402",
     },
     extend: {
       colors: {
