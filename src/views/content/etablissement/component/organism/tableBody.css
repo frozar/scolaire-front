@@ -1,0 +1,6 @@
+#table-body {
+  @apply divide-y divide-gray-200;
+  overflow-y: visible;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+}
