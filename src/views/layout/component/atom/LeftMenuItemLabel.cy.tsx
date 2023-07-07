@@ -11,7 +11,7 @@ describe("LeftMenuItemLabel component", () => {
 
   it("Check snapshot", () => {
     cy.mount(() => (
-      <div id="left-nav" class="active" style={{ "background-color": "black" }}>
+      <div id="left-nav" class="active">
         <LeftMenuItemLabel
           isActive={props.isActive}
           isDisabled={props.isDisabled}

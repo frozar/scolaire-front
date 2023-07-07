@@ -55,7 +55,6 @@ describe("LeftMenuItem component", () => {
       />
     ));
 
-    //@ts-ignore
     cy.get("li").compareSnapshot("LeftMenuItem-label-hidden", 0.01);
   });
 
@@ -72,8 +71,6 @@ describe("LeftMenuItem component", () => {
       </div>
     ));
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    //@ts-ignore
     cy.get("li").compareSnapshot("LeftMenuItem-not-selected", 0.01);
   });
 
