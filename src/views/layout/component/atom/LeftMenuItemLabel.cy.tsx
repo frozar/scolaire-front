@@ -1,39 +1,60 @@
 import LeftMenuItemLabel from "./LeftMenuItemLabel";
 
-// TODO: Fix test, it's not "authenticated"
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+
 describe("LeftMenuItemLabel component", () => {
   const props = {
-    isActive: false,
-    isDisabled: false,
-    label: "Se connecter",
+    isActive: true,
+    isDisabled: true,
+    label: "Graphicage",
   };
 
-  it("When not authenticated", () => {
+  it("When not active and not disabled", () => {
     cy.mount(() => (
       <LeftMenuItemLabel
-        isActive={props.isActive}
-        isDisabled={props.isDisabled}
+        isActive={!props.isActive}
+        isDisabled={!props.isDisabled}
         label={props.label}
       />
     ));
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    //@ts-ignore
-    cy.get("span").compareSnapshot("authenticated-label", 0.01);
     cy.get("span").contains(props.label);
+
+    //@ts-ignore
+    cy.get("span").compareSnapshot("not-active-and-not-disabled", 0.01);
   });
 
-  it("When authenticated", () => {
-    props.label = "Se déconnecter";
-
+  it("When active", () => {
     cy.mount(() => (
       <LeftMenuItemLabel
         isActive={props.isActive}
-        isDisabled={props.isDisabled}
+        isDisabled={!props.isDisabled}
         label={props.label}
       />
     ));
 
     cy.get("span").contains(props.label);
+
+    //@ts-ignore
+    cy.get("span").compareSnapshot("active", 0.01);
+  });
+
+  it("When disabled", () => {
+    cy.mount(() => (
+      <LeftMenuItemLabel
+        isActive={!props.isActive}
+        isDisabled={props.isDisabled}
+        label={props.label}
+      />
+    ));
+
+    cy.get("span").then((span) => {
+      cy.wrap(span).invoke("css", "background-color", "black");
+    });
+
+    cy.get("span").contains(props.label);
+
+    //@ts-ignore
+    cy.get("span").compareSnapshot("disabled", 0.01);
   });
 });

@@ -9,5 +9,5 @@
 }
 
 .left-menu-item-label.disabled {
-  color: white;
+  @apply text-white;
 }

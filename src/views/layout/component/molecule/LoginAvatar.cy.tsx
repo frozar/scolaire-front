@@ -1,5 +1,7 @@
 import LoginAvatar from "./LoginAvatar";
 
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+
 describe("LoginAvatar component", () => {
   const props = {
     authenticated: true,
@@ -30,7 +32,6 @@ describe("LoginAvatar component", () => {
     cy.get("img").should("not.exist");
     cy.get("svg").should("be.visible");
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
     cy.get("svg").compareSnapshot("login-avatar", 0.01);
   });
