@@ -2,12 +2,10 @@ import LeftMenuItemLabel from "./LeftMenuItemLabel";
 
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 
-// TODO: Fix test, it's not "authenticated"
 describe("LeftMenuItemLabel component", () => {
   const props = {
     isActive: true,
     isDisabled: true,
-    // label: "Se connecter",
     label: "Graphicage",
   };
 
