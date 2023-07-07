@@ -4,7 +4,7 @@
   @apply invisible fill-white opacity-0 transition-opacity delay-200;
 }
 
-#lateral-nav.active .entreprise-logo-text {
+#left-nav.active .entreprise-logo-text {
   @apply visible opacity-100;
 }
 
