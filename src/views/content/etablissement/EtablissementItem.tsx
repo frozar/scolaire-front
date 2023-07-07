@@ -49,20 +49,20 @@ export default function (props: {
       <td>{props.item.quantity}</td>
       <td>{props.item.nbLine}</td>
       <td>
-        <span class="mr-2">
+        <div class="flex gap-2">
           <Button
             onClick={() => handleClickEdit(props.item)}
             label="Editer"
             variant="borderless"
           />
-        </span>
 
-        <Button
-          onClick={() => handleClickSuppression(props.item)}
-          label="Supprimer"
-          variant="borderless"
-          isDisabled={true}
-        />
+          <Button
+            onClick={() => handleClickSuppression(props.item)}
+            label="Supprimer"
+            variant="borderless"
+            isDisabled={true}
+          />
+        </div>
       </td>
     </tr>
   );
