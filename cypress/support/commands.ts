@@ -36,5 +36,21 @@
 //   }
 // }
 
+import { mount } from "@lmiller1990/cypress-ct-solid-js";
+
 import compareSnapshotCommand from "cypress-image-diff-js/dist/command";
-compareSnapshotCommand();
+
+// compareSnapshotCommand();
+
+declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  namespace Cypress {
+    interface Chainable {
+      mount: typeof mount;
+      compareSnapshot: typeof compareSnapshotCommand;
+    }
+  }
+}
+
+Cypress.Commands.add("mount", mount);
+Cypress.Commands.add("compareSnapshot", compareSnapshotCommand);

@@ -32,7 +32,7 @@ describe("LoginAvatar component", () => {
     cy.get("img").should("not.exist");
     cy.get("svg").should("be.visible");
 
-    //@ts-ignore
+    // //@ts-ignore
     cy.get("svg").compareSnapshot("login-avatar", 0.01);
   });
 });
