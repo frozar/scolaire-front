@@ -1,0 +1,6 @@
+.information-board-tabs-item-icon {
+  @apply w-[24px] fill-gray-base;
+}
+.information-board-tabs-item-icon.active {
+  @apply fill-green-base;
+}
