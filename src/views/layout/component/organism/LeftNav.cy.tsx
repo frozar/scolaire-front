@@ -1,8 +1,6 @@
 import { createSignal } from "solid-js";
 import LeftNav from "./LeftNav";
 
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-
 describe("LeftNav component", () => {
   const [displayMenu, setDisplayMenu] = createSignal(false);
 
@@ -23,7 +21,6 @@ describe("LeftNav component", () => {
       cy.wrap(component).invoke("css", "height", "700px");
     });
 
-    //@ts-ignore
     cy.get("#left-nav").compareSnapshot("LeftNav-closed", 0.01);
   });
 
@@ -40,8 +37,6 @@ describe("LeftNav component", () => {
     });
 
     cy.wait(500);
-
-    //@ts-ignore
     cy.get("#left-nav").compareSnapshot("LeftNav-open", 0.01);
   });
 
@@ -61,19 +56,16 @@ describe("LeftNav component", () => {
       cy.wrap(component).invoke("css", "outline", "none");
     });
 
-    //@ts-ignore
     cy.get("#left-nav").compareSnapshot("LeftNav-closed", 0.01);
 
     cy.get("#left-close").click();
     cy.wait(400);
 
-    //@ts-ignore
     cy.get("#left-nav").compareSnapshot("LeftNav-open", 0.01);
 
     cy.get("#left-close").click();
     cy.wait(400);
 
-    //@ts-ignore
     cy.get("#left-nav").compareSnapshot("LeftNav-closed", 0.01);
   });
 });

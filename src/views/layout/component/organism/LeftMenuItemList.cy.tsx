@@ -1,8 +1,6 @@
 import { SelectedMenuType } from "../../../../type";
 import LeftMenuItemList from "./LeftMenuItemList";
 
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-
 describe("LeftMenuItemList component", () => {
   const props = {
     displayedLabel: true,
@@ -17,7 +15,6 @@ describe("LeftMenuItemList component", () => {
       />
     ));
 
-    //@ts-ignore
     cy.get("ul").compareSnapshot("LeftMenuItemList-displayed-labels", 0.01);
   });
 
@@ -29,7 +26,6 @@ describe("LeftMenuItemList component", () => {
       />
     ));
 
-    //@ts-ignore
     cy.get("ul").compareSnapshot("LeftMenuItemList-no-labels-displayed", 0.01);
   });
 
@@ -43,7 +39,6 @@ describe("LeftMenuItemList component", () => {
       />
     ));
 
-    //@ts-ignore
     cy.get("ul").compareSnapshot("LeftMenuItemList-one-selected", 0.01);
   });
 });
