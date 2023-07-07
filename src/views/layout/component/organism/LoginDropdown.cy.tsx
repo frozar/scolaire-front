@@ -30,7 +30,7 @@ describe("LoginDropdown component", () => {
         handleLogin={props.handleLogin}
       />
     ));
-
+    cy.intercept("/dummy").as("dummy");
     cy.intercept(profilePictureUrl).as("getProfilePicture");
     cy.wait("@getProfilePicture", { requestTimeout: 30000 });
     cy.get("button").compareSnapshot("LoginDropdown-authentified", 0.01);
