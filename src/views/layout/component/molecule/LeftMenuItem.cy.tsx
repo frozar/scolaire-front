@@ -1,7 +1,5 @@
 import LeftMenuItem from "./LeftMenuItem";
 
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-
 describe("LeftMenuItem component", () => {
   const props = {
     isDisabled: false,
@@ -43,7 +41,6 @@ describe("LeftMenuItem component", () => {
       />
     ));
 
-    //@ts-ignore
     cy.get("li").compareSnapshot("LeftMenuItem-selected", 0.01);
   });
 
@@ -59,7 +56,6 @@ describe("LeftMenuItem component", () => {
       />
     ));
 
-    //@ts-ignore
     cy.get("li").compareSnapshot("LeftMenuItem-not-selected", 0.01);
   });
 
@@ -75,7 +71,6 @@ describe("LeftMenuItem component", () => {
       />
     ));
 
-    //@ts-ignore
     cy.get("li").compareSnapshot("LeftMenuItem-disabled", 0.01);
   });
 
@@ -91,7 +86,6 @@ describe("LeftMenuItem component", () => {
       />
     ));
 
-    //@ts-ignore
     cy.get("li").compareSnapshot("LeftMenuItem-no-label-displayed", 0.01);
   });
 });

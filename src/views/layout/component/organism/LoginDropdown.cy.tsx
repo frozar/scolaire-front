@@ -1,7 +1,5 @@
 import LoginDropdown from "./LoginDropdown";
 
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-
 describe("LoginDropdown component", () => {
   const props = {
     getProfilePicture: () =>
@@ -19,7 +17,6 @@ describe("LoginDropdown component", () => {
       />
     ));
 
-    //@ts-ignore
     cy.get("button").compareSnapshot("LoginDropdown-unauthentified", 0.01);
   });
 
@@ -33,8 +30,6 @@ describe("LoginDropdown component", () => {
     ));
 
     cy.wait(400);
-
-    //@ts-ignore
     cy.get("button").compareSnapshot("LoginDropdown-authentified", 0.01);
   });
 

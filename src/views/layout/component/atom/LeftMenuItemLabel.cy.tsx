@@ -1,7 +1,5 @@
 import LeftMenuItemLabel from "./LeftMenuItemLabel";
 
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-
 describe("LeftMenuItemLabel component", () => {
   const props = {
     isActive: true,
@@ -19,8 +17,6 @@ describe("LeftMenuItemLabel component", () => {
     ));
 
     cy.get("span").contains(props.label);
-
-    //@ts-ignore
     cy.get("span").compareSnapshot("not-active-and-not-disabled", 0.01);
   });
 
@@ -34,8 +30,6 @@ describe("LeftMenuItemLabel component", () => {
     ));
 
     cy.get("span").contains(props.label);
-
-    //@ts-ignore
     cy.get("span").compareSnapshot("active", 0.01);
   });
 
@@ -53,8 +47,6 @@ describe("LeftMenuItemLabel component", () => {
     });
 
     cy.get("span").contains(props.label);
-
-    //@ts-ignore
     cy.get("span").compareSnapshot("disabled", 0.01);
   });
 });
