@@ -30,7 +30,9 @@ export function LateralInformationBoard() {
   return (
     <div
       ref={refMenuContent}
+      // TODO Delete CSS dependence in menu.css
       class="menu__custom"
+      // TODO Utility of this classList ?
       classList={{
         _active: getDisplayedLeftMenu(),
         active: getDisplayedInformationBoard(),
