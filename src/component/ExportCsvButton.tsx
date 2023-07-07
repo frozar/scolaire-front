@@ -4,7 +4,9 @@ import { getTimestamp } from "../views/content/graphicage/rightMapMenu/export/ut
 import { authenticateWrap } from "../views/layout/authentication";
 import Button from "./atom/Button";
 
-function onClickHandler(exportRoute: string) {
+function onClickHandler(exportRoute: string, filename: string) {
+  console.log("exportRoute", exportRoute);
+  console.log("filename", filename);
   authenticateWrap((headers) => {
     fetch(import.meta.env.VITE_BACK_URL + exportRoute, {
       method: "GET",
@@ -23,7 +25,8 @@ function onClickHandler(exportRoute: string) {
         }
 
         const { year, month, day, hour, minute, second } = getTimestamp();
-        const fileName = `${year}-${month}-${day}_${hour}-${minute}-${second}_etablissement.csv`;
+
+        const fileName = `${year}-${month}-${day}_${hour}-${minute}-${second}_${filename}.csv`;
         download(fileName, blob);
       })
       .catch(() => {
@@ -32,10 +35,10 @@ function onClickHandler(exportRoute: string) {
   });
 }
 
-export default function (props: { exportRoute: string }) {
+export default function (props: { exportRoute: string; filename: string }) {
   return (
     <Button
-      onClick={() => onClickHandler(props.exportRoute)}
+      onClickHandler={() => onClickHandler(props.exportRoute, props.filename)}
       label="Exporter"
     />
   );
