@@ -1,7 +1,7 @@
 @import "../../../../css/var.css";
 
 #left-nav-container {
-  @apply z-[1401] h-[100vh] w-[70px];
+  @apply z-layoutLeft h-[100vh] w-[70px];
 }
 
 
