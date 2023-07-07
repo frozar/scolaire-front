@@ -418,8 +418,6 @@ export function fetchBusLines() {
         }[];
       } = await res.json();
 
-      console.log("fetchBusLines data", json);
-
       const lines: LineType[] = json.content.map((resLine) => {
         const color = resLine.color ? "#" + resLine.color : randColor();
         const stopsWithNatureEnum = resLine.stops.map(

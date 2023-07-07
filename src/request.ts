@@ -57,11 +57,7 @@ export async function uploadFile(formData: FormData) {
 
 export async function updateBusLine(selectedBusLineId: number, color: string) {
   return authenticateWrap((headers) => {
-    // console.error("color", color);
-
     const colorWk = color.length === 6 ? color : color.substring(1);
-
-    // console.error("colorWk", colorWk);
 
     return fetch(
       import.meta.env.VITE_BACK_URL +
