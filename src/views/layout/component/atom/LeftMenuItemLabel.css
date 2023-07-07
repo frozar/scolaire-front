@@ -1,4 +1,3 @@
-@import "../../../../css/var.css";
 @import "../../../../css/utils.css";
 
 .left-menu-item-label {
@@ -6,7 +5,7 @@
 }
 
 .left-menu-item-label.active {
-  color: var(--green-base);
+  @apply text-green-base;
 }
 
 .left-menu-item-label.disabled {

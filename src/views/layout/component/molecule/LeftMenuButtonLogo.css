@@ -1,11 +1,9 @@
-@import "../../../../css/var.css";
-
 .left-menu-button-logo {
   @apply inline-block p-1 rounded-lg;
 }
 
 .left-menu-button-logo.active {
-  fill: var(--green-base);
+  @apply fill-green-base;
 }
 
 .left-menu-button-logo.disabled {

@@ -10,3 +10,4 @@ services:
     volumes:
       - ./:/code/cypress
       - ../src:/code/src
+      - ../tailwind.config.js:/code/tailwind.config.js

@@ -1,24 +1,22 @@
-@import "../../../../../css/var.css";
-
 .menu-btn {
   @apply z-[999] cursor-default relative;
 }
 
 .btn-fla {
-  @apply inline-flex cursor-pointer select-none flex-wrap items-center justify-center text-center transition-all text-[0.875rem] leading-[1em] min-h-[3rem] uppercase font-[600] no-underline	text-[var(--dark-teal)];
+  @apply inline-flex cursor-pointer select-none flex-wrap items-center justify-center text-center transition-all text-[0.875rem] leading-[1em] min-h-[3rem] uppercase font-[600] no-underline	text-dark-teal;
 
   animation: button-pop var(--animation-btn, 0.25s) ease-out;
 }
 
 .btn-fla.active {
-  @apply bg-[var(--dark-teal)] text-[var(--green-base)];
+  @apply bg-dark-teal text-green-base;
 }
 
 .btn-fla.active:hover {
-  @apply bg-[var(--dark-shade-teal)];
+  @apply bg-dark-shade-teal;
 }
 .btn-fla:hover {
-  @apply bg-[var(--dark-teal)] text-[var(--green-base)];
+  @apply bg-dark-teal text-green-base;
 }
 
 .btn-circle-fla {

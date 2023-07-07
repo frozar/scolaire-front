@@ -2,9 +2,6 @@
 @import "./menu.css";
 @import "./timeline.css";
 
-/* TODO: to delete when useless (#edit-stop css no longer here)*/
-@import "./var.css";
-
 body,
 html {
   overflow: hidden;
@@ -38,7 +35,6 @@ code {
   width: calc(100vw - 70px);
   height: calc(100vh - 60px);
 }
-
 
 .legend {
   padding: 6px 8px;
@@ -389,7 +385,7 @@ code {
 #edit-stop > header > button {
   width: 30px;
   height: 30px;
-  color: var(--green-base);
+  @apply text-green-base;
 }
 
 #edit-stop > header > button > svg {
@@ -420,9 +416,49 @@ code {
   padding: 10px 20px;
   border-radius: 5px;
   color: white;
-  background-color: var(--red-base);
+  @apply bg-red-base;
 }
 
 #edit-stop > section > div.action > button.green {
-  background-color: var(--green-base);
+  @apply bg-green-base;
+}
+
+.alert {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: 1rem;
+  flex-direction: row;
+}
+
+.alert-info {
+  background-color: #3abff8;
+}
+
+.alert-warnings {
+  background-color: #fabd23;
+}
+
+.alert-error {
+  background-color: #f87272;
+}
+
+.alert-succes {
+  background-color: #36d399;
+}
+
+.kbd {
+  display: inline-flex;
+  align-items: center;
+  border-width: 1px;
+  border-color: #1f293733;
+  background-color: #f2f2f2;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  border-radius: 0.5rem;
+  border-bottom-width: 2px;
+  min-height: 2.2em;
+  min-width: 2.2em;
 }

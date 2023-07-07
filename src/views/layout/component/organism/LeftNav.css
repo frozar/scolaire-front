@@ -1,12 +1,9 @@
-@import "../../../../css/var.css";
-
 #left-nav-container {
   @apply z-layoutLeft h-[100vh] w-[70px];
 }
 
-
 #left-nav {
-  @apply absolute flex flex-col justify-between py-4 h-[100vh] w-[70px] bg-[var(--dark-teal)];
+  @apply absolute flex flex-col justify-between py-4 h-[100vh] w-[70px] bg-dark-teal;
   transition-duration: 400ms;
 }
 
