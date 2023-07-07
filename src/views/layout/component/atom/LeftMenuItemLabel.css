@@ -4,7 +4,7 @@
   @apply p-1 prevent-select transition-opacity delay-200 duration-200 invisible opacity-0;
 }
 
-#lateral-nav.active .left-menu-item-label {
+#left-nav.active .left-menu-item-label {
   @apply visible opacity-100;
 }
 
