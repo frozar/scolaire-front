@@ -2,7 +2,7 @@ import { mergeProps } from "solid-js";
 import { ButtonProps } from "../../../../../component/atom/Button";
 
 interface TableActionButtonProps extends ButtonProps {
-  _class?: string;
+  class?: string;
 }
 
 export default function (props: TableActionButtonProps) {
@@ -12,7 +12,7 @@ export default function (props: TableActionButtonProps) {
     <button
       onClick={() => props.onClickHandler()}
       disabled={mergedProps.isDisabled}
-      class={props._class}
+      class={props.class}
     >
       {props.label}
     </button>

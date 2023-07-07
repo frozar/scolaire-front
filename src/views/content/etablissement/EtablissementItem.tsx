@@ -2,6 +2,7 @@ import { Setter, createEffect } from "solid-js";
 // import { setRemoveRamassageConfirmation } from "../../../signaux";
 import { EtablissementItemType } from "../../../type";
 import { setDataToEdit, toggleEditStop } from "./EditEtablissement";
+import TableActionButton from "./component/atom/TableActionButton";
 
 function handleClickEdit(item: EtablissementItemType) {
   setDataToEdit(item);
@@ -48,12 +49,11 @@ export default function (props: {
       <td>{props.item.quantity}</td>
       <td>{props.item.nbLine}</td>
       <td>
-        <button
-          onClick={() => handleClickEdit(props.item)}
+        <TableActionButton
+          onClickHandler={() => handleClickEdit(props.item)}
           class="text-[#0CC683] hover:text-indigo-600 mr-2"
-        >
-          Editer
-        </button>
+          label="Editer"
+        />
 
         <button
           disabled
