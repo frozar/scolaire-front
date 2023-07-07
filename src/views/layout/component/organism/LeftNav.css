@@ -16,6 +16,6 @@
   width: 140px;
 }
 
-#left-close {
+#left-nav-btn-colapse {
   @apply inline-flex justify-end px-2;
 }

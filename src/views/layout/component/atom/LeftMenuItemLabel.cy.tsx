@@ -1,5 +1,7 @@
 import LeftMenuItemLabel from "./LeftMenuItemLabel";
 
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+
 describe("LeftMenuItemLabel component", () => {
   const props = {
     isActive: true,
@@ -7,39 +9,49 @@ describe("LeftMenuItemLabel component", () => {
     label: "Graphicage",
   };
 
-  it("When not active and not disabled", () => {
+  it("Check snapshot", () => {
     cy.mount(() => (
-      <LeftMenuItemLabel
-        isActive={!props.isActive}
-        isDisabled={!props.isDisabled}
-        label={props.label}
-      />
+      <div id="left-nav" class="active">
+        <LeftMenuItemLabel
+          isActive={props.isActive}
+          isDisabled={props.isDisabled}
+          label={props.label}
+        />
+      </div>
     ));
 
+    cy.get("span").then((span) => {
+      cy.wrap(span).invoke("css", "background-color", "black");
+    });
+
+    cy.get("span").compareSnapshot("label", 0.01);
     cy.get("span").contains(props.label);
-    cy.get("span").compareSnapshot("not-active-and-not-disabled", 0.01);
   });
 
-  it("When active", () => {
+  it("Check snapshot text active", () => {
     cy.mount(() => (
-      <LeftMenuItemLabel
-        isActive={props.isActive}
-        isDisabled={!props.isDisabled}
-        label={props.label}
-      />
+      <div id="left-nav" class="active">
+        <LeftMenuItemLabel
+          isActive={true}
+          isDisabled={false}
+          label={props.label}
+        />
+      </div>
     ));
 
+    cy.get("span").compareSnapshot("label-active", 0.01);
     cy.get("span").contains(props.label);
-    cy.get("span").compareSnapshot("active", 0.01);
   });
 
   it("When disabled", () => {
     cy.mount(() => (
-      <LeftMenuItemLabel
-        isActive={!props.isActive}
-        isDisabled={props.isDisabled}
-        label={props.label}
-      />
+      <div id="left-nav" class="active">
+        <LeftMenuItemLabel
+          isActive={!props.isActive}
+          isDisabled={props.isDisabled}
+          label={props.label}
+        />
+      </div>
     ));
 
     cy.get("span").then((span) => {
@@ -48,5 +60,22 @@ describe("LeftMenuItemLabel component", () => {
 
     cy.get("span").contains(props.label);
     cy.get("span").compareSnapshot("disabled", 0.01);
+  });
+
+  it("Check snapshot hidden", () => {
+    cy.mount(() => (
+      <div id="left-nav">
+        <LeftMenuItemLabel
+          isActive={!props.isActive}
+          isDisabled={!props.isDisabled}
+          label={props.label}
+        />
+      </div>
+    ));
+
+    cy.get("span").then((span) => {
+      cy.wrap(span).invoke("css", "background-color", "black");
+    });
+    cy.get("span").compareSnapshot("label-hidden", 0.01);
   });
 });

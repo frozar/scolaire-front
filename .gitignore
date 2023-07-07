@@ -9,3 +9,4 @@ cypress/videos
 cypress-visual-report
 cypress/cypress-visual-screenshots/comparison
 cypress/cypress-visual-screenshots/diff
+cypress/screenshots

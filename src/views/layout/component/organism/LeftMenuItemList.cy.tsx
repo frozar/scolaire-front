@@ -9,10 +9,9 @@ describe("LeftMenuItemList component", () => {
 
   it("LeftMenuItemList check snapshot with displayed labels", () => {
     cy.mount(() => (
-      <LeftMenuItemList
-        displayedLabel={props.displayedLabel}
-        getSelectedMenu={props.getSelectedMenu}
-      />
+      <div id="left-nav" class="active">
+        <LeftMenuItemList getSelectedMenu={props.getSelectedMenu} />
+      </div>
     ));
 
     cy.get("ul").compareSnapshot("LeftMenuItemList-displayed-labels", 0.01);
@@ -20,10 +19,7 @@ describe("LeftMenuItemList component", () => {
 
   it("LeftMenuItemList check snapshot without displayed labels", () => {
     cy.mount(() => (
-      <LeftMenuItemList
-        displayedLabel={!props.displayedLabel}
-        getSelectedMenu={props.getSelectedMenu}
-      />
+      <LeftMenuItemList getSelectedMenu={props.getSelectedMenu} />
     ));
 
     cy.get("ul").compareSnapshot("LeftMenuItemList-no-labels-displayed", 0.01);
@@ -33,10 +29,9 @@ describe("LeftMenuItemList component", () => {
     props.getSelectedMenu = () => "graphicage";
 
     cy.mount(() => (
-      <LeftMenuItemList
-        displayedLabel={props.displayedLabel}
-        getSelectedMenu={props.getSelectedMenu}
-      />
+      <div id="left-nav" class="active">
+        <LeftMenuItemList getSelectedMenu={props.getSelectedMenu} />
+      </div>
     ));
 
     cy.get("ul").compareSnapshot("LeftMenuItemList-one-selected", 0.01);

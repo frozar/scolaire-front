@@ -1,7 +1,11 @@
 @import "../../../../css/utils.css";
 
 .left-menu-item-label {
-  @apply inline-block p-1 prevent-select;
+  @apply p-1 prevent-select transition-opacity delay-200 duration-200 invisible opacity-0;
+}
+
+#left-nav.active .left-menu-item-label {
+  @apply visible opacity-100;
 }
 
 .left-menu-item-label.active {
