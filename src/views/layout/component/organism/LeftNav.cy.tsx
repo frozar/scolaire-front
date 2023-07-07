@@ -1,6 +1,8 @@
 import { createSignal } from "solid-js";
 import LeftNav from "./LeftNav";
 
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+
 describe("LeftNav component", () => {
   const [displayMenu, setDisplayMenu] = createSignal(false);
 
@@ -21,7 +23,6 @@ describe("LeftNav component", () => {
       cy.wrap(component).invoke("css", "height", "700px");
     });
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
     cy.get("#left-nav").compareSnapshot("LeftNav-closed", 0.01);
   });
@@ -39,7 +40,7 @@ describe("LeftNav component", () => {
     });
 
     cy.wait(500);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+
     //@ts-ignore
     cy.get("#left-nav").compareSnapshot("LeftNav-open", 0.01);
   });
@@ -60,21 +61,18 @@ describe("LeftNav component", () => {
       cy.wrap(component).invoke("css", "outline", "none");
     });
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
     cy.get("#left-nav").compareSnapshot("LeftNav-closed", 0.01);
 
     cy.get("#left-close").click();
     cy.wait(400);
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
     cy.get("#left-nav").compareSnapshot("LeftNav-open", 0.01);
 
     cy.get("#left-close").click();
     cy.wait(400);
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
     cy.get("#left-nav").compareSnapshot("LeftNav-closed", 0.01);
   });

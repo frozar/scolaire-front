@@ -27,6 +27,7 @@ import { mount } from "@lmiller1990/cypress-ct-solid-js";
 // your custom command.
 // Alternatively, can be defined in cypress/support/component.d.ts
 // with a <reference path="./component" /> at the top of your spec.
+
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
@@ -37,6 +38,7 @@ declare global {
 }
 
 Cypress.Commands.add("mount", mount);
+
 after(() => {
   cy.task("generateReport");
 });

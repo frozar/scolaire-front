@@ -8,6 +8,8 @@ import VoirieLogo from "../atom/VoirieLogo";
 
 import LeftMenuButtonLogo from "./LeftMenuButtonLogo";
 
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+
 describe("LeftMenuButtonLogo component", () => {
   const props = {
     isActive: false,
@@ -43,7 +45,7 @@ describe("LeftMenuButtonLogo component", () => {
     ));
 
     cy.get("svg").should("be.visible");
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+
     //@ts-ignore
     cy.get("span").compareSnapshot("logo-dashboard", 0.01);
   });
@@ -60,7 +62,7 @@ describe("LeftMenuButtonLogo component", () => {
     ));
 
     cy.get("svg").should("be.visible");
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+
     //@ts-ignore
     cy.get("span").compareSnapshot("logo-graphicage", 0.01);
   });
@@ -77,7 +79,7 @@ describe("LeftMenuButtonLogo component", () => {
     ));
 
     cy.get("svg").should("be.visible");
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+
     //@ts-ignore
     cy.get("span").compareSnapshot("logo-voirie", 0.01);
   });
@@ -94,7 +96,7 @@ describe("LeftMenuButtonLogo component", () => {
     ));
 
     cy.get("svg").should("be.visible");
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+
     //@ts-ignore
     cy.get("span").compareSnapshot("logo-etablissement", 0.01);
   });
@@ -111,7 +113,7 @@ describe("LeftMenuButtonLogo component", () => {
     ));
 
     cy.get("svg").should("be.visible");
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+
     //@ts-ignore
     cy.get("span").compareSnapshot("logo-arrets", 0.01);
   });
@@ -128,7 +130,7 @@ describe("LeftMenuButtonLogo component", () => {
     ));
 
     cy.get("svg").should("be.visible");
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+
     //@ts-ignore
     cy.get("span").compareSnapshot("logo-setting", 0.01);
   });
@@ -145,7 +147,7 @@ describe("LeftMenuButtonLogo component", () => {
     ));
 
     cy.get("svg").should("be.visible");
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+
     //@ts-ignore
     cy.get("span").compareSnapshot("logo-support", 0.01);
   });
