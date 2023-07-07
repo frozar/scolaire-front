@@ -111,7 +111,7 @@ function dropHandler(
 
       const body: ReturnMessageType = await res.json();
 
-      // TODO: manage eror above, with maybe an import confirmation
+      // TODO: manage error above, with maybe an import confirmation
       //       dialogue box
 
       setImportConfirmation({

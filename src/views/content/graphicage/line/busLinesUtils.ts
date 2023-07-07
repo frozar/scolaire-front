@@ -405,17 +405,20 @@ export function fetchBusLines() {
         headers,
       }
     ).then(async (res) => {
-      const data: {
-        id_bus_line: number;
-        color: string | null;
-        stops: {
-          id: number;
-          id_point: number;
-          nature: string;
+      const json: {
+        message: string;
+        content: {
+          id_bus_line: number;
+          color: string | null;
+          stops: {
+            id: number;
+            id_point: number;
+            nature: string;
+          }[];
         }[];
-      }[] = await res.json();
+      } = await res.json();
 
-      const lines: LineType[] = data.map((resLine) => {
+      const lines: LineType[] = json.content.map((resLine) => {
         const color = resLine.color ? "#" + resLine.color : randColor();
         const stopsWithNatureEnum = resLine.stops.map(
           (stop) =>
