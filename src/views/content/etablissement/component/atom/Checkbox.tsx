@@ -1,0 +1,18 @@
+interface CheckboxProps {
+  ariaDescribedby: string;
+  ref: HTMLInputElement;
+  onChange: () => void;
+  name: string;
+}
+
+export default function (props: CheckboxProps) {
+  return (
+    <input
+      aria-describedby={props.ariaDescribedby}
+      onChange={() => props.onChange}
+      name={props.name}
+      ref={props.ref}
+      type="checkbox"
+    />
+  );
+}
