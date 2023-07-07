@@ -23,6 +23,8 @@ describe("LoginDropdown component", () => {
   });
 
   it("LoginDropdown check snapshot when authentified", () => {
+    cy.intercept(profilePictureUrl).as("getProfilePicture");
+
     cy.mount(() => (
       <LoginDropdown
         getProfilePicture={props.getProfilePicture}
@@ -31,8 +33,7 @@ describe("LoginDropdown component", () => {
       />
     ));
 
-    cy.intercept(profilePictureUrl).as("getTheProfilePicture");
-    cy.wait("@getTheProfilePicture", {
+    cy.wait("@getProfilePicture", {
       requestTimeout: 60000,
       responseTimeout: 60000,
     });
