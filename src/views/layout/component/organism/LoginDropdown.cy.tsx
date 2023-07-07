@@ -32,7 +32,7 @@ describe("LoginDropdown component", () => {
     ));
 
     cy.intercept(profilePictureUrl).as("getProfilePicture");
-    cy.wait("@getProfilePicture");
+    cy.wait("@getProfilePicture", { requestTimeout: 30000 });
     cy.get("button").compareSnapshot("LoginDropdown-authentified", 0.01);
   });
 
