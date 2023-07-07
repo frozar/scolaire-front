@@ -178,7 +178,7 @@ code {
 }
 
 .d-user-informations {
-  @apply absolute top-[20px] z-[1001] w-full flex flex-col items-center;
+  @apply absolute top-[20px] z-userInformations w-full flex flex-col items-center;
 }
 
 @keyframes circle-animation-ramassage {
