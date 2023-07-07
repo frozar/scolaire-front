@@ -9,7 +9,6 @@ import LeftMenuItem from "../molecule/LeftMenuItem";
 const [, { setSelectedMenu, getSelectedMenu }] = useStateGui();
 
 export interface LeftMenuItemProps {
-  // displayedLabel: boolean;
   getSelectedMenu?: () => SelectedMenuType;
   setSelectedMenu?: (itemMenu: SelectedMenuType) => void;
 }

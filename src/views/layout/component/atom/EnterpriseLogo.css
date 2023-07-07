@@ -7,5 +7,5 @@
 }
 
 .entreprise-logo-icon {
-  @apply fill-[var(--green-base)];
+  @apply fill-green-base;
 }

@@ -9,7 +9,6 @@ import "./LeftMenuItem.css";
 export interface LeftMenuItemProps {
   isDisabled?: boolean;
   label: string;
-  // displayedLabel: boolean;
 
   isSelected: boolean;
   Logo: () => JSXElement;

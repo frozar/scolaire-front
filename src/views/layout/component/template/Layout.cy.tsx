@@ -16,7 +16,7 @@ describe("Layout template", () => {
       cy.wrap(layout).invoke("css", "height", "700px");
     });
 
-    cy.get("#left-close").then((closeLateralNavBtn) => {
+    cy.get("#left-nav-btn-colapse").then((closeLateralNavBtn) => {
       cy.wrap(closeLateralNavBtn).invoke("css", "outline", "none");
     });
 
@@ -48,7 +48,7 @@ describe("Layout template", () => {
   });
 
   it("Layout check lateral nav is open", () => {
-    cy.get("#left-close").click();
+    cy.get("#left-nav-btn-colapse").click();
     cy.wait(400);
 
     cy.get("#layout").compareSnapshot("Layout-check-lateralnav-open", 0.01);
