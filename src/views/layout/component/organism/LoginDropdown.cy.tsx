@@ -1,9 +1,11 @@
 import LoginDropdown from "./LoginDropdown";
 
 describe("LoginDropdown component", () => {
+  const profilePictureUrl =
+    "https://raw.githubusercontent.com/frozar/scolaire-front/main/public/profile-picture.jpeg";
+
   const props = {
-    getProfilePicture: () =>
-      "https://raw.githubusercontent.com/frozar/scolaire-front/main/public/profile-picture.jpeg",
+    getProfilePicture: () => profilePictureUrl,
     authenticated: () => false,
     handleLogin: async () => console.log("ok"),
   };
@@ -29,7 +31,8 @@ describe("LoginDropdown component", () => {
       />
     ));
 
-    cy.wait(400);
+    cy.intercept(profilePictureUrl).as("getProfilePicture");
+    cy.wait("@getProfilePicture");
     cy.get("button").compareSnapshot("LoginDropdown-authentified", 0.01);
   });
 
