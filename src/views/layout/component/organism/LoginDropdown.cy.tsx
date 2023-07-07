@@ -30,9 +30,9 @@ describe("LoginDropdown component", () => {
         handleLogin={props.handleLogin}
       />
     ));
-    cy.intercept("/dummy").as("dummy");
-    cy.intercept(profilePictureUrl).as("getProfilePicture");
-    cy.wait("@getProfilePicture", {
+
+    cy.intercept(profilePictureUrl).as("getTheProfilePicture");
+    cy.wait("@getTheProfilePicture", {
       requestTimeout: 60000,
       responseTimeout: 60000,
     });
