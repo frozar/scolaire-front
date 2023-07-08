@@ -13,6 +13,7 @@ import { authenticateWrap } from "../../layout/authentication";
 import EditStop, { setDataToEdit, toggleEditStop } from "./EditEtablissement";
 import EtablissementItem from "./EtablissementItem";
 import Checkbox from "./component/atom/Checkbox";
+import TableColumn from "./component/atom/TableColumn";
 
 const [, { getActiveMapId }] = useStateGui();
 
@@ -171,7 +172,7 @@ export default function () {
               <table class="min-w-full">
                 <thead>
                   <tr>
-                    <th>
+                    <TableColumn classVariant="table-head-col-checkbox">
                       <Checkbox
                         ariaDescribedby="etablissement-item"
                         name="etablissement"
@@ -185,15 +186,20 @@ export default function () {
                           );
                         }}
                       />
-                    </th>
-                    <th scope="col" class="pl-4 pr-3 sm:pl-0 flex items-center">
-                      Nom
-                    </th>
-                    <th scope="col">Nombre d'élèves</th>
-                    <th scope="col">Nombre de lignes</th>
-                    <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-0">
+                    </TableColumn>
+                    <TableColumn classVariant="table-head-col">Nom</TableColumn>
+                    <TableColumn classVariant="table-head-col">
+                      Nombre d'élèves
+                    </TableColumn>
+                    <TableColumn classVariant="table-head-col">
+                      Nombre de lignes
+                    </TableColumn>
+                    <TableColumn
+                      classVariant={"table-head-col"}
+                      class="relative py-3.5 pl-3 pr-4 sm:pr-0"
+                    >
                       <span class="">Actions</span>
-                    </th>
+                    </TableColumn>
                   </tr>
                 </thead>
                 <tbody>
