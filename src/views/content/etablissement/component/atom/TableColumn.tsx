@@ -4,7 +4,7 @@ import "./TableColumn.css";
 interface TableBldyRowColumnProps {
   children: JSXElement;
   class?: string;
-  classVariant?: "table-head-col" | "table-head-col-checkbox";
+  classVariant?: "table-head-col" | "table-col-checkbox";
 }
 
 export default function (props: TableBldyRowColumnProps) {
@@ -22,7 +22,7 @@ export default function (props: TableBldyRowColumnProps) {
     <Show
       when={
         mergedProps.classVariant == "table-head-col" ||
-        mergedProps.classVariant == "table-head-col-checkbox"
+        mergedProps.classVariant == "table-col-checkbox"
       }
       fallback={<td class="table-body-col">{child()}</td>}
     >
