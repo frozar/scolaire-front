@@ -1,8 +1,9 @@
-import { Setter, createEffect } from "solid-js";
+import { Setter, createEffect, createSignal } from "solid-js";
 // import { setRemoveRamassageConfirmation } from "../../../signaux";
 import Button from "../../../component/atom/Button";
 import { EtablissementItemType } from "../../../type";
 import { setDataToEdit, toggleEditStop } from "./EditEtablissement";
+import Checkbox from "./component/atom/Checkbox";
 
 function handleClickEdit(item: EtablissementItemType) {
   setDataToEdit(item);
@@ -18,22 +19,23 @@ export default function (props: {
   item: EtablissementItemType;
   setEtablissements: Setter<EtablissementItemType[]>;
 }) {
-  let refCheckbox!: HTMLInputElement;
+  const [refCheckbox, setRefCheckbox] = createSignal<HTMLInputElement>(
+    document.createElement("input")
+  );
 
   createEffect(() => {
-    refCheckbox.checked = props.item.selected;
+    refCheckbox().checked = props.item.selected;
   });
 
   return (
     <tr>
       <td class="flex items-center">
-        <input
-          aria-describedby="etablissement-item"
+        <Checkbox
+          ariaDescribedby="etablissement-item"
           name="etablissement"
-          type="checkbox"
-          class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600 relative right-2"
-          onChange={(e) => {
-            const isItemChecked = e.target.checked;
+          ref={setRefCheckbox}
+          onChange={() => {
+            const isItemChecked = refCheckbox().checked;
             const itemId = props.item.id;
 
             props.setEtablissements((etablissements) =>
@@ -42,7 +44,6 @@ export default function (props: {
               )
             );
           }}
-          ref={refCheckbox}
         />
         {props.item.name}
       </td>
