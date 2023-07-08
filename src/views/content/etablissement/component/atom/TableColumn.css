@@ -1,10 +1,10 @@
 .table-body-col {
-  @apply px-3 py-4 text-sm text-gray-500;
+  @apply pl-2 py-4 text-sm text-gray-500;
 }
 .table-head-col {
-  @apply px-3 text-left text-sm font-semibold text-gray-900;
+  @apply pl-2 text-left text-sm font-semibold text-gray-900;
 }
 
-.table-head-col-checkbox {
-  @apply w-0 p-0 pl-3;
+.table-col-checkbox {
+  @apply w-0 pt-[7px];
 }
