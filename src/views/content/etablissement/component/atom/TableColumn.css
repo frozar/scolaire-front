@@ -1,3 +1,12 @@
+.table-body-col,
+.table-head-col {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: #111827;
+  text-align: left;
+  @apply p-3;
+}
+
 .table-head-col-checkbox {
-  @apply w-0;
+  @apply w-0 p-0 pl-3;
 }

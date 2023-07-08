@@ -348,9 +348,9 @@ code {
   @apply min-w-full divide-y divide-gray-300;
 }
 
-#ramassages-board > .board-content > div > table > thead > tr > th {
+/* #ramassages-board > .board-content > div > table > thead > tr > th {
   @apply px-3 py-3.5 text-left text-sm font-semibold text-gray-900;
-}
+} */
 
 #ramassages-board > .board-content > div > table > tbody {
   @apply divide-y divide-gray-200;
@@ -359,9 +359,9 @@ code {
   scroll-behavior: smooth;
 }
 
-#ramassages-board > .board-content > div > table > tbody > tr > td {
+/* #ramassages-board > .board-content > div > table > tbody > tr > td {
   @apply whitespace-nowrap px-3 py-4 text-sm text-gray-500;
-}
+} */
 
 #edit-stop {
   width: 400px;

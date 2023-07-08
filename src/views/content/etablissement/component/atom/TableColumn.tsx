@@ -13,7 +13,7 @@ export default function (props: TableBldyRowColumnProps) {
   const mergedProps = mergeProps(
     {
       // eslint-disable-next-line solid/reactivity
-      class: `${props.class} + " " + ${props.classVariant}`,
+      class: `${props.class ?? ""} ${props.classVariant}`,
     },
     props
   );
@@ -24,9 +24,9 @@ export default function (props: TableBldyRowColumnProps) {
         mergedProps.classVariant == "table-head-col" ||
         mergedProps.classVariant == "table-head-col-checkbox"
       }
-      fallback={<td>{child()}</td>}
+      fallback={<td class="table-body-col">{child()}</td>}
     >
-      <th scope="col" class={mergedProps.class}>
+      <th scope="col" class={`table-head-col ${mergedProps.class}`}>
         {child()}
       </th>
     </Show>
