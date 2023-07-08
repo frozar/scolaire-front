@@ -10,10 +10,6 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const ref = document.createElement("input");
-ref.setAttribute("type", "checkbox");
-ref.checked = true;
-
 export const Checkbox: Story = {
   args: {},
 };
