@@ -14,44 +14,30 @@ describe("Checkbox component", () => {
 
   it("Checkbox unchecked", () => {
     cy.mount(() => (
-      <div id="checkbox-container">
-        <Checkbox
-          ariaDescribedby="etablissement-item"
-          onChange={props.onChange}
-          name="etablissement"
-          ref={props.ref}
-        />
-      </div>
+      <Checkbox
+        ariaDescribedby="etablissement-item"
+        onChange={props.onChange}
+        name="etablissement"
+        ref={props.ref}
+      />
     ));
-    cy.get("#checkbox-container").then((checkboxContainer) => {
-      cy.wrap(checkboxContainer).invoke("css", "width", "35px");
-      cy.wrap(checkboxContainer).invoke("css", "display", "flex");
-      cy.wrap(checkboxContainer).invoke("css", "justify-content", "center");
-    });
+
     cy.get(".checkbox").should("have.prop", "name", "etablissement");
     cy.get(".checkbox").should("have.prop", "type", "checkbox");
 
     //@ts-ignore
-    cy.get("#checkbox-container").compareSnapshot("Checkbox: unchecked", 0.01);
+    cy.get(".checkbox").compareSnapshot("Checkbox: unchecked", 0.01);
   });
 
   it("Checkbox checked", () => {
     cy.mount(() => (
-      <div id="checkbox-container">
-        <Checkbox
-          ariaDescribedby="etablissement-item"
-          onChange={props.onChange}
-          name="etablissement"
-          ref={props.ref}
-        />
-      </div>
+      <Checkbox
+        ariaDescribedby="etablissement-item"
+        onChange={props.onChange}
+        name="etablissement"
+        ref={props.ref}
+      />
     ));
-
-    cy.get("#checkbox-container").then((checkboxContainer) => {
-      cy.wrap(checkboxContainer).invoke("css", "width", "35px");
-      cy.wrap(checkboxContainer).invoke("css", "display", "flex");
-      cy.wrap(checkboxContainer).invoke("css", "justify-content", "center");
-    });
 
     cy.get(".checkbox").then((checkbox) => {
       cy.wrap(checkbox).invoke("css", "outline", "none");
@@ -59,6 +45,6 @@ describe("Checkbox component", () => {
 
     cy.get(".checkbox").click();
     //@ts-ignore
-    cy.get("#checkbox-container").compareSnapshot("Checkbox checked", 0.01);
+    cy.get(".checkbox").compareSnapshot("Checkbox checked", 0.01);
   });
 });
