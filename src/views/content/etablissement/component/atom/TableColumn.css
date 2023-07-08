@@ -1,10 +1,8 @@
-.table-body-col,
+.table-body-col {
+  @apply px-3 py-4 text-sm text-gray-500;
+}
 .table-head-col {
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  color: #111827;
-  text-align: left;
-  @apply p-3;
+  @apply px-3 text-left text-sm font-semibold text-gray-900;
 }
 
 .table-head-col-checkbox {
