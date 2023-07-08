@@ -29,7 +29,7 @@ export default function (props: {
 
   return (
     <tr>
-      <td class="flex items-center">
+      <td>
         <Checkbox
           ariaDescribedby="etablissement-item"
           name="etablissement"
@@ -45,8 +45,8 @@ export default function (props: {
             );
           }}
         />
-        {props.item.name}
       </td>
+      <td>{props.item.name}</td>
       <td>{props.item.quantity}</td>
       <td>{props.item.nbLine}</td>
       <td>

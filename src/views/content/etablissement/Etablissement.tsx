@@ -12,6 +12,7 @@ import RemoveRamassageConfirmation from "../../../userInformation/RemoveRamassag
 import { authenticateWrap } from "../../layout/authentication";
 import EditStop, { setDataToEdit, toggleEditStop } from "./EditEtablissement";
 import EtablissementItem from "./EtablissementItem";
+import Checkbox from "./component/atom/Checkbox";
 
 const [, { getActiveMapId }] = useStateGui();
 
@@ -61,7 +62,11 @@ function preventDefaultHandler(e: DragEvent) {
 
 export default function () {
   let etablissementDiv!: HTMLDivElement;
-  let refCheckbox!: HTMLInputElement;
+
+  const [refCheckbox, setRefCheckbox] = createSignal<HTMLInputElement>(
+    document.createElement("input")
+  );
+  // let refCheckbox!: HTMLInputElement;
 
   const [keyword, setKeyword] = createSignal("");
 
@@ -74,7 +79,7 @@ export default function () {
     etablissements().filter((eta) => eta.selected);
 
   createEffect(() => {
-    refCheckbox.checked =
+    refCheckbox().checked =
       filteredEtablissements().length != 0 &&
       selectedEtablissements().length == filteredEtablissements().length;
   });
@@ -166,23 +171,22 @@ export default function () {
               <table class="min-w-full">
                 <thead>
                   <tr>
-                    <th scope="col" class="pl-4 pr-3 sm:pl-0 flex items-center">
-                      <input
-                        id="comments"
-                        aria-describedby="comments-description"
-                        name="comments"
-                        type="checkbox"
-                        class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600 relative right-2"
-                        onChange={(e) => {
+                    <th>
+                      <Checkbox
+                        ariaDescribedby="etablissement-item"
+                        name="etablissement"
+                        ref={setRefCheckbox}
+                        onChange={() => {
                           setEtablissements((etablissements) =>
                             etablissements.map((eta) => ({
                               ...eta,
-                              selected: e.target.checked,
+                              selected: refCheckbox().checked,
                             }))
                           );
                         }}
-                        ref={refCheckbox}
                       />
+                    </th>
+                    <th scope="col" class="pl-4 pr-3 sm:pl-0 flex items-center">
                       Nom
                     </th>
                     <th scope="col">Nombre d'élèves</th>
