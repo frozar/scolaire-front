@@ -26,7 +26,7 @@ describe("Checkbox component", () => {
     cy.get(".checkbox").should("have.prop", "type", "checkbox");
 
     //@ts-ignore
-    cy.get(".checkbox").compareSnapshot("Checkbox: unchecked", 0.01);
+    cy.get(".checkbox").compareSnapshot("checkbox-unchecked", 0.01);
   });
 
   it("Checkbox checked", () => {
@@ -45,6 +45,6 @@ describe("Checkbox component", () => {
 
     cy.get(".checkbox").click();
     //@ts-ignore
-    cy.get(".checkbox").compareSnapshot("Checkbox checked", 0.01);
+    cy.get(".checkbox").compareSnapshot("checkbox-checked", 0.01);
   });
 });

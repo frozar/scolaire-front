@@ -2,7 +2,7 @@ import { Setter } from "solid-js";
 import "./Checkbox.css";
 interface CheckboxProps {
   ariaDescribedby: string;
-  ref: Setter<HTMLInputElement>;
+  ref: Setter<HTMLInputElement> | HTMLInputElement;
   onChange: () => void;
   name: string;
 }
