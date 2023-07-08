@@ -30,7 +30,7 @@ export default function (props: {
 
   return (
     <tr>
-      <TableColumn>
+      <TableColumn classVariant="table-col-checkbox">
         <Checkbox
           ariaDescribedby="etablissement-item"
           name="etablissement"

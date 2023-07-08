@@ -172,7 +172,7 @@ export default function () {
               <table class="min-w-full">
                 <thead>
                   <tr>
-                    <TableColumn classVariant="table-head-col-checkbox">
+                    <TableColumn classVariant="table-col-checkbox">
                       <Checkbox
                         ariaDescribedby="etablissement-item"
                         name="etablissement"
