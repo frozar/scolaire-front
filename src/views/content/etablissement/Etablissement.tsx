@@ -6,6 +6,7 @@ import ImportCsvButton from "../../../component/ImportCsvButton";
 import ImportCsvCanvas from "../../../component/ImportCsvCanvas";
 import ImportCsvDialogBox from "../../../component/ImportCsvDialogBox";
 import ActionSelector from "../../../component/atom/ActionSelector";
+import PageTitle from "../../../component/atom/PageTitle";
 import { EtablissementItemType } from "../../../type";
 import RemoveRamassageConfirmation from "../../../userInformation/RemoveRamassageConfirmation";
 import { authenticateWrap } from "../../layout/authentication";
@@ -117,7 +118,7 @@ export default function () {
       <div class="flex w-full bg-white" ref={etablissementDiv}>
         <div id="ramassages-board">
           <header>
-            <h1>Etablissements</h1>
+            <PageTitle title="Etablissements" />
             <div id="filters">
               <div class="left">
                 <ActionSelector isDisabled={true} />
