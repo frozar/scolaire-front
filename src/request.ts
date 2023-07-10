@@ -2,7 +2,7 @@ import { authenticateWrap } from "./views/layout/authentication";
 
 import { useStateGui } from "./StateGui";
 
-const [, { getActiveMapId }] = useStateGui();
+const [, { getActiveMapId, getSelectedMenu }] = useStateGui();
 
 export async function deleteBusLine(idToRemove: number) {
   return authenticateWrap((headers) => {
@@ -43,15 +43,24 @@ export async function addBusLine(idsPoint: number[]) {
 }
 
 export async function uploadFile(formData: FormData) {
+  let url =
+    import.meta.env.VITE_BACK_URL + `/map/${getActiveMapId()}/uploadfile`;
+
+  switch (getSelectedMenu()) {
+    case "etablissements":
+      url += "/etablissement";
+      break;
+    case "ramassages":
+      url += "/ramassage";
+      break;
+  }
+
   return authenticateWrap((headers) => {
-    return fetch(
-      import.meta.env.VITE_BACK_URL + `/map/${getActiveMapId()}/uploadfile`,
-      {
-        method: "POST",
-        headers,
-        body: formData,
-      }
-    );
+    return fetch(url, {
+      method: "POST",
+      headers,
+      body: formData,
+    });
   }, true);
 }
 
