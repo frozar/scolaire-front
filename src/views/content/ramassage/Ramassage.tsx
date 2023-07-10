@@ -6,6 +6,7 @@ import ImportCsvButton from "../../../component/ImportCsvButton";
 import ImportCsvCanvas from "../../../component/ImportCsvCanvas";
 import ImportCsvDialogBox from "../../../component/ImportCsvDialogBox";
 import ActionSelector from "../../../component/atom/ActionSelector";
+import PageTitle from "../../../component/atom/PageTitle";
 import { addNewUserInformation } from "../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum, StopItemType } from "../../../type";
 import RemoveRamassageConfirmation from "../../../userInformation/RemoveRamassageConfirmation";
@@ -133,7 +134,9 @@ export default function () {
       <div class="flex w-full bg-white" ref={ramassageDiv}>
         <div id="ramassages-board">
           <header>
-            <h1>Points de ramassage</h1>
+            <div>
+              <PageTitle title="Points de ramassage" />
+            </div>
             <div id="filters">
               <div class="left">
                 <ActionSelector isDisabled={true} />
