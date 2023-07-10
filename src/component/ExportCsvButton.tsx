@@ -38,7 +38,7 @@ function onClickHandler(exportRoute: string, filename: string) {
 export default function (props: { exportRoute: string; filename: string }) {
   return (
     <Button
-      onClickHandler={() => onClickHandler(props.exportRoute, props.filename)}
+      onClick={() => onClickHandler(props.exportRoute, props.filename)}
       label="Exporter"
     />
   );
