@@ -167,7 +167,7 @@ export default function () {
 
               <div class="right">
                 <ExportCsvButton
-                  exportRoute={`/map/${getActiveMapId()}/export/ramassages_input`}
+                  exportRoute={`/map/${getActiveMapId()}/export/ramassage_input`}
                   filename="ramassage"
                 />
                 <ImportCsvButton />
