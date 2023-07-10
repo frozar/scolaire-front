@@ -13,6 +13,7 @@ import { authenticateWrap } from "../../layout/authentication";
 import EditStop, { setDataToEdit, toggleEditStop } from "./EditEtablissement";
 import EtablissementItem from "./EtablissementItem";
 import Checkbox from "./component/atom/Checkbox";
+import InputText from "./component/atom/InputText";
 
 const [, { getActiveMapId }] = useStateGui();
 
@@ -144,13 +145,11 @@ export default function () {
                   <div class="input-search-logo">
                     <AiOutlineSearch />
                   </div>
-                  <input
-                    class="bg-white"
-                    type="text"
+                  <InputText
                     name="search"
                     placeholder="Recherche"
                     onInput={(e) => {
-                      setKeyword(e.currentTarget.value);
+                      setKeyword(e);
                     }}
                   />
                 </div>
