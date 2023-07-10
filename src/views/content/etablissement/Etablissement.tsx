@@ -118,7 +118,10 @@ export default function () {
       <div class="flex w-full bg-white" ref={etablissementDiv}>
         <div id="ramassages-board">
           <header>
-            <PageTitle title="Etablissements" />
+            <div>
+              <PageTitle title="Etablissements" />
+            </div>
+
             <div id="filters">
               <div class="left">
                 <ActionSelector isDisabled={true} />

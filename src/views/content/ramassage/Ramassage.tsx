@@ -134,7 +134,9 @@ export default function () {
       <div class="flex w-full bg-white" ref={ramassageDiv}>
         <div id="ramassages-board">
           <header>
-            <PageTitle title="Points de ramassage" />
+            <div>
+              <PageTitle title="Points de ramassage" />
+            </div>
             <div id="filters">
               <div class="left">
                 <ActionSelector isDisabled={true} />
