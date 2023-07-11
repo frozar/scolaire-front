@@ -6,6 +6,7 @@ import { SelectedMenuType, TileId } from "./type";
 type StateGuiType = {
   selectedMenu: SelectedMenuType;
   selectedTab: string;
+  informationBoardSelectedTab: number;
   activeMapId: number | null;
   displayedLeftMenu: boolean;
   displayedRightMenu: boolean;
@@ -43,6 +44,7 @@ function createLocalStore<T extends object>(
 const makeStateGuiContext = () => {
   const defaultStateGui: StateGuiType = {
     selectedMenu: "dashboard",
+    informationBoardSelectedTab: 0,
     selectedTab: "info",
     activeMapId: null,
     displayedLeftMenu: false,
@@ -58,6 +60,15 @@ const makeStateGuiContext = () => {
     setState("displayedLeftMenu", (currentValue: boolean) => !currentValue);
   }
 
+  function setInformationBoardSelectedTab(key: number) {
+    setState("informationBoardSelectedTab", key);
+  }
+
+  function getInformationBoardSelectedTab(): number {
+    return state.informationBoardSelectedTab;
+  }
+
+  // TODO to delete
   function setSelectedTab(tabName: string) {
     setState("selectedTab", tabName);
   }
@@ -121,6 +132,8 @@ const makeStateGuiContext = () => {
     state,
     {
       setSelectedTab,
+      getInformationBoardSelectedTab,
+      setInformationBoardSelectedTab,
       getActiveMapId,
       setActiveMapId,
       setSelectedReadModeTile,
