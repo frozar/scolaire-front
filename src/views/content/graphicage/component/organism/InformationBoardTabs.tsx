@@ -12,14 +12,15 @@ export interface InformationBoardTabsProps {
   tabs: InformationBoardTabType[];
 }
 
-function checkSelectedTab(tabs: InformationBoardTabType[]) {
+function checkSelectedTabKey(tabs: InformationBoardTabType[]) {
   if (getInformationBoardSelectedTab() + 1 > tabs.length) {
     setInformationBoardSelectedTab(0);
   }
 }
 
 export function InformationBoardTabs(props: InformationBoardTabsProps) {
-  checkSelectedTab(props.tabs);
+  //TODO Question about the positionning of the checking function
+  checkSelectedTabKey(props.tabs);
 
   return (
     <nav class="information-board-tabs">
