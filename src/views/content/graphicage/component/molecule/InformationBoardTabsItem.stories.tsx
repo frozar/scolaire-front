@@ -1,12 +1,12 @@
 import { Meta, StoryObj } from "storybook-solidjs";
-import { InformationBoardTabsItemIcon } from "./InformationBoardTabsItemIcon";
-import InformationCircleIcon from "./InformationCircleIcon";
-import SettingsIcon from "./SettingsIcon";
+import InformationCircleIcon from "../atom/InformationCircleIcon";
+import SettingsIcon from "../atom/SettingsIcon";
+import { InformationBoardTabsItem } from "./InformationBoardTabsItem";
 
 const meta = {
-  component: InformationBoardTabsItemIcon,
+  component: InformationBoardTabsItem,
   tags: ["autodocs"],
-} satisfies Meta<typeof InformationBoardTabsItemIcon>;
+} satisfies Meta<typeof InformationBoardTabsItem>;
 
 const icon = SettingsIcon;
 
@@ -18,10 +18,11 @@ const icons = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const InformationBoardTabsItemIconStory: Story = {
+export const InformationBoardTabsItemStory: Story = {
   args: {
     isActive: false,
     icon: icon,
+    label: "Paramètres",
   },
   argTypes: {
     icon: {

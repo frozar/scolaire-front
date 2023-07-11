@@ -1,0 +1,3 @@
+.information-board-tabs-item {
+  @apply inline-flex items-center py-4 px-4 border-transparent hover:opacity-80 transition duration-150 ease-in-out;
+}

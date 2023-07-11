@@ -9,7 +9,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const LeftMenuItemLabel: Story = {
+export const InformationBoardTabsItemLabelStory: Story = {
   args: {
     isActive: false,
     label: "Informations",
