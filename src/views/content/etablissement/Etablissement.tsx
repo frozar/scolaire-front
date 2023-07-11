@@ -1,4 +1,3 @@
-import { AiOutlineSearch } from "solid-icons/ai";
 import { For, createEffect, createSignal, onCleanup, onMount } from "solid-js";
 import { useStateGui } from "../../../StateGui";
 import ExportCsvButton from "../../../component/ExportCsvButton";
@@ -13,7 +12,7 @@ import { authenticateWrap } from "../../layout/authentication";
 import EditStop, { setDataToEdit, toggleEditStop } from "./EditEtablissement";
 import EtablissementItem from "./EtablissementItem";
 import Checkbox from "./component/atom/Checkbox";
-import InputText from "./component/atom/InputText";
+import InputSearch from "./component/molecule/InputSearch";
 
 const [, { getActiveMapId }] = useStateGui();
 
@@ -140,19 +139,11 @@ export default function () {
                 >
                   Ajouter
                 </button>
-
-                <div class="input-field">
-                  <div class="input-search-logo">
-                    <AiOutlineSearch />
-                  </div>
-                  <InputText
-                    name="search"
-                    placeholder="Recherche"
-                    onInput={(e) => {
-                      setKeyword(e);
-                    }}
-                  />
-                </div>
+                <InputSearch
+                  onInput={(key: string) => {
+                    setKeyword(key);
+                  }}
+                />
               </div>
 
               <div class="right">
