@@ -5,6 +5,7 @@ import InformationContent from "./InformationContent";
 import { useStateAction } from "../../../../StateAction";
 import { useStateGui } from "../../../../StateGui";
 import { InformationBoardTabsItemIcon } from "../component/atom/InformationBoardTabsItemIcon";
+import { InformationBoardTabsItemLabel } from "../component/atom/InformationBoardTabsItemLabel";
 import InformationCircleIcon from "../component/atom/InformationCircleIcon";
 import SettingsIcon from "../component/atom/SettingsIcon";
 
@@ -31,21 +32,13 @@ function SettingsContent(props: object) {
   );
 }
 
-function InformationName() {
-  return <span>Informations</span>;
-}
-
-function SettingsName() {
-  return <span>Paramètres</span>;
-}
-
 export function InformationBoard() {
   let refMenuContent!: HTMLDivElement;
 
   type TabValueType = {
     tabLabel: () => JSXElement;
     tabContent: (props: object) => JSX.Element;
-    tabName: (props: object) => JSX.Element;
+    tabName: string;
   };
   type TabType = {
     info: TabValueType;
@@ -56,12 +49,12 @@ export function InformationBoard() {
     info: {
       tabLabel: InformationCircleIcon,
       tabContent: InformationContent,
-      tabName: InformationName,
+      tabName: "Informations",
     },
     settings: {
       tabLabel: SettingsIcon,
       tabContent: SettingsContent,
-      tabName: SettingsName,
+      tabName: "Paramètres",
     },
   };
   type TabKey = keyof typeof tabs;
@@ -86,7 +79,7 @@ export function InformationBoard() {
             validateTabKey(value);
             const tabKey = value as keyof typeof tabs;
             const icon = tabs[tabKey].tabLabel;
-            const TabNameComponent = tabs[tabKey].tabName;
+            const tabName = tabs[tabKey].tabName;
             const active = stateGui.selectedTab === tabKey;
             const group = stateGui.selectedTab != tabKey;
             return (
@@ -98,7 +91,10 @@ export function InformationBoard() {
                 onClick={() => setSelectedTab(tabKey)}
               >
                 <InformationBoardTabsItemIcon icon={icon} isActive={active} />
-                <TabNameComponent />
+                <InformationBoardTabsItemLabel
+                  label={tabName}
+                  isActive={active}
+                />
               </button>
             );
           }}
