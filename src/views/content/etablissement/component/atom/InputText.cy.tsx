@@ -13,12 +13,8 @@ describe("InputText component", () => {
   it("InputText check props", () => {
     cy.mount(() => <InputText {...props} />);
 
-    cy.get("input[type='text']").should(
-      "have.attr",
-      "placeholder",
-      "placeholder"
-    );
-    cy.get("input[type='text']").should("have.attr", "name", "name");
+    cy.get(".input").should("have.attr", "placeholder", "placeholder");
+    cy.get(".input").should("have.attr", "name", "name");
 
     //@ts-ignore
     cy.get(".input").compareSnapshot("empty", 0.01);
