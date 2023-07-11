@@ -2,36 +2,81 @@ import SettingsIcon from "../atom/SettingsIcon";
 import { InformationBoardTabsItem } from "./InformationBoardTabsItem";
 
 describe("InformationBoardTabsItemLabel atom", () => {
-  const myLabel = "My Label";
-  const icon = SettingsIcon;
+  const props = {
+    isActive: true,
+    label: "My Label",
+    icon: SettingsIcon,
+    onClick: () => console.log("ok"),
+  };
 
-  it("Active label", () => {
+  it("Active button", () => {
     cy.mount(() => (
-      //TODO manque le test du void onClick
-      <InformationBoardTabsItem isActive={true} label={myLabel} icon={icon} />
+      <InformationBoardTabsItem
+        isActive={props.isActive}
+        label={props.label}
+        icon={props.icon}
+        onClick={props.onClick}
+      />
     ));
-    cy.get("span").should("satisfy", ($el) => {
+    cy.get("button.information-board-tabs-item").should("satisfy", ($el) => {
       const classList = Array.from($el[0].classList);
       return classList.includes("active");
     });
-    cy.get("span").contains(myLabel);
+    cy.get(".information-board-tabs-item-label").contains(props.label);
     //TODO have to fix the Cypress SnapShot : don't take the first snap
-    cy.get("span").compareSnapshot("active", 0.01);
+    cy.get("button.information-board-tabs-item").compareSnapshot(
+      "active",
+      0.01
+    );
   });
 
-  it("Inactive label", () => {
+  it("Active button", () => {
     cy.mount(() => (
-      <InformationBoardTabsItem isActive={false} label={myLabel} icon={icon} />
+      <InformationBoardTabsItem
+        isActive={props.isActive}
+        label={props.label}
+        icon={props.icon}
+        onClick={props.onClick}
+      />
     ));
-    cy.get("span").contains(myLabel);
-    cy.get("span").compareSnapshot("inactive", 0.01);
+    cy.get(".information-board-tabs-item-label").contains(props.label);
+    cy.get("button.information-board-tabs-item").compareSnapshot(
+      "active",
+      0.01
+    );
   });
 
-  it("Active label", () => {
+  it("Inactive button", () => {
+    const onClickSpy = cy.spy(props.onClick).as("onclickListener");
     cy.mount(() => (
-      <InformationBoardTabsItem isActive={true} label={myLabel} icon={icon} />
+      <InformationBoardTabsItem
+        isActive={!props.isActive}
+        label={props.label}
+        icon={props.icon}
+        onClick={onClickSpy}
+      />
     ));
-    cy.get("span").contains(myLabel);
-    cy.get("span").compareSnapshot("active", 0.01);
+
+    cy.get("button.information-board-tabs-item").click();
+    cy.get("@onclickListener").should("have.been.calledOnce");
+    cy.get(".information-board-tabs-item-label").contains(props.label);
+    cy.get("button.information-board-tabs-item").compareSnapshot(
+      "inactive",
+      0.01
+    );
+  });
+
+  it("Button onClick", () => {
+    const onClickSpy = cy.spy(props.onClick).as("onclickListener");
+    cy.mount(() => (
+      <InformationBoardTabsItem
+        isActive={props.isActive}
+        label={props.label}
+        icon={props.icon}
+        onClick={onClickSpy}
+      />
+    ));
+    cy.get("button.information-board-tabs-item").click();
+    cy.get("@onclickListener").should("have.been.calledOnce");
   });
 });
