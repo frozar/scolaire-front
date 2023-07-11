@@ -4,10 +4,9 @@ import InformationContent from "./InformationContent";
 
 import { useStateAction } from "../../../../StateAction";
 import { useStateGui } from "../../../../StateGui";
-import { InformationBoardTabsItemIcon } from "../component/atom/InformationBoardTabsItemIcon";
-import { InformationBoardTabsItemLabel } from "../component/atom/InformationBoardTabsItemLabel";
 import InformationCircleIcon from "../component/atom/InformationCircleIcon";
 import SettingsIcon from "../component/atom/SettingsIcon";
+import { InformationBoardTabsItem } from "../component/molecule/InformationBoardTabsItem";
 
 const [stateAction, { toggleAltimetryAnimation }] = useStateAction();
 const [stateGui, { setSelectedTab, getDisplayedInformationBoard }] =
@@ -79,23 +78,15 @@ export function InformationBoard() {
             validateTabKey(value);
             const tabKey = value as keyof typeof tabs;
             const icon = tabs[tabKey].tabLabel;
-            const tabName = tabs[tabKey].tabName;
+            const label = tabs[tabKey].tabName;
             const active = stateGui.selectedTab === tabKey;
-            const group = stateGui.selectedTab != tabKey;
             return (
-              <button
-                classList={{
-                  "group active": active,
-                  group: group,
-                }}
+              <InformationBoardTabsItem
+                label={label}
+                icon={icon}
+                isActive={active}
                 onClick={() => setSelectedTab(tabKey)}
-              >
-                <InformationBoardTabsItemIcon icon={icon} isActive={active} />
-                <InformationBoardTabsItemLabel
-                  label={tabName}
-                  isActive={active}
-                />
-              </button>
+              />
             );
           }}
         </For>
