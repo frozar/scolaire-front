@@ -5,7 +5,6 @@ import { SelectedMenuType, TileId } from "./type";
 
 type StateGuiType = {
   selectedMenu: SelectedMenuType;
-  selectedTab: string;
   informationBoardSelectedTab: number;
   activeMapId: number | null;
   displayedLeftMenu: boolean;
@@ -45,7 +44,6 @@ const makeStateGuiContext = () => {
   const defaultStateGui: StateGuiType = {
     selectedMenu: "dashboard",
     informationBoardSelectedTab: 0,
-    selectedTab: "info",
     activeMapId: null,
     displayedLeftMenu: false,
     displayedRightMenu: false,
@@ -66,11 +64,6 @@ const makeStateGuiContext = () => {
 
   function getInformationBoardSelectedTab(): number {
     return state.informationBoardSelectedTab;
-  }
-
-  // TODO to delete
-  function setSelectedTab(tabName: string) {
-    setState("selectedTab", tabName);
   }
 
   function getActiveMapId() {
@@ -131,7 +124,6 @@ const makeStateGuiContext = () => {
   return [
     state,
     {
-      setSelectedTab,
       getInformationBoardSelectedTab,
       setInformationBoardSelectedTab,
       getActiveMapId,

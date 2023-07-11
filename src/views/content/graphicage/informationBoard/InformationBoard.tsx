@@ -1,15 +1,15 @@
-import { For, JSX, JSXElement } from "solid-js";
 import { Dynamic } from "solid-js/web";
 import InformationContent from "./InformationContent";
 
 import { useStateAction } from "../../../../StateAction";
 import { useStateGui } from "../../../../StateGui";
+import { InformationBoardTabType } from "../../../../type";
 import InformationCircleIcon from "../component/atom/InformationCircleIcon";
 import SettingsIcon from "../component/atom/SettingsIcon";
-import { InformationBoardTabsItem } from "../component/molecule/InformationBoardTabsItem";
+import { InformationBoardTabs } from "../component/organism/InformationBoardTabs";
 
 const [stateAction, { toggleAltimetryAnimation }] = useStateAction();
-const [stateGui, { setSelectedTab, getDisplayedInformationBoard }] =
+const [, { getInformationBoardSelectedTab, getDisplayedInformationBoard }] =
   useStateGui();
 
 function SettingsContent(props: object) {
@@ -34,35 +34,18 @@ function SettingsContent(props: object) {
 export function InformationBoard() {
   let refMenuContent!: HTMLDivElement;
 
-  type TabValueType = {
-    tabLabel: () => JSXElement;
-    tabContent: (props: object) => JSX.Element;
-    tabName: string;
-  };
-  type TabType = {
-    info: TabValueType;
-    settings: TabValueType;
-  };
-
-  const tabs: TabType = {
-    info: {
-      tabLabel: InformationCircleIcon,
-      tabContent: InformationContent,
-      tabName: "Informations",
+  const tabs: InformationBoardTabType[] = [
+    {
+      icon: InformationCircleIcon,
+      content: InformationContent,
+      label: "Informations",
     },
-    settings: {
-      tabLabel: SettingsIcon,
-      tabContent: SettingsContent,
-      tabName: "Paramètres",
+    {
+      icon: SettingsIcon,
+      content: SettingsContent,
+      label: "Paramètres",
     },
-  };
-  type TabKey = keyof typeof tabs;
-
-  function validateTabKey(value: string): asserts value is TabKey {
-    if (!(value in tabs)) {
-      throw Error("invalid tab key");
-    }
-  }
+  ];
 
   return (
     <div
@@ -72,28 +55,9 @@ export function InformationBoard() {
         active: getDisplayedInformationBoard(),
       }}
     >
-      <nav aria-label="Tabs">
-        <For each={Object.keys(tabs)}>
-          {(value: string) => {
-            validateTabKey(value);
-            const tabKey = value as keyof typeof tabs;
-            const icon = tabs[tabKey].tabLabel;
-            const label = tabs[tabKey].tabName;
-            const active = stateGui.selectedTab === tabKey;
-            return (
-              <InformationBoardTabsItem
-                label={label}
-                icon={icon}
-                isActive={active}
-                onClick={() => setSelectedTab(tabKey)}
-              />
-            );
-          }}
-        </For>
-      </nav>
-      <Dynamic
-        component={tabs[stateGui.selectedTab as keyof typeof tabs].tabContent}
-      />
+      <InformationBoardTabs tabs={tabs} />
+
+      <Dynamic component={tabs[getInformationBoardSelectedTab()].content} />
     </div>
   );
 }
