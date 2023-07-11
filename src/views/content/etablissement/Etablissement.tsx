@@ -66,7 +66,6 @@ export default function () {
   const [refCheckbox, setRefCheckbox] = createSignal<HTMLInputElement>(
     document.createElement("input")
   );
-  // let refCheckbox!: HTMLInputElement;
 
   const [keyword, setKeyword] = createSignal("");
 
