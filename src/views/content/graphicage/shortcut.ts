@@ -93,11 +93,14 @@ function enterHandler({ code }: KeyboardEvent) {
     if (!isInAddLineMode()) {
       return;
     }
-    const ids_point = getLineUnderConstruction().stops.map(function (value) {
-      return value["idPoint"];
+    const resourceInfo = getLineUnderConstruction().stops.map(function (value) {
+      return {
+        id_resource: value["id"],
+        nature: value["nature"].toLowerCase(),
+      };
     });
 
-    addBusLine(ids_point).then(async (res) => {
+    addBusLine(resourceInfo).then(async (res) => {
       if (!res) {
         console.error("addBusLine failed");
         return;
