@@ -29,14 +29,16 @@ export async function clear() {
   });
 }
 
-export async function addBusLine(idsPoint: number[]) {
+export async function addBusLine(
+  stops: { id_resource: number; nature: string }[]
+) {
   return authenticateWrap((headers) => {
     return fetch(
       import.meta.env.VITE_BACK_URL + `/map/${getActiveMapId()}/bus_line`,
       {
         method: "POST",
         headers,
-        body: JSON.stringify({ ids_point: idsPoint }),
+        body: JSON.stringify({ stops }),
       }
     );
   });
