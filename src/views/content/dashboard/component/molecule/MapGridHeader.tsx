@@ -1,4 +1,5 @@
 import Button from "../../../../../component/atom/Button";
+import PageTitle from "../../../../../component/atom/PageTitle";
 
 import "./MapGridHeader.css";
 
@@ -9,7 +10,7 @@ interface MapGridHeaderProps {
 export default function (props: MapGridHeaderProps) {
   return (
     <div class="justify-between flex items-center text-3xl">
-      <h1>Tableau de bord</h1>
+      <PageTitle title="Tableau de bord" />
       <Button
         onClick={() => props.openCreateMapModal()}
         label="Nouvelle carte"
