@@ -23,7 +23,7 @@ export function fetchEtablissement() {
   authenticateWrap((headers) => {
     fetch(
       import.meta.env.VITE_BACK_URL +
-        `/map/${getActiveMapId()}/dashboard/etablissements`,
+        `/map/${getActiveMapId()}/dashboard/etablissement`,
       {
         method: "GET",
         headers,

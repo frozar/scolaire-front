@@ -22,7 +22,7 @@ export function fetchRamassage() {
   authenticateWrap((headers) => {
     fetch(
       import.meta.env.VITE_BACK_URL +
-        `/map/${getActiveMapId()}/dashboard/ramassages`,
+        `/map/${getActiveMapId()}/dashboard/ramassage`,
       {
         method: "GET",
         headers,
