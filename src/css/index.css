@@ -348,8 +348,12 @@ code {
   @apply min-w-full divide-y divide-gray-300;
 }
 
+#ramassages-board > .board-content > div > table > thead > tr {
+  @apply h-10;
+}
+
 #ramassages-board > .board-content > div > table > thead > tr > th {
-  @apply px-3 py-3.5 text-left text-sm font-semibold text-gray-900;
+  @apply px-3 py-0 text-left text-sm font-semibold text-gray-900;
 }
 
 #ramassages-board > .board-content > div > table > tbody {
