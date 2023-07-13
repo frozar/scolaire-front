@@ -1,4 +1,6 @@
 import _ from "lodash";
+import { useStateAction } from "../../../StateAction";
+import { addBusLine } from "../../../request";
 import {
   addNewUserInformation,
   disableSpinningWheel,
@@ -13,11 +15,9 @@ import {
   PointIdentityType,
   PointRamassageType,
 } from "../../../type";
-import { addBusLine } from "../../../request";
-import { useStateAction } from "../../../StateAction";
-import { fetchBusLines } from "./line/busLinesUtils";
 import { authenticateWrap } from "../../layout/authentication";
 import { busLines } from "./line/BusLines";
+import { fetchBusLines } from "./line/busLinesUtils";
 
 const [, { setModeRead }] = useStateAction();
 
@@ -132,19 +132,25 @@ export function generateCircuit(
           return;
         }
         for (const route of data) {
-          const idsPoint = route["steps"].map(
+          const resourceInfo = route["steps"].map(
             (step: {
               load: number;
               distance: number;
               id: number;
               id_point: number;
               nature: string;
-            }) => step["id_point"]
+            }) => {
+              const { id, nature } = step;
+              return {
+                id,
+                nature,
+              };
+            }
           );
 
           // TODO: differ add line with a dialog box
           // const res = await addBusLine(idsPoint);
-          await addBusLine(idsPoint);
+          await addBusLine(resourceInfo);
 
           // TODO: Deal case of error
           // await res.json();
