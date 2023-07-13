@@ -14,7 +14,7 @@ export function exportCsv() {
   displayOnGoingDownloadMessage();
   authenticateWrap((headers) => {
     fetch(
-      import.meta.env.VITE_BACK_URL + `/map/${getActiveMapId()}/export/input`,
+      import.meta.env.VITE_BACK_URL + `/map/${getActiveMapId()}/export/csv/zip`,
       {
         headers,
       }

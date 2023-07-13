@@ -150,7 +150,7 @@ export default function () {
 
               <div class="right">
                 <ExportCsvButton
-                  exportRoute={`/map/${getActiveMapId()}/export/etablissement_input`}
+                  exportRoute={`/map/${getActiveMapId()}/export/csv_etablissement`}
                   filename="etablissement"
                 />
                 <ImportCsvButton />

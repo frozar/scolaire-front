@@ -43,8 +43,7 @@ export async function addBusLine(idsPoint: number[]) {
 }
 
 export async function uploadFile(formData: FormData) {
-  let url =
-    import.meta.env.VITE_BACK_URL + `/map/${getActiveMapId()}/uploadfile`;
+  let url = import.meta.env.VITE_BACK_URL + `/map/${getActiveMapId()}/import`;
 
   switch (getSelectedMenu()) {
     case "etablissements":
