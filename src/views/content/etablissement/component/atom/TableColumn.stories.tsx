@@ -15,12 +15,13 @@ checkbox.setAttribute("type", "checkbox");
 
 export const TableBodyColumnText: Story = {
   args: {
-    label: "column",
+    children: "column",
   },
 };
 
 export const TableBodyColumnCheckBox: Story = {
   args: {
-    label: checkbox,
+    children: checkbox,
+    classVariant: "table-col-checkbox",
   },
 };
