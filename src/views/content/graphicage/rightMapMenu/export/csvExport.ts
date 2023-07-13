@@ -1,18 +1,24 @@
-import { authenticateWrap } from "../../../../layout/authentication";
+import { useStateGui } from "../../../../../StateGui";
 import {
   displayDownloadErrorMessage,
   displayDownloadSuccessMessage,
   displayOnGoingDownloadMessage,
 } from "../../../../../userInformation/utils";
 import { download } from "../../../../../utils";
+import { authenticateWrap } from "../../../../layout/authentication";
 import { getTimestamp } from "./utils";
+
+const [, { getActiveMapId }] = useStateGui();
 
 export function exportCsv() {
   displayOnGoingDownloadMessage();
   authenticateWrap((headers) => {
-    fetch(import.meta.env.VITE_BACK_URL + "/export/input", {
-      headers,
-    })
+    fetch(
+      import.meta.env.VITE_BACK_URL + `/map/${getActiveMapId()}/export/input`,
+      {
+        headers,
+      }
+    )
       .then((response) => {
         if (!response.ok) {
           displayDownloadErrorMessage();

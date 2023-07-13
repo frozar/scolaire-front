@@ -106,13 +106,13 @@ export default function () {
           return;
         }
 
-        if (res.status != 200) {
+        if (!res.ok) {
           const body = await res.json();
           addNewUserInformation({
             displayed: true,
             level: MessageLevelEnum.error,
             type: MessageTypeEnum.global,
-            content: body.message,
+            content: body.detail,
           });
           return;
         }
