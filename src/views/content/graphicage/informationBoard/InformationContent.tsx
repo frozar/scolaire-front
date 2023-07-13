@@ -73,7 +73,7 @@ export default function () {
     } else {
       const URL =
         import.meta.env.VITE_BACK_URL +
-        `/map/${getActiveMapId()}/get_associated_points`;
+        `/map/${getActiveMapId()}/eleve_vers_etablissement/associated_points`;
       // TODO:
       // Attemp to use authenticateWrap failed => Don't use the 'createResource' from solidjs
       authenticateWrap((headers) => {
@@ -89,8 +89,9 @@ export default function () {
           }
         )
           .then(async (res) => {
-            const datas = await res.json();
+            const json = await res.json();
 
+            const datas = json.content;
             // Rename "id_point" -> "idPoint"
             const datasWk = datas.map(
               (data: { id_point: number; name: string; quantity: number }) => {
