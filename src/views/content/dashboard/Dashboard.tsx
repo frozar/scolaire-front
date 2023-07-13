@@ -41,7 +41,7 @@ export default function () {
   });
 
   return (
-    <div class="mx-10 w-full bg-white">
+    <div class="px-10 w-full bg-white">
       <div class="h-[calc(100vh-60px)] overflow-y-auto px-1.5">
         <div class="mt-5 mb-3">
           <MapGridHeader openCreateMapModal={openCreateMapModal} />
