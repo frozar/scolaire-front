@@ -1,5 +1,6 @@
 import { For, Match, Show, Switch, createEffect, createSignal } from "solid-js";
 import { useStateAction } from "../../../../StateAction";
+import { useStateGui } from "../../../../StateGui";
 import { updateBusLine } from "../../../../request";
 import { addNewUserInformation, points } from "../../../../signaux";
 import {
@@ -27,6 +28,8 @@ import InfoPointName from "./InfoPointName";
 import Timeline from "./Timeline";
 
 const [, { isInAddLineMode, resetLineUnderConstruction }] = useStateAction();
+
+const [, { getActiveMapId }] = useStateGui();
 
 export default function () {
   const getSelectedPoint = (): PointRamassageType | null => {
@@ -68,8 +71,9 @@ export default function () {
     if (id == -1 || nature == null) {
       return [];
     } else {
-      const URL = import.meta.env.VITE_BACK_URL + "/get_associated_points";
-
+      const URL =
+        import.meta.env.VITE_BACK_URL +
+        `/map/${getActiveMapId()}/get_associated_points`;
       // TODO:
       // Attemp to use authenticateWrap failed => Don't use the 'createResource' from solidjs
       authenticateWrap((headers) => {
