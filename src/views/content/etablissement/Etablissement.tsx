@@ -12,6 +12,7 @@ import Checkbox from "./component/atom/Checkbox";
 import Filters, { searchInputKeyword } from "./component/organism/Filters";
 import InputSearch from "./component/molecule/InputSearch";
 import TableHeaderColumn from "./component/molecule/TableHeaderColumn";
+import TableHeader from "./component/organism/TableHeader";
 
 const [, { getActiveMapId }] = useStateGui();
 
@@ -127,29 +128,27 @@ export default function () {
           <div class="board-content">
             <div class="h-[78vh]">
               <table class="min-w-full">
-                <thead>
-                  <tr>
-                    <TableHeaderColumn>
-                      <Checkbox
-                        ariaDescribedby="etablissement-item"
-                        name="etablissement"
-                        ref={setRefCheckbox}
-                        onChange={() => {
-                          setEtablissements((etablissements) =>
-                            etablissements.map((eta) => ({
-                              ...eta,
-                              selected: refCheckbox().checked,
-                            }))
-                          );
-                        }}
-                      />
-                    </TableHeaderColumn>
-                    <TableHeaderColumn>Nom</TableHeaderColumn>
-                    <TableHeaderColumn>Nombre de d'élèves</TableHeaderColumn>
-                    <TableHeaderColumn>Nombre de lignes</TableHeaderColumn>
-                    <TableHeaderColumn>Actions</TableHeaderColumn>
-                  </tr>
-                </thead>
+                <TableHeader>
+                  <TableHeaderColumn>
+                    <Checkbox
+                      ariaDescribedby="etablissement-item"
+                      name="etablissement"
+                      ref={setRefCheckbox}
+                      onChange={() => {
+                        setEtablissements((etablissements) =>
+                          etablissements.map((eta) => ({
+                            ...eta,
+                            selected: refCheckbox().checked,
+                          }))
+                        );
+                      }}
+                    />
+                  </TableHeaderColumn>
+                  <TableHeaderColumn>Nom</TableHeaderColumn>
+                  <TableHeaderColumn>Nombre de d'élèves</TableHeaderColumn>
+                  <TableHeaderColumn>Nombre de lignes</TableHeaderColumn>
+                  <TableHeaderColumn>Actions</TableHeaderColumn>
+                </TableHeader>
                 <tbody>
                   <For each={filteredEtablissements()}>
                     {(fields) => {
