@@ -16,7 +16,6 @@ describe("InputText component", () => {
     cy.get(".input").should("have.attr", "placeholder", "placeholder");
     cy.get(".input").should("have.attr", "name", "name");
 
-    //@ts-ignore
     cy.get(".input").compareSnapshot("empty", 0.01);
   });
 
@@ -24,7 +23,6 @@ describe("InputText component", () => {
     cy.mount(() => <InputText {...props} />);
 
     cy.get(".input").type("onInput");
-    //@ts-ignore
     cy.get(".input").compareSnapshot("typed", 0.01);
   });
 });
