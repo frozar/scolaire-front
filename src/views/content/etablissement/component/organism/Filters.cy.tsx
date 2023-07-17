@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import Filters from "./Filters";
 
 describe("Filters component", () => {
