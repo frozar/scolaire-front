@@ -24,14 +24,17 @@ describe("InformationBoardTabs organisme", () => {
     cy.get("nav").compareSnapshot("nominal", 0.01);
   });
 
-  it("Nominal Tabs", () => {
-    cy.mount(() => <InformationBoardTabs tabs={tabs} />);
-    cy.get("nav").compareSnapshot("nominal", 0.01);
-  });
-
   it("Second Tab selected", () => {
     cy.mount(() => <InformationBoardTabs tabs={tabs} />);
+
+    cy.get(".information-board-tabs-item")
+      .eq(1)
+      .then((tab) => {
+        cy.wrap(tab).invoke("css", "outline", "none");
+      });
+
     cy.get(".information-board-tabs-item").eq(1).click();
+
     cy.get("nav").compareSnapshot("second", 0.01);
   });
 });

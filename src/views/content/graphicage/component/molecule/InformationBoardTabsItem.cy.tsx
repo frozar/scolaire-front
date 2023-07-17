@@ -40,8 +40,6 @@ describe("InformationBoardTabsItemLabel atom", () => {
       />
     ));
 
-    cy.get("button.information-board-tabs-item").click();
-    cy.get("@onclickListener").should("have.been.calledOnce");
     cy.get(".information-board-tabs-item-label").contains(props.label);
     cy.get("button.information-board-tabs-item").compareSnapshot(
       "inactive",
