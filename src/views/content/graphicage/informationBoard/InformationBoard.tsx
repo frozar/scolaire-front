@@ -4,10 +4,13 @@ import InformationContent from "./InformationContent";
 import { useStateAction } from "../../../../StateAction";
 import { useStateGui } from "../../../../StateGui";
 // import { InformationBoardTabType } from "../../../../type";
-import { InformationBoardTabType } from "../../../../type";
+// import { InformationBoardTabType } from "../../../../type";
 import InformationCircleIcon from "../component/atom/InformationCircleIcon";
 import SettingsIcon from "../component/atom/SettingsIcon";
-import { InformationBoardTabs } from "../component/organism/InformationBoardTabs";
+import {
+  InformationBoardTabType,
+  InformationBoardTabs,
+} from "../component/organism/InformationBoardTabs";
 
 const [stateAction, { toggleAltimetryAnimation }] = useStateAction();
 const [, { getInformationBoardSelectedTab, getDisplayedInformationBoard }] =
@@ -38,15 +41,15 @@ export function InformationBoard() {
   const tabs: InformationBoardTabType[] = [
     {
       id: "information",
+      label: "Informations",
       icon: InformationCircleIcon,
       content: InformationContent,
-      label: "Informations",
     },
     {
       id: "settings",
+      label: "Paramètres",
       icon: SettingsIcon,
       content: SettingsContent,
-      label: "Paramètres",
     },
   ];
 
@@ -60,7 +63,12 @@ export function InformationBoard() {
     >
       <InformationBoardTabs tabs={tabs} />
 
-      <Dynamic component={tabs[getInformationBoardSelectedTab()].content} />
+      <Dynamic
+        component={
+          tabs.find((tab) => tab.id === getInformationBoardSelectedTab())
+            ?.content
+        }
+      />
     </div>
   );
 }

@@ -1,28 +1,41 @@
+import { createSignal } from "solid-js";
 import { Meta, StoryObj } from "storybook-solidjs";
-// import { InformationBoardTabType } from "../../../../../type";
 import InformationCircleIcon from "../atom/InformationCircleIcon";
 import SettingsIcon from "../atom/SettingsIcon";
-import { InformationBoardTabsItemProps } from "../molecule/InformationBoardTabsItem";
-import { InformationBoardTabs } from "./InformationBoardTabs";
+import {
+  InformationBoardTabType,
+  InformationBoardTabs,
+  tabType,
+} from "./InformationBoardTabs";
 
 const meta = {
   component: InformationBoardTabs,
   tags: ["autodocs"],
 } satisfies Meta<typeof InformationBoardTabs>;
 
-// const tabs: InformationBoardTabType[] = [
-const tabs: InformationBoardTabsItemProps[] = [
+const [getInformationBoardSelectedTab, setInformationBoardSelectedTab] =
+  createSignal("information" as tabType);
+
+function wrapGetInformationBoardSelectedTab() {
+  console.log("In getInformationBoardSelectedTab");
+  return getInformationBoardSelectedTab();
+}
+
+function wrapSetInformationBoardSelectedTab(key: tabType) {
+  console.log("In setInformationBoardSelectedTab");
+  return setInformationBoardSelectedTab(key);
+}
+
+const tabs: Omit<InformationBoardTabType, "content">[] = [
   {
-    // content: InformationContent,
+    id: "information",
     label: "Informations",
     icon: InformationCircleIcon,
-    onClick: () => console.log("On click event."),
   },
   {
-    // content: InformationContent,
+    id: "settings",
     label: "Paramètres",
     icon: SettingsIcon,
-    onClick: () => console.log("On click event."),
   },
 ];
 
@@ -32,5 +45,7 @@ type Story = StoryObj<typeof meta>;
 export const InformationBoardTabsStory: Story = {
   args: {
     tabs: tabs,
+    getInformationBoardSelectedTab: wrapGetInformationBoardSelectedTab,
+    setInformationBoardSelectedTab: wrapSetInformationBoardSelectedTab,
   },
 };

@@ -1,42 +1,45 @@
-import { For } from "solid-js";
+import { For, JSXElement, mergeProps } from "solid-js";
 import { useStateGui } from "../../../../../StateGui";
 // import { InformationBoardTabType } from "../../../../../type";
 import { InformationBoardTabsItem } from "../molecule/InformationBoardTabsItem";
 
-import { InformationBoardTabType } from "../../../../../type";
+// import { InformationBoardTabType, tabType } from "../../../../../type";
 import "./InformationBoardTabs.css";
 
-const [, { setInformationBoardSelectedTab, getInformationBoardSelectedTab }] =
+const [, { getInformationBoardSelectedTab, setInformationBoardSelectedTab }] =
   useStateGui();
+
+export type tabType = "information" | "settings";
+
+export type InformationBoardTabType = {
+  id: tabType;
+  label: string;
+  icon: () => JSXElement;
+  content: (props: object) => JSXElement;
+};
 
 export interface InformationBoardTabsProps {
   tabs: InformationBoardTabType[];
-  // tabs: InformationBoardTabsItemProps[];
-  // tabs: Omit<InformationBoardTabsItemProps, "onClick">;
+  getInformationBoardSelectedTab?: () => tabType;
+  setInformationBoardSelectedTab?: (key: tabType) => void;
 }
 
-function checkSelectedTabKey(tabs: InformationBoardTabType[]) {
-  if (getInformationBoardSelectedTab() + 1 > tabs.length) {
-    setInformationBoardSelectedTab(0);
-  }
-}
-
-// export function InformationBoardTabs(props: InformationBoardTabsProps) {
 export function InformationBoardTabs(props: InformationBoardTabsProps) {
-  //TODO Question about the positionning of the checking function
-  // eslint-disable-next-line solid/reactivity
-  checkSelectedTabKey(props.tabs);
+  const mergedProps = mergeProps(
+    { getInformationBoardSelectedTab, setInformationBoardSelectedTab },
+    props
+  );
 
   return (
     <nav class="information-board-tabs">
       <For each={props.tabs}>
-        {(tab: InformationBoardTabType, index) => {
+        {(tab: InformationBoardTabType) => {
           return (
             <InformationBoardTabsItem
               label={tab.label}
               icon={tab.icon}
-              isActive={getInformationBoardSelectedTab() === index()}
-              onClick={() => setInformationBoardSelectedTab(tab.id)}
+              isActive={mergedProps.getInformationBoardSelectedTab() === tab.id}
+              onClick={() => mergedProps.setInformationBoardSelectedTab(tab.id)}
             />
           );
         }}

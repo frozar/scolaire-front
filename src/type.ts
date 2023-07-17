@@ -1,4 +1,4 @@
-import { Accessor, JSX, JSXElement, Setter } from "solid-js";
+import { Accessor, JSX, Setter } from "solid-js";
 
 export type EleveVersEtablissementType = {
   id: number;
@@ -203,19 +203,4 @@ export type UserMapType = {
   isActive: Accessor<boolean>;
   setIsSelected: Setter<boolean>;
   setIsActive: Setter<boolean>;
-};
-
-// export type InformationBoardTabType = {
-//   label: string;
-//   icon: () => JSXElement;
-//   content: (props: object) => JSX.Element;
-// };
-
-export type tabType = "information" | "settings";
-
-export type InformationBoardTabType = {
-  id: tabType;
-  label: string;
-  icon: () => JSXElement;
-  content: (props: object) => JSXElement;
 };
