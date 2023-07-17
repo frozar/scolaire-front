@@ -1,8 +1,13 @@
 import { createEffect, createSignal } from "solid-js";
-import { createMap } from "./dashboard";
-import ClickOutside from "../../../component/ClickOutside";
+import { addNewUserInformation } from "../../../signaux";
+import { MessageLevelEnum, MessageTypeEnum } from "../../../type";
 import { assertIsNode } from "../../../utils";
 import { closeCreateMapModal } from "./Dashboard";
+import { createMap } from "./dashboard";
+
+import ClickOutside from "../../../component/ClickOutside";
+
+false && ClickOutside;
 
 export default function () {
   const [buttonRef, setButtonRef] = createSignal<
@@ -98,6 +103,13 @@ export default function () {
                 const mapName = refInput.value;
                 if (mapName) {
                   createMap(mapName);
+                } else {
+                  addNewUserInformation({
+                    type: MessageTypeEnum.global,
+                    content: "Le nom de la carte ne peut pas être vide",
+                    displayed: true,
+                    level: MessageLevelEnum.error,
+                  });
                 }
               }}
             >
