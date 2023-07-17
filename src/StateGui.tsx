@@ -1,12 +1,12 @@
 import _ from "lodash";
 import { JSX, createContext, createEffect, useContext } from "solid-js";
 import { SetStoreFunction, Store, createStore } from "solid-js/store";
-import { SelectedMenuType, TileId, tabType } from "./type";
+import { SelectedMenuType, TileId } from "./type";
+import { informationBoardTabIdType } from "./views/content/graphicage/component/organism/InformationBoardTabs";
 
 type StateGuiType = {
   selectedMenu: SelectedMenuType;
-  // informationBoardSelectedTab: number;
-  informationBoardSelectedTab: tabType;
+  informationBoardSelectedTab: informationBoardTabIdType;
   activeMapId: number | null;
   displayedLeftMenu: boolean;
   displayedRightMenu: boolean;
@@ -59,12 +59,11 @@ const makeStateGuiContext = () => {
     setState("displayedLeftMenu", (currentValue: boolean) => !currentValue);
   }
 
-  // function setInformationBoardSelectedTab(key: number) {
-  function setInformationBoardSelectedTab(key: tabType) {
+  function setInformationBoardSelectedTab(key: informationBoardTabIdType) {
     setState("informationBoardSelectedTab", key);
   }
 
-  function getInformationBoardSelectedTab(): tabType {
+  function getInformationBoardSelectedTab(): informationBoardTabIdType {
     return state.informationBoardSelectedTab;
   }
 

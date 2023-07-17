@@ -7,18 +7,18 @@ import "./InformationBoardTabs.css";
 const [, { getInformationBoardSelectedTab, setInformationBoardSelectedTab }] =
   useStateGui();
 
-export type tabType = "information" | "settings";
+export type informationBoardTabIdType = "information" | "settings";
 
 export type InformationBoardTabType = {
-  id: tabType;
+  id: informationBoardTabIdType;
   label: string;
   icon: () => JSXElement;
 };
 
 export interface InformationBoardTabsProps {
   tabs: InformationBoardTabType[];
-  getInformationBoardSelectedTab?: () => tabType;
-  setInformationBoardSelectedTab?: (key: tabType) => void;
+  getInformationBoardSelectedTab?: () => informationBoardTabIdType;
+  setInformationBoardSelectedTab?: (key: informationBoardTabIdType) => void;
 }
 
 export function InformationBoardTabs(props: InformationBoardTabsProps) {

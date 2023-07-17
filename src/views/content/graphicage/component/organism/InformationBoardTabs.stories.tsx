@@ -5,7 +5,7 @@ import SettingsIcon from "../atom/SettingsIcon";
 import {
   InformationBoardTabType,
   InformationBoardTabs,
-  tabType,
+  informationBoardTabIdType,
 } from "./InformationBoardTabs";
 
 const meta = {
@@ -14,14 +14,14 @@ const meta = {
 } satisfies Meta<typeof InformationBoardTabs>;
 
 const [getInformationBoardSelectedTab, setInformationBoardSelectedTab] =
-  createSignal("information" as tabType);
+  createSignal("information" as informationBoardTabIdType);
 
 function wrapGetInformationBoardSelectedTab() {
   console.log("In getInformationBoardSelectedTab");
   return getInformationBoardSelectedTab();
 }
 
-function wrapSetInformationBoardSelectedTab(key: tabType) {
+function wrapSetInformationBoardSelectedTab(key: informationBoardTabIdType) {
   console.log("In setInformationBoardSelectedTab");
   return setInformationBoardSelectedTab(key);
 }
