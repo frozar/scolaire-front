@@ -299,21 +299,6 @@ code {
   @apply flex w-1/2 gap-3;
 }
 
-#ramassages-board > header > #filters > .left > .btn-arret-add {
-  width: 92px;
-  height: 45px;
-  color: white;
-  /* Green-base */
-
-  background: #0cc683;
-  border-radius: 5px;
-  transition-duration: 400ms;
-}
-
-#ramassages-board > header > #filters > .left > .btn-arret-add:hover {
-  background: #0cb778;
-}
-
 #ramassages-board > header > #filters > .left > .input-field {
   @apply relative rounded-md shadow-sm;
 }
