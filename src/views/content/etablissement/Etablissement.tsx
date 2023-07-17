@@ -5,6 +5,7 @@ import ImportCsvButton from "../../../component/ImportCsvButton";
 import ImportCsvCanvas from "../../../component/ImportCsvCanvas";
 import ImportCsvDialogBox from "../../../component/ImportCsvDialogBox";
 import ActionSelector from "../../../component/atom/ActionSelector";
+import Button from "../../../component/atom/Button";
 import PageTitle from "../../../component/atom/PageTitle";
 import { EtablissementItemType } from "../../../type";
 import RemoveRamassageConfirmation from "../../../userInformation/RemoveRamassageConfirmation";
@@ -129,16 +130,13 @@ export default function () {
             <div id="filters">
               <div class="left">
                 <ActionSelector isDisabled={true} />
-                <button
-                  type="button"
-                  class="btn-arret-add"
+                <Button
+                  label="Ajouter"
                   onClick={() => {
                     setDataToEdit();
                     toggleEditStop();
                   }}
-                >
-                  Ajouter
-                </button>
+                />
                 <InputSearch
                   onInput={(key: string) => {
                     setKeyword(key);
