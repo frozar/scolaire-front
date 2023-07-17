@@ -1,5 +1,5 @@
 import { JSXElement, children } from "solid-js";
-import "./TableHeader.css";
+import "./TableHeaderColumn.css";
 
 interface TableHeaderProps {
   children: JSXElement;
