@@ -9,9 +9,8 @@ import { authenticateWrap } from "../../layout/authentication";
 import EditStop from "./EditEtablissement";
 import EtablissementItem from "./EtablissementItem";
 import Checkbox from "./component/atom/Checkbox";
-import Filters, { searchInputKeyword } from "./component/organism/Filters";
-import InputSearch from "./component/molecule/InputSearch";
 import TableHeaderColumn from "./component/molecule/TableHeaderColumn";
+import Filters, { searchInputKeyword } from "./component/organism/Filters";
 import TableHeader from "./component/organism/TableHeader";
 
 const [, { getActiveMapId }] = useStateGui();
