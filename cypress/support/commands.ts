@@ -52,3 +52,4 @@ declare global {
 
 Cypress.Commands.add("mount", mount);
 Cypress.Commands.add("compareSnapshot", compareSnapshotCommand);
+compareSnapshotCommand();

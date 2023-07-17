@@ -9,7 +9,7 @@ describe("SearchLogo ", () => {
       cy.wrap(input).invoke("css", "height", "30px");
       cy.wrap(input).invoke("css", "width", "40px");
     });
-    //@ts-ignore
+
     cy.get(".input-search-logo").compareSnapshot("logo", 0.01);
   });
 });

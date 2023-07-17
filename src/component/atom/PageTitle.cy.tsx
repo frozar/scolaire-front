@@ -7,7 +7,6 @@ describe("LeftMenuItemLabel component", () => {
 
     cy.get(".page-title").contains("Title");
 
-    //@ts-ignore
     cy.get(".page-title").compareSnapshot("primary-enabled", 0.01);
   });
 });

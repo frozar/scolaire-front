@@ -14,7 +14,6 @@ describe("InputSearch component", () => {
     cy.get(".input-search-logo").should("exist");
     cy.get(".input").should("exist");
 
-    //@ts-ignore
     cy.get(".input").compareSnapshot("empty", 0.01);
   });
 
@@ -22,7 +21,6 @@ describe("InputSearch component", () => {
     cy.mount(() => <InputSearch {...props} />);
 
     cy.get(".input").type("onInput");
-    //@ts-ignore
     cy.get(".input").compareSnapshot("typed", 0.01);
   });
 });
