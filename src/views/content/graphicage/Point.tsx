@@ -16,6 +16,7 @@ import {
 } from "../../../type";
 
 import { useStateAction } from "../../../StateAction";
+import { useStateGui } from "../../../StateGui";
 import {
   getLeafletMap,
   points,
@@ -27,6 +28,8 @@ import { renderAnimation } from "./animation";
 import { deselectAllBusLines } from "./line/busLinesUtils";
 
 export const linkMap = new Map<number, L.CircleMarker>();
+
+const [, { getActiveMapId }] = useStateGui();
 
 const [
   ,
@@ -78,16 +81,17 @@ export default function (props: {
 
     const [getEndPoint, getParameter] =
       nature === NatureEnum.ramassage
-        ? ["eleves_vers_etablissement_by_ramassage", "id_ramassage"]
+        ? ["/eleve_vers_etablissement_by_ramassage", "id_ramassage"]
         : nature === NatureEnum.etablissement
-        ? ["eleves_vers_etablissement_by_etablissement", "id_etablissement"]
+        ? ["/eleve_vers_etablissement_by_etablissement", "id_etablissement"]
         : [null, null];
 
     if (getEndPoint && getParameter) {
       authenticateWrap((headers) => {
         fetch(
           import.meta.env.VITE_BACK_URL +
-            "/" +
+            "/map/" +
+            getActiveMapId() +
             getEndPoint +
             "?" +
             getParameter +
