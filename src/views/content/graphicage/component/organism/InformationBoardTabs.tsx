@@ -1,9 +1,7 @@
 import { For, JSXElement, mergeProps } from "solid-js";
 import { useStateGui } from "../../../../../StateGui";
-// import { InformationBoardTabType } from "../../../../../type";
 import { InformationBoardTabsItem } from "../molecule/InformationBoardTabsItem";
 
-// import { InformationBoardTabType, tabType } from "../../../../../type";
 import "./InformationBoardTabs.css";
 
 const [, { getInformationBoardSelectedTab, setInformationBoardSelectedTab }] =
