@@ -79,55 +79,52 @@ export default function (props: {
   ) {
     const { id, nature } = point;
 
-    const [getEndPoint, getParameter] =
+    const [getEndPoint] =
       nature === NatureEnum.ramassage
-        ? ["/eleve_vers_etablissement_by_ramassage", "id_ramassage"]
+        ? ["/eleve_vers_etablissement/ramassage"]
         : nature === NatureEnum.etablissement
-        ? ["/eleve_vers_etablissement_by_etablissement", "id_etablissement"]
-        : [null, null];
+        ? ["/eleve_vers_etablissement/etablissement"]
+        : [null];
 
-    if (getEndPoint && getParameter) {
+    if (getEndPoint) {
       authenticateWrap((headers) => {
         fetch(
           import.meta.env.VITE_BACK_URL +
             "/map/" +
             getActiveMapId() +
             getEndPoint +
-            "?" +
-            getParameter +
-            "=" +
+            "?id_resource=" +
             id,
           {
             headers,
           }
-        )
-          .then((res) => {
-            return res.json();
-          })
-          .then((data: EleveVersEtablissementType[]) => {
-            setter(
-              data.map((elt) => {
-                const associatedId =
-                  nature === NatureEnum.ramassage
-                    ? elt.etablissement_id
-                    : elt.ramassage_id;
-                const associatedNature =
-                  nature === NatureEnum.ramassage
-                    ? NatureEnum.etablissement
-                    : NatureEnum.ramassage;
-                const id_point =
-                  associatedNature === NatureEnum.etablissement
-                    ? elt.etablissement_id_point
-                    : elt.ramassage_id_point;
+        ).then(async (res) => {
+          const json = await res.json();
 
-                return {
-                  id: associatedId,
-                  idPoint: id_point,
-                  nature: associatedNature,
-                };
-              })
-            );
-          });
+          const data: EleveVersEtablissementType[] = json.content;
+          setter(
+            data.map((elt) => {
+              const associatedId =
+                nature === NatureEnum.ramassage
+                  ? elt.etablissement_id
+                  : elt.ramassage_id;
+              const associatedNature =
+                nature === NatureEnum.ramassage
+                  ? NatureEnum.etablissement
+                  : NatureEnum.ramassage;
+              const id_point =
+                associatedNature === NatureEnum.etablissement
+                  ? elt.etablissement_id_point
+                  : elt.ramassage_id_point;
+
+              return {
+                id: associatedId,
+                idPoint: id_point,
+                nature: associatedNature,
+              };
+            })
+          );
+        });
       });
     }
   }
