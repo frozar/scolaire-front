@@ -288,30 +288,6 @@ code {
   @apply text-2xl;
 }
 
-#ramassages-board > header > #filters {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  margin: 20px 0;
-}
-
-#ramassages-board > header > #filters > .left {
-  @apply flex w-1/2 gap-3;
-}
-
-#ramassages-board > header > #filters > .left > .input-field {
-  @apply relative rounded-md shadow-sm;
-}
-
-#ramassages-board > header > #filters > .left > .input-field > input {
-  @apply block w-full rounded-md border-0 py-1.5 pl-10 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset   sm:text-sm sm:leading-6;
-  height: 45px;
-}
-
-#ramassages-board > header > #filters > .right {
-  @apply flex gap-3;
-}
-
 #ramassages-board > .board-content {
   @apply mt-8 flow-root mx-8;
 }
