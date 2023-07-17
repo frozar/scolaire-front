@@ -6,6 +6,7 @@ import ImportCsvButton from "../../../component/ImportCsvButton";
 import ImportCsvCanvas from "../../../component/ImportCsvCanvas";
 import ImportCsvDialogBox from "../../../component/ImportCsvDialogBox";
 import ActionSelector from "../../../component/atom/ActionSelector";
+import Button from "../../../component/atom/Button";
 import PageTitle from "../../../component/atom/PageTitle";
 import { addNewUserInformation } from "../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum, StopItemType } from "../../../type";
@@ -140,17 +141,13 @@ export default function () {
             <div id="filters">
               <div class="left">
                 <ActionSelector isDisabled={true} />
-
-                <button
-                  type="button"
-                  class="btn-arret-add"
+                <Button
+                  label="Ajouter"
                   onClick={() => {
                     setDataToEdit();
                     toggleEditStop();
                   }}
-                >
-                  Ajouter
-                </button>
+                />
 
                 <div class="input-field">
                   <div class="input-search-logo">
