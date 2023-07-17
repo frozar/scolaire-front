@@ -1,8 +1,9 @@
 import { For } from "solid-js";
 import { useStateGui } from "../../../../../StateGui";
-import { InformationBoardTabType } from "../../../../../type";
+// import { InformationBoardTabType } from "../../../../../type";
 import { InformationBoardTabsItem } from "../molecule/InformationBoardTabsItem";
 
+import { InformationBoardTabType } from "../../../../../type";
 import "./InformationBoardTabs.css";
 
 const [, { setInformationBoardSelectedTab, getInformationBoardSelectedTab }] =
@@ -10,6 +11,8 @@ const [, { setInformationBoardSelectedTab, getInformationBoardSelectedTab }] =
 
 export interface InformationBoardTabsProps {
   tabs: InformationBoardTabType[];
+  // tabs: InformationBoardTabsItemProps[];
+  // tabs: Omit<InformationBoardTabsItemProps, "onClick">;
 }
 
 function checkSelectedTabKey(tabs: InformationBoardTabType[]) {
@@ -18,8 +21,10 @@ function checkSelectedTabKey(tabs: InformationBoardTabType[]) {
   }
 }
 
+// export function InformationBoardTabs(props: InformationBoardTabsProps) {
 export function InformationBoardTabs(props: InformationBoardTabsProps) {
   //TODO Question about the positionning of the checking function
+  // eslint-disable-next-line solid/reactivity
   checkSelectedTabKey(props.tabs);
 
   return (
@@ -31,7 +36,7 @@ export function InformationBoardTabs(props: InformationBoardTabsProps) {
               label={tab.label}
               icon={tab.icon}
               isActive={getInformationBoardSelectedTab() === index()}
-              onClick={() => setInformationBoardSelectedTab(index())}
+              onClick={() => setInformationBoardSelectedTab(tab.id)}
             />
           );
         }}

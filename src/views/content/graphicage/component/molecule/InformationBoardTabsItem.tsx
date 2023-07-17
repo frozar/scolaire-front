@@ -7,7 +7,12 @@ export interface InformationBoardTabsItemProps {
   label: string;
   isActive: boolean;
   icon: () => JSXElement;
-  onClick: () => void;
+  onClick: (
+    e: MouseEvent & {
+      currentTarget: HTMLButtonElement;
+      target: Element;
+    }
+  ) => void;
 }
 
 export function InformationBoardTabsItem(props: InformationBoardTabsItemProps) {
@@ -17,7 +22,12 @@ export function InformationBoardTabsItem(props: InformationBoardTabsItemProps) {
       classList={{
         active: props.isActive,
       }}
-      onClick={() => props.onClick()}
+      onClick={(
+        e: MouseEvent & {
+          currentTarget: HTMLButtonElement;
+          target: Element;
+        }
+      ) => props.onClick(e)}
     >
       <InformationBoardTabsItemIcon
         icon={props.icon}

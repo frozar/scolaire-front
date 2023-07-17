@@ -3,6 +3,7 @@ import InformationContent from "./InformationContent";
 
 import { useStateAction } from "../../../../StateAction";
 import { useStateGui } from "../../../../StateGui";
+// import { InformationBoardTabType } from "../../../../type";
 import { InformationBoardTabType } from "../../../../type";
 import InformationCircleIcon from "../component/atom/InformationCircleIcon";
 import SettingsIcon from "../component/atom/SettingsIcon";
@@ -36,11 +37,13 @@ export function InformationBoard() {
 
   const tabs: InformationBoardTabType[] = [
     {
+      id: "information",
       icon: InformationCircleIcon,
       content: InformationContent,
       label: "Informations",
     },
     {
+      id: "settings",
       icon: SettingsIcon,
       content: SettingsContent,
       label: "Paramètres",

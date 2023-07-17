@@ -205,8 +205,17 @@ export type UserMapType = {
   setIsActive: Setter<boolean>;
 };
 
+// export type InformationBoardTabType = {
+//   label: string;
+//   icon: () => JSXElement;
+//   content: (props: object) => JSX.Element;
+// };
+
+export type tabType = "information" | "settings";
+
 export type InformationBoardTabType = {
+  id: tabType;
   label: string;
   icon: () => JSXElement;
-  content: (props: object) => JSX.Element;
+  content: (props: object) => JSXElement;
 };

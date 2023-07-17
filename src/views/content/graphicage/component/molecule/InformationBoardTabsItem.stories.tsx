@@ -23,6 +23,7 @@ export const InformationBoardTabsItemStory: Story = {
     isActive: false,
     icon: icon,
     label: "Paramètres",
+    onClick: () => console.log("On click event."),
   },
   argTypes: {
     icon: {

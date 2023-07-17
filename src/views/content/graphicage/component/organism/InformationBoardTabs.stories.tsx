@@ -1,8 +1,8 @@
 import { Meta, StoryObj } from "storybook-solidjs";
-import { InformationBoardTabType } from "../../../../../type";
-import InformationContent from "../../informationBoard/InformationContent";
+// import { InformationBoardTabType } from "../../../../../type";
 import InformationCircleIcon from "../atom/InformationCircleIcon";
 import SettingsIcon from "../atom/SettingsIcon";
+import { InformationBoardTabsItemProps } from "../molecule/InformationBoardTabsItem";
 import { InformationBoardTabs } from "./InformationBoardTabs";
 
 const meta = {
@@ -10,16 +10,19 @@ const meta = {
   tags: ["autodocs"],
 } satisfies Meta<typeof InformationBoardTabs>;
 
-const tabs: InformationBoardTabType[] = [
+// const tabs: InformationBoardTabType[] = [
+const tabs: InformationBoardTabsItemProps[] = [
   {
-    content: InformationContent,
-    icon: InformationCircleIcon,
+    // content: InformationContent,
     label: "Informations",
+    icon: InformationCircleIcon,
+    onClick: () => console.log("On click event."),
   },
   {
-    content: InformationContent,
-    icon: SettingsIcon,
+    // content: InformationContent,
     label: "Paramètres",
+    icon: SettingsIcon,
+    onClick: () => console.log("On click event."),
   },
 ];
 

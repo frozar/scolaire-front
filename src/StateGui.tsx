@@ -1,11 +1,12 @@
 import _ from "lodash";
 import { JSX, createContext, createEffect, useContext } from "solid-js";
 import { SetStoreFunction, Store, createStore } from "solid-js/store";
-import { SelectedMenuType, TileId } from "./type";
+import { SelectedMenuType, TileId, tabType } from "./type";
 
 type StateGuiType = {
   selectedMenu: SelectedMenuType;
-  informationBoardSelectedTab: number;
+  // informationBoardSelectedTab: number;
+  informationBoardSelectedTab: tabType;
   activeMapId: number | null;
   displayedLeftMenu: boolean;
   displayedRightMenu: boolean;
@@ -43,7 +44,7 @@ function createLocalStore<T extends object>(
 const makeStateGuiContext = () => {
   const defaultStateGui: StateGuiType = {
     selectedMenu: "dashboard",
-    informationBoardSelectedTab: 0,
+    informationBoardSelectedTab: "information",
     activeMapId: null,
     displayedLeftMenu: false,
     displayedRightMenu: false,
@@ -58,11 +59,12 @@ const makeStateGuiContext = () => {
     setState("displayedLeftMenu", (currentValue: boolean) => !currentValue);
   }
 
-  function setInformationBoardSelectedTab(key: number) {
+  // function setInformationBoardSelectedTab(key: number) {
+  function setInformationBoardSelectedTab(key: tabType) {
     setState("informationBoardSelectedTab", key);
   }
 
-  function getInformationBoardSelectedTab(): number {
+  function getInformationBoardSelectedTab(): tabType {
     return state.informationBoardSelectedTab;
   }
 
