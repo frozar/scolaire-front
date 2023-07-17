@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import TableHeaderColumn from "../molecule/TableHeaderColumn";
 import TableHeader from "./TableHeader";
 
