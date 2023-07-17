@@ -89,7 +89,7 @@ export function fetchPointsRamassageAndEtablissement() {
 
     if (mapId) {
       fetch(
-        import.meta.env.VITE_BACK_URL + `/map/${mapId}/dashboard/ramassages`,
+        import.meta.env.VITE_BACK_URL + `/map/${mapId}/dashboard/ramassage`,
         {
           headers,
         }
@@ -112,8 +112,7 @@ export function fetchPointsRamassageAndEtablissement() {
       });
 
       fetch(
-        import.meta.env.VITE_BACK_URL +
-          `/map/${mapId}/dashboard/etablissements`,
+        import.meta.env.VITE_BACK_URL + `/map/${mapId}/dashboard/etablissement`,
         {
           headers,
         }
