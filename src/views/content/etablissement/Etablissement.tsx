@@ -10,6 +10,8 @@ import EditStop from "./EditEtablissement";
 import EtablissementItem from "./EtablissementItem";
 import Checkbox from "./component/atom/Checkbox";
 import Filters, { searchInputKeyword } from "./component/organism/Filters";
+import InputSearch from "./component/molecule/InputSearch";
+import TableHeaderColumn from "./component/molecule/TableHeaderColumn";
 
 const [, { getActiveMapId }] = useStateGui();
 
@@ -127,11 +129,7 @@ export default function () {
               <table class="min-w-full">
                 <thead>
                   <tr>
-                    <th
-                      scope="col"
-                      class="flex items-center"
-                      style={{ height: "inherit" }}
-                    >
+                    <TableHeaderColumn>
                       <Checkbox
                         ariaDescribedby="etablissement-item"
                         name="etablissement"
@@ -145,13 +143,11 @@ export default function () {
                           );
                         }}
                       />
-                    </th>
-                    <th scope="col">Nom</th>
-                    <th scope="col">Nombre d'élèves</th>
-                    <th scope="col">Nombre de lignes</th>
-                    <th scope="col">
-                      <span class="">Actions</span>
-                    </th>
+                    </TableHeaderColumn>
+                    <TableHeaderColumn>Nom</TableHeaderColumn>
+                    <TableHeaderColumn>Nombre de d'élèves</TableHeaderColumn>
+                    <TableHeaderColumn>Nombre de lignes</TableHeaderColumn>
+                    <TableHeaderColumn>Actions</TableHeaderColumn>
                   </tr>
                 </thead>
                 <tbody>
