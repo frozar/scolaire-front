@@ -1,6 +1,7 @@
 import { createSignal } from "solid-js";
 import { useStateGui } from "../../../StateGui";
-import { UserMapType } from "../../../type";
+import { addNewUserInformation } from "../../../signaux";
+import { MessageLevelEnum, MessageTypeEnum, UserMapType } from "../../../type";
 import { authenticateWrap } from "../../layout/authentication";
 import { closeCreateMapModal, closeDeleteMapModal } from "./Dashboard";
 
@@ -61,7 +62,20 @@ export function createMap(mapName: string) {
       headers,
       body: JSON.stringify({ name: mapName }),
     })
-      .then(() => {
+      .then(async (res) => {
+        const json = await res.json();
+
+        if (!res.ok) {
+          addNewUserInformation({
+            content: json.detail,
+            type: MessageTypeEnum.global,
+            displayed: true,
+            level: MessageLevelEnum.error,
+          });
+
+          return;
+        }
+
         fetchUserMaps();
       })
       .catch((error) => {
@@ -77,6 +91,8 @@ export function deleteMap(mapId: number) {
       method: "DELETE",
       headers,
     })
+      // TODO: check status
+
       .then(() => {
         fetchUserMaps();
       })
