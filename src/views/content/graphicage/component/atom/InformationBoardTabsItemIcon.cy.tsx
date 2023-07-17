@@ -21,11 +21,4 @@ describe("InformationBoardTabsItemIcon atom", () => {
     ));
     cy.get("span").compareSnapshot("inactive", 0.01);
   });
-
-  it("Active icon", () => {
-    cy.mount(() => (
-      <InformationBoardTabsItemIcon isActive={true} icon={icon} />
-    ));
-    cy.get("span").compareSnapshot("active", 0.01);
-  });
 });

@@ -13,7 +13,6 @@ export type InformationBoardTabType = {
   id: tabType;
   label: string;
   icon: () => JSXElement;
-  content: (props: object) => JSXElement;
 };
 
 export interface InformationBoardTabsProps {

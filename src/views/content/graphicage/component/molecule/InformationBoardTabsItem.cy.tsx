@@ -23,23 +23,6 @@ describe("InformationBoardTabsItemLabel atom", () => {
       return classList.includes("active");
     });
     cy.get(".information-board-tabs-item-label").contains(props.label);
-    //TODO have to fix the Cypress SnapShot : don't take the first snap
-    cy.get("button.information-board-tabs-item").compareSnapshot(
-      "active",
-      0.01
-    );
-  });
-
-  it("Active button", () => {
-    cy.mount(() => (
-      <InformationBoardTabsItem
-        isActive={props.isActive}
-        label={props.label}
-        icon={props.icon}
-        onClick={props.onClick}
-      />
-    ));
-    cy.get(".information-board-tabs-item-label").contains(props.label);
     cy.get("button.information-board-tabs-item").compareSnapshot(
       "active",
       0.01

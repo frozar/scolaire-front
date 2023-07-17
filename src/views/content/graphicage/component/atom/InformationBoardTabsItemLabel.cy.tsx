@@ -12,7 +12,6 @@ describe("InformationBoardTabsItemLabel atom", () => {
       return classList.includes("active");
     });
     cy.get("span").contains(myLabel);
-    //TODO have to fix the Cypress SnapShot : don't take the first snap
     cy.get("span").compareSnapshot("active", 0.01);
   });
 
@@ -22,13 +21,5 @@ describe("InformationBoardTabsItemLabel atom", () => {
     ));
     cy.get("span").contains(myLabel);
     cy.get("span").compareSnapshot("inactive", 0.01);
-  });
-
-  it("Active label", () => {
-    cy.mount(() => (
-      <InformationBoardTabsItemLabel isActive={true} label={myLabel} />
-    ));
-    cy.get("span").contains(myLabel);
-    cy.get("span").compareSnapshot("active", 0.01);
   });
 });
