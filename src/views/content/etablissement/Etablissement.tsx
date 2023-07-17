@@ -1,19 +1,15 @@
 import { For, createEffect, createSignal, onCleanup, onMount } from "solid-js";
 import { useStateGui } from "../../../StateGui";
-import ExportCsvButton from "../../../component/ExportCsvButton";
-import ImportCsvButton from "../../../component/ImportCsvButton";
 import ImportCsvCanvas from "../../../component/ImportCsvCanvas";
 import ImportCsvDialogBox from "../../../component/ImportCsvDialogBox";
-import ActionSelector from "../../../component/atom/ActionSelector";
-import Button from "../../../component/atom/Button";
 import PageTitle from "../../../component/atom/PageTitle";
 import { EtablissementItemType } from "../../../type";
 import RemoveRamassageConfirmation from "../../../userInformation/RemoveRamassageConfirmation";
 import { authenticateWrap } from "../../layout/authentication";
-import EditStop, { setDataToEdit, toggleEditStop } from "./EditEtablissement";
+import EditStop from "./EditEtablissement";
 import EtablissementItem from "./EtablissementItem";
 import Checkbox from "./component/atom/Checkbox";
-import InputSearch from "./component/molecule/InputSearch";
+import Filters, { searchInputKeyword } from "./component/organism/Filters";
 
 const [, { getActiveMapId }] = useStateGui();
 
@@ -68,11 +64,9 @@ export default function () {
     document.createElement("input")
   );
 
-  const [keyword, setKeyword] = createSignal("");
-
   const filteredEtablissements = () =>
     etablissements().filter((e) =>
-      e.name.toLowerCase().includes(keyword().toLowerCase())
+      e.name.toLowerCase().includes(searchInputKeyword().toLowerCase())
     );
 
   const selectedEtablissements = () =>
@@ -126,32 +120,7 @@ export default function () {
             <div>
               <PageTitle title="Etablissements" />
             </div>
-
-            <div id="filters">
-              <div class="left">
-                <ActionSelector isDisabled={true} />
-                <Button
-                  label="Ajouter"
-                  onClick={() => {
-                    setDataToEdit();
-                    toggleEditStop();
-                  }}
-                />
-                <InputSearch
-                  onInput={(key: string) => {
-                    setKeyword(key);
-                  }}
-                />
-              </div>
-
-              <div class="right">
-                <ExportCsvButton
-                  exportRoute={`/map/${getActiveMapId()}/export/csv_etablissement`}
-                  filename="etablissement"
-                />
-                <ImportCsvButton />
-              </div>
-            </div>
+            <Filters />
           </header>
           <div class="board-content">
             <div class="h-[78vh]">
