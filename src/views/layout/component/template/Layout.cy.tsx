@@ -4,6 +4,8 @@ describe("Layout template", () => {
   beforeEach(() => {
     cy.mount(() => <Layout />);
 
+    cy.viewport(1000, 1000);
+
     cy.get("#left-nav-container").then((lateralNav) => {
       cy.wrap(lateralNav).invoke("css", "height", "700px");
     });

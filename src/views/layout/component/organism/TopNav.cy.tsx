@@ -1,6 +1,9 @@
 import TopNav from "./TopNav";
 
 describe("TopNav component", () => {
+  // beforeEach(() => {
+  //   cy.viewport(1000, 1000);
+  // });
   it("TopNav check snapshot", () => {
     cy.mount(() => <TopNav />);
 
