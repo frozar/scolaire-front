@@ -9,8 +9,10 @@ import { authenticateWrap } from "../../layout/authentication";
 import EditStop from "./EditEtablissement";
 import EtablissementItem from "./EtablissementItem";
 import Checkbox from "./component/atom/Checkbox";
+import TableHeaderCell from "./component/molecule/TableHeaderCell";
 import Filters, { searchInputKeyword } from "./component/organism/Filters";
 import TableBody from "./component/organism/TableBody";
+import TableHeader from "./component/organism/TableHeader";
 
 const [, { getActiveMapId }] = useStateGui();
 
@@ -126,35 +128,28 @@ export default function () {
           <div class="board-content">
             <div class="h-[78vh]">
               <table class="min-w-full">
-                <thead>
-                  <tr>
-                    <th
-                      scope="col"
-                      class="flex items-center"
-                      style={{ height: "inherit" }}
-                    >
-                      <Checkbox
-                        ariaDescribedby="etablissement-item"
-                        name="etablissement"
-                        ref={setRefCheckbox}
-                        onChange={() => {
-                          setEtablissements((etablissements) =>
-                            etablissements.map((eta) => ({
-                              ...eta,
-                              selected: refCheckbox().checked,
-                            }))
-                          );
-                        }}
-                      />
-                    </th>
-                    <th scope="col">Nom</th>
-                    <th scope="col">Nombre d'élèves</th>
-                    <th scope="col">Nombre de lignes</th>
-                    <th scope="col">
-                      <span class="">Actions</span>
-                    </th>
-                  </tr>
-                </thead>
+                <TableHeader>
+                  <TableHeaderCell>
+                    <Checkbox
+                      ariaDescribedby="etablissement-item"
+                      name="etablissement"
+                      ref={setRefCheckbox}
+                      onChange={() => {
+                        setEtablissements((etablissements) =>
+                          etablissements.map((eta) => ({
+                            ...eta,
+                            selected: refCheckbox().checked,
+                          }))
+                        );
+                      }}
+                    />
+                  </TableHeaderCell>
+                  <TableHeaderCell>Nom</TableHeaderCell>
+                  <TableHeaderCell>Nombre de d'élèves</TableHeaderCell>
+                  <TableHeaderCell>Nombre de lignes</TableHeaderCell>
+                  <TableHeaderCell>Actions</TableHeaderCell>
+                </TableHeader>
+
                 <TableBody>
                   <For each={filteredEtablissements()}>
                     {(fields) => {
