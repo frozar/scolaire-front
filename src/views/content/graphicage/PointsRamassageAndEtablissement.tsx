@@ -150,6 +150,7 @@ export function fetchPointsRamassageAndEtablissement() {
 export default function () {
   onMount(() => {
     fetchPointsRamassageAndEtablissement();
+    fetchEleveVersEtablissement();
   });
 
   onCleanup(() => {
@@ -173,7 +174,7 @@ export default function () {
     return Number.isFinite(maxCandidat) ? maxCandidat : 0;
   };
 
-  newFunction();
+  // newFunction();
 
   return (
     <For each={points()}>
@@ -191,7 +192,7 @@ export default function () {
     </For>
   );
 }
-function newFunction() {
+function fetchEleveVersEtablissement() {
   authenticateWrap((headers) => {
     fetch(
       import.meta.env.VITE_BACK_URL +
@@ -207,7 +208,15 @@ function newFunction() {
       const data: EleveVersEtablissementType[] = json.content;
 
       for (const point of points()) {
-        const tmp = data.filter((elt) => elt.id === point.id);
+        const tmp = data.filter(
+          (elt) =>
+            point.id ===
+            (point.nature === NatureEnum.ramassage
+              ? elt.ramassage_id
+              : elt.etablissement_id)
+        );
+        console.log("tmp", tmp);
+        console.log("tmp", points());
 
         point.setAssociatedPoints(
           tmp.map((elt) => {

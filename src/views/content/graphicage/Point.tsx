@@ -168,82 +168,76 @@ export default function (props: {
 
     // console.log("lon", lon, "typeof lon", typeof lon);
     // console.log("lat", lat);
-    return (
-      L.circleMarker([lat, lon], {
-        color,
-        fillColor,
-        radius,
-        fillOpacity: 1,
-        weight,
-        pane: "markerPane",
+    return L.circleMarker([lat, lon], {
+      color,
+      fillColor,
+      radius,
+      fillOpacity: 1,
+      weight,
+      pane: "markerPane",
+    })
+      .on("click", () => {
+        // Select the current element to display information
+        console.log("point", point);
+
+        if (!isInAddLineMode()) {
+          deselectAllBusLines();
+          selectPointById(point.idPoint);
+          return;
+        }
+
+        const pointIdentity: PointIdentityType = {
+          id: point.id,
+          idPoint: point.idPoint,
+          nature: point.nature,
+        };
+
+        addPointToLineUnderConstruction(pointIdentity);
+
+        if (!(1 < getLineUnderConstruction().stops.length)) {
+          return;
+        }
+
+        // Highlight point ramassage
+        for (const associatedPoint of point.associatedPoints()) {
+          let element;
+          if ((element = linkMap.get(associatedPoint.idPoint)?.getElement())) {
+            renderAnimation(element);
+          }
+        }
       })
-        // eslint-disable-next-line solid/reactivity
-        .on("click", () => {
-          // Select the current element to display information
-
-          if (!isInAddLineMode()) {
-            deselectAllBusLines();
-            selectPointById(point.idPoint);
-            return;
+      .on("dblclick", (event: LeafletMouseEvent) => {
+        L.DomEvent.stopPropagation(event);
+      })
+      .on("mouseover", () => {
+        console.log("point", point.associatedPoints());
+        for (const associatedPoint of point.associatedPoints()) {
+          console.log("associatedPoint", associatedPoint);
+          const element = linkMap.get(associatedPoint.idPoint)?.getElement();
+          const { nature } = associatedPoint;
+          const className =
+            nature === NatureEnum.ramassage
+              ? "circle-animation-ramassage"
+              : "circle-animation-etablissement";
+          if (element) {
+            element.classList.add(className);
           }
+        }
+      })
+      .on("mouseout", () => {
+        for (const associatedPoint of point.associatedPoints()) {
+          const element = linkMap.get(associatedPoint.idPoint)?.getElement();
+          const { nature } = associatedPoint;
+          const className =
+            nature === NatureEnum.ramassage
+              ? "circle-animation-ramassage"
+              : "circle-animation-etablissement";
 
-          console.log("point", point);
-
-          const pointIdentity: PointIdentityType = {
-            id: point.id,
-            idPoint: point.idPoint,
-            nature: point.nature,
-          };
-
-          addPointToLineUnderConstruction(pointIdentity);
-
-          if (!(1 < getLineUnderConstruction().stops.length)) {
-            return;
+          if (element) {
+            element.classList.remove(className);
           }
-
-          // Highlight point ramassage
-          for (const associatedPoint of point.associatedPoints()) {
-            let element;
-            if (
-              (element = linkMap.get(associatedPoint.idPoint)?.getElement())
-            ) {
-              renderAnimation(element);
-            }
-          }
-        })
-        .on("dblclick", (event: LeafletMouseEvent) => {
-          L.DomEvent.stopPropagation(event);
-        })
-        // eslint-disable-next-line solid/reactivity
-        .on("mouseover", () => {
-          for (const associatedPoint of point.associatedPoints()) {
-            const element = linkMap.get(associatedPoint.idPoint)?.getElement();
-            const { nature } = associatedPoint;
-            const className =
-              nature === NatureEnum.ramassage
-                ? "circle-animation-ramassage"
-                : "circle-animation-etablissement";
-            if (element) {
-              element.classList.add(className);
-            }
-          }
-        })
-        // eslint-disable-next-line solid/reactivity
-        .on("mouseout", () => {
-          for (const associatedPoint of point.associatedPoints()) {
-            const element = linkMap.get(associatedPoint.idPoint)?.getElement();
-            const { nature } = associatedPoint;
-            const className =
-              nature === NatureEnum.ramassage
-                ? "circle-animation-ramassage"
-                : "circle-animation-etablissement";
-
-            if (element) {
-              element.classList.remove(className);
-            }
-          }
-        })
-    );
+        }
+      });
   }
 
   // If a line is under construction, show a pencil when the mouse is over a circle
