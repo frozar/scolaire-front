@@ -4,6 +4,7 @@ import Button from "../../../component/atom/Button";
 import { EtablissementItemType } from "../../../type";
 import { setDataToEdit, toggleEditStop } from "./EditEtablissement";
 import Checkbox from "./component/atom/Checkbox";
+import TableCells from "./component/molecule/TableCell";
 
 function handleClickEdit(item: EtablissementItemType) {
   setDataToEdit(item);
@@ -29,7 +30,7 @@ export default function (props: {
 
   return (
     <tr>
-      <td class="flex items-center">
+      <TableCells>
         <Checkbox
           ariaDescribedby="etablissement-item"
           name="etablissement"
@@ -45,11 +46,12 @@ export default function (props: {
             );
           }}
         />
-      </td>
-      <td>{props.item.name}</td>
-      <td>{props.item.quantity}</td>
-      <td>{props.item.nbLine}</td>
-      <td>
+      </TableCells>
+
+      <TableCells>{props.item.name}</TableCells>
+      <TableCells>{props.item.quantity}</TableCells>
+      <TableCells>{props.item.nbLine}</TableCells>
+      <TableCells>
         <div class="flex gap-2">
           <Button
             onClick={() => handleClickEdit(props.item)}
@@ -64,7 +66,7 @@ export default function (props: {
             isDisabled={true}
           />
         </div>
-      </td>
+      </TableCells>
     </tr>
   );
 }
