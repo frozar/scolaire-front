@@ -1,13 +1,29 @@
-import TableHeaderColumn from "../molecule/TableHeaderColumn";
+import { createSignal } from "solid-js";
+import Checkbox from "../atom/Checkbox";
+import TableHeaderColumn from "../molecule/TableHeaderCell";
 import TableHeader from "./TableHeader";
 
+const [refCheckbox, setRefCheckbox] = createSignal<HTMLInputElement>(
+  document.createElement("input")
+);
 describe("TableHeader component", () => {
   beforeEach(() => {
     cy.mount(() => (
       <TableHeader>
-        <TableHeaderColumn>Column 1</TableHeaderColumn>
-        <TableHeaderColumn>Column 2</TableHeaderColumn>
-        <TableHeaderColumn>Column 3</TableHeaderColumn>
+        <TableHeaderColumn>
+          <Checkbox
+            ref={setRefCheckbox}
+            name="checkbox"
+            ariaDescribedby="checkbox"
+            onChange={() =>
+              console.log("checkbox checked: ", refCheckbox().checked)
+            }
+          />
+        </TableHeaderColumn>
+        <TableHeaderColumn>Nom</TableHeaderColumn>
+        <TableHeaderColumn>Nombre d'élèves</TableHeaderColumn>
+        <TableHeaderColumn>Nombre de lignes</TableHeaderColumn>
+        <TableHeaderColumn>Actions</TableHeaderColumn>
       </TableHeader>
     ));
   });
