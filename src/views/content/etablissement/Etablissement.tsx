@@ -9,7 +9,7 @@ import { authenticateWrap } from "../../layout/authentication";
 import EditStop from "./EditEtablissement";
 import EtablissementItem from "./EtablissementItem";
 import Checkbox from "./component/atom/Checkbox";
-import TableHeaderColumn from "./component/molecule/TableHeaderColumn";
+import TableHeaderColumn from "./component/molecule/TableHeaderCell";
 import Filters, { searchInputKeyword } from "./component/organism/Filters";
 import TableHeader from "./component/organism/TableHeader";
 
