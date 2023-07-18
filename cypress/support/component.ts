@@ -26,8 +26,13 @@ import "tailwindcss/tailwind.css";
 // Alternatively, can be defined in cypress/support/component.d.ts
 // with a <reference path="./component" /> at the top of your spec.
 
+beforeEach(() => {
+  cy.viewport(500, 700);
+});
+
 after(() => {
   cy.task("generateReport");
 });
+
 // Example use:
 // cy.mount(MyComponent)

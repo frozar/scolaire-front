@@ -6,6 +6,7 @@ describe("Filters component", () => {
 
   beforeEach(() => {
     cy.mount(Filters);
+    cy.viewport(1000, 1000);
   });
 
   it("Filters check elements", () => {
