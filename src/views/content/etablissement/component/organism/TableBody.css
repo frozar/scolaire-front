@@ -1,0 +1,3 @@
+tbody {
+  @apply divide-y overflow-y-scroll;
+}

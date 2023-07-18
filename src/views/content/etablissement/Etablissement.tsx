@@ -9,8 +9,9 @@ import { authenticateWrap } from "../../layout/authentication";
 import EditStop from "./EditEtablissement";
 import EtablissementItem from "./EtablissementItem";
 import Checkbox from "./component/atom/Checkbox";
-import TableHeaderColumn from "./component/molecule/TableHeaderCell";
+import TableHeaderCell from "./component/molecule/TableHeaderCell";
 import Filters, { searchInputKeyword } from "./component/organism/Filters";
+import TableBody from "./component/organism/TableBody";
 import TableHeader from "./component/organism/TableHeader";
 
 const [, { getActiveMapId }] = useStateGui();
@@ -128,7 +129,7 @@ export default function () {
             <div class="h-[78vh]">
               <table class="min-w-full">
                 <TableHeader>
-                  <TableHeaderColumn>
+                  <TableHeaderCell>
                     <Checkbox
                       ariaDescribedby="etablissement-item"
                       name="etablissement"
@@ -142,13 +143,14 @@ export default function () {
                         );
                       }}
                     />
-                  </TableHeaderColumn>
-                  <TableHeaderColumn>Nom</TableHeaderColumn>
-                  <TableHeaderColumn>Nombre de d'élèves</TableHeaderColumn>
-                  <TableHeaderColumn>Nombre de lignes</TableHeaderColumn>
-                  <TableHeaderColumn>Actions</TableHeaderColumn>
+                  </TableHeaderCell>
+                  <TableHeaderCell>Nom</TableHeaderCell>
+                  <TableHeaderCell>Nombre de d'élèves</TableHeaderCell>
+                  <TableHeaderCell>Nombre de lignes</TableHeaderCell>
+                  <TableHeaderCell>Actions</TableHeaderCell>
                 </TableHeader>
-                <tbody>
+
+                <TableBody>
                   <For each={filteredEtablissements()}>
                     {(fields) => {
                       return (
@@ -159,7 +161,7 @@ export default function () {
                       );
                     }}
                   </For>
-                </tbody>
+                </TableBody>
               </table>
             </div>
           </div>
