@@ -1,6 +1,9 @@
 import Filters from "./Filters";
 
 describe("Filters component", () => {
+  // describe("Filters component", { viewportWidth: 1000 }, () => {
+  // Cypress.config("viewportWidth", 1000);
+
   beforeEach(() => {
     cy.mount(Filters);
   });
@@ -19,6 +22,7 @@ describe("Filters component", () => {
   it("Filters snapshot", () => {
     // TODO Check why only 500px width image is generated and not more
     // https://github.com/uktrade/cypress-image-diff/issues/100
-    cy.get("#filters").compareSnapshot("filters", 0.01);
+    cy.viewport(1000, 700);
+    cy.get("#filters").compareSnapshot("filters", 0.01, {});
   });
 });
