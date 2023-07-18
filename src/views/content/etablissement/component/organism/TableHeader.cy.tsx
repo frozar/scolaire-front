@@ -1,6 +1,6 @@
 import { createSignal } from "solid-js";
 import Checkbox from "../atom/Checkbox";
-import TableHeaderColumn from "../molecule/TableHeaderCell";
+import TableHeaderCell from "../molecule/TableHeaderCell";
 import TableHeader from "./TableHeader";
 
 const [refCheckbox, setRefCheckbox] = createSignal<HTMLInputElement>(
@@ -10,7 +10,7 @@ describe("TableHeader component", () => {
   beforeEach(() => {
     cy.mount(() => (
       <TableHeader>
-        <TableHeaderColumn>
+        <TableHeaderCell>
           <Checkbox
             ref={setRefCheckbox}
             name="checkbox"
@@ -19,11 +19,11 @@ describe("TableHeader component", () => {
               console.log("checkbox checked: ", refCheckbox().checked)
             }
           />
-        </TableHeaderColumn>
-        <TableHeaderColumn>Nom</TableHeaderColumn>
-        <TableHeaderColumn>Nombre d'élèves</TableHeaderColumn>
-        <TableHeaderColumn>Nombre de lignes</TableHeaderColumn>
-        <TableHeaderColumn>Actions</TableHeaderColumn>
+        </TableHeaderCell>
+        <TableHeaderCell>Nom</TableHeaderCell>
+        <TableHeaderCell>Nombre d'élèves</TableHeaderCell>
+        <TableHeaderCell>Nombre de lignes</TableHeaderCell>
+        <TableHeaderCell>Actions</TableHeaderCell>
       </TableHeader>
     ));
   });
@@ -31,8 +31,9 @@ describe("TableHeader component", () => {
   it("TableHeader snapshot", () => {
     cy.get("thead").should("exist");
     cy.get("tr").should("exist");
-    cy.get("th").should("have.length", 3);
+    cy.get("th").should("have.length", 5);
 
+    // TODO: wait "viewport PR" to enlarge width of the preview
     cy.get("thead").compareSnapshot("columns", 0.01);
   });
 });
