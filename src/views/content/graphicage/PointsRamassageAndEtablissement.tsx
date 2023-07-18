@@ -190,6 +190,7 @@ export default function () {
     </For>
   );
 }
+
 function fetchEleveVersEtablissement() {
   authenticateWrap((headers) => {
     fetch(

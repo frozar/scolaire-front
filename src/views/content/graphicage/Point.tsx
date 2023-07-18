@@ -143,7 +143,6 @@ export default function (props: {
       })
       .on("mouseover", () => {
         for (const associatedPoint of point.associatedPoints()) {
-          console.log("associatedPoint", associatedPoint);
           const element = linkMap.get(associatedPoint.idPoint)?.getElement();
           const { nature } = associatedPoint;
           const className =
