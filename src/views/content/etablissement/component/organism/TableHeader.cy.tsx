@@ -33,7 +33,6 @@ describe("TableHeader component", () => {
     cy.get("tr").should("exist");
     cy.get("th").should("have.length", 5);
 
-    // TODO: wait "viewport PR" to enlarge width of the preview
     cy.get("thead").compareSnapshot("columns", 0.01);
   });
 });
