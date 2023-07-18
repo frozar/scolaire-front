@@ -1,4 +1,4 @@
-version: '3.2'
+version: "3.2"
 
 services:
   cypress:
@@ -11,3 +11,4 @@ services:
       - ./:/code/cypress
       - ../src:/code/src
       - ../tailwind.config.js:/code/tailwind.config.js
+      - ../cypress.config.ts:/code/cypress.config.ts
