@@ -2,10 +2,11 @@ import _ from "lodash";
 import { JSX, createContext, createEffect, useContext } from "solid-js";
 import { SetStoreFunction, Store, createStore } from "solid-js/store";
 import { SelectedMenuType, TileId } from "./type";
+import { informationBoardTabIdType } from "./views/content/graphicage/component/organism/InformationBoardTabs";
 
 type StateGuiType = {
   selectedMenu: SelectedMenuType;
-  selectedTab: string;
+  informationBoardSelectedTab: informationBoardTabIdType;
   activeMapId: number | null;
   displayedLeftMenu: boolean;
   displayedRightMenu: boolean;
@@ -43,7 +44,7 @@ function createLocalStore<T extends object>(
 const makeStateGuiContext = () => {
   const defaultStateGui: StateGuiType = {
     selectedMenu: "dashboard",
-    selectedTab: "info",
+    informationBoardSelectedTab: "information",
     activeMapId: null,
     displayedLeftMenu: false,
     displayedRightMenu: false,
@@ -58,8 +59,12 @@ const makeStateGuiContext = () => {
     setState("displayedLeftMenu", (currentValue: boolean) => !currentValue);
   }
 
-  function setSelectedTab(tabName: string) {
-    setState("selectedTab", tabName);
+  function setInformationBoardSelectedTab(key: informationBoardTabIdType) {
+    setState("informationBoardSelectedTab", key);
+  }
+
+  function getInformationBoardSelectedTab(): informationBoardTabIdType {
+    return state.informationBoardSelectedTab;
   }
 
   function getActiveMapId() {
@@ -120,7 +125,8 @@ const makeStateGuiContext = () => {
   return [
     state,
     {
-      setSelectedTab,
+      getInformationBoardSelectedTab,
+      setInformationBoardSelectedTab,
       getActiveMapId,
       setActiveMapId,
       setSelectedReadModeTile,
