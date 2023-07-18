@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from "storybook-solidjs";
 
-import TableHeaderColumn from "../molecule/TableHeaderColumn";
+import TableHeaderColumn from "../molecule/TableHeaderCell";
 import TableHeaderComponent from "./TableHeader";
 
 const meta = {
