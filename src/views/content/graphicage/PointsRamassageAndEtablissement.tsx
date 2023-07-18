@@ -174,8 +174,6 @@ export default function () {
     return Number.isFinite(maxCandidat) ? maxCandidat : 0;
   };
 
-  // newFunction();
-
   return (
     <For each={points()}>
       {(point, i) => {
@@ -208,18 +206,16 @@ function fetchEleveVersEtablissement() {
       const data: EleveVersEtablissementType[] = json.content;
 
       for (const point of points()) {
-        const tmp = data.filter(
+        const associatedPoints = data.filter(
           (elt) =>
             point.id ===
             (point.nature === NatureEnum.ramassage
               ? elt.ramassage_id
               : elt.etablissement_id)
         );
-        console.log("tmp", tmp);
-        console.log("tmp", points());
 
         point.setAssociatedPoints(
-          tmp.map((elt) => {
+          associatedPoints.map((elt) => {
             const associatedId =
               point.nature === NatureEnum.ramassage
                 ? elt.etablissement_id

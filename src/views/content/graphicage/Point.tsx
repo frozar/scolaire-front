@@ -53,70 +53,6 @@ export default function (props: {
   const minQuantity = () => props.minQuantity;
   const maxQuantity = () => props.maxQuantity;
 
-  // const [associatedPoints, setAssociatedPoints] = createSignal<
-  //   PointIdentityType[]
-  // >([]);
-
-  // For an etablissement, fetch every ramassage points which
-  // contain student toward etablissement.
-  // For a ramassage, fetch every etablissement points toward which
-  // some student goes from this ramassage point.
-  // function fetchAssociatedPoints(
-  //   point: PointEtablissementType | PointRamassageType,
-  //   setter: Setter<PointIdentityType[]>
-  // ) {
-  //   const { id, nature } = point;
-
-  //   const [getEndPoint] =
-  //     nature === NatureEnum.ramassage
-  //       ? ["/eleve_vers_etablissement/ramassage"]
-  //       : nature === NatureEnum.etablissement
-  //       ? ["/eleve_vers_etablissement/etablissement"]
-  //       : [null];
-
-  //   if (getEndPoint) {
-  //     authenticateWrap((headers) => {
-  //       fetch(
-  //         import.meta.env.VITE_BACK_URL +
-  //           "/map/" +
-  //           getActiveMapId() +
-  //           getEndPoint +
-  //           "?id_resource=" +
-  //           id,
-  //         {
-  //           headers,
-  //         }
-  //       ).then(async (res) => {
-  //         const json = await res.json();
-
-  //         const data: EleveVersEtablissementType[] = json.content;
-  //         setter(
-  //           data.map((elt) => {
-  //             const associatedId =
-  //               nature === NatureEnum.ramassage
-  //                 ? elt.etablissement_id
-  //                 : elt.ramassage_id;
-  //             const associatedNature =
-  //               nature === NatureEnum.ramassage
-  //                 ? NatureEnum.etablissement
-  //                 : NatureEnum.ramassage;
-  //             const id_point =
-  //               associatedNature === NatureEnum.etablissement
-  //                 ? elt.etablissement_id_point
-  //                 : elt.ramassage_id_point;
-
-  //             return {
-  //               id: associatedId,
-  //               idPoint: id_point,
-  //               nature: associatedNature,
-  //             };
-  //           })
-  //         );
-  //       });
-  //     });
-  //   }
-  // }
-
   let circle: L.CircleMarker;
 
   function buildCircle(point: PointEtablissementType): L.CircleMarker {
@@ -175,7 +111,6 @@ export default function (props: {
     })
       .on("click", () => {
         // Select the current element to display information
-        console.log("point", point);
 
         if (!isInAddLineMode()) {
           deselectAllBusLines();
@@ -207,7 +142,6 @@ export default function (props: {
         L.DomEvent.stopPropagation(event);
       })
       .on("mouseover", () => {
-        console.log("point", point.associatedPoints());
         for (const associatedPoint of point.associatedPoints()) {
           console.log("associatedPoint", associatedPoint);
           const element = linkMap.get(associatedPoint.idPoint)?.getElement();
@@ -277,7 +211,6 @@ export default function (props: {
 
     // Fetch associated points (ramassage or etablissement) and
     // store them in the associatedPoints() signal (used is the on'click' event)
-    // fetchAssociatedPoints(point(), setAssociatedPoints());
     if (isLast()) {
       if (nature() === NatureEnum.ramassage) {
         setIsRamassageReady(true);
