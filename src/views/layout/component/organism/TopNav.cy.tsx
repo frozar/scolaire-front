@@ -27,7 +27,7 @@ describe("TopNav component", () => {
     //   cy.wrap(topNav).invoke("css", "height", "150px");
     // });
 
-    // cy.get("#top-nav").compareSnapshot("TopNav-login-menu-close", 0.01);
+    cy.get("#to-screenshot").compareSnapshot("TopNav-login-menu-close", 0.01);
 
     // Open the login menu
     cy.get("#login-btn").click();
@@ -35,7 +35,7 @@ describe("TopNav component", () => {
     cy.get("#to-screenshot").compareSnapshot("TopNav-login-menu-open", 0.01);
 
     // Close the menu login
-    // cy.get("#login-btn").click();
-    // cy.get("#top-nav").compareSnapshot("TopNav-login-menu-close", 0.01);
+    cy.get("#login-btn").click();
+    cy.get("#top-nav").compareSnapshot("TopNav-login-menu-close", 0.01);
   });
 });
