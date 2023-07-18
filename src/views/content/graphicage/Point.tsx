@@ -1,14 +1,6 @@
 import L, { LeafletMouseEvent } from "leaflet";
+import { createEffect, on, onCleanup, onMount } from "solid-js";
 import {
-  Setter,
-  createEffect,
-  createSignal,
-  on,
-  onCleanup,
-  onMount,
-} from "solid-js";
-import {
-  EleveVersEtablissementType,
   NatureEnum,
   PointEtablissementType,
   PointIdentityType,
@@ -23,7 +15,6 @@ import {
   setIsEtablissementReady,
   setIsRamassageReady,
 } from "../../../signaux";
-import { authenticateWrap } from "../../layout/authentication";
 import { renderAnimation } from "./animation";
 import { deselectAllBusLines } from "./line/busLinesUtils";
 
@@ -65,69 +56,69 @@ export default function (props: {
   const minQuantity = () => props.minQuantity;
   const maxQuantity = () => props.maxQuantity;
 
-  const [associatedPoints, setAssociatedPoints] = createSignal<
-    PointIdentityType[]
-  >([]);
+  // const [associatedPoints, setAssociatedPoints] = createSignal<
+  //   PointIdentityType[]
+  // >([]);
 
   // For an etablissement, fetch every ramassage points which
   // contain student toward etablissement.
   // For a ramassage, fetch every etablissement points toward which
   // some student goes from this ramassage point.
-  function fetchAssociatedPoints(
-    point: PointEtablissementType | PointRamassageType,
-    setter: Setter<PointIdentityType[]>
-  ) {
-    const { id, nature } = point;
+  // function fetchAssociatedPoints(
+  //   point: PointEtablissementType | PointRamassageType,
+  //   setter: Setter<PointIdentityType[]>
+  // ) {
+  //   const { id, nature } = point;
 
-    const [getEndPoint] =
-      nature === NatureEnum.ramassage
-        ? ["/eleve_vers_etablissement/ramassage"]
-        : nature === NatureEnum.etablissement
-        ? ["/eleve_vers_etablissement/etablissement"]
-        : [null];
+  //   const [getEndPoint] =
+  //     nature === NatureEnum.ramassage
+  //       ? ["/eleve_vers_etablissement/ramassage"]
+  //       : nature === NatureEnum.etablissement
+  //       ? ["/eleve_vers_etablissement/etablissement"]
+  //       : [null];
 
-    if (getEndPoint) {
-      authenticateWrap((headers) => {
-        fetch(
-          import.meta.env.VITE_BACK_URL +
-            "/map/" +
-            getActiveMapId() +
-            getEndPoint +
-            "?id_resource=" +
-            id,
-          {
-            headers,
-          }
-        ).then(async (res) => {
-          const json = await res.json();
+  //   if (getEndPoint) {
+  //     authenticateWrap((headers) => {
+  //       fetch(
+  //         import.meta.env.VITE_BACK_URL +
+  //           "/map/" +
+  //           getActiveMapId() +
+  //           getEndPoint +
+  //           "?id_resource=" +
+  //           id,
+  //         {
+  //           headers,
+  //         }
+  //       ).then(async (res) => {
+  //         const json = await res.json();
 
-          const data: EleveVersEtablissementType[] = json.content;
-          setter(
-            data.map((elt) => {
-              const associatedId =
-                nature === NatureEnum.ramassage
-                  ? elt.etablissement_id
-                  : elt.ramassage_id;
-              const associatedNature =
-                nature === NatureEnum.ramassage
-                  ? NatureEnum.etablissement
-                  : NatureEnum.ramassage;
-              const id_point =
-                associatedNature === NatureEnum.etablissement
-                  ? elt.etablissement_id_point
-                  : elt.ramassage_id_point;
+  //         const data: EleveVersEtablissementType[] = json.content;
+  //         setter(
+  //           data.map((elt) => {
+  //             const associatedId =
+  //               nature === NatureEnum.ramassage
+  //                 ? elt.etablissement_id
+  //                 : elt.ramassage_id;
+  //             const associatedNature =
+  //               nature === NatureEnum.ramassage
+  //                 ? NatureEnum.etablissement
+  //                 : NatureEnum.ramassage;
+  //             const id_point =
+  //               associatedNature === NatureEnum.etablissement
+  //                 ? elt.etablissement_id_point
+  //                 : elt.ramassage_id_point;
 
-              return {
-                id: associatedId,
-                idPoint: id_point,
-                nature: associatedNature,
-              };
-            })
-          );
-        });
-      });
-    }
-  }
+  //             return {
+  //               id: associatedId,
+  //               idPoint: id_point,
+  //               nature: associatedNature,
+  //             };
+  //           })
+  //         );
+  //       });
+  //     });
+  //   }
+  // }
 
   let circle: L.CircleMarker;
 
@@ -211,7 +202,7 @@ export default function (props: {
           }
 
           // Highlight point ramassage
-          for (const associatedPoint of associatedPoints()) {
+          for (const associatedPoint of point.associatedPoints()) {
             let element;
             if (
               (element = linkMap.get(associatedPoint.idPoint)?.getElement())
@@ -225,7 +216,7 @@ export default function (props: {
         })
         // eslint-disable-next-line solid/reactivity
         .on("mouseover", () => {
-          for (const associatedPoint of associatedPoints()) {
+          for (const associatedPoint of point.associatedPoints()) {
             const element = linkMap.get(associatedPoint.idPoint)?.getElement();
             const { nature } = associatedPoint;
             const className =
@@ -239,7 +230,7 @@ export default function (props: {
         })
         // eslint-disable-next-line solid/reactivity
         .on("mouseout", () => {
-          for (const associatedPoint of associatedPoints()) {
+          for (const associatedPoint of point.associatedPoints()) {
             const element = linkMap.get(associatedPoint.idPoint)?.getElement();
             const { nature } = associatedPoint;
             const className =
@@ -295,7 +286,7 @@ export default function (props: {
 
     // Fetch associated points (ramassage or etablissement) and
     // store them in the associatedPoints() signal (used is the on'click' event)
-    fetchAssociatedPoints(point(), setAssociatedPoints);
+    // fetchAssociatedPoints(point(), setAssociatedPoints());
     if (isLast()) {
       if (nature() === NatureEnum.ramassage) {
         setIsRamassageReady(true);
