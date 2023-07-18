@@ -1,6 +1,6 @@
 import InputSearch from "./InputSearch";
 
-describe("InputSearch component", () => {
+describe("InputSearch component", { viewportWidth: 500 }, () => {
   const props = {
     onInput: () => {
       console.log("onInput");
