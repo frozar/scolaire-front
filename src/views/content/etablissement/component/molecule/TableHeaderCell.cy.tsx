@@ -1,4 +1,4 @@
-import TableHeaderColumn from "./TableHeaderColumn";
+import TableHeaderColumn from "./TableHeaderCell";
 
 describe("TableHeaderColumn component", () => {
   it("TableHeaderColumn snapshot", () => {
