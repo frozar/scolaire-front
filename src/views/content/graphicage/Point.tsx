@@ -8,7 +8,6 @@ import {
 } from "../../../type";
 
 import { useStateAction } from "../../../StateAction";
-import { useStateGui } from "../../../StateGui";
 import {
   getLeafletMap,
   points,
@@ -19,8 +18,6 @@ import { renderAnimation } from "./animation";
 import { deselectAllBusLines } from "./line/busLinesUtils";
 
 export const linkMap = new Map<number, L.CircleMarker>();
-
-const [, { getActiveMapId }] = useStateGui();
 
 const [
   ,
