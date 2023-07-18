@@ -20,10 +20,10 @@ describe("TableHeader component", () => {
             }
           />
         </TableHeaderCell>
-        <TableHeaderCell>Nom</TableHeaderCell>
-        <TableHeaderCell>Nombre d'élèves</TableHeaderCell>
-        <TableHeaderCell>Nombre de lignes</TableHeaderCell>
-        <TableHeaderCell>Actions</TableHeaderCell>
+        <TableHeaderCell>Cell 1</TableHeaderCell>
+        <TableHeaderCell>Cell 2</TableHeaderCell>
+        <TableHeaderCell>Cell 3</TableHeaderCell>
+        <TableHeaderCell>Cell 4</TableHeaderCell>
       </TableHeader>
     ));
   });
