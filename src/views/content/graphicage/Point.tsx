@@ -14,14 +14,7 @@ import {
 } from "../../../signaux";
 import { buildCircleEvent, linkMap } from "./pointUtils";
 
-const [
-  ,
-  {
-    addPointToLineUnderConstruction,
-    getLineUnderConstruction,
-    isInAddLineMode,
-  },
-] = useStateAction();
+const [, { isInAddLineMode }] = useStateAction();
 
 // function selectPointById(targerIdPoint: number) {
 //   points().map((point) => point.setSelected(targerIdPoint == point.idPoint));
