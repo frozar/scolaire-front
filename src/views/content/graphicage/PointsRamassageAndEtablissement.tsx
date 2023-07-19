@@ -8,8 +8,10 @@ import {
   setPoints,
 } from "../../../signaux";
 import {
+  EleveVersEtablissementType,
   NatureEnum,
   PointEtablissementType,
+  PointIdentityType,
   PointRamassageType,
 } from "../../../type";
 import { authenticateWrap } from "../../layout/authentication";
@@ -73,7 +75,16 @@ function PointBack2Front<
       // Add signal "selected"
       .map((data) => {
         const [selected, setSelected] = createSignal(false);
-        return { ...data, selected, setSelected } as PointRamassageType;
+        const [associatedPoints, setAssociatedPoints] = createSignal<
+          PointIdentityType[]
+        >([]);
+        return {
+          ...data,
+          selected,
+          setSelected,
+          associatedPoints,
+          setAssociatedPoints,
+        } as PointRamassageType;
       })
       // Add "nature"
       .map((data) => ({ ...data, nature }))
@@ -139,6 +150,7 @@ export function fetchPointsRamassageAndEtablissement() {
 export default function () {
   onMount(() => {
     fetchPointsRamassageAndEtablissement();
+    fetchEleveVersEtablissement();
   });
 
   onCleanup(() => {
@@ -162,10 +174,6 @@ export default function () {
     return Number.isFinite(maxCandidat) ? maxCandidat : 0;
   };
 
-  // createEffect(() => {
-  //   console.log("points()", points());
-  // });
-
   return (
     <For each={points()}>
       {(point, i) => {
@@ -181,4 +189,55 @@ export default function () {
       }}
     </For>
   );
+}
+
+function fetchEleveVersEtablissement() {
+  authenticateWrap((headers) => {
+    fetch(
+      import.meta.env.VITE_BACK_URL +
+        "/map/" +
+        getActiveMapId() +
+        "/eleve_vers_etablissement",
+      {
+        headers,
+      }
+    ).then(async (res) => {
+      const json = await res.json();
+
+      const data: EleveVersEtablissementType[] = json.content;
+
+      for (const point of points()) {
+        const associatedPoints = data.filter(
+          (elt) =>
+            point.id ===
+            (point.nature === NatureEnum.ramassage
+              ? elt.ramassage_id
+              : elt.etablissement_id)
+        );
+
+        point.setAssociatedPoints(
+          associatedPoints.map((elt) => {
+            const associatedId =
+              point.nature === NatureEnum.ramassage
+                ? elt.etablissement_id
+                : elt.ramassage_id;
+            const associatedNature =
+              point.nature === NatureEnum.ramassage
+                ? NatureEnum.etablissement
+                : NatureEnum.ramassage;
+            const id_point =
+              associatedNature === NatureEnum.etablissement
+                ? elt.etablissement_id_point
+                : elt.ramassage_id_point;
+
+            return {
+              id: associatedId,
+              idPoint: id_point,
+              nature: associatedNature,
+            };
+          })
+        );
+      }
+    });
+  });
 }

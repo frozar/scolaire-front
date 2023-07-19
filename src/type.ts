@@ -7,6 +7,8 @@ export type EleveVersEtablissementType = {
   etablissement_id: number;
   etablissement_id_point: number;
   ramassage_id_point: number;
+  etablissement: string;
+  ramassage: string;
 };
 
 export enum NatureEnum {
@@ -24,6 +26,8 @@ export type PointRamassageType = {
   quantity: number;
   selected: Accessor<boolean>;
   setSelected: Setter<boolean>;
+  associatedPoints: Accessor<PointIdentityType[]>;
+  setAssociatedPoints: Setter<PointIdentityType[]>;
 };
 
 export type PointEtablissementType = PointRamassageType;

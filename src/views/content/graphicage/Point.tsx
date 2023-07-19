@@ -1,14 +1,6 @@
 import L, { LeafletMouseEvent } from "leaflet";
+import { createEffect, on, onCleanup, onMount } from "solid-js";
 import {
-  Setter,
-  createEffect,
-  createSignal,
-  on,
-  onCleanup,
-  onMount,
-} from "solid-js";
-import {
-  EleveVersEtablissementType,
   NatureEnum,
   PointEtablissementType,
   PointIdentityType,
@@ -16,20 +8,16 @@ import {
 } from "../../../type";
 
 import { useStateAction } from "../../../StateAction";
-import { useStateGui } from "../../../StateGui";
 import {
   getLeafletMap,
   points,
   setIsEtablissementReady,
   setIsRamassageReady,
 } from "../../../signaux";
-import { authenticateWrap } from "../../layout/authentication";
 import { renderAnimation } from "./animation";
 import { deselectAllBusLines } from "./line/busLinesUtils";
 
 export const linkMap = new Map<number, L.CircleMarker>();
-
-const [, { getActiveMapId }] = useStateGui();
 
 const [
   ,
@@ -64,70 +52,6 @@ export default function (props: {
   const nature = () => props.nature;
   const minQuantity = () => props.minQuantity;
   const maxQuantity = () => props.maxQuantity;
-
-  const [associatedPoints, setAssociatedPoints] = createSignal<
-    PointIdentityType[]
-  >([]);
-
-  // For an etablissement, fetch every ramassage points which
-  // contain student toward etablissement.
-  // For a ramassage, fetch every etablissement points toward which
-  // some student goes from this ramassage point.
-  function fetchAssociatedPoints(
-    point: PointEtablissementType | PointRamassageType,
-    setter: Setter<PointIdentityType[]>
-  ) {
-    const { id, nature } = point;
-
-    const [getEndPoint] =
-      nature === NatureEnum.ramassage
-        ? ["/eleve_vers_etablissement/ramassage"]
-        : nature === NatureEnum.etablissement
-        ? ["/eleve_vers_etablissement/etablissement"]
-        : [null];
-
-    if (getEndPoint) {
-      authenticateWrap((headers) => {
-        fetch(
-          import.meta.env.VITE_BACK_URL +
-            "/map/" +
-            getActiveMapId() +
-            getEndPoint +
-            "?id_resource=" +
-            id,
-          {
-            headers,
-          }
-        ).then(async (res) => {
-          const json = await res.json();
-
-          const data: EleveVersEtablissementType[] = json.content;
-          setter(
-            data.map((elt) => {
-              const associatedId =
-                nature === NatureEnum.ramassage
-                  ? elt.etablissement_id
-                  : elt.ramassage_id;
-              const associatedNature =
-                nature === NatureEnum.ramassage
-                  ? NatureEnum.etablissement
-                  : NatureEnum.ramassage;
-              const id_point =
-                associatedNature === NatureEnum.etablissement
-                  ? elt.etablissement_id_point
-                  : elt.ramassage_id_point;
-
-              return {
-                id: associatedId,
-                idPoint: id_point,
-                nature: associatedNature,
-              };
-            })
-          );
-        });
-      });
-    }
-  }
 
   let circle: L.CircleMarker;
 
@@ -177,82 +101,73 @@ export default function (props: {
 
     // console.log("lon", lon, "typeof lon", typeof lon);
     // console.log("lat", lat);
-    return (
-      L.circleMarker([lat, lon], {
-        color,
-        fillColor,
-        radius,
-        fillOpacity: 1,
-        weight,
-        pane: "markerPane",
+    return L.circleMarker([lat, lon], {
+      color,
+      fillColor,
+      radius,
+      fillOpacity: 1,
+      weight,
+      pane: "markerPane",
+    })
+      .on("click", () => {
+        // Select the current element to display information
+
+        if (!isInAddLineMode()) {
+          deselectAllBusLines();
+          selectPointById(point.idPoint);
+          return;
+        }
+
+        const pointIdentity: PointIdentityType = {
+          id: point.id,
+          idPoint: point.idPoint,
+          nature: point.nature,
+        };
+
+        addPointToLineUnderConstruction(pointIdentity);
+
+        if (!(1 < getLineUnderConstruction().stops.length)) {
+          return;
+        }
+
+        // Highlight point ramassage
+        for (const associatedPoint of point.associatedPoints()) {
+          let element;
+          if ((element = linkMap.get(associatedPoint.idPoint)?.getElement())) {
+            renderAnimation(element);
+          }
+        }
       })
-        // eslint-disable-next-line solid/reactivity
-        .on("click", () => {
-          // Select the current element to display information
-
-          if (!isInAddLineMode()) {
-            deselectAllBusLines();
-            selectPointById(point.idPoint);
-            return;
+      .on("dblclick", (event: LeafletMouseEvent) => {
+        L.DomEvent.stopPropagation(event);
+      })
+      .on("mouseover", () => {
+        for (const associatedPoint of point.associatedPoints()) {
+          const element = linkMap.get(associatedPoint.idPoint)?.getElement();
+          const { nature } = associatedPoint;
+          const className =
+            nature === NatureEnum.ramassage
+              ? "circle-animation-ramassage"
+              : "circle-animation-etablissement";
+          if (element) {
+            element.classList.add(className);
           }
+        }
+      })
+      .on("mouseout", () => {
+        for (const associatedPoint of point.associatedPoints()) {
+          const element = linkMap.get(associatedPoint.idPoint)?.getElement();
+          const { nature } = associatedPoint;
+          const className =
+            nature === NatureEnum.ramassage
+              ? "circle-animation-ramassage"
+              : "circle-animation-etablissement";
 
-          console.log("point", point);
-
-          const pointIdentity: PointIdentityType = {
-            id: point.id,
-            idPoint: point.idPoint,
-            nature: point.nature,
-          };
-
-          addPointToLineUnderConstruction(pointIdentity);
-
-          if (!(1 < getLineUnderConstruction().stops.length)) {
-            return;
+          if (element) {
+            element.classList.remove(className);
           }
-
-          // Highlight point ramassage
-          for (const associatedPoint of associatedPoints()) {
-            let element;
-            if (
-              (element = linkMap.get(associatedPoint.idPoint)?.getElement())
-            ) {
-              renderAnimation(element);
-            }
-          }
-        })
-        .on("dblclick", (event: LeafletMouseEvent) => {
-          L.DomEvent.stopPropagation(event);
-        })
-        // eslint-disable-next-line solid/reactivity
-        .on("mouseover", () => {
-          for (const associatedPoint of associatedPoints()) {
-            const element = linkMap.get(associatedPoint.idPoint)?.getElement();
-            const { nature } = associatedPoint;
-            const className =
-              nature === NatureEnum.ramassage
-                ? "circle-animation-ramassage"
-                : "circle-animation-etablissement";
-            if (element) {
-              element.classList.add(className);
-            }
-          }
-        })
-        // eslint-disable-next-line solid/reactivity
-        .on("mouseout", () => {
-          for (const associatedPoint of associatedPoints()) {
-            const element = linkMap.get(associatedPoint.idPoint)?.getElement();
-            const { nature } = associatedPoint;
-            const className =
-              nature === NatureEnum.ramassage
-                ? "circle-animation-ramassage"
-                : "circle-animation-etablissement";
-
-            if (element) {
-              element.classList.remove(className);
-            }
-          }
-        })
-    );
+        }
+      });
   }
 
   // If a line is under construction, show a pencil when the mouse is over a circle
@@ -295,7 +210,6 @@ export default function (props: {
 
     // Fetch associated points (ramassage or etablissement) and
     // store them in the associatedPoints() signal (used is the on'click' event)
-    fetchAssociatedPoints(point(), setAssociatedPoints);
     if (isLast()) {
       if (nature() === NatureEnum.ramassage) {
         setIsRamassageReady(true);
