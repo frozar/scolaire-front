@@ -1,7 +1,11 @@
 import L, { LeafletMouseEvent } from "leaflet";
 import { useStateAction } from "../../../StateAction";
 import { points } from "../../../signaux";
-import { PointEtablissementType, PointIdentityType } from "../../../type";
+import {
+  NatureEnum,
+  PointEtablissementType,
+  PointIdentityType,
+} from "../../../type";
 import { renderAnimation } from "./animation";
 import { deselectAllBusLines } from "./line/busLinesUtils";
 
@@ -54,4 +58,33 @@ export const buildCircleEvent = {
   },
 
   onDBLClick: (event: LeafletMouseEvent) => L.DomEvent.stopPropagation(event),
+
+  mouseOver: (point: PointEtablissementType) => {
+    for (const associatedPoint of point.associatedPoints()) {
+      const element = linkMap.get(associatedPoint.idPoint)?.getElement();
+      const { nature } = associatedPoint;
+      const className =
+        nature === NatureEnum.ramassage
+          ? "circle-animation-ramassage"
+          : "circle-animation-etablissement";
+      if (element) {
+        element.classList.add(className);
+      }
+    }
+  },
+
+  mouseOut: (point: PointEtablissementType) => {
+    for (const associatedPoint of point.associatedPoints()) {
+      const element = linkMap.get(associatedPoint.idPoint)?.getElement();
+      const { nature } = associatedPoint;
+      const className =
+        nature === NatureEnum.ramassage
+          ? "circle-animation-ramassage"
+          : "circle-animation-etablissement";
+
+      if (element) {
+        element.classList.remove(className);
+      }
+    }
+  },
 };

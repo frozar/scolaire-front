@@ -75,33 +75,8 @@ export default function (props: PointProps) {
     })
       .on("click", () => buildCircleEvent.onClick(point))
       .on("dblclick", buildCircleEvent.onDBLClick)
-      .on("mouseover", () => {
-        for (const associatedPoint of point.associatedPoints()) {
-          const element = linkMap.get(associatedPoint.idPoint)?.getElement();
-          const { nature } = associatedPoint;
-          const className =
-            nature === NatureEnum.ramassage
-              ? "circle-animation-ramassage"
-              : "circle-animation-etablissement";
-          if (element) {
-            element.classList.add(className);
-          }
-        }
-      })
-      .on("mouseout", () => {
-        for (const associatedPoint of point.associatedPoints()) {
-          const element = linkMap.get(associatedPoint.idPoint)?.getElement();
-          const { nature } = associatedPoint;
-          const className =
-            nature === NatureEnum.ramassage
-              ? "circle-animation-ramassage"
-              : "circle-animation-etablissement";
-
-          if (element) {
-            element.classList.remove(className);
-          }
-        }
-      });
+      .on("mouseover", () => buildCircleEvent.mouseOver(point))
+      .on("mouseout", () => buildCircleEvent.mouseOut(point));
   }
 
   // If a line is under construction, show a pencil when the mouse is over a circle
