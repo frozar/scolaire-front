@@ -9,18 +9,18 @@ export default function () {
     layerTilesList[0].tileContent.addTo(map);
   });
 
-  const onClick = () => {
-    return;
-  };
-  const onDBLClick = () => {
-    return;
-  };
-  const onMouseOut = () => {
-    return;
-  };
-  const onMouseOver = () => {
-    return;
-  };
+  // const onClick = () => {
+  //   return;
+  // };
+  // const onDBLClick = () => {
+  //   return;
+  // };
+  // const onMouseOut = () => {
+  //   return;
+  // };
+  // const onMouseOver = () => {
+  //   return;
+  // };
 
   // const point: PointRamassageType = {
   //   id: 16,
