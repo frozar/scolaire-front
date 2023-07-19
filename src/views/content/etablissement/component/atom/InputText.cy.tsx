@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import InputText from "./InputText";
 
-describe("InputText component", { viewportWidth: 500 }, () => {
+describe("InputText component", () => {
   const props = {
     onInput: () => {
       console.log("onInput");

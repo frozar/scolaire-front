@@ -5,8 +5,8 @@ describe("Filters component", () => {
   // Cypress.config("viewportWidth", 1000);
 
   beforeEach(() => {
-    cy.mount(Filters);
     cy.viewport(1000, 1000);
+    cy.mount(Filters);
   });
 
   it("Filters check elements", () => {
