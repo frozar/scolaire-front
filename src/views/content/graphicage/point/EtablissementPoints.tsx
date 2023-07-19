@@ -107,16 +107,15 @@ export default function (props: ShoolPointProps) {
         };
 
         // TODO: these line is for ramassage
-        const minSizeValue = 5;
-        const maxSizeValue = 10;
-        const range = maxSizeValue - minSizeValue;
-        const coef =
-          minQuantity() == maxQuantity()
-            ? 0
-            : (point.quantity - minQuantity()) /
-              (maxQuantity() - minQuantity());
+        // const minSizeValue = 5;
+        // const maxSizeValue = 10;
+        // const range = maxSizeValue - minSizeValue;
+        // const coef =
+        minQuantity() == maxQuantity()
+          ? 0
+          : (point.quantity - minQuantity()) / (maxQuantity() - minQuantity());
 
-        const radiusValue = coef * range + minSizeValue;
+        // const radiusValue = coef * range + minSizeValue;
         // ----- end line
 
         return (
