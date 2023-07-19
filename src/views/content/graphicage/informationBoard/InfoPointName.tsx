@@ -1,7 +1,7 @@
 import { renderAnimation } from "../animation";
 
 import { PointToDisplayType } from "../../../../type";
-import { linkMap } from "../Point";
+import { linkMap } from "../pointUtils";
 
 import "../../../../css/utils.css";
 
