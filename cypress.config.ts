@@ -24,10 +24,7 @@ export default defineConfig({
 
       getCompareSnapshotsPlugin(on, config, {
         rootDir: "cypress/",
-        // rootDir: "badPath/"
-        // viewport ...
       });
-      // getCompareSnapshotsPlugin(on, config, { rootDir: "./cypress" });
     },
   },
 });
