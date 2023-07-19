@@ -1,4 +1,4 @@
-import L from "leaflet";
+import L, { LeafletMouseEvent } from "leaflet";
 import { createEffect, on, onCleanup, onMount } from "solid-js";
 import {
   NatureEnum,
@@ -9,39 +9,40 @@ import {
 import { useStateAction } from "../../../StateAction";
 import {
   getLeafletMap,
+  points,
   setIsEtablissementReady,
   setIsRamassageReady,
 } from "../../../signaux";
-import { buildCircleEvent, linkMap } from "./pointUtils";
+
+export const linkMap = new Map<number, L.CircleMarker>();
 
 const [, { isInAddLineMode }] = useStateAction();
 
-// function selectPointById(targerIdPoint: number) {
-//   points().map((point) => point.setSelected(targerIdPoint == point.idPoint));
-// }
-
-// export function deselectAllPoints() {
-//   points().map((point) => point.setSelected(false));
-// }
-
-const minSizeValue = 5;
-const maxSizeValue = 10;
-const range = maxSizeValue - minSizeValue;
+export function deselectAllPoints() {
+  points().map((point) => point.setSelected(false));
+}
 
 interface PointProps {
   point: PointRamassageType | PointEtablissementType;
   isLast: boolean;
-  nature: NatureEnum;
-  minQuantity: number;
-  maxQuantity: number;
+
+  onClick: () => void;
+  onDBLClick: (event: LeafletMouseEvent) => void;
+  onMouseOver: () => void;
+  onMouseOut: () => void;
+
+  borderColor: string;
+  fillColor: string;
+  weight: number;
+  radius: number;
+
+  isBlinking?: boolean;
 }
 
 export default function (props: PointProps) {
   const point = () => props.point;
   const isLast = () => props.isLast;
-  const nature = () => props.nature;
-  const minQuantity = () => props.minQuantity;
-  const maxQuantity = () => props.maxQuantity;
+  const nature = () => props.point.nature;
 
   let circle: L.CircleMarker;
 
@@ -49,34 +50,18 @@ export default function (props: PointProps) {
     const lon = point.lon;
     const lat = point.lat;
 
-    const coef =
-      minQuantity() == maxQuantity()
-        ? 0
-        : (point.quantity - minQuantity()) / (maxQuantity() - minQuantity());
-
-    const radiusValue = coef * range + minSizeValue;
-
-    const { nature } = point;
-
-    const [color, fillColor, radius, weight] =
-      nature === NatureEnum.ramassage
-        ? ["red", "white", radiusValue, 2]
-        : nature === NatureEnum.etablissement
-        ? ["green", "white", 12, 4]
-        : ["white", "#000", 18, 4];
-
     return L.circleMarker([lat, lon], {
-      color,
-      fillColor,
-      radius,
+      color: props.borderColor,
+      fillColor: props.fillColor,
+      radius: props.radius,
       fillOpacity: 1,
-      weight,
+      weight: props.weight,
       pane: "markerPane",
     })
-      .on("click", () => buildCircleEvent.onClick(point))
-      .on("dblclick", buildCircleEvent.onDBLClick)
-      .on("mouseover", () => buildCircleEvent.mouseOver(point))
-      .on("mouseout", () => buildCircleEvent.mouseOut(point));
+      .on("click", props.onClick)
+      .on("dblclick", props.onDBLClick)
+      .on("mouseover", props.onMouseOver)
+      .on("mouseout", props.onMouseOut);
   }
 
   // If a line is under construction, show a pencil when the mouse is over a circle
