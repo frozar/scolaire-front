@@ -6,6 +6,8 @@ export default defineConfig({
   // watchForFileChanges: true,
   video: false,
   component: {
+    viewportWidth: 1000,
+    viewportHeight: 1000,
     devServer: {
       framework: "@lmiller1990/cypress-ct-solid-js",
       bundler: "vite",

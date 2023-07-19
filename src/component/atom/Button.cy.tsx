@@ -8,6 +8,10 @@ describe("LeftMenuItemLabel component", () => {
     label: "Graphicage",
   };
 
+  beforeEach(() => {
+    cy.viewport(1000, 1000);
+  });
+
   it("primary: when enabled", () => {
     cy.mount(() => (
       <Button onClick={props.onClick} label={props.label} isDisabled={false} />

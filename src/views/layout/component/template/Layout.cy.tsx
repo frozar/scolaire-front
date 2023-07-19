@@ -2,19 +2,8 @@ import Layout from "./Layout";
 
 describe("Layout template", () => {
   beforeEach(() => {
+    cy.viewport(1000, 1000);
     cy.mount(() => <Layout />);
-
-    cy.get("#left-nav-container").then((lateralNav) => {
-      cy.wrap(lateralNav).invoke("css", "height", "700px");
-    });
-
-    cy.get("#left-nav").then((lateralNav) => {
-      cy.wrap(lateralNav).invoke("css", "height", "700px");
-    });
-
-    cy.get("#layout").then((layout) => {
-      cy.wrap(layout).invoke("css", "height", "700px");
-    });
 
     cy.get("#left-nav-btn-colapse").then((closeLateralNavBtn) => {
       cy.wrap(closeLateralNavBtn).invoke("css", "outline", "none");

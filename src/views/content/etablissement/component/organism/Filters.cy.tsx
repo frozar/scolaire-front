@@ -2,6 +2,7 @@ import Filters from "./Filters";
 
 describe("Filters component", () => {
   beforeEach(() => {
+    cy.viewport(1000, 1000);
     cy.mount(Filters);
   });
 
@@ -17,8 +18,6 @@ describe("Filters component", () => {
   });
 
   it("Filters snapshot", () => {
-    // TODO Check why only 500px width image is generated and not more
-    // https://github.com/uktrade/cypress-image-diff/issues/100
     cy.get("#filters").compareSnapshot("filters", 0.01);
   });
 });
