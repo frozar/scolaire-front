@@ -18,6 +18,6 @@ describe("Filters component", () => {
   });
 
   it("Filters snapshot", () => {
-    cy.get("#filters").compareSnapshot("filters", 0.01, {});
+    cy.get("#filters").compareSnapshot("filters", 0.01);
   });
 });

@@ -30,6 +30,6 @@ describe("TopNav component", () => {
 
     // Close the menu login
     cy.get("#login-btn").click();
-    cy.get("#top-nav").compareSnapshot("TopNav-login-menu-close", 0.01);
+    cy.get("#to-screenshot").compareSnapshot("TopNav-login-menu-close", 0.01);
   });
 });
