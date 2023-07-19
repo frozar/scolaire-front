@@ -27,6 +27,7 @@ import "tailwindcss/tailwind.css";
 // with a <reference path="./component" /> at the top of your spec.
 
 beforeEach(() => {
+  // Default screenshots viewports
   cy.viewport(500, 700);
 });
 
