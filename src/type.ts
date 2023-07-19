@@ -208,3 +208,19 @@ export type UserMapType = {
   setIsSelected: Setter<boolean>;
   setIsActive: Setter<boolean>;
 };
+
+export type PointRamassageDBType = {
+  id: number;
+  id_point: number;
+  nature: NatureEnum;
+  lon: number;
+  lat: number;
+  name: string;
+  quantity: number;
+};
+
+export type PointEtablissementDBType = PointRamassageDBType;
+
+export type PointRamassageCoreType = Omit<PointRamassageDBType, "id_point"> & {
+  idPoint: number;
+};
