@@ -1,4 +1,4 @@
-import { For, createEffect, createSignal, onCleanup, onMount } from "solid-js";
+import { createEffect, createSignal, onCleanup, onMount } from "solid-js";
 
 import { useStateGui } from "../../../StateGui";
 import {
@@ -10,16 +10,26 @@ import {
 import {
   EleveVersEtablissementType,
   NatureEnum,
+  PointEtablissementDBType,
   PointEtablissementType,
   PointIdentityType,
+  PointRamassageCoreType,
+  PointRamassageDBType,
   PointRamassageType,
 } from "../../../type";
 import { authenticateWrap } from "../../layout/authentication";
-import Point from "./Point";
+import EtablissementPoints from "./point/EtablissementPoints";
 
 const [, { getActiveMapId }] = useStateGui();
 
 export const [pointsReady, setPointsReady] = createSignal(false);
+
+export const [pointsEtablissement, setPointsEtablissement] = createSignal<
+  PointEtablissementType[]
+>([]);
+export const [pointsRamassage, setPointsRamassage] = createSignal<
+  PointEtablissementType[]
+>([]);
 
 const [pointsRamassageReady, setPointsRamassageReady] = createSignal(false);
 const [pointsEtablissementReady, setPointsEtablissementReady] =
@@ -30,22 +40,6 @@ createEffect(() => {
     setPointsReady(true);
   }
 });
-
-type PointRamassageDBType = {
-  id: number;
-  id_point: number;
-  nature: NatureEnum;
-  lon: number;
-  lat: number;
-  name: string;
-  quantity: number;
-};
-
-type PointEtablissementDBType = PointRamassageDBType;
-
-type PointRamassageCoreType = Omit<PointRamassageDBType, "id_point"> & {
-  idPoint: number;
-};
 
 // Rename field 'id_point' to 'idPoint'
 function PointBack2FrontIdPoint(
@@ -86,7 +80,7 @@ function PointBack2Front<
           setAssociatedPoints,
         } as PointRamassageType;
       })
-      // Add "nature"
+
       .map((data) => ({ ...data, nature }))
   );
 }
@@ -118,7 +112,7 @@ export function fetchPointsRamassageAndEtablissement() {
         console.log("Ramassage: dataWk", dataWk);
 
         setPoints((dataArray) => [...dataArray, ...dataWk]);
-
+        setPointsRamassage((dataArray) => [...dataArray, ...dataWk]);
         setPointsRamassageReady(true);
       });
 
@@ -129,9 +123,7 @@ export function fetchPointsRamassageAndEtablissement() {
         }
       ).then(async (res) => {
         const json = await res.json();
-
         const datas: PointEtablissementDBType[] = json["content"];
-        console.log("Etablissement datas", datas);
 
         const dataWk = PointBack2Front(
           datas,
@@ -139,6 +131,7 @@ export function fetchPointsRamassageAndEtablissement() {
         ) as PointEtablissementType[];
         console.log("Etablissement: dataWk", dataWk);
 
+        setPointsEtablissement((dataArray) => [...dataArray, ...dataWk]);
         setPoints((dataArray) => [...dataArray, ...dataWk]);
 
         setPointsEtablissementReady(true);
@@ -159,36 +152,7 @@ export default function () {
     setIsEtablissementReady(false);
   });
 
-  const filteredPoints = () =>
-    points()
-      .filter((value) => Number.isFinite(value.quantity))
-      .map((value) => value.quantity);
-
-  const minQuantity = () => {
-    const minCandidat = Math.min(...filteredPoints());
-    return Number.isFinite(minCandidat) ? minCandidat : 0;
-  };
-
-  const maxQuantity = () => {
-    const maxCandidat = Math.max(...filteredPoints());
-    return Number.isFinite(maxCandidat) ? maxCandidat : 0;
-  };
-
-  return (
-    <For each={points()}>
-      {(point, i) => {
-        return (
-          <Point
-            point={point}
-            isLast={i() === points().length - 1}
-            nature={point.nature}
-            minQuantity={minQuantity()}
-            maxQuantity={maxQuantity()}
-          />
-        );
-      }}
-    </For>
-  );
+  return <EtablissementPoints items={pointsEtablissement()} />;
 }
 
 function fetchEleveVersEtablissement() {

@@ -28,6 +28,30 @@ export function deselectAllPoints() {
   points().map((point) => point.setSelected(false));
 }
 
+/**
+ * Here we defined the size of the point according to number of people on the stop
+ * @param minQuantity minimun student on stop
+ * @param maxQuantity maximun student on stop
+ */
+export function definePointRadius(
+  minQuantity: number,
+  maxQuantity: number,
+  point: PointEtablissementType
+) {
+  const minSizeValue = 5;
+  const maxSizeValue = 10;
+  const range = maxSizeValue - minSizeValue;
+
+  const coef =
+    minQuantity == maxQuantity
+      ? 0
+      : (point.quantity - minQuantity) / (maxQuantity - minQuantity);
+
+  const radiusValue = coef * range + minSizeValue;
+
+  return radiusValue;
+}
+
 export const buildCircleEvent = {
   onClick: (point: PointEtablissementType) => {
     if (!isInAddLineMode()) {
@@ -88,3 +112,11 @@ export const buildCircleEvent = {
     }
   },
 };
+
+// export function newFunction(nature: string): [string, string, number, number] {
+//   return nature === NatureEnum.ramassage
+//     ? ["red", "white", radiusValue, 2]
+//     : nature === NatureEnum.etablissement
+//     ? ["green", "white", 12, 4]
+//     : ["white", "#000", 18, 4];
+// }
