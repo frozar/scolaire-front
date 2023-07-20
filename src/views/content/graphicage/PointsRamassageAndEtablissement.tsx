@@ -1,7 +1,10 @@
-import { createEffect, createSignal, onCleanup, onMount } from "solid-js";
+import { For, createEffect, createSignal, onCleanup, onMount } from "solid-js";
 
+import L, { LeafletMouseEvent } from "leaflet";
+import { useStateAction } from "../../../StateAction";
 import { useStateGui } from "../../../StateGui";
 import {
+  getLeafletMap,
   points,
   setIsEtablissementReady,
   setIsRamassageReady,
@@ -18,9 +21,20 @@ import {
   PointRamassageType,
 } from "../../../type";
 import { authenticateWrap } from "../../layout/authentication";
-import EtablissementPoints from "./point/EtablissementPoints";
+import { renderAnimation } from "./animation";
+import { deselectAllBusLines } from "./line/busLinesUtils";
+import Point, { linkMap } from "./point/atom/Point";
+import { selectPointById } from "./pointUtils";
 
 const [, { getActiveMapId }] = useStateGui();
+const [
+  ,
+  {
+    addPointToLineUnderConstruction,
+    getLineUnderConstruction,
+    isInAddLineMode,
+  },
+] = useStateAction();
 
 export const [pointsReady, setPointsReady] = createSignal(false);
 
@@ -152,7 +166,95 @@ export default function () {
     setIsEtablissementReady(false);
   });
 
-  return <EtablissementPoints items={pointsEtablissement()} />;
+  return (
+    <For each={points()}>
+      {(point, i) => {
+        const onClick = () => {
+          // Select the current element to display information
+          if (!isInAddLineMode()) {
+            deselectAllBusLines();
+            selectPointById(point.idPoint);
+            return;
+          }
+
+          const pointIdentity: PointIdentityType = {
+            id: point.id,
+            idPoint: point.idPoint,
+            nature: point.nature,
+          };
+
+          addPointToLineUnderConstruction(pointIdentity);
+
+          if (!(1 < getLineUnderConstruction().stops.length)) {
+            return;
+          }
+
+          // Highlight point ramassage
+          for (const associatedPoint of point.associatedPoints()) {
+            let element;
+            if (
+              (element = linkMap.get(associatedPoint.idPoint)?.getElement())
+            ) {
+              renderAnimation(element);
+            }
+          }
+        };
+
+        const onDBLClick = (event: LeafletMouseEvent) => {
+          L.DomEvent.stopPropagation(event);
+        };
+
+        const onMouseOver = () => {
+          for (const associatedPoint of point.associatedPoints()) {
+            const element = linkMap.get(associatedPoint.idPoint)?.getElement();
+            const { nature } = associatedPoint;
+            const className =
+              nature === NatureEnum.ramassage
+                ? "circle-animation-ramassage"
+                : "circle-animation-etablissement";
+            if (element) {
+              element.classList.add(className);
+            }
+          }
+        };
+
+        const onMouseOut = () => {
+          for (const associatedPoint of point.associatedPoints()) {
+            const element = linkMap.get(associatedPoint.idPoint)?.getElement();
+            const { nature } = associatedPoint;
+            const className =
+              nature === NatureEnum.ramassage
+                ? "circle-animation-ramassage"
+                : "circle-animation-etablissement";
+
+            if (element) {
+              element.classList.remove(className);
+            }
+          }
+        };
+
+        return (
+          <Point
+            borderColor="green"
+            fillColor="white"
+            isLast={i() === points().length - 1}
+            idPoint={point.id}
+            lat={point.lat}
+            lon={point.lon}
+            map={getLeafletMap()}
+            onClick={onClick}
+            onDBLClick={onDBLClick}
+            onMouseOut={onMouseOut}
+            onMouseOver={onMouseOver}
+            radius={4}
+            weight={2}
+            onIsLast={() => ""}
+            isBlinking={false}
+          />
+        );
+      }}
+    </For>
+  );
 }
 
 function fetchEleveVersEtablissement() {
