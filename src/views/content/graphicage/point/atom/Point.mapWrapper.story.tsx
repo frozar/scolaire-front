@@ -10,6 +10,7 @@ interface PointStoryProps {
   weight: number;
   borderColor: string;
   fillColor: string;
+  isBlinking: boolean;
 }
 
 export default function (props: PointStoryProps) {
@@ -51,7 +52,7 @@ export default function (props: PointStoryProps) {
         onMouseOver={onMouseOver}
         radius={props.radius}
         weight={props.weight}
-        isBlinking={false}
+        isBlinking={props.isBlinking}
       />
     </div>
   );
