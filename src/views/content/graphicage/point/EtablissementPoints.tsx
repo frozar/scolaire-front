@@ -6,10 +6,10 @@ import {
   PointIdentityType,
   PointRamassageType,
 } from "../../../../type";
-import Point, { linkMap } from "../Point";
 import { renderAnimation } from "../animation";
 import { deselectAllBusLines } from "../line/busLinesUtils";
-import { selectPointById } from "../pointUtils";
+import { linkMap, selectPointById } from "../pointUtils";
+import Point from "./atom/Point";
 
 const [
   ,
