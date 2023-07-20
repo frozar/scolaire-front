@@ -5,9 +5,9 @@ import {
   NatureEnum,
   PointIdentityType,
   PointRamassageType,
-} from "../../../type";
+} from "../../../../../type";
+import { layerTilesList } from "../../constant";
 import Point from "./Point";
-import { layerTilesList } from "./constant";
 
 interface PointStoryProps {
   radius: number;

@@ -4,15 +4,15 @@ import {
   NatureEnum,
   PointEtablissementType,
   PointRamassageType,
-} from "../../../type";
+} from "../../../../../type";
 
-import { useStateAction } from "../../../StateAction";
+import { useStateAction } from "../../../../../StateAction";
 import {
   getLeafletMap,
   points,
   setIsEtablissementReady,
   setIsRamassageReady,
-} from "../../../signaux";
+} from "../../../../../signaux";
 
 export const linkMap = new Map<number, L.CircleMarker>();
 
