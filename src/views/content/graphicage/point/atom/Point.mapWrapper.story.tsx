@@ -1,12 +1,8 @@
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { createSignal, onMount } from "solid-js";
-import {
-  NatureEnum,
-  PointIdentityType,
-  PointRamassageType,
-} from "../../../../../type";
-import { layerTilesList } from "../../constant";
+import { onMount } from "solid-js";
+
+import { initialiseMap } from "../../../../../../.storybook/utils/mapWrapper";
 import Point from "./Point";
 
 interface PointStoryProps {
@@ -20,11 +16,7 @@ export default function (props: PointStoryProps) {
   let map: L.Map;
 
   onMount(() => {
-    map = L.map("map-container").setView(
-      [-20.9466588303741, 55.5343806753509],
-      15
-    );
-    layerTilesList[0].tileContent.addTo(map);
+    map = initialiseMap("map-container");
   });
 
   const getMap = () => map;
@@ -42,28 +34,13 @@ export default function (props: PointStoryProps) {
     return;
   };
 
-  const [selected, setSelected] = createSignal<boolean>(false);
-  const [associatedPoints, setAssociatedPoints] = createSignal<
-    PointIdentityType[]
-  >([]);
-
-  const point: PointRamassageType = {
-    id: 16,
-    idPoint: 48,
-    lat: -20.9466588303741,
-    lon: 55.5343806753509,
-    name: "test",
-    nature: NatureEnum.ramassage,
-    quantity: 0,
-    selected,
-    setSelected,
-    associatedPoints,
-    setAssociatedPoints,
-  };
-
   return (
     <div id="map-container" style={{ width: "100%", height: "500px" }}>
       <Point
+        idPoint={1}
+        onIsLast={() => console.log("ok")}
+        lat={-20.9466588303741}
+        lon={55.5343806753509}
         map={getMap()}
         onClick={onClick}
         borderColor={props.borderColor}
@@ -72,7 +49,6 @@ export default function (props: PointStoryProps) {
         onDBLClick={onDBLClick}
         onMouseOut={onMouseOut}
         onMouseOver={onMouseOver}
-        point={point}
         radius={props.radius}
         weight={props.weight}
         isBlinking={false}
