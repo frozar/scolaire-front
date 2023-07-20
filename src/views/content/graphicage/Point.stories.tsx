@@ -1,7 +1,5 @@
-import "leaflet/dist/leaflet.css";
 import { Meta, StoryObj } from "storybook-solidjs";
-
-import MapWithPointComponent from "./Point.storie";
+import MapWithPointComponent from "./Point.story";
 
 const meta = {
   component: MapWithPointComponent,
@@ -11,4 +9,20 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const MapWithPoint: Story = {};
+export const EtablissementPoint: Story = {
+  args: {
+    radius: 12,
+    weight: 4,
+    borderColor: "green",
+    fillColor: "white",
+  },
+};
+
+export const RamassagePoint: Story = {
+  args: {
+    radius: 5,
+    weight: 2,
+    borderColor: "red",
+    fillColor: "white",
+  },
+};
