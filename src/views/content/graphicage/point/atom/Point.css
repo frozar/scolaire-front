@@ -1,0 +1,16 @@
+@keyframes circle-animation-ramassage {
+  0% {
+    stroke: red;
+    fill: #fff;
+    fill-opacity: 1;
+  }
+  100% {
+    stroke: red;
+    fill: red;
+    fill-opacity: 1;
+  }
+}
+
+.circle-animation-ramassage {
+  animation: circle-animation-ramassage 1s infinite ease;
+}
