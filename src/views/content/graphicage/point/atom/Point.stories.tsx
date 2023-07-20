@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from "storybook-solidjs";
-import MapWithPointComponent from "./Point.story";
+import MapWithPointComponent from "./Point.mapWrapper.story";
 
 const meta = {
   component: MapWithPointComponent,
@@ -9,6 +9,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+// TODO: Setup reactivity on Higling point and size
 export const EtablissementPoint: Story = {
   args: {
     radius: 12,

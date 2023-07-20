@@ -1,4 +1,4 @@
-import Point from "./Point.story";
+import Point from "./Point.mapWrapper.story";
 
 describe("Checkbox component", () => {
   it("Etablissement Point", () => {
