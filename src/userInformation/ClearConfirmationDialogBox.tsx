@@ -18,8 +18,8 @@ import { assertIsNode } from "../utils";
 
 import ClickOutside from "../component/ClickOutside";
 import { fetchPointsRamassageAndEtablissement } from "../views/content/graphicage/PointsRamassageAndEtablissement";
-import { busLines } from "../views/content/graphicage/line/BusLines";
 import { fetchBusLines } from "../views/content/graphicage/line/busLinesUtils";
+import { busLines } from "../views/content/graphicage/line/organism/BusLines";
 
 // HACK for the documentation to preserve the ClickOutside directive on save
 // https://www.solidjs.com/guides/typescript#use___

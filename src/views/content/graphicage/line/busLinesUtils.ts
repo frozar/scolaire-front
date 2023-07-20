@@ -22,7 +22,7 @@ import {
   linkBusLinePolyline,
   setBusLines,
   setPickerColor,
-} from "./BusLines";
+} from "./organism/BusLines";
 
 const [, { getActiveMapId }] = useStateGui();
 
