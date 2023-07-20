@@ -1,5 +1,5 @@
 import L, { LeafletMouseEvent } from "leaflet";
-import { createEffect, on, onCleanup, onMount } from "solid-js";
+import { createEffect, mergeProps, on, onCleanup, onMount } from "solid-js";
 import {
   NatureEnum,
   PointEtablissementType,
@@ -23,6 +23,7 @@ export function deselectAllPoints() {
 }
 
 interface PointProps {
+  map?: L.Map;
   point: PointRamassageType | PointEtablissementType;
   isLast: boolean;
 
@@ -40,9 +41,10 @@ interface PointProps {
 }
 
 export default function (props: PointProps) {
-  const point = () => props.point;
-  const isLast = () => props.isLast;
-  const nature = () => props.point.nature;
+  const mergedProps = mergeProps({ map: getLeafletMap() }, props);
+  const point = () => mergedProps.point;
+  const isLast = () => mergedProps.isLast;
+  const nature = () => mergedProps.point.nature;
 
   let circle: L.CircleMarker;
 
@@ -51,17 +53,17 @@ export default function (props: PointProps) {
     const lat = point.lat;
 
     return L.circleMarker([lat, lon], {
-      color: props.borderColor,
-      fillColor: props.fillColor,
-      radius: props.radius,
+      color: mergedProps.borderColor,
+      fillColor: mergedProps.fillColor,
+      radius: mergedProps.radius,
       fillOpacity: 1,
-      weight: props.weight,
+      weight: mergedProps.weight,
       pane: "markerPane",
     })
-      .on("click", props.onClick)
-      .on("dblclick", props.onDBLClick)
-      .on("mouseover", props.onMouseOver)
-      .on("mouseout", props.onMouseOut);
+      .on("click", mergedProps.onClick)
+      .on("dblclick", mergedProps.onDBLClick)
+      .on("mouseover", mergedProps.onMouseOver)
+      .on("mouseout", mergedProps.onMouseOut);
   }
 
   // If a line is under construction, show a pencil when the mouse is over a circle
@@ -87,7 +89,7 @@ export default function (props: PointProps) {
   );
 
   onMount(() => {
-    const leafletMap = getLeafletMap();
+    const leafletMap = mergedProps.map;
     if (!leafletMap) {
       return;
     }
