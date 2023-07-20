@@ -3,19 +3,19 @@ import MapWithPointComponent from "./Point.mapWrapper.story";
 
 const meta = {
   component: MapWithPointComponent,
-  tags: ["autodocs"],
 } satisfies Meta<typeof MapWithPointComponent>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// TODO: Setup reactivity on Higling point and size
+// TODO: Setup reactivity on blinking point and size
 export const EtablissementPoint: Story = {
   args: {
     radius: 12,
     weight: 4,
     borderColor: "green",
     fillColor: "white",
+    isBlinking: true,
   },
 };
 
@@ -25,5 +25,6 @@ export const RamassagePoint: Story = {
     weight: 2,
     borderColor: "red",
     fillColor: "white",
+    isBlinking: true,
   },
 };

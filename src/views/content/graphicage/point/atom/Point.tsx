@@ -1,18 +1,10 @@
 import L, { LeafletMouseEvent } from "leaflet";
-import { createEffect, mergeProps, on, onCleanup, onMount } from "solid-js";
-import {
-  NatureEnum,
-  PointEtablissementType,
-  PointRamassageType,
-} from "../../../../../type";
+import { createEffect, on, onCleanup, onMount } from "solid-js";
 
 import { useStateAction } from "../../../../../StateAction";
-import {
-  getLeafletMap,
-  points,
-  setIsEtablissementReady,
-  setIsRamassageReady,
-} from "../../../../../signaux";
+import { points } from "../../../../../signaux";
+
+import "./Point.css";
 
 export const linkMap = new Map<number, L.CircleMarker>();
 
@@ -23,10 +15,10 @@ export function deselectAllPoints() {
 }
 
 interface PointProps {
-  map?: L.Map;
-  point: PointRamassageType | PointEtablissementType;
+  map: L.Map;
   isLast: boolean;
-
+  onIsLast: () => void;
+  idPoint: number;
   onClick: () => void;
   onDBLClick: (event: LeafletMouseEvent) => void;
   onMouseOver: () => void;
@@ -37,35 +29,17 @@ interface PointProps {
   weight: number;
   radius: number;
 
+  lat: number;
+  lon: number;
+
   isBlinking?: boolean;
 }
 
 export default function (props: PointProps) {
-  const mergedProps = mergeProps({ map: getLeafletMap() }, props);
-  const point = () => mergedProps.point;
-  const isLast = () => mergedProps.isLast;
-  const nature = () => mergedProps.point.nature;
-
+  // const isLast = () => props.isLast;
   let circle: L.CircleMarker;
 
-  function buildCircle(point: PointEtablissementType): L.CircleMarker {
-    const lon = point.lon;
-    const lat = point.lat;
-
-    return L.circleMarker([lat, lon], {
-      color: mergedProps.borderColor,
-      fillColor: mergedProps.fillColor,
-      radius: mergedProps.radius,
-      fillOpacity: 1,
-      weight: mergedProps.weight,
-      pane: "markerPane",
-    })
-      .on("click", mergedProps.onClick)
-      .on("dblclick", mergedProps.onDBLClick)
-      .on("mouseover", mergedProps.onMouseOver)
-      .on("mouseout", mergedProps.onMouseOut);
-  }
-
+  // TODO: Put in css only (.addlinemode .point)
   // If a line is under construction, show a pencil when the mouse is over a circle
   createEffect(
     on(isInAddLineMode, (isInAddLineMode) => {
@@ -87,34 +61,59 @@ export default function (props: PointProps) {
       }
     })
   );
-
+  // createEffect(() => {
+  //   // if (props.isBlinking) {
+  //   try {
+  //     if (true) {
+  //       log
+  //       circle.getElement()?.classList.add("circle-animation-ramassage");
+  //     }
+  //   } catch (error) {}
+  // });
   onMount(() => {
-    const leafletMap = mergedProps.map;
-    if (!leafletMap) {
-      return;
-    }
+    circle = L.circleMarker([props.lat, props.lon], {
+      color: props.borderColor,
+      fillColor: props.fillColor,
+      radius: props.radius,
+      fillOpacity: 1,
+      weight: props.weight,
+      pane: "markerPane",
+      className: "map-point",
+    })
+      .on("click", props.onClick)
+      .on("dblclick", props.onDBLClick)
+      .on("mouseover", props.onMouseOver)
+      .on("mouseout", props.onMouseOut)
+      .addTo(props.map);
+    // createEffect(() => {
+    // if (props.isBlinking) {
+    // try {
+    // if (true) {
+    console.log("ouai");
+    circle.getElement()?.classList.add("circle-animation-ramassage");
+    // }
+    // } catch (error) {}
+    // });
+    // TODO: Test deletion
+    // const element = circle.getElement();
+    // if (element) {
+    //   linkMap.set(props.idPoint, circle);
+    // }
 
-    circle = buildCircle(point());
-    circle.addTo(leafletMap);
-
-    const element = circle.getElement();
-    if (element) {
-      linkMap.set(point().idPoint, circle);
-    }
-
-    // Fetch associated points (ramassage or etablissement) and
-    // store them in the associatedPoints() signal (used is the on'click' event)
-    if (isLast()) {
-      if (nature() === NatureEnum.ramassage) {
-        setIsRamassageReady(true);
-      } else {
-        setIsEtablissementReady(true);
-      }
-    }
+    // TODO: Appeler une fonction spécifique passer en props (onMount)
+    // if (isLast()) {
+    //   props.onIsLast();
+    //   if (nature() === NatureEnum.ramassage) {
+    //     setIsRamassageReady(true);
+    //   } else {
+    //     setIsEtablissementReady(true);
+    //   }
+    // }
   });
 
   onCleanup(() => {
-    linkMap.delete(point().idPoint);
+    // try without linkMap
+    linkMap.delete(props.idPoint);
     circle.remove();
   });
 
