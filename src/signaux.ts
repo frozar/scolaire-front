@@ -218,6 +218,5 @@ export function removeUserInformation(id: number) {
   );
 }
 
-export const [getLeafletMap, setLeafletMap] = createSignal<L.Map>(
-  L.map(document.createElement("div"))
-);
+export const [getLeafletMap, setLeafletMap] = createSignal<L.Map>();
+// L.map(document.createElement("div"))

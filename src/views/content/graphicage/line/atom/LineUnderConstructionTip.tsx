@@ -1,4 +1,3 @@
-import L from "leaflet";
 import { createEffect, onCleanup } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import { getLeafletMap } from "../../../../../signaux";
