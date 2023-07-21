@@ -181,6 +181,40 @@ code {
   @apply absolute top-[20px] z-userInformations w-full flex flex-col items-center;
 }
 
+@keyframes circle-animation-ramassage {
+  0% {
+    stroke: red;
+    fill: #fff;
+    fill-opacity: 1;
+  }
+  100% {
+    stroke: red;
+    fill: red;
+    fill-opacity: 1;
+  }
+}
+
+.circle-animation-ramassage {
+  animation: circle-animation-ramassage 1s infinite ease;
+}
+
+@keyframes circle-animation-etablissement {
+  0% {
+    stroke: green;
+    fill: #fff;
+    fill-opacity: 1;
+  }
+  100% {
+    stroke: green;
+    fill: green;
+    fill-opacity: 1;
+  }
+}
+
+.circle-animation-etablissement {
+  animation: circle-animation-etablissement 1s infinite ease;
+}
+
 .logo-container {
   padding: 10px 8px;
 }
