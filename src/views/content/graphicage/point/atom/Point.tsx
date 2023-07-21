@@ -89,6 +89,13 @@ export default function (props: PointProps) {
       }
     });
 
+    createEffect(() => {
+      circle.setRadius(props.radius);
+      circle
+        .getElement()
+        ?.setAttribute("stroke-width", props.weight.toString());
+    });
+
     // TODO: Test deletion
     // const element = circle.getElement();
     // if (element) {
