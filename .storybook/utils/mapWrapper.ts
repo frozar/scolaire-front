@@ -1,12 +1,12 @@
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
-// let map: L.Map;
 let mapTabs: {
   idDiv: string;
   map: L.Map;
 }[] = [];
 
+// TODO: Rename
 const initMap = (idDiv: string) => {
   const newMap = L.map(idDiv).setView(
     [-20.9466588303741, 55.5343806753509],
@@ -22,6 +22,7 @@ const initMap = (idDiv: string) => {
   return newMap;
 };
 
+// TODO: Rename
 export const initialiseMap = (idDiv: string) => {
   let map = mapTabs.filter((m) => m.idDiv === idDiv)[0];
   const newMap = initMap(idDiv);
