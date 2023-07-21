@@ -4,13 +4,6 @@ import { layerTilesList } from "../../constant";
 import Line from "./Line";
 
 describe("LeftMenuItemLabel component", () => {
-  const props = {
-    onClick: () => {
-      console.log("clicked");
-    },
-    label: "Graphicage",
-  };
-
   const retryOptions = {
     limit: 5, // max number of retries
     delay: 500, // delay before next iteration, ms
