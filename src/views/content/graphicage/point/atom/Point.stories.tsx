@@ -1,34 +1,3 @@
-// import { Meta, StoryObj } from "storybook-solidjs";
-
-// import MapWithPointComponent from "./Point.mapWrapper.story";
-
-// const meta = {
-//   component: MapWithPointComponent,
-// } satisfies Meta<typeof MapWithPointComponent>;
-
-// export default meta;
-// type Story = StoryObj<typeof meta>;
-
-// export const EtablissementPoint: Story = {
-//   args: {
-//     radius: 12,
-//     weight: 4,
-//     borderColor: "green",
-//     fillColor: "white",
-//     isBlinking: false,
-//   },
-// };
-
-// export const RamassagePoint: Story = {
-//   args: {
-//     radius: 5,
-//     weight: 2,
-//     borderColor: "red",
-//     fillColor: "white",
-//     isBlinking: false,
-//   },
-// };
-
 import "leaflet/dist/leaflet.css";
 import { Meta, StoryObj } from "storybook-solidjs";
 import { initialiseMap } from "../../../../../../.storybook/utils/mapWrapper";
