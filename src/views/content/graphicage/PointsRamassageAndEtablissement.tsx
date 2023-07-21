@@ -150,18 +150,6 @@ export function fetchPointsRamassageAndEtablissement() {
 export default function () {
   onMount(async () => {
     fetchPointsRamassageAndEtablissement();
-    // if (pointsRamassageReady() === false) {
-    //   window.setTimeout(
-    //     pointsRamassageReady,
-    //     100
-    //   ); /* this checks the flag every 100 milliseconds*/
-    // }
-    // if (pointsEtablissementReady() === false) {
-    //   window.setTimeout(
-    //     pointsEtablissementReady,
-    //     100
-    //   ); /* this checks the flag every 100 milliseconds*/
-    // }
     fetchEleveVersEtablissement();
   });
 
