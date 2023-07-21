@@ -61,23 +61,6 @@ export default function (props: PointProps) {
       }
     })
   );
-
-  createEffect(() => {
-    if (props.isBlinking) {
-      console.log("ok");
-
-      circle
-        .getElement()
-        ?.classList.add("circle-animation-" + props.borderColor);
-    } else {
-      console.log("no");
-
-      circle
-        .getElement()
-        ?.classList.remove("circle-animation-" + props.borderColor);
-    }
-  });
-
   onMount(() => {
     circle = L.circleMarker([props.lat, props.lon], {
       color: props.borderColor,
@@ -93,6 +76,18 @@ export default function (props: PointProps) {
       .on("mouseover", props.onMouseOver)
       .on("mouseout", props.onMouseOut)
       .addTo(props.map);
+
+    createEffect(() => {
+      if (props.isBlinking) {
+        circle
+          .getElement()
+          ?.classList.add("circle-animation-" + props.borderColor);
+      } else {
+        circle
+          .getElement()
+          ?.classList.remove("circle-animation-" + props.borderColor);
+      }
+    });
 
     // TODO: Test deletion
     // const element = circle.getElement();
