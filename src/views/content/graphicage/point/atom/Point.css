@@ -1,4 +1,4 @@
-@keyframes circle-animation-ramassage {
+@keyframes circle-animation-red {
   0% {
     stroke: red;
     fill: #fff;
@@ -11,6 +11,23 @@
   }
 }
 
-.circle-animation-ramassage {
-  animation: circle-animation-ramassage 1s infinite ease;
+.circle-animation-red {
+  animation: circle-animation-red 1s infinite ease;
+}
+
+@keyframes circle-animation-green {
+  0% {
+    stroke: green;
+    fill: #fff;
+    fill-opacity: 1;
+  }
+  100% {
+    stroke: green;
+    fill: green;
+    fill-opacity: 1;
+  }
+}
+
+.circle-animation-green {
+  animation: circle-animation-green 1s infinite ease;
 }
