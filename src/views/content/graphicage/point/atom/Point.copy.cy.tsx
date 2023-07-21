@@ -1,7 +1,5 @@
-import L from "leaflet";
-import { layerTilesList } from "../../constant";
-// import Point from "./Point.mapWrapper.story";
 import "leaflet/dist/leaflet.css";
+import { initialiseMap } from "../../../../../../.storybook/utils/mapWrapper";
 import Point from "./Point";
 
 describe("Checkbox component", () => {
@@ -14,18 +12,11 @@ describe("Checkbox component", () => {
     cy.viewport(1000, 1000);
   });
 
-  // TODO: replace with initMap
-  const buildMap = (idDiv: string) => {
-    const map = L.map(idDiv).setView([-20.9466588303741, 55.5343806753509], 15);
-    layerTilesList[0].tileContent.addTo(map);
-    return map;
-  };
-
   it("Etablissement Point", () => {
     cy.mount(() => (
       <div id="map-container" style={{ width: "100%", height: "500px" }}>
         <Point
-          map={buildMap("map-container")}
+          map={initialiseMap("map-container")}
           idPoint={1}
           onIsLast={() => console.log("ok")}
           lat={-20.9466588303741}
@@ -52,7 +43,7 @@ describe("Checkbox component", () => {
     cy.mount(() => (
       <div id="map-container" style={{ width: "100%", height: "500px" }}>
         <Point
-          map={buildMap("map-container")}
+          map={initialiseMap("map-container")}
           idPoint={1}
           onIsLast={() => console.log("ok")}
           lat={-20.9466588303741}
@@ -79,7 +70,7 @@ describe("Checkbox component", () => {
     cy.mount(() => (
       <div id="map-container" style={{ width: "100%", height: "500px" }}>
         <Point
-          map={buildMap("map-container")}
+          map={initialiseMap("map-container")}
           idPoint={1}
           onIsLast={() => console.log("ok")}
           lat={-20.9466588303741}

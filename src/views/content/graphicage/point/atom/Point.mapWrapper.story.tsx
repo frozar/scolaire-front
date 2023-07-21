@@ -2,7 +2,7 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { onMount } from "solid-js";
 
-import { initMap } from "../../../../../../.storybook/utils/mapWrapper";
+import { initialiseMap } from "../../../../../../.storybook/utils/mapWrapper";
 import Point from "./Point";
 
 interface PointStoryProps {
@@ -17,7 +17,7 @@ export default function (props: PointStoryProps) {
   let map: L.Map;
 
   onMount(() => {
-    map = initMap("map-container");
+    map = initialiseMap("map-container");
   });
 
   const getMap = () => map;
