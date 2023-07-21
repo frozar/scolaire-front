@@ -14,3 +14,4 @@ services:
       - ../tailwind.config.js:/code/tailwind.config.js
       - ../cypress.config.ts:/code/cypress.config.ts
       - ../testing:/code/testing
+      - ../.storybook/utils:/code/.storybook/utils
