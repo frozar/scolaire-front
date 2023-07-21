@@ -15,24 +15,23 @@ export function deselectAllPoints() {
 }
 
 interface PointProps {
+  idPoint: number;
+  lat: number;
+  lon: number;
   map: L.Map;
   isLast: boolean;
-  onIsLast: () => void;
-  idPoint: number;
-  onClick: () => void;
-  onDBLClick: (event: LeafletMouseEvent) => void;
-  onMouseOver: () => void;
-  onMouseOut: () => void;
+  isBlinking?: boolean;
 
   borderColor: string;
   fillColor: string;
   weight: number;
   radius: number;
 
-  lat: number;
-  lon: number;
-
-  isBlinking?: boolean;
+  onIsLast: () => void;
+  onClick: () => void;
+  onDBLClick: (event: LeafletMouseEvent) => void;
+  onMouseOver: () => void;
+  onMouseOut: () => void;
 }
 
 export default function (props: PointProps) {
