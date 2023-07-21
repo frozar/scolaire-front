@@ -8,7 +8,6 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// TODO: Setup reactivity on blinking point and size
 export const EtablissementPoint: Story = {
   args: {
     radius: 12,
