@@ -17,7 +17,6 @@ import {
 } from "../../../../type";
 import { authenticateWrap } from "../../../layout/authentication";
 import { deselectAllPoints, linkMap } from "../Point";
-
 import {
   busLines,
   linkBusLinePolyline,
