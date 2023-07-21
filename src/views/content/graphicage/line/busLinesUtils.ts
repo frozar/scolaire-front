@@ -16,7 +16,7 @@ import {
   PointIdentityType,
 } from "../../../../type";
 import { authenticateWrap } from "../../../layout/authentication";
-import { deselectAllPoints, linkMap } from "../pointUtils";
+import { deselectAllPoints, linkMap } from "../Point";
 
 import {
   busLines,
