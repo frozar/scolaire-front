@@ -15,7 +15,7 @@ export const EtablissementPoint: Story = {
     weight: 4,
     borderColor: "green",
     fillColor: "white",
-    isBlinking: true,
+    isBlinking: false,
   },
 };
 
@@ -25,6 +25,6 @@ export const RamassagePoint: Story = {
     weight: 2,
     borderColor: "red",
     fillColor: "white",
-    isBlinking: true,
+    isBlinking: false,
   },
 };
