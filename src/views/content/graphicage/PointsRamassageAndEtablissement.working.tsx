@@ -24,7 +24,7 @@ import { authenticateWrap } from "../../layout/authentication";
 import { renderAnimation } from "./animation";
 import { deselectAllBusLines } from "./line/busLinesUtils";
 import Point, { linkMap } from "./point/atom/Point";
-import { selectPointById } from "./pointUtils";
+import { selectPointById } from "./pointUtils.working";
 
 const [, { getActiveMapId }] = useStateGui();
 const [
