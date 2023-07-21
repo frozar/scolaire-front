@@ -31,7 +31,7 @@
 
 import "leaflet/dist/leaflet.css";
 import { Meta, StoryObj } from "storybook-solidjs";
-import { initialiseMap } from "../../../../../../.storybook/utils/mapWrapper";
+import { initMap } from "../../../../../../.storybook/utils/mapWrapper";
 import PointComponent from "./Point";
 
 const meta = {
@@ -69,7 +69,7 @@ export const Point: Story = {
 
     return (
       <div id="map-container" style={{ width: "100%", height: "500px" }}>
-        <PointComponent {...props} map={initialiseMap("map-container")} />
+        <PointComponent {...props} map={initMap("map-container")} />
       </div>
     );
   },
