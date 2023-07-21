@@ -1,19 +1,27 @@
 import L from "leaflet";
 import { createEffect, onCleanup } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
-import { getLeafletMap } from "../../../../../signaux";
-import { PointIdentityType } from "../../../../../type";
+import {
+  LineUnderConstructionType,
+  PointIdentityType,
+} from "../../../../../type";
 import { linkMap } from "../../Point";
 import { COLOR_LINE_UNDER_CONSTRUCTION } from "../../constant";
-const [, { isInAddLineMode, getLineUnderConstruction }] = useStateAction();
+const [, { isInAddLineMode }] = useStateAction();
 
 // Draw the tip of the line under construction between
 // the last selected circle and the mouse position
-export default function () {
+export default function (props: {
+  //latlngs: L.LatLng[];
+  line: LineUnderConstructionType;
+  leafletMap: L.Map;
+  color: string;
+  opacity: number;
+}) {
   let lineUnderConstructionTip: L.Polyline | undefined = undefined;
 
   function onCleanupHandler() {
-    const leafletMap = getLeafletMap();
+    const leafletMap = props.leafletMap;
     if (!leafletMap) {
       return;
     }
@@ -29,9 +37,16 @@ export default function () {
     if (!isInAddLineMode()) {
       onCleanupHandler();
     }
-  });
+    const leafletMap = props.leafletMap;
+    const line = props.line;
 
-  const stops = () => getLineUnderConstruction().stops;
+    const stops = () => line.stops;
+    leafletMap?.on("mousemove", ({ latlng }) => {
+      // Draw line tip
+      const lastPointIdentity = stops().at(-1);
+      drawLineTip(lastPointIdentity, latlng, leafletMap);
+    });
+  });
 
   function drawLineTip(
     lastPointIdentity: PointIdentityType | undefined,
@@ -72,14 +87,6 @@ export default function () {
       element.style = "pointer-events: none;";
     }
   }
-
-  const leafletMap = getLeafletMap();
-
-  leafletMap?.on("mousemove", ({ latlng }) => {
-    // Draw line tip
-    const lastPointIdentity = stops().at(-1);
-    drawLineTip(lastPointIdentity, latlng, leafletMap);
-  });
 
   onCleanup(() => {
     onCleanupHandler();

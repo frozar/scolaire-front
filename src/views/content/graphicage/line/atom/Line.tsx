@@ -2,12 +2,14 @@ import { LineString } from "geojson";
 import L from "leaflet";
 import { createEffect, onCleanup } from "solid-js";
 
-export default function (props: {
+interface LineProps {
   latlngs: L.LatLng[];
   leafletMap: L.Map;
   color: string;
   opacity: number;
-}) {
+}
+
+export default function (props: LineProps) {
   let busLinePolyline: L.Polyline;
 
   createEffect(() => {
