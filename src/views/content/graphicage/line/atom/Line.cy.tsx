@@ -1,6 +1,5 @@
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { layerTilesList } from "../../constant";
 import Line from "./Line";
 
 describe("LeftMenuItemLabel component", () => {
@@ -15,7 +14,11 @@ describe("LeftMenuItemLabel component", () => {
 
   const buildMap = (idDiv: string) => {
     const map = L.map(idDiv).setView([-20.9466588303741, 55.5343806753509], 15);
-    layerTilesList[0].tileContent.addTo(map);
+    L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
+      attribution:
+        // eslint-disable-next-line quotes
+        '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+    }).addTo(map);
     return map;
   };
 
@@ -36,7 +39,8 @@ describe("LeftMenuItemLabel component", () => {
         </div>
       );
     });
-    cy.wait(1000);
+    // TODO Try reduce time
+    cy.wait(3000);
     cy.get("#map-container").compareSnapshot("default", 0.01, retryOptions);
   });
 
@@ -57,7 +61,8 @@ describe("LeftMenuItemLabel component", () => {
         </div>
       );
     });
-    cy.wait(1000);
+    // TODO Try reduce time
+    cy.wait(3000);
     cy.get("#map-container").compareSnapshot("color", 0.01, retryOptions);
   });
 
@@ -78,7 +83,8 @@ describe("LeftMenuItemLabel component", () => {
         </div>
       );
     });
-    cy.wait(1000);
+    // TODO Try reduce time
+    cy.wait(3000);
     cy.get("#map-container").compareSnapshot("opacity", 0.01, retryOptions);
   });
 
@@ -98,7 +104,8 @@ describe("LeftMenuItemLabel component", () => {
         </div>
       );
     });
-    cy.wait(1000);
+    // TODO Try reduce time
+    cy.wait(3000);
     cy.get("#map-container").compareSnapshot("latlng", 0.01, retryOptions);
   });
 });
