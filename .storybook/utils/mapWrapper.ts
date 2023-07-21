@@ -3,7 +3,7 @@ import { layerTilesList } from "../../src/views/content/graphicage/constant";
 
 let map: L.Map;
 
-export const initialiseMap = (idDiv: string) => {
+export const initMap = (idDiv: string) => {
   if (map != undefined) {
     map.off();
     map.remove();
