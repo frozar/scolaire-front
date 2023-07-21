@@ -19,7 +19,7 @@ describe("LeftMenuItemLabel component", () => {
     return map;
   };
 
-  it("primary: when enabled", () => {
+  it("Default Line", () => {
     cy.mount(() => {
       return (
         <div id="map-container" style={{ width: "100%", height: "500px" }}>
@@ -37,6 +37,68 @@ describe("LeftMenuItemLabel component", () => {
       );
     });
     cy.wait(1000);
-    cy.get("#map-container").compareSnapshot("line", 0.01, retryOptions);
+    cy.get("#map-container").compareSnapshot("default", 0.01, retryOptions);
+  });
+
+  it("Change color", () => {
+    cy.mount(() => {
+      return (
+        <div id="map-container" style={{ width: "100%", height: "500px" }}>
+          <Line
+            latlngs={[
+              L.latLng(-20.9466588303741, 55.5343806753509),
+              L.latLng(-20.9466588303743, 55.54),
+              L.latLng(-20.942, 55.535),
+            ]}
+            leafletMap={buildMap("map-container")}
+            color={"red"}
+            opacity={1}
+          />
+        </div>
+      );
+    });
+    cy.wait(1000);
+    cy.get("#map-container").compareSnapshot("color", 0.01, retryOptions);
+  });
+
+  it("Change Opacity", () => {
+    cy.mount(() => {
+      return (
+        <div id="map-container" style={{ width: "100%", height: "500px" }}>
+          <Line
+            latlngs={[
+              L.latLng(-20.9466588303741, 55.5343806753509),
+              L.latLng(-20.9466588303743, 55.54),
+              L.latLng(-20.942, 55.535),
+            ]}
+            leafletMap={buildMap("map-container")}
+            color={"orange"}
+            opacity={0.5}
+          />
+        </div>
+      );
+    });
+    cy.wait(1000);
+    cy.get("#map-container").compareSnapshot("opacity", 0.01, retryOptions);
+  });
+
+  it("Change Latlngs", () => {
+    cy.mount(() => {
+      return (
+        <div id="map-container" style={{ width: "100%", height: "500px" }}>
+          <Line
+            latlngs={[
+              L.latLng(-20.9466588303741, 55.5343806753509),
+              L.latLng(-20.9466588303743, 55.54),
+            ]}
+            leafletMap={buildMap("map-container")}
+            color={"orange"}
+            opacity={1}
+          />
+        </div>
+      );
+    });
+    cy.wait(1000);
+    cy.get("#map-container").compareSnapshot("latlng", 0.01, retryOptions);
   });
 });
