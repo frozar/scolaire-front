@@ -16,6 +16,7 @@ describe("Checkbox component", () => {
         isBlinking={false}
       />
     ));
+
     cy.wait(1000);
     cy.get("#map-container").compareSnapshot("school", 0.01, retryOptions);
   });
@@ -30,6 +31,7 @@ describe("Checkbox component", () => {
         isBlinking={false}
       />
     ));
+
     cy.wait(1000);
     cy.get("#map-container").compareSnapshot("stop", 0.01, retryOptions);
   });

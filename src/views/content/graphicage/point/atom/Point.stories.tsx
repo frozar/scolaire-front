@@ -1,4 +1,5 @@
 import { Meta, StoryObj } from "storybook-solidjs";
+
 import MapWithPointComponent from "./Point.mapWrapper.story";
 
 const meta = {
