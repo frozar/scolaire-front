@@ -24,6 +24,11 @@ describe("Checkbox component", () => {
       <div id="map-container" style={{ width: "100%", height: "500px" }}>
         <Point
           map={buildMap("map-container")}
+          idPoint={1}
+          onIsLast={() => console.log("ok")}
+          lat={-20.9466588303741}
+          lon={55.5343806753509}
+          onClick={() => console.log("onClick")}
           radius={12}
           weight={4}
           borderColor="green"
