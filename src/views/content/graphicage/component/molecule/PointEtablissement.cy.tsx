@@ -8,7 +8,7 @@ describe("Checkbox component", () => {
     delay: 500, // delay before next iteration, ms
   };
 
-  it("Etablissement Point", () => {
+  it("Etablissement Point snapshot", () => {
     cy.mount(() => (
       <div id="map-container" style={{ width: "100%", height: "500px" }}>
         <PointEtablissement
