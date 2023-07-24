@@ -3,7 +3,7 @@ import "leaflet/dist/leaflet.css";
 import { Meta, StoryObj } from "storybook-solidjs";
 import { initMap } from "../../../../../../testing/utils/mapWrapper";
 
-import PointComponent from "./Point";
+import PointComponent, { PointProps } from "./Point";
 
 const meta = {
   component: PointComponent,
@@ -12,24 +12,6 @@ const meta = {
 
 export default meta;
 type Story = StoryObj<typeof meta>;
-
-interface PointProps {
-  idPoint: number;
-  onIsLast: () => void;
-  lat: number;
-  lon: number;
-  map: L.Map;
-  onClick: () => void;
-  borderColor: string;
-  fillColor: string;
-  isLast: boolean;
-  onDBLClick: () => void;
-  onMouseOut: () => void;
-  onMouseOver: () => void;
-  radius: number;
-  weight: number;
-  isBlinking: boolean;
-}
 
 export const Point: Story = {
   render: (props: PointProps) => {
@@ -52,7 +34,6 @@ export const Point: Story = {
     onClick: () => console.log("onClick"),
     borderColor: "red",
     fillColor: "white",
-    isLast: false,
     onDBLClick: () => console.log("onDBLClick"),
     onMouseOut: () => console.log("onMouseOut"),
     onMouseOver: () => console.log("onMouseOver"),

@@ -9,12 +9,11 @@ export function deselectAllPoints() {
   points().map((point) => point.setSelected(false));
 }
 
-interface PointProps {
+export interface PointProps {
   idPoint: number;
   lat: number;
   lon: number;
   map: L.Map;
-  isLast: boolean;
   isBlinking?: boolean;
 
   borderColor: string;

@@ -21,7 +21,6 @@ describe("Checkbox component", () => {
           onClick={() => console.log("onClick")}
           borderColor="green"
           fillColor="white"
-          isLast={false}
           onDBLClick={() => console.log("onDBLClick")}
           onMouseOut={() => console.log("onMouseOut")}
           onMouseOver={() => console.log("onMouseOver")}
@@ -33,7 +32,7 @@ describe("Checkbox component", () => {
     ));
 
     cy.wait(1000);
-    cy.get("#map-container").compareSnapshot("school", 0.01, retryOptions);
+    cy.get("#map-container").compareSnapshot("point-1", 0.01, retryOptions);
   });
 
   it("Ramassage Point", () => {
@@ -43,24 +42,23 @@ describe("Checkbox component", () => {
           map={initMap("map-container")}
           idPoint={1}
           onIsLast={() => console.log("onIsLast")}
-          lat={-20.9466588303741}
-          lon={55.5343806753509}
+          lat={-20.9466588303742}
+          lon={55.5343806753508}
           onClick={() => console.log("onClick")}
           borderColor="red"
-          fillColor="white"
-          isLast={false}
+          fillColor="gray"
           onDBLClick={() => console.log("onDBLClick")}
           onMouseOut={() => console.log("onMouseOut")}
           onMouseOver={() => console.log("onMouseOver")}
-          radius={8}
-          weight={4}
+          radius={9}
+          weight={5}
           isBlinking={false}
         />
       </div>
     ));
 
     cy.wait(1000);
-    cy.get("#map-container").compareSnapshot("stop", 0.01, retryOptions);
+    cy.get("#map-container").compareSnapshot("point-2", 0.01, retryOptions);
   });
 
   it("Check blinking", () => {
@@ -70,12 +68,11 @@ describe("Checkbox component", () => {
           map={initMap("map-container")}
           idPoint={1}
           onIsLast={() => console.log("onIsLast")}
-          lat={-20.9466588303741}
-          lon={55.5343806753509}
+          lat={-20.9466588303749}
+          lon={55.5343806753501}
           onClick={() => console.log("onClick")}
           borderColor="green"
           fillColor="white"
-          isLast={false}
           onDBLClick={() => console.log("onDBLClick")}
           onMouseOut={() => console.log("onMouseOut")}
           onMouseOver={() => console.log("onMouseOver")}
