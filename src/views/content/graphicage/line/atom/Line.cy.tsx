@@ -3,7 +3,7 @@ import "leaflet/dist/leaflet.css";
 import { initialiseMap } from "../../../../../../testing/utils/mapWrapper";
 import Line from "./Line";
 
-describe("LeftMenuItemLabel component", () => {
+describe("Line component", () => {
   const retryOptions = {
     limit: 5, // max number of retries
     delay: 1000, // delay before next iteration, ms
@@ -30,7 +30,7 @@ describe("LeftMenuItemLabel component", () => {
         </div>
       );
     });
-    cy.wait(1000);
+    cy.wait(1500);
     cy.get("#map-container").compareSnapshot("default", 0.01, retryOptions);
   });
 
@@ -51,7 +51,7 @@ describe("LeftMenuItemLabel component", () => {
         </div>
       );
     });
-    cy.wait(1000);
+    cy.wait(1500);
     cy.get("#map-container").compareSnapshot("color", 0.01, retryOptions);
   });
 
@@ -72,7 +72,7 @@ describe("LeftMenuItemLabel component", () => {
         </div>
       );
     });
-    cy.wait(1000);
+    cy.wait(1500);
     cy.get("#map-container").compareSnapshot("opacity", 0.01, retryOptions);
   });
 
@@ -92,7 +92,7 @@ describe("LeftMenuItemLabel component", () => {
         </div>
       );
     });
-    cy.wait(1000);
+    cy.wait(1500);
     cy.get("#map-container").compareSnapshot("latlng", 0.01, retryOptions);
   });
 });
