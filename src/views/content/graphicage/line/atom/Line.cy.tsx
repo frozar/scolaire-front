@@ -5,7 +5,7 @@ import Line from "./Line";
 describe("LeftMenuItemLabel component", () => {
   const retryOptions = {
     limit: 5, // max number of retries
-    delay: 500, // delay before next iteration, ms
+    delay: 1000, // delay before next iteration, ms
   };
 
   beforeEach(() => {
@@ -39,8 +39,7 @@ describe("LeftMenuItemLabel component", () => {
         </div>
       );
     });
-    // TODO Try reduce time
-    cy.wait(3000);
+    cy.wait(1000);
     cy.get("#map-container").compareSnapshot("default", 0.01, retryOptions);
   });
 
@@ -61,8 +60,7 @@ describe("LeftMenuItemLabel component", () => {
         </div>
       );
     });
-    // TODO Try reduce time
-    cy.wait(3000);
+    cy.wait(1000);
     cy.get("#map-container").compareSnapshot("color", 0.01, retryOptions);
   });
 
@@ -83,8 +81,7 @@ describe("LeftMenuItemLabel component", () => {
         </div>
       );
     });
-    // TODO Try reduce time
-    cy.wait(3000);
+    cy.wait(1000);
     cy.get("#map-container").compareSnapshot("opacity", 0.01, retryOptions);
   });
 
@@ -104,8 +101,7 @@ describe("LeftMenuItemLabel component", () => {
         </div>
       );
     });
-    // TODO Try reduce time
-    cy.wait(3000);
+    cy.wait(1000);
     cy.get("#map-container").compareSnapshot("latlng", 0.01, retryOptions);
   });
 });
