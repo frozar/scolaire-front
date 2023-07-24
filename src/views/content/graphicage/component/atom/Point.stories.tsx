@@ -1,6 +1,8 @@
 import "leaflet/dist/leaflet.css";
+
 import { Meta, StoryObj } from "storybook-solidjs";
 import { initialiseMap } from "../../../../../../.storybook/utils/mapWrapper";
+
 import PointComponent from "./Point";
 
 const meta = {
@@ -44,7 +46,7 @@ export const Point: Story = {
   },
   args: {
     idPoint: 1,
-    onIsLast: () => console.log("ok"),
+    onIsLast: () => console.log("onIsLast"),
     lat: -20.9466588303741,
     lon: 55.5343806753509,
     onClick: () => console.log("onClick"),

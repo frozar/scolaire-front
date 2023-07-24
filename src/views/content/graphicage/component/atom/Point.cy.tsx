@@ -1,4 +1,5 @@
 import "leaflet/dist/leaflet.css";
+
 import { initialiseMap } from "../../../../../../.storybook/utils/mapWrapper";
 import Point from "./Point";
 
@@ -41,7 +42,7 @@ describe("Checkbox component", () => {
         <Point
           map={initialiseMap("map-container")}
           idPoint={1}
-          onIsLast={() => console.log("ok")}
+          onIsLast={() => console.log("onIsLast")}
           lat={-20.9466588303741}
           lon={55.5343806753509}
           onClick={() => console.log("onClick")}
@@ -68,7 +69,7 @@ describe("Checkbox component", () => {
         <Point
           map={initialiseMap("map-container")}
           idPoint={1}
-          onIsLast={() => console.log("ok")}
+          onIsLast={() => console.log("onIsLast")}
           lat={-20.9466588303741}
           lon={55.5343806753509}
           onClick={() => console.log("onClick")}
