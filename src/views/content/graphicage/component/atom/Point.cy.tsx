@@ -83,7 +83,7 @@ describe("Checkbox component", () => {
       </div>
     ));
 
-    cy.get(".map-point").should("have.class", "circle-animation-green");
+    cy.get(".map-point").should("have.class", "circle-animation");
     cy.get("@onIsLastListener").should("have.been.calledOnce");
   });
 });

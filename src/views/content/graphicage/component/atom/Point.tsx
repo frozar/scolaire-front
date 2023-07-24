@@ -49,14 +49,13 @@ export default function (props: PointProps) {
       .addTo(props.map);
 
     createEffect(() => {
+      const circleElement = circle.getElement() as HTMLElement;
+      circleElement.style.setProperty("--stroke-color", props.borderColor);
+
       if (props.isBlinking) {
-        circle
-          .getElement()
-          ?.classList.add("circle-animation-" + props.borderColor);
+        circleElement.classList.add("circle-animation");
       } else {
-        circle
-          .getElement()
-          ?.classList.remove("circle-animation-" + props.borderColor);
+        circleElement.classList.remove("circle-animation");
       }
     });
 
