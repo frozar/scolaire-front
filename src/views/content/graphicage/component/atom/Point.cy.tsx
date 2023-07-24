@@ -1,6 +1,6 @@
 import "leaflet/dist/leaflet.css";
 
-import { initialiseMap } from "../../../../../../.storybook/utils/mapWrapper";
+import { initMap } from "../../../../../../testing/utils/mapWrapper";
 import Point from "./Point";
 
 describe("Checkbox component", () => {
@@ -13,7 +13,7 @@ describe("Checkbox component", () => {
     cy.mount(() => (
       <div id="map-container" style={{ width: "100%", height: "500px" }}>
         <Point
-          map={initialiseMap("map-container")}
+          map={initMap("map-container")}
           idPoint={1}
           onIsLast={() => console.log("ok")}
           lat={-20.9466588303741}
@@ -40,7 +40,7 @@ describe("Checkbox component", () => {
     cy.mount(() => (
       <div id="map-container" style={{ width: "100%", height: "500px" }}>
         <Point
-          map={initialiseMap("map-container")}
+          map={initMap("map-container")}
           idPoint={1}
           onIsLast={() => console.log("onIsLast")}
           lat={-20.9466588303741}
@@ -67,7 +67,7 @@ describe("Checkbox component", () => {
     cy.mount(() => (
       <div id="map-container" style={{ width: "100%", height: "500px" }}>
         <Point
-          map={initialiseMap("map-container")}
+          map={initMap("map-container")}
           idPoint={1}
           onIsLast={() => console.log("onIsLast")}
           lat={-20.9466588303741}
