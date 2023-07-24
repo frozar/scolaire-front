@@ -5,8 +5,6 @@ import { points } from "../../../../../signaux";
 
 import "./Point.css";
 
-export const linkMap = new Map<number, L.CircleMarker>();
-
 export function deselectAllPoints() {
   points().map((point) => point.setSelected(false));
 }
@@ -32,7 +30,6 @@ interface PointProps {
 }
 
 export default function (props: PointProps) {
-  // const isLast = () => props.isLast;
   let circle: L.CircleMarker;
 
   onMount(() => {
@@ -70,26 +67,10 @@ export default function (props: PointProps) {
         ?.setAttribute("stroke-width", props.weight.toString());
     });
 
-    // TODO: Test deletion
-    // const element = circle.getElement();
-    // if (element) {
-    //   linkMap.set(props.idPoint, circle);
-    // }
-
-    // TODO: Appeler une fonction spécifique passer en props (onMount)
-    // if (isLast()) {
-    //   props.onIsLast();
-    //   if (nature() === NatureEnum.ramassage) {
-    //     setIsRamassageReady(true);
-    //   } else {
-    //     setIsEtablissementReady(true);
-    //   }
-    // }
+    // TODO: Make onIsLast works
   });
 
   onCleanup(() => {
-    // try without linkMap
-    linkMap.delete(props.idPoint);
     circle.remove();
   });
 
