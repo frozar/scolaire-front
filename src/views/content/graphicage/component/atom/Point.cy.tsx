@@ -3,7 +3,7 @@ import "leaflet/dist/leaflet.css";
 import { initialiseMap } from "../../../../../../testing/utils/mapWrapper";
 import Point from "./Point";
 
-describe("Checkbox component", () => {
+describe("Point component", () => {
   it("Point", () => {
     cy.mount(() => (
       <div id="map-container" style={{ width: "100%", height: "500px" }}>
@@ -58,6 +58,7 @@ describe("Checkbox component", () => {
     ));
 
     cy.get("#map-container").compareSnapshot("point-2", 0.01);
+    cy.get("@onIsLastListener").should("not.have.been.called");
   });
 
   it("Check blinking and onIsLast", () => {
