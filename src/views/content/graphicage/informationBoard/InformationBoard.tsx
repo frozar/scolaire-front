@@ -1,26 +1,18 @@
 import { JSXElement } from "solid-js";
 import { Dynamic } from "solid-js/web";
-import { useStateAction } from "../../../../StateAction";
 import { useStateGui } from "../../../../StateGui";
 import InformationCircleIcon from "../component/atom/InformationCircleIcon";
-import { SettingsContentAnimationParameters } from "../component/atom/SettingsContentAnimationParameters";
 import SettingsIcon from "../component/atom/SettingsIcon";
 import {
   InformationBoardTabType,
   InformationBoardTabs,
 } from "../component/organism/InformationBoardTabs";
+import { SettingsContent } from "../component/organism/SettingsContent";
 import InformationContent from "./InformationContent";
 
 const [, { getInformationBoardSelectedTab, getDisplayedInformationBoard }] =
   useStateGui();
 
-function SettingsContent(props: object) {
-  return (
-    <div>
-      <SettingsContentAnimationParameters/>
-    </div>
-  );
-}
 
 export function InformationBoard() {
   let refMenuContent!: HTMLDivElement;

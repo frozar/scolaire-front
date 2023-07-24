@@ -3,16 +3,16 @@ import { SettingsContentAnimationParameters } from "./SettingsContentAnimationPa
 describe("SettingsContentAnimationParameters atom", () => {
 
 
-    //TODO ajouter un spy et un mock sur animation settings (stateAction)
+    //TODO Have to Mock or Stub Signal
 
-  it("unselected checkbox", () => {
+  it("selected checkbox", () => {
     cy.mount(() => (
       <SettingsContentAnimationParameters />
     ));
-    cy.get(".settings-content-animation-parameter").compareSnapshot("nominal", 0.01);
+    cy.get(".settings-content-animation-parameter").compareSnapshot("selected", 0.01);
   });
 
-  it("select checkbox", () => {
+  it("unselect checkbox", () => {
     cy.mount(() => (
       <SettingsContentAnimationParameters />
     ));
@@ -22,6 +22,6 @@ describe("SettingsContentAnimationParameters atom", () => {
       });
 
     cy.get(".settings-content-animation-parameter input").click();
-    cy.get(".settings-content-animation-parameter").compareSnapshot("selected", 0.01);
+    cy.get(".settings-content-animation-parameter").compareSnapshot("nominal", 0.01);
   });
 });
