@@ -1,19 +1,14 @@
 import "leaflet/dist/leaflet.css";
 
-import { initMap } from "../../../../../../testing/utils/mapWrapper";
+import { initialiseMap } from "../../../../../../testing/utils/mapWrapper";
 import Point from "./Point";
 
 describe("Checkbox component", () => {
-  const retryOptions = {
-    limit: 5, // max number of retries
-    delay: 500, // delay before next iteration, ms
-  };
-
   it("Etablissement Point", () => {
     cy.mount(() => (
       <div id="map-container" style={{ width: "100%", height: "500px" }}>
         <Point
-          map={initMap("map-container")}
+          map={initialiseMap("map-container", false)}
           idPoint={1}
           onIsLast={() => console.log("ok")}
           lat={-20.9466588303741}
@@ -32,15 +27,14 @@ describe("Checkbox component", () => {
       </div>
     ));
 
-    cy.wait(1000);
-    cy.get("#map-container").compareSnapshot("point-1", 0.01, retryOptions);
+    cy.get("#map-container").compareSnapshot("point-1", 0.01);
   });
 
   it("Ramassage Point", () => {
     cy.mount(() => (
       <div id="map-container" style={{ width: "100%", height: "500px" }}>
         <Point
-          map={initMap("map-container")}
+          map={initialiseMap("map-container", false)}
           idPoint={1}
           onIsLast={() => console.log("onIsLast")}
           lat={-20.9466588303742}
@@ -59,8 +53,7 @@ describe("Checkbox component", () => {
       </div>
     ));
 
-    cy.wait(1000);
-    cy.get("#map-container").compareSnapshot("point-2", 0.01, retryOptions);
+    cy.get("#map-container").compareSnapshot("point-2", 0.01);
   });
 
   it("Check blinking and onIsLast", () => {
@@ -71,7 +64,7 @@ describe("Checkbox component", () => {
     cy.mount(() => (
       <div id="map-container" style={{ width: "100%", height: "500px" }}>
         <Point
-          map={initMap("map-container")}
+          map={initialiseMap("map-container", false)}
           idPoint={1}
           onIsLast={onIsLastSpied}
           lat={-20.9466588303749}
