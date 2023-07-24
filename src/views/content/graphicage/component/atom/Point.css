@@ -13,3 +13,9 @@
 .addline-mode .map-point {
   cursor: url("/pencil.png"), auto;
 }
+
+/* TODO: Make it work */
+/* If a line is under construction, show a pencil when the mouse is over a circle */
+.addline-mode .map-point {
+  cursor: url("/pencil.png"), auto;
+}
