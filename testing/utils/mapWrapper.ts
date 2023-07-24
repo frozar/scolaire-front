@@ -2,7 +2,7 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
 // let map: L.Map;
-let mapTabs: {
+const mapTabs: {
   idDiv: string;
   map: L.Map;
 }[] = [];
@@ -16,6 +16,7 @@ const initMap = (idDiv: string) => {
   // Cannot use the same instance of L.tileLayer for multiple maps
   L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
     attribution:
+      // eslint-disable-next-line quotes
       '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
   }).addTo(newMap);
 
@@ -23,7 +24,7 @@ const initMap = (idDiv: string) => {
 };
 
 export const initialiseMap = (idDiv: string) => {
-  let map = mapTabs.filter((m) => m.idDiv === idDiv)[0];
+  const map = mapTabs.filter((m) => m.idDiv === idDiv)[0];
   const newMap = initMap(idDiv);
 
   if (map == undefined) {

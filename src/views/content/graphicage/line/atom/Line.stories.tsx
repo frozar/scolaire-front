@@ -1,7 +1,7 @@
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { Meta, StoryObj } from "storybook-solidjs";
-import { initialiseMap } from "../../../../../../.storybook/utils/mapWrapper";
+import { initialiseMap } from "../../../../../../testing/utils/mapWrapper";
 import LineComponent from "./Line";
 
 const meta = {
