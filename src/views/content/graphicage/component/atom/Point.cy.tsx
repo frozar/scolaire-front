@@ -4,7 +4,7 @@ import { initialiseMap } from "../../../../../../testing/utils/mapWrapper";
 import Point from "./Point";
 
 describe("Checkbox component", () => {
-  it("Etablissement Point", () => {
+  it("Point", () => {
     cy.mount(() => (
       <div id="map-container" style={{ width: "100%", height: "500px" }}>
         <Point
@@ -30,13 +30,17 @@ describe("Checkbox component", () => {
     cy.get("#map-container").compareSnapshot("point-1", 0.01);
   });
 
-  it("Ramassage Point", () => {
+  it("Point with different color and check onIsLast", () => {
+    const onIsLastSpied = cy
+      .spy(() => console.log("onIsLast"))
+      .as("onIsLastListener");
+
     cy.mount(() => (
       <div id="map-container" style={{ width: "100%", height: "500px" }}>
         <Point
           map={initialiseMap("map-container", false)}
           idPoint={1}
-          onIsLast={() => console.log("onIsLast")}
+          onIsLast={onIsLastSpied}
           lat={-20.9466588303742}
           lon={55.5343806753508}
           isLast={false}
