@@ -3,6 +3,7 @@ import { Dynamic } from "solid-js/web";
 import { useStateAction } from "../../../../StateAction";
 import { useStateGui } from "../../../../StateGui";
 import InformationCircleIcon from "../component/atom/InformationCircleIcon";
+import { SettingsContentAnimationParameters } from "../component/atom/SettingsContentAnimationParameters";
 import SettingsIcon from "../component/atom/SettingsIcon";
 import {
   InformationBoardTabType,
@@ -10,25 +11,13 @@ import {
 } from "../component/organism/InformationBoardTabs";
 import InformationContent from "./InformationContent";
 
-const [stateAction, { toggleAltimetryAnimation }] = useStateAction();
 const [, { getInformationBoardSelectedTab, getDisplayedInformationBoard }] =
   useStateGui();
 
 function SettingsContent(props: object) {
   return (
     <div>
-      <input
-        id="animation-setting"
-        type="checkbox"
-        class="mr-2"
-        value="animation"
-        checked={stateAction.altimetry.animation}
-        onChange={() => {
-          toggleAltimetryAnimation();
-        }}
-        {...props}
-      />
-      <label for="animation-setting">Animations</label>
+      <SettingsContentAnimationParameters/>
     </div>
   );
 }

@@ -15,6 +15,7 @@ const history = createHistory();
 
 type StateActionType = {
   // Field which keep the select circle on the map
+  //TODO May be the name of "altimetry" is not the good one, "settings" is more appropriate
   altimetry: { animation: boolean };
   lineUnderConstruction: LineUnderConstructionType;
   mode: ModeEnum;
@@ -40,6 +41,10 @@ const makeStateActionContext = () => {
 
   function toggleAltimetryAnimation() {
     setState("altimetry", "animation", (animation: boolean) => !animation);
+  }
+
+  function getAnimationSettings(){
+    return state.altimetry.animation;
   }
 
   function addPointToLineUnderConstruction(point: PointIdentityType) {
@@ -125,6 +130,7 @@ const makeStateActionContext = () => {
     state,
     {
       toggleAltimetryAnimation,
+      getAnimationSettings,
       addPointToLineUnderConstruction,
       getLineUnderConstruction,
       resetLineUnderConstruction,
