@@ -72,7 +72,7 @@ fi
 docker-compose up -d
 
 if [ "$arg" == "f" ]; then
-    docker-compose exec cypress npm run cypress-test -- --spec $file
+    docker-compose exec cypress npm run cypress-watch -- --spec $file
 
 else
     docker-compose exec cypress npm run cypress-watch
