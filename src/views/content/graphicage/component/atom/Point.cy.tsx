@@ -18,6 +18,7 @@ describe("Checkbox component", () => {
           onIsLast={() => console.log("ok")}
           lat={-20.9466588303741}
           lon={55.5343806753509}
+          isLast={false}
           onClick={() => console.log("onClick")}
           borderColor="green"
           fillColor="white"
@@ -44,6 +45,7 @@ describe("Checkbox component", () => {
           onIsLast={() => console.log("onIsLast")}
           lat={-20.9466588303742}
           lon={55.5343806753508}
+          isLast={false}
           onClick={() => console.log("onClick")}
           borderColor="red"
           fillColor="gray"
@@ -61,15 +63,20 @@ describe("Checkbox component", () => {
     cy.get("#map-container").compareSnapshot("point-2", 0.01, retryOptions);
   });
 
-  it("Check blinking", () => {
+  it("Check blinking and onIsLast", () => {
+    const onIsLastSpied = cy
+      .spy(() => console.log("onIsLast"))
+      .as("onIsLastListener");
+
     cy.mount(() => (
       <div id="map-container" style={{ width: "100%", height: "500px" }}>
         <Point
           map={initMap("map-container")}
           idPoint={1}
-          onIsLast={() => console.log("onIsLast")}
+          onIsLast={onIsLastSpied}
           lat={-20.9466588303749}
           lon={55.5343806753501}
+          isLast={true}
           onClick={() => console.log("onClick")}
           borderColor="green"
           fillColor="white"
@@ -84,5 +91,6 @@ describe("Checkbox component", () => {
     ));
 
     cy.get(".map-point").should("have.class", "circle-animation-green");
+    cy.get("@onIsLastListener").should("have.been.calledOnce");
   });
 });

@@ -35,6 +35,7 @@ export const Point: Story = {
     fillColor: "white",
     weight: 4,
     radius: 8,
+    isLast: false,
     onIsLast: () => console.log("onIsLast"),
     onClick: () => console.log("onClick"),
     onDBLClick: () => console.log("onDBLClick"),

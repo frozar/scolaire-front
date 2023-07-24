@@ -14,6 +14,7 @@ export interface PointProps {
   lat: number;
   lon: number;
   map: L.Map;
+  isLast: boolean;
   isBlinking?: boolean;
 
   borderColor: string;
@@ -66,7 +67,11 @@ export default function (props: PointProps) {
         ?.setAttribute("stroke-width", props.weight.toString());
     });
 
-    // TODO: Make onIsLast works
+    createEffect(() => {
+      if (props.isLast) {
+        props.onIsLast();
+      }
+    });
   });
 
   onCleanup(() => {
