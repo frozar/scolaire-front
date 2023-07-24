@@ -32,3 +32,9 @@
 .circle-animation-green {
   animation: circle-animation-green 1s infinite ease;
 }
+
+/* TODO: Make it work */
+/* If a line is under construction, show a pencil when the mouse is over a circle */
+.addline-mode .map-point {
+  cursor: url("/pencil.png"), auto;
+}

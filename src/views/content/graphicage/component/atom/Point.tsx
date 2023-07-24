@@ -1,14 +1,11 @@
 import L, { LeafletMouseEvent } from "leaflet";
-import { createEffect, on, onCleanup, onMount } from "solid-js";
+import { createEffect, onCleanup, onMount } from "solid-js";
 
-import { useStateAction } from "../../../../../StateAction";
 import { points } from "../../../../../signaux";
 
 import "./Point.css";
 
 export const linkMap = new Map<number, L.CircleMarker>();
-
-const [, { isInAddLineMode }] = useStateAction();
 
 export function deselectAllPoints() {
   points().map((point) => point.setSelected(false));
@@ -38,28 +35,6 @@ export default function (props: PointProps) {
   // const isLast = () => props.isLast;
   let circle: L.CircleMarker;
 
-  // TODO: Put in css only (.addlinemode .point)
-  // If a line is under construction, show a pencil when the mouse is over a circle
-  createEffect(
-    on(isInAddLineMode, (isInAddLineMode) => {
-      if (circle) {
-        const element = circle.getElement() as SVGElement;
-        if (element) {
-          if (isInAddLineMode) {
-            if (String(element.style) !== "cursor: url('/pencil.png'), auto;") {
-              // @ts-expect-error: 'style' field should not be assigned
-              element.style = "cursor: url('/pencil.png'), auto;";
-            }
-          } else {
-            if (String(element.style) !== "") {
-              // @ts-expect-error: 'style' field should not be assigned
-              element.style = "";
-            }
-          }
-        }
-      }
-    })
-  );
   onMount(() => {
     circle = L.circleMarker([props.lat, props.lon], {
       color: props.borderColor,
