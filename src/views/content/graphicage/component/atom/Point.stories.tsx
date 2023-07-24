@@ -13,6 +13,22 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+function onIsLast() {
+  return;
+}
+function onClick() {
+  console.log("onClick");
+}
+function onDBLClick() {
+  console.log("onDBLClick");
+}
+function onMouseOut() {
+  console.log("onMouseOut");
+}
+function onMouseOver() {
+  console.log("onMouseOver");
+}
+
 export const PointStories: Story = {
   render: (props: PointProps) => {
     const div = document.getElementById("map-container-1");
@@ -36,11 +52,11 @@ export const PointStories: Story = {
     borderColor: "red",
     fillColor: "white",
     isLast: false,
-    onIsLast: () => console.log("onIsLast"),
-    onClick: () => console.log("onClick"),
-    onDBLClick: () => console.log("onDBLClick"),
-    onMouseOut: () => console.log("onMouseOut"),
-    onMouseOver: () => console.log("onMouseOver"),
+    onIsLast: onIsLast,
+    onClick: onClick,
+    onDBLClick: onDBLClick,
+    onMouseOut: onMouseOut,
+    onMouseOver: onMouseOver,
   },
 };
 
@@ -67,10 +83,10 @@ export const PointStories2: Story = {
     borderColor: "green",
     fillColor: "white",
     isLast: false,
-    onIsLast: () => console.log("onIsLast"),
-    onClick: () => console.log("onClick"),
-    onDBLClick: () => console.log("onDBLClick"),
-    onMouseOut: () => console.log("onMouseOut"),
-    onMouseOver: () => console.log("onMouseOver"),
+    onIsLast: onIsLast,
+    onClick: onClick,
+    onDBLClick: onDBLClick,
+    onMouseOut: onMouseOut,
+    onMouseOver: onMouseOver,
   },
 };
