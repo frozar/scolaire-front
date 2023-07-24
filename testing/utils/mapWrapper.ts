@@ -26,16 +26,20 @@ const initMap = (idDiv: string, withTiles: boolean) => {
 
 export const initialiseMap = (idDiv: string, withTiles = true) => {
   const map = mapTabs.filter((m) => m.idDiv === idDiv)[0];
-  const newMap = initMap(idDiv, withTiles);
-
   if (map == undefined) {
+    const newMap = initMap(idDiv, withTiles);
     mapTabs.push({ idDiv, map: newMap });
+    console.log("newMap1", newMap);
     return newMap;
   }
-
-  map.map.off();
-  map.map.remove();
-  map.map = newMap;
-
   return map.map;
+
+  // map.map.off();
+  // map.map.remove();
+  // const newMap = initMap(idDiv, withTiles);
+
+  // console.log("newMap", newMap);
+  // map.map = newMap;
+
+  // return map.map;
 };
