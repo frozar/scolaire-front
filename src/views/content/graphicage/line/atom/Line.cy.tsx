@@ -30,7 +30,7 @@ describe("Line component", () => {
         </div>
       );
     });
-    cy.wait(1500);
+    cy.wait(3000);
     cy.get("#map-container").compareSnapshot("default", 0.01, retryOptions);
   });
 
@@ -51,7 +51,7 @@ describe("Line component", () => {
         </div>
       );
     });
-    cy.wait(1500);
+    cy.wait(3000);
     cy.get("#map-container").compareSnapshot("color", 0.01, retryOptions);
   });
 
@@ -72,7 +72,7 @@ describe("Line component", () => {
         </div>
       );
     });
-    cy.wait(1500);
+    cy.wait(3000);
     cy.get("#map-container").compareSnapshot("opacity", 0.01, retryOptions);
   });
 
@@ -92,7 +92,7 @@ describe("Line component", () => {
         </div>
       );
     });
-    cy.wait(1500);
+    cy.wait(3000);
     cy.get("#map-container").compareSnapshot("latlng", 0.01, retryOptions);
   });
 });
