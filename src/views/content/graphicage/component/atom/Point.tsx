@@ -8,7 +8,7 @@ import "./Point.css";
 export function deselectAllPoints() {
   points().map((point) => point.setSelected(false));
 }
-
+// test commit
 export interface PointProps {
   idPoint: number;
   lat: number;
