@@ -14,7 +14,6 @@ export interface PointProps {
   lat: number;
   lon: number;
   map: L.Map;
-  isLast: boolean;
   isBlinking?: boolean;
 
   borderColor: string;
