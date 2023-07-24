@@ -6,8 +6,8 @@ import { useStateGui } from "../../../StateGui";
 import { buildMapL7 } from "./l7MapBuilder";
 
 import PointsRamassageAndEtablissement from "./PointsRamassageAndEtablissement";
-import BusLines from "./line/BusLines";
-import LineUnderConstruction from "./line/LineUnderConstruction";
+import BusLines from "./line/organism/BusLines";
+import LineUnderConstruction from "./line/organism/LineUnderConstruction";
 
 import ImportCsvCanvas from "../../../component/ImportCsvCanvas";
 import ConfirmStopAddLine from "./ConfirmStopAddLineBox";

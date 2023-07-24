@@ -1,7 +1,7 @@
-import { onCleanup, createEffect, createSignal } from "solid-js";
-import { pointsReady } from "../../../../views/content/graphicage/PointsRamassageAndEtablissement";
-import { fetchBusLines } from "./busLinesUtils";
-import { LineType } from "../../../../type";
+import { createEffect, createSignal, onCleanup } from "solid-js";
+import { LineType } from "../../../../../type";
+import { pointsReady } from "../../PointsRamassageAndEtablissement";
+import { fetchBusLines } from "../busLinesUtils";
 
 export const [busLines, setBusLines] = createSignal<LineType[]>([]);
 export const [pickerColor, setPickerColor] = createSignal("");

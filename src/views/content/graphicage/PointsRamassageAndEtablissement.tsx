@@ -148,7 +148,7 @@ export function fetchPointsRamassageAndEtablissement() {
 }
 
 export default function () {
-  onMount(() => {
+  onMount(async () => {
     fetchPointsRamassageAndEtablissement();
     fetchEleveVersEtablissement();
   });
