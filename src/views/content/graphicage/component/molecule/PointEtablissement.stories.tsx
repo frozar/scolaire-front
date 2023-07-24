@@ -1,6 +1,6 @@
 import { LeafletMouseEvent } from "leaflet";
 import { Meta, StoryObj } from "storybook-solidjs";
-import { initialiseMap } from "../../../../../../.storybook/utils/mapWrapper";
+import { initialiseMap } from "../../../../../../testing/utils/mapWrapper";
 import PointEtablissementComponent, {
   PointEtablissementProps,
 } from "./PointEtablissement";

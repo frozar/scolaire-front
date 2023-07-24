@@ -1,5 +1,5 @@
 import "leaflet/dist/leaflet.css";
-import { initialiseMap } from "../../../../../../.storybook/utils/mapWrapper";
+import { initialiseMap } from "../../../../../../testing/utils/mapWrapper";
 import PointEtablissement from "./PointEtablissement";
 
 describe("Checkbox component", () => {
