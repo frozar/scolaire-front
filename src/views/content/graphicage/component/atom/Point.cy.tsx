@@ -67,8 +67,8 @@ describe("Checkbox component", () => {
           map={initialiseMap("map-container", false)}
           idPoint={1}
           onIsLast={onIsLastSpied}
-          lat={-20.9466588303749}
-          lon={55.5343806753501}
+          lat={-20.9466588303742}
+          lon={55.5343806753508}
           isLast={true}
           onClick={() => console.log("onClick")}
           borderColor="green"
