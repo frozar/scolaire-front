@@ -69,8 +69,13 @@ if $have_build && [ "$arg" == "b" ] || ! $have_build; then
     docker-compose build
 fi
 
+docker-compose up -d
+
 if [ "$arg" == "f" ]; then
-    docker run -e RUN_COMMAND="cypress-test -- --spec $file" cypress-cypress
+    docker-compose exec cypress npm run cypress-test -- --spec $file
+
 else
-    docker-compose up
+    docker-compose exec cypress npm run cypress-watch
 fi
+
+docker-compose down

@@ -38,7 +38,3 @@ WORKDIR /code
 COPY ./package.json .
 COPY ./package-lock.json .
 RUN npm install --force
-
-ENV RUN_COMMAND "cypress-test"
-
-CMD ["sh", "-c", "npm run $RUN_COMMAND"]
