@@ -1,9 +1,5 @@
 import { addNewUserInformation } from "../../../signaux";
-import {
-  MessageLevelEnum,
-  MessageTypeEnum,
-  PointStopType,
-} from "../../../type";
+import { MessageLevelEnum, MessageTypeEnum } from "../../../type";
 import { asyncAuthenticateWrap } from "../../layout/authentication";
 
 const config = {
