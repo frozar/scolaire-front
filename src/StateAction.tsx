@@ -43,7 +43,7 @@ const makeStateActionContext = () => {
     setState("altimetry", "animation", (animation: boolean) => !animation);
   }
 
-  function getAnimationSettings(){
+  function getAnimationSettings() {
     return state.altimetry.animation;
   }
 

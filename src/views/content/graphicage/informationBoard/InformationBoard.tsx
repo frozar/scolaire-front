@@ -13,7 +13,6 @@ import InformationContent from "./InformationContent";
 const [, { getInformationBoardSelectedTab, getDisplayedInformationBoard }] =
   useStateGui();
 
-
 export function InformationBoard() {
   let refMenuContent!: HTMLDivElement;
 
