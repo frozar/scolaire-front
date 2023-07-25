@@ -16,7 +16,6 @@ import {
 } from "../../../type";
 import { authenticateWrap } from "../../layout/authentication";
 import Point from "./Point";
-import { fetchSchool } from "./point.service";
 
 const [, { getActiveMapId }] = useStateGui();
 
@@ -93,41 +92,35 @@ function PointBack2Front<
 }
 
 export async function fetchPointsRamassageAndEtablissement() {
-  const mapId = getActiveMapId();
-  const datas: PointRamassageDBType[] = await fetchSchool(mapId as number);
-  const dataWk = PointBack2Front(
-    datas,
-    NatureEnum.ramassage
-  ) as PointRamassageType[];
-  setPoints((dataArray) => [...dataArray, ...dataWk]);
-
   authenticateWrap((headers) => {
     setPointsRamassageReady(false);
     setPointsEtablissementReady(false);
 
+    const mapId = getActiveMapId();
+
     if (mapId) {
-      // fetch(
-      //   import.meta.env.VITE_BACK_URL + `/map/${mapId}/dashboard/ramassage`,
-      //   {
-      //     headers,
-      //   }
-      // ).then(async (res) => {
-      //   const json = await res.json();
-      //   // console.log("json", json);
+      fetch(
+        import.meta.env.VITE_BACK_URL + `/map/${mapId}/dashboard/ramassage`,
+        {
+          headers,
+        }
+      ).then(async (res) => {
+        const json = await res.json();
+        // console.log("json", json);
 
-      //   const datas: PointRamassageDBType[] = json["content"];
-      //   console.log("Ramassage datas", datas);
+        const datas: PointRamassageDBType[] = json["content"];
+        console.log("Ramassage datas", datas);
 
-      //   const dataWk = PointBack2Front(
-      //     datas,
-      //     NatureEnum.ramassage
-      //   ) as PointRamassageType[];
-      //   console.log("Ramassage: dataWk", dataWk);
+        const dataWk = PointBack2Front(
+          datas,
+          NatureEnum.ramassage
+        ) as PointRamassageType[];
+        console.log("Ramassage: dataWk", dataWk);
 
-      //   setPoints((dataArray) => [...dataArray, ...dataWk]);
+        setPoints((dataArray) => [...dataArray, ...dataWk]);
 
-      //   setPointsRamassageReady(true);
-      // });
+        setPointsRamassageReady(true);
+      });
 
       fetch(
         import.meta.env.VITE_BACK_URL + `/map/${mapId}/dashboard/etablissement`,
