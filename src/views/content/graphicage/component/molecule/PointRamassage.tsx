@@ -26,6 +26,8 @@ const rangeRadius = maxRadius - minRadius;
 const [radius, setRadius] = createSignal(5);
 
 export default function (props: PointRamassageProps) {
+  console.log("debut PointRamassage.tsx");
+
   createEffect(() => {
     if (props.quantity && props.maxQuantity && props.minQuantity) {
       const coef =

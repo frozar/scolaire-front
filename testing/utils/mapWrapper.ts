@@ -7,6 +7,8 @@ const mapTabs: {
 }[] = [];
 
 const initMap = (idDiv: string, withTiles: boolean) => {
+  console.log("init0");
+
   const newMap = L.map(idDiv).setView(
     [-20.9466588303741, 55.5343806753509],
     12
@@ -20,11 +22,13 @@ const initMap = (idDiv: string, withTiles: boolean) => {
         '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
     }).addTo(newMap);
   }
+  console.log("init2");
 
   return newMap;
 };
-
 export const initialiseMap = (idDiv: string, withTiles = true) => {
+  console.log("initialiseMap");
+
   const map = mapTabs.filter((m) => m.idDiv === idDiv)[0];
 
   if (map == undefined) {
@@ -49,3 +53,22 @@ export const initialiseMap = (idDiv: string, withTiles = true) => {
 
   return map.map;
 };
+// export const initialiseMap = (idDiv: string, withTiles = true) => {
+//   console.log("initialiseMap");
+
+//   const map = mapTabs.filter((m) => m.idDiv === idDiv)[-1];
+//   console.log("initialiseMapBis");
+//   const newMap = initMap(idDiv, withTiles);
+//   console.log(newMap);
+
+//   if (map == undefined) {
+//     mapTabs.push({ idDiv, map: newMap });
+//     return newMap;
+//   }
+
+//   // map.map.off();
+//   // map.map.remove();
+//   // map.map = newMap;
+
+//   return map.map;
+// };

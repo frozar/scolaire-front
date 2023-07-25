@@ -48,6 +48,8 @@ export interface PointProps {
 }
 
 export default function (props: PointProps) {
+  console.log("debut Point.tsx");
+
   let circle: L.CircleMarker;
 
   onMount(() => {
