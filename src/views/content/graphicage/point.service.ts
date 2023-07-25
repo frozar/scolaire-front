@@ -4,6 +4,7 @@ import { asyncAuthenticateWrap } from "../../layout/authentication";
 
 const config = {
   host: import.meta.env.VITE_BACK_URL,
+  xano: import.meta.env.XANO_URL,
 };
 
 const connexionError = () => {
