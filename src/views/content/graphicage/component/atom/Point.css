@@ -1,0 +1,15 @@
+@keyframes circle-animation {
+  100% {
+    fill: var(--stroke-color);
+  }
+}
+
+.circle-animation {
+  animation: circle-animation 1s infinite ease;
+}
+
+/* TODO: Make it work (add 'addline-mode' classlist in map )*/
+/* If a line is under construction, show a pencil when the mouse is over a circle */
+.addline-mode .map-point {
+  cursor: url("/pencil.png"), auto;
+}
