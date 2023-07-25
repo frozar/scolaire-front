@@ -21,7 +21,7 @@ const manageStatusCode = async (response: Response) => {
     const json = await response.json();
     const message =
       json.detail ??
-      "Désoler une erreur est survenue lors du chargement des données veuillez essayer ultérieument";
+      "Désolé une erreur est survenue lors du chargement des données veuillez essayer ultérieument";
 
     addNewUserInformation({
       displayed: true,
