@@ -13,6 +13,7 @@ import {
   isPointRamassage,
 } from "../../../../type";
 import { authenticateWrap } from "../../../layout/authentication";
+import { ColorPicker } from "../component/atom/ColorPicker";
 import {
   getSelectedBusLine,
   getSelectedBusLineId,
@@ -135,13 +136,7 @@ export default function () {
     return isPointRamassage(selectedPoint) ? "Etablissement" : "Ramassage";
   };
 
-  const handleColorPicker = (e: InputEvent) => {
-    if (!e.target) {
-      return;
-    }
-
-    const newColor = (e.target as HTMLInputElement).value;
-
+  const handleColorPicker = (color: string) => {
     const selectedBusLineId = getSelectedBusLineId();
 
     if (!selectedBusLineId) {
@@ -149,7 +144,7 @@ export default function () {
     }
 
     linkBusLinePolyline[selectedBusLineId].polyline.setStyle({
-      color: newColor,
+      color: color,
     });
 
     const arrows = linkBusLinePolyline[selectedBusLineId].arrows;
@@ -166,22 +161,17 @@ export default function () {
       }
 
       const iconHTML = iconHTMLorNull as SVGElement;
-      iconHTML.setAttribute("fill", newColor);
+      iconHTML.setAttribute("fill", color);
     }
   };
 
-  const handleColorChanged = (e: Event) => {
-    if (!e.target) {
-      return;
-    }
-
+  const handleColorChanged = (color: string) => {
     const selectedBusLine = getSelectedBusLine();
     if (!selectedBusLine) {
       return;
     }
 
     const selectedBusLineId = selectedBusLine.idBusLine;
-    const color = (e.target as HTMLInputElement).value;
 
     updateBusLine(selectedBusLineId, color)
       .then(() => {
@@ -270,17 +260,13 @@ export default function () {
           </Show>
         </Match>
         <Match when={getSelectedBusLineId()}>
-          <div class="flex items-center gap-3">
-            Couleur de la ligne
-            <input
-              id="nativeColorPicker1"
-              type="color"
-              class="border-[0.5px] p-0 border-slate-400"
-              value={pickerColor()}
-              onInput={handleColorPicker}
-              onChange={handleColorChanged}
-            />
-          </div>
+          <ColorPicker
+            color={pickerColor()}
+            title="Couleur de la ligne"
+            onInput={handleColorPicker}
+            onChange={handleColorChanged}
+          />
+
           <Timeline stopNames={selectedBusLineStopNames()} />
         </Match>
         <Match
