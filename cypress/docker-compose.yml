@@ -12,3 +12,4 @@ services:
       - ../src:/code/src
       - ../testing:/code/testing
       - ../tailwind.config.js:/code/tailwind.config.js
+      - ../cypress.config.ts:/code/cypress.config.ts
