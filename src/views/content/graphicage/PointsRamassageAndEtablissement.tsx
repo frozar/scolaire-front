@@ -14,8 +14,12 @@ import {
   PointIdentityType,
   PointRamassageType,
 } from "../../../type";
-import { authenticateWrap } from "../../layout/authentication";
 import Point from "./Point";
+import {
+  fetchEleveVersEtablissement,
+  fetchSchool,
+  fetchStop,
+} from "./point.service";
 
 const [, { getActiveMapId }] = useStateGui();
 
@@ -91,66 +95,32 @@ function PointBack2Front<
   );
 }
 
-export function fetchPointsRamassageAndEtablissement() {
-  authenticateWrap((headers) => {
-    setPointsRamassageReady(false);
-    setPointsEtablissementReady(false);
+export async function fetchPointsRamassageAndEtablissement() {
+  const mapId = getActiveMapId();
+  if (!mapId) return;
 
-    const mapId = getActiveMapId();
+  const ramassages: PointRamassageDBType[] = await fetchStop(mapId as number);
+  const ramassageWk = PointBack2Front(
+    ramassages,
+    NatureEnum.ramassage
+  ) as PointRamassageType[];
 
-    if (mapId) {
-      fetch(
-        import.meta.env.VITE_BACK_URL + `/map/${mapId}/dashboard/ramassage`,
-        {
-          headers,
-        }
-      ).then(async (res) => {
-        const json = await res.json();
-        // console.log("json", json);
+  setPoints((dataArray) => [...dataArray, ...ramassageWk]);
+  setPointsRamassageReady(true);
 
-        const datas: PointRamassageDBType[] = json["content"];
-        console.log("Ramassage datas", datas);
-
-        const dataWk = PointBack2Front(
-          datas,
-          NatureEnum.ramassage
-        ) as PointRamassageType[];
-        console.log("Ramassage: dataWk", dataWk);
-
-        setPoints((dataArray) => [...dataArray, ...dataWk]);
-
-        setPointsRamassageReady(true);
-      });
-
-      fetch(
-        import.meta.env.VITE_BACK_URL + `/map/${mapId}/dashboard/etablissement`,
-        {
-          headers,
-        }
-      ).then(async (res) => {
-        const json = await res.json();
-
-        const datas: PointEtablissementDBType[] = json["content"];
-        console.log("Etablissement datas", datas);
-
-        const dataWk = PointBack2Front(
-          datas,
-          NatureEnum.etablissement
-        ) as PointEtablissementType[];
-        console.log("Etablissement: dataWk", dataWk);
-
-        setPoints((dataArray) => [...dataArray, ...dataWk]);
-
-        setPointsEtablissementReady(true);
-      });
-    }
-  });
+  const etablissements: PointEtablissementDBType[] = await fetchSchool(mapId);
+  const etablissementsWk = PointBack2Front(
+    etablissements,
+    NatureEnum.etablissement
+  ) as PointEtablissementType[];
+  setPoints((dataArray) => [...dataArray, ...etablissementsWk]);
+  setPointsEtablissementReady(true);
 }
 
 export default function () {
   onMount(async () => {
-    fetchPointsRamassageAndEtablissement();
-    fetchEleveVersEtablissement();
+    await fetchPointsRamassageAndEtablissement();
+    await getEleveVersEtablissement();
   });
 
   onCleanup(() => {
@@ -191,53 +161,39 @@ export default function () {
   );
 }
 
-function fetchEleveVersEtablissement() {
-  authenticateWrap((headers) => {
-    fetch(
-      import.meta.env.VITE_BACK_URL +
-        "/map/" +
-        getActiveMapId() +
-        "/eleve_vers_etablissement",
-      {
-        headers,
-      }
-    ).then(async (res) => {
-      const json = await res.json();
+async function getEleveVersEtablissement() {
+  const data: EleveVersEtablissementType[] = await fetchEleveVersEtablissement(
+    getActiveMapId() as number
+  );
 
-      const data: EleveVersEtablissementType[] = json.content;
-
-      for (const point of points()) {
-        const associatedPoints = data.filter(
-          (elt) =>
-            point.id ===
-            (point.nature === NatureEnum.ramassage
-              ? elt.ramassage_id
-              : elt.etablissement_id)
-        );
-
-        point.setAssociatedPoints(
-          associatedPoints.map((elt) => {
-            const associatedId =
-              point.nature === NatureEnum.ramassage
-                ? elt.etablissement_id
-                : elt.ramassage_id;
-            const associatedNature =
-              point.nature === NatureEnum.ramassage
-                ? NatureEnum.etablissement
-                : NatureEnum.ramassage;
-            const id_point =
-              associatedNature === NatureEnum.etablissement
-                ? elt.etablissement_id_point
-                : elt.ramassage_id_point;
-
-            return {
-              id: associatedId,
-              idPoint: id_point,
-              nature: associatedNature,
-            };
-          })
-        );
-      }
-    });
-  });
+  for (const point of points()) {
+    const associatedPoints = data.filter(
+      (elt) =>
+        point.id ===
+        (point.nature === NatureEnum.ramassage
+          ? elt.ramassage_id
+          : elt.etablissement_id)
+    );
+    point.setAssociatedPoints(
+      associatedPoints.map((elt) => {
+        const associatedId =
+          point.nature === NatureEnum.ramassage
+            ? elt.etablissement_id
+            : elt.ramassage_id;
+        const associatedNature =
+          point.nature === NatureEnum.ramassage
+            ? NatureEnum.etablissement
+            : NatureEnum.ramassage;
+        const id_point =
+          associatedNature === NatureEnum.etablissement
+            ? elt.etablissement_id_point
+            : elt.ramassage_id_point;
+        return {
+          id: associatedId,
+          idPoint: id_point,
+          nature: associatedNature,
+        };
+      })
+    );
+  }
 }
