@@ -30,6 +30,7 @@ export const PointEtablissement: Story = {
       </div>
     );
   },
+
   args: {
     idPoint: 50,
     lat: -20.9466588303741,
