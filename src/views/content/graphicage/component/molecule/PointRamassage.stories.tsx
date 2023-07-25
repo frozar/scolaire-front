@@ -13,7 +13,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const PointEtablissement: Story = {
+export const PointRamassageStories: Story = {
   render: (props: PointRamassageProps) => {
     const div = document.getElementById("map-container");
 
