@@ -12,4 +12,3 @@ services:
       - ../src:/code/src
       - ../testing:/code/testing
       - ../tailwind.config.js:/code/tailwind.config.js
-      - ../.storybook/utils:/code/.storybook/utils
