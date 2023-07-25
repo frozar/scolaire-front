@@ -1,9 +1,5 @@
 import { addNewUserInformation } from "../../../signaux";
-import {
-  MessageLevelEnum,
-  MessageTypeEnum,
-  PointStopType,
-} from "../../../type";
+import { MessageLevelEnum, MessageTypeEnum } from "../../../type";
 import { asyncAuthenticateWrap } from "../../layout/authentication";
 
 const config = {
@@ -78,7 +74,7 @@ export async function fetchEleveVersEtablissement(mapId: number) {
   return json.content;
 }
 
-export async function fetchStop(mapId: number): Promise<PointStopType[]> {
+export async function fetchStop(mapId: number) {
   const headers = await asyncAuthenticateWrap();
   let response: Response;
 
