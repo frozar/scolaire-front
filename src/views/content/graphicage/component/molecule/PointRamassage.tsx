@@ -8,7 +8,11 @@ export interface PointRamassageProps {
   map: L.Map;
   isLast: boolean;
 
-  quantity: number;
+  isBlinking?: boolean;
+  isLast: boolean;
+  map: L.Map;
+
+  // quantity: number;
   minQuantity: number;
   maxQuantity: number;
 

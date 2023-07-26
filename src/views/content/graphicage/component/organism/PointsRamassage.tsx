@@ -189,13 +189,14 @@ export default function (props: RamassagePointsProps) {
           // TODO: Utiliser PointRamassageType plutot !
           // Pour pas avoir à passer autant de props
           <PointRamassage
-            idPoint={point.id}
-            lat={point.lat}
-            lon={point.lon}
+            point={point}
+            // idPoint={point.id}
+            // lat={point.lat}
+            // lon={point.lon}
+            // quantity={point.quantity}
             map={props.map}
             isLast={i() === ramassage().length - 1}
             isBlinking={false}
-            quantity={point.quantity}
             minQuantity={minQuantity()}
             maxQuantity={maxQuantity()}
             onIsLast={onIsLast}
