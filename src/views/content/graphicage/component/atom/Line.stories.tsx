@@ -18,7 +18,7 @@ export const LineStory: Story = {
     if (div) {
       div.remove();
     }
-
+    //TODO : refactor this -> mapWraper
     return (
       <div id="map-container" style={{ width: "100%", height: "500px" }}>
         <LineComponent {...props} leafletMap={initialiseMap("map-container")} />

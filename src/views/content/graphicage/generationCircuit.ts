@@ -16,8 +16,8 @@ import {
   PointRamassageType,
 } from "../../../type";
 import { authenticateWrap } from "../../layout/authentication";
+import { busLines } from "./line/BusLines";
 import { fetchBusLines } from "./line/busLinesUtils";
-import { busLines } from "./line/organism/BusLines";
 
 const [, { setModeRead }] = useStateAction();
 
