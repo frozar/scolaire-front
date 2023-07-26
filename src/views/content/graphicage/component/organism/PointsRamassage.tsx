@@ -8,11 +8,21 @@ import {
   PointIdentityType,
   PointRamassageType,
 } from "../../../../../type";
-import { linkMap, selectPointById } from "../../Point";
+import { linkMap } from "../../Point";
+import { setPointsEtablissementReady } from "../../PointsRamassageAndEtablissement";
 import { renderAnimation } from "../../animation";
 import { deselectAllBusLines } from "../../line/busLinesUtils";
 import { fetchStop } from "../../point.service";
 import PointRamassage from "../molecule/PointRamassage";
+
+const [
+  ,
+  {
+    addPointToLineUnderConstruction,
+    getLineUnderConstruction,
+    isInAddLineMode,
+  },
+] = useStateAction();
 
 type PointRamassageDBType = {
   id: number;
@@ -23,21 +33,6 @@ type PointRamassageDBType = {
   name: string;
   quantity: number;
 };
-
-export interface RamassagePointsProps {
-  mapId: number;
-  map: L.Map;
-  isBlinking?: boolean;
-}
-
-const [
-  ,
-  {
-    addPointToLineUnderConstruction,
-    getLineUnderConstruction,
-    isInAddLineMode,
-  },
-] = useStateAction();
 
 type PointRamassageCoreType = Omit<PointRamassageDBType, "id_point"> & {
   idPoint: number;
@@ -81,12 +76,18 @@ function PointBack2Front<T extends PointRamassageDBType>(
   );
 }
 
+export interface RamassagePointsProps {
+  map: L.Map;
+  mapId: number;
+}
+
+// TODO: Finalité => Utiliser pointRamassageType !!
+// (et pas la longue liste de props)
+
+const [ramassage, setRamassage] = createSignal<PointRamassageType[]>([]);
+
 export default function (props: RamassagePointsProps) {
   console.log("debut RamassagePoints");
-
-  // TODO: Finalité => Utiliser pointRamassageType !!
-  // Faire pareil pour composant enfants
-  const [ramassage, setRamassage] = createSignal<PointRamassageType[]>([]);
 
   onMount(async () => {
     const ramassages = PointBack2Front(
@@ -94,8 +95,44 @@ export default function (props: RamassagePointsProps) {
     ) as PointRamassageType[];
 
     setRamassage(ramassages);
+    setPointsEtablissementReady(true);
     console.log("onMount iciii", ramassage());
   });
+
+  const selectPointById = (id: number) =>
+    ramassage().map((point) => point.setSelected(id == point.idPoint));
+
+  function onClick(point: PointRamassageType) {
+    if (!isInAddLineMode()) {
+      deselectAllBusLines();
+      selectPointById(point.idPoint);
+      return;
+    }
+
+    // TODO: when add line with an etablissement point the line destroy after next point click
+    // Wait Richard/Hugo finish the line underconstruction
+    addPointToLineUnderConstruction({
+      id: point.id,
+      idPoint: point.idPoint,
+      nature: NatureEnum.ramassage,
+    });
+
+    if (!(1 < getLineUnderConstruction().stops.length)) {
+      return;
+    }
+
+    // Highlight point ramassage
+    for (const associatedPoint of point.associatedPoints()) {
+      let element;
+      if ((element = linkMap.get(associatedPoint.idPoint)?.getElement())) {
+        renderAnimation(element);
+      }
+    }
+  }
+
+  function onDBLClick(event: LeafletMouseEvent) {
+    L.DomEvent.stopPropagation(event);
+  }
 
   const filteredPoints = () =>
     ramassage()
@@ -112,43 +149,7 @@ export default function (props: RamassagePointsProps) {
     return Number.isFinite(maxCandidat) ? maxCandidat : 0;
   };
 
-  function onDBLClick(event: LeafletMouseEvent) {
-    L.DomEvent.stopPropagation(event);
-  }
-  function onClick(pointRamassage: PointRamassageType) {
-    if (!isInAddLineMode()) {
-      deselectAllBusLines();
-      selectPointById(pointRamassage.idPoint);
-      return;
-    }
-
-    const pointIdentity: PointIdentityType = {
-      id: pointRamassage.id,
-      idPoint: pointRamassage.idPoint,
-      nature: pointRamassage.nature,
-    };
-
-    addPointToLineUnderConstruction(pointIdentity);
-
-    if (!(1 < getLineUnderConstruction().stops.length)) {
-      return;
-    }
-    // Highlight point ramassage
-    for (const associatedPoint of pointRamassage.associatedPoints()) {
-      let element;
-      if ((element = linkMap.get(associatedPoint.idPoint)?.getElement())) {
-        renderAnimation(element);
-      }
-    }
-  }
-  // function onMouseOver() {
-  //   // Mettre à jour les points à blinker
-  //   // ...
-  // }
-  // function onMouseOut() {
-  //   // Mettre à jour les points à blinker (vider)
-  //   // ...
-  // }
+  // Working --
 
   createEffect(() => {
     console.log("ramassagePoints createEffect", ramassage());
