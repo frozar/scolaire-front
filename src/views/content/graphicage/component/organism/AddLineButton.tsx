@@ -10,6 +10,7 @@ import ButtonGraphicageRightMenu, {
 } from "../molecule/ButtonGraphicageRightMenu";
 
 import { FaSolidPlus } from "solid-icons/fa";
+import { setBusLines } from "../../line/BusLines";
 
 const [, { setModeAddLine, isInAddLineMode, setModeRead }] = useStateAction();
 
@@ -24,6 +25,7 @@ export default function (props: AddLineButtonProps) {
     if (isInAddLineMode()) {
       setModeRead();
       fetchBusLines();
+      setBusLines([]);
     } else {
       deselectAllPoints();
       setModeAddLine();

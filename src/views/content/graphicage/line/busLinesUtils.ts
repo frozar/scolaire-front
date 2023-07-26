@@ -25,6 +25,7 @@ import {
 } from "./BusLines";
 
 const [, { getActiveMapId }] = useStateGui();
+const [, { isInAddLineMode }] = useStateAction();
 
 export function getLatLngs(stops: PointIdentityType[]): L.LatLng[] {
   const latlngs: L.LatLng[] = [];
@@ -484,6 +485,9 @@ export function fetchBusLines() {
 
             delete linkBusLinePolyline[previousLine.idBusLine];
           }
+        }
+        if (isInAddLineMode()) {
+          return [];
         }
 
         // console.log("lines", lines);
