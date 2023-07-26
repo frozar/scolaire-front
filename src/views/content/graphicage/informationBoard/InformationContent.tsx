@@ -15,16 +15,16 @@ import {
 import { authenticateWrap } from "../../../layout/authentication";
 import { ColorPicker } from "../component/atom/ColorPicker";
 import {
+  linkBusLinePolyline,
+  pickerColor,
+  setBusLines,
+} from "../line/BusLines";
+import {
   getSelectedBusLine,
   getSelectedBusLineId,
   lineUnderConstructionStopNames,
   selectedBusLineStopNames,
 } from "../line/busLinesUtils";
-import {
-  linkBusLinePolyline,
-  pickerColor,
-  setBusLines,
-} from "../line/organism/BusLines";
 import InfoPointName from "./InfoPointName";
 import Timeline from "./Timeline";
 

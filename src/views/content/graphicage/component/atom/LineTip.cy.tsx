@@ -4,10 +4,6 @@ import { initialiseMap } from "../../../../../../testing/utils/mapWrapper";
 import LineTip from "./LineTip";
 
 describe("Line Tip component", () => {
-  beforeEach(() => {
-    cy.viewport(1000, 1000);
-  });
-
   it("Line tip", () => {
     cy.mount(() => {
       return (
