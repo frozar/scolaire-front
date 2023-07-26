@@ -1,5 +1,5 @@
 import L, { LeafletMouseEvent } from "leaflet";
-import { For, createEffect, createSignal, onMount } from "solid-js";
+import { For, createSignal, onMount } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 // TODO: Déplacer PointRamassageType, PointIdentityType et selectPointById ici ?
 // Vérifier tout les imports
@@ -133,6 +133,36 @@ export default function (props: RamassagePointsProps) {
   function onDBLClick(event: LeafletMouseEvent) {
     L.DomEvent.stopPropagation(event);
   }
+  // TODO: Change
+  const onMouseOver = (point: PointRamassageType) => {
+    for (const associatedPoint of point.associatedPoints()) {
+      const element = linkMap.get(associatedPoint.idPoint)?.getElement();
+      const { nature } = associatedPoint;
+      const className =
+        nature === NatureEnum.etablissement
+          ? "circle-animation-ramassage"
+          : "circle-animation-etablissement";
+      if (element) {
+        element.classList.add(className);
+      }
+    }
+  };
+
+  // TODO: Change
+  const onMouseOut = (point: PointRamassageType) => {
+    for (const associatedPoint of point.associatedPoints()) {
+      const element = linkMap.get(associatedPoint.idPoint)?.getElement();
+      const { nature } = associatedPoint;
+      const className =
+        nature === NatureEnum.etablissement
+          ? "circle-animation-ramassage"
+          : "circle-animation-etablissement";
+
+      if (element) {
+        element.classList.remove(className);
+      }
+    }
+  };
 
   const filteredPoints = () =>
     ramassage()
@@ -149,19 +179,10 @@ export default function (props: RamassagePointsProps) {
     return Number.isFinite(maxCandidat) ? maxCandidat : 0;
   };
 
-  // Working --
-
-  createEffect(() => {
-    console.log("ramassagePoints createEffect", ramassage());
-    // Update isBlinking
-  });
   return (
     <For each={ramassage()}>
       {(point, i) => {
         const onIsLast = () => "";
-        // const onClick = () => "";
-        const onMouseOver = () => "";
-        const onMouseOut = () => "";
         console.log(point);
 
         return (
@@ -180,8 +201,8 @@ export default function (props: RamassagePointsProps) {
             onIsLast={onIsLast}
             onClick={() => onClick(point)}
             onDBLClick={onDBLClick}
-            onMouseOver={onMouseOver}
-            onMouseOut={onMouseOut}
+            onMouseOver={() => onMouseOver(point)}
+            onMouseOut={() => onMouseOut(point)}
           />
         );
       }}
