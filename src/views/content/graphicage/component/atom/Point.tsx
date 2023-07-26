@@ -3,6 +3,7 @@ import { createEffect, onCleanup, onMount } from "solid-js";
 
 import { points } from "../../../../../signaux";
 
+import { linkMap } from "../../Point";
 import "./Point.css";
 
 export function deselectAllPoints() {
@@ -47,6 +48,11 @@ export default function (props: PointProps) {
       .on("mouseover", props.onMouseOver)
       .on("mouseout", props.onMouseOut)
       .addTo(props.map);
+
+    const element = circle.getElement();
+    if (element) {
+      linkMap.set(props.idPoint, circle);
+    }
 
     createEffect(() => {
       const circleElement = circle.getElement() as HTMLElement;

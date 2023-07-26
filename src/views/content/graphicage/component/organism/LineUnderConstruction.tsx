@@ -15,12 +15,14 @@ export default function (props: LineUnderConstructionProps) {
 
   return (
     <Show when={getLineUnderConstruction().stops.length > 0}>
-      <Line
-        latlngs={getLatLngs(props.stops)}
-        leafletMap={props.leafletMap}
-        color={color}
-        opacity={opacity}
-      />
+      <Show when={getLineUnderConstruction().stops.length > 1}>
+        <Line
+          latlngs={getLatLngs(props.stops)}
+          leafletMap={props.leafletMap}
+          color={color}
+          opacity={opacity}
+        />
+      </Show>
       <LineTip
         latlng={getLatLngs(props.stops).at(-1) as L.LatLng}
         leafletMap={props.leafletMap}
