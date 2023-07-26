@@ -1,6 +1,13 @@
 import L, { LeafletMouseEvent } from "leaflet";
 import { For, createEffect, createSignal, onMount } from "solid-js";
-import { NatureEnum } from "../../../../../type";
+import { useStateAction } from "../../../../../StateAction";
+// TODO: Déplacer PointRamassageType, et PointIdentityType ici
+import {
+  NatureEnum,
+  PointIdentityType,
+  PointRamassageType,
+} from "../../../../../type";
+import { deselectAllBusLines } from "../../line/busLinesUtils";
 import { fetchStop } from "../../point.service";
 import PointRamassage from "../molecule/PointRamassage";
 
@@ -16,22 +23,59 @@ type PointRamassageDBType = {
 
 export interface RamassagePointsProps {
   mapId: number;
-  //   idPoint: number;
-  //   lat: number;
-  //   lon: number;
   map: L.Map;
-  //   isLast: boolean;
   isBlinking?: boolean;
+}
 
-  //   quantity: number;
-  //   minQuantity: number;
-  //   maxQuantity: number;
+const [
+  ,
+  {
+    addPointToLineUnderConstruction,
+    getLineUnderConstruction,
+    isInAddLineMode,
+  },
+] = useStateAction();
 
-  //   onIsLast: () => void;
-  //   onClick: () => void;
-  //   onDBLClick: (event: LeafletMouseEvent) => void;
-  //   onMouseOver: () => void;
-  //   onMouseOut: () => void;
+type PointRamassageCoreType = Omit<PointRamassageDBType, "id_point"> & {
+  idPoint: number;
+};
+
+function PointBack2FrontIdPoint(
+  data: PointRamassageDBType
+): PointRamassageCoreType {
+  const dataWk = {
+    ...data,
+    idPoint: data.id_point,
+  } as PointRamassageCoreType & { id_point?: number };
+  delete dataWk["id_point"];
+
+  console.assert(dataWk["idPoint"] != undefined, "idPoint is undefined");
+
+  return dataWk;
+}
+
+function PointBack2Front<T extends PointRamassageDBType>(
+  datas: T[]
+): PointRamassageType[] {
+  return (
+    datas
+      // Rename "id_point" -> "idPoint"
+      .map((data) => PointBack2FrontIdPoint(data))
+      // Add signal "selected"
+      .map((data) => {
+        const [selected, setSelected] = createSignal(false);
+        const [associatedPoints, setAssociatedPoints] = createSignal<
+          PointIdentityType[]
+        >([]);
+        return {
+          ...data,
+          selected,
+          setSelected,
+          associatedPoints,
+          setAssociatedPoints,
+        } as PointRamassageType;
+      })
+  );
 }
 
 export default function (props: RamassagePointsProps) {
@@ -39,7 +83,7 @@ export default function (props: RamassagePointsProps) {
 
   // TODO: Finalité => Utiliser pointRamassageType !!
   // Faire pareil pour composant enfants
-  const [ramassage, setRamassage] = createSignal<PointRamassageDBType[]>([
+  const [ramassage, setRamassage] = createSignal<PointRamassageType[]>([
     // {
     //   id: 1,
     //   id_point: 1,
@@ -61,8 +105,12 @@ export default function (props: RamassagePointsProps) {
   ]);
 
   onMount(async () => {
-    console.log("RamassagePoints onMount");
-    setRamassage(await fetchStop(props.mapId));
+    const ramassages = PointBack2Front(
+      await fetchStop(props.mapId)
+    ) as PointRamassageType[];
+
+    setRamassage(ramassages);
+    console.log("onMount iciii", ramassage());
   });
 
   const filteredPoints = () =>
@@ -83,11 +131,13 @@ export default function (props: RamassagePointsProps) {
   function onDBLClick(event: LeafletMouseEvent) {
     L.DomEvent.stopPropagation(event);
   }
-  // function onClick(idPoint: number) {
-  //   deselectAllBusLines();
-  //   // selectPointById(idPoint);
-  //   // ...
-  // }
+  function onClick(idPoint: number) {
+    if (!isInAddLineMode()) {
+      deselectAllBusLines();
+      selectPointById(idPoint);
+      return;
+    }
+  }
   // function onMouseOver() {
   //   // Mettre à jour les points à blinker
   //   // ...
