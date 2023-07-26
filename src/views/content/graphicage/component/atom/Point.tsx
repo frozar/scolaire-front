@@ -80,6 +80,7 @@ export default function (props: PointProps) {
   });
 
   onCleanup(() => {
+    linkMap.delete(props.idPoint);
     circle.remove();
   });
 
