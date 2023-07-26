@@ -86,26 +86,7 @@ export default function (props: RamassagePointsProps) {
 
   // TODO: Finalité => Utiliser pointRamassageType !!
   // Faire pareil pour composant enfants
-  const [ramassage, setRamassage] = createSignal<PointRamassageType[]>([
-    // {
-    //   id: 1,
-    //   id_point: 1,
-    //   nature: NatureEnum.ramassage,
-    //   lon: 55.5308837890625,
-    //   lat: -20.9299793243408,
-    //   name: "guillemets",
-    //   quantity: 5,
-    // },
-    // {
-    //   id: 2,
-    //   id_point: 2,
-    //   nature: NatureEnum.ramassage,
-    //   lon: 55.5292167663574,
-    //   lat: -20.9363956451416,
-    //   name: "guillemetsLaSuite",
-    //   quantity: 10,
-    // },
-  ]);
+  const [ramassage, setRamassage] = createSignal<PointRamassageType[]>([]);
 
   onMount(async () => {
     const ramassages = PointBack2Front(
@@ -173,48 +154,6 @@ export default function (props: RamassagePointsProps) {
     console.log("ramassagePoints createEffect", ramassage());
     // Update isBlinking
   });
-  // return (
-  //   <>
-  //     <PointRamassage
-  //       idPoint={ramassage()[0].id}
-  //       lat={ramassage()[0].lat}
-  //       lon={ramassage()[0].lon}
-  //       map={props.map}
-  //       // isLast={i() === ramassage().length - 1}
-  //       isLast={false}
-  //       isBlinking={false}
-  //       quantity={ramassage()[0].quantity}
-  //       // minQuantity={minQuantity()}
-  //       // maxQuantity={maxQuantity()}
-  //       minQuantity={5}
-  //       maxQuantity={50}
-  //       onIsLast={() => ""}
-  //       onClick={() => ""}
-  //       onDBLClick={onDBLClick}
-  //       onMouseOver={() => ""}
-  //       onMouseOut={() => ""}
-  //     />
-  //     <PointRamassage
-  //       idPoint={ramassage()[1].id}
-  //       lat={ramassage()[1].lat}
-  //       lon={ramassage()[1].lon}
-  //       map={props.map}
-  //       // isLast={i() === ramassage().length - 1}
-  //       isLast={false}
-  //       isBlinking={false}
-  //       quantity={ramassage()[1].quantity}
-  //       // minQuantity={minQuantity()}
-  //       // maxQuantity={maxQuantity()}
-  //       minQuantity={5}
-  //       maxQuantity={50}
-  //       onIsLast={() => ""}
-  //       onClick={() => ""}
-  //       onDBLClick={onDBLClick}
-  //       onMouseOver={() => ""}
-  //       onMouseOut={() => ""}
-  //     />
-  //   </>
-  // );
   return (
     <For each={ramassage()}>
       {(point, i) => {
@@ -233,13 +172,10 @@ export default function (props: RamassagePointsProps) {
             lon={point.lon}
             map={props.map}
             isLast={i() === ramassage().length - 1}
-            // isLast={false}
             isBlinking={false}
             quantity={point.quantity}
             minQuantity={minQuantity()}
             maxQuantity={maxQuantity()}
-            // minQuantity={5}
-            // maxQuantity={50}
             onIsLast={onIsLast}
             onClick={() => onClick(point)}
             onDBLClick={onDBLClick}
