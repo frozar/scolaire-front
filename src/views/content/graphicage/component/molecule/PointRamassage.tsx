@@ -12,7 +12,6 @@ export interface PointRamassageProps {
   isLast: boolean;
   map: L.Map;
 
-  // quantity: number;
   minQuantity: number;
   maxQuantity: number;
 

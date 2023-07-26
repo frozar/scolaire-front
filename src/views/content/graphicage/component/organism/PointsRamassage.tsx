@@ -4,6 +4,10 @@ import { useStateAction } from "../../../../../StateAction";
 // TODO: Déplacer PointRamassageType, PointIdentityType et selectPointById ici ?
 // Vérifier tout les imports
 import {
+  setIsEtablissementReady,
+  setIsRamassageReady,
+} from "../../../../../signaux";
+import {
   NatureEnum,
   PointIdentityType,
   PointRamassageType,
@@ -80,9 +84,6 @@ export interface RamassagePointsProps {
   map: L.Map;
   mapId: number;
 }
-
-// TODO: Finalité => Utiliser pointRamassageType !!
-// (et pas la longue liste de props)
 
 const [ramassage, setRamassage] = createSignal<PointRamassageType[]>([]);
 
@@ -164,6 +165,14 @@ export default function (props: RamassagePointsProps) {
     }
   };
 
+  function onIsLast(nature: NatureEnum) {
+    if (nature === NatureEnum.ramassage) {
+      setIsRamassageReady(true);
+    } else {
+      setIsEtablissementReady(true);
+    }
+  }
+
   const filteredPoints = () =>
     ramassage()
       .filter((value) => Number.isFinite(value.quantity))
@@ -182,24 +191,17 @@ export default function (props: RamassagePointsProps) {
   return (
     <For each={ramassage()}>
       {(point, i) => {
-        const onIsLast = () => "";
         console.log(point);
 
         return (
-          // TODO: Utiliser PointRamassageType plutot !
-          // Pour pas avoir à passer autant de props
           <PointRamassage
             point={point}
-            // idPoint={point.id}
-            // lat={point.lat}
-            // lon={point.lon}
-            // quantity={point.quantity}
             map={props.map}
             isLast={i() === ramassage().length - 1}
             isBlinking={false}
             minQuantity={minQuantity()}
             maxQuantity={maxQuantity()}
-            onIsLast={onIsLast}
+            onIsLast={() => onIsLast(point.nature)}
             onClick={() => onClick(point)}
             onDBLClick={onDBLClick}
             onMouseOver={() => onMouseOver(point)}
