@@ -199,8 +199,10 @@ export default function (props: RamassagePointsProps) {
             map={props.map}
             isLast={i() === ramassage().length - 1}
             isBlinking={false}
-            minQuantity={minQuantity()}
-            maxQuantity={maxQuantity()}
+            // minQuantity={minQuantity()}
+            // maxQuantity={maxQuantity()}
+            minQuantity={5}
+            maxQuantity={25}
             onIsLast={() => onIsLast(point.nature)}
             onClick={() => onClick(point)}
             onDBLClick={onDBLClick}
