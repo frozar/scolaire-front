@@ -129,13 +129,8 @@ export default function (props: PointsEtablissementProps) {
   const onMouseOver = (point: PointEtablissementType) => {
     for (const associatedPoint of point.associatedPoints()) {
       const element = linkMap.get(associatedPoint.idPoint)?.getElement();
-      const { nature } = associatedPoint;
-      const className =
-        nature === NatureEnum.ramassage
-          ? "circle-animation-ramassage"
-          : "circle-animation-etablissement";
       if (element) {
-        element.classList.add(className);
+        element.classList.add("circle-animation");
       }
     }
   };
@@ -143,14 +138,8 @@ export default function (props: PointsEtablissementProps) {
   const onMouseOut = (point: PointEtablissementType) => {
     for (const associatedPoint of point.associatedPoints()) {
       const element = linkMap.get(associatedPoint.idPoint)?.getElement();
-      const { nature } = associatedPoint;
-      const className =
-        nature === NatureEnum.ramassage
-          ? "circle-animation-ramassage"
-          : "circle-animation-etablissement";
-
       if (element) {
-        element.classList.remove(className);
+        element.classList.remove("circle-animation");
       }
     }
   };
