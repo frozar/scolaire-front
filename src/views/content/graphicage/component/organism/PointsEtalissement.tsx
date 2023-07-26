@@ -7,7 +7,7 @@ import {
   PointIdentityType,
 } from "../../../../../type";
 import { linkMap } from "../../Point";
-import { setPointsEtablissementReady } from "../../PointsRamassageAndEtablissement";
+import { setPointsEtablissementReady } from "../../PointsRamassageAndEtablissement.working";
 import { renderAnimation } from "../../animation";
 import { deselectAllBusLines } from "../../line/busLinesUtils";
 import { fetchSchool } from "../../point.service";
