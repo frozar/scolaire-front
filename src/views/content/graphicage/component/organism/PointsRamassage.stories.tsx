@@ -6,7 +6,7 @@ import { initialiseMap } from "../../../../../../testing/utils/mapWrapper";
 import { createSignal } from "solid-js";
 import RamassagePointsComponent, {
   RamassagePointsProps,
-} from "./RamassagePoints";
+} from "./PointsRamassage";
 
 const meta = {
   component: RamassagePointsComponent,
