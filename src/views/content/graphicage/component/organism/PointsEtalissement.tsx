@@ -82,6 +82,14 @@ export const [etablissements, setEtablissement] = createSignal<
   PointEtablissementType[]
 >([]);
 
+export const [blinkingStopPoint, setBlinkingStopPoint] = createSignal<number[]>(
+  []
+);
+
+export const addBlinking = (id: number) => {
+  setBlinkingStopPoint([...blinkingStopPoint(), id]);
+};
+
 export default function (props: PointsEtablissementProps) {
   onMount(async () => {
     const etablissements = PointBack2Front(
@@ -113,6 +121,7 @@ export default function (props: PointsEtablissementProps) {
       return;
     }
 
+    // TODO: check utility
     // Highlight point ramassage
     for (const associatedPoint of point.associatedPoints()) {
       let element;
@@ -128,20 +137,12 @@ export default function (props: PointsEtablissementProps) {
 
   const onMouseOver = (point: PointEtablissementType) => {
     for (const associatedPoint of point.associatedPoints()) {
-      const element = linkMap.get(associatedPoint.idPoint)?.getElement();
-      if (element) {
-        element.classList.add("circle-animation");
-      }
+      addBlinking(associatedPoint.idPoint);
     }
   };
 
-  const onMouseOut = (point: PointEtablissementType) => {
-    for (const associatedPoint of point.associatedPoints()) {
-      const element = linkMap.get(associatedPoint.idPoint)?.getElement();
-      if (element) {
-        element.classList.remove("circle-animation");
-      }
-    }
+  const onMouseOut = () => {
+    setBlinkingStopPoint([]);
   };
 
   return (
@@ -151,9 +152,7 @@ export default function (props: PointsEtablissementProps) {
 
         return (
           <PointEtablissement
-            idPoint={point.idPoint}
-            lat={point.lat}
-            lon={point.lon}
+            point={point}
             map={props.map}
             isLast={i() === etablissements().length - 1}
             isBlinking={false}
@@ -161,7 +160,7 @@ export default function (props: PointsEtablissementProps) {
             onClick={() => onClick(point)}
             onDBLClick={onDBLClick}
             onMouseOver={() => onMouseOver(point)}
-            onMouseOut={() => onMouseOut(point)}
+            onMouseOut={() => onMouseOut()}
           />
         );
       }}
