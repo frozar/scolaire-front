@@ -12,20 +12,31 @@ usage() {
     echo ""
     echo 'Usage:
     ./start-cypress
-    ./start-cypress -f'
+    ./start-cypress -b
+    ./start-cypress -f <path/of/file>'
     echo ""
     exit 1
 }
 
 # Parse options
-while getopts "f" opt; do
+file=""
+while getopts "bf:" opt; do
     echo "getopts a trouvé l'option $opt"
     case "${opt}" in
+    b)
+        arg=$opt
+        ;;
     f)
         arg=$opt
+        file=$OPTARG
         ;;
     \?)
         echo "Invalid option: $OPTARG" >&2
+        usage
+        ;;
+
+    :)
+        echo "Option -$OPTARG requires an argument." >&2
         usage
         ;;
     esac
@@ -54,8 +65,17 @@ if docker image inspect "$image_name:$image_tag" >/dev/null 2>&1; then
     have_build=true
 fi
 
-if $have_build && [ "$arg" == "f" ] || ! $have_build; then
+if $have_build && [ "$arg" == "b" ] || ! $have_build; then
     docker-compose build
 fi
 
-docker-compose up
+docker-compose up -d
+
+if [ "$arg" == "f" ]; then
+    docker-compose exec cypress npm run cypress-watch -- --spec $file
+
+else
+    docker-compose exec cypress npm run cypress-watch
+fi
+
+docker-compose down
