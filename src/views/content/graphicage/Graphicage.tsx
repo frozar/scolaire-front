@@ -7,7 +7,6 @@ import { buildMapL7 } from "./l7MapBuilder";
 
 import PointsRamassageAndEtablissement from "./PointsRamassageAndEtablissement";
 import BusLines from "./line/BusLines";
-import LineUnderConstruction from "./line/LineUnderConstruction";
 
 import ImportCsvCanvas from "../../../component/ImportCsvCanvas";
 import ConfirmStopAddLine from "./ConfirmStopAddLineBox";
@@ -19,10 +18,11 @@ import RightMapMenu from "./component/organism/RightMapMenu";
 import { listHandlerLMap } from "./shortcut";
 
 import "leaflet/dist/leaflet.css";
+import { getLeafletMap } from "../../../signaux";
+import LineUnderConstruction from "./component/organism/LineUnderConstruction";
 
-const [, { isInAddLineMode }] = useStateAction();
+const [, { isInAddLineMode, getLineUnderConstruction }] = useStateAction();
 const [, { getActiveMapId }] = useStateGui();
-
 function buildMap(div: HTMLDivElement) {
   const option = "l7";
   switch (option) {
@@ -74,7 +74,10 @@ export default function () {
       <div ref={mapDiv} id="main-map" />
       <PointsRamassageAndEtablissement />
       <Show when={isInAddLineMode()}>
-        <LineUnderConstruction />
+        <LineUnderConstruction
+          stops={getLineUnderConstruction().stops}
+          leafletMap={getLeafletMap() as L.Map}
+        />
       </Show>
       <BusLines />
       <div class="z-[1000] absolute top-[45%] right-[15px]">

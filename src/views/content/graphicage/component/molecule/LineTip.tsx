@@ -1,5 +1,5 @@
 import L from "leaflet";
-import { createEffect, createSignal } from "solid-js";
+import { createEffect, createSignal, onCleanup } from "solid-js";
 import Line from "../atom/Line";
 
 interface LineTipProps {
@@ -22,6 +22,13 @@ export default function (props: LineTipProps) {
         L.latLng(latlng.lat, latlng.lng),
       ]);
     });
+  });
+
+  onCleanup(() => {
+    props.leafletMap?.off("mousemove");
+    if (props.leafletMap.hasEventListeners("mousemove")) {
+      props.leafletMap.off("mousemove");
+    }
   });
 
   return (

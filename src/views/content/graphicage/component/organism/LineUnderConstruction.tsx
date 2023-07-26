@@ -1,6 +1,7 @@
 import { Show } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import { PointIdentityType } from "../../../../../type";
+import { COLOR_LINE_UNDER_CONSTRUCTION } from "../../constant";
 import { getLatLngs } from "../../line/busLinesUtils";
 import Line from "../atom/Line";
 import LineTip from "../molecule/LineTip";
@@ -10,7 +11,7 @@ interface LineUnderConstructionProps {
   stops: PointIdentityType[];
 }
 export default function (props: LineUnderConstructionProps) {
-  const color = "blue";
+  const color = COLOR_LINE_UNDER_CONSTRUCTION;
   const opacity = 1;
 
   return (

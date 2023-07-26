@@ -3,7 +3,7 @@ import { Meta, StoryObj } from "storybook-solidjs";
 import {
   decorators,
   getDivFullId,
-} from "../../../../../../testing/utils/StoryBookUtils";
+} from "../../../../../../testing/utils/TestUtils";
 import { initialiseMap } from "../../../../../../testing/utils/mapWrapper";
 import { useStateAction } from "../../../../../StateAction";
 import LineUnderConstructionComponent from "./LineUnderConstruction";

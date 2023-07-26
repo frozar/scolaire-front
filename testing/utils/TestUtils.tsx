@@ -97,18 +97,17 @@ export const decorators = [
     return (
       <>
         <div id={fullId} style={{ width: "100%", height: "500px" }}>
-          {/* TODO : create function to add example points in the map */}
           {createPointRamassage(
             fullId,
             51,
-            -20.9466588303741,
-            55.5343806753509
+            -20.9465588303741,
+            55.5323806753509
           )}
           ,
           {createPointEtablissement(
             fullId,
             50,
-            -20.9566588304741,
+            -20.9486587304741,
             55.5344806754509
           )}
           <Story />

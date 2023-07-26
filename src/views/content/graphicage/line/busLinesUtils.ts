@@ -38,8 +38,6 @@ export function getLatLngs(stops: PointIdentityType[]): L.LatLng[] {
     }
   }
 
-  console.log("latlngs", latlngs);
-
   return latlngs;
 }
 

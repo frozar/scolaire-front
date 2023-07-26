@@ -2,7 +2,7 @@ import "leaflet/dist/leaflet.css";
 import {
   createPointEtablissement,
   createPointRamassage,
-} from "../../../../../../testing/utils/StoryBookUtils";
+} from "../../../../../../testing/utils/TestUtils";
 import { initialiseMap } from "../../../../../../testing/utils/mapWrapper";
 import { useStateAction } from "../../../../../StateAction";
 import LineUnderConstruction from "./LineUnderConstruction";
@@ -16,14 +16,14 @@ describe("Line component", () => {
           {createPointRamassage(
             "map-container",
             51,
-            -20.9466588303741,
-            55.5343806753509
+            -20.9465588303741,
+            55.5323806753509
           )}
           ,
           {createPointEtablissement(
             "map-container",
             50,
-            -20.9566588304741,
+            -20.9486587304741,
             55.5344806754509
           )}
           <LineUnderConstruction
