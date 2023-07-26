@@ -19,7 +19,7 @@ describe("Line Tip component", () => {
     });
 
     const mapContainer = cy.get("#map-container");
-    mapContainer.trigger("mousemove", { clientX: 250, clientY: 250 });
+    mapContainer.trigger("mousemove", { clientX: 350, clientY: 350 });
     mapContainer.compareSnapshot("line-tip", 0.01);
   });
 });
