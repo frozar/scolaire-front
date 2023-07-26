@@ -8,6 +8,7 @@ import {
   setIsRamassageReady,
 } from "../../../../../signaux";
 import {
+  EleveVersEtablissementType,
   NatureEnum,
   PointIdentityType,
   PointRamassageType,
@@ -16,7 +17,7 @@ import { linkMap } from "../../Point";
 import { setPointsEtablissementReady } from "../../PointsRamassageAndEtablissement";
 import { renderAnimation } from "../../animation";
 import { deselectAllBusLines } from "../../line/busLinesUtils";
-import { fetchStop } from "../../point.service";
+import { fetchEleveVersEtablissement, fetchStop } from "../../point.service";
 import PointRamassage from "../molecule/PointRamassage";
 
 const [
@@ -56,8 +57,32 @@ function PointBack2FrontIdPoint(
   return dataWk;
 }
 
+// function PointBack2Front<T extends PointRamassageDBType>(
+//   datas: T[]
+// ): PointRamassageType[] {
+//   return (
+//     datas
+//       // Rename "id_point" -> "idPoint"
+//       .map((data) => PointBack2FrontIdPoint(data))
+//       // Add signal "selected"
+//       .map((data) => {
+//         const [selected, setSelected] = createSignal(false);
+//         const [associatedPoints, setAssociatedPoints] = createSignal<
+//           PointIdentityType[]
+//         >([]);
+//         return {
+//           ...data,
+//           selected,
+//           setSelected,
+//           associatedPoints,
+//           setAssociatedPoints,
+//         } as PointRamassageType;
+//       })
+//   );
+// }
 function PointBack2Front<T extends PointRamassageDBType>(
-  datas: T[]
+  datas: T[],
+  nature: NatureEnum
 ): PointRamassageType[] {
   return (
     datas
@@ -77,6 +102,8 @@ function PointBack2Front<T extends PointRamassageDBType>(
           setAssociatedPoints,
         } as PointRamassageType;
       })
+      // Add "nature"
+      .map((data) => ({ ...data, nature }))
   );
 }
 
@@ -87,14 +114,77 @@ export interface RamassagePointsProps {
 
 const [ramassage, setRamassage] = createSignal<PointRamassageType[]>([]);
 
+async function getEleveVersEtablissement(mapId: number) {
+  const data: EleveVersEtablissementType[] = await fetchEleveVersEtablissement(
+    mapId
+  );
+  console.log("eleveVersEtablissementDatas", data);
+
+  // createEffect(() => {
+  //   for (const point of ramassage()) {
+  //     const associated = data.filter((elt) => point.id == elt.etablissement_id);
+
+  //     point.setAssociatedPoints(
+  //       associated.map((elt) => {
+  //         return {
+  //           id: elt.etablissement_id,
+  //           idPoint: elt.ramassage_id_point,
+  //           nature: NatureEnum.ramassage,
+  //         };
+  //       })
+  //     );
+  //   }
+  // });
+
+  for (const point of ramassage()) {
+    console.log("boucle for");
+
+    const associatedPoints = data.filter(
+      (elt) =>
+        point.id ===
+        (point.nature === NatureEnum.ramassage
+          ? elt.ramassage_id
+          : elt.etablissement_id)
+    );
+    console.log("associatedPoints", associatedPoints);
+
+    point.setAssociatedPoints(
+      associatedPoints.map((elt) => {
+        const associatedId =
+          point.nature === NatureEnum.ramassage
+            ? elt.etablissement_id
+            : elt.ramassage_id;
+        const associatedNature =
+          point.nature === NatureEnum.ramassage
+            ? NatureEnum.etablissement
+            : NatureEnum.ramassage;
+        const id_point =
+          associatedNature === NatureEnum.etablissement
+            ? elt.etablissement_id_point
+            : elt.ramassage_id_point;
+        return {
+          id: associatedId,
+          idPoint: id_point,
+          nature: associatedNature,
+        };
+      })
+    );
+  }
+}
+
 export default function (props: RamassagePointsProps) {
   onMount(async () => {
     const ramassages = PointBack2Front(
-      await fetchStop(props.mapId)
+      await fetchStop(props.mapId),
+      NatureEnum.ramassage
     ) as PointRamassageType[];
+
+    getEleveVersEtablissement(props.mapId);
 
     setRamassage(ramassages);
     setPointsEtablissementReady(true);
+    console.log("=>", ramassage());
+    // setAssociatedPoints
   });
 
   const selectPointById = (id: number) =>
@@ -133,7 +223,10 @@ export default function (props: RamassagePointsProps) {
   }
   // TODO: Change
   const onMouseOver = (point: PointRamassageType) => {
+    console.log("mouseOver");
     for (const associatedPoint of point.associatedPoints()) {
+      console.log("associatedPoint", associatedPoint);
+
       const element = linkMap.get(associatedPoint.idPoint)?.getElement();
       const { nature } = associatedPoint;
       const className =
