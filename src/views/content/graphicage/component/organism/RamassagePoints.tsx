@@ -1,12 +1,15 @@
 import L, { LeafletMouseEvent } from "leaflet";
 import { For, createEffect, createSignal, onMount } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
-// TODO: Déplacer PointRamassageType, et PointIdentityType ici
+// TODO: Déplacer PointRamassageType, PointIdentityType et selectPointById ici ?
+// Vérifier tout les imports
 import {
   NatureEnum,
   PointIdentityType,
   PointRamassageType,
 } from "../../../../../type";
+import { linkMap, selectPointById } from "../../Point";
+import { renderAnimation } from "../../animation";
 import { deselectAllBusLines } from "../../line/busLinesUtils";
 import { fetchStop } from "../../point.service";
 import PointRamassage from "../molecule/PointRamassage";
@@ -131,11 +134,30 @@ export default function (props: RamassagePointsProps) {
   function onDBLClick(event: LeafletMouseEvent) {
     L.DomEvent.stopPropagation(event);
   }
-  function onClick(idPoint: number) {
+  function onClick(pointRamassage: PointRamassageType) {
     if (!isInAddLineMode()) {
       deselectAllBusLines();
-      selectPointById(idPoint);
+      selectPointById(pointRamassage.idPoint);
       return;
+    }
+
+    const pointIdentity: PointIdentityType = {
+      id: pointRamassage.id,
+      idPoint: pointRamassage.idPoint,
+      nature: pointRamassage.nature,
+    };
+
+    addPointToLineUnderConstruction(pointIdentity);
+
+    if (!(1 < getLineUnderConstruction().stops.length)) {
+      return;
+    }
+    // Highlight point ramassage
+    for (const associatedPoint of pointRamassage.associatedPoints()) {
+      let element;
+      if ((element = linkMap.get(associatedPoint.idPoint)?.getElement())) {
+        renderAnimation(element);
+      }
     }
   }
   // function onMouseOver() {
@@ -197,7 +219,7 @@ export default function (props: RamassagePointsProps) {
     <For each={ramassage()}>
       {(point, i) => {
         const onIsLast = () => "";
-        const onClick = () => "";
+        // const onClick = () => "";
         const onMouseOver = () => "";
         const onMouseOut = () => "";
         console.log(point);
@@ -219,7 +241,7 @@ export default function (props: RamassagePointsProps) {
             // minQuantity={5}
             // maxQuantity={50}
             onIsLast={onIsLast}
-            onClick={onClick}
+            onClick={() => onClick(point)}
             onDBLClick={onDBLClick}
             onMouseOver={onMouseOver}
             onMouseOut={onMouseOut}

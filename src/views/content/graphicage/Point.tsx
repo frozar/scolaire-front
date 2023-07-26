@@ -28,7 +28,7 @@ const [
   },
 ] = useStateAction();
 
-function selectPointById(targerIdPoint: number) {
+export function selectPointById(targerIdPoint: number) {
   points().map((point) => point.setSelected(targerIdPoint == point.idPoint));
 }
 
