@@ -5,7 +5,7 @@ import PointEtablissement from "./PointsEtalissement";
 describe("PointsEtablissement component", () => {
   beforeEach(() => {
     cy.intercept("http://localhost:8000/map/2/dashboard/etablissement", {
-      fixture: "getEtablissement.json",
+      fixture: "getEtablissements.json",
     }).as("getData");
   });
 
