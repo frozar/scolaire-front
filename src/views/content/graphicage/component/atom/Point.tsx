@@ -3,6 +3,7 @@ import { createEffect, onCleanup, onMount } from "solid-js";
 
 import { points } from "../../../../../signaux";
 
+import { PointEtablissementType } from "../../../../../type";
 import { linkMap } from "../../Point";
 import "./Point.css";
 
@@ -11,9 +12,8 @@ export function deselectAllPoints() {
 }
 
 export interface PointProps {
-  idPoint: number;
-  lat: number;
-  lon: number;
+  point: PointEtablissementType;
+
   map: L.Map;
   isLast: boolean;
   isBlinking?: boolean;
@@ -34,7 +34,7 @@ export default function (props: PointProps) {
   let circle: L.CircleMarker;
 
   onMount(() => {
-    circle = L.circleMarker([props.lat, props.lon], {
+    circle = L.circleMarker([props.point.lat, props.point.lon], {
       color: props.borderColor,
       fillColor: props.fillColor,
       radius: props.radius,
@@ -51,7 +51,7 @@ export default function (props: PointProps) {
 
     const element = circle.getElement();
     if (element) {
-      linkMap.set(props.idPoint, circle);
+      linkMap.set(props.point.idPoint, circle);
     }
 
     createEffect(() => {
@@ -80,7 +80,7 @@ export default function (props: PointProps) {
   });
 
   onCleanup(() => {
-    linkMap.delete(props.idPoint);
+    linkMap.delete(props.point.idPoint);
     circle.remove();
   });
 

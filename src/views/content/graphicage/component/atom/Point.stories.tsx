@@ -35,7 +35,6 @@ export const PointStories: Story = {
     if (div) {
       div.remove();
     }
-
     return (
       <div id="map-container-1" style={{ width: "100%", height: "500px" }}>
         <PointComponent {...props} map={initialiseMap("map-container-1")} />
@@ -43,12 +42,14 @@ export const PointStories: Story = {
     );
   },
   args: {
+    point: {
+      idPoint: 1,
+      lat: -20.9466588303741,
+      lon: 55.5343806753509,
+    },
     isBlinking: false,
     weight: 4,
     radius: 8,
-    idPoint: 1,
-    lat: -20.9466588303741,
-    lon: 55.5343806753509,
     borderColor: "red",
     fillColor: "white",
     isLast: false,
@@ -66,7 +67,6 @@ export const PointStories2: Story = {
     if (div) {
       div.remove();
     }
-
     return (
       <div id="map-container-2" style={{ width: "100%", height: "500px" }}>
         <PointComponent {...props} map={initialiseMap("map-container-2")} />
@@ -77,9 +77,11 @@ export const PointStories2: Story = {
     isBlinking: false,
     weight: 4,
     radius: 12,
-    idPoint: 1,
-    lat: -20.9466588303741,
-    lon: 55.5343806753509,
+    point: {
+      idPoint: 1,
+      lat: -20.9466588303741,
+      lon: 55.5343806753509,
+    },
     borderColor: "green",
     fillColor: "white",
     isLast: false,
