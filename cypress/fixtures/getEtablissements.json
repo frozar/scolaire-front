@@ -1,0 +1,75 @@
+{
+    "message": "Récupération des ramassages de la carte id:2.",
+    "content": [
+        {
+            "id": 16,
+            "name": "test",
+            "quantity": 0,
+            "nb_etablissement": 0,
+            "nb_line": 0,
+            "id_point": 48,
+            "lon": 1.0,
+            "lat": 1.0
+        },
+        {
+            "id": 17,
+            "name": "test 1",
+            "quantity": 0,
+            "nb_etablissement": 0,
+            "nb_line": 0,
+            "id_point": 49,
+            "lon": 1.0,
+            "lat": 1.0
+        },
+        {
+            "id": 18,
+            "name": "Ecole DE BEAUMONT",
+            "quantity": 149,
+            "nb_etablissement": 23,
+            "nb_line": 0,
+            "id_point": 82,
+            "lon": 55.5343806753509,
+            "lat": -20.9466588303741
+        },
+        {
+            "id": 19,
+            "name": "Ecole DE BOIS ROUGE",
+            "quantity": 102,
+            "nb_etablissement": 14,
+            "nb_line": 1,
+            "id_point": 83,
+            "lon": 55.5314344074146,
+            "lat": -20.9217774459811
+        },
+        {
+            "id": 20,
+            "name": "Lycée polyvalent Jean Hinglo",
+            "quantity": 3,
+            "nb_etablissement": 1,
+            "nb_line": 0,
+            "id_point": 88,
+            "lon": 55.29104,
+            "lat": -20.94882
+        },
+        {
+            "id": 21,
+            "name": "Lycée général et technologique Évariste de Parny",
+            "quantity": 2,
+            "nb_etablissement": 2,
+            "nb_line": 0,
+            "id_point": 89,
+            "lon": 55.26998,
+            "lat": -21.02896
+        },
+        {
+            "id": 22,
+            "name": "Lycée général et technologique Louis Payen",
+            "quantity": 4,
+            "nb_etablissement": 1,
+            "nb_line": 0,
+            "id_point": 90,
+            "lon": 55.281893,
+            "lat": -20.999738
+        }
+    ]
+}
