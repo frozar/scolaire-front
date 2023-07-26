@@ -30,6 +30,7 @@ export function getLatLngs(stops: PointIdentityType[]): L.LatLng[] {
   const latlngs: L.LatLng[] = [];
 
   // TODO: linkMap must be reactive => signal
+
   for (const pointIdentity of stops) {
     const circle = linkMap.get(pointIdentity.idPoint);
     if (circle) {
