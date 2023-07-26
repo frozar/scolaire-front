@@ -88,8 +88,6 @@ export interface RamassagePointsProps {
 const [ramassage, setRamassage] = createSignal<PointRamassageType[]>([]);
 
 export default function (props: RamassagePointsProps) {
-  console.log("debut RamassagePoints");
-
   onMount(async () => {
     const ramassages = PointBack2Front(
       await fetchStop(props.mapId)
@@ -97,7 +95,6 @@ export default function (props: RamassagePointsProps) {
 
     setRamassage(ramassages);
     setPointsEtablissementReady(true);
-    console.log("onMount iciii", ramassage());
   });
 
   const selectPointById = (id: number) =>
@@ -191,18 +188,14 @@ export default function (props: RamassagePointsProps) {
   return (
     <For each={ramassage()}>
       {(point, i) => {
-        console.log(point);
-
         return (
           <PointRamassage
             point={point}
             map={props.map}
             isLast={i() === ramassage().length - 1}
             isBlinking={false}
-            // minQuantity={minQuantity()}
-            // maxQuantity={maxQuantity()}
-            minQuantity={5}
-            maxQuantity={25}
+            minQuantity={minQuantity()}
+            maxQuantity={maxQuantity()}
             onIsLast={() => onIsLast(point.nature)}
             onClick={() => onClick(point)}
             onDBLClick={onDBLClick}

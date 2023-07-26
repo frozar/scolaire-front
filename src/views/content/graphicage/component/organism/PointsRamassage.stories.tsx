@@ -19,8 +19,6 @@ type Story = StoryObj<typeof meta>;
 const [myMap, setMyMap] = createSignal();
 
 function getMyMap() {
-  console.log("getMyMap");
-
   if (!myMap()) {
     const returnedMap = initialiseMap("map-container");
     setMyMap(returnedMap);
@@ -32,12 +30,9 @@ function getMyMap() {
 
 export const RamassagePoints: Story = {
   render: (props: RamassagePointsProps) => {
-    console.log("render executed");
-
     const div = document.getElementById("map-container");
     // const map = initialiseMap("map-container");
     if (div) {
-      console.log("render executed 1");
       div.remove();
     }
 
@@ -56,11 +51,6 @@ export const RamassagePoints: Story = {
 
   args: {
     mapId: 4,
-    // idPoint: 50,
-    // lat: -20.9466588303741,
-    // lon: 55.5343806753509,
-    // isLast: false,
-    // isBlinking: false,
   },
 
   argTypes: {

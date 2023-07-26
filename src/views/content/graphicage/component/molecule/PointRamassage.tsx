@@ -1,5 +1,7 @@
+// TODO: Fix radius reactivity
+/* eslint-disable solid/reactivity */
 import { LeafletMouseEvent } from "leaflet";
-import { createEffect, createSignal } from "solid-js";
+import { createEffect } from "solid-js";
 import Point, { PointInterface } from "../atom/Point";
 import { blinkingStopPoint } from "../organism/PointsEtalissement";
 
@@ -26,10 +28,10 @@ const minRadius = 5;
 const maxRadius = 10;
 const rangeRadius = maxRadius - minRadius;
 
-const [radius, setRadius] = createSignal(5);
+// const [radius, setRadius] = createSignal(5);
 
 export default function (props: PointRamassageProps) {
-  console.log("debut PointRamassage.tsx");
+  // console.log("debut PointRamassage.tsx");
 
   createEffect(() => {
     if (props.quantity && props.maxQuantity && props.minQuantity) {
@@ -44,13 +46,21 @@ export default function (props: PointRamassageProps) {
     }
   });
 
+  // createEffect(() => {
+  //   props.setRadius(radiusValue);
+  // });
+
+  // setRadius(radiusValue);
+  // });
+  // console.log("radiusValue", radius());
   return (
     <Point
       {...props}
       isBlinking={blinkingStopPoint().includes(props.point.idPoint)}
       borderColor="red"
       fillColor="white"
-      radius={radius()}
+      // radius={props.point.radius()}
+      radius={radiusValue}
       weight={4}
     />
   );

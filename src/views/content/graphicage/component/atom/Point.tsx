@@ -48,8 +48,6 @@ export interface PointProps {
 }
 
 export default function (props: PointProps) {
-  console.log("debut Point.tsx");
-
   let circle: L.CircleMarker;
 
   onMount(() => {
@@ -95,6 +93,7 @@ export default function (props: PointProps) {
   createEffect(() => {
     if (props.point) {
       circle.setRadius(props.radius);
+
       circle
         .getElement()
         ?.setAttribute("stroke-width", props.weight.toString());
