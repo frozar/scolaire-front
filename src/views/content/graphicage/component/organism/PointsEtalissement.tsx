@@ -101,12 +101,14 @@ export default function (props: PointsEtablissementProps) {
       return;
     }
 
+    // TODO: when add line with an etablissement point the line destroy after next point click
+    // Wait Richard/Hugo finish the line underconstruction
     addPointToLineUnderConstruction({
       id: point.id,
       idPoint: point.idPoint,
       nature: NatureEnum.etablissement,
     });
-    console.log(getLineUnderConstruction());
+
     if (!(1 < getLineUnderConstruction().stops.length)) {
       return;
     }
