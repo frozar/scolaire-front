@@ -1,54 +1,48 @@
-import { LeafletMouseEvent } from "leaflet";
 import { Meta, StoryObj } from "storybook-solidjs";
 
 import { initialiseMap } from "../../../../../../testing/utils/mapWrapper";
 
-import PointRamassageComponent, { PointRamassageProps } from "./PointRamassage";
+import {
+  Mapdecorators,
+  createPoint,
+  getDivFullId,
+} from "../../../../../../testing/utils/TestUtils";
+import PointRamassageComponent from "./PointRamassage";
 
 const meta = {
   component: PointRamassageComponent,
   tags: ["autodocs"],
+  decorators: Mapdecorators,
 } satisfies Meta<typeof PointRamassageComponent>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const PointRamassage: Story = {
-  render: (props: PointRamassageProps) => {
-    const div = document.getElementById("map-container");
-
-    if (div) {
-      div.remove();
-    }
+  render: (props: null, options) => {
+    const fullId = getDivFullId(options);
 
     return (
-      <div id="map-container" style={{ width: "100%", height: "500px" }}>
-        <PointRamassageComponent
-          {...props}
-          map={initialiseMap("map-container")}
-        />
-      </div>
+      <PointRamassageComponent
+        point={createPoint(
+          1,
+          50,
+          -20.9466588303741,
+          55.5343806753509,
+          "name",
+          5
+        )}
+        map={initialiseMap(fullId)}
+        onClick={() => console.log("onClick")}
+        onIsLast={() => console.log("onIsLast")}
+        onDBLClick={() => console.log("onDBLClick")}
+        onMouseOut={() => console.log("onMouseOut")}
+        onMouseOver={() => console.log("onMouseOvre")}
+        isLast={false}
+        maxQuantity={25}
+        minQuantity={1}
+        quantity={6}
+      />
     );
-  },
-
-  args: {
-    quantity: 6,
-    minQuantity: 1,
-    maxQuantity: 25,
-
-    idPoint: 50,
-    lat: -20.9466588303741,
-    lon: 55.5343806753509,
-    isLast: false,
-    isBlinking: false,
-  },
-
-  argTypes: {
-    onIsLast: () => console.log("onIsLast"),
-    onClick: () => console.log("onClick"),
-    onDBLClick: (event: LeafletMouseEvent) =>
-      console.log("onDBLClick, event:", event),
-    onMouseOver: () => console.log("onMouseOver"),
-    onMouseOut: () => console.log("onMouseOut"),
   },
 };
