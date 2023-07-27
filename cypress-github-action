@@ -8,4 +8,5 @@ cd "${script_directory}/cypress"
 docker-compose build
 docker-compose up -d
 docker-compose exec cypress npm run cypress-test
+
 docker-compose down
