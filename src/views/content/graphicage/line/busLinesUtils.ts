@@ -576,15 +576,47 @@ function getStopNames(busLine: LineUnderConstructionType) {
     (stopId) => points().filter((point) => point.idPoint === stopId)[0].name
   );
 }
+// TODO: Refactor
+// function getStopsQuantity(busLine: LineUnderConstructionType) {
+//   const stopIds = busLine.stops.map((stop) => stop.idPoint);
+//   return stopIds.map(
+//     (stopId) => points().filter((point) => point.idPoint === stopId)[0].quantity
+//   );
+// }
 
-export const selectedBusLineStopNames = () => {
+// export const selectedBusLineStopNames = () => {
+//   const selectedBusLine = getSelectedBusLine();
+//   console.log("selectedBusLine => ", selectedBusLine);
+
+//   if (!selectedBusLine) {
+//     return [];
+//   }
+
+//   return getStopNames(selectedBusLine);
+// };
+export function getStopInfosToTimeline(busLine: LineUnderConstructionType) {
+  // const busLine = getSelectedBusLine() as LineUnderConstructionType;
+  const stopIds = busLine.stops.map((stop) => stop.idPoint);
+  console.log("busLine", busLine);
+  console.log("points()", points());
+  return stopIds.map((stopId) => {
+    return {
+      name: points().filter((point) => point.idPoint === stopId)[0].name,
+      quantity: points().filter((point) => point.idPoint === stopId)[0]
+        .quantity,
+    };
+  });
+}
+
+export const selectedBusLineToTimeline = () => {
   const selectedBusLine = getSelectedBusLine();
+  console.log("selectedBusLine => ", selectedBusLine);
 
   if (!selectedBusLine) {
     return [];
   }
 
-  return getStopNames(selectedBusLine);
+  return getStopInfosToTimeline(selectedBusLine);
 };
 
 export const lineUnderConstructionStopNames = () => {

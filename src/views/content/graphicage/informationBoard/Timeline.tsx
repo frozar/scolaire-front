@@ -1,7 +1,8 @@
-import { For, splitProps } from "solid-js";
+import { For } from "solid-js";
 
-type TimelineItemType = {
+export type TimelineItemType = {
   name: string;
+  quantity: number;
 };
 
 function TimelineItem(props: TimelineItemType) {
@@ -9,7 +10,7 @@ function TimelineItem(props: TimelineItemType) {
     <div class="v-timeline-item">
       <div class="v-timeline-item__body">
         <div class="d-flex">
-          <div class="me-4">00</div>
+          <div class="me-4">{props.quantity}</div>
           <div>
             <strong>{props.name}</strong>
           </div>
@@ -27,9 +28,14 @@ function TimelineItem(props: TimelineItemType) {
     </div>
   );
 }
-
-export default function (props: { stopNames: string[] }) {
-  const [local] = splitProps(props, ["stopNames"]);
+// TODO: Rename
+// export default function (props: TimelineItemType[]) {
+export default function (props: {
+  point: { name: string; quantity: number }[];
+}) {
+  // TODO: Delete
+  // const [local] = splitProps(props, ["stopNames"]);
+  console.log("props=> ", props);
 
   return (
     <div class="timeline">
@@ -37,8 +43,10 @@ export default function (props: { stopNames: string[] }) {
         class="v-timeline v-timeline--align-start v-timeline--justify-auto v-timeline--side-end v-timeline--vertical"
         style={{ "--v-timeline-line-thickness": "2px" }}
       >
-        <For each={local.stopNames}>
-          {(stop) => <TimelineItem name={stop} />}
+        <For each={props.point}>
+          {(point) => (
+            <TimelineItem name={point.name} quantity={point.quantity} />
+          )}
         </For>
       </div>
     </div>
