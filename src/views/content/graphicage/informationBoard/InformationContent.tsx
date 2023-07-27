@@ -14,6 +14,7 @@ import {
 } from "../../../../type";
 import { authenticateWrap } from "../../../layout/authentication";
 import { ColorPicker } from "../component/atom/ColorPicker";
+import AddLineInformationBoardContent from "../component/organism/AddLineInformationBoardContent";
 import {
   linkBusLinePolyline,
   pickerColor,
@@ -22,7 +23,6 @@ import {
 import {
   getSelectedBusLine,
   getSelectedBusLineId,
-  lineUnderConstructionStopNames,
   selectedBusLineStopNames,
 } from "../line/busLinesUtils";
 import InfoPointName from "./InfoPointName";
@@ -271,10 +271,12 @@ export default function () {
         </Match>
         <Match
           when={
-            isInAddLineMode() && lineUnderConstructionStopNames().length != 0
+            isInAddLineMode()
+            // && lineUnderConstructionStopNames().length != 0
           }
         >
-          <Timeline stopNames={lineUnderConstructionStopNames()} />
+          <AddLineInformationBoardContent />
+          {/* <Timeline stopNames={lineUnderConstructionStopNames()} /> */}
         </Match>
       </Switch>
     </div>
