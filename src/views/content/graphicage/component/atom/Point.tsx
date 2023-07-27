@@ -49,15 +49,12 @@ export default function (props: PointProps) {
   let circle: L.CircleMarker;
 
   createEffect(() => {
-    props.isBlinking;
     const element = linkMap.get(props.point.idPoint)?.getElement();
-    if (!element) return;
-
-    if (props?.isBlinking) {
+    if (element && props.isBlinking) {
       element.classList.add("circle-animation");
-    } else {
+    } else if (element && !props.isBlinking) {
       element.classList.remove("circle-animation");
-    }
+    } else return;
   });
 
   onMount(() => {
