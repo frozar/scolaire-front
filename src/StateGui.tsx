@@ -122,6 +122,10 @@ const makeStateGuiContext = () => {
     );
   }
 
+  function setDisplayedInformationBoard(displayed: boolean) {
+    setState("displayedInformationBoard", displayed);
+  }
+
   return [
     state,
     {
@@ -141,6 +145,7 @@ const makeStateGuiContext = () => {
       toggleDisplayedLeftMenu,
       getDisplayedInformationBoard,
       toggleDisplayedInformationBoard,
+      setDisplayedInformationBoard,
     },
   ] as const;
 };
