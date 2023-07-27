@@ -1,17 +1,14 @@
 import L, { LeafletMouseEvent } from "leaflet";
 import { For, createSignal, onMount } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
-import {
-  NatureEnum,
-  PointEtablissementType,
-  PointIdentityType,
-} from "../../../../../type";
+import { NatureEnum, PointEtablissementType } from "../../../../../type";
 import { linkMap } from "../../Point";
 import { PointEtablissementDBType } from "../../PointsRamassageAndEtablissement";
 import { setPointsEtablissementReady } from "../../PointsRamassageAndEtablissement.working";
 import { renderAnimation } from "../../animation";
 import { deselectAllBusLines } from "../../line/busLinesUtils";
 import { fetchSchool } from "../../point.service";
+import { PointIdentityType, PointInterface } from "../atom/Point";
 import PointEtablissement from "../molecule/PointEtablissement";
 
 const [
@@ -40,7 +37,7 @@ function PointBack2FrontIdPoint(
 
 function PointBack2Front<T extends PointEtablissementDBType>(
   datas: T[]
-): PointEtablissementType[] {
+): PointInterface[] {
   return (
     datas
       // Rename "id_point" -> "idPoint"
@@ -57,7 +54,7 @@ function PointBack2Front<T extends PointEtablissementDBType>(
           setSelected,
           associatedPoints,
           setAssociatedPoints,
-        } as PointEtablissementType;
+        } as PointInterface;
       })
   );
 }
@@ -68,7 +65,7 @@ export interface PointsEtablissementProps {
 }
 
 export const [etablissements, setEtablissement] = createSignal<
-  PointEtablissementType[]
+  PointInterface[]
 >([]);
 
 export const [blinkingStopPoint, setBlinkingStopPoint] = createSignal<number[]>(
@@ -91,7 +88,7 @@ export default function (props: PointsEtablissementProps) {
   const selectPointById = (id: number) =>
     etablissements().map((point) => point.setSelected(id == point.idPoint));
 
-  const onClick = (point: PointEtablissementType) => {
+  const onClick = (point: PointInterface) => {
     if (!isInAddLineMode()) {
       deselectAllBusLines();
       selectPointById(point.idPoint);
@@ -124,7 +121,7 @@ export default function (props: PointsEtablissementProps) {
     L.DomEvent.stopPropagation(event);
   };
 
-  const onMouseOver = (point: PointEtablissementType) => {
+  const onMouseOver = (point: PointInterface) => {
     for (const associatedPoint of point.associatedPoints()) {
       addBlinking(associatedPoint.idPoint);
     }
@@ -144,7 +141,6 @@ export default function (props: PointsEtablissementProps) {
             point={point}
             map={props.map}
             isLast={i() === etablissements().length - 1}
-            isBlinking={false}
             onIsLast={onIsLast}
             onClick={() => onClick(point)}
             onDBLClick={onDBLClick}
