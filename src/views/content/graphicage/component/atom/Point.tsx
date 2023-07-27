@@ -1,9 +1,8 @@
 import L, { LeafletMouseEvent } from "leaflet";
-import { createEffect, onCleanup, onMount } from "solid-js";
+import { Accessor, Setter, createEffect, onCleanup, onMount } from "solid-js";
 
 import { points } from "../../../../../signaux";
 
-import { PointEtablissementType } from "../../../../../type";
 import { linkMap } from "../../Point";
 import "./Point.css";
 
@@ -11,8 +10,24 @@ export function deselectAllPoints() {
   points().map((point) => point.setSelected(false));
 }
 
+export type PointIdentityType = {
+  id: number;
+  idPoint: number;
+};
+
+export interface PointInterface extends PointIdentityType {
+  lon: number;
+  lat: number;
+  name: string;
+  quantity: number;
+  selected: Accessor<boolean>;
+  setSelected: Setter<boolean>;
+  associatedPoints: Accessor<PointIdentityType[]>;
+  setAssociatedPoints: Setter<PointIdentityType[]>;
+}
+
 export interface PointProps {
-  point: PointEtablissementType;
+  point: PointInterface;
 
   map: L.Map;
   isLast: boolean;
@@ -32,6 +47,18 @@ export interface PointProps {
 
 export default function (props: PointProps) {
   let circle: L.CircleMarker;
+
+  createEffect(() => {
+    props.isBlinking;
+    const element = linkMap.get(props.point.idPoint)?.getElement();
+    if (!element) return;
+
+    if (props?.isBlinking) {
+      element.classList.add("circle-animation");
+    } else {
+      element.classList.remove("circle-animation");
+    }
+  });
 
   onMount(() => {
     circle = L.circleMarker([props.point.lat, props.point.lon], {
