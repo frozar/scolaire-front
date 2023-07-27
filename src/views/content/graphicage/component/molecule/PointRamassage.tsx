@@ -27,14 +27,16 @@ const [radius, setRadius] = createSignal(5);
 
 export default function (props: PointRamassageProps) {
   createEffect(() => {
-    const coef =
-      props.minQuantity == props.maxQuantity
-        ? 0
-        : (props.quantity - props.minQuantity) /
-          (props.maxQuantity - props.minQuantity);
+    if (props.quantity && props.maxQuantity && props.minQuantity) {
+      const coef =
+        props.minQuantity == props.maxQuantity
+          ? 0
+          : (props.quantity - props.minQuantity) /
+            (props.maxQuantity - props.minQuantity);
 
-    const radiusValue = coef * rangeRadius + minRadius;
-    setRadius(radiusValue);
+      const radiusValue = coef * rangeRadius + minRadius;
+      setRadius(radiusValue);
+    }
   });
 
   return (

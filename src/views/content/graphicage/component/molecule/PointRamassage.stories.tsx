@@ -60,9 +60,10 @@ export const PointRamassage: Story = {
 
   args: {
     isBlinking: false,
-    weight: 4,
-    radius: 8,
     borderColor: "red",
     fillColor: "white",
+    quantity: 5,
+    maxQuantity: 30,
+    minQuantity: 1,
   },
 };
