@@ -1,14 +1,12 @@
 import { LeafletMouseEvent } from "leaflet";
 import { createEffect, createSignal } from "solid-js";
-import Point from "../atom/Point";
+import Point, { PointInterface } from "../atom/Point";
+import { blinkingStopPoint } from "../organism/PointsEtalissement";
 
 export interface PointRamassageProps {
-  idPoint: number;
-  lat: number;
-  lon: number;
+  point: PointInterface;
   map: L.Map;
   isLast: boolean;
-  isBlinking?: boolean;
 
   quantity: number;
   minQuantity: number;
@@ -42,6 +40,7 @@ export default function (props: PointRamassageProps) {
   return (
     <Point
       {...props}
+      isBlinking={blinkingStopPoint().includes(props.point.idPoint)}
       borderColor="red"
       fillColor="white"
       radius={radius()}
