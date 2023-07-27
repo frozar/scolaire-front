@@ -13,19 +13,23 @@ describe("Line component", () => {
     cy.mount(() => {
       return (
         <div id="map-container" style={{ width: "100%", height: "500px" }}>
-          {createPointRamassage(
-            "map-container",
-            51,
-            -20.9465588303741,
-            55.5323806753509
-          )}
+          {createPointRamassage({
+            fullId: "map-container",
+            id: 1,
+            idPoint: 51,
+            lat: -20.9465588303741,
+            lon: 55.5323806753509,
+            name: "name",
+          })}
           ,
-          {createPointEtablissement(
-            "map-container",
-            50,
-            -20.9486587304741,
-            55.5544806754509
-          )}
+          {createPointEtablissement({
+            fullId: "map-container",
+            id: 1,
+            idPoint: 51,
+            lat: -20.9486587304741,
+            lon: 55.5544806754509,
+            name: "name",
+          })}
           <LineUnderConstruction
             stops={getLineUnderConstruction().stops}
             leafletMap={initialiseMap("map-container", false)}
