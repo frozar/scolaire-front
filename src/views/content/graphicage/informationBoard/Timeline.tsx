@@ -9,6 +9,7 @@ function TimelineItem(props: TimelineItemType) {
     <div class="v-timeline-item">
       <div class="v-timeline-item__body">
         <div class="d-flex">
+          <div class="me-4">00</div>
           <div>
             <strong>{props.name}</strong>
           </div>
