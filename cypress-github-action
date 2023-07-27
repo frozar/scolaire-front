@@ -6,6 +6,5 @@ script_directory=$(dirname $(readlink -f $0))
 cd "${script_directory}/cypress"
 
 docker-compose build
-docker-compose up -d
-docker-compose exec cypress npm run cypress-test
+docker-compose run cypress npm run cypress-test
 docker-compose down
