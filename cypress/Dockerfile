@@ -38,3 +38,4 @@ WORKDIR /code
 COPY ./package.json .
 COPY ./package-lock.json .
 RUN npm install --force
+CMD ["tail", "-f", "/dev/null"]
