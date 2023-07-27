@@ -24,7 +24,7 @@ describe("Line component", () => {
             "map-container",
             50,
             -20.9486587304741,
-            55.5344806754509
+            55.5544806754509
           )}
           <LineUnderConstruction
             stops={getLineUnderConstruction().stops}
@@ -34,8 +34,8 @@ describe("Line component", () => {
       );
     });
 
-    cy.get(".map-point").eq(0).click();
-    cy.get(".map-point").eq(1).click();
+    cy.get("#map-container").find(".map-point").eq(0).click({ force: true });
+    cy.get("#map-container").find(".map-point").eq(1).click({ force: true });
 
     cy.get("#map-container").compareSnapshot("default", 0.01);
   });
