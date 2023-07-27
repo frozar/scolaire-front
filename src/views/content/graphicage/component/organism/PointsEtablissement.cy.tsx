@@ -1,6 +1,6 @@
 import "leaflet/dist/leaflet.css";
 import { initialiseMap } from "../../../../../../testing/utils/mapWrapper";
-import PointEtablissement from "./PointsEtalissement";
+import PointEtablissement from "./PointsEtablissement";
 
 describe("PointsEtablissement component", () => {
   beforeEach(() => {
