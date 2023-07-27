@@ -84,16 +84,14 @@ export function createPointRamassage(
   lat: number,
   lon: number
 ) {
+  const point = createPoint(1, idPoint, lat, lon, "name", 5);
   return (
     <PointRamassage
+      point={point}
       quantity={6}
       minQuantity={1}
       maxQuantity={25}
-      idPoint={idPoint}
-      lat={lat}
-      lon={lon}
       isLast={false}
-      isBlinking={false}
       map={initialiseMap(fullId)}
       onIsLast={() => console.log("onIsLast")}
       onClick={() =>
