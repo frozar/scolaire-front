@@ -62,6 +62,7 @@ function PointBack2Front<T extends PointEtablissementDBType>(
 export interface PointsEtablissementProps {
   map: L.Map;
   mapID: number;
+  items?: PointInterface[];
 }
 
 export const [etablissements, setEtablissement] = createSignal<
@@ -78,9 +79,15 @@ export const addBlinking = (id: number) => {
 
 export default function (props: PointsEtablissementProps) {
   onMount(async () => {
-    const etablissements = PointBack2Front(
-      await fetchSchool(props.mapID)
-    ) as PointEtablissementType[];
+    let etablissements;
+
+    if (!props.items) {
+      etablissements = PointBack2Front(
+        await fetchSchool(props.mapID)
+      ) as PointEtablissementType[];
+    } else {
+      etablissements = props.items;
+    }
     setEtablissement(etablissements);
     setPointsEtablissementReady(true);
   });
