@@ -55,7 +55,6 @@ export default function () {
       </Show>
 
       <Show when={lineUnderConstructionStopNames().length != 0}>
-        {/* <Timeline stopNames={lineUnderConstructionStopNames()} /> */}
         <Timeline point={lineUnderConstructionStopNames()} />
       </Show>
     </>

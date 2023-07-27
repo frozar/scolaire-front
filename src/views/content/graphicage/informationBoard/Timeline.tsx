@@ -1,6 +1,6 @@
 import { For } from "solid-js";
 
-export type TimelineItemType = {
+type TimelineItemType = {
   name: string;
   quantity: number;
 };
@@ -28,15 +28,8 @@ function TimelineItem(props: TimelineItemType) {
     </div>
   );
 }
-// TODO: Rename
-// export default function (props: TimelineItemType[]) {
-export default function (props: {
-  point: { name: string; quantity: number }[];
-}) {
-  // TODO: Delete
-  // const [local] = splitProps(props, ["stopNames"]);
-  console.log("props=> ", props);
 
+export default function (props: { point: TimelineItemType[] }) {
   return (
     <div class="timeline">
       <div

@@ -279,13 +279,6 @@ export default function () {
             onChange={handleColorChanged}
           />
 
-          {/* <Timeline stopNames={selectedBusLineStopNames()} /> */}
-          {/* <Timeline
-            point={[
-              { name: "test", quantity: 5 },
-              { name: "test2", quantity: 10 },
-            ]}
-          /> */}
           <Timeline point={selectedBusLineToTimeline()} />
         </Match>
         <Match when={isInAddLineMode()}>
