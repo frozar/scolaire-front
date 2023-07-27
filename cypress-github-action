@@ -5,5 +5,6 @@ echo "****** Launch test *********"
 script_directory=$(dirname $(readlink -f $0))
 cd $script_directory
 
-docker build -t cypress:latest -f cypress/Dockerfile .
-docker run cypress:latest
+docker-compose build
+docker-compose up
+docker-compose exec npm run cypress-test
