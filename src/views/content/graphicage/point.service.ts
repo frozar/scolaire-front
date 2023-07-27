@@ -74,6 +74,8 @@ export async function fetchEleveVersEtablissement(mapId: number) {
 
   if (!manageStatusCode(response)) return;
   const json = await response.json();
+  console.log("json", json);
+
   return json.content;
 }
 
