@@ -54,7 +54,6 @@ export default function (props: PointProps) {
         .get(props.point.idPoint)
         ?.getElement() as HTMLElement;
 
-      console.log("Point");
       if (element) {
         element.style.setProperty("--stroke-color", props.borderColor);
       }
