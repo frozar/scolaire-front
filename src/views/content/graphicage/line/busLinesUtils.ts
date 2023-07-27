@@ -487,6 +487,7 @@ export function fetchBusLines() {
           }
         }
         if (isInAddLineMode()) {
+          setBusLines([]);
           return [];
         }
 

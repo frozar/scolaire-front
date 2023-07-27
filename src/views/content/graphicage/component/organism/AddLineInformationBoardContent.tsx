@@ -5,7 +5,7 @@ import { lineUnderConstructionStopNames } from "../../line/busLinesUtils";
 export default function () {
   return (
     <>
-      <p>AddLineInformationBoardContent</p>
+      <p>Création d'une ligne</p>
       <Show when={lineUnderConstructionStopNames().length != 0}>
         <Timeline stopNames={lineUnderConstructionStopNames()} />
       </Show>

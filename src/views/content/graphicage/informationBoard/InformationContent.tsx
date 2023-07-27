@@ -269,14 +269,8 @@ export default function () {
 
           <Timeline stopNames={selectedBusLineStopNames()} />
         </Match>
-        <Match
-          when={
-            isInAddLineMode()
-            // && lineUnderConstructionStopNames().length != 0
-          }
-        >
+        <Match when={isInAddLineMode()}>
           <AddLineInformationBoardContent />
-          {/* <Timeline stopNames={lineUnderConstructionStopNames()} /> */}
         </Match>
       </Switch>
     </div>
