@@ -31,7 +31,6 @@ function getMyMap() {
 export const RamassagePoints: Story = {
   render: (props: RamassagePointsProps) => {
     const div = document.getElementById("map-container");
-    // const map = initialiseMap("map-container");
     if (div) {
       div.remove();
     }
@@ -40,7 +39,6 @@ export const RamassagePoints: Story = {
       <div id="map-container" style={{ width: "100%", height: "500px" }}>
         <RamassagePointsComponent
           {...props}
-          // map={map}
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           map={getMyMap()}

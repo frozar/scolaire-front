@@ -7,7 +7,6 @@ describe("RamassagePoints component", () => {
     cy.intercept("/dashboard/ramassage", (req) => {
       req.reply({ status: 200, body: { message: "Mocked API response" } });
     });
-    // cy.fixture()
     cy.mount(() => (
       <div id="map-container" style={{ width: "100%", height: "500px" }}>
         <RamassagePoints

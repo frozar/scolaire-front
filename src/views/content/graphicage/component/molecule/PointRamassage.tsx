@@ -28,8 +28,6 @@ const minRadius = 5;
 const maxRadius = 10;
 const rangeRadius = maxRadius - minRadius;
 
-// const [radius, setRadius] = createSignal(5);
-
 export default function (props: PointRamassageProps) {
   createEffect(() => {
     blinkingStopPoint();
@@ -43,7 +41,6 @@ export default function (props: PointRamassageProps) {
       element.classList.remove("circle-animation");
     }
   });
-  // console.log("debut PointRamassage.tsx");
 
   createEffect(() => {
     if (props.quantity && props.maxQuantity && props.minQuantity) {
@@ -71,7 +68,6 @@ export default function (props: PointRamassageProps) {
       isBlinking={blinkingStopPoint().includes(props.point.idPoint)}
       borderColor="red"
       fillColor="white"
-      // radius={props.point.radius()}
       radius={radiusValue}
       weight={4}
     />

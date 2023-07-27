@@ -56,29 +56,6 @@ function PointBack2FrontIdPoint(
   return dataWk;
 }
 
-// function PointBack2Front<T extends PointRamassageDBType>(
-//   datas: T[]
-// ): PointRamassageType[] {
-//   return (
-//     datas
-//       // Rename "id_point" -> "idPoint"
-//       .map((data) => PointBack2FrontIdPoint(data))
-//       // Add signal "selected"
-//       .map((data) => {
-//         const [selected, setSelected] = createSignal(false);
-//         const [associatedPoints, setAssociatedPoints] = createSignal<
-//           PointIdentityType[]
-//         >([]);
-//         return {
-//           ...data,
-//           selected,
-//           setSelected,
-//           associatedPoints,
-//           setAssociatedPoints,
-//         } as PointRamassageType;
-//       })
-//   );
-// }
 function PointBack2Front<T extends PointRamassageDBType>(
   datas: T[]
 ): PointRamassageType[] {
@@ -161,23 +138,7 @@ export default function (props: RamassagePointsProps) {
   function onDBLClick(event: LeafletMouseEvent) {
     L.DomEvent.stopPropagation(event);
   }
-  // TODO: Change
-  // const onMouseOver = (point: PointRamassageType) => {
-  //   console.log("mouseOver");
-  //   for (const associatedPoint of point.associatedPoints()) {
-  //     console.log("associatedPoint", associatedPoint);
 
-  //     const element = linkMap.get(associatedPoint.idPoint)?.getElement();
-  //     const { nature } = associatedPoint;
-  //     const className =
-  //       nature === NatureEnum.etablissement
-  //         ? "circle-animation-ramassage"
-  //         : "circle-animation-etablissement";
-  //     if (element) {
-  //       element.classList.add(className);
-  //     }
-  //   }
-  // };
   const onMouseOver = (point: PointRamassageType) => {
     for (const associatedPoint of point.associatedPoints()) {
       addBlinking(associatedPoint.idPoint);
@@ -185,21 +146,6 @@ export default function (props: RamassagePointsProps) {
     console.log(blinkingStopPoint());
   };
 
-  // TODO: Change
-  // const onMouseOut = (point: PointRamassageType) => {
-  //   for (const associatedPoint of point.associatedPoints()) {
-  //     const element = linkMap.get(associatedPoint.idPoint)?.getElement();
-  //     const { nature } = associatedPoint;
-  //     const className =
-  //       nature === NatureEnum.etablissement
-  //         ? "circle-animation-ramassage"
-  //         : "circle-animation-etablissement";
-
-  //     if (element) {
-  //       element.classList.remove(className);
-  //     }
-  //   }
-  // };
   const onMouseOut = () => {
     setBlinkingStopPoint([]);
   };

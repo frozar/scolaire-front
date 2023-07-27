@@ -23,6 +23,7 @@ const initMap = (idDiv: string, withTiles: boolean) => {
 
   return newMap;
 };
+
 export const initialiseMap = (idDiv: string, withTiles = true) => {
   const map = mapTabs.filter((m) => m.idDiv === idDiv)[0];
 

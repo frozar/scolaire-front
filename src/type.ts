@@ -24,8 +24,6 @@ export type PointRamassageType = {
   lat: number;
   name: string;
   quantity: number;
-  // radius: Accessor<number>;
-  // setRadius: Setter<number>;
   selected: Accessor<boolean>;
   setSelected: Setter<boolean>;
   associatedPoints: Accessor<PointIdentityType[]>;
