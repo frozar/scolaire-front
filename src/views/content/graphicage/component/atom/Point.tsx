@@ -15,11 +15,13 @@ export type PointIdentityType = {
   idPoint: number;
 };
 
-export interface PointInterface extends PointIdentityType {
+export interface PointInformation extends PointIdentityType {
   lon: number;
   lat: number;
   name: string;
-  quantity: number;
+  quantity?: number;
+}
+export interface PointInterface extends PointInformation {
   selected: Accessor<boolean>;
   setSelected: Setter<boolean>;
   associatedPoints: Accessor<PointIdentityType[]>;
