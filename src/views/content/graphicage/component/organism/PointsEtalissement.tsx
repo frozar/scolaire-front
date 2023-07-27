@@ -3,8 +3,10 @@ import { For, createSignal, onMount } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import { NatureEnum, PointEtablissementType } from "../../../../../type";
 import { linkMap } from "../../Point";
-import { PointEtablissementDBType } from "../../PointsRamassageAndEtablissement";
-import { setPointsEtablissementReady } from "../../PointsRamassageAndEtablissement.working";
+import {
+  PointEtablissementDBType,
+  setPointsEtablissementReady,
+} from "../../PointsRamassageAndEtablissement";
 import { renderAnimation } from "../../animation";
 import { deselectAllBusLines } from "../../line/busLinesUtils";
 import { fetchSchool } from "../../point.service";

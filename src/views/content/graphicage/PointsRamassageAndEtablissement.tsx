@@ -26,7 +26,7 @@ const [, { getActiveMapId }] = useStateGui();
 export const [pointsReady, setPointsReady] = createSignal(false);
 
 const [pointsRamassageReady, setPointsRamassageReady] = createSignal(false);
-const [pointsEtablissementReady, setPointsEtablissementReady] =
+export const [pointsEtablissementReady, setPointsEtablissementReady] =
   createSignal(false);
 
 createEffect(() => {
