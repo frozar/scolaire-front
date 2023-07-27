@@ -27,8 +27,22 @@ export const PointeEtablissement: Story = {
         map={initialiseMap(fullId)}
         mapID={2}
         items={[
-          createPoint(1, 50, -20.9466588303741, 55.5343806753509, "name", 5),
-          createPoint(2, 51, -20.9466588303741, 55.5343806753519, "name", 5),
+          createPoint({
+            id: 1,
+            idPoint: 1,
+            lat: -20.9466588303741,
+            lon: 55.5343806753509,
+            name: "name",
+            quantity: 5,
+          }),
+          createPoint({
+            id: 1,
+            idPoint: 1,
+            lat: -20.9466588303741,
+            lon: 55.5343806753519,
+            name: "name",
+            quantity: 5,
+          }),
         ]}
       />
     );

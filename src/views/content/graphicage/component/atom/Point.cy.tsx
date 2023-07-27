@@ -17,14 +17,14 @@ describe("Point component", () => {
     cy.mount(() => (
       <div id="map-container" style={{ width: "100%", height: "500px" }}>
         <Point
-          point={createPoint(
-            1,
-            1,
-            -20.9466588303741,
-            55.5343806753509,
-            "name",
-            5
-          )}
+          point={createPoint({
+            id: 1,
+            idPoint: 1,
+            lat: -20.9466588303741,
+            lon: 55.5343806753509,
+            name: "name",
+            quantity: 5,
+          })}
           map={initialiseMap("map-container", false)}
           onIsLast={onIsLastSpied}
           isLast={false}
@@ -54,14 +54,14 @@ describe("Point component", () => {
       <div id="map-container" style={{ width: "100%", height: "500px" }}>
         <Point
           map={initialiseMap("map-container", false)}
-          point={createPoint(
-            1,
-            1,
-            -20.9466588303742,
-            55.5343806753508,
-            "name",
-            5
-          )}
+          point={createPoint({
+            id: 1,
+            idPoint: 1,
+            lat: -20.9466588303742,
+            lon: 55.5343806753508,
+            name: "name",
+            quantity: 5,
+          })}
           onIsLast={onIsLastSpied}
           isLast={false}
           onClick={() => console.log("onClick")}
@@ -89,14 +89,14 @@ describe("Point component", () => {
     cy.mount(() => (
       <div id="map-container" style={{ width: "100%", height: "500px" }}>
         <Point
-          point={createPoint(
-            1,
-            1,
-            -20.9466588303742,
-            55.5343806753508,
-            "name",
-            5
-          )}
+          point={createPoint({
+            id: 1,
+            idPoint: 1,
+            lat: -20.9466588303742,
+            lon: 55.5343806753508,
+            name: "name",
+            quantity: 5,
+          })}
           map={initialiseMap("map-container", false)}
           onIsLast={onIsLastSpied}
           isLast={true}

@@ -12,14 +12,14 @@ describe("StopPoint component", () => {
     cy.mount(() => (
       <div id="map-container" style={{ width: "100%", height: "500px" }}>
         <PointRamassage
-          point={createPoint(
-            1,
-            1,
-            -20.9466588303741,
-            55.5343806753509,
-            "name",
-            5
-          )}
+          point={createPoint({
+            id: 1,
+            idPoint: 1,
+            lat: -20.9466588303741,
+            lon: 55.5343806753509,
+            name: "name",
+            quantity: 5,
+          })}
           map={initialiseMap("map-container", false)}
           isLast={false}
           quantity={6}
@@ -36,18 +36,19 @@ describe("StopPoint component", () => {
 
     cy.get("#map-container").compareSnapshot("stopPoint", 0.01);
   });
+
   it("StopPoint snapshot 2", () => {
     cy.mount(() => (
       <div id="map-container" style={{ width: "100%", height: "500px" }}>
         <PointRamassage
-          point={createPoint(
-            1,
-            1,
-            -20.9466588303741,
-            55.5343806753509,
-            "name",
-            5
-          )}
+          point={createPoint({
+            id: 1,
+            idPoint: 1,
+            lat: -20.9466588303741,
+            lon: 55.5343806753509,
+            name: "name",
+            quantity: 5,
+          })}
           map={initialiseMap("map-container", false)}
           isLast={false}
           quantity={45}

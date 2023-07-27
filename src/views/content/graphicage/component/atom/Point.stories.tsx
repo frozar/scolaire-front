@@ -25,14 +25,14 @@ export const PointStories: Story = {
 
     return (
       <PointComponent
-        point={createPoint(
-          1,
-          50,
-          -20.9466588303741,
-          55.5343806753509,
-          "name",
-          5
-        )}
+        point={createPoint({
+          id: 1,
+          idPoint: 50,
+          lat: -20.9466588303741,
+          lon: 55.5343806753509,
+          name: "name",
+          quantity: 5,
+        })}
         map={initialiseMap(fullId)}
         isBlinking={false}
         weight={4}
@@ -56,14 +56,14 @@ export const PointStories2: Story = {
 
     return (
       <PointComponent
-        point={createPoint(
-          1,
-          50,
-          -20.9466588303741,
-          55.5343806753519,
-          "name",
-          5
-        )}
+        point={createPoint({
+          id: 1,
+          idPoint: 50,
+          lat: -20.9466588303741,
+          lon: 55.5343806753519,
+          name: "name",
+          quantity: 5,
+        })}
         map={initialiseMap(fullId)}
         isBlinking={false}
         weight={4}

@@ -24,14 +24,14 @@ export const PointRamassage: Story = {
 
     return (
       <PointRamassageComponent
-        point={createPoint(
-          1,
-          50,
-          -20.9466588303741,
-          55.5343806753509,
-          "name",
-          5
-        )}
+        point={createPoint({
+          id: 1,
+          idPoint: 1,
+          lat: -20.9466588303741,
+          lon: 55.5343806753509,
+          name: "name",
+          quantity: 5,
+        })}
         map={initialiseMap(fullId)}
         onClick={() => console.log("onClick")}
         onIsLast={() => console.log("onIsLast")}
