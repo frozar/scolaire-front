@@ -572,20 +572,20 @@ export const getSelectedBusLineId = (): number | undefined => {
   return selectedBusLine.idBusLine;
 };
 // Affichage du total de quantity
-// export function getTimelineInfos(
-//   busLine: LineUnderConstructionType
-// ): TimelineItemType[] {
-//   const stopIds = busLine.stops.map((stop) => stop.idPoint);
-//   console.log("signal points", points());
+export function getTimelineInfosOld(
+  busLine: LineUnderConstructionType
+): TimelineItemType[] {
+  const stopIds = busLine.stops.map((stop) => stop.idPoint);
+  console.log("signal points", points());
 
-//   return stopIds.map((stopId) => {
-//     return {
-//       name: points().filter((point) => point.idPoint === stopId)[0].name,
-//       quantity: points().filter((point) => point.idPoint === stopId)[0]
-//         .quantity,
-//     };
-//   });
-// }
+  return stopIds.map((stopId) => {
+    return {
+      name: points().filter((point) => point.idPoint === stopId)[0].name,
+      quantity: points().filter((point) => point.idPoint === stopId)[0]
+        .quantity,
+    };
+  });
+}
 // TODO: Déplacer où ?
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const [testData, setTestData] = createSignal<EleveVersEtablissementType[]>(
@@ -637,7 +637,7 @@ export const selectedBusLineInfos = (): TimelineItemType[] => {
 };
 
 export const lineUnderConstructionInfos = () => {
-  return getTimelineInfos(getLineUnderConstruction());
+  return getTimelineInfosOld(getLineUnderConstruction());
 };
 
 function getStopNames(busLine: LineUnderConstructionType) {
