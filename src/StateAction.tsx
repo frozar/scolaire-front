@@ -3,13 +3,17 @@ import { JSXElement, createContext, useContext } from "solid-js";
 import { createStore } from "solid-js/store";
 import { createHistory, record } from "solid-record";
 
+import { setUserInformations } from "./signaux";
 import {
-  PointIdentityType,
-  ModeEnum,
   LineUnderConstructionType,
   MessageTypeEnum,
+  ModeEnum,
+  PointIdentityType,
 } from "./type";
-import { setUserInformations } from "./signaux";
+
+import { useStateGui } from "./StateGui";
+
+const [, { setDisplayedInformationBoard }] = useStateGui();
 
 const history = createHistory();
 
@@ -107,6 +111,7 @@ const makeStateActionContext = () => {
   }
 
   function setModeAddLine() {
+    setDisplayedInformationBoard(true);
     changeMode(ModeEnum.addLine);
   }
 
