@@ -30,6 +30,7 @@ function defaultLineUnderConstruction() {
     idBusLine: -1,
     color: "#000000",
     stops: [],
+    etablissementSelected: undefined,
   };
 }
 

@@ -1,5 +1,6 @@
 import { For, createEffect, createSignal, onCleanup, onMount } from "solid-js";
 
+import { useStateAction } from "../../../StateAction";
 import { useStateGui } from "../../../StateGui";
 import {
   points,
@@ -23,10 +24,12 @@ import {
 
 const [, { getActiveMapId }] = useStateGui();
 
+const [, { isInAddLineMode, getLineUnderConstruction }] = useStateAction();
+
 export const [pointsReady, setPointsReady] = createSignal(false);
 
 const [pointsRamassageReady, setPointsRamassageReady] = createSignal(false);
-export const [pointsEtablissementReady, setPointsEtablissementReady] =
+const [pointsEtablissementReady, setPointsEtablissementReady] =
   createSignal(false);
 
 createEffect(() => {
@@ -35,7 +38,7 @@ createEffect(() => {
   }
 });
 
-export type PointRamassageDBType = {
+type PointRamassageDBType = {
   id: number;
   id_point: number;
   nature: NatureEnum;
@@ -45,7 +48,7 @@ export type PointRamassageDBType = {
   quantity: number;
 };
 
-export type PointEtablissementDBType = PointRamassageDBType;
+type PointEtablissementDBType = PointRamassageDBType;
 
 type PointRamassageCoreType = Omit<PointRamassageDBType, "id_point"> & {
   idPoint: number;
@@ -70,7 +73,7 @@ function PointBack2FrontIdPoint(
   return dataWk;
 }
 
-export function PointBack2Front<
+function PointBack2Front<
   T extends PointRamassageDBType | PointEtablissementDBType
 >(
   datas: T[],
@@ -148,21 +151,71 @@ export default function () {
     return Number.isFinite(maxCandidat) ? maxCandidat : 0;
   };
 
+  //TODO move filters to Ramassage or Etablissement point file
   return (
-    <For each={points()}>
-      {(point, i) => {
-        return (
-          <Point
-            point={point}
-            isLast={i() === points().length - 1}
-            nature={point.nature}
-            minQuantity={minQuantity()}
-            maxQuantity={maxQuantity()}
-          />
-        );
-      }}
-    </For>
+    <>
+      <For each={ramassageFilter()}>
+        {(point, i) => {
+          return (
+            <Point
+              point={point}
+              isLast={i() === points().length - 1}
+              nature={point.nature}
+              minQuantity={minQuantity()}
+              maxQuantity={maxQuantity()}
+            />
+          );
+        }}
+      </For>
+      <For each={etablissementFilter()}>
+        {(point, i) => {
+          return (
+            <Point
+              point={point}
+              isLast={i() === points().length - 1}
+              nature={point.nature}
+              minQuantity={minQuantity()}
+              maxQuantity={maxQuantity()}
+            />
+          );
+        }}
+      </For>
+    </>
   );
+}
+
+function etablissementFilter(): PointRamassageType[] {
+  let etablissements = points().filter(
+    (value) => value.nature === NatureEnum.etablissement
+  );
+  if (isInAddLineMode()) {
+    const etablissementsSelected =
+      getLineUnderConstruction().etablissementSelected;
+
+    if (etablissementsSelected) {
+      etablissements = [etablissementsSelected];
+    }
+  }
+
+  return etablissements;
+}
+
+function ramassageFilter(): PointRamassageType[] {
+  const etablissment = getLineUnderConstruction().etablissementSelected;
+
+  let ramassages = points().filter(
+    (value) => value.nature === NatureEnum.ramassage
+  );
+
+  if (isInAddLineMode()) {
+    ramassages = ramassages.filter((value) =>
+      value
+        .associatedPoints()
+        .some((elt) => elt.id === (etablissment ? etablissment.id : -1))
+    );
+  }
+
+  return ramassages;
 }
 
 async function getEleveVersEtablissement() {

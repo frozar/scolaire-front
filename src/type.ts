@@ -55,6 +55,7 @@ export type PointIdentityType = {
 export type LineUnderConstructionType = {
   color: string;
   stops: PointIdentityType[];
+  etablissementSelected?: PointEtablissementType;
 };
 
 export type LineType = LineUnderConstructionType & {

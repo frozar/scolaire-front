@@ -25,6 +25,7 @@ const [
     addPointToLineUnderConstruction,
     getLineUnderConstruction,
     isInAddLineMode,
+    setLineUnderConstruction,
   },
 ] = useStateAction();
 
@@ -115,6 +116,20 @@ export default function (props: {
         if (!isInAddLineMode()) {
           deselectAllBusLines();
           selectPointById(point.idPoint);
+          return;
+        }
+
+        //TODO : move to PointEtablissement in click handler when used
+
+        const etablissementSelected =
+          getLineUnderConstruction().etablissementSelected;
+
+        if (!etablissementSelected) {
+          setLineUnderConstruction({
+            ...getLineUnderConstruction(),
+            etablissementSelected: point,
+          });
+
           return;
         }
 
