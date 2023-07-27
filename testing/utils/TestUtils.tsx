@@ -23,19 +23,19 @@ function onClickHandler(point: PointIdentityType) {
   addPointToLineUnderConstruction(pointIdentity);
 }
 
-export const createPoint = (arg: PointInformation) => {
+export const createPoint = (pointInformation: PointInformation) => {
   const [associatedPoint, setAssociatedPoint] = createSignal<
     PointIdentityType[]
   >([]);
   const [selected, setSelected] = createSignal<boolean>(false);
 
   const point: PointInterface = {
-    id: arg.id,
-    idPoint: arg.idPoint,
-    lat: arg.lat,
-    lon: arg.lon,
-    name: arg.name,
-    quantity: arg.quantity,
+    id: pointInformation.id,
+    idPoint: pointInformation.idPoint,
+    lat: pointInformation.lat,
+    lon: pointInformation.lon,
+    name: pointInformation.name,
+    quantity: pointInformation.quantity,
     associatedPoints: associatedPoint,
     setAssociatedPoints: setAssociatedPoint,
     selected: selected,
@@ -49,26 +49,26 @@ interface PointInformationWithMapID extends PointInformation {
   fullId: string;
 }
 
-export function createPointEtablissement(args: PointInformationWithMapID) {
+export function createPointEtablissement(pointmap: PointInformationWithMapID) {
   const point = createPoint({
     id: 1,
-    idPoint: args.idPoint as number,
-    lat: args.lat,
-    lon: args.lon,
-    name: args.name,
-    quantity: args.quantity,
+    idPoint: pointmap.idPoint as number,
+    lat: pointmap.lat,
+    lon: pointmap.lon,
+    name: pointmap.name,
+    quantity: pointmap.quantity,
   });
 
   return (
     <PointEtablissement
       point={point}
       isLast={false}
-      map={initialiseMap(args.fullId)}
+      map={initialiseMap(pointmap.fullId)}
       onIsLast={() => console.log("onIsLast")}
       onClick={() => {
         onClickHandler({
           id: 50,
-          idPoint: args.idPoint,
+          idPoint: pointmap.idPoint,
           nature: NatureEnum.etablissement,
         });
       }}
@@ -81,14 +81,14 @@ export function createPointEtablissement(args: PointInformationWithMapID) {
   );
 }
 
-export function createPointRamassage(args: PointInformationWithMapID) {
+export function createPointRamassage(pointmap: PointInformationWithMapID) {
   const point = createPoint({
     id: 1,
-    idPoint: args.idPoint,
-    lat: args.lat,
-    lon: args.lon,
-    name: args.name,
-    quantity: args.quantity,
+    idPoint: pointmap.idPoint,
+    lat: pointmap.lat,
+    lon: pointmap.lon,
+    name: pointmap.name,
+    quantity: pointmap.quantity,
   });
   return (
     <PointRamassage
@@ -97,12 +97,12 @@ export function createPointRamassage(args: PointInformationWithMapID) {
       minQuantity={1}
       maxQuantity={25}
       isLast={false}
-      map={initialiseMap(args.fullId)}
+      map={initialiseMap(pointmap.fullId)}
       onIsLast={() => console.log("onIsLast")}
       onClick={() =>
         onClickHandler({
           id: 51,
-          idPoint: args.idPoint,
+          idPoint: pointmap.idPoint,
           nature: NatureEnum.ramassage,
         })
       }
