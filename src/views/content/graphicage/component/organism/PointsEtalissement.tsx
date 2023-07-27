@@ -7,6 +7,7 @@ import {
   PointIdentityType,
 } from "../../../../../type";
 import { linkMap } from "../../Point";
+import { PointEtablissementDBType } from "../../PointsRamassageAndEtablissement";
 import { setPointsEtablissementReady } from "../../PointsRamassageAndEtablissement.working";
 import { renderAnimation } from "../../animation";
 import { deselectAllBusLines } from "../../line/busLinesUtils";
@@ -22,15 +23,6 @@ const [
   },
 ] = useStateAction();
 
-type PointEtablissementDBType = {
-  id: number;
-  id_point: number;
-  lon: number;
-  lat: number;
-  name: string;
-  quantity: number;
-};
-
 type PointEtablissementCoreType = Omit<PointEtablissementDBType, "id_point"> & {
   idPoint: number;
 };
@@ -43,9 +35,6 @@ function PointBack2FrontIdPoint(
     idPoint: data.id_point,
   } as PointEtablissementCoreType & { id_point?: number };
   delete dataWk["id_point"];
-
-  console.assert(dataWk["idPoint"] != undefined, "idPoint is undefined");
-
   return dataWk;
 }
 
