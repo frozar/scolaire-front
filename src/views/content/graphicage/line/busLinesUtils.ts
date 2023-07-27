@@ -18,6 +18,7 @@ import {
 import { authenticateWrap } from "../../../layout/authentication";
 import { deselectAllPoints, linkMap } from "../component/organism/Points";
 import { TimelineItemType } from "../informationBoard/Timeline";
+import { fetchEleveVersEtablissement } from "../point.service";
 import {
   busLines,
   linkBusLinePolyline,
@@ -570,17 +571,76 @@ export const getSelectedBusLineId = (): number | undefined => {
   return selectedBusLine.idBusLine;
 };
 // TODO: Rename
+// export function getTimelineInfos(
+//   busLine: LineUnderConstructionType
+// ): TimelineItemType[] {
+//   const stopIds = busLine.stops.map((stop) => stop.idPoint);
+//   console.log("signal points", points());
+
+//   return stopIds.map((stopId) => {
+//     return {
+//       name: points().filter((point) => point.idPoint === stopId)[0].name,
+//       quantity: points().filter((point) => point.idPoint === stopId)[0]
+//         .quantity,
+//     };
+//   });
+// }
+const [testData, setTestData] = createSignal();
+setTestData(await fetchEleveVersEtablissement(getActiveMapId() as number));
+
 export function getTimelineInfos(
   busLine: LineUnderConstructionType
-): TimelineItemType[] {
+): Promise<TimelineItemType[]> {
   const stopIds = busLine.stops.map((stop) => stop.idPoint);
-  console.log(points());
 
+  // const datas: EleveVersEtablissementType[] = await fetchEleveVersEtablissement(
+  //   getActiveMapId() as number
+  // );
+  console.log("fetch data=>", testData());
+  console.log("selectedBusLine=>", busLine);
+
+  const etablissementId = busLine.stops.filter(
+    (point) => point.nature == NatureEnum.etablissement
+  )[0].idPoint;
+
+  console.log("etablissementId selectioné", etablissementId);
+
+  const quantities = stopIds.map((stopId) => {
+    // const dataFiltered = datas.filter(
+    //   (data) =>
+    //     data.etablissement_id_point == etablissementId &&
+    //     data.ramassage_id_point == stopId
+    // );
+    let quantity = 0;
+    const dataFiltered = testData()
+      .filter(
+        (data) =>
+          data.etablissement_id_point == etablissementId &&
+          data.ramassage_id_point == stopId
+      )
+      .map(
+        (eleve_vers_etablissement) =>
+          (quantity += eleve_vers_etablissement.quantity)
+      );
+    // console.log("dataFiltered", dataFiltered);
+    // let sums: { idPoint: number; quantity: number }[];
+    // dataFiltered.map((data) => sums);
+  });
   return stopIds.map((stopId) => {
+    let quantity = 0;
+    testData()
+      .filter(
+        (data) =>
+          data.etablissement_id_point == etablissementId &&
+          data.ramassage_id_point == stopId
+      )
+      .map(
+        (eleve_vers_etablissement) =>
+          (quantity += eleve_vers_etablissement.quantity)
+      );
     return {
       name: points().filter((point) => point.idPoint === stopId)[0].name,
-      quantity: points().filter((point) => point.idPoint === stopId)[0]
-        .quantity,
+      quantity: quantity,
     };
   });
 }
