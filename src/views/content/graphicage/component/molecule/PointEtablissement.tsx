@@ -1,13 +1,11 @@
 import { LeafletMouseEvent } from "leaflet";
-import Point from "../atom/Point";
+import Point, { PointInterface } from "../atom/Point";
+import { blinkingStopPoint } from "../organism/PointsEtalissement";
 
 export interface PointEtablissementProps {
-  idPoint: number;
-  lat: number;
-  lon: number;
+  point: PointInterface;
   map: L.Map;
   isLast: boolean;
-  isBlinking?: boolean;
 
   onIsLast: () => void;
   onClick: () => void;
@@ -20,6 +18,7 @@ export default function (props: PointEtablissementProps) {
   return (
     <Point
       {...props}
+      isBlinking={blinkingStopPoint().includes(props.point.idPoint)}
       borderColor="green"
       fillColor="white"
       radius={12}

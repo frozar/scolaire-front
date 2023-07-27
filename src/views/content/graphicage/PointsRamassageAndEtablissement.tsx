@@ -26,7 +26,7 @@ const [, { getActiveMapId }] = useStateGui();
 export const [pointsReady, setPointsReady] = createSignal(false);
 
 const [pointsRamassageReady, setPointsRamassageReady] = createSignal(false);
-const [pointsEtablissementReady, setPointsEtablissementReady] =
+export const [pointsEtablissementReady, setPointsEtablissementReady] =
   createSignal(false);
 
 createEffect(() => {
@@ -35,7 +35,7 @@ createEffect(() => {
   }
 });
 
-type PointRamassageDBType = {
+export type PointRamassageDBType = {
   id: number;
   id_point: number;
   nature: NatureEnum;
@@ -45,7 +45,7 @@ type PointRamassageDBType = {
   quantity: number;
 };
 
-type PointEtablissementDBType = PointRamassageDBType;
+export type PointEtablissementDBType = PointRamassageDBType;
 
 type PointRamassageCoreType = Omit<PointRamassageDBType, "id_point"> & {
   idPoint: number;
@@ -66,7 +66,7 @@ function PointBack2FrontIdPoint(
   return dataWk;
 }
 
-function PointBack2Front<
+export function PointBack2Front<
   T extends PointRamassageDBType | PointEtablissementDBType
 >(
   datas: T[],

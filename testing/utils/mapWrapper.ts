@@ -9,7 +9,7 @@ const mapTabs: {
 const initMap = (idDiv: string, withTiles: boolean) => {
   const newMap = L.map(idDiv).setView(
     [-20.9466588303741, 55.5343806753509],
-    15
+    12
   );
 
   if (withTiles) {
