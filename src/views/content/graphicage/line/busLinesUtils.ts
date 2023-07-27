@@ -569,13 +569,14 @@ export const getSelectedBusLineId = (): number | undefined => {
   return selectedBusLine.idBusLine;
 };
 
-function getStopNames(busLine: LineUnderConstructionType) {
-  const stopIds = busLine.stops.map((stop) => stop.idPoint);
-  // TODO: Delete points() when no longer used (replaced by stops and schools)
-  return stopIds.map(
-    (stopId) => points().filter((point) => point.idPoint === stopId)[0].name
-  );
-}
+// function getStopNames(busLine: LineUnderConstructionType) {
+//   const stopIds = busLine.stops.map((stop) => stop.idPoint);
+//   console.log("busLine", busLine);
+//   console.log("points()", points());
+//   return stopIds.map(
+//     (stopId) => points().filter((point) => point.idPoint === stopId)[0].name
+//   );
+// }
 // TODO: Refactor
 // function getStopsQuantity(busLine: LineUnderConstructionType) {
 //   const stopIds = busLine.stops.map((stop) => stop.idPoint);
@@ -619,6 +620,10 @@ export const selectedBusLineToTimeline = () => {
   return getStopInfosToTimeline(selectedBusLine);
 };
 
+// export const lineUnderConstructionStopNames = () => {
+//   return getStopNames(getLineUnderConstruction());
+// };
+
 export const lineUnderConstructionStopNames = () => {
-  return getStopNames(getLineUnderConstruction());
+  return getStopInfosToTimeline(getLineUnderConstruction());
 };

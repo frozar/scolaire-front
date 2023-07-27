@@ -2,6 +2,7 @@ import { Show } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import Button from "../../../../../component/atom/Button";
 import { PointRamassageType } from "../../../../../type";
+import Timeline from "../../informationBoard/Timeline";
 import { lineUnderConstructionStopNames } from "../../line/busLinesUtils";
 import BuildLineButton from "../atom/BuildLineButton";
 import SelectedSchool from "../atom/SelectedSchool";
@@ -52,10 +53,11 @@ export default function () {
       >
         <Button onClick={confirmEtablissementSelection} label="Valider" />
       </Show>
-      {/* TODO: Fix timeline */}
-      {/* <Show when={lineUnderConstructionStopNames().length != 0}>
-        <Timeline stopNames={lineUnderConstructionStopNames()} />
-      </Show> */}
+
+      <Show when={lineUnderConstructionStopNames().length != 0}>
+        {/* <Timeline stopNames={lineUnderConstructionStopNames()} /> */}
+        <Timeline point={lineUnderConstructionStopNames()} />
+      </Show>
     </>
   );
 }
