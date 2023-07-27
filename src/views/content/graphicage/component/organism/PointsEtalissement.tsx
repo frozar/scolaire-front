@@ -102,8 +102,7 @@ export default function (props: PointsEtablissementProps) {
       return;
     }
 
-    // TODO: when add line with an etablissement point the line destroy after next point click
-    // Wait Richard/Hugo finish the line underconstruction
+    // TODO: check how manage line underconstuction with ramassages/etablissement signals
     addPointToLineUnderConstruction({
       id: point.id,
       idPoint: point.idPoint,
