@@ -10,6 +10,7 @@ import {
   setRemoveConfirmation,
 } from "../../../../signaux";
 import {
+  EleveVersEtablissementType,
   LineType,
   LineUnderConstructionType,
   NatureEnum,
@@ -585,12 +586,16 @@ export const getSelectedBusLineId = (): number | undefined => {
 //     };
 //   });
 // }
-const [testData, setTestData] = createSignal();
-setTestData(await fetchEleveVersEtablissement(getActiveMapId() as number));
+// TODO: Déplacer où ?
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const [testData, setTestData] = createSignal<EleveVersEtablissementType[]>(
+  await fetchEleveVersEtablissement(getActiveMapId() as number)
+);
+// setTestData(await fetchEleveVersEtablissement(getActiveMapId() as number));
 
 export function getTimelineInfos(
   busLine: LineUnderConstructionType
-): Promise<TimelineItemType[]> {
+): TimelineItemType[] {
   const stopIds = busLine.stops.map((stop) => stop.idPoint);
 
   // const datas: EleveVersEtablissementType[] = await fetchEleveVersEtablissement(
@@ -605,27 +610,27 @@ export function getTimelineInfos(
 
   console.log("etablissementId selectioné", etablissementId);
 
-  const quantities = stopIds.map((stopId) => {
-    // const dataFiltered = datas.filter(
-    //   (data) =>
-    //     data.etablissement_id_point == etablissementId &&
-    //     data.ramassage_id_point == stopId
-    // );
-    let quantity = 0;
-    const dataFiltered = testData()
-      .filter(
-        (data) =>
-          data.etablissement_id_point == etablissementId &&
-          data.ramassage_id_point == stopId
-      )
-      .map(
-        (eleve_vers_etablissement) =>
-          (quantity += eleve_vers_etablissement.quantity)
-      );
-    // console.log("dataFiltered", dataFiltered);
-    // let sums: { idPoint: number; quantity: number }[];
-    // dataFiltered.map((data) => sums);
-  });
+  // const quantities = stopIds.map((stopId) => {
+  //   // const dataFiltered = datas.filter(
+  //   //   (data) =>
+  //   //     data.etablissement_id_point == etablissementId &&
+  //   //     data.ramassage_id_point == stopId
+  //   // );
+  //   let quantity = 0;
+  //   const dataFiltered = testData()
+  //     .filter(
+  //       (data) =>
+  //         data.etablissement_id_point == etablissementId &&
+  //         data.ramassage_id_point == stopId
+  //     )
+  //     .map(
+  //       (eleve_vers_etablissement) =>
+  //         (quantity += eleve_vers_etablissement.quantity)
+  //     );
+  //   // console.log("dataFiltered", dataFiltered);
+  //   // let sums: { idPoint: number; quantity: number }[];
+  //   // dataFiltered.map((data) => sums);
+  // });
   return stopIds.map((stopId) => {
     let quantity = 0;
     testData()
