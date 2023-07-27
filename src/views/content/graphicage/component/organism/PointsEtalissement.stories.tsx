@@ -1,54 +1,36 @@
 import "leaflet/dist/leaflet.css";
 import { Meta, StoryObj } from "storybook-solidjs";
 
-import { createSignal } from "solid-js";
+import {
+  Mapdecorators,
+  createPoint,
+  getDivFullId,
+} from "../../../../../../testing/utils/TestUtils";
 import { initialiseMap } from "../../../../../../testing/utils/mapWrapper";
-import PointsEtablissementComponent, {
-  PointsEtablissementProps,
-} from "./PointsEtalissement";
+import PointsEtablissementComponent from "./PointsEtalissement";
 
 const meta = {
   component: PointsEtablissementComponent,
   tags: ["autodocs"],
+  decorators: Mapdecorators,
 } satisfies Meta<typeof PointsEtablissementComponent>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const [myMap, setMyMap] = createSignal<L.Map>();
-
-function getMyMap() {
-  if (!myMap()) {
-    const returnedMap = initialiseMap("map-container");
-    setMyMap(returnedMap);
-    return returnedMap;
-  } else {
-    return myMap();
-  }
-}
-
-export const PointRamassage: Story = {
-  render: (props: PointsEtablissementProps) => {
-    const div = document.getElementById("map-container");
-    console.log("div:", div);
-
-    if (div) {
-      div.remove();
-    }
+export const PointeEtablissement: Story = {
+  render: (props: null, options) => {
+    const fullId = getDivFullId(options);
 
     return (
-      <div id="map-container" style={{ width: "100%", height: "500px" }}>
-        <PointsEtablissementComponent
-          {...props}
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          map={getMyMap()}
-        />
-      </div>
+      <PointsEtablissementComponent
+        map={initialiseMap(fullId)}
+        mapID={2}
+        items={[
+          createPoint(1, 50, -20.9466588303741, 55.5343806753509, "name", 5),
+          createPoint(2, 51, -20.9466588303741, 55.5343806753519, "name", 5),
+        ]}
+      />
     );
-  },
-
-  args: {
-    mapID: 2,
   },
 };
