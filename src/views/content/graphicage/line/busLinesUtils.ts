@@ -17,6 +17,7 @@ import {
 } from "../../../../type";
 import { authenticateWrap } from "../../../layout/authentication";
 import { deselectAllPoints, linkMap } from "../component/organism/Points";
+import { TimelineItemType } from "../informationBoard/Timeline";
 import {
   busLines,
   linkBusLinePolyline,
@@ -568,10 +569,10 @@ export const getSelectedBusLineId = (): number | undefined => {
 
   return selectedBusLine.idBusLine;
 };
-
-// TODO: Refactor
 // TODO: Rename
-export function getTimelineInfos(busLine: LineUnderConstructionType) {
+export function getTimelineInfos(
+  busLine: LineUnderConstructionType
+): TimelineItemType[] {
   const stopIds = busLine.stops.map((stop) => stop.idPoint);
   return stopIds.map((stopId) => {
     return {
@@ -581,8 +582,8 @@ export function getTimelineInfos(busLine: LineUnderConstructionType) {
     };
   });
 }
-// TODO: Typer ?
-export const selectedBusLineToTimeline = () => {
+
+export const selectedBusLineInfos = (): TimelineItemType[] => {
   const selectedBusLine = getSelectedBusLine();
 
   if (!selectedBusLine) {
@@ -592,10 +593,18 @@ export const selectedBusLineToTimeline = () => {
   return getTimelineInfos(selectedBusLine);
 };
 
-// export const lineUnderConstructionStopNames = () => {
-//   return getStopNames(getLineUnderConstruction());
-// };
+export const lineUnderConstructionInfos = () => {
+  return getTimelineInfos(getLineUnderConstruction());
+};
+
+function getStopNames(busLine: LineUnderConstructionType) {
+  const stopIds = busLine.stops.map((stop) => stop.idPoint);
+
+  return stopIds.map(
+    (stopId) => points().filter((point) => point.idPoint === stopId)[0].name
+  );
+}
 
 export const lineUnderConstructionStopNames = () => {
-  return getTimelineInfos(getLineUnderConstruction());
+  return getStopNames(getLineUnderConstruction());
 };

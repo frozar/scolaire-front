@@ -25,7 +25,7 @@ import {
 import {
   getSelectedBusLine,
   getSelectedBusLineId,
-  selectedBusLineToTimeline,
+  selectedBusLineInfos,
 } from "../line/busLinesUtils";
 import InfoPointName from "./InfoPointName";
 import Timeline from "./Timeline";
@@ -279,7 +279,7 @@ export default function () {
             onChange={handleColorChanged}
           />
 
-          <Timeline point={selectedBusLineToTimeline()} />
+          <Timeline point={selectedBusLineInfos()} />
         </Match>
         <Match when={isInAddLineMode()}>
           <AddLineInformationBoardContent />

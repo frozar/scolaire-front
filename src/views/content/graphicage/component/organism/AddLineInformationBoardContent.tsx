@@ -3,7 +3,10 @@ import { useStateAction } from "../../../../../StateAction";
 import Button from "../../../../../component/atom/Button";
 import { PointRamassageType } from "../../../../../type";
 import Timeline from "../../informationBoard/Timeline";
-import { lineUnderConstructionStopNames } from "../../line/busLinesUtils";
+import {
+  lineUnderConstructionInfos,
+  lineUnderConstructionStopNames,
+} from "../../line/busLinesUtils";
 import BuildLineButton from "../atom/BuildLineButton";
 import SelectedSchool from "../atom/SelectedSchool";
 
@@ -54,8 +57,11 @@ export default function () {
         <Button onClick={confirmEtablissementSelection} label="Valider" />
       </Show>
 
-      <Show when={lineUnderConstructionStopNames().length != 0}>
-        <Timeline point={lineUnderConstructionStopNames()} />
+      {/* <Show when={lineUnderConstructionStopNames().length != 0}> */}
+      {/* <Timeline point={lineUnderConstructionStopNames()} /> */}
+      <p>Création d'une ligne</p>
+      <Show when={lineUnderConstructionInfos().length != 0}>
+        <Timeline point={lineUnderConstructionInfos()} />
       </Show>
     </>
   );

@@ -1,6 +1,6 @@
 import { For } from "solid-js";
 
-type TimelineItemType = {
+export type TimelineItemType = {
   name: string;
   quantity: number;
 };
