@@ -31,6 +31,18 @@ const rangeRadius = maxRadius - minRadius;
 // const [radius, setRadius] = createSignal(5);
 
 export default function (props: PointRamassageProps) {
+  createEffect(() => {
+    blinkingStopPoint();
+
+    const element = linkMap.get(props.point.idPoint)?.getElement();
+    if (!element) return;
+
+    if (blinkingStopPoint().includes(props.point.idPoint)) {
+      element.classList.add("circle-animation");
+    } else {
+      element.classList.remove("circle-animation");
+    }
+  });
   // console.log("debut PointRamassage.tsx");
 
   createEffect(() => {
