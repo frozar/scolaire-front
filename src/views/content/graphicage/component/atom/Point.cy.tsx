@@ -1,5 +1,6 @@
 import "leaflet/dist/leaflet.css";
 
+import { createPoint } from "../../../../../../testing/utils/TestUtils";
 import { initialiseMap } from "../../../../../../testing/utils/mapWrapper";
 import Point from "./Point";
 
@@ -16,11 +17,16 @@ describe("Point component", () => {
     cy.mount(() => (
       <div id="map-container" style={{ width: "100%", height: "500px" }}>
         <Point
+          point={createPoint(
+            1,
+            1,
+            -20.9466588303741,
+            55.5343806753509,
+            "name",
+            5
+          )}
           map={initialiseMap("map-container", false)}
-          idPoint={1}
           onIsLast={onIsLastSpied}
-          lat={-20.9466588303741}
-          lon={55.5343806753509}
           isLast={false}
           onClick={voidFunction}
           borderColor="green"
@@ -48,10 +54,15 @@ describe("Point component", () => {
       <div id="map-container" style={{ width: "100%", height: "500px" }}>
         <Point
           map={initialiseMap("map-container", false)}
-          idPoint={1}
+          point={createPoint(
+            1,
+            1,
+            -20.9466588303742,
+            55.5343806753508,
+            "name",
+            5
+          )}
           onIsLast={onIsLastSpied}
-          lat={-20.9466588303742}
-          lon={55.5343806753508}
           isLast={false}
           onClick={() => console.log("onClick")}
           borderColor="red"
@@ -78,11 +89,16 @@ describe("Point component", () => {
     cy.mount(() => (
       <div id="map-container" style={{ width: "100%", height: "500px" }}>
         <Point
+          point={createPoint(
+            1,
+            1,
+            -20.9466588303742,
+            55.5343806753508,
+            "name",
+            5
+          )}
           map={initialiseMap("map-container", false)}
-          idPoint={1}
           onIsLast={onIsLastSpied}
-          lat={-20.9466588303742}
-          lon={55.5343806753508}
           isLast={true}
           onClick={voidFunction}
           borderColor="green"
