@@ -7,4 +7,4 @@ cd $script_directory
 
 docker-compose build
 docker-compose up
-docker-compose exec npm run cypress-test
+docker-compose exec cypress npm run cypress-test
