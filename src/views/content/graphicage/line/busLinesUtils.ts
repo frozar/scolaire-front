@@ -571,7 +571,7 @@ export const getSelectedBusLineId = (): number | undefined => {
 
   return selectedBusLine.idBusLine;
 };
-// TODO: Rename
+// Affichage du total de quantity
 // export function getTimelineInfos(
 //   busLine: LineUnderConstructionType
 // ): TimelineItemType[] {
@@ -598,9 +598,6 @@ export function getTimelineInfos(
 ): TimelineItemType[] {
   const stopIds = busLine.stops.map((stop) => stop.idPoint);
 
-  // const datas: EleveVersEtablissementType[] = await fetchEleveVersEtablissement(
-  //   getActiveMapId() as number
-  // );
   console.log("fetch data=>", testData());
   console.log("selectedBusLine=>", busLine);
 
@@ -610,27 +607,6 @@ export function getTimelineInfos(
 
   console.log("etablissementId selectioné", etablissementId);
 
-  // const quantities = stopIds.map((stopId) => {
-  //   // const dataFiltered = datas.filter(
-  //   //   (data) =>
-  //   //     data.etablissement_id_point == etablissementId &&
-  //   //     data.ramassage_id_point == stopId
-  //   // );
-  //   let quantity = 0;
-  //   const dataFiltered = testData()
-  //     .filter(
-  //       (data) =>
-  //         data.etablissement_id_point == etablissementId &&
-  //         data.ramassage_id_point == stopId
-  //     )
-  //     .map(
-  //       (eleve_vers_etablissement) =>
-  //         (quantity += eleve_vers_etablissement.quantity)
-  //     );
-  //   // console.log("dataFiltered", dataFiltered);
-  //   // let sums: { idPoint: number; quantity: number }[];
-  //   // dataFiltered.map((data) => sums);
-  // });
   return stopIds.map((stopId) => {
     let quantity = 0;
     testData()
