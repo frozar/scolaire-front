@@ -1,8 +1,9 @@
 import { LeafletMouseEvent } from "leaflet";
-import { Component } from "solid-js";
+import { Component, createSignal } from "solid-js";
 import { StoryContext } from "storybook-solidjs";
 import { useStateAction } from "../../src/StateAction";
 import { NatureEnum, PointIdentityType } from "../../src/type";
+import { PointInterface } from "../../src/views/content/graphicage/component/atom/Point";
 import PointEtablissement from "../../src/views/content/graphicage/component/molecule/PointEtablissement";
 import PointRamassage from "../../src/views/content/graphicage/component/molecule/PointRamassage";
 import { initialiseMap } from "./mapWrapper";
@@ -18,19 +19,47 @@ function onClickHandler(point: PointIdentityType) {
 
   addPointToLineUnderConstruction(pointIdentity);
 }
+
+export const createPoint = (
+  id: number,
+  idPoint: number,
+  lat: number,
+  lon: number,
+  name: string,
+  quantity: number
+) => {
+  const [associatedPoint, setAssociatedPoint] = createSignal<
+    PointIdentityType[]
+  >([]);
+  const [selected, setSelected] = createSignal<boolean>(false);
+
+  const point: PointInterface = {
+    id: id,
+    idPoint: idPoint,
+    lat: lat,
+    lon: lon,
+    name: name,
+    quantity: quantity,
+    associatedPoints: associatedPoint,
+    setAssociatedPoints: setAssociatedPoint,
+    selected: selected,
+    setSelected: setSelected,
+  };
+
+  return point;
+};
+
 export function createPointEtablissement(
   fullId: string,
   idPoint: number,
   lat: number,
   lon: number
 ) {
+  const point = createPoint(1, idPoint, lat, lon, "name", 5);
   return (
     <PointEtablissement
-      idPoint={idPoint}
-      lat={lat}
-      lon={lon}
+      point={point}
       isLast={false}
-      isBlinking={false}
       map={initialiseMap(fullId)}
       onIsLast={() => console.log("onIsLast")}
       onClick={() => {
@@ -110,6 +139,20 @@ export const decorators = [
             -20.9486587304741,
             55.5344806754509
           )}
+          <Story />
+        </div>
+      </>
+    );
+  },
+];
+
+export const Mapdecorators = [
+  (Story: Component, options: StoryContext) => {
+    const fullId = getDivFullId(options);
+
+    return (
+      <>
+        <div id={fullId} style={{ width: "100%", height: "500px" }}>
           <Story />
         </div>
       </>
