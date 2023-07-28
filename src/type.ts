@@ -1,4 +1,5 @@
 import { Accessor, JSX, Setter } from "solid-js";
+import { PointInformation } from "./views/content/graphicage/component/atom/Point";
 
 export type EleveVersEtablissementType = {
   id: number;
@@ -55,6 +56,8 @@ export type PointIdentityType = {
 export type LineUnderConstructionType = {
   color: string;
   stops: PointIdentityType[];
+  etablissementSelected?: PointInformation[];
+  confirmSelection?: boolean;
 };
 
 export type LineType = LineUnderConstructionType & {

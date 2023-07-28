@@ -1,5 +1,6 @@
 import { For, createEffect, createSignal, onCleanup, onMount } from "solid-js";
 
+import { useStateAction } from "../../../StateAction";
 import { useStateGui } from "../../../StateGui";
 import {
   points,
@@ -22,6 +23,8 @@ import {
 } from "./point.service";
 
 const [, { getActiveMapId }] = useStateGui();
+
+const [, { isInAddLineMode, getLineUnderConstruction }] = useStateAction();
 
 export const [pointsReady, setPointsReady] = createSignal(false);
 
@@ -70,7 +73,7 @@ function PointBack2FrontIdPoint(
   return dataWk;
 }
 
-export function PointBack2Front<
+function PointBack2Front<
   T extends PointRamassageDBType | PointEtablissementDBType
 >(
   datas: T[],
@@ -148,21 +151,79 @@ export default function () {
     return Number.isFinite(maxCandidat) ? maxCandidat : 0;
   };
 
+  //TODO move filters to Ramassage or Etablissement point file
   return (
-    <For each={points()}>
-      {(point, i) => {
-        return (
-          <Point
-            point={point}
-            isLast={i() === points().length - 1}
-            nature={point.nature}
-            minQuantity={minQuantity()}
-            maxQuantity={maxQuantity()}
-          />
-        );
-      }}
-    </For>
+    <>
+      <For each={ramassageFilter()}>
+        {(point, i) => {
+          return (
+            <Point
+              point={point}
+              isLast={i() === points().length - 1}
+              nature={point.nature}
+              minQuantity={minQuantity()}
+              maxQuantity={maxQuantity()}
+            />
+          );
+        }}
+      </For>
+      <For each={etablissementFilter()}>
+        {(point, i) => {
+          return (
+            <Point
+              point={point}
+              isLast={i() === points().length - 1}
+              nature={point.nature}
+              minQuantity={minQuantity()}
+              maxQuantity={maxQuantity()}
+            />
+          );
+        }}
+      </For>
+    </>
   );
+}
+
+function etablissementFilter(): PointRamassageType[] {
+  const isValidate = getLineUnderConstruction().confirmSelection;
+
+  let etablissements = points().filter(
+    (value) => value.nature === NatureEnum.etablissement
+  );
+  if (isInAddLineMode()) {
+    const etablissementsSelected =
+      getLineUnderConstruction().etablissementSelected;
+
+    if (isValidate && etablissementsSelected) {
+      etablissements = etablissements.filter((value) =>
+        etablissementsSelected.some(
+          (etablissementInfo) => etablissementInfo.idPoint === value.idPoint
+        )
+      );
+    }
+  }
+  return etablissements;
+}
+
+function ramassageFilter(): PointRamassageType[] {
+  const etablissement = getLineUnderConstruction().etablissementSelected;
+  const isValidate = getLineUnderConstruction().confirmSelection;
+
+  let ramassages = points().filter(
+    (value) => value.nature === NatureEnum.ramassage
+  );
+
+  if (isInAddLineMode() && etablissement) {
+    ramassages = ramassages.filter((value) =>
+      value
+        .associatedPoints()
+        .some((elt) =>
+          etablissement.find((e) => e.idPoint === elt.idPoint && isValidate)
+        )
+    );
+  }
+
+  return ramassages;
 }
 
 async function getEleveVersEtablissement() {

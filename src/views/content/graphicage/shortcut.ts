@@ -90,7 +90,7 @@ function enterHandler({ code }: KeyboardEvent) {
   }
 
   if (code === "Enter") {
-    if (!isInAddLineMode()) {
+    if (!isInAddLineMode() || !getLineUnderConstruction().confirmSelection) {
       return;
     }
     const resourceInfo = getLineUnderConstruction().stops.map(function (value) {

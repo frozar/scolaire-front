@@ -30,6 +30,8 @@ function defaultLineUnderConstruction() {
     idBusLine: -1,
     color: "#000000",
     stops: [],
+    etablissementSelected: [],
+    confirmSelection: false,
   };
 }
 
@@ -74,6 +76,10 @@ const makeStateActionContext = () => {
 
   function getLineUnderConstruction() {
     return state.lineUnderConstruction;
+  }
+
+  function confirmEtablissementSelection() {
+    setState("lineUnderConstruction", "confirmSelection", true);
   }
 
   const types: { [key in ModeEnum]: MessageTypeEnum[] } = {
@@ -140,6 +146,7 @@ const makeStateActionContext = () => {
       getLineUnderConstruction,
       resetLineUnderConstruction,
       setLineUnderConstruction,
+      confirmEtablissementSelection,
       setModeRemoveLine,
       setModeAddLine,
       setModeRead,
