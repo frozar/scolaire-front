@@ -609,7 +609,7 @@ export function getTimelineInfos(
   let totalQuantity = 0;
   return stopIds.map((stopId) => {
     let quantity = 0;
-    let quantityEtablissement;
+
     testData()
       .filter(
         (data) =>
@@ -619,17 +619,37 @@ export function getTimelineInfos(
       .map((eleve_vers_etablissement) => {
         quantity += eleve_vers_etablissement.quantity;
         totalQuantity += eleve_vers_etablissement.quantity;
+
         // TODO: Fix it
-        if (stopId == etablissementId) {
-          totalQuantity = 0;
-        }
+        // if (stopId == 254) {
+        //   console.log("stopId == etablissementId");
+        //   console.log(
+        //     "BISstopId =>",
+        //     stopId,
+        //     "etablissementId",
+        //     etablissementId
+        //   );
+        //   totalQuantity = 0;
+        // }
       });
+    // if (stopId == etablissementId) {
+    //   console.log("stopId =>", stopId, "etablissementId", etablissementId);
+    //   totalQuantity = 0;
+    // }
     // TODO: points() will be replaced by ramassage() and etalbissement()
+    // function monTest()
     return {
       nature: points().filter((point) => point.idPoint === stopId)[0].nature,
       name: points().filter((point) => point.idPoint === stopId)[0].name,
       // quantity: quantity,
-      quantity: stopId == etablissementId ? totalQuantity : quantity,
+      quantity:
+        stopId == etablissementId
+          ? (function monTest() {
+              const actualTotalQuantity = totalQuantity;
+              totalQuantity = 0;
+              return actualTotalQuantity;
+            })()
+          : quantity,
     };
   });
 }
