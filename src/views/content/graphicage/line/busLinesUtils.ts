@@ -643,10 +643,6 @@ export function getTimelineInfosAddLineMode(
   console.log("fetch data=>", testData());
   console.log("selectedBusLine=>", busLine);
 
-  // const etablissementId = busLine.stops.filter(
-  //   (point) => point.nature == NatureEnum.etablissement
-  // )[0].idPoint;
-
   const etablissementId = busLine.etablissementSelected?.idPoint;
 
   console.log("etablissementId selectioné", etablissementId);
@@ -680,10 +676,6 @@ export const selectedBusLineInfos = (): TimelineItemType[] => {
 
   return getTimelineInfos(selectedBusLine);
 };
-
-// export const lineUnderConstructionInfos = () => {
-//   return getTimelineInfosOld(getLineUnderConstruction());
-// };
 
 // TODO: Fix type difference (LineType)
 export const lineUnderConstructionInfos = () => {
