@@ -1,4 +1,3 @@
-import { LeafletMouseEvent } from "leaflet";
 import { Meta, StoryObj } from "storybook-solidjs";
 
 import { initialiseMap } from "../../../../../../testing/utils/mapWrapper";
@@ -64,18 +63,5 @@ export const RamassagePoints: Story = {
         />
       </div>
     );
-  },
-
-  args: {
-    mapId: 4,
-  },
-
-  argTypes: {
-    onIsLast: () => console.log("onIsLast"),
-    onClick: () => console.log("onClick"),
-    onDBLClick: (event: LeafletMouseEvent) =>
-      console.log("onDBLClick, event:", event),
-    onMouseOver: () => console.log("onMouseOver"),
-    onMouseOut: () => console.log("onMouseOut"),
   },
 };
