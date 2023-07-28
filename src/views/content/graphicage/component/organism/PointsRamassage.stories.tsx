@@ -2,46 +2,31 @@ import { Meta, StoryObj } from "storybook-solidjs";
 
 import { initialiseMap } from "../../../../../../testing/utils/mapWrapper";
 
-import { createSignal } from "solid-js";
-import { createPoint } from "../../../../../../testing/utils/TestUtils";
-import RamassagePointsComponent, {
-  RamassagePointsProps,
-} from "./PointsRamassage";
+import {
+  Mapdecorators,
+  createPoint,
+  getDivFullId,
+} from "../../../../../../testing/utils/TestUtils";
+import RamassagePointsComponent from "./PointsRamassage";
 
 const meta = {
   component: RamassagePointsComponent,
   tags: ["autodocs"],
+  decorators: Mapdecorators,
 } satisfies Meta<typeof RamassagePointsComponent>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const [myMap, setMyMap] = createSignal();
-
-function getMyMap() {
-  if (!myMap()) {
-    const returnedMap = initialiseMap("map-container");
-    setMyMap(returnedMap);
-    return returnedMap;
-  } else {
-    return myMap();
-  }
-}
-
 export const RamassagePoints: Story = {
-  render: (props: RamassagePointsProps) => {
-    const div = document.getElementById("map-container");
-    if (div) {
-      div.remove();
-    }
+  render: (props: null, options) => {
+    const fullId = getDivFullId(options);
 
     return (
       <div id="map-container" style={{ width: "100%", height: "500px" }}>
         <RamassagePointsComponent
-          {...props}
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          map={getMyMap()}
+          map={initialiseMap(fullId)}
+          mapId={2}
           items={[
             createPoint({
               id: 1,
