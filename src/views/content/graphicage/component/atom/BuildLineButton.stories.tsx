@@ -16,7 +16,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const ButtonPrimary: Story = {
+export const BuildLineButtonStories: Story = {
   args: {
     clickHandler: () => {
       console.log("call onClickHandler");
