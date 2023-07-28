@@ -3,7 +3,7 @@ import "./BuildLineButton.css";
 
 interface SelectedEtablissementProps {
   clickHandler: () => void;
-  disabled?: boolean;
+  disabled: boolean;
 }
 
 export default function (props: SelectedEtablissementProps) {
