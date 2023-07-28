@@ -18,7 +18,7 @@ type Story = StoryObj<typeof meta>;
 
 export const ButtonPrimary: Story = {
   args: {
-    onClickHandler: () => {
+    clickHandler: () => {
       console.log("call onClickHandler");
     },
     disabled: false,

@@ -14,3 +14,18 @@ export const SettingsContentAnimationParametersStory: Story = {
     schoolSelected: [],
   },
 };
+
+export const SettingsContentAnimationParametersStory2: Story = {
+  args: {
+    schoolSelected: [
+      {
+        id: 0,
+        idPoint: 1,
+        lon: 20,
+        lat: 20,
+        name: "Etablissement test",
+        quantity: 20,
+      },
+    ],
+  },
+};

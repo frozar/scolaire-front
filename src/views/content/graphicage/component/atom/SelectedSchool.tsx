@@ -1,9 +1,9 @@
 import { For, Show } from "solid-js";
-import { PointInterface } from "./Point";
+import { PointInformation } from "./Point";
 import "./SelectedSchool.css";
 
 interface SelectedEtablissementProps {
-  schoolSelected: PointInterface[];
+  schoolSelected: PointInformation[];
 }
 
 export default function (props: SelectedEtablissementProps) {
