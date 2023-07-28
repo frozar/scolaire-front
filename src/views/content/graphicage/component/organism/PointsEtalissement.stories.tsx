@@ -30,7 +30,7 @@ export const PointeEtablissement: Story = {
           createPoint({
             id: 1,
             idPoint: 1,
-            lat: -20.9466588303741,
+            lat: -20.9666588303741,
             lon: 55.5343806753509,
             name: "name",
             quantity: 5,
