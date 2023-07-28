@@ -591,8 +591,8 @@ export function getTimelineInfosOld(
 const [testData, setTestData] = createSignal<EleveVersEtablissementType[]>(
   await fetchEleveVersEtablissement(getActiveMapId() as number)
 );
-// setTestData(await fetchEleveVersEtablissement(getActiveMapId() as number));
 
+// TODO: Refactor
 export function getTimelineInfos(
   busLine: LineUnderConstructionType
 ): TimelineItemType[] {
@@ -680,8 +680,10 @@ export const selectedBusLineInfos = (): TimelineItemType[] => {
 // export const lineUnderConstructionInfos = () => {
 //   return getTimelineInfosOld(getLineUnderConstruction());
 // };
+
+// TODO: Fix type difference (LineType)
 export const lineUnderConstructionInfos = () => {
-  return getTimelineInfosAddLineMode(getLineUnderConstruction());
+  return getTimelineInfosAddLineMode(getLineUnderConstruction() as LineType);
 };
 
 function getStopNames(busLine: LineUnderConstructionType) {
