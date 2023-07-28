@@ -1,19 +1,19 @@
 import L, { LeafletMouseEvent } from "leaflet";
 import { For, createSignal, onMount } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
-import { NatureEnum } from "../../../../../type";
+import { NatureEnum, PointIdentityType } from "../../../../../type";
 import { linkMap } from "../../Point";
 import {
-  PointEtablissementDBType,
+  PointRamassageDBType,
   blinkingStopPoint,
   setBlinkingStopPoint,
   setPointsEtablissementReady,
 } from "../../PointsRamassageAndEtablissement";
 import { renderAnimation } from "../../animation";
 import { deselectAllBusLines } from "../../line/busLinesUtils";
-import { fetchSchool } from "../../point.service";
-import { PointIdentityType, PointInterface } from "../atom/Point";
-import PointEtablissement from "../molecule/PointEtablissement";
+import { fetchStop } from "../../point.service";
+import { PointInterface } from "../atom/Point";
+import PointRamassage from "../molecule/PointRamassage";
 
 const [
   ,
@@ -24,22 +24,25 @@ const [
   },
 ] = useStateAction();
 
-type PointEtablissementCoreType = Omit<PointEtablissementDBType, "id_point"> & {
+type PointRamassageCoreType = Omit<PointRamassageDBType, "id_point"> & {
   idPoint: number;
 };
 
 function PointBack2FrontIdPoint(
-  data: PointEtablissementDBType
-): PointEtablissementCoreType {
+  data: PointRamassageDBType
+): PointRamassageCoreType {
   const dataWk = {
     ...data,
     idPoint: data.id_point,
-  } as PointEtablissementCoreType & { id_point?: number };
+  } as PointRamassageCoreType & { id_point?: number };
   delete dataWk["id_point"];
+
+  console.assert(dataWk["idPoint"] != undefined, "idPoint is undefined");
+
   return dataWk;
 }
 
-function PointBack2Front<T extends PointEtablissementDBType>(
+function PointBack2Front<T extends PointRamassageDBType>(
   datas: T[]
 ): PointInterface[] {
   return (
@@ -63,57 +66,55 @@ function PointBack2Front<T extends PointEtablissementDBType>(
   );
 }
 
-export interface PointsEtablissementProps {
+export interface RamassagePointsProps {
   map: L.Map;
-  mapID: number;
+  mapId: number;
   items?: PointInterface[];
 }
 
-export const [etablissements, setEtablissement] = createSignal<
-  PointInterface[]
->([]);
+const [ramassage, setRamassage] = createSignal<PointInterface[]>([]);
 
 export const addBlinking = (id: number) => {
   setBlinkingStopPoint([...blinkingStopPoint(), id]);
 };
-
-export default function (props: PointsEtablissementProps) {
+export default function (props: RamassagePointsProps) {
   onMount(async () => {
-    let etablissements;
+    let ramassages;
 
     if (!props.items) {
-      etablissements = PointBack2Front(
-        await fetchSchool(props.mapID)
+      ramassages = PointBack2Front(
+        await fetchStop(props.mapId)
       ) as PointInterface[];
     } else {
-      etablissements = props.items;
+      ramassages = props.items;
     }
-    setEtablissement(etablissements);
+
+    setRamassage(ramassages);
     setPointsEtablissementReady(true);
   });
 
   const selectPointById = (id: number) =>
-    etablissements().map((point) => point.setSelected(id == point.idPoint));
+    ramassage().map((point) => point.setSelected(id == point.idPoint));
 
-  const onClick = (point: PointInterface) => {
+  function onClick(point: PointInterface) {
     if (!isInAddLineMode()) {
       deselectAllBusLines();
       selectPointById(point.idPoint);
       return;
     }
 
-    // TODO: check how manage line underconstuction with ramassages/etablissement signals
+    // TODO: when add line with an etablissement point the line destroy after next point click
+    // Wait Richard/Hugo finish the line underconstruction
     addPointToLineUnderConstruction({
       id: point.id,
       idPoint: point.idPoint,
-      nature: NatureEnum.etablissement,
+      nature: NatureEnum.ramassage,
     });
 
     if (!(1 < getLineUnderConstruction().stops.length)) {
       return;
     }
 
-    // TODO: check utility
     // Highlight point ramassage
     for (const associatedPoint of point.associatedPoints()) {
       let element;
@@ -121,11 +122,11 @@ export default function (props: PointsEtablissementProps) {
         renderAnimation(element);
       }
     }
-  };
+  }
 
-  const onDBLClick = (event: LeafletMouseEvent) => {
+  function onDBLClick(event: LeafletMouseEvent) {
     L.DomEvent.stopPropagation(event);
-  };
+  }
 
   const onMouseOver = (point: PointInterface) => {
     for (const associatedPoint of point.associatedPoints()) {
@@ -136,18 +137,45 @@ export default function (props: PointsEtablissementProps) {
   const onMouseOut = () => {
     setBlinkingStopPoint([]);
   };
+  // TODO: Check how to manage onIsLast
+  // function onIsLast(nature: NatureEnum) {
+  //   if (nature === NatureEnum.ramassage) {
+  //     setIsRamassageReady(true);
+  //   } else {
+  //     setIsEtablissementReady(true);
+  //   }
+  // }
+
+  const filteredPoints = () => {
+    const datas = ramassage()
+      .filter((value) => Number.isFinite(value.quantity))
+      .map((value) => value.quantity) as number[];
+    return datas;
+  };
+
+  const minQuantity = () => {
+    const minCandidat = Math.min(...filteredPoints());
+    return Number.isFinite(minCandidat) ? minCandidat : 0;
+  };
+
+  const maxQuantity = () => {
+    const maxCandidat = Math.max(...filteredPoints());
+    return Number.isFinite(maxCandidat) ? maxCandidat : 0;
+  };
 
   return (
-    <For each={etablissements()}>
+    <For each={ramassage()}>
       {(point, i) => {
         const onIsLast = () => "";
-
         return (
-          <PointEtablissement
+          <PointRamassage
             point={point}
             map={props.map}
-            isLast={i() === etablissements().length - 1}
-            onIsLast={onIsLast}
+            isLast={i() === ramassage().length - 1}
+            quantity={point.quantity as number}
+            minQuantity={minQuantity()}
+            maxQuantity={maxQuantity()}
+            onIsLast={() => onIsLast()}
             onClick={() => onClick(point)}
             onDBLClick={onDBLClick}
             onMouseOver={() => onMouseOver(point)}

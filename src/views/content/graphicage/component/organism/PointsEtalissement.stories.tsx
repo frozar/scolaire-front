@@ -18,7 +18,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const PointeEtablissement: Story = {
+export const PointEtablissement: Story = {
   render: (props: null, options) => {
     const fullId = getDivFullId(options);
 
@@ -30,7 +30,7 @@ export const PointeEtablissement: Story = {
           createPoint({
             id: 1,
             idPoint: 1,
-            lat: -20.9466588303741,
+            lat: -20.9666588303741,
             lon: 55.5343806753509,
             name: "name",
             quantity: 5,

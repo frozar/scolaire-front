@@ -1,7 +1,7 @@
 import { LeafletMouseEvent } from "leaflet";
 import { createEffect, createSignal } from "solid-js";
+import { blinkingStopPoint } from "../../PointsRamassageAndEtablissement";
 import Point, { PointInterface } from "../atom/Point";
-import { blinkingStopPoint } from "../organism/PointsEtalissement";
 
 export interface PointRamassageProps {
   point: PointInterface;
@@ -18,11 +18,9 @@ export interface PointRamassageProps {
   onMouseOver: () => void;
   onMouseOut: () => void;
 }
-
 const minRadius = 5;
 const maxRadius = 10;
 const rangeRadius = maxRadius - minRadius;
-
 const [radius, setRadius] = createSignal(5);
 
 export default function (props: PointRamassageProps) {

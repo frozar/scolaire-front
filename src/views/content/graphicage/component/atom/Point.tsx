@@ -1,14 +1,8 @@
 import L, { LeafletMouseEvent } from "leaflet";
 import { Accessor, Setter, createEffect, onCleanup, onMount } from "solid-js";
 
-import { points } from "../../../../../signaux";
-
 import { linkMap } from "../../Point";
 import "./Point.css";
-
-export function deselectAllPoints() {
-  points().map((point) => point.setSelected(false));
-}
 
 export type PointIdentityType = {
   id: number;

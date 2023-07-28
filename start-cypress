@@ -69,13 +69,11 @@ if $have_build && [ "$arg" == "b" ] || ! $have_build; then
     docker-compose build
 fi
 
-docker-compose up -d
-
 if [ "$arg" == "f" ]; then
-    docker-compose exec cypress npm run cypress-watch -- --spec $file
+    docker-compose run cypress npm run cypress-watch -- --spec $file
 
 else
-    docker-compose exec cypress npm run cypress-watch
+    docker-compose run cypress npm run cypress-watch
 fi
 
 docker-compose down
