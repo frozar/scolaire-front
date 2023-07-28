@@ -13,11 +13,20 @@ function TimelineItem(props: TimelineItemType) {
   // const classBeginning = "v-timeline-divider__inner-dot";
   const classBeginning =
     "v-timeline-divider__dot v-timeline-divider__dot--size-small";
+
+  // props.nature == NatureEnum.ramassage
+  //   ? "+ " + props.quantity
+  //   : "- " + props.quantity;
   return (
     <div class="v-timeline-item">
       <div class="v-timeline-item__body">
         <div class="d-flex">
-          <div class="me-4">{props.quantity}</div>
+          {/* <div class="me-4">{props.quantity}</div> */}
+          <div class="me-4">
+            {props.nature == NatureEnum.ramassage
+              ? "+ " + props.quantity
+              : "- " + props.quantity}
+          </div>
           <div>
             <strong>{props.name}</strong>
           </div>

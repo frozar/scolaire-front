@@ -592,7 +592,7 @@ const [testData, setTestData] = createSignal<EleveVersEtablissementType[]>(
   await fetchEleveVersEtablissement(getActiveMapId() as number)
 );
 
-// TODO: Refactor
+// TODO: Refactor (faire le + de fct pures possibles)
 export function getTimelineInfos(
   busLine: LineUnderConstructionType
 ): TimelineItemType[] {
@@ -606,19 +606,20 @@ export function getTimelineInfos(
   )[0].idPoint;
 
   console.log("etablissementId selectioné", etablissementId);
-
+  let totalQuantity = 0;
   return stopIds.map((stopId) => {
     let quantity = 0;
+    let quantityEtablissement;
     testData()
       .filter(
         (data) =>
           data.etablissement_id_point == etablissementId &&
           data.ramassage_id_point == stopId
       )
-      .map(
-        (eleve_vers_etablissement) =>
-          (quantity += eleve_vers_etablissement.quantity)
-      );
+      .map((eleve_vers_etablissement) => {
+        quantity += eleve_vers_etablissement.quantity;
+        totalQuantity += eleve_vers_etablissement.quantity;
+      });
     // TODO: points() will be replaced by ramassage() and etalbissement()
     return {
       nature: points().filter((point) => point.idPoint === stopId)[0].nature,
