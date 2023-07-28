@@ -195,7 +195,6 @@ function etablissementFilter(): PointRamassageType[] {
       getLineUnderConstruction().etablissementSelected;
 
     if (isValidate && etablissementsSelected) {
-      etablissements = etablissementsSelected;
       etablissements = etablissements.filter((value) =>
         etablissementsSelected.some(
           (etablissementInfo) => etablissementInfo.idPoint === value.idPoint
