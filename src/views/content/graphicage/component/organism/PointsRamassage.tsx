@@ -1,8 +1,6 @@
 import L, { LeafletMouseEvent } from "leaflet";
 import { For, createSignal, onMount } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
-// TODO: Déplacer PointRamassageType, PointIdentityType et selectPointById ici ?
-// Vérifier tout les imports
 import { NatureEnum, PointIdentityType } from "../../../../../type";
 import { linkMap } from "../../Point";
 import {
