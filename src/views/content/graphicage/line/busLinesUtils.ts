@@ -619,29 +619,11 @@ export function getTimelineInfos(
       .map((eleve_vers_etablissement) => {
         quantity += eleve_vers_etablissement.quantity;
         totalQuantity += eleve_vers_etablissement.quantity;
-
-        // TODO: Fix it
-        // if (stopId == 254) {
-        //   console.log("stopId == etablissementId");
-        //   console.log(
-        //     "BISstopId =>",
-        //     stopId,
-        //     "etablissementId",
-        //     etablissementId
-        //   );
-        //   totalQuantity = 0;
-        // }
       });
-    // if (stopId == etablissementId) {
-    //   console.log("stopId =>", stopId, "etablissementId", etablissementId);
-    //   totalQuantity = 0;
-    // }
     // TODO: points() will be replaced by ramassage() and etalbissement()
-    // function monTest()
     return {
       nature: points().filter((point) => point.idPoint === stopId)[0].nature,
       name: points().filter((point) => point.idPoint === stopId)[0].name,
-      // quantity: quantity,
       quantity:
         stopId == etablissementId
           ? (() => {
