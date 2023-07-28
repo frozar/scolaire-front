@@ -1,6 +1,6 @@
-import BuildLineButtonComponent from "./BuildLineButton";
+import BuildLineButton from "./BuildLineButton";
 
-describe("BuildLineButtonComponent component", () => {
+describe("BuildLineButton component", () => {
   const props = {
     clickHandler: () => {
       console.log("clicked");
@@ -12,9 +12,7 @@ describe("BuildLineButtonComponent component", () => {
   });
 
   it("build-line-button", () => {
-    cy.mount(() => (
-      <BuildLineButtonComponent clickHandler={props.clickHandler} />
-    ));
+    cy.mount(() => <BuildLineButton clickHandler={props.clickHandler} />);
 
     cy.get(".build-line-button").compareSnapshot("build-line-button", 0.01);
   });
