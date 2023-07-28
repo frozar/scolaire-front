@@ -626,6 +626,47 @@ export function getTimelineInfos(
   });
 }
 
+export function getTimelineInfosAddLineMode(
+  // busLine: LineUnderConstructionType
+  busLine: LineType
+): TimelineItemType[] {
+  console.log("addlinemodebusline => ", busLine);
+  if (busLine.stops.length == 0) {
+    return [];
+  }
+
+  const stopIds = busLine.stops.map((stop) => stop.idPoint);
+
+  console.log("fetch data=>", testData());
+  console.log("selectedBusLine=>", busLine);
+
+  // const etablissementId = busLine.stops.filter(
+  //   (point) => point.nature == NatureEnum.etablissement
+  // )[0].idPoint;
+
+  const etablissementId = busLine.etablissementSelected?.idPoint;
+
+  console.log("etablissementId selectioné", etablissementId);
+
+  return stopIds.map((stopId) => {
+    let quantity = 0;
+    testData()
+      .filter(
+        (data) =>
+          data.etablissement_id_point == etablissementId &&
+          data.ramassage_id_point == stopId
+      )
+      .map(
+        (eleve_vers_etablissement) =>
+          (quantity += eleve_vers_etablissement.quantity)
+      );
+    return {
+      name: points().filter((point) => point.idPoint === stopId)[0].name,
+      quantity: quantity,
+    };
+  });
+}
+
 export const selectedBusLineInfos = (): TimelineItemType[] => {
   const selectedBusLine = getSelectedBusLine();
 
@@ -636,8 +677,11 @@ export const selectedBusLineInfos = (): TimelineItemType[] => {
   return getTimelineInfos(selectedBusLine);
 };
 
+// export const lineUnderConstructionInfos = () => {
+//   return getTimelineInfosOld(getLineUnderConstruction());
+// };
 export const lineUnderConstructionInfos = () => {
-  return getTimelineInfosOld(getLineUnderConstruction());
+  return getTimelineInfosAddLineMode(getLineUnderConstruction());
 };
 
 function getStopNames(busLine: LineUnderConstructionType) {
