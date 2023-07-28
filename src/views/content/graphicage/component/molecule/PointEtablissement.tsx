@@ -1,6 +1,6 @@
 import { LeafletMouseEvent } from "leaflet";
+import { blinkingStopPoint } from "../../PointsRamassageAndEtablissement";
 import Point, { PointInterface } from "../atom/Point";
-import { blinkingStopPoint } from "../organism/PointsEtalissement";
 
 export interface PointEtablissementProps {
   point: PointInterface;

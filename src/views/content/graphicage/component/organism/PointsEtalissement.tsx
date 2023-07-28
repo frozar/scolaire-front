@@ -1,10 +1,12 @@
 import L, { LeafletMouseEvent } from "leaflet";
 import { For, createSignal, onMount } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
-import { NatureEnum, PointEtablissementType } from "../../../../../type";
+import { NatureEnum } from "../../../../../type";
 import { linkMap } from "../../Point";
 import {
   PointEtablissementDBType,
+  blinkingStopPoint,
+  setBlinkingStopPoint,
   setPointsEtablissementReady,
 } from "../../PointsRamassageAndEtablissement";
 import { renderAnimation } from "../../animation";
@@ -71,10 +73,6 @@ export const [etablissements, setEtablissement] = createSignal<
   PointInterface[]
 >([]);
 
-export const [blinkingStopPoint, setBlinkingStopPoint] = createSignal<number[]>(
-  []
-);
-
 export const addBlinking = (id: number) => {
   setBlinkingStopPoint([...blinkingStopPoint(), id]);
 };
@@ -86,7 +84,7 @@ export default function (props: PointsEtablissementProps) {
     if (!props.items) {
       etablissements = PointBack2Front(
         await fetchSchool(props.mapID)
-      ) as PointEtablissementType[];
+      ) as PointInterface[];
     } else {
       etablissements = props.items;
     }

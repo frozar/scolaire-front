@@ -51,6 +51,10 @@ type PointRamassageCoreType = Omit<PointRamassageDBType, "id_point"> & {
   idPoint: number;
 };
 
+export const [blinkingStopPoint, setBlinkingStopPoint] = createSignal<number[]>(
+  []
+);
+
 // Rename field 'id_point' to 'idPoint'
 function PointBack2FrontIdPoint(
   data: PointRamassageDBType
