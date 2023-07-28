@@ -663,6 +663,7 @@ export function getTimelineInfosAddLineMode(
           (quantity += eleve_vers_etablissement.quantity)
       );
     return {
+      nature: points().filter((point) => point.idPoint === stopId)[0].nature,
       name: points().filter((point) => point.idPoint === stopId)[0].name,
       quantity: quantity,
     };
