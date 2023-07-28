@@ -4,6 +4,7 @@ import { Meta, StoryObj } from "storybook-solidjs";
 import { initialiseMap } from "../../../../../../testing/utils/mapWrapper";
 
 import { createSignal } from "solid-js";
+import { createPoint } from "../../../../../../testing/utils/TestUtils";
 import RamassagePointsComponent, {
   RamassagePointsProps,
 } from "./PointsRamassage";
@@ -42,6 +43,24 @@ export const RamassagePoints: Story = {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           map={getMyMap()}
+          items={[
+            createPoint({
+              id: 1,
+              idPoint: 1,
+              lat: -20.9666588303741,
+              lon: 55.5343806753509,
+              name: "name",
+              quantity: 5,
+            }),
+            createPoint({
+              id: 1,
+              idPoint: 1,
+              lat: -20.9466588303741,
+              lon: 55.5343806753519,
+              name: "name",
+              quantity: 5,
+            }),
+          ]}
         />
       </div>
     );

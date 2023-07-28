@@ -3,20 +3,18 @@ import { For, createSignal, onMount } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 // TODO: Déplacer PointRamassageType, PointIdentityType et selectPointById ici ?
 // Vérifier tout les imports
-import {
-  setIsEtablissementReady,
-  setIsRamassageReady,
-} from "../../../../../signaux";
-import {
-  NatureEnum,
-  PointIdentityType,
-  PointRamassageType,
-} from "../../../../../type";
+import { NatureEnum, PointIdentityType } from "../../../../../type";
 import { linkMap } from "../../Point";
-import { setPointsEtablissementReady } from "../../PointsRamassageAndEtablissement";
+import {
+  PointRamassageDBType,
+  blinkingStopPoint,
+  setBlinkingStopPoint,
+  setPointsEtablissementReady,
+} from "../../PointsRamassageAndEtablissement";
 import { renderAnimation } from "../../animation";
 import { deselectAllBusLines } from "../../line/busLinesUtils";
 import { fetchStop } from "../../point.service";
+import { PointInterface } from "../atom/Point";
 import PointRamassage from "../molecule/PointRamassage";
 
 const [
@@ -27,16 +25,6 @@ const [
     isInAddLineMode,
   },
 ] = useStateAction();
-
-type PointRamassageDBType = {
-  id: number;
-  id_point: number;
-  nature: NatureEnum;
-  lon: number;
-  lat: number;
-  name: string;
-  quantity: number;
-};
 
 type PointRamassageCoreType = Omit<PointRamassageDBType, "id_point"> & {
   idPoint: number;
@@ -58,7 +46,7 @@ function PointBack2FrontIdPoint(
 
 function PointBack2Front<T extends PointRamassageDBType>(
   datas: T[]
-): PointRamassageType[] {
+): PointInterface[] {
   return (
     datas
       // Rename "id_point" -> "idPoint"
@@ -75,7 +63,7 @@ function PointBack2Front<T extends PointRamassageDBType>(
           setSelected,
           associatedPoints,
           setAssociatedPoints,
-        } as PointRamassageType;
+        } as PointInterface;
       })
   );
 }
@@ -83,22 +71,25 @@ function PointBack2Front<T extends PointRamassageDBType>(
 export interface RamassagePointsProps {
   map: L.Map;
   mapId: number;
+  items: PointInterface[];
 }
 
-const [ramassage, setRamassage] = createSignal<PointRamassageType[]>([]);
-
-export const [blinkingStopPoint, setBlinkingStopPoint] = createSignal<number[]>(
-  []
-);
+const [ramassage, setRamassage] = createSignal<PointInterface[]>([]);
 
 export const addBlinking = (id: number) => {
   setBlinkingStopPoint([...blinkingStopPoint(), id]);
 };
 export default function (props: RamassagePointsProps) {
   onMount(async () => {
-    const ramassages = PointBack2Front(
-      await fetchStop(props.mapId)
-    ) as PointRamassageType[];
+    let ramassages;
+
+    if (!props.items) {
+      ramassages = PointBack2Front(
+        await fetchStop(props.mapId)
+      ) as PointInterface[];
+    } else {
+      ramassages = props.items;
+    }
 
     setRamassage(ramassages);
     setPointsEtablissementReady(true);
@@ -107,7 +98,7 @@ export default function (props: RamassagePointsProps) {
   const selectPointById = (id: number) =>
     ramassage().map((point) => point.setSelected(id == point.idPoint));
 
-  function onClick(point: PointRamassageType) {
+  function onClick(point: PointInterface) {
     if (!isInAddLineMode()) {
       deselectAllBusLines();
       selectPointById(point.idPoint);
@@ -139,29 +130,30 @@ export default function (props: RamassagePointsProps) {
     L.DomEvent.stopPropagation(event);
   }
 
-  const onMouseOver = (point: PointRamassageType) => {
+  const onMouseOver = (point: PointInterface) => {
     for (const associatedPoint of point.associatedPoints()) {
       addBlinking(associatedPoint.idPoint);
     }
-    console.log(blinkingStopPoint());
   };
 
   const onMouseOut = () => {
     setBlinkingStopPoint([]);
   };
 
-  function onIsLast(nature: NatureEnum) {
-    if (nature === NatureEnum.ramassage) {
-      setIsRamassageReady(true);
-    } else {
-      setIsEtablissementReady(true);
-    }
-  }
+  // function onIsLast(nature: NatureEnum) {
+  //   if (nature === NatureEnum.ramassage) {
+  //     setIsRamassageReady(true);
+  //   } else {
+  //     setIsEtablissementReady(true);
+  //   }
+  // }
 
-  const filteredPoints = () =>
-    ramassage()
+  const filteredPoints = () => {
+    const datas = ramassage()
       .filter((value) => Number.isFinite(value.quantity))
-      .map((value) => value.quantity);
+      .map((value) => value.quantity) as number[];
+    return datas;
+  };
 
   const minQuantity = () => {
     const minCandidat = Math.min(...filteredPoints());
@@ -176,15 +168,16 @@ export default function (props: RamassagePointsProps) {
   return (
     <For each={ramassage()}>
       {(point, i) => {
+        const onIsLast = () => "";
         return (
           <PointRamassage
             point={point}
             map={props.map}
             isLast={i() === ramassage().length - 1}
-            isBlinking={false}
+            quantity={point.quantity as number}
             minQuantity={minQuantity()}
             maxQuantity={maxQuantity()}
-            onIsLast={() => onIsLast(point.nature)}
+            onIsLast={() => onIsLast()}
             onClick={() => onClick(point)}
             onDBLClick={onDBLClick}
             onMouseOver={() => onMouseOver(point)}

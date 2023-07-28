@@ -1,19 +1,14 @@
-// TODO: Fix radius reactivity
-/* eslint-disable solid/reactivity */
 import { LeafletMouseEvent } from "leaflet";
-import { createEffect } from "solid-js";
+import { createEffect, createSignal } from "solid-js";
+import { blinkingStopPoint } from "../../PointsRamassageAndEtablissement";
 import Point, { PointInterface } from "../atom/Point";
-import { blinkingStopPoint } from "../organism/PointsEtalissement";
 
 export interface PointRamassageProps {
   point: PointInterface;
   map: L.Map;
   isLast: boolean;
 
-  isBlinking?: boolean;
-  isLast: boolean;
-  map: L.Map;
-
+  quantity: number;
   minQuantity: number;
   maxQuantity: number;
 
@@ -23,25 +18,12 @@ export interface PointRamassageProps {
   onMouseOver: () => void;
   onMouseOut: () => void;
 }
-
 const minRadius = 5;
 const maxRadius = 10;
 const rangeRadius = maxRadius - minRadius;
+const [radius, setRadius] = createSignal(5);
 
 export default function (props: PointRamassageProps) {
-  createEffect(() => {
-    blinkingStopPoint();
-
-    const element = linkMap.get(props.point.idPoint)?.getElement();
-    if (!element) return;
-
-    if (blinkingStopPoint().includes(props.point.idPoint)) {
-      element.classList.add("circle-animation");
-    } else {
-      element.classList.remove("circle-animation");
-    }
-  });
-
   createEffect(() => {
     if (props.quantity && props.maxQuantity && props.minQuantity) {
       const coef =
@@ -55,20 +37,13 @@ export default function (props: PointRamassageProps) {
     }
   });
 
-  // createEffect(() => {
-  //   props.setRadius(radiusValue);
-  // });
-
-  // setRadius(radiusValue);
-  // });
-  // console.log("radiusValue", radius());
   return (
     <Point
       {...props}
       isBlinking={blinkingStopPoint().includes(props.point.idPoint)}
       borderColor="red"
       fillColor="white"
-      radius={radiusValue}
+      radius={radius()}
       weight={4}
     />
   );
