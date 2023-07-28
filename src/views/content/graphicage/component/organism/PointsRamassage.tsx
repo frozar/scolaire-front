@@ -137,7 +137,7 @@ export default function (props: RamassagePointsProps) {
   const onMouseOut = () => {
     setBlinkingStopPoint([]);
   };
-
+  // TODO: Check how to manage onIsLast
   // function onIsLast(nature: NatureEnum) {
   //   if (nature === NatureEnum.ramassage) {
   //     setIsRamassageReady(true);
