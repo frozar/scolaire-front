@@ -10,7 +10,9 @@ export type TimelineItemType = {
 function TimelineItem(props: TimelineItemType) {
   // TODO: use color in tailwind theme ?
   // TODO: diff color depending on props.nature
-  const classBeginning = "v-timeline-divider__inner-dot";
+  // const classBeginning = "v-timeline-divider__inner-dot";
+  const classBeginning =
+    "v-timeline-divider__dot v-timeline-divider__dot--size-small";
   return (
     <div class="v-timeline-item">
       <div class="v-timeline-item__body">
@@ -23,15 +25,22 @@ function TimelineItem(props: TimelineItemType) {
       </div>
       <div class="v-timeline-divider">
         <div class="v-timeline-divider__before" />
-        <div class="v-timeline-divider__dot v-timeline-divider__dot--size-small">
-          {/* <div class="v-timeline-divider__inner-dot !bg-green-base"> */}
-          <div
+        {/* <div class="v-timeline-divider__dot v-timeline-divider__dot--size-small !bg-green-base"> */}
+        <div
+          class={
+            props.nature == NatureEnum.ramassage
+              ? classBeginning + " !bg-red-500"
+              : classBeginning + " !bg-green-base"
+          }
+        >
+          <div class="v-timeline-divider__inner-dot !bg-white">
+            {/* <div
             class={
               props.nature == NatureEnum.ramassage
                 ? classBeginning + " !bg-green-base"
                 : classBeginning + " !bg-red-600"
             }
-          >
+          > */}
             <i class="" aria-hidden="true" />
           </div>
         </div>
