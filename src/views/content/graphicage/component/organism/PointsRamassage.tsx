@@ -72,7 +72,7 @@ export interface RamassagePointsProps {
   items?: PointInterface[];
 }
 
-const [ramassage, setRamassage] = createSignal<PointInterface[]>([]);
+export const [ramassages, setRamassage] = createSignal<PointInterface[]>([]);
 
 export const addBlinking = (id: number) => {
   setBlinkingStopPoint([...blinkingStopPoint(), id]);
@@ -94,7 +94,7 @@ export default function (props: RamassagePointsProps) {
   });
 
   const selectPointById = (id: number) =>
-    ramassage().map((point) => point.setSelected(id == point.idPoint));
+    ramassages().map((point) => point.setSelected(id == point.idPoint));
 
   function onClick(point: PointInterface) {
     if (!isInAddLineMode()) {
@@ -147,7 +147,7 @@ export default function (props: RamassagePointsProps) {
   // }
 
   const filteredPoints = () => {
-    const datas = ramassage()
+    const datas = ramassages()
       .filter((value) => Number.isFinite(value.quantity))
       .map((value) => value.quantity) as number[];
     return datas;
@@ -164,14 +164,14 @@ export default function (props: RamassagePointsProps) {
   };
 
   return (
-    <For each={ramassage()}>
+    <For each={ramassages()}>
       {(point, i) => {
         const onIsLast = () => "";
         return (
           <PointRamassage
             point={point}
             map={props.map}
-            isLast={i() === ramassage().length - 1}
+            isLast={i() === ramassages().length - 1}
             quantity={point.quantity as number}
             minQuantity={minQuantity()}
             maxQuantity={maxQuantity()}
