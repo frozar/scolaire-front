@@ -7,10 +7,6 @@ describe("BuildLineButton component", () => {
     },
   };
 
-  beforeEach(() => {
-    cy.viewport(1000, 1000);
-  });
-
   it("build-line-button", () => {
     cy.mount(() => <BuildLineButton clickHandler={props.clickHandler} />);
 
