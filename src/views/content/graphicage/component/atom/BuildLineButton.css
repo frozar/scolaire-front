@@ -2,12 +2,9 @@
   @apply fill-green-600;
 }
 
-/* resize svg */
 .build-line-button > svg {
   @apply scale-125;
 }
-
-/* If disabled no hover  and grey color*/
 
 .build-line-button[disabled] > svg {
   @apply fill-gray-500;
