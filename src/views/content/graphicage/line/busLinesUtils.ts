@@ -644,7 +644,7 @@ export function getTimelineInfos(
       // quantity: quantity,
       quantity:
         stopId == etablissementId
-          ? (function monTest() {
+          ? (() => {
               const actualTotalQuantity = totalQuantity;
               totalQuantity = 0;
               return actualTotalQuantity;
