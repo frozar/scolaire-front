@@ -20,6 +20,7 @@ describe("Line component", () => {
             lat: -20.9465588303741,
             lon: 55.5323806753509,
             name: "name",
+            quantity: 30,
           })}
           ,
           {createPointEtablissement({
@@ -38,8 +39,8 @@ describe("Line component", () => {
       );
     });
 
-    cy.get("#map-container").find(".map-point").eq(0).click({ force: true });
-    cy.get("#map-container").find(".map-point").eq(1).click({ force: true });
+    cy.get(".map-point").eq(1).click({ force: true });
+    cy.get(".map-point").eq(0).click({ force: true });
 
     cy.get("#map-container").compareSnapshot("default", 0.01);
   });
