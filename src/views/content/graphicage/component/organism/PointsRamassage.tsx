@@ -71,7 +71,7 @@ function PointBack2Front<T extends PointRamassageDBType>(
 export interface RamassagePointsProps {
   map: L.Map;
   mapId: number;
-  items: PointInterface[];
+  items?: PointInterface[];
 }
 
 const [ramassage, setRamassage] = createSignal<PointInterface[]>([]);

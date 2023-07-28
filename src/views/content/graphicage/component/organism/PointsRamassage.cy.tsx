@@ -3,19 +3,22 @@ import { initialiseMap } from "../../../../../../testing/utils/mapWrapper";
 import RamassagePoints from "./PointsRamassage";
 
 describe("RamassagePoints component", () => {
+  beforeEach(() => {
+    cy.intercept("http://localhost:8000/map/2/dashboard/ramassage", {
+      fixture: "getRamassages.json",
+    }).as("getData");
+  });
+
   it("RamassagePoints snapshot", () => {
-    cy.intercept("/dashboard/ramassage", (req) => {
-      req.reply({ status: 200, body: { message: "Mocked API response" } });
-    });
     cy.mount(() => (
       <div id="map-container" style={{ width: "100%", height: "500px" }}>
         <RamassagePoints
-          mapId={4}
+          mapId={2}
           map={initialiseMap("map-container", false)}
         />
       </div>
     ));
-    cy.wait(5000);
+
     cy.get("#map-container").compareSnapshot("RamassagePoints", 0.01);
   });
 });
