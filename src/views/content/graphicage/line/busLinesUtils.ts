@@ -596,6 +596,7 @@ const [testData, setTestData] = createSignal<EleveVersEtablissementType[]>(
   await fetchEleveVersEtablissement(getActiveMapId() as number)
 );
 
+// TODO: Make it work with multiple schools
 // TODO: Refactor (faire le + de fct pures possibles)
 export function getTimelineInfos(
   busLine: LineUnderConstructionType
