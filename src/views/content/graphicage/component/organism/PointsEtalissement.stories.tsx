@@ -18,7 +18,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const PointeEtablissement: Story = {
+export const PointEtablissement: Story = {
   render: (props: null, options) => {
     const fullId = getDivFullId(options);
 
