@@ -9,6 +9,8 @@ interface LineTipProps {
   opacity: number;
 }
 
+//TODO LineTip: to delete
+
 export default function (props: LineTipProps) {
   const [lineTip, setLineTip] = createSignal<L.LatLng[]>([]);
 

@@ -55,7 +55,8 @@ export type PointIdentityType = {
 export type LineUnderConstructionType = {
   color: string;
   stops: PointIdentityType[];
-  etablissementSelected?: PointEtablissementType;
+  etablissementSelected?: PointEtablissementType[];
+  confirmSelection?: boolean;
 };
 
 export type LineType = LineUnderConstructionType & {

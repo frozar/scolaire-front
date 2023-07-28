@@ -185,6 +185,8 @@ export default function () {
 }
 
 function etablissementFilter(): PointRamassageType[] {
+  const isValidate = getLineUnderConstruction().confirmSelection;
+
   let etablissements = points().filter(
     (value) => value.nature === NatureEnum.etablissement
   );
@@ -192,26 +194,28 @@ function etablissementFilter(): PointRamassageType[] {
     const etablissementsSelected =
       getLineUnderConstruction().etablissementSelected;
 
-    if (etablissementsSelected) {
-      etablissements = [etablissementsSelected];
+    if (isValidate && etablissementsSelected) {
+      etablissements = etablissementsSelected;
     }
   }
-
   return etablissements;
 }
 
 function ramassageFilter(): PointRamassageType[] {
-  const etablissment = getLineUnderConstruction().etablissementSelected;
+  const etablissement = getLineUnderConstruction().etablissementSelected;
+  const isValidate = getLineUnderConstruction().confirmSelection;
 
   let ramassages = points().filter(
     (value) => value.nature === NatureEnum.ramassage
   );
 
-  if (isInAddLineMode()) {
+  if (isInAddLineMode() && etablissement) {
     ramassages = ramassages.filter((value) =>
       value
         .associatedPoints()
-        .some((elt) => elt.id === (etablissment ? etablissment.id : -1))
+        .some((elt) =>
+          etablissement.find((e) => e.idPoint === elt.idPoint && isValidate)
+        )
     );
   }
 

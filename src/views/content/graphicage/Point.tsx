@@ -124,10 +124,15 @@ export default function (props: {
         const etablissementSelected =
           getLineUnderConstruction().etablissementSelected;
 
-        if (!etablissementSelected) {
+        if (!getLineUnderConstruction().confirmSelection) {
+          if (etablissementSelected?.find((p) => p.idPoint === point.idPoint)) {
+            return;
+          }
           setLineUnderConstruction({
             ...getLineUnderConstruction(),
-            etablissementSelected: point,
+            etablissementSelected: !etablissementSelected
+              ? [point]
+              : etablissementSelected.concat(point),
           });
 
           return;
