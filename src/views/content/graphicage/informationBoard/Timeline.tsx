@@ -53,13 +53,16 @@ export default function (props: { point: TimelineItemType[] }) {
         style={{ "--v-timeline-line-thickness": "2px" }}
       >
         <For each={props.point}>
-          {(point) => (
-            <TimelineItem
-              nature={point.nature}
-              name={point.name}
-              quantity={point.quantity}
-            />
-          )}
+          {(point) => {
+            console.log("for each of timeline", point);
+            return (
+              <TimelineItem
+                nature={point.nature}
+                name={point.name}
+                quantity={point.quantity}
+              />
+            );
+          }}
         </For>
       </div>
     </div>

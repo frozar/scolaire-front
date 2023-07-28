@@ -17,6 +17,10 @@ import {
   PointIdentityType,
 } from "../../../../type";
 import { authenticateWrap } from "../../../layout/authentication";
+import {
+  setTotalQuantity,
+  totalQuantity,
+} from "../component/organism/AddLineInformationBoardContent";
 import { deselectAllPoints, linkMap } from "../component/organism/Points";
 import { TimelineItemType } from "../informationBoard/Timeline";
 import { fetchEleveVersEtablissement } from "../point.service";
@@ -640,6 +644,7 @@ export function getTimelineInfosAddLineMode(
   // busLine: LineUnderConstructionType
   busLine: LineType
 ): TimelineItemType[] {
+  console.log("getTimelineInfosAddLineMode executed");
   console.log("addlinemodebusline => ", busLine);
   if (busLine.stops.length == 0) {
     return [];
@@ -662,14 +667,27 @@ export function getTimelineInfosAddLineMode(
           data.etablissement_id_point == etablissementId &&
           data.ramassage_id_point == stopId
       )
-      .map(
-        (eleve_vers_etablissement) =>
-          (quantity += eleve_vers_etablissement.quantity)
-      );
+      .map((eleve_vers_etablissement) => {
+        quantity += eleve_vers_etablissement.quantity;
+        // TODO: Fix infinity loop issue caused here
+        setTotalQuantity((prev) => prev + quantity);
+      });
+    console.log("testBoucle");
     return {
       nature: points().filter((point) => point.idPoint === stopId)[0].nature,
       name: points().filter((point) => point.idPoint === stopId)[0].name,
-      quantity: quantity,
+      // quantity: quantity,
+      quantity:
+        stopId == etablissementId
+          ? (() => {
+              // const actualTotalQuantity = totalQuantity;
+              const actualTotalQuantity = totalQuantity();
+              // totalQuantity = 0;
+              setTotalQuantity(0);
+              return actualTotalQuantity;
+              // return quantity;
+            })()
+          : quantity,
     };
   });
 }
@@ -686,6 +704,8 @@ export const selectedBusLineInfos = (): TimelineItemType[] => {
 
 // TODO: Fix type difference (LineType)
 export const lineUnderConstructionInfos = () => {
+  console.log("in busline utils => lineUnderConstructionInfos");
+
   return getTimelineInfosAddLineMode(getLineUnderConstruction() as LineType);
 };
 
