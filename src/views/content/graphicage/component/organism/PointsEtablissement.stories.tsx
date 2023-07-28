@@ -7,7 +7,7 @@ import {
   getDivFullId,
 } from "../../../../../../testing/utils/TestUtils";
 import { initialiseMap } from "../../../../../../testing/utils/mapWrapper";
-import PointsEtablissementComponent from "./PointsEtalissement";
+import PointsEtablissementComponent from "./PointsEtablissement";
 
 const meta = {
   component: PointsEtablissementComponent,
