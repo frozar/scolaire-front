@@ -4,7 +4,6 @@ import { PointIdentityType } from "../../../../../type";
 import { COLOR_LINE_UNDER_CONSTRUCTION } from "../../constant";
 import { getLatLngs } from "../../line/busLinesUtils";
 import Line from "../atom/Line";
-import LineTip from "../molecule/LineTip";
 const [, { getLineUnderConstruction }] = useStateAction();
 interface LineUnderConstructionProps {
   leafletMap: L.Map;
@@ -24,12 +23,13 @@ export default function (props: LineUnderConstructionProps) {
           opacity={opacity}
         />
       </Show>
-      <LineTip
+      {/* TODO delete lineTip */}
+      {/* <LineTip
         latlng={getLatLngs(props.stops).at(-1) as L.LatLng}
         leafletMap={props.leafletMap}
         color={color}
         opacity={opacity}
-      />
+      /> */}
     </Show>
   );
 }
