@@ -13,7 +13,7 @@ describe("PointsEtablissement component", () => {
     cy.mount(() => (
       <div id="map-container" style={{ width: "100%", height: "500px" }}>
         <PointEtablissement
-          mapID={2}
+          mapId={2}
           map={initialiseMap("map-container", false)}
         />
       </div>

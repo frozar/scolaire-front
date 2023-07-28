@@ -14,6 +14,7 @@ import { deselectAllBusLines } from "../../line/busLinesUtils";
 import { fetchSchool } from "../../point.service";
 import { PointIdentityType, PointInterface } from "../atom/Point";
 import PointEtablissement from "../molecule/PointEtablissement";
+import { setBlinking, setBlinkingPoint } from "./Points";
 
 const [
   ,
@@ -65,7 +66,7 @@ function PointBack2Front<T extends PointEtablissementDBType>(
 
 export interface PointsEtablissementProps {
   map: L.Map;
-  mapID: number;
+  mapId: number;
   items?: PointInterface[];
 }
 
@@ -80,10 +81,9 @@ export const addBlinking = (id: number) => {
 export default function (props: PointsEtablissementProps) {
   onMount(async () => {
     let etablissements;
-
     if (!props.items) {
       etablissements = PointBack2Front(
-        await fetchSchool(props.mapID)
+        await fetchSchool(props.mapId)
       ) as PointInterface[];
     } else {
       etablissements = props.items;
@@ -128,13 +128,11 @@ export default function (props: PointsEtablissementProps) {
   };
 
   const onMouseOver = (point: PointInterface) => {
-    for (const associatedPoint of point.associatedPoints()) {
-      addBlinking(associatedPoint.idPoint);
-    }
+    setBlinking(point.associatedPoints);
   };
 
   const onMouseOut = () => {
-    setBlinkingStopPoint([]);
+    setBlinkingPoint([]);
   };
 
   return (
