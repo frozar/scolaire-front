@@ -5,7 +5,7 @@ import Line from "./Line";
 
 describe("Line component", () => {
   beforeEach(() => {
-    cy.viewport(1000, 1000);
+    cy.viewport(500, 500);
   });
 
   it("Default Line", () => {
@@ -15,8 +15,8 @@ describe("Line component", () => {
           <Line
             latlngs={[
               L.latLng(-20.9466588303741, 55.5343806753509),
-              L.latLng(-20.9466588303743, 55.54),
-              L.latLng(-20.942, 55.535),
+              L.latLng(-20.9466588303743, 55.56),
+              L.latLng(-20.942, 55.57),
             ]}
             leafletMap={initialiseMap("map-container", false)}
             color={"orange"}
@@ -35,8 +35,8 @@ describe("Line component", () => {
           <Line
             latlngs={[
               L.latLng(-20.9466588303741, 55.5343806753509),
-              L.latLng(-20.9466588303743, 55.54),
-              L.latLng(-20.942, 55.535),
+              L.latLng(-20.9466588303743, 55.56),
+              L.latLng(-20.942, 55.57),
             ]}
             leafletMap={initialiseMap("map-container", false)}
             color={"red"}
@@ -55,8 +55,8 @@ describe("Line component", () => {
           <Line
             latlngs={[
               L.latLng(-20.9466588303741, 55.5343806753509),
-              L.latLng(-20.9466588303743, 55.54),
-              L.latLng(-20.942, 55.535),
+              L.latLng(-20.9466588303743, 55.56),
+              L.latLng(-20.942, 55.57),
             ]}
             leafletMap={initialiseMap("map-container", false)}
             color={"orange"}
@@ -75,7 +75,7 @@ describe("Line component", () => {
           <Line
             latlngs={[
               L.latLng(-20.9466588303741, 55.5343806753509),
-              L.latLng(-20.9466588303743, 55.54),
+              L.latLng(-20.9466588303743, 55.56),
             ]}
             leafletMap={initialiseMap("map-container", false)}
             color={"orange"}

@@ -3,7 +3,10 @@ import { Component, createSignal } from "solid-js";
 import { StoryContext } from "storybook-solidjs";
 import { useStateAction } from "../../src/StateAction";
 import { NatureEnum, PointIdentityType } from "../../src/type";
-import { PointInterface } from "../../src/views/content/graphicage/component/atom/Point";
+import {
+  PointInformation,
+  PointInterface,
+} from "../../src/views/content/graphicage/component/atom/Point";
 import PointEtablissement from "../../src/views/content/graphicage/component/molecule/PointEtablissement";
 import PointRamassage from "../../src/views/content/graphicage/component/molecule/PointRamassage";
 import { initialiseMap } from "./mapWrapper";
@@ -20,26 +23,19 @@ function onClickHandler(point: PointIdentityType) {
   addPointToLineUnderConstruction(pointIdentity);
 }
 
-export const createPoint = (
-  id: number,
-  idPoint: number,
-  lat: number,
-  lon: number,
-  name: string,
-  quantity: number
-) => {
+export const createPoint = (pointInformation: PointInformation) => {
   const [associatedPoint, setAssociatedPoint] = createSignal<
     PointIdentityType[]
   >([]);
   const [selected, setSelected] = createSignal<boolean>(false);
 
   const point: PointInterface = {
-    id: id,
-    idPoint: idPoint,
-    lat: lat,
-    lon: lon,
-    name: name,
-    quantity: quantity,
+    id: pointInformation.id,
+    idPoint: pointInformation.idPoint,
+    lat: pointInformation.lat,
+    lon: pointInformation.lon,
+    name: pointInformation.name,
+    quantity: pointInformation.quantity,
     associatedPoints: associatedPoint,
     setAssociatedPoints: setAssociatedPoint,
     selected: selected,
@@ -49,23 +45,30 @@ export const createPoint = (
   return point;
 };
 
-export function createPointEtablissement(
-  fullId: string,
-  idPoint: number,
-  lat: number,
-  lon: number
-) {
-  const point = createPoint(1, idPoint, lat, lon, "name", 5);
+interface PointInformationWithMapID extends PointInformation {
+  fullId: string;
+}
+
+export function createPointEtablissement(pointmap: PointInformationWithMapID) {
+  const point = createPoint({
+    id: 1,
+    idPoint: pointmap.idPoint as number,
+    lat: pointmap.lat,
+    lon: pointmap.lon,
+    name: pointmap.name,
+    quantity: pointmap.quantity,
+  });
+
   return (
     <PointEtablissement
       point={point}
       isLast={false}
-      map={initialiseMap(fullId)}
+      map={initialiseMap(pointmap.fullId)}
       onIsLast={() => console.log("onIsLast")}
       onClick={() => {
         onClickHandler({
           id: 50,
-          idPoint,
+          idPoint: pointmap.idPoint,
           nature: NatureEnum.etablissement,
         });
       }}
@@ -78,28 +81,28 @@ export function createPointEtablissement(
   );
 }
 
-export function createPointRamassage(
-  fullId: string,
-  idPoint: number,
-  lat: number,
-  lon: number
-) {
+export function createPointRamassage(pointmap: PointInformationWithMapID) {
+  const point = createPoint({
+    id: 1,
+    idPoint: pointmap.idPoint,
+    lat: pointmap.lat,
+    lon: pointmap.lon,
+    name: pointmap.name,
+    quantity: pointmap.quantity,
+  });
   return (
     <PointRamassage
+      point={point}
       quantity={6}
       minQuantity={1}
       maxQuantity={25}
-      idPoint={idPoint}
-      lat={lat}
-      lon={lon}
       isLast={false}
-      isBlinking={false}
-      map={initialiseMap(fullId)}
+      map={initialiseMap(pointmap.fullId)}
       onIsLast={() => console.log("onIsLast")}
       onClick={() =>
         onClickHandler({
           id: 51,
-          idPoint,
+          idPoint: pointmap.idPoint,
           nature: NatureEnum.ramassage,
         })
       }
@@ -126,19 +129,25 @@ export const decorators = [
     return (
       <>
         <div id={fullId} style={{ width: "100%", height: "500px" }}>
-          {createPointRamassage(
-            fullId,
-            51,
-            -20.9465588303741,
-            55.5323806753509
-          )}
+          {createPointRamassage({
+            fullId: fullId,
+            id: 1,
+            idPoint: 51,
+            lat: -20.9465588303741,
+            lon: 55.5323806753509,
+            name: "name",
+            quantity: 15,
+          })}
           ,
-          {createPointEtablissement(
-            fullId,
-            50,
-            -20.9486587304741,
-            55.5344806754509
-          )}
+          {createPointEtablissement({
+            fullId: fullId,
+            id: 1,
+            idPoint: 50,
+            lat: -20.9486587304741,
+            lon: 55.5344806754509,
+            name: "name",
+            quantity: 15,
+          })}
           <Story />
         </div>
       </>

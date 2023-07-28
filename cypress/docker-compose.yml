@@ -2,8 +2,6 @@ version: "3.2"
 
 services:
   cypress:
-    stdin_open: true
-    tty: true
     build:
       context: ..
       dockerfile: cypress/Dockerfile

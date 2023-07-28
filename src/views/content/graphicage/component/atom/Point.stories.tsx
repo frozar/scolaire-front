@@ -3,6 +3,8 @@ import "leaflet/dist/leaflet.css";
 import { Meta, StoryObj } from "storybook-solidjs";
 import { initialiseMap } from "../../../../../../testing/utils/mapWrapper";
 
+import { LeafletMouseEvent } from "leaflet";
+import { splitProps } from "solid-js";
 import {
   Mapdecorators,
   createPoint,
@@ -14,31 +16,89 @@ const meta = {
   component: PointComponent,
   tags: ["autodocs"],
   decorators: Mapdecorators,
+  argTypes: {
+    onIsLast: () => console.log("onIsLast"),
+    onClick: () => console.log("onClick"),
+    onDBLClick: (event: LeafletMouseEvent) =>
+      console.log("onDBLClick, event:", event),
+    onMouseOver: () => console.log("onMouseOver"),
+    onMouseOut: () => console.log("onMouseOut"),
+  },
 } satisfies Meta<typeof PointComponent>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+export interface PointStorybook {
+  fillColor?: string;
+  borderColor?: string;
+  maxQuantity?: number;
+  minQuantity?: number;
+  quantity?: number;
+
+  radius: number;
+  weight: number;
+  isBlinking: false;
+
+  onClick: () => void;
+  onIsLast: () => void;
+  onDBLClick: () => void;
+  onMouseOut: () => void;
+  onMouseOver: () => void;
+}
+
 export const PointStories: Story = {
-  render: (props: null, options) => {
+  render: (props: PointStorybook, options) => {
     const fullId = getDivFullId(options);
+    const [local, others] = splitProps(props, ["fillColor", "borderColor"]);
 
     return (
       <PointComponent
-        point={createPoint(
-          1,
-          50,
-          -20.9466588303741,
-          55.5343806753509,
-          "name",
-          5
-        )}
+        point={createPoint({
+          id: 1,
+          idPoint: 50,
+          lat: -20.9466588303741,
+          lon: 55.5343806753509,
+          name: "name",
+          quantity: 5,
+        })}
         map={initialiseMap(fullId)}
-        isBlinking={false}
-        weight={4}
-        radius={8}
-        borderColor="red"
-        fillColor="white"
+        {...others}
+        borderColor={local.borderColor as string}
+        fillColor={local.fillColor as string}
+        isLast={false}
+      />
+    );
+  },
+
+  args: {
+    isBlinking: false,
+    weight: 4,
+    radius: 8,
+    borderColor: "red",
+    fillColor: "white",
+  },
+};
+
+export const PointStories2: Story = {
+  render: (props: PointStorybook, options) => {
+    const fullId = getDivFullId(options);
+    const [local, others] = splitProps(props, ["fillColor", "borderColor"]);
+
+    return (
+      <PointComponent
+        point={createPoint({
+          id: 1,
+          idPoint: 50,
+          lat: -20.9466588303741,
+          lon: 55.5343806753519,
+          name: "name",
+          quantity: 5,
+        })}
+        map={initialiseMap(fullId)}
+        {...others}
+        borderColor={local.borderColor as string}
+        fillColor={local.fillColor as string}
         onClick={() => console.log("onClick")}
         onIsLast={() => console.log("onIsLast")}
         onDBLClick={() => console.log("onDBLClick")}
@@ -48,35 +108,12 @@ export const PointStories: Story = {
       />
     );
   },
-};
 
-export const PointStories2: Story = {
-  render: (props: null, options) => {
-    const fullId = getDivFullId(options);
-
-    return (
-      <PointComponent
-        point={createPoint(
-          1,
-          50,
-          -20.9466588303741,
-          55.5343806753519,
-          "name",
-          5
-        )}
-        map={initialiseMap(fullId)}
-        isBlinking={false}
-        weight={4}
-        radius={12}
-        borderColor="green"
-        fillColor="white"
-        onClick={() => console.log("onClick")}
-        onIsLast={() => console.log("onIsLast")}
-        onDBLClick={() => console.log("onDBLClick")}
-        onMouseOut={() => console.log("onMouseOut")}
-        onMouseOver={() => console.log("onMouseOvre")}
-        isLast={false}
-      />
-    );
+  args: {
+    isBlinking: false,
+    weight: 4,
+    radius: 12,
+    borderColor: "green",
+    fillColor: "white",
   },
 };

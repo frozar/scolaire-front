@@ -15,11 +15,13 @@ export type PointIdentityType = {
   idPoint: number;
 };
 
-export interface PointInterface extends PointIdentityType {
+export interface PointInformation extends PointIdentityType {
   lon: number;
   lat: number;
   name: string;
-  quantity: number;
+  quantity?: number;
+}
+export interface PointInterface extends PointInformation {
   selected: Accessor<boolean>;
   setSelected: Setter<boolean>;
   associatedPoints: Accessor<PointIdentityType[]>;
@@ -48,24 +50,6 @@ export interface PointProps {
 export default function (props: PointProps) {
   let circle: L.CircleMarker;
 
-  createEffect(() => {
-    if (props.point) {
-      const element = linkMap
-        .get(props.point.idPoint)
-        ?.getElement() as HTMLElement;
-
-      if (element) {
-        element.style.setProperty("--stroke-color", props.borderColor);
-      }
-
-      if (element && props.isBlinking) {
-        element.classList.add("circle-animation");
-      } else if (element && !props.isBlinking) {
-        element.classList.remove("circle-animation");
-      } else return;
-    }
-  });
-
   onMount(() => {
     if (props.point) {
       circle = L.circleMarker([props.point.lat, props.point.lon], {
@@ -87,6 +71,22 @@ export default function (props: PointProps) {
       if (element) {
         linkMap.set(props.point.idPoint, circle);
       }
+
+      createEffect(() => {
+        const element = linkMap
+          .get(props.point.idPoint)
+          ?.getElement() as HTMLElement;
+
+        if (element) {
+          element.style.setProperty("--stroke-color", props.borderColor);
+        }
+
+        if (element && props.isBlinking) {
+          element.classList.add("circle-animation");
+        } else if (element && !props.isBlinking) {
+          element.classList.remove("circle-animation");
+        } else return;
+      });
     }
   });
 
