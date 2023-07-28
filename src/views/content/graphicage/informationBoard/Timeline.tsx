@@ -1,11 +1,16 @@
 import { For } from "solid-js";
+import { NatureEnum } from "../../../../type";
 
 export type TimelineItemType = {
+  nature: NatureEnum;
   name: string;
   quantity: number;
 };
 
 function TimelineItem(props: TimelineItemType) {
+  // TODO: use color in tailwind theme ?
+  // TODO: diff color depending on props.nature
+  const classBeginning = "v-timeline-divider__inner-dot";
   return (
     <div class="v-timeline-item">
       <div class="v-timeline-item__body">
@@ -19,7 +24,14 @@ function TimelineItem(props: TimelineItemType) {
       <div class="v-timeline-divider">
         <div class="v-timeline-divider__before" />
         <div class="v-timeline-divider__dot v-timeline-divider__dot--size-small">
-          <div class="v-timeline-divider__inner-dot bg-pink">
+          {/* <div class="v-timeline-divider__inner-dot !bg-green-base"> */}
+          <div
+            class={
+              props.nature == NatureEnum.ramassage
+                ? classBeginning + " !bg-green-base"
+                : classBeginning + " !bg-red-600"
+            }
+          >
             <i class="" aria-hidden="true" />
           </div>
         </div>
@@ -38,7 +50,11 @@ export default function (props: { point: TimelineItemType[] }) {
       >
         <For each={props.point}>
           {(point) => (
-            <TimelineItem name={point.name} quantity={point.quantity} />
+            <TimelineItem
+              nature={point.nature}
+              name={point.name}
+              quantity={point.quantity}
+            />
           )}
         </For>
       </div>

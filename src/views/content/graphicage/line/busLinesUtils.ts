@@ -619,7 +619,9 @@ export function getTimelineInfos(
         (eleve_vers_etablissement) =>
           (quantity += eleve_vers_etablissement.quantity)
       );
+    // TODO: points() will be replaced by ramassage() and etalbissement()
     return {
+      nature: points().filter((point) => point.idPoint === stopId)[0].nature,
       name: points().filter((point) => point.idPoint === stopId)[0].name,
       quantity: quantity,
     };
