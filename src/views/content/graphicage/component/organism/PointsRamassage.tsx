@@ -14,6 +14,7 @@ import { deselectAllBusLines } from "../../line/busLinesUtils";
 import { fetchStop } from "../../point.service";
 import { PointInterface } from "../atom/Point";
 import PointRamassage from "../molecule/PointRamassage";
+import { setBlinking, setBlinkingPoint } from "./Points";
 
 const [
   ,
@@ -129,13 +130,11 @@ export default function (props: RamassagePointsProps) {
   }
 
   const onMouseOver = (point: PointInterface) => {
-    for (const associatedPoint of point.associatedPoints()) {
-      addBlinking(associatedPoint.idPoint);
-    }
+    setBlinking(point.associatedPoints);
   };
 
   const onMouseOut = () => {
-    setBlinkingStopPoint([]);
+    setBlinkingPoint([]);
   };
   // TODO: Check how to manage onIsLast
   // function onIsLast(nature: NatureEnum) {
@@ -149,7 +148,9 @@ export default function (props: RamassagePointsProps) {
   const filteredPoints = () => {
     const datas = ramassages()
       .filter((value) => Number.isFinite(value.quantity))
-      .map((value) => value.quantity) as number[];
+      .map((value) => {
+        return value.quantity;
+      }) as number[];
     return datas;
   };
 
