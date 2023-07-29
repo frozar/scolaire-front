@@ -1,11 +1,18 @@
 import L from "leaflet";
-import { Accessor, Setter, createSignal, mergeProps } from "solid-js";
+import {
+  Accessor,
+  createEffect,
+  createSignal,
+  mergeProps,
+  onMount,
+} from "solid-js";
 import { useStateGui } from "../../../../../StateGui";
 import { getLeafletMap } from "../../../../../signaux";
-import { EleveVersEtablissementType } from "../../../../../type";
+import { EleveVersEtablissementType, NatureEnum } from "../../../../../type";
+import { fetchEleveVersEtablissement } from "../../point.service";
 import { PointIdentityType, PointInterface } from "../atom/Point";
-import PointsEtablissement from "./PointsEtablissement";
-import PointsRamassage from "./PointsRamassage";
+import PointsEtablissement, { etablissements } from "./PointsEtablissement";
+import PointsRamassage, { ramassages } from "./PointsRamassage";
 
 const [, { getActiveMapId }] = useStateGui();
 
@@ -25,50 +32,46 @@ export const [studentsToSchool, setStudentsToSchool] = createSignal<
   EleveVersEtablissementType[]
 >([]);
 
-// const setupAssociation = (
-//   points: PointInterface[],
-//   nature: "school" | "stop"
-// ) => {
-//   const newPoints = [];
-//   for (const point of points) {
-//     const associated = studentsToSchool().filter(
-//       (elt) =>
-//         point.id ===
-//         (nature === "stop" ? elt.ramassage_id : elt.etablissement_id)
-//     );
+const setupAssociations = (points: PointInterface[], nature: NatureEnum) => {
+  for (const point of points) {
+    const associatedPoints = studentsToSchool().filter(
+      (elt) =>
+        point.id ===
+        (nature === NatureEnum.ramassage
+          ? elt.ramassage_id
+          : elt.etablissement_id)
+    );
 
-//     point.setAssociatedPoints(
-//       associated.map((elt) => {
-//         return {
-//           id: elt.etablissement_id,
-//           idPoint: elt.ramassage_id_point,
-//         };
-//       })
-//     );
-//     newPoints.push(point);
-//     console.log("set association");
-//     console.log("point associated: ", point.associatedPoints());
-//   }
+    point.setAssociatedPoints(
+      associatedPoints.map((elt) => {
+        const associatedId =
+          nature === NatureEnum.ramassage
+            ? elt.etablissement_id
+            : elt.ramassage_id;
 
-//   return newPoints;
-// };
+        const associatedNature =
+          nature === NatureEnum.ramassage
+            ? NatureEnum.etablissement
+            : NatureEnum.ramassage;
+
+        const id_point =
+          associatedNature === NatureEnum.etablissement
+            ? elt.etablissement_id_point
+            : elt.ramassage_id_point;
+
+        return {
+          id: associatedId,
+          idPoint: id_point,
+        };
+      })
+    );
+  }
+};
 
 // Props here is for storybook
 interface PointsProps {
   map?: L.Map;
   mapId?: number;
-  schoolItems?: {
-    items: Accessor<PointInterface[]>;
-    set: Setter<PointInterface[]>;
-  };
-  stopItems?: {
-    items: Accessor<PointInterface[]>;
-    set: Setter<PointInterface[]>;
-  };
-  studentsToSchool?: {
-    items: Accessor<EleveVersEtablissementType[]>;
-    set: Setter<EleveVersEtablissementType[]>;
-  };
 }
 
 export default function (props: PointsProps) {
@@ -80,65 +83,42 @@ export default function (props: PointsProps) {
     props
   );
 
-  // const schoolItems: PointInterface[] = [];
-  // const stopsItem: PointInterface[] = [];
+  console.log("getLeafletMap", getLeafletMap());
 
-  // console.log(props.stopItems?.items());
+  createEffect(() => console.log("getLeafletMap", getLeafletMap()));
+  onMount(async () => {
+    if (getActiveMapId()) {
+      setStudentsToSchool(
+        await fetchEleveVersEtablissement(getActiveMapId() as number)
+      );
+    }
+  });
 
-  // if (props.studentsToSchool) {
-  //   studentsToSchool = props.studentsToSchool;
-  // }
+  createEffect(() => {
+    if (
+      etablissements().length == 0 ||
+      !studentsToSchool() ||
+      ramassages().length == 0
+    ) {
+      return;
+    }
 
-  // if (props.schoolsItem && props.stopsItem) {
-  //   schoolItems = setupAssociation(
-  //     props.schoolsItem as PointInterface[],
-  //     "school"
-  //   );
-  //   stopsItem = setupAssociation(props.stopsItem as PointInterface[], "stop");
-  // }
+    setupAssociations(etablissements(), NatureEnum.etablissement);
+    setupAssociations(ramassages(), NatureEnum.ramassage);
 
-  // // onMount(async () => {});
-
-  // createEffect(() => {
-  //   if (!props.studentsToSchool) {
-  //     studentsToSchool = await fetchEleveVersEtablissement(
-  //       getActiveMapId() as number
-  //     );
-  //   } else {
-  //     studentsToSchool = props.studentsToSchool;
-  //   }
-
-  //   setStudentsToSchool(studentsToSchool);
-  //   console.log("mergedProps", mergedProps, studentsToSchool);
-  //   if (!props.schoolsItem) {
-  //     console.log("school is not defined in props");
-
-  //     createEffect(() => {
-  //       setupAssociation(etablissements(), "school");
-  //       setupAssociation(ramassages(), "stop");
-  //     });
-  //   } else {
-  //     console.log("school is defined in props");
-
-  //     schoolItems = setupAssociation(
-  //       props.schoolsItem as PointInterface[],
-  //       "school"
-  //     );
-  //     stopsItem = setupAssociation(props.stopsItem as PointInterface[], "stop");
-
-  //     console.log("stops: ", stopsItem[0].associatedPoints());
-  //   }
-  // });
+    console.log(etablissements()[2].associatedPoints());
+  });
 
   return (
     <div>
       <PointsEtablissement
-        {...mergedProps}
-        items={props.schoolItems?.items()}
+        mapId={mergedProps.mapId}
+        map={(props.map as L.Map) ?? getLeafletMap()}
       />
-      <PointsRamassage {...mergedProps} items={props.stopItems?.items()} />
+      <PointsRamassage
+        mapId={mergedProps.mapId}
+        map={(props.map as L.Map) ?? getLeafletMap()}
+      />
     </div>
   );
 }
-
-// ---------------
