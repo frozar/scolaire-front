@@ -2,7 +2,6 @@ import { mergeProps } from "solid-js";
 
 import { useStateAction } from "../../../../../StateAction";
 import { displayRemoveLineMessage } from "../../../../../userInformation/utils";
-import { deselectAllPoints } from "../../Point";
 import { fetchBusLines } from "../../line/busLinesUtils";
 
 import ButtonGraphicageRightMenu, {
@@ -10,6 +9,7 @@ import ButtonGraphicageRightMenu, {
 } from "../molecule/ButtonGraphicageRightMenu";
 
 import { FaSolidMinus } from "solid-icons/fa";
+import { deselectAllPoints } from "./Points";
 
 const [, { setModeRemoveLine, isInRemoveLineMode, setModeRead }] =
   useStateAction();

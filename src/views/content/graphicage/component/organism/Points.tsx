@@ -74,6 +74,12 @@ interface PointsProps {
   mapId?: number;
 }
 
+export function deselectAllPoints() {
+  etablissements().map((point) => point.setSelected(false));
+  ramassages().map((point) => point.setSelected(false));
+}
+export const [pointsReady, setPointsReady] = createSignal(false);
+
 export default function (props: PointsProps) {
   const mergedProps = mergeProps(
     {
@@ -83,9 +89,6 @@ export default function (props: PointsProps) {
     props
   );
 
-  console.log("getLeafletMap", getLeafletMap());
-
-  createEffect(() => console.log("getLeafletMap", getLeafletMap()));
   onMount(async () => {
     if (getActiveMapId()) {
       setStudentsToSchool(
@@ -105,8 +108,7 @@ export default function (props: PointsProps) {
 
     setupAssociations(etablissements(), NatureEnum.etablissement);
     setupAssociations(ramassages(), NatureEnum.ramassage);
-
-    console.log(etablissements()[2].associatedPoints());
+    setPointsReady(true);
   });
 
   return (
