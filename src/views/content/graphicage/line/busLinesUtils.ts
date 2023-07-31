@@ -578,7 +578,7 @@ const [eleveVersEtablissementData, setEleveVersEtablissementData] =
     await fetchEleveVersEtablissement(getActiveMapId() as number)
   );
 
-export const getSelectedBusLineTimelineInfos = (): TimelineItemType[] => {
+export function getSelectedBusLineTimelineInfos(): TimelineItemType[] {
   const selectedBusLine = getSelectedBusLine();
   if (!selectedBusLine) {
     return [];
@@ -594,7 +594,7 @@ export const getSelectedBusLineTimelineInfos = (): TimelineItemType[] => {
   etablissementsId = [...new Set(etablissementsId)];
 
   return getTimelineInfos(stopsId, etablissementsId);
-};
+}
 
 // Works with multiple schools
 export function getTimelineInfos(
