@@ -584,7 +584,7 @@ export function getSelectedBusLineTimelineInfos(): TimelineItemType[] {
     return [];
   }
 
-  const stopsId = selectedBusLine.stops.map((stop) => stop.idPoint);
+  const stops = selectedBusLine.stops;
 
   let etablissementsId = selectedBusLine.stops
     .filter((point) => point.nature === NatureEnum.etablissement)
@@ -593,12 +593,12 @@ export function getSelectedBusLineTimelineInfos(): TimelineItemType[] {
   // Keep only unique values
   etablissementsId = [...new Set(etablissementsId)];
 
-  return getTimelineInfos(stopsId, etablissementsId);
+  return getTimelineInfos(stops, etablissementsId);
 }
 
 // Works with multiple schools
 export function getTimelineInfos(
-  stopsId: number[],
+  stops: PointIdentityType[],
   etablissementsId: number[]
 ): TimelineItemType[] {
   const specificQuantity: { [id: number]: number } = {};
@@ -606,34 +606,38 @@ export function getTimelineInfos(
     specificQuantity[id] = 0;
   }
 
-  return stopsId.map((stopId) => {
+  return stops.map((stop) => {
     let pointQuantity = 0;
 
-    eleveVersEtablissementData()
-      .filter(
-        (data) =>
-          etablissementsId.includes(data.etablissement_id_point) &&
-          data.ramassage_id_point === stopId
-      )
-      .map((data) => {
-        for (const etablissementId of etablissementsId) {
-          if (etablissementId === data.etablissement_id_point) {
-            specificQuantity[etablissementId] += data.quantity;
+    if (stop.nature === NatureEnum.ramassage) {
+      eleveVersEtablissementData()
+        .filter(
+          (data) =>
+            etablissementsId.includes(data.etablissement_id_point) &&
+            data.ramassage_id_point === stop.idPoint
+        )
+        .map((data) => {
+          for (const etablissementId of etablissementsId) {
+            if (etablissementId === data.etablissement_id_point) {
+              specificQuantity[etablissementId] += data.quantity;
+            }
           }
-        }
-        pointQuantity += data.quantity;
-      });
+          pointQuantity += data.quantity;
+        });
+    }
+
     // TODO: points() will be replaced by ramassage() and etablissement()
     return {
-      nature: points().filter((point) => point.idPoint === stopId)[0].nature,
-      name: points().filter((point) => point.idPoint === stopId)[0].name,
-      quantity: etablissementsId.includes(stopId)
-        ? (() => {
-            const specificQuantityToReturn = specificQuantity[stopId];
-            specificQuantity[stopId] = 0;
-            return specificQuantityToReturn;
-          })()
-        : pointQuantity,
+      nature: stop.nature,
+      name: points().filter((point) => point.idPoint === stop.idPoint)[0].name,
+      quantity:
+        stop.nature == NatureEnum.etablissement
+          ? (() => {
+              const specificQuantityToReturn = specificQuantity[stop.idPoint];
+              specificQuantity[stop.idPoint] = 0;
+              return specificQuantityToReturn;
+            })()
+          : pointQuantity,
     };
   });
 }
