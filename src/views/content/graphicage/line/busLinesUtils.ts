@@ -580,18 +580,28 @@ const [eleveVersEtablissementData, setEleveVersEtablissementData] =
 
 // TODO: Refactor (faire le + de fct pures possibles)
 // TODO: Rename
-export function getTimelineInfosNew(
-  busLine: LineUnderConstructionType
-): TimelineItemType[] {
-  const stopsId = busLine.stops.map((stop) => stop.idPoint);
+export const selectedBusLineInfosNew = (): TimelineItemType[] => {
+  const selectedBusLine = getSelectedBusLine();
+  if (!selectedBusLine) {
+    return [];
+  }
 
-  let etablissementsId = busLine.stops
+  const stopsId = selectedBusLine.stops.map((stop) => stop.idPoint);
+
+  let etablissementsId = selectedBusLine.stops
     .filter((point) => point.nature === NatureEnum.etablissement)
     .map((etablissement) => etablissement.idPoint);
 
   // Keep only unique values
   etablissementsId = [...new Set(etablissementsId)];
 
+  return getTimelineInfosNewNew(stopsId, etablissementsId);
+};
+
+export function getTimelineInfosNewNew(
+  stopsId: number[],
+  etablissementsId: number[]
+): TimelineItemType[] {
   const specificQuantity: { [id: number]: number } = {};
   for (const id of etablissementsId) {
     specificQuantity[id] = 0;
@@ -620,24 +630,14 @@ export function getTimelineInfosNew(
       name: points().filter((point) => point.idPoint === stopId)[0].name,
       quantity: etablissementsId.includes(stopId)
         ? (() => {
-            const actualSpecificQuantity = specificQuantity[stopId];
+            const specificQuantityToReturn = specificQuantity[stopId];
             specificQuantity[stopId] = 0;
-            return actualSpecificQuantity;
+            return specificQuantityToReturn;
           })()
         : pointQuantity,
     };
   });
 }
-
-export const selectedBusLineInfos = (): TimelineItemType[] => {
-  const selectedBusLine = getSelectedBusLine();
-
-  if (!selectedBusLine) {
-    return [];
-  }
-
-  return getTimelineInfosNew(selectedBusLine);
-};
 
 function getStopNames(busLine: LineUnderConstructionType) {
   const stopIds = busLine.stops.map((stop) => stop.idPoint);
