@@ -583,42 +583,36 @@ const [eleveVersEtablissementData, setEleveVersEtablissementData] =
 export function getTimelineInfosNew(
   busLine: LineUnderConstructionType
 ): TimelineItemType[] {
-  const stopIds = busLine.stops.map((stop) => stop.idPoint);
-  // console.log("stopIds", stopIds);
-
-  // console.log("fetch data=>", testData());
-  // console.log("selectedBusLine=>", busLine);
+  const stopsId = busLine.stops.map((stop) => stop.idPoint);
 
   let etablissementsId = busLine.stops
-    .filter((point) => point.nature == NatureEnum.etablissement)
+    .filter((point) => point.nature === NatureEnum.etablissement)
     .map((etablissement) => etablissement.idPoint);
-  etablissementsId = [...new Set(etablissementsId)];
 
-  // console.log("etablissementsId selectioné", etablissementsId);
+  // Keep only unique values
+  etablissementsId = [...new Set(etablissementsId)];
 
   const specificQuantity: { [id: number]: number } = {};
   for (const id of etablissementsId) {
     specificQuantity[id] = 0;
   }
 
-  return stopIds.map((stopId) => {
+  return stopsId.map((stopId) => {
     let pointQuantity = 0;
 
     eleveVersEtablissementData()
       .filter(
         (data) =>
           etablissementsId.includes(data.etablissement_id_point) &&
-          data.ramassage_id_point == stopId
+          data.ramassage_id_point === stopId
       )
-      .map((eleve_vers_etablissement) => {
-        // console.log("in map => ", eleve_vers_etablissement);
-
-        for (const id of etablissementsId) {
-          if (id === eleve_vers_etablissement.etablissement_id_point) {
-            specificQuantity[id] += eleve_vers_etablissement.quantity;
+      .map((data) => {
+        for (const etablissementId of etablissementsId) {
+          if (etablissementId === data.etablissement_id_point) {
+            specificQuantity[etablissementId] += data.quantity;
           }
         }
-        pointQuantity += eleve_vers_etablissement.quantity;
+        pointQuantity += data.quantity;
       });
     // TODO: points() will be replaced by ramassage() and etablissement()
     return {
