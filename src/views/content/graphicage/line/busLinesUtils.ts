@@ -9,12 +9,7 @@ import {
   points,
   setRemoveConfirmation,
 } from "../../../../signaux";
-import {
-  LineType,
-  LineUnderConstructionType,
-  NatureEnum,
-  PointIdentityType,
-} from "../../../../type";
+import { LineType, NatureEnum, PointIdentityType } from "../../../../type";
 import { authenticateWrap } from "../../../layout/authentication";
 import { deselectAllPoints, linkMap } from "../component/organism/Points";
 import {
@@ -569,7 +564,7 @@ export const getSelectedBusLineId = (): number | undefined => {
   return selectedBusLine.idBusLine;
 };
 
-function getStopNames(busLine: LineUnderConstructionType) {
+function getStopNames(busLine: LineType) {
   const stopIds = busLine.stops.map((stop) => stop.idPoint);
   // TODO: Delete points() when no longer used (replaced by stops and schools)
   return stopIds.map(

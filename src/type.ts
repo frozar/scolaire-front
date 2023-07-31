@@ -55,17 +55,17 @@ export type PointIdentityType = {
   nature: NatureEnum;
 };
 
-export type LineUnderConstructionType = {
-  color: string;
-  stops: PointIdentityType[];
+export type LineUnderConstructionType = LineType & {
   etablissementSelected?: PointInformation[];
   confirmSelection?: boolean;
 };
 
-export type LineType = LineUnderConstructionType & {
+export type LineType = {
   idBusLine: number;
   selected: Accessor<boolean>;
   setSelected: Setter<boolean>;
+  color: string;
+  stops: PointIdentityType[];
 };
 
 export enum ModeEnum {
