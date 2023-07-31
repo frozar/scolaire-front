@@ -578,8 +578,6 @@ const [eleveVersEtablissementData, setEleveVersEtablissementData] =
     await fetchEleveVersEtablissement(getActiveMapId() as number)
   );
 
-// TODO: Refactor (faire le + de fct pures possibles)
-// TODO: Rename
 export const getSelectedBusLineTimelineInfos = (): TimelineItemType[] => {
   const selectedBusLine = getSelectedBusLine();
   if (!selectedBusLine) {
@@ -598,6 +596,7 @@ export const getSelectedBusLineTimelineInfos = (): TimelineItemType[] => {
   return getTimelineInfos(stopsId, etablissementsId);
 };
 
+// Works with multiple schools
 export function getTimelineInfos(
   stopsId: number[],
   etablissementsId: number[]
@@ -652,64 +651,6 @@ function getStopNames(busLine: LineUnderConstructionType) {
 export const lineUnderConstructionStopNames = () => {
   return getStopNames(getLineUnderConstruction());
 };
-
-// export function getTimelineInfosAddLineMode(
-//   // busLine: LineUnderConstructionType
-//   busLine: LineType
-// ): TimelineItemType[] {
-//   console.log("getTimelineInfosAddLineMode executed");
-//   console.log("addlinemodebusline => ", busLine);
-//   if (busLine.stops.length == 0) {
-//     return [];
-//   }
-
-//   const stopIds = busLine.stops.map((stop) => stop.idPoint);
-
-//   // console.log("fetch data=>", testData());
-//   // console.log("selectedBusLine=>", busLine);
-
-//   const etablissementId = busLine.etablissementSelected?.idPoint;
-
-//   // console.log("etablissementId selectioné", etablissementId);
-
-//   return stopIds.map((stopId) => {
-//     let quantity = 0;
-//     testData()
-//       .filter(
-//         (data) =>
-//           data.etablissement_id_point == etablissementId &&
-//           data.ramassage_id_point == stopId
-//       )
-//       .map((eleve_vers_etablissement) => {
-//         quantity += eleve_vers_etablissement.quantity;
-//         // TODO: Fix infinity loop issue caused here
-//         setTotalQuantity((prev) => prev + quantity);
-//       });
-//     return {
-//       nature: points().filter((point) => point.idPoint === stopId)[0].nature,
-//       name: points().filter((point) => point.idPoint === stopId)[0].name,
-//       quantity:
-//         stopId == etablissementId
-//           ? (() => {
-//               const actualTotalQuantity = totalQuantity();
-//               setTotalQuantity(0);
-//               return actualTotalQuantity;
-//             })()
-//           : quantity,
-//     };
-//   });
-// }
-
-// TODO: Fix type difference (LineType)
-// export const lineUnderConstructionInfos = () => {
-//   console.log("in busline utils => lineUnderConstructionInfos");
-
-//   return getTimelineInfosAddLineMode(getLineUnderConstruction() as LineType);
-// };
-
-// export const lineUnderConstructionInfos = () => {
-//   return getTimelineInfosAddLineMode(getLineUnderConstruction() as LineType);
-// };
 
 // TODO: Make it display correct quantities
 export function getTimelineInfosAddLineMode(): TimelineItemType[] {
