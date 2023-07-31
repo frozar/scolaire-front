@@ -54,7 +54,7 @@ export default function (props: { point: TimelineItemType[] }) {
       >
         <For each={props.point}>
           {(point) => {
-            console.log("for each of timeline", point);
+            // console.log("for each of timeline", point);
             return (
               <TimelineItem
                 nature={point.nature}

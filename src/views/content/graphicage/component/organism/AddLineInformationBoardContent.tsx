@@ -1,4 +1,4 @@
-import { Show, createEffect, createSignal } from "solid-js";
+import { Show, createSignal } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import Button from "../../../../../component/atom/Button";
 import { PointRamassageType } from "../../../../../type";
@@ -16,7 +16,7 @@ const [, { getLineUnderConstruction, confirmEtablissementSelection }] =
 // TODO: Rename signal
 export const [totalQuantity, setTotalQuantity] = createSignal<number>(0);
 
-createEffect(() => console.log("totalQuantity", totalQuantity()));
+// createEffect(() => console.log("totalQuantity", totalQuantity()));
 
 export default function () {
   const isValidate = () => getLineUnderConstruction().confirmSelection;
