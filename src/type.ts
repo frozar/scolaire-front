@@ -19,10 +19,13 @@ export enum NatureEnum {
 }
 
 //TODO to update or delete cause of Xano
-export type PointRamassageType = {
+export type PointIdentityType = {
   id: number;
   idPoint: number;
   nature: NatureEnum;
+};
+
+export type PointResourceType = PointIdentityType & {
   lon: number;
   lat: number;
   name: string;
@@ -33,7 +36,9 @@ export type PointRamassageType = {
   setAssociatedPoints: Setter<PointIdentityType[]>;
 };
 
-export type PointEtablissementType = PointRamassageType;
+export type PointRamassageType = PointResourceType;
+
+export type PointEtablissementType = PointResourceType;
 
 export type PointToDisplayType = {
   idPoint: number;
@@ -48,12 +53,6 @@ export function isPointRamassage(pt: { nature: NatureEnum }) {
 export function isPointEtablissement(pt: { nature: NatureEnum }) {
   return pt.nature === NatureEnum.etablissement;
 }
-
-export type PointIdentityType = {
-  id: number;
-  idPoint: number;
-  nature: NatureEnum;
-};
 
 export type LineUnderConstructionType = LineType & {
   etablissementSelected?: PointInformation[];

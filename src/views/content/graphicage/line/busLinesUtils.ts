@@ -9,7 +9,12 @@ import {
   points,
   setRemoveConfirmation,
 } from "../../../../signaux";
-import { LineType, NatureEnum, PointIdentityType } from "../../../../type";
+import {
+  LineType,
+  NatureEnum,
+  PointIdentityType,
+  PointResourceType,
+} from "../../../../type";
 import { authenticateWrap } from "../../../layout/authentication";
 import { deselectAllPoints, linkMap } from "../component/organism/Points";
 import {
@@ -414,7 +419,6 @@ export function fetchBusLines() {
           }[];
         }[];
       } = await res.json();
-
       const lines: LineType[] = json.content.map((resLine) => {
         const color = resLine.color ? "#" + resLine.color : randColor();
         const stopsWithNatureEnum = resLine.stops.map(
@@ -564,11 +568,28 @@ export const getSelectedBusLineId = (): number | undefined => {
   return selectedBusLine.idBusLine;
 };
 
-function getStopNames(busLine: LineType) {
+export function getStopNames(busLine: LineType | undefined) {
+  if (!busLine) {
+    return [];
+  }
   const stopIds = busLine.stops.map((stop) => stop.idPoint);
   // TODO: Delete points() when no longer used (replaced by stops and schools)
   return stopIds.map(
     (stopId) => points().filter((point) => point.idPoint === stopId)[0].name
+  );
+}
+
+export function mapIdentityToResourceType(
+  pointsIdentity: PointIdentityType[] | undefined
+): PointResourceType[] {
+  if (!pointsIdentity) {
+    return [];
+  }
+  const stopIds = pointsIdentity.map((stop) => stop.idPoint);
+  console.log(stopIds);
+
+  return stopIds.map(
+    (stopId) => points().filter((point) => point.idPoint === stopId)[0]
   );
 }
 

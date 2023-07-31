@@ -277,7 +277,7 @@ export default function () {
             onChange={handleColorChanged}
           />
           {/* TODO: Fix timeline */}
-          {/* <Timeline stopNames={selectedBusLineStopNames()} /> */}
+          {/* <Timeline line={getSelectedBusLine()} /> */}
         </Match>
         <Match when={isInAddLineMode()}>
           <AddLineInformationBoardContent />

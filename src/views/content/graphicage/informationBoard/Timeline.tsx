@@ -1,7 +1,9 @@
-import { For, splitProps } from "solid-js";
+import { For } from "solid-js";
+import { LineType, PointResourceType } from "../../../../type";
+import { mapIdentityToResourceType } from "../line/busLinesUtils";
 
 type TimelineItemType = {
-  name: string;
+  pointsResource: PointResourceType;
 };
 
 function TimelineItem(props: TimelineItemType) {
@@ -10,7 +12,7 @@ function TimelineItem(props: TimelineItemType) {
       <div class="v-timeline-item__body">
         <div class="d-flex">
           <div>
-            <strong>{props.name}</strong>
+            <strong>{props.pointsResource.name}</strong>
           </div>
         </div>
       </div>
@@ -27,17 +29,16 @@ function TimelineItem(props: TimelineItemType) {
   );
 }
 
-export default function (props: { stopNames: string[] }) {
-  const [local] = splitProps(props, ["stopNames"]);
-
+export default function (props: { line: LineType | undefined }) {
   return (
     <div class="timeline">
       <div
         class="v-timeline v-timeline--align-start v-timeline--justify-auto v-timeline--side-end v-timeline--vertical"
         style={{ "--v-timeline-line-thickness": "2px" }}
       >
-        <For each={local.stopNames}>
-          {(stop) => <TimelineItem name={stop} />}
+        <For each={mapIdentityToResourceType(props.line?.stops)}>
+          {/* TODO refactor de replace mapIdentityToResourceType */}
+          {(stop) => <TimelineItem pointsResource={stop} />}
         </For>
       </div>
     </div>

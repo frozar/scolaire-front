@@ -54,7 +54,7 @@ export default function () {
       </Show>
       {/* TODO: Fix timeline */}
       {/* <Show when={lineUnderConstructionStopNames().length != 0}>
-        <Timeline stopNames={lineUnderConstructionStopNames()} />
+        <Timeline line={getLineUnderConstruction()} />
       </Show> */}
     </>
   );
