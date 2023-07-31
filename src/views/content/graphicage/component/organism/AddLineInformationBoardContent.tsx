@@ -2,11 +2,8 @@ import { Show, createSignal } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import Button from "../../../../../component/atom/Button";
 import { PointRamassageType } from "../../../../../type";
-import Timeline from "../../informationBoard/Timeline";
-import {
-  lineUnderConstructionInfos,
-  lineUnderConstructionStopNames,
-} from "../../line/busLinesUtils";
+// import Timeline from "../../informationBoard/Timeline";
+import { lineUnderConstructionStopNames } from "../../line/busLinesUtils";
 import BuildLineButton from "../atom/BuildLineButton";
 import SelectedSchool from "../atom/SelectedSchool";
 
@@ -61,10 +58,10 @@ export default function () {
       >
         <Button onClick={confirmEtablissementSelection} label="Valider" />
       </Show>
-
-      <Show when={lineUnderConstructionInfos().length != 0}>
+      {/* TODO: Put it back like it was before */}
+      {/* <Show when={lineUnderConstructionInfos().length != 0}>
         <Timeline point={lineUnderConstructionInfos()} />
-      </Show>
+      </Show> */}
     </>
   );
 }

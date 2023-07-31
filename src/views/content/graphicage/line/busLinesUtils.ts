@@ -17,10 +17,6 @@ import {
   PointIdentityType,
 } from "../../../../type";
 import { authenticateWrap } from "../../../layout/authentication";
-import {
-  setTotalQuantity,
-  totalQuantity,
-} from "../component/organism/AddLineInformationBoardContent";
 import { deselectAllPoints, linkMap } from "../component/organism/Points";
 import { TimelineItemType } from "../informationBoard/Timeline";
 import { fetchEleveVersEtablissement } from "../point.service";
@@ -577,9 +573,10 @@ export const getSelectedBusLineId = (): number | undefined => {
 };
 // TODO: Déplacer où ?
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const [testData, setTestData] = createSignal<EleveVersEtablissementType[]>(
-  await fetchEleveVersEtablissement(getActiveMapId() as number)
-);
+const [eleveVersEtablissementData, setEleveVersEtablissementData] =
+  createSignal<EleveVersEtablissementType[]>(
+    await fetchEleveVersEtablissement(getActiveMapId() as number)
+  );
 
 // TODO: Refactor (faire le + de fct pures possibles)
 // TODO: Rename
@@ -607,7 +604,7 @@ export function getTimelineInfosNew(
   return stopIds.map((stopId) => {
     let pointQuantity = 0;
 
-    testData()
+    eleveVersEtablissementData()
       .filter(
         (data) =>
           etablissementsId.includes(data.etablissement_id_point) &&
@@ -637,52 +634,6 @@ export function getTimelineInfosNew(
     };
   });
 }
-export function getTimelineInfosAddLineMode(
-  // busLine: LineUnderConstructionType
-  busLine: LineType
-): TimelineItemType[] {
-  console.log("getTimelineInfosAddLineMode executed");
-  console.log("addlinemodebusline => ", busLine);
-  if (busLine.stops.length == 0) {
-    return [];
-  }
-
-  const stopIds = busLine.stops.map((stop) => stop.idPoint);
-
-  // console.log("fetch data=>", testData());
-  // console.log("selectedBusLine=>", busLine);
-
-  const etablissementId = busLine.etablissementSelected?.idPoint;
-
-  // console.log("etablissementId selectioné", etablissementId);
-
-  return stopIds.map((stopId) => {
-    let quantity = 0;
-    testData()
-      .filter(
-        (data) =>
-          data.etablissement_id_point == etablissementId &&
-          data.ramassage_id_point == stopId
-      )
-      .map((eleve_vers_etablissement) => {
-        quantity += eleve_vers_etablissement.quantity;
-        // TODO: Fix infinity loop issue caused here
-        setTotalQuantity((prev) => prev + quantity);
-      });
-    return {
-      nature: points().filter((point) => point.idPoint === stopId)[0].nature,
-      name: points().filter((point) => point.idPoint === stopId)[0].name,
-      quantity:
-        stopId == etablissementId
-          ? (() => {
-              const actualTotalQuantity = totalQuantity();
-              setTotalQuantity(0);
-              return actualTotalQuantity;
-            })()
-          : quantity,
-    };
-  });
-}
 
 export const selectedBusLineInfos = (): TimelineItemType[] => {
   const selectedBusLine = getSelectedBusLine();
@@ -694,13 +645,6 @@ export const selectedBusLineInfos = (): TimelineItemType[] => {
   return getTimelineInfosNew(selectedBusLine);
 };
 
-// TODO: Fix type difference (LineType)
-export const lineUnderConstructionInfos = () => {
-  console.log("in busline utils => lineUnderConstructionInfos");
-
-  return getTimelineInfosAddLineMode(getLineUnderConstruction() as LineType);
-};
-
 function getStopNames(busLine: LineUnderConstructionType) {
   const stopIds = busLine.stops.map((stop) => stop.idPoint);
 
@@ -709,7 +653,61 @@ function getStopNames(busLine: LineUnderConstructionType) {
   );
 }
 
-// TODO: Delete
+// TODO: Delete when quantity is displayed in addline mode
 export const lineUnderConstructionStopNames = () => {
   return getStopNames(getLineUnderConstruction());
 };
+
+// export function getTimelineInfosAddLineMode(
+//   // busLine: LineUnderConstructionType
+//   busLine: LineType
+// ): TimelineItemType[] {
+//   console.log("getTimelineInfosAddLineMode executed");
+//   console.log("addlinemodebusline => ", busLine);
+//   if (busLine.stops.length == 0) {
+//     return [];
+//   }
+
+//   const stopIds = busLine.stops.map((stop) => stop.idPoint);
+
+//   // console.log("fetch data=>", testData());
+//   // console.log("selectedBusLine=>", busLine);
+
+//   const etablissementId = busLine.etablissementSelected?.idPoint;
+
+//   // console.log("etablissementId selectioné", etablissementId);
+
+//   return stopIds.map((stopId) => {
+//     let quantity = 0;
+//     testData()
+//       .filter(
+//         (data) =>
+//           data.etablissement_id_point == etablissementId &&
+//           data.ramassage_id_point == stopId
+//       )
+//       .map((eleve_vers_etablissement) => {
+//         quantity += eleve_vers_etablissement.quantity;
+//         // TODO: Fix infinity loop issue caused here
+//         setTotalQuantity((prev) => prev + quantity);
+//       });
+//     return {
+//       nature: points().filter((point) => point.idPoint === stopId)[0].nature,
+//       name: points().filter((point) => point.idPoint === stopId)[0].name,
+//       quantity:
+//         stopId == etablissementId
+//           ? (() => {
+//               const actualTotalQuantity = totalQuantity();
+//               setTotalQuantity(0);
+//               return actualTotalQuantity;
+//             })()
+//           : quantity,
+//     };
+//   });
+// }
+
+// TODO: Fix type difference (LineType)
+// export const lineUnderConstructionInfos = () => {
+//   console.log("in busline utils => lineUnderConstructionInfos");
+
+//   return getTimelineInfosAddLineMode(getLineUnderConstruction() as LineType);
+// };
