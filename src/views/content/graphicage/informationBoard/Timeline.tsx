@@ -1,5 +1,14 @@
-import { For } from "solid-js";
-import { NatureEnum } from "../../../../type";
+import { For, createSignal } from "solid-js";
+import { useStateGui } from "../../../../StateGui";
+import { EleveVersEtablissementType, NatureEnum } from "../../../../type";
+import { fetchEleveVersEtablissement } from "../point.service";
+
+const [, { getActiveMapId }] = useStateGui();
+
+export const [eleveVersEtablissementData, setEleveVersEtablissementData] =
+  createSignal<EleveVersEtablissementType[]>(
+    await fetchEleveVersEtablissement(getActiveMapId() as number)
+  );
 
 export type TimelineItemType = {
   nature: NatureEnum;
@@ -44,14 +53,14 @@ function TimelineItem(props: TimelineItemType) {
   );
 }
 
-export default function (props: { point: TimelineItemType[] }) {
+export default function (props: { item: TimelineItemType[] }) {
   return (
     <div class="timeline">
       <div
         class="v-timeline v-timeline--align-start v-timeline--justify-auto v-timeline--side-end v-timeline--vertical"
         style={{ "--v-timeline-line-thickness": "2px" }}
       >
-        <For each={props.point}>
+        <For each={props.item}>
           {(point) => {
             return (
               <TimelineItem

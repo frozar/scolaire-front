@@ -279,7 +279,7 @@ export default function () {
             onChange={handleColorChanged}
           />
 
-          <Timeline point={getSelectedBusLineTimelineInfos()} />
+          <Timeline item={getSelectedBusLineTimelineInfos()} />
         </Match>
         <Match when={isInAddLineMode()}>
           <AddLineInformationBoardContent />

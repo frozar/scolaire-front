@@ -711,7 +711,7 @@ export const lineUnderConstructionStopNames = () => {
 //   return getTimelineInfosAddLineMode(getLineUnderConstruction() as LineType);
 // };
 
-// TODO: Display correct quantities
+// TODO: Make it display correct quantities
 export function getTimelineInfosAddLineMode(): TimelineItemType[] {
   const busLine = getLineUnderConstruction();
   if (busLine.stops.length == 0) {

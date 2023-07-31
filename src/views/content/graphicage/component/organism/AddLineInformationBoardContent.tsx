@@ -2,11 +2,9 @@ import { Show } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import Button from "../../../../../component/atom/Button";
 import { PointRamassageType } from "../../../../../type";
-// import Timeline from "../../informationBoard/Timeline";
 import Timeline from "../../informationBoard/Timeline";
 import {
   getTimelineInfosAddLineMode,
-  // lineUnderConstructionInfos,
   lineUnderConstructionStopNames,
 } from "../../line/busLinesUtils";
 import BuildLineButton from "../atom/BuildLineButton";
@@ -14,11 +12,6 @@ import SelectedSchool from "../atom/SelectedSchool";
 
 const [, { getLineUnderConstruction, confirmEtablissementSelection }] =
   useStateAction();
-
-// TODO: Rename signal
-// export const [totalQuantity, setTotalQuantity] = createSignal<number>(0);
-
-// createEffect(() => console.log("totalQuantity", totalQuantity()));
 
 export default function () {
   const isValidate = () => getLineUnderConstruction().confirmSelection;
@@ -63,9 +56,9 @@ export default function () {
       >
         <Button onClick={confirmEtablissementSelection} label="Valider" />
       </Show>
-      {/* TODO: Make it work */}
+      {/* TODO: Make it display correct quantities */}
       <Show when={getTimelineInfosAddLineMode().length != 0}>
-        <Timeline point={getTimelineInfosAddLineMode()} />
+        <Timeline item={getTimelineInfosAddLineMode()} />
       </Show>
     </>
   );
