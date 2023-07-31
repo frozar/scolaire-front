@@ -9,6 +9,7 @@ export type TimelineItemType = {
 
 function TimelineItem(props: TimelineItemType) {
   // TODO: use color in tailwind theme ?
+  // TODO: Rename
   const classBeginning =
     "v-timeline-divider__dot v-timeline-divider__dot--size-small";
 

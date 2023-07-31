@@ -575,86 +575,29 @@ export const getSelectedBusLineId = (): number | undefined => {
 
   return selectedBusLine.idBusLine;
 };
-// Affichage du total de quantity
-// export function getTimelineInfosOld(
-//   busLine: LineUnderConstructionType
-// ): TimelineItemType[] {
-//   const stopIds = busLine.stops.map((stop) => stop.idPoint);
-//   console.log("signal points", points());
-
-//   return stopIds.map((stopId) => {
-//     return {
-//       name: points().filter((point) => point.idPoint === stopId)[0].name,
-//       quantity: points().filter((point) => point.idPoint === stopId)[0]
-//         .quantity,
-//     };
-//   });
-// }
 // TODO: Déplacer où ?
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const [testData, setTestData] = createSignal<EleveVersEtablissementType[]>(
   await fetchEleveVersEtablissement(getActiveMapId() as number)
 );
 
-// TODO: Make it work with multiple schools
 // TODO: Refactor (faire le + de fct pures possibles)
-export function getTimelineInfos(
-  busLine: LineUnderConstructionType
-): TimelineItemType[] {
-  const stopIds = busLine.stops.map((stop) => stop.idPoint);
-
-  console.log("fetch data=>", testData());
-  console.log("selectedBusLine=>", busLine);
-
-  const etablissementId = busLine.stops.filter(
-    (point) => point.nature == NatureEnum.etablissement
-  )[0].idPoint;
-
-  console.log("etablissementId selectioné", etablissementId);
-  let totalQuantity = 0;
-  return stopIds.map((stopId) => {
-    let quantity = 0;
-
-    testData()
-      .filter(
-        (data) =>
-          data.etablissement_id_point == etablissementId &&
-          data.ramassage_id_point == stopId
-      )
-      .map((eleve_vers_etablissement) => {
-        quantity += eleve_vers_etablissement.quantity;
-        totalQuantity += eleve_vers_etablissement.quantity;
-      });
-    // TODO: points() will be replaced by ramassage() and etalbissement()
-    return {
-      nature: points().filter((point) => point.idPoint === stopId)[0].nature,
-      name: points().filter((point) => point.idPoint === stopId)[0].name,
-      quantity:
-        stopId == etablissementId
-          ? (() => {
-              const actualTotalQuantity = totalQuantity;
-              totalQuantity = 0;
-              return actualTotalQuantity;
-            })()
-          : quantity,
-    };
-  });
-}
+// TODO: Rename
 export function getTimelineInfosNew(
   busLine: LineUnderConstructionType
 ): TimelineItemType[] {
   const stopIds = busLine.stops.map((stop) => stop.idPoint);
-  console.log("stopIds", stopIds);
+  // console.log("stopIds", stopIds);
 
   // console.log("fetch data=>", testData());
-  console.log("selectedBusLine=>", busLine);
+  // console.log("selectedBusLine=>", busLine);
 
   let etablissementsId = busLine.stops
     .filter((point) => point.nature == NatureEnum.etablissement)
     .map((etablissement) => etablissement.idPoint);
   etablissementsId = [...new Set(etablissementsId)];
 
-  console.log("etablissementsId selectioné", etablissementsId);
+  // console.log("etablissementsId selectioné", etablissementsId);
 
   const specificQuantity: { [id: number]: number } = {};
   for (const id of etablissementsId) {
@@ -662,7 +605,7 @@ export function getTimelineInfosNew(
   }
 
   return stopIds.map((stopId) => {
-    let pointQuantity = 0; // ajouter n total quantity
+    let pointQuantity = 0;
 
     testData()
       .filter(
@@ -706,12 +649,12 @@ export function getTimelineInfosAddLineMode(
 
   const stopIds = busLine.stops.map((stop) => stop.idPoint);
 
-  console.log("fetch data=>", testData());
-  console.log("selectedBusLine=>", busLine);
+  // console.log("fetch data=>", testData());
+  // console.log("selectedBusLine=>", busLine);
 
   const etablissementId = busLine.etablissementSelected?.idPoint;
 
-  console.log("etablissementId selectioné", etablissementId);
+  // console.log("etablissementId selectioné", etablissementId);
 
   return stopIds.map((stopId) => {
     let quantity = 0;
@@ -726,20 +669,15 @@ export function getTimelineInfosAddLineMode(
         // TODO: Fix infinity loop issue caused here
         setTotalQuantity((prev) => prev + quantity);
       });
-    console.log("testBoucle");
     return {
       nature: points().filter((point) => point.idPoint === stopId)[0].nature,
       name: points().filter((point) => point.idPoint === stopId)[0].name,
-      // quantity: quantity,
       quantity:
         stopId == etablissementId
           ? (() => {
-              // const actualTotalQuantity = totalQuantity;
               const actualTotalQuantity = totalQuantity();
-              // totalQuantity = 0;
               setTotalQuantity(0);
               return actualTotalQuantity;
-              // return quantity;
             })()
           : quantity,
     };
@@ -753,7 +691,6 @@ export const selectedBusLineInfos = (): TimelineItemType[] => {
     return [];
   }
 
-  // return getTimelineInfos(selectedBusLine);
   return getTimelineInfosNew(selectedBusLine);
 };
 

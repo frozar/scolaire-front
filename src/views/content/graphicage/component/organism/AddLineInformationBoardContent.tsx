@@ -62,8 +62,6 @@ export default function () {
         <Button onClick={confirmEtablissementSelection} label="Valider" />
       </Show>
 
-      {/* <Show when={lineUnderConstructionStopNames().length != 0}> */}
-      {/* <Timeline point={lineUnderConstructionStopNames()} /> */}
       <Show when={lineUnderConstructionInfos().length != 0}>
         <Timeline point={lineUnderConstructionInfos()} />
       </Show>

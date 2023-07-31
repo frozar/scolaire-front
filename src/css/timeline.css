@@ -196,10 +196,6 @@
   display: flex;
   justify-content: center;
 }
-/* .bg-pink {
-  background-color: #e91e63 !important;
-  color: #fff !important;
-} */
 
 .v-timeline--vertical.v-timeline--align-start
   .v-timeline-divider
