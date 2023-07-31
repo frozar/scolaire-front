@@ -706,3 +706,26 @@ export const lineUnderConstructionStopNames = () => {
 
 //   return getTimelineInfosAddLineMode(getLineUnderConstruction() as LineType);
 // };
+
+// export const lineUnderConstructionInfos = () => {
+//   return getTimelineInfosAddLineMode(getLineUnderConstruction() as LineType);
+// };
+
+// TODO: Display correct quantities
+export function getTimelineInfosAddLineMode(): TimelineItemType[] {
+  const busLine = getLineUnderConstruction();
+  if (busLine.stops.length == 0) {
+    return [];
+  }
+
+  const stopIds = busLine.stops.map((stop) => stop.idPoint);
+
+  return stopIds.map((stopId) => {
+    return {
+      nature: points().filter((point) => point.idPoint === stopId)[0].nature,
+      name: points().filter((point) => point.idPoint === stopId)[0].name,
+      quantity: points().filter((point) => point.idPoint === stopId)[0]
+        .quantity,
+    };
+  });
+}

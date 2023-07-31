@@ -1,9 +1,14 @@
-import { Show, createSignal } from "solid-js";
+import { Show } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import Button from "../../../../../component/atom/Button";
 import { PointRamassageType } from "../../../../../type";
 // import Timeline from "../../informationBoard/Timeline";
-import { lineUnderConstructionStopNames } from "../../line/busLinesUtils";
+import Timeline from "../../informationBoard/Timeline";
+import {
+  getTimelineInfosAddLineMode,
+  // lineUnderConstructionInfos,
+  lineUnderConstructionStopNames,
+} from "../../line/busLinesUtils";
 import BuildLineButton from "../atom/BuildLineButton";
 import SelectedSchool from "../atom/SelectedSchool";
 
@@ -11,7 +16,7 @@ const [, { getLineUnderConstruction, confirmEtablissementSelection }] =
   useStateAction();
 
 // TODO: Rename signal
-export const [totalQuantity, setTotalQuantity] = createSignal<number>(0);
+// export const [totalQuantity, setTotalQuantity] = createSignal<number>(0);
 
 // createEffect(() => console.log("totalQuantity", totalQuantity()));
 
@@ -58,10 +63,10 @@ export default function () {
       >
         <Button onClick={confirmEtablissementSelection} label="Valider" />
       </Show>
-      {/* TODO: Put it back like it was before */}
-      {/* <Show when={lineUnderConstructionInfos().length != 0}>
-        <Timeline point={lineUnderConstructionInfos()} />
-      </Show> */}
+      {/* TODO: Make it work */}
+      <Show when={getTimelineInfosAddLineMode().length != 0}>
+        <Timeline point={getTimelineInfosAddLineMode()} />
+      </Show>
     </>
   );
 }
