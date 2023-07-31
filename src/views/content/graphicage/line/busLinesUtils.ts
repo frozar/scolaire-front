@@ -718,6 +718,7 @@ function getStopNames(busLine: LineUnderConstructionType) {
   );
 }
 
+// TODO: Delete
 export const lineUnderConstructionStopNames = () => {
   return getStopNames(getLineUnderConstruction());
 };

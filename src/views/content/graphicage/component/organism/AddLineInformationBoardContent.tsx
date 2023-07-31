@@ -64,7 +64,6 @@ export default function () {
 
       {/* <Show when={lineUnderConstructionStopNames().length != 0}> */}
       {/* <Timeline point={lineUnderConstructionStopNames()} /> */}
-      <p>Création d'une ligne</p>
       <Show when={lineUnderConstructionInfos().length != 0}>
         <Timeline point={lineUnderConstructionInfos()} />
       </Show>
