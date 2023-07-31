@@ -640,7 +640,74 @@ export function getTimelineInfos(
     };
   });
 }
+export function getTimelineInfosNew(
+  busLine: LineUnderConstructionType
+): TimelineItemType[] {
+  const stopIds = busLine.stops.map((stop) => stop.idPoint);
+  console.log("stopIds", stopIds);
 
+  console.log("fetch data=>", testData());
+  console.log("selectedBusLine=>", busLine);
+
+  const etablissementsId = busLine.stops
+    .filter((point) => point.nature == NatureEnum.etablissement)
+    .map((etablissement) => etablissement.idPoint);
+
+  console.log("etablissementsId selectioné", etablissementsId);
+  // let totalQuantity = 0; // ajouter n total quantity
+  const specificQuantity: { [id: number]: number } = {};
+  for (const id of etablissementsId) {
+    specificQuantity[id] = 0;
+  }
+
+  return stopIds.map((stopId) => {
+    let pointQuantity = 0; // ajouter n total quantity
+    // console.log("testData()", testData());
+
+    testData()
+      .filter(
+        (data) =>
+          // data.etablissement_id_point in etablissementsId &&
+          etablissementsId.includes(data.etablissement_id_point) &&
+          data.ramassage_id_point == stopId
+      )
+      .map((eleve_vers_etablissement) => {
+        console.log("in map => ", eleve_vers_etablissement);
+
+        for (const id of etablissementsId) {
+          if (id === eleve_vers_etablissement.etablissement_id_point) {
+            specificQuantity[id] += eleve_vers_etablissement.quantity;
+            // TODO: Do better
+            // specificQuantity[id]
+            // ? (specificQuantity[id] += eleve_vers_etablissement.quantity)
+            // : (specificQuantity[id] = eleve_vers_etablissement.quantity);
+            // try {
+            //   specificQuantity[id] += eleve_vers_etablissement.quantity;
+            // } catch {
+            //   specificQuantity[id] = eleve_vers_etablissement.quantity;
+            // }
+          }
+        }
+        pointQuantity += eleve_vers_etablissement.quantity;
+        // totalQuantity += eleve_vers_etablissement.quantity;
+      });
+    // TODO: points() will be replaced by ramassage() and etablissement()
+    return {
+      nature: points().filter((point) => point.idPoint === stopId)[0].nature,
+      name: points().filter((point) => point.idPoint === stopId)[0].name,
+      quantity:
+        // stopId in etablissementsId
+        etablissementsId.includes(stopId)
+          ? (() => {
+              const actualSpecificQuantity = specificQuantity[stopId];
+              // totalQuantity = 0;
+              specificQuantity[stopId] = 0;
+              return actualSpecificQuantity;
+            })()
+          : pointQuantity,
+    };
+  });
+}
 export function getTimelineInfosAddLineMode(
   // busLine: LineUnderConstructionType
   busLine: LineType
@@ -700,7 +767,8 @@ export const selectedBusLineInfos = (): TimelineItemType[] => {
     return [];
   }
 
-  return getTimelineInfos(selectedBusLine);
+  // return getTimelineInfos(selectedBusLine);
+  return getTimelineInfosNew(selectedBusLine);
 };
 
 // TODO: Fix type difference (LineType)
