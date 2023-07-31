@@ -57,6 +57,7 @@ export function isPointEtablissement(pt: { nature: NatureEnum }) {
 export type LineUnderConstructionType = LineType & {
   etablissementSelected?: PointInformation[];
   confirmSelection?: boolean;
+  currentIndex: number;
 };
 
 export type LineType = {
