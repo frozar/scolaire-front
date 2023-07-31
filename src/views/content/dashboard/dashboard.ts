@@ -1,103 +1,26 @@
 import { createSignal } from "solid-js";
-import { useStateGui } from "../../../StateGui";
-import { addNewUserInformation } from "../../../signaux";
-import { MessageLevelEnum, MessageTypeEnum, UserMapType } from "../../../type";
-import { authenticateWrap } from "../../layout/authentication";
+import { MapType } from "../../../_entities/map.entity";
+import { MapService } from "../../../_services/map.service";
 import { closeCreateMapModal, closeDeleteMapModal } from "./Dashboard";
 
-const [, { getActiveMapId }] = useStateGui();
+export const [userMaps, setUserMaps] = createSignal<MapType[]>([]);
 
-export const [userMaps, setUserMaps] = createSignal<UserMapType[]>([]);
-
-export function fetchUserMaps() {
-  authenticateWrap((headers) => {
-    fetch(import.meta.env.VITE_BACK_URL + "/maps", {
-      method: "GET",
-      headers,
-    })
-      .then(async (res) => {
-        const data: {
-          status: string;
-          content: {
-            id: number;
-            name: string;
-          }[];
-        } = await res.json();
-
-        const { content } = data;
-
-        // TODO: check status
-
-        const maps: UserMapType[] = content.map((userMap) => {
-          const [isActive, setIsActive] = createSignal(false);
-          const [isSelected, setIsSelected] = createSignal(false);
-
-          const userMapId = userMap.id;
-          if (getActiveMapId() === userMapId) {
-            setIsActive(true);
-          }
-
-          return {
-            ...userMap,
-            isActive,
-            isSelected,
-            setIsSelected,
-            setIsActive,
-          } as UserMapType;
-        });
-
-        setUserMaps(maps);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  });
+export async function fetchUserMaps() {
+  const maps: MapType[] = await MapService.getAll();
+  setUserMaps(maps);
 }
 
-export function createMap(mapName: string) {
+export async function createMap(mapName: string) {
   closeCreateMapModal();
-  authenticateWrap((headers) => {
-    fetch(import.meta.env.VITE_BACK_URL + "/map", {
-      method: "POST",
-      headers,
-      body: JSON.stringify({ name: mapName }),
-    })
-      .then(async (res) => {
-        const json = await res.json();
-
-        if (!res.ok) {
-          addNewUserInformation({
-            content: json.detail,
-            type: MessageTypeEnum.global,
-            displayed: true,
-            level: MessageLevelEnum.error,
-          });
-
-          return;
-        }
-
-        fetchUserMaps();
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  });
+  const map: MapType = await MapService.create({ name: mapName });
+  setUserMaps([...userMaps(), map]);
 }
 
-export function deleteMap(mapId: number) {
+export async function deleteMap(mapId: number) {
   closeDeleteMapModal();
-  authenticateWrap((headers) => {
-    fetch(import.meta.env.VITE_BACK_URL + `/map/${mapId}`, {
-      method: "DELETE",
-      headers,
-    })
-      // TODO: check status
+  const isDeleted: boolean = await MapService.delete(mapId);
 
-      .then(() => {
-        fetchUserMaps();
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  });
+  if (isDeleted) {
+    setUserMaps(userMaps().filter((map) => map.id != mapId));
+  }
 }
