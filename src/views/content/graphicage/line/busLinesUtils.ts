@@ -580,7 +580,7 @@ const [eleveVersEtablissementData, setEleveVersEtablissementData] =
 
 // TODO: Refactor (faire le + de fct pures possibles)
 // TODO: Rename
-export const selectedBusLineInfosNew = (): TimelineItemType[] => {
+export const getSelectedBusLineTimelineInfos = (): TimelineItemType[] => {
   const selectedBusLine = getSelectedBusLine();
   if (!selectedBusLine) {
     return [];
@@ -595,10 +595,10 @@ export const selectedBusLineInfosNew = (): TimelineItemType[] => {
   // Keep only unique values
   etablissementsId = [...new Set(etablissementsId)];
 
-  return getTimelineInfosNewNew(stopsId, etablissementsId);
+  return getTimelineInfos(stopsId, etablissementsId);
 };
 
-export function getTimelineInfosNewNew(
+export function getTimelineInfos(
   stopsId: number[],
   etablissementsId: number[]
 ): TimelineItemType[] {
@@ -639,6 +639,7 @@ export function getTimelineInfosNewNew(
   });
 }
 
+// TODO: Delete when quantity is displayed in addline mode
 function getStopNames(busLine: LineUnderConstructionType) {
   const stopIds = busLine.stops.map((stop) => stop.idPoint);
 

@@ -8,9 +8,7 @@ export type TimelineItemType = {
 };
 
 function TimelineItem(props: TimelineItemType) {
-  // TODO: use color in tailwind theme ?
-  // TODO: Rename
-  const classBeginning =
+  const timelineCircleClass =
     "v-timeline-divider__dot v-timeline-divider__dot--size-small";
 
   return (
@@ -32,8 +30,8 @@ function TimelineItem(props: TimelineItemType) {
         <div
           class={
             props.nature == NatureEnum.ramassage
-              ? classBeginning + " !bg-red-500"
-              : classBeginning + " !bg-green-base"
+              ? timelineCircleClass + " !bg-red-500"
+              : timelineCircleClass + " !bg-green-base"
           }
         >
           <div class="v-timeline-divider__inner-dot !bg-white">
@@ -55,7 +53,6 @@ export default function (props: { point: TimelineItemType[] }) {
       >
         <For each={props.point}>
           {(point) => {
-            // console.log("for each of timeline", point);
             return (
               <TimelineItem
                 nature={point.nature}
