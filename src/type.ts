@@ -1,5 +1,6 @@
 import { Accessor, JSX, Setter } from "solid-js";
 import { PointInformation } from "./views/content/graphicage/component/atom/Point";
+import { StopType } from "./_entities/stop.entity";
 
 export type EleveVersEtablissementType = {
   id: number;
@@ -16,20 +17,6 @@ export enum NatureEnum {
   ramassage = "Ramassage",
   etablissement = "Etablissement",
 }
-
-export type PointStopType = {
-  id: number;
-  lon: number;
-  lat: number;
-  name: string;
-  schools: SchoolOfStopType[];
-};
-
-export type SchoolOfStopType = {
-  id: number;
-  name: string;
-  quantity: number;
-};
 
 //TODO to update or delete cause of Xano
 export type PointRamassageType = {
@@ -124,7 +111,7 @@ export type removeConfirmationType = {
 
 export type removeRamassageConfirmationType = {
   displayed: boolean;
-  item: StopItemType | null;
+  item: StopType | null;
 };
 
 export type clearConfirmationType = {

@@ -2,10 +2,12 @@ import { CgCloseO } from "solid-icons/cg";
 import { HiSolidLocationMarker } from "solid-icons/hi";
 import { Show, createSignal } from "solid-js";
 import { useStateGui } from "../../../StateGui";
+import { StopType } from "../../../_entities/stop.entity";
+import { StopService } from "../../../_services/stop.service";
 import { addNewUserInformation } from "../../../signaux";
-import { MessageLevelEnum, MessageTypeEnum, StopItemType } from "../../../type";
+import { MessageLevelEnum, MessageTypeEnum } from "../../../type";
 import { authenticateWrap } from "../../layout/authentication";
-import { fetchRamassage } from "./Ramassage";
+import { fetchRamassage, ramassages, setRamassages } from "./Ramassage";
 
 const [, { getActiveMapId }] = useStateGui();
 
@@ -13,13 +15,13 @@ export const [toggledEditStop, setToggledEditStop] = createSignal(false);
 
 export const toggleEditStop = () => setToggledEditStop((bool) => !bool);
 
-export const [dataToEdit, setDataToEdit] = createSignal<StopItemType>();
+export const [dataToEdit, setDataToEdit] = createSignal<StopType>();
 
 export default function () {
   let name!: HTMLInputElement;
   let lon!: HTMLInputElement;
   let lat!: HTMLInputElement;
-  const handleClickAddStop = () => {
+  const handleClickAddStop = async () => {
     const nameStop = name.value;
     const lonStop = lon.value;
     const latStop = lat.value;
@@ -50,59 +52,27 @@ export default function () {
       return;
     }
 
-    // eslint-disable-next-line solid/reactivity
-    authenticateWrap((headers) => {
-      fetch(
-        import.meta.env.VITE_BACK_URL +
-          "/map/" +
-          getActiveMapId() +
-          "/ramassage",
-        {
-          method: "POST",
-          headers,
-          body: JSON.stringify({
-            id: dataToEdit()?.id,
-            name: nameStop,
-            lon: lonStop,
-            lat: latStop,
-          }),
-        }
-      )
-        .then(async (res) => {
-          const json = await res.json();
-
-          if (res.status !== 201) {
-            addNewUserInformation({
-              displayed: true,
-              level: MessageLevelEnum.error,
-              type: MessageTypeEnum.global,
-              content: json["detail"],
-            });
-
-            return;
-          }
-
-          addNewUserInformation({
-            displayed: true,
-            level: MessageLevelEnum.success,
-            type: MessageTypeEnum.global,
-            content: json["message"],
-          });
-          toggleEditStop();
-
-          fetchRamassage();
-        })
-        .catch((err) => {
-          console.error(err);
-
-          addNewUserInformation({
-            displayed: true,
-            level: MessageLevelEnum.error,
-            type: MessageTypeEnum.global,
-            content: err.message,
-          });
-        });
+    const stop: StopType = await StopService.create({
+      name: nameStop,
+      lon: +lonStop,
+      lat: +latStop,
+      schools: [],
     });
+
+    if (stop) {
+      setRamassages(
+        [...ramassages(), stop].sort((a, b) => a.name.localeCompare(b.name))
+      );
+
+      toggleEditStop();
+
+      addNewUserInformation({
+        displayed: true,
+        level: MessageLevelEnum.success,
+        type: MessageTypeEnum.global,
+        content: `Votre point de ramassage ${stop.name} a été ajouté.`,
+      });
+    }
   };
 
   const handleClickEditStop = () => {
