@@ -1,7 +1,8 @@
 import L, { LeafletMouseEvent } from "leaflet";
 import { Accessor, Setter, createEffect, onCleanup, onMount } from "solid-js";
 
-import { linkMap } from "../../Point";
+// import { linkMap } from "../../Point";
+import { linkMap } from "../organism/Points";
 import "./Point.css";
 
 export type PointIdentityType = {

@@ -14,6 +14,8 @@ import { PointIdentityType, PointInterface } from "../atom/Point";
 import PointsEtablissement, { etablissements } from "./PointsEtablissement";
 import PointsRamassage, { ramassages } from "./PointsRamassage";
 
+export const linkMap = new Map<number, L.CircleMarker>();
+
 const [, { getActiveMapId }] = useStateGui();
 
 export const [blinkingPoints, setBlinkingPoint] = createSignal<number[]>([]);

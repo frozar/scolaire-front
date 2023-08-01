@@ -2,7 +2,7 @@ import { mergeProps } from "solid-js";
 
 import { useStateAction } from "../../../../../StateAction";
 import { displayAddLineMessage } from "../../../../../userInformation/utils";
-import { deselectAllPoints } from "../../Point";
+// import { deselectAllPoints } from "../../Point";
 import { fetchBusLines } from "../../line/busLinesUtils";
 
 import ButtonGraphicageRightMenu, {
@@ -10,6 +10,7 @@ import ButtonGraphicageRightMenu, {
 } from "../molecule/ButtonGraphicageRightMenu";
 
 import { FaSolidPlus } from "solid-icons/fa";
+import { deselectAllPoints } from "./Points";
 
 const [, { setModeAddLine, isInAddLineMode, setModeRead }] = useStateAction();
 

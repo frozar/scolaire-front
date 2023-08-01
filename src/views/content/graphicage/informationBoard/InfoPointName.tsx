@@ -1,9 +1,10 @@
 import { renderAnimation } from "../animation";
 
 import { PointToDisplayType } from "../../../../type";
-import { linkMap } from "../Point";
+// import { linkMap } from "../Point";
 
 import "../../../../css/utils.css";
+import { linkMap } from "../component/organism/Points";
 
 export default function (props: { point: PointToDisplayType }) {
   return (

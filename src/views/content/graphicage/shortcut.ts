@@ -13,7 +13,8 @@ import {
   displayRemoveLineMessage,
 } from "../../../userInformation/utils";
 import { displayedConfirmStopAddLine } from "./ConfirmStopAddLineBox";
-import { deselectAllPoints } from "./Point";
+import { deselectAllPoints } from "./component/organism/Points";
+// import { deselectAllPoints } from "./Point";
 import { deselectAllBusLines, fetchBusLines } from "./line/busLinesUtils";
 
 const [

@@ -26,7 +26,9 @@ const [, { getActiveMapId }] = useStateGui();
 
 const [, { isInAddLineMode, getLineUnderConstruction }] = useStateAction();
 
-export const [pointsReady, setPointsReady] = createSignal(false);
+// export const [pointsReady, setPointsReady] = createSignal(false);
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const [pointsReady, setPointsReady] = createSignal(false);
 
 const [pointsRamassageReady, setPointsRamassageReady] = createSignal(false);
 export const [pointsEtablissementReady, setPointsEtablissementReady] =
@@ -123,6 +125,7 @@ export async function fetchPointsRamassageAndEtablissement() {
   setPoints((dataArray) => [...dataArray, ...etablissementsWk]);
   setPointsEtablissementReady(true);
 }
+console.log("ancien PointsRamassageAndEtablissement");
 
 export default function () {
   onMount(async () => {

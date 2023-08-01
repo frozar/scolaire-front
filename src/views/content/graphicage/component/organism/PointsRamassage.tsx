@@ -2,7 +2,7 @@ import L, { LeafletMouseEvent } from "leaflet";
 import { For, createSignal, onMount } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import { NatureEnum, PointIdentityType } from "../../../../../type";
-import { linkMap } from "../../Point";
+// import { linkMap } from "../../Point";
 import {
   PointRamassageDBType,
   blinkingStopPoint,
@@ -14,7 +14,7 @@ import { deselectAllBusLines } from "../../line/busLinesUtils";
 import { fetchStop } from "../../point.service";
 import { PointInterface } from "../atom/Point";
 import PointRamassage from "../molecule/PointRamassage";
-import { setBlinking, setBlinkingPoint } from "./Points";
+import { linkMap, setBlinking, setBlinkingPoint } from "./Points";
 
 const [
   ,

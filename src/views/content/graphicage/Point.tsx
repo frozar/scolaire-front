@@ -17,7 +17,8 @@ import {
 import { renderAnimation } from "./animation";
 import { deselectAllBusLines } from "./line/busLinesUtils";
 
-export const linkMap = new Map<number, L.CircleMarker>();
+// export const linkMap = new Map<number, L.CircleMarker>();
+const linkMap = new Map<number, L.CircleMarker>();
 
 const [
   ,
@@ -33,13 +34,14 @@ function selectPointById(targerIdPoint: number) {
   points().map((point) => point.setSelected(targerIdPoint == point.idPoint));
 }
 
-export function deselectAllPoints() {
-  points().map((point) => point.setSelected(false));
-}
+// export function deselectAllPoints() {
+//   points().map((point) => point.setSelected(false));
+// }
 
 const minSizeValue = 5;
 const maxSizeValue = 10;
 const range = maxSizeValue - minSizeValue;
+console.log("ancien point");
 
 export default function (props: {
   point: PointRamassageType | PointEtablissementType;
