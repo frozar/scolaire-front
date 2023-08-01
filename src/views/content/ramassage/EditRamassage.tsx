@@ -52,7 +52,6 @@ export default function () {
       name: nameStop,
       lon: +lonStop,
       lat: +latStop,
-      schools: [],
     });
 
     if (stop) {

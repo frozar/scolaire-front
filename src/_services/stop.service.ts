@@ -8,7 +8,7 @@ export class StopService {
   }
 
   static async create(
-    stop: Omit<StopType, "id" | "selected">
+    stop: Omit<StopType, "id" | "selected" | "associated">
   ): Promise<StopType> {
     const data = StopEntity.dbFormat(stop);
     const dbStop: StopDBType = await ServiceUtils.post("/stop", data);
@@ -16,7 +16,7 @@ export class StopService {
   }
 
   static async update(
-    stop: Omit<StopType, "schools" | "selected">
+    stop: Omit<StopType, "associated" | "selected">
   ): Promise<StopType> {
     const data = StopEntity.dbFormat(stop);
     const dbStop: StopDBType = await ServiceUtils.patch(

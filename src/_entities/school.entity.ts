@@ -1,8 +1,8 @@
 import {
   AssociatedDBPointType,
-  DBPointType,
+  AssociatedPointType,
   EntityUtils,
-  PointType,
+  LocationDBType,
 } from "./_utils.entity";
 
 export class SchoolEntity {
@@ -13,7 +13,7 @@ export class SchoolEntity {
       lat: dbSchool.location.data.lat,
       name: dbSchool.name,
       selected: false,
-      associated: formatAssociatedPoints(dbSchool.associated),
+      associated: EntityUtils.formatAssociatedPoints(dbSchool.associated),
     };
   }
 
@@ -27,16 +27,19 @@ export class SchoolEntity {
   }
 }
 
-const formatAssociatedPoints = (associatedDBPoint: AssociatedDBPointType[]) => {
-  return associatedDBPoint.map((item) => {
-    return {
-      id: item.entity.id,
-      name: item.entity.name,
-      quantity: item.quantity,
-    };
-  });
+export type SchoolType = {
+  id: number;
+  name: string;
+  lon: number;
+  lat: number;
+  //TODO utility of this prop ?
+  selected: boolean;
+  associated: AssociatedPointType[];
 };
 
-export type SchoolType = PointType;
-
-export type SchoolDBType = DBPointType;
+export type SchoolDBType = {
+  id: number;
+  name: string;
+  location: LocationDBType;
+  associated: AssociatedDBPointType[];
+};

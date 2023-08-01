@@ -1,3 +1,6 @@
+import { SchoolType } from "./school.entity";
+import { StopType } from "./stop.entity";
+
 export class EntityUtils {
   static builLocationPoint(lng: number, lat: number): LocationDBType {
     return {
@@ -8,29 +11,26 @@ export class EntityUtils {
       },
     };
   }
+
+  static formatAssociatedPoints(
+    associatedDBPoint: AssociatedDBPointType[]
+  ): AssociatedPointType[] {
+    return associatedDBPoint.map((item) => {
+      return {
+        id: item.entity.id,
+        name: item.entity.name,
+        quantity: item.quantity,
+      };
+    });
+  }
 }
 
-export type PointType = {
-  id: number;
-  name: string;
-  lon: number;
-  lat: number;
-  //TODO utility of this prop ?
-  selected: boolean;
-  associated: AssociatedPointType[];
-};
+export type PointType = SchoolType | StopType;
 
 export type AssociatedPointType = {
   id: number;
   name: string;
   quantity: number;
-};
-
-export type DBPointType = {
-  id: number;
-  name: string;
-  location: LocationDBType;
-  associated: AssociatedDBPointType[];
 };
 
 export type AssociatedDBPointType = {
@@ -41,6 +41,10 @@ export type AssociatedDBPointType = {
   quantity: number;
 };
 
+enum LocationDBTypeEnum {
+  point = "point",
+}
+
 export type LocationDBType = {
   type: LocationDBTypeEnum;
   data: {
@@ -48,7 +52,3 @@ export type LocationDBType = {
     lat: number;
   };
 };
-
-enum LocationDBTypeEnum {
-  point = "point",
-}

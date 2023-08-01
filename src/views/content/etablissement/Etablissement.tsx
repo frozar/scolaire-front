@@ -1,5 +1,6 @@
 import { For, createEffect, createSignal, onCleanup, onMount } from "solid-js";
 import { SchoolType } from "../../../_entities/school.entity";
+import { StopType } from "../../../_entities/stop.entity";
 import { SchoolService } from "../../../_services/school.service";
 import ImportCsvCanvas from "../../../component/ImportCsvCanvas";
 import ImportCsvDialogBox from "../../../component/ImportCsvDialogBox";
@@ -18,7 +19,7 @@ export const [etablissements, setEtablissements] = createSignal<SchoolType[]>(
 );
 
 export async function fetchEtablissement() {
-  const schools: SchoolType[] = await SchoolService.getAll();
+  const schools: SchoolType[] | StopType[] = await SchoolService.getAll();
   setEtablissements(schools.sort((a, b) => a.name.localeCompare(b.name)));
 }
 

@@ -45,9 +45,12 @@ export default function (props: {
         {props.item.name}
       </td>
       <td>
-        {props.item.schools.reduce((acc, school) => acc + school.quantity, 0)}
+        {props.item.associated.reduce(
+          (acc, school) => acc + school.quantity,
+          0
+        )}
       </td>
-      <td>{props.item.schools.length}</td>
+      <td>{props.item.associated.length}</td>
       {/* TODO importer les lignes depuis Xano */}
       {/* <td>{props.item.lines.length}</td> */}
       <td>todo</td>

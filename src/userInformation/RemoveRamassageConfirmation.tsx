@@ -179,7 +179,7 @@ export default function () {
                           <li>
                             le nombre d'élèves allant vers un établissement (
                             <span class="font-semibold text-sm text-gray-900">
-                              {getRemoveRamassageConfirmation().item?.schools.reduce(
+                              {getRemoveRamassageConfirmation().item?.associated.reduce(
                                 (acc, school) => acc + school.quantity,
                                 0
                               )}
