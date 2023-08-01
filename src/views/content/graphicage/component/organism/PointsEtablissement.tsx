@@ -3,17 +3,23 @@ import { For, createSignal, onMount } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import { NatureEnum } from "../../../../../type";
 // import { linkMap } from "../../Point";
-import {
-  PointEtablissementDBType,
-  blinkingStopPoint,
-  setBlinkingStopPoint,
-} from "../../PointsRamassageAndEtablissement";
+// import {
+//   blinkingStopPoint,
+//   setBlinkingStopPoint,
+// } from "../../PointsRamassageAndEtablissement";
 import { renderAnimation } from "../../animation";
 import { deselectAllBusLines } from "../../line/busLinesUtils";
 import { fetchSchool } from "../../point.service";
 import { PointIdentityType, PointInterface } from "../atom/Point";
 import PointEtablissement from "../molecule/PointEtablissement";
-import { linkMap, setBlinking, setBlinkingPoint } from "./Points";
+import {
+  blinkingStopPoint,
+  linkMap,
+  setBlinking,
+  setBlinkingPoint,
+  setBlinkingStopPoint,
+} from "./Points";
+import { PointRamassageDBType } from "./PointsRamassage";
 
 const [
   ,
@@ -23,6 +29,9 @@ const [
     isInAddLineMode,
   },
 ] = useStateAction();
+
+// working
+type PointEtablissementDBType = PointRamassageDBType;
 
 type PointEtablissementCoreType = Omit<PointEtablissementDBType, "id_point"> & {
   idPoint: number;

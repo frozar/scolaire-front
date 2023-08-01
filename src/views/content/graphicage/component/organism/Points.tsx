@@ -76,6 +76,10 @@ export function deselectAllPoints() {
 }
 export const [pointsReady, setPointsReady] = createSignal(false);
 
+export const [blinkingStopPoint, setBlinkingStopPoint] = createSignal<number[]>(
+  []
+);
+
 // Props here is for storybook
 interface PointsProps {
   map?: L.Map;

@@ -42,7 +42,16 @@ createEffect(() => {
   }
 });
 
-export type PointRamassageDBType = {
+// export type PointRamassageDBType = {
+//   id: number;
+//   id_point: number;
+//   nature: NatureEnum;
+//   lon: number;
+//   lat: number;
+//   name: string;
+//   quantity: number;
+// };
+type PointRamassageDBType = {
   id: number;
   id_point: number;
   nature: NatureEnum;
@@ -51,16 +60,16 @@ export type PointRamassageDBType = {
   name: string;
   quantity: number;
 };
-
-export type PointEtablissementDBType = PointRamassageDBType;
+// export type PointEtablissementDBType = PointRamassageDBType;
+type PointEtablissementDBType = PointRamassageDBType;
 
 type PointRamassageCoreType = Omit<PointRamassageDBType, "id_point"> & {
   idPoint: number;
 };
 
-export const [blinkingStopPoint, setBlinkingStopPoint] = createSignal<number[]>(
-  []
-);
+// export const [blinkingStopPoint, setBlinkingStopPoint] = createSignal<number[]>(
+//   []
+// );
 
 // Rename field 'id_point' to 'idPoint'
 function PointBack2FrontIdPoint(
