@@ -15,6 +15,18 @@ export class StopService {
     return StopEntity.build(dbStop);
   }
 
+  static async update(
+    stop: Omit<StopType, "schools" | "selected">
+  ): Promise<StopType> {
+    const data = StopEntity.dbFormat(stop);
+    const dbStop: StopDBType = await ServiceUtils.patch(
+      "/stop/" + stop.id,
+      data
+    );
+    if (dbStop == null) return dbStop;
+    return StopEntity.build(dbStop);
+  }
+
   static async delete(id: number): Promise<boolean> {
     return await ServiceUtils.delete("/stop/" + id);
   }

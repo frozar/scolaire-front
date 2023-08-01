@@ -1,15 +1,11 @@
 import { CgCloseO } from "solid-icons/cg";
 import { HiSolidLocationMarker } from "solid-icons/hi";
 import { Show, createSignal } from "solid-js";
-import { useStateGui } from "../../../StateGui";
 import { StopType } from "../../../_entities/stop.entity";
 import { StopService } from "../../../_services/stop.service";
 import { addNewUserInformation } from "../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../type";
-import { authenticateWrap } from "../../layout/authentication";
-import { fetchRamassage, ramassages, setRamassages } from "./Ramassage";
-
-const [, { getActiveMapId }] = useStateGui();
+import { ramassages, setRamassages } from "./Ramassage";
 
 export const [toggledEditStop, setToggledEditStop] = createSignal(false);
 
@@ -75,7 +71,11 @@ export default function () {
     }
   };
 
-  const handleClickEditStop = () => {
+  const handleClickEditStop = async () => {
+    const idToEdit = dataToEdit()?.id;
+    if (!idToEdit) {
+      return;
+    }
     const nameStop = name.value;
     const lonStop = lon.value;
     const latStop = lat.value;
@@ -106,58 +106,40 @@ export default function () {
       return;
     }
 
-    // eslint-disable-next-line solid/reactivity
-    authenticateWrap((headers) => {
-      fetch(
-        import.meta.env.VITE_BACK_URL +
-          `/map/${getActiveMapId()}/ramassage/${dataToEdit()?.id}`,
-        // "/point_ramassage",
-        {
-          method: "PATCH",
-          headers,
-          body: JSON.stringify({
-            id: dataToEdit()?.id,
-            name: nameStop,
-            lon: lonStop,
-            lat: latStop,
-          }),
-        }
-      )
-        .then(async (res) => {
-          const json = await res.json();
-          console.log(json);
-
-          if (res.status !== 200) {
-            addNewUserInformation({
-              displayed: true,
-              level: MessageLevelEnum.error,
-              type: MessageTypeEnum.global,
-              content: json["detail"],
-            });
-
-            return;
-          }
-
-          addNewUserInformation({
-            displayed: true,
-            level: MessageLevelEnum.success,
-            type: MessageTypeEnum.global,
-            content: json["message"],
-          });
-
-          fetchRamassage();
-        })
-        .catch((err) => {
-          console.error(err);
-
-          addNewUserInformation({
-            displayed: true,
-            level: MessageLevelEnum.error,
-            type: MessageTypeEnum.global,
-            content: err.message,
-          });
-        });
+    const stop: StopType = await StopService.update({
+      id: idToEdit,
+      name: nameStop,
+      lon: +lonStop,
+      lat: +latStop,
     });
+
+    if (stop != null) {
+      setRamassages(
+        ramassages()
+          .map((item) => {
+            console.log(item);
+            if (item.id == stop.id) return stop;
+            else return item;
+          })
+          .sort((a, b) => a.name.localeCompare(b.name))
+      );
+
+      toggleEditStop();
+      addNewUserInformation({
+        displayed: true,
+        level: MessageLevelEnum.success,
+        type: MessageTypeEnum.global,
+        content: "La modification a été prise en compte.",
+      });
+    } else {
+      toggleEditStop();
+      addNewUserInformation({
+        displayed: true,
+        level: MessageLevelEnum.error,
+        type: MessageTypeEnum.global,
+        content: "La modification a échouée.",
+      });
+    }
   };
 
   return (

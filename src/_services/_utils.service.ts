@@ -39,6 +39,25 @@ export class ServiceUtils {
     return await response.json();
   }
 
+  static async patch(url: string, data: object, urlNeedMap = true) {
+    let response: Response;
+    try {
+      response = await fetch(buildXanoUrl(url, urlNeedMap), {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+    } catch (error) {
+      connexionError();
+      return false;
+    }
+
+    if (!(await manageStatusCode(response))) return;
+    return await response.json();
+  }
+
   static async delete(url: string, urlNeedMap = true) {
     let response: Response;
     try {

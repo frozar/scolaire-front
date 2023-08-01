@@ -13,12 +13,11 @@ export class StopEntity {
   }
 
   static dbFormat(
-    stop: Omit<StopType, "id" | "selected">
-  ): Omit<StopDBType, "id"> {
+    stop: Omit<StopType, "id" | "selected" | "schools">
+  ): Omit<StopDBType, "id" | "schools"> {
     return {
       name: stop.name,
       location: EntityUtils.builLocationPoint(stop.lon, stop.lat),
-      schools: [],
     };
   }
 }
