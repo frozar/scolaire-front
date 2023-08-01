@@ -18,14 +18,11 @@ describe("StopPoint component", () => {
             lat: -20.9466588303741,
             lon: 55.5343806753509,
             name: "name",
-            quantity: 5,
+            quantity: 4,
           })}
           map={initialiseMap("map-container", false)}
-          isLast={false}
-          quantity={6}
           minQuantity={3}
           maxQuantity={25}
-          onIsLast={voidFunction}
           onClick={voidFunction}
           onDBLClick={voidFunction}
           onMouseOut={voidFunction}
@@ -47,14 +44,11 @@ describe("StopPoint component", () => {
             lat: -20.9466588303741,
             lon: 55.5343806753509,
             name: "name",
-            quantity: 5,
+            quantity: 48,
           })}
           map={initialiseMap("map-container", false)}
-          isLast={false}
-          quantity={45}
           minQuantity={1}
           maxQuantity={50}
-          onIsLast={voidFunction}
           onClick={voidFunction}
           onDBLClick={voidFunction}
           onMouseOut={voidFunction}
