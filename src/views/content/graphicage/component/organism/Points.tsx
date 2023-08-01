@@ -83,7 +83,6 @@ interface PointsProps {
 export default function (props: PointsProps) {
   const mergedProps = mergeProps(
     {
-      // map: getLeafletMap() as L.Map,
       mapId: getActiveMapId() as number,
     },
     props
