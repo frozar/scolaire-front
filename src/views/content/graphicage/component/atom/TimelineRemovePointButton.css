@@ -1,0 +1,6 @@
+.button-delete {
+  display: none;
+}
+.v-timeline-item:hover .button-delete {
+  display: block;
+}

@@ -1,18 +1,14 @@
 import { For, Show } from "solid-js";
 import { useStateAction } from "../../../../StateAction";
-import {
-  AbstractLineType,
-  LineType,
-  PointResourceType,
-} from "../../../../type";
+import { AbstractLineType, PointResourceType } from "../../../../type";
+import { TimelineRemovePointButton } from "../component/atom/TimelineRemovePointButton";
 import { mapIdentityToResourceType } from "../line/busLinesUtils";
-import { TimelineRemovePointButton } from "./TimelineRemovePointButton";
 const [, { isInAddLineMode }] = useStateAction();
 
 export type TimelineItemType = {
   pointsResource: PointResourceType;
   indice: number;
-  line: LineType | undefined;
+  line: AbstractLineType | undefined;
 };
 
 function TimelineItem(props: TimelineItemType) {

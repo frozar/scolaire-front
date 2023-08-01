@@ -58,12 +58,6 @@
   padding-inline-end: initial;
   justify-self: flex-start;
 }
-.button-delete {
-  display: none;
-}
-.v-timeline-item:hover .button-delete {
-  display: block;
-}
 
 .v-timeline--vertical.v-timeline--align-start {
   align-items: flex-start;
