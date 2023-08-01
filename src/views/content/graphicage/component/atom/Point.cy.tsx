@@ -10,10 +10,6 @@ function voidFunction() {
 
 describe("Point component", () => {
   it("Point", () => {
-    const onIsLastSpied = cy
-      .spy(() => console.log("onIsLast"))
-      .as("onIsLastListener");
-
     cy.mount(() => (
       <div id="map-container" style={{ width: "100%", height: "500px" }}>
         <Point
@@ -26,8 +22,6 @@ describe("Point component", () => {
             quantity: 5,
           })}
           map={initialiseMap("map-container", false)}
-          onIsLast={onIsLastSpied}
-          isLast={false}
           onClick={voidFunction}
           borderColor="green"
           fillColor="white"
@@ -42,14 +36,9 @@ describe("Point component", () => {
     ));
 
     cy.get("#map-container").compareSnapshot("point-1", 0.01);
-    cy.get("@onIsLastListener").should("not.have.been.called");
   });
 
   it("Point with different color and check onIsLast", () => {
-    const onIsLastSpied = cy
-      .spy(() => console.log("onIsLast"))
-      .as("onIsLastListener");
-
     cy.mount(() => (
       <div id="map-container" style={{ width: "100%", height: "500px" }}>
         <Point
@@ -62,8 +51,6 @@ describe("Point component", () => {
             name: "name",
             quantity: 5,
           })}
-          onIsLast={onIsLastSpied}
-          isLast={false}
           onClick={() => console.log("onClick")}
           borderColor="red"
           fillColor="gray"
@@ -78,14 +65,9 @@ describe("Point component", () => {
     ));
 
     cy.get("#map-container").compareSnapshot("point-2", 0.01);
-    cy.get("@onIsLastListener").should("not.have.been.called");
   });
 
   it("Check blinking and onIsLast", () => {
-    const onIsLastSpied = cy
-      .spy(() => console.log("onIsLast"))
-      .as("onIsLastListener");
-
     cy.mount(() => (
       <div id="map-container" style={{ width: "100%", height: "500px" }}>
         <Point
@@ -98,8 +80,6 @@ describe("Point component", () => {
             quantity: 5,
           })}
           map={initialiseMap("map-container", false)}
-          onIsLast={onIsLastSpied}
-          isLast={true}
           onClick={voidFunction}
           borderColor="green"
           fillColor="white"
@@ -114,6 +94,5 @@ describe("Point component", () => {
     ));
 
     cy.get(".map-point").should("have.class", "circle-animation");
-    cy.get("@onIsLastListener").should("have.been.calledOnce");
   });
 });

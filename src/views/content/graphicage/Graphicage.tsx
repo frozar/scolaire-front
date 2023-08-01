@@ -73,7 +73,6 @@ export default function () {
       <InformationBoard />
       <div ref={mapDiv} id="main-map" />
       <Points />
-      {/* <PointsRamassageAndEtablissement /> */}
       <Show when={isInAddLineMode()}>
         <LineUnderConstruction
           stops={getLineUnderConstruction().stops}

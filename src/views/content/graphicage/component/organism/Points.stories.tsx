@@ -1,6 +1,8 @@
 import "leaflet/dist/leaflet.css";
 import { Meta, StoryObj } from "storybook-solidjs";
 
+// TODO: Fix not working if PointsEtablissement and PointsRamassage stories
+// opened first
 // TODO: Use fixtures ?
 // TODO: Fix blinking
 
