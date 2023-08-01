@@ -20,7 +20,7 @@ describe("Line component", () => {
             lat: -20.9465588303741,
             lon: 55.5323806753509,
             name: "name",
-            quantity: 30,
+            quantity: 9,
           })}
           ,
           {createPointEtablissement({
