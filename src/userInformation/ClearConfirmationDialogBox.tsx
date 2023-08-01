@@ -17,7 +17,6 @@ import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { assertIsNode } from "../utils";
 
 import ClickOutside from "../component/ClickOutside";
-import { fetchPointsRamassageAndEtablissement } from "../views/content/graphicage/PointsRamassageAndEtablissement";
 import { busLines } from "../views/content/graphicage/line/BusLines";
 import { fetchBusLines } from "../views/content/graphicage/line/busLinesUtils";
 
@@ -46,7 +45,7 @@ function clearUserInformation(content: string, level: MessageLevelEnum) {
     content,
   });
   setPoints([]);
-  fetchPointsRamassageAndEtablissement();
+  // fetchPointsRamassageAndEtablissement();
   fetchBusLines();
   disableSpinningWheel();
   closeClearConfirmationBox();

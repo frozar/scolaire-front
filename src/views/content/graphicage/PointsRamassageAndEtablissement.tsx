@@ -115,7 +115,29 @@ function PointBack2Front<
   );
 }
 
-export async function fetchPointsRamassageAndEtablissement() {
+// export async function fetchPointsRamassageAndEtablissement() {
+//   const mapId = getActiveMapId();
+//   if (!mapId) return;
+
+//   const ramassages: PointRamassageDBType[] = await fetchStop(mapId as number);
+//   const ramassageWk = PointBack2Front(
+//     ramassages,
+//     NatureEnum.ramassage
+//   ) as PointRamassageType[];
+
+//   setPoints((dataArray) => [...dataArray, ...ramassageWk]);
+//   setPointsRamassageReady(true);
+
+//   const etablissements: PointEtablissementDBType[] = await fetchSchool(mapId);
+//   const etablissementsWk = PointBack2Front(
+//     etablissements,
+//     NatureEnum.etablissement
+//   ) as PointEtablissementType[];
+//   setPoints((dataArray) => [...dataArray, ...etablissementsWk]);
+//   setPointsEtablissementReady(true);
+// }
+
+async function fetchPointsRamassageAndEtablissement() {
   const mapId = getActiveMapId();
   if (!mapId) return;
 
