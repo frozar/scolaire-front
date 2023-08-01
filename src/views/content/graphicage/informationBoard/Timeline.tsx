@@ -1,12 +1,15 @@
-import { FaRegularTrashCan } from "solid-icons/fa";
 import { For, Show } from "solid-js";
 import { useStateAction } from "../../../../StateAction";
-import { LineType, PointResourceType } from "../../../../type";
+import {
+  AbstractLineType,
+  LineType,
+  PointResourceType,
+} from "../../../../type";
 import { mapIdentityToResourceType } from "../line/busLinesUtils";
+import { TimelineRemovePointButton } from "./TimelineRemovePointButton";
 const [, { isInAddLineMode }] = useStateAction();
-const [, { setLineUnderConstruction, getLineUnderConstruction }] =
-  useStateAction();
-type TimelineItemType = {
+
+export type TimelineItemType = {
   pointsResource: PointResourceType;
   indice: number;
   line: LineType | undefined;
@@ -26,19 +29,7 @@ function TimelineItem(props: TimelineItemType) {
           <div class="v-timeline-divider__inner-dot bg-pink">
             <i class="" aria-hidden="true" />
             <Show when={isInAddLineMode()}>
-              <button
-                class="button-delete"
-                onClick={() => {
-                  const a = [...getLineUnderConstruction().stops];
-                  a.splice(props.indice, 1);
-                  setLineUnderConstruction({
-                    ...getLineUnderConstruction(),
-                    stops: a,
-                  });
-                }}
-              >
-                <FaRegularTrashCan />
-              </button>
+              <TimelineRemovePointButton {...props} />
             </Show>
           </div>
         </div>
@@ -49,7 +40,7 @@ function TimelineItem(props: TimelineItemType) {
   );
 }
 
-export default function (props: { line: LineType | undefined }) {
+export default function (props: { line: AbstractLineType | undefined }) {
   return (
     <div class="timeline">
       <div

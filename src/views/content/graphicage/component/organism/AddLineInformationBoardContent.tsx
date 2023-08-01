@@ -25,7 +25,7 @@ export default function () {
       console.log(stopName);
     }
   }
-
+  //TODO Refactor all
   return (
     <>
       <div class="mb-2 flex mr-3 w-full justify-between items-center p-2">
