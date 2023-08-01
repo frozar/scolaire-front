@@ -111,7 +111,7 @@ export default function (props: PointsProps) {
 
     setPointsReady(true);
   });
-
+  // TODO: Fix ramassages displayed over etalbissements
   return (
     <div>
       <PointsEtablissement

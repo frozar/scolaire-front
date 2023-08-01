@@ -1,6 +1,9 @@
 import "leaflet/dist/leaflet.css";
 import { Meta, StoryObj } from "storybook-solidjs";
 
+// TODO: Use fixtures ?
+// TODO: Fix blinking
+
 import {
   Mapdecorators,
   getDivFullId,
@@ -21,6 +24,6 @@ export const Points: Story = {
   render: (props: null, options) => {
     const fullId = getDivFullId(options);
 
-    return <PointsComponent map={initialiseMap(fullId)} mapId={4} />;
+    return <PointsComponent map={initialiseMap(fullId)} mapId={2} />;
   },
 };
