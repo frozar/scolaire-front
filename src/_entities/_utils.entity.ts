@@ -45,6 +45,13 @@ enum LocationDBTypeEnum {
   point = "point",
 }
 
+export type DBPointType = {
+  id: number;
+  name: string;
+  location: LocationDBType;
+  associated: AssociatedDBPointType[];
+};
+
 export type LocationDBType = {
   type: LocationDBTypeEnum;
   data: {
