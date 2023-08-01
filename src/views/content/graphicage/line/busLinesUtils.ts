@@ -585,8 +585,8 @@ export function mapIdentityToResourceType(
   if (!pointsIdentity) {
     return [];
   }
+
   const stopIds = pointsIdentity.map((stop) => stop.idPoint);
-  console.log(stopIds);
 
   return stopIds.map(
     (stopId) => points().filter((point) => point.idPoint === stopId)[0]
