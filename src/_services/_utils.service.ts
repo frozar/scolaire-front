@@ -51,7 +51,7 @@ export class ServiceUtils {
     }
 
     if (!(await manageStatusCode(response))) return false;
-    return true;
+    return await response.json();
   }
 }
 

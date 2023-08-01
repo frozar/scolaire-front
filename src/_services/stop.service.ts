@@ -14,4 +14,8 @@ export class StopService {
     const dbStop: StopDBType = await ServiceUtils.post("/stop", data);
     return StopEntity.build(dbStop);
   }
+
+  static async delete(id: number): Promise<boolean> {
+    return await ServiceUtils.delete("/stop/" + id);
+  }
 }
