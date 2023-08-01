@@ -97,6 +97,13 @@ export default function (props: PointsProps) {
       );
     }
   });
+  // Working
+  // TODO: check if necessary (similar feature already existing !)
+  // createEffect(() => {
+  //   if (pointsRamassageReady() && pointsEtablissementReady()) {
+  //     setPointsReady(true);
+  //   }
+  // });
 
   createEffect(() => {
     if (

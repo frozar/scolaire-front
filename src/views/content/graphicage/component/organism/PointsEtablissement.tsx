@@ -7,7 +7,6 @@ import {
   PointEtablissementDBType,
   blinkingStopPoint,
   setBlinkingStopPoint,
-  setPointsEtablissementReady,
 } from "../../PointsRamassageAndEtablissement";
 import { renderAnimation } from "../../animation";
 import { deselectAllBusLines } from "../../line/busLinesUtils";
@@ -73,6 +72,10 @@ export interface PointsEtablissementProps {
 export const [etablissements, setEtablissements] = createSignal<
   PointInterface[]
 >([]);
+// Working
+// TODO: check if necessary (similar feature already existing !)
+export const [pointsEtablissementReady, setPointsEtablissementReady] =
+  createSignal(false);
 
 export const addBlinking = (id: number) => {
   setBlinkingStopPoint([...blinkingStopPoint(), id]);

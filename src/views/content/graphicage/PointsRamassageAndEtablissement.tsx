@@ -31,7 +31,9 @@ const [, { isInAddLineMode, getLineUnderConstruction }] = useStateAction();
 const [pointsReady, setPointsReady] = createSignal(false);
 
 const [pointsRamassageReady, setPointsRamassageReady] = createSignal(false);
-export const [pointsEtablissementReady, setPointsEtablissementReady] =
+// export const [pointsEtablissementReady, setPointsEtablissementReady] =
+//   createSignal(false);
+const [pointsEtablissementReady, setPointsEtablissementReady] =
   createSignal(false);
 
 createEffect(() => {

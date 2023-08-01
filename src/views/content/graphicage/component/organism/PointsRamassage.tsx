@@ -7,7 +7,6 @@ import {
   PointRamassageDBType,
   blinkingStopPoint,
   setBlinkingStopPoint,
-  setPointsEtablissementReady,
 } from "../../PointsRamassageAndEtablissement";
 import { renderAnimation } from "../../animation";
 import { deselectAllBusLines } from "../../line/busLinesUtils";
@@ -75,6 +74,11 @@ export interface RamassagePointsProps {
 
 export const [ramassages, setRamassages] = createSignal<PointInterface[]>([]);
 
+// Working
+// TODO: check if necessary (similar feature already existing !)
+export const [pointsRamassageReady, setPointsRamassageReady] =
+  createSignal(false);
+
 export const addBlinking = (id: number) => {
   setBlinkingStopPoint([...blinkingStopPoint(), id]);
 };
@@ -91,7 +95,7 @@ export default function (props: RamassagePointsProps) {
     }
 
     setRamassages(ramassages);
-    setPointsEtablissementReady(true);
+    setPointsRamassageReady(true);
   });
 
   const selectPointById = (id: number) =>
