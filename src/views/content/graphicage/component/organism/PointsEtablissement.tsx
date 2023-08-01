@@ -138,15 +138,11 @@ export default function (props: PointsEtablissementProps) {
 
   return (
     <For each={etablissements()}>
-      {(point, i) => {
-        const onIsLast = () => "";
-
+      {(point) => {
         return (
           <PointEtablissement
             point={point}
             map={props.map}
-            isLast={i() === etablissements().length - 1}
-            onIsLast={onIsLast}
             onClick={() => onClick(point)}
             onDBLClick={onDBLClick}
             onMouseOver={() => onMouseOver(point)}

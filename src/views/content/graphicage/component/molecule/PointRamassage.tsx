@@ -5,13 +5,10 @@ import { blinkingPoints } from "../organism/Points";
 export interface PointRamassageProps {
   point: PointInterface;
   map: L.Map;
-  isLast: boolean;
 
-  // quantity: number;
   minQuantity: number;
   maxQuantity: number;
 
-  onIsLast: () => void;
   onClick: () => void;
   onDBLClick: (event: LeafletMouseEvent) => void;
   onMouseOver: () => void;

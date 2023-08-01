@@ -165,17 +165,13 @@ export default function (props: RamassagePointsProps) {
 
   return (
     <For each={ramassages()}>
-      {(point, i) => {
-        const onIsLast = () => "";
+      {(point) => {
         return (
           <PointRamassage
             point={point}
             map={props.map}
-            isLast={i() === ramassages().length - 1}
-            // quantity={point.quantity as number}
             minQuantity={minQuantity()}
             maxQuantity={maxQuantity()}
-            onIsLast={() => onIsLast()}
             onClick={() => onClick(point)}
             onDBLClick={onDBLClick}
             onMouseOver={() => onMouseOver(point)}

@@ -26,7 +26,6 @@ export interface PointProps {
   point: PointInterface;
 
   map: L.Map;
-  isLast: boolean;
   isBlinking?: boolean;
 
   borderColor: string;
@@ -34,7 +33,6 @@ export interface PointProps {
   weight: number;
   radius: number;
 
-  onIsLast: () => void;
   onClick: () => void;
   onDBLClick: (event: LeafletMouseEvent) => void;
   onMouseOver: () => void;
@@ -90,12 +88,6 @@ export default function (props: PointProps) {
       circle
         .getElement()
         ?.setAttribute("stroke-width", props.weight.toString());
-    }
-  });
-
-  createEffect(() => {
-    if (props.isLast) {
-      props.onIsLast();
     }
   });
 

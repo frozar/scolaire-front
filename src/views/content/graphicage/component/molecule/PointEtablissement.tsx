@@ -5,9 +5,7 @@ import { blinkingPoints } from "../organism/Points";
 export interface PointEtablissementProps {
   point: PointInterface;
   map: L.Map;
-  isLast: boolean;
 
-  onIsLast: () => void;
   onClick: () => void;
   onDBLClick: (event: LeafletMouseEvent) => void;
   onMouseOver: () => void;
