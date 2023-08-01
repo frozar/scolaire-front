@@ -32,7 +32,7 @@ function defaultLineUnderConstruction() {
     stops: [],
     etablissementSelected: [],
     confirmSelection: false,
-    currentIndex: -1,
+    currentIndex: 0,
   };
 }
 

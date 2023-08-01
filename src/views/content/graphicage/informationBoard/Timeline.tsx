@@ -1,4 +1,4 @@
-import { FaRegularTrashCan, FaSolidPlus } from "solid-icons/fa";
+import { FaRegularTrashCan } from "solid-icons/fa";
 import { For, Show } from "solid-js";
 import { useStateAction } from "../../../../StateAction";
 import { LineType, PointResourceType } from "../../../../type";
@@ -43,21 +43,7 @@ function TimelineItem(props: TimelineItemType) {
           </div>
         </div>
         <div class="v-timeline-divider__after" />
-        <Show when={isInAddLineMode()}>
-          <button
-            class="w-full h-1/3"
-            onClick={() => {
-              console.log("test2");
-              setLineUnderConstruction({
-                ...getLineUnderConstruction(),
-                currentIndex: props.indice,
-              });
-              // props.line.stops.splice(props.indice, 0, i);
-            }}
-          >
-            <FaSolidPlus />
-          </button>
-        </Show>
+        {/* TODO Add button to add point between points */}
       </div>
     </div>
   );
