@@ -70,7 +70,7 @@ export interface PointsEtablissementProps {
   items?: PointInterface[];
 }
 
-export const [etablissements, setEtablissement] = createSignal<
+export const [etablissements, setEtablissements] = createSignal<
   PointInterface[]
 >([]);
 
@@ -81,6 +81,7 @@ export const addBlinking = (id: number) => {
 export default function (props: PointsEtablissementProps) {
   onMount(async () => {
     let etablissements;
+
     if (!props.items) {
       etablissements = PointBack2Front(
         await fetchSchool(props.mapId)
@@ -88,7 +89,7 @@ export default function (props: PointsEtablissementProps) {
     } else {
       etablissements = props.items;
     }
-    setEtablissement(etablissements);
+    setEtablissements(etablissements);
     setPointsEtablissementReady(true);
   });
 

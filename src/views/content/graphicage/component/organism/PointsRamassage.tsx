@@ -73,7 +73,7 @@ export interface RamassagePointsProps {
   items?: PointInterface[];
 }
 
-export const [ramassages, setRamassage] = createSignal<PointInterface[]>([]);
+export const [ramassages, setRamassages] = createSignal<PointInterface[]>([]);
 
 export const addBlinking = (id: number) => {
   setBlinkingStopPoint([...blinkingStopPoint(), id]);
@@ -90,7 +90,7 @@ export default function (props: RamassagePointsProps) {
       ramassages = props.items;
     }
 
-    setRamassage(ramassages);
+    setRamassages(ramassages);
     setPointsEtablissementReady(true);
   });
 
@@ -145,22 +145,21 @@ export default function (props: RamassagePointsProps) {
   //   }
   // }
 
-  const filteredPoints = () => {
-    const datas = ramassages()
+  const quantities = () => {
+    return ramassages()
       .filter((value) => Number.isFinite(value.quantity))
       .map((value) => {
         return value.quantity;
       }) as number[];
-    return datas;
   };
 
   const minQuantity = () => {
-    const minCandidat = Math.min(...filteredPoints());
+    const minCandidat = Math.min(...quantities());
     return Number.isFinite(minCandidat) ? minCandidat : 0;
   };
 
   const maxQuantity = () => {
-    const maxCandidat = Math.max(...filteredPoints());
+    const maxCandidat = Math.max(...quantities());
     return Number.isFinite(maxCandidat) ? maxCandidat : 0;
   };
 
@@ -173,7 +172,7 @@ export default function (props: RamassagePointsProps) {
             point={point}
             map={props.map}
             isLast={i() === ramassages().length - 1}
-            quantity={point.quantity as number}
+            // quantity={point.quantity as number}
             minQuantity={minQuantity()}
             maxQuantity={maxQuantity()}
             onIsLast={() => onIsLast()}

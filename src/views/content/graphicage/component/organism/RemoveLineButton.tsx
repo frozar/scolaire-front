@@ -3,13 +3,13 @@ import { mergeProps } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import { displayRemoveLineMessage } from "../../../../../userInformation/utils";
 import { fetchBusLines } from "../../line/busLinesUtils";
+import { deselectAllPoints } from "./Points";
 
 import ButtonGraphicageRightMenu, {
   OffsetType,
 } from "../molecule/ButtonGraphicageRightMenu";
 
 import { FaSolidMinus } from "solid-icons/fa";
-import { deselectAllPoints } from "./Points";
 
 const [, { setModeRemoveLine, isInRemoveLineMode, setModeRead }] =
   useStateAction();

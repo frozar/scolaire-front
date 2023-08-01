@@ -68,22 +68,22 @@ const setupAssociations = (points: PointInterface[], nature: NatureEnum) => {
   }
 };
 
-// Props here is for storybook
-interface PointsProps {
-  map?: L.Map;
-  mapId?: number;
-}
-
 export function deselectAllPoints() {
   etablissements().map((point) => point.setSelected(false));
   ramassages().map((point) => point.setSelected(false));
 }
 export const [pointsReady, setPointsReady] = createSignal(false);
 
+// Props here is for storybook
+interface PointsProps {
+  map?: L.Map;
+  mapId?: number;
+}
+
 export default function (props: PointsProps) {
   const mergedProps = mergeProps(
     {
-      map: getLeafletMap() as L.Map,
+      // map: getLeafletMap() as L.Map,
       mapId: getActiveMapId() as number,
     },
     props
@@ -108,6 +108,7 @@ export default function (props: PointsProps) {
 
     setupAssociations(etablissements(), NatureEnum.etablissement);
     setupAssociations(ramassages(), NatureEnum.ramassage);
+
     setPointsReady(true);
   });
 

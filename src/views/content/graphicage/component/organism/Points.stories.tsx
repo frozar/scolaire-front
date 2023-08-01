@@ -21,6 +21,6 @@ export const Points: Story = {
   render: (props: null, options) => {
     const fullId = getDivFullId(options);
 
-    return <PointsComponent map={initialiseMap(fullId, true)} mapId={2} />;
+    return <PointsComponent map={initialiseMap(fullId)} mapId={4} />;
   },
 };

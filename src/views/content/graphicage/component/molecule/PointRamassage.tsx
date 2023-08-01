@@ -7,7 +7,7 @@ export interface PointRamassageProps {
   map: L.Map;
   isLast: boolean;
 
-  quantity: number;
+  // quantity: number;
   minQuantity: number;
   maxQuantity: number;
 
@@ -24,11 +24,11 @@ const rangeRadius = maxRadius - minRadius;
 export default function (props: PointRamassageProps) {
   const rad = () => {
     let radiusValue: number;
-    if (props.quantity && props.maxQuantity && props.minQuantity) {
+    if (props.point.quantity && props.maxQuantity && props.minQuantity) {
       const coef =
         props.minQuantity == props.maxQuantity
           ? 0
-          : (props.quantity - props.minQuantity) /
+          : (props.point.quantity - props.minQuantity) /
             (props.maxQuantity - props.minQuantity);
 
       radiusValue = coef * rangeRadius + minRadius;
