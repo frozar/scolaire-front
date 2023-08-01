@@ -54,18 +54,20 @@ export function isPointEtablissement(pt: { nature: NatureEnum }) {
   return pt.nature === NatureEnum.etablissement;
 }
 
-export type LineUnderConstructionType = LineType & {
+export type AbstractLineType = {
+  idBusLine: number;
+  color: string;
+  stops: PointIdentityType[];
+};
+
+export type LineType = AbstractLineType & {
+  selected: Accessor<boolean>;
+  setSelected: Setter<boolean>;
+};
+export type LineUnderConstructionType = AbstractLineType & {
   etablissementSelected: PointInformation[];
   confirmSelection?: boolean;
   nextIndex: number;
-};
-
-export type LineType = {
-  idBusLine: number;
-  selected: Accessor<boolean>;
-  setSelected: Setter<boolean>;
-  color: string;
-  stops: PointIdentityType[];
 };
 
 export enum ModeEnum {
