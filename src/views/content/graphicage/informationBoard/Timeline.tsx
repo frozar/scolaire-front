@@ -31,7 +31,19 @@ function TimelineItem(props: TimelineItemType) {
           </div>
         </div>
         <div class="v-timeline-divider__after" />
-        {/* TODO Add button to add point between points */}
+        <Show when={isInAddLineMode()}>
+          <button
+            class="button-add"
+            onClick={() => {
+              setLineUnderConstruction({
+                ...getLineUnderConstruction(),
+                nextIndex: props.indice + 1,
+              });
+            }}
+          >
+            <FaSolidPlus />
+          </button>
+        </Show>
       </div>
     </div>
   );
