@@ -31,7 +31,7 @@ import Timeline from "./Timeline";
 const [, { isInAddLineMode, resetLineUnderConstruction }] = useStateAction();
 
 const [, { getActiveMapId }] = useStateGui();
-
+// TODO: Delete points() when no longer used (replaced by stops and schools)
 export default function () {
   const getSelectedPoint = (): PointRamassageType | null => {
     const filteredArray = points().filter((point) => point.selected());

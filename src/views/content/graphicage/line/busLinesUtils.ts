@@ -572,7 +572,7 @@ export const getSelectedBusLineId = (): number | undefined => {
 
 function getStopNames(busLine: LineUnderConstructionType) {
   const stopIds = busLine.stops.map((stop) => stop.idPoint);
-
+  // TODO: Delete points() when no longer used (replaced by stops and schools)
   return stopIds.map(
     (stopId) => points().filter((point) => point.idPoint === stopId)[0].name
   );

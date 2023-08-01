@@ -37,6 +37,7 @@ export function generateCircuit(
 ) {
   // TODO: This must be rewrite. The existing lines should drive the sanity check.
   // Which students are not already taken by a bus?
+  // TODO: Delete when no longer used (replaced by stops and schools)
   const all_pois = points().map(
     (elt: PointRamassageType): PointIdentityType => {
       const { id, idPoint, nature } = elt;

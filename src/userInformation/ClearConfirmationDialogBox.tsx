@@ -104,7 +104,7 @@ export default function () {
   });
 
   let refDialogueBox!: HTMLDivElement;
-
+  // TODO: Use stops() and schools() instead of points()
   return (
     <Transition
       name="slide-fade"
