@@ -17,6 +17,21 @@ export enum NatureEnum {
   etablissement = "Etablissement",
 }
 
+export type PointStopType = {
+  id: number;
+  lon: number;
+  lat: number;
+  name: string;
+  schools: SchoolOfStopType[];
+};
+
+export type SchoolOfStopType = {
+  id: number;
+  name: string;
+  quantity: number;
+};
+
+//TODO to update or delete cause of Xano
 export type PointRamassageType = {
   id: number;
   idPoint: number;
