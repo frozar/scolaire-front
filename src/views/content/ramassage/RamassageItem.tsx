@@ -48,7 +48,7 @@ export default function (props: {
         {props.item.schools.reduce((acc, school) => acc + school.quantity, 0)}
       </td>
       <td>{props.item.schools.length}</td>
-      {/* TODO imùporter les lignes depuis Xano */}
+      {/* TODO importer les lignes depuis Xano */}
       {/* <td>{props.item.lines.length}</td> */}
       <td>todo</td>
       <td>

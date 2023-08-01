@@ -1,11 +1,10 @@
 import { For, createEffect, createSignal, onCleanup, onMount } from "solid-js";
-import { useStateGui } from "../../../StateGui";
+import { SchoolType } from "../../../_entities/school.entity";
+import { SchoolService } from "../../../_services/school.service";
 import ImportCsvCanvas from "../../../component/ImportCsvCanvas";
 import ImportCsvDialogBox from "../../../component/ImportCsvDialogBox";
 import PageTitle from "../../../component/atom/PageTitle";
-import { EtablissementItemType } from "../../../type";
 import RemoveRamassageConfirmation from "../../../userInformation/RemoveRamassageConfirmation";
-import { authenticateWrap } from "../../layout/authentication";
 import EditStop from "./EditEtablissement";
 import EtablissementItem from "./EtablissementItem";
 import Checkbox from "./component/atom/Checkbox";
@@ -14,46 +13,13 @@ import Filters, { searchInputKeyword } from "./component/organism/Filters";
 import TableBody from "./component/organism/TableBody";
 import TableHeader from "./component/organism/TableHeader";
 
-const [, { getActiveMapId }] = useStateGui();
+export const [etablissements, setEtablissements] = createSignal<SchoolType[]>(
+  []
+);
 
-const [etablissements, setEtablissements] = createSignal<
-  EtablissementItemType[]
->([]);
-
-export function fetchEtablissement() {
-  authenticateWrap((headers) => {
-    fetch(
-      import.meta.env.VITE_BACK_URL +
-        `/map/${getActiveMapId()}/dashboard/etablissement`,
-      {
-        method: "GET",
-        headers,
-      }
-    ).then(async (res) => {
-      const json = await res.json();
-
-      const datas: {
-        id: number;
-        name: string;
-        quantity: number;
-        nb_line: number;
-        lon: number;
-        lat: number;
-      }[] = json["content"];
-
-      setEtablissements(
-        datas
-          .map((elt) => {
-            return {
-              ...elt,
-              nbLine: elt.nb_line,
-              selected: false,
-            };
-          })
-          .sort((a, b) => a.name.localeCompare(b.name))
-      );
-    });
-  });
+export async function fetchEtablissement() {
+  const schools: SchoolType[] = await SchoolService.getAll();
+  setEtablissements(schools.sort((a, b) => a.name.localeCompare(b.name)));
 }
 
 function preventDefaultHandler(e: DragEvent) {

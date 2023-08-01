@@ -1,17 +1,11 @@
 import { CgCloseO } from "solid-icons/cg";
 import { HiSolidLocationMarker } from "solid-icons/hi";
 import { Show, createSignal } from "solid-js";
-import { useStateGui } from "../../../StateGui";
+import { SchoolType } from "../../../_entities/school.entity";
+import { SchoolService } from "../../../_services/school.service";
 import { addNewUserInformation } from "../../../signaux";
-import {
-  EtablissementItemType,
-  MessageLevelEnum,
-  MessageTypeEnum,
-} from "../../../type";
-import { authenticateWrap } from "../../layout/authentication";
-import { fetchEtablissement } from "./Etablissement";
-
-const [, { getActiveMapId }] = useStateGui();
+import { MessageLevelEnum, MessageTypeEnum } from "../../../type";
+import { etablissements, setEtablissements } from "./Etablissement";
 
 export const [toggledEditStop, setToggledEditStop] = createSignal(false);
 
@@ -19,15 +13,14 @@ export function toggleEditStop() {
   setToggledEditStop((bool) => !bool);
 }
 
-export const [dataToEdit, setDataToEdit] =
-  createSignal<EtablissementItemType>();
+export const [dataToEdit, setDataToEdit] = createSignal<SchoolType>();
 
 export default function () {
   let name!: HTMLInputElement;
   let lon!: HTMLInputElement;
   let lat!: HTMLInputElement;
 
-  const handleClickAddStop = () => {
+  const handleClickAddStop = async () => {
     const nameStop = name.value;
     const lonStop = lon.value;
     const latStop = lat.value;
@@ -46,55 +39,33 @@ export default function () {
       return;
     }
 
-    authenticateWrap((headers) => {
-      console.log(getActiveMapId());
-      fetch(
-        import.meta.env.VITE_BACK_URL +
-          "/map/" +
-          getActiveMapId() +
-          "/etablissement",
-        {
-          method: "post",
-          headers,
-          body: JSON.stringify({
-            name: nameStop,
-            lon: lonStop,
-            lat: latStop,
-          }),
-        }
-      )
-        .then(async (res) => {
-          const json = await res.json();
-          console.log("json", json);
-
-          if (res.status !== 201) {
-            addNewUserInformation({
-              displayed: true,
-              level: MessageLevelEnum.error,
-              type: MessageTypeEnum.global,
-              content: json["detail"],
-            });
-
-            return;
-          }
-
-          addNewUserInformation({
-            displayed: true,
-            level: MessageLevelEnum.success,
-            type: MessageTypeEnum.global,
-            content: json["message"],
-          });
-          toggleEditStop();
-
-          fetchEtablissement();
-        })
-        .catch((err) => {
-          console.error(err);
-        });
+    const school: SchoolType = await SchoolService.create({
+      name: nameStop,
+      lon: +lonStop,
+      lat: +latStop,
     });
+
+    if (school) {
+      setEtablissements(
+        [...etablissements(), school].sort((a, b) =>
+          a.name.localeCompare(b.name)
+        )
+      );
+      addNewUserInformation({
+        displayed: true,
+        level: MessageLevelEnum.success,
+        type: MessageTypeEnum.global,
+        content: `L'établissement ${school.name} a été ajouté.`,
+      });
+      toggleEditStop();
+    }
   };
 
-  const handleClickEditStop = () => {
+  const handleClickEditStop = async () => {
+    const idToEdit = dataToEdit()?.id;
+    if (!idToEdit) {
+      return;
+    }
     const nameStop = name.value;
     const lonStop = lon.value;
     const latStop = lat.value;
@@ -118,55 +89,39 @@ export default function () {
       return;
     }
 
-    // eslint-disable-next-line solid/reactivity
-    authenticateWrap((headers) => {
-      fetch(
-        import.meta.env.VITE_BACK_URL +
-          `/map/${getActiveMapId()}/etablissement/${dataToEdit()?.id}`,
-        {
-          method: "PATCH",
-          headers,
-          body: JSON.stringify({
-            name: nameStop,
-            lon: lonStop,
-            lat: latStop,
-          }),
-        }
-      )
-        .then(async (res: Response) => {
-          const json = await res.json();
-          console.log(json);
-
-          if (res.status != 200) {
-            addNewUserInformation({
-              displayed: true,
-              level: MessageLevelEnum.error,
-              type: MessageTypeEnum.global,
-              content: json["detail"],
-            });
-            return;
-          }
-
-          addNewUserInformation({
-            displayed: true,
-            level: MessageLevelEnum.success,
-            type: MessageTypeEnum.global,
-            content: json["message"],
-          });
-
-          fetchEtablissement();
-        })
-        .catch((err) => {
-          console.error(err);
-
-          addNewUserInformation({
-            displayed: true,
-            level: MessageLevelEnum.error,
-            type: MessageTypeEnum.global,
-            content: err.message,
-          });
-        });
+    const school: SchoolType = await SchoolService.update({
+      id: idToEdit,
+      name: nameStop,
+      lon: +lonStop,
+      lat: +latStop,
     });
+
+    if (school != null) {
+      setEtablissements(
+        etablissements()
+          .map((item) => {
+            if (item.id == school.id) return school;
+            else return item;
+          })
+          .sort((a, b) => a.name.localeCompare(b.name))
+      );
+
+      toggleEditStop();
+      addNewUserInformation({
+        displayed: true,
+        level: MessageLevelEnum.success,
+        type: MessageTypeEnum.global,
+        content: "La modification a été prise en compte.",
+      });
+    } else {
+      toggleEditStop();
+      addNewUserInformation({
+        displayed: true,
+        level: MessageLevelEnum.error,
+        type: MessageTypeEnum.global,
+        content: "La modification a échouée.",
+      });
+    }
   };
 
   return (
