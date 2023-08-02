@@ -189,8 +189,6 @@ export default function (props: PointsEtablissementProps) {
   return (
     <For each={etablissementFilter()}>
       {(point) => {
-        console.log("PointsEtablissement!");
-
         return (
           <PointEtablissement
             point={point}
