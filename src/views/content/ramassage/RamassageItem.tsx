@@ -1,20 +1,20 @@
 import { Setter, createEffect } from "solid-js";
+import { StopType } from "../../../_entities/stop.entity";
 import { setRemoveRamassageConfirmation } from "../../../signaux";
-import { StopItemType } from "../../../type";
 import { setDataToEdit, toggleEditStop } from "./EditRamassage";
 
-function handleClickEdit(item: StopItemType) {
+function handleClickEdit(item: StopType) {
   setDataToEdit(item);
   toggleEditStop();
 }
 
-function handleClickSuppression(item: StopItemType) {
+function handleClickSuppression(item: StopType) {
   setRemoveRamassageConfirmation({ displayed: true, item });
 }
 
 export default function (props: {
-  item: StopItemType;
-  setRamassages: Setter<StopItemType[]>;
+  item: StopType;
+  setRamassages: Setter<StopType[]>;
 }) {
   let refCheckbox!: HTMLInputElement;
 
@@ -44,9 +44,13 @@ export default function (props: {
         />
         {props.item.name}
       </td>
-      <td>{props.item.quantity}</td>
-      <td>{props.item.nbEtablissement}</td>
-      <td>{props.item.nbLine}</td>
+      <td>
+        {props.item.schools.reduce((acc, school) => acc + school.quantity, 0)}
+      </td>
+      <td>{props.item.schools.length}</td>
+      {/* TODO imùporter les lignes depuis Xano */}
+      {/* <td>{props.item.lines.length}</td> */}
+      <td>todo</td>
       <td>
         <button
           onClick={() => handleClickEdit(props.item)}

@@ -9,85 +9,50 @@ import {
 } from "../signaux";
 
 // import { deleteRamassage } from "../request";
-import { useStateGui } from "../StateGui";
+import { StopService } from "../_services/stop.service";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { assertIsNode } from "../utils";
-import { fetchRamassage } from "../views/content/ramassage/Ramassage";
-import { asyncAuthenticateWrap } from "../views/layout/authentication";
+import {
+  ramassages,
+  setRamassages,
+} from "../views/content/ramassage/Ramassage";
 
 // HACK for the documentation to preserve the ClickOutside directive on save
 // https://www.solidjs.com/guides/typescript#use___
 false && ClickOutside;
-
-const [, { getActiveMapId }] = useStateGui();
-
-async function deleteRamassage(idToRemove: number) {
-  const headers = await asyncAuthenticateWrap();
-
-  return fetch(
-    import.meta.env.VITE_BACK_URL +
-      `/map/${getActiveMapId()}/ramassage/${idToRemove}`,
-    {
-      method: "DELETE",
-      headers,
-      body: JSON.stringify({
-        id: idToRemove,
-      }),
-    }
-  );
-}
 
 export default function () {
   const displayed = () => getRemoveRamassageConfirmation()["displayed"];
   const id_ramassage = () => getRemoveRamassageConfirmation().item?.id;
   const name_ramassage = () => getRemoveRamassageConfirmation().item?.name;
 
-  function handlerOnClickValider() {
+  async function handlerOnClickValider() {
     const idToCheck = id_ramassage();
     if (!idToCheck) {
       return;
     }
 
     const idToRemove: number = idToCheck;
-    deleteRamassage(idToRemove)
-      .then(async (res) => {
-        const json = await res.json();
 
-        if (res.status !== 200) {
-          addNewUserInformation({
-            displayed: true,
-            level: MessageLevelEnum.error,
-            type: MessageTypeEnum.global,
-            content: json["detail"],
-          });
-
-          closeRemoveRamassageConfirmationBox();
-          return;
-        }
-
-        addNewUserInformation({
-          displayed: true,
-          level: MessageLevelEnum.success,
-          type: MessageTypeEnum.global,
-          content: json["message"],
-        });
-        closeRemoveRamassageConfirmationBox();
-
-        fetchRamassage();
-      })
-      .catch((error) => {
-        console.error("Error during suppression", error);
-        addNewUserInformation({
-          displayed: true,
-          level: MessageLevelEnum.error,
-          type: MessageTypeEnum.removeLine,
-          content: `Impossible de supprimer la ligne ${id_ramassage()}`,
-        });
-
-        closeRemoveRamassageConfirmationBox();
-
-        fetchRamassage();
+    const isDeleted: boolean = await StopService.delete(idToRemove);
+    if (isDeleted) {
+      closeRemoveRamassageConfirmationBox();
+      setRamassages(ramassages().filter((stop) => stop.id != idToRemove));
+      addNewUserInformation({
+        displayed: true,
+        level: MessageLevelEnum.success,
+        type: MessageTypeEnum.global,
+        content: "Le point de ramassage a bien été supprimé.",
       });
+    } else {
+      closeRemoveRamassageConfirmationBox();
+      addNewUserInformation({
+        displayed: true,
+        level: MessageLevelEnum.error,
+        type: MessageTypeEnum.removeLine,
+        content: "Impossible de supprimer le point de ramassage.",
+      });
+    }
   }
 
   const [buttonRef, setButtonRef] = createSignal<
@@ -214,7 +179,10 @@ export default function () {
                           <li>
                             le nombre d'élèves allant vers un établissement (
                             <span class="font-semibold text-sm text-gray-900">
-                              {getRemoveRamassageConfirmation().item?.quantity}
+                              {getRemoveRamassageConfirmation().item?.schools.reduce(
+                                (acc, school) => acc + school.quantity,
+                                0
+                              )}
                             </span>{" "}
                             élève(s))
                           </li>

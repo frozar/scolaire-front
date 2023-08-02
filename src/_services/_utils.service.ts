@@ -1,17 +1,16 @@
+import { useStateGui } from "../StateGui";
 import { addNewUserInformation } from "../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
 
+const [, { getActiveMapId }] = useStateGui();
+
+// TODO Need auth0 authentication
+// TODO Refacto error management
 export class ServiceUtils {
-  /**
-   * Function using fetch with GET method
-   * @param url the Get URL
-   * @returns
-   */
-  // TODO Need auth0 authentication
-  static async get(url: string) {
+  static async get(url: string, urlNeedMap = true) {
     let response: Response;
     try {
-      response = await fetch(import.meta.env.VITE_XANO_URL + url);
+      response = await fetch(buildXanoUrl(url, urlNeedMap));
     } catch (error) {
       connexionError();
       return false;
@@ -21,10 +20,10 @@ export class ServiceUtils {
     return await response.json();
   }
 
-  static async post(url: string, data: object) {
+  static async post(url: string, data: object, urlNeedMap = true) {
     let response: Response;
     try {
-      response = await fetch(import.meta.env.VITE_XANO_URL + url, {
+      response = await fetch(buildXanoUrl(url, urlNeedMap), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -40,10 +39,29 @@ export class ServiceUtils {
     return await response.json();
   }
 
-  static async delete(url: string) {
+  static async patch(url: string, data: object, urlNeedMap = true) {
     let response: Response;
     try {
-      response = await fetch(import.meta.env.VITE_XANO_URL + url, {
+      response = await fetch(buildXanoUrl(url, urlNeedMap), {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+    } catch (error) {
+      connexionError();
+      return false;
+    }
+
+    if (!(await manageStatusCode(response))) return;
+    return await response.json();
+  }
+
+  static async delete(url: string, urlNeedMap = true) {
+    let response: Response;
+    try {
+      response = await fetch(buildXanoUrl(url, urlNeedMap), {
         method: "DELETE",
       });
     } catch (error) {
@@ -52,9 +70,17 @@ export class ServiceUtils {
     }
 
     if (!(await manageStatusCode(response))) return false;
-    return true;
+    return await response.json();
   }
 }
+
+const buildXanoUrl = (url: string, urlNeedMap: boolean) => {
+  let buildUrl = import.meta.env.VITE_XANO_URL;
+  if (urlNeedMap) {
+    buildUrl += "/map/" + getActiveMapId();
+  }
+  return buildUrl + url;
+};
 
 // TODO reformat this (copy/past from point.service.ts)
 const connexionError = () => {

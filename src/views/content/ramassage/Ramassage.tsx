@@ -1,6 +1,8 @@
 import { AiOutlineSearch } from "solid-icons/ai";
 import { For, createEffect, createSignal, onCleanup, onMount } from "solid-js";
 import { useStateGui } from "../../../StateGui";
+import { StopType } from "../../../_entities/stop.entity";
+import { StopService } from "../../../_services/stop.service";
 import ExportCsvButton from "../../../component/ExportCsvButton";
 import ImportCsvButton from "../../../component/ImportCsvButton";
 import ImportCsvCanvas from "../../../component/ImportCsvCanvas";
@@ -8,69 +10,17 @@ import ImportCsvDialogBox from "../../../component/ImportCsvDialogBox";
 import ActionSelector from "../../../component/atom/ActionSelector";
 import Button from "../../../component/atom/Button";
 import PageTitle from "../../../component/atom/PageTitle";
-import { addNewUserInformation } from "../../../signaux";
-import { MessageLevelEnum, MessageTypeEnum, StopItemType } from "../../../type";
 import RemoveRamassageConfirmation from "../../../userInformation/RemoveRamassageConfirmation";
-import { authenticateWrap } from "../../layout/authentication";
 import EditStop, { setDataToEdit, toggleEditStop } from "./EditRamassage";
 import StopItems from "./RamassageItem";
 
 const [, { getActiveMapId }] = useStateGui();
 
-const [ramassages, setRamassages] = createSignal<StopItemType[]>([]);
+export const [ramassages, setRamassages] = createSignal<StopType[]>([]);
 
-export function fetchRamassage() {
-  authenticateWrap((headers) => {
-    fetch(
-      import.meta.env.VITE_BACK_URL +
-        `/map/${getActiveMapId()}/dashboard/ramassage`,
-      {
-        method: "GET",
-        headers,
-      }
-    )
-      .then(async (res) => {
-        const json = await res.json();
-
-        if (res.status !== 200) {
-          console.error(json["detail"]);
-          return;
-        }
-
-        const data: {
-          id: number;
-          name: string;
-          quantity: number;
-          nb_etablissement: number;
-          nb_line: number;
-          lon: number;
-          lat: number;
-        }[] = json["content"];
-
-        setRamassages(
-          data
-            .map((elt) => {
-              return {
-                ...elt,
-                nbEtablissement: elt.nb_etablissement,
-                nbLine: elt.nb_line,
-                selected: false,
-              };
-            })
-            .sort((a, b) => a.name.localeCompare(b.name))
-        );
-      })
-      .catch((err) => {
-        console.error(err);
-
-        addNewUserInformation({
-          displayed: true,
-          level: MessageLevelEnum.error,
-          type: MessageTypeEnum.global,
-          content: err.message,
-        });
-      });
-  });
+export async function fetchRamassage() {
+  const stops: StopType[] = await StopService.getAll();
+  setRamassages(stops.sort((a, b) => a.name.localeCompare(b.name)));
 }
 
 function preventDefaultHandler(e: DragEvent) {
