@@ -25,8 +25,8 @@ describe("Line component", () => {
           ,
           {createPointEtablissement({
             fullId: "map-container",
-            id: 1,
-            idPoint: 51,
+            id: 2,
+            idPoint: 52,
             lat: -20.9486587304741,
             lon: 55.5544806754509,
             name: "name",
@@ -38,7 +38,6 @@ describe("Line component", () => {
         </div>
       );
     });
-
     cy.get(".map-point").eq(1).click({ force: true });
     cy.get(".map-point").eq(0).click({ force: true });
 
