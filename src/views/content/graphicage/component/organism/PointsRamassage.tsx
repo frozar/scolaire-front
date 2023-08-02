@@ -7,7 +7,12 @@ import { deselectAllBusLines } from "../../line/busLinesUtils";
 import { fetchStop } from "../../point.service";
 import { PointInterface } from "../atom/Point";
 import PointRamassage from "../molecule/PointRamassage";
-import { linkMap, setBlinking, setBlinkingPoint } from "./Points";
+import {
+  deselectAllPoints,
+  linkMap,
+  setBlinking,
+  setBlinkingPoint,
+} from "./Points";
 
 const [
   ,
@@ -104,6 +109,7 @@ export default function (props: RamassagePointsProps) {
   function onClick(point: PointInterface) {
     if (!isInAddLineMode()) {
       deselectAllBusLines();
+      deselectAllPoints();
       selectPointById(point.idPoint);
       return;
     }

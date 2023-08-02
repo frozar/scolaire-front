@@ -7,7 +7,12 @@ import { deselectAllBusLines } from "../../line/busLinesUtils";
 import { fetchSchool } from "../../point.service";
 import { PointIdentityType, PointInterface } from "../atom/Point";
 import PointEtablissement from "../molecule/PointEtablissement";
-import { linkMap, setBlinking, setBlinkingPoint } from "./Points";
+import {
+  deselectAllPoints,
+  linkMap,
+  setBlinking,
+  setBlinkingPoint,
+} from "./Points";
 import { PointRamassageDBType } from "./PointsRamassage";
 
 const [
@@ -96,6 +101,7 @@ export default function (props: PointsEtablissementProps) {
   const onClick = (point: PointInterface) => {
     if (!isInAddLineMode()) {
       deselectAllBusLines();
+      deselectAllPoints();
       selectPointById(point.idPoint);
       return;
     }

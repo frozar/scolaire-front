@@ -61,6 +61,8 @@ const setupAssociations = (points: PointInterface[], nature: NatureEnum) => {
 };
 
 export function deselectAllPoints() {
+  console.log("deselectAllPoints");
+
   etablissements().map((point) => point.setSelected(false));
   ramassages().map((point) => point.setSelected(false));
 }
