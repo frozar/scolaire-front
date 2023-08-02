@@ -23,10 +23,8 @@ import {
 import {
   getSelectedBusLine,
   getSelectedBusLineId,
-  selectedBusLineStopNames,
 } from "../line/busLinesUtils";
 import InfoPointName from "./InfoPointName";
-import Timeline from "./Timeline";
 
 const [, { isInAddLineMode, resetLineUnderConstruction }] = useStateAction();
 
@@ -266,8 +264,8 @@ export default function () {
             onInput={handleColorPicker}
             onChange={handleColorChanged}
           />
-
-          <Timeline stopNames={selectedBusLineStopNames()} />
+          {/* TODO: Fix timeline */}
+          {/* <Timeline stopNames={selectedBusLineStopNames()} /> */}
         </Match>
         <Match when={isInAddLineMode()}>
           <AddLineInformationBoardContent />
