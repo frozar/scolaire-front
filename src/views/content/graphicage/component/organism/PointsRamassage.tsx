@@ -186,10 +186,6 @@ export default function (props: RamassagePointsProps) {
     const etablissement = getLineUnderConstruction().etablissementSelected;
     const isValidate = getLineUnderConstruction().confirmSelection;
 
-    // let ramassages = points().filter(
-    //   (value) => value.nature === NatureEnum.ramassage
-    // );
-
     let ramassagesToReturn = ramassages();
 
     if (isInAddLineMode() && etablissement) {
@@ -206,30 +202,12 @@ export default function (props: RamassagePointsProps) {
   }
 
   return (
-    // <For each={ramassages()}>
-    //   {(point) => {
-    //     return (
-    //       <PointRamassage
-    //         point={point}
-    //         map={props.map}
-    //         minQuantity={minQuantity()}
-    //         maxQuantity={maxQuantity()}
-    //         onClick={() => onClick(point)}
-    //         onDBLClick={onDBLClick}
-    //         onMouseOver={() => onMouseOver(point)}
-    //         onMouseOut={() => onMouseOut()}
-    //       />
-    //     );
-    //   }}
-    // </For>
     <For each={ramassageFilter()}>
       {(point) => {
         return (
           <PointRamassage
             point={point}
             map={props.map}
-            // isLast={i() === points().length - 1}
-            // nature={point.nature}
             minQuantity={minQuantity()}
             maxQuantity={maxQuantity()}
             onClick={() => onClick(point)}

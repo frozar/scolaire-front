@@ -116,8 +116,6 @@ export default function (props: PointsEtablissementProps) {
       return;
     }
 
-    //TODO : move to PointEtablissement in click handler when used
-
     const etablissementSelected =
       getLineUnderConstruction().etablissementSelected;
 
@@ -189,20 +187,6 @@ export default function (props: PointsEtablissementProps) {
   }
 
   return (
-    // <For each={etablissements()}>
-    //   {(point) => {
-    //     return (
-    //       <PointEtablissement
-    //         point={point}
-    //         map={props.map}
-    //         onClick={() => onClick(point)}
-    //         onDBLClick={onDBLClick}
-    //         onMouseOver={() => onMouseOver(point)}
-    //         onMouseOut={() => onMouseOut()}
-    //       />
-    //     );
-    //   }}
-    // </For>
     <For each={etablissementFilter()}>
       {(point) => {
         console.log("PointsEtablissement!");
@@ -215,10 +199,6 @@ export default function (props: PointsEtablissementProps) {
             onDBLClick={onDBLClick}
             onMouseOver={() => onMouseOver(point)}
             onMouseOut={() => onMouseOut()}
-            // isLast={i() === points().length - 1}
-            // nature={point.nature}
-            // minQuantity={minQuantity()}
-            // maxQuantity={maxQuantity()}
           />
         );
       }}
