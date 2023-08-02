@@ -2,6 +2,7 @@ import { For, Show } from "solid-js";
 import { useStateAction } from "../../../../StateAction";
 import { AbstractLineType } from "../../../../type";
 import { PointInterface } from "../component/atom/Point";
+import { TimelineAddPointButton } from "../component/atom/TimelineAddPointButton";
 import { TimelineRemovePointButton } from "../component/atom/TimelineRemovePointButton";
 import { mapIdentityToResourceType } from "../line/busLinesUtils";
 const [, { isInAddLineMode }] = useStateAction();
@@ -15,6 +16,9 @@ export type TimelineItemType = {
 function TimelineItem(props: TimelineItemType) {
   return (
     <div class="v-timeline-item">
+      <Show when={isInAddLineMode()}>
+        <TimelineAddPointButton {...props} />
+      </Show>
       <div class="v-timeline-item__body">
         <div class="d-flex">
           <strong>{props.pointsResource.name}</strong>
@@ -31,19 +35,6 @@ function TimelineItem(props: TimelineItemType) {
           </div>
         </div>
         <div class="v-timeline-divider__after" />
-        <Show when={isInAddLineMode()}>
-          <button
-            class="button-add"
-            onClick={() => {
-              setLineUnderConstruction({
-                ...getLineUnderConstruction(),
-                nextIndex: props.indice + 1,
-              });
-            }}
-          >
-            <FaSolidPlus />
-          </button>
-        </Show>
       </div>
     </div>
   );

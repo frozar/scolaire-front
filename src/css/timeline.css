@@ -59,15 +59,6 @@
   justify-self: flex-start;
 }
 
-.button-add :hover {
-  opacity: 100%;
-}
-
-.button-add {
-  padding-inline-start: 12px;
-  opacity: 70%;
-}
-
 .v-timeline--vertical.v-timeline--align-start {
   align-items: flex-start;
 }

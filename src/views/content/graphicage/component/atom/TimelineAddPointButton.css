@@ -1,0 +1,9 @@
+.timeline-add-point-button {
+  padding-inline-start: 24px;
+
+  opacity: 50%;
+}
+
+.timeline-add-point-button:hover {
+  opacity: 100%;
+}
