@@ -182,13 +182,54 @@ export default function (props: RamassagePointsProps) {
     return Number.isFinite(maxCandidat) ? maxCandidat : 0;
   };
 
+  function ramassageFilter(): PointInterface[] {
+    const etablissement = getLineUnderConstruction().etablissementSelected;
+    const isValidate = getLineUnderConstruction().confirmSelection;
+
+    // let ramassages = points().filter(
+    //   (value) => value.nature === NatureEnum.ramassage
+    // );
+
+    let ramassagesToReturn = ramassages();
+
+    if (isInAddLineMode() && etablissement) {
+      ramassagesToReturn = ramassages().filter((value) =>
+        value
+          .associatedPoints()
+          .some((elt) =>
+            etablissement.find((e) => e.idPoint === elt.idPoint && isValidate)
+          )
+      );
+    }
+
+    return ramassagesToReturn as PointInterface[];
+  }
+
   return (
-    <For each={ramassages()}>
+    // <For each={ramassages()}>
+    //   {(point) => {
+    //     return (
+    //       <PointRamassage
+    //         point={point}
+    //         map={props.map}
+    //         minQuantity={minQuantity()}
+    //         maxQuantity={maxQuantity()}
+    //         onClick={() => onClick(point)}
+    //         onDBLClick={onDBLClick}
+    //         onMouseOver={() => onMouseOver(point)}
+    //         onMouseOut={() => onMouseOut()}
+    //       />
+    //     );
+    //   }}
+    // </For>
+    <For each={ramassageFilter()}>
       {(point) => {
         return (
           <PointRamassage
             point={point}
             map={props.map}
+            // isLast={i() === points().length - 1}
+            // nature={point.nature}
             minQuantity={minQuantity()}
             maxQuantity={maxQuantity()}
             onClick={() => onClick(point)}

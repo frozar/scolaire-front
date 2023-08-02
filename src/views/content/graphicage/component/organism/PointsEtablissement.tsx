@@ -27,6 +27,7 @@ const [
     addPointToLineUnderConstruction,
     getLineUnderConstruction,
     isInAddLineMode,
+    setLineUnderConstruction,
   },
 ] = useStateAction();
 
@@ -115,6 +116,25 @@ export default function (props: PointsEtablissementProps) {
       return;
     }
 
+    //TODO : move to PointEtablissement in click handler when used
+
+    const etablissementSelected =
+      getLineUnderConstruction().etablissementSelected;
+
+    if (!getLineUnderConstruction().confirmSelection) {
+      if (etablissementSelected?.find((p) => p.idPoint === point.idPoint)) {
+        return;
+      }
+      setLineUnderConstruction({
+        ...getLineUnderConstruction(),
+        etablissementSelected: !etablissementSelected
+          ? [point]
+          : etablissementSelected.concat(point),
+      });
+
+      return;
+    }
+
     // TODO: check how manage line underconstuction with ramassages/etablissement signals
     addPointToLineUnderConstruction({
       id: point.id,
@@ -148,9 +168,45 @@ export default function (props: PointsEtablissementProps) {
     setBlinkingPoint([]);
   };
 
+  function etablissementFilter(): PointInterface[] {
+    const isValidate = getLineUnderConstruction().confirmSelection;
+
+    let etablissementsToReturn = etablissements();
+
+    if (isInAddLineMode()) {
+      const etablissementsSelected =
+        getLineUnderConstruction().etablissementSelected;
+
+      if (isValidate && etablissementsSelected) {
+        etablissementsToReturn = etablissements().filter((value) =>
+          etablissementsSelected.some(
+            (etablissementInfo) => etablissementInfo.idPoint === value.idPoint
+          )
+        );
+      }
+    }
+    return etablissementsToReturn as PointInterface[];
+  }
+
   return (
-    <For each={etablissements()}>
+    // <For each={etablissements()}>
+    //   {(point) => {
+    //     return (
+    //       <PointEtablissement
+    //         point={point}
+    //         map={props.map}
+    //         onClick={() => onClick(point)}
+    //         onDBLClick={onDBLClick}
+    //         onMouseOver={() => onMouseOver(point)}
+    //         onMouseOut={() => onMouseOut()}
+    //       />
+    //     );
+    //   }}
+    // </For>
+    <For each={etablissementFilter()}>
       {(point) => {
+        console.log("PointsEtablissement!");
+
         return (
           <PointEtablissement
             point={point}
@@ -159,6 +215,10 @@ export default function (props: PointsEtablissementProps) {
             onDBLClick={onDBLClick}
             onMouseOver={() => onMouseOver(point)}
             onMouseOut={() => onMouseOut()}
+            // isLast={i() === points().length - 1}
+            // nature={point.nature}
+            // minQuantity={minQuantity()}
+            // maxQuantity={maxQuantity()}
           />
         );
       }}
