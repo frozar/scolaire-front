@@ -89,7 +89,6 @@ export interface RamassagePointsProps {
 
 export const [ramassages, setRamassages] = createSignal<PointInterface[]>([]);
 
-// Working
 // TODO: check if necessary (similar feature already existing !)
 export const [pointsRamassageReady, setPointsRamassageReady] =
   createSignal(false);

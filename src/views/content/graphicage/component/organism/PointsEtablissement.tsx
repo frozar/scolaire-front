@@ -31,7 +31,6 @@ const [
   },
 ] = useStateAction();
 
-// working
 type PointEtablissementDBType = PointRamassageDBType;
 
 type PointEtablissementCoreType = Omit<PointEtablissementDBType, "id_point"> & {
@@ -82,7 +81,7 @@ export interface PointsEtablissementProps {
 export const [etablissements, setEtablissements] = createSignal<
   PointInterface[]
 >([]);
-// Working
+
 // TODO: check if necessary (similar feature already existing !)
 export const [pointsEtablissementReady, setPointsEtablissementReady] =
   createSignal(false);
