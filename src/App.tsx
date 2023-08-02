@@ -13,7 +13,6 @@ import RemoveConfirmationDialogBox from "./userInformation/RemoveConfirmationDia
 import Dashboard from "./views/content/dashboard/Dashboard";
 import Etablissement from "./views/content/etablissement/Etablissement";
 import Graphicage from "./views/content/graphicage/Graphicage";
-// import { setPointsReady } from "./views/content/graphicage/PointsRamassageAndEtablissement";
 import { setPointsReady } from "./views/content/graphicage/component/organism/Points";
 import ExportConfirmationDialogBox from "./views/content/graphicage/rightMapMenu/export/ExportConfirmationDialogBox";
 import Ramassage from "./views/content/ramassage/Ramassage";
