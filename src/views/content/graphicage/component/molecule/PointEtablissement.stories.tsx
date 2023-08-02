@@ -4,9 +4,9 @@ import { initialiseMap } from "../../../../../../testing/utils/mapWrapper";
 
 import { LeafletMouseEvent } from "leaflet";
 import {
-  Mapdecorators,
   createPoint,
   getDivFullId,
+  mapDecorators,
 } from "../../../../../../testing/utils/TestUtils";
 import { PointStorybook } from "../atom/Point.stories";
 import PointEtablissementComponent from "./PointEtablissement";
@@ -14,7 +14,7 @@ import PointEtablissementComponent from "./PointEtablissement";
 const meta = {
   component: PointEtablissementComponent,
   tags: ["autodocs"],
-  decorators: Mapdecorators,
+  decorators: mapDecorators,
   argTypes: {
     onIsLast: () => console.log("onIsLast"),
     onClick: () => console.log("onClick"),

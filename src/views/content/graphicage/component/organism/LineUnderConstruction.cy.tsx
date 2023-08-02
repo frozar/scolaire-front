@@ -38,6 +38,7 @@ describe("Line component", () => {
         </div>
       );
     });
+
     cy.get(".map-point").eq(1).click({ force: true });
     cy.get(".map-point").eq(0).click({ force: true });
 

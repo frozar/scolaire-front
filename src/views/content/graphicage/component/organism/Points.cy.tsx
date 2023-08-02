@@ -22,7 +22,7 @@ describe("PointsEtablissement component", () => {
   it("Points snapshot", () => {
     cy.mount(() => (
       <div id="map-container" style={{ width: "100%", height: "500px" }}>
-        <Points mapId={2} map={initialiseMap("map-container", false)} />
+        <Points mapId={2} leafletMap={initialiseMap("map-container", false)} />
       </div>
     ));
 

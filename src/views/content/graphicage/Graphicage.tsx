@@ -72,7 +72,10 @@ export default function () {
       />
       <InformationBoard />
       <div ref={mapDiv} id="main-map" />
-      <Points />
+      <Points
+        leafletMap={getLeafletMap() as L.Map}
+        mapId={getActiveMapId() as number}
+      />
       <Show when={isInAddLineMode()}>
         <LineUnderConstruction
           stops={getLineUnderConstruction().stops}

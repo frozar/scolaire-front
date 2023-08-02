@@ -2,9 +2,9 @@ import "leaflet/dist/leaflet.css";
 import { Meta, StoryObj } from "storybook-solidjs";
 
 import {
-  Mapdecorators,
   createPoint,
   getDivFullId,
+  mapDecorators,
 } from "../../../../../../testing/utils/TestUtils";
 import { initialiseMap } from "../../../../../../testing/utils/mapWrapper";
 import PointsEtablissementComponent from "./PointsEtablissement";
@@ -12,7 +12,7 @@ import PointsEtablissementComponent from "./PointsEtablissement";
 const meta = {
   component: PointsEtablissementComponent,
   tags: ["autodocs"],
-  decorators: Mapdecorators,
+  decorators: mapDecorators,
 } satisfies Meta<typeof PointsEtablissementComponent>;
 
 export default meta;

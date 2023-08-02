@@ -1,7 +1,6 @@
 import L, { LeafletMouseEvent } from "leaflet";
 import { Accessor, Setter, createEffect, onCleanup, onMount } from "solid-js";
 
-// import { linkMap } from "../../Point";
 import { linkMap } from "../organism/Points";
 import "./Point.css";
 
@@ -44,42 +43,42 @@ export default function (props: PointProps) {
   let circle: L.CircleMarker;
 
   onMount(() => {
-    if (!props.point) {
-      return;
-    }
+    if (props.point) {
+      circle = L.circleMarker([props.point.lat, props.point.lon], {
+        color: props.borderColor,
+        fillColor: props.fillColor,
+        radius: props.radius,
+        fillOpacity: 1,
+        weight: props.weight,
+        pane: "markerPane",
+        className: "map-point",
+      })
+        .on("click", props.onClick)
+        .on("dblclick", props.onDBLClick)
+        .on("mouseover", props.onMouseOver)
+        .on("mouseout", props.onMouseOut)
+        .addTo(props.map);
 
-    circle = L.circleMarker([props.point.lat, props.point.lon], {
-      color: props.borderColor,
-      fillColor: props.fillColor,
-      radius: props.radius,
-      fillOpacity: 1,
-      weight: props.weight,
-      pane: "markerPane",
-      className: "map-point",
-    })
-      .on("click", props.onClick)
-      .on("dblclick", props.onDBLClick)
-      .on("mouseover", props.onMouseOver)
-      .on("mouseout", props.onMouseOut)
-      .addTo(props.map);
-    const element = circle.getElement();
-    if (element) {
-      linkMap.set(props.point.idPoint, circle);
-    }
-  });
-
-  createEffect(() => {
-    const element = linkMap
-      .get(props.point.idPoint)
-      ?.getElement() as HTMLElement;
-
-    if (element) {
-      element.style.setProperty("--stroke-color", props.borderColor);
-      if (props.isBlinking) {
-        element.classList.add("circle-animation");
-      } else {
-        element.classList.remove("circle-animation");
+      const element = circle.getElement();
+      if (element) {
+        linkMap.set(props.point.idPoint, circle);
       }
+
+      createEffect(() => {
+        const element = linkMap
+          .get(props.point.idPoint)
+          ?.getElement() as HTMLElement;
+
+        if (element) {
+          element.style.setProperty("--stroke-color", props.borderColor);
+        }
+
+        if (element && props.isBlinking) {
+          element.classList.add("circle-animation");
+        } else if (element && !props.isBlinking) {
+          element.classList.remove("circle-animation");
+        } else return;
+      });
     }
   });
 

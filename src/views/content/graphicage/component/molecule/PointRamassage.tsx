@@ -19,8 +19,9 @@ const maxRadius = 10;
 const rangeRadius = maxRadius - minRadius;
 
 export default function (props: PointRamassageProps) {
-  const rad = () => {
-    let radiusValue: number;
+  const rad = (): number => {
+    let radiusValue = minRadius;
+
     if (props.point.quantity && props.maxQuantity && props.minQuantity) {
       const coef =
         props.minQuantity == props.maxQuantity
@@ -28,9 +29,10 @@ export default function (props: PointRamassageProps) {
           : (props.point.quantity - props.minQuantity) /
             (props.maxQuantity - props.minQuantity);
 
-      radiusValue = coef * rangeRadius + minRadius;
-      return radiusValue;
+      radiusValue += coef * rangeRadius;
     }
+
+    return radiusValue;
   };
 
   return (
@@ -39,7 +41,7 @@ export default function (props: PointRamassageProps) {
       isBlinking={blinkingPoints().includes(props.point.idPoint)}
       borderColor="red"
       fillColor="white"
-      radius={rad() as number}
+      radius={rad()}
       weight={2}
     />
   );

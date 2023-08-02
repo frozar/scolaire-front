@@ -14,7 +14,7 @@ describe("PointsRamassage component", () => {
       <div id="map-container" style={{ width: "100%", height: "500px" }}>
         <PointsRamassage
           mapId={2}
-          map={initialiseMap("map-container", false)}
+          leafletMap={initialiseMap("map-container", false)}
         />
       </div>
     ));

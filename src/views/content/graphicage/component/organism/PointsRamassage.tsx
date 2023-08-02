@@ -2,23 +2,12 @@ import L, { LeafletMouseEvent } from "leaflet";
 import { For, createSignal, onMount } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import { NatureEnum, PointIdentityType } from "../../../../../type";
-// import { linkMap } from "../../Point";
-// import {
-//   blinkingStopPoint,
-//   setBlinkingStopPoint,
-// } from "../../PointsRamassageAndEtablissement";
 import { renderAnimation } from "../../animation";
 import { deselectAllBusLines } from "../../line/busLinesUtils";
 import { fetchStop } from "../../point.service";
 import { PointInterface } from "../atom/Point";
 import PointRamassage from "../molecule/PointRamassage";
-import {
-  blinkingStopPoint,
-  linkMap,
-  setBlinking,
-  setBlinkingPoint,
-  setBlinkingStopPoint,
-} from "./Points";
+import { linkMap, setBlinking, setBlinkingPoint } from "./Points";
 
 const [
   ,
@@ -82,7 +71,7 @@ function PointBack2Front<T extends PointRamassageDBType>(
 }
 
 export interface RamassagePointsProps {
-  map: L.Map;
+  leafletMap: L.Map;
   mapId: number;
   items?: PointInterface[];
 }
@@ -93,9 +82,6 @@ export const [ramassages, setRamassages] = createSignal<PointInterface[]>([]);
 export const [pointsRamassageReady, setPointsRamassageReady] =
   createSignal(false);
 
-export const addBlinking = (id: number) => {
-  setBlinkingStopPoint([...blinkingStopPoint(), id]);
-};
 export default function (props: RamassagePointsProps) {
   onMount(async () => {
     let ramassages;
@@ -206,7 +192,7 @@ export default function (props: RamassagePointsProps) {
         return (
           <PointRamassage
             point={point}
-            map={props.map}
+            map={props.leafletMap}
             minQuantity={minQuantity()}
             maxQuantity={maxQuantity()}
             onClick={() => onClick(point)}

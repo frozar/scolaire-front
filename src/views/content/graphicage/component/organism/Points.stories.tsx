@@ -1,14 +1,9 @@
 import "leaflet/dist/leaflet.css";
 import { Meta, StoryObj } from "storybook-solidjs";
 
-// TODO: Fix not working if PointsEtablissement and PointsRamassage stories
-// not opened first
-// TODO: Use fixtures ?
-// TODO: Fix blinking
-
 import {
-  Mapdecorators,
   getDivFullId,
+  mapDecorators,
 } from "../../../../../../testing/utils/TestUtils";
 import { initialiseMap } from "../../../../../../testing/utils/mapWrapper";
 import PointsComponent from "./Points";
@@ -16,7 +11,7 @@ import PointsComponent from "./Points";
 const meta = {
   component: PointsComponent,
   tags: ["autodocs"],
-  decorators: Mapdecorators,
+  decorators: mapDecorators,
 } satisfies Meta<typeof PointsComponent>;
 
 export default meta;
@@ -25,7 +20,11 @@ type Story = StoryObj<typeof meta>;
 export const Points: Story = {
   render: (props: null, options) => {
     const fullId = getDivFullId(options);
-
-    return <PointsComponent map={initialiseMap(fullId)} mapId={2} />;
+    const testMapId = 3;
+    // TODO WARNING testMapId depends of local database.
+    // Mock data to fetch
+    return (
+      <PointsComponent leafletMap={initialiseMap(fullId)} mapId={testMapId} />
+    );
   },
 };

@@ -1,13 +1,5 @@
 import L from "leaflet";
-import {
-  Accessor,
-  createEffect,
-  createSignal,
-  mergeProps,
-  onMount,
-} from "solid-js";
-import { useStateGui } from "../../../../../StateGui";
-import { getLeafletMap } from "../../../../../signaux";
+import { Accessor, createEffect, createSignal, onMount } from "solid-js";
 import { EleveVersEtablissementType, NatureEnum } from "../../../../../type";
 import { fetchEleveVersEtablissement } from "../../point.service";
 import { PointIdentityType, PointInterface } from "../atom/Point";
@@ -15,8 +7,6 @@ import PointsEtablissement, { etablissements } from "./PointsEtablissement";
 import PointsRamassage, { ramassages } from "./PointsRamassage";
 
 export const linkMap = new Map<number, L.CircleMarker>();
-
-const [, { getActiveMapId }] = useStateGui();
 
 export const [blinkingPoints, setBlinkingPoint] = createSignal<number[]>([]);
 export const setBlinking = (
@@ -76,30 +66,15 @@ export function deselectAllPoints() {
 }
 export const [pointsReady, setPointsReady] = createSignal(false);
 
-export const [blinkingStopPoint, setBlinkingStopPoint] = createSignal<number[]>(
-  []
-);
-
 // Props here is for storybook
 interface PointsProps {
-  map?: L.Map;
-  mapId?: number;
+  leafletMap: L.Map;
+  mapId: number;
 }
 
 export default function (props: PointsProps) {
-  const mergedProps = mergeProps(
-    {
-      mapId: getActiveMapId() as number,
-    },
-    props
-  );
-
   onMount(async () => {
-    if (getActiveMapId()) {
-      setStudentsToSchool(
-        await fetchEleveVersEtablissement(getActiveMapId() as number)
-      );
-    }
+    setStudentsToSchool(await fetchEleveVersEtablissement(props.mapId));
   });
 
   // TODO: check if necessary (similar feature already existing !)
@@ -126,14 +101,8 @@ export default function (props: PointsProps) {
   // TODO: Fix ramassages displayed over etalbissements
   return (
     <div>
-      <PointsEtablissement
-        mapId={mergedProps.mapId}
-        map={(props.map as L.Map) ?? getLeafletMap()}
-      />
-      <PointsRamassage
-        mapId={mergedProps.mapId}
-        map={(props.map as L.Map) ?? getLeafletMap()}
-      />
+      <PointsEtablissement {...props} />
+      <PointsRamassage {...props} />
     </div>
   );
 }

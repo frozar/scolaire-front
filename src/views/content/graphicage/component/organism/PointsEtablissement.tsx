@@ -2,23 +2,12 @@ import L, { LeafletMouseEvent } from "leaflet";
 import { For, createSignal, onMount } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import { NatureEnum } from "../../../../../type";
-// import { linkMap } from "../../Point";
-// import {
-//   blinkingStopPoint,
-//   setBlinkingStopPoint,
-// } from "../../PointsRamassageAndEtablissement";
 import { renderAnimation } from "../../animation";
 import { deselectAllBusLines } from "../../line/busLinesUtils";
 import { fetchSchool } from "../../point.service";
 import { PointIdentityType, PointInterface } from "../atom/Point";
 import PointEtablissement from "../molecule/PointEtablissement";
-import {
-  blinkingStopPoint,
-  linkMap,
-  setBlinking,
-  setBlinkingPoint,
-  setBlinkingStopPoint,
-} from "./Points";
+import { linkMap, setBlinking, setBlinkingPoint } from "./Points";
 import { PointRamassageDBType } from "./PointsRamassage";
 
 const [
@@ -73,7 +62,7 @@ function PointBack2Front<T extends PointEtablissementDBType>(
 }
 
 export interface PointsEtablissementProps {
-  map: L.Map;
+  leafletMap: L.Map;
   mapId: number;
   items?: PointInterface[];
 }
@@ -85,10 +74,6 @@ export const [etablissements, setEtablissements] = createSignal<
 // TODO: check if necessary (similar feature already existing !)
 export const [pointsEtablissementReady, setPointsEtablissementReady] =
   createSignal(false);
-
-export const addBlinking = (id: number) => {
-  setBlinkingStopPoint([...blinkingStopPoint(), id]);
-};
 
 export default function (props: PointsEtablissementProps) {
   onMount(async () => {
@@ -168,21 +153,21 @@ export default function (props: PointsEtablissementProps) {
   function etablissementFilter(): PointInterface[] {
     const isValidate = getLineUnderConstruction().confirmSelection;
 
-    let etablissementsToReturn = etablissements();
+    let displayedEtablissements = etablissements();
 
     if (isInAddLineMode()) {
       const etablissementsSelected =
         getLineUnderConstruction().etablissementSelected;
 
       if (isValidate && etablissementsSelected) {
-        etablissementsToReturn = etablissements().filter((value) =>
+        displayedEtablissements = etablissements().filter((value) =>
           etablissementsSelected.some(
             (etablissementInfo) => etablissementInfo.idPoint === value.idPoint
           )
         );
       }
     }
-    return etablissementsToReturn as PointInterface[];
+    return displayedEtablissements as PointInterface[];
   }
 
   return (
@@ -191,7 +176,7 @@ export default function (props: PointsEtablissementProps) {
         return (
           <PointEtablissement
             point={point}
-            map={props.map}
+            map={props.leafletMap}
             onClick={() => onClick(point)}
             onDBLClick={onDBLClick}
             onMouseOver={() => onMouseOver(point)}

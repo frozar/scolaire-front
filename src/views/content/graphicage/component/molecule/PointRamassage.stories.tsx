@@ -5,9 +5,9 @@ import { initialiseMap } from "../../../../../../testing/utils/mapWrapper";
 import { LeafletMouseEvent } from "leaflet";
 import { splitProps } from "solid-js";
 import {
-  Mapdecorators,
   createPoint,
   getDivFullId,
+  mapDecorators,
 } from "../../../../../../testing/utils/TestUtils";
 import { PointStorybook } from "../atom/Point.stories";
 import PointRamassageComponent from "./PointRamassage";
@@ -15,7 +15,7 @@ import PointRamassageComponent from "./PointRamassage";
 const meta = {
   component: PointRamassageComponent,
   tags: ["autodocs"],
-  decorators: Mapdecorators,
+  decorators: mapDecorators,
   argTypes: {
     onIsLast: () => console.log("onIsLast"),
     onClick: () => console.log("onClick"),

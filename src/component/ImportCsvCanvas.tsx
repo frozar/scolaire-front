@@ -120,7 +120,6 @@ function dropHandler(
       });
 
       setPoints([]);
-      // fetchPointsRamassageAndEtablissement();
       exitCanvas();
 
       if (callbackSuccess && typeof callbackSuccess === "function") {

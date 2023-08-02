@@ -6,16 +6,16 @@ import { initialiseMap } from "../../../../../../testing/utils/mapWrapper";
 import { LeafletMouseEvent } from "leaflet";
 import { splitProps } from "solid-js";
 import {
-  Mapdecorators,
   createPoint,
   getDivFullId,
+  mapDecorators,
 } from "../../../../../../testing/utils/TestUtils";
 import PointComponent from "./Point";
 
 const meta = {
   component: PointComponent,
   tags: ["autodocs"],
-  decorators: Mapdecorators,
+  decorators: mapDecorators,
   argTypes: {
     onIsLast: () => console.log("onIsLast"),
     onClick: () => console.log("onClick"),

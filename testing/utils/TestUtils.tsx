@@ -150,7 +150,7 @@ export const decorators = [
   },
 ];
 
-export const Mapdecorators = [
+export const mapDecorators = [
   (Story: Component, options: StoryContext) => {
     const fullId = getDivFullId(options);
 

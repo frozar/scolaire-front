@@ -45,7 +45,6 @@ function clearUserInformation(content: string, level: MessageLevelEnum) {
     content,
   });
   setPoints([]);
-  // fetchPointsRamassageAndEtablissement();
   fetchBusLines();
   disableSpinningWheel();
   closeClearConfirmationBox();
