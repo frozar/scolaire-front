@@ -1,9 +1,13 @@
+import L, { LeafletMouseEvent } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { createPoint } from "../../../../../../testing/utils/TestUtils";
 import { initialiseMap } from "../../../../../../testing/utils/mapWrapper";
 import PointRamassage from "./PointRamassage";
 
 describe("StopPoint component", () => {
+  function onDBLClick(event: LeafletMouseEvent) {
+    L.DomEvent.stopPropagation(event);
+  }
   it("StopPoint snapshot", () => {
     cy.mount(() => (
       <div id="map-container" style={{ width: "100%", height: "500px" }}>
@@ -16,6 +20,7 @@ describe("StopPoint component", () => {
             name: "name",
             quantity: 4,
           })}
+          onDBLClick={onDBLClick}
           map={initialiseMap("map-container", false)}
           minQuantity={3}
           maxQuantity={25}
@@ -38,6 +43,7 @@ describe("StopPoint component", () => {
             name: "name",
             quantity: 48,
           })}
+          onDBLClick={onDBLClick}
           map={initialiseMap("map-container", false)}
           minQuantity={1}
           maxQuantity={50}

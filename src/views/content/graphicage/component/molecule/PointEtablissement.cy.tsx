@@ -1,3 +1,4 @@
+import L, { LeafletMouseEvent } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { createPoint } from "../../../../../../testing/utils/TestUtils";
 import { initialiseMap } from "../../../../../../testing/utils/mapWrapper";
@@ -17,6 +18,9 @@ describe("Checkbox component", () => {
             quantity: 5,
           })}
           map={initialiseMap("map-container", false)}
+          onDBLClick={(event: LeafletMouseEvent) => {
+            L.DomEvent.stopPropagation(event);
+          }}
         />
       </div>
     ));

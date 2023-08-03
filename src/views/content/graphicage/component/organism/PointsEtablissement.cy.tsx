@@ -1,3 +1,4 @@
+import L, { LeafletMouseEvent } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { initialiseMap } from "../../../../../../testing/utils/mapWrapper";
 import PointEtablissement from "./PointsEtablissement";
@@ -15,6 +16,9 @@ describe("PointsEtablissement component", () => {
         <PointEtablissement
           mapId={2}
           leafletMap={initialiseMap("map-container", false)}
+          onDBLClick={(event: LeafletMouseEvent) => {
+            L.DomEvent.stopPropagation(event);
+          }}
         />
       </div>
     )).as("component");
