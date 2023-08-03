@@ -35,7 +35,6 @@ const [, { getActiveMapId }] = useStateGui();
 export default function () {
   const getSelectedPoint = (): PointInterface | null => {
     const points = [...ramassages(), ...etablissements()];
-    // console.log("points ", points);
 
     const filteredArray = points.filter((point) => point.selected());
 
@@ -109,8 +108,6 @@ export default function () {
               }
             );
             setAssociatedPoints(datasWk);
-            //TODO delete this console log and fix ESLint
-            console.log("associatedPoints ", associatedPoints());
           })
           .catch((err) => {
             console.log(err);
@@ -118,7 +115,8 @@ export default function () {
       });
     }
   };
-
+  //TODO Fix ESLint without using exception
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [associatedPoints, setAssociatedPoints] = createSignal<
     PointToDisplayType[]
   >([]);
@@ -126,12 +124,6 @@ export default function () {
   createEffect(() => {
     fetchAssociatedPoints(selectedIdentity());
   });
-
-  // const ptToDisplay = () => {
-  //   const wkAssociatedPoints = associatedPoints();
-
-  //   return wkAssociatedPoints ? wkAssociatedPoints : [];
-  // };
 
   const firstColumnTitle = () => {
     const selectedPoint = getSelectedPoint();
