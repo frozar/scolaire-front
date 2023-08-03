@@ -25,7 +25,7 @@ export class GraphicageService {
     }
 
     if (!(await manageStatusCode(response))) return;
-    console.log (response);
+    console.log(response);
     // return await response.json();
   }
 }
