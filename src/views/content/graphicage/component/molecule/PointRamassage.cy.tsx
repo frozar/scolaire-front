@@ -1,12 +1,11 @@
-import L, { LeafletMouseEvent } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { createPoint } from "../../../../../../testing/utils/TestUtils";
 import { initialiseMap } from "../../../../../../testing/utils/mapWrapper";
 import PointRamassage from "./PointRamassage";
 
 describe("StopPoint component", () => {
-  function onDBLClick(event: LeafletMouseEvent) {
-    L.DomEvent.stopPropagation(event);
+  function onDBLClick() {
+    console.log("onDBLClick");
   }
   it("StopPoint snapshot", () => {
     cy.mount(() => (

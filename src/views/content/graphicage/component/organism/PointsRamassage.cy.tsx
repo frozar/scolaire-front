@@ -1,4 +1,3 @@
-import L, { LeafletMouseEvent } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { initialiseMap } from "../../../../../../testing/utils/mapWrapper";
 import PointsRamassage from "./PointsRamassage";
@@ -16,9 +15,7 @@ describe("PointsRamassage component", () => {
         <PointsRamassage
           mapId={2}
           leafletMap={initialiseMap("map-container", false)}
-          onDBLClick={(event: LeafletMouseEvent) => {
-            L.DomEvent.stopPropagation(event);
-          }}
+          onDBLClick={() => console.log("onDBLClick")}
         />
       </div>
     ));
