@@ -104,8 +104,8 @@ export default function (props: PointsProps) {
   // TODO: Fix ramassages displayed over etalbissements
   return (
     <div>
-      <PointsEtablissement {...props} />
-      <PointsRamassage {...props} />
+      <PointsEtablissement leafletMap={props.leafletMap} mapId={props.mapId} />
+      <PointsRamassage leafletMap={props.leafletMap} mapId={props.mapId} />
     </div>
   );
 }

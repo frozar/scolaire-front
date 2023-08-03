@@ -96,7 +96,8 @@ export default function (props: PointRamassageProps) {
 
   return (
     <Point
-      {...props}
+      point={props.point}
+      map={props.map}
       isBlinking={blinkingPoints().includes(props.point.idPoint)}
       borderColor="red"
       fillColor="white"

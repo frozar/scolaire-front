@@ -91,7 +91,8 @@ const onMouseOut = () => {
 export default function (props: PointEtablissementProps) {
   return (
     <Point
-      {...props}
+      point={props.point}
+      map={props.map}
       isBlinking={blinkingPoints().includes(props.point.idPoint)}
       borderColor="green"
       fillColor="white"
