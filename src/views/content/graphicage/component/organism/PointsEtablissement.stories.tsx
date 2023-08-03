@@ -1,6 +1,7 @@
 import "leaflet/dist/leaflet.css";
 import { Meta, StoryObj } from "storybook-solidjs";
 
+import L, { LeafletMouseEvent } from "leaflet";
 import {
   createPoint,
   getDivFullId,
@@ -26,6 +27,10 @@ export const PointEtablissement: Story = {
       <PointsEtablissementComponent
         leafletMap={initialiseMap(fullId)}
         mapId={2}
+        onDBLClick={(event: LeafletMouseEvent) => {
+          L.DomEvent.stopPropagation(event);
+          console.log("onDBLClick, event:", event);
+        }}
         items={[
           createPoint({
             id: 1,
