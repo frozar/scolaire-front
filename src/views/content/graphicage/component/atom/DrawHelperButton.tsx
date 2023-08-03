@@ -1,6 +1,5 @@
 import { FaSolidWandMagicSparkles } from "solid-icons/fa";
 import { useStateAction } from "../../../../../StateAction";
-import { PointRamassageType } from "../../../../../type";
 import { PointInformation } from "./Point";
 
 import "./DrawHelperButton.css";
@@ -14,17 +13,15 @@ const [, { getLineUnderConstruction }] = useStateAction();
 
 export function DrawHelperButton(props: DrawHelperButtonProps) {
   function onclick() {
-    console.log("Etablissement selectionnés :");
-    for (const school of props.schools as PointRamassageType[]) {
-      console.log(school);
-    }
+    const data = {
+      schools: JSON.parse(JSON.stringify(props.schools)),
+      selectedStops: JSON.parse(
+        JSON.stringify(getLineUnderConstruction().stops)
+      ),
+      stops: JSON.parse(JSON.stringify(getLineUnderConstruction().stops)),
+    };
 
-    // console.log(getLineUnderConstruction().stops);
-
-    console.log("ramassages :");
-    for (const stopName of getLineUnderConstruction().stops) {
-      console.log(stopName);
-    }
+    console.log(data);
   }
 
   return (
