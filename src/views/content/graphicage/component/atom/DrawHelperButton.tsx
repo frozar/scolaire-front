@@ -1,16 +1,8 @@
 import { FaSolidWandMagicSparkles } from "solid-icons/fa";
 import { useStateAction } from "../../../../../StateAction";
-import { PointIdentityType, PointInformation } from "./Point";
+import { PointRamassageType } from "../../../../../type";
+import { PointInformation } from "./Point";
 
-import {
-  DrawHelperDataType,
-  GraphicageService,
-} from "../../../../../_services/graphicage.service";
-import { ramassageFilter } from "../organism/PointsRamassage";
-
-const [, { setPointsToLineUnderConstruction }] = useStateAction();
-
-import { NatureEnum } from "../../../../../type";
 import "./DrawHelperButton.css";
 
 interface DrawHelperButtonProps {
@@ -21,32 +13,18 @@ interface DrawHelperButtonProps {
 const [, { getLineUnderConstruction }] = useStateAction();
 
 export function DrawHelperButton(props: DrawHelperButtonProps) {
-  async function onclick() {
-    const schools: PointInformation[] =
-      props.schools != undefined
-        ? JSON.parse(JSON.stringify(props.schools))
-        : [];
+  function onclick() {
+    console.log("Etablissement selectionnés :");
+    for (const school of props.schools as PointRamassageType[]) {
+      console.log(school);
+    }
 
-    const selectedStops = JSON.parse(
-      JSON.stringify(getLineUnderConstruction().stops)
-    );
+    // console.log(getLineUnderConstruction().stops);
 
-    const stops = ramassageFilter();
-
-    const data: DrawHelperDataType = {
-      schools: schools,
-      selected: selectedStops,
-      stops: stops,
-    };
-
-    console.log("Query", data);
-
-    const response = await GraphicageService.drawHelper(data);
-    console.log("response", response);
-
-    const formattedResponse: PointIdentityType[] =
-      formatTimeLinePoints(response);
-    setPointsToLineUnderConstruction(formattedResponse);
+    console.log("ramassages :");
+    for (const stopName of getLineUnderConstruction().stops) {
+      console.log(stopName);
+    }
   }
 
   return (
@@ -58,6 +36,7 @@ export function DrawHelperButton(props: DrawHelperButtonProps) {
     </div>
   );
 }
+<<<<<<< HEAD
 
 function formatTimeLinePoints(
   data: { id: number; idPoint: number; nature: string }[]
@@ -71,3 +50,5 @@ function formatTimeLinePoints(
     };
   });
 }
+=======
+>>>>>>> d10adeda (Graphicage Draw Helper : refacto the draw helper button)
