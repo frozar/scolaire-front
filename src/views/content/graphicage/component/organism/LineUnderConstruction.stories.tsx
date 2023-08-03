@@ -8,7 +8,13 @@ import { initialiseMap } from "../../../../../../testing/utils/mapWrapper";
 import { useStateAction } from "../../../../../StateAction";
 import LineUnderConstructionComponent from "./LineUnderConstruction";
 
-const [, { getLineUnderConstruction }] = useStateAction();
+const [
+  ,
+  { getLineUnderConstruction, setModeAddLine, confirmEtablissementSelection },
+] = useStateAction();
+
+setModeAddLine();
+confirmEtablissementSelection();
 
 const meta = {
   component: LineUnderConstructionComponent,

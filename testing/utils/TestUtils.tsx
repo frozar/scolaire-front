@@ -1,8 +1,6 @@
-import { LeafletMouseEvent } from "leaflet";
 import { Component, createSignal } from "solid-js";
 import { StoryContext } from "storybook-solidjs";
-import { useStateAction } from "../../src/StateAction";
-import { NatureEnum, PointIdentityType } from "../../src/type";
+import { PointIdentityType } from "../../src/type";
 import {
   PointInformation,
   PointInterface,
@@ -10,18 +8,6 @@ import {
 import PointEtablissement from "../../src/views/content/graphicage/component/molecule/PointEtablissement";
 import PointRamassage from "../../src/views/content/graphicage/component/molecule/PointRamassage";
 import { initialiseMap } from "./mapWrapper";
-const [, { addPointToLineUnderConstruction }] = useStateAction();
-
-//TODO replace this with the real handler
-function onClickHandler(point: PointIdentityType) {
-  const pointIdentity: PointIdentityType = {
-    id: point.id,
-    idPoint: point.idPoint,
-    nature: point.nature,
-  };
-
-  addPointToLineUnderConstruction(pointIdentity);
-}
 
 export const createPoint = (pointInformation: PointInformation) => {
   const [associatedPoint, setAssociatedPoint] = createSignal<
@@ -60,22 +46,7 @@ export function createPointEtablissement(pointmap: PointInformationWithMapID) {
   });
 
   return (
-    <PointEtablissement
-      point={point}
-      map={initialiseMap(pointmap.fullId)}
-      onClick={() => {
-        onClickHandler({
-          id: 50,
-          idPoint: pointmap.idPoint,
-          nature: NatureEnum.etablissement,
-        });
-      }}
-      onDBLClick={(event: LeafletMouseEvent) =>
-        console.log("onDBLClick, event:", event)
-      }
-      onMouseOver={() => console.log("onMouseOver")}
-      onMouseOut={() => console.log("onMouseOut")}
-    />
+    <PointEtablissement point={point} map={initialiseMap(pointmap.fullId)} />
   );
 }
 
@@ -94,18 +65,6 @@ export function createPointRamassage(pointmap: PointInformationWithMapID) {
       minQuantity={1}
       maxQuantity={25}
       map={initialiseMap(pointmap.fullId)}
-      onClick={() =>
-        onClickHandler({
-          id: 51,
-          idPoint: pointmap.idPoint,
-          nature: NatureEnum.ramassage,
-        })
-      }
-      onDBLClick={(event: LeafletMouseEvent) =>
-        console.log("onDBLClick, event:", event)
-      }
-      onMouseOver={() => console.log("onMouseOver")}
-      onMouseOut={() => console.log("onMouseOut")}
     />
   );
 }

@@ -6,7 +6,14 @@ import {
 import { initialiseMap } from "../../../../../../testing/utils/mapWrapper";
 import { useStateAction } from "../../../../../StateAction";
 import LineUnderConstruction from "./LineUnderConstruction";
-const [, { getLineUnderConstruction }] = useStateAction();
+
+const [
+  ,
+  { getLineUnderConstruction, confirmEtablissementSelection, setModeAddLine },
+] = useStateAction();
+
+setModeAddLine();
+confirmEtablissementSelection();
 
 describe("Line component", () => {
   it("Default Line", () => {
