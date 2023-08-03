@@ -2,6 +2,7 @@ import { FaSolidWandMagicSparkles } from "solid-icons/fa";
 import { useStateAction } from "../../../../../StateAction";
 import { PointInformation } from "./Point";
 
+import { ramassageFilter } from "../organism/PointsRamassage";
 import "./DrawHelperButton.css";
 
 interface DrawHelperButtonProps {
@@ -13,12 +14,19 @@ const [, { getLineUnderConstruction }] = useStateAction();
 
 export function DrawHelperButton(props: DrawHelperButtonProps) {
   function onclick() {
+    const schools: PointInformation[] =
+      props.schools != undefined ? props.schools.map((school) => school) : [];
+
+    const selectedStops = JSON.parse(
+      JSON.stringify(getLineUnderConstruction().stops)
+    );
+
+    const stops = ramassageFilter();
+
     const data = {
-      schools: JSON.parse(JSON.stringify(props.schools)),
-      selectedStops: JSON.parse(
-        JSON.stringify(getLineUnderConstruction().stops)
-      ),
-      stops: JSON.parse(JSON.stringify(getLineUnderConstruction().stops)),
+      schools: schools,
+      selectedStops: selectedStops,
+      stops: stops,
     };
 
     console.log(data);

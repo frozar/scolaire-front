@@ -107,25 +107,6 @@ export default function (props: RamassagePointsProps) {
     return Number.isFinite(maxCandidat) ? maxCandidat : 0;
   };
 
-  function ramassageFilter(): PointInterface[] {
-    const etablissement = getLineUnderConstruction().etablissementSelected;
-    const isValidate = getLineUnderConstruction().confirmSelection;
-
-    let ramassagesToReturn = ramassages();
-
-    if (isInAddLineMode() && etablissement) {
-      ramassagesToReturn = ramassages().filter((value) =>
-        value
-          .associatedPoints()
-          .some((elt) =>
-            etablissement.find((e) => e.idPoint === elt.idPoint && isValidate)
-          )
-      );
-    }
-
-    return ramassagesToReturn;
-  }
-
   return (
     <For each={ramassageFilter()}>
       {(point) => {
@@ -141,4 +122,24 @@ export default function (props: RamassagePointsProps) {
       }}
     </For>
   );
+}
+
+// TODO to improve
+export function ramassageFilter(): PointInterface[] {
+  const etablissement = getLineUnderConstruction().etablissementSelected;
+  const isValidate = getLineUnderConstruction().confirmSelection;
+
+  let ramassagesToReturn = ramassages();
+
+  if (isInAddLineMode() && etablissement) {
+    ramassagesToReturn = ramassages().filter((value) =>
+      value
+        .associatedPoints()
+        .some((elt) =>
+          etablissement.find((e) => e.idPoint === elt.idPoint && isValidate)
+        )
+    );
+  }
+
+  return ramassagesToReturn as PointInterface[];
 }
