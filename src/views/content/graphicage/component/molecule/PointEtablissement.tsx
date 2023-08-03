@@ -26,11 +26,6 @@ const [
 export interface PointEtablissementProps {
   point: PointInterface;
   map: L.Map;
-
-  // onClick: () => void;
-  // onDBLClick: (event: LeafletMouseEvent) => void;
-  // onMouseOver: () => void;
-  // onMouseOut: () => void;
 }
 const selectPointById = (id: number) =>
   etablissements().map((point) => point.setSelected(id == point.idPoint));

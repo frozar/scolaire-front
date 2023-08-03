@@ -28,11 +28,6 @@ export interface PointRamassageProps {
 
   minQuantity: number;
   maxQuantity: number;
-
-  // onClick: () => void;
-  // onDBLClick: (event: LeafletMouseEvent) => void;
-  // onMouseOver: () => void;
-  // onMouseOut: () => void;
 }
 const minRadius = 5;
 const maxRadius = 10;

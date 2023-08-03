@@ -88,50 +88,6 @@ export default function (props: RamassagePointsProps) {
     setPointsRamassageReady(true);
   });
 
-  // const selectPointById = (id: number) =>
-  //   ramassages().map((point) => point.setSelected(id == point.idPoint));
-
-  // function onClick(point: PointInterface) {
-  //   if (!isInAddLineMode()) {
-  //     deselectAllBusLines();
-  //     deselectAllPoints();
-  //     selectPointById(point.idPoint);
-  //     return;
-  //   }
-
-  //   // TODO: when add line with an etablissement point the line destroy after next point click
-  //   // Wait Richard/Hugo finish the line underconstruction
-  //   addPointToLineUnderConstruction({
-  //     id: point.id,
-  //     idPoint: point.idPoint,
-  //     nature: NatureEnum.ramassage,
-  //   });
-
-  //   if (!(1 < getLineUnderConstruction().stops.length)) {
-  //     return;
-  //   }
-
-  //   // Highlight point ramassage
-  //   for (const associatedPoint of point.associatedPoints()) {
-  //     let element;
-  //     if ((element = linkMap.get(associatedPoint.idPoint)?.getElement())) {
-  //       renderAnimation(element);
-  //     }
-  //   }
-  // }
-
-  // function onDBLClick(event: LeafletMouseEvent) {
-  //   L.DomEvent.stopPropagation(event);
-  // }
-
-  // const onMouseOver = (point: PointInterface) => {
-  //   setBlinking(point.associatedPoints);
-  // };
-
-  // const onMouseOut = () => {
-  //   setBlinkingPoint([]);
-  // };
-
   const quantities = () => {
     return ramassages()
       .filter((value) => Number.isFinite(value.quantity))
@@ -178,10 +134,6 @@ export default function (props: RamassagePointsProps) {
             map={props.leafletMap}
             minQuantity={minQuantity()}
             maxQuantity={maxQuantity()}
-            // onClick={() => onClick(point)}
-            // onDBLClick={onDBLClick}
-            // onMouseOver={() => onMouseOver(point)}
-            // onMouseOut={() => onMouseOut()}
           />
         );
       }}

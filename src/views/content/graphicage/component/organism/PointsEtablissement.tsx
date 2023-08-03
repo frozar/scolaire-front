@@ -78,67 +78,6 @@ export default function (props: PointsEtablissementProps) {
     setPointsEtablissementReady(true);
   });
 
-  // const selectPointById = (id: number) =>
-  //   etablissements().map((point) => point.setSelected(id == point.idPoint));
-
-  // const onClick = (point: PointInterface) => {
-  //   if (!isInAddLineMode()) {
-  //     deselectAllBusLines();
-  //     deselectAllPoints();
-  //     selectPointById(point.idPoint);
-  //     return;
-  //   }
-
-  //   const etablissementSelected =
-  //     getLineUnderConstruction().etablissementSelected;
-
-  //   if (!getLineUnderConstruction().confirmSelection) {
-  //     if (etablissementSelected?.find((p) => p.idPoint === point.idPoint)) {
-  //       return;
-  //     }
-  //     setLineUnderConstruction({
-  //       ...getLineUnderConstruction(),
-  //       etablissementSelected: !etablissementSelected
-  //         ? [point]
-  //         : etablissementSelected.concat(point),
-  //     });
-
-  //     return;
-  //   }
-
-  //   // TODO: check how manage line underconstuction with ramassages/etablissement signals
-  //   addPointToLineUnderConstruction({
-  //     id: point.id,
-  //     idPoint: point.idPoint,
-  //     nature: NatureEnum.etablissement,
-  //   });
-
-  //   if (!(1 < getLineUnderConstruction().stops.length)) {
-  //     return;
-  //   }
-
-  //   // TODO: check utility
-  //   // Highlight point ramassage
-  //   for (const associatedPoint of point.associatedPoints()) {
-  //     let element;
-  //     if ((element = linkMap.get(associatedPoint.idPoint)?.getElement())) {
-  //       renderAnimation(element);
-  //     }
-  //   }
-  // };
-
-  // const onDBLClick = (event: LeafletMouseEvent) => {
-  //   L.DomEvent.stopPropagation(event);
-  // };
-
-  // const onMouseOver = (point: PointInterface) => {
-  //   setBlinking(point.associatedPoints);
-  // };
-
-  // const onMouseOut = () => {
-  //   setBlinkingPoint([]);
-  // };
-
   function etablissementFilter(): PointInterface[] {
     const isValidate = getLineUnderConstruction().confirmSelection;
 
@@ -162,16 +101,7 @@ export default function (props: PointsEtablissementProps) {
   return (
     <For each={etablissementFilter()}>
       {(point) => {
-        return (
-          <PointEtablissement
-            point={point}
-            map={props.leafletMap}
-            // onClick={() => onClick(point)}
-            // onDBLClick={onDBLClick}
-            // onMouseOver={() => onMouseOver(point)}
-            // onMouseOut={() => onMouseOut()}
-          />
-        );
+        return <PointEtablissement point={point} map={props.leafletMap} />;
       }}
     </For>
   );

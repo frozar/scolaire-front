@@ -3,10 +3,6 @@ import { createPoint } from "../../../../../../testing/utils/TestUtils";
 import { initialiseMap } from "../../../../../../testing/utils/mapWrapper";
 import PointRamassage from "./PointRamassage";
 
-// function voidFunction() {
-//   return;
-// }
-
 describe("StopPoint component", () => {
   it("StopPoint snapshot", () => {
     cy.mount(() => (
@@ -23,10 +19,6 @@ describe("StopPoint component", () => {
           map={initialiseMap("map-container", false)}
           minQuantity={3}
           maxQuantity={25}
-          // onClick={voidFunction}
-          // onDBLClick={voidFunction}
-          // onMouseOut={voidFunction}
-          // onMouseOver={voidFunction}
         />
       </div>
     ));
@@ -49,10 +41,6 @@ describe("StopPoint component", () => {
           map={initialiseMap("map-container", false)}
           minQuantity={1}
           maxQuantity={50}
-          // onClick={voidFunction}
-          // onDBLClick={voidFunction}
-          // onMouseOut={voidFunction}
-          // onMouseOver={voidFunction}
         />
       </div>
     ));
