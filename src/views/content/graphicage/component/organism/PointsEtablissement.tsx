@@ -1,18 +1,12 @@
-import L, { LeafletMouseEvent } from "leaflet";
+import L from "leaflet";
 import { For, createSignal, onMount } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
-import { NatureEnum } from "../../../../../type";
-import { deselectAllBusLines } from "../../line/busLinesUtils";
 import { fetchSchool } from "../../point.service";
 import { PointIdentityType, PointInterface } from "../atom/Point";
 import PointEtablissement from "../molecule/PointEtablissement";
-import { deselectAllPoints, setBlinking, setBlinkingPoint } from "./Points";
 import { PointRamassageDBType } from "./PointsRamassage";
 
-const [
-  ,
-  { getLineUnderConstruction, isInAddLineMode, setLineUnderConstruction },
-] = useStateAction();
+const [, { getLineUnderConstruction, isInAddLineMode }] = useStateAction();
 
 type PointEtablissementDBType = PointRamassageDBType;
 
@@ -84,61 +78,66 @@ export default function (props: PointsEtablissementProps) {
     setPointsEtablissementReady(true);
   });
 
-  const selectPointById = (id: number) =>
-    etablissements().map((point) => point.setSelected(id == point.idPoint));
+  // const selectPointById = (id: number) =>
+  //   etablissements().map((point) => point.setSelected(id == point.idPoint));
 
-  function onClick(point: PointInterface) {
-    // Select the current element to display information
+  // const onClick = (point: PointInterface) => {
+  //   if (!isInAddLineMode()) {
+  //     deselectAllBusLines();
+  //     deselectAllPoints();
+  //     selectPointById(point.idPoint);
+  //     return;
+  //   }
 
-    if (!isInAddLineMode()) {
-      deselectAllBusLines();
-      deselectAllPoints();
-      selectPointById(point.idPoint);
-      return;
-    }
+  //   const etablissementSelected =
+  //     getLineUnderConstruction().etablissementSelected;
 
-    //TODO : move to PointEtablissement in click handler when used
+  //   if (!getLineUnderConstruction().confirmSelection) {
+  //     if (etablissementSelected?.find((p) => p.idPoint === point.idPoint)) {
+  //       return;
+  //     }
+  //     setLineUnderConstruction({
+  //       ...getLineUnderConstruction(),
+  //       etablissementSelected: !etablissementSelected
+  //         ? [point]
+  //         : etablissementSelected.concat(point),
+  //     });
 
-    const etablissementSelected =
-      getLineUnderConstruction().etablissementSelected;
+  //     return;
+  //   }
 
-    const currentStops = [...getLineUnderConstruction().stops];
+  //   // TODO: check how manage line underconstuction with ramassages/etablissement signals
+  //   addPointToLineUnderConstruction({
+  //     id: point.id,
+  //     idPoint: point.idPoint,
+  //     nature: NatureEnum.etablissement,
+  //   });
 
-    if (getLineUnderConstruction().confirmSelection) {
-      const pointIdentity = {
-        id: point.id,
-        idPoint: point.idPoint,
-        nature: NatureEnum.etablissement,
-      };
+  //   if (!(1 < getLineUnderConstruction().stops.length)) {
+  //     return;
+  //   }
 
-      const index = getLineUnderConstruction().nextIndex;
+  //   // TODO: check utility
+  //   // Highlight point ramassage
+  //   for (const associatedPoint of point.associatedPoints()) {
+  //     let element;
+  //     if ((element = linkMap.get(associatedPoint.idPoint)?.getElement())) {
+  //       renderAnimation(element);
+  //     }
+  //   }
+  // };
 
-      currentStops.splice(index, 0, pointIdentity);
-    }
+  // const onDBLClick = (event: LeafletMouseEvent) => {
+  //   L.DomEvent.stopPropagation(event);
+  // };
 
-    setLineUnderConstruction({
-      ...getLineUnderConstruction(),
-      etablissementSelected: !etablissementSelected
-        ? [point]
-        : etablissementSelected.concat(point),
-      stops: currentStops,
-      nextIndex: currentStops.length,
-    });
+  // const onMouseOver = (point: PointInterface) => {
+  //   setBlinking(point.associatedPoints);
+  // };
 
-    return;
-  }
-
-  const onDBLClick = (event: LeafletMouseEvent) => {
-    L.DomEvent.stopPropagation(event);
-  };
-
-  const onMouseOver = (point: PointInterface) => {
-    setBlinking(point.associatedPoints);
-  };
-
-  const onMouseOut = () => {
-    setBlinkingPoint([]);
-  };
+  // const onMouseOut = () => {
+  //   setBlinkingPoint([]);
+  // };
 
   function etablissementFilter(): PointInterface[] {
     const isValidate = getLineUnderConstruction().confirmSelection;
@@ -167,10 +166,10 @@ export default function (props: PointsEtablissementProps) {
           <PointEtablissement
             point={point}
             map={props.leafletMap}
-            onClick={() => onClick(point)}
-            onDBLClick={onDBLClick}
-            onMouseOver={() => onMouseOver(point)}
-            onMouseOut={() => onMouseOut()}
+            // onClick={() => onClick(point)}
+            // onDBLClick={onDBLClick}
+            // onMouseOver={() => onMouseOver(point)}
+            // onMouseOut={() => onMouseOut()}
           />
         );
       }}
