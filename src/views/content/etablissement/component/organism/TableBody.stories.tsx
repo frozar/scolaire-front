@@ -1,5 +1,5 @@
-import { Meta, StoryObj } from "storybook-solidjs";
 import { For, createSignal } from "solid-js";
+import { Meta, StoryObj } from "storybook-solidjs";
 
 import EtablissementItem from "../../EtablissementItem";
 import TableBodyComponent from "./TableBody";
@@ -16,24 +16,39 @@ const [items, setItems] = createSignal([
   {
     id: 1,
     name: "Ecole DE BEAUMONT",
-    quantity: 149,
-    nbLine: 0,
     lon: 1,
     lat: 1,
     selected: false,
+    associated: [
+      {
+        id: 2,
+        name: "Stop 2",
+        quantity: 3,
+      },
+    ],
   },
   {
     id: 2,
     name: "Ecole DE BEAUMONT",
-    quantity: 14,
-    nbLine: 0,
     lon: 1,
     lat: 1,
     selected: false,
+    associated: [
+      {
+        id: 1,
+        name: "Stop 1",
+        quantity: 4,
+      },
+      {
+        id: 2,
+        name: "Stop 2",
+        quantity: 9,
+      },
+    ],
   },
 ]);
 
-export const Body: Story = {
+export const TableBodyStory: Story = {
   args: {
     children: () => (
       <For each={items()}>
