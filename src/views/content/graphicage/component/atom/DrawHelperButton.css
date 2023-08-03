@@ -1,0 +1,19 @@
+.graphicage-draw-helper-button{
+  @apply mb-2 flex mr-3 w-full justify-end items-center p-2;
+}
+
+.graphicage-draw-helper-button button{
+  @apply ml-5;
+}
+
+.graphicage-draw-helper-button button:hover > svg {
+  @apply fill-green-600;
+}
+
+.graphicage-draw-helper-button button > svg {
+  @apply scale-125;
+}
+
+.graphicage-draw-helper-button button[disabled] > svg {
+  @apply fill-gray-500;
+}
