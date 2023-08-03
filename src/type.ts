@@ -22,7 +22,7 @@ export enum NatureEnum {
 export type PointIdentityType = {
   id: number;
   idPoint: number;
-  // nature: NatureEnum;
+  nature: NatureEnum;
 };
 
 export type PointResourceType = PointIdentityType & {

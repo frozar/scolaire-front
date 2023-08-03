@@ -117,6 +117,7 @@ export default function (props: RamassagePointsProps) {
       const pointIdentity = {
         id: point.id,
         idPoint: point.idPoint,
+        nature: NatureEnum.ramassage,
       };
 
       const index = getLineUnderConstruction().nextIndex;
@@ -182,7 +183,7 @@ export default function (props: RamassagePointsProps) {
       );
     }
 
-    return ramassagesToReturn as PointInterface[];
+    return ramassagesToReturn;
   }
 
   return (

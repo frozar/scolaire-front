@@ -1,12 +1,13 @@
 import { For, Show } from "solid-js";
 import { useStateAction } from "../../../../StateAction";
-import { AbstractLineType, PointResourceType } from "../../../../type";
+import { AbstractLineType } from "../../../../type";
+import { PointInterface } from "../component/atom/Point";
 import { TimelineRemovePointButton } from "../component/atom/TimelineRemovePointButton";
 import { mapIdentityToResourceType } from "../line/busLinesUtils";
 const [, { isInAddLineMode }] = useStateAction();
 
 export type TimelineItemType = {
-  pointsResource: PointResourceType;
+  pointsResource: PointInterface;
   indice: number;
   line: AbstractLineType | undefined;
 };
@@ -36,20 +37,20 @@ function TimelineItem(props: TimelineItemType) {
   );
 }
 
-export default function (props: { line: AbstractLineType | undefined }) {
+export default function (props: { line: () => AbstractLineType }) {
   return (
     <div class="timeline">
       <div
         class="v-timeline v-timeline--align-start v-timeline--justify-auto v-timeline--side-end v-timeline--vertical"
         style={{ "--v-timeline-line-thickness": "2px" }}
       >
-        <For each={mapIdentityToResourceType(props.line?.stops)}>
+        <For each={mapIdentityToResourceType(props.line()?.stops)}>
           {/* TODO refactor de replace mapIdentityToResourceType */}
           {(stop, i) => (
             <TimelineItem
               pointsResource={stop}
               indice={i()}
-              line={props.line}
+              line={props.line()}
             />
           )}
         </For>

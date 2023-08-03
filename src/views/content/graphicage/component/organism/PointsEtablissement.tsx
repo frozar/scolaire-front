@@ -1,6 +1,7 @@
 import L, { LeafletMouseEvent } from "leaflet";
 import { For, createSignal, onMount } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
+import { NatureEnum } from "../../../../../type";
 import { deselectAllBusLines } from "../../line/busLinesUtils";
 import { fetchSchool } from "../../point.service";
 import { PointIdentityType, PointInterface } from "../atom/Point";
@@ -107,6 +108,7 @@ export default function (props: PointsEtablissementProps) {
       const pointIdentity = {
         id: point.id,
         idPoint: point.idPoint,
+        nature: NatureEnum.etablissement,
       };
 
       const index = getLineUnderConstruction().nextIndex;

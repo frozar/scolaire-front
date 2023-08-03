@@ -1,12 +1,14 @@
 import L, { LeafletMouseEvent } from "leaflet";
 import { Accessor, Setter, createEffect, onCleanup, onMount } from "solid-js";
 
+import { NatureEnum } from "../../../../../type";
 import { linkMap } from "../organism/Points";
 import "./Point.css";
 
 export type PointIdentityType = {
   id: number;
   idPoint: number;
+  nature: NatureEnum;
 };
 
 export interface PointInformation extends PointIdentityType {

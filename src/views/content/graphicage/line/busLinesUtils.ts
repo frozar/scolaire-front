@@ -4,19 +4,13 @@ import { LineString } from "geojson";
 import { createEffect, createSignal } from "solid-js";
 import { useStateAction } from "../../../../StateAction";
 import { useStateGui } from "../../../../StateGui";
-import {
-  getLeafletMap,
-  points,
-  setRemoveConfirmation,
-} from "../../../../signaux";
-import {
-  LineType,
-  NatureEnum,
-  PointIdentityType,
-  PointResourceType,
-} from "../../../../type";
+import { getLeafletMap, setRemoveConfirmation } from "../../../../signaux";
+import { LineType, NatureEnum, PointIdentityType } from "../../../../type";
 import { authenticateWrap } from "../../../layout/authentication";
+import { PointInterface } from "../component/atom/Point";
 import { deselectAllPoints, linkMap } from "../component/organism/Points";
+import { etablissements } from "../component/organism/PointsEtablissement";
+import { ramassages } from "../component/organism/PointsRamassage";
 import {
   busLines,
   linkBusLinePolyline,
@@ -413,7 +407,7 @@ export function fetchBusLines() {
           id_bus_line: number;
           color: string | null;
           stops: {
-            id: number;
+            id_resource: number;
             id_point: number;
             nature: string;
           }[];
@@ -424,7 +418,7 @@ export function fetchBusLines() {
         const stopsWithNatureEnum = resLine.stops.map(
           (stop) =>
             ({
-              id: stop.id,
+              id: stop.id_resource,
               idPoint: stop.id_point,
               nature:
                 stop["nature"] === "ramassage"
@@ -581,15 +575,16 @@ export function getStopNames(busLine: LineType | undefined) {
 
 export function mapIdentityToResourceType(
   pointsIdentity: PointIdentityType[] | undefined
-): PointResourceType[] {
+): PointInterface[] {
   if (!pointsIdentity) {
     return [];
   }
 
   const stopIds = pointsIdentity.map((stop) => stop.idPoint);
+  const points = [...ramassages(), ...etablissements()];
 
   return stopIds.map(
-    (stopId) => points().filter((point) => point.idPoint === stopId)[0]
+    (stopId) => points.filter((point) => point.idPoint === stopId)[0]
   );
 }
 

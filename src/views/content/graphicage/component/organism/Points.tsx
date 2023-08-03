@@ -54,6 +54,7 @@ const setupAssociations = (points: PointInterface[], nature: NatureEnum) => {
         return {
           id: associatedId,
           idPoint: id_point,
+          nature: associatedNature,
         };
       })
     );
