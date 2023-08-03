@@ -17,7 +17,6 @@ const meta = {
   tags: ["autodocs"],
   decorators: mapDecorators,
   argTypes: {
-    onIsLast: () => console.log("onIsLast"),
     onClick: () => console.log("onClick"),
     onDBLClick: (event: LeafletMouseEvent) =>
       console.log("onDBLClick, event:", event),
@@ -66,7 +65,6 @@ export const PointStories: Story = {
         {...others}
         borderColor={local.borderColor as string}
         fillColor={local.fillColor as string}
-        isLast={false}
       />
     );
   },
@@ -100,11 +98,9 @@ export const PointStories2: Story = {
         borderColor={local.borderColor as string}
         fillColor={local.fillColor as string}
         onClick={() => console.log("onClick")}
-        onIsLast={() => console.log("onIsLast")}
         onDBLClick={() => console.log("onDBLClick")}
         onMouseOut={() => console.log("onMouseOut")}
         onMouseOver={() => console.log("onMouseOvre")}
-        isLast={false}
       />
     );
   },

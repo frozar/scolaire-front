@@ -16,7 +16,6 @@ const meta = {
   tags: ["autodocs"],
   decorators: mapDecorators,
   argTypes: {
-    onIsLast: () => console.log("onIsLast"),
     onClick: () => console.log("onClick"),
     onDBLClick: (event: LeafletMouseEvent) =>
       console.log("onDBLClick, event:", event),
@@ -44,7 +43,6 @@ export const PointEtablissement: Story = {
         })}
         map={initialiseMap(fullId)}
         {...props}
-        isLast={false}
       />
     );
   },

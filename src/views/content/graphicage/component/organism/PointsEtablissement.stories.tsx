@@ -24,7 +24,7 @@ export const PointEtablissement: Story = {
 
     return (
       <PointsEtablissementComponent
-        map={initialiseMap(fullId)}
+        leafletMap={initialiseMap(fullId)}
         mapId={2}
         items={[
           createPoint({

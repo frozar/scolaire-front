@@ -17,7 +17,6 @@ const meta = {
   tags: ["autodocs"],
   decorators: mapDecorators,
   argTypes: {
-    onIsLast: () => console.log("onIsLast"),
     onClick: () => console.log("onClick"),
     onDBLClick: (event: LeafletMouseEvent) =>
       console.log("onDBLClick, event:", event),
@@ -51,8 +50,6 @@ export const PointRamassage: Story = {
         map={initialiseMap(fullId)}
         maxQuantity={local.maxQuantity as number}
         minQuantity={local.minQuantity as number}
-        quantity={local.quantity as number}
-        isLast={false}
         {...others}
       />
     );
@@ -62,7 +59,6 @@ export const PointRamassage: Story = {
     isBlinking: false,
     borderColor: "red",
     fillColor: "white",
-    quantity: 5,
     maxQuantity: 30,
     minQuantity: 1,
   },
