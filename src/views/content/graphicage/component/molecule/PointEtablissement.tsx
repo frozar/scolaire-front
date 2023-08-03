@@ -81,7 +81,7 @@ const onDBLClick = (event: LeafletMouseEvent) => {
 
 const onMouseOver = (point: PointInterface) => {
   setBlinkingStops(
-    point.associatedPoints().map((associatedPoint) => associatedPoint.idPoint)
+    point.associatedPoints().map((associatedPoint) => associatedPoint.id)
   );
 };
 
@@ -94,7 +94,7 @@ export default function (props: PointEtablissementProps) {
     <Point
       point={props.point}
       map={props.map}
-      isBlinking={blinkingSchools().includes(props.point.idPoint)}
+      isBlinking={blinkingSchools().includes(props.point.id)}
       borderColor="green"
       fillColor="white"
       radius={12}
