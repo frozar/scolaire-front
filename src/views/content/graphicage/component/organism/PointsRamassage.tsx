@@ -2,25 +2,15 @@ import L, { LeafletMouseEvent } from "leaflet";
 import { For, createSignal, onMount } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import { NatureEnum, PointIdentityType } from "../../../../../type";
-import { renderAnimation } from "../../animation";
 import { deselectAllBusLines } from "../../line/busLinesUtils";
 import { fetchStop } from "../../point.service";
 import { PointInterface } from "../atom/Point";
 import PointRamassage from "../molecule/PointRamassage";
-import {
-  deselectAllPoints,
-  linkMap,
-  setBlinking,
-  setBlinkingPoint,
-} from "./Points";
+import { deselectAllPoints, setBlinking, setBlinkingPoint } from "./Points";
 
 const [
   ,
-  {
-    addPointToLineUnderConstruction,
-    getLineUnderConstruction,
-    isInAddLineMode,
-  },
+  { getLineUnderConstruction, setLineUnderConstruction, isInAddLineMode },
 ] = useStateAction();
 
 export type PointRamassageDBType = {
@@ -107,6 +97,8 @@ export default function (props: RamassagePointsProps) {
     ramassages().map((point) => point.setSelected(id == point.idPoint));
 
   function onClick(point: PointInterface) {
+    // Select the current element to display information
+    console.log("ici");
     if (!isInAddLineMode()) {
       deselectAllBusLines();
       deselectAllPoints();
@@ -114,25 +106,34 @@ export default function (props: RamassagePointsProps) {
       return;
     }
 
-    // TODO: when add line with an etablissement point the line destroy after next point click
-    // Wait Richard/Hugo finish the line underconstruction
-    addPointToLineUnderConstruction({
-      id: point.id,
-      idPoint: point.idPoint,
-      nature: NatureEnum.ramassage,
+    //TODO : move to PointEtablissement in click handler when used
+
+    const etablissementSelected =
+      getLineUnderConstruction().etablissementSelected;
+
+    const currentStops = [...getLineUnderConstruction().stops];
+
+    if (getLineUnderConstruction().confirmSelection) {
+      const pointIdentity = {
+        id: point.id,
+        idPoint: point.idPoint,
+      };
+
+      const index = getLineUnderConstruction().nextIndex;
+
+      currentStops.splice(index, 0, pointIdentity);
+    }
+
+    setLineUnderConstruction({
+      ...getLineUnderConstruction(),
+      etablissementSelected: !etablissementSelected
+        ? [point]
+        : etablissementSelected.concat(point),
+      stops: currentStops,
+      nextIndex: currentStops.length,
     });
 
-    if (!(1 < getLineUnderConstruction().stops.length)) {
-      return;
-    }
-
-    // Highlight point ramassage
-    for (const associatedPoint of point.associatedPoints()) {
-      let element;
-      if ((element = linkMap.get(associatedPoint.idPoint)?.getElement())) {
-        renderAnimation(element);
-      }
-    }
+    return;
   }
 
   function onDBLClick(event: LeafletMouseEvent) {

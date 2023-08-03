@@ -1,6 +1,6 @@
 import { Accessor, JSX, Setter } from "solid-js";
-import { PointInformation } from "./views/content/graphicage/component/atom/Point";
 import { StopType } from "./_entities/stop.entity";
+import { PointInformation } from "./views/content/graphicage/component/atom/Point";
 
 export type EleveVersEtablissementType = {
   id: number;
@@ -22,7 +22,7 @@ export enum NatureEnum {
 export type PointIdentityType = {
   id: number;
   idPoint: number;
-  nature: NatureEnum;
+  // nature: NatureEnum;
 };
 
 export type PointResourceType = PointIdentityType & {
