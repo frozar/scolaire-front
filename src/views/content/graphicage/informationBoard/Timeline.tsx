@@ -4,14 +4,14 @@ import {
   AbstractLineType,
   LineType,
   LineUnderConstructionType,
-  PointResourceType,
 } from "../../../../type";
+import { PointInterface } from "../component/atom/Point";
 import { TimelineAddPointButton } from "../component/atom/TimelineAddPointButton";
 import { TimelineRemovePointButton } from "../component/atom/TimelineRemovePointButton";
 import { mapIdentityToResourceType } from "../line/busLinesUtils";
 const [, { isInAddLineMode }] = useStateAction();
 export type TimelineItemType = {
-  pointsResource?: PointResourceType;
+  pointsResource?: PointInterface;
   indice: number;
   line?: AbstractLineType | undefined;
   getter: () => LineUnderConstructionType | LineType;
@@ -80,7 +80,7 @@ export default function (props: { line: () => AbstractLineType }) {
               <TimelineItem
                 pointsResource={stop}
                 indice={i()}
-                line={props.line}
+                line={props.line()}
                 setter={setLineUnderConstruction}
                 getter={getLineUnderConstruction}
               />
