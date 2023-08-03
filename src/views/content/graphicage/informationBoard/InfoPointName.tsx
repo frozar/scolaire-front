@@ -1,11 +1,10 @@
 import { renderAnimation } from "../animation";
 
-import { PointToDisplayType } from "../../../../type";
-import { linkMap } from "../Point";
-
 import "../../../../css/utils.css";
+import { PointIdentityType } from "../component/atom/Point";
+import { linkMap } from "../component/organism/Points";
 
-export default function (props: { point: PointToDisplayType }) {
+export default function (props: { point: PointIdentityType }) {
   return (
     <a
       class="prevent-select"

@@ -6,21 +6,36 @@ describe("TableBody component with etablissement item row", () => {
   const [items, setItems] = createSignal([
     {
       id: 1,
-      name: "cell 1",
-      quantity: 149,
-      nbLine: 0,
+      name: "Ecole DE BEAUMONT",
       lon: 1,
       lat: 1,
       selected: false,
+      associated: [
+        {
+          id: 2,
+          name: "Stop 2",
+          quantity: 3,
+        },
+      ],
     },
     {
       id: 2,
-      name: "cell 2",
-      quantity: 149,
-      nbLine: 0,
+      name: "Ecole DE BEAUMONT",
       lon: 1,
       lat: 1,
       selected: false,
+      associated: [
+        {
+          id: 1,
+          name: "Stop 1",
+          quantity: 4,
+        },
+        {
+          id: 2,
+          name: "Stop 2",
+          quantity: 9,
+        },
+      ],
     },
   ]);
 

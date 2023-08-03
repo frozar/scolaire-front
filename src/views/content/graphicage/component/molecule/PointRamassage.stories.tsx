@@ -5,9 +5,9 @@ import { initialiseMap } from "../../../../../../testing/utils/mapWrapper";
 import { LeafletMouseEvent } from "leaflet";
 import { splitProps } from "solid-js";
 import {
-  Mapdecorators,
   createPoint,
   getDivFullId,
+  mapDecorators,
 } from "../../../../../../testing/utils/TestUtils";
 import { PointStorybook } from "../atom/Point.stories";
 import PointRamassageComponent from "./PointRamassage";
@@ -15,9 +15,8 @@ import PointRamassageComponent from "./PointRamassage";
 const meta = {
   component: PointRamassageComponent,
   tags: ["autodocs"],
-  decorators: Mapdecorators,
+  decorators: mapDecorators,
   argTypes: {
-    onIsLast: () => console.log("onIsLast"),
     onClick: () => console.log("onClick"),
     onDBLClick: (event: LeafletMouseEvent) =>
       console.log("onDBLClick, event:", event),
@@ -51,8 +50,6 @@ export const PointRamassage: Story = {
         map={initialiseMap(fullId)}
         maxQuantity={local.maxQuantity as number}
         minQuantity={local.minQuantity as number}
-        quantity={local.quantity as number}
-        isLast={false}
         {...others}
       />
     );
@@ -62,7 +59,6 @@ export const PointRamassage: Story = {
     isBlinking: false,
     borderColor: "red",
     fillColor: "white",
-    quantity: 5,
     maxQuantity: 30,
     minQuantity: 1,
   },

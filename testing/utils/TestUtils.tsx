@@ -62,9 +62,7 @@ export function createPointEtablissement(pointmap: PointInformationWithMapID) {
   return (
     <PointEtablissement
       point={point}
-      isLast={false}
       map={initialiseMap(pointmap.fullId)}
-      onIsLast={() => console.log("onIsLast")}
       onClick={() => {
         onClickHandler({
           id: 50,
@@ -93,12 +91,9 @@ export function createPointRamassage(pointmap: PointInformationWithMapID) {
   return (
     <PointRamassage
       point={point}
-      quantity={6}
       minQuantity={1}
       maxQuantity={25}
-      isLast={false}
       map={initialiseMap(pointmap.fullId)}
-      onIsLast={() => console.log("onIsLast")}
       onClick={() =>
         onClickHandler({
           id: 51,
@@ -155,7 +150,7 @@ export const decorators = [
   },
 ];
 
-export const Mapdecorators = [
+export const mapDecorators = [
   (Story: Component, options: StoryContext) => {
     const fullId = getDivFullId(options);
 

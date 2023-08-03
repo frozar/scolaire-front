@@ -1,7 +1,7 @@
 import L, { LeafletMouseEvent } from "leaflet";
 import { Accessor, Setter, createEffect, onCleanup, onMount } from "solid-js";
 
-import { linkMap } from "../../Point";
+import { linkMap } from "../organism/Points";
 import "./Point.css";
 
 export type PointIdentityType = {
@@ -26,7 +26,6 @@ export interface PointProps {
   point: PointInterface;
 
   map: L.Map;
-  isLast: boolean;
   isBlinking?: boolean;
 
   borderColor: string;
@@ -34,7 +33,6 @@ export interface PointProps {
   weight: number;
   radius: number;
 
-  onIsLast: () => void;
   onClick: () => void;
   onDBLClick: (event: LeafletMouseEvent) => void;
   onMouseOver: () => void;
@@ -85,17 +83,11 @@ export default function (props: PointProps) {
   });
 
   createEffect(() => {
-    if (props.point) {
+    if (circle) {
       circle.setRadius(props.radius);
       circle
         .getElement()
         ?.setAttribute("stroke-width", props.weight.toString());
-    }
-  });
-
-  createEffect(() => {
-    if (props.isLast) {
-      props.onIsLast();
     }
   });
 

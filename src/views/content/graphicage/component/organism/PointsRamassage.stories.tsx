@@ -3,16 +3,16 @@ import { Meta, StoryObj } from "storybook-solidjs";
 import { initialiseMap } from "../../../../../../testing/utils/mapWrapper";
 
 import {
-  Mapdecorators,
   createPoint,
   getDivFullId,
+  mapDecorators,
 } from "../../../../../../testing/utils/TestUtils";
 import RamassagePointsComponent from "./PointsRamassage";
 
 const meta = {
   component: RamassagePointsComponent,
   tags: ["autodocs"],
-  decorators: Mapdecorators,
+  decorators: mapDecorators,
 } satisfies Meta<typeof RamassagePointsComponent>;
 
 export default meta;
@@ -25,7 +25,7 @@ export const RamassagePoints: Story = {
     return (
       <div id="map-container" style={{ width: "100%", height: "500px" }}>
         <RamassagePointsComponent
-          map={initialiseMap(fullId)}
+          leafletMap={initialiseMap(fullId)}
           mapId={2}
           items={[
             createPoint({

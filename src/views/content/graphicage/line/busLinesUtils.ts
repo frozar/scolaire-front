@@ -16,7 +16,7 @@ import {
   PointIdentityType,
 } from "../../../../type";
 import { authenticateWrap } from "../../../layout/authentication";
-import { deselectAllPoints, linkMap } from "../Point";
+import { deselectAllPoints, linkMap } from "../component/organism/Points";
 import {
   busLines,
   linkBusLinePolyline,
@@ -571,7 +571,7 @@ export const getSelectedBusLineId = (): number | undefined => {
 
 function getStopNames(busLine: LineUnderConstructionType) {
   const stopIds = busLine.stops.map((stop) => stop.idPoint);
-
+  // TODO: Delete points() when no longer used (replaced by stops and schools)
   return stopIds.map(
     (stopId) => points().filter((point) => point.idPoint === stopId)[0].name
   );

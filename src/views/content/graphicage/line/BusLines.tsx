@@ -1,6 +1,6 @@
 import { createEffect, createSignal, onCleanup } from "solid-js";
 import { LineType } from "../../../../type";
-import { pointsReady } from "../PointsRamassageAndEtablissement";
+import { pointsReady } from "../component/organism/Points";
 import { fetchBusLines } from "./busLinesUtils";
 
 export const [busLines, setBusLines] = createSignal<LineType[]>([]);

@@ -8,7 +8,6 @@ import {
   setPoints,
 } from "../signaux";
 import { MessageLevelEnum, MessageTypeEnum, ReturnMessageType } from "../type";
-import { fetchPointsRamassageAndEtablissement } from "../views/content/graphicage/PointsRamassageAndEtablissement";
 
 let mapDragDropDiv: HTMLDivElement;
 
@@ -121,7 +120,6 @@ function dropHandler(
       });
 
       setPoints([]);
-      fetchPointsRamassageAndEtablissement();
       exitCanvas();
 
       if (callbackSuccess && typeof callbackSuccess === "function") {

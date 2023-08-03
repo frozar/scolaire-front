@@ -1,18 +1,14 @@
 import { LeafletMouseEvent } from "leaflet";
-import { createEffect, createSignal } from "solid-js";
-import { blinkingStopPoint } from "../../PointsRamassageAndEtablissement";
 import Point, { PointInterface } from "../atom/Point";
+import { blinkingPoints } from "../organism/Points";
 
 export interface PointRamassageProps {
   point: PointInterface;
   map: L.Map;
-  isLast: boolean;
 
-  quantity: number;
   minQuantity: number;
   maxQuantity: number;
 
-  onIsLast: () => void;
   onClick: () => void;
   onDBLClick: (event: LeafletMouseEvent) => void;
   onMouseOver: () => void;
@@ -21,30 +17,32 @@ export interface PointRamassageProps {
 const minRadius = 5;
 const maxRadius = 10;
 const rangeRadius = maxRadius - minRadius;
-const [radius, setRadius] = createSignal(5);
 
 export default function (props: PointRamassageProps) {
-  createEffect(() => {
-    if (props.quantity && props.maxQuantity && props.minQuantity) {
+  const rad = (): number => {
+    let radiusValue = minRadius;
+
+    if (props.point.quantity && props.maxQuantity && props.minQuantity) {
       const coef =
         props.minQuantity == props.maxQuantity
           ? 0
-          : (props.quantity - props.minQuantity) /
+          : (props.point.quantity - props.minQuantity) /
             (props.maxQuantity - props.minQuantity);
 
-      const radiusValue = coef * rangeRadius + minRadius;
-      setRadius(radiusValue);
+      radiusValue += coef * rangeRadius;
     }
-  });
+
+    return radiusValue;
+  };
 
   return (
     <Point
       {...props}
-      isBlinking={blinkingStopPoint().includes(props.point.idPoint)}
+      isBlinking={blinkingPoints().includes(props.point.idPoint)}
       borderColor="red"
       fillColor="white"
-      radius={radius()}
-      weight={4}
+      radius={rad()}
+      weight={2}
     />
   );
 }

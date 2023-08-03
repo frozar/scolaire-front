@@ -5,7 +5,6 @@ import { useStateGui } from "../../../StateGui";
 
 import { buildMapL7 } from "./l7MapBuilder";
 
-import PointsRamassageAndEtablissement from "./PointsRamassageAndEtablissement";
 import BusLines from "./line/BusLines";
 
 import ImportCsvCanvas from "../../../component/ImportCsvCanvas";
@@ -20,6 +19,7 @@ import { listHandlerLMap } from "./shortcut";
 import "leaflet/dist/leaflet.css";
 import { getLeafletMap } from "../../../signaux";
 import LineUnderConstruction from "./component/organism/LineUnderConstruction";
+import Points from "./component/organism/Points";
 
 const [, { isInAddLineMode, getLineUnderConstruction }] = useStateAction();
 const [, { getActiveMapId }] = useStateGui();
@@ -72,7 +72,10 @@ export default function () {
       />
       <InformationBoard />
       <div ref={mapDiv} id="main-map" />
-      <PointsRamassageAndEtablissement />
+      <Points
+        leafletMap={getLeafletMap() as L.Map}
+        mapId={getActiveMapId() as number}
+      />
       <Show when={isInAddLineMode()}>
         <LineUnderConstruction
           stops={getLineUnderConstruction().stops}

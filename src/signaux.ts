@@ -43,6 +43,7 @@ export function disableSpinningWheel() {
   });
 }
 
+// TODO: Delete when no longer used (replaced by stops and schools)
 export const [points, setPoints] = createSignal<
   PointRamassageType[] | PointEtablissementType[]
 >([]);

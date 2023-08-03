@@ -2,19 +2,21 @@ import { For, Match, Show, Switch, createEffect, createSignal } from "solid-js";
 import { useStateAction } from "../../../../StateAction";
 import { useStateGui } from "../../../../StateGui";
 import { updateBusLine } from "../../../../request";
-import { addNewUserInformation, points } from "../../../../signaux";
+import { addNewUserInformation } from "../../../../signaux";
 import {
   LineType,
   MessageLevelEnum,
   MessageTypeEnum,
   NatureEnum,
-  PointRamassageType,
   PointToDisplayType,
   isPointRamassage,
 } from "../../../../type";
 import { authenticateWrap } from "../../../layout/authentication";
 import { ColorPicker } from "../component/atom/ColorPicker";
+import { PointInterface } from "../component/atom/Point";
 import AddLineInformationBoardContent from "../component/organism/AddLineInformationBoardContent";
+import { etablissements } from "../component/organism/PointsEtablissement";
+import { ramassages } from "../component/organism/PointsRamassage";
 import {
   linkBusLinePolyline,
   pickerColor,
@@ -23,18 +25,19 @@ import {
 import {
   getSelectedBusLine,
   getSelectedBusLineId,
-  selectedBusLineStopNames,
 } from "../line/busLinesUtils";
 import InfoPointName from "./InfoPointName";
-import Timeline from "./Timeline";
 
 const [, { isInAddLineMode, resetLineUnderConstruction }] = useStateAction();
 
 const [, { getActiveMapId }] = useStateGui();
-
+// TODO: Delete points() when no longer used (replaced by stops and schools)
 export default function () {
-  const getSelectedPoint = (): PointRamassageType | null => {
-    const filteredArray = points().filter((point) => point.selected());
+  const getSelectedPoint = (): PointInterface | null => {
+    const points = [...ramassages(), ...etablissements()];
+
+    const filteredArray = points.filter((point) => point.selected());
+
     if (filteredArray.length === 0) {
       return null;
     } else {
@@ -112,7 +115,8 @@ export default function () {
       });
     }
   };
-
+  //TODO Fix ESLint without using exception
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [associatedPoints, setAssociatedPoints] = createSignal<
     PointToDisplayType[]
   >([]);
@@ -120,12 +124,6 @@ export default function () {
   createEffect(() => {
     fetchAssociatedPoints(selectedIdentity());
   });
-
-  const ptToDisplay = () => {
-    const wkAssociatedPoints = associatedPoints();
-
-    return wkAssociatedPoints ? wkAssociatedPoints : [];
-  };
 
   const firstColumnTitle = () => {
     const selectedPoint = getSelectedPoint();
@@ -199,6 +197,17 @@ export default function () {
         });
       });
   };
+  function getDisplayPoints() {
+    const points = [...ramassages(), ...etablissements()];
+
+    const associatedIdPoints = getSelectedPoint()
+      ?.associatedPoints()
+      .map((point) => point.idPoint);
+
+    return points.filter((point) =>
+      associatedIdPoints?.includes(point.idPoint)
+    );
+  }
 
   return (
     <div
@@ -212,7 +221,7 @@ export default function () {
         <Match when={getSelectedPoint()}>
           <h2>{getSelectedPoint()?.name}</h2>
           <Show
-            when={0 < ptToDisplay().length}
+            when={0 < getDisplayPoints().length}
             fallback={<span>Aucun élément à afficher</span>}
           >
             <div class="px-4 sm:px-6 lg:px-8">
@@ -238,14 +247,15 @@ export default function () {
                           </tr>
                         </thead>
                         <tbody>
-                          <For each={ptToDisplay()}>
+                          <For each={getDisplayPoints()}>
                             {(pt) => (
                               <tr>
                                 <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
                                   <InfoPointName point={pt} />
                                 </td>
                                 <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                                  {pt.quantity}
+                                  {/* TODO add Quantity */}
+                                  {/* {pt.quantity} */}
                                 </td>
                               </tr>
                             )}
@@ -266,8 +276,8 @@ export default function () {
             onInput={handleColorPicker}
             onChange={handleColorChanged}
           />
-
-          <Timeline stopNames={selectedBusLineStopNames()} />
+          {/* TODO: Fix timeline */}
+          {/* <Timeline stopNames={selectedBusLineStopNames()} /> */}
         </Match>
         <Match when={isInAddLineMode()}>
           <AddLineInformationBoardContent />

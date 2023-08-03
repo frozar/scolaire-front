@@ -2,18 +2,18 @@ import L, { LeafletMouseEvent } from "leaflet";
 import { For, createSignal, onMount } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import { NatureEnum } from "../../../../../type";
-import { linkMap } from "../../Point";
-import {
-  PointEtablissementDBType,
-  blinkingStopPoint,
-  setBlinkingStopPoint,
-  setPointsEtablissementReady,
-} from "../../PointsRamassageAndEtablissement";
 import { renderAnimation } from "../../animation";
 import { deselectAllBusLines } from "../../line/busLinesUtils";
 import { fetchSchool } from "../../point.service";
 import { PointIdentityType, PointInterface } from "../atom/Point";
 import PointEtablissement from "../molecule/PointEtablissement";
+import {
+  deselectAllPoints,
+  linkMap,
+  setBlinking,
+  setBlinkingPoint,
+} from "./Points";
+import { PointRamassageDBType } from "./PointsRamassage";
 
 const [
   ,
@@ -21,8 +21,11 @@ const [
     addPointToLineUnderConstruction,
     getLineUnderConstruction,
     isInAddLineMode,
+    setLineUnderConstruction,
   },
 ] = useStateAction();
+
+type PointEtablissementDBType = PointRamassageDBType;
 
 type PointEtablissementCoreType = Omit<PointEtablissementDBType, "id_point"> & {
   idPoint: number;
@@ -64,18 +67,18 @@ function PointBack2Front<T extends PointEtablissementDBType>(
 }
 
 export interface PointsEtablissementProps {
-  map: L.Map;
-  mapID: number;
+  leafletMap: L.Map;
+  mapId: number;
   items?: PointInterface[];
 }
 
-export const [etablissements, setEtablissement] = createSignal<
+export const [etablissements, setEtablissements] = createSignal<
   PointInterface[]
 >([]);
 
-export const addBlinking = (id: number) => {
-  setBlinkingStopPoint([...blinkingStopPoint(), id]);
-};
+// TODO: check if necessary (similar feature already existing !)
+export const [pointsEtablissementReady, setPointsEtablissementReady] =
+  createSignal(false);
 
 export default function (props: PointsEtablissementProps) {
   onMount(async () => {
@@ -83,12 +86,12 @@ export default function (props: PointsEtablissementProps) {
 
     if (!props.items) {
       etablissements = PointBack2Front(
-        await fetchSchool(props.mapID)
+        await fetchSchool(props.mapId)
       ) as PointInterface[];
     } else {
       etablissements = props.items;
     }
-    setEtablissement(etablissements);
+    setEtablissements(etablissements);
     setPointsEtablissementReady(true);
   });
 
@@ -98,7 +101,25 @@ export default function (props: PointsEtablissementProps) {
   const onClick = (point: PointInterface) => {
     if (!isInAddLineMode()) {
       deselectAllBusLines();
+      deselectAllPoints();
       selectPointById(point.idPoint);
+      return;
+    }
+
+    const etablissementSelected =
+      getLineUnderConstruction().etablissementSelected;
+
+    if (!getLineUnderConstruction().confirmSelection) {
+      if (etablissementSelected?.find((p) => p.idPoint === point.idPoint)) {
+        return;
+      }
+      setLineUnderConstruction({
+        ...getLineUnderConstruction(),
+        etablissementSelected: !etablissementSelected
+          ? [point]
+          : etablissementSelected.concat(point),
+      });
+
       return;
     }
 
@@ -128,26 +149,40 @@ export default function (props: PointsEtablissementProps) {
   };
 
   const onMouseOver = (point: PointInterface) => {
-    for (const associatedPoint of point.associatedPoints()) {
-      addBlinking(associatedPoint.idPoint);
-    }
+    setBlinking(point.associatedPoints);
   };
 
   const onMouseOut = () => {
-    setBlinkingStopPoint([]);
+    setBlinkingPoint([]);
   };
 
-  return (
-    <For each={etablissements()}>
-      {(point, i) => {
-        const onIsLast = () => "";
+  function etablissementFilter(): PointInterface[] {
+    const isValidate = getLineUnderConstruction().confirmSelection;
 
+    let displayedEtablissements = etablissements();
+
+    if (isInAddLineMode()) {
+      const etablissementsSelected =
+        getLineUnderConstruction().etablissementSelected;
+
+      if (isValidate && etablissementsSelected) {
+        displayedEtablissements = etablissements().filter((value) =>
+          etablissementsSelected.some(
+            (etablissementInfo) => etablissementInfo.idPoint === value.idPoint
+          )
+        );
+      }
+    }
+    return displayedEtablissements as PointInterface[];
+  }
+
+  return (
+    <For each={etablissementFilter()}>
+      {(point) => {
         return (
           <PointEtablissement
             point={point}
-            map={props.map}
-            isLast={i() === etablissements().length - 1}
-            onIsLast={onIsLast}
+            map={props.leafletMap}
             onClick={() => onClick(point)}
             onDBLClick={onDBLClick}
             onMouseOver={() => onMouseOver(point)}

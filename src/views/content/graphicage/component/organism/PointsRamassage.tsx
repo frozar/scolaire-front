@@ -2,18 +2,17 @@ import L, { LeafletMouseEvent } from "leaflet";
 import { For, createSignal, onMount } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import { NatureEnum, PointIdentityType } from "../../../../../type";
-import { linkMap } from "../../Point";
-import {
-  PointRamassageDBType,
-  blinkingStopPoint,
-  setBlinkingStopPoint,
-  setPointsEtablissementReady,
-} from "../../PointsRamassageAndEtablissement";
 import { renderAnimation } from "../../animation";
 import { deselectAllBusLines } from "../../line/busLinesUtils";
 import { fetchStop } from "../../point.service";
 import { PointInterface } from "../atom/Point";
 import PointRamassage from "../molecule/PointRamassage";
+import {
+  deselectAllPoints,
+  linkMap,
+  setBlinking,
+  setBlinkingPoint,
+} from "./Points";
 
 const [
   ,
@@ -23,6 +22,16 @@ const [
     isInAddLineMode,
   },
 ] = useStateAction();
+
+export type PointRamassageDBType = {
+  id: number;
+  id_point: number;
+  nature: NatureEnum;
+  lon: number;
+  lat: number;
+  name: string;
+  quantity: number;
+};
 
 type PointRamassageCoreType = Omit<PointRamassageDBType, "id_point"> & {
   idPoint: number;
@@ -67,16 +76,17 @@ function PointBack2Front<T extends PointRamassageDBType>(
 }
 
 export interface RamassagePointsProps {
-  map: L.Map;
+  leafletMap: L.Map;
   mapId: number;
   items?: PointInterface[];
 }
 
-const [ramassage, setRamassage] = createSignal<PointInterface[]>([]);
+export const [ramassages, setRamassages] = createSignal<PointInterface[]>([]);
 
-export const addBlinking = (id: number) => {
-  setBlinkingStopPoint([...blinkingStopPoint(), id]);
-};
+// TODO: check if necessary (similar feature already existing !)
+export const [pointsRamassageReady, setPointsRamassageReady] =
+  createSignal(false);
+
 export default function (props: RamassagePointsProps) {
   onMount(async () => {
     let ramassages;
@@ -89,16 +99,17 @@ export default function (props: RamassagePointsProps) {
       ramassages = props.items;
     }
 
-    setRamassage(ramassages);
-    setPointsEtablissementReady(true);
+    setRamassages(ramassages);
+    setPointsRamassageReady(true);
   });
 
   const selectPointById = (id: number) =>
-    ramassage().map((point) => point.setSelected(id == point.idPoint));
+    ramassages().map((point) => point.setSelected(id == point.idPoint));
 
   function onClick(point: PointInterface) {
     if (!isInAddLineMode()) {
       deselectAllBusLines();
+      deselectAllPoints();
       selectPointById(point.idPoint);
       return;
     }
@@ -129,53 +140,59 @@ export default function (props: RamassagePointsProps) {
   }
 
   const onMouseOver = (point: PointInterface) => {
-    for (const associatedPoint of point.associatedPoints()) {
-      addBlinking(associatedPoint.idPoint);
-    }
+    setBlinking(point.associatedPoints);
   };
 
   const onMouseOut = () => {
-    setBlinkingStopPoint([]);
+    setBlinkingPoint([]);
   };
-  // TODO: Check how to manage onIsLast
-  // function onIsLast(nature: NatureEnum) {
-  //   if (nature === NatureEnum.ramassage) {
-  //     setIsRamassageReady(true);
-  //   } else {
-  //     setIsEtablissementReady(true);
-  //   }
-  // }
 
-  const filteredPoints = () => {
-    const datas = ramassage()
+  const quantities = () => {
+    return ramassages()
       .filter((value) => Number.isFinite(value.quantity))
-      .map((value) => value.quantity) as number[];
-    return datas;
+      .map((value) => {
+        return value.quantity;
+      }) as number[];
   };
 
   const minQuantity = () => {
-    const minCandidat = Math.min(...filteredPoints());
+    const minCandidat = Math.min(...quantities());
     return Number.isFinite(minCandidat) ? minCandidat : 0;
   };
 
   const maxQuantity = () => {
-    const maxCandidat = Math.max(...filteredPoints());
+    const maxCandidat = Math.max(...quantities());
     return Number.isFinite(maxCandidat) ? maxCandidat : 0;
   };
 
+  function ramassageFilter(): PointInterface[] {
+    const etablissement = getLineUnderConstruction().etablissementSelected;
+    const isValidate = getLineUnderConstruction().confirmSelection;
+
+    let ramassagesToReturn = ramassages();
+
+    if (isInAddLineMode() && etablissement) {
+      ramassagesToReturn = ramassages().filter((value) =>
+        value
+          .associatedPoints()
+          .some((elt) =>
+            etablissement.find((e) => e.idPoint === elt.idPoint && isValidate)
+          )
+      );
+    }
+
+    return ramassagesToReturn as PointInterface[];
+  }
+
   return (
-    <For each={ramassage()}>
-      {(point, i) => {
-        const onIsLast = () => "";
+    <For each={ramassageFilter()}>
+      {(point) => {
         return (
           <PointRamassage
             point={point}
-            map={props.map}
-            isLast={i() === ramassage().length - 1}
-            quantity={point.quantity as number}
+            map={props.leafletMap}
             minQuantity={minQuantity()}
             maxQuantity={maxQuantity()}
-            onIsLast={() => onIsLast()}
             onClick={() => onClick(point)}
             onDBLClick={onDBLClick}
             onMouseOver={() => onMouseOver(point)}

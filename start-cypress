@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# TODO: Fix cypress image difference between `./start-cypress` and `./start-cypress -f <file>`
 echo "****** Launch test *********"
 
 script_directory=$(dirname $(readlink -f $0))

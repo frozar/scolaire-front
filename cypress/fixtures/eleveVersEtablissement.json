@@ -1,0 +1,374 @@
+{
+    "content": [
+        {
+            "id": 344,
+            "quantity": 4,
+            "ramassage_id": 280,
+            "etablissement_id": 34,
+            "etablissement_id_point": 322,
+            "ramassage_id_point": 330,
+            "etablissement": "Ecole DE BEAUMONT",
+            "ramassage": "BENJOINS"
+        },
+        {
+            "id": 345,
+            "quantity": 8,
+            "ramassage_id": 281,
+            "etablissement_id": 34,
+            "etablissement_id_point": 322,
+            "ramassage_id_point": 331,
+            "etablissement": "Ecole DE BEAUMONT",
+            "ramassage": "CANNELLE"
+        },
+        {
+            "id": 346,
+            "quantity": 12,
+            "ramassage_id": 282,
+            "etablissement_id": 34,
+            "etablissement_id_point": 322,
+            "ramassage_id_point": 332,
+            "etablissement": "Ecole DE BEAUMONT",
+            "ramassage": "CHEMIN DU BASSIN"
+        },
+        {
+            "id": 347,
+            "quantity": 3,
+            "ramassage_id": 283,
+            "etablissement_id": 34,
+            "etablissement_id_point": 322,
+            "ramassage_id_point": 333,
+            "etablissement": "Ecole DE BEAUMONT",
+            "ramassage": "CHEMIN HERMAN"
+        },
+        {
+            "id": 348,
+            "quantity": 1,
+            "ramassage_id": 285,
+            "etablissement_id": 34,
+            "etablissement_id_point": 322,
+            "ramassage_id_point": 335,
+            "etablissement": "Ecole DE BEAUMONT",
+            "ramassage": "Chemin Robert"
+        },
+        {
+            "id": 349,
+            "quantity": 6,
+            "ramassage_id": 287,
+            "etablissement_id": 34,
+            "etablissement_id_point": 322,
+            "ramassage_id_point": 337,
+            "etablissement": "Ecole DE BEAUMONT",
+            "ramassage": "CONTEUR"
+        },
+        {
+            "id": 350,
+            "quantity": 2,
+            "ramassage_id": 290,
+            "etablissement_id": 34,
+            "etablissement_id_point": 322,
+            "ramassage_id_point": 340,
+            "etablissement": "Ecole DE BEAUMONT",
+            "ramassage": "LES BEGONIAS"
+        },
+        {
+            "id": 351,
+            "quantity": 2,
+            "ramassage_id": 291,
+            "etablissement_id": 34,
+            "etablissement_id_point": 322,
+            "ramassage_id_point": 341,
+            "etablissement": "Ecole DE BEAUMONT",
+            "ramassage": "LES CAPUCINES"
+        },
+        {
+            "id": 352,
+            "quantity": 1,
+            "ramassage_id": 292,
+            "etablissement_id": 34,
+            "etablissement_id_point": 322,
+            "ramassage_id_point": 342,
+            "etablissement": "Ecole DE BEAUMONT",
+            "ramassage": "LES EGLANTINES"
+        },
+        {
+            "id": 353,
+            "quantity": 5,
+            "ramassage_id": 293,
+            "etablissement_id": 34,
+            "etablissement_id_point": 322,
+            "ramassage_id_point": 343,
+            "etablissement": "Ecole DE BEAUMONT",
+            "ramassage": "LES FANJANS"
+        },
+        {
+            "id": 354,
+            "quantity": 1,
+            "ramassage_id": 294,
+            "etablissement_id": 34,
+            "etablissement_id_point": 322,
+            "ramassage_id_point": 344,
+            "etablissement": "Ecole DE BEAUMONT",
+            "ramassage": "LES FRANCISEAS"
+        },
+        {
+            "id": 355,
+            "quantity": 2,
+            "ramassage_id": 295,
+            "etablissement_id": 34,
+            "etablissement_id_point": 322,
+            "ramassage_id_point": 345,
+            "etablissement": "Ecole DE BEAUMONT",
+            "ramassage": "LES GREVILIAIRES"
+        },
+        {
+            "id": 356,
+            "quantity": 7,
+            "ramassage_id": 296,
+            "etablissement_id": 34,
+            "etablissement_id_point": 322,
+            "ramassage_id_point": 346,
+            "etablissement": "Ecole DE BEAUMONT",
+            "ramassage": "LES HORTENSIAS"
+        },
+        {
+            "id": 357,
+            "quantity": 7,
+            "ramassage_id": 297,
+            "etablissement_id": 34,
+            "etablissement_id_point": 322,
+            "ramassage_id_point": 347,
+            "etablissement": "Ecole DE BEAUMONT",
+            "ramassage": "LES JACINTHES"
+        },
+        {
+            "id": 358,
+            "quantity": 5,
+            "ramassage_id": 298,
+            "etablissement_id": 34,
+            "etablissement_id_point": 322,
+            "ramassage_id_point": 348,
+            "etablissement": "Ecole DE BEAUMONT",
+            "ramassage": "LES KAKIS"
+        },
+        {
+            "id": 359,
+            "quantity": 1,
+            "ramassage_id": 299,
+            "etablissement_id": 34,
+            "etablissement_id_point": 322,
+            "ramassage_id_point": 349,
+            "etablissement": "Ecole DE BEAUMONT",
+            "ramassage": "LES LATANIERS"
+        },
+        {
+            "id": 360,
+            "quantity": 4,
+            "ramassage_id": 301,
+            "etablissement_id": 34,
+            "etablissement_id_point": 322,
+            "ramassage_id_point": 351,
+            "etablissement": "Ecole DE BEAUMONT",
+            "ramassage": "LES NATTES"
+        },
+        {
+            "id": 361,
+            "quantity": 45,
+            "ramassage_id": 302,
+            "etablissement_id": 34,
+            "etablissement_id_point": 322,
+            "ramassage_id_point": 352,
+            "etablissement": "Ecole DE BEAUMONT",
+            "ramassage": "MADORE"
+        },
+        {
+            "id": 362,
+            "quantity": 5,
+            "ramassage_id": 304,
+            "etablissement_id": 34,
+            "etablissement_id_point": 322,
+            "ramassage_id_point": 354,
+            "etablissement": "Ecole DE BEAUMONT",
+            "ramassage": "PITON CAILLOUX"
+        },
+        {
+            "id": 363,
+            "quantity": 13,
+            "ramassage_id": 305,
+            "etablissement_id": 34,
+            "etablissement_id_point": 322,
+            "ramassage_id_point": 355,
+            "etablissement": "Ecole DE BEAUMONT",
+            "ramassage": "PITON FOUGERES"
+        },
+        {
+            "id": 364,
+            "quantity": 6,
+            "ramassage_id": 275,
+            "etablissement_id": 34,
+            "etablissement_id_point": 322,
+            "ramassage_id_point": 325,
+            "etablissement": "Ecole DE BEAUMONT",
+            "ramassage": "TAKAMAKA"
+        },
+        {
+            "id": 365,
+            "quantity": 5,
+            "ramassage_id": 276,
+            "etablissement_id": 34,
+            "etablissement_id_point": 322,
+            "ramassage_id_point": 326,
+            "etablissement": "Ecole DE BEAUMONT",
+            "ramassage": "TALIPOT"
+        },
+        {
+            "id": 366,
+            "quantity": 4,
+            "ramassage_id": 277,
+            "etablissement_id": 34,
+            "etablissement_id_point": 322,
+            "ramassage_id_point": 327,
+            "etablissement": "Ecole DE BEAUMONT",
+            "ramassage": "VIERGE BLANCHE"
+        },
+        {
+            "id": 367,
+            "quantity": 1,
+            "ramassage_id": 278,
+            "etablissement_id": 35,
+            "etablissement_id_point": 323,
+            "ramassage_id_point": 328,
+            "etablissement": "Ecole DE BOIS ROUGE",
+            "ramassage": "ALLEES COCO"
+        },
+        {
+            "id": 368,
+            "quantity": 12,
+            "ramassage_id": 279,
+            "etablissement_id": 35,
+            "etablissement_id_point": 323,
+            "ramassage_id_point": 329,
+            "etablissement": "Ecole DE BOIS ROUGE",
+            "ramassage": "BABA FIGUES"
+        },
+        {
+            "id": 369,
+            "quantity": 6,
+            "ramassage_id": 280,
+            "etablissement_id": 35,
+            "etablissement_id_point": 323,
+            "ramassage_id_point": 330,
+            "etablissement": "Ecole DE BOIS ROUGE",
+            "ramassage": "BENJOINS"
+        },
+        {
+            "id": 370,
+            "quantity": 7,
+            "ramassage_id": 281,
+            "etablissement_id": 35,
+            "etablissement_id_point": 323,
+            "ramassage_id_point": 331,
+            "etablissement": "Ecole DE BOIS ROUGE",
+            "ramassage": "CANNELLE"
+        },
+        {
+            "id": 371,
+            "quantity": 3,
+            "ramassage_id": 282,
+            "etablissement_id": 35,
+            "etablissement_id_point": 323,
+            "ramassage_id_point": 332,
+            "etablissement": "Ecole DE BOIS ROUGE",
+            "ramassage": "CHEMIN DU BASSIN"
+        },
+        {
+            "id": 372,
+            "quantity": 1,
+            "ramassage_id": 284,
+            "etablissement_id": 35,
+            "etablissement_id_point": 323,
+            "ramassage_id_point": 334,
+            "etablissement": "Ecole DE BOIS ROUGE",
+            "ramassage": "CHEMIN PITON ROUGE"
+        },
+        {
+            "id": 373,
+            "quantity": 11,
+            "ramassage_id": 286,
+            "etablissement_id": 35,
+            "etablissement_id_point": 323,
+            "ramassage_id_point": 336,
+            "etablissement": "Ecole DE BOIS ROUGE",
+            "ramassage": "Colombo"
+        },
+        {
+            "id": 374,
+            "quantity": 3,
+            "ramassage_id": 288,
+            "etablissement_id": 35,
+            "etablissement_id_point": 323,
+            "ramassage_id_point": 338,
+            "etablissement": "Ecole DE BOIS ROUGE",
+            "ramassage": "HUBERT GRONDIN"
+        },
+        {
+            "id": 375,
+            "quantity": 5,
+            "ramassage_id": 289,
+            "etablissement_id": 35,
+            "etablissement_id_point": 323,
+            "ramassage_id_point": 339,
+            "etablissement": "Ecole DE BOIS ROUGE",
+            "ramassage": "LAGRANGE"
+        },
+        {
+            "id": 376,
+            "quantity": 12,
+            "ramassage_id": 300,
+            "etablissement_id": 35,
+            "etablissement_id_point": 323,
+            "ramassage_id_point": 350,
+            "etablissement": "Ecole DE BOIS ROUGE",
+            "ramassage": "LES LUCAS"
+        },
+        {
+            "id": 377,
+            "quantity": 7,
+            "ramassage_id": 303,
+            "etablissement_id": 35,
+            "etablissement_id_point": 323,
+            "ramassage_id_point": 353,
+            "etablissement": "Ecole DE BOIS ROUGE",
+            "ramassage": "PARNY"
+        },
+        {
+            "id": 378,
+            "quantity": 5,
+            "ramassage_id": 274,
+            "etablissement_id": 35,
+            "etablissement_id_point": 323,
+            "ramassage_id_point": 324,
+            "etablissement": "Ecole DE BOIS ROUGE",
+            "ramassage": "RESSOURCE"
+        },
+        {
+            "id": 379,
+            "quantity": 6,
+            "ramassage_id": 275,
+            "etablissement_id": 35,
+            "etablissement_id_point": 323,
+            "ramassage_id_point": 325,
+            "etablissement": "Ecole DE BOIS ROUGE",
+            "ramassage": "TAKAMAKA"
+        },
+        {
+            "id": 380,
+            "quantity": 23,
+            "ramassage_id": 277,
+            "etablissement_id": 35,
+            "etablissement_id_point": 323,
+            "ramassage_id_point": 327,
+            "etablissement": "Ecole DE BOIS ROUGE",
+            "ramassage": "VIERGE BLANCHE"
+        }
+    ]
+}
