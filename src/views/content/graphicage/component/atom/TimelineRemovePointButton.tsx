@@ -8,11 +8,11 @@ const [, { setLineUnderConstruction, getLineUnderConstruction }] =
 // TODO Create stories and cypress
 export function TimelineRemovePointButton(props: TimelineItemType) {
   const deletePoint = (id: number) => {
-    const a = [...getLineUnderConstruction().stops];
-    a.splice(id, 1);
+    const stops = [...getLineUnderConstruction().stops];
+    stops.splice(id, 1);
     setLineUnderConstruction({
       ...getLineUnderConstruction(),
-      stops: a,
+      stops: stops,
     });
   };
 

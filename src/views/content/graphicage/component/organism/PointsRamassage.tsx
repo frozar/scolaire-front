@@ -98,7 +98,6 @@ export default function (props: RamassagePointsProps) {
 
   function onClick(point: PointInterface) {
     // Select the current element to display information
-    console.log("ici");
     if (!isInAddLineMode()) {
       deselectAllBusLines();
       deselectAllPoints();
