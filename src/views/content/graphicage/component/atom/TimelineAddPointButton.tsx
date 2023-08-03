@@ -1,21 +1,18 @@
 import { FaSolidPlus } from "solid-icons/fa";
-import { useStateAction } from "../../../../../StateAction";
 import { TimelineItemType } from "../../informationBoard/Timeline";
 import "./TimelineAddPointButton.css";
 
-const [, { setLineUnderConstruction, getLineUnderConstruction }] =
-  useStateAction();
 // TODO Create stories and cypress
 export function TimelineAddPointButton(props: TimelineItemType) {
-  const modifyNextIndex = (indice: number | undefined) => {
-    if (indice) {
-      const a = [...getLineUnderConstruction().stops];
-      a.splice(indice, 1);
-      setLineUnderConstruction({
-        ...getLineUnderConstruction(),
-        nextIndex: indice + 1,
-      });
-    }
+  const modifyNextIndex = (indice: number) => {
+    console.log("ici ", indice);
+    console.log("la");
+    const a = [...props.getter()?.stops];
+    a.splice(indice, 1);
+    props.setter({
+      ...props.getter(),
+      nextIndex: indice + 1,
+    });
   };
 
   return (

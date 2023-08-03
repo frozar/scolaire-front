@@ -55,17 +55,18 @@ export function isPointEtablissement(pt: { nature: NatureEnum }) {
 }
 
 export type AbstractLineType = {
-  idBusLine: number;
   color: string;
   stops: PointIdentityType[];
+  etablissementSelected: PointInformation[];
 };
 
 export type LineType = AbstractLineType & {
+  idBusLine: number;
   selected: Accessor<boolean>;
   setSelected: Setter<boolean>;
 };
+
 export type LineUnderConstructionType = AbstractLineType & {
-  etablissementSelected: PointInformation[];
   confirmSelection?: boolean;
   nextIndex: number;
 };
