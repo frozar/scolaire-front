@@ -22,6 +22,7 @@ describe("Line component", () => {
         <div id="map-container" style={{ width: "100%", height: "500px" }}>
           {createPointRamassage({
             fullId: "map-container",
+            withTiles: false,
             id: 1,
             idPoint: 51,
             lat: -20.9465588303741,
@@ -32,6 +33,7 @@ describe("Line component", () => {
           ,
           {createPointEtablissement({
             fullId: "map-container",
+            withTiles: false,
             id: 2,
             idPoint: 52,
             lat: -20.9486587304741,

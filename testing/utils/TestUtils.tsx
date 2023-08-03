@@ -31,11 +31,14 @@ export const createPoint = (pointInformation: PointInformation) => {
   return point;
 };
 
-interface PointInformationWithMapID extends PointInformation {
+interface PointInformationWithMapInfos extends PointInformation {
   fullId: string;
+  withTiles: boolean;
 }
 
-export function createPointEtablissement(pointmap: PointInformationWithMapID) {
+export function createPointEtablissement(
+  pointmap: PointInformationWithMapInfos
+) {
   const point = createPoint({
     id: 1,
     idPoint: pointmap.idPoint as number,
@@ -46,11 +49,14 @@ export function createPointEtablissement(pointmap: PointInformationWithMapID) {
   });
 
   return (
-    <PointEtablissement point={point} map={initialiseMap(pointmap.fullId)} />
+    <PointEtablissement
+      point={point}
+      map={initialiseMap(pointmap.fullId, pointmap.withTiles)}
+    />
   );
 }
 
-export function createPointRamassage(pointmap: PointInformationWithMapID) {
+export function createPointRamassage(pointmap: PointInformationWithMapInfos) {
   const point = createPoint({
     id: 1,
     idPoint: pointmap.idPoint,
@@ -64,7 +70,7 @@ export function createPointRamassage(pointmap: PointInformationWithMapID) {
       point={point}
       minQuantity={1}
       maxQuantity={25}
-      map={initialiseMap(pointmap.fullId)}
+      map={initialiseMap(pointmap.fullId, pointmap.withTiles)}
     />
   );
 }
@@ -85,6 +91,7 @@ export const decorators = [
         <div id={fullId} style={{ width: "100%", height: "500px" }}>
           {createPointRamassage({
             fullId: fullId,
+            withTiles: true,
             id: 1,
             idPoint: 51,
             lat: -20.9465588303741,
@@ -95,6 +102,7 @@ export const decorators = [
           ,
           {createPointEtablissement({
             fullId: fullId,
+            withTiles: true,
             id: 1,
             idPoint: 50,
             lat: -20.9486587304741,

@@ -13,6 +13,8 @@ const initMap = (idDiv: string, withTiles: boolean) => {
   );
 
   if (withTiles) {
+    console.log("with tiles");
+
     // Cannot use the same instance of L.tileLayer for multiple maps
     L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
       attribution:
@@ -25,6 +27,8 @@ const initMap = (idDiv: string, withTiles: boolean) => {
 };
 
 export const initialiseMap = (idDiv: string, withTiles = true) => {
+  console.log("initialiseMap");
+
   const map = mapTabs.filter((m) => m.idDiv === idDiv)[0];
 
   if (map == undefined) {
