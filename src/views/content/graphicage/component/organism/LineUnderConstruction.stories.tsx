@@ -8,8 +8,6 @@ import { initialiseMap } from "../../../../../../testing/utils/mapWrapper";
 import { useStateAction } from "../../../../../StateAction";
 import LineUnderConstructionComponent from "./LineUnderConstruction";
 
-// TODO: Fix not working
-
 const [, { getLineUnderConstruction }] = useStateAction();
 
 const meta = {
