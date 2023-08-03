@@ -1,23 +1,16 @@
 import L from "leaflet";
-import { Accessor, createEffect, createSignal, onMount } from "solid-js";
+import { createEffect, createSignal, onMount } from "solid-js";
 import { EleveVersEtablissementType, NatureEnum } from "../../../../../type";
 import { fetchEleveVersEtablissement } from "../../point.service";
-import { PointIdentityType, PointInterface } from "../atom/Point";
+import { PointInterface } from "../atom/Point";
 import PointsEtablissement, { etablissements } from "./PointsEtablissement";
 import PointsRamassage, { ramassages } from "./PointsRamassage";
 
 export const linkMap = new Map<number, L.CircleMarker>();
 
-export const [blinkingPoints, setBlinkingPoint] = createSignal<number[]>([]);
-export const setBlinking = (
-  associatedPoints: Accessor<PointIdentityType[]>
-) => {
-  const toBlink: number[] = [];
-  for (const associatedPoint of associatedPoints()) {
-    toBlink.push(associatedPoint.idPoint);
-  }
-  setBlinkingPoint(toBlink);
-};
+export const [blinkingStops, setBlinkingStops] = createSignal<number[]>([]);
+
+export const [blinkingSchools, setBlinkingSchools] = createSignal<number[]>([]);
 
 // This will be removed in the future with the innerJoin or LeftJoin
 export const [studentsToSchool, setStudentsToSchool] = createSignal<

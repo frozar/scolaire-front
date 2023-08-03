@@ -5,11 +5,10 @@ import { renderAnimation } from "../../animation";
 import { deselectAllBusLines } from "../../line/busLinesUtils";
 import Point, { PointInterface } from "../atom/Point";
 import {
-  blinkingPoints,
+  blinkingStops,
   deselectAllPoints,
   linkMap,
-  setBlinking,
-  setBlinkingPoint,
+  setBlinkingSchools,
 } from "../organism/Points";
 import { ramassages } from "../organism/PointsRamassage";
 
@@ -70,11 +69,13 @@ function onDBLClick(event: LeafletMouseEvent) {
 }
 
 const onMouseOver = (point: PointInterface) => {
-  setBlinking(point.associatedPoints);
+  setBlinkingSchools(
+    point.associatedPoints().map((associatedPoint) => associatedPoint.idPoint)
+  );
 };
 
 const onMouseOut = () => {
-  setBlinkingPoint([]);
+  setBlinkingSchools([]);
 };
 
 export default function (props: PointRamassageProps) {
@@ -98,7 +99,7 @@ export default function (props: PointRamassageProps) {
     <Point
       point={props.point}
       map={props.map}
-      isBlinking={blinkingPoints().includes(props.point.idPoint)}
+      isBlinking={blinkingStops().includes(props.point.idPoint)}
       borderColor="red"
       fillColor="white"
       radius={rad()}
