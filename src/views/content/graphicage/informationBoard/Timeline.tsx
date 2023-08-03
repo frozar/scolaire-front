@@ -5,8 +5,7 @@ import { PointInterface } from "../component/atom/Point";
 import { TimelineAddPointButton } from "../component/atom/TimelineAddPointButton";
 import { TimelineRemovePointButton } from "../component/atom/TimelineRemovePointButton";
 import { mapIdentityToResourceType } from "../line/busLinesUtils";
-const [, { isInAddLineMode }] = useStateAction();
-
+const [, { isInAddLineMode, getLineUnderConstruction }] = useStateAction();
 export type TimelineItemType = {
   pointsResource: PointInterface;
   indice: number;
@@ -16,14 +15,12 @@ export type TimelineItemType = {
 function TimelineItem(props: TimelineItemType) {
   return (
     <div class="v-timeline-item">
-      <Show when={isInAddLineMode()}>
-        <TimelineAddPointButton {...props} />
-      </Show>
       <div class="v-timeline-item__body">
         <div class="d-flex">
-          <strong>{props.pointsResource.name}</strong>
+          <strong>{props.pointsResource?.name}</strong>
         </div>
       </div>
+
       <div class="v-timeline-divider">
         <div class="v-timeline-divider__before" />
         <div class="v-timeline-divider__dot v-timeline-divider__dot--size-small">
@@ -34,7 +31,11 @@ function TimelineItem(props: TimelineItemType) {
             </Show>
           </div>
         </div>
+
         <div class="v-timeline-divider__after" />
+        <Show when={isInAddLineMode()}>
+          <TimelineAddPointButton {...props} />
+        </Show>
       </div>
     </div>
   );
@@ -50,11 +51,21 @@ export default function (props: { line: () => AbstractLineType }) {
         <For each={mapIdentityToResourceType(props.line()?.stops)}>
           {/* TODO refactor de replace mapIdentityToResourceType */}
           {(stop, i) => (
-            <TimelineItem
-              pointsResource={stop}
-              indice={i()}
-              line={props.line()}
-            />
+            <>
+              <Show
+                when={
+                  isInAddLineMode() &&
+                  getLineUnderConstruction().nextIndex == i()
+                }
+              >
+                <TimelineItem />
+              </Show>
+              <TimelineItem
+                pointsResource={stop}
+                indice={i()}
+                line={props.line}
+              />
+            </>
           )}
         </For>
       </div>

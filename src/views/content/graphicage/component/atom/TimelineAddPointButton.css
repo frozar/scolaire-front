@@ -1,7 +1,8 @@
 .timeline-add-point-button {
-  padding-inline-start: 24px;
-
   opacity: 50%;
+  position: absolute;
+  margin-left: 55%;
+  margin-top: 115%;
 }
 
 .timeline-add-point-button:hover {

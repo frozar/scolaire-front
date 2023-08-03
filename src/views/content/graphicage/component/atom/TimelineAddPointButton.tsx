@@ -7,19 +7,21 @@ const [, { setLineUnderConstruction, getLineUnderConstruction }] =
   useStateAction();
 // TODO Create stories and cypress
 export function TimelineAddPointButton(props: TimelineItemType) {
-  const deletePoint = (id: number) => {
-    const a = [...getLineUnderConstruction().stops];
-    a.splice(id, 1);
-    setLineUnderConstruction({
-      ...getLineUnderConstruction(),
-      nextIndex: props.indice + 1,
-    });
+  const modifyNextIndex = (indice: number | undefined) => {
+    if (indice) {
+      const a = [...getLineUnderConstruction().stops];
+      a.splice(indice, 1);
+      setLineUnderConstruction({
+        ...getLineUnderConstruction(),
+        nextIndex: indice + 1,
+      });
+    }
   };
 
   return (
     <button
       class="timeline-add-point-button"
-      onClick={() => deletePoint(props.indice)}
+      onClick={() => modifyNextIndex(props.indice)}
     >
       <FaSolidPlus />
     </button>
