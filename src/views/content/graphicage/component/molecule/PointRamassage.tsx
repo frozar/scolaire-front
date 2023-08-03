@@ -24,6 +24,7 @@ const [
 export interface PointRamassageProps {
   point: PointInterface;
   map: L.Map;
+  onDBLClick: (event: LeafletMouseEvent) => void;
 
   minQuantity: number;
   maxQuantity: number;
@@ -64,10 +65,6 @@ function onClick(point: PointInterface) {
   }
 }
 
-function onDBLClick(event: LeafletMouseEvent) {
-  L.DomEvent.stopPropagation(event);
-}
-
 const onMouseOver = (point: PointInterface) => {
   setBlinkingSchools(
     point.associatedPoints().map((associatedPoint) => associatedPoint.id)
@@ -105,7 +102,7 @@ export default function (props: PointRamassageProps) {
       radius={rad()}
       weight={2}
       onClick={() => onClick(props.point)}
-      onDBLClick={onDBLClick}
+      onDBLClick={props.onDBLClick}
       onMouseOver={() => onMouseOver(props.point)}
       onMouseOut={() => onMouseOut()}
     />

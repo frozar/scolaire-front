@@ -1,4 +1,4 @@
-import L from "leaflet";
+import L, { LeafletMouseEvent } from "leaflet";
 import { For, createSignal, onMount } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import { NatureEnum, PointIdentityType } from "../../../../../type";
@@ -63,6 +63,7 @@ function PointBack2Front<T extends PointRamassageDBType>(
 export interface RamassagePointsProps {
   leafletMap: L.Map;
   mapId: number;
+  onDBLClick: (event: LeafletMouseEvent) => void;
   items?: PointInterface[];
 }
 
@@ -132,6 +133,7 @@ export default function (props: RamassagePointsProps) {
           <PointRamassage
             point={point}
             map={props.leafletMap}
+            onDBLClick={props.onDBLClick}
             minQuantity={minQuantity()}
             maxQuantity={maxQuantity()}
           />

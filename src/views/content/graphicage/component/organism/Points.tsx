@@ -1,4 +1,4 @@
-import L from "leaflet";
+import L, { LeafletMouseEvent } from "leaflet";
 import { createEffect, createSignal, onMount } from "solid-js";
 import { EleveVersEtablissementType, NatureEnum } from "../../../../../type";
 import { fetchEleveVersEtablissement } from "../../point.service";
@@ -16,6 +16,10 @@ export const [blinkingSchools, setBlinkingSchools] = createSignal<number[]>([]);
 export const [studentsToSchool, setStudentsToSchool] = createSignal<
   EleveVersEtablissementType[]
 >([]);
+
+const onDBLClick = (event: LeafletMouseEvent) => {
+  L.DomEvent.stopPropagation(event);
+};
 
 const setupAssociations = (points: PointInterface[], nature: NatureEnum) => {
   for (const point of points) {
@@ -97,8 +101,16 @@ export default function (props: PointsProps) {
   // TODO: Fix ramassages displayed over etalbissements
   return (
     <div>
-      <PointsEtablissement leafletMap={props.leafletMap} mapId={props.mapId} />
-      <PointsRamassage leafletMap={props.leafletMap} mapId={props.mapId} />
+      <PointsEtablissement
+        leafletMap={props.leafletMap}
+        mapId={props.mapId}
+        onDBLClick={onDBLClick}
+      />
+      <PointsRamassage
+        leafletMap={props.leafletMap}
+        mapId={props.mapId}
+        onDBLClick={onDBLClick}
+      />
     </div>
   );
 }

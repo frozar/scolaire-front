@@ -25,6 +25,7 @@ const [
 export interface PointEtablissementProps {
   point: PointInterface;
   map: L.Map;
+  onDBLClick: (event: LeafletMouseEvent) => void;
 }
 const selectPointById = (id: number) =>
   etablissements().map((point) => point.setSelected(id == point.idPoint));
@@ -75,10 +76,6 @@ const onClick = (point: PointInterface) => {
   }
 };
 
-const onDBLClick = (event: LeafletMouseEvent) => {
-  L.DomEvent.stopPropagation(event);
-};
-
 const onMouseOver = (point: PointInterface) => {
   setBlinkingStops(
     point.associatedPoints().map((associatedPoint) => associatedPoint.id)
@@ -100,7 +97,7 @@ export default function (props: PointEtablissementProps) {
       radius={12}
       weight={4}
       onClick={() => onClick(props.point)}
-      onDBLClick={onDBLClick}
+      onDBLClick={props.onDBLClick}
       onMouseOver={() => onMouseOver(props.point)}
       onMouseOut={() => onMouseOut()}
     />

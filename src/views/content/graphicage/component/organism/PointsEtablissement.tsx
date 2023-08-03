@@ -1,4 +1,4 @@
-import L from "leaflet";
+import L, { LeafletMouseEvent } from "leaflet";
 import { For, createSignal, onMount } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import { fetchSchool } from "../../point.service";
@@ -52,6 +52,7 @@ function PointBack2Front<T extends PointEtablissementDBType>(
 export interface PointsEtablissementProps {
   leafletMap: L.Map;
   mapId: number;
+  onDBLClick: (event: LeafletMouseEvent) => void;
   items?: PointInterface[];
 }
 
@@ -101,7 +102,13 @@ export default function (props: PointsEtablissementProps) {
   return (
     <For each={etablissementFilter()}>
       {(point) => {
-        return <PointEtablissement point={point} map={props.leafletMap} />;
+        return (
+          <PointEtablissement
+            point={point}
+            map={props.leafletMap}
+            onDBLClick={props.onDBLClick}
+          />
+        );
       }}
     </For>
   );
