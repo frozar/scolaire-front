@@ -5,7 +5,8 @@ import TimelineItemReadMode from "../component/atom/TimelineItemReadMode";
 import { studentsToSchool } from "../component/organism/Points";
 import { mapIdentityToResourceType } from "../line/busLinesUtils";
 
-interface ToDisplay extends PointInterface {
+interface ToDisplay {
+  point: PointInterface;
   quantityToDisplay: number;
 }
 
@@ -59,7 +60,7 @@ export default function (props: { line: () => LineType | undefined }) {
         specificQuantity[stop.idPoint] = 0;
       }
 
-      toDisplay.push({ ...stop, quantityToDisplay });
+      toDisplay.push({ point: { ...stop }, quantityToDisplay });
     }
     setValuesToDisplay(toDisplay);
   });
@@ -74,7 +75,7 @@ export default function (props: { line: () => LineType | undefined }) {
           {(toDisplay) => (
             <>
               <TimelineItemReadMode
-                pointsResource={toDisplay}
+                pointsResource={toDisplay.point}
                 getter={props.line}
                 quantityToDisplay={toDisplay.quantityToDisplay}
               />
