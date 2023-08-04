@@ -1,6 +1,5 @@
 import { AbstractLineType, NatureEnum } from "../../../../../type";
 import { PointInterface } from "./Point";
-import { TimelineItemAddType } from "./TimelineItemAddMode";
 
 export type TimelineItemReadType = {
   pointsResource: PointInterface;
@@ -8,7 +7,7 @@ export type TimelineItemReadType = {
   getter: () => AbstractLineType | undefined;
 };
 
-export default function (props: TimelineItemAddType) {
+export default function (props: TimelineItemReadType) {
   const timelineCircleClass =
     "v-timeline-divider__dot v-timeline-divider__dot--size-small";
 

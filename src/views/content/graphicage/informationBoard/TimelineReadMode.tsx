@@ -34,7 +34,7 @@ export default function (props: { line: () => LineType | undefined }) {
 
     const toDisplay: ToDisplay[] = [];
 
-    for (const stop of mapIdentityToResourceType(props.line()?.stops)) {
+    for (const stop of mapIdentityToResourceType(stops)) {
       let pointQuantity = 0;
       let quantityToDisplay = 0;
 
