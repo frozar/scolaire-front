@@ -457,6 +457,7 @@ export function fetchBusLines() {
           stops: stopsWithNatureEnum,
           selected,
           setSelected,
+          etablissementSelected: [],
         };
 
         return lineWk;

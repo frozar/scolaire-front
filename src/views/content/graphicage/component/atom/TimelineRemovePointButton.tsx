@@ -1,6 +1,6 @@
 import { FaRegularTrashCan } from "solid-icons/fa";
 import { useStateAction } from "../../../../../StateAction";
-import { TimelineItemType } from "../../informationBoard/TimelineItem";
+import { TimelineItemType } from "../../informationBoard/TimelineItemReadMode";
 import "./TimelineRemovePointButton.css";
 
 const [, { setLineUnderConstruction, getLineUnderConstruction }] =
