@@ -1,17 +1,18 @@
 import { FaRegularTrashCan } from "solid-icons/fa";
-import { useStateAction } from "../../../../../StateAction";
-import { TimelineItemType } from "../../informationBoard/TimelineItemReadMode";
+import { LineUnderConstructionType } from "../../../../../type";
 import "./TimelineRemovePointButton.css";
 
-const [, { setLineUnderConstruction, getLineUnderConstruction }] =
-  useStateAction();
 // TODO Create stories and cypress
-export function TimelineRemovePointButton(props: TimelineItemType) {
+export function TimelineRemovePointButton(props: {
+  indice: number;
+  getter: () => LineUnderConstructionType;
+  setter: (line: LineUnderConstructionType) => void;
+}) {
   const deletePoint = (id: number) => {
-    const stops = [...getLineUnderConstruction().stops];
+    const stops = [...props.getter().stops];
     stops.splice(id, 1);
-    setLineUnderConstruction({
-      ...getLineUnderConstruction(),
+    props.setter({
+      ...props.getter(),
       stops: stops,
     });
   };

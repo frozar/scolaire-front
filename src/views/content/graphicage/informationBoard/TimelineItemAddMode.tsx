@@ -1,18 +1,15 @@
-import { JSX } from "solid-js";
-import { AbstractLineType, LineUnderConstructionType } from "../../../../type";
+import { LineUnderConstructionType } from "../../../../type";
 import { PointInterface } from "../component/atom/Point";
 import { TimelineRemovePointButton } from "../component/atom/TimelineRemovePointButton";
-export type TimelineItemType = {
+export type TimelineItemAddType = {
   pointsResource: PointInterface;
   indice: number;
-  getter: () => AbstractLineType;
+  getter: () => LineUnderConstructionType;
   setter: (line: LineUnderConstructionType) => void;
   isInAddLineMode: boolean;
-  removeButton?: JSX.Element;
 };
 
-export default function (props: TimelineItemType) {
-  const removeButton = <TimelineRemovePointButton {...props} />;
+export default function (props: TimelineItemAddType) {
   return (
     <div class="v-timeline-item">
       <div class="v-timeline-item__body">
@@ -27,7 +24,11 @@ export default function (props: TimelineItemType) {
         <div class="v-timeline-divider__dot v-timeline-divider__dot--size-small">
           <div class="v-timeline-divider__inner-dot bg-pink">
             <i class="" aria-hidden="true" />
-            {removeButton}
+            <TimelineRemovePointButton
+              indice={props.indice}
+              setter={props.setter}
+              getter={props.getter}
+            />
           </div>
         </div>
 

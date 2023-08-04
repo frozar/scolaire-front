@@ -1,11 +1,11 @@
 import { AbstractLineType } from "../../../../type";
 import { PointInterface } from "../component/atom/Point";
-export type TimelineItemAddType = {
+export type TimelineItemReadType = {
   pointsResource: PointInterface;
   getter: () => AbstractLineType | undefined;
 };
 
-export default function (props: TimelineItemAddType) {
+export default function (props: TimelineItemReadType) {
   return (
     <div class="v-timeline-item">
       <div class="v-timeline-item__body">

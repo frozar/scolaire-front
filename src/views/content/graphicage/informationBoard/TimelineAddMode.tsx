@@ -19,7 +19,13 @@ export default function (props: {
         <For each={mapIdentityToResourceType(props.line()?.stops)}>
           {(stop, i) => (
             <>
-              <TimelineAddPointButton {...props} />
+              <TimelineAddPointButton
+                pointsResource={stop}
+                indice={i()}
+                setter={props.setLine}
+                getter={props.line}
+                isInAddLineMode={isInAddLineMode()}
+              />
 
               <TimelineItemAddMode
                 pointsResource={stop}
