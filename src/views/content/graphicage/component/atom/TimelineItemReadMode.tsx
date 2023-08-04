@@ -11,18 +11,15 @@ export type TimelineItemReadType = {
 export default function (props: TimelineItemAddType) {
   const timelineCircleClass =
     "v-timeline-divider__dot v-timeline-divider__dot--size-small";
-  console.log("props.pointsResource", props.pointsResource);
 
   return (
     <div class="v-timeline-item">
       <div class="v-timeline-item__body">
         <div class="d-flex">
           <div class="me-4">
-            {props.pointsResource.nature == NatureEnum.ramassage
-              ? // "+ " + props.pointsResource.quantity
-                "+ " + props.quantityToDisplay
-              : // : "- " + props.pointsResource.quantity}
-                "- " + props.quantityToDisplay}
+            {(props.pointsResource.nature == NatureEnum.ramassage
+              ? "+ "
+              : "- ") + props.quantityToDisplay}
           </div>
           <strong>{props.pointsResource.name}</strong>
         </div>
@@ -30,8 +27,6 @@ export default function (props: TimelineItemAddType) {
 
       <div class="v-timeline-divider">
         <div class="v-timeline-divider__before" />
-
-        {/* <div class="v-timeline-divider__dot v-timeline-divider__dot--size-small"> */}
         <div
           class={
             props.pointsResource.nature == NatureEnum.ramassage

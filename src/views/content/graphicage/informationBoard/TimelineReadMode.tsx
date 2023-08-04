@@ -6,7 +6,6 @@ import { studentsToSchool } from "../component/organism/Points";
 import { mapIdentityToResourceType } from "../line/busLinesUtils";
 
 interface ToDisplay extends PointInterface {
-  // quantity: number;
   quantityToDisplay: number;
 }
 
@@ -14,30 +13,32 @@ const [valuesToDisplay, setValuesToDisplay] = createSignal<ToDisplay[]>([]);
 
 export default function (props: { line: () => LineType | undefined }) {
   createEffect(() => {
-    const stops = props.line().stops;
-    console.log("stops", stops);
+    const line = props.line();
+    if (!line) {
+      return;
+    }
+    const stops = line.stops;
 
-    let etablissementsIdPoint = stops
-      .filter((point) => point.nature === NatureEnum.etablissement)
-      .map((etablissement) => etablissement.idPoint);
-    console.log("etablissementsIdPoint", etablissementsIdPoint);
-
-    // Keep only unique values
-    etablissementsIdPoint = [...new Set(etablissementsIdPoint)];
-    console.log("uniques etablissementsIdPoint", etablissementsIdPoint);
+    const etablissementsIdPoint = [
+      ...new Set(
+        stops
+          .filter((point) => point.nature === NatureEnum.etablissement)
+          .map((etablissement) => etablissement.idPoint)
+      ),
+    ];
 
     const specificQuantity: { [id: number]: number } = {};
-    for (const id of etablissementsIdPoint) {
-      specificQuantity[id] = 0;
+    for (const idPoint of etablissementsIdPoint) {
+      specificQuantity[idPoint] = 0;
     }
 
     const toDisplay: ToDisplay[] = [];
+
     for (const stop of mapIdentityToResourceType(props.line()?.stops)) {
       let pointQuantity = 0;
       let quantityToDisplay = 0;
 
       if (stop.nature === NatureEnum.ramassage) {
-        console.log("tthe stops=>, ", stop);
         studentsToSchool()
           .filter(
             (data) =>
@@ -51,7 +52,6 @@ export default function (props: { line: () => LineType | undefined }) {
               }
             }
             pointQuantity += data.quantity;
-            console.log("the quantity", pointQuantity);
           });
         quantityToDisplay = pointQuantity;
       } else {
@@ -59,10 +59,9 @@ export default function (props: { line: () => LineType | undefined }) {
         specificQuantity[stop.idPoint] = 0;
       }
 
-      toDisplay.push({ ...stop, quantityToDisplay: quantityToDisplay });
+      toDisplay.push({ ...stop, quantityToDisplay });
     }
     setValuesToDisplay(toDisplay);
-    console.log("toDisplay", toDisplay);
   });
 
   return (
@@ -71,20 +70,12 @@ export default function (props: { line: () => LineType | undefined }) {
         class="v-timeline v-timeline--align-start v-timeline--justify-auto v-timeline--side-end v-timeline--vertical"
         style={{ "--v-timeline-line-thickness": "2px" }}
       >
-        {/* <For each={mapIdentityToResourceType(props.line()?.stops)}>
-          {(stop) => (
-            <>
-              <TimelineItemReadMode pointsResource={stop} getter={props.line} />
-            </>
-          )}
-        </For> */}
         <For each={valuesToDisplay()}>
           {(toDisplay) => (
             <>
               <TimelineItemReadMode
                 pointsResource={toDisplay}
                 getter={props.line}
-                // quantity={toDisplay.quantity}
                 quantityToDisplay={toDisplay.quantityToDisplay}
               />
             </>
