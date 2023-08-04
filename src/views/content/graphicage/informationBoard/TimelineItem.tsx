@@ -1,22 +1,18 @@
-import { Show } from "solid-js";
-import {
-  AbstractLineType,
-  LineType,
-  LineUnderConstructionType,
-} from "../../../../type";
+import { JSX } from "solid-js";
+import { AbstractLineType, LineUnderConstructionType } from "../../../../type";
 import { PointInterface } from "../component/atom/Point";
-import { TimelineAddPointButton } from "../component/atom/TimelineAddPointButton";
 import { TimelineRemovePointButton } from "../component/atom/TimelineRemovePointButton";
 export type TimelineItemType = {
   pointsResource: PointInterface;
   indice: number;
-  line: AbstractLineType | undefined;
-  getter: () => LineUnderConstructionType | LineType;
-  setter: (line: LineUnderConstructionType) => void;
+  getter: () => AbstractLineType;
+  setter?: (line: LineUnderConstructionType) => void;
   isInAddLineMode: boolean;
+  removeButton?: JSX.Element;
 };
 
 export function TimelineItem(props: TimelineItemType) {
+  const removeButton = <TimelineRemovePointButton {...props} />;
   return (
     <div class="v-timeline-item">
       <div class="v-timeline-item__body">
@@ -31,16 +27,11 @@ export function TimelineItem(props: TimelineItemType) {
         <div class="v-timeline-divider__dot v-timeline-divider__dot--size-small">
           <div class="v-timeline-divider__inner-dot bg-pink">
             <i class="" aria-hidden="true" />
-            <Show when={props.isInAddLineMode}>
-              <TimelineRemovePointButton {...props} />
-            </Show>
+            {removeButton}
           </div>
         </div>
 
         <div class="v-timeline-divider__after" />
-        <Show when={props.isInAddLineMode}>
-          <TimelineAddPointButton {...props} />
-        </Show>
       </div>
     </div>
   );

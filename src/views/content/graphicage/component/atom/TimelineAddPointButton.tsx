@@ -1,5 +1,5 @@
 import { FaSolidPlus } from "solid-icons/fa";
-import { TimelineItemType } from "../../informationBoard/Timeline";
+import { TimelineItemType } from "../../informationBoard/TimelineReadMode";
 import "./TimelineAddPointButton.css";
 
 // TODO Create stories and cypress
