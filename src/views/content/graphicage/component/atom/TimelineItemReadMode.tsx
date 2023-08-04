@@ -1,24 +1,39 @@
-import { AbstractLineType } from "../../../../type";
-import { PointInterface } from "../component/atom/Point";
+import { AbstractLineType, NatureEnum } from "../../../../../type";
+import { PointInterface } from "./Point";
+
 export type TimelineItemReadType = {
   pointsResource: PointInterface;
+  quantityToDisplay: number;
   getter: () => AbstractLineType | undefined;
 };
 
 export default function (props: TimelineItemReadType) {
+  const timelineCircleClass =
+    "v-timeline-divider__dot v-timeline-divider__dot--size-small";
+
   return (
     <div class="v-timeline-item">
       <div class="v-timeline-item__body">
         <div class="d-flex">
+          <div class="me-4">
+            {(props.pointsResource.nature == NatureEnum.ramassage
+              ? "+ "
+              : "- ") + props.quantityToDisplay}
+          </div>
           <strong>{props.pointsResource.name}</strong>
         </div>
       </div>
 
       <div class="v-timeline-divider">
         <div class="v-timeline-divider__before" />
-
-        <div class="v-timeline-divider__dot v-timeline-divider__dot--size-small">
-          <div class="v-timeline-divider__inner-dot bg-pink">
+        <div
+          class={
+            props.pointsResource.nature == NatureEnum.ramassage
+              ? timelineCircleClass + " !bg-red-500"
+              : timelineCircleClass + " !bg-green-base"
+          }
+        >
+          <div class="v-timeline-divider__inner-dot !bg-white">
             <i class="" aria-hidden="true" />
           </div>
         </div>

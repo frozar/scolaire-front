@@ -583,7 +583,16 @@ export function mapIdentityToResourceType(
   }
 
   const stopIds = pointsIdentity.map((stop) => stop.idPoint);
-  const points = [...ramassages(), ...etablissements()];
+  const points = [
+    ...ramassages().map((ramassage) => ({
+      ...ramassage,
+      nature: NatureEnum.ramassage,
+    })),
+    ...etablissements().map((etablissement) => ({
+      ...etablissement,
+      nature: NatureEnum.etablissement,
+    })),
+  ];
 
   return stopIds.map(
     (stopId) => points.filter((point) => point.idPoint === stopId)[0]
