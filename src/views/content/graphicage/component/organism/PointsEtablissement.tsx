@@ -2,27 +2,16 @@ import L, { LeafletMouseEvent } from "leaflet";
 import { For, createSignal, onMount } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import { NatureEnum } from "../../../../../type";
-import { renderAnimation } from "../../animation";
 import { deselectAllBusLines } from "../../line/busLinesUtils";
 import { fetchSchool } from "../../point.service";
 import { PointIdentityType, PointInterface } from "../atom/Point";
 import PointEtablissement from "../molecule/PointEtablissement";
-import {
-  deselectAllPoints,
-  linkMap,
-  setBlinking,
-  setBlinkingPoint,
-} from "./Points";
+import { deselectAllPoints, setBlinking, setBlinkingPoint } from "./Points";
 import { PointRamassageDBType } from "./PointsRamassage";
 
 const [
   ,
-  {
-    addPointToLineUnderConstruction,
-    getLineUnderConstruction,
-    isInAddLineMode,
-    setLineUnderConstruction,
-  },
+  { getLineUnderConstruction, isInAddLineMode, setLineUnderConstruction },
 ] = useStateAction();
 
 type PointEtablissementDBType = PointRamassageDBType;
@@ -98,7 +87,9 @@ export default function (props: PointsEtablissementProps) {
   const selectPointById = (id: number) =>
     etablissements().map((point) => point.setSelected(id == point.idPoint));
 
-  const onClick = (point: PointInterface) => {
+  function onClick(point: PointInterface) {
+    // Select the current element to display information
+
     if (!isInAddLineMode()) {
       deselectAllBusLines();
       deselectAllPoints();
@@ -106,43 +97,36 @@ export default function (props: PointsEtablissementProps) {
       return;
     }
 
+    //TODO : move to PointEtablissement in click handler when used
+
     const etablissementSelected =
       getLineUnderConstruction().etablissementSelected;
 
-    if (!getLineUnderConstruction().confirmSelection) {
-      if (etablissementSelected?.find((p) => p.idPoint === point.idPoint)) {
-        return;
-      }
-      setLineUnderConstruction({
-        ...getLineUnderConstruction(),
-        etablissementSelected: !etablissementSelected
-          ? [point]
-          : etablissementSelected.concat(point),
-      });
+    const currentStops = [...getLineUnderConstruction().stops];
 
-      return;
+    if (getLineUnderConstruction().confirmSelection) {
+      const pointIdentity = {
+        id: point.id,
+        idPoint: point.idPoint,
+        nature: NatureEnum.etablissement,
+      };
+
+      const index = getLineUnderConstruction().nextIndex;
+
+      currentStops.splice(index, 0, pointIdentity);
     }
 
-    // TODO: check how manage line underconstuction with ramassages/etablissement signals
-    addPointToLineUnderConstruction({
-      id: point.id,
-      idPoint: point.idPoint,
-      nature: NatureEnum.etablissement,
+    setLineUnderConstruction({
+      ...getLineUnderConstruction(),
+      etablissementSelected: !etablissementSelected
+        ? [point]
+        : etablissementSelected.concat(point),
+      stops: currentStops,
+      nextIndex: currentStops.length,
     });
 
-    if (!(1 < getLineUnderConstruction().stops.length)) {
-      return;
-    }
-
-    // TODO: check utility
-    // Highlight point ramassage
-    for (const associatedPoint of point.associatedPoints()) {
-      let element;
-      if ((element = linkMap.get(associatedPoint.idPoint)?.getElement())) {
-        renderAnimation(element);
-      }
-    }
-  };
+    return;
+  }
 
   const onDBLClick = (event: LeafletMouseEvent) => {
     L.DomEvent.stopPropagation(event);

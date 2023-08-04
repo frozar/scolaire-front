@@ -1,6 +1,6 @@
 import { Accessor, JSX, Setter } from "solid-js";
-import { PointInformation } from "./views/content/graphicage/component/atom/Point";
 import { StopType } from "./_entities/stop.entity";
+import { PointInformation } from "./views/content/graphicage/component/atom/Point";
 
 export type EleveVersEtablissementType = {
   id: number;
@@ -19,10 +19,13 @@ export enum NatureEnum {
 }
 
 //TODO to update or delete cause of Xano
-export type PointRamassageType = {
+export type PointIdentityType = {
   id: number;
   idPoint: number;
   nature: NatureEnum;
+};
+
+export type PointResourceType = PointIdentityType & {
   lon: number;
   lat: number;
   name: string;
@@ -33,7 +36,9 @@ export type PointRamassageType = {
   setAssociatedPoints: Setter<PointIdentityType[]>;
 };
 
-export type PointEtablissementType = PointRamassageType;
+export type PointRamassageType = PointResourceType;
+
+export type PointEtablissementType = PointResourceType;
 
 export type PointToDisplayType = {
   idPoint: number;
@@ -49,23 +54,20 @@ export function isPointEtablissement(pt: { nature: NatureEnum }) {
   return pt.nature === NatureEnum.etablissement;
 }
 
-export type PointIdentityType = {
-  id: number;
-  idPoint: number;
-  nature: NatureEnum;
-};
-
-export type LineUnderConstructionType = {
+export type AbstractLineType = {
+  idBusLine: number;
   color: string;
   stops: PointIdentityType[];
-  etablissementSelected?: PointInformation[];
-  confirmSelection?: boolean;
 };
 
-export type LineType = LineUnderConstructionType & {
-  idBusLine: number;
+export type LineType = AbstractLineType & {
   selected: Accessor<boolean>;
   setSelected: Setter<boolean>;
+};
+export type LineUnderConstructionType = AbstractLineType & {
+  etablissementSelected: PointInformation[];
+  confirmSelection?: boolean;
+  nextIndex: number;
 };
 
 export enum ModeEnum {

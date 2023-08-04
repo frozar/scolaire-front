@@ -1,0 +1,6 @@
+.button-delete {
+  display: none;
+}
+.bg-pink:hover .button-delete {
+  display: block;
+}

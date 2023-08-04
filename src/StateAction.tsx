@@ -32,6 +32,8 @@ function defaultLineUnderConstruction() {
     stops: [],
     etablissementSelected: [],
     confirmSelection: false,
+    currentIndex: 0,
+    nextIndex: 0,
   };
 }
 
