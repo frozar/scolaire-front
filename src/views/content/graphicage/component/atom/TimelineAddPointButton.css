@@ -1,0 +1,19 @@
+.timeline-add-point-button {
+  opacity: 0%;
+}
+
+.timeline-add-point-button:hover {
+  opacity: 100%;
+}
+.v-timeline-item__body.body-add {
+  opacity: 0%;
+}
+/*Put in Onclick
+} */
+.v-timeline-item:focus-within .v-timeline-item__body.body-add {
+  opacity: 100%;
+}
+
+.v-timeline-item:focus-within .timeline-add-point-button {
+  opacity: 100%;
+}

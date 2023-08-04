@@ -2,13 +2,19 @@ import { Show } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import Button from "../../../../../component/atom/Button";
 import { PointRamassageType } from "../../../../../type";
-import Timeline from "../../informationBoard/Timeline";
+import TimelineAddMode from "../../informationBoard/TimelineAddMode";
 import { lineUnderConstructionStopNames } from "../../line/busLinesUtils";
 import BuildLineButton from "../atom/BuildLineButton";
 import SelectedSchool from "../atom/SelectedSchool";
 
-const [, { getLineUnderConstruction, confirmEtablissementSelection }] =
-  useStateAction();
+const [
+  ,
+  {
+    getLineUnderConstruction,
+    setLineUnderConstruction,
+    confirmEtablissementSelection,
+  },
+] = useStateAction();
 
 export default function () {
   const isValidate = () => getLineUnderConstruction().confirmSelection;
@@ -55,7 +61,10 @@ export default function () {
       </Show>
       {/* TODO: Fix timeline */}
       <Show when={getLineUnderConstruction().stops.length != 0}>
-        <Timeline line={getLineUnderConstruction} />
+        <TimelineAddMode
+          line={getLineUnderConstruction}
+          setLine={setLineUnderConstruction}
+        />
       </Show>
     </>
   );
