@@ -1,4 +1,4 @@
-import { For, createSignal, onMount } from "solid-js";
+import { For, createEffect, createSignal } from "solid-js";
 import { LineType, NatureEnum } from "../../../../type";
 import { PointInterface } from "../component/atom/Point";
 import TimelineItemReadMode from "../component/atom/TimelineItemReadMode";
@@ -12,7 +12,7 @@ interface ToDisplay extends PointInterface {
 const [valuesToDisplay, setValuesToDisplay] = createSignal<ToDisplay[]>([]);
 
 export default function (props: { line: () => LineType | undefined }) {
-  onMount(() => {
+  createEffect(() => {
     const stops = props.line().stops;
     console.log("stops", stops);
 
@@ -33,13 +33,16 @@ export default function (props: { line: () => LineType | undefined }) {
     const toDisplay: ToDisplay[] = [];
     for (const stop of mapIdentityToResourceType(props.line()?.stops)) {
       let pointQuantity = 0;
+      let quantityToDisplay = 0;
 
       if (stop.nature === NatureEnum.ramassage) {
+        console.log("tthe stops=>, ", stop);
         studentsToSchool()
-          .filter((data) => {
-            etablissementsIdPoint.includes(data.etablissement_id_point) &&
-              data.ramassage_id_point === stop.idPoint;
-          })
+          .filter(
+            (data) =>
+              etablissementsIdPoint.includes(data.etablissement_id_point) &&
+              data.ramassage_id_point === stop.idPoint
+          )
           .map((data) => {
             for (const etablissementIdPoint of etablissementsIdPoint) {
               if (etablissementIdPoint === data.etablissement_id_point) {
@@ -47,11 +50,18 @@ export default function (props: { line: () => LineType | undefined }) {
               }
             }
             pointQuantity += data.quantity;
+            console.log("the quantity", pointQuantity);
           });
+        quantityToDisplay = pointQuantity;
+      } else {
+        quantityToDisplay = specificQuantity[stop.idPoint];
+        specificQuantity[stop.idPoint] = 0;
       }
-      toDisplay.push({ ...stop, quantity: pointQuantity });
+
+      toDisplay.push({ ...stop, quantity: quantityToDisplay });
     }
     setValuesToDisplay(toDisplay);
+    console.log("toDisplay", toDisplay);
   });
 
   return (
