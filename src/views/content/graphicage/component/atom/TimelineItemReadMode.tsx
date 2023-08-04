@@ -2,6 +2,7 @@ import { AbstractLineType } from "../../../../type";
 import { PointInterface } from "../component/atom/Point";
 export type TimelineItemReadType = {
   pointsResource: PointInterface;
+  quantity: number;
   getter: () => AbstractLineType | undefined;
 };
 
