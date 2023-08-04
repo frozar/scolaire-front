@@ -6,7 +6,8 @@ import { studentsToSchool } from "../component/organism/Points";
 import { mapIdentityToResourceType } from "../line/busLinesUtils";
 
 interface ToDisplay extends PointInterface {
-  quantity: number;
+  // quantity: number;
+  quantityToDisplay: number;
 }
 
 const [valuesToDisplay, setValuesToDisplay] = createSignal<ToDisplay[]>([]);
@@ -58,7 +59,7 @@ export default function (props: { line: () => LineType | undefined }) {
         specificQuantity[stop.idPoint] = 0;
       }
 
-      toDisplay.push({ ...stop, quantity: quantityToDisplay });
+      toDisplay.push({ ...stop, quantityToDisplay: quantityToDisplay });
     }
     setValuesToDisplay(toDisplay);
     console.log("toDisplay", toDisplay);
@@ -83,7 +84,8 @@ export default function (props: { line: () => LineType | undefined }) {
               <TimelineItemReadMode
                 pointsResource={toDisplay}
                 getter={props.line}
-                quantity={toDisplay.quantity}
+                // quantity={toDisplay.quantity}
+                quantityToDisplay={toDisplay.quantityToDisplay}
               />
             </>
           )}

@@ -4,7 +4,7 @@ import { TimelineItemAddType } from "./TimelineItemAddMode";
 
 export type TimelineItemReadType = {
   pointsResource: PointInterface;
-  quantity: number;
+  quantityToDisplay: number;
   getter: () => AbstractLineType | undefined;
 };
 
@@ -20,8 +20,9 @@ export default function (props: TimelineItemAddType) {
           <div class="me-4">
             {props.pointsResource.nature == NatureEnum.ramassage
               ? // "+ " + props.pointsResource.quantity
-                "+ " + props.quantity
-              : "- " + props.pointsResource.quantity}
+                "+ " + props.quantityToDisplay
+              : // : "- " + props.pointsResource.quantity}
+                "- " + props.quantityToDisplay}
           </div>
           <strong>{props.pointsResource.name}</strong>
         </div>
