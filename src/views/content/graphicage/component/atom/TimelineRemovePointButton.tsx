@@ -1,5 +1,5 @@
 import { FaRegularTrashCan } from "solid-icons/fa";
-import { LineUnderConstructionType } from "../../../../../type";
+import { LineUnderConstructionType } from "../../../../type";
 import "./TimelineRemovePointButton.css";
 
 // TODO Create stories and cypress

@@ -19,20 +19,20 @@ export function TimelineAddPointButton(props: {
 
   return (
     <div class="v-timeline-item">
-      <div class="v-timeline-item__body">
+      <div class="v-timeline-item__body body-add">
         <div class="d-flex">
-          <strong>{"veuillez"}</strong>
+          <strong>{"Sélectionnez un point sur la carte"}</strong>
         </div>
       </div>
 
-      <div class="v-timeline-divider">
+      <div class="v-timeline-divider ">
         <div class="v-timeline-divider__before" />
 
-        <div class="v-timeline-divider__dot v-timeline-divider__dot--size-small">
-          <i class="" aria-hidden="true" />
+        <div class="v-timeline-divider__dot v-timeline-divider__dot--size-very-small timeline-add-point-button">
           <button
-            class="timeline-add-point-button"
+            class=""
             onClick={() => modifyNextIndex(props.indice)}
+            title="Ajouter un point"
           >
             <FaSolidPlus />
           </button>

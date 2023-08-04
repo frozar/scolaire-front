@@ -1,7 +1,7 @@
 import { For } from "solid-js";
 import { LineType } from "../../../../type";
+import TimelineItemReadMode from "../component/atom/TimelineItemReadMode";
 import { mapIdentityToResourceType } from "../line/busLinesUtils";
-import TimelineItemReadMode from "./TimelineItemReadMode";
 
 export default function (props: { line: () => LineType | undefined }) {
   return (

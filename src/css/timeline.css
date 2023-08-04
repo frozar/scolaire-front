@@ -19,6 +19,22 @@
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
+.timeline-add-mode {
+  width: 100%;
+  -webkit-text-size-adjust: 100%;
+  word-break: normal;
+  -moz-tab-size: 4;
+  tab-size: 4;
+  font-family: Roboto, sans-serif;
+  line-height: 1.5;
+  font-size: 0.8rem;
+  overflow-x: hidden;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
 .timeline *,
 .timeline *:before,
 .timeline *:after {
@@ -65,6 +81,7 @@
 
 .v-timeline--vertical.v-timeline {
   grid-row-gap: 24px;
+  /* TODO use grid-row-gap to reduce distance between points */
   height: 100%;
 }
 

@@ -2,8 +2,9 @@ import { For } from "solid-js";
 import { useStateAction } from "../../../../StateAction";
 import { LineUnderConstructionType } from "../../../../type";
 import { TimelineAddPointButton } from "../component/atom/TimelineAddPointButton";
+import TimelineItemAddMode from "../component/atom/TimelineItemAddMode";
 import { mapIdentityToResourceType } from "../line/busLinesUtils";
-import TimelineItemAddMode from "./TimelineItemAddMode";
+
 const [, { isInAddLineMode }] = useStateAction();
 
 export default function (props: {
@@ -11,7 +12,7 @@ export default function (props: {
   setLine: (line: LineUnderConstructionType) => void;
 }) {
   return (
-    <div class="timeline">
+    <div class="timeline-add-mode">
       <div
         class="v-timeline v-timeline--align-start v-timeline--justify-auto v-timeline--side-end v-timeline--vertical"
         style={{ "--v-timeline-line-thickness": "2px" }}
@@ -20,11 +21,9 @@ export default function (props: {
           {(stop, i) => (
             <>
               <TimelineAddPointButton
-                pointsResource={stop}
                 indice={i()}
                 setter={props.setLine}
                 getter={props.line}
-                isInAddLineMode={isInAddLineMode()}
               />
 
               <TimelineItemAddMode
