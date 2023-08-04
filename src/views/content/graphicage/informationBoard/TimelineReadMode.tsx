@@ -5,12 +5,14 @@ import TimelineItemReadMode from "../component/atom/TimelineItemReadMode";
 import { studentsToSchool } from "../component/organism/Points";
 import { mapIdentityToResourceType } from "../line/busLinesUtils";
 
-interface ToDisplay {
+interface itemInfoToDisplayInterface {
   point: PointInterface;
-  quantityToDisplay: number;
+  quantity: number;
 }
 
-const [valuesToDisplay, setValuesToDisplay] = createSignal<ToDisplay[]>([]);
+const [itemsInfoToDisplay, setItemsInfoToDisplay] = createSignal<
+  itemInfoToDisplayInterface[]
+>([]);
 
 export default function (props: { line: () => LineType | undefined }) {
   createEffect(() => {
@@ -20,49 +22,47 @@ export default function (props: { line: () => LineType | undefined }) {
     }
     const stops = line.stops;
 
-    const etablissementsIdPoint = [
+    const schoolsIdPoint = [
       ...new Set(
         stops
           .filter((point) => point.nature === NatureEnum.etablissement)
-          .map((etablissement) => etablissement.idPoint)
+          .map((school) => school.idPoint)
       ),
     ];
 
-    const specificQuantity: { [id: number]: number } = {};
-    for (const idPoint of etablissementsIdPoint) {
-      specificQuantity[idPoint] = 0;
+    const schoolQuantity: { [id: number]: number } = {};
+    for (const idPoint of schoolsIdPoint) {
+      schoolQuantity[idPoint] = 0;
     }
 
-    const toDisplay: ToDisplay[] = [];
+    const itemsInfoToDisplay: itemInfoToDisplayInterface[] = [];
 
     for (const stop of mapIdentityToResourceType(stops)) {
-      let pointQuantity = 0;
-      let quantityToDisplay = 0;
+      let quantity = 0;
 
       if (stop.nature === NatureEnum.ramassage) {
         studentsToSchool()
           .filter(
             (data) =>
-              etablissementsIdPoint.includes(data.etablissement_id_point) &&
+              schoolsIdPoint.includes(data.etablissement_id_point) &&
               data.ramassage_id_point === stop.idPoint
           )
           .map((data) => {
-            for (const etablissementIdPoint of etablissementsIdPoint) {
-              if (etablissementIdPoint === data.etablissement_id_point) {
-                specificQuantity[etablissementIdPoint] += data.quantity;
+            for (const idPoint of schoolsIdPoint) {
+              if (idPoint === data.etablissement_id_point) {
+                schoolQuantity[idPoint] += data.quantity;
               }
             }
-            pointQuantity += data.quantity;
+            quantity += data.quantity;
           });
-        quantityToDisplay = pointQuantity;
       } else {
-        quantityToDisplay = specificQuantity[stop.idPoint];
-        specificQuantity[stop.idPoint] = 0;
+        quantity = schoolQuantity[stop.idPoint];
+        schoolQuantity[stop.idPoint] = 0;
       }
 
-      toDisplay.push({ point: { ...stop }, quantityToDisplay });
+      itemsInfoToDisplay.push({ point: { ...stop }, quantity });
     }
-    setValuesToDisplay(toDisplay);
+    setItemsInfoToDisplay(itemsInfoToDisplay);
   });
 
   return (
@@ -71,13 +71,13 @@ export default function (props: { line: () => LineType | undefined }) {
         class="v-timeline v-timeline--align-start v-timeline--justify-auto v-timeline--side-end v-timeline--vertical"
         style={{ "--v-timeline-line-thickness": "2px" }}
       >
-        <For each={valuesToDisplay()}>
-          {(toDisplay) => (
+        <For each={itemsInfoToDisplay()}>
+          {(itemInfoToDisplay) => (
             <>
               <TimelineItemReadMode
-                pointsResource={toDisplay.point}
+                pointsResource={itemInfoToDisplay.point}
                 getter={props.line}
-                quantityToDisplay={toDisplay.quantityToDisplay}
+                quantityToDisplay={itemInfoToDisplay.quantity}
               />
             </>
           )}
