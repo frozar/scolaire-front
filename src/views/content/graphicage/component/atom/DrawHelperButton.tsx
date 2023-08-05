@@ -1,12 +1,16 @@
 import { FaSolidWandMagicSparkles } from "solid-icons/fa";
 import { useStateAction } from "../../../../../StateAction";
-import { PointInformation } from "./Point";
+import { PointIdentityType, PointInformation } from "./Point";
 
 import {
   DrawHelperDataType,
   GraphicageService,
 } from "../../../../../_services/graphicage.service";
 import { ramassageFilter } from "../organism/PointsRamassage";
+
+const [, { setPointsToLineUnderConstruction }] = useStateAction();
+
+import { NatureEnum } from "../../../../../type";
 import "./DrawHelperButton.css";
 
 interface DrawHelperButtonProps {
@@ -17,7 +21,7 @@ interface DrawHelperButtonProps {
 const [, { getLineUnderConstruction }] = useStateAction();
 
 export function DrawHelperButton(props: DrawHelperButtonProps) {
-  function onclick() {
+  async function onclick() {
     const schools: PointInformation[] =
       props.schools != undefined
         ? JSON.parse(JSON.stringify(props.schools))
@@ -35,7 +39,14 @@ export function DrawHelperButton(props: DrawHelperButtonProps) {
       stops: stops,
     };
 
-    GraphicageService.drawHelper(data);
+    console.log("Query", data);
+
+    const response = await GraphicageService.drawHelper(data);
+    console.log("response", response);
+
+    const formattedResponse: PointIdentityType[] =
+      formatTimeLinePoints(response);
+    setPointsToLineUnderConstruction(formattedResponse);
   }
 
   return (
@@ -47,7 +58,6 @@ export function DrawHelperButton(props: DrawHelperButtonProps) {
     </div>
   );
 }
-<<<<<<< HEAD
 
 function formatTimeLinePoints(
   data: { id: number; idPoint: number; nature: string }[]
@@ -61,5 +71,3 @@ function formatTimeLinePoints(
     };
   });
 }
-=======
->>>>>>> d10adeda (Graphicage Draw Helper : refacto the draw helper button)
