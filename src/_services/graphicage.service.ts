@@ -10,7 +10,6 @@ const host = import.meta.env.VITE_BACK_URL;
 export class GraphicageService {
   static async drawHelper(data: DrawHelperDataType) {
     let response: Response;
-    console.log(data);
     try {
       response = await fetch(host + "/generator/draw-helper", {
         method: "POST",
@@ -25,8 +24,8 @@ export class GraphicageService {
     }
 
     if (!(await manageStatusCode(response))) return;
-    console.log(response);
-    // return await response.json();
+    // console.log(response);
+    return await response.json();
   }
 }
 

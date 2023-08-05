@@ -55,6 +55,10 @@ const makeStateActionContext = () => {
     return state.altimetry.animation;
   }
 
+  function setPointsToLineUnderConstruction(points: PointIdentityType[]) {
+    setState("lineUnderConstruction", "stops", points);
+  }
+
   function addPointToLineUnderConstruction(point: PointIdentityType) {
     setState("lineUnderConstruction", "stops", (line: PointIdentityType[]) => {
       if (line.length === 0) {
@@ -144,6 +148,7 @@ const makeStateActionContext = () => {
     {
       toggleAltimetryAnimation,
       getAnimationSettings,
+      setPointsToLineUnderConstruction,
       addPointToLineUnderConstruction,
       getLineUnderConstruction,
       resetLineUnderConstruction,
