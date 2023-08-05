@@ -12,7 +12,7 @@ export class GraphicageService {
     let response: Response;
     console.log(data);
     try {
-      response = await fetch(host + "/graphicage/draw-helper", {
+      response = await fetch(host + "/generator/draw-helper", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
