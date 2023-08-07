@@ -83,7 +83,7 @@ const buildXanoUrl = (url: string, urlNeedMap: boolean) => {
 };
 
 // TODO reformat this (copy/past from point.service.ts)
-const connexionError = () => {
+export const connexionError = () => {
   addNewUserInformation({
     displayed: true,
     level: MessageLevelEnum.error,
@@ -94,7 +94,7 @@ const connexionError = () => {
 };
 
 // TODO reformat this (copy/past from point.service.ts)
-const manageStatusCode = async (response: Response) => {
+export const manageStatusCode = async (response: Response) => {
   if (response.status !== 200) {
     const json = await response.json();
     const message =
