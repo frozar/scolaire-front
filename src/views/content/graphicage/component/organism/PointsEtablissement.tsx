@@ -41,30 +41,8 @@ export default function (props: PointsEtablissementProps) {
     setLeafletSchools(leafletSchools);
   });
 
-  console.log(etablissementFilter());
-  //TODO to change
-  function etablissementFilter(): PointInterface[] {
-    const isValidate = getLineUnderConstruction().confirmSelection;
-
-    let displayedEtablissements = etablissements();
-
-    if (isInAddLineMode()) {
-      const etablissementsSelected =
-        getLineUnderConstruction().etablissementSelected;
-
-      if (isValidate && etablissementsSelected) {
-        displayedEtablissements = etablissements().filter((value) =>
-          etablissementsSelected.some(
-            (etablissementInfo) => etablissementInfo.idPoint === value.idPoint
-          )
-        );
-      }
-    }
-    return displayedEtablissements as PointInterface[];
-  }
-
   return (
-    <For each={getLeafletSchools()}>
+    <For each={leafletSchoolsFilter()}>
       {(point) => {
         return <PointEtablissement point={point} map={props.leafletMap} />;
       }}
@@ -90,4 +68,24 @@ function buildLeafletSchools(schools: SchoolType[]): LeafletSchoolType[] {
       leafletId: nextLeafletPointId(),
     };
   });
+}
+
+function leafletSchoolsFilter(): LeafletSchoolType[] {
+  const isValidate = getLineUnderConstruction().confirmSelection;
+
+  let schools = getLeafletSchools();
+
+  if (isInAddLineMode()) {
+    const etablissementsSelected =
+      getLineUnderConstruction().etablissementSelected;
+
+    if (isValidate && etablissementsSelected) {
+      schools = schools.filter((value) =>
+        etablissementsSelected.some(
+          (etablissementInfo) => etablissementInfo.id === value.id
+        )
+      );
+    }
+  }
+  return schools;
 }

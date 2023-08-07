@@ -1,17 +1,20 @@
 import L from "leaflet";
 import { useStateAction } from "../../../../../StateAction";
 import { NatureEnum } from "../../../../../type";
+import { renderAnimation } from "../../animation";
 import { deselectAllBusLines } from "../../line/busLinesUtils";
 import Point from "../atom/Point";
 import {
   blinkingSchools,
   deselectAllPoints,
+  linkMap,
   setBlinkingStops,
 } from "../organism/Points";
 import {
   LeafletSchoolType,
   etablissements,
 } from "../organism/PointsEtablissement";
+import { getLeafletStops } from "../organism/PointsRamassage";
 
 const [
   ,
@@ -30,6 +33,17 @@ const selectPointById = (id: number) =>
   etablissements().map((point) => point.setSelected(id == point.idPoint));
 
 const onClick = (point: LeafletSchoolType) => {
+  // Highlight point stops
+  for (const associated of point.associated) {
+    let element;
+    const stop = getLeafletStops().filter(
+      (item) => item.id == associated.id
+    )[0];
+    if (stop && (element = linkMap.get(stop.leafletId)?.getElement())) {
+      renderAnimation(element);
+    }
+  }
+
   if (!isInAddLineMode()) {
     deselectAllBusLines();
     deselectAllPoints();
@@ -66,28 +80,14 @@ const onClick = (point: LeafletSchoolType) => {
     nature: NatureEnum.etablissement,
   });
 
+  //TODO pourquoi cette condition ?
   if (!(1 < getLineUnderConstruction().stops.length)) {
     return;
   }
-
-  // TODO: check utility
-  // Highlight point ramassage
-  //TODO fix with new type model
-  // for (const associatedPoint of point.associatedPoints()) {
-  //   let element;
-  // // TODO find leafletSchool and identify leafletId
-  //   if ((element = linkMap.get(associatedPoint.idPoint)?.getElement())) {
-  //     renderAnimation(element);
-  //   }
-  // }
 };
 
-const onMouseOver = (point: LeafletSchoolType) => {
-  console.log(point);
-  // // TODO find leafletSchool IDs and identify leafletId
-  // setBlinkingStops(
-  //   point.associatedPoints().map((associatedPoint) => associatedPoint.id)
-  // );
+const onMouseOver = (school: LeafletSchoolType) => {
+  setBlinkingStops(school.associated.map((stop) => stop.id));
 };
 
 const onMouseOut = () => {

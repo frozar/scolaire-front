@@ -1,14 +1,17 @@
 import L from "leaflet";
 import { useStateAction } from "../../../../../StateAction";
 import { NatureEnum } from "../../../../../type";
+import { renderAnimation } from "../../animation";
 import { deselectAllBusLines } from "../../line/busLinesUtils";
 import Point from "../atom/Point";
 import {
   blinkingStops,
   deselectAllPoints,
+  linkMap,
   setBlinkingSchools,
 } from "../organism/Points";
-import { LeafletStopType, ramassages } from "../organism/PointsRamassage";
+import { getLeafletSchools } from "../organism/PointsEtablissement";
+import { LeafletStopType, getLeafletStops } from "../organism/PointsRamassage";
 
 const [
   ,
@@ -31,12 +34,24 @@ const maxRadius = 10;
 const rangeRadius = maxRadius - minRadius;
 
 const selectPointById = (id: number) =>
-  ramassages().map((point) => point.setSelected(id == point.idPoint));
+  getLeafletStops().map((point) => point.setSelected(id == point.leafletId));
 
 function onClick(point: LeafletStopType) {
+  // Highlight point schools
+  for (const associated of point.associated) {
+    let element;
+    const school = getLeafletSchools().filter(
+      (item) => item.id == associated.id
+    )[0];
+    if (school && (element = linkMap.get(school.leafletId)?.getElement())) {
+      renderAnimation(element);
+    }
+  }
+
   if (!isInAddLineMode()) {
     deselectAllBusLines();
     deselectAllPoints();
+    // point.setSelected(true);
     selectPointById(point.leafletId);
     return;
   }
@@ -50,27 +65,14 @@ function onClick(point: LeafletStopType) {
     nature: NatureEnum.ramassage,
   });
 
+  //TODO pourquoi cette condition ?
   if (!(1 < getLineUnderConstruction().stops.length)) {
     return;
   }
-
-  // Highlight point ramassage
-  //TODO fix with new type model
-  // for (const associatedPoint of point.associatedPoints()) {
-  //   let element;
-  // // TODO find leafletSchool and identify leafletId
-  //   if ((element = linkMap.get(associatedPoint.idPoint)?.getElement())) {
-  //     renderAnimation(element);
-  //   }
-  // }
 }
 
-const onMouseOver = (point: LeafletStopType) => {
-  console.log(point);
-  // // TODO find leafletSchool IDs and identify leafletId
-  // setBlinkingSchools(
-  //   point.associatedPoints().map((associatedPoint) => associatedPoint.id)
-  // );
+const onMouseOver = (stop: LeafletStopType) => {
+  setBlinkingSchools(stop.associated.map((school) => school.id));
 };
 
 const onMouseOut = () => {

@@ -2,8 +2,14 @@ import L from "leaflet";
 import { createEffect, createSignal, onMount } from "solid-js";
 import { EleveVersEtablissementType } from "../../../../../type";
 import { fetchEleveVersEtablissement } from "../../point.service";
-import PointsEtablissement, { etablissements } from "./PointsEtablissement";
-import PointsRamassage, { ramassages } from "./PointsRamassage";
+import PointsEtablissement, {
+  etablissements,
+  getLeafletSchools,
+} from "./PointsEtablissement";
+import PointsRamassage, {
+  getLeafletStops,
+  ramassages,
+} from "./PointsRamassage";
 
 export const linkMap = new Map<number, L.CircleMarker>();
 
@@ -19,10 +25,8 @@ export const [studentsToSchool, setStudentsToSchool] = createSignal<
 // TODO to delete post Xano
 
 export function deselectAllPoints() {
-  console.log("deselectAllPoints");
-
-  etablissements().map((point) => point.setSelected(false));
-  ramassages().map((point) => point.setSelected(false));
+  getLeafletSchools().map((point) => point.setSelected(false));
+  getLeafletStops().map((point) => point.setSelected(false));
 }
 export const [pointsReady, setPointsReady] = createSignal(false);
 
