@@ -15,7 +15,7 @@ import { initScreenshoter } from "./rightMapMenu/export/screenShoter";
 import { getTileById } from "./tileUtils";
 
 const [, { getSelectedReadModeTile, getSelectedEditModeTile }] = useStateGui();
-const [, { isInReadMode, isInAddLineMode }] = useStateAction();
+const [, { isInReadMode }] = useStateAction();
 
 function addLogoFlaxib(map: L.Map) {
   const logoControl = L.Control.extend({
@@ -76,19 +76,6 @@ export function buildMapL7(div: HTMLDivElement) {
 
   addLogoFlaxib(leafletMap);
   initScreenshoter();
-
-  // If a line is under construction, disable the possibility
-  // to pan the map
-  createEffect(() => {
-    const dragging = leafletMap.dragging;
-    if (dragging) {
-      if (isInAddLineMode()) {
-        dragging.disable();
-      } else {
-        dragging.enable();
-      }
-    }
-  });
 
   // The argument in the constructor of the 'L7Layer' is simply pass to
   // Leaflet Layer as options for the constructor
