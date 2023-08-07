@@ -1,18 +1,12 @@
 import L, { LeafletMouseEvent } from "leaflet";
 import { For, createSignal, onMount } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
-import { NatureEnum } from "../../../../../type";
-import { deselectAllBusLines } from "../../line/busLinesUtils";
 import { fetchSchool } from "../../point.service";
 import { PointIdentityType, PointInterface } from "../atom/Point";
 import PointEtablissement from "../molecule/PointEtablissement";
-import { deselectAllPoints, setBlinking, setBlinkingPoint } from "./Points";
 import { PointRamassageDBType } from "./PointsRamassage";
 
-const [
-  ,
-  { getLineUnderConstruction, isInAddLineMode, setLineUnderConstruction },
-] = useStateAction();
+const [, { getLineUnderConstruction, isInAddLineMode }] = useStateAction();
 
 type PointEtablissementDBType = PointRamassageDBType;
 
@@ -58,6 +52,7 @@ function PointBack2Front<T extends PointEtablissementDBType>(
 export interface PointsEtablissementProps {
   leafletMap: L.Map;
   mapId: number;
+  onDBLClick: (event: LeafletMouseEvent) => void;
   items?: PointInterface[];
 }
 
@@ -83,62 +78,6 @@ export default function (props: PointsEtablissementProps) {
     setEtablissements(etablissements);
     setPointsEtablissementReady(true);
   });
-
-  const selectPointById = (id: number) =>
-    etablissements().map((point) => point.setSelected(id == point.idPoint));
-
-  function onClick(point: PointInterface) {
-    // Select the current element to display information
-
-    if (!isInAddLineMode()) {
-      deselectAllBusLines();
-      deselectAllPoints();
-      selectPointById(point.idPoint);
-      return;
-    }
-
-    //TODO : move to PointEtablissement in click handler when used
-
-    const etablissementSelected =
-      getLineUnderConstruction().etablissementSelected;
-
-    const currentStops = [...getLineUnderConstruction().stops];
-
-    if (getLineUnderConstruction().confirmSelection) {
-      const pointIdentity = {
-        id: point.id,
-        idPoint: point.idPoint,
-        nature: NatureEnum.etablissement,
-      };
-
-      const index = getLineUnderConstruction().nextIndex;
-
-      currentStops.splice(index, 0, pointIdentity);
-    }
-
-    setLineUnderConstruction({
-      ...getLineUnderConstruction(),
-      etablissementSelected: !etablissementSelected
-        ? [point]
-        : etablissementSelected.concat(point),
-      stops: currentStops,
-      nextIndex: currentStops.length,
-    });
-
-    return;
-  }
-
-  const onDBLClick = (event: LeafletMouseEvent) => {
-    L.DomEvent.stopPropagation(event);
-  };
-
-  const onMouseOver = (point: PointInterface) => {
-    setBlinking(point.associatedPoints);
-  };
-
-  const onMouseOut = () => {
-    setBlinkingPoint([]);
-  };
 
   function etablissementFilter(): PointInterface[] {
     const isValidate = getLineUnderConstruction().confirmSelection;
@@ -167,10 +106,7 @@ export default function (props: PointsEtablissementProps) {
           <PointEtablissement
             point={point}
             map={props.leafletMap}
-            onClick={() => onClick(point)}
-            onDBLClick={onDBLClick}
-            onMouseOver={() => onMouseOver(point)}
-            onMouseOut={() => onMouseOut()}
+            onDBLClick={props.onDBLClick}
           />
         );
       }}

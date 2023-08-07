@@ -2,7 +2,6 @@ import { Meta, StoryObj } from "storybook-solidjs";
 
 import { initialiseMap } from "../../../../../../testing/utils/mapWrapper";
 
-import { LeafletMouseEvent } from "leaflet";
 import {
   createPoint,
   getDivFullId,
@@ -15,13 +14,6 @@ const meta = {
   component: PointEtablissementComponent,
   tags: ["autodocs"],
   decorators: mapDecorators,
-  argTypes: {
-    onClick: () => console.log("onClick"),
-    onDBLClick: (event: LeafletMouseEvent) =>
-      console.log("onDBLClick, event:", event),
-    onMouseOver: () => console.log("onMouseOver"),
-    onMouseOut: () => console.log("onMouseOut"),
-  },
 } satisfies Meta<typeof PointEtablissementComponent>;
 
 export default meta;

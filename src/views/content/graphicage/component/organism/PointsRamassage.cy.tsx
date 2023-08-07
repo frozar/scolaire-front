@@ -15,6 +15,7 @@ describe("PointsRamassage component", () => {
         <PointsRamassage
           mapId={2}
           leafletMap={initialiseMap("map-container", false)}
+          onDBLClick={() => console.log("onDBLClick")}
         />
       </div>
     ));

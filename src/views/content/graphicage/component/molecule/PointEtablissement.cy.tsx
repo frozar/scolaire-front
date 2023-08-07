@@ -17,12 +17,7 @@ describe("Checkbox component", () => {
             quantity: 5,
           })}
           map={initialiseMap("map-container", false)}
-          isLast={false}
-          onIsLast={() => console.log("onIsLast")}
-          onClick={() => console.log("onClick")}
-          onMouseOut={() => console.log("onMouseOut")}
           onDBLClick={() => console.log("onDBLClick")}
-          onMouseOver={() => console.log("onMouseOver")}
         />
       </div>
     ));

@@ -1,8 +1,6 @@
-import { LeafletMouseEvent } from "leaflet";
 import { Component, createSignal } from "solid-js";
 import { StoryContext } from "storybook-solidjs";
-import { useStateAction } from "../../src/StateAction";
-import { NatureEnum, PointIdentityType } from "../../src/type";
+import { PointIdentityType } from "../../src/type";
 import {
   PointInformation,
   PointInterface,
@@ -10,18 +8,6 @@ import {
 import PointEtablissement from "../../src/views/content/graphicage/component/molecule/PointEtablissement";
 import PointRamassage from "../../src/views/content/graphicage/component/molecule/PointRamassage";
 import { initialiseMap } from "./mapWrapper";
-const [, { addPointToLineUnderConstruction }] = useStateAction();
-
-//TODO replace this with the real handler
-function onClickHandler(point: PointIdentityType) {
-  const pointIdentity: PointIdentityType = {
-    id: point.id,
-    idPoint: point.idPoint,
-    nature: point.nature,
-  };
-
-  addPointToLineUnderConstruction(pointIdentity);
-}
 
 export const createPoint = (pointInformation: PointInformation) => {
   const [associatedPoint, setAssociatedPoint] = createSignal<
@@ -45,11 +31,14 @@ export const createPoint = (pointInformation: PointInformation) => {
   return point;
 };
 
-interface PointInformationWithMapID extends PointInformation {
+interface PointInformationWithMapInfos extends PointInformation {
   fullId: string;
+  withTiles: boolean;
 }
 
-export function createPointEtablissement(pointmap: PointInformationWithMapID) {
+export function createPointEtablissement(
+  pointmap: PointInformationWithMapInfos
+) {
   const point = createPoint({
     id: 1,
     idPoint: pointmap.idPoint as number,
@@ -62,24 +51,12 @@ export function createPointEtablissement(pointmap: PointInformationWithMapID) {
   return (
     <PointEtablissement
       point={point}
-      map={initialiseMap(pointmap.fullId)}
-      onClick={() => {
-        onClickHandler({
-          id: 50,
-          idPoint: pointmap.idPoint,
-          nature: NatureEnum.etablissement,
-        });
-      }}
-      onDBLClick={(event: LeafletMouseEvent) =>
-        console.log("onDBLClick, event:", event)
-      }
-      onMouseOver={() => console.log("onMouseOver")}
-      onMouseOut={() => console.log("onMouseOut")}
+      map={initialiseMap(pointmap.fullId, pointmap.withTiles)}
     />
   );
 }
 
-export function createPointRamassage(pointmap: PointInformationWithMapID) {
+export function createPointRamassage(pointmap: PointInformationWithMapInfos) {
   const point = createPoint({
     id: 1,
     idPoint: pointmap.idPoint,
@@ -93,19 +70,7 @@ export function createPointRamassage(pointmap: PointInformationWithMapID) {
       point={point}
       minQuantity={1}
       maxQuantity={25}
-      map={initialiseMap(pointmap.fullId)}
-      onClick={() =>
-        onClickHandler({
-          id: 51,
-          idPoint: pointmap.idPoint,
-          nature: NatureEnum.ramassage,
-        })
-      }
-      onDBLClick={(event: LeafletMouseEvent) =>
-        console.log("onDBLClick, event:", event)
-      }
-      onMouseOver={() => console.log("onMouseOver")}
-      onMouseOut={() => console.log("onMouseOut")}
+      map={initialiseMap(pointmap.fullId, pointmap.withTiles)}
     />
   );
 }
@@ -126,6 +91,7 @@ export const decorators = [
         <div id={fullId} style={{ width: "100%", height: "500px" }}>
           {createPointRamassage({
             fullId: fullId,
+            withTiles: true,
             id: 1,
             idPoint: 51,
             lat: -20.9465588303741,
@@ -136,6 +102,7 @@ export const decorators = [
           ,
           {createPointEtablissement({
             fullId: fullId,
+            withTiles: true,
             id: 1,
             idPoint: 50,
             lat: -20.9486587304741,

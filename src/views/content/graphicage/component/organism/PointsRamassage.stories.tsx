@@ -2,6 +2,7 @@ import { Meta, StoryObj } from "storybook-solidjs";
 
 import { initialiseMap } from "../../../../../../testing/utils/mapWrapper";
 
+import L, { LeafletMouseEvent } from "leaflet";
 import {
   createPoint,
   getDivFullId,
@@ -27,6 +28,10 @@ export const RamassagePoints: Story = {
         <RamassagePointsComponent
           leafletMap={initialiseMap(fullId)}
           mapId={2}
+          onDBLClick={(event: LeafletMouseEvent) => {
+            L.DomEvent.stopPropagation(event);
+            console.log("onDBLClick, event:", event);
+          }}
           items={[
             createPoint({
               id: 1,

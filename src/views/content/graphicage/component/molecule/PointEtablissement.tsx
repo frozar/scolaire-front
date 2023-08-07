@@ -1,26 +1,105 @@
-import { LeafletMouseEvent } from "leaflet";
+import L, { LeafletMouseEvent } from "leaflet";
+import { useStateAction } from "../../../../../StateAction";
+import { NatureEnum } from "../../../../../type";
+import { renderAnimation } from "../../animation";
+import { deselectAllBusLines } from "../../line/busLinesUtils";
 import Point, { PointInterface } from "../atom/Point";
-import { blinkingPoints } from "../organism/Points";
+import {
+  blinkingSchools,
+  deselectAllPoints,
+  linkMap,
+  setBlinkingStops,
+} from "../organism/Points";
+import { etablissements } from "../organism/PointsEtablissement";
+
+const [
+  ,
+  {
+    addPointToLineUnderConstruction,
+    getLineUnderConstruction,
+    isInAddLineMode,
+    setLineUnderConstruction,
+  },
+] = useStateAction();
 
 export interface PointEtablissementProps {
   point: PointInterface;
   map: L.Map;
-
-  onClick: () => void;
   onDBLClick: (event: LeafletMouseEvent) => void;
-  onMouseOver: () => void;
-  onMouseOut: () => void;
 }
+const selectPointById = (id: number) =>
+  etablissements().map((point) => point.setSelected(id == point.idPoint));
+
+const onClick = (point: PointInterface) => {
+  if (!isInAddLineMode()) {
+    deselectAllBusLines();
+    deselectAllPoints();
+    selectPointById(point.idPoint);
+    return;
+  }
+
+  const etablissementSelected =
+    getLineUnderConstruction().etablissementSelected;
+
+  if (!getLineUnderConstruction().confirmSelection) {
+    if (etablissementSelected?.find((p) => p.idPoint === point.idPoint)) {
+      return;
+    }
+    setLineUnderConstruction({
+      ...getLineUnderConstruction(),
+      etablissementSelected: !etablissementSelected
+        ? [point]
+        : etablissementSelected.concat(point),
+    });
+
+    return;
+  }
+
+  // TODO: check how manage line underconstuction with ramassages/etablissement signals
+  addPointToLineUnderConstruction({
+    id: point.id,
+    idPoint: point.idPoint,
+    nature: NatureEnum.etablissement,
+  });
+
+  if (!(1 < getLineUnderConstruction().stops.length)) {
+    return;
+  }
+
+  // TODO: check utility
+  // Highlight point ramassage
+  for (const associatedPoint of point.associatedPoints()) {
+    let element;
+    if ((element = linkMap.get(associatedPoint.idPoint)?.getElement())) {
+      renderAnimation(element);
+    }
+  }
+};
+
+const onMouseOver = (point: PointInterface) => {
+  setBlinkingStops(
+    point.associatedPoints().map((associatedPoint) => associatedPoint.id)
+  );
+};
+
+const onMouseOut = () => {
+  setBlinkingStops([]);
+};
 
 export default function (props: PointEtablissementProps) {
   return (
     <Point
-      {...props}
-      isBlinking={blinkingPoints().includes(props.point.idPoint)}
+      point={props.point}
+      map={props.map}
+      isBlinking={blinkingSchools().includes(props.point.id)}
       borderColor="green"
       fillColor="white"
       radius={12}
       weight={4}
+      onClick={() => onClick(props.point)}
+      onDBLClick={props.onDBLClick}
+      onMouseOver={() => onMouseOver(props.point)}
+      onMouseOut={() => onMouseOut()}
     />
   );
 }

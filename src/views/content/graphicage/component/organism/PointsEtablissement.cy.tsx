@@ -15,6 +15,7 @@ describe("PointsEtablissement component", () => {
         <PointEtablissement
           mapId={2}
           leafletMap={initialiseMap("map-container", false)}
+          onDBLClick={() => console.log("onDBLClick")}
         />
       </div>
     )).as("component");

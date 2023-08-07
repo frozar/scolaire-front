@@ -2,16 +2,11 @@ import L, { LeafletMouseEvent } from "leaflet";
 import { For, createSignal, onMount } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import { NatureEnum, PointIdentityType } from "../../../../../type";
-import { deselectAllBusLines } from "../../line/busLinesUtils";
 import { fetchStop } from "../../point.service";
 import { PointInterface } from "../atom/Point";
 import PointRamassage from "../molecule/PointRamassage";
-import { deselectAllPoints, setBlinking, setBlinkingPoint } from "./Points";
 
-const [
-  ,
-  { getLineUnderConstruction, setLineUnderConstruction, isInAddLineMode },
-] = useStateAction();
+const [, { getLineUnderConstruction, isInAddLineMode }] = useStateAction();
 
 export type PointRamassageDBType = {
   id: number;
@@ -68,6 +63,7 @@ function PointBack2Front<T extends PointRamassageDBType>(
 export interface RamassagePointsProps {
   leafletMap: L.Map;
   mapId: number;
+  onDBLClick: (event: LeafletMouseEvent) => void;
   items?: PointInterface[];
 }
 
@@ -92,61 +88,6 @@ export default function (props: RamassagePointsProps) {
     setRamassages(ramassages);
     setPointsRamassageReady(true);
   });
-
-  const selectPointById = (id: number) =>
-    ramassages().map((point) => point.setSelected(id == point.idPoint));
-
-  function onClick(point: PointInterface) {
-    // Select the current element to display information
-    if (!isInAddLineMode()) {
-      deselectAllBusLines();
-      deselectAllPoints();
-      selectPointById(point.idPoint);
-      return;
-    }
-
-    //TODO : move to PointEtablissement in click handler when used
-
-    const etablissementSelected =
-      getLineUnderConstruction().etablissementSelected;
-
-    const currentStops = [...getLineUnderConstruction().stops];
-
-    if (getLineUnderConstruction().confirmSelection) {
-      const pointIdentity = {
-        id: point.id,
-        idPoint: point.idPoint,
-        nature: NatureEnum.ramassage,
-      };
-
-      const index = getLineUnderConstruction().nextIndex;
-
-      currentStops.splice(index, 0, pointIdentity);
-    }
-
-    setLineUnderConstruction({
-      ...getLineUnderConstruction(),
-      etablissementSelected: !etablissementSelected
-        ? [point]
-        : etablissementSelected.concat(point),
-      stops: currentStops,
-      nextIndex: currentStops.length,
-    });
-
-    return;
-  }
-
-  function onDBLClick(event: LeafletMouseEvent) {
-    L.DomEvent.stopPropagation(event);
-  }
-
-  const onMouseOver = (point: PointInterface) => {
-    setBlinking(point.associatedPoints);
-  };
-
-  const onMouseOut = () => {
-    setBlinkingPoint([]);
-  };
 
   const quantities = () => {
     return ramassages()
@@ -192,12 +133,9 @@ export default function (props: RamassagePointsProps) {
           <PointRamassage
             point={point}
             map={props.leafletMap}
+            onDBLClick={props.onDBLClick}
             minQuantity={minQuantity()}
             maxQuantity={maxQuantity()}
-            onClick={() => onClick(point)}
-            onDBLClick={onDBLClick}
-            onMouseOver={() => onMouseOver(point)}
-            onMouseOut={() => onMouseOut()}
           />
         );
       }}

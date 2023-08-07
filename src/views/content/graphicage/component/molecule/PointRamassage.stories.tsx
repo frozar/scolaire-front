@@ -2,7 +2,6 @@ import { Meta, StoryObj } from "storybook-solidjs";
 
 import { initialiseMap } from "../../../../../../testing/utils/mapWrapper";
 
-import { LeafletMouseEvent } from "leaflet";
 import { splitProps } from "solid-js";
 import {
   createPoint,
@@ -16,13 +15,6 @@ const meta = {
   component: PointRamassageComponent,
   tags: ["autodocs"],
   decorators: mapDecorators,
-  argTypes: {
-    onClick: () => console.log("onClick"),
-    onDBLClick: (event: LeafletMouseEvent) =>
-      console.log("onDBLClick, event:", event),
-    onMouseOver: () => console.log("onMouseOver"),
-    onMouseOut: () => console.log("onMouseOut"),
-  },
 } satisfies Meta<typeof PointRamassageComponent>;
 
 export default meta;
