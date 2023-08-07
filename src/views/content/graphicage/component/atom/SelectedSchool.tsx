@@ -1,6 +1,7 @@
-import { For, Show } from "solid-js";
+import { For } from "solid-js";
 import { PointInformation } from "./Point";
 import "./SelectedSchool.css";
+import SelectedSchoolItem from "./SelectedSchoolItem";
 
 interface SelectedEtablissementProps {
   schoolSelected: PointInformation[];
@@ -11,17 +12,17 @@ export default function (props: SelectedEtablissementProps) {
 
   return (
     <div class="selected-school">
-      <Show
+      {/* <Show
         when={schoolSelected().length > 0}
-        fallback={<p>sélectionnez des établissements</p>}
+        fallback={<p>Sélectionnez des établissements</p>}
       >
         <p>Etablissements sélectionnés:</p>
-      </Show>
-      <ul>
-        <For each={schoolSelected()}>
-          {(etablissement) => <li>{etablissement.name}</li>}
-        </For>
-      </ul>
+      </Show> */}
+      <For each={schoolSelected()}>
+        {(etablissement) => {
+          return <SelectedSchoolItem etablissement={etablissement} />;
+        }}
+      </For>
     </div>
   );
 }

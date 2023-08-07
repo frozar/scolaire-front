@@ -6,6 +6,7 @@ import TimelineAddMode from "../../informationBoard/TimelineAddMode";
 import { lineUnderConstructionStopNames } from "../../line/busLinesUtils";
 import BuildLineButton from "../atom/BuildLineButton";
 import SelectedSchool from "../atom/SelectedSchool";
+import SelectedSchoolItem from "../atom/SelectedSchoolItem";
 
 const [
   ,
@@ -37,7 +38,19 @@ export default function () {
     <>
       <div class="mb-2 flex mr-3 w-full justify-between items-center p-2">
         <p />
-        <p>Création d'une ligne</p>
+        <Show
+          when={
+            etablissementSelected() &&
+            etablissementSelected()?.length != 0 &&
+            getLineUnderConstruction().confirmSelection
+          }
+          fallback={<p>Sélectionner un établissement</p>}
+        >
+          <SelectedSchoolItem
+            etablissement={etablissementSelected()[0] as PointRamassageType}
+          />
+        </Show>
+
         <BuildLineButton
           clickHandler={buildLineClickHandler}
           disabled={!isValidate()}

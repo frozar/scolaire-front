@@ -45,11 +45,14 @@ const onClick = (point: PointInterface) => {
     if (etablissementSelected?.find((p) => p.idPoint === point.idPoint)) {
       return;
     }
+    // TODO Selected multiple etablissement
+    // const etablissementsSelected = !etablissementSelected
+    //   ? [point]
+    //   : etablissementSelected.concat(point);
+
     setLineUnderConstruction({
       ...getLineUnderConstruction(),
-      etablissementSelected: !etablissementSelected
-        ? [point]
-        : etablissementSelected.concat(point),
+      etablissementSelected: [point],
     });
 
     return;
