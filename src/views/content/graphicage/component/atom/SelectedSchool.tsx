@@ -12,12 +12,6 @@ export default function (props: SelectedEtablissementProps) {
 
   return (
     <div class="selected-school">
-      {/* <Show
-        when={schoolSelected().length > 0}
-        fallback={<p>Sélectionnez des établissements</p>}
-      >
-        <p>Etablissements sélectionnés:</p>
-      </Show> */}
       <For each={schoolSelected()}>
         {(etablissement) => {
           return <SelectedSchoolItem etablissement={etablissement} />;
