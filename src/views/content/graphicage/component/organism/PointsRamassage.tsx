@@ -1,100 +1,46 @@
-import L, { LeafletMouseEvent } from "leaflet";
-import { For, createSignal, onMount } from "solid-js";
+import L from "leaflet";
+import { Accessor, For, Setter, createSignal, onMount } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
-import { NatureEnum, PointIdentityType } from "../../../../../type";
-import { fetchStop } from "../../point.service";
+import { useStateGui } from "../../../../../StateGui";
+import { StopType } from "../../../../../_entities/stop.entity";
+import { StopService } from "../../../../../_services/stop.service";
 import { PointInterface } from "../atom/Point";
 import PointRamassage from "../molecule/PointRamassage";
 
 const [, { getLineUnderConstruction, isInAddLineMode }] = useStateAction();
+const [, { nextLeafletPointId }] = useStateGui();
 
-export type PointRamassageDBType = {
-  id: number;
-  id_point: number;
-  nature: NatureEnum;
-  lon: number;
-  lat: number;
-  name: string;
-  quantity: number;
-};
-
-type PointRamassageCoreType = Omit<PointRamassageDBType, "id_point"> & {
-  idPoint: number;
-};
-
-function PointBack2FrontIdPoint(
-  data: PointRamassageDBType
-): PointRamassageCoreType {
-  const dataWk = {
-    ...data,
-    idPoint: data.id_point,
-  } as PointRamassageCoreType & { id_point?: number };
-  delete dataWk["id_point"];
-
-  console.assert(dataWk["idPoint"] != undefined, "idPoint is undefined");
-
-  return dataWk;
-}
-
-function PointBack2Front<T extends PointRamassageDBType>(
-  datas: T[]
-): PointInterface[] {
-  return (
-    datas
-      // Rename "id_point" -> "idPoint"
-      .map((data) => PointBack2FrontIdPoint(data))
-      // Add signal "selected"
-      .map((data) => {
-        const [selected, setSelected] = createSignal(false);
-        const [associatedPoints, setAssociatedPoints] = createSignal<
-          PointIdentityType[]
-        >([]);
-        return {
-          ...data,
-          selected,
-          setSelected,
-          associatedPoints,
-          setAssociatedPoints,
-        } as PointInterface;
-      })
-  );
-}
-
-export interface RamassagePointsProps {
+export interface StopPointsProps {
   leafletMap: L.Map;
   mapId: number;
-  onDBLClick: (event: LeafletMouseEvent) => void;
-  items?: PointInterface[];
+
+  // TODO Utilisé pour les test et les story, possibilité de s'en passer ? Mocker ?
+  items?: LeafletStopType[];
 }
 
+export const [getLeafletStops, setLeafletStops] = createSignal<
+  LeafletStopType[]
+>([]);
+
+// TODO to delete and all reference
 export const [ramassages, setRamassages] = createSignal<PointInterface[]>([]);
 
-// TODO: check if necessary (similar feature already existing !)
-export const [pointsRamassageReady, setPointsRamassageReady] =
-  createSignal(false);
-
-export default function (props: RamassagePointsProps) {
+export default function (props: StopPointsProps) {
   onMount(async () => {
-    let ramassages;
-
+    let leafletStops: LeafletStopType[];
     if (!props.items) {
-      ramassages = PointBack2Front(
-        await fetchStop(props.mapId)
-      ) as PointInterface[];
+      const stops: StopType[] = await StopService.getAll();
+      leafletStops = buildLeafletStops(stops);
     } else {
-      ramassages = props.items;
+      leafletStops = props.items;
     }
-
-    setRamassages(ramassages);
-    setPointsRamassageReady(true);
+    setLeafletStops(leafletStops);
   });
 
   const quantities = () => {
-    return ramassages()
-      .filter((value) => Number.isFinite(value.quantity))
-      .map((value) => {
-        return value.quantity;
-      }) as number[];
+    return getLeafletStops().map((stop) => {
+      return stop.associated.reduce((acc, stop) => acc + stop.quantity, 0);
+    }) as number[];
   };
 
   const minQuantity = () => {
@@ -108,13 +54,12 @@ export default function (props: RamassagePointsProps) {
   };
 
   return (
-    <For each={ramassageFilter()}>
+    <For each={leafletStopsFilter()}>
       {(point) => {
         return (
           <PointRamassage
             point={point}
             map={props.leafletMap}
-            onDBLClick={props.onDBLClick}
             minQuantity={minQuantity()}
             maxQuantity={maxQuantity()}
           />
@@ -124,22 +69,40 @@ export default function (props: RamassagePointsProps) {
   );
 }
 
+export type LeafletStopType = {
+  leafletId: number;
+  // TODO check utility
+  selected: Accessor<boolean>;
+  setSelected: Setter<boolean>;
+} & StopType;
+
 // TODO to improve
-export function ramassageFilter(): PointInterface[] {
+export function leafletStopsFilter(): LeafletStopType[] {
   const etablissement = getLineUnderConstruction().etablissementSelected;
   const isValidate = getLineUnderConstruction().confirmSelection;
 
-  let ramassagesToReturn = ramassages();
+  let stops = getLeafletStops();
 
   if (isInAddLineMode() && etablissement) {
-    ramassagesToReturn = ramassages().filter((value) =>
-      value
-        .associatedPoints()
-        .some((elt) =>
-          etablissement.find((e) => e.idPoint === elt.idPoint && isValidate)
-        )
+    stops = stops.filter((stop) =>
+      stop.associated.some((school) =>
+        etablissement.find((e) => e.id === school.id && isValidate)
+      )
     );
   }
 
-  return ramassagesToReturn as PointInterface[];
+  return stops;
+}
+
+function buildLeafletStops(stops: StopType[]): LeafletStopType[] {
+  // TODO ununderstood lint error
+  return stops.map((stop) => {
+    const [selected, setSelected] = createSignal(false);
+    return {
+      ...stop,
+      setSelected,
+      selected,
+      leafletId: nextLeafletPointId(),
+    };
+  });
 }

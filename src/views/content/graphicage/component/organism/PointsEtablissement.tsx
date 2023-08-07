@@ -1,84 +1,48 @@
-import L, { LeafletMouseEvent } from "leaflet";
-import { For, createSignal, onMount } from "solid-js";
+import L from "leaflet";
+import { Accessor, For, Setter, createSignal, onMount } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
-import { fetchSchool } from "../../point.service";
-import { PointIdentityType, PointInterface } from "../atom/Point";
+import { useStateGui } from "../../../../../StateGui";
+import { SchoolType } from "../../../../../_entities/school.entity";
+import { StopType } from "../../../../../_entities/stop.entity";
+import { SchoolService } from "../../../../../_services/school.service";
+import { PointInterface } from "../atom/Point";
 import PointEtablissement from "../molecule/PointEtablissement";
-import { PointRamassageDBType } from "./PointsRamassage";
+
+const [, { nextLeafletPointId }] = useStateGui();
 
 const [, { getLineUnderConstruction, isInAddLineMode }] = useStateAction();
-
-type PointEtablissementDBType = PointRamassageDBType;
-
-type PointEtablissementCoreType = Omit<PointEtablissementDBType, "id_point"> & {
-  idPoint: number;
-};
-
-function PointBack2FrontIdPoint(
-  data: PointEtablissementDBType
-): PointEtablissementCoreType {
-  const dataWk = {
-    ...data,
-    idPoint: data.id_point,
-  } as PointEtablissementCoreType & { id_point?: number };
-  delete dataWk["id_point"];
-  return dataWk;
-}
-
-function PointBack2Front<T extends PointEtablissementDBType>(
-  datas: T[]
-): PointInterface[] {
-  return (
-    datas
-      // Rename "id_point" -> "idPoint"
-      .map((data) => PointBack2FrontIdPoint(data))
-      // Add signal "selected"
-      .map((data) => {
-        const [selected, setSelected] = createSignal(false);
-        const [associatedPoints, setAssociatedPoints] = createSignal<
-          PointIdentityType[]
-        >([]);
-        return {
-          ...data,
-          selected,
-          setSelected,
-          associatedPoints,
-          setAssociatedPoints,
-        } as PointInterface;
-      })
-  );
-}
 
 export interface PointsEtablissementProps {
   leafletMap: L.Map;
   mapId: number;
-  onDBLClick: (event: LeafletMouseEvent) => void;
-  items?: PointInterface[];
+
+  // TODO Utilisé pour les test et les story, possibilité de s'en passer ? Mocker ?
+  items?: LeafletSchoolType[];
 }
 
+export const [getLeafletSchools, setLeafletSchools] = createSignal<
+  LeafletSchoolType[]
+>([]);
+
+// TODO to delete and all reference
 export const [etablissements, setEtablissements] = createSignal<
   PointInterface[]
 >([]);
 
-// TODO: check if necessary (similar feature already existing !)
-export const [pointsEtablissementReady, setPointsEtablissementReady] =
-  createSignal(false);
-
 export default function (props: PointsEtablissementProps) {
   onMount(async () => {
-    let etablissements;
-
+    let leafletSchools: LeafletSchoolType[];
     if (!props.items) {
-      etablissements = PointBack2Front(
-        await fetchSchool(props.mapId)
-      ) as PointInterface[];
+      const schools: SchoolType[] = await SchoolService.getAll();
+      leafletSchools = buildLeafletSchools(schools);
     } else {
-      etablissements = props.items;
+      leafletSchools = props.items;
     }
-    setEtablissements(etablissements);
-    setPointsEtablissementReady(true);
+    setLeafletSchools(leafletSchools);
   });
 
+  console.log(etablissementFilter());
+  //TODO to change
   function etablissementFilter(): PointInterface[] {
     const isValidate = getLineUnderConstruction().confirmSelection;
 
@@ -100,16 +64,30 @@ export default function (props: PointsEtablissementProps) {
   }
 
   return (
-    <For each={etablissementFilter()}>
+    <For each={getLeafletSchools()}>
       {(point) => {
-        return (
-          <PointEtablissement
-            point={point}
-            map={props.leafletMap}
-            onDBLClick={props.onDBLClick}
-          />
-        );
+        return <PointEtablissement point={point} map={props.leafletMap} />;
       }}
     </For>
   );
+}
+
+export type LeafletSchoolType = {
+  leafletId: number;
+  // TODO check utility
+  selected: Accessor<boolean>;
+  setSelected: Setter<boolean>;
+} & StopType;
+
+function buildLeafletSchools(schools: SchoolType[]): LeafletSchoolType[] {
+  // TODO ununderstood lint error
+  return schools.map((school) => {
+    const [selected, setSelected] = createSignal(false);
+    return {
+      ...school,
+      setSelected,
+      selected,
+      leafletId: nextLeafletPointId(),
+    };
+  });
 }

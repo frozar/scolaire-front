@@ -1,16 +1,17 @@
-import L, { LeafletMouseEvent } from "leaflet";
+import L from "leaflet";
 import { useStateAction } from "../../../../../StateAction";
 import { NatureEnum } from "../../../../../type";
-import { renderAnimation } from "../../animation";
 import { deselectAllBusLines } from "../../line/busLinesUtils";
-import Point, { PointInterface } from "../atom/Point";
+import Point from "../atom/Point";
 import {
   blinkingSchools,
   deselectAllPoints,
-  linkMap,
   setBlinkingStops,
 } from "../organism/Points";
-import { etablissements } from "../organism/PointsEtablissement";
+import {
+  LeafletSchoolType,
+  etablissements,
+} from "../organism/PointsEtablissement";
 
 const [
   ,
@@ -18,23 +19,21 @@ const [
     addPointToLineUnderConstruction,
     getLineUnderConstruction,
     isInAddLineMode,
-    setLineUnderConstruction,
   },
 ] = useStateAction();
 
 export interface PointEtablissementProps {
-  point: PointInterface;
+  point: LeafletSchoolType;
   map: L.Map;
-  onDBLClick: (event: LeafletMouseEvent) => void;
 }
 const selectPointById = (id: number) =>
   etablissements().map((point) => point.setSelected(id == point.idPoint));
 
-const onClick = (point: PointInterface) => {
+const onClick = (point: LeafletSchoolType) => {
   if (!isInAddLineMode()) {
     deselectAllBusLines();
     deselectAllPoints();
-    selectPointById(point.idPoint);
+    selectPointById(point.leafletId);
     return;
   }
 
@@ -42,26 +41,28 @@ const onClick = (point: PointInterface) => {
     getLineUnderConstruction().etablissementSelected;
 
   if (!getLineUnderConstruction().confirmSelection) {
-    if (etablissementSelected?.find((p) => p.idPoint === point.idPoint)) {
+    if (etablissementSelected?.find((p) => p.id === point.id)) {
       return;
     }
-    // TODO Selected multiple etablissement
+    // TODO Uncomment to add "Select multiple etablissement"
     // const etablissementsSelected = !etablissementSelected
     //   ? [point]
     //   : etablissementSelected.concat(point);
 
-    setLineUnderConstruction({
-      ...getLineUnderConstruction(),
-      etablissementSelected: [point],
-    });
+    // TODO
+    // setLineUnderConstruction({
+    //   ...getLineUnderConstruction(),
+    //   etablissementSelected: [point],
+    // });
 
     return;
   }
 
   // TODO: check how manage line underconstuction with ramassages/etablissement signals
+  // TODO utility ?
   addPointToLineUnderConstruction({
     id: point.id,
-    idPoint: point.idPoint,
+    idPoint: point.leafletId,
     nature: NatureEnum.etablissement,
   });
 
@@ -71,18 +72,22 @@ const onClick = (point: PointInterface) => {
 
   // TODO: check utility
   // Highlight point ramassage
-  for (const associatedPoint of point.associatedPoints()) {
-    let element;
-    if ((element = linkMap.get(associatedPoint.idPoint)?.getElement())) {
-      renderAnimation(element);
-    }
-  }
+  //TODO fix with new type model
+  // for (const associatedPoint of point.associatedPoints()) {
+  //   let element;
+  // // TODO find leafletSchool and identify leafletId
+  //   if ((element = linkMap.get(associatedPoint.idPoint)?.getElement())) {
+  //     renderAnimation(element);
+  //   }
+  // }
 };
 
-const onMouseOver = (point: PointInterface) => {
-  setBlinkingStops(
-    point.associatedPoints().map((associatedPoint) => associatedPoint.id)
-  );
+const onMouseOver = (point: LeafletSchoolType) => {
+  console.log(point);
+  // // TODO find leafletSchool IDs and identify leafletId
+  // setBlinkingStops(
+  //   point.associatedPoints().map((associatedPoint) => associatedPoint.id)
+  // );
 };
 
 const onMouseOut = () => {
@@ -100,7 +105,6 @@ export default function (props: PointEtablissementProps) {
       radius={12}
       weight={4}
       onClick={() => onClick(props.point)}
-      onDBLClick={props.onDBLClick}
       onMouseOver={() => onMouseOver(props.point)}
       onMouseOut={() => onMouseOut()}
     />

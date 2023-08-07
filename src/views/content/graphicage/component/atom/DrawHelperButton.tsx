@@ -6,11 +6,11 @@ import {
   DrawHelperDataType,
   GraphicageService,
 } from "../../../../../_services/graphicage.service";
-import { ramassageFilter } from "../organism/PointsRamassage";
 
 const [, { setPointsToLineUnderConstruction }] = useStateAction();
 
 import { NatureEnum } from "../../../../../type";
+import { leafletStopsFilter } from "../organism/PointsRamassage";
 import "./DrawHelperButton.css";
 
 interface DrawHelperButtonProps {
@@ -31,7 +31,7 @@ export function DrawHelperButton(props: DrawHelperButtonProps) {
       JSON.stringify(getLineUnderConstruction().stops)
     );
 
-    const stops = ramassageFilter();
+    const stops = leafletStopsFilter();
 
     const data: DrawHelperDataType = {
       schools: schools,

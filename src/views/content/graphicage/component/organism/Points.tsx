@@ -1,8 +1,7 @@
-import L, { LeafletMouseEvent } from "leaflet";
+import L from "leaflet";
 import { createEffect, createSignal, onMount } from "solid-js";
-import { EleveVersEtablissementType, NatureEnum } from "../../../../../type";
+import { EleveVersEtablissementType } from "../../../../../type";
 import { fetchEleveVersEtablissement } from "../../point.service";
-import { PointInterface } from "../atom/Point";
 import PointsEtablissement, { etablissements } from "./PointsEtablissement";
 import PointsRamassage, { ramassages } from "./PointsRamassage";
 
@@ -17,46 +16,7 @@ export const [studentsToSchool, setStudentsToSchool] = createSignal<
   EleveVersEtablissementType[]
 >([]);
 
-const onDBLClick = (event: LeafletMouseEvent) => {
-  L.DomEvent.stopPropagation(event);
-};
-
-const setupAssociations = (points: PointInterface[], nature: NatureEnum) => {
-  for (const point of points) {
-    const associatedPoints = studentsToSchool().filter(
-      (elt) =>
-        point.id ===
-        (nature === NatureEnum.ramassage
-          ? elt.ramassage_id
-          : elt.etablissement_id)
-    );
-
-    point.setAssociatedPoints(
-      associatedPoints.map((elt) => {
-        const associatedId =
-          nature === NatureEnum.ramassage
-            ? elt.etablissement_id
-            : elt.ramassage_id;
-
-        const associatedNature =
-          nature === NatureEnum.ramassage
-            ? NatureEnum.etablissement
-            : NatureEnum.ramassage;
-
-        const id_point =
-          associatedNature === NatureEnum.etablissement
-            ? elt.etablissement_id_point
-            : elt.ramassage_id_point;
-
-        return {
-          id: associatedId,
-          idPoint: id_point,
-          nature: associatedNature,
-        };
-      })
-    );
-  }
-};
+// TODO to delete post Xano
 
 export function deselectAllPoints() {
   console.log("deselectAllPoints");
@@ -73,6 +33,7 @@ interface PointsProps {
 }
 
 export default function (props: PointsProps) {
+  // TODO to delete post Xano
   onMount(async () => {
     setStudentsToSchool(await fetchEleveVersEtablissement(props.mapId));
   });
@@ -93,24 +54,17 @@ export default function (props: PointsProps) {
       return;
     }
 
-    setupAssociations(etablissements(), NatureEnum.etablissement);
-    setupAssociations(ramassages(), NatureEnum.ramassage);
+    // TODO to delete post Xano
+    // setupAssociations(etablissements(), NatureEnum.etablissement);
+    // setupAssociations(ramassages(), NatureEnum.ramassage);
 
     setPointsReady(true);
   });
   // TODO: Fix ramassages displayed over etalbissements
   return (
     <div>
-      <PointsEtablissement
-        leafletMap={props.leafletMap}
-        mapId={props.mapId}
-        onDBLClick={onDBLClick}
-      />
-      <PointsRamassage
-        leafletMap={props.leafletMap}
-        mapId={props.mapId}
-        onDBLClick={onDBLClick}
-      />
+      <PointsEtablissement leafletMap={props.leafletMap} mapId={props.mapId} />
+      <PointsRamassage leafletMap={props.leafletMap} mapId={props.mapId} />
     </div>
   );
 }

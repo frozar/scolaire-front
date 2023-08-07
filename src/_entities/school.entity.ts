@@ -43,3 +43,7 @@ export type SchoolDBType = {
   location: LocationDBType;
   associated: AssociatedDBPointType[];
 };
+
+export type LeafletShoolType = SchoolType & {
+  idPoint: number;
+};

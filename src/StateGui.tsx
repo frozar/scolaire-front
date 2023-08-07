@@ -13,6 +13,7 @@ type StateGuiType = {
   selectedReadModeTile: TileId;
   selectedEditModeTile: TileId;
   displayedInformationBoard: boolean;
+  nextLeafletPointId: number;
 };
 
 // Documentation link:
@@ -51,9 +52,16 @@ const makeStateGuiContext = () => {
     selectedReadModeTile: "OpenStreetMap_Mapnik",
     selectedEditModeTile: "Stadia_AlidadeSmoothDark",
     displayedInformationBoard: false,
+    nextLeafletPointId: 0,
   };
 
   const [state, setState] = createLocalStore(defaultStateGui);
+
+  function nextLeafletPointId(): number {
+    const nextLeafletPointId = state.nextLeafletPointId;
+    setState("nextLeafletPointId", nextLeafletPointId + 1);
+    return nextLeafletPointId;
+  }
 
   function toggleDisplayedLeftMenu() {
     setState("displayedLeftMenu", (currentValue: boolean) => !currentValue);
@@ -146,6 +154,7 @@ const makeStateGuiContext = () => {
       getDisplayedInformationBoard,
       toggleDisplayedInformationBoard,
       setDisplayedInformationBoard,
+      nextLeafletPointId,
     },
   ] as const;
 };

@@ -1,16 +1,14 @@
-import L, { LeafletMouseEvent } from "leaflet";
+import L from "leaflet";
 import { useStateAction } from "../../../../../StateAction";
 import { NatureEnum } from "../../../../../type";
-import { renderAnimation } from "../../animation";
 import { deselectAllBusLines } from "../../line/busLinesUtils";
-import Point, { PointInterface } from "../atom/Point";
+import Point from "../atom/Point";
 import {
   blinkingStops,
   deselectAllPoints,
-  linkMap,
   setBlinkingSchools,
 } from "../organism/Points";
-import { ramassages } from "../organism/PointsRamassage";
+import { LeafletStopType, ramassages } from "../organism/PointsRamassage";
 
 const [
   ,
@@ -22,9 +20,8 @@ const [
 ] = useStateAction();
 
 export interface PointRamassageProps {
-  point: PointInterface;
+  point: LeafletStopType;
   map: L.Map;
-  onDBLClick: (event: LeafletMouseEvent) => void;
 
   minQuantity: number;
   maxQuantity: number;
@@ -36,19 +33,20 @@ const rangeRadius = maxRadius - minRadius;
 const selectPointById = (id: number) =>
   ramassages().map((point) => point.setSelected(id == point.idPoint));
 
-function onClick(point: PointInterface) {
+function onClick(point: LeafletStopType) {
   if (!isInAddLineMode()) {
     deselectAllBusLines();
     deselectAllPoints();
-    selectPointById(point.idPoint);
+    selectPointById(point.leafletId);
     return;
   }
 
   // TODO: when add line with an etablissement point the line destroy after next point click
   // Wait Richard/Hugo finish the line underconstruction
+  // TODO utility ?
   addPointToLineUnderConstruction({
     id: point.id,
-    idPoint: point.idPoint,
+    idPoint: point.leafletId,
     nature: NatureEnum.ramassage,
   });
 
@@ -57,18 +55,22 @@ function onClick(point: PointInterface) {
   }
 
   // Highlight point ramassage
-  for (const associatedPoint of point.associatedPoints()) {
-    let element;
-    if ((element = linkMap.get(associatedPoint.idPoint)?.getElement())) {
-      renderAnimation(element);
-    }
-  }
+  //TODO fix with new type model
+  // for (const associatedPoint of point.associatedPoints()) {
+  //   let element;
+  // // TODO find leafletSchool and identify leafletId
+  //   if ((element = linkMap.get(associatedPoint.idPoint)?.getElement())) {
+  //     renderAnimation(element);
+  //   }
+  // }
 }
 
-const onMouseOver = (point: PointInterface) => {
-  setBlinkingSchools(
-    point.associatedPoints().map((associatedPoint) => associatedPoint.id)
-  );
+const onMouseOver = (point: LeafletStopType) => {
+  console.log(point);
+  // // TODO find leafletSchool IDs and identify leafletId
+  // setBlinkingSchools(
+  //   point.associatedPoints().map((associatedPoint) => associatedPoint.id)
+  // );
 };
 
 const onMouseOut = () => {
@@ -78,12 +80,16 @@ const onMouseOut = () => {
 export default function (props: PointRamassageProps) {
   const rad = (): number => {
     let radiusValue = minRadius;
+    const quantity = props.point.associated.reduce(
+      (acc, stop) => acc + stop.quantity,
+      0
+    );
 
-    if (props.point.quantity && props.maxQuantity && props.minQuantity) {
+    if (quantity && props.maxQuantity && props.minQuantity) {
       const coef =
         props.minQuantity == props.maxQuantity
           ? 0
-          : (props.point.quantity - props.minQuantity) /
+          : (quantity - props.minQuantity) /
             (props.maxQuantity - props.minQuantity);
 
       radiusValue += coef * rangeRadius;
@@ -102,7 +108,6 @@ export default function (props: PointRamassageProps) {
       radius={rad()}
       weight={2}
       onClick={() => onClick(props.point)}
-      onDBLClick={props.onDBLClick}
       onMouseOver={() => onMouseOver(props.point)}
       onMouseOut={() => onMouseOut()}
     />
