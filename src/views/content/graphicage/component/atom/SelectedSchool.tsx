@@ -1,10 +1,10 @@
 import { For } from "solid-js";
-import { PointInformation } from "./Point";
+import { LeafletSchoolType } from "../organism/PointsEtablissement";
 import "./SelectedSchool.css";
 import SelectedSchoolItem from "./SelectedSchoolItem";
 
 interface SelectedEtablissementProps {
-  schoolSelected: PointInformation[];
+  schoolSelected: LeafletSchoolType[];
 }
 
 export default function (props: SelectedEtablissementProps) {

@@ -1,3 +1,4 @@
+import { NatureEnum } from "../type";
 import {
   AssociatedDBPointType,
   AssociatedPointType,
@@ -12,7 +13,7 @@ export class SchoolEntity {
       lon: dbSchool.location.data.lng,
       lat: dbSchool.location.data.lat,
       name: dbSchool.name,
-      selected: false,
+      nature: NatureEnum.school,
       associated: EntityUtils.formatAssociatedPoints(dbSchool.associated),
     };
   }
@@ -32,9 +33,8 @@ export type SchoolType = {
   name: string;
   lon: number;
   lat: number;
-  //TODO utility of this prop ?
-  selected: boolean;
   associated: AssociatedPointType[];
+  nature: NatureEnum;
 };
 
 export type SchoolDBType = {

@@ -1,5 +1,4 @@
-import { PointIdentityType } from "../type";
-import { PointInformation } from "../views/content/graphicage/component/atom/Point";
+import { LeafletSchoolType } from "../views/content/graphicage/component/organism/PointsEtablissement";
 import { LeafletStopType } from "../views/content/graphicage/component/organism/PointsRamassage";
 import { connexionError, manageStatusCode } from "./_utils.service";
 
@@ -28,7 +27,7 @@ export class GraphicageService {
 }
 
 export type DrawHelperDataType = {
-  schools: PointInformation[];
-  selected: PointIdentityType[];
+  schools: LeafletSchoolType[];
+  selected: (LeafletStopType | LeafletSchoolType)[];
   stops: LeafletStopType[];
 };

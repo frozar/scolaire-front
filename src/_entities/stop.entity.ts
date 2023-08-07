@@ -1,3 +1,4 @@
+import { NatureEnum } from "../type";
 import {
   AssociatedDBPointType,
   AssociatedPointType,
@@ -12,7 +13,7 @@ export class StopEntity {
       lon: dbStop.location.data.lng,
       lat: dbStop.location.data.lat,
       name: dbStop.name,
-      selected: false,
+      nature: NatureEnum.stop,
       associated: EntityUtils.formatAssociatedPoints(dbStop.associated),
     };
   }
@@ -32,9 +33,8 @@ export type StopType = {
   name: string;
   lon: number;
   lat: number;
-  //TODO utility of this prop ?
-  selected: boolean;
   associated: AssociatedPointType[];
+  nature: NatureEnum;
 };
 
 export type StopDBType = {

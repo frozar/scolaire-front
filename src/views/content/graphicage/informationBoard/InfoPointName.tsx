@@ -1,10 +1,13 @@
 import { renderAnimation } from "../animation";
 
 import "../../../../css/utils.css";
-import { PointIdentityType } from "../component/atom/Point";
 import { linkMap } from "../component/organism/Points";
+import { LeafletSchoolType } from "../component/organism/PointsEtablissement";
+import { LeafletStopType } from "../component/organism/PointsRamassage";
 
-export default function (props: { point: PointIdentityType }) {
+export default function (props: {
+  point: LeafletSchoolType | LeafletStopType;
+}) {
   return (
     <a
       class="prevent-select"
@@ -12,7 +15,7 @@ export default function (props: { point: PointIdentityType }) {
       onClick={() => {
         let element;
 
-        if ((element = linkMap.get(props.point.idPoint)?.getElement())) {
+        if ((element = linkMap.get(props.point.leafletId)?.getElement())) {
           renderAnimation(element);
         }
       }}

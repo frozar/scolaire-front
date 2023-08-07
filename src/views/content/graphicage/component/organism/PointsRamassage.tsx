@@ -71,7 +71,6 @@ export default function (props: StopPointsProps) {
 
 export type LeafletStopType = {
   leafletId: number;
-  // TODO check utility
   selected: Accessor<boolean>;
   setSelected: Setter<boolean>;
 } & StopType;

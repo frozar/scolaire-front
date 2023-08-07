@@ -1,6 +1,7 @@
 import { Accessor, JSX, Setter } from "solid-js";
 import { StopType } from "./_entities/stop.entity";
-import { PointInformation } from "./views/content/graphicage/component/atom/Point";
+import { LeafletSchoolType } from "./views/content/graphicage/component/organism/PointsEtablissement";
+import { LeafletStopType } from "./views/content/graphicage/component/organism/PointsRamassage";
 
 export type EleveVersEtablissementType = {
   id: number;
@@ -14,8 +15,12 @@ export type EleveVersEtablissementType = {
 };
 
 export enum NatureEnum {
+  //TODO to delete
   ramassage = "Ramassage",
+  //TODO to delete
   etablissement = "Etablissement",
+  stop = "stop",
+  school = "school",
 }
 
 //TODO to update or delete cause of Xano
@@ -46,18 +51,18 @@ export type PointToDisplayType = {
   quantity: number;
 };
 
-export function isPointRamassage(pt: { nature: NatureEnum }) {
-  return pt.nature === NatureEnum.ramassage;
+export function isLeafletStopType(pt: LeafletStopType | LeafletSchoolType) {
+  return pt.nature === NatureEnum.stop;
 }
 
-export function isPointEtablissement(pt: { nature: NatureEnum }) {
-  return pt.nature === NatureEnum.etablissement;
+export function isLeafletSchoolType(pt: LeafletStopType | LeafletSchoolType) {
+  return pt.nature === NatureEnum.school;
 }
 
 export type AbstractLineType = {
   color: string;
-  stops: PointIdentityType[];
-  etablissementSelected: PointInformation[];
+  stops: (LeafletStopType | LeafletSchoolType)[];
+  etablissementSelected: LeafletSchoolType[];
 };
 
 export type LineType = AbstractLineType & {

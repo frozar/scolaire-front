@@ -9,8 +9,14 @@ import { LineType, NatureEnum, PointIdentityType } from "../../../../type";
 import { authenticateWrap } from "../../../layout/authentication";
 import { PointInterface } from "../component/atom/Point";
 import { deselectAllPoints, linkMap } from "../component/organism/Points";
-import { etablissements } from "../component/organism/PointsEtablissement";
-import { ramassages } from "../component/organism/PointsRamassage";
+import {
+  LeafletSchoolType,
+  etablissements,
+} from "../component/organism/PointsEtablissement";
+import {
+  LeafletStopType,
+  ramassages,
+} from "../component/organism/PointsRamassage";
 import {
   busLines,
   linkBusLinePolyline,
@@ -21,13 +27,15 @@ import {
 const [, { getActiveMapId }] = useStateGui();
 const [, { isInAddLineMode }] = useStateAction();
 
-export function getLatLngs(stops: PointIdentityType[]): L.LatLng[] {
+export function getLatLngs(
+  stops: (LeafletStopType | LeafletSchoolType)[]
+): L.LatLng[] {
   const latlngs: L.LatLng[] = [];
 
   // TODO: linkMap must be reactive => signal
 
   for (const pointIdentity of stops) {
-    const circle = linkMap.get(pointIdentity.idPoint);
+    const circle = linkMap.get(pointIdentity.leafletId);
     if (circle) {
       latlngs.push(circle.getLatLng());
     }

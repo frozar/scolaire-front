@@ -1,6 +1,5 @@
 import { FaSolidWandMagicSparkles } from "solid-icons/fa";
 import { useStateAction } from "../../../../../StateAction";
-import { PointIdentityType, PointInformation } from "./Point";
 
 import {
   DrawHelperDataType,
@@ -9,20 +8,26 @@ import {
 
 const [, { setPointsToLineUnderConstruction }] = useStateAction();
 
-import { NatureEnum } from "../../../../../type";
-import { leafletStopsFilter } from "../organism/PointsRamassage";
+import {
+  LeafletSchoolType,
+  getLeafletSchools,
+} from "../organism/PointsEtablissement";
+import {
+  LeafletStopType,
+  getLeafletStops,
+  leafletStopsFilter,
+} from "../organism/PointsRamassage";
 import "./DrawHelperButton.css";
 
 interface DrawHelperButtonProps {
-  //TODO Must impose PointRamassageType[] type
-  schools: PointInformation[] | undefined;
+  schools: LeafletSchoolType[] | undefined;
 }
 
 const [, { getLineUnderConstruction }] = useStateAction();
 
 export function DrawHelperButton(props: DrawHelperButtonProps) {
   async function onclick() {
-    const schools: PointInformation[] =
+    const schools: LeafletSchoolType[] =
       props.schools != undefined
         ? JSON.parse(JSON.stringify(props.schools))
         : [];
@@ -44,7 +49,7 @@ export function DrawHelperButton(props: DrawHelperButtonProps) {
     const response = await GraphicageService.drawHelper(data);
     console.log("response", response);
 
-    const formattedResponse: PointIdentityType[] =
+    const formattedResponse: (LeafletStopType | LeafletSchoolType)[] =
       formatTimeLinePoints(response);
     setPointsToLineUnderConstruction(formattedResponse);
   }
@@ -60,14 +65,11 @@ export function DrawHelperButton(props: DrawHelperButtonProps) {
 }
 
 function formatTimeLinePoints(
-  data: { id: number; idPoint: number; nature: string }[]
-): PointIdentityType[] {
-  return data.map((item) => {
-    return {
-      id: item.id,
-      idPoint: item.idPoint,
-      nature:
-        item.nature == "stop" ? NatureEnum.ramassage : NatureEnum.etablissement,
-    };
-  });
+  data: { id: number; leafletId: number; nature: string }[]
+): (LeafletStopType | LeafletSchoolType)[] {
+  const points = [...getLeafletSchools(), ...getLeafletStops()];
+
+  const leafletIds: number[] = data.map((item) => item.leafletId);
+
+  return points.filter((item) => leafletIds.includes(item.leafletId));
 }

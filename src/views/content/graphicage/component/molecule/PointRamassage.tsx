@@ -1,6 +1,5 @@
 import L from "leaflet";
 import { useStateAction } from "../../../../../StateAction";
-import { NatureEnum } from "../../../../../type";
 import { renderAnimation } from "../../animation";
 import { deselectAllBusLines } from "../../line/busLinesUtils";
 import Point from "../atom/Point";
@@ -11,7 +10,7 @@ import {
   setBlinkingSchools,
 } from "../organism/Points";
 import { getLeafletSchools } from "../organism/PointsEtablissement";
-import { LeafletStopType, getLeafletStops } from "../organism/PointsRamassage";
+import { LeafletStopType } from "../organism/PointsRamassage";
 
 const [
   ,
@@ -33,9 +32,6 @@ const minRadius = 5;
 const maxRadius = 10;
 const rangeRadius = maxRadius - minRadius;
 
-const selectPointById = (id: number) =>
-  getLeafletStops().map((point) => point.setSelected(id == point.leafletId));
-
 function onClick(point: LeafletStopType) {
   // Highlight point schools
   for (const associated of point.associated) {
@@ -51,19 +47,13 @@ function onClick(point: LeafletStopType) {
   if (!isInAddLineMode()) {
     deselectAllBusLines();
     deselectAllPoints();
-    // point.setSelected(true);
-    selectPointById(point.leafletId);
+    point.setSelected(true);
     return;
   }
 
   // TODO: when add line with an etablissement point the line destroy after next point click
   // Wait Richard/Hugo finish the line underconstruction
-  // TODO utility ?
-  addPointToLineUnderConstruction({
-    id: point.id,
-    idPoint: point.leafletId,
-    nature: NatureEnum.ramassage,
-  });
+  addPointToLineUnderConstruction(point);
 
   //TODO pourquoi cette condition ?
   if (!(1 < getLineUnderConstruction().stops.length)) {

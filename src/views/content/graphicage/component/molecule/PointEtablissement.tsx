@@ -1,6 +1,5 @@
 import L from "leaflet";
 import { useStateAction } from "../../../../../StateAction";
-import { NatureEnum } from "../../../../../type";
 import { renderAnimation } from "../../animation";
 import { deselectAllBusLines } from "../../line/busLinesUtils";
 import Point from "../atom/Point";
@@ -10,10 +9,7 @@ import {
   linkMap,
   setBlinkingStops,
 } from "../organism/Points";
-import {
-  LeafletSchoolType,
-  etablissements,
-} from "../organism/PointsEtablissement";
+import { LeafletSchoolType } from "../organism/PointsEtablissement";
 import { getLeafletStops } from "../organism/PointsRamassage";
 
 const [
@@ -21,6 +17,7 @@ const [
   {
     addPointToLineUnderConstruction,
     getLineUnderConstruction,
+    setLineUnderConstruction,
     isInAddLineMode,
   },
 ] = useStateAction();
@@ -29,8 +26,6 @@ export interface PointEtablissementProps {
   point: LeafletSchoolType;
   map: L.Map;
 }
-const selectPointById = (id: number) =>
-  etablissements().map((point) => point.setSelected(id == point.idPoint));
 
 const onClick = (point: LeafletSchoolType) => {
   // Highlight point stops
@@ -47,7 +42,7 @@ const onClick = (point: LeafletSchoolType) => {
   if (!isInAddLineMode()) {
     deselectAllBusLines();
     deselectAllPoints();
-    selectPointById(point.leafletId);
+    point.setSelected(true);
     return;
   }
 
@@ -63,22 +58,16 @@ const onClick = (point: LeafletSchoolType) => {
     //   ? [point]
     //   : etablissementSelected.concat(point);
 
-    // TODO
-    // setLineUnderConstruction({
-    //   ...getLineUnderConstruction(),
-    //   etablissementSelected: [point],
-    // });
+    setLineUnderConstruction({
+      ...getLineUnderConstruction(),
+      etablissementSelected: [point],
+    });
 
     return;
   }
 
   // TODO: check how manage line underconstuction with ramassages/etablissement signals
-  // TODO utility ?
-  addPointToLineUnderConstruction({
-    id: point.id,
-    idPoint: point.leafletId,
-    nature: NatureEnum.etablissement,
-  });
+  addPointToLineUnderConstruction(point);
 
   //TODO pourquoi cette condition ?
   if (!(1 < getLineUnderConstruction().stops.length)) {
