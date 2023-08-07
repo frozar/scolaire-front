@@ -1,5 +1,5 @@
-import { LineUnderConstructionType } from "../../../../type";
-import { PointInterface } from "../component/atom/Point";
+import { LineUnderConstructionType } from "../../../../../type";
+import { PointInterface } from "./Point";
 import { TimelineRemovePointButton } from "./TimelineRemovePointButton";
 export type TimelineItemAddType = {
   pointsResource: PointInterface;

@@ -1,0 +1,8 @@
+.selected-school-item {
+  height: auto;
+  width: auto;
+  padding: 5%;
+  margin-bottom: 3%;
+  border: 2px solid blue;
+  border-radius: 20px;
+}
