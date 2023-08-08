@@ -26,8 +26,6 @@ export function TimelineAddPointButton(props: {
       </div>
 
       <div class="v-timeline-divider ">
-        <div class="v-timeline-divider__before" />
-
         <div class="v-timeline-divider__dot v-timeline-divider__dot--size-very-small timeline-add-point-button">
           <button
             class=""
@@ -37,8 +35,6 @@ export function TimelineAddPointButton(props: {
             <FaSolidPlus />
           </button>
         </div>
-
-        <div class="v-timeline-divider__after" />
       </div>
     </div>
   );

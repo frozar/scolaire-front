@@ -31,11 +31,13 @@
   font-family: Roboto, sans-serif;
   line-height: 1.5;
   font-size: 0.8rem;
+  max-height: 65vh;
   overflow-y: scroll;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  padding: 4vh;
 }
 
 .timeline *,
@@ -56,6 +58,7 @@
 
 .v-timeline {
   display: grid;
+
   grid-auto-flow: dense;
   position: relative;
 }

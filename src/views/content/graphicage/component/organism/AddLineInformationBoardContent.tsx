@@ -44,7 +44,9 @@ export default function () {
           !getLineUnderConstruction().confirmSelection
         }
       >
-        <Button onClick={confirmEtablissementSelection} label="Valider" />
+        <div class="confirm-etablissement-selection">
+          <Button onClick={confirmEtablissementSelection} label="Valider" />
+        </div>
       </Show>
       <Show when={getLineUnderConstruction().stops.length != 0}>
         <TimelineAddMode
