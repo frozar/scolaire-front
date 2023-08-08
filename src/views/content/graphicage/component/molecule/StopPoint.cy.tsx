@@ -2,7 +2,7 @@ import "leaflet/dist/leaflet.css";
 import { createPoint } from "../../../../../../testing/utils/TestUtils";
 import { initialiseMap } from "../../../../../../testing/utils/mapWrapper";
 import { NatureEnum } from "../../../../../type";
-import {StopPoint} from "./StopPoint";
+import { StopPoint } from "./StopPoint";
 
 describe("StopPoint component", () => {
   it("StopPoint snapshot", () => {

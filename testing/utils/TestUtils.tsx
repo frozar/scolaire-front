@@ -16,7 +16,7 @@ export function createPoint(
     name: string;
     nature: NatureEnum;
   },
-  quantityOffset: number = 0
+  quantityOffset = 0
 ): LeafletPointType {
   const [selected, setSelected] = createSignal<boolean>(false);
 

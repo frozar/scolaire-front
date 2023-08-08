@@ -8,7 +8,7 @@ import {
   mapDecorators,
 } from "../../../../../../testing/utils/TestUtils";
 import { PointStorybook } from "../atom/Point.stories";
-import {SchoolPoint} from "./SchoolPoint";
+import { SchoolPoint } from "./SchoolPoint";
 import { NatureEnum } from "../../../../../type";
 
 const meta = {
@@ -32,7 +32,7 @@ export const PointEtablissement: Story = {
           lat: -20.9466588303741,
           lon: 55.5343806753509,
           name: "name",
-          nature: NatureEnum.school
+          nature: NatureEnum.school,
         })}
         map={initialiseMap(fullId)}
         {...props}
