@@ -4,6 +4,7 @@ import Button from "../../../../../component/atom/Button";
 import TimelineAddMode from "../../informationBoard/TimelineAddMode";
 import { DrawHelperButton } from "../atom/DrawHelperButton";
 import SelectedSchool from "../atom/SelectedSchool";
+import "./AddLineInformationBoardContent.css";
 import { LeafletSchoolType } from "./SchoolPoints";
 
 const [
@@ -22,17 +23,19 @@ export default function () {
 
   return (
     <>
-      <Show
-        when={typeof etablissementSelected() != "undefined" && isValidate()}
-      >
-        <DrawHelperButton schools={etablissementSelected()} />
-      </Show>
+      <div class="add-line-information-board-content-header">
+        <Show when={etablissementSelected()}>
+          <SelectedSchool
+            schoolSelected={etablissementSelected() as LeafletSchoolType[]}
+          />
+        </Show>
 
-      <Show when={etablissementSelected() && !isValidate()}>
-        <SelectedSchool
-          schoolSelected={etablissementSelected() as LeafletSchoolType[]}
-        />
-      </Show>
+        <Show
+          when={typeof etablissementSelected() != "undefined" && isValidate()}
+        >
+          <DrawHelperButton schools={etablissementSelected()} />
+        </Show>
+      </div>
 
       <Show
         when={
@@ -43,7 +46,6 @@ export default function () {
       >
         <Button onClick={confirmEtablissementSelection} label="Valider" />
       </Show>
-      {/* TODO: Fix timeline */}
       <Show when={getLineUnderConstruction().stops.length != 0}>
         <TimelineAddMode
           line={getLineUnderConstruction}

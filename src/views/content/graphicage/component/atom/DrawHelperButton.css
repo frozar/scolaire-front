@@ -1,8 +1,9 @@
-.graphicage-draw-helper-button{
+.graphicage-draw-helper-button {
   @apply mb-2 flex mr-3 w-full justify-end items-center p-2;
+  flex: 1;
 }
 
-.graphicage-draw-helper-button button{
+.graphicage-draw-helper-button button {
   @apply ml-5;
 }
 

@@ -1,5 +1,6 @@
 .selected-school {
   @apply w-full justify-center flex flex-col items-center;
+  flex: 5;
 }
 
 .selected-school > p {
