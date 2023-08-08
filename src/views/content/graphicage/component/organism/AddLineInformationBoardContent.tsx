@@ -1,10 +1,10 @@
 import { Show } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import Button from "../../../../../component/atom/Button";
-import { PointRamassageType } from "../../../../../type";
 import TimelineAddMode from "../../informationBoard/TimelineAddMode";
 import { DrawHelperButton } from "../atom/DrawHelperButton";
 import SelectedSchool from "../atom/SelectedSchool";
+import { LeafletSchoolType } from "./SchoolPoints";
 
 const [
   ,
@@ -30,7 +30,7 @@ export default function () {
 
       <Show when={etablissementSelected() && !isValidate()}>
         <SelectedSchool
-          schoolSelected={etablissementSelected() as PointRamassageType[]}
+          schoolSelected={etablissementSelected() as LeafletSchoolType[]}
         />
       </Show>
 

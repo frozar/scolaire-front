@@ -4,14 +4,11 @@ import { createStore } from "solid-js/store";
 import { createHistory, record } from "solid-record";
 
 import { setUserInformations } from "./signaux";
-import {
-  LineUnderConstructionType,
-  MessageTypeEnum,
-  ModeEnum,
-  PointIdentityType,
-} from "./type";
+import { LineUnderConstructionType, MessageTypeEnum, ModeEnum } from "./type";
 
 import { useStateGui } from "./StateGui";
+import { LeafletSchoolType } from "./views/content/graphicage/component/organism/SchoolPoints";
+import { LeafletStopType } from "./views/content/graphicage/component/organism/StopPoints";
 
 const [, { setDisplayedInformationBoard }] = useStateGui();
 
@@ -55,21 +52,29 @@ const makeStateActionContext = () => {
     return state.altimetry.animation;
   }
 
-  function setPointsToLineUnderConstruction(points: PointIdentityType[]) {
+  function setPointsToLineUnderConstruction(
+    points: (LeafletStopType | LeafletSchoolType)[]
+  ) {
     setState("lineUnderConstruction", "stops", points);
   }
 
-  function addPointToLineUnderConstruction(point: PointIdentityType) {
-    setState("lineUnderConstruction", "stops", (line: PointIdentityType[]) => {
-      if (line.length === 0) {
-        return [point];
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      } else if (_.isEqual(line.at(-1)!, point)) {
-        return line;
-      } else {
-        return [...line, point];
+  function addPointToLineUnderConstruction(
+    point: LeafletStopType | LeafletSchoolType
+  ) {
+    setState(
+      "lineUnderConstruction",
+      "stops",
+      (line: (LeafletStopType | LeafletSchoolType)[]) => {
+        if (line.length === 0) {
+          return [point];
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        } else if (_.isEqual(line.at(-1)!, point)) {
+          return line;
+        } else {
+          return [...line, point];
+        }
       }
-    });
+    );
   }
 
   function resetLineUnderConstruction() {

@@ -1,13 +1,14 @@
 import { Show } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
-import { PointIdentityType } from "../../../../../type";
 import { COLOR_LINE_UNDER_CONSTRUCTION } from "../../constant";
 import { getLatLngs } from "../../line/busLinesUtils";
 import Line from "../atom/Line";
+import { LeafletSchoolType } from "./SchoolPoints";
+import { LeafletStopType } from "./StopPoints";
 const [, { getLineUnderConstruction }] = useStateAction();
 interface LineUnderConstructionProps {
   leafletMap: L.Map;
-  stops: PointIdentityType[];
+  stops: (LeafletStopType | LeafletSchoolType)[];
 }
 export default function (props: LineUnderConstructionProps) {
   const color = COLOR_LINE_UNDER_CONSTRUCTION;

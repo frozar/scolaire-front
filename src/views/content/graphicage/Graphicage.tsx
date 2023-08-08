@@ -19,7 +19,7 @@ import { listHandlerLMap } from "./shortcut";
 import "leaflet/dist/leaflet.css";
 import { getLeafletMap } from "../../../signaux";
 import LineUnderConstruction from "./component/organism/LineUnderConstruction";
-import Points from "./component/organism/Points";
+import { Points } from "./component/organism/Points";
 
 const [, { isInAddLineMode, getLineUnderConstruction }] = useStateAction();
 const [, { getActiveMapId }] = useStateGui();
@@ -72,10 +72,7 @@ export default function () {
       />
       <InformationBoard />
       <div ref={mapDiv} id="main-map" />
-      <Points
-        leafletMap={getLeafletMap() as L.Map}
-        mapId={getActiveMapId() as number}
-      />
+      <Points leafletMap={getLeafletMap() as L.Map} />
       <Show when={isInAddLineMode()}>
         <LineUnderConstruction
           stops={getLineUnderConstruction().stops}

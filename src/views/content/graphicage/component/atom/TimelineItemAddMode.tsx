@@ -1,8 +1,9 @@
 import { LineUnderConstructionType } from "../../../../../type";
-import { PointInterface } from "./Point";
+import { LeafletSchoolType } from "../organism/SchoolPoints";
+import { LeafletStopType } from "../organism/StopPoints";
 import { TimelineRemovePointButton } from "./TimelineRemovePointButton";
 export type TimelineItemAddType = {
-  pointsResource: PointInterface;
+  point: LeafletStopType | LeafletSchoolType;
   indice: number;
   getter: () => LineUnderConstructionType;
   setter: (line: LineUnderConstructionType) => void;
@@ -14,7 +15,7 @@ export default function (props: TimelineItemAddType) {
     <div class="v-timeline-item">
       <div class="v-timeline-item__body">
         <div class="d-flex">
-          <strong>{props.pointsResource.name}</strong>
+          <strong>{props.point.name}</strong>
         </div>
       </div>
 

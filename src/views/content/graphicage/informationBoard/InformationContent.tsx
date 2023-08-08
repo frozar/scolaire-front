@@ -1,22 +1,23 @@
-import { For, Match, Show, Switch, createEffect, createSignal } from "solid-js";
+import { For, Match, Show, Switch, createEffect } from "solid-js";
 import { useStateAction } from "../../../../StateAction";
-import { useStateGui } from "../../../../StateGui";
 import { updateBusLine } from "../../../../request";
 import { addNewUserInformation } from "../../../../signaux";
 import {
   LineType,
   MessageLevelEnum,
   MessageTypeEnum,
-  NatureEnum,
-  PointToDisplayType,
-  isPointRamassage,
+  isLeafletStopType,
 } from "../../../../type";
-import { authenticateWrap } from "../../../layout/authentication";
 import { ColorPicker } from "../component/atom/ColorPicker";
-import { PointInterface } from "../component/atom/Point";
 import AddLineInformationBoardContent from "../component/organism/AddLineInformationBoardContent";
-import { etablissements } from "../component/organism/PointsEtablissement";
-import { ramassages } from "../component/organism/PointsRamassage";
+import {
+  LeafletSchoolType,
+  getLeafletSchools,
+} from "../component/organism/SchoolPoints";
+import {
+  LeafletStopType,
+  getLeafletStops,
+} from "../component/organism/StopPoints";
 import {
   linkBusLinePolyline,
   pickerColor,
@@ -31,11 +32,9 @@ import TimelineReadMode from "./TimelineReadMode";
 
 const [, { isInAddLineMode, resetLineUnderConstruction }] = useStateAction();
 
-const [, { getActiveMapId }] = useStateGui();
-// TODO: Delete points() when no longer used (replaced by stops and schools)
 export default function () {
-  const getSelectedPoint = (): PointInterface | null => {
-    const points = [...ramassages(), ...etablissements()];
+  const getSelectedPoint = (): LeafletSchoolType | LeafletStopType | null => {
+    const points = [...getLeafletStops(), ...getLeafletSchools()];
 
     const filteredArray = points.filter((point) => point.selected());
 
@@ -53,86 +52,13 @@ export default function () {
     }
   });
 
-  const selectedIdentity = () => {
-    const selectedPoint = getSelectedPoint();
-    if (!selectedPoint) {
-      return null;
-    }
-    const { id, idPoint, nature } = selectedPoint;
-    return { id, idPoint, nature };
-  };
-
-  const fetchAssociatedPoints = async (
-    selectedIdentityWk: {
-      id: number;
-      nature: NatureEnum;
-    } | null
-  ) => {
-    if (!selectedIdentityWk) {
-      return;
-    }
-    const { id, nature } = selectedIdentityWk;
-
-    if (id == -1 || nature == null) {
-      return [];
-    } else {
-      const URL =
-        import.meta.env.VITE_BACK_URL +
-        `/map/${getActiveMapId()}/eleve_vers_etablissement/associated_points`;
-      // TODO:
-      // Attemp to use authenticateWrap failed => Don't use the 'createResource' from solidjs
-      authenticateWrap((headers) => {
-        fetch(
-          URL +
-            "?" +
-            new URLSearchParams({
-              id: String(id),
-              nature: nature.toLowerCase(),
-            }),
-          {
-            headers,
-          }
-        )
-          .then(async (res) => {
-            const json = await res.json();
-
-            const datas = json.content;
-            // Rename "id_point" -> "idPoint"
-            const datasWk = datas.map(
-              (data: { id_point: number; name: string; quantity: number }) => {
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                const { id_point: _, ...dataWk } = {
-                  ...data,
-                  idPoint: data.id_point,
-                };
-                return dataWk;
-              }
-            );
-            setAssociatedPoints(datasWk);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      });
-    }
-  };
-  //TODO Fix ESLint without using exception
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [associatedPoints, setAssociatedPoints] = createSignal<
-    PointToDisplayType[]
-  >([]);
-
-  createEffect(() => {
-    fetchAssociatedPoints(selectedIdentity());
-  });
-
   const firstColumnTitle = () => {
     const selectedPoint = getSelectedPoint();
     if (!selectedPoint) {
       return "";
     }
 
-    return isPointRamassage(selectedPoint) ? "Etablissement" : "Ramassage";
+    return isLeafletStopType(selectedPoint) ? "Etablissement" : "Ramassage";
   };
 
   const handleColorPicker = (color: string) => {
@@ -198,16 +124,29 @@ export default function () {
         });
       });
   };
-  function getDisplayPoints() {
-    const points = [...ramassages(), ...etablissements()];
+  //TODO error with the associated Point (test with quantity)
+  function getDisplayPoints(): LeafletSchoolType[] | LeafletStopType[] {
+    const points = [...getLeafletStops(), ...getLeafletSchools()];
 
-    const associatedIdPoints = getSelectedPoint()
-      ?.associatedPoints()
-      .map((point) => point.idPoint);
+    const selectedPoint = getSelectedPoint();
 
-    return points.filter((point) =>
-      associatedIdPoints?.includes(point.idPoint)
-    );
+    if (selectedPoint) {
+      const associatedIdPoints = selectedPoint.associated.map(
+        (point) => point.id
+      );
+      const nature = selectedPoint.nature;
+      return points
+        .filter(
+          (point) =>
+            nature != point.nature && associatedIdPoints?.includes(point.id)
+        )
+        .map((entity) => {
+          entity.associated = entity.associated.filter(
+            (point) => point.id == selectedPoint.id
+          );
+          return entity;
+        });
+    } else return [];
   }
 
   return (
@@ -220,6 +159,7 @@ export default function () {
     >
       <Switch fallback={<span>Aucun élément sélectionné</span>}>
         <Match when={getSelectedPoint()}>
+          {/* TODO To atomise */}
           <h2>{getSelectedPoint()?.name}</h2>
           <Show
             when={0 < getDisplayPoints().length}
@@ -256,7 +196,10 @@ export default function () {
                                 </td>
                                 <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                                   {/* TODO add Quantity */}
-                                  {/* {pt.quantity} */}
+                                  {pt.associated.reduce(
+                                    (acc, entity) => acc + entity.quantity,
+                                    0
+                                  )}
                                 </td>
                               </tr>
                             )}
@@ -271,6 +214,7 @@ export default function () {
           </Show>
         </Match>
         <Match when={getSelectedBusLineId()}>
+          {/* TODO Put th e2 next component in "organism" */}
           <ColorPicker
             color={pickerColor()}
             title="Couleur de la ligne"

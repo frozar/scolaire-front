@@ -1,10 +1,8 @@
-import L, { LeafletMouseEvent } from "leaflet";
-import { createEffect, createSignal, onMount } from "solid-js";
-import { EleveVersEtablissementType, NatureEnum } from "../../../../../type";
-import { fetchEleveVersEtablissement } from "../../point.service";
-import { PointInterface } from "../atom/Point";
-import PointsEtablissement, { etablissements } from "./PointsEtablissement";
-import PointsRamassage, { ramassages } from "./PointsRamassage";
+import L from "leaflet";
+import { createEffect, createSignal } from "solid-js";
+import { EleveVersEtablissementType } from "../../../../../type";
+import { SchoolPoints, getLeafletSchools } from "./SchoolPoints";
+import { StopPoints, getLeafletStops } from "./StopPoints";
 
 export const linkMap = new Map<number, L.CircleMarker>();
 
@@ -17,100 +15,33 @@ export const [studentsToSchool, setStudentsToSchool] = createSignal<
   EleveVersEtablissementType[]
 >([]);
 
-const onDBLClick = (event: LeafletMouseEvent) => {
-  L.DomEvent.stopPropagation(event);
-};
-
-const setupAssociations = (points: PointInterface[], nature: NatureEnum) => {
-  for (const point of points) {
-    const associatedPoints = studentsToSchool().filter(
-      (elt) =>
-        point.id ===
-        (nature === NatureEnum.ramassage
-          ? elt.ramassage_id
-          : elt.etablissement_id)
-    );
-
-    point.setAssociatedPoints(
-      associatedPoints.map((elt) => {
-        const associatedId =
-          nature === NatureEnum.ramassage
-            ? elt.etablissement_id
-            : elt.ramassage_id;
-
-        const associatedNature =
-          nature === NatureEnum.ramassage
-            ? NatureEnum.etablissement
-            : NatureEnum.ramassage;
-
-        const id_point =
-          associatedNature === NatureEnum.etablissement
-            ? elt.etablissement_id_point
-            : elt.ramassage_id_point;
-
-        return {
-          id: associatedId,
-          idPoint: id_point,
-          nature: associatedNature,
-        };
-      })
-    );
-  }
-};
-
 export function deselectAllPoints() {
-  console.log("deselectAllPoints");
-
-  etablissements().map((point) => point.setSelected(false));
-  ramassages().map((point) => point.setSelected(false));
+  getLeafletSchools().map((point) => point.setSelected(false));
+  getLeafletStops().map((point) => point.setSelected(false));
 }
 export const [pointsReady, setPointsReady] = createSignal(false);
 
 // Props here is for storybook
 interface PointsProps {
   leafletMap: L.Map;
-  mapId: number;
 }
 
-export default function (props: PointsProps) {
-  onMount(async () => {
-    setStudentsToSchool(await fetchEleveVersEtablissement(props.mapId));
-  });
-
-  // TODO: check if necessary (similar feature already existing !)
-  // createEffect(() => {
-  //   if (pointsRamassageReady() && pointsEtablissementReady()) {
-  //     setPointsReady(true);
-  //   }
-  // });
-
+export function Points(props: PointsProps) {
   createEffect(() => {
     if (
-      etablissements().length == 0 ||
+      getLeafletSchools().length == 0 ||
       !studentsToSchool() ||
-      ramassages().length == 0
+      getLeafletStops().length == 0
     ) {
       return;
     }
 
-    setupAssociations(etablissements(), NatureEnum.etablissement);
-    setupAssociations(ramassages(), NatureEnum.ramassage);
-
     setPointsReady(true);
   });
-  // TODO: Fix ramassages displayed over etalbissements
   return (
     <div>
-      <PointsEtablissement
-        leafletMap={props.leafletMap}
-        mapId={props.mapId}
-        onDBLClick={onDBLClick}
-      />
-      <PointsRamassage
-        leafletMap={props.leafletMap}
-        mapId={props.mapId}
-        onDBLClick={onDBLClick}
-      />
+      <StopPoints leafletMap={props.leafletMap} />
+      <SchoolPoints leafletMap={props.leafletMap} />
     </div>
   );
 }

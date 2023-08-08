@@ -1,6 +1,8 @@
 import { Accessor, JSX, Setter } from "solid-js";
 import { StopType } from "./_entities/stop.entity";
-import { PointInformation } from "./views/content/graphicage/component/atom/Point";
+import { LeafletPointType } from "./views/content/graphicage/component/atom/Point";
+import { LeafletSchoolType } from "./views/content/graphicage/component/organism/SchoolPoints";
+import { LeafletStopType } from "./views/content/graphicage/component/organism/StopPoints";
 
 export type EleveVersEtablissementType = {
   id: number;
@@ -14,17 +16,22 @@ export type EleveVersEtablissementType = {
 };
 
 export enum NatureEnum {
+  //TODO to delete and dependence
   ramassage = "Ramassage",
+  //TODO to delete and dependence
   etablissement = "Etablissement",
+  stop = "stop",
+  school = "school",
 }
 
-//TODO to update or delete cause of Xano
+//TODO to  delete cause of Xano (and all dependence)
 export type PointIdentityType = {
   id: number;
   idPoint: number;
   nature: NatureEnum;
 };
 
+//TODO to  delete cause of Xano (and all dependence)
 export type PointResourceType = PointIdentityType & {
   lon: number;
   lat: number;
@@ -40,24 +47,18 @@ export type PointRamassageType = PointResourceType;
 
 export type PointEtablissementType = PointResourceType;
 
-export type PointToDisplayType = {
-  idPoint: number;
-  name: string;
-  quantity: number;
-};
-
-export function isPointRamassage(pt: { nature: NatureEnum }) {
-  return pt.nature === NatureEnum.ramassage;
+export function isLeafletStopType(pt: LeafletPointType) {
+  return pt.nature === NatureEnum.stop;
 }
 
-export function isPointEtablissement(pt: { nature: NatureEnum }) {
-  return pt.nature === NatureEnum.etablissement;
+export function isLeafletSchoolType(pt: LeafletPointType) {
+  return pt.nature === NatureEnum.school;
 }
 
 export type AbstractLineType = {
   color: string;
-  stops: PointIdentityType[];
-  etablissementSelected: PointInformation[];
+  stops: (LeafletStopType | LeafletSchoolType)[];
+  etablissementSelected: LeafletSchoolType[];
 };
 
 export type LineType = AbstractLineType & {

@@ -1,8 +1,12 @@
 import L, { LeafletMouseEvent } from "leaflet";
 import { Accessor, Setter, createEffect, onCleanup, onMount } from "solid-js";
 
+import { SchoolType } from "../../../../../_entities/school.entity";
+import { StopType } from "../../../../../_entities/stop.entity";
 import { NatureEnum } from "../../../../../type";
 import { linkMap } from "../organism/Points";
+import { LeafletSchoolType } from "../organism/SchoolPoints";
+import { LeafletStopType } from "../organism/StopPoints";
 import "./Point.css";
 
 export type PointIdentityType = {
@@ -17,6 +21,10 @@ export interface PointInformation extends PointIdentityType {
   name: string;
   quantity?: number;
 }
+
+export type PointType = StopType | SchoolType;
+export type LeafletPointType = LeafletStopType | LeafletSchoolType;
+
 export interface PointInterface extends PointInformation {
   selected: Accessor<boolean>;
   setSelected: Setter<boolean>;
@@ -25,7 +33,7 @@ export interface PointInterface extends PointInformation {
 }
 
 export interface PointProps {
-  point: PointInterface;
+  point: LeafletStopType | LeafletSchoolType;
 
   map: L.Map;
   isBlinking?: boolean;
@@ -36,10 +44,13 @@ export interface PointProps {
   radius: number;
 
   onClick: () => void;
-  onDBLClick: (event: LeafletMouseEvent) => void;
   onMouseOver: () => void;
   onMouseOut: () => void;
 }
+
+const onDBLClick = (event: LeafletMouseEvent) => {
+  L.DomEvent.stopPropagation(event);
+};
 
 export default function (props: PointProps) {
   let circle: L.CircleMarker;
@@ -56,19 +67,19 @@ export default function (props: PointProps) {
         className: "map-point",
       })
         .on("click", props.onClick)
-        .on("dblclick", props.onDBLClick)
+        .on("dblclick", onDBLClick)
         .on("mouseover", props.onMouseOver)
         .on("mouseout", props.onMouseOut)
         .addTo(props.map);
 
       const element = circle.getElement();
       if (element) {
-        linkMap.set(props.point.idPoint, circle);
+        linkMap.set(props.point.leafletId, circle);
       }
 
       createEffect(() => {
         const element = linkMap
-          .get(props.point.idPoint)
+          .get(props.point.leafletId)
           ?.getElement() as HTMLElement;
 
         if (element) {
@@ -95,7 +106,7 @@ export default function (props: PointProps) {
 
   onCleanup(() => {
     if (props.point) {
-      linkMap.delete(props.point.idPoint);
+      linkMap.delete(props.point.leafletId);
     }
     if (circle) circle.remove();
   });

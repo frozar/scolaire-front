@@ -1,16 +1,16 @@
-import L, { LeafletMouseEvent } from "leaflet";
+import L from "leaflet";
 import { useStateAction } from "../../../../../StateAction";
-import { NatureEnum } from "../../../../../type";
 import { renderAnimation } from "../../animation";
 import { deselectAllBusLines } from "../../line/busLinesUtils";
-import Point, { PointInterface } from "../atom/Point";
+import Point from "../atom/Point";
 import {
   blinkingStops,
   deselectAllPoints,
   linkMap,
   setBlinkingSchools,
 } from "../organism/Points";
-import { ramassages } from "../organism/PointsRamassage";
+import { getLeafletSchools } from "../organism/SchoolPoints";
+import { LeafletStopType } from "../organism/StopPoints";
 
 const [
   ,
@@ -21,10 +21,9 @@ const [
   },
 ] = useStateAction();
 
-export interface PointRamassageProps {
-  point: PointInterface;
+export interface StopPointProps {
+  point: LeafletStopType;
   map: L.Map;
-  onDBLClick: (event: LeafletMouseEvent) => void;
 
   minQuantity: number;
   maxQuantity: number;
@@ -33,57 +32,56 @@ const minRadius = 5;
 const maxRadius = 10;
 const rangeRadius = maxRadius - minRadius;
 
-const selectPointById = (id: number) =>
-  ramassages().map((point) => point.setSelected(id == point.idPoint));
+function onClick(point: LeafletStopType) {
+  // Highlight point schools
+  for (const associated of point.associated) {
+    let element;
+    const school = getLeafletSchools().filter(
+      (item) => item.id == associated.id
+    )[0];
+    if (school && (element = linkMap.get(school.leafletId)?.getElement())) {
+      renderAnimation(element);
+    }
+  }
 
-function onClick(point: PointInterface) {
   if (!isInAddLineMode()) {
     deselectAllBusLines();
     deselectAllPoints();
-    selectPointById(point.idPoint);
+    point.setSelected(true);
     return;
   }
 
   // TODO: when add line with an etablissement point the line destroy after next point click
   // Wait Richard/Hugo finish the line underconstruction
-  addPointToLineUnderConstruction({
-    id: point.id,
-    idPoint: point.idPoint,
-    nature: NatureEnum.ramassage,
-  });
+  addPointToLineUnderConstruction(point);
 
+  //TODO pourquoi cette condition ?
   if (!(1 < getLineUnderConstruction().stops.length)) {
     return;
   }
-
-  // Highlight point ramassage
-  for (const associatedPoint of point.associatedPoints()) {
-    let element;
-    if ((element = linkMap.get(associatedPoint.idPoint)?.getElement())) {
-      renderAnimation(element);
-    }
-  }
 }
 
-const onMouseOver = (point: PointInterface) => {
-  setBlinkingSchools(
-    point.associatedPoints().map((associatedPoint) => associatedPoint.id)
-  );
+const onMouseOver = (stop: LeafletStopType) => {
+  setBlinkingSchools(stop.associated.map((school) => school.id));
 };
 
 const onMouseOut = () => {
   setBlinkingSchools([]);
 };
 
-export default function (props: PointRamassageProps) {
+export function StopPoint(props: StopPointProps) {
   const rad = (): number => {
     let radiusValue = minRadius;
+    const quantity = props.point.associated.reduce(
+      (acc, stop) => acc + stop.quantity,
+      0
+    );
 
-    if (props.point.quantity && props.maxQuantity && props.minQuantity) {
+    if (quantity && props.maxQuantity && props.minQuantity) {
       const coef =
         props.minQuantity == props.maxQuantity
           ? 0
-          : (props.point.quantity - props.minQuantity) /
+          : (quantity - props.minQuantity) /
             (props.maxQuantity - props.minQuantity);
 
       radiusValue += coef * rangeRadius;
@@ -102,7 +100,6 @@ export default function (props: PointRamassageProps) {
       radius={rad()}
       weight={2}
       onClick={() => onClick(props.point)}
-      onDBLClick={props.onDBLClick}
       onMouseOver={() => onMouseOver(props.point)}
       onMouseOut={() => onMouseOut()}
     />
