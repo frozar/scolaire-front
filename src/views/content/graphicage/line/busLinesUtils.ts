@@ -12,11 +12,8 @@ import { deselectAllPoints, linkMap } from "../component/organism/Points";
 import {
   LeafletSchoolType,
   etablissements,
-} from "../component/organism/PointsEtablissement";
-import {
-  LeafletStopType,
-  ramassages,
-} from "../component/organism/PointsRamassage";
+} from "../component/organism/SchoolPoints";
+import { LeafletStopType, ramassages } from "../component/organism/StopPoints";
 import {
   busLines,
   linkBusLinePolyline,

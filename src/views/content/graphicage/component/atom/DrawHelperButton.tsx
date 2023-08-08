@@ -8,15 +8,12 @@ import {
 
 const [, { setPointsToLineUnderConstruction }] = useStateAction();
 
-import {
-  LeafletSchoolType,
-  getLeafletSchools,
-} from "../organism/PointsEtablissement";
+import { LeafletSchoolType, getLeafletSchools } from "../organism/SchoolPoints";
 import {
   LeafletStopType,
   getLeafletStops,
   leafletStopsFilter,
-} from "../organism/PointsRamassage";
+} from "../organism/StopPoints";
 import "./DrawHelperButton.css";
 
 interface DrawHelperButtonProps {

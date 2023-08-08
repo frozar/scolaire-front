@@ -2,8 +2,8 @@ import { renderAnimation } from "../animation";
 
 import "../../../../css/utils.css";
 import { linkMap } from "../component/organism/Points";
-import { LeafletSchoolType } from "../component/organism/PointsEtablissement";
-import { LeafletStopType } from "../component/organism/PointsRamassage";
+import { LeafletSchoolType } from "../component/organism/SchoolPoints";
+import { LeafletStopType } from "../component/organism/StopPoints";
 
 export default function (props: {
   point: LeafletSchoolType | LeafletStopType;

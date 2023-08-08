@@ -1,6 +1,6 @@
 import { LineUnderConstructionType } from "../../../../../type";
-import { LeafletSchoolType } from "../organism/PointsEtablissement";
-import { LeafletStopType } from "../organism/PointsRamassage";
+import { LeafletSchoolType } from "../organism/SchoolPoints";
+import { LeafletStopType } from "../organism/StopPoints";
 import { TimelineRemovePointButton } from "./TimelineRemovePointButton";
 export type TimelineItemAddType = {
   point: LeafletStopType | LeafletSchoolType;

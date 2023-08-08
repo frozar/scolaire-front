@@ -5,14 +5,13 @@ import { useStateGui } from "../../../../../StateGui";
 import { StopType } from "../../../../../_entities/stop.entity";
 import { StopService } from "../../../../../_services/stop.service";
 import { PointInterface } from "../atom/Point";
-import PointRamassage from "../molecule/PointRamassage";
+import { StopPoint } from "../molecule/StopPoint";
 
 const [, { getLineUnderConstruction, isInAddLineMode }] = useStateAction();
 const [, { nextLeafletPointId }] = useStateGui();
 
 export interface StopPointsProps {
   leafletMap: L.Map;
-  mapId: number;
 
   // TODO Utilisé pour les test et les story, possibilité de s'en passer ? Mocker ?
   items?: LeafletStopType[];
@@ -25,7 +24,7 @@ export const [getLeafletStops, setLeafletStops] = createSignal<
 // TODO to delete and all reference
 export const [ramassages, setRamassages] = createSignal<PointInterface[]>([]);
 
-export default function (props: StopPointsProps) {
+export function StopPoints(props: StopPointsProps) {
   onMount(async () => {
     let leafletStops: LeafletStopType[];
     if (!props.items) {
@@ -57,7 +56,7 @@ export default function (props: StopPointsProps) {
     <For each={leafletStopsFilter()}>
       {(point) => {
         return (
-          <PointRamassage
+          <StopPoint
             point={point}
             map={props.leafletMap}
             minQuantity={minQuantity()}

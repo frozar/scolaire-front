@@ -6,15 +6,14 @@ import { SchoolType } from "../../../../../_entities/school.entity";
 import { StopType } from "../../../../../_entities/stop.entity";
 import { SchoolService } from "../../../../../_services/school.service";
 import { PointInterface } from "../atom/Point";
-import PointEtablissement from "../molecule/PointEtablissement";
+import { SchoolPoint } from "../molecule/SchoolPoint";
 
 const [, { nextLeafletPointId }] = useStateGui();
 
 const [, { getLineUnderConstruction, isInAddLineMode }] = useStateAction();
 
-export interface PointsEtablissementProps {
+export interface SchoolPointsProps {
   leafletMap: L.Map;
-  mapId: number;
 
   // TODO Utilisé pour les test et les story, possibilité de s'en passer ? Mocker ?
   items?: LeafletSchoolType[];
@@ -29,7 +28,7 @@ export const [etablissements, setEtablissements] = createSignal<
   PointInterface[]
 >([]);
 
-export default function (props: PointsEtablissementProps) {
+export function SchoolPoints(props: SchoolPointsProps) {
   onMount(async () => {
     let leafletSchools: LeafletSchoolType[];
     if (!props.items) {
@@ -44,7 +43,7 @@ export default function (props: PointsEtablissementProps) {
   return (
     <For each={leafletSchoolsFilter()}>
       {(point) => {
-        return <PointEtablissement point={point} map={props.leafletMap} />;
+        return <SchoolPoint point={point} map={props.leafletMap} />;
       }}
     </For>
   );

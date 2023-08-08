@@ -9,8 +9,8 @@ import {
   linkMap,
   setBlinkingStops,
 } from "../organism/Points";
-import { LeafletSchoolType } from "../organism/PointsEtablissement";
-import { getLeafletStops } from "../organism/PointsRamassage";
+import { LeafletSchoolType } from "../organism/SchoolPoints";
+import { getLeafletStops } from "../organism/StopPoints";
 
 const [
   ,
@@ -22,7 +22,7 @@ const [
   },
 ] = useStateAction();
 
-export interface PointEtablissementProps {
+export interface SchoolPointProps {
   point: LeafletSchoolType;
   map: L.Map;
 }
@@ -66,7 +66,6 @@ const onClick = (point: LeafletSchoolType) => {
     return;
   }
 
-  // TODO: check how manage line underconstuction with ramassages/etablissement signals
   addPointToLineUnderConstruction(point);
 
   //TODO pourquoi cette condition ?
@@ -83,7 +82,7 @@ const onMouseOut = () => {
   setBlinkingStops([]);
 };
 
-export default function (props: PointEtablissementProps) {
+export function SchoolPoint(props: SchoolPointProps) {
   return (
     <Point
       point={props.point}

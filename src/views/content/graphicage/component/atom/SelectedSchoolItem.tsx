@@ -1,4 +1,4 @@
-import { LeafletSchoolType } from "../organism/PointsEtablissement";
+import { LeafletSchoolType } from "../organism/SchoolPoints";
 import "./SelectedSchoolItem.css";
 
 export default function (props: { etablissement: LeafletSchoolType }) {

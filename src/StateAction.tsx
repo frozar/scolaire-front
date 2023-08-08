@@ -7,8 +7,8 @@ import { setUserInformations } from "./signaux";
 import { LineUnderConstructionType, MessageTypeEnum, ModeEnum } from "./type";
 
 import { useStateGui } from "./StateGui";
-import { LeafletSchoolType } from "./views/content/graphicage/component/organism/PointsEtablissement";
-import { LeafletStopType } from "./views/content/graphicage/component/organism/PointsRamassage";
+import { LeafletSchoolType } from "./views/content/graphicage/component/organism/SchoolPoints";
+import { LeafletStopType } from "./views/content/graphicage/component/organism/StopPoints";
 
 const [, { setDisplayedInformationBoard }] = useStateGui();
 

@@ -1,5 +1,5 @@
 import { For } from "solid-js";
-import { LeafletSchoolType } from "../organism/PointsEtablissement";
+import { LeafletSchoolType } from "../organism/SchoolPoints";
 import "./SelectedSchool.css";
 import SelectedSchoolItem from "./SelectedSchoolItem";
 

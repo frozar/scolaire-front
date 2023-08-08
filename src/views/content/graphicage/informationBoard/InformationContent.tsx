@@ -13,11 +13,11 @@ import AddLineInformationBoardContent from "../component/organism/AddLineInforma
 import {
   LeafletSchoolType,
   getLeafletSchools,
-} from "../component/organism/PointsEtablissement";
+} from "../component/organism/SchoolPoints";
 import {
   LeafletStopType,
   getLeafletStops,
-} from "../component/organism/PointsRamassage";
+} from "../component/organism/StopPoints";
 import {
   linkBusLinePolyline,
   pickerColor,
@@ -32,7 +32,6 @@ import TimelineReadMode from "./TimelineReadMode";
 
 const [, { isInAddLineMode, resetLineUnderConstruction }] = useStateAction();
 
-// TODO: Delete points() when no longer used (replaced by stops and schools)
 export default function () {
   const getSelectedPoint = (): LeafletSchoolType | LeafletStopType | null => {
     const points = [...getLeafletStops(), ...getLeafletSchools()];
@@ -160,6 +159,7 @@ export default function () {
     >
       <Switch fallback={<span>Aucun élément sélectionné</span>}>
         <Match when={getSelectedPoint()}>
+          {/* TODO To atomise */}
           <h2>{getSelectedPoint()?.name}</h2>
           <Show
             when={0 < getDisplayPoints().length}
@@ -214,6 +214,7 @@ export default function () {
           </Show>
         </Match>
         <Match when={getSelectedBusLineId()}>
+          {/* TODO Put th e2 next component in "organism" */}
           <ColorPicker
             color={pickerColor()}
             title="Couleur de la ligne"

@@ -2,6 +2,7 @@ import "leaflet/dist/leaflet.css";
 
 import { createPoint } from "../../../../../../testing/utils/TestUtils";
 import { initialiseMap } from "../../../../../../testing/utils/mapWrapper";
+import { NatureEnum } from "../../../../../type";
 import Point from "./Point";
 
 function voidFunction() {
@@ -15,17 +16,16 @@ describe("Point component", () => {
         <Point
           point={createPoint({
             id: 1,
-            idPoint: 1,
+            leafletId: 1,
             lat: -20.9466588303741,
             lon: 55.5343806753509,
             name: "name",
-            quantity: 5,
+            nature: NatureEnum.stop,
           })}
           map={initialiseMap("map-container", false)}
           onClick={voidFunction}
           borderColor="green"
           fillColor="white"
-          onDBLClick={voidFunction}
           onMouseOut={voidFunction}
           onMouseOver={voidFunction}
           radius={12}
@@ -45,16 +45,15 @@ describe("Point component", () => {
           map={initialiseMap("map-container", false)}
           point={createPoint({
             id: 1,
-            idPoint: 1,
+            leafletId: 1,
             lat: -20.9466588303742,
             lon: 55.5343806753508,
             name: "name",
-            quantity: 5,
+            nature: NatureEnum.stop,
           })}
           onClick={() => console.log("onClick")}
           borderColor="red"
           fillColor="gray"
-          onDBLClick={voidFunction}
           onMouseOut={voidFunction}
           onMouseOver={voidFunction}
           radius={9}
@@ -73,17 +72,16 @@ describe("Point component", () => {
         <Point
           point={createPoint({
             id: 1,
-            idPoint: 1,
+            leafletId: 1,
             lat: -20.9466588303742,
             lon: 55.5343806753508,
             name: "name",
-            quantity: 5,
+            nature: NatureEnum.stop,
           })}
           map={initialiseMap("map-container", false)}
           onClick={voidFunction}
           borderColor="green"
           fillColor="white"
-          onDBLClick={voidFunction}
           onMouseOut={voidFunction}
           onMouseOver={voidFunction}
           radius={12}

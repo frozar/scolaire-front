@@ -1,10 +1,12 @@
 import L, { LeafletMouseEvent } from "leaflet";
 import { Accessor, Setter, createEffect, onCleanup, onMount } from "solid-js";
 
+import { SchoolType } from "../../../../../_entities/school.entity";
+import { StopType } from "../../../../../_entities/stop.entity";
 import { NatureEnum } from "../../../../../type";
 import { linkMap } from "../organism/Points";
-import { LeafletSchoolType } from "../organism/PointsEtablissement";
-import { LeafletStopType } from "../organism/PointsRamassage";
+import { LeafletSchoolType } from "../organism/SchoolPoints";
+import { LeafletStopType } from "../organism/StopPoints";
 import "./Point.css";
 
 export type PointIdentityType = {
@@ -19,6 +21,10 @@ export interface PointInformation extends PointIdentityType {
   name: string;
   quantity?: number;
 }
+
+export type PointType = StopType | SchoolType;
+export type LeafletPointType = LeafletStopType | LeafletSchoolType;
+
 export interface PointInterface extends PointInformation {
   selected: Accessor<boolean>;
   setSelected: Setter<boolean>;

@@ -4,7 +4,7 @@ import Button from "../../../../../component/atom/Button";
 import TimelineAddMode from "../../informationBoard/TimelineAddMode";
 import { DrawHelperButton } from "../atom/DrawHelperButton";
 import SelectedSchool from "../atom/SelectedSchool";
-import { LeafletSchoolType } from "./PointsEtablissement";
+import { LeafletSchoolType } from "./SchoolPoints";
 
 const [
   ,

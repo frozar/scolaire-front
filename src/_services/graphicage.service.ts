@@ -1,5 +1,5 @@
-import { LeafletSchoolType } from "../views/content/graphicage/component/organism/PointsEtablissement";
-import { LeafletStopType } from "../views/content/graphicage/component/organism/PointsRamassage";
+import { LeafletSchoolType } from "../views/content/graphicage/component/organism/SchoolPoints";
+import { LeafletStopType } from "../views/content/graphicage/component/organism/StopPoints";
 import { connexionError, manageStatusCode } from "./_utils.service";
 
 const host = import.meta.env.VITE_BACK_URL;

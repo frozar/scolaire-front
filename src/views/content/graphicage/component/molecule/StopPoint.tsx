@@ -9,8 +9,8 @@ import {
   linkMap,
   setBlinkingSchools,
 } from "../organism/Points";
-import { getLeafletSchools } from "../organism/PointsEtablissement";
-import { LeafletStopType } from "../organism/PointsRamassage";
+import { getLeafletSchools } from "../organism/SchoolPoints";
+import { LeafletStopType } from "../organism/StopPoints";
 
 const [
   ,
@@ -21,7 +21,7 @@ const [
   },
 ] = useStateAction();
 
-export interface PointRamassageProps {
+export interface StopPointProps {
   point: LeafletStopType;
   map: L.Map;
 
@@ -69,7 +69,7 @@ const onMouseOut = () => {
   setBlinkingSchools([]);
 };
 
-export default function (props: PointRamassageProps) {
+export function StopPoint(props: StopPointProps) {
   const rad = (): number => {
     let radiusValue = minRadius;
     const quantity = props.point.associated.reduce(

@@ -1,7 +1,8 @@
 import { Accessor, JSX, Setter } from "solid-js";
 import { StopType } from "./_entities/stop.entity";
-import { LeafletSchoolType } from "./views/content/graphicage/component/organism/PointsEtablissement";
-import { LeafletStopType } from "./views/content/graphicage/component/organism/PointsRamassage";
+import { LeafletPointType } from "./views/content/graphicage/component/atom/Point";
+import { LeafletSchoolType } from "./views/content/graphicage/component/organism/SchoolPoints";
+import { LeafletStopType } from "./views/content/graphicage/component/organism/StopPoints";
 
 export type EleveVersEtablissementType = {
   id: number;
@@ -15,21 +16,22 @@ export type EleveVersEtablissementType = {
 };
 
 export enum NatureEnum {
-  //TODO to delete
+  //TODO to delete and dependence
   ramassage = "Ramassage",
-  //TODO to delete
+  //TODO to delete and dependence
   etablissement = "Etablissement",
   stop = "stop",
   school = "school",
 }
 
-//TODO to update or delete cause of Xano
+//TODO to  delete cause of Xano (and all dependence)
 export type PointIdentityType = {
   id: number;
   idPoint: number;
   nature: NatureEnum;
 };
 
+//TODO to  delete cause of Xano (and all dependence)
 export type PointResourceType = PointIdentityType & {
   lon: number;
   lat: number;
@@ -45,17 +47,11 @@ export type PointRamassageType = PointResourceType;
 
 export type PointEtablissementType = PointResourceType;
 
-export type PointToDisplayType = {
-  idPoint: number;
-  name: string;
-  quantity: number;
-};
-
-export function isLeafletStopType(pt: LeafletStopType | LeafletSchoolType) {
+export function isLeafletStopType(pt: LeafletPointType) {
   return pt.nature === NatureEnum.stop;
 }
 
-export function isLeafletSchoolType(pt: LeafletStopType | LeafletSchoolType) {
+export function isLeafletSchoolType(pt: LeafletPointType) {
   return pt.nature === NatureEnum.school;
 }
 

@@ -2,48 +2,57 @@ import { Meta, StoryObj } from "storybook-solidjs";
 
 import { initialiseMap } from "../../../../../../testing/utils/mapWrapper";
 
+import { splitProps } from "solid-js";
 import {
   createPoint,
   getDivFullId,
   mapDecorators,
 } from "../../../../../../testing/utils/TestUtils";
+import { NatureEnum } from "../../../../../type";
 import { PointStorybook } from "../atom/Point.stories";
-import PointEtablissementComponent from "./PointEtablissement";
+import { StopPoint } from "./StopPoint";
 
 const meta = {
-  component: PointEtablissementComponent,
+  component: StopPoint,
   tags: ["autodocs"],
   decorators: mapDecorators,
-} satisfies Meta<typeof PointEtablissementComponent>;
+} satisfies Meta<typeof StopPoint>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const PointEtablissement: Story = {
+export const PointRamassage: Story = {
   render: (props: PointStorybook, options) => {
     const fullId = getDivFullId(options);
+    const [local, others] = splitProps(props, [
+      "maxQuantity",
+      "minQuantity",
+      "quantity",
+    ]);
 
     return (
-      <PointEtablissementComponent
+      <StopPoint
         point={createPoint({
           id: 1,
-          idPoint: 1,
+          leafletId: 1,
           lat: -20.9466588303741,
           lon: 55.5343806753509,
           name: "name",
-          quantity: 5,
+          nature: NatureEnum.stop,
         })}
         map={initialiseMap(fullId)}
-        {...props}
+        maxQuantity={local.maxQuantity as number}
+        minQuantity={local.minQuantity as number}
+        {...others}
       />
     );
   },
 
   args: {
     isBlinking: false,
-    weight: 4,
-    radius: 8,
     borderColor: "red",
     fillColor: "white",
+    maxQuantity: 30,
+    minQuantity: 1,
   },
 };
