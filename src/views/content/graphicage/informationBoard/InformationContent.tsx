@@ -21,7 +21,7 @@ import {
 import {
   linkBusLinePolyline,
   pickerColor,
-  setBusLines,
+  setBusLinesOld,
 } from "../line/BusLines";
 import {
   getSelectedBusLine,
@@ -102,7 +102,7 @@ export default function () {
 
     updateBusLine(selectedBusLineId, color)
       .then(() => {
-        setBusLines((prevBusLines) => {
+        setBusLinesOld((prevBusLines) => {
           const busLinesWithoutSelectedBusLine = prevBusLines.filter(
             (busLine) => busLine.idBusLine != selectedBusLineId
           );

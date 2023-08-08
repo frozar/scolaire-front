@@ -17,7 +17,7 @@ import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { assertIsNode } from "../utils";
 
 import ClickOutside from "../component/ClickOutside";
-import { busLines } from "../views/content/graphicage/line/BusLines";
+import { busLinesOld } from "../views/content/graphicage/line/BusLines";
 import { fetchBusLines } from "../views/content/graphicage/line/busLinesUtils";
 
 // HACK for the documentation to preserve the ClickOutside directive on save
@@ -228,7 +228,7 @@ export default function () {
                           </li>
                           <li>
                             <span class="font-semibold text-sm text-gray-900">
-                              {busLines().length + " "}
+                              {busLinesOld().length + " "}
                             </span>
                             ligne(s) présente(s) sur la carte,
                           </li>

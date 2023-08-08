@@ -25,6 +25,7 @@ export interface PointInformation extends PointIdentityType {
 export type PointType = StopType | SchoolType;
 export type LeafletPointType = LeafletStopType | LeafletSchoolType;
 
+// TODO probably to delete
 export interface PointInterface extends PointInformation {
   selected: Accessor<boolean>;
   setSelected: Setter<boolean>;

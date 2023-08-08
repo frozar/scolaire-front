@@ -5,7 +5,7 @@ import { useStateGui } from "../../../StateGui";
 
 import { buildMapL7 } from "./l7MapBuilder";
 
-import BusLines from "./line/BusLines";
+import { BusLines } from "./line/BusLines";
 
 import ImportCsvCanvas from "../../../component/ImportCsvCanvas";
 import ConfirmStopAddLine from "./ConfirmStopAddLineBox";
@@ -79,7 +79,7 @@ export default function () {
           leafletMap={getLeafletMap() as L.Map}
         />
       </Show>
-      <BusLines />
+      <BusLines map={getLeafletMap() as L.Map} />
       <div class="z-[1000] absolute top-[45%] right-[15px]">
         <RightMapMenu />
       </div>

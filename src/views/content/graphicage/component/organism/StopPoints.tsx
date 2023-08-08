@@ -29,6 +29,8 @@ export function StopPoints(props: StopPointsProps) {
     let leafletStops: LeafletStopType[];
     if (!props.items) {
       const stops: StopType[] = await StopService.getAll();
+      //TODO temporary log
+      console.log(stops);
       leafletStops = buildLeafletStops(stops);
     } else {
       leafletStops = props.items;

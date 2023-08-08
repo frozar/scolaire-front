@@ -16,7 +16,7 @@ import {
   PointRamassageType,
 } from "../../../type";
 import { authenticateWrap } from "../../layout/authentication";
-import { busLines } from "./line/BusLines";
+import { busLinesOld } from "./line/BusLines";
 import { fetchBusLines } from "./line/busLinesUtils";
 
 const [, { setModeRead }] = useStateAction();
@@ -46,7 +46,7 @@ export function generateCircuit(
   );
 
   const planned_stops: PointIdentityType[] = _.flattenDeep(
-    busLines().map((elt: LineType) => elt.stops)
+    busLinesOld().map((elt: LineType) => elt.stops)
   );
 
   const unplanned_stops = compute_unplanned_stops(all_pois, planned_stops);

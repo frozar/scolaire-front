@@ -15,9 +15,9 @@ import {
 } from "../component/organism/SchoolPoints";
 import { LeafletStopType, ramassages } from "../component/organism/StopPoints";
 import {
-  busLines,
+  busLinesOld,
   linkBusLinePolyline,
-  setBusLines,
+  setBusLinesOld,
   setPickerColor,
 } from "./BusLines";
 
@@ -127,11 +127,11 @@ function getBusLineById(
 }
 
 export function deselectAllBusLines() {
-  busLines().map((busLine) => busLine.setSelected(false));
+  busLinesOld().map((busLine) => busLine.setSelected(false));
 }
 
 function selectBusLineById(targetIdBusLine: number) {
-  busLines().map((busLine) =>
+  busLinesOld().map((busLine) =>
     busLine.setSelected(targetIdBusLine == busLine.idBusLine)
   );
 }
@@ -178,7 +178,7 @@ function handleMouseOver(
   arrowsLinked: L.Marker[],
   idBusLine: number
 ) {
-  const busLine = getBusLineById(busLines(), idBusLine);
+  const busLine = getBusLineById(busLinesOld(), idBusLine);
   if (!busLine) {
     return;
   }
@@ -195,7 +195,7 @@ function handleMouseOut(
   arrowsLinked: L.Marker[],
   idBusLine: number
 ) {
-  const busLine = getBusLineById(busLines(), idBusLine);
+  const busLine = getBusLineById(busLinesOld(), idBusLine);
   if (!busLine) {
     return;
   }
@@ -203,7 +203,7 @@ function handleMouseOut(
   const isSelected = busLine.selected();
 
   if (!isSelected && (isInRemoveLineMode() || isInReadMode())) {
-    const routeColor = getBusLineColor(busLines(), idBusLine);
+    const routeColor = getBusLineColor(busLinesOld(), idBusLine);
     if (!routeColor) {
       return;
     }
@@ -420,21 +420,22 @@ export function fetchBusLines() {
       } = await res.json();
 
       const lines: LineType[] = json.content.map((resLine) => {
-        const color = resLine.color ? "#" + resLine.color : randColor();
-        const stopsWithNatureEnum = resLine.stops.map(
-          (stop) =>
-            ({
-              id: stop.id_resource,
-              idPoint: stop.id_point,
-              nature:
-                stop["nature"] === "ramassage"
-                  ? NatureEnum.ramassage
-                  : NatureEnum.etablissement,
-            } as PointIdentityType)
-        );
+        // const color = resLine.color ? "#" + resLine.color : randColor();
+        // const stopsWithNatureEnum = resLine.stops.map(
+        //   (stop) =>
+        //     ({
+        //       id: stop.id_resource,
+        //       idPoint: stop.id_point,
+        //       nature:
+        //         stop["nature"] === "ramassage"
+        //           ? NatureEnum.ramassage
+        //           : NatureEnum.etablissement,
+        //     } as PointIdentityType)
+        // );
 
         const [selected, setSelected] = createSignal(false);
 
+        //TODO looking for
         createEffect(() => {
           const selectedWk = selected();
 
@@ -444,7 +445,10 @@ export function fetchBusLines() {
 
           const { polyline, arrows } = linkBusLinePolyline[resLine.id_bus_line];
 
-          const routeColor = getBusLineColor(busLines(), resLine.id_bus_line);
+          const routeColor = getBusLineColor(
+            busLinesOld(),
+            resLine.id_bus_line
+          );
           if (!routeColor) {
             return;
           }
@@ -457,18 +461,18 @@ export function fetchBusLines() {
         });
 
         const lineWk: LineType = {
-          idBusLine: resLine.id_bus_line,
-          color: color,
-          stops: stopsWithNatureEnum,
-          selected,
-          setSelected,
+          // idBusLine: resLine.id_bus_line,
+          // color: color,
+          // stops: stopsWithNatureEnum,
+          // selected,
+          // setSelected,
           etablissementSelected: [],
         };
 
         return lineWk;
       });
 
-      setBusLines((previousLines) => {
+      setBusLinesOld((previousLines) => {
         // Remove existing polylines and arrows
         const idLines = lines.map((line) => line.idBusLine);
 
@@ -487,7 +491,7 @@ export function fetchBusLines() {
           }
         }
         if (isInAddLineMode()) {
-          setBusLines([]);
+          setBusLinesOld([]);
           return [];
         }
 
@@ -552,7 +556,7 @@ export function fetchBusLines() {
 }
 
 export const getSelectedBusLine = (): LineType | undefined => {
-  const busLinesWk = busLines();
+  const busLinesWk = busLinesOld();
   if (busLinesWk.length == 0) {
     return;
   }
