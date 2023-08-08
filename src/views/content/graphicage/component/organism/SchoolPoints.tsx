@@ -3,7 +3,6 @@ import { Accessor, For, Setter, createSignal, onMount } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import { useStateGui } from "../../../../../StateGui";
 import { SchoolType } from "../../../../../_entities/school.entity";
-import { StopType } from "../../../../../_entities/stop.entity";
 import { SchoolService } from "../../../../../_services/school.service";
 import { PointInterface } from "../atom/Point";
 import { SchoolPoint } from "../molecule/SchoolPoint";
@@ -54,7 +53,7 @@ export type LeafletSchoolType = {
   // TODO check utility
   selected: Accessor<boolean>;
   setSelected: Setter<boolean>;
-} & StopType;
+} & SchoolType;
 
 function buildLeafletSchools(schools: SchoolType[]): LeafletSchoolType[] {
   // TODO ununderstood lint error
