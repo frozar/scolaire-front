@@ -21,6 +21,8 @@
 }
 
 .timeline-add-mode {
+  @apply v-timeline v-timeline--align-start v-timeline--justify-auto v-timeline--side-end v-timeline--vertical;
+  --v-timeline-line-thickness: 2px;
   width: 100%;
   -webkit-text-size-adjust: 100%;
   word-break: normal;
@@ -29,7 +31,6 @@
   font-family: Roboto, sans-serif;
   line-height: 1.5;
   font-size: 0.8rem;
-  max-height: 35em;
   overflow-y: scroll;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;

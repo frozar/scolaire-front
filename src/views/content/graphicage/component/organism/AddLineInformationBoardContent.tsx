@@ -22,7 +22,7 @@ export default function () {
     getLineUnderConstruction().etablissementSelected;
 
   return (
-    <>
+    <div class="add-line-information-board-content">
       <div class="add-line-information-board-content-header">
         <Show when={etablissementSelected()}>
           <SelectedSchool
@@ -52,6 +52,6 @@ export default function () {
           setLine={setLineUnderConstruction}
         />
       </Show>
-    </>
+    </div>
   );
 }

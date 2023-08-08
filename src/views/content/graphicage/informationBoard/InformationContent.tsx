@@ -30,6 +30,8 @@ import {
 import InfoPointName from "./InfoPointName";
 import TimelineReadMode from "./TimelineReadMode";
 
+import "./InformationContent.css";
+
 const [, { isInAddLineMode, resetLineUnderConstruction }] = useStateAction();
 
 export default function () {
@@ -150,13 +152,7 @@ export default function () {
   }
 
   return (
-    <div
-      style={{
-        display: "flex",
-        "flex-direction": "column",
-        "align-items": "center",
-      }}
-    >
+    <div class="information-content">
       <Switch fallback={<span>Aucun élément sélectionné</span>}>
         <Match when={getSelectedPoint()}>
           {/* TODO To atomise */}
