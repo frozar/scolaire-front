@@ -1,4 +1,5 @@
 import { FaSolidWandMagicSparkles } from "solid-icons/fa";
+import { Show } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 
 import {
@@ -8,6 +9,11 @@ import {
 
 const [, { setPointsToLineUnderConstruction }] = useStateAction();
 
+import {
+  getDrawHelperDialog,
+  openDrawHelperDialog,
+  setDrawHelperDialog,
+} from "../../../../../signaux";
 import { LeafletSchoolType, getLeafletSchools } from "../organism/SchoolPoints";
 import {
   LeafletStopType,
@@ -15,15 +21,24 @@ import {
   leafletStopsFilter,
 } from "../organism/StopPoints";
 import "./DrawHelperButton.css";
+import DrawHelperDialog from "./DrawHelperDialog";
 
 interface DrawHelperButtonProps {
   schools: LeafletSchoolType[] | undefined;
 }
 
 const [, { getLineUnderConstruction }] = useStateAction();
+async function drawHelper(data: DrawHelperDataType) {
+  console.log("Query", data);
+  const response = await GraphicageService.drawHelper(data);
+  console.log("response", response);
 
+  const formattedResponse: (LeafletStopType | LeafletSchoolType)[] =
+    formatTimeLinePoints(response);
+  setPointsToLineUnderConstruction(formattedResponse);
+}
 export function DrawHelperButton(props: DrawHelperButtonProps) {
-  async function onclick() {
+  async function requestCircuit(capacity = 30) {
     const schools: LeafletSchoolType[] =
       props.schools != undefined
         ? JSON.parse(JSON.stringify(props.schools))
@@ -39,25 +54,43 @@ export function DrawHelperButton(props: DrawHelperButtonProps) {
       schools: schools,
       selected: selectedStops,
       stops: stops,
-      capacity: 30,
+      capacity: capacity,
     };
 
-    console.log("Query", data);
+    await drawHelper(data);
+  }
 
-    const response = await GraphicageService.drawHelper(data);
-    console.log("response", response);
-
-    const formattedResponse: (LeafletStopType | LeafletSchoolType)[] =
-      formatTimeLinePoints(response);
-    setPointsToLineUnderConstruction(formattedResponse);
+  async function onclick() {
+    openDrawHelperDialog();
   }
 
   return (
+<<<<<<< HEAD
     <div class="graphicage-draw-helper-button">
       <button onClick={onclick}>
         <FaSolidWandMagicSparkles />
       </button>
     </div>
+=======
+    <>
+      <DrawHelperDialog
+        getter={getDrawHelperDialog}
+        setter={setDrawHelperDialog}
+        requestCircuit={requestCircuit}
+      />
+      <div class="graphicage-draw-helper-button">
+        <Show
+          when={getLineUnderConstruction().stops.length > 0}
+          fallback={<span>Création d'une ligne</span>}
+        >
+          <p>Création automatique d'une ligne</p>
+          <button onClick={onclick}>
+            <FaSolidWandMagicSparkles />
+          </button>
+        </Show>
+      </div>
+    </>
+>>>>>>> a0bbe6aa (WIP before atomisation)
   );
 }
 
