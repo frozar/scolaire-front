@@ -23,11 +23,13 @@ export default function (props: AddLineButtonProps) {
   const handleClick = () => {
     if (isInAddLineMode()) {
       setModeRead();
-      fetchBusLines();
+      //TODO voir l'impact de la suppression
+      // fetchBusLines();
     } else {
       deselectAllPoints();
       setModeAddLine();
-      fetchBusLines();
+      //TODO voir l'impact de la suppression
+      // fetchBusLines();
       displayAddLineMessage();
     }
   };

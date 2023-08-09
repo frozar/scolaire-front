@@ -47,7 +47,8 @@ function exitModal({ code }: KeyboardEvent) {
 export default function () {
   const confirmStopingEdition = () => {
     setModeRead();
-    fetchBusLines();
+    //TODO voir l'impact de la suppression
+    // fetchBusLines();
     toggleConfirmStopAddLine();
     modalToOpen();
   };

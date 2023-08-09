@@ -1,13 +1,6 @@
 import { For, Match, Show, Switch, createEffect } from "solid-js";
 import { useStateAction } from "../../../../StateAction";
-import { updateBusLine } from "../../../../request";
-import { addNewUserInformation } from "../../../../signaux";
-import {
-  LineType,
-  MessageLevelEnum,
-  MessageTypeEnum,
-  isLeafletStopType,
-} from "../../../../type";
+import { isLeafletStopType } from "../../../../type";
 import { ColorPicker } from "../component/atom/ColorPicker";
 import AddLineInformationBoardContent from "../component/organism/AddLineInformationBoardContent";
 import {
@@ -18,15 +11,7 @@ import {
   LeafletStopType,
   getLeafletStops,
 } from "../component/organism/StopPoints";
-import {
-  linkBusLinePolyline,
-  pickerColor,
-  setBusLinesOld,
-} from "../line/BusLines";
-import {
-  getSelectedBusLine,
-  getSelectedBusLineId,
-} from "../line/busLinesUtils";
+import { getSelectedBusLine, pickerColor } from "../line/BusLines";
 import InfoPointName from "./InfoPointName";
 import TimelineReadMode from "./TimelineReadMode";
 
@@ -64,67 +49,59 @@ export default function () {
   };
 
   const handleColorPicker = (color: string) => {
-    const selectedBusLineId = getSelectedBusLineId();
-
-    if (!selectedBusLineId) {
-      return;
-    }
-
-    linkBusLinePolyline[selectedBusLineId].polyline.setStyle({
-      color: color,
-    });
-
-    const arrows = linkBusLinePolyline[selectedBusLineId].arrows;
-
-    for (const arrow of arrows) {
-      const arrowHTML = arrow.getElement();
-      if (!arrowHTML) {
-        return;
-      }
-
-      const iconHTMLorNull = arrowHTML.firstElementChild;
-      if (!iconHTMLorNull) {
-        return;
-      }
-
-      const iconHTML = iconHTMLorNull as SVGElement;
-      iconHTML.setAttribute("fill", color);
-    }
+    // TODO rework this fonctionnality ... rendre la couleur réactive ?
+    // const selectedBusLineId = getSelectedBusLineId();
+    // if (!selectedBusLineId) {
+    //   return;
+    // }
+    // linkBusLinePolyline[selectedBusLineId].polyline.setStyle({
+    //   color: color,
+    // });
+    // const arrows = linkBusLinePolyline[selectedBusLineId].arrows;
+    // for (const arrow of arrows) {
+    //   const arrowHTML = arrow.getElement();
+    //   if (!arrowHTML) {
+    //     return;
+    //   }
+    //   const iconHTMLorNull = arrowHTML.firstElementChild;
+    //   if (!iconHTMLorNull) {
+    //     return;
+    //   }
+    //   const iconHTML = iconHTMLorNull as SVGElement;
+    //   iconHTML.setAttribute("fill", color);
+    // }
   };
 
   const handleColorChanged = (color: string) => {
-    const selectedBusLine = getSelectedBusLine();
-    if (!selectedBusLine) {
-      return;
-    }
-
-    const selectedBusLineId = selectedBusLine.idBusLine;
-
-    updateBusLine(selectedBusLineId, color)
-      .then(() => {
-        setBusLinesOld((prevBusLines) => {
-          const busLinesWithoutSelectedBusLine = prevBusLines.filter(
-            (busLine) => busLine.idBusLine != selectedBusLineId
-          );
-
-          const busLineWithNewColor: LineType = {
-            ...selectedBusLine,
-            color,
-          };
-
-          return [...busLinesWithoutSelectedBusLine, busLineWithNewColor];
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-        addNewUserInformation({
-          displayed: true,
-          level: MessageLevelEnum.error,
-          type: MessageTypeEnum.global,
-          content:
-            "Une erreur est survenue lors de la modification de couleur de la ligne",
-        });
-      });
+    // TODO rework this fonctionnality ... rendre la couleur réactive ?
+    // const selectedBusLine = getSelectedBusLine();
+    // if (!selectedBusLine) {
+    //   return;
+    // }
+    // const selectedBusLineId = selectedBusLine.idBusLine;
+    // updateBusLine(selectedBusLineId, color)
+    //   .then(() => {
+    //     setBusLinesOld((prevBusLines) => {
+    //       const busLinesWithoutSelectedBusLine = prevBusLines.filter(
+    //         (busLine) => busLine.idBusLine != selectedBusLineId
+    //       );
+    //       const busLineWithNewColor: LineType = {
+    //         ...selectedBusLine,
+    //         color,
+    //       };
+    //       return [...busLinesWithoutSelectedBusLine, busLineWithNewColor];
+    //     });
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //     addNewUserInformation({
+    //       displayed: true,
+    //       level: MessageLevelEnum.error,
+    //       type: MessageTypeEnum.global,
+    //       content:
+    //         "Une erreur est survenue lors de la modification de couleur de la ligne",
+    //     });
+    //   });
   };
   //TODO error with the associated Point (test with quantity)
   function getDisplayPoints(): LeafletSchoolType[] | LeafletStopType[] {
@@ -204,7 +181,7 @@ export default function () {
             </div>
           </Show>
         </Match>
-        <Match when={getSelectedBusLineId()}>
+        <Match when={getSelectedBusLine()}>
           {/* TODO Put th e2 next component in "organism" */}
           <ColorPicker
             color={pickerColor()}

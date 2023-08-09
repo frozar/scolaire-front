@@ -7,7 +7,11 @@ interface LineProps {
   leafletMap: L.Map;
   color: string;
   opacity: number;
+
   withArrows?: boolean;
+  onMouseOver?: (polyline: L.Polyline, arrows: L.Marker[]) => void;
+  onMouseOut?: (polyline: L.Polyline, arrows: L.Marker[]) => void;
+  onClick?: () => void;
 }
 
 const [localArrows, setLocalArrows] = createSignal<L.Marker[]>([]);
@@ -24,19 +28,45 @@ export default function (props: LineProps) {
 
     busLinePolyline?.remove();
 
-    busLinePolyline = L.polyline(latlngs, {
-      color: color,
-      opacity: opacity,
-    }) as L.Polyline<LineString>;
-
-    busLinePolyline.addTo(leafletMap);
+    busLinePolyline = buildLeafletPolyline(color, latlngs, opacity);
 
     if (props.withArrows) {
-      setLocalArrows(buildArrows(props.latlngs, props.color));
+      setLocalArrows(buildArrows(props.latlngs, color));
     }
 
-    for (const arrow of localArrows()) {
-      arrow.addTo(leafletMap);
+    // Add events to Line & Arrows
+    if (props.onMouseOver || props.onMouseOut || props.onClick) {
+      let leafletElem: (L.Polyline | L.Marker)[] = [busLinePolyline];
+      if (props.withArrows) {
+        leafletElem = [...leafletElem, ...localArrows()];
+      }
+
+      if (props.onMouseOver != undefined) {
+        leafletElem.map((elem) =>
+          elem.on("mouseover", () =>
+            props.onMouseOver?.(busLinePolyline, localArrows())
+          )
+        );
+      }
+
+      if (props.onMouseOut != undefined) {
+        leafletElem.map((elem) =>
+          elem.on("mouseout", () =>
+            props.onMouseOut?.(busLinePolyline, localArrows())
+          )
+        );
+      }
+      if (props.onClick) {
+        leafletElem.map((elem) => elem.on("click", () => props.onClick?.()));
+      }
+    }
+
+    // Add Line & Arrows to the map
+    busLinePolyline.addTo(leafletMap);
+    if (props.withArrows) {
+      for (const arrow of localArrows()) {
+        arrow.addTo(leafletMap);
+      }
     }
     //TODO ajouter les event Arrows et Polyline
   });
@@ -47,6 +77,23 @@ export default function (props: LineProps) {
 
   return <></>;
 }
+
+function buildLeafletPolyline(
+  color: string,
+  latlngs: L.LatLng[],
+  opacity: number = 1
+): L.Polyline<LineString> {
+  return L.polyline(latlngs, {
+    color: color,
+    opacity: opacity,
+  }) as L.Polyline<LineString>;
+}
+
+/**
+ *
+ *  Arrow's functions
+ *
+ */
 
 function buildArrows(latLngs: L.LatLng[], color: string): L.Marker[] {
   const increment = 30;

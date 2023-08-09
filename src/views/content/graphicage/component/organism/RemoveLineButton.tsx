@@ -25,11 +25,13 @@ export default function (props: RemoveLineButtonProps) {
     deselectAllPoints();
     if (isInRemoveLineMode()) {
       setModeRead();
-      fetchBusLines();
+      //TODO voir l'impact de la suppression
+      // fetchBusLines();
       return;
     }
     setModeRemoveLine();
-    fetchBusLines();
+    //TODO voir l'impact de la suppression
+    // fetchBusLines();
     displayRemoveLineMessage();
   };
 

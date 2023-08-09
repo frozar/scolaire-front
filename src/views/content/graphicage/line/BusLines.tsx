@@ -6,8 +6,13 @@ import { LineType } from "../../../../type";
 import { BusLine } from "../component/molecule/BusLine";
 import { pointsReady } from "../component/organism/Points";
 
+// TODO to delete
 export const [busLinesOld, setBusLinesOld] = createSignal<LineType[]>([]);
+
+// TODO move to color picker component ?
 export const [pickerColor, setPickerColor] = createSignal("");
+
+// TODO to delete
 export const linkBusLinePolyline: {
   [idBusLine: number]: {
     polyline: L.Polyline;
@@ -25,21 +30,16 @@ export function BusLines(props: BusLinesProps) {
   createEffect(async () => {
     if (pointsReady()) {
       const lines = await BusLineService.getAll();
-
       setBusLines(lines);
-
-      //TODO to delete
-      // fetchBusLines();
     }
   });
 
   onCleanup(() => {
     setBusLines([]);
-    setBusLinesOld([]);
   });
 
   return (
-    <For each={getBusLines()}>
+    <For each={busLinesFilter()}>
       {(line) => {
         return <BusLine line={line} map={props.map} />;
       }}
@@ -49,4 +49,18 @@ export function BusLines(props: BusLinesProps) {
 
 const busLinesFilter = () => {
   return getBusLines();
+};
+
+export function deselectAllBusLines() {
+  getBusLines().map((busLine) => busLine.setSelected(false));
+}
+
+export const getSelectedBusLine = (): BusLineType | undefined => {
+  const selectedBusLine = getBusLines().find((line) => line.selected());
+
+  if (!selectedBusLine) {
+    return;
+  }
+
+  return selectedBusLine;
 };

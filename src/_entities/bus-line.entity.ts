@@ -21,7 +21,7 @@ export class BusLineEntity {
 
     const school = filteredShools[0];
     const [selected, setSelected] = createSignal(false);
-    const [polyline, setPolyline] = createSignal([]);
+    const [latLngs, setLatLngs] = createSignal([]);
 
     return {
       id: dbData.id,
@@ -29,8 +29,8 @@ export class BusLineEntity {
       name: dbData.name,
       color: "#" + dbData.color,
       points: formatBusLinePointType(dbData.bus_line_stop),
-      polyline: polyline,
-      setPolyline: setPolyline,
+      latLngs: latLngs,
+      setLatLngs: setLatLngs,
       selected: selected,
       setSelected: setSelected,
     };
@@ -51,6 +51,7 @@ const formatBusLinePointType = (
     }
     return {
       id: associatedPoint.id,
+      leafletId: associatedPoint.leafletId,
       name: associatedPoint.name,
       lon: associatedPoint.lon,
       lat: associatedPoint.lat,
@@ -77,14 +78,15 @@ export type BusLineType = {
   color: string;
   school: SchoolType;
   points: BusLinePointType[];
-  polyline: Accessor<L.LatLng[]>;
-  setPolyline: Setter<L.LatLng[]>;
+  latLngs: Accessor<L.LatLng[]>;
+  setLatLngs: Setter<L.LatLng[]>;
   selected: Accessor<boolean>;
   setSelected: Setter<boolean>;
 };
 
 export type BusLinePointType = {
   id: number;
+  leafletId: number;
   name: string;
   lon: number;
   lat: number;

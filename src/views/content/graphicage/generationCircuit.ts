@@ -8,7 +8,6 @@ import {
   points,
 } from "../../../signaux";
 import {
-  LineType,
   MessageLevelEnum,
   MessageTypeEnum,
   NatureEnum,
@@ -16,7 +15,6 @@ import {
   PointRamassageType,
 } from "../../../type";
 import { authenticateWrap } from "../../layout/authentication";
-import { busLinesOld } from "./line/BusLines";
 import { fetchBusLines } from "./line/busLinesUtils";
 
 const [, { setModeRead }] = useStateAction();
@@ -45,9 +43,11 @@ export function generateCircuit(
     }
   );
 
-  const planned_stops: PointIdentityType[] = _.flattenDeep(
-    busLinesOld().map((elt: LineType) => elt.stops)
-  );
+  // TODO To improve with new Type (post Xano)
+  // const planned_stops: PointIdentityType[] = _.flattenDeep(
+  //   busLinesOld().map((elt: LineType) => elt.stops)
+  // );
+  const planned_stops: PointIdentityType[] = [];
 
   const unplanned_stops = compute_unplanned_stops(all_pois, planned_stops);
 
@@ -156,7 +156,8 @@ export function generateCircuit(
           // TODO: Deal case of error
           // await res.json();
           setModeRead();
-          fetchBusLines();
+          //TODO voir l'impact de la suppression
+          // fetchBusLines();
           disableSpinningWheel();
         }
       })

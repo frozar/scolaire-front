@@ -14,7 +14,7 @@ import {
 } from "../../../userInformation/utils";
 import { displayedConfirmStopAddLine } from "./ConfirmStopAddLineBox";
 import { deselectAllPoints } from "./component/organism/Points";
-import { deselectAllBusLines, fetchBusLines } from "./line/busLinesUtils";
+import { deselectAllBusLines } from "./line/BusLines";
 
 const [
   ,
@@ -80,7 +80,8 @@ function escapeHandler({ code }: KeyboardEvent) {
 
     resetLineUnderConstruction();
     setModeRead();
-    fetchBusLines();
+    //TODO voir l'impact de la suppression
+    // fetchBusLines();
   }
 }
 
@@ -110,7 +111,8 @@ function enterHandler({ code }: KeyboardEvent) {
 
       resetLineUnderConstruction();
       setModeRead();
-      fetchBusLines();
+      //TODO voir l'impact de la suppression
+      // fetchBusLines();
     });
   }
 }
@@ -128,11 +130,13 @@ function toggleLineUnderConstruction({ code }: KeyboardEvent) {
     if (upKey === "l") {
       if (isInAddLineMode()) {
         setModeRead();
-        fetchBusLines();
+        //TODO voir l'impact de la suppression
+        // fetchBusLines();
       } else {
         deselectAllPoints();
         setModeAddLine();
-        fetchBusLines();
+        //TODO voir l'impact de la suppression
+        // fetchBusLines();
         displayAddLineMessage();
       }
     }
@@ -142,11 +146,13 @@ function toggleLineUnderConstruction({ code }: KeyboardEvent) {
 
       if (!isInRemoveLineMode()) {
         setModeRemoveLine();
-        fetchBusLines();
+        //TODO voir l'impact de la suppression
+        // fetchBusLines();
         displayRemoveLineMessage();
       } else {
         setModeRead();
-        fetchBusLines();
+        //TODO voir l'impact de la suppression
+        // fetchBusLines();
         closeRemoveConfirmationBox();
       }
     }
