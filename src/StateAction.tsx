@@ -61,20 +61,21 @@ const makeStateActionContext = () => {
   function addPointToLineUnderConstruction(
     point: LeafletStopType | LeafletSchoolType
   ) {
-    setState(
-      "lineUnderConstruction",
-      "stops",
-      (line: (LeafletStopType | LeafletSchoolType)[]) => {
-        if (line.length === 0) {
-          return [point];
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        } else if (_.isEqual(line.at(-1)!, point)) {
-          return line;
-        } else {
-          return [...line, point];
-        }
+    setState("lineUnderConstruction", "stops", (line: PointIdentityType[]) => {
+      const res = [...line];
+      if (!_.isEqual(line.at(-1), point)) {
+        const indice = state.lineUnderConstruction.nextIndex;
+        res.splice(indice, 0, point);
       }
-    );
+
+      setState("lineUnderConstruction", "nextIndex", res.length);
+
+      return res;
+    });
+  }
+
+  function setLineUnderConstructionNextIndex(indicepoints: number) {
+    setState("lineUnderConstruction", "nextIndex", indicepoints);
   }
 
   function resetLineUnderConstruction() {
@@ -165,6 +166,7 @@ const makeStateActionContext = () => {
       isInAddLineMode,
       isInRemoveLineMode,
       isInReadMode,
+      setLineUnderConstructionNextIndex,
     },
     history,
   ] as const;
