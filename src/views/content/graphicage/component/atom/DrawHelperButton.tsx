@@ -39,6 +39,7 @@ export function DrawHelperButton(props: DrawHelperButtonProps) {
       schools: schools,
       selected: selectedStops,
       stops: stops,
+      capacity: 30,
     };
 
     console.log("Query", data);

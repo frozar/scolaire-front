@@ -30,4 +30,5 @@ export type DrawHelperDataType = {
   schools: LeafletSchoolType[];
   selected: (LeafletStopType | LeafletSchoolType)[];
   stops: LeafletStopType[];
+  capacity: number;
 };
