@@ -135,17 +135,10 @@ export default function () {
         (point) => point.id
       );
       const nature = selectedPoint.nature;
-      return points
-        .filter(
-          (point) =>
-            nature != point.nature && associatedIdPoints?.includes(point.id)
-        )
-        .map((entity) => {
-          entity.associated = entity.associated.filter(
-            (point) => point.id == selectedPoint.id
-          );
-          return entity;
-        });
+      return points.filter(
+        (point) =>
+          nature != point.nature && associatedIdPoints?.includes(point.id)
+      );
     } else return [];
   }
 
@@ -196,10 +189,12 @@ export default function () {
                                 </td>
                                 <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                                   {/* TODO add Quantity */}
-                                  {pt.associated.reduce(
-                                    (acc, entity) => acc + entity.quantity,
-                                    0
-                                  )}
+                                  {
+                                    pt.associated.filter(
+                                      (point) =>
+                                        point.id === getSelectedPoint()?.id
+                                    )[0].quantity
+                                  }
                                 </td>
                               </tr>
                             )}
