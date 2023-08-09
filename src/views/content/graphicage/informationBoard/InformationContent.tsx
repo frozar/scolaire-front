@@ -129,10 +129,9 @@ export default function () {
     const points = [...getLeafletStops(), ...getLeafletSchools()];
 
     const selectedPoint = getSelectedPoint();
-    console.log("selected ", selectedPoint);
-    console.log("associated ", selectedPoint?.associated);
+
     if (selectedPoint) {
-      const associatedIdPoints = [...selectedPoint.associated].map(
+      const associatedIdPoints = selectedPoint.associated.map(
         (point) => point.id
       );
       const nature = selectedPoint.nature;

@@ -34,7 +34,6 @@ const rangeRadius = maxRadius - minRadius;
 
 function onClick(point: LeafletStopType) {
   // Highlight point schools
-
   for (const associated of point.associated) {
     let element;
     const school = getLeafletSchools().filter(
