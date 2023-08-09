@@ -8,10 +8,6 @@ import {
 import { OsrmService } from "../../../../../_services/osrm.service";
 import { setRemoveConfirmation } from "../../../../../signaux";
 import { deselectAllBusLines, setPickerColor } from "../../line/BusLines";
-import {
-  buslineSetBoldStyle,
-  buslineSetNormalStyle,
-} from "../../line/busLinesUtils";
 import Line from "../atom/Line";
 import { deselectAllPoints } from "../organism/Points";
 
@@ -90,4 +86,83 @@ export function BusLine(props: BusLineProps) {
 
 function getLatLngsFromPoint(points: BusLinePointType[]): L.LatLng[] {
   return points.map((point) => L.latLng(point.lat, point.lon));
+}
+
+export function buslineSetNormalStyle(
+  polyline: L.Polyline,
+  arrowsLinked: L.Marker[],
+  color: string
+) {
+  polylineSetNormalStyle(polyline, color);
+  arrowsSetNormalStyle(arrowsLinked, color);
+}
+
+export function buslineSetBoldStyle(
+  polyline: L.Polyline,
+  arrowsLinked: L.Marker[],
+  color: string
+) {
+  polylineSetBoldStyle(polyline, color);
+  arrowsSetBoldStyle(arrowsLinked, color);
+}
+
+function polylineSetBoldStyle(polyline: L.Polyline, color: string) {
+  polyline.setStyle({ color, weight: 8 });
+}
+
+function polylineSetNormalStyle(polyline: L.Polyline, color: string) {
+  polyline.setStyle({ color, weight: 3 });
+}
+
+function arrowsSetBoldStyle(arrows: L.Marker[], color: string) {
+  arrowApplyStyle(arrows, color, "scale(4,4) ");
+}
+
+function arrowsSetNormalStyle(arrows: L.Marker[], color: string) {
+  arrowApplyStyle(arrows, color, "scale(2,2) ");
+}
+
+function arrowApplyStyle(arrows: L.Marker[], color: string, transform: string) {
+  // Change color
+  arrows.map((arrow) => {
+    const element = arrow.getElement();
+    if (!element) {
+      return;
+    }
+    const elementChild = element.firstElementChild;
+    if (!elementChild) {
+      return;
+    }
+    elementChild.setAttribute("fill", color);
+  });
+
+  // Change size
+  arrows.map((arrow) => {
+    const element = arrow.getElement();
+    if (!element) {
+      return;
+    }
+
+    const elementChild = element.firstElementChild;
+    if (!elementChild) {
+      return;
+    }
+
+    const subChild = elementChild.firstElementChild;
+    if (!subChild) {
+      return;
+    }
+
+    // Keep first transformation value which should be a rotation
+    const transformValue = subChild.getAttribute("transform");
+    const rotation = transformValue;
+    if (!rotation) {
+      return;
+    }
+
+    const rotationValue = rotation.split(" ").at(1);
+    const transformModifiedValue = transform + rotationValue;
+
+    subChild.setAttribute("transform", transformModifiedValue);
+  });
 }

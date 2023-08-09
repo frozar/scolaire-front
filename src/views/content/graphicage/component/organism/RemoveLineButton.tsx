@@ -2,7 +2,6 @@ import { mergeProps } from "solid-js";
 
 import { useStateAction } from "../../../../../StateAction";
 import { displayRemoveLineMessage } from "../../../../../userInformation/utils";
-import { fetchBusLines } from "../../line/busLinesUtils";
 import { deselectAllPoints } from "./Points";
 
 import ButtonGraphicageRightMenu, {

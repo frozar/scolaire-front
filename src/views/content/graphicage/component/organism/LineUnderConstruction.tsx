@@ -1,8 +1,10 @@
+import L from "leaflet";
 import { Show } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import { COLOR_LINE_UNDER_CONSTRUCTION } from "../../constant";
-import { getLatLngs } from "../../line/busLinesUtils";
+
 import Line from "../atom/Line";
+import { linkMap } from "./Points";
 import { LeafletSchoolType } from "./SchoolPoints";
 import { LeafletStopType } from "./StopPoints";
 const [, { getLineUnderConstruction }] = useStateAction();
@@ -33,4 +35,22 @@ export default function (props: LineUnderConstructionProps) {
       /> */}
     </Show>
   );
+}
+
+// TODO to refactor ?
+function getLatLngs(
+  stops: (LeafletStopType | LeafletSchoolType)[]
+): L.LatLng[] {
+  const latlngs: L.LatLng[] = [];
+
+  // TODO: linkMap must be reactive => signal
+
+  for (const pointIdentity of stops) {
+    const circle = linkMap.get(pointIdentity.leafletId);
+    if (circle) {
+      latlngs.push(circle.getLatLng());
+    }
+  }
+
+  return latlngs;
 }
