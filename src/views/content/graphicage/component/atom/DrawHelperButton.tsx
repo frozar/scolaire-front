@@ -53,7 +53,6 @@ export function DrawHelperButton(props: DrawHelperButtonProps) {
 
   return (
     <div class="graphicage-draw-helper-button">
-      <p>Création d'une ligne</p>
       <button onClick={onclick}>
         <FaSolidWandMagicSparkles />
       </button>

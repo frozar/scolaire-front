@@ -1,0 +1,4 @@
+.information-content {
+  @apply flex flex-col;
+  align-items: center;
+}
