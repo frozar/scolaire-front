@@ -1,3 +1,4 @@
+import L from "leaflet";
 import { Accessor, Setter, createSignal } from "solid-js";
 import { NatureEnum } from "../type";
 import { LeafletPointType } from "../views/content/graphicage/component/atom/Point";
@@ -20,13 +21,16 @@ export class BusLineEntity {
 
     const school = filteredShools[0];
     const [selected, setSelected] = createSignal(false);
+    const [polyline, setPolyline] = createSignal([]);
 
     return {
       id: dbData.id,
       school: school,
       name: dbData.name,
-      color: dbData.color,
+      color: "#" + dbData.color,
       points: formatBusLinePointType(dbData.bus_line_stop),
+      polyline: polyline,
+      setPolyline: setPolyline,
       selected: selected,
       setSelected: setSelected,
     };
@@ -73,6 +77,8 @@ export type BusLineType = {
   color: string;
   school: SchoolType;
   points: BusLinePointType[];
+  polyline: Accessor<L.LatLng[]>;
+  setPolyline: Setter<L.LatLng[]>;
   selected: Accessor<boolean>;
   setSelected: Setter<boolean>;
 };

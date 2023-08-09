@@ -32,8 +32,6 @@ export function SchoolPoints(props: SchoolPointsProps) {
     let leafletSchools: LeafletSchoolType[];
     if (!props.items) {
       const schools: SchoolType[] = await SchoolService.getAll();
-      //TODO temporary log
-      console.log(schools);
       leafletSchools = buildLeafletSchools(schools);
     } else {
       leafletSchools = props.items;

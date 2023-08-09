@@ -232,6 +232,7 @@ function handleClick(idBusLine: number) {
   setPickerColor(color);
 }
 
+// TODO  à réinégrer à BusLIne component
 export function attachEvent(
   self: L.Polyline | L.Marker,
   polyline: L.Polyline,

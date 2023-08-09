@@ -24,7 +24,7 @@ export default function (props: LineUnderConstructionProps) {
           opacity={opacity}
         />
       </Show>
-      {/* TODO delete lineTip */}
+      {/* TODO delete lineTip or rethink fonctionnality */}
       {/* <LineTip
         latlng={getLatLngs(props.stops).at(-1) as L.LatLng}
         leafletMap={props.leafletMap}
