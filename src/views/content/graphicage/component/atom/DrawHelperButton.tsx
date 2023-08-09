@@ -10,10 +10,13 @@ import {
 const [, { setPointsToLineUnderConstruction }] = useStateAction();
 
 import {
+  disableSpinningWheel,
+  enableSpinningWheel,
   getDrawHelperDialog,
   openDrawHelperDialog,
   setDrawHelperDialog,
 } from "../../../../../signaux";
+import DrawHelperDialog from "../molecule/DrawHelperDialog";
 import { LeafletSchoolType, getLeafletSchools } from "../organism/SchoolPoints";
 import {
   LeafletStopType,
@@ -21,22 +24,25 @@ import {
   leafletStopsFilter,
 } from "../organism/StopPoints";
 import "./DrawHelperButton.css";
-import DrawHelperDialog from "./DrawHelperDialog";
 
 interface DrawHelperButtonProps {
   schools: LeafletSchoolType[] | undefined;
 }
 
 const [, { getLineUnderConstruction }] = useStateAction();
+
 async function drawHelper(data: DrawHelperDataType) {
   console.log("Query", data);
+  enableSpinningWheel();
   const response = await GraphicageService.drawHelper(data);
+  disableSpinningWheel();
   console.log("response", response);
 
   const formattedResponse: (LeafletStopType | LeafletSchoolType)[] =
     formatTimeLinePoints(response);
   setPointsToLineUnderConstruction(formattedResponse);
 }
+
 export function DrawHelperButton(props: DrawHelperButtonProps) {
   async function requestCircuit(capacity = 30) {
     const schools: LeafletSchoolType[] =
