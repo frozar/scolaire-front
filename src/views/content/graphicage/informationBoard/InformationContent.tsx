@@ -190,11 +190,12 @@ export default function () {
                                 </td>
                                 <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                                   {/* TODO add Quantity */}
-                                  {/* TODO BUG HERE */}
-                                  {pt.associated.reduce(
-                                    (acc, entity) => acc + entity.quantity,
-                                    0
-                                  )}
+                                  {
+                                    pt.associated.filter(
+                                      (point) =>
+                                        point.id === getSelectedPoint()?.id
+                                    )[0].quantity
+                                  }
                                 </td>
                               </tr>
                             )}
