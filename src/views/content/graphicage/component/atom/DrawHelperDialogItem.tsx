@@ -11,8 +11,6 @@ export type DrawHelperDialogItemType = {
 };
 
 export default function (props: DrawHelperDialogItemType) {
-  // const [value, setValue] = createSignal(1);
-
   return (
     <div>
       <div class="sm:flex sm:items-start justify-center">
