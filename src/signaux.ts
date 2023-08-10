@@ -67,11 +67,11 @@ export const [getImportCsvBox, setImportCsvBox] =
     displayed: false,
   });
 
-export const [getDrawHelperDialog, setDrawHelperDialog] =
+export const [getDisplayedDrawHelperDialog, setDisplayedDrawHelperDialog] =
   createSignal<boolean>(false);
 
 export function openDrawHelperDialog() {
-  setDrawHelperDialog(true);
+  setDisplayedDrawHelperDialog(true);
 }
 
 export const [getRemoveRamassageConfirmation, setRemoveRamassageConfirmation] =

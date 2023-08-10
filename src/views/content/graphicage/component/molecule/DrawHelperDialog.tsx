@@ -1,17 +1,13 @@
-import {
-  Accessor,
-  Setter,
-  Show,
-  createEffect,
-  createSignal,
-  onCleanup,
-  onMount,
-} from "solid-js";
+import { Show, createEffect, createSignal, onCleanup, onMount } from "solid-js";
 import { Transition } from "solid-transition-group";
 
 import ClickOutside from "../../../../../component/ClickOutside";
 
 import Button from "../../../../../component/atom/Button";
+import {
+  getDisplayedDrawHelperDialog,
+  setDisplayedDrawHelperDialog,
+} from "../../../../../signaux";
 import { assertIsNode } from "../../../../../utils";
 import DrawHelperDialogItem from "../atom/DrawHelperDialogItem";
 true && ClickOutside;
@@ -19,12 +15,10 @@ true && ClickOutside;
 let refDialogueBox: HTMLDivElement;
 
 export default function (props: {
-  getter: Accessor<boolean>;
-  setter: Setter<boolean>;
   requestCircuit: (capacity?: number) => Promise<void>;
 }) {
   function closeDrawHelperDialog() {
-    props.setter(false);
+    setDisplayedDrawHelperDialog(false);
   }
 
   function exitModal({ code }: KeyboardEvent) {
@@ -33,7 +27,7 @@ export default function (props: {
     // eslint-disable-next-line solid/reactivity
     keyboard.getLayoutMap().then(() => {
       if (code === "Escape") {
-        if (props.getter()) {
+        if (getDisplayedDrawHelperDialog()) {
           closeDrawHelperDialog();
         }
       }
@@ -47,7 +41,7 @@ export default function (props: {
     document.removeEventListener("keyup", exitModal);
   });
 
-  const displayed = () => props.getter();
+  const displayed = () => getDisplayedDrawHelperDialog();
   const [nbVehicles, setNbVehicles] = createSignal(1);
   const [vehiclesCapacity, setVehiclesCapacity] = createSignal(30);
   // TODO Uncoment to add time limit

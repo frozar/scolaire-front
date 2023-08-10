@@ -9,11 +9,7 @@ import {
 const [, { setPointsToLineUnderConstruction }] = useStateAction();
 
 import { FaSolidWandMagicSparkles } from "solid-icons/fa";
-import {
-  getDrawHelperDialog,
-  openDrawHelperDialog,
-  setDrawHelperDialog,
-} from "../../../../../signaux";
+import { openDrawHelperDialog } from "../../../../../signaux";
 import DrawHelperDialog from "../molecule/DrawHelperDialog";
 import { LeafletSchoolType, getLeafletSchools } from "../organism/SchoolPoints";
 import {
@@ -66,11 +62,7 @@ export function DrawHelperButton(props: DrawHelperButtonProps) {
 
   return (
     <>
-      <DrawHelperDialog
-        getter={getDrawHelperDialog}
-        setter={setDrawHelperDialog}
-        requestCircuit={requestCircuit}
-      />
+      <DrawHelperDialog requestCircuit={requestCircuit} />
       <div class="graphicage-draw-helper-button">
         <Show
           when={getLineUnderConstruction().stops.length > 0}

@@ -1,6 +1,5 @@
 .btn-primary {
-  @apply w-full justify-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm sm:w-auto duration-150;
-  margin:1%;
+  @apply w-full justify-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm sm:w-auto duration-150 m-2;
 }
 
 .btn-primary:not([disabled]):hover {
