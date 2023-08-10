@@ -2,6 +2,7 @@ import { For, Match, Show, Switch, createEffect } from "solid-js";
 import { useStateAction } from "../../../../StateAction";
 import { isLeafletStopType } from "../../../../type";
 import AddLineInformationBoardContent from "../component/organism/AddLineInformationBoardContent";
+import { getSelectedBusLine } from "../component/organism/BusLines";
 import {
   LeafletSchoolType,
   getLeafletSchools,
@@ -10,7 +11,6 @@ import {
   LeafletStopType,
   getLeafletStops,
 } from "../component/organism/StopPoints";
-import { getSelectedBusLine } from "../line/BusLines";
 import InfoPointName from "./InfoPointName";
 
 import { BusLineInformationBoardContent } from "../component/organism/BusLineInformationBoardContent";

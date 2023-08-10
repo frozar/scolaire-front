@@ -19,17 +19,15 @@ export class BusLineService {
   //   return StopEntity.build(dbStop);
   // }
 
-  // static async update(
-  //   stop: Omit<StopType, "associated" | "selected">
-  // ): Promise<StopType> {
-  //   const data = StopEntity.dbFormat(stop);
-  //   const dbStop: StopDBType = await ServiceUtils.patch(
-  //     "/stop/" + stop.id,
-  //     data
-  //   );
-  //   if (dbStop == null) return dbStop;
-  //   return StopEntity.build(dbStop);
-  // }
+  static async update(line: Partial<BusLineType>): Promise<BusLineType> {
+    const data = BusLineEntity.dbPartialFormat(line);
+    const dbBusLine: BusLineDBType = await ServiceUtils.patch(
+      "/bus-line/" + line.id,
+      data
+    );
+    if (dbBusLine == null) return dbBusLine;
+    return BusLineEntity.build(dbBusLine);
+  }
 
   // static async delete(id: number): Promise<boolean> {
   //   return await ServiceUtils.delete("/stop/" + id);

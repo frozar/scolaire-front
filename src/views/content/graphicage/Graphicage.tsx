@@ -5,7 +5,7 @@ import { useStateGui } from "../../../StateGui";
 
 import { buildMapL7 } from "./l7MapBuilder";
 
-import { BusLines } from "./line/BusLines";
+import { BusLines } from "./component/organism/BusLines";
 
 import ImportCsvCanvas from "../../../component/ImportCsvCanvas";
 import ConfirmStopAddLine from "./ConfirmStopAddLineBox";
