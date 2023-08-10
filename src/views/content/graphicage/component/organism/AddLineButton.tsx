@@ -2,7 +2,6 @@ import { mergeProps } from "solid-js";
 
 import { useStateAction } from "../../../../../StateAction";
 import { displayAddLineMessage } from "../../../../../userInformation/utils";
-import { fetchBusLines } from "../../line/busLinesUtils";
 
 import ButtonGraphicageRightMenu, {
   OffsetType,
@@ -23,11 +22,13 @@ export default function (props: AddLineButtonProps) {
   const handleClick = () => {
     if (isInAddLineMode()) {
       setModeRead();
-      fetchBusLines();
+      //TODO voir l'impact de la suppression
+      // fetchBusLines();
     } else {
       deselectAllPoints();
       setModeAddLine();
-      fetchBusLines();
+      //TODO voir l'impact de la suppression
+      // fetchBusLines();
       displayAddLineMessage();
     }
   };

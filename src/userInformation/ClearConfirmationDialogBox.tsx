@@ -7,18 +7,17 @@ import {
   disableSpinningWheel,
   displayedClearConfirmationDialogBox,
   enableSpinningWheel,
-  points,
   setPoints,
 } from "../signaux";
-import { NatureEnum } from "../type";
 
 import { clear } from "../request";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { assertIsNode } from "../utils";
 
 import ClickOutside from "../component/ClickOutside";
-import { busLines } from "../views/content/graphicage/line/BusLines";
-import { fetchBusLines } from "../views/content/graphicage/line/busLinesUtils";
+import { getLeafletSchools } from "../views/content/graphicage/component/organism/SchoolPoints";
+import { getLeafletStops } from "../views/content/graphicage/component/organism/StopPoints";
+import { getBusLines } from "../views/content/graphicage/line/BusLines";
 
 // HACK for the documentation to preserve the ClickOutside directive on save
 // https://www.solidjs.com/guides/typescript#use___
@@ -45,7 +44,8 @@ function clearUserInformation(content: string, level: MessageLevelEnum) {
     content,
   });
   setPoints([]);
-  fetchBusLines();
+  //TODO voir l'impact de la suppression
+  // fetchBusLines();
   disableSpinningWheel();
   closeClearConfirmationBox();
 }
@@ -61,6 +61,7 @@ export default function () {
     document.removeEventListener("keyup", exitModal);
   });
 
+  // TODO  Have to be rewrite to be compliance with Xano
   function handlerOnClickValider() {
     clear()
       .then(async (res) => {
@@ -211,24 +212,19 @@ export default function () {
                         <ul class="text-sm text-gray-500 standard-list">
                           <li>
                             <span class="font-semibold text-sm text-gray-900">
-                              {points().filter(
-                                (value) => value.nature == NatureEnum.ramassage
-                              ).length + " "}
+                              {getLeafletStops().length + " "}
                             </span>
                             arrêt(s) de bus,
                           </li>
                           <li>
                             <span class="font-semibold text-sm text-gray-900">
-                              {points().filter(
-                                (value) =>
-                                  value.nature == NatureEnum.etablissement
-                              ).length + " "}
+                              {getLeafletSchools().length + " "}
                             </span>
                             établissement(s),
                           </li>
                           <li>
                             <span class="font-semibold text-sm text-gray-900">
-                              {busLines().length + " "}
+                              {getBusLines().length + " "}
                             </span>
                             ligne(s) présente(s) sur la carte,
                           </li>

@@ -11,7 +11,6 @@ import {
 import { deleteBusLine } from "../request";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { assertIsNode } from "../utils";
-import { fetchBusLines } from "../views/content/graphicage/line/busLinesUtils";
 
 // HACK for the documentation to preserve the ClickOutside directive on save
 // https://www.solidjs.com/guides/typescript#use___
@@ -65,7 +64,8 @@ export default function () {
           content: json.message,
         });
 
-        fetchBusLines();
+        //TODO voir l'impact de la suppression
+        // fetchBusLines();
       })
       .catch((error) => {
         console.error("Error during suppression", error);
@@ -76,7 +76,8 @@ export default function () {
           content: `Impossible de supprimer la ligne ${idBusLine()}`,
         });
         closeRemoveConfirmationBox();
-        fetchBusLines();
+        //TODO voir l'impact de la suppression
+        // fetchBusLines();
       });
   }
 

@@ -2,7 +2,6 @@ import { mergeProps } from "solid-js";
 
 import { useStateAction } from "../../../../../StateAction";
 import { displayRemoveLineMessage } from "../../../../../userInformation/utils";
-import { fetchBusLines } from "../../line/busLinesUtils";
 import { deselectAllPoints } from "./Points";
 
 import ButtonGraphicageRightMenu, {
@@ -25,11 +24,13 @@ export default function (props: RemoveLineButtonProps) {
     deselectAllPoints();
     if (isInRemoveLineMode()) {
       setModeRead();
-      fetchBusLines();
+      //TODO voir l'impact de la suppression
+      // fetchBusLines();
       return;
     }
     setModeRemoveLine();
-    fetchBusLines();
+    //TODO voir l'impact de la suppression
+    // fetchBusLines();
     displayRemoveLineMessage();
   };
 

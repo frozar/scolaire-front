@@ -1,10 +1,8 @@
-import { AbstractLineType, NatureEnum } from "../../../../../type";
-import { PointInterface } from "./Point";
+import { BusLinePointType } from "../../../../../_entities/bus-line.entity";
+import { NatureEnum } from "../../../../../type";
 
 export type TimelineItemReadType = {
-  pointsResource: PointInterface;
-  quantityToDisplay: number;
-  getter: () => AbstractLineType | undefined;
+  point: BusLinePointType;
 };
 
 export default function (props: TimelineItemReadType) {
@@ -16,11 +14,11 @@ export default function (props: TimelineItemReadType) {
       <div class="v-timeline-item__body">
         <div class="d-flex">
           <div class="me-4">
-            {(props.pointsResource.nature == NatureEnum.ramassage
-              ? "+ "
-              : "- ") + props.quantityToDisplay}
+            {props.point.nature == NatureEnum.stop
+              ? "+ " + props.point.quantity
+              : "- " + props.point.quantity * -1}
           </div>
-          <strong>{props.pointsResource.name}</strong>
+          <strong>{props.point.name}</strong>
         </div>
       </div>
 
@@ -28,7 +26,7 @@ export default function (props: TimelineItemReadType) {
         <div class="v-timeline-divider__before" />
         <div
           class={
-            props.pointsResource.nature == NatureEnum.ramassage
+            props.point.nature == NatureEnum.stop
               ? timelineCircleClass + " !bg-red-500"
               : timelineCircleClass + " !bg-green-base"
           }

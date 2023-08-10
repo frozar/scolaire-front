@@ -1,12 +1,14 @@
+import { createSignal } from "solid-js";
 import "./ColorPicker.css";
 
 export interface ColorPickeProps {
-  color: string;
   title: string;
 
   onInput: (color: string) => void;
   onChange: (color: string) => void;
 }
+
+export const [pickerColor, setPickerColor] = createSignal("");
 
 export function ColorPicker(props: ColorPickeProps) {
   return (
@@ -14,7 +16,7 @@ export function ColorPicker(props: ColorPickeProps) {
       {props.title}
       <input
         type="color"
-        value={props.color}
+        value={pickerColor()}
         onInput={(e) => {
           props.onInput(e.target.value);
         }}
