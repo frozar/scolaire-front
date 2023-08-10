@@ -11,13 +11,11 @@ export class BusLineService {
     return dbStops.map((dbStop: BusLineDBType) => BusLineEntity.build(dbStop));
   }
 
-  // static async create(
-  //   stop: Omit<StopType, "id" | "selected" | "associated">
-  // ): Promise<StopType> {
-  //   const data = StopEntity.dbFormat(stop);
-  //   const dbStop: StopDBType = await ServiceUtils.post("/stop", data);
-  //   return StopEntity.build(dbStop);
-  // }
+  static async create(line:  BusLineType): Promise<BusLineType> {
+    const data = BusLineEntity.dbFormat(line);
+    const dbBusLine: BusLineDBType = await ServiceUtils.post("/bus-line", data);
+    return BusLineEntity.build(dbBusLine);
+  }
 
   static async update(line: Partial<BusLineType>): Promise<BusLineType> {
     const data = BusLineEntity.dbPartialFormat(line);
@@ -29,7 +27,7 @@ export class BusLineService {
     return BusLineEntity.build(dbBusLine);
   }
 
-  // static async delete(id: number): Promise<boolean> {
-  //   return await ServiceUtils.delete("/stop/" + id);
-  // }
+  static async delete(id: number): Promise<boolean> {
+    return await ServiceUtils.delete("/bus-line/" + id);
+  }
 }

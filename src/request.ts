@@ -4,19 +4,6 @@ import { useStateGui } from "./StateGui";
 
 const [, { getActiveMapId, getSelectedMenu }] = useStateGui();
 
-export async function deleteBusLine(idToRemove: number) {
-  return authenticateWrap((headers) => {
-    return fetch(
-      import.meta.env.VITE_BACK_URL +
-        `/map/${getActiveMapId()}/bus_line/${idToRemove}`,
-      {
-        method: "DELETE",
-        headers,
-      }
-    );
-  });
-}
-
 export async function clear() {
   return authenticateWrap((headers) => {
     return fetch(

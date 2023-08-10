@@ -45,6 +45,16 @@ export class BusLineEntity {
     };
   }
 
+  static dbFormat(line: BusLineType): Omit<BusLineDBType, "id"> {
+    return {
+      color: line.color(),
+      name: line.name,
+      school_id: line.school.id,
+      bus_line_stop: formatBusLinePointDBType(line.points),
+      polyline: EntityUtils.buildLocationPath(line.latLngs()),
+    };
+  }
+
   static dbPartialFormat(line: Partial<BusLineType>): Partial<BusLineDBType> {
     let output = {};
 
@@ -94,6 +104,18 @@ const formatBusLinePointType = (
       lat: associatedPoint.lat,
       nature: associatedPoint.nature,
       quantity: dbPoint.quantity,
+    };
+  });
+};
+
+const formatBusLinePointDBType = (
+  points: BusLinePointType[]
+): BusLinePointDBType[] => {
+  return points.map((point) => {
+    return {
+      stop_id: point.nature == NatureEnum.stop ? point.id : 0,
+      school_id: point.nature == NatureEnum.school ? point.id : 0,
+      quantity: point.quantity,
     };
   });
 };
