@@ -40,8 +40,13 @@ async function drawHelper(data: DrawHelperDataType) {
     formatTimeLinePoints(response);
   setPointsToLineUnderConstruction(formattedResponse);
 }
+
 export function DrawHelperButton(props: DrawHelperButtonProps) {
-  async function requestCircuit(capacity = 30) {
+  async function requestCircuit(
+    capacity = 30,
+    timeLimitSeconds = 10,
+    nbLimitSolution = 50000
+  ) {
     const schools: LeafletSchoolType[] =
       props.schools != undefined
         ? JSON.parse(JSON.stringify(props.schools))
@@ -58,6 +63,8 @@ export function DrawHelperButton(props: DrawHelperButtonProps) {
       selected: selectedStops,
       stops: stops,
       capacity: capacity,
+      timeLimitSeconds: timeLimitSeconds,
+      nbLimitSolution: nbLimitSolution,
     };
 
     await drawHelper(data);

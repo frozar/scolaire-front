@@ -31,4 +31,6 @@ export type DrawHelperDataType = {
   selected: (LeafletStopType | LeafletSchoolType)[];
   stops: LeafletStopType[];
   capacity: number;
+  timeLimitSeconds: number;
+  nbLimitSolution: number;
 };

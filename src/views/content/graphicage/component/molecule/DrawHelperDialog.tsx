@@ -19,7 +19,11 @@ export function openDrawHelperDialog() {
 let refDialogueBox: HTMLDivElement;
 //TODO need to be refactored
 export default function (props: {
-  requestCircuit: (capacity?: number) => Promise<void>;
+  requestCircuit: (
+    capacity: number,
+    timeLimitSeconds: number,
+    nbLimitSolution: number
+  ) => Promise<void>;
 }) {
   function closeDrawHelperDialog() {
     setDisplayedDrawHelperDialog(false);
@@ -48,15 +52,17 @@ export default function (props: {
   const displayed = () => getDisplayedDrawHelperDialog();
   const [nbVehicles, setNbVehicles] = createSignal(1);
   const [vehiclesCapacity, setVehiclesCapacity] = createSignal(30);
-  // TODO Uncoment to add time limit
-  //const [timeLimitSeconds, setTimeLimitSeconds] = createSignal(10);
+  const [timeLimitSeconds, setTimeLimitSeconds] = createSignal(10);
+  const [nbLimitSolution, setNbLimitSolution] = createSignal(50000);
 
   function handlerOnClickSoumettre() {
     closeDrawHelperDialog();
 
-    props.requestCircuit(vehiclesCapacity());
-    // TODO Uncoment to add time limit
-    //props.requestCircuit(vehiclesCapacity(),timeLimitSeconds());
+    props.requestCircuit(
+      vehiclesCapacity(),
+      timeLimitSeconds(),
+      nbLimitSolution()
+    );
   }
 
   const [refButton, setRefButton] = createSignal<
@@ -159,8 +165,7 @@ export default function (props: {
                     text={"Capacité des véhicules"}
                     disabled={false}
                   />
-                  {/* TODO  Uncoment to add time limit */}
-                  {/* <h4 class="text-sm text-left font-semibold leading-6 text-gray-500 mt-7">
+                  <h4 class="text-sm text-left font-semibold leading-6 text-gray-500 mt-7">
                     Paramètres avancés du solveur de circuit
                   </h4>
                   <DrawHelperDialogItem
@@ -168,7 +173,13 @@ export default function (props: {
                     setValue={setTimeLimitSeconds}
                     text={"Temps maximum de génération (s)"}
                     disabled={false}
-                  /> */}
+                  />
+                  <DrawHelperDialogItem
+                    value={nbLimitSolution}
+                    setValue={setNbLimitSolution}
+                    text={"Nombre maximum de génération (s)"}
+                    disabled={false}
+                  />
 
                   <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse ">
                     <Button
