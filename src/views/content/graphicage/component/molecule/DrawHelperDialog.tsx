@@ -4,13 +4,17 @@ import { Transition } from "solid-transition-group";
 import ClickOutside from "../../../../../component/ClickOutside";
 
 import Button from "../../../../../component/atom/Button";
-import {
-  getDisplayedDrawHelperDialog,
-  setDisplayedDrawHelperDialog,
-} from "../../../../../signaux";
+
 import { assertIsNode } from "../../../../../utils";
 import DrawHelperDialogItem from "../atom/DrawHelperDialogItem";
 true && ClickOutside;
+
+export const [getDisplayedDrawHelperDialog, setDisplayedDrawHelperDialog] =
+  createSignal<boolean>(false);
+
+export function openDrawHelperDialog() {
+  setDisplayedDrawHelperDialog(true);
+}
 
 let refDialogueBox: HTMLDivElement;
 //TODO need to be refactored

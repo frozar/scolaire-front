@@ -12,9 +12,10 @@ import { FaSolidWandMagicSparkles } from "solid-icons/fa";
 import {
   disableSpinningWheel,
   enableSpinningWheel,
-  openDrawHelperDialog,
 } from "../../../../../signaux";
-import DrawHelperDialog from "../molecule/DrawHelperDialog";
+import DrawHelperDialog, {
+  openDrawHelperDialog,
+} from "../molecule/DrawHelperDialog";
 import { LeafletSchoolType, getLeafletSchools } from "../organism/SchoolPoints";
 import {
   LeafletStopType,
