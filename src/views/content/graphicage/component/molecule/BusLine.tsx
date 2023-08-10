@@ -7,7 +7,8 @@ import {
 } from "../../../../../_entities/bus-line.entity";
 import { OsrmService } from "../../../../../_services/osrm.service";
 import { setRemoveConfirmation } from "../../../../../signaux";
-import { deselectAllBusLines, setPickerColor } from "../../line/BusLines";
+import { deselectAllBusLines } from "../../line/BusLines";
+import { setPickerColor } from "../atom/ColorPicker";
 import Line from "../atom/Line";
 import { deselectAllPoints } from "../organism/Points";
 
@@ -49,7 +50,7 @@ export function BusLine(props: BusLineProps) {
   const onMouseOut = (polyline: L.Polyline, arrows: L.Marker[]) => {
     // if (!line.selected() && (isInRemoveLineMode() || isInReadMode())) {
     if (isInRemoveLineMode() || isInReadMode()) {
-      buslineSetNormalStyle(polyline, arrows, line.color);
+      buslineSetNormalStyle(polyline, arrows, line.color());
     }
   };
 
@@ -65,7 +66,7 @@ export function BusLine(props: BusLineProps) {
     if (isInReadMode()) {
       deselectAllBusLines();
       deselectAllPoints();
-      setPickerColor(line.color);
+      setPickerColor(line.color());
       line.setSelected(true);
     }
   };
@@ -74,7 +75,7 @@ export function BusLine(props: BusLineProps) {
     <Line
       latlngs={localLatLngs()}
       leafletMap={props.map}
-      color={props.line.color + ""}
+      color={props.line.color()}
       opacity={localOpacity()}
       withArrows={true}
       onMouseOver={onMouseOver}

@@ -22,12 +22,14 @@ export class BusLineEntity {
     const school = filteredShools[0];
     const [selected, setSelected] = createSignal(false);
     const [latLngs, setLatLngs] = createSignal([]);
+    const [color, setColor] = createSignal<string>("#" + dbData.color);
 
     return {
       id: dbData.id,
       school: school,
       name: dbData.name,
-      color: "#" + dbData.color,
+      color: color,
+      setColor: setColor,
       points: formatBusLinePointType(dbData.bus_line_stop),
       latLngs: latLngs,
       setLatLngs: setLatLngs,
@@ -37,6 +39,11 @@ export class BusLineEntity {
   }
 }
 
+/**
+ * Format the bus line associated points
+ * @param points
+ * @returns
+ */
 const formatBusLinePointType = (
   points: BusLinePointDBType[]
 ): BusLinePointType[] => {
@@ -74,9 +81,10 @@ const getAssociatedBusLinePoint = (
 
 export type BusLineType = {
   id: number;
-  name: string;
-  color: string;
   school: SchoolType;
+  name: string;
+  color: Accessor<string>;
+  setColor: Setter<string>;
   points: BusLinePointType[];
   latLngs: Accessor<L.LatLng[]>;
   setLatLngs: Setter<L.LatLng[]>;

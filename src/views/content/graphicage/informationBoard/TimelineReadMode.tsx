@@ -5,8 +5,6 @@ import {
 } from "../../../../_entities/bus-line.entity";
 import { PointInterface } from "../component/atom/Point";
 import TimelineItemReadMode from "../component/atom/TimelineItemReadMode";
-import { LeafletSchoolType } from "../component/organism/SchoolPoints";
-import { LeafletStopType } from "../component/organism/StopPoints";
 
 interface itemInfoToDisplayInterface {
   point: PointInterface;
@@ -16,10 +14,6 @@ interface itemInfoToDisplayInterface {
 const [pointsToDisplay, setPointsToDisplay] = createSignal<BusLinePointType[]>(
   []
 );
-
-type ExtendedBusLinePointType = {
-  entity: LeafletSchoolType | LeafletStopType;
-} & BusLinePointType;
 
 export default function (props: { line: () => BusLineType | undefined }) {
   createEffect(() => {

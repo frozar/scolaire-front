@@ -2,23 +2,13 @@ import L from "leaflet";
 import { For, createEffect, createSignal, onCleanup } from "solid-js";
 import { BusLineType } from "../../../../_entities/bus-line.entity";
 import { BusLineService } from "../../../../_services/bus-line.service";
-import { LineType } from "../../../../type";
 import { BusLine } from "../component/molecule/BusLine";
 import { pointsReady } from "../component/organism/Points";
 
-// TODO to delete
-export const [busLinesOld, setBusLinesOld] = createSignal<LineType[]>([]);
-
-// TODO move to color picker component ?
-export const [pickerColor, setPickerColor] = createSignal("");
-
-// TODO to delete
-export const linkBusLinePolyline: {
-  [idBusLine: number]: {
-    polyline: L.Polyline;
-    arrows: L.Marker[];
-  };
-} = {};
+export type leafletBusLineType = {
+  polyline: L.Polyline;
+  arrows: L.Marker[];
+};
 
 export const [getBusLines, setBusLines] = createSignal<BusLineType[]>([]);
 

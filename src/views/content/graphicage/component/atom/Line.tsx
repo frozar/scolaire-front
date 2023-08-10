@@ -36,13 +36,13 @@ export default function (props: LineProps) {
 
     // Add events to Line & Arrows
     if (props.onMouseOver || props.onMouseOut || props.onClick) {
-      let leafletElem: (L.Polyline | L.Marker)[] = [busLinePolyline];
+      let leafletLineElems: (L.Polyline | L.Marker)[] = [busLinePolyline];
       if (props.withArrows) {
-        leafletElem = [...leafletElem, ...localArrows()];
+        leafletLineElems = [...leafletLineElems, ...localArrows()];
       }
 
       if (props.onMouseOver != undefined) {
-        leafletElem.map((elem) =>
+        leafletLineElems.map((elem) =>
           elem.on("mouseover", () =>
             props.onMouseOver?.(busLinePolyline, localArrows())
           )
@@ -50,14 +50,16 @@ export default function (props: LineProps) {
       }
 
       if (props.onMouseOut != undefined) {
-        leafletElem.map((elem) =>
+        leafletLineElems.map((elem) =>
           elem.on("mouseout", () =>
             props.onMouseOut?.(busLinePolyline, localArrows())
           )
         );
       }
       if (props.onClick) {
-        leafletElem.map((elem) => elem.on("click", () => props.onClick?.()));
+        leafletLineElems.map((elem) =>
+          elem.on("click", () => props.onClick?.())
+        );
       }
     }
 
@@ -81,7 +83,7 @@ export default function (props: LineProps) {
 function buildLeafletPolyline(
   color: string,
   latlngs: L.LatLng[],
-  opacity: number = 1
+  opacity = 1
 ): L.Polyline<LineString> {
   return L.polyline(latlngs, {
     color: color,
