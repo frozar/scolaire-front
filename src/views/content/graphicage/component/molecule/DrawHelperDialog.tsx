@@ -13,7 +13,7 @@ import DrawHelperDialogItem from "../atom/DrawHelperDialogItem";
 true && ClickOutside;
 
 let refDialogueBox: HTMLDivElement;
-
+//TODO need to be refactored
 export default function (props: {
   requestCircuit: (capacity?: number) => Promise<void>;
 }) {
