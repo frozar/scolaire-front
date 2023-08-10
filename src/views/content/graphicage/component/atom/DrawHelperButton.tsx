@@ -1,4 +1,3 @@
-import { FaSolidWandMagicSparkles } from "solid-icons/fa";
 import { Show } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 
@@ -9,9 +8,8 @@ import {
 
 const [, { setPointsToLineUnderConstruction }] = useStateAction();
 
+import { FaSolidWandMagicSparkles } from "solid-icons/fa";
 import {
-  disableSpinningWheel,
-  enableSpinningWheel,
   getDrawHelperDialog,
   openDrawHelperDialog,
   setDrawHelperDialog,
@@ -30,19 +28,15 @@ interface DrawHelperButtonProps {
 }
 
 const [, { getLineUnderConstruction }] = useStateAction();
-
 async function drawHelper(data: DrawHelperDataType) {
   console.log("Query", data);
-  enableSpinningWheel();
   const response = await GraphicageService.drawHelper(data);
-  disableSpinningWheel();
   console.log("response", response);
 
   const formattedResponse: (LeafletStopType | LeafletSchoolType)[] =
     formatTimeLinePoints(response);
   setPointsToLineUnderConstruction(formattedResponse);
 }
-
 export function DrawHelperButton(props: DrawHelperButtonProps) {
   async function requestCircuit(capacity = 30) {
     const schools: LeafletSchoolType[] =
@@ -71,13 +65,6 @@ export function DrawHelperButton(props: DrawHelperButtonProps) {
   }
 
   return (
-<<<<<<< HEAD
-    <div class="graphicage-draw-helper-button">
-      <button onClick={onclick}>
-        <FaSolidWandMagicSparkles />
-      </button>
-    </div>
-=======
     <>
       <DrawHelperDialog
         getter={getDrawHelperDialog}
@@ -96,7 +83,6 @@ export function DrawHelperButton(props: DrawHelperButtonProps) {
         </Show>
       </div>
     </>
->>>>>>> a0bbe6aa (WIP before atomisation)
   );
 }
 
