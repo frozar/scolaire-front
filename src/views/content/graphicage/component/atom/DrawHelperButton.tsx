@@ -9,7 +9,11 @@ import {
 const [, { setPointsToLineUnderConstruction }] = useStateAction();
 
 import { FaSolidWandMagicSparkles } from "solid-icons/fa";
-import { openDrawHelperDialog } from "../../../../../signaux";
+import {
+  disableSpinningWheel,
+  enableSpinningWheel,
+  openDrawHelperDialog,
+} from "../../../../../signaux";
 import DrawHelperDialog from "../molecule/DrawHelperDialog";
 import { LeafletSchoolType, getLeafletSchools } from "../organism/SchoolPoints";
 import {
@@ -26,7 +30,9 @@ interface DrawHelperButtonProps {
 const [, { getLineUnderConstruction }] = useStateAction();
 async function drawHelper(data: DrawHelperDataType) {
   console.log("Query", data);
+  enableSpinningWheel();
   const response = await GraphicageService.drawHelper(data);
+  disableSpinningWheel();
   console.log("response", response);
 
   const formattedResponse: (LeafletStopType | LeafletSchoolType)[] =
@@ -61,20 +67,18 @@ export function DrawHelperButton(props: DrawHelperButtonProps) {
   }
 
   return (
-    <>
+    <div class="graphicage-draw-helper-button">
       <DrawHelperDialog requestCircuit={requestCircuit} />
-      <div class="graphicage-draw-helper-button">
-        <Show
-          when={getLineUnderConstruction().stops.length > 0}
-          fallback={<span>Création d'une ligne</span>}
-        >
-          <p>Création automatique d'une ligne</p>
-          <button onClick={onclick}>
-            <FaSolidWandMagicSparkles />
-          </button>
-        </Show>
-      </div>
-    </>
+      <Show
+        when={getLineUnderConstruction().stops.length > 0}
+        fallback={<span>Création d'une ligne</span>}
+      >
+        <p>Création automatique d'une ligne</p>
+        <button onClick={onclick}>
+          <FaSolidWandMagicSparkles />
+        </button>
+      </Show>
+    </div>
   );
 }
 
