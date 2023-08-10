@@ -3,7 +3,7 @@
   --v-timeline-line-inset: 0px;
 }
 
-.timeline {
+/* .timeline {
   width: 100%;
   -webkit-text-size-adjust: 100%;
   word-break: normal;
@@ -18,9 +18,9 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-}
+} */
 
-.timeline-add-mode {
+.timeline {
   @apply v-timeline v-timeline--align-start v-timeline--justify-auto v-timeline--side-end v-timeline--vertical;
   --v-timeline-line-thickness: 2px;
   width: 100%;
@@ -58,7 +58,6 @@
 
 .v-timeline {
   display: grid;
-
   grid-auto-flow: dense;
   position: relative;
 }

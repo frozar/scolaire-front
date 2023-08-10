@@ -49,10 +49,12 @@ export default function () {
         </div>
       </Show>
       <Show when={getLineUnderConstruction().stops.length != 0}>
-        <TimelineAddMode
-          line={getLineUnderConstruction}
-          setLine={setLineUnderConstruction}
-        />
+        <div class="bus-line-information-board-content">
+          <TimelineAddMode
+            line={getLineUnderConstruction}
+            setLine={setLineUnderConstruction}
+          />
+        </div>
       </Show>
     </div>
   );
