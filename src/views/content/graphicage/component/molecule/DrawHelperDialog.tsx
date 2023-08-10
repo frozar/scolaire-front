@@ -5,6 +5,8 @@ import ClickOutside from "../../../../../component/ClickOutside";
 
 import Button from "../../../../../component/atom/Button";
 
+import "./DrawHelperDialog.css";
+
 import { assertIsNode } from "../../../../../utils";
 import DrawHelperDialogItem from "../atom/DrawHelperDialogItem";
 true && ClickOutside;
@@ -150,7 +152,7 @@ export default function (props: {
                     </button>
                   </div>
 
-                  <h3 class="text-base text-center font-semibold leading-6 text-gray-900">
+                  <h3 class="drawer-helper-dialog-title">
                     Paramètres de la génération de circuit
                   </h3>
                   <DrawHelperDialogItem
@@ -165,7 +167,7 @@ export default function (props: {
                     text={"Capacité des véhicules"}
                     disabled={false}
                   />
-                  <h4 class="text-sm text-left font-semibold leading-6 text-gray-500 mt-7">
+                  <h4 class="drawer-helper-dialog-title">
                     Paramètres avancés du solveur de circuit
                   </h4>
                   <DrawHelperDialogItem
@@ -181,7 +183,7 @@ export default function (props: {
                     disabled={false}
                   />
 
-                  <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse ">
+                  <div class="draw-helper-dialog-buttons">
                     <Button
                       onClick={closeDrawHelperDialog}
                       label={"Annuler"}

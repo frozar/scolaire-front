@@ -43,9 +43,9 @@ async function drawHelper(data: DrawHelperDataType) {
 
 export function DrawHelperButton(props: DrawHelperButtonProps) {
   async function requestCircuit(
-    capacity = 30,
-    timeLimitSeconds = 10,
-    nbLimitSolution = 50000
+    capacity: number,
+    timeLimitSeconds: number,
+    nbLimitSolution: number
   ) {
     const schools: LeafletSchoolType[] =
       props.schools != undefined
