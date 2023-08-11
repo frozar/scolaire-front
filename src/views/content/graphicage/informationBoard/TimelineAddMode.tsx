@@ -15,7 +15,7 @@ export default function (props: {
     <div class="timeline">
       {/* TODO use only 1 div for defining "timeline-add-mode" component wherever possible */}
       <div
-        class="v-timeline v-timeline--align-start v-timeline--justify-auto v-timeline--side-end v-timeline--vertical"
+        class="timeline-items v-timeline--side-end v-timeline--vertical"
         style={{ "--v-timeline-line-thickness": "2px" }}
       >
         <For each={props.line()?.stops}>

@@ -1,4 +1,4 @@
-import { LineUnderConstructionType } from "../../../../../type";
+import { LineUnderConstructionType, NatureEnum } from "../../../../../type";
 import { LeafletSchoolType } from "../organism/SchoolPoints";
 import { LeafletStopType } from "../organism/StopPoints";
 import { TimelineRemovePointButton } from "./TimelineRemovePointButton";
@@ -11,6 +11,8 @@ export type TimelineItemAddType = {
 };
 
 export default function (props: TimelineItemAddType) {
+  const timelineCircleClass =
+    "v-timeline-divider__dot v-timeline-divider__dot--size-small";
   return (
     <div class="v-timeline-item">
       <div class="v-timeline-item__body">
@@ -21,9 +23,15 @@ export default function (props: TimelineItemAddType) {
 
       <div class="v-timeline-divider">
         <div class="v-timeline-divider__before" />
-
-        <div class="v-timeline-divider__dot v-timeline-divider__dot--size-small">
-          <div class="v-timeline-divider__inner-dot bg-pink">
+        <div
+          class={
+            props.pointsResource.nature == NatureEnum.stop
+              ? timelineCircleClass + " !bg-red-500"
+              : timelineCircleClass + " !bg-green-base"
+          }
+        >
+          <div class="v-timeline-divider__inner-dot !bg-white">
+            <i class="" aria-hidden="true" />
             <TimelineRemovePointButton
               indice={props.indice}
               setter={props.setter}
