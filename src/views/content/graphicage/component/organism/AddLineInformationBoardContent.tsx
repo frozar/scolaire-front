@@ -1,7 +1,12 @@
+import { LineString } from "geojson";
+import L from "leaflet";
 import { Show } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
+import { OsrmService } from "../../../../../_services/osrm.service";
 import Button from "../../../../../component/atom/Button";
+import { getLeafletMap } from "../../../../../signaux";
 import TimelineAddMode from "../../informationBoard/TimelineAddMode";
+import { quitModeAddLine } from "../../shortcut";
 import { DrawHelperButton } from "../atom/DrawHelperButton";
 import SelectedSchool from "../atom/SelectedSchool";
 import "./AddLineInformationBoardContent.css";
@@ -15,11 +20,39 @@ const [
     confirmEtablissementSelection,
   },
 ] = useStateAction();
-
 export default function () {
   const isValidate = () => getLineUnderConstruction().confirmSelection;
   const etablissementSelected = () =>
     getLineUnderConstruction().etablissementSelected;
+  function buildLeafletPolyline(
+    color: string,
+    latlngs: L.LatLng[],
+    opacity = 1
+  ): L.Polyline<LineString> {
+    return L.polyline(latlngs, {
+      color: color,
+      opacity: opacity,
+    }) as L.Polyline<LineString>;
+  }
+
+  async function drawPolyline() {
+    // TODO Put to BusLineEntity
+    const latlngs: L.LatLng[] = await OsrmService.getRoadPolylineDraw(
+      getLineUnderConstruction().stops
+    );
+    const busLinePolyline = buildLeafletPolyline("blue", latlngs, 0.8);
+
+    busLinePolyline.addTo(getLeafletMap() as L.Map);
+
+    // line.setLatLngs(latlngs);
+    // if (isInReadMode() && line.latLngs().length != 0) {
+    //   setLocalLatLngs(line.latLngs());
+    //   setLocalOpacity(0.8);
+    // } else {
+    //   setLocalLatLngs(getLatLngsFromPoint(line.points));
+    //   setLocalOpacity(1);
+    // }
+  }
 
   return (
     <div class="add-line-information-board-content">
@@ -53,6 +86,22 @@ export default function () {
           <TimelineAddMode
             line={getLineUnderConstruction}
             setLine={setLineUnderConstruction}
+          />
+        </div>
+      </Show>
+      <Show when={getLineUnderConstruction().stops.length > 1}>
+        <div class="">
+          <Button
+            onClick={quitModeAddLine}
+            label={"Annuler"}
+            variant="primary"
+            isDisabled={false}
+          />
+          <Button
+            onClick={drawPolyline}
+            label={"Valider"}
+            variant="primary"
+            isDisabled={false}
           />
         </div>
       </Show>

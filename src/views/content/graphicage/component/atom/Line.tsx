@@ -42,6 +42,7 @@ export default function (props: LineProps) {
 
       if (props.onMouseOver != undefined) {
         leafletLineElems.map((elem) =>
+          // eslint-disable-next-line solid/reactivity
           elem.on("mouseover", () =>
             props.onMouseOver?.(busLinePolyline, arrows)
           )
@@ -50,11 +51,13 @@ export default function (props: LineProps) {
 
       if (props.onMouseOut != undefined) {
         leafletLineElems.map((elem) =>
+          // eslint-disable-next-line solid/reactivity
           elem.on("mouseout", () => props.onMouseOut?.(busLinePolyline, arrows))
         );
       }
       if (props.onClick) {
         leafletLineElems.map((elem) =>
+          // eslint-disable-next-line solid/reactivity
           elem.on("click", () => props.onClick?.())
         );
       }
@@ -78,7 +81,7 @@ export default function (props: LineProps) {
   return <></>;
 }
 
-function buildLeafletPolyline(
+export function buildLeafletPolyline(
   color: string,
   latlngs: L.LatLng[],
   opacity = 1
