@@ -17,7 +17,17 @@ export default function (props: TimelineItemAddType) {
     <div class="v-timeline-item">
       <div class="v-timeline-item__body">
         <div class="d-flex">
+          <div class="me-4">
+            {props.pointsResource.nature === NatureEnum.stop
+              ? "+ " + stopQuantity(props.pointsResource, props.getter)
+              : "- " + props.pointsResource.id * -1}
+          </div>
           <strong>{props.pointsResource.name}</strong>
+          <div class="me-4">
+            {props.pointsResource.nature === NatureEnum.stop
+              ? " + " + stopSumQuantity(props.getter, props.indice)
+              : " - " + props.pointsResource.id * -1}
+          </div>
         </div>
       </div>
 
@@ -25,9 +35,10 @@ export default function (props: TimelineItemAddType) {
         <div class="v-timeline-divider__before" />
         <div
           class={
-            props.pointsResource.nature == NatureEnum.stop
-              ? timelineCircleClass + " !bg-red-500"
-              : timelineCircleClass + " !bg-green-base"
+            timelineCircleClass +
+            (props.pointsResource.nature == NatureEnum.stop
+              ? " !bg-red-500"
+              : " !bg-green-base")
           }
         >
           <div class="v-timeline-divider__inner-dot !bg-white">
@@ -44,4 +55,36 @@ export default function (props: TimelineItemAddType) {
       </div>
     </div>
   );
+}
+function stopQuantity(
+  pointsResource: LeafletStopType | LeafletSchoolType,
+  getter: () => LineUnderConstructionType
+) {
+  return pointsResource.associated.filter((school) =>
+    getter()
+      .etablissementSelected.map((point) => point.id)
+      .includes(school.id)
+  )[0].quantity;
+}
+
+function stopSumQuantity(
+  getter: () => LineUnderConstructionType,
+  indice: number
+) {
+  let subList = getter().stops.slice(0, indice + 1);
+
+  const school = getter().etablissementSelected[0];
+  let deb = subList.lastIndexOf(school);
+
+  deb = deb > -1 ? deb + 1 : 0;
+
+  subList = subList.slice(deb);
+
+  let sum = 0;
+
+  subList.map((point) => {
+    sum += stopQuantity(point, getter);
+  });
+
+  return sum;
 }
