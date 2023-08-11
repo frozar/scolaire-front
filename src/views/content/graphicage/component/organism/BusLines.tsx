@@ -1,9 +1,14 @@
 import L from "leaflet";
 import { For, createEffect, createSignal, onCleanup } from "solid-js";
+import { useStateAction } from "../../../../../StateAction";
 import { BusLineType } from "../../../../../_entities/bus-line.entity";
 import { BusLineService } from "../../../../../_services/bus-line.service";
 import { BusLine } from "../molecule/BusLine";
 import { pointsReady } from "./Points";
+
+const [, { isInReadMode }] = useStateAction();
+
+export const arrowsMap = new Map<number, L.Marker[]>();
 
 export type leafletBusLineType = {
   polyline: L.Polyline;
@@ -28,6 +33,18 @@ export function BusLines(props: BusLinesProps) {
     setBusLines([]);
   });
 
+  const busLinesFilter = () => {
+    if (!isInReadMode()) {
+      // delete all arrows
+      arrowsMap.forEach((arrows) =>
+        arrows.map((arrow) => props.map.removeLayer(arrow))
+      );
+      arrowsMap.clear();
+      return [];
+    }
+    return getBusLines();
+  };
+
   return (
     <For each={busLinesFilter()}>
       {(line) => {
@@ -36,10 +53,6 @@ export function BusLines(props: BusLinesProps) {
     </For>
   );
 }
-
-const busLinesFilter = () => {
-  return getBusLines();
-};
 
 export function deselectAllBusLines() {
   getBusLines().map((busLine) => busLine.setSelected(false));

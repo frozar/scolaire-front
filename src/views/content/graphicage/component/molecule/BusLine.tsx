@@ -74,7 +74,7 @@ export function BusLine(props: BusLineProps) {
       leafletMap={props.map}
       color={props.line.color()}
       opacity={localOpacity()}
-      withArrows={true}
+      lineId={props.line.id}
       onMouseOver={onMouseOver}
       onMouseOut={onMouseOut}
       onClick={onClick}
