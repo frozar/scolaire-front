@@ -17,13 +17,15 @@
 /* Button DELETE container */
 .button-delete-container {
   @apply absolute bottom-0 right-0;
-  border-bottom-right-radius: inherit;
 }
 
 /* Button DELETE */
 .button-delete {
   @apply p-2 bg-white bg-opacity-50 duration-150 rounded-tl-xl;
   border-bottom-right-radius: inherit;
+  border-top-right-radius: inherit;
+  border-bottom-left-radius: inherit;
+  border-top-left-radius: inherit;
 }
 
 .button-delete:hover {

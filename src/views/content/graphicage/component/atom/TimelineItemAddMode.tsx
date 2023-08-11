@@ -19,14 +19,35 @@ export default function (props: TimelineItemAddType) {
         <div class="d-flex">
           <div class="me-4">
             {props.pointsResource.nature === NatureEnum.stop
-              ? "+ " + stopQuantity(props.pointsResource, props.getter)
-              : "- " + props.pointsResource.id * -1}
+              ? "+ " +
+                stopQuantity(
+                  props.pointsResource,
+                  props.getter().etablissementSelected[0]
+                )
+              : " " +
+                SumQuantity(
+                  props.getter().stops,
+                  props.getter().etablissementSelected[0],
+                  props.indice - 1
+                ) *
+                  -1}
           </div>
           <strong>{props.pointsResource.name}</strong>
-          <div class="me-4">
+          <div class="ms-4">
             {props.pointsResource.nature === NatureEnum.stop
-              ? " + " + stopSumQuantity(props.getter, props.indice)
-              : " - " + props.pointsResource.id * -1}
+              ? " + " +
+                SumQuantity(
+                  props.getter().stops,
+                  props.getter().etablissementSelected[0],
+                  props.indice
+                )
+              : " " +
+                SumQuantity(
+                  props.getter().stops,
+                  props.getter().etablissementSelected[0],
+                  props.indice
+                ) *
+                  -1}
           </div>
         </div>
       </div>
@@ -58,23 +79,21 @@ export default function (props: TimelineItemAddType) {
 }
 function stopQuantity(
   pointsResource: LeafletStopType | LeafletSchoolType,
-  getter: () => LineUnderConstructionType
+  etablissementSelected: LeafletSchoolType
 ) {
-  return pointsResource.associated.filter((school) =>
-    getter()
-      .etablissementSelected.map((point) => point.id)
-      .includes(school.id)
+  return pointsResource.associated.filter(
+    (school) => school.id === etablissementSelected.id
   )[0].quantity;
 }
 
-function stopSumQuantity(
-  getter: () => LineUnderConstructionType,
+function SumQuantity(
+  stops: (LeafletStopType | LeafletSchoolType)[],
+  selectedSchool: LeafletSchoolType,
   indice: number
 ) {
-  let subList = getter().stops.slice(0, indice + 1);
+  let subList = stops.slice(0, indice + 1);
 
-  const school = getter().etablissementSelected[0];
-  let deb = subList.lastIndexOf(school);
+  let deb = subList.lastIndexOf(selectedSchool);
 
   deb = deb > -1 ? deb + 1 : 0;
 
@@ -83,7 +102,7 @@ function stopSumQuantity(
   let sum = 0;
 
   subList.map((point) => {
-    sum += stopQuantity(point, getter);
+    sum += stopQuantity(point, selectedSchool);
   });
 
   return sum;

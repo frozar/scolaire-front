@@ -18,7 +18,10 @@ export function TimelineRemovePointButton(props: {
   };
 
   return (
-    <button class="button-delete" onClick={() => deletePoint(props.indice)}>
+    <button
+      class="button-delete button-delete-timeline"
+      onClick={() => deletePoint(props.indice)}
+    >
       <FaRegularTrashCan />
     </button>
   );
