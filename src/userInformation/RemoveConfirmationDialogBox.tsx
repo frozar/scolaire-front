@@ -8,9 +8,13 @@ import {
   getRemoveConfirmation,
 } from "../signaux";
 
-import { deleteBusLine } from "../request";
+import { BusLineService } from "../_services/bus-line.service";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { assertIsNode } from "../utils";
+import {
+  getBusLines,
+  setBusLines,
+} from "../views/content/graphicage/component/organism/BusLines";
 
 // HACK for the documentation to preserve the ClickOutside directive on save
 // https://www.solidjs.com/guides/typescript#use___
@@ -20,7 +24,7 @@ export default function () {
   const displayed = () => getRemoveConfirmation()["displayed"];
   const idBusLine = () => getRemoveConfirmation()["idBusLine"];
 
-  function handlerOnClickValider() {
+  async function handlerOnClickValider() {
     const idToCheck = idBusLine();
     if (!idToCheck) {
       return;
@@ -28,57 +32,27 @@ export default function () {
 
     const idToRemove: number = idToCheck;
 
-    deleteBusLine(idToRemove)
-      .then(async (res) => {
-        if (!res) {
-          closeRemoveConfirmationBox();
-          addNewUserInformation({
-            displayed: true,
-            level: MessageLevelEnum.error,
-            type: MessageTypeEnum.global,
-            content: `Impossible de supprimer la ligne ${idBusLine()}`,
-          });
-          return;
-        }
+    const isDeleted: boolean = await BusLineService.delete(idToRemove);
+    if (isDeleted) {
+      closeRemoveConfirmationBox();
 
-        if (res.status != 200) {
-          const json = await res.json();
-          closeRemoveConfirmationBox();
-          addNewUserInformation({
-            displayed: true,
-            level: MessageLevelEnum.error,
-            type: MessageTypeEnum.global,
-            content: json.detail,
-          });
-          return;
-        }
+      setBusLines(getBusLines().filter((line) => line.id != idToRemove));
 
-        const json = await res.json();
-
-        console.log("json", json);
-        closeRemoveConfirmationBox();
-        addNewUserInformation({
-          displayed: true,
-          level: MessageLevelEnum.success,
-          type: MessageTypeEnum.global,
-          content: json.message,
-        });
-
-        //TODO voir l'impact de la suppression
-        // fetchBusLines();
-      })
-      .catch((error) => {
-        console.error("Error during suppression", error);
-        addNewUserInformation({
-          displayed: true,
-          level: MessageLevelEnum.error,
-          type: MessageTypeEnum.removeLine,
-          content: `Impossible de supprimer la ligne ${idBusLine()}`,
-        });
-        closeRemoveConfirmationBox();
-        //TODO voir l'impact de la suppression
-        // fetchBusLines();
+      addNewUserInformation({
+        displayed: true,
+        level: MessageLevelEnum.success,
+        type: MessageTypeEnum.global,
+        content: "Le point de ramassage a bien été supprimé.",
       });
+    } else {
+      closeRemoveConfirmationBox();
+      addNewUserInformation({
+        displayed: true,
+        level: MessageLevelEnum.error,
+        type: MessageTypeEnum.removeLine,
+        content: "Impossible de supprimer la ligne de bus.",
+      });
+    }
   }
 
   function exitModal({ code }: KeyboardEvent) {

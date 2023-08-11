@@ -2,6 +2,7 @@ import L from "leaflet";
 import { useStateAction } from "../../../../../StateAction";
 import { renderAnimation } from "../../animation";
 import Point from "../atom/Point";
+import { deselectAllBusLines } from "../organism/BusLines";
 import {
   blinkingSchools,
   deselectAllPoints,
@@ -10,7 +11,6 @@ import {
 } from "../organism/Points";
 import { LeafletSchoolType } from "../organism/SchoolPoints";
 import { getLeafletStops } from "../organism/StopPoints";
-import { deselectAllBusLines } from "../../line/BusLines";
 
 const [
   ,

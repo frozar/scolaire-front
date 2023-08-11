@@ -12,6 +12,18 @@ export class EntityUtils {
     };
   }
 
+  static buildLocationPath(latLngs: L.LatLng[]): LocationPathDBType {
+    return {
+      type: LocationDBTypeEnum.path,
+      data: latLngs.map((latLng) => {
+        return {
+          lng: latLng.lng,
+          lat: latLng.lat,
+        };
+      }),
+    };
+  }
+
   static formatAssociatedPoints(
     associatedDBPoint: AssociatedDBPointType[]
   ): AssociatedPointType[] {
@@ -43,6 +55,7 @@ export type AssociatedDBPointType = {
 
 enum LocationDBTypeEnum {
   point = "point",
+  path = "path",
 }
 
 export type DBPointType = {
@@ -58,4 +71,12 @@ export type LocationDBType = {
     lng: number;
     lat: number;
   };
+};
+
+export type LocationPathDBType = {
+  type: LocationDBTypeEnum;
+  data: {
+    lng: number;
+    lat: number;
+  }[];
 };

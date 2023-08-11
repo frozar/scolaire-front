@@ -5,11 +5,10 @@ import {
   BusLinePointType,
   BusLineType,
 } from "../../../../../_entities/bus-line.entity";
-import { OsrmService } from "../../../../../_services/osrm.service";
 import { setRemoveConfirmation } from "../../../../../signaux";
-import { deselectAllBusLines } from "../../line/BusLines";
 import { setPickerColor } from "../atom/ColorPicker";
 import Line from "../atom/Line";
+import { deselectAllBusLines } from "../organism/BusLines";
 import { deselectAllPoints } from "../organism/Points";
 
 const [, { isInReadMode, isInRemoveLineMode }] = useStateAction();
@@ -26,11 +25,9 @@ export function BusLine(props: BusLineProps) {
   const line = props.line;
 
   createEffect(async () => {
-    // TODO les polyline devront être stocké en BDD pour garder persistence des données. Le service sera utilisé si aucune polyline pré-existance ou à la création/modification d'une ligne
-    const latlngs: L.LatLng[] = await OsrmService.getRoadPolyline(line.points);
-    line.setLatLngs(latlngs);
-
-    // TODO Have to create signal roadPolylineMode the ReadMode and DrawMode will maage roadPolylineMode signal
+    // TODO Put to BusLineEntity
+    // const latlngs: L.LatLng[] = await OsrmService.getRoadPolyline(line.points);
+    // line.setLatLngs(latlngs);
     if (isInReadMode() && line.latLngs().length != 0) {
       setLocalLatLngs(line.latLngs());
       setLocalOpacity(0.8);
@@ -124,7 +121,6 @@ function arrowsSetNormalStyle(arrows: L.Marker[], color: string) {
 }
 
 function arrowApplyStyle(arrows: L.Marker[], color: string, transform: string) {
-  // Change color
   arrows.map((arrow) => {
     const element = arrow.getElement();
     if (!element) {

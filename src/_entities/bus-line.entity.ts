@@ -4,6 +4,7 @@ import { NatureEnum } from "../type";
 import { LeafletPointType } from "../views/content/graphicage/component/atom/Point";
 import { getLeafletSchools } from "../views/content/graphicage/component/organism/SchoolPoints";
 import { getLeafletStops } from "../views/content/graphicage/component/organism/StopPoints";
+import { EntityUtils, LocationPathDBType } from "./_utils.entity";
 import { SchoolType } from "./school.entity";
 
 export class BusLineEntity {
@@ -20,10 +21,16 @@ export class BusLineEntity {
     }
 
     const school = filteredShools[0];
-    const [selected, setSelected] = createSignal(false);
-    const [latLngs, setLatLngs] = createSignal([]);
+
+    const [selected, setSelected] = createSignal<boolean>(false);
+    const [latLngs, setLatLngs] = createSignal<L.LatLng[]>([]);
     const [color, setColor] = createSignal<string>("#" + dbData.color);
 
+    if (dbData.polyline != null) {
+      setLatLngs(
+        dbData.polyline.data.map((item) => L.latLng(item.lat, item.lng))
+      );
+    }
     return {
       id: dbData.id,
       school: school,
@@ -37,6 +44,39 @@ export class BusLineEntity {
       setSelected: setSelected,
     };
   }
+
+  static dbFormat(line: BusLineType): Omit<BusLineDBType, "id"> {
+    return {
+      color: line.color(),
+      name: line.name,
+      school_id: line.school.id,
+      bus_line_stop: formatBusLinePointDBType(line.points),
+      polyline: EntityUtils.buildLocationPath(line.latLngs()),
+    };
+  }
+
+  static dbPartialFormat(line: Partial<BusLineType>): Partial<BusLineDBType> {
+    let output = {};
+
+    if (line.color) {
+      output = { ...output, color: formatColorForDB(line.color()) };
+    }
+    if (line.latLngs) {
+      output = {
+        ...output,
+        polyline: EntityUtils.buildLocationPath(line.latLngs()),
+      };
+    }
+
+    return output;
+  }
+}
+
+function formatColorForDB(color: string) {
+  if (color.startsWith("#")) {
+    return color.replace("#", "");
+  }
+  return color;
 }
 
 /**
@@ -64,6 +104,18 @@ const formatBusLinePointType = (
       lat: associatedPoint.lat,
       nature: associatedPoint.nature,
       quantity: dbPoint.quantity,
+    };
+  });
+};
+
+const formatBusLinePointDBType = (
+  points: BusLinePointType[]
+): BusLinePointDBType[] => {
+  return points.map((point) => {
+    return {
+      stop_id: point.nature == NatureEnum.stop ? point.id : 0,
+      school_id: point.nature == NatureEnum.school ? point.id : 0,
+      quantity: point.quantity,
     };
   });
 };
@@ -108,6 +160,7 @@ export type BusLineDBType = {
   name: string;
   color: string;
   bus_line_stop: BusLinePointDBType[];
+  polyline: LocationPathDBType;
 };
 
 export type BusLinePointDBType = {

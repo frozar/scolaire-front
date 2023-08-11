@@ -1,9 +1,9 @@
 import L from "leaflet";
 import { For, createEffect, createSignal, onCleanup } from "solid-js";
-import { BusLineType } from "../../../../_entities/bus-line.entity";
-import { BusLineService } from "../../../../_services/bus-line.service";
-import { BusLine } from "../component/molecule/BusLine";
-import { pointsReady } from "../component/organism/Points";
+import { BusLineType } from "../../../../../_entities/bus-line.entity";
+import { BusLineService } from "../../../../../_services/bus-line.service";
+import { BusLine } from "../molecule/BusLine";
+import { pointsReady } from "./Points";
 
 export type leafletBusLineType = {
   polyline: L.Polyline;
