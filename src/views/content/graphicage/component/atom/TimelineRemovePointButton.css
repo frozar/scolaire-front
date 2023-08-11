@@ -1,6 +1,6 @@
-.button-delete {
+.button-delete-timeline {
   display: none;
 }
-.bg-pink:hover .button-delete {
+.v-timeline-divider__inner-dot:hover .button-delete {
   display: block;
 }

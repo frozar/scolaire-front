@@ -12,28 +12,32 @@ export default function (props: {
   setLine: (line: LineUnderConstructionType) => void;
 }) {
   return (
-    <div class="timeline-add-mode">
+    <div class="timeline">
       {/* TODO use only 1 div for defining "timeline-add-mode" component wherever possible */}
+      <div
+        class="timeline-items v-timeline--side-end v-timeline--vertical"
+        style={{ "--v-timeline-line-thickness": "2px" }}
+      >
+        <For each={props.line()?.stops}>
+          {(stop, i) => (
+            <>
+              <TimelineAddPointButton
+                indice={i()}
+                setter={props.setLine}
+                getter={props.line}
+              />
 
-      <For each={props.line()?.stops}>
-        {(stop, i) => (
-          <>
-            <TimelineAddPointButton
-              indice={i()}
-              setter={props.setLine}
-              getter={props.line}
-            />
-
-            <TimelineItemAddMode
-              pointsResource={stop}
-              indice={i()}
-              setter={props.setLine}
-              getter={props.line}
-              isInAddLineMode={isInAddLineMode()}
-            />
-          </>
-        )}
-      </For>
+              <TimelineItemAddMode
+                pointsResource={stop}
+                indice={i()}
+                setter={props.setLine}
+                getter={props.line}
+                isInAddLineMode={isInAddLineMode()}
+              />
+            </>
+          )}
+        </For>
+      </div>
     </div>
   );
 }

@@ -3,25 +3,11 @@
   --v-timeline-line-inset: 0px;
 }
 
-.timeline {
-  width: 100%;
-  -webkit-text-size-adjust: 100%;
-  word-break: normal;
-  -moz-tab-size: 4;
-  tab-size: 4;
-  font-family: Roboto, sans-serif;
-  line-height: 1.5;
-  font-size: 1rem;
-  max-height: 35em;
-  overflow-y: scroll;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+.timeline-items {
+  @apply v-timeline v-timeline--align-start v-timeline--justify-auto;
 }
 
-.timeline-add-mode {
-  @apply v-timeline v-timeline--align-start v-timeline--justify-auto v-timeline--side-end v-timeline--vertical;
+.timeline {
   --v-timeline-line-thickness: 2px;
   width: 100%;
   -webkit-text-size-adjust: 100%;
@@ -58,7 +44,6 @@
 
 .v-timeline {
   display: grid;
-
   grid-auto-flow: dense;
   position: relative;
 }
@@ -119,6 +104,10 @@
 
 .me-4 {
   margin-inline-end: 16px !important;
+}
+
+.ms-4 {
+  margin-inline-start: 16px !important;
 }
 
 .text-caption {

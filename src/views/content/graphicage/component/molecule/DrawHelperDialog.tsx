@@ -5,7 +5,7 @@ import ClickOutside from "../../../../../component/ClickOutside";
 
 import Button from "../../../../../component/atom/Button";
 
-// import "./DrawHelperDialog.css";
+import "./DrawHelperDialog.css";
 
 import { assertIsNode } from "../../../../../utils";
 import DrawHelperDialogItem from "../atom/DrawHelperDialogItem";

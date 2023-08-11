@@ -1,16 +1,16 @@
 .add-line-information-board-content-header {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
+  @apply flex flex-row;
+  align-items: left;
 }
 
 .add-line-information-board-content {
   @apply flex flex-col;
-  width: 100%;
-  height: 100%;
+  align-items: center;
 }
 
 .confirm-etablissement-selection {
-  @apply flex;
+  display: flex;
+  width: 100%;
+  height: 100%;
   justify-content: center;
 }
