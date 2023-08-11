@@ -94,8 +94,10 @@ function formatTimeLinePoints(
   data: { id: number; leafletId: number; nature: string }[]
 ): (LeafletStopType | LeafletSchoolType)[] {
   const points = [...getLeafletSchools(), ...getLeafletStops()];
-
-  const leafletIds: number[] = data.map((item) => item.leafletId);
-
-  return points.filter((item) => leafletIds.includes(item.leafletId));
+  const output = [];
+  for (const item of data) {
+    const point = points.find((point) => item.leafletId == point.leafletId);
+    if (point) output.push(point);
+  }
+  return output;
 }
