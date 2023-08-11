@@ -1,6 +1,7 @@
 import { LineString } from "geojson";
 import L from "leaflet";
-import { createEffect, createSignal, onCleanup } from "solid-js";
+import { createEffect, onCleanup } from "solid-js";
+import { arrowsMap } from "../organism/BusLines";
 
 interface LineProps {
   latlngs: L.LatLng[];
@@ -8,52 +9,48 @@ interface LineProps {
   color: string;
   opacity: number;
 
-  withArrows?: boolean;
+  lineId?: number;
+  // withArrows?: boolean;
   onMouseOver?: (polyline: L.Polyline, arrows: L.Marker[]) => void;
   onMouseOut?: (polyline: L.Polyline, arrows: L.Marker[]) => void;
   onClick?: () => void;
 }
 
-const [localArrows, setLocalArrows] = createSignal<L.Marker[]>([]);
-
 export default function (props: LineProps) {
   let busLinePolyline: L.Polyline;
 
   createEffect(() => {
+    let arrows: L.Marker[] = [];
     const latlngs = props.latlngs;
     const leafletMap = props.leafletMap;
 
     const color = props.color;
     const opacity = props.opacity;
 
-    busLinePolyline?.remove();
-
     busLinePolyline = buildLeafletPolyline(color, latlngs, opacity);
 
-    if (props.withArrows) {
-      setLocalArrows(buildArrows(props.latlngs, color));
+    if (props.lineId) {
+      arrows = buildArrows(props.latlngs, color);
     }
 
     // Add events to Line & Arrows
     if (props.onMouseOver || props.onMouseOut || props.onClick) {
       let leafletLineElems: (L.Polyline | L.Marker)[] = [busLinePolyline];
-      if (props.withArrows) {
-        leafletLineElems = [...leafletLineElems, ...localArrows()];
+      if (props.lineId) {
+        leafletLineElems = [...leafletLineElems, ...arrows];
       }
 
       if (props.onMouseOver != undefined) {
         leafletLineElems.map((elem) =>
           elem.on("mouseover", () =>
-            props.onMouseOver?.(busLinePolyline, localArrows())
+            props.onMouseOver?.(busLinePolyline, arrows)
           )
         );
       }
 
       if (props.onMouseOut != undefined) {
         leafletLineElems.map((elem) =>
-          elem.on("mouseout", () =>
-            props.onMouseOut?.(busLinePolyline, localArrows())
-          )
+          elem.on("mouseout", () => props.onMouseOut?.(busLinePolyline, arrows))
         );
       }
       if (props.onClick) {
@@ -65,12 +62,13 @@ export default function (props: LineProps) {
 
     // Add Line & Arrows to the map
     busLinePolyline.addTo(leafletMap);
-    if (props.withArrows) {
-      for (const arrow of localArrows()) {
+    if (props.lineId) {
+      for (const arrow of arrows) {
         arrow.addTo(leafletMap);
       }
+      // Map use to desable the arrows on drawMode
+      arrowsMap.set(props.lineId, arrows);
     }
-    //TODO ajouter les event Arrows et Polyline
   });
 
   onCleanup(() => {
