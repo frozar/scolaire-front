@@ -70,6 +70,8 @@ export type LineType = AbstractLineType & {
 export type LineUnderConstructionType = AbstractLineType & {
   confirmSelection?: boolean;
   nextIndex: number;
+  latLngs: Accessor<L.LatLng[]>;
+  setLatLngs: Setter<L.LatLng[]>;
 };
 
 export enum ModeEnum {

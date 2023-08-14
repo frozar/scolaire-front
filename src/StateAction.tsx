@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { JSXElement, createContext, useContext } from "solid-js";
+import { JSXElement, createContext, createSignal, useContext } from "solid-js";
 import { createStore } from "solid-js/store";
 import { createHistory, record } from "solid-record";
 
@@ -23,6 +23,7 @@ type StateActionType = {
 };
 
 function defaultLineUnderConstruction() {
+  const [localLatLngs, setLocalLatLngs] = createSignal<L.LatLng[]>([]);
   return {
     idBusLine: -1,
     color: "#000000",
@@ -31,6 +32,8 @@ function defaultLineUnderConstruction() {
     confirmSelection: false,
     currentIndex: 0,
     nextIndex: 0,
+    latLngs: localLatLngs,
+    setLatLngs: setLocalLatLngs,
   };
 }
 
@@ -61,17 +64,21 @@ const makeStateActionContext = () => {
   function addPointToLineUnderConstruction(
     point: LeafletStopType | LeafletSchoolType
   ) {
-    setState("lineUnderConstruction", "stops", (line: PointIdentityType[]) => {
-      const res = [...line];
-      if (!_.isEqual(line.at(-1), point)) {
-        const indice = state.lineUnderConstruction.nextIndex;
-        res.splice(indice, 0, point);
+    setState(
+      "lineUnderConstruction",
+      "stops",
+      (line: (LeafletStopType | LeafletSchoolType)[]) => {
+        const res = [...line];
+        if (!_.isEqual(line.at(-1), point)) {
+          const indice = state.lineUnderConstruction.nextIndex;
+          res.splice(indice, 0, point);
+        }
+
+        setState("lineUnderConstruction", "nextIndex", res.length);
+
+        return res;
       }
-
-      setState("lineUnderConstruction", "nextIndex", res.length);
-
-      return res;
-    });
+    );
   }
 
   function setLineUnderConstructionNextIndex(indicepoints: number) {
