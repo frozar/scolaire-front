@@ -10,41 +10,19 @@ export class OsrmService {
   static async getRoadPolyline(
     points: BusLinePointType[]
   ): Promise<L.LatLng[]> {
-    let response: Response;
-    try {
-      response = await fetch(
-        osrm +
-          "/" +
-          this.buildPositionURL(points) +
-          "?geometries=geojson&overview=full"
-      );
-    } catch (error) {
-      connexionError();
-      return [];
-    }
+    const pointsToStr = this.buildPositionURL(points);
+    return OsrmService.getRoadDraw(pointsToStr);
+  }
 
-    if (!(await manageStatusCode(response))) return [];
-    return await this.formatResponse(response);
+  private static buildPositionURL(points: BusLinePointType[]): string {
+    return points.map((point) => point.lon + "," + point.lat).join(";");
   }
 
   static async getRoadPolylineDraw(
     points: (LeafletStopType | LeafletSchoolType)[]
   ): Promise<L.LatLng[]> {
-    let response: Response;
-    try {
-      response = await fetch(
-        osrm +
-          "/" +
-          this.buildPositionLeafletURL(points) +
-          "?geometries=geojson&overview=full"
-      );
-    } catch (error) {
-      connexionError();
-      return [];
-    }
-
-    if (!(await manageStatusCode(response))) return [];
-    return await this.formatResponse(response);
+    const pointsToStr = this.buildPositionLeafletURL(points);
+    return OsrmService.getRoadDraw(pointsToStr);
   }
 
   private static buildPositionLeafletURL(
@@ -53,8 +31,19 @@ export class OsrmService {
     return points.map((point) => point.lon + "," + point.lat).join(";");
   }
 
-  private static buildPositionURL(points: BusLinePointType[]): string {
-    return points.map((point) => point.lon + "," + point.lat).join(";");
+  static async getRoadDraw(points: string): Promise<L.LatLng[]> {
+    let response: Response;
+    try {
+      response = await fetch(
+        osrm + "/" + points + "?geometries=geojson&overview=full"
+      );
+    } catch (error) {
+      connexionError();
+      return [];
+    }
+
+    if (!(await manageStatusCode(response))) return [];
+    return await this.formatResponse(response);
   }
 
   private static async formatResponse(response: Response): Promise<L.LatLng[]> {

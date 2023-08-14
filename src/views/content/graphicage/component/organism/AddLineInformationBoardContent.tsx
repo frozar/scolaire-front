@@ -23,28 +23,12 @@ export default function () {
   const etablissementSelected = () =>
     getLineUnderConstruction().etablissementSelected;
 
-  async function drawPolyline() {
+  async function updatePolyline() {
     // TODO Put to BusLineEntity
     const latlngs: L.LatLng[] = await OsrmService.getRoadPolylineDraw(
       getLineUnderConstruction().stops
     );
     getLineUnderConstruction().setLatLngs(latlngs);
-
-    // const busLinePolyline = buildLeafletPolyline("red", latlngs, 0.8);
-    // console.log(getLineUnderConstruction());
-
-    // console.log(busLinePolyline);
-
-    // busLinePolyline.addTo(getLeafletMap() as L.Map);
-
-    // line.setLatLngs(latlngs);
-    // if (isInReadMode() && line.latLngs().length != 0) {
-    //   setLocalLatLngs(line.latLngs());
-    //   setLocalOpacity(0.8);
-    // } else {
-    //   setLocalLatLngs(getLatLngsFromPoint(line.points));
-    //   setLocalOpacity(1);
-    // }
   }
 
   return (
@@ -91,7 +75,7 @@ export default function () {
             isDisabled={false}
           />
           <Button
-            onClick={drawPolyline}
+            onClick={updatePolyline}
             label={"Valider"}
             variant="primary"
             isDisabled={false}
