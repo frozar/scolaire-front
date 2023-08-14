@@ -75,7 +75,7 @@ export default function () {
       <Points leafletMap={getLeafletMap() as L.Map} />
       <Show when={isInAddLineMode()}>
         <LineUnderConstruction
-          stops={getLineUnderConstruction().stops}
+          stops={getLineUnderConstruction().busLine.points}
           leafletMap={getLeafletMap() as L.Map}
         />
       </Show>

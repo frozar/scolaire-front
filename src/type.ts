@@ -1,4 +1,5 @@
 import { Accessor, JSX, Setter } from "solid-js";
+import { BusLineType } from "./_entities/bus-line.entity";
 import { StopType } from "./_entities/stop.entity";
 import { LeafletPointType } from "./views/content/graphicage/component/atom/Point";
 import { LeafletSchoolType } from "./views/content/graphicage/component/organism/SchoolPoints";
@@ -67,11 +68,17 @@ export type LineType = AbstractLineType & {
   setSelected: Setter<boolean>;
 };
 
-export type LineUnderConstructionType = AbstractLineType & {
-  confirmSelection?: boolean;
+// export type LineUnderConstructionType = AbstractLineType & {
+//   nextIndex: number;
+//   confirmSelection?: boolean;
+//   latLngs: Accessor<L.LatLng[]>;
+//   setLatLngs: Setter<L.LatLng[]>;
+// };
+
+export type LineUnderConstructionType = {
   nextIndex: number;
-  latLngs: Accessor<L.LatLng[]>;
-  setLatLngs: Setter<L.LatLng[]>;
+  confirmSelection: boolean;
+  busLine: BusLineType;
 };
 
 export enum ModeEnum {

@@ -3,14 +3,13 @@ import { Show, createEffect, createSignal } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import { COLOR_LINE_UNDER_CONSTRUCTION } from "../../constant";
 
+import { BusLinePointType } from "../../../../../_entities/bus-line.entity";
 import Line from "../atom/Line";
 import { linkMap } from "./Points";
-import { LeafletSchoolType } from "./SchoolPoints";
-import { LeafletStopType } from "./StopPoints";
 const [, { getLineUnderConstruction }] = useStateAction();
 interface LineUnderConstructionProps {
   leafletMap: L.Map;
-  stops: (LeafletStopType | LeafletSchoolType)[];
+  stops: BusLinePointType[];
 }
 export const [localLatLngs, setLocalLatLngs] = createSignal<L.LatLng[]>([]);
 const [localOpacity, setLocalOpacity] = createSignal<number>(1);
@@ -24,16 +23,16 @@ export default function (props: LineUnderConstructionProps) {
     // const latlngs: L.LatLng[] = await OsrmService.getRoadPolyline(line.points);
     // line.setLatLngs(latlngs);
 
-    if (getLineUnderConstruction().latLngs().length === 0) {
+    if (getLineUnderConstruction().busLine.latLngs().length === 0) {
       setLocalLatLngs(getLatLngs(props.stops));
     } else {
-      setLocalLatLngs(getLineUnderConstruction().latLngs());
+      setLocalLatLngs(getLineUnderConstruction().busLine.latLngs());
     }
     setLocalOpacity(1);
   });
   return (
-    <Show when={getLineUnderConstruction().stops.length > 0}>
-      <Show when={getLineUnderConstruction().stops.length > 1}>
+    <Show when={getLineUnderConstruction().busLine.points.length > 0}>
+      <Show when={getLineUnderConstruction().busLine.points.length > 1}>
         <Line
           latlngs={localLatLngs()}
           leafletMap={props.leafletMap}
@@ -53,9 +52,7 @@ export default function (props: LineUnderConstructionProps) {
 }
 
 // TODO to refactor ?
-function getLatLngs(
-  stops: (LeafletStopType | LeafletSchoolType)[]
-): L.LatLng[] {
+function getLatLngs(stops: BusLinePointType[]): L.LatLng[] {
   const latlngs: L.LatLng[] = [];
 
   // TODO: linkMap must be reactive => signal

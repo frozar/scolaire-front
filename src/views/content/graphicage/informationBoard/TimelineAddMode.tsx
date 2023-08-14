@@ -18,7 +18,7 @@ export default function (props: {
         class="timeline-items v-timeline--side-end v-timeline--vertical"
         style={{ "--v-timeline-line-thickness": "2px" }}
       >
-        <For each={props.line()?.stops}>
+        <For each={props.line()?.busLine.points}>
           {(stop, i) => (
             <>
               <TimelineAddPointButton

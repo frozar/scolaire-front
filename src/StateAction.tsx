@@ -7,8 +7,7 @@ import { setUserInformations } from "./signaux";
 import { LineUnderConstructionType, MessageTypeEnum, ModeEnum } from "./type";
 
 import { useStateGui } from "./StateGui";
-import { LeafletSchoolType } from "./views/content/graphicage/component/organism/SchoolPoints";
-import { LeafletStopType } from "./views/content/graphicage/component/organism/StopPoints";
+import { BusLinePointType } from "./_entities/bus-line.entity";
 
 const [, { setDisplayedInformationBoard }] = useStateGui();
 
@@ -23,17 +22,23 @@ type StateActionType = {
 };
 
 function defaultLineUnderConstruction() {
-  const [localLatLngs, setLocalLatLngs] = createSignal<L.LatLng[]>([]);
+  const [latLngs, setLatLngs] = createSignal<L.LatLng[]>([]);
+  const [color, setColor] = createSignal<string>("#000000");
+  const [selected, setSelected] = createSignal<boolean>(false);
   return {
-    idBusLine: -1,
-    color: "#000000",
-    stops: [],
-    etablissementSelected: [],
     confirmSelection: false,
-    currentIndex: 0,
     nextIndex: 0,
-    latLngs: localLatLngs,
-    setLatLngs: setLocalLatLngs,
+    busLine: {
+      color: color,
+      setColor: setColor,
+      points: [],
+      schools: [],
+      currentIndex: 0,
+      latLngs: latLngs,
+      setLatLngs: setLatLngs,
+      selected: selected,
+      setSelected: setSelected,
+    },
   };
 }
 
@@ -55,19 +60,16 @@ const makeStateActionContext = () => {
     return state.altimetry.animation;
   }
 
-  function setPointsToLineUnderConstruction(
-    points: (LeafletStopType | LeafletSchoolType)[]
-  ) {
-    setState("lineUnderConstruction", "stops", points);
+  function setPointsToLineUnderConstruction(points: BusLinePointType[]) {
+    setState("lineUnderConstruction", "busLine", "points", points);
   }
 
-  function addPointToLineUnderConstruction(
-    point: LeafletStopType | LeafletSchoolType
-  ) {
+  function addPointToLineUnderConstruction(point: BusLinePointType) {
     setState(
       "lineUnderConstruction",
-      "stops",
-      (line: (LeafletStopType | LeafletSchoolType)[]) => {
+      "busLine",
+      "points",
+      (line: BusLinePointType[]) => {
         const res = [...line];
         if (!_.isEqual(line.at(-1), point)) {
           const indice = state.lineUnderConstruction.nextIndex;
@@ -179,10 +181,10 @@ const makeStateActionContext = () => {
   ] as const;
 };
 
-type StateActionContextType = ReturnType<typeof makeStateActionContext>;
 const StateActionContext = createContext<StateActionContextType>(
   makeStateActionContext()
 );
+type StateActionContextType = ReturnType<typeof makeStateActionContext>;
 
 export function StateActionProvider(props: { children: JSXElement }) {
   return (

@@ -1,3 +1,5 @@
+import { BusLinePointType } from "../../../../../_entities/bus-line.entity";
+import { SchoolType } from "../../../../../_entities/school.entity";
 import { LineUnderConstructionType, NatureEnum } from "../../../../../type";
 import { LeafletSchoolType } from "../organism/SchoolPoints";
 import { LeafletStopType } from "../organism/StopPoints";
@@ -20,14 +22,14 @@ export default function (props: TimelineItemAddType) {
           <div class="me-4">
             {props.pointsResource.nature === NatureEnum.stop
               ? "+ " +
-                stopQuantity(
+                stopQuantity2(
                   props.pointsResource,
-                  props.getter().etablissementSelected[0]
+                  props.getter().busLine.schools[0]
                 )
               : " " +
-                SumQuantity(
-                  props.getter().stops,
-                  props.getter().etablissementSelected[0],
+                SumQuantity2(
+                  props.getter().busLine.points,
+                  props.getter().busLine.schools[0],
                   props.indice - 1
                 ) *
                   -1}
@@ -36,15 +38,15 @@ export default function (props: TimelineItemAddType) {
           <div class="ms-4">
             {props.pointsResource.nature === NatureEnum.stop
               ? " + " +
-                SumQuantity(
-                  props.getter().stops,
-                  props.getter().etablissementSelected[0],
+                SumQuantity2(
+                  props.getter().busLine.points,
+                  props.getter().busLine.schools[0],
                   props.indice
                 )
               : " " +
-                SumQuantity(
-                  props.getter().stops,
-                  props.getter().etablissementSelected[0],
+                SumQuantity2(
+                  props.getter().busLine.points,
+                  props.getter().busLine.schools[0],
                   props.indice
                 ) *
                   -1}
@@ -77,23 +79,51 @@ export default function (props: TimelineItemAddType) {
     </div>
   );
 }
-function stopQuantity(
-  pointsResource: LeafletStopType | LeafletSchoolType,
-  etablissementSelected: LeafletSchoolType
-) {
-  return pointsResource.associated.filter(
-    (school) => school.id === etablissementSelected.id
-  )[0].quantity;
-}
+// export function stopQuantity(
+//   pointsResource: LeafletStopType | LeafletSchoolType,
+//   etablissementSelected: LeafletSchoolType
+// ) {
+//   return pointsResource.associated.filter(
+//     (school) => school.id === etablissementSelected.id
+//   )[0].quantity;
+// }
 
-function SumQuantity(
-  stops: (LeafletStopType | LeafletSchoolType)[],
-  selectedSchool: LeafletSchoolType,
+// function SumQuantity(
+//   stops: (LeafletStopType | LeafletSchoolType)[],
+//   selectedSchool: LeafletSchoolType,
+//   indice: number
+// ) {
+//   let subList = stops.slice(0, indice + 1);
+
+//   let deb = subList.lastIndexOf(selectedSchool);
+
+//   deb = deb > -1 ? deb + 1 : 0;
+
+//   subList = subList.slice(deb);
+
+//   let sum = 0;
+
+//   subList.map((point) => {
+//     sum += stopQuantity(point, selectedSchool);
+//   });
+
+//   return sum;
+// }
+
+function SumQuantity2(
+  stops: BusLinePointType[],
+  selectedSchool: SchoolType,
   indice: number
 ) {
+  const school = stops.filter(
+    (point) =>
+      point.id === selectedSchool.id &&
+      point.nature === NatureEnum.etablissement
+  )[0];
+
   let subList = stops.slice(0, indice + 1);
 
-  let deb = subList.lastIndexOf(selectedSchool);
+  let deb = subList.lastIndexOf(school);
 
   deb = deb > -1 ? deb + 1 : 0;
 
@@ -102,8 +132,19 @@ function SumQuantity(
   let sum = 0;
 
   subList.map((point) => {
-    sum += stopQuantity(point, selectedSchool);
+    console.log("point.quantity ", point.quantity);
+
+    sum += point.quantity;
   });
 
   return sum;
+}
+
+export function stopQuantity2(
+  pointsResource: LeafletStopType | LeafletSchoolType,
+  etablissementSelected: LeafletSchoolType
+) {
+  return pointsResource.associated.filter(
+    (school) => school.id === etablissementSelected.id
+  )[0].quantity;
 }

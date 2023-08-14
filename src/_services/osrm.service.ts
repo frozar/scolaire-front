@@ -31,6 +31,19 @@ export class OsrmService {
     return points.map((point) => point.lon + "," + point.lat).join(";");
   }
 
+  static async getRoadPolylineBusLinePointTypeDraw(
+    points: BusLinePointType[]
+  ): Promise<L.LatLng[]> {
+    const pointsToStr = this.buildPositionBusLinePointTypeURL(points);
+    return OsrmService.getRoadDraw(pointsToStr);
+  }
+
+  private static buildPositionBusLinePointTypeURL(
+    points: BusLinePointType[]
+  ): string {
+    return points.map((point) => point.lon + "," + point.lat).join(";");
+  }
+
   static async getRoadDraw(points: string): Promise<L.LatLng[]> {
     let response: Response;
     try {

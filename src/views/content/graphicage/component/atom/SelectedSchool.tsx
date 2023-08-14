@@ -1,10 +1,10 @@
 import { For } from "solid-js";
-import { LeafletSchoolType } from "../organism/SchoolPoints";
+import { SchoolType } from "../../../../../_entities/school.entity";
 import "./SelectedSchool.css";
 import SelectedSchoolItem from "./SelectedSchoolItem";
 
 interface SelectedEtablissementProps {
-  schoolSelected: LeafletSchoolType[];
+  schoolSelected: SchoolType[];
 }
 
 export default function (props: SelectedEtablissementProps) {

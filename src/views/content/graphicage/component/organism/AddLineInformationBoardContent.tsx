@@ -8,7 +8,6 @@ import { quitModeAddLine } from "../../shortcut";
 import { DrawHelperButton } from "../atom/DrawHelperButton";
 import SelectedSchool from "../atom/SelectedSchool";
 import "./AddLineInformationBoardContent.css";
-import { LeafletSchoolType } from "./SchoolPoints";
 
 const [
   ,
@@ -20,24 +19,24 @@ const [
 ] = useStateAction();
 export default function () {
   const isValidate = () => getLineUnderConstruction().confirmSelection;
-  const etablissementSelected = () =>
-    getLineUnderConstruction().etablissementSelected;
+  const etablissementSelected = () => {
+    return getLineUnderConstruction().busLine.schools;
+  };
 
   async function updatePolyline() {
     // TODO Put to BusLineEntity
-    const latlngs: L.LatLng[] = await OsrmService.getRoadPolylineDraw(
-      getLineUnderConstruction().stops
-    );
-    getLineUnderConstruction().setLatLngs(latlngs);
+    const latlngs: L.LatLng[] =
+      await OsrmService.getRoadPolylineBusLinePointTypeDraw(
+        getLineUnderConstruction().busLine.points
+      );
+    getLineUnderConstruction().busLine.setLatLngs(latlngs);
   }
 
   return (
     <div class="add-line-information-board-content">
       <div class="add-line-information-board-content-header">
         <Show when={etablissementSelected()}>
-          <SelectedSchool
-            schoolSelected={etablissementSelected() as LeafletSchoolType[]}
-          />
+          <SelectedSchool schoolSelected={etablissementSelected()} />
         </Show>
 
         <Show
@@ -58,7 +57,7 @@ export default function () {
           <Button onClick={confirmEtablissementSelection} label="Valider" />
         </div>
       </Show>
-      <Show when={getLineUnderConstruction().stops.length != 0}>
+      <Show when={getLineUnderConstruction().busLine.points.length != 0}>
         <div class="bus-line-information-board-content">
           <TimelineAddMode
             line={getLineUnderConstruction}
@@ -66,7 +65,7 @@ export default function () {
           />
         </div>
       </Show>
-      <Show when={getLineUnderConstruction().stops.length > 1}>
+      <Show when={getLineUnderConstruction().busLine.points.length > 1}>
         <div class="">
           <Button
             onClick={quitModeAddLine}

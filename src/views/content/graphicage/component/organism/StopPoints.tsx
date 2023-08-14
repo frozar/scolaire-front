@@ -76,15 +76,15 @@ export type LeafletStopType = {
 
 // TODO to improve
 export function leafletStopsFilter(): LeafletStopType[] {
-  const etablissement = getLineUnderConstruction().etablissementSelected;
+  const etablissements = getLineUnderConstruction().busLine.schools;
   const isValidate = getLineUnderConstruction().confirmSelection;
 
   let stops = getLeafletStops();
 
-  if (isInAddLineMode() && etablissement) {
+  if (isInAddLineMode() && etablissements) {
     stops = stops.filter((stop) =>
       stop.associated.some((school) =>
-        etablissement.find((e) => e.id === school.id && isValidate)
+        etablissements.find((e) => e.id === school.id && isValidate)
       )
     );
   }
