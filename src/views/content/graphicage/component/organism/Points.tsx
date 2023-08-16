@@ -21,7 +21,6 @@ export function deselectAllPoints() {
 }
 export const [pointsReady, setPointsReady] = createSignal(false);
 
-// Props here is for storybook
 interface PointsProps {
   leafletMap: L.Map;
 }
