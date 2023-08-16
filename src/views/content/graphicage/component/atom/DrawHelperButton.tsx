@@ -74,11 +74,7 @@ export function DrawHelperButton(props: DrawHelperButtonProps) {
   return (
     <div class="graphicage-draw-helper-button">
       <DrawHelperDialog requestCircuit={requestCircuit} />
-      <Show
-        when={getLineUnderConstruction().busLine.points.length > 0}
-        fallback={<span>Création d'une ligne</span>}
-      >
-        <p>Création automatique d'une ligne</p>
+      <Show when={getLineUnderConstruction().busLine.points.length > 0}>
         <button onClick={onclick}>
           <FaSolidWandMagicSparkles />
         </button>
