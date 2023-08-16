@@ -181,10 +181,10 @@ const makeStateActionContext = () => {
   ] as const;
 };
 
+type StateActionContextType = ReturnType<typeof makeStateActionContext>;
 const StateActionContext = createContext<StateActionContextType>(
   makeStateActionContext()
 );
-type StateActionContextType = ReturnType<typeof makeStateActionContext>;
 
 export function StateActionProvider(props: { children: JSXElement }) {
   return (

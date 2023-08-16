@@ -23,12 +23,11 @@ export default function () {
     return getLineUnderConstruction().busLine.schools;
   };
 
-  async function updatePolyline() {
+  async function addLineUnderConstructionPolylineWithOsrm() {
     // TODO Put to BusLineEntity
-    const latlngs: L.LatLng[] =
-      await OsrmService.getRoadPolylineBusLinePointTypeDraw(
-        getLineUnderConstruction().busLine.points
-      );
+    const latlngs: L.LatLng[] = await OsrmService.getRoadPolyline(
+      getLineUnderConstruction().busLine.points
+    );
     getLineUnderConstruction().busLine.setLatLngs(latlngs);
   }
 
@@ -74,7 +73,7 @@ export default function () {
             isDisabled={false}
           />
           <Button
-            onClick={updatePolyline}
+            onClick={addLineUnderConstructionPolylineWithOsrm}
             label={"Valider"}
             variant="primary"
             isDisabled={false}

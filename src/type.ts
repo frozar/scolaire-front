@@ -2,8 +2,6 @@ import { Accessor, JSX, Setter } from "solid-js";
 import { BusLineType } from "./_entities/bus-line.entity";
 import { StopType } from "./_entities/stop.entity";
 import { LeafletPointType } from "./views/content/graphicage/component/atom/Point";
-import { LeafletSchoolType } from "./views/content/graphicage/component/organism/SchoolPoints";
-import { LeafletStopType } from "./views/content/graphicage/component/organism/StopPoints";
 
 export type EleveVersEtablissementType = {
   id: number;
@@ -55,25 +53,6 @@ export function isLeafletStopType(pt: LeafletPointType) {
 export function isLeafletSchoolType(pt: LeafletPointType) {
   return pt.nature === NatureEnum.school;
 }
-
-export type AbstractLineType = {
-  color: string;
-  stops: (LeafletStopType | LeafletSchoolType)[];
-  etablissementSelected: LeafletSchoolType[];
-};
-
-export type LineType = AbstractLineType & {
-  idBusLine: number;
-  selected: Accessor<boolean>;
-  setSelected: Setter<boolean>;
-};
-
-// export type LineUnderConstructionType = AbstractLineType & {
-//   nextIndex: number;
-//   confirmSelection?: boolean;
-//   latLngs: Accessor<L.LatLng[]>;
-//   setLatLngs: Setter<L.LatLng[]>;
-// };
 
 export type LineUnderConstructionType = {
   nextIndex: number;

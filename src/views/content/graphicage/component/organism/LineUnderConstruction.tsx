@@ -19,9 +19,7 @@ export default function (props: LineUnderConstructionProps) {
 
   // eslint-disable-next-line solid/reactivity
   createEffect(async () => {
-    // TODO Put to BusLineEntity
     // const latlngs: L.LatLng[] = await OsrmService.getRoadPolyline(line.points);
-    // line.setLatLngs(latlngs);
 
     if (getLineUnderConstruction().busLine.latLngs().length === 0) {
       setLocalLatLngs(getLatLngs(props.stops));
@@ -30,6 +28,7 @@ export default function (props: LineUnderConstructionProps) {
     }
     setLocalOpacity(1);
   });
+
   return (
     <Show when={getLineUnderConstruction().busLine.points.length > 0}>
       <Show when={getLineUnderConstruction().busLine.points.length > 1}>

@@ -8,32 +8,13 @@ export class OsrmService {
   static async getRoadPolyline(
     points: BusLinePointType[]
   ): Promise<L.LatLng[]> {
-    const pointsToStr = this.buildPositionURL(points);
-    return OsrmService.getRoadDraw(pointsToStr);
-  }
-
-  private static buildPositionURL(points: BusLinePointType[]): string {
-    return points.map((point) => point.lon + "," + point.lat).join(";");
-  }
-
-  static async getRoadPolylineBusLinePointTypeDraw(
-    points: BusLinePointType[]
-  ): Promise<L.LatLng[]> {
-    const pointsToStr = this.buildPositionBusLinePointTypeURL(points);
-    return OsrmService.getRoadDraw(pointsToStr);
-  }
-
-  private static buildPositionBusLinePointTypeURL(
-    points: BusLinePointType[]
-  ): string {
-    return points.map((point) => point.lon + "," + point.lat).join(";");
-  }
-
-  static async getRoadDraw(points: string): Promise<L.LatLng[]> {
     let response: Response;
     try {
       response = await fetch(
-        osrm + "/" + points + "?geometries=geojson&overview=full"
+        osrm +
+          "/" +
+          this.buildPositionURL(points) +
+          "?geometries=geojson&overview=full"
       );
     } catch (error) {
       connexionError();
@@ -42,6 +23,10 @@ export class OsrmService {
 
     if (!(await manageStatusCode(response))) return [];
     return await this.formatResponse(response);
+  }
+
+  private static buildPositionURL(points: BusLinePointType[]): string {
+    return points.map((point) => point.lon + "," + point.lat).join(";");
   }
 
   private static async formatResponse(response: Response): Promise<L.LatLng[]> {
