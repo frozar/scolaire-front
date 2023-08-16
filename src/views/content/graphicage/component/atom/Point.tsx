@@ -32,7 +32,7 @@ export interface PointInterface extends PointInformation {
 }
 
 export interface PointProps {
-  point: StopType | SchoolType;
+  point: LeafletPointType;
 
   map: L.Map;
   isBlinking?: boolean;
