@@ -34,10 +34,12 @@ export default function () {
   return (
     <div class="add-line-information-board-content">
       <div class="add-line-information-board-content-header">
+        {/* TODO utiliser un système de stepper (nextDrawStep par exemple + check de l'étape actuelle (incrément d'un nombre ou d'étape avec Enum [préférence Enum]))  plutôt que de checker "l'état" de notre donnée */}
         <Show when={etablissementSelected()}>
           <SelectedSchool schoolSelected={etablissementSelected()} />
         </Show>
 
+        {/* TODO utiliser un système de stepper (nextDrawStep par exemple + check de l'étape actuelle (incrément d'un nombre ou d'étape avec Enum [préférence Enum]))  plutôt que de checker "l'état" de notre donnée */}
         <Show
           when={typeof etablissementSelected() != "undefined" && isValidate()}
         >
@@ -45,6 +47,7 @@ export default function () {
         </Show>
       </div>
 
+      {/* TODO utiliser un système de stepper (nextDrawStep par exemple + check de l'étape actuelle (incrément d'un nombre ou d'étape avec Enum [préférence Enum]))  plutôt que de checker "l'état" de notre donnée */}
       <Show
         when={
           etablissementSelected() &&
@@ -56,6 +59,7 @@ export default function () {
           <Button onClick={confirmEtablissementSelection} label="Valider" />
         </div>
       </Show>
+      {/* TODO utiliser un système de stepper (nextDrawStep par exemple + check de l'étape actuelle (incrément d'un nombre ou d'étape avec Enum [préférence Enum]))  plutôt que de checker "l'état" de notre donnée */}
       <Show when={getLineUnderConstruction().busLine.points.length != 0}>
         <div class="bus-line-information-board-content">
           <TimelineAddMode
@@ -64,6 +68,7 @@ export default function () {
           />
         </div>
       </Show>
+      {/* TODO utiliser un système de stepper (nextDrawStep par exemple + check de l'étape actuelle (incrément d'un nombre ou d'étape avec Enum [préférence Enum]))  plutôt que de checker "l'état" de notre donnée */}
       <Show when={getLineUnderConstruction().busLine.points.length > 1}>
         <div class="">
           <Button
