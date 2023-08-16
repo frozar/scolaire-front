@@ -1,7 +1,5 @@
 import L from "leaflet";
 import { BusLinePointType } from "../_entities/bus-line.entity";
-import { LeafletSchoolType } from "../views/content/graphicage/component/organism/SchoolPoints";
-import { LeafletStopType } from "../views/content/graphicage/component/organism/StopPoints";
 import { connexionError, manageStatusCode } from "./_utils.service";
 
 const osrm = import.meta.env.VITE_API_OSRM_URL;
@@ -15,19 +13,6 @@ export class OsrmService {
   }
 
   private static buildPositionURL(points: BusLinePointType[]): string {
-    return points.map((point) => point.lon + "," + point.lat).join(";");
-  }
-
-  static async getRoadPolylineDraw(
-    points: (LeafletStopType | LeafletSchoolType)[]
-  ): Promise<L.LatLng[]> {
-    const pointsToStr = this.buildPositionLeafletURL(points);
-    return OsrmService.getRoadDraw(pointsToStr);
-  }
-
-  private static buildPositionLeafletURL(
-    points: (LeafletStopType | LeafletSchoolType)[]
-  ): string {
     return points.map((point) => point.lon + "," + point.lat).join(";");
   }
 
