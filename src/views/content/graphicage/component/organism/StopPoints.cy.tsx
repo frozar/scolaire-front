@@ -1,24 +1,20 @@
-// import "leaflet/dist/leaflet.css";
+import "leaflet/dist/leaflet.css";
+import stops from "../../../../../../cypress/fixtures/getAllStops.json";
+import { initialiseMap } from "../../../../../../testing/utils/mapWrapper";
+import { StopService } from "../../../../../_services/stop.service";
+import { StopPoints } from "./StopPoints";
 
-// describe("StopPoints component", () => {
-//   beforeEach(() => {
-//     //TODO Have to Mock the fetch - first have to setup the MapId
-//     cy.intercept("http://localhost:8000/map/2/dashboard/ramassage", {
-//       //TODO have to update the fixture JSON
-//       fixture: "getRamassages.json",
-//     }).as("getData");
-//   });
+describe("StopPoints component", () => {
+  beforeEach(() => {
+    cy.stub(StopService, "getAll").resolves(stops);
+  });
 
-//   it("StopPoints snapshot", () => {
-//     // cy.mount(() => (
-//     //   <div id="map-container" style={{ width: "100%", height: "500px" }}>
-//     //     <StopPoints
-//     //       mapId={2}
-//     //       leafletMap={initialiseMap("map-container", false)}
-//     //     />
-//     //   </div>
-//     // ));
-
-//     // cy.get("#map-container").compareSnapshot("stops", 0.01);
-//   });
-// });
+  it("StopPoints snapshot", () => {
+    cy.mount(() => (
+      <div id="map-container" style={{ width: "100%", height: "500px" }}>
+        <StopPoints leafletMap={initialiseMap("map-container", false)} />
+      </div>
+    ));
+    cy.get("#map-container").compareSnapshot("stops", 0.01);
+  });
+});
