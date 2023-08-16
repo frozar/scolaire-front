@@ -17,6 +17,6 @@ describe("PointsEtablissement component", () => {
       </div>
     )).as("component");
 
-    cy.get("#map-container").compareSnapshot("EtablissementPoints", 0.01);
+    cy.get("#map-container").compareSnapshot("SchoolPoints", 0.01);
   });
 });
