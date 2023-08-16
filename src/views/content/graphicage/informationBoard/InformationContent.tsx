@@ -3,8 +3,8 @@ import { useStateAction } from "../../../../StateAction";
 import { isLeafletStopType } from "../../../../type";
 import AddLineInformationBoardContent from "../component/organism/AddLineInformationBoardContent";
 import { getSelectedBusLine } from "../component/organism/BusLines";
-import { getLeafletSchools } from "../component/organism/SchoolPoints";
-import { getLeafletStops } from "../component/organism/StopPoints";
+import { getSchools } from "../component/organism/SchoolPoints";
+import { getStops } from "../component/organism/StopPoints";
 import InfoPointName from "./InfoPointName";
 
 import { SchoolType } from "../../../../_entities/school.entity";
@@ -16,7 +16,7 @@ const [, { isInAddLineMode, resetLineUnderConstruction }] = useStateAction();
 
 export default function () {
   const getSelectedPoint = (): SchoolType | StopType | null => {
-    const points = [...getLeafletStops(), ...getLeafletSchools()];
+    const points = [...getStops(), ...getSchools()];
 
     const filteredArray = points.filter((point) => point.selected());
 
@@ -45,7 +45,7 @@ export default function () {
 
   //TODO error with the associated Point (test with quantity)
   function getDisplayPoints(): SchoolType[] | StopType[] {
-    const points = [...getLeafletStops(), ...getLeafletSchools()];
+    const points = [...getStops(), ...getSchools()];
 
     const selectedPoint = getSelectedPoint();
 

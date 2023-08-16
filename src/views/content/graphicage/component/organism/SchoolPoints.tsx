@@ -4,7 +4,6 @@ import { useStateAction } from "../../../../../StateAction";
 import { useStateGui } from "../../../../../StateGui";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { SchoolService } from "../../../../../_services/school.service";
-import { PointInterface } from "../atom/Point";
 import { SchoolPoint } from "../molecule/SchoolPoint";
 
 const [, { nextLeafletPointId }] = useStateGui();
@@ -18,14 +17,7 @@ export interface SchoolPointsProps {
   items?: SchoolType[];
 }
 
-export const [getLeafletSchools, setLeafletSchools] = createSignal<
-  SchoolType[]
->([]);
-
-// TODO to delete and all reference
-export const [etablissements, setEtablissements] = createSignal<
-  PointInterface[]
->([]);
+export const [getSchools, setSchools] = createSignal<SchoolType[]>([]);
 
 export function SchoolPoints(props: SchoolPointsProps) {
   onMount(async () => {
@@ -36,7 +28,7 @@ export function SchoolPoints(props: SchoolPointsProps) {
     } else {
       leafletSchools = props.items;
     }
-    setLeafletSchools(leafletSchools);
+    setSchools(leafletSchools);
   });
 
   return (
@@ -64,7 +56,7 @@ function buildLeafletSchools(schools: SchoolType[]): SchoolType[] {
 function leafletSchoolsFilter(): SchoolType[] {
   const isValidate = getLineUnderConstruction().confirmSelection;
 
-  let schools = getLeafletSchools();
+  let schools = getSchools();
 
   if (isInAddLineMode()) {
     const etablissementsSelected = getLineUnderConstruction().busLine.schools;

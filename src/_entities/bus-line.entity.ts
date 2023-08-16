@@ -2,14 +2,14 @@ import L from "leaflet";
 import { Accessor, Setter, createSignal } from "solid-js";
 import { NatureEnum } from "../type";
 import { LeafletPointType } from "../views/content/graphicage/component/atom/Point";
-import { getLeafletSchools } from "../views/content/graphicage/component/organism/SchoolPoints";
-import { getLeafletStops } from "../views/content/graphicage/component/organism/StopPoints";
+import { getSchools } from "../views/content/graphicage/component/organism/SchoolPoints";
+import { getStops } from "../views/content/graphicage/component/organism/StopPoints";
 import { EntityUtils, LocationPathDBType } from "./_utils.entity";
 import { SchoolType } from "./school.entity";
 
 export class BusLineEntity {
   static build(dbData: BusLineDBType): BusLineType {
-    const filteredShools: LeafletPointType[] = getLeafletSchools().filter(
+    const filteredShools: LeafletPointType[] = getSchools().filter(
       (item) => item.id == dbData.school_id
     );
     if (filteredShools.length == 0) {
@@ -124,11 +124,9 @@ const getAssociatedBusLinePoint = (
   dbPoint: BusLinePointDBType
 ): LeafletPointType => {
   if (dbPoint.school_id != 0) {
-    return getLeafletSchools().filter(
-      (item) => item.id == dbPoint.school_id
-    )[0];
+    return getSchools().filter((item) => item.id == dbPoint.school_id)[0];
   }
-  return getLeafletStops().filter((item) => item.id == dbPoint.stop_id)[0];
+  return getStops().filter((item) => item.id == dbPoint.stop_id)[0];
 };
 
 export type BusLineType = {

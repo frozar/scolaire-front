@@ -18,8 +18,8 @@ import {
 import DrawHelperDialog, {
   openDrawHelperDialog,
 } from "../molecule/DrawHelperDialog";
-import { getLeafletSchools } from "../organism/SchoolPoints";
-import { getLeafletStops, leafletStopsFilter } from "../organism/StopPoints";
+import { getSchools } from "../organism/SchoolPoints";
+import { getStops, leafletStopsFilter } from "../organism/StopPoints";
 import "./DrawHelperButton.css";
 
 interface DrawHelperButtonProps {
@@ -90,7 +90,7 @@ export function DrawHelperButton(props: DrawHelperButtonProps) {
 function formatTimeLinePoints(
   data: { id: number; leafletId: number; nature: string; quantity: number }[]
 ): BusLinePointType[] {
-  const points = [...getLeafletSchools(), ...getLeafletStops()];
+  const points = [...getSchools(), ...getStops()];
   const output = [];
   for (const item of data) {
     const point = points.find((point) => item.leafletId == point.leafletId);

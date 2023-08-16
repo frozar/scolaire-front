@@ -17,7 +17,7 @@ export interface StopPointsProps {
   items?: StopType[];
 }
 
-export const [getLeafletStops, setLeafletStops] = createSignal<StopType[]>([]);
+export const [getStops, setStops] = createSignal<StopType[]>([]);
 
 // TODO to delete and all reference
 export const [ramassages, setRamassages] = createSignal<PointInterface[]>([]);
@@ -31,11 +31,11 @@ export function StopPoints(props: StopPointsProps) {
     } else {
       leafletStops = props.items;
     }
-    setLeafletStops(leafletStops);
+    setStops(leafletStops);
   });
 
   const quantities = () => {
-    return getLeafletStops().map((stop) => {
+    return getStops().map((stop) => {
       return stop.associated.reduce((acc, stop) => acc + stop.quantity, 0);
     }) as number[];
   };
@@ -71,7 +71,7 @@ export function leafletStopsFilter(): StopType[] {
   const etablissements = getLineUnderConstruction().busLine.schools;
   const isValidate = getLineUnderConstruction().confirmSelection;
 
-  let stops = getLeafletStops();
+  let stops = getStops();
 
   if (isInAddLineMode() && etablissements) {
     stops = stops.filter((stop) =>

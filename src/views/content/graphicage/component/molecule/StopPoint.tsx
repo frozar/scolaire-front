@@ -10,7 +10,7 @@ import {
   linkMap,
   setBlinkingSchools,
 } from "../organism/Points";
-import { getLeafletSchools } from "../organism/SchoolPoints";
+import { getSchools } from "../organism/SchoolPoints";
 
 const [
   ,
@@ -36,9 +36,7 @@ function onClick(point: StopType) {
   // Highlight point schools
   for (const associated of point.associated) {
     let element;
-    const school = getLeafletSchools().filter(
-      (item) => item.id == associated.id
-    )[0];
+    const school = getSchools().filter((item) => item.id == associated.id)[0];
     if (school && (element = linkMap.get(school.leafletId)?.getElement())) {
       renderAnimation(element);
     }
