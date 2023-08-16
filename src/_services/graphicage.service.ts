@@ -1,5 +1,5 @@
-import { LeafletSchoolType } from "../views/content/graphicage/component/organism/SchoolPoints";
-import { LeafletStopType } from "../views/content/graphicage/component/organism/StopPoints";
+import { SchoolType } from "../_entities/school.entity";
+import { StopType } from "../_entities/stop.entity";
 import { connexionError, manageStatusCode } from "./_utils.service";
 
 const host = import.meta.env.VITE_BACK_URL;
@@ -27,9 +27,9 @@ export class GraphicageService {
 }
 
 export type DrawHelperDataType = {
-  schools: LeafletSchoolType[];
-  selected: (LeafletStopType | LeafletSchoolType)[];
-  stops: LeafletStopType[];
+  schools: SchoolType[];
+  selected: (StopType | SchoolType)[];
+  stops: StopType[];
   capacity: number;
   timeLimitSeconds: number;
   nbLimitSolution: number;

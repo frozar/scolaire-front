@@ -14,19 +14,17 @@ export interface StopPointsProps {
   leafletMap: L.Map;
 
   // TODO Utilisé pour les test et les story, possibilité de s'en passer ? Mocker ?
-  items?: LeafletStopType[];
+  items?: StopType[];
 }
 
-export const [getLeafletStops, setLeafletStops] = createSignal<
-  LeafletStopType[]
->([]);
+export const [getLeafletStops, setLeafletStops] = createSignal<StopType[]>([]);
 
 // TODO to delete and all reference
 export const [ramassages, setRamassages] = createSignal<PointInterface[]>([]);
 
 export function StopPoints(props: StopPointsProps) {
   onMount(async () => {
-    let leafletStops: LeafletStopType[];
+    let leafletStops: StopType[];
     if (!props.items) {
       const stops: StopType[] = await StopService.getAll();
       leafletStops = buildLeafletStops(stops);
@@ -75,7 +73,7 @@ export type LeafletStopType = {
 } & StopType;
 
 // TODO to improve
-export function leafletStopsFilter(): LeafletStopType[] {
+export function leafletStopsFilter(): StopType[] {
   const etablissements = getLineUnderConstruction().busLine.schools;
   const isValidate = getLineUnderConstruction().confirmSelection;
 
@@ -92,7 +90,7 @@ export function leafletStopsFilter(): LeafletStopType[] {
   return stops;
 }
 
-function buildLeafletStops(stops: StopType[]): LeafletStopType[] {
+function buildLeafletStops(stops: StopType[]): StopType[] {
   // TODO ununderstood lint error
   return stops.map((stop) => {
     const [selected, setSelected] = createSignal(false);

@@ -1,3 +1,5 @@
+import { Accessor, Setter, createSignal } from "solid-js";
+import { useStateGui } from "../StateGui";
 import { NatureEnum } from "../type";
 import {
   AssociatedDBPointType,
@@ -6,8 +8,11 @@ import {
   LocationDBType,
 } from "./_utils.entity";
 
+const [, { nextLeafletPointId }] = useStateGui();
+
 export class StopEntity {
   static build(dbStop: StopDBType): StopType {
+    const [selected, setSelected] = createSignal<boolean>(false);
     return {
       id: dbStop.id,
       lon: dbStop.location.data.lng,
@@ -15,6 +20,10 @@ export class StopEntity {
       name: dbStop.name,
       nature: NatureEnum.stop,
       associated: EntityUtils.formatAssociatedPoints(dbStop.associated),
+
+      leafletId: nextLeafletPointId(),
+      selected: selected,
+      setSelected: setSelected,
     };
   }
 
@@ -35,6 +44,10 @@ export type StopType = {
   lat: number;
   associated: AssociatedPointType[];
   nature: NatureEnum;
+
+  leafletId: number;
+  selected: Accessor<boolean>;
+  setSelected: Setter<boolean>;
 };
 
 export type StopDBType = {

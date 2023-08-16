@@ -1,5 +1,6 @@
 import { Accessor, JSX, Setter } from "solid-js";
 import { BusLineType } from "./_entities/bus-line.entity";
+import { SchoolType } from "./_entities/school.entity";
 import { StopType } from "./_entities/stop.entity";
 import { LeafletPointType } from "./views/content/graphicage/component/atom/Point";
 

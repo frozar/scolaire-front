@@ -1,13 +1,11 @@
 import { renderAnimation } from "../animation";
 
+import { SchoolType } from "../../../../_entities/school.entity";
+import { StopType } from "../../../../_entities/stop.entity";
 import "../../../../css/utils.css";
 import { linkMap } from "../component/organism/Points";
-import { LeafletSchoolType } from "../component/organism/SchoolPoints";
-import { LeafletStopType } from "../component/organism/StopPoints";
 
-export default function (props: {
-  point: LeafletSchoolType | LeafletStopType;
-}) {
+export default function (props: { point: SchoolType | StopType }) {
   return (
     <a
       class="prevent-select"
