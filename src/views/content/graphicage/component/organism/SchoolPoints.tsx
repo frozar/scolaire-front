@@ -1,10 +1,9 @@
 import L from "leaflet";
-import { Accessor, For, Setter, createSignal, onMount } from "solid-js";
+import { For, createSignal, onMount } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import { useStateGui } from "../../../../../StateGui";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { SchoolService } from "../../../../../_services/school.service";
-import { PointInterface } from "../atom/Point";
 import { SchoolPoint } from "../molecule/SchoolPoint";
 
 const [, { nextLeafletPointId }] = useStateGui();
@@ -15,28 +14,21 @@ export interface SchoolPointsProps {
   leafletMap: L.Map;
 
   // TODO Utilisé pour les test et les story, possibilité de s'en passer ? Mocker ?
-  items?: LeafletSchoolType[];
+  items?: SchoolType[];
 }
 
-export const [getLeafletSchools, setLeafletSchools] = createSignal<
-  LeafletSchoolType[]
->([]);
-
-// TODO to delete and all reference
-export const [etablissements, setEtablissements] = createSignal<
-  PointInterface[]
->([]);
+export const [getSchools, setSchools] = createSignal<SchoolType[]>([]);
 
 export function SchoolPoints(props: SchoolPointsProps) {
   onMount(async () => {
-    let leafletSchools: LeafletSchoolType[];
+    let leafletSchools: SchoolType[];
     if (!props.items) {
       const schools: SchoolType[] = await SchoolService.getAll();
       leafletSchools = buildLeafletSchools(schools);
     } else {
       leafletSchools = props.items;
     }
-    setLeafletSchools(leafletSchools);
+    setSchools(leafletSchools);
   });
 
   return (
@@ -48,14 +40,7 @@ export function SchoolPoints(props: SchoolPointsProps) {
   );
 }
 
-export type LeafletSchoolType = {
-  leafletId: number;
-  // TODO check utility
-  selected: Accessor<boolean>;
-  setSelected: Setter<boolean>;
-} & SchoolType;
-
-function buildLeafletSchools(schools: SchoolType[]): LeafletSchoolType[] {
+function buildLeafletSchools(schools: SchoolType[]): SchoolType[] {
   // TODO ununderstood lint error
   return schools.map((school) => {
     const [selected, setSelected] = createSignal(false);
@@ -68,10 +53,10 @@ function buildLeafletSchools(schools: SchoolType[]): LeafletSchoolType[] {
   });
 }
 
-function leafletSchoolsFilter(): LeafletSchoolType[] {
+function leafletSchoolsFilter(): SchoolType[] {
   const isValidate = getLineUnderConstruction().confirmSelection;
 
-  let schools = getLeafletSchools();
+  let schools = getSchools();
 
   if (isInAddLineMode()) {
     const etablissementsSelected = getLineUnderConstruction().busLine.schools;

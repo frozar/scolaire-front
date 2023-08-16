@@ -18,8 +18,8 @@ import {
 import DrawHelperDialog, {
   openDrawHelperDialog,
 } from "../molecule/DrawHelperDialog";
-import { LeafletSchoolType, getLeafletSchools } from "../organism/SchoolPoints";
-import { getLeafletStops, leafletStopsFilter } from "../organism/StopPoints";
+import { getSchools } from "../organism/SchoolPoints";
+import { getStops, leafletStopsFilter } from "../organism/StopPoints";
 import "./DrawHelperButton.css";
 
 interface DrawHelperButtonProps {
@@ -44,7 +44,7 @@ export function DrawHelperButton(props: DrawHelperButtonProps) {
     timeLimitSeconds: number,
     nbLimitSolution: number
   ) {
-    const schools: LeafletSchoolType[] =
+    const schools: SchoolType[] =
       props.schools != undefined
         ? JSON.parse(JSON.stringify(props.schools))
         : [];
@@ -90,7 +90,7 @@ export function DrawHelperButton(props: DrawHelperButtonProps) {
 function formatTimeLinePoints(
   data: { id: number; leafletId: number; nature: string; quantity: number }[]
 ): BusLinePointType[] {
-  const points = [...getLeafletSchools(), ...getLeafletStops()];
+  const points = [...getSchools(), ...getStops()];
   const output = [];
   for (const item of data) {
     const point = points.find((point) => item.leafletId == point.leafletId);

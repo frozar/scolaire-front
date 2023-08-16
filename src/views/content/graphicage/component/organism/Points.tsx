@@ -1,8 +1,8 @@
 import L from "leaflet";
 import { createEffect, createSignal } from "solid-js";
 import { EleveVersEtablissementType } from "../../../../../type";
-import { SchoolPoints, getLeafletSchools } from "./SchoolPoints";
-import { StopPoints, getLeafletStops } from "./StopPoints";
+import { SchoolPoints, getSchools } from "./SchoolPoints";
+import { StopPoints, getStops } from "./StopPoints";
 
 export const linkMap = new Map<number, L.CircleMarker>();
 
@@ -16,8 +16,8 @@ export const [studentsToSchool, setStudentsToSchool] = createSignal<
 >([]);
 
 export function deselectAllPoints() {
-  getLeafletSchools().map((point) => point.setSelected(false));
-  getLeafletStops().map((point) => point.setSelected(false));
+  getSchools().map((point) => point.setSelected(false));
+  getStops().map((point) => point.setSelected(false));
 }
 export const [pointsReady, setPointsReady] = createSignal(false);
 
@@ -29,9 +29,9 @@ interface PointsProps {
 export function Points(props: PointsProps) {
   createEffect(() => {
     if (
-      getLeafletSchools().length == 0 ||
+      getSchools().length == 0 ||
       !studentsToSchool() ||
-      getLeafletStops().length == 0
+      getStops().length == 0
     ) {
       return;
     }

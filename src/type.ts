@@ -1,7 +1,7 @@
 import { Accessor, JSX, Setter } from "solid-js";
 import { BusLineType } from "./_entities/bus-line.entity";
 import { StopType } from "./_entities/stop.entity";
-import { LeafletPointType } from "./views/content/graphicage/component/atom/Point";
+import { PointType } from "./views/content/graphicage/component/atom/Point";
 
 export type EleveVersEtablissementType = {
   id: number;
@@ -46,11 +46,11 @@ export type PointRamassageType = PointResourceType;
 
 export type PointEtablissementType = PointResourceType;
 
-export function isLeafletStopType(pt: LeafletPointType) {
+export function isLeafletStopType(pt: PointType) {
   return pt.nature === NatureEnum.stop;
 }
 
-export function isLeafletSchoolType(pt: LeafletPointType) {
+export function isLeafletSchoolType(pt: PointType) {
   return pt.nature === NatureEnum.school;
 }
 

@@ -11,7 +11,7 @@ export class BusLineService {
     return dbStops.map((dbStop: BusLineDBType) => BusLineEntity.build(dbStop));
   }
 
-  static async create(line:  BusLineType): Promise<BusLineType> {
+  static async create(line: BusLineType): Promise<BusLineType> {
     const data = BusLineEntity.dbFormat(line);
     const dbBusLine: BusLineDBType = await ServiceUtils.post("/bus-line", data);
     return BusLineEntity.build(dbBusLine);

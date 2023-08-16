@@ -3,24 +3,20 @@ import { useStateAction } from "../../../../StateAction";
 import { isLeafletStopType } from "../../../../type";
 import AddLineInformationBoardContent from "../component/organism/AddLineInformationBoardContent";
 import { getSelectedBusLine } from "../component/organism/BusLines";
-import {
-  LeafletSchoolType,
-  getLeafletSchools,
-} from "../component/organism/SchoolPoints";
-import {
-  LeafletStopType,
-  getLeafletStops,
-} from "../component/organism/StopPoints";
+import { getSchools } from "../component/organism/SchoolPoints";
+import { getStops } from "../component/organism/StopPoints";
 import InfoPointName from "./InfoPointName";
 
+import { SchoolType } from "../../../../_entities/school.entity";
+import { StopType } from "../../../../_entities/stop.entity";
 import { BusLineInformationBoardContent } from "../component/organism/BusLineInformationBoardContent";
 import "./InformationContent.css";
 
 const [, { isInAddLineMode, resetLineUnderConstruction }] = useStateAction();
 
 export default function () {
-  const getSelectedPoint = (): LeafletSchoolType | LeafletStopType | null => {
-    const points = [...getLeafletStops(), ...getLeafletSchools()];
+  const getSelectedPoint = (): SchoolType | StopType | null => {
+    const points = [...getStops(), ...getSchools()];
 
     const filteredArray = points.filter((point) => point.selected());
 
@@ -48,8 +44,8 @@ export default function () {
   };
 
   //TODO error with the associated Point (test with quantity)
-  function getDisplayPoints(): LeafletSchoolType[] | LeafletStopType[] {
-    const points = [...getLeafletStops(), ...getLeafletSchools()];
+  function getDisplayPoints(): SchoolType[] | StopType[] {
+    const points = [...getStops(), ...getSchools()];
 
     const selectedPoint = getSelectedPoint();
 

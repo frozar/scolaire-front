@@ -16,8 +16,8 @@ import { assertIsNode } from "../utils";
 
 import ClickOutside from "../component/ClickOutside";
 import { getBusLines } from "../views/content/graphicage/component/organism/BusLines";
-import { getLeafletSchools } from "../views/content/graphicage/component/organism/SchoolPoints";
-import { getLeafletStops } from "../views/content/graphicage/component/organism/StopPoints";
+import { getSchools } from "../views/content/graphicage/component/organism/SchoolPoints";
+import { getStops } from "../views/content/graphicage/component/organism/StopPoints";
 
 // HACK for the documentation to preserve the ClickOutside directive on save
 // https://www.solidjs.com/guides/typescript#use___
@@ -212,13 +212,13 @@ export default function () {
                         <ul class="text-sm text-gray-500 standard-list">
                           <li>
                             <span class="font-semibold text-sm text-gray-900">
-                              {getLeafletStops().length + " "}
+                              {getStops().length + " "}
                             </span>
                             arrêt(s) de bus,
                           </li>
                           <li>
                             <span class="font-semibold text-sm text-gray-900">
-                              {getLeafletSchools().length + " "}
+                              {getSchools().length + " "}
                             </span>
                             établissement(s),
                           </li>

@@ -1,10 +1,10 @@
 import { createPoint } from "../../../../../../testing/utils/TestUtils";
+import { SchoolType } from "../../../../../_entities/school.entity";
 import { NatureEnum } from "../../../../../type";
-import { LeafletSchoolType } from "../organism/SchoolPoints";
 import SelectedSchool from "./SelectedSchool";
 
 describe("SelectedSchool atom", () => {
-  const schoolSelected: LeafletSchoolType[] = [
+  const schoolSelected: SchoolType[] = [
     createPoint({
       id: 0,
       leafletId: 1,
