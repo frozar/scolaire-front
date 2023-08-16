@@ -1,287 +1,57 @@
 [
-    {
-        "id": 1,
-        "name": "Ecole DE BEAUMONT",
-        "location": {
-            "type": "point",
-            "data": {
-                "lng": 55.534380675351,
-                "lat": -20.946658830374
-            }
-        },
-        "associated": [
-            {
-                "quantity": 4,
-                "entity": {
-                    "id": 7,
-                    "name": "BENJOINS"
-                }
-            },
-            {
-                "quantity": 8,
-                "entity": {
-                    "id": 8,
-                    "name": "CANNELLE"
-                }
-            },
-            {
-                "quantity": 12,
-                "entity": {
-                    "id": 9,
-                    "name": "CHEMIN DU BASSIN"
-                }
-            },
-            {
-                "quantity": 3,
-                "entity": {
-                    "id": 10,
-                    "name": "CHEMIN HERMAN"
-                }
-            },
-            {
-                "quantity": 1,
-                "entity": {
-                    "id": 12,
-                    "name": "Chemin Robert"
-                }
-            },
-            {
-                "quantity": 6,
-                "entity": {
-                    "id": 14,
-                    "name": "CONTEUR"
-                }
-            },
-            {
-                "quantity": 2,
-                "entity": {
-                    "id": 17,
-                    "name": "LES BEGONIAS"
-                }
-            },
-            {
-                "quantity": 2,
-                "entity": {
-                    "id": 18,
-                    "name": "LES CAPUCINES"
-                }
-            },
-            {
-                "quantity": 1,
-                "entity": {
-                    "id": 19,
-                    "name": "LES EGLANTINES"
-                }
-            },
-            {
-                "quantity": 5,
-                "entity": {
-                    "id": 20,
-                    "name": "LES FANJANS"
-                }
-            },
-            {
-                "quantity": 1,
-                "entity": {
-                    "id": 21,
-                    "name": "LES FRANCISEAS"
-                }
-            },
-            {
-                "quantity": 2,
-                "entity": {
-                    "id": 22,
-                    "name": "LES GREVILIAIRES"
-                }
-            },
-            {
-                "quantity": 7,
-                "entity": {
-                    "id": 23,
-                    "name": "LES HORTENSIAS"
-                }
-            },
-            {
-                "quantity": 7,
-                "entity": {
-                    "id": 24,
-                    "name": "LES JACINTHES"
-                }
-            },
-            {
-                "quantity": 5,
-                "entity": {
-                    "id": 25,
-                    "name": "LES KAKIS"
-                }
-            },
-            {
-                "quantity": 1,
-                "entity": {
-                    "id": 26,
-                    "name": "LES LATANIERS"
-                }
-            },
-            {
-                "quantity": 4,
-                "entity": {
-                    "id": 28,
-                    "name": "LES NATTES"
-                }
-            },
-            {
-                "quantity": 45,
-                "entity": {
-                    "id": 29,
-                    "name": "MADORE"
-                }
-            },
-            {
-                "quantity": 5,
-                "entity": {
-                    "id": 31,
-                    "name": "PITON CAILLOUX"
-                }
-            },
-            {
-                "quantity": 13,
-                "entity": {
-                    "id": 32,
-                    "name": "PITON FOUGERES"
-                }
-            },
-            {
-                "quantity": 6,
-                "entity": {
-                    "id": 2,
-                    "name": "TAKAMAKA"
-                }
-            },
-            {
-                "quantity": 5,
-                "entity": {
-                    "id": 3,
-                    "name": "TALIPOT"
-                }
-            },
-            {
-                "quantity": 4,
-                "entity": {
-                    "id": 4,
-                    "name": "VIERGE BLANCHE"
-                }
-            }
-        ]
-    },
-    {
-        "id": 2,
-        "name": "Ecole DE BOIS ROUGE",
-        "location": {
-            "type": "point",
-            "data": {
-                "lng": 55.531434407415,
-                "lat": -20.921777445981
-            }
-        },
-        "associated": [
-            {
-                "quantity": 1,
-                "entity": {
-                    "id": 5,
-                    "name": "ALLEES COCO"
-                }
-            },
-            {
-                "quantity": 12,
-                "entity": {
-                    "id": 6,
-                    "name": "BABA FIGUES"
-                }
-            },
-            {
-                "quantity": 6,
-                "entity": {
-                    "id": 7,
-                    "name": "BENJOINS"
-                }
-            },
-            {
-                "quantity": 7,
-                "entity": {
-                    "id": 8,
-                    "name": "CANNELLE"
-                }
-            },
-            {
-                "quantity": 3,
-                "entity": {
-                    "id": 9,
-                    "name": "CHEMIN DU BASSIN"
-                }
-            },
-            {
-                "quantity": 1,
-                "entity": {
-                    "id": 11,
-                    "name": "CHEMIN PITON ROUGE"
-                }
-            },
-            {
-                "quantity": 11,
-                "entity": {
-                    "id": 13,
-                    "name": "Colombo"
-                }
-            },
-            {
-                "quantity": 3,
-                "entity": {
-                    "id": 15,
-                    "name": "HUBERT GRONDIN"
-                }
-            },
-            {
-                "quantity": 5,
-                "entity": {
-                    "id": 16,
-                    "name": "LAGRANGE"
-                }
-            },
-            {
-                "quantity": 12,
-                "entity": {
-                    "id": 27,
-                    "name": "LES LUCAS"
-                }
-            },
-            {
-                "quantity": 7,
-                "entity": {
-                    "id": 30,
-                    "name": "PARNY"
-                }
-            },
-            {
-                "quantity": 5,
-                "entity": {
-                    "id": 1,
-                    "name": "RESSOURCE"
-                }
-            },
-            {
-                "quantity": 6,
-                "entity": {
-                    "id": 2,
-                    "name": "TAKAMAKA"
-                }
-            },
-            {
-                "quantity": 23,
-                "entity": {
-                    "id": 4,
-                    "name": "VIERGE BLANCHE"
-                }
-            }
-        ]
-    }
+  {
+    "id": 1,
+    "lon": 55.534380675351,
+    "lat": -20.946658830374,
+    "name": "Ecole DE BEAUMONT",
+    "nature": "school",
+    "associated": [
+      { "id": 7, "name": "BENJOINS", "quantity": 4 },
+      { "id": 8, "name": "CANNELLE", "quantity": 8 },
+      { "id": 9, "name": "CHEMIN DU BASSIN", "quantity": 12 },
+      { "id": 10, "name": "CHEMIN HERMAN", "quantity": 3 },
+      { "id": 12, "name": "Chemin Robert", "quantity": 1 },
+      { "id": 14, "name": "CONTEUR", "quantity": 6 },
+      { "id": 17, "name": "LES BEGONIAS", "quantity": 2 },
+      { "id": 18, "name": "LES CAPUCINES", "quantity": 2 },
+      { "id": 19, "name": "LES EGLANTINES", "quantity": 1 },
+      { "id": 20, "name": "LES FANJANS", "quantity": 5 },
+      { "id": 21, "name": "LES FRANCISEAS", "quantity": 1 },
+      { "id": 22, "name": "LES GREVILIAIRES", "quantity": 2 },
+      { "id": 23, "name": "LES HORTENSIAS", "quantity": 7 },
+      { "id": 24, "name": "LES JACINTHES", "quantity": 7 },
+      { "id": 25, "name": "LES KAKIS", "quantity": 5 },
+      { "id": 26, "name": "LES LATANIERS", "quantity": 1 },
+      { "id": 28, "name": "LES NATTES", "quantity": 4 },
+      { "id": 29, "name": "MADORE", "quantity": 45 },
+      { "id": 31, "name": "PITON CAILLOUX", "quantity": 5 },
+      { "id": 32, "name": "PITON FOUGERES", "quantity": 13 },
+      { "id": 2, "name": "TAKAMAKA", "quantity": 6 },
+      { "id": 3, "name": "TALIPOT", "quantity": 5 },
+      { "id": 4, "name": "VIERGE BLANCHE", "quantity": 4 }
+    ]
+  },
+  {
+    "id": 2,
+    "lon": 55.531434407415,
+    "lat": -20.921777445981,
+    "name": "Ecole DE BOIS ROUGE",
+    "nature": "school",
+    "associated": [
+      { "id": 5, "name": "ALLEES COCO", "quantity": 1 },
+      { "id": 6, "name": "BABA FIGUES", "quantity": 12 },
+      { "id": 7, "name": "BENJOINS", "quantity": 6 },
+      { "id": 8, "name": "CANNELLE", "quantity": 7 },
+      { "id": 9, "name": "CHEMIN DU BASSIN", "quantity": 3 },
+      { "id": 11, "name": "CHEMIN PITON ROUGE", "quantity": 1 },
+      { "id": 13, "name": "Colombo", "quantity": 11 },
+      { "id": 15, "name": "HUBERT GRONDIN", "quantity": 3 },
+      { "id": 16, "name": "LAGRANGE", "quantity": 5 },
+      { "id": 27, "name": "LES LUCAS", "quantity": 12 },
+      { "id": 30, "name": "PARNY", "quantity": 7 },
+      { "id": 1, "name": "RESSOURCE", "quantity": 5 },
+      { "id": 2, "name": "TAKAMAKA", "quantity": 6 },
+      { "id": 4, "name": "VIERGE BLANCHE", "quantity": 23 }
+    ]
+  }
 ]
