@@ -51,6 +51,7 @@ function onClick(point: LeafletStopType) {
     return;
   }
 
+  //TODO Modify when we use multiple schools
   const associatedQuantity = point.associated.filter(
     (associatedSchool) =>
       associatedSchool.id === getLineUnderConstruction().busLine.schools[0].id

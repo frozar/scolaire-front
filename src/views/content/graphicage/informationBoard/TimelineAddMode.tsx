@@ -21,11 +21,7 @@ export default function (props: {
         <For each={props.line()?.busLine.points}>
           {(stop, i) => (
             <>
-              <TimelineAddPointButton
-                indice={i()}
-                setter={props.setLine}
-                getter={props.line}
-              />
+              <TimelineAddPointButton indice={i()} />
 
               <TimelineItemAddMode
                 pointsResource={stop}

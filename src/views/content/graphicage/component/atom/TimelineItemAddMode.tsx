@@ -1,11 +1,9 @@
 import { BusLinePointType } from "../../../../../_entities/bus-line.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { LineUnderConstructionType, NatureEnum } from "../../../../../type";
-import { LeafletSchoolType } from "../organism/SchoolPoints";
-import { LeafletStopType } from "../organism/StopPoints";
 import { TimelineRemovePointButton } from "./TimelineRemovePointButton";
 export type TimelineItemAddType = {
-  pointsResource: LeafletStopType | LeafletSchoolType;
+  pointsResource: BusLinePointType;
   indice: number;
   getter: () => LineUnderConstructionType;
   setter: (line: LineUnderConstructionType) => void;
@@ -21,13 +19,9 @@ export default function (props: TimelineItemAddType) {
         <div class="d-flex">
           <div class="me-4">
             {props.pointsResource.nature === NatureEnum.stop
-              ? "+ " +
-                stopQuantity2(
-                  props.pointsResource,
-                  props.getter().busLine.schools[0]
-                )
+              ? "+ " + props.pointsResource.quantity
               : " " +
-                SumQuantity2(
+                SumQuantity(
                   props.getter().busLine.points,
                   props.getter().busLine.schools[0],
                   props.indice - 1
@@ -38,13 +32,13 @@ export default function (props: TimelineItemAddType) {
           <div class="ms-4">
             {props.pointsResource.nature === NatureEnum.stop
               ? " + " +
-                SumQuantity2(
+                SumQuantity(
                   props.getter().busLine.points,
                   props.getter().busLine.schools[0],
                   props.indice
                 )
               : " " +
-                SumQuantity2(
+                SumQuantity(
                   props.getter().busLine.points,
                   props.getter().busLine.schools[0],
                   props.indice
@@ -79,46 +73,15 @@ export default function (props: TimelineItemAddType) {
     </div>
   );
 }
-// export function stopQuantity(
-//   pointsResource: LeafletStopType | LeafletSchoolType,
-//   etablissementSelected: LeafletSchoolType
-// ) {
-//   return pointsResource.associated.filter(
-//     (school) => school.id === etablissementSelected.id
-//   )[0].quantity;
-// }
 
-// function SumQuantity(
-//   stops: (LeafletStopType | LeafletSchoolType)[],
-//   selectedSchool: LeafletSchoolType,
-//   indice: number
-// ) {
-//   let subList = stops.slice(0, indice + 1);
-
-//   let deb = subList.lastIndexOf(selectedSchool);
-
-//   deb = deb > -1 ? deb + 1 : 0;
-
-//   subList = subList.slice(deb);
-
-//   let sum = 0;
-
-//   subList.map((point) => {
-//     sum += stopQuantity(point, selectedSchool);
-//   });
-
-//   return sum;
-// }
-
-function SumQuantity2(
+function SumQuantity(
   stops: BusLinePointType[],
   selectedSchool: SchoolType,
   indice: number
 ) {
   const school = stops.filter(
     (point) =>
-      point.id === selectedSchool.id &&
-      point.nature === NatureEnum.etablissement
+      point.id === selectedSchool.id && point.nature === NatureEnum.school
   )[0];
 
   let subList = stops.slice(0, indice + 1);
@@ -132,19 +95,8 @@ function SumQuantity2(
   let sum = 0;
 
   subList.map((point) => {
-    console.log("point.quantity ", point.quantity);
-
     sum += point.quantity;
   });
 
   return sum;
-}
-
-export function stopQuantity2(
-  pointsResource: LeafletStopType | LeafletSchoolType,
-  etablissementSelected: LeafletSchoolType
-) {
-  return pointsResource.associated.filter(
-    (school) => school.id === etablissementSelected.id
-  )[0].quantity;
 }
