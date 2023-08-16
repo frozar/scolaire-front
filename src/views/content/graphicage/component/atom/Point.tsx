@@ -5,8 +5,6 @@ import { SchoolType } from "../../../../../_entities/school.entity";
 import { StopType } from "../../../../../_entities/stop.entity";
 import { NatureEnum } from "../../../../../type";
 import { linkMap } from "../organism/Points";
-import { LeafletSchoolType } from "../organism/SchoolPoints";
-import { LeafletStopType } from "../organism/StopPoints";
 import "./Point.css";
 
 export type PointIdentityType = {
@@ -23,7 +21,7 @@ export interface PointInformation extends PointIdentityType {
 }
 
 export type PointType = StopType | SchoolType;
-export type LeafletPointType = LeafletStopType | LeafletSchoolType;
+export type LeafletPointType = StopType | SchoolType;
 
 // TODO probably to delete
 export interface PointInterface extends PointInformation {
@@ -34,7 +32,7 @@ export interface PointInterface extends PointInformation {
 }
 
 export interface PointProps {
-  point: LeafletStopType | LeafletSchoolType;
+  point: StopType | SchoolType;
 
   map: L.Map;
   isBlinking?: boolean;

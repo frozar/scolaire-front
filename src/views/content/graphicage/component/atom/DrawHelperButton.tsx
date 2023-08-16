@@ -18,7 +18,7 @@ import {
 import DrawHelperDialog, {
   openDrawHelperDialog,
 } from "../molecule/DrawHelperDialog";
-import { LeafletSchoolType, getLeafletSchools } from "../organism/SchoolPoints";
+import { getLeafletSchools } from "../organism/SchoolPoints";
 import { getLeafletStops, leafletStopsFilter } from "../organism/StopPoints";
 import "./DrawHelperButton.css";
 
@@ -44,7 +44,7 @@ export function DrawHelperButton(props: DrawHelperButtonProps) {
     timeLimitSeconds: number,
     nbLimitSolution: number
   ) {
-    const schools: LeafletSchoolType[] =
+    const schools: SchoolType[] =
       props.schools != undefined
         ? JSON.parse(JSON.stringify(props.schools))
         : [];

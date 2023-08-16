@@ -1,5 +1,6 @@
 import L from "leaflet";
 import { useStateAction } from "../../../../../StateAction";
+import { SchoolType } from "../../../../../_entities/school.entity";
 import { renderAnimation } from "../../animation";
 import Point from "../atom/Point";
 import { deselectAllBusLines } from "../organism/BusLines";
@@ -9,7 +10,6 @@ import {
   linkMap,
   setBlinkingStops,
 } from "../organism/Points";
-import { LeafletSchoolType } from "../organism/SchoolPoints";
 import { getLeafletStops } from "../organism/StopPoints";
 
 const [
@@ -23,11 +23,11 @@ const [
 ] = useStateAction();
 
 export interface SchoolPointProps {
-  point: LeafletSchoolType;
+  point: SchoolType;
   map: L.Map;
 }
 
-const onClick = (point: LeafletSchoolType) => {
+const onClick = (point: SchoolType) => {
   // Highlight point stops
   for (const associated of point.associated) {
     let element;
@@ -73,7 +73,7 @@ const onClick = (point: LeafletSchoolType) => {
   }
 };
 
-const onMouseOver = (school: LeafletSchoolType) => {
+const onMouseOver = (school: SchoolType) => {
   setBlinkingStops(school.associated.map((stop) => stop.id));
 };
 

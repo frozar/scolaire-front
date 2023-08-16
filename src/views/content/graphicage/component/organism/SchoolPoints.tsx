@@ -15,11 +15,11 @@ export interface SchoolPointsProps {
   leafletMap: L.Map;
 
   // TODO Utilisé pour les test et les story, possibilité de s'en passer ? Mocker ?
-  items?: LeafletSchoolType[];
+  items?: SchoolType[];
 }
 
 export const [getLeafletSchools, setLeafletSchools] = createSignal<
-  LeafletSchoolType[]
+  SchoolType[]
 >([]);
 
 // TODO to delete and all reference
@@ -29,7 +29,7 @@ export const [etablissements, setEtablissements] = createSignal<
 
 export function SchoolPoints(props: SchoolPointsProps) {
   onMount(async () => {
-    let leafletSchools: LeafletSchoolType[];
+    let leafletSchools: SchoolType[];
     if (!props.items) {
       const schools: SchoolType[] = await SchoolService.getAll();
       leafletSchools = buildLeafletSchools(schools);
@@ -50,12 +50,11 @@ export function SchoolPoints(props: SchoolPointsProps) {
 
 export type LeafletSchoolType = {
   leafletId: number;
-  // TODO check utility
   selected: Accessor<boolean>;
   setSelected: Setter<boolean>;
 } & SchoolType;
 
-function buildLeafletSchools(schools: SchoolType[]): LeafletSchoolType[] {
+function buildLeafletSchools(schools: SchoolType[]): SchoolType[] {
   // TODO ununderstood lint error
   return schools.map((school) => {
     const [selected, setSelected] = createSignal(false);
@@ -68,7 +67,7 @@ function buildLeafletSchools(schools: SchoolType[]): LeafletSchoolType[] {
   });
 }
 
-function leafletSchoolsFilter(): LeafletSchoolType[] {
+function leafletSchoolsFilter(): SchoolType[] {
   const isValidate = getLineUnderConstruction().confirmSelection;
 
   let schools = getLeafletSchools();
