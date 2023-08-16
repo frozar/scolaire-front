@@ -1,7 +1,7 @@
 import L from "leaflet";
 import { Accessor, Setter, createSignal } from "solid-js";
 import { NatureEnum } from "../type";
-import { LeafletPointType } from "../views/content/graphicage/component/atom/Point";
+import { PointType } from "../views/content/graphicage/component/atom/Point";
 import { getSchools } from "../views/content/graphicage/component/organism/SchoolPoints";
 import { getStops } from "../views/content/graphicage/component/organism/StopPoints";
 import { EntityUtils, LocationPathDBType } from "./_utils.entity";
@@ -9,7 +9,7 @@ import { SchoolType } from "./school.entity";
 
 export class BusLineEntity {
   static build(dbData: BusLineDBType): BusLineType {
-    const filteredShools: LeafletPointType[] = getSchools().filter(
+    const filteredShools: PointType[] = getSchools().filter(
       (item) => item.id == dbData.school_id
     );
     if (filteredShools.length == 0) {
@@ -88,8 +88,7 @@ const formatBusLinePointType = (
   points: BusLinePointDBType[]
 ): BusLinePointType[] => {
   return points.map((dbPoint) => {
-    const associatedPoint: LeafletPointType =
-      getAssociatedBusLinePoint(dbPoint);
+    const associatedPoint: PointType = getAssociatedBusLinePoint(dbPoint);
     if (!associatedPoint) {
       //TODO Error log to improve
       console.log(
@@ -120,9 +119,7 @@ const formatBusLinePointDBType = (
   });
 };
 
-const getAssociatedBusLinePoint = (
-  dbPoint: BusLinePointDBType
-): LeafletPointType => {
+const getAssociatedBusLinePoint = (dbPoint: BusLinePointDBType): PointType => {
   if (dbPoint.school_id != 0) {
     return getSchools().filter((item) => item.id == dbPoint.school_id)[0];
   }

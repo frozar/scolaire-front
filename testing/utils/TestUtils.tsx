@@ -2,7 +2,6 @@ import { Component, createSignal } from "solid-js";
 import { StoryContext } from "storybook-solidjs";
 import { PointType } from "../../src/_entities/_utils.entity";
 import { NatureEnum } from "../../src/type";
-import { LeafletPointType } from "../../src/views/content/graphicage/component/atom/Point";
 import { SchoolPoint } from "../../src/views/content/graphicage/component/molecule/SchoolPoint";
 import { StopPoint } from "../../src/views/content/graphicage/component/molecule/StopPoint";
 import { initialiseMap } from "./mapWrapper";
@@ -17,7 +16,7 @@ export function createPoint(
     nature: NatureEnum;
   },
   quantityOffset = 0
-): LeafletPointType {
+): PointType {
   const [selected, setSelected] = createSignal<boolean>(false);
 
   return {

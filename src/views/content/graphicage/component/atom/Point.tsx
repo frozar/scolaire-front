@@ -21,7 +21,6 @@ export interface PointInformation extends PointIdentityType {
 }
 
 export type PointType = StopType | SchoolType;
-export type LeafletPointType = StopType | SchoolType;
 
 // TODO probably to delete
 export interface PointInterface extends PointInformation {
@@ -32,7 +31,7 @@ export interface PointInterface extends PointInformation {
 }
 
 export interface PointProps {
-  point: LeafletPointType;
+  point: PointType;
 
   map: L.Map;
   isBlinking?: boolean;
