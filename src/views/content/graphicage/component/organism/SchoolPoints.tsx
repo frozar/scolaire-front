@@ -1,5 +1,5 @@
 import L from "leaflet";
-import { Accessor, For, Setter, createSignal, onMount } from "solid-js";
+import { For, createSignal, onMount } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import { useStateGui } from "../../../../../StateGui";
 import { SchoolType } from "../../../../../_entities/school.entity";
@@ -47,12 +47,6 @@ export function SchoolPoints(props: SchoolPointsProps) {
     </For>
   );
 }
-
-export type LeafletSchoolType = {
-  leafletId: number;
-  selected: Accessor<boolean>;
-  setSelected: Setter<boolean>;
-} & SchoolType;
 
 function buildLeafletSchools(schools: SchoolType[]): SchoolType[] {
   // TODO ununderstood lint error

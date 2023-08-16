@@ -1,5 +1,5 @@
 import L from "leaflet";
-import { Accessor, For, Setter, createSignal, onMount } from "solid-js";
+import { For, createSignal, onMount } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import { useStateGui } from "../../../../../StateGui";
 import { StopType } from "../../../../../_entities/stop.entity";
@@ -65,12 +65,6 @@ export function StopPoints(props: StopPointsProps) {
     </For>
   );
 }
-
-export type LeafletStopType = {
-  leafletId: number;
-  selected: Accessor<boolean>;
-  setSelected: Setter<boolean>;
-} & StopType;
 
 // TODO to improve
 export function leafletStopsFilter(): StopType[] {
