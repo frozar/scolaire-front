@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { JSXElement, createContext, useContext } from "solid-js";
+import { JSXElement, createContext, createSignal, useContext } from "solid-js";
 import { createStore } from "solid-js/store";
 import { createHistory, record } from "solid-record";
 
@@ -7,8 +7,7 @@ import { setUserInformations } from "./signaux";
 import { LineUnderConstructionType, MessageTypeEnum, ModeEnum } from "./type";
 
 import { useStateGui } from "./StateGui";
-import { LeafletSchoolType } from "./views/content/graphicage/component/organism/SchoolPoints";
-import { LeafletStopType } from "./views/content/graphicage/component/organism/StopPoints";
+import { BusLinePointType } from "./_entities/bus-line.entity";
 
 const [, { setDisplayedInformationBoard }] = useStateGui();
 
@@ -23,14 +22,23 @@ type StateActionType = {
 };
 
 function defaultLineUnderConstruction() {
+  const [latLngs, setLatLngs] = createSignal<L.LatLng[]>([]);
+  const [color, setColor] = createSignal<string>("#000000");
+  const [selected, setSelected] = createSignal<boolean>(false);
   return {
-    idBusLine: -1,
-    color: "#000000",
-    stops: [],
-    etablissementSelected: [],
     confirmSelection: false,
-    currentIndex: 0,
     nextIndex: 0,
+    busLine: {
+      color: color,
+      setColor: setColor,
+      points: [],
+      schools: [],
+      currentIndex: 0,
+      latLngs: latLngs,
+      setLatLngs: setLatLngs,
+      selected: selected,
+      setSelected: setSelected,
+    },
   };
 }
 
@@ -52,26 +60,27 @@ const makeStateActionContext = () => {
     return state.altimetry.animation;
   }
 
-  function setPointsToLineUnderConstruction(
-    points: (LeafletStopType | LeafletSchoolType)[]
-  ) {
-    setState("lineUnderConstruction", "stops", points);
+  function setPointsToLineUnderConstruction(points: BusLinePointType[]) {
+    setState("lineUnderConstruction", "busLine", "points", points);
   }
 
-  function addPointToLineUnderConstruction(
-    point: LeafletStopType | LeafletSchoolType
-  ) {
-    setState("lineUnderConstruction", "stops", (line: PointIdentityType[]) => {
-      const res = [...line];
-      if (!_.isEqual(line.at(-1), point)) {
-        const indice = state.lineUnderConstruction.nextIndex;
-        res.splice(indice, 0, point);
+  function addPointToLineUnderConstruction(point: BusLinePointType) {
+    setState(
+      "lineUnderConstruction",
+      "busLine",
+      "points",
+      (line: BusLinePointType[]) => {
+        const res = [...line];
+        if (!_.isEqual(line.at(-1), point)) {
+          const indice = state.lineUnderConstruction.nextIndex;
+          res.splice(indice, 0, point);
+        }
+
+        setState("lineUnderConstruction", "nextIndex", res.length);
+
+        return res;
       }
-
-      setState("lineUnderConstruction", "nextIndex", res.length);
-
-      return res;
-    });
+    );
   }
 
   function setLineUnderConstructionNextIndex(indicepoints: number) {

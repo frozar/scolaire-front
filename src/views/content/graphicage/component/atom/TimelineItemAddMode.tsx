@@ -1,9 +1,9 @@
+import { BusLinePointType } from "../../../../../_entities/bus-line.entity";
+import { SchoolType } from "../../../../../_entities/school.entity";
 import { LineUnderConstructionType, NatureEnum } from "../../../../../type";
-import { LeafletSchoolType } from "../organism/SchoolPoints";
-import { LeafletStopType } from "../organism/StopPoints";
 import { TimelineRemovePointButton } from "./TimelineRemovePointButton";
 export type TimelineItemAddType = {
-  pointsResource: LeafletStopType | LeafletSchoolType;
+  pointsResource: BusLinePointType;
   indice: number;
   getter: () => LineUnderConstructionType;
   setter: (line: LineUnderConstructionType) => void;
@@ -19,15 +19,11 @@ export default function (props: TimelineItemAddType) {
         <div class="d-flex">
           <div class="me-4">
             {props.pointsResource.nature === NatureEnum.stop
-              ? "+ " +
-                stopQuantity(
-                  props.pointsResource,
-                  props.getter().etablissementSelected[0]
-                )
+              ? "+ " + props.pointsResource.quantity
               : " " +
                 SumQuantity(
-                  props.getter().stops,
-                  props.getter().etablissementSelected[0],
+                  props.getter().busLine.points,
+                  props.getter().busLine.schools[0],
                   props.indice - 1
                 ) *
                   -1}
@@ -37,14 +33,14 @@ export default function (props: TimelineItemAddType) {
             {props.pointsResource.nature === NatureEnum.stop
               ? " + " +
                 SumQuantity(
-                  props.getter().stops,
-                  props.getter().etablissementSelected[0],
+                  props.getter().busLine.points,
+                  props.getter().busLine.schools[0],
                   props.indice
                 )
               : " " +
                 SumQuantity(
-                  props.getter().stops,
-                  props.getter().etablissementSelected[0],
+                  props.getter().busLine.points,
+                  props.getter().busLine.schools[0],
                   props.indice
                 ) *
                   -1}
@@ -77,23 +73,20 @@ export default function (props: TimelineItemAddType) {
     </div>
   );
 }
-function stopQuantity(
-  pointsResource: LeafletStopType | LeafletSchoolType,
-  etablissementSelected: LeafletSchoolType
-) {
-  return pointsResource.associated.filter(
-    (school) => school.id === etablissementSelected.id
-  )[0].quantity;
-}
 
 function SumQuantity(
-  stops: (LeafletStopType | LeafletSchoolType)[],
-  selectedSchool: LeafletSchoolType,
+  stops: BusLinePointType[],
+  selectedSchool: SchoolType,
   indice: number
 ) {
+  const school = stops.filter(
+    (point) =>
+      point.id === selectedSchool.id && point.nature === NatureEnum.school
+  )[0];
+
   let subList = stops.slice(0, indice + 1);
 
-  let deb = subList.lastIndexOf(selectedSchool);
+  let deb = subList.lastIndexOf(school);
 
   deb = deb > -1 ? deb + 1 : 0;
 
@@ -102,7 +95,7 @@ function SumQuantity(
   let sum = 0;
 
   subList.map((point) => {
-    sum += stopQuantity(point, selectedSchool);
+    sum += point.quantity;
   });
 
   return sum;

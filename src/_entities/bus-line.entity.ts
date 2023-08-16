@@ -33,7 +33,7 @@ export class BusLineEntity {
     }
     return {
       id: dbData.id,
-      school: school,
+      schools: school,
       name: dbData.name,
       color: color,
       setColor: setColor,
@@ -49,7 +49,7 @@ export class BusLineEntity {
     return {
       color: line.color(),
       name: line.name,
-      school_id: line.school.id,
+      school_id: line.schools.id,
       bus_line_stop: formatBusLinePointDBType(line.points),
       polyline: EntityUtils.buildLocationPath(line.latLngs()),
     };
@@ -132,9 +132,9 @@ const getAssociatedBusLinePoint = (
 };
 
 export type BusLineType = {
-  id: number;
-  school: SchoolType;
-  name: string;
+  id?: number;
+  schools: SchoolType[];
+  name?: string;
   color: Accessor<string>;
   setColor: Setter<string>;
   points: BusLinePointType[];

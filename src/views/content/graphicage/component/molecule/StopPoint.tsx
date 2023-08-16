@@ -51,12 +51,18 @@ function onClick(point: LeafletStopType) {
     return;
   }
 
+  //TODO Modify when we use multiple schools
+  const associatedQuantity = point.associated.filter(
+    (associatedSchool) =>
+      associatedSchool.id === getLineUnderConstruction().busLine.schools[0].id
+  )[0].quantity;
+
   // TODO: when add line with an etablissement point the line destroy after next point click
   // Wait Richard/Hugo finish the line underconstruction
-  addPointToLineUnderConstruction(point);
+  addPointToLineUnderConstruction({ ...point, quantity: associatedQuantity });
 
   //TODO pourquoi cette condition ?
-  if (!(1 < getLineUnderConstruction().stops.length)) {
+  if (!(1 < getLineUnderConstruction().busLine.points.length)) {
     return;
   }
 }

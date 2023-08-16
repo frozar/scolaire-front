@@ -18,14 +18,10 @@ export default function (props: {
         class="timeline-items v-timeline--side-end v-timeline--vertical"
         style={{ "--v-timeline-line-thickness": "2px" }}
       >
-        <For each={props.line()?.stops}>
+        <For each={props.line()?.busLine.points}>
           {(stop, i) => (
             <>
-              <TimelineAddPointButton
-                indice={i()}
-                setter={props.setLine}
-                getter={props.line}
-              />
+              <TimelineAddPointButton indice={i()} />
 
               <TimelineItemAddMode
                 pointsResource={stop}

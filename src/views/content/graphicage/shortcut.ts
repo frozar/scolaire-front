@@ -78,11 +78,15 @@ function escapeHandler({ code }: KeyboardEvent) {
       return;
     }
 
-    resetLineUnderConstruction();
-    setModeRead();
+    quitModeAddLine();
     //TODO voir l'impact de la suppression
     // fetchBusLines();
   }
+}
+
+export function quitModeAddLine() {
+  resetLineUnderConstruction();
+  setModeRead();
 }
 
 function enterHandler({ code }: KeyboardEvent) {

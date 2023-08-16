@@ -9,11 +9,11 @@ export function TimelineRemovePointButton(props: {
   setter: (line: LineUnderConstructionType) => void;
 }) {
   const deletePoint = (id: number) => {
-    const stops = [...props.getter().stops];
+    const stops = [...props.getter().busLine.points];
     stops.splice(id, 1);
     props.setter({
       ...props.getter(),
-      stops: stops,
+      busLine: { ...props.getter().busLine, points: stops },
     });
   };
 

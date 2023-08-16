@@ -22,8 +22,9 @@ const [localLatLngs, setLocalLatLngs] = createSignal<L.LatLng[]>([]);
 const [localOpacity, setLocalOpacity] = createSignal<number>(1);
 
 export function BusLine(props: BusLineProps) {
+  // eslint-disable-next-line solid/reactivity
   const line = props.line;
-
+  // eslint-disable-next-line solid/reactivity
   createEffect(async () => {
     // TODO Put to BusLineEntity
     // const latlngs: L.LatLng[] = await OsrmService.getRoadPolyline(line.points);

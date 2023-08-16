@@ -74,8 +74,7 @@ function leafletSchoolsFilter(): LeafletSchoolType[] {
   let schools = getLeafletSchools();
 
   if (isInAddLineMode()) {
-    const etablissementsSelected =
-      getLineUnderConstruction().etablissementSelected;
+    const etablissementsSelected = getLineUnderConstruction().busLine.schools;
 
     if (isValidate && etablissementsSelected) {
       schools = schools.filter((value) =>

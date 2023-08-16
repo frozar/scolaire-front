@@ -1,6 +1,6 @@
 import { LineString } from "geojson";
 import L from "leaflet";
-import { createEffect, onCleanup } from "solid-js";
+import { createEffect, createSignal, onCleanup } from "solid-js";
 import { arrowsMap } from "../organism/BusLines";
 
 interface LineProps {
@@ -17,7 +17,9 @@ interface LineProps {
 }
 
 export default function (props: LineProps) {
-  let busLinePolyline: L.Polyline;
+  const [busLinePolyline, setbusLinePolyline] = createSignal<
+    L.Polyline<LineString>
+  >(buildLeafletPolyline("red", [], 0.8));
 
   createEffect(() => {
     let arrows: L.Marker[] = [];
@@ -27,7 +29,10 @@ export default function (props: LineProps) {
     const color = props.color;
     const opacity = props.opacity;
 
-    busLinePolyline = buildLeafletPolyline(color, latlngs, opacity);
+    setbusLinePolyline((previous) => {
+      previous.remove();
+      return buildLeafletPolyline(color, latlngs, opacity);
+    });
 
     if (props.lineId) {
       arrows = buildArrows(props.latlngs, color);
@@ -35,33 +40,38 @@ export default function (props: LineProps) {
 
     // Add events to Line & Arrows
     if (props.onMouseOver || props.onMouseOut || props.onClick) {
-      let leafletLineElems: (L.Polyline | L.Marker)[] = [busLinePolyline];
+      let leafletLineElems: (L.Polyline | L.Marker)[] = [busLinePolyline()];
       if (props.lineId) {
         leafletLineElems = [...leafletLineElems, ...arrows];
       }
 
       if (props.onMouseOver != undefined) {
         leafletLineElems.map((elem) =>
+          // eslint-disable-next-line solid/reactivity
           elem.on("mouseover", () =>
-            props.onMouseOver?.(busLinePolyline, arrows)
+            props.onMouseOver?.(busLinePolyline(), arrows)
           )
         );
       }
 
       if (props.onMouseOut != undefined) {
         leafletLineElems.map((elem) =>
-          elem.on("mouseout", () => props.onMouseOut?.(busLinePolyline, arrows))
+          // eslint-disable-next-line solid/reactivity
+          elem.on("mouseout", () =>
+            props.onMouseOut?.(busLinePolyline(), arrows)
+          )
         );
       }
       if (props.onClick) {
         leafletLineElems.map((elem) =>
+          // eslint-disable-next-line solid/reactivity
           elem.on("click", () => props.onClick?.())
         );
       }
     }
 
     // Add Line & Arrows to the map
-    busLinePolyline.addTo(leafletMap);
+    busLinePolyline().addTo(leafletMap);
     if (props.lineId) {
       for (const arrow of arrows) {
         arrow.addTo(leafletMap);
@@ -72,13 +82,13 @@ export default function (props: LineProps) {
   });
 
   onCleanup(() => {
-    busLinePolyline?.remove();
+    busLinePolyline()?.remove();
   });
 
   return <></>;
 }
 
-function buildLeafletPolyline(
+export function buildLeafletPolyline(
   color: string,
   latlngs: L.LatLng[],
   opacity = 1

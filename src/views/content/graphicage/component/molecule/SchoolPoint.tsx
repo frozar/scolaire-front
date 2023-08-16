@@ -46,8 +46,7 @@ const onClick = (point: LeafletSchoolType) => {
     return;
   }
 
-  const etablissementSelected =
-    getLineUnderConstruction().etablissementSelected;
+  const etablissementSelected = getLineUnderConstruction().busLine.schools;
 
   if (!getLineUnderConstruction().confirmSelection) {
     if (etablissementSelected?.find((p) => p.id === point.id)) {
@@ -60,16 +59,16 @@ const onClick = (point: LeafletSchoolType) => {
 
     setLineUnderConstruction({
       ...getLineUnderConstruction(),
-      etablissementSelected: [point],
+      busLine: { ...getLineUnderConstruction().busLine, schools: [point] },
     });
 
     return;
   }
 
-  addPointToLineUnderConstruction(point);
+  addPointToLineUnderConstruction({ ...point, quantity: 0 });
 
   //TODO pourquoi cette condition ?
-  if (!(1 < getLineUnderConstruction().stops.length)) {
+  if (!(1 < getLineUnderConstruction().busLine.points.length)) {
     return;
   }
 };

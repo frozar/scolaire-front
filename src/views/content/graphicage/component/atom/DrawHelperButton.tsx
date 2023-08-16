@@ -9,6 +9,8 @@ import {
 const [, { setPointsToLineUnderConstruction }] = useStateAction();
 
 import { FaSolidWandMagicSparkles } from "solid-icons/fa";
+import { BusLinePointType } from "../../../../../_entities/bus-line.entity";
+import { SchoolType } from "../../../../../_entities/school.entity";
 import {
   disableSpinningWheel,
   enableSpinningWheel,
@@ -17,15 +19,11 @@ import DrawHelperDialog, {
   openDrawHelperDialog,
 } from "../molecule/DrawHelperDialog";
 import { LeafletSchoolType, getLeafletSchools } from "../organism/SchoolPoints";
-import {
-  LeafletStopType,
-  getLeafletStops,
-  leafletStopsFilter,
-} from "../organism/StopPoints";
+import { getLeafletStops, leafletStopsFilter } from "../organism/StopPoints";
 import "./DrawHelperButton.css";
 
 interface DrawHelperButtonProps {
-  schools: LeafletSchoolType[] | undefined;
+  schools: SchoolType[] | undefined;
 }
 
 const [, { getLineUnderConstruction }] = useStateAction();
@@ -35,9 +33,8 @@ async function drawHelper(data: DrawHelperDataType) {
   const response = await GraphicageService.drawHelper(data);
   disableSpinningWheel();
   console.log("response", response);
-
-  const formattedResponse: (LeafletStopType | LeafletSchoolType)[] =
-    formatTimeLinePoints(response);
+  //TODO Resolve type problem and add quantity here
+  const formattedResponse: BusLinePointType[] = formatTimeLinePoints(response);
   setPointsToLineUnderConstruction(formattedResponse);
 }
 
@@ -53,7 +50,7 @@ export function DrawHelperButton(props: DrawHelperButtonProps) {
         : [];
 
     const selectedStops = JSON.parse(
-      JSON.stringify(getLineUnderConstruction().stops)
+      JSON.stringify(getLineUnderConstruction().busLine.points)
     );
 
     const stops = leafletStopsFilter();
@@ -78,7 +75,7 @@ export function DrawHelperButton(props: DrawHelperButtonProps) {
     <div class="graphicage-draw-helper-button">
       <DrawHelperDialog requestCircuit={requestCircuit} />
       <Show
-        when={getLineUnderConstruction().stops.length > 0}
+        when={getLineUnderConstruction().busLine.points.length > 0}
         fallback={<span>Création d'une ligne</span>}
       >
         <p>Création automatique d'une ligne</p>
@@ -91,13 +88,13 @@ export function DrawHelperButton(props: DrawHelperButtonProps) {
 }
 
 function formatTimeLinePoints(
-  data: { id: number; leafletId: number; nature: string }[]
-): (LeafletStopType | LeafletSchoolType)[] {
+  data: { id: number; leafletId: number; nature: string; quantity: number }[]
+): BusLinePointType[] {
   const points = [...getLeafletSchools(), ...getLeafletStops()];
   const output = [];
   for (const item of data) {
     const point = points.find((point) => item.leafletId == point.leafletId);
-    if (point) output.push(point);
+    if (point) output.push({ ...point, quantity: item.quantity ?? 0 });
   }
   return output;
 }

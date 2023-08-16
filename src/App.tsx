@@ -26,7 +26,10 @@ export default () => {
   createEffect(() => {
     const [, { getLineUnderConstruction }] = useStateAction();
 
-    if (isInAddLineMode() && 0 < getLineUnderConstruction().stops.length) {
+    if (
+      isInAddLineMode() &&
+      0 < getLineUnderConstruction().busLine.points.length
+    ) {
       if (
         refApp &&
         String(refApp.style) !== "cursor: url('/pencil.png'), auto;"
