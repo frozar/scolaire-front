@@ -1,7 +1,6 @@
-//TODO Have to Mock the fetch https://storybook-addon-mock.netlify.app - first have to setup the MapId
 import "leaflet/dist/leaflet.css";
 import { Meta, StoryObj } from "storybook-solidjs";
-import schools from "../../../../../../cypress/fixtures/schoolsUnformated.json";
+import schools from "../../../../../../cypress/fixtures/stopsFromDB.json";
 
 import {
   getDivFullId,

@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from "storybook-solidjs";
-import stops from "../../../../../../cypress/fixtures/stopsUnformated.json";
+import stops from "../../../../../../cypress/fixtures/stopsFromDB.json";
 import { initialiseMap } from "../../../../../../testing/utils/mapWrapper";
 
 import {
