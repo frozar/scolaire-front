@@ -18,13 +18,12 @@ export const [getSchools, setSchools] = createSignal<SchoolType[]>([]);
 
 export function SchoolPoints(props: SchoolPointsProps) {
   onMount(async () => {
-    const leafletSchools: SchoolType[] = await SchoolService.getAll();
-    const schools: SchoolType[] = buildLeafletSchools(leafletSchools);
+    const schools: SchoolType[] = buildSchools(await SchoolService.getAll());
     setSchools(schools);
   });
 
   return (
-    <For each={leafletSchoolsFilter()}>
+    <For each={schoolsFilter()}>
       {(point) => {
         return <SchoolPoint point={point} map={props.leafletMap} />;
       }}
@@ -32,8 +31,7 @@ export function SchoolPoints(props: SchoolPointsProps) {
   );
 }
 
-function buildLeafletSchools(schools: SchoolType[]): SchoolType[] {
-  // TODO ununderstood lint error
+function buildSchools(schools: SchoolType[]): SchoolType[] {
   return schools.map((school) => {
     const [selected, setSelected] = createSignal(false);
     return {
@@ -45,19 +43,17 @@ function buildLeafletSchools(schools: SchoolType[]): SchoolType[] {
   });
 }
 
-function leafletSchoolsFilter(): SchoolType[] {
+function schoolsFilter(): SchoolType[] {
   const isValidate = getLineUnderConstruction().confirmSelection;
 
   let schools = getSchools();
 
   if (isInAddLineMode()) {
-    const etablissementsSelected = getLineUnderConstruction().busLine.schools;
+    const selectedSchool = getLineUnderConstruction().busLine.schools;
 
-    if (isValidate && etablissementsSelected) {
+    if (isValidate && selectedSchool) {
       schools = schools.filter((value) =>
-        etablissementsSelected.some(
-          (etablissementInfo) => etablissementInfo.id === value.id
-        )
+        selectedSchool.some((schoolInfo) => schoolInfo.id === value.id)
       );
     }
   }

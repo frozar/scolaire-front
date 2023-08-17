@@ -8,11 +8,11 @@ import {
 } from "../../../../../../testing/utils/TestUtils";
 import { initialiseMap } from "../../../../../../testing/utils/mapWrapper";
 import { useStateGui } from "../../../../../StateGui";
-import { SchoolPoints } from "./SchoolPoints";
+import { SchoolPoints as SchoolPointsComponent } from "./SchoolPoints";
 const [, { getActiveMapId }] = useStateGui();
 
 const meta = {
-  component: SchoolPoints,
+  component: SchoolPointsComponent,
   tags: ["autodocs"],
   decorators: mapDecorators,
   parameters: {
@@ -29,15 +29,15 @@ const meta = {
       },
     ],
   },
-} satisfies Meta<typeof SchoolPoints>;
+} satisfies Meta<typeof SchoolPointsComponent>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const PointEtablissement: Story = {
+export const SchoolPoints: Story = {
   render: (props: null, options) => {
     const fullId = getDivFullId(options);
 
-    return <SchoolPoints leafletMap={initialiseMap(fullId)} />;
+    return <SchoolPointsComponent leafletMap={initialiseMap(fullId)} />;
   },
 };
