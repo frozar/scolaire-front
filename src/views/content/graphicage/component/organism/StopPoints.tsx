@@ -12,9 +12,6 @@ const [, { nextLeafletPointId }] = useStateGui();
 
 export interface StopPointsProps {
   leafletMap: L.Map;
-
-  // TODO Utilisé pour les test et les story, possibilité de s'en passer ? Mocker ?
-  items?: StopType[];
 }
 
 export const [getStops, setStops] = createSignal<StopType[]>([]);
@@ -24,14 +21,9 @@ export const [ramassages, setRamassages] = createSignal<PointInterface[]>([]);
 
 export function StopPoints(props: StopPointsProps) {
   onMount(async () => {
-    let leafletStops: StopType[];
-    if (!props.items) {
-      const stops: StopType[] = await StopService.getAll();
-      leafletStops = buildLeafletStops(stops);
-    } else {
-      leafletStops = props.items;
-    }
-    setStops(leafletStops);
+    const leafletStops: StopType[] = await StopService.getAll();
+    const stops = buildLeafletStops(leafletStops);
+    setStops(stops);
   });
 
   const quantities = () => {

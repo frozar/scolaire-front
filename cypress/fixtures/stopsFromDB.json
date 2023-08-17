@@ -1,0 +1,437 @@
+[
+  {
+    "id": 1,
+    "name": "RESSOURCE",
+    "location": {
+      "type": "point",
+      "data": {
+        "lng": 55.530883789062,
+        "lat": -20.929979324341
+      }
+    },
+    "associated": [
+      {
+        "quantity": 5,
+        "entity": {
+          "id": 2,
+          "name": "Ecole DE BOIS ROUGE"
+        }
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "TAKAMAKA",
+    "location": {
+      "type": "point",
+      "data": {
+        "lng": 55.529216766357,
+        "lat": -20.936395645142
+      }
+    },
+    "associated": [
+      {
+        "quantity": 6,
+        "entity": {
+          "id": 1,
+          "name": "Ecole DE BEAUMONT"
+        }
+      },
+      {
+        "quantity": 6,
+        "entity": {
+          "id": 2,
+          "name": "Ecole DE BOIS ROUGE"
+        }
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "TALIPOT",
+    "location": {
+      "type": "point",
+      "data": {
+        "lng": 55.533889770508,
+        "lat": -20.944295883179
+      }
+    },
+    "associated": [
+      {
+        "quantity": 5,
+        "entity": {
+          "id": 1,
+          "name": "Ecole DE BEAUMONT"
+        }
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "name": "VIERGE BLANCHE",
+    "location": {
+      "type": "point",
+      "data": {
+        "lng": 55.533256530762,
+        "lat": -20.933179855347
+      }
+    },
+    "associated": [
+      {
+        "quantity": 4,
+        "entity": {
+          "id": 1,
+          "name": "Ecole DE BEAUMONT"
+        }
+      },
+      {
+        "quantity": 23,
+        "entity": {
+          "id": 2,
+          "name": "Ecole DE BOIS ROUGE"
+        }
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "name": "ALLEES COCO",
+    "location": {
+      "type": "point",
+      "data": {
+        "lng": 55.531314849854,
+        "lat": -20.932321548462
+      }
+    },
+    "associated": [
+      {
+        "quantity": 1,
+        "entity": {
+          "id": 2,
+          "name": "Ecole DE BOIS ROUGE"
+        }
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "name": "BABA FIGUES",
+    "location": {
+      "type": "point",
+      "data": {
+        "lng": 55.537635803223,
+        "lat": -20.922954559326
+      }
+    },
+    "associated": [
+      {
+        "quantity": 12,
+        "entity": {
+          "id": 2,
+          "name": "Ecole DE BOIS ROUGE"
+        }
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "name": "BENJOINS",
+    "location": {
+      "type": "point",
+      "data": {
+        "lng": 55.529098510742,
+        "lat": -20.938499450684
+      }
+    },
+    "associated": [
+      {
+        "quantity": 4,
+        "entity": {
+          "id": 1,
+          "name": "Ecole DE BEAUMONT"
+        }
+      },
+      {
+        "quantity": 6,
+        "entity": {
+          "id": 2,
+          "name": "Ecole DE BOIS ROUGE"
+        }
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "name": "CANNELLE",
+    "location": {
+      "type": "point",
+      "data": {
+        "lng": 55.528949737549,
+        "lat": -20.93815612793
+      }
+    },
+    "associated": [
+      {
+        "quantity": 8,
+        "entity": {
+          "id": 1,
+          "name": "Ecole DE BEAUMONT"
+        }
+      },
+      {
+        "quantity": 7,
+        "entity": {
+          "id": 2,
+          "name": "Ecole DE BOIS ROUGE"
+        }
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "name": "CHEMIN DU BASSIN",
+    "location": {
+      "type": "point",
+      "data": {
+        "lng": 55.528800964355,
+        "lat": -20.939636230469
+      }
+    },
+    "associated": [
+      {
+        "quantity": 12,
+        "entity": {
+          "id": 1,
+          "name": "Ecole DE BEAUMONT"
+        }
+      },
+      {
+        "quantity": 3,
+        "entity": {
+          "id": 2,
+          "name": "Ecole DE BOIS ROUGE"
+        }
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "name": "CHEMIN HERMAN",
+    "location": {
+      "type": "point",
+      "data": {
+        "lng": 55.532291412354,
+        "lat": -20.948383331299
+      }
+    },
+    "associated": [
+      {
+        "quantity": 3,
+        "entity": {
+          "id": 1,
+          "name": "Ecole DE BEAUMONT"
+        }
+      }
+    ]
+  },
+  {
+    "id": 11,
+    "name": "CHEMIN PITON ROUGE",
+    "location": {
+      "type": "point",
+      "data": {
+        "lng": 55.522065019576,
+        "lat": -20.919910585688
+      }
+    },
+    "associated": [
+      {
+        "quantity": 1,
+        "entity": {
+          "id": 2,
+          "name": "Ecole DE BOIS ROUGE"
+        }
+      }
+    ]
+  },
+  {
+    "id": 12,
+    "name": "Chemin Robert",
+    "location": {
+      "type": "point",
+      "data": {
+        "lng": 55.536270141602,
+        "lat": -20.946746826172
+      }
+    },
+    "associated": [
+      {
+        "quantity": 1,
+        "entity": {
+          "id": 1,
+          "name": "Ecole DE BEAUMONT"
+        }
+      }
+    ]
+  },
+  {
+    "id": 13,
+    "name": "Colombo",
+    "location": {
+      "type": "point",
+      "data": {
+        "lng": 55.531410217285,
+        "lat": -20.936262130737
+      }
+    },
+    "associated": [
+      {
+        "quantity": 11,
+        "entity": {
+          "id": 2,
+          "name": "Ecole DE BOIS ROUGE"
+        }
+      }
+    ]
+  },
+  {
+    "id": 14,
+    "name": "CONTEUR",
+    "location": {
+      "type": "point",
+      "data": {
+        "lng": 55.540046691895,
+        "lat": -20.950031280518
+      }
+    },
+    "associated": [
+      {
+        "quantity": 6,
+        "entity": {
+          "id": 1,
+          "name": "Ecole DE BEAUMONT"
+        }
+      }
+    ]
+  },
+  {
+    "id": 15,
+    "name": "HUBERT GRONDIN",
+    "location": {
+      "type": "point",
+      "data": {
+        "lng": 55.530689239502,
+        "lat": -20.938243865967
+      }
+    },
+    "associated": [
+      {
+        "quantity": 3,
+        "entity": {
+          "id": 2,
+          "name": "Ecole DE BOIS ROUGE"
+        }
+      }
+    ]
+  },
+  {
+    "id": 16,
+    "name": "LAGRANGE",
+    "location": {
+      "type": "point",
+      "data": {
+        "lng": 55.531959533691,
+        "lat": -20.935047149658
+      }
+    },
+    "associated": [
+      {
+        "quantity": 5,
+        "entity": {
+          "id": 2,
+          "name": "Ecole DE BOIS ROUGE"
+        }
+      }
+    ]
+  },
+  {
+    "id": 17,
+    "name": "LES BEGONIAS",
+    "location": {
+      "type": "point",
+      "data": {
+        "lng": 55.53443145752,
+        "lat": -20.948934555054
+      }
+    },
+    "associated": [
+      {
+        "quantity": 2,
+        "entity": {
+          "id": 1,
+          "name": "Ecole DE BEAUMONT"
+        }
+      }
+    ]
+  },
+  {
+    "id": 18,
+    "name": "LES CAPUCINES",
+    "location": {
+      "type": "point",
+      "data": {
+        "lng": 55.566505000083,
+        "lat": -20.909284999892
+      }
+    },
+    "associated": [
+      {
+        "quantity": 2,
+        "entity": {
+          "id": 1,
+          "name": "Ecole DE BEAUMONT"
+        }
+      }
+    ]
+  },
+  {
+    "id": 19,
+    "name": "LES EGLANTINES",
+    "location": {
+      "type": "point",
+      "data": {
+        "lng": 55.53450012207,
+        "lat": -20.955791473389
+      }
+    },
+    "associated": [
+      {
+        "quantity": 1,
+        "entity": {
+          "id": 1,
+          "name": "Ecole DE BEAUMONT"
+        }
+      }
+    ]
+  },
+  {
+    "id": 20,
+    "name": "LES FANJANS",
+    "location": {
+      "type": "point",
+      "data": {
+        "lng": 55.528938293457,
+        "lat": -20.941434860229
+      }
+    },
+    "associated": [
+      {
+        "quantity": 5,
+        "entity": {
+          "id": 1,
+          "name": "Ecole DE BEAUMONT"
+        }
+      }
+    ]
+  }
+]
