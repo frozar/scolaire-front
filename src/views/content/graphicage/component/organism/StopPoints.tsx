@@ -6,8 +6,9 @@ import { StopType } from "../../../../../_entities/stop.entity";
 import { StopService } from "../../../../../_services/stop.service";
 import { PointInterface } from "../atom/Point";
 import { StopPoint } from "../molecule/StopPoint";
+import { currentStep, drawModeStep } from "./AddLineInformationBoardContent";
 
-const [, { getLineUnderConstruction, isInAddLineMode }] = useStateAction();
+const [, { getLineUnderConstruction }] = useStateAction();
 const [, { nextLeafletPointId }] = useStateGui();
 
 export interface StopPointsProps {
@@ -60,19 +61,18 @@ export function StopPoints(props: StopPointsProps) {
 // TODO to improve
 export function leafletStopsFilter(): StopType[] {
   const schools = getLineUnderConstruction().busLine.schools;
-  const isValidate = getLineUnderConstruction().confirmSelection;
 
-  let stops = getStops();
-
-  if (isInAddLineMode() && schools) {
-    stops = stops.filter((stop) =>
-      stop.associated.some((school) =>
-        schools.find((e) => e.id === school.id && isValidate)
-      )
-    );
+  const stops = getStops();
+  console.log(currentStep());
+  if (currentStep() === drawModeStep.start) {
+    return stops;
   }
-
-  return stops;
+  if (currentStep() === drawModeStep.schoolSelection) {
+    return [];
+  }
+  return stops.filter((stop) =>
+    stop.associated.some((school) => schools.find((e) => e.id === school.id))
+  );
 }
 
 function buildStops(stops: StopType[]): StopType[] {

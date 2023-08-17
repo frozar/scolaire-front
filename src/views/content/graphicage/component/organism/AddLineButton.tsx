@@ -8,6 +8,7 @@ import ButtonGraphicageRightMenu, {
 } from "../molecule/ButtonGraphicageRightMenu";
 
 import { FaSolidPlus } from "solid-icons/fa";
+import { drawModeStep, setCurrentStep } from "./AddLineInformationBoardContent";
 import { deselectAllPoints } from "./Points";
 
 const [, { setModeAddLine, isInAddLineMode, setModeRead }] = useStateAction();
@@ -22,11 +23,14 @@ export default function (props: AddLineButtonProps) {
   const handleClick = () => {
     if (isInAddLineMode()) {
       setModeRead();
+      setCurrentStep("start");
+
       //TODO voir l'impact de la suppression
       // fetchBusLines();
     } else {
       deselectAllPoints();
       setModeAddLine();
+      setCurrentStep(drawModeStep.schoolSelection);
       //TODO voir l'impact de la suppression
       // fetchBusLines();
       displayAddLineMessage();

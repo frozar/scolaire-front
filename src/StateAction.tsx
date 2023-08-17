@@ -21,7 +21,7 @@ type StateActionType = {
   mode: ModeEnum;
 };
 
-function defaultLineUnderConstruction() {
+export function defaultLineUnderConstruction() {
   const [latLngs, setLatLngs] = createSignal<L.LatLng[]>([]);
   const [color, setColor] = createSignal<string>("#000000");
   const [selected, setSelected] = createSignal<boolean>(false);
