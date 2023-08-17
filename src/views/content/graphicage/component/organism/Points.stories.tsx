@@ -1,6 +1,8 @@
-//TODO Have to Mock the fetch https://storybook-addon-mock.netlify.app - first have to setup the MapId
+// TODO Have to Mock the fetch https://storybook-addon-mock.netlify.app - first have to setup the MapId
+
 import "leaflet/dist/leaflet.css";
 import { Meta, StoryObj } from "storybook-solidjs";
+import stops from "../../../../../../cypress/fixtures/stopsUnformated.json";
 import schools from "../../../../../../cypress/fixtures/schoolsUnformated.json";
 
 import {
@@ -8,12 +10,12 @@ import {
   mapDecorators,
 } from "../../../../../../testing/utils/TestUtils";
 import { initialiseMap } from "../../../../../../testing/utils/mapWrapper";
+import { Points } from "./Points";
 import { useStateGui } from "../../../../../StateGui";
-import { SchoolPoints } from "./SchoolPoints";
 const [, { getActiveMapId }] = useStateGui();
 
 const meta = {
-  component: SchoolPoints,
+  component: Points,
   tags: ["autodocs"],
   decorators: mapDecorators,
   parameters: {
@@ -27,17 +29,27 @@ const meta = {
         status: 200,
         response: schools,
       },
+      {
+        url:
+          "https://x8ki-letl-twmt.n7.xano.io/api:DL_gv4vw/map/" +
+          getActiveMapId() +
+          "/stop",
+        method: "GET",
+        status: 200,
+        response: stops,
+      },
     ],
   },
-} satisfies Meta<typeof SchoolPoints>;
+} satisfies Meta<typeof Points>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const PointEtablissement: Story = {
+export const PointsStory: Story = {
   render: (props: null, options) => {
     const fullId = getDivFullId(options);
-
-    return <SchoolPoints leafletMap={initialiseMap(fullId)} />;
+    // TODO WARNING testMapId depends of local database.
+    // Mock data to fetch
+    return <Points leafletMap={initialiseMap(fullId)} />;
   },
 };
