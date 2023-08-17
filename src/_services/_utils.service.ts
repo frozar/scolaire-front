@@ -7,69 +7,56 @@ const [, { getActiveMapId }] = useStateGui();
 // TODO Need auth0 authentication
 // TODO Refacto error management
 export class ServiceUtils {
-  static async get(url: string, urlNeedMap = true) {
+  static async generic(url: string, options = {}) {
     let response: Response;
     try {
-      response = await fetch(buildXanoUrl(url, urlNeedMap));
-    } catch (error) {
-      connexionError();
-      return false;
-    }
-
-    if (!(await manageStatusCode(response))) return;
-    return await response.json();
-  }
-
-  static async post(url: string, data: object, urlNeedMap = true) {
-    let response: Response;
-    try {
-      response = await fetch(buildXanoUrl(url, urlNeedMap), {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-    } catch (error) {
-      connexionError();
-      return false;
-    }
-
-    if (!(await manageStatusCode(response))) return;
-    return await response.json();
-  }
-
-  static async patch(url: string, data: object, urlNeedMap = true) {
-    let response: Response;
-    try {
-      response = await fetch(buildXanoUrl(url, urlNeedMap), {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-    } catch (error) {
-      connexionError();
-      return false;
-    }
-
-    if (!(await manageStatusCode(response))) return;
-    return await response.json();
-  }
-
-  static async delete(url: string, urlNeedMap = true) {
-    let response: Response;
-    try {
-      response = await fetch(buildXanoUrl(url, urlNeedMap), {
-        method: "DELETE",
-      });
+      response = await fetch(url, options);
     } catch (error) {
       connexionError();
       return false;
     }
 
     if (!(await manageStatusCode(response))) return false;
+    return await response.json();
+  }
+
+  static async get(url: string, urlNeedMap = true) {
+    const response = await ServiceUtils.generic(buildXanoUrl(url, urlNeedMap));
+    if (!response) return;
+    return await response;
+  }
+
+  static async post(url: string, data: object, urlNeedMap = true) {
+    const response = await ServiceUtils.generic(buildXanoUrl(url, urlNeedMap), {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    if (!response) return;
+    return await response.json();
+  }
+
+  static async patch(url: string, data: object, urlNeedMap = true) {
+    const response = await ServiceUtils.generic(buildXanoUrl(url, urlNeedMap), {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response) return false;
+    return await response.json();
+  }
+
+  static async delete(url: string, urlNeedMap = true) {
+    const response = await ServiceUtils.generic(buildXanoUrl(url, urlNeedMap), {
+      method: "DELETE",
+    });
+
+    if (!response) return false;
     return await response.json();
   }
 }
