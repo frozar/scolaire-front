@@ -8,6 +8,7 @@ import { quitModeAddLine } from "../../shortcut";
 import { DrawHelperButton } from "../atom/DrawHelperButton";
 import SelectedSchool from "../atom/SelectedSchool";
 import "./AddLineInformationBoardContent.css";
+import AddLineInformationBoardContentFooter from "./AddLineInformationBoardContentFooter";
 
 const [
   ,
@@ -69,22 +70,10 @@ export default function () {
         </div>
       </Show>
       {/* TODO utiliser un système de stepper (nextDrawStep par exemple + check de l'étape actuelle (incrément d'un nombre ou d'étape avec Enum [préférence Enum]))  plutôt que de checker "l'état" de notre donnée */}
-      <Show when={getLineUnderConstruction().busLine.points.length > 1}>
-        <div class="">
-          <Button
-            onClick={quitModeAddLine}
-            label={"Annuler"}
-            variant="primary"
-            isDisabled={false}
-          />
-          <Button
-            onClick={addLineUnderConstructionPolylineWithOsrm}
-            label={"Valider"}
-            variant="primary"
-            isDisabled={false}
-          />
-        </div>
-      </Show>
+      <AddLineInformationBoardContentFooter
+        nextStep={addLineUnderConstructionPolylineWithOsrm}
+        previousStep={quitModeAddLine}
+      />
     </div>
   );
 }

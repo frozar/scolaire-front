@@ -1,6 +1,8 @@
 .information-content {
   @apply flex flex-col;
   align-items: center;
+  width: -webkit-fill-available;
+  height: 80vh;
 }
 
 /* width */

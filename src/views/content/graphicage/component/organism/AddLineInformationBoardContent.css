@@ -8,6 +8,8 @@
   @apply flex flex-col ml-4;
   align-items: center;
   width: -webkit-fill-available;
+  height: -webkit-fill-available;
+  justify-content:space-between;
 }
 
 .bus-line-information-board-content {
