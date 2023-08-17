@@ -72,19 +72,16 @@ export const connexionError = () => {
 
 // TODO reformat this (copy/past from point.service.ts)
 export const manageStatusCode = async (response: Response) => {
-  if (response.status == 429) {
-    const json = await response.json();
+  const error: { message?: string } = {};
 
-    addNewUserInformation({
-      displayed: true,
-      level: MessageLevelEnum.error,
-      type: MessageTypeEnum.global,
-      content:
+  switch (response.status) {
+    case 429:
+      const json = await response.json();
+
+      error.message =
         json.detail ??
-        "Trop de requêtes effectuer, veuillez essayer ultérieurement",
-    });
-
-    return false;
+        "Trop de requêtes effectuer, veuillez essayer ultérieurement";
+      break;
   }
 
   if (response.status !== 200) {
@@ -97,7 +94,7 @@ export const manageStatusCode = async (response: Response) => {
       displayed: true,
       level: MessageLevelEnum.error,
       type: MessageTypeEnum.global,
-      content: message,
+      content: error.message ?? message,
     });
 
     return false;
