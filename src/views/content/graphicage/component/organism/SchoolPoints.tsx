@@ -12,23 +12,15 @@ const [, { getLineUnderConstruction, isInAddLineMode }] = useStateAction();
 
 export interface SchoolPointsProps {
   leafletMap: L.Map;
-
-  // TODO Utilisé pour les test et les story, possibilité de s'en passer ? Mocker ?
-  items?: SchoolType[];
 }
 
 export const [getSchools, setSchools] = createSignal<SchoolType[]>([]);
 
 export function SchoolPoints(props: SchoolPointsProps) {
   onMount(async () => {
-    let leafletSchools: SchoolType[];
-    if (!props.items) {
-      const schools: SchoolType[] = await SchoolService.getAll();
-      leafletSchools = buildLeafletSchools(schools);
-    } else {
-      leafletSchools = props.items;
-    }
-    setSchools(leafletSchools);
+    const leafletSchools: SchoolType[] = await SchoolService.getAll();
+    const schools: SchoolType[] = buildLeafletSchools(leafletSchools);
+    setSchools(schools);
   });
 
   return (

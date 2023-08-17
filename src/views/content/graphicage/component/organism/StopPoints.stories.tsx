@@ -1,5 +1,3 @@
-// TODO Have to Mock the fetch https://storybook-addon-mock.netlify.app - first have to setup the MapId
-
 import { Meta, StoryObj } from "storybook-solidjs";
 import stops from "../../../../../../cypress/fixtures/stopsUnformated.json";
 import { initialiseMap } from "../../../../../../testing/utils/mapWrapper";
