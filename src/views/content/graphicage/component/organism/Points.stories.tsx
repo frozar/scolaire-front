@@ -20,7 +20,8 @@ const meta = {
     mockData: [
       {
         url:
-          "https://x8ki-letl-twmt.n7.xano.io/api:DL_gv4vw/map/" +
+          import.meta.env.VITE_XANO_URL +
+          "/map/" +
           getActiveMapId() +
           "/school",
         method: "GET",
@@ -29,9 +30,7 @@ const meta = {
       },
       {
         url:
-          "https://x8ki-letl-twmt.n7.xano.io/api:DL_gv4vw/map/" +
-          getActiveMapId() +
-          "/stop",
+          import.meta.env.VITE_XANO_URL + "/map/" + getActiveMapId() + "/stop",
         method: "GET",
         status: 200,
         response: stops,

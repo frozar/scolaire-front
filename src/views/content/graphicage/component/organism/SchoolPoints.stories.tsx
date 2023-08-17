@@ -1,6 +1,6 @@
 import "leaflet/dist/leaflet.css";
 import { Meta, StoryObj } from "storybook-solidjs";
-import schools from "../../../../../../cypress/fixtures/stopsFromDB.json";
+import schools from "../../../../../../cypress/fixtures/schoolsFromDB.json";
 
 import {
   getDivFullId,
@@ -19,7 +19,8 @@ const meta = {
     mockData: [
       {
         url:
-          "https://x8ki-letl-twmt.n7.xano.io/api:DL_gv4vw/map/" +
+          import.meta.env.VITE_XANO_URL +
+          "/map/" +
           getActiveMapId() +
           "/school",
         method: "GET",
