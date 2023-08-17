@@ -21,43 +21,33 @@ export class ServiceUtils {
   }
 
   static async get(url: string, urlNeedMap = true) {
-    const response = await ServiceUtils.generic(buildXanoUrl(url, urlNeedMap));
-    if (!response) return;
-    return await response;
+    return await this.generic(buildXanoUrl(url, urlNeedMap));
   }
 
   static async post(url: string, data: object, urlNeedMap = true) {
-    const response = await ServiceUtils.generic(buildXanoUrl(url, urlNeedMap), {
+    return await this.generic(buildXanoUrl(url, urlNeedMap), {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
     });
-    if (!response) return;
-    return await response.json();
   }
 
   static async patch(url: string, data: object, urlNeedMap = true) {
-    const response = await ServiceUtils.generic(buildXanoUrl(url, urlNeedMap), {
+    return await this.generic(buildXanoUrl(url, urlNeedMap), {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
     });
-
-    if (!response) return false;
-    return await response.json();
   }
 
   static async delete(url: string, urlNeedMap = true) {
-    const response = await ServiceUtils.generic(buildXanoUrl(url, urlNeedMap), {
+    return await this.generic(buildXanoUrl(url, urlNeedMap), {
       method: "DELETE",
     });
-
-    if (!response) return false;
-    return await response.json();
   }
 }
 
