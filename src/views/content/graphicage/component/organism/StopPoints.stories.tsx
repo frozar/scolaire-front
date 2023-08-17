@@ -6,11 +6,11 @@ import {
   getDivFullId,
   mapDecorators,
 } from "../../../../../../testing/utils/TestUtils";
-import { StopPoints } from "./StopPoints";
+import { StopPoints as StopPointsComponent } from "./StopPoints";
 import { useStateGui } from "../../../../../StateGui";
 const [, { getActiveMapId }] = useStateGui();
 const meta = {
-  component: StopPoints,
+  component: StopPointsComponent,
   tags: ["autodocs"],
   decorators: mapDecorators,
   parameters: {
@@ -24,18 +24,18 @@ const meta = {
       },
     ],
   },
-} satisfies Meta<typeof StopPoints>;
+} satisfies Meta<typeof StopPointsComponent>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const RamassagePoints: Story = {
+export const StopPoints: Story = {
   render: (props: null, options) => {
     const fullId = getDivFullId(options);
 
     return (
       <div id="map-container" style={{ width: "100%", height: "500px" }}>
-        <StopPoints leafletMap={initialiseMap(fullId)} />
+        <StopPointsComponent leafletMap={initialiseMap(fullId)} />
       </div>
     );
   },

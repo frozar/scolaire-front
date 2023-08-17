@@ -21,8 +21,7 @@ export const [ramassages, setRamassages] = createSignal<PointInterface[]>([]);
 
 export function StopPoints(props: StopPointsProps) {
   onMount(async () => {
-    const leafletStops: StopType[] = await StopService.getAll();
-    const stops = buildLeafletStops(leafletStops);
+    const stops: StopType[] = buildStops(await StopService.getAll());
     setStops(stops);
   });
 
@@ -60,15 +59,15 @@ export function StopPoints(props: StopPointsProps) {
 
 // TODO to improve
 export function leafletStopsFilter(): StopType[] {
-  const etablissements = getLineUnderConstruction().busLine.schools;
+  const schools = getLineUnderConstruction().busLine.schools;
   const isValidate = getLineUnderConstruction().confirmSelection;
 
   let stops = getStops();
 
-  if (isInAddLineMode() && etablissements) {
+  if (isInAddLineMode() && schools) {
     stops = stops.filter((stop) =>
       stop.associated.some((school) =>
-        etablissements.find((e) => e.id === school.id && isValidate)
+        schools.find((e) => e.id === school.id && isValidate)
       )
     );
   }
@@ -76,7 +75,7 @@ export function leafletStopsFilter(): StopType[] {
   return stops;
 }
 
-function buildLeafletStops(stops: StopType[]): StopType[] {
+function buildStops(stops: StopType[]): StopType[] {
   // TODO ununderstood lint error
   return stops.map((stop) => {
     const [selected, setSelected] = createSignal(false);

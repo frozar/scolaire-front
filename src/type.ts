@@ -3,17 +3,6 @@ import { BusLineType } from "./_entities/bus-line.entity";
 import { StopType } from "./_entities/stop.entity";
 import { PointType } from "./views/content/graphicage/component/atom/Point";
 
-export type EleveVersEtablissementType = {
-  id: number;
-  quantity: number;
-  ramassage_id: number;
-  etablissement_id: number;
-  etablissement_id_point: number;
-  ramassage_id_point: number;
-  etablissement: string;
-  ramassage: string;
-};
-
 export enum NatureEnum {
   //TODO to delete and dependence
   ramassage = "Ramassage",
