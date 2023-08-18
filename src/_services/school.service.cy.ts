@@ -30,7 +30,7 @@ describe("SchoolService", () => {
     // expect(spySchoolEntityBuild).to.be.called;
   });
 
-  it("Create, spy on: generic, buildXanoUrl & get from ServiceUtils, build & dbFormat from SchoolEntity", () => {
+  it("Create, spy on: generic, buildXanoUrl & post from ServiceUtils, build & dbFormat from SchoolEntity", () => {
     const spyBuildXanoUrl = cy.spy(ServiceUtils, "buildXanoUrl");
     const spyGeneric = cy.spy(ServiceUtils, "generic");
     const spyGet = cy.spy(ServiceUtils, "post");
@@ -55,7 +55,7 @@ describe("SchoolService", () => {
     // expect(spySchoolEntityBuild).to.be.called;
   });
 
-  it("Update, spy on: generic, buildXanoUrl & get from ServiceUtils, build & dbFormat from SchoolEntity", () => {
+  it("Update, spy on: generic, buildXanoUrl & patch from ServiceUtils, build & dbFormat from SchoolEntity", () => {
     const spyBuildXanoUrl = cy.spy(ServiceUtils, "buildXanoUrl");
     const spyGeneric = cy.spy(ServiceUtils, "generic");
     const spyGet = cy.spy(ServiceUtils, "patch");
@@ -81,7 +81,7 @@ describe("SchoolService", () => {
     // expect(spySchoolEntityBuild).to.be.called;
   });
 
-  it("Update, spy on: generic, buildXanoUrl & get from ServiceUtils, build & dbFormat from SchoolEntity", () => {
+  it("Delete, spy on: generic, buildXanoUrl & delete from ServiceUtils", () => {
     const spyBuildXanoUrl = cy.spy(ServiceUtils, "buildXanoUrl");
     const spyGeneric = cy.spy(ServiceUtils, "generic");
     const spyGet = cy.spy(ServiceUtils, "delete");
