@@ -13,7 +13,9 @@ describe("BusLineService", () => {
   const [latLngs, setLatLngs] = createSignal<L.LatLng[]>([]);
   const [color, setColor] = createSignal<string>("#0000");
 
-  // TODO: check why bus line is not catch
+  // TODO: check why BusLineEntity.build is not catch with cy.spy
+  // ERROR: AssertionError: expected build to have been called at least once, but it was never called
+  // TESTED: in bus-line.service, place BusLineEntity.build in var and return the var | same result
 
   it("GetAll, spy on: generic, buildXanoUrl & get from ServiceUtils, build from BusLineEntity", () => {
     // Spy on: buildXanoUrl, generic, post, build

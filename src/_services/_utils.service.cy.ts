@@ -28,7 +28,6 @@ describe("ServiceUtils", () => {
 
     // Request check
     cy.wait("@getData").then((interception) => {
-      cy.task("log", interception.response);
       expect(interception.request.method).to.eq("GET");
       expect(interception.response?.statusCode).to.eq(200);
       expect(interception.request.url).to.eq(interceptUrl);
@@ -90,6 +89,11 @@ describe("ServiceUtils", () => {
     cy.wait("@getData").then((interception) => {
       expect(interception.request.method).to.eq("DELETE");
       // TODO: check why 404 is returned
+      // ERROR: AssertionError: expected 404 to equal 200
+      //        + expected - actual
+      //        -404
+      //        +200
+      // TESTED: use simple fetch, nothing same result
       // expect(interception.response?.statusCode).to.eq(200);
       expect(interception.request.url).to.eq(interceptUrl);
     });
