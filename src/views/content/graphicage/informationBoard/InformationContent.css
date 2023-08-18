@@ -1,6 +1,8 @@
 .information-content {
   @apply flex flex-col;
   align-items: center;
+  width: 100%;
+  height: 80%;
 }
 
 /* width */

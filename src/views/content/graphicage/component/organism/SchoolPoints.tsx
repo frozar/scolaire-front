@@ -5,6 +5,7 @@ import { useStateGui } from "../../../../../StateGui";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { SchoolService } from "../../../../../_services/school.service";
 import { SchoolPoint } from "../molecule/SchoolPoint";
+import { currentStep, drawModeStep } from "./AddLineInformationBoardContent";
 
 const [, { nextLeafletPointId }] = useStateGui();
 
@@ -43,19 +44,21 @@ function buildSchools(schools: SchoolType[]): SchoolType[] {
   });
 }
 
+//TODO Delete and replace with displayedSchool signal
 function schoolsFilter(): SchoolType[] {
-  const isValidate = getLineUnderConstruction().confirmSelection;
-
   let schools = getSchools();
 
   if (isInAddLineMode()) {
-    const selectedSchool = getLineUnderConstruction().busLine.schools;
-
-    if (isValidate && selectedSchool) {
-      schools = schools.filter((value) =>
-        selectedSchool.some((schoolInfo) => schoolInfo.id === value.id)
-      );
+    const schoolsSelected = getLineUnderConstruction().busLine.schools;
+    if (currentStep() === drawModeStep.schoolSelection) {
+      return schools;
     }
+
+    schools = schools.filter((value) =>
+      schoolsSelected.some(
+        (etablissementInfo) => etablissementInfo.id === value.id
+      )
+    );
   }
   return schools;
 }

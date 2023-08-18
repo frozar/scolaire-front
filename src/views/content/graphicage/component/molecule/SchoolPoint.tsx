@@ -3,6 +3,10 @@ import { useStateAction } from "../../../../../StateAction";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { renderAnimation } from "../../animation";
 import Point from "../atom/Point";
+import {
+  currentStep,
+  drawModeStep,
+} from "../organism/AddLineInformationBoardContent";
 import { deselectAllBusLines } from "../organism/BusLines";
 import {
   blinkingSchools,
@@ -46,7 +50,7 @@ const onClick = (point: SchoolType) => {
 
   const etablissementSelected = getLineUnderConstruction().busLine.schools;
 
-  if (!getLineUnderConstruction().confirmSelection) {
+  if (currentStep() === drawModeStep.schoolSelection) {
     if (etablissementSelected?.find((p) => p.id === point.id)) {
       return;
     }

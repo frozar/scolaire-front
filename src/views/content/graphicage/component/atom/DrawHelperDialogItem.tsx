@@ -16,7 +16,7 @@ export default function (props: DrawHelperDialogItemType) {
     <div>
       <div class="sm:flex sm:items-start justify-center">
         <div class="mt-7 mr-2 max-w-xl text-sm text-gray-900 w-1/3">
-          <p class="text-right">{props.text} :</p>
+          <p class="text-right">{props.text} </p>
         </div>
         <form class="mt-5 sm:flex sm:items-center">
           <div class="w-full sm:max-w-xs">

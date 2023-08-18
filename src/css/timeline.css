@@ -6,6 +6,9 @@
 .timeline-items {
   @apply v-timeline v-timeline--align-start v-timeline--justify-auto;
 }
+.timeline-tools {
+  height: 5vh;
+}
 
 .timeline {
   --v-timeline-line-thickness: 2px;
