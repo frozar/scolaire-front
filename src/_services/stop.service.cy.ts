@@ -7,7 +7,7 @@ import { StopService } from "./stop.service";
 
 const [, { setActiveMapId }] = useStateGui();
 
-describe("SchoolService", () => {
+describe("StopService", () => {
   setActiveMapId(1);
   const [selected, setSelected] = createSignal<boolean>();
   // To bypass select warning eslint
@@ -31,7 +31,7 @@ describe("SchoolService", () => {
     // expect(spyStopEntityBuild).to.be.called;
   });
 
-  it("Create, spy on: generic, buildXanoUrl & get from ServiceUtils, build & dbFormat from StopEntity", () => {
+  it("Create, spy on: generic, buildXanoUrl & post from ServiceUtils, build & dbFormat from StopEntity", () => {
     const spyBuildXanoUrl = cy.spy(ServiceUtils, "buildXanoUrl");
     const spyGeneric = cy.spy(ServiceUtils, "generic");
     const spyGet = cy.spy(ServiceUtils, "post");
@@ -56,7 +56,7 @@ describe("SchoolService", () => {
     // expect(spyStopEntityBuild).to.be.called;
   });
 
-  it("Update, spy on: generic, buildXanoUrl & get from ServiceUtils, build & dbFormat from StopEntity", () => {
+  it("Update, spy on: generic, buildXanoUrl & patch from ServiceUtils, build & dbFormat from StopEntity", () => {
     const spyBuildXanoUrl = cy.spy(ServiceUtils, "buildXanoUrl");
     const spyGeneric = cy.spy(ServiceUtils, "generic");
     const spyGet = cy.spy(ServiceUtils, "patch");
@@ -82,7 +82,7 @@ describe("SchoolService", () => {
     // expect(spyStopEntityBuild).to.be.called;
   });
 
-  it("Update, spy on: generic, buildXanoUrl & get from ServiceUtils, build & dbFormat from StopEntity", () => {
+  it("Delete, spy on: generic, buildXanoUrl & delete from ServiceUtils", () => {
     const spyBuildXanoUrl = cy.spy(ServiceUtils, "buildXanoUrl");
     const spyGeneric = cy.spy(ServiceUtils, "generic");
     const spyGet = cy.spy(ServiceUtils, "delete");
