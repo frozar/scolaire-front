@@ -8,6 +8,10 @@ import {
 import { setRemoveConfirmation } from "../../../../../signaux";
 import { setPickerColor } from "../atom/ColorPicker";
 import Line from "../atom/Line";
+import {
+  currentStep,
+  drawModeStep,
+} from "../organism/AddLineInformationBoardContent";
 import { deselectAllBusLines } from "../organism/BusLines";
 import { deselectAllPoints } from "../organism/Points";
 
@@ -40,7 +44,11 @@ export function BusLine(props: BusLineProps) {
 
   const onMouseOver = (polyline: L.Polyline, arrows: L.Marker[]) => {
     // if (!line.selected() && (isInRemoveLineMode() || isInReadMode())) {
-    if (isInRemoveLineMode() || isInReadMode()) {
+    if (
+      isInRemoveLineMode() ||
+      isInReadMode() ||
+      currentStep() === drawModeStep.polylineEdition
+    ) {
       buslineSetBoldStyle(polyline, arrows, "white");
     }
   };

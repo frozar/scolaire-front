@@ -1,6 +1,11 @@
 import { LineString } from "geojson";
-import L from "leaflet";
+import L, { LeafletMouseEvent } from "leaflet";
 import { createEffect, onCleanup } from "solid-js";
+import { getLeafletMap } from "../../../../../signaux";
+import {
+  currentStep,
+  drawModeStep,
+} from "../organism/AddLineInformationBoardContent";
 import { arrowsMap } from "../organism/BusLines";
 
 interface LineProps {
@@ -33,17 +38,18 @@ export default function (props: LineProps) {
     }
 
     busLinePolyline = buildLeafletPolyline(color, latlngs, opacity);
-
-    if (props.lineId) {
+    if (currentStep() === drawModeStep.polylineEdition) {
+      arrows = buildUpdatePoint(props.latlngs, "white");
+    } else {
       arrows = buildArrows(props.latlngs, color);
     }
+    console.log(arrows);
 
     // Add events to Line & Arrows
     if (props.onMouseOver || props.onMouseOut || props.onClick) {
       let leafletLineElems: (L.Polyline | L.Marker)[] = [busLinePolyline];
-      if (props.lineId) {
-        leafletLineElems = [...leafletLineElems, ...arrows];
-      }
+
+      leafletLineElems = [...leafletLineElems, ...arrows];
 
       if (props.onMouseOver != undefined) {
         leafletLineElems.map((elem) =>
@@ -70,16 +76,16 @@ export default function (props: LineProps) {
 
     // Add Line & Arrows to the map
     busLinePolyline.addTo(leafletMap);
-    if (props.lineId) {
-      for (const arrow of arrows) {
-        arrow.addTo(leafletMap);
-      }
+    for (const arrow of arrows) {
+      arrow.addTo(leafletMap);
       // Map use to desable the arrows on drawMode
-      arrowsMap.set(props.lineId, arrows);
+      arrowsMap.set(props.lineId ?? -1, arrows);
     }
   });
 
   onCleanup(() => {
+    console.log("je clean");
+
     if (busLinePolyline) {
       props.leafletMap.removeLayer(busLinePolyline);
       busLinePolyline.remove();
@@ -127,13 +133,58 @@ function buildArrows(latLngs: L.LatLng[], color: string): L.Marker[] {
       html: getArrowSVG(color, arrowAngle),
     });
 
-    arrows.push(
-      new L.Marker([latArrow, lngArrow], {
-        icon: arrowIcon,
-        pane: "overlayPane",
-        keyboard: false,
-      })
-    );
+    const arrow = new L.Marker([latArrow, lngArrow], {
+      icon: arrowIcon,
+      pane: "overlayPane",
+      keyboard: false,
+    });
+
+    arrows.push(arrow);
+  }
+  return arrows;
+}
+
+function buildUpdatePoint(latLngs: L.LatLng[], color: string): L.Marker[] {
+  const increment = 30;
+  const iStart = 2;
+  const iLast = 2;
+
+  const arrows: L.Marker[] = [];
+
+  for (let i = iStart; i < latLngs.length - iLast; i = i + increment) {
+    // on road routes
+    const latArrow = latLngs[i].lat;
+    const lngArrow = latLngs[i].lng;
+
+    const arrowIcon = L.divIcon({
+      className: "bus-line-drag",
+      html: getUpdateSVG(color),
+    });
+
+    const arrow = new L.Marker([latArrow, lngArrow], {
+      icon: arrowIcon,
+      pane: "overlayPane",
+      keyboard: false,
+    });
+    // getLeafletMap()?.on("mousemove", function (e: LeafletMouseEvent) {
+    //   console.log("Lat, Lon : " + e.latlng.lat + ", " + e.latlng.lng);
+    // });
+    //TODO resolve MapLeaflet responsivity
+    arrow.addEventListener("click", () => {
+      console.log("test ", i);
+      getLeafletMap()?.on("mousemove", function (e: LeafletMouseEvent) {
+        console.log("Lat, Lon : " + e.latlng.lat + ", " + e.latlng.lng);
+        arrow.setLatLng(L.latLng(e.latlng.lat, e.latlng.lng));
+
+        latLngs[i].lat = e.latlng.lat;
+        latLngs[i].lng = e.latlng.lng;
+      });
+      // getLeafletMap().on("mouseover", function (e: LeafletMouseEvent) {
+      //   +      console.log("Lat, Lon : " + e.latlng.lat + ", " + e.latlng.lng);}
+      // arrow.setLatLng(L.latLng())
+      // latLngs[i].lat = 10;
+    });
+    arrows.push(arrow);
   }
   return arrows;
 }
@@ -147,5 +198,14 @@ function getArrowSVG(color: string, angle: number) {
     "transform-origin='12 12' transform='scale(2,2) rotate(" +
     angle +
     ")'></path></svg>"
+  );
+}
+
+export function getUpdateSVG(color: string) {
+  return (
+    "<svg fill=" +
+    color +
+    " stroke-width='0' xmlns='http://www.w3.org/2000/svg' height='3pt' width='3pt' " +
+    "style='overflow: visible;'> <circle cx='5' cy='5' r='5' /></svg>"
   );
 }

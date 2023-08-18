@@ -9,6 +9,7 @@ import { quitModeAddLine } from "../../shortcut";
 import SelectedSchool from "../atom/SelectedSchool";
 import "./AddLineInformationBoardContent.css";
 import AddLineInformationBoardContentFooter from "./AddLineInformationBoardContentFooter";
+import { arrowsMap } from "./BusLines";
 
 const [, { getLineUnderConstruction, setLineUnderConstruction }] =
   useStateAction();
@@ -60,8 +61,13 @@ function prevStep() {
       break;
     case drawModeStep.stopSelection:
       setLineUnderConstruction(defaultLineUnderConstruction());
+
       break;
     case drawModeStep.polylineEdition:
+      const indice = getLineUnderConstruction().busLine.id ?? -1;
+      arrowsMap.get(indice)?.map((marker) => marker.remove());
+      arrowsMap.set(indice, []);
+
       getLineUnderConstruction().busLine.setLatLngs([]);
       break;
     case drawModeStep.validationStep:
