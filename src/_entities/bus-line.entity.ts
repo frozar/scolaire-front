@@ -14,6 +14,7 @@ export class BusLineEntity {
     const filteredShools: PointType[] = getSchools().filter(
       (item) => item.id == dbData.school_id
     );
+
     if (filteredShools.length == 0) {
       //TODO Error log to improve
       console.log(
@@ -35,7 +36,7 @@ export class BusLineEntity {
     }
     return {
       id: dbData.id,
-      schools: school,
+      schools: [school],
       name: dbData.name,
       color: color,
       setColor: setColor,
@@ -50,8 +51,8 @@ export class BusLineEntity {
   static dbFormat(line: BusLineType): Omit<BusLineDBType, "id"> {
     return {
       color: line.color(),
-      name: line.name,
-      school_id: line.schools.id,
+      name: line.name as string,
+      school_id: line.schools[0].id,
       bus_line_stop: formatBusLinePointDBType(line.points),
       polyline: EntityUtils.buildLocationPath(line.latLngs()),
     };
