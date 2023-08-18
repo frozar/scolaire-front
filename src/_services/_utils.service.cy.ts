@@ -1,65 +1,75 @@
+import { useStateGui } from "../StateGui";
 import { ServiceUtils } from "./_utils.service";
+const [, { setActiveMapId }] = useStateGui();
 
 describe("ServiceUtils", () => {
-  const url = import.meta.env.VITE_BACK_URL + "/";
+  setActiveMapId(1);
+  const url = "/";
+  const interceptUrl = ServiceUtils.buildXanoUrl(url, true);
+  const requestData = {
+    data: "request data",
+  };
 
-  const postData = {
-    test: "test",
+  const checkResponseBody = (expected: object, actual: object) => {
+    return JSON.stringify(expected) == JSON.stringify(actual);
   };
 
   it("Generic, check:  method,  url, response(status code, returned data)", () => {
-    cy.intercept("GET", url, {
-      test: "test",
-    }).as("getData");
+    cy.intercept("GET", interceptUrl, requestData).as("getData");
 
-    ServiceUtils.generic(url);
+    ServiceUtils.generic(interceptUrl, {
+      method: "GET",
+    });
 
     // Request check
     cy.wait("@getData").then((interception) => {
       cy.task("log", interception.response);
       expect(interception.request.method).to.eq("GET");
       expect(interception.response?.statusCode).to.eq(200);
-      // expect(interception.response?.body).to.eq;
-      expect(interception.request.url).to.eq(url);
+      expect(interception.request.url).to.eq(interceptUrl);
     });
   });
 
-  it("Post, check: spy call on generic, method,  url, response(status code, returned data)", () => {
-    cy.intercept("POST", url, postData).as("getData");
+  it("Post, check: spy on generic & buildXanoUrl , method,  url, response(status code, returned data)", () => {
+    cy.intercept("POST", interceptUrl, requestData).as("getData");
 
-    // Check call of generic method
-    const spy = cy.spy(ServiceUtils, "post").as("genericApiService");
-    ServiceUtils.post(url, postData).then((response) => {
-      cy.task("log", response);
+    // Spy on: buildXanoUrl & generic
+    const spyBuildXanoUrl = cy.spy(ServiceUtils, "buildXanoUrl");
+    const spy = cy.spy(ServiceUtils, "generic");
 
-      cy.wait("@getData").then((interception) => {
-        cy.task("log", interception.response);
-        expect(interception.request.method).to.eq("POST");
-        expect(interception.response?.statusCode).to.eq(200);
-        expect(interception.response?.body).to.have.eq(postData);
-        expect(interception.request.url).to.eq(url);
-      });
+    ServiceUtils.post(url, requestData);
+
+    cy.wait("@getData").then((interception) => {
+      expect(interception.request.method).to.eq("POST");
+      expect(interception.response?.statusCode).to.eq(200);
+      expect(checkResponseBody(interception.response?.body, requestData)).to.eq(
+        true
+      );
+      expect(interception.request.url).to.eq(interceptUrl);
     });
+
+    // Check spies
     expect(spy).to.be.called;
+    expect(spyBuildXanoUrl).to.be.called;
   });
 
   it("Patch, check: spy call on generic, method,  url, response(status code, returned data)", () => {
-    cy.intercept("POST", url, postData).as("getData");
+    cy.intercept("PATCH", interceptUrl, requestData).as("getData");
 
-    // Check call of generic method
-    const spy = cy.spy(ServiceUtils, "generic").as("genericApiService");
+    const spyBuildXanoUrl = cy.spy(ServiceUtils, "buildXanoUrl");
+    const spy = cy.spy(ServiceUtils, "generic");
 
-    ServiceUtils.post(url, postData).then((response) => {
-      cy.task("log", response);
-
-      cy.wait("@getData").then((interception) => {
-        expect(interception.request.method).to.eq("PATCH");
-        expect(interception.response?.statusCode).to.eq(200);
-        expect(interception.response?.body).to.have.eq(postData);
-        expect(interception.request.url).to.eq(url);
-      });
+    ServiceUtils.patch(url, requestData);
+    cy.wait("@getData").then((interception) => {
+      expect(interception.request.method).to.eq("PATCH");
+      expect(interception.response?.statusCode).to.eq(200);
+      expect(checkResponseBody(interception.response?.body, requestData)).to.eq(
+        true
+      );
+      expect(interception.request.url).to.eq(interceptUrl);
     });
     expect(spy).to.be.called;
+    expect(spyBuildXanoUrl).to.be.called;
   });
 
   // it("Delete, check: spy call on generic, method,  url, response(status code, returned data)", () => {
