@@ -104,4 +104,16 @@ describe("BusLineService", () => {
     expect(spyGeneric).to.be.called;
     expect(spyGet).to.be.called;
   });
+
+  it("Delete, check: spy on generic & buildXanoUrl & delete from ServiceUtils &   ", () => {
+    const spyBuildXanoUrl = cy.spy(ServiceUtils, "buildXanoUrl");
+    const spyGeneric = cy.spy(ServiceUtils, "generic");
+    const spyGet = cy.spy(ServiceUtils, "delete");
+
+    BusLineService.delete(1);
+
+    expect(spyBuildXanoUrl).to.be.called;
+    expect(spyGeneric).to.be.called;
+    expect(spyGet).to.be.called;
+  });
 });

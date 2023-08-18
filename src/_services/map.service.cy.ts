@@ -43,7 +43,7 @@ describe("SchoolService", () => {
     // expect(spyMapEntityBuild).to.be.called;
   });
 
-  it("Update, spy on: generic, buildXanoUrl & get from ServiceUtils, build & dbFormat from MapService", () => {
+  it("Delete, spy on: generic, buildXanoUrl & get from ServiceUtils, build & dbFormat from MapService", () => {
     const spyBuildXanoUrl = cy.spy(ServiceUtils, "buildXanoUrl");
     const spyGeneric = cy.spy(ServiceUtils, "generic");
     const spyGet = cy.spy(ServiceUtils, "delete");
