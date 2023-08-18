@@ -44,17 +44,18 @@ function buildSchools(schools: SchoolType[]): SchoolType[] {
   });
 }
 
+//TODO Delete and replace with displayedSchool signal
 function schoolsFilter(): SchoolType[] {
   let schools = getSchools();
 
   if (isInAddLineMode()) {
-    const etablissementsSelected = getLineUnderConstruction().busLine.schools;
+    const schoolsSelected = getLineUnderConstruction().busLine.schools;
     if (currentStep() === drawModeStep.schoolSelection) {
       return schools;
     }
 
     schools = schools.filter((value) =>
-      etablissementsSelected.some(
+      schoolsSelected.some(
         (etablissementInfo) => etablissementInfo.id === value.id
       )
     );

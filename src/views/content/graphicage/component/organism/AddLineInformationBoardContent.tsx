@@ -80,7 +80,7 @@ export default function () {
 
   return (
     <div class="add-line-information-board-content">
-      <div class="add-line-information-board-content-header">
+      <header>
         <div class="add-line-information-board-content-header-title">
           <h1>
             {
@@ -94,7 +94,7 @@ export default function () {
             }
           </h1>
         </div>
-      </div>
+      </header>
       <Show when={currentStep() === drawModeStep.schoolSelection}>
         <SelectedSchool schoolSelected={etablissementSelected()} />
       </Show>
@@ -107,22 +107,24 @@ export default function () {
           />
         </div>
       </Show>
-      <AddLineInformationBoardContentFooter
-        nextStep={{
-          callback: nextStep,
-          label:
-            currentStep() === drawModeStep.validationStep
-              ? "Valider"
-              : "Suivant",
-        }}
-        previousStep={{
-          callback: prevStep,
-          label:
-            currentStep() === drawModeStep.schoolSelection
-              ? "Annuler"
-              : "Précédant",
-        }}
-      />
+      <footer>
+        <AddLineInformationBoardContentFooter
+          nextStep={{
+            callback: nextStep,
+            label:
+              currentStep() === drawModeStep.validationStep
+                ? "Valider"
+                : "Suivant",
+          }}
+          previousStep={{
+            callback: prevStep,
+            label:
+              currentStep() === drawModeStep.schoolSelection
+                ? "Annuler"
+                : "Précédant",
+          }}
+        />
+      </footer>
     </div>
   );
 }

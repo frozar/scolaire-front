@@ -58,7 +58,7 @@ export function StopPoints(props: StopPointsProps) {
   );
 }
 
-// TODO to improve
+//TODO Delete and replace with displayedStop signal
 export function leafletStopsFilter(): StopType[] {
   const schools = getLineUnderConstruction().busLine.schools;
 
