@@ -7,7 +7,7 @@ const [, { setActiveMapId }] = useStateGui();
 describe("SchoolService", () => {
   setActiveMapId(1);
 
-  /** TODO: check why bus line is not catch.**/
+  //TODO: check why bus line is not catch.
 
   it("getAll, spy on: generic, buildXanoUrl & get from ServiceUtils, build from MapService", () => {
     const spyBuildXanoUrl = cy.spy(ServiceUtils, "buildXanoUrl");

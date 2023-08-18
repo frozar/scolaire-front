@@ -13,7 +13,7 @@ describe("StopService", () => {
   // To bypass select warning eslint
   selected;
 
-  /** TODO: check why bus line is not catch.**/
+  //TODO: check why bus line is not catch.
 
   it("getAll, spy on: generic, buildXanoUrl & get from ServiceUtils, build from StopEntity", () => {
     const spyBuildXanoUrl = cy.spy(ServiceUtils, "buildXanoUrl");

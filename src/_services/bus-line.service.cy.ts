@@ -9,13 +9,11 @@ const [, { setActiveMapId }] = useStateGui();
 
 describe("BusLineService", () => {
   setActiveMapId(1);
-  // const url = "bus-line";
-  // const interceptUrl = ServiceUtils.buildXanoUrl(url, true) + url;
   const [selected, setSelected] = createSignal<boolean>(false);
   const [latLngs, setLatLngs] = createSignal<L.LatLng[]>([]);
   const [color, setColor] = createSignal<string>("#0000");
 
-  /** TODO: check why bus line is not catch.**/
+  // TODO: check why bus line is not catch
 
   it("GetAll, spy on: generic, buildXanoUrl & get from ServiceUtils, build from BusLineEntity", () => {
     // Spy on: buildXanoUrl, generic, post, build
