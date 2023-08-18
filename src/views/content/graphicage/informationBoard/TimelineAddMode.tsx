@@ -1,6 +1,7 @@
-import { For } from "solid-js";
+import { For, Show } from "solid-js";
 import { useStateAction } from "../../../../StateAction";
 import { LineUnderConstructionType } from "../../../../type";
+import { DrawHelperButton } from "../component/atom/DrawHelperButton";
 import { TimelineAddPointButton } from "../component/atom/TimelineAddPointButton";
 import TimelineItemAddMode from "../component/atom/TimelineItemAddMode";
 
@@ -13,7 +14,11 @@ export default function (props: {
 }) {
   return (
     <div class="timeline">
-      {/* TODO use only 1 div for defining "timeline-add-mode" component wherever possible */}
+      <div class="timeline-tools">
+        <Show when={props.line().busLine.points.length > 0}>
+          <DrawHelperButton schools={props.line().busLine.schools} />
+        </Show>
+      </div>
       <div
         class="timeline-items v-timeline--side-end v-timeline--vertical"
         style={{ "--v-timeline-line-thickness": "2px" }}

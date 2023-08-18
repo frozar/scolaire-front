@@ -9,21 +9,22 @@ import "./AddLineInformationBoardContent.css";
 //     confirmEtablissementSelection,
 //   },
 // ] = useStateAction();
+export type addLineButtonType = { callback: () => void; label: string };
 export default function (props: {
-  nextStep: () => void;
-  previousStep: () => void;
+  nextStep: addLineButtonType;
+  previousStep: addLineButtonType;
 }) {
   return (
     <div class="">
       <Button
-        onClick={props.previousStep}
-        label={"Annuler"}
+        onClick={props.previousStep.callback}
+        label={props.previousStep.label}
         variant="primary"
         isDisabled={false}
       />
       <Button
-        onClick={props.nextStep}
-        label={"Valider"}
+        onClick={props.nextStep.callback}
+        label={props.nextStep.label}
         variant="primary"
         isDisabled={false}
       />

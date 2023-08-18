@@ -63,7 +63,6 @@ export function leafletStopsFilter(): StopType[] {
   const schools = getLineUnderConstruction().busLine.schools;
 
   const stops = getStops();
-  console.log(currentStep());
   if (currentStep() === drawModeStep.start) {
     return stops;
   }

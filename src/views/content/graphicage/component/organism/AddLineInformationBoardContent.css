@@ -1,6 +1,7 @@
 .add-line-information-board-content-header {
-  @apply flex flex-row;
-  align-items: left;
+  @apply flex flex-row mb-4;
+  align-items: center;
+  justify-content: center;
   width: -webkit-fill-available;
 }
 
@@ -9,7 +10,7 @@
   align-items: center;
   width: -webkit-fill-available;
   height: -webkit-fill-available;
-  justify-content:space-between;
+  justify-content: space-between;
 }
 
 .bus-line-information-board-content {

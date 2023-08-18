@@ -1,5 +1,7 @@
 import L from "leaflet";
 import { Accessor, Setter, createSignal } from "solid-js";
+import { OsrmService } from "../_services/osrm.service";
+import { disableSpinningWheel, enableSpinningWheel } from "../signaux";
 import { NatureEnum } from "../type";
 import { PointType } from "../views/content/graphicage/component/atom/Point";
 import { getSchools } from "../views/content/graphicage/component/organism/SchoolPoints";
@@ -125,6 +127,13 @@ const getAssociatedBusLinePoint = (dbPoint: BusLinePointDBType): PointType => {
   }
   return getStops().filter((item) => item.id == dbPoint.stop_id)[0];
 };
+
+export async function updatePolylineWithOsrm(busLine: BusLineType) {
+  enableSpinningWheel();
+  const latlngs: L.LatLng[] = await OsrmService.getRoadPolyline(busLine.points);
+  busLine.setLatLngs(latlngs);
+  disableSpinningWheel();
+}
 
 export type BusLineType = {
   id?: number;

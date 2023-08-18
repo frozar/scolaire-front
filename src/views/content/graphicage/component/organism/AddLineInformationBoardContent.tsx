@@ -1,13 +1,11 @@
-import L from "leaflet";
 import { Show, createSignal } from "solid-js";
 import {
   defaultLineUnderConstruction,
   useStateAction,
 } from "../../../../../StateAction";
-import { OsrmService } from "../../../../../_services/osrm.service";
+import { updatePolylineWithOsrm } from "../../../../../_entities/bus-line.entity";
 import TimelineAddMode from "../../informationBoard/TimelineAddMode";
 import { quitModeAddLine } from "../../shortcut";
-import { DrawHelperButton } from "../atom/DrawHelperButton";
 import SelectedSchool from "../atom/SelectedSchool";
 import "./AddLineInformationBoardContent.css";
 import AddLineInformationBoardContentFooter from "./AddLineInformationBoardContentFooter";
@@ -35,19 +33,22 @@ function nextStep() {
       }
       break;
     case drawModeStep.stopSelection:
-      addLineUnderConstructionPolylineWithOsrm();
+      if (getLineUnderConstruction().busLine.points.length < 2) {
+        return;
+      }
+      updatePolylineWithOsrm(getLineUnderConstruction().busLine);
       break;
     case drawModeStep.polylineEdition:
-      console.log(getLineUnderConstruction().busLine);
+      console.log("Validation de la polyline");
       break;
     case drawModeStep.validationStep:
-      console.log("Validation");
+      console.log("Validation finale");
+      console.log(getLineUnderConstruction().busLine);
       quitModeAddLine();
       break;
     default:
       console.log("Sorry, we are out of range}.");
   }
-  setPreviousStep(currentStep());
   setCurrentStep((currentStep() + 1) % 5);
 }
 
@@ -55,7 +56,6 @@ function prevStep() {
   switch (currentStep()) {
     case drawModeStep.schoolSelection:
       setLineUnderConstruction(defaultLineUnderConstruction());
-      Time;
       quitModeAddLine();
       break;
     case drawModeStep.stopSelection:
@@ -65,25 +65,12 @@ function prevStep() {
       getLineUnderConstruction().busLine.setLatLngs([]);
       break;
     case drawModeStep.validationStep:
-      console.log("Validation");
       break;
     default:
       console.log("Sorry, we are out of range}.");
   }
-  setPreviousStep(currentStep());
   const step = currentStep() - 1;
   setCurrentStep(step > 0 ? step : 0);
-}
-
-export const [previousStep, setPreviousStep] = createSignal<drawModeStep>(
-  drawModeStep.start
-);
-async function addLineUnderConstructionPolylineWithOsrm() {
-  // TODO Put to BusLineEntity
-  const latlngs: L.LatLng[] = await OsrmService.getRoadPolyline(
-    getLineUnderConstruction().busLine.points
-  );
-  getLineUnderConstruction().busLine.setLatLngs(latlngs);
 }
 
 export default function () {
@@ -94,18 +81,25 @@ export default function () {
   return (
     <div class="add-line-information-board-content">
       <div class="add-line-information-board-content-header">
-        <SelectedSchool schoolSelected={etablissementSelected()} />
-
-        <Show when={currentStep() === drawModeStep.stopSelection}>
-          <DrawHelperButton schools={etablissementSelected()} />
-        </Show>
+        <div class="add-line-information-board-content-header-title">
+          <h1>
+            {
+              [
+                "",
+                " Sélection des établissements",
+                "Création de la ligne",
+                "Modification de l'itinéraire",
+                "Détails",
+              ][currentStep()]
+            }
+          </h1>
+        </div>
       </div>
-      <Show
-        when={
-          currentStep() != drawModeStep.start &&
-          currentStep() != drawModeStep.schoolSelection
-        }
-      >
+      <Show when={currentStep() === drawModeStep.schoolSelection}>
+        <SelectedSchool schoolSelected={etablissementSelected()} />
+      </Show>
+
+      <Show when={currentStep() === drawModeStep.stopSelection}>
         <div class="bus-line-information-board-content">
           <TimelineAddMode
             line={getLineUnderConstruction}
@@ -114,8 +108,20 @@ export default function () {
         </div>
       </Show>
       <AddLineInformationBoardContentFooter
-        nextStep={nextStep}
-        previousStep={prevStep}
+        nextStep={{
+          callback: nextStep,
+          label:
+            currentStep() === drawModeStep.validationStep
+              ? "Valider"
+              : "Suivant",
+        }}
+        previousStep={{
+          callback: prevStep,
+          label:
+            currentStep() === drawModeStep.schoolSelection
+              ? "Annuler"
+              : "Précédant",
+        }}
       />
     </div>
   );
