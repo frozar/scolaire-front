@@ -21,11 +21,11 @@ export class ServiceUtils {
   }
 
   static async get(url: string, urlNeedMap = true) {
-    return await this.generic(buildXanoUrl(url, urlNeedMap));
+    return await this.generic(this.buildXanoUrl(url, urlNeedMap));
   }
 
   static async post(url: string, data: object, urlNeedMap = true) {
-    return await this.generic(buildXanoUrl(url, urlNeedMap), {
+    return await this.generic(this.buildXanoUrl(url, urlNeedMap), {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -35,7 +35,7 @@ export class ServiceUtils {
   }
 
   static async patch(url: string, data: object, urlNeedMap = true) {
-    return await this.generic(buildXanoUrl(url, urlNeedMap), {
+    return await this.generic(this.buildXanoUrl(url, urlNeedMap), {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -45,19 +45,19 @@ export class ServiceUtils {
   }
 
   static async delete(url: string, urlNeedMap = true) {
-    return await this.generic(buildXanoUrl(url, urlNeedMap), {
+    return await this.generic(this.buildXanoUrl(url, urlNeedMap), {
       method: "DELETE",
     });
   }
-}
 
-const buildXanoUrl = (url: string, urlNeedMap: boolean) => {
-  let buildUrl = import.meta.env.VITE_XANO_URL;
-  if (urlNeedMap) {
-    buildUrl += "/map/" + getActiveMapId();
+  static buildXanoUrl(url: string, urlNeedMap: boolean) {
+    let buildUrl = import.meta.env.VITE_XANO_URL;
+    if (urlNeedMap) {
+      buildUrl += "/map/" + getActiveMapId();
+    }
+    return buildUrl + url;
   }
-  return buildUrl + url;
-};
+}
 
 // TODO reformat this (copy/past from point.service.ts)
 export const connexionError = () => {
