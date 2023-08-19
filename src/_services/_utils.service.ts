@@ -7,63 +7,10 @@ const [, { getActiveMapId }] = useStateGui();
 // TODO Need auth0 authentication
 // TODO Refacto error management
 export class ServiceUtils {
-  static async get(url: string, urlNeedMap = true) {
+  static async generic(url: string, options = {}) {
     let response: Response;
     try {
-      response = await fetch(buildXanoUrl(url, urlNeedMap));
-    } catch (error) {
-      connexionError();
-      return false;
-    }
-
-    if (!(await manageStatusCode(response))) return;
-    return await response.json();
-  }
-
-  static async post(url: string, data: object, urlNeedMap = true) {
-    let response: Response;
-    try {
-      response = await fetch(buildXanoUrl(url, urlNeedMap), {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-    } catch (error) {
-      connexionError();
-      return false;
-    }
-
-    if (!(await manageStatusCode(response))) return;
-    return await response.json();
-  }
-
-  static async patch(url: string, data: object, urlNeedMap = true) {
-    let response: Response;
-    try {
-      response = await fetch(buildXanoUrl(url, urlNeedMap), {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-    } catch (error) {
-      connexionError();
-      return false;
-    }
-
-    if (!(await manageStatusCode(response))) return;
-    return await response.json();
-  }
-
-  static async delete(url: string, urlNeedMap = true) {
-    let response: Response;
-    try {
-      response = await fetch(buildXanoUrl(url, urlNeedMap), {
-        method: "DELETE",
-      });
+      response = await fetch(url, options);
     } catch (error) {
       connexionError();
       return false;
@@ -72,15 +19,45 @@ export class ServiceUtils {
     if (!(await manageStatusCode(response))) return false;
     return await response.json();
   }
-}
 
-const buildXanoUrl = (url: string, urlNeedMap: boolean) => {
-  let buildUrl = import.meta.env.VITE_XANO_URL;
-  if (urlNeedMap) {
-    buildUrl += "/map/" + getActiveMapId();
+  static async get(url: string, urlNeedMap = true) {
+    return await this.generic(this.buildXanoUrl(url, urlNeedMap));
   }
-  return buildUrl + url;
-};
+
+  static async post(url: string, data: object, urlNeedMap = true) {
+    return await this.generic(this.buildXanoUrl(url, urlNeedMap), {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+  }
+
+  static async patch(url: string, data: object, urlNeedMap = true) {
+    return await this.generic(this.buildXanoUrl(url, urlNeedMap), {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+  }
+
+  static async delete(url: string, urlNeedMap = true) {
+    return await this.generic(this.buildXanoUrl(url, urlNeedMap), {
+      method: "DELETE",
+    });
+  }
+
+  static buildXanoUrl(url: string, urlNeedMap: boolean) {
+    let buildUrl = import.meta.env.VITE_XANO_URL;
+    if (urlNeedMap) {
+      buildUrl += "/map/" + getActiveMapId();
+    }
+    return buildUrl + url;
+  }
+}
 
 // TODO reformat this (copy/past from point.service.ts)
 export const connexionError = () => {
@@ -95,6 +72,18 @@ export const connexionError = () => {
 
 // TODO reformat this (copy/past from point.service.ts)
 export const manageStatusCode = async (response: Response) => {
+  const error: { message?: string } = {};
+
+  switch (response.status) {
+    case 429:
+      const json = await response.json();
+
+      error.message =
+        json.detail ??
+        "Trop de requêtes effectuer, veuillez essayer ultérieurement";
+      break;
+  }
+
   if (response.status !== 200) {
     const json = await response.json();
     const message =
@@ -105,7 +94,7 @@ export const manageStatusCode = async (response: Response) => {
       displayed: true,
       level: MessageLevelEnum.error,
       type: MessageTypeEnum.global,
-      content: message,
+      content: error.message ?? message,
     });
 
     return false;
