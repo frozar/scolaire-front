@@ -13,6 +13,10 @@ import {
   displayRemoveLineMessage,
 } from "../../../userInformation/utils";
 import { displayedConfirmStopAddLine } from "./ConfirmStopAddLineBox";
+import {
+  currentStep,
+  drawModeStep,
+} from "./component/organism/AddLineInformationBoardContent";
 import { deselectAllBusLines } from "./component/organism/BusLines";
 import { deselectAllPoints } from "./component/organism/Points";
 
@@ -95,15 +99,17 @@ function enterHandler({ code }: KeyboardEvent) {
   }
 
   if (code === "Enter") {
-    if (!isInAddLineMode() || !getLineUnderConstruction().confirmSelection) {
+    if (!isInAddLineMode() || currentStep() === drawModeStep.schoolSelection) {
       return;
     }
-    const resourceInfo = getLineUnderConstruction().stops.map(function (value) {
-      return {
-        id_resource: value["id"],
-        nature: value["nature"].toLowerCase(),
-      };
-    });
+    const resourceInfo = getLineUnderConstruction().busLine.points.map(
+      function (value) {
+        return {
+          id_resource: value["id"],
+          nature: value["nature"].toLowerCase(),
+        };
+      }
+    );
 
     addBusLine(resourceInfo).then(async (res) => {
       if (!res) {

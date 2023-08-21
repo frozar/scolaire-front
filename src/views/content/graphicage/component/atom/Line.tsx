@@ -23,6 +23,7 @@ export default function (props: LineProps) {
     let arrows: L.Marker[] = [];
     const latlngs = props.latlngs;
     const leafletMap = props.leafletMap;
+    console.log("modification de ma latlong ", latlngs);
 
     const color = props.color;
     const opacity = props.opacity;

@@ -115,10 +115,6 @@ const makeStateActionContext = () => {
     return state.lineUnderConstruction;
   }
 
-  function confirmEtablissementSelection() {
-    setState("lineUnderConstruction", "confirmSelection", true);
-  }
-
   const types: { [key in ModeEnum]: MessageTypeEnum[] } = {
     [ModeEnum.read]: [MessageTypeEnum.global],
     [ModeEnum.addLine]: [MessageTypeEnum.addLine, MessageTypeEnum.enterAddLine],
@@ -184,7 +180,6 @@ const makeStateActionContext = () => {
       getLineUnderConstruction,
       resetLineUnderConstruction,
       setLineUnderConstruction,
-      confirmEtablissementSelection,
       setModeRemoveLine,
       setModeAddLine,
       setModeRead,

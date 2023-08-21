@@ -23,7 +23,7 @@ export default function (props: AddLineButtonProps) {
   const handleClick = () => {
     if (isInAddLineMode()) {
       setModeRead();
-      setCurrentStep("start");
+      setCurrentStep(drawModeStep.start);
 
       //TODO voir l'impact de la suppression
       // fetchBusLines();

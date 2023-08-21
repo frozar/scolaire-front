@@ -45,7 +45,6 @@ export function isLeafletSchoolType(pt: PointType) {
 
 export type LineUnderConstructionType = {
   nextIndex: number;
-  confirmSelection: boolean;
   busLine: BusLineType;
 };
 
