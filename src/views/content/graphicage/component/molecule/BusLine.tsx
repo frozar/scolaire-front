@@ -76,11 +76,6 @@ export function BusLine(props: BusLineProps) {
     if (isInRemoveLineMode() || isInReadMode()) {
       buslineSetBoldStyle(polyline, arrows, "white");
     }
-    // Object.entries(linkMap).map(([k, v]) => {
-    //   if (props.line.points.map((point) => point.leafletId).includes(k)) {
-    //     return v;
-    //   }
-    // }).map(());
   };
 
   const onMouseOut = (polyline: L.Polyline, arrows: L.Marker[]) => {
@@ -88,15 +83,6 @@ export function BusLine(props: BusLineProps) {
     if (isInRemoveLineMode() || isInReadMode()) {
       buslineSetNormalStyle(polyline, arrows, props.line.color());
     }
-
-    // linkMap.forEach((value, idLeaflet) => {
-    //   if (
-    //     props.line.points.map((point) => point.leafletId).includes(idLeaflet)
-    //   ) {
-
-    //     value.setStyle({ color: "yellow" });
-    //   }
-    // });
   };
 
   const onClick = () => {
