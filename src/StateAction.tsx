@@ -36,6 +36,7 @@ export function defaultLineUnderConstruction() {
       setColor: setColor,
       points: [],
       schools: [],
+      name: "my default name",
       currentIndex: 0,
       latLngs: latLngs,
       setLatLngs: setLatLngs,
