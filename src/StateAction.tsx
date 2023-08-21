@@ -83,6 +83,19 @@ const makeStateActionContext = () => {
     );
   }
 
+  function removePointToLineUnderConstruction(point: BusLinePointType) {
+    setState(
+      "lineUnderConstruction",
+      "busLine",
+      "points",
+      (line: BusLinePointType[]) => {
+        return line.filter(
+          (l) => l.id != point.id && l.lat != point.lat && l.lon != point.lon
+        );
+      }
+    );
+  }
+
   function setLineUnderConstructionNextIndex(indicepoints: number) {
     setState("lineUnderConstruction", "nextIndex", indicepoints);
   }
@@ -176,6 +189,7 @@ const makeStateActionContext = () => {
       isInRemoveLineMode,
       isInReadMode,
       setLineUnderConstructionNextIndex,
+      removePointToLineUnderConstruction,
     },
     history,
   ] as const;
