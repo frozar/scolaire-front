@@ -33,8 +33,8 @@ export default function (props: {
     <tr>
       <TableCells>
         <Checkbox
-          ariaDescribedby="etablissement-item"
-          name="etablissement"
+          ariaDescribedby="school-item"
+          name="school"
           ref={setRefCheckbox}
           onChange={() => {
             props.item.setSelected(refCheckbox().checked);
