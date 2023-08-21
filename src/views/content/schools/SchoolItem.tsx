@@ -26,7 +26,7 @@ export default function (props: {
   );
 
   createEffect(() => {
-    refCheckbox().checked = props.item.selected;
+    refCheckbox().checked = props.item.selected();
   });
 
   return (
@@ -37,14 +37,7 @@ export default function (props: {
           name="etablissement"
           ref={setRefCheckbox}
           onChange={() => {
-            const isItemChecked = refCheckbox().checked;
-            const itemId = props.item.id;
-
-            props.setEtablissements((etablissements) =>
-              etablissements.map((eta) =>
-                eta.id === itemId ? { ...eta, selected: isItemChecked } : eta
-              )
-            );
+            props.item.setSelected(refCheckbox().checked);
           }}
         />
       </TableCells>

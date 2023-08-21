@@ -9,7 +9,7 @@ import {
   getSchools,
   setSchools,
 } from "../graphicage/component/organism/SchoolPoints";
-import SchoolItem from "./EtablissementItem";
+import SchoolItem from "./SchoolItem";
 import Checkbox from "./component/atom/Checkbox";
 import TableHeaderCell from "./component/molecule/TableHeaderCell";
 import Filters, { searchInputKeyword } from "./component/organism/Filters";
