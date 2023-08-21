@@ -5,8 +5,10 @@ import { SchoolType } from "../../../_entities/school.entity";
 import { SchoolService } from "../../../_services/school.service";
 import { addNewUserInformation } from "../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../type";
-import { etablissements, setEtablissements } from "./Etablissement";
-
+import {
+  getSchools,
+  setSchools,
+} from "../graphicage/component/organism/SchoolPoints";
 export const [toggledEditStop, setToggledEditStop] = createSignal(false);
 
 export function toggleEditStop() {
@@ -46,10 +48,8 @@ export default function () {
     });
 
     if (school) {
-      setEtablissements(
-        [...etablissements(), school].sort((a, b) =>
-          a.name.localeCompare(b.name)
-        )
+      setSchools(
+        [...getSchools(), school].sort((a, b) => a.name.localeCompare(b.name))
       );
       addNewUserInformation({
         displayed: true,
@@ -97,8 +97,8 @@ export default function () {
     });
 
     if (school != null) {
-      setEtablissements(
-        etablissements()
+      setSchools(
+        getSchools()
           .map((item) => {
             if (item.id == school.id) return school;
             else return item;

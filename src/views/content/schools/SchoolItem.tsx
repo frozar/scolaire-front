@@ -2,7 +2,7 @@ import { Setter, createEffect, createSignal } from "solid-js";
 // import { setRemoveRamassageConfirmation } from "../../../signaux";
 import { SchoolType } from "../../../_entities/school.entity";
 import Button from "../../../component/atom/Button";
-import { setDataToEdit, toggleEditStop } from "./EditEtablissement";
+import { setDataToEdit, toggleEditStop } from "./EditSchool";
 import Checkbox from "./component/atom/Checkbox";
 import TableCells from "./component/molecule/TableCell";
 
