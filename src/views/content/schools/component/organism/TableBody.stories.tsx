@@ -1,7 +1,7 @@
 import { For, createSignal } from "solid-js";
 import { Meta, StoryObj } from "storybook-solidjs";
 
-import EtablissementItem from "../../EtablissementItem";
+import EtablissementItem from "../../SchoolItem";
 import TableBodyComponent from "./TableBody";
 
 const meta = {

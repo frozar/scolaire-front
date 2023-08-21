@@ -1,5 +1,5 @@
 import { createSignal, For } from "solid-js";
-import EtablissementItem from "../../EtablissementItem";
+import EtablissementItem from "../../SchoolItem";
 import TableBody from "./TableBody";
 
 describe("TableBody component with etablissement item row", () => {
