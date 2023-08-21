@@ -103,7 +103,8 @@ async function createOrUpdateBusLine(busLine: BusLineType) {
 async function createBusLine(busLine: BusLineType) {
   console.log("Create new busLine");
   const newBusLine: BusLineType = await BusLineService.create(busLine);
-  let busLines: BusLineType[] = getBusLines();
+
+  const busLines: BusLineType[] = getBusLines();
   busLines.push(newBusLine);
   setBusLines(busLines);
   // add the newBusLine to the BusLines signal

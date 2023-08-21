@@ -20,6 +20,8 @@ export default function (props: LineProps) {
   let busLinePolyline: L.Polyline;
   let arrows: L.Marker[] = [];
 
+  console.log(props);
+
   createEffect(() => {
     const latlngs = props.latlngs;
     const leafletMap = props.leafletMap;
@@ -27,10 +29,11 @@ export default function (props: LineProps) {
     const color = props.color;
     const opacity = props.opacity;
 
-    if (busLinePolyline) {
-      props.leafletMap.removeLayer(busLinePolyline);
-      busLinePolyline.remove();
-    }
+    // TODO non fonctionnel... supprime la ligne précédente
+    // if (busLinePolyline) {
+    //   props.leafletMap.removeLayer(busLinePolyline);
+    //   busLinePolyline.remove();
+    // }
 
     busLinePolyline = buildLeafletPolyline(color, latlngs, opacity);
 
