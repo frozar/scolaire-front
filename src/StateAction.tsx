@@ -8,6 +8,7 @@ import { LineUnderConstructionType, MessageTypeEnum, ModeEnum } from "./type";
 
 import { useStateGui } from "./StateGui";
 import { BusLinePointType } from "./_entities/bus-line.entity";
+import { StopType } from "./_entities/stop.entity";
 
 const [, { setDisplayedInformationBoard }] = useStateGui();
 
@@ -83,7 +84,8 @@ const makeStateActionContext = () => {
     );
   }
 
-  function removePointToLineUnderConstruction(point: BusLinePointType) {
+  // TODO: move all logic about line under construction in LineUnderConstruction file
+  function removePointToLineUnderConstruction(point: StopType) {
     setState(
       "lineUnderConstruction",
       "busLine",
