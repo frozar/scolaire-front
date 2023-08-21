@@ -15,8 +15,7 @@ import {
 import { deselectAllBusLines } from "../organism/BusLines";
 import { deselectAllPoints } from "../organism/Points";
 
-const [, { isInReadMode, isInRemoveLineMode, isInAddLineMode }] =
-  useStateAction();
+const [, { isInReadMode, isInRemoveLineMode }] = useStateAction();
 
 export type BusLineProps = {
   line: BusLineType;
@@ -24,38 +23,24 @@ export type BusLineProps = {
 };
 
 export function BusLine(props: BusLineProps) {
-  const [localLatLngs, setLocalLatLngs] = createSignal<L.LatLng[]>(
-    props.line.latLngs()
-  );
+  const [localLatLngs, setLocalLatLngs] = createSignal<L.LatLng[]>([]);
   const [localOpacity, setLocalOpacity] = createSignal<number>(1);
-  // eslint-disable-next-line solid/reactivity
-  // const line = props.line;
   // eslint-disable-next-line solid/reactivity
   createEffect(async () => {
     // TODO Put to BusLineEntity
     // const latlngs: L.LatLng[] = await OsrmService.getRoadPolyline(line.points);
     // line.setLatLngs(latlngs);
-    console.log(
-      "currentStep() != drawModeStep.stopSelection",
-      currentStep() != drawModeStep.stopSelection &&
-        props.line.latLngs().length != 0
-    );
+
     if (
       currentStep() != drawModeStep.stopSelection &&
       props.line.latLngs().length != 0
     ) {
       setLocalLatLngs(props.line.latLngs());
       setLocalOpacity(0.8);
-      console.log("j'ai pas modifier ");
     } else {
       setLocalLatLngs(getLatLngsFromPoint(props.line.points));
       setLocalOpacity(1);
-      console.log("j'ai modifier ", localLatLngs());
     }
-  });
-
-  createEffect(() => {
-    console.log(currentStep());
   });
 
   const onMouseOver = (polyline: L.Polyline, arrows: L.Marker[]) => {
@@ -77,7 +62,7 @@ export function BusLine(props: BusLineProps) {
       //TODO fonction à explorer
       setRemoveConfirmation({
         displayed: true,
-        idBusLine: props.line.id ?? -1,
+        idBusLine: props.line.id ?? null,
       });
     }
 

@@ -9,6 +9,7 @@ import ButtonGraphicageRightMenu, {
 
 import { FaSolidPlus } from "solid-icons/fa";
 import { drawModeStep, setCurrentStep } from "./AddLineInformationBoardContent";
+import { deselectAllBusLines } from "./BusLines";
 import { deselectAllPoints } from "./Points";
 
 const [, { setModeAddLine, isInAddLineMode, setModeRead }] = useStateAction();
@@ -29,6 +30,7 @@ export default function (props: AddLineButtonProps) {
       // fetchBusLines();
     } else {
       deselectAllPoints();
+      deselectAllBusLines();
       setModeAddLine();
       setCurrentStep(drawModeStep.schoolSelection);
       //TODO voir l'impact de la suppression

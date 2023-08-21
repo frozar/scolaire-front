@@ -16,6 +16,7 @@ import { displayedConfirmStopAddLine } from "./ConfirmStopAddLineBox";
 import {
   currentStep,
   drawModeStep,
+  setCurrentStep,
 } from "./component/organism/AddLineInformationBoardContent";
 import { deselectAllBusLines } from "./component/organism/BusLines";
 import { deselectAllPoints } from "./component/organism/Points";
@@ -83,6 +84,7 @@ function escapeHandler({ code }: KeyboardEvent) {
     }
 
     quitModeAddLine();
+    setCurrentStep(drawModeStep.start);
     //TODO voir l'impact de la suppression
     // fetchBusLines();
   }

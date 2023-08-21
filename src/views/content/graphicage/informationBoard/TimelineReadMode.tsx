@@ -3,15 +3,9 @@ import {
   BusLinePointType,
   BusLineType,
 } from "../../../../_entities/bus-line.entity";
-import { PointInterface } from "../component/atom/Point";
 import TimelineItemReadMode from "../component/atom/TimelineItemReadMode";
 import UpdateLineButton from "../component/atom/UpdateLineButton";
 import { getSelectedBusLine } from "../component/organism/BusLines";
-
-interface itemInfoToDisplayInterface {
-  point: PointInterface;
-  quantity: number;
-}
 
 const [pointsToDisplay, setPointsToDisplay] = createSignal<BusLinePointType[]>(
   []

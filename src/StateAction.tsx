@@ -10,6 +10,7 @@ import { useStateGui } from "./StateGui";
 import { BusLinePointType } from "./_entities/bus-line.entity";
 import { SchoolType } from "./_entities/school.entity";
 import { StopType } from "./_entities/stop.entity";
+import { COLOR_LINE_UNDER_CONSTRUCTION } from "./views/content/graphicage/constant";
 
 const [, { setDisplayedInformationBoard }] = useStateGui();
 
@@ -25,7 +26,7 @@ type StateActionType = {
 
 export function defaultLineUnderConstruction() {
   const [latLngs, setLatLngs] = createSignal<L.LatLng[]>([]);
-  const [color, setColor] = createSignal<string>("#000000");
+  const [color, setColor] = createSignal<string>(COLOR_LINE_UNDER_CONSTRUCTION);
   const [selected, setSelected] = createSignal<boolean>(false);
   return {
     confirmSelection: false,

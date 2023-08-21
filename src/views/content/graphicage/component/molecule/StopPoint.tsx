@@ -59,7 +59,6 @@ function onClick(point: StopType) {
   // TODO: when add line with an etablissement point the line destroy after next point click
   // Wait Richard/Hugo finish the line underconstruction
   addPointToLineUnderConstruction({ ...point, quantity: associatedQuantity });
-  console.log("points", getLineUnderConstruction().busLine.points);
 
   //TODO pourquoi cette condition ?
   if (!(1 < getLineUnderConstruction().busLine.points.length)) {

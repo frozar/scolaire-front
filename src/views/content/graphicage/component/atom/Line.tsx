@@ -18,12 +18,11 @@ interface LineProps {
 
 export default function (props: LineProps) {
   let busLinePolyline: L.Polyline;
+  let arrows: L.Marker[] = [];
 
   createEffect(() => {
-    let arrows: L.Marker[] = [];
     const latlngs = props.latlngs;
     const leafletMap = props.leafletMap;
-    console.log("modification de ma latlong ", latlngs);
 
     const color = props.color;
     const opacity = props.opacity;
@@ -35,9 +34,11 @@ export default function (props: LineProps) {
 
     busLinePolyline = buildLeafletPolyline(color, latlngs, opacity);
 
-    if (props.lineId) {
-      arrows = buildArrows(props.latlngs, color);
+    if (arrows) {
+      arrows.map((arrow) => leafletMap.removeLayer(arrow));
     }
+
+    arrows = buildArrows(props.latlngs, color);
 
     // Add events to Line & Arrows
     if (props.onMouseOver || props.onMouseOut || props.onClick) {
