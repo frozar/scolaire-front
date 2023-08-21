@@ -86,6 +86,9 @@ export default function (props: LineProps) {
       props.leafletMap.removeLayer(busLinePolyline);
       busLinePolyline.remove();
     }
+    if (arrows) {
+      arrows.map((arrow) => props.leafletMap.removeLayer(arrow));
+    }
   });
 
   return <></>;
