@@ -1,7 +1,6 @@
 import L from "leaflet";
 import { useStateAction } from "../../../../../StateAction";
 import { StopType } from "../../../../../_entities/stop.entity";
-import { NatureEnum } from "../../../../../type";
 import { renderAnimation } from "../../animation";
 import Point from "../atom/Point";
 import { deselectAllBusLines } from "../organism/BusLines";
@@ -96,6 +95,16 @@ export function StopPoint(props: StopPointProps) {
     return radiusValue;
   };
 
+  const onRightClick = () => {
+    const isInLineUnderConstruction =
+      getLineUnderConstruction().busLine.points.filter(
+        (_point) => _point.id == props.point.id
+      )[0];
+    if (isInAddLineMode() && isInLineUnderConstruction != undefined) {
+      removePointToLineUnderConstruction(props.point);
+    }
+  };
+
   return (
     <Point
       point={props.point}
@@ -108,23 +117,7 @@ export function StopPoint(props: StopPointProps) {
       onClick={() => onClick(props.point)}
       onMouseOver={() => onMouseOver(props.point)}
       onMouseOut={() => onMouseOut()}
-      onRightClick={() => {
-        const isInLineUnderConstruction =
-          getLineUnderConstruction().busLine.points.filter(
-            (_point) => _point.id == props.point.id
-          )[0];
-        if (isInAddLineMode() && isInLineUnderConstruction != undefined) {
-          removePointToLineUnderConstruction({
-            id: props.point.id,
-            leafletId: props.point.leafletId,
-            name: props.point.name,
-            lon: props.point.lon,
-            lat: props.point.lat,
-            quantity: 0,
-            nature: NatureEnum.stop,
-          });
-        }
-      }}
+      onRightClick={onRightClick}
     />
   );
 }
