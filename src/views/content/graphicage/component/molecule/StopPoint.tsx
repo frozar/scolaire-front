@@ -18,6 +18,7 @@ const [
     addPointToLineUnderConstruction,
     getLineUnderConstruction,
     isInAddLineMode,
+    removePointToLineUnderConstruction,
   },
 ] = useStateAction();
 
@@ -94,6 +95,16 @@ export function StopPoint(props: StopPointProps) {
     return radiusValue;
   };
 
+  const onRightClick = () => {
+    const isInLineUnderConstruction =
+      getLineUnderConstruction().busLine.points.filter(
+        (_point) => _point.id == props.point.id
+      )[0];
+    if (isInAddLineMode() && isInLineUnderConstruction != undefined) {
+      removePointToLineUnderConstruction(props.point);
+    }
+  };
+
   return (
     <Point
       point={props.point}
@@ -106,6 +117,7 @@ export function StopPoint(props: StopPointProps) {
       onClick={() => onClick(props.point)}
       onMouseOver={() => onMouseOver(props.point)}
       onMouseOut={() => onMouseOut()}
+      onRightClick={onRightClick}
     />
   );
 }

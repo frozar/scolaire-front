@@ -8,6 +8,8 @@ import { LineUnderConstructionType, MessageTypeEnum, ModeEnum } from "./type";
 
 import { useStateGui } from "./StateGui";
 import { BusLinePointType } from "./_entities/bus-line.entity";
+import { SchoolType } from "./_entities/school.entity";
+import { StopType } from "./_entities/stop.entity";
 
 const [, { setDisplayedInformationBoard }] = useStateGui();
 
@@ -79,6 +81,20 @@ const makeStateActionContext = () => {
         setState("lineUnderConstruction", "nextIndex", res.length);
 
         return res;
+      }
+    );
+  }
+
+  // TODO: move all logic about line under construction in LineUnderConstruction file
+  function removePointToLineUnderConstruction(point: StopType | SchoolType) {
+    setState(
+      "lineUnderConstruction",
+      "busLine",
+      "points",
+      (line: BusLinePointType[]) => {
+        return line.filter(
+          (l) => l.id != point.id && l.lat != point.lat && l.lon != point.lon
+        );
       }
     );
   }
@@ -176,6 +192,7 @@ const makeStateActionContext = () => {
       isInRemoveLineMode,
       isInReadMode,
       setLineUnderConstructionNextIndex,
+      removePointToLineUnderConstruction,
     },
     history,
   ] as const;
