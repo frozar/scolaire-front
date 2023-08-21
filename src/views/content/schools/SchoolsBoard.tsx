@@ -32,18 +32,18 @@ export default function () {
     document.createElement("input")
   );
 
-  const filteredEtablissements = () =>
+  const filteredSchools = () =>
     getSchools().filter((e) =>
       e.name.toLowerCase().includes(searchInputKeyword().toLowerCase())
     );
 
-  const selectedEtablissements = () =>
-    getSchools().filter((eta) => eta.selected);
+  const selectedSchools = () =>
+    getSchools().filter((school) => school.selected);
 
   createEffect(() => {
     refCheckbox().checked =
-      filteredEtablissements().length != 0 &&
-      selectedEtablissements().length == filteredEtablissements().length;
+      filteredSchools().length != 0 &&
+      selectedSchools().length == filteredSchools().length;
   });
 
   const [displayImportCsvCanvas, setDisplayImportCsvCanvas] =
@@ -117,7 +117,7 @@ export default function () {
                 </TableHeader>
 
                 <TableBody>
-                  <For each={filteredEtablissements()}>
+                  <For each={filteredSchools()}>
                     {(fields) => {
                       return (
                         <SchoolItem
