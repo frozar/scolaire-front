@@ -62,8 +62,6 @@ export default function (props: PointProps) {
   };
 
   onMount(() => {
-    document.addEventListener("contextmenu", (e) => e.preventDefault());
-
     if (props.point) {
       circle = L.circleMarker([props.point.lat, props.point.lon], {
         color: props.borderColor,

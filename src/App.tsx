@@ -24,6 +24,8 @@ export default () => {
   let refApp!: HTMLDivElement;
 
   createEffect(() => {
+    // This line is to disable right click menu, necessary to remove point in line under construction with the right click
+    document.addEventListener("contextmenu", (e) => e.preventDefault());
     const [, { getLineUnderConstruction }] = useStateAction();
 
     if (
