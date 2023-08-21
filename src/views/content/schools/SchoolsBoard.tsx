@@ -38,12 +38,10 @@ export default function () {
     );
 
   const selectedSchools = () =>
-    getSchools().filter((school) => school.selected);
+    getSchools().filter((school) => school.selected());
 
   createEffect(() => {
-    refCheckbox().checked =
-      filteredSchools().length != 0 &&
-      selectedSchools().length == filteredSchools().length;
+    refCheckbox().checked = selectedSchools().length == getSchools().length;
   });
 
   const [displayImportCsvCanvas, setDisplayImportCsvCanvas] =
@@ -70,6 +68,14 @@ export default function () {
     schoolDiv.removeEventListener("dragend", preventDefaultHandler);
     schoolDiv.removeEventListener("dragover", preventDefaultHandler);
   });
+
+  // TODO: check why when checking global checkbox, only one item is selected
+  const globalCheckboxOnChange = () => {
+    getSchools().map((school) => {
+      school.setSelected(refCheckbox().checked);
+      console.log(school.selected(), refCheckbox().checked);
+    });
+  };
 
   return (
     <>
@@ -100,14 +106,7 @@ export default function () {
                       ariaDescribedby="school-item"
                       name="school"
                       ref={setRefCheckbox}
-                      onChange={() => {
-                        // setEtablissements((schools) =>
-                        //   schools.map((eta) => ({
-                        //     ...eta,
-                        //     selected: refCheckbox().checked,
-                        //   }))
-                        // );
-                      }}
+                      onChange={globalCheckboxOnChange}
                     />
                   </TableHeaderCell>
                   <TableHeaderCell>Nom</TableHeaderCell>
