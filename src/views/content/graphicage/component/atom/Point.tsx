@@ -44,6 +44,8 @@ export interface PointProps {
   onClick: () => void;
   onMouseOver: () => void;
   onMouseOut: () => void;
+
+  onRightClick?: () => void;
 }
 
 const onDBLClick = (event: LeafletMouseEvent) => {
@@ -53,7 +55,15 @@ const onDBLClick = (event: LeafletMouseEvent) => {
 export default function (props: PointProps) {
   let circle: L.CircleMarker;
 
+  const onRightClick = () => {
+    if (props.onRightClick != undefined) {
+      props.onRightClick();
+    }
+  };
+
   onMount(() => {
+    document.addEventListener("contextmenu", (e) => e.preventDefault());
+
     if (props.point) {
       circle = L.circleMarker([props.point.lat, props.point.lon], {
         color: props.borderColor,
@@ -68,6 +78,7 @@ export default function (props: PointProps) {
         .on("dblclick", onDBLClick)
         .on("mouseover", props.onMouseOver)
         .on("mouseout", props.onMouseOut)
+        .on("contextmenu", onRightClick)
         .addTo(props.map);
 
       const element = circle.getElement();
