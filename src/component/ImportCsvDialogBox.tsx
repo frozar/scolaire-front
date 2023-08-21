@@ -13,7 +13,7 @@ import { uploadFile } from "../request";
 import { MessageLevelEnum, MessageTypeEnum, ReturnMessageType } from "../type";
 import { assertIsNode } from "../utils";
 import { fetchRamassage } from "../views/content/ramassage/Ramassage";
-import { fetchEtablissement } from "../views/content/schools/Etablissement";
+import { fetchEtablissement } from "../views/content/schools/SchoolsBoard";
 
 // HACK for the documentation to preserve the ClickOutside directive on save
 // https://www.solidjs.com/guides/typescript#use___
