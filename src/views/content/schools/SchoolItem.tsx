@@ -1,8 +1,9 @@
-import { Setter, createEffect, createSignal } from "solid-js";
+import { Setter, createEffect, createSignal, onMount } from "solid-js";
 // import { setRemoveRamassageConfirmation } from "../../../signaux";
 import { SchoolType } from "../../../_entities/school.entity";
 import Button from "../../../component/atom/Button";
 import { setDataToEdit, toggleEditStop } from "./EditSchool";
+import { globalChecked } from "./SchoolsBoard";
 import Checkbox from "./component/atom/Checkbox";
 import TableCells from "./component/molecule/TableCell";
 
@@ -25,8 +26,12 @@ export default function (props: {
     document.createElement("input")
   );
 
-  createEffect(() => {
+  onMount(() => {
     refCheckbox().checked = props.item.selected();
+  });
+
+  createEffect(() => {
+    if (globalChecked()) refCheckbox().checked = globalChecked();
   });
 
   return (

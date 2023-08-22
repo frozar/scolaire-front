@@ -26,10 +26,13 @@ function preventDefaultHandler(e: DragEvent) {
   e.preventDefault();
 }
 
+// TODO: checkbox selection when select all by GlobalCheckbox then deselect one and reselect all, here have a bug
+export const [globalChecked, setGlobalChecked] = createSignal<boolean>(false);
+
 export default function () {
   let schoolDiv!: HTMLDivElement;
 
-  const [refCheckbox, setRefCheckbox] = createSignal<HTMLInputElement>(
+  const [refCheckboxGlobal, setRefCheckbox] = createSignal<HTMLInputElement>(
     document.createElement("input")
   );
 
@@ -42,7 +45,13 @@ export default function () {
     getSchools().filter((school) => school.selected());
 
   createEffect(() => {
-    refCheckbox().checked = selectedSchools().length == getSchools().length;
+    refCheckboxGlobal().checked = globalChecked();
+  });
+
+  createEffect(() => {
+    if (filteredSchools().length == selectedSchools().length)
+      setGlobalChecked(true);
+    else setGlobalChecked(false);
   });
 
   const [displayImportCsvCanvas, setDisplayImportCsvCanvas] =
@@ -70,13 +79,7 @@ export default function () {
     schoolDiv.removeEventListener("dragover", preventDefaultHandler);
   });
 
-  // TODO: check why when checking global checkbox, only one item is selected
-  const globalCheckboxOnChange = () => {
-    getSchools().map((school) => {
-      school.setSelected(refCheckbox().checked);
-      console.log(school.selected(), refCheckbox().checked);
-    });
-  };
+  const globalCheckboxOnChange = () => setGlobalChecked((bool) => !bool);
 
   return (
     <>

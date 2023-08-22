@@ -7,6 +7,7 @@ import TableCell from "../schools/component/molecule/TableCell";
 import { setDataToEdit, toggleEditStop } from "./EditStop";
 import { globalChecked, setGlobalChecked } from "./StopsBoard";
 
+
 function handleClickEdit(item: StopType) {
   setDataToEdit(item);
   toggleEditStop();
