@@ -5,19 +5,19 @@ import ImportCsvCanvas from "../../../component/ImportCsvCanvas";
 import ImportCsvDialogBox from "../../../component/ImportCsvDialogBox";
 import PageTitle from "../../../component/atom/PageTitle";
 import RemoveRamassageConfirmation from "../../../userInformation/RemoveRamassageConfirmation";
-import { setSchools } from "../graphicage/component/organism/SchoolPoints";
 import {
   getStops,
   setStops,
 } from "../graphicage/component/organism/StopPoints";
-import SchoolItem from "../schools/SchoolItem";
 import Checkbox from "../schools/component/atom/Checkbox";
 import TableHeaderCell from "../schools/component/molecule/TableHeaderCell";
 import TableBody from "../schools/component/organism/TableBody";
 import TableHeader from "../schools/component/organism/TableHeader";
 import EditStop from "./EditStop";
-import Filters, { searchInputKeyword } from "./component/organism/Filters";
+import StopItem from "./StopItem";
 
+import TableWraper from "../schools/component/organism/TableWraper";
+import Filters, { searchInputKeyword } from "./component/organism/Filters";
 export async function fetchStop() {
   const stops: StopType[] = await StopService.getAll();
   setStops(stops.sort((a, b) => a.name.localeCompare(b.name)));
@@ -97,39 +97,34 @@ export default function () {
             <Filters />
           </header>
 
-          <div class="board-content">
-            <div class="h-[78vh]">
-              <table class="min-w-full">
-                <TableHeader>
-                  <TableHeaderCell>
-                    <Checkbox
-                      ariaDescribedby="school-item"
-                      name="school"
-                      ref={setRefCheckbox}
-                      onChange={globalCheckboxOnChange}
-                    />
-                  </TableHeaderCell>
-                  <TableHeaderCell>Nom</TableHeaderCell>
-                  <TableHeaderCell>Nombre de d'élèves</TableHeaderCell>
-                  <TableHeaderCell>Nombre de lignes</TableHeaderCell>
-                  <TableHeaderCell>Actions</TableHeaderCell>
-                </TableHeader>
-
-                <TableBody>
-                  <For each={filteredStops()}>
-                    {(fields) => {
-                      return (
-                        <SchoolItem
-                          item={fields}
-                          setEtablissements={setSchools}
-                        />
-                      );
-                    }}
-                  </For>
-                </TableBody>
-              </table>
-            </div>
-          </div>
+          <TableWraper>
+            <table class="min-w-full table-content">
+              <TableHeader>
+                <TableHeaderCell>
+                  <Checkbox
+                    ariaDescribedby="stop-item"
+                    name="stop"
+                    ref={setRefCheckbox}
+                    onChange={globalCheckboxOnChange}
+                  />
+                </TableHeaderCell>
+                <TableHeaderCell>Nom</TableHeaderCell>
+                <TableHeaderCell>Nombre d'élèves</TableHeaderCell>
+                <TableHeaderCell>
+                  Nombre d'établissements desservis
+                </TableHeaderCell>
+                <TableHeaderCell>Nombre de lignes</TableHeaderCell>
+                <TableHeaderCell>Actions</TableHeaderCell>
+              </TableHeader>
+              <TableBody>
+                <For each={filteredStops()}>
+                  {(fields) => {
+                    return <StopItem item={fields} setStops={setStops} />;
+                  }}
+                </For>
+              </TableBody>
+            </table>
+          </TableWraper>
         </div>
         <EditStop />
       </div>
