@@ -13,11 +13,7 @@ import { quitModeAddLine } from "../../shortcut";
 import SelectedSchool from "../atom/SelectedSchool";
 import "./AddLineInformationBoardContent.css";
 import AddLineInformationBoardContentFooter from "./AddLineInformationBoardContentFooter";
-<<<<<<< HEAD
-import { getBusLines, setBusLines } from "./BusLines";
-=======
-import { getBusLines, setBusLines } from "./BusLines";
->>>>>>> c369fb54 (plug the bus line creation with Xano)
+import { setBusLines } from "./BusLines";
 
 const [, { getLineUnderConstruction, setLineUnderConstruction }] =
   useStateAction();
@@ -104,10 +100,10 @@ async function createBusLine(busLine: BusLineType) {
   console.log("Create new busLine");
   const newBusLine: BusLineType = await BusLineService.create(busLine);
 
-  const busLines: BusLineType[] = getBusLines();
-  busLines.push(newBusLine);
-  setBusLines(busLines);
-  // add the newBusLine to the BusLines signal
+  setBusLines((prev) => {
+    prev.push(newBusLine);
+    return prev;
+  });
 }
 
 async function updateBusLine(busLine: BusLineType) {
@@ -160,4 +156,3 @@ function prevStep() {
   const step = currentStep() - 1;
   setCurrentStep(step > 0 ? step : 0);
 }
-
