@@ -27,23 +27,30 @@ function preventDefaultHandler(e: DragEvent) {
   e.preventDefault();
 }
 
+export const [refCheckboxGlobal, setRefCheckbox] =
+  createSignal<HTMLInputElement>(document.createElement("input"));
+
+export const [globalChecked, setGlobalChecked] = createSignal<boolean>(false);
+
 export default function () {
   let stopDiv!: HTMLDivElement;
   // let refCheckbox!: HTMLInputElement;
-  const [refCheckbox, setRefCheckbox] = createSignal<HTMLInputElement>(
-    document.createElement("input")
-  );
+
   const filteredStops = () =>
     getStops().filter((e) =>
       e.name.toLowerCase().includes(searchInputKeyword().toLowerCase())
     );
 
-  const selectedStops = () => getStops().filter((ram) => ram.selected);
+  const selectedStops = () => getStops().filter((ram) => ram.selected());
 
   createEffect(() => {
-    refCheckbox().checked =
-      filteredStops().length != 0 &&
-      selectedStops().length == filteredStops().length;
+    refCheckboxGlobal().checked = globalChecked();
+  });
+
+  createEffect(() => {
+    if (filteredStops().length == selectedStops().length)
+      setGlobalChecked(true);
+    else setGlobalChecked(false);
   });
 
   const [displayImportCsvCanvas, setDisplayImportCsvCanvas] =
@@ -71,13 +78,7 @@ export default function () {
     stopDiv.removeEventListener("dragover", preventDefaultHandler);
   });
 
-  // TODO: check why when checking global checkbox, only one item is selected
-  const globalCheckboxOnChange = () => {
-    getStops().map((stop) => {
-      stop.setSelected(refCheckbox().checked);
-      console.log(stop.selected(), refCheckbox().checked);
-    });
-  };
+  const globalCheckboxOnChange = () => setGlobalChecked((bool) => !bool);
 
   return (
     <>

@@ -1,10 +1,11 @@
-import { Setter, createEffect, createSignal } from "solid-js";
+import { Setter, createEffect, createSignal, onMount } from "solid-js";
 import { StopType } from "../../../_entities/stop.entity";
 import Button from "../../../component/atom/Button";
 import { setRemoveStopConfirmation } from "../../../signaux";
 import Checkbox from "../schools/component/atom/Checkbox";
 import TableCell from "../schools/component/molecule/TableCell";
 import { setDataToEdit, toggleEditStop } from "./EditStop";
+import { globalChecked, setGlobalChecked } from "./StopsBoard";
 
 function handleClickEdit(item: StopType) {
   setDataToEdit(item);
@@ -24,9 +25,18 @@ export default function (props: {
     document.createElement("input")
   );
 
-  createEffect(() => {
+  onMount(() => {
     refCheckbox().checked = props.item.selected();
   });
+
+  createEffect(() => {
+    if (globalChecked()) refCheckbox().checked = globalChecked();
+  });
+
+  const checkBoxOnChange = () => {
+    props.item.setSelected(refCheckbox().checked);
+    if (!props.item.selected()) setGlobalChecked(false);
+  };
 
   return (
     <tr>
@@ -35,9 +45,7 @@ export default function (props: {
           ariaDescribedby="school-item"
           name="school"
           ref={setRefCheckbox}
-          onChange={() => {
-            props.item.setSelected(refCheckbox().checked);
-          }}
+          onChange={checkBoxOnChange}
         />
       </TableCell>
       <TableCell>{props.item.name}</TableCell>
