@@ -3,6 +3,11 @@ export const COLOR_SCHOOL_POINT = "green";
 export const COLOR_STOP_POINT = "red";
 export const COLOR_POINT_EMPHASE = "yellow";
 
+export const GREEN_BASE = "#0CC683";
+export const RED_BASE = "#F44434";
+export const BLUE_BASE = "#062F3F";
+export const GRAY_BASe = "#AEB8B4";
+
 import L from "leaflet";
 import { TileType } from "../../../type";
 
