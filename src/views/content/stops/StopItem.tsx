@@ -20,7 +20,6 @@ export default function (props: {
   item: StopType;
   setStops: Setter<StopType[]>;
 }) {
-  // let refCheckbox!: HTMLInputElement;
   const [refCheckbox, setRefCheckbox] = createSignal<HTMLInputElement>(
     document.createElement("input")
   );

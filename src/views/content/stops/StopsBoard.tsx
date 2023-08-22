@@ -13,11 +13,11 @@ import Checkbox from "../schools/component/atom/Checkbox";
 import TableHeaderCell from "../schools/component/molecule/TableHeaderCell";
 import TableBody from "../schools/component/organism/TableBody";
 import TableHeader from "../schools/component/organism/TableHeader";
+import TableWraper from "../schools/component/organism/TableWraper";
 import EditStop from "./EditStop";
 import StopItem from "./StopItem";
-
-import TableWraper from "../schools/component/organism/TableWraper";
 import Filters, { searchInputKeyword } from "./component/organism/Filters";
+
 export async function fetchStop() {
   const stops: StopType[] = await StopService.getAll();
   setStops(stops.sort((a, b) => a.name.localeCompare(b.name)));
@@ -27,14 +27,13 @@ function preventDefaultHandler(e: DragEvent) {
   e.preventDefault();
 }
 
-export const [refCheckboxGlobal, setRefCheckbox] =
-  createSignal<HTMLInputElement>(document.createElement("input"));
-
 export const [globalChecked, setGlobalChecked] = createSignal<boolean>(false);
 
 export default function () {
   let stopDiv!: HTMLDivElement;
-  // let refCheckbox!: HTMLInputElement;
+  const [refCheckboxGlobal, setRefCheckbox] = createSignal<HTMLInputElement>(
+    document.createElement("input")
+  );
 
   const filteredStops = () =>
     getStops().filter((e) =>
