@@ -11,6 +11,8 @@ import "./AddLineInformationBoardContent.css";
 import AddLineInformationBoardContentFooter from "./AddLineInformationBoardContentFooter";
 import { updateBusLines } from "./BusLines";
 
+import "../../../../../css/timeline.css";
+
 const [, { getLineUnderConstruction, setLineUnderConstruction }] =
   useStateAction();
 
