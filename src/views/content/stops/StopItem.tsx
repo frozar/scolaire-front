@@ -1,7 +1,7 @@
 import { Setter, createEffect } from "solid-js";
 import { StopType } from "../../../_entities/stop.entity";
 import { setRemoveRamassageConfirmation } from "../../../signaux";
-import { setDataToEdit, toggleEditStop } from "./EditRamassage";
+import { setDataToEdit, toggleEditStop } from "./EditStop";
 
 function handleClickEdit(item: StopType) {
   setDataToEdit(item);

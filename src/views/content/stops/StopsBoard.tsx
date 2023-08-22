@@ -11,8 +11,8 @@ import ActionSelector from "../../../component/atom/ActionSelector";
 import Button from "../../../component/atom/Button";
 import PageTitle from "../../../component/atom/PageTitle";
 import RemoveRamassageConfirmation from "../../../userInformation/RemoveRamassageConfirmation";
-import EditStop, { setDataToEdit, toggleEditStop } from "./EditRamassage";
-import StopItems from "./RamassageItem";
+import EditStop, { setDataToEdit, toggleEditStop } from "./EditStop";
+import StopItems from "./StopItem";
 
 const [, { getActiveMapId }] = useStateGui();
 
