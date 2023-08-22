@@ -20,7 +20,7 @@ import StopItems from "./StopItem";
 
 const [, { getActiveMapId }] = useStateGui();
 
-export async function fetchRamassage() {
+export async function fetchStop() {
   const stops: StopType[] = await StopService.getAll();
   setStops(stops.sort((a, b) => a.name.localeCompare(b.name)));
 }
@@ -30,7 +30,7 @@ function preventDefaultHandler(e: DragEvent) {
 }
 
 export default function () {
-  let ramassageDiv!: HTMLDivElement;
+  let stopDiv!: HTMLDivElement;
   let refCheckbox!: HTMLInputElement;
 
   const [keyword, setKeyword] = createSignal("");
@@ -57,20 +57,20 @@ export default function () {
   }
 
   onMount(() => {
-    fetchRamassage();
-    ramassageDiv.addEventListener("dragenter", dragEnterHandler);
-    ramassageDiv.addEventListener("drop", preventDefaultHandler);
-    ramassageDiv.addEventListener("dragleave", preventDefaultHandler);
-    ramassageDiv.addEventListener("dragend", preventDefaultHandler);
-    ramassageDiv.addEventListener("dragover", preventDefaultHandler);
+    fetchStop();
+    stopDiv.addEventListener("dragenter", dragEnterHandler);
+    stopDiv.addEventListener("drop", preventDefaultHandler);
+    stopDiv.addEventListener("dragleave", preventDefaultHandler);
+    stopDiv.addEventListener("dragend", preventDefaultHandler);
+    stopDiv.addEventListener("dragover", preventDefaultHandler);
   });
 
   onCleanup(() => {
-    ramassageDiv.removeEventListener("dragenter", dragEnterHandler);
-    ramassageDiv.removeEventListener("drop", preventDefaultHandler);
-    ramassageDiv.removeEventListener("dragleave", preventDefaultHandler);
-    ramassageDiv.removeEventListener("dragend", preventDefaultHandler);
-    ramassageDiv.removeEventListener("dragover", preventDefaultHandler);
+    stopDiv.removeEventListener("dragenter", dragEnterHandler);
+    stopDiv.removeEventListener("drop", preventDefaultHandler);
+    stopDiv.removeEventListener("dragleave", preventDefaultHandler);
+    stopDiv.removeEventListener("dragend", preventDefaultHandler);
+    stopDiv.removeEventListener("dragover", preventDefaultHandler);
   });
 
   return (
@@ -80,11 +80,11 @@ export default function () {
         display={displayImportCsvCanvas()}
         setDisplay={setDisplayImportCsvCanvas}
         callbackSuccess={() => {
-          fetchRamassage();
+          fetchStop();
         }}
       />
       <RemoveRamassageConfirmation />
-      <div class="flex w-full bg-white" ref={ramassageDiv}>
+      <div class="flex w-full bg-white" ref={stopDiv}>
         <div id="ramassages-board">
           <header>
             <div>
@@ -139,8 +139,8 @@ export default function () {
                         type="checkbox"
                         class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600 relative right-2"
                         onChange={(e) => {
-                          setStops((ramassages) =>
-                            ramassages.map((eta) => ({
+                          setStops((stops) =>
+                            stops.map((eta) => ({
                               ...eta,
                               selected: e.target.checked,
                             }))

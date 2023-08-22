@@ -13,7 +13,7 @@ import { uploadFile } from "../request";
 import { MessageLevelEnum, MessageTypeEnum, ReturnMessageType } from "../type";
 import { assertIsNode } from "../utils";
 import { fetchSchool } from "../views/content/schools/SchoolsBoard";
-import { fetchRamassage } from "../views/content/stops/StopsBoard";
+import { fetchStop } from "../views/content/stops/StopsBoard";
 
 // HACK for the documentation to preserve the ClickOutside directive on save
 // https://www.solidjs.com/guides/typescript#use___
@@ -131,7 +131,7 @@ export default function () {
             fetchSchool();
             break;
           case "ramassages":
-            fetchRamassage();
+            fetchStop();
             break;
         }
       })
