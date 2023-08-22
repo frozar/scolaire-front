@@ -1,4 +1,7 @@
 export const COLOR_LINE_UNDER_CONSTRUCTION = "#0000FF";
+export const COLOR_SCHOOL_POINT = "green";
+export const COLOR_STOP_POINT = "red";
+export const COLOR_POINT_EMPHASE = "yellow";
 
 import L from "leaflet";
 import { TileType } from "../../../type";
