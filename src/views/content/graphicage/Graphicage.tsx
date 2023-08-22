@@ -1,6 +1,5 @@
 import { Show, createSignal, onCleanup, onMount } from "solid-js";
 
-import { useStateAction } from "../../../StateAction";
 import { useStateGui } from "../../../StateGui";
 
 import { buildMapL7 } from "./l7MapBuilder";
@@ -18,10 +17,8 @@ import { listHandlerLMap } from "./shortcut";
 
 import "leaflet/dist/leaflet.css";
 import { getLeafletMap } from "../../../signaux";
-import LineUnderConstruction from "./component/organism/LineUnderConstruction";
 import { Points } from "./component/organism/Points";
 
-const [, { isInAddLineMode, getLineUnderConstruction }] = useStateAction();
 const [, { getActiveMapId }] = useStateGui();
 function buildMap(div: HTMLDivElement) {
   const option = "l7";
@@ -73,12 +70,6 @@ export default function () {
       <InformationBoard />
       <div ref={mapDiv} id="main-map" />
       <Points leafletMap={getLeafletMap() as L.Map} />
-      <Show when={isInAddLineMode()}>
-        <LineUnderConstruction
-          stops={getLineUnderConstruction().busLine.points}
-          leafletMap={getLeafletMap() as L.Map}
-        />
-      </Show>
       <BusLines map={getLeafletMap() as L.Map} />
       <div class="z-[1000] absolute top-[45%] right-[15px]">
         <RightMapMenu />

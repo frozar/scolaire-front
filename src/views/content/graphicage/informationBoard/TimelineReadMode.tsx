@@ -3,13 +3,9 @@ import {
   BusLinePointType,
   BusLineType,
 } from "../../../../_entities/bus-line.entity";
-import { PointInterface } from "../component/atom/Point";
 import TimelineItemReadMode from "../component/atom/TimelineItemReadMode";
-
-interface itemInfoToDisplayInterface {
-  point: PointInterface;
-  quantity: number;
-}
+import UpdateLineButton from "../component/atom/UpdateLineButton";
+import { getSelectedBusLine } from "../component/organism/BusLines";
 
 const [pointsToDisplay, setPointsToDisplay] = createSignal<BusLinePointType[]>(
   []
@@ -28,6 +24,9 @@ export default function (props: { line: () => BusLineType | undefined }) {
 
   return (
     <div class="timeline">
+      <div class="timeline-tools">
+        <UpdateLineButton busLine={getSelectedBusLine() as BusLineType} />
+      </div>
       <div
         class="v-timeline v-timeline--align-start v-timeline--justify-auto v-timeline--side-end v-timeline--vertical"
         style={{ "--v-timeline-line-thickness": "2px" }}

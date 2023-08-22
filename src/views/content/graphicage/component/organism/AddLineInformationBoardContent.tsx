@@ -9,6 +9,7 @@ import { quitModeAddLine } from "../../shortcut";
 import SelectedSchool from "../atom/SelectedSchool";
 import "./AddLineInformationBoardContent.css";
 import AddLineInformationBoardContentFooter from "./AddLineInformationBoardContentFooter";
+import { updateBusLines } from "./BusLines";
 
 const [, { getLineUnderConstruction, setLineUnderConstruction }] =
   useStateAction();
@@ -44,6 +45,9 @@ function nextStep() {
     case drawModeStep.validationStep:
       console.log("Validation finale");
       console.log(getLineUnderConstruction().busLine);
+
+      //TODO Fetch to have id bus line
+      updateBusLines(getLineUnderConstruction().busLine);
       quitModeAddLine();
       break;
     default:
@@ -59,6 +63,9 @@ function prevStep() {
       quitModeAddLine();
       break;
     case drawModeStep.stopSelection:
+      if (getLineUnderConstruction().busLine.id) {
+        quitModeAddLine();
+      }
       setLineUnderConstruction(defaultLineUnderConstruction());
       break;
     case drawModeStep.polylineEdition:

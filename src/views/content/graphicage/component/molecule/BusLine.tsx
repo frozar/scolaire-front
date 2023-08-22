@@ -8,6 +8,10 @@ import {
 import { setRemoveConfirmation } from "../../../../../signaux";
 import { setPickerColor } from "../atom/ColorPicker";
 import Line from "../atom/Line";
+import {
+  currentStep,
+  drawModeStep,
+} from "../organism/AddLineInformationBoardContent";
 import { deselectAllBusLines } from "../organism/BusLines";
 import { deselectAllPoints } from "../organism/Points";
 
@@ -18,22 +22,23 @@ export type BusLineProps = {
   map: L.Map;
 };
 
-const [localLatLngs, setLocalLatLngs] = createSignal<L.LatLng[]>([]);
-const [localOpacity, setLocalOpacity] = createSignal<number>(1);
-
 export function BusLine(props: BusLineProps) {
-  // eslint-disable-next-line solid/reactivity
-  const line = props.line;
+  const [localLatLngs, setLocalLatLngs] = createSignal<L.LatLng[]>([]);
+  const [localOpacity, setLocalOpacity] = createSignal<number>(1);
   // eslint-disable-next-line solid/reactivity
   createEffect(async () => {
     // TODO Put to BusLineEntity
     // const latlngs: L.LatLng[] = await OsrmService.getRoadPolyline(line.points);
     // line.setLatLngs(latlngs);
-    if (isInReadMode() && line.latLngs().length != 0) {
-      setLocalLatLngs(line.latLngs());
+
+    if (
+      currentStep() != drawModeStep.stopSelection &&
+      props.line.latLngs().length != 0
+    ) {
+      setLocalLatLngs(props.line.latLngs());
       setLocalOpacity(0.8);
     } else {
-      setLocalLatLngs(getLatLngsFromPoint(line.points));
+      setLocalLatLngs(getLatLngsFromPoint(props.line.points));
       setLocalOpacity(1);
     }
   });
@@ -48,7 +53,7 @@ export function BusLine(props: BusLineProps) {
   const onMouseOut = (polyline: L.Polyline, arrows: L.Marker[]) => {
     // if (!line.selected() && (isInRemoveLineMode() || isInReadMode())) {
     if (isInRemoveLineMode() || isInReadMode()) {
-      buslineSetNormalStyle(polyline, arrows, line.color());
+      buslineSetNormalStyle(polyline, arrows, props.line.color());
     }
   };
 
@@ -57,15 +62,15 @@ export function BusLine(props: BusLineProps) {
       //TODO fonction à explorer
       setRemoveConfirmation({
         displayed: true,
-        idBusLine: line.id,
+        idBusLine: props.line.id ?? null,
       });
     }
 
     if (isInReadMode()) {
       deselectAllBusLines();
       deselectAllPoints();
-      setPickerColor(line.color());
-      line.setSelected(true);
+      setPickerColor(props.line.color());
+      props.line.setSelected(true);
     }
   };
 

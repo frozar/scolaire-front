@@ -4,9 +4,10 @@ import { useStateAction } from "../../../../../StateAction";
 import { BusLineType } from "../../../../../_entities/bus-line.entity";
 import { BusLineService } from "../../../../../_services/bus-line.service";
 import { BusLine } from "../molecule/BusLine";
+import { currentStep, drawModeStep } from "./AddLineInformationBoardContent";
 import { pointsReady } from "./Points";
 
-const [, { isInReadMode }] = useStateAction();
+const [, { getLineUnderConstruction }] = useStateAction();
 
 export const arrowsMap = new Map<number, L.Marker[]>();
 
@@ -22,6 +23,7 @@ export type BusLinesProps = {
 };
 
 export function BusLines(props: BusLinesProps) {
+  // eslint-disable-next-line solid/reactivity
   createEffect(async () => {
     if (pointsReady()) {
       const lines = await BusLineService.getAll();
@@ -34,13 +36,13 @@ export function BusLines(props: BusLinesProps) {
   });
 
   const busLinesFilter = () => {
-    if (!isInReadMode()) {
+    if (currentStep() > drawModeStep.start) {
       // delete all arrows
       arrowsMap.forEach((arrows) =>
         arrows.map((arrow) => props.map.removeLayer(arrow))
       );
       arrowsMap.clear();
-      return [];
+      return [getLineUnderConstruction().busLine];
     }
     return getBusLines();
   };
@@ -67,3 +69,11 @@ export const getSelectedBusLine = (): BusLineType | undefined => {
 
   return selectedBusLine;
 };
+
+export function updateBusLines(busLine: BusLineType) {
+  let newBusLines = getBusLines();
+  if (busLine.id) {
+    newBusLines = getBusLines().filter((busline) => busline.id != busLine.id);
+  }
+  setBusLines([...newBusLines, busLine]);
+}
