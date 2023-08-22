@@ -5,7 +5,7 @@ import { StopType } from "../../../_entities/stop.entity";
 import { StopService } from "../../../_services/stop.service";
 import { addNewUserInformation } from "../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../type";
-import { ramassages, setRamassages } from "./Ramassage";
+import { ramassages, setRamassages } from "./StopsBoard";
 
 export const [toggledEditStop, setToggledEditStop] = createSignal(false);
 
