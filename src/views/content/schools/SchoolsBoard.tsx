@@ -26,7 +26,7 @@ function preventDefaultHandler(e: DragEvent) {
   e.preventDefault();
 }
 
-// TODO: checkbox selection when select all by GlobalCheckbox then deselect one and reselect all, here have a bug
+// TODO: checkbox selection when select all by GlobalCheckbox then deselect one and reselect the deselected, here have a bug
 export const [globalChecked, setGlobalChecked] = createSignal<boolean>(false);
 
 export default function () {
