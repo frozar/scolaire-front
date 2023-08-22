@@ -5,7 +5,7 @@ import ClickOutside from "../component/ClickOutside";
 import {
   addNewUserInformation,
   closeRemoveRamassageConfirmationBox,
-  getRemoveRamassageConfirmation,
+  getRemoveStopConfirmation,
 } from "../signaux";
 
 // import { deleteRamassage } from "../request";
@@ -23,9 +23,9 @@ import {
 false && ClickOutside;
 
 export default function () {
-  const displayed = () => getRemoveRamassageConfirmation()["displayed"];
-  const id_ramassage = () => getRemoveRamassageConfirmation().item?.id;
-  const name_ramassage = () => getRemoveRamassageConfirmation().item?.name;
+  const displayed = () => getRemoveStopConfirmation()["displayed"];
+  const id_ramassage = () => getRemoveStopConfirmation().item?.id;
+  const name_ramassage = () => getRemoveStopConfirmation().item?.name;
 
   async function handlerOnClickValider() {
     const idToCheck = id_ramassage();
@@ -180,7 +180,7 @@ export default function () {
                           <li>
                             le nombre d'élèves allant vers un établissement (
                             <span class="font-semibold text-sm text-gray-900">
-                              {getRemoveRamassageConfirmation().item?.associated.reduce(
+                              {getRemoveStopConfirmation().item?.associated.reduce(
                                 (acc, school) => acc + school.quantity,
                                 0
                               )}

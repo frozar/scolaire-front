@@ -67,7 +67,7 @@ export const [getImportCsvBox, setImportCsvBox] =
     displayed: false,
   });
 
-export const [getRemoveRamassageConfirmation, setRemoveRamassageConfirmation] =
+export const [getRemoveStopConfirmation, setRemoveStopConfirmation] =
   createSignal({
     displayed: false,
     item: null,
@@ -133,7 +133,7 @@ export function closeRemoveConfirmationBox() {
   });
 }
 export function closeRemoveRamassageConfirmationBox() {
-  setRemoveRamassageConfirmation({
+  setRemoveStopConfirmation({
     displayed: false,
     item: null,
   });

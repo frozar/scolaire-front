@@ -1,7 +1,7 @@
 import { Setter, createEffect, createSignal } from "solid-js";
 import { StopType } from "../../../_entities/stop.entity";
 import Button from "../../../component/atom/Button";
-import { setRemoveRamassageConfirmation } from "../../../signaux";
+import { setRemoveStopConfirmation } from "../../../signaux";
 import Checkbox from "../schools/component/atom/Checkbox";
 import TableCell from "../schools/component/molecule/TableCell";
 import { setDataToEdit, toggleEditStop } from "./EditStop";
@@ -12,7 +12,7 @@ function handleClickEdit(item: StopType) {
 }
 
 function handleClickSuppression(item: StopType) {
-  setRemoveRamassageConfirmation({ displayed: true, item });
+  setRemoveStopConfirmation({ displayed: true, item });
 }
 
 export default function (props: {
