@@ -9,6 +9,7 @@ import {
   getSchools,
   setSchools,
 } from "../graphicage/component/organism/SchoolPoints";
+import EditSchool from "./EditSchool";
 import SchoolItem from "./SchoolItem";
 import Checkbox from "./component/atom/Checkbox";
 import TableHeaderCell from "./component/molecule/TableHeaderCell";
@@ -16,7 +17,7 @@ import Filters, { searchInputKeyword } from "./component/organism/Filters";
 import TableBody from "./component/organism/TableBody";
 import TableHeader from "./component/organism/TableHeader";
 
-export async function fetchEtablissement() {
+export async function fetchSchool() {
   const schools: SchoolType[] = await SchoolService.getAll();
   setSchools(schools.sort((a, b) => a.name.localeCompare(b.name)));
 }
@@ -53,7 +54,7 @@ export default function () {
   }
 
   onMount(async () => {
-    await fetchEtablissement();
+    await fetchSchool();
     schoolDiv.addEventListener("dragenter", dragEnterHandler);
     schoolDiv.addEventListener("drop", preventDefaultHandler);
     schoolDiv.addEventListener("dragleave", preventDefaultHandler);
@@ -84,7 +85,7 @@ export default function () {
         display={displayImportCsvCanvas()}
         setDisplay={setDisplayImportCsvCanvas}
         callbackSuccess={() => {
-          fetchEtablissement();
+          fetchSchool();
         }}
       />
       <RemoveRamassageConfirmation />
@@ -98,40 +99,38 @@ export default function () {
           </header>
 
           <div class="board-content">
-            <div class="h-[78vh]">
-              <table class="min-w-full">
-                <TableHeader>
-                  <TableHeaderCell>
-                    <Checkbox
-                      ariaDescribedby="school-item"
-                      name="school"
-                      ref={setRefCheckbox}
-                      onChange={globalCheckboxOnChange}
-                    />
-                  </TableHeaderCell>
-                  <TableHeaderCell>Nom</TableHeaderCell>
-                  <TableHeaderCell>Nombre de d'élèves</TableHeaderCell>
-                  <TableHeaderCell>Nombre de lignes</TableHeaderCell>
-                  <TableHeaderCell>Actions</TableHeaderCell>
-                </TableHeader>
+            <table class="min-w-full">
+              <TableHeader>
+                <TableHeaderCell>
+                  <Checkbox
+                    ariaDescribedby="school-item"
+                    name="school"
+                    ref={setRefCheckbox}
+                    onChange={globalCheckboxOnChange}
+                  />
+                </TableHeaderCell>
+                <TableHeaderCell>Nom</TableHeaderCell>
+                <TableHeaderCell>Nombre de d'élèves</TableHeaderCell>
+                <TableHeaderCell>Nombre de lignes</TableHeaderCell>
+                <TableHeaderCell>Actions</TableHeaderCell>
+              </TableHeader>
 
-                <TableBody>
-                  <For each={filteredSchools()}>
-                    {(fields) => {
-                      return (
-                        <SchoolItem
-                          item={fields}
-                          setEtablissements={setSchools}
-                        />
-                      );
-                    }}
-                  </For>
-                </TableBody>
-              </table>
-            </div>
+              <TableBody>
+                <For each={filteredSchools()}>
+                  {(fields) => {
+                    return (
+                      <SchoolItem
+                        item={fields}
+                        setEtablissements={setSchools}
+                      />
+                    );
+                  }}
+                </For>
+              </TableBody>
+            </table>
           </div>
         </div>
-        {/* <EditStop /> */}
+        <EditSchool />
       </div>
     </>
   );
