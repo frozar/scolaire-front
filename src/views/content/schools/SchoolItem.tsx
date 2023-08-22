@@ -19,7 +19,7 @@ function handleClickSuppression(item: SchoolType) {
 
 export default function (props: {
   item: SchoolType;
-  setEtablissements: Setter<SchoolType[]>;
+  setSchools: Setter<SchoolType[]>;
 }) {
   const [refCheckbox, setRefCheckbox] = createSignal<HTMLInputElement>(
     document.createElement("input")

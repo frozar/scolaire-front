@@ -118,12 +118,7 @@ export default function () {
               <TableBody>
                 <For each={filteredSchools()}>
                   {(fields) => {
-                    return (
-                      <SchoolItem
-                        item={fields}
-                        setEtablissements={setSchools}
-                      />
-                    );
+                    return <SchoolItem item={fields} setSchools={setSchools} />;
                   }}
                 </For>
               </TableBody>
