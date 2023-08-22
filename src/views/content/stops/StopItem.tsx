@@ -1,6 +1,9 @@
-import { Setter, createEffect } from "solid-js";
+import { Setter, createEffect, createSignal } from "solid-js";
 import { StopType } from "../../../_entities/stop.entity";
+import Button from "../../../component/atom/Button";
 import { setRemoveRamassageConfirmation } from "../../../signaux";
+import Checkbox from "../schools/component/atom/Checkbox";
+import TableCell from "../schools/component/molecule/TableCell";
 import { setDataToEdit, toggleEditStop } from "./EditStop";
 
 function handleClickEdit(item: StopType) {
@@ -14,61 +17,55 @@ function handleClickSuppression(item: StopType) {
 
 export default function (props: {
   item: StopType;
-  setRamassages: Setter<StopType[]>;
+  setStops: Setter<StopType[]>;
 }) {
-  let refCheckbox!: HTMLInputElement;
+  // let refCheckbox!: HTMLInputElement;
+  const [refCheckbox, setRefCheckbox] = createSignal<HTMLInputElement>(
+    document.createElement("input")
+  );
 
   createEffect(() => {
-    refCheckbox.checked = props.item.selected;
+    refCheckbox().checked = props.item.selected();
   });
 
   return (
     <tr>
-      <td class="flex items-center">
-        <input
-          aria-describedby="ramassage-item"
-          name="ramassage"
-          type="checkbox"
-          class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600 relative right-2"
-          onChange={(e) => {
-            const isItemChecked = e.target.checked;
-            const itemId = props.item.id;
-
-            props.setRamassages((ramassage) =>
-              ramassage.map((eta) =>
-                eta.id === itemId ? { ...eta, selected: isItemChecked } : eta
-              )
-            );
+      <TableCell>
+        <Checkbox
+          ariaDescribedby="school-item"
+          name="school"
+          ref={setRefCheckbox}
+          onChange={() => {
+            props.item.setSelected(refCheckbox().checked);
           }}
-          ref={refCheckbox}
         />
-        {props.item.name}
-      </td>
-      <td>
+      </TableCell>
+      <TableCell>{props.item.name}</TableCell>
+      <TableCell>
+        {" "}
         {props.item.associated.reduce(
           (acc, school) => acc + school.quantity,
           0
         )}
-      </td>
-      <td>{props.item.associated.length}</td>
-      {/* TODO importer les lignes depuis Xano */}
-      {/* <td>{props.item.lines.length}</td> */}
-      <td>todo</td>
-      <td>
-        <button
-          onClick={() => handleClickEdit(props.item)}
-          class="text-[#0CC683] hover:text-indigo-600 mr-2"
-        >
-          Editer
-        </button>
+      </TableCell>
+      <TableCell>{props.item.associated.length}</TableCell>
+      <TableCell>Todo</TableCell>
+      <TableCell>
+        <div class="flex gap-2">
+          <Button
+            onClick={() => handleClickEdit(props.item)}
+            label="Editer"
+            variant="borderless"
+          />
 
-        <button
-          class="text-[#0CC683] hover:text-indigo-600"
-          onClick={() => handleClickSuppression(props.item)}
-        >
-          Supprimer
-        </button>
-      </td>
+          <Button
+            onClick={() => handleClickSuppression(props.item)}
+            label="Supprimer"
+            variant="borderless"
+            isDisabled={true}
+          />
+        </div>
+      </TableCell>
     </tr>
   );
 }
