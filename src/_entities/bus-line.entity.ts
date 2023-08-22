@@ -71,6 +71,18 @@ export class BusLineEntity {
         polyline: EntityUtils.buildLocationPath(line.latLngs()),
       };
     }
+    if (line.name) {
+      output = {
+        ...output,
+        name: line.name,
+      };
+    }
+    if (line.points) {
+      output = {
+        ...output,
+        bus_line_stop: formatBusLinePointDBType(line.points),
+      };
+    }
 
     return output;
   }
