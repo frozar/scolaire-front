@@ -20,7 +20,10 @@ export class SchoolService {
   }
 
   static async update(
-    school: Omit<SchoolType, "associated" | "selected">
+    school: Omit<
+      SchoolType,
+      "associated" | "selected" | "setSelected" | "nature" | "leafletId"
+    >
   ): Promise<SchoolType> {
     const data = SchoolEntity.dbFormat(school);
     const dbSchool: SchoolDBType = await ServiceUtils.patch(
