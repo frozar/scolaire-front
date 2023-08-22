@@ -13,7 +13,7 @@ import { quitModeAddLine } from "../../shortcut";
 import SelectedSchool from "../atom/SelectedSchool";
 import "./AddLineInformationBoardContent.css";
 import AddLineInformationBoardContentFooter from "./AddLineInformationBoardContentFooter";
-import { setBusLines } from "./BusLines";
+import { updateBusLines } from "./BusLines";
 
 const [, { getLineUnderConstruction, setLineUnderConstruction }] =
   useStateAction();
@@ -100,10 +100,7 @@ async function createBusLine(busLine: BusLineType) {
   console.log("Create new busLine");
   const newBusLine: BusLineType = await BusLineService.create(busLine);
 
-  setBusLines((prev) => {
-    prev.push(newBusLine);
-    return prev;
-  });
+  updateBusLines(newBusLine);
 }
 
 async function updateBusLine(busLine: BusLineType) {
