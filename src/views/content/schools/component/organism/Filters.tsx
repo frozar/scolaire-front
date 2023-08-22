@@ -4,7 +4,7 @@ import ExportCsvButton from "../../../../../component/ExportCsvButton";
 import ImportCsvButton from "../../../../../component/ImportCsvButton";
 import ActionSelector from "../../../../../component/atom/ActionSelector";
 import Button from "../../../../../component/atom/Button";
-import { setDataToEdit, toggleEditStop } from "../../EditEtablissement";
+import { setDataToEdit, toggleEditStop } from "../../EditSchool";
 import InputSearch from "../molecule/InputSearch";
 import "./Filters.css";
 

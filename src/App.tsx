@@ -15,7 +15,7 @@ import Graphicage from "./views/content/graphicage/Graphicage";
 import { setPointsReady } from "./views/content/graphicage/component/organism/Points";
 import ExportConfirmationDialogBox from "./views/content/graphicage/rightMapMenu/export/ExportConfirmationDialogBox";
 import Ramassage from "./views/content/ramassage/Ramassage";
-import Etablissement from "./views/content/schools/Etablissement";
+import SchoolsBoard from "./views/content/schools/SchoolsBoard";
 
 const [, { isInAddLineMode }] = useStateAction();
 const [, { getSelectedMenu }] = useStateGui();
@@ -66,7 +66,7 @@ export default () => {
           </Match>
 
           <Match when={getSelectedMenu() == "etablissements"}>
-            <Etablissement />
+            <SchoolsBoard />
           </Match>
 
           <Match when={getSelectedMenu() == "ramassages"}>

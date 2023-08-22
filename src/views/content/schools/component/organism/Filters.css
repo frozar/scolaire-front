@@ -2,10 +2,12 @@
   @apply flex justify-between w-full my-5;
 }
 
-#filters > .left {
-  @apply flex gap-3;
+#filters > .left,
+.right {
+  @apply flex gap-3 items-center;
 }
 
-#filters > .right {
-  @apply flex gap-3;
+#filters > .right > button,
+.left > button {
+  margin: 0;
 }

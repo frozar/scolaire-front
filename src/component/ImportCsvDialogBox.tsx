@@ -13,7 +13,7 @@ import { uploadFile } from "../request";
 import { MessageLevelEnum, MessageTypeEnum, ReturnMessageType } from "../type";
 import { assertIsNode } from "../utils";
 import { fetchRamassage } from "../views/content/ramassage/Ramassage";
-import { fetchEtablissement } from "../views/content/schools/Etablissement";
+import { fetchSchool } from "../views/content/schools/SchoolsBoard";
 
 // HACK for the documentation to preserve the ClickOutside directive on save
 // https://www.solidjs.com/guides/typescript#use___
@@ -128,7 +128,7 @@ export default function () {
       .finally(() => {
         switch (getSelectedMenu()) {
           case "etablissements":
-            fetchEtablissement();
+            fetchSchool();
             break;
           case "ramassages":
             fetchRamassage();

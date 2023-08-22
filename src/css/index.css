@@ -284,10 +284,6 @@ code {
   @apply w-full mx-16 mt-5;
 }
 
-#ramassages-board > header > h1 {
-  @apply text-2xl;
-}
-
 #ramassages-board > .board-content {
   @apply mt-8 flow-root mx-8;
 }
@@ -398,4 +394,8 @@ code {
   border-bottom-width: 2px;
   min-height: 2.2em;
   min-width: 2.2em;
+}
+
+.content-pane {
+  @apply flex w-full bg-white;
 }

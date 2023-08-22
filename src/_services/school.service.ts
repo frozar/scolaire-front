@@ -12,7 +12,10 @@ export class SchoolService {
   }
 
   static async create(
-    school: Omit<SchoolType, "id" | "selected" | "associated">
+    school: Omit<
+      SchoolType,
+      "id" | "selected" | "associated" | "setSelected" | "nature" | "leafletId"
+    >
   ): Promise<SchoolType> {
     const data = SchoolEntity.dbFormat(school);
     const dbSchool: SchoolDBType = await ServiceUtils.post("/school", data);
@@ -20,7 +23,10 @@ export class SchoolService {
   }
 
   static async update(
-    school: Omit<SchoolType, "associated" | "selected">
+    school: Omit<
+      SchoolType,
+      "associated" | "selected" | "setSelected" | "nature" | "leafletId"
+    >
   ): Promise<SchoolType> {
     const data = SchoolEntity.dbFormat(school);
     const dbSchool: SchoolDBType = await ServiceUtils.patch(

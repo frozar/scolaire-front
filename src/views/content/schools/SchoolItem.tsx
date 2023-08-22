@@ -2,7 +2,7 @@ import { Setter, createEffect, createSignal } from "solid-js";
 // import { setRemoveRamassageConfirmation } from "../../../signaux";
 import { SchoolType } from "../../../_entities/school.entity";
 import Button from "../../../component/atom/Button";
-import { setDataToEdit, toggleEditStop } from "./EditEtablissement";
+import { setDataToEdit, toggleEditStop } from "./EditSchool";
 import Checkbox from "./component/atom/Checkbox";
 import TableCells from "./component/molecule/TableCell";
 
@@ -26,25 +26,18 @@ export default function (props: {
   );
 
   createEffect(() => {
-    refCheckbox().checked = props.item.selected;
+    refCheckbox().checked = props.item.selected();
   });
 
   return (
     <tr>
       <TableCells>
         <Checkbox
-          ariaDescribedby="etablissement-item"
-          name="etablissement"
+          ariaDescribedby="school-item"
+          name="school"
           ref={setRefCheckbox}
           onChange={() => {
-            const isItemChecked = refCheckbox().checked;
-            const itemId = props.item.id;
-
-            props.setEtablissements((etablissements) =>
-              etablissements.map((eta) =>
-                eta.id === itemId ? { ...eta, selected: isItemChecked } : eta
-              )
-            );
+            props.item.setSelected(refCheckbox().checked);
           }}
         />
       </TableCells>
