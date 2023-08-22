@@ -11,16 +11,18 @@ import ActionSelector from "../../../component/atom/ActionSelector";
 import Button from "../../../component/atom/Button";
 import PageTitle from "../../../component/atom/PageTitle";
 import RemoveRamassageConfirmation from "../../../userInformation/RemoveRamassageConfirmation";
+import {
+  getStops,
+  setStops,
+} from "../graphicage/component/organism/StopPoints";
 import EditStop, { setDataToEdit, toggleEditStop } from "./EditStop";
 import StopItems from "./StopItem";
 
 const [, { getActiveMapId }] = useStateGui();
 
-export const [ramassages, setRamassages] = createSignal<StopType[]>([]);
-
 export async function fetchRamassage() {
   const stops: StopType[] = await StopService.getAll();
-  setRamassages(stops.sort((a, b) => a.name.localeCompare(b.name)));
+  setStops(stops.sort((a, b) => a.name.localeCompare(b.name)));
 }
 
 function preventDefaultHandler(e: DragEvent) {
@@ -34,11 +36,11 @@ export default function () {
   const [keyword, setKeyword] = createSignal("");
 
   const filteredRamassages = () =>
-    ramassages().filter((e) =>
+    getStops().filter((e) =>
       e.name.toLowerCase().includes(keyword().toLowerCase())
     );
 
-  const selectedRamassages = () => ramassages().filter((ram) => ram.selected);
+  const selectedRamassages = () => getStops().filter((ram) => ram.selected);
 
   createEffect(() => {
     refCheckbox.checked =
@@ -137,7 +139,7 @@ export default function () {
                         type="checkbox"
                         class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600 relative right-2"
                         onChange={(e) => {
-                          setRamassages((ramassages) =>
+                          setStops((ramassages) =>
                             ramassages.map((eta) => ({
                               ...eta,
                               selected: e.target.checked,
@@ -159,7 +161,7 @@ export default function () {
                 <tbody>
                   <For each={filteredRamassages()}>
                     {(fields) => (
-                      <StopItems item={fields} setRamassages={setRamassages} />
+                      <StopItems item={fields} setRamassages={setStops} />
                     )}
                   </For>
                 </tbody>

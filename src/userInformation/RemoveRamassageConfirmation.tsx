@@ -12,7 +12,11 @@ import {
 import { StopService } from "../_services/stop.service";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { assertIsNode } from "../utils";
-import { ramassages, setRamassages } from "../views/content/stops/StopsBoard";
+import {
+  getStops,
+  setStops,
+} from "../views/content/graphicage/component/organism/StopPoints";
+// import { getStops, setStops } from "../views/content/stops/StopsBoard";
 
 // HACK for the documentation to preserve the ClickOutside directive on save
 // https://www.solidjs.com/guides/typescript#use___
@@ -34,7 +38,7 @@ export default function () {
     const isDeleted: boolean = await StopService.delete(idToRemove);
     if (isDeleted) {
       closeRemoveRamassageConfirmationBox();
-      setRamassages(ramassages().filter((stop) => stop.id != idToRemove));
+      setStops(getStops().filter((stop) => stop.id != idToRemove));
       addNewUserInformation({
         displayed: true,
         level: MessageLevelEnum.success,
