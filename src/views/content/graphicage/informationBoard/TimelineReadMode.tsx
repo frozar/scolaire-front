@@ -7,6 +7,8 @@ import TimelineItemReadMode from "../component/atom/TimelineItemReadMode";
 import UpdateLineButton from "../component/atom/UpdateLineButton";
 import { getSelectedBusLine } from "../component/organism/BusLines";
 
+import "../../../../css/timeline.css";
+
 const [pointsToDisplay, setPointsToDisplay] = createSignal<BusLinePointType[]>(
   []
 );

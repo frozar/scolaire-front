@@ -12,6 +12,8 @@ import { StopType } from "../../../../_entities/stop.entity";
 import { BusLineInformationBoardContent } from "../component/organism/BusLineInformationBoardContent";
 import "./InformationContent.css";
 
+import "../../../../css/timeline.css";
+
 const [, { isInAddLineMode, resetLineUnderConstruction }] = useStateAction();
 
 export default function () {
