@@ -1,15 +1,21 @@
 import { createSignal, For } from "solid-js";
+import { NatureEnum } from "../../../../../type";
 import EtablissementItem from "../../SchoolItem";
 import TableBody from "./TableBody";
 
 describe("TableBody component with etablissement item row", () => {
+  const [selected, setSelected] = createSignal(false);
   const [items, setItems] = createSignal([
     {
+      leafletId: 1,
       id: 1,
       name: "Ecole DE BEAUMONT",
       lon: 1,
       lat: 1,
-      selected: false,
+      selected: selected,
+      setSelected: setSelected,
+      quantity: 0,
+      nature: NatureEnum.school,
       associated: [
         {
           id: 2,
@@ -19,11 +25,15 @@ describe("TableBody component with etablissement item row", () => {
       ],
     },
     {
+      leafletId: 1,
       id: 2,
       name: "Ecole DE BEAUMONT",
       lon: 1,
       lat: 1,
-      selected: false,
+      selected: selected,
+      setSelected: setSelected,
+      quantity: 0,
+      nature: NatureEnum.school,
       associated: [
         {
           id: 1,

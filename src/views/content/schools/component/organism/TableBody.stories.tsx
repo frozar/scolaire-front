@@ -1,6 +1,7 @@
 import { For, createSignal } from "solid-js";
 import { Meta, StoryObj } from "storybook-solidjs";
 
+import { NatureEnum } from "../../../../../type";
 import EtablissementItem from "../../SchoolItem";
 import TableBodyComponent from "./TableBody";
 
@@ -12,13 +13,18 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+const [selected, setSelected] = createSignal(false);
 const [items, setItems] = createSignal([
   {
+    leafletId: 1,
     id: 1,
     name: "Ecole DE BEAUMONT",
     lon: 1,
     lat: 1,
-    selected: false,
+    selected: selected,
+    setSelected: setSelected,
+    quantity: 0,
+    nature: NatureEnum.school,
     associated: [
       {
         id: 2,
@@ -28,11 +34,15 @@ const [items, setItems] = createSignal([
     ],
   },
   {
+    leafletId: 1,
     id: 2,
     name: "Ecole DE BEAUMONT",
     lon: 1,
     lat: 1,
-    selected: false,
+    selected: selected,
+    setSelected: setSelected,
+    quantity: 0,
+    nature: NatureEnum.school,
     associated: [
       {
         id: 1,
