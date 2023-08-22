@@ -12,10 +12,7 @@ import {
 import { StopService } from "../_services/stop.service";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { assertIsNode } from "../utils";
-import {
-  ramassages,
-  setRamassages,
-} from "../views/content/ramassage/Ramassage";
+import { ramassages, setRamassages } from "../views/content/stops/Ramassage";
 
 // HACK for the documentation to preserve the ClickOutside directive on save
 // https://www.solidjs.com/guides/typescript#use___

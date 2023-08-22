@@ -14,8 +14,8 @@ import Dashboard from "./views/content/dashboard/Dashboard";
 import Graphicage from "./views/content/graphicage/Graphicage";
 import { setPointsReady } from "./views/content/graphicage/component/organism/Points";
 import ExportConfirmationDialogBox from "./views/content/graphicage/rightMapMenu/export/ExportConfirmationDialogBox";
-import Ramassage from "./views/content/ramassage/Ramassage";
 import SchoolsBoard from "./views/content/schools/SchoolsBoard";
+import Ramassage from "./views/content/stops/Ramassage";
 
 const [, { isInAddLineMode }] = useStateAction();
 const [, { getSelectedMenu }] = useStateGui();
