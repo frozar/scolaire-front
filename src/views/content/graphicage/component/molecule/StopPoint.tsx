@@ -1,17 +1,23 @@
 import L from "leaflet";
 import { useStateAction } from "../../../../../StateAction";
 import { StopType } from "../../../../../_entities/stop.entity";
-import { renderAnimation } from "../../animation";
-import { STOP_READ } from "../../constant";
+import {
+  setSchoolPointsColor,
+  setStopPointsColor,
+} from "../../../../../leafletUtils";
+import {
+  SCHOOL_READ_UNSELECTED,
+  STOP_READ,
+  STOP_READ_UNSELECTED,
+} from "../../constant";
 import Point from "../atom/Point";
 import { deselectAllBusLines } from "../organism/BusLines";
 import {
   blinkingStops,
   deselectAllPoints,
-  linkMap,
   setBlinkingSchools,
 } from "../organism/Points";
-import { getSchools } from "../organism/SchoolPoints";
+import { getStops } from "../organism/StopPoints";
 
 const [
   ,
@@ -37,13 +43,16 @@ const rangeRadius = maxRadius - minRadius;
 
 function onClick(point: StopType) {
   // Highlight point schools
+  const ids: number[] = [point.leafletId];
   for (const associated of point.associated) {
-    let element;
-    const school = getSchools().filter((item) => item.id == associated.id)[0];
-    if (school && (element = linkMap.get(school.leafletId)?.getElement())) {
-      renderAnimation(element);
-    }
+    const leafletPoint = getStops().filter(
+      (item) => item.id == associated.id
+    )[0];
+    ids.push(leafletPoint.leafletId);
   }
+
+  setSchoolPointsColor(ids, SCHOOL_READ_UNSELECTED);
+  setStopPointsColor(ids, STOP_READ_UNSELECTED);
 
   if (!isInAddLineMode()) {
     deselectAllBusLines();

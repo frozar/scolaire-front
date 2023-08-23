@@ -1,8 +1,15 @@
 import L from "leaflet";
 import { useStateAction } from "../../../../../StateAction";
 import { SchoolType } from "../../../../../_entities/school.entity";
-import { renderAnimation } from "../../animation";
-import { SCHOOL_READ } from "../../constant";
+import {
+  setSchoolPointsColor,
+  setStopPointsColor,
+} from "../../../../../leafletUtils";
+import {
+  SCHOOL_READ,
+  SCHOOL_READ_UNSELECTED,
+  STOP_READ_UNSELECTED,
+} from "../../constant";
 import Point from "../atom/Point";
 import {
   currentStep,
@@ -12,7 +19,6 @@ import { deselectAllBusLines } from "../organism/BusLines";
 import {
   blinkingSchools,
   deselectAllPoints,
-  linkMap,
   setBlinkingStops,
 } from "../organism/Points";
 import { getStops } from "../organism/StopPoints";
@@ -34,13 +40,17 @@ export interface SchoolPointProps {
 
 const onClick = (point: SchoolType) => {
   // Highlight point stops
+  const ids: number[] = [point.leafletId];
+
   for (const associated of point.associated) {
-    let element;
-    const stop = getStops().filter((item) => item.id == associated.id)[0];
-    if (stop && (element = linkMap.get(stop.leafletId)?.getElement())) {
-      renderAnimation(element);
+    const school = getStops().filter((item) => item.id == associated.id)[0];
+    if (school != undefined) {
+      ids.push(school.leafletId);
     }
   }
+
+  setSchoolPointsColor(ids, SCHOOL_READ_UNSELECTED);
+  setStopPointsColor(ids, STOP_READ_UNSELECTED);
 
   if (!isInAddLineMode()) {
     deselectAllBusLines();
