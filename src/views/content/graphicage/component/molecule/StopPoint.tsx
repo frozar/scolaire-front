@@ -17,7 +17,7 @@ import {
   deselectAllPoints,
   setBlinkingSchools,
 } from "../organism/Points";
-import { getStops } from "../organism/StopPoints";
+import { getSchools } from "../organism/SchoolPoints";
 
 const [
   ,
@@ -45,7 +45,7 @@ function onClick(point: StopType) {
   // Highlight point schools
   const ids: number[] = [point.leafletId];
   for (const associated of point.associated) {
-    const leafletPoint = getStops().filter(
+    const leafletPoint = getSchools().filter(
       (item) => item.id == associated.id
     )[0];
     ids.push(leafletPoint.leafletId);
