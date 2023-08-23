@@ -2,6 +2,7 @@ import L from "leaflet";
 import { useStateAction } from "../../../../../StateAction";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { renderAnimation } from "../../animation";
+import { SCHOOL_READ } from "../../constant";
 import Point from "../atom/Point";
 import {
   currentStep,
@@ -89,10 +90,10 @@ export function SchoolPoint(props: SchoolPointProps) {
       point={props.point}
       map={props.map}
       isBlinking={blinkingSchools().includes(props.point.id)}
-      borderColor="green"
-      fillColor="white"
+      borderColor={SCHOOL_READ}
+      fillColor={SCHOOL_READ}
       radius={12}
-      weight={4}
+      weight={0}
       onClick={() => onClick(props.point)}
       onMouseOver={() => onMouseOver(props.point)}
       onMouseOut={() => onMouseOut()}

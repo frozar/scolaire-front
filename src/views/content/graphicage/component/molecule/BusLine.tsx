@@ -8,9 +8,9 @@ import {
 import { setRemoveConfirmation } from "../../../../../signaux";
 import { NatureEnum } from "../../../../../type";
 import {
-  COLOR_POINT_EMPHASE,
   COLOR_SCHOOL_POINT,
   COLOR_STOP_POINT,
+  STOP_READ_EMPHASE,
 } from "../../constant";
 import { setPickerColor } from "../atom/ColorPicker";
 import Line from "../atom/Line";
@@ -54,7 +54,7 @@ export function BusLine(props: BusLineProps) {
     ) {
       props.line.points.map((point) => {
         const circle = linkMap.get(point.leafletId);
-        circle?.setStyle({ color: COLOR_POINT_EMPHASE });
+        circle?.setStyle({ color: STOP_READ_EMPHASE });
       });
     } else {
       props.line.points.map((point) => {

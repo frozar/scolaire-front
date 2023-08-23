@@ -2,6 +2,7 @@ import L from "leaflet";
 import { useStateAction } from "../../../../../StateAction";
 import { StopType } from "../../../../../_entities/stop.entity";
 import { renderAnimation } from "../../animation";
+import { STOP_READ } from "../../constant";
 import Point from "../atom/Point";
 import { deselectAllBusLines } from "../organism/BusLines";
 import {
@@ -15,6 +16,7 @@ import { getSchools } from "../organism/SchoolPoints";
 const [
   ,
   {
+    isInReadMode,
     addPointToLineUnderConstruction,
     getLineUnderConstruction,
     isInAddLineMode,
@@ -76,6 +78,7 @@ const onMouseOut = () => {
 
 export function StopPoint(props: StopPointProps) {
   const rad = (): number => {
+    if (isInReadMode()) return 5;
     let radiusValue = minRadius;
     const quantity = props.point.associated.reduce(
       (acc, stop) => acc + stop.quantity,
@@ -110,10 +113,10 @@ export function StopPoint(props: StopPointProps) {
       point={props.point}
       map={props.map}
       isBlinking={blinkingStops().includes(props.point.id)}
-      borderColor="red"
-      fillColor="white"
+      borderColor={STOP_READ}
+      fillColor={STOP_READ}
       radius={rad()}
-      weight={2}
+      weight={0}
       onClick={() => onClick(props.point)}
       onMouseOver={() => onMouseOver(props.point)}
       onMouseOut={() => onMouseOut()}
