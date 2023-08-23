@@ -15,16 +15,10 @@ const meta = {
   component: LineTipComponent,
   tags: ["autodocs"],
   argTypes: {
-    latlng: {
+    latlngs: {
       description: "The latlng of the line tip",
       control: {
         type: "object",
-      },
-    },
-    color: {
-      description: "The color of the line tip",
-      control: {
-        type: "color",
       },
     },
     opacity: {
