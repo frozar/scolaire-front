@@ -1,8 +1,8 @@
 export const COLOR_LINE_UNDER_CONSTRUCTION = "#0000FF";
 
 export const COLOR_BLUE_BASE = "#062F3F";
-export const COLOR_GREEB_BASE = "#0CC683";
-export const COLOR_GREEB_LIGHT = "#8FE2BA";
+export const COLOR_GREEN_BASE = "#0CC683";
+export const COLOR_GREEN_LIGHT = "#8FE2BA";
 export const COLOR_RED_BASE = "#F44434";
 export const COLOR_RED_LIGHT = "#F7A19F";
 export const COLOR_YELLOW_BASE = "#F9C932";
