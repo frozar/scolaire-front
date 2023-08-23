@@ -22,6 +22,7 @@ const meta = {
       console.log("onDBLClick, event:", event),
     onMouseOver: () => console.log("onMouseOver"),
     onMouseOut: () => console.log("onMouseOut"),
+    onMouseUp: () => console.log("onMouseUp"),
   },
 } satisfies Meta<typeof PointComponent>;
 
@@ -44,6 +45,7 @@ export interface PointStorybook {
   onDBLClick: () => void;
   onMouseOut: () => void;
   onMouseOver: () => void;
+  onMouseUp: () => void;
 }
 
 export const PointStories: Story = {
@@ -97,10 +99,12 @@ export const PointStories2: Story = {
         {...others}
         borderColor={local.borderColor as string}
         fillColor={local.fillColor as string}
+        // TODO: Use argtypes as the first story do
         onClick={() => console.log("onClick")}
         onDBLClick={() => console.log("onDBLClick")}
         onMouseOut={() => console.log("onMouseOut")}
-        onMouseOver={() => console.log("onMouseOvre")}
+        onMouseOver={() => console.log("onMouseOver")}
+        onMouseUp={() => console.log("onMouseUp")}
       />
     );
   },
