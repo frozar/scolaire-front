@@ -161,11 +161,13 @@ export function BusLine(props: BusLineProps) {
       setShowLineTip(true);
 
       setLineUnderConstructionNextIndex(indice + 1);
-      // TODO: Remove this listener in "onCleanup" of LineTip.tsx
-      document.addEventListener("mouseup", () => {
+
+      function handleMouseUp() {
         setShowLineTip(false);
         props.map.dragging.enable();
-      });
+        document.removeEventListener("mouseup", handleMouseUp);
+      }
+      document.addEventListener("mouseup", handleMouseUp);
     }
   }
 
