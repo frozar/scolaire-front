@@ -1,4 +1,5 @@
 import L from "leaflet";
+import { createEffect } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import { StopType } from "../../../../../_entities/stop.entity";
 import {
@@ -6,15 +7,18 @@ import {
   setStopPointsColor,
 } from "../../../../../leafletUtils";
 import {
+  COLOR_GRAY_BASE,
   COLOR_SCHOOL_LIGHT,
   COLOR_STOP_FOCUS,
   COLOR_STOP_LIGHT,
+  COLOR_YELLOW_BASE,
 } from "../../constant";
 import Point from "../atom/Point";
 import { deselectAllBusLines } from "../organism/BusLines";
 import {
   blinkingStops,
   deselectAllPoints,
+  linkMap,
   setBlinkingSchools,
 } from "../organism/Points";
 import { getSchools } from "../organism/SchoolPoints";
@@ -51,6 +55,7 @@ function onClick(point: StopType) {
     ids.push(leafletPoint.leafletId);
   }
 
+  // For all point that is not in ids set the color
   setSchoolPointsColor(ids, COLOR_SCHOOL_LIGHT);
   setStopPointsColor(ids, COLOR_STOP_LIGHT);
 
@@ -108,13 +113,28 @@ export function StopPoint(props: StopPointProps) {
   };
 
   const onRightClick = () => {
+    const circle = linkMap.get(props.point.leafletId);
     const isInLineUnderConstruction =
       getLineUnderConstruction().busLine.points.filter(
         (_point) => _point.id == props.point.id
       )[0];
+
     if (isInAddLineMode() && isInLineUnderConstruction != undefined) {
       removePointToLineUnderConstruction(props.point);
+      circle?.setStyle({ fillColor: COLOR_GRAY_BASE });
     }
+  };
+
+  createEffect(() => {
+    if (isInAddLineMode()) {
+      const circle = linkMap.get(props.point.leafletId);
+      circle?.setStyle({ fillColor: COLOR_YELLOW_BASE });
+    }
+  });
+  const color = () => {
+    if (isInAddLineMode()) {
+      return COLOR_GRAY_BASE;
+    } else return COLOR_STOP_FOCUS;
   };
 
   return (
@@ -122,8 +142,8 @@ export function StopPoint(props: StopPointProps) {
       point={props.point}
       map={props.map}
       isBlinking={blinkingStops().includes(props.point.id)}
-      borderColor={COLOR_STOP_FOCUS}
-      fillColor={COLOR_STOP_FOCUS}
+      borderColor={color()}
+      fillColor={color()}
       radius={rad()}
       weight={0}
       onClick={() => onClick(props.point)}

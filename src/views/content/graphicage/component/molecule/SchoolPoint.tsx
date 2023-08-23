@@ -19,6 +19,7 @@ import { deselectAllBusLines } from "../organism/BusLines";
 import {
   blinkingSchools,
   deselectAllPoints,
+  linkMap,
   setBlinkingStops,
 } from "../organism/Points";
 import { getStops } from "../organism/StopPoints";
@@ -39,7 +40,6 @@ export interface SchoolPointProps {
 }
 
 const onClick = (point: SchoolType) => {
-  // Highlight point stops
   const ids: number[] = [point.leafletId];
 
   for (const associated of point.associated) {
@@ -48,6 +48,9 @@ const onClick = (point: SchoolType) => {
       ids.push(school.leafletId);
     }
   }
+
+  const circle = linkMap.get(point.leafletId);
+  circle?.setStyle({ fillColor: COLOR_SCHOOL_FOCUS });
 
   setSchoolPointsColor(ids, COLOR_SCHOOL_LIGHT);
   setStopPointsColor(ids, COLOR_STOP_LIGHT);

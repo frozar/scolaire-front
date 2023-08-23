@@ -54,10 +54,7 @@ export function BusLine(props: BusLineProps) {
   });
 
   createEffect(() => {
-    if (
-      props.line.selected() ||
-      getLineUnderConstruction().busLine === props.line
-    ) {
+    if (getLineUnderConstruction().busLine === props.line) {
       props.line.points.map((point) => {
         const circle = linkMap.get(point.leafletId);
         circle?.setStyle({ fillColor: COLOR_STOP_EMPHASE });
