@@ -3,10 +3,12 @@ export const COLOR_SCHOOL_POINT = "green";
 export const COLOR_STOP_POINT = "red";
 export const COLOR_POINT_EMPHASE = "yellow";
 
-export const GREEN_BASE = "#0CC683";
-export const RED_BASE = "#F44434";
-export const BLUE_BASE = "#062F3F";
-export const GRAY_BASe = "#AEB8B4";
+export const STOP_READ = "#062F3F"; // gray-base
+export const STOP_READ_UNSELECTED = "#AEB8B4"; // blue-base
+export const STOP_READ_EMPHASE = "#FFBB00"; // yellow-base
+
+export const SCHOOL_READ = "#0CC683"; // green-base
+export const SCHOOL_READ_UNSELECTED = ""; // green-light
 
 import L from "leaflet";
 import { TileType } from "../../../type";
