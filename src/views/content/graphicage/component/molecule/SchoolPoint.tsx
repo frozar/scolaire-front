@@ -6,9 +6,9 @@ import {
   setStopPointsColor,
 } from "../../../../../leafletUtils";
 import {
-  SCHOOL_READ,
-  SCHOOL_READ_UNSELECTED,
-  STOP_READ_UNSELECTED,
+  COLOR_SCHOOL_FOCUS,
+  COLOR_SCHOOL_LIGHT,
+  COLOR_STOP_LIGHT,
 } from "../../constant";
 import Point from "../atom/Point";
 import {
@@ -49,8 +49,8 @@ const onClick = (point: SchoolType) => {
     }
   }
 
-  setSchoolPointsColor(ids, SCHOOL_READ_UNSELECTED);
-  setStopPointsColor(ids, STOP_READ_UNSELECTED);
+  setSchoolPointsColor(ids, COLOR_SCHOOL_LIGHT);
+  setStopPointsColor(ids, COLOR_STOP_LIGHT);
 
   if (!isInAddLineMode()) {
     deselectAllBusLines();
@@ -100,8 +100,8 @@ export function SchoolPoint(props: SchoolPointProps) {
       point={props.point}
       map={props.map}
       isBlinking={blinkingSchools().includes(props.point.id)}
-      borderColor={SCHOOL_READ}
-      fillColor={SCHOOL_READ}
+      borderColor={COLOR_SCHOOL_FOCUS}
+      fillColor={COLOR_SCHOOL_FOCUS}
       radius={12}
       weight={0}
       onClick={() => onClick(props.point)}

@@ -1,14 +1,18 @@
 export const COLOR_LINE_UNDER_CONSTRUCTION = "#0000FF";
-export const COLOR_SCHOOL_POINT = "green";
-export const COLOR_STOP_POINT = "red";
-export const COLOR_POINT_EMPHASE = "yellow";
 
-export const STOP_READ = "#062F3F"; // gray-base
-export const STOP_READ_UNSELECTED = "#AEB8B4"; // blue-base
-export const STOP_READ_EMPHASE = "#FFBB00"; // yellow-base
+export const COLOR_BLUE_BASE = "#062F3F";
+export const COLOR_GREEB_BASE = "#0CC683";
+export const COLOR_GREEB_LIGHT = "#8FE2BA";
+export const COLOR_RED_BASE = "#F44434";
+export const COLOR_RED_LIGHT = "#F7A19F";
+export const COLOR_YELLOW_BASE = "#F9C932";
+export const COLOR_GRAY_BASE = "#AEB8B4";
 
-export const SCHOOL_READ = "#0CC683"; // green-base
-export const SCHOOL_READ_UNSELECTED = "#8FE2BA"; // green-light
+export const COLOR_STOP_FOCUS = COLOR_BLUE_BASE; // gray-base
+export const COLOR_STOP_LIGHT = COLOR_GRAY_BASE; // blue-base
+export const COLOR_STOP_EMPHASE = COLOR_YELLOW_BASE; // yellow-base
+export const COLOR_SCHOOL_FOCUS = COLOR_RED_BASE; // red-base
+export const COLOR_SCHOOL_LIGHT = COLOR_RED_LIGHT; // red-light
 
 import L from "leaflet";
 import { TileType } from "../../../type";

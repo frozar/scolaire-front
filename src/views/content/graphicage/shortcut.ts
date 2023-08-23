@@ -25,7 +25,7 @@ import {
 } from "./component/organism/AddLineInformationBoardContent";
 import { deselectAllBusLines } from "./component/organism/BusLines";
 import { deselectAllPoints } from "./component/organism/Points";
-import { SCHOOL_READ, STOP_READ } from "./constant";
+import { COLOR_SCHOOL_FOCUS, COLOR_STOP_FOCUS } from "./constant";
 
 const [
   ,
@@ -86,8 +86,8 @@ function escapeHandler({ code }: KeyboardEvent) {
     deselectAllPoints();
     if (isInReadMode()) {
       deselectAllBusLines();
-      setStopPointsColor([], STOP_READ);
-      setSchoolPointsColor([], SCHOOL_READ);
+      setStopPointsColor([], COLOR_STOP_FOCUS);
+      setSchoolPointsColor([], COLOR_SCHOOL_FOCUS);
       return;
     }
 

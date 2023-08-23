@@ -6,9 +6,9 @@ import {
   setStopPointsColor,
 } from "../../../../../leafletUtils";
 import {
-  SCHOOL_READ_UNSELECTED,
-  STOP_READ,
-  STOP_READ_UNSELECTED,
+  COLOR_SCHOOL_LIGHT,
+  COLOR_STOP_FOCUS,
+  COLOR_STOP_LIGHT,
 } from "../../constant";
 import Point from "../atom/Point";
 import { deselectAllBusLines } from "../organism/BusLines";
@@ -51,8 +51,8 @@ function onClick(point: StopType) {
     ids.push(leafletPoint.leafletId);
   }
 
-  setSchoolPointsColor(ids, SCHOOL_READ_UNSELECTED);
-  setStopPointsColor(ids, STOP_READ_UNSELECTED);
+  setSchoolPointsColor(ids, COLOR_SCHOOL_LIGHT);
+  setStopPointsColor(ids, COLOR_STOP_LIGHT);
 
   if (!isInAddLineMode()) {
     deselectAllBusLines();
@@ -122,8 +122,8 @@ export function StopPoint(props: StopPointProps) {
       point={props.point}
       map={props.map}
       isBlinking={blinkingStops().includes(props.point.id)}
-      borderColor={STOP_READ}
-      fillColor={STOP_READ}
+      borderColor={COLOR_STOP_FOCUS}
+      fillColor={COLOR_STOP_FOCUS}
       radius={rad()}
       weight={0}
       onClick={() => onClick(props.point)}
