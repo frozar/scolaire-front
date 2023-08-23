@@ -34,9 +34,6 @@ export function BusLine(props: BusLineProps) {
   const [localOpacity, setLocalOpacity] = createSignal<number>(1);
   // eslint-disable-next-line solid/reactivity
   createEffect(async () => {
-    // TODO Put to BusLineEntity
-    // const latlngs: L.LatLng[] = await OsrmService.getRoadPolyline(line.points);
-    // line.setLatLngs(latlngs);
 
     if (
       currentStep() != drawModeStep.stopSelection &&
@@ -87,11 +84,11 @@ export function BusLine(props: BusLineProps) {
 
   const onClick = () => {
     if (isInRemoveLineMode()) {
-      //TODO fonction à explorer
-      setRemoveConfirmation({
-        displayed: true,
-        idBusLine: props.line.id ?? null,
-      });
+      //TODO fonction à explorer --- To Fix
+      // setRemoveConfirmation({
+      //   displayed: true,
+      //   idBusLine: line.id,
+      // });
     }
 
     if (isInReadMode()) {

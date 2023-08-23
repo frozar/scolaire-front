@@ -49,9 +49,10 @@ export class BusLineEntity {
   }
 
   static dbFormat(line: BusLineType): Omit<BusLineDBType, "id"> {
+    const name = line.name ? line.name : "";
     return {
-      color: line.color(),
-      name: line.name as string,
+      color: formatColorForDB(line.color()),
+      name: name,
       school_id: line.schools[0].id,
       bus_line_stop: formatBusLinePointDBType(line.points),
       polyline: EntityUtils.buildLocationPath(line.latLngs()),
