@@ -47,13 +47,13 @@ export default function (props: LineTipProps) {
     <>
       <Line
         latlngs={lineTipLatLngs().lineA}
-        color={"#cef3e6"}
+        color={"#8fe2ba"}
         opacity={props.opacity}
         leafletMap={props.leafletMap}
       />
       <Line
         latlngs={lineTipLatLngs().lineB}
-        color={"#cef3e6"}
+        color={"#8fe2ba"}
         opacity={props.opacity}
         leafletMap={props.leafletMap}
       />
