@@ -42,6 +42,7 @@ export function BusLines(props: BusLinesProps) {
         arrows.map((arrow) => props.map.removeLayer(arrow))
       );
       arrowsMap.clear();
+      getLineUnderConstruction().busLine.setColor("#0cc683");
       return [getLineUnderConstruction().busLine];
     }
     return getBusLines();
