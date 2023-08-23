@@ -5,7 +5,6 @@ import Line from "../atom/Line";
 interface LineTipProps {
   latlng: L.LatLng[];
   leafletMap: L.Map;
-  color: string;
   opacity: number;
 }
 interface LineTipLatLngsInterface {
@@ -48,13 +47,13 @@ export default function (props: LineTipProps) {
     <>
       <Line
         latlngs={lineTipLatLngs().lineA}
-        color={props.color}
+        color={"#cef3e6"}
         opacity={props.opacity}
         leafletMap={props.leafletMap}
       />
       <Line
         latlngs={lineTipLatLngs().lineB}
-        color={props.color}
+        color={"#cef3e6"}
         opacity={props.opacity}
         leafletMap={props.leafletMap}
       />

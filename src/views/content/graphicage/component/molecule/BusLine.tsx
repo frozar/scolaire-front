@@ -183,7 +183,6 @@ export function BusLine(props: BusLineProps) {
       <Show when={showLineTip()}>
         <LineTip
           leafletMap={props.map}
-          color="red"
           latlng={[lineTipCoordinates()[0], lineTipCoordinates()[1]]}
           opacity={1}
         />
