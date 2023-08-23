@@ -5,7 +5,11 @@ import { StopType } from "../../../_entities/stop.entity";
 import { StopService } from "../../../_services/stop.service";
 import { addNewUserInformation } from "../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../type";
-import { ramassages, setRamassages } from "./Ramassage";
+import {
+  getStops,
+  setStops,
+} from "../graphicage/component/organism/StopPoints";
+// import { getStops, setStops } from "./StopsBoard";
 
 export const [toggledEditStop, setToggledEditStop] = createSignal(false);
 
@@ -55,8 +59,8 @@ export default function () {
     });
 
     if (stop) {
-      setRamassages(
-        [...ramassages(), stop].sort((a, b) => a.name.localeCompare(b.name))
+      setStops(
+        [...getStops(), stop].sort((a, b) => a.name.localeCompare(b.name))
       );
 
       toggleEditStop();
@@ -113,8 +117,8 @@ export default function () {
     });
 
     if (stop != null) {
-      setRamassages(
-        ramassages()
+      setStops(
+        getStops()
           .map((item) => {
             console.log(item);
             if (item.id == stop.id) return stop;

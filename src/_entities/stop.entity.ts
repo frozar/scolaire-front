@@ -28,7 +28,10 @@ export class StopEntity {
   }
 
   static dbFormat(
-    stop: Omit<StopType, "id" | "selected" | "associated">
+    stop: Omit<
+      StopType,
+      "id" | "selected" | "associated" | "setSelected" | "nature" | "leafletId"
+    >
   ): Omit<StopDBType, "id" | "associated"> {
     return {
       name: stop.name,

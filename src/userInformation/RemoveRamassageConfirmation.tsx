@@ -5,7 +5,7 @@ import ClickOutside from "../component/ClickOutside";
 import {
   addNewUserInformation,
   closeRemoveRamassageConfirmationBox,
-  getRemoveRamassageConfirmation,
+  getRemoveStopConfirmation,
 } from "../signaux";
 
 // import { deleteRamassage } from "../request";
@@ -13,18 +13,19 @@ import { StopService } from "../_services/stop.service";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { assertIsNode } from "../utils";
 import {
-  ramassages,
-  setRamassages,
-} from "../views/content/ramassage/Ramassage";
+  getStops,
+  setStops,
+} from "../views/content/graphicage/component/organism/StopPoints";
+// import { getStops, setStops } from "../views/content/stops/StopsBoard";
 
 // HACK for the documentation to preserve the ClickOutside directive on save
 // https://www.solidjs.com/guides/typescript#use___
 false && ClickOutside;
 
 export default function () {
-  const displayed = () => getRemoveRamassageConfirmation()["displayed"];
-  const id_ramassage = () => getRemoveRamassageConfirmation().item?.id;
-  const name_ramassage = () => getRemoveRamassageConfirmation().item?.name;
+  const displayed = () => getRemoveStopConfirmation()["displayed"];
+  const id_ramassage = () => getRemoveStopConfirmation().item?.id;
+  const name_ramassage = () => getRemoveStopConfirmation().item?.name;
 
   async function handlerOnClickValider() {
     const idToCheck = id_ramassage();
@@ -37,7 +38,7 @@ export default function () {
     const isDeleted: boolean = await StopService.delete(idToRemove);
     if (isDeleted) {
       closeRemoveRamassageConfirmationBox();
-      setRamassages(ramassages().filter((stop) => stop.id != idToRemove));
+      setStops(getStops().filter((stop) => stop.id != idToRemove));
       addNewUserInformation({
         displayed: true,
         level: MessageLevelEnum.success,
@@ -179,7 +180,7 @@ export default function () {
                           <li>
                             le nombre d'élèves allant vers un établissement (
                             <span class="font-semibold text-sm text-gray-900">
-                              {getRemoveRamassageConfirmation().item?.associated.reduce(
+                              {getRemoveStopConfirmation().item?.associated.reduce(
                                 (acc, school) => acc + school.quantity,
                                 0
                               )}
