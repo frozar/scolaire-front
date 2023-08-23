@@ -1,5 +1,5 @@
-import L from "leaflet";
-import { createEffect, createSignal } from "solid-js";
+import L, { LeafletMouseEvent } from "leaflet";
+import { Show, createEffect, createSignal } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import {
   BusLinePointType,
@@ -20,9 +20,22 @@ import {
 } from "../organism/AddLineInformationBoardContent";
 import { deselectAllBusLines } from "../organism/BusLines";
 import { deselectAllPoints, linkMap } from "../organism/Points";
+import LineTip from "./LineTip";
 
-const [, { isInReadMode, isInRemoveLineMode, getLineUnderConstruction }] =
-  useStateAction();
+const [
+  ,
+  {
+    isInReadMode,
+    isInRemoveLineMode,
+    getLineUnderConstruction,
+    setLineUnderConstructionNextIndex,
+  },
+] = useStateAction();
+
+export const [showLineTip, setShowLineTip] = createSignal<boolean>(false);
+const [lineTipCoordinates, setLineTipCoordinates] = createSignal<L.LatLng[]>(
+  []
+);
 
 export type BusLineProps = {
   line: BusLineType;
@@ -102,17 +115,78 @@ export function BusLine(props: BusLineProps) {
     }
   };
 
+  function onMouseDown(e: LeafletMouseEvent) {
+    if (currentStep() == drawModeStep.stopSelection) {
+      props.map.dragging.disable();
+
+      function pointToLineDistance(
+        clickCoordinate: L.LatLng,
+        point1: L.LatLng,
+        point2: L.LatLng
+      ): number {
+        const x1 = point1.lng;
+        const y1 = point1.lat;
+        const x2 = point2.lng;
+        const y2 = point2.lat;
+        const x = clickCoordinate.lng;
+        const y = clickCoordinate.lat;
+
+        return (
+          Math.abs((y2 - y1) * x - (x2 - x1) * y + x2 * y1 - y2 * x1) /
+          Math.sqrt(
+            (point1.lat - point2.lat) ** 2 + (point1.lng - point2.lng) ** 2
+          )
+        );
+      }
+      const coordinates: L.LatLng[] = e.target._latlngs;
+
+      let distance = 999;
+      let indice = -1;
+      for (let i = 0; i < coordinates.length - 1; i++) {
+        const actualDistance = pointToLineDistance(
+          e.latlng,
+          coordinates[i],
+          coordinates[i + 1]
+        );
+        if (actualDistance < distance) {
+          distance = actualDistance;
+          indice = i;
+        }
+      }
+      setLineTipCoordinates([coordinates[indice], coordinates[indice + 1]]);
+      setShowLineTip(true);
+
+      setLineUnderConstructionNextIndex(indice + 1);
+      // TODO: Remove this listener in "onCleanup" of LineTip.tsx
+      document.addEventListener("mouseup", () => {
+        setShowLineTip(false);
+        props.map.dragging.enable();
+      });
+    }
+  }
+
   return (
-    <Line
-      latlngs={localLatLngs()}
-      leafletMap={props.map}
-      color={props.line.color()}
-      opacity={localOpacity()}
-      lineId={props.line.id}
-      onMouseOver={onMouseOver}
-      onMouseOut={onMouseOut}
-      onClick={onClick}
-    />
+    <>
+      <Line
+        latlngs={localLatLngs()}
+        leafletMap={props.map}
+        color={props.line.color()}
+        opacity={localOpacity()}
+        lineId={props.line.id}
+        onMouseOver={onMouseOver}
+        onMouseOut={onMouseOut}
+        onClick={onClick}
+        onMouseDown={onMouseDown}
+      />
+      <Show when={showLineTip()}>
+        <LineTip
+          leafletMap={props.map}
+          color="red"
+          latlng={[lineTipCoordinates()[0], lineTipCoordinates()[1]]}
+          opacity={1}
+        />
+      </Show>
+    </>
   );
 }
 

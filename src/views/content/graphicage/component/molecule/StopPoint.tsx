@@ -11,6 +11,7 @@ import {
   setBlinkingSchools,
 } from "../organism/Points";
 import { getSchools } from "../organism/SchoolPoints";
+import { showLineTip } from "./BusLine";
 
 const [
   ,
@@ -33,6 +34,14 @@ const minRadius = 5;
 const maxRadius = 10;
 const rangeRadius = maxRadius - minRadius;
 
+//TODO Modify when we use multiple schools
+function getAssociatedQuantity(point: StopType) {
+  return point.associated.filter(
+    (associatedSchool) =>
+      associatedSchool.id === getLineUnderConstruction().busLine.schools[0].id
+  )[0].quantity;
+}
+
 function onClick(point: StopType) {
   // Highlight point schools
   for (const associated of point.associated) {
@@ -50,11 +59,7 @@ function onClick(point: StopType) {
     return;
   }
 
-  //TODO Modify when we use multiple schools
-  const associatedQuantity = point.associated.filter(
-    (associatedSchool) =>
-      associatedSchool.id === getLineUnderConstruction().busLine.schools[0].id
-  )[0].quantity;
+  const associatedQuantity = getAssociatedQuantity(point);
 
   // TODO: when add line with an etablissement point the line destroy after next point click
   // Wait Richard/Hugo finish the line underconstruction
@@ -72,6 +77,14 @@ const onMouseOver = (stop: StopType) => {
 
 const onMouseOut = () => {
   setBlinkingSchools([]);
+};
+
+const onMouseUp = (point: StopType) => {
+  if (showLineTip()) {
+    const associatedQuantity = getAssociatedQuantity(point);
+
+    addPointToLineUnderConstruction({ ...point, quantity: associatedQuantity });
+  }
 };
 
 export function StopPoint(props: StopPointProps) {
@@ -118,6 +131,7 @@ export function StopPoint(props: StopPointProps) {
       onMouseOver={() => onMouseOver(props.point)}
       onMouseOut={() => onMouseOut()}
       onRightClick={onRightClick}
+      onMouseUp={() => onMouseUp(props.point)}
     />
   );
 }
