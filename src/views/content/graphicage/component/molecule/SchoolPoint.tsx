@@ -1,6 +1,7 @@
 import L from "leaflet";
 import { useStateAction } from "../../../../../StateAction";
 import { SchoolType } from "../../../../../_entities/school.entity";
+import { StopType } from "../../../../../_entities/stop.entity";
 import {
   setSchoolPointsColor,
   setStopPointsColor,
@@ -23,6 +24,7 @@ import {
   setBlinkingStops,
 } from "../organism/Points";
 import { getStops } from "../organism/StopPoints";
+import { showLineTip } from "./BusLine";
 
 const [
   ,
@@ -89,6 +91,17 @@ const onClick = (point: SchoolType) => {
   }
 };
 
+const onMouseUp = (point: StopType) => {
+  if (showLineTip()) {
+    const associatedQuantity = point.associated.filter(
+      (associatedSchool) =>
+        associatedSchool.id === getLineUnderConstruction().busLine.schools[0].id
+    )[0].quantity;
+
+    addPointToLineUnderConstruction({ ...point, quantity: associatedQuantity });
+  }
+};
+
 const onMouseOver = (school: SchoolType) => {
   setBlinkingStops(school.associated.map((stop) => stop.id));
 };
@@ -110,6 +123,7 @@ export function SchoolPoint(props: SchoolPointProps) {
       onClick={() => onClick(props.point)}
       onMouseOver={() => onMouseOver(props.point)}
       onMouseOut={() => onMouseOut()}
+      onMouseUp={() => onMouseUp(props.point)}
     />
   );
 }

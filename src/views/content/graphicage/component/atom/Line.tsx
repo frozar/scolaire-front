@@ -1,5 +1,5 @@
 import { LineString } from "geojson";
-import L from "leaflet";
+import L, { LeafletMouseEvent } from "leaflet";
 import { createEffect, onCleanup } from "solid-js";
 import { arrowsMap } from "../organism/BusLines";
 
@@ -14,6 +14,8 @@ interface LineProps {
   onMouseOver?: (polyline: L.Polyline, arrows: L.Marker[]) => void;
   onMouseOut?: (polyline: L.Polyline, arrows: L.Marker[]) => void;
   onClick?: () => void;
+  onMouseDown?: (e: LeafletMouseEvent) => void;
+  onMouseUp?: () => void;
 }
 
 export default function (props: LineProps) {
@@ -66,6 +68,12 @@ export default function (props: LineProps) {
         leafletLineElems.map((elem) =>
           // eslint-disable-next-line solid/reactivity
           elem.on("click", () => props.onClick?.())
+        );
+      }
+      if (props.onMouseDown) {
+        leafletLineElems.map((elem) =>
+          // eslint-disable-next-line solid/reactivity
+          elem.on("mousedown", (e) => props.onMouseDown?.(e))
         );
       }
     }
