@@ -53,7 +53,7 @@ type Story = StoryObj<typeof meta>;
 export const LineTipStory: Story = {
   render: (
     props: {
-      latlng: L.LatLng[];
+      latlngs: L.LatLng[];
       color: string;
       opacity: number;
       leafletMap: L.Map;
