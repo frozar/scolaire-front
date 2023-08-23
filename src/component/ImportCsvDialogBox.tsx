@@ -4,16 +4,13 @@ import {
   addNewUserInformation,
   closeImportCsvBox,
   getImportCsvBox,
-  setImportConfirmation,
 } from "../signaux";
 
+import Papa from "papaparse";
 import { useStateGui } from "../StateGui";
 import ClickOutside from "../component/ClickOutside";
-import { uploadFile } from "../request";
-import { MessageLevelEnum, MessageTypeEnum, ReturnMessageType } from "../type";
+import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { assertIsNode } from "../utils";
-import { fetchSchool } from "../views/content/schools/SchoolsBoard";
-import { fetchStop } from "../views/content/stops/StopsBoard";
 
 // HACK for the documentation to preserve the ClickOutside directive on save
 // https://www.solidjs.com/guides/typescript#use___
@@ -90,62 +87,81 @@ export default function () {
     }
 
     const file = files[0];
+    Papa.parse(file, {
+      header: true,
+      complete: function (results) {
+        const data = dataToDB(
+          results.data as { name: string; lat: string; lon: string }[]
+        );
+        console.log(data);
+      },
+    });
 
-    const formData = new FormData();
-    formData.append("file", file, file.name);
+    // const formData = new FormData();
+    // formData.append("file", file, file.name);
+    // console.log(formData);
 
-    uploadFile(formData)
-      .then(async (res) => {
-        if (!res) {
-          addNewUserInformation({
-            displayed: true,
-            level: MessageLevelEnum.error,
-            type: MessageTypeEnum.global,
-            content: "Echec de l'import de fichier",
-          });
-          return;
-        }
+    // uploadFile(formData)
+    //   .then(async (res) => {
+    //     if (!res) {
+    //       addNewUserInformation({
+    //         displayed: true,
+    //         level: MessageLevelEnum.error,
+    //         type: MessageTypeEnum.global,
+    //         content: "Echec de l'import de fichier",
+    //       });
+    //       return;
+    //     }
 
-        if (!res.ok) {
-          const body = await res.json();
-          addNewUserInformation({
-            displayed: true,
-            level: MessageLevelEnum.error,
-            type: MessageTypeEnum.global,
-            content: body.detail,
-          });
-          return;
-        }
+    //     if (!res.ok) {
+    //       const body = await res.json();
+    //       addNewUserInformation({
+    //         displayed: true,
+    //         level: MessageLevelEnum.error,
+    //         type: MessageTypeEnum.global,
+    //         content: body.detail,
+    //       });
+    //       return;
+    //     }
 
-        const body: ReturnMessageType = await res.json();
+    //     const body: ReturnMessageType = await res.json();
 
-        setImportConfirmation({
-          displayed: true,
-          message: body.message,
-          metrics: body.metrics,
-        });
-      })
-      .finally(() => {
-        switch (getSelectedMenu()) {
-          case "etablissements":
-            fetchSchool();
-            break;
-          case "ramassages":
-            fetchStop();
-            break;
-        }
-      })
-      .catch((e) => {
-        closeImportCsvBox();
-        addNewUserInformation({
-          displayed: true,
-          level: MessageLevelEnum.error,
-          type: MessageTypeEnum.removeLine,
-          content: `Une erreur est survenue : ${e}.`,
-        });
-      });
+    //     setImportConfirmation({
+    //       displayed: true,
+    //       message: body.message,
+    //       metrics: body.metrics,
+    //     });
+    //   })
+    //   .finally(() => {
+    //     switch (getSelectedMenu()) {
+    //       case "etablissements":
+    //         fetchSchool();
+    //         break;
+    //       case "ramassages":
+    //         fetchRamassage();
+    //         break;
+    //     }
+    //   })
+    //   .catch((e) => {
+    //     closeImportCsvBox();
+    //     addNewUserInformation({
+    //       displayed: true,
+    //       level: MessageLevelEnum.error,
+    //       type: MessageTypeEnum.removeLine,
+    //       content: `Une erreur est survenue : ${e}.`,
+    //     });
+    //   });
 
     closeImportCsvBox();
+  }
+
+  function dataToDB(datas: { name: string; lat: string; lon: string }[]) {
+    return datas.map((data) => {
+      return {
+        name: data.name,
+        location: { lon: +data.lon, lat: +data.lat },
+      };
+    });
   }
 
   return (

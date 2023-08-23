@@ -28,10 +28,7 @@ export class SchoolEntity {
   }
 
   static dbFormat(
-    school: Omit<
-      SchoolType,
-      "id" | "selected" | "associated" | "setSelected" | "nature" | "leafletId"
-    >
+    school: Pick<SchoolType, "name" | "lon" | "lat">
   ): Omit<SchoolDBType, "id" | "associated"> {
     return {
       name: school.name,

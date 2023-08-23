@@ -11,6 +11,7 @@ export class SchoolService {
     return dbSchools.map((dbSchool) => SchoolEntity.build(dbSchool));
   }
 
+  //TODO change Omit to Pick
   static async create(
     school: Omit<
       SchoolType,
