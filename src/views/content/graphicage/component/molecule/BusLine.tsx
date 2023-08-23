@@ -5,12 +5,18 @@ import {
   BusLinePointType,
   BusLineType,
 } from "../../../../../_entities/bus-line.entity";
+import {
+  setSchoolPointsColor,
+  setStopPointsColor,
+} from "../../../../../leafletUtils";
 import { setRemoveConfirmation } from "../../../../../signaux";
 import { NatureEnum } from "../../../../../type";
 import {
   COLOR_SCHOOL_POINT,
   COLOR_STOP_POINT,
+  SCHOOL_READ_UNSELECTED,
   STOP_READ_EMPHASE,
+  STOP_READ_UNSELECTED,
 } from "../../constant";
 import { setPickerColor } from "../atom/ColorPicker";
 import Line from "../atom/Line";
@@ -96,6 +102,10 @@ export function BusLine(props: BusLineProps) {
       deselectAllPoints();
       setPickerColor(props.line.color());
       props.line.setSelected(true);
+
+      const leafletIds = props.line.points.map((point) => point.leafletId);
+      setStopPointsColor(leafletIds, STOP_READ_UNSELECTED);
+      setSchoolPointsColor(leafletIds, SCHOOL_READ_UNSELECTED);
     }
   };
 

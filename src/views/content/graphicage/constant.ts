@@ -8,7 +8,7 @@ export const STOP_READ_UNSELECTED = "#AEB8B4"; // blue-base
 export const STOP_READ_EMPHASE = "#FFBB00"; // yellow-base
 
 export const SCHOOL_READ = "#0CC683"; // green-base
-export const SCHOOL_READ_UNSELECTED = ""; // green-light
+export const SCHOOL_READ_UNSELECTED = "#8FE2BA"; // green-light
 
 import L from "leaflet";
 import { TileType } from "../../../type";
