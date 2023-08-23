@@ -1,4 +1,4 @@
-import { Show, createSignal } from "solid-js";
+import { Show, createEffect, createSignal } from "solid-js";
 import {
   defaultLineUnderConstruction,
   useStateAction,
@@ -27,6 +27,10 @@ export enum drawModeStep {
 export const [currentStep, setCurrentStep] = createSignal<drawModeStep>(
   drawModeStep.start
 );
+// ! Rename
+export const [roadLinePointLatLngs, setRoadLinePointLatLngs] = createSignal<
+  L.LatLng[]
+>([]);
 
 function nextStep() {
   switch (currentStep()) {
@@ -40,9 +44,33 @@ function nextStep() {
         return;
       }
       updatePolylineWithOsrm(getLineUnderConstruction().busLine);
+      console.log(
+        "(0)draw polyline points:",
+        getLineUnderConstruction().busLine.latLngs()
+      );
+      createEffect(() => {
+        if (getLineUnderConstruction().busLine.latLngs().length != 0) {
+          console.log(
+            "(0bis)from createEffect:",
+            getLineUnderConstruction().busLine.latLngs()
+          );
+          // remplir signal qui contient la liste des latlngs
+          setRoadLinePointLatLngs(getLineUnderConstruction().busLine.latLngs());
+          // composant "markers" ne doivent s'afficher / se construire que quand ce signal
+          //    est different de `[]`
+          // donc doit être vidé dans `case drawModeStep.polylineEdition` ? (ou onCleanup des marker)
+          // ce composant monter dans busline ?
+        }
+      });
+
+      // for (point in )
       break;
     case drawModeStep.polylineEdition:
       console.log("Validation de la polyline");
+      console.log(
+        "(1)draw polyline points:",
+        getLineUnderConstruction().busLine.latLngs()
+      );
       break;
     case drawModeStep.validationStep:
       console.log("Validation finale");

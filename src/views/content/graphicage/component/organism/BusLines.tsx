@@ -49,11 +49,14 @@ export function BusLines(props: BusLinesProps) {
   };
 
   return (
-    <For each={busLinesFilter()}>
-      {(line) => {
-        return <BusLine line={line} map={props.map} />;
-      }}
-    </For>
+    <>
+      <For each={busLinesFilter()}>
+        {(line) => {
+          return <BusLine line={line} map={props.map} />;
+        }}
+      </For>
+      {/* <Show when={roadLinePointLatLngs().length != 0} /> */}
+    </>
   );
 }
 
