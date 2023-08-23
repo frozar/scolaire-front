@@ -3,7 +3,7 @@ import { createEffect, createSignal, onCleanup } from "solid-js";
 import Line from "../atom/Line";
 
 interface LineTipProps {
-  latlng: L.LatLng[];
+  latlngs: L.LatLng[];
   leafletMap: L.Map;
   opacity: number;
 }
@@ -20,7 +20,7 @@ export default function (props: LineTipProps) {
 
   createEffect(() => {
     const leafletMap = props.leafletMap;
-    const initlatlng = props.latlng;
+    const initlatlng = props.latlngs;
 
     leafletMap?.on("mousemove", ({ latlng }) => {
       setLineTipLatLngs({
