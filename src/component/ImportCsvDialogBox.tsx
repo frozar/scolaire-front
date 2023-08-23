@@ -8,6 +8,8 @@ import {
 
 import Papa from "papaparse";
 import { useStateGui } from "../StateGui";
+import { SchoolEntity } from "../_entities/school.entity";
+import { SchoolService } from "../_services/school.service";
 import ClickOutside from "../component/ClickOutside";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { assertIsNode } from "../utils";
@@ -93,7 +95,8 @@ export default function () {
         const data = dataToDB(
           results.data as { name: string; lat: string; lon: string }[]
         );
-        console.log(data);
+        console.log(data.slice(0, data.length - 1));
+        SchoolService.importSchools(data.slice(0, data.length - 1));
       },
     });
 
@@ -154,13 +157,14 @@ export default function () {
 
     closeImportCsvBox();
   }
-
+  // Pick<SchoolType, "name" | "lon" | "lat">
   function dataToDB(datas: { name: string; lat: string; lon: string }[]) {
     return datas.map((data) => {
-      return {
+      return SchoolEntity.dbFormat({
         name: data.name,
-        location: { lon: +data.lon, lat: +data.lat },
-      };
+        lat: +data.lat,
+        lon: +data.lon,
+      });
     });
   }
 

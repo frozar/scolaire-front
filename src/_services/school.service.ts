@@ -11,6 +11,17 @@ export class SchoolService {
     return dbSchools.map((dbSchool) => SchoolEntity.build(dbSchool));
   }
 
+  static async importSchools(
+    schools: Pick<SchoolDBType, "name" | "location">[]
+  ): Promise<SchoolType[]> {
+    const dbSchools: SchoolDBType[] = await ServiceUtils.post(
+      "/school/import",
+      schools
+    );
+    console.log(dbSchools);
+    return dbSchools.map((dbSchool) => SchoolEntity.build(dbSchool));
+  }
+
   //TODO change Omit to Pick
   static async create(
     school: Omit<
