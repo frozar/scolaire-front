@@ -15,7 +15,7 @@ export default function (props: {
   previousStep: addLineButtonType;
 }) {
   return (
-    <div class="">
+    <div class="add-line-information-board-content-buttons">
       <Button
         onClick={props.previousStep.callback}
         label={props.previousStep.label}

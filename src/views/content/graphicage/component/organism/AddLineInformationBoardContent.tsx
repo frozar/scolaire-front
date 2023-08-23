@@ -39,21 +39,19 @@ export default function () {
 
   return (
     <div class="add-line-information-board-content">
-      <header>
-        <div class="add-line-information-board-content-header-title">
-          <h1>
-            {
-              [
-                "",
-                " Sélection des établissements",
-                "Création de la ligne",
-                "Modification de l'itinéraire",
-                "Détails",
-              ][currentStep()]
-            }
-          </h1>
-        </div>
-      </header>
+      <div class="add-line-information-board-content-title">
+        <h1>
+          {
+            [
+              "",
+              " Sélection des établissements",
+              "Création de la ligne",
+              "Modification de l'itinéraire",
+              "Détails",
+            ][currentStep()]
+          }
+        </h1>
+      </div>
       <Show when={currentStep() === drawModeStep.schoolSelection}>
         <SelectedSchool schoolSelected={etablissementSelected()} />
       </Show>
@@ -66,24 +64,22 @@ export default function () {
           />
         </div>
       </Show>
-      <footer>
-        <AddLineInformationBoardContentFooter
-          nextStep={{
-            callback: nextStep,
-            label:
-              currentStep() === drawModeStep.validationStep
-                ? "Valider"
-                : "Suivant",
-          }}
-          previousStep={{
-            callback: prevStep,
-            label:
-              currentStep() === drawModeStep.schoolSelection
-                ? "Annuler"
-                : "Précédant",
-          }}
-        />
-      </footer>
+      <AddLineInformationBoardContentFooter
+        nextStep={{
+          callback: nextStep,
+          label:
+            currentStep() === drawModeStep.validationStep
+              ? "Valider"
+              : "Suivant",
+        }}
+        previousStep={{
+          callback: prevStep,
+          label:
+            currentStep() === drawModeStep.schoolSelection
+              ? "Annuler"
+              : "Précédant",
+        }}
+      />
     </div>
   );
 }
