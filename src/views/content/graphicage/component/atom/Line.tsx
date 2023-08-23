@@ -15,7 +15,6 @@ interface LineProps {
   onMouseOut?: (polyline: L.Polyline, arrows: L.Marker[]) => void;
   onClick?: () => void;
   onMouseDown?: (e: LeafletMouseEvent) => void;
-  onMouseUp?: () => void;
 }
 
 export default function (props: LineProps) {
