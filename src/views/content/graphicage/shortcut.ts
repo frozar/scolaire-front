@@ -18,12 +18,17 @@ import {
 } from "../../../userInformation/utils";
 import { displayedConfirmStopAddLine } from "./ConfirmStopAddLineBox";
 
+// import {
+//   currentStep,
+//   drawModeStep,
+//   setCurrentStep,
+// } from "./component/organism/AddLineInformationBoardContent";
+import { deselectAllBusLines } from "./component/organism/BusLines";
 import {
   currentStep,
   drawModeStep,
   setCurrentStep,
-} from "./component/organism/AddLineInformationBoardContent";
-import { deselectAllBusLines } from "./component/organism/BusLines";
+} from "./component/organism/DrawModeBoardContent";
 import { deselectAllPoints } from "./component/organism/Points";
 import { COLOR_SCHOOL_FOCUS, COLOR_STOP_FOCUS } from "./constant";
 

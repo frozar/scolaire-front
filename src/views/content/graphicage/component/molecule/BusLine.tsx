@@ -19,11 +19,12 @@ import {
 } from "../../constant";
 import { setPickerColor } from "../atom/ColorPicker";
 import Line from "../atom/Line";
-import {
-  currentStep,
-  drawModeStep,
-} from "../organism/AddLineInformationBoardContent";
+// import {
+//   currentStep,
+//   drawModeStep,
+// } from "../organism/AddLineInformationBoardContent";
 import { deselectAllBusLines } from "../organism/BusLines";
+import { currentStep, drawModeStep } from "../organism/DrawModeBoardContent";
 import {
   cursorIsOverPoint,
   deselectAllPoints,
