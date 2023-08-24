@@ -1,5 +1,5 @@
 import L, { LeafletMouseEvent } from "leaflet";
-import { Show, createEffect, createSignal } from "solid-js";
+import { createEffect, createSignal } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import {
   BusLinePointType,
@@ -9,7 +9,6 @@ import {
   setSchoolPointsColor,
   setStopPointsColor,
 } from "../../../../../leafletUtils";
-import { setRemoveConfirmation } from "../../../../../signaux";
 import { NatureEnum } from "../../../../../type";
 import {
   COLOR_SCHOOL_FOCUS,
@@ -30,7 +29,6 @@ import {
   linkMap,
   mouseIsOverPoint,
 } from "../organism/Points";
-import LineTip from "./LineTip";
 
 const [
   ,
@@ -42,14 +40,7 @@ const [
   },
 ] = useStateAction();
 
-// ! delete and reset lineTip as before
-export const [showLineTip, setShowLineTip] = createSignal<boolean>(false);
-
 export const [draggingLine, setDraggingLine] = createSignal<boolean>(false);
-
-const [lineTipCoordinates, setLineTipCoordinates] = createSignal<L.LatLng[]>(
-  []
-);
 
 export type BusLineProps = {
   line: BusLineType;
@@ -61,7 +52,6 @@ export function BusLine(props: BusLineProps) {
   const [localOpacity, setLocalOpacity] = createSignal<number>(1);
   // eslint-disable-next-line solid/reactivity
   createEffect(async () => {
-
     if (
       currentStep() != drawModeStep.stopSelection &&
       props.line.latLngs().length != 0
@@ -136,15 +126,15 @@ export function BusLine(props: BusLineProps) {
         point1: L.LatLng,
         point2: L.LatLng
       ): number {
-        const x1 = point1.lng;
-        const y1 = point1.lat;
-        const x2 = point2.lng;
-        const y2 = point2.lat;
-        const x = clickCoordinate.lng;
-        const y = clickCoordinate.lat;
+        const x1 = clickCoordinate.lng;
+        const y1 = clickCoordinate.lat;
+        const x2 = point1.lng;
+        const y2 = point1.lat;
+        const x3 = point2.lng;
+        const y3 = point2.lat;
 
         return (
-          Math.abs((y2 - y1) * x - (x2 - x1) * y + x2 * y1 - y2 * x1) /
+          Math.abs((y3 - y2) * x1 - (x3 - x2) * y1 + x3 * y2 - y3 * x2) /
           Math.sqrt(
             (point1.lat - point2.lat) ** 2 + (point1.lng - point2.lng) ** 2
           )
@@ -152,9 +142,14 @@ export function BusLine(props: BusLineProps) {
       }
       const coordinates: L.LatLng[] = e.target._latlngs;
 
-      let distance = 999;
-      let indice = -1;
-      for (let i = 0; i < coordinates.length - 1; i++) {
+      let distance = pointToLineDistance(
+        e.latlng,
+        coordinates[0],
+        coordinates[1]
+      );
+      let indice = 0;
+
+      for (let i = 1; i < coordinates.length - 1; i++) {
         const actualDistance = pointToLineDistance(
           e.latlng,
           coordinates[i],
@@ -165,13 +160,11 @@ export function BusLine(props: BusLineProps) {
           indice = i;
         }
       }
-      setLineTipCoordinates([coordinates[indice], coordinates[indice + 1]]);
       setLocalLatLngs((prev) => {
         prev.splice(indice + 1, 0, e.latlng);
         return [...prev];
       });
       setDraggingLine(true);
-      console.log("local latlng", localLatLngs());
 
       createEffect(() => {
         props.map?.on("mousemove", ({ latlng }) => {
@@ -219,13 +212,6 @@ export function BusLine(props: BusLineProps) {
         onClick={onClick}
         onMouseDown={onMouseDown}
       />
-      <Show when={showLineTip()}>
-        <LineTip
-          leafletMap={props.map}
-          latlngs={[lineTipCoordinates()[0], lineTipCoordinates()[1]]}
-          opacity={1}
-        />
-      </Show>
     </>
   );
 }
