@@ -7,9 +7,9 @@ import {
 } from "../signaux";
 
 import { useStateGui } from "../StateGui";
-import { SchoolService } from "../_services/school.service";
+import { ServiceUtils } from "../_services/_utils.service";
 import ClickOutside from "../component/ClickOutside";
-import { MessageLevelEnum, MessageTypeEnum } from "../type";
+import { MessageLevelEnum, MessageTypeEnum, NatureEnum } from "../type";
 import { assertIsNode } from "../utils";
 
 // HACK for the documentation to preserve the ClickOutside directive on save
@@ -90,15 +90,9 @@ export default function (props: {
     }
 
     const file = files[0];
-    // function onCompleteDialogBox() {
-    //   addNewUserInformation({
-    //     displayed: true,
-    //     level: MessageLevelEnum.success,
-    //     type: MessageTypeEnum.global,
-    //     content: "Les établissements ont été ajoutés",
-    //   });
-    //   //TODO Add error message and import overview
-    // }
+
+    // TODO Add import overview
+
     const onComplete = () => {
       props.callbackSuccess ? props.callbackSuccess() : "";
       closeImportCsvBox();
@@ -107,7 +101,7 @@ export default function (props: {
       props.callbackFail ? props.callbackFail() : "";
       closeImportCsvBox();
     };
-    SchoolService.importEntities(file, onComplete, onFail);
+    ServiceUtils.importEntities(file, onComplete, onFail, NatureEnum.school);
   }
 
   return (

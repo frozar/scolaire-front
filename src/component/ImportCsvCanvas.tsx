@@ -1,11 +1,11 @@
 import { Setter, onCleanup, onMount } from "solid-js";
-import { SchoolService } from "../_services/school.service";
+import { ServiceUtils } from "../_services/_utils.service";
 import {
   addNewUserInformation,
   disableSpinningWheel,
   enableSpinningWheel,
 } from "../signaux";
-import { MessageLevelEnum, MessageTypeEnum } from "../type";
+import { MessageLevelEnum, MessageTypeEnum, NatureEnum } from "../type";
 
 let mapDragDropDiv: HTMLDivElement;
 export default function (props: {
@@ -31,11 +31,7 @@ export default function (props: {
     e.preventDefault();
   }
 
-  function dropHandler(
-    e: DragEvent,
-    setDisplay: Setter<boolean>,
-    callbackSuccess?: () => void
-  ) {
+  function dropHandler(e: DragEvent, setDisplay: Setter<boolean>) {
     e.preventDefault();
 
     enableSpinningWheel();
@@ -91,7 +87,7 @@ export default function (props: {
       exitCanvas();
     };
 
-    SchoolService.importEntities(file, onComplete, onFail);
+    ServiceUtils.importEntities(file, onComplete, onFail, NatureEnum.school);
   }
 
   function dragLeaveHandlerAux(e: DragEvent) {
