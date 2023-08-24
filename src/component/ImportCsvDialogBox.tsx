@@ -8,11 +8,15 @@ import {
 
 import Papa from "papaparse";
 import { useStateGui } from "../StateGui";
-import { SchoolEntity } from "../_entities/school.entity";
+import { SchoolEntity, SchoolType } from "../_entities/school.entity";
 import { SchoolService } from "../_services/school.service";
 import ClickOutside from "../component/ClickOutside";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { assertIsNode } from "../utils";
+import {
+  buildSchools,
+  setSchools,
+} from "../views/content/graphicage/component/organism/SchoolPoints";
 
 // HACK for the documentation to preserve the ClickOutside directive on save
 // https://www.solidjs.com/guides/typescript#use___
@@ -91,30 +95,39 @@ export default function () {
     const file = files[0];
     Papa.parse(file, {
       header: true,
-      complete: function (results) {
+      complete: async function (results) {
         const data = dataToDB(
-          results.data as { name: string; lat: string; lon: string }[]
+          results.data.slice(0, results.data.length - 1) as {
+            // data.length - 1 to skip the last empty line of the csv
+            name: string;
+            lat: string;
+            lon: string;
+          }[]
         );
-        console.log(data.slice(0, data.length - 1));
-        SchoolService.importSchools(data.slice(0, data.length - 1));
+
+        const schools: SchoolType[] = buildSchools(
+          await SchoolService.importSchools(data)
+        );
+
+        setSchools(schools);
+
+        addNewUserInformation({
+          displayed: true,
+          level: MessageLevelEnum.success,
+          type: MessageTypeEnum.global,
+          content: "Les établissements ont été ajoutés",
+        });
       },
     });
 
-    // const formData = new FormData();
-    // formData.append("file", file, file.name);
-    // console.log(formData);
+    //TODO Add error message and import overview
 
-    // uploadFile(formData)
-    //   .then(async (res) => {
-    //     if (!res) {
     //       addNewUserInformation({
     //         displayed: true,
     //         level: MessageLevelEnum.error,
     //         type: MessageTypeEnum.global,
     //         content: "Echec de l'import de fichier",
     //       });
-    //       return;
-    //     }
 
     //     if (!res.ok) {
     //       const body = await res.json();
@@ -126,8 +139,6 @@ export default function () {
     //       });
     //       return;
     //     }
-
-    //     const body: ReturnMessageType = await res.json();
 
     //     setImportConfirmation({
     //       displayed: true,

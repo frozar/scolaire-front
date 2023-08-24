@@ -32,7 +32,7 @@ export function SchoolPoints(props: SchoolPointsProps) {
   );
 }
 
-function buildSchools(schools: SchoolType[]): SchoolType[] {
+export function buildSchools(schools: SchoolType[]): SchoolType[] {
   return schools.map((school) => {
     const [selected, setSelected] = createSignal(false);
     return {

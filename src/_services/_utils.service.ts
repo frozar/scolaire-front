@@ -65,8 +65,7 @@ export const connexionError = () => {
     displayed: true,
     level: MessageLevelEnum.error,
     type: MessageTypeEnum.global,
-    content:
-      "Désolé une erreur est survenue lors du chargement des données veuillez essayer ultérieurement",
+    content: "Une erreur est survenue lors du chargement des données.",
   });
 };
 
@@ -87,8 +86,7 @@ export const manageStatusCode = async (response: Response) => {
   if (response.status !== 200) {
     const json = await response.json();
     const message =
-      json.detail ??
-      "Désolé une erreur est survenue lors du chargement des données veuillez essayer ultérieurement";
+      json.detail ?? "Une erreur est survenue lors du chargement des données.";
 
     addNewUserInformation({
       displayed: true,
