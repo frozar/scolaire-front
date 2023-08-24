@@ -4,6 +4,8 @@ import { SchoolService } from "../../../_services/school.service";
 import ImportCsvCanvas from "../../../component/ImportCsvCanvas";
 import ImportCsvDialogBox from "../../../component/ImportCsvDialogBox";
 import PageTitle from "../../../component/atom/PageTitle";
+import { addNewUserInformation } from "../../../signaux";
+import { MessageLevelEnum, MessageTypeEnum } from "../../../type";
 import RemoveRamassageConfirmation from "../../../userInformation/RemoveRamassageConfirmation";
 import {
   getSchools,
@@ -80,7 +82,15 @@ export default function () {
   });
 
   const globalCheckboxOnChange = () => setGlobalChecked((bool) => !bool);
-
+  function onCompleteCsvCanvas() {
+    addNewUserInformation({
+      displayed: true,
+      level: MessageLevelEnum.success,
+      type: MessageTypeEnum.global,
+      content: "Les établissements ont été ajoutés",
+    });
+    //TODO ADD resume dialogue box
+  }
   return (
     <>
       <ImportCsvDialogBox />

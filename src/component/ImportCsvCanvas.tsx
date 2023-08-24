@@ -1,13 +1,11 @@
 import { Setter, onCleanup, onMount } from "solid-js";
-import { uploadFile } from "../request";
 import {
   addNewUserInformation,
   disableSpinningWheel,
   enableSpinningWheel,
-  setImportConfirmation,
-  setPoints,
 } from "../signaux";
-import { MessageLevelEnum, MessageTypeEnum, ReturnMessageType } from "../type";
+import { MessageLevelEnum, MessageTypeEnum } from "../type";
+import { importValues } from "./ImportCsvDialogBox";
 
 let mapDragDropDiv: HTMLDivElement;
 
@@ -79,56 +77,17 @@ function dropHandler(
 
   const file = files[0];
 
-  const formData = new FormData();
-
-  formData.append("file", file, file.name);
-
-  uploadFile(formData)
-    .then(async (res) => {
-      if (!res) {
-        exitCanvas();
-        addNewUserInformation({
-          displayed: true,
-          level: MessageLevelEnum.error,
-          type: MessageTypeEnum.global,
-          content: "Echec de l'import de fichier",
-        });
-        return;
-      }
-
-      if (res.status != 200) {
-        const json = await res.json();
-        exitCanvas();
-        addNewUserInformation({
-          displayed: true,
-          level: MessageLevelEnum.error,
-          type: MessageTypeEnum.global,
-          content: json.detail,
-        });
-        return;
-      }
-
-      const body: ReturnMessageType = await res.json();
-
-      // TODO: manage error above, with maybe an import confirmation
-      //       dialogue box
-
-      setImportConfirmation({
-        displayed: true,
-        message: body.message,
-        metrics: body.metrics,
-      });
-
-      setPoints([]);
-      exitCanvas();
-
-      if (callbackSuccess && typeof callbackSuccess === "function") {
-        callbackSuccess();
-      }
-    })
-    .catch((err) => {
-      console.log(err);
+  importValues(file, () => {
+    callbackSuccess ? callbackSuccess() : "";
+    disableSpinningWheel();
+    addNewUserInformation({
+      displayed: true,
+      level: MessageLevelEnum.success,
+      type: MessageTypeEnum.global,
+      content: "Les établissements ont été ajoutés",
     });
+    exitCanvas();
+  });
 }
 
 export default function (props: {

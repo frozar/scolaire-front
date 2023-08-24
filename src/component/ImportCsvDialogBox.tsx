@@ -93,90 +93,17 @@ export default function () {
     }
 
     const file = files[0];
-    Papa.parse(file, {
-      header: true,
-      complete: async function (results) {
-        const data = dataToDB(
-          results.data.slice(0, results.data.length - 1) as {
-            // data.length - 1 to skip the last empty line of the csv
-            name: string;
-            lat: string;
-            lon: string;
-          }[]
-        );
-
-        const schools: SchoolType[] = buildSchools(
-          await SchoolService.importSchools(data)
-        );
-
-        setSchools(schools);
-
-        addNewUserInformation({
-          displayed: true,
-          level: MessageLevelEnum.success,
-          type: MessageTypeEnum.global,
-          content: "Les établissements ont été ajoutés",
-        });
-      },
-    });
-
-    //TODO Add error message and import overview
-
-    //       addNewUserInformation({
-    //         displayed: true,
-    //         level: MessageLevelEnum.error,
-    //         type: MessageTypeEnum.global,
-    //         content: "Echec de l'import de fichier",
-    //       });
-
-    //     if (!res.ok) {
-    //       const body = await res.json();
-    //       addNewUserInformation({
-    //         displayed: true,
-    //         level: MessageLevelEnum.error,
-    //         type: MessageTypeEnum.global,
-    //         content: body.detail,
-    //       });
-    //       return;
-    //     }
-
-    //     setImportConfirmation({
-    //       displayed: true,
-    //       message: body.message,
-    //       metrics: body.metrics,
-    //     });
-    //   })
-    //   .finally(() => {
-    //     switch (getSelectedMenu()) {
-    //       case "etablissements":
-    //         fetchSchool();
-    //         break;
-    //       case "ramassages":
-    //         fetchRamassage();
-    //         break;
-    //     }
-    //   })
-    //   .catch((e) => {
-    //     closeImportCsvBox();
-    //     addNewUserInformation({
-    //       displayed: true,
-    //       level: MessageLevelEnum.error,
-    //       type: MessageTypeEnum.removeLine,
-    //       content: `Une erreur est survenue : ${e}.`,
-    //     });
-    //   });
-
-    closeImportCsvBox();
-  }
-  // Pick<SchoolType, "name" | "lon" | "lat">
-  function dataToDB(datas: { name: string; lat: string; lon: string }[]) {
-    return datas.map((data) => {
-      return SchoolEntity.dbFormat({
-        name: data.name,
-        lat: +data.lat,
-        lon: +data.lon,
+    function onCompleteDialogBox() {
+      addNewUserInformation({
+        displayed: true,
+        level: MessageLevelEnum.success,
+        type: MessageTypeEnum.global,
+        content: "Les établissements ont été ajoutés",
       });
-    });
+      //TODO Add error message and import overview
+    }
+    importValues(file, onCompleteDialogBox);
+    closeImportCsvBox();
   }
 
   return (
@@ -309,4 +236,38 @@ export default function () {
       </Show>
     </Transition>
   );
+}
+
+function dataToDB(datas: { name: string; lat: string; lon: string }[]) {
+  return datas.map((data) => {
+    return SchoolEntity.dbFormat({
+      name: data.name,
+      lat: +data.lat,
+      lon: +data.lon,
+    });
+  });
+}
+
+export function importValues(file: File, onComplete: () => void) {
+  Papa.parse(file, {
+    header: true,
+    complete: async function (results) {
+      const data = dataToDB(
+        results.data.slice(0, results.data.length - 1) as {
+          // data.length - 1 to skip the last empty line of the csv
+          name: string;
+          lat: string;
+          lon: string;
+        }[]
+      );
+
+      const schools: SchoolType[] = buildSchools(
+        await SchoolService.importSchools(data)
+      );
+
+      setSchools(schools);
+
+      onComplete();
+    },
+  });
 }
