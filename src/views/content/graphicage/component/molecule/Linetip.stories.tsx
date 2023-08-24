@@ -15,10 +15,16 @@ const meta = {
   component: LineTipComponent,
   tags: ["autodocs"],
   argTypes: {
-    latlngs: {
+    latlng: {
       description: "The latlng of the line tip",
       control: {
         type: "object",
+      },
+    },
+    color: {
+      description: "The color of the line tip",
+      control: {
+        type: "color",
       },
     },
     opacity: {
@@ -53,7 +59,7 @@ type Story = StoryObj<typeof meta>;
 export const LineTipStory: Story = {
   render: (
     props: {
-      latlngs: L.LatLng[];
+      latlng: L.LatLng;
       color: string;
       opacity: number;
       leafletMap: L.Map;
@@ -66,10 +72,7 @@ export const LineTipStory: Story = {
   },
 
   args: {
-    latlng: [
-      L.latLng(-20.9466588303741, 55.5343806753509),
-      L.latLng(-20.9566588303741, 55.5443806753509),
-    ],
+    latlng: L.latLng(-20.9466588303741, 55.5343806753509),
     color: "orange",
     opacity: 1,
   },

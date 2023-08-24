@@ -3,36 +3,26 @@ import { createEffect, createSignal, onCleanup } from "solid-js";
 import Line from "../atom/Line";
 
 interface LineTipProps {
-  latlngs: L.LatLng[];
+  latlng: L.LatLng;
   leafletMap: L.Map;
+  color: string;
   opacity: number;
-}
-interface LineTipLatLngsInterface {
-  lineA: L.LatLng[];
-  lineB: L.LatLng[];
 }
 
 //TODO LineTip: to delete
 
 export default function (props: LineTipProps) {
-  const [lineTipLatLngs, setLineTipLatLngs] =
-    createSignal<LineTipLatLngsInterface>({ lineA: [], lineB: [] });
+  const [lineTip, setLineTip] = createSignal<L.LatLng[]>([]);
 
   createEffect(() => {
     const leafletMap = props.leafletMap;
-    const initlatlng = props.latlngs;
+    const initlatlng = props.latlng;
 
     leafletMap?.on("mousemove", ({ latlng }) => {
-      setLineTipLatLngs({
-        lineA: [
-          L.latLng(initlatlng[0].lat, initlatlng[0].lng),
-          L.latLng(latlng.lat, latlng.lng),
-        ],
-        lineB: [
-          L.latLng(initlatlng[1].lat, initlatlng[1].lng),
-          L.latLng(latlng.lat, latlng.lng),
-        ],
-      });
+      setLineTip([
+        L.latLng(initlatlng.lat, initlatlng.lng),
+        L.latLng(latlng.lat, latlng.lng),
+      ]);
     });
   });
 
@@ -44,19 +34,11 @@ export default function (props: LineTipProps) {
   });
 
   return (
-    <>
-      <Line
-        latlngs={lineTipLatLngs().lineA}
-        color={"#8fe2ba"}
-        opacity={props.opacity}
-        leafletMap={props.leafletMap}
-      />
-      <Line
-        latlngs={lineTipLatLngs().lineB}
-        color={"#8fe2ba"}
-        opacity={props.opacity}
-        leafletMap={props.leafletMap}
-      />
-    </>
+    <Line
+      latlngs={lineTip()}
+      color={props.color}
+      opacity={props.opacity}
+      leafletMap={props.leafletMap}
+    />
   );
 }

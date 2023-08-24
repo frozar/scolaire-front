@@ -9,11 +9,9 @@ describe("Line Tip component", () => {
       return (
         <div id="map-container" style={{ width: "100%", height: "500px" }}>
           <LineTip
-            latlngs={[
-              L.latLng(-20.9466588303741, 55.5343806753509),
-              L.latLng(-20.9566588303741, 55.5443806753509),
-            ]}
+            latlng={L.latLng(-20.9466588303741, 55.5343806753509)}
             leafletMap={initialiseMap("map-container", false)}
+            color={"orange"}
             opacity={1}
           />
         </div>
@@ -21,7 +19,7 @@ describe("Line Tip component", () => {
     });
 
     const mapContainer = cy.get("#map-container");
-    mapContainer.trigger("mousemove", { clientX: 200, clientY: 350 });
+    mapContainer.trigger("mousemove", { clientX: 350, clientY: 350 });
     mapContainer.compareSnapshot("line-tip", 0.01);
   });
 });
