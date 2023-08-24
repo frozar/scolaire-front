@@ -2,7 +2,7 @@ import { For, Match, Show, Switch, createEffect } from "solid-js";
 import { useStateAction } from "../../../../StateAction";
 import { isLeafletStopType } from "../../../../type";
 // import AddLineInformationBoardContent from "../component/organism/AddLineInformationBoardContent";
-import AddLineInformationBoardContent from "../component/organism/DrawModeBoardContent";
+import DrawModeBoardContent from "../component/organism/DrawModeBoardContent";
 
 import { getSelectedBusLine } from "../component/organism/BusLines";
 import { getSchools } from "../component/organism/SchoolPoints";
@@ -128,8 +128,11 @@ export default function () {
         <Match when={getSelectedBusLine()}>
           <BusLineInformationBoardContent />
         </Match>
-        <Match when={isInAddLineMode()}>
+        {/* <Match when={isInAddLineMode()}>
           <AddLineInformationBoardContent />
+        </Match> */}
+        <Match when={isInAddLineMode()}>
+          <DrawModeBoardContent />
         </Match>
       </Switch>
     </div>

@@ -1,4 +1,4 @@
-import { Show, createSignal } from "solid-js";
+import { Show, createEffect, createSignal } from "solid-js";
 import {
   defaultLineUnderConstruction,
   useStateAction,
@@ -33,7 +33,12 @@ export const [currentStep, setCurrentStep] = createSignal<drawModeStep>(
 );
 
 export default function () {
-  // set var line soit default soit avec la LineToUpdate
+  console.log("DrawModeBoardContent");
+  createEffect(() => {
+    console.log("currentStep()", currentStep());
+  });
+
+  //  ! set var line soit default soit avec la LineToUpdate
   const etablissementSelected = () => {
     return getLineUnderConstruction().busLine.schools;
   };
@@ -53,12 +58,20 @@ export default function () {
           }
         </h1>
       </div>
-      {/*  when line.shools.lenght > 0 */}
-      <Show when={currentStep() === drawModeStep.schoolSelection}>
+      {/* <Show when={currentStep() === drawModeStep.schoolSelection}>
         <SelectedSchool schoolSelected={etablissementSelected()} />
-      </Show>
-
-      <Show when={currentStep() === drawModeStep.stopSelection}>
+      </Show> */}
+      {/* <Show when={currentStep() === drawModeStep.stopSelection}>
+        <div class="bus-line-information-board-content">
+          <TimelineAddMode
+            line={getLineUnderConstruction}
+            setLine={setLineUnderConstruction}
+          />
+        </div>
+      </Show> */}
+      {/*  // !when line.shools.lenght > 0 */}
+      <Show when={getLineUnderConstruction().busLine.schools.length > 0}>
+        <SelectedSchool schoolSelected={etablissementSelected()} />
         <div class="bus-line-information-board-content">
           <TimelineAddMode
             line={getLineUnderConstruction}
