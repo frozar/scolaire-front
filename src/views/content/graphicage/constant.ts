@@ -1,9 +1,8 @@
 export const COLOR_LINE_UNDER_CONSTRUCTION = "#0000FF";
 
 // eslint-disable-next-line
-const COLOR_GREEN_BASE = "#0CC683";
-// eslint-disable-next-line
 const COLOR_GREEN_LIGHT = "#8FE2BA";
+const COLOR_GREEN_BASE = "#0CC683";
 const COLOR_BLUE_BASE = "#062F3F";
 const COLOR_RED_BASE = "#F44434";
 const COLOR_RED_LIGHT = "#F7A19F";
@@ -15,6 +14,7 @@ export const COLOR_STOP_LIGHT = COLOR_GRAY_BASE;
 export const COLOR_STOP_EMPHASE = COLOR_YELLOW_BASE;
 export const COLOR_SCHOOL_FOCUS = COLOR_RED_BASE;
 export const COLOR_SCHOOL_LIGHT = COLOR_RED_LIGHT;
+export const COLOR_LINE_EDITION = COLOR_GREEN_BASE;
 
 import L from "leaflet";
 import { TileType } from "../../../type";
