@@ -5,12 +5,18 @@ import {
   BusLinePointType,
   BusLineType,
 } from "../../../../../_entities/bus-line.entity";
+import {
+  setSchoolPointsColor,
+  setStopPointsColor,
+} from "../../../../../leafletUtils";
 import { setRemoveConfirmation } from "../../../../../signaux";
 import { NatureEnum } from "../../../../../type";
 import {
-  COLOR_POINT_EMPHASE,
-  COLOR_SCHOOL_POINT,
-  COLOR_STOP_POINT,
+  COLOR_SCHOOL_FOCUS,
+  COLOR_SCHOOL_LIGHT,
+  COLOR_STOP_EMPHASE,
+  COLOR_STOP_FOCUS,
+  COLOR_STOP_LIGHT,
 } from "../../constant";
 import { setPickerColor } from "../atom/ColorPicker";
 import Line from "../atom/Line";
@@ -48,22 +54,19 @@ export function BusLine(props: BusLineProps) {
   });
 
   createEffect(() => {
-    if (
-      props.line.selected() ||
-      getLineUnderConstruction().busLine === props.line
-    ) {
+    if (getLineUnderConstruction().busLine === props.line) {
       props.line.points.map((point) => {
         const circle = linkMap.get(point.leafletId);
-        circle?.setStyle({ color: COLOR_POINT_EMPHASE });
+        circle?.setStyle({ fillColor: COLOR_STOP_EMPHASE });
       });
     } else {
       props.line.points.map((point) => {
         const circle = linkMap.get(point.leafletId);
         const color =
           point.nature === NatureEnum.school
-            ? COLOR_SCHOOL_POINT
-            : COLOR_STOP_POINT;
-        circle?.setStyle({ color: color });
+            ? COLOR_SCHOOL_FOCUS
+            : COLOR_STOP_FOCUS;
+        circle?.setStyle({ fillColor: color });
       });
     }
   });
@@ -96,6 +99,10 @@ export function BusLine(props: BusLineProps) {
       deselectAllPoints();
       setPickerColor(props.line.color());
       props.line.setSelected(true);
+
+      const leafletIds = props.line.points.map((point) => point.leafletId);
+      setStopPointsColor(leafletIds, COLOR_STOP_LIGHT);
+      setSchoolPointsColor(leafletIds, COLOR_SCHOOL_LIGHT);
     }
   };
 

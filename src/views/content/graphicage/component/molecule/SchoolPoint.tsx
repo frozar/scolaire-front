@@ -1,7 +1,15 @@
 import L from "leaflet";
 import { useStateAction } from "../../../../../StateAction";
 import { SchoolType } from "../../../../../_entities/school.entity";
-import { renderAnimation } from "../../animation";
+import {
+  setSchoolPointsColor,
+  setStopPointsColor,
+} from "../../../../../leafletUtils";
+import {
+  COLOR_SCHOOL_FOCUS,
+  COLOR_SCHOOL_LIGHT,
+  COLOR_STOP_LIGHT,
+} from "../../constant";
 import Point from "../atom/Point";
 import {
   currentStep,
@@ -32,14 +40,20 @@ export interface SchoolPointProps {
 }
 
 const onClick = (point: SchoolType) => {
-  // Highlight point stops
+  const ids: number[] = [point.leafletId];
+
   for (const associated of point.associated) {
-    let element;
-    const stop = getStops().filter((item) => item.id == associated.id)[0];
-    if (stop && (element = linkMap.get(stop.leafletId)?.getElement())) {
-      renderAnimation(element);
+    const school = getStops().filter((item) => item.id == associated.id)[0];
+    if (school != undefined) {
+      ids.push(school.leafletId);
     }
   }
+
+  const circle = linkMap.get(point.leafletId);
+  circle?.setStyle({ fillColor: COLOR_SCHOOL_FOCUS });
+
+  setSchoolPointsColor(ids, COLOR_SCHOOL_LIGHT);
+  setStopPointsColor(ids, COLOR_STOP_LIGHT);
 
   if (!isInAddLineMode()) {
     deselectAllBusLines();
@@ -89,10 +103,10 @@ export function SchoolPoint(props: SchoolPointProps) {
       point={props.point}
       map={props.map}
       isBlinking={blinkingSchools().includes(props.point.id)}
-      borderColor="green"
-      fillColor="white"
+      borderColor={COLOR_SCHOOL_FOCUS}
+      fillColor={COLOR_SCHOOL_FOCUS}
       radius={12}
-      weight={4}
+      weight={0}
       onClick={() => onClick(props.point)}
       onMouseOver={() => onMouseOver(props.point)}
       onMouseOut={() => onMouseOut()}

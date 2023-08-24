@@ -1,7 +1,17 @@
 import L from "leaflet";
+import { createEffect } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import { StopType } from "../../../../../_entities/stop.entity";
-import { renderAnimation } from "../../animation";
+import {
+  setSchoolPointsColor,
+  setStopPointsColor,
+} from "../../../../../leafletUtils";
+import {
+  COLOR_SCHOOL_LIGHT,
+  COLOR_STOP_EMPHASE,
+  COLOR_STOP_FOCUS,
+  COLOR_STOP_LIGHT,
+} from "../../constant";
 import Point from "../atom/Point";
 import { deselectAllBusLines } from "../organism/BusLines";
 import {
@@ -15,6 +25,7 @@ import { getSchools } from "../organism/SchoolPoints";
 const [
   ,
   {
+    isInReadMode,
     addPointToLineUnderConstruction,
     getLineUnderConstruction,
     isInAddLineMode,
@@ -35,13 +46,17 @@ const rangeRadius = maxRadius - minRadius;
 
 function onClick(point: StopType) {
   // Highlight point schools
+  const ids: number[] = [point.leafletId];
   for (const associated of point.associated) {
-    let element;
-    const school = getSchools().filter((item) => item.id == associated.id)[0];
-    if (school && (element = linkMap.get(school.leafletId)?.getElement())) {
-      renderAnimation(element);
-    }
+    const leafletPoint = getSchools().filter(
+      (item) => item.id == associated.id
+    )[0];
+    ids.push(leafletPoint.leafletId);
   }
+
+  // For all point that is not in ids set the color
+  setSchoolPointsColor(ids, COLOR_SCHOOL_LIGHT);
+  setStopPointsColor(ids, COLOR_STOP_LIGHT);
 
   if (!isInAddLineMode()) {
     deselectAllBusLines();
@@ -76,6 +91,7 @@ const onMouseOut = () => {
 
 export function StopPoint(props: StopPointProps) {
   const rad = (): number => {
+    if (isInReadMode()) return 5;
     let radiusValue = minRadius;
     const quantity = props.point.associated.reduce(
       (acc, stop) => acc + stop.quantity,
@@ -96,13 +112,28 @@ export function StopPoint(props: StopPointProps) {
   };
 
   const onRightClick = () => {
+    const circle = linkMap.get(props.point.leafletId);
     const isInLineUnderConstruction =
       getLineUnderConstruction().busLine.points.filter(
         (_point) => _point.id == props.point.id
       )[0];
+
     if (isInAddLineMode() && isInLineUnderConstruction != undefined) {
       removePointToLineUnderConstruction(props.point);
+      circle?.setStyle({ fillColor: COLOR_STOP_LIGHT });
     }
+  };
+
+  createEffect(() => {
+    if (isInAddLineMode()) {
+      const circle = linkMap.get(props.point.leafletId);
+      circle?.setStyle({ fillColor: COLOR_STOP_EMPHASE });
+    }
+  });
+  const color = () => {
+    if (isInAddLineMode()) {
+      return COLOR_STOP_LIGHT;
+    } else return COLOR_STOP_FOCUS;
   };
 
   return (
@@ -110,10 +141,10 @@ export function StopPoint(props: StopPointProps) {
       point={props.point}
       map={props.map}
       isBlinking={blinkingStops().includes(props.point.id)}
-      borderColor="red"
-      fillColor="white"
+      borderColor={color()}
+      fillColor={color()}
       radius={rad()}
-      weight={2}
+      weight={0}
       onClick={() => onClick(props.point)}
       onMouseOver={() => onMouseOver(props.point)}
       onMouseOut={() => onMouseOut()}
