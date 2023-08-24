@@ -200,19 +200,17 @@ export function BusLine(props: BusLineProps) {
   }
 
   return (
-    <>
-      <Line
-        latlngs={localLatLngs()}
-        leafletMap={props.map}
-        color={props.line.color()}
-        opacity={localOpacity()}
-        lineId={props.line.id}
-        onMouseOver={onMouseOver}
-        onMouseOut={onMouseOut}
-        onClick={onClick}
-        onMouseDown={onMouseDown}
-      />
-    </>
+    <Line
+      latlngs={localLatLngs()}
+      leafletMap={props.map}
+      color={props.line.color()}
+      opacity={localOpacity()}
+      lineId={props.line.id}
+      onMouseOver={onMouseOver}
+      onMouseOut={onMouseOut}
+      onClick={onClick}
+      onMouseDown={onMouseDown}
+    />
   );
 }
 
