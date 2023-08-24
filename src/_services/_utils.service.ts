@@ -1,3 +1,4 @@
+import Papa from "papaparse";
 import { useStateGui } from "../StateGui";
 import { addNewUserInformation } from "../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
@@ -56,6 +57,23 @@ export class ServiceUtils {
       buildUrl += "/map/" + getActiveMapId();
     }
     return buildUrl + url;
+  }
+
+  static async parseFile(file: File): Promise<Papa.ParseResult<unknown>> {
+    const res = new Promise((resolve, reject) => {
+      Papa.parse(file, {
+        header: true,
+        complete(results, file) {
+          console.log(results);
+          resolve(results);
+        },
+        error(err, file) {
+          reject(err);
+        },
+      });
+    });
+
+    return res as Promise<Papa.ParseResult<unknown>>;
   }
 }
 

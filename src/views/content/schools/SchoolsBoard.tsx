@@ -31,6 +31,22 @@ function preventDefaultHandler(e: DragEvent) {
 // TODO: checkbox selection when select all by GlobalCheckbox then deselect one and reselect the deselected, here have a bug
 export const [globalChecked, setGlobalChecked] = createSignal<boolean>(false);
 
+export const callbackSuccess = function (): void {
+  addNewUserInformation({
+    displayed: true,
+    level: MessageLevelEnum.success,
+    type: MessageTypeEnum.global,
+    content: "Les établissements ont été ajoutés",
+  });
+};
+export const callbackFail = function (): void {
+  addNewUserInformation({
+    displayed: true,
+    level: MessageLevelEnum.success,
+    type: MessageTypeEnum.global,
+    content: "Des erreurs sont survenues lors de l'importation",
+  });
+};
 export default function () {
   let schoolDiv!: HTMLDivElement;
 
@@ -93,13 +109,15 @@ export default function () {
   }
   return (
     <>
-      <ImportCsvDialogBox />
+      <ImportCsvDialogBox
+        callbackSuccess={callbackSuccess}
+        callbackFail={callbackFail}
+      />
       <ImportCsvCanvas
         display={displayImportCsvCanvas()}
         setDisplay={setDisplayImportCsvCanvas}
-        callbackSuccess={() => {
-          fetchSchool();
-        }}
+        callbackSuccess={callbackSuccess}
+        callbackFail={callbackFail}
       />
       <RemoveRamassageConfirmation />
 

@@ -6,17 +6,11 @@ import {
   getImportCsvBox,
 } from "../signaux";
 
-import Papa from "papaparse";
 import { useStateGui } from "../StateGui";
-import { SchoolEntity, SchoolType } from "../_entities/school.entity";
 import { SchoolService } from "../_services/school.service";
 import ClickOutside from "../component/ClickOutside";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { assertIsNode } from "../utils";
-import {
-  buildSchools,
-  setSchools,
-} from "../views/content/graphicage/component/organism/SchoolPoints";
 
 // HACK for the documentation to preserve the ClickOutside directive on save
 // https://www.solidjs.com/guides/typescript#use___
@@ -24,7 +18,10 @@ false && ClickOutside;
 
 const [, { getSelectedMenu }] = useStateGui();
 
-export default function () {
+export default function (props: {
+  callbackSuccess?: () => void;
+  callbackFail?: () => void;
+}) {
   let refDialogueBox!: HTMLDivElement;
 
   const [refInputCsv, setRefInputCsv] = createSignal<
@@ -93,17 +90,24 @@ export default function () {
     }
 
     const file = files[0];
-    function onCompleteDialogBox() {
-      addNewUserInformation({
-        displayed: true,
-        level: MessageLevelEnum.success,
-        type: MessageTypeEnum.global,
-        content: "Les établissements ont été ajoutés",
-      });
-      //TODO Add error message and import overview
-    }
-    importValues(file, onCompleteDialogBox);
-    closeImportCsvBox();
+    // function onCompleteDialogBox() {
+    //   addNewUserInformation({
+    //     displayed: true,
+    //     level: MessageLevelEnum.success,
+    //     type: MessageTypeEnum.global,
+    //     content: "Les établissements ont été ajoutés",
+    //   });
+    //   //TODO Add error message and import overview
+    // }
+    const onComplete = () => {
+      props.callbackSuccess ? props.callbackSuccess() : "";
+      closeImportCsvBox();
+    };
+    const onFail = () => {
+      props.callbackFail ? props.callbackFail() : "";
+      closeImportCsvBox();
+    };
+    SchoolService.importEntities(file, onComplete, onFail);
   }
 
   return (
@@ -236,38 +240,4 @@ export default function () {
       </Show>
     </Transition>
   );
-}
-
-function dataToDB(datas: { name: string; lat: string; lon: string }[]) {
-  return datas.map((data) => {
-    return SchoolEntity.dbFormat({
-      name: data.name,
-      lat: +data.lat,
-      lon: +data.lon,
-    });
-  });
-}
-
-export function importValues(file: File, onComplete: () => void) {
-  Papa.parse(file, {
-    header: true,
-    complete: async function (results) {
-      const data = dataToDB(
-        results.data.slice(0, results.data.length - 1) as {
-          // data.length - 1 to skip the last empty line of the csv
-          name: string;
-          lat: string;
-          lon: string;
-        }[]
-      );
-
-      const schools: SchoolType[] = buildSchools(
-        await SchoolService.importSchools(data)
-      );
-
-      setSchools(schools);
-
-      onComplete();
-    },
-  });
 }

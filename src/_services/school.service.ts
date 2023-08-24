@@ -3,6 +3,8 @@ import {
   SchoolEntity,
   SchoolType,
 } from "../_entities/school.entity";
+import { addNewUserInformation, disableSpinningWheel } from "../signaux";
+import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { ServiceUtils } from "./_utils.service";
 
 export class SchoolService {
@@ -53,4 +55,97 @@ export class SchoolService {
   static async delete(id: number): Promise<boolean> {
     return await ServiceUtils.delete("/school/" + id);
   }
+
+  static async importEntities(
+    file: File,
+    onComplete?: () => void,
+    onFail?: () => void
+  ) {
+    const regexExtention = new RegExp(".csv$");
+
+    if (!regexExtention.test(file.name)) {
+      addNewUserInformation({
+        displayed: true,
+        level: MessageLevelEnum.error,
+        type: MessageTypeEnum.global,
+        content:
+          "Fichier non reconnue. Veuillez utiliser des .csv lors de l'importation.",
+      });
+      disableSpinningWheel();
+      onFail ? onFail() : "";
+      return;
+    }
+
+    const strReg =
+      "[0-9]{4}-[0-9]{2}-[0-9]{2}_[0-9]{2}-[0-9]{2}-[0-9]{2}_etablissement.csv";
+    const regex = new RegExp(strReg);
+
+    if (!regex.test(file.name)) {
+      addNewUserInformation({
+        displayed: true,
+        level: MessageLevelEnum.error,
+        type: MessageTypeEnum.global,
+        content: "Nom du fichier incorrect",
+      });
+      disableSpinningWheel();
+      onFail ? onFail() : "";
+      return;
+    }
+
+    const correctHeader = ["name", "lat", "lon"];
+
+    const parsedFile = await ServiceUtils.parseFile(file);
+    if (parsedFile.meta.fields?.toString() === correctHeader.toString()) {
+      addNewUserInformation({
+        displayed: true,
+        level: MessageLevelEnum.error,
+        type: MessageTypeEnum.global,
+        content:
+          "Erreur de formatage du header. \n Veuillez utiliser le header suivant: ['name', 'lat', 'lon']",
+      });
+      disableSpinningWheel();
+      onFail ? onFail() : "";
+      return;
+    }
+
+    disableSpinningWheel();
+    onComplete ? onComplete() : "";
+    // Papa.parse(file, {
+    //   header: true,
+    //   complete: async function (results) {
+    //     enableSpinningWheel();
+    //     console.log(results.meta.fields);
+    //     const data = dataToDB(
+    //       results.data.slice(0, results.data.length - 1) as {
+    //         // data.length - 1 to skip the last empty line of the csv
+    //         name: string;
+    //         lat: string;
+    //         lon: string;
+    //       }[]
+    //     );
+    //     try {
+    //       const schools: SchoolType[] = buildSchools(
+    //         await SchoolService.importSchools(data)
+    //       );
+
+    //       setSchools(schools);
+    //       onComplete ? onComplete() : "";
+    //     } catch (err) {
+    //       console.log("Import failed", err);
+    //       onFail ? onFail() : "";
+    //     }
+
+    //     disableSpinningWheel();
+    //   },
+    // });
+  }
+}
+function dataToDB(datas: { name: string; lat: string; lon: string }[]) {
+  return datas.map((data) => {
+    return SchoolEntity.dbFormat({
+      name: data.name,
+      lat: +data.lat,
+      lon: +data.lon,
+    });
+  });
 }

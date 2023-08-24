@@ -16,7 +16,8 @@ import RightMapMenu from "./component/organism/RightMapMenu";
 import { listHandlerLMap } from "./shortcut";
 
 import "leaflet/dist/leaflet.css";
-import { getLeafletMap } from "../../../signaux";
+import { addNewUserInformation, getLeafletMap } from "../../../signaux";
+import { MessageLevelEnum, MessageTypeEnum } from "../../../type";
 import { Points } from "./component/organism/Points";
 
 const [, { getActiveMapId }] = useStateGui();
@@ -66,6 +67,14 @@ export default function () {
       <ImportCsvCanvas
         display={displayImportCsvCanvas()}
         setDisplay={setDisplayImportCsvCanvas}
+        callbackSuccess={() => {
+          addNewUserInformation({
+            displayed: true,
+            level: MessageLevelEnum.success,
+            type: MessageTypeEnum.global,
+            content: "Les établissements ont été ajoutés",
+          });
+        }}
       />
       <InformationBoard />
       <div ref={mapDiv} id="main-map" />

@@ -1,100 +1,99 @@
 import { Setter, onCleanup, onMount } from "solid-js";
+import { SchoolService } from "../_services/school.service";
 import {
   addNewUserInformation,
   disableSpinningWheel,
   enableSpinningWheel,
 } from "../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
-import { importValues } from "./ImportCsvDialogBox";
 
 let mapDragDropDiv: HTMLDivElement;
-
-function dragLeaveHandler(e: DragEvent, setDisplay: Setter<boolean>) {
-  // console.log("dragleave");
-  e.preventDefault();
-  setDisplay(false);
-}
-
-function dragEndHandler(e: DragEvent, setDisplay: Setter<boolean>) {
-  // console.log("dragend");
-  e.preventDefault();
-  setDisplay(false);
-}
-
-function dragOverHandler(e: DragEvent) {
-  // console.log("dragover");
-  e.preventDefault();
-}
-
-function dropHandler(
-  e: DragEvent,
-  setDisplay: Setter<boolean>,
-  callbackSuccess?: () => void
-) {
-  e.preventDefault();
-
-  enableSpinningWheel();
-
-  function exitCanvas() {
-    setDisplay(false);
-    disableSpinningWheel();
-  }
-
-  if (!e.dataTransfer) {
-    exitCanvas();
-    addNewUserInformation({
-      displayed: true,
-      level: MessageLevelEnum.warning,
-      type: MessageTypeEnum.global,
-      content: "Pas de fichier à importer",
-    });
-    return;
-  }
-
-  const files = e.dataTransfer.files;
-
-  if (!files || files.length == 0) {
-    exitCanvas();
-    addNewUserInformation({
-      displayed: true,
-      level: MessageLevelEnum.warning,
-      type: MessageTypeEnum.global,
-      content: "Aucun fichier sélectionné",
-    });
-    return;
-  }
-
-  if (files.length != 1) {
-    exitCanvas();
-    addNewUserInformation({
-      displayed: true,
-      level: MessageLevelEnum.warning,
-      type: MessageTypeEnum.global,
-      content: "Veuillez importer un fichier à la fois",
-    });
-    return;
-  }
-
-  const file = files[0];
-
-  importValues(file, () => {
-    callbackSuccess ? callbackSuccess() : "";
-    disableSpinningWheel();
-    addNewUserInformation({
-      displayed: true,
-      level: MessageLevelEnum.success,
-      type: MessageTypeEnum.global,
-      content: "Les établissements ont été ajoutés",
-    });
-    exitCanvas();
-  });
-}
-
 export default function (props: {
   display: boolean;
   setDisplay: Setter<boolean>;
   callbackSuccess?: () => void;
+  callbackFail?: () => void;
 }) {
+  function dragLeaveHandler(e: DragEvent, setDisplay: Setter<boolean>) {
+    // console.log("dragleave");
+    e.preventDefault();
+    setDisplay(false);
+  }
+
+  function dragEndHandler(e: DragEvent, setDisplay: Setter<boolean>) {
+    // console.log("dragend");
+    e.preventDefault();
+    setDisplay(false);
+  }
+
+  function dragOverHandler(e: DragEvent) {
+    // console.log("dragover");
+    e.preventDefault();
+  }
+
+  function dropHandler(
+    e: DragEvent,
+    setDisplay: Setter<boolean>,
+    callbackSuccess?: () => void
+  ) {
+    e.preventDefault();
+
+    enableSpinningWheel();
+
+    function exitCanvas() {
+      setDisplay(false);
+      disableSpinningWheel();
+    }
+
+    if (!e.dataTransfer) {
+      exitCanvas();
+      addNewUserInformation({
+        displayed: true,
+        level: MessageLevelEnum.warning,
+        type: MessageTypeEnum.global,
+        content: "Pas de fichier à importer",
+      });
+      return;
+    }
+
+    const files = e.dataTransfer.files;
+
+    if (!files || files.length == 0) {
+      exitCanvas();
+      addNewUserInformation({
+        displayed: true,
+        level: MessageLevelEnum.warning,
+        type: MessageTypeEnum.global,
+        content: "Aucun fichier sélectionné",
+      });
+      return;
+    }
+
+    if (files.length != 1) {
+      exitCanvas();
+      addNewUserInformation({
+        displayed: true,
+        level: MessageLevelEnum.warning,
+        type: MessageTypeEnum.global,
+        content: "Veuillez importer un fichier à la fois",
+      });
+      return;
+    }
+
+    const file = files[0];
+
+    const onComplete = () => {
+      props.callbackSuccess ? props.callbackSuccess() : "";
+      exitCanvas();
+    };
+    const onFail = () => {
+      props.callbackFail ? props.callbackFail() : "";
+      exitCanvas();
+    };
+
+    SchoolService.importEntities(file, onComplete, onFail);
+  }
+
   function dragLeaveHandlerAux(e: DragEvent) {
     dragLeaveHandler(e, props.setDisplay);
   }
