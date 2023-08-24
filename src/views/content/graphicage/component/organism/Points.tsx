@@ -9,7 +9,7 @@ export const [blinkingStops, setBlinkingStops] = createSignal<number[]>([]);
 
 export const [blinkingSchools, setBlinkingSchools] = createSignal<number[]>([]);
 
-export const [mouseIsOverPoint, setMouseIsOverPoint] =
+export const [cursorIsOverPoint, setCursorIsOverPoint] =
   createSignal<boolean>(false);
 
 export function deselectAllPoints() {

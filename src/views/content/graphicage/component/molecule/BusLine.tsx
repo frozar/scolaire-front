@@ -25,9 +25,9 @@ import {
 } from "../organism/AddLineInformationBoardContent";
 import { deselectAllBusLines } from "../organism/BusLines";
 import {
+  cursorIsOverPoint,
   deselectAllPoints,
   linkMap,
-  mouseIsOverPoint,
 } from "../organism/Points";
 
 const [
@@ -185,7 +185,7 @@ export function BusLine(props: BusLineProps) {
 
         props.map.dragging.enable();
 
-        if (!mouseIsOverPoint()) {
+        if (!cursorIsOverPoint()) {
           setLocalLatLngs((prev) => {
             prev.splice(indice + 1, 1);
             return [...prev];

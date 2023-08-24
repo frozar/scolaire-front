@@ -16,11 +16,11 @@ import Point from "../atom/Point";
 import { deselectAllBusLines } from "../organism/BusLines";
 import {
   blinkingStops,
+  cursorIsOverPoint,
   deselectAllPoints,
   linkMap,
-  mouseIsOverPoint,
   setBlinkingSchools,
-  setMouseIsOverPoint,
+  setCursorIsOverPoint,
 } from "../organism/Points";
 import { getSchools } from "../organism/SchoolPoints";
 import { draggingLine, setDraggingLine } from "./BusLine";
@@ -92,15 +92,15 @@ const onMouseOver = (stop: StopType) => {
   setBlinkingSchools(stop.associated.map((school) => school.id));
 
   if (draggingLine()) {
-    setMouseIsOverPoint(true);
+    setCursorIsOverPoint(true);
   }
 };
 
 const onMouseOut = () => {
   setBlinkingSchools([]);
 
-  if (draggingLine() || mouseIsOverPoint()) {
-    setMouseIsOverPoint(false);
+  if (draggingLine() || cursorIsOverPoint()) {
+    setCursorIsOverPoint(false);
   }
 };
 
