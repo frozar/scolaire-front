@@ -33,6 +33,7 @@ export const [currentStep, setCurrentStep] = createSignal<drawModeStep>(
 );
 
 export default function () {
+  // set var line soit default soit avec la LineToUpdate
   const etablissementSelected = () => {
     return getLineUnderConstruction().busLine.schools;
   };
@@ -52,6 +53,7 @@ export default function () {
           }
         </h1>
       </div>
+      {/*  when line.shools.lenght > 0 */}
       <Show when={currentStep() === drawModeStep.schoolSelection}>
         <SelectedSchool schoolSelected={etablissementSelected()} />
       </Show>
