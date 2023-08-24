@@ -4,6 +4,7 @@ import {
   useStateAction,
 } from "../../../../../StateAction";
 import {
+  BusLinePointType,
   BusLineType,
   updatePolylineWithOsrm,
 } from "../../../../../_entities/bus-line.entity";
@@ -133,6 +134,36 @@ function nextStep() {
       if (getLineUnderConstruction().busLine.points.length < 2) {
         return;
       }
+      // Construire getLineUnderConstruction().editLines à partir de getLineUnderConstruction().busLine
+      // let i = 0
+      // for (const elt of getLineUnderConstruction().busLine.points) {
+      const editLinesWip: BusLineType[] = [];
+      for (
+        let i = 0;
+        i < getLineUnderConstruction().busLine.points.length - 1;
+        i++
+      ) {
+        editLinesWip.push({
+          ...getLineUnderConstruction().busLine,
+          points: [
+            {
+              lon: getLineUnderConstruction().busLine.points[i].lon,
+              lat: getLineUnderConstruction().busLine.points[i].lat,
+            },
+            {
+              lon: getLineUnderConstruction().busLine.points[i + 1].lon,
+              lat: getLineUnderConstruction().busLine.points[i + 1].lat,
+            },
+          ] as BusLinePointType[],
+        } as BusLineType);
+      }
+      console.log("editLinesWip", editLinesWip);
+
+      setLineUnderConstruction({
+        ...getLineUnderConstruction(),
+        editLines: editLinesWip,
+      });
+
       updatePolylineWithOsrm(getLineUnderConstruction().busLine);
       break;
     case drawModeStep.polylineEdition:

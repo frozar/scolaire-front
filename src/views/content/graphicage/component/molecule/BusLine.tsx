@@ -57,6 +57,7 @@ export function BusLine(props: BusLineProps) {
       currentStep() != drawModeStep.stopSelection &&
       props.line.latLngs().length != 0
     ) {
+      // ! ici tracé de polyline
       setLocalLatLngs(props.line.latLngs());
       setLocalOpacity(0.8);
     } else {

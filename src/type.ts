@@ -46,6 +46,7 @@ export function isLeafletSchoolType(pt: PointType) {
 export type LineUnderConstructionType = {
   nextIndex: number;
   busLine: BusLineType;
+  editLines?: BusLineType[];
 };
 
 export enum ModeEnum {
