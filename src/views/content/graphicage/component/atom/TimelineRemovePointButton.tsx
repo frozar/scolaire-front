@@ -1,6 +1,6 @@
 import { FaRegularTrashCan } from "solid-icons/fa";
 import { LineUnderConstructionType } from "../../../../../type";
-import { COLOR_GRAY_BASE } from "../../constant";
+import { COLOR_STOP_LIGHT } from "../../constant";
 import { linkMap } from "../organism/Points";
 import "./TimelineRemovePointButton.css";
 
@@ -12,7 +12,7 @@ export function TimelineRemovePointButton(props: {
 }) {
   const deletePoint = (id: number) => {
     const circle = linkMap.get(props.getter().busLine.points[id].leafletId);
-    circle?.setStyle({ fillColor: COLOR_GRAY_BASE });
+    circle?.setStyle({ fillColor: COLOR_STOP_LIGHT });
 
     const stops = [...props.getter().busLine.points];
     stops.splice(id, 1);

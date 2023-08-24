@@ -7,11 +7,10 @@ import {
   setStopPointsColor,
 } from "../../../../../leafletUtils";
 import {
-  COLOR_GRAY_BASE,
   COLOR_SCHOOL_LIGHT,
+  COLOR_STOP_EMPHASE,
   COLOR_STOP_FOCUS,
   COLOR_STOP_LIGHT,
-  COLOR_YELLOW_BASE,
 } from "../../constant";
 import Point from "../atom/Point";
 import { deselectAllBusLines } from "../organism/BusLines";
@@ -121,19 +120,19 @@ export function StopPoint(props: StopPointProps) {
 
     if (isInAddLineMode() && isInLineUnderConstruction != undefined) {
       removePointToLineUnderConstruction(props.point);
-      circle?.setStyle({ fillColor: COLOR_GRAY_BASE });
+      circle?.setStyle({ fillColor: COLOR_STOP_LIGHT });
     }
   };
 
   createEffect(() => {
     if (isInAddLineMode()) {
       const circle = linkMap.get(props.point.leafletId);
-      circle?.setStyle({ fillColor: COLOR_YELLOW_BASE });
+      circle?.setStyle({ fillColor: COLOR_STOP_EMPHASE });
     }
   });
   const color = () => {
     if (isInAddLineMode()) {
-      return COLOR_GRAY_BASE;
+      return COLOR_STOP_LIGHT;
     } else return COLOR_STOP_FOCUS;
   };
 
