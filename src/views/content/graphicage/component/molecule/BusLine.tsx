@@ -198,8 +198,8 @@ export function BusLine(props: BusLineProps) {
             return [...prev];
           });
           setLineUnderConstructionNextIndex(localLatLngs().length);
+          setDraggingLine(false);
         }
-        setDraggingLine(false);
         document.removeEventListener("mouseup", handleMouseUp);
       }
       document.addEventListener("mouseup", handleMouseUp);

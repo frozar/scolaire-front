@@ -21,11 +21,12 @@ import {
   blinkingSchools,
   deselectAllPoints,
   linkMap,
+  mouseIsOverPoint,
   setBlinkingStops,
   setMouseIsOverPoint,
 } from "../organism/Points";
 import { getStops } from "../organism/StopPoints";
-import { draggingLine } from "./BusLine";
+import { draggingLine, setDraggingLine } from "./BusLine";
 
 const [
   ,
@@ -100,6 +101,7 @@ const onMouseUp = (point: StopType) => {
     )[0].quantity;
 
     addPointToLineUnderConstruction({ ...point, quantity: associatedQuantity });
+    setDraggingLine(false);
   }
 };
 
@@ -114,7 +116,7 @@ const onMouseOver = (school: SchoolType) => {
 const onMouseOut = () => {
   setBlinkingStops([]);
 
-  if (draggingLine()) {
+  if (draggingLine() || mouseIsOverPoint()) {
     setMouseIsOverPoint(false);
   }
 };
