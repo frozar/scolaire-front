@@ -1,4 +1,4 @@
-import L from "leaflet";
+import L, { LeafletMouseEvent } from "leaflet";
 import { createEffect, createSignal } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import {
@@ -9,7 +9,6 @@ import {
   setSchoolPointsColor,
   setStopPointsColor,
 } from "../../../../../leafletUtils";
-import { setRemoveConfirmation } from "../../../../../signaux";
 import { NatureEnum } from "../../../../../type";
 import {
   COLOR_SCHOOL_FOCUS,
@@ -25,10 +24,23 @@ import {
   drawModeStep,
 } from "../organism/AddLineInformationBoardContent";
 import { deselectAllBusLines } from "../organism/BusLines";
-import { deselectAllPoints, linkMap } from "../organism/Points";
+import {
+  cursorIsOverPoint,
+  deselectAllPoints,
+  linkMap,
+} from "../organism/Points";
 
-const [, { isInReadMode, isInRemoveLineMode, getLineUnderConstruction }] =
-  useStateAction();
+const [
+  ,
+  {
+    isInReadMode,
+    isInRemoveLineMode,
+    getLineUnderConstruction,
+    setLineUnderConstructionNextIndex,
+  },
+] = useStateAction();
+
+export const [draggingLine, setDraggingLine] = createSignal<boolean>(false);
 
 export type BusLineProps = {
   line: BusLineType;
@@ -40,7 +52,6 @@ export function BusLine(props: BusLineProps) {
   const [localOpacity, setLocalOpacity] = createSignal<number>(1);
   // eslint-disable-next-line solid/reactivity
   createEffect(async () => {
-
     if (
       currentStep() != drawModeStep.stopSelection &&
       props.line.latLngs().length != 0
@@ -106,6 +117,88 @@ export function BusLine(props: BusLineProps) {
     }
   };
 
+  function onMouseDown(e: LeafletMouseEvent) {
+    if (currentStep() == drawModeStep.stopSelection) {
+      props.map.dragging.disable();
+
+      function pointToLineDistance(
+        clickCoordinate: L.LatLng,
+        point1: L.LatLng,
+        point2: L.LatLng
+      ): number {
+        const x1 = clickCoordinate.lng;
+        const y1 = clickCoordinate.lat;
+        const x2 = point1.lng;
+        const y2 = point1.lat;
+        const x3 = point2.lng;
+        const y3 = point2.lat;
+
+        return (
+          Math.abs((y3 - y2) * x1 - (x3 - x2) * y1 + x3 * y2 - y3 * x2) /
+          Math.sqrt(
+            (point1.lat - point2.lat) ** 2 + (point1.lng - point2.lng) ** 2
+          )
+        );
+      }
+      const coordinates: L.LatLng[] = e.target._latlngs;
+
+      let distance = pointToLineDistance(
+        e.latlng,
+        coordinates[0],
+        coordinates[1]
+      );
+      let indice = 0;
+
+      for (let i = 1; i < coordinates.length - 1; i++) {
+        const actualDistance = pointToLineDistance(
+          e.latlng,
+          coordinates[i],
+          coordinates[i + 1]
+        );
+        if (actualDistance < distance) {
+          distance = actualDistance;
+          indice = i;
+        }
+      }
+      setLocalLatLngs((prev) => {
+        prev.splice(indice + 1, 0, e.latlng);
+        return [...prev];
+      });
+      setDraggingLine(true);
+
+      createEffect(() => {
+        props.map?.on("mousemove", ({ latlng }) => {
+          setLocalLatLngs((prev) => {
+            prev.splice(indice + 1, 1, latlng);
+            return [...prev];
+          });
+        });
+      });
+
+      setLineUnderConstructionNextIndex(indice + 1);
+
+      function handleMouseUp() {
+        props.map?.off("mousemove");
+        if (props.map.hasEventListeners("mousemove")) {
+          props.map.off("mousemove");
+        }
+
+        props.map.dragging.enable();
+
+        if (!cursorIsOverPoint()) {
+          setLocalLatLngs((prev) => {
+            prev.splice(indice + 1, 1);
+            return [...prev];
+          });
+          setLineUnderConstructionNextIndex(localLatLngs().length);
+          setDraggingLine(false);
+        }
+        document.removeEventListener("mouseup", handleMouseUp);
+      }
+      document.addEventListener("mouseup", handleMouseUp);
+    }
+  }
+
   return (
     <Line
       latlngs={localLatLngs()}
@@ -116,6 +209,7 @@ export function BusLine(props: BusLineProps) {
       onMouseOver={onMouseOver}
       onMouseOut={onMouseOut}
       onClick={onClick}
+      onMouseDown={onMouseDown}
     />
   );
 }

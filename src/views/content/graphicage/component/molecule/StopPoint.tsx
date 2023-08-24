@@ -16,11 +16,14 @@ import Point from "../atom/Point";
 import { deselectAllBusLines } from "../organism/BusLines";
 import {
   blinkingStops,
+  cursorIsOverPoint,
   deselectAllPoints,
   linkMap,
   setBlinkingSchools,
+  setCursorIsOverPoint,
 } from "../organism/Points";
 import { getSchools } from "../organism/SchoolPoints";
+import { draggingLine, setDraggingLine } from "./BusLine";
 
 const [
   ,
@@ -44,6 +47,14 @@ const minRadius = 5;
 const maxRadius = 10;
 const rangeRadius = maxRadius - minRadius;
 
+//TODO Modify when we use multiple schools
+function getAssociatedQuantity(point: StopType) {
+  return point.associated.filter(
+    (associatedSchool) =>
+      associatedSchool.id === getLineUnderConstruction().busLine.schools[0].id
+  )[0].quantity;
+}
+
 function onClick(point: StopType) {
   // Highlight point schools
   const ids: number[] = [point.leafletId];
@@ -65,11 +76,7 @@ function onClick(point: StopType) {
     return;
   }
 
-  //TODO Modify when we use multiple schools
-  const associatedQuantity = point.associated.filter(
-    (associatedSchool) =>
-      associatedSchool.id === getLineUnderConstruction().busLine.schools[0].id
-  )[0].quantity;
+  const associatedQuantity = getAssociatedQuantity(point);
 
   // TODO: when add line with an etablissement point the line destroy after next point click
   // Wait Richard/Hugo finish the line underconstruction
@@ -83,10 +90,27 @@ function onClick(point: StopType) {
 
 const onMouseOver = (stop: StopType) => {
   setBlinkingSchools(stop.associated.map((school) => school.id));
+
+  if (draggingLine()) {
+    setCursorIsOverPoint(true);
+  }
 };
 
 const onMouseOut = () => {
   setBlinkingSchools([]);
+
+  if (draggingLine() || cursorIsOverPoint()) {
+    setCursorIsOverPoint(false);
+  }
+};
+
+const onMouseUp = (point: StopType) => {
+  if (draggingLine()) {
+    const associatedQuantity = getAssociatedQuantity(point);
+
+    addPointToLineUnderConstruction({ ...point, quantity: associatedQuantity });
+    setDraggingLine(false);
+  }
 };
 
 export function StopPoint(props: StopPointProps) {
@@ -149,6 +173,7 @@ export function StopPoint(props: StopPointProps) {
       onMouseOver={() => onMouseOver(props.point)}
       onMouseOut={() => onMouseOut()}
       onRightClick={onRightClick}
+      onMouseUp={() => onMouseUp(props.point)}
     />
   );
 }

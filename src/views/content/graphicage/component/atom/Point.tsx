@@ -44,6 +44,7 @@ export interface PointProps {
   onClick: () => void;
   onMouseOver: () => void;
   onMouseOut: () => void;
+  onMouseUp: () => void;
 
   onRightClick?: () => void;
 }
@@ -76,6 +77,7 @@ export default function (props: PointProps) {
         .on("dblclick", onDBLClick)
         .on("mouseover", props.onMouseOver)
         .on("mouseout", props.onMouseOut)
+        .on("mouseup", props.onMouseUp)
         .on("contextmenu", onRightClick)
         .addTo(props.map);
 

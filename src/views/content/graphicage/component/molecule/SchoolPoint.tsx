@@ -1,6 +1,7 @@
 import L from "leaflet";
 import { useStateAction } from "../../../../../StateAction";
 import { SchoolType } from "../../../../../_entities/school.entity";
+import { StopType } from "../../../../../_entities/stop.entity";
 import {
   setSchoolPointsColor,
   setStopPointsColor,
@@ -18,11 +19,14 @@ import {
 import { deselectAllBusLines } from "../organism/BusLines";
 import {
   blinkingSchools,
+  cursorIsOverPoint,
   deselectAllPoints,
   linkMap,
   setBlinkingStops,
+  setCursorIsOverPoint,
 } from "../organism/Points";
 import { getStops } from "../organism/StopPoints";
+import { draggingLine, setDraggingLine } from "./BusLine";
 
 const [
   ,
@@ -89,12 +93,32 @@ const onClick = (point: SchoolType) => {
   }
 };
 
+const onMouseUp = (point: StopType) => {
+  if (draggingLine()) {
+    const associatedQuantity = point.associated.filter(
+      (associatedSchool) =>
+        associatedSchool.id === getLineUnderConstruction().busLine.schools[0].id
+    )[0].quantity;
+
+    addPointToLineUnderConstruction({ ...point, quantity: associatedQuantity });
+    setDraggingLine(false);
+  }
+};
+
 const onMouseOver = (school: SchoolType) => {
   setBlinkingStops(school.associated.map((stop) => stop.id));
+
+  if (draggingLine()) {
+    setCursorIsOverPoint(true);
+  }
 };
 
 const onMouseOut = () => {
   setBlinkingStops([]);
+
+  if (draggingLine() || cursorIsOverPoint()) {
+    setCursorIsOverPoint(false);
+  }
 };
 
 export function SchoolPoint(props: SchoolPointProps) {
@@ -110,6 +134,7 @@ export function SchoolPoint(props: SchoolPointProps) {
       onClick={() => onClick(props.point)}
       onMouseOver={() => onMouseOver(props.point)}
       onMouseOut={() => onMouseOut()}
+      onMouseUp={() => onMouseUp(props.point)}
     />
   );
 }

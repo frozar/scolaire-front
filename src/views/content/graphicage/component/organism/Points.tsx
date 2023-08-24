@@ -9,6 +9,9 @@ export const [blinkingStops, setBlinkingStops] = createSignal<number[]>([]);
 
 export const [blinkingSchools, setBlinkingSchools] = createSignal<number[]>([]);
 
+export const [cursorIsOverPoint, setCursorIsOverPoint] =
+  createSignal<boolean>(false);
+
 export function deselectAllPoints() {
   getSchools().map((point) => point.setSelected(false));
   getStops().map((point) => point.setSelected(false));
