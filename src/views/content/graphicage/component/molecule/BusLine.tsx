@@ -42,8 +42,10 @@ const [
   },
 ] = useStateAction();
 
+// ! delete and reset lineTip as before
 export const [showLineTip, setShowLineTip] = createSignal<boolean>(false);
-export const [draggingLines, setDraggingLines] = createSignal<boolean>(false);
+
+export const [draggingLine, setDraggingLine] = createSignal<boolean>(false);
 
 const [lineTipCoordinates, setLineTipCoordinates] = createSignal<L.LatLng[]>(
   []
@@ -168,78 +170,21 @@ export function BusLine(props: BusLineProps) {
         prev.splice(indice + 1, 0, e.latlng);
         return [...prev];
       });
-      // setShowLineTip(true);
-      setDraggingLines(true);
-      // setLocalLatLngs((prev) => {
-      //   console.log("prev", prev);
-      //   console.log("indice", indice);
-
-      //   prev.splice(indice, 0, L.latLng(-20.8466588303741, 55.5343806753509));
-      //   console.log("newLatlgs", prev);
-      //   return prev;
-      // });
-      // setLocalLatLngs((prev) => {
-      //   console.log(prev);
-
-      //   prev.push(L.latLng(-20.8466588303741, 55.4343806753509));
-      //   console.log(prev);
-
-      //   return prev;
-      // });
-      // setLocalLatLngs((prev) => {
-      //   // console.log(prev);
-
-      //   // prev.push(L.latLng(-20.8466588303741, 55.4343806753509));
-      //   // console.log(prev);
-
-      //   return [
-      //     L.latLng(-20.8466588303741, 55.4343806753509),
-      //     L.latLng(-20.9466588303741, 55.5343806753509),
-      //   ];
-      // });
+      setDraggingLine(true);
       console.log("local latlng", localLatLngs());
 
       createEffect(() => {
-        // const leafletMap = props.leafletMap;
-        // const initlatlng = props.latlngs;
-        // ! setLocalLatLngs splice 0 avec mousedown
         props.map?.on("mousemove", ({ latlng }) => {
-          // console.log("onmousemove");
-
           setLocalLatLngs((prev) => {
             prev.splice(indice + 1, 1, latlng);
             return [...prev];
           });
-          // setLocalLatLngs((prev) => {
-          //   // prev.splice(indice, 1, latlng);
-          //   return [latlng, L.latLng(-20.9466588303741, 55.5343806753509)];
-          // });
-
-          // console.log("localLatLngs()", localLatLngs());
-
-          // setLineTipLatLngs({
-          //   lineA: [
-          //     L.latLng(initlatlng[0].lat, initlatlng[0].lng),
-          //     L.latLng(latlng.lat, latlng.lng),
-          //   ],
-          //   lineB: [
-          //     L.latLng(initlatlng[1].lat, initlatlng[1].lng),
-          //     L.latLng(latlng.lat, latlng.lng),
-          //   ],
-          // });
         });
       });
 
       setLineUnderConstructionNextIndex(indice + 1);
 
-      // function handleMouseUp() {
-      //   setShowLineTip(false);
-      //   props.map.dragging.enable();
-      //   document.removeEventListener("mouseup", handleMouseUp);
-      // }
-      // document.addEventListener("mouseup", handleMouseUp);
-      function handleMouseUp2() {
-        // setShowLineTip(false);
+      function handleMouseUp() {
         props.map?.off("mousemove");
         if (props.map.hasEventListeners("mousemove")) {
           props.map.off("mousemove");
@@ -254,10 +199,10 @@ export function BusLine(props: BusLineProps) {
           });
           setLineUnderConstructionNextIndex(localLatLngs().length);
         }
-        setDraggingLines(false);
-        document.removeEventListener("mouseup", handleMouseUp2);
+        setDraggingLine(false);
+        document.removeEventListener("mouseup", handleMouseUp);
       }
-      document.addEventListener("mouseup", handleMouseUp2);
+      document.addEventListener("mouseup", handleMouseUp);
     }
   }
 
