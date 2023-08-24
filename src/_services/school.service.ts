@@ -5,6 +5,10 @@ import {
 } from "../_entities/school.entity";
 import { addNewUserInformation, disableSpinningWheel } from "../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
+import {
+  buildSchools,
+  setSchools,
+} from "../views/content/graphicage/component/organism/SchoolPoints";
 import { ServiceUtils } from "./_utils.service";
 
 export class SchoolService {
@@ -63,7 +67,9 @@ export class SchoolService {
   ) {
     const regexExtention = new RegExp(".csv$");
 
-    if (!regexExtention.test(file.name)) {
+    const fileName = file.name;
+
+    if (!regexExtention.test(fileName)) {
       addNewUserInformation({
         displayed: true,
         level: MessageLevelEnum.error,
@@ -108,6 +114,25 @@ export class SchoolService {
       return;
     }
 
+    const data = dataToDB(
+      parsedFile.data.slice(0, parsedFile.data.length - 1) as Pick<
+        SchoolType,
+        "name" | "lon" | "lat"
+      >[] // data.length - 1 to skip the last empty line of the csv
+    );
+
+    try {
+      const schools: SchoolType[] = buildSchools(
+        await SchoolService.importSchools(data)
+      );
+
+      setSchools(schools);
+      onComplete ? onComplete() : "";
+    } catch (err) {
+      console.log("Import failed", err);
+      onFail ? onFail() : "";
+    }
+
     disableSpinningWheel();
     onComplete ? onComplete() : "";
     // Papa.parse(file, {
@@ -140,7 +165,7 @@ export class SchoolService {
     // });
   }
 }
-function dataToDB(datas: { name: string; lat: string; lon: string }[]) {
+function dataToDB(datas: Pick<SchoolType, "name" | "lon" | "lat">[]) {
   return datas.map((data) => {
     return SchoolEntity.dbFormat({
       name: data.name,
