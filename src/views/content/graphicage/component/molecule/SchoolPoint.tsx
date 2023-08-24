@@ -22,9 +22,10 @@ import {
   deselectAllPoints,
   linkMap,
   setBlinkingStops,
+  setMouseIsOverPoint,
 } from "../organism/Points";
 import { getStops } from "../organism/StopPoints";
-import { showLineTip } from "./BusLine";
+import { draggingLines } from "./BusLine";
 
 const [
   ,
@@ -92,22 +93,29 @@ const onClick = (point: SchoolType) => {
 };
 
 const onMouseUp = (point: StopType) => {
-  if (showLineTip()) {
+  if (draggingLines()) {
     const associatedQuantity = point.associated.filter(
       (associatedSchool) =>
         associatedSchool.id === getLineUnderConstruction().busLine.schools[0].id
     )[0].quantity;
 
     addPointToLineUnderConstruction({ ...point, quantity: associatedQuantity });
+    // setDraggingLines(false);
   }
 };
 
 const onMouseOver = (school: SchoolType) => {
   setBlinkingStops(school.associated.map((stop) => stop.id));
+  if (draggingLines()) {
+    setMouseIsOverPoint(true);
+  }
 };
 
 const onMouseOut = () => {
   setBlinkingStops([]);
+  if (draggingLines()) {
+    setMouseIsOverPoint(false);
+  }
 };
 
 export function SchoolPoint(props: SchoolPointProps) {
