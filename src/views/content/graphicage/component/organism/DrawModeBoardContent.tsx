@@ -164,7 +164,11 @@ function nextStep() {
         editLines: editLinesWip,
       });
 
-      updatePolylineWithOsrm(getLineUnderConstruction().busLine);
+      // updatePolylineWithOsrm(getLineUnderConstruction().busLine);
+      updatePolylineWithOsrm(getLineUnderConstruction().editLines[0]);
+      // for (const line of getLineUnderConstruction().editLines) {
+      //   updatePolylineWithOsrm(line);
+      // }
       break;
     case drawModeStep.polylineEdition:
       console.log("Validation de la polyline");
