@@ -11,7 +11,7 @@ export class SchoolService {
     return dbSchools.map((dbSchool) => SchoolEntity.build(dbSchool));
   }
 
-  static async importSchools(
+  static async import(
     schools: Pick<SchoolDBType, "name" | "location">[]
   ): Promise<SchoolType[]> {
     const xanoResult: SchoolDBType[] = await ServiceUtils.post(
@@ -19,7 +19,9 @@ export class SchoolService {
       { schools: schools }
     );
 
-    return xanoResult.map((dbSchool) => SchoolEntity.build(dbSchool));
+    return SchoolEntity.buildSchools(
+      xanoResult.map((dbSchool) => SchoolEntity.build(dbSchool))
+    );
   }
 
   //TODO change Omit to Pick
@@ -52,14 +54,5 @@ export class SchoolService {
   // TODO no tested : school supression process on stand by
   static async delete(id: number): Promise<boolean> {
     return await ServiceUtils.delete("/school/" + id);
-  }
-  static dataToDB(datas: Pick<SchoolType, "name" | "lon" | "lat">[]) {
-    return datas.map((data) => {
-      return SchoolEntity.dbFormat({
-        name: data.name,
-        lat: +data.lat,
-        lon: +data.lon,
-      });
-    });
   }
 }

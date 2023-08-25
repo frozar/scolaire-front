@@ -29,11 +29,33 @@ export class SchoolEntity {
 
   static dbFormat(
     school: Pick<SchoolType, "name" | "lon" | "lat">
-  ): Omit<SchoolDBType, "id" | "associated"> {
+  ): Pick<SchoolDBType, "name" | "location"> {
     return {
       name: school.name,
       location: EntityUtils.builLocationPoint(school.lon, school.lat),
     };
+  }
+
+  static dataToDB(datas: Pick<SchoolType, "name" | "lon" | "lat">[]) {
+    return datas.map((data) => {
+      return SchoolEntity.dbFormat({
+        name: data.name,
+        lat: +data.lat,
+        lon: +data.lon,
+      });
+    });
+  }
+
+  static buildSchools(schools: SchoolType[]): SchoolType[] {
+    return schools.map((school) => {
+      const [selected, setSelected] = createSignal(false);
+      return {
+        ...school,
+        setSelected,
+        selected,
+        leafletId: nextLeafletPointId(),
+      };
+    });
   }
 }
 

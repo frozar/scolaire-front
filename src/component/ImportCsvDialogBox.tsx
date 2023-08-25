@@ -3,14 +3,18 @@ import { Transition } from "solid-transition-group";
 import {
   addNewUserInformation,
   closeImportCsvBox,
+  disableSpinningWheel,
   getImportCsvBox,
 } from "../signaux";
 
 import { useStateGui } from "../StateGui";
-import { ServiceUtils } from "../_services/_utils.service";
+import { SchoolType } from "../_entities/school.entity";
+import { SchoolService } from "../_services/school.service";
 import ClickOutside from "../component/ClickOutside";
-import { MessageLevelEnum, MessageTypeEnum, NatureEnum } from "../type";
+import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { assertIsNode } from "../utils";
+import { parsedCsvFileToSchoolData } from "../utils/csvUtils";
+import { setSchools } from "../views/content/graphicage/component/organism/SchoolPoints";
 
 // HACK for the documentation to preserve the ClickOutside directive on save
 // https://www.solidjs.com/guides/typescript#use___
@@ -59,7 +63,7 @@ export default function (props: {
     return res;
   };
 
-  function handlerOnClickValider() {
+  async function handlerOnClickValider() {
     const constRefInputCsv = refInputCsv();
     if (!constRefInputCsv) {
       return;
@@ -93,15 +97,27 @@ export default function (props: {
 
     // TODO Add import overview
 
-    const onComplete = () => {
-      props.callbackSuccess ? props.callbackSuccess() : "";
-      closeImportCsvBox();
-    };
-    const onFail = () => {
+    const parsedFileData = await parsedCsvFileToSchoolData(file);
+
+    if (!parsedFileData) {
+      disableSpinningWheel();
       props.callbackFail ? props.callbackFail() : "";
       closeImportCsvBox();
-    };
-    ServiceUtils.importEntities(file, onComplete, onFail, NatureEnum.school);
+      return;
+    }
+
+    try {
+      const schools: SchoolType[] = await SchoolService.import(parsedFileData);
+      setSchools(schools);
+      props.callbackSuccess ? props.callbackSuccess() : "";
+      closeImportCsvBox();
+    } catch (err) {
+      console.log("Import failed", err);
+      props.callbackFail ? props.callbackFail() : "";
+      closeImportCsvBox();
+    }
+
+    disableSpinningWheel();
   }
 
   return (

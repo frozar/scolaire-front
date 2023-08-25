@@ -1,13 +1,6 @@
-import Papa from "papaparse";
 import { useStateGui } from "../StateGui";
-import { SchoolType } from "../_entities/school.entity";
-import { addNewUserInformation, disableSpinningWheel } from "../signaux";
-import { MessageLevelEnum, MessageTypeEnum, NatureEnum } from "../type";
-import {
-  buildSchools,
-  setSchools,
-} from "../views/content/graphicage/component/organism/SchoolPoints";
-import { SchoolService } from "./school.service";
+import { addNewUserInformation } from "../signaux";
+import { MessageLevelEnum, MessageTypeEnum } from "../type";
 
 const [, { getActiveMapId }] = useStateGui();
 
@@ -63,117 +56,6 @@ export class ServiceUtils {
       buildUrl += "/map/" + getActiveMapId();
     }
     return buildUrl + url;
-  }
-
-  static async parseFile(file: File): Promise<Papa.ParseResult<unknown>> {
-    const res = new Promise((resolve, reject) => {
-      Papa.parse(file, {
-        header: true,
-        complete(results) {
-          resolve(results);
-        },
-        error(err) {
-          reject(err);
-        },
-      });
-    });
-
-    return res as Promise<Papa.ParseResult<unknown>>;
-  }
-  static fileNameIsCorrect(fileName: string) {
-    const regexExtention = new RegExp(".csv$");
-    if (!regexExtention.test(fileName)) {
-      addNewUserInformation({
-        displayed: true,
-        level: MessageLevelEnum.error,
-        type: MessageTypeEnum.global,
-        content:
-          "Fichier non reconnue. Veuillez utiliser des .csv lors de l'importation.",
-      });
-      return false;
-    }
-
-    const strReg =
-      "[0-9]{4}-[0-9]{2}-[0-9]{2}_[0-9]{2}-[0-9]{2}-[0-9]{2}_etablissement.csv";
-    const regex = new RegExp(strReg);
-
-    if (!regex.test(fileName)) {
-      addNewUserInformation({
-        displayed: true,
-        level: MessageLevelEnum.error,
-        type: MessageTypeEnum.global,
-        content: "Nom du fichier incorrect",
-      });
-
-      return false;
-    }
-    return true;
-  }
-  static isCorrectHeader(
-    currentHeader: string[] | undefined,
-    correctHeader: string[]
-  ) {
-    if (currentHeader?.toString() != correctHeader.toString()) {
-      addNewUserInformation({
-        displayed: true,
-        level: MessageLevelEnum.error,
-        type: MessageTypeEnum.global,
-        content:
-          "Erreur de formatage du header. \n Veuillez utiliser le header suivant: ['name', 'lat', 'lon']",
-      });
-      return false;
-    }
-    return true;
-  }
-
-  static async importEntities(
-    file: File,
-    onComplete: () => void,
-    onFail: () => void,
-    importType: NatureEnum
-  ) {
-    const fileName = file.name;
-
-    if (!ServiceUtils.fileNameIsCorrect(fileName)) {
-      disableSpinningWheel();
-      onFail();
-      return;
-    }
-
-    const parsedFile = await ServiceUtils.parseFile(file);
-
-    const correctHeader = ["name", "lat", "lon"];
-    if (!ServiceUtils.isCorrectHeader(parsedFile.meta.fields, correctHeader)) {
-      disableSpinningWheel();
-      onFail();
-      return;
-    }
-
-    try {
-      let data = [];
-      if (importType === NatureEnum.school) {
-        data = SchoolService.dataToDB(
-          parsedFile.data.slice(0, parsedFile.data.length - 1) as Pick<
-            SchoolType,
-            "name" | "lon" | "lat"
-          >[]
-        ); // data.length - 1 to skip the last empty line of the csv
-
-        const schools: SchoolType[] = buildSchools(
-          await SchoolService.importSchools(data)
-        );
-
-        setSchools(schools);
-        onComplete();
-      } else {
-        onFail();
-      }
-    } catch (err) {
-      console.log("Import failed", err);
-      onFail();
-    }
-
-    disableSpinningWheel();
   }
 }
 

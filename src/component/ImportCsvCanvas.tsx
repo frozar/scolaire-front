@@ -1,11 +1,17 @@
 import { Setter, onCleanup, onMount } from "solid-js";
-import { ServiceUtils } from "../_services/_utils.service";
+import { SchoolType } from "../_entities/school.entity";
+import { SchoolService } from "../_services/school.service";
 import {
   addNewUserInformation,
   disableSpinningWheel,
   enableSpinningWheel,
 } from "../signaux";
-import { MessageLevelEnum, MessageTypeEnum, NatureEnum } from "../type";
+import { MessageLevelEnum, MessageTypeEnum } from "../type";
+import {
+  fileNameIsCorrect,
+  parsedCsvFileToSchoolData,
+} from "../utils/csvUtils";
+import { setSchools } from "../views/content/graphicage/component/organism/SchoolPoints";
 
 let mapDragDropDiv: HTMLDivElement;
 export default function (props: {
@@ -31,7 +37,7 @@ export default function (props: {
     e.preventDefault();
   }
 
-  function dropHandler(e: DragEvent, setDisplay: Setter<boolean>) {
+  async function dropHandler(e: DragEvent, setDisplay: Setter<boolean>) {
     e.preventDefault();
 
     enableSpinningWheel();
@@ -78,16 +84,34 @@ export default function (props: {
 
     const file = files[0];
 
-    const onComplete = () => {
-      props.callbackSuccess ? props.callbackSuccess() : "";
-      exitCanvas();
-    };
-    const onFail = () => {
+    const fileName = file.name;
+
+    if (!fileNameIsCorrect(fileName, "etablissement")) {
+      return;
+    }
+
+    const parsedFileData = await parsedCsvFileToSchoolData(file);
+
+    if (!parsedFileData) {
+      disableSpinningWheel();
       props.callbackFail ? props.callbackFail() : "";
       exitCanvas();
-    };
+      return;
+    }
+    console.log(parsedFileData);
 
-    ServiceUtils.importEntities(file, onComplete, onFail, NatureEnum.school);
+    try {
+      const schools: SchoolType[] = await SchoolService.import(parsedFileData);
+      setSchools(schools);
+      props.callbackSuccess ? props.callbackSuccess() : "";
+      exitCanvas();
+    } catch (err) {
+      console.log("Import failed", err);
+      props.callbackFail ? props.callbackFail() : "";
+      exitCanvas();
+    }
+
+    disableSpinningWheel();
   }
 
   function dragLeaveHandlerAux(e: DragEvent) {
@@ -99,7 +123,7 @@ export default function (props: {
   }
 
   function dropHandlerAux(e: DragEvent) {
-    dropHandler(e, props.setDisplay, props.callbackSuccess);
+    dropHandler(e, props.setDisplay);
   }
 
   onMount(() => {
