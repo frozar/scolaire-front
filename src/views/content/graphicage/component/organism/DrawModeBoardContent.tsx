@@ -143,8 +143,11 @@ function nextStep() {
         i < getLineUnderConstruction().busLine.points.length - 1;
         i++
       ) {
+        const [latLngs, setLatLngs] = createSignal<L.LatLng[]>([]);
         editLinesWip.push({
           ...getLineUnderConstruction().busLine,
+          latLngs,
+          setLatLngs,
           points: [
             {
               lon: getLineUnderConstruction().busLine.points[i].lon,
@@ -165,10 +168,10 @@ function nextStep() {
       });
 
       // updatePolylineWithOsrm(getLineUnderConstruction().busLine);
-      updatePolylineWithOsrm(getLineUnderConstruction().editLines[0]);
-      // for (const line of getLineUnderConstruction().editLines) {
-      //   updatePolylineWithOsrm(line);
-      // }
+      // updatePolylineWithOsrm(getLineUnderConstruction().editLines[0]);
+      for (const line of getLineUnderConstruction().editLines) {
+        updatePolylineWithOsrm(line);
+      }
       break;
     case drawModeStep.polylineEdition:
       console.log("Validation de la polyline");
