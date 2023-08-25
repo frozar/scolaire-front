@@ -1,5 +1,6 @@
 import L from "leaflet";
 import { Accessor, Setter, createSignal } from "solid-js";
+import { useStateAction } from "../StateAction";
 import { OsrmService } from "../_services/osrm.service";
 import { disableSpinningWheel, enableSpinningWheel } from "../signaux";
 import { NatureEnum } from "../type";
@@ -8,6 +9,9 @@ import { getSchools } from "../views/content/graphicage/component/organism/Schoo
 import { getStops } from "../views/content/graphicage/component/organism/StopPoints";
 import { EntityUtils, LocationPathDBType } from "./_utils.entity";
 import { SchoolType } from "./school.entity";
+
+const [, { getLineUnderConstruction, setLineUnderConstruction }] =
+  useStateAction();
 
 export class BusLineEntity {
   static build(dbData: BusLineDBType): BusLineType {
@@ -142,12 +146,65 @@ const getAssociatedBusLinePoint = (dbPoint: BusLinePointDBType): PointType => {
   return getStops().filter((item) => item.id == dbPoint.stop_id)[0];
 };
 
+// export async function updatePolylineWithOsrm(busLine: BusLineType) {
+//   enableSpinningWheel();
+//   const latlngs: L.LatLng[] = await OsrmService.getRoadPolyline(busLine.points);
+//   busLine.setLatLngs(latlngs);
+//   disableSpinningWheel();
+// }
+
+// export async function updatePolylineWithOsrm(busLine: BusLineType) {
+//   enableSpinningWheel();
+//   const latlngs: L.LatLng[] = await OsrmService.getRoadPolyline(
+//     busLine.waypoints
+//   );
+//   busLine.setLatLngs(latlngs);
+//   // ! `projectedLon` et `projectedLat` à enregistrer dans busLine.points (pour les markers et les modifs plus tard)
+//   // ! signal mountPolylineDragMarker pour le <Show> de ce composant ?
+//   disableSpinningWheel();
+// }
+
 export async function updatePolylineWithOsrm(busLine: BusLineType) {
   enableSpinningWheel();
-  const latlngs: L.LatLng[] = await OsrmService.getRoadPolyline(busLine.points);
-  busLine.setLatLngs(latlngs);
+  // ! RENAME
+  // ! return polyline coordinates [0] and prejected points (school/stop) coordinates [1]
+  const latlngs: [L.LatLng[], L.LatLng[]] = await OsrmService.getRoadPolyline(
+    busLine.waypoints
+  );
+  console.log("returned =>", latlngs);
+  busLine.setLatLngs(latlngs[0]);
+
+  // ! `onRoadLon` et `onRoadLat` à enregistrer dans busLine.points (pour les markers et les modifs plus tard)
+
+  // ! TODO: ATTENTION => A réecrire ! liste des waypoints ne correspondra pas à liste des points après modification ! Utiliser waypoints (idSchool ou idStop)
+  const newPoints: BusLinePointType[] = [];
+  for (let i = 0; i < getLineUnderConstruction().busLine.points.length; i++) {
+    newPoints.push({
+      ...getLineUnderConstruction().busLine.points[i],
+      onRoadLon: latlngs[1][i].lng,
+      onRoadLat: latlngs[1][i].lat,
+    });
+  }
+  console.log("newPoints", newPoints);
+  setLineUnderConstruction({
+    ...getLineUnderConstruction(),
+    busLine: { ...getLineUnderConstruction().busLine, points: newPoints },
+  });
+
+  // ! signal mountPolylineDragMarker pour le <Show> de ce composant ?
+  // ! pour l'instant drawModeStep utilisé
+
+  console.log("getLineUnderConstruction", getLineUnderConstruction());
+
   disableSpinningWheel();
 }
+
+export type PolylinePointType = {
+  idSchool?: number;
+  idStop?: number;
+  lat: number;
+  lon: number;
+};
 
 export type BusLineType = {
   id?: number;
@@ -156,6 +213,8 @@ export type BusLineType = {
   color: Accessor<string>;
   setColor: Setter<string>;
   points: BusLinePointType[];
+  // polylinePoints?: PolylinePointType[]; // ! pas necessaire ?
+  waypoints?: PolylinePointType[];
   latLngs: Accessor<L.LatLng[]>;
   setLatLngs: Setter<L.LatLng[]>;
   selected: Accessor<boolean>;
@@ -168,6 +227,8 @@ export type BusLinePointType = {
   name: string;
   lon: number;
   lat: number;
+  onRoadLon?: number;
+  onRoadLat?: number;
   quantity: number;
   nature: NatureEnum;
 };

@@ -1,5 +1,5 @@
 import L, { LeafletMouseEvent } from "leaflet";
-import { createEffect, createSignal } from "solid-js";
+import { For, Show, createEffect, createSignal } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import {
   BusLinePointType,
@@ -23,6 +23,7 @@ import Line from "../atom/Line";
 //   currentStep,
 //   drawModeStep,
 // } from "../organism/AddLineInformationBoardContent";
+import PolylineDragMarker from "../atom/PolylineDragMarker";
 import { deselectAllBusLines } from "../organism/BusLines";
 import { currentStep, drawModeStep } from "../organism/DrawModeBoardContent";
 import {
@@ -38,6 +39,7 @@ const [
     isInRemoveLineMode,
     getLineUnderConstruction,
     setLineUnderConstructionNextIndex,
+    isInAddLineMode,
   },
 ] = useStateAction();
 
@@ -200,19 +202,50 @@ export function BusLine(props: BusLineProps) {
       document.addEventListener("mouseup", handleMouseUp);
     }
   }
-
+  const latLngList = props.line.latLngs();
+  const pointProjectedCoord: L.LatLng[] = [];
+  for (const point of props.line.points) {
+    pointProjectedCoord.push(L.latLng(point.lat, point.lon));
+  }
   return (
-    <Line
-      latlngs={localLatLngs()}
-      leafletMap={props.map}
-      color={props.line.color()}
-      opacity={localOpacity()}
-      lineId={props.line.id}
-      onMouseOver={onMouseOver}
-      onMouseOut={onMouseOut}
-      onClick={onClick}
-      onMouseDown={onMouseDown}
-    />
+    <>
+      <Line
+        latlngs={localLatLngs()}
+        leafletMap={props.map}
+        color={props.line.color()}
+        opacity={localOpacity()}
+        lineId={props.line.id}
+        onMouseOver={onMouseOver}
+        onMouseOut={onMouseOut}
+        onClick={onClick}
+        onMouseDown={onMouseDown}
+      />
+      <Show when={currentStep() == drawModeStep.polylineEdition}>
+        {/* // ! Passer le bon props (indexPointBefore) */}
+        <For each={latLngList}>
+          {(coord: L.LatLng) => {
+            console.log("coord", coord);
+            // ! Boucler sur chaque latlgns
+            // ! si correspond à un point => indexPointBefore + 1
+            // ! si correspond à coord => break
+            // const indexPointBefore = 0;
+            // for (let i = 0; latLngList.length - 1; i++) {
+            //   if (latLngList[i] coord) {
+            //     indexPointBefore + 1;
+            //   }
+            // }
+
+            return (
+              <PolylineDragMarker
+                map={props.map}
+                latlngs={coord}
+                indexPointBefore={0} // ! use correct value => indexPointBefore
+              />
+            );
+          }}
+        </For>
+      </Show>
+    </>
   );
 }
 

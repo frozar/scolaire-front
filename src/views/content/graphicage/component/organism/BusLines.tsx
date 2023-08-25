@@ -46,16 +46,12 @@ export function BusLines(props: BusLinesProps) {
       );
       arrowsMap.clear();
       getLineUnderConstruction().busLine.setColor(COLOR_LINE_EDITION);
-      // return [getLineUnderConstruction().busLine];
-      // return currentStep() == drawModeStep.polylineEdition
-      //   ? [getLineUnderConstruction().editLines[0]]
-      //   : [getLineUnderConstruction().busLine];
-      console.log("currentStep()", currentStep());
-      console.log("editlines", getLineUnderConstruction().editLines);
+      console.log("busline=>", getLineUnderConstruction().busLine);
+      return [getLineUnderConstruction().busLine];
 
-      return currentStep() == drawModeStep.polylineEdition
-        ? getLineUnderConstruction().editLines
-        : [getLineUnderConstruction().busLine];
+      // return currentStep() == drawModeStep.polylineEdition
+      //   ? getLineUnderConstruction().editLines
+      //   : [getLineUnderConstruction().busLine];
     }
     return getBusLines();
   };

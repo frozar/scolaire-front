@@ -4,8 +4,8 @@ import {
   useStateAction,
 } from "../../../../../StateAction";
 import {
-  BusLinePointType,
   BusLineType,
+  PolylinePointType,
   updatePolylineWithOsrm,
 } from "../../../../../_entities/bus-line.entity";
 import { BusLineService } from "../../../../../_services/bus-line.service";
@@ -17,6 +17,7 @@ import AddLineInformationBoardContentFooter from "./AddLineInformationBoardConte
 import { updateBusLines } from "./BusLines";
 
 import "../../../../../css/timeline.css";
+import { NatureEnum } from "../../../../../type";
 
 const [, { getLineUnderConstruction, setLineUnderConstruction }] =
   useStateAction();
@@ -137,41 +138,69 @@ function nextStep() {
       // Construire getLineUnderConstruction().editLines à partir de getLineUnderConstruction().busLine
       // let i = 0
       // for (const elt of getLineUnderConstruction().busLine.points) {
-      const editLinesWip: BusLineType[] = [];
-      for (
-        let i = 0;
-        i < getLineUnderConstruction().busLine.points.length - 1;
-        i++
-      ) {
-        const [latLngs, setLatLngs] = createSignal<L.LatLng[]>([]);
-        editLinesWip.push({
-          ...getLineUnderConstruction().busLine,
-          latLngs,
-          setLatLngs,
-          points: [
-            {
-              lon: getLineUnderConstruction().busLine.points[i].lon,
-              lat: getLineUnderConstruction().busLine.points[i].lat,
-            },
-            {
-              lon: getLineUnderConstruction().busLine.points[i + 1].lon,
-              lat: getLineUnderConstruction().busLine.points[i + 1].lat,
-            },
-          ] as BusLinePointType[],
-        } as BusLineType);
+      // --
+      // const editLinesWip: BusLineType[] = [];
+      // for (
+      //   let i = 0;
+      //   i < getLineUnderConstruction().busLine.points.length - 1;
+      //   i++
+      // ) {
+      //   const [latLngs, setLatLngs] = createSignal<L.LatLng[]>([]);
+      //   editLinesWip.push({
+      //     ...getLineUnderConstruction().busLine,
+      //     latLngs,
+      //     setLatLngs,
+      //     points: [
+      //       {
+      //         lon: getLineUnderConstruction().busLine.points[i].lon,
+      //         lat: getLineUnderConstruction().busLine.points[i].lat,
+      //       },
+      //       {
+      //         lon: getLineUnderConstruction().busLine.points[i + 1].lon,
+      //         lat: getLineUnderConstruction().busLine.points[i + 1].lat,
+      //       },
+      //     ] as BusLinePointType[],
+      //   } as BusLineType);
+      // }
+      // console.log("editLinesWip", editLinesWip);
+
+      // setLineUnderConstruction({
+      //   ...getLineUnderConstruction(),
+      //   editLines: editLinesWip,
+      // });
+      // --
+      const waypoints: PolylinePointType[] = [];
+      for (const point of getLineUnderConstruction().busLine.points) {
+        // ! bon nature natureEnum  ?
+        if (point.nature == NatureEnum.school) {
+          waypoints.push({
+            idSchool: point.id,
+            lon: point.lon,
+            lat: point.lat,
+          });
+        } else if (point.nature == NatureEnum.stop) {
+          waypoints.push({
+            idStop: point.id,
+            lon: point.lon,
+            lat: point.lat,
+          });
+        }
       }
-      console.log("editLinesWip", editLinesWip);
+      console.log("editLinesWip", waypoints);
 
       setLineUnderConstruction({
         ...getLineUnderConstruction(),
-        editLines: editLinesWip,
+        busLine: {
+          ...getLineUnderConstruction().busLine,
+          waypoints: waypoints,
+        },
       });
 
-      // updatePolylineWithOsrm(getLineUnderConstruction().busLine);
       // updatePolylineWithOsrm(getLineUnderConstruction().editLines[0]);
-      for (const line of getLineUnderConstruction().editLines) {
-        updatePolylineWithOsrm(line);
-      }
+      updatePolylineWithOsrm(getLineUnderConstruction().busLine);
+      // for (const line of getLineUnderConstruction().editLines) {
+      //   updatePolylineWithOsrm(line);
+      // }
       break;
     case drawModeStep.polylineEdition:
       console.log("Validation de la polyline");
