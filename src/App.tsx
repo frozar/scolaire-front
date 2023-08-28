@@ -13,9 +13,11 @@ import RemoveConfirmationDialogBox from "./userInformation/RemoveConfirmationDia
 import Dashboard from "./views/content/dashboard/Dashboard";
 import Graphicage from "./views/content/graphicage/Graphicage";
 import { setPointsReady } from "./views/content/graphicage/component/organism/Points";
+import { InformationBoard } from "./views/content/graphicage/informationBoard/InformationBoard";
 import ExportConfirmationDialogBox from "./views/content/graphicage/rightMapMenu/export/ExportConfirmationDialogBox";
 import SchoolsBoard from "./views/content/schools/SchoolsBoard";
 import Ramassage from "./views/content/stops/StopsBoard";
+import InformationBoardLayout from "./views/layout/component/template/InformationBoardLayout";
 
 const [, { isInAddLineMode }] = useStateAction();
 const [, { getSelectedMenu }] = useStateGui();
@@ -63,6 +65,9 @@ export default () => {
 
           <Match when={getSelectedMenu() == "graphicage"}>
             <Graphicage />
+            <InformationBoardLayout>
+              <InformationBoard />
+            </InformationBoardLayout>
           </Match>
 
           <Match when={getSelectedMenu() == "etablissements"}>
