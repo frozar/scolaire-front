@@ -1,6 +1,5 @@
 .btn-primary {
-  @apply w-full justify-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm sm:w-auto duration-150 m-2;
-height:4vh;
+  @apply w-full justify-center rounded-md bg-green-600 px-6 py-2 text-sm font-semibold text-white shadow-sm sm:w-auto duration-150;
 }
 
 .btn-primary:not([disabled]):hover {
@@ -21,4 +20,8 @@ height:4vh;
 
 .btn-borderless:disabled {
   @apply text-gray-600 opacity-75;
+}
+
+.btn-danger{
+  @apply w-full bg-[#F44434] justify-center rounded-md px-6 py-2 text-sm font-semibold text-white shadow-sm sm:w-auto duration-150 m-2;
 }
