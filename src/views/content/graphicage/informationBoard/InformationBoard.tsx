@@ -3,10 +3,7 @@ import { Dynamic } from "solid-js/web";
 import { useStateGui } from "../../../../StateGui";
 import InformationCircleIcon from "../component/atom/InformationCircleIcon";
 import SettingsIcon from "../component/atom/SettingsIcon";
-import {
-  InformationBoardTabType,
-  InformationBoardTabs,
-} from "../component/organism/InformationBoardTabs";
+import { InformationBoardTabType } from "../component/organism/InformationBoardTabs";
 import { SettingsContent } from "../component/organism/SettingsContent";
 import InformationContent from "./InformationContent";
 
@@ -41,8 +38,6 @@ export function InformationBoard() {
         active: getDisplayedInformationBoard(),
       }}
     >
-      <InformationBoardTabs tabs={tabs} />
-
       <Dynamic
         component={
           tabs.find((tab) => tab.id === getInformationBoardSelectedTab())
