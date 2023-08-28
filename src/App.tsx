@@ -1,4 +1,4 @@
-import { Match, Switch, createEffect } from "solid-js";
+import { Match, Switch, createEffect, createSignal } from "solid-js";
 import { useStateAction } from "./StateAction";
 import { useStateGui } from "./StateGui";
 
@@ -10,15 +10,18 @@ import DisplayUserInformation from "./userInformation/DisplayUserInformation";
 import DragAndDropSummary from "./userInformation/DragAndDropSummary";
 import GeneratorDialogBox from "./userInformation/GeneratorDialogBox";
 import RemoveConfirmationDialogBox from "./userInformation/RemoveConfirmationDialogBox";
-import Dashboard from "./views/content/dashboard/Dashboard";
 import Graphicage from "./views/content/graphicage/Graphicage";
+import AddLineInformationBoardContent from "./views/content/graphicage/component/organism/AddLineInformationBoardContent";
 import { setPointsReady } from "./views/content/graphicage/component/organism/Points";
 import ExportConfirmationDialogBox from "./views/content/graphicage/rightMapMenu/export/ExportConfirmationDialogBox";
-import SchoolsBoard from "./views/content/schools/SchoolsBoard";
-import Ramassage from "./views/content/stops/StopsBoard";
+import { setFilAriane } from "./views/layout/component/atom/FilAriane";
+import InformationBoardLayout from "./views/layout/component/template/InformationBoardLayout";
 
 const [, { isInAddLineMode }] = useStateAction();
 const [, { getSelectedMenu }] = useStateGui();
+
+type boardContent = "add-line" | "home";
+const [onBoardContent, setOnBoardContent] = createSignal<boardContent>();
 
 export default () => {
   let refApp!: HTMLDivElement;
@@ -53,26 +56,49 @@ export default () => {
     }
   });
 
+  // Here i manage the arian fil and the display content of information board for add line modf
+  createEffect(() => {
+    if (isInAddLineMode()) {
+      setFilAriane("Création d'une ligne");
+      setOnBoardContent("add-line");
+    } else {
+      setFilAriane("Acceuil");
+      setOnBoardContent("home");
+    }
+  });
+
   return (
     <div ref={refApp}>
       <Layout>
-        <Switch fallback={<p>Page not found</p>}>
-          <Match when={getSelectedMenu() == "dashboard"}>
-            <Dashboard />
-          </Match>
+        <Graphicage />
 
-          <Match when={getSelectedMenu() == "graphicage"}>
-            <Graphicage />
-          </Match>
+        <InformationBoardLayout>
+          <Switch>
+            <Match when={onBoardContent() === "add-line"}>
+              <AddLineInformationBoardContent />
+            </Match>
+          </Switch>
+        </InformationBoardLayout>
 
-          <Match when={getSelectedMenu() == "etablissements"}>
-            <SchoolsBoard />
-          </Match>
+        {/* <InformationBoardLayout>
+          <Switch fallback={<p>Page not found</p>}>
+            <Match when={getSelectedMenu() == "dashboard"}>
+              <Dashboard />
+            </Match>
 
-          <Match when={getSelectedMenu() == "ramassages"}>
-            <Ramassage />
-          </Match>
-        </Switch>
+            <Match when={getSelectedMenu() == "graphicage"}>
+              <Graphicage />
+            </Match>
+
+            <Match when={getSelectedMenu() == "etablissements"}>
+              <SchoolsBoard />
+            </Match>
+
+            <Match when={getSelectedMenu() == "ramassages"}>
+              <Ramassage />
+            </Match>
+          </Switch>
+        </InformationBoardLayout> */}
 
         <DisplayUserInformation />
         <DragAndDropSummary />
