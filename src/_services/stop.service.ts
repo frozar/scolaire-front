@@ -7,6 +7,18 @@ export class StopService {
     return dbStops.map((dbStop: StopDBType) => StopEntity.build(dbStop));
   }
 
+  static async import(
+    stops: Pick<StopDBType, "name" | "location">[]
+  ): Promise<StopType[]> {
+    const xanoResult: StopDBType[] = await ServiceUtils.post("/stop/import", {
+      stops: stops,
+    });
+
+    return StopEntity.buildStops(
+      xanoResult.map((dbSchool) => StopEntity.build(dbSchool))
+    );
+  }
+
   static async create(
     stop: Omit<
       StopType,

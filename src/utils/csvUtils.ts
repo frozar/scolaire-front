@@ -4,6 +4,7 @@ import {
   SchoolEntity,
   SchoolType,
 } from "../_entities/school.entity";
+import { StopDBType, StopEntity, StopType } from "../_entities/stop.entity";
 import { addNewUserInformation } from "../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
 
@@ -84,4 +85,28 @@ export async function parsedCsvFileToSchoolData(
   parsedData = parsedData.filter((data) => data.lat && data.lon && data.name);
 
   return SchoolEntity.dataToDB(parsedData);
+}
+
+export async function parsedCsvFileToStopData(
+  file: File
+): Promise<Pick<StopDBType, "name" | "location">[] | undefined> {
+  const parsedFile = await parseFile(file);
+
+  const correctHeader = ["name", "lat", "lon"];
+  if (!isCorrectHeader(parsedFile.meta.fields, correctHeader)) {
+    return;
+  }
+  let parsedData = parsedFile.data as Pick<StopType, "name" | "lon" | "lat">[];
+  parsedData = parsedData.filter((data) => data.lat && data.lon && data.name);
+
+  return StopEntity.dataToDB(parsedData);
+}
+
+export async function parsedCsvFileData(file: File) {
+  const fileName = file.name;
+  if (fileNameIsCorrect(fileName, "etablissement")) {
+    return await parsedCsvFileToSchoolData(file);
+  } else if (fileNameIsCorrect(fileName, "ramassage")) {
+    return await parsedCsvFileToStopData(file);
+  } else return;
 }

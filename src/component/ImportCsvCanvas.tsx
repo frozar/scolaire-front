@@ -1,18 +1,17 @@
 import { Setter, onCleanup, onMount } from "solid-js";
 import { SchoolType } from "../_entities/school.entity";
+import { StopType } from "../_entities/stop.entity";
 import { SchoolService } from "../_services/school.service";
+import { StopService } from "../_services/stop.service";
 import {
   addNewUserInformation,
   disableSpinningWheel,
   enableSpinningWheel,
 } from "../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
-import {
-  fileExtensionIsCorrect,
-  fileNameIsCorrect,
-  parsedCsvFileToSchoolData,
-} from "../utils/csvUtils";
+import { fileExtensionIsCorrect, parsedCsvFileData } from "../utils/csvUtils";
 import { setSchools } from "../views/content/graphicage/component/organism/SchoolPoints";
+import { setStops } from "../views/content/graphicage/component/organism/StopPoints";
 
 let mapDragDropDiv: HTMLDivElement;
 export default function (props: {
@@ -87,36 +86,31 @@ export default function (props: {
 
     const fileName = file.name;
     if (fileExtensionIsCorrect(fileName)) {
-      if (fileNameIsCorrect(fileName, "etablissement")) {
-        const parsedFileData = await parsedCsvFileToSchoolData(file);
+      const parsedFileData = await parsedCsvFileData(file);
 
-        if (!parsedFileData) {
-          disableSpinningWheel();
-          props.callbackFail ? props.callbackFail() : "";
-          exitCanvas();
-          return;
-        }
-
+      if (parsedFileData) {
         try {
-          const schools: SchoolType[] = await SchoolService.import(
-            parsedFileData
-          );
-          setSchools(schools);
+          const suffixe = fileName.split("_").at(-1)?.split(".").at(0);
+          if (suffixe === "etablissement") {
+            const schools: SchoolType[] = await SchoolService.import(
+              parsedFileData
+            );
+            setSchools(schools);
+          } else if (suffixe === "ramassage") {
+            const stops: StopType[] = await StopService.import(parsedFileData);
+
+            setStops(stops);
+          }
           props.callbackSuccess ? props.callbackSuccess() : "";
         } catch (err) {
           console.log("Import failed", err);
           props.callbackFail ? props.callbackFail() : "";
         }
-      } else if (fileNameIsCorrect(fileName, "ramassage")) {
-        addNewUserInformation({
-          displayed: true,
-          level: MessageLevelEnum.warning,
-          type: MessageTypeEnum.global,
-          content: "ajout d'un ramassage",
-        });
-        props.callbackSuccess ? props.callbackSuccess() : "";
+      } else {
+        props.callbackFail ? props.callbackFail() : "";
       }
     }
+
     exitCanvas();
     disableSpinningWheel();
   }
