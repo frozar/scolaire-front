@@ -1,9 +1,6 @@
 import { JSXElement, children } from "solid-js";
 import FilAriane, { setFilAriane } from "../atom/FilAriane";
-
-import { useStateGui } from "../../../../StateGui";
 import "./InformationBoardLayout.css";
-const [, { setSelectedMenu, getSelectedMenu }] = useStateGui();
 
 export default function (props: { children: JSXElement }) {
   const fileariane = "Création d'une ligne";
