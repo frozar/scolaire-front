@@ -46,7 +46,7 @@ export function BusLines(props: BusLinesProps) {
       );
       arrowsMap.clear();
       getLineUnderConstruction().busLine.setColor(COLOR_LINE_EDITION);
-      console.log("busline=>", getLineUnderConstruction().busLine);
+      // console.log("busline=>", getLineUnderConstruction().busLine);
       return [getLineUnderConstruction().busLine];
 
       // return currentStep() == drawModeStep.polylineEdition
@@ -59,7 +59,7 @@ export function BusLines(props: BusLinesProps) {
   return (
     <For each={busLinesFilter()}>
       {(line) => {
-        console.log("in loop line:", line);
+        // console.log("in loop line:", line);
 
         return <BusLine line={line} map={props.map} />;
       }}

@@ -1,5 +1,5 @@
 import L, { LeafletMouseEvent } from "leaflet";
-import { For, Show, createEffect, createSignal } from "solid-js";
+import { createEffect, createSignal } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import {
   BusLinePointType,
@@ -23,7 +23,6 @@ import Line from "../atom/Line";
 //   currentStep,
 //   drawModeStep,
 // } from "../organism/AddLineInformationBoardContent";
-import PolylineDragMarker from "../atom/PolylineDragMarker";
 import { deselectAllBusLines } from "../organism/BusLines";
 import { currentStep, drawModeStep } from "../organism/DrawModeBoardContent";
 import {
@@ -39,7 +38,7 @@ const [
     isInRemoveLineMode,
     getLineUnderConstruction,
     setLineUnderConstructionNextIndex,
-    isInAddLineMode,
+    // isInAddLineMode,
   },
 ] = useStateAction();
 
@@ -202,11 +201,12 @@ export function BusLine(props: BusLineProps) {
       document.addEventListener("mouseup", handleMouseUp);
     }
   }
-  const latLngList = props.line.latLngs();
-  const pointProjectedCoord: L.LatLng[] = [];
-  for (const point of props.line.points) {
-    pointProjectedCoord.push(L.latLng(point.lat, point.lon));
-  }
+  // ! Do not delete
+  // const latLngList = props.line.latLngs();
+  // const pointProjectedCoord: L.LatLng[] = [];
+  // for (const point of props.line.points) {
+  //   pointProjectedCoord.push(L.latLng(point.lat, point.lon));
+  // }
   return (
     <>
       <Line
@@ -220,9 +220,10 @@ export function BusLine(props: BusLineProps) {
         onClick={onClick}
         onMouseDown={onMouseDown}
       />
-      <Show when={currentStep() == drawModeStep.polylineEdition}>
-        {/* // ! Passer le bon props (indexPointBefore) */}
-        <For each={latLngList}>
+      // ! PolylineDragMarker is temporarily not showed
+      {/* <Show when={currentStep() == drawModeStep.polylineEdition}> */}
+      {/* // ! Passer le bon props (indexPointBefore) */}
+      {/* <For each={latLngList}>
           {(coord: L.LatLng) => {
             console.log("coord", coord);
             // ! Boucler sur chaque latlgns
@@ -243,8 +244,8 @@ export function BusLine(props: BusLineProps) {
               />
             );
           }}
-        </For>
-      </Show>
+        </For> */}
+      {/* </Show> */}
     </>
   );
 }

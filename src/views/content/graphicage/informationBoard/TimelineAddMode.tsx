@@ -13,32 +13,37 @@ export default function (props: {
   setLine: (line: LineUnderConstructionType) => void;
 }) {
   return (
-    <div class="timeline">
-      <div class="timeline-tools">
-        <Show when={props.line().busLine.points.length > 0}>
-          <DrawHelperButton schools={props.line().busLine.schools} />
-        </Show>
+    <>
+      <div class="add-line-information-board-content-title">
+        <h1>Editer votre ligne</h1>
       </div>
-      <div
-        class="timeline-items v-timeline--side-end v-timeline--vertical"
-        style={{ "--v-timeline-line-thickness": "2px" }}
-      >
-        <For each={props.line()?.busLine.points}>
-          {(stop, i) => (
-            <>
-              <TimelineAddPointButton indice={i()} />
+      <div class="timeline">
+        <div class="timeline-tools">
+          <Show when={props.line().busLine.points.length > 0}>
+            <DrawHelperButton schools={props.line().busLine.schools} />
+          </Show>
+        </div>
+        <div
+          class="timeline-items v-timeline--side-end v-timeline--vertical"
+          style={{ "--v-timeline-line-thickness": "2px" }}
+        >
+          <For each={props.line()?.busLine.points}>
+            {(stop, i) => (
+              <>
+                <TimelineAddPointButton indice={i()} />
 
-              <TimelineItemAddMode
-                pointsResource={stop}
-                indice={i()}
-                setter={props.setLine}
-                getter={props.line}
-                isInAddLineMode={isInAddLineMode()}
-              />
-            </>
-          )}
-        </For>
+                <TimelineItemAddMode
+                  pointsResource={stop}
+                  indice={i()}
+                  setter={props.setLine}
+                  getter={props.line}
+                  isInAddLineMode={isInAddLineMode()}
+                />
+              </>
+            )}
+          </For>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

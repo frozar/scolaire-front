@@ -3,11 +3,7 @@ import {
   defaultLineUnderConstruction,
   useStateAction,
 } from "../../../../../StateAction";
-import {
-  BusLineType,
-  PolylinePointType,
-  updatePolylineWithOsrm,
-} from "../../../../../_entities/bus-line.entity";
+import { BusLineType } from "../../../../../_entities/bus-line.entity";
 import { BusLineService } from "../../../../../_services/bus-line.service";
 import TimelineAddMode from "../../informationBoard/TimelineAddMode";
 import { quitModeAddLine } from "../../shortcut";
@@ -17,7 +13,6 @@ import AddLineInformationBoardContentFooter from "./AddLineInformationBoardConte
 import { updateBusLines } from "./BusLines";
 
 import "../../../../../css/timeline.css";
-import { NatureEnum } from "../../../../../type";
 
 const [, { getLineUnderConstruction, setLineUnderConstruction }] =
   useStateAction();
@@ -44,10 +39,14 @@ export default function () {
   const etablissementSelected = () => {
     return getLineUnderConstruction().busLine.schools;
   };
+  // console.log(
+  //   "getLineUnderConstruction().busLine.schools",
+  //   getLineUnderConstruction().busLine.schools
+  // );
 
   return (
     <div class="add-line-information-board-content">
-      <div class="add-line-information-board-content-title">
+      {/* <div class="add-line-information-board-content-title">
         <h1>
           {
             [
@@ -59,7 +58,7 @@ export default function () {
             ][currentStep()]
           }
         </h1>
-      </div>
+      </div> */}
       {/* <Show when={currentStep() === drawModeStep.schoolSelection}>
         <SelectedSchool schoolSelected={etablissementSelected()} />
       </Show> */}
@@ -72,8 +71,12 @@ export default function () {
         </div>
       </Show> */}
       {/*  // !when line.shools.lenght > 0 */}
-      <Show when={getLineUnderConstruction().busLine.schools.length > 0}>
+      <Show when={currentStep() == drawModeStep.schoolSelection}>
+        {() => console.log("SCHOOL SELECTION")}
         <SelectedSchool schoolSelected={etablissementSelected()} />
+      </Show>
+      <Show when={currentStep() > drawModeStep.schoolSelection}>
+        {() => console.log("AFTER SCHOOL SELECTION")}
         <div class="bus-line-information-board-content">
           <TimelineAddMode
             line={getLineUnderConstruction}
@@ -81,11 +84,22 @@ export default function () {
           />
         </div>
       </Show>
+
+      {/* <Show when={getLineUnderConstruction().busLine.schools.length > 0}>
+        {() => console.log("mytest")}
+        <SelectedSchool schoolSelected={etablissementSelected()} />
+        <div class="bus-line-information-board-content">
+          <TimelineAddMode
+            line={getLineUnderConstruction}
+            setLine={setLineUnderConstruction}
+          />
+        </div>
+      </Show> */}
       <AddLineInformationBoardContentFooter
         nextStep={{
           callback: nextStep,
           label:
-            currentStep() === drawModeStep.validationStep
+            currentStep() > drawModeStep.schoolSelection
               ? "Valider"
               : "Suivant",
         }}
@@ -125,91 +139,56 @@ async function updateBusLine(busLine: BusLineType) {
 }
 
 function nextStep() {
-  switch (currentStep()) {
-    case drawModeStep.schoolSelection:
-      if (getLineUnderConstruction().busLine.schools.length == 0) {
-        return;
-      }
-      break;
-    case drawModeStep.stopSelection:
-      if (getLineUnderConstruction().busLine.points.length < 2) {
-        return;
-      }
-      // Construire getLineUnderConstruction().editLines à partir de getLineUnderConstruction().busLine
-      // let i = 0
-      // for (const elt of getLineUnderConstruction().busLine.points) {
-      // --
-      // const editLinesWip: BusLineType[] = [];
-      // for (
-      //   let i = 0;
-      //   i < getLineUnderConstruction().busLine.points.length - 1;
-      //   i++
-      // ) {
-      //   const [latLngs, setLatLngs] = createSignal<L.LatLng[]>([]);
-      //   editLinesWip.push({
-      //     ...getLineUnderConstruction().busLine,
-      //     latLngs,
-      //     setLatLngs,
-      //     points: [
-      //       {
-      //         lon: getLineUnderConstruction().busLine.points[i].lon,
-      //         lat: getLineUnderConstruction().busLine.points[i].lat,
-      //       },
-      //       {
-      //         lon: getLineUnderConstruction().busLine.points[i + 1].lon,
-      //         lat: getLineUnderConstruction().busLine.points[i + 1].lat,
-      //       },
-      //     ] as BusLinePointType[],
-      //   } as BusLineType);
-      // }
-      // console.log("editLinesWip", editLinesWip);
+  // switch (currentStep()) {
+  // case drawModeStep.schoolSelection:
+  //   if (getLineUnderConstruction().busLine.schools.length == 0) {
+  //     return;
+  //   }
+  //   break;
+  // case drawModeStep.stopSelection:
+  //   if (getLineUnderConstruction().busLine.points.length < 2) {
+  //     return;
+  //   }
+  //   const waypoints: PolylinePointType[] = [];
+  //   for (const point of getLineUnderConstruction().busLine.points) {
+  //     // ! bon nature natureEnum  ?
+  //     if (point.nature == NatureEnum.school) {
+  //       waypoints.push({
+  //         idSchool: point.id,
+  //         lon: point.lon,
+  //         lat: point.lat,
+  //       });
+  //     } else if (point.nature == NatureEnum.stop) {
+  //       waypoints.push({
+  //         idStop: point.id,
+  //         lon: point.lon,
+  //         lat: point.lat,
+  //       });
+  //     }
+  //   }
+  //   console.log("editLinesWip", waypoints);
 
-      // setLineUnderConstruction({
-      //   ...getLineUnderConstruction(),
-      //   editLines: editLinesWip,
-      // });
-      // --
-      const waypoints: PolylinePointType[] = [];
-      for (const point of getLineUnderConstruction().busLine.points) {
-        // ! bon nature natureEnum  ?
-        if (point.nature == NatureEnum.school) {
-          waypoints.push({
-            idSchool: point.id,
-            lon: point.lon,
-            lat: point.lat,
-          });
-        } else if (point.nature == NatureEnum.stop) {
-          waypoints.push({
-            idStop: point.id,
-            lon: point.lon,
-            lat: point.lat,
-          });
-        }
-      }
-      console.log("editLinesWip", waypoints);
+  //   setLineUnderConstruction({
+  //     ...getLineUnderConstruction(),
+  //     busLine: {
+  //       ...getLineUnderConstruction().busLine,
+  //       waypoints: waypoints,
+  //     },
+  //   });
 
-      setLineUnderConstruction({
-        ...getLineUnderConstruction(),
-        busLine: {
-          ...getLineUnderConstruction().busLine,
-          waypoints: waypoints,
-        },
-      });
-
-      // updatePolylineWithOsrm(getLineUnderConstruction().editLines[0]);
-      updatePolylineWithOsrm(getLineUnderConstruction().busLine);
-      // for (const line of getLineUnderConstruction().editLines) {
-      //   updatePolylineWithOsrm(line);
-      // }
-      break;
-    case drawModeStep.polylineEdition:
-      console.log("Validation de la polyline");
-      break;
-    case drawModeStep.validationStep:
-      createOrUpdateBusLine(getLineUnderConstruction().busLine);
-      break;
-    default:
-      console.log("Sorry, we are out of range}.");
+  //   updatePolylineWithOsrm(getLineUnderConstruction().busLine);
+  //   break;
+  // case drawModeStep.polylineEdition:
+  //   console.log("Validation de la polyline");
+  //   break;
+  // case drawModeStep.validationStep:
+  //   createOrUpdateBusLine(getLineUnderConstruction().busLine);
+  //   break;
+  // default:
+  //   console.log("Sorry, we are out of range}.");
+  // }
+  if (currentStep() > drawModeStep.schoolSelection) {
+    createOrUpdateBusLine(getLineUnderConstruction().busLine);
   }
   setCurrentStep((currentStep() + 1) % 5);
 }
