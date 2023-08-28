@@ -1,8 +1,7 @@
+import { createSignal } from "solid-js";
 import "./FilAriane.css";
 
-let filAriane = "";
-export const setFilAriane = (text: string) => (filAriane = text);
-
+export const [filAriane, setFilAriane] = createSignal<string>("Acceuil");
 export default function () {
-  return <div class="fil-arian">{filAriane}</div>;
+  return <div class="fil-arian">{filAriane()}</div>;
 }
