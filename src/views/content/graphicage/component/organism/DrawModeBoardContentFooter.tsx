@@ -9,8 +9,10 @@ import Button from "../../../../../component/atom/Button";
 // } from "./AddLineInformationBoardContent";
 import {
   currentStep,
+  displayLineMode,
+  displayLineModeEnum,
   drawModeStep,
-  setCurrentStep,
+  setDisplayLineMode,
 } from "./DrawModeBoardContent";
 // import "./AddLineInformationBoardContent.css";
 import "./DrawModeBoardContent.css";
@@ -22,29 +24,61 @@ export default function (props: {
   nextStep: addLineButtonType;
   previousStep: addLineButtonType;
 }) {
-  function onClick() {
-    if (currentStep() == drawModeStep.stopSelection) {
+  // function onClick() {
+  //   if (currentStep() == drawModeStep.stopSelection) {
+  //     if (getLineUnderConstruction().busLine.points.length < 2) {
+  //       return;
+  //     }
+  //     updatePolylineWithOsrm(getLineUnderConstruction().busLine);
+  //     // ! Changement de drawModeStep
+  //     setCurrentStep((currentStep() + 1) % 5);
+  //   } else if (currentStep() == drawModeStep.polylineEdition) {
+  //     getLineUnderConstruction().busLine.setLatLngs([]);
+  //     // ! Changement de drawModeStep
+  //     const step = currentStep() - 1;
+  //     setCurrentStep(step > 0 ? step : 0);
+  //   }
+  // }
+  async function onClick() {
+    console.log("onClick displayLineMode=>", displayLineMode());
+
+    if (displayLineMode() == displayLineModeEnum.straight) {
       if (getLineUnderConstruction().busLine.points.length < 2) {
         return;
       }
-      updatePolylineWithOsrm(getLineUnderConstruction().busLine);
+      await updatePolylineWithOsrm(getLineUnderConstruction().busLine);
+      setDisplayLineMode(displayLineModeEnum.onRoad);
       // ! Changement de drawModeStep
-      setCurrentStep((currentStep() + 1) % 5);
-    } else if (currentStep() == drawModeStep.polylineEdition) {
+      // setCurrentStep((currentStep() + 1) % 5);
+    } else if (displayLineMode() == displayLineModeEnum.onRoad) {
       getLineUnderConstruction().busLine.setLatLngs([]);
+      setDisplayLineMode(displayLineModeEnum.straight);
       // ! Changement de drawModeStep
-      const step = currentStep() - 1;
-      setCurrentStep(step > 0 ? step : 0);
+      // const step = currentStep() - 1;
+      // setCurrentStep(step > 0 ? step : 0);
     }
   }
   return (
     <div class="add-line-information-board-content-buttons">
-      <Show when={currentStep() > drawModeStep.schoolSelection}>
+      {/* <Show when={currentStep() > drawModeStep.schoolSelection}> */}
+      {/* // TODO: Déplacer */}
+      {/* <Button
+          onClick={onClick}
+          label={
+            displayLineMode() == displayLineModeEnum.straight
+              ? "Afficher tracé sur route"
+              : "Afficher tracé vol d'oiseau"
+          }
+          variant="primary"
+          isDisabled={false}
+        />
+      </Show> */}
+      <Show when={currentStep() == drawModeStep.editLine}>
         {/* // TODO: Déplacer */}
         <Button
           onClick={onClick}
           label={
-            currentStep() == drawModeStep.stopSelection
+            displayLineMode() == displayLineModeEnum.straight
               ? "Afficher tracé sur route"
               : "Afficher tracé vol d'oiseau"
           }

@@ -10,9 +10,9 @@ import "./DrawHelperDialog.css";
 import { assertIsNode } from "../../../../../utils";
 import DrawHelperDialogItem from "../atom/DrawHelperDialogItem";
 import {
-  currentStep,
-  drawModeStep,
-  setCurrentStep,
+  displayLineMode,
+  displayLineModeEnum,
+  setDisplayLineMode,
 } from "../organism/DrawModeBoardContent";
 true && ClickOutside;
 
@@ -72,8 +72,11 @@ export default function (props: {
     );
     // ! Temporaire !?
     // ! Doit systématiquement afficher la ligne d'orTools juste après
-    if (currentStep() != drawModeStep.stopSelection) {
-      setCurrentStep(drawModeStep.stopSelection);
+    // if (currentStep() != drawModeStep.stopSelection) {
+    //   setCurrentStep(drawModeStep.stopSelection);
+    // }
+    if (displayLineMode() != displayLineModeEnum.straight) {
+      setDisplayLineMode(displayLineModeEnum.straight);
     }
   }
 

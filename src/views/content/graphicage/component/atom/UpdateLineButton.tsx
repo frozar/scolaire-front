@@ -7,7 +7,10 @@ import { BusLineType } from "../../../../../_entities/bus-line.entity";
 //   setCurrentStep,
 // } from "../organism/AddLineInformationBoardContent";
 import { deselectAllBusLines } from "../organism/BusLines";
-import { drawModeStep, setCurrentStep } from "../organism/DrawModeBoardContent";
+import {
+  displayLineModeEnum,
+  setDisplayLineMode,
+} from "../organism/DrawModeBoardContent";
 import { deselectAllPoints } from "../organism/Points";
 import "./DrawHelperButton.css";
 
@@ -26,7 +29,8 @@ export default function (props: { busLine: BusLineType }) {
 
     deselectAllPoints();
     deselectAllBusLines();
-    setCurrentStep(drawModeStep.stopSelection);
+    // setCurrentStep(drawModeStep.stopSelection);
+    setDisplayLineMode(displayLineModeEnum.straight);
     setModeAddLine();
   }
 
