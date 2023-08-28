@@ -5,6 +5,7 @@ import {
   SchoolType,
 } from "../_entities/school.entity";
 import { StopDBType, StopEntity, StopType } from "../_entities/stop.entity";
+import { StudentToSchool } from "../_services/student-to-school.service";
 import { addNewUserInformation } from "../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
 
@@ -101,12 +102,43 @@ export async function parsedCsvFileToStopData(
 
   return StopEntity.dataToDB(parsedData);
 }
+export async function parsedCsvFileToStudentToSchoolData(
+  file: File
+): Promise<StudentToSchool[] | undefined> {
+  const parsedFile = await parseFile(file);
+
+  const correctHeader = ["school_name", "stop_name", "quantity"];
+  if (!isCorrectHeader(parsedFile.meta.fields, correctHeader)) {
+    return;
+  }
+
+  let parsedData = parsedFile.data as StudentToSchool[];
+  parsedData = parsedData.filter(
+    (data) => data.school_name && data.stop_name && data.quantity
+  );
+
+  return parsedData;
+}
+
+export function isSchoolFile(fileName: string) {
+  return fileNameIsCorrect(fileName, "etablissement");
+}
+
+export function isStopFile(fileName: string) {
+  return fileNameIsCorrect(fileName, "ramassage");
+}
+
+export function isStudentToSchoolFile(fileName: string) {
+  return fileNameIsCorrect(fileName, "eleve_vers_etablissement");
+}
 
 export async function parsedCsvFileData(file: File) {
   const fileName = file.name;
-  if (fileNameIsCorrect(fileName, "etablissement")) {
+  if (isSchoolFile(fileName)) {
     return await parsedCsvFileToSchoolData(file);
-  } else if (fileNameIsCorrect(fileName, "ramassage")) {
+  } else if (isStopFile(fileName)) {
     return await parsedCsvFileToStopData(file);
+  } else if (isStudentToSchoolFile(fileName)) {
+    return await parsedCsvFileToStudentToSchoolData(file);
   } else return;
 }

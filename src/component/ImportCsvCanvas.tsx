@@ -1,15 +1,25 @@
 import { Setter, onCleanup, onMount } from "solid-js";
-import { SchoolType } from "../_entities/school.entity";
-import { StopType } from "../_entities/stop.entity";
+import { SchoolDBType, SchoolType } from "../_entities/school.entity";
+import { StopDBType, StopType } from "../_entities/stop.entity";
 import { SchoolService } from "../_services/school.service";
 import { StopService } from "../_services/stop.service";
+import {
+  StudentToSchool,
+  StudentToSchoolService,
+} from "../_services/student-to-school.service";
 import {
   addNewUserInformation,
   disableSpinningWheel,
   enableSpinningWheel,
 } from "../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
-import { fileExtensionIsCorrect, parsedCsvFileData } from "../utils/csvUtils";
+import {
+  fileExtensionIsCorrect,
+  isSchoolFile,
+  isStopFile,
+  isStudentToSchoolFile,
+  parsedCsvFileData,
+} from "../utils/csvUtils";
 import { setSchools } from "../views/content/graphicage/component/organism/SchoolPoints";
 import { setStops } from "../views/content/graphicage/component/organism/StopPoints";
 
@@ -90,20 +100,29 @@ export default function (props: {
 
       if (parsedFileData) {
         try {
-          const suffixe = fileName.split("_").at(-1)?.split(".").at(0);
-          if (suffixe === "etablissement") {
+          if (isSchoolFile(fileName)) {
             const schools: SchoolType[] = await SchoolService.import(
-              parsedFileData
+              parsedFileData as Pick<SchoolDBType, "name" | "location">[]
             );
+
             setSchools(schools);
-          } else if (suffixe === "ramassage") {
-            const stops: StopType[] = await StopService.import(parsedFileData);
+          } else if (isStopFile(fileName)) {
+            const stops: StopType[] = await StopService.import(
+              parsedFileData as Pick<StopDBType, "name" | "location">[]
+            );
 
             setStops(stops);
+          } else if (isStudentToSchoolFile(fileName)) {
+            const { schools, stops } = await StudentToSchoolService.import(
+              parsedFileData as StudentToSchool[]
+            );
+
+            setStops(stops);
+            setSchools(schools);
+          } else {
           }
           props.callbackSuccess ? props.callbackSuccess() : "";
         } catch (err) {
-          console.log("Import failed", err);
           props.callbackFail ? props.callbackFail() : "";
         }
       } else {
