@@ -2,12 +2,18 @@ import { Show } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import { updatePolylineWithOsrm } from "../../../../../_entities/bus-line.entity";
 import Button from "../../../../../component/atom/Button";
+// import {
+//   currentStep,
+//   drawModeStep,
+//   setCurrentStep,
+// } from "./AddLineInformationBoardContent";
 import {
   currentStep,
   drawModeStep,
   setCurrentStep,
-} from "./AddLineInformationBoardContent";
-import "./AddLineInformationBoardContent.css";
+} from "./DrawModeBoardContent";
+// import "./AddLineInformationBoardContent.css";
+import "./DrawModeBoardContent.css";
 
 const [, { getLineUnderConstruction }] = useStateAction();
 
