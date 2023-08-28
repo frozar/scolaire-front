@@ -1,7 +1,6 @@
 .add-line-information-board-content .add-line-information-board-content-title {
-  @apply flex flex-row mb-4;
+  @apply flex flex-row mb-4 text-black text-2xl;
   align-items: center;
-  justify-content: center;
   width: 100%;
   height: 50px;
 }
@@ -30,7 +29,11 @@
   .add-line-information-board-content-buttons {
   @apply flex flex-row mb-2;
   align-items: center;
-  justify-content: center;
+  /* justify-content: center; */
   width: 100%;
   height: 35px;
+}
+
+.add-line-information-board-content-buttons{
+  @apply absolute bottom-14 justify-around;
 }
