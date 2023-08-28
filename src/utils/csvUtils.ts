@@ -23,7 +23,7 @@ async function parseFile(file: File): Promise<Papa.ParseResult<unknown>> {
   return res as Promise<Papa.ParseResult<unknown>>;
 }
 
-export function fileNameIsCorrect(fileName: string, fileNameType: string) {
+export function fileExtensionIsCorrect(fileName: string) {
   const regexExtention = new RegExp(".csv$");
   if (!regexExtention.test(fileName)) {
     addNewUserInformation({
@@ -35,7 +35,10 @@ export function fileNameIsCorrect(fileName: string, fileNameType: string) {
     });
     return false;
   }
+  return true;
+}
 
+export function fileNameIsCorrect(fileName: string, fileNameType: string) {
   const strReg =
     "[0-9]{4}-[0-9]{2}-[0-9]{2}_[0-9]{2}-[0-9]{2}-[0-9]{2}_" +
     fileNameType +
@@ -43,13 +46,6 @@ export function fileNameIsCorrect(fileName: string, fileNameType: string) {
   const regex = new RegExp(strReg);
 
   if (!regex.test(fileName)) {
-    addNewUserInformation({
-      displayed: true,
-      level: MessageLevelEnum.error,
-      type: MessageTypeEnum.global,
-      content: "Nom du fichier incorrect",
-    });
-
     return false;
   }
   return true;

@@ -8,6 +8,7 @@ import {
 } from "../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import {
+  fileExtensionIsCorrect,
   fileNameIsCorrect,
   parsedCsvFileToSchoolData,
 } from "../utils/csvUtils";
@@ -85,31 +86,38 @@ export default function (props: {
     const file = files[0];
 
     const fileName = file.name;
+    if (fileExtensionIsCorrect(fileName)) {
+      if (fileNameIsCorrect(fileName, "etablissement")) {
+        const parsedFileData = await parsedCsvFileToSchoolData(file);
 
-    if (fileNameIsCorrect(fileName, "etablissement")) {
-      const parsedFileData = await parsedCsvFileToSchoolData(file);
+        if (!parsedFileData) {
+          disableSpinningWheel();
+          props.callbackFail ? props.callbackFail() : "";
+          exitCanvas();
+          return;
+        }
 
-      if (!parsedFileData) {
-        disableSpinningWheel();
-        props.callbackFail ? props.callbackFail() : "";
-        exitCanvas();
-        return;
-      }
-
-      try {
-        const schools: SchoolType[] = await SchoolService.import(
-          parsedFileData
-        );
-        setSchools(schools);
+        try {
+          const schools: SchoolType[] = await SchoolService.import(
+            parsedFileData
+          );
+          setSchools(schools);
+          props.callbackSuccess ? props.callbackSuccess() : "";
+        } catch (err) {
+          console.log("Import failed", err);
+          props.callbackFail ? props.callbackFail() : "";
+        }
+      } else if (fileNameIsCorrect(fileName, "ramassage")) {
+        addNewUserInformation({
+          displayed: true,
+          level: MessageLevelEnum.warning,
+          type: MessageTypeEnum.global,
+          content: "ajout d'un ramassage",
+        });
         props.callbackSuccess ? props.callbackSuccess() : "";
-        exitCanvas();
-      } catch (err) {
-        console.log("Import failed", err);
-        props.callbackFail ? props.callbackFail() : "";
-        exitCanvas();
       }
     }
-
+    exitCanvas();
     disableSpinningWheel();
   }
 

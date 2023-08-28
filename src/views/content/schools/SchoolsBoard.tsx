@@ -98,15 +98,7 @@ export default function () {
   });
 
   const globalCheckboxOnChange = () => setGlobalChecked((bool) => !bool);
-  function onCompleteCsvCanvas() {
-    addNewUserInformation({
-      displayed: true,
-      level: MessageLevelEnum.success,
-      type: MessageTypeEnum.global,
-      content: "Les établissements ont été ajoutés",
-    });
-    //TODO ADD resume dialogue box
-  }
+
   return (
     <>
       <ImportCsvDialogBox

@@ -14,6 +14,7 @@ import ClickOutside from "../component/ClickOutside";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { assertIsNode } from "../utils";
 import {
+  fileExtensionIsCorrect,
   fileNameIsCorrect,
   parsedCsvFileToSchoolData,
 } from "../utils/csvUtils";
@@ -101,31 +102,38 @@ export default function (props: {
     const file = files[0];
 
     const fileName = file.name;
+    if (fileExtensionIsCorrect(fileName)) {
+      if (fileNameIsCorrect(fileName, "etablissement")) {
+        const parsedFileData = await parsedCsvFileToSchoolData(file);
 
-    if (fileNameIsCorrect(fileName, "etablissement")) {
-      const parsedFileData = await parsedCsvFileToSchoolData(file);
+        if (!parsedFileData) {
+          disableSpinningWheel();
+          props.callbackFail ? props.callbackFail() : "";
+          closeImportCsvBox();
+          return;
+        }
 
-      if (!parsedFileData) {
-        disableSpinningWheel();
-        props.callbackFail ? props.callbackFail() : "";
-        closeImportCsvBox();
-        return;
-      }
-
-      try {
-        const schools: SchoolType[] = await SchoolService.import(
-          parsedFileData
-        );
-        setSchools(schools);
+        try {
+          const schools: SchoolType[] = await SchoolService.import(
+            parsedFileData
+          );
+          setSchools(schools);
+          props.callbackSuccess ? props.callbackSuccess() : "";
+        } catch (err) {
+          console.log("Import failed", err);
+          props.callbackFail ? props.callbackFail() : "";
+        }
+      } else if (fileNameIsCorrect(fileName, "ramassage")) {
+        addNewUserInformation({
+          displayed: true,
+          level: MessageLevelEnum.warning,
+          type: MessageTypeEnum.global,
+          content: "ajout d'un ramassage",
+        });
         props.callbackSuccess ? props.callbackSuccess() : "";
-        closeImportCsvBox();
-      } catch (err) {
-        console.log("Import failed", err);
-        props.callbackFail ? props.callbackFail() : "";
-        closeImportCsvBox();
       }
     }
-
+    closeImportCsvBox();
     disableSpinningWheel();
   }
 
