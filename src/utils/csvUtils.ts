@@ -75,12 +75,6 @@ export function isCorrectHeader(
 export async function parsedCsvFileToSchoolData(
   file: File
 ): Promise<Pick<SchoolDBType, "name" | "location">[] | undefined> {
-  const fileName = file.name;
-
-  if (!fileNameIsCorrect(fileName, "etablissement")) {
-    return;
-  }
-
   const parsedFile = await parseFile(file);
 
   const correctHeader = ["name", "lat", "lon"];

@@ -13,7 +13,10 @@ import { SchoolService } from "../_services/school.service";
 import ClickOutside from "../component/ClickOutside";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { assertIsNode } from "../utils";
-import { parsedCsvFileToSchoolData } from "../utils/csvUtils";
+import {
+  fileNameIsCorrect,
+  parsedCsvFileToSchoolData,
+} from "../utils/csvUtils";
 import { setSchools } from "../views/content/graphicage/component/organism/SchoolPoints";
 
 // HACK for the documentation to preserve the ClickOutside directive on save
@@ -93,28 +96,34 @@ export default function (props: {
       return;
     }
 
-    const file = files[0];
-
     // TODO Add import overview
 
-    const parsedFileData = await parsedCsvFileToSchoolData(file);
+    const file = files[0];
 
-    if (!parsedFileData) {
-      disableSpinningWheel();
-      props.callbackFail ? props.callbackFail() : "";
-      closeImportCsvBox();
-      return;
-    }
+    const fileName = file.name;
 
-    try {
-      const schools: SchoolType[] = await SchoolService.import(parsedFileData);
-      setSchools(schools);
-      props.callbackSuccess ? props.callbackSuccess() : "";
-      closeImportCsvBox();
-    } catch (err) {
-      console.log("Import failed", err);
-      props.callbackFail ? props.callbackFail() : "";
-      closeImportCsvBox();
+    if (fileNameIsCorrect(fileName, "etablissement")) {
+      const parsedFileData = await parsedCsvFileToSchoolData(file);
+
+      if (!parsedFileData) {
+        disableSpinningWheel();
+        props.callbackFail ? props.callbackFail() : "";
+        closeImportCsvBox();
+        return;
+      }
+
+      try {
+        const schools: SchoolType[] = await SchoolService.import(
+          parsedFileData
+        );
+        setSchools(schools);
+        props.callbackSuccess ? props.callbackSuccess() : "";
+        closeImportCsvBox();
+      } catch (err) {
+        console.log("Import failed", err);
+        props.callbackFail ? props.callbackFail() : "";
+        closeImportCsvBox();
+      }
     }
 
     disableSpinningWheel();

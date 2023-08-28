@@ -86,29 +86,28 @@ export default function (props: {
 
     const fileName = file.name;
 
-    if (!fileNameIsCorrect(fileName, "etablissement")) {
-      return;
-    }
+    if (fileNameIsCorrect(fileName, "etablissement")) {
+      const parsedFileData = await parsedCsvFileToSchoolData(file);
 
-    const parsedFileData = await parsedCsvFileToSchoolData(file);
+      if (!parsedFileData) {
+        disableSpinningWheel();
+        props.callbackFail ? props.callbackFail() : "";
+        exitCanvas();
+        return;
+      }
 
-    if (!parsedFileData) {
-      disableSpinningWheel();
-      props.callbackFail ? props.callbackFail() : "";
-      exitCanvas();
-      return;
-    }
-    console.log(parsedFileData);
-
-    try {
-      const schools: SchoolType[] = await SchoolService.import(parsedFileData);
-      setSchools(schools);
-      props.callbackSuccess ? props.callbackSuccess() : "";
-      exitCanvas();
-    } catch (err) {
-      console.log("Import failed", err);
-      props.callbackFail ? props.callbackFail() : "";
-      exitCanvas();
+      try {
+        const schools: SchoolType[] = await SchoolService.import(
+          parsedFileData
+        );
+        setSchools(schools);
+        props.callbackSuccess ? props.callbackSuccess() : "";
+        exitCanvas();
+      } catch (err) {
+        console.log("Import failed", err);
+        props.callbackFail ? props.callbackFail() : "";
+        exitCanvas();
+      }
     }
 
     disableSpinningWheel();
