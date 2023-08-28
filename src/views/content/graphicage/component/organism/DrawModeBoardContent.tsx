@@ -1,10 +1,17 @@
 import { Show, createSignal } from "solid-js";
-import { useStateAction } from "../../../../../StateAction";
+import {
+  defaultLineUnderConstruction,
+  useStateAction,
+} from "../../../../../StateAction";
 
 import TimelineAddMode from "../../informationBoard/TimelineAddMode";
 import SelectedSchool from "../atom/SelectedSchool";
 
+import { BusLineType } from "../../../../../_entities/bus-line.entity";
+import { BusLineService } from "../../../../../_services/bus-line.service";
 import "../../../../../css/timeline.css";
+import { quitModeAddLine } from "../../shortcut";
+import { updateBusLines } from "./BusLines";
 import DrawModeBoardContentFooter from "./DrawModeBoardContentFooter";
 
 const [, { getLineUnderConstruction, setLineUnderConstruction }] =
@@ -88,4 +95,55 @@ export default function () {
       />
     </div>
   );
+}
+
+async function createOrUpdateBusLine(busLine: BusLineType) {
+  console.log("Validation finale");
+  if (busLine.id == undefined) {
+    await createBusLine(busLine);
+  } else {
+    await updateBusLine(busLine);
+  }
+  quitModeAddLine();
+}
+
+async function createBusLine(busLine: BusLineType) {
+  console.log("Create new busLine");
+  const newBusLine: BusLineType = await BusLineService.create(busLine);
+  updateBusLines(newBusLine);
+}
+
+async function updateBusLine(busLine: BusLineType) {
+  // TODO to do
+  console.log("Update busLine");
+  const updatedBusLine: BusLineType = await BusLineService.update(busLine);
+  updateBusLines(updatedBusLine);
+}
+
+function nextStep() {
+  if (currentStep() > drawModeStep.schoolSelection) {
+    createOrUpdateBusLine(getLineUnderConstruction().busLine);
+  }
+  setCurrentStep((currentStep() + 1) % 5);
+}
+
+function prevStep() {
+  switch (currentStep()) {
+    case drawModeStep.schoolSelection:
+      setLineUnderConstruction(defaultLineUnderConstruction());
+      quitModeAddLine();
+      break;
+    case drawModeStep.stopSelection:
+      setLineUnderConstruction(defaultLineUnderConstruction());
+      break;
+    case drawModeStep.polylineEdition:
+      getLineUnderConstruction().busLine.setLatLngs([]);
+      break;
+    case drawModeStep.validationStep:
+      break;
+    default:
+      console.log("Sorry, we are out of range}.");
+  }
+  const step = currentStep() - 1;
+  setCurrentStep(step > 0 ? step : 0);
 }
