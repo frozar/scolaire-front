@@ -12,6 +12,9 @@ export default function (props: SelectedEtablissementProps) {
 
   return (
     <div class="selected-school">
+      <div class="add-line-information-board-content-title">
+        <h1>Sélection des établissements</h1>
+      </div>
       <For each={schoolSelected()}>
         {(etablissement) => {
           return <SelectedSchoolItem etablissement={etablissement} />;
