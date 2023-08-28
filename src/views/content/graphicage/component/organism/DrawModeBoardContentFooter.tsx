@@ -17,14 +17,6 @@ import "./DrawModeBoardContent.css";
 
 const [, { getLineUnderConstruction }] = useStateAction();
 
-// const [
-//   ,
-//   {
-//     getLineUnderConstruction,
-//     setLineUnderConstruction,
-//     confirmEtablissementSelection,
-//   },
-// ] = useStateAction();
 export type addLineButtonType = { callback: () => void; label: string };
 export default function (props: {
   nextStep: addLineButtonType;
@@ -36,41 +28,6 @@ export default function (props: {
         return;
       }
       updatePolylineWithOsrm(getLineUnderConstruction().busLine);
-      //   if (getLineUnderConstruction().busLine.points.length < 2) {
-      //     return;
-      //   }
-      //   // ! Change to origin/main actual code
-      //   const waypoints: PolylinePointType[] = [];
-      //   for (const point of getLineUnderConstruction().busLine.points) {
-      //     // ! bon nature natureEnum  ?
-      //     if (point.nature == NatureEnum.school) {
-      //       waypoints.push({
-      //         idSchool: point.id,
-      //         lon: point.lon,
-      //         lat: point.lat,
-      //       });
-      //     } else if (point.nature == NatureEnum.stop) {
-      //       waypoints.push({
-      //         idStop: point.id,
-      //         lon: point.lon,
-      //         lat: point.lat,
-      //       });
-      //     }
-      //   }
-      //   console.log("editLinesWip", waypoints);
-
-      //   setLineUnderConstruction({
-      //     ...getLineUnderConstruction(),
-      //     busLine: {
-      //       ...getLineUnderConstruction().busLine,
-      //       waypoints: waypoints,
-      //     },
-      //   });
-
-      // updatePolylineWithOsrm(getLineUnderConstruction().editLines[0]);
-      //   updatePolylineWithOsrm(getLineUnderConstruction().busLine);
-      // for (const line of getLineUnderConstruction().editLines) {
-      //   updatePolylineWithOsrm(line);
       // ! Changement de drawModeStep
       setCurrentStep((currentStep() + 1) % 5);
     } else if (currentStep() == drawModeStep.polylineEdition) {
@@ -83,7 +40,7 @@ export default function (props: {
   return (
     <div class="add-line-information-board-content-buttons">
       <Show when={currentStep() > drawModeStep.schoolSelection}>
-        {/* // ! Déplacer */}
+        {/* // TODO: Déplacer */}
         <Button
           onClick={onClick}
           label={

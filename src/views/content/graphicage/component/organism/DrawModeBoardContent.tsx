@@ -20,6 +20,7 @@ import DrawModeBoardContentFooter from "./DrawModeBoardContentFooter";
 const [, { getLineUnderConstruction, setLineUnderConstruction }] =
   useStateAction();
 
+// ! replace stopSelection, polylineEdition, validationStep with editLine
 export enum drawModeStep {
   start,
   schoolSelection,
@@ -33,7 +34,7 @@ export const [currentStep, setCurrentStep] = createSignal<drawModeStep>(
 );
 
 export default function () {
-  // console.log("DrawModeBoardContent");
+  // ! delete
   createEffect(() => {
     console.log("createEffect currentStep()", currentStep());
   });
@@ -42,20 +43,14 @@ export default function () {
   const etablissementSelected = () => {
     return getLineUnderConstruction().busLine.schools;
   };
-  // console.log(
-  //   "getLineUnderConstruction().busLine.schools",
-  //   getLineUnderConstruction().busLine.schools
-  // );
 
   return (
     <div class="add-line-information-board-content">
       {/*  // !when line.shools.lenght > 0 */}
       <Show when={currentStep() == drawModeStep.schoolSelection}>
-        {() => console.log("SCHOOL SELECTION")}
         <SelectedSchool schoolSelected={etablissementSelected()} />
       </Show>
       <Show when={currentStep() > drawModeStep.schoolSelection}>
-        {() => console.log("AFTER SCHOOL SELECTION")}
         <div class="bus-line-information-board-content">
           <TimelineAddMode
             line={getLineUnderConstruction}
@@ -64,22 +59,6 @@ export default function () {
         </div>
       </Show>
 
-      {/* <AddLineInformationBoardContentFooter
-        nextStep={{
-          callback: nextStep,
-          label:
-            currentStep() > drawModeStep.schoolSelection
-              ? "Valider"
-              : "Suivant",
-        }}
-        previousStep={{
-          callback: prevStep,
-          label:
-            currentStep() === drawModeStep.schoolSelection
-              ? "Annuler"
-              : "Précédant",
-        }}
-      /> */}
       <DrawModeBoardContentFooter
         nextStep={{
           callback: nextStep,
