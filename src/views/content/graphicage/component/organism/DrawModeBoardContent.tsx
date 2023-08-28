@@ -1,4 +1,4 @@
-import { Show, createSignal } from "solid-js";
+import { Show, createEffect, createSignal } from "solid-js";
 import {
   defaultLineUnderConstruction,
   useStateAction,
@@ -7,7 +7,10 @@ import {
 import TimelineAddMode from "../../informationBoard/TimelineAddMode";
 import SelectedSchool from "../atom/SelectedSchool";
 
-import { BusLineType } from "../../../../../_entities/bus-line.entity";
+import {
+  BusLineType,
+  updatePolylineWithOsrm,
+} from "../../../../../_entities/bus-line.entity";
 import { BusLineService } from "../../../../../_services/bus-line.service";
 import "../../../../../css/timeline.css";
 import { quitModeAddLine } from "../../shortcut";
@@ -31,9 +34,9 @@ export const [currentStep, setCurrentStep] = createSignal<drawModeStep>(
 
 export default function () {
   // console.log("DrawModeBoardContent");
-  // createEffect(() => {
-  //   console.log("currentStep()", currentStep());
-  // });
+  createEffect(() => {
+    console.log("createEffect currentStep()", currentStep());
+  });
 
   //  ! set var line soit default soit avec la LineToUpdate
   const etablissementSelected = () => {
@@ -120,30 +123,45 @@ async function updateBusLine(busLine: BusLineType) {
   updateBusLines(updatedBusLine);
 }
 
-function nextStep() {
-  if (currentStep() > drawModeStep.schoolSelection) {
-    createOrUpdateBusLine(getLineUnderConstruction().busLine);
+async function nextStep() {
+  console.log("actual step=>", currentStep());
+  if (currentStep() < drawModeStep.stopSelection) {
+    setCurrentStep((currentStep() + 1) % 5);
   }
-  setCurrentStep((currentStep() + 1) % 5);
+  if (currentStep() >= drawModeStep.stopSelection) {
+    if (getLineUnderConstruction().busLine.points.length < 2) {
+      return;
+    }
+    if (currentStep() == drawModeStep.stopSelection) {
+      await updatePolylineWithOsrm(getLineUnderConstruction().busLine);
+    }
+
+    createOrUpdateBusLine(getLineUnderConstruction().busLine);
+    // ! Ajouter setCurrentStep(0) ?!
+  }
 }
 
 function prevStep() {
-  switch (currentStep()) {
-    case drawModeStep.schoolSelection:
-      setLineUnderConstruction(defaultLineUnderConstruction());
-      quitModeAddLine();
-      break;
-    case drawModeStep.stopSelection:
-      setLineUnderConstruction(defaultLineUnderConstruction());
-      break;
-    case drawModeStep.polylineEdition:
+  if (currentStep() == drawModeStep.schoolSelection) {
+    console.log("currentStep()", currentStep());
+
+    setLineUnderConstruction(defaultLineUnderConstruction());
+    quitModeAddLine();
+
+    setCurrentStep(drawModeStep.start);
+  } else if (currentStep() > drawModeStep.schoolSelection) {
+    console.log("currentStep()", currentStep());
+
+    setLineUnderConstruction(defaultLineUnderConstruction());
+    if (currentStep() == drawModeStep.polylineEdition) {
       getLineUnderConstruction().busLine.setLatLngs([]);
-      break;
-    case drawModeStep.validationStep:
-      break;
-    default:
-      console.log("Sorry, we are out of range}.");
+    }
+
+    setCurrentStep(drawModeStep.schoolSelection);
+    // ! useless, so delete ?
+  } else {
+    console.log("Sorry, we are out of range}.");
   }
-  const step = currentStep() - 1;
-  setCurrentStep(step > 0 ? step : 0);
+  // ! cas case drawModeStep.validationStep: ?
+  // ! Refactor setCurrentStep()
 }

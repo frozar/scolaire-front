@@ -9,6 +9,11 @@ import "./DrawHelperDialog.css";
 
 import { assertIsNode } from "../../../../../utils";
 import DrawHelperDialogItem from "../atom/DrawHelperDialogItem";
+import {
+  currentStep,
+  drawModeStep,
+  setCurrentStep,
+} from "../organism/DrawModeBoardContent";
 true && ClickOutside;
 
 export const [getDisplayedDrawHelperDialog, setDisplayedDrawHelperDialog] =
@@ -57,14 +62,19 @@ export default function (props: {
   const [timeLimitSeconds, setTimeLimitSeconds] = createSignal(10);
   const [nbLimitSolution, setNbLimitSolution] = createSignal(50000);
 
-  function handlerOnClickSoumettre() {
+  async function handlerOnClickSoumettre() {
     closeDrawHelperDialog();
 
-    props.requestCircuit(
+    await props.requestCircuit(
       vehiclesCapacity(),
       timeLimitSeconds(),
       nbLimitSolution()
     );
+    // ! Temporaire !?
+    // ! Doit systématiquement afficher la ligne d'orTools juste après
+    if (currentStep() != drawModeStep.stopSelection) {
+      setCurrentStep(drawModeStep.stopSelection);
+    }
   }
 
   const [refButton, setRefButton] = createSignal<
