@@ -14,7 +14,15 @@ import FlaxibMapLogo from "./FlaxibMapLogo";
 import { initScreenshoter } from "./rightMapMenu/export/screenShoter";
 import { getTileById } from "./tileUtils";
 
-const [, { getSelectedReadModeTile, getSelectedEditModeTile }] = useStateGui();
+const [
+  ,
+  {
+    getSelectedReadModeTile,
+    getSelectedEditModeTile,
+    setSelectedEditModeTile,
+    setSelectedReadModeTile,
+  },
+] = useStateGui();
 const [, { isInReadMode }] = useStateAction();
 
 function addLogoFlaxib(map: L.Map) {
@@ -55,6 +63,10 @@ export function buildMapL7(div: HTMLDivElement) {
   >();
 
   createEffect(() => {
+    // TODO delete the two setters and check why the tiles' default parameters are not respected and fix it
+    setSelectedReadModeTile("OpenStreetMap_Mapnik");
+    setSelectedEditModeTile("Esri_WorldTopoMap");
+
     setCurrentTileLayer(() => {
       if (isInReadMode()) {
         return readTile();
