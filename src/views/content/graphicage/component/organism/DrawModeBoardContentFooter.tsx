@@ -48,7 +48,7 @@ export default function (props: {
       <Button
         onClick={props.previousStep.callback}
         label={props.previousStep.label}
-        variant="primary"
+        variant="danger"
         isDisabled={false}
       />
       <Button
