@@ -77,7 +77,6 @@ export default function () {
 }
 
 async function createOrUpdateBusLine(busLine: BusLineType) {
-  console.log("Validation finale");
   if (busLine.id == undefined) {
     await createBusLine(busLine);
   } else {
@@ -87,14 +86,11 @@ async function createOrUpdateBusLine(busLine: BusLineType) {
 }
 
 async function createBusLine(busLine: BusLineType) {
-  console.log("Create new busLine");
   const newBusLine: BusLineType = await BusLineService.create(busLine);
   updateBusLines(newBusLine);
 }
 
 async function updateBusLine(busLine: BusLineType) {
-  // TODO to do
-  console.log("Update busLine");
   const updatedBusLine: BusLineType = await BusLineService.update(busLine);
   updateBusLines(updatedBusLine);
 }
