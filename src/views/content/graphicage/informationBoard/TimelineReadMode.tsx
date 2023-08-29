@@ -34,9 +34,13 @@ export default function (props: { line: () => BusLineType | undefined }) {
         style={{ "--v-timeline-line-thickness": "2px" }}
       >
         <For each={pointsToDisplay()}>
-          {(point) => (
+          {(point, i) => (
             <>
-              <TimelineItemReadMode point={point} />
+              <TimelineItemReadMode
+                point={point}
+                indice={i()}
+                busLine={getSelectedBusLine as () => BusLineType}
+              />
             </>
           )}
         </For>

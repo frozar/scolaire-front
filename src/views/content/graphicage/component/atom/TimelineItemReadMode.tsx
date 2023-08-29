@@ -1,8 +1,14 @@
-import { BusLinePointType } from "../../../../../_entities/bus-line.entity";
+import {
+  BusLinePointType,
+  BusLineType,
+} from "../../../../../_entities/bus-line.entity";
+import { SchoolType } from "../../../../../_entities/school.entity";
 import { NatureEnum } from "../../../../../type";
 
 export type TimelineItemReadType = {
   point: BusLinePointType;
+  busLine: () => BusLineType;
+  indice: number;
 };
 
 export default function (props: TimelineItemReadType) {
@@ -16,7 +22,13 @@ export default function (props: TimelineItemReadType) {
           <div class="me-4">
             {props.point.nature == NatureEnum.stop
               ? "+ " + props.point.quantity
-              : "- " + props.point.quantity * -1}
+              : " " +
+                SumQuantity(
+                  props.busLine().points,
+                  props.busLine().schools[0],
+                  props.indice - 1
+                ) *
+                  -1}
           </div>
           <strong>{props.point.name}</strong>
         </div>
@@ -40,4 +52,31 @@ export default function (props: TimelineItemReadType) {
       </div>
     </div>
   );
+}
+
+function SumQuantity(
+  stops: BusLinePointType[],
+  selectedSchool: SchoolType,
+  indice: number
+) {
+  const school = stops.filter(
+    (point) =>
+      point.id === selectedSchool.id && point.nature === NatureEnum.school
+  )[0];
+
+  let subList = stops.slice(0, indice + 1);
+
+  let deb = subList.lastIndexOf(school);
+
+  deb = deb > -1 ? deb + 1 : 0;
+
+  subList = subList.slice(deb);
+
+  let sum = 0;
+
+  subList.map((point) => {
+    sum += point.quantity;
+  });
+
+  return sum;
 }
