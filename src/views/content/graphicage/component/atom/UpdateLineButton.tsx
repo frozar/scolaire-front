@@ -5,6 +5,8 @@ import { BusLineType } from "../../../../../_entities/bus-line.entity";
 import { deselectAllBusLines } from "../organism/BusLines";
 import {
   displayLineModeEnum,
+  drawModeStep,
+  setCurrentStep,
   setDisplayLineMode,
 } from "../organism/DrawModeBoardContent";
 import { deselectAllPoints } from "../organism/Points";
@@ -26,6 +28,7 @@ export default function (props: { busLine: BusLineType }) {
     deselectAllPoints();
     deselectAllBusLines();
     setDisplayLineMode(displayLineModeEnum.straight);
+    setCurrentStep(drawModeStep.editLine);
     setModeAddLine();
   }
 
