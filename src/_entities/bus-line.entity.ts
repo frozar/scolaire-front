@@ -103,24 +103,28 @@ function formatColorForDB(color: string) {
 const formatBusLinePointType = (
   points: BusLinePointDBType[]
 ): BusLinePointType[] => {
-  return points.map((dbPoint) => {
-    const associatedPoint: PointType = getAssociatedBusLinePoint(dbPoint);
-    if (!associatedPoint) {
-      //TODO Error log to improve
-      console.log(
-        "Error : impossible de retrouver le point de la ligne de bus "
-      );
-    }
-    return {
-      id: associatedPoint.id,
-      leafletId: associatedPoint.leafletId,
-      name: associatedPoint.name,
-      lon: associatedPoint.lon,
-      lat: associatedPoint.lat,
-      nature: associatedPoint.nature,
-      quantity: dbPoint.quantity,
-    };
-  });
+  //TODO Investigate the problem during switching between map
+  return points
+    .map((dbPoint) => {
+      const associatedPoint: PointType = getAssociatedBusLinePoint(dbPoint);
+      if (associatedPoint) {
+        return {
+          id: associatedPoint.id,
+          leafletId: associatedPoint.leafletId,
+          name: associatedPoint.name,
+          lon: associatedPoint.lon,
+          lat: associatedPoint.lat,
+          nature: associatedPoint.nature,
+          quantity: dbPoint.quantity,
+        };
+      } else {
+        //TODO Error log to improve
+        console.log(
+          "Error : impossible de retrouver le point de la ligne de bus "
+        );
+      }
+    })
+    .filter((elem) => elem != undefined) as BusLinePointType[]; // temporary FIX Filter to delete undefined data
 };
 
 const formatBusLinePointDBType = (
