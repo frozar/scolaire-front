@@ -5,6 +5,7 @@ import {
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { NatureEnum } from "../../../../../type";
 
+// ! use only one input props busline
 export type TimelineItemReadType = {
   point: BusLinePointType;
   busLine: () => BusLineType;
