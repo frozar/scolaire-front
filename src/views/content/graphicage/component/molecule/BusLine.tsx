@@ -21,8 +21,10 @@ import { setPickerColor } from "../atom/ColorPicker";
 import Line from "../atom/Line";
 import { deselectAllBusLines } from "../organism/BusLines";
 import {
+  currentStep,
   displayLineMode,
   displayLineModeEnum,
+  drawModeStep,
 } from "../organism/DrawModeBoardContent";
 import {
   cursorIsOverPoint,
@@ -114,7 +116,11 @@ export function BusLine(props: BusLineProps) {
   };
 
   function onMouseDown(e: LeafletMouseEvent) {
-    if (displayLineMode() == displayLineModeEnum.straight && !isInReadMode()) {
+    // if (displayLineMode() == displayLineModeEnum.straight && !isInReadMode()) {
+    if (
+      displayLineMode() == displayLineModeEnum.straight &&
+      currentStep() == drawModeStep.editLine
+    ) {
       props.map.dragging.disable();
 
       function pointToLineDistance(
