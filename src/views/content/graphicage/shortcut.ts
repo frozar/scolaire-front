@@ -18,11 +18,6 @@ import {
 } from "../../../userInformation/utils";
 import { displayedConfirmStopAddLine } from "./ConfirmStopAddLineBox";
 
-// import {
-//   currentStep,
-//   drawModeStep,
-//   setCurrentStep,
-// } from "./component/organism/AddLineInformationBoardContent";
 import { deselectAllBusLines } from "./component/organism/BusLines";
 import {
   currentStep,

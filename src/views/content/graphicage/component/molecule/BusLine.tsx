@@ -19,10 +19,6 @@ import {
 } from "../../constant";
 import { setPickerColor } from "../atom/ColorPicker";
 import Line from "../atom/Line";
-// import {
-//   currentStep,
-//   drawModeStep,
-// } from "../organism/AddLineInformationBoardContent";
 import { deselectAllBusLines } from "../organism/BusLines";
 import {
   displayLineMode,
@@ -54,22 +50,6 @@ export type BusLineProps = {
 export function BusLine(props: BusLineProps) {
   const [localLatLngs, setLocalLatLngs] = createSignal<L.LatLng[]>([]);
   const [localOpacity, setLocalOpacity] = createSignal<number>(1);
-  // eslint-disable-next-line solid/reactivity
-  // createEffect(async () => {
-  //   if (
-  //     // currentStep() != drawModeStep.stopSelection &&
-  //     displayLineMode() == displayLineModeEnum.onRoad &&
-  //     currentStep() < drawModeStep.schoolSelection &&
-  //     props.line.latLngs().length != 0 //||
-  //     // !isInAddLineMode()
-  //   ) {
-  //     setLocalLatLngs(props.line.latLngs());
-  //     setLocalOpacity(0.8);
-  //   } else {
-  //     setLocalLatLngs(getLatLngsFromPoint(props.line.points));
-  //     setLocalOpacity(1);
-  //   }
-  // });
   createEffect(() => {
     if (displayLineMode() == displayLineModeEnum.onRoad || isInReadMode()) {
       setLocalLatLngs(props.line.latLngs());
@@ -134,12 +114,7 @@ export function BusLine(props: BusLineProps) {
   };
 
   function onMouseDown(e: LeafletMouseEvent) {
-    console.log("line mousedown");
-
-    // if (currentStep() == drawModeStep.stopSelection) {
     if (displayLineMode() == displayLineModeEnum.straight) {
-      console.log("line mousedown in if");
-
       props.map.dragging.disable();
 
       function pointToLineDistance(

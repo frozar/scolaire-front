@@ -6,7 +6,6 @@ import { StopType } from "../../../../../_entities/stop.entity";
 import { StopService } from "../../../../../_services/stop.service";
 import { PointInterface } from "../atom/Point";
 import { StopPoint } from "../molecule/StopPoint";
-// import { currentStep, drawModeStep } from "./AddLineInformationBoardContent";
 import { currentStep, drawModeStep } from "./DrawModeBoardContent";
 
 const [, { getLineUnderConstruction }] = useStateAction();

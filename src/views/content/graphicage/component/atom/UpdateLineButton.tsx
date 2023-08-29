@@ -2,10 +2,6 @@ import { useStateAction } from "../../../../../StateAction";
 
 import { FaSolidPen } from "solid-icons/fa";
 import { BusLineType } from "../../../../../_entities/bus-line.entity";
-// import {
-//   drawModeStep,
-//   setCurrentStep,
-// } from "../organism/AddLineInformationBoardContent";
 import { deselectAllBusLines } from "../organism/BusLines";
 import {
   displayLineModeEnum,
@@ -29,7 +25,6 @@ export default function (props: { busLine: BusLineType }) {
 
     deselectAllPoints();
     deselectAllBusLines();
-    // setCurrentStep(drawModeStep.stopSelection);
     setDisplayLineMode(displayLineModeEnum.straight);
     setModeAddLine();
   }
