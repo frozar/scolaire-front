@@ -1,5 +1,33 @@
+import { createEffect, createSignal } from "solid-js";
+import { useStateAction } from "../../../../StateAction";
+import {
+  currentStep,
+  drawModeStep,
+} from "../../../content/graphicage/component/organism/DrawModeBoardContent";
 import "./FilAriane.css";
 
-export default function (props: { text: string }) {
-  return <div class="fil-arian">{props.text}</div>;
+const [, { isInReadMode, isInAddLineMode }] = useStateAction();
+
+export default function (props: { text?: string }) {
+  const [text, setText] = createSignal(props.text ?? "Acceuil");
+
+  createEffect(() => {
+    if (isInReadMode()) {
+      setText("Acceuil");
+    }
+  });
+
+  createEffect(() => {
+    if (isInAddLineMode()) {
+      setText("création d'une ligne");
+    }
+  });
+
+  createEffect(() => {
+    if (isInAddLineMode() && currentStep() == drawModeStep.editLine) {
+      setText("éditer votre ligne");
+    }
+  });
+
+  return <div class="fil-arian">{text()}</div>;
 }
