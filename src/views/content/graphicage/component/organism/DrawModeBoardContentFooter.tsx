@@ -1,11 +1,9 @@
 import Button from "../../../../../component/atom/Button";
-import {
-  currentStep,
-  displayLineMode,
-  displayLineModeEnum,
-  drawModeStep,
-  setDisplayLineMode,
-} from "./DrawModeBoardContent";
+// import {
+//   currentStep,
+//   drawModeStep,
+//   setCurrentStep,
+// } from "./AddLineInformationBoardContent";
 
 import "./DrawModeBoardContent.css";
 
@@ -14,32 +12,8 @@ export default function (props: {
   nextStep: addLineButtonType;
   previousStep: addLineButtonType;
 }) {
-  async function onClick() {
-    if (displayLineMode() == displayLineModeEnum.straight) {
-      if (getLineUnderConstruction().busLine.points.length < 2) {
-        return;
-      }
-      await updatePolylineWithOsrm(getLineUnderConstruction().busLine);
-      setDisplayLineMode(displayLineModeEnum.onRoad);
-    } else if (displayLineMode() == displayLineModeEnum.onRoad) {
-      getLineUnderConstruction().busLine.setLatLngs([]);
-      setDisplayLineMode(displayLineModeEnum.straight);
-    }
-  }
   return (
     <div class="add-line-information-board-content-buttons">
-      <Show when={currentStep() == drawModeStep.editLine}>
-        <Button
-          onClick={onClick}
-          label={
-            displayLineMode() == displayLineModeEnum.straight
-              ? "Afficher tracé sur route"
-              : "Afficher tracé vol d'oiseau"
-          }
-          variant="primary"
-          isDisabled={false}
-        />
-      </Show>
       <Button
         onClick={props.previousStep.callback}
         label={props.previousStep.label}
