@@ -99,37 +99,41 @@ async function updateBusLine(busLine: BusLineType) {
 }
 
 async function nextStep() {
-  if (currentStep() == drawModeStep.schoolSelection) {
-    if (getLineUnderConstruction().busLine.schools.length < 1) {
-      return;
-    }
-    setCurrentStep(drawModeStep.editLine);
-  } else {
-    if (getLineUnderConstruction().busLine.points.length < 2) {
-      return;
-    }
-    if (displayLineMode() == displayLineModeEnum.straight) {
-      await updatePolylineWithOsrm(getLineUnderConstruction().busLine);
-    }
+  switch (currentStep()) {
+    case drawModeStep.schoolSelection:
+      if (getLineUnderConstruction().busLine.schools.length < 1) {
+        break;
+      }
+      setCurrentStep(drawModeStep.editLine);
+    case drawModeStep.editLine:
+      if (getLineUnderConstruction().busLine.points.length < 2) {
+        break;
+      }
+      if (displayLineMode() == displayLineModeEnum.straight) {
+        await updatePolylineWithOsrm(getLineUnderConstruction().busLine);
+      }
 
-    createOrUpdateBusLine(getLineUnderConstruction().busLine);
+      createOrUpdateBusLine(getLineUnderConstruction().busLine);
   }
 }
 
 function prevStep() {
-  if (currentStep() == drawModeStep.schoolSelection) {
-    setLineUnderConstruction(defaultLineUnderConstruction());
-    quitModeAddLine();
+  switch (currentStep()) {
+    case drawModeStep.schoolSelection:
+      setLineUnderConstruction(defaultLineUnderConstruction());
+      quitModeAddLine();
 
-    setCurrentStep(drawModeStep.start);
-  } else if (currentStep() == drawModeStep.editLine) {
-    setLineUnderConstruction(defaultLineUnderConstruction());
+      setCurrentStep(drawModeStep.start);
+      break;
+    case drawModeStep.editLine:
+      setLineUnderConstruction(defaultLineUnderConstruction());
 
-    if (displayLineMode() == displayLineModeEnum.onRoad) {
-      getLineUnderConstruction().busLine.setLatLngs([]);
-    }
+      if (displayLineMode() == displayLineModeEnum.onRoad) {
+        getLineUnderConstruction().busLine.setLatLngs([]);
+      }
 
-    setCurrentStep(drawModeStep.schoolSelection);
+      setCurrentStep(drawModeStep.schoolSelection);
+      break;
   }
   setDisplayLineMode((prev) =>
     prev == displayLineModeEnum.straight ? prev : displayLineModeEnum.straight
