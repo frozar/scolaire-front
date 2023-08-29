@@ -54,8 +54,8 @@ export default function (props: {
   const displayed = () => getDisplayedDrawHelperDialog();
   const [nbVehicles, setNbVehicles] = createSignal(1);
   const [vehiclesCapacity, setVehiclesCapacity] = createSignal(30);
-  const [timeLimitSeconds, setTimeLimitSeconds] = createSignal(10);
-  const [nbLimitSolution, setNbLimitSolution] = createSignal(50000);
+  const [timeLimitSeconds, setTimeLimitSeconds] = createSignal(1);
+  const [nbLimitSolution, setNbLimitSolution] = createSignal(5000);
 
   function handlerOnClickSoumettre() {
     closeDrawHelperDialog();
