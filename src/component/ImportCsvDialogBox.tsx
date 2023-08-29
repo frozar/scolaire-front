@@ -8,16 +8,12 @@ import {
 } from "../signaux";
 
 import { useStateGui } from "../StateGui";
-import { SchoolType } from "../_entities/school.entity";
-import { SchoolService } from "../_services/school.service";
 import ClickOutside from "../component/ClickOutside";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { assertIsNode } from "../utils";
-import {
-  fileNameIsCorrect,
-  parsedCsvFileToSchoolData,
-} from "../utils/csvUtils";
+import { importFile } from "../utils/importUtils";
 import { setSchools } from "../views/content/graphicage/component/organism/SchoolPoints";
+import { setStops } from "../views/content/graphicage/component/organism/StopPoints";
 
 // HACK for the documentation to preserve the ClickOutside directive on save
 // https://www.solidjs.com/guides/typescript#use___
@@ -100,32 +96,17 @@ export default function (props: {
 
     const file = files[0];
 
-    const fileName = file.name;
+    const { stops, schools } = await importFile(file);
 
-    if (fileNameIsCorrect(fileName, "etablissement")) {
-      const parsedFileData = await parsedCsvFileToSchoolData(file);
-
-      if (!parsedFileData) {
-        disableSpinningWheel();
-        props.callbackFail ? props.callbackFail() : "";
-        closeImportCsvBox();
-        return;
-      }
-
-      try {
-        const schools: SchoolType[] = await SchoolService.import(
-          parsedFileData
-        );
-        setSchools(schools);
-        props.callbackSuccess ? props.callbackSuccess() : "";
-        closeImportCsvBox();
-      } catch (err) {
-        console.log("Import failed", err);
-        props.callbackFail ? props.callbackFail() : "";
-        closeImportCsvBox();
-      }
+    if (schools || stops) {
+      schools ? setSchools(schools) : "";
+      stops ? setStops(stops) : "";
+      props.callbackSuccess ? props.callbackSuccess() : "";
+    } else {
+      props.callbackFail ? props.callbackFail() : "";
     }
 
+    closeImportCsvBox();
     disableSpinningWheel();
   }
 

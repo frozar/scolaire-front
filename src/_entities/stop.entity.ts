@@ -38,6 +38,28 @@ export class StopEntity {
       location: EntityUtils.builLocationPoint(stop.lon, stop.lat),
     };
   }
+
+  static dataToDB(datas: Pick<StopType, "name" | "lon" | "lat">[]) {
+    return datas.map((data) => {
+      return StopEntity.dbFormat({
+        name: data.name,
+        lat: +data.lat,
+        lon: +data.lon,
+      });
+    });
+  }
+
+  static buildStops(stops: StopType[]): StopType[] {
+    return stops.map((stop) => {
+      const [selected, setSelected] = createSignal(false);
+      return {
+        ...stop,
+        setSelected,
+        selected,
+        leafletId: nextLeafletPointId(),
+      };
+    });
+  }
 }
 
 export type StopType = {

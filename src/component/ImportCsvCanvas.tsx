@@ -1,17 +1,13 @@
 import { Setter, onCleanup, onMount } from "solid-js";
-import { SchoolType } from "../_entities/school.entity";
-import { SchoolService } from "../_services/school.service";
 import {
   addNewUserInformation,
   disableSpinningWheel,
   enableSpinningWheel,
 } from "../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
-import {
-  fileNameIsCorrect,
-  parsedCsvFileToSchoolData,
-} from "../utils/csvUtils";
+import { importFile } from "../utils/importUtils";
 import { setSchools } from "../views/content/graphicage/component/organism/SchoolPoints";
+import { setStops } from "../views/content/graphicage/component/organism/StopPoints";
 
 let mapDragDropDiv: HTMLDivElement;
 export default function (props: {
@@ -84,32 +80,17 @@ export default function (props: {
 
     const file = files[0];
 
-    const fileName = file.name;
+    const { stops, schools } = await importFile(file);
 
-    if (fileNameIsCorrect(fileName, "etablissement")) {
-      const parsedFileData = await parsedCsvFileToSchoolData(file);
-
-      if (!parsedFileData) {
-        disableSpinningWheel();
-        props.callbackFail ? props.callbackFail() : "";
-        exitCanvas();
-        return;
-      }
-
-      try {
-        const schools: SchoolType[] = await SchoolService.import(
-          parsedFileData
-        );
-        setSchools(schools);
-        props.callbackSuccess ? props.callbackSuccess() : "";
-        exitCanvas();
-      } catch (err) {
-        console.log("Import failed", err);
-        props.callbackFail ? props.callbackFail() : "";
-        exitCanvas();
-      }
+    if (schools || stops) {
+      schools ? setSchools(schools) : "";
+      stops ? setStops(stops) : "";
+      props.callbackSuccess ? props.callbackSuccess() : "";
+    } else {
+      props.callbackFail ? props.callbackFail() : "";
     }
 
+    exitCanvas();
     disableSpinningWheel();
   }
 

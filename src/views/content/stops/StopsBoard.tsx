@@ -4,6 +4,8 @@ import { StopService } from "../../../_services/stop.service";
 import ImportCsvCanvas from "../../../component/ImportCsvCanvas";
 import ImportCsvDialogBox from "../../../component/ImportCsvDialogBox";
 import PageTitle from "../../../component/atom/PageTitle";
+import { addNewUserInformation } from "../../../signaux";
+import { MessageLevelEnum, MessageTypeEnum } from "../../../type";
 import RemoveRamassageConfirmation from "../../../userInformation/RemoveRamassageConfirmation";
 import {
   getStops,
@@ -26,6 +28,23 @@ export async function fetchStop() {
 function preventDefaultHandler(e: DragEvent) {
   e.preventDefault();
 }
+
+export const callbackSuccess = function (): void {
+  addNewUserInformation({
+    displayed: true,
+    level: MessageLevelEnum.success,
+    type: MessageTypeEnum.global,
+    content: "Les point de ramassage ont été mis à jour",
+  });
+};
+export const callbackFail = function (): void {
+  addNewUserInformation({
+    displayed: true,
+    level: MessageLevelEnum.success,
+    type: MessageTypeEnum.global,
+    content: "Des erreurs sont survenues lors de l'importation",
+  });
+};
 
 // TODO: checkbox selection when select all by GlobalCheckbox then deselect one and reselect the deselected, here have a bug
 export const [globalChecked, setGlobalChecked] = createSignal<boolean>(false);
@@ -82,7 +101,10 @@ export default function () {
 
   return (
     <>
-      <ImportCsvDialogBox />
+      <ImportCsvDialogBox
+        callbackSuccess={callbackSuccess}
+        callbackFail={callbackFail}
+      />
       <ImportCsvCanvas
         display={displayImportCsvCanvas()}
         setDisplay={setDisplayImportCsvCanvas}

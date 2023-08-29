@@ -36,7 +36,7 @@ export const callbackSuccess = function (): void {
     displayed: true,
     level: MessageLevelEnum.success,
     type: MessageTypeEnum.global,
-    content: "Les établissements ont été ajoutés",
+    content: "Les établissements ont été mis à jour",
   });
 };
 export const callbackFail = function (): void {
@@ -98,15 +98,7 @@ export default function () {
   });
 
   const globalCheckboxOnChange = () => setGlobalChecked((bool) => !bool);
-  function onCompleteCsvCanvas() {
-    addNewUserInformation({
-      displayed: true,
-      level: MessageLevelEnum.success,
-      type: MessageTypeEnum.global,
-      content: "Les établissements ont été ajoutés",
-    });
-    //TODO ADD resume dialogue box
-  }
+
   return (
     <>
       <ImportCsvDialogBox

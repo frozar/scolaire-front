@@ -4,6 +4,7 @@ import { Signal, createSignal } from "solid-js";
 import {
   ExportTypeEnum,
   ImportCsvBoxType,
+  MessageLevelEnum,
   MessageTypeEnum,
   PointEtablissementType,
   PointRamassageType,
@@ -210,6 +211,15 @@ export function addNewUserInformation(
     ];
 
     return res;
+  });
+}
+
+export function addNewGlobalWarningInformation(message: string) {
+  addNewUserInformation({
+    displayed: true,
+    level: MessageLevelEnum.error,
+    type: MessageTypeEnum.global,
+    content: message,
   });
 }
 
