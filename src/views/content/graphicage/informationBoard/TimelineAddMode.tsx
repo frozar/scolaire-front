@@ -16,7 +16,6 @@ import {
   displayLineModeEnum,
   setDisplayLineMode,
 } from "../component/organism/DrawModeBoardContent";
-import "./TimelineAddMode.css";
 import ButtonIcon from "./components/molecul/ButtonIcon";
 import LabeledInputField from "./components/molecul/LabeledInputField";
 import SchoolsEnumeration from "./components/molecul/SchoolsEnumeration";
@@ -93,7 +92,6 @@ export default function (props: {
           onChange={onChange}
         />
 
-        {/* // TODO externalie button */}
         <Show
           when={displayLineMode() == displayLineModeEnum.straight}
           fallback={
@@ -107,7 +105,7 @@ export default function (props: {
       <Show
         when={getLineUnderConstruction().busLine.points.length > 0}
         fallback={
-          <div class="flex justify-center">
+          <div class="flex justify-center absolute bottom-40 mx-auto w-[90%]">
             Veuillez séléctionner des point sur la carte
           </div>
         }
