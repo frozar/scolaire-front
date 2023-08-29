@@ -72,7 +72,7 @@ export default function () {
             displayed: true,
             level: MessageLevelEnum.success,
             type: MessageTypeEnum.global,
-            content: "Les établissements ont été ajoutés",
+            content: "Les données ont été mises à jour",
           });
         }}
       />

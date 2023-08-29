@@ -1,25 +1,11 @@
 import { Setter, onCleanup, onMount } from "solid-js";
-import { SchoolDBType, SchoolType } from "../_entities/school.entity";
-import { StopDBType, StopType } from "../_entities/stop.entity";
-import { SchoolService } from "../_services/school.service";
-import { StopService } from "../_services/stop.service";
-import {
-  StudentToSchool,
-  StudentToSchoolService,
-} from "../_services/student-to-school.service";
 import {
   addNewUserInformation,
   disableSpinningWheel,
   enableSpinningWheel,
 } from "../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
-import {
-  fileExtensionIsCorrect,
-  isSchoolFile,
-  isStopFile,
-  isStudentToSchoolFile,
-  parsedCsvFileData,
-} from "../utils/csvUtils";
+import { importFile } from "../utils/importUtils";
 import { setSchools } from "../views/content/graphicage/component/organism/SchoolPoints";
 import { setStops } from "../views/content/graphicage/component/organism/StopPoints";
 
@@ -94,41 +80,14 @@ export default function (props: {
 
     const file = files[0];
 
-    // TODO mutualize code with importCsvDialogBox
-    const fileName = file.name;
-    if (fileExtensionIsCorrect(fileName)) {
-      const parsedFileData = await parsedCsvFileData(file);
+    const { stops, schools } = await importFile(file);
 
-      if (parsedFileData) {
-        try {
-          if (isSchoolFile(fileName)) {
-            const schools: SchoolType[] = await SchoolService.import(
-              parsedFileData as Pick<SchoolDBType, "name" | "location">[]
-            );
-
-            setSchools(schools);
-          } else if (isStopFile(fileName)) {
-            const stops: StopType[] = await StopService.import(
-              parsedFileData as Pick<StopDBType, "name" | "location">[]
-            );
-
-            setStops(stops);
-          } else if (isStudentToSchoolFile(fileName)) {
-            const { schools, stops } = await StudentToSchoolService.import(
-              parsedFileData as StudentToSchool[]
-            );
-
-            setStops(stops);
-            setSchools(schools);
-          } else {
-          }
-          props.callbackSuccess ? props.callbackSuccess() : "";
-        } catch (err) {
-          props.callbackFail ? props.callbackFail() : "";
-        }
-      } else {
-        props.callbackFail ? props.callbackFail() : "";
-      }
+    if (schools || stops) {
+      schools ? setSchools(schools) : "";
+      stops ? setStops(stops) : "";
+      props.callbackSuccess ? props.callbackSuccess() : "";
+    } else {
+      props.callbackFail ? props.callbackFail() : "";
     }
 
     exitCanvas();

@@ -25,22 +25,15 @@ async function parseFile(file: File): Promise<Papa.ParseResult<unknown>> {
   return res as Promise<Papa.ParseResult<unknown>>;
 }
 
-export function fileExtensionIsCorrect(fileName: string) {
+export function fileExtensionIsCsv(fileName: string) {
   const regexExtention = new RegExp(".csv$");
   if (!regexExtention.test(fileName)) {
-    addNewUserInformation({
-      displayed: true,
-      level: MessageLevelEnum.error,
-      type: MessageTypeEnum.global,
-      content:
-        "Fichier non reconnue. Veuillez utiliser des .csv lors de l'importation.",
-    });
     return false;
   }
   return true;
 }
 
-export function fileNameIsCorrect(fileName: string, fileNameType: string) {
+function fileNameIsCorrect(fileName: string, fileNameType: string) {
   const strReg =
     "[0-9]{4}-[0-9]{2}-[0-9]{2}_[0-9]{2}-[0-9]{2}-[0-9]{2}_" +
     fileNameType +
@@ -53,7 +46,7 @@ export function fileNameIsCorrect(fileName: string, fileNameType: string) {
   return true;
 }
 
-export function isCorrectHeader(
+function isCorrectHeader(
   currentHeader: string[] | undefined,
   correctHeader: string[]
 ) {
@@ -70,7 +63,7 @@ export function isCorrectHeader(
   return true;
 }
 
-export async function parsedCsvFileToSchoolData(
+async function parsedCsvFileToSchoolData(
   file: File
 ): Promise<Pick<SchoolDBType, "name" | "location">[] | undefined> {
   const parsedFile = await parseFile(file);
@@ -88,7 +81,7 @@ export async function parsedCsvFileToSchoolData(
   return SchoolEntity.dataToDB(parsedData);
 }
 
-export async function parsedCsvFileToStopData(
+async function parsedCsvFileToStopData(
   file: File
 ): Promise<Pick<StopDBType, "name" | "location">[] | undefined> {
   const parsedFile = await parseFile(file);
@@ -102,7 +95,7 @@ export async function parsedCsvFileToStopData(
 
   return StopEntity.dataToDB(parsedData);
 }
-export async function parsedCsvFileToStudentToSchoolData(
+async function parsedCsvFileToStudentToSchoolData(
   file: File
 ): Promise<StudentToSchool[] | undefined> {
   const parsedFile = await parseFile(file);
