@@ -94,6 +94,7 @@ export default function (props: {
 
     const file = files[0];
 
+    // TODO mutualize code with importCsvDialogBox
     const fileName = file.name;
     if (fileExtensionIsCorrect(fileName)) {
       const parsedFileData = await parsedCsvFileData(file);

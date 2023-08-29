@@ -109,7 +109,7 @@ export default function (props: {
     // TODO Add import overview
 
     const file = files[0];
-
+    // TODO mutualize code with importCsvCanvas
     const fileName = file.name;
     if (fileExtensionIsCorrect(fileName)) {
       const parsedFileData = await parsedCsvFileData(file);
