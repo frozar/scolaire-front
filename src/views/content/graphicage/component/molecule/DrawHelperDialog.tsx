@@ -10,7 +10,6 @@ import "./DrawHelperDialog.css";
 import { assertIsNode } from "../../../../../utils";
 import DrawHelperDialogItem from "../atom/DrawHelperDialogItem";
 import {
-  displayLineMode,
   displayLineModeEnum,
   setDisplayLineMode,
 } from "../organism/DrawModeBoardContent";
@@ -70,14 +69,9 @@ export default function (props: {
       timeLimitSeconds(),
       nbLimitSolution()
     );
-    // ! Temporaire !?
-    // ! Doit systématiquement afficher la ligne d'orTools juste après
-    // if (currentStep() != drawModeStep.stopSelection) {
-    //   setCurrentStep(drawModeStep.stopSelection);
-    // }
-    if (displayLineMode() != displayLineModeEnum.straight) {
-      setDisplayLineMode(displayLineModeEnum.straight);
-    }
+    setDisplayLineMode((prev) =>
+      prev == displayLineModeEnum.straight ? prev : displayLineModeEnum.straight
+    );
   }
 
   const [refButton, setRefButton] = createSignal<
