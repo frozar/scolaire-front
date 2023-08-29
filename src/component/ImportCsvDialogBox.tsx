@@ -3,17 +3,21 @@ import { Transition } from "solid-transition-group";
 import {
   addNewUserInformation,
   closeImportCsvBox,
+  disableSpinningWheel,
   getImportCsvBox,
-  setImportConfirmation,
 } from "../signaux";
 
 import { useStateGui } from "../StateGui";
+import { SchoolType } from "../_entities/school.entity";
+import { SchoolService } from "../_services/school.service";
 import ClickOutside from "../component/ClickOutside";
-import { uploadFile } from "../request";
-import { MessageLevelEnum, MessageTypeEnum, ReturnMessageType } from "../type";
+import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { assertIsNode } from "../utils";
-import { fetchSchool } from "../views/content/schools/SchoolsBoard";
-import { fetchStop } from "../views/content/stops/StopsBoard";
+import {
+  fileNameIsCorrect,
+  parsedCsvFileToSchoolData,
+} from "../utils/csvUtils";
+import { setSchools } from "../views/content/graphicage/component/organism/SchoolPoints";
 
 // HACK for the documentation to preserve the ClickOutside directive on save
 // https://www.solidjs.com/guides/typescript#use___
@@ -21,7 +25,10 @@ false && ClickOutside;
 
 const [, { getSelectedMenu }] = useStateGui();
 
-export default function () {
+export default function (props: {
+  callbackSuccess?: () => void;
+  callbackFail?: () => void;
+}) {
   let refDialogueBox!: HTMLDivElement;
 
   const [refInputCsv, setRefInputCsv] = createSignal<
@@ -59,7 +66,7 @@ export default function () {
     return res;
   };
 
-  function handlerOnClickValider() {
+  async function handlerOnClickValider() {
     const constRefInputCsv = refInputCsv();
     if (!constRefInputCsv) {
       return;
@@ -89,63 +96,37 @@ export default function () {
       return;
     }
 
+    // TODO Add import overview
+
     const file = files[0];
 
-    const formData = new FormData();
-    formData.append("file", file, file.name);
+    const fileName = file.name;
 
-    uploadFile(formData)
-      .then(async (res) => {
-        if (!res) {
-          addNewUserInformation({
-            displayed: true,
-            level: MessageLevelEnum.error,
-            type: MessageTypeEnum.global,
-            content: "Echec de l'import de fichier",
-          });
-          return;
-        }
+    if (fileNameIsCorrect(fileName, "etablissement")) {
+      const parsedFileData = await parsedCsvFileToSchoolData(file);
 
-        if (!res.ok) {
-          const body = await res.json();
-          addNewUserInformation({
-            displayed: true,
-            level: MessageLevelEnum.error,
-            type: MessageTypeEnum.global,
-            content: body.detail,
-          });
-          return;
-        }
-
-        const body: ReturnMessageType = await res.json();
-
-        setImportConfirmation({
-          displayed: true,
-          message: body.message,
-          metrics: body.metrics,
-        });
-      })
-      .finally(() => {
-        switch (getSelectedMenu()) {
-          case "etablissements":
-            fetchSchool();
-            break;
-          case "ramassages":
-            fetchStop();
-            break;
-        }
-      })
-      .catch((e) => {
+      if (!parsedFileData) {
+        disableSpinningWheel();
+        props.callbackFail ? props.callbackFail() : "";
         closeImportCsvBox();
-        addNewUserInformation({
-          displayed: true,
-          level: MessageLevelEnum.error,
-          type: MessageTypeEnum.removeLine,
-          content: `Une erreur est survenue : ${e}.`,
-        });
-      });
+        return;
+      }
 
-    closeImportCsvBox();
+      try {
+        const schools: SchoolType[] = await SchoolService.import(
+          parsedFileData
+        );
+        setSchools(schools);
+        props.callbackSuccess ? props.callbackSuccess() : "";
+        closeImportCsvBox();
+      } catch (err) {
+        console.log("Import failed", err);
+        props.callbackFail ? props.callbackFail() : "";
+        closeImportCsvBox();
+      }
+    }
+
+    disableSpinningWheel();
   }
 
   return (
