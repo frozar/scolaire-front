@@ -114,7 +114,7 @@ export function BusLine(props: BusLineProps) {
   };
 
   function onMouseDown(e: LeafletMouseEvent) {
-    if (displayLineMode() == displayLineModeEnum.straight) {
+    if (displayLineMode() == displayLineModeEnum.straight && !isInReadMode()) {
       props.map.dragging.disable();
 
       function pointToLineDistance(
