@@ -1,4 +1,4 @@
-import { For, Show, createSignal } from "solid-js";
+import { For, Show, createEffect, createSignal } from "solid-js";
 import { useStateAction } from "../../../../StateAction";
 import {
   BusLineType,
@@ -21,7 +21,14 @@ import LabeledInputField from "./components/molecul/LabeledInputField";
 import SchoolsEnumeration from "./components/molecul/SchoolsEnumeration";
 import CurvedLine from "./components/svg-icons/CurvedLine";
 import SimpleLine from "./components/svg-icons/SimpleLine";
-const [, { isInAddLineMode, getLineUnderConstruction }] = useStateAction();
+const [
+  ,
+  {
+    isInAddLineMode,
+    getLineUnderConstruction,
+    updateNameLineUnderConstruction,
+  },
+] = useStateAction();
 
 const onInput = (color: string) => {
   const line: BusLineType | undefined = setColorOnLine(color);
@@ -71,6 +78,8 @@ export default function (props: {
       // ! Changement de drawModeStep
     }
   }
+
+  createEffect(() => updateNameLineUnderConstruction(lineName()));
 
   return (
     <section>
