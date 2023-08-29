@@ -1,10 +1,4 @@
 import Button from "../../../../../component/atom/Button";
-// import {
-//   currentStep,
-//   drawModeStep,
-//   setCurrentStep,
-// } from "./AddLineInformationBoardContent";
-
 import "./DrawModeBoardContent.css";
 
 export type addLineButtonType = { callback: () => void; label: string };
