@@ -130,6 +130,10 @@ const makeStateActionContext = () => {
     return state.lineUnderConstruction;
   }
 
+  function updateNameLineUnderConstruction(name: string) {
+    setState("lineUnderConstruction", "busLine", "name", name);
+  }
+
   const types: { [key in ModeEnum]: MessageTypeEnum[] } = {
     [ModeEnum.read]: [MessageTypeEnum.global],
     [ModeEnum.addLine]: [MessageTypeEnum.addLine, MessageTypeEnum.enterAddLine],
@@ -204,6 +208,7 @@ const makeStateActionContext = () => {
       setLineUnderConstructionNextIndex,
       removePointToLineUnderConstruction,
       removeSchoolToLineUnderConstruction,
+      updateNameLineUnderConstruction,
     },
     history,
   ] as const;
