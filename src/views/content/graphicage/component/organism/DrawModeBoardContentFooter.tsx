@@ -1,6 +1,3 @@
-import { Show } from "solid-js";
-import { useStateAction } from "../../../../../StateAction";
-import { updatePolylineWithOsrm } from "../../../../../_entities/bus-line.entity";
 import Button from "../../../../../component/atom/Button";
 import {
   currentStep,
@@ -11,8 +8,6 @@ import {
 } from "./DrawModeBoardContent";
 
 import "./DrawModeBoardContent.css";
-
-const [, { getLineUnderConstruction }] = useStateAction();
 
 export type addLineButtonType = { callback: () => void; label: string };
 export default function (props: {

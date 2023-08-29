@@ -52,6 +52,7 @@ export default function () {
       <Show when={currentStep() == drawModeStep.editLine}>
         <div class="bus-line-information-board-content">
           <TimelineAddMode
+            schools={etablissementSelected()}
             line={getLineUnderConstruction}
             setLine={setLineUnderConstruction}
           />
