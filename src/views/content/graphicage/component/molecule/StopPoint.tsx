@@ -15,6 +15,10 @@ import {
 import Point from "../atom/Point";
 import { deselectAllBusLines } from "../organism/BusLines";
 import {
+  displayLineMode,
+  displayLineModeEnum,
+} from "../organism/DrawModeBoardContent";
+import {
   blinkingStops,
   cursorIsOverPoint,
   deselectAllPoints,
@@ -80,7 +84,9 @@ function onClick(point: StopType) {
 
   // TODO: when add line with an etablissement point the line destroy after next point click
   // Wait Richard/Hugo finish the line underconstruction
-  addPointToLineUnderConstruction({ ...point, quantity: associatedQuantity });
+  if (displayLineMode() == displayLineModeEnum.straight) {
+    addPointToLineUnderConstruction({ ...point, quantity: associatedQuantity });
+  }
 
   //TODO pourquoi cette condition ?
   if (!(1 < getLineUnderConstruction().busLine.points.length)) {
