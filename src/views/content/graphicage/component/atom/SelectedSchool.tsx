@@ -17,7 +17,7 @@ export default function (props: SelectedEtablissementProps) {
       </div>
       <For each={schoolSelected()}>
         {(etablissement) => {
-          return <SelectedSchoolItem etablissement={etablissement} />;
+          return <SelectedSchoolItem school={etablissement} />;
         }}
       </For>
     </div>
