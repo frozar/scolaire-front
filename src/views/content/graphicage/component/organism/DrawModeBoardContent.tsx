@@ -158,6 +158,9 @@ async function updateBusLine(busLine: BusLineType) {
 async function nextStep() {
   console.log("actual step=>", currentStep());
   if (currentStep() == drawModeStep.schoolSelection) {
+    if (getLineUnderConstruction().busLine.schools.length < 1) {
+      return;
+    }
     // setCurrentStep((currentStep() + 1) % 5);
     setCurrentStep(drawModeStep.editLine);
   } else {
