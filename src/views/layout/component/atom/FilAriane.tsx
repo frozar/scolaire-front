@@ -19,13 +19,13 @@ export default function (props: { text?: string }) {
 
   createEffect(() => {
     if (isInAddLineMode()) {
-      setText("création d'une ligne");
+      setText("Création d'une ligne");
     }
   });
 
   createEffect(() => {
     if (isInAddLineMode() && currentStep() == drawModeStep.editLine) {
-      setText("éditer votre ligne");
+      setText("Editer votre ligne");
     }
   });
 
