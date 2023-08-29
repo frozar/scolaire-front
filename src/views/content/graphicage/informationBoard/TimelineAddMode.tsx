@@ -14,6 +14,7 @@ import {
   setDisplayLineMode,
 } from "../component/organism/DrawModeBoardContent";
 import "./TimelineAddMode.css";
+import SchoolsEnumeration from "./components/molecul/SchoolsEnumeration";
 const [, { isInAddLineMode, getLineUnderConstruction }] = useStateAction();
 
 export default function (props: {
@@ -25,8 +26,6 @@ export default function (props: {
   setFilAriane("Editer votre ligne");
 
   async function onClick() {
-    console.log("onClick displayLineMode=>", displayLineMode());
-
     if (displayLineMode() == displayLineModeEnum.straight) {
       if (getLineUnderConstruction().busLine.points.length < 2) {
         return;
@@ -34,26 +33,26 @@ export default function (props: {
       await updatePolylineWithOsrm(getLineUnderConstruction().busLine);
       setDisplayLineMode(displayLineModeEnum.onRoad);
       // ! Changement de drawModeStep
-      // setCurrentStep((currentStep() + 1) % 5);
     } else if (displayLineMode() == displayLineModeEnum.onRoad) {
       getLineUnderConstruction().busLine.setLatLngs([]);
       setDisplayLineMode(displayLineModeEnum.straight);
       // ! Changement de drawModeStep
-      // const step = currentStep() - 1;
-      // setCurrentStep(step > 0 ? step : 0);
     }
   }
   return (
     <section>
       {/* // TODO: externalise school list of current editing line */}
-      <p>Ecoles</p>
+      <SchoolsEnumeration
+        schoolsName={props.schools.map((school) => school.name)}
+      />
+      {/* <p>Ecoles</p>
       <p class="edit-mode-school-item">
         <For each={props.schools}>
           {(school) => {
             return <>{school.name}</>;
           }}
         </For>
-      </p>
+      </p> */}
 
       {/* // TODO externalise labeled input field & link the input to the line name */}
       <div class="labeled-input-field">
