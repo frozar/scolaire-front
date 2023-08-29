@@ -1,5 +1,5 @@
 .information-content {
-  @apply  flex flex-col pl-6 w-full ;
+  @apply  flex flex-col w-full ;
 }
 
 /* width */

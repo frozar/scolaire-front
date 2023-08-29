@@ -1,6 +1,3 @@
-.edit-mode-school-item{
-    @apply text-sm text-green-base;
-}
 
 .labeled-input-field{
     @apply grid mt-3;
