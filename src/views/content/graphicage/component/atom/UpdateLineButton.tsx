@@ -3,12 +3,7 @@ import { useStateAction } from "../../../../../StateAction";
 import { FaSolidPen } from "solid-icons/fa";
 import { BusLineType } from "../../../../../_entities/bus-line.entity";
 import { deselectAllBusLines } from "../organism/BusLines";
-import {
-  displayLineModeEnum,
-  drawModeStep,
-  setCurrentStep,
-  setDisplayLineMode,
-} from "../organism/DrawModeBoardContent";
+import { drawModeStep, setCurrentStep } from "../organism/DrawModeBoardContent";
 import { deselectAllPoints } from "../organism/Points";
 import "./DrawHelperButton.css";
 
@@ -27,7 +22,6 @@ export default function (props: { busLine: BusLineType }) {
 
     deselectAllPoints();
     deselectAllBusLines();
-    setDisplayLineMode(displayLineModeEnum.straight);
     setCurrentStep(drawModeStep.editLine);
     setModeAddLine();
   }
