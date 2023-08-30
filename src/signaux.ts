@@ -223,6 +223,15 @@ export function addNewGlobalWarningInformation(message: string) {
   });
 }
 
+export function addNewGlobalSuccessInformation(message: string) {
+  addNewUserInformation({
+    displayed: true,
+    level: MessageLevelEnum.error,
+    type: MessageTypeEnum.global,
+    content: message,
+  });
+}
+
 export function removeUserInformation(id: number) {
   setUserInformations((prevUserInformations) =>
     prevUserInformations.filter((userInformation) => userInformation.id !== id)

@@ -10,8 +10,6 @@ import { useStateGui } from "../StateGui";
 import ClickOutside from "../component/ClickOutside";
 import { assertIsNode } from "../utils";
 import { FileUtils } from "../utils/file.utils";
-import { setSchools } from "../views/content/graphicage/component/organism/SchoolPoints";
-import { setStops } from "../views/content/graphicage/component/organism/StopPoints";
 
 // HACK for the documentation to preserve the ClickOutside directive on save
 // https://www.solidjs.com/guides/typescript#use___
@@ -64,11 +62,7 @@ export default function (props: {
   async function handlerOnClickValider() {
     const files = refInputCsv()?.files;
 
-    const { stops, schools } = await FileUtils.importFile(files);
-
-    if (schools || stops) {
-      schools ? setSchools(schools) : "";
-      stops ? setStops(stops) : "";
+    if (await FileUtils.importFileAndUpdate(files)) {
       props.callbackSuccess ? props.callbackSuccess() : "";
     } else {
       props.callbackFail ? props.callbackFail() : "";

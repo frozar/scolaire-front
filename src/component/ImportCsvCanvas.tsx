@@ -1,8 +1,6 @@
 import { Setter, onCleanup, onMount } from "solid-js";
 import { disableSpinningWheel, enableSpinningWheel } from "../signaux";
 import { FileUtils } from "../utils/file.utils";
-import { setSchools } from "../views/content/graphicage/component/organism/SchoolPoints";
-import { setStops } from "../views/content/graphicage/component/organism/StopPoints";
 
 let mapDragDropDiv: HTMLDivElement;
 export default function (props: {
@@ -28,7 +26,6 @@ export default function (props: {
     e.preventDefault();
   }
 
-  // TODO code à mutualiser avec ImportCsvDialogBox.handlerOnClickValider()
   async function dropHandler(e: DragEvent, setDisplay: Setter<boolean>) {
     e.preventDefault();
 
@@ -36,11 +33,7 @@ export default function (props: {
 
     const files = e.dataTransfer?.files;
 
-    const { stops, schools } = await FileUtils.importFile(files);
-
-    if (schools || stops) {
-      schools ? setSchools(schools) : "";
-      stops ? setStops(stops) : "";
+    if (await FileUtils.importFileAndUpdate(files)) {
       props.callbackSuccess ? props.callbackSuccess() : "";
     } else {
       props.callbackFail ? props.callbackFail() : "";

@@ -16,7 +16,6 @@ import {
   addNewUserInformation,
 } from "../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
-import { setSchools } from "../views/content/graphicage/component/organism/SchoolPoints";
 
 export namespace CsvUtils {
   export function fileExtensionIsCsv(fileName: string) {
@@ -34,23 +33,18 @@ export namespace CsvUtils {
     if (parsedFileData) {
       try {
         if (isSchoolFile(fileName)) {
-          // TODO créer une fonction pour cette logique
           const schools: SchoolType[] = await SchoolService.import(
             parsedFileData as Pick<SchoolDBType, "name" | "location">[]
           );
 
-          setSchools(schools);
-
           return { schools };
         } else if (isStopFile(fileName)) {
-          // TODO créer une fonction pour cette logique
           const stops: StopType[] = await StopService.import(
             parsedFileData as Pick<StopDBType, "name" | "location">[]
           );
 
           return { stops };
         } else if (isStudentToSchoolFile(fileName)) {
-          // TODO créer une fonction pour cette logique
           const { schools, stops } = await StudentToSchoolService.import(
             parsedFileData as StudentToSchool[]
           );

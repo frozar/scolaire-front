@@ -1,6 +1,8 @@
 import { SchoolType } from "../_entities/school.entity";
 import { StopType } from "../_entities/stop.entity";
 import { addNewGlobalWarningInformation } from "../signaux";
+import { setSchools } from "../views/content/graphicage/component/organism/SchoolPoints";
+import { setStops } from "../views/content/graphicage/component/organism/StopPoints";
 import { CsvUtils } from "./csv.utils";
 
 export namespace FileUtils {
@@ -15,9 +17,9 @@ export namespace FileUtils {
     return {};
   }
 
-  export async function importFile(
+  function getImportedFile(
     files: FileList | null | undefined
-  ): Promise<{ schools?: SchoolType[]; stops?: StopType[] }> {
+  ): File | undefined {
     if (
       !files ||
       files === null ||
@@ -25,16 +27,14 @@ export namespace FileUtils {
       !containFiles(files)
     ) {
       addNewGlobalWarningInformation("Aucun fichier sélectionné");
-      return {};
+      return;
     }
 
     if (!containOneFile(files)) {
       addNewGlobalWarningInformation("Veuillez importer un fichier à la fois");
-      return {};
+      return;
     }
-
-    const file = files[0];
-    return importOneFile(file);
+    return files[0];
   }
 
   function containFiles(files: FileList) {
@@ -43,5 +43,33 @@ export namespace FileUtils {
 
   function containOneFile(files: FileList) {
     return files && files.length === 1;
+  }
+
+  async function importFile(
+    files: FileList | null | undefined
+  ): Promise<{ schools?: SchoolType[]; stops?: StopType[] }> {
+    const file = getImportedFile(files);
+
+    if (!file) return {};
+
+    const { schools, stops } = await importOneFile(file);
+
+    if (!schools && !stop) {
+      return {};
+    }
+    return { schools, stops };
+  }
+
+  export async function importFileAndUpdate(
+    files: FileList | null | undefined
+  ): Promise<boolean> {
+    const { schools, stops } = await importFile(files);
+
+    if (!schools && !stops) return false;
+
+    schools ? setSchools(schools) : "";
+    stops ? setStops(stops) : "";
+
+    return true;
   }
 }
