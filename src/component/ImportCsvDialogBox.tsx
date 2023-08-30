@@ -11,7 +11,7 @@ import { useStateGui } from "../StateGui";
 import ClickOutside from "../component/ClickOutside";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { assertIsNode } from "../utils";
-import { importFile } from "../utils/importUtils";
+import { FileUtils } from "../utils/file.utils";
 import { setSchools } from "../views/content/graphicage/component/organism/SchoolPoints";
 import { setStops } from "../views/content/graphicage/component/organism/StopPoints";
 
@@ -62,6 +62,7 @@ export default function (props: {
     return res;
   };
 
+  // TODO code à mutualiser avec ImportCsvCanvas.dropHandler()
   async function handlerOnClickValider() {
     const constRefInputCsv = refInputCsv();
     if (!constRefInputCsv) {
@@ -96,7 +97,7 @@ export default function (props: {
 
     const file = files[0];
 
-    const { stops, schools } = await importFile(file);
+    const { stops, schools } = await FileUtils.importFile(file);
 
     if (schools || stops) {
       schools ? setSchools(schools) : "";

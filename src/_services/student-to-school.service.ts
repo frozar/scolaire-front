@@ -21,12 +21,12 @@ export class StudentToSchoolService {
         students_to_schools: students_to_schools,
       });
 
-    const new_schools = SchoolEntity.buildSchools(
-      xanoResult.schools.map((dbSchool) => SchoolEntity.build(dbSchool))
+    const new_schools = xanoResult.schools.map((dbSchool) =>
+      SchoolEntity.build(dbSchool)
     );
 
-    const new_stops = StopEntity.buildStops(
-      xanoResult.stops.map((dbStop) => StopEntity.build(dbStop))
+    const new_stops = xanoResult.stops.map((dbStop) =>
+      StopEntity.build(dbStop)
     );
 
     return { schools: new_schools, stops: new_stops };

@@ -5,7 +5,7 @@ import {
   enableSpinningWheel,
 } from "../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
-import { importFile } from "../utils/importUtils";
+import { FileUtils } from "../utils/file.utils";
 import { setSchools } from "../views/content/graphicage/component/organism/SchoolPoints";
 import { setStops } from "../views/content/graphicage/component/organism/StopPoints";
 
@@ -33,6 +33,7 @@ export default function (props: {
     e.preventDefault();
   }
 
+  // TODO code à mutualiser avec ImportCsvDialogBox.handlerOnClickValider()
   async function dropHandler(e: DragEvent, setDisplay: Setter<boolean>) {
     e.preventDefault();
 
@@ -80,7 +81,7 @@ export default function (props: {
 
     const file = files[0];
 
-    const { stops, schools } = await importFile(file);
+    const { stops, schools } = await FileUtils.importFile(file);
 
     if (schools || stops) {
       schools ? setSchools(schools) : "";

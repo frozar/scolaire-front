@@ -19,9 +19,7 @@ export class SchoolService {
       { schools: schools }
     );
 
-    return SchoolEntity.buildSchools(
-      xanoResult.map((dbSchool) => SchoolEntity.build(dbSchool))
-    );
+    return xanoResult.map((dbSchool) => SchoolEntity.build(dbSchool));
   }
 
   //TODO change Omit to Pick
