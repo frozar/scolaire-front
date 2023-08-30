@@ -19,6 +19,7 @@ import DrawModeBoardContentFooter from "./DrawModeBoardContentFooter";
 
 import "../../../../../css/timeline.css";
 import Timeline from "../../informationBoard/Timeline";
+import { DrawHelperButton } from "../atom/DrawHelperButton";
 
 const [, { getLineUnderConstruction, setLineUnderConstruction }] =
   useStateAction();
@@ -58,6 +59,9 @@ export default function () {
             line={getLineUnderConstruction}
             setLine={setLineUnderConstruction}
           /> */}
+          <DrawHelperButton
+            schools={getLineUnderConstruction().busLine.schools}
+          />
           <Timeline />
         </div>
       </Show>
