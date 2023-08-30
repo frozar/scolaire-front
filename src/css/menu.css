@@ -54,14 +54,8 @@
 * SLIDING MENU PANEL
 */
 .menu__custom {
-  @apply w-[var(--information-board-width)] p-2;
-  position: absolute;
+  @apply p-2;
   z-index: 1001;
-  color: #005c9c;
-  background: rgba(250, 250, 250, 0.7);
-  transition: 400ms left;
-  left: calc(-1 * var(--information-board-width));
-  height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
 }

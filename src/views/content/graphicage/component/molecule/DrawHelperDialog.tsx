@@ -9,6 +9,10 @@ import "./DrawHelperDialog.css";
 
 import { assertIsNode } from "../../../../../utils";
 import DrawHelperDialogItem from "../atom/DrawHelperDialogItem";
+import {
+  displayLineModeEnum,
+  setDisplayLineMode,
+} from "../organism/DrawModeBoardContent";
 true && ClickOutside;
 
 export const [getDisplayedDrawHelperDialog, setDisplayedDrawHelperDialog] =
@@ -57,13 +61,16 @@ export default function (props: {
   const [timeLimitSeconds, setTimeLimitSeconds] = createSignal(1);
   const [nbLimitSolution, setNbLimitSolution] = createSignal(5000);
 
-  function handlerOnClickSoumettre() {
+  async function handlerOnClickSoumettre() {
     closeDrawHelperDialog();
 
-    props.requestCircuit(
+    await props.requestCircuit(
       vehiclesCapacity(),
       timeLimitSeconds(),
       nbLimitSolution()
+    );
+    setDisplayLineMode((prev) =>
+      prev == displayLineModeEnum.straight ? prev : displayLineModeEnum.straight
     );
   }
 

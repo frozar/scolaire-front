@@ -8,7 +8,8 @@ import ButtonGraphicageRightMenu, {
 } from "../molecule/ButtonGraphicageRightMenu";
 
 import { FaSolidPlus } from "solid-icons/fa";
-import { drawModeStep, setCurrentStep } from "./AddLineInformationBoardContent";
+import { drawModeStep, setCurrentStep } from "./DrawModeBoardContent";
+
 import { deselectAllBusLines } from "./BusLines";
 import { deselectAllPoints } from "./Points";
 

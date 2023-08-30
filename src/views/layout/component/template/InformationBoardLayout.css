@@ -1,0 +1,8 @@
+#information-board-layout{
+  @apply absolute top-[60px] left-0 h-full w-[var(--information-board-width)] pt-5 px-5;
+  z-index: 1001;
+  color: #005c9c;
+  overflow-y: auto;
+  background: #ffffff; 
+}
+  

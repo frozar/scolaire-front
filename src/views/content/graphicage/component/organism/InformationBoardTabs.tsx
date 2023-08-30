@@ -1,7 +1,7 @@
 import { For, JSXElement, mergeProps } from "solid-js";
 import { useStateGui } from "../../../../../StateGui";
 import { InformationBoardTabsItem } from "../molecule/InformationBoardTabsItem";
-
+// TODO: maybe remove this component ?
 import "./InformationBoardTabs.css";
 
 const [, { getInformationBoardSelectedTab, setInformationBoardSelectedTab }] =

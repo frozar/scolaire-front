@@ -5,7 +5,8 @@ import { BusLineType } from "../../../../../_entities/bus-line.entity";
 import { BusLineService } from "../../../../../_services/bus-line.service";
 import { COLOR_LINE_EDITION } from "../../constant";
 import { BusLine } from "../molecule/BusLine";
-import { currentStep, drawModeStep } from "./AddLineInformationBoardContent";
+import { currentStep, drawModeStep } from "./DrawModeBoardContent";
+
 import { pointsReady } from "./Points";
 
 const [, { getLineUnderConstruction }] = useStateAction();

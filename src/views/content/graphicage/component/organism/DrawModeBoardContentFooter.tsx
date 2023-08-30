@@ -1,14 +1,6 @@
 import Button from "../../../../../component/atom/Button";
-import "./AddLineInformationBoardContent.css";
+import "./DrawModeBoardContent.css";
 
-// const [
-//   ,
-//   {
-//     getLineUnderConstruction,
-//     setLineUnderConstruction,
-//     confirmEtablissementSelection,
-//   },
-// ] = useStateAction();
 export type addLineButtonType = { callback: () => void; label: string };
 export default function (props: {
   nextStep: addLineButtonType;
@@ -19,7 +11,7 @@ export default function (props: {
       <Button
         onClick={props.previousStep.callback}
         label={props.previousStep.label}
-        variant="primary"
+        variant="danger"
         isDisabled={false}
       />
       <Button

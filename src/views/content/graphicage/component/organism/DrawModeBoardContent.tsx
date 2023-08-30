@@ -3,19 +3,19 @@ import {
   defaultLineUnderConstruction,
   useStateAction,
 } from "../../../../../StateAction";
+
+import TimelineAddMode from "../../informationBoard/TimelineAddMode";
+import SelectedSchool from "../atom/SelectedSchool";
+
 import {
   BusLineType,
   updatePolylineWithOsrm,
 } from "../../../../../_entities/bus-line.entity";
 import { BusLineService } from "../../../../../_services/bus-line.service";
-import TimelineAddMode from "../../informationBoard/TimelineAddMode";
-import { quitModeAddLine } from "../../shortcut";
-import SelectedSchool from "../atom/SelectedSchool";
-import "./AddLineInformationBoardContent.css";
-import AddLineInformationBoardContentFooter from "./AddLineInformationBoardContentFooter";
-import { updateBusLines } from "./BusLines";
-
 import "../../../../../css/timeline.css";
+import { quitModeAddLine } from "../../shortcut";
+import { updateBusLines } from "./BusLines";
+import DrawModeBoardContentFooter from "./DrawModeBoardContentFooter";
 
 const [, { getLineUnderConstruction, setLineUnderConstruction }] =
   useStateAction();
@@ -23,14 +23,20 @@ const [, { getLineUnderConstruction, setLineUnderConstruction }] =
 export enum drawModeStep {
   start,
   schoolSelection,
-  stopSelection,
-  polylineEdition,
-  validationStep,
+  editLine,
 }
 
 export const [currentStep, setCurrentStep] = createSignal<drawModeStep>(
   drawModeStep.start
 );
+
+export enum displayLineModeEnum {
+  straight = "straight",
+  onRoad = "onRoad",
+}
+
+export const [displayLineMode, setDisplayLineMode] =
+  createSignal<displayLineModeEnum>(displayLineModeEnum.straight);
 
 export default function () {
   const etablissementSelected = () => {
@@ -39,38 +45,24 @@ export default function () {
 
   return (
     <div class="add-line-information-board-content">
-      <div class="add-line-information-board-content-title">
-        <h1>
-          {
-            [
-              "",
-              " Sélection des établissements",
-              "Création de la ligne",
-              "Modification de l'itinéraire",
-              "Détails",
-            ][currentStep()]
-          }
-        </h1>
-      </div>
-      <Show when={currentStep() === drawModeStep.schoolSelection}>
+      <Show when={currentStep() == drawModeStep.schoolSelection}>
         <SelectedSchool schoolSelected={etablissementSelected()} />
       </Show>
 
-      <Show when={currentStep() === drawModeStep.stopSelection}>
+      <Show when={currentStep() == drawModeStep.editLine}>
         <div class="bus-line-information-board-content">
           <TimelineAddMode
+            schools={etablissementSelected()}
             line={getLineUnderConstruction}
             setLine={setLineUnderConstruction}
           />
         </div>
       </Show>
-      <AddLineInformationBoardContentFooter
+
+      <DrawModeBoardContentFooter
         nextStep={{
           callback: nextStep,
-          label:
-            currentStep() === drawModeStep.validationStep
-              ? "Valider"
-              : "Suivant",
+          label: currentStep() == drawModeStep.editLine ? "Valider" : "Suivant",
         }}
         previousStep={{
           callback: prevStep,
@@ -85,7 +77,6 @@ export default function () {
 }
 
 async function createOrUpdateBusLine(busLine: BusLineType) {
-  console.log("Validation finale");
   if (busLine.id == undefined) {
     await createBusLine(busLine);
   } else {
@@ -95,41 +86,32 @@ async function createOrUpdateBusLine(busLine: BusLineType) {
 }
 
 async function createBusLine(busLine: BusLineType) {
-  console.log("Create new busLine");
   const newBusLine: BusLineType = await BusLineService.create(busLine);
   updateBusLines(newBusLine);
 }
 
 async function updateBusLine(busLine: BusLineType) {
-  // TODO to do
-  console.log("Update busLine");
   const updatedBusLine: BusLineType = await BusLineService.update(busLine);
   updateBusLines(updatedBusLine);
 }
 
-function nextStep() {
+async function nextStep() {
   switch (currentStep()) {
     case drawModeStep.schoolSelection:
-      if (getLineUnderConstruction().busLine.schools.length == 0) {
-        return;
+      if (getLineUnderConstruction().busLine.schools.length < 1) {
+        break;
       }
-      break;
-    case drawModeStep.stopSelection:
+      setCurrentStep(drawModeStep.editLine);
+    case drawModeStep.editLine:
       if (getLineUnderConstruction().busLine.points.length < 2) {
-        return;
+        break;
       }
-      updatePolylineWithOsrm(getLineUnderConstruction().busLine);
-      break;
-    case drawModeStep.polylineEdition:
-      console.log("Validation de la polyline");
-      break;
-    case drawModeStep.validationStep:
+      if (displayLineMode() == displayLineModeEnum.straight) {
+        await updatePolylineWithOsrm(getLineUnderConstruction().busLine);
+      }
+
       createOrUpdateBusLine(getLineUnderConstruction().busLine);
-      break;
-    default:
-      console.log("Sorry, we are out of range}.");
   }
-  setCurrentStep((currentStep() + 1) % 5);
 }
 
 function prevStep() {
@@ -137,18 +119,20 @@ function prevStep() {
     case drawModeStep.schoolSelection:
       setLineUnderConstruction(defaultLineUnderConstruction());
       quitModeAddLine();
+
+      setCurrentStep(drawModeStep.start);
       break;
-    case drawModeStep.stopSelection:
+    case drawModeStep.editLine:
       setLineUnderConstruction(defaultLineUnderConstruction());
+
+      if (displayLineMode() == displayLineModeEnum.onRoad) {
+        getLineUnderConstruction().busLine.setLatLngs([]);
+      }
+
+      setCurrentStep(drawModeStep.schoolSelection);
       break;
-    case drawModeStep.polylineEdition:
-      getLineUnderConstruction().busLine.setLatLngs([]);
-      break;
-    case drawModeStep.validationStep:
-      break;
-    default:
-      console.log("Sorry, we are out of range}.");
   }
-  const step = currentStep() - 1;
-  setCurrentStep(step > 0 ? step : 0);
+  setDisplayLineMode((prev) =>
+    prev == displayLineModeEnum.straight ? prev : displayLineModeEnum.straight
+  );
 }

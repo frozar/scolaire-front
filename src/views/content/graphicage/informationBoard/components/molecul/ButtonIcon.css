@@ -1,0 +1,12 @@
+.btn-icon{
+    @apply flex justify-center p-1;
+    font-size: 14px;
+    width: 60px;
+    background-color: #E8EFEC; /* Gray-base */
+    border-radius: 25px;
+    font-weight: 700;
+}
+
+.btn-icon > svg {
+    width: 20px;
+}

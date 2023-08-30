@@ -7,7 +7,7 @@ import {
 } from "../../../../../_entities/school.entity";
 import { SchoolService } from "../../../../../_services/school.service";
 import { SchoolPoint } from "../molecule/SchoolPoint";
-import { currentStep, drawModeStep } from "./AddLineInformationBoardContent";
+import { currentStep, drawModeStep } from "./DrawModeBoardContent";
 
 const [, { getLineUnderConstruction, isInAddLineMode }] = useStateAction();
 

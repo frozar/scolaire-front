@@ -101,6 +101,19 @@ const makeStateActionContext = () => {
     );
   }
 
+  function removeSchoolToLineUnderConstruction(point: StopType | SchoolType) {
+    setState(
+      "lineUnderConstruction",
+      "busLine",
+      "schools",
+      (line: SchoolType[]) => {
+        return line.filter(
+          (l) => l.id != point.id && l.lat != point.lat && l.lon != point.lon
+        );
+      }
+    );
+  }
+
   function setLineUnderConstructionNextIndex(indicepoints: number) {
     setState("lineUnderConstruction", "nextIndex", indicepoints);
   }
@@ -115,6 +128,10 @@ const makeStateActionContext = () => {
 
   function getLineUnderConstruction() {
     return state.lineUnderConstruction;
+  }
+
+  function updateNameLineUnderConstruction(name: string) {
+    setState("lineUnderConstruction", "busLine", "name", name);
   }
 
   const types: { [key in ModeEnum]: MessageTypeEnum[] } = {
@@ -190,6 +207,8 @@ const makeStateActionContext = () => {
       isInReadMode,
       setLineUnderConstructionNextIndex,
       removePointToLineUnderConstruction,
+      removeSchoolToLineUnderConstruction,
+      updateNameLineUnderConstruction,
     },
     history,
   ] as const;

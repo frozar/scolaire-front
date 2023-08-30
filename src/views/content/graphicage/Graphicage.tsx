@@ -9,8 +9,6 @@ import { BusLines } from "./component/organism/BusLines";
 import ImportCsvCanvas from "../../../component/ImportCsvCanvas";
 import ConfirmStopAddLine from "./ConfirmStopAddLineBox";
 
-import { InformationBoard } from "./informationBoard/InformationBoard";
-
 import RightMapMenu from "./component/organism/RightMapMenu";
 
 import { listHandlerLMap } from "./shortcut";
@@ -76,7 +74,6 @@ export default function () {
           });
         }}
       />
-      <InformationBoard />
       <div ref={mapDiv} id="main-map" />
       <Points leafletMap={getLeafletMap() as L.Map} />
       <BusLines map={getLeafletMap() as L.Map} />

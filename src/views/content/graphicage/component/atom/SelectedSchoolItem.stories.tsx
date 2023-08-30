@@ -11,7 +11,7 @@ type Story = StoryObj<typeof meta>;
 
 export const SelectedSchoolItemComponent1: Story = {
   args: {
-    etablissement: {
+    school: {
       id: 0,
       idPoint: 1,
       lon: 20,

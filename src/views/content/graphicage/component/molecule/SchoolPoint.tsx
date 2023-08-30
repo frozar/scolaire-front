@@ -12,11 +12,8 @@ import {
   COLOR_STOP_LIGHT,
 } from "../../constant";
 import Point from "../atom/Point";
-import {
-  currentStep,
-  drawModeStep,
-} from "../organism/AddLineInformationBoardContent";
 import { deselectAllBusLines } from "../organism/BusLines";
+import { currentStep, drawModeStep } from "../organism/DrawModeBoardContent";
 import {
   blinkingSchools,
   cursorIsOverPoint,

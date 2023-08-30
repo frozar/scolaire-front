@@ -1,7 +1,9 @@
 .color-picker {
-  @apply flex justify-center gap-3;
+  @apply flex gap-3;
 }
 
 .color-picker input {
-  @apply border-[0.5px] p-0 border-slate-400;
+  @apply  p-0 ;
+  border: none;
+  outline: none;
 }
