@@ -16,7 +16,7 @@ export function BusLineInformationBoardContent() {
       />
       {/* TODO: Fix timeline */}
       {/* <TimelineReadMode line={getSelectedBusLine} /> */}
-      <Timeline line={getSelectedBusLine} />
+      <Timeline />
     </div>
   );
 }

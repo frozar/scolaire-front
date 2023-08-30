@@ -7,12 +7,17 @@ import {
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { LineUnderConstructionType, NatureEnum } from "../../../../../type";
 import { TimelineRemovePointButton } from "./TimelineRemovePointButton";
-const [, { isInAddLineMode }] = useStateAction();
+const [
+  ,
+  { isInAddLineMode, setLineUnderConstruction, getLineUnderConstruction },
+] = useStateAction();
 export type TimelineItemAddType = {
   pointsResource: BusLinePointType;
   indice: number;
   // getter: () => LineUnderConstructionType;
-  getter: () => BusLineType;
+  // getter: () => BusLineType;
+  getter: BusLineType;
+
   setter?: (line: LineUnderConstructionType) => void;
   isInAddLineMode: boolean;
 };
@@ -29,8 +34,8 @@ export default function (props: TimelineItemAddType) {
               ? "+ " + props.pointsResource.quantity
               : " " +
                 SumQuantity(
-                  props.getter().points,
-                  props.getter().schools[0],
+                  props.getter.points,
+                  props.getter.schools[0],
                   props.indice - 1
                 ) *
                   -1}
@@ -40,14 +45,14 @@ export default function (props: TimelineItemAddType) {
             {props.pointsResource.nature === NatureEnum.stop
               ? " + " +
                 SumQuantity(
-                  props.getter().points,
-                  props.getter().schools[0],
+                  props.getter.points,
+                  props.getter.schools[0],
                   props.indice
                 )
               : " " +
                 SumQuantity(
-                  props.getter().points,
-                  props.getter().schools[0],
+                  props.getter.points,
+                  props.getter.schools[0],
                   props.indice
                 ) *
                   -1}
@@ -70,8 +75,8 @@ export default function (props: TimelineItemAddType) {
             <Show when={isInAddLineMode()}>
               <TimelineRemovePointButton
                 indice={props.indice}
-                setter={props.setter}
-                getter={props.getter}
+                setter={setLineUnderConstruction}
+                getter={getLineUnderConstruction}
               />
             </Show>
           </div>
