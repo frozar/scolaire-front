@@ -23,7 +23,7 @@ export function TimelineRemovePointButton(props: {
       busLine: { ...props.getter().busLine, points: stops },
     });
     // ! Faire en sorte d'activer le createEffect qui met a jour
-    // ! la timeline
+    // ! la timeline => NON
   };
 
   return (

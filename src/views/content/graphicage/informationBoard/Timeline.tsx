@@ -10,16 +10,21 @@ const [, { getLineUnderConstruction, isInAddLineMode }] = useStateAction();
 // ! Déplacer `DrawHelperButton` hors de ce fichiers
 
 export default function () {
+  console.log("Timeline component");
+
   // ! Refactor
-  let busLine: BusLineType;
+  let busLine: () => BusLineType;
   isInAddLineMode()
-    ? (busLine = getLineUnderConstruction().busLine)
-    : (busLine = getSelectedBusLine() as BusLineType);
+    ? (busLine = () => getLineUnderConstruction().busLine)
+    : (busLine = () => getSelectedBusLine() as BusLineType);
 
   createEffect(() => {
     isInAddLineMode()
-      ? (busLine = getLineUnderConstruction().busLine)
-      : (busLine = getSelectedBusLine() as BusLineType);
+      ? (busLine = () => getLineUnderConstruction().busLine)
+      : (busLine = () => getSelectedBusLine() as BusLineType);
+    console.log("busLine=>", busLine());
+    console.log("busline.points", busLine().points.length);
+    console.log("isInAddLineMode", isInAddLineMode());
   });
 
   return (
@@ -36,7 +41,8 @@ export default function () {
         class="timeline-items v-timeline--side-end v-timeline--vertical"
         style={{ "--v-timeline-line-thickness": "2px" }}
       >
-        <For each={busLine.points}>
+        {/* <For each={busLine.points}> */}
+        <For each={busLine().points}>
           {(stop, i) => (
             <>
               <Show when={isInAddLineMode()}>
@@ -46,7 +52,7 @@ export default function () {
               <TimelineItem
                 pointsResource={stop}
                 indice={i()}
-                busLine={busLine}
+                busLine={busLine()}
               />
             </>
           )}
