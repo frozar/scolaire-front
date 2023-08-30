@@ -5,7 +5,7 @@ import {
   BusLineType,
 } from "../../../../../_entities/bus-line.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
-import { LineUnderConstructionType, NatureEnum } from "../../../../../type";
+import { NatureEnum } from "../../../../../type";
 import { TimelineRemovePointButton } from "./TimelineRemovePointButton";
 const [
   ,
@@ -14,12 +14,12 @@ const [
 export type TimelineItemAddType = {
   pointsResource: BusLinePointType;
   indice: number;
+  getter: BusLineType;
   // getter: () => LineUnderConstructionType;
   // getter: () => BusLineType;
-  getter: BusLineType;
 
-  setter?: (line: LineUnderConstructionType) => void;
-  isInAddLineMode: boolean;
+  // setter?: (line: LineUnderConstructionType) => void;
+  // isInAddLineMode: boolean;
 };
 
 export default function (props: TimelineItemAddType) {

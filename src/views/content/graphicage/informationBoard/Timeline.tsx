@@ -1,4 +1,4 @@
-import { For, Show } from "solid-js";
+import { For, Show, createEffect } from "solid-js";
 import { useStateAction } from "../../../../StateAction";
 import {
   BusLinePointType,
@@ -9,10 +9,7 @@ import TimelineItem from "../component/atom/TimelineItem";
 import { getSelectedBusLine } from "../component/organism/BusLines";
 // import TimelineItemAddMode from "../component/atom/TimelineItemAddMode";
 
-const [
-  ,
-  { getLineUnderConstruction, setLineUnderConstruction, isInAddLineMode },
-] = useStateAction();
+const [, { getLineUnderConstruction, isInAddLineMode }] = useStateAction();
 // ! Déplacer `DrawHelperButton` hors de ce fichiers
 
 // export default function (props: {
@@ -64,15 +61,30 @@ const [
 // }
 export default function () {
   // ! Refactor
-  let busLinePoints: BusLinePointType[] = [];
-  isInAddLineMode()
-    ? (busLinePoints = getLineUnderConstruction().busLine.points)
-    : (busLinePoints = getSelectedBusLine().points);
+  // let busLinePoints: BusLinePointType[] = [];
+  // isInAddLineMode()
+  // ? (busLinePoints = getLineUnderConstruction().busLine.points)
+  // : (busLinePoints = getSelectedBusLine().points);
 
+  // let busLine: BusLineType;
+  // isInAddLineMode()
+  // ? (busLine = getLineUnderConstruction().busLine)
+  // : (busLine = getSelectedBusLine() as BusLineType);
+
+  let busLinePoints: () => BusLinePointType[];
   let busLine: BusLineType;
   isInAddLineMode()
     ? (busLine = getLineUnderConstruction().busLine)
     : (busLine = getSelectedBusLine() as BusLineType);
+
+  busLinePoints = () => busLine.points;
+  createEffect(() => {
+    isInAddLineMode()
+      ? (busLine = getLineUnderConstruction().busLine)
+      : (busLine = getSelectedBusLine() as BusLineType);
+
+    busLinePoints = () => busLine.points;
+  });
 
   return (
     <div class="timeline">
@@ -89,7 +101,7 @@ export default function () {
         style={{ "--v-timeline-line-thickness": "2px" }}
       >
         {/* <For each={props.lineUnderConstruction()?.busLine.points}> */}
-        <For each={busLinePoints}>
+        <For each={busLinePoints()}>
           {(stop, i) => (
             <>
               <Show when={isInAddLineMode()}>
@@ -99,9 +111,9 @@ export default function () {
               <TimelineItem
                 pointsResource={stop}
                 indice={i()}
-                setter={setLineUnderConstruction}
+                // setter={setLineUnderConstruction}
                 getter={busLine}
-                isInAddLineMode={isInAddLineMode()}
+                // isInAddLineMode={isInAddLineMode()}
               />
             </>
           )}
