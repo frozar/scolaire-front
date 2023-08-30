@@ -142,6 +142,8 @@ export function StopPoint(props: StopPointProps) {
   };
 
   const onRightClick = () => {
+    console.log("onRightClick");
+
     const circle = linkMap.get(props.point.leafletId);
     const isInLineUnderConstruction =
       getLineUnderConstruction().busLine.points.filter(

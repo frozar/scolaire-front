@@ -11,6 +11,8 @@ export function TimelineRemovePointButton(props: {
   setter: (line: LineUnderConstructionType) => void;
 }) {
   const deletePoint = (id: number) => {
+    console.log("delete depuis la timeline");
+
     const circle = linkMap.get(props.getter().busLine.points[id].leafletId);
     circle?.setStyle({ fillColor: COLOR_STOP_LIGHT });
 
@@ -20,6 +22,8 @@ export function TimelineRemovePointButton(props: {
       ...props.getter(),
       busLine: { ...props.getter().busLine, points: stops },
     });
+    // ! Faire en sorte d'activer le createEffect qui met a jour
+    // ! la timeline
   };
 
   return (

@@ -1,9 +1,6 @@
 import { For, Show, createEffect } from "solid-js";
 import { useStateAction } from "../../../../StateAction";
-import {
-  BusLinePointType,
-  BusLineType,
-} from "../../../../_entities/bus-line.entity";
+import { BusLineType } from "../../../../_entities/bus-line.entity";
 import { TimelineAddPointButton } from "../component/atom/TimelineAddPointButton";
 import TimelineItem from "../component/atom/TimelineItem";
 import { getSelectedBusLine } from "../component/organism/BusLines";
@@ -71,19 +68,15 @@ export default function () {
   // ? (busLine = getLineUnderConstruction().busLine)
   // : (busLine = getSelectedBusLine() as BusLineType);
 
-  let busLinePoints: () => BusLinePointType[];
   let busLine: BusLineType;
   isInAddLineMode()
     ? (busLine = getLineUnderConstruction().busLine)
     : (busLine = getSelectedBusLine() as BusLineType);
 
-  busLinePoints = () => busLine.points;
   createEffect(() => {
     isInAddLineMode()
       ? (busLine = getLineUnderConstruction().busLine)
       : (busLine = getSelectedBusLine() as BusLineType);
-
-    busLinePoints = () => busLine.points;
   });
 
   return (
@@ -101,7 +94,7 @@ export default function () {
         style={{ "--v-timeline-line-thickness": "2px" }}
       >
         {/* <For each={props.lineUnderConstruction()?.busLine.points}> */}
-        <For each={busLinePoints()}>
+        <For each={busLine.points}>
           {(stop, i) => (
             <>
               <Show when={isInAddLineMode()}>
