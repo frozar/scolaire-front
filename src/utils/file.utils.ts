@@ -1,22 +1,7 @@
-import { SchoolType } from "../_entities/school.entity";
-import { StopType } from "../_entities/stop.entity";
 import { addNewGlobalWarningInformation } from "../signaux";
-import { setSchools } from "../views/content/graphicage/component/organism/SchoolPoints";
-import { setStops } from "../views/content/graphicage/component/organism/StopPoints";
 import { CsvUtils } from "./csv.utils";
 
 export namespace FileUtils {
-  async function importOneFile(
-    file: File
-  ): Promise<{ schools?: SchoolType[]; stops?: StopType[] }> {
-    const fileName = file.name;
-    if (CsvUtils.fileExtensionIsCsv(fileName)) {
-      return CsvUtils.importCsvFile(file);
-    }
-    addNewGlobalWarningInformation("Type de Fichier non reconnu");
-    return {};
-  }
-
   function getImportedFile(
     files: FileList | null | undefined
   ): File | undefined {
@@ -45,31 +30,19 @@ export namespace FileUtils {
     return files && files.length === 1;
   }
 
-  async function importFile(
-    files: FileList | null | undefined
-  ): Promise<{ schools?: SchoolType[]; stops?: StopType[] }> {
-    const file = getImportedFile(files);
-
-    if (!file) return {};
-
-    const { schools, stops } = await importOneFile(file);
-
-    if (!schools && !stop) {
-      return {};
-    }
-    return { schools, stops };
-  }
-
-  export async function importFileAndUpdate(
+  export async function importFile(
     files: FileList | null | undefined
   ): Promise<boolean> {
-    const { schools, stops } = await importFile(files);
+    const file = getImportedFile(files);
 
-    if (!schools && !stops) return false;
+    if (!file) return false;
+    const fileName = file.name;
 
-    schools ? setSchools(schools) : "";
-    stops ? setStops(stops) : "";
+    if (CsvUtils.fileExtensionIsCsv(fileName)) {
+      return CsvUtils.importCsvFile(file);
+    }
 
-    return true;
+    addNewGlobalWarningInformation("Type de Fichier non reconnu");
+    return false;
   }
 }

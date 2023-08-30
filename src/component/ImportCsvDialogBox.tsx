@@ -62,7 +62,7 @@ export default function (props: {
   async function handlerOnClickValider() {
     const files = refInputCsv()?.files;
 
-    if (await FileUtils.importFileAndUpdate(files)) {
+    if (await FileUtils.importFile(files)) {
       props.callbackSuccess ? props.callbackSuccess() : "";
     } else {
       props.callbackFail ? props.callbackFail() : "";

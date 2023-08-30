@@ -33,7 +33,7 @@ export default function (props: {
 
     const files = e.dataTransfer?.files;
 
-    if (await FileUtils.importFileAndUpdate(files)) {
+    if (await FileUtils.importFile(files)) {
       props.callbackSuccess ? props.callbackSuccess() : "";
     } else {
       props.callbackFail ? props.callbackFail() : "";
