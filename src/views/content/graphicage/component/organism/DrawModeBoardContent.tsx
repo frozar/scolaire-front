@@ -13,7 +13,6 @@ import {
 import { BusLineService } from "../../../../../_services/bus-line.service";
 
 import { quitModeAddLine } from "../../shortcut";
-import "./AddLineInformationBoardContent.css";
 import { updateBusLines } from "./BusLines";
 import DrawModeBoardContentFooter from "./DrawModeBoardContentFooter";
 
