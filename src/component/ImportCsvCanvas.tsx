@@ -1,10 +1,5 @@
 import { Setter, onCleanup, onMount } from "solid-js";
-import {
-  addNewUserInformation,
-  disableSpinningWheel,
-  enableSpinningWheel,
-} from "../signaux";
-import { MessageLevelEnum, MessageTypeEnum } from "../type";
+import { disableSpinningWheel, enableSpinningWheel } from "../signaux";
 import { FileUtils } from "../utils/file.utils";
 import { setSchools } from "../views/content/graphicage/component/organism/SchoolPoints";
 import { setStops } from "../views/content/graphicage/component/organism/StopPoints";
@@ -39,49 +34,9 @@ export default function (props: {
 
     enableSpinningWheel();
 
-    function exitCanvas() {
-      setDisplay(false);
-      disableSpinningWheel();
-    }
+    const files = e.dataTransfer?.files;
 
-    if (!e.dataTransfer) {
-      exitCanvas();
-      addNewUserInformation({
-        displayed: true,
-        level: MessageLevelEnum.warning,
-        type: MessageTypeEnum.global,
-        content: "Pas de fichier à importer",
-      });
-      return;
-    }
-
-    const files = e.dataTransfer.files;
-
-    if (!files || files.length == 0) {
-      exitCanvas();
-      addNewUserInformation({
-        displayed: true,
-        level: MessageLevelEnum.warning,
-        type: MessageTypeEnum.global,
-        content: "Aucun fichier sélectionné",
-      });
-      return;
-    }
-
-    if (files.length != 1) {
-      exitCanvas();
-      addNewUserInformation({
-        displayed: true,
-        level: MessageLevelEnum.warning,
-        type: MessageTypeEnum.global,
-        content: "Veuillez importer un fichier à la fois",
-      });
-      return;
-    }
-
-    const file = files[0];
-
-    const { stops, schools } = await FileUtils.importFile(file);
+    const { stops, schools } = await FileUtils.importFile(files);
 
     if (schools || stops) {
       schools ? setSchools(schools) : "";
@@ -91,7 +46,7 @@ export default function (props: {
       props.callbackFail ? props.callbackFail() : "";
     }
 
-    exitCanvas();
+    setDisplay(false);
     disableSpinningWheel();
   }
 
