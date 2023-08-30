@@ -9,6 +9,6 @@ describe("PointsEtablissement component", () => {
 
     cy.get("label").contains("Label text");
     cy.get("label").invoke("attr", "for").should("eq", "input-id");
-    cy.get("label").compareSnapshot("Label", 0.01);
+    cy.get("label").compareSnapshot("Labe^", 0.01);
   });
 });
