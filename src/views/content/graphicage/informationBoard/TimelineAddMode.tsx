@@ -62,7 +62,7 @@ export default function (props: {
   setLine: (line: LineUnderConstructionType) => void;
   schools: SchoolType[];
 }) {
-  const [lineName, setLineName] = createSignal<string>("");
+  const [lineName, setLineName] = createSignal<string>(props.schools[0].name);
 
   async function onClick() {
     if (displayLineMode() == displayLineModeEnum.straight) {
