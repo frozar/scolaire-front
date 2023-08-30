@@ -14,12 +14,7 @@ const [
 export type TimelineItemAddType = {
   pointsResource: BusLinePointType;
   indice: number;
-  getter: BusLineType;
-  // getter: () => LineUnderConstructionType;
-  // getter: () => BusLineType;
-
-  // setter?: (line: LineUnderConstructionType) => void;
-  // isInAddLineMode: boolean;
+  busLine: BusLineType;
 };
 
 export default function (props: TimelineItemAddType) {
@@ -34,8 +29,8 @@ export default function (props: TimelineItemAddType) {
               ? "+ " + props.pointsResource.quantity
               : " " +
                 SumQuantity(
-                  props.getter.points,
-                  props.getter.schools[0],
+                  props.busLine.points,
+                  props.busLine.schools[0],
                   props.indice - 1
                 ) *
                   -1}
@@ -45,14 +40,14 @@ export default function (props: TimelineItemAddType) {
             {props.pointsResource.nature === NatureEnum.stop
               ? " + " +
                 SumQuantity(
-                  props.getter.points,
-                  props.getter.schools[0],
+                  props.busLine.points,
+                  props.busLine.schools[0],
                   props.indice
                 )
               : " " +
                 SumQuantity(
-                  props.getter.points,
-                  props.getter.schools[0],
+                  props.busLine.points,
+                  props.busLine.schools[0],
                   props.indice
                 ) *
                   -1}
