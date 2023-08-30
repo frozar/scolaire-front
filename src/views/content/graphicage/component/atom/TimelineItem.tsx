@@ -7,10 +7,12 @@ import {
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { NatureEnum } from "../../../../../type";
 import { TimelineRemovePointButton } from "./TimelineRemovePointButton";
+
 const [
   ,
   { isInAddLineMode, setLineUnderConstruction, getLineUnderConstruction },
 ] = useStateAction();
+
 export type TimelineItemAddType = {
   pointsResource: BusLinePointType;
   indice: number;

@@ -55,10 +55,6 @@ export default function () {
 
       <Show when={currentStep() == drawModeStep.editLine}>
         <div class="bus-line-information-board-content">
-          {/* <TimelineAddMode
-            line={getLineUnderConstruction}
-            setLine={setLineUnderConstruction}
-          /> */}
           <DrawHelperButton
             schools={getLineUnderConstruction().busLine.schools}
           />

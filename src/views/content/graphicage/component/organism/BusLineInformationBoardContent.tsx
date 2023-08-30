@@ -15,8 +15,6 @@ export function BusLineInformationBoardContent() {
         onInput={onInput}
         onChange={onChange}
       />
-      {/* TODO: Fix timeline */}
-      {/* <TimelineReadMode line={getSelectedBusLine} /> */}
 
       <UpdateLineButton busLine={getSelectedBusLine() as BusLineType} />
 
