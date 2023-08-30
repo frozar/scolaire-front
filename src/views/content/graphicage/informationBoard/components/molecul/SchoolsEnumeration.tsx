@@ -1,7 +1,10 @@
 import { For } from "solid-js";
 import "./SchoolsEnumeration.css";
 
-export default function (props: { schoolsName: string[] }) {
+export interface SchoolsEnumerationProps {
+  schoolsName: string[];
+}
+export default function (props: SchoolsEnumerationProps) {
   return (
     <>
       {/* // TODO maybe externalise title in atom folder ? */}
@@ -9,7 +12,7 @@ export default function (props: { schoolsName: string[] }) {
       <p class="edit-mode-school-item">
         <For each={props.schoolsName}>
           {(school) => {
-            return <>{school}</>;
+            return <>{school + " "}</>;
           }}
         </For>
       </p>

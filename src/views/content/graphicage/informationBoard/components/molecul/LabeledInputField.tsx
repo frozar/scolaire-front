@@ -1,7 +1,7 @@
 import Label from "../atom/Label";
 import "./LabeledInputField.css";
 
-export default function (props: {
+export interface LabeledInputFieldProps {
   name: string;
   value: string | number;
   placeholder?: string;
@@ -10,7 +10,9 @@ export default function (props: {
       target: HTMLInputElement;
     }
   ) => void;
-}) {
+}
+
+export default function (props: LabeledInputFieldProps) {
   return (
     <div class="labeled-input-field">
       <Label label="Nom de la ligne" for={props.name} />
