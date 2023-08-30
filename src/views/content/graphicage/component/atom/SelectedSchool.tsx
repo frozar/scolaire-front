@@ -3,11 +3,11 @@ import { SchoolType } from "../../../../../_entities/school.entity";
 import "./SelectedSchool.css";
 import SelectedSchoolItem from "./SelectedSchoolItem";
 
-interface SelectedEtablissementProps {
+interface SelectedSchoolProps {
   schoolSelected: SchoolType[];
 }
 
-export default function (props: SelectedEtablissementProps) {
+export default function (props: SelectedSchoolProps) {
   const schoolSelected = () => props.schoolSelected;
 
   return (
@@ -16,9 +16,7 @@ export default function (props: SelectedEtablissementProps) {
         <h1>Sélection des écoles</h1>
       </div>
       <For each={schoolSelected()}>
-        {(etablissement) => {
-          return <SelectedSchoolItem school={etablissement} />;
-        }}
+        {(school) => <SelectedSchoolItem school={school} />}
       </For>
     </div>
   );

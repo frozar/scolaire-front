@@ -96,6 +96,7 @@ export default function (props: {
 
       <div class="flex mt-4 justify-between">
         <ColorPicker
+          defaultColor={getLineUnderConstruction().busLine.color()}
           title="Couleur de la ligne"
           onInput={onInput}
           onChange={onChange}
