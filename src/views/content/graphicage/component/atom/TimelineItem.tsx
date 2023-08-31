@@ -1,13 +1,22 @@
-import { BusLinePointType } from "../../../../../_entities/bus-line.entity";
+import { Show } from "solid-js";
+import { useStateAction } from "../../../../../StateAction";
+import {
+  BusLinePointType,
+  BusLineType,
+} from "../../../../../_entities/bus-line.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
-import { LineUnderConstructionType, NatureEnum } from "../../../../../type";
+import { NatureEnum } from "../../../../../type";
 import { TimelineRemovePointButton } from "./TimelineRemovePointButton";
+
+const [
+  ,
+  { isInAddLineMode, setLineUnderConstruction, getLineUnderConstruction },
+] = useStateAction();
+
 export type TimelineItemAddType = {
   pointsResource: BusLinePointType;
   indice: number;
-  getter: () => LineUnderConstructionType;
-  setter: (line: LineUnderConstructionType) => void;
-  isInAddLineMode: boolean;
+  busLine: BusLineType;
 };
 
 export default function (props: TimelineItemAddType) {
@@ -22,8 +31,8 @@ export default function (props: TimelineItemAddType) {
               ? "+ " + props.pointsResource.quantity
               : " " +
                 SumQuantity(
-                  props.getter().busLine.points,
-                  props.getter().busLine.schools[0],
+                  props.busLine.points,
+                  props.busLine.schools[0],
                   props.indice - 1
                 ) *
                   -1}
@@ -33,14 +42,14 @@ export default function (props: TimelineItemAddType) {
             {props.pointsResource.nature === NatureEnum.stop
               ? " + " +
                 SumQuantity(
-                  props.getter().busLine.points,
-                  props.getter().busLine.schools[0],
+                  props.busLine.points,
+                  props.busLine.schools[0],
                   props.indice
                 )
               : " " +
                 SumQuantity(
-                  props.getter().busLine.points,
-                  props.getter().busLine.schools[0],
+                  props.busLine.points,
+                  props.busLine.schools[0],
                   props.indice
                 ) *
                   -1}
@@ -60,11 +69,13 @@ export default function (props: TimelineItemAddType) {
         >
           <div class="v-timeline-divider__inner-dot !bg-white">
             <i class="" aria-hidden="true" />
-            <TimelineRemovePointButton
-              indice={props.indice}
-              setter={props.setter}
-              getter={props.getter}
-            />
+            <Show when={isInAddLineMode()}>
+              <TimelineRemovePointButton
+                indice={props.indice}
+                setter={setLineUnderConstruction}
+                getter={getLineUnderConstruction}
+              />
+            </Show>
           </div>
         </div>
 

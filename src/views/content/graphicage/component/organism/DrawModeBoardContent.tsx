@@ -4,7 +4,6 @@ import {
   useStateAction,
 } from "../../../../../StateAction";
 
-import TimelineAddMode from "../../informationBoard/TimelineAddMode";
 import SelectedSchool from "../atom/SelectedSchool";
 
 import {
@@ -12,10 +11,14 @@ import {
   updatePolylineWithOsrm,
 } from "../../../../../_entities/bus-line.entity";
 import { BusLineService } from "../../../../../_services/bus-line.service";
-import "../../../../../css/timeline.css";
+
 import { quitModeAddLine } from "../../shortcut";
 import { updateBusLines } from "./BusLines";
 import DrawModeBoardContentFooter from "./DrawModeBoardContentFooter";
+
+import "../../../../../css/timeline.css";
+import Timeline from "../../informationBoard/Timeline";
+import { DrawHelperButton } from "../atom/DrawHelperButton";
 
 const [, { getLineUnderConstruction, setLineUnderConstruction }] =
   useStateAction();
@@ -51,11 +54,10 @@ export default function () {
 
       <Show when={currentStep() == drawModeStep.editLine}>
         <div class="bus-line-information-board-content">
-          <TimelineAddMode
-            schools={etablissementSelected()}
-            line={getLineUnderConstruction}
-            setLine={setLineUnderConstruction}
+          <DrawHelperButton
+            schools={getLineUnderConstruction().busLine.schools}
           />
+          <Timeline />
         </div>
       </Show>
 

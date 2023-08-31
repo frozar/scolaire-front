@@ -1,8 +1,9 @@
-import TimelineReadMode from "../../informationBoard/TimelineReadMode";
 import { ColorPicker } from "../atom/ColorPicker";
 
 import { BusLineType } from "../../../../../_entities/bus-line.entity";
 import { BusLineService } from "../../../../../_services/bus-line.service";
+import Timeline from "../../informationBoard/Timeline";
+import UpdateLineButton from "../atom/UpdateLineButton";
 import { getSelectedBusLine } from "./BusLines";
 
 export function BusLineInformationBoardContent() {
@@ -14,8 +15,10 @@ export function BusLineInformationBoardContent() {
         onInput={onInput}
         onChange={onChange}
       />
-      {/* TODO: Fix timeline */}
-      <TimelineReadMode line={getSelectedBusLine} />
+
+      <UpdateLineButton busLine={getSelectedBusLine() as BusLineType} />
+
+      <Timeline />
     </div>
   );
 }
