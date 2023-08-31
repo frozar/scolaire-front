@@ -6,6 +6,7 @@ import { NatureEnum } from "../type";
 import { PointType } from "../views/content/graphicage/component/atom/Point";
 import { getSchools } from "../views/content/graphicage/component/organism/SchoolPoints";
 import { getStops } from "../views/content/graphicage/component/organism/StopPoints";
+import { COLOR_LINE_UNDER_CONSTRUCTION } from "../views/content/graphicage/constant";
 import { EntityUtils, LocationPathDBType } from "./_utils.entity";
 import { SchoolType } from "./school.entity";
 
@@ -51,6 +52,28 @@ export class BusLineEntity {
     };
   }
 
+  static defaultBusLine(): BusLineType {
+    const [latLngs, setLatLngs] = createSignal<L.LatLng[]>([]);
+    const [color, setColor] = createSignal<string>(
+      COLOR_LINE_UNDER_CONSTRUCTION
+    );
+    const [selected, setSelected] = createSignal<boolean>(false);
+    const [metrics, setMetrics] = createSignal<busLineMetricType>({});
+
+    return {
+      color: color,
+      setColor: setColor,
+      points: [],
+      schools: [],
+      name: "my default name",
+      latLngs: latLngs,
+      setLatLngs: setLatLngs,
+      selected: selected,
+      setSelected: setSelected,
+      metrics: metrics,
+      setMetrics: setMetrics,
+    };
+  }
   static dbFormat(line: BusLineType): Omit<BusLineDBType, "id"> {
     const name = line.name ? line.name : "";
     return {
