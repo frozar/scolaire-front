@@ -1,7 +1,10 @@
 import L from "leaflet";
 import { createEffect, onCleanup } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
-import { WaypointType } from "../../../../../_entities/bus-line.entity";
+import {
+  WaypointType,
+  updatePolylineWithOsrm,
+} from "../../../../../_entities/bus-line.entity";
 
 const [, { setLineUnderConstruction, getLineUnderConstruction }] =
   useStateAction();
@@ -34,6 +37,7 @@ export default function (props: PolylineDragMarkersProps) {
         polylineDragMarker.setLatLng(latlng);
       });
     });
+    // ! Déplacer hors de là ?
     function handleMouseUp() {
       // ! refactor ? (BusLine.tsx)
       props.map?.off("mousemove");
@@ -73,6 +77,8 @@ export default function (props: PolylineDragMarkersProps) {
       });
 
       // ! ensuite refaire l'update osrm
+
+      updatePolylineWithOsrm(getLineUnderConstruction().busLine); // ! await ?
 
       document.removeEventListener("mouseup", handleMouseUp);
     }

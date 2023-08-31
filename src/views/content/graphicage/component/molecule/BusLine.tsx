@@ -207,6 +207,8 @@ export function BusLine(props: BusLineProps) {
   }
   // ! In first place can only add one waypoints between points ?
   const latLngList = () => props.line.latLngs();
+
+  // ! pointProjectedCoord doit provenir de waypoints !?
   const pointProjectedCoord: L.LatLng[] = [];
   for (const point of props.line.points) {
     // ! Ajouter les coord des waypoints qui ne sont pas des points !?
@@ -238,6 +240,12 @@ export function BusLine(props: BusLineProps) {
 
             for (let i = 0; latLngList.length - 1; i++) {
               // ! direct comparison doesn't work
+              // console.log("indexPointBefore", indexPointBefore);
+              // ! fix temporaire en dur pour une ligne à 4 points d'interêts !!!!!!!!
+              // ! pointProjectedCoorddoit provenir de waypoints !!!!
+              if (indexPointBefore == 4) {
+                break;
+              }
               if (
                 pointProjectedCoord[indexPointBefore].lat ==
                   latLngList()[i].lat &&
