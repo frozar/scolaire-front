@@ -17,13 +17,11 @@ type osrmResponseType = { routes: routesType[] };
 // ): Promise<{ latlngs: L.LatLng[]; metrics: busLineMetricType }> {
 //   const response: osrmResponseType = await ServiceUtils.generic(
 // export class OsrmService {
-//   static async getRoadPolyline(
-//     points: BusLinePointType[]
-//   ): Promise<L.LatLng[]> {
+//   static async getRoadPolyline(waypoints: WaypointType[]): Promise<L.LatLng[]> {
 //     const response = await ServiceUtils.generic(
 //       osrm +
 //         "/" +
-//         this.buildPositionURL(points) +
+//         this.buildPositionURL(waypoints) +
 //         "?geometries=geojson&overview=full"
 //     );
 
@@ -31,7 +29,7 @@ type osrmResponseType = { routes: routesType[] };
 //     return this.formatResponse(response.routes);
 //   }
 
-//   private static buildPositionURL(points: BusLinePointType[]): string {
+//   private static buildPositionURL(points: WaypointType[]): string {
 //     return points.map((point) => point.lon + "," + point.lat).join(";");
 //   }
 
@@ -43,17 +41,18 @@ type osrmResponseType = { routes: routesType[] };
 // }
 export class OsrmService {
   static async getRoadPolyline(busLine: BusLineType): Promise<{
-    latlngs: L.LatLng[];
+    latlngs: [L.LatLng[], L.LatLng[]];
     metrics: busLineMetricType;
   }> {
     const points: BusLinePointType[] = busLine.points;
     const waypoints: WaypointType[] = busLine.waypoints ?? points;
 
+    // ! change tuple to dict ?
     const response = await ServiceUtils.generic(
       osrm +
         "/" +
         this.buildPositionURL(waypoints) +
-        "?geometries=geojson&overview=full"
+        "?geometries=geojson&overview=full&steps=true"
     );
     const response_direct = await ServiceUtils.generic(
       osrm +
@@ -62,7 +61,14 @@ export class OsrmService {
         "?geometries=geojson&overview=full"
     );
 
-    return this.formatResponse(response, response_direct, points);
+    if (!response) return { latlngs: [[], []], metrics: {} };
+    return this.formatResponse(
+      response,
+      response_direct,
+      points,
+      response.waypoints
+    );
+    // return this.formatResponse(response.routes, response.waypoints);
   }
 
   private static buildPositionURL(points: WaypointType[]): string {
@@ -72,12 +78,13 @@ export class OsrmService {
   private static formatResponse(
     response: osrmResponseType,
     response_direct: osrmResponseType,
-    points: BusLinePointType[]
+    points: BusLinePointType[],
+    waypoints: waypointsType[]
   ): {
-    latlngs: L.LatLng[];
+    latlngs: [L.LatLng[], L.LatLng[]];
     metrics: busLineMetricType;
   } {
-    let latlngs: L.LatLng[] = [];
+    let latlngs: [L.LatLng[], L.LatLng[]] = [[], []];
     let metrics: busLineMetricType = {};
 
     if (!response || response.routes[0] == undefined)
@@ -87,13 +94,23 @@ export class OsrmService {
 
     const coordinates = routes[0].geometry.coordinates;
 
-    latlngs = coordinates.map((elt: number[]) => L.latLng(elt[1], elt[0]));
-
+    latlngs = [
+      coordinates.map((elt: number[]) => L.latLng(elt[1], elt[0])),
+      waypoints.map((waypoint) =>
+        L.latLng(waypoint.location[1], waypoint.location[0])
+      ),
+    ];
     metrics = getMetrics(response, response_direct, points);
-
     return { latlngs, metrics };
   }
 }
+
+type waypointsType = {
+  hint: string;
+  distance: number;
+  name: string;
+  location: number[];
+};
 
 type routesType = {
   distance: number;

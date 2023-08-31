@@ -226,11 +226,11 @@ export function BusLine(props: BusLineProps) {
       />
       <Show when={displayLineMode() == displayLineModeEnum.onRoad}>
         <For each={latLngList()}>
-          {(coord: L.LatLng) => {
+          {(coord: L.LatLng, i) => {
             console.log("coord", coord);
             // ! Boucler sur chaque latlgns
-            // ! si correspond à un point => indexPointBefore + 1
-            // ! si correspond à coord => break
+            // ! si correspond à un point => indexPointBefore + 1 et return void
+            // ! si correspond à coord => break ??
             // const indexPointBefore = 0;
             // for (let i = 0; latLngList.length - 1; i++) {
             //   if (latLngList[i] coord) {

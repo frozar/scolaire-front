@@ -1,5 +1,6 @@
 import L from "leaflet";
 import { Accessor, Setter, createSignal } from "solid-js";
+import { useStateAction } from "../StateAction";
 import { OsrmService } from "../_services/osrm.service";
 import { disableSpinningWheel, enableSpinningWheel } from "../signaux";
 import { NatureEnum } from "../type";
@@ -9,6 +10,9 @@ import { getStops } from "../views/content/graphicage/component/organism/StopPoi
 import { COLOR_LINE_UNDER_CONSTRUCTION } from "../views/content/graphicage/constant";
 import { EntityUtils, LocationPathDBType } from "./_utils.entity";
 import { SchoolType } from "./school.entity";
+
+const [, { getLineUnderConstruction, setLineUnderConstruction }] =
+  useStateAction();
 
 export class BusLineEntity {
   static build(dbData: BusLineDBType): BusLineType {
@@ -191,12 +195,38 @@ const getAssociatedBusLinePoint = (dbPoint: BusLinePointDBType): PointType => {
   return getStops().filter((item) => item.id == dbPoint.stop_id)[0];
 };
 
+// export async function updatePolylineWithOsrm(busLine: BusLineType) {
+//   enableSpinningWheel();
+//   // const latlngs: L.LatLng[] = await OsrmService.getRoadPolyline(busLine.points);
+//   const latlngs: L.LatLng[] = await OsrmService.getRoadPolyline(
+//     busLine?.waypoints
+//   );
+
+//   busLine.setLatLngs(latlngs);
+//   disableSpinningWheel();
+// }
 export async function updatePolylineWithOsrm(busLine: BusLineType) {
   enableSpinningWheel();
+  // const latlngs: L.LatLng[] = await OsrmService.getRoadPolyline(busLine.points);
   const { latlngs, metrics } = await OsrmService.getRoadPolyline(busLine);
 
-  busLine.setLatLngs(latlngs);
+  busLine.setLatLngs(latlngs[0]);
   busLine.setMetrics(metrics);
+
+  const newPoints: BusLinePointType[] = [];
+  for (let i = 0; i < getLineUnderConstruction().busLine.points.length; i++) {
+    newPoints.push({
+      ...getLineUnderConstruction().busLine.points[i],
+      onRoadLon: latlngs[1][i].lng,
+      onRoadLat: latlngs[1][i].lat,
+    });
+  }
+  console.log("newPoints", newPoints);
+  setLineUnderConstruction({
+    ...getLineUnderConstruction(),
+    busLine: { ...getLineUnderConstruction().busLine, points: newPoints },
+  });
+  console.log("getLineUnderConstruction", getLineUnderConstruction());
 
   disableSpinningWheel();
 }
@@ -230,6 +260,8 @@ export type BusLinePointType = {
   name: string;
   lon: number;
   lat: number;
+  onRoadLon: number;
+  onRoadLat: number;
   quantity: number;
   nature: NatureEnum;
 };
