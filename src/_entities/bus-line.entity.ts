@@ -28,6 +28,7 @@ export class BusLineEntity {
     const [selected, setSelected] = createSignal<boolean>(false);
     const [latLngs, setLatLngs] = createSignal<L.LatLng[]>([]);
     const [color, setColor] = createSignal<string>("#" + dbData.color);
+    const [metrics, setMetrics] = createSignal<busLineMetricType>({});
 
     if (dbData.polyline != null) {
       setLatLngs(
@@ -45,6 +46,8 @@ export class BusLineEntity {
       setLatLngs: setLatLngs,
       selected: selected,
       setSelected: setSelected,
+      metrics: metrics,
+      setMetrics: setMetrics,
     };
   }
 
@@ -164,6 +167,8 @@ export type BusLineType = {
   setLatLngs: Setter<L.LatLng[]>;
   selected: Accessor<boolean>;
   setSelected: Setter<boolean>;
+  metrics: Accessor<busLineMetricType>;
+  setMetrics: Setter<busLineMetricType>;
 };
 
 export type BusLinePointType = {
@@ -189,4 +194,13 @@ export type BusLinePointDBType = {
   stop_id: number;
   school_id: number;
   quantity: number;
+};
+export type busLineMetricType = {
+  distanceBus?: number;
+  temps?: number;
+  distancePCC?: number;
+  deviation?: number;
+  kmPassager?: number;
+  txRemplissMoy?: number;
+  CO2?: number;
 };
