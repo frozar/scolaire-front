@@ -193,15 +193,20 @@ const getAssociatedBusLinePoint = (dbPoint: BusLinePointDBType): PointType => {
 
 export async function updatePolylineWithOsrm(busLine: BusLineType) {
   enableSpinningWheel();
-  const { latlngs, metrics } = await OsrmService.getRoadPolyline(
-    busLine.points
-  );
+  const { latlngs, metrics } = await OsrmService.getRoadPolyline(busLine);
 
   busLine.setLatLngs(latlngs);
   busLine.setMetrics(metrics);
 
   disableSpinningWheel();
 }
+
+export type WaypointType = {
+  idSchool?: number;
+  idStop?: number;
+  lat: number;
+  lon: number;
+};
 
 export type BusLineType = {
   id?: number;
@@ -210,6 +215,7 @@ export type BusLineType = {
   color: Accessor<string>;
   setColor: Setter<string>;
   points: BusLinePointType[];
+  waypoints?: WaypointType[];
   latLngs: Accessor<L.LatLng[]>;
   setLatLngs: Setter<L.LatLng[]>;
   selected: Accessor<boolean>;

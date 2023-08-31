@@ -241,6 +241,7 @@ async function nextStep() {
         break;
       }
       if (displayLineMode() == displayLineModeEnum.straight) {
+        // ! make sure waypoints value is fill !
         await updatePolylineWithOsrm(getLineUnderConstruction().busLine);
       }
 
