@@ -6,7 +6,6 @@ import AddLineButton from "./AddLineButton";
 import ClearButton from "./ClearButton";
 import ExportButton from "./ExportButton";
 import GenerateButton from "./GenerateButton";
-import InformationBoardButton from "./InformationBoardButton";
 import RemoveLineButton from "./RemoveLineButton";
 
 import "./RightMapMenu.css";
@@ -20,7 +19,7 @@ export default function (props: RightMapMenuProps) {
 
   return (
     <div id="right-map-menu">
-      <InformationBoardButton xOffset={mergedProps.xOffset} />
+      {/* <InformationBoardButton xOffset={mergedProps.xOffset} /> */}
       <AddLineButton xOffset={mergedProps.xOffset} />
       <RemoveLineButton xOffset={mergedProps.xOffset} />
       <ClearButton xOffset={mergedProps.xOffset} />

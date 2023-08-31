@@ -1,4 +1,4 @@
-import { Match, Switch, createEffect } from "solid-js";
+import { createEffect } from "solid-js";
 import { useStateAction } from "./StateAction";
 import { useStateGui } from "./StateGui";
 
@@ -10,14 +10,10 @@ import DisplayUserInformation from "./userInformation/DisplayUserInformation";
 import DragAndDropSummary from "./userInformation/DragAndDropSummary";
 import GeneratorDialogBox from "./userInformation/GeneratorDialogBox";
 import RemoveConfirmationDialogBox from "./userInformation/RemoveConfirmationDialogBox";
-import Dashboard from "./views/content/dashboard/Dashboard";
 import Graphicage from "./views/content/graphicage/Graphicage";
 import { setPointsReady } from "./views/content/graphicage/component/organism/Points";
-import { InformationBoard } from "./views/content/graphicage/informationBoard/InformationBoard";
 import ExportConfirmationDialogBox from "./views/content/graphicage/rightMapMenu/export/ExportConfirmationDialogBox";
-import SchoolsBoard from "./views/content/schools/SchoolsBoard";
-import Ramassage from "./views/content/stops/StopsBoard";
-import InformationBoardLayout from "./views/layout/component/template/InformationBoardLayout";
+import ContextManager from "./views/layout/component/organism/ContextManager";
 
 const [, { isInAddLineMode }] = useStateAction();
 const [, { getSelectedMenu }] = useStateGui();
@@ -58,17 +54,21 @@ export default () => {
   return (
     <div ref={refApp}>
       <Layout>
-        <Switch fallback={<p>Page not found</p>}>
+        <Graphicage />
+        <ContextManager />
+
+        {/* <Switch fallback={<p>Page not found</p>}>
           <Match when={getSelectedMenu() == "dashboard"}>
             <Dashboard />
           </Match>
 
           <Match when={getSelectedMenu() == "graphicage"}>
             <Graphicage />
-            <InformationBoardLayout>
+            <ContextManager /> */}
+        {/* <InformationBoardLayout>
               <InformationBoard />
-            </InformationBoardLayout>
-          </Match>
+            </InformationBoardLayout> */}
+        {/* </Match>
 
           <Match when={getSelectedMenu() == "etablissements"}>
             <SchoolsBoard />
@@ -77,7 +77,7 @@ export default () => {
           <Match when={getSelectedMenu() == "ramassages"}>
             <Ramassage />
           </Match>
-        </Switch>
+        </Switch> */}
 
         <DisplayUserInformation />
         <DragAndDropSummary />

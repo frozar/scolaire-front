@@ -10,6 +10,7 @@ import {
 
 import { useStateAction } from "../../../StateAction";
 import { useStateGui } from "../../../StateGui";
+import { isInDrawMod } from "../../layout/component/organism/ContextManager";
 import FlaxibMapLogo from "./FlaxibMapLogo";
 import { initScreenshoter } from "./rightMapMenu/export/screenShoter";
 import { getTileById } from "./tileUtils";
@@ -68,7 +69,7 @@ export function buildMapL7(div: HTMLDivElement) {
     setSelectedEditModeTile("Esri_WorldTopoMap");
 
     setCurrentTileLayer(() => {
-      if (isInReadMode()) {
+      if (!isInDrawMod()) {
         return readTile();
       } else {
         return editTile();
