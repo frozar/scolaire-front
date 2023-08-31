@@ -3,6 +3,7 @@ import { ColorPicker } from "../atom/ColorPicker";
 import { BusLineType } from "../../../../../_entities/bus-line.entity";
 import { BusLineService } from "../../../../../_services/bus-line.service";
 import Timeline from "../../informationBoard/Timeline";
+import SchoolsEnumeration from "../../informationBoard/components/molecul/SchoolsEnumeration";
 import UpdateLineButton from "../atom/UpdateLineButton";
 import { getSelectedBusLine } from "./BusLines";
 
@@ -17,7 +18,11 @@ export function BusLineInformationBoardContent() {
       />
 
       <UpdateLineButton busLine={getSelectedBusLine() as BusLineType} />
-
+      <SchoolsEnumeration
+        schoolsName={
+          getSelectedBusLine()?.schools.map((school) => school.name) ?? []
+        }
+      />
       <Timeline />
     </div>
   );

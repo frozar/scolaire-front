@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { JSXElement, createContext, useContext } from "solid-js";
+import { JSXElement, createContext, createSignal, useContext } from "solid-js";
 import { createStore } from "solid-js/store";
 import { createHistory, record } from "solid-record";
 
@@ -7,9 +7,13 @@ import { setUserInformations } from "./signaux";
 import { LineUnderConstructionType, MessageTypeEnum, ModeEnum } from "./type";
 
 import { useStateGui } from "./StateGui";
-import { BusLineEntity, BusLinePointType } from "./_entities/bus-line.entity";
+import {
+  BusLinePointType,
+  busLineMetricType,
+} from "./_entities/bus-line.entity";
 import { SchoolType } from "./_entities/school.entity";
 import { StopType } from "./_entities/stop.entity";
+import { COLOR_LINE_UNDER_CONSTRUCTION } from "./views/content/graphicage/constant";
 
 const [, { setDisplayedInformationBoard }] = useStateGui();
 
@@ -24,9 +28,26 @@ type StateActionType = {
 };
 
 export function defaultLineUnderConstruction(): LineUnderConstructionType {
+  const [latLngs, setLatLngs] = createSignal<L.LatLng[]>([]);
+  const [color, setColor] = createSignal<string>(COLOR_LINE_UNDER_CONSTRUCTION);
+  const [selected, setSelected] = createSignal<boolean>(false);
+  const [metrics, setMetrics] = createSignal<busLineMetricType>({});
+
   return {
     nextIndex: 0,
-    busLine: BusLineEntity.defaultBusLine(),
+    busLine: {
+      color: color,
+      setColor: setColor,
+      points: [],
+      schools: [],
+      name: "my default name",
+      latLngs: latLngs,
+      setLatLngs: setLatLngs,
+      selected: selected,
+      setSelected: setSelected,
+      metrics: metrics,
+      setMetrics: setMetrics,
+    },
   };
 }
 
