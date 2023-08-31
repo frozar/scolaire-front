@@ -1,4 +1,4 @@
-import { Show, createSignal } from "solid-js";
+import { Show, createEffect, createSignal } from "solid-js";
 import {
   defaultLineUnderConstruction,
   useStateAction,
@@ -17,7 +17,14 @@ import { updateBusLines } from "./BusLines";
 import DrawModeBoardContentFooter from "./DrawModeBoardContentFooter";
 
 import "../../../../../css/timeline.css";
+import { LineUnderConstructionType } from "../../../../../type";
 import Timeline from "../../informationBoard/Timeline";
+import ButtonIcon from "../../informationBoard/components/molecul/ButtonIcon";
+import LabeledInputField from "../../informationBoard/components/molecul/LabeledInputField";
+import SchoolsEnumeration from "../../informationBoard/components/molecul/SchoolsEnumeration";
+import CurvedLine from "../../informationBoard/components/svg-icons/CurvedLine";
+import SimpleLine from "../../informationBoard/components/svg-icons/SimpleLine";
+import { ColorPicker } from "../atom/ColorPicker";
 import { DrawHelperButton } from "../atom/DrawHelperButton";
 
 const [, { getLineUnderConstruction, setLineUnderConstruction }] =
@@ -38,13 +45,74 @@ export enum displayLineModeEnum {
   onRoad = "onRoad",
 }
 
+const setColorOnLine = (color: string): BusLineType | undefined => {
+  const line: LineUnderConstructionType | undefined =
+    getLineUnderConstruction();
+
+  if (!line) return;
+
+  line.busLine.setColor(color);
+
+  return line.busLine;
+};
+
+const onInput = (color: string) => {
+  const line: BusLineType | undefined = setColorOnLine(color);
+
+  if (!line) return;
+};
+
+const onChange = async (color: string) => {
+  const line: BusLineType | undefined = setColorOnLine(color);
+
+  if (!line) return;
+
+  // TODO Patch the Line Bus Color
+
+  const updatedLine: BusLineType = await BusLineService.update({
+    id: line.id,
+
+    color: line.color,
+
+    latLngs: line.latLngs,
+  });
+
+  console.log(updatedLine);
+};
+
+async function onClick() {
+  if (displayLineMode() == displayLineModeEnum.straight) {
+    if (getLineUnderConstruction().busLine.points.length < 2) {
+      return;
+    }
+
+    await updatePolylineWithOsrm(getLineUnderConstruction().busLine);
+
+    setDisplayLineMode(displayLineModeEnum.onRoad);
+
+    // ! Changement de drawModeStep
+  } else if (displayLineMode() == displayLineModeEnum.onRoad) {
+    getLineUnderConstruction().busLine.setLatLngs([]);
+
+    setDisplayLineMode(displayLineModeEnum.straight);
+
+    // ! Changement de drawModeStep
+  }
+}
+
 export const [displayLineMode, setDisplayLineMode] =
   createSignal<displayLineModeEnum>(displayLineModeEnum.straight);
 
 export default function () {
+  const [lineName, setLineName] = createSignal<string>("");
   const etablissementSelected = () => {
     return getLineUnderConstruction().busLine.schools;
   };
+
+  createEffect(() => {
+    if (getLineUnderConstruction().busLine.schools.length > 0)
+      setLineName(getLineUnderConstruction().busLine.schools[0].name);
+  });
 
   return (
     <div class="add-line-information-board-content">
@@ -53,11 +121,58 @@ export default function () {
       </Show>
 
       <Show when={currentStep() == drawModeStep.editLine}>
+        <SchoolsEnumeration
+          schoolsName={getLineUnderConstruction().busLine.schools.map(
+            (school) => school.name
+          )}
+        />
+
+        <LabeledInputField
+          value={lineName()}
+          onInput={(e) => setLineName(e.target.value)}
+          name="line-name"
+          placeholder="Entrer le nom de la ligne"
+        />
+
+        <div class="flex mt-4 justify-between">
+          <ColorPicker
+            defaultColor={getLineUnderConstruction().busLine.color()}
+            title="Couleur de la ligne"
+            onInput={onInput}
+            onChange={onChange}
+          />
+
+          <Show
+            when={displayLineMode() == displayLineModeEnum.straight}
+            fallback={
+              <ButtonIcon
+                icon={<SimpleLine />}
+                onClick={onClick}
+                class="mr-2"
+              />
+            }
+          >
+            <ButtonIcon icon={<CurvedLine />} onClick={onClick} class="mr-2" />
+          </Show>
+        </div>
+      </Show>
+
+      <Show when={currentStep() == drawModeStep.editLine}>
         <div class="bus-line-information-board-content">
           <DrawHelperButton
             schools={getLineUnderConstruction().busLine.schools}
           />
-          <Timeline />
+
+          <Show
+            when={getLineUnderConstruction().busLine.points.length > 0}
+            fallback={
+              <div class="flex w-4/5 justify-center absolute bottom-[120px]">
+                Veuillez sélectionner des arrêts sur la carte
+              </div>
+            }
+          >
+            <Timeline />
+          </Show>
         </div>
       </Show>
 
