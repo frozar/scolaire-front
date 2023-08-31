@@ -5,7 +5,7 @@
 }
 
 .graphicage-draw-helper-button button {
-  @apply ml-5;
+  @apply mr-3;
 }
 
 .graphicage-draw-helper-button button:hover > svg {

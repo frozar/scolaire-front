@@ -1,4 +1,4 @@
-.add-line-information-board-content .add-line-information-board-content-title {
+.add-line-information-board-content-title {
   @apply flex flex-row mb-4 text-black text-2xl;
   align-items: center;
   width: 100%;
@@ -6,9 +6,8 @@
 }
 
 .add-line-information-board-content {
-  @apply flex flex-col ml-4;
-  align-items: center;
-  width: 100%;
+  @apply ml-4;
+  width: 80%;
   height: 100%;
   justify-content: space-between;
 }
@@ -25,15 +24,6 @@
   justify-content: center;
 }
 
-.add-line-information-board-content
-  .add-line-information-board-content-buttons {
-  @apply flex flex-row mb-2;
-  align-items: center;
-  /* justify-content: center; */
-  width: 100%;
-  height: 35px;
-}
-
 .add-line-information-board-content-buttons{
-  @apply absolute bottom-14 justify-around;
+  @apply flex items-center w-4/5 absolute bottom-16 justify-between;
 }
