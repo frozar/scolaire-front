@@ -29,7 +29,20 @@ export default function (props: PolylineDragMarkersProps) {
         polylineDragMarker.setLatLng(latlng);
       });
     });
-    // document.addEventListener("mouseup", handleMouseUp) // ! wip
+    function handleMouseUp() {
+      // ! refactor ? (BusLine.tsx)
+      props.map?.off("mousemove");
+      if (props.map.hasEventListeners("mousemove")) {
+        props.map.off("mousemove");
+      }
+
+      props.map.dragging.enable();
+
+      // ! ici ajouter le nouveau waypoints !
+
+      document.removeEventListener("mouseup", handleMouseUp);
+    }
+    document.addEventListener("mouseup", handleMouseUp);
   }
 
   const polylineDragMarker = L.marker(props.latlngs, {
