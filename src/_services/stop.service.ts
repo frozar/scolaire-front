@@ -1,3 +1,4 @@
+import { SchoolEntity } from "../_entities/school.entity";
 import { StopDBType, StopEntity, StopType } from "../_entities/stop.entity";
 import { ServiceUtils } from "./_utils.service";
 
@@ -14,9 +15,7 @@ export class StopService {
       stops: stops,
     });
 
-    return StopEntity.buildStops(
-      xanoResult.map((dbSchool) => StopEntity.build(dbSchool))
-    );
+    return xanoResult.map((dbSchool) => SchoolEntity.build(dbSchool));
   }
 
   static async create(

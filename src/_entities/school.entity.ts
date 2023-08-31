@@ -45,18 +45,6 @@ export class SchoolEntity {
       });
     });
   }
-
-  static buildSchools(schools: SchoolType[]): SchoolType[] {
-    return schools.map((school) => {
-      const [selected, setSelected] = createSignal(false);
-      return {
-        ...school,
-        setSelected,
-        selected,
-        leafletId: nextLeafletPointId(),
-      };
-    });
-  }
 }
 
 export type SchoolType = {

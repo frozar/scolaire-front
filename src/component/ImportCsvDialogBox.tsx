@@ -1,7 +1,6 @@
 import { Show, createEffect, createSignal } from "solid-js";
 import { Transition } from "solid-transition-group";
 import {
-  addNewUserInformation,
   closeImportCsvBox,
   disableSpinningWheel,
   getImportCsvBox,
@@ -9,11 +8,8 @@ import {
 
 import { useStateGui } from "../StateGui";
 import ClickOutside from "../component/ClickOutside";
-import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { assertIsNode } from "../utils";
-import { importFile } from "../utils/importUtils";
-import { setSchools } from "../views/content/graphicage/component/organism/SchoolPoints";
-import { setStops } from "../views/content/graphicage/component/organism/StopPoints";
+import { FileUtils } from "../utils/file.utils";
 
 // HACK for the documentation to preserve the ClickOutside directive on save
 // https://www.solidjs.com/guides/typescript#use___
@@ -62,45 +58,11 @@ export default function (props: {
     return res;
   };
 
+  // TODO Add import overview
   async function handlerOnClickValider() {
-    const constRefInputCsv = refInputCsv();
-    if (!constRefInputCsv) {
-      return;
-    }
+    const files = refInputCsv()?.files;
 
-    const files = constRefInputCsv.files;
-
-    if (!files || files.length === 0) {
-      closeImportCsvBox();
-      addNewUserInformation({
-        displayed: true,
-        level: MessageLevelEnum.warning,
-        type: MessageTypeEnum.global,
-        content: "Aucun fichier sélectionné",
-      });
-      return;
-    }
-
-    if (files.length !== 1) {
-      closeImportCsvBox();
-      addNewUserInformation({
-        displayed: true,
-        level: MessageLevelEnum.warning,
-        type: MessageTypeEnum.global,
-        content: "Veuillez importer un fichier à la fois",
-      });
-      return;
-    }
-
-    // TODO Add import overview
-
-    const file = files[0];
-
-    const { stops, schools } = await importFile(file);
-
-    if (schools || stops) {
-      schools ? setSchools(schools) : "";
-      stops ? setStops(stops) : "";
+    if (await FileUtils.importFile(files)) {
       props.callbackSuccess ? props.callbackSuccess() : "";
     } else {
       props.callbackFail ? props.callbackFail() : "";

@@ -23,6 +23,7 @@ module.exports = {
     "solid/reactivity": "warn",
     "solid/no-destructure": "warn",
     "solid/jsx-no-undef": "error",
+    "@typescript-eslint/no-namespace": "off",
     quotes: "error",
     "@typescript-eslint/no-explicit-any": "error",
   },

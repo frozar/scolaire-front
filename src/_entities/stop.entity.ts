@@ -48,18 +48,6 @@ export class StopEntity {
       });
     });
   }
-
-  static buildStops(stops: StopType[]): StopType[] {
-    return stops.map((stop) => {
-      const [selected, setSelected] = createSignal(false);
-      return {
-        ...stop,
-        setSelected,
-        selected,
-        leafletId: nextLeafletPointId(),
-      };
-    });
-  }
 }
 
 export type StopType = {

@@ -1,10 +1,7 @@
 import L from "leaflet";
 import { For, createSignal, onMount } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
-import {
-  SchoolEntity,
-  SchoolType,
-} from "../../../../../_entities/school.entity";
+import { SchoolType } from "../../../../../_entities/school.entity";
 import { SchoolService } from "../../../../../_services/school.service";
 import { SchoolPoint } from "../molecule/SchoolPoint";
 import { currentStep, drawModeStep } from "./DrawModeBoardContent";
@@ -19,9 +16,7 @@ export const [getSchools, setSchools] = createSignal<SchoolType[]>([]);
 
 export function SchoolPoints(props: SchoolPointsProps) {
   onMount(async () => {
-    const schools: SchoolType[] = SchoolEntity.buildSchools(
-      await SchoolService.getAll()
-    );
+    const schools: SchoolType[] = await SchoolService.getAll();
     setSchools(schools);
   });
 
