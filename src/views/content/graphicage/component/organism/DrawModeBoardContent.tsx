@@ -22,6 +22,7 @@ import Timeline from "../../informationBoard/Timeline";
 import ButtonIcon from "../../informationBoard/components/molecul/ButtonIcon";
 import LabeledInputField from "../../informationBoard/components/molecul/LabeledInputField";
 import SchoolsEnumeration from "../../informationBoard/components/molecul/SchoolsEnumeration";
+import Metrics from "../../informationBoard/components/organisme/Metrics";
 import CurvedLine from "../../informationBoard/components/svg-icons/CurvedLine";
 import SimpleLine from "../../informationBoard/components/svg-icons/SimpleLine";
 import { ColorPicker } from "../atom/ColorPicker";
@@ -130,12 +131,19 @@ export default function () {
       </Show>
 
       <Show when={currentStep() == drawModeStep.editLine}>
-        <SchoolsEnumeration
-          schoolsName={getLineUnderConstruction().busLine.schools.map(
-            (school) => school.name
-          )}
-        />
-
+        <div class="bus-line-information-board-content-schools">
+          <SchoolsEnumeration
+            schoolsName={getLineUnderConstruction().busLine.schools.map(
+              (school) => school.name
+            )}
+          />
+          <Show when={getLineUnderConstruction().busLine.points.length > 0}>
+            <DrawHelperButton
+              schools={getLineUnderConstruction().busLine.schools}
+            />
+          </Show>
+        </div>
+        <Metrics line={getLineUnderConstruction().busLine} />
         <LabeledInputField
           value={lineName()}
           onInput={(e) => setLineName(e.target.value)}
@@ -168,10 +176,6 @@ export default function () {
 
       <Show when={currentStep() == drawModeStep.editLine}>
         <div class="bus-line-information-board-content">
-          <DrawHelperButton
-            schools={getLineUnderConstruction().busLine.schools}
-          />
-
           <Show
             when={getLineUnderConstruction().busLine.points.length > 0}
             fallback={

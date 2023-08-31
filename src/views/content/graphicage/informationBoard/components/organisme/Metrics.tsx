@@ -6,7 +6,7 @@ export interface MetricsEnumerationProps {
   metrics: MetricItemProps[];
 }
 export type MetricsProps = {
-  line: Pick<BusLineType, "metrics">;
+  line?: Pick<BusLineType, "metrics">;
 };
 
 export default function (props: MetricsProps) {
@@ -15,33 +15,33 @@ export default function (props: MetricsProps) {
     <>
       <MetricItem
         title={"Distance parcourue"}
-        value={props.line.metrics()?.distanceBus}
+        value={props.line?.metrics()?.distanceBus}
         unite={"km"}
       />
 
       <MetricItem
         title={"Degré de déviation"}
-        value={props.line.metrics()?.deviation}
+        value={props.line?.metrics()?.deviation}
       />
 
       <MetricItem
         title={"Temps de parcours"}
-        value={props.line.metrics()?.temps}
+        value={props.line?.metrics()?.temps}
         unite={"h"}
       />
 
       <MetricItem
         title={"Kilomètre passager"}
-        value={props.line.metrics()?.kmPassager}
+        value={props.line?.metrics()?.kmPassager}
         unite={"km"}
       />
 
       <MetricItem
         title={"Taux de remplissage moyen"}
-        value={props.line.metrics()?.txRemplissMoy}
+        value={props.line?.metrics()?.txRemplissMoy}
         unite={"personnes"}
       />
-      <MetricItem title={"Économie CO²"} value={props.line.metrics()?.CO2} />
+      <MetricItem title={"Économie CO²"} value={props.line?.metrics()?.CO2} />
     </>
   );
 }

@@ -1,6 +1,6 @@
 .graphicage-draw-helper-button {
-  @apply mb-2 flex mr-3 w-full justify-end items-center p-2;
-  height: 5vh;
+  @apply flex mr-3 w-full justify-end items-center;
+  height: 100%;
   flex: 1;
 }
 
