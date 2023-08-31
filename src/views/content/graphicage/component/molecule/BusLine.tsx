@@ -1,5 +1,5 @@
 import L, { LeafletMouseEvent } from "leaflet";
-import { createEffect, createSignal } from "solid-js";
+import { For, Show, createEffect, createSignal } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import {
   BusLinePointType,
@@ -21,6 +21,7 @@ import {
 } from "../../constant";
 import { setPickerColor } from "../atom/ColorPicker";
 import Line from "../atom/Line";
+import PolylineDragMarker from "../atom/PolylineDragMarker";
 import { deselectAllBusLines } from "../organism/BusLines";
 import {
   currentStep,
@@ -205,11 +206,11 @@ export function BusLine(props: BusLineProps) {
     }
   }
   // ! In first place can only add one waypoints between points ?
-  // const latLngList = props.line.latLngs();
-  // const pointProjectedCoord: L.LatLng[] = [];
-  // for (const point of props.line.points) {
-  //   pointProjectedCoord.push(L.latLng(point.lat, point.lon));
-  // }
+  const latLngList = () => props.line.latLngs();
+  const pointProjectedCoord: L.LatLng[] = [];
+  for (const point of props.line.points) {
+    pointProjectedCoord.push(L.latLng(point.lat, point.lon));
+  }
   return (
     <>
       <Line
@@ -223,8 +224,8 @@ export function BusLine(props: BusLineProps) {
         onClick={onClick}
         onMouseDown={onMouseDown}
       />
-      {/* <Show when={displayLineMode() == displayLineModeEnum.onRoad}>
-        <For each={latLngList}>
+      <Show when={displayLineMode() == displayLineModeEnum.onRoad}>
+        <For each={latLngList()}>
           {(coord: L.LatLng) => {
             console.log("coord", coord);
             // ! Boucler sur chaque latlgns
@@ -246,7 +247,7 @@ export function BusLine(props: BusLineProps) {
             );
           }}
         </For>
-      </Show> */}
+      </Show>
     </>
   );
 }
