@@ -202,7 +202,9 @@ export default function () {
   );
 }
 
+// TODO after creating line set it as selected and show the timeline in the information board in read mod
 async function createOrUpdateBusLine(busLine: BusLineType) {
+  busLine.setSelected(true);
   if (busLine.id == undefined) {
     await createBusLine(busLine);
   } else {
