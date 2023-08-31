@@ -74,11 +74,9 @@ export const getSelectedBusLine = (): BusLineType | undefined => {
 };
 
 export function updateBusLines(busLine: BusLineType) {
-  setBusLines((busLines) => {
-    if (busLine.id) {
-      busLines = busLines.filter((busline) => busline.id == busLine.id);
-    }
-    busLines.push(busLine);
-    return busLines;
-  });
+  let newBusLines = getBusLines();
+  if (busLine.id) {
+    newBusLines = getBusLines().filter((busline) => busline.id != busLine.id);
+  }
+  setBusLines([...newBusLines, busLine]);
 }
