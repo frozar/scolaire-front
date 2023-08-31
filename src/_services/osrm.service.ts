@@ -16,6 +16,32 @@ export class OsrmService {
     );
 
     if (!response) return [];
+    const Dp = response.routes[0].distance;
+    console.log(response);
+    console.log("-distance parcouru (m)", Dp);
+
+    const response_direct = await ServiceUtils.generic(
+      osrm +
+        "/" +
+        this.buildPositionURL([points[0], points[points.length - 1]]) +
+        "?geometries=geojson&overview=full"
+    );
+
+    const Dd = response_direct.routes[0].distance;
+    console.log("distance direct (m)", Dd);
+    // console.log("duration direct (s)", response_direct.routes[0].duration);
+
+    console.log("-degré de déviation (s)", Dp / Dd - 1);
+    console.log("-temps de parcourts (s)", response.routes[0].duration);
+    let res = 0;
+    let distance_restante = Dp;
+    response.routes[0].legs.map((elem, k) => {
+      res += (points.at(k)?.quantity ?? 0) * (distance_restante ?? 0);
+      distance_restante -= elem.distance;
+      console.log("res", res);
+    });
+    console.log("-km passagers", res);
+    console.log("-charge moyenne", res / Dp);
     return this.formatResponse(response.routes);
   }
 
