@@ -27,8 +27,14 @@ import SimpleLine from "../../informationBoard/components/svg-icons/SimpleLine";
 import { ColorPicker } from "../atom/ColorPicker";
 import { DrawHelperButton } from "../atom/DrawHelperButton";
 
-const [, { getLineUnderConstruction, setLineUnderConstruction }] =
-  useStateAction();
+const [
+  ,
+  {
+    getLineUnderConstruction,
+    setLineUnderConstruction,
+    updateNameLineUnderConstruction,
+  },
+] = useStateAction();
 
 export enum drawModeStep {
   start,
@@ -104,14 +110,17 @@ export const [displayLineMode, setDisplayLineMode] =
   createSignal<displayLineModeEnum>(displayLineModeEnum.straight);
 
 export default function () {
-  const [lineName, setLineName] = createSignal<string>("");
+  const [lineName, setLineName] = createSignal<string>(
+    getLineUnderConstruction().busLine.name ??
+      getLineUnderConstruction().busLine.schools[0].name
+  );
+
   const etablissementSelected = () => {
     return getLineUnderConstruction().busLine.schools;
   };
 
   createEffect(() => {
-    if (getLineUnderConstruction().busLine.schools.length > 0)
-      setLineName(getLineUnderConstruction().busLine.schools[0].name);
+    updateNameLineUnderConstruction(lineName());
   });
 
   return (
@@ -193,13 +202,16 @@ export default function () {
   );
 }
 
+// TODO after creating line set it as selected and show the timeline in the information board in read mod
 async function createOrUpdateBusLine(busLine: BusLineType) {
+  busLine.setSelected(true);
   if (busLine.id == undefined) {
     await createBusLine(busLine);
   } else {
     await updateBusLine(busLine);
   }
   quitModeAddLine();
+  setCurrentStep(drawModeStep.start);
 }
 
 async function createBusLine(busLine: BusLineType) {
