@@ -1,0 +1,4 @@
+.metric-item {
+  @apply text-gray-base italic text-sm list-disc list-inside mb-1;
+  font-family: "Mulish"
+}
