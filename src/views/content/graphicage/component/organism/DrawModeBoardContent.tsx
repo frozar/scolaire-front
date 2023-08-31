@@ -27,8 +27,14 @@ import SimpleLine from "../../informationBoard/components/svg-icons/SimpleLine";
 import { ColorPicker } from "../atom/ColorPicker";
 import { DrawHelperButton } from "../atom/DrawHelperButton";
 
-const [, { getLineUnderConstruction, setLineUnderConstruction }] =
-  useStateAction();
+const [
+  ,
+  {
+    getLineUnderConstruction,
+    setLineUnderConstruction,
+    updateNameLineUnderConstruction,
+  },
+] = useStateAction();
 
 export enum drawModeStep {
   start,
@@ -104,14 +110,17 @@ export const [displayLineMode, setDisplayLineMode] =
   createSignal<displayLineModeEnum>(displayLineModeEnum.straight);
 
 export default function () {
-  const [lineName, setLineName] = createSignal<string>("");
+  const [lineName, setLineName] = createSignal<string>(
+    getLineUnderConstruction().busLine.name ??
+      getLineUnderConstruction().busLine.schools[0].name
+  );
+
   const etablissementSelected = () => {
     return getLineUnderConstruction().busLine.schools;
   };
 
   createEffect(() => {
-    if (getLineUnderConstruction().busLine.schools.length > 0)
-      setLineName(getLineUnderConstruction().busLine.schools[0].name);
+    updateNameLineUnderConstruction(lineName());
   });
 
   return (
