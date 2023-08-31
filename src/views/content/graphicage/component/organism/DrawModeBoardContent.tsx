@@ -200,6 +200,7 @@ async function createOrUpdateBusLine(busLine: BusLineType) {
     await updateBusLine(busLine);
   }
   quitModeAddLine();
+  setCurrentStep(drawModeStep.start);
 }
 
 async function createBusLine(busLine: BusLineType) {
