@@ -1,10 +1,15 @@
 import L from "leaflet";
 import { createEffect, onCleanup } from "solid-js";
+import { useStateAction } from "../../../../../StateAction";
+import { WaypointType } from "../../../../../_entities/bus-line.entity";
+
+const [, { setLineUnderConstruction, getLineUnderConstruction }] =
+  useStateAction();
 
 type PolylineDragMarkersProps = {
   map: L.Map;
   latlngs: L.LatLng;
-  // ! Use to update waypoints ?
+  // ! Rename !?
   indexPointBefore: number;
 };
 const dotIcon =
@@ -39,6 +44,35 @@ export default function (props: PolylineDragMarkersProps) {
       props.map.dragging.enable();
 
       // ! ici ajouter le nouveau waypoints !
+      const newWaypoint: WaypointType = {
+        lat: polylineDragMarker.getLatLng().lat,
+        lon: polylineDragMarker.getLatLng().lng,
+      };
+
+      let waypoints = getLineUnderConstruction().busLine
+        .waypoints as WaypointType[];
+      waypoints = [...waypoints];
+      console.log("oldWaypoint =>", waypoints);
+      waypoints.splice(props.indexPointBefore, 0, newWaypoint);
+      console.log("new Waypoint =>", waypoints);
+      // setLineUnderConstruction((prev: LineUnderConstructionType) => {
+      // prev.busLine.waypoints?.splice(props.indexPointBefore, 0, newWaypoint);
+      // return { ...prev };
+      // });
+      // setLineUnderConstruction((prev) => {
+      // const updatedPrev = { ...prev };
+      // prev.busLine.waypoints?.splice(props.indexPointBefore, 0, newWaypoint);
+      // return { ...prev };
+      // });
+      setLineUnderConstruction({
+        ...getLineUnderConstruction(),
+        busLine: {
+          ...getLineUnderConstruction().busLine,
+          waypoints: waypoints,
+        },
+      });
+
+      // ! ensuite refaire l'update osrm
 
       document.removeEventListener("mouseup", handleMouseUp);
     }
