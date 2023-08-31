@@ -209,7 +209,8 @@ export function BusLine(props: BusLineProps) {
   const latLngList = () => props.line.latLngs();
   const pointProjectedCoord: L.LatLng[] = [];
   for (const point of props.line.points) {
-    pointProjectedCoord.push(L.latLng(point.lat, point.lon));
+    // ! Ajouter les coord des waypoints qui ne sont pas des points !?
+    pointProjectedCoord.push(L.latLng(point.onRoadLat, point.onRoadLon));
   }
   return (
     <>
@@ -226,23 +227,39 @@ export function BusLine(props: BusLineProps) {
       />
       <Show when={displayLineMode() == displayLineModeEnum.onRoad}>
         <For each={latLngList()}>
-          {(coord: L.LatLng, i) => {
-            console.log("coord", coord);
+          {(coord: L.LatLng) => {
+            // console.log("coord", coord);
             // ! Boucler sur chaque latlgns
             // ! si correspond à un point => indexPointBefore + 1 et return void
-            // ! si correspond à coord => break ??
-            // const indexPointBefore = 0;
-            // for (let i = 0; latLngList.length - 1; i++) {
-            //   if (latLngList[i] coord) {
-            //     indexPointBefore + 1;
-            //   }
-            // }
+            let indexPointBefore = 0;
+
+            // console.log("pointProjectedCoord", pointProjectedCoord);
+            // console.log("latLngList()", latLngList());
+
+            for (let i = 0; latLngList.length - 1; i++) {
+              // ! direct comparison doesn't work
+              if (
+                pointProjectedCoord[indexPointBefore].lat ==
+                  latLngList()[i].lat &&
+                pointProjectedCoord[indexPointBefore].lng == latLngList()[i].lng
+              ) {
+                // console.log("first if");
+
+                indexPointBefore += 1;
+              }
+              if (coord == latLngList()[i]) {
+                // console.log("second if");
+
+                break; // ! après => sauf si waypoint ?
+              }
+            }
+            // console.log("indexPointBefore", indexPointBefore);
 
             return (
               <PolylineDragMarker
                 map={props.map}
                 latlngs={coord}
-                indexPointBefore={0} // ! use correct value => indexPointBefore
+                indexPointBefore={indexPointBefore} // ! verify it's the correct value !
               />
             );
           }}

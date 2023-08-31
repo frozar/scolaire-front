@@ -4,6 +4,7 @@ import { onCleanup } from "solid-js";
 type PolylineDragMarkersProps = {
   map: L.Map;
   latlngs: L.LatLng;
+  // ! Use to update waypoints ?
   indexPointBefore: number;
 };
 const dotIcon =
