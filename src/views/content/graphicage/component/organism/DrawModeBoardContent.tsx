@@ -97,7 +97,6 @@ async function onClick() {
     // ! fill waypoints if undefined
     // ! (or put it [] by default ?)
     if (!getLineUnderConstruction().busLine.waypoints) {
-      console.log("No initial waypoints");
       const waypoints: WaypointType[] = [];
 
       for (const point of getLineUnderConstruction().busLine.points) {

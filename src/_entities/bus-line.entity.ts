@@ -211,7 +211,6 @@ export async function updatePolylineWithOsrm(busLine: BusLineType) {
       onRoadLat: latlngs[1][i].lat,
     });
   }
-  console.log("newPoints", newPoints);
   setLineUnderConstruction({
     ...getLineUnderConstruction(),
     busLine: { ...getLineUnderConstruction().busLine, points: newPoints },
