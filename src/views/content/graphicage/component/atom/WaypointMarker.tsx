@@ -90,7 +90,7 @@ export default function (props: PolylineDragMarkersProps) {
   // eslint-disable-next-line solid/reactivity
   const waypointMarker = L.marker(props.latlngs, {
     icon: waypointMarkerIcon,
-    pane: "overlayPane",
+    pane: "markerPane",
     // draggable: true,
     keyboard: false,
   }).on("contextmenu", onRightClick);
