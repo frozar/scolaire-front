@@ -1,4 +1,3 @@
-import { createEffect } from "solid-js";
 import { BusLineType } from "../../../../../../_entities/bus-line.entity";
 import { MetricItem, MetricItemProps } from "../atom/MetricItem";
 
@@ -10,12 +9,11 @@ export type MetricsProps = {
 };
 
 export default function (props: MetricsProps) {
-  createEffect(() => console.log(props));
   return (
     <>
       <MetricItem
         title={"Distance parcourue"}
-        value={props.line?.metrics()?.distanceBus}
+        value={props.line?.metrics()?.distance}
         unite={"km"}
       />
 

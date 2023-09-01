@@ -36,6 +36,9 @@ export class BusLineEntity {
         dbData.polyline.data.map((item) => L.latLng(item.lat, item.lng))
       );
     }
+
+    setMetrics(dbData.metrics);
+
     return {
       id: dbData.id,
       schools: [school],
@@ -74,6 +77,7 @@ export class BusLineEntity {
       setMetrics: setMetrics,
     };
   }
+
   static dbFormat(line: BusLineType): Omit<BusLineDBType, "id"> {
     const name = line.name ? line.name : "";
     return {
@@ -82,6 +86,15 @@ export class BusLineEntity {
       school_id: line.schools[0].id,
       bus_line_stop: formatBusLinePointDBType(line.points),
       polyline: EntityUtils.buildLocationPath(line.latLngs()),
+      metrics: {
+        distance: line.metrics().distance,
+        temps: line.metrics().temps,
+        distancePCC: line.metrics().distancePCC,
+        deviation: line.metrics().deviation,
+        kmPassager: line.metrics().kmPassager,
+        txRemplissMoy: line.metrics().txRemplissMoy,
+        CO2: line.metrics().CO2,
+      },
     };
   }
 
@@ -174,8 +187,13 @@ const getAssociatedBusLinePoint = (dbPoint: BusLinePointDBType): PointType => {
 
 export async function updatePolylineWithOsrm(busLine: BusLineType) {
   enableSpinningWheel();
-  const latlngs: L.LatLng[] = await OsrmService.getRoadPolyline(busLine.points);
+  const { latlngs, metrics } = await OsrmService.getRoadPolyline(
+    busLine.points
+  );
+
   busLine.setLatLngs(latlngs);
+  busLine.setMetrics(metrics);
+
   disableSpinningWheel();
 }
 
@@ -211,6 +229,7 @@ export type BusLineDBType = {
   color: string;
   bus_line_stop: BusLinePointDBType[];
   polyline: LocationPathDBType;
+  metrics: busLineMetricType;
 };
 
 export type BusLinePointDBType = {
@@ -218,8 +237,9 @@ export type BusLinePointDBType = {
   school_id: number;
   quantity: number;
 };
+
 export type busLineMetricType = {
-  distanceBus?: number;
+  distance?: number;
   temps?: number;
   distancePCC?: number;
   deviation?: number;

@@ -18,7 +18,7 @@ export const Label: Story = {
   args: {
     line: {
       metrics: () => {
-        distanceBus: 0;
+        return { distance: 0 };
       },
     } as Pick<BusLineType, "metrics">,
   },
