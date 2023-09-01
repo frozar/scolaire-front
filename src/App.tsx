@@ -1,4 +1,4 @@
-import { createEffect } from "solid-js";
+import { Match, Switch, createEffect } from "solid-js";
 import { useStateAction } from "./StateAction";
 import { useStateGui } from "./StateGui";
 
@@ -10,6 +10,7 @@ import DisplayUserInformation from "./userInformation/DisplayUserInformation";
 import DragAndDropSummary from "./userInformation/DragAndDropSummary";
 import GeneratorDialogBox from "./userInformation/GeneratorDialogBox";
 import RemoveConfirmationDialogBox from "./userInformation/RemoveConfirmationDialogBox";
+import Dashboard from "./views/content/dashboard/Dashboard";
 import Graphicage from "./views/content/graphicage/Graphicage";
 import { setPointsReady } from "./views/content/graphicage/component/organism/Points";
 import ExportConfirmationDialogBox from "./views/content/graphicage/rightMapMenu/export/ExportConfirmationDialogBox";
@@ -54,17 +55,17 @@ export default () => {
   return (
     <div ref={refApp}>
       <Layout>
-        <Graphicage />
-        <ContextManager />
-
-        {/* <Switch fallback={<p>Page not found</p>}>
+        <Switch>
           <Match when={getSelectedMenu() == "dashboard"}>
             <Dashboard />
           </Match>
 
           <Match when={getSelectedMenu() == "graphicage"}>
             <Graphicage />
-            <ContextManager /> */}
+            <ContextManager />
+          </Match>
+        </Switch>
+
         {/* <InformationBoardLayout>
               <InformationBoard />
             </InformationBoardLayout> */}
