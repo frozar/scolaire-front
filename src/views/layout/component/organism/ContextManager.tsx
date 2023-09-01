@@ -1,27 +1,44 @@
-import { createEffect, createSignal } from "solid-js";
+import { Match, Switch, createEffect, createSignal } from "solid-js";
+import DrawModeBoardContent from "../../../content/graphicage/component/organism/DrawModeBoardContent";
 import InformationContent from "../../../content/graphicage/informationBoard/InformationContent";
 import InformationBoardLayout from "../template/InformationBoardLayout";
 
-type BoardsType = "home" | "schools" | "stops";
+export type BoardsType =
+  | "schools"
+  | "stops"
+  | "draw-line"
+  | "selected-informations";
 
 export const [isInDrawMod, setIsDrawMod] = createSignal<boolean>(false);
 export const toggleDrawMod = () => setIsDrawMod((bool) => !bool);
 
-export const [onBoard, setOnBoard] = createSignal<BoardsType>("home");
+export const [onBoard, setOnBoard] = createSignal<BoardsType>(
+  "selected-informations"
+);
+export const changeBoard = (boardName: BoardsType) => setOnBoard(boardName);
 
 export default function () {
   createEffect(() => {
     if (isInDrawMod()) {
-      console.log("In add/edit line mode");
+      changeBoard("draw-line");
     } else {
-      console.log("In read mode");
+      changeBoard("selected-informations");
     }
   });
 
   return (
     <section>
       <InformationBoardLayout>
-        <InformationContent />
+        <Switch>
+          <Match when={onBoard() == "selected-informations"}>
+            <InformationContent />
+          </Match>
+          <Match when={onBoard() == "draw-line"}>
+            <DrawModeBoardContent />
+          </Match>
+          <Match when={onBoard() == "schools"}>Liste des écoles</Match>
+          <Match when={onBoard() == "stops"}>Liste des arrêts</Match>
+        </Switch>
       </InformationBoardLayout>
     </section>
   );
