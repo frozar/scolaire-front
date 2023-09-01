@@ -23,6 +23,7 @@ import {
 import { setPickerColor } from "../atom/ColorPicker";
 import Line from "../atom/Line";
 import PolylineDragMarker from "../atom/PolylineDragMarker";
+import WaypointMarker from "../atom/WaypointMarker";
 import { deselectAllBusLines } from "../organism/BusLines";
 import {
   currentStep,
@@ -269,7 +270,42 @@ export function BusLine(props: BusLineProps) {
             );
           }}
         </For>
+        <Show when={getLineUnderConstruction().busLine.waypoints}>
+          <For each={getLineUnderConstruction().busLine.waypoints}>
+            {(waypoint: WaypointType, i) => {
+              if (!waypoint.idSchool && !waypoint.idStop) {
+                return (
+                  <WaypointMarker
+                    map={props.map}
+                    latlngs={L.latLng(waypoint.lat, waypoint.lon)}
+                    index={i()}
+                  />
+                );
+              }
+            }}
+          </For>
+        </Show>
       </Show>
+      {/* <Show
+        when={
+          getLineUnderConstruction().busLine.waypoints &&
+          displayLineMode() == displayLineModeEnum.onRoad
+        }
+      >
+        <For each={getLineUnderConstruction().busLine.waypoints}>
+          {(waypoint: WaypointType, i) => {
+            if (!waypoint.idSchool && !waypoint.idStop) {
+              return (
+                <WaypointMarker
+                  map={props.map}
+                  latlngs={L.latLng(waypoint.lat, waypoint.lon)}
+                  index={i()}
+                />
+              );
+            }
+          }}
+        </For>
+      </Show> */}
     </>
   );
 }
