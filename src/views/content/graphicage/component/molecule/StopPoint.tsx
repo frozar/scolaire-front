@@ -244,6 +244,24 @@ export function StopPoint(props: StopPointProps) {
 
     if (isInAddLineMode() && isInLineUnderConstruction != undefined) {
       removePointToLineUnderConstruction(props.point);
+      const waypoints = getLineUnderConstruction().busLine.waypoints;
+      if (waypoints) {
+        const waypointIndex = waypoints.findIndex(
+          (waypoint) => waypoint.idStop == props.point.id
+        );
+
+        const newWaypoints = [...waypoints];
+        newWaypoints.splice(waypointIndex, 1);
+
+        setLineUnderConstruction({
+          ...getLineUnderConstruction(),
+          busLine: {
+            ...getLineUnderConstruction().busLine,
+            waypoints: newWaypoints,
+          },
+        });
+      }
+
       circle?.setStyle({ fillColor: COLOR_STOP_LIGHT });
     }
   };
