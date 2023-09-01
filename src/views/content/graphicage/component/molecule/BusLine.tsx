@@ -286,26 +286,6 @@ export function BusLine(props: BusLineProps) {
           </For>
         </Show>
       </Show>
-      {/* <Show
-        when={
-          getLineUnderConstruction().busLine.waypoints &&
-          displayLineMode() == displayLineModeEnum.onRoad
-        }
-      >
-        <For each={getLineUnderConstruction().busLine.waypoints}>
-          {(waypoint: WaypointType, i) => {
-            if (!waypoint.idSchool && !waypoint.idStop) {
-              return (
-                <WaypointMarker
-                  map={props.map}
-                  latlngs={L.latLng(waypoint.lat, waypoint.lon)}
-                  index={i()}
-                />
-              );
-            }
-          }}
-        </For>
-      </Show> */}
     </>
   );
 }

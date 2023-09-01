@@ -1,8 +1,13 @@
 import L from "leaflet";
 import { onCleanup } from "solid-js";
+import { useStateAction } from "../../../../../StateAction";
+import {
+  WaypointType,
+  updatePolylineWithOsrm,
+} from "../../../../../_entities/bus-line.entity";
 
-// const [, { setLineUnderConstruction, getLineUnderConstruction }] =
-//   useStateAction();
+const [, { setLineUnderConstruction, getLineUnderConstruction }] =
+  useStateAction();
 
 type PolylineDragMarkersProps = {
   map: L.Map;
@@ -65,11 +70,29 @@ export default function (props: PolylineDragMarkersProps) {
   //   document.addEventListener("mouseup", handleMouseUp);
   // }
 
+  function onRightClick() {
+    console.log("onRightClick on WaypointMarker");
+
+    let waypoints = getLineUnderConstruction().busLine
+      .waypoints as WaypointType[];
+    waypoints = [...waypoints];
+    waypoints.splice(props.index, 1);
+
+    setLineUnderConstruction({
+      ...getLineUnderConstruction(),
+      busLine: {
+        ...getLineUnderConstruction().busLine,
+        waypoints: waypoints,
+      },
+    });
+    updatePolylineWithOsrm(getLineUnderConstruction().busLine);
+  }
+
   const waypointMarker = L.marker(props.latlngs, {
     icon: waypointMarkerIcon,
     pane: "overlayPane",
     keyboard: false,
-  });
+  }).on("contextmenu", onRightClick);
 
   waypointMarker.addTo(props.map);
 
