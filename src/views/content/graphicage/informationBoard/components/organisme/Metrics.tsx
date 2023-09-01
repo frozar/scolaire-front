@@ -13,7 +13,7 @@ export default function (props: MetricsProps) {
     <>
       <MetricItem
         title={"Distance parcourue"}
-        value={props.line?.metrics()?.distance}
+        value={mToKm(props.line?.metrics()?.distance)}
         unite={"km"}
       />
 
@@ -39,7 +39,12 @@ export default function (props: MetricsProps) {
         value={props.line?.metrics()?.txRemplissMoy}
         unite={"personnes"}
       />
+
       <MetricItem title={"Économie CO²"} value={props.line?.metrics()?.CO2} />
     </>
   );
+}
+
+function mToKm(value: number | undefined) {
+  return value ? value / 1000 : undefined;
 }
