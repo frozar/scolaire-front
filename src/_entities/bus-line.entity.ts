@@ -220,7 +220,7 @@ export async function updatePolylineWithOsrm(busLine: BusLineType) {
 
   disableSpinningWheel();
 }
-
+// ! Comment to commit and see eslint errors
 export type WaypointType = {
   idSchool?: number;
   idStop?: number;
