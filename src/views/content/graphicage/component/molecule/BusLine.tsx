@@ -9,6 +9,7 @@ import {
   setSchoolPointsColor,
   setStopPointsColor,
 } from "../../../../../leafletUtils";
+import { setRemoveConfirmation } from "../../../../../signaux";
 import { NatureEnum } from "../../../../../type";
 import {
   COLOR_SCHOOL_FOCUS,
@@ -96,11 +97,13 @@ export function BusLine(props: BusLineProps) {
 
   const onClick = () => {
     if (isInRemoveLineMode()) {
-      //TODO fonction à explorer --- To Fix
-      // setRemoveConfirmation({
-      //   displayed: true,
-      //   idBusLine: line.id,
-      // });
+      //TODO fonction à explorer
+      if (props.line.id) {
+        setRemoveConfirmation({
+          displayed: true,
+          idBusLine: props.line.id,
+        });
+      }
     }
 
     if (isInReadMode()) {
