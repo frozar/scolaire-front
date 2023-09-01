@@ -1,15 +1,16 @@
 import { For, Show } from "solid-js";
 import { useStateAction } from "../../../../StateAction";
 import { BusLineType } from "../../../../_entities/bus-line.entity";
+import { onBoard } from "../../../layout/component/organism/ContextManager";
 import { TimelineAddPointButton } from "../component/atom/TimelineAddPointButton";
 import TimelineItem from "../component/atom/TimelineItem";
 import { getSelectedBusLine } from "../component/organism/BusLines";
 
-const [, { getLineUnderConstruction, isInAddLineMode }] = useStateAction();
+const [, { getLineUnderConstruction }] = useStateAction();
 
 export default function () {
   const busLine: () => BusLineType = () =>
-    isInAddLineMode()
+    onBoard() == "draw-line"
       ? getLineUnderConstruction().busLine
       : (getSelectedBusLine() as BusLineType);
 
@@ -22,7 +23,7 @@ export default function () {
         <For each={busLine().points}>
           {(stop, i) => (
             <>
-              <Show when={isInAddLineMode()}>
+              <Show when={onBoard() == "draw-line"}>
                 <TimelineAddPointButton indice={i()} />
               </Show>
 
