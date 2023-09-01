@@ -94,8 +94,6 @@ async function onClick() {
     if (getLineUnderConstruction().busLine.points.length < 2) {
       return;
     }
-    // ! fill waypoints if undefined
-    // ! (or put it [] by default ?)
     if (!getLineUnderConstruction().busLine.waypoints) {
       const waypoints: WaypointType[] = [];
 
@@ -114,8 +112,7 @@ async function onClick() {
           });
         }
       }
-      // ! when busline.points is modified, waypoints is not updated
-      console.log("waypoints", waypoints);
+
       setLineUnderConstruction({
         ...getLineUnderConstruction(),
         busLine: {
@@ -129,7 +126,6 @@ async function onClick() {
     setDisplayLineMode(displayLineModeEnum.onRoad);
   } else if (displayLineMode() == displayLineModeEnum.onRoad) {
     getLineUnderConstruction().busLine.setLatLngs([]);
-    // ! Tant que l'info waypoint pas traité dans le mode straight (temporaire) => suppr waypoint !
 
     setDisplayLineMode(displayLineModeEnum.straight);
   }
@@ -268,7 +264,6 @@ async function nextStep() {
         break;
       }
       if (displayLineMode() == displayLineModeEnum.straight) {
-        // ! make sure waypoints value is fill !
         await updatePolylineWithOsrm(getLineUnderConstruction().busLine);
       }
 

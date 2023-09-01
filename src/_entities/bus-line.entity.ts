@@ -215,11 +215,10 @@ export async function updatePolylineWithOsrm(busLine: BusLineType) {
     ...getLineUnderConstruction(),
     busLine: { ...getLineUnderConstruction().busLine, points: newPoints },
   });
-  console.log("getLineUnderConstruction", getLineUnderConstruction());
 
   disableSpinningWheel();
 }
-// ! Comment to commit and see eslint errors
+
 export type WaypointType = {
   idSchool?: number;
   idStop?: number;
@@ -249,7 +248,6 @@ export type BusLinePointType = {
   name: string;
   lon: number;
   lat: number;
-  // ! Put this elsewere ?
   onRoadLon?: number;
   onRoadLat?: number;
   quantity: number;

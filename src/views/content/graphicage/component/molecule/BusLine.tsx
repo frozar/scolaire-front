@@ -49,9 +49,6 @@ const [
 
 export const [draggingLine, setDraggingLine] = createSignal<boolean>(false);
 
-// export const [displayPolylineDragMarkers, setDisplayPolylineDragMarkers] =
-//   createSignal<boolean>(false);
-
 export type BusLineProps = {
   line: BusLineType;
   map: L.Map;
@@ -93,14 +90,6 @@ export function BusLine(props: BusLineProps) {
     if (isInRemoveLineMode() || isInReadMode()) {
       buslineSetBoldStyle(polyline, arrows, "white");
     }
-    // // ! Both conditions are necessary ?!
-    // if (
-    //   currentStep() == drawModeStep.editLine &&
-    //   displayLineMode() == displayLineModeEnum.onRoad
-    // ) {
-    //   setDisplayPolylineDragMarkers(true);
-    //   console.log(displayPolylineDragMarkers());
-    // }
   };
 
   const onMouseOut = (polyline: L.Polyline, arrows: L.Marker[]) => {
@@ -108,11 +97,6 @@ export function BusLine(props: BusLineProps) {
     if (isInRemoveLineMode() || isInReadMode()) {
       buslineSetNormalStyle(polyline, arrows, props.line.color());
     }
-    //   // ! Rewrite
-    //   if (displayPolylineDragMarkers()) {
-    //     setDisplayPolylineDragMarkers(false);
-    //     console.log(displayPolylineDragMarkers());
-    //   }
   };
 
   const onClick = () => {
@@ -242,20 +226,15 @@ export function BusLine(props: BusLineProps) {
       <Show when={displayLineMode() == displayLineModeEnum.onRoad}>
         <For each={latLngList()}>
           {(coord: L.LatLng) => {
-            // ! Boucler sur chaque latlgns
-            // ! si correspond à un point => indexPointBefore + 1 et return void
-            let indexPointBefore = 0;
+            let index = 0;
 
-            // ! Déplacer
             const pointProjectedCoord: L.LatLng[] = [];
 
             if (getLineUnderConstruction().busLine.waypoints) {
-              // ! Si waypoint existant
               for (const point of props.line.waypoints as WaypointType[]) {
                 pointProjectedCoord.push(L.latLng(point.lat, point.lon));
               }
             } else {
-              // ! Sinon utilise points
               for (const point of props.line.points) {
                 pointProjectedCoord.push(
                   L.latLng(point.onRoadLat as number, point.onRoadLon as number)
@@ -264,16 +243,14 @@ export function BusLine(props: BusLineProps) {
             }
 
             for (let i = 0; latLngList.length - 1; i++) {
-              // ! direct comparison doesn't work
               if (
-                pointProjectedCoord[indexPointBefore].lat ==
-                  latLngList()[i].lat &&
-                pointProjectedCoord[indexPointBefore].lng == latLngList()[i].lng
+                pointProjectedCoord[index].lat == latLngList()[i].lat &&
+                pointProjectedCoord[index].lng == latLngList()[i].lng
               ) {
-                indexPointBefore += 1;
+                index += 1;
               }
               if (coord == latLngList()[i]) {
-                break; // ! Mettre en place un return; dans le cas point correspond à un point de passage
+                break; // TODO: Do not display polylineDragMarker for stop, school or waypoint
               }
             }
 
@@ -281,7 +258,7 @@ export function BusLine(props: BusLineProps) {
               <PolylineDragMarker
                 map={props.map}
                 latlngs={coord}
-                indexPointBefore={indexPointBefore} // ! verify it's the correct value !
+                index={index}
               />
             );
           }}

@@ -1,5 +1,6 @@
 import { FaRegularTrashCan } from "solid-icons/fa";
 import { useStateAction } from "../../../../../StateAction";
+import { WaypointType } from "../../../../../_entities/bus-line.entity";
 import { LineUnderConstructionType } from "../../../../../type";
 import { COLOR_STOP_LIGHT } from "../../constant";
 import { linkMap } from "../organism/Points";
@@ -19,21 +20,22 @@ export function TimelineRemovePointButton(props: {
     circle?.setStyle({ fillColor: COLOR_STOP_LIGHT });
 
     const stops = [...props.getter().busLine.points];
-    const pointId = stops[id].id; // ! bizare
+    const pointId = stops[id].id;
     stops.splice(id, 1);
     props.setter({
       ...props.getter(),
       busLine: { ...props.getter().busLine, points: stops },
     });
 
-    const waypoints = getLineUnderConstruction().busLine.waypoints;
-    if (waypoints) {
-      const waypointIndex = waypoints.findIndex(
-        (waypoint) => waypoint.idStop == pointId
+    // Update waypoints array
+    const newWaypoints = [
+      ...(getLineUnderConstruction().busLine.waypoints as WaypointType[]),
+    ];
+    if (newWaypoints) {
+      newWaypoints.splice(
+        newWaypoints.findIndex((waypoint) => waypoint.idStop == pointId),
+        1
       );
-
-      const newWaypoints = [...waypoints];
-      newWaypoints.splice(waypointIndex, 1);
 
       setLineUnderConstruction({
         ...getLineUnderConstruction(),
