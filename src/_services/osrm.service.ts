@@ -45,8 +45,11 @@ export class OsrmService {
 
     const distance = response.routes[0].distance;
 
+    const duration = response.routes[0].duration;
+
     metrics = {
       distance,
+      duration,
     };
 
     return { latlngs, metrics };

@@ -24,8 +24,8 @@ export default function (props: MetricsProps) {
 
       <MetricItem
         title={"Temps de parcours"}
-        value={props.line?.metrics()?.temps}
-        unite={"h"}
+        value={displayedTime(props.line?.metrics()?.duration)}
+        unite={getMetricDuration(props.line?.metrics()?.duration)}
       />
 
       <MetricItem
@@ -47,4 +47,34 @@ export default function (props: MetricsProps) {
 
 function mToKm(value: number | undefined) {
   return value ? value / 1000 : undefined;
+}
+
+function displayedTime(value: number | undefined) {
+  if (value) {
+    return value > 3600 ? sToH(value) : sToM(value);
+  }
+}
+function sToH(value: number) {
+  let duration;
+  duration = value / 3600;
+  duration = roundDecimal(duration, 2);
+  return duration;
+}
+
+function sToM(value: number) {
+  let duration;
+  duration = value / 60;
+  duration = roundDecimal(duration, 2);
+  return duration;
+}
+
+function roundDecimal(nombre: number, precision: number) {
+  const tmp = Math.pow(10, precision);
+  return Math.round(nombre * tmp) / tmp;
+}
+
+function getMetricDuration(value: number | undefined) {
+  if (value) {
+    return value > 3600 ? "h" : "min";
+  }
 }

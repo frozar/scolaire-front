@@ -88,7 +88,7 @@ export class BusLineEntity {
       polyline: EntityUtils.buildLocationPath(line.latLngs()),
       metrics: {
         distance: line.metrics().distance,
-        temps: line.metrics().temps,
+        duration: line.metrics().duration,
         distancePCC: line.metrics().distancePCC,
         deviation: line.metrics().deviation,
         kmPassager: line.metrics().kmPassager,
@@ -240,7 +240,7 @@ export type BusLinePointDBType = {
 
 export type busLineMetricType = {
   distance?: number;
-  temps?: number;
+  duration?: number;
   distancePCC?: number;
   deviation?: number;
   kmPassager?: number;
