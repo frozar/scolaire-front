@@ -8,7 +8,7 @@ import GraphicageLogo from "./component/atom/GraphicageLogo";
 import SettingsLogo from "./component/atom/SettingsLogo";
 import SupportLogo from "./component/atom/SupportLogo";
 import VoirieLogo from "./component/atom/VoirieLogo";
-import { changeBoard } from "./component/organism/ContextManager";
+import { changeBoard, onBoard } from "./component/organism/ContextManager";
 const [, { setSelectedMenu, getSelectedMenu }] = useStateGui();
 
 export const [isOnPage, setIsOnPage] = createSignal<boolean>(true);
@@ -35,6 +35,9 @@ const menuItems: MenuItemType[] = [
     label: "Graphicage",
     isDisabled: false,
     onClick: () => {
+      if (onBoard() == "schools" || onBoard() == "stops") {
+        changeBoard("selected-informations");
+      }
       setIsOnPage(true);
       setSelectedMenu("graphicage");
     },
