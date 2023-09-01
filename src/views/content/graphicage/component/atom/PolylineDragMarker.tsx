@@ -70,7 +70,7 @@ export default function (props: PolylineDragMarkersProps) {
 
   const polylineDragMarker = L.marker(props.latlngs, {
     icon: dragMarkerIcon,
-    pane: "overlayPane",
+    pane: "markerPane",
     keyboard: false,
   }).on("mousedown", onMouseDown);
 

@@ -91,6 +91,7 @@ export default function (props: PolylineDragMarkersProps) {
   const waypointMarker = L.marker(props.latlngs, {
     icon: waypointMarkerIcon,
     pane: "overlayPane",
+    // draggable: true,
     keyboard: false,
   }).on("contextmenu", onRightClick);
 
