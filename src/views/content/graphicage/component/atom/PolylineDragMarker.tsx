@@ -1,5 +1,5 @@
 import L from "leaflet";
-import { createEffect, onCleanup } from "solid-js";
+import { onCleanup } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import {
   WaypointType,
@@ -24,56 +24,92 @@ export default function (props: PolylineDragMarkersProps) {
     html: dotIcon,
   });
 
-  function onMouseDown() {
-    props.map.dragging.disable();
-    createEffect(() => {
-      props.map?.on("mousemove", ({ latlng }) => {
-        polylineDragMarker.setLatLng(latlng);
-      });
-    });
-    // ! Déplacer hors de là ?
-    function handleMouseUp() {
-      props.map?.off("mousemove");
-      if (props.map.hasEventListeners("mousemove")) {
-        props.map.off("mousemove");
-      }
+  // function onMouseDown() {
+  //   props.map.dragging.disable();
+  //   createEffect(() => {
+  //     props.map?.on("mousemove", ({ latlng }) => {
+  //       polylineDragMarker.setLatLng(latlng);
+  //     });
+  //   });
+  //   // ! Déplacer hors de là ?
+  //   function handleMouseUp() {
+  //     props.map?.off("mousemove");
+  //     if (props.map.hasEventListeners("mousemove")) {
+  //       props.map.off("mousemove");
+  //     }
 
-      props.map.dragging.enable();
+  //     props.map.dragging.enable();
 
-      const newWaypoint: WaypointType = {
-        lat: polylineDragMarker.getLatLng().lat,
-        lon: polylineDragMarker.getLatLng().lng,
-      };
+  //     const newWaypoint: WaypointType = {
+  //       lat: polylineDragMarker.getLatLng().lat,
+  //       lon: polylineDragMarker.getLatLng().lng,
+  //     };
 
-      // ! Rewrite
-      let waypoints = getLineUnderConstruction().busLine
-        .waypoints as WaypointType[];
-      waypoints = [...waypoints];
-      console.log("oldWaypoint =>", waypoints);
-      waypoints.splice(props.indexPointBefore + 1, 0, newWaypoint); // ! Fix indexPointBeforeValue
-      console.log("new Waypoint =>", waypoints);
+  //     // ! Rewrite
+  //     let waypoints = getLineUnderConstruction().busLine
+  //       .waypoints as WaypointType[];
+  //     waypoints = [...waypoints];
+  //     console.log("oldWaypoint =>", waypoints);
+  //     waypoints.splice(props.indexPointBefore + 1, 0, newWaypoint); // ! Fix indexPointBeforeValue
+  //     console.log("new Waypoint =>", waypoints);
 
-      setLineUnderConstruction({
-        ...getLineUnderConstruction(),
-        busLine: {
-          ...getLineUnderConstruction().busLine,
-          waypoints: waypoints,
-        },
-      });
+  //     setLineUnderConstruction({
+  //       ...getLineUnderConstruction(),
+  //       busLine: {
+  //         ...getLineUnderConstruction().busLine,
+  //         waypoints: waypoints,
+  //       },
+  //     });
 
-      updatePolylineWithOsrm(getLineUnderConstruction().busLine);
+  //     updatePolylineWithOsrm(getLineUnderConstruction().busLine);
 
-      document.removeEventListener("mouseup", handleMouseUp);
-    }
-    document.addEventListener("mouseup", handleMouseUp);
-  }
+  //     document.removeEventListener("mouseup", handleMouseUp);
+  //   }
+  //   document.addEventListener("mouseup", handleMouseUp);
+  // }
+
+  // // eslint-disable-next-line solid/reactivity
+  // const polylineDragMarker = L.marker(props.latlngs, {
+  //   icon: dragMarkerIcon,
+  //   pane: "markerPane",
+  //   keyboard: false,
+  // }).on("mousedown", onMouseDown);
 
   // eslint-disable-next-line solid/reactivity
   const polylineDragMarker = L.marker(props.latlngs, {
     icon: dragMarkerIcon,
     pane: "markerPane",
+    draggable: true,
     keyboard: false,
-  }).on("mousedown", onMouseDown);
+    // ! externalise the function
+    // eslint-disable-next-line solid/reactivity
+  }).on("dragend", (e) => {
+    console.log("dragend polylineDragMarker=>", e);
+    const newWaypoint: WaypointType = {
+      lat: polylineDragMarker.getLatLng().lat,
+      lon: polylineDragMarker.getLatLng().lng,
+    };
+    // ! Rewrite
+    let waypoints = getLineUnderConstruction().busLine
+      .waypoints as WaypointType[];
+    waypoints = [...waypoints];
+    console.log("oldWaypoint =>", waypoints);
+    waypoints.splice(props.indexPointBefore + 1, 0, newWaypoint); // ! Fix indexPointBeforeValue
+    console.log("new Waypoint =>", waypoints);
+
+    setLineUnderConstruction({
+      ...getLineUnderConstruction(),
+      busLine: {
+        ...getLineUnderConstruction().busLine,
+        waypoints: waypoints,
+      },
+    });
+
+    updatePolylineWithOsrm(getLineUnderConstruction().busLine);
+  });
+  // .on("dragstart", (e) => {
+  //   console.log("e=>", e);
+  // })
 
   // eslint-disable-next-line solid/reactivity
   polylineDragMarker.addTo(props.map);
