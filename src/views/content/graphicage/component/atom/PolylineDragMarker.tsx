@@ -57,7 +57,7 @@ export default function (props: PolylineDragMarkersProps) {
         .waypoints as WaypointType[];
       waypoints = [...waypoints];
       console.log("oldWaypoint =>", waypoints);
-      waypoints.splice(props.indexPointBefore, 0, newWaypoint);
+      waypoints.splice(props.indexPointBefore + 1, 0, newWaypoint); // ! Fix indexPointBeforeValue
       console.log("new Waypoint =>", waypoints);
       // setLineUnderConstruction((prev: LineUnderConstructionType) => {
       // prev.busLine.waypoints?.splice(props.indexPointBefore, 0, newWaypoint);
