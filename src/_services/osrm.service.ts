@@ -9,36 +9,6 @@ import { ServiceUtils } from "./_utils.service";
 
 const osrm = import.meta.env.VITE_API_OSRM_URL;
 
-type osrmResponseType = { routes: routesType[] };
-
-// export class OsrmService {
-// static async getRoadPolyline(
-//   points: BusLinePointType[]
-// ): Promise<{ latlngs: L.LatLng[]; metrics: busLineMetricType }> {
-//   const response: osrmResponseType = await ServiceUtils.generic(
-// export class OsrmService {
-//   static async getRoadPolyline(waypoints: WaypointType[]): Promise<L.LatLng[]> {
-//     const response = await ServiceUtils.generic(
-//       osrm +
-//         "/" +
-//         this.buildPositionURL(waypoints) +
-//         "?geometries=geojson&overview=full"
-//     );
-
-//     if (!response) return [];
-//     return this.formatResponse(response.routes);
-//   }
-
-//   private static buildPositionURL(points: WaypointType[]): string {
-//     return points.map((point) => point.lon + "," + point.lat).join(";");
-//   }
-
-//   private static formatResponse(routes: routesType[]): L.LatLng[] {
-//     if (routes[0] == undefined) return [];
-//     const coordinates = routes[0].geometry.coordinates;
-//     return coordinates.map((elt: number[]) => L.latLng(elt[1], elt[0]));
-//   }
-// }
 export class OsrmService {
   static async getRoadPolyline(busLine: BusLineType): Promise<{
     latlngs: [L.LatLng[], L.LatLng[]];

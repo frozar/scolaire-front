@@ -101,7 +101,6 @@ async function onClick() {
       const waypoints: WaypointType[] = [];
 
       for (const point of getLineUnderConstruction().busLine.points) {
-        // ! bon nature natureEnum  ?
         if (point.nature == NatureEnum.school) {
           waypoints.push({
             idSchool: point.id,
@@ -131,6 +130,7 @@ async function onClick() {
     setDisplayLineMode(displayLineModeEnum.onRoad);
   } else if (displayLineMode() == displayLineModeEnum.onRoad) {
     getLineUnderConstruction().busLine.setLatLngs([]);
+    // ! Tant que l'info waypoint pas traité dans le mode straight (temporaire) => suppr waypoint !
 
     setDisplayLineMode(displayLineModeEnum.straight);
   }

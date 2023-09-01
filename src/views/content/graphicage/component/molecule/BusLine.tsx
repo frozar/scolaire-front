@@ -206,27 +206,9 @@ export function BusLine(props: BusLineProps) {
       document.addEventListener("mouseup", handleMouseUp);
     }
   }
-  // ! In first place can only add one waypoints between points ?
+
   const latLngList = () => props.line.latLngs();
 
-  // // ! pointProjectedCoord doit provenir de waypoints !?
-  // const pointProjectedCoord: L.LatLng[] = [];
-  // for (const point of props.line.points) {
-  //   // ! Ajouter les coord des waypoints qui ne sont pas des points !?
-  //   pointProjectedCoord.push(L.latLng(point.onRoadLat, point.onRoadLon));
-  // }
-  // ----------
-  // const pointProjectedCoord: L.LatLng[] = [];
-  // if (displayLineMode() == displayLineModeEnum.onRoad) {
-  //   console.log("================ici====================");
-
-  //   // ! pointProjectedCoord doit provenir de waypoints !?
-  //   const pointProjectedCoord: L.LatLng[] = [];
-  //   for (const point of props.line.waypoints as WaypointType[]) {
-  //     // ! Ajouter les coord des waypoints qui ne sont pas des points !?
-  //     pointProjectedCoord.push(L.latLng(point.lat, point.lon));
-  //   }
-  // }
   return (
     <>
       <Line
@@ -243,54 +225,40 @@ export function BusLine(props: BusLineProps) {
       <Show when={displayLineMode() == displayLineModeEnum.onRoad}>
         <For each={latLngList()}>
           {(coord: L.LatLng) => {
-            // console.log("coord", coord);
             // ! Boucler sur chaque latlgns
             // ! si correspond à un point => indexPointBefore + 1 et return void
             let indexPointBefore = 0;
 
             // ! Déplacer
             const pointProjectedCoord: L.LatLng[] = [];
+
             if (getLineUnderConstruction().busLine.waypoints) {
+              // ! Si waypoint existant
               for (const point of props.line.waypoints as WaypointType[]) {
-                // ! Ajouter les coord des waypoints qui ne sont pas des points !?
                 pointProjectedCoord.push(L.latLng(point.lat, point.lon));
               }
             } else {
+              // ! Sinon utilise points
               for (const point of props.line.points) {
-                // ! Ajouter les coord des waypoints qui ne sont pas des points !?
                 pointProjectedCoord.push(
-                  L.latLng(point.onRoadLat, point.onRoadLon)
+                  L.latLng(point.onRoadLat as number, point.onRoadLon as number)
                 );
               }
             }
 
-            // console.log("pointProjectedCoord", pointProjectedCoord);
-            // console.log("latLngList()", latLngList());
-
             for (let i = 0; latLngList.length - 1; i++) {
               // ! direct comparison doesn't work
-              // console.log("indexPointBefore", indexPointBefore);
-              // // ! fix temporaire en dur pour une ligne à 4 points d'interêts !!!!!!!!
-              // // ! pointProjectedCoorddoit provenir de waypoints !!!!
-              // if (indexPointBefore == 4) {
-              //   break;
-              // }
               if (
                 pointProjectedCoord[indexPointBefore].lat ==
                   latLngList()[i].lat &&
                 pointProjectedCoord[indexPointBefore].lng == latLngList()[i].lng
               ) {
-                // console.log("first if");
-
                 indexPointBefore += 1;
               }
               if (coord == latLngList()[i]) {
-                // console.log("second if");
-
-                break; // ! après => sauf si waypoint ?
+                break; // ! Mettre en place un return; dans le cas point correspond à un point de passage
               }
             }
-            // console.log("indexPointBefore", indexPointBefore);
 
             return (
               <PolylineDragMarker

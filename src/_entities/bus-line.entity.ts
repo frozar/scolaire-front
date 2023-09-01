@@ -195,16 +195,6 @@ const getAssociatedBusLinePoint = (dbPoint: BusLinePointDBType): PointType => {
   return getStops().filter((item) => item.id == dbPoint.stop_id)[0];
 };
 
-// export async function updatePolylineWithOsrm(busLine: BusLineType) {
-//   enableSpinningWheel();
-//   // const latlngs: L.LatLng[] = await OsrmService.getRoadPolyline(busLine.points);
-//   const latlngs: L.LatLng[] = await OsrmService.getRoadPolyline(
-//     busLine?.waypoints
-//   );
-
-//   busLine.setLatLngs(latlngs);
-//   disableSpinningWheel();
-// }
 export async function updatePolylineWithOsrm(busLine: BusLineType) {
   enableSpinningWheel();
   // const latlngs: L.LatLng[] = await OsrmService.getRoadPolyline(busLine.points);
@@ -260,8 +250,9 @@ export type BusLinePointType = {
   name: string;
   lon: number;
   lat: number;
-  onRoadLon: number;
-  onRoadLat: number;
+  // ! Put this elsewere ?
+  onRoadLon?: number;
+  onRoadLat?: number;
   quantity: number;
   nature: NatureEnum;
 };
