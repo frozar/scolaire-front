@@ -49,6 +49,9 @@ const [
 
 export const [draggingLine, setDraggingLine] = createSignal<boolean>(false);
 
+// export const [displayPolylineDragMarkers, setDisplayPolylineDragMarkers] =
+//   createSignal<boolean>(false);
+
 export type BusLineProps = {
   line: BusLineType;
   map: L.Map;
@@ -90,6 +93,14 @@ export function BusLine(props: BusLineProps) {
     if (isInRemoveLineMode() || isInReadMode()) {
       buslineSetBoldStyle(polyline, arrows, "white");
     }
+    // // ! Both conditions are necessary ?!
+    // if (
+    //   currentStep() == drawModeStep.editLine &&
+    //   displayLineMode() == displayLineModeEnum.onRoad
+    // ) {
+    //   setDisplayPolylineDragMarkers(true);
+    //   console.log(displayPolylineDragMarkers());
+    // }
   };
 
   const onMouseOut = (polyline: L.Polyline, arrows: L.Marker[]) => {
@@ -97,6 +108,11 @@ export function BusLine(props: BusLineProps) {
     if (isInRemoveLineMode() || isInReadMode()) {
       buslineSetNormalStyle(polyline, arrows, props.line.color());
     }
+    //   // ! Rewrite
+    //   if (displayPolylineDragMarkers()) {
+    //     setDisplayPolylineDragMarkers(false);
+    //     console.log(displayPolylineDragMarkers());
+    //   }
   };
 
   const onClick = () => {

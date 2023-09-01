@@ -114,6 +114,14 @@ export default function (props: PolylineDragMarkersProps) {
   // eslint-disable-next-line solid/reactivity
   polylineDragMarker.addTo(props.map);
 
+  // createEffect(() => {
+  //   if (displayPolylineDragMarkers()) {
+  //     props.map.addLayer(polylineDragMarker);
+  //   } else if (!displayPolylineDragMarkers()) {
+  //     props.map.removeLayer(polylineDragMarker);
+  //   }
+  // });
+
   onCleanup(() => {
     polylineDragMarker.remove();
   });
