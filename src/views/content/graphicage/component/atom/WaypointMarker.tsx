@@ -87,7 +87,7 @@ export default function (props: PolylineDragMarkersProps) {
     });
     updatePolylineWithOsrm(getLineUnderConstruction().busLine);
   }
-
+  // eslint-disable-next-line solid/reactivity
   const waypointMarker = L.marker(props.latlngs, {
     icon: waypointMarkerIcon,
     pane: "overlayPane",
@@ -95,6 +95,7 @@ export default function (props: PolylineDragMarkersProps) {
     keyboard: false,
   }).on("contextmenu", onRightClick);
 
+  // eslint-disable-next-line solid/reactivity
   waypointMarker.addTo(props.map);
 
   onCleanup(() => {

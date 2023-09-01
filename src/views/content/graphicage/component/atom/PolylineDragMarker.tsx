@@ -68,12 +68,14 @@ export default function (props: PolylineDragMarkersProps) {
     document.addEventListener("mouseup", handleMouseUp);
   }
 
+  // eslint-disable-next-line solid/reactivity
   const polylineDragMarker = L.marker(props.latlngs, {
     icon: dragMarkerIcon,
     pane: "markerPane",
     keyboard: false,
   }).on("mousedown", onMouseDown);
 
+  // eslint-disable-next-line solid/reactivity
   polylineDragMarker.addTo(props.map);
 
   onCleanup(() => {
