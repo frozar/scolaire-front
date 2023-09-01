@@ -103,8 +103,10 @@ function escapeHandler({ code }: KeyboardEvent) {
 }
 
 export function quitModeAddLine() {
-  resetLineUnderConstruction();
   // setModeRead();
+  resetLineUnderConstruction();
+  setStopPointsColor([], COLOR_STOP_FOCUS);
+  setSchoolPointsColor([], COLOR_SCHOOL_FOCUS);
   toggleDrawMod();
 }
 
