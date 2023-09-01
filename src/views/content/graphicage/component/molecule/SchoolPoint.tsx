@@ -6,6 +6,7 @@ import {
   setSchoolPointsColor,
   setStopPointsColor,
 } from "../../../../../leafletUtils";
+import { isInDrawMod } from "../../../../layout/component/organism/ContextManager";
 import {
   COLOR_SCHOOL_FOCUS,
   COLOR_SCHOOL_LIGHT,
@@ -31,7 +32,7 @@ const [
     addPointToLineUnderConstruction,
     getLineUnderConstruction,
     setLineUnderConstruction,
-    isInAddLineMode,
+    // isInAddLineMode,
   },
 ] = useStateAction();
 
@@ -56,7 +57,7 @@ const onClick = (point: SchoolType) => {
   setSchoolPointsColor(ids, COLOR_SCHOOL_LIGHT);
   setStopPointsColor(ids, COLOR_STOP_LIGHT);
 
-  if (!isInAddLineMode()) {
+  if (!isInDrawMod()) {
     deselectAllBusLines();
     deselectAllPoints();
     point.setSelected(true);
