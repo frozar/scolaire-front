@@ -73,6 +73,27 @@ function updateWaypoints(point: StopType) {
     const index = getLineUnderConstruction().busLine.points.findIndex(
       (actualPoint) => actualPoint.id == point.id
     );
+    // ! Refactor
+    if (getLineUnderConstruction().busLine.points.length < index + 2) {
+      const newWaypoints = [...waypoints];
+      console.log("oldWaypoint =>", waypoints);
+      // ! Et ajouter le waypoint correspondant au nouveau point en même temps!
+      newWaypoints.push({
+        idStop: point.id,
+        lat: point.lat,
+        lon: point.lon,
+      });
+      console.log("new Waypoint =>", newWaypoints);
+
+      setLineUnderConstruction({
+        ...getLineUnderConstruction(),
+        busLine: {
+          ...getLineUnderConstruction().busLine,
+          waypoints: newWaypoints,
+        },
+      });
+      return;
+    }
     console.log("index", index);
     const idPointBefore =
       getLineUnderConstruction().busLine.points[index - 1].id;
