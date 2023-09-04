@@ -122,6 +122,12 @@ export class BusLineEntity {
         bus_line_stop: formatBusLinePointDBType(line.points),
       };
     }
+    if (line.metrics) {
+      output = {
+        ...output,
+        metrics: line.metrics(),
+      };
+    }
 
     return output;
   }

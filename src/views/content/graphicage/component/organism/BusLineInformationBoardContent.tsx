@@ -45,6 +45,7 @@ const onChange = async (color: string) => {
     id: line.id,
     color: line.color,
     latLngs: line.latLngs,
+    metrics: line.metrics,
   });
 
   console.log(updatedLine);
