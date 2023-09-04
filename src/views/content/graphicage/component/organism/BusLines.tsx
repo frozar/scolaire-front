@@ -3,7 +3,6 @@ import { For, createEffect, createSignal, onCleanup } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import { BusLineType } from "../../../../../_entities/bus-line.entity";
 import { BusLineService } from "../../../../../_services/bus-line.service";
-import { COLOR_LINE_EDITION } from "../../constant";
 import { BusLine } from "../molecule/BusLine";
 import { currentStep, drawModeStep } from "./DrawModeBoardContent";
 
@@ -44,7 +43,7 @@ export function BusLines(props: BusLinesProps) {
         arrows.map((arrow) => props.map.removeLayer(arrow))
       );
       arrowsMap.clear();
-      getLineUnderConstruction().busLine.setColor(COLOR_LINE_EDITION);
+
       return [getLineUnderConstruction().busLine];
     }
     return getBusLines();
