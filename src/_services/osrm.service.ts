@@ -26,7 +26,7 @@ export class OsrmService {
         "?geometries=geojson&overview=full"
     );
 
-    return this.formatResponse(response, response_direct);
+    return this.formatResponse(response, response_direct, points);
   }
 
   private static buildPositionURL(points: BusLinePointType[]): string {
@@ -35,7 +35,8 @@ export class OsrmService {
 
   private static formatResponse(
     response: osrmResponseType,
-    response_direct: osrmResponseType
+    response_direct: osrmResponseType,
+    points: BusLinePointType[]
   ): {
     latlngs: L.LatLng[];
     metrics: busLineMetricType;
@@ -60,10 +61,13 @@ export class OsrmService {
 
     const deviation = distance / distanceDirect - 1;
 
+    const kmPassager = getKmPassagers(response, points, distance);
+
     metrics = {
       distance,
       duration,
       deviation,
+      kmPassager,
     };
     return { latlngs, metrics };
   }
@@ -76,4 +80,20 @@ type routesType = {
     coordinates: number[][];
     type: string;
   };
+  legs: { weight: number; duration: number; distance: number }[];
 };
+
+function getKmPassagers(
+  response: osrmResponseType,
+  points: BusLinePointType[],
+  distance: number
+) {
+  let kmPassager = 0;
+  let distance_restante = distance;
+  response.routes[0].legs.map((elem, k) => {
+    kmPassager += (points.at(k)?.quantity ?? 0) * (distance_restante ?? 0);
+    distance_restante -= elem.distance;
+  });
+
+  return kmPassager;
+}
