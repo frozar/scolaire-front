@@ -6,6 +6,7 @@ import {
   setSchoolPointsColor,
   setStopPointsColor,
 } from "../../../../../leafletUtils";
+import { onBoard } from "../../../../layout/component/organism/ContextManager";
 import {
   COLOR_SCHOOL_LIGHT,
   COLOR_STOP_EMPHASE,
@@ -73,7 +74,7 @@ function onClick(point: StopType) {
   setSchoolPointsColor(ids, COLOR_SCHOOL_LIGHT);
   setStopPointsColor(ids, COLOR_STOP_LIGHT);
 
-  if (!isInAddLineMode()) {
+  if (onBoard() != "draw-line") {
     deselectAllBusLines();
     deselectAllPoints();
     point.setSelected(true);

@@ -11,6 +11,7 @@ import {
 } from "../../../../../leafletUtils";
 import { setRemoveConfirmation } from "../../../../../signaux";
 import { NatureEnum } from "../../../../../type";
+import { isInDrawMod } from "../../../../layout/component/organism/ContextManager";
 import {
   COLOR_SCHOOL_FOCUS,
   COLOR_SCHOOL_LIGHT,
@@ -54,7 +55,7 @@ export function BusLine(props: BusLineProps) {
   const [localLatLngs, setLocalLatLngs] = createSignal<L.LatLng[]>([]);
   const [localOpacity, setLocalOpacity] = createSignal<number>(1);
   createEffect(() => {
-    if (displayLineMode() == displayLineModeEnum.onRoad || isInReadMode()) {
+    if (displayLineMode() == displayLineModeEnum.onRoad || !isInDrawMod()) {
       setLocalLatLngs(props.line.latLngs());
       setLocalOpacity(0.8);
     } else {
@@ -106,7 +107,7 @@ export function BusLine(props: BusLineProps) {
       }
     }
 
-    if (isInReadMode()) {
+    if (!isInDrawMod()) {
       deselectAllBusLines();
       deselectAllPoints();
       setPickerColor(props.line.color());

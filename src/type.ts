@@ -151,9 +151,9 @@ export type ReturnMessageType = {
 export type SelectedMenuType =
   | "graphicage"
   | "dashboard"
-  | "ramassages"
+  | "stops"
   | "voirie"
-  | "etablissements"
+  | "schools"
   | "parametres"
   | "support";
 
@@ -162,6 +162,7 @@ export type MenuItemType = {
   Logo: () => JSX.Element;
   label: string;
   isDisabled: boolean;
+  onClick: () => void;
 };
 
 export type StopItemType = {

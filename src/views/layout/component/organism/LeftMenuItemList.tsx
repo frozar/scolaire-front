@@ -3,8 +3,9 @@ import { For, mergeProps } from "solid-js";
 import { useStateGui } from "../../../../StateGui";
 import { SelectedMenuType } from "../../../../type";
 
-import menuItems from "../../menuItemFields";
+import menuItems, { isOnPage } from "../../menuItemFields";
 import LeftMenuItem from "../molecule/LeftMenuItem";
+import { onBoard } from "./ContextManager";
 
 const [, { setSelectedMenu, getSelectedMenu }] = useStateGui();
 
@@ -20,16 +21,18 @@ export default function (props: LeftMenuItemProps) {
       <For each={menuItems}>
         {(menuItemArg) => {
           const { label, menuItem, Logo, isDisabled } = menuItemArg;
+          const pageSelected = () =>
+            mergedProps.getSelectedMenu() === menuItem && isOnPage();
 
-          const isSelected = () => mergedProps.getSelectedMenu() === menuItem;
-
+          const isSelected = () =>
+            pageSelected() || (onBoard() == menuItem && !isOnPage());
           return (
             <LeftMenuItem
               isDisabled={isDisabled}
               Logo={Logo}
               label={label}
               isSelected={isSelected()}
-              onClick={() => mergedProps.setSelectedMenu(menuItem)}
+              onClick={menuItemArg.onClick}
             />
           );
         }}

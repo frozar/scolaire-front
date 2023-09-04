@@ -13,11 +13,8 @@ import RemoveConfirmationDialogBox from "./userInformation/RemoveConfirmationDia
 import Dashboard from "./views/content/dashboard/Dashboard";
 import Graphicage from "./views/content/graphicage/Graphicage";
 import { setPointsReady } from "./views/content/graphicage/component/organism/Points";
-import { InformationBoard } from "./views/content/graphicage/informationBoard/InformationBoard";
 import ExportConfirmationDialogBox from "./views/content/graphicage/rightMapMenu/export/ExportConfirmationDialogBox";
-import SchoolsBoard from "./views/content/schools/SchoolsBoard";
-import Ramassage from "./views/content/stops/StopsBoard";
-import InformationBoardLayout from "./views/layout/component/template/InformationBoardLayout";
+import ContextManager from "./views/layout/component/organism/ContextManager";
 
 const [, { isInAddLineMode }] = useStateAction();
 const [, { getSelectedMenu }] = useStateGui();
@@ -58,17 +55,21 @@ export default () => {
   return (
     <div ref={refApp}>
       <Layout>
-        <Switch fallback={<p>Page not found</p>}>
+        <Switch>
           <Match when={getSelectedMenu() == "dashboard"}>
             <Dashboard />
           </Match>
 
           <Match when={getSelectedMenu() == "graphicage"}>
             <Graphicage />
-            <InformationBoardLayout>
-              <InformationBoard />
-            </InformationBoardLayout>
+            <ContextManager />
           </Match>
+        </Switch>
+
+        {/* <InformationBoardLayout>
+              <InformationBoard />
+            </InformationBoardLayout> */}
+        {/* </Match>
 
           <Match when={getSelectedMenu() == "etablissements"}>
             <SchoolsBoard />
@@ -77,7 +78,7 @@ export default () => {
           <Match when={getSelectedMenu() == "ramassages"}>
             <Ramassage />
           </Match>
-        </Switch>
+        </Switch> */}
 
         <DisplayUserInformation />
         <DragAndDropSummary />

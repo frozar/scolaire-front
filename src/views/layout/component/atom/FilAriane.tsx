@@ -1,31 +1,34 @@
 import { createEffect, createSignal } from "solid-js";
 import { useStateAction } from "../../../../StateAction";
-import {
-  currentStep,
-  drawModeStep,
-} from "../../../content/graphicage/component/organism/DrawModeBoardContent";
+import { onBoard } from "../organism/ContextManager";
 import "./FilAriane.css";
 
-const [, { isInReadMode, isInAddLineMode }] = useStateAction();
+const [, { getLineUnderConstruction }] = useStateAction();
 
 export default function (props: { text?: string }) {
-  const [text, setText] = createSignal(props.text ?? "Acceuil");
+  const [text, setText] = createSignal(props.text);
 
   createEffect(() => {
-    if (isInReadMode()) {
-      setText("Acceuil");
-    }
-  });
+    switch (onBoard()) {
+      case "draw-line":
+        if (getLineUnderConstruction().busLine.schools.length > 0) {
+          setText("Editer votre ligne");
+          break;
+        }
+        setText("Création d'une ligne");
+        break;
 
-  createEffect(() => {
-    if (isInAddLineMode()) {
-      setText("Création d'une ligne");
-    }
-  });
+      case "schools":
+        setText("Liste des écoles");
+        break;
 
-  createEffect(() => {
-    if (isInAddLineMode() && currentStep() == drawModeStep.editLine) {
-      setText("Editer votre ligne");
+      case "stops":
+        setText("Liste des arrêts");
+        break;
+
+      default:
+        setText("Graphicage");
+        break;
     }
   });
 

@@ -16,6 +16,10 @@ import {
   displayAddLineMessage,
   displayRemoveLineMessage,
 } from "../../../userInformation/utils";
+import {
+  isInDrawMod,
+  toggleDrawMod,
+} from "../../layout/component/organism/ContextManager";
 import { displayedConfirmStopAddLine } from "./ConfirmStopAddLineBox";
 
 import { deselectAllBusLines } from "./component/organism/BusLines";
@@ -33,7 +37,7 @@ const [
     setModeAddLine,
     setModeRemoveLine,
     isInAddLineMode,
-    isInReadMode,
+    // isInReadMode,
     resetLineUnderConstruction,
     getLineUnderConstruction,
     setModeRead,
@@ -84,7 +88,7 @@ function escapeHandler({ code }: KeyboardEvent) {
 
   if (code === "Escape") {
     deselectAllPoints();
-    if (isInReadMode()) {
+    if (!isInDrawMod()) {
       deselectAllBusLines();
       setStopPointsColor([], COLOR_STOP_FOCUS);
       setSchoolPointsColor([], COLOR_SCHOOL_FOCUS);
@@ -99,8 +103,11 @@ function escapeHandler({ code }: KeyboardEvent) {
 }
 
 export function quitModeAddLine() {
+  // setModeRead();
   resetLineUnderConstruction();
-  setModeRead();
+  setStopPointsColor([], COLOR_STOP_FOCUS);
+  setSchoolPointsColor([], COLOR_SCHOOL_FOCUS);
+  toggleDrawMod();
 }
 
 function enterHandler({ code }: KeyboardEvent) {

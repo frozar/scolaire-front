@@ -3,10 +3,11 @@ import { For, createSignal, onMount } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { SchoolService } from "../../../../../_services/school.service";
+import { isInDrawMod } from "../../../../layout/component/organism/ContextManager";
 import { SchoolPoint } from "../molecule/SchoolPoint";
 import { currentStep, drawModeStep } from "./DrawModeBoardContent";
 
-const [, { getLineUnderConstruction, isInAddLineMode }] = useStateAction();
+const [, { getLineUnderConstruction }] = useStateAction();
 
 export interface SchoolPointsProps {
   leafletMap: L.Map;
@@ -33,7 +34,7 @@ export function SchoolPoints(props: SchoolPointsProps) {
 function schoolsFilter(): SchoolType[] {
   let schools = getSchools();
 
-  if (isInAddLineMode()) {
+  if (isInDrawMod()) {
     const schoolsSelected = getLineUnderConstruction().busLine.schools;
     if (currentStep() === drawModeStep.schoolSelection) {
       return schools;
