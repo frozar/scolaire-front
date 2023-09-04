@@ -1,4 +1,3 @@
-import { createSignal } from "solid-js";
 import "./MetricItem.css";
 
 export interface MetricItemProps {
@@ -6,8 +5,6 @@ export interface MetricItemProps {
   value?: number;
   unite?: string;
 }
-
-export const [pickerColor, setPickerColor] = createSignal("");
 
 export function MetricItem(props: MetricItemProps) {
   return (
