@@ -53,25 +53,8 @@ export class OsrmService {
 
     latlngs = coordinates.map((elt: number[]) => L.latLng(elt[1], elt[0]));
 
-    const distance = response.routes[0].distance;
+    metrics = getMetrics(response, response_direct, points);
 
-    const duration = response.routes[0].duration;
-
-    const distanceDirect = response_direct.routes[0].distance;
-
-    const deviation = distance / distanceDirect - 1;
-
-    const kmPassager = getKmPassagers(response, points, distance);
-
-    const txRemplissMoy = kmPassager / distance;
-
-    metrics = {
-      distance,
-      duration,
-      deviation,
-      kmPassager,
-      txRemplissMoy,
-    };
     return { latlngs, metrics };
   }
 }
@@ -85,6 +68,25 @@ type routesType = {
   };
   legs: { weight: number; duration: number; distance: number }[];
 };
+
+function getMetrics(
+  response: osrmResponseType,
+  response_direct: osrmResponseType,
+  points: BusLinePointType[]
+) {
+  const distance = response.routes[0].distance;
+
+  const duration = response.routes[0].duration;
+
+  const distanceDirect = response_direct.routes[0].distance;
+
+  const deviation = distance / distanceDirect - 1;
+
+  const kmPassager = getKmPassagers(response, points, distance);
+
+  const txRemplissMoy = kmPassager / distance;
+  return { distance, duration, deviation, kmPassager, txRemplissMoy };
+}
 
 function getKmPassagers(
   response: osrmResponseType,
