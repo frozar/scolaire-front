@@ -1,3 +1,7 @@
 .edit-mode-school-item{
-  @apply text-sm text-green-base;
+  @apply flex flex-col;
+}
+
+.edit-mode-school-item{
+  @apply text-sm text-green-base ;
 }

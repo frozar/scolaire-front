@@ -6,6 +6,7 @@ import { NatureEnum } from "../type";
 import { PointType } from "../views/content/graphicage/component/atom/Point";
 import { getSchools } from "../views/content/graphicage/component/organism/SchoolPoints";
 import { getStops } from "../views/content/graphicage/component/organism/StopPoints";
+import { COLOR_LINE_UNDER_CONSTRUCTION } from "../views/content/graphicage/constant";
 import { EntityUtils, LocationPathDBType } from "./_utils.entity";
 import { SchoolType } from "./school.entity";
 
@@ -28,12 +29,16 @@ export class BusLineEntity {
     const [selected, setSelected] = createSignal<boolean>(false);
     const [latLngs, setLatLngs] = createSignal<L.LatLng[]>([]);
     const [color, setColor] = createSignal<string>("#" + dbData.color);
+    const [metrics, setMetrics] = createSignal<busLineMetricType>({});
 
     if (dbData.polyline != null) {
       setLatLngs(
         dbData.polyline.data.map((item) => L.latLng(item.lat, item.lng))
       );
     }
+
+    setMetrics(dbData.metrics);
+
     return {
       id: dbData.id,
       schools: [school],
@@ -45,6 +50,31 @@ export class BusLineEntity {
       setLatLngs: setLatLngs,
       selected: selected,
       setSelected: setSelected,
+      metrics: metrics,
+      setMetrics: setMetrics,
+    };
+  }
+
+  static defaultBusLine(): BusLineType {
+    const [latLngs, setLatLngs] = createSignal<L.LatLng[]>([]);
+    const [color, setColor] = createSignal<string>(
+      COLOR_LINE_UNDER_CONSTRUCTION
+    );
+    const [selected, setSelected] = createSignal<boolean>(false);
+    const [metrics, setMetrics] = createSignal<busLineMetricType>({});
+
+    return {
+      color: color,
+      setColor: setColor,
+      points: [],
+      schools: [],
+      name: "my default name",
+      latLngs: latLngs,
+      setLatLngs: setLatLngs,
+      selected: selected,
+      setSelected: setSelected,
+      metrics: metrics,
+      setMetrics: setMetrics,
     };
   }
 
@@ -56,6 +86,15 @@ export class BusLineEntity {
       school_id: line.schools[0].id,
       bus_line_stop: formatBusLinePointDBType(line.points),
       polyline: EntityUtils.buildLocationPath(line.latLngs()),
+      metrics: {
+        distance: line.metrics().distance,
+        temps: line.metrics().temps,
+        distancePCC: line.metrics().distancePCC,
+        deviation: line.metrics().deviation,
+        kmPassager: line.metrics().kmPassager,
+        txRemplissMoy: line.metrics().txRemplissMoy,
+        CO2: line.metrics().CO2,
+      },
     };
   }
 
@@ -148,8 +187,13 @@ const getAssociatedBusLinePoint = (dbPoint: BusLinePointDBType): PointType => {
 
 export async function updatePolylineWithOsrm(busLine: BusLineType) {
   enableSpinningWheel();
-  const latlngs: L.LatLng[] = await OsrmService.getRoadPolyline(busLine.points);
+  const { latlngs, metrics } = await OsrmService.getRoadPolyline(
+    busLine.points
+  );
+
   busLine.setLatLngs(latlngs);
+  busLine.setMetrics(metrics);
+
   disableSpinningWheel();
 }
 
@@ -164,6 +208,8 @@ export type BusLineType = {
   setLatLngs: Setter<L.LatLng[]>;
   selected: Accessor<boolean>;
   setSelected: Setter<boolean>;
+  metrics: Accessor<busLineMetricType>;
+  setMetrics: Setter<busLineMetricType>;
 };
 
 export type BusLinePointType = {
@@ -183,10 +229,21 @@ export type BusLineDBType = {
   color: string;
   bus_line_stop: BusLinePointDBType[];
   polyline: LocationPathDBType;
+  metrics: busLineMetricType;
 };
 
 export type BusLinePointDBType = {
   stop_id: number;
   school_id: number;
   quantity: number;
+};
+
+export type busLineMetricType = {
+  distance?: number;
+  temps?: number;
+  distancePCC?: number;
+  deviation?: number;
+  kmPassager?: number;
+  txRemplissMoy?: number;
+  CO2?: number;
 };

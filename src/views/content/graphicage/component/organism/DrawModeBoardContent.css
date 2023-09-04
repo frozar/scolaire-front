@@ -17,6 +17,13 @@
   height: 100%;
 }
 
+.bus-line-information-board-content-schools{
+  @apply flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: space-between;
+}
+
 .confirm-etablissement-selection {
   display: flex;
   width: 100%;

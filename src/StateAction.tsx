@@ -7,7 +7,10 @@ import { setUserInformations } from "./signaux";
 import { LineUnderConstructionType, MessageTypeEnum, ModeEnum } from "./type";
 
 import { useStateGui } from "./StateGui";
-import { BusLinePointType } from "./_entities/bus-line.entity";
+import {
+  BusLinePointType,
+  busLineMetricType,
+} from "./_entities/bus-line.entity";
 import { SchoolType } from "./_entities/school.entity";
 import { StopType } from "./_entities/stop.entity";
 import { COLOR_LINE_UNDER_CONSTRUCTION } from "./views/content/graphicage/constant";
@@ -24,12 +27,13 @@ type StateActionType = {
   mode: ModeEnum;
 };
 
-export function defaultLineUnderConstruction() {
+export function defaultLineUnderConstruction(): LineUnderConstructionType {
   const [latLngs, setLatLngs] = createSignal<L.LatLng[]>([]);
   const [color, setColor] = createSignal<string>(COLOR_LINE_UNDER_CONSTRUCTION);
   const [selected, setSelected] = createSignal<boolean>(false);
+  const [metrics, setMetrics] = createSignal<busLineMetricType>({});
+
   return {
-    confirmSelection: false,
     nextIndex: 0,
     busLine: {
       color: color,
@@ -37,11 +41,12 @@ export function defaultLineUnderConstruction() {
       points: [],
       schools: [],
       name: "my default name",
-      currentIndex: 0,
       latLngs: latLngs,
       setLatLngs: setLatLngs,
       selected: selected,
       setSelected: setSelected,
+      metrics: metrics,
+      setMetrics: setMetrics,
     },
   };
 }
