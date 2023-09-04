@@ -63,11 +63,14 @@ export class OsrmService {
 
     const kmPassager = getKmPassagers(response, points, distance);
 
+    const txRemplissMoy = kmPassager / distance;
+
     metrics = {
       distance,
       duration,
       deviation,
       kmPassager,
+      txRemplissMoy,
     };
     return { latlngs, metrics };
   }
