@@ -19,15 +19,24 @@ export class OsrmService {
         this.buildPositionURL(points) +
         "?geometries=geojson&overview=full"
     );
+    const response_direct = await ServiceUtils.generic(
+      osrm +
+        "/" +
+        this.buildPositionURL([points[0], points[points.length - 1]]) +
+        "?geometries=geojson&overview=full"
+    );
 
-    return this.formatResponse(response);
+    return this.formatResponse(response, response_direct);
   }
 
   private static buildPositionURL(points: BusLinePointType[]): string {
     return points.map((point) => point.lon + "," + point.lat).join(";");
   }
 
-  private static formatResponse(response: osrmResponseType): {
+  private static formatResponse(
+    response: osrmResponseType,
+    response_direct: osrmResponseType
+  ): {
     latlngs: L.LatLng[];
     metrics: busLineMetricType;
   } {
@@ -47,11 +56,15 @@ export class OsrmService {
 
     const duration = response.routes[0].duration;
 
+    const distanceDirect = response_direct.routes[0].distance;
+
+    const deviation = distance / distanceDirect - 1;
+
     metrics = {
       distance,
       duration,
+      deviation,
     };
-
     return { latlngs, metrics };
   }
 }
