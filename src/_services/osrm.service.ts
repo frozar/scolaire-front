@@ -9,6 +9,8 @@ import { ServiceUtils } from "./_utils.service";
 
 const osrm = import.meta.env.VITE_API_OSRM_URL;
 
+type osrmResponseType = { routes: routesType[] };
+
 export class OsrmService {
   static async getRoadPolyline(busLine: BusLineType): Promise<{
     latlngs: [L.LatLng[], L.LatLng[]];
