@@ -1,9 +1,10 @@
 import L, { LeafletMouseEvent } from "leaflet";
-import { createEffect, createSignal } from "solid-js";
+import { For, Show, createEffect, createSignal } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import {
   BusLinePointType,
   BusLineType,
+  WaypointType,
 } from "../../../../../_entities/bus-line.entity";
 import {
   setSchoolPointsColor,
@@ -21,6 +22,8 @@ import {
 } from "../../constant";
 import { setPickerColor } from "../atom/ColorPicker";
 import Line from "../atom/Line";
+import PolylineDragMarker from "../atom/PolylineDragMarker";
+import WaypointMarker from "../atom/WaypointMarker";
 import { deselectAllBusLines } from "../organism/BusLines";
 import {
   currentStep,
@@ -205,18 +208,78 @@ export function BusLine(props: BusLineProps) {
     }
   }
 
+  const latLngList = () => props.line.latLngs();
+
   return (
-    <Line
-      latlngs={localLatLngs()}
-      leafletMap={props.map}
-      color={props.line.color()}
-      opacity={localOpacity()}
-      lineId={props.line.id}
-      onMouseOver={onMouseOver}
-      onMouseOut={onMouseOut}
-      onClick={onClick}
-      onMouseDown={onMouseDown}
-    />
+    <>
+      <Line
+        latlngs={localLatLngs()}
+        leafletMap={props.map}
+        color={props.line.color()}
+        opacity={localOpacity()}
+        lineId={props.line.id}
+        onMouseOver={onMouseOver}
+        onMouseOut={onMouseOut}
+        onClick={onClick}
+        onMouseDown={onMouseDown}
+      />
+      <Show when={displayLineMode() == displayLineModeEnum.onRoad}>
+        <For each={latLngList()}>
+          {(coord: L.LatLng) => {
+            let index = 0;
+
+            const pointProjectedCoord: L.LatLng[] = [];
+
+            if (getLineUnderConstruction().busLine.waypoints) {
+              for (const point of props.line.waypoints as WaypointType[]) {
+                pointProjectedCoord.push(L.latLng(point.lat, point.lon));
+              }
+            } else {
+              for (const point of props.line.points) {
+                pointProjectedCoord.push(
+                  L.latLng(point.onRoadLat as number, point.onRoadLon as number)
+                );
+              }
+            }
+
+            for (let i = 0; latLngList.length - 1; i++) {
+              if (
+                pointProjectedCoord[index].lat == latLngList()[i].lat &&
+                pointProjectedCoord[index].lng == latLngList()[i].lng
+              ) {
+                index += 1;
+              }
+              if (coord == latLngList()[i]) {
+                break; // TODO: Do not display polylineDragMarker for stop, school or waypoint
+              }
+            }
+
+            return (
+              <PolylineDragMarker
+                map={props.map}
+                latlngs={coord}
+                index={index}
+              />
+            );
+          }}
+        </For>
+        <Show when={getLineUnderConstruction().busLine.waypoints}>
+          <For each={getLineUnderConstruction().busLine.waypoints}>
+            {(waypoint: WaypointType, i) => {
+              if (!waypoint.idSchool && !waypoint.idStop) {
+                return (
+                  <WaypointMarker
+                    map={props.map}
+                    latlngs={L.latLng(waypoint.lat, waypoint.lon)}
+                    index={i()}
+                  />
+                );
+              }
+            }}
+          </For>
+        </Show>
+      </Show>
+    </>
   );
 }
 

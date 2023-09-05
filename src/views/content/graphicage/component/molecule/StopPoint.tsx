@@ -38,6 +38,7 @@ const [
     getLineUnderConstruction,
     isInAddLineMode,
     removePointToLineUnderConstruction,
+    setLineUnderConstruction,
   },
 ] = useStateAction();
 
@@ -58,6 +59,65 @@ function getAssociatedQuantity(point: StopType) {
     (associatedSchool) =>
       associatedSchool.id === getLineUnderConstruction().busLine.schools[0].id
   )[0].quantity;
+}
+
+// TODO: Refactor
+function updateWaypoints(point: StopType) {
+  const waypoints = getLineUnderConstruction().busLine.waypoints;
+  if (waypoints) {
+    // ! Récup les ids des points avant et après
+    const index = getLineUnderConstruction().busLine.points.findIndex(
+      (actualPoint) => actualPoint.id == point.id
+    );
+    // ! Refactor
+    if (getLineUnderConstruction().busLine.points.length < index + 2) {
+      const newWaypoints = [...waypoints];
+      newWaypoints.push({
+        idStop: point.id,
+        lat: point.lat,
+        lon: point.lon,
+      });
+
+      setLineUnderConstruction({
+        ...getLineUnderConstruction(),
+        busLine: {
+          ...getLineUnderConstruction().busLine,
+          waypoints: newWaypoints,
+        },
+      });
+      return;
+    }
+    const idPointBefore =
+      getLineUnderConstruction().busLine.points[index - 1].id;
+    const idPointAfter =
+      getLineUnderConstruction().busLine.points[index + 1].id;
+    const pointBeforeIndexWaypoint = waypoints.findIndex(
+      (actualPoint) => actualPoint.idStop == idPointBefore
+    );
+    const pointAfterIndexWaypoint = waypoints.findIndex(
+      (actualPoint) => actualPoint.idStop == idPointAfter
+    );
+    const difference = pointAfterIndexWaypoint - pointBeforeIndexWaypoint;
+
+    let toDelete = 0;
+    if (difference > 1) {
+      toDelete = difference - 1;
+    }
+    const newWaypoints = [...waypoints];
+    newWaypoints.splice(pointBeforeIndexWaypoint + 1, toDelete, {
+      idStop: point.id,
+      lat: point.lat,
+      lon: point.lon,
+    });
+
+    setLineUnderConstruction({
+      ...getLineUnderConstruction(),
+      busLine: {
+        ...getLineUnderConstruction().busLine,
+        waypoints: newWaypoints,
+      },
+    });
+  }
 }
 
 function onClick(point: StopType) {
@@ -87,6 +147,7 @@ function onClick(point: StopType) {
   // Wait Richard/Hugo finish the line underconstruction
   if (displayLineMode() == displayLineModeEnum.straight) {
     addPointToLineUnderConstruction({ ...point, quantity: associatedQuantity });
+    updateWaypoints(point);
   }
 
   //TODO pourquoi cette condition ?
@@ -116,6 +177,8 @@ const onMouseUp = (point: StopType) => {
     const associatedQuantity = getAssociatedQuantity(point);
 
     addPointToLineUnderConstruction({ ...point, quantity: associatedQuantity });
+    updateWaypoints(point);
+
     setDraggingLine(false);
   }
 };
@@ -151,6 +214,25 @@ export function StopPoint(props: StopPointProps) {
 
     if (isInAddLineMode() && isInLineUnderConstruction != undefined) {
       removePointToLineUnderConstruction(props.point);
+      // Update waypoints
+      const waypoints = getLineUnderConstruction().busLine.waypoints;
+      if (waypoints) {
+        const waypointIndex = waypoints.findIndex(
+          (waypoint) => waypoint.idStop == props.point.id
+        );
+
+        const newWaypoints = [...waypoints];
+        newWaypoints.splice(waypointIndex, 1);
+
+        setLineUnderConstruction({
+          ...getLineUnderConstruction(),
+          busLine: {
+            ...getLineUnderConstruction().busLine,
+            waypoints: newWaypoints,
+          },
+        });
+      }
+
       circle?.setStyle({ fillColor: COLOR_STOP_LIGHT });
     }
   };

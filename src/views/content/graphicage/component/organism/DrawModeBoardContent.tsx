@@ -8,6 +8,7 @@ import SelectedSchool from "../atom/SelectedSchool";
 
 import {
   BusLineType,
+  WaypointType,
   updatePolylineWithOsrm,
 } from "../../../../../_entities/bus-line.entity";
 import { BusLineService } from "../../../../../_services/bus-line.service";
@@ -17,7 +18,7 @@ import { updateBusLines } from "./BusLines";
 import DrawModeBoardContentFooter from "./DrawModeBoardContentFooter";
 
 import "../../../../../css/timeline.css";
-import { LineUnderConstructionType } from "../../../../../type";
+import { LineUnderConstructionType, NatureEnum } from "../../../../../type";
 import Timeline from "../../informationBoard/Timeline";
 import ButtonIcon from "../../informationBoard/components/molecul/ButtonIcon";
 import LabeledInputField from "../../informationBoard/components/molecul/LabeledInputField";
@@ -93,18 +94,40 @@ async function onClick() {
     if (getLineUnderConstruction().busLine.points.length < 2) {
       return;
     }
+    if (!getLineUnderConstruction().busLine.waypoints) {
+      const waypoints: WaypointType[] = [];
 
+      for (const point of getLineUnderConstruction().busLine.points) {
+        if (point.nature == NatureEnum.school) {
+          waypoints.push({
+            idSchool: point.id,
+            lon: point.lon,
+            lat: point.lat,
+          });
+        } else if (point.nature == NatureEnum.stop) {
+          waypoints.push({
+            idStop: point.id,
+            lon: point.lon,
+            lat: point.lat,
+          });
+        }
+      }
+
+      setLineUnderConstruction({
+        ...getLineUnderConstruction(),
+        busLine: {
+          ...getLineUnderConstruction().busLine,
+          waypoints: waypoints,
+        },
+      });
+    }
     await updatePolylineWithOsrm(getLineUnderConstruction().busLine);
 
     setDisplayLineMode(displayLineModeEnum.onRoad);
-
-    // ! Changement de drawModeStep
   } else if (displayLineMode() == displayLineModeEnum.onRoad) {
     getLineUnderConstruction().busLine.setLatLngs([]);
 
     setDisplayLineMode(displayLineModeEnum.straight);
-
-    // ! Changement de drawModeStep
   }
 }
 
