@@ -1,13 +1,11 @@
-import { mergeProps } from "solid-js";
-
-import { useStateAction } from "../../../../../StateAction";
-import { displayRemoveLineMessage } from "../../../../../userInformation/utils";
-import { deselectAllPoints } from "./Points";
-
 import { FaSolidMinus } from "solid-icons/fa";
+import { mergeProps } from "solid-js";
+import { useStateAction } from "../../../../../../StateAction";
+import { displayRemoveLineMessage } from "../../../../../../userInformation/utils";
+import { deselectAllPoints } from "../../../component/organism/Points";
 import ButtonGraphicageRightMenu, {
   OffsetType,
-} from "../../rightMapMenu/component/molecule/ButtonGraphicageRightMenu";
+} from "../molecule/ButtonGraphicageRightMenu";
 
 const [, { setModeRemoveLine, isInRemoveLineMode, setModeRead }] =
   useStateAction();

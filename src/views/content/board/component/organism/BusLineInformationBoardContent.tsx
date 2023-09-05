@@ -1,10 +1,10 @@
 import { BusLineType } from "../../../../../_entities/bus-line.entity";
-import UpdateLineButton from "../../../board/component/atom/UpdateLineButton";
-import SchoolsEnumeration from "../../../board/component/molecule/SchoolsEnumeration";
-import Metrics from "../../../board/component/organism/Metrics";
-import Timeline from "../../../board/component/organism/Timeline";
+import UpdateLineButton from "../atom/UpdateLineButton";
+import SchoolsEnumeration from "../molecule/SchoolsEnumeration";
+import Metrics from "./Metrics";
+import Timeline from "./Timeline";
 
-import { getSelectedBusLine } from "./BusLines";
+import { getSelectedBusLine } from "../../../map/component/organism/BusLines";
 
 export function BusLineInformationBoardContent() {
   return (

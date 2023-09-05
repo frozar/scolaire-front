@@ -1,23 +1,20 @@
-import { mergeProps } from "solid-js";
-
-import { useStateAction } from "../../../../../StateAction";
-import { displayAddLineMessage } from "../../../../../userInformation/utils";
-
 import { FaSolidPlus } from "solid-icons/fa";
-
+import { mergeProps } from "solid-js";
+import { useStateAction } from "../../../../../../StateAction";
+import { displayAddLineMessage } from "../../../../../../userInformation/utils";
 import {
   drawModeStep,
   setCurrentStep,
-} from "../../../board/component/organism/DrawModeBoardContent";
+} from "../../../../board/component/organism/DrawModeBoardContent";
 import {
   isInDrawMod,
   toggleDrawMod,
-} from "../../../board/component/template/ContextManager";
+} from "../../../../board/component/template/ContextManager";
+import { deselectAllBusLines } from "../../../component/organism/BusLines";
+import { deselectAllPoints } from "../../../component/organism/Points";
 import ButtonGraphicageRightMenu, {
   OffsetType,
-} from "../../rightMapMenu/component/molecule/ButtonGraphicageRightMenu";
-import { deselectAllBusLines } from "./BusLines";
-import { deselectAllPoints } from "./Points";
+} from "../molecule/ButtonGraphicageRightMenu";
 
 const [, { isInAddLineMode }] = useStateAction();
 

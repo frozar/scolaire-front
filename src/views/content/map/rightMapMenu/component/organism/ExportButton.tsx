@@ -1,25 +1,22 @@
+import { CgExport } from "solid-icons/cg";
 import { mergeProps } from "solid-js";
-
-import { openClearConfirmationBox } from "../../../../../signaux";
-
+import { openExportConfirmationBox } from "../../../../../../signaux";
 import {
   confirmAbortEditionNeedToBeCall,
   defineModalToOpen,
-} from "../../ConfirmStopAddLineBox";
-
-import { FaRegularTrashCan } from "solid-icons/fa";
+} from "../../../ConfirmStopAddLineBox";
 import ButtonGraphicageRightMenu, {
   OffsetType,
-} from "../../rightMapMenu/component/molecule/ButtonGraphicageRightMenu";
+} from "../molecule/ButtonGraphicageRightMenu";
 
-export interface ClearButtonProps {
+export interface ExportButtonProps {
   handleClick?: () => void;
   xOffset: OffsetType;
 }
 
-export default function (props: ClearButtonProps) {
+export default function (props: ExportButtonProps) {
   const handleClick = () => {
-    defineModalToOpen(openClearConfirmationBox);
+    defineModalToOpen(openExportConfirmationBox);
     confirmAbortEditionNeedToBeCall();
   };
 
@@ -28,8 +25,8 @@ export default function (props: ClearButtonProps) {
   return (
     <ButtonGraphicageRightMenu
       onClick={mergedProps.handleClick}
-      tooltip="Vider la carte"
-      icon={<FaRegularTrashCan class="w-full p-0 h-2/3" />}
+      icon={<CgExport class="h-10 w-10 pb-[5px]" />}
+      tooltip="Exporter"
       xOffset={mergedProps.xOffset}
     />
   );

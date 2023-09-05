@@ -1,25 +1,22 @@
+import { FaSolidGears } from "solid-icons/fa";
 import { mergeProps } from "solid-js";
-
-import { openExportConfirmationBox } from "../../../../../signaux";
-
+import { openGeneratorDialogBox } from "../../../../../../signaux";
 import {
   confirmAbortEditionNeedToBeCall,
   defineModalToOpen,
-} from "../../ConfirmStopAddLineBox";
-
-import { CgExport } from "solid-icons/cg";
+} from "../../../ConfirmStopAddLineBox";
 import ButtonGraphicageRightMenu, {
   OffsetType,
-} from "../../rightMapMenu/component/molecule/ButtonGraphicageRightMenu";
+} from "../molecule/ButtonGraphicageRightMenu";
 
-export interface ExportButtonProps {
+export interface GenerateButtonProps {
   handleClick?: () => void;
   xOffset: OffsetType;
 }
 
-export default function (props: ExportButtonProps) {
+export default function (props: GenerateButtonProps) {
   const handleClick = () => {
-    defineModalToOpen(openExportConfirmationBox);
+    defineModalToOpen(openGeneratorDialogBox);
     confirmAbortEditionNeedToBeCall();
   };
 
@@ -28,8 +25,8 @@ export default function (props: ExportButtonProps) {
   return (
     <ButtonGraphicageRightMenu
       onClick={mergedProps.handleClick}
-      icon={<CgExport class="h-10 w-10 pb-[5px]" />}
-      tooltip="Exporter"
+      tooltip="Générer des trajets"
+      icon={<FaSolidGears class="h-10 w-10" />}
       xOffset={mergedProps.xOffset}
     />
   );
