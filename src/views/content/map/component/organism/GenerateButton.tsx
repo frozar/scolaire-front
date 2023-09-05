@@ -7,11 +7,10 @@ import {
   defineModalToOpen,
 } from "../../ConfirmStopAddLineBox";
 
+import { FaSolidGears } from "solid-icons/fa";
 import ButtonGraphicageRightMenu, {
   OffsetType,
-} from "../molecule/ButtonGraphicageRightMenu";
-
-import { FaSolidGears } from "solid-icons/fa";
+} from "../../rightMapMenu/component/molecule/ButtonGraphicageRightMenu";
 
 export interface GenerateButtonProps {
   handleClick?: () => void;

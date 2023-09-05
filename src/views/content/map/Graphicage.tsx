@@ -9,8 +9,6 @@ import { BusLines } from "./component/organism/BusLines";
 import ImportCsvCanvas from "../../../component/ImportCsvCanvas";
 import ConfirmStopAddLine from "./ConfirmStopAddLineBox";
 
-import RightMapMenu from "./component/organism/RightMapMenu";
-
 import { listHandlerLMap } from "./shortcut";
 
 import "leaflet/dist/leaflet.css";
@@ -18,6 +16,7 @@ import { addNewUserInformation, getLeafletMap } from "../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../type";
 import { Points } from "./component/organism/Points";
 
+import RightMapMenu from "./rightMapMenu/component/organism/RightMapMenu";
 const [, { getActiveMapId }] = useStateGui();
 function buildMap(div: HTMLDivElement) {
   const option = "l7";

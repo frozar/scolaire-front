@@ -1,13 +1,11 @@
 import { mergeProps } from "solid-js";
 
+import AddLineButton from "../../../component/organism/AddLineButton";
+import ClearButton from "../../../component/organism/ClearButton";
+import ExportButton from "../../../component/organism/ExportButton";
+import GenerateButton from "../../../component/organism/GenerateButton";
+import RemoveLineButton from "../../../component/organism/RemoveLineButton";
 import { OffsetType } from "../molecule/ButtonGraphicageRightMenu";
-
-import AddLineButton from "./AddLineButton";
-import ClearButton from "./ClearButton";
-import ExportButton from "./ExportButton";
-import GenerateButton from "./GenerateButton";
-import RemoveLineButton from "./RemoveLineButton";
-
 import "./RightMapMenu.css";
 
 export interface RightMapMenuProps {

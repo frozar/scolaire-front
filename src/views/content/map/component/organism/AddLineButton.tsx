@@ -3,10 +3,6 @@ import { mergeProps } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import { displayAddLineMessage } from "../../../../../userInformation/utils";
 
-import ButtonGraphicageRightMenu, {
-  OffsetType,
-} from "../molecule/ButtonGraphicageRightMenu";
-
 import { FaSolidPlus } from "solid-icons/fa";
 
 import {
@@ -17,6 +13,9 @@ import {
   drawModeStep,
   setCurrentStep,
 } from "../../../board/component/organism/DrawModeBoardContent";
+import ButtonGraphicageRightMenu, {
+  OffsetType,
+} from "../../rightMapMenu/component/molecule/ButtonGraphicageRightMenu";
 import { deselectAllBusLines } from "./BusLines";
 import { deselectAllPoints } from "./Points";
 

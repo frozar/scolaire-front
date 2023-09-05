@@ -4,11 +4,10 @@ import { useStateAction } from "../../../../../StateAction";
 import { displayRemoveLineMessage } from "../../../../../userInformation/utils";
 import { deselectAllPoints } from "./Points";
 
+import { FaSolidMinus } from "solid-icons/fa";
 import ButtonGraphicageRightMenu, {
   OffsetType,
-} from "../molecule/ButtonGraphicageRightMenu";
-
-import { FaSolidMinus } from "solid-icons/fa";
+} from "../../rightMapMenu/component/molecule/ButtonGraphicageRightMenu";
 
 const [, { setModeRemoveLine, isInRemoveLineMode, setModeRead }] =
   useStateAction();
