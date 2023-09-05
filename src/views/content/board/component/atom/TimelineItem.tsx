@@ -23,6 +23,7 @@ export type TimelineItemAddType = {
 export default function (props: TimelineItemAddType) {
   const timelineCircleClass =
     "v-timeline-divider__dot v-timeline-divider__dot--size-small";
+
   return (
     <div class="v-timeline-item">
       <div class="v-timeline-item__body">

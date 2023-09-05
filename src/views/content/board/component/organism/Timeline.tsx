@@ -1,6 +1,9 @@
-import { For, Show } from "solid-js";
+import { For, Show, createEffect, createSignal } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
-import { BusLineType } from "../../../../../_entities/bus-line.entity";
+import {
+  BusLineEntity,
+  BusLineType,
+} from "../../../../../_entities/bus-line.entity";
 import { getSelectedBusLine } from "../../../map/component/organism/BusLines";
 import { TimelineAddPointButton } from "../atom/TimelineAddPointButton";
 import TimelineItem from "../atom/TimelineItem";
@@ -8,30 +11,40 @@ import { onBoard } from "../template/ContextManager";
 
 const [, { getLineUnderConstruction }] = useStateAction();
 
+const [displayBusLine, setDisplayPoints] = createSignal<BusLineType>(
+  BusLineEntity.defaultBusLine()
+);
 export default function () {
-  const busLine: () => BusLineType = () =>
-    onBoard() == "draw-line"
-      ? getLineUnderConstruction().busLine
-      : (getSelectedBusLine() as BusLineType);
+  createEffect(() => {
+    const displayedPoints =
+      onBoard() === "draw-line"
+        ? getLineUnderConstruction().busLine
+        : (getSelectedBusLine() as BusLineType);
 
+    setDisplayPoints(displayedPoints);
+    console.log("onBoard()", onBoard());
+    console.log(displayBusLine());
+  });
   return (
     <div class="timeline">
       <div
         class="timeline-items v-timeline--side-end v-timeline--vertical"
         style={{ "--v-timeline-line-thickness": "2px" }}
       >
-        <For each={busLine().points}>
+        <For each={displayBusLine()?.points}>
           {(stop, i) => (
             <>
               <Show when={onBoard() == "draw-line"}>
                 <TimelineAddPointButton indice={i()} />
               </Show>
 
-              <TimelineItem
-                pointsResource={stop}
-                indice={i()}
-                busLine={busLine()}
-              />
+              <Show when={displayBusLine() != undefined}>
+                <TimelineItem
+                  pointsResource={stop}
+                  indice={i()}
+                  busLine={displayBusLine()}
+                />
+              </Show>
             </>
           )}
         </For>
