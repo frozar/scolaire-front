@@ -40,7 +40,6 @@ export class OsrmService {
       points,
       response.waypoints
     );
-    // return this.formatResponse(response.routes, response.waypoints);
   }
 
   private static buildPositionURL(points: WaypointType[]): string {
@@ -72,7 +71,9 @@ export class OsrmService {
         L.latLng(waypoint.location[1], waypoint.location[0])
       ),
     ];
+
     metrics = getMetrics(response, response_direct, points);
+
     return { latlngs, metrics };
   }
 }

@@ -197,15 +197,17 @@ const getAssociatedBusLinePoint = (dbPoint: BusLinePointDBType): PointType => {
 
 export async function updatePolylineWithOsrm(busLine: BusLineType) {
   enableSpinningWheel();
-  // const latlngs: L.LatLng[] = await OsrmService.getRoadPolyline(busLine.points);
+
   const { latlngs, metrics } = await OsrmService.getRoadPolyline(busLine);
 
   busLine.setLatLngs(latlngs[0]);
   busLine.setMetrics(metrics);
 
-  const newPoints: BusLinePointType[] = [];
+  //TODO to refactor !----
+  const pointsWithOnRoad: BusLinePointType[] = [];
+
   for (let i = 0; i < getLineUnderConstruction().busLine.points.length; i++) {
-    newPoints.push({
+    pointsWithOnRoad.push({
       ...getLineUnderConstruction().busLine.points[i],
       onRoadLon: latlngs[1][i].lng,
       onRoadLat: latlngs[1][i].lat,
@@ -213,12 +215,16 @@ export async function updatePolylineWithOsrm(busLine: BusLineType) {
   }
   setLineUnderConstruction({
     ...getLineUnderConstruction(),
-    busLine: { ...getLineUnderConstruction().busLine, points: newPoints },
+    busLine: {
+      ...getLineUnderConstruction().busLine,
+      points: pointsWithOnRoad,
+    },
   });
-
+  //!----
   disableSpinningWheel();
 }
 
+//TODO Tester sans ce nouveau type => tester ajout d'une nouvelle nature waypoint
 export type WaypointType = {
   idSchool?: number;
   idStop?: number;
