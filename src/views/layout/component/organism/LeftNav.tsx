@@ -1,12 +1,12 @@
 import { Show, mergeProps } from "solid-js";
 
 import { useStateGui } from "../../../../StateGui";
+import OpenPictogram from "../../../../icons/OpenPictogram";
 import ClosePictogram from "../atom/ClosePictogram";
-import EnterpriseLogo from "../atom/EnterpriseLogo";
-import OpenPictogram from "../atom/OpenPictogram";
 
 import LeftMenuItemList from "./LeftMenuItemList";
 
+import EnterpriseLogo from "../../../../icons/EnterpriseLogo";
 import "./LeftNav.css";
 
 const [, { getDisplayedLeftMenu, toggleDisplayedLeftMenu }] = useStateGui();

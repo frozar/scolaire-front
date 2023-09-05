@@ -1,17 +1,18 @@
 import { createSignal } from "solid-js";
 import { useStateGui } from "../../StateGui";
+import ArretsLogo from "../../icons/ArretsLogo";
+import DashboardLogo from "../../icons/DashboardLogo";
+import EtablissementLogo from "../../icons/EtablissementLogo";
+import GraphicageLogo from "../../icons/GraphicageLogo";
+import SettingsLogo from "../../icons/SettingsLogo";
+import SupportLogo from "../../icons/SupportLogo";
+import VoirieLogo from "../../icons/VoirieLogo";
 import { MenuItemType } from "../../type";
 import {
   changeBoard,
   onBoard,
 } from "../content/board/component/template/ContextManager";
-import ArretsLogo from "./component/atom/ArretsLogo";
-import DashboardLogo from "./component/atom/DashboardLogo";
-import EtablissementLogo from "./component/atom/EtablissementLogo";
-import GraphicageLogo from "./component/atom/GraphicageLogo";
-import SettingsLogo from "./component/atom/SettingsLogo";
-import SupportLogo from "./component/atom/SupportLogo";
-import VoirieLogo from "./component/atom/VoirieLogo";
+
 const [, { setSelectedMenu, getSelectedMenu }] = useStateGui();
 
 export const [isOnPage, setIsOnPage] = createSignal<boolean>(true);
