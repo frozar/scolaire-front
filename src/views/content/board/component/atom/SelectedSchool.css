@@ -1,0 +1,12 @@
+.selected-school {
+  @apply w-full flex flex-col items-center;
+  flex: 5;
+}
+
+.selected-school > p {
+  @apply text-black mb-2;
+}
+
+.selected-school > ul {
+  @apply text-black text-sm list-disc list-inside mb-4;
+}

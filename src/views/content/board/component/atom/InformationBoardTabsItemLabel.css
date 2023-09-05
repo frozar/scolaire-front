@@ -1,0 +1,7 @@
+.information-board-tabs-item-label {
+  @apply text-sm text-gray-500 font-medium;
+}
+
+.information-board-tabs-item-label.active {
+  @apply text-indigo-600;
+}

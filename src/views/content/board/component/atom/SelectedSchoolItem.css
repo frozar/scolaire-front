@@ -1,0 +1,3 @@
+.selected-school-item {
+  @apply flex w-80 mx-auto justify-around items-center;
+}
