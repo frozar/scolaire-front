@@ -19,7 +19,7 @@ import DrawModeBoardContentFooter from "./DrawModeBoardContentFooter";
 
 import "../../../../../css/timeline.css";
 import { LineUnderConstructionType, NatureEnum } from "../../../../../type";
-import { ColorPicker } from "../../../board/atom/ColorPicker";
+import { ColorPicker } from "../../../board/component/atom/ColorPicker";
 import Timeline from "../../informationBoard/Timeline";
 import ButtonIcon from "../../informationBoard/components/molecul/ButtonIcon";
 import LabeledInputField from "../../informationBoard/components/molecul/LabeledInputField";

@@ -13,7 +13,7 @@ import {
 import { setRemoveConfirmation } from "../../../../../signaux";
 import { NatureEnum } from "../../../../../type";
 import { isInDrawMod } from "../../../../layout/component/organism/ContextManager";
-import { setPickerColor } from "../../../board/atom/ColorPicker";
+import { setPickerColor } from "../../../board/component/atom/ColorPicker";
 import {
   COLOR_SCHOOL_FOCUS,
   COLOR_SCHOOL_LIGHT,

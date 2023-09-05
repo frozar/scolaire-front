@@ -1,6 +1,0 @@
-.information-board-tabs-item-icon {
-  @apply block w-[24px] h-auto resize-x text-gray-base mr-2;
-}
-.information-board-tabs-item-icon.active {
-  @apply text-green-base;
-}
