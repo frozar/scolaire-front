@@ -13,6 +13,7 @@ import {
 import { setRemoveConfirmation } from "../../../../../signaux";
 import { NatureEnum } from "../../../../../type";
 import { isInDrawMod } from "../../../../layout/component/organism/ContextManager";
+import { setPickerColor } from "../../../board/atom/ColorPicker";
 import {
   COLOR_SCHOOL_FOCUS,
   COLOR_SCHOOL_LIGHT,
@@ -20,7 +21,6 @@ import {
   COLOR_STOP_FOCUS,
   COLOR_STOP_LIGHT,
 } from "../../constant";
-import { setPickerColor } from "../atom/ColorPicker";
 import Line from "../atom/Line";
 import PolylineDragMarker from "../atom/PolylineDragMarker";
 import WaypointMarker from "../atom/WaypointMarker";

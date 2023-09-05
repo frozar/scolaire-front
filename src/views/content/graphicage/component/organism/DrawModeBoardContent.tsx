@@ -19,6 +19,7 @@ import DrawModeBoardContentFooter from "./DrawModeBoardContentFooter";
 
 import "../../../../../css/timeline.css";
 import { LineUnderConstructionType, NatureEnum } from "../../../../../type";
+import { ColorPicker } from "../../../board/atom/ColorPicker";
 import Timeline from "../../informationBoard/Timeline";
 import ButtonIcon from "../../informationBoard/components/molecul/ButtonIcon";
 import LabeledInputField from "../../informationBoard/components/molecul/LabeledInputField";
@@ -26,7 +27,6 @@ import SchoolsEnumeration from "../../informationBoard/components/molecul/School
 import Metrics from "../../informationBoard/components/organisme/Metrics";
 import CurvedLine from "../../informationBoard/components/svg-icons/CurvedLine";
 import SimpleLine from "../../informationBoard/components/svg-icons/SimpleLine";
-import { ColorPicker } from "../atom/ColorPicker";
 import { DrawHelperButton } from "../atom/DrawHelperButton";
 
 const [

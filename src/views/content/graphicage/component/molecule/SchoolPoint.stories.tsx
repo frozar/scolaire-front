@@ -7,9 +7,9 @@ import {
   getDivFullId,
   mapDecorators,
 } from "../../../../../../testing/utils/TestUtils";
+import { NatureEnum } from "../../../../../type";
 import { PointStorybook } from "../atom/Point.stories";
 import { SchoolPoint } from "./SchoolPoint";
-import { NatureEnum } from "../../../../../type";
 
 const meta = {
   component: SchoolPoint,
