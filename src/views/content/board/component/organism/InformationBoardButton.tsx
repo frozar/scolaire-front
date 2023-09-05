@@ -2,11 +2,10 @@ import { mergeProps } from "solid-js";
 
 import { useStateGui } from "../../../../../StateGui";
 
+import { BsInfoCircle } from "solid-icons/bs";
 import ButtonGraphicageRightMenu, {
   OffsetType,
-} from "../molecule/ButtonGraphicageRightMenu";
-
-import { BsInfoCircle } from "solid-icons/bs";
+} from "../../../map/rightMapMenu/component/molecule/ButtonGraphicageRightMenu";
 
 const [, { getDisplayedInformationBoard, toggleDisplayedInformationBoard }] =
   useStateGui();
