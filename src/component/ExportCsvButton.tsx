@@ -1,6 +1,6 @@
 import { displayDownloadErrorMessage } from "../userInformation/utils";
 import { download } from "../utils";
-import { getTimestamp } from "../views/content/graphicage/rightMapMenu/export/utils";
+import { getTimestamp } from "../views/content/map/rightMapMenu/export/utils";
 import { authenticateWrap } from "../views/layout/authentication";
 import Button from "./atom/Button";
 

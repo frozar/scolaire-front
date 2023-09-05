@@ -6,10 +6,10 @@ import { useStateAction } from "../../../../../StateAction";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { StopType } from "../../../../../_entities/stop.entity";
 import { isLeafletStopType } from "../../../../../type";
-import { BusLineInformationBoardContent } from "../../../graphicage/component/organism/BusLineInformationBoardContent";
-import { getSelectedBusLine } from "../../../graphicage/component/organism/BusLines";
-import { getSchools } from "../../../graphicage/component/organism/SchoolPoints";
-import { getStops } from "../../../graphicage/component/organism/StopPoints";
+import { BusLineInformationBoardContent } from "../../../map/component/organism/BusLineInformationBoardContent";
+import { getSelectedBusLine } from "../../../map/component/organism/BusLines";
+import { getSchools } from "../../../map/component/organism/SchoolPoints";
+import { getStops } from "../../../map/component/organism/StopPoints";
 import DrawModeBoardContent from "../organism/DrawModeBoardContent";
 import InfoPointName from "../organism/InfoPointName";
 

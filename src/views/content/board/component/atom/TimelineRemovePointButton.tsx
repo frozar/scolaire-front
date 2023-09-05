@@ -3,8 +3,8 @@ import { FaRegularTrashCan } from "solid-icons/fa";
 import { useStateAction } from "../../../../../StateAction";
 import { WaypointType } from "../../../../../_entities/bus-line.entity";
 import { LineUnderConstructionType } from "../../../../../type";
-import { linkMap } from "../../../graphicage/component/organism/Points";
-import { COLOR_STOP_LIGHT } from "../../../graphicage/constant";
+import { linkMap } from "../../../map/component/organism/Points";
+import { COLOR_STOP_LIGHT } from "../../../map/constant";
 import "./TimelineRemovePointButton.css";
 
 const [, { getLineUnderConstruction, setLineUnderConstruction }] =

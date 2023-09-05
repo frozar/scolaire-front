@@ -5,10 +5,7 @@ import { SchoolType } from "../../../_entities/school.entity";
 import { SchoolService } from "../../../_services/school.service";
 import { addNewUserInformation } from "../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../type";
-import {
-  getSchools,
-  setSchools,
-} from "../graphicage/component/organism/SchoolPoints";
+import { getSchools, setSchools } from "../map/component/organism/SchoolPoints";
 export const [toggledEditStop, setToggledEditStop] = createSignal(false);
 
 export function toggleEditStop() {

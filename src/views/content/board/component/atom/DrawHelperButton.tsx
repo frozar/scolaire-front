@@ -19,11 +19,11 @@ import DrawHelperDialog, {
   openDrawHelperDialog,
 } from "../molecule/DrawHelperDialog";
 
-import { getSchools } from "../../../graphicage/component/organism/SchoolPoints";
+import { getSchools } from "../../../map/component/organism/SchoolPoints";
 import {
   getStops,
   leafletStopsFilter,
-} from "../../../graphicage/component/organism/StopPoints";
+} from "../../../map/component/organism/StopPoints";
 import "./DrawHelperButton.css";
 
 interface DrawHelperButtonProps {

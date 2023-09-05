@@ -8,7 +8,6 @@ import {
   setLeafletMap,
 } from "../../../signaux";
 
-import { useStateAction } from "../../../StateAction";
 import { useStateGui } from "../../../StateGui";
 import { isInDrawMod } from "../../layout/component/organism/ContextManager";
 import FlaxibMapLogo from "./FlaxibMapLogo";
@@ -24,7 +23,6 @@ const [
     setSelectedReadModeTile,
   },
 ] = useStateGui();
-const [, { isInReadMode }] = useStateAction();
 
 function addLogoFlaxib(map: L.Map) {
   const logoControl = L.Control.extend({

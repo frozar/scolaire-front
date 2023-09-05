@@ -1,6 +1,6 @@
 import { Match, Switch, createSignal } from "solid-js";
-import DrawModeBoardContent from "../../../content/graphicage/component/organism/DrawModeBoardContent";
-import InformationContent from "../../../content/graphicage/informationBoard/InformationContent";
+import DrawModeBoardContent from "../../../content/map/component/organism/DrawModeBoardContent";
+import InformationContent from "../../../content/map/informationBoard/InformationContent";
 type SubMapBoard = "selected-informations" | "draw-line" | "nothing";
 
 export const [onSubMapBoard, setOnSubMapBoard] =

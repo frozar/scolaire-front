@@ -7,10 +7,7 @@ import PageTitle from "../../../component/atom/PageTitle";
 import { addNewUserInformation } from "../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../type";
 import RemoveRamassageConfirmation from "../../../userInformation/RemoveRamassageConfirmation";
-import {
-  getSchools,
-  setSchools,
-} from "../graphicage/component/organism/SchoolPoints";
+import { getSchools, setSchools } from "../map/component/organism/SchoolPoints";
 import EditSchool from "./EditSchool";
 import SchoolItem from "./SchoolItem";
 import Checkbox from "./component/atom/Checkbox";

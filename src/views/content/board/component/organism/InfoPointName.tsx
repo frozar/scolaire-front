@@ -1,8 +1,8 @@
-import { renderAnimation } from "../../../graphicage/animation";
+import { renderAnimation } from "../../../map/animation";
 
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { StopType } from "../../../../../_entities/stop.entity";
-import { linkMap } from "../../../graphicage/component/organism/Points";
+import { linkMap } from "../../../map/component/organism/Points";
 
 export default function (props: { point: SchoolType | StopType }) {
   return (

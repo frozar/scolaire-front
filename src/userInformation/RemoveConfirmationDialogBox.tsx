@@ -14,7 +14,7 @@ import { assertIsNode } from "../utils";
 import {
   getBusLines,
   setBusLines,
-} from "../views/content/graphicage/component/organism/BusLines";
+} from "../views/content/map/component/organism/BusLines";
 
 // HACK for the documentation to preserve the ClickOutside directive on save
 // https://www.solidjs.com/guides/typescript#use___

@@ -1,7 +1,7 @@
 import { Accessor, JSX, Setter } from "solid-js";
 import { BusLineType } from "./_entities/bus-line.entity";
 import { StopType } from "./_entities/stop.entity";
-import { PointType } from "./views/content/graphicage/component/atom/Point";
+import { PointType } from "./views/content/map/component/atom/Point";
 
 export enum NatureEnum {
   //TODO to delete and dependence

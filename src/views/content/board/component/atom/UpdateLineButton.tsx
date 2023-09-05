@@ -1,9 +1,9 @@
 import { FaSolidPen } from "solid-icons/fa";
 import { useStateAction } from "../../../../../StateAction";
 import { BusLineType } from "../../../../../_entities/bus-line.entity";
-import { deselectAllBusLines } from "../../../graphicage/component/organism/BusLines";
+import { deselectAllBusLines } from "../../../map/component/organism/BusLines";
 
-import { deselectAllPoints } from "../../../graphicage/component/organism/Points";
+import { deselectAllPoints } from "../../../map/component/organism/Points";
 import { drawModeStep, setCurrentStep } from "../organism/DrawModeBoardContent";
 import "./DrawHelperButton.css";
 

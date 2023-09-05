@@ -15,9 +15,9 @@ import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { assertIsNode } from "../utils";
 
 import ClickOutside from "../component/ClickOutside";
-import { getBusLines } from "../views/content/graphicage/component/organism/BusLines";
-import { getSchools } from "../views/content/graphicage/component/organism/SchoolPoints";
-import { getStops } from "../views/content/graphicage/component/organism/StopPoints";
+import { getBusLines } from "../views/content/map/component/organism/BusLines";
+import { getSchools } from "../views/content/map/component/organism/SchoolPoints";
+import { getStops } from "../views/content/map/component/organism/StopPoints";
 
 // HACK for the documentation to preserve the ClickOutside directive on save
 // https://www.solidjs.com/guides/typescript#use___

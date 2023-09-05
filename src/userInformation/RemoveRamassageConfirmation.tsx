@@ -15,7 +15,7 @@ import { assertIsNode } from "../utils";
 import {
   getStops,
   setStops,
-} from "../views/content/graphicage/component/organism/StopPoints";
+} from "../views/content/map/component/organism/StopPoints";
 // import { getStops, setStops } from "../views/content/stops/StopsBoard";
 
 // HACK for the documentation to preserve the ClickOutside directive on save

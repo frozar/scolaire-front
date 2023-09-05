@@ -2,8 +2,8 @@ import { Component, createSignal } from "solid-js";
 import { StoryContext } from "storybook-solidjs";
 import { PointType } from "../../src/_entities/_utils.entity";
 import { NatureEnum } from "../../src/type";
-import { SchoolPoint } from "../../src/views/content/graphicage/component/molecule/SchoolPoint";
-import { StopPoint } from "../../src/views/content/graphicage/component/molecule/StopPoint";
+import { SchoolPoint } from "../../src/views/content/map/component/molecule/SchoolPoint";
+import { StopPoint } from "../../src/views/content/map/component/molecule/StopPoint";
 import { initialiseMap } from "./mapWrapper";
 
 export function createPoint(

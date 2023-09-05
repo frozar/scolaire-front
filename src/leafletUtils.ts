@@ -1,8 +1,8 @@
 import { useStateAction } from "./StateAction";
-import { linkMap } from "./views/content/graphicage/component/organism/Points";
-import { getSchools } from "./views/content/graphicage/component/organism/SchoolPoints";
-import { getStops } from "./views/content/graphicage/component/organism/StopPoints";
-import { COLOR_STOP_FOCUS } from "./views/content/graphicage/constant";
+import { linkMap } from "./views/content/map/component/organism/Points";
+import { getSchools } from "./views/content/map/component/organism/SchoolPoints";
+import { getStops } from "./views/content/map/component/organism/StopPoints";
+import { COLOR_STOP_FOCUS } from "./views/content/map/constant";
 const [, { isInAddLineMode }] = useStateAction();
 
 export function setStopPointsColor(leafletIds: number[], color: string) {

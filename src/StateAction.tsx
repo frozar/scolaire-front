@@ -13,7 +13,7 @@ import {
 } from "./_entities/bus-line.entity";
 import { SchoolType } from "./_entities/school.entity";
 import { StopType } from "./_entities/stop.entity";
-import { COLOR_LINE_UNDER_CONSTRUCTION } from "./views/content/graphicage/constant";
+import { COLOR_LINE_UNDER_CONSTRUCTION } from "./views/content/map/constant";
 
 const [, { setDisplayedInformationBoard }] = useStateGui();
 

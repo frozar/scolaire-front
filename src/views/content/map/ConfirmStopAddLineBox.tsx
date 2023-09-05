@@ -1,7 +1,12 @@
 import { Show, createSignal, onCleanup, onMount } from "solid-js";
 import { Transition } from "solid-transition-group";
 import { useStateAction } from "../../../StateAction";
+import ClickOutside from "../../../component/ClickOutside";
 import { assertIsNode } from "../../../utils";
+
+// HACK for the documentation to preserve the ClickOutside directive on save
+// https://www.solidjs.com/guides/typescript#use___
+false && ClickOutside;
 
 const [, { isInAddLineMode, getLineUnderConstruction, setModeRead }] =
   useStateAction();
