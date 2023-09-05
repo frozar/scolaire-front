@@ -22,8 +22,6 @@ export default function () {
         : (getSelectedBusLine() as BusLineType);
 
     setDisplayPoints(displayedPoints);
-    console.log("onBoard()", onBoard());
-    console.log(displayBusLine());
   });
   return (
     <div class="timeline">
