@@ -2,7 +2,6 @@ import L from "leaflet";
 import { Accessor, Setter, createSignal } from "solid-js";
 import { useStateAction } from "../StateAction";
 import { OsrmService } from "../_services/osrm.service";
-import { disableSpinningWheel, enableSpinningWheel } from "../signaux";
 import { NatureEnum } from "../type";
 import { PointType } from "../views/content/map/component/atom/Point";
 import { getSchools } from "../views/content/map/component/organism/SchoolPoints";
@@ -196,32 +195,11 @@ const getAssociatedBusLinePoint = (dbPoint: BusLinePointDBType): PointType => {
 };
 
 export async function updatePolylineWithOsrm(busLine: BusLineType) {
-  enableSpinningWheel();
-
   const { latlngs, metrics } = await OsrmService.getRoadPolyline(busLine);
 
   busLine.setLatLngs(latlngs[0]);
   busLine.setMetrics(metrics);
-
-  //TODO to refactor !----
-  const pointsWithOnRoad: BusLinePointType[] = [];
-
-  for (let i = 0; i < getLineUnderConstruction().busLine.points.length; i++) {
-    pointsWithOnRoad.push({
-      ...getLineUnderConstruction().busLine.points[i],
-      onRoadLon: latlngs[1][i].lng,
-      onRoadLat: latlngs[1][i].lat,
-    });
-  }
-  setLineUnderConstruction({
-    ...getLineUnderConstruction(),
-    busLine: {
-      ...getLineUnderConstruction().busLine,
-      points: pointsWithOnRoad,
-    },
-  });
-  //!----
-  disableSpinningWheel();
+  setOnRoad(latlngs);
 }
 
 //TODO Tester sans ce nouveau type => tester ajout d'une nouvelle nature waypoint
@@ -285,3 +263,23 @@ export type busLineMetricType = {
   txRemplissMoy?: number;
   CO2?: number;
 };
+
+//Todo delete function : ne pas utiliser le signal
+function setOnRoad(latlngs: [L.LatLng[], L.LatLng[]]) {
+  const pointsWithOnRoad: BusLinePointType[] =
+    getLineUnderConstruction().busLine.points.map((point, i) => {
+      return {
+        ...point,
+        onRoadLon: latlngs[1][i].lng,
+        onRoadLat: latlngs[1][i].lat,
+      };
+    });
+
+  setLineUnderConstruction({
+    ...getLineUnderConstruction(),
+    busLine: {
+      ...getLineUnderConstruction().busLine,
+      points: pointsWithOnRoad,
+    },
+  });
+}
