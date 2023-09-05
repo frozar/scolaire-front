@@ -18,7 +18,6 @@ export function BusLineInformationBoardContent() {
         />
         <UpdateLineButton busLine={getSelectedBusLine() as BusLineType} />
       </div>
-      p
       <Metrics line={getSelectedBusLine()} />
       <Timeline />
     </div>
