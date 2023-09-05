@@ -15,10 +15,11 @@ import {
 } from "../../constant";
 import Point from "../atom/Point";
 import { deselectAllBusLines } from "../organism/BusLines";
+
 import {
   displayLineMode,
   displayLineModeEnum,
-} from "../organism/DrawModeBoardContent";
+} from "../../../board/component/organism/DrawModeBoardContent";
 import {
   blinkingStops,
   cursorIsOverPoint,

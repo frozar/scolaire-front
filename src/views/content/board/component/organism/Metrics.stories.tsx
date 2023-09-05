@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from "storybook-solidjs";
-import { BusLineType } from "../../../../../../_entities/bus-line.entity";
+import { BusLineType } from "../../../../../_entities/bus-line.entity";
 import Metrics, { MetricsProps } from "./Metrics";
 
 const meta = {

@@ -1,8 +1,5 @@
-import { BusLineType } from "../../../../../../_entities/bus-line.entity";
-import {
-  MetricItem,
-  MetricItemProps,
-} from "../../../../board/component/atom/MetricItem";
+import { BusLineType } from "../../../../../_entities/bus-line.entity";
+import { MetricItem, MetricItemProps } from "../atom/MetricItem";
 
 export interface MetricsEnumerationProps {
   metrics: MetricItemProps[];

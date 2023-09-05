@@ -1,18 +1,17 @@
 import { For, Match, Show, Switch, createEffect } from "solid-js";
-import { useStateAction } from "../../../../StateAction";
-import { isLeafletStopType } from "../../../../type";
-import { getSelectedBusLine } from "../component/organism/BusLines";
-import { getSchools } from "../component/organism/SchoolPoints";
-import { getStops } from "../component/organism/StopPoints";
-import InfoPointName from "./InfoPointName";
 
-import { SchoolType } from "../../../../_entities/school.entity";
-import { StopType } from "../../../../_entities/stop.entity";
-import { BusLineInformationBoardContent } from "../component/organism/BusLineInformationBoardContent";
 import "./InformationContent.css";
 
-import "../../../../css/timeline.css";
-import DrawModeBoardContent from "../component/organism/DrawModeBoardContent";
+import { useStateAction } from "../../../../../StateAction";
+import { SchoolType } from "../../../../../_entities/school.entity";
+import { StopType } from "../../../../../_entities/stop.entity";
+import { isLeafletStopType } from "../../../../../type";
+import { BusLineInformationBoardContent } from "../../../graphicage/component/organism/BusLineInformationBoardContent";
+import { getSelectedBusLine } from "../../../graphicage/component/organism/BusLines";
+import { getSchools } from "../../../graphicage/component/organism/SchoolPoints";
+import { getStops } from "../../../graphicage/component/organism/StopPoints";
+import DrawModeBoardContent from "../organism/DrawModeBoardContent";
+import InfoPointName from "../organism/InfoPointName";
 
 const [, { isInAddLineMode, resetLineUnderConstruction }] = useStateAction();
 

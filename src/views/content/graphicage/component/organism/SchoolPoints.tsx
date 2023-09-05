@@ -4,8 +4,11 @@ import { useStateAction } from "../../../../../StateAction";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { SchoolService } from "../../../../../_services/school.service";
 import { isInDrawMod } from "../../../../layout/component/organism/ContextManager";
+import {
+  currentStep,
+  drawModeStep,
+} from "../../../board/component/organism/DrawModeBoardContent";
 import { SchoolPoint } from "../molecule/SchoolPoint";
-import { currentStep, drawModeStep } from "./DrawModeBoardContent";
 
 const [, { getLineUnderConstruction }] = useStateAction();
 

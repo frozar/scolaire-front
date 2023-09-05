@@ -8,16 +8,19 @@ import ButtonGraphicageRightMenu, {
 } from "../molecule/ButtonGraphicageRightMenu";
 
 import { FaSolidPlus } from "solid-icons/fa";
-import { drawModeStep, setCurrentStep } from "./DrawModeBoardContent";
 
 import {
   isInDrawMod,
   toggleDrawMod,
 } from "../../../../layout/component/organism/ContextManager";
+import {
+  drawModeStep,
+  setCurrentStep,
+} from "../../../board/component/organism/DrawModeBoardContent";
 import { deselectAllBusLines } from "./BusLines";
 import { deselectAllPoints } from "./Points";
 
-const [, { setModeAddLine, isInAddLineMode, setModeRead }] = useStateAction();
+const [, { isInAddLineMode }] = useStateAction();
 
 export interface AddLineButtonProps {
   handleClick?: () => void;

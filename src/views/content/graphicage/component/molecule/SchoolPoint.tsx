@@ -8,13 +8,16 @@ import {
 } from "../../../../../leafletUtils";
 import { isInDrawMod } from "../../../../layout/component/organism/ContextManager";
 import {
+  currentStep,
+  drawModeStep,
+} from "../../../board/component/organism/DrawModeBoardContent";
+import {
   COLOR_SCHOOL_FOCUS,
   COLOR_SCHOOL_LIGHT,
   COLOR_STOP_LIGHT,
 } from "../../constant";
 import Point from "../atom/Point";
 import { deselectAllBusLines } from "../organism/BusLines";
-import { currentStep, drawModeStep } from "../organism/DrawModeBoardContent";
 import {
   blinkingSchools,
   cursorIsOverPoint,

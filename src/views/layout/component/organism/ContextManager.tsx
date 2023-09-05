@@ -1,6 +1,7 @@
 import { Match, Switch, createEffect, createSignal } from "solid-js";
-import DrawModeBoardContent from "../../../content/graphicage/component/organism/DrawModeBoardContent";
-import InformationContent from "../../../content/graphicage/informationBoard/InformationContent";
+
+import DrawModeBoardContent from "../../../content/board/component/organism/DrawModeBoardContent";
+import InformationContent from "../../../content/board/component/template/InformationContent";
 import InformationBoardLayout from "../template/InformationBoardLayout";
 
 export type BoardsType =

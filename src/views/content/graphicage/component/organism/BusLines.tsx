@@ -4,8 +4,11 @@ import { useStateAction } from "../../../../../StateAction";
 import { BusLineType } from "../../../../../_entities/bus-line.entity";
 import { BusLineService } from "../../../../../_services/bus-line.service";
 import { BusLine } from "../molecule/BusLine";
-import { currentStep, drawModeStep } from "./DrawModeBoardContent";
 
+import {
+  currentStep,
+  drawModeStep,
+} from "../../../board/component/organism/DrawModeBoardContent";
 import { pointsReady } from "./Points";
 
 const [, { getLineUnderConstruction }] = useStateAction();

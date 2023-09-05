@@ -25,12 +25,13 @@ import Line from "../atom/Line";
 import PolylineDragMarker from "../atom/PolylineDragMarker";
 import WaypointMarker from "../atom/WaypointMarker";
 import { deselectAllBusLines } from "../organism/BusLines";
+
 import {
   currentStep,
   displayLineMode,
   displayLineModeEnum,
   drawModeStep,
-} from "../organism/DrawModeBoardContent";
+} from "../../../board/component/organism/DrawModeBoardContent";
 import {
   cursorIsOverPoint,
   deselectAllPoints,

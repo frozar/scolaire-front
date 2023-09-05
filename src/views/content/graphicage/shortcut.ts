@@ -20,14 +20,15 @@ import {
   isInDrawMod,
   toggleDrawMod,
 } from "../../layout/component/organism/ContextManager";
-import { displayedConfirmStopAddLine } from "./ConfirmStopAddLineBox";
-
-import { deselectAllBusLines } from "./component/organism/BusLines";
 import {
   currentStep,
   drawModeStep,
   setCurrentStep,
-} from "./component/organism/DrawModeBoardContent";
+} from "../board/component/organism/DrawModeBoardContent";
+import { displayedConfirmStopAddLine } from "./ConfirmStopAddLineBox";
+
+import { deselectAllBusLines } from "./component/organism/BusLines";
+
 import { deselectAllPoints } from "./component/organism/Points";
 import { COLOR_SCHOOL_FOCUS, COLOR_STOP_FOCUS } from "./constant";
 

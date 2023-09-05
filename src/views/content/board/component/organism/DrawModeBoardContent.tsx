@@ -13,21 +13,22 @@ import {
 } from "../../../../../_entities/bus-line.entity";
 import { BusLineService } from "../../../../../_services/bus-line.service";
 
-import { quitModeAddLine } from "../../shortcut";
-import { updateBusLines } from "./BusLines";
 import DrawModeBoardContentFooter from "./DrawModeBoardContentFooter";
 
 import "../../../../../css/timeline.css";
 import { LineUnderConstructionType, NatureEnum } from "../../../../../type";
 import { ColorPicker } from "../../../board/component/atom/ColorPicker";
-import Timeline from "../../informationBoard/Timeline";
-import ButtonIcon from "../../informationBoard/components/molecul/ButtonIcon";
-import LabeledInputField from "../../informationBoard/components/molecul/LabeledInputField";
-import SchoolsEnumeration from "../../informationBoard/components/molecul/SchoolsEnumeration";
-import Metrics from "../../informationBoard/components/organisme/Metrics";
-import CurvedLine from "../../informationBoard/components/svg-icons/CurvedLine";
-import SimpleLine from "../../informationBoard/components/svg-icons/SimpleLine";
+
+import { updateBusLines } from "../../../graphicage/component/organism/BusLines";
+import { quitModeAddLine } from "../../../graphicage/shortcut";
+import CurvedLine from "../../svg-icons/CurvedLine";
+import SimpleLine from "../../svg-icons/SimpleLine";
 import { DrawHelperButton } from "../atom/DrawHelperButton";
+import ButtonIcon from "../molecule/ButtonIcon";
+import LabeledInputField from "../molecule/LabeledInputField";
+import SchoolsEnumeration from "../molecule/SchoolsEnumeration";
+import Metrics from "./Metrics";
+import Timeline from "./Timeline";
 
 const [
   ,

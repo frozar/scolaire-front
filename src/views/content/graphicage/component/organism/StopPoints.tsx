@@ -4,9 +4,12 @@ import { useStateAction } from "../../../../../StateAction";
 import { useStateGui } from "../../../../../StateGui";
 import { StopType } from "../../../../../_entities/stop.entity";
 import { StopService } from "../../../../../_services/stop.service";
+import {
+  currentStep,
+  drawModeStep,
+} from "../../../board/component/organism/DrawModeBoardContent";
 import { PointInterface } from "../atom/Point";
 import { StopPoint } from "../molecule/StopPoint";
-import { currentStep, drawModeStep } from "./DrawModeBoardContent";
 
 const [, { getLineUnderConstruction }] = useStateAction();
 const [, { nextLeafletPointId }] = useStateGui();
