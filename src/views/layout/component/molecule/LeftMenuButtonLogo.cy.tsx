@@ -1,4 +1,4 @@
-import ArretsLogo from "../atom/ArretsLogo";
+import ArretsLogo from "../../../../icons/ArretsLogo";
 import DashboardLogo from "../atom/DashboardLogo";
 import EtablissementLogo from "../atom/EtablissementLogo";
 import GraphicageLogo from "../atom/GraphicageLogo";

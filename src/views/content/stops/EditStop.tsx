@@ -5,10 +5,7 @@ import { StopType } from "../../../_entities/stop.entity";
 import { StopService } from "../../../_services/stop.service";
 import { addNewUserInformation } from "../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../type";
-import {
-  getStops,
-  setStops,
-} from "../graphicage/component/organism/StopPoints";
+import { getStops, setStops } from "../map/component/organism/StopPoints";
 // import { getStops, setStops } from "./StopsBoard";
 
 export const [toggledEditStop, setToggledEditStop] = createSignal(false);

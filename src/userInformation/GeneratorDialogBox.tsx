@@ -1,14 +1,16 @@
 import { Show, createEffect, createSignal, onCleanup, onMount } from "solid-js";
 import { Transition } from "solid-transition-group";
 
-import ClickOutside from "../component/ClickOutside";
 import {
   closeGeneratorDialogBox,
   getDisplayedGeneratorDialogBox,
 } from "../signaux";
 
+import ClickOutside from "../component/ClickOutside";
 import { assertIsNode } from "../utils";
-import { generateCircuit } from "../views/content/graphicage/generationCircuit";
+import { generateCircuit } from "../views/content/map/generationCircuit";
+
+false && ClickOutside;
 
 let refDialogueBox: HTMLDivElement;
 

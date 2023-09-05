@@ -16,8 +16,8 @@ import {
   addNewUserInformation,
 } from "../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
-import { setSchools } from "../views/content/graphicage/component/organism/SchoolPoints";
-import { setStops } from "../views/content/graphicage/component/organism/StopPoints";
+import { setSchools } from "../views/content/map/component/organism/SchoolPoints";
+import { setStops } from "../views/content/map/component/organism/StopPoints";
 
 export namespace CsvUtils {
   export async function importCsvFile(file: File): Promise<boolean> {

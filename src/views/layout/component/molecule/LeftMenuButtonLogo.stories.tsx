@@ -1,13 +1,13 @@
 import { Meta, StoryObj } from "storybook-solidjs";
 
-import DashboardLogo from "../atom/DashboardLogo";
-import GraphicageLogo from "../atom/GraphicageLogo";
-import VoirieLogo from "../atom/VoirieLogo";
-import EtablissementLogo from "../atom/EtablissementLogo";
-import ArretsLogo from "../atom/ArretsLogo";
-import SettingsLogo from "../atom/SettingsLogo";
-import SupportLogo from "../atom/SupportLogo";
+import ArretsLogo from "../../../../icons/ArretsLogo";
 
+import DashboardLogo from "../../../../icons/DashboardLogo";
+import EtablissementLogo from "../../../../icons/EtablissementLogo";
+import GraphicageLogo from "../../../../icons/GraphicageLogo";
+import SettingsLogo from "../../../../icons/SettingsLogo";
+import SupportLogo from "../../../../icons/SupportLogo";
+import VoirieLogo from "../../../../icons/VoirieLogo";
 import LeftMenuButtonLogoComponent from "./LeftMenuButtonLogo";
 
 const logos = {

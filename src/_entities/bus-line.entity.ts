@@ -4,10 +4,10 @@ import { useStateAction } from "../StateAction";
 import { OsrmService } from "../_services/osrm.service";
 import { disableSpinningWheel, enableSpinningWheel } from "../signaux";
 import { NatureEnum } from "../type";
-import { PointType } from "../views/content/graphicage/component/atom/Point";
-import { getSchools } from "../views/content/graphicage/component/organism/SchoolPoints";
-import { getStops } from "../views/content/graphicage/component/organism/StopPoints";
-import { COLOR_LINE_UNDER_CONSTRUCTION } from "../views/content/graphicage/constant";
+import { PointType } from "../views/content/map/component/atom/Point";
+import { getSchools } from "../views/content/map/component/organism/SchoolPoints";
+import { getStops } from "../views/content/map/component/organism/StopPoints";
+import { COLOR_LINE_UNDER_CONSTRUCTION } from "../views/content/map/constant";
 import { EntityUtils, LocationPathDBType } from "./_utils.entity";
 import { SchoolType } from "./school.entity";
 

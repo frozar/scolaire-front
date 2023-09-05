@@ -3,9 +3,9 @@ import { For, mergeProps } from "solid-js";
 import { useStateGui } from "../../../../StateGui";
 import { SelectedMenuType } from "../../../../type";
 
+import { onBoard } from "../../../content/board/component/template/ContextManager";
 import menuItems, { isOnPage } from "../../menuItemFields";
 import LeftMenuItem from "../molecule/LeftMenuItem";
-import { onBoard } from "./ContextManager";
 
 const [, { setSelectedMenu, getSelectedMenu }] = useStateGui();
 

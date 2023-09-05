@@ -1,14 +1,18 @@
 import { createSignal } from "solid-js";
 import { useStateGui } from "../../StateGui";
+import ArretsLogo from "../../icons/ArretsLogo";
+import DashboardLogo from "../../icons/DashboardLogo";
+import EtablissementLogo from "../../icons/EtablissementLogo";
+import GraphicageLogo from "../../icons/GraphicageLogo";
+import SettingsLogo from "../../icons/SettingsLogo";
+import SupportLogo from "../../icons/SupportLogo";
+import VoirieLogo from "../../icons/VoirieLogo";
 import { MenuItemType } from "../../type";
-import ArretsLogo from "./component/atom/ArretsLogo";
-import DashboardLogo from "./component/atom/DashboardLogo";
-import EtablissementLogo from "./component/atom/EtablissementLogo";
-import GraphicageLogo from "./component/atom/GraphicageLogo";
-import SettingsLogo from "./component/atom/SettingsLogo";
-import SupportLogo from "./component/atom/SupportLogo";
-import VoirieLogo from "./component/atom/VoirieLogo";
-import { changeBoard, onBoard } from "./component/organism/ContextManager";
+import {
+  changeBoard,
+  onBoard,
+} from "../content/board/component/template/ContextManager";
+
 const [, { setSelectedMenu, getSelectedMenu }] = useStateGui();
 
 export const [isOnPage, setIsOnPage] = createSignal<boolean>(true);
@@ -69,21 +73,27 @@ const menuItems: MenuItemType[] = [
     Logo: VoirieLogo,
     label: "Voirie",
     isDisabled: true,
-    onClick: () => {},
+    onClick: () => {
+      console.log("Voirie");
+    },
   },
   {
     menuItem: "parametres",
     Logo: SettingsLogo,
     label: "Paramètres",
     isDisabled: true,
-    onClick: () => {},
+    onClick: () => {
+      console.log("Paramètres");
+    },
   },
   {
     menuItem: "support",
     Logo: SupportLogo,
     label: "Support",
     isDisabled: true,
-    onClick: () => {},
+    onClick: () => {
+      console.log("Support");
+    },
   },
 ];
 

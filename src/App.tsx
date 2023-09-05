@@ -10,11 +10,11 @@ import DisplayUserInformation from "./userInformation/DisplayUserInformation";
 import DragAndDropSummary from "./userInformation/DragAndDropSummary";
 import GeneratorDialogBox from "./userInformation/GeneratorDialogBox";
 import RemoveConfirmationDialogBox from "./userInformation/RemoveConfirmationDialogBox";
+import ContextManager from "./views/content/board/component/template/ContextManager";
 import Dashboard from "./views/content/dashboard/Dashboard";
-import Graphicage from "./views/content/graphicage/Graphicage";
-import { setPointsReady } from "./views/content/graphicage/component/organism/Points";
-import ExportConfirmationDialogBox from "./views/content/graphicage/rightMapMenu/export/ExportConfirmationDialogBox";
-import ContextManager from "./views/layout/component/organism/ContextManager";
+import Map from "./views/content/map/Map";
+import { setPointsReady } from "./views/content/map/component/organism/Points";
+import ExportConfirmationDialogBox from "./views/content/map/rightMapMenu/export/ExportConfirmationDialogBox";
 
 const [, { isInAddLineMode }] = useStateAction();
 const [, { getSelectedMenu }] = useStateGui();
@@ -61,7 +61,7 @@ export default () => {
           </Match>
 
           <Match when={getSelectedMenu() == "graphicage"}>
-            <Graphicage />
+            <Map />
             <ContextManager />
           </Match>
         </Switch>

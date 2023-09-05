@@ -2,7 +2,7 @@ import _ from "lodash";
 import { JSX, createContext, createEffect, useContext } from "solid-js";
 import { SetStoreFunction, Store, createStore } from "solid-js/store";
 import { SelectedMenuType, TileId } from "./type";
-import { informationBoardTabIdType } from "./views/content/graphicage/component/organism/InformationBoardTabs";
+import { informationBoardTabIdType } from "./views/content/map/component/organism/InformationBoardTabs";
 
 type StateGuiType = {
   selectedMenu: SelectedMenuType;
