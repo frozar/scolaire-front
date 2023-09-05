@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from "storybook-solidjs";
+import GraphicageLogo from "../../../../icons/GraphicageLogo";
 import LeftMenuItemComponent from "./LeftMenuItem";
-import GraphicageLogo from "../atom/GraphicageLogo";
 
 const meta = {
   component: LeftMenuItemComponent,
