@@ -52,6 +52,15 @@ export default function (props: PolylineDragMarkersProps) {
     updatePolylineWithOsrm(getLineUnderConstruction().busLine);
   });
 
+  polylineDragMarker.setOpacity(0);
+
+  polylineDragMarker.on("mouseover", function () {
+    polylineDragMarker.setOpacity(100);
+  });
+
+  polylineDragMarker.on("mouseout", function () {
+    polylineDragMarker.setOpacity(0);
+  });
   // eslint-disable-next-line solid/reactivity
   polylineDragMarker.addTo(props.map);
 
