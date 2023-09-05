@@ -19,10 +19,10 @@ import "../../../../../css/timeline.css";
 import { LineUnderConstructionType, NatureEnum } from "../../../../../type";
 import { ColorPicker } from "../../../board/component/atom/ColorPicker";
 
+import CurvedLine from "../../../../../icons/CurvedLine";
+import SimpleLine from "../../../../../icons/SimpleLine";
 import { updateBusLines } from "../../../map/component/organism/BusLines";
 import { quitModeAddLine } from "../../../map/shortcut";
-import CurvedLine from "../../svg-icons/CurvedLine";
-import SimpleLine from "../../svg-icons/SimpleLine";
 import { DrawHelperButton } from "../atom/DrawHelperButton";
 import ButtonIcon from "../molecule/ButtonIcon";
 import LabeledInputField from "../molecule/LabeledInputField";
