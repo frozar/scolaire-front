@@ -9,7 +9,7 @@ import {
 } from "../../../signaux";
 
 import { useStateGui } from "../../../StateGui";
-import { isInDrawMod } from "../../layout/component/organism/ContextManager";
+import { isInDrawMod } from "../board/component/template/ContextManager";
 import FlaxibMapLogo from "./FlaxibMapLogo";
 import { initScreenshoter } from "./rightMapMenu/export/screenShoter";
 import { getTileById } from "./tileUtils";

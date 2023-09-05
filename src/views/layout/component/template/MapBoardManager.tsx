@@ -1,6 +1,7 @@
 import { Match, Switch, createSignal } from "solid-js";
-import DrawModeBoardContent from "../../../content/map/component/organism/DrawModeBoardContent";
-import InformationContent from "../../../content/map/informationBoard/InformationContent";
+import DrawModeBoardContent from "../../../content/board/component/organism/DrawModeBoardContent";
+import InformationContent from "../../../content/board/component/template/InformationContent";
+
 type SubMapBoard = "selected-informations" | "draw-line" | "nothing";
 
 export const [onSubMapBoard, setOnSubMapBoard] =
@@ -28,7 +29,7 @@ export const changeSubMapBoard = (boardName: SubMapBoard, showLine = false) => {
   }
   setOnSubMapBoard(boardName);
 };
-
+// TODO Utiliser le composant ou le supprimer
 export default function (props: { subBoard: SubMapBoard }) {
   return (
     <Switch>

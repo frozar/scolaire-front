@@ -1,10 +1,10 @@
 import { For, Show } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import { BusLineType } from "../../../../../_entities/bus-line.entity";
-import { onBoard } from "../../../../layout/component/organism/ContextManager";
 import { getSelectedBusLine } from "../../../map/component/organism/BusLines";
 import { TimelineAddPointButton } from "../atom/TimelineAddPointButton";
 import TimelineItem from "../atom/TimelineItem";
+import { onBoard } from "../template/ContextManager";
 
 const [, { getLineUnderConstruction }] = useStateAction();
 

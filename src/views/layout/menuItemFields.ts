@@ -1,6 +1,10 @@
 import { createSignal } from "solid-js";
 import { useStateGui } from "../../StateGui";
 import { MenuItemType } from "../../type";
+import {
+  changeBoard,
+  onBoard,
+} from "../content/board/component/template/ContextManager";
 import ArretsLogo from "./component/atom/ArretsLogo";
 import DashboardLogo from "./component/atom/DashboardLogo";
 import EtablissementLogo from "./component/atom/EtablissementLogo";
@@ -8,7 +12,6 @@ import GraphicageLogo from "./component/atom/GraphicageLogo";
 import SettingsLogo from "./component/atom/SettingsLogo";
 import SupportLogo from "./component/atom/SupportLogo";
 import VoirieLogo from "./component/atom/VoirieLogo";
-import { changeBoard, onBoard } from "./component/organism/ContextManager";
 const [, { setSelectedMenu, getSelectedMenu }] = useStateGui();
 
 export const [isOnPage, setIsOnPage] = createSignal<boolean>(true);
@@ -69,21 +72,27 @@ const menuItems: MenuItemType[] = [
     Logo: VoirieLogo,
     label: "Voirie",
     isDisabled: true,
-    onClick: () => {},
+    onClick: () => {
+      console.log("Voirie");
+    },
   },
   {
     menuItem: "parametres",
     Logo: SettingsLogo,
     label: "Paramètres",
     isDisabled: true,
-    onClick: () => {},
+    onClick: () => {
+      console.log("Paramètres");
+    },
   },
   {
     menuItem: "support",
     Logo: SupportLogo,
     label: "Support",
     isDisabled: true,
-    onClick: () => {},
+    onClick: () => {
+      console.log("Support");
+    },
   },
 ];
 

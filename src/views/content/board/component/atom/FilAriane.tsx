@@ -1,12 +1,12 @@
 import { createEffect, createSignal } from "solid-js";
-import { useStateAction } from "../../../../StateAction";
-import { onBoard } from "../organism/ContextManager";
+import { useStateAction } from "../../../../../StateAction";
+import { onBoard } from "../template/ContextManager";
 import "./FilAriane.css";
 
 const [, { getLineUnderConstruction }] = useStateAction();
 
-export default function (props: { text?: string }) {
-  const [text, setText] = createSignal(props.text);
+export default function () {
+  const [text, setText] = createSignal("");
 
   createEffect(() => {
     switch (onBoard()) {

@@ -12,8 +12,8 @@ import {
 } from "../../../../../leafletUtils";
 import { setRemoveConfirmation } from "../../../../../signaux";
 import { NatureEnum } from "../../../../../type";
-import { isInDrawMod } from "../../../../layout/component/organism/ContextManager";
 import { setPickerColor } from "../../../board/component/atom/ColorPicker";
+import { isInDrawMod } from "../../../board/component/template/ContextManager";
 import {
   COLOR_SCHOOL_FOCUS,
   COLOR_SCHOOL_LIGHT,

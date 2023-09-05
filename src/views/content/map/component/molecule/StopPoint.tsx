@@ -6,7 +6,7 @@ import {
   setSchoolPointsColor,
   setStopPointsColor,
 } from "../../../../../leafletUtils";
-import { onBoard } from "../../../../layout/component/organism/ContextManager";
+import { onBoard } from "../../../board/component/template/ContextManager";
 import {
   COLOR_SCHOOL_LIGHT,
   COLOR_STOP_EMPHASE,

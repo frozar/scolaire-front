@@ -17,14 +17,14 @@ import {
   displayRemoveLineMessage,
 } from "../../../userInformation/utils";
 import {
-  isInDrawMod,
-  toggleDrawMod,
-} from "../../layout/component/organism/ContextManager";
-import {
   currentStep,
   drawModeStep,
   setCurrentStep,
 } from "../board/component/organism/DrawModeBoardContent";
+import {
+  isInDrawMod,
+  toggleDrawMod,
+} from "../board/component/template/ContextManager";
 import { displayedConfirmStopAddLine } from "./ConfirmStopAddLineBox";
 
 import { deselectAllBusLines } from "./component/organism/BusLines";

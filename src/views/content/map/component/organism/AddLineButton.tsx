@@ -6,13 +6,13 @@ import { displayAddLineMessage } from "../../../../../userInformation/utils";
 import { FaSolidPlus } from "solid-icons/fa";
 
 import {
-  isInDrawMod,
-  toggleDrawMod,
-} from "../../../../layout/component/organism/ContextManager";
-import {
   drawModeStep,
   setCurrentStep,
 } from "../../../board/component/organism/DrawModeBoardContent";
+import {
+  isInDrawMod,
+  toggleDrawMod,
+} from "../../../board/component/template/ContextManager";
 import ButtonGraphicageRightMenu, {
   OffsetType,
 } from "../../rightMapMenu/component/molecule/ButtonGraphicageRightMenu";
