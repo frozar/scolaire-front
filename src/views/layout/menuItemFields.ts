@@ -40,7 +40,7 @@ const menuItems: MenuItemType[] = [
     isDisabled: false,
     onClick: () => {
       if (onBoard() == "schools" || onBoard() == "stops") {
-        changeBoard("selected-informations");
+        changeBoard("line");
       }
       setIsOnPage(true);
       setSelectedMenu("graphicage");

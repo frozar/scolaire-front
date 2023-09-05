@@ -5,6 +5,7 @@ import { deselectAllBusLines } from "../../../map/component/organism/BusLines";
 
 import { deselectAllPoints } from "../../../map/component/organism/Points";
 import { drawModeStep, setCurrentStep } from "../organism/DrawModeBoardContent";
+import { changeBoard, toggleDrawMod } from "../template/ContextManager";
 import "./DrawHelperButton.css";
 
 // interface DrawHelperButtonProps {
@@ -22,7 +23,9 @@ export default function (props: { busLine: BusLineType }) {
 
     deselectAllPoints();
     deselectAllBusLines();
+    toggleDrawMod();
     setCurrentStep(drawModeStep.editLine);
+    changeBoard("draw-line");
     setModeAddLine();
   }
 

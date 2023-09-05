@@ -21,12 +21,20 @@ import { ColorPicker } from "../../../board/component/atom/ColorPicker";
 
 import CurvedLine from "../../../../../icons/CurvedLine";
 import SimpleLine from "../../../../../icons/SimpleLine";
-import { updateBusLines } from "../../../map/component/organism/BusLines";
+import {
+  disableSpinningWheel,
+  enableSpinningWheel,
+} from "../../../../../signaux";
+import {
+  getBusLines,
+  updateBusLines,
+} from "../../../map/component/organism/BusLines";
 import { quitModeAddLine } from "../../../map/shortcut";
 import { DrawHelperButton } from "../atom/DrawHelperButton";
 import ButtonIcon from "../molecule/ButtonIcon";
 import LabeledInputField from "../molecule/LabeledInputField";
 import SchoolsEnumeration from "../molecule/SchoolsEnumeration";
+import { changeBoard } from "../template/ContextManager";
 import Metrics from "./Metrics";
 import Timeline from "./Timeline";
 
@@ -241,6 +249,14 @@ async function createOrUpdateBusLine(busLine: BusLineType) {
   }
   quitModeAddLine();
   setCurrentStep(drawModeStep.start);
+  changeBoard("line");
+  selectedUpdatedBusLine(busLine);
+}
+
+function selectedUpdatedBusLine(busLine: BusLineType) {
+  getBusLines()
+    .filter((line) => line.id === busLine.id)[0]
+    .setSelected(true);
 }
 
 async function createBusLine(busLine: BusLineType) {
@@ -254,6 +270,7 @@ async function updateBusLine(busLine: BusLineType) {
 }
 
 async function nextStep() {
+  enableSpinningWheel();
   switch (currentStep()) {
     case drawModeStep.schoolSelection:
       if (getLineUnderConstruction().busLine.schools.length < 1) {
@@ -268,8 +285,9 @@ async function nextStep() {
         await updatePolylineWithOsrm(getLineUnderConstruction().busLine);
       }
 
-      createOrUpdateBusLine(getLineUnderConstruction().busLine);
+      await createOrUpdateBusLine(getLineUnderConstruction().busLine);
   }
+  disableSpinningWheel();
 }
 
 function prevStep() {
