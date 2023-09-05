@@ -11,10 +11,11 @@ import { onBoard } from "../template/ContextManager";
 
 const [, { getLineUnderConstruction }] = useStateAction();
 
-const [displayBusLine, setDisplayPoints] = createSignal<BusLineType>(
-  BusLineEntity.defaultBusLine()
-);
 export default function () {
+  const [displayBusLine, setDisplayPoints] = createSignal<BusLineType>(
+    BusLineEntity.defaultBusLine()
+  );
+
   createEffect(() => {
     const displayedPoints =
       onBoard() === "draw-line"
