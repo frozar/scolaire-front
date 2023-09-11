@@ -7,7 +7,7 @@ import {
 } from "../../../../../_entities/bus-line.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { NatureEnum } from "../../../../../type";
-import { isInDrawMod } from "../template/ContextManager";
+import { onBoard } from "../template/ContextManager";
 import { TimelineRemovePointButton } from "./TimelineRemovePointButton";
 
 const [, { setLineUnderConstruction, getLineUnderConstruction }] =
@@ -69,7 +69,7 @@ export default function (props: TimelineItemAddType) {
         >
           <div class="v-timeline-divider__inner-dot !bg-white">
             <i class="" aria-hidden="true" />
-            <Show when={isInDrawMod()}>
+            <Show when={onBoard() == "draw-line"}>
               <TimelineRemovePointButton
                 indice={props.indice}
                 setter={setLineUnderConstruction}
