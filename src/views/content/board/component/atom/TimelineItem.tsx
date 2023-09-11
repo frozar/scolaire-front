@@ -7,12 +7,11 @@ import {
 } from "../../../../../_entities/bus-line.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { NatureEnum } from "../../../../../type";
+import { isInDrawMod } from "../template/ContextManager";
 import { TimelineRemovePointButton } from "./TimelineRemovePointButton";
 
-const [
-  ,
-  { isInAddLineMode, setLineUnderConstruction, getLineUnderConstruction },
-] = useStateAction();
+const [, { setLineUnderConstruction, getLineUnderConstruction }] =
+  useStateAction();
 
 export type TimelineItemAddType = {
   pointsResource: BusLinePointType;
@@ -70,7 +69,7 @@ export default function (props: TimelineItemAddType) {
         >
           <div class="v-timeline-divider__inner-dot !bg-white">
             <i class="" aria-hidden="true" />
-            <Show when={isInAddLineMode()}>
+            <Show when={isInDrawMod()}>
               <TimelineRemovePointButton
                 indice={props.indice}
                 setter={setLineUnderConstruction}
