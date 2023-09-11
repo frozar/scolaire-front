@@ -12,6 +12,7 @@ import { FaSolidWandMagicSparkles } from "solid-icons/fa";
 import {
   BusLinePointType,
   WaypointType,
+  updatePolylineWithOsrm,
 } from "../../../../../_entities/bus-line.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import {
@@ -28,6 +29,10 @@ import {
   getStops,
   leafletStopsFilter,
 } from "../../../map/component/organism/StopPoints";
+import {
+  displayLineMode,
+  displayLineModeEnum,
+} from "../organism/DrawModeBoardContent";
 import "./DrawHelperButton.css";
 
 interface DrawHelperButtonProps {
@@ -66,6 +71,9 @@ async function drawHelper(data: DrawHelperDataType) {
     ...getLineUnderConstruction(),
     busLine: { ...getLineUnderConstruction().busLine, waypoints: newWaypoints },
   });
+  if (displayLineMode() == displayLineModeEnum.onRoad) {
+    updatePolylineWithOsrm(getLineUnderConstruction().busLine);
+  }
 }
 
 export function DrawHelperButton(props: DrawHelperButtonProps) {

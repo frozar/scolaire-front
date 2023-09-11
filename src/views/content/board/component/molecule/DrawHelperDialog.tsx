@@ -9,10 +9,6 @@ import "./DrawHelperDialog.css";
 
 import { assertIsNode } from "../../../../../utils";
 import DrawHelperDialogItem from "../atom/DrawHelperDialogItem";
-import {
-  displayLineModeEnum,
-  setDisplayLineMode,
-} from "../organism/DrawModeBoardContent";
 true && ClickOutside;
 
 export const [getDisplayedDrawHelperDialog, setDisplayedDrawHelperDialog] =
@@ -68,9 +64,6 @@ export default function (props: {
       vehiclesCapacity(),
       timeLimitSeconds(),
       nbLimitSolution()
-    );
-    setDisplayLineMode((prev) =>
-      prev == displayLineModeEnum.straight ? prev : displayLineModeEnum.straight
     );
   }
 
