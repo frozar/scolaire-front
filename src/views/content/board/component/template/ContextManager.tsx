@@ -1,5 +1,6 @@
 import { Match, Switch, createEffect, createSignal } from "solid-js";
 
+import SchoolsBoard from "../../../schools/SchoolsBoard";
 import DrawModeBoardContent from "../organism/DrawModeBoardContent";
 import InformationBoardLayout from "./InformationBoardLayout";
 import InformationContent from "./InformationContent";
@@ -32,7 +33,9 @@ export default function () {
           <Match when={onBoard() == "draw-line"}>
             <DrawModeBoardContent />
           </Match>
-          <Match when={onBoard() == "schools"}>Liste des écoles</Match>
+          <Match when={onBoard() == "schools"}>
+            <SchoolsBoard />
+          </Match>
           <Match when={onBoard() == "stops"}>Liste des arrêts</Match>
         </Switch>
       </InformationBoardLayout>

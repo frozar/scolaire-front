@@ -280,7 +280,7 @@ code {
 }
 
 #ramassages-board {
-  @apply w-full mx-16 mt-5;
+  @apply w-full  mt-5;
 }
 
 #ramassages-board > .board-content {
