@@ -130,7 +130,6 @@ async function onClick() {
         },
       });
     }
-
     await updatePolylineWithOsrm(getLineUnderConstruction().busLine);
 
     setDisplayLineMode(displayLineModeEnum.onRoad);

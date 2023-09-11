@@ -29,10 +29,11 @@ export function TimelineRemovePointButton(props: {
     });
 
     // Update waypoints array
-    const newWaypoints = [
-      ...(getLineUnderConstruction().busLine.waypoints as WaypointType[]),
-    ];
-    if (newWaypoints) {
+    if (getLineUnderConstruction().busLine.waypoints) {
+      const newWaypoints = [
+        ...(getLineUnderConstruction().busLine.waypoints as WaypointType[]),
+      ];
+
       newWaypoints.splice(
         newWaypoints.findIndex((waypoint) => waypoint.idStop == pointId),
         1

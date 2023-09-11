@@ -213,7 +213,7 @@ export function StopPoint(props: StopPointProps) {
         (_point) => _point.id == props.point.id
       )[0];
 
-    if (isInAddLineMode() && isInLineUnderConstruction != undefined) {
+    if (onBoard() == "draw-line" && isInLineUnderConstruction != undefined) {
       removePointToLineUnderConstruction(props.point);
       // Update waypoints
       const waypoints = getLineUnderConstruction().busLine.waypoints;
