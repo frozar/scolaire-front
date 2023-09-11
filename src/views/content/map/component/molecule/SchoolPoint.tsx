@@ -39,6 +39,7 @@ const [
     addPointToLineUnderConstruction,
     getLineUnderConstruction,
     setLineUnderConstruction,
+    removePointToLineUnderConstruction,
     // isInAddLineMode,
   },
 ] = useStateAction();
@@ -130,6 +131,41 @@ const onMouseOut = () => {
   }
 };
 
+const onRightClick = (point: SchoolType) => {
+  const circle = linkMap.get(point.leafletId);
+  const isInLineUnderConstruction =
+    getLineUnderConstruction().busLine.points.filter(
+      (_point) => _point.id == point.id
+    )[0];
+
+  if (onBoard() == "draw-line" && isInLineUnderConstruction != undefined) {
+    removePointToLineUnderConstruction(point);
+    // Update waypoints
+    const waypoints = getLineUnderConstruction().busLine.waypoints;
+    if (waypoints) {
+      const waypointIndex = waypoints.findIndex(
+        (waypoint) => waypoint.idStop == point.id
+      );
+
+      const newWaypoints = [...waypoints];
+      newWaypoints.splice(waypointIndex, 1);
+
+      setLineUnderConstruction({
+        ...getLineUnderConstruction(),
+        busLine: {
+          ...getLineUnderConstruction().busLine,
+          waypoints: newWaypoints,
+        },
+      });
+      if (displayLineMode() == displayLineModeEnum.onRoad) {
+        updatePolylineWithOsrm(getLineUnderConstruction().busLine);
+      }
+    }
+
+    circle?.setStyle({ fillColor: COLOR_STOP_LIGHT });
+  }
+};
+
 export function SchoolPoint(props: SchoolPointProps) {
   return (
     <Point
@@ -144,6 +180,7 @@ export function SchoolPoint(props: SchoolPointProps) {
       onMouseOver={() => onMouseOver(props.point)}
       onMouseOut={() => onMouseOut()}
       onMouseUp={() => onMouseUp(props.point)}
+      onRightClick={() => onRightClick(props.point)}
     />
   );
 }
