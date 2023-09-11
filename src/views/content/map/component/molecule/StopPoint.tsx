@@ -67,11 +67,9 @@ function getAssociatedQuantity(point: StopType) {
 function updateWaypoints(point: StopType) {
   const waypoints = getLineUnderConstruction().busLine.waypoints;
   if (waypoints) {
-    // ! Récup les ids des points avant et après
     const index = getLineUnderConstruction().busLine.points.findIndex(
       (actualPoint) => actualPoint.id == point.id
     );
-    // ! Refactor
     if (getLineUnderConstruction().busLine.points.length < index + 2) {
       const newWaypoints = [...waypoints];
       newWaypoints.push({
@@ -89,24 +87,28 @@ function updateWaypoints(point: StopType) {
       });
       return;
     }
-    const idPointBefore =
-      getLineUnderConstruction().busLine.points[index - 1].id;
-    const idPointAfter =
-      getLineUnderConstruction().busLine.points[index + 1].id;
-    const pointBeforeIndexWaypoint = waypoints.findIndex(
-      (actualPoint) => actualPoint.idStop == idPointBefore
-    );
-    const pointAfterIndexWaypoint = waypoints.findIndex(
-      (actualPoint) => actualPoint.idStop == idPointAfter
-    );
-    const difference = pointAfterIndexWaypoint - pointBeforeIndexWaypoint;
 
-    let toDelete = 0;
-    if (difference > 1) {
-      toDelete = difference - 1;
-    }
+    const indexPreviousWaypoint =
+      index > 0
+        ? waypoints.findIndex(
+            (actualPoint) =>
+              actualPoint.idStop ==
+              getLineUnderConstruction().busLine.points[index - 1].id
+          )
+        : -1;
+
+    const indexNextWaypoint = waypoints.findIndex(
+      (actualPoint) =>
+        actualPoint.idStop ==
+        getLineUnderConstruction().busLine.points[index + 1].id
+    );
+
+    const difference = indexNextWaypoint - indexPreviousWaypoint;
+
+    const toDelete = difference > 1 ? difference - 1 : 0;
+
     const newWaypoints = [...waypoints];
-    newWaypoints.splice(pointBeforeIndexWaypoint + 1, toDelete, {
+    newWaypoints.splice(indexPreviousWaypoint + 1, toDelete, {
       idStop: point.id,
       lat: point.lat,
       lon: point.lon,
