@@ -2,6 +2,7 @@ import L from "leaflet";
 import { Accessor, Setter, createSignal } from "solid-js";
 import { useStateAction } from "../StateAction";
 import { OsrmService } from "../_services/osrm.service";
+import { disableSpinningWheel, enableSpinningWheel } from "../signaux";
 import { NatureEnum } from "../type";
 import { PointType } from "../views/content/map/component/atom/Point";
 import { getSchools } from "../views/content/map/component/organism/SchoolPoints";
@@ -195,11 +196,13 @@ const getAssociatedBusLinePoint = (dbPoint: BusLinePointDBType): PointType => {
 };
 
 export async function updatePolylineWithOsrm(busLine: BusLineType) {
+  enableSpinningWheel();
   const { latlngs, metrics } = await OsrmService.getRoadPolyline(busLine);
 
   busLine.setLatLngs(latlngs[0]);
   busLine.setMetrics(metrics);
   setOnRoad(latlngs);
+  disableSpinningWheel();
 }
 
 //TODO Tester sans ce nouveau type => tester ajout d'une nouvelle nature waypoint

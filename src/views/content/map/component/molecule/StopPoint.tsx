@@ -234,7 +234,9 @@ export function StopPoint(props: StopPointProps) {
             waypoints: newWaypoints,
           },
         });
-        updatePolylineWithOsrm(getLineUnderConstruction().busLine);
+        if (displayLineMode() == displayLineModeEnum.onRoad) {
+          updatePolylineWithOsrm(getLineUnderConstruction().busLine);
+        }
       }
 
       circle?.setStyle({ fillColor: COLOR_STOP_LIGHT });
