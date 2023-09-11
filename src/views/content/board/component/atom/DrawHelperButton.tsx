@@ -44,10 +44,9 @@ async function drawHelper(data: DrawHelperDataType) {
   console.log("response", response);
   //TODO Resolve type problem and add quantity here
   const formattedResponse: BusLinePointType[] = formatTimeLinePoints(response);
-  console.log("formattedResponse", formattedResponse);
   setPointsToLineUnderConstruction(formattedResponse);
-  const newWaypoints: WaypointType[] = [];
 
+  const newWaypoints: WaypointType[] = [];
   for (const point of getLineUnderConstruction().busLine.points) {
     if (point.nature == NatureEnum.school) {
       newWaypoints.push({
@@ -63,17 +62,10 @@ async function drawHelper(data: DrawHelperDataType) {
       });
     }
   }
-  // const test = getLineUnderConstruction();
-  // test.busLine.waypoints = undefined;
-  // console.log("test", test.busLine.waypoints);
   setLineUnderConstruction({
     ...getLineUnderConstruction(),
     busLine: { ...getLineUnderConstruction().busLine, waypoints: newWaypoints },
   });
-  console.log(
-    "getLineUnderConstruction().busLine",
-    getLineUnderConstruction().busLine
-  );
 }
 
 export function DrawHelperButton(props: DrawHelperButtonProps) {

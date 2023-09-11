@@ -195,14 +195,10 @@ const getAssociatedBusLinePoint = (dbPoint: BusLinePointDBType): PointType => {
 };
 
 export async function updatePolylineWithOsrm(busLine: BusLineType) {
-  console.log("busLine waypoints", busLine.waypoints?.length);
-  console.log("busLine points", busLine.points.length);
-
   const { latlngs, metrics } = await OsrmService.getRoadPolyline(busLine);
 
   busLine.setLatLngs(latlngs[0]);
   busLine.setMetrics(metrics);
-  console.log("latlngs", latlngs);
   setOnRoad(latlngs);
 }
 
@@ -270,13 +266,8 @@ export type busLineMetricType = {
 
 //Todo delete function : ne pas utiliser le signal
 function setOnRoad(latlngs: [L.LatLng[], L.LatLng[]]) {
-  console.log(
-    "getLineUnderConstruction().busLine.points",
-    getLineUnderConstruction().busLine.points
-  );
   const pointsWithOnRoad: BusLinePointType[] =
     getLineUnderConstruction().busLine.points.map((point, i) => {
-      console.log(i);
       return {
         ...point,
         onRoadLon: latlngs[1][i].lng,
