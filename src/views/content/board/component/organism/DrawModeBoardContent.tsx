@@ -130,6 +130,8 @@ async function onClick() {
         },
       });
     }
+    // console.log("getLineUnderConstruction().busLine", getLineUnderConstruction().busLine);
+
     await updatePolylineWithOsrm(getLineUnderConstruction().busLine);
 
     setDisplayLineMode(displayLineModeEnum.onRoad);

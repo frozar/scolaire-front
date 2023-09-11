@@ -18,6 +18,9 @@ export class OsrmService {
   }> {
     const points: BusLinePointType[] = busLine.points;
     const waypoints: WaypointType[] = busLine.waypoints ?? points;
+    // const waypoints: WaypointType[] = points;
+
+    // ! ICI
 
     // ! change tuple to dict ?
     const response = await ServiceUtils.generic(
