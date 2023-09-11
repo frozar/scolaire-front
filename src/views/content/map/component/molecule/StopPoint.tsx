@@ -16,6 +16,7 @@ import {
 import Point from "../atom/Point";
 import { deselectAllBusLines } from "../organism/BusLines";
 
+import { updatePolylineWithOsrm } from "../../../../../_entities/bus-line.entity";
 import {
   displayLineMode,
   displayLineModeEnum,
@@ -146,9 +147,10 @@ function onClick(point: StopType) {
 
   // TODO: when add line with an etablissement point the line destroy after next point click
   // Wait Richard/Hugo finish the line underconstruction
-  if (displayLineMode() == displayLineModeEnum.straight) {
-    addPointToLineUnderConstruction({ ...point, quantity: associatedQuantity });
-    updateWaypoints(point);
+  addPointToLineUnderConstruction({ ...point, quantity: associatedQuantity });
+  updateWaypoints(point);
+  if (displayLineMode() == displayLineModeEnum.onRoad) {
+    updatePolylineWithOsrm(getLineUnderConstruction().busLine);
   }
 
   //TODO pourquoi cette condition ?
@@ -232,6 +234,7 @@ export function StopPoint(props: StopPointProps) {
             waypoints: newWaypoints,
           },
         });
+        updatePolylineWithOsrm(getLineUnderConstruction().busLine);
       }
 
       circle?.setStyle({ fillColor: COLOR_STOP_LIGHT });

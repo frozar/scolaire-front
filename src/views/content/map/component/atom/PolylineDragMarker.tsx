@@ -26,7 +26,7 @@ export default function (props: PolylineDragMarkersProps) {
   // eslint-disable-next-line solid/reactivity
   const polylineDragMarker = L.marker(props.latlngs, {
     icon: dragMarkerIcon,
-    pane: "markerPane",
+    pane: "shadowPane",
     draggable: true,
     keyboard: false,
     // eslint-disable-next-line solid/reactivity
