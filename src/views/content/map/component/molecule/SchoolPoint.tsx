@@ -1,5 +1,6 @@
 import L from "leaflet";
 import { useStateAction } from "../../../../../StateAction";
+import { updatePolylineWithOsrm } from "../../../../../_entities/bus-line.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { StopType } from "../../../../../_entities/stop.entity";
 import {
@@ -8,6 +9,8 @@ import {
 } from "../../../../../leafletUtils";
 import {
   currentStep,
+  displayLineMode,
+  displayLineModeEnum,
   drawModeStep,
 } from "../../../board/component/organism/DrawModeBoardContent";
 import { onBoard } from "../../../board/component/template/ContextManager";
@@ -25,6 +28,7 @@ import {
   linkMap,
   setBlinkingStops,
   setCursorIsOverPoint,
+  updateWaypoints,
 } from "../organism/Points";
 import { getStops } from "../organism/StopPoints";
 import { draggingLine, setDraggingLine } from "./BusLine";
@@ -87,6 +91,10 @@ const onClick = (point: SchoolType) => {
   }
 
   addPointToLineUnderConstruction({ ...point, quantity: 0 });
+  updateWaypoints(point);
+  if (displayLineMode() == displayLineModeEnum.onRoad) {
+    updatePolylineWithOsrm(getLineUnderConstruction().busLine);
+  }
 
   //TODO pourquoi cette condition ?
   if (!(1 < getLineUnderConstruction().busLine.points.length)) {

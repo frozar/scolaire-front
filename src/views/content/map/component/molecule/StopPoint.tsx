@@ -28,6 +28,7 @@ import {
   linkMap,
   setBlinkingSchools,
   setCursorIsOverPoint,
+  updateWaypoints,
 } from "../organism/Points";
 import { getSchools } from "../organism/SchoolPoints";
 import { draggingLine, setDraggingLine } from "./BusLine";
@@ -61,67 +62,6 @@ function getAssociatedQuantity(point: StopType) {
     (associatedSchool) =>
       associatedSchool.id === getLineUnderConstruction().busLine.schools[0].id
   )[0].quantity;
-}
-
-// TODO: Refactor
-function updateWaypoints(point: StopType) {
-  const waypoints = getLineUnderConstruction().busLine.waypoints;
-  if (waypoints) {
-    const index = getLineUnderConstruction().busLine.points.findIndex(
-      (actualPoint) => actualPoint.id == point.id
-    );
-    if (getLineUnderConstruction().busLine.points.length < index + 2) {
-      const newWaypoints = [...waypoints];
-      newWaypoints.push({
-        idStop: point.id,
-        lat: point.lat,
-        lon: point.lon,
-      });
-
-      setLineUnderConstruction({
-        ...getLineUnderConstruction(),
-        busLine: {
-          ...getLineUnderConstruction().busLine,
-          waypoints: newWaypoints,
-        },
-      });
-      return;
-    }
-
-    const indexPreviousWaypoint =
-      index > 0
-        ? waypoints.findIndex(
-            (actualPoint) =>
-              actualPoint.idStop ==
-              getLineUnderConstruction().busLine.points[index - 1].id
-          )
-        : -1;
-
-    const indexNextWaypoint = waypoints.findIndex(
-      (actualPoint) =>
-        actualPoint.idStop ==
-        getLineUnderConstruction().busLine.points[index + 1].id
-    );
-
-    const difference = indexNextWaypoint - indexPreviousWaypoint;
-
-    const toDelete = difference > 1 ? difference - 1 : 0;
-
-    const newWaypoints = [...waypoints];
-    newWaypoints.splice(indexPreviousWaypoint + 1, toDelete, {
-      idStop: point.id,
-      lat: point.lat,
-      lon: point.lon,
-    });
-
-    setLineUnderConstruction({
-      ...getLineUnderConstruction(),
-      busLine: {
-        ...getLineUnderConstruction().busLine,
-        waypoints: newWaypoints,
-      },
-    });
-  }
 }
 
 function onClick(point: StopType) {
