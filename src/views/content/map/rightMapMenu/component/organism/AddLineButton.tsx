@@ -7,7 +7,7 @@ import {
   setCurrentStep,
 } from "../../../../board/component/organism/DrawModeBoardContent";
 import {
-  isInDrawMod,
+  onBoard,
   toggleDrawMod,
 } from "../../../../board/component/template/ContextManager";
 import { deselectAllBusLines } from "../../../component/organism/BusLines";
@@ -26,7 +26,7 @@ export interface AddLineButtonProps {
 
 export default function (props: AddLineButtonProps) {
   const handleClick = () => {
-    if (isInDrawMod()) {
+    if (onBoard() == "draw-line") {
       //if (isInAddLineMode()) {
       // setModeRead();
       toggleDrawMod();
@@ -53,8 +53,7 @@ export default function (props: AddLineButtonProps) {
     <ButtonGraphicageRightMenu
       onClick={mergedProps.handleClick}
       tooltip="Ajouter une ligne"
-      // isActive={mergedProps.isInAddLineMode()}
-      isActive={isInDrawMod()}
+      isActive={onBoard() == "draw-line"}
       icon={<FaSolidPlus class="w-full p-0 h-2/3" />}
       xOffset={mergedProps.xOffset}
     />

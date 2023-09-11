@@ -10,7 +10,7 @@ import {
   currentStep,
   drawModeStep,
 } from "../../../board/component/organism/DrawModeBoardContent";
-import { isInDrawMod } from "../../../board/component/template/ContextManager";
+import { onBoard } from "../../../board/component/template/ContextManager";
 import {
   COLOR_SCHOOL_FOCUS,
   COLOR_SCHOOL_LIGHT,
@@ -60,7 +60,7 @@ const onClick = (point: SchoolType) => {
   setSchoolPointsColor(ids, COLOR_SCHOOL_LIGHT);
   setStopPointsColor(ids, COLOR_STOP_LIGHT);
 
-  if (!isInDrawMod()) {
+  if (onBoard() != "draw-line") {
     deselectAllBusLines();
     deselectAllPoints();
     point.setSelected(true);
