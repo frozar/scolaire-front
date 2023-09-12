@@ -13,7 +13,7 @@ import {
 import { setRemoveConfirmation } from "../../../../../signaux";
 import { NatureEnum } from "../../../../../type";
 import { setPickerColor } from "../../../board/component/atom/ColorPicker";
-import { isInDrawMod } from "../../../board/component/template/ContextManager";
+import { onBoard } from "../../../board/component/template/ContextManager";
 import {
   COLOR_SCHOOL_FOCUS,
   COLOR_SCHOOL_LIGHT,
@@ -59,7 +59,10 @@ export function BusLine(props: BusLineProps) {
   const [localLatLngs, setLocalLatLngs] = createSignal<L.LatLng[]>([]);
   const [localOpacity, setLocalOpacity] = createSignal<number>(1);
   createEffect(() => {
-    if (displayLineMode() == displayLineModeEnum.onRoad || !isInDrawMod()) {
+    if (
+      displayLineMode() == displayLineModeEnum.onRoad ||
+      onBoard() == "line"
+    ) {
       setLocalLatLngs(props.line.latLngs());
       setLocalOpacity(0.8);
     } else {
@@ -111,7 +114,7 @@ export function BusLine(props: BusLineProps) {
       }
     }
 
-    if (!isInDrawMod()) {
+    if (onBoard() != "draw-line") {
       deselectAllBusLines();
       deselectAllPoints();
       setPickerColor(props.line.color());

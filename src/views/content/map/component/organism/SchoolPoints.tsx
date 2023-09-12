@@ -7,7 +7,7 @@ import {
   currentStep,
   drawModeStep,
 } from "../../../board/component/organism/DrawModeBoardContent";
-import { isInDrawMod } from "../../../board/component/template/ContextManager";
+import { onBoard } from "../../../board/component/template/ContextManager";
 import { SchoolPoint } from "../molecule/SchoolPoint";
 
 const [, { getLineUnderConstruction }] = useStateAction();
@@ -37,7 +37,7 @@ export function SchoolPoints(props: SchoolPointsProps) {
 function schoolsFilter(): SchoolType[] {
   let schools = getSchools();
 
-  if (isInDrawMod()) {
+  if (onBoard() == "draw-line") {
     const schoolsSelected = getLineUnderConstruction().busLine.schools;
     if (currentStep() === drawModeStep.schoolSelection) {
       return schools;

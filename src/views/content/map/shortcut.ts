@@ -22,7 +22,7 @@ import {
   setCurrentStep,
 } from "../board/component/organism/DrawModeBoardContent";
 import {
-  isInDrawMod,
+  onBoard,
   toggleDrawMod,
 } from "../board/component/template/ContextManager";
 import { displayedConfirmStopAddLine } from "./ConfirmStopAddLineBox";
@@ -89,7 +89,7 @@ function escapeHandler({ code }: KeyboardEvent) {
 
   if (code === "Escape") {
     deselectAllPoints();
-    if (!isInDrawMod()) {
+    if (onBoard() == "line") {
       deselectAllBusLines();
       setStopPointsColor([], COLOR_STOP_FOCUS);
       setSchoolPointsColor([], COLOR_SCHOOL_FOCUS);
