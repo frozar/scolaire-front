@@ -1,6 +1,6 @@
 import { Match, Switch, createEffect, createSignal } from "solid-js";
 
-import SchoolsBoard from "../../../schools/SchoolsBoard";
+import SchoolsBoard from "../../../schools/component/organism/SchoolBoard";
 import DrawModeBoardContent from "../organism/DrawModeBoardContent";
 import InformationBoardLayout from "./InformationBoardLayout";
 import InformationContent from "./InformationContent";
