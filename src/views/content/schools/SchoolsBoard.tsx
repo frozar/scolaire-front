@@ -50,7 +50,6 @@ export default function () {
   const [refCheckboxGlobal, setRefCheckbox] = createSignal<HTMLInputElement>(
     document.createElement("input")
   );
-  setRefCheckbox;
   const filteredSchools = () =>
     getSchools().filter((e) =>
       e.name.toLowerCase().includes(searchInputKeyword().toLowerCase())
