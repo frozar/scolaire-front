@@ -1,0 +1,8 @@
+.class-item{
+  @apply flex w-full bg-gray-300 items-center relative pl-5 rounded-sm my-2 py-2
+}
+
+.class-item > .pellet {
+  @apply absolute left-[-12px] w-[25px] h-[25px];
+  border: 2px solid white;
+}
