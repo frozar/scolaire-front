@@ -1,5 +1,6 @@
 import { createEffect, createSignal } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
+import { schoolDetailsItem } from "../../../schools/component/organism/SchoolDetails";
 import { onBoard } from "../template/ContextManager";
 import "./FilAriane.css";
 
@@ -24,6 +25,10 @@ export default function () {
 
       case "stops":
         setText("Liste des arrêts");
+        break;
+
+      case "school-details":
+        setText("Liste des établissement > " + schoolDetailsItem()?.name);
         break;
 
       default:
