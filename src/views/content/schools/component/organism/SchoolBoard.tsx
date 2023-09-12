@@ -23,7 +23,7 @@ export default function () {
         <div class="flex justify-between my-5">
           <p>Total des établissements: {getSchools().length}</p>
           <ButtonIcon
-            icon={<FaSolidPlus />}
+            icon={<FaSolidPlus class="fill-green-base" />}
             onClick={addSchool}
             class="rounded-full"
           />
