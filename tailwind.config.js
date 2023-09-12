@@ -18,6 +18,7 @@ module.exports = {
         "dark-shade-teal": "#062f3fcc",
         "gray-base": "#aeb8b4",
         "gray-shade-base": "#ccd6d2",
+        "bg-gray-light": "#E8EFEC",
       },
     },
   },
