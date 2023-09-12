@@ -1,13 +1,20 @@
-import { createEffect, createSignal, onCleanup, onMount } from "solid-js";
+import { For, createEffect, createSignal, onCleanup, onMount } from "solid-js";
 import { SchoolType } from "../../../_entities/school.entity";
 import { SchoolService } from "../../../_services/school.service";
 import ImportCsvCanvas from "../../../component/ImportCsvCanvas";
 import ImportCsvDialogBox from "../../../component/ImportCsvDialogBox";
+import PageTitle from "../../../component/atom/PageTitle";
 import { addNewUserInformation } from "../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../type";
 import RemoveRamassageConfirmation from "../../../userInformation/RemoveRamassageConfirmation";
 import { getSchools, setSchools } from "../map/component/organism/SchoolPoints";
-import { searchInputKeyword } from "./component/organism/Filters";
+import EditSchool from "./EditSchool";
+import SchoolItem from "./SchoolItem";
+import Checkbox from "./component/atom/Checkbox";
+import TableHeaderCell from "./component/molecule/TableHeaderCell";
+import Filters, { searchInputKeyword } from "./component/organism/Filters";
+import TableBody from "./component/organism/TableBody";
+import TableHeader from "./component/organism/TableHeader";
 
 export async function fetchSchool() {
   const schools: SchoolType[] = await SchoolService.getAll();
@@ -103,14 +110,7 @@ export default function () {
       />
       <RemoveRamassageConfirmation />
 
-      <section>
-        <div class="flex justify-between">
-          <p>Total des établissements: 0</p>
-          <button>+</button>
-        </div>
-      </section>
-
-      {/* <div class="content-pane" ref={schoolDiv}>
+      <div class="content-pane" ref={schoolDiv}>
         <div id="ramassages-board">
           <header>
             <PageTitle title="Etablissements" />
@@ -126,7 +126,7 @@ export default function () {
                     ariaDescribedby="school-item"
                     name="school"
                     ref={setRefCheckbox}
-                    onChange={globalCheckboxOnChange}
+                    onChange={refCheckboxGlobal}
                   />
                 </TableHeaderCell>
                 <TableHeaderCell>Nom</TableHeaderCell>
@@ -145,8 +145,8 @@ export default function () {
             </table>
           </div>
         </div>
-        <EditSchool /> 
-      </div> */}
+        <EditSchool />
+      </div>
     </>
   );
 }
