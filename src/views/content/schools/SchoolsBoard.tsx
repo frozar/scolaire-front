@@ -94,7 +94,7 @@ export default function () {
     schoolDiv.removeEventListener("dragover", preventDefaultHandler);
   });
 
-  // const globalCheckboxOnChange = () => setGlobalChecked((bool) => !bool);
+  const globalCheckboxOnChange = () => setGlobalChecked((bool) => !bool);
 
   return (
     <>
@@ -126,7 +126,7 @@ export default function () {
                     ariaDescribedby="school-item"
                     name="school"
                     ref={setRefCheckbox}
-                    onChange={refCheckboxGlobal}
+                    onChange={globalCheckboxOnChange}
                   />
                 </TableHeaderCell>
                 <TableHeaderCell>Nom</TableHeaderCell>
