@@ -198,11 +198,15 @@ export default function () {
               <ButtonIcon
                 icon={<SimpleLine />}
                 onClick={onClick}
-                class="mr-2"
+                class="line-to-road-btn-icon"
               />
             }
           >
-            <ButtonIcon icon={<CurvedLine />} onClick={onClick} class="mr-2" />
+            <ButtonIcon
+              icon={<CurvedLine />}
+              onClick={onClick}
+              class="line-to-road-btn-icon"
+            />
           </Show>
         </div>
       </Show>

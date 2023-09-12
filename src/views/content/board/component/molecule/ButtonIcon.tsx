@@ -5,6 +5,7 @@ export interface ButtonIconProps {
   icon: JSXElement;
   onClick: () => void;
   class?: string;
+  svgClass?: string;
 }
 
 export default function (props: ButtonIconProps) {

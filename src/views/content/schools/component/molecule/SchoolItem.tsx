@@ -23,8 +23,14 @@ export default function (props: SchoolItemProps) {
       <div class="school-item-head">
         <p>{props.school.name}</p>
         <div class="school-item-actions">
-          <ButtonIcon icon={<FaRegularTrashCan />} onClick={onClickDelete} />
-          <ButtonIcon icon={<FaSolidPen />} onClick={onClickEdit} />
+          <ButtonIcon
+            icon={<FaRegularTrashCan class="fill-red-base" />}
+            onClick={onClickDelete}
+          />
+          <ButtonIcon
+            icon={<FaSolidPen class="fill-green-base" />}
+            onClick={onClickEdit}
+          />
         </div>
       </div>
       <div class="school-item-content">
