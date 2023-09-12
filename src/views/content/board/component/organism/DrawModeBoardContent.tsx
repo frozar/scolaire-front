@@ -254,7 +254,7 @@ async function createOrUpdateBusLine(busLine: BusLineType) {
   quitModeAddLine();
   setCurrentStep(drawModeStep.start);
   changeBoard("line");
-  selectedUpdatedBusLine(busLine);
+  selectedUpdatedBusLine(getBusLines().at(-1) as BusLineType);
 }
 
 function selectedUpdatedBusLine(busLine: BusLineType) {
