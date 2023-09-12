@@ -8,6 +8,20 @@ import {
   setAuthenticated,
   setAuthenticatedUser,
 } from "../../signaux";
+const XANO_AUTH_URL =
+  "https://x8ki-letl-twmt.n7.xano.io/api:elCAJnQ5/oauth/auth0";
+const REDIRECT_URI =
+  "https://demo.xano.com/xano-auth0-oauth/assets/oauth/auth0/index.html";
+
+export type xanoUser = {
+  name: string;
+  token: string;
+  email: string;
+  picture: string;
+  nickname: string;
+};
+
+let currentUser: xanoUser;
 
 export const auth0Client: Auth0Client = await createAuth0Client({
   domain: import.meta.env.VITE_AUTH0_DOMAIN,
@@ -20,7 +34,6 @@ export const auth0Client: Auth0Client = await createAuth0Client({
 export async function logout() {
   try {
     console.log("Logging out");
-    console.log(await getToken());
     const options: LogoutOptions = {
       logoutParams: {
         returnTo: window.location.origin,
@@ -33,89 +46,69 @@ export async function logout() {
   }
 }
 
-export async function login() {
-  try {
-    const XANO_AUTH_URL =
-      "https://x8ki-letl-twmt.n7.xano.io/api:elCAJnQ5/oauth/auth0";
-    const redirect_uri =
-      "https://demo.xano.com/xano-auth0-oauth/assets/oauth/auth0/index.html";
-    // const res = await fetch(
-    //   "https://x8ki-letl-twmt.n7.xano.io/api:elCAJnQ5/oauth/auth0/init?redirect_uri=https://demo.xano.com/xano-auth0-oauth/assets/oauth/auth0/index.html"
-    // );
-    // console.log(res.body);
+async function getUser(e: { data: { args: { code: string }; type: string } }) {
+  if (e && e["data"] && e["data"]["type"] == "oauth:auth0") {
+    const code = e.data.args.code;
 
     const res = await fetch(
-      XANO_AUTH_URL + "/init?redirect_uri=" + redirect_uri,
+      XANO_AUTH_URL +
+        "/continue?code=" +
+        code +
+        "&redirect_uri=" +
+        REDIRECT_URI,
       {
         method: "GET",
       }
-    );
-    const response: { authUrl: string } = await res.json();
-    const url = response.authUrl;
-    console.log(url);
+    ).catch((err) => {
+      console.log("Log in failed", err);
+      closeOauthWindow();
+    });
 
-    const callback = async (e) => {
-      if (e && e["data"] && e["data"]["type"] == "oauth:auth0") {
-        try {
-          console.log(e);
-          const code = e.data.args.code;
-          console.log(code);
-          const res = await fetch(
-            XANO_AUTH_URL +
-              "/continue?code=" +
-              code +
-              "&redirect_uri=" +
-              redirect_uri,
-            {
-              method: "GET",
-            }
-          );
-          const response = await res.json();
-          console.log(response);
-        } catch (e) {
-          window.removeEventListener("message", callback);
-        }
-        // authenticating = true;
-        // api.get({
-        //   endpoint: this.apiUrl,
-        //   params: {
-        //     code: e["data"]["args"]["code"],
-        //     redirect_uri: this.redirect_uri,
-        //   },
-        // }).subscribe((response: any) => {
-        //   this.result = response;
-        //   window.removeEventListener('message', callback);
-        // }, err => {
-        //   this.authenticating = false;
-        //   window.removeEventListener('message', this.callback);
-        //   this.toast.error(_.get(err, "error.message") || "An unknown error has occured.");
-        // });
-      }
-    };
+    currentUser = await res?.json().catch((err) => {
+      console.log("Log in failed", err);
+      closeOauthWindow();
+    });
+  }
+}
 
-    const oauthWindow = window.open(
-      "",
-      "auth0Oauth",
-      "scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,width=600,height=660,left=100,top=100"
-    );
-    window.removeEventListener("message", callback);
-    window.addEventListener("message", callback);
+let currentOauthWindow: Window;
 
-    oauthWindow.location.href = response.authUrl;
+function closeOauthWindow() {
+  window.removeEventListener("message", getUser);
+  if (currentOauthWindow) currentOauthWindow.close();
+}
 
-    // const res2 = await fetch(url, {
-    //   method: "GET",
-    // });
-    // console.log(res2);
-    // const options: RedirectLoginOptions = {
-    //   authorizationParams: {
-    //     redirect_uri: url,
-    //   },
-    // };
-    // await auth0Client.loginWithRedirect(options);
+export async function login() {
+  const currentOauthWindow = window.open(
+    "",
+    "auth0Oauth",
+    "scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,width=600,height=660,left=100,top=100"
+  );
+  if (!currentOauthWindow) return;
+
+  try {
+    const url = await getAuthUrl();
+    if (!url) return closeOauthWindow();
+
+    currentOauthWindow.location.href = url;
+
+    window.removeEventListener("message", getUser);
+    window.addEventListener("message", getUser);
   } catch (err) {
     console.log("Log in failed", err);
+    closeOauthWindow();
   }
+}
+
+async function getAuthUrl() {
+  const response = await fetch(
+    XANO_AUTH_URL + "/init?redirect_uri=" + REDIRECT_URI,
+    {
+      method: "GET",
+    }
+  );
+  const jsonResponse = await response.json();
+  return jsonResponse.authUrl;
 }
 
 export async function tryConnection() {
@@ -144,15 +137,12 @@ export const getProfilePicture = () => {
   else return "";
 };
 
-export async function getToken() {
+export function getToken() {
   if (import.meta.env.VITE_AUTH0_DEV_MODE === "true") {
-    console.log("fake token");
     return "fakeToken";
   }
   try {
-    const token = await auth0Client.getTokenSilently();
-    console.log(token);
-    return token;
+    return currentUser.token;
   } catch (error) {
     console.error("ERROR: getToken");
     console.error(error);
@@ -204,18 +194,6 @@ export async function asyncAuthenticateWrap(authorizationOnly = false) {
     console.error("ERROR: authenticateWrap");
     console.error(error);
   }
-
-  // .then((token) => {
-  //   const headers: HeadersInit = authorizationOnly
-  //     ? headerAuthorization(token)
-  //     : headerJson(token);
-
-  //   callback(headers);
-  // })
-  // .catch((error) => {
-  //   console.error("ERROR: authenticateWrap");
-  //   console.error(error);
-  // });
 }
 
 window.onload = async () => {
