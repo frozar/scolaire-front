@@ -27,10 +27,12 @@ import {
 } from "../../../../../signaux";
 import {
   getBusLines,
+  setBusLines,
   updateBusLines,
 } from "../../../map/component/organism/BusLines";
 import { quitModeAddLine } from "../../../map/shortcut";
 import { DrawHelperButton } from "../atom/DrawHelperButton";
+import { currentPoints } from "../atom/UpdateLineButton";
 import ButtonIcon from "../molecule/ButtonIcon";
 import LabeledInputField from "../molecule/LabeledInputField";
 import SchoolsEnumeration from "../molecule/SchoolsEnumeration";
@@ -295,6 +297,7 @@ async function nextStep() {
 function prevStep() {
   switch (currentStep()) {
     case drawModeStep.schoolSelection:
+      // console.log("case => schoolSelection");
       setLineUnderConstruction(defaultLineUnderConstruction());
       quitModeAddLine();
 
@@ -302,12 +305,18 @@ function prevStep() {
       setOnBoard("line");
       break;
     case drawModeStep.editLine:
+      // console.log("case => editLine");
       if (getLineUnderConstruction().busLine.id) {
         const linePreviousColor = previousColor();
         if (linePreviousColor) {
           setColorOnLine(linePreviousColor);
         }
       }
+      const id = getLineUnderConstruction().busLine.id;
+      const busLines = getBusLines().filter((busLine) => busLine.id != id);
+      const busLine = getBusLines().filter((busLine) => busLine.id == id)[0];
+      setBusLines([...busLines, { ...busLine, points: currentPoints() }]);
+
       setLineUnderConstruction(defaultLineUnderConstruction());
 
       if (displayLineMode() == displayLineModeEnum.onRoad) {

@@ -1,8 +1,12 @@
 import { FaSolidPen } from "solid-icons/fa";
 import { useStateAction } from "../../../../../StateAction";
-import { BusLineType } from "../../../../../_entities/bus-line.entity";
+import {
+  BusLinePointType,
+  BusLineType,
+} from "../../../../../_entities/bus-line.entity";
 import { deselectAllBusLines } from "../../../map/component/organism/BusLines";
 
+import { createSignal } from "solid-js";
 import { deselectAllPoints } from "../../../map/component/organism/Points";
 import { drawModeStep, setCurrentStep } from "../organism/DrawModeBoardContent";
 import { changeBoard, toggleDrawMod } from "../template/ContextManager";
@@ -14,12 +18,17 @@ import "./DrawHelperButton.css";
 
 const [, { setLineUnderConstruction, setModeAddLine }] = useStateAction();
 
+export const [currentPoints, setCurrentPoints] = createSignal<
+  BusLinePointType[]
+>([]);
+
 export default function (props: { busLine: BusLineType }) {
   async function onclick() {
     setLineUnderConstruction({
       busLine: props.busLine,
       nextIndex: props.busLine.points.length ?? 0,
     });
+    setCurrentPoints(props.busLine.points);
 
     deselectAllPoints();
     deselectAllBusLines();
