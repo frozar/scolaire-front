@@ -1,8 +1,5 @@
-import {
-  Auth0Client,
-  LogoutOptions,
-  createAuth0Client,
-} from "@auth0/auth0-spa-js";
+import { Auth0Client, createAuth0Client } from "@auth0/auth0-spa-js";
+import { createSignal } from "solid-js";
 import {
   getAuthenticatedUser,
   setAuthenticated,
@@ -21,7 +18,11 @@ export type xanoUser = {
   nickname: string;
 };
 
-let currentUser: xanoUser;
+// let currentUser: xanoUser | undefined;
+
+export const [currentUser, setCurrentUser] = createSignal<
+  xanoUser | undefined
+>();
 
 export const auth0Client: Auth0Client = await createAuth0Client({
   domain: import.meta.env.VITE_AUTH0_DOMAIN,
@@ -32,18 +33,19 @@ export const auth0Client: Auth0Client = await createAuth0Client({
 });
 
 export async function logout() {
-  try {
-    console.log("Logging out");
-    const options: LogoutOptions = {
-      logoutParams: {
-        returnTo: window.location.origin,
-      },
-    };
-    auth0Client.logout(options);
-    setAuthenticatedUser(undefined);
-  } catch (err) {
-    console.log("Log out failed", err);
-  }
+  setCurrentUser(undefined);
+  // try {
+  //   console.log("Logging out");
+  //   const options: LogoutOptions = {
+  //     logoutParams: {
+  //       returnTo: window.location.origin,
+  //     },
+  //   };
+  //   auth0Client.logout(options);
+  //   setAuthenticatedUser(undefined);
+  // } catch (err) {
+  //   console.log("Log out failed", err);
+  // }
 }
 
 async function getUser(e: { data: { args: { code: string }; type: string } }) {
@@ -64,10 +66,12 @@ async function getUser(e: { data: { args: { code: string }; type: string } }) {
       closeOauthWindow();
     });
 
-    currentUser = await res?.json().catch((err) => {
-      console.log("Log in failed", err);
-      closeOauthWindow();
-    });
+    setCurrentUser(
+      await res?.json().catch((err) => {
+        console.log("Log in failed", err);
+        closeOauthWindow();
+      })
+    );
   }
 }
 
@@ -142,7 +146,7 @@ export function getToken() {
     return "fakeToken";
   }
   try {
-    return currentUser.token;
+    return currentUser()?.token;
   } catch (error) {
     console.error("ERROR: getToken");
     console.error(error);
@@ -168,33 +172,44 @@ export function authenticateWrap(
   callback: (headers: HeadersInit) => Response | PromiseLike<Response> | void,
   authorizationOnly = false
 ) {
-  return getToken()
-    .then((token) => {
-      const headers: HeadersInit = authorizationOnly
-        ? headerAuthorization(token)
-        : headerJson(token);
-
-      return callback(headers);
-    })
-    .catch((error) => {
-      console.error("ERROR: authenticateWrap");
-      console.error(error);
-    });
-}
-
-export async function asyncAuthenticateWrap(authorizationOnly = false) {
-  try {
-    const token = await getToken();
+  const token = getToken();
+  if (token) {
     const headers: HeadersInit = authorizationOnly
       ? headerAuthorization(token)
       : headerJson(token);
 
-    return headers;
-  } catch (error) {
-    console.error("ERROR: authenticateWrap");
-    console.error(error);
+    return callback(headers);
   }
+  // return getToken()
+  //   .then((token) => {
+  //     const headers: HeadersInit = authorizationOnly
+  //       ? headerAuthorization(token)
+  //       : headerJson(token);
+
+  //     return callback(headers);
+  //   })
+  //   .catch((error) => {
+  //     console.error("ERROR: authenticateWrap");
+  //     console.error(error);
+  //   });
 }
+
+// export async function asyncAuthenticateWrap(authorizationOnly = false) {
+//   let headers: HeadersInit = [];
+//   try {
+//     const token = await getToken();
+//     if (token) {
+//       headers = authorizationOnly
+//         ? headerAuthorization(token)
+//         : headerJson(token);
+//     }
+
+//     return headers;
+//   } catch (error) {
+//     console.error("ERROR: authenticateWrap");
+//     console.error(error);
+//   }
+// }
 
 window.onload = async () => {
   const query = window.location.search;
