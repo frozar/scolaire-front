@@ -1,12 +1,19 @@
 import { Match, Switch, createEffect, createSignal } from "solid-js";
 
 import SchoolsBoard from "../../../schools/component/organism/SchoolBoard";
+import SchoolDetails from "../../../schools/component/organism/SchoolDetails";
 import DrawModeBoardContent from "../organism/DrawModeBoardContent";
 import InformationBoardLayout from "./InformationBoardLayout";
 import InformationContent from "./InformationContent";
 
 //TODO utiliser ou supprimer "schools" et "stops"
-export type BoardsType = "schools" | "stops" | "draw-line" | "line";
+export type BoardsType =
+  | "schools"
+  | "school-details"
+  | "scool-class"
+  | "stops"
+  | "draw-line"
+  | "line";
 
 export const [isInDrawMod, setIsDrawMod] = createSignal<boolean>(false);
 export const toggleDrawMod = () => setIsDrawMod((bool) => !bool);
@@ -33,9 +40,17 @@ export default function () {
           <Match when={onBoard() == "draw-line"}>
             <DrawModeBoardContent />
           </Match>
+
+          {/* Schools */}
           <Match when={onBoard() == "schools"}>
             <SchoolsBoard />
           </Match>
+
+          <Match when={onBoard() == "school-details"}>
+            <SchoolDetails />
+          </Match>
+
+          {/* Stops */}
           <Match when={onBoard() == "stops"}>Liste des arrêts</Match>
         </Switch>
       </InformationBoardLayout>
