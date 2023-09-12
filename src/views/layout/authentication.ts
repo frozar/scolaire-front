@@ -1,7 +1,6 @@
 import {
   Auth0Client,
   LogoutOptions,
-  RedirectLoginOptions,
   createAuth0Client,
 } from "@auth0/auth0-spa-js";
 import {
@@ -21,6 +20,7 @@ export const auth0Client: Auth0Client = await createAuth0Client({
 export async function logout() {
   try {
     console.log("Logging out");
+    console.log(await getToken());
     const options: LogoutOptions = {
       logoutParams: {
         returnTo: window.location.origin,
@@ -35,13 +35,84 @@ export async function logout() {
 
 export async function login() {
   try {
-    const options: RedirectLoginOptions = {
-      authorizationParams: {
-        redirect_uri: window.location.origin,
-      },
+    const XANO_AUTH_URL =
+      "https://x8ki-letl-twmt.n7.xano.io/api:elCAJnQ5/oauth/auth0";
+    const redirect_uri =
+      "https://demo.xano.com/xano-auth0-oauth/assets/oauth/auth0/index.html";
+    // const res = await fetch(
+    //   "https://x8ki-letl-twmt.n7.xano.io/api:elCAJnQ5/oauth/auth0/init?redirect_uri=https://demo.xano.com/xano-auth0-oauth/assets/oauth/auth0/index.html"
+    // );
+    // console.log(res.body);
+
+    const res = await fetch(
+      XANO_AUTH_URL + "/init?redirect_uri=" + redirect_uri,
+      {
+        method: "GET",
+      }
+    );
+    const response: { authUrl: string } = await res.json();
+    const url = response.authUrl;
+    console.log(url);
+
+    const callback = async (e) => {
+      if (e && e["data"] && e["data"]["type"] == "oauth:auth0") {
+        try {
+          console.log(e);
+          const code = e.data.args.code;
+          console.log(code);
+          const res = await fetch(
+            XANO_AUTH_URL +
+              "/continue?code=" +
+              code +
+              "&redirect_uri=" +
+              redirect_uri,
+            {
+              method: "GET",
+            }
+          );
+          const response = await res.json();
+          console.log(response);
+        } catch (e) {
+          window.removeEventListener("message", callback);
+        }
+        // authenticating = true;
+        // api.get({
+        //   endpoint: this.apiUrl,
+        //   params: {
+        //     code: e["data"]["args"]["code"],
+        //     redirect_uri: this.redirect_uri,
+        //   },
+        // }).subscribe((response: any) => {
+        //   this.result = response;
+        //   window.removeEventListener('message', callback);
+        // }, err => {
+        //   this.authenticating = false;
+        //   window.removeEventListener('message', this.callback);
+        //   this.toast.error(_.get(err, "error.message") || "An unknown error has occured.");
+        // });
+      }
     };
 
-    await auth0Client.loginWithRedirect(options);
+    const oauthWindow = window.open(
+      "",
+      "auth0Oauth",
+      "scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,width=600,height=660,left=100,top=100"
+    );
+    window.removeEventListener("message", callback);
+    window.addEventListener("message", callback);
+
+    oauthWindow.location.href = response.authUrl;
+
+    // const res2 = await fetch(url, {
+    //   method: "GET",
+    // });
+    // console.log(res2);
+    // const options: RedirectLoginOptions = {
+    //   authorizationParams: {
+    //     redirect_uri: url,
+    //   },
+    // };
+    // await auth0Client.loginWithRedirect(options);
   } catch (err) {
     console.log("Log in failed", err);
   }
@@ -52,6 +123,7 @@ export async function tryConnection() {
   if (!user || !user.sub) {
     if (await auth0Client.isAuthenticated()) {
       const user = await auth0Client.getUser();
+      console.log(user);
       setAuthenticatedUser(user);
     }
   }
@@ -72,12 +144,14 @@ export const getProfilePicture = () => {
   else return "";
 };
 
-async function getToken() {
+export async function getToken() {
   if (import.meta.env.VITE_AUTH0_DEV_MODE === "true") {
+    console.log("fake token");
     return "fakeToken";
   }
   try {
     const token = await auth0Client.getTokenSilently();
+    console.log(token);
     return token;
   } catch (error) {
     console.error("ERROR: getToken");
@@ -94,8 +168,9 @@ function headerJson(token: string): HeadersInit {
 }
 
 function headerAuthorization(token: string): HeadersInit {
+  console.log("Bearer " + token);
   return {
-    authorization: "Bearer " + token,
+    authorization: token,
   };
 }
 

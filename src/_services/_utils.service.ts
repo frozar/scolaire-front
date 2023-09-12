@@ -1,6 +1,7 @@
 import { useStateGui } from "../StateGui";
 import { addNewUserInformation } from "../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
+import { getToken } from "../views/layout/authentication";
 
 const [, { getActiveMapId }] = useStateGui();
 
@@ -10,7 +11,7 @@ export class ServiceUtils {
   static async generic(url: string, options = {}) {
     let response: Response;
     try {
-      response = await fetch(url, options);
+      response = await fetch(url, { ...options });
     } catch (error) {
       connexionError();
       return false;
@@ -29,6 +30,8 @@ export class ServiceUtils {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "X-Xano-Authorization-Only": true,
+        "X-Xano-Authorization": await getToken(),
       },
       body: JSON.stringify(data),
     });
