@@ -34,7 +34,7 @@ import { DrawHelperButton } from "../atom/DrawHelperButton";
 import ButtonIcon from "../molecule/ButtonIcon";
 import LabeledInputField from "../molecule/LabeledInputField";
 import SchoolsEnumeration from "../molecule/SchoolsEnumeration";
-import { changeBoard } from "../template/ContextManager";
+import { changeBoard, setOnBoard } from "../template/ContextManager";
 import Metrics from "./Metrics";
 import Timeline from "./Timeline";
 
@@ -61,6 +61,8 @@ export enum displayLineModeEnum {
   straight = "straight",
   onRoad = "onRoad",
 }
+// ! Replace by previous line !?
+const [previousColor, setPreviousColor] = createSignal<string | undefined>();
 
 const setColorOnLine = (color: string): BusLineType | undefined => {
   const line: LineUnderConstructionType | undefined =
@@ -74,6 +76,15 @@ const setColorOnLine = (color: string): BusLineType | undefined => {
 };
 
 const onInput = (color: string) => {
+  if (!previousColor() && getLineUnderConstruction().busLine.id) {
+    setPreviousColor(
+      getBusLines()
+        .filter(
+          (busLine) => busLine.id == getLineUnderConstruction().busLine.id
+        )[0]
+        .color()
+    );
+  }
   const line: BusLineType | undefined = setColorOnLine(color);
 
   if (!line) return;
@@ -83,19 +94,6 @@ const onChange = async (color: string) => {
   const line: BusLineType | undefined = setColorOnLine(color);
 
   if (!line) return;
-
-  // TODO Patch the Line Bus Color
-
-  const updatedLine: BusLineType = await BusLineService.update({
-    id: line.id,
-
-    color: line.color,
-
-    latLngs: line.latLngs,
-    metrics: line.metrics,
-  });
-
-  console.log(updatedLine);
 };
 
 async function onClick() {
@@ -301,8 +299,15 @@ function prevStep() {
       quitModeAddLine();
 
       setCurrentStep(drawModeStep.start);
+      setOnBoard("line");
       break;
     case drawModeStep.editLine:
+      if (getLineUnderConstruction().busLine.id) {
+        const linePreviousColor = previousColor();
+        if (linePreviousColor) {
+          setColorOnLine(linePreviousColor);
+        }
+      }
       setLineUnderConstruction(defaultLineUnderConstruction());
 
       if (displayLineMode() == displayLineModeEnum.onRoad) {
