@@ -1,0 +1,15 @@
+.school-item{
+  @apply w-full bg-gray-light rounded-lg px-4 py-2 my-1;
+}
+
+.school-item-head{
+  @apply flex justify-between
+}
+
+.school-item-actions{
+  @apply flex gap-2
+}
+
+.school-item-content{
+  @apply w-[70%] flex justify-between mt-3;
+}
