@@ -1,6 +1,8 @@
 import { FaRegularTrashCan, FaSolidPen } from "solid-icons/fa";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
+import { changeBoard } from "../../../board/component/template/ContextManager";
+import { setSchoolDetailsItem } from "../organism/SchoolDetails";
 import "./SchoolItem.css";
 
 export interface SchoolItemProps {
@@ -16,6 +18,8 @@ export default function (props: SchoolItemProps) {
 
   async function onClickEdit() {
     // TODO: setup board manager for school
+    setSchoolDetailsItem(props.school);
+    changeBoard("school-details");
   }
 
   return (
@@ -38,9 +42,9 @@ export default function (props: SchoolItemProps) {
         {/* <p>lignes: {props.school.NbLines ?? 0}</p>
         <p>classes: {props.school.NbClasses ?? 0}</p>
         <p>élèves: {props.school.NbStudents ?? 0}</p> */}
-        <p>lignes: 0</p>
-        <p>classes: 0</p>
-        <p>élèves: 0</p>
+        <p>lignes: Todo</p>
+        <p>classes: Todo</p>
+        <p>élèves: Todo</p>
       </div>
     </div>
   );
