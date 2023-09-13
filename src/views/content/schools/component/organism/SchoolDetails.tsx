@@ -3,7 +3,8 @@ import { SchoolType } from "../../../../../_entities/school.entity";
 import { changeBoard } from "../../../board/component/template/ContextManager";
 import SchoolDetailsHeader from "../molecule/SchoolDetailsHeader";
 import SchoolDetailsPanelsButton from "../molecule/SchoolDetailsPanelsButton";
-import ClassesList from "./LinesList";
+import ClasseList from "./ClasseList";
+import LineList from "./LinesList";
 
 export const [schoolDetailsItem, setSchoolDetailsItem] =
   createSignal<SchoolType>();
@@ -30,9 +31,11 @@ export default function () {
         <SchoolDetailsPanelsButton setOnPanel={setOnPanel} onPanel={onPanel} />
 
         <Switch>
-          <Match when={onPanel() == Panels.classes}>classes</Match>
+          <Match when={onPanel() == Panels.classes}>
+            <ClasseList />
+          </Match>
           <Match when={onPanel() == Panels.lines}>
-            <ClassesList />
+            <LineList />
           </Match>
         </Switch>
       </div>
