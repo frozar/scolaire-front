@@ -61,9 +61,7 @@ export function BusLine(props: BusLineProps) {
   createEffect(() => {
     if (
       displayLineMode() == displayLineModeEnum.onRoad ||
-      onBoard() == "line" ||
-      onBoard() == "schools" ||
-      onBoard() == "stops"
+      onBoard() != "draw-line"
     ) {
       setLocalLatLngs(props.line.latLngs());
       setLocalOpacity(0.8);
