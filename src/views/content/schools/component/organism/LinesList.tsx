@@ -11,12 +11,12 @@ export interface LineItemProps {
 }
 
 export default function () {
-  const [classes, setClasses] = createSignal<LineItemProps[]>([]);
+  const [lines, setLines] = createSignal<LineItemProps[]>([]);
 
   function getSchoolClasses() {
     // TODO will load data
     // const response = Api.get('...')
-    setClasses([
+    setLines([
       {
         lineName: "line 1",
         linkedSchools: ["School 1", "School 2"],
@@ -33,7 +33,7 @@ export default function () {
 
   return (
     <div class="school-details-classe-list">
-      <For each={classes()}>{(item) => <LineItem line={item} />}</For>
+      <For each={lines()}>{(item) => <LineItem line={item} />}</For>
     </div>
   );
 }
