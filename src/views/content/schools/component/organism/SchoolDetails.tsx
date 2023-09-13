@@ -27,7 +27,7 @@ export default function () {
       <SchoolDetailsHeader />
 
       <div class="content mt-2">
-        <SchoolDetailsPanelsButton setOnPanel={setOnPanel} />
+        <SchoolDetailsPanelsButton setOnPanel={setOnPanel} onPanel={onPanel} />
 
         <Switch>
           <Match when={onPanel() == Panels.classes}>
