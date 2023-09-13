@@ -1,19 +1,10 @@
 import Pellet from "../../../../../component/atom/Pellet";
 import ArretsLogo from "../../../../../icons/ArretsLogo";
 import ClasseLinkedSchool from "../atom/ClasseLinkedSchool";
-import "./ClasseItem.css";
+import { ClasseItemProps } from "../organism/ClassesList";
+import "./LineItem.css";
 
-interface ClasseProps {
-  line: {
-    lineName: string;
-    linkedSchools: string[];
-    linkedStops: number;
-    NbStopDeserved: number;
-    color: string;
-  };
-}
-
-export default function (props: ClasseProps) {
+export default function (props: { line: ClasseItemProps }) {
   return (
     <div class="class-item">
       <Pellet color="red" />
@@ -23,7 +14,7 @@ export default function (props: ClasseProps) {
         <ClasseLinkedSchool schools={props.line.linkedSchools} />
 
         <div class="flex">
-          <div class="w-[15px] mr-2">
+          <div class="stop-logo">
             <ArretsLogo />
           </div>
           <p>{props.line.NbStopDeserved + " arrêts déservis"}</p>

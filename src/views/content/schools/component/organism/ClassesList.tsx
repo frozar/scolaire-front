@@ -1,9 +1,17 @@
 import { For, createSignal, onMount } from "solid-js";
-import ClasseItem from "../molecule/ClasseItem";
+import LineItem from "../molecule/LineItem";
 import "./ClassesList.css";
 
+export interface ClasseItemProps {
+  lineName: string;
+  linkedSchools: string[];
+  linkedStops: number;
+  color: string;
+  NbStopDeserved: number;
+}
+
 export default function () {
-  const [classes, setClasses] = createSignal<any[]>([]);
+  const [classes, setClasses] = createSignal<ClasseItemProps[]>([]);
 
   function getSchoolClasses() {
     // TODO will load data
@@ -25,7 +33,7 @@ export default function () {
 
   return (
     <div class="school-details-classe-list">
-      <For each={classes()}>{(item) => <ClasseItem line={item} />}</For>
+      <For each={classes()}>{(item) => <LineItem line={item} />}</For>
     </div>
   );
 }
