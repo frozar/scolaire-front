@@ -126,7 +126,7 @@ export default function () {
         <Match when={getSelectedBusLine()}>
           <BusLineInformationBoardContent />
         </Match>
-        <Match when={onBoard() == "draw-line"}>
+        <Match when={onBoard() == "line-draw"}>
           <DrawModeBoardContent />
         </Match>
       </Switch>

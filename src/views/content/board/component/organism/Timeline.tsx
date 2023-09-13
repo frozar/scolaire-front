@@ -18,7 +18,7 @@ export default function () {
 
   createEffect(() => {
     const displayedPoints =
-      onBoard() === "draw-line"
+      onBoard() === "line-draw"
         ? getLineUnderConstruction().busLine
         : (getSelectedBusLine() as BusLineType);
 
@@ -33,7 +33,7 @@ export default function () {
         <For each={displayBusLine()?.points}>
           {(stop, i) => (
             <>
-              <Show when={onBoard() == "draw-line"}>
+              <Show when={onBoard() == "line-draw"}>
                 <TimelineAddPointButton indice={i()} />
               </Show>
 

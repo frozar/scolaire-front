@@ -26,7 +26,7 @@ export default function (props: LeftMenuItemProps) {
             mergedProps.getSelectedMenu() === menuItem && isOnPage();
 
           const deepSchoolSelected = () =>
-            (onBoard() == "school-details" || onBoard() == "scool-class") &&
+            (onBoard() == "school-details" || onBoard() == "school-class") &&
             menuItem == "schools";
 
           const isSelected = () =>

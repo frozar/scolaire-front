@@ -37,7 +37,7 @@ export function SchoolPoints(props: SchoolPointsProps) {
 function schoolsFilter(): SchoolType[] {
   let schools = getSchools();
 
-  if (onBoard() == "draw-line") {
+  if (onBoard() == "line-draw") {
     const schoolsSelected = getLineUnderConstruction().busLine.schools;
     if (currentStep() === drawModeStep.schoolSelection) {
       return schools;

@@ -65,7 +65,7 @@ const onClick = (point: SchoolType) => {
   setSchoolPointsColor(ids, COLOR_SCHOOL_LIGHT);
   setStopPointsColor(ids, COLOR_STOP_LIGHT);
 
-  if (onBoard() != "draw-line") {
+  if (onBoard() != "line-draw") {
     deselectAllBusLines();
     deselectAllPoints();
     point.setSelected(true);
@@ -138,7 +138,7 @@ const onRightClick = (point: SchoolType) => {
       (_point) => _point.id == point.id
     )[0];
 
-  if (onBoard() == "draw-line" && isInLineUnderConstruction != undefined) {
+  if (onBoard() == "line-draw" && isInLineUnderConstruction != undefined) {
     removePointToLineUnderConstruction(point);
     // Update waypoints
     const waypoints = getLineUnderConstruction().busLine.waypoints;

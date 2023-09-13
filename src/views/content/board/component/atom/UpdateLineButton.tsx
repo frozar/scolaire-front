@@ -35,7 +35,7 @@ export default function (props: { busLine: BusLineType }) {
     deselectAllBusLines();
     toggleDrawMod();
     setCurrentStep(drawModeStep.editLine);
-    changeBoard("draw-line");
+    changeBoard("line-draw");
     setModeAddLine();
   }
 

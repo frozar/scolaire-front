@@ -11,7 +11,7 @@ export default function () {
 
   createEffect(() => {
     switch (onBoard()) {
-      case "draw-line":
+      case "line-draw":
         if (getLineUnderConstruction().busLine.schools.length > 0) {
           setText("Editer votre ligne");
           break;
