@@ -1,6 +1,6 @@
 import { For, createSignal, onMount } from "solid-js";
 import LineItem from "../molecule/LineItem";
-import "./ClassesList.css";
+import "./LinesList.css";
 
 export interface LineItemProps {
   lineName: string;
