@@ -236,6 +236,7 @@ export function BusLine(props: BusLineProps) {
         <For each={latLngList()}>
           {(coord: L.LatLng) => {
             let index = 0;
+
             const pointProjectedCoord: L.LatLng[] = [];
 
             if (getLineUnderConstruction().busLine.waypoints) {

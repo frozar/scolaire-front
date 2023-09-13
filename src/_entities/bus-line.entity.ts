@@ -19,9 +19,6 @@ export class BusLineEntity {
     const filteredShools: PointType[] = getSchools().filter(
       (item) => item.id == dbData.school_id
     );
-    // console.log("filteredShools", filteredShools);
-    // console.log("filteredShools.length", filteredShools.length);
-    // console.log("filteredShools[0]", filteredShools[0]);
 
     if (filteredShools.length == 0) {
       //TODO Error log to improve

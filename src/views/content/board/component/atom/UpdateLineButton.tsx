@@ -28,6 +28,7 @@ export default function (props: { busLine: BusLineType }) {
       busLine: props.busLine,
       nextIndex: props.busLine.points.length ?? 0,
     });
+    // TODO: Save the whole busline
     setCurrentPoints(props.busLine.points);
 
     deselectAllPoints();

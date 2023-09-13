@@ -63,7 +63,7 @@ export enum displayLineModeEnum {
   straight = "straight",
   onRoad = "onRoad",
 }
-// ! Replace by previous line !?
+// TODO: Save the whole busLine instead in UpdateLineButton.tsx
 const [previousColor, setPreviousColor] = createSignal<string | undefined>();
 
 const setColorOnLine = (color: string): BusLineType | undefined => {
@@ -297,7 +297,6 @@ async function nextStep() {
 function prevStep() {
   switch (currentStep()) {
     case drawModeStep.schoolSelection:
-      // console.log("case => schoolSelection");
       setLineUnderConstruction(defaultLineUnderConstruction());
       quitModeAddLine();
 
@@ -305,7 +304,6 @@ function prevStep() {
       setOnBoard("line");
       break;
     case drawModeStep.editLine:
-      // console.log("case => editLine");
       if (getLineUnderConstruction().busLine.id) {
         const linePreviousColor = previousColor();
         if (linePreviousColor) {
