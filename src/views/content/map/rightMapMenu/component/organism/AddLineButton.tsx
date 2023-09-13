@@ -26,7 +26,7 @@ export interface AddLineButtonProps {
 
 export default function (props: AddLineButtonProps) {
   const handleClick = () => {
-    if (onBoard() == "draw-line") {
+    if (onBoard() == "line-draw") {
       //if (isInAddLineMode()) {
       // setModeRead();
       toggleDrawMod();
@@ -53,7 +53,7 @@ export default function (props: AddLineButtonProps) {
     <ButtonGraphicageRightMenu
       onClick={mergedProps.handleClick}
       tooltip="Ajouter une ligne"
-      isActive={onBoard() == "draw-line"}
+      isActive={onBoard() == "line-draw"}
       icon={<FaSolidPlus class="w-full p-0 h-2/3" />}
       xOffset={mergedProps.xOffset}
     />

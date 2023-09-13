@@ -1,0 +1,7 @@
+.line-item{
+  @apply flex justify-between w-full bg-gray-light items-center relative px-5 rounded-sm my-2 py-2 
+}
+
+.line-item-actions{
+  @apply flex gap-2 
+}

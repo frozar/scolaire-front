@@ -9,3 +9,7 @@
 .left-menu-button-logo.disabled {
   fill: white;
 }
+
+.left-menu-button-logo > svg {
+  width: 30px;
+}

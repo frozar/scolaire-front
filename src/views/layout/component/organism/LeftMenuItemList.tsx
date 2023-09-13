@@ -21,11 +21,19 @@ export default function (props: LeftMenuItemProps) {
       <For each={menuItems}>
         {(menuItemArg) => {
           const { label, menuItem, Logo, isDisabled } = menuItemArg;
+
           const pageSelected = () =>
             mergedProps.getSelectedMenu() === menuItem && isOnPage();
 
+          const deepSchoolSelected = () =>
+            (onBoard() == "school-details" || onBoard() == "school-class") &&
+            menuItem == "schools";
+
           const isSelected = () =>
-            pageSelected() || (onBoard() == menuItem && !isOnPage());
+            pageSelected() ||
+            (onBoard() == menuItem && !isOnPage()) ||
+            deepSchoolSelected();
+
           return (
             <LeftMenuItem
               isDisabled={isDisabled}

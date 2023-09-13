@@ -78,7 +78,7 @@ function onClick(point: StopType) {
   setSchoolPointsColor(ids, COLOR_SCHOOL_LIGHT);
   setStopPointsColor(ids, COLOR_STOP_LIGHT);
 
-  if (onBoard() != "draw-line") {
+  if (onBoard() != "line-draw") {
     deselectAllBusLines();
     deselectAllPoints();
     point.setSelected(true);
@@ -157,7 +157,7 @@ export function StopPoint(props: StopPointProps) {
         (_point) => _point.id == props.point.id
       )[0];
 
-    if (onBoard() == "draw-line" && isInLineUnderConstruction != undefined) {
+    if (onBoard() == "line-draw" && isInLineUnderConstruction != undefined) {
       removePointToLineUnderConstruction(props.point);
       // Update waypoints
       const waypoints = getLineUnderConstruction().busLine.waypoints;

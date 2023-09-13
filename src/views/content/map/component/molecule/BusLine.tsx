@@ -61,7 +61,7 @@ export function BusLine(props: BusLineProps) {
   createEffect(() => {
     if (
       displayLineMode() == displayLineModeEnum.onRoad ||
-      onBoard() != "draw-line"
+      onBoard() != "line-draw"
     ) {
       setLocalLatLngs(props.line.latLngs());
       setLocalOpacity(0.8);
@@ -114,7 +114,7 @@ export function BusLine(props: BusLineProps) {
       }
     }
 
-    if (onBoard() != "draw-line") {
+    if (onBoard() != "line-draw") {
       deselectAllBusLines();
       deselectAllPoints();
       setPickerColor(props.line.color());
@@ -230,7 +230,7 @@ export function BusLine(props: BusLineProps) {
       <Show
         when={
           displayLineMode() == displayLineModeEnum.onRoad &&
-          onBoard() == "draw-line"
+          onBoard() == "line-draw"
         }
       >
         <For each={latLngList()}>

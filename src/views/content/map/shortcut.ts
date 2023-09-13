@@ -89,7 +89,7 @@ function escapeHandler({ code }: KeyboardEvent) {
 
   if (code === "Escape") {
     deselectAllPoints();
-    if (onBoard() != "draw-line") {
+    if (onBoard() != "line-draw") {
       deselectAllBusLines();
       setStopPointsColor([], COLOR_STOP_FOCUS);
       setSchoolPointsColor([], COLOR_SCHOOL_FOCUS);
