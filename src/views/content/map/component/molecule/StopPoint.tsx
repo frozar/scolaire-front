@@ -16,6 +16,7 @@ import {
 import Point from "../atom/Point";
 import { deselectAllBusLines } from "../organism/BusLines";
 
+import { updatePolylineWithOsrm } from "../../../../../_entities/bus-line.entity";
 import {
   displayLineMode,
   displayLineModeEnum,
@@ -27,6 +28,7 @@ import {
   linkMap,
   setBlinkingSchools,
   setCursorIsOverPoint,
+  updateWaypoints,
 } from "../organism/Points";
 import { getSchools } from "../organism/SchoolPoints";
 import { draggingLine, setDraggingLine } from "./BusLine";
@@ -62,65 +64,6 @@ function getAssociatedQuantity(point: StopType) {
   )[0].quantity;
 }
 
-// TODO: Refactor
-function updateWaypoints(point: StopType) {
-  const waypoints = getLineUnderConstruction().busLine.waypoints;
-  if (waypoints) {
-    // ! Récup les ids des points avant et après
-    const index = getLineUnderConstruction().busLine.points.findIndex(
-      (actualPoint) => actualPoint.id == point.id
-    );
-    // ! Refactor
-    if (getLineUnderConstruction().busLine.points.length < index + 2) {
-      const newWaypoints = [...waypoints];
-      newWaypoints.push({
-        idStop: point.id,
-        lat: point.lat,
-        lon: point.lon,
-      });
-
-      setLineUnderConstruction({
-        ...getLineUnderConstruction(),
-        busLine: {
-          ...getLineUnderConstruction().busLine,
-          waypoints: newWaypoints,
-        },
-      });
-      return;
-    }
-    const idPointBefore =
-      getLineUnderConstruction().busLine.points[index - 1].id;
-    const idPointAfter =
-      getLineUnderConstruction().busLine.points[index + 1].id;
-    const pointBeforeIndexWaypoint = waypoints.findIndex(
-      (actualPoint) => actualPoint.idStop == idPointBefore
-    );
-    const pointAfterIndexWaypoint = waypoints.findIndex(
-      (actualPoint) => actualPoint.idStop == idPointAfter
-    );
-    const difference = pointAfterIndexWaypoint - pointBeforeIndexWaypoint;
-
-    let toDelete = 0;
-    if (difference > 1) {
-      toDelete = difference - 1;
-    }
-    const newWaypoints = [...waypoints];
-    newWaypoints.splice(pointBeforeIndexWaypoint + 1, toDelete, {
-      idStop: point.id,
-      lat: point.lat,
-      lon: point.lon,
-    });
-
-    setLineUnderConstruction({
-      ...getLineUnderConstruction(),
-      busLine: {
-        ...getLineUnderConstruction().busLine,
-        waypoints: newWaypoints,
-      },
-    });
-  }
-}
-
 function onClick(point: StopType) {
   // Highlight point schools
   const ids: number[] = [point.leafletId];
@@ -146,9 +89,10 @@ function onClick(point: StopType) {
 
   // TODO: when add line with an etablissement point the line destroy after next point click
   // Wait Richard/Hugo finish the line underconstruction
-  if (displayLineMode() == displayLineModeEnum.straight) {
-    addPointToLineUnderConstruction({ ...point, quantity: associatedQuantity });
-    updateWaypoints(point);
+  addPointToLineUnderConstruction({ ...point, quantity: associatedQuantity });
+  updateWaypoints(point);
+  if (displayLineMode() == displayLineModeEnum.onRoad) {
+    updatePolylineWithOsrm(getLineUnderConstruction().busLine);
   }
 
   //TODO pourquoi cette condition ?
@@ -213,7 +157,7 @@ export function StopPoint(props: StopPointProps) {
         (_point) => _point.id == props.point.id
       )[0];
 
-    if (isInAddLineMode() && isInLineUnderConstruction != undefined) {
+    if (onBoard() == "draw-line" && isInLineUnderConstruction != undefined) {
       removePointToLineUnderConstruction(props.point);
       // Update waypoints
       const waypoints = getLineUnderConstruction().busLine.waypoints;
@@ -232,6 +176,9 @@ export function StopPoint(props: StopPointProps) {
             waypoints: newWaypoints,
           },
         });
+        if (displayLineMode() == displayLineModeEnum.onRoad) {
+          updatePolylineWithOsrm(getLineUnderConstruction().busLine);
+        }
       }
 
       circle?.setStyle({ fillColor: COLOR_STOP_LIGHT });

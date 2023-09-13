@@ -227,7 +227,12 @@ export function BusLine(props: BusLineProps) {
         onClick={onClick}
         onMouseDown={onMouseDown}
       />
-      <Show when={displayLineMode() == displayLineModeEnum.onRoad}>
+      <Show
+        when={
+          displayLineMode() == displayLineModeEnum.onRoad &&
+          onBoard() == "draw-line"
+        }
+      >
         <For each={latLngList()}>
           {(coord: L.LatLng) => {
             let index = 0;

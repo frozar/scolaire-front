@@ -12,6 +12,7 @@ import { getStops } from "../../../map/component/organism/StopPoints";
 import { BusLineInformationBoardContent } from "../organism/BusLineInformationBoardContent";
 import DrawModeBoardContent from "../organism/DrawModeBoardContent";
 import InfoPointName from "../organism/InfoPointName";
+import { onBoard } from "./ContextManager";
 
 const [, { isInAddLineMode, resetLineUnderConstruction }] = useStateAction();
 
@@ -125,7 +126,7 @@ export default function () {
         <Match when={getSelectedBusLine()}>
           <BusLineInformationBoardContent />
         </Match>
-        <Match when={isInAddLineMode()}>
+        <Match when={onBoard() == "draw-line"}>
           <DrawModeBoardContent />
         </Match>
       </Switch>

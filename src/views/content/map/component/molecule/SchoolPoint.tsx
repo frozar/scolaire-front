@@ -1,5 +1,6 @@
 import L from "leaflet";
 import { useStateAction } from "../../../../../StateAction";
+import { updatePolylineWithOsrm } from "../../../../../_entities/bus-line.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { StopType } from "../../../../../_entities/stop.entity";
 import {
@@ -8,6 +9,8 @@ import {
 } from "../../../../../leafletUtils";
 import {
   currentStep,
+  displayLineMode,
+  displayLineModeEnum,
   drawModeStep,
 } from "../../../board/component/organism/DrawModeBoardContent";
 import { onBoard } from "../../../board/component/template/ContextManager";
@@ -25,6 +28,7 @@ import {
   linkMap,
   setBlinkingStops,
   setCursorIsOverPoint,
+  updateWaypoints,
 } from "../organism/Points";
 import { getStops } from "../organism/StopPoints";
 import { draggingLine, setDraggingLine } from "./BusLine";
@@ -35,6 +39,7 @@ const [
     addPointToLineUnderConstruction,
     getLineUnderConstruction,
     setLineUnderConstruction,
+    removePointToLineUnderConstruction,
     // isInAddLineMode,
   },
 ] = useStateAction();
@@ -87,6 +92,10 @@ const onClick = (point: SchoolType) => {
   }
 
   addPointToLineUnderConstruction({ ...point, quantity: 0 });
+  updateWaypoints(point);
+  if (displayLineMode() == displayLineModeEnum.onRoad) {
+    updatePolylineWithOsrm(getLineUnderConstruction().busLine);
+  }
 
   //TODO pourquoi cette condition ?
   if (!(1 < getLineUnderConstruction().busLine.points.length)) {
@@ -122,6 +131,41 @@ const onMouseOut = () => {
   }
 };
 
+const onRightClick = (point: SchoolType) => {
+  const circle = linkMap.get(point.leafletId);
+  const isInLineUnderConstruction =
+    getLineUnderConstruction().busLine.points.filter(
+      (_point) => _point.id == point.id
+    )[0];
+
+  if (onBoard() == "draw-line" && isInLineUnderConstruction != undefined) {
+    removePointToLineUnderConstruction(point);
+    // Update waypoints
+    const waypoints = getLineUnderConstruction().busLine.waypoints;
+    if (waypoints) {
+      const waypointIndex = waypoints.findIndex(
+        (waypoint) => waypoint.idStop == point.id
+      );
+
+      const newWaypoints = [...waypoints];
+      newWaypoints.splice(waypointIndex, 1);
+
+      setLineUnderConstruction({
+        ...getLineUnderConstruction(),
+        busLine: {
+          ...getLineUnderConstruction().busLine,
+          waypoints: newWaypoints,
+        },
+      });
+      if (displayLineMode() == displayLineModeEnum.onRoad) {
+        updatePolylineWithOsrm(getLineUnderConstruction().busLine);
+      }
+    }
+
+    circle?.setStyle({ fillColor: COLOR_STOP_LIGHT });
+  }
+};
+
 export function SchoolPoint(props: SchoolPointProps) {
   return (
     <Point
@@ -136,6 +180,7 @@ export function SchoolPoint(props: SchoolPointProps) {
       onMouseOver={() => onMouseOver(props.point)}
       onMouseOut={() => onMouseOut()}
       onMouseUp={() => onMouseUp(props.point)}
+      onRightClick={() => onRightClick(props.point)}
     />
   );
 }

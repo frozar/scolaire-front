@@ -9,7 +9,11 @@ import {
 const [, { setPointsToLineUnderConstruction }] = useStateAction();
 
 import { FaSolidWandMagicSparkles } from "solid-icons/fa";
-import { BusLinePointType } from "../../../../../_entities/bus-line.entity";
+import {
+  BusLinePointType,
+  WaypointType,
+  updatePolylineWithOsrm,
+} from "../../../../../_entities/bus-line.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import {
   disableSpinningWheel,
@@ -19,18 +23,24 @@ import DrawHelperDialog, {
   openDrawHelperDialog,
 } from "../molecule/DrawHelperDialog";
 
+import { NatureEnum } from "../../../../../type";
 import { getSchools } from "../../../map/component/organism/SchoolPoints";
 import {
   getStops,
   leafletStopsFilter,
 } from "../../../map/component/organism/StopPoints";
+import {
+  displayLineMode,
+  displayLineModeEnum,
+} from "../organism/DrawModeBoardContent";
 import "./DrawHelperButton.css";
 
 interface DrawHelperButtonProps {
   schools: SchoolType[] | undefined;
 }
 
-const [, { getLineUnderConstruction }] = useStateAction();
+const [, { getLineUnderConstruction, setLineUnderConstruction }] =
+  useStateAction();
 async function drawHelper(data: DrawHelperDataType) {
   console.log("Query", data);
   enableSpinningWheel();
@@ -40,6 +50,30 @@ async function drawHelper(data: DrawHelperDataType) {
   //TODO Resolve type problem and add quantity here
   const formattedResponse: BusLinePointType[] = formatTimeLinePoints(response);
   setPointsToLineUnderConstruction(formattedResponse);
+
+  const newWaypoints: WaypointType[] = [];
+  for (const point of getLineUnderConstruction().busLine.points) {
+    if (point.nature == NatureEnum.school) {
+      newWaypoints.push({
+        idSchool: point.id,
+        lon: point.lon,
+        lat: point.lat,
+      });
+    } else if (point.nature == NatureEnum.stop) {
+      newWaypoints.push({
+        idStop: point.id,
+        lon: point.lon,
+        lat: point.lat,
+      });
+    }
+  }
+  setLineUnderConstruction({
+    ...getLineUnderConstruction(),
+    busLine: { ...getLineUnderConstruction().busLine, waypoints: newWaypoints },
+  });
+  if (displayLineMode() == displayLineModeEnum.onRoad) {
+    updatePolylineWithOsrm(getLineUnderConstruction().busLine);
+  }
 }
 
 export function DrawHelperButton(props: DrawHelperButtonProps) {

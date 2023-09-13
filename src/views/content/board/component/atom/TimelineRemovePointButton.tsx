@@ -1,10 +1,17 @@
 import { FaRegularTrashCan } from "solid-icons/fa";
 
 import { useStateAction } from "../../../../../StateAction";
-import { WaypointType } from "../../../../../_entities/bus-line.entity";
+import {
+  WaypointType,
+  updatePolylineWithOsrm,
+} from "../../../../../_entities/bus-line.entity";
 import { LineUnderConstructionType } from "../../../../../type";
 import { linkMap } from "../../../map/component/organism/Points";
 import { COLOR_STOP_LIGHT } from "../../../map/constant";
+import {
+  displayLineMode,
+  displayLineModeEnum,
+} from "../organism/DrawModeBoardContent";
 import "./TimelineRemovePointButton.css";
 
 const [, { getLineUnderConstruction, setLineUnderConstruction }] =
@@ -29,10 +36,11 @@ export function TimelineRemovePointButton(props: {
     });
 
     // Update waypoints array
-    const newWaypoints = [
-      ...(getLineUnderConstruction().busLine.waypoints as WaypointType[]),
-    ];
-    if (newWaypoints) {
+    if (getLineUnderConstruction().busLine.waypoints) {
+      const newWaypoints = [
+        ...(getLineUnderConstruction().busLine.waypoints as WaypointType[]),
+      ];
+
       newWaypoints.splice(
         newWaypoints.findIndex((waypoint) => waypoint.idStop == pointId),
         1
@@ -45,6 +53,9 @@ export function TimelineRemovePointButton(props: {
           waypoints: newWaypoints,
         },
       });
+    }
+    if (displayLineMode() == displayLineModeEnum.onRoad) {
+      updatePolylineWithOsrm(getLineUnderConstruction().busLine);
     }
   };
 
