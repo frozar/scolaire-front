@@ -1,10 +1,6 @@
 import { Auth0Client, createAuth0Client } from "@auth0/auth0-spa-js";
 import { createSignal } from "solid-js";
-import {
-  getAuthenticatedUser,
-  setAuthenticated,
-  setAuthenticatedUser,
-} from "../../signaux";
+import { setAuthenticated } from "../../signaux";
 const XANO_AUTH_URL =
   "https://x8ki-letl-twmt.n7.xano.io/api:elCAJnQ5/oauth/auth0";
 const REDIRECT_URI =
@@ -16,6 +12,7 @@ export type xanoUser = {
   email: string;
   picture: string;
   nickname: string;
+  code: string;
 };
 
 // let currentUser: xanoUser | undefined;
@@ -34,18 +31,6 @@ export const auth0Client: Auth0Client = await createAuth0Client({
 
 export async function logout() {
   setCurrentUser(undefined);
-  // try {
-  //   console.log("Logging out");
-  //   const options: LogoutOptions = {
-  //     logoutParams: {
-  //       returnTo: window.location.origin,
-  //     },
-  //   };
-  //   auth0Client.logout(options);
-  //   setAuthenticatedUser(undefined);
-  // } catch (err) {
-  //   console.log("Log out failed", err);
-  // }
 }
 
 async function getUser(e: { data: { args: { code: string }; type: string } }) {
@@ -65,17 +50,18 @@ async function getUser(e: { data: { args: { code: string }; type: string } }) {
       console.log("Log in failed", err);
       closeOauthWindow();
     });
-
-    setCurrentUser(
-      await res?.json().catch((err) => {
-        console.log("Log in failed", err);
-        closeOauthWindow();
-      })
-    );
+    const user = await res?.json().catch((err) => {
+      console.log("Log in failed", err);
+      closeOauthWindow();
+    });
+    if (user) {
+      setCurrentUser({ ...user, code });
+      setAuthenticated(true);
+    }
   }
 }
 
-let currentOauthWindow: Window;
+let currentOauthWindow: Window | null;
 
 function closeOauthWindow() {
   window.removeEventListener("message", getUser);
@@ -83,16 +69,23 @@ function closeOauthWindow() {
 }
 
 export async function login() {
-  const currentOauthWindow = window.open(
-    "",
-    "auth0Oauth",
-    "scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,width=600,height=660,left=100,top=100"
-  );
-  if (!currentOauthWindow) return;
+  if (currentOauthWindow) currentOauthWindow.close();
 
   try {
     const url = await getAuthUrl();
-    if (!url) return closeOauthWindow();
+    if (!url) return;
+
+    currentOauthWindow = window.open(
+      "",
+      "auth0Oauth",
+      "scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,width=" +
+        300 +
+        ",height=" +
+        500 +
+        ",left=2500,top=100"
+    );
+
+    if (!currentOauthWindow) return;
 
     currentOauthWindow.location.href = url;
 
@@ -116,42 +109,29 @@ async function getAuthUrl() {
 }
 
 export async function tryConnection() {
-  const user = getAuthenticatedUser();
-  if (!user || !user.sub) {
-    if (await auth0Client.isAuthenticated()) {
-      const user = await auth0Client.getUser();
-      console.log(user);
-      setAuthenticatedUser(user);
-    }
+  const user = currentUser();
+  if (!user) {
+    // login(); //TODO find how to maintain a session
   }
 }
 
 export async function isAuthenticated() {
-  await tryConnection();
-  const user = getAuthenticatedUser();
-  if (!user || !user.sub) {
+  await tryConnection(); //TODO a refaire
+  const user = currentUser();
+  if (!user) {
     return false;
   }
   return true;
 }
 
-export const getProfilePicture = () => {
-  const user = getAuthenticatedUser();
-  if (user && user.sub) return user.picture;
-  else return "";
-};
-
 export function getToken() {
+  if (currentUser()) return currentUser()?.token;
+
   if (import.meta.env.VITE_AUTH0_DEV_MODE === "true") {
     return "fakeToken";
   }
-  try {
-    return currentUser()?.token;
-  } catch (error) {
-    console.error("ERROR: getToken");
-    console.error(error);
-    return "errorToken";
-  }
+
+  return "";
 }
 
 function headerJson(token: string): HeadersInit {
@@ -162,7 +142,6 @@ function headerJson(token: string): HeadersInit {
 }
 
 function headerAuthorization(token: string): HeadersInit {
-  console.log("Bearer " + token);
   return {
     authorization: token,
   };
@@ -180,50 +159,21 @@ export function authenticateWrap(
 
     return callback(headers);
   }
-  // return getToken()
-  //   .then((token) => {
-  //     const headers: HeadersInit = authorizationOnly
-  //       ? headerAuthorization(token)
-  //       : headerJson(token);
-
-  //     return callback(headers);
-  //   })
-  //   .catch((error) => {
-  //     console.error("ERROR: authenticateWrap");
-  //     console.error(error);
-  //   });
 }
 
-// export async function asyncAuthenticateWrap(authorizationOnly = false) {
-//   let headers: HeadersInit = [];
-//   try {
-//     const token = await getToken();
-//     if (token) {
-//       headers = authorizationOnly
-//         ? headerAuthorization(token)
-//         : headerJson(token);
-//     }
-
-//     return headers;
-//   } catch (error) {
-//     console.error("ERROR: authenticateWrap");
-//     console.error(error);
-//   }
-// }
-
 window.onload = async () => {
-  const query = window.location.search;
-  const shouldParseResult = query.includes("code=") && query.includes("state=");
-
-  if (shouldParseResult) {
-    try {
-      await auth0Client.handleRedirectCallback();
-      const user = await auth0Client.getUser();
-      setAuthenticatedUser(user);
-      setAuthenticated(true);
-    } catch (err) {
-      console.log("Error parsing redirect:", err);
-    }
-    window.history.replaceState({}, document.title, "/");
-  }
+  //TODO fix to keep the same session
+  // const query = window.location.search;
+  // const shouldParseResult = query.includes("code=") && query.includes("state=");
+  // if (shouldParseResult) {
+  //   try {
+  //     await auth0Client.handleRedirectCallback();
+  //     const user = await auth0Client.getUser();
+  //     setAuthenticatedUser(user);
+  //     setAuthenticated(true);
+  //   } catch (err) {
+  //     console.log("Error parsing redirect:", err);
+  //   }
+  //   window.history.replaceState({}, document.title, "/");
+  // }
 };
