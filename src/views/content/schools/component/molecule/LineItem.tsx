@@ -1,10 +1,10 @@
 import Pellet from "../../../../../component/atom/Pellet";
 import ArretsLogo from "../../../../../icons/ArretsLogo";
 import ClasseLinkedSchool from "../atom/ClasseLinkedSchool";
-import { ClasseItemProps } from "../organism/ClassesList";
+import { LineItemProps } from "../organism/LinesList";
 import "./LineItem.css";
 
-export default function (props: { line: ClasseItemProps }) {
+export default function (props: { line: LineItemProps }) {
   return (
     <div class="class-item">
       <Pellet color="red" />
