@@ -3,7 +3,7 @@ import { SchoolType } from "../../../../../_entities/school.entity";
 import { changeBoard } from "../../../board/component/template/ContextManager";
 import SchoolDetailsHeader from "../molecule/SchoolDetailsHeader";
 import SchoolDetailsPanelsButton from "../molecule/SchoolDetailsPanelsButton";
-import ClassesList from "./ClassesList";
+import ClassesList from "./LinesList";
 
 export const [schoolDetailsItem, setSchoolDetailsItem] =
   createSignal<SchoolType>();
