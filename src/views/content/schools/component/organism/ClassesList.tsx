@@ -2,7 +2,7 @@ import { For, createSignal, onMount } from "solid-js";
 import LineItem from "../molecule/LineItem";
 import "./ClassesList.css";
 
-export interface ClasseItemProps {
+export interface LineItemProps {
   lineName: string;
   linkedSchools: string[];
   linkedStops: number;
@@ -11,7 +11,7 @@ export interface ClasseItemProps {
 }
 
 export default function () {
-  const [classes, setClasses] = createSignal<ClasseItemProps[]>([]);
+  const [classes, setClasses] = createSignal<LineItemProps[]>([]);
 
   function getSchoolClasses() {
     // TODO will load data

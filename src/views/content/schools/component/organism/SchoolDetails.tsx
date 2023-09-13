@@ -30,10 +30,10 @@ export default function () {
         <SchoolDetailsPanelsButton setOnPanel={setOnPanel} onPanel={onPanel} />
 
         <Switch>
-          <Match when={onPanel() == Panels.classes}>
+          <Match when={onPanel() == Panels.classes}>classes</Match>
+          <Match when={onPanel() == Panels.lines}>
             <ClassesList />
           </Match>
-          <Match when={onPanel() == Panels.lines}>lines</Match>
         </Switch>
       </div>
     </section>
