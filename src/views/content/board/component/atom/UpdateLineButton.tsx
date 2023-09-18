@@ -1,9 +1,6 @@
 import { FaSolidPen } from "solid-icons/fa";
 import { useStateAction } from "../../../../../StateAction";
-import {
-  BusLinePointType,
-  BusLineType,
-} from "../../../../../_entities/bus-line.entity";
+import { BusLineType } from "../../../../../_entities/bus-line.entity";
 import { deselectAllBusLines } from "../../../map/component/organism/BusLines";
 
 import { createSignal } from "solid-js";
@@ -18,9 +15,8 @@ import "./DrawHelperButton.css";
 
 const [, { setLineUnderConstruction, setModeAddLine }] = useStateAction();
 
-export const [currentPoints, setCurrentPoints] = createSignal<
-  BusLinePointType[]
->([]);
+export const [unmodifiedBusLine, setUnmodifiedBusLine] =
+  createSignal<BusLineType>();
 
 export default function (props: { busLine: BusLineType }) {
   async function onclick() {
@@ -28,8 +24,8 @@ export default function (props: { busLine: BusLineType }) {
       busLine: props.busLine,
       nextIndex: props.busLine.points.length ?? 0,
     });
-    // TODO: Save the whole busline
-    setCurrentPoints(props.busLine.points);
+    const [color, setColor] = createSignal<string>(props.busLine.color());
+    setUnmodifiedBusLine({ ...props.busLine, color, setColor });
 
     deselectAllPoints();
     deselectAllBusLines();
