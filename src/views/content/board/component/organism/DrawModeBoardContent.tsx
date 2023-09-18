@@ -298,10 +298,15 @@ function prevStep() {
     case drawModeStep.editLine:
       const busLine = unmodifiedBusLine();
       if (busLine) {
-        const busLines = getBusLines().filter(
-          (busLine) => busLine.id != getLineUnderConstruction().busLine.id
-        );
-        setBusLines([...busLines, busLine]);
+        setBusLines((buslines) => {
+          buslines = [
+            ...buslines.filter(
+              (busLine) => busLine.id != getLineUnderConstruction().busLine.id
+            ),
+          ];
+          buslines.push(busLine);
+          return buslines;
+        });
         setUnmodifiedBusLine(undefined);
       }
 
