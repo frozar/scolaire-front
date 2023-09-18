@@ -32,7 +32,10 @@ import {
 } from "../../../map/component/organism/BusLines";
 import { quitModeAddLine } from "../../../map/shortcut";
 import { DrawHelperButton } from "../atom/DrawHelperButton";
-import { currentPoints } from "../atom/UpdateLineButton";
+import {
+  setUnmodifiedBusLine,
+  unmodifiedBusLine,
+} from "../atom/UpdateLineButton";
 import ButtonIcon from "../molecule/ButtonIcon";
 import LabeledInputField from "../molecule/LabeledInputField";
 import SchoolsEnumeration from "../molecule/SchoolsEnumeration";
@@ -63,8 +66,6 @@ export enum displayLineModeEnum {
   straight = "straight",
   onRoad = "onRoad",
 }
-// TODO: Save the whole busLine instead in UpdateLineButton.tsx
-const [previousColor, setPreviousColor] = createSignal<string | undefined>();
 
 const setColorOnLine = (color: string): BusLineType | undefined => {
   const line: LineUnderConstructionType | undefined =
@@ -78,15 +79,6 @@ const setColorOnLine = (color: string): BusLineType | undefined => {
 };
 
 const onInput = (color: string) => {
-  if (!previousColor() && getLineUnderConstruction().busLine.id) {
-    setPreviousColor(
-      getBusLines()
-        .filter(
-          (busLine) => busLine.id == getLineUnderConstruction().busLine.id
-        )[0]
-        .color()
-    );
-  }
   const line: BusLineType | undefined = setColorOnLine(color);
 
   if (!line) return;
@@ -304,16 +296,14 @@ function prevStep() {
       setOnBoard("line");
       break;
     case drawModeStep.editLine:
-      if (getLineUnderConstruction().busLine.id) {
-        const linePreviousColor = previousColor();
-        if (linePreviousColor) {
-          setColorOnLine(linePreviousColor);
-        }
+      const busLine = unmodifiedBusLine();
+      if (busLine) {
+        const busLines = getBusLines().filter(
+          (busLine) => busLine.id != getLineUnderConstruction().busLine.id
+        );
+        setBusLines([...busLines, busLine]);
+        setUnmodifiedBusLine(undefined);
       }
-      const id = getLineUnderConstruction().busLine.id;
-      const busLines = getBusLines().filter((busLine) => busLine.id != id);
-      const busLine = getBusLines().filter((busLine) => busLine.id == id)[0];
-      setBusLines([...busLines, { ...busLine, points: currentPoints() }]);
 
       setLineUnderConstruction(defaultLineUnderConstruction());
 
