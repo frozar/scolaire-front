@@ -251,7 +251,7 @@ export function BusLine(props: BusLineProps) {
               }
             }
 
-            for (let i = 0; latLngList.length - 1; i++) {
+            for (let i = 0; latLngList().length - 1; i++) {
               if (
                 pointProjectedCoord[index].lat == latLngList()[i].lat &&
                 pointProjectedCoord[index].lng == latLngList()[i].lng
