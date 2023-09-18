@@ -239,16 +239,44 @@ export function BusLine(props: BusLineProps) {
             const pointProjectedCoord: L.LatLng[] = [];
 
             if (getLineUnderConstruction().busLine.waypoints) {
-              for (const point of props.line.waypoints as WaypointType[]) {
-                pointProjectedCoord.push(L.latLng(point.lat, point.lon));
+              console.log("case if");
+              console.log(
+                "getLineUnderConstruction().busLine.waypoints",
+                getLineUnderConstruction().busLine.waypoints
+              );
+
+              for (const waypoint of props.line.waypoints as WaypointType[]) {
+                // pointProjectedCoord.push(L.latLng(point.lat, point.lon));
+                // ! TEMPORAIRE =>
+                // ! quand ajout / suppr d'un point updatePolylineWithOSRM before saving new
+                // ! lineUnderConstruction (onRoadLat and lon is needed)
+                if (waypoint.onRoadLat && waypoint.onRoadLon) {
+                  pointProjectedCoord.push(
+                    L.latLng(
+                      waypoint.onRoadLat as number,
+                      waypoint.onRoadLon as number
+                    )
+                  );
+                } else {
+                  pointProjectedCoord.push(
+                    L.latLng(waypoint.lat, waypoint.lon)
+                  );
+                }
+                // pointProjectedCoord.push(
+                //   L.latLng(waypoint.onRoadLat as number, waypoint.onRoadLon as number)
+                // );
               }
             } else {
+              // ! Correspond réellement à un cas ?
+              console.log("case else");
+
               for (const point of props.line.points) {
                 pointProjectedCoord.push(
                   L.latLng(point.onRoadLat as number, point.onRoadLon as number)
                 );
               }
             }
+            console.log("pointProjectedCoord", pointProjectedCoord);
 
             for (let i = 0; latLngList().length - 1; i++) {
               if (
@@ -261,7 +289,7 @@ export function BusLine(props: BusLineProps) {
                 break; // TODO: Do not display polylineDragMarker for stop, school or waypoint
               }
             }
-
+            // ! why index - 1 ?
             return (
               <PolylineDragMarker
                 map={props.map}

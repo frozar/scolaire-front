@@ -2,12 +2,12 @@ import L from "leaflet";
 import { onCleanup } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import {
+  BusLineType,
   WaypointType,
   updatePolylineWithOsrm,
 } from "../../../../../_entities/bus-line.entity";
 
-const [, { setLineUnderConstruction, getLineUnderConstruction }] =
-  useStateAction();
+const [, { getLineUnderConstruction }] = useStateAction();
 
 type PolylineDragMarkersProps = {
   map: L.Map;
@@ -30,32 +30,41 @@ export default function (props: PolylineDragMarkersProps) {
     draggable: true,
     keyboard: false,
     // eslint-disable-next-line solid/reactivity
-  }).on("dragend", () => {
+  }).on("dragend", async () => {
     const newWaypoint: WaypointType = {
       lat: polylineDragMarker.getLatLng().lat,
       lon: polylineDragMarker.getLatLng().lng,
     };
-
+    // ! Rewrite
     const waypoints = [
       ...(getLineUnderConstruction().busLine.waypoints as WaypointType[]),
     ];
-    waypoints.splice(props.index + 1, 0, newWaypoint);
+    // ! Why index + 1
+    waypoints.splice(props.index, 0, newWaypoint);
 
-    setLineUnderConstruction({
-      ...getLineUnderConstruction(),
-      busLine: {
-        ...getLineUnderConstruction().busLine,
-        waypoints: waypoints,
-      },
-    });
+    // setLineUnderConstruction({
+    //   ...getLineUnderConstruction(),
+    //   busLine: {
+    //     ...getLineUnderConstruction().busLine,
+    //     waypoints: waypoints,
+    //   },
+    // });
+    const newBusLine: BusLineType = {
+      ...getLineUnderConstruction().busLine,
+      waypoints: waypoints,
+    };
+    console.log("started");
+    // await updatePolylineWithOsrm(getLineUnderConstruction().busLine);
+    await updatePolylineWithOsrm(newBusLine);
 
-    updatePolylineWithOsrm(getLineUnderConstruction().busLine);
+    console.log("done");
   });
 
   polylineDragMarker.setOpacity(0);
 
   polylineDragMarker.on("mouseover", function () {
     polylineDragMarker.setOpacity(100);
+    console.log("props.index", props.index);
   });
 
   polylineDragMarker.on("mouseout", function () {
