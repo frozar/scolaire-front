@@ -253,6 +253,9 @@ async function createOrUpdateBusLine(busLine: BusLineType) {
   }
   quitModeAddLine();
   setCurrentStep(drawModeStep.start);
+  setDisplayLineMode((prev) =>
+    prev == displayLineModeEnum.straight ? prev : displayLineModeEnum.straight
+  );
   changeBoard("line");
   selectedUpdatedBusLine(getBusLines().at(-1) as BusLineType);
 }
