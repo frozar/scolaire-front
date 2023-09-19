@@ -197,11 +197,12 @@ const getAssociatedBusLinePoint = (dbPoint: BusLinePointDBType): PointType => {
 
 export async function updatePolylineWithOsrm(busLine: BusLineType) {
   enableSpinningWheel();
-  const { latlngs, metrics } = await OsrmService.getRoadPolyline(busLine);
+  const { latlngs, projectedLatlngs, metrics } =
+    await OsrmService.getRoadPolyline(busLine);
 
-  busLine.setLatLngs(latlngs[0]);
+  busLine.setLatLngs(latlngs);
   busLine.setMetrics(metrics);
-  setOnRoad(busLine, latlngs);
+  setOnRoad(busLine, projectedLatlngs);
   disableSpinningWheel();
 }
 
@@ -237,8 +238,6 @@ export type BusLinePointType = {
   name: string;
   lon: number;
   lat: number;
-  // onRoadLon?: number;
-  // onRoadLat?: number;
   quantity: number;
   nature: NatureEnum;
 };
@@ -270,8 +269,7 @@ export type busLineMetricType = {
 };
 
 //Todo delete function : ne pas utiliser le signal
-// ! Ne pas utiliser de tuples ici
-function setOnRoad(busLine: BusLineType, latlngs: [L.LatLng[], L.LatLng[]]) {
+function setOnRoad(busLine: BusLineType, projectedLatlngs: L.LatLng[]) {
   let waypoints = busLine.waypoints;
   if (!waypoints) {
     return;
@@ -279,8 +277,8 @@ function setOnRoad(busLine: BusLineType, latlngs: [L.LatLng[], L.LatLng[]]) {
   waypoints = [...waypoints].map((waypoint, i) => {
     return {
       ...waypoint,
-      onRoadLat: latlngs[1][i].lat,
-      onRoadLon: latlngs[1][i].lng,
+      onRoadLat: projectedLatlngs[i].lat,
+      onRoadLon: projectedLatlngs[i].lng,
     };
   });
 

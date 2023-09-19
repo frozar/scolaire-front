@@ -13,13 +13,13 @@ type osrmResponseType = { routes: routesType[] };
 
 export class OsrmService {
   static async getRoadPolyline(busLine: BusLineType): Promise<{
-    latlngs: [L.LatLng[], L.LatLng[]];
+    latlngs: L.LatLng[];
+    projectedLatlngs: L.LatLng[];
     metrics: busLineMetricType;
   }> {
     const points: BusLinePointType[] = busLine.points;
     const waypoints: WaypointType[] = busLine.waypoints ?? points;
 
-    // ! change tuple to dict ?
     const response = await ServiceUtils.generic(
       osrm +
         "/" +
@@ -33,7 +33,7 @@ export class OsrmService {
         "?geometries=geojson&overview=full"
     );
 
-    if (!response) return { latlngs: [[], []], metrics: {} };
+    if (!response) return { latlngs: [], projectedLatlngs: [], metrics: {} };
     return this.formatResponse(
       response,
       response_direct,
@@ -52,29 +52,30 @@ export class OsrmService {
     points: BusLinePointType[],
     waypoints: waypointsType[]
   ): {
-    latlngs: [L.LatLng[], L.LatLng[]];
+    latlngs: L.LatLng[];
+    projectedLatlngs: L.LatLng[];
     metrics: busLineMetricType;
   } {
-    let latlngs: [L.LatLng[], L.LatLng[]] = [[], []];
+    let latlngs: L.LatLng[] = [];
+    let projectedLatlngs: L.LatLng[] = [];
     let metrics: busLineMetricType = {};
 
     if (!response || response.routes[0] == undefined)
-      return { latlngs, metrics };
+      return { latlngs, projectedLatlngs, metrics };
 
     const routes = response.routes;
 
     const coordinates = routes[0].geometry.coordinates;
 
-    latlngs = [
-      coordinates.map((elt: number[]) => L.latLng(elt[1], elt[0])),
-      waypoints.map((waypoint) =>
-        L.latLng(waypoint.location[1], waypoint.location[0])
-      ),
-    ];
+    latlngs = coordinates.map((elt: number[]) => L.latLng(elt[1], elt[0]));
+
+    projectedLatlngs = waypoints.map((waypoint) =>
+      L.latLng(waypoint.location[1], waypoint.location[0])
+    );
 
     metrics = getMetrics(response, response_direct, points);
 
-    return { latlngs, metrics };
+    return { latlngs, projectedLatlngs, metrics };
   }
 }
 
