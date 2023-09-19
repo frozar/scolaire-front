@@ -1,18 +1,13 @@
-import { Show, createSignal, mergeProps, onMount } from "solid-js";
+import { Show, createSignal, onMount } from "solid-js";
 import { Transition } from "solid-transition-group";
 
 import ClickOutside from "../../../../component/ClickOutside";
-import { authenticated, setAuthenticated } from "../../../../signaux";
+import { getAuthenticatedUser, setAuthenticated } from "../../../../signaux";
 
 import LoginMenu from "../atom/LoginMenu";
 import LoginAvatar from "../molecule/LoginAvatar";
 
-import {
-  getProfilePicture,
-  isAuthenticated,
-  login,
-  logout,
-} from "../../authentication";
+import { isAuthenticated, login, logout } from "../../authentication";
 
 import "./LoginDropdown.css";
 
@@ -31,7 +26,7 @@ export interface LoginDropdownProps {
 
 export default function (props: LoginDropdownProps) {
   const handleLogin = async () => {
-    if (!authenticated()) {
+    if (!getAuthenticatedUser()) {
       await login();
     } else {
       await logout();
@@ -51,15 +46,8 @@ export default function (props: LoginDropdownProps) {
     setDisplayedSubComponent((bool) => !bool);
   }
 
-  // Merged props
-  const defaultXOffset = 0;
-  const mergedProps = mergeProps(
-    { authenticated, handleLogin, getProfilePicture, xOffset: defaultXOffset },
-    props
-  );
-
   const xOffsetClassName = () =>
-    "translate-x-[" + String(mergedProps.xOffset) + "rem]";
+    "translate-x-[" + String(props.xOffset ?? 0) + "rem]";
 
   return (
     <button
@@ -74,10 +62,7 @@ export default function (props: LoginDropdownProps) {
         }
       }}
     >
-      <LoginAvatar
-        authenticated={mergedProps.authenticated()}
-        profilePicture={mergedProps.getProfilePicture()}
-      />
+      <LoginAvatar profilePicture={getAuthenticatedUser()?.picture} />
 
       <Transition
         enterActiveClass="transition ease-out duration-200"
@@ -90,8 +75,8 @@ export default function (props: LoginDropdownProps) {
         <Show when={displayedSubComponent()}>
           <div id="login-menu-container" class={xOffsetClassName()}>
             <LoginMenu
-              authenticated={mergedProps.authenticated()}
-              onClick={mergedProps.handleLogin}
+              authenticated={getAuthenticatedUser() ? true : false}
+              onClick={handleLogin}
             />
           </div>
         </Show>

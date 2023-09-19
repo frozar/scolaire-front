@@ -1,6 +1,7 @@
 import { useStateGui } from "../StateGui";
 import { addNewUserInformation } from "../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
+import { getToken } from "../views/layout/authentication";
 
 const [, { getActiveMapId }] = useStateGui();
 
@@ -10,7 +11,7 @@ export class ServiceUtils {
   static async generic(url: string, options = {}) {
     let response: Response;
     try {
-      response = await fetch(url, options);
+      response = await fetch(url, { ...options });
     } catch (error) {
       connexionError();
       return false;
@@ -21,32 +22,43 @@ export class ServiceUtils {
   }
 
   static async get(url: string, urlNeedMap = true) {
-    return await this.generic(this.buildXanoUrl(url, urlNeedMap));
+    const headers = await createXanoAuthenticateHeader();
+    return await this.generic(this.buildXanoUrl(url, urlNeedMap), {
+      method: "GET",
+      headers,
+    });
   }
 
   static async post(url: string, data: object, urlNeedMap = true) {
+    const headers = {
+      ...(await createXanoAuthenticateHeader()),
+      "Content-Type": "application/json",
+    };
+
     return await this.generic(this.buildXanoUrl(url, urlNeedMap), {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers,
       body: JSON.stringify(data),
     });
   }
 
   static async patch(url: string, data: object, urlNeedMap = true) {
+    const headers = {
+      ...(await createXanoAuthenticateHeader()),
+      "Content-Type": "application/json",
+    };
     return await this.generic(this.buildXanoUrl(url, urlNeedMap), {
       method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers,
       body: JSON.stringify(data),
     });
   }
 
   static async delete(url: string, urlNeedMap = true) {
+    const headers = await createXanoAuthenticateHeader();
     return await this.generic(this.buildXanoUrl(url, urlNeedMap), {
       method: "DELETE",
+      headers,
     });
   }
 
@@ -99,4 +111,13 @@ export const manageStatusCode = async (response: Response) => {
   }
 
   return true;
+};
+
+const createXanoAuthenticateHeader = async () => {
+  return getToken()
+    ? {
+        "X-Xano-Authorization-Only": true,
+        "X-Xano-Authorization": await getToken(),
+      }
+    : {};
 };
