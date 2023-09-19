@@ -30,7 +30,7 @@ export default function (props: PolylineDragMarkersProps) {
     draggable: true,
     keyboard: false,
     // eslint-disable-next-line solid/reactivity
-  }).on("dragend", async () => {
+  }).on("dragend", () => {
     const newWaypoint: WaypointType = {
       lat: polylineDragMarker.getLatLng().lat,
       lon: polylineDragMarker.getLatLng().lng,
@@ -48,18 +48,13 @@ export default function (props: PolylineDragMarkersProps) {
       ...getLineUnderConstruction().busLine,
       waypoints,
     };
-    console.log("started");
-    await updatePolylineWithOsrm(newBusLine);
-
-    console.log("done");
+    updatePolylineWithOsrm(newBusLine);
   });
 
   polylineDragMarker.setOpacity(0);
 
-  // eslint-disable-next-line solid/reactivity
   polylineDragMarker.on("mouseover", function () {
     polylineDragMarker.setOpacity(100);
-    console.log("props.index", props.index);
   });
 
   polylineDragMarker.on("mouseout", function () {

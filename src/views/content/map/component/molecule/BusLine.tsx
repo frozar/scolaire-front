@@ -248,12 +248,10 @@ export function BusLine(props: BusLineProps) {
                 pointProjectedCoord.push(
                   L.latLng(waypoint.onRoadLat, waypoint.onRoadLon)
                 );
-                // TODO: Remove the else case
               } else {
                 pointProjectedCoord.push(L.latLng(waypoint.lat, waypoint.lon));
               }
             }
-            // console.log("pointProjectedCoord", pointProjectedCoord);
 
             for (let i = 0; latLngList().length - 1; i++) {
               if (
