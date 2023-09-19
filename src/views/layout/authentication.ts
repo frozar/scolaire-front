@@ -104,10 +104,7 @@ async function getAuthUrl() {
 export async function tryConnection() {
   let user: xanoUser | undefined = getAuthenticatedUser();
   if (!user) {
-    const state = window.history.state;
-    if (state.user) {
-      user = state.user;
-    }
+    user = window.history.state?.user ?? undefined;
   }
 
   if (user) {
