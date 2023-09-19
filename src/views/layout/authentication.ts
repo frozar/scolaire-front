@@ -121,7 +121,7 @@ export async function tryConnection() {
 }
 
 export async function isAuthenticated() {
-  await tryConnection(); //TODO a refaire
+  await tryConnection();
   const user = getAuthenticatedUser();
   if (!user) {
     return false;
