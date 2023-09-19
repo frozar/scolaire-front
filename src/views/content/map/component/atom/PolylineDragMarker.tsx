@@ -35,26 +35,20 @@ export default function (props: PolylineDragMarkersProps) {
       lat: polylineDragMarker.getLatLng().lat,
       lon: polylineDragMarker.getLatLng().lng,
     };
-    // ! Rewrite
-    const waypoints = [
-      ...(getLineUnderConstruction().busLine.waypoints as WaypointType[]),
-    ];
-    // ! Why index + 1
+
+    let waypoints = getLineUnderConstruction().busLine.waypoints;
+    if (!waypoints) {
+      return;
+    }
+
+    waypoints = [...waypoints];
     waypoints.splice(props.index, 0, newWaypoint);
 
-    // setLineUnderConstruction({
-    //   ...getLineUnderConstruction(),
-    //   busLine: {
-    //     ...getLineUnderConstruction().busLine,
-    //     waypoints: waypoints,
-    //   },
-    // });
     const newBusLine: BusLineType = {
       ...getLineUnderConstruction().busLine,
-      waypoints: waypoints,
+      waypoints,
     };
     console.log("started");
-    // await updatePolylineWithOsrm(getLineUnderConstruction().busLine);
     await updatePolylineWithOsrm(newBusLine);
 
     console.log("done");
@@ -62,6 +56,7 @@ export default function (props: PolylineDragMarkersProps) {
 
   polylineDragMarker.setOpacity(0);
 
+  // eslint-disable-next-line solid/reactivity
   polylineDragMarker.on("mouseover", function () {
     polylineDragMarker.setOpacity(100);
     console.log("props.index", props.index);
