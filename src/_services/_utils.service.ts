@@ -1,5 +1,5 @@
 import { useStateGui } from "../StateGui";
-import { addNewUserInformation } from "../signaux";
+import { addNewUserInformation, getAuthenticatedUser } from "../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { getToken } from "../views/layout/authentication";
 
@@ -8,11 +8,14 @@ const [, { getActiveMapId }] = useStateGui();
 // TODO Need auth0 authentication
 // TODO Refacto error management
 export class ServiceUtils {
-  static async generic(url: string, options = {}) {
+  static async generic(url: string, options = {}, returnError = false) {
     let response: Response;
     try {
       response = await fetch(url, { ...options });
     } catch (error) {
+      if (returnError) {
+        return error;
+      }
       connexionError();
       return false;
     }
@@ -21,12 +24,18 @@ export class ServiceUtils {
     return await response.json();
   }
 
-  static async get(url: string, urlNeedMap = true) {
-    const headers = await createXanoAuthenticateHeader();
-    return await this.generic(this.buildXanoUrl(url, urlNeedMap), {
-      method: "GET",
-      headers,
-    });
+  static async get(url: string, urlNeedMap = true, returnError = false) {
+    if (getAuthenticatedUser()) {
+      const headers = await createXanoAuthenticateHeader();
+      return await this.generic(
+        this.buildXanoUrl(url, urlNeedMap),
+        {
+          method: "GET",
+          headers,
+        },
+        returnError
+      );
+    }
   }
 
   static async post(url: string, data: object, urlNeedMap = true) {

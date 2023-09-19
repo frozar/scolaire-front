@@ -1,4 +1,4 @@
-import { Show, createSignal, onCleanup, onMount } from "solid-js";
+import { Show, createEffect, createSignal, onCleanup } from "solid-js";
 import { Transition } from "solid-transition-group";
 import Modal from "../../../component/molecule/Moldal";
 import CreateMap from "./CreateMap";
@@ -32,7 +32,7 @@ export function closeCreateMapModal() {
 }
 
 export default function () {
-  onMount(() => {
+  createEffect(() => {
     fetchUserMaps();
   });
 
