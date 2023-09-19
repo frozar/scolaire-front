@@ -1,4 +1,4 @@
-import { Match, Switch, createEffect } from "solid-js";
+import { Match, Switch, createEffect, onMount } from "solid-js";
 import { useStateAction } from "./StateAction";
 import { useStateGui } from "./StateGui";
 
@@ -15,12 +15,17 @@ import Dashboard from "./views/content/dashboard/Dashboard";
 import Map from "./views/content/map/Map";
 import { setPointsReady } from "./views/content/map/component/organism/Points";
 import ExportConfirmationDialogBox from "./views/content/map/rightMapMenu/export/ExportConfirmationDialogBox";
+import { tryConnection } from "./views/layout/authentication";
 
 const [, { isInAddLineMode }] = useStateAction();
 const [, { getSelectedMenu }] = useStateGui();
 
 export default () => {
   let refApp!: HTMLDivElement;
+
+  onMount(async () => {
+    await tryConnection();
+  });
 
   createEffect(() => {
     // This line is to disable right click menu, necessary to remove point in line under construction with the right click
