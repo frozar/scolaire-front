@@ -23,7 +23,7 @@ export const [getStops, setStops] = createSignal<StopType[]>([]);
 // TODO to delete and all reference
 export const [ramassages, setRamassages] = createSignal<PointInterface[]>([]);
 
-export async function StopPoints(props: StopPointsProps) {
+export function StopPoints(props: StopPointsProps) {
   // eslint-disable-next-line solid/reactivity
   createEffect(async () => await updateStop());
 
