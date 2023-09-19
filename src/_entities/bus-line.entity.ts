@@ -289,5 +289,4 @@ function setOnRoad(busLine: BusLineType, projectedLatlngs: L.LatLng[]) {
       waypoints,
     },
   });
-  // console.log("waypoints", waypoints);
 }
