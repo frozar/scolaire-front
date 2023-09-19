@@ -239,35 +239,33 @@ export function BusLine(props: BusLineProps) {
             const pointProjectedCoord: L.LatLng[] = [];
 
             // ! if necessaire ?
-            if (getLineUnderConstruction().busLine.waypoints) {
-              console.log("case if");
-              console.log(
-                "getLineUnderConstruction().busLine.waypoints",
-                getLineUnderConstruction().busLine.waypoints
-              );
-
-              for (const waypoint of props.line.waypoints as WaypointType[]) {
-                // pointProjectedCoord.push(L.latLng(point.lat, point.lon));
-                // ! TEMPORAIRE =>
-                // ! quand ajout / suppr d'un point updatePolylineWithOSRM before saving new
-                // ! lineUnderConstruction (onRoadLat and lon is needed)
-                if (waypoint.onRoadLat && waypoint.onRoadLon) {
-                  pointProjectedCoord.push(
-                    L.latLng(
-                      waypoint.onRoadLat as number,
-                      waypoint.onRoadLon as number
-                    )
-                  );
-                } else {
-                  pointProjectedCoord.push(
-                    L.latLng(waypoint.lat, waypoint.lon)
-                  );
-                }
-                // pointProjectedCoord.push(
-                //   L.latLng(waypoint.onRoadLat as number, waypoint.onRoadLon as number)
-                // );
+            // if (getLineUnderConstruction().busLine.waypoints) {
+            // console.log("case if");
+            console.log("getLineUnderConstruction().busLine.waypoints", [
+              ...(getLineUnderConstruction().busLine
+                .waypoints as WaypointType[]),
+            ]);
+            // ! Rewrite
+            for (const waypoint of props.line.waypoints as WaypointType[]) {
+              // pointProjectedCoord.push(L.latLng(point.lat, point.lon));
+              // ! TEMPORAIRE =>
+              // ! quand ajout / suppr d'un point updatePolylineWithOSRM before saving new
+              // ! lineUnderConstruction (onRoadLat and lon is needed)
+              if (waypoint.onRoadLat && waypoint.onRoadLon) {
+                pointProjectedCoord.push(
+                  L.latLng(
+                    waypoint.onRoadLat as number,
+                    waypoint.onRoadLon as number
+                  )
+                );
+              } else {
+                pointProjectedCoord.push(L.latLng(waypoint.lat, waypoint.lon));
               }
+              // pointProjectedCoord.push(
+              //   L.latLng(waypoint.onRoadLat as number, waypoint.onRoadLon as number)
+              // );
             }
+            // }
             // else {
             //   // ! Correspond réellement à un cas ?
             //   console.log("case else");
@@ -288,17 +286,32 @@ export function BusLine(props: BusLineProps) {
                 index += 1;
               }
               if (coord == latLngList()[i]) {
-                break; // TODO: Do not display polylineDragMarker for stop, school or waypoint
+                break;
               }
             }
             // ! why index - 1 ?
-            return (
-              <PolylineDragMarker
-                map={props.map}
-                latlngs={coord}
-                index={index}
-              />
+            console.log("coord", coord);
+            console.log(
+              "pointProjectedCoord.filter((coordinates) => coordinates.equals(coord))",
+              pointProjectedCoord.filter((coordinates) =>
+                coordinates.equals(coord)
+              )
             );
+            if (
+              pointProjectedCoord.filter((coordinates) =>
+                coordinates.equals(coord)
+              ).length > 0
+            ) {
+              return <></>;
+            } else {
+              return (
+                <PolylineDragMarker
+                  map={props.map}
+                  latlngs={coord}
+                  index={index}
+                />
+              );
+            }
           }}
         </For>
         <Show when={getLineUnderConstruction().busLine.waypoints}>
