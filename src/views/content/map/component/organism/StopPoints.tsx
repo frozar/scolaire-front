@@ -25,9 +25,7 @@ export const [ramassages, setRamassages] = createSignal<PointInterface[]>([]);
 
 export function StopPoints(props: StopPointsProps) {
   // eslint-disable-next-line solid/reactivity
-  createEffect(async () => {
-    await updateStop();
-  });
+  createEffect(async () => await updateStop());
 
   const quantities = () => {
     return getStops().map((stop) => {
