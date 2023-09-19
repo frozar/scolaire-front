@@ -238,45 +238,22 @@ export function BusLine(props: BusLineProps) {
 
             const pointProjectedCoord: L.LatLng[] = [];
 
-            // ! if necessaire ?
-            // if (getLineUnderConstruction().busLine.waypoints) {
-            // console.log("case if");
-            console.log("getLineUnderConstruction().busLine.waypoints", [
-              ...(getLineUnderConstruction().busLine
-                .waypoints as WaypointType[]),
-            ]);
-            // ! Rewrite
-            for (const waypoint of props.line.waypoints as WaypointType[]) {
-              // pointProjectedCoord.push(L.latLng(point.lat, point.lon));
-              // ! TEMPORAIRE =>
-              // ! quand ajout / suppr d'un point updatePolylineWithOSRM before saving new
-              // ! lineUnderConstruction (onRoadLat and lon is needed)
+            const waypoints = props.line.waypoints;
+            if (!waypoints) {
+              return <></>;
+            }
+
+            for (const waypoint of waypoints) {
               if (waypoint.onRoadLat && waypoint.onRoadLon) {
                 pointProjectedCoord.push(
-                  L.latLng(
-                    waypoint.onRoadLat as number,
-                    waypoint.onRoadLon as number
-                  )
+                  L.latLng(waypoint.onRoadLat, waypoint.onRoadLon)
                 );
+                // TODO: Remove the else case
               } else {
                 pointProjectedCoord.push(L.latLng(waypoint.lat, waypoint.lon));
               }
-              // pointProjectedCoord.push(
-              //   L.latLng(waypoint.onRoadLat as number, waypoint.onRoadLon as number)
-              // );
             }
-            // }
-            // else {
-            //   // ! Correspond réellement à un cas ?
-            //   console.log("case else");
-
-            //   for (const point of props.line.points) {
-            //     pointProjectedCoord.push(
-            //       L.latLng(point.onRoadLat as number, point.onRoadLon as number)
-            //     );
-            //   }
-            // }
-            console.log("pointProjectedCoord", pointProjectedCoord);
+            // console.log("pointProjectedCoord", pointProjectedCoord);
 
             for (let i = 0; latLngList().length - 1; i++) {
               if (
@@ -289,29 +266,18 @@ export function BusLine(props: BusLineProps) {
                 break;
               }
             }
-            // ! why index - 1 ?
-            console.log("coord", coord);
-            console.log(
-              "pointProjectedCoord.filter((coordinates) => coordinates.equals(coord))",
-              pointProjectedCoord.filter((coordinates) =>
-                coordinates.equals(coord)
-              )
+
+            return pointProjectedCoord.filter((coordinates) =>
+              coordinates.equals(coord)
+            ).length > 0 ? (
+              <></>
+            ) : (
+              <PolylineDragMarker
+                map={props.map}
+                latlngs={coord}
+                index={index}
+              />
             );
-            if (
-              pointProjectedCoord.filter((coordinates) =>
-                coordinates.equals(coord)
-              ).length > 0
-            ) {
-              return <></>;
-            } else {
-              return (
-                <PolylineDragMarker
-                  map={props.map}
-                  latlngs={coord}
-                  index={index}
-                />
-              );
-            }
           }}
         </For>
         <Show when={getLineUnderConstruction().busLine.waypoints}>
