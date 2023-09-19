@@ -183,13 +183,6 @@ export function StopPoint(props: StopPointProps) {
     }
   };
 
-  // createEffect(() => {
-  //   if (isInAddLineMode()) {
-  //     console.log("activated");
-  //     const circle = linkMap.get(props.point.leafletId);
-  //     circle?.setStyle({ fillColor: COLOR_STOP_EMPHASE });
-  //   }
-  // });
   const color = () => {
     if (isInAddLineMode()) {
       return COLOR_STOP_LIGHT;
