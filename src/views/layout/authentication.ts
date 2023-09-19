@@ -1,6 +1,9 @@
-import { Auth0Client, createAuth0Client } from "@auth0/auth0-spa-js";
-import { createSignal } from "solid-js";
-import { setAuthenticated } from "../../signaux";
+import { ServiceUtils } from "../../_services/_utils.service";
+import {
+  getAuthenticatedUser,
+  setAuthenticated,
+  setAuthenticatedUser,
+} from "../../signaux";
 const XANO_AUTH_URL =
   "https://x8ki-letl-twmt.n7.xano.io/api:elCAJnQ5/oauth/auth0";
 const REDIRECT_URI =
@@ -12,59 +15,49 @@ export type xanoUser = {
   email: string;
   picture: string;
   nickname: string;
-  code: string;
 };
 
-// let currentUser: xanoUser | undefined;
-
-export const [currentUser, setCurrentUser] = createSignal<
-  xanoUser | undefined
->();
-
-export const auth0Client: Auth0Client = await createAuth0Client({
-  domain: import.meta.env.VITE_AUTH0_DOMAIN,
-  clientId: import.meta.env.VITE_AUTH0_CLIENT_ID,
-  authorizationParams: {
-    audience: import.meta.env.VITE_AUTH0_AUDIENCE,
-  },
-});
-
 export async function logout() {
-  setCurrentUser(undefined);
+  setAuthenticatedUser(undefined);
+  window.history.replaceState({ user: undefined }, document.title, "/");
 }
 
-async function getUser(e: { data: { args: { code: string }; type: string } }) {
+async function handleAuthenticateUser(e: {
+  data: { args: { code: string }; type: string };
+}) {
   if (e && e["data"] && e["data"]["type"] == "oauth:auth0") {
     const code = e.data.args.code;
 
-    const res = await fetch(
-      XANO_AUTH_URL +
-        "/continue?code=" +
-        code +
-        "&redirect_uri=" +
-        REDIRECT_URI,
-      {
-        method: "GET",
-      }
-    ).catch((err) => {
-      console.log("Log in failed", err);
-      closeOauthWindow();
-    });
-    const user = await res?.json().catch((err) => {
-      console.log("Log in failed", err);
-      closeOauthWindow();
-    });
-    if (user) {
-      setCurrentUser({ ...user, code });
-      setAuthenticated(true);
+    await authenticateUser(code);
+  }
+}
+
+async function authenticateUser(code: string) {
+  const authenticatedUserResponse = await fetch(
+    XANO_AUTH_URL + "/continue?code=" + code + "&redirect_uri=" + REDIRECT_URI,
+    {
+      method: "GET",
     }
+  ).catch((err) => {
+    console.log("Log in failed", err);
+    closeOauthWindow();
+  });
+
+  const user = await authenticatedUserResponse?.json().catch((err) => {
+    console.log("Log in failed", err);
+    closeOauthWindow();
+  });
+  if (user) {
+    setAuthenticatedUser(user);
+    setAuthenticated(true);
+    window.history.replaceState({ user }, document.title, "/");
   }
 }
 
 let currentOauthWindow: Window | null;
 
 function closeOauthWindow() {
-  window.removeEventListener("message", getUser);
+  window.removeEventListener("message", handleAuthenticateUser);
   if (currentOauthWindow) currentOauthWindow.close();
 }
 
@@ -89,8 +82,8 @@ export async function login() {
 
     currentOauthWindow.location.href = url;
 
-    window.removeEventListener("message", getUser);
-    window.addEventListener("message", getUser);
+    window.removeEventListener("message", handleAuthenticateUser);
+    window.addEventListener("message", handleAuthenticateUser);
   } catch (err) {
     console.log("Log in failed", err);
     closeOauthWindow();
@@ -109,15 +102,30 @@ async function getAuthUrl() {
 }
 
 export async function tryConnection() {
-  const user = currentUser();
+  let user: xanoUser | undefined = getAuthenticatedUser();
   if (!user) {
-    // login(); //TODO find how to maintain a session
+    const state = window.history.state;
+    if (state.user) {
+      user = state.user;
+    }
+  }
+
+  if (user) {
+    setAuthenticatedUser(user);
+    setAuthenticated(true);
+
+    const res = await ServiceUtils.get("/auth/me", false);
+
+    if (!res.isAuthenticated) {
+      setAuthenticatedUser(undefined);
+      setAuthenticated(false);
+    }
   }
 }
 
 export async function isAuthenticated() {
   await tryConnection(); //TODO a refaire
-  const user = currentUser();
+  const user = getAuthenticatedUser();
   if (!user) {
     return false;
   }
@@ -125,7 +133,7 @@ export async function isAuthenticated() {
 }
 
 export function getToken() {
-  if (currentUser()) return currentUser()?.token;
+  if (getAuthenticatedUser()) return getAuthenticatedUser()?.token;
 
   if (import.meta.env.VITE_AUTH0_DEV_MODE === "true") {
     return "fakeToken";
@@ -160,20 +168,3 @@ export function authenticateWrap(
     return callback(headers);
   }
 }
-
-window.onload = async () => {
-  //TODO fix to keep the same session
-  // const query = window.location.search;
-  // const shouldParseResult = query.includes("code=") && query.includes("state=");
-  // if (shouldParseResult) {
-  //   try {
-  //     await auth0Client.handleRedirectCallback();
-  //     const user = await auth0Client.getUser();
-  //     setAuthenticatedUser(user);
-  //     setAuthenticated(true);
-  //   } catch (err) {
-  //     console.log("Error parsing redirect:", err);
-  //   }
-  //   window.history.replaceState({}, document.title, "/");
-  // }
-};

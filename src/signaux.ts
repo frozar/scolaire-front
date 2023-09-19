@@ -1,4 +1,3 @@
-import { User } from "@auth0/auth0-spa-js";
 import L from "leaflet";
 import { Signal, createSignal } from "solid-js";
 import {
@@ -15,6 +14,7 @@ import {
   removeRamassageConfirmationType,
   userInformationType,
 } from "./type";
+import { xanoUser } from "./views/layout/authentication";
 
 const [getDisplayedSpinningWheel, setDisplayedSpinningWheel] =
   createSignal(false);
@@ -53,8 +53,9 @@ export const [getUserInformations, setUserInformations] = createSignal(
   []
 ) as Signal<userInformationType[]>;
 
-export const [getAuthenticatedUser, setAuthenticatedUser] =
-  createSignal<User>();
+export const [getAuthenticatedUser, setAuthenticatedUser] = createSignal<
+  xanoUser | undefined
+>();
 
 export const [authenticated, setAuthenticated] = createSignal(false);
 

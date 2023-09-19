@@ -2,17 +2,12 @@ import { Show, createSignal, onMount } from "solid-js";
 import { Transition } from "solid-transition-group";
 
 import ClickOutside from "../../../../component/ClickOutside";
-import { setAuthenticated } from "../../../../signaux";
+import { getAuthenticatedUser, setAuthenticated } from "../../../../signaux";
 
 import LoginMenu from "../atom/LoginMenu";
 import LoginAvatar from "../molecule/LoginAvatar";
 
-import {
-  currentUser,
-  isAuthenticated,
-  login,
-  logout,
-} from "../../authentication";
+import { isAuthenticated, login, logout } from "../../authentication";
 
 import "./LoginDropdown.css";
 
@@ -31,7 +26,7 @@ export interface LoginDropdownProps {
 
 export default function (props: LoginDropdownProps) {
   const handleLogin = async () => {
-    if (!currentUser()) {
+    if (!getAuthenticatedUser()) {
       await login();
     } else {
       await logout();
@@ -67,7 +62,7 @@ export default function (props: LoginDropdownProps) {
         }
       }}
     >
-      <LoginAvatar profilePicture={currentUser()?.picture} />
+      <LoginAvatar profilePicture={getAuthenticatedUser()?.picture} />
 
       <Transition
         enterActiveClass="transition ease-out duration-200"
@@ -80,7 +75,7 @@ export default function (props: LoginDropdownProps) {
         <Show when={displayedSubComponent()}>
           <div id="login-menu-container" class={xOffsetClassName()}>
             <LoginMenu
-              authenticated={currentUser() ? true : false}
+              authenticated={getAuthenticatedUser() ? true : false}
               onClick={handleLogin}
             />
           </div>
