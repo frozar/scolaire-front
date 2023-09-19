@@ -1,5 +1,4 @@
 import L from "leaflet";
-import { createEffect } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import { StopType } from "../../../../../_entities/stop.entity";
 import {
@@ -9,7 +8,6 @@ import {
 import { onBoard } from "../../../board/component/template/ContextManager";
 import {
   COLOR_SCHOOL_LIGHT,
-  COLOR_STOP_EMPHASE,
   COLOR_STOP_FOCUS,
   COLOR_STOP_LIGHT,
 } from "../../constant";
@@ -185,12 +183,6 @@ export function StopPoint(props: StopPointProps) {
     }
   };
 
-  createEffect(() => {
-    if (isInAddLineMode()) {
-      const circle = linkMap.get(props.point.leafletId);
-      circle?.setStyle({ fillColor: COLOR_STOP_EMPHASE });
-    }
-  });
   const color = () => {
     if (isInAddLineMode()) {
       return COLOR_STOP_LIGHT;
