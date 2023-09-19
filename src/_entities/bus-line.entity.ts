@@ -237,8 +237,8 @@ export type BusLinePointType = {
   name: string;
   lon: number;
   lat: number;
-  onRoadLon?: number;
-  onRoadLat?: number;
+  // onRoadLon?: number;
+  // onRoadLat?: number;
   quantity: number;
   nature: NatureEnum;
 };
@@ -270,26 +270,7 @@ export type busLineMetricType = {
 };
 
 //Todo delete function : ne pas utiliser le signal
-// ! Do the same but with waypoints
-// function setOnRoad(latlngs: [L.LatLng[], L.LatLng[]]) {
-//   const pointsWithOnRoad: BusLinePointType[] =
-//     getLineUnderConstruction().busLine.points.map((point, i) => {
-//       return {
-//         ...point,
-//         onRoadLon: latlngs[1][i].lng,
-//         onRoadLat: latlngs[1][i].lat,
-//       };
-//     });
-
-//   setLineUnderConstruction({
-//     ...getLineUnderConstruction(),
-//     busLine: {
-//       ...getLineUnderConstruction().busLine,
-//       points: pointsWithOnRoad,
-//     },
-//   });
-// }
-
+// ! Ne pas utiliser de tuples ici
 function setOnRoad(busLine: BusLineType, latlngs: [L.LatLng[], L.LatLng[]]) {
   let waypoints = busLine.waypoints;
   if (!waypoints) {
@@ -302,15 +283,6 @@ function setOnRoad(busLine: BusLineType, latlngs: [L.LatLng[], L.LatLng[]]) {
       onRoadLon: latlngs[1][i].lng,
     };
   });
-
-  // const pointsWithOnRoad: BusLinePointType[] =
-  //   getLineUnderConstruction().busLine.points.map((point, i) => {
-  //     return {
-  //       ...point,
-  //       onRoadLon: latlngs[1][i].lng,
-  //       onRoadLat: latlngs[1][i].lat,
-  //     };
-  //   });
 
   setLineUnderConstruction({
     ...getLineUnderConstruction(),

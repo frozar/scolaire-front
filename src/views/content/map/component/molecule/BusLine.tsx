@@ -238,6 +238,7 @@ export function BusLine(props: BusLineProps) {
 
             const pointProjectedCoord: L.LatLng[] = [];
 
+            // ! if necessaire ?
             if (getLineUnderConstruction().busLine.waypoints) {
               console.log("case if");
               console.log(
@@ -266,16 +267,17 @@ export function BusLine(props: BusLineProps) {
                 //   L.latLng(waypoint.onRoadLat as number, waypoint.onRoadLon as number)
                 // );
               }
-            } else {
-              // ! Correspond réellement à un cas ?
-              console.log("case else");
-
-              for (const point of props.line.points) {
-                pointProjectedCoord.push(
-                  L.latLng(point.onRoadLat as number, point.onRoadLon as number)
-                );
-              }
             }
+            // else {
+            //   // ! Correspond réellement à un cas ?
+            //   console.log("case else");
+
+            //   for (const point of props.line.points) {
+            //     pointProjectedCoord.push(
+            //       L.latLng(point.onRoadLat as number, point.onRoadLon as number)
+            //     );
+            //   }
+            // }
             console.log("pointProjectedCoord", pointProjectedCoord);
 
             for (let i = 0; latLngList().length - 1; i++) {
