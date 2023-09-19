@@ -33,13 +33,12 @@ export function updateWaypoints(point: StopType | SchoolType) {
   if (!waypoints) {
     return;
   }
-  // if (waypoints) {
+  const newWaypoints = [...waypoints];
+
   const index = getLineUnderConstruction().busLine.points.findIndex(
     (actualPoint) => actualPoint.id == point.id
   );
-  // ! Check directement dans waypoints !
   if (getLineUnderConstruction().busLine.points.length < index + 2) {
-    const newWaypoints = [...waypoints];
     newWaypoints.push({
       idStop: point.id,
       lat: point.lat,
@@ -68,14 +67,15 @@ export function updateWaypoints(point: StopType | SchoolType) {
   const indexNextWaypoint = waypoints.findIndex(
     (actualPoint) =>
       actualPoint.idStop ==
-      getLineUnderConstruction().busLine.points[index + 1].id
+        getLineUnderConstruction().busLine.points[index + 1].id ||
+      actualPoint.idSchool ==
+        getLineUnderConstruction().busLine.points[index + 1].id
   );
 
   const difference = indexNextWaypoint - indexPreviousWaypoint;
 
   const toDelete = difference > 1 ? difference - 1 : 0;
 
-  const newWaypoints = [...waypoints];
   newWaypoints.splice(indexPreviousWaypoint + 1, toDelete, {
     idStop: point.id,
     lat: point.lat,
@@ -89,7 +89,6 @@ export function updateWaypoints(point: StopType | SchoolType) {
       waypoints: newWaypoints,
     },
   });
-  // }
 }
 
 export function Points(props: PointsProps) {
