@@ -41,7 +41,6 @@ import {
 const [
   ,
   {
-    isInReadMode,
     isInRemoveLineMode,
     getLineUnderConstruction,
     setLineUnderConstructionNextIndex,
@@ -91,14 +90,14 @@ export function BusLine(props: BusLineProps) {
 
   const onMouseOver = (polyline: L.Polyline, arrows: L.Marker[]) => {
     // if (!line.selected() && (isInRemoveLineMode() || isInReadMode())) {
-    if (isInRemoveLineMode() || isInReadMode()) {
+    if (onBoard() != "line-draw") {
       buslineSetBoldStyle(polyline, arrows, "white");
     }
   };
 
   const onMouseOut = (polyline: L.Polyline, arrows: L.Marker[]) => {
     // if (!line.selected() && (isInRemoveLineMode() || isInReadMode())) {
-    if (isInRemoveLineMode() || isInReadMode()) {
+    if (onBoard() != "line-draw") {
       buslineSetNormalStyle(polyline, arrows, props.line.color());
     }
   };
