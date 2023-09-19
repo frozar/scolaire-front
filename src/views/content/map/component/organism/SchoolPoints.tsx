@@ -1,5 +1,5 @@
 import L from "leaflet";
-import { For, createSignal, onMount } from "solid-js";
+import { For, createEffect, createSignal } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { SchoolService } from "../../../../../_services/school.service";
@@ -19,10 +19,8 @@ export interface SchoolPointsProps {
 export const [getSchools, setSchools] = createSignal<SchoolType[]>([]);
 
 export function SchoolPoints(props: SchoolPointsProps) {
-  onMount(async () => {
-    const schools: SchoolType[] = await SchoolService.getAll();
-    setSchools(schools);
-  });
+  // eslint-disable-next-line solid/reactivity
+  createEffect(async () => updateSchools());
 
   return (
     <For each={schoolsFilter()}>
@@ -31,6 +29,11 @@ export function SchoolPoints(props: SchoolPointsProps) {
       }}
     </For>
   );
+}
+
+async function updateSchools() {
+  const schools: SchoolType[] = await SchoolService.getAll();
+  setSchools(schools);
 }
 
 //TODO Delete and replace with displayedSchool signal

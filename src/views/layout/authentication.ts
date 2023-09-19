@@ -111,7 +111,7 @@ export async function tryConnection() {
     setAuthenticatedUser(user);
     setAuthenticated(true);
 
-    const res = await ServiceUtils.get("/auth/me", false);
+    const res = await ServiceUtils.get("/auth/me", false, true);
 
     if (!res.isAuthenticated) {
       setAuthenticatedUser(undefined);

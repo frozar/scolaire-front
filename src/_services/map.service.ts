@@ -4,9 +4,11 @@ import { ServiceUtils } from "./_utils.service";
 export class MapService {
   static async getAll(): Promise<MapType[]> {
     const dbMaps: MapDBType[] = await ServiceUtils.get("/map", false);
-    return dbMaps.map((dbMap: MapDBType) => {
-      return MapEntity.build(dbMap);
-    });
+    return dbMaps
+      ? dbMaps.map((dbMap: MapDBType) => {
+          return MapEntity.build(dbMap);
+        })
+      : [];
   }
 
   static async create(map: Omit<MapDBType, "id">) {

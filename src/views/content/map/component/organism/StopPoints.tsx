@@ -1,5 +1,5 @@
 import L from "leaflet";
-import { For, createSignal, onMount } from "solid-js";
+import { For, createEffect, createSignal } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import { useStateGui } from "../../../../../StateGui";
 import { StopType } from "../../../../../_entities/stop.entity";
@@ -23,11 +23,9 @@ export const [getStops, setStops] = createSignal<StopType[]>([]);
 // TODO to delete and all reference
 export const [ramassages, setRamassages] = createSignal<PointInterface[]>([]);
 
-export function StopPoints(props: StopPointsProps) {
-  onMount(async () => {
-    const stops: StopType[] = buildStops(await StopService.getAll());
-    setStops(stops);
-  });
+export async function StopPoints(props: StopPointsProps) {
+  // eslint-disable-next-line solid/reactivity
+  createEffect(async () => await updateStop());
 
   const quantities = () => {
     return getStops().map((stop) => {
@@ -59,6 +57,11 @@ export function StopPoints(props: StopPointsProps) {
       }}
     </For>
   );
+}
+
+async function updateStop() {
+  const stops: StopType[] = buildStops(await StopService.getAll());
+  setStops(stops);
 }
 
 //TODO Delete and replace with displayedStop signal
