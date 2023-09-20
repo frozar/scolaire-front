@@ -5,6 +5,7 @@ import Metrics from "./Metrics";
 import Timeline from "./Timeline";
 
 import { getSelectedBusLine } from "../../../map/component/organism/BusLines";
+import CollapsibleElement from "./CollapsibleElement";
 
 export function BusLineInformationBoardContent() {
   return (
@@ -18,8 +19,14 @@ export function BusLineInformationBoardContent() {
         />
         <UpdateLineButton busLine={getSelectedBusLine() as BusLineType} />
       </div>
-      <Metrics line={getSelectedBusLine()} />
-      <Timeline />
+
+      <CollapsibleElement title="Métriques">
+        <Metrics line={getSelectedBusLine()} />
+      </CollapsibleElement>
+
+      <CollapsibleElement title="TimeLine">
+        <Timeline />
+      </CollapsibleElement>
     </div>
   );
 }

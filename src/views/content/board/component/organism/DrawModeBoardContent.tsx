@@ -40,6 +40,7 @@ import ButtonIcon from "../molecule/ButtonIcon";
 import LabeledInputField from "../molecule/LabeledInputField";
 import SchoolsEnumeration from "../molecule/SchoolsEnumeration";
 import { changeBoard, setOnBoard } from "../template/ContextManager";
+import CollapsibleElement from "./CollapsibleElement";
 import Metrics from "./Metrics";
 import Timeline from "./Timeline";
 
@@ -168,7 +169,9 @@ export default function () {
             />
           </Show>
         </div>
-        <Metrics line={getLineUnderConstruction().busLine} />
+        <CollapsibleElement title="Métriques">
+          <Metrics line={getLineUnderConstruction().busLine} />
+        </CollapsibleElement>
         <LabeledInputField
           value={lineName()}
           onInput={(e) => setLineName(e.target.value)}
