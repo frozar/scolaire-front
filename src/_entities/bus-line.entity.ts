@@ -55,6 +55,7 @@ export class BusLineEntity {
       color: color,
       setColor: setColor,
       points: formatBusLinePointType(dbData.bus_line_stop),
+      waypoints: formatWaypointType(dbData.waypoint),
       latLngs: latLngs,
       setLatLngs: setLatLngs,
       selected: selected,
@@ -180,6 +181,20 @@ const formatBusLinePointType = (
       }
     })
     .filter((elem) => elem != undefined) as BusLinePointType[]; // temporary FIX Filter to delete undefined data
+};
+
+const formatWaypointType = (waypoints: WaypointDBType[]): WaypointType[] => {
+  console.log("waypoints", waypoints);
+  return waypoints.map((waypoint) => {
+    return {
+      idSchool: waypoint.school_id ? waypoint.school_id : undefined,
+      idStop: waypoint.stop_id ? waypoint.stop_id : undefined,
+      lat: waypoint.location.data.lat,
+      lon: waypoint.location.data.lng,
+      onRoadLat: waypoint.on_road_location.data.lat,
+      onRoadLon: waypoint.on_road_location.data.lng,
+    };
+  });
 };
 
 const formatBusLinePointDBType = (

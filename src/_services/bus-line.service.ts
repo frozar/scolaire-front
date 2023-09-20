@@ -8,6 +8,7 @@ import { ServiceUtils } from "./_utils.service";
 export class BusLineService {
   static async getAll(): Promise<BusLineType[]> {
     const dbStops: BusLineDBType[] = await ServiceUtils.get("/bus-line");
+    console.log("dbStops", dbStops);
     return dbStops
       ? dbStops.map((dbStop: BusLineDBType) => BusLineEntity.build(dbStop))
       : [];

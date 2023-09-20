@@ -31,6 +31,7 @@ export function BusLines(props: BusLinesProps) {
   createEffect(async () => {
     if (pointsReady()) {
       const lines = await BusLineService.getAll();
+      console.log("lines", lines);
       setBusLines(lines);
     }
   });
