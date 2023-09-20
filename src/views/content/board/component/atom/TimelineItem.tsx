@@ -20,8 +20,7 @@ export type TimelineItemAddType = {
 };
 
 export default function (props: TimelineItemAddType) {
-  const correspondingColor =
-    // eslint-disable-next-line solid/reactivity
+  const correspondingColor = () =>
     props.pointsResource.nature == NatureEnum.stop
       ? " !bg-blue-base"
       : " !bg-red-base";
@@ -65,10 +64,10 @@ export default function (props: TimelineItemAddType) {
         <div
           class={
             "v-timeline-divider__dot v-timeline-divider__dot--size-small" +
-            correspondingColor
+            correspondingColor()
           }
         >
-          <div class={"v-timeline-divider__inner-dot " + correspondingColor}>
+          <div class={"v-timeline-divider__inner-dot " + correspondingColor()}>
             <i class="" aria-hidden="true" />
             <Show when={onBoard() == "line-draw"}>
               <TimelineRemovePointButton
