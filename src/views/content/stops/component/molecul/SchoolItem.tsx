@@ -14,13 +14,13 @@ export default function (props: { school: AssociatedPointType }) {
   }
 
   return (
-    <div class="school-item">
-      <div class="school-item-content">
+    <div class="school-list-item">
+      <div class="school-list-item-content">
         <p>{props.school.name}</p>
         <p>{props.school.quantity + " élèves à récuperer"}</p>
       </div>
 
-      <div class="school-item-actions">
+      <div class="school-list-item-actions">
         <ButtonIcon icon={<TrashIcon />} onClick={onClickDelete} />
         <ButtonIcon icon={<PencilIcon />} onClick={onClickEdit} />
       </div>
