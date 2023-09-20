@@ -1,6 +1,8 @@
-import { Match, Switch, createSignal, onMount } from "solid-js";
+import { Match, Show, Switch, createSignal, onMount } from "solid-js";
 import { AssociatedPointType } from "../../../../../_entities/_utils.entity";
 import { StopType } from "../../../../../_entities/stop.entity";
+import PlusIcon from "../../../../../icons/PlusIcon";
+import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { changeBoard } from "../../../board/component/template/ContextManager";
 import StopDetailsHeader from "../molecul/StopDetailsHeader";
 import StopDetailsPanelsButton from "../molecul/StopDetailsPanelsButton";
@@ -23,18 +25,28 @@ export default function () {
     }
   });
 
+  function addSchool() {
+    console.log("add school to this stop");
+  }
   return (
     <section>
       <StopDetailsHeader stop={stopDetailsItem() as StopType} />
 
       <p>TODO élèves</p>
 
-      <div class="content mt-2">
+      <div class="stop-details-actions">
         <StopDetailsPanelsButton
           onPanel={onPanel}
           setOnPanel={setOnPanel}
           NbSchool={stopDetailsItem()?.associated.length as number}
         />
+
+        <Show when={onPanel() == "schools"}>
+          <ButtonIcon icon={<PlusIcon />} onClick={addSchool} />
+        </Show>
+      </div>
+
+      <div class="content mt-2">
         <Switch>
           <Match when={onPanel() == Panels.classes}>
             <SchoolList
