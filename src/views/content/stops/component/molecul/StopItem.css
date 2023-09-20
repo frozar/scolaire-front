@@ -1,0 +1,7 @@
+.stop-item{
+  @apply flex justify-between px-4 py-2 my-2 bg-gray-light
+}
+
+.stop-item-actions{
+  @apply flex gap-3
+}

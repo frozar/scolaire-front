@@ -2,6 +2,7 @@ import { Match, Switch, createEffect, createSignal } from "solid-js";
 
 import SchoolsBoard from "../../../schools/component/organism/SchoolBoard";
 import SchoolDetails from "../../../schools/component/organism/SchoolDetails";
+import StopBoard from "../../../stops/component/organism/StopBoard";
 import DrawModeBoardContent from "../organism/DrawModeBoardContent";
 import InformationBoardLayout from "./InformationBoardLayout";
 import InformationContent from "./InformationContent";
@@ -51,7 +52,9 @@ export default function () {
           </Match>
 
           {/* Stops */}
-          <Match when={onBoard() == "stops"}>Liste des arrêts</Match>
+          <Match when={onBoard() == "stops"}>
+            <StopBoard />
+          </Match>
         </Switch>
       </InformationBoardLayout>
     </section>

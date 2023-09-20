@@ -1,0 +1,11 @@
+.stop-board-header{
+  @apply my-4;
+}
+
+.stop-board-header > p {
+  @apply mt-3
+}
+
+.stop-board-content{
+  @apply mt-3
+}
