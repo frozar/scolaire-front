@@ -238,15 +238,18 @@ export function BusLine(props: BusLineProps) {
 
             const pointProjectedCoord: L.LatLng[] = [];
 
-            if (getLineUnderConstruction().busLine.waypoints) {
-              for (const point of props.line.waypoints as WaypointType[]) {
-                pointProjectedCoord.push(L.latLng(point.lat, point.lon));
-              }
-            } else {
-              for (const point of props.line.points) {
+            const waypoints = props.line.waypoints;
+            if (!waypoints) {
+              return <></>;
+            }
+
+            for (const waypoint of waypoints) {
+              if (waypoint.onRoadLat && waypoint.onRoadLon) {
                 pointProjectedCoord.push(
-                  L.latLng(point.onRoadLat as number, point.onRoadLon as number)
+                  L.latLng(waypoint.onRoadLat, waypoint.onRoadLon)
                 );
+              } else {
+                pointProjectedCoord.push(L.latLng(waypoint.lat, waypoint.lon));
               }
             }
 
@@ -258,11 +261,15 @@ export function BusLine(props: BusLineProps) {
                 index += 1;
               }
               if (coord == latLngList()[i]) {
-                break; // TODO: Do not display polylineDragMarker for stop, school or waypoint
+                break;
               }
             }
 
-            return (
+            return pointProjectedCoord.filter((coordinates) =>
+              coordinates.equals(coord)
+            ).length > 0 ? (
+              <></>
+            ) : (
               <PolylineDragMarker
                 map={props.map}
                 latlngs={coord}

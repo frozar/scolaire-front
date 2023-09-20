@@ -2,12 +2,12 @@ import L from "leaflet";
 import { onCleanup } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import {
+  BusLineType,
   WaypointType,
   updatePolylineWithOsrm,
 } from "../../../../../_entities/bus-line.entity";
 
-const [, { setLineUnderConstruction, getLineUnderConstruction }] =
-  useStateAction();
+const [, { getLineUnderConstruction }] = useStateAction();
 
 type PolylineDragMarkersProps = {
   map: L.Map;
@@ -36,20 +36,19 @@ export default function (props: PolylineDragMarkersProps) {
       lon: polylineDragMarker.getLatLng().lng,
     };
 
-    const waypoints = [
-      ...(getLineUnderConstruction().busLine.waypoints as WaypointType[]),
-    ];
-    waypoints.splice(props.index + 1, 0, newWaypoint);
+    let waypoints = getLineUnderConstruction().busLine.waypoints;
+    if (!waypoints) {
+      return;
+    }
 
-    setLineUnderConstruction({
-      ...getLineUnderConstruction(),
-      busLine: {
-        ...getLineUnderConstruction().busLine,
-        waypoints: waypoints,
-      },
-    });
+    waypoints = [...waypoints];
+    waypoints.splice(props.index, 0, newWaypoint);
 
-    updatePolylineWithOsrm(getLineUnderConstruction().busLine);
+    const newBusLine: BusLineType = {
+      ...getLineUnderConstruction().busLine,
+      waypoints,
+    };
+    updatePolylineWithOsrm(newBusLine);
   });
 
   polylineDragMarker.setOpacity(0);
