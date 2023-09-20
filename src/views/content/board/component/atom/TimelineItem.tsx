@@ -76,7 +76,6 @@ export default function (props: TimelineItemAddType) {
 
       <div class="v-timeline-divider">
         <div class="v-timeline-divider__before" />
-
         <div
           class={
             "v-timeline-divider__dot v-timeline-divider__dot--size-small" +
