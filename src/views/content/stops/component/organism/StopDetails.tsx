@@ -4,6 +4,8 @@ import { StopType } from "../../../../../_entities/stop.entity";
 import PlusIcon from "../../../../../icons/PlusIcon";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { changeBoard } from "../../../board/component/template/ContextManager";
+import { getBusLines } from "../../../map/component/organism/BusLines";
+import LinesList from "../../../schools/component/organism/LinesList";
 import StopDetailsHeader from "../molecul/StopDetailsHeader";
 import StopDetailsPanelsButton from "../molecul/StopDetailsPanelsButton";
 import SchoolList from "./SchoolList";
@@ -23,11 +25,25 @@ export default function () {
     if (stopDetailsItem() == undefined) {
       changeBoard("schools");
     }
+
+    console.log(getStopLines());
   });
 
   function addSchool() {
     console.log("add school to this stop");
   }
+
+  function getStopLines() {
+    const lines = [];
+
+    for (const line of getBusLines()) {
+      const _line = line.points.filter((l) => l.id == stopDetailsItem()?.id);
+      if (_line) lines.push(line);
+    }
+
+    return lines;
+  }
+
   return (
     <section>
       <StopDetailsHeader stop={stopDetailsItem() as StopType} />
@@ -54,8 +70,7 @@ export default function () {
             />
           </Match>
           <Match when={onPanel() == Panels.lines}>
-            {/* <LinesList /> */}
-            list des lignes associé
+            <LinesList lines={getStopLines()} />
           </Match>
         </Switch>
       </div>
