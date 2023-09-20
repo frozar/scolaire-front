@@ -1,0 +1,7 @@
+.school-item{
+  @apply px-4 py-2 my-2 bg-gray-light rounded-sm flex justify-between;
+}
+
+.school-item-content{
+  @apply block
+}
