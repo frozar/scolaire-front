@@ -8,7 +8,12 @@ import { PointType } from "../views/content/map/component/atom/Point";
 import { getSchools } from "../views/content/map/component/organism/SchoolPoints";
 import { getStops } from "../views/content/map/component/organism/StopPoints";
 import { COLOR_LINE_UNDER_CONSTRUCTION } from "../views/content/map/constant";
-import { EntityUtils, LocationPathDBType } from "./_utils.entity";
+import {
+  EntityUtils,
+  LocationDBType,
+  LocationDBTypeEnum,
+  LocationPathDBType,
+} from "./_utils.entity";
 import { SchoolType } from "./school.entity";
 
 const [, { getLineUnderConstruction, setLineUnderConstruction }] =
@@ -99,6 +104,7 @@ export class BusLineEntity {
         txRemplissMoy: line.metrics().txRemplissMoy,
         CO2: line.metrics().CO2,
       },
+      waypoint: formatWaypointDBType(line.waypoints as WaypointType[]),
     };
   }
 
@@ -188,6 +194,29 @@ const formatBusLinePointDBType = (
   });
 };
 
+const formatWaypointDBType = (waypoints: WaypointType[]): WaypointDBType[] => {
+  return waypoints.map((waypoint) => {
+    return {
+      stop_id: waypoint.idStop ? waypoint.idStop : undefined,
+      school_id: waypoint.idSchool ? waypoint.idSchool : undefined,
+      location: {
+        type: LocationDBTypeEnum.point,
+        data: {
+          lng: waypoint.lon,
+          lat: waypoint.lat,
+        },
+      },
+      on_road_location: {
+        type: LocationDBTypeEnum.point,
+        data: {
+          lng: waypoint.onRoadLon as number,
+          lat: waypoint.onRoadLat as number,
+        },
+      },
+    };
+  });
+};
+
 const getAssociatedBusLinePoint = (dbPoint: BusLinePointDBType): PointType => {
   if (dbPoint.school_id != 0) {
     return getSchools().filter((item) => item.id == dbPoint.school_id)[0];
@@ -214,6 +243,13 @@ export type WaypointType = {
   lon: number;
   onRoadLat?: number;
   onRoadLon?: number;
+};
+
+export type WaypointDBType = {
+  stop_id?: number;
+  school_id?: number;
+  location: LocationDBType;
+  on_road_location: LocationDBType;
 };
 
 export type BusLineType = {
@@ -250,6 +286,7 @@ export type BusLineDBType = {
   bus_line_stop: BusLinePointDBType[];
   polyline: LocationPathDBType;
   metrics: busLineMetricType;
+  waypoint: WaypointDBType[];
 };
 
 export type BusLinePointDBType = {
