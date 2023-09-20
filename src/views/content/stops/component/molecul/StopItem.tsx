@@ -2,7 +2,9 @@ import { StopType } from "../../../../../_entities/stop.entity";
 import PencilIcon from "../../../../../icons/PencilIcon";
 import TrashIcon from "../../../../../icons/TrashIcon";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
+import { changeBoard } from "../../../board/component/template/ContextManager";
 import ClasseLinkedSchool from "../../../schools/component/atom/ClasseLinkedSchool";
+import { setStopDetailsItem } from "../organism/StopDetails";
 import "./StopItem.css";
 
 interface StopItemProps {
@@ -15,8 +17,10 @@ export default function (props: StopItemProps) {
   const onClickDelete = () => {
     console.log("Delete stop");
   };
+
   const onClickEdit = () => {
-    console.log("Edit stop");
+    setStopDetailsItem(props.stop);
+    changeBoard("stops-details");
   };
 
   return (

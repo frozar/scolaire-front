@@ -29,10 +29,14 @@ export default function (props: LeftMenuItemProps) {
             (onBoard() == "school-details" || onBoard() == "school-class") &&
             menuItem == "schools";
 
+          const deepStopSelected = () =>
+            onBoard() == "stops-details" && menuItem == "stops";
+
           const isSelected = () =>
             pageSelected() ||
             (onBoard() == menuItem && !isOnPage()) ||
-            deepSchoolSelected();
+            deepSchoolSelected() ||
+            deepStopSelected();
 
           return (
             <LeftMenuItem
