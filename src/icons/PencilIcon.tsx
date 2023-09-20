@@ -1,5 +1,5 @@
 import { FaSolidPen } from "solid-icons/fa";
-import "./Pencil.css";
+import "./PencilIcon.css";
 
 export default function () {
   return <FaSolidPen class="pencil-icon" />;
