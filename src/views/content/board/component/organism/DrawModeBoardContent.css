@@ -7,7 +7,6 @@
 
 .add-line-information-board-content {
   @apply ml-4;
-  width: 80%;
   justify-content: space-between;
 }
 
