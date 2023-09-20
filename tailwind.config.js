@@ -20,6 +20,7 @@ module.exports = {
         "gray-base": "#aeb8b4",
         "gray-shade-base": "#ccd6d2",
         "gray-light": "#E8EFEC",
+        "blue-base": "#062F3F",
       },
     },
   },

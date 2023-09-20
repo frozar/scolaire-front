@@ -1,4 +1,4 @@
-import { Show } from "solid-js";
+import { Show, createEffect } from "solid-js";
 
 import { useStateAction } from "../../../../../StateAction";
 import {
@@ -20,8 +20,25 @@ export type TimelineItemAddType = {
 };
 
 export default function (props: TimelineItemAddType) {
-  const timelineCircleClass =
-    "v-timeline-divider__dot v-timeline-divider__dot--size-small";
+  const pointColor = () =>
+    props.pointsResource.nature == NatureEnum.stop
+      ? " !bg-blue-base"
+      : " !bg-red-base";
+
+  createEffect(() => {
+    for (const element of document.getElementsByClassName(
+      "v-timeline-divider__before"
+    )) {
+      element.setAttribute("style", "background:" + props.busLine.color());
+    }
+
+    for (const element of document.getElementsByClassName(
+      "v-timeline-divider__after"
+    )) {
+      element.setAttribute("style", "background:" + props.busLine.color());
+    }
+  });
+
   return (
     <div class="v-timeline-item">
       <div class="v-timeline-item__body">
@@ -61,13 +78,11 @@ export default function (props: TimelineItemAddType) {
         <div class="v-timeline-divider__before" />
         <div
           class={
-            timelineCircleClass +
-            (props.pointsResource.nature == NatureEnum.stop
-              ? " !bg-red-500"
-              : " !bg-green-base")
+            "v-timeline-divider__dot v-timeline-divider__dot--size-small" +
+            pointColor()
           }
         >
-          <div class="v-timeline-divider__inner-dot !bg-white">
+          <div class={"v-timeline-divider__inner-dot " + pointColor()}>
             <i class="" aria-hidden="true" />
             <Show when={onBoard() == "line-draw"}>
               <TimelineRemovePointButton
