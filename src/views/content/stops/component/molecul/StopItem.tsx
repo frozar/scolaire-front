@@ -1,6 +1,6 @@
 import { StopType } from "../../../../../_entities/stop.entity";
-import Pencil from "../../../../../icons/Pencil";
-import Trash from "../../../../../icons/Trash";
+import PencilIcon from "../../../../../icons/PencilIcon";
+import TrashIcon from "../../../../../icons/TrashIcon";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import ClasseLinkedSchool from "../../../schools/component/atom/ClasseLinkedSchool";
 import "./StopItem.css";
@@ -27,8 +27,8 @@ export default function (props: StopItemProps) {
       </div>
 
       <div class="stop-item-actions">
-        <ButtonIcon icon={<Trash />} onClick={onClickDelete} />
-        <ButtonIcon icon={<Pencil />} onClick={onClickEdit} />
+        <ButtonIcon icon={<TrashIcon />} onClick={onClickDelete} />
+        <ButtonIcon icon={<PencilIcon />} onClick={onClickEdit} />
       </div>
     </div>
   );
