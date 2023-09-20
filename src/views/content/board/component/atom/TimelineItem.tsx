@@ -1,4 +1,4 @@
-import { Show } from "solid-js";
+import { Show, createEffect } from "solid-js";
 
 import { useStateAction } from "../../../../../StateAction";
 import {
@@ -24,8 +24,20 @@ export default function (props: TimelineItemAddType) {
     props.pointsResource.nature == NatureEnum.stop
       ? " !bg-blue-base"
       : " !bg-red-base";
-  // const timelineDividerBeforeClass =
-  // console.log("v-timeline-divider__before bg-[" + props.busLine.color() + "]");
+
+  createEffect(() => {
+    for (const element of document.getElementsByClassName(
+      "v-timeline-divider__before"
+    )) {
+      element.setAttribute("style", "background:" + props.busLine.color());
+    }
+
+    for (const element of document.getElementsByClassName(
+      "v-timeline-divider__after"
+    )) {
+      element.setAttribute("style", "background:" + props.busLine.color());
+    }
+  });
 
   return (
     <div class="v-timeline-item">
@@ -63,13 +75,7 @@ export default function (props: TimelineItemAddType) {
       </div>
 
       <div class="v-timeline-divider">
-        <div
-          class={
-            "v-timeline-divider__before bg-[" + props.busLine.color() + "]"
-          }
-        />
-
-        {/* <div class={"v-timeline-divider__before bg-[#0000ff]"} /> */}
+        <div class="v-timeline-divider__before" />
 
         <div
           class={
@@ -89,11 +95,7 @@ export default function (props: TimelineItemAddType) {
           </div>
         </div>
 
-        <div
-          class={
-            "v-timeline-divider__after !bg-[" + props.busLine.color() + "]"
-          }
-        />
+        <div class="v-timeline-divider__after" />
       </div>
     </div>
   );
