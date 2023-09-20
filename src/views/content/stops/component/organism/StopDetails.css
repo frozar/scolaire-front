@@ -1,0 +1,3 @@
+.stop-details-header{
+  @apply flex justify-between my-5;
+}
