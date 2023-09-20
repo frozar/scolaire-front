@@ -8,18 +8,18 @@ export default function () {
   const [keywordSearch, setKeyWordSearch] = createSignal<string>("");
 
   const filteredStops = () =>
-    getStops().filter((e) =>
-      e.name.toLowerCase().includes(keywordSearch().toLowerCase())
+    getStops().filter((stop) =>
+      stop.name.toLowerCase().includes(keywordSearch().toLowerCase())
     );
+
+  function onInputSearch(key: string) {
+    setKeyWordSearch(key);
+  }
 
   return (
     <section class="stop-board">
       <header class="stop-board-header">
-        <InputSearch
-          onInput={(key: string) => {
-            setKeyWordSearch(key);
-          }}
-        />
+        <InputSearch onInput={onInputSearch} />
 
         <p>{getStops().length + " "} arrêts enregistrer</p>
       </header>
