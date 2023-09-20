@@ -133,6 +133,12 @@ export class BusLineEntity {
         bus_line_stop: formatBusLinePointDBType(line.points),
       };
     }
+    if (line.waypoints) {
+      output = {
+        ...output,
+        waypoint: formatWaypointDBType(line.waypoints),
+      };
+    }
     if (line.metrics) {
       output = {
         ...output,
