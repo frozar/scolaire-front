@@ -30,49 +30,16 @@ interface PointsProps {
 
 export function updateWaypoints(point: StopType | SchoolType) {
   const waypoints = getLineUnderConstruction().busLine.waypoints;
-  if (waypoints) {
-    const index = getLineUnderConstruction().busLine.points.findIndex(
-      (actualPoint) => actualPoint.id == point.id
-    );
-    if (getLineUnderConstruction().busLine.points.length < index + 2) {
-      const newWaypoints = [...waypoints];
-      newWaypoints.push({
-        idStop: point.id,
-        lat: point.lat,
-        lon: point.lon,
-      });
+  if (!waypoints) {
+    return;
+  }
+  const newWaypoints = [...waypoints];
 
-      setLineUnderConstruction({
-        ...getLineUnderConstruction(),
-        busLine: {
-          ...getLineUnderConstruction().busLine,
-          waypoints: newWaypoints,
-        },
-      });
-      return;
-    }
-
-    const indexPreviousWaypoint =
-      index > 0
-        ? waypoints.findIndex(
-            (actualPoint) =>
-              actualPoint.idStop ==
-              getLineUnderConstruction().busLine.points[index - 1].id
-          )
-        : -1;
-
-    const indexNextWaypoint = waypoints.findIndex(
-      (actualPoint) =>
-        actualPoint.idStop ==
-        getLineUnderConstruction().busLine.points[index + 1].id
-    );
-
-    const difference = indexNextWaypoint - indexPreviousWaypoint;
-
-    const toDelete = difference > 1 ? difference - 1 : 0;
-
-    const newWaypoints = [...waypoints];
-    newWaypoints.splice(indexPreviousWaypoint + 1, toDelete, {
+  const index = getLineUnderConstruction().busLine.points.findIndex(
+    (actualPoint) => actualPoint.id == point.id
+  );
+  if (getLineUnderConstruction().busLine.points.length < index + 2) {
+    newWaypoints.push({
       idStop: point.id,
       lat: point.lat,
       lon: point.lon,
@@ -85,7 +52,43 @@ export function updateWaypoints(point: StopType | SchoolType) {
         waypoints: newWaypoints,
       },
     });
+    return;
   }
+
+  const indexPreviousWaypoint =
+    index > 0
+      ? waypoints.findIndex(
+          (actualPoint) =>
+            actualPoint.idStop ==
+            getLineUnderConstruction().busLine.points[index - 1].id
+        )
+      : -1;
+
+  const indexNextWaypoint = waypoints.findIndex(
+    (actualPoint) =>
+      actualPoint.idStop ==
+        getLineUnderConstruction().busLine.points[index + 1].id ||
+      actualPoint.idSchool ==
+        getLineUnderConstruction().busLine.points[index + 1].id
+  );
+
+  const difference = indexNextWaypoint - indexPreviousWaypoint;
+
+  const toDelete = difference > 1 ? difference - 1 : 0;
+
+  newWaypoints.splice(indexPreviousWaypoint + 1, toDelete, {
+    idStop: point.id,
+    lat: point.lat,
+    lon: point.lon,
+  });
+
+  setLineUnderConstruction({
+    ...getLineUnderConstruction(),
+    busLine: {
+      ...getLineUnderConstruction().busLine,
+      waypoints: newWaypoints,
+    },
+  });
 }
 
 export function Points(props: PointsProps) {
