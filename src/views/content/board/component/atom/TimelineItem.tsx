@@ -20,8 +20,11 @@ export type TimelineItemAddType = {
 };
 
 export default function (props: TimelineItemAddType) {
-  const timelineCircleClass =
-    "v-timeline-divider__dot v-timeline-divider__dot--size-small";
+  const correspondingColor =
+    // eslint-disable-next-line solid/reactivity
+    props.pointsResource.nature == NatureEnum.stop
+      ? " !bg-blue-base"
+      : " !bg-red-base";
   return (
     <div class="v-timeline-item">
       <div class="v-timeline-item__body">
@@ -61,13 +64,11 @@ export default function (props: TimelineItemAddType) {
         <div class="v-timeline-divider__before" />
         <div
           class={
-            timelineCircleClass +
-            (props.pointsResource.nature == NatureEnum.stop
-              ? " !bg-red-500"
-              : " !bg-green-base")
+            "v-timeline-divider__dot v-timeline-divider__dot--size-small" +
+            correspondingColor
           }
         >
-          <div class="v-timeline-divider__inner-dot !bg-white">
+          <div class={"v-timeline-divider__inner-dot " + correspondingColor}>
             <i class="" aria-hidden="true" />
             <Show when={onBoard() == "line-draw"}>
               <TimelineRemovePointButton
