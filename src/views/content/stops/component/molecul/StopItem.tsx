@@ -1,5 +1,6 @@
-import { FaRegularTrashCan, FaSolidPen } from "solid-icons/fa";
 import { StopType } from "../../../../../_entities/stop.entity";
+import Pencil from "../../../../../icons/Pencil";
+import Trash from "../../../../../icons/Trash";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import ClasseLinkedSchool from "../../../schools/component/atom/ClasseLinkedSchool";
 import "./StopItem.css";
@@ -20,20 +21,14 @@ export default function (props: StopItemProps) {
 
   return (
     <div class="stop-item">
-      <div class="stop-item-left">
+      <div class="stop-item-content">
         <p>{props.stop.name}</p>
         <ClasseLinkedSchool schools={schoolNames()} />
       </div>
 
-      <div class="stop-item-right">
-        <ButtonIcon
-          icon={<FaRegularTrashCan class="fill-red-base" />}
-          onClick={onClickDelete}
-        />
-        <ButtonIcon
-          icon={<FaSolidPen class="fill-green-base" />}
-          onClick={onClickEdit}
-        />
+      <div class="stop-item-actions">
+        <ButtonIcon icon={<Trash />} onClick={onClickDelete} />
+        <ButtonIcon icon={<Pencil />} onClick={onClickEdit} />
       </div>
     </div>
   );
