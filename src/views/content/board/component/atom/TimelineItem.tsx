@@ -20,10 +20,13 @@ export type TimelineItemAddType = {
 };
 
 export default function (props: TimelineItemAddType) {
-  const correspondingColor = () =>
+  const pointColor = () =>
     props.pointsResource.nature == NatureEnum.stop
       ? " !bg-blue-base"
       : " !bg-red-base";
+  // const timelineDividerBeforeClass =
+  // console.log("v-timeline-divider__before bg-[" + props.busLine.color() + "]");
+
   return (
     <div class="v-timeline-item">
       <div class="v-timeline-item__body">
@@ -60,14 +63,21 @@ export default function (props: TimelineItemAddType) {
       </div>
 
       <div class="v-timeline-divider">
-        <div class="v-timeline-divider__before" />
+        <div
+          class={
+            "v-timeline-divider__before bg-[" + props.busLine.color() + "]"
+          }
+        />
+
+        {/* <div class={"v-timeline-divider__before bg-[#0000ff]"} /> */}
+
         <div
           class={
             "v-timeline-divider__dot v-timeline-divider__dot--size-small" +
-            correspondingColor()
+            pointColor()
           }
         >
-          <div class={"v-timeline-divider__inner-dot " + correspondingColor()}>
+          <div class={"v-timeline-divider__inner-dot " + pointColor()}>
             <i class="" aria-hidden="true" />
             <Show when={onBoard() == "line-draw"}>
               <TimelineRemovePointButton
@@ -79,7 +89,11 @@ export default function (props: TimelineItemAddType) {
           </div>
         </div>
 
-        <div class="v-timeline-divider__after" />
+        <div
+          class={
+            "v-timeline-divider__after !bg-[" + props.busLine.color() + "]"
+          }
+        />
       </div>
     </div>
   );

@@ -170,7 +170,7 @@
   top: -12px;
 }
 .v-timeline-divider__before {
-  background: #0000001f;
+  /* background: #0000001f; */
   position: absolute;
 }
 
@@ -241,7 +241,7 @@
   bottom: -12px;
 }
 .v-timeline-divider__after {
-  background: #0000001f;
+  /* background: #0000001f; */
   position: absolute;
 }
 
