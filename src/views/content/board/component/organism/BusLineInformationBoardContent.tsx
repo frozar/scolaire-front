@@ -11,6 +11,9 @@ export function BusLineInformationBoardContent() {
   return (
     <div class="bus-line-information-board-content">
       {/* TODO Put th e2 next component in "organism" */}
+      <div class="bus-line-information-board-content-name">
+        {getSelectedBusLine()?.name}
+      </div>
       <div class="bus-line-information-board-content-schools">
         <SchoolsEnumeration
           schoolsName={

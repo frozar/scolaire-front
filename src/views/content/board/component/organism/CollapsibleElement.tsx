@@ -21,7 +21,7 @@ export default function (props: { children: JSXElement; title: string }) {
   });
 
   return (
-    <div>
+    <div class="collapsible-element">
       <button ref={setAccordion} class="accordion">
         {props.title}
         <div class="button-icon">

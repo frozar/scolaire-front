@@ -1,7 +1,9 @@
 #information-board-layout{
-  @apply absolute top-[60px] left-0 h-full w-[var(--information-board-width)] pt-5 px-5;
+  @apply absolute top-[60px] left-0 h-full w-[var(--information-board-width)] pt-5 pl-7 pr-5;
+  height: 93.7vh;
   z-index: 1001;
-  overflow-y: auto;
+  color: #005c9c;
+  overflow-y:hidden;
   background: #ffffff; 
 }
   

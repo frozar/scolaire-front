@@ -14,6 +14,9 @@
   width: 100%;
   height: 100%;
 }
+.bus-line-information-board-content-name{
+  @apply text-2xl mb-4 mt-4 text-blue-base
+}
 
 .bus-line-information-board-content-schools{
   @apply flex;
@@ -30,5 +33,5 @@
 }
 
 .add-line-information-board-content-buttons{
-  @apply flex items-center w-4/5 absolute bottom-16 justify-between;
+  @apply flex items-center w-4/5 absolute bottom-8 justify-between;
 }

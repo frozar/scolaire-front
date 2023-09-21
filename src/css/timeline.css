@@ -17,13 +17,12 @@
   font-family: Roboto, sans-serif;
   line-height: 1.5;
   font-size: 0.8rem;
-  max-height: 65vh;
+  max-height: 50vh;
   overflow-y: auto;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  padding: 4vh;
 }
 
 .timeline *,

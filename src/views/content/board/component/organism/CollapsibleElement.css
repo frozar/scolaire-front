@@ -1,3 +1,6 @@
+.collapsible-element{
+  @apply mb-1
+}
 .accordion {
   display:flex;
   cursor: pointer;
