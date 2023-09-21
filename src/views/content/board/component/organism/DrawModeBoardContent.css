@@ -14,6 +14,13 @@
   width: 100%;
   height: 100%;
 }
+
+.bus-line-information-board-content-title {
+@apply flex;
+height: 100%;
+justify-content: space-between
+}
+
 .bus-line-information-board-content-name{
   @apply text-2xl mb-4 mt-4 text-blue-base
 }

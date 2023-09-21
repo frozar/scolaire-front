@@ -1,13 +1,13 @@
-import { FaSolidPen } from "solid-icons/fa";
 import { useStateAction } from "../../../../../StateAction";
 import { BusLineType } from "../../../../../_entities/bus-line.entity";
 import { deselectAllBusLines } from "../../../map/component/organism/BusLines";
 
 import { createSignal } from "solid-js";
+import UpdateButton from "../../../../../icons/UpdateButton";
 import { deselectAllPoints } from "../../../map/component/organism/Points";
 import { drawModeStep, setCurrentStep } from "../organism/DrawModeBoardContent";
 import { changeBoard, toggleDrawMod } from "../template/ContextManager";
-import "./DrawHelperButton.css";
+import "./DrawUpdateButton.css";
 
 // interface DrawHelperButtonProps {
 //   schools: SchoolType[] | undefined;
@@ -36,9 +36,9 @@ export default function (props: { busLine: BusLineType }) {
   }
 
   return (
-    <div class="graphicage-draw-helper-button">
+    <div class="graphicage-draw-update-button">
       <button onClick={onclick}>
-        <FaSolidPen />
+        <UpdateButton />
       </button>
     </div>
   );
