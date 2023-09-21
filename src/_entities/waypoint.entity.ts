@@ -85,4 +85,22 @@ export namespace WaypointEntity {
     });
     return newWaypoints;
   }
+  export function deleteWaypoint(
+    point: StopType | SchoolType,
+    waypoints: WaypointType[]
+  ): WaypointType[] {
+    // ! Refactor with deleteSchoolWaypoint
+    // const waypointIndex = waypoints.findIndex(
+    //   (waypoint) => waypoint.idStop == point.id
+    // );
+    const waypointIndex = waypoints.findIndex((waypoint) =>
+      point.nature == NatureEnum.stop
+        ? waypoint.idStop == point.id
+        : waypoint.idSchool == point.id
+    );
+    // ! Cas particulier dernier point de la ligne à mettre en place
+    const newWaypoints = [...waypoints];
+    newWaypoints.splice(waypointIndex, 1);
+    return newWaypoints;
+  }
 }

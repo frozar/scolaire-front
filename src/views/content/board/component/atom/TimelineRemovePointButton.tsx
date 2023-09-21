@@ -36,6 +36,7 @@ export function TimelineRemovePointButton(props: {
     });
 
     // Update waypoints array
+    // ! Déplacer dans WaypointEntity
     if (getLineUnderConstruction().busLine.waypoints) {
       const newWaypoints = [
         ...(getLineUnderConstruction().busLine.waypoints as WaypointType[]),
