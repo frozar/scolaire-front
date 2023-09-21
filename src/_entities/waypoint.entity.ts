@@ -20,15 +20,6 @@ export namespace WaypointEntity {
         });
       }
     }
-
-    // setLineUnderConstruction({
-    //   ...getLineUnderConstruction(),
-    //   busLine: {
-    //     ...getLineUnderConstruction().busLine,
-    //     waypoints: waypoints,
-    //   },
-    // });
-    // return { ...busLine, waypoints };
     return waypoints;
   }
 }

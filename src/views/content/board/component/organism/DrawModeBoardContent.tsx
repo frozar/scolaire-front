@@ -91,41 +91,12 @@ const onChange = async (color: string) => {
   if (!line) return;
 };
 
-// function createWaypointsFromPoints() {
-//   const waypoints: WaypointType[] = [];
-
-//   for (const point of getLineUnderConstruction().busLine.points) {
-//     if (point.nature == NatureEnum.school) {
-//       waypoints.push({
-//         idSchool: point.id,
-//         lon: point.lon,
-//         lat: point.lat,
-//       });
-//     } else if (point.nature == NatureEnum.stop) {
-//       waypoints.push({
-//         idStop: point.id,
-//         lon: point.lon,
-//         lat: point.lat,
-//       });
-//     }
-//   }
-
-//   setLineUnderConstruction({
-//     ...getLineUnderConstruction(),
-//     busLine: {
-//       ...getLineUnderConstruction().busLine,
-//       waypoints: waypoints,
-//     },
-//   });
-// }
-
 async function onClick() {
   if (displayLineMode() == displayLineModeEnum.straight) {
     if (getLineUnderConstruction().busLine.points.length < 2) {
       return;
     }
     if (!getLineUnderConstruction().busLine.waypoints) {
-      // createWaypointsFromPoints();
       const waypoints = WaypointEntity.createWaypointsFromPoints(
         getLineUnderConstruction().busLine
       );
@@ -298,7 +269,6 @@ async function nextStep() {
         break;
       }
       if (!getLineUnderConstruction().busLine.waypoints) {
-        // createWaypointsFromPoints();
         const waypoints = WaypointEntity.createWaypointsFromPoints(
           getLineUnderConstruction().busLine
         );
