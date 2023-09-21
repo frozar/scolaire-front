@@ -1,3 +1,7 @@
+.input-title {
+  @apply text-2xl font-semibold;
+}
+
 .input-title:disabled{
   background: transparent;
 }
