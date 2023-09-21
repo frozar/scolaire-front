@@ -3,6 +3,7 @@ import { useStateAction } from "../../../../../StateAction";
 import { updatePolylineWithOsrm } from "../../../../../_entities/bus-line.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { StopType } from "../../../../../_entities/stop.entity";
+import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
 import {
   setSchoolPointsColor,
   setStopPointsColor,
@@ -28,7 +29,6 @@ import {
   linkMap,
   setBlinkingStops,
   setCursorIsOverPoint,
-  updateWaypoints,
 } from "../organism/Points";
 import { getStops } from "../organism/StopPoints";
 import { draggingLine, setDraggingLine } from "./BusLine";
@@ -92,7 +92,23 @@ const onClick = (point: SchoolType) => {
   }
 
   addPointToLineUnderConstruction({ ...point, quantity: 0 });
-  updateWaypoints(point);
+
+  const actualWaypoints = getLineUnderConstruction().busLine.waypoints;
+  if (actualWaypoints) {
+    const waypoints = WaypointEntity.updateWaypoints(
+      point,
+      actualWaypoints,
+      getLineUnderConstruction().busLine.points
+    );
+    setLineUnderConstruction({
+      ...getLineUnderConstruction(),
+      busLine: {
+        ...getLineUnderConstruction().busLine,
+        waypoints,
+      },
+    });
+  }
+
   if (displayLineMode() == displayLineModeEnum.onRoad) {
     updatePolylineWithOsrm(getLineUnderConstruction().busLine);
   }
