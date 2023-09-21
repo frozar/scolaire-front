@@ -71,7 +71,10 @@ export default function () {
             />
 
             <Show when={editItem()}>
-              <EditStop close={toggleEditItem} />
+              <EditStop
+                close={toggleEditItem}
+                stopID={stopDetailsItem()?.id as number}
+              />
             </Show>
           </Match>
           <Match when={onPanel() == StopPanels.lines}>
