@@ -11,13 +11,18 @@ export function BusLineInformationBoardContent() {
   return (
     <div class="bus-line-information-board-content">
       {/* TODO Put th e2 next component in "organism" */}
+      <div class="bus-line-information-board-content-title">
+        <div class="bus-line-information-board-content-name">
+          {getSelectedBusLine()?.name}
+        </div>
+        <UpdateLineButton busLine={getSelectedBusLine() as BusLineType} />
+      </div>
       <div class="bus-line-information-board-content-schools">
         <SchoolsEnumeration
           schoolsName={
             getSelectedBusLine()?.schools.map((school) => school.name) ?? []
           }
         />
-        <UpdateLineButton busLine={getSelectedBusLine() as BusLineType} />
       </div>
 
       <CollapsibleElement title="Métriques">

@@ -211,8 +211,8 @@ export default function () {
           <Show
             when={getLineUnderConstruction().busLine.points.length > 0}
             fallback={
-              <div class="flex w-4/5 justify-center absolute bottom-[120px]">
-                Veuillez sélectionner des arrêts sur la carte
+              <div class="flex w-4/5 text-xs justify-center absolute bottom-[500px]">
+                Veuillez sélectionner des points sur la carte
               </div>
             }
           >

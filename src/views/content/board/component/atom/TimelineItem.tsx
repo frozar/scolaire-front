@@ -43,18 +43,20 @@ export default function (props: TimelineItemAddType) {
     <div class="v-timeline-item">
       <div class="v-timeline-item__body">
         <div class="d-flex">
-          <div class="me-4">
-            {props.pointsResource.nature === NatureEnum.stop
-              ? "+ " + props.pointsResource.quantity
-              : " " +
-                SumQuantity(
-                  props.busLine.points,
-                  props.busLine.schools[0],
-                  props.indice - 1
-                ) *
-                  -1}
+          <div class="first-items">
+            <div class="me-4">
+              {props.pointsResource.nature === NatureEnum.stop
+                ? "+ " + props.pointsResource.quantity
+                : " " +
+                  SumQuantity(
+                    props.busLine.points,
+                    props.busLine.schools[0],
+                    props.indice - 1
+                  ) *
+                    -1}
+            </div>
+            <p class="resource-name">{props.pointsResource.name}</p>
           </div>
-          <strong>{props.pointsResource.name}</strong>
           <div class="ms-4">
             {props.pointsResource.nature === NatureEnum.stop
               ? " + " +

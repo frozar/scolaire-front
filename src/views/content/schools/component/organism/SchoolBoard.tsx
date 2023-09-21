@@ -21,7 +21,7 @@ export default function () {
     <section>
       <header>
         <div class="flex justify-between my-5">
-          <p>Total des établissements: {getSchools().length}</p>
+          <p>Nombre total d'établissements : {getSchools().length}</p>
           <ButtonIcon
             icon={<FaSolidPlus class="fill-green-base" />}
             onClick={addSchool}

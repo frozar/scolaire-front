@@ -8,14 +8,14 @@ export default function (props: SchoolsEnumerationProps) {
   return (
     <div class="edit-mode-school">
       {/* // TODO maybe externalise title in atom folder ? */}
-      <p>Ecoles</p>
-      <p class="edit-mode-school-item">
+      <p class="edit-mode-school-title">Ecoles :</p>
+      <div>
         <For each={props.schoolsName}>
           {(school) => {
-            return <>{school + " "}</>;
+            return <p class="edit-mode-school-item">{school + " "}</p>;
           }}
         </For>
-      </p>
+      </div>
     </div>
   );
 }

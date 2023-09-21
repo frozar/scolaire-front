@@ -1,0 +1,22 @@
+.graphicage-draw-update-button {
+  @apply flex mr-3 justify-center ;
+  align-items:center;
+  align-self: center;
+}
+
+.graphicage-draw-update-button button {
+  @apply mr-3;
+  
+}
+
+.graphicage-draw-update-button button:hover > svg {
+  @apply fill-green-600;
+}
+
+.graphicage-draw-update-button button > svg {
+  @apply scale-125;
+}
+
+.graphicage-draw-update-button button[disabled] > svg {
+  @apply fill-gray-500;
+}

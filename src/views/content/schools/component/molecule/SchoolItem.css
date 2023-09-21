@@ -1,5 +1,5 @@
 .school-item{
-  @apply w-full bg-gray-light rounded-lg px-4 py-2 my-1;
+  @apply w-full bg-gray-light rounded-lg px-4 py-2 my-1 text-xs;
 }
 
 .school-item-head{
@@ -11,5 +11,5 @@
 }
 
 .school-item-content{
-  @apply w-[70%] flex justify-between mt-3;
+  @apply w-[80%] flex justify-between mt-3;
 }
