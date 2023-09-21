@@ -2,6 +2,7 @@ import { createSignal } from "solid-js";
 import { StopType } from "../../../../../_entities/stop.entity";
 import PencilIcon from "../../../../../icons/PencilIcon";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
+import "./StopDetailsHeader.css";
 
 export default function (props: { stop: StopType }) {
   const [inputRef, setInputRef] = createSignal<HTMLInputElement>();
@@ -18,6 +19,7 @@ export default function (props: { stop: StopType }) {
         value={props.stop?.name}
         ref={setInputRef}
         disabled={editStopName()}
+        class="input-title"
       />
       <ButtonIcon icon={<PencilIcon />} onClick={editName} />
     </header>
