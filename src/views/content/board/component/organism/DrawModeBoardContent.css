@@ -40,5 +40,5 @@ justify-content: space-between
 }
 
 .add-line-information-board-content-buttons{
-  @apply flex items-center w-4/5 absolute bottom-8 justify-between;
+  @apply flex items-center w-4/5 bottom-8 justify-between ml-2 mr-2 mt-1;
 }
