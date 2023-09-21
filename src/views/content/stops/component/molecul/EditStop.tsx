@@ -1,4 +1,6 @@
 import { For, createSignal } from "solid-js";
+import { SchoolType } from "../../../../../_entities/school.entity";
+import { ServiceUtils } from "../../../../../_services/_utils.service";
 import CheckIcon from "../../../../../icons/CheckIcon";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { getSchools } from "../../../map/component/organism/SchoolPoints";
@@ -6,15 +8,18 @@ import "./EditStop.css";
 
 interface EditStopProps {
   close: () => void;
+  stopID: number;
 }
 
 export default function (props: EditStopProps) {
-  let selectedSchool;
+  let selectedSchool: SchoolType;
+  const [disabled, setDisabled] = createSignal<boolean>(true);
   const [schoolSelectRef, setSchoolSelectRef] = createSignal<HTMLSelectElement>(
     document.createElement("select")
   );
 
-  const [disabled, setDisabled] = createSignal<boolean>(true);
+  const [quantityInputRef, setQuantityInputRef] =
+    createSignal<HTMLInputElement>(document.createElement("input"));
 
   const onChange = () => {
     selectedSchool = getSchools().filter(
@@ -24,8 +29,16 @@ export default function (props: EditStopProps) {
     if (selectedSchool) setDisabled((bool) => !bool);
   };
 
-  function validate() {
-    console.log("Ajout d'une école", schoolSelectRef().value);
+  // TODO review with classe
+  async function validate() {
+    const response = await ServiceUtils.post("/student-to-school", {
+      school_id: selectedSchool.id,
+      stop_id: props.stopID,
+      quantity: quantityInputRef().value,
+    });
+
+    console.log(response);
+
     props.close();
   }
 
@@ -47,10 +60,13 @@ export default function (props: EditStopProps) {
       </div>
 
       <div class="flex gap-1">
+        {/* TODO Review to add loop on school classe */}
         <select disabled={disabled()}>
           <option value="default">Selectionner une classe</option>
         </select>
+
         <input
+          ref={setQuantityInputRef}
           class="input-form"
           type="number"
           placeholder="Elève à ramasser"
