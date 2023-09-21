@@ -190,7 +190,6 @@ const formatBusLinePointType = (
 };
 
 const formatWaypointType = (waypoints: WaypointDBType[]): WaypointType[] => {
-  console.log("waypoints", waypoints);
   return waypoints.map((waypoint) => {
     return {
       idSchool: waypoint.school_id ? waypoint.school_id : undefined,
