@@ -72,13 +72,17 @@ export function BusLine(props: BusLineProps) {
   });
 
   createEffect(() => {
+    console.log("createEffect");
+
     if (getLineUnderConstruction().busLine === props.line) {
       props.line.points.map((point) => {
+        console.log("circle set to yellow");
         const circle = linkMap.get(point.leafletId);
         circle?.setStyle({ fillColor: COLOR_STOP_EMPHASE });
       });
     } else {
       props.line.points.map((point) => {
+        console.log("circle set to default color");
         const circle = linkMap.get(point.leafletId);
         const color =
           point.nature === NatureEnum.school
