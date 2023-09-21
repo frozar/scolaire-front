@@ -1,0 +1,11 @@
+.school-list-item{
+  @apply px-4 py-2 my-2 bg-gray-light rounded-sm flex justify-between;
+}
+
+.school-list-item-content{
+  @apply block
+}
+
+.school-list-item-actions{
+  @apply flex gap-2
+}

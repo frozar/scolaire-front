@@ -1,23 +1,25 @@
+import { BusLineType } from "../../../../../_entities/bus-line.entity";
 import Pellet from "../../../../../component/atom/Pellet";
 import ArretsLogo from "../../../../../icons/ArretsLogo";
 import ClasseLinkedSchool from "../atom/ClasseLinkedSchool";
-import { LineItemProps } from "../organism/LinesList";
 import "./LineItem.css";
 
-export default function (props: { line: LineItemProps }) {
+export default function (props: { line: BusLineType }) {
+  const schoolNames = () => props.line.schools.map((school) => school.name);
+
   return (
     <div class="class-item">
-      <Pellet color="red" />
+      <Pellet color={props.line.color()} />
       <div class="class-content">
-        <p>{props.line.lineName}</p>
+        <p>{props.line.name}</p>
 
-        <ClasseLinkedSchool schools={props.line.linkedSchools} />
+        <ClasseLinkedSchool schools={schoolNames()} />
 
         <div class="flex">
           <div class="stop-logo">
             <ArretsLogo />
           </div>
-          <p>{props.line.NbStopDeserved + " arrêts déservis"}</p>
+          <p>{props.line.points.length + " arrêts déservis"}</p>
         </div>
       </div>
     </div>
