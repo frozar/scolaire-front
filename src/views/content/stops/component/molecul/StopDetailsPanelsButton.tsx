@@ -25,7 +25,7 @@ export default function (props: PanelsButtonProps) {
         classList={{ active: props.onPanel() == Panels.lines }}
         onClick={() => props.setOnPanel(Panels.lines)}
       >
-        lignes: {props.NbLines ?? "Todo"}
+        lignes: {props.NbLines}
       </button>
     </div>
   );

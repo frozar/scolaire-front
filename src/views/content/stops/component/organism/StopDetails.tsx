@@ -68,6 +68,7 @@ export default function () {
           onPanel={onPanel}
           setOnPanel={setOnPanel}
           NbSchool={stopDetailsItem()?.associated.length as number}
+          NbLines={getStopLines().length}
         />
 
         <Show when={onPanel() == "schools"}>
