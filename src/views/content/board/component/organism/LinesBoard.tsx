@@ -11,6 +11,7 @@ import LinesList from "../../../schools/component/organism/LinesList";
 import ButtonIcon from "../molecule/ButtonIcon";
 import { onBoard, toggleDrawMod } from "../template/ContextManager";
 import { drawModeStep, setCurrentStep } from "./DrawModeBoardContent";
+import "./LinesBoard.css";
 
 export default function () {
   const [searchKeyword, setSearchKeyword] = createSignal<string>("");
@@ -38,8 +39,8 @@ export default function () {
 
   return (
     <section>
-      <header class="my-5">
-        <div class="flex justify-between my-3">
+      <header class="line-board-header">
+        <div class="line-board-header-infos">
           <p>Total des lignes: {getBusLines().length}</p>
           <ButtonIcon icon={<PlusIcon />} onClick={addLine} />
         </div>
