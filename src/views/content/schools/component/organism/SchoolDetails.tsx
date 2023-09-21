@@ -29,7 +29,7 @@ export default function () {
 
     for (const line of getBusLines()) {
       const _line = line.schools.filter((l) => l.id == schoolDetailsItem()?.id);
-      if (_line) lines.push(line);
+      if (_line.length > 0) lines.push(line);
     }
 
     return lines;

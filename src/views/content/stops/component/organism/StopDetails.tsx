@@ -18,6 +18,19 @@ export enum Panels {
   lines = "lines",
 }
 
+function EditSchoolItem() {
+  return (
+    <div>
+      <input class="input-form" type="text" />
+
+      <div class="flex">
+        <input class="input-form" type="text" />
+        <input class="input-form" type="text" />
+      </div>
+    </div>
+  );
+}
+
 export default function () {
   const [onPanel, setOnPanel] = createSignal<Panels>(Panels.classes);
 
@@ -38,7 +51,7 @@ export default function () {
 
     for (const line of getBusLines()) {
       const _line = line.points.filter((l) => l.id == stopDetailsItem()?.id);
-      if (_line) lines.push(line);
+      if (_line.length > 0) lines.push(line);
     }
 
     return lines;
@@ -68,6 +81,8 @@ export default function () {
             <SchoolList
               schools={stopDetailsItem()?.associated as AssociatedPointType[]}
             />
+
+            <EditSchoolItem />
           </Match>
           <Match when={onPanel() == Panels.lines}>
             <LinesList lines={getStopLines()} />
