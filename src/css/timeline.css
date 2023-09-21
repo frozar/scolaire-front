@@ -60,6 +60,8 @@
   .v-timeline-item
   .v-timeline-item__body {
   grid-column: 3;
+  width: 100%;
+  height: 100%;
   padding-inline-start: 24px;
   padding-inline-end: initial;
   justify-self: flex-start;
@@ -77,6 +79,8 @@
 
 .v-timeline-item {
   display: contents;
+  height: 100%;
+  width: 100%;
 }
 
 .v-timeline--vertical.v-timeline
@@ -99,13 +103,24 @@
 
 .d-flex {
   display: flex !important;
+  justify-content: space-between;
+  width: 100%
 }
 
 .me-4 {
+  @apply text-green-base flex;
   margin-inline-end: 16px !important;
+  justify-content: space-between
+  
+}
+
+.first-items {
+  @apply flex;
+  
 }
 
 .ms-4 {
+  @apply text-purple-400;
   margin-inline-start: 16px !important;
 }
 
@@ -252,14 +267,8 @@
   --v-timeline-line-size-offset: 0px;
 }
 
-.v-timeline--vertical.v-timeline
-  .v-timeline-item:last-child
-  .v-timeline-divider,
-.v-timeline--vertical.v-timeline
-  .v-timeline-item:last-child
-  .v-timeline-item__body,
-.v-timeline--vertical.v-timeline
-  .v-timeline-item:last-child
-  .v-timeline-item__opposite {
-  padding-block-end: 24px;
+.resource-name{
+  @apply text-blue-base;
+  font-size: 0.63rem;
+  line-height: 1rem
 }

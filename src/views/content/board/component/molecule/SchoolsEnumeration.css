@@ -2,4 +2,7 @@
   @apply flex flex-col text-xs text-green-base mb-1;
 }
 
+.edit-mode-school-title{
+  @apply flex flex-col text-sm text-blue-base mb-1 ;
+}
 
