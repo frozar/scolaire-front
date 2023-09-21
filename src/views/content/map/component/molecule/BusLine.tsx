@@ -58,6 +58,10 @@ export type BusLineProps = {
 export function BusLine(props: BusLineProps) {
   const [localLatLngs, setLocalLatLngs] = createSignal<L.LatLng[]>([]);
   const [localOpacity, setLocalOpacity] = createSignal<number>(1);
+  // ! Rename
+  // const [pointFocus, setPointFocus] = createSignal<
+  //   { circle: L.CircleMarker; nature: NatureEnum }[]
+  // >([]);
   createEffect(() => {
     if (
       displayLineMode() == displayLineModeEnum.onRoad ||
@@ -70,17 +74,48 @@ export function BusLine(props: BusLineProps) {
       setLocalOpacity(1);
     }
   });
-
+  let pointFocus: { circle: L.CircleMarker; nature: NatureEnum }[] = [];
   createEffect(() => {
     console.log("createEffect");
 
+    // if (getLineUnderConstruction().busLine === props.line) {
+    //   props.line.points.map((point) => {
+    //     console.log("circle set to yellow");
+    //     const circle = linkMap.get(point.leafletId);
+    //     circle?.setStyle({ fillColor: COLOR_STOP_EMPHASE });
+    //     // setPointFocus((prev) => {
+    //     //   return [...prev, circle as L.CircleMarker];
+    //     // });
+    //   });
     if (getLineUnderConstruction().busLine === props.line) {
+      pointFocus.map((circle) => {
+        circle.circle.setStyle({
+          fillColor:
+            circle.nature === NatureEnum.school
+              ? COLOR_SCHOOL_FOCUS
+              : COLOR_STOP_FOCUS,
+        });
+      });
+      // setPointFocus([]);
+      pointFocus = [];
       props.line.points.map((point) => {
         console.log("circle set to yellow");
         const circle = linkMap.get(point.leafletId);
         circle?.setStyle({ fillColor: COLOR_STOP_EMPHASE });
+        pointFocus = [
+          ...pointFocus,
+          { circle: circle as L.CircleMarker, nature: point.nature },
+        ];
+        // setPointFocus((prev) => {
+        //   return [
+        //     ...prev,
+        //     { circle: circle as L.CircleMarker, nature: point.nature },
+        //   ];
+        // });
+        // circles.push(circle as L.CircleMarker);
       });
     } else {
+      console.log("else case");
       props.line.points.map((point) => {
         console.log("circle set to default color");
         const circle = linkMap.get(point.leafletId);
