@@ -18,19 +18,6 @@ export enum Panels {
   lines = "lines",
 }
 
-function EditSchoolItem() {
-  return (
-    <div>
-      <input class="input-form" type="text" />
-
-      <div class="flex">
-        <input class="input-form" type="text" />
-        <input class="input-form" type="text" />
-      </div>
-    </div>
-  );
-}
-
 export default function () {
   const [onPanel, setOnPanel] = createSignal<Panels>(Panels.classes);
 
@@ -38,8 +25,6 @@ export default function () {
     if (stopDetailsItem() == undefined) {
       changeBoard("schools");
     }
-
-    console.log(getStopLines());
   });
 
   function addSchool() {
@@ -82,8 +67,6 @@ export default function () {
             <SchoolList
               schools={stopDetailsItem()?.associated as AssociatedPointType[]}
             />
-
-            <EditSchoolItem />
           </Match>
           <Match when={onPanel() == Panels.lines}>
             <LinesList lines={getStopLines()} />
