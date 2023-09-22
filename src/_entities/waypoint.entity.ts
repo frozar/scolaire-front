@@ -82,9 +82,11 @@ export namespace WaypointEntity {
     // console.log("pointId", pointId);
     // console.log("pointNature", pointNature);
     // console.log("waypointIndex", waypointIndex);
+    // const newWaypoints = deleteWaypoint(waypoints, waypointIndex);
     // console.log("newWaypoints", newWaypoints);
 
     return deleteWaypoint(waypoints, waypointIndex);
+    // return newWaypoints;
   }
 
   export function createWaypoint(

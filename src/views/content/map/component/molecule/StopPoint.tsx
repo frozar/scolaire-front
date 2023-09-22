@@ -14,7 +14,10 @@ import {
 import Point from "../atom/Point";
 import { deselectAllBusLines } from "../organism/BusLines";
 
-import { updatePolylineWithOsrm } from "../../../../../_entities/bus-line.entity";
+import {
+  BusLineType,
+  updatePolylineWithOsrm,
+} from "../../../../../_entities/bus-line.entity";
 import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
 import {
   displayLineMode,
@@ -64,6 +67,7 @@ function getAssociatedQuantity(point: StopType) {
 }
 
 function updateWaypoints(point: StopType) {
+  // ! Modifs necessaire icic aussi ?
   const actualWaypoints = getLineUnderConstruction().busLine.waypoints;
   if (actualWaypoints) {
     const waypoints = WaypointEntity.updateWaypoints(
@@ -187,15 +191,17 @@ export function StopPoint(props: StopPointProps) {
           props.point.nature
         );
 
-        setLineUnderConstruction({
-          ...getLineUnderConstruction(),
-          busLine: {
-            ...getLineUnderConstruction().busLine,
-            waypoints: newWaypoints,
-          },
-        });
+        const newBusLine: BusLineType = {
+          ...getLineUnderConstruction().busLine,
+          waypoints: newWaypoints,
+        };
         if (displayLineMode() == displayLineModeEnum.onRoad) {
-          updatePolylineWithOsrm(getLineUnderConstruction().busLine);
+          updatePolylineWithOsrm(newBusLine);
+        } else {
+          setLineUnderConstruction({
+            ...getLineUnderConstruction(),
+            busLine: newBusLine,
+          });
         }
       }
 
