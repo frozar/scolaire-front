@@ -58,7 +58,6 @@ export type BusLineProps = {
 export function BusLine(props: BusLineProps) {
   const [localLatLngs, setLocalLatLngs] = createSignal<L.LatLng[]>([]);
   const [localOpacity, setLocalOpacity] = createSignal<number>(1);
-
   createEffect(() => {
     if (
       displayLineMode() == displayLineModeEnum.onRoad ||
@@ -74,8 +73,6 @@ export function BusLine(props: BusLineProps) {
 
   let pointFocus: { circle: L.CircleMarker; nature: NatureEnum }[] = [];
   createEffect(() => {
-    console.log("createEffect");
-
     if (getLineUnderConstruction().busLine === props.line) {
       pointFocus.map((point) => {
         point.circle.setStyle({
@@ -87,13 +84,8 @@ export function BusLine(props: BusLineProps) {
       });
       pointFocus = [];
       props.line.points.map((point) => {
-        console.log("circle set to yellow");
         const circle = linkMap.get(point.leafletId);
         circle?.setStyle({ fillColor: COLOR_STOP_EMPHASE });
-        // pointFocus = [
-        //   ...pointFocus,
-        //   { circle: circle as L.CircleMarker, nature: point.nature },
-        // ];
         pointFocus.push({
           circle: circle as L.CircleMarker,
           nature: point.nature,
