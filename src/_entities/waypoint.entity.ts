@@ -90,7 +90,6 @@ export namespace WaypointEntity {
     pointId: number,
     pointNature: NatureEnum
   ) {
-    // TODO: Fix case deletion and only one point left
     const waypointIndex = waypoints.findIndex((waypoint) =>
       pointNature == NatureEnum.stop
         ? waypoint.idStop == pointId

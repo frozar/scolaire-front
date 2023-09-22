@@ -19,11 +19,7 @@ export class OsrmService {
   }> {
     const points: BusLinePointType[] = busLine.points;
     const waypoints: WaypointType[] = busLine.waypoints ?? points;
-    // ! Cas où points.length = 1 mais waypoints.length > 1 ?
-    console.log("busLine.waypoints", busLine.waypoints);
-    console.log("points.length", points.length);
-    console.log("busLine.waypoints.length", busLine.waypoints?.length);
-    console.log("waypoints.length", waypoints.length);
+
     if (waypoints.length <= 1) {
       return { latlngs: [], projectedLatlngs: [], metrics: {} };
     }
