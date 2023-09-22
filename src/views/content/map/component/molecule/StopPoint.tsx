@@ -201,7 +201,6 @@ export function StopPoint(props: StopPointProps) {
           waypoints: newWaypoints,
         };
         if (displayLineMode() == displayLineModeEnum.onRoad) {
-          console.log("newBusLine.waypoints", newBusLine.waypoints);
           updatePolylineWithOsrm(newBusLine);
         } else {
           setLineUnderConstruction({
