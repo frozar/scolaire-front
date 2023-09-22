@@ -13,7 +13,10 @@ import {
 import { setRemoveConfirmation } from "../../../../../signaux";
 import { NatureEnum } from "../../../../../type";
 import { setPickerColor } from "../../../board/component/atom/ColorPicker";
-import { onBoard } from "../../../board/component/template/ContextManager";
+import {
+  changeBoard,
+  onBoard,
+} from "../../../board/component/template/ContextManager";
 import {
   COLOR_SCHOOL_FOCUS,
   COLOR_SCHOOL_LIGHT,
@@ -111,6 +114,7 @@ export function BusLine(props: BusLineProps) {
   };
 
   const onClick = () => {
+    changeBoard("line-details");
     if (isInRemoveLineMode()) {
       //TODO fonction à explorer
       if (props.line.id) {
