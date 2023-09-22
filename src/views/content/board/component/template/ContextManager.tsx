@@ -4,6 +4,7 @@ import SchoolsBoard from "../../../schools/component/organism/SchoolBoard";
 import SchoolDetails from "../../../schools/component/organism/SchoolDetails";
 import StopBoard from "../../../stops/component/organism/StopBoard";
 import StopDetails from "../../../stops/component/organism/StopDetails";
+import { BusLineInformationBoardContent } from "../organism/BusLineInformationBoardContent";
 import DrawModeBoardContent from "../organism/DrawModeBoardContent";
 import InformationBoardLayout from "./InformationBoardLayout";
 import InformationContent from "./InformationContent";
@@ -16,7 +17,8 @@ export type BoardTags =
   | "stops"
   | "stops-details"
   | "line-draw"
-  | "line";
+  | "line"
+  | "line-details";
 
 export const [isInDrawMod, setIsDrawMod] = createSignal<boolean>(false);
 export const toggleDrawMod = () => setIsDrawMod((bool) => !bool);
@@ -60,6 +62,10 @@ export default function () {
 
           <Match when={onBoard() == "stops-details"}>
             <StopDetails />
+          </Match>
+
+          <Match when={onBoard() == "lines-details"}>
+            <BusLineInformationBoardContent />
           </Match>
         </Switch>
       </InformationBoardLayout>
