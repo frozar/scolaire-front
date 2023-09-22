@@ -1,5 +1,5 @@
-import { FaSolidPen } from "solid-icons/fa";
 import { createSignal } from "solid-js";
+import PencilIcon from "../../../../../icons/PencilIcon";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { schoolDetailsItem } from "../organism/SchoolDetails";
 import InputSearch from "./InputSearch";
@@ -26,7 +26,7 @@ export default function () {
           disabled={editSchoolName()}
         />
 
-        <ButtonIcon icon={<FaSolidPen />} onClick={editName} />
+        <ButtonIcon icon={<PencilIcon />} onClick={editName} />
       </div>
 
       <p>élèves: Todo</p>
