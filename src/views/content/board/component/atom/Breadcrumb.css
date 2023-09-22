@@ -1,0 +1,7 @@
+.fil-arian{
+  @apply text-green-base pb-3 flex gap-1;
+}
+
+.sub-crumb{
+  @apply text-blue-base;
+}
