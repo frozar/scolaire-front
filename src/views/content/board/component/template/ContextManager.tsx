@@ -64,7 +64,7 @@ export default function () {
             <StopDetails />
           </Match>
 
-          <Match when={onBoard() == "lines-details"}>
+          <Match when={onBoard() == "line-details"}>
             <BusLineInformationBoardContent />
           </Match>
         </Switch>
