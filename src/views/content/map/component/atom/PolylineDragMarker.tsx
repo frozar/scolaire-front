@@ -36,7 +36,7 @@ export default function (props: PolylineDragMarkersProps) {
       return;
     }
 
-    const newWaypoints = WaypointEntity.createWaypoints(
+    const newWaypoints = WaypointEntity.createWaypoint(
       waypoints,
       props.index,
       polylineDragMarker.getLatLng().lat,

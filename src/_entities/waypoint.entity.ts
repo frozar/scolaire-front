@@ -82,14 +82,12 @@ export namespace WaypointEntity {
     // console.log("pointId", pointId);
     // console.log("pointNature", pointNature);
     // console.log("waypointIndex", waypointIndex);
-    const newWaypoints = [...waypoints];
-    newWaypoints.splice(waypointIndex, 1);
     // console.log("newWaypoints", newWaypoints);
 
-    return newWaypoints;
+    return deleteWaypoint(waypoints, waypointIndex);
   }
 
-  export function createWaypoints(
+  export function createWaypoint(
     waypoints: WaypointType[],
     index: number,
     lat: number,
@@ -101,6 +99,13 @@ export namespace WaypointEntity {
     };
     const newWaypoints = [...waypoints];
     newWaypoints.splice(index, 0, newWaypoint);
+
+    return newWaypoints;
+  }
+
+  export function deleteWaypoint(waypoints: WaypointType[], index: number) {
+    const newWaypoints = [...waypoints];
+    newWaypoints.splice(index, 1);
 
     return newWaypoints;
   }
