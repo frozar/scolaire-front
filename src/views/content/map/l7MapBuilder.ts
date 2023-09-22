@@ -9,8 +9,18 @@ import {
 } from "../../../signaux";
 
 import { useStateGui } from "../../../StateGui";
-import { isInDrawMod } from "../board/component/template/ContextManager";
+import {
+  setSchoolPointsColor,
+  setStopPointsColor,
+} from "../../../leafletUtils";
+import {
+  changeBoard,
+  isInDrawMod,
+} from "../board/component/template/ContextManager";
 import FlaxibMapLogo from "./FlaxibMapLogo";
+import { deselectAllBusLines } from "./component/organism/BusLines";
+import { deselectAllPoints } from "./component/organism/Points";
+import { COLOR_SCHOOL_FOCUS, COLOR_STOP_FOCUS } from "./constant";
 import { initScreenshoter } from "./rightMapMenu/export/screenShoter";
 import { getTileById } from "./tileUtils";
 
@@ -23,6 +33,8 @@ const [
     setSelectedReadModeTile,
   },
 ] = useStateGui();
+
+export const [isOverMapItem, setIsOverMapItem] = createSignal(false);
 
 function addLogoFlaxib(map: L.Map) {
   const logoControl = L.Control.extend({
@@ -83,6 +95,16 @@ export function buildMapL7(div: HTMLDivElement) {
     });
     currentTileLayer()?.remove();
     currentTileLayer()?.addTo(leafletMap);
+  });
+
+  leafletMap.addEventListener("click", () => {
+    if (!isOverMapItem()) {
+      changeBoard("line");
+      deselectAllPoints();
+      deselectAllBusLines();
+      setStopPointsColor([], COLOR_STOP_FOCUS);
+      setSchoolPointsColor([], COLOR_SCHOOL_FOCUS);
+    }
   });
 
   addLogoFlaxib(leafletMap);

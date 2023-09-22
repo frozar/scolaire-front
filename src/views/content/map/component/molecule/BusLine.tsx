@@ -32,6 +32,7 @@ import {
   displayLineModeEnum,
   drawModeStep,
 } from "../../../board/component/organism/DrawModeBoardContent";
+import { setIsOverMapItem } from "../../l7MapBuilder";
 import {
   cursorIsOverPoint,
   deselectAllPoints,
@@ -89,6 +90,7 @@ export function BusLine(props: BusLineProps) {
   });
 
   const onMouseOver = (polyline: L.Polyline, arrows: L.Marker[]) => {
+    setIsOverMapItem(true);
     // if (!line.selected() && (isInRemoveLineMode() || isInReadMode())) {
     if (onBoard() != "line-draw") {
       buslineSetBoldStyle(polyline, arrows, "white");
@@ -96,6 +98,7 @@ export function BusLine(props: BusLineProps) {
   };
 
   const onMouseOut = (polyline: L.Polyline, arrows: L.Marker[]) => {
+    setIsOverMapItem(false);
     // if (!line.selected() && (isInRemoveLineMode() || isInReadMode())) {
     if (onBoard() != "line-draw") {
       buslineSetNormalStyle(polyline, arrows, props.line.color());

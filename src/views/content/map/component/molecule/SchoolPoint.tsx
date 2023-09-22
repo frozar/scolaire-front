@@ -20,6 +20,7 @@ import {
   COLOR_SCHOOL_LIGHT,
   COLOR_STOP_LIGHT,
 } from "../../constant";
+import { setIsOverMapItem } from "../../l7MapBuilder";
 import Point from "../atom/Point";
 import { deselectAllBusLines } from "../organism/BusLines";
 import {
@@ -132,6 +133,7 @@ const onMouseUp = (point: StopType) => {
 };
 
 const onMouseOver = (school: SchoolType) => {
+  setIsOverMapItem(true);
   setBlinkingStops(school.associated.map((stop) => stop.id));
 
   if (draggingLine()) {
@@ -140,6 +142,7 @@ const onMouseOver = (school: SchoolType) => {
 };
 
 const onMouseOut = () => {
+  setIsOverMapItem(false);
   setBlinkingStops([]);
 
   if (draggingLine() || cursorIsOverPoint()) {

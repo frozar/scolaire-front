@@ -12,6 +12,7 @@ import { getStops } from "../../../map/component/organism/StopPoints";
 import { BusLineInformationBoardContent } from "../organism/BusLineInformationBoardContent";
 import DrawModeBoardContent from "../organism/DrawModeBoardContent";
 import InfoPointName from "../organism/InfoPointName";
+import LinesBoard from "../organism/LinesBoard";
 import { onBoard } from "./ContextManager";
 
 const [, { isInAddLineMode, resetLineUnderConstruction }] = useStateAction();
@@ -65,7 +66,7 @@ export default function () {
 
   return (
     <div class="information-content">
-      <Switch fallback={<span>Aucun élément sélectionné</span>}>
+      <Switch fallback={<LinesBoard />}>
         <Match when={getSelectedPoint()}>
           {/* TODO To atomise */}
           <h2>{getSelectedPoint()?.name}</h2>

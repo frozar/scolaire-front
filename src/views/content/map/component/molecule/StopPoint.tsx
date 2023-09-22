@@ -20,6 +20,7 @@ import {
   displayLineMode,
   displayLineModeEnum,
 } from "../../../board/component/organism/DrawModeBoardContent";
+import { setIsOverMapItem } from "../../l7MapBuilder";
 import {
   blinkingStops,
   cursorIsOverPoint,
@@ -118,6 +119,7 @@ function onClick(point: StopType) {
 }
 
 const onMouseOver = (stop: StopType) => {
+  setIsOverMapItem(true);
   setBlinkingSchools(stop.associated.map((school) => school.id));
 
   if (draggingLine()) {
@@ -126,6 +128,7 @@ const onMouseOver = (stop: StopType) => {
 };
 
 const onMouseOut = () => {
+  setIsOverMapItem(false);
   setBlinkingSchools([]);
 
   if (draggingLine() || cursorIsOverPoint()) {
