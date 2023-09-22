@@ -1,5 +1,6 @@
 import { Show, createEffect, createSignal } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
+import { getSelectedBusLine } from "../../../map/component/organism/BusLines";
 import { schoolDetailsItem } from "../../../schools/component/organism/SchoolDetails";
 import { stopDetailsItem } from "../../../stops/component/organism/StopDetails";
 import { changeBoard, onBoard } from "../template/ContextManager";
@@ -40,6 +41,9 @@ export default function () {
         setSubCrumb(schoolDetailsItem()?.name.toLowerCase() as string);
         break;
 
+      case "line-details":
+        setArianText("Lignes");
+        setSubCrumb(getSelectedBusLine()?.name?.toLowerCase() as string);
       default:
         setArianText("Lignes");
         break;
@@ -55,6 +59,10 @@ export default function () {
 
         case "Liste des écoles":
           changeBoard("schools");
+          break;
+
+        case "Lignes":
+          changeBoard("line");
           break;
       }
 
