@@ -71,20 +71,25 @@ export function BusLine(props: BusLineProps) {
     }
   });
 
+  let pointFocus: { circle: L.CircleMarker; nature: NatureEnum }[] = [];
   createEffect(() => {
     if (getLineUnderConstruction().busLine === props.line) {
+      pointFocus.map((point) => {
+        point.circle.setStyle({
+          fillColor:
+            point.nature === NatureEnum.school
+              ? COLOR_SCHOOL_FOCUS
+              : COLOR_STOP_FOCUS,
+        });
+      });
+      pointFocus = [];
       props.line.points.map((point) => {
         const circle = linkMap.get(point.leafletId);
         circle?.setStyle({ fillColor: COLOR_STOP_EMPHASE });
-      });
-    } else {
-      props.line.points.map((point) => {
-        const circle = linkMap.get(point.leafletId);
-        const color =
-          point.nature === NatureEnum.school
-            ? COLOR_SCHOOL_FOCUS
-            : COLOR_STOP_FOCUS;
-        circle?.setStyle({ fillColor: color });
+        pointFocus.push({
+          circle: circle as L.CircleMarker,
+          nature: point.nature,
+        });
       });
     }
   });
