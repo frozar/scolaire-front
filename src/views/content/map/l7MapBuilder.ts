@@ -16,6 +16,7 @@ import {
 import {
   changeBoard,
   isInDrawMod,
+  onBoard,
 } from "../board/component/template/ContextManager";
 import FlaxibMapLogo from "./FlaxibMapLogo";
 import { deselectAllBusLines } from "./component/organism/BusLines";
@@ -98,7 +99,7 @@ export function buildMapL7(div: HTMLDivElement) {
   });
 
   leafletMap.addEventListener("click", () => {
-    if (!isOverMapItem()) {
+    if (!isOverMapItem() && onBoard() != "line-draw") {
       changeBoard("line");
       deselectAllPoints();
       deselectAllBusLines();
