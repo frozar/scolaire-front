@@ -104,7 +104,6 @@ const onClick = (point: SchoolType) => {
       waypoints,
       getLineUnderConstruction().busLine.points
     );
-    // ! Modification necessaire ici ?!
     setLineUnderConstruction({
       ...getLineUnderConstruction(),
       busLine: {
@@ -112,18 +111,6 @@ const onClick = (point: SchoolType) => {
         waypoints: newWaypoints,
       },
     });
-    // const newBusLine: BusLineType = {
-    //   ...getLineUnderConstruction().busLine,
-    //   waypoints: newWaypoints,
-    // };
-    // if (displayLineMode() == displayLineModeEnum.onRoad) {
-    //   updatePolylineWithOsrm(newBusLine);
-    // } else {
-    //   setLineUnderConstruction({
-    //     ...getLineUnderConstruction(),
-    //     busLine: newBusLine,
-    //   });
-    // }
   }
 
   if (displayLineMode() == displayLineModeEnum.onRoad) {

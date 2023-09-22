@@ -67,7 +67,6 @@ function getAssociatedQuantity(point: StopType) {
 }
 
 function updateWaypoints(point: StopType) {
-  // ! Modifs necessaire icic aussi ?
   const actualWaypoints = getLineUnderConstruction().busLine.waypoints;
   if (actualWaypoints) {
     const waypoints = WaypointEntity.updateWaypoints(

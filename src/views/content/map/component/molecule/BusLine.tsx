@@ -257,26 +257,17 @@ export function BusLine(props: BusLineProps) {
                   L.latLng(waypoint.onRoadLat, waypoint.onRoadLon)
                 );
               } else {
-                console.log("else case");
                 pointProjectedCoord.push(L.latLng(waypoint.lat, waypoint.lon));
               }
             }
-            console.log("pointProjectedCoord", pointProjectedCoord);
             for (let i = 0; latLngList().length - 1; i++) {
-              // console.log("latLngList().length", latLngList().length);
-              // console.log("index", index);
               if (
                 pointProjectedCoord[index].lat == latLngList()[i].lat &&
                 pointProjectedCoord[index].lng == latLngList()[i].lng
               ) {
                 index += 1;
               }
-              // if (coord == latLngList()[i]) {
-              //   console.log("case break");
-              //   break;
-              // }
               if (coord.equals(latLngList()[i])) {
-                console.log("case break");
                 break;
               }
             }
