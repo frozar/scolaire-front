@@ -33,23 +33,7 @@ export namespace WaypointEntity {
     const newWaypoints = [...waypoints];
 
     const index = points.findIndex((actualPoint) => actualPoint.id == point.id);
-    console.log("oldWaypoint", newWaypoints);
-    // console.log("index + 2", index + 2);
-    // console.log("points.length", points.length);
-    console.log("index", index);
-    console.log("points.length - 1", points.length - 1);
-
-    // if (points.length < index + 2) {
-    //   newWaypoints.push({
-    //     idStop: point.id,
-    //     lat: point.lat,
-    //     lon: point.lon,
-    //   });
-    //   return newWaypoints;
-    // }
     if (points.length - 1 == index) {
-      console.log("ajouté à la fin");
-
       newWaypoints.push({
         idStop: point.id,
         lat: point.lat,
@@ -75,9 +59,6 @@ export namespace WaypointEntity {
 
     const toDelete = difference > 1 ? difference - 1 : 0;
 
-    console.log("indexNextWaypoint", indexNextWaypoint);
-    console.log("indexPreviousWaypoint", indexPreviousWaypoint);
-    console.log("toDelete", toDelete);
     newWaypoints.splice(indexPreviousWaypoint + 1, toDelete, {
       idStop: point.id,
       lat: point.lat,
@@ -91,18 +72,18 @@ export namespace WaypointEntity {
     pointId: number,
     pointNature: NatureEnum
   ) {
-    // ! Fix cas dernier de la ligne
+    // TODO: Fix cas supression dernier point de la ligne
     const waypointIndex = waypoints.findIndex((waypoint) =>
       pointNature == NatureEnum.stop
         ? waypoint.idStop == pointId
         : waypoint.idSchool == pointId
     );
-    console.log("pointId", pointId);
-    console.log("pointNature", pointNature);
-    console.log("waypointIndex", waypointIndex);
+    // console.log("pointId", pointId);
+    // console.log("pointNature", pointNature);
+    // console.log("waypointIndex", waypointIndex);
     const newWaypoints = [...waypoints];
     newWaypoints.splice(waypointIndex, 1);
-    console.log("newWaypoints", newWaypoints);
+    // console.log("newWaypoints", newWaypoints);
 
     return newWaypoints;
   }

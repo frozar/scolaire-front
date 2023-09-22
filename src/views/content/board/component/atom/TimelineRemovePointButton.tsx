@@ -35,33 +35,10 @@ export function TimelineRemovePointButton(props: {
     });
 
     // Update waypoints array
-    // ! Déplacer dans WaypointEntity
-    // if (getLineUnderConstruction().busLine.waypoints) {
-    //   const newWaypoints = [
-    //     ...(getLineUnderConstruction().busLine.waypoints as WaypointType[]),
-    //   ];
-
-    //   newWaypoints.splice(
-    //     newWaypoints.findIndex((waypoint) => waypoint.idStop == pointId),
-    //     1
-    //   );
-
-    //   setLineUnderConstruction({
-    //     ...getLineUnderConstruction(),
-    //     busLine: {
-    //       ...getLineUnderConstruction().busLine,
-    //       waypoints: newWaypoints,
-    //     },
-    //   });
-    // }
     const waypoints = getLineUnderConstruction().busLine.waypoints;
     if (waypoints) {
       let newWaypoints = [...waypoints];
 
-      // newWaypoints.splice(
-      //   newWaypoints.findIndex((waypoint) => waypoint.idStop == pointId),
-      //   1
-      // );
       newWaypoints = WaypointEntity.deleteSchoolOrStopWaypoint(
         waypoints,
         pointId,
@@ -79,7 +56,6 @@ export function TimelineRemovePointButton(props: {
     if (displayLineMode() == displayLineModeEnum.onRoad) {
       updatePolylineWithOsrm(getLineUnderConstruction().busLine);
     }
-    // console.log("waypoints", getLineUnderConstruction().busLine.waypoints);
   };
 
   return (

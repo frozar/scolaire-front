@@ -176,15 +176,8 @@ export function StopPoint(props: StopPointProps) {
     if (onBoard() == "line-draw" && isInLineUnderConstruction != undefined) {
       removePointToLineUnderConstruction(props.point);
       // Update waypoints
-      // ! Déplacer dans WaypointEntity
       const waypoints = getLineUnderConstruction().busLine.waypoints;
       if (waypoints) {
-        // const waypointIndex = waypoints.findIndex(
-        //   (waypoint) => waypoint.idStop == props.point.id
-        // );
-
-        // const newWaypoints = [...waypoints];
-        // newWaypoints.splice(waypointIndex, 1);
         const newWaypoints = WaypointEntity.deleteSchoolOrStopWaypoint(
           waypoints,
           props.point.id,

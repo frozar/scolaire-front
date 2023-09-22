@@ -157,16 +157,8 @@ const onRightClick = (point: SchoolType) => {
   if (onBoard() == "line-draw" && isInLineUnderConstruction != undefined) {
     removePointToLineUnderConstruction(point);
     // Update waypoints
-    // ! Déplacer dans WaypointEntity
     const waypoints = getLineUnderConstruction().busLine.waypoints;
     if (waypoints) {
-      // const waypointIndex = waypoints.findIndex(
-      //   (waypoint) => waypoint.idStop == point.id
-      // );
-      // // ! idSchool et non idStop
-
-      // const newWaypoints = [...waypoints];
-      // newWaypoints.splice(waypointIndex, 1);
       const newWaypoints = WaypointEntity.deleteSchoolOrStopWaypoint(
         waypoints,
         point.id,
