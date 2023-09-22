@@ -85,11 +85,12 @@ export namespace WaypointEntity {
     });
     return newWaypoints;
   }
+
   export function deleteWaypoint(
     point: StopType | SchoolType,
     waypoints: WaypointType[]
   ): WaypointType[] {
-    // ! Refactor with deleteSchoolWaypoint
+    // ! Refactor with deleteWaypointFromTimeline
     // const waypointIndex = waypoints.findIndex(
     //   (waypoint) => waypoint.idStop == point.id
     // );
@@ -101,6 +102,30 @@ export namespace WaypointEntity {
     // ! Cas particulier dernier point de la ligne à mettre en place
     const newWaypoints = [...waypoints];
     newWaypoints.splice(waypointIndex, 1);
+    return newWaypoints;
+  }
+
+  export function deleteWaypointFromTimeline(
+    waypoints: WaypointType[],
+    pointId: number,
+    nature: NatureEnum
+  ) {
+    // ! Cas school !?
+    console.log("deleteWaypointFromTimeline");
+    // const waypointIndex = waypoints.findIndex(
+    //   (waypoint) => waypoint.idStop == pointId
+    // );
+    const waypointIndex = waypoints.findIndex((waypoint) =>
+      nature == NatureEnum.stop
+        ? waypoint.idStop == pointId
+        : waypoint.idSchool == pointId
+    );
+    console.log("pointId", pointId);
+    console.log("waypointIndex", waypointIndex);
+    const newWaypoints = [...waypoints];
+    newWaypoints.splice(waypointIndex, 1);
+    console.log("newWaypoints", newWaypoints);
+
     return newWaypoints;
   }
 }

@@ -1,10 +1,8 @@
 import { FaRegularTrashCan } from "solid-icons/fa";
 
 import { useStateAction } from "../../../../../StateAction";
-import {
-  WaypointType,
-  updatePolylineWithOsrm,
-} from "../../../../../_entities/bus-line.entity";
+import { updatePolylineWithOsrm } from "../../../../../_entities/bus-line.entity";
+import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
 import { LineUnderConstructionType } from "../../../../../type";
 import { linkMap } from "../../../map/component/organism/Points";
 import { COLOR_STOP_LIGHT } from "../../../map/constant";
@@ -29,6 +27,7 @@ export function TimelineRemovePointButton(props: {
 
     const stops = [...props.getter().busLine.points];
     const pointId = stops[id].id;
+    const nature = stops[id].nature;
     stops.splice(id, 1);
     props.setter({
       ...props.getter(),
@@ -37,14 +36,36 @@ export function TimelineRemovePointButton(props: {
 
     // Update waypoints array
     // ! Déplacer dans WaypointEntity
-    if (getLineUnderConstruction().busLine.waypoints) {
-      const newWaypoints = [
-        ...(getLineUnderConstruction().busLine.waypoints as WaypointType[]),
-      ];
+    // if (getLineUnderConstruction().busLine.waypoints) {
+    //   const newWaypoints = [
+    //     ...(getLineUnderConstruction().busLine.waypoints as WaypointType[]),
+    //   ];
 
-      newWaypoints.splice(
-        newWaypoints.findIndex((waypoint) => waypoint.idStop == pointId),
-        1
+    //   newWaypoints.splice(
+    //     newWaypoints.findIndex((waypoint) => waypoint.idStop == pointId),
+    //     1
+    //   );
+
+    //   setLineUnderConstruction({
+    //     ...getLineUnderConstruction(),
+    //     busLine: {
+    //       ...getLineUnderConstruction().busLine,
+    //       waypoints: newWaypoints,
+    //     },
+    //   });
+    // }
+    const waypoints = getLineUnderConstruction().busLine.waypoints;
+    if (waypoints) {
+      let newWaypoints = [...waypoints];
+
+      // newWaypoints.splice(
+      //   newWaypoints.findIndex((waypoint) => waypoint.idStop == pointId),
+      //   1
+      // );
+      newWaypoints = WaypointEntity.deleteWaypointFromTimeline(
+        waypoints,
+        pointId,
+        nature
       );
 
       setLineUnderConstruction({
@@ -58,6 +79,7 @@ export function TimelineRemovePointButton(props: {
     if (displayLineMode() == displayLineModeEnum.onRoad) {
       updatePolylineWithOsrm(getLineUnderConstruction().busLine);
     }
+    // console.log("waypoints", getLineUnderConstruction().busLine.waypoints);
   };
 
   return (
