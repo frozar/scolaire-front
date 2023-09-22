@@ -72,17 +72,12 @@ export namespace WaypointEntity {
     pointId: number,
     pointNature: NatureEnum
   ) {
-    // TODO: Fix case deletion of the last point of the line
     // TODO: Fix case deletion and only one point left
     const waypointIndex = waypoints.findIndex((waypoint) =>
       pointNature == NatureEnum.stop
         ? waypoint.idStop == pointId
         : waypoint.idSchool == pointId
     );
-    // console.log("pointId", pointId);
-    // console.log("pointNature", pointNature);
-    // console.log("waypointIndex", waypointIndex);
-    // console.log("newWaypoints", newWaypoints);
 
     return deleteWaypoint(waypoints, waypointIndex);
   }

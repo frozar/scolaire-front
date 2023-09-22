@@ -1,6 +1,9 @@
 import L from "leaflet";
 import { useStateAction } from "../../../../../StateAction";
-import { updatePolylineWithOsrm } from "../../../../../_entities/bus-line.entity";
+import {
+  BusLineType,
+  updatePolylineWithOsrm,
+} from "../../../../../_entities/bus-line.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { StopType } from "../../../../../_entities/stop.entity";
 import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
@@ -94,18 +97,18 @@ const onClick = (point: SchoolType) => {
 
   addPointToLineUnderConstruction({ ...point, quantity: 0 });
 
-  const actualWaypoints = getLineUnderConstruction().busLine.waypoints;
-  if (actualWaypoints) {
-    const waypoints = WaypointEntity.updateWaypoints(
+  const waypoints = getLineUnderConstruction().busLine.waypoints;
+  if (waypoints) {
+    const newWaypoints = WaypointEntity.updateWaypoints(
       point,
-      actualWaypoints,
+      waypoints,
       getLineUnderConstruction().busLine.points
     );
     setLineUnderConstruction({
       ...getLineUnderConstruction(),
       busLine: {
         ...getLineUnderConstruction().busLine,
-        waypoints,
+        waypoints: newWaypoints,
       },
     });
   }
@@ -168,15 +171,17 @@ const onRightClick = (point: SchoolType) => {
         point.nature
       );
 
-      setLineUnderConstruction({
-        ...getLineUnderConstruction(),
-        busLine: {
-          ...getLineUnderConstruction().busLine,
-          waypoints: newWaypoints,
-        },
-      });
+      const newBusLine: BusLineType = {
+        ...getLineUnderConstruction().busLine,
+        waypoints: newWaypoints,
+      };
       if (displayLineMode() == displayLineModeEnum.onRoad) {
-        updatePolylineWithOsrm(getLineUnderConstruction().busLine);
+        updatePolylineWithOsrm(newBusLine);
+      } else {
+        setLineUnderConstruction({
+          ...getLineUnderConstruction(),
+          busLine: newBusLine,
+        });
       }
     }
 

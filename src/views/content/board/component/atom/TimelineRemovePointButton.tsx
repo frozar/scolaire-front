@@ -1,7 +1,10 @@
 import { FaRegularTrashCan } from "solid-icons/fa";
 
 import { useStateAction } from "../../../../../StateAction";
-import { updatePolylineWithOsrm } from "../../../../../_entities/bus-line.entity";
+import {
+  BusLineType,
+  updatePolylineWithOsrm,
+} from "../../../../../_entities/bus-line.entity";
 import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
 import { LineUnderConstructionType } from "../../../../../type";
 import { linkMap } from "../../../map/component/organism/Points";
@@ -45,16 +48,18 @@ export function TimelineRemovePointButton(props: {
         nature
       );
 
-      setLineUnderConstruction({
-        ...getLineUnderConstruction(),
-        busLine: {
-          ...getLineUnderConstruction().busLine,
-          waypoints: newWaypoints,
-        },
-      });
-    }
-    if (displayLineMode() == displayLineModeEnum.onRoad) {
-      updatePolylineWithOsrm(getLineUnderConstruction().busLine);
+      const newBusLine: BusLineType = {
+        ...getLineUnderConstruction().busLine,
+        waypoints: newWaypoints,
+      };
+      if (displayLineMode() == displayLineModeEnum.onRoad) {
+        updatePolylineWithOsrm(newBusLine);
+      } else {
+        setLineUnderConstruction({
+          ...getLineUnderConstruction(),
+          busLine: newBusLine,
+        });
+      }
     }
   };
 

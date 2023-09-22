@@ -268,7 +268,7 @@ export function BusLine(props: BusLineProps) {
               ) {
                 index += 1;
               }
-              if (coord == latLngList()[i]) {
+              if (coord.equals(latLngList()[i])) {
                 break;
               }
             }
