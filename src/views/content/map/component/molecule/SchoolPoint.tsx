@@ -167,7 +167,11 @@ const onRightClick = (point: SchoolType) => {
 
       // const newWaypoints = [...waypoints];
       // newWaypoints.splice(waypointIndex, 1);
-      const newWaypoints = WaypointEntity.deleteWaypoint(point, waypoints);
+      const newWaypoints = WaypointEntity.deleteSchoolOrStopWaypoint(
+        waypoints,
+        point.id,
+        point.nature
+      );
 
       setLineUnderConstruction({
         ...getLineUnderConstruction(),

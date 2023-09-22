@@ -185,9 +185,10 @@ export function StopPoint(props: StopPointProps) {
 
         // const newWaypoints = [...waypoints];
         // newWaypoints.splice(waypointIndex, 1);
-        const newWaypoints = WaypointEntity.deleteWaypoint(
-          props.point,
-          waypoints
+        const newWaypoints = WaypointEntity.deleteSchoolOrStopWaypoint(
+          waypoints,
+          props.point.id,
+          props.point.nature
         );
 
         setLineUnderConstruction({

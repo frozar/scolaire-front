@@ -62,7 +62,7 @@ export function TimelineRemovePointButton(props: {
       //   newWaypoints.findIndex((waypoint) => waypoint.idStop == pointId),
       //   1
       // );
-      newWaypoints = WaypointEntity.deleteWaypointFromTimeline(
+      newWaypoints = WaypointEntity.deleteSchoolOrStopWaypoint(
         waypoints,
         pointId,
         nature

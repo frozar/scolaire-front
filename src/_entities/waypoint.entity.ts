@@ -86,41 +86,19 @@ export namespace WaypointEntity {
     return newWaypoints;
   }
 
-  export function deleteWaypoint(
-    point: StopType | SchoolType,
-    waypoints: WaypointType[]
-  ): WaypointType[] {
-    // ! Refactor with deleteWaypointFromTimeline
-    // const waypointIndex = waypoints.findIndex(
-    //   (waypoint) => waypoint.idStop == point.id
-    // );
-    const waypointIndex = waypoints.findIndex((waypoint) =>
-      point.nature == NatureEnum.stop
-        ? waypoint.idStop == point.id
-        : waypoint.idSchool == point.id
-    );
-    // ! Cas particulier dernier point de la ligne à mettre en place
-    const newWaypoints = [...waypoints];
-    newWaypoints.splice(waypointIndex, 1);
-    return newWaypoints;
-  }
-
-  export function deleteWaypointFromTimeline(
+  export function deleteSchoolOrStopWaypoint(
     waypoints: WaypointType[],
     pointId: number,
-    nature: NatureEnum
+    pointNature: NatureEnum
   ) {
-    // ! Cas school !?
-    console.log("deleteWaypointFromTimeline");
-    // const waypointIndex = waypoints.findIndex(
-    //   (waypoint) => waypoint.idStop == pointId
-    // );
+    // ! Fix cas dernier de la ligne
     const waypointIndex = waypoints.findIndex((waypoint) =>
-      nature == NatureEnum.stop
+      pointNature == NatureEnum.stop
         ? waypoint.idStop == pointId
         : waypoint.idSchool == pointId
     );
     console.log("pointId", pointId);
+    console.log("pointNature", pointNature);
     console.log("waypointIndex", waypointIndex);
     const newWaypoints = [...waypoints];
     newWaypoints.splice(waypointIndex, 1);
