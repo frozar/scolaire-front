@@ -4,9 +4,10 @@ import SchoolsBoard from "../../../schools/component/organism/SchoolBoard";
 import SchoolDetails from "../../../schools/component/organism/SchoolDetails";
 import StopBoard from "../../../stops/component/organism/StopBoard";
 import StopDetails from "../../../stops/component/organism/StopDetails";
+import { BusLineInformationBoardContent } from "../organism/BusLineInformationBoardContent";
 import DrawModeBoardContent from "../organism/DrawModeBoardContent";
+import LinesBoard from "../organism/LinesBoard";
 import InformationBoardLayout from "./InformationBoardLayout";
-import InformationContent from "./InformationContent";
 
 //TODO utiliser ou supprimer "schools" et "stops"
 export type BoardTags =
@@ -14,9 +15,10 @@ export type BoardTags =
   | "school-details"
   | "school-class"
   | "stops"
-  | "stops-details"
+  | "stop-details"
   | "line-draw"
-  | "line";
+  | "line"
+  | "line-details";
 
 export const [isInDrawMod, setIsDrawMod] = createSignal<boolean>(false);
 export const toggleDrawMod = () => setIsDrawMod((bool) => !bool);
@@ -38,7 +40,7 @@ export default function () {
       <InformationBoardLayout>
         <Switch>
           <Match when={onBoard() == "line"}>
-            <InformationContent />
+            <LinesBoard />
           </Match>
           <Match when={onBoard() == "line-draw"}>
             <DrawModeBoardContent />
@@ -58,8 +60,12 @@ export default function () {
             <StopBoard />
           </Match>
 
-          <Match when={onBoard() == "stops-details"}>
+          <Match when={onBoard() == "stop-details"}>
             <StopDetails />
+          </Match>
+
+          <Match when={onBoard() == "line-details"}>
+            <BusLineInformationBoardContent />
           </Match>
         </Switch>
       </InformationBoardLayout>

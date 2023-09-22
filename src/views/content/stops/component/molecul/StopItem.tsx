@@ -20,7 +20,7 @@ export default function (props: StopItemProps) {
 
   const onClickEdit = () => {
     setStopDetailsItem(props.stop);
-    changeBoard("stops-details");
+    changeBoard("stop-details");
   };
 
   return (

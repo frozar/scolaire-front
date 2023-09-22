@@ -22,6 +22,7 @@ import {
   setCurrentStep,
 } from "../board/component/organism/DrawModeBoardContent";
 import {
+  changeBoard,
   onBoard,
   toggleDrawMod,
 } from "../board/component/template/ContextManager";
@@ -93,11 +94,13 @@ function escapeHandler({ code }: KeyboardEvent) {
       deselectAllBusLines();
       setStopPointsColor([], COLOR_STOP_FOCUS);
       setSchoolPointsColor([], COLOR_SCHOOL_FOCUS);
+      changeBoard("line");
       return;
     }
 
     quitModeAddLine();
     setCurrentStep(drawModeStep.start);
+
     //TODO voir l'impact de la suppression
     // fetchBusLines();
   }
