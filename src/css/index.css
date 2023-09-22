@@ -1,5 +1,10 @@
 @import "./tailwind.css";
 @import "./menu.css";
+@import url('https://fonts.googleapis.com/css2?family=Chivo:wght@100&family=Mulish:wght@200;300;400;500;600;700;800&family=Nunito:wght@300&display=swap');
+
+*{
+  font-family: "Mulish";
+}
 
 body,
 html {
