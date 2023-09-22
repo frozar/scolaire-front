@@ -72,7 +72,8 @@ export namespace WaypointEntity {
     pointId: number,
     pointNature: NatureEnum
   ) {
-    // TODO: Fix cas supression dernier point de la ligne
+    // TODO: Fix case deletion of the last point of the line
+    // TODO: Fix case deletion and only one point left
     const waypointIndex = waypoints.findIndex((waypoint) =>
       pointNature == NatureEnum.stop
         ? waypoint.idStop == pointId
@@ -84,6 +85,22 @@ export namespace WaypointEntity {
     const newWaypoints = [...waypoints];
     newWaypoints.splice(waypointIndex, 1);
     // console.log("newWaypoints", newWaypoints);
+
+    return newWaypoints;
+  }
+
+  export function createWaypoints(
+    waypoints: WaypointType[],
+    index: number,
+    lat: number,
+    lon: number
+  ): WaypointType[] {
+    const newWaypoint: WaypointType = {
+      lat,
+      lon,
+    };
+    const newWaypoints = [...waypoints];
+    newWaypoints.splice(index, 0, newWaypoint);
 
     return newWaypoints;
   }

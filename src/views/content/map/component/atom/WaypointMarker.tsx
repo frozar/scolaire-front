@@ -22,6 +22,7 @@ export default function (props: PolylineDragMarkersProps) {
     const waypoints = [
       ...(getLineUnderConstruction().busLine.waypoints as WaypointType[]),
     ];
+    // TODO: Déplacer vers waypoint.entity.ts
     waypoints.splice(props.index, 1);
 
     setLineUnderConstruction({
