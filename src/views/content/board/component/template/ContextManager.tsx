@@ -6,8 +6,8 @@ import StopBoard from "../../../stops/component/organism/StopBoard";
 import StopDetails from "../../../stops/component/organism/StopDetails";
 import { BusLineInformationBoardContent } from "../organism/BusLineInformationBoardContent";
 import DrawModeBoardContent from "../organism/DrawModeBoardContent";
+import LinesBoard from "../organism/LinesBoard";
 import InformationBoardLayout from "./InformationBoardLayout";
-import InformationContent from "./InformationContent";
 
 //TODO utiliser ou supprimer "schools" et "stops"
 export type BoardTags =
@@ -40,7 +40,7 @@ export default function () {
       <InformationBoardLayout>
         <Switch>
           <Match when={onBoard() == "line"}>
-            <InformationContent />
+            <LinesBoard />
           </Match>
           <Match when={onBoard() == "line-draw"}>
             <DrawModeBoardContent />
