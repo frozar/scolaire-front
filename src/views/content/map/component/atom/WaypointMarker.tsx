@@ -2,14 +2,14 @@ import L from "leaflet";
 import { onCleanup } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import {
-  WaypointType,
+  BusLineType,
   updatePolylineWithOsrm,
 } from "../../../../../_entities/bus-line.entity";
 
+import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
 import { COLOR_WAYPOINT } from "../../constant";
 
-const [, { setLineUnderConstruction, getLineUnderConstruction }] =
-  useStateAction();
+const [, { getLineUnderConstruction }] = useStateAction();
 
 type PolylineDragMarkersProps = {
   map: L.Map;
@@ -19,19 +19,17 @@ type PolylineDragMarkersProps = {
 
 export default function (props: PolylineDragMarkersProps) {
   function onRightClick() {
-    const waypoints = [
-      ...(getLineUnderConstruction().busLine.waypoints as WaypointType[]),
-    ];
-    waypoints.splice(props.index, 1);
+    const waypoints = getLineUnderConstruction().busLine.waypoints;
+    if (!waypoints) {
+      return;
+    }
+    const newWaypoints = WaypointEntity.deleteWaypoint(waypoints, props.index);
 
-    setLineUnderConstruction({
-      ...getLineUnderConstruction(),
-      busLine: {
-        ...getLineUnderConstruction().busLine,
-        waypoints: waypoints,
-      },
-    });
-    updatePolylineWithOsrm(getLineUnderConstruction().busLine);
+    const newBusLine: BusLineType = {
+      ...getLineUnderConstruction().busLine,
+      waypoints: newWaypoints,
+    };
+    updatePolylineWithOsrm(newBusLine);
   }
   // eslint-disable-next-line solid/reactivity
   const waypointMarker = L.circleMarker(props.latlngs, {

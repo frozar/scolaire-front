@@ -8,7 +8,6 @@ import SelectedSchool from "../atom/SelectedSchool";
 
 import {
   BusLineType,
-  WaypointType,
   updatePolylineWithOsrm,
 } from "../../../../../_entities/bus-line.entity";
 import { BusLineService } from "../../../../../_services/bus-line.service";
@@ -16,9 +15,10 @@ import { BusLineService } from "../../../../../_services/bus-line.service";
 import DrawModeBoardContentFooter from "./DrawModeBoardContentFooter";
 
 import "../../../../../css/timeline.css";
-import { LineUnderConstructionType, NatureEnum } from "../../../../../type";
+import { LineUnderConstructionType } from "../../../../../type";
 import { ColorPicker } from "../../../board/component/atom/ColorPicker";
 
+import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
 import CurvedLine from "../../../../../icons/CurvedLine";
 import SimpleLine from "../../../../../icons/SimpleLine";
 import {
@@ -97,29 +97,14 @@ async function onClick() {
       return;
     }
     if (!getLineUnderConstruction().busLine.waypoints) {
-      const waypoints: WaypointType[] = [];
-
-      for (const point of getLineUnderConstruction().busLine.points) {
-        if (point.nature == NatureEnum.school) {
-          waypoints.push({
-            idSchool: point.id,
-            lon: point.lon,
-            lat: point.lat,
-          });
-        } else if (point.nature == NatureEnum.stop) {
-          waypoints.push({
-            idStop: point.id,
-            lon: point.lon,
-            lat: point.lat,
-          });
-        }
-      }
-
+      const waypoints = WaypointEntity.createWaypointsFromPoints(
+        getLineUnderConstruction().busLine
+      );
       setLineUnderConstruction({
         ...getLineUnderConstruction(),
         busLine: {
           ...getLineUnderConstruction().busLine,
-          waypoints: waypoints,
+          waypoints,
         },
       });
     }
@@ -282,6 +267,18 @@ async function nextStep() {
     case drawModeStep.editLine:
       if (getLineUnderConstruction().busLine.points.length < 2) {
         break;
+      }
+      if (!getLineUnderConstruction().busLine.waypoints) {
+        const waypoints = WaypointEntity.createWaypointsFromPoints(
+          getLineUnderConstruction().busLine
+        );
+        setLineUnderConstruction({
+          ...getLineUnderConstruction(),
+          busLine: {
+            ...getLineUnderConstruction().busLine,
+            waypoints,
+          },
+        });
       }
       if (displayLineMode() == displayLineModeEnum.straight) {
         await updatePolylineWithOsrm(getLineUnderConstruction().busLine);

@@ -15,6 +15,7 @@ import Point from "../atom/Point";
 import { deselectAllBusLines } from "../organism/BusLines";
 
 import { updatePolylineWithOsrm } from "../../../../../_entities/bus-line.entity";
+import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
 import {
   displayLineMode,
   displayLineModeEnum,
@@ -26,7 +27,6 @@ import {
   linkMap,
   setBlinkingSchools,
   setCursorIsOverPoint,
-  updateWaypoints,
 } from "../organism/Points";
 import { getSchools } from "../organism/SchoolPoints";
 import { draggingLine, setDraggingLine } from "./BusLine";
@@ -60,6 +60,24 @@ function getAssociatedQuantity(point: StopType) {
     (associatedSchool) =>
       associatedSchool.id === getLineUnderConstruction().busLine.schools[0].id
   )[0].quantity;
+}
+
+function updateWaypoints(point: StopType) {
+  const actualWaypoints = getLineUnderConstruction().busLine.waypoints;
+  if (actualWaypoints) {
+    const waypoints = WaypointEntity.updateWaypoints(
+      point,
+      actualWaypoints,
+      getLineUnderConstruction().busLine.points
+    );
+    setLineUnderConstruction({
+      ...getLineUnderConstruction(),
+      busLine: {
+        ...getLineUnderConstruction().busLine,
+        waypoints,
+      },
+    });
+  }
 }
 
 function onClick(point: StopType) {
@@ -160,12 +178,11 @@ export function StopPoint(props: StopPointProps) {
       // Update waypoints
       const waypoints = getLineUnderConstruction().busLine.waypoints;
       if (waypoints) {
-        const waypointIndex = waypoints.findIndex(
-          (waypoint) => waypoint.idStop == props.point.id
+        const newWaypoints = WaypointEntity.deleteSchoolOrStopWaypoint(
+          waypoints,
+          props.point.id,
+          props.point.nature
         );
-
-        const newWaypoints = [...waypoints];
-        newWaypoints.splice(waypointIndex, 1);
 
         setLineUnderConstruction({
           ...getLineUnderConstruction(),

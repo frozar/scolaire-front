@@ -3,9 +3,9 @@ import { onCleanup } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import {
   BusLineType,
-  WaypointType,
   updatePolylineWithOsrm,
 } from "../../../../../_entities/bus-line.entity";
+import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
 
 const [, { getLineUnderConstruction }] = useStateAction();
 
@@ -31,22 +31,21 @@ export default function (props: PolylineDragMarkersProps) {
     keyboard: false,
     // eslint-disable-next-line solid/reactivity
   }).on("dragend", () => {
-    const newWaypoint: WaypointType = {
-      lat: polylineDragMarker.getLatLng().lat,
-      lon: polylineDragMarker.getLatLng().lng,
-    };
-
-    let waypoints = getLineUnderConstruction().busLine.waypoints;
+    const waypoints = getLineUnderConstruction().busLine.waypoints;
     if (!waypoints) {
       return;
     }
 
-    waypoints = [...waypoints];
-    waypoints.splice(props.index, 0, newWaypoint);
+    const newWaypoints = WaypointEntity.createWaypoint(
+      waypoints,
+      props.index,
+      polylineDragMarker.getLatLng().lat,
+      polylineDragMarker.getLatLng().lng
+    );
 
     const newBusLine: BusLineType = {
       ...getLineUnderConstruction().busLine,
-      waypoints,
+      waypoints: newWaypoints,
     };
     updatePolylineWithOsrm(newBusLine);
   });

@@ -53,7 +53,7 @@ export type AssociatedDBPointType = {
   quantity: number;
 };
 
-enum LocationDBTypeEnum {
+export enum LocationDBTypeEnum {
   point = "point",
   path = "path",
 }
