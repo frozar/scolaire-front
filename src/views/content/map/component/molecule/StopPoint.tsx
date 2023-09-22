@@ -5,7 +5,10 @@ import {
   setSchoolPointsColor,
   setStopPointsColor,
 } from "../../../../../leafletUtils";
-import { onBoard } from "../../../board/component/template/ContextManager";
+import {
+  changeBoard,
+  onBoard,
+} from "../../../board/component/template/ContextManager";
 import {
   COLOR_SCHOOL_LIGHT,
   COLOR_STOP_FOCUS,
@@ -23,6 +26,7 @@ import {
   displayLineMode,
   displayLineModeEnum,
 } from "../../../board/component/organism/DrawModeBoardContent";
+import { setStopDetailsItem } from "../../../stops/component/organism/StopDetails";
 import { setIsOverMapItem } from "../../l7MapBuilder";
 import {
   blinkingStops,
@@ -101,6 +105,8 @@ function onClick(point: StopType) {
   if (onBoard() != "line-draw") {
     deselectAllBusLines();
     deselectAllPoints();
+    setStopDetailsItem(point);
+    changeBoard("stop-details");
     point.setSelected(true);
     return;
   }

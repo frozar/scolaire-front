@@ -62,6 +62,7 @@ export default function () {
     } else return [];
   }
 
+  // TODO is this code yet legit ?
   return (
     <div class="information-content">
       <Switch fallback={<LinesBoard />}>

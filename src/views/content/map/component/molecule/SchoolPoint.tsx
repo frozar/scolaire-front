@@ -17,7 +17,11 @@ import {
   displayLineModeEnum,
   drawModeStep,
 } from "../../../board/component/organism/DrawModeBoardContent";
-import { onBoard } from "../../../board/component/template/ContextManager";
+import {
+  changeBoard,
+  onBoard,
+} from "../../../board/component/template/ContextManager";
+import { setSchoolDetailsItem } from "../../../schools/component/organism/SchoolDetails";
 import {
   COLOR_SCHOOL_FOCUS,
   COLOR_SCHOOL_LIGHT,
@@ -73,6 +77,8 @@ const onClick = (point: SchoolType) => {
     deselectAllBusLines();
     deselectAllPoints();
     point.setSelected(true);
+    setSchoolDetailsItem(point);
+    changeBoard("school-details");
     return;
   }
 
