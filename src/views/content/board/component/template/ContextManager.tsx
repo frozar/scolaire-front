@@ -15,7 +15,7 @@ export type BoardTags =
   | "school-details"
   | "school-class"
   | "stops"
-  | "stops-details"
+  | "stop-details"
   | "line-draw"
   | "line"
   | "line-details";
@@ -60,7 +60,7 @@ export default function () {
             <StopBoard />
           </Match>
 
-          <Match when={onBoard() == "stops-details"}>
+          <Match when={onBoard() == "stop-details"}>
             <StopDetails />
           </Match>
 

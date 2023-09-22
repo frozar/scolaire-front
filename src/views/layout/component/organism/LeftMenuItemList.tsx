@@ -30,7 +30,7 @@ export default function (props: LeftMenuItemProps) {
             menuItem == "schools";
 
           const deepStopSelected = () =>
-            onBoard() == "stops-details" && menuItem == "stops";
+            onBoard() == "stop-details" && menuItem == "stops";
 
           const isSelected = () =>
             pageSelected() ||

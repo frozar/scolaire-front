@@ -31,7 +31,7 @@ export default function () {
         setCrumbText("Liste des arrêts");
         break;
 
-      case "stops-details":
+      case "stop-details":
         setCrumbText("Liste des arrêts");
         setSubCrumb(stopDetailsItem()?.name.toLowerCase() as string);
         break;
