@@ -2,7 +2,6 @@ import { Show, createEffect, createSignal } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import { getSelectedBusLine } from "../../../map/component/organism/BusLines";
 import { schoolDetailsItem } from "../../../schools/component/organism/SchoolDetails";
-import { stopDetailsItem } from "../../../stops/component/organism/StopDetails";
 import { changeBoard, onBoard } from "../template/ContextManager";
 import "./Breadcrumb.css";
 
@@ -33,7 +32,8 @@ export default function () {
 
       case "stop-details":
         setCrumbText("Arrêts");
-        setSubCrumb(stopDetailsItem()?.name.toLowerCase() as string);
+        setSubCrumb("Ecole de teste 1 pour tester la longueur");
+        // setSubCrumb(stopDetailsItem()?.name.toLowerCase() as string);
         break;
 
       case "school-details":
@@ -71,11 +71,14 @@ export default function () {
   }
 
   return (
-    <div class="breadcrumb flex">
-      <button onClick={onClick}>{crumbText()}</button>
-      <Show when={subCrumb() != ""}>
-        <p class="sub-crumb">{" > "}</p>
-        <p class="sub-crumb">{subCrumb()}</p>
+    <div class="breadcrumb">
+      <Show when={subCrumb() != ""} fallback={crumbText()}>
+        <p class="sub-crumb">
+          <button class="breadcrumb" onClick={onClick}>
+            {crumbText()}
+          </button>
+          {" > " + subCrumb()}
+        </p>
       </Show>
     </div>
   );
