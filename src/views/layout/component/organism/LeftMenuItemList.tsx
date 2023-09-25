@@ -46,40 +46,37 @@ export default function (props: LeftMenuItemProps) {
           //   (onBoard() == menuItem && !isOnPage()) ||
           //   deepSchoolSelected() ||
           //   deepStopSelected();
-          // ! Pas oublier cas particulier dashboard
-          // ! Factoriser toutes les conditions ??
-          // ! getSelectedMenu cassé !? => fix et delete tout les "mergedProps.getSelectedMenu() == "graphicage""
-          // ! onClick sur graphicage quand 'school-details' cassé
-          function isSelected() {
-            if (menuItem == "graphicage") {
-              return ["line", "line-details", "line-draw"].includes(
-                onBoard()
-              ) && mergedProps.getSelectedMenu() == "graphicage"
-                ? true
-                : false;
-            } else if (menuItem == "schools") {
-              return ["schools", "school-details", "school-class"].includes(
-                onBoard()
-              ) && mergedProps.getSelectedMenu() == "graphicage"
-                ? true
-                : false;
-            } else if (menuItem == "stops") {
-              return ["stops", "stop-details"].includes(onBoard()) &&
-                mergedProps.getSelectedMenu() == "graphicage"
-                ? true
-                : false;
-            } else if (menuItem == "dashboard") {
-              return mergedProps.getSelectedMenu() == "dashboard"
-                ? true
-                : false;
-            } else {
-              // !
-              return false;
-            }
-          }
+
           // function isSelected() {
-          //   if ()
+          //   if (menuItem == "graphicage") {
+          //     return ["line", "line-details", "line-draw"].includes(
+          //       onBoard()
+          //     ) && mergedProps.getSelectedMenu() == "graphicage"
+          //       ? true
+          //       : false;
+          //   } else if (menuItem == "schools") {
+          //     return ["schools", "school-details", "school-class"].includes(
+          //       onBoard()
+          //     ) && mergedProps.getSelectedMenu() == "graphicage"
+          //       ? true
+          //       : false;
+          //   } else if (menuItem == "stops") {
+          //     return ["stops", "stop-details"].includes(onBoard()) &&
+          //       mergedProps.getSelectedMenu() == "graphicage"
+          //       ? true
+          //       : false;
+          //   } else if (menuItem == "dashboard") {
+          //     return mergedProps.getSelectedMenu() == "dashboard"
+          //       ? true
+          //       : false;
+          //   } else {
+          //     // !
+          //     return false;
+          //   }
           // }
+          function isSelected() {
+            return menuItem == mergedProps.getSelectedMenu() ? true : false;
+          }
 
           // console.log("isSelected", isSelected());
 

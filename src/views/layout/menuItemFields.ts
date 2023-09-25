@@ -44,7 +44,6 @@ const menuItems: MenuItemType[] = [
       // setIsOnPage(true);
       // setSelectedMenu("graphicage");
       if (onBoard() != "line-draw") {
-        // ! changer condition ?
         changeBoard("line");
         // setIsOnPage(true);
         setSelectedMenu("graphicage");
@@ -60,8 +59,7 @@ const menuItems: MenuItemType[] = [
       // boardCall();
       // setIsOnPage(false);
       changeBoard("schools");
-      // ! fait bug pq ?
-      // setSelectedMenu("schools");
+      setSelectedMenu("schools");
     },
   },
   {
@@ -73,6 +71,7 @@ const menuItems: MenuItemType[] = [
       // boardCall();
       // setIsOnPage(false);
       changeBoard("stops");
+      setSelectedMenu("stops");
     },
   },
   {
