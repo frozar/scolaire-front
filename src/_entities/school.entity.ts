@@ -1,6 +1,7 @@
 import { Accessor, Setter, createSignal } from "solid-js";
 import { useStateGui } from "../StateGui";
 import { NatureEnum } from "../type";
+import { getBusLines } from "../views/content/map/component/organism/BusLines";
 import {
   AssociatedDBPointType,
   AssociatedPointType,
@@ -45,6 +46,25 @@ export class SchoolEntity {
         lon: +data.lon,
       });
     });
+  }
+
+  static getStudentQuantityForSchool(school: SchoolType) {
+    let quantity = 0;
+    for (const stop of school.associated) {
+      quantity += stop.quantity;
+    }
+    return quantity;
+  }
+
+  static getSchoolLines(currentSchoolId: number) {
+    const lines = [];
+
+    for (const line of getBusLines()) {
+      const _line = line.schools.filter((l) => l.id == currentSchoolId);
+      if (_line.length > 0) lines.push(line);
+    }
+
+    return lines;
   }
 }
 
