@@ -47,7 +47,8 @@ export class SchoolEntity {
     });
   }
 }
-type ClasseType = {
+
+export type ClasseType = {
   id: number;
   school_id: number;
   classe: string;
