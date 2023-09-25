@@ -15,6 +15,7 @@ export default function (props: { school: SchoolType }) {
     inputRef()?.focus();
   };
 
+  // TODO used at 2 place, to refactor: SchoolItem.tsx
   function studentQuantity() {
     let quantity = 0;
     for (const stop of props.school.associated) {
@@ -37,7 +38,7 @@ export default function (props: { school: SchoolType }) {
         <ButtonIcon icon={<PencilIcon />} onClick={editName} />
       </div>
 
-      <p>{studentQuantity()} élèves</p>
+      <p>{studentQuantity()} élèves582a48ca39c7227476d00fd6fe1c4c4bf8ff2e0e</p>
 
       <InputSearch
         onInput={() => {
