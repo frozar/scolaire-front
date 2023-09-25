@@ -1,7 +1,10 @@
 import { Match, Switch, createSignal, onMount } from "solid-js";
-import { ClasseType, SchoolType } from "../../../../../_entities/school.entity";
+import {
+  ClasseType,
+  SchoolEntity,
+  SchoolType,
+} from "../../../../../_entities/school.entity";
 import { changeBoard } from "../../../board/component/template/ContextManager";
-import { getBusLines } from "../../../map/component/organism/BusLines";
 import SchoolDetailsHeader from "../molecule/SchoolDetailsHeader";
 import SchoolDetailsPanelsButton from "../molecule/SchoolDetailsPanelsButton";
 import ClasseList from "./ClasseList";
@@ -24,25 +27,15 @@ export default function () {
     }
   });
 
-  // TODO used at 2 place, to refactor: SchoolItem.tsx
-  function getSchoolLines() {
-    const lines = [];
-
-    for (const line of getBusLines()) {
-      const _line = line.schools.filter((l) => l.id == schoolDetailsItem()?.id);
-      if (_line.length > 0) lines.push(line);
-    }
-
-    return lines;
-  }
-
   return (
     <section>
       <SchoolDetailsHeader school={schoolDetailsItem() as SchoolType} />
       <SchoolDetailsPanelsButton
         setOnPanel={setOnPanel}
         onPanel={onPanel}
-        NbLines={getSchoolLines().length}
+        NbLines={
+          SchoolEntity.getSchoolLines(schoolDetailsItem()?.id as number).length
+        }
       />
       <div class="content mt-5">
         <Switch>
@@ -52,7 +45,11 @@ export default function () {
             />
           </Match>
           <Match when={onPanel() == Panels.lines}>
-            <LineList lines={getSchoolLines()} />
+            <LineList
+              lines={SchoolEntity.getSchoolLines(
+                schoolDetailsItem()?.id as number
+              )}
+            />
           </Match>
         </Switch>
       </div>

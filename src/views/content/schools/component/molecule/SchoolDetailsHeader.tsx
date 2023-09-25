@@ -1,5 +1,8 @@
 import { createSignal } from "solid-js";
-import { SchoolType } from "../../../../../_entities/school.entity";
+import {
+  SchoolEntity,
+  SchoolType,
+} from "../../../../../_entities/school.entity";
 import PencilIcon from "../../../../../icons/PencilIcon";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import InputSearch from "./InputSearch";
@@ -15,15 +18,6 @@ export default function (props: { school: SchoolType }) {
     inputRef()?.focus();
   };
 
-  // TODO used at 2 place, to refactor: SchoolItem.tsx
-  function studentQuantity() {
-    let quantity = 0;
-    for (const stop of props.school.associated) {
-      quantity += stop.quantity;
-    }
-    return quantity;
-  }
-
   return (
     <header class="school-detail-header">
       <div class="school-detail-header-title">
@@ -38,7 +32,7 @@ export default function (props: { school: SchoolType }) {
         <ButtonIcon icon={<PencilIcon />} onClick={editName} />
       </div>
 
-      <p>{studentQuantity()} élèves</p>
+      <p>{SchoolEntity.studentQuantity(props.school)} élèves</p>
 
       <InputSearch
         onInput={() => {
