@@ -61,7 +61,7 @@ export default function (props: SchoolItemProps) {
       </div>
       <div class="school-item-content">
         <p>lignes: {getSchoolLines().length}</p>
-        <p>classes: Todo</p>
+        <p>classes: {props.school.classes.length}</p>
         <p>élèves: {studentQuantity()}</p>
       </div>
     </div>
