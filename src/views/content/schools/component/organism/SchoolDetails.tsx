@@ -39,14 +39,12 @@ export default function () {
   return (
     <section>
       <SchoolDetailsHeader school={schoolDetailsItem() as SchoolType} />
-
-      <div class="content mt-2">
-        <SchoolDetailsPanelsButton
-          setOnPanel={setOnPanel}
-          onPanel={onPanel}
-          NbLines={getSchoolLines().length}
-        />
-
+      <SchoolDetailsPanelsButton
+        setOnPanel={setOnPanel}
+        onPanel={onPanel}
+        NbLines={getSchoolLines().length}
+      />
+      <div class="content mt-5">
         <Switch>
           <Match when={onPanel() == Panels.classes}>
             <ClasseList
