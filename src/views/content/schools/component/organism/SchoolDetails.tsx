@@ -1,5 +1,5 @@
 import { Match, Switch, createSignal, onMount } from "solid-js";
-import { SchoolType } from "../../../../../_entities/school.entity";
+import { ClasseType, SchoolType } from "../../../../../_entities/school.entity";
 import { changeBoard } from "../../../board/component/template/ContextManager";
 import { getBusLines } from "../../../map/component/organism/BusLines";
 import SchoolDetailsHeader from "../molecule/SchoolDetailsHeader";
@@ -35,20 +35,21 @@ export default function () {
 
     return lines;
   }
+
   return (
     <section>
       <SchoolDetailsHeader school={schoolDetailsItem() as SchoolType} />
-
-      <div class="content mt-2">
-        <SchoolDetailsPanelsButton
-          setOnPanel={setOnPanel}
-          onPanel={onPanel}
-          NbLines={getSchoolLines().length}
-        />
-
+      <SchoolDetailsPanelsButton
+        setOnPanel={setOnPanel}
+        onPanel={onPanel}
+        NbLines={getSchoolLines().length}
+      />
+      <div class="content mt-5">
         <Switch>
           <Match when={onPanel() == Panels.classes}>
-            <ClasseList />
+            <ClasseList
+              classes={schoolDetailsItem()?.classes as ClasseType[]}
+            />
           </Match>
           <Match when={onPanel() == Panels.lines}>
             <LineList lines={getSchoolLines()} />

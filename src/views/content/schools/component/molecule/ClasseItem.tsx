@@ -4,7 +4,7 @@ import "./ClasseItem.css";
 
 interface ClasseItemProps {
   classe: string;
-  NbStudents: number;
+  NbStudents?: number;
 }
 
 export default function (props: ClasseItemProps) {
@@ -20,7 +20,7 @@ export default function (props: ClasseItemProps) {
     <div class="classe-item">
       <div class="left">
         <p>{props.classe}</p>
-        <p>{props.NbStudents + " élèves"}</p>
+        <p>{props.NbStudents ? props.NbStudents + " élèves" : "Todo élèves"}</p>
       </div>
 
       <div class="classe-item-actions">
