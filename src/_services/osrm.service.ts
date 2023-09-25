@@ -20,6 +20,9 @@ export class OsrmService {
     const points: BusLinePointType[] = busLine.points;
     const waypoints: WaypointType[] = busLine.waypoints ?? points;
 
+    if (waypoints.length <= 1) {
+      return { latlngs: [], projectedLatlngs: [], metrics: {} };
+    }
     const response = await ServiceUtils.generic(
       osrm +
         "/" +

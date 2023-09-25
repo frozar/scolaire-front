@@ -327,6 +327,13 @@ export type busLineMetricType = {
 
 //Todo delete function : ne pas utiliser le signal
 function setOnRoad(busLine: BusLineType, projectedLatlngs: L.LatLng[]) {
+  if (projectedLatlngs.length == 0) {
+    setLineUnderConstruction({
+      ...getLineUnderConstruction(),
+      busLine,
+    });
+    return;
+  }
   let waypoints = busLine.waypoints;
   if (!waypoints) {
     return;

@@ -34,36 +34,54 @@ export namespace WaypointEntity {
 
     const index = points.findIndex((actualPoint) => actualPoint.id == point.id);
     if (points.length - 1 == index) {
-      newWaypoints.push({
-        idStop: point.id,
-        lat: point.lat,
-        lon: point.lon,
-      });
+      point.nature == NatureEnum.stop
+        ? newWaypoints.push({
+            idStop: point.id,
+            lat: point.lat,
+            lon: point.lon,
+          })
+        : newWaypoints.push({
+            idSchool: point.id,
+            lat: point.lat,
+            lon: point.lon,
+          });
       return newWaypoints;
     }
 
     const indexPreviousWaypoint =
       index > 0
-        ? waypoints.findIndex(
-            (actualPoint) => actualPoint.idStop == points[index - 1].id
+        ? waypoints.findIndex((actualPoint) =>
+            points[index - 1].nature == NatureEnum.stop
+              ? actualPoint.idStop == points[index - 1].id
+              : actualPoint.idSchool == points[index - 1].id
           )
         : -1;
 
-    const indexNextWaypoint = waypoints.findIndex(
-      (actualPoint) =>
-        actualPoint.idStop == points[index + 1].id ||
-        actualPoint.idSchool == points[index + 1].id
+    const indexNextWaypoint = waypoints.findIndex((actualPoint) =>
+      points[index + 1].nature == NatureEnum.stop
+        ? actualPoint.idStop == points[index + 1].id
+        : actualPoint.idSchool == points[index + 1].id
     );
 
     const difference = indexNextWaypoint - indexPreviousWaypoint;
 
     const toDelete = difference > 1 ? difference - 1 : 0;
 
-    newWaypoints.splice(indexPreviousWaypoint + 1, toDelete, {
-      idStop: point.id,
-      lat: point.lat,
-      lon: point.lon,
-    });
+    newWaypoints.splice(
+      indexPreviousWaypoint + 1,
+      toDelete,
+      point.nature == NatureEnum.stop
+        ? {
+            idStop: point.id,
+            lat: point.lat,
+            lon: point.lon,
+          }
+        : {
+            idSchool: point.id,
+            lat: point.lat,
+            lon: point.lon,
+          }
+    );
     return newWaypoints;
   }
 
@@ -72,7 +90,6 @@ export namespace WaypointEntity {
     pointId: number,
     pointNature: NatureEnum
   ) {
-    // TODO: Fix case deletion and only one point left
     const waypointIndex = waypoints.findIndex((waypoint) =>
       pointNature == NatureEnum.stop
         ? waypoint.idStop == pointId
