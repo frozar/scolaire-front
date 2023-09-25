@@ -23,6 +23,7 @@ export default function (props: SchoolItemProps) {
     changeBoard("school-details");
   }
 
+  // TODO used at 2 place, to refactor: SchoolDetails.tsx
   function getSchoolLines() {
     const lines = [];
 
@@ -34,6 +35,7 @@ export default function (props: SchoolItemProps) {
     return lines;
   }
 
+  // TODO used at 2 place, to refactor: SchoolDetailsHeader.tsx
   function studentQuantity() {
     let quantity = 0;
     for (const stop of props.school.associated) {

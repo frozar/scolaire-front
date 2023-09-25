@@ -24,6 +24,7 @@ export default function () {
     }
   });
 
+  // TODO used at 2 place, to refactor: SchoolItem.tsx
   function getSchoolLines() {
     const lines = [];
 
@@ -36,7 +37,7 @@ export default function () {
   }
   return (
     <section>
-      <SchoolDetailsHeader />
+      <SchoolDetailsHeader school={schoolDetailsItem() as SchoolType} />
 
       <div class="content mt-2">
         <SchoolDetailsPanelsButton
