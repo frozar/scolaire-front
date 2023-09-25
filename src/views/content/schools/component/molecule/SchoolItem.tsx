@@ -2,6 +2,7 @@ import { FaRegularTrashCan, FaSolidPen } from "solid-icons/fa";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { changeBoard } from "../../../board/component/template/ContextManager";
+import { getBusLines } from "../../../map/component/organism/BusLines";
 import { setSchoolDetailsItem } from "../organism/SchoolDetails";
 import "./SchoolItem.css";
 
@@ -22,6 +23,25 @@ export default function (props: SchoolItemProps) {
     changeBoard("school-details");
   }
 
+  function getSchoolLines() {
+    const lines = [];
+
+    for (const line of getBusLines()) {
+      const _line = line.schools.filter((l) => l.id == props.school.id);
+      if (_line.length > 0) lines.push(line);
+    }
+
+    return lines;
+  }
+
+  function studentQuantity() {
+    let quantity = 0;
+    for (const stop of props.school.associated) {
+      quantity += stop.quantity;
+    }
+    return quantity;
+  }
+
   return (
     <div class="school-item">
       <div class="school-item-head">
@@ -38,9 +58,9 @@ export default function (props: SchoolItemProps) {
         </div>
       </div>
       <div class="school-item-content">
-        <p>lignes: Todo</p>
+        <p>lignes: {getSchoolLines().length}</p>
         <p>classes: Todo</p>
-        <p>élèves: Todo</p>
+        <p>élèves: {studentQuantity()}</p>
       </div>
     </div>
   );
