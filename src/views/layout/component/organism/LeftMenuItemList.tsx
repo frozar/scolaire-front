@@ -17,10 +17,8 @@ export interface LeftMenuItemProps {
 export default function (props: LeftMenuItemProps) {
   const mergedProps = mergeProps({ getSelectedMenu, setSelectedMenu }, props);
   createEffect(() => {
-    console.log("getSelectedMenu()", getSelectedMenu());
-  });
-  createEffect(() => {
-    // ! Ici
+    console.log("createEffect");
+
     if (["line", "line-draw", "line-details"].includes(onBoard())) {
       setSelectedMenu("graphicage");
     } else if (

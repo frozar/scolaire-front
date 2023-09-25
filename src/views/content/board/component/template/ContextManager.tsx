@@ -1,4 +1,4 @@
-import { Match, Switch, createEffect, createSignal } from "solid-js";
+import { Match, Switch, createEffect, createSignal, on } from "solid-js";
 
 import SchoolsBoard from "../../../schools/component/organism/SchoolBoard";
 import SchoolDetails from "../../../schools/component/organism/SchoolDetails";
@@ -18,7 +18,9 @@ export type BoardTags =
   | "stop-details"
   | "line-draw"
   | "line"
-  | "line-details";
+  | "line-details"
+  // ! rename
+  | "close";
 
 export const [isInDrawMod, setIsDrawMod] = createSignal<boolean>(false);
 export const toggleDrawMod = () => setIsDrawMod((bool) => !bool);
@@ -27,13 +29,25 @@ export const [onBoard, setOnBoard] = createSignal<BoardTags>("line");
 export const changeBoard = (boardName: BoardTags) => setOnBoard(boardName);
 
 export default function () {
-  createEffect(() => {
-    if (isInDrawMod()) {
-      changeBoard("line-draw");
-    } else {
-      changeBoard("line");
-    }
-  });
+  // ! Ne plus utiiser on()
+  createEffect(
+    on(isInDrawMod, () => {
+      console.log("createEffect");
+      console.log("onBoard() before", onBoard());
+
+      if (isInDrawMod()) {
+        changeBoard("line-draw");
+        // } else {
+        // changeBoard("line");
+      } else {
+        // ! à tester
+        setOnBoard((prev) => {
+          return prev == "line-draw" ? "line" : prev;
+        });
+      }
+      console.log("onBoard() after", onBoard());
+    })
+  );
 
   return (
     <section>
