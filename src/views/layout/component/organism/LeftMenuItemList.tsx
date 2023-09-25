@@ -3,8 +3,7 @@ import { For, mergeProps } from "solid-js";
 import { useStateGui } from "../../../../StateGui";
 import { SelectedMenuType } from "../../../../type";
 
-import { onBoard } from "../../../content/board/component/template/ContextManager";
-import menuItems, { isOnPage } from "../../menuItemFields";
+import menuItems from "../../menuItemFields";
 import LeftMenuItem from "../molecule/LeftMenuItem";
 
 const [, { setSelectedMenu, getSelectedMenu }] = useStateGui();
@@ -22,21 +21,9 @@ export default function (props: LeftMenuItemProps) {
         {(menuItemArg) => {
           const { label, menuItem, Logo, isDisabled } = menuItemArg;
 
-          const pageSelected = () =>
-            mergedProps.getSelectedMenu() === menuItem && isOnPage();
-
-          const deepSchoolSelected = () =>
-            (onBoard() == "school-details" || onBoard() == "school-class") &&
-            menuItem == "schools";
-
-          const deepStopSelected = () =>
-            onBoard() == "stop-details" && menuItem == "stops";
-
-          const isSelected = () =>
-            pageSelected() ||
-            (onBoard() == menuItem && !isOnPage()) ||
-            deepSchoolSelected() ||
-            deepStopSelected();
+          function isSelected() {
+            return menuItem == mergedProps.getSelectedMenu() ? true : false;
+          }
 
           return (
             <LeftMenuItem

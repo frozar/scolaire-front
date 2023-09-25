@@ -65,7 +65,7 @@ export default () => {
             <Dashboard />
           </Match>
 
-          <Match when={getSelectedMenu() == "graphicage"}>
+          <Match when={getSelectedMenu() != "dashboard"}>
             <Map />
             <ContextManager />
           </Match>
