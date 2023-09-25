@@ -48,7 +48,7 @@ export class SchoolEntity {
     });
   }
 
-  static studentQuantity(school: SchoolType) {
+  static getStudentQuantityForSchool(school: SchoolType) {
     let quantity = 0;
     for (const stop of school.associated) {
       quantity += stop.quantity;
