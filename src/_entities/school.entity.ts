@@ -60,7 +60,7 @@ export type SchoolType = {
   lat: number;
   associated: AssociatedPointType[];
   nature: NatureEnum;
-  classes: ClasseType;
+  classes: ClasseType[];
   leafletId: number;
   selected: Accessor<boolean>;
   setSelected: Setter<boolean>;
@@ -71,7 +71,7 @@ export type SchoolDBType = {
   name: string;
   location: LocationDBType;
   associated: AssociatedDBPointType[];
-  classes: ClasseType;
+  classes: ClasseType[];
 };
 
 export type LeafletShoolType = SchoolType & {
