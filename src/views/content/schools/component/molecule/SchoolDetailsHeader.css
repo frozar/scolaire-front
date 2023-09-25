@@ -1,0 +1,15 @@
+.school-detail-header{
+  @apply my-4;
+}
+
+.school-detail-header-title{
+  @apply flex justify-between my-2;
+}
+
+.input-title {
+  @apply text-2xl font-semibold;
+}
+
+.input-title:disabled{
+  background: transparent;
+}

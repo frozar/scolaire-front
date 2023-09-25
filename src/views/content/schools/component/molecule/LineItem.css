@@ -1,8 +1,8 @@
-.class-item{
+.line-item{
   @apply flex w-full bg-gray-light items-center relative pl-5 rounded-sm my-2 py-2
 }
 
-.class-item > .pellet {
+.line-item > .pellet {
   @apply absolute left-[-16px] w-[35px] h-[35px];
   border: 4px solid white;
 }

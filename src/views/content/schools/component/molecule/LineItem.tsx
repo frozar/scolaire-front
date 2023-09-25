@@ -8,9 +8,9 @@ export default function (props: { line: BusLineType }) {
   const schoolNames = () => props.line.schools.map((school) => school.name);
 
   return (
-    <div class="class-item">
+    <div class="line-item">
       <Pellet color={props.line.color()} />
-      <div class="class-content">
+      <div class="line-content">
         <p>{props.line.name}</p>
 
         <ClasseLinkedSchool schools={schoolNames()} />

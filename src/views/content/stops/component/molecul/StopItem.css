@@ -1,7 +1,10 @@
 .stop-item{
-  @apply flex justify-between px-4 py-2 my-2 bg-gray-light rounded-md text-xs
+  @apply flex justify-between px-4 py-2 my-2 bg-gray-light rounded-md;
 }
 
+.stop-item-content{
+  @apply text-base;
+}
 .stop-item-actions{
-  @apply flex gap-3
+  @apply flex gap-3;
 }

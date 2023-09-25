@@ -38,10 +38,6 @@ export default function (props: SchoolItemProps) {
         </div>
       </div>
       <div class="school-item-content">
-        {/* TODO check how get these varaibles NbLines, NbClasses, NbStudents*/}
-        {/* <p>lignes: {props.school.NbLines ?? 0}</p>
-        <p>classes: {props.school.NbClasses ?? 0}</p>
-        <p>élèves: {props.school.NbStudents ?? 0}</p> */}
         <p>lignes: Todo</p>
         <p>classes: Todo</p>
         <p>élèves: Todo</p>

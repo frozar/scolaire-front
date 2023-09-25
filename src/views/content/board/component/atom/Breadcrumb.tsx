@@ -24,20 +24,20 @@ export default function () {
         break;
 
       case "schools":
-        setCrumbText("Liste des écoles");
+        setCrumbText("Ecoles");
         break;
 
       case "stops":
-        setCrumbText("Liste des arrêts");
+        setCrumbText("Arrêts");
         break;
 
       case "stop-details":
-        setCrumbText("Liste des arrêts");
+        setCrumbText("Arrêts");
         setSubCrumb(stopDetailsItem()?.name.toLowerCase() as string);
         break;
 
       case "school-details":
-        setCrumbText("Liste des écoles");
+        setCrumbText("Ecoles");
         setSubCrumb(schoolDetailsItem()?.name.toLowerCase() as string);
         break;
 
@@ -53,11 +53,11 @@ export default function () {
   function onClick() {
     if (subCrumb() != "") {
       switch (crumbText()) {
-        case "Liste des arrêts":
+        case "Arrêts":
           changeBoard("stops");
           break;
 
-        case "Liste des écoles":
+        case "Ecoles":
           changeBoard("schools");
           break;
 
@@ -71,11 +71,14 @@ export default function () {
   }
 
   return (
-    <div class="breadcrumb flex">
-      <button onClick={onClick}>{crumbText()}</button>
-      <Show when={subCrumb() != ""}>
-        <p class="sub-crumb">{" > "}</p>
-        <p class="sub-crumb">{subCrumb()}</p>
+    <div class="breadcrumb">
+      <Show when={subCrumb() != ""} fallback={crumbText()}>
+        <p class="sub-crumb">
+          <button class="breadcrumb" onClick={onClick}>
+            {crumbText()}
+          </button>
+          {" > " + subCrumb()}
+        </p>
       </Show>
     </div>
   );
