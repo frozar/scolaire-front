@@ -31,8 +31,8 @@ const menuItems: MenuItemType[] = [
     isDisabled: false,
     onClick: () => {
       if (onBoard() != "line-draw") {
-        changeBoard("line");
         setSelectedMenu("graphicage");
+        changeBoard("line");
       }
     },
   },
@@ -42,8 +42,8 @@ const menuItems: MenuItemType[] = [
     label: "Établissements",
     isDisabled: false,
     onClick: () => {
-      changeBoard("schools");
       setSelectedMenu("schools");
+      changeBoard("schools");
     },
   },
   {
@@ -52,8 +52,8 @@ const menuItems: MenuItemType[] = [
     label: "Arrêts",
     isDisabled: false,
     onClick: () => {
-      changeBoard("stops");
       setSelectedMenu("stops");
+      changeBoard("stops");
     },
   },
   {
