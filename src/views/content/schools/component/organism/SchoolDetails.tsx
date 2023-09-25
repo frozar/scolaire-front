@@ -36,7 +36,7 @@ export default function () {
   }
   return (
     <section>
-      <SchoolDetailsHeader />
+      <SchoolDetailsHeader school={schoolDetailsItem() as SchoolType} />
 
       <div class="content mt-2">
         <SchoolDetailsPanelsButton

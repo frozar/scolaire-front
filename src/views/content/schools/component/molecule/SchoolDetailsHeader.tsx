@@ -1,11 +1,11 @@
 import { createSignal } from "solid-js";
+import { SchoolType } from "../../../../../_entities/school.entity";
 import PencilIcon from "../../../../../icons/PencilIcon";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
-import { schoolDetailsItem } from "../organism/SchoolDetails";
 import InputSearch from "./InputSearch";
 import "./SchoolDetailsHeader.css";
 
-export default function () {
+export default function (props: { school: SchoolType }) {
   const [inputRef, setInputRef] = createSignal<HTMLInputElement>();
 
   const [editSchoolName, setEditSchoolName] = createSignal<boolean>(true);
@@ -15,6 +15,14 @@ export default function () {
     inputRef()?.focus();
   };
 
+  function studentQuantity() {
+    let quantity = 0;
+    for (const stop of props.school.associated) {
+      quantity += stop.quantity;
+    }
+    return quantity;
+  }
+
   return (
     <header class="school-detail-header">
       <div class="school-detail-header-title">
@@ -22,14 +30,14 @@ export default function () {
           class="input-title"
           ref={setInputRef}
           type="text"
-          value={schoolDetailsItem()?.name}
+          value={props.school?.name}
           disabled={editSchoolName()}
         />
 
         <ButtonIcon icon={<PencilIcon />} onClick={editName} />
       </div>
 
-      <p>élèves: Todo</p>
+      <p>élèves: {studentQuantity()}</p>
 
       <InputSearch
         onInput={() => {
