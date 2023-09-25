@@ -1,9 +1,8 @@
-import { For, createEffect, mergeProps } from "solid-js";
+import { For, mergeProps } from "solid-js";
 
 import { useStateGui } from "../../../../StateGui";
 import { SelectedMenuType } from "../../../../type";
 
-import { onBoard } from "../../../content/board/component/template/ContextManager";
 import menuItems from "../../menuItemFields";
 import LeftMenuItem from "../molecule/LeftMenuItem";
 
@@ -16,15 +15,6 @@ export interface LeftMenuItemProps {
 
 export default function (props: LeftMenuItemProps) {
   const mergedProps = mergeProps({ getSelectedMenu, setSelectedMenu }, props);
-  createEffect(() => {
-    console.log("mergedProps.getSelectedMenu()", mergedProps.getSelectedMenu());
-  });
-  createEffect(() => {
-    console.log("onBoard", onBoard());
-  });
-  createEffect(() => {
-    console.log("menuItems", menuItems);
-  });
   return (
     <ul>
       <For each={menuItems}>
