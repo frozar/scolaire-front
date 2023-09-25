@@ -17,15 +17,17 @@ export interface LeftMenuItemProps {
 export default function (props: LeftMenuItemProps) {
   const mergedProps = mergeProps({ getSelectedMenu, setSelectedMenu }, props);
   createEffect(() => {
-    console.log("createEffect");
-
-    if (["line", "line-draw", "line-details"].includes(onBoard())) {
+    const onBoardMode = onBoard();
+    if (!onBoardMode) {
+      return;
+    }
+    if (["line", "line-draw", "line-details"].includes(onBoardMode)) {
       setSelectedMenu("graphicage");
     } else if (
-      ["schools", "school-details", "school-class"].includes(onBoard())
+      ["schools", "school-details", "school-class"].includes(onBoardMode)
     ) {
       setSelectedMenu("schools");
-    } else if (["stops", "stop-details"].includes(onBoard())) {
+    } else if (["stops", "stop-details"].includes(onBoardMode)) {
       setSelectedMenu("stops");
     }
   });
