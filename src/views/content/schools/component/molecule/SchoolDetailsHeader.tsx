@@ -38,7 +38,7 @@ export default function (props: { school: SchoolType }) {
         <ButtonIcon icon={<PencilIcon />} onClick={editName} />
       </div>
 
-      <p>{studentQuantity()} élèves582a48ca39c7227476d00fd6fe1c4c4bf8ff2e0e</p>
+      <p>{studentQuantity()} élèves</p>
 
       <InputSearch
         onInput={() => {
