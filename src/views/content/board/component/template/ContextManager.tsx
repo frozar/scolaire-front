@@ -18,7 +18,8 @@ export type BoardTags =
   | "stop-details"
   | "line-draw"
   | "line"
-  | "line-details";
+  | "line-details"
+  | undefined;
 
 export const [isInDrawMod, setIsDrawMod] = createSignal<boolean>(false);
 export const toggleDrawMod = () => setIsDrawMod((bool) => !bool);
@@ -31,7 +32,9 @@ export default function () {
     if (isInDrawMod()) {
       changeBoard("line-draw");
     } else {
-      changeBoard("line");
+      setOnBoard((prev) => {
+        return prev == "line-draw" ? "line" : prev;
+      });
     }
   });
 

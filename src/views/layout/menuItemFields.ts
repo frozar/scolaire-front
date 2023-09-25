@@ -22,6 +22,7 @@ const menuItems: MenuItemType[] = [
     isDisabled: false,
     onClick: () => {
       setSelectedMenu("dashboard");
+      changeBoard(undefined);
     },
   },
   {
@@ -31,7 +32,6 @@ const menuItems: MenuItemType[] = [
     isDisabled: false,
     onClick: () => {
       if (onBoard() != "line-draw") {
-        setSelectedMenu("graphicage");
         changeBoard("line");
       }
     },
@@ -42,7 +42,6 @@ const menuItems: MenuItemType[] = [
     label: "Établissements",
     isDisabled: false,
     onClick: () => {
-      setSelectedMenu("schools");
       changeBoard("schools");
     },
   },
@@ -52,7 +51,6 @@ const menuItems: MenuItemType[] = [
     label: "Arrêts",
     isDisabled: false,
     onClick: () => {
-      setSelectedMenu("stops");
       changeBoard("stops");
     },
   },
