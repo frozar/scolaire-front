@@ -17,13 +17,13 @@ export default function (props: ClasseItemProps) {
   }
 
   return (
-    <div class="line-item">
+    <div class="classe-item">
       <div class="left">
         <p>{props.classe}</p>
         <p>{props.NbStudents + " élèves"}</p>
       </div>
 
-      <div class="line-item-actions">
+      <div class="classe-item-actions">
         <ButtonIcon
           icon={<FaRegularTrashCan class="fill-red-base" />}
           onClick={onClickDelete}
