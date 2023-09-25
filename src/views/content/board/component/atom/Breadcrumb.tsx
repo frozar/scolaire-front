@@ -2,6 +2,7 @@ import { Show, createEffect, createSignal } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import { getSelectedBusLine } from "../../../map/component/organism/BusLines";
 import { schoolDetailsItem } from "../../../schools/component/organism/SchoolDetails";
+import { stopDetailsItem } from "../../../stops/component/organism/StopDetails";
 import { changeBoard, onBoard } from "../template/ContextManager";
 import "./Breadcrumb.css";
 
@@ -32,8 +33,7 @@ export default function () {
 
       case "stop-details":
         setCrumbText("Arrêts");
-        setSubCrumb("Ecole de teste 1 pour tester la longueur");
-        // setSubCrumb(stopDetailsItem()?.name.toLowerCase() as string);
+        setSubCrumb(stopDetailsItem()?.name.toLowerCase() as string);
         break;
 
       case "school-details":
