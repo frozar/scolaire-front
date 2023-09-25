@@ -1,24 +1,12 @@
-import { For, createSignal, onMount } from "solid-js";
+import { For } from "solid-js";
+import { ClasseType } from "../../../../../_entities/school.entity";
 import ClasseItem from "../molecule/ClasseItem";
 
-interface ClasseItemProps {
-  classeName: string;
-  NbStudents: number;
-}
-
-export default function () {
-  const [classes, setClasses] = createSignal<ClasseItemProps[]>([]);
-
-  onMount(() => {
-    setClasses([{ classeName: "Classe name", NbStudents: 1 }]);
-  });
-
+export default function (props: { classes: ClasseType[] }) {
   return (
     <div class="school-details-classe-list">
-      <For each={classes()}>
-        {(item) => (
-          <ClasseItem NbStudents={item.NbStudents} classe={item.classeName} />
-        )}
+      <For each={props.classes}>
+        {(item) => <ClasseItem NbStudents={0} classe={item.classe} />}
       </For>
     </div>
   );
