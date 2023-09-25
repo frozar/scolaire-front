@@ -23,6 +23,7 @@ export default function (props: SchoolItemProps) {
     changeBoard("school-details");
   }
 
+  // TODO used at 2 place, to refactor: SchoolDetails.tsx
   function getSchoolLines() {
     const lines = [];
 

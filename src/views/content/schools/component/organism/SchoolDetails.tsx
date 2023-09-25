@@ -24,6 +24,7 @@ export default function () {
     }
   });
 
+  // TODO used at 2 place, to refactor: SchoolItem.tsx
   function getSchoolLines() {
     const lines = [];
 
