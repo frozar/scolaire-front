@@ -77,6 +77,9 @@ export default function (props: LeftMenuItemProps) {
               return false;
             }
           }
+          // function isSelected() {
+          //   if ()
+          // }
 
           // console.log("isSelected", isSelected());
 

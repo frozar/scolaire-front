@@ -1,4 +1,3 @@
-import { createSignal } from "solid-js";
 import { useStateGui } from "../../StateGui";
 import ArretsLogo from "../../icons/ArretsLogo";
 import DashboardLogo from "../../icons/DashboardLogo";
@@ -13,14 +12,14 @@ import {
   onBoard,
 } from "../content/board/component/template/ContextManager";
 
-const [, { setSelectedMenu, getSelectedMenu }] = useStateGui();
+const [, { setSelectedMenu }] = useStateGui();
 
-export const [isOnPage, setIsOnPage] = createSignal<boolean>(true);
-const boardCall = () => {
-  if (getSelectedMenu() == "dashboard") {
-    setSelectedMenu("graphicage");
-  }
-};
+// export const [isOnPage, setIsOnPage] = createSignal<boolean>(true);
+// const boardCall = () => {
+//   if (getSelectedMenu() == "dashboard") {
+//     setSelectedMenu("graphicage");
+//   }
+// };
 
 const menuItems: MenuItemType[] = [
   {
@@ -29,7 +28,7 @@ const menuItems: MenuItemType[] = [
     label: "Dashboard",
     isDisabled: false,
     onClick: () => {
-      setIsOnPage(true);
+      // setIsOnPage(true);
       setSelectedMenu("dashboard");
     },
   },
@@ -45,8 +44,9 @@ const menuItems: MenuItemType[] = [
       // setIsOnPage(true);
       // setSelectedMenu("graphicage");
       if (onBoard() != "line-draw") {
+        // ! changer condition ?
         changeBoard("line");
-        setIsOnPage(true);
+        // setIsOnPage(true);
         setSelectedMenu("graphicage");
       }
     },
@@ -57,9 +57,11 @@ const menuItems: MenuItemType[] = [
     label: "Établissements",
     isDisabled: false,
     onClick: () => {
-      boardCall();
-      setIsOnPage(false);
+      // boardCall();
+      // setIsOnPage(false);
       changeBoard("schools");
+      // ! fait bug pq ?
+      // setSelectedMenu("schools");
     },
   },
   {
@@ -68,8 +70,8 @@ const menuItems: MenuItemType[] = [
     label: "Arrêts",
     isDisabled: false,
     onClick: () => {
-      boardCall();
-      setIsOnPage(false);
+      // boardCall();
+      // setIsOnPage(false);
       changeBoard("stops");
     },
   },
