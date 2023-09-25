@@ -24,20 +24,20 @@ export default function () {
         break;
 
       case "schools":
-        setCrumbText("Liste des écoles");
+        setCrumbText("Ecoles");
         break;
 
       case "stops":
-        setCrumbText("Liste des arrêts");
+        setCrumbText("Arrêts");
         break;
 
       case "stop-details":
-        setCrumbText("Liste des arrêts");
+        setCrumbText("Arrêts");
         setSubCrumb(stopDetailsItem()?.name.toLowerCase() as string);
         break;
 
       case "school-details":
-        setCrumbText("Liste des écoles");
+        setCrumbText("Ecoles");
         setSubCrumb(schoolDetailsItem()?.name.toLowerCase() as string);
         break;
 
@@ -53,11 +53,11 @@ export default function () {
   function onClick() {
     if (subCrumb() != "") {
       switch (crumbText()) {
-        case "Liste des arrêts":
+        case "Arrêts":
           changeBoard("stops");
           break;
 
-        case "Liste des écoles":
+        case "Ecoles":
           changeBoard("schools");
           break;
 
