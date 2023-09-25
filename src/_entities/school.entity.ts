@@ -20,6 +20,7 @@ export class SchoolEntity {
       name: dbSchool.name,
       nature: NatureEnum.school,
       associated: EntityUtils.formatAssociatedPoints(dbSchool.associated),
+      classes: dbSchool.classes,
 
       leafletId: nextLeafletPointId(),
       selected: selected,
@@ -46,6 +47,11 @@ export class SchoolEntity {
     });
   }
 }
+type ClasseType = {
+  id: number;
+  school_id: number;
+  classe: string;
+};
 
 export type SchoolType = {
   id: number;
@@ -54,7 +60,7 @@ export type SchoolType = {
   lat: number;
   associated: AssociatedPointType[];
   nature: NatureEnum;
-
+  classes: ClasseType;
   leafletId: number;
   selected: Accessor<boolean>;
   setSelected: Setter<boolean>;
@@ -65,6 +71,7 @@ export type SchoolDBType = {
   name: string;
   location: LocationDBType;
   associated: AssociatedDBPointType[];
+  classes: ClasseType;
 };
 
 export type LeafletShoolType = SchoolType & {
