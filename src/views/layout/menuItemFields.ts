@@ -39,11 +39,16 @@ const menuItems: MenuItemType[] = [
     label: "Graphicage",
     isDisabled: false,
     onClick: () => {
-      if (onBoard() == "schools" || onBoard() == "stops") {
+      // if (onBoard() == "schools" || onBoard() == "stops") {
+      //   changeBoard("line");
+      // }
+      // setIsOnPage(true);
+      // setSelectedMenu("graphicage");
+      if (onBoard() != "line-draw") {
         changeBoard("line");
+        setIsOnPage(true);
+        setSelectedMenu("graphicage");
       }
-      setIsOnPage(true);
-      setSelectedMenu("graphicage");
     },
   },
   {
