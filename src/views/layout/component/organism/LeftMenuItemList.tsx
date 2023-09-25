@@ -31,54 +31,9 @@ export default function (props: LeftMenuItemProps) {
         {(menuItemArg) => {
           const { label, menuItem, Logo, isDisabled } = menuItemArg;
 
-          // const pageSelected = () =>
-          //   mergedProps.getSelectedMenu() === menuItem && isOnPage();
-
-          // const deepSchoolSelected = () =>
-          //   (onBoard() == "school-details" || onBoard() == "school-class") &&
-          //   menuItem == "schools";
-
-          // const deepStopSelected = () =>
-          //   onBoard() == "stop-details" && menuItem == "stops";
-
-          // const isSelected = () =>
-          //   pageSelected() ||
-          //   (onBoard() == menuItem && !isOnPage()) ||
-          //   deepSchoolSelected() ||
-          //   deepStopSelected();
-
-          // function isSelected() {
-          //   if (menuItem == "graphicage") {
-          //     return ["line", "line-details", "line-draw"].includes(
-          //       onBoard()
-          //     ) && mergedProps.getSelectedMenu() == "graphicage"
-          //       ? true
-          //       : false;
-          //   } else if (menuItem == "schools") {
-          //     return ["schools", "school-details", "school-class"].includes(
-          //       onBoard()
-          //     ) && mergedProps.getSelectedMenu() == "graphicage"
-          //       ? true
-          //       : false;
-          //   } else if (menuItem == "stops") {
-          //     return ["stops", "stop-details"].includes(onBoard()) &&
-          //       mergedProps.getSelectedMenu() == "graphicage"
-          //       ? true
-          //       : false;
-          //   } else if (menuItem == "dashboard") {
-          //     return mergedProps.getSelectedMenu() == "dashboard"
-          //       ? true
-          //       : false;
-          //   } else {
-          //     // !
-          //     return false;
-          //   }
-          // }
           function isSelected() {
             return menuItem == mergedProps.getSelectedMenu() ? true : false;
           }
-
-          // console.log("isSelected", isSelected());
 
           return (
             <LeftMenuItem
