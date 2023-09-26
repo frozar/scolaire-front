@@ -23,10 +23,10 @@ false && ClickOutside;
 
 export default function () {
   const displayed = () => getRemoveConfirmation()["displayed"];
-  const idBusLine = () => getRemoveConfirmation()["idBusLine"];
+  const busLine = () => getRemoveConfirmation()["busLine"];
 
   async function handlerOnClickValider() {
-    const idToCheck = idBusLine();
+    const idToCheck = busLine()?.id;
     if (!idToCheck) {
       return;
     }
@@ -43,7 +43,7 @@ export default function () {
         displayed: true,
         level: MessageLevelEnum.success,
         type: MessageTypeEnum.global,
-        content: "Le point de ramassage a bien été supprimé.",
+        content: "La ligne de bus a bien été supprimée.",
       });
     } else {
       closeRemoveConfirmationBox();
@@ -190,8 +190,8 @@ export default function () {
                       </h3>
                       <div class="mt-2">
                         <p class="text-sm text-gray-500">
-                          Etes-vous sûr de vouloir supprimer la ligne de bus
-                          numéro {idBusLine()} ?
+                          Etes-vous sûr de vouloir supprimer la ligne de bus :{" "}
+                          {busLine()?.name} ?
                         </p>
                       </div>
                     </div>

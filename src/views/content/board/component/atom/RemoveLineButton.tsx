@@ -13,7 +13,7 @@ export default function (props: RemoveLineButtonProps) {
     if (props.busLine.id) {
       setRemoveConfirmation({
         displayed: true,
-        idBusLine: props.busLine.id,
+        busLine: props.busLine,
       });
     }
   };
