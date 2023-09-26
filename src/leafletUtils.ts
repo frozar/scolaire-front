@@ -28,6 +28,7 @@ export function setSchoolPointsColor(leafletIds: number[], color: string) {
 }
 
 // ! Rename
+// ! Déplacer ?
 // export function changePointsColorAfterPointSelection(
 //   point: SchoolType | StopType
 // ) {}
