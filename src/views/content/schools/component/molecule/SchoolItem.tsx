@@ -3,9 +3,9 @@ import {
   SchoolEntity,
   SchoolType,
 } from "../../../../../_entities/school.entity";
+import CardTitle from "../../../../../component/atom/CardTitle";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { changeBoard } from "../../../board/component/template/ContextManager";
-import CardTitle from "../atom/CardTitle";
 import { setSchoolDetailsItem } from "../organism/SchoolDetails";
 import "./SchoolItem.css";
 

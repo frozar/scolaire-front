@@ -1,6 +1,6 @@
 import { FaRegularTrashCan, FaSolidPen } from "solid-icons/fa";
+import CardTitle from "../../../../../component/atom/CardTitle";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
-import CardTitle from "../atom/CardTitle";
 import "./ClasseItem.css";
 
 interface ClasseItemProps {

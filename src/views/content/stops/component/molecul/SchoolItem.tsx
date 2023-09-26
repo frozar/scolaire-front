@@ -1,8 +1,8 @@
 import { AssociatedPointType } from "../../../../../_entities/_utils.entity";
+import CardTitle from "../../../../../component/atom/CardTitle";
 import PencilIcon from "../../../../../icons/PencilIcon";
 import TrashIcon from "../../../../../icons/TrashIcon";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
-import CardTitle from "../../../schools/component/atom/CardTitle";
 import "./SchoolItem.css";
 
 export default function (props: { school: AssociatedPointType }) {

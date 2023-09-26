@@ -1,9 +1,9 @@
 import { StopType } from "../../../../../_entities/stop.entity";
+import CardTitle from "../../../../../component/atom/CardTitle";
 import PencilIcon from "../../../../../icons/PencilIcon";
 import TrashIcon from "../../../../../icons/TrashIcon";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { changeBoard } from "../../../board/component/template/ContextManager";
-import CardTitle from "../../../schools/component/atom/CardTitle";
 import ClasseLinkedSchool from "../../../schools/component/atom/ClasseLinkedSchool";
 import { setStopDetailsItem } from "../organism/StopDetails";
 import "./StopItem.css";

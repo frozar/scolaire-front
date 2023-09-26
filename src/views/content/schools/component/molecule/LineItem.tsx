@@ -1,7 +1,7 @@
 import { BusLineType } from "../../../../../_entities/bus-line.entity";
+import CardTitle from "../../../../../component/atom/CardTitle";
 import Pellet from "../../../../../component/atom/Pellet";
 import ArretsLogo from "../../../../../icons/ArretsLogo";
-import CardTitle from "../atom/CardTitle";
 import ClasseLinkedSchool from "../atom/ClasseLinkedSchool";
 import "./LineItem.css";
 
