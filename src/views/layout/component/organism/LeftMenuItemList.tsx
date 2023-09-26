@@ -49,7 +49,7 @@ export default function (props: LeftMenuItemProps) {
     // ! utiliser switch case ?
     if (["line", "line-draw", "line-details"].includes(onBoardMode)) {
       if (onBoardMode == "line") {
-        deselectAllPointsAndBusLines();
+        deselectAllPointsAndBusLines(); // ! doublons ? (l7mapbuilder.ts) => pas si modif de deselect...()
       } else if (onBoardMode == "line-details") {
         const selectedBusLine = getBusLines().filter((busLine) =>
           busLine.selected()
