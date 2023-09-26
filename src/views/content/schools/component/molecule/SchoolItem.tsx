@@ -1,4 +1,5 @@
 import { FaRegularTrashCan } from "solid-icons/fa";
+import { Accessor, createSignal } from "solid-js";
 import {
   SchoolEntity,
   SchoolType,
@@ -15,7 +16,10 @@ export interface SchoolItemProps {
 }
 
 export default function (props: SchoolItemProps) {
+  const [refTrashButton, setRefTrashButton] = createSignal<HTMLButtonElement>();
+
   async function onClickDelete() {
+    console.log("delete");
     // TODO: stanby
     // const response = await SchoolService.delete(props.school.id);
     // console.log(response);
@@ -28,18 +32,19 @@ export default function (props: SchoolItemProps) {
   }
 
   return (
-    <CardWrapper onClick={onClickEdit}>
+    <CardWrapper
+      onClick={onClickEdit}
+      class="z-10"
+      refClickableButton={refTrashButton as Accessor<HTMLButtonElement>}
+    >
       <div class="school-item-head">
         <CardTitle title={props.school.name} />
         <div class="school-item-actions">
           <ButtonIcon
+            refSetter={setRefTrashButton}
             icon={<FaRegularTrashCan class="fill-red-base" />}
             onClick={onClickDelete}
           />
-          {/* <ButtonIcon
-            icon={<FaSolidPen class="fill-green-base" />}
-            onClick={onClickEdit}
-          /> */}
         </div>
       </div>
       <div class="school-item-content">
