@@ -50,7 +50,6 @@ export default function (props: LeftMenuItemProps) {
     } else if (
       ["schools", "school-details", "school-class"].includes(onBoardMode)
     ) {
-      // deselectAllPointsAndBusLines(); // ! cas particulier ou etablissement selectionées à prendre en compte
       if (onBoardMode == "schools") {
         deselectAllPointsAndBusLines();
       } else if (onBoardMode == "school-details") {
@@ -59,36 +58,8 @@ export default function (props: LeftMenuItemProps) {
 
         updateOnMapPointColor(selectedSchool);
       }
-      // else if (onBoardMode == "school-details") {
-      //   // ! Refactor (schoolPoint.tsx)
-      //   const selectedSchool = schoolDetailsItem();
-      //   if (!selectedSchool) {
-      //     return;
-      //   }
-      //   // console.log("selectedSchool", selectedSchool);
-      //   const ids: number[] = [selectedSchool.leafletId];
-
-      //   for (const associated of selectedSchool.associated) {
-      //     const school = getStops().filter(
-      //       (item) => item.id == associated.id
-      //     )[0];
-      //     if (school != undefined) {
-      //       ids.push(school.leafletId);
-      //     }
-      //   }
-      //   // ! necessaire ?
-      //   const circle = linkMap.get(selectedSchool.leafletId);
-      //   circle?.setStyle({ fillColor: COLOR_SCHOOL_FOCUS });
-
-      //   setSchoolPointsColor(ids, COLOR_SCHOOL_LIGHT);
-      //   setStopPointsColor(ids, COLOR_STOP_LIGHT);
-
-      //   // ! deselectAllPoints à mettre en place si code doublons suppr de SchoolPoint.tsx
-      //   selectedSchool.setSelected(true);
-      // }
       setSelectedMenu("schools");
     } else if (["stops", "stop-details"].includes(onBoardMode)) {
-      // deselectAllPointsAndBusLines(); // ! cas stop-details ?!
       if (onBoardMode == "stops") {
         deselectAllPointsAndBusLines();
       } else {
@@ -96,9 +67,6 @@ export default function (props: LeftMenuItemProps) {
         if (!selectedStop) return;
         updateOnMapPointColor(selectedStop);
       }
-      // getSchools().map((point) => point.setSelected(false));
-      // setSchoolPointsColor([], COLOR_SCHOOL_FOCUS);
-      // deselectAllBusLines();
       setSelectedMenu("stops");
     }
   });

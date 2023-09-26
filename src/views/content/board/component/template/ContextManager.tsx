@@ -28,6 +28,7 @@ export const [onBoard, setOnBoard] = createSignal<BoardTags>("line");
 export const changeBoard = (boardName: BoardTags) => setOnBoard(boardName);
 
 export default function () {
+  // ! Mettre createEffect de leftMenuItemList.tsx ici
   createEffect(() => {
     if (isInDrawMod()) {
       changeBoard("line-draw");

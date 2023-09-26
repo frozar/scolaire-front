@@ -40,24 +40,13 @@ export function setSchoolPointsColor(leafletIds: number[], color: string) {
 export function updateOnMapPointColor(point: PointType) {
   const ids: number[] = [point.leafletId];
   const nature = point.nature;
-
   const points = nature == NatureEnum.school ? getStops() : getSchools();
+
   for (const associated of point.associated) {
     const leafletPoint = points.filter((item) => item.id == associated.id)[0];
     ids.push(leafletPoint.leafletId);
-    // if (nature == NatureEnum.school) {
-    //   const school = getStops().filter((item) => item.id == associated.id)[0];
-    //   if (school != undefined) {
-    //     ids.push(school.leafletId);
-    //   }
-    // } else if (nature == NatureEnum.stop) {
-    //   const leafletPoint = getSchools().filter(
-    //     (item) => item.id == associated.id
-    //   )[0];
-    //   ids.push(leafletPoint.leafletId);
-    // }
   }
-  // ! necessaire ?
+
   if (nature == NatureEnum.school) {
     const circle = linkMap.get(point.leafletId);
     circle?.setStyle({ fillColor: COLOR_SCHOOL_FOCUS });

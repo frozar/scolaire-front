@@ -80,19 +80,6 @@ function updateWaypoints(point: StopType) {
 }
 
 function onClick(point: StopType) {
-  // Highlight point schools
-  // const ids: number[] = [point.leafletId];
-  // for (const associated of point.associated) {
-  //   const leafletPoint = getSchools().filter(
-  //     (item) => item.id == associated.id
-  //   )[0];
-  //   ids.push(leafletPoint.leafletId);
-  // }
-
-  // For all point that is not in ids set the color
-  // setSchoolPointsColor(ids, COLOR_SCHOOL_LIGHT);
-  // setStopPointsColor(ids, COLOR_STOP_LIGHT);
-
   if (onBoard() != "line-draw") {
     deselectAllBusLines();
     deselectAllPoints();
