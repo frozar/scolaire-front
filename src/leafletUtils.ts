@@ -26,3 +26,8 @@ export function setSchoolPointsColor(leafletIds: number[], color: string) {
     }
   });
 }
+
+// ! Rename
+// export function changePointsColorAfterPointSelection(
+//   point: SchoolType | StopType
+// ) {}

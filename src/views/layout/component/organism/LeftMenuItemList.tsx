@@ -9,11 +9,18 @@ import {
 } from "../../../../leafletUtils";
 import { onBoard } from "../../../content/board/component/template/ContextManager";
 import { deselectAllBusLines } from "../../../content/map/component/organism/BusLines";
-import { deselectAllPoints } from "../../../content/map/component/organism/Points";
+import {
+  deselectAllPoints,
+  linkMap,
+} from "../../../content/map/component/organism/Points";
+import { getStops } from "../../../content/map/component/organism/StopPoints";
 import {
   COLOR_SCHOOL_FOCUS,
+  COLOR_SCHOOL_LIGHT,
   COLOR_STOP_FOCUS,
+  COLOR_STOP_LIGHT,
 } from "../../../content/map/constant";
+import { schoolDetailsItem } from "../../../content/schools/component/organism/SchoolDetails";
 import menuItems from "../../menuItemFields";
 import LeftMenuItem from "../molecule/LeftMenuItem";
 
@@ -49,10 +56,33 @@ export default function (props: LeftMenuItemProps) {
       // deselectAllPointsAndBusLines(); // ! cas particulier ou etablissement selectionées à prendre en compte
       if (onBoardMode == "schools") {
         deselectAllPointsAndBusLines();
+      } else if (onBoardMode == "school-details") {
+        // ! Refactor (schoolPoint.tsx)
+        const selectedSchool = schoolDetailsItem();
+        if (!selectedSchool) {
+          return;
+        }
+        // console.log("selectedSchool", selectedSchool);
+        const ids: number[] = [selectedSchool.leafletId];
+
+        for (const associated of selectedSchool.associated) {
+          const school = getStops().filter(
+            (item) => item.id == associated.id
+          )[0];
+          if (school != undefined) {
+            ids.push(school.leafletId);
+          }
+        }
+        // ! necessaire ?
+        const circle = linkMap.get(selectedSchool.leafletId);
+        circle?.setStyle({ fillColor: COLOR_SCHOOL_FOCUS });
+
+        setSchoolPointsColor(ids, COLOR_SCHOOL_LIGHT);
+        setStopPointsColor(ids, COLOR_STOP_LIGHT);
+
+        // ! deselectAllPoints à mettre en place si code doublons suppr de SchoolPoint.tsx
+        selectedSchool.setSelected(true);
       }
-      // getStops().map((point) => point.setSelected(false));
-      // setStopPointsColor([], COLOR_STOP_FOCUS);
-      // deselectAllBusLines();
       setSelectedMenu("schools");
     } else if (["stops", "stop-details"].includes(onBoardMode)) {
       // deselectAllPointsAndBusLines(); // ! cas stop-details ?!

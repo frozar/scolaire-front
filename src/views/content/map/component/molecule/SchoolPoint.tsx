@@ -59,6 +59,8 @@ export interface SchoolPointProps {
 
 const onClick = (point: SchoolType) => {
   const ids: number[] = [point.leafletId];
+  // ! A suppr car déjà présent dans createEffect LeftMenuItemList ? ou déplacer ?
+  // ! et juste garder setSchoolDetailsItem(point); ?
 
   for (const associated of point.associated) {
     const school = getStops().filter((item) => item.id == associated.id)[0];
@@ -66,13 +68,13 @@ const onClick = (point: SchoolType) => {
       ids.push(school.leafletId);
     }
   }
-
+  // ! necessaire ?
   const circle = linkMap.get(point.leafletId);
   circle?.setStyle({ fillColor: COLOR_SCHOOL_FOCUS });
 
   setSchoolPointsColor(ids, COLOR_SCHOOL_LIGHT);
   setStopPointsColor(ids, COLOR_STOP_LIGHT);
-
+  // ! À copier aussi ? pas tout
   if (onBoard() != "line-draw") {
     deselectAllBusLines();
     deselectAllPoints();
