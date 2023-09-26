@@ -16,7 +16,6 @@ import { addNewUserInformation, getLeafletMap } from "../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../type";
 import { Points } from "./component/organism/Points";
 
-import RightMapMenu from "./rightMapMenu/component/organism/RightMapMenu";
 const [, { getActiveMapId }] = useStateGui();
 function buildMap(div: HTMLDivElement) {
   const option = "l7";
@@ -76,9 +75,6 @@ export default function () {
       <div ref={mapDiv} id="main-map" />
       <Points leafletMap={getLeafletMap() as L.Map} />
       <BusLines map={getLeafletMap() as L.Map} />
-      <div class="z-[1000] absolute top-[45%] right-[15px]">
-        <RightMapMenu />
-      </div>
       <ConfirmStopAddLine />
     </Show>
   );
