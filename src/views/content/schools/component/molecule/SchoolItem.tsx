@@ -5,6 +5,7 @@ import {
 } from "../../../../../_entities/school.entity";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { changeBoard } from "../../../board/component/template/ContextManager";
+import CardTitle from "../atom/CardTitle";
 import { setSchoolDetailsItem } from "../organism/SchoolDetails";
 import "./SchoolItem.css";
 
@@ -28,7 +29,7 @@ export default function (props: SchoolItemProps) {
   return (
     <div class="school-item">
       <div class="school-item-head">
-        <p>{props.school.name}</p>
+        <CardTitle title={props.school.name} />
         <div class="school-item-actions">
           <ButtonIcon
             icon={<FaRegularTrashCan class="fill-red-base" />}

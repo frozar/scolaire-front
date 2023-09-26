@@ -3,6 +3,7 @@ import PencilIcon from "../../../../../icons/PencilIcon";
 import TrashIcon from "../../../../../icons/TrashIcon";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { changeBoard } from "../../../board/component/template/ContextManager";
+import CardTitle from "../../../schools/component/atom/CardTitle";
 import ClasseLinkedSchool from "../../../schools/component/atom/ClasseLinkedSchool";
 import { setStopDetailsItem } from "../organism/StopDetails";
 import "./StopItem.css";
@@ -26,7 +27,7 @@ export default function (props: StopItemProps) {
   return (
     <div class="stop-item">
       <div class="stop-item-content">
-        <p>{props.stop.name}</p>
+        <CardTitle title={props.stop.name} />
         <ClasseLinkedSchool schools={schoolNames()} />
       </div>
 

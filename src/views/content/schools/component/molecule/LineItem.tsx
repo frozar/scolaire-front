@@ -1,6 +1,7 @@
 import { BusLineType } from "../../../../../_entities/bus-line.entity";
 import Pellet from "../../../../../component/atom/Pellet";
 import ArretsLogo from "../../../../../icons/ArretsLogo";
+import CardTitle from "../atom/CardTitle";
 import ClasseLinkedSchool from "../atom/ClasseLinkedSchool";
 import "./LineItem.css";
 
@@ -11,11 +12,10 @@ export default function (props: { line: BusLineType }) {
     <div class="line-item">
       <Pellet color={props.line.color()} />
       <div class="line-content">
-        <p>{props.line.name}</p>
-
+        <CardTitle title={props.line.name ?? "Pas de nom de ligne"} />
         <ClasseLinkedSchool schools={schoolNames()} />
 
-        <div class="flex">
+        <div class="line-stops-count">
           <div class="stop-logo">
             <ArretsLogo />
           </div>

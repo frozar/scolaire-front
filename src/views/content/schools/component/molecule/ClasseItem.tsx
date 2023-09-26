@@ -1,5 +1,6 @@
 import { FaRegularTrashCan, FaSolidPen } from "solid-icons/fa";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
+import CardTitle from "../atom/CardTitle";
 import "./ClasseItem.css";
 
 interface ClasseItemProps {
@@ -19,7 +20,7 @@ export default function (props: ClasseItemProps) {
   return (
     <div class="classe-item">
       <div class="left">
-        <p>{props.classe}</p>
+        <CardTitle title={props.classe} />
         <p>{props.NbStudents ? props.NbStudents + " élèves" : "Todo élèves"}</p>
       </div>
 

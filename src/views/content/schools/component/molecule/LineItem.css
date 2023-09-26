@@ -13,3 +13,16 @@
 .stop-logo > svg {
   @apply fill-green-base;
 }
+
+.line-content{
+  @apply ml-2;
+  user-select: none;
+}
+
+.line-name{
+  @apply text-lg;
+}
+
+.line-stops-count{
+  @apply flex;
+}
