@@ -1,3 +1,5 @@
 .linked-schools-item{
-  @apply flex flex-wrap gap-1 text-green-base text-sm; 
+  @apply flex flex-wrap text-green-base  italic; 
+  font-size: 0.95rem;
+  line-height: 20px;
 }
