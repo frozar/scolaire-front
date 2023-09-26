@@ -62,7 +62,11 @@ export function BusLines(props: BusLinesProps) {
 }
 
 export function deselectAllBusLines() {
-  getBusLines().map((busLine) => busLine.setSelected(false));
+  getBusLines().map((busLine) =>
+    busLine.setSelected((prev) => {
+      return prev == false ? prev : false;
+    })
+  );
 }
 
 export const getSelectedBusLine = (): BusLineType | undefined => {

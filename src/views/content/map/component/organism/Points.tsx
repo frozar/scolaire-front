@@ -12,10 +12,17 @@ export const [blinkingSchools, setBlinkingSchools] = createSignal<number[]>([]);
 export const [cursorIsOverPoint, setCursorIsOverPoint] =
   createSignal<boolean>(false);
 
-// ! Ajouter un filter pour modif que les points selectionné ?!
 export function deselectAllPoints() {
-  getSchools().map((point) => point.setSelected(false));
-  getStops().map((point) => point.setSelected(false));
+  getSchools().map((point) =>
+    point.setSelected((prev) => {
+      return prev == false ? prev : false;
+    })
+  );
+  getStops().map((point) =>
+    point.setSelected((prev) => {
+      return prev == false ? prev : false;
+    })
+  );
 }
 export const [pointsReady, setPointsReady] = createSignal(false);
 
