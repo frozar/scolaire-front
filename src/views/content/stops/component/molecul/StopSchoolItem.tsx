@@ -4,7 +4,7 @@ import CardWrapper from "../../../../../component/molecule/CardWrapper";
 import PencilIcon from "../../../../../icons/PencilIcon";
 import TrashIcon from "../../../../../icons/TrashIcon";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
-import "./SchoolItem.css";
+import "./StopSchoolItem.css";
 
 export default function (props: { school: AssociatedPointType }) {
   function onClickDelete() {
