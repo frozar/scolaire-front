@@ -5,6 +5,7 @@ import Metrics from "./Metrics";
 import Timeline from "./Timeline";
 
 import { getSelectedBusLine } from "../../../map/component/organism/BusLines";
+import RemoveLineButton from "../atom/RemoveLineButton";
 import CollapsibleElement from "./CollapsibleElement";
 
 export function BusLineInformationBoardContent() {
@@ -16,6 +17,7 @@ export function BusLineInformationBoardContent() {
           {getSelectedBusLine()?.name}
         </div>
         <UpdateLineButton busLine={getSelectedBusLine() as BusLineType} />
+        <RemoveLineButton busLine={getSelectedBusLine() as BusLineType} />
       </div>
       <div class="bus-line-information-board-content-schools">
         <SchoolsEnumeration

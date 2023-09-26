@@ -6,16 +6,12 @@ import {
 } from "../../../leafletUtils";
 import { addBusLine } from "../../../request";
 import {
-  closeRemoveConfirmationBox,
   displayedClearConfirmationDialogBox,
   getDisplayedGeneratorDialogBox,
   getExportConfirmationDialogBox,
   getRemoveConfirmation,
 } from "../../../signaux";
-import {
-  displayAddLineMessage,
-  displayRemoveLineMessage,
-} from "../../../userInformation/utils";
+import { displayAddLineMessage } from "../../../userInformation/utils";
 import {
   currentStep,
   drawModeStep,
@@ -37,13 +33,10 @@ const [
   ,
   {
     setModeAddLine,
-    setModeRemoveLine,
     isInAddLineMode,
-    // isInReadMode,
     resetLineUnderConstruction,
     getLineUnderConstruction,
     setModeRead,
-    isInRemoveLineMode,
   },
   history,
 ] = useStateAction();
@@ -169,22 +162,6 @@ function toggleLineUnderConstruction({ code }: KeyboardEvent) {
         //TODO voir l'impact de la suppression
         // fetchBusLines();
         displayAddLineMessage();
-      }
-    }
-    if (upKey === "d") {
-      // Toggle behavior
-      deselectAllPoints();
-
-      if (!isInRemoveLineMode()) {
-        setModeRemoveLine();
-        //TODO voir l'impact de la suppression
-        // fetchBusLines();
-        displayRemoveLineMessage();
-      } else {
-        setModeRead();
-        //TODO voir l'impact de la suppression
-        // fetchBusLines();
-        closeRemoveConfirmationBox();
       }
     }
   });

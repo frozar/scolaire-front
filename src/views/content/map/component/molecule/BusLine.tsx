@@ -10,7 +10,6 @@ import {
   setSchoolPointsColor,
   setStopPointsColor,
 } from "../../../../../leafletUtils";
-import { setRemoveConfirmation } from "../../../../../signaux";
 import { NatureEnum } from "../../../../../type";
 import { setPickerColor } from "../../../board/component/atom/ColorPicker";
 import {
@@ -42,14 +41,8 @@ import {
   linkMap,
 } from "../organism/Points";
 
-const [
-  ,
-  {
-    isInRemoveLineMode,
-    getLineUnderConstruction,
-    setLineUnderConstructionNextIndex,
-  },
-] = useStateAction();
+const [, { getLineUnderConstruction, setLineUnderConstructionNextIndex }] =
+  useStateAction();
 
 export const [draggingLine, setDraggingLine] = createSignal<boolean>(false);
 
@@ -60,15 +53,15 @@ export type BusLineProps = {
 
 export function onClickBusLine(line: BusLineType) {
   changeBoard("line-details");
-  if (isInRemoveLineMode()) {
-    //TODO fonction à explorer
-    if (line.id) {
-      setRemoveConfirmation({
-        displayed: true,
-        idBusLine: line.id,
-      });
-    }
-  }
+  // if (isInRemoveLineMode()) {
+  //   //TODO fonction à explorer
+  //   if (line.id) {
+  //     setRemoveConfirmation({
+  //       displayed: true,
+  //       idBusLine: line.id,
+  //     });
+  //   }
+  // }
 
   if (onBoard() != "line-draw") {
     deselectAllBusLines();

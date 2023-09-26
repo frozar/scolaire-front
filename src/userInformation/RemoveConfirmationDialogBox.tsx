@@ -11,6 +11,7 @@ import {
 import { BusLineService } from "../_services/bus-line.service";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { assertIsNode } from "../utils";
+import { changeBoard } from "../views/content/board/component/template/ContextManager";
 import {
   getBusLines,
   setBusLines,
@@ -53,6 +54,7 @@ export default function () {
         content: "Impossible de supprimer la ligne de bus.",
       });
     }
+    changeBoard("line");
   }
 
   function exitModal({ code }: KeyboardEvent) {
