@@ -27,12 +27,12 @@ export default function () {
   return (
     <div class="timeline">
       <div
-        class="timeline-items v-timeline--side-end v-timeline--vertical"
+        class="timeline-items "
         style={{ "--v-timeline-line-thickness": "2px" }}
       >
         <For each={displayBusLine()?.points}>
           {(stop, i) => (
-            <>
+            <div class="timeline-block">
               <Show when={onBoard() == "line-draw"}>
                 <TimelineAddPointButton indice={i()} />
               </Show>
@@ -44,7 +44,7 @@ export default function () {
                   busLine={displayBusLine()}
                 />
               </Show>
-            </>
+            </div>
           )}
         </For>
       </div>

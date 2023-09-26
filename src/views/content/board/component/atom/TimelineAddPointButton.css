@@ -1,4 +1,5 @@
 .timeline-add-point-button {
+  @apply ml-1;
   opacity: 0%;
 }
 
@@ -10,10 +11,10 @@
 }
 /*Put in Onclick
 } */
-.v-timeline-item:focus-within .v-timeline-item__body.body-add {
+.v-timeline-item-add:focus-within .v-timeline-item__body.body-add {
   opacity: 100%;
 }
 
-.v-timeline-item:focus-within .timeline-add-point-button {
+.v-timeline-item-add:focus-within .timeline-add-point-button {
   opacity: 100%;
 }
