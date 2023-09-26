@@ -6,6 +6,18 @@
   font-family: "Mulish";
 }
 
+*::-webkit-scrollbar {
+  @apply rounded-md w-[0.4em];
+}
+ 
+*::-webkit-scrollbar-track {
+  @apply rounded-md shadow-inner;
+}
+ 
+*::-webkit-scrollbar-thumb {
+  @apply outline-blue-base bg-blue-base rounded-md
+}
+
 body,
 html {
   overflow: hidden;
