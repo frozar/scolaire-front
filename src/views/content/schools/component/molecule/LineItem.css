@@ -1,5 +1,5 @@
 .line-item{
-  @apply flex w-full bg-gray-light items-center relative pl-5 rounded-sm my-2 py-2
+  @apply flex w-full items-center relative cursor-pointer;
 }
 
 .line-item > .pellet {

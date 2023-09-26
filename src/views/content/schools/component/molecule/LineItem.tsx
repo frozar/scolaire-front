@@ -3,6 +3,7 @@ import CardTitle from "../../../../../component/atom/CardTitle";
 import Pellet from "../../../../../component/atom/Pellet";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
 import ArretsLogo from "../../../../../icons/ArretsLogo";
+import { onClickBusLine } from "../../../map/component/molecule/BusLine";
 import ClasseLinkedSchool from "../atom/ClasseLinkedSchool";
 import "./LineItem.css";
 
@@ -10,7 +11,7 @@ export default function (props: { line: BusLineType }) {
   const schoolNames = () => props.line.schools.map((school) => school.name);
 
   return (
-    <CardWrapper class="line-item">
+    <CardWrapper class="line-item" onClick={() => onClickBusLine(props.line)}>
       <Pellet color={props.line.color()} />
       <div class="line-content">
         <CardTitle title={props.line.name ?? "Pas de nom de ligne"} />

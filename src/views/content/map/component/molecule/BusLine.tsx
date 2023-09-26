@@ -58,6 +58,31 @@ export type BusLineProps = {
   map: L.Map;
 };
 
+export function onClickBusLine(line: BusLineType) {
+  changeBoard("line-details");
+  if (isInRemoveLineMode()) {
+    //TODO fonction à explorer
+    if (line.id) {
+      setRemoveConfirmation({
+        displayed: true,
+        idBusLine: line.id,
+      });
+    }
+  }
+
+  if (onBoard() != "line-draw") {
+    deselectAllBusLines();
+    deselectAllPoints();
+    setPickerColor(line.color());
+    line.setSelected(true);
+
+    // TODO Refactor
+    const leafletIds = line.points.map((point) => point.leafletId);
+    setStopPointsColor(leafletIds, COLOR_STOP_LIGHT);
+    setSchoolPointsColor(leafletIds, COLOR_SCHOOL_LIGHT);
+  }
+}
+
 export function BusLine(props: BusLineProps) {
   const [localLatLngs, setLocalLatLngs] = createSignal<L.LatLng[]>([]);
   const [localOpacity, setLocalOpacity] = createSignal<number>(1);
@@ -110,30 +135,6 @@ export function BusLine(props: BusLineProps) {
     // if (!line.selected() && (isInRemoveLineMode() || isInReadMode())) {
     if (onBoard() != "line-draw") {
       buslineSetNormalStyle(polyline, arrows, props.line.color());
-    }
-  };
-
-  const onClick = () => {
-    changeBoard("line-details");
-    if (isInRemoveLineMode()) {
-      //TODO fonction à explorer
-      if (props.line.id) {
-        setRemoveConfirmation({
-          displayed: true,
-          idBusLine: props.line.id,
-        });
-      }
-    }
-
-    if (onBoard() != "line-draw") {
-      deselectAllBusLines();
-      deselectAllPoints();
-      setPickerColor(props.line.color());
-      props.line.setSelected(true);
-
-      const leafletIds = props.line.points.map((point) => point.leafletId);
-      setStopPointsColor(leafletIds, COLOR_STOP_LIGHT);
-      setSchoolPointsColor(leafletIds, COLOR_SCHOOL_LIGHT);
     }
   };
 
@@ -235,7 +236,7 @@ export function BusLine(props: BusLineProps) {
         lineId={props.line.id}
         onMouseOver={onMouseOver}
         onMouseOut={onMouseOut}
-        onClick={onClick}
+        onClick={() => onClickBusLine(props.line)}
         onMouseDown={onMouseDown}
       />
       <Show
