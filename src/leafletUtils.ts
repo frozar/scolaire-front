@@ -1,5 +1,6 @@
 import { useStateAction } from "./StateAction";
 import { PointType } from "./_entities/_utils.entity";
+import { BusLineType } from "./_entities/bus-line.entity";
 import { NatureEnum } from "./type";
 import { linkMap } from "./views/content/map/component/organism/Points";
 import { getSchools } from "./views/content/map/component/organism/SchoolPoints";
@@ -26,6 +27,8 @@ export function setStopPointsColor(leafletIds: number[], color: string) {
 
 export function setSchoolPointsColor(leafletIds: number[], color: string) {
   if (isInAddLineMode()) return;
+  // ! Ne fonctionne pas
+  // TODO: Fix it
   getSchools().map((stop) => {
     if (!leafletIds.includes(stop.leafletId)) {
       const circle = linkMap.get(stop.leafletId);
@@ -54,4 +57,11 @@ export function updateOnMapPointColor(point: PointType) {
 
   setSchoolPointsColor(ids, COLOR_SCHOOL_LIGHT);
   setStopPointsColor(ids, COLOR_STOP_LIGHT);
+}
+
+// ! Rename ? Refactor ?
+export function updateOnMapPointColorForBusLine(line: BusLineType) {
+  const leafletIds = line.points.map((point) => point.leafletId);
+  setStopPointsColor(leafletIds, COLOR_STOP_LIGHT);
+  setSchoolPointsColor(leafletIds, COLOR_SCHOOL_LIGHT);
 }

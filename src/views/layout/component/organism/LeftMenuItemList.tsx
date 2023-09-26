@@ -7,9 +7,13 @@ import {
   setSchoolPointsColor,
   setStopPointsColor,
   updateOnMapPointColor,
+  updateOnMapPointColorForBusLine,
 } from "../../../../leafletUtils";
 import { onBoard } from "../../../content/board/component/template/ContextManager";
-import { deselectAllBusLines } from "../../../content/map/component/organism/BusLines";
+import {
+  deselectAllBusLines,
+  getBusLines,
+} from "../../../content/map/component/organism/BusLines";
 import { deselectAllPoints } from "../../../content/map/component/organism/Points";
 import {
   COLOR_SCHOOL_FOCUS,
@@ -42,9 +46,15 @@ export default function (props: LeftMenuItemProps) {
     if (!onBoardMode) {
       return;
     }
+    // ! utiliser switch case ?
     if (["line", "line-draw", "line-details"].includes(onBoardMode)) {
       if (onBoardMode == "line") {
         deselectAllPointsAndBusLines();
+      } else if (onBoardMode == "line-details") {
+        const selectedBusLine = getBusLines().filter((busLine) =>
+          busLine.selected()
+        )[0];
+        updateOnMapPointColorForBusLine(selectedBusLine);
       }
       setSelectedMenu("graphicage");
     } else if (
