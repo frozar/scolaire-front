@@ -1,4 +1,4 @@
-import { JSXElement } from "solid-js";
+import { JSXElement, Setter } from "solid-js";
 import "./ButtonIcon.css";
 
 export interface ButtonIconProps {
@@ -6,12 +6,17 @@ export interface ButtonIconProps {
   onClick: () => void;
   class?: string;
   svgClass?: string;
+  refSetter?: Setter<HTMLButtonElement>;
 }
 
 export default function (props: ButtonIconProps) {
   const Icon = () => props.icon;
   return (
-    <button class={"btn-icon " + props.class} onClick={() => props.onClick()}>
+    <button
+      ref={props.refSetter}
+      class={"btn-icon " + props.class}
+      onClick={() => props.onClick()}
+    >
       <Icon />
     </button>
   );
