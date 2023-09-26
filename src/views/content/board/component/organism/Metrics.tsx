@@ -18,7 +18,9 @@ export default function (props: MetricsProps) {
 
       <MetricItem
         title={"Degré de déviation"}
-        value={(props.line?.metrics()?.deviation ?? "") + ""}
+        value={
+          (displayRoundedValue(props.line?.metrics()?.deviation) ?? "") + ""
+        }
       />
 
       <MetricItem
@@ -28,12 +30,16 @@ export default function (props: MetricsProps) {
 
       <MetricItem
         title={"Kilomètre passager"}
-        value={(props.line?.metrics()?.kmPassager ?? "") + ""}
+        value={
+          (displayRoundedValue(props.line?.metrics()?.kmPassager) ?? "") + ""
+        }
       />
 
       <MetricItem
         title={"Taux de remplissage moyen"}
-        value={(props.line?.metrics()?.txRemplissMoy ?? "") + ""}
+        value={
+          (displayRoundedValue(props.line?.metrics()?.txRemplissMoy) ?? "") + ""
+        }
       />
 
       <MetricItem
@@ -46,6 +52,10 @@ export default function (props: MetricsProps) {
 
 function displayedDistance(value: number | undefined) {
   return value ? roundDecimal(value / 1000, 2) : "";
+}
+
+function displayRoundedValue(value: number | undefined) {
+  return value ? roundDecimal(value, 2) : "";
 }
 
 function displayedTime(value: number | undefined): string {
