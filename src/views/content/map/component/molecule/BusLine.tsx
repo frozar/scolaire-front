@@ -53,15 +53,6 @@ export type BusLineProps = {
 
 export function onClickBusLine(line: BusLineType) {
   changeBoard("line-details");
-  // if (isInRemoveLineMode()) {
-  //   //TODO fonction à explorer
-  //   if (line.id) {
-  //     setRemoveConfirmation({
-  //       displayed: true,
-  //       idBusLine: line.id,
-  //     });
-  //   }
-  // }
 
   if (onBoard() != "line-draw") {
     deselectAllBusLines();
@@ -117,7 +108,6 @@ export function BusLine(props: BusLineProps) {
 
   const onMouseOver = (polyline: L.Polyline, arrows: L.Marker[]) => {
     setIsOverMapItem(true);
-    // if (!line.selected() && (isInRemoveLineMode() || isInReadMode())) {
     if (onBoard() != "line-draw") {
       buslineSetBoldStyle(polyline, arrows, "white");
     }
