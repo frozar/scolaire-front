@@ -35,7 +35,7 @@ export default function (props: SchoolItemProps) {
     <CardWrapper
       onClick={onClickEdit}
       class="z-10"
-      refClickableButton={refTrashButton as Accessor<HTMLButtonElement>}
+      refClickableButtons={[refTrashButton] as Accessor<HTMLButtonElement>[]}
     >
       <div class="school-item-head">
         <CardTitle title={props.school.name} />

@@ -11,7 +11,7 @@ interface CardWrapperProps {
   children: JSXElement;
   class?: string;
   onClick?: () => void;
-  refClickableButton?: Accessor<HTMLButtonElement>;
+  refClickableButtons?: Accessor<HTMLButtonElement>[];
 }
 
 export default function (props: CardWrapperProps) {
@@ -26,17 +26,18 @@ export default function (props: CardWrapperProps) {
   }
 
   createEffect(() => {
-    if (
-      props.refClickableButton != undefined &&
-      props.refClickableButton() != undefined
-    ) {
-      props.refClickableButton()?.addEventListener("mouseenter", () => {
-        toggleHoverClickable();
-      });
+    if (props.refClickableButtons != undefined) {
+      for (const ref of props.refClickableButtons) {
+        if (ref() != undefined) {
+          ref()?.addEventListener("mouseenter", () => {
+            toggleHoverClickable();
+          });
 
-      props.refClickableButton()?.addEventListener("mouseleave", () => {
-        toggleHoverClickable();
-      });
+          ref()?.addEventListener("mouseleave", () => {
+            toggleHoverClickable();
+          });
+        }
+      }
     }
   });
 
