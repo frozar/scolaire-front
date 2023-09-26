@@ -8,10 +8,6 @@ import { SchoolType } from "../../../../../_entities/school.entity";
 import { StopType } from "../../../../../_entities/stop.entity";
 import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
 import {
-  setSchoolPointsColor,
-  setStopPointsColor,
-} from "../../../../../leafletUtils";
-import {
   currentStep,
   displayLineMode,
   displayLineModeEnum,
@@ -22,11 +18,7 @@ import {
   onBoard,
 } from "../../../board/component/template/ContextManager";
 import { setSchoolDetailsItem } from "../../../schools/component/organism/SchoolDetails";
-import {
-  COLOR_SCHOOL_FOCUS,
-  COLOR_SCHOOL_LIGHT,
-  COLOR_STOP_LIGHT,
-} from "../../constant";
+import { COLOR_SCHOOL_FOCUS, COLOR_STOP_LIGHT } from "../../constant";
 import { setIsOverMapItem } from "../../l7MapBuilder";
 import Point from "../atom/Point";
 import { deselectAllBusLines } from "../organism/BusLines";
@@ -38,7 +30,6 @@ import {
   setBlinkingStops,
   setCursorIsOverPoint,
 } from "../organism/Points";
-import { getStops } from "../organism/StopPoints";
 import { draggingLine, setDraggingLine } from "./BusLine";
 
 const [
@@ -58,22 +49,24 @@ export interface SchoolPointProps {
 }
 
 const onClick = (point: SchoolType) => {
-  const ids: number[] = [point.leafletId];
+  // const ids: number[] = [point.leafletId];
   // ! A suppr car déjà présent dans createEffect LeftMenuItemList ? ou déplacer ?
   // ! et juste garder setSchoolDetailsItem(point); ?
 
-  for (const associated of point.associated) {
-    const school = getStops().filter((item) => item.id == associated.id)[0];
-    if (school != undefined) {
-      ids.push(school.leafletId);
-    }
-  }
+  // for (const associated of point.associated) {
+  //   const school = getStops().filter((item) => item.id == associated.id)[0];
+  //   if (school != undefined) {
+  //     ids.push(school.leafletId);
+  //   }
+  // }
   // ! necessaire ?
-  const circle = linkMap.get(point.leafletId);
-  circle?.setStyle({ fillColor: COLOR_SCHOOL_FOCUS });
+  // const circle = linkMap.get(point.leafletId);
+  // circle?.setStyle({ fillColor: COLOR_SCHOOL_FOCUS });
 
-  setSchoolPointsColor(ids, COLOR_SCHOOL_LIGHT);
-  setStopPointsColor(ids, COLOR_STOP_LIGHT);
+  // setSchoolPointsColor(ids, COLOR_SCHOOL_LIGHT);
+  // setStopPointsColor(ids, COLOR_STOP_LIGHT);
+  // ! Est executé 2 fois (LeftMenuItemList)
+  // changePointsColorAfterPointSelection(point);
   // ! À copier aussi ? pas tout
   if (onBoard() != "line-draw") {
     deselectAllBusLines();
