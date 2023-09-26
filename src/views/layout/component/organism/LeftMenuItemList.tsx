@@ -23,7 +23,7 @@ export interface LeftMenuItemProps {
   getSelectedMenu?: () => SelectedMenuType;
   setSelectedMenu?: (itemMenu: SelectedMenuType) => void;
 }
-
+// ! Refactor
 function deselectAllPointsAndBusLines() {
   deselectAllPoints();
   deselectAllBusLines();
@@ -46,10 +46,22 @@ export default function (props: LeftMenuItemProps) {
     } else if (
       ["schools", "school-details", "school-class"].includes(onBoardMode)
     ) {
-      deselectAllPointsAndBusLines(); // ! cas particulier ou etablissement selectionées à prendre en compte
+      // deselectAllPointsAndBusLines(); // ! cas particulier ou etablissement selectionées à prendre en compte
+      if (onBoardMode == "schools") {
+        deselectAllPointsAndBusLines();
+      }
+      // getStops().map((point) => point.setSelected(false));
+      // setStopPointsColor([], COLOR_STOP_FOCUS);
+      // deselectAllBusLines();
       setSelectedMenu("schools");
     } else if (["stops", "stop-details"].includes(onBoardMode)) {
-      deselectAllPointsAndBusLines(); // ! cas particulier à prendre en compte
+      // deselectAllPointsAndBusLines(); // ! cas stop-details ?!
+      if (onBoardMode == "stops") {
+        deselectAllPointsAndBusLines();
+      }
+      // getSchools().map((point) => point.setSelected(false));
+      // setSchoolPointsColor([], COLOR_SCHOOL_FOCUS);
+      // deselectAllBusLines();
       setSelectedMenu("stops");
     }
   });
