@@ -16,6 +16,7 @@ import {
   COLOR_STOP_FOCUS,
 } from "../../../content/map/constant";
 import { schoolDetailsItem } from "../../../content/schools/component/organism/SchoolDetails";
+import { stopDetailsItem } from "../../../content/stops/component/organism/StopDetails";
 import menuItems from "../../menuItemFields";
 import LeftMenuItem from "../molecule/LeftMenuItem";
 
@@ -35,6 +36,7 @@ function deselectAllPointsAndBusLines() {
 
 export default function (props: LeftMenuItemProps) {
   const mergedProps = mergeProps({ getSelectedMenu, setSelectedMenu }, props);
+  // ! Déplacer dans un contextManager like
   createEffect(() => {
     const onBoardMode = onBoard();
     if (!onBoardMode) {
@@ -53,9 +55,8 @@ export default function (props: LeftMenuItemProps) {
         deselectAllPointsAndBusLines();
       } else if (onBoardMode == "school-details") {
         const selectedSchool = schoolDetailsItem();
-        if (!selectedSchool) {
-          return;
-        }
+        if (!selectedSchool) return;
+
         updateOnMapPointColor(selectedSchool);
       }
       // else if (onBoardMode == "school-details") {
@@ -90,6 +91,10 @@ export default function (props: LeftMenuItemProps) {
       // deselectAllPointsAndBusLines(); // ! cas stop-details ?!
       if (onBoardMode == "stops") {
         deselectAllPointsAndBusLines();
+      } else {
+        const selectedStop = stopDetailsItem();
+        if (!selectedStop) return;
+        updateOnMapPointColor(selectedStop);
       }
       // getSchools().map((point) => point.setSelected(false));
       // setSchoolPointsColor([], COLOR_SCHOOL_FOCUS);

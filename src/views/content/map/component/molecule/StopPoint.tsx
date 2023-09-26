@@ -2,18 +2,10 @@ import L from "leaflet";
 import { useStateAction } from "../../../../../StateAction";
 import { StopType } from "../../../../../_entities/stop.entity";
 import {
-  setSchoolPointsColor,
-  setStopPointsColor,
-} from "../../../../../leafletUtils";
-import {
   changeBoard,
   onBoard,
 } from "../../../board/component/template/ContextManager";
-import {
-  COLOR_SCHOOL_LIGHT,
-  COLOR_STOP_FOCUS,
-  COLOR_STOP_LIGHT,
-} from "../../constant";
+import { COLOR_STOP_FOCUS, COLOR_STOP_LIGHT } from "../../constant";
 import Point from "../atom/Point";
 import { deselectAllBusLines } from "../organism/BusLines";
 
@@ -36,7 +28,6 @@ import {
   setBlinkingSchools,
   setCursorIsOverPoint,
 } from "../organism/Points";
-import { getSchools } from "../organism/SchoolPoints";
 import { draggingLine, setDraggingLine } from "./BusLine";
 
 const [
@@ -90,17 +81,17 @@ function updateWaypoints(point: StopType) {
 
 function onClick(point: StopType) {
   // Highlight point schools
-  const ids: number[] = [point.leafletId];
-  for (const associated of point.associated) {
-    const leafletPoint = getSchools().filter(
-      (item) => item.id == associated.id
-    )[0];
-    ids.push(leafletPoint.leafletId);
-  }
+  // const ids: number[] = [point.leafletId];
+  // for (const associated of point.associated) {
+  //   const leafletPoint = getSchools().filter(
+  //     (item) => item.id == associated.id
+  //   )[0];
+  //   ids.push(leafletPoint.leafletId);
+  // }
 
   // For all point that is not in ids set the color
-  setSchoolPointsColor(ids, COLOR_SCHOOL_LIGHT);
-  setStopPointsColor(ids, COLOR_STOP_LIGHT);
+  // setSchoolPointsColor(ids, COLOR_SCHOOL_LIGHT);
+  // setStopPointsColor(ids, COLOR_STOP_LIGHT);
 
   if (onBoard() != "line-draw") {
     deselectAllBusLines();

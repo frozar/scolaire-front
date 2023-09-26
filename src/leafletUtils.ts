@@ -1,5 +1,6 @@
 import { useStateAction } from "./StateAction";
 import { PointType } from "./_entities/_utils.entity";
+import { NatureEnum } from "./type";
 import { linkMap } from "./views/content/map/component/organism/Points";
 import { getSchools } from "./views/content/map/component/organism/SchoolPoints";
 import { getStops } from "./views/content/map/component/organism/StopPoints";
@@ -38,15 +39,29 @@ export function setSchoolPointsColor(leafletIds: number[], color: string) {
 // ! Selectionner point aussi ? ou dans (_utils.entity.ts)
 export function updateOnMapPointColor(point: PointType) {
   const ids: number[] = [point.leafletId];
+  const nature = point.nature;
+
+  const points = nature == NatureEnum.school ? getStops() : getSchools();
   for (const associated of point.associated) {
-    const school = getStops().filter((item) => item.id == associated.id)[0];
-    if (school != undefined) {
-      ids.push(school.leafletId);
-    }
+    const leafletPoint = points.filter((item) => item.id == associated.id)[0];
+    ids.push(leafletPoint.leafletId);
+    // if (nature == NatureEnum.school) {
+    //   const school = getStops().filter((item) => item.id == associated.id)[0];
+    //   if (school != undefined) {
+    //     ids.push(school.leafletId);
+    //   }
+    // } else if (nature == NatureEnum.stop) {
+    //   const leafletPoint = getSchools().filter(
+    //     (item) => item.id == associated.id
+    //   )[0];
+    //   ids.push(leafletPoint.leafletId);
+    // }
   }
   // ! necessaire ?
-  const circle = linkMap.get(point.leafletId);
-  circle?.setStyle({ fillColor: COLOR_SCHOOL_FOCUS });
+  if (nature == NatureEnum.school) {
+    const circle = linkMap.get(point.leafletId);
+    circle?.setStyle({ fillColor: COLOR_SCHOOL_FOCUS });
+  }
 
   setSchoolPointsColor(ids, COLOR_SCHOOL_LIGHT);
   setStopPointsColor(ids, COLOR_STOP_LIGHT);
