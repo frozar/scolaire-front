@@ -2,6 +2,10 @@
   @apply flex w-full items-center relative cursor-pointer;
 }
 
+.line-content{
+  @apply w-full;
+}
+
 .line-item > .pellet {
   @apply absolute left-[-16px] w-[35px] h-[35px];
   border: 4px solid white;
