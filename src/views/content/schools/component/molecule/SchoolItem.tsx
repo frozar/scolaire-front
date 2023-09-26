@@ -4,6 +4,7 @@ import {
   SchoolType,
 } from "../../../../../_entities/school.entity";
 import CardTitle from "../../../../../component/atom/CardTitle";
+import CardWrapper from "../../../../../component/molecule/CardWrapper";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { changeBoard } from "../../../board/component/template/ContextManager";
 import { setSchoolDetailsItem } from "../organism/SchoolDetails";
@@ -27,7 +28,7 @@ export default function (props: SchoolItemProps) {
   }
 
   return (
-    <div class="school-item">
+    <CardWrapper>
       <div class="school-item-head">
         <CardTitle title={props.school.name} />
         <div class="school-item-actions">
@@ -46,6 +47,6 @@ export default function (props: SchoolItemProps) {
         <p>classes: {props.school.classes.length}</p>
         <p>élèves: {SchoolEntity.getStudentQuantityForSchool(props.school)}</p>
       </div>
-    </div>
+    </CardWrapper>
   );
 }

@@ -1,5 +1,6 @@
 import { StopType } from "../../../../../_entities/stop.entity";
 import CardTitle from "../../../../../component/atom/CardTitle";
+import CardWrapper from "../../../../../component/molecule/CardWrapper";
 import PencilIcon from "../../../../../icons/PencilIcon";
 import TrashIcon from "../../../../../icons/TrashIcon";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
@@ -25,7 +26,7 @@ export default function (props: StopItemProps) {
   };
 
   return (
-    <div class="stop-item">
+    <CardWrapper class="stop-item">
       <div class="stop-item-content">
         <CardTitle title={props.stop.name} />
         <ClasseLinkedSchool schools={schoolNames()} />
@@ -35,6 +36,6 @@ export default function (props: StopItemProps) {
         <ButtonIcon icon={<TrashIcon />} onClick={onClickDelete} />
         <ButtonIcon icon={<PencilIcon />} onClick={onClickEdit} />
       </div>
-    </div>
+    </CardWrapper>
   );
 }

@@ -1,5 +1,5 @@
 .classe-item{
-  @apply flex justify-between w-full bg-gray-light items-center relative px-5 rounded-md my-2 py-2 
+  @apply flex justify-between; 
 }
 
 .classe-item-actions{

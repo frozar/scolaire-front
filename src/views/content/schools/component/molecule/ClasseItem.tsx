@@ -1,5 +1,6 @@
 import { FaRegularTrashCan, FaSolidPen } from "solid-icons/fa";
 import CardTitle from "../../../../../component/atom/CardTitle";
+import CardWrapper from "../../../../../component/molecule/CardWrapper";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import "./ClasseItem.css";
 
@@ -18,7 +19,7 @@ export default function (props: ClasseItemProps) {
   }
 
   return (
-    <div class="classe-item">
+    <CardWrapper class="classe-item">
       <div class="left">
         <CardTitle title={props.classe} />
         <p>{props.NbStudents ? props.NbStudents + " élèves" : "Todo élèves"}</p>
@@ -34,6 +35,6 @@ export default function (props: ClasseItemProps) {
           onClick={onClickEdit}
         />
       </div>
-    </div>
+    </CardWrapper>
   );
 }

@@ -9,5 +9,5 @@ interface CardWrapperProps {
 export default function (props: CardWrapperProps) {
   const childs = children(() => props.children);
 
-  return <section class={"card " + props.class}>{childs()}</section>;
+  return <section class={"card " + props.class ?? ""}>{childs()}</section>;
 }
