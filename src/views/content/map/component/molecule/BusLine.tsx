@@ -76,6 +76,7 @@ export function onClickBusLine(line: BusLineType) {
     setPickerColor(line.color());
     line.setSelected(true);
 
+    // TODO Refactor
     const leafletIds = line.points.map((point) => point.leafletId);
     setStopPointsColor(leafletIds, COLOR_STOP_LIGHT);
     setSchoolPointsColor(leafletIds, COLOR_SCHOOL_LIGHT);
