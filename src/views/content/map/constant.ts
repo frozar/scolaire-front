@@ -1,5 +1,3 @@
-export const COLOR_LINE_UNDER_CONSTRUCTION = "#0000FF";
-
 // eslint-disable-next-line
 const COLOR_GREEN_LIGHT = "#8FE2BA";
 export const COLOR_GREEN_BASE = "#0CC683";
@@ -15,7 +13,7 @@ export const COLOR_STOP_LIGHT = COLOR_GRAY_BASE;
 export const COLOR_STOP_EMPHASE = COLOR_YELLOW_BASE;
 export const COLOR_SCHOOL_FOCUS = COLOR_RED_BASE;
 export const COLOR_SCHOOL_LIGHT = COLOR_RED_LIGHT;
-export const COLOR_LINE_EDITION = COLOR_GREEN_BASE;
+export const COLOR_LINE_UNDER_CONSTRUCTION = COLOR_GREEN_BASE;
 export const COLOR_WAYPOINT = COLOR_PURPLE_BASE;
 
 import L from "leaflet";
