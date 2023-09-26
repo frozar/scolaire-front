@@ -8,10 +8,11 @@ import GenerateButton from "./GenerateButton";
 import RemoveLineButton from "./RemoveLineButton";
 import "./RightMapMenu.css";
 
+// Todo to delete, keep for the moment to save the GenerateButton, Clear, Export logic
+
 export interface RightMapMenuProps {
   xOffset?: OffsetType;
 }
-
 export default function (props: RightMapMenuProps) {
   const mergedProps = mergeProps({ xOffset: "left" as OffsetType }, props);
 
