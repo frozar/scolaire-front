@@ -1,3 +1,4 @@
+import { For } from "solid-js";
 import "./ClasseLinkedSchool.css";
 
 interface ClasseLinkedSchoolProps {
@@ -7,12 +8,7 @@ interface ClasseLinkedSchoolProps {
 export default function (props: ClasseLinkedSchoolProps) {
   return (
     <div class="linked-schools-item">
-      {props.schools.map((school, index) => (
-        <>
-          <p>{school}</p>
-          {index !== props.schools.length - 1 && <span>|</span>}
-        </>
-      ))}
+      <For each={props.schools}>{(school) => <p>{school}</p>}</For>
     </div>
   );
 }

@@ -1,7 +1,3 @@
-.school-item{
-  @apply w-full bg-gray-light rounded-lg px-4 py-2 my-2;
-}
-
 .school-item-head{
   @apply flex justify-between text-base;
 }

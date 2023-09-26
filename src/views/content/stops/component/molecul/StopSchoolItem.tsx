@@ -1,8 +1,10 @@
 import { AssociatedPointType } from "../../../../../_entities/_utils.entity";
+import CardTitle from "../../../../../component/atom/CardTitle";
+import CardWrapper from "../../../../../component/molecule/CardWrapper";
 import PencilIcon from "../../../../../icons/PencilIcon";
 import TrashIcon from "../../../../../icons/TrashIcon";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
-import "./SchoolItem.css";
+import "./StopSchoolItem.css";
 
 export default function (props: { school: AssociatedPointType }) {
   function onClickDelete() {
@@ -14,9 +16,9 @@ export default function (props: { school: AssociatedPointType }) {
   }
 
   return (
-    <div class="school-list-item">
+    <CardWrapper class="school-list-item">
       <div class="school-list-item-content">
-        <p>{props.school.name}</p>
+        <CardTitle title={props.school.name} />
         <p>{props.school.quantity + " élèves à récuperer"}</p>
       </div>
 
@@ -24,6 +26,6 @@ export default function (props: { school: AssociatedPointType }) {
         <ButtonIcon icon={<TrashIcon />} onClick={onClickDelete} />
         <ButtonIcon icon={<PencilIcon />} onClick={onClickEdit} />
       </div>
-    </div>
+    </CardWrapper>
   );
 }
