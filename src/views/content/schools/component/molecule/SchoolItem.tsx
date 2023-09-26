@@ -20,7 +20,7 @@ export default function (props: SchoolItemProps) {
 
   async function onClickDelete() {
     console.log("delete");
-    // TODO: stanby
+    // TODO: standby
     // const response = await SchoolService.delete(props.school.id);
     // console.log(response);
   }
