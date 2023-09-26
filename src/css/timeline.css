@@ -17,7 +17,6 @@
   font-family: Roboto, sans-serif;
   line-height: 1.5;
   font-size: 0.8rem;
-  max-height: 50vh;
   overflow-y: auto;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;

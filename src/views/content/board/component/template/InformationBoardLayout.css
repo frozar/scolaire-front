@@ -1,6 +1,6 @@
 #information-board-layout{
   @apply absolute top-[60px] left-0 h-full w-[var(--information-board-width)] pt-5 pl-7 pr-5;
-  height: 93.7vh;
+  height: calc(100vh - 60px);
   
   z-index: 1001;
   overflow-y:hidden;
