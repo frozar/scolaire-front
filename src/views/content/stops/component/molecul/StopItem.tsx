@@ -1,7 +1,7 @@
+import { createSignal } from "solid-js";
 import { StopType } from "../../../../../_entities/stop.entity";
 import CardTitle from "../../../../../component/atom/CardTitle";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
-import PencilIcon from "../../../../../icons/PencilIcon";
 import TrashIcon from "../../../../../icons/TrashIcon";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { changeBoard } from "../../../board/component/template/ContextManager";
@@ -15,6 +15,7 @@ interface StopItemProps {
 
 export default function (props: StopItemProps) {
   const schoolNames = () => props.stop.associated.map((school) => school.name);
+  const [refTrashButton, setRefTrashButton] = createSignal<HTMLButtonElement>();
 
   const onClickDelete = () => {
     console.log("Delete stop");
@@ -26,15 +27,22 @@ export default function (props: StopItemProps) {
   };
 
   return (
-    <CardWrapper class="stop-item">
+    <CardWrapper
+      class="stop-item"
+      onClick={onClickEdit}
+      refClickableButtons={[refTrashButton]}
+    >
       <div class="stop-item-content">
         <CardTitle title={props.stop.name} />
         <ClasseLinkedSchool schools={schoolNames()} />
       </div>
 
       <div class="stop-item-actions">
-        <ButtonIcon icon={<TrashIcon />} onClick={onClickDelete} />
-        <ButtonIcon icon={<PencilIcon />} onClick={onClickEdit} />
+        <ButtonIcon
+          refSetter={setRefTrashButton}
+          icon={<TrashIcon />}
+          onClick={onClickDelete}
+        />
       </div>
     </CardWrapper>
   );

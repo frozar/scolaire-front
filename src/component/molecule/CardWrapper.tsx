@@ -11,7 +11,7 @@ interface CardWrapperProps {
   children: JSXElement;
   class?: string;
   onClick?: () => void;
-  refClickableButtons?: Accessor<HTMLButtonElement>[];
+  refClickableButtons?: Accessor<HTMLButtonElement | undefined>[];
 }
 
 export default function (props: CardWrapperProps) {
