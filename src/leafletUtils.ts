@@ -13,6 +13,7 @@ import {
 } from "./views/content/map/constant";
 const [, { isInAddLineMode }] = useStateAction();
 
+// ! Refactor ? enlever color des arguments
 export function setStopPointsColor(leafletIds: number[], color: string) {
   if (isInAddLineMode()) return;
   getStops().map((stop) => {
@@ -24,15 +25,15 @@ export function setStopPointsColor(leafletIds: number[], color: string) {
     }
   });
 }
-
+// ! Refactor ? enlever color des arguments
 export function setSchoolPointsColor(leafletIds: number[], color: string) {
   if (isInAddLineMode()) return;
-  // ! Ne fonctionne pas
-  // TODO: Fix it
-  getSchools().map((stop) => {
-    if (!leafletIds.includes(stop.leafletId)) {
-      const circle = linkMap.get(stop.leafletId);
+  getSchools().map((school) => {
+    const circle = linkMap.get(school.leafletId);
+    if (!leafletIds.includes(school.leafletId)) {
       circle?.setStyle({ fill: true, fillColor: color });
+    } else {
+      circle?.setStyle({ fill: true, fillColor: COLOR_SCHOOL_FOCUS });
     }
   });
 }
