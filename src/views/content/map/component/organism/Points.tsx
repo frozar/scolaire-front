@@ -13,16 +13,8 @@ export const [cursorIsOverPoint, setCursorIsOverPoint] =
   createSignal<boolean>(false);
 
 export function deselectAllPoints() {
-  getSchools().map((point) =>
-    point.setSelected((prev) => {
-      return prev == false ? prev : false;
-    })
-  );
-  getStops().map((point) =>
-    point.setSelected((prev) => {
-      return prev == false ? prev : false;
-    })
-  );
+  getSchools().map((point) => point.setSelected(false));
+  getSchools().map((point) => point.setSelected(false));
 }
 export const [pointsReady, setPointsReady] = createSignal(false);
 

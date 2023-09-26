@@ -1,4 +1,4 @@
-import { For, createEffect, mergeProps } from "solid-js";
+import { For, createEffect, mergeProps, on } from "solid-js";
 
 import { useStateGui } from "../../../../StateGui";
 import { SelectedMenuType } from "../../../../type";
@@ -41,45 +41,48 @@ function deselectAllPointsAndBusLines() {
 export default function (props: LeftMenuItemProps) {
   const mergedProps = mergeProps({ getSelectedMenu, setSelectedMenu }, props);
   // ! Déplacer dans un contextManager like
-  createEffect(() => {
-    const onBoardMode = onBoard();
-    if (!onBoardMode) {
-      return;
-    }
-    // ! utiliser switch case ?
-    if (["line", "line-draw", "line-details"].includes(onBoardMode)) {
-      if (onBoardMode == "line") {
-        deselectAllPointsAndBusLines(); // ! doublons ? (l7mapbuilder.ts) => pas si modif de deselect...()
-      } else if (onBoardMode == "line-details") {
-        const selectedBusLine = getBusLines().filter((busLine) =>
-          busLine.selected()
-        )[0];
-        updateOnMapPointColorForBusLine(selectedBusLine);
+  // ! Essayer de se débarasser de on()
+  createEffect(
+    on(onBoard, () => {
+      const onBoardMode = onBoard();
+      if (!onBoardMode) {
+        return;
       }
-      setSelectedMenu("graphicage");
-    } else if (
-      ["schools", "school-details", "school-class"].includes(onBoardMode)
-    ) {
-      if (onBoardMode == "schools") {
-        deselectAllPointsAndBusLines();
-      } else if (onBoardMode == "school-details") {
-        const selectedSchool = schoolDetailsItem();
-        if (!selectedSchool) return;
+      // ! utiliser switch case ?
+      if (["line", "line-draw", "line-details"].includes(onBoardMode)) {
+        if (onBoardMode == "line") {
+          deselectAllPointsAndBusLines();
+        } else if (onBoardMode == "line-details") {
+          const selectedBusLine = getBusLines().filter((busLine) =>
+            busLine.selected()
+          )[0];
+          updateOnMapPointColorForBusLine(selectedBusLine);
+        }
+        setSelectedMenu("graphicage");
+      } else if (
+        ["schools", "school-details", "school-class"].includes(onBoardMode)
+      ) {
+        if (onBoardMode == "schools") {
+          deselectAllPointsAndBusLines();
+        } else if (onBoardMode == "school-details") {
+          const selectedSchool = schoolDetailsItem();
+          if (!selectedSchool) return;
 
-        updateOnMapPointColor(selectedSchool);
+          updateOnMapPointColor(selectedSchool);
+        }
+        setSelectedMenu("schools");
+      } else if (["stops", "stop-details"].includes(onBoardMode)) {
+        if (onBoardMode == "stops") {
+          deselectAllPointsAndBusLines();
+        } else {
+          const selectedStop = stopDetailsItem();
+          if (!selectedStop) return;
+          updateOnMapPointColor(selectedStop);
+        }
+        setSelectedMenu("stops");
       }
-      setSelectedMenu("schools");
-    } else if (["stops", "stop-details"].includes(onBoardMode)) {
-      if (onBoardMode == "stops") {
-        deselectAllPointsAndBusLines();
-      } else {
-        const selectedStop = stopDetailsItem();
-        if (!selectedStop) return;
-        updateOnMapPointColor(selectedStop);
-      }
-      setSelectedMenu("stops");
-    }
-  });
+    })
+  );
 
   return (
     <ul>

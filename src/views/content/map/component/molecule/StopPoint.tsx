@@ -83,9 +83,9 @@ function onClick(point: StopType) {
   if (onBoard() != "line-draw") {
     deselectAllBusLines();
     deselectAllPoints();
+    point.setSelected(true);
     setStopDetailsItem(point);
     changeBoard("stop-details");
-    point.setSelected(true);
     return;
   }
 
