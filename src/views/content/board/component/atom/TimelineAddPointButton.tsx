@@ -7,16 +7,8 @@ const [, { setLineUnderConstructionNextIndex }] = useStateAction();
 // TODO Create stories and cypress
 export function TimelineAddPointButton(props: { indice: number }) {
   return (
-    <div class="v-timeline-item">
-      <div class="v-timeline-item__body body-add">
-        <div class="d-flex">
-          <strong>{"Sélectionnez un point sur la carte"}</strong>
-        </div>
-      </div>
-
+    <div class="v-timeline-item-add">
       <div class="v-timeline-divider ">
-        <div class="v-timeline-divider__before" />
-
         <div class="v-timeline-divider__dot v-timeline-divider__dot--size-very-small timeline-add-point-button">
           <button
             class=""
@@ -26,7 +18,11 @@ export function TimelineAddPointButton(props: { indice: number }) {
             <FaSolidPlus />
           </button>
         </div>
-        <div class="v-timeline-divider__after" />
+      </div>
+      <div class="v-timeline-item__body body-add">
+        <div class="d-flex">
+          <strong>{"Sélectionnez un point sur la carte"}</strong>
+        </div>
       </div>
     </div>
   );
