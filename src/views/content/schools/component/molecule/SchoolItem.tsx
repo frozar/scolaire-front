@@ -1,4 +1,4 @@
-import { FaRegularTrashCan, FaSolidPen } from "solid-icons/fa";
+import { FaRegularTrashCan } from "solid-icons/fa";
 import {
   SchoolEntity,
   SchoolType,
@@ -28,7 +28,7 @@ export default function (props: SchoolItemProps) {
   }
 
   return (
-    <CardWrapper>
+    <CardWrapper onClick={onClickEdit}>
       <div class="school-item-head">
         <CardTitle title={props.school.name} />
         <div class="school-item-actions">
@@ -36,10 +36,10 @@ export default function (props: SchoolItemProps) {
             icon={<FaRegularTrashCan class="fill-red-base" />}
             onClick={onClickDelete}
           />
-          <ButtonIcon
+          {/* <ButtonIcon
             icon={<FaSolidPen class="fill-green-base" />}
             onClick={onClickEdit}
-          />
+          /> */}
         </div>
       </div>
       <div class="school-item-content">
