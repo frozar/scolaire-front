@@ -56,10 +56,6 @@ export function onClickBusLine(line: BusLineType) {
 
     changeBoard("line-details");
 
-    // TODO Refactor
-    // const leafletIds = line.points.map((point) => point.leafletId);
-    // setStopPointsColor(leafletIds, COLOR_STOP_LIGHT);
-    // setSchoolPointsColor(leafletIds, COLOR_SCHOOL_LIGHT);
     updateOnMapPointColorForBusLine(line);
   }
 }

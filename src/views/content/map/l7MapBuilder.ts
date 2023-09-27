@@ -95,10 +95,6 @@ export function buildMapL7(div: HTMLDivElement) {
   leafletMap.addEventListener("click", () => {
     if (!isOverMapItem() && onBoard() != "line-draw") {
       changeBoard("line");
-      // deselectAllPoints();
-      // deselectAllBusLines();
-      // setStopPointsColor([], COLOR_STOP_FOCUS);
-      // setSchoolPointsColor([], COLOR_SCHOOL_FOCUS);
       deselectAllPointsAndBusLines();
     }
   });

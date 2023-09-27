@@ -13,7 +13,6 @@ import {
 } from "./views/content/map/constant";
 const [, { isInAddLineMode }] = useStateAction();
 
-// ! Refactor ? enlever color des arguments
 export function setStopPointsColor(leafletIds: number[], color: string) {
   if (isInAddLineMode()) return;
   getStops().map((stop) => {
@@ -25,7 +24,6 @@ export function setStopPointsColor(leafletIds: number[], color: string) {
     }
   });
 }
-// ! Refactor ? enlever color des arguments
 export function setSchoolPointsColor(leafletIds: number[], color: string) {
   if (isInAddLineMode()) return;
   getSchools().map((school) => {
@@ -38,8 +36,6 @@ export function setSchoolPointsColor(leafletIds: number[], color: string) {
   });
 }
 
-// ! Rename
-// ! Déplacer ? (_utils.entity.ts)
 // ! Selectionner point aussi ? ou dans (_utils.entity.ts)
 export function updateOnMapPointColor(point: PointType) {
   const ids: number[] = [point.leafletId];
@@ -60,7 +56,6 @@ export function updateOnMapPointColor(point: PointType) {
   setStopPointsColor(ids, COLOR_STOP_LIGHT);
 }
 
-// ! Rename ? Refactor ?
 export function updateOnMapPointColorForBusLine(line: BusLineType) {
   const leafletIds = line.points.map((point) => point.leafletId);
   setStopPointsColor(leafletIds, COLOR_STOP_LIGHT);

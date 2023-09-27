@@ -50,7 +50,6 @@ export interface SchoolPointProps {
 }
 
 const onClick = (point: SchoolType) => {
-  // ! À factoriser aussi ? autre PR
   if (onBoard() != "line-draw") {
     deselectAllBusLines();
     deselectAllPoints();

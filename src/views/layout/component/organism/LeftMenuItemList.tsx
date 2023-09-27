@@ -46,21 +46,12 @@ export default function (props: LeftMenuItemProps) {
       return;
     }
     if (["line", "line-draw", "line-details"].includes(onBoardMode)) {
-      // if (onBoardMode == "line") {
-      //   deselectAllPointsAndBusLines();
-      // }
       setSelectedMenu("graphicage");
     } else if (
       ["schools", "school-details", "school-class"].includes(onBoardMode)
     ) {
-      // if (onBoardMode == "schools") {
-      //   deselectAllPointsAndBusLines();
-      // }
       setSelectedMenu("schools");
     } else if (["stops", "stop-details"].includes(onBoardMode)) {
-      // if (onBoardMode == "stops") {
-      //   deselectAllPointsAndBusLines();
-      // }
       setSelectedMenu("stops");
     }
   });

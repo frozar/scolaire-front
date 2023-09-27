@@ -56,17 +56,14 @@ export default function () {
       switch (crumbText()) {
         case "Arrêts":
           changeBoard("stops");
-          // deselectAllPointsAndBusLines();
           break;
 
         case "Ecoles":
           changeBoard("schools");
-          // deselectAllPointsAndBusLines();
           break;
 
         case "Lignes":
           changeBoard("line");
-          // deselectAllPointsAndBusLines();
           break;
       }
       deselectAllPointsAndBusLines();

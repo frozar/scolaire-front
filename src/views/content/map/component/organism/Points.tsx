@@ -14,7 +14,7 @@ export const [cursorIsOverPoint, setCursorIsOverPoint] =
 
 export function deselectAllPoints() {
   getSchools().map((point) => point.setSelected(false));
-  getSchools().map((point) => point.setSelected(false));
+  getStops().map((point) => point.setSelected(false));
 }
 export const [pointsReady, setPointsReady] = createSignal(false);
 
