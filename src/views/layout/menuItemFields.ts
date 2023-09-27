@@ -1,4 +1,3 @@
-import { useStateGui } from "../../StateGui";
 import ArretsLogo from "../../icons/ArretsLogo";
 import DashboardLogo from "../../icons/DashboardLogo";
 import EtablissementLogo from "../../icons/EtablissementLogo";
@@ -10,8 +9,6 @@ import {
 } from "../content/board/component/template/ContextManager";
 import { deselectAllPointsAndBusLines } from "./component/organism/LeftMenuItemList";
 
-const [, { setSelectedMenu }] = useStateGui();
-
 const menuItems: MenuItemType[] = [
   {
     menuItem: "dashboard",
@@ -19,7 +16,6 @@ const menuItems: MenuItemType[] = [
     label: "Dashboard",
     isDisabled: false,
     onClick: () => {
-      setSelectedMenu("dashboard");
       changeBoard(undefined);
     },
   },

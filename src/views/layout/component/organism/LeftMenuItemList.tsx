@@ -33,16 +33,13 @@ export function deselectAllPointsAndBusLines() {
 
 export default function (props: LeftMenuItemProps) {
   const mergedProps = mergeProps({ getSelectedMenu, setSelectedMenu }, props);
-  // ! Déplacer dans un contextManager like
-  // ! Essayer d'enlever deselectAllPointsAndBusLines de la
   createEffect(() => {
     console.log("createEffect");
     console.log("onBoard()", onBoard());
 
-    // console.log("schoolDetailsItem()", schoolDetailsItem());
-    // console.log("stopDetailsItem()", stopDetailsItem());
     const onBoardMode = onBoard();
     if (!onBoardMode) {
+      setSelectedMenu("dashboard");
       return;
     }
     if (["line", "line-draw", "line-details"].includes(onBoardMode)) {
