@@ -32,7 +32,9 @@ export default function () {
     if (isInDrawMod()) {
       changeBoard("line-draw");
     } else {
-      changeBoard("line");
+      setOnBoard((prev) => {
+        return prev == "line-draw" ? "line" : prev;
+      });
     }
   });
 

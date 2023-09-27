@@ -222,7 +222,7 @@ export default function () {
     </div>
   );
 }
-
+// TODO: Fix wrong point color is displayed on map after creating / modifying a line
 async function createOrUpdateBusLine(busLine: BusLineType) {
   busLine.setSelected(true);
   if (busLine.id == undefined) {
