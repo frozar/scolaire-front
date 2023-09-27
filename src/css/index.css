@@ -265,7 +265,8 @@ code {
 }
 
 .child {
-  background: rgb(145, 101, 21);
+  @apply  rounded-lg border-2 border-dashed border-green-base p-12 text-center hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2;
+  background: none;
   opacity: 1;
   position: absolute;
   top: 50%;
