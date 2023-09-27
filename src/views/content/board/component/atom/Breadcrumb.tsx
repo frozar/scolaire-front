@@ -1,6 +1,6 @@
 import { Show, createEffect, createSignal } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
-import { deselectAllPointsAndBusLines } from "../../../../layout/component/organism/LeftMenuItemList";
+import { OnMapElementUtils } from "../../../../../utils/onMapElement.utils";
 import { getSelectedBusLine } from "../../../map/component/organism/BusLines";
 import { schoolDetailsItem } from "../../../schools/component/organism/SchoolDetails";
 import { stopDetailsItem } from "../../../stops/component/organism/StopDetails";
@@ -66,7 +66,7 @@ export default function () {
           changeBoard("line");
           break;
       }
-      deselectAllPointsAndBusLines();
+      OnMapElementUtils.deselectAllPointsAndBusLines();
       setSubCrumb("");
     }
   }

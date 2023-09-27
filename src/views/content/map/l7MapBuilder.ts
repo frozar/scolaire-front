@@ -9,7 +9,7 @@ import {
 } from "../../../signaux";
 
 import { useStateGui } from "../../../StateGui";
-import { deselectAllPointsAndBusLines } from "../../layout/component/organism/LeftMenuItemList";
+import { OnMapElementUtils } from "../../../utils/onMapElement.utils";
 import {
   changeBoard,
   isInDrawMod,
@@ -95,7 +95,7 @@ export function buildMapL7(div: HTMLDivElement) {
   leafletMap.addEventListener("click", () => {
     if (!isOverMapItem() && onBoard() != "line-draw") {
       changeBoard("line");
-      deselectAllPointsAndBusLines();
+      OnMapElementUtils.deselectAllPointsAndBusLines();
     }
   });
 

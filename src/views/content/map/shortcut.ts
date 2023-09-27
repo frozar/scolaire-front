@@ -12,7 +12,7 @@ import {
   getRemoveConfirmation,
 } from "../../../signaux";
 import { displayAddLineMessage } from "../../../userInformation/utils";
-import { deselectAllPointsAndBusLines } from "../../layout/component/organism/LeftMenuItemList";
+import { OnMapElementUtils } from "../../../utils/onMapElement.utils";
 import {
   currentStep,
   drawModeStep,
@@ -89,7 +89,7 @@ function escapeHandler({ code }: KeyboardEvent) {
       setStopPointsColor([], COLOR_STOP_FOCUS);
       setSchoolPointsColor([], COLOR_SCHOOL_FOCUS);
       changeBoard("line");
-      deselectAllPointsAndBusLines();
+      OnMapElementUtils.deselectAllPointsAndBusLines();
       return;
     }
 

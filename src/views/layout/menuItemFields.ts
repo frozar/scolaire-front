@@ -3,11 +3,11 @@ import DashboardLogo from "../../icons/DashboardLogo";
 import EtablissementLogo from "../../icons/EtablissementLogo";
 import GraphicageLogo from "../../icons/GraphicageLogo";
 import { MenuItemType } from "../../type";
+import { OnMapElementUtils } from "../../utils/onMapElement.utils";
 import {
   changeBoard,
   onBoard,
 } from "../content/board/component/template/ContextManager";
-import { deselectAllPointsAndBusLines } from "./component/organism/LeftMenuItemList";
 
 const menuItems: MenuItemType[] = [
   {
@@ -27,7 +27,7 @@ const menuItems: MenuItemType[] = [
     onClick: () => {
       if (onBoard() != "line-draw") {
         changeBoard("line");
-        deselectAllPointsAndBusLines();
+        OnMapElementUtils.deselectAllPointsAndBusLines();
       }
     },
   },
@@ -38,7 +38,7 @@ const menuItems: MenuItemType[] = [
     isDisabled: false,
     onClick: () => {
       changeBoard("schools");
-      deselectAllPointsAndBusLines();
+      OnMapElementUtils.deselectAllPointsAndBusLines();
     },
   },
   {
@@ -48,7 +48,7 @@ const menuItems: MenuItemType[] = [
     isDisabled: false,
     onClick: () => {
       changeBoard("stops");
-      deselectAllPointsAndBusLines();
+      OnMapElementUtils.deselectAllPointsAndBusLines();
     },
   },
   // {

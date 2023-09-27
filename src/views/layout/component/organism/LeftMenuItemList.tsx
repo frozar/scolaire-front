@@ -3,17 +3,7 @@ import { For, createEffect, mergeProps } from "solid-js";
 import { useStateGui } from "../../../../StateGui";
 import { SelectedMenuType } from "../../../../type";
 
-import {
-  setSchoolPointsColor,
-  setStopPointsColor,
-} from "../../../../leafletUtils";
 import { onBoard } from "../../../content/board/component/template/ContextManager";
-import { deselectAllBusLines } from "../../../content/map/component/organism/BusLines";
-import { deselectAllPoints } from "../../../content/map/component/organism/Points";
-import {
-  COLOR_SCHOOL_FOCUS,
-  COLOR_STOP_FOCUS,
-} from "../../../content/map/constant";
 import menuItems from "../../menuItemFields";
 import LeftMenuItem from "../molecule/LeftMenuItem";
 
@@ -22,13 +12,6 @@ const [, { setSelectedMenu, getSelectedMenu }] = useStateGui();
 export interface LeftMenuItemProps {
   getSelectedMenu?: () => SelectedMenuType;
   setSelectedMenu?: (itemMenu: SelectedMenuType) => void;
-}
-// ! Refactor / Move
-export function deselectAllPointsAndBusLines() {
-  deselectAllPoints();
-  deselectAllBusLines();
-  setStopPointsColor([], COLOR_STOP_FOCUS);
-  setSchoolPointsColor([], COLOR_SCHOOL_FOCUS);
 }
 
 export default function (props: LeftMenuItemProps) {
