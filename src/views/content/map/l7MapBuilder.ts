@@ -9,19 +9,13 @@ import {
 } from "../../../signaux";
 
 import { useStateGui } from "../../../StateGui";
-import {
-  setSchoolPointsColor,
-  setStopPointsColor,
-} from "../../../leafletUtils";
+import { deselectAllPointsAndBusLines } from "../../layout/component/organism/LeftMenuItemList";
 import {
   changeBoard,
   isInDrawMod,
   onBoard,
 } from "../board/component/template/ContextManager";
 import FlaxibMapLogo from "./FlaxibMapLogo";
-import { deselectAllBusLines } from "./component/organism/BusLines";
-import { deselectAllPoints } from "./component/organism/Points";
-import { COLOR_SCHOOL_FOCUS, COLOR_STOP_FOCUS } from "./constant";
 import { initScreenshoter } from "./rightMapMenu/export/screenShoter";
 import { getTileById } from "./tileUtils";
 
@@ -101,10 +95,11 @@ export function buildMapL7(div: HTMLDivElement) {
   leafletMap.addEventListener("click", () => {
     if (!isOverMapItem() && onBoard() != "line-draw") {
       changeBoard("line");
-      deselectAllPoints();
-      deselectAllBusLines();
-      setStopPointsColor([], COLOR_STOP_FOCUS);
-      setSchoolPointsColor([], COLOR_SCHOOL_FOCUS);
+      // deselectAllPoints();
+      // deselectAllBusLines();
+      // setStopPointsColor([], COLOR_STOP_FOCUS);
+      // setSchoolPointsColor([], COLOR_SCHOOL_FOCUS);
+      deselectAllPointsAndBusLines();
     }
   });
 

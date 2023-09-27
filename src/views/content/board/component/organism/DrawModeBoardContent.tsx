@@ -237,7 +237,8 @@ async function createOrUpdateBusLine(busLine: BusLineType) {
     prev == displayLineModeEnum.straight ? prev : displayLineModeEnum.straight
   );
   changeBoard("line");
-  selectedUpdatedBusLine(getBusLines().at(-1) as BusLineType);
+  // deselectAllPointsAndBusLines()
+  selectedUpdatedBusLine(getBusLines().at(-1) as BusLineType); // ! ? Suppr cette fonctionnalité OU changeBoard("line-details") plutot
 }
 
 function selectedUpdatedBusLine(busLine: BusLineType) {

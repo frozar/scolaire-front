@@ -8,6 +8,7 @@ import {
   changeBoard,
   onBoard,
 } from "../content/board/component/template/ContextManager";
+import { deselectAllPointsAndBusLines } from "./component/organism/LeftMenuItemList";
 
 const [, { setSelectedMenu }] = useStateGui();
 
@@ -30,6 +31,7 @@ const menuItems: MenuItemType[] = [
     onClick: () => {
       if (onBoard() != "line-draw") {
         changeBoard("line");
+        deselectAllPointsAndBusLines();
       }
     },
   },
@@ -40,6 +42,7 @@ const menuItems: MenuItemType[] = [
     isDisabled: false,
     onClick: () => {
       changeBoard("schools");
+      deselectAllPointsAndBusLines();
     },
   },
   {
@@ -49,6 +52,7 @@ const menuItems: MenuItemType[] = [
     isDisabled: false,
     onClick: () => {
       changeBoard("stops");
+      deselectAllPointsAndBusLines();
     },
   },
   // {

@@ -1,5 +1,6 @@
 import { Match, Switch, createEffect, createSignal } from "solid-js";
 
+import { deselectAllPointsAndBusLines } from "../../../../layout/component/organism/LeftMenuItemList";
 import SchoolsBoard from "../../../schools/component/organism/SchoolBoard";
 import SchoolDetails from "../../../schools/component/organism/SchoolDetails";
 import StopBoard from "../../../stops/component/organism/StopBoard";
@@ -30,12 +31,16 @@ export const changeBoard = (boardName: BoardTags) => setOnBoard(boardName);
 export default function () {
   // ! Mettre createEffect de leftMenuItemList.tsx ici
   createEffect(() => {
+    // ! ?
     if (isInDrawMod()) {
       changeBoard("line-draw");
     } else {
       setOnBoard((prev) => {
         return prev == "line-draw" ? "line" : prev;
       });
+      if (onBoard() == "line") {
+        deselectAllPointsAndBusLines();
+      }
     }
   });
 

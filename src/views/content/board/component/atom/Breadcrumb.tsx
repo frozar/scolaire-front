@@ -1,5 +1,6 @@
 import { Show, createEffect, createSignal } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
+import { deselectAllPointsAndBusLines } from "../../../../layout/component/organism/LeftMenuItemList";
 import { getSelectedBusLine } from "../../../map/component/organism/BusLines";
 import { schoolDetailsItem } from "../../../schools/component/organism/SchoolDetails";
 import { stopDetailsItem } from "../../../stops/component/organism/StopDetails";
@@ -55,17 +56,20 @@ export default function () {
       switch (crumbText()) {
         case "Arrêts":
           changeBoard("stops");
+          // deselectAllPointsAndBusLines();
           break;
 
         case "Ecoles":
           changeBoard("schools");
+          // deselectAllPointsAndBusLines();
           break;
 
         case "Lignes":
           changeBoard("line");
+          // deselectAllPointsAndBusLines();
           break;
       }
-
+      deselectAllPointsAndBusLines();
       setSubCrumb("");
     }
   }
