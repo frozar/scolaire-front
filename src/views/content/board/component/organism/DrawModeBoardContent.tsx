@@ -160,6 +160,7 @@ export default function () {
           <Metrics line={getLineUnderConstruction().busLine} />
         </CollapsibleElement>
         <LabeledInputField
+          label="Nom de la ligne"
           value={lineName()}
           onInput={(e) => setLineName(e.target.value)}
           name="line-name"
