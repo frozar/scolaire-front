@@ -51,11 +51,11 @@ export default function (props: MetricsProps) {
 }
 
 function displayedDistance(value: number | undefined) {
-  return value ? roundDecimal(value / 1000, 2) : "";
+  return value != undefined ? roundDecimal(value / 1000, 2) : "";
 }
 
 function displayRoundedValue(value: number | undefined) {
-  return value ? roundDecimal(value, 2) : "";
+  return value != undefined ? roundDecimal(value, 2) : "";
 }
 
 function displayedTime(value: number | undefined): string {
