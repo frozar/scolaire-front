@@ -1,6 +1,6 @@
 import { JSXElement, children } from "solid-js";
 
-import Breadcrumb from "../atom/Breadcrumb";
+import Breadcrumb from "../molecule/Breadcrumb";
 import "./InformationBoardLayout.css";
 
 export default function (props: { children: JSXElement }) {
