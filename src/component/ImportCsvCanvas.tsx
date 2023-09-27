@@ -1,4 +1,5 @@
 import { Setter, onCleanup, onMount } from "solid-js";
+import DropZoneLogo from "../icons/DropZoneLogo";
 import { disableSpinningWheel, enableSpinningWheel } from "../signaux";
 import { FileUtils } from "../utils/file.utils";
 
@@ -72,7 +73,8 @@ export default function (props: {
   return (
     <div ref={mapDragDropDiv} classList={{ highlight: props.display }}>
       <div class="child" classList={{ invisible: !props.display }}>
-        Drop your file here
+        <DropZoneLogo />
+        <span class="dropzone">Déposez votre fichier</span>
       </div>
     </div>
   );

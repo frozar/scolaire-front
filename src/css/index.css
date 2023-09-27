@@ -265,13 +265,22 @@ code {
 }
 
 .child {
-  background: rgb(145, 101, 21);
-  opacity: 1;
+  @apply flex-col rounded-lg border-dashed border-green-base pl-12 pr-12 pb-12 pt-3 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 text-green-base ;
+  justify-content: center;
+  border-width: 6px;
+  background: white;
+  width: 360px;
+  height: 160px;
+  opacity: 0.9;
   position: absolute;
-  top: 50%;
-  left: 50%;
+  top: 33%;
+  left: 35%;
   pointer-events: none;
+  font-family: "Mulish";
 }
+
+.dropzone{@apply mt-2 block text-2xl font-semibold ;
+margin-left: 5%;}
 
 .invisible_child {
   display: none;
