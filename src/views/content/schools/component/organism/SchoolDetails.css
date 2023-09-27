@@ -1,0 +1,7 @@
+.panel-actions{
+  @apply flex justify-between;
+}
+
+.board-content{
+  @apply mt-5;
+}
