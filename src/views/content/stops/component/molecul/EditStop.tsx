@@ -1,9 +1,11 @@
-import { For, createSignal } from "solid-js";
+import { createSignal } from "solid-js";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { ServiceUtils } from "../../../../../_services/_utils.service";
+import CardWrapper from "../../../../../component/molecule/CardWrapper";
 import CheckIcon from "../../../../../icons/CheckIcon";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { getSchools } from "../../../map/component/organism/SchoolPoints";
+import SchoolSelect from "../atom/SchoolSelect";
 import "./EditStop.css";
 
 interface EditStopProps {
@@ -43,23 +45,18 @@ export default function (props: EditStopProps) {
   }
 
   return (
-    <div class="edit-stop">
+    <CardWrapper class="edit-stop">
       <div class="flex justify-between my-2">
-        <select
-          name="school-select"
+        <SchoolSelect
           onChange={onChange}
-          ref={setSchoolSelectRef}
-        >
-          <option value="default">Choisir une école</option>
-          <For each={getSchools()}>
-            {(school) => <option value={school.id}>{school.name}</option>}
-          </For>
-        </select>
+          refSelectSetter={setSchoolSelectRef}
+          schools={getSchools()}
+        />
 
         <ButtonIcon icon={<CheckIcon />} onClick={validate} />
       </div>
 
-      <div class="flex gap-1">
+      <div class="flex gap-1 w-[90%]">
         {/* TODO Review to add loop on school classe */}
         <select disabled={disabled()}>
           <option value="default">Selectionner une classe</option>
@@ -69,10 +66,10 @@ export default function (props: EditStopProps) {
           ref={setQuantityInputRef}
           class="input-form"
           type="number"
-          placeholder="Elève à ramasser"
+          placeholder="Quantité"
           disabled={disabled()}
         />
       </div>
-    </div>
+    </CardWrapper>
   );
 }
