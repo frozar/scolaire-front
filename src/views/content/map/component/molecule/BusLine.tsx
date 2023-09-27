@@ -23,6 +23,7 @@ import PolylineDragMarker from "../atom/PolylineDragMarker";
 import WaypointMarker from "../atom/WaypointMarker";
 import { deselectAllBusLines } from "../organism/BusLines";
 
+import { updateOnMapPointColorForBusLine } from "../../../../../leafletUtils";
 import {
   currentStep,
   displayLineMode,
@@ -59,6 +60,7 @@ export function onClickBusLine(line: BusLineType) {
     // const leafletIds = line.points.map((point) => point.leafletId);
     // setStopPointsColor(leafletIds, COLOR_STOP_LIGHT);
     // setSchoolPointsColor(leafletIds, COLOR_SCHOOL_LIGHT);
+    updateOnMapPointColorForBusLine(line);
   }
 }
 
