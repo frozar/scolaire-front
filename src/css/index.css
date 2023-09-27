@@ -265,7 +265,7 @@ code {
 }
 
 .child {
-  @apply flex-col rounded-lg border-dashed border-green-base pl-12 pr-12 pb-12 pt-3 text-center hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 text-green-base ;
+  @apply flex-col rounded-lg border-dashed border-green-base pl-12 pr-12 pb-12 pt-3 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 text-green-base ;
   justify-content: center;
   border-width: 6px;
   background: white;
