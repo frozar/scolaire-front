@@ -7,5 +7,6 @@
 }
 
 .bus-line-information-board-content-name{
-  @apply text-2xl mb-4 mt-4 text-blue-base
+  @apply text-2xl mb-4 mt-4 text-blue-base;
+  /* flex-1 overflow-y-hidden flex flex-col; */
 }

@@ -23,5 +23,5 @@
 }
 
 .btn-danger{
-  @apply w-full bg-[#F44434] justify-center rounded-md px-6 py-2 text-sm font-semibold text-white shadow-sm sm:w-auto duration-150 m-2;
+  @apply w-full bg-[#F44434] justify-center rounded-md px-6 py-2 text-sm font-semibold text-white shadow-sm sm:w-auto duration-150 m-2 z-[99];
 }
