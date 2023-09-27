@@ -223,7 +223,6 @@ export default function () {
   );
 }
 
-// TODO after creating line set it as selected and show the timeline in the information board in read mod
 async function createOrUpdateBusLine(busLine: BusLineType) {
   busLine.setSelected(true);
   if (busLine.id == undefined) {
@@ -236,9 +235,8 @@ async function createOrUpdateBusLine(busLine: BusLineType) {
   setDisplayLineMode((prev) =>
     prev == displayLineModeEnum.straight ? prev : displayLineModeEnum.straight
   );
-  changeBoard("line");
-  // deselectAllPointsAndBusLines()
-  selectedUpdatedBusLine(getBusLines().at(-1) as BusLineType); // ! ? Suppr cette fonctionnalité OU changeBoard("line-details") plutot
+  selectedUpdatedBusLine(getBusLines().at(-1) as BusLineType);
+  changeBoard("line-details");
 }
 
 function selectedUpdatedBusLine(busLine: BusLineType) {
