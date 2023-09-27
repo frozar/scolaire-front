@@ -19,6 +19,7 @@ export default function (props: LeftMenuItemProps) {
   createEffect(() => {
     const onBoardMode = onBoard();
     if (!onBoardMode) {
+      setSelectedMenu("dashboard");
       return;
     }
     if (["line", "line-draw", "line-details"].includes(onBoardMode)) {

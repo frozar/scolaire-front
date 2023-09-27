@@ -1,15 +1,13 @@
-import { useStateGui } from "../../StateGui";
 import ArretsLogo from "../../icons/ArretsLogo";
 import DashboardLogo from "../../icons/DashboardLogo";
 import EtablissementLogo from "../../icons/EtablissementLogo";
 import GraphicageLogo from "../../icons/GraphicageLogo";
 import { MenuItemType } from "../../type";
+import { MapElementUtils } from "../../utils/mapElement.utils";
 import {
   changeBoard,
   onBoard,
 } from "../content/board/component/template/ContextManager";
-
-const [, { setSelectedMenu }] = useStateGui();
 
 const menuItems: MenuItemType[] = [
   {
@@ -18,7 +16,6 @@ const menuItems: MenuItemType[] = [
     label: "Dashboard",
     isDisabled: false,
     onClick: () => {
-      setSelectedMenu("dashboard");
       changeBoard(undefined);
     },
   },
@@ -30,6 +27,7 @@ const menuItems: MenuItemType[] = [
     onClick: () => {
       if (onBoard() != "line-draw") {
         changeBoard("line");
+        MapElementUtils.deselectAllPointsAndBusLines();
       }
     },
   },
@@ -40,6 +38,7 @@ const menuItems: MenuItemType[] = [
     isDisabled: false,
     onClick: () => {
       changeBoard("schools");
+      MapElementUtils.deselectAllPointsAndBusLines();
     },
   },
   {
@@ -49,6 +48,7 @@ const menuItems: MenuItemType[] = [
     isDisabled: false,
     onClick: () => {
       changeBoard("stops");
+      MapElementUtils.deselectAllPointsAndBusLines();
     },
   },
   // {

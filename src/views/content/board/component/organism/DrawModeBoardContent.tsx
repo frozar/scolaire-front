@@ -21,6 +21,7 @@ import { ColorPicker } from "../../../board/component/atom/ColorPicker";
 import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
 import CurvedLine from "../../../../../icons/CurvedLine";
 import SimpleLine from "../../../../../icons/SimpleLine";
+import { updatePointColor } from "../../../../../leafletUtils";
 import {
   disableSpinningWheel,
   enableSpinningWheel,
@@ -50,6 +51,7 @@ const [
     getLineUnderConstruction,
     setLineUnderConstruction,
     updateNameLineUnderConstruction,
+    setModeRead,
   },
 ] = useStateAction();
 
@@ -222,8 +224,6 @@ export default function () {
     </div>
   );
 }
-
-// TODO after creating line set it as selected and show the timeline in the information board in read mod
 async function createOrUpdateBusLine(busLine: BusLineType) {
   busLine.setSelected(true);
   if (busLine.id == undefined) {
@@ -236,7 +236,6 @@ async function createOrUpdateBusLine(busLine: BusLineType) {
   setDisplayLineMode((prev) =>
     prev == displayLineModeEnum.straight ? prev : displayLineModeEnum.straight
   );
-  changeBoard("line");
   selectedUpdatedBusLine(getBusLines().at(-1) as BusLineType);
 }
 
@@ -285,6 +284,9 @@ async function nextStep() {
       }
 
       await createOrUpdateBusLine(getLineUnderConstruction().busLine);
+      setModeRead();
+      changeBoard("line-details");
+      updatePointColor();
   }
   disableSpinningWheel();
 }

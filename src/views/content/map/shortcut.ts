@@ -12,6 +12,7 @@ import {
   getRemoveConfirmation,
 } from "../../../signaux";
 import { displayAddLineMessage } from "../../../userInformation/utils";
+import { MapElementUtils } from "../../../utils/mapElement.utils";
 import {
   currentStep,
   drawModeStep,
@@ -23,8 +24,6 @@ import {
   toggleDrawMod,
 } from "../board/component/template/ContextManager";
 import { displayedConfirmStopAddLine } from "./ConfirmStopAddLineBox";
-
-import { deselectAllBusLines } from "./component/organism/BusLines";
 
 import { deselectAllPoints } from "./component/organism/Points";
 import { COLOR_SCHOOL_FOCUS, COLOR_STOP_FOCUS } from "./constant";
@@ -84,10 +83,8 @@ function escapeHandler({ code }: KeyboardEvent) {
   if (code === "Escape") {
     deselectAllPoints();
     if (onBoard() != "line-draw") {
-      deselectAllBusLines();
-      setStopPointsColor([], COLOR_STOP_FOCUS);
-      setSchoolPointsColor([], COLOR_SCHOOL_FOCUS);
       changeBoard("line");
+      MapElementUtils.deselectAllPointsAndBusLines();
       return;
     }
 

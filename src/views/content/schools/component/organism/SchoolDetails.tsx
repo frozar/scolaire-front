@@ -4,6 +4,7 @@ import {
   SchoolEntity,
   SchoolType,
 } from "../../../../../_entities/school.entity";
+import { MapElementUtils } from "../../../../../utils/mapElement.utils";
 import { changeBoard } from "../../../board/component/template/ContextManager";
 import SchoolDetailsHeader from "../molecule/SchoolDetailsHeader";
 import SchoolDetailsPanelsButton from "../molecule/SchoolDetailsPanelsButton";
@@ -24,6 +25,7 @@ export default function () {
   onMount(() => {
     if (schoolDetailsItem() == undefined) {
       changeBoard("schools");
+      MapElementUtils.deselectAllPointsAndBusLines();
     }
   });
 

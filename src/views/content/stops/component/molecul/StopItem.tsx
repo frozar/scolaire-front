@@ -3,6 +3,7 @@ import { StopType } from "../../../../../_entities/stop.entity";
 import CardTitle from "../../../../../component/atom/CardTitle";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
 import TrashIcon from "../../../../../icons/TrashIcon";
+import { updatePointColor } from "../../../../../leafletUtils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { changeBoard } from "../../../board/component/template/ContextManager";
 import ClasseLinkedSchool from "../../../schools/component/atom/ClasseLinkedSchool";
@@ -24,6 +25,7 @@ export default function (props: StopItemProps) {
   const onClickEdit = () => {
     setStopDetailsItem(props.stop);
     changeBoard("stop-details");
+    updatePointColor(props.stop);
   };
 
   return (

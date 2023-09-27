@@ -6,10 +6,7 @@ import {
   BusLineType,
   WaypointType,
 } from "../../../../../_entities/bus-line.entity";
-import {
-  setSchoolPointsColor,
-  setStopPointsColor,
-} from "../../../../../leafletUtils";
+
 import { NatureEnum } from "../../../../../type";
 import { setPickerColor } from "../../../board/component/atom/ColorPicker";
 import {
@@ -18,16 +15,15 @@ import {
 } from "../../../board/component/template/ContextManager";
 import {
   COLOR_SCHOOL_FOCUS,
-  COLOR_SCHOOL_LIGHT,
   COLOR_STOP_EMPHASE,
   COLOR_STOP_FOCUS,
-  COLOR_STOP_LIGHT,
 } from "../../constant";
 import Line from "../atom/Line";
 import PolylineDragMarker from "../atom/PolylineDragMarker";
 import WaypointMarker from "../atom/WaypointMarker";
 import { deselectAllBusLines } from "../organism/BusLines";
 
+import { updatePointColor } from "../../../../../leafletUtils";
 import {
   currentStep,
   displayLineMode,
@@ -52,18 +48,15 @@ export type BusLineProps = {
 };
 
 export function onClickBusLine(line: BusLineType) {
-  changeBoard("line-details");
-
   if (onBoard() != "line-draw") {
     deselectAllBusLines();
     deselectAllPoints();
     setPickerColor(line.color());
     line.setSelected(true);
 
-    // TODO Refactor
-    const leafletIds = line.points.map((point) => point.leafletId);
-    setStopPointsColor(leafletIds, COLOR_STOP_LIGHT);
-    setSchoolPointsColor(leafletIds, COLOR_SCHOOL_LIGHT);
+    changeBoard("line-details");
+
+    updatePointColor();
   }
 }
 

@@ -11,6 +11,7 @@ import {
 import { BusLineService } from "../_services/bus-line.service";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { assertIsNode } from "../utils";
+import { MapElementUtils } from "../utils/mapElement.utils";
 import { changeBoard } from "../views/content/board/component/template/ContextManager";
 import {
   getBusLines,
@@ -55,6 +56,7 @@ export default function () {
       });
     }
     changeBoard("line");
+    MapElementUtils.deselectAllPointsAndBusLines();
   }
 
   function exitModal({ code }: KeyboardEvent) {

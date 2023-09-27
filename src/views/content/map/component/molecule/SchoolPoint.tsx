@@ -7,10 +7,7 @@ import {
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { StopType } from "../../../../../_entities/stop.entity";
 import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
-import {
-  setSchoolPointsColor,
-  setStopPointsColor,
-} from "../../../../../leafletUtils";
+import { updatePointColor } from "../../../../../leafletUtils";
 import {
   currentStep,
   displayLineMode,
@@ -22,11 +19,7 @@ import {
   onBoard,
 } from "../../../board/component/template/ContextManager";
 import { setSchoolDetailsItem } from "../../../schools/component/organism/SchoolDetails";
-import {
-  COLOR_SCHOOL_FOCUS,
-  COLOR_SCHOOL_LIGHT,
-  COLOR_STOP_LIGHT,
-} from "../../constant";
+import { COLOR_SCHOOL_FOCUS, COLOR_STOP_LIGHT } from "../../constant";
 import { setIsOverMapItem } from "../../l7MapBuilder";
 import Point from "../atom/Point";
 import { deselectAllBusLines } from "../organism/BusLines";
@@ -38,7 +31,6 @@ import {
   setBlinkingStops,
   setCursorIsOverPoint,
 } from "../organism/Points";
-import { getStops } from "../organism/StopPoints";
 import { draggingLine, setDraggingLine } from "./BusLine";
 
 const [
@@ -58,27 +50,14 @@ export interface SchoolPointProps {
 }
 
 const onClick = (point: SchoolType) => {
-  const ids: number[] = [point.leafletId];
-
-  for (const associated of point.associated) {
-    const school = getStops().filter((item) => item.id == associated.id)[0];
-    if (school != undefined) {
-      ids.push(school.leafletId);
-    }
-  }
-
-  const circle = linkMap.get(point.leafletId);
-  circle?.setStyle({ fillColor: COLOR_SCHOOL_FOCUS });
-
-  setSchoolPointsColor(ids, COLOR_SCHOOL_LIGHT);
-  setStopPointsColor(ids, COLOR_STOP_LIGHT);
-
   if (onBoard() != "line-draw") {
     deselectAllBusLines();
     deselectAllPoints();
     point.setSelected(true);
     setSchoolDetailsItem(point);
     changeBoard("school-details");
+    updatePointColor(point);
+
     return;
   }
 
