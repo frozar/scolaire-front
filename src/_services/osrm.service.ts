@@ -114,7 +114,7 @@ function getMetrics(
 
   const kmPassager = getKmPassagers(response, points, distance);
 
-  const txRemplissMoy = kmPassager / distance;
+  const txRemplissMoy = kmPassager / (distance / 1000);
   return { distance, duration, deviation, kmPassager, txRemplissMoy };
 }
 
@@ -129,6 +129,6 @@ function getKmPassagers(
     kmPassager += (points.at(k)?.quantity ?? 0) * (distance_restante ?? 0);
     distance_restante -= elem.distance;
   });
-
+  kmPassager = kmPassager / 1000;
   return kmPassager;
 }
