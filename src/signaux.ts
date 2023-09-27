@@ -61,7 +61,7 @@ export const [authenticated, setAuthenticated] = createSignal(false);
 
 export const [getRemoveConfirmation, setRemoveConfirmation] = createSignal({
   displayed: false,
-  idBusLine: null,
+  busLine: null,
 }) as Signal<removeConfirmationType>;
 
 export const [getImportCsvBox, setImportCsvBox] =
@@ -131,7 +131,7 @@ export function openImportCsvBox() {
 export function closeRemoveConfirmationBox() {
   setRemoveConfirmation({
     displayed: false,
-    idBusLine: null,
+    busLine: null,
   });
 }
 export function closeRemoveRamassageConfirmationBox() {

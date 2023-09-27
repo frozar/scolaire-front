@@ -169,10 +169,6 @@ const makeStateActionContext = () => {
     });
   }
 
-  function setModeRemoveLine() {
-    changeMode(ModeEnum.removeLine);
-  }
-
   function setModeAddLine() {
     setDisplayedInformationBoard(true);
     changeMode(ModeEnum.addLine);
@@ -184,10 +180,6 @@ const makeStateActionContext = () => {
 
   function isInAddLineMode() {
     return state.mode === ModeEnum.addLine;
-  }
-
-  function isInRemoveLineMode() {
-    return state.mode === ModeEnum.removeLine;
   }
 
   function isInReadMode() {
@@ -204,11 +196,9 @@ const makeStateActionContext = () => {
       getLineUnderConstruction,
       resetLineUnderConstruction,
       setLineUnderConstruction,
-      setModeRemoveLine,
       setModeAddLine,
       setModeRead,
       isInAddLineMode,
-      isInRemoveLineMode,
       isInReadMode,
       setLineUnderConstructionNextIndex,
       removePointToLineUnderConstruction,

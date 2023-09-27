@@ -86,7 +86,7 @@ export type userInformationType = {
 
 export type removeConfirmationType = {
   displayed: boolean;
-  idBusLine: number | null;
+  busLine: BusLineType | null;
 };
 
 export type removeRamassageConfirmationType = {
