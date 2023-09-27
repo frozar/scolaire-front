@@ -17,9 +17,6 @@ export interface LeftMenuItemProps {
 export default function (props: LeftMenuItemProps) {
   const mergedProps = mergeProps({ getSelectedMenu, setSelectedMenu }, props);
   createEffect(() => {
-    console.log("createEffect");
-    console.log("onBoard()", onBoard());
-
     const onBoardMode = onBoard();
     if (!onBoardMode) {
       setSelectedMenu("dashboard");
