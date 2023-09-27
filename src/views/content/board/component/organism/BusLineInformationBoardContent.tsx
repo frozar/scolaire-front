@@ -29,7 +29,7 @@ export function BusLineInformationBoardContent() {
         <Metrics line={getSelectedBusLine()} />
       </CollapsibleElement>
 
-      <CollapsibleElement title="TimeLine">
+      <CollapsibleElement title="TimeLine" class="timeline-collapsise">
         <Timeline />
       </CollapsibleElement>
     </div>

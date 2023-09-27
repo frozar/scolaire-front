@@ -4,7 +4,11 @@ import CollapseLogo from "../../../../../icons/CollapseLogo";
 import UncollapseLogo from "../../../../../icons/UncollapseLogo";
 import "./CollapsibleElement.css";
 
-export default function (props: { children: JSXElement; title: string }) {
+export default function (props: {
+  children: JSXElement;
+  title: string;
+  class?: string;
+}) {
   const [accordion, setAccordion] = createSignal<HTMLElement | undefined>();
   const [child, setChild] = createSignal<HTMLElement | undefined>();
 
@@ -21,7 +25,7 @@ export default function (props: { children: JSXElement; title: string }) {
   });
 
   return (
-    <div class="collapsible-element">
+    <div class={"collapsible-element " + (props.class ?? "")}>
       <button ref={setAccordion} class="accordion">
         {props.title}
         <div class="button-icon">
