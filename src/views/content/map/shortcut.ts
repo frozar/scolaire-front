@@ -12,7 +12,7 @@ import {
   getRemoveConfirmation,
 } from "../../../signaux";
 import { displayAddLineMessage } from "../../../userInformation/utils";
-import { OnMapElementUtils } from "../../../utils/onMapElement.utils";
+import { MapElementUtils } from "../../../utils/mapElement.utils";
 import {
   currentStep,
   drawModeStep,
@@ -84,7 +84,7 @@ function escapeHandler({ code }: KeyboardEvent) {
     deselectAllPoints();
     if (onBoard() != "line-draw") {
       changeBoard("line");
-      OnMapElementUtils.deselectAllPointsAndBusLines();
+      MapElementUtils.deselectAllPointsAndBusLines();
       return;
     }
 

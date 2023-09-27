@@ -2,7 +2,7 @@ import { Match, Show, Switch, createSignal, onMount } from "solid-js";
 import { AssociatedPointType } from "../../../../../_entities/_utils.entity";
 import { StopType } from "../../../../../_entities/stop.entity";
 import PlusIcon from "../../../../../icons/PlusIcon";
-import { OnMapElementUtils } from "../../../../../utils/onMapElement.utils";
+import { MapElementUtils } from "../../../../../utils/mapElement.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { changeBoard } from "../../../board/component/template/ContextManager";
 import { getBusLines } from "../../../map/component/organism/BusLines";
@@ -25,7 +25,7 @@ export default function () {
   onMount(() => {
     if (stopDetailsItem() == undefined) {
       changeBoard("schools");
-      OnMapElementUtils.deselectAllPointsAndBusLines();
+      MapElementUtils.deselectAllPointsAndBusLines();
     }
   });
 

@@ -6,7 +6,7 @@ import {
 } from "../../../../../_entities/school.entity";
 import CardTitle from "../../../../../component/atom/CardTitle";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
-import { updateOnMapPointColor } from "../../../../../leafletUtils";
+import { updatePointColor } from "../../../../../leafletUtils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { changeBoard } from "../../../board/component/template/ContextManager";
 import { setSchoolDetailsItem } from "../organism/SchoolDetails";
@@ -30,7 +30,7 @@ export default function (props: SchoolItemProps) {
     // TODO: setup board manager for school
     setSchoolDetailsItem(props.school);
     changeBoard("school-details");
-    updateOnMapPointColor(props.school);
+    updatePointColor(props.school);
   }
 
   return (

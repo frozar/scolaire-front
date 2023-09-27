@@ -36,7 +36,7 @@ export function setSchoolPointsColor(leafletIds: number[], color: string) {
   });
 }
 
-export function updateOnMapPointColor(point?: PointType) {
+export function updatePointColor(point?: PointType) {
   const ids: number[] = [];
   if (point) {
     ids.push(point.leafletId);

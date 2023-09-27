@@ -7,7 +7,7 @@ import {
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { StopType } from "../../../../../_entities/stop.entity";
 import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
-import { updateOnMapPointColor } from "../../../../../leafletUtils";
+import { updatePointColor } from "../../../../../leafletUtils";
 import {
   currentStep,
   displayLineMode,
@@ -56,7 +56,7 @@ const onClick = (point: SchoolType) => {
     point.setSelected(true);
     setSchoolDetailsItem(point);
     changeBoard("school-details");
-    updateOnMapPointColor(point);
+    updatePointColor(point);
 
     return;
   }

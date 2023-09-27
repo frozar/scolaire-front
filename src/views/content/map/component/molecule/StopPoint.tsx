@@ -14,7 +14,7 @@ import {
   updatePolylineWithOsrm,
 } from "../../../../../_entities/bus-line.entity";
 import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
-import { updateOnMapPointColor } from "../../../../../leafletUtils";
+import { updatePointColor } from "../../../../../leafletUtils";
 import {
   displayLineMode,
   displayLineModeEnum,
@@ -87,7 +87,7 @@ function onClick(point: StopType) {
     point.setSelected(true);
     setStopDetailsItem(point);
     changeBoard("stop-details");
-    updateOnMapPointColor(point);
+    updatePointColor(point);
 
     return;
   }

@@ -21,7 +21,7 @@ import { ColorPicker } from "../../../board/component/atom/ColorPicker";
 import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
 import CurvedLine from "../../../../../icons/CurvedLine";
 import SimpleLine from "../../../../../icons/SimpleLine";
-import { updateOnMapPointColor } from "../../../../../leafletUtils";
+import { updatePointColor } from "../../../../../leafletUtils";
 import {
   disableSpinningWheel,
   enableSpinningWheel,
@@ -286,7 +286,7 @@ async function nextStep() {
       await createOrUpdateBusLine(getLineUnderConstruction().busLine);
       setModeRead();
       changeBoard("line-details");
-      updateOnMapPointColor();
+      updatePointColor();
   }
   disableSpinningWheel();
 }
