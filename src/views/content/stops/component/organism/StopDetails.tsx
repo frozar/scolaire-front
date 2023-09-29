@@ -48,7 +48,7 @@ export default function () {
     <section>
       <StopDetailsHeader stop={stopDetailsItem() as StopType} />
 
-      <p>TODO élèves</p>
+      {/* TODO <p>TODO élèves</p> */}
 
       <div class="stop-details-actions">
         <StopDetailsPanelsButton
