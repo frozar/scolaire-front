@@ -51,7 +51,7 @@ export default function () {
 
       <div class="content">
         <div class="line-height-1">
-          <p>Ecoles:</p>
+          <p>Ecole:</p>
           <ClasseLinkedSchool schools={[schoolDetailsItem()?.name as string]} />
         </div>
 
