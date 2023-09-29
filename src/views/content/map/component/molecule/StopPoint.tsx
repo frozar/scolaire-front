@@ -96,20 +96,28 @@ function onClick(point: StopType) {
 
   // TODO: when add line with an etablissement point the line destroy after next point click
   // Wait Richard/Hugo finish the line underconstruction
+  const lastPoint = getLineUnderConstruction().busLine.points.at(-1);
+  addPointToLineUnderConstruction({ ...point, quantity: associatedQuantity }); // ! Y intégrer ça ?
+  // ! if points.length > 0 ?
+  // ! changer aussi au niveau de schoolPooint
+  // ! change conditions
+  console.log("lastPoint", lastPoint);
   console.log("point.leafletId", point.leafletId);
   console.log(
     "last point.leafletId",
     getLineUnderConstruction().busLine.points.at(-1)?.leafletId
   );
-  addPointToLineUnderConstruction({ ...point, quantity: associatedQuantity }); // ! Y intégrer ça ?
-  // ! if points.length > 0 ?
-  // ! changer aussi au niveau de schoolPooint
-  // ! change conditions
-  const lastPoint = getLineUnderConstruction().busLine.points.at(-1);
-  if (Number(point.leafletId) != Number(lastPoint?.leafletId)) {
-    // ! ????
+  if (lastPoint == undefined) {
+    console.log("in if 1");
 
-    console.log("in if");
+    updateWaypoints(point);
+    if (displayLineMode() == displayLineModeEnum.onRoad) {
+      updatePolylineWithOsrm(getLineUnderConstruction().busLine);
+    }
+  } else if (point.leafletId != lastPoint.leafletId) {
+    // } else if (point.leafletId != 99999) {
+    // } else if (99999 != lastPoint.leafletId) {
+    console.log("in if 2");
 
     updateWaypoints(point);
     if (displayLineMode() == displayLineModeEnum.onRoad) {
@@ -126,6 +134,7 @@ function onClick(point: StopType) {
     return;
   }
   // ! console.log waypoints et points pour vérif que correspond tjrs
+  console.log("waypoints", getLineUnderConstruction().busLine.waypoints);
 }
 
 const onMouseOver = (stop: StopType) => {
