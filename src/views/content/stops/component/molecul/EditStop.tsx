@@ -1,10 +1,10 @@
 import { createSignal } from "solid-js";
 import { SchoolType } from "../../../../../_entities/school.entity";
-import { ServiceUtils } from "../../../../../_services/_utils.service";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
 import CheckIcon from "../../../../../icons/CheckIcon";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { getSchools } from "../../../map/component/organism/SchoolPoints";
+import ClasseSelection from "../atom/ClasseSelection";
 import SchoolSelect from "../atom/SchoolSelect";
 import "./EditStop.css";
 
@@ -19,6 +19,9 @@ export default function (props: EditStopProps) {
   const [schoolSelectRef, setSchoolSelectRef] = createSignal<HTMLSelectElement>(
     document.createElement("select")
   );
+  const [classeSelectRef, setClasseSelectRef] = createSignal<HTMLSelectElement>(
+    document.createElement("select")
+  );
 
   const [quantityInputRef, setQuantityInputRef] =
     createSignal<HTMLInputElement>(document.createElement("input"));
@@ -31,19 +34,23 @@ export default function (props: EditStopProps) {
     if (selectedSchool) setDisabled((bool) => !bool);
   };
 
-  // TODO review with classe
   async function validate() {
-    const response = await ServiceUtils.post("/student-to-school", {
-      school_id: selectedSchool.id,
-      stop_id: props.stopID,
-      quantity: quantityInputRef().value,
-    });
-
-    console.log(response);
+    // TODO make request to add student quantity from class of school to the stop
+    console.log("selected school", schoolSelectRef().value);
+    console.log(
+      "selected class",
+      classeSelectRef().value == ""
+        ? "no classe selected"
+        : classeSelectRef().value
+    );
+    console.log("choosen student quantity", quantityInputRef().value);
 
     props.close();
   }
 
+  function onChangeSelectClasse() {
+    console.log("on change classe select");
+  }
   return (
     <CardWrapper class="edit-stop">
       <div class="flex justify-between my-2">
@@ -56,15 +63,18 @@ export default function (props: EditStopProps) {
         <ButtonIcon icon={<CheckIcon />} onClick={validate} />
       </div>
 
-      <div class="flex gap-1 w-[90%]">
+      <div class="flex gap-1 w-[100%]">
         {/* TODO Review to add loop on school classe */}
-        <select disabled={disabled()}>
-          <option value="default">Selectionner une classe</option>
-        </select>
-
+        <ClasseSelection
+          refSelectSetter={setClasseSelectRef}
+          classes={[]}
+          onChange={onChangeSelectClasse}
+          disabled={disabled()}
+        />
         <input
           ref={setQuantityInputRef}
-          class="input-form"
+          class="input-form w-full"
+          min={0}
           type="number"
           placeholder="Quantité"
           disabled={disabled()}
