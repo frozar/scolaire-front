@@ -96,16 +96,36 @@ function onClick(point: StopType) {
 
   // TODO: when add line with an etablissement point the line destroy after next point click
   // Wait Richard/Hugo finish the line underconstruction
-  addPointToLineUnderConstruction({ ...point, quantity: associatedQuantity });
-  updateWaypoints(point);
-  if (displayLineMode() == displayLineModeEnum.onRoad) {
-    updatePolylineWithOsrm(getLineUnderConstruction().busLine);
+  console.log("point.leafletId", point.leafletId);
+  console.log(
+    "last point.leafletId",
+    getLineUnderConstruction().busLine.points.at(-1)?.leafletId
+  );
+  addPointToLineUnderConstruction({ ...point, quantity: associatedQuantity }); // ! Y intégrer ça ?
+  // ! if points.length > 0 ?
+  // ! changer aussi au niveau de schoolPooint
+  // ! change conditions
+  const lastPoint = getLineUnderConstruction().busLine.points.at(-1);
+  if (Number(point.leafletId) != Number(lastPoint?.leafletId)) {
+    // ! ????
+
+    console.log("in if");
+
+    updateWaypoints(point);
+    if (displayLineMode() == displayLineModeEnum.onRoad) {
+      updatePolylineWithOsrm(getLineUnderConstruction().busLine);
+    }
   }
+  // updateWaypoints(point);
+  // if (displayLineMode() == displayLineModeEnum.onRoad) {
+  //   updatePolylineWithOsrm(getLineUnderConstruction().busLine);
+  // }
 
   //TODO pourquoi cette condition ?
   if (!(1 < getLineUnderConstruction().busLine.points.length)) {
     return;
   }
+  // ! console.log waypoints et points pour vérif que correspond tjrs
 }
 
 const onMouseOver = (stop: StopType) => {

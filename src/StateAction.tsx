@@ -81,6 +81,7 @@ const makeStateActionContext = () => {
       (line: BusLinePointType[]) => {
         const res = [...line];
         if (!_.isEqual(line.at(-1), point)) {
+          // ! problème içi ?
           const indice = state.lineUnderConstruction.nextIndex;
           res.splice(indice, 0, point);
         }
