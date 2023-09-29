@@ -1,10 +1,9 @@
 import { useStateAction } from "../../../../../StateAction";
 import { BusLineType } from "../../../../../_entities/bus-line.entity";
-import { deselectAllBusLines } from "../../../map/component/organism/BusLines";
 
 import { createSignal } from "solid-js";
 import UpdateButton from "../../../../../icons/UpdatePen";
-import { deselectAllPoints } from "../../../map/component/organism/Points";
+import { MapElementUtils } from "../../../../../utils/mapElement.utils";
 import { drawModeStep, setCurrentStep } from "../organism/DrawModeBoardContent";
 import { changeBoard, toggleDrawMod } from "../template/ContextManager";
 import "./DrawUpdateButton.css";
@@ -23,8 +22,7 @@ export default function (props: { busLine: BusLineType }) {
     const [color, setColor] = createSignal<string>(props.busLine.color());
     setUnmodifiedBusLine({ ...props.busLine, color, setColor });
 
-    deselectAllPoints();
-    deselectAllBusLines();
+    MapElementUtils.deselectAllPointsAndBusLines();
     toggleDrawMod();
     setCurrentStep(drawModeStep.editLine);
     changeBoard("line-draw");
