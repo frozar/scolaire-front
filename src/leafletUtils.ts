@@ -1,4 +1,3 @@
-import { useStateAction } from "./StateAction";
 import { PointType } from "./_entities/_utils.entity";
 import { NatureEnum } from "./type";
 import { getSelectedBusLine } from "./views/content/map/component/organism/BusLines";
@@ -11,10 +10,8 @@ import {
   COLOR_STOP_FOCUS,
   COLOR_STOP_LIGHT,
 } from "./views/content/map/constant";
-const [, { isInAddLineMode }] = useStateAction();
 
 export function setStopPointsColor(leafletIds: number[], color: string) {
-  if (isInAddLineMode()) return;
   getStops().map((stop) => {
     const circle = linkMap.get(stop.leafletId);
     if (!leafletIds.includes(stop.leafletId)) {
@@ -25,7 +22,6 @@ export function setStopPointsColor(leafletIds: number[], color: string) {
   });
 }
 export function setSchoolPointsColor(leafletIds: number[], color: string) {
-  if (isInAddLineMode()) return;
   getSchools().map((school) => {
     const circle = linkMap.get(school.leafletId);
     if (!leafletIds.includes(school.leafletId)) {

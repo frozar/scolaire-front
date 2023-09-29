@@ -81,15 +81,12 @@ function escapeHandler({ code }: KeyboardEvent) {
   }
 
   if (code === "Escape") {
-    deselectAllPoints();
-    if (onBoard() != "line-draw") {
-      changeBoard("line");
-      MapElementUtils.deselectAllPointsAndBusLines();
-      return;
+    if (onBoard() == "line-draw") {
+      quitModeAddLine();
+      setCurrentStep(drawModeStep.start);
     }
-
-    quitModeAddLine();
-    setCurrentStep(drawModeStep.start);
+    changeBoard("line");
+    MapElementUtils.deselectAllPointsAndBusLines();
 
     //TODO voir l'impact de la suppression
     // fetchBusLines();
