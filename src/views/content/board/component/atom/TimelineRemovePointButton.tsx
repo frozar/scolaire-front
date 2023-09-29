@@ -6,9 +6,9 @@ import {
   updatePolylineWithOsrm,
 } from "../../../../../_entities/bus-line.entity";
 import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
-import { LineUnderConstructionType } from "../../../../../type";
+import { LineUnderConstructionType, NatureEnum } from "../../../../../type";
 import { linkMap } from "../../../map/component/organism/Points";
-import { COLOR_STOP_LIGHT } from "../../../map/constant";
+import { COLOR_SCHOOL_FOCUS, COLOR_STOP_FOCUS } from "../../../map/constant";
 import {
   displayLineMode,
   displayLineModeEnum,
@@ -25,12 +25,15 @@ export function TimelineRemovePointButton(props: {
   setter: (line: LineUnderConstructionType) => void;
 }) {
   const deletePoint = (id: number) => {
-    const circle = linkMap.get(props.getter().busLine.points[id].leafletId);
-    circle?.setStyle({ fillColor: COLOR_STOP_LIGHT });
-
     const stops = [...props.getter().busLine.points];
     const pointId = stops[id].id;
     const nature = stops[id].nature;
+
+    const circle = linkMap.get(props.getter().busLine.points[id].leafletId);
+    nature == NatureEnum.stop
+      ? circle?.setStyle({ fillColor: COLOR_STOP_FOCUS })
+      : circle?.setStyle({ fillColor: COLOR_SCHOOL_FOCUS });
+
     stops.splice(id, 1);
     props.setter({
       ...props.getter(),

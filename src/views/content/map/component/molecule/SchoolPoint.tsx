@@ -19,7 +19,7 @@ import {
   onBoard,
 } from "../../../board/component/template/ContextManager";
 import { setSchoolDetailsItem } from "../../../schools/component/organism/SchoolDetails";
-import { COLOR_SCHOOL_FOCUS, COLOR_STOP_LIGHT } from "../../constant";
+import { COLOR_SCHOOL_FOCUS } from "../../constant";
 import { setIsOverMapItem } from "../../l7MapBuilder";
 import Point from "../atom/Point";
 import { deselectAllBusLines } from "../organism/BusLines";
@@ -170,7 +170,7 @@ const onRightClick = (point: SchoolType) => {
       }
     }
 
-    circle?.setStyle({ fillColor: COLOR_STOP_LIGHT });
+    circle?.setStyle({ fillColor: COLOR_SCHOOL_FOCUS });
   }
 };
 

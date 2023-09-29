@@ -191,7 +191,7 @@ export function StopPoint(props: StopPointProps) {
         }
       }
 
-      circle?.setStyle({ fillColor: COLOR_STOP_LIGHT });
+      circle?.setStyle({ fillColor: COLOR_STOP_FOCUS });
     }
   };
 
