@@ -43,6 +43,7 @@ import LabeledInputField from "../molecule/LabeledInputField";
 import SchoolsEnumeration from "../molecule/SchoolsEnumeration";
 import { changeBoard } from "../template/ContextManager";
 import CollapsibleElement from "./CollapsibleElement";
+import "./DrawModeBoardContent.css";
 import Metrics from "./Metrics";
 import Timeline from "./Timeline";
 
