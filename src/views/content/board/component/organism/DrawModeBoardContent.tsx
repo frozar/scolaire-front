@@ -12,7 +12,7 @@ import {
 } from "../../../../../_entities/bus-line.entity";
 import { BusLineService } from "../../../../../_services/bus-line.service";
 
-import DrawModeBoardContentFooter from "./DrawModeBoardContentFooter";
+import DrawModeBoardContentFooter from "../molecule/BoardFooterActions";
 
 import "../../../../../css/timeline.css";
 import { LineUnderConstructionType } from "../../../../../type";
