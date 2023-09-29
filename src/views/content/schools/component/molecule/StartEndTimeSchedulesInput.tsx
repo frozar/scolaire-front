@@ -14,9 +14,11 @@ export default function (props: TimeSchedulesInputProps) {
   function validateSchedule(schedule: string) {
     const [houre, minute] = schedule.split(":");
     if (isNaN(Number(houre)) || isNaN(Number(minute))) return false;
+    const roundedMinute = Math.round(Number(minute) / 5) * 5;
+
     return {
       hour: Number(houre),
-      minutes: Number(minute),
+      minutes: Number(roundedMinute),
     };
   }
 
