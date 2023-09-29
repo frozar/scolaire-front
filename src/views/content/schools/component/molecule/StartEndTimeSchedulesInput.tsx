@@ -41,6 +41,7 @@ export default function (props: TimeSchedulesInputProps) {
 
     if (houre.length == 1) houre = "0" + houre;
     if (minutes.length == 1) minutes = "0" + minutes;
+    if (Number(minutes) > 59) minutes = "59";
     return houre + ":" + minutes;
   }
 
