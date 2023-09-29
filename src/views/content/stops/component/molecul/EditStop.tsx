@@ -36,6 +36,10 @@ export default function (props: EditStopProps) {
 
   async function validate() {
     // TODO make request to add student quantity from class of school to the stop
+    console.log(
+      "TODO make request to add student quantity from class of school to the stop"
+    );
+
     console.log("selected school", schoolSelectRef().value);
     console.log(
       "selected class",
