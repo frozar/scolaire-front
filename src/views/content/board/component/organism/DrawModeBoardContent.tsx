@@ -26,6 +26,7 @@ import {
   disableSpinningWheel,
   enableSpinningWheel,
 } from "../../../../../signaux";
+import { MapElementUtils } from "../../../../../utils/mapElement.utils";
 import {
   getBusLines,
   setBusLines,
@@ -40,7 +41,7 @@ import {
 import ButtonIcon from "../molecule/ButtonIcon";
 import LabeledInputField from "../molecule/LabeledInputField";
 import SchoolsEnumeration from "../molecule/SchoolsEnumeration";
-import { changeBoard, setOnBoard } from "../template/ContextManager";
+import { changeBoard } from "../template/ContextManager";
 import CollapsibleElement from "./CollapsibleElement";
 import Metrics from "./Metrics";
 import Timeline from "./Timeline";
@@ -51,7 +52,6 @@ const [
     getLineUnderConstruction,
     setLineUnderConstruction,
     updateNameLineUnderConstruction,
-    setModeRead,
   },
 ] = useStateAction();
 
@@ -285,7 +285,7 @@ async function nextStep() {
       }
 
       await createOrUpdateBusLine(getLineUnderConstruction().busLine);
-      setModeRead();
+      // setModeRead(); // ! Suppr
       changeBoard("line-details");
       updatePointColor();
   }
@@ -295,15 +295,21 @@ async function nextStep() {
 function prevStep() {
   switch (currentStep()) {
     case drawModeStep.schoolSelection:
+      console.log("case création de lignes");
+
       setLineUnderConstruction(defaultLineUnderConstruction());
       quitModeAddLine();
 
       setCurrentStep(drawModeStep.start);
-      setOnBoard("line");
+      // setOnBoard("line");
+      changeBoard("line");
+      MapElementUtils.deselectAllPointsAndBusLines();
+
       break;
     case drawModeStep.editLine:
       const busLine = unmodifiedBusLine();
       if (busLine) {
+        console.log("case modification de lignes");
         setBusLines((buslines) => {
           buslines = [
             ...buslines.filter(
