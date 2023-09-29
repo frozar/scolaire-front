@@ -77,7 +77,7 @@ export default function (props: EditStopProps) {
 
     if (
       schoolSelectRef().value == "" ||
-      quantityInputRef().value == "" ||
+      quantityInputRef().value == "0" ||
       classeSelectRef().value == "default" ||
       classeSelectRef().value == ""
     ) {
