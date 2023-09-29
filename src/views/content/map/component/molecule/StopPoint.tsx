@@ -98,37 +98,13 @@ function onClick(point: StopType) {
   // Wait Richard/Hugo finish the line underconstruction
   const lastPoint = getLineUnderConstruction().busLine.points.at(-1);
   addPointToLineUnderConstruction({ ...point, quantity: associatedQuantity }); // ! Y intégrer ça ?
-  // ! if points.length > 0 ?
   // ! changer aussi au niveau de schoolPooint
-  // ! change conditions
-  console.log("lastPoint", lastPoint);
-  console.log("point.leafletId", point.leafletId);
-  console.log(
-    "last point.leafletId",
-    getLineUnderConstruction().busLine.points.at(-1)?.leafletId
-  );
   if (lastPoint == undefined || point.leafletId != lastPoint.leafletId) {
-    console.log("in if 1");
-
     updateWaypoints(point);
     if (displayLineMode() == displayLineModeEnum.onRoad) {
       updatePolylineWithOsrm(getLineUnderConstruction().busLine);
     }
   }
-  // else if (point.leafletId != lastPoint.leafletId) {
-  //   // } else if (point.leafletId != 99999) {
-  //   // } else if (99999 != lastPoint.leafletId) {
-  //   console.log("in if 2");
-
-  //   updateWaypoints(point);
-  //   if (displayLineMode() == displayLineModeEnum.onRoad) {
-  //     updatePolylineWithOsrm(getLineUnderConstruction().busLine);
-  //   }
-  // }
-  // updateWaypoints(point);
-  // if (displayLineMode() == displayLineModeEnum.onRoad) {
-  //   updatePolylineWithOsrm(getLineUnderConstruction().busLine);
-  // }
 
   //TODO pourquoi cette condition ?
   if (!(1 < getLineUnderConstruction().busLine.points.length)) {
