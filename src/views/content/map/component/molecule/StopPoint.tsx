@@ -107,23 +107,24 @@ function onClick(point: StopType) {
     "last point.leafletId",
     getLineUnderConstruction().busLine.points.at(-1)?.leafletId
   );
-  if (lastPoint == undefined) {
+  if (lastPoint == undefined || point.leafletId != lastPoint.leafletId) {
     console.log("in if 1");
 
     updateWaypoints(point);
     if (displayLineMode() == displayLineModeEnum.onRoad) {
       updatePolylineWithOsrm(getLineUnderConstruction().busLine);
     }
-  } else if (point.leafletId != lastPoint.leafletId) {
-    // } else if (point.leafletId != 99999) {
-    // } else if (99999 != lastPoint.leafletId) {
-    console.log("in if 2");
-
-    updateWaypoints(point);
-    if (displayLineMode() == displayLineModeEnum.onRoad) {
-      updatePolylineWithOsrm(getLineUnderConstruction().busLine);
-    }
   }
+  // else if (point.leafletId != lastPoint.leafletId) {
+  //   // } else if (point.leafletId != 99999) {
+  //   // } else if (99999 != lastPoint.leafletId) {
+  //   console.log("in if 2");
+
+  //   updateWaypoints(point);
+  //   if (displayLineMode() == displayLineModeEnum.onRoad) {
+  //     updatePolylineWithOsrm(getLineUnderConstruction().busLine);
+  //   }
+  // }
   // updateWaypoints(point);
   // if (displayLineMode() == displayLineModeEnum.onRoad) {
   //   updatePolylineWithOsrm(getLineUnderConstruction().busLine);
