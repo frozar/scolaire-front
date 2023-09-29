@@ -12,7 +12,7 @@ import {
 } from "../../../../../_entities/bus-line.entity";
 import { BusLineService } from "../../../../../_services/bus-line.service";
 
-import DrawModeBoardContentFooter from "./DrawModeBoardContentFooter";
+import BoardFooterActions from "../molecule/BoardFooterActions";
 
 import "../../../../../css/timeline.css";
 import { LineUnderConstructionType } from "../../../../../type";
@@ -160,6 +160,7 @@ export default function () {
           <Metrics line={getLineUnderConstruction().busLine} />
         </CollapsibleElement>
         <LabeledInputField
+          label="Nom de la ligne"
           value={lineName()}
           onInput={(e) => setLineName(e.target.value)}
           name="line-name"
@@ -208,7 +209,7 @@ export default function () {
         </div>
       </Show>
 
-      <DrawModeBoardContentFooter
+      <BoardFooterActions
         nextStep={{
           callback: nextStep,
           label: currentStep() == drawModeStep.editLine ? "Valider" : "Suivant",

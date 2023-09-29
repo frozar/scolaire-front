@@ -18,15 +18,6 @@
   @apply flex flex-col h-full;
 }
 
-.bus-line-information-board-content-title {
-@apply flex;
-justify-content: space-between
-}
-
-.bus-line-information-board-content-name{
-  @apply text-2xl mb-4 mt-4 text-blue-base
-}
-
 .bus-line-information-board-content-schools{
   @apply flex;
   width: 100%;

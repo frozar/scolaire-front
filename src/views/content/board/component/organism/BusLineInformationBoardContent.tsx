@@ -6,8 +6,8 @@ import Timeline from "./Timeline";
 
 import { getSelectedBusLine } from "../../../map/component/organism/BusLines";
 import RemoveLineButton from "../atom/RemoveLineButton";
+import "./BusLineInformationBoardContent.css";
 import CollapsibleElement from "./CollapsibleElement";
-
 export function BusLineInformationBoardContent() {
   return (
     <div class="bus-line-information-board-content">

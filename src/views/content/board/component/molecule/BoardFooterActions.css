@@ -1,0 +1,3 @@
+.board-footer-actions{
+   @apply flex items-center w-[98%] left-0 bottom-1 justify-between absolute;
+}

@@ -1,5 +1,5 @@
 .breadcrumb{
-  @apply text-green-base ;
+  @apply text-green-base flex gap-1;
 }
 
 .sub-crumb{

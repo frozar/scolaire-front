@@ -1,3 +1,11 @@
 .timeline-collapsise{
   @apply flex-[0.95] overflow-y-hidden flex flex-col;
 }
+
+.bus-line-information-board-content-title {
+  @apply flex justify-between;
+}
+
+.bus-line-information-board-content-name{
+  @apply text-2xl mb-4 mt-4 text-blue-base
+}

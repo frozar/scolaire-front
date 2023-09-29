@@ -10,12 +10,13 @@ export interface LabeledInputFieldProps {
       target: HTMLInputElement;
     }
   ) => void;
+  label: string;
 }
 
 export default function (props: LabeledInputFieldProps) {
   return (
     <div class="labeled-input-field">
-      <Label label="Nom de la ligne" for={props.name} />
+      <Label label={props.label} for={props.name} />
       <input
         id={props.name}
         type="text"

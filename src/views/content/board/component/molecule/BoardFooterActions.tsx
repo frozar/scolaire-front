@@ -1,13 +1,14 @@
 import Button from "../../../../../component/atom/Button";
-import "./DrawModeBoardContent.css";
+import "./BoardFooterActions.css";
 
 export type addLineButtonType = { callback: () => void; label: string };
+
 export default function (props: {
   nextStep: addLineButtonType;
   previousStep: addLineButtonType;
 }) {
   return (
-    <div class="add-line-information-board-content-buttons">
+    <div class="board-footer-actions">
       <Button
         onClick={props.previousStep.callback}
         label={props.previousStep.label}
