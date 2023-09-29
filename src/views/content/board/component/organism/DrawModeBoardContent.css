@@ -10,7 +10,7 @@
 }
 
 .add-line-information-board-content > .bus-line-information-board-content {
-  flex: 0.88;
+  flex: 0.85;
   @apply overflow-y-auto mt-5
 }
 
