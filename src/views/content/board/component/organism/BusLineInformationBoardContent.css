@@ -2,6 +2,10 @@
   @apply flex-[0.95] overflow-y-hidden flex flex-col;
 }
 
+.bus-line-information-board-content{
+  @apply flex flex-col h-full;
+}
+
 .bus-line-information-board-content-title {
   @apply flex justify-between;
 }
