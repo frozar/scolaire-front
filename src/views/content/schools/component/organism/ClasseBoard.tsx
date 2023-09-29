@@ -13,12 +13,19 @@ export type HeureFormat = {
 };
 
 export default function () {
+  const defaultTime = {
+    hour: 0,
+    minutes: 0,
+  };
   const [classeName, setClasseName] = createSignal("Nom de classe par défaut");
 
-  const [morningStart, setMorningStart] = createSignal<HeureFormat>();
-  const [morningEnd, setMorningEnd] = createSignal<HeureFormat>();
-  const [afternoonEnd, setAfternoonEnd] = createSignal<HeureFormat>();
-  const [afternoonStart, setAfternoonStart] = createSignal<HeureFormat>();
+  const [morningStart, setMorningStart] =
+    createSignal<HeureFormat>(defaultTime);
+  const [morningEnd, setMorningEnd] = createSignal<HeureFormat>(defaultTime);
+  const [afternoonEnd, setAfternoonEnd] =
+    createSignal<HeureFormat>(defaultTime);
+  const [afternoonStart, setAfternoonStart] =
+    createSignal<HeureFormat>(defaultTime);
 
   function onInputClasseName(
     e: Event & {
