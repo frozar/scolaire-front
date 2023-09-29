@@ -1,5 +1,7 @@
 import { createSignal } from "solid-js";
+import BoardFooterActions from "../../../board/component/molecule/BoardFooterActions";
 import LabeledInputField from "../../../board/component/molecule/LabeledInputField";
+import { changeBoard } from "../../../board/component/template/ContextManager";
 import ClasseLinkedSchool from "../atom/ClasseLinkedSchool";
 import ClasseBoardHeader from "../molecule/ClasseBoardHeader";
 import TimesInputWrapper from "../molecule/TimesInputWrapper";
@@ -11,7 +13,7 @@ export type HeureFormat = {
 };
 
 export default function () {
-  const [classeName, setClasseName] = createSignal("");
+  const [classeName, setClasseName] = createSignal("Nom de classe par défaut");
 
   const [morningStart, setMorningStart] = createSignal<HeureFormat>();
   const [morningEnd, setMorningEnd] = createSignal<HeureFormat>();
@@ -24,6 +26,16 @@ export default function () {
     }
   ) {
     setClasseName(e.target.value);
+  }
+
+  function onClickAddClasse() {
+    // TODO add request to add classe into database for the current school
+    // TODO Into database add schedule table to register the start/end hour day for the morning and the afternoon of classes
+    console.log("add classe");
+  }
+
+  function onClickCancel() {
+    changeBoard("school-details");
   }
 
   return (
@@ -57,6 +69,17 @@ export default function () {
           end={afternoonEnd}
         />
       </div>
+
+      <BoardFooterActions
+        nextStep={{
+          callback: onClickAddClasse,
+          label: "Suivant",
+        }}
+        previousStep={{
+          callback: onClickCancel,
+          label: "Annuler",
+        }}
+      />
     </section>
   );
 }
