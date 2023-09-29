@@ -109,8 +109,6 @@ function onClick(point: StopType) {
   if (!(1 < getLineUnderConstruction().busLine.points.length)) {
     return;
   }
-  console.log("waypoints", getLineUnderConstruction().busLine.waypoints);
-  console.log("points", getLineUnderConstruction().busLine.points);
 }
 
 const onMouseOver = (stop: StopType) => {
