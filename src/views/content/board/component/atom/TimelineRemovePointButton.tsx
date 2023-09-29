@@ -26,8 +26,8 @@ export function TimelineRemovePointButton(props: {
 }) {
   const deletePoint = (id: number) => {
     const stops = [...props.getter().busLine.points];
-    const nature = stops[id].nature;
     const pointId = stops[id].id;
+    const nature = stops[id].nature;
 
     const circle = linkMap.get(props.getter().busLine.points[id].leafletId);
     nature == NatureEnum.stop
