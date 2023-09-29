@@ -12,7 +12,6 @@ import {
 } from "./views/content/map/constant";
 
 export function setStopPointsColor(leafletIds: number[], color: string) {
-  // if (isInAddLineMode()) return; // ! Utiliser plutot isInDrawMod OU suppr ?
   getStops().map((stop) => {
     const circle = linkMap.get(stop.leafletId);
     if (!leafletIds.includes(stop.leafletId)) {
@@ -23,7 +22,6 @@ export function setStopPointsColor(leafletIds: number[], color: string) {
   });
 }
 export function setSchoolPointsColor(leafletIds: number[], color: string) {
-  // if (isInAddLineMode()) return; // ! Utiliser plutot isInDrawMod OU suppr ?
   getSchools().map((school) => {
     const circle = linkMap.get(school.leafletId);
     if (!leafletIds.includes(school.leafletId)) {

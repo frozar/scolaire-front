@@ -285,7 +285,6 @@ async function nextStep() {
       }
 
       await createOrUpdateBusLine(getLineUnderConstruction().busLine);
-      // setModeRead(); // ! Suppr
       changeBoard("line-details");
       updatePointColor();
   }
@@ -295,13 +294,10 @@ async function nextStep() {
 function prevStep() {
   switch (currentStep()) {
     case drawModeStep.schoolSelection:
-      console.log("case création de lignes");
-
       setLineUnderConstruction(defaultLineUnderConstruction());
       quitModeAddLine();
 
       setCurrentStep(drawModeStep.start);
-      // setOnBoard("line");
       changeBoard("line");
       MapElementUtils.deselectAllPointsAndBusLines();
 
@@ -309,7 +305,6 @@ function prevStep() {
     case drawModeStep.editLine:
       const busLine = unmodifiedBusLine();
       if (busLine) {
-        console.log("case modification de lignes");
         setBusLines((buslines) => {
           buslines = [
             ...buslines.filter(
