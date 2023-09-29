@@ -7,12 +7,13 @@ interface TimesInputWrapper {
   start: Accessor<HeureFormat | undefined>;
   endSetter: Setter<HeureFormat>;
   end: Accessor<HeureFormat | undefined>;
+  label: string;
 }
 
 export default function (props: TimesInputWrapper) {
   return (
     <div class="schedules-input my-5">
-      <p>Horraire matin</p>
+      <p>{props.label}</p>
       <StartEndTimeSchedulesInput
         startSetter={props.startSetter}
         start={props.start}

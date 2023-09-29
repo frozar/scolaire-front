@@ -10,7 +10,6 @@ export default function (props: TimeInputProps) {
       name="start-time"
       type="time"
       onInput={props.onInput}
-      // class="hidden"
     />
   );
 }
