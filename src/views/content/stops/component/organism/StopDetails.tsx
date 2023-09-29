@@ -7,6 +7,7 @@ import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { changeBoard } from "../../../board/component/template/ContextManager";
 import { getBusLines } from "../../../map/component/organism/BusLines";
 import LinesList from "../../../schools/component/organism/LinesList";
+import EditStop from "../molecul/EditStop";
 import StopDetailsHeader from "../molecul/StopDetailsHeader";
 import StopDetailsPanelsButton from "../molecul/StopDetailsPanelsButton";
 import SchoolList from "./SchoolList";
@@ -14,13 +15,14 @@ import "./StopDetails.css";
 
 export const [stopDetailsItem, setStopDetailsItem] = createSignal<StopType>();
 
-export enum Panels {
+export enum StopPanels {
   classes = "schools",
   lines = "lines",
 }
 
 export default function () {
-  const [onPanel, setOnPanel] = createSignal<Panels>(Panels.classes);
+  const [onPanel, setOnPanel] = createSignal<StopPanels>(StopPanels.classes);
+  const [editItem, setEditItem] = createSignal<boolean>(false);
 
   onMount(() => {
     if (stopDetailsItem() == undefined) {
@@ -29,9 +31,7 @@ export default function () {
     }
   });
 
-  function addSchool() {
-    console.log("add school to this stop");
-  }
+  const toggleEditItem = () => setEditItem((bool) => !bool);
 
   function getStopLines() {
     const lines = [];
@@ -59,18 +59,25 @@ export default function () {
         />
 
         <Show when={onPanel() == "schools"}>
-          <ButtonIcon icon={<PlusIcon />} onClick={addSchool} />
+          <ButtonIcon icon={<PlusIcon />} onClick={toggleEditItem} />
         </Show>
       </div>
 
       <div class="content mt-2">
         <Switch>
-          <Match when={onPanel() == Panels.classes}>
+          <Match when={onPanel() == StopPanels.classes}>
             <SchoolList
               schools={stopDetailsItem()?.associated as AssociatedPointType[]}
             />
+
+            <Show when={editItem()}>
+              <EditStop
+                close={toggleEditItem}
+                stopID={stopDetailsItem()?.id as number}
+              />
+            </Show>
           </Match>
-          <Match when={onPanel() == Panels.lines}>
+          <Match when={onPanel() == StopPanels.lines}>
             <LinesList lines={getStopLines()} />
           </Match>
         </Switch>

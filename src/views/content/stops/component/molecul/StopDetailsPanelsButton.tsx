@@ -1,10 +1,10 @@
 import { Accessor, Setter } from "solid-js";
-import { Panels } from "../organism/StopDetails";
+import { StopPanels } from "../organism/StopDetails";
 import "./StopDetailsPanelsButton.css";
 
 interface PanelsButtonProps {
-  setOnPanel: Setter<Panels>;
-  onPanel: Accessor<Panels>;
+  setOnPanel: Setter<StopPanels>;
+  onPanel: Accessor<StopPanels>;
   NbLines?: number;
   NbSchool: number;
 }
@@ -14,16 +14,16 @@ export default function (props: PanelsButtonProps) {
     <div class="stop-details-panels-buttons">
       <button
         class="panel-button"
-        classList={{ active: props.onPanel() == Panels.classes }}
-        onClick={() => props.setOnPanel(Panels.classes)}
+        classList={{ active: props.onPanel() == StopPanels.classes }}
+        onClick={() => props.setOnPanel(StopPanels.classes)}
       >
         écoles: {props.NbSchool}
       </button>
 
       <button
         class="panel-button"
-        classList={{ active: props.onPanel() == Panels.lines }}
-        onClick={() => props.setOnPanel(Panels.lines)}
+        classList={{ active: props.onPanel() == StopPanels.lines }}
+        onClick={() => props.setOnPanel(StopPanels.lines)}
       >
         lignes: {props.NbLines}
       </button>
