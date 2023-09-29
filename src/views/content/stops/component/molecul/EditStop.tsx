@@ -2,6 +2,8 @@ import { createSignal, onMount } from "solid-js";
 import { ClasseType, SchoolType } from "../../../../../_entities/school.entity";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
 import CheckIcon from "../../../../../icons/CheckIcon";
+import { addNewUserInformation } from "../../../../../signaux";
+import { MessageLevelEnum, MessageTypeEnum } from "../../../../../type";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { getSchools } from "../../../map/component/organism/SchoolPoints";
 import ClasseSelection from "../atom/ClasseSelection";
@@ -73,7 +75,22 @@ export default function (props: EditStopProps) {
     );
     console.log("choosen student quantity", quantityInputRef().value);
 
-    props.close();
+    if (
+      schoolSelectRef().value == "" ||
+      quantityInputRef().value == "" ||
+      classeSelectRef().value == "default" ||
+      classeSelectRef().value == ""
+    ) {
+      return addNewUserInformation({
+        displayed: true,
+        level: MessageLevelEnum.error,
+        type: MessageTypeEnum.global,
+        content: "Veuillez compléter tous les champs !",
+      });
+    } else {
+      // TODO make request here
+      props.close();
+    }
   }
 
   function onChangeSelectClasse() {
