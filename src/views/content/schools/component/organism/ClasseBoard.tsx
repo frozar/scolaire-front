@@ -64,14 +64,14 @@ export default function () {
         />
 
         <TimesInputWrapper
-          label="Horaire matin"
+          label="Horaires matin"
           startSetter={setMorningStart}
           start={morningStart}
           endSetter={setMorningEnd}
           end={morningEnd}
         />
         <TimesInputWrapper
-          label="Horaire après-midi"
+          label="Horaires après-midi"
           startSetter={setAfternoonStart}
           start={afternoonStart}
           endSetter={setAfternoonEnd}
