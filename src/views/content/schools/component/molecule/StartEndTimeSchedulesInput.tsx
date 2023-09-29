@@ -22,14 +22,14 @@ export default function (props: TimeSchedulesInputProps) {
     };
   }
 
-  function onInputStart(e: Event & { target: HTMLInputElement }) {
-    const formatedSchedule = validateSchedule(e.target.value);
+  function onInputStart(value: string) {
+    const formatedSchedule = validateSchedule(value);
     if (!formatedSchedule) return;
     props.startSetter(formatedSchedule);
   }
 
-  function onInputEnd(e: Event & { target: HTMLInputElement }) {
-    const formatedSchedule = validateSchedule(e.target.value);
+  function onInputEnd(value: string) {
+    const formatedSchedule = validateSchedule(value);
     if (!formatedSchedule) return;
     props.endSetter(formatedSchedule);
   }
