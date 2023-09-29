@@ -124,6 +124,7 @@ export default function (props: EditStopProps) {
           ref={setQuantityInputRef}
           class="input-form w-full"
           min={0}
+          value={0}
           type="number"
           placeholder="Quantité"
         />
