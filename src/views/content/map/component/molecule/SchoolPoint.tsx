@@ -79,27 +79,27 @@ const onClick = (point: SchoolType) => {
 
     return;
   }
-
+  const lastPoint = getLineUnderConstruction().busLine.points.at(-1);
   addPointToLineUnderConstruction({ ...point, quantity: 0 });
-
-  const waypoints = getLineUnderConstruction().busLine.waypoints;
-  if (waypoints) {
-    const newWaypoints = WaypointEntity.updateWaypoints(
-      point,
-      waypoints,
-      getLineUnderConstruction().busLine.points
-    );
-    setLineUnderConstruction({
-      ...getLineUnderConstruction(),
-      busLine: {
-        ...getLineUnderConstruction().busLine,
-        waypoints: newWaypoints,
-      },
-    });
-  }
-
-  if (displayLineMode() == displayLineModeEnum.onRoad) {
-    updatePolylineWithOsrm(getLineUnderConstruction().busLine);
+  if (!lastPoint || point.leafletId != lastPoint.leafletId) {
+    const waypoints = getLineUnderConstruction().busLine.waypoints;
+    if (waypoints) {
+      const newWaypoints = WaypointEntity.updateWaypoints(
+        point,
+        waypoints,
+        getLineUnderConstruction().busLine.points
+      );
+      setLineUnderConstruction({
+        ...getLineUnderConstruction(),
+        busLine: {
+          ...getLineUnderConstruction().busLine,
+          waypoints: newWaypoints,
+        },
+      });
+    }
+    if (displayLineMode() == displayLineModeEnum.onRoad) {
+      updatePolylineWithOsrm(getLineUnderConstruction().busLine);
+    }
   }
 
   //TODO pourquoi cette condition ?

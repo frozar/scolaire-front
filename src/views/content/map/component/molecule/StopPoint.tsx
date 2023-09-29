@@ -96,10 +96,13 @@ function onClick(point: StopType) {
 
   // TODO: when add line with an etablissement point the line destroy after next point click
   // Wait Richard/Hugo finish the line underconstruction
+  const lastPoint = getLineUnderConstruction().busLine.points.at(-1);
   addPointToLineUnderConstruction({ ...point, quantity: associatedQuantity });
-  updateWaypoints(point);
-  if (displayLineMode() == displayLineModeEnum.onRoad) {
-    updatePolylineWithOsrm(getLineUnderConstruction().busLine);
+  if (!lastPoint || point.leafletId != lastPoint.leafletId) {
+    updateWaypoints(point);
+    if (displayLineMode() == displayLineModeEnum.onRoad) {
+      updatePolylineWithOsrm(getLineUnderConstruction().busLine);
+    }
   }
 
   //TODO pourquoi cette condition ?
