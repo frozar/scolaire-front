@@ -47,7 +47,7 @@ export default function () {
 
   return (
     <section>
-      <ClasseBoardHeader title="Ajout d'une ligne" />
+      <ClasseBoardHeader title="Ajout d'une classe" />
 
       <div class="content">
         <div class="line-height-1">
