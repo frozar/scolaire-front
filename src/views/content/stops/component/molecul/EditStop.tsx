@@ -1,5 +1,5 @@
-import { createSignal } from "solid-js";
-import { SchoolType } from "../../../../../_entities/school.entity";
+import { createSignal, onMount } from "solid-js";
+import { ClasseType, SchoolType } from "../../../../../_entities/school.entity";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
 import CheckIcon from "../../../../../icons/CheckIcon";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
@@ -14,24 +14,48 @@ interface EditStopProps {
 }
 
 export default function (props: EditStopProps) {
-  let selectedSchool: SchoolType;
-  const [disabled, setDisabled] = createSignal<boolean>(true);
+  const [selectedSchool, setSelectedSchool] = createSignal<SchoolType>();
   const [schoolSelectRef, setSchoolSelectRef] = createSignal<HTMLSelectElement>(
     document.createElement("select")
   );
   const [classeSelectRef, setClasseSelectRef] = createSignal<HTMLSelectElement>(
     document.createElement("select")
   );
-
   const [quantityInputRef, setQuantityInputRef] =
     createSignal<HTMLInputElement>(document.createElement("input"));
 
-  const onChange = () => {
-    selectedSchool = getSchools().filter(
+  onMount(() => {
+    classeSelectRef().disabled = true;
+    quantityInputRef().disabled = true;
+  });
+
+  function resetClasseAndQuantity() {
+    classeSelectRef().disabled = true;
+    classeSelectRef().value = "default";
+    quantityInputRef().disabled = true;
+    quantityInputRef().value = "0";
+  }
+
+  const onChangeSchoolSelect = () => {
+    const school = getSchools().filter(
       (school) => school.id == parseInt(schoolSelectRef().value)
     )[0];
 
-    if (selectedSchool) setDisabled((bool) => !bool);
+    if (!school) return resetClasseAndQuantity();
+
+    if (!selectedSchool()) {
+      classeSelectRef().disabled = false;
+      setSelectedSchool(school);
+    }
+
+    if (school.id != selectedSchool()?.id) {
+      resetClasseAndQuantity();
+      setSelectedSchool();
+      setSelectedSchool(school);
+      return;
+    }
+
+    classeSelectRef().disabled = false;
   };
 
   async function validate() {
@@ -53,13 +77,19 @@ export default function (props: EditStopProps) {
   }
 
   function onChangeSelectClasse() {
-    console.log("on change classe select");
+    if (classeSelectRef().value != "default") {
+      quantityInputRef().disabled = false;
+    } else {
+      quantityInputRef().disabled = true;
+      quantityInputRef().value = "0";
+    }
   }
+
   return (
     <CardWrapper class="edit-stop">
       <div class="flex justify-between my-2">
         <SchoolSelect
-          onChange={onChange}
+          onChange={onChangeSchoolSelect}
           refSelectSetter={setSchoolSelectRef}
           schools={getSchools()}
         />
@@ -68,12 +98,10 @@ export default function (props: EditStopProps) {
       </div>
 
       <div class="flex gap-1 w-[100%]">
-        {/* TODO Review to add loop on school classe */}
         <ClasseSelection
           refSelectSetter={setClasseSelectRef}
-          classes={[]}
+          classes={selectedSchool()?.classes as ClasseType[]}
           onChange={onChangeSelectClasse}
-          disabled={disabled()}
         />
         <input
           ref={setQuantityInputRef}
@@ -81,7 +109,6 @@ export default function (props: EditStopProps) {
           min={0}
           type="number"
           placeholder="Quantité"
-          disabled={disabled()}
         />
       </div>
     </CardWrapper>
