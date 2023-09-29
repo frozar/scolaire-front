@@ -51,8 +51,6 @@ export default function () {
         break;
 
       case "school-details":
-        console.log("ok", schoolDetailsItem()?.name);
-
         setCrumbs([
           {
             text: "Ecoles",
