@@ -1,17 +1,17 @@
+import { saveAs } from "file-saver";
 import JSZip from "jszip";
 import { LatLng, LatLngBounds, Polyline } from "leaflet";
 import { SimpleMapScreenshoter } from "leaflet-simple-map-screenshoter";
 import {
+  disableSpinningWheel,
+  enableSpinningWheel,
+  getLeafletMap,
+} from "../../../../../signaux";
+import {
   displayDownloadSuccessMessage,
-  displayNoLineMessage,
+  displayNoCourseMessage,
 } from "../../../../../userInformation/utils";
 import { getScreenshoter } from "./screenShoter";
-import { getLeafletMap } from "../../../../../signaux";
-import { saveAs } from "file-saver";
-import {
-  enableSpinningWheel,
-  disableSpinningWheel,
-} from "../../../../../signaux";
 import { getTimestamp } from "./utils";
 
 let zip: JSZip;
@@ -51,7 +51,7 @@ function moveEndEvent(
   });
 }
 
-function exportLine(
+function exportCourse(
   line: L.Polyline,
   leafletMap: L.Map,
   screenShoter: SimpleMapScreenshoter
@@ -62,14 +62,14 @@ function exportLine(
   });
 }
 
-async function exportLinesImages(
+async function exportCoursesImages(
   screenshoter: SimpleMapScreenshoter,
   lines: L.Polyline[],
   leafletMap: L.Map
 ) {
   for (const line of lines) {
     line.getElement()?.classList.remove("hidden");
-    await exportLine(line, leafletMap, screenshoter);
+    await exportCourse(line, leafletMap, screenshoter);
     line.getElement()?.classList.add("hidden");
   }
   lines.map((line) => line.getElement()?.classList.remove("hidden"));
@@ -83,7 +83,7 @@ async function exportMapImage(
   await moveEndEvent(leafletMap, screenShoter, lineBoundBox);
 }
 
-function getLinesBoundBox(lines: L.Polyline[]): LatLngBounds {
+function getCoursesBoundBox(lines: L.Polyline[]): LatLngBounds {
   const linesBoundBox = lines.reduce(
     (bounds, line) => bounds.extend(line.getBounds()),
     new LatLngBounds([])
@@ -100,7 +100,7 @@ function getPolylines(leafletMap: L.Map): L.Polyline[] | null {
     }
   });
   if (polylines.length === 0) {
-    displayNoLineMessage();
+    displayNoCourseMessage();
     return null;
   }
   return polylines;
@@ -121,15 +121,15 @@ export async function exportImages() {
     return;
   }
 
-  lineBoundBox = getLinesBoundBox(polylines);
+  lineBoundBox = getCoursesBoundBox(polylines);
   enableSpinningWheel();
   await exportMapImage(screenShoter, leafletMap, lineBoundBox);
   console.log(polylines);
   polylines.map((line) => line.getElement()?.classList.add("hidden"));
-  await exportLinesImages(screenShoter, polylines, leafletMap);
+  await exportCoursesImages(screenShoter, polylines, leafletMap);
   zip.generateAsync({ type: "blob" }).then((content) => {
     const { year, month, day, hour, minute } = getTimestamp();
-    const fileName = `${year}-${month}-${day}_${hour}-${minute}_bus-line.zip`;
+    const fileName = `${year}-${month}-${day}_${hour}-${minute}_bus-course.zip`;
     saveAs(content, fileName);
     displayDownloadSuccessMessage();
   });

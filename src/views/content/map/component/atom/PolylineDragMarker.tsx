@@ -2,13 +2,13 @@ import L from "leaflet";
 import { createEffect, onCleanup } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import {
-  BusLineType,
+  BusCourseType,
   updatePolylineWithOsrm,
-} from "../../../../../_entities/bus-line.entity";
+} from "../../../../../_entities/bus-course.entity";
 import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
 import { COLOR_WAYPOINT } from "../../constant";
 
-const [, { getLineUnderConstruction }] = useStateAction();
+const [, { getCourseUnderConstruction }] = useStateAction();
 
 type PolylineDragMarkersProps = {
   map: L.Map;
@@ -30,7 +30,7 @@ export default function (props: PolylineDragMarkersProps) {
     function handleMouseUp() {
       props.map.off("mousemove");
       props.map.dragging.enable();
-      const waypoints = getLineUnderConstruction().busLine.waypoints;
+      const waypoints = getCourseUnderConstruction().busCourse.waypoints;
       if (!waypoints) {
         return;
       }
@@ -42,11 +42,11 @@ export default function (props: PolylineDragMarkersProps) {
         polylineDragMarker.getLatLng().lng
       );
 
-      const newBusLine: BusLineType = {
-        ...getLineUnderConstruction().busLine,
+      const newBusCourse: BusCourseType = {
+        ...getCourseUnderConstruction().busCourse,
         waypoints: newWaypoints,
       };
-      updatePolylineWithOsrm(newBusLine);
+      updatePolylineWithOsrm(newBusCourse);
       polylineDragMarker.off("mouseup", handleMouseUp);
     }
     polylineDragMarker.on("mouseup", handleMouseUp);

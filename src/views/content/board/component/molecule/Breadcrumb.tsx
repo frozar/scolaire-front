@@ -1,6 +1,6 @@
 import { For, Show, createEffect, createSignal } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
-import { getSelectedBusLine } from "../../../map/component/organism/BusLines";
+import { getSelectedBusCourse } from "../../../map/component/organism/BusCourses";
 import { schoolDetailsItem } from "../../../schools/component/organism/SchoolDetails";
 import { stopDetailsItem } from "../../../stops/component/organism/StopDetails";
 import BreadcrumbButton from "../atom/BreadcrumbButton";
@@ -8,7 +8,7 @@ import DisplayBreadcrumbText from "../atom/DisplayBreadcrumbText";
 import { changeBoard, onBoard } from "../template/ContextManager";
 import "./Breadcrumb.css";
 
-const [, { getLineUnderConstruction }] = useStateAction();
+const [, { getCourseUnderConstruction }] = useStateAction();
 
 type CrumbType = {
   text: string;
@@ -21,7 +21,7 @@ export default function () {
   createEffect(() => {
     switch (onBoard()) {
       case "line-draw":
-        if (getLineUnderConstruction().busLine.schools.length > 0) {
+        if (getCourseUnderConstruction().busCourse.schools.length > 0) {
           setCrumbs([{ text: "Editer votre ligne" }]);
           break;
         }
@@ -91,7 +91,7 @@ export default function () {
             },
           },
           {
-            text: getSelectedBusLine()?.name?.toLowerCase() as string,
+            text: getSelectedBusCourse()?.name?.toLowerCase() as string,
           },
         ]);
     }

@@ -10,7 +10,7 @@ import {
 import { onBoard } from "../../../board/component/template/ContextManager";
 import { SchoolPoint } from "../molecule/SchoolPoint";
 
-const [, { getLineUnderConstruction }] = useStateAction();
+const [, { getCourseUnderConstruction }] = useStateAction();
 
 export interface SchoolPointsProps {
   leafletMap: L.Map;
@@ -41,7 +41,7 @@ function schoolsFilter(): SchoolType[] {
   let schools = getSchools();
 
   if (onBoard() == "line-draw") {
-    const schoolsSelected = getLineUnderConstruction().busLine.schools;
+    const schoolsSelected = getCourseUnderConstruction().busCourse.schools;
     if (currentStep() === drawModeStep.schoolSelection) {
       return schools;
     }

@@ -1,13 +1,17 @@
 import { NatureEnum } from "../type";
-import { BusLinePointType, BusLineType, WaypointType } from "./bus-line.entity";
+import {
+  BusCoursePointType,
+  BusCourseType,
+  WaypointType,
+} from "./bus-course.entity";
 import { SchoolType } from "./school.entity";
 import { StopType } from "./stop.entity";
 
 export namespace WaypointEntity {
-  export function createWaypointsFromPoints(busLine: BusLineType) {
+  export function createWaypointsFromPoints(busCourse: BusCourseType) {
     const waypoints: WaypointType[] = [];
 
-    for (const point of busLine.points) {
+    for (const point of busCourse.points) {
       if (point.nature == NatureEnum.school) {
         waypoints.push({
           idSchool: point.id,
@@ -28,7 +32,7 @@ export namespace WaypointEntity {
   export function updateWaypoints(
     point: StopType | SchoolType,
     waypoints: WaypointType[],
-    points: BusLinePointType[]
+    points: BusCoursePointType[]
   ) {
     const newWaypoints = [...waypoints];
 

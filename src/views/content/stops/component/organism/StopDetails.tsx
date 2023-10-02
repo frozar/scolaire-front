@@ -5,8 +5,8 @@ import PlusIcon from "../../../../../icons/PlusIcon";
 import { MapElementUtils } from "../../../../../utils/mapElement.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { changeBoard } from "../../../board/component/template/ContextManager";
-import { getBusLines } from "../../../map/component/organism/BusLines";
-import LinesList from "../../../schools/component/organism/LinesList";
+import { getBusCourses } from "../../../map/component/organism/BusCourses";
+import CoursesList from "../../../schools/component/organism/CoursesList";
 import EditStop from "../molecul/EditStop";
 import StopDetailsHeader from "../molecul/StopDetailsHeader";
 import StopDetailsPanelsButton from "../molecul/StopDetailsPanelsButton";
@@ -27,16 +27,16 @@ export default function () {
   onMount(() => {
     if (stopDetailsItem() == undefined) {
       changeBoard("schools");
-      MapElementUtils.deselectAllPointsAndBusLines();
+      MapElementUtils.deselectAllPointsAndBusCourses();
     }
   });
 
   const toggleEditItem = () => setEditItem((bool) => !bool);
 
-  function getStopLines() {
+  function getStopCourses() {
     const lines = [];
 
-    for (const line of getBusLines()) {
+    for (const line of getBusCourses()) {
       const _line = line.points.filter((l) => l.id == stopDetailsItem()?.id);
       if (_line.length > 0) lines.push(line);
     }
@@ -55,7 +55,7 @@ export default function () {
           onPanel={onPanel}
           setOnPanel={setOnPanel}
           NbSchool={stopDetailsItem()?.associated.length as number}
-          NbLines={getStopLines().length}
+          NbCourses={getStopCourses().length}
         />
 
         <Show when={onPanel() == "schools"}>
@@ -78,7 +78,7 @@ export default function () {
             </Show>
           </Match>
           <Match when={onPanel() == StopPanels.lines}>
-            <LinesList lines={getStopLines()} />
+            <CoursesList lines={getStopCourses()} />
           </Match>
         </Switch>
       </div>

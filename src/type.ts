@@ -1,5 +1,5 @@
 import { Accessor, JSX, Setter } from "solid-js";
-import { BusLineType } from "./_entities/bus-line.entity";
+import { BusCourseType } from "./_entities/bus-course.entity";
 import { StopType } from "./_entities/stop.entity";
 import { PointType } from "./views/content/map/component/atom/Point";
 
@@ -43,22 +43,22 @@ export function isLeafletSchoolType(pt: PointType) {
   return pt.nature === NatureEnum.school;
 }
 
-export type LineUnderConstructionType = {
+export type CourseUnderConstructionType = {
   nextIndex: number;
-  busLine: BusLineType;
+  busCourse: BusCourseType;
 };
 
 export enum ModeEnum {
   read,
-  addLine,
-  removeLine,
+  addCourse,
+  removeCourse,
 }
 
 export enum MessageTypeEnum {
-  enterRemoveLine,
-  enterAddLine,
-  removeLine,
-  addLine,
+  enterRemoveCourse,
+  enterAddCourse,
+  removeCourse,
+  addCourse,
   global,
   clear,
 }
@@ -86,7 +86,7 @@ export type userInformationType = {
 
 export type removeConfirmationType = {
   displayed: boolean;
-  busLine: BusLineType | null;
+  busCourse: BusCourseType | null;
 };
 
 export type removeRamassageConfirmationType = {
@@ -169,7 +169,7 @@ export type StopItemType = {
   id: number;
   name: string;
   quantity: number;
-  nbLine: number;
+  nbCourse: number;
   nbEtablissement: number;
   lon: number;
   lat: number;
@@ -180,7 +180,7 @@ export type EtablissementItemType = {
   id: number;
   name: string;
   quantity: number;
-  nbLine: number;
+  nbCourse: number;
   lon: number;
   lat: number;
   selected: boolean;

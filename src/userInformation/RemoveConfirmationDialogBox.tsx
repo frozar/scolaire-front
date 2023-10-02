@@ -8,15 +8,15 @@ import {
   getRemoveConfirmation,
 } from "../signaux";
 
-import { BusLineService } from "../_services/bus-line.service";
+import { BusCourseService } from "../_services/bus-course.service";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { assertIsNode } from "../utils";
 import { MapElementUtils } from "../utils/mapElement.utils";
 import { changeBoard } from "../views/content/board/component/template/ContextManager";
 import {
-  getBusLines,
-  setBusLines,
-} from "../views/content/map/component/organism/BusLines";
+  getBusCourses,
+  setBusCourses,
+} from "../views/content/map/component/organism/BusCourses";
 
 // HACK for the documentation to preserve the ClickOutside directive on save
 // https://www.solidjs.com/guides/typescript#use___
@@ -24,21 +24,21 @@ false && ClickOutside;
 
 export default function () {
   const displayed = () => getRemoveConfirmation()["displayed"];
-  const busLine = () => getRemoveConfirmation()["busLine"];
+  const busCourse = () => getRemoveConfirmation()["busCourse"];
 
   async function handlerOnClickValider() {
-    const idToCheck = busLine()?.id;
+    const idToCheck = busCourse()?.id;
     if (!idToCheck) {
       return;
     }
 
     const idToRemove: number = idToCheck;
 
-    const isDeleted: boolean = await BusLineService.delete(idToRemove);
+    const isDeleted: boolean = await BusCourseService.delete(idToRemove);
     if (isDeleted) {
       closeRemoveConfirmationBox();
 
-      setBusLines(getBusLines().filter((line) => line.id != idToRemove));
+      setBusCourses(getBusCourses().filter((line) => line.id != idToRemove));
 
       addNewUserInformation({
         displayed: true,
@@ -51,12 +51,12 @@ export default function () {
       addNewUserInformation({
         displayed: true,
         level: MessageLevelEnum.error,
-        type: MessageTypeEnum.removeLine,
+        type: MessageTypeEnum.removeCourse,
         content: "Impossible de supprimer la ligne de bus.",
       });
     }
     changeBoard("line");
-    MapElementUtils.deselectAllPointsAndBusLines();
+    MapElementUtils.deselectAllPointsAndBusCourses();
   }
 
   function exitModal({ code }: KeyboardEvent) {
@@ -193,7 +193,7 @@ export default function () {
                       <div class="mt-2">
                         <p class="text-sm text-gray-500">
                           Etes-vous sûr de vouloir supprimer la ligne de bus :{" "}
-                          {busLine()?.name} ?
+                          {busCourse()?.name} ?
                         </p>
                       </div>
                     </div>

@@ -50,7 +50,7 @@ export default function () {
       addNewUserInformation({
         displayed: true,
         level: MessageLevelEnum.error,
-        type: MessageTypeEnum.removeLine,
+        type: MessageTypeEnum.removeCourse,
         content: "Impossible de supprimer le point de ramassage.",
       });
     }

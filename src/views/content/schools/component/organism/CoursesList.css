@@ -1,0 +1,6 @@
+.school-details-line-list{
+  @apply pl-4;
+  overflow-y:auto;
+  padding-right: 0.5rem;
+  max-height: 80vh;
+}

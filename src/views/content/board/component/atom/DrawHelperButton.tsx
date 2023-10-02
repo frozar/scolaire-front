@@ -6,14 +6,14 @@ import {
   GraphicageService,
 } from "../../../../../_services/graphicage.service";
 
-const [, { setPointsToLineUnderConstruction }] = useStateAction();
+const [, { setPointsToCourseUnderConstruction }] = useStateAction();
 
 import { FaSolidWandMagicSparkles } from "solid-icons/fa";
 import {
-  BusLinePointType,
+  BusCoursePointType,
   WaypointType,
   updatePolylineWithOsrm,
-} from "../../../../../_entities/bus-line.entity";
+} from "../../../../../_entities/bus-course.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import {
   disableSpinningWheel,
@@ -30,8 +30,8 @@ import {
   leafletStopsFilter,
 } from "../../../map/component/organism/StopPoints";
 import {
-  displayLineMode,
-  displayLineModeEnum,
+  displayCourseMode,
+  displayCourseModeEnum,
 } from "../organism/DrawModeBoardContent";
 import "./DrawHelperButton.css";
 
@@ -39,7 +39,7 @@ interface DrawHelperButtonProps {
   schools: SchoolType[] | undefined;
 }
 
-const [, { getLineUnderConstruction, setLineUnderConstruction }] =
+const [, { getCourseUnderConstruction, setCourseUnderConstruction }] =
   useStateAction();
 async function drawHelper(data: DrawHelperDataType) {
   console.log("Query", data);
@@ -48,11 +48,12 @@ async function drawHelper(data: DrawHelperDataType) {
   disableSpinningWheel();
   console.log("response", response);
   //TODO Resolve type problem and add quantity here
-  const formattedResponse: BusLinePointType[] = formatTimeLinePoints(response);
-  setPointsToLineUnderConstruction(formattedResponse);
+  const formattedResponse: BusCoursePointType[] =
+    formatTimeCoursePoints(response);
+  setPointsToCourseUnderConstruction(formattedResponse);
 
   const newWaypoints: WaypointType[] = [];
-  for (const point of getLineUnderConstruction().busLine.points) {
+  for (const point of getCourseUnderConstruction().busCourse.points) {
     if (point.nature == NatureEnum.school) {
       newWaypoints.push({
         idSchool: point.id,
@@ -67,12 +68,15 @@ async function drawHelper(data: DrawHelperDataType) {
       });
     }
   }
-  setLineUnderConstruction({
-    ...getLineUnderConstruction(),
-    busLine: { ...getLineUnderConstruction().busLine, waypoints: newWaypoints },
+  setCourseUnderConstruction({
+    ...getCourseUnderConstruction(),
+    busCourse: {
+      ...getCourseUnderConstruction().busCourse,
+      waypoints: newWaypoints,
+    },
   });
-  if (displayLineMode() == displayLineModeEnum.onRoad) {
-    updatePolylineWithOsrm(getLineUnderConstruction().busLine);
+  if (displayCourseMode() == displayCourseModeEnum.onRoad) {
+    updatePolylineWithOsrm(getCourseUnderConstruction().busCourse);
   }
 }
 
@@ -88,7 +92,7 @@ export function DrawHelperButton(props: DrawHelperButtonProps) {
         : [];
 
     const selectedStops = JSON.parse(
-      JSON.stringify(getLineUnderConstruction().busLine.points)
+      JSON.stringify(getCourseUnderConstruction().busCourse.points)
     );
 
     const stops = leafletStopsFilter();
@@ -112,7 +116,7 @@ export function DrawHelperButton(props: DrawHelperButtonProps) {
   return (
     <div class="graphicage-draw-helper-button">
       <DrawHelperDialog requestCircuit={requestCircuit} />
-      <Show when={getLineUnderConstruction().busLine.points.length > 0}>
+      <Show when={getCourseUnderConstruction().busCourse.points.length > 0}>
         <button onClick={onclick}>
           <FaSolidWandMagicSparkles />
         </button>
@@ -121,9 +125,9 @@ export function DrawHelperButton(props: DrawHelperButtonProps) {
   );
 }
 
-function formatTimeLinePoints(
+function formatTimeCoursePoints(
   data: { id: number; leafletId: number; nature: string; quantity: number }[]
-): BusLinePointType[] {
+): BusCoursePointType[] {
   const points = [...getSchools(), ...getStops()];
   const output = [];
   for (const item of data) {

@@ -15,7 +15,7 @@ import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { assertIsNode } from "../utils";
 
 import ClickOutside from "../component/ClickOutside";
-import { getBusLines } from "../views/content/map/component/organism/BusLines";
+import { getBusCourses } from "../views/content/map/component/organism/BusCourses";
 import { getSchools } from "../views/content/map/component/organism/SchoolPoints";
 import { getStops } from "../views/content/map/component/organism/StopPoints";
 
@@ -40,12 +40,12 @@ function clearUserInformation(content: string, level: MessageLevelEnum) {
   addNewUserInformation({
     displayed: true,
     level,
-    type: MessageTypeEnum.removeLine,
+    type: MessageTypeEnum.removeCourse,
     content,
   });
   setPoints([]);
   //TODO voir l'impact de la suppression
-  // fetchBusLines();
+  // fetchBusCourses();
   disableSpinningWheel();
   closeClearConfirmationBox();
 }
@@ -224,7 +224,7 @@ export default function () {
                           </li>
                           <li>
                             <span class="font-semibold text-sm text-gray-900">
-                              {getBusLines().length + " "}
+                              {getBusCourses().length + " "}
                             </span>
                             ligne(s) présente(s) sur la carte,
                           </li>

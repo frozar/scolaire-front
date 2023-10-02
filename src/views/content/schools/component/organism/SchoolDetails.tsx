@@ -11,7 +11,7 @@ import { changeBoard } from "../../../board/component/template/ContextManager";
 import SchoolDetailsHeader from "../molecule/SchoolDetailsHeader";
 import SchoolDetailsPanelsButton from "../molecule/SchoolDetailsPanelsButton";
 import ClasseList from "./ClasseList";
-import LineList from "./LinesList";
+import CourseList from "./CoursesList";
 import "./SchoolDetails.css";
 
 export const [schoolDetailsItem, setSchoolDetailsItem] =
@@ -28,7 +28,7 @@ export default function () {
   onMount(() => {
     if (schoolDetailsItem() == undefined) {
       changeBoard("schools");
-      MapElementUtils.deselectAllPointsAndBusLines();
+      MapElementUtils.deselectAllPointsAndBusCourses();
     }
   });
 
@@ -44,8 +44,8 @@ export default function () {
         <SchoolDetailsPanelsButton
           setOnPanel={setOnPanel}
           onPanel={onPanel}
-          NbLines={
-            SchoolEntity.getSchoolLines(schoolDetailsItem()?.id as number)
+          NbCourses={
+            SchoolEntity.getSchoolCourses(schoolDetailsItem()?.id as number)
               .length
           }
         />
@@ -61,8 +61,8 @@ export default function () {
             />
           </Match>
           <Match when={onPanel() == Panels.lines}>
-            <LineList
-              lines={SchoolEntity.getSchoolLines(
+            <CourseList
+              lines={SchoolEntity.getSchoolCourses(
                 schoolDetailsItem()?.id as number
               )}
             />

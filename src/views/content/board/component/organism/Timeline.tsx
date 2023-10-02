@@ -1,26 +1,26 @@
 import { For, Show, createEffect, createSignal } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import {
-  BusLineEntity,
-  BusLineType,
-} from "../../../../../_entities/bus-line.entity";
-import { getSelectedBusLine } from "../../../map/component/organism/BusLines";
+  BusCourseEntity,
+  BusCourseType,
+} from "../../../../../_entities/bus-course.entity";
+import { getSelectedBusCourse } from "../../../map/component/organism/BusCourses";
 import { TimelineAddPointButton } from "../atom/TimelineAddPointButton";
 import TimelineItem from "../atom/TimelineItem";
 import { onBoard } from "../template/ContextManager";
 
-const [, { getLineUnderConstruction }] = useStateAction();
+const [, { getCourseUnderConstruction }] = useStateAction();
 
 export default function () {
-  const [displayBusLine, setDisplayPoints] = createSignal<BusLineType>(
-    BusLineEntity.defaultBusLine()
+  const [displayBusCourse, setDisplayPoints] = createSignal<BusCourseType>(
+    BusCourseEntity.defaultBusCourse()
   );
 
   createEffect(() => {
     const displayedPoints =
       onBoard() === "line-draw"
-        ? getLineUnderConstruction().busLine
-        : (getSelectedBusLine() as BusLineType);
+        ? getCourseUnderConstruction().busCourse
+        : (getSelectedBusCourse() as BusCourseType);
 
     setDisplayPoints(displayedPoints);
   });
@@ -30,18 +30,18 @@ export default function () {
         class="timeline-items "
         style={{ "--v-timeline-line-thickness": "2px" }}
       >
-        <For each={displayBusLine()?.points}>
+        <For each={displayBusCourse()?.points}>
           {(stop, i) => (
             <div class="timeline-block">
               <Show when={onBoard() == "line-draw"}>
                 <TimelineAddPointButton indice={i()} />
               </Show>
 
-              <Show when={displayBusLine() != undefined}>
+              <Show when={displayBusCourse() != undefined}>
                 <TimelineItem
                   pointsResource={stop}
                   indice={i()}
-                  busLine={displayBusLine()}
+                  busCourse={displayBusCourse()}
                 />
               </Show>
             </div>

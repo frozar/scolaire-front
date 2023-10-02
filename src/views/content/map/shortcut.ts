@@ -4,14 +4,14 @@ import {
   setSchoolPointsColor,
   setStopPointsColor,
 } from "../../../leafletUtils";
-import { addBusLine } from "../../../request";
+import { addBusCourse } from "../../../request";
 import {
   displayedClearConfirmationDialogBox,
   getDisplayedGeneratorDialogBox,
   getExportConfirmationDialogBox,
   getRemoveConfirmation,
 } from "../../../signaux";
-import { displayAddLineMessage } from "../../../userInformation/utils";
+import { displayAddCourseMessage } from "../../../userInformation/utils";
 import { MapElementUtils } from "../../../utils/mapElement.utils";
 import {
   currentStep,
@@ -23,7 +23,7 @@ import {
   onBoard,
   toggleDrawMod,
 } from "../board/component/template/ContextManager";
-import { displayedConfirmStopAddLine } from "./ConfirmStopAddLineBox";
+import { displayedConfirmStopAddCourse } from "./ConfirmStopAddCourseBox";
 
 import { deselectAllPoints } from "./component/organism/Points";
 import { COLOR_SCHOOL_FOCUS, COLOR_STOP_FOCUS } from "./constant";
@@ -31,10 +31,10 @@ import { COLOR_SCHOOL_FOCUS, COLOR_STOP_FOCUS } from "./constant";
 const [
   ,
   {
-    setModeAddLine,
-    isInAddLineMode,
-    resetLineUnderConstruction,
-    getLineUnderConstruction,
+    setModeAddCourse,
+    isInAddCourseMode,
+    resetCourseUnderConstruction,
+    getCourseUnderConstruction,
     setModeRead,
   },
   history,
@@ -45,7 +45,7 @@ const isOpenedModal = () =>
   getDisplayedGeneratorDialogBox() ||
   displayedClearConfirmationDialogBox().displayed ||
   getRemoveConfirmation().displayed ||
-  displayedConfirmStopAddLine();
+  displayedConfirmStopAddCourse();
 
 const [, { getSelectedMenu }] = useStateGui();
 
@@ -82,20 +82,20 @@ function escapeHandler({ code }: KeyboardEvent) {
 
   if (code === "Escape") {
     if (onBoard() == "line-draw") {
-      quitModeAddLine();
+      quitModeAddCourse();
       setCurrentStep(drawModeStep.start);
     }
     changeBoard("line");
-    MapElementUtils.deselectAllPointsAndBusLines();
+    MapElementUtils.deselectAllPointsAndBusCourses();
 
     //TODO voir l'impact de la suppression
-    // fetchBusLines();
+    // fetchBusCourses();
   }
 }
 
-export function quitModeAddLine() {
+export function quitModeAddCourse() {
   // setModeRead();
-  resetLineUnderConstruction();
+  resetCourseUnderConstruction();
   setStopPointsColor([], COLOR_STOP_FOCUS);
   setSchoolPointsColor([], COLOR_SCHOOL_FOCUS);
   toggleDrawMod();
@@ -107,10 +107,13 @@ function enterHandler({ code }: KeyboardEvent) {
   }
 
   if (code === "Enter") {
-    if (!isInAddLineMode() || currentStep() === drawModeStep.schoolSelection) {
+    if (
+      !isInAddCourseMode() ||
+      currentStep() === drawModeStep.schoolSelection
+    ) {
       return;
     }
-    const resourceInfo = getLineUnderConstruction().busLine.points.map(
+    const resourceInfo = getCourseUnderConstruction().busCourse.points.map(
       function (value) {
         return {
           id_resource: value["id"],
@@ -119,23 +122,23 @@ function enterHandler({ code }: KeyboardEvent) {
       }
     );
 
-    addBusLine(resourceInfo).then(async (res) => {
+    addBusCourse(resourceInfo).then(async (res) => {
       if (!res) {
-        console.error("addBusLine failed");
+        console.error("addBusCourse failed");
         return;
       }
 
       await res.json();
 
-      resetLineUnderConstruction();
+      resetCourseUnderConstruction();
       setModeRead();
       //TODO voir l'impact de la suppression
-      // fetchBusLines();
+      // fetchBusCourses();
     });
   }
 }
 
-function toggleLineUnderConstruction({ code }: KeyboardEvent) {
+function toggleCourseUnderConstruction({ code }: KeyboardEvent) {
   if (disable_shortcut()) {
     return;
   }
@@ -146,16 +149,16 @@ function toggleLineUnderConstruction({ code }: KeyboardEvent) {
   keyboard.getLayoutMap().then((keyboardLayoutMap) => {
     const upKey = keyboardLayoutMap.get(code);
     if (upKey === "l") {
-      if (isInAddLineMode()) {
+      if (isInAddCourseMode()) {
         setModeRead();
         //TODO voir l'impact de la suppression
-        // fetchBusLines();
+        // fetchBusCourses();
       } else {
         deselectAllPoints();
-        setModeAddLine();
+        setModeAddCourse();
         //TODO voir l'impact de la suppression
-        // fetchBusLines();
-        displayAddLineMessage();
+        // fetchBusCourses();
+        displayAddCourseMessage();
       }
     }
   });
@@ -165,5 +168,5 @@ export const listHandlerLMap = [
   undoRedoHandler,
   escapeHandler,
   enterHandler,
-  toggleLineUnderConstruction,
+  toggleCourseUnderConstruction,
 ];

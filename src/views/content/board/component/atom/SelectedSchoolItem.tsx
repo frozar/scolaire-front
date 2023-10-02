@@ -3,10 +3,10 @@ import { useStateAction } from "../../../../../StateAction";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import "./SelectedSchoolItem.css";
 
-const [, { removeSchoolToLineUnderConstruction }] = useStateAction();
+const [, { removeSchoolToCourseUnderConstruction }] = useStateAction();
 
 export default function (props: { school: SchoolType }) {
-  const onClick = () => removeSchoolToLineUnderConstruction(props.school);
+  const onClick = () => removeSchoolToCourseUnderConstruction(props.school);
 
   return (
     <div class="selected-school-item">

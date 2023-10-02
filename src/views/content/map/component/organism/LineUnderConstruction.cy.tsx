@@ -6,18 +6,18 @@
 // } from "../../../../../../testing/utils/TestUtils";
 // import { initialiseMap } from "../../../../../../testing/utils/mapWrapper";
 // import { useStateAction } from "../../../../../StateAction";
-// import LineUnderConstruction from "./LineUnderConstruction";
+// import CourseUnderConstruction from "./CourseUnderConstruction";
 
 // const [
 //   ,
-//   { getLineUnderConstruction, confirmEtablissementSelection, setModeAddLine },
+//   { getCourseUnderConstruction, confirmEtablissementSelection, setModeAddCourse },
 // ] = useStateAction();
 
-// setModeAddLine();
+// setModeAddCourse();
 // confirmEtablissementSelection();
 
-// describe("Line component", () => {
-//   it("Default Line", () => {
+// describe("Course component", () => {
+//   it("Default Course", () => {
 //     cy.mount(() => {
 //       return (
 //         <div id="map-container" style={{ width: "100%", height: "500px" }}>
@@ -40,8 +40,8 @@
 //             lon: 55.5544806754509,
 //             name: "name",
 //           })}
-//           <LineUnderConstruction
-//             stops={getLineUnderConstruction().stops}
+//           <CourseUnderConstruction
+//             stops={getCourseUnderConstruction().stops}
 //             leafletMap={initialiseMap("map-container", false)}
 //           />
 //         </div>

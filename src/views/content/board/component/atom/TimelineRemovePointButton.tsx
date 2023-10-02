@@ -2,34 +2,34 @@ import { FaRegularTrashCan } from "solid-icons/fa";
 
 import { useStateAction } from "../../../../../StateAction";
 import {
-  BusLineType,
+  BusCourseType,
   updatePolylineWithOsrm,
-} from "../../../../../_entities/bus-line.entity";
+} from "../../../../../_entities/bus-course.entity";
 import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
-import { LineUnderConstructionType, NatureEnum } from "../../../../../type";
+import { CourseUnderConstructionType, NatureEnum } from "../../../../../type";
 import { linkMap } from "../../../map/component/organism/Points";
 import { COLOR_SCHOOL_FOCUS, COLOR_STOP_FOCUS } from "../../../map/constant";
 import {
-  displayLineMode,
-  displayLineModeEnum,
+  displayCourseMode,
+  displayCourseModeEnum,
 } from "../organism/DrawModeBoardContent";
 import "./TimelineRemovePointButton.css";
 
-const [, { getLineUnderConstruction, setLineUnderConstruction }] =
+const [, { getCourseUnderConstruction, setCourseUnderConstruction }] =
   useStateAction();
 
 // TODO Create stories and cypress
 export function TimelineRemovePointButton(props: {
   indice: number;
-  getter: () => LineUnderConstructionType;
-  setter: (line: LineUnderConstructionType) => void;
+  getter: () => CourseUnderConstructionType;
+  setter: (line: CourseUnderConstructionType) => void;
 }) {
   const deletePoint = (id: number) => {
-    const stops = [...props.getter().busLine.points];
+    const stops = [...props.getter().busCourse.points];
     const pointId = stops[id].id;
     const nature = stops[id].nature;
 
-    const circle = linkMap.get(props.getter().busLine.points[id].leafletId);
+    const circle = linkMap.get(props.getter().busCourse.points[id].leafletId);
     nature == NatureEnum.stop
       ? circle?.setStyle({ fillColor: COLOR_STOP_FOCUS })
       : circle?.setStyle({ fillColor: COLOR_SCHOOL_FOCUS });
@@ -37,11 +37,11 @@ export function TimelineRemovePointButton(props: {
     stops.splice(id, 1);
     props.setter({
       ...props.getter(),
-      busLine: { ...props.getter().busLine, points: stops },
+      busCourse: { ...props.getter().busCourse, points: stops },
     });
 
     // Update waypoints array
-    const waypoints = getLineUnderConstruction().busLine.waypoints;
+    const waypoints = getCourseUnderConstruction().busCourse.waypoints;
     if (waypoints) {
       let newWaypoints = [...waypoints];
 
@@ -51,16 +51,16 @@ export function TimelineRemovePointButton(props: {
         nature
       );
 
-      const newBusLine: BusLineType = {
-        ...getLineUnderConstruction().busLine,
+      const newBusCourse: BusCourseType = {
+        ...getCourseUnderConstruction().busCourse,
         waypoints: newWaypoints,
       };
-      if (displayLineMode() == displayLineModeEnum.onRoad) {
-        updatePolylineWithOsrm(newBusLine);
+      if (displayCourseMode() == displayCourseModeEnum.onRoad) {
+        updatePolylineWithOsrm(newBusCourse);
       } else {
-        setLineUnderConstruction({
-          ...getLineUnderConstruction(),
-          busLine: newBusLine,
+        setCourseUnderConstruction({
+          ...getCourseUnderConstruction(),
+          busCourse: newBusCourse,
         });
       }
     }

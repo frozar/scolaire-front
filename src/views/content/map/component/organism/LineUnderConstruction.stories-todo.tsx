@@ -7,18 +7,18 @@
 // } from "../../../../../../testing/utils/TestUtils";
 // import { initialiseMap } from "../../../../../../testing/utils/mapWrapper";
 // import { useStateAction } from "../../../../../StateAction";
-// import LineUnderConstructionComponent from "./LineUnderConstruction";
+// import CourseUnderConstructionComponent from "./CourseUnderConstruction";
 
 // const [
 //   ,
-//   { getLineUnderConstruction, setModeAddLine, confirmEtablissementSelection },
+//   { getCourseUnderConstruction, setModeAddCourse, confirmEtablissementSelection },
 // ] = useStateAction();
 
-// setModeAddLine();
+// setModeAddCourse();
 // confirmEtablissementSelection();
 
 // const meta = {
-//   component: LineUnderConstructionComponent,
+//   component: CourseUnderConstructionComponent,
 //   tags: ["autodocs"],
 //   argTypes: {
 //     leafletMap: {
@@ -29,18 +29,18 @@
 //     },
 //   },
 //   decorators,
-// } satisfies Meta<typeof LineUnderConstructionComponent>;
+// } satisfies Meta<typeof CourseUnderConstructionComponent>;
 
 // export default meta;
 // type Story = StoryObj<typeof meta>;
 
-// export const LineUnderConstructionStory: Story = {
+// export const CourseUnderConstructionStory: Story = {
 //   render: (props: null, options) => {
 //     const fullId = getDivFullId(options);
 
 //     return (
-//       <LineUnderConstructionComponent
-//         stops={getLineUnderConstruction().stops}
+//       <CourseUnderConstructionComponent
+//         stops={getCourseUnderConstruction().stops}
 //         leafletMap={initialiseMap(fullId)}
 //       />
 //     );

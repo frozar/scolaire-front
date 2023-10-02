@@ -4,10 +4,10 @@ import { useStateGui } from "../../../StateGui";
 
 import { buildMapL7 } from "./l7MapBuilder";
 
-import { BusLines } from "./component/organism/BusLines";
+import { BusCourses } from "./component/organism/BusCourses";
 
 import ImportCsvCanvas from "../../../component/ImportCsvCanvas";
-import ConfirmStopAddLine from "./ConfirmStopAddLineBox";
+import ConfirmStopAddCourse from "./ConfirmStopAddCourseBox";
 
 import { listHandlerLMap } from "./shortcut";
 
@@ -74,12 +74,12 @@ export default function () {
       />
       <div ref={mapDiv} id="main-map" />
       <Points leafletMap={getLeafletMap() as L.Map} />
-      <BusLines map={getLeafletMap() as L.Map} />
+      <BusCourses map={getLeafletMap() as L.Map} />
       {/* <div class="z-[1000] absolute top-[45%] right-[15px]">
         <RightMapMenu />
       </div> */}
       {/* TODO Modify and re-activate export and generate functionalities */}
-      <ConfirmStopAddLine />
+      <ConfirmStopAddCourse />
     </Show>
   );
 }

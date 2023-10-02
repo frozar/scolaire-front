@@ -2,14 +2,14 @@ import L from "leaflet";
 import { onCleanup } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import {
-  BusLineType,
+  BusCourseType,
   updatePolylineWithOsrm,
-} from "../../../../../_entities/bus-line.entity";
+} from "../../../../../_entities/bus-course.entity";
 
 import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
 import { COLOR_WAYPOINT } from "../../constant";
 
-const [, { getLineUnderConstruction }] = useStateAction();
+const [, { getCourseUnderConstruction }] = useStateAction();
 
 type PolylineDragMarkersProps = {
   map: L.Map;
@@ -19,17 +19,17 @@ type PolylineDragMarkersProps = {
 
 export default function (props: PolylineDragMarkersProps) {
   function onRightClick() {
-    const waypoints = getLineUnderConstruction().busLine.waypoints;
+    const waypoints = getCourseUnderConstruction().busCourse.waypoints;
     if (!waypoints) {
       return;
     }
     const newWaypoints = WaypointEntity.deleteWaypoint(waypoints, props.index);
 
-    const newBusLine: BusLineType = {
-      ...getLineUnderConstruction().busLine,
+    const newBusCourse: BusCourseType = {
+      ...getCourseUnderConstruction().busCourse,
       waypoints: newWaypoints,
     };
-    updatePolylineWithOsrm(newBusLine);
+    updatePolylineWithOsrm(newBusCourse);
   }
   // eslint-disable-next-line solid/reactivity
   const waypointMarker = L.circleMarker(props.latlngs, {
