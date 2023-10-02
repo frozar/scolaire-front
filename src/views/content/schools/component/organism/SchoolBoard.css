@@ -1,0 +1,10 @@
+.school-board-header{
+  @apply flex justify-between my-5;
+}
+
+.school-board-content {
+  margin-top: 0.75rem;
+  overflow: auto;
+  padding-right: 0.5rem;
+  max-height: 80vh;
+}
