@@ -1,32 +1,32 @@
 import { createSignal } from "solid-js";
 import { useStateGui } from "../StateGui";
-import { BusLineEntity } from "../_entities/bus-line.entity";
+import { CourseEntity } from "../_entities/course.entity";
 import { NatureEnum } from "../type";
 import { ServiceUtils } from "./_utils.service";
-import { BusLineService } from "./bus-line.service";
+import { CourseService } from "./course.service";
 
 const [, { setActiveMapId }] = useStateGui();
 
-describe("BusLineService", () => {
+describe("CourseService", () => {
   setActiveMapId(1);
   const [selected, setSelected] = createSignal<boolean>(false);
   const [latLngs, setLatLngs] = createSignal<L.LatLng[]>([]);
   const [color, setColor] = createSignal<string>("#0000");
 
-  // TODO: check why BusLineEntity.build is not catch with cy.spy
+  // TODO: check why CourseEntity.build is not catch with cy.spy
   // ERROR: AssertionError: expected build to have been called at least once, but it was never called
-  // TESTED: in bus-line.service, place BusLineEntity.build in var and return the var | same result
+  // TESTED: in course.service, place CourseEntity.build in var and return the var | same result
 
-  it("GetAll, spy on: generic, buildXanoUrl & get from ServiceUtils, build from BusLineEntity", () => {
+  it("GetAll, spy on: generic, buildXanoUrl & get from ServiceUtils, build from CourseEntity", () => {
     // Spy on: buildXanoUrl, generic, post, build
-    // const spyBusLineEntityBuild = cy.spy(BusLineEntity, "build");
+    // const spyCourseEntityBuild = cy.spy(CourseEntity, "build");
     const spyBuildXanoUrl = cy.spy(ServiceUtils, "buildXanoUrl");
     const spyGeneric = cy.spy(ServiceUtils, "generic");
     const spyGet = cy.spy(ServiceUtils, "get");
 
-    BusLineService.getAll();
+    CourseService.getAll();
 
-    // expect(spyBusLineEntityBuild).to.be.called;
+    // expect(spyCourseEntityBuild).to.be.called;
     expect(spyBuildXanoUrl).to.be.called;
     expect(spyGeneric).to.be.called;
     expect(spyGet).to.be.called;
@@ -34,13 +34,13 @@ describe("BusLineService", () => {
 
   it("Create, check: spy on generic & buildXanoUrl & get from ServiceUtils &   ", () => {
     // Spy on: buildXanoUrl, generic, post, build, dbFormat
-    const spyBusLineEntityDBFormat = cy.spy(BusLineEntity, "dbFormat");
-    // const spyBusLineEntityBuild = cy.spy(BusLineEntity, "build");
+    const spyCourseEntityDBFormat = cy.spy(CourseEntity, "dbFormat");
+    // const spyCourseEntityBuild = cy.spy(CourseEntity, "build");
     const spyBuildXanoUrl = cy.spy(ServiceUtils, "buildXanoUrl");
     const spyGeneric = cy.spy(ServiceUtils, "generic");
     const spyGet = cy.spy(ServiceUtils, "post");
 
-    BusLineService.create({
+    CourseService.create({
       id: 1,
       name: "line name",
       color: color,
@@ -75,8 +75,8 @@ describe("BusLineService", () => {
       ],
     });
 
-    expect(spyBusLineEntityDBFormat).to.be.called;
-    // expect(spyBusLineEntityBuild).to.be.called;
+    expect(spyCourseEntityDBFormat).to.be.called;
+    // expect(spyCourseEntityBuild).to.be.called;
     expect(spyBuildXanoUrl).to.be.called;
     expect(spyGeneric).to.be.called;
     expect(spyGet).to.be.called;
@@ -84,22 +84,22 @@ describe("BusLineService", () => {
 
   it("Update, check: spy on generic & buildXanoUrl & get from ServiceUtils &   ", () => {
     // Spy on: buildXanoUrl, generic, post, build, dbPartialFormat
-    const spyBusLineEntityDBPartialFormat = cy.spy(
-      BusLineEntity,
+    const spyCourseEntityDBPartialFormat = cy.spy(
+      CourseEntity,
       "dbPartialFormat"
     );
-    // const spyBusLineEntityBuild = cy.spy(BusLineEntity, "build");
+    // const spyCourseEntityBuild = cy.spy(CourseEntity, "build");
     const spyBuildXanoUrl = cy.spy(ServiceUtils, "buildXanoUrl");
     const spyGeneric = cy.spy(ServiceUtils, "generic");
     const spyGet = cy.spy(ServiceUtils, "patch");
 
-    BusLineService.update({
+    CourseService.update({
       id: 1,
       name: "new line name",
     });
 
-    expect(spyBusLineEntityDBPartialFormat).to.be.called;
-    // expect(spyBusLineEntityBuild).to.be.called;
+    expect(spyCourseEntityDBPartialFormat).to.be.called;
+    // expect(spyCourseEntityBuild).to.be.called;
     expect(spyBuildXanoUrl).to.be.called;
     expect(spyGeneric).to.be.called;
     expect(spyGet).to.be.called;
@@ -110,7 +110,7 @@ describe("BusLineService", () => {
     const spyGeneric = cy.spy(ServiceUtils, "generic");
     const spyGet = cy.spy(ServiceUtils, "delete");
 
-    BusLineService.delete(1);
+    CourseService.delete(1);
 
     expect(spyBuildXanoUrl).to.be.called;
     expect(spyGeneric).to.be.called;

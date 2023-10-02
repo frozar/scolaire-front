@@ -1,34 +1,34 @@
-import { BusLineType } from "../../../../../_entities/bus-line.entity";
+import { CourseType } from "../../../../../_entities/course.entity";
 import UpdateLineButton from "../atom/UpdateLineButton";
 import SchoolsEnumeration from "../molecule/SchoolsEnumeration";
 import Metrics from "./Metrics";
 import Timeline from "./Timeline";
 
-import { getSelectedBusLine } from "../../../map/component/organism/BusLines";
+import { getSelectedCourse } from "../../../map/component/organism/Courses";
 import RemoveLineButton from "../atom/RemoveLineButton";
-import "./BusLineInformationBoardContent.css";
 import CollapsibleElement from "./CollapsibleElement";
-export function BusLineInformationBoardContent() {
+import "./CourseInformationBoardContent.css";
+export function CourseInformationBoardContent() {
   return (
-    <div class="bus-line-information-board-content">
+    <div class="course-information-board-content">
       {/* TODO Put th e2 next component in "organism" */}
-      <div class="bus-line-information-board-content-title">
-        <div class="bus-line-information-board-content-name">
-          {getSelectedBusLine()?.name}
+      <div class="course-information-board-content-title">
+        <div class="course-information-board-content-name">
+          {getSelectedCourse()?.name}
         </div>
-        <UpdateLineButton busLine={getSelectedBusLine() as BusLineType} />
-        <RemoveLineButton busLine={getSelectedBusLine() as BusLineType} />
+        <UpdateLineButton busLine={getSelectedCourse() as CourseType} />
+        <RemoveLineButton busLine={getSelectedCourse() as CourseType} />
       </div>
-      <div class="bus-line-information-board-content-schools">
+      <div class="course-information-board-content-schools">
         <SchoolsEnumeration
           schoolsName={
-            getSelectedBusLine()?.schools.map((school) => school.name) ?? []
+            getSelectedCourse()?.schools.map((school) => school.name) ?? []
           }
         />
       </div>
 
       <CollapsibleElement title="Métriques">
-        <Metrics line={getSelectedBusLine()} />
+        <Metrics line={getSelectedCourse()} />
       </CollapsibleElement>
 
       <CollapsibleElement title="TimeLine" class="timeline-collapsise">

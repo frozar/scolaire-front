@@ -2,9 +2,9 @@ import { createSignal } from "solid-js";
 import PlusIcon from "../../../../../icons/PlusIcon";
 import { displayAddLineMessage } from "../../../../../userInformation/utils";
 import {
-  deselectAllBusLines,
-  getBusLines,
-} from "../../../map/component/organism/BusLines";
+  deselectAllCourses,
+  getCourses,
+} from "../../../map/component/organism/Courses";
 import { deselectAllPoints } from "../../../map/component/organism/Points";
 import InputSearch from "../../../schools/component/molecule/InputSearch";
 import LinesList from "../../../schools/component/organism/LinesList";
@@ -17,7 +17,7 @@ export default function () {
   const [searchKeyword, setSearchKeyword] = createSignal<string>("");
 
   const filteredLines = () =>
-    getBusLines().filter((line) => line.name?.includes(searchKeyword()));
+    getCourses().filter((line) => line.name?.includes(searchKeyword()));
 
   function addLine() {
     if (onBoard() == "line-draw") {
@@ -25,7 +25,7 @@ export default function () {
       setCurrentStep(drawModeStep.start);
     } else {
       deselectAllPoints();
-      deselectAllBusLines();
+      deselectAllCourses();
       toggleDrawMod();
 
       setCurrentStep(drawModeStep.schoolSelection);
@@ -41,7 +41,7 @@ export default function () {
     <section>
       <header class="line-board-header">
         <div class="line-board-header-infos">
-          <p>Total des lignes: {getBusLines().length}</p>
+          <p>Total des courses: {getCourses().length}</p>
           <ButtonIcon icon={<PlusIcon />} onClick={addLine} />
         </div>
 

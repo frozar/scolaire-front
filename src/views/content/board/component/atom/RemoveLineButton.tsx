@@ -1,11 +1,11 @@
-import { BusLineType } from "../../../../../_entities/bus-line.entity";
+import { CourseType } from "../../../../../_entities/course.entity";
 import TrashIcon from "../../../../../icons/TrashIcon";
 import { setRemoveConfirmation } from "../../../../../signaux";
 import { deselectAllPoints } from "../../../map/component/organism/Points";
 import ButtonIcon from "../molecule/ButtonIcon";
 
 export interface RemoveLineButtonProps {
-  busLine: BusLineType;
+  busLine: CourseType;
 }
 
 export default function (props: RemoveLineButtonProps) {

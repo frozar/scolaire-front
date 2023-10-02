@@ -1,5 +1,5 @@
 import { useStateAction } from "../../../../../StateAction";
-import { BusLineType } from "../../../../../_entities/bus-line.entity";
+import { CourseType } from "../../../../../_entities/course.entity";
 
 import { createSignal } from "solid-js";
 import UpdateButton from "../../../../../icons/UpdatePen";
@@ -10,19 +10,19 @@ import "./DrawUpdateButton.css";
 
 const [, { setLineUnderConstruction, setModeAddLine }] = useStateAction();
 
-export const [unmodifiedBusLine, setUnmodifiedBusLine] =
-  createSignal<BusLineType>();
+export const [unmodifiedCourse, setUnmodifiedCourse] =
+  createSignal<CourseType>();
 
-export default function (props: { busLine: BusLineType }) {
+export default function (props: { busLine: CourseType }) {
   async function onclick() {
     setLineUnderConstruction({
       busLine: props.busLine,
       nextIndex: props.busLine.points.length ?? 0,
     });
     const [color, setColor] = createSignal<string>(props.busLine.color());
-    setUnmodifiedBusLine({ ...props.busLine, color, setColor });
+    setUnmodifiedCourse({ ...props.busLine, color, setColor });
 
-    MapElementUtils.deselectAllPointsAndBusLines();
+    MapElementUtils.deselectAllPointsAndCourses();
     toggleDrawMod();
     setCurrentStep(drawModeStep.editLine);
     changeBoard("line-draw");

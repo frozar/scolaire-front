@@ -19,8 +19,8 @@ import { SchoolType } from "./school.entity";
 const [, { getLineUnderConstruction, setLineUnderConstruction }] =
   useStateAction();
 
-export class BusLineEntity {
-  static build(dbData: BusLineDBType): BusLineType {
+export class CourseEntity {
+  static build(dbData: CourseDBType): CourseType {
     const filteredShools: PointType[] = getSchools().filter(
       (item) => item.id == dbData.school_id
     );
@@ -54,7 +54,7 @@ export class BusLineEntity {
       name: dbData.name,
       color: color,
       setColor: setColor,
-      points: formatBusLinePointType(dbData.bus_line_stop),
+      points: formatCoursePointType(dbData.bus_line_stop),
       waypoints: formatWaypointType(dbData.waypoint),
       latLngs: latLngs,
       setLatLngs: setLatLngs,
@@ -65,7 +65,7 @@ export class BusLineEntity {
     };
   }
 
-  static defaultBusLine(): BusLineType {
+  static defaultCourse(): CourseType {
     const [latLngs, setLatLngs] = createSignal<L.LatLng[]>([]);
     const [color, setColor] = createSignal<string>(
       COLOR_LINE_UNDER_CONSTRUCTION
@@ -88,13 +88,13 @@ export class BusLineEntity {
     };
   }
 
-  static dbFormat(line: BusLineType): Omit<BusLineDBType, "id"> {
+  static dbFormat(line: CourseType): Omit<CourseDBType, "id"> {
     const name = line.name ? line.name : "";
     return {
       color: formatColorForDB(line.color()),
       name: name,
       school_id: line.schools[0].id,
-      bus_line_stop: formatBusLinePointDBType(line.points),
+      bus_line_stop: formatCoursePointDBType(line.points),
       polyline: EntityUtils.buildLocationPath(line.latLngs()),
       metrics: {
         distance: line.metrics().distance,
@@ -109,7 +109,7 @@ export class BusLineEntity {
     };
   }
 
-  static dbPartialFormat(line: Partial<BusLineType>): Partial<BusLineDBType> {
+  static dbPartialFormat(line: Partial<CourseType>): Partial<CourseDBType> {
     let output = {};
 
     if (line.color) {
@@ -130,7 +130,7 @@ export class BusLineEntity {
     if (line.points) {
       output = {
         ...output,
-        bus_line_stop: formatBusLinePointDBType(line.points),
+        bus_line_stop: formatCoursePointDBType(line.points),
       };
     }
     if (line.waypoints) {
@@ -162,13 +162,13 @@ function formatColorForDB(color: string) {
  * @param points
  * @returns
  */
-const formatBusLinePointType = (
-  points: BusLinePointDBType[]
-): BusLinePointType[] => {
+const formatCoursePointType = (
+  points: CoursePointDBType[]
+): CoursePointType[] => {
   //TODO Investigate the problem during switching between map
   return points
     .map((dbPoint) => {
-      const associatedPoint: PointType = getAssociatedBusLinePoint(dbPoint);
+      const associatedPoint: PointType = getAssociatedCoursePoint(dbPoint);
       if (associatedPoint) {
         return {
           id: associatedPoint.id,
@@ -186,7 +186,7 @@ const formatBusLinePointType = (
         );
       }
     })
-    .filter((elem) => elem != undefined) as BusLinePointType[]; // temporary FIX Filter to delete undefined data
+    .filter((elem) => elem != undefined) as CoursePointType[]; // temporary FIX Filter to delete undefined data
 };
 
 const formatWaypointType = (waypoints: WaypointDBType[]): WaypointType[] => {
@@ -202,9 +202,9 @@ const formatWaypointType = (waypoints: WaypointDBType[]): WaypointType[] => {
   });
 };
 
-const formatBusLinePointDBType = (
-  points: BusLinePointType[]
-): BusLinePointDBType[] => {
+const formatCoursePointDBType = (
+  points: CoursePointType[]
+): CoursePointDBType[] => {
   return points.map((point) => {
     return {
       stop_id: point.nature == NatureEnum.stop ? point.id : 0,
@@ -237,14 +237,14 @@ const formatWaypointDBType = (waypoints: WaypointType[]): WaypointDBType[] => {
   });
 };
 
-const getAssociatedBusLinePoint = (dbPoint: BusLinePointDBType): PointType => {
+const getAssociatedCoursePoint = (dbPoint: CoursePointDBType): PointType => {
   if (dbPoint.school_id != 0) {
     return getSchools().filter((item) => item.id == dbPoint.school_id)[0];
   }
   return getStops().filter((item) => item.id == dbPoint.stop_id)[0];
 };
 
-export async function updatePolylineWithOsrm(busLine: BusLineType) {
+export async function updatePolylineWithOsrm(busLine: CourseType) {
   enableSpinningWheel();
   const { latlngs, projectedLatlngs, metrics } =
     await OsrmService.getRoadPolyline(busLine);
@@ -272,13 +272,13 @@ export type WaypointDBType = {
   on_road_location: LocationDBType;
 };
 
-export type BusLineType = {
+export type CourseType = {
   id?: number;
   schools: SchoolType[];
   name?: string;
   color: Accessor<string>;
   setColor: Setter<string>;
-  points: BusLinePointType[];
+  points: CoursePointType[];
   waypoints?: WaypointType[];
   latLngs: Accessor<L.LatLng[]>;
   setLatLngs: Setter<L.LatLng[]>;
@@ -288,7 +288,7 @@ export type BusLineType = {
   setMetrics: Setter<busLineMetricType>;
 };
 
-export type BusLinePointType = {
+export type CoursePointType = {
   id: number;
   leafletId: number;
   name: string;
@@ -298,18 +298,18 @@ export type BusLinePointType = {
   nature: NatureEnum;
 };
 
-export type BusLineDBType = {
+export type CourseDBType = {
   id: number;
   school_id: number;
   name: string;
   color: string;
-  bus_line_stop: BusLinePointDBType[];
+  bus_line_stop: CoursePointDBType[];
   polyline: LocationPathDBType;
   metrics: busLineMetricType;
   waypoint: WaypointDBType[];
 };
 
-export type BusLinePointDBType = {
+export type CoursePointDBType = {
   stop_id: number;
   school_id: number;
   quantity: number;
@@ -326,7 +326,7 @@ export type busLineMetricType = {
 };
 
 //Todo delete function : ne pas utiliser le signal
-function setOnRoad(busLine: BusLineType, projectedLatlngs: L.LatLng[]) {
+function setOnRoad(busLine: CourseType, projectedLatlngs: L.LatLng[]) {
   if (projectedLatlngs.length == 0) {
     setLineUnderConstruction({
       ...getLineUnderConstruction(),
