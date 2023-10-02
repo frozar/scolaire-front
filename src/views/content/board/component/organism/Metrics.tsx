@@ -1,11 +1,11 @@
-import { BusLineType } from "../../../../../_entities/bus-line.entity";
+import { CourseType } from "../../../../../_entities/course.entity";
 import { MetricItem, MetricItemProps } from "../atom/MetricItem";
 
 export interface MetricsEnumerationProps {
   metrics: MetricItemProps[];
 }
 export type MetricsProps = {
-  line?: Pick<BusLineType, "metrics">;
+  line?: Pick<CourseType, "metrics">;
 };
 
 export default function (props: MetricsProps) {

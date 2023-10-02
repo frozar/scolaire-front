@@ -1,6 +1,6 @@
 import { PointType } from "./_entities/_utils.entity";
 import { NatureEnum } from "./type";
-import { getSelectedBusLine } from "./views/content/map/component/organism/BusLines";
+import { getSelectedCourse } from "./views/content/map/component/organism/Courses";
 import { linkMap } from "./views/content/map/component/organism/Points";
 import { getSchools } from "./views/content/map/component/organism/SchoolPoints";
 import { getStops } from "./views/content/map/component/organism/StopPoints";
@@ -49,11 +49,11 @@ export function updatePointColor(point?: PointType) {
       circle?.setStyle({ fillColor: COLOR_SCHOOL_FOCUS });
     }
   } else {
-    const selectedBusLine = getSelectedBusLine();
-    if (!selectedBusLine) {
+    const selectedBusCourse = getSelectedCourse();
+    if (!selectedBusCourse) {
       return;
     }
-    ids.push(...selectedBusLine.points.map((point) => point.leafletId));
+    ids.push(...selectedBusCourse.points.map((point) => point.leafletId));
   }
 
   setSchoolPointsColor(ids, COLOR_SCHOOL_LIGHT);

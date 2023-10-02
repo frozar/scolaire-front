@@ -50,8 +50,8 @@ export default function (props: SchoolItemProps) {
         </div>
       </div>
       <div class="school-item-content">
-        <p>lignes: {SchoolEntity.getSchoolLines(props.school.id).length}</p>
-        <p>classes: {props.school.classes.length}</p>
+        <p>Courses: {SchoolEntity.getSchoolCourses(props.school.id).length}</p>
+        <p>classes: {props.school.classes.length ?? "-"}</p>
         <p>élèves: {SchoolEntity.getStudentQuantityForSchool(props.school)}</p>
       </div>
     </CardWrapper>

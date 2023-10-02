@@ -4,11 +4,11 @@ import { setRemoveConfirmation } from "../../../../../signaux";
 import { deselectAllPoints } from "../../../map/component/organism/Points";
 import ButtonIcon from "../molecule/ButtonIcon";
 
-export interface RemoveLineButtonProps {
+export interface RemoveCourseButtonProps {
   course: CourseType;
 }
 
-export default function (props: RemoveLineButtonProps) {
+export default function (props: RemoveCourseButtonProps) {
   const onclick = () => {
     deselectAllPoints();
     if (props.course.id) {

@@ -1,22 +1,22 @@
 import { useStateAction } from "../StateAction";
 import { addNewUserInformation } from "../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
-import DisplayAddLineMessageContent from "./DisplayAddLineMessageContent";
-import DisplayRemoveLineMessageContent from "./DisplayRemoveLineMessageContent";
-const [, { isInAddLineMode }] = useStateAction();
+import DisplayAddCourseMessageContent from "./DisplayAddCourseMessageContent";
+import DisplayRemoveCourseMessageContent from "./DisplayRemoveCourseMessageContent";
+const [, { isInAddCourseMode }] = useStateAction();
 
-export function displayAddLineMessage() {
-  if (isInAddLineMode()) {
+export function displayAddCourseMessage() {
+  if (isInAddCourseMode()) {
     addNewUserInformation({
       displayed: true,
       level: MessageLevelEnum.info,
-      type: MessageTypeEnum.enterAddLine,
-      content: DisplayAddLineMessageContent(),
+      type: MessageTypeEnum.enterAddCourse,
+      content: DisplayAddCourseMessageContent(),
     });
   }
 }
 
-export function displayNoLineMessage() {
+export function displayNoCourseMessage() {
   addNewUserInformation({
     displayed: true,
     level: MessageLevelEnum.error,
@@ -25,12 +25,12 @@ export function displayNoLineMessage() {
   });
 }
 
-export function displayRemoveLineMessage() {
+export function displayRemoveCourseMessage() {
   addNewUserInformation({
     displayed: true,
     level: MessageLevelEnum.info,
-    type: MessageTypeEnum.enterRemoveLine,
-    content: DisplayRemoveLineMessageContent(),
+    type: MessageTypeEnum.enterRemoveCourse,
+    content: DisplayRemoveCourseMessageContent(),
   });
 }
 

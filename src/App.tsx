@@ -17,7 +17,7 @@ import { setPointsReady } from "./views/content/map/component/organism/Points";
 import ExportConfirmationDialogBox from "./views/content/map/rightMapMenu/export/ExportConfirmationDialogBox";
 import { tryConnection } from "./views/layout/authentication";
 
-const [, { isInAddLineMode }] = useStateAction();
+const [, { isInAddCourseMode }] = useStateAction();
 const [, { getSelectedMenu }] = useStateGui();
 
 export default () => {
@@ -30,11 +30,11 @@ export default () => {
   createEffect(() => {
     // This line is to disable right click menu, necessary to remove point in line under construction with the right click
     document.addEventListener("contextmenu", (e) => e.preventDefault());
-    const [, { getLineUnderConstruction }] = useStateAction();
+    const [, { getCourseUnderConstruction }] = useStateAction();
 
     if (
-      isInAddLineMode() &&
-      0 < getLineUnderConstruction().busLine.points.length
+      isInAddCourseMode() &&
+      0 < getCourseUnderConstruction().course.points.length
     ) {
       if (
         refApp &&

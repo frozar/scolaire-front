@@ -2,7 +2,7 @@ import { FaSolidPlus } from "solid-icons/fa";
 import { useStateAction } from "../../../../../StateAction";
 import "./TimelineAddPointButton.css";
 
-const [, { setLineUnderConstructionNextIndex }] = useStateAction();
+const [, { setCourseUnderConstructionNextIndex }] = useStateAction();
 
 // TODO Create stories and cypress
 export function TimelineAddPointButton(props: { indice: number }) {
@@ -12,7 +12,7 @@ export function TimelineAddPointButton(props: { indice: number }) {
         <div class="v-timeline-divider__dot v-timeline-divider__dot--size-very-small timeline-add-point-button">
           <button
             class=""
-            onClick={() => setLineUnderConstructionNextIndex(props.indice)}
+            onClick={() => setCourseUnderConstructionNextIndex(props.indice)}
             title="Ajouter un point"
           >
             <FaSolidPlus />

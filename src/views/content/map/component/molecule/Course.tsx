@@ -2,10 +2,10 @@ import L, { LeafletMouseEvent } from "leaflet";
 import { For, Show, createEffect, createSignal } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import {
-  BusLinePointType,
-  BusLineType,
+  CoursePointType,
+  CourseType,
   WaypointType,
-} from "../../../../../_entities/bus-line.entity";
+} from "../../../../../_entities/course.entity";
 
 import { NatureEnum } from "../../../../../type";
 import { setPickerColor } from "../../../board/component/atom/ColorPicker";
@@ -21,13 +21,13 @@ import {
 import Line from "../atom/Line";
 import PolylineDragMarker from "../atom/PolylineDragMarker";
 import WaypointMarker from "../atom/WaypointMarker";
-import { deselectAllBusLines } from "../organism/BusLines";
+import { deselectAllCourses } from "../organism/Courses";
 
 import { updatePointColor } from "../../../../../leafletUtils";
 import {
   currentStep,
-  displayLineMode,
-  displayLineModeEnum,
+  displayCourseMode,
+  displayCourseModeEnum,
   drawModeStep,
 } from "../../../board/component/organism/DrawModeBoardContent";
 import { setIsOverMapItem } from "../../l7MapBuilder";
@@ -37,19 +37,19 @@ import {
   linkMap,
 } from "../organism/Points";
 
-const [, { getLineUnderConstruction, setLineUnderConstructionNextIndex }] =
+const [, { getCourseUnderConstruction, setCourseUnderConstructionNextIndex }] =
   useStateAction();
 
-export const [draggingLine, setDraggingLine] = createSignal<boolean>(false);
+export const [draggingCourse, setDraggingCourse] = createSignal<boolean>(false);
 
-export type BusLineProps = {
-  line: BusLineType;
+export type BusCourseProps = {
+  course: CourseType;
   map: L.Map;
 };
 
-export function onClickBusLine(line: BusLineType) {
+export function onClickBusCourse(line: CourseType) {
   if (onBoard() != "line-draw") {
-    deselectAllBusLines();
+    deselectAllCourses();
     deselectAllPoints();
     setPickerColor(line.color());
     line.setSelected(true);
@@ -60,25 +60,25 @@ export function onClickBusLine(line: BusLineType) {
   }
 }
 
-export function BusLine(props: BusLineProps) {
+export function BusCourse(props: BusCourseProps) {
   const [localLatLngs, setLocalLatLngs] = createSignal<L.LatLng[]>([]);
   const [localOpacity, setLocalOpacity] = createSignal<number>(1);
   createEffect(() => {
     if (
-      displayLineMode() == displayLineModeEnum.onRoad ||
+      displayCourseMode() == displayCourseModeEnum.onRoad ||
       onBoard() != "line-draw"
     ) {
-      setLocalLatLngs(props.line.latLngs());
+      setLocalLatLngs(props.course.latLngs());
       setLocalOpacity(0.8);
     } else {
-      setLocalLatLngs(getLatLngsFromPoint(props.line.points));
+      setLocalLatLngs(getLatLngsFromPoint(props.course.points));
       setLocalOpacity(1);
     }
   });
 
   let pointFocus: { circle: L.CircleMarker; nature: NatureEnum }[] = [];
   createEffect(() => {
-    if (getLineUnderConstruction().busLine === props.line) {
+    if (getCourseUnderConstruction().course === props.course) {
       pointFocus.map((point) => {
         point.circle.setStyle({
           fillColor:
@@ -88,7 +88,7 @@ export function BusLine(props: BusLineProps) {
         });
       });
       pointFocus = [];
-      props.line.points.map((point) => {
+      props.course.points.map((point) => {
         const circle = linkMap.get(point.leafletId);
         circle?.setStyle({ fillColor: COLOR_STOP_EMPHASE });
         pointFocus.push({
@@ -102,27 +102,27 @@ export function BusLine(props: BusLineProps) {
   const onMouseOver = (polyline: L.Polyline, arrows: L.Marker[]) => {
     setIsOverMapItem(true);
     if (onBoard() != "line-draw") {
-      buslineSetBoldStyle(polyline, arrows, "white");
+      buscourseSetBoldStyle(polyline, arrows, "white");
     }
   };
 
   const onMouseOut = (polyline: L.Polyline, arrows: L.Marker[]) => {
     setIsOverMapItem(false);
-    // if (!line.selected() && (isInRemoveLineMode() || isInReadMode())) {
+    // if (!line.selected() && (isInRemoveCourseMode() || isInReadMode())) {
     if (onBoard() != "line-draw") {
-      buslineSetNormalStyle(polyline, arrows, props.line.color());
+      buscourseSetNormalStyle(polyline, arrows, props.course.color());
     }
   };
 
   function onMouseDown(e: LeafletMouseEvent) {
-    // if (displayLineMode() == displayLineModeEnum.straight && !isInReadMode()) {
+    // if (displayCourseMode() == displayCourseModeEnum.straight && !isInReadMode()) {
     if (
-      displayLineMode() == displayLineModeEnum.straight &&
-      currentStep() == drawModeStep.editLine
+      displayCourseMode() == displayCourseModeEnum.straight &&
+      currentStep() == drawModeStep.editCourse
     ) {
       props.map.dragging.disable();
 
-      function pointToLineDistance(
+      function pointToCourseDistance(
         clickCoordinate: L.LatLng,
         point1: L.LatLng,
         point2: L.LatLng
@@ -143,7 +143,7 @@ export function BusLine(props: BusLineProps) {
       }
       const coordinates: L.LatLng[] = e.target._latlngs;
 
-      let distance = pointToLineDistance(
+      let distance = pointToCourseDistance(
         e.latlng,
         coordinates[0],
         coordinates[1]
@@ -151,7 +151,7 @@ export function BusLine(props: BusLineProps) {
       let indice = 0;
 
       for (let i = 1; i < coordinates.length - 1; i++) {
-        const actualDistance = pointToLineDistance(
+        const actualDistance = pointToCourseDistance(
           e.latlng,
           coordinates[i],
           coordinates[i + 1]
@@ -165,7 +165,7 @@ export function BusLine(props: BusLineProps) {
         prev.splice(indice + 1, 0, e.latlng);
         return [...prev];
       });
-      setDraggingLine(true);
+      setDraggingCourse(true);
 
       createEffect(() => {
         props.map?.on("mousemove", ({ latlng }) => {
@@ -176,7 +176,7 @@ export function BusLine(props: BusLineProps) {
         });
       });
 
-      setLineUnderConstructionNextIndex(indice + 1);
+      setCourseUnderConstructionNextIndex(indice + 1);
 
       function handleMouseUp() {
         props.map?.off("mousemove");
@@ -191,8 +191,8 @@ export function BusLine(props: BusLineProps) {
             prev.splice(indice + 1, 1);
             return [...prev];
           });
-          setLineUnderConstructionNextIndex(localLatLngs().length);
-          setDraggingLine(false);
+          setCourseUnderConstructionNextIndex(localLatLngs().length);
+          setDraggingCourse(false);
         }
         document.removeEventListener("mouseup", handleMouseUp);
       }
@@ -200,24 +200,24 @@ export function BusLine(props: BusLineProps) {
     }
   }
 
-  const latLngList = () => props.line.latLngs();
+  const latLngList = () => props.course.latLngs();
 
   return (
     <>
       <Line
         latlngs={localLatLngs()}
         leafletMap={props.map}
-        color={props.line.color()}
+        color={props.course.color()}
         opacity={localOpacity()}
-        lineId={props.line.id}
+        lineId={props.course.id}
         onMouseOver={onMouseOver}
         onMouseOut={onMouseOut}
-        onClick={() => onClickBusLine(props.line)}
+        onClick={() => onClickBusCourse(props.course)}
         onMouseDown={onMouseDown}
       />
       <Show
         when={
-          displayLineMode() == displayLineModeEnum.onRoad &&
+          displayCourseMode() == displayCourseModeEnum.onRoad &&
           onBoard() == "line-draw"
         }
       >
@@ -227,7 +227,7 @@ export function BusLine(props: BusLineProps) {
 
             const pointProjectedCoord: L.LatLng[] = [];
 
-            const waypoints = props.line.waypoints;
+            const waypoints = props.course.waypoints;
             if (!waypoints) {
               return <></>;
             }
@@ -244,6 +244,7 @@ export function BusLine(props: BusLineProps) {
 
             for (let i = 0; latLngList().length - 1; i++) {
               if (
+                pointProjectedCoord[index] &&
                 pointProjectedCoord[index].lat == latLngList()[i].lat &&
                 pointProjectedCoord[index].lng == latLngList()[i].lng
               ) {
@@ -267,8 +268,8 @@ export function BusLine(props: BusLineProps) {
             );
           }}
         </For>
-        <Show when={getLineUnderConstruction().busLine.waypoints}>
-          <For each={getLineUnderConstruction().busLine.waypoints}>
+        <Show when={getCourseUnderConstruction().course.waypoints}>
+          <For each={getCourseUnderConstruction().course.waypoints}>
             {(waypoint: WaypointType, i) => {
               if (!waypoint.idSchool && !waypoint.idStop) {
                 return (
@@ -287,11 +288,11 @@ export function BusLine(props: BusLineProps) {
   );
 }
 
-function getLatLngsFromPoint(points: BusLinePointType[]): L.LatLng[] {
+function getLatLngsFromPoint(points: CoursePointType[]): L.LatLng[] {
   return points.map((point) => L.latLng(point.lat, point.lon));
 }
 
-export function buslineSetNormalStyle(
+export function buscourseSetNormalStyle(
   polyline: L.Polyline,
   arrowsLinked: L.Marker[],
   color: string
@@ -300,7 +301,7 @@ export function buslineSetNormalStyle(
   arrowsSetNormalStyle(arrowsLinked, color);
 }
 
-export function buslineSetBoldStyle(
+export function buscourseSetBoldStyle(
   polyline: L.Polyline,
   arrowsLinked: L.Marker[],
   color: string

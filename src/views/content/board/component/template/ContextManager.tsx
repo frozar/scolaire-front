@@ -5,9 +5,9 @@ import SchoolsBoard from "../../../schools/component/organism/SchoolBoard";
 import SchoolDetails from "../../../schools/component/organism/SchoolDetails";
 import StopBoard from "../../../stops/component/organism/StopBoard";
 import StopDetails from "../../../stops/component/organism/StopDetails";
-import { BusLineInformationBoardContent } from "../organism/BusLineInformationBoardContent";
+import { BusCourseInformationBoardContent } from "../organism/CourseInformationBoardContent";
+import CoursesBoard from "../organism/CoursesBoard";
 import DrawModeBoardContent from "../organism/DrawModeBoardContent";
-import LinesBoard from "../organism/LinesBoard";
 import InformationBoardLayout from "./InformationBoardLayout";
 
 //TODO utiliser ou supprimer "schools" et "stops"
@@ -44,7 +44,7 @@ export default function () {
       <InformationBoardLayout>
         <Switch>
           <Match when={onBoard() == "line"}>
-            <LinesBoard />
+            <CoursesBoard />
           </Match>
           <Match when={onBoard() == "line-draw"}>
             <DrawModeBoardContent />
@@ -73,7 +73,7 @@ export default function () {
           </Match>
 
           <Match when={onBoard() == "line-details"}>
-            <BusLineInformationBoardContent />
+            <BusCourseInformationBoardContent />
           </Match>
         </Switch>
       </InformationBoardLayout>

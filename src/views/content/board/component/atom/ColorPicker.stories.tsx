@@ -22,7 +22,7 @@ const onInput = (color: string) => console.log("color onInput : " + color);
 export const ColorPickerStory: Story = {
   args: {
     color: "#f3e6aa",
-    title: "Couleur de la ligne",
+    title: "Couleur de la course",
     onInput: onInput,
     onChange: onChange,
   },

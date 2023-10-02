@@ -8,14 +8,14 @@ import { assertIsNode } from "../../../utils";
 // https://www.solidjs.com/guides/typescript#use___
 false && ClickOutside;
 
-const [, { isInAddLineMode, getLineUnderConstruction, setModeRead }] =
+const [, { isInAddCourseMode, getCourseUnderConstruction, setModeRead }] =
   useStateAction();
 
-export const [displayedConfirmStopAddLine, setDisplayedConfirmStopAddLine] =
+export const [displayedConfirmStopAddCourse, setDisplayedConfirmStopAddCourse] =
   createSignal(false);
 
-const toggleConfirmStopAddLine = () =>
-  setDisplayedConfirmStopAddLine(!displayedConfirmStopAddLine());
+const toggleConfirmStopAddCourse = () =>
+  setDisplayedConfirmStopAddCourse(!displayedConfirmStopAddCourse());
 
 let refDialogue: HTMLDivElement;
 
@@ -25,10 +25,11 @@ export function defineModalToOpen(obj: () => void) {
 }
 
 export const confirmAbortEditionNeedToBeCall = () => {
-  const hasLineUnderConstruction = getLineUnderConstruction().stops.length > 0;
+  const hasCourseUnderConstruction =
+    getCourseUnderConstruction().stops.length > 0;
 
-  if (isInAddLineMode() && hasLineUnderConstruction) {
-    toggleConfirmStopAddLine();
+  if (isInAddCourseMode() && hasCourseUnderConstruction) {
+    toggleConfirmStopAddCourse();
   } else {
     modalToOpen();
   }
@@ -40,8 +41,8 @@ function exitModal({ code }: KeyboardEvent) {
   // eslint-disable-next-line solid/reactivity
   keyboard.getLayoutMap().then(() => {
     if (code === "Escape") {
-      if (displayedConfirmStopAddLine()) {
-        setDisplayedConfirmStopAddLine(false);
+      if (displayedConfirmStopAddCourse()) {
+        setDisplayedConfirmStopAddCourse(false);
       }
     }
   });
@@ -51,8 +52,8 @@ export default function () {
   const confirmStopingEdition = () => {
     setModeRead();
     //TODO voir l'impact de la suppression
-    // fetchBusLines();
-    toggleConfirmStopAddLine();
+    // fetchBusCourses();
+    toggleConfirmStopAddCourse();
     modalToOpen();
   };
 
@@ -74,7 +75,7 @@ export default function () {
       exitClass="opacity-100"
       exitToClass="opacity-0"
     >
-      <Show when={displayedConfirmStopAddLine()}>
+      <Show when={displayedConfirmStopAddCourse()}>
         <div
           class="relative z-[1400]"
           aria-labelledby="modal-title"
@@ -110,7 +111,7 @@ export default function () {
 
                     assertIsNode(e.target);
                     if (!refDialogue.contains(e.target)) {
-                      setDisplayedConfirmStopAddLine(false);
+                      setDisplayedConfirmStopAddCourse(false);
                     }
                   }}
                 >
@@ -128,7 +129,7 @@ export default function () {
                     <button
                       type="button"
                       class="export-modal-cancel"
-                      onClick={toggleConfirmStopAddLine}
+                      onClick={toggleConfirmStopAddCourse}
                     >
                       Non
                     </button>

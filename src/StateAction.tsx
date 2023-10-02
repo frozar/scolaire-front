@@ -4,13 +4,10 @@ import { createStore } from "solid-js/store";
 import { createHistory, record } from "solid-record";
 
 import { setUserInformations } from "./signaux";
-import { LineUnderConstructionType, MessageTypeEnum, ModeEnum } from "./type";
+import { CourseUnderConstructionType, MessageTypeEnum, ModeEnum } from "./type";
 
 import { useStateGui } from "./StateGui";
-import {
-  BusLinePointType,
-  busLineMetricType,
-} from "./_entities/bus-line.entity";
+import { CourseMetricType, CoursePointType } from "./_entities/course.entity";
 import { SchoolType } from "./_entities/school.entity";
 import { StopType } from "./_entities/stop.entity";
 import { COLOR_LINE_UNDER_CONSTRUCTION } from "./views/content/map/constant";
@@ -23,19 +20,19 @@ type StateActionType = {
   // Field which keep the select circle on the map
   //TODO May be the name of "altimetry" is not the good one, "settings" is more appropriate
   altimetry: { animation: boolean };
-  lineUnderConstruction: LineUnderConstructionType;
+  courseUnderConstruction: CourseUnderConstructionType;
   mode: ModeEnum;
 };
 
-export function defaultLineUnderConstruction(): LineUnderConstructionType {
+export function defaultCourseUnderConstruction(): CourseUnderConstructionType {
   const [latLngs, setLatLngs] = createSignal<L.LatLng[]>([]);
   const [color, setColor] = createSignal<string>(COLOR_LINE_UNDER_CONSTRUCTION);
   const [selected, setSelected] = createSignal<boolean>(false);
-  const [metrics, setMetrics] = createSignal<busLineMetricType>({});
+  const [metrics, setMetrics] = createSignal<CourseMetricType>({});
 
   return {
     nextIndex: 0,
-    busLine: {
+    course: {
       color: color,
       setColor: setColor,
       points: [],
@@ -54,7 +51,7 @@ export function defaultLineUnderConstruction(): LineUnderConstructionType {
 const makeStateActionContext = () => {
   const defaultState: StateActionType = {
     altimetry: { animation: true },
-    lineUnderConstruction: defaultLineUnderConstruction(),
+    courseUnderConstruction: defaultCourseUnderConstruction(),
     mode: ModeEnum.read,
   };
 
@@ -69,36 +66,36 @@ const makeStateActionContext = () => {
     return state.altimetry.animation;
   }
 
-  function setPointsToLineUnderConstruction(points: BusLinePointType[]) {
-    setState("lineUnderConstruction", "busLine", "points", points);
+  function setPointsToCourseUnderConstruction(points: CoursePointType[]) {
+    setState("courseUnderConstruction", "course", "points", points);
   }
 
-  function addPointToLineUnderConstruction(point: BusLinePointType) {
+  function addPointToCourseUnderConstruction(point: CoursePointType) {
     setState(
-      "lineUnderConstruction",
-      "busLine",
+      "courseUnderConstruction",
+      "course",
       "points",
-      (line: BusLinePointType[]) => {
+      (line: CoursePointType[]) => {
         const res = [...line];
         if (!_.isEqual(line.at(-1), point)) {
-          const indice = state.lineUnderConstruction.nextIndex;
+          const indice = state.courseUnderConstruction.nextIndex;
           res.splice(indice, 0, point);
         }
 
-        setState("lineUnderConstruction", "nextIndex", res.length);
+        setState("courseUnderConstruction", "nextIndex", res.length);
 
         return res;
       }
     );
   }
 
-  // TODO: move all logic about line under construction in LineUnderConstruction file
-  function removePointToLineUnderConstruction(point: StopType | SchoolType) {
+  // TODO: move all logic about line under construction in CourseUnderConstruction file
+  function removePointToCourseUnderConstruction(point: StopType | SchoolType) {
     setState(
-      "lineUnderConstruction",
-      "busLine",
+      "courseUnderConstruction",
+      "course",
       "points",
-      (line: BusLinePointType[]) => {
+      (line: CoursePointType[]) => {
         return line.filter(
           (l) => l.id != point.id && l.lat != point.lat && l.lon != point.lon
         );
@@ -106,10 +103,10 @@ const makeStateActionContext = () => {
     );
   }
 
-  function removeSchoolToLineUnderConstruction(point: StopType | SchoolType) {
+  function removeSchoolToCourseUnderConstruction(point: StopType | SchoolType) {
     setState(
-      "lineUnderConstruction",
-      "busLine",
+      "courseUnderConstruction",
+      "course",
       "schools",
       (line: SchoolType[]) => {
         return line.filter(
@@ -119,32 +116,35 @@ const makeStateActionContext = () => {
     );
   }
 
-  function setLineUnderConstructionNextIndex(indicepoints: number) {
-    setState("lineUnderConstruction", "nextIndex", indicepoints);
+  function setCourseUnderConstructionNextIndex(indicepoints: number) {
+    setState("courseUnderConstruction", "nextIndex", indicepoints);
   }
 
-  function resetLineUnderConstruction() {
-    setState("lineUnderConstruction", defaultLineUnderConstruction());
+  function resetCourseUnderConstruction() {
+    setState("courseUnderConstruction", defaultCourseUnderConstruction());
   }
 
-  function setLineUnderConstruction(line: LineUnderConstructionType) {
-    setState("lineUnderConstruction", line);
+  function setCourseUnderConstruction(line: CourseUnderConstructionType) {
+    setState("courseUnderConstruction", line);
   }
 
-  function getLineUnderConstruction() {
-    return state.lineUnderConstruction;
+  function getCourseUnderConstruction() {
+    return state.courseUnderConstruction;
   }
 
-  function updateNameLineUnderConstruction(name: string) {
-    setState("lineUnderConstruction", "busLine", "name", name);
+  function updateNameCourseUnderConstruction(name: string) {
+    setState("courseUnderConstruction", "course", "name", name);
   }
 
   const types: { [key in ModeEnum]: MessageTypeEnum[] } = {
     [ModeEnum.read]: [MessageTypeEnum.global],
-    [ModeEnum.addLine]: [MessageTypeEnum.addLine, MessageTypeEnum.enterAddLine],
-    [ModeEnum.removeLine]: [
-      MessageTypeEnum.removeLine,
-      MessageTypeEnum.enterRemoveLine,
+    [ModeEnum.addCourse]: [
+      MessageTypeEnum.addCourse,
+      MessageTypeEnum.enterAddCourse,
+    ],
+    [ModeEnum.removeCourse]: [
+      MessageTypeEnum.removeCourse,
+      MessageTypeEnum.enterRemoveCourse,
     ],
   };
 
@@ -169,17 +169,17 @@ const makeStateActionContext = () => {
     });
   }
 
-  function setModeAddLine() {
+  function setModeAddCourse() {
     setDisplayedInformationBoard(true);
-    changeMode(ModeEnum.addLine);
+    changeMode(ModeEnum.addCourse);
   }
 
   function setModeRead() {
     changeMode(ModeEnum.read);
   }
 
-  function isInAddLineMode() {
-    return state.mode === ModeEnum.addLine;
+  function isInAddCourseMode() {
+    return state.mode === ModeEnum.addCourse;
   }
 
   function isInReadMode() {
@@ -191,19 +191,19 @@ const makeStateActionContext = () => {
     {
       toggleAltimetryAnimation,
       getAnimationSettings,
-      setPointsToLineUnderConstruction,
-      addPointToLineUnderConstruction,
-      getLineUnderConstruction,
-      resetLineUnderConstruction,
-      setLineUnderConstruction,
-      setModeAddLine,
+      setPointsToCourseUnderConstruction,
+      addPointToCourseUnderConstruction,
+      getCourseUnderConstruction,
+      resetCourseUnderConstruction,
+      setCourseUnderConstruction,
+      setModeAddCourse,
       setModeRead,
-      isInAddLineMode,
+      isInAddCourseMode,
       isInReadMode,
-      setLineUnderConstructionNextIndex,
-      removePointToLineUnderConstruction,
-      removeSchoolToLineUnderConstruction,
-      updateNameLineUnderConstruction,
+      setCourseUnderConstructionNextIndex,
+      removePointToCourseUnderConstruction,
+      removeSchoolToCourseUnderConstruction,
+      updateNameCourseUnderConstruction,
     },
     history,
   ] as const;

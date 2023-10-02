@@ -5,7 +5,7 @@ describe("OSRMService", () => {
   const host = import.meta.env.VITE_API_OSRM_URL;
   const interceptURL = host + "/1,1;2,2?geometries=geojson&overview=full";
 
-  const busLinePoint = [
+  const coursePoint = [
     {
       id: 1,
       leafletId: 1,
@@ -29,7 +29,7 @@ describe("OSRMService", () => {
   it("getRoadPolyline, URL check ", () => {
     cy.intercept("GET", interceptURL).as("intercept");
 
-    OsrmService.getRoadPolyline(busLinePoint);
+    OsrmService.getRoadPolyline(coursePoint);
 
     cy.wait("@intercept").then((interception) => {
       expect(interception.request.method).to.eq("GET");

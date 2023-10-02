@@ -2,21 +2,21 @@ import { Show, createEffect } from "solid-js";
 
 import { useStateAction } from "../../../../../StateAction";
 import {
-  BusLinePointType,
-  BusLineType,
-} from "../../../../../_entities/bus-line.entity";
+  CoursePointType,
+  CourseType,
+} from "../../../../../_entities/course.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { NatureEnum } from "../../../../../type";
 import { onBoard } from "../template/ContextManager";
 import { TimelineRemovePointButton } from "./TimelineRemovePointButton";
 
-const [, { setLineUnderConstruction, getLineUnderConstruction }] =
+const [, { setCourseUnderConstruction, getCourseUnderConstruction }] =
   useStateAction();
 
 export type TimelineItemAddType = {
-  pointsResource: BusLinePointType;
+  pointsResource: CoursePointType;
   indice: number;
-  busLine: BusLineType;
+  course: CourseType;
 };
 
 export default function (props: TimelineItemAddType) {
@@ -29,13 +29,13 @@ export default function (props: TimelineItemAddType) {
     for (const element of document.getElementsByClassName(
       "v-timeline-divider__before"
     )) {
-      element.setAttribute("style", "background:" + props.busLine.color());
+      element.setAttribute("style", "background:" + props.course.color());
     }
 
     for (const element of document.getElementsByClassName(
       "v-timeline-divider__after"
     )) {
-      element.setAttribute("style", "background:" + props.busLine.color());
+      element.setAttribute("style", "background:" + props.course.color());
     }
   });
 
@@ -49,8 +49,8 @@ export default function (props: TimelineItemAddType) {
                 ? "+ " + props.pointsResource.quantity
                 : " " +
                   SumQuantity(
-                    props.busLine.points,
-                    props.busLine.schools[0],
+                    props.course.points,
+                    props.course.schools[0],
                     props.indice - 1
                   ) *
                     -1}
@@ -61,14 +61,14 @@ export default function (props: TimelineItemAddType) {
             {props.pointsResource.nature === NatureEnum.stop
               ? " + " +
                 SumQuantity(
-                  props.busLine.points,
-                  props.busLine.schools[0],
+                  props.course.points,
+                  props.course.schools[0],
                   props.indice
                 )
               : " " +
                 SumQuantity(
-                  props.busLine.points,
-                  props.busLine.schools[0],
+                  props.course.points,
+                  props.course.schools[0],
                   props.indice
                 ) *
                   -1}
@@ -89,8 +89,8 @@ export default function (props: TimelineItemAddType) {
             <Show when={onBoard() == "line-draw"}>
               <TimelineRemovePointButton
                 indice={props.indice}
-                setter={setLineUnderConstruction}
-                getter={getLineUnderConstruction}
+                setter={setCourseUnderConstruction}
+                getter={getCourseUnderConstruction}
               />
             </Show>
           </div>
@@ -103,7 +103,7 @@ export default function (props: TimelineItemAddType) {
 }
 
 function SumQuantity(
-  stops: BusLinePointType[],
+  stops: CoursePointType[],
   selectedSchool: SchoolType,
   indice: number
 ) {

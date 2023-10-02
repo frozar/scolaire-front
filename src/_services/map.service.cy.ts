@@ -9,7 +9,7 @@ describe("SchoolService", () => {
 
   // TODO: check why MapEntity.build is not catch with cy.spy
   // ERROR: AssertionError: expected build to have been called at least once, but it was never called
-  // TESTED: in bus-line.service, place MapEntity.build in var and return the var | same result
+  // TESTED: in bus-course.service, place MapEntity.build in var and return the var | same result
 
   it("getAll, spy on: generic, buildXanoUrl & get from ServiceUtils, build from MapService", () => {
     const spyBuildXanoUrl = cy.spy(ServiceUtils, "buildXanoUrl");

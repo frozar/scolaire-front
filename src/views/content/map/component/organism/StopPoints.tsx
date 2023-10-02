@@ -11,7 +11,7 @@ import {
 import { PointInterface } from "../atom/Point";
 import { StopPoint } from "../molecule/StopPoint";
 
-const [, { getLineUnderConstruction }] = useStateAction();
+const [, { getCourseUnderConstruction }] = useStateAction();
 const [, { nextLeafletPointId }] = useStateGui();
 
 export interface StopPointsProps {
@@ -66,7 +66,7 @@ async function updateStop() {
 
 //TODO Delete and replace with displayedStop signal
 export function leafletStopsFilter(): StopType[] {
-  const schools = getLineUnderConstruction().busLine.schools;
+  const schools = getCourseUnderConstruction().course.schools;
 
   const stops = getStops();
   if (currentStep() === drawModeStep.start) {

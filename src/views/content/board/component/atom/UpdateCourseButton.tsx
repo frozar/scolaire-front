@@ -8,25 +8,25 @@ import { drawModeStep, setCurrentStep } from "../organism/DrawModeBoardContent";
 import { changeBoard, toggleDrawMod } from "../template/ContextManager";
 import "./DrawUpdateButton.css";
 
-const [, { setLineUnderConstruction, setModeAddLine }] = useStateAction();
+const [, { setCourseUnderConstruction, setModeAddCourse }] = useStateAction();
 
-export const [unmodifiedCourse, setUnmodifiedCourse] =
+export const [unmodifiedBusCourse, setUnmodifiedBusCourse] =
   createSignal<CourseType>();
 
 export default function (props: { course: CourseType }) {
   async function onclick() {
-    setLineUnderConstruction({
+    setCourseUnderConstruction({
       course: props.course,
       nextIndex: props.course.points.length ?? 0,
     });
     const [color, setColor] = createSignal<string>(props.course.color());
-    setUnmodifiedCourse({ ...props.course, color, setColor });
+    setUnmodifiedBusCourse({ ...props.course, color, setColor });
 
-    MapElementUtils.deselectAllPointsAndCourses();
+    MapElementUtils.deselectAllPointsAndBusCourses();
     toggleDrawMod();
-    setCurrentStep(drawModeStep.editLine);
+    setCurrentStep(drawModeStep.editCourse);
     changeBoard("line-draw");
-    setModeAddLine();
+    setModeAddCourse();
   }
 
   return (

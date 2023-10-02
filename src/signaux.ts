@@ -61,7 +61,7 @@ export const [authenticated, setAuthenticated] = createSignal(false);
 
 export const [getRemoveConfirmation, setRemoveConfirmation] = createSignal({
   displayed: false,
-  busLine: null,
+  course: null,
 }) as Signal<removeConfirmationType>;
 
 export const [getImportCsvBox, setImportCsvBox] =
@@ -131,7 +131,7 @@ export function openImportCsvBox() {
 export function closeRemoveConfirmationBox() {
   setRemoveConfirmation({
     displayed: false,
-    busLine: null,
+    course: null,
   });
 }
 export function closeRemoveRamassageConfirmationBox() {
@@ -193,10 +193,11 @@ export function addNewUserInformation(
   const id = generateUniqueID();
 
   setUserInformations((currentArray) => {
-    if (userInformation.type === MessageTypeEnum.enterAddLine) {
+    if (userInformation.type === MessageTypeEnum.enterAddCourse) {
       const doesContainEnterAddline =
-        currentArray.filter((elt) => elt.type === MessageTypeEnum.enterAddLine)
-          .length != 0;
+        currentArray.filter(
+          (elt) => elt.type === MessageTypeEnum.enterAddCourse
+        ).length != 0;
 
       if (doesContainEnterAddline) {
         return currentArray;

@@ -27,7 +27,7 @@ const menuItems: MenuItemType[] = [
     onClick: () => {
       if (onBoard() != "line-draw") {
         changeBoard("line");
-        MapElementUtils.deselectAllPointsAndBusLines();
+        MapElementUtils.deselectAllPointsAndBusCourses();
       }
     },
   },
@@ -38,7 +38,7 @@ const menuItems: MenuItemType[] = [
     isDisabled: false,
     onClick: () => {
       changeBoard("schools");
-      MapElementUtils.deselectAllPointsAndBusLines();
+      MapElementUtils.deselectAllPointsAndBusCourses();
     },
   },
   {
@@ -48,7 +48,7 @@ const menuItems: MenuItemType[] = [
     isDisabled: false,
     onClick: () => {
       changeBoard("stops");
-      MapElementUtils.deselectAllPointsAndBusLines();
+      MapElementUtils.deselectAllPointsAndBusCourses();
     },
   },
   // {

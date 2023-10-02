@@ -4,6 +4,7 @@ import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { getSchools } from "../../../map/component/organism/SchoolPoints";
 import InputSearch from "../molecule/InputSearch";
 import SchoolItem from "../molecule/SchoolItem";
+import "./SchoolBoard.css";
 
 export default function () {
   const [keywordSearch, setKeyWordSearch] = createSignal<string>("");
@@ -20,7 +21,7 @@ export default function () {
   return (
     <section>
       <header>
-        <div class="flex justify-between my-5">
+        <div class=".school-board-header">
           <p>Nombre total d'établissements : {getSchools().length}</p>
           <ButtonIcon
             icon={<FaSolidPlus class="fill-green-base" />}
@@ -36,7 +37,7 @@ export default function () {
         />
       </header>
 
-      <div class="mt-3">
+      <div class="school-board-content">
         <For each={filteredSchools()}>
           {(fields) => <SchoolItem school={fields} />}
         </For>
