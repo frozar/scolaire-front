@@ -244,6 +244,7 @@ export function BusCourse(props: BusCourseProps) {
 
             for (let i = 0; latLngList().length - 1; i++) {
               if (
+                pointProjectedCoord[index] &&
                 pointProjectedCoord[index].lat == latLngList()[i].lat &&
                 pointProjectedCoord[index].lng == latLngList()[i].lng
               ) {

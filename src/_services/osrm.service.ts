@@ -20,9 +20,7 @@ export class OsrmService {
     const points: BusCoursePointType[] = busCourse.points;
     let waypoints: WaypointType[] = busCourse.waypoints ?? points;
     waypoints = waypoints.length > 0 ? waypoints : points;
-    console.log("test osrm ", busCourse);
     if (waypoints.length <= 1) {
-      console.log("waypoints.length <= 1");
       return { latlngs: [], projectedLatlngs: [], metrics: {} };
     }
     const response = await ServiceUtils.generic(

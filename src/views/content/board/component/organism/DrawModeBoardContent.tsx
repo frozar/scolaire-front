@@ -95,7 +95,6 @@ const onChange = async (color: string) => {
 };
 
 async function onClick() {
-  console.log("test");
   if (displayCourseMode() == displayCourseModeEnum.straight) {
     if (getCourseUnderConstruction().busCourse.points.length < 2) {
       return;
