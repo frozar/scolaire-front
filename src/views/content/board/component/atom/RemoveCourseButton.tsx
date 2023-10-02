@@ -1,20 +1,20 @@
-import { BusCourseType } from "../../../../../_entities/bus-course.entity";
+import { CourseType } from "../../../../../_entities/course.entity";
 import TrashIcon from "../../../../../icons/TrashIcon";
 import { setRemoveConfirmation } from "../../../../../signaux";
 import { deselectAllPoints } from "../../../map/component/organism/Points";
 import ButtonIcon from "../molecule/ButtonIcon";
 
 export interface RemoveCourseButtonProps {
-  busCourse: BusCourseType;
+  course: CourseType;
 }
 
 export default function (props: RemoveCourseButtonProps) {
   const onclick = () => {
     deselectAllPoints();
-    if (props.busCourse.id) {
+    if (props.course.id) {
       setRemoveConfirmation({
         displayed: true,
-        busCourse: props.busCourse,
+        course: props.course,
       });
     }
   };

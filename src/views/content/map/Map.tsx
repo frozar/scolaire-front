@@ -4,7 +4,7 @@ import { useStateGui } from "../../../StateGui";
 
 import { buildMapL7 } from "./l7MapBuilder";
 
-import { BusCourses } from "./component/organism/BusCourses";
+import { BusCourses } from "./component/organism/Courses";
 
 import ImportCsvCanvas from "../../../component/ImportCsvCanvas";
 import ConfirmStopAddCourse from "./ConfirmStopAddCourseBox";

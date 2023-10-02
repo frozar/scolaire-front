@@ -1,7 +1,7 @@
 import { Accessor, Setter, createSignal } from "solid-js";
 import { useStateGui } from "../StateGui";
 import { NatureEnum } from "../type";
-import { getBusCourses } from "../views/content/map/component/organism/BusCourses";
+import { getCourses } from "../views/content/map/component/organism/Courses";
 import {
   AssociatedDBPointType,
   AssociatedPointType,
@@ -59,7 +59,7 @@ export class SchoolEntity {
   static getSchoolCourses(currentSchoolId: number) {
     const lines = [];
 
-    for (const line of getBusCourses()) {
+    for (const line of getCourses()) {
       const _line = line.schools.filter((l) => l.id == currentSchoolId);
       if (_line.length > 0) lines.push(line);
     }

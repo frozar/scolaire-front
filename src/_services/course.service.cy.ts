@@ -1,9 +1,9 @@
 import { createSignal } from "solid-js";
 import { useStateGui } from "../StateGui";
-import { BusCourseEntity } from "../_entities/bus-course.entity";
+import { BusCourseEntity } from "../_entities/course.entity";
 import { NatureEnum } from "../type";
 import { ServiceUtils } from "./_utils.service";
-import { BusCourseService } from "./bus-course.service";
+import { BusCourseService } from "./course.service";
 
 const [, { setActiveMapId }] = useStateGui();
 

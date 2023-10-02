@@ -20,7 +20,7 @@ const [, { getCourseUnderConstruction, setCourseUnderConstruction }] =
   useStateAction();
 
 export class BusCourseEntity {
-  static build(dbData: BusCourseDBType): BusCourseType {
+  static build(dbData: CourseDBType): CourseType {
     const filteredShools: PointType[] = getSchools().filter(
       (item) => item.id == dbData.school_id
     );
@@ -38,7 +38,7 @@ export class BusCourseEntity {
     const [selected, setSelected] = createSignal<boolean>(false);
     const [latLngs, setLatLngs] = createSignal<L.LatLng[]>([]);
     const [color, setColor] = createSignal<string>("#" + dbData.color);
-    const [metrics, setMetrics] = createSignal<busCourseMetricType>({});
+    const [metrics, setMetrics] = createSignal<CourseMetricType>({});
 
     if (dbData.polyline != null) {
       setLatLngs(
@@ -65,13 +65,13 @@ export class BusCourseEntity {
     };
   }
 
-  static defaultBusCourse(): BusCourseType {
+  static defaultBusCourse(): CourseType {
     const [latLngs, setLatLngs] = createSignal<L.LatLng[]>([]);
     const [color, setColor] = createSignal<string>(
       COLOR_LINE_UNDER_CONSTRUCTION
     );
     const [selected, setSelected] = createSignal<boolean>(false);
-    const [metrics, setMetrics] = createSignal<busCourseMetricType>({});
+    const [metrics, setMetrics] = createSignal<CourseMetricType>({});
 
     return {
       color: color,
@@ -88,7 +88,7 @@ export class BusCourseEntity {
     };
   }
 
-  static dbFormat(line: BusCourseType): Omit<BusCourseDBType, "id"> {
+  static dbFormat(line: CourseType): Omit<CourseDBType, "id"> {
     const name = line.name ? line.name : "";
     return {
       color: formatColorForDB(line.color()),
@@ -109,9 +109,7 @@ export class BusCourseEntity {
     };
   }
 
-  static dbPartialFormat(
-    line: Partial<BusCourseType>
-  ): Partial<BusCourseDBType> {
+  static dbPartialFormat(line: Partial<CourseType>): Partial<CourseDBType> {
     let output = {};
 
     if (line.color) {
@@ -165,8 +163,8 @@ function formatColorForDB(color: string) {
  * @returns
  */
 const formatBusCoursePointType = (
-  points: BusCoursePointDBType[]
-): BusCoursePointType[] => {
+  points: CoursePointDBType[]
+): CoursePointType[] => {
   //TODO Investigate the problem during switching between map
   return points
     .map((dbPoint) => {
@@ -188,7 +186,7 @@ const formatBusCoursePointType = (
         );
       }
     })
-    .filter((elem) => elem != undefined) as BusCoursePointType[]; // temporary FIX Filter to delete undefined data
+    .filter((elem) => elem != undefined) as CoursePointType[]; // temporary FIX Filter to delete undefined data
 };
 
 const formatWaypointType = (waypoints: WaypointDBType[]): WaypointType[] => {
@@ -205,8 +203,8 @@ const formatWaypointType = (waypoints: WaypointDBType[]): WaypointType[] => {
 };
 
 const formatBusCoursePointDBType = (
-  points: BusCoursePointType[]
-): BusCoursePointDBType[] => {
+  points: CoursePointType[]
+): CoursePointDBType[] => {
   return points.map((point) => {
     return {
       stop_id: point.nature == NatureEnum.stop ? point.id : 0,
@@ -239,23 +237,21 @@ const formatWaypointDBType = (waypoints: WaypointType[]): WaypointDBType[] => {
   });
 };
 
-const getAssociatedBusCoursePoint = (
-  dbPoint: BusCoursePointDBType
-): PointType => {
+const getAssociatedBusCoursePoint = (dbPoint: CoursePointDBType): PointType => {
   if (dbPoint.school_id != 0) {
     return getSchools().filter((item) => item.id == dbPoint.school_id)[0];
   }
   return getStops().filter((item) => item.id == dbPoint.stop_id)[0];
 };
 
-export async function updatePolylineWithOsrm(busCourse: BusCourseType) {
+export async function updatePolylineWithOsrm(course: CourseType) {
   enableSpinningWheel();
   const { latlngs, projectedLatlngs, metrics } =
-    await OsrmService.getRoadPolyline(busCourse);
+    await OsrmService.getRoadPolyline(course);
 
-  busCourse.setLatLngs(latlngs);
-  busCourse.setMetrics(metrics);
-  setOnRoad(busCourse, projectedLatlngs);
+  course.setLatLngs(latlngs);
+  course.setMetrics(metrics);
+  setOnRoad(course, projectedLatlngs);
   disableSpinningWheel();
 }
 
@@ -276,23 +272,23 @@ export type WaypointDBType = {
   on_road_location: LocationDBType;
 };
 
-export type BusCourseType = {
+export type CourseType = {
   id?: number;
   schools: SchoolType[];
   name?: string;
   color: Accessor<string>;
   setColor: Setter<string>;
-  points: BusCoursePointType[];
+  points: CoursePointType[];
   waypoints?: WaypointType[];
   latLngs: Accessor<L.LatLng[]>;
   setLatLngs: Setter<L.LatLng[]>;
   selected: Accessor<boolean>;
   setSelected: Setter<boolean>;
-  metrics: Accessor<busCourseMetricType>;
-  setMetrics: Setter<busCourseMetricType>;
+  metrics: Accessor<CourseMetricType>;
+  setMetrics: Setter<CourseMetricType>;
 };
 
-export type BusCoursePointType = {
+export type CoursePointType = {
   id: number;
   leafletId: number;
   name: string;
@@ -302,24 +298,24 @@ export type BusCoursePointType = {
   nature: NatureEnum;
 };
 
-export type BusCourseDBType = {
+export type CourseDBType = {
   id: number;
   school_id: number;
   name: string;
   color: string;
-  bus_line_stop: BusCoursePointDBType[];
+  bus_line_stop: CoursePointDBType[];
   polyline: LocationPathDBType;
-  metrics: busCourseMetricType;
+  metrics: CourseMetricType;
   waypoint: WaypointDBType[];
 };
 
-export type BusCoursePointDBType = {
+export type CoursePointDBType = {
   stop_id: number;
   school_id: number;
   quantity: number;
 };
 
-export type busCourseMetricType = {
+export type CourseMetricType = {
   distance?: number;
   duration?: number;
   distancePCC?: number;
@@ -330,15 +326,15 @@ export type busCourseMetricType = {
 };
 
 //Todo delete function : ne pas utiliser le signal
-function setOnRoad(busCourse: BusCourseType, projectedLatlngs: L.LatLng[]) {
+function setOnRoad(course: CourseType, projectedLatlngs: L.LatLng[]) {
   if (projectedLatlngs.length == 0) {
     setCourseUnderConstruction({
       ...getCourseUnderConstruction(),
-      busCourse,
+      course: course,
     });
     return;
   }
-  let waypoints = busCourse.waypoints;
+  let waypoints = course.waypoints;
   if (!waypoints) {
     return;
   }
@@ -352,8 +348,8 @@ function setOnRoad(busCourse: BusCourseType, projectedLatlngs: L.LatLng[]) {
 
   setCourseUnderConstruction({
     ...getCourseUnderConstruction(),
-    busCourse: {
-      ...getCourseUnderConstruction().busCourse,
+    course: {
+      ...getCourseUnderConstruction().course,
       waypoints,
     },
   });

@@ -26,14 +26,14 @@ type Story = StoryObj<typeof meta>;
 
 export const AddCourse: Story = {
   args: {
-    tooltip: "Ajouter une ligne",
+    tooltip: "Ajouter une course",
     icon: <FaSolidPlus class="w-full p-0 h-2/3" />,
   },
 };
 
 export const RemoveCourse: Story = {
   args: {
-    tooltip: "Supprimer une ligne",
+    tooltip: "Supprimer une course",
     icon: <FaSolidMinus class="w-full p-0 h-2/3" />,
   },
 };

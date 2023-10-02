@@ -113,7 +113,7 @@ function enterHandler({ code }: KeyboardEvent) {
     ) {
       return;
     }
-    const resourceInfo = getCourseUnderConstruction().busCourse.points.map(
+    const resourceInfo = getCourseUnderConstruction().course.points.map(
       function (value) {
         return {
           id_resource: value["id"],

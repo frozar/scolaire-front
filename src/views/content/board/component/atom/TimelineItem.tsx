@@ -2,9 +2,9 @@ import { Show, createEffect } from "solid-js";
 
 import { useStateAction } from "../../../../../StateAction";
 import {
-  BusCoursePointType,
-  BusCourseType,
-} from "../../../../../_entities/bus-course.entity";
+  CoursePointType,
+  CourseType,
+} from "../../../../../_entities/course.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { NatureEnum } from "../../../../../type";
 import { onBoard } from "../template/ContextManager";
@@ -14,9 +14,9 @@ const [, { setCourseUnderConstruction, getCourseUnderConstruction }] =
   useStateAction();
 
 export type TimelineItemAddType = {
-  pointsResource: BusCoursePointType;
+  pointsResource: CoursePointType;
   indice: number;
-  busCourse: BusCourseType;
+  course: CourseType;
 };
 
 export default function (props: TimelineItemAddType) {
@@ -29,13 +29,13 @@ export default function (props: TimelineItemAddType) {
     for (const element of document.getElementsByClassName(
       "v-timeline-divider__before"
     )) {
-      element.setAttribute("style", "background:" + props.busCourse.color());
+      element.setAttribute("style", "background:" + props.course.color());
     }
 
     for (const element of document.getElementsByClassName(
       "v-timeline-divider__after"
     )) {
-      element.setAttribute("style", "background:" + props.busCourse.color());
+      element.setAttribute("style", "background:" + props.course.color());
     }
   });
 
@@ -49,8 +49,8 @@ export default function (props: TimelineItemAddType) {
                 ? "+ " + props.pointsResource.quantity
                 : " " +
                   SumQuantity(
-                    props.busCourse.points,
-                    props.busCourse.schools[0],
+                    props.course.points,
+                    props.course.schools[0],
                     props.indice - 1
                   ) *
                     -1}
@@ -61,14 +61,14 @@ export default function (props: TimelineItemAddType) {
             {props.pointsResource.nature === NatureEnum.stop
               ? " + " +
                 SumQuantity(
-                  props.busCourse.points,
-                  props.busCourse.schools[0],
+                  props.course.points,
+                  props.course.schools[0],
                   props.indice
                 )
               : " " +
                 SumQuantity(
-                  props.busCourse.points,
-                  props.busCourse.schools[0],
+                  props.course.points,
+                  props.course.schools[0],
                   props.indice
                 ) *
                   -1}
@@ -103,7 +103,7 @@ export default function (props: TimelineItemAddType) {
 }
 
 function SumQuantity(
-  stops: BusCoursePointType[],
+  stops: CoursePointType[],
   selectedSchool: SchoolType,
   indice: number
 ) {

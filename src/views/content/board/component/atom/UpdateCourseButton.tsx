@@ -1,5 +1,5 @@
 import { useStateAction } from "../../../../../StateAction";
-import { BusCourseType } from "../../../../../_entities/bus-course.entity";
+import { CourseType } from "../../../../../_entities/course.entity";
 
 import { createSignal } from "solid-js";
 import UpdateButton from "../../../../../icons/UpdatePen";
@@ -11,16 +11,16 @@ import "./DrawUpdateButton.css";
 const [, { setCourseUnderConstruction, setModeAddCourse }] = useStateAction();
 
 export const [unmodifiedBusCourse, setUnmodifiedBusCourse] =
-  createSignal<BusCourseType>();
+  createSignal<CourseType>();
 
-export default function (props: { busCourse: BusCourseType }) {
+export default function (props: { course: CourseType }) {
   async function onclick() {
     setCourseUnderConstruction({
-      busCourse: props.busCourse,
-      nextIndex: props.busCourse.points.length ?? 0,
+      course: props.course,
+      nextIndex: props.course.points.length ?? 0,
     });
-    const [color, setColor] = createSignal<string>(props.busCourse.color());
-    setUnmodifiedBusCourse({ ...props.busCourse, color, setColor });
+    const [color, setColor] = createSignal<string>(props.course.color());
+    setUnmodifiedBusCourse({ ...props.course, color, setColor });
 
     MapElementUtils.deselectAllPointsAndBusCourses();
     toggleDrawMod();

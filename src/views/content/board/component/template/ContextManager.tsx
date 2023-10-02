@@ -5,7 +5,7 @@ import SchoolsBoard from "../../../schools/component/organism/SchoolBoard";
 import SchoolDetails from "../../../schools/component/organism/SchoolDetails";
 import StopBoard from "../../../stops/component/organism/StopBoard";
 import StopDetails from "../../../stops/component/organism/StopDetails";
-import { BusCourseInformationBoardContent } from "../organism/BusCourseInformationBoardContent";
+import { BusCourseInformationBoardContent } from "../organism/CourseInformationBoardContent";
 import CoursesBoard from "../organism/CoursesBoard";
 import DrawModeBoardContent from "../organism/DrawModeBoardContent";
 import InformationBoardLayout from "./InformationBoardLayout";

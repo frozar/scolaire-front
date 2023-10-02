@@ -1,9 +1,9 @@
 import L from "leaflet";
 import { For, createEffect, createSignal, onCleanup } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
-import { BusCourseType } from "../../../../../_entities/bus-course.entity";
-import { BusCourseService } from "../../../../../_services/bus-course.service";
-import { BusCourse } from "../molecule/BusCourse";
+import { CourseType } from "../../../../../_entities/course.entity";
+import { BusCourseService } from "../../../../../_services/course.service";
+import { BusCourse } from "../molecule/Course";
 
 import {
   currentStep,
@@ -20,7 +20,7 @@ export type leafletBusCourseType = {
   arrows: L.Marker[];
 };
 
-export const [getBusCourses, setBusCourses] = createSignal<BusCourseType[]>([]);
+export const [getCourses, setCourses] = createSignal<CourseType[]>([]);
 
 export type BusCoursesProps = {
   map: L.Map;
@@ -31,15 +31,15 @@ export function BusCourses(props: BusCoursesProps) {
   createEffect(async () => {
     if (pointsReady()) {
       const lines = await BusCourseService.getAll();
-      setBusCourses(lines);
+      setCourses(lines);
     }
   });
 
   onCleanup(() => {
-    setBusCourses([]);
+    setCourses([]);
   });
 
-  const busCoursesFilter = () => {
+  const coursesFilter = () => {
     if (currentStep() > drawModeStep.start) {
       // delete all arrows
       arrowsMap.forEach((arrows) =>
@@ -47,13 +47,13 @@ export function BusCourses(props: BusCoursesProps) {
       );
       arrowsMap.clear();
 
-      return [getCourseUnderConstruction().busCourse];
+      return [getCourseUnderConstruction().course];
     }
-    return getBusCourses();
+    return getCourses();
   };
 
   return (
-    <For each={busCoursesFilter()}>
+    <For each={coursesFilter()}>
       {(line) => {
         return <BusCourse course={line} map={props.map} />;
       }}
@@ -61,26 +61,26 @@ export function BusCourses(props: BusCoursesProps) {
   );
 }
 
-export function deselectAllBusCourses() {
-  getBusCourses().map((busCourse) => busCourse.setSelected(false));
+export function deselectAllCourses() {
+  getCourses().map((course) => course.setSelected(false));
 }
 
-export const getSelectedBusCourse = (): BusCourseType | undefined => {
-  const selectedBusCourse = getBusCourses().find((line) => line.selected());
+export const getSelectedCourse = (): CourseType | undefined => {
+  const selectedCourse = getCourses().find((line) => line.selected());
 
-  if (!selectedBusCourse) {
+  if (!selectedCourse) {
     return;
   }
 
-  return selectedBusCourse;
+  return selectedCourse;
 };
 
-export function updateBusCourses(busCourse: BusCourseType) {
-  let newBusCourses = getBusCourses();
-  if (busCourse.id) {
-    newBusCourses = getBusCourses().filter(
-      (buscourse) => buscourse.id != busCourse.id
+export function updateBusCourses(course: CourseType) {
+  let newBusCourses = getCourses();
+  if (course.id) {
+    newBusCourses = getCourses().filter(
+      (buscourse) => buscourse.id != course.id
     );
   }
-  setBusCourses([...newBusCourses, busCourse]);
+  setCourses([...newBusCourses, course]);
 }

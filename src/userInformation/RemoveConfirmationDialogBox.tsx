@@ -8,15 +8,15 @@ import {
   getRemoveConfirmation,
 } from "../signaux";
 
-import { BusCourseService } from "../_services/bus-course.service";
+import { BusCourseService } from "../_services/course.service";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { assertIsNode } from "../utils";
 import { MapElementUtils } from "../utils/mapElement.utils";
 import { changeBoard } from "../views/content/board/component/template/ContextManager";
 import {
-  getBusCourses,
-  setBusCourses,
-} from "../views/content/map/component/organism/BusCourses";
+  getCourses,
+  setCourses,
+} from "../views/content/map/component/organism/Courses";
 
 // HACK for the documentation to preserve the ClickOutside directive on save
 // https://www.solidjs.com/guides/typescript#use___
@@ -24,10 +24,10 @@ false && ClickOutside;
 
 export default function () {
   const displayed = () => getRemoveConfirmation()["displayed"];
-  const busCourse = () => getRemoveConfirmation()["busCourse"];
+  const course = () => getRemoveConfirmation()["course"];
 
   async function handlerOnClickValider() {
-    const idToCheck = busCourse()?.id;
+    const idToCheck = course()?.id;
     if (!idToCheck) {
       return;
     }
@@ -38,13 +38,13 @@ export default function () {
     if (isDeleted) {
       closeRemoveConfirmationBox();
 
-      setBusCourses(getBusCourses().filter((line) => line.id != idToRemove));
+      setCourses(getCourses().filter((line) => line.id != idToRemove));
 
       addNewUserInformation({
         displayed: true,
         level: MessageLevelEnum.success,
         type: MessageTypeEnum.global,
-        content: "La ligne de bus a bien été supprimée.",
+        content: "La course a bien été supprimée.",
       });
     } else {
       closeRemoveConfirmationBox();
@@ -188,12 +188,12 @@ export default function () {
                         class="text-base font-semibold leading-6 text-gray-900"
                         id="modal-title"
                       >
-                        Supprimer une ligne de bus
+                        Supprimer une course
                       </h3>
                       <div class="mt-2">
                         <p class="text-sm text-gray-500">
-                          Etes-vous sûr de vouloir supprimer la ligne de bus :{" "}
-                          {busCourse()?.name} ?
+                          Etes-vous sûr de vouloir supprimer la course :{" "}
+                          {course()?.name} ?
                         </p>
                       </div>
                     </div>

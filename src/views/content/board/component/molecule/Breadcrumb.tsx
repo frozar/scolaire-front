@@ -1,6 +1,6 @@
 import { For, Show, createEffect, createSignal } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
-import { getSelectedBusCourse } from "../../../map/component/organism/BusCourses";
+import { getSelectedCourse } from "../../../map/component/organism/Courses";
 import { schoolDetailsItem } from "../../../schools/component/organism/SchoolDetails";
 import { stopDetailsItem } from "../../../stops/component/organism/StopDetails";
 import BreadcrumbButton from "../atom/BreadcrumbButton";
@@ -21,11 +21,11 @@ export default function () {
   createEffect(() => {
     switch (onBoard()) {
       case "line-draw":
-        if (getCourseUnderConstruction().busCourse.schools.length > 0) {
-          setCrumbs([{ text: "Editer votre ligne" }]);
+        if (getCourseUnderConstruction().course.schools.length > 0) {
+          setCrumbs([{ text: "Editer votre course" }]);
           break;
         }
-        setCrumbs([{ text: "Création d'une ligne" }]);
+        setCrumbs([{ text: "Création d'une course" }]);
         break;
 
       case "schools":
@@ -91,7 +91,7 @@ export default function () {
             },
           },
           {
-            text: getSelectedBusCourse()?.name?.toLowerCase() as string,
+            text: getSelectedCourse()?.name?.toLowerCase() as string,
           },
         ]);
     }

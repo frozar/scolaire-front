@@ -2,9 +2,9 @@ import { FaRegularTrashCan } from "solid-icons/fa";
 
 import { useStateAction } from "../../../../../StateAction";
 import {
-  BusCourseType,
+  CourseType,
   updatePolylineWithOsrm,
-} from "../../../../../_entities/bus-course.entity";
+} from "../../../../../_entities/course.entity";
 import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
 import { CourseUnderConstructionType, NatureEnum } from "../../../../../type";
 import { linkMap } from "../../../map/component/organism/Points";
@@ -25,11 +25,11 @@ export function TimelineRemovePointButton(props: {
   setter: (line: CourseUnderConstructionType) => void;
 }) {
   const deletePoint = (id: number) => {
-    const stops = [...props.getter().busCourse.points];
+    const stops = [...props.getter().course.points];
     const pointId = stops[id].id;
     const nature = stops[id].nature;
 
-    const circle = linkMap.get(props.getter().busCourse.points[id].leafletId);
+    const circle = linkMap.get(props.getter().course.points[id].leafletId);
     nature == NatureEnum.stop
       ? circle?.setStyle({ fillColor: COLOR_STOP_FOCUS })
       : circle?.setStyle({ fillColor: COLOR_SCHOOL_FOCUS });
@@ -37,11 +37,11 @@ export function TimelineRemovePointButton(props: {
     stops.splice(id, 1);
     props.setter({
       ...props.getter(),
-      busCourse: { ...props.getter().busCourse, points: stops },
+      course: { ...props.getter().course, points: stops },
     });
 
     // Update waypoints array
-    const waypoints = getCourseUnderConstruction().busCourse.waypoints;
+    const waypoints = getCourseUnderConstruction().course.waypoints;
     if (waypoints) {
       let newWaypoints = [...waypoints];
 
@@ -51,8 +51,8 @@ export function TimelineRemovePointButton(props: {
         nature
       );
 
-      const newBusCourse: BusCourseType = {
-        ...getCourseUnderConstruction().busCourse,
+      const newBusCourse: CourseType = {
+        ...getCourseUnderConstruction().course,
         waypoints: newWaypoints,
       };
       if (displayCourseMode() == displayCourseModeEnum.onRoad) {
@@ -60,7 +60,7 @@ export function TimelineRemovePointButton(props: {
       } else {
         setCourseUnderConstruction({
           ...getCourseUnderConstruction(),
-          busCourse: newBusCourse,
+          course: newBusCourse,
         });
       }
     }

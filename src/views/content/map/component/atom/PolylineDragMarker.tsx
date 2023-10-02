@@ -2,9 +2,9 @@ import L from "leaflet";
 import { createEffect, onCleanup } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import {
-  BusCourseType,
+  CourseType,
   updatePolylineWithOsrm,
-} from "../../../../../_entities/bus-course.entity";
+} from "../../../../../_entities/course.entity";
 import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
 import { COLOR_WAYPOINT } from "../../constant";
 
@@ -30,7 +30,7 @@ export default function (props: PolylineDragMarkersProps) {
     function handleMouseUp() {
       props.map.off("mousemove");
       props.map.dragging.enable();
-      const waypoints = getCourseUnderConstruction().busCourse.waypoints;
+      const waypoints = getCourseUnderConstruction().course.waypoints;
       if (!waypoints) {
         return;
       }
@@ -42,8 +42,8 @@ export default function (props: PolylineDragMarkersProps) {
         polylineDragMarker.getLatLng().lng
       );
 
-      const newBusCourse: BusCourseType = {
-        ...getCourseUnderConstruction().busCourse,
+      const newBusCourse: CourseType = {
+        ...getCourseUnderConstruction().course,
         waypoints: newWaypoints,
       };
       updatePolylineWithOsrm(newBusCourse);

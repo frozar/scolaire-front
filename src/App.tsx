@@ -34,7 +34,7 @@ export default () => {
 
     if (
       isInAddCourseMode() &&
-      0 < getCourseUnderConstruction().busCourse.points.length
+      0 < getCourseUnderConstruction().course.points.length
     ) {
       if (
         refApp &&

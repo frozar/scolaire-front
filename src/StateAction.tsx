@@ -7,10 +7,7 @@ import { setUserInformations } from "./signaux";
 import { CourseUnderConstructionType, MessageTypeEnum, ModeEnum } from "./type";
 
 import { useStateGui } from "./StateGui";
-import {
-  BusCoursePointType,
-  busCourseMetricType,
-} from "./_entities/bus-course.entity";
+import { CourseMetricType, CoursePointType } from "./_entities/course.entity";
 import { SchoolType } from "./_entities/school.entity";
 import { StopType } from "./_entities/stop.entity";
 import { COLOR_LINE_UNDER_CONSTRUCTION } from "./views/content/map/constant";
@@ -31,11 +28,11 @@ export function defaultCourseUnderConstruction(): CourseUnderConstructionType {
   const [latLngs, setLatLngs] = createSignal<L.LatLng[]>([]);
   const [color, setColor] = createSignal<string>(COLOR_LINE_UNDER_CONSTRUCTION);
   const [selected, setSelected] = createSignal<boolean>(false);
-  const [metrics, setMetrics] = createSignal<busCourseMetricType>({});
+  const [metrics, setMetrics] = createSignal<CourseMetricType>({});
 
   return {
     nextIndex: 0,
-    busCourse: {
+    course: {
       color: color,
       setColor: setColor,
       points: [],
@@ -69,16 +66,16 @@ const makeStateActionContext = () => {
     return state.altimetry.animation;
   }
 
-  function setPointsToCourseUnderConstruction(points: BusCoursePointType[]) {
-    setState("courseUnderConstruction", "busCourse", "points", points);
+  function setPointsToCourseUnderConstruction(points: CoursePointType[]) {
+    setState("courseUnderConstruction", "course", "points", points);
   }
 
-  function addPointToCourseUnderConstruction(point: BusCoursePointType) {
+  function addPointToCourseUnderConstruction(point: CoursePointType) {
     setState(
       "courseUnderConstruction",
-      "busCourse",
+      "course",
       "points",
-      (line: BusCoursePointType[]) => {
+      (line: CoursePointType[]) => {
         const res = [...line];
         if (!_.isEqual(line.at(-1), point)) {
           const indice = state.courseUnderConstruction.nextIndex;
@@ -96,9 +93,9 @@ const makeStateActionContext = () => {
   function removePointToCourseUnderConstruction(point: StopType | SchoolType) {
     setState(
       "courseUnderConstruction",
-      "busCourse",
+      "course",
       "points",
-      (line: BusCoursePointType[]) => {
+      (line: CoursePointType[]) => {
         return line.filter(
           (l) => l.id != point.id && l.lat != point.lat && l.lon != point.lon
         );
@@ -109,7 +106,7 @@ const makeStateActionContext = () => {
   function removeSchoolToCourseUnderConstruction(point: StopType | SchoolType) {
     setState(
       "courseUnderConstruction",
-      "busCourse",
+      "course",
       "schools",
       (line: SchoolType[]) => {
         return line.filter(
@@ -136,7 +133,7 @@ const makeStateActionContext = () => {
   }
 
   function updateNameCourseUnderConstruction(name: string) {
-    setState("courseUnderConstruction", "busCourse", "name", name);
+    setState("courseUnderConstruction", "course", "name", name);
   }
 
   const types: { [key in ModeEnum]: MessageTypeEnum[] } = {

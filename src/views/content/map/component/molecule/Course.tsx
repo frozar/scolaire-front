@@ -2,10 +2,10 @@ import L, { LeafletMouseEvent } from "leaflet";
 import { For, Show, createEffect, createSignal } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import {
-  BusCoursePointType,
-  BusCourseType,
+  CoursePointType,
+  CourseType,
   WaypointType,
-} from "../../../../../_entities/bus-course.entity";
+} from "../../../../../_entities/course.entity";
 
 import { NatureEnum } from "../../../../../type";
 import { setPickerColor } from "../../../board/component/atom/ColorPicker";
@@ -21,7 +21,7 @@ import {
 import Line from "../atom/Line";
 import PolylineDragMarker from "../atom/PolylineDragMarker";
 import WaypointMarker from "../atom/WaypointMarker";
-import { deselectAllBusCourses } from "../organism/BusCourses";
+import { deselectAllCourses } from "../organism/Courses";
 
 import { updatePointColor } from "../../../../../leafletUtils";
 import {
@@ -43,13 +43,13 @@ const [, { getCourseUnderConstruction, setCourseUnderConstructionNextIndex }] =
 export const [draggingCourse, setDraggingCourse] = createSignal<boolean>(false);
 
 export type BusCourseProps = {
-  course: BusCourseType;
+  course: CourseType;
   map: L.Map;
 };
 
-export function onClickBusCourse(line: BusCourseType) {
+export function onClickBusCourse(line: CourseType) {
   if (onBoard() != "line-draw") {
-    deselectAllBusCourses();
+    deselectAllCourses();
     deselectAllPoints();
     setPickerColor(line.color());
     line.setSelected(true);
@@ -78,7 +78,7 @@ export function BusCourse(props: BusCourseProps) {
 
   let pointFocus: { circle: L.CircleMarker; nature: NatureEnum }[] = [];
   createEffect(() => {
-    if (getCourseUnderConstruction().busCourse === props.course) {
+    if (getCourseUnderConstruction().course === props.course) {
       pointFocus.map((point) => {
         point.circle.setStyle({
           fillColor:
@@ -268,8 +268,8 @@ export function BusCourse(props: BusCourseProps) {
             );
           }}
         </For>
-        <Show when={getCourseUnderConstruction().busCourse.waypoints}>
-          <For each={getCourseUnderConstruction().busCourse.waypoints}>
+        <Show when={getCourseUnderConstruction().course.waypoints}>
+          <For each={getCourseUnderConstruction().course.waypoints}>
             {(waypoint: WaypointType, i) => {
               if (!waypoint.idSchool && !waypoint.idStop) {
                 return (
@@ -288,7 +288,7 @@ export function BusCourse(props: BusCourseProps) {
   );
 }
 
-function getLatLngsFromPoint(points: BusCoursePointType[]): L.LatLng[] {
+function getLatLngsFromPoint(points: CoursePointType[]): L.LatLng[] {
   return points.map((point) => L.latLng(point.lat, point.lon));
 }
 

@@ -44,7 +44,7 @@ export function generateCircuit(
 
   // TODO To improve with new Type (post Xano)
   // const planned_stops: PointIdentityType[] = _.flattenDeep(
-  //   busCoursesOld().map((elt: CourseType) => elt.stops)
+  //   coursesOld().map((elt: CourseType) => elt.stops)
   // );
   const planned_stops: PointIdentityType[] = [];
 

@@ -7,10 +7,10 @@ import {
 import SelectedSchool from "../atom/SelectedSchool";
 
 import {
-  BusCourseType,
+  CourseType,
   updatePolylineWithOsrm,
-} from "../../../../../_entities/bus-course.entity";
-import { BusCourseService } from "../../../../../_services/bus-course.service";
+} from "../../../../../_entities/course.entity";
+import { BusCourseService } from "../../../../../_services/course.service";
 
 import BoardFooterActions from "../molecule/BoardFooterActions";
 
@@ -28,10 +28,10 @@ import {
 } from "../../../../../signaux";
 import { MapElementUtils } from "../../../../../utils/mapElement.utils";
 import {
-  getBusCourses,
-  setBusCourses,
+  getCourses,
+  setCourses,
   updateBusCourses,
-} from "../../../map/component/organism/BusCourses";
+} from "../../../map/component/organism/Courses";
 import { quitModeAddCourse } from "../../../map/shortcut";
 import { DrawHelperButton } from "../atom/DrawHelperButton";
 import {
@@ -71,51 +71,51 @@ export enum displayCourseModeEnum {
   onRoad = "onRoad",
 }
 
-const setColorOnCourse = (color: string): BusCourseType | undefined => {
+const setColorOnCourse = (color: string): CourseType | undefined => {
   const line: CourseUnderConstructionType | undefined =
     getCourseUnderConstruction();
 
   if (!line) return;
 
-  line.busCourse.setColor(color);
+  line.course.setColor(color);
 
-  return line.busCourse;
+  return line.course;
 };
 
 const onInput = (color: string) => {
-  const line: BusCourseType | undefined = setColorOnCourse(color);
+  const line: CourseType | undefined = setColorOnCourse(color);
 
   if (!line) return;
 };
 
 const onChange = async (color: string) => {
-  const line: BusCourseType | undefined = setColorOnCourse(color);
+  const line: CourseType | undefined = setColorOnCourse(color);
 
   if (!line) return;
 };
 
 async function onClick() {
   if (displayCourseMode() == displayCourseModeEnum.straight) {
-    if (getCourseUnderConstruction().busCourse.points.length < 2) {
+    if (getCourseUnderConstruction().course.points.length < 2) {
       return;
     }
-    if (!getCourseUnderConstruction().busCourse.waypoints) {
+    if (!getCourseUnderConstruction().course.waypoints) {
       const waypoints = WaypointEntity.createWaypointsFromPoints(
-        getCourseUnderConstruction().busCourse
+        getCourseUnderConstruction().course
       );
       setCourseUnderConstruction({
         ...getCourseUnderConstruction(),
-        busCourse: {
-          ...getCourseUnderConstruction().busCourse,
+        course: {
+          ...getCourseUnderConstruction().course,
           waypoints,
         },
       });
     }
-    await updatePolylineWithOsrm(getCourseUnderConstruction().busCourse);
+    await updatePolylineWithOsrm(getCourseUnderConstruction().course);
 
     setDisplayCourseMode(displayCourseModeEnum.onRoad);
   } else if (displayCourseMode() == displayCourseModeEnum.onRoad) {
-    getCourseUnderConstruction().busCourse.setLatLngs([]);
+    getCourseUnderConstruction().course.setLatLngs([]);
 
     setDisplayCourseMode(displayCourseModeEnum.straight);
   }
@@ -126,12 +126,12 @@ export const [displayCourseMode, setDisplayCourseMode] =
 
 export default function () {
   const [lineName, setCourseName] = createSignal<string>(
-    getCourseUnderConstruction().busCourse.name ??
-      getCourseUnderConstruction().busCourse.schools[0].name
+    getCourseUnderConstruction().course.name ??
+      getCourseUnderConstruction().course.schools[0].name
   );
 
   const etablissementSelected = () => {
-    return getCourseUnderConstruction().busCourse.schools;
+    return getCourseUnderConstruction().course.schools;
   };
 
   createEffect(() => {
@@ -147,31 +147,31 @@ export default function () {
       <Show when={currentStep() == drawModeStep.editCourse}>
         <div class="bus-course-information-board-content-schools">
           <SchoolsEnumeration
-            schoolsName={getCourseUnderConstruction().busCourse.schools.map(
+            schoolsName={getCourseUnderConstruction().course.schools.map(
               (school) => school.name
             )}
           />
-          <Show when={getCourseUnderConstruction().busCourse.points.length > 0}>
+          <Show when={getCourseUnderConstruction().course.points.length > 0}>
             <DrawHelperButton
-              schools={getCourseUnderConstruction().busCourse.schools}
+              schools={getCourseUnderConstruction().course.schools}
             />
           </Show>
         </div>
         <CollapsibleElement title="Métriques">
-          <Metrics line={getCourseUnderConstruction().busCourse} />
+          <Metrics line={getCourseUnderConstruction().course} />
         </CollapsibleElement>
         <LabeledInputField
-          label="Nom de la ligne"
+          label="Nom de la course"
           value={lineName()}
           onInput={(e) => setCourseName(e.target.value)}
           name="line-name"
-          placeholder="Entrer le nom de la ligne"
+          placeholder="Entrer le nom de la course"
         />
 
         <div class="flex mt-4 justify-between">
           <ColorPicker
-            defaultColor={getCourseUnderConstruction().busCourse.color()}
-            title="Couleur de la ligne"
+            defaultColor={getCourseUnderConstruction().course.color()}
+            title="Couleur de la course"
             onInput={onInput}
             onChange={onChange}
           />
@@ -198,7 +198,7 @@ export default function () {
       <Show when={currentStep() == drawModeStep.editCourse}>
         <div class="bus-course-information-board-content">
           <Show
-            when={getCourseUnderConstruction().busCourse.points.length > 0}
+            when={getCourseUnderConstruction().course.points.length > 0}
             fallback={
               <div class="flex w-4/5 text-xs justify-center absolute bottom-[500px]">
                 Veuillez sélectionner des points sur la carte
@@ -227,12 +227,12 @@ export default function () {
     </div>
   );
 }
-async function createOrUpdateBusCourse(busCourse: BusCourseType) {
-  busCourse.setSelected(true);
-  if (busCourse.id == undefined) {
-    await createBusCourse(busCourse);
+async function createOrUpdateBusCourse(course: CourseType) {
+  course.setSelected(true);
+  if (course.id == undefined) {
+    await createBusCourse(course);
   } else {
-    await updateBusCourse(busCourse);
+    await updateBusCourse(course);
   }
   quitModeAddCourse();
   setCurrentStep(drawModeStep.start);
@@ -241,24 +241,22 @@ async function createOrUpdateBusCourse(busCourse: BusCourseType) {
       ? prev
       : displayCourseModeEnum.straight
   );
-  selectedUpdatedBusCourse(getBusCourses().at(-1) as BusCourseType);
+  selectedUpdatedBusCourse(getCourses().at(-1) as CourseType);
 }
 
-function selectedUpdatedBusCourse(busCourse: BusCourseType) {
-  getBusCourses()
-    .filter((line) => line.id === busCourse.id)[0]
+function selectedUpdatedBusCourse(course: CourseType) {
+  getCourses()
+    .filter((line) => line.id === course.id)[0]
     .setSelected(true);
 }
 
-async function createBusCourse(busCourse: BusCourseType) {
-  const newBusCourse: BusCourseType = await BusCourseService.create(busCourse);
+async function createBusCourse(course: CourseType) {
+  const newBusCourse: CourseType = await BusCourseService.create(course);
   updateBusCourses(newBusCourse);
 }
 
-async function updateBusCourse(busCourse: BusCourseType) {
-  const updatedBusCourse: BusCourseType = await BusCourseService.update(
-    busCourse
-  );
+async function updateBusCourse(course: CourseType) {
+  const updatedBusCourse: CourseType = await BusCourseService.update(course);
   updateBusCourses(updatedBusCourse);
 }
 
@@ -266,31 +264,31 @@ async function nextStep() {
   enableSpinningWheel();
   switch (currentStep()) {
     case drawModeStep.schoolSelection:
-      if (getCourseUnderConstruction().busCourse.schools.length < 1) {
+      if (getCourseUnderConstruction().course.schools.length < 1) {
         break;
       }
       setCurrentStep(drawModeStep.editCourse);
     case drawModeStep.editCourse:
-      if (getCourseUnderConstruction().busCourse.points.length < 2) {
+      if (getCourseUnderConstruction().course.points.length < 2) {
         break;
       }
-      if (!getCourseUnderConstruction().busCourse.waypoints) {
+      if (!getCourseUnderConstruction().course.waypoints) {
         const waypoints = WaypointEntity.createWaypointsFromPoints(
-          getCourseUnderConstruction().busCourse
+          getCourseUnderConstruction().course
         );
         setCourseUnderConstruction({
           ...getCourseUnderConstruction(),
-          busCourse: {
-            ...getCourseUnderConstruction().busCourse,
+          course: {
+            ...getCourseUnderConstruction().course,
             waypoints,
           },
         });
       }
       if (displayCourseMode() == displayCourseModeEnum.straight) {
-        await updatePolylineWithOsrm(getCourseUnderConstruction().busCourse);
+        await updatePolylineWithOsrm(getCourseUnderConstruction().course);
       }
 
-      await createOrUpdateBusCourse(getCourseUnderConstruction().busCourse);
+      await createOrUpdateBusCourse(getCourseUnderConstruction().course);
       changeBoard("line-details");
       updatePointColor();
   }
@@ -309,16 +307,15 @@ function prevStep() {
 
       break;
     case drawModeStep.editCourse:
-      const busCourse = unmodifiedBusCourse();
-      if (busCourse) {
-        setBusCourses((buscourses) => {
+      const course = unmodifiedBusCourse();
+      if (course) {
+        setCourses((buscourses) => {
           buscourses = [
             ...buscourses.filter(
-              (busCourse) =>
-                busCourse.id != getCourseUnderConstruction().busCourse.id
+              (course) => course.id != getCourseUnderConstruction().course.id
             ),
           ];
-          buscourses.push(busCourse);
+          buscourses.push(course);
           return buscourses;
         });
         setUnmodifiedBusCourse(undefined);
@@ -327,7 +324,7 @@ function prevStep() {
       setCourseUnderConstruction(defaultCourseUnderConstruction());
 
       if (displayCourseMode() == displayCourseModeEnum.onRoad) {
-        getCourseUnderConstruction().busCourse.setLatLngs([]);
+        getCourseUnderConstruction().course.setLatLngs([]);
       }
 
       setCurrentStep(drawModeStep.schoolSelection);

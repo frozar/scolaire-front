@@ -1,9 +1,9 @@
 import L from "leaflet";
 import { useStateAction } from "../../../../../StateAction";
 import {
-  BusCourseType,
+  CourseType,
   updatePolylineWithOsrm,
-} from "../../../../../_entities/bus-course.entity";
+} from "../../../../../_entities/course.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { StopType } from "../../../../../_entities/stop.entity";
 import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
@@ -22,7 +22,7 @@ import { setSchoolDetailsItem } from "../../../schools/component/organism/School
 import { COLOR_SCHOOL_FOCUS } from "../../constant";
 import { setIsOverMapItem } from "../../l7MapBuilder";
 import Point from "../atom/Point";
-import { deselectAllBusCourses } from "../organism/BusCourses";
+import { deselectAllCourses } from "../organism/Courses";
 import {
   blinkingSchools,
   cursorIsOverPoint,
@@ -31,7 +31,7 @@ import {
   setBlinkingStops,
   setCursorIsOverPoint,
 } from "../organism/Points";
-import { draggingCourse, setDraggingCourse } from "./BusCourse";
+import { draggingCourse, setDraggingCourse } from "./Course";
 
 const [
   ,
@@ -51,7 +51,7 @@ export interface SchoolPointProps {
 
 const onClick = (point: SchoolType) => {
   if (onBoard() != "line-draw") {
-    deselectAllBusCourses();
+    deselectAllCourses();
     deselectAllPoints();
     point.setSelected(true);
     setSchoolDetailsItem(point);
@@ -61,7 +61,7 @@ const onClick = (point: SchoolType) => {
     return;
   }
 
-  const etablissementSelected = getCourseUnderConstruction().busCourse.schools;
+  const etablissementSelected = getCourseUnderConstruction().course.schools;
 
   if (currentStep() === drawModeStep.schoolSelection) {
     if (etablissementSelected?.find((p) => p.id === point.id)) {
@@ -74,39 +74,39 @@ const onClick = (point: SchoolType) => {
 
     setCourseUnderConstruction({
       ...getCourseUnderConstruction(),
-      busCourse: {
-        ...getCourseUnderConstruction().busCourse,
+      course: {
+        ...getCourseUnderConstruction().course,
         schools: [point],
       },
     });
 
     return;
   }
-  const lastPoint = getCourseUnderConstruction().busCourse.points.at(-1);
+  const lastPoint = getCourseUnderConstruction().course.points.at(-1);
   addPointToCourseUnderConstruction({ ...point, quantity: 0 });
   if (!lastPoint || point.leafletId != lastPoint.leafletId) {
-    const waypoints = getCourseUnderConstruction().busCourse.waypoints;
+    const waypoints = getCourseUnderConstruction().course.waypoints;
     if (waypoints) {
       const newWaypoints = WaypointEntity.updateWaypoints(
         point,
         waypoints,
-        getCourseUnderConstruction().busCourse.points
+        getCourseUnderConstruction().course.points
       );
       setCourseUnderConstruction({
         ...getCourseUnderConstruction(),
-        busCourse: {
-          ...getCourseUnderConstruction().busCourse,
+        course: {
+          ...getCourseUnderConstruction().course,
           waypoints: newWaypoints,
         },
       });
     }
     if (displayCourseMode() == displayCourseModeEnum.onRoad) {
-      updatePolylineWithOsrm(getCourseUnderConstruction().busCourse);
+      updatePolylineWithOsrm(getCourseUnderConstruction().course);
     }
   }
 
   //TODO pourquoi cette condition ?
-  if (!(1 < getCourseUnderConstruction().busCourse.points.length)) {
+  if (!(1 < getCourseUnderConstruction().course.points.length)) {
     return;
   }
 };
@@ -116,7 +116,7 @@ const onMouseUp = (point: StopType) => {
     const associatedQuantity = point.associated.filter(
       (associatedSchool) =>
         associatedSchool.id ===
-        getCourseUnderConstruction().busCourse.schools[0].id
+        getCourseUnderConstruction().course.schools[0].id
     )[0].quantity;
 
     addPointToCourseUnderConstruction({
@@ -148,14 +148,14 @@ const onMouseOut = () => {
 const onRightClick = (point: SchoolType) => {
   const circle = linkMap.get(point.leafletId);
   const isInCourseUnderConstruction =
-    getCourseUnderConstruction().busCourse.points.filter(
+    getCourseUnderConstruction().course.points.filter(
       (_point) => _point.id == point.id
     )[0];
 
   if (onBoard() == "line-draw" && isInCourseUnderConstruction != undefined) {
     removePointToCourseUnderConstruction(point);
     // Update waypoints
-    const waypoints = getCourseUnderConstruction().busCourse.waypoints;
+    const waypoints = getCourseUnderConstruction().course.waypoints;
     if (waypoints) {
       const newWaypoints = WaypointEntity.deleteSchoolOrStopWaypoint(
         waypoints,
@@ -163,8 +163,8 @@ const onRightClick = (point: SchoolType) => {
         point.nature
       );
 
-      const newBusCourse: BusCourseType = {
-        ...getCourseUnderConstruction().busCourse,
+      const newBusCourse: CourseType = {
+        ...getCourseUnderConstruction().course,
         waypoints: newWaypoints,
       };
       if (displayCourseMode() == displayCourseModeEnum.onRoad) {
@@ -172,7 +172,7 @@ const onRightClick = (point: SchoolType) => {
       } else {
         setCourseUnderConstruction({
           ...getCourseUnderConstruction(),
-          busCourse: newBusCourse,
+          course: newBusCourse,
         });
       }
     }

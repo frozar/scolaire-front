@@ -5,16 +5,16 @@ import { deselectAllPoints } from "../../../map/component/organism/Points";
 import ButtonIcon from "../molecule/ButtonIcon";
 
 export interface RemoveLineButtonProps {
-  busLine: CourseType;
+  course: CourseType;
 }
 
 export default function (props: RemoveLineButtonProps) {
   const onclick = () => {
     deselectAllPoints();
-    if (props.busLine.id) {
+    if (props.course.id) {
       setRemoveConfirmation({
         displayed: true,
-        busLine: props.busLine,
+        course: props.course,
       });
     }
   };

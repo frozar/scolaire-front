@@ -10,10 +10,10 @@ const [, { setPointsToCourseUnderConstruction }] = useStateAction();
 
 import { FaSolidWandMagicSparkles } from "solid-icons/fa";
 import {
-  BusCoursePointType,
+  CoursePointType,
   WaypointType,
   updatePolylineWithOsrm,
-} from "../../../../../_entities/bus-course.entity";
+} from "../../../../../_entities/course.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import {
   disableSpinningWheel,
@@ -48,12 +48,11 @@ async function drawHelper(data: DrawHelperDataType) {
   disableSpinningWheel();
   console.log("response", response);
   //TODO Resolve type problem and add quantity here
-  const formattedResponse: BusCoursePointType[] =
-    formatTimeCoursePoints(response);
+  const formattedResponse: CoursePointType[] = formatCoursePoints(response);
   setPointsToCourseUnderConstruction(formattedResponse);
 
   const newWaypoints: WaypointType[] = [];
-  for (const point of getCourseUnderConstruction().busCourse.points) {
+  for (const point of getCourseUnderConstruction().course.points) {
     if (point.nature == NatureEnum.school) {
       newWaypoints.push({
         idSchool: point.id,
@@ -70,13 +69,13 @@ async function drawHelper(data: DrawHelperDataType) {
   }
   setCourseUnderConstruction({
     ...getCourseUnderConstruction(),
-    busCourse: {
-      ...getCourseUnderConstruction().busCourse,
+    course: {
+      ...getCourseUnderConstruction().course,
       waypoints: newWaypoints,
     },
   });
   if (displayCourseMode() == displayCourseModeEnum.onRoad) {
-    updatePolylineWithOsrm(getCourseUnderConstruction().busCourse);
+    updatePolylineWithOsrm(getCourseUnderConstruction().course);
   }
 }
 
@@ -92,7 +91,7 @@ export function DrawHelperButton(props: DrawHelperButtonProps) {
         : [];
 
     const selectedStops = JSON.parse(
-      JSON.stringify(getCourseUnderConstruction().busCourse.points)
+      JSON.stringify(getCourseUnderConstruction().course.points)
     );
 
     const stops = leafletStopsFilter();
@@ -116,7 +115,7 @@ export function DrawHelperButton(props: DrawHelperButtonProps) {
   return (
     <div class="graphicage-draw-helper-button">
       <DrawHelperDialog requestCircuit={requestCircuit} />
-      <Show when={getCourseUnderConstruction().busCourse.points.length > 0}>
+      <Show when={getCourseUnderConstruction().course.points.length > 0}>
         <button onClick={onclick}>
           <FaSolidWandMagicSparkles />
         </button>
@@ -125,9 +124,9 @@ export function DrawHelperButton(props: DrawHelperButtonProps) {
   );
 }
 
-function formatTimeCoursePoints(
+function formatCoursePoints(
   data: { id: number; leafletId: number; nature: string; quantity: number }[]
-): BusCoursePointType[] {
+): CoursePointType[] {
   const points = [...getSchools(), ...getStops()];
   const output = [];
   for (const item of data) {

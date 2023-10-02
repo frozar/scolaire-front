@@ -1,5 +1,5 @@
 import { setSchoolPointsColor, setStopPointsColor } from "../leafletUtils";
-import { deselectAllBusCourses } from "../views/content/map/component/organism/BusCourses";
+import { deselectAllCourses } from "../views/content/map/component/organism/Courses";
 import { deselectAllPoints } from "../views/content/map/component/organism/Points";
 import {
   COLOR_SCHOOL_FOCUS,
@@ -9,7 +9,7 @@ import {
 export namespace MapElementUtils {
   export function deselectAllPointsAndBusCourses() {
     deselectAllPoints();
-    deselectAllBusCourses();
+    deselectAllCourses();
     setStopPointsColor([], COLOR_STOP_FOCUS);
     setSchoolPointsColor([], COLOR_SCHOOL_FOCUS);
   }

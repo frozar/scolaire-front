@@ -1,5 +1,5 @@
 import { Accessor, JSX, Setter } from "solid-js";
-import { BusCourseType } from "./_entities/bus-course.entity";
+import { CourseType } from "./_entities/course.entity";
 import { StopType } from "./_entities/stop.entity";
 import { PointType } from "./views/content/map/component/atom/Point";
 
@@ -45,7 +45,7 @@ export function isLeafletSchoolType(pt: PointType) {
 
 export type CourseUnderConstructionType = {
   nextIndex: number;
-  busCourse: BusCourseType;
+  course: CourseType;
 };
 
 export enum ModeEnum {
@@ -86,7 +86,7 @@ export type userInformationType = {
 
 export type removeConfirmationType = {
   displayed: boolean;
-  busCourse: BusCourseType | null;
+  course: CourseType | null;
 };
 
 export type removeRamassageConfirmationType = {

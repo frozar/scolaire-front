@@ -2,9 +2,9 @@ import { For, Show, createEffect, createSignal } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import {
   BusCourseEntity,
-  BusCourseType,
-} from "../../../../../_entities/bus-course.entity";
-import { getSelectedBusCourse } from "../../../map/component/organism/BusCourses";
+  CourseType,
+} from "../../../../../_entities/course.entity";
+import { getSelectedCourse } from "../../../map/component/organism/Courses";
 import { TimelineAddPointButton } from "../atom/TimelineAddPointButton";
 import TimelineItem from "../atom/TimelineItem";
 import { onBoard } from "../template/ContextManager";
@@ -12,15 +12,15 @@ import { onBoard } from "../template/ContextManager";
 const [, { getCourseUnderConstruction }] = useStateAction();
 
 export default function () {
-  const [displayBusCourse, setDisplayPoints] = createSignal<BusCourseType>(
+  const [displayBusCourse, setDisplayPoints] = createSignal<CourseType>(
     BusCourseEntity.defaultBusCourse()
   );
 
   createEffect(() => {
     const displayedPoints =
       onBoard() === "line-draw"
-        ? getCourseUnderConstruction().busCourse
-        : (getSelectedBusCourse() as BusCourseType);
+        ? getCourseUnderConstruction().course
+        : (getSelectedCourse() as CourseType);
 
     setDisplayPoints(displayedPoints);
   });
@@ -41,7 +41,7 @@ export default function () {
                 <TimelineItem
                   pointsResource={stop}
                   indice={i()}
-                  busCourse={displayBusCourse()}
+                  course={displayBusCourse()}
                 />
               </Show>
             </div>

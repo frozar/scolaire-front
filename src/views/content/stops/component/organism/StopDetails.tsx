@@ -5,7 +5,7 @@ import PlusIcon from "../../../../../icons/PlusIcon";
 import { MapElementUtils } from "../../../../../utils/mapElement.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { changeBoard } from "../../../board/component/template/ContextManager";
-import { getBusCourses } from "../../../map/component/organism/BusCourses";
+import { getCourses } from "../../../map/component/organism/Courses";
 import CoursesList from "../../../schools/component/organism/CoursesList";
 import EditStop from "../molecul/EditStop";
 import StopDetailsHeader from "../molecul/StopDetailsHeader";
@@ -36,7 +36,7 @@ export default function () {
   function getStopCourses() {
     const lines = [];
 
-    for (const line of getBusCourses()) {
+    for (const line of getCourses()) {
       const _line = line.points.filter((l) => l.id == stopDetailsItem()?.id);
       if (_line.length > 0) lines.push(line);
     }

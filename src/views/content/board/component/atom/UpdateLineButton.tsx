@@ -13,14 +13,14 @@ const [, { setLineUnderConstruction, setModeAddLine }] = useStateAction();
 export const [unmodifiedCourse, setUnmodifiedCourse] =
   createSignal<CourseType>();
 
-export default function (props: { busLine: CourseType }) {
+export default function (props: { course: CourseType }) {
   async function onclick() {
     setLineUnderConstruction({
-      busLine: props.busLine,
-      nextIndex: props.busLine.points.length ?? 0,
+      course: props.course,
+      nextIndex: props.course.points.length ?? 0,
     });
-    const [color, setColor] = createSignal<string>(props.busLine.color());
-    setUnmodifiedCourse({ ...props.busLine, color, setColor });
+    const [color, setColor] = createSignal<string>(props.course.color());
+    setUnmodifiedCourse({ ...props.course, color, setColor });
 
     MapElementUtils.deselectAllPointsAndCourses();
     toggleDrawMod();

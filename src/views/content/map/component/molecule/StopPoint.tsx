@@ -7,12 +7,12 @@ import {
 } from "../../../board/component/template/ContextManager";
 import { COLOR_STOP_FOCUS, COLOR_STOP_LIGHT } from "../../constant";
 import Point from "../atom/Point";
-import { deselectAllBusCourses } from "../organism/BusCourses";
+import { deselectAllCourses } from "../organism/Courses";
 
 import {
-  BusCourseType,
+  CourseType,
   updatePolylineWithOsrm,
-} from "../../../../../_entities/bus-course.entity";
+} from "../../../../../_entities/course.entity";
 import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
 import { updatePointColor } from "../../../../../leafletUtils";
 import {
@@ -29,7 +29,7 @@ import {
   setBlinkingSchools,
   setCursorIsOverPoint,
 } from "../organism/Points";
-import { draggingCourse, setDraggingCourse } from "./BusCourse";
+import { draggingCourse, setDraggingCourse } from "./Course";
 
 const [
   ,
@@ -58,23 +58,22 @@ const rangeRadius = maxRadius - minRadius;
 function getAssociatedQuantity(point: StopType) {
   return point.associated.filter(
     (associatedSchool) =>
-      associatedSchool.id ===
-      getCourseUnderConstruction().busCourse.schools[0].id
+      associatedSchool.id === getCourseUnderConstruction().course.schools[0].id
   )[0].quantity;
 }
 
 function updateWaypoints(point: StopType) {
-  const actualWaypoints = getCourseUnderConstruction().busCourse.waypoints;
+  const actualWaypoints = getCourseUnderConstruction().course.waypoints;
   if (actualWaypoints) {
     const waypoints = WaypointEntity.updateWaypoints(
       point,
       actualWaypoints,
-      getCourseUnderConstruction().busCourse.points
+      getCourseUnderConstruction().course.points
     );
     setCourseUnderConstruction({
       ...getCourseUnderConstruction(),
-      busCourse: {
-        ...getCourseUnderConstruction().busCourse,
+      course: {
+        ...getCourseUnderConstruction().course,
         waypoints,
       },
     });
@@ -83,7 +82,7 @@ function updateWaypoints(point: StopType) {
 
 function onClick(point: StopType) {
   if (onBoard() != "line-draw") {
-    deselectAllBusCourses();
+    deselectAllCourses();
     deselectAllPoints();
     point.setSelected(true);
     setStopDetailsItem(point);
@@ -97,17 +96,17 @@ function onClick(point: StopType) {
 
   // TODO: when add line with an etablissement point the line destroy after next point click
   // Wait Richard/Hugo finish the line underconstruction
-  const lastPoint = getCourseUnderConstruction().busCourse.points.at(-1);
+  const lastPoint = getCourseUnderConstruction().course.points.at(-1);
   addPointToCourseUnderConstruction({ ...point, quantity: associatedQuantity });
   if (!lastPoint || point.leafletId != lastPoint.leafletId) {
     updateWaypoints(point);
     if (displayCourseMode() == displayCourseModeEnum.onRoad) {
-      updatePolylineWithOsrm(getCourseUnderConstruction().busCourse);
+      updatePolylineWithOsrm(getCourseUnderConstruction().course);
     }
   }
 
   //TODO pourquoi cette condition ?
-  if (!(1 < getCourseUnderConstruction().busCourse.points.length)) {
+  if (!(1 < getCourseUnderConstruction().course.points.length)) {
     return;
   }
 }
@@ -169,14 +168,14 @@ export function StopPoint(props: StopPointProps) {
   const onRightClick = () => {
     const circle = linkMap.get(props.point.leafletId);
     const isInCourseUnderConstruction =
-      getCourseUnderConstruction().busCourse.points.filter(
+      getCourseUnderConstruction().course.points.filter(
         (_point) => _point.id == props.point.id
       )[0];
 
     if (onBoard() == "line-draw" && isInCourseUnderConstruction != undefined) {
       removePointToCourseUnderConstruction(props.point);
       // Update waypoints
-      const waypoints = getCourseUnderConstruction().busCourse.waypoints;
+      const waypoints = getCourseUnderConstruction().course.waypoints;
       if (waypoints) {
         const newWaypoints = WaypointEntity.deleteSchoolOrStopWaypoint(
           waypoints,
@@ -184,8 +183,8 @@ export function StopPoint(props: StopPointProps) {
           props.point.nature
         );
 
-        const newBusCourse: BusCourseType = {
-          ...getCourseUnderConstruction().busCourse,
+        const newBusCourse: CourseType = {
+          ...getCourseUnderConstruction().course,
           waypoints: newWaypoints,
         };
         if (displayCourseMode() == displayCourseModeEnum.onRoad) {
@@ -193,7 +192,7 @@ export function StopPoint(props: StopPointProps) {
         } else {
           setCourseUnderConstruction({
             ...getCourseUnderConstruction(),
-            busCourse: newBusCourse,
+            course: newBusCourse,
           });
         }
       }

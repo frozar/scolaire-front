@@ -1,10 +1,10 @@
 import L from "leaflet";
 import {
-  BusCoursePointType,
-  BusCourseType,
+  CourseMetricType,
+  CoursePointType,
+  CourseType,
   WaypointType,
-  busCourseMetricType,
-} from "../_entities/bus-course.entity";
+} from "../_entities/course.entity";
 import { ServiceUtils } from "./_utils.service";
 
 const osrm = import.meta.env.VITE_API_OSRM_URL;
@@ -12,13 +12,13 @@ const osrm = import.meta.env.VITE_API_OSRM_URL;
 type osrmResponseType = { routes: routesType[] };
 
 export class OsrmService {
-  static async getRoadPolyline(busCourse: BusCourseType): Promise<{
+  static async getRoadPolyline(course: CourseType): Promise<{
     latlngs: L.LatLng[];
     projectedLatlngs: L.LatLng[];
-    metrics: busCourseMetricType;
+    metrics: CourseMetricType;
   }> {
-    const points: BusCoursePointType[] = busCourse.points;
-    let waypoints: WaypointType[] = busCourse.waypoints ?? points;
+    const points: CoursePointType[] = course.points;
+    let waypoints: WaypointType[] = course.waypoints ?? points;
     waypoints = waypoints.length > 0 ? waypoints : points;
     if (waypoints.length <= 1) {
       return { latlngs: [], projectedLatlngs: [], metrics: {} };
@@ -52,16 +52,16 @@ export class OsrmService {
   private static formatResponse(
     response: osrmResponseType,
     response_direct: osrmResponseType,
-    points: BusCoursePointType[],
+    points: CoursePointType[],
     waypoints: waypointsType[]
   ): {
     latlngs: L.LatLng[];
     projectedLatlngs: L.LatLng[];
-    metrics: busCourseMetricType;
+    metrics: CourseMetricType;
   } {
     let latlngs: L.LatLng[] = [];
     let projectedLatlngs: L.LatLng[] = [];
-    let metrics: busCourseMetricType = {};
+    let metrics: CourseMetricType = {};
     if (!response || response.routes[0] == undefined)
       return { latlngs, projectedLatlngs, metrics };
 
@@ -101,7 +101,7 @@ type routesType = {
 function getMetrics(
   response: osrmResponseType,
   response_direct: osrmResponseType,
-  points: BusCoursePointType[]
+  points: CoursePointType[]
 ) {
   const distance = response.routes[0].distance;
 
@@ -119,7 +119,7 @@ function getMetrics(
 
 function getKmPassagers(
   response: osrmResponseType,
-  points: BusCoursePointType[],
+  points: CoursePointType[],
   distance: number
 ) {
   let kmPassager = 0;

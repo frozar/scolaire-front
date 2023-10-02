@@ -41,7 +41,7 @@ function schoolsFilter(): SchoolType[] {
   let schools = getSchools();
 
   if (onBoard() == "line-draw") {
-    const schoolsSelected = getCourseUnderConstruction().busCourse.schools;
+    const schoolsSelected = getCourseUnderConstruction().course.schools;
     if (currentStep() === drawModeStep.schoolSelection) {
       return schools;
     }

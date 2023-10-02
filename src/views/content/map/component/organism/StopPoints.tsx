@@ -66,7 +66,7 @@ async function updateStop() {
 
 //TODO Delete and replace with displayedStop signal
 export function leafletStopsFilter(): StopType[] {
-  const schools = getCourseUnderConstruction().busCourse.schools;
+  const schools = getCourseUnderConstruction().course.schools;
 
   const stops = getStops();
   if (currentStep() === drawModeStep.start) {
