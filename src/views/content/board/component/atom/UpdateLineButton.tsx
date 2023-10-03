@@ -25,7 +25,7 @@ export default function (props: { course: CourseType }) {
     MapElementUtils.deselectAllPointsAndCourses();
     toggleDrawMod();
     setCurrentStep(drawModeStep.editLine);
-    changeBoard("line-draw");
+    changeBoard("course-draw");
     setModeAddLine();
   }
 

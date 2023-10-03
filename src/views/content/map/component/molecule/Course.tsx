@@ -42,13 +42,13 @@ const [, { getCourseUnderConstruction, setCourseUnderConstructionNextIndex }] =
 
 export const [draggingCourse, setDraggingCourse] = createSignal<boolean>(false);
 
-export type BusCourseProps = {
+export type CourseProps = {
   course: CourseType;
   map: L.Map;
 };
 
 export function onClickBusCourse(line: CourseType) {
-  if (onBoard() != "line-draw") {
+  if (onBoard() != "course-draw") {
     deselectAllCourses();
     deselectAllPoints();
     setPickerColor(line.color());
@@ -60,13 +60,13 @@ export function onClickBusCourse(line: CourseType) {
   }
 }
 
-export function BusCourse(props: BusCourseProps) {
+export function Course(props: CourseProps) {
   const [localLatLngs, setLocalLatLngs] = createSignal<L.LatLng[]>([]);
   const [localOpacity, setLocalOpacity] = createSignal<number>(1);
   createEffect(() => {
     if (
       displayCourseMode() == displayCourseModeEnum.onRoad ||
-      onBoard() != "line-draw"
+      onBoard() != "course-draw"
     ) {
       setLocalLatLngs(props.course.latLngs());
       setLocalOpacity(0.8);
@@ -101,7 +101,7 @@ export function BusCourse(props: BusCourseProps) {
 
   const onMouseOver = (polyline: L.Polyline, arrows: L.Marker[]) => {
     setIsOverMapItem(true);
-    if (onBoard() != "line-draw") {
+    if (onBoard() != "course-draw") {
       buscourseSetBoldStyle(polyline, arrows, "white");
     }
   };
@@ -109,7 +109,7 @@ export function BusCourse(props: BusCourseProps) {
   const onMouseOut = (polyline: L.Polyline, arrows: L.Marker[]) => {
     setIsOverMapItem(false);
     // if (!line.selected() && (isInRemoveCourseMode() || isInReadMode())) {
-    if (onBoard() != "line-draw") {
+    if (onBoard() != "course-draw") {
       buscourseSetNormalStyle(polyline, arrows, props.course.color());
     }
   };
@@ -218,7 +218,7 @@ export function BusCourse(props: BusCourseProps) {
       <Show
         when={
           displayCourseMode() == displayCourseModeEnum.onRoad &&
-          onBoard() == "line-draw"
+          onBoard() == "course-draw"
         }
       >
         <For each={latLngList()}>

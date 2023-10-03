@@ -20,7 +20,7 @@ export default function () {
     getCourses().filter((line) => line.name?.includes(searchKeyword()));
 
   function addCourse() {
-    if (onBoard() == "line-draw") {
+    if (onBoard() == "course-draw") {
       toggleDrawMod();
       setCurrentStep(drawModeStep.start);
     } else {

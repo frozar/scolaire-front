@@ -14,6 +14,7 @@ import { listHandlerLMap } from "./shortcut";
 import "leaflet/dist/leaflet.css";
 import { addNewUserInformation, getLeafletMap } from "../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../type";
+import { BusLines } from "./component/organism/BusLines";
 import { Points } from "./component/organism/Points";
 
 const [, { getActiveMapId }] = useStateGui();
@@ -75,6 +76,7 @@ export default function () {
       <div ref={mapDiv} id="main-map" />
       <Points leafletMap={getLeafletMap() as L.Map} />
       <BusCourses map={getLeafletMap() as L.Map} />
+      <BusLines map={getLeafletMap() as L.Map} />
       {/* <div class="z-[1000] absolute top-[45%] right-[15px]">
         <RightMapMenu />
       </div> */}

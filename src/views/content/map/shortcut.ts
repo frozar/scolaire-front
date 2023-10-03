@@ -81,7 +81,7 @@ function escapeHandler({ code }: KeyboardEvent) {
   }
 
   if (code === "Escape") {
-    if (onBoard() == "line-draw") {
+    if (onBoard() == "course-draw") {
       quitModeAddCourse();
       setCurrentStep(drawModeStep.start);
     }

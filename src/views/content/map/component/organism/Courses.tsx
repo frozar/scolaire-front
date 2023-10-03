@@ -2,7 +2,7 @@ import L from "leaflet";
 import { For, createEffect, createSignal, onCleanup } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import { CourseType } from "../../../../../_entities/course.entity";
-import { BusCourse } from "../molecule/Course";
+import { Course } from "../molecule/Course";
 
 import { CourseUtils } from "../../../../../utils/course.utils";
 import {
@@ -54,7 +54,7 @@ export function BusCourses(props: BusCoursesProps) {
   return (
     <For each={coursesFilter()}>
       {(line) => {
-        return <BusCourse course={line} map={props.map} />;
+        return <Course course={line} map={props.map} />;
       }}
     </For>
   );

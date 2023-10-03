@@ -20,7 +20,7 @@ export default function () {
 
   createEffect(() => {
     switch (onBoard()) {
-      case "line-draw":
+      case "course-draw":
         if (getCourseUnderConstruction().course.schools.length > 0) {
           setCrumbs([{ text: "Editer votre course" }]);
           break;

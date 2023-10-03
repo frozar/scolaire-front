@@ -22,7 +22,7 @@ export default function (props: LeftMenuItemProps) {
       setSelectedMenu("dashboard");
       return;
     }
-    if (["line", "line-draw", "line-details"].includes(onBoardMode)) {
+    if (["line", "course-draw", "line-details"].includes(onBoardMode)) {
       setSelectedMenu("graphicage");
     } else if (
       ["schools", "school-details", "school-class"].includes(onBoardMode)

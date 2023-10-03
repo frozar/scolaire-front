@@ -7,7 +7,7 @@ import { NatureEnum } from "../type";
 import { PointType } from "../views/content/map/component/atom/Point";
 import { getSchools } from "../views/content/map/component/organism/SchoolPoints";
 import { getStops } from "../views/content/map/component/organism/StopPoints";
-import { COLOR_LINE_UNDER_CONSTRUCTION } from "../views/content/map/constant";
+import { COLOR_DEFAULT_COURSE } from "../views/content/map/constant";
 import {
   EntityUtils,
   LocationDBType,
@@ -67,9 +67,7 @@ export class BusCourseEntity {
 
   static defaultBusCourse(): CourseType {
     const [latLngs, setLatLngs] = createSignal<L.LatLng[]>([]);
-    const [color, setColor] = createSignal<string>(
-      COLOR_LINE_UNDER_CONSTRUCTION
-    );
+    const [color, setColor] = createSignal<string>(COLOR_DEFAULT_COURSE);
     const [selected, setSelected] = createSignal<boolean>(false);
     const [metrics, setMetrics] = createSignal<CourseMetricType>({});
 
