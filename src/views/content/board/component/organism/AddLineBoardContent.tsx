@@ -1,4 +1,4 @@
-import { Show, createSignal } from "solid-js";
+import { For, Show, createEffect, createSignal } from "solid-js";
 
 import { LineType } from "../../../../../_entities/line.entity";
 
@@ -7,10 +7,14 @@ import BoardFooterActions from "../molecule/BoardFooterActions";
 import "../../../../../css/timeline.css";
 import { ColorPicker } from "../atom/ColorPicker";
 
-import CurvedLine from "../../../../../icons/CurvedLine";
-import SimpleLine from "../../../../../icons/SimpleLine";
-import ButtonIcon from "../molecule/ButtonIcon";
+import { createStore } from "solid-js/store";
+import { AssociatedPointType } from "../../../../../_entities/_utils.entity";
+import { SchoolType } from "../../../../../_entities/school.entity";
+import { getSchools } from "../../../map/component/organism/SchoolPoints";
 import LabeledInputField from "../molecule/LabeledInputField";
+import CollapsibleCheckableElement, {
+  AssociatedItem,
+} from "./CollapsibleCheckableElement";
 import "./DrawModeBoardContent.css";
 
 export enum drawModeStep {
@@ -19,6 +23,30 @@ export enum drawModeStep {
   editLine,
 }
 
+export const [addLineSelectedSchool, setaddLineSelectedShcool] = createSignal<
+  SchoolType[]
+>([]);
+const [stopSelected, setStopSelected] = createStore<AssociatedItem[]>([]);
+
+createEffect(() => {
+  const selectedAssociated: AssociatedPointType[] = [];
+  addLineSelectedSchool().forEach((elem) => {
+    elem.associated.forEach((associatedValue) =>
+      selectedAssociated.includes(associatedValue)
+        ? ""
+        : selectedAssociated.push(associatedValue)
+    );
+  });
+  // setStopSelected(
+  //   addLineSelectedSchool().map((elem) => {
+  //     return { associated: elem, done: true };
+  //   })
+  // );
+});
+
+createEffect(() => {
+  setaddLineSelectedShcool(getSchools()); //TODO to delete (use for primary test)
+});
 export const [currentStep, setCurrentStep] = createSignal<drawModeStep>(
   drawModeStep.start
 );
@@ -112,30 +140,26 @@ export default function () {
         <div class="flex mt-4 justify-between">
           <ColorPicker
             defaultColor={creatingLine()?.color()}
-            title="Couleur de la line"
+            title="Couleur de la ligne"
             onInput={onInput}
             onChange={onChange}
           />
-
-          <Show
-            when={displayLineMode() == displayLineModeEnum.straight}
-            fallback={
-              <ButtonIcon
-                icon={<SimpleLine />}
-                onClick={onClick}
-                class="line-to-road-btn-icon"
-              />
-            }
-          >
-            <ButtonIcon
-              icon={<CurvedLine />}
-              onClick={onClick}
-              class="line-to-road-btn-icon"
-            />
-          </Show>
         </div>
       </Show>
 
+      <fieldset>
+        <For each={addLineSelectedSchool()}>
+          {(school_elem) => {
+            return (
+              <CollapsibleCheckableElement
+                school={school_elem}
+                stopSelected={stopSelected}
+                setStopSelected={setStopSelected}
+              />
+            );
+          }}
+        </For>
+      </fieldset>
       {/* <Show when={currentStep() == drawModeStep.editLine}>
         <div class="bus-line-information-board-content">
           <Show
