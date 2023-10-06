@@ -8,6 +8,7 @@ import StopDetails from "../../../stops/component/organism/StopDetails";
 import AddLineBoardContent from "../organism/AddLineBoardContent";
 import BusLinesBoard from "../organism/BusLinesBoard";
 import { BusCourseInformationBoardContent } from "../organism/CourseInformationBoardContent";
+import CoursesBoard from "../organism/CoursesBoard";
 import DrawModeBoardContent from "../organism/DrawModeBoardContent";
 import InformationBoardLayout from "./InformationBoardLayout";
 
@@ -18,6 +19,7 @@ export type BoardTags =
   | "school-class"
   | "stops"
   | "stop-details"
+  | "course"
   | "course-draw"
   | "line"
   | "line-add"
@@ -52,6 +54,9 @@ export default function () {
           <Match when={onBoard() == "line-add"}>
             {/* <CoursesBoard /> */}
             <AddLineBoardContent />
+          </Match>
+          <Match when={onBoard() == "course"}>
+            <CoursesBoard />
           </Match>
           <Match when={onBoard() == "course-draw"}>
             <DrawModeBoardContent />

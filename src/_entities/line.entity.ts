@@ -14,7 +14,7 @@ export class BusLineEntity {
   static build(dbData: LineDBType): LineType {
     console.log("la", dbData);
     const filteredShools: SchoolType[] = getSchools().filter((item) =>
-      dbData.schools.map((school) => school.id).includes(item.id)
+      dbData.schools.includes(item.id)
     );
 
     if (filteredShools.length == 0) {
@@ -25,7 +25,7 @@ export class BusLineEntity {
     const schools = filteredShools;
 
     const filteredStops: StopType[] = getStops().filter((item) =>
-      dbData.stops.map((stop) => stop.id).includes(item.id)
+      dbData.stops.includes(item.id)
     );
 
     if (filteredStops.length == 0) {
@@ -85,8 +85,8 @@ export class BusLineEntity {
     return {
       color: formatColorForDB(line.color()),
       name: name,
-      schools: line.schools,
-      stops: line.stops,
+      schools: line.schools.map((school) => school.id),
+      stops: line.stops.map((stop) => stop.id),
       courses: line.courses,
     };
   }
@@ -146,7 +146,7 @@ export type LineDBType = {
   id: number;
   name: string;
   color: string;
-  schools: SchoolType[];
-  stops: StopType[];
+  schools: number[];
+  stops: number[];
   courses: CourseType[];
 };

@@ -48,7 +48,7 @@ export default function () {
         <InputSearch onInput={onInputSearch} />
       </header>
 
-      <CoursesList lines={filteredCourses()} />
+      <CoursesList courses={filteredCourses()} />
     </section>
   );
 }

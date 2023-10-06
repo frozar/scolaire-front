@@ -12,8 +12,10 @@ export class BusLineService {
   }
 
   static async create(line: LineType): Promise<LineType> {
+    console.log("line", line);
     const data = BusLineEntity.dbFormat(line);
     const dbBusLine: LineDBType = await ServiceUtils.post("/bus_line", data);
+    console.log(dbBusLine);
     return BusLineEntity.build(dbBusLine);
   }
 

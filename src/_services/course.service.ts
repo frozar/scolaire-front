@@ -3,6 +3,7 @@ import {
   CourseDBType,
   CourseType,
 } from "../_entities/course.entity";
+import { currentBusLine } from "../views/content/board/component/organism/BusLinesBoard";
 import { ServiceUtils } from "./_utils.service";
 
 export class BusCourseService {
@@ -16,7 +17,7 @@ export class BusCourseService {
   static async create(line: CourseType): Promise<CourseType> {
     const data = BusCourseEntity.dbFormat(line);
     const dbBusCourse: CourseDBType = await ServiceUtils.post(
-      "/bus-course",
+      "/busline/" + currentBusLine()?.id + "/bus-course_v2", //TODO tester la v2
       data
     );
     return BusCourseEntity.build(dbBusCourse);
