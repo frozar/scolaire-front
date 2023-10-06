@@ -1,6 +1,7 @@
 import { Accessor, Setter, createSignal } from "solid-js";
 import { useStateGui } from "../StateGui";
 import { NatureEnum } from "../type";
+import { QuantityUtils } from "../utils/quantity.utils";
 import { getCourses } from "../views/content/map/component/organism/Courses";
 import {
   AssociatedDBPointType,
@@ -48,10 +49,18 @@ export class SchoolEntity {
     });
   }
 
-  static getStudentQuantityForSchool(school: SchoolType) {
+  static getTotalQuantity(school: SchoolType) {
     let quantity = 0;
     for (const stop of school.associated) {
       quantity += stop.quantity;
+    }
+    return quantity;
+  }
+
+  static getRemainingQuantity(school: SchoolType) {
+    let quantity = 0;
+    for (const stop of school.associated) {
+      quantity += QuantityUtils.remaining(stop);
     }
     return quantity;
   }

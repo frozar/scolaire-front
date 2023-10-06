@@ -34,6 +34,7 @@ export function SchoolPoints(props: SchoolPointsProps) {
 async function updateSchools() {
   const schools: SchoolType[] = await SchoolService.getAll();
   setSchools(schools);
+  console.log("Schools préléminaire", schools);
 }
 
 //TODO Delete and replace with displayedSchool signal

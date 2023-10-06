@@ -62,6 +62,7 @@ export function StopPoints(props: StopPointsProps) {
 async function updateStop() {
   const stops: StopType[] = buildStops(await StopService.getAll());
   setStops(stops);
+  console.log("Stops préléminaire", stops);
 }
 
 //TODO Delete and replace with displayedStop signal
@@ -76,12 +77,16 @@ export function leafletStopsFilter(): StopType[] {
     return [];
   }
   return stops.filter((stop) =>
-    stop.associated.some((school) => schools.find((e) => e.id === school.id))
+    stop.associated.some(
+      (school) => schools.find((e) => e.id === school.id)
+      // TODO don't display stop with no remaining quantity in new Course Creation
+      // TODO creation a display error if the stop is in the updating Course
+      // && QuantityUtils.remaining(school) > 0
+    )
   );
 }
 
 function buildStops(stops: StopType[]): StopType[] {
-  // TODO ununderstood lint error
   return stops.map((stop) => {
     const [selected, setSelected] = createSignal(false);
     return {
