@@ -3,6 +3,7 @@ import CardTitle from "../../../../../component/atom/CardTitle";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
 import PencilIcon from "../../../../../icons/PencilIcon";
 import TrashIcon from "../../../../../icons/TrashIcon";
+import { QuantityUtils } from "../../../../../utils/quantity.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import "./StopSchoolItem.css";
 
@@ -19,7 +20,11 @@ export default function (props: { school: AssociatedPointType }) {
     <CardWrapper class="school-list-item">
       <div class="school-list-item-content">
         <CardTitle title={props.school.name} />
-        <p>{props.school.quantity + " élèves à récuperer"}</p>
+        <p class="school-list-item-quantity">
+          {QuantityUtils.remaining(props.school) +
+            " élèves restant sur " +
+            props.school.quantity}
+        </p>
       </div>
 
       <div class="school-list-item-actions">

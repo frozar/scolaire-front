@@ -1,3 +1,4 @@
+import { AssociatedPointType } from "../_entities/_utils.entity";
 import { CoursePointType, CourseType } from "../_entities/course.entity";
 import { SchoolType } from "../_entities/school.entity";
 import { NatureEnum } from "../type";
@@ -15,14 +16,28 @@ export namespace QuantityUtils {
       });
     });
   }
-  export function substract(course: CourseType) {
-    // Foreach substract quantity on Stops with School_id
-    // Foreach substract quantity on Schools with Stop_id
+
+  export function remainingQuantities(points: AssociatedPointType[]) {
+    let quantity = 0;
+    points.forEach((point) => {
+      quantity += remaining(point);
+    });
+    console.log(quantity);
+    return quantity;
   }
-  export function add(course: CourseType) {
-    // Foreach add quantity on Stops with School_id
-    // Foreach add quantity on Schools with Stop_id
+
+  export function remaining(point: AssociatedPointType) {
+    return point.quantity - point.usedQuantity;
   }
+
+  // export function substract(course: CourseType) {
+  //   // Foreach substract quantity on Stops with School_id
+  //   // Foreach substract quantity on Schools with Stop_id
+  // }
+  // export function add(course: CourseType) {
+  //   // Foreach add quantity on Stops with School_id
+  //   // Foreach add quantity on Schools with Stop_id
+  // }
 
   function setSchoolQuantity(school: SchoolType, points: CoursePointType[]) {
     points.forEach((point) => {

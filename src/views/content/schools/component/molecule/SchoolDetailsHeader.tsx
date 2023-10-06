@@ -32,7 +32,10 @@ export default function (props: { school: SchoolType }) {
         <ButtonIcon icon={<PencilIcon />} onClick={editName} />
       </div>
 
-      <p>{SchoolEntity.getStudentQuantityForSchool(props.school)} élèves</p>
+      <p>
+        {SchoolEntity.getRemainingQuantity(props.school)} élèves restant sur{" "}
+        {SchoolEntity.getTotalQuantity(props.school)}
+      </p>
 
       <InputSearch
         onInput={() => {

@@ -5,6 +5,9 @@
 .school-list-item-content{
   @apply block
 }
+.school-list-item-quantity{
+  @apply italic;
+}
 
 .school-list-item-actions{
   @apply flex gap-2
