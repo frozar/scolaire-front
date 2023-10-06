@@ -21,7 +21,7 @@ const [, { getCourseUnderConstruction, setCourseUnderConstruction }] =
 
 export class BusCourseEntity {
   static build(dbData: CourseDBType): CourseType {
-    const filteredShools: PointType[] = getSchools().filter(
+    const filteredShools: SchoolType[] = getSchools().filter(
       (item) => item.id == dbData.school_id
     );
 
@@ -33,7 +33,7 @@ export class BusCourseEntity {
       );
     }
 
-    const school = filteredShools[0];
+    const school: SchoolType = filteredShools[0];
 
     const [selected, setSelected] = createSignal<boolean>(false);
     const [latLngs, setLatLngs] = createSignal<L.LatLng[]>([]);
@@ -256,6 +256,7 @@ export async function updatePolylineWithOsrm(course: CourseType) {
 }
 
 //TODO Tester sans ce nouveau type => tester ajout d'une nouvelle nature waypoint
+//TODO !!! à placer dans WayPoint si c'est utile !!
 export type WaypointType = {
   idSchool?: number;
   idStop?: number;

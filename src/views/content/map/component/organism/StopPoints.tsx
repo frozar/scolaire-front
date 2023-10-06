@@ -62,6 +62,7 @@ export function StopPoints(props: StopPointsProps) {
 async function updateStop() {
   const stops: StopType[] = buildStops(await StopService.getAll());
   setStops(stops);
+  console.log("Stops préléminaire", stops);
 }
 
 //TODO Delete and replace with displayedStop signal

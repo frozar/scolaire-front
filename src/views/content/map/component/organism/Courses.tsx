@@ -2,9 +2,9 @@ import L from "leaflet";
 import { For, createEffect, createSignal, onCleanup } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import { CourseType } from "../../../../../_entities/course.entity";
-import { BusCourseService } from "../../../../../_services/course.service";
 import { BusCourse } from "../molecule/Course";
 
+import { CourseUtils } from "../../../../../utils/course.utils";
 import {
   currentStep,
   drawModeStep,
@@ -30,8 +30,7 @@ export function BusCourses(props: BusCoursesProps) {
   // eslint-disable-next-line solid/reactivity
   createEffect(async () => {
     if (pointsReady()) {
-      const lines = await BusCourseService.getAll();
-      setCourses(lines);
+      await CourseUtils.set();
     }
   });
 

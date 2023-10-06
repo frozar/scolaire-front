@@ -32,6 +32,7 @@ export class EntityUtils {
         id: item.entity.id,
         name: item.entity.name,
         quantity: item.quantity,
+        usedQuantity: 0,
       };
     });
   }
@@ -43,6 +44,7 @@ export type AssociatedPointType = {
   id: number;
   name: string;
   quantity: number;
+  usedQuantity: number;
 };
 
 export type AssociatedDBPointType = {
