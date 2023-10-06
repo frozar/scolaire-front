@@ -4,6 +4,7 @@ import { useStateAction } from "../../../../../StateAction";
 import { useStateGui } from "../../../../../StateGui";
 import { StopType } from "../../../../../_entities/stop.entity";
 import { StopService } from "../../../../../_services/stop.service";
+import { QuantityUtils } from "../../../../../utils/quantity.utils";
 import {
   currentStep,
   drawModeStep,
@@ -77,7 +78,11 @@ export function leafletStopsFilter(): StopType[] {
     return [];
   }
   return stops.filter((stop) =>
-    stop.associated.some((school) => schools.find((e) => e.id === school.id))
+    stop.associated.some(
+      (school) =>
+        schools.find((e) => e.id === school.id) &&
+        QuantityUtils.remaining(school) > 0
+    )
   );
 }
 
