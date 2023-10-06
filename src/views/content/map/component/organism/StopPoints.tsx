@@ -4,7 +4,6 @@ import { useStateAction } from "../../../../../StateAction";
 import { useStateGui } from "../../../../../StateGui";
 import { StopType } from "../../../../../_entities/stop.entity";
 import { StopService } from "../../../../../_services/stop.service";
-import { QuantityUtils } from "../../../../../utils/quantity.utils";
 import {
   currentStep,
   drawModeStep,
@@ -79,15 +78,15 @@ export function leafletStopsFilter(): StopType[] {
   }
   return stops.filter((stop) =>
     stop.associated.some(
-      (school) =>
-        schools.find((e) => e.id === school.id) &&
-        QuantityUtils.remaining(school) > 0
+      (school) => schools.find((e) => e.id === school.id)
+      // TODO don't display stop with no remaining quantity in new Course Creation
+      // TODO creation a display error if the stop is in the updating Course
+      // && QuantityUtils.remaining(school) > 0
     )
   );
 }
 
 function buildStops(stops: StopType[]): StopType[] {
-  // TODO ununderstood lint error
   return stops.map((stop) => {
     const [selected, setSelected] = createSignal(false);
     return {
