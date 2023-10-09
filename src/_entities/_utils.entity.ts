@@ -1,6 +1,6 @@
-import { ClasseType, SchoolType } from "./school.entity";
+import { ClasseType } from "./classe.entity";
+import { SchoolType } from "./school.entity";
 import { StopType } from "./stop.entity";
-
 export class EntityUtils {
   static builLocationPoint(lng: number, lat: number): LocationDBType {
     return {
@@ -48,11 +48,15 @@ export type AssociatedPointType = {
   name: string;
   quantity: number;
   usedQuantity: number;
-  class: ClasseType;
+  class: Omit<
+    ClasseType,
+    "afternoonStart" | "afternoonEnd" | "morningEnd" | "morningStart"
+  >;
 };
 
 export type AssociatedDBPointType = {
-  id: number; // ! ID of StudentToSchool association
+  // ! ID of StudentToSchool association
+  id: number;
   entity: {
     // ! associated School entity
     id: number;
