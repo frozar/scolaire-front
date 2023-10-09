@@ -1,21 +1,10 @@
 import { StudentToSchool } from "../_services/student-to-school.service";
-
-type StudentToSchoolDBData = {
-  id: number;
-  quantity: number;
-  class: {
-    name: string;
-  };
-  school: {
-    name: string;
-  };
-  stop: {
-    name: string;
-  };
-};
+import { ClasseType } from "./classe.entity";
 
 export namespace ClassStudentToSchool {
-  export function build(dbData: StudentToSchoolDBData): StudentToSchool {
+  export function build(
+    dbData: ClassStudentToSchoolTypeFormated
+  ): StudentToSchool {
     return {
       id: dbData.id,
       quantity: dbData.quantity,
@@ -24,4 +13,49 @@ export namespace ClassStudentToSchool {
       class_name: dbData.class.name,
     };
   }
+
+  export function dbFormat(
+    classStudentToSchool: ClassStudentToSchoolDBType
+  ): ClassStudentToSchoolType {
+    return {
+      id: classStudentToSchool.id,
+      stopId: classStudentToSchool.stop_id,
+      schoolId: classStudentToSchool.school_id,
+      quantity: classStudentToSchool.quantity,
+      classId: classStudentToSchool.class_id,
+    };
+  }
 }
+
+type ClassStudentToSchoolTypeFormated = {
+  id: number;
+  quantity: number;
+  class: Omit<
+    ClasseType,
+    "afternoonStart" | "afternoonStart" | "morningEnd" | "morningStart"
+  >;
+  school: {
+    id?: number;
+    name: string;
+  };
+  stop: {
+    id?: number;
+    name: string;
+  };
+};
+
+export type ClassStudentToSchoolDBType = {
+  id: number;
+  stop_id: number;
+  school_id: number;
+  quantity: number;
+  class_id: number;
+};
+
+export type ClassStudentToSchoolType = {
+  id: number;
+  stopId: number;
+  schoolId: number;
+  quantity: number;
+  classId: number;
+};
