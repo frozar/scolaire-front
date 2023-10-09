@@ -44,6 +44,22 @@ export default function () {
     return lines;
   }
 
+  function appendClassToStop(classItem: AssociatedPointType) {
+    console.log("append class to list");
+
+    setStopDetailsItem((prev) => {
+      let currentItem;
+      if (prev != undefined) {
+        currentItem = { ...prev };
+        currentItem?.associated.push(classItem);
+        console.log("after:", currentItem?.associated);
+      }
+
+      return currentItem;
+    });
+    // console.log(classItem);
+  }
+
   return (
     <section>
       <StopDetailsHeader stop={stopDetailsItem() as StopType} />
@@ -72,6 +88,7 @@ export default function () {
 
             <Show when={editItem()}>
               <EditStop
+                appendClassToList={appendClassToStop}
                 close={toggleEditItem}
                 stopID={stopDetailsItem()?.id as number}
               />

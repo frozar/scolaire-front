@@ -1,5 +1,6 @@
 import { createSignal, onMount } from "solid-js";
 import { useStateGui } from "../../../../../StateGui";
+import { AssociatedPointType } from "../../../../../_entities/_utils.entity";
 import { ClasseType } from "../../../../../_entities/classe.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { ServiceUtils } from "../../../../../_services/_utils.service";
@@ -16,6 +17,7 @@ import "./EditStudentSchoolClassItem.css";
 
 const [, { getActiveMapId }] = useStateGui();
 interface EditStopProps {
+  appendClassToList: (classItem: AssociatedPointType) => void;
   close: () => void;
   stopID: number;
 }
@@ -88,7 +90,18 @@ export default function (props: EditStopProps) {
       class_id: classeSelectRef().value,
     });
 
-    console.log(response);
+    // TODO: to review
+    props.appendClassToList({
+      class: {
+        id: Number(classeSelectRef().value),
+        name: classeSelectRef().selectedOptions[0].text,
+      },
+      id: Number(schoolSelectRef().value),
+      name: schoolSelectRef().selectedOptions[0].text,
+      quantity: Number(quantityInputRef().value),
+      studentSchoolId: response.id,
+      usedQuantity: 0,
+    });
 
     props.close();
   }
