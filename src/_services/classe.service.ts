@@ -5,10 +5,10 @@ import {
 } from "../_entities/classe.entity";
 import { ServiceUtils } from "./_utils.service";
 
-export class ClasseService {
+export namespace ClasseService {
   // TODO: static async update()
 
-  static async create(classe: ClasseType): Promise<ClasseType> {
+  export async function create(classe: ClasseType): Promise<ClasseType> {
     const data = ClasseEntity.dbFormat(classe);
     const dbClasse: ClasseDBType = await ServiceUtils.post("/classe", data);
     console.log("returned dbClasse =>", dbClasse);

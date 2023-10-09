@@ -1,18 +1,7 @@
 import { HeureFormat } from "../views/content/schools/component/organism/ClasseBoard";
 
-function getStringFromHeureFormat(time: HeureFormat) {
-  return String(time.hour) + ":" + String(time.minutes);
-}
-
-function getHourFormatFromString(time: string) {
-  return {
-    hour: Number(time.split(":")[0]),
-    minutes: Number(time.split(":")[1]),
-  };
-}
-
-export class ClasseEntity {
-  static dbFormat(classe: ClasseType): Omit<ClasseDBType, "id"> {
+export namespace ClasseEntity {
+  export function dbFormat(classe: ClasseType): Omit<ClasseDBType, "id"> {
     return {
       school_id: classe.schoolId as number,
       name: classe.name,
@@ -22,7 +11,7 @@ export class ClasseEntity {
       afternoon_end: getStringFromHeureFormat(classe.afternoonEnd),
     };
   }
-  static build(dbData: ClasseDBType): ClasseType {
+  export function build(dbData: ClasseDBType): ClasseType {
     return {
       id: dbData.id,
       name: dbData.name,
@@ -30,6 +19,16 @@ export class ClasseEntity {
       morningEnd: getHourFormatFromString(dbData.morning_end),
       afternoonStart: getHourFormatFromString(dbData.afternoon_start),
       afternoonEnd: getHourFormatFromString(dbData.afternoon_end),
+    };
+  }
+  function getStringFromHeureFormat(time: HeureFormat) {
+    return String(time.hour) + ":" + String(time.minutes);
+  }
+
+  function getHourFormatFromString(time: string) {
+    return {
+      hour: Number(time.split(":")[0]),
+      minutes: Number(time.split(":")[1]),
     };
   }
 }
