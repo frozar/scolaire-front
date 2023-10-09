@@ -1,3 +1,11 @@
 .edit-stop{
     @apply bg-gray-light px-4 py-2
 }
+
+.edit-stop-top-line{
+    @apply flex justify-between my-2;
+}
+
+.edit-stop-bottom-line{
+    @apply flex gap-1 w-[100%];
+}

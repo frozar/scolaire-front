@@ -1,6 +1,8 @@
 import { createSignal, onMount } from "solid-js";
+import { useStateGui } from "../../../../../StateGui";
 import { ClasseType } from "../../../../../_entities/classe.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
+import { ServiceUtils } from "../../../../../_services/_utils.service";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
 import CheckIcon from "../../../../../icons/CheckIcon";
 import { addNewUserInformation } from "../../../../../signaux";
@@ -8,22 +10,24 @@ import { MessageLevelEnum, MessageTypeEnum } from "../../../../../type";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { getSchools } from "../../../map/component/organism/SchoolPoints";
 import ClasseSelection from "../atom/ClasseSelection";
-import SchoolSelect from "../atom/SchoolSelect";
+import InputNumber from "../atom/InputNumber";
+import SchoolSelect from "../atom/SchoolSelection";
 import "./EditStop.css";
 
+const [, { getActiveMapId }] = useStateGui();
 interface EditStopProps {
   close: () => void;
   stopID: number;
 }
 
 export default function (props: EditStopProps) {
+  const seletElement = document.createElement("select");
+
   const [selectedSchool, setSelectedSchool] = createSignal<SchoolType>();
-  const [schoolSelectRef, setSchoolSelectRef] = createSignal<HTMLSelectElement>(
-    document.createElement("select")
-  );
-  const [classeSelectRef, setClasseSelectRef] = createSignal<HTMLSelectElement>(
-    document.createElement("select")
-  );
+  const [schoolSelectRef, setSchoolSelectRef] =
+    createSignal<HTMLSelectElement>(seletElement);
+  const [classeSelectRef, setClasseSelectRef] =
+    createSignal<HTMLSelectElement>(seletElement);
   const [quantityInputRef, setQuantityInputRef] =
     createSignal<HTMLInputElement>(document.createElement("input"));
 
@@ -62,36 +66,31 @@ export default function (props: EditStopProps) {
   };
 
   async function validate() {
-    // TODO make request to add student quantity from class of school to the stop
-    console.log(
-      "TODO make request to add student quantity from class of school to the stop"
-    );
-
-    console.log("selected school", schoolSelectRef().value);
-    console.log(
-      "selected class",
-      classeSelectRef().value == ""
-        ? "no classe selected"
-        : classeSelectRef().value
-    );
-    console.log("choosen student quantity", quantityInputRef().value);
-
     if (
-      schoolSelectRef().value == "" ||
+      schoolSelectRef().value == "default" ||
       quantityInputRef().value == "0" ||
-      classeSelectRef().value == "default" ||
-      classeSelectRef().value == ""
+      classeSelectRef().value == "default"
     ) {
       return addNewUserInformation({
         displayed: true,
-        level: MessageLevelEnum.error,
+        level: MessageLevelEnum.warning,
         type: MessageTypeEnum.global,
         content: "Veuillez compléter tous les champs !",
       });
-    } else {
-      // TODO make request here
-      props.close();
     }
+
+    // TODO use class service instead of gener ServiceUtils
+    const response = await ServiceUtils.post("/student-to-school", {
+      map_id: getActiveMapId(),
+      school_id: schoolSelectRef().value,
+      stop_id: props.stopID,
+      quantity: quantityInputRef().value,
+      class_id: classeSelectRef().value,
+    });
+
+    console.log(response);
+
+    props.close();
   }
 
   function onChangeSelectClasse() {
@@ -105,7 +104,7 @@ export default function (props: EditStopProps) {
 
   return (
     <CardWrapper class="edit-stop">
-      <div class="flex justify-between my-2">
+      <div class="edit-stop-top-line">
         <SchoolSelect
           onChange={onChangeSchoolSelect}
           refSelectSetter={setSchoolSelectRef}
@@ -115,18 +114,17 @@ export default function (props: EditStopProps) {
         <ButtonIcon icon={<CheckIcon />} onClick={validate} />
       </div>
 
-      <div class="flex gap-1 w-[100%]">
+      <div class="edit-stop-bottom-line">
         <ClasseSelection
           refSelectSetter={setClasseSelectRef}
           classes={selectedSchool()?.classes as ClasseType[]}
           onChange={onChangeSelectClasse}
         />
-        <input
+        <InputNumber
           ref={setQuantityInputRef}
           class="input-form w-full"
           min={0}
-          value={0}
-          type="number"
+          defaultValue={0}
           placeholder="Quantité"
         />
       </div>
