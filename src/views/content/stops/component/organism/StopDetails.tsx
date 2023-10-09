@@ -7,7 +7,7 @@ import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { changeBoard } from "../../../board/component/template/ContextManager";
 import { getCourses } from "../../../map/component/organism/Courses";
 import CoursesList from "../../../schools/component/organism/CoursesList";
-import EditStop from "../molecul/EditStop";
+import EditStop from "../molecul/EditStudentSchoolClassItem";
 import StopDetailsHeader from "../molecul/StopDetailsHeader";
 import StopDetailsPanelsButton from "../molecul/StopDetailsPanelsButton";
 import "./StopDetails.css";

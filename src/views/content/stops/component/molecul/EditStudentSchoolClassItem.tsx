@@ -12,7 +12,7 @@ import { getSchools } from "../../../map/component/organism/SchoolPoints";
 import ClasseSelection from "../atom/ClasseSelection";
 import InputNumber from "../atom/InputNumber";
 import SchoolSelect from "../atom/SchoolSelection";
-import "./EditStop.css";
+import "./EditStudentSchoolClassItem.css";
 
 const [, { getActiveMapId }] = useStateGui();
 interface EditStopProps {
