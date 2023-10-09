@@ -1,4 +1,5 @@
 import { Accessor, Setter, createSignal } from "solid-js";
+import { setLines } from "../views/content/map/component/organism/BusLines";
 import { getSchools } from "../views/content/map/component/organism/SchoolPoints";
 import { getStops } from "../views/content/map/component/organism/StopPoints";
 import { COLOR_DEFAULT_LINE } from "../views/content/map/constant";
@@ -10,26 +11,11 @@ export class BusLineEntity {
   static build(dbLine: LineDBType): LineType {
     const schools: SchoolType[] = BusLineEntity.dbSchoolsToSchoolType(dbLine);
 
-    const dbLineStopid = dbLine.stops.map((school) => school.stop_id);
-    const stops: StopType[] = getStops().filter((item) =>
-      dbLineStopid.includes(item.id)
-    );
-
-    if (stops.length == 0) {
-      //TODO Error log to improve
-      console.log(
-        "Error : La liste des points de ramassage est incorrecte ou vide"
-      );
-    }
+    const stops: StopType[] = BusLineEntity.dbStopsToStopsType(dbLine);
 
     const courses = dbLine.courses.map((dbCourse) =>
       BusCourseEntity.build(dbCourse.course)
     );
-
-    if (courses.length == 0) {
-      //TODO Error log to improve
-      console.log(" La liste des courses de bus est incorrecte ou vide");
-    }
 
     const [selected, setSelected] = createSignal<boolean>(false);
     const [color, setColor] = createSignal<string>("#" + dbLine.color);
@@ -45,6 +31,14 @@ export class BusLineEntity {
       selected: selected,
       setSelected: setSelected,
     };
+  }
+
+  static dbStopsToStopsType(dbLine: LineDBType) {
+    const dbLineStopid = dbLine.stops.map((school) => school.stop_id);
+    const stops: StopType[] = getStops().filter((item) =>
+      dbLineStopid.includes(item.id)
+    );
+    return stops;
   }
 
   static dbSchoolsToSchoolType(dbLine: LineDBType) {
@@ -104,6 +98,14 @@ export class BusLineEntity {
     // }
 
     return output;
+  }
+
+  static updateLines(bus_lines: LineDBType[]) {
+    setLines(
+      bus_lines
+        ? bus_lines.map((dbLine: LineDBType) => BusLineEntity.build(dbLine))
+        : []
+    );
   }
 }
 

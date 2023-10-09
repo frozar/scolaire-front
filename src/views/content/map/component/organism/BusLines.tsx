@@ -18,13 +18,10 @@ export function BusLines() {
       setLines(lines ?? []);
     }
   });
+
   // eslint-disable-next-line solid/reactivity
   createEffect(async () => {
-    const courses = getLines()
-      ?.map((line) => line.courses)
-      .flatMap((e) => [...e]);
-
-    setCourses(getSelectedLine()?.courses ?? courses);
+    setDisplayedCourses();
   });
 
   onCleanup(() => {
@@ -42,6 +39,14 @@ export function BusLines() {
       }}
     </For>
   );
+}
+
+function setDisplayedCourses() {
+  const allCourses = getLines()
+    ?.map((line) => line.courses)
+    .flatMap((e) => [...e]);
+
+  setCourses(getSelectedLine()?.courses ?? allCourses);
 }
 
 export function deselectAllLines() {

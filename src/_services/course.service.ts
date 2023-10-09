@@ -17,15 +17,16 @@ export class BusCourseService {
 
   static async create(line: CourseType): Promise<LineType[]> {
     const data = BusCourseEntity.dbFormat(line);
+
     const dbBusCourse: { bus_lines: LineDBType[] } = await ServiceUtils.post(
       "/busline/" + currentBusLine()?.id + "/bus-course_v2", //TODO tester la v2
       data
     );
-    console.log("dbBusCourse", dbBusCourse);
-    return dbBusCourse
-      ? dbBusCourse.bus_lines.map((dbLine: LineDBType) =>
-          BusLineEntity.build(dbLine)
-        )
+
+    const bus_lines = dbBusCourse.bus_lines;
+
+    return bus_lines
+      ? bus_lines.map((dbLine: LineDBType) => BusLineEntity.build(dbLine))
       : [];
   }
 

@@ -252,11 +252,10 @@ function selectedUpdatedBusCourse(course: CourseType) {
 }
 
 async function createBusCourse(course: CourseType) {
-  // const newBusCourses: LineType[] =
-  // updateBusCourses(newBusCourses);
   setLines((await BusCourseService.create(course)) ?? []);
 }
 
+//TODO À faire
 async function updateBusCourse(course: CourseType) {
   const updatedBusCourse: CourseType = await BusCourseService.update(course);
   updateBusCourses(updatedBusCourse);

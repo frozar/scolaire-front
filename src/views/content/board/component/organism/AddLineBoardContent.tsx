@@ -42,32 +42,6 @@ const [stopSelected, setStopSelected] = createStore<AssociatedItem[]>([]);
 export const [addLineCurrentStep, setAddLineCurrentStep] =
   createSignal<AddLineStep>(AddLineStep.schoolSelection);
 
-const setColorOnLine = (color: string): LineType | undefined => {
-  const line: LineType | undefined = creatingLine();
-
-  if (!line) return;
-
-  line.setColor(color);
-
-  return line;
-};
-
-const onInput = (color: string) => {
-  const line: LineType | undefined = setColorOnLine(color);
-
-  if (!line) return;
-};
-
-const onChange = async (color: string) => {
-  const line: LineType | undefined = setColorOnLine(color);
-
-  if (!line) return;
-};
-
-export const [creatingLine, setCreatingLine] = createSignal<LineType>(
-  BusLineEntity.defaultBusLine()
-);
-
 // eslint-disable-next-line solid/reactivity
 export default function () {
   createEffect(() => {
@@ -82,11 +56,11 @@ export default function () {
   });
 
   createEffect(() => {
-    setaddLineSelectedSchool(getSchools()); // TODO to delete (use for primary test)
+    setaddLineSelectedSchool(getSchools()); // TODO to delete (use for primary test) rendre les écoles clickables
   });
 
-  if (creatingLine() == undefined) {
-    setCreatingLine(BusLineEntity.defaultBusLine());
+  if (currentLine() == undefined) {
+    setCurrentLine(BusLineEntity.defaultBusLine());
   }
 
   return (
@@ -98,9 +72,9 @@ export default function () {
       <Show when={addLineCurrentStep() == AddLineStep.editLine}>
         <LabeledInputField
           label="Nom de la line"
-          value={creatingLine()?.name ?? " default name"}
+          value={currentLine()?.name ?? " default name"}
           onInput={(e) =>
-            setCreatingLine({ ...creatingLine(), name: e.target.value })
+            setCurrentLine({ ...currentLine(), name: e.target.value })
           }
           name="line-name"
           placeholder="Entrer le nom de la line"
@@ -108,7 +82,7 @@ export default function () {
 
         <div class="flex mt-4 justify-between">
           <ColorPicker
-            defaultColor={creatingLine()?.color()}
+            defaultColor={currentLine()?.color()}
             title="Couleur de la ligne"
             onInput={onInput}
             onChange={onChange}
@@ -129,20 +103,6 @@ export default function () {
           </For>
         </fieldset>
       </Show>
-      {/* <Show when={addLineCurrentStep() == drawModeStep.editLine}>
-        <div class="bus-line-information-board-content">
-          <Show
-            when={creatingLine().line.points.length > 0}
-            fallback={
-              <div class="flex w-4/5 text-xs justify-center absolute bottom-[500px]">
-                Veuillez sélectionner des points sur la carte
-              </div>
-            }
-          >
-            <Timeline />
-          </Show>
-        </div>
-      </Show> */}
 
       <BoardFooterActions
         nextStep={{
@@ -164,6 +124,32 @@ export default function () {
   );
 }
 
+const setColorOnLine = (color: string): LineType | undefined => {
+  const line: LineType | undefined = currentLine();
+
+  if (!line) return;
+
+  line.setColor(color);
+
+  return line;
+};
+
+const onInput = (color: string) => {
+  const line: LineType | undefined = setColorOnLine(color);
+
+  if (!line) return;
+};
+
+const onChange = async (color: string) => {
+  const line: LineType | undefined = setColorOnLine(color);
+
+  if (!line) return;
+};
+
+export const [currentLine, setCurrentLine] = createSignal<LineType>(
+  BusLineEntity.defaultBusLine()
+);
+
 async function nextStep() {
   enableSpinningWheel();
   switch (addLineCurrentStep()) {
@@ -172,7 +158,7 @@ async function nextStep() {
         break;
       }
       setAddLineCurrentStep(AddLineStep.editLine);
-      setCreatingLine({ ...creatingLine(), schools: addLineSelectedSchool() });
+      setCurrentLine({ ...currentLine(), schools: addLineSelectedSchool() });
       break;
     case AddLineStep.editLine:
       if (stopSelected.length < 2) {
@@ -190,11 +176,24 @@ async function nextStep() {
           .map((val) => val.associated.id)
           .includes(elem.id)
       );
-      setCreatingLine({ ...creatingLine(), stops });
-      await createBusLine(creatingLine());
+      setCurrentLine({ ...currentLine(), stops });
+      await createBusLine(currentLine());
   }
   disableSpinningWheel();
 }
+
+async function createBusLine(line: LineType) {
+  const newBusLine: LineType = await BusLineService.create(line);
+  deselectAllLines();
+  newBusLine.setSelected(true);
+  displayBusLine(newBusLine);
+  // updateBusLines(newBusLine);
+}
+
+// async function updateBusLine(line: LineType) {
+//   const updatedBusLine: LineType = await BusLineService.update(line);
+//   updateBusLines(updatedBusLine);
+// }
 
 // async function createOrUpdateBusLine(line: LineType) {
 //   line.setSelected(true);
@@ -209,17 +208,4 @@ async function nextStep() {
 //     prev == displayLineModeEnum.straight ? prev : displayLineModeEnum.straight
 //   );
 //   selectedUpdatedBusLine(getLines().at(-1) as LineType);
-// }
-
-async function createBusLine(line: LineType) {
-  const newBusLine: LineType = await BusLineService.create(line);
-  deselectAllLines();
-  newBusLine.setSelected(true);
-  displayBusLine(newBusLine);
-  // updateBusLines(newBusLine);
-}
-
-// async function updateBusLine(line: LineType) {
-//   const updatedBusLine: LineType = await BusLineService.update(line);
-//   updateBusLines(updatedBusLine);
 // }

@@ -18,18 +18,13 @@ export const [currentBusLine, setCurrentBusLine] = createSignal<LineType>();
 export default function () {
   const [searchKeyword, setSearchKeyword] = createSignal<string>("");
 
-  // const filteredLines = () =>
-  //   getLines().filter((line) => line.name?.includes(searchKeyword()));
-
   function addLine() {
     if (onBoard() == "line-add") {
       changeBoard("line");
     } else {
       deselectAllPoints();
       deselectAllCourses();
-      // toggleDrawMod();
 
-      // setCurrentStep(drawModeStep.schoolSelection);
       changeBoard("line-add");
       displayAddCourseMessage();
     }
