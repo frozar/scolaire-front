@@ -11,7 +11,7 @@ import EditStop from "../molecul/EditStop";
 import StopDetailsHeader from "../molecul/StopDetailsHeader";
 import StopDetailsPanelsButton from "../molecul/StopDetailsPanelsButton";
 import "./StopDetails.css";
-import SchoolList from "./StudentSchoolClassList";
+import StudentSchoolClassList from "./StudentSchoolClassList";
 
 export const [stopDetailsItem, setStopDetailsItem] = createSignal<StopType>();
 
@@ -66,7 +66,7 @@ export default function () {
       <div class="content mt-2">
         <Switch>
           <Match when={onPanel() == StopPanels.classes}>
-            <SchoolList
+            <StudentSchoolClassList
               schools={stopDetailsItem()?.associated as AssociatedPointType[]}
             />
 
