@@ -14,7 +14,7 @@ function getHourFormatFromString(time: string) {
 export class ClasseEntity {
   static dbFormat(classe: ClasseType): Omit<ClasseDBType, "id"> {
     return {
-      school_id: classe.schoolId,
+      school_id: classe.schoolId as number,
       name: classe.name,
       morning_start: getStringFromHeureFormat(classe.morningStart),
       morning_end: getStringFromHeureFormat(classe.morningEnd),
@@ -25,7 +25,6 @@ export class ClasseEntity {
   static build(dbData: ClasseDBType): ClasseType {
     return {
       id: dbData.id,
-      schoolId: dbData.school_id,
       name: dbData.name,
       morningStart: getHourFormatFromString(dbData.morning_start),
       morningEnd: getHourFormatFromString(dbData.morning_end),
@@ -47,7 +46,7 @@ export type ClasseDBType = {
 
 export type ClasseType = {
   id?: number;
-  schoolId: number; // ! Delete ? Necessaire ?
+  schoolId?: number;
   name: string;
   morningStart: HeureFormat;
   morningEnd: HeureFormat;

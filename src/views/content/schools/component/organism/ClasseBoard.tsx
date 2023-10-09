@@ -64,10 +64,13 @@ export default function () {
       );
       newSchools.push({
         ...schoolToModify,
-        classes: [...schoolToModify.classes, newClasse],
+        classes: [...schoolToModify.classes, returnedValue],
       });
       return newSchools;
     });
+    console.log("returnedValue => ", returnedValue);
+    console.log("getSchools()", getSchools());
+
     // TODO: Switch à un autre menu
     setSchoolDetailsItem(
       getSchools().filter((school) => school.id == schoolDetailsItem()?.id)[0]
