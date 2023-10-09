@@ -45,7 +45,7 @@ export default function () {
     const schoolId = schoolDetailsItem()?.id;
     if (!schoolId) return;
 
-    // TODO: Verify if schedules input different of "0:0" then display user message
+    // TODO: Verify if schedules input different of "0:0" then display user message and return;
     const newClasse: ClasseType = {
       schoolId: schoolId,
       name: classeName(),
