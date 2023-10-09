@@ -95,7 +95,7 @@ export type SchoolDBType = {
   name: string;
   location: LocationDBType;
   associated: AssociatedDBPointType[];
-  classes: ClasseDBType[]; // ! Change to ClassDBType ?
+  classes: ClasseDBType[];
 };
 
 export type LeafletShoolType = SchoolType & {

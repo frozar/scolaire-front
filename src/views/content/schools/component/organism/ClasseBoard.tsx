@@ -42,38 +42,32 @@ export default function () {
   }
 
   async function onClickAddClasse() {
-    // const schoolId = schoolDetailsItem()?.id // !
+    const schoolId = schoolDetailsItem()?.id;
+    if (!schoolId) return;
+
     const newClasse: ClasseType = {
-      schoolId: schoolDetailsItem()?.id as number,
+      schoolId: schoolId,
       name: classeName(),
       morningStart: morningStart(),
       morningEnd: morningEnd(),
       afternoonStart: afternoonStart(),
       afternoonEnd: afternoonEnd(),
     };
+
     const returnedValue = await ClasseService.create(newClasse);
-    console.log("classe added =>", newClasse);
-    console.log("service returned value =>", returnedValue);
-    // TODO: Ajouter à school
+
     setSchools((prev) => {
-      const schoolToModify = prev.filter(
-        (school) => school.id == schoolDetailsItem()?.id
-      )[0];
-      const newSchools = [...prev].filter(
-        (school) => school.id != schoolDetailsItem()?.id
-      );
+      const schoolToModify = prev.filter((school) => school.id == schoolId)[0];
+      const newSchools = [...prev].filter((school) => school.id != schoolId);
       newSchools.push({
         ...schoolToModify,
         classes: [...schoolToModify.classes, returnedValue],
       });
       return newSchools;
     });
-    console.log("returnedValue => ", returnedValue);
-    console.log("getSchools()", getSchools());
 
-    // TODO: Switch à un autre menu
     setSchoolDetailsItem(
-      getSchools().filter((school) => school.id == schoolDetailsItem()?.id)[0]
+      getSchools().filter((school) => school.id == schoolId)[0]
     );
     changeBoard("school-details");
   }
