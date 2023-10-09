@@ -1,5 +1,5 @@
 import { For } from "solid-js";
-import { ClasseType } from "../../../../../_entities/school.entity";
+import { ClasseType } from "../../../../../_entities/classe.entity";
 import ClasseItem from "../molecule/ClasseItem";
 
 export default function (props: { classes: ClasseType[] }) {

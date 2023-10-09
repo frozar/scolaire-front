@@ -1,6 +1,6 @@
 import { Match, Show, Switch, createSignal, onMount } from "solid-js";
+import { ClasseType } from "../../../../../_entities/classe.entity";
 import {
-  ClasseType,
   SchoolEntity,
   SchoolType,
 } from "../../../../../_entities/school.entity";
