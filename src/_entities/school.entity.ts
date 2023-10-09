@@ -3,6 +3,7 @@ import { useStateGui } from "../StateGui";
 import { NatureEnum } from "../type";
 import { QuantityUtils } from "../utils/quantity.utils";
 import { getCourses } from "../views/content/map/component/organism/Courses";
+import { HeureFormat } from "../views/content/schools/component/organism/ClasseBoard";
 import {
   AssociatedDBPointType,
   AssociatedPointType,
@@ -79,8 +80,11 @@ export class SchoolEntity {
 
 export type ClasseType = {
   id: number;
-  school_id: number;
-  classe: string;
+  name: string;
+  morningStart?: HeureFormat;
+  morningEnd?: HeureFormat;
+  afternoonStart?: HeureFormat;
+  afternoonEnd?: HeureFormat;
 };
 
 export type SchoolType = {

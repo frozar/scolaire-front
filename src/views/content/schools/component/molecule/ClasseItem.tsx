@@ -5,7 +5,7 @@ import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import "./ClasseItem.css";
 
 interface ClasseItemProps {
-  classe: string;
+  nameClass: string;
   NbStudents?: number;
 }
 
@@ -21,7 +21,7 @@ export default function (props: ClasseItemProps) {
   return (
     <CardWrapper class="classe-item">
       <div class="left">
-        <CardTitle title={props.classe} />
+        <CardTitle title={props.nameClass} />
         <p>{props.NbStudents ? props.NbStudents + " élèves" : "Todo élèves"}</p>
       </div>
 

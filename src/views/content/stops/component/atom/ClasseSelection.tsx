@@ -12,7 +12,7 @@ export default function (props: ClasseSelectProps) {
     <select onChange={props.onChange} ref={props.refSelectSetter}>
       <option value="default">Sélectionner une classe</option>
       <For each={props.classes}>
-        {(classe) => <option value={classe.id}>{classe.classe}</option>}
+        {(classe) => <option value={classe.id}>{classe.name}</option>}
       </For>
     </select>
   );
