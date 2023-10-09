@@ -54,14 +54,14 @@ export default function () {
       afternoonEnd: afternoonEnd(),
     };
 
-    const returnedValue = await ClasseService.create(newClasse);
+    const returnedClasse = await ClasseService.create(newClasse);
 
     setSchools((prev) => {
       const schoolToModify = prev.filter((school) => school.id == schoolId)[0];
       const newSchools = [...prev].filter((school) => school.id != schoolId);
       newSchools.push({
         ...schoolToModify,
-        classes: [...schoolToModify.classes, returnedValue],
+        classes: [...schoolToModify.classes, returnedClasse],
       });
       return newSchools;
     });

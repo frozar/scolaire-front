@@ -6,7 +6,7 @@ import {
 import { ServiceUtils } from "./_utils.service";
 
 export namespace ClasseService {
-  // TODO: static async update()
+  // TODO: export async function update()
 
   export async function create(classe: ClasseType): Promise<ClasseType> {
     const data = ClasseEntity.dbFormat(classe);
