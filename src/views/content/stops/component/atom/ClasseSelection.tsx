@@ -1,5 +1,6 @@
 import { For, Setter } from "solid-js";
 import { ClasseType } from "../../../../../_entities/classe.entity";
+import "./ClasseSelection.css";
 
 interface ClasseSelectProps {
   refSelectSetter: Setter<HTMLInputElement>;
@@ -9,7 +10,11 @@ interface ClasseSelectProps {
 
 export default function (props: ClasseSelectProps) {
   return (
-    <select onChange={() => props.onChange()} ref={props.refSelectSetter}>
+    <select
+      class="class-selection"
+      onChange={() => props.onChange()}
+      ref={props.refSelectSetter}
+    >
       <option selected value="default">
         Sélectionner une classe
       </option>

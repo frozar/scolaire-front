@@ -1,6 +1,6 @@
 import { For, Setter } from "solid-js";
 import { SchoolType } from "../../../../../_entities/school.entity";
-
+import "./SchoolSelection.css";
 interface SchoolSelectionProps {
   schools: SchoolType[];
   refSelectSetter: Setter<HTMLSelectElement>;
@@ -13,6 +13,7 @@ export default function (props: SchoolSelectionProps) {
       name="school-select"
       onChange={() => props.onChange()}
       ref={props.refSelectSetter}
+      class="school-selection"
     >
       <option selected value="default">
         Choisir une école
