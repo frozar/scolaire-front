@@ -2,6 +2,7 @@ import { createSignal, onMount } from "solid-js";
 import { AssociatedPointType } from "../../../../../_entities/_utils.entity";
 import { ClasseType } from "../../../../../_entities/classe.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
+import { ClassStudentToSchoolDBType } from "../../../../../_entities/student-to-school.entity";
 import { StudentToSchoolService } from "../../../../../_services/student-to-school.service";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
 import CheckIcon from "../../../../../icons/CheckIcon";
@@ -65,6 +66,15 @@ export default function (props: EditStopProps) {
     classeSelectRef().disabled = false;
   };
 
+  function getClassStudentToSchool(): Omit<ClassStudentToSchoolDBType, "id"> {
+    return {
+      school_id: Number(schoolSelectRef().value),
+      stop_id: Number(props.stopID),
+      quantity: Number(quantityInputRef().value),
+      class_id: Number(classeSelectRef().value),
+    };
+  }
+
   async function validate() {
     if (
       schoolSelectRef().value == "default" ||
@@ -79,26 +89,25 @@ export default function (props: EditStopProps) {
       });
     }
 
-    const response = await StudentToSchoolService.create({
-      school_id: Number(schoolSelectRef().value),
-      stop_id: Number(props.stopID),
-      quantity: Number(quantityInputRef().value),
-      class_id: Number(classeSelectRef().value),
-    });
+    const response = await StudentToSchoolService.create(
+      getClassStudentToSchool()
+    );
 
-    // TODO: to review
-    props.appendClassToList({
-      class: {
-        id: Number(classeSelectRef().value),
-        name: classeSelectRef().selectedOptions[0].text,
-      },
-      id: Number(schoolSelectRef().value),
-      name: schoolSelectRef().selectedOptions[0].text,
-      quantity: Number(quantityInputRef().value),
-      studentSchoolId: response.id,
-      usedQuantity: 0,
-    });
+    function getAssociatedPoint(): AssociatedPointType {
+      return {
+        class: {
+          id: Number(classeSelectRef().value),
+          name: classeSelectRef().selectedOptions[0].text,
+        },
+        id: Number(schoolSelectRef().value),
+        name: schoolSelectRef().selectedOptions[0].text,
+        quantity: Number(quantityInputRef().value),
+        studentSchoolId: response.id,
+        usedQuantity: 0,
+      };
+    }
 
+    props.appendClassToList(getAssociatedPoint());
     props.close();
   }
 
