@@ -3,13 +3,13 @@ import { useStateGui } from "../StateGui";
 import { NatureEnum } from "../type";
 import { QuantityUtils } from "../utils/quantity.utils";
 import { getCourses } from "../views/content/map/component/organism/Courses";
-import { HeureFormat } from "../views/content/schools/component/organism/ClasseBoard";
 import {
   AssociatedDBPointType,
   AssociatedPointType,
   EntityUtils,
   LocationDBType,
 } from "./_utils.entity";
+import { ClasseDBType, ClasseEntity, ClasseType } from "./classe.entity";
 
 const [, { nextLeafletPointId }] = useStateGui();
 
@@ -23,8 +23,7 @@ export class SchoolEntity {
       name: dbSchool.name,
       nature: NatureEnum.school,
       associated: EntityUtils.formatAssociatedPoints(dbSchool.associated),
-      classes: dbSchool.classes,
-
+      classes: dbSchool.classes.map((classe) => ClasseEntity.build(classe)),
       leafletId: nextLeafletPointId(),
       selected: selected,
       setSelected: setSelected,
@@ -78,15 +77,6 @@ export class SchoolEntity {
   }
 }
 
-export type ClasseType = {
-  id: number;
-  name: string;
-  morningStart?: HeureFormat;
-  morningEnd?: HeureFormat;
-  afternoonStart?: HeureFormat;
-  afternoonEnd?: HeureFormat;
-};
-
 export type SchoolType = {
   id: number;
   name: string;
@@ -105,7 +95,7 @@ export type SchoolDBType = {
   name: string;
   location: LocationDBType;
   associated: AssociatedDBPointType[];
-  classes: ClasseType[];
+  classes: ClasseDBType[];
 };
 
 export type LeafletShoolType = SchoolType & {

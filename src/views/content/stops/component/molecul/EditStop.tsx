@@ -1,5 +1,6 @@
 import { createSignal, onMount } from "solid-js";
-import { ClasseType, SchoolType } from "../../../../../_entities/school.entity";
+import { ClasseType } from "../../../../../_entities/classe.entity";
+import { SchoolType } from "../../../../../_entities/school.entity";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
 import CheckIcon from "../../../../../icons/CheckIcon";
 import { addNewUserInformation } from "../../../../../signaux";

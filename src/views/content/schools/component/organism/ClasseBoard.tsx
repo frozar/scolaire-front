@@ -1,11 +1,17 @@
 import { createSignal } from "solid-js";
+import { ClasseType } from "../../../../../_entities/classe.entity";
+import { ClasseService } from "../../../../../_services/classe.service";
 import BoardFooterActions from "../../../board/component/molecule/BoardFooterActions";
 import LabeledInputField from "../../../board/component/molecule/LabeledInputField";
 import { changeBoard } from "../../../board/component/template/ContextManager";
+import {
+  getSchools,
+  setSchools,
+} from "../../../map/component/organism/SchoolPoints";
 import ClasseLinkedSchool from "../atom/ClasseLinkedSchool";
 import ClasseBoardHeader from "../molecule/ClasseBoardHeader";
 import TimesInputWrapper from "../molecule/TimesInputWrapper";
-import { schoolDetailsItem } from "./SchoolDetails";
+import { schoolDetailsItem, setSchoolDetailsItem } from "./SchoolDetails";
 
 export type HeureFormat = {
   hour: number;
@@ -35,10 +41,35 @@ export default function () {
     setClasseName(e.target.value);
   }
 
-  function onClickAddClasse() {
-    // TODO add request to add classe into database for the current school
-    // TODO Into database add schedule table to register the start/end hour day for the morning and the afternoon of classes
-    console.log("add classe");
+  async function onClickAddClasse() {
+    const schoolId = schoolDetailsItem()?.id;
+    if (!schoolId) return;
+
+    const newClasse: ClasseType = {
+      schoolId: schoolId,
+      name: classeName(),
+      morningStart: morningStart(),
+      morningEnd: morningEnd(),
+      afternoonStart: afternoonStart(),
+      afternoonEnd: afternoonEnd(),
+    };
+
+    const returnedClasse = await ClasseService.create(newClasse);
+
+    setSchools((prev) => {
+      const schoolToModify = prev.filter((school) => school.id == schoolId)[0];
+      const newSchools = [...prev].filter((school) => school.id != schoolId);
+      newSchools.push({
+        ...schoolToModify,
+        classes: [...schoolToModify.classes, returnedClasse],
+      });
+      return newSchools;
+    });
+
+    setSchoolDetailsItem(
+      getSchools().filter((school) => school.id == schoolId)[0]
+    );
+    changeBoard("school-details");
   }
 
   function onClickCancel() {
