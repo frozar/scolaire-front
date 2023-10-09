@@ -1,4 +1,4 @@
-import { SchoolType } from "./school.entity";
+import { ClasseType, SchoolType } from "./school.entity";
 import { StopType } from "./stop.entity";
 
 export class EntityUtils {
@@ -33,6 +33,7 @@ export class EntityUtils {
         name: item.entity.name,
         quantity: item.quantity,
         usedQuantity: 0,
+        class: item.class,
       };
     });
   }
@@ -45,6 +46,7 @@ export type AssociatedPointType = {
   name: string;
   quantity: number;
   usedQuantity: number;
+  class: ClasseType;
 };
 
 export type AssociatedDBPointType = {
@@ -53,6 +55,7 @@ export type AssociatedDBPointType = {
     name: string;
   };
   quantity: number;
+  class: ClasseType;
 };
 
 export enum LocationDBTypeEnum {
