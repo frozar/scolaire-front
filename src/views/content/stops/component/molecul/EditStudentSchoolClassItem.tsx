@@ -1,9 +1,8 @@
 import { createSignal, onMount } from "solid-js";
-import { useStateGui } from "../../../../../StateGui";
 import { AssociatedPointType } from "../../../../../_entities/_utils.entity";
 import { ClasseType } from "../../../../../_entities/classe.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
-import { ServiceUtils } from "../../../../../_services/_utils.service";
+import { StudentToSchoolService } from "../../../../../_services/student-to-school.service";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
 import CheckIcon from "../../../../../icons/CheckIcon";
 import { addNewUserInformation } from "../../../../../signaux";
@@ -15,7 +14,6 @@ import InputNumber from "../atom/InputNumber";
 import SchoolSelect from "../atom/SchoolSelection";
 import "./EditStudentSchoolClassItem.css";
 
-const [, { getActiveMapId }] = useStateGui();
 interface EditStopProps {
   appendClassToList: (classItem: AssociatedPointType) => void;
   close: () => void;
@@ -81,13 +79,11 @@ export default function (props: EditStopProps) {
       });
     }
 
-    // TODO use class service instead of gener ServiceUtils
-    const response = await ServiceUtils.post("/student-to-school", {
-      map_id: getActiveMapId(),
-      school_id: schoolSelectRef().value,
-      stop_id: props.stopID,
-      quantity: quantityInputRef().value,
-      class_id: classeSelectRef().value,
+    const response = await StudentToSchoolService.create({
+      school_id: Number(schoolSelectRef().value),
+      stop_id: Number(props.stopID),
+      quantity: Number(quantityInputRef().value),
+      class_id: Number(classeSelectRef().value),
     });
 
     // TODO: to review
