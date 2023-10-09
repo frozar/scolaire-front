@@ -1,4 +1,3 @@
-import { BusCourseEntity } from "../../../../../_entities/course.entity";
 import { LineType } from "../../../../../_entities/line.entity";
 import CardTitle from "../../../../../component/atom/CardTitle";
 import Pellet from "../../../../../component/atom/Pellet";
@@ -16,11 +15,8 @@ export default function (props: { line: LineType }) {
 
   function onClickBusLine(line: LineType): void {
     setCurrentBusLine(line);
-    setCourses(
-      line.courses.length > 0
-        ? line.courses
-        : [BusCourseEntity.defaultBusCourse()]
-    ); //TODO TO delete, only for test
+    console.log("line", line);
+    setCourses(line.courses.length > 0 ? line.courses : []);
     setOnBoard("course");
   }
 

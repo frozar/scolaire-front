@@ -3,6 +3,7 @@ import {
   CourseDBType,
   CourseType,
 } from "../_entities/course.entity";
+import { BusLineEntity, LineDBType, LineType } from "../_entities/line.entity";
 import { currentBusLine } from "../views/content/board/component/organism/BusLinesBoard";
 import { ServiceUtils } from "./_utils.service";
 
@@ -14,13 +15,18 @@ export class BusCourseService {
       : [];
   }
 
-  static async create(line: CourseType): Promise<CourseType> {
+  static async create(line: CourseType): Promise<LineType[]> {
     const data = BusCourseEntity.dbFormat(line);
-    const dbBusCourse: CourseDBType = await ServiceUtils.post(
+    const dbBusCourse: { bus_lines: LineDBType[] } = await ServiceUtils.post(
       "/busline/" + currentBusLine()?.id + "/bus-course_v2", //TODO tester la v2
       data
     );
-    return BusCourseEntity.build(dbBusCourse);
+    console.log("dbBusCourse", dbBusCourse);
+    return dbBusCourse
+      ? dbBusCourse.bus_lines.map((dbLine: LineDBType) =>
+          BusLineEntity.build(dbLine)
+        )
+      : [];
   }
 
   static async update(line: Partial<CourseType>): Promise<CourseType> {

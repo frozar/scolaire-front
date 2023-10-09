@@ -74,12 +74,12 @@ export const getSelectedCourse = (): CourseType | undefined => {
   return selectedCourse;
 };
 
-export function updateBusCourses(course: CourseType) {
-  let newBusCourses = getCourses();
-  if (course.id) {
-    newBusCourses = getCourses().filter(
-      (buscourse) => buscourse.id != course.id
-    );
-  }
-  setCourses([...newBusCourses, course]);
+export function updateBusCourses(courses: CourseType[]) {
+  // let newBusCourses = getCourses();
+  // if (course.id) {
+  //   newBusCourses = getCourses().filter(
+  //     (buscourse) => buscourse.id != course.id
+  //   );
+  // }
+  setCourses(courses);
 }

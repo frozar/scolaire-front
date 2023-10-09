@@ -14,9 +14,15 @@ export class BusLineService {
   static async create(line: LineType): Promise<LineType> {
     console.log("line", line);
     const data = BusLineEntity.dbFormat(line);
-    const dbBusLine: LineDBType = await ServiceUtils.post("/bus_line", data);
-    console.log(dbBusLine);
-    return BusLineEntity.build(dbBusLine);
+    const dbData: {
+      bus_lines: { bus_lines: LineDBType[] };
+      new_bus_line: LineDBType;
+    } = await ServiceUtils.post("/bus_line", data);
+    console.log(dbData);
+    const dbLine: LineDBType = dbData.bus_lines.bus_lines.filter(
+      (line) => line.id === dbData.new_bus_line.id
+    )[0];
+    return BusLineEntity.build(dbLine);
   }
 
   static async update(line: Partial<LineType>): Promise<LineType> {

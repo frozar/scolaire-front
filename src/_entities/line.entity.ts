@@ -1,9 +1,8 @@
 import { Accessor, Setter, createSignal } from "solid-js";
-import { getCourses } from "../views/content/map/component/organism/Courses";
 import { getSchools } from "../views/content/map/component/organism/SchoolPoints";
 import { getStops } from "../views/content/map/component/organism/StopPoints";
 import { COLOR_DEFAULT_LINE } from "../views/content/map/constant";
-import { CourseType } from "./course.entity";
+import { BusCourseEntity, CourseDBType, CourseType } from "./course.entity";
 import { SchoolType } from "./school.entity";
 import { StopType } from "./stop.entity";
 
@@ -11,10 +10,12 @@ import { StopType } from "./stop.entity";
 //   useStateAction();
 
 export class BusLineEntity {
-  static build(dbData: LineDBType): LineType {
-    console.log("la", dbData);
+  static build(dbLine: LineDBType): LineType {
+    console.log("dbLine", dbLine);
+    console.log("getSchools()", getSchools());
+    const dbLineSchoolid = dbLine.schools.map((school) => school.school_id);
     const filteredShools: SchoolType[] = getSchools().filter((item) =>
-      dbData.schools.includes(item.id)
+      dbLineSchoolid.includes(item.id)
     );
 
     if (filteredShools.length == 0) {
@@ -24,8 +25,13 @@ export class BusLineEntity {
 
     const schools = filteredShools;
 
+    // const filteredStops: StopType[] = getStops().filter((item) =>
+    //   dbLine.stops.includes(item.id)
+    // );
+
+    const dbLineStopid = dbLine.stops.map((school) => school.stop_id);
     const filteredStops: StopType[] = getStops().filter((item) =>
-      dbData.stops.includes(item.id)
+      dbLineStopid.includes(item.id)
     );
 
     if (filteredStops.length == 0) {
@@ -37,26 +43,30 @@ export class BusLineEntity {
 
     const stops = filteredStops;
 
-    const filteredCourses: CourseType[] = getCourses().filter((item) =>
-      dbData.courses.map((course) => course.id).includes(item.id)
+    // const filteredCourses: CourseType[] = getCourses().filter((item) =>
+    //   dbLine.courses.map((course) => course.id).includes(item.id)
+    // );
+
+    const courses = dbLine.courses.map((dbCourse) =>
+      BusCourseEntity.build(dbCourse.course)
     );
 
-    if (filteredCourses.length == 0) {
+    if (courses.length == 0) {
       //TODO Error log to improve
-      console.log("Error : La liste des courses de bus est incorrecte ou vide");
+      console.log(" La liste des courses de bus est incorrecte ou vide");
     }
 
-    const courses = filteredCourses;
+    // const courses = filteredCourses;
 
     const [selected, setSelected] = createSignal<boolean>(false);
-    const [color, setColor] = createSignal<string>("#" + dbData.color);
+    const [color, setColor] = createSignal<string>("#" + dbLine.color);
 
     return {
-      id: dbData.id,
+      id: dbLine.id,
       schools,
       stops,
       courses,
-      name: dbData.name,
+      name: dbLine.name,
       color: color,
       setColor: setColor,
       selected: selected,
@@ -146,7 +156,7 @@ export type LineDBType = {
   id: number;
   name: string;
   color: string;
-  schools: number[];
-  stops: number[];
-  courses: CourseType[];
+  schools: { school_id: number }[];
+  stops: { stop_id: number }[];
+  courses: { course_id: number; course: CourseDBType }[];
 };
