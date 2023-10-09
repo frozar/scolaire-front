@@ -75,12 +75,30 @@ export default function (props: EditStopProps) {
     };
   }
 
-  async function validate() {
-    if (
+  function getAssociatedPoint(id: number): AssociatedPointType {
+    return {
+      class: {
+        id: Number(classeSelectRef().value),
+        name: classeSelectRef().selectedOptions[0].text,
+      },
+      id: Number(schoolSelectRef().value),
+      name: schoolSelectRef().selectedOptions[0].text,
+      quantity: Number(quantityInputRef().value),
+      studentSchoolId: id,
+      usedQuantity: 0,
+    };
+  }
+
+  function checkAllSelectorHaveSelectedValue() {
+    return (
       schoolSelectRef().value == "default" ||
       quantityInputRef().value == "0" ||
       classeSelectRef().value == "default"
-    ) {
+    );
+  }
+
+  async function validate() {
+    if (checkAllSelectorHaveSelectedValue()) {
       return addNewUserInformation({
         displayed: true,
         level: MessageLevelEnum.warning,
@@ -93,21 +111,7 @@ export default function (props: EditStopProps) {
       getClassStudentToSchool()
     );
 
-    function getAssociatedPoint(): AssociatedPointType {
-      return {
-        class: {
-          id: Number(classeSelectRef().value),
-          name: classeSelectRef().selectedOptions[0].text,
-        },
-        id: Number(schoolSelectRef().value),
-        name: schoolSelectRef().selectedOptions[0].text,
-        quantity: Number(quantityInputRef().value),
-        studentSchoolId: response.id,
-        usedQuantity: 0,
-      };
-    }
-
-    props.appendClassToList(getAssociatedPoint());
+    props.appendClassToList(getAssociatedPoint(response.id));
     props.close();
   }
 
