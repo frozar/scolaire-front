@@ -1,12 +1,10 @@
 import L from "leaflet";
 import { For, createEffect, createSignal, onCleanup } from "solid-js";
-import { useStateAction } from "../../../../../StateAction";
 import { LineType } from "../../../../../_entities/line.entity";
 
 import { BusLineService } from "../../../../../_services/line.service";
+import { setCourses } from "./Courses";
 import { pointsReady } from "./Points";
-
-const [, { getLineUnderConstruction }] = useStateAction();
 
 export const arrowsMap = new Map<number, L.Marker[]>();
 
@@ -21,9 +19,16 @@ export function BusLines(props: BusLinesProps) {
   createEffect(async () => {
     if (pointsReady()) {
       const lines = await BusLineService.getAll();
-      console.log(lines);
       setLines(lines ?? []);
     }
+  });
+
+  createEffect(async () => {
+    const cours = getLines()
+      ?.map((line) => line.courses)
+      .flatMap((e) => [...e]);
+
+    setCourses(getSelectedLine()?.courses ?? cours);
   });
 
   onCleanup(() => {
@@ -49,7 +54,7 @@ export function deselectAllLines() {
   getLines().map((line) => line.setSelected(false));
 }
 
-export const getSelectedLine = (): LinesType | undefined => {
+export const getSelectedLine = (): LineType | undefined => {
   const selectedLine = getLines().find((line) => line.selected());
 
   if (!selectedLine) {

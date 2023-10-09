@@ -61,6 +61,7 @@ export function onClickBusCourse(line: CourseType) {
 }
 
 export function Course(props: CourseProps) {
+  console.log("CourseProps", props);
   const [localLatLngs, setLocalLatLngs] = createSignal<L.LatLng[]>([]);
   const [localOpacity, setLocalOpacity] = createSignal<number>(1);
   createEffect(() => {

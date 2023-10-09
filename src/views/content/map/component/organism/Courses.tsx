@@ -1,15 +1,13 @@
 import L from "leaflet";
-import { For, createEffect, createSignal, onCleanup } from "solid-js";
+import { For, createSignal, onCleanup } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import { CourseType } from "../../../../../_entities/course.entity";
 import { Course } from "../molecule/Course";
 
-import { CourseUtils } from "../../../../../utils/course.utils";
 import {
   currentStep,
   drawModeStep,
 } from "../../../board/component/organism/DrawModeBoardContent";
-import { pointsReady } from "./Points";
 
 const [, { getCourseUnderConstruction }] = useStateAction();
 
@@ -28,11 +26,6 @@ export type BusCoursesProps = {
 
 export function BusCourses(props: BusCoursesProps) {
   // eslint-disable-next-line solid/reactivity
-  createEffect(async () => {
-    if (pointsReady()) {
-      await CourseUtils.set();
-    }
-  });
 
   onCleanup(() => {
     setCourses([]);
@@ -70,6 +63,7 @@ export const getSelectedCourse = (): CourseType | undefined => {
   if (!selectedCourse) {
     return;
   }
+  console.log("getCourses", getCourses());
 
   return selectedCourse;
 };
