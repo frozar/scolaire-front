@@ -4,7 +4,10 @@ import {
   SchoolType,
 } from "../_entities/school.entity";
 import { StopDBType, StopEntity, StopType } from "../_entities/stop.entity";
-import { ClassStudentToSchool } from "../_entities/student-to-school.entity";
+import {
+  ClassStudentToSchool,
+  ClassStudentToSchoolDBType,
+} from "../_entities/student-to-school.entity";
 import { ServiceUtils } from "./_utils.service";
 
 export type StudentToSchool = {
@@ -35,12 +38,9 @@ export class StudentToSchoolService {
     return { schools: new_schools, stops: new_stops };
   }
 
-  static async create(props: {
-    school_id: number;
-    stop_id: number;
-    quantity: number;
-    class_id: number;
-  }): Promise<StudentToSchool> {
+  static async create(
+    props: Omit<ClassStudentToSchoolDBType, "id">
+  ): Promise<StudentToSchool> {
     const response = await ServiceUtils.post("/student-to-school", props);
     return ClassStudentToSchool.build(response);
   }
