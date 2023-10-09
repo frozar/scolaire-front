@@ -25,7 +25,12 @@ export default function (props: LeftMenuItemProps) {
     if (["line", "course-draw", "line-details"].includes(onBoardMode)) {
       setSelectedMenu("graphicage");
     } else if (
-      ["schools", "school-details", "school-class"].includes(onBoardMode)
+      [
+        "schools",
+        "school-details",
+        "school-class-add",
+        "school-class-modify",
+      ].includes(onBoardMode)
     ) {
       setSelectedMenu("schools");
     } else if (["stops", "stop-details"].includes(onBoardMode)) {

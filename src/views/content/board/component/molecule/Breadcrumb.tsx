@@ -20,6 +20,7 @@ export default function () {
   const [crumbs, setCrumbs] = createSignal<CrumbType[]>([{ text: "Lignes" }]);
 
   createEffect(() => {
+    // TODO: add case "school-class-modify"
     switch (onBoard()) {
       case "course-draw":
         if (getCourseUnderConstruction().course.schools.length > 0) {
@@ -65,7 +66,7 @@ export default function () {
         ]);
         break;
 
-      case "school-class":
+      case "school-class-add":
         setCrumbs([
           {
             text: "Ecoles",

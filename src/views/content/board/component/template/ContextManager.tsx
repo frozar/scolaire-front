@@ -1,6 +1,7 @@
 import { Match, Switch, createEffect, createSignal } from "solid-js";
 
 import ClasseBoard from "../../../schools/component/organism/ClasseBoard";
+import ClasseBoardModify from "../../../schools/component/organism/ClasseBoardModify";
 import SchoolsBoard from "../../../schools/component/organism/SchoolBoard";
 import SchoolDetails from "../../../schools/component/organism/SchoolDetails";
 import StopBoard from "../../../stops/component/organism/StopBoard";
@@ -16,7 +17,8 @@ import InformationBoardLayout from "./InformationBoardLayout";
 export type BoardTags =
   | "schools"
   | "school-details"
-  | "school-class"
+  | "school-class-add"
+  | "school-class-modify"
   | "stops"
   | "stop-details"
   | "course"
@@ -33,6 +35,10 @@ export const [onBoard, setOnBoard] = createSignal<BoardTags>("line");
 export const changeBoard = (boardName: BoardTags) => setOnBoard(boardName);
 
 export default function () {
+  createEffect(() => {
+    console.log("onBoard()", onBoard());
+  });
+
   createEffect(() => {
     if (isInDrawMod()) {
       changeBoard("course-draw");
@@ -71,8 +77,13 @@ export default function () {
             <SchoolDetails />
           </Match>
 
-          <Match when={onBoard() == "school-class"}>
+          <Match when={onBoard() == "school-class-add"}>
             <ClasseBoard />
+          </Match>
+
+          <Match when={onBoard() == "school-class-modify"}>
+            {/* TODO: Refactor ClasseBoardModify */}
+            <ClasseBoardModify />
           </Match>
 
           {/* Stops */}

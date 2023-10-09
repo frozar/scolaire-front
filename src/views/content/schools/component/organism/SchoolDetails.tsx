@@ -33,7 +33,7 @@ export default function () {
   });
 
   function onClickAddClasse() {
-    changeBoard("school-class");
+    changeBoard("school-class-add");
   }
 
   return (
