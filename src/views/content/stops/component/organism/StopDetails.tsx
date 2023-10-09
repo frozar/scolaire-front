@@ -10,8 +10,8 @@ import CoursesList from "../../../schools/component/organism/CoursesList";
 import EditStop from "../molecul/EditStop";
 import StopDetailsHeader from "../molecul/StopDetailsHeader";
 import StopDetailsPanelsButton from "../molecul/StopDetailsPanelsButton";
-import SchoolList from "./SchoolList";
 import "./StopDetails.css";
+import SchoolList from "./StudentSchoolClassItem";
 
 export const [stopDetailsItem, setStopDetailsItem] = createSignal<StopType>();
 
