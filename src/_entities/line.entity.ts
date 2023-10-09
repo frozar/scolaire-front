@@ -6,46 +6,21 @@ import { BusCourseEntity, CourseDBType, CourseType } from "./course.entity";
 import { SchoolType } from "./school.entity";
 import { StopType } from "./stop.entity";
 
-// const [, { getLineUnderConstruction, setLineUnderConstruction }] =
-//   useStateAction();
-
 export class BusLineEntity {
   static build(dbLine: LineDBType): LineType {
-    console.log("dbLine", dbLine);
-    console.log("getSchools()", getSchools());
-    const dbLineSchoolid = dbLine.schools.map((school) => school.school_id);
-    const filteredShools: SchoolType[] = getSchools().filter((item) =>
-      dbLineSchoolid.includes(item.id)
-    );
-
-    if (filteredShools.length == 0) {
-      //TODO Error log to improve
-      console.log("Error : La liste des établissments est incorrecte ou vide");
-    }
-
-    const schools = filteredShools;
-
-    // const filteredStops: StopType[] = getStops().filter((item) =>
-    //   dbLine.stops.includes(item.id)
-    // );
+    const schools: SchoolType[] = BusLineEntity.dbSchoolsToSchoolType(dbLine);
 
     const dbLineStopid = dbLine.stops.map((school) => school.stop_id);
-    const filteredStops: StopType[] = getStops().filter((item) =>
+    const stops: StopType[] = getStops().filter((item) =>
       dbLineStopid.includes(item.id)
     );
 
-    if (filteredStops.length == 0) {
+    if (stops.length == 0) {
       //TODO Error log to improve
       console.log(
         "Error : La liste des points de ramassage est incorrecte ou vide"
       );
     }
-
-    const stops = filteredStops;
-
-    // const filteredCourses: CourseType[] = getCourses().filter((item) =>
-    //   dbLine.courses.map((course) => course.id).includes(item.id)
-    // );
 
     const courses = dbLine.courses.map((dbCourse) =>
       BusCourseEntity.build(dbCourse.course)
@@ -55,8 +30,6 @@ export class BusLineEntity {
       //TODO Error log to improve
       console.log(" La liste des courses de bus est incorrecte ou vide");
     }
-
-    // const courses = filteredCourses;
 
     const [selected, setSelected] = createSignal<boolean>(false);
     const [color, setColor] = createSignal<string>("#" + dbLine.color);
@@ -72,6 +45,14 @@ export class BusLineEntity {
       selected: selected,
       setSelected: setSelected,
     };
+  }
+
+  static dbSchoolsToSchoolType(dbLine: LineDBType) {
+    const dbLineSchoolid = dbLine.schools.map((school) => school.school_id);
+    const schools: SchoolType[] = getSchools().filter((item) =>
+      dbLineSchoolid.includes(item.id)
+    );
+    return schools;
   }
 
   static defaultBusLine(): LineType {
@@ -159,4 +140,9 @@ export type LineDBType = {
   schools: { school_id: number }[];
   stops: { stop_id: number }[];
   courses: { course_id: number; course: CourseDBType }[];
+};
+
+export type DbDataLineType = {
+  bus_lines: { bus_lines: LineDBType[] };
+  new_bus_line: LineDBType;
 };

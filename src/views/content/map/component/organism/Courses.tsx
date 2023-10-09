@@ -54,7 +54,7 @@ export function BusCourses(props: BusCoursesProps) {
 }
 
 export function deselectAllCourses() {
-  getCourses().map((course) => course.setSelected(false));
+  getCourses().forEach((course) => course.setSelected(false));
 }
 
 export const getSelectedCourse = (): CourseType | undefined => {
@@ -63,7 +63,6 @@ export const getSelectedCourse = (): CourseType | undefined => {
   if (!selectedCourse) {
     return;
   }
-  console.log("getCourses", getCourses());
 
   return selectedCourse;
 };

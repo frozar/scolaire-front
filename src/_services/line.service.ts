@@ -1,27 +1,37 @@
-import { BusLineEntity, LineDBType, LineType } from "../_entities/line.entity";
+import {
+  BusLineEntity,
+  DbDataLineType,
+  LineDBType,
+  LineType,
+} from "../_entities/line.entity";
+import { setLines } from "../views/content/map/component/organism/BusLines";
 import { ServiceUtils } from "./_utils.service";
 
 export class BusLineService {
   static async getAll(): Promise<LineType[]> {
     const dbLines = await ServiceUtils.get("/bus_line");
+
     const bus_lines: LineDBType[] = dbLines.bus_lines;
-    console.log("ici", bus_lines);
     return bus_lines
       ? bus_lines.map((dbLine: LineDBType) => BusLineEntity.build(dbLine))
       : [];
   }
 
   static async create(line: LineType): Promise<LineType> {
-    console.log("line", line);
     const data = BusLineEntity.dbFormat(line);
-    const dbData: {
-      bus_lines: { bus_lines: LineDBType[] };
-      new_bus_line: LineDBType;
-    } = await ServiceUtils.post("/bus_line", data);
-    console.log(dbData);
+
+    const dbData: DbDataLineType = await ServiceUtils.post("/bus_line", data);
+
     const dbLine: LineDBType = dbData.bus_lines.bus_lines.filter(
       (line) => line.id === dbData.new_bus_line.id
     )[0];
+
+    const bus_lines: LineDBType[] = dbData.bus_lines.bus_lines;
+    setLines(
+      bus_lines
+        ? bus_lines.map((dbLine: LineDBType) => BusLineEntity.build(dbLine))
+        : []
+    );
     return BusLineEntity.build(dbLine);
   }
 

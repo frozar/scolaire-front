@@ -1,5 +1,6 @@
 import { For, Show, createEffect, createSignal } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
+import { MapElementUtils } from "../../../../../utils/mapElement.utils";
 import { getSelectedCourse } from "../../../map/component/organism/Courses";
 import { schoolDetailsItem } from "../../../schools/component/organism/SchoolDetails";
 import { stopDetailsItem } from "../../../stops/component/organism/StopDetails";
@@ -88,6 +89,7 @@ export default function () {
             text: "Lignes",
             onClick: () => {
               changeBoard("line");
+              MapElementUtils.deselectAllPointsAndBusCourses();
             },
           },
           {

@@ -76,7 +76,7 @@ export default function () {
       <div ref={mapDiv} id="main-map" />
       <Points leafletMap={getLeafletMap() as L.Map} />
       <BusCourses map={getLeafletMap() as L.Map} />
-      <BusLines map={getLeafletMap() as L.Map} />
+      <BusLines />
       {/* <div class="z-[1000] absolute top-[45%] right-[15px]">
         <RightMapMenu />
       </div> */}

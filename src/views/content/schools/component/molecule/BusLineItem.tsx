@@ -9,19 +9,19 @@ import { setCourses } from "../../../map/component/organism/Courses";
 import ClasseLinkedSchool from "../atom/ClasseLinkedSchool";
 import "./CourseItem.css";
 
+export function displayBusLine(line: LineType): void {
+  setCurrentBusLine(line);
+  console.log("line", line);
+  setCourses(line.courses.length > 0 ? line.courses : []);
+  setOnBoard("course");
+}
+
 export default function (props: { line: LineType }) {
   const schoolNames = () =>
     props.line.schools.map((school) => school.name ?? "");
 
-  function onClickBusLine(line: LineType): void {
-    setCurrentBusLine(line);
-    console.log("line", line);
-    setCourses(line.courses.length > 0 ? line.courses : []);
-    setOnBoard("course");
-  }
-
   return (
-    <CardWrapper class="line-item" onClick={() => onClickBusLine(props.line)}>
+    <CardWrapper class="line-item" onClick={() => displayBusLine(props.line)}>
       <Pellet color={props.line.color()} />
       <div class="line-content">
         <CardTitle title={props.line.name ?? "Pas de nom de course"} />
