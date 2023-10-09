@@ -9,9 +9,10 @@ interface ClasseSelectProps {
 
 export default function (props: ClasseSelectProps) {
   return (
-    // eslint-disable-next-line solid/reactivity
-    <select onChange={props.onChange} ref={props.refSelectSetter}>
-      <option value="default">Sélectionner une classe</option>
+    <select onChange={() => props.onChange()} ref={props.refSelectSetter}>
+      <option selected value="default">
+        Sélectionner une classe
+      </option>
       <For each={props.classes}>
         {(classe) => <option value={classe.id}>{classe.name}</option>}
       </For>

@@ -14,7 +14,9 @@ export default function (props: SchoolSelectionProps) {
       onChange={() => props.onChange()}
       ref={props.refSelectSetter}
     >
-      <option value="default">Choisir une école</option>
+      <option selected value="default">
+        Choisir une école
+      </option>
       <For each={props.schools}>
         {(school) => <option value={school.id}>{school.name}</option>}
       </For>
