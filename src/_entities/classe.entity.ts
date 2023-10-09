@@ -1,16 +1,6 @@
 import { HeureFormat } from "../views/content/schools/component/organism/ClasseBoard";
 
 export namespace ClasseEntity {
-  export function dbFormat(classe: ClasseType): Omit<ClasseDBType, "id"> {
-    return {
-      school_id: classe.schoolId as number,
-      name: classe.name,
-      morning_start: getStringFromHeureFormat(classe.morningStart),
-      morning_end: getStringFromHeureFormat(classe.morningEnd),
-      afternoon_start: getStringFromHeureFormat(classe.afternoonStart),
-      afternoon_end: getStringFromHeureFormat(classe.afternoonEnd),
-    };
-  }
   export function build(dbData: ClasseDBType): ClasseType {
     return {
       id: dbData.id,
@@ -19,6 +9,16 @@ export namespace ClasseEntity {
       morningEnd: getHourFormatFromString(dbData.morning_end),
       afternoonStart: getHourFormatFromString(dbData.afternoon_start),
       afternoonEnd: getHourFormatFromString(dbData.afternoon_end),
+    };
+  }
+  export function dbFormat(classe: ClasseType): Omit<ClasseDBType, "id"> {
+    return {
+      school_id: classe.schoolId as number,
+      name: classe.name,
+      morning_start: getStringFromHeureFormat(classe.morningStart),
+      morning_end: getStringFromHeureFormat(classe.morningEnd),
+      afternoon_start: getStringFromHeureFormat(classe.afternoonStart),
+      afternoon_end: getStringFromHeureFormat(classe.afternoonEnd),
     };
   }
   function getStringFromHeureFormat(time: HeureFormat) {

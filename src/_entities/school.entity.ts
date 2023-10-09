@@ -9,7 +9,7 @@ import {
   EntityUtils,
   LocationDBType,
 } from "./_utils.entity";
-import { ClasseType } from "./classe.entity";
+import { ClasseDBType, ClasseEntity, ClasseType } from "./classe.entity";
 
 const [, { nextLeafletPointId }] = useStateGui();
 
@@ -23,8 +23,7 @@ export class SchoolEntity {
       name: dbSchool.name,
       nature: NatureEnum.school,
       associated: EntityUtils.formatAssociatedPoints(dbSchool.associated),
-      classes: dbSchool.classes,
-
+      classes: dbSchool.classes.map((classe) => ClasseEntity.build(classe)),
       leafletId: nextLeafletPointId(),
       selected: selected,
       setSelected: setSelected,
@@ -78,13 +77,6 @@ export class SchoolEntity {
   }
 }
 
-// TODO:Replace
-// export type ClasseType = {
-//   id: number;
-//   school_id: number;
-//   classe: string;
-// };
-
 export type SchoolType = {
   id: number;
   name: string;
@@ -103,7 +95,7 @@ export type SchoolDBType = {
   name: string;
   location: LocationDBType;
   associated: AssociatedDBPointType[];
-  classes: ClasseType[]; // ! Change to ClassDBType ?
+  classes: ClasseDBType[]; // ! Change to ClassDBType ?
 };
 
 export type LeafletShoolType = SchoolType & {
