@@ -30,6 +30,7 @@ export class EntityUtils {
     return associatedDBPoint.map((item) => {
       return {
         id: item.entity.id,
+        studentSchoolId: item.id,
         name: item.entity.name,
         quantity: item.quantity,
         usedQuantity: 0,
@@ -42,6 +43,7 @@ export class EntityUtils {
 export type PointType = SchoolType | StopType;
 
 export type AssociatedPointType = {
+  studentSchoolId: number;
   id: number;
   name: string;
   quantity: number;
@@ -50,7 +52,9 @@ export type AssociatedPointType = {
 };
 
 export type AssociatedDBPointType = {
+  id: number; // ! ID of StudentToSchool association
   entity: {
+    // ! associated School entity
     id: number;
     name: string;
   };
