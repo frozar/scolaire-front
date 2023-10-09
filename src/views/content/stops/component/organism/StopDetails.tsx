@@ -11,7 +11,7 @@ import EditStop from "../molecul/EditStop";
 import StopDetailsHeader from "../molecul/StopDetailsHeader";
 import StopDetailsPanelsButton from "../molecul/StopDetailsPanelsButton";
 import "./StopDetails.css";
-import SchoolList from "./StudentSchoolClassItem";
+import SchoolList from "./StudentSchoolClassList";
 
 export const [stopDetailsItem, setStopDetailsItem] = createSignal<StopType>();
 
