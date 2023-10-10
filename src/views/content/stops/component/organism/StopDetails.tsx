@@ -56,6 +56,20 @@ export default function () {
     });
   }
 
+  function removeClassToSchool(id: number) {
+    setStopDetailsItem((prev) => {
+      let currentItem;
+      if (prev != undefined) {
+        currentItem = { ...prev };
+        currentItem.associated = currentItem.associated.filter(
+          (item) => item.studentSchoolId != id
+        );
+      }
+
+      return currentItem;
+    });
+  }
+
   return (
     <section>
       <StopDetailsHeader stop={stopDetailsItem() as StopType} />
@@ -80,6 +94,7 @@ export default function () {
           <Match when={onPanel() == StopPanels.classes}>
             <StudentSchoolClassList
               schools={stopDetailsItem()?.associated as AssociatedPointType[]}
+              removeClassStudentToSchoolItem={removeClassToSchool}
             />
 
             <Show when={editItem()}>
