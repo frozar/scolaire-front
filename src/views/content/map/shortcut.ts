@@ -10,17 +10,8 @@ import {
   getExportConfirmationDialogBox,
   getRemoveConfirmation,
 } from "../../../signaux";
-import { MapElementUtils } from "../../../utils/mapElement.utils";
-import {
-  DrawModeStep,
-  setCurrentRace,
-  setCurrentStep,
-} from "../board/component/organism/DrawRaceBoard";
-import {
-  changeBoard,
-  onBoard,
-  toggleDrawMod,
-} from "../board/component/template/ContextManager";
+import { setCurrentRace } from "../board/component/organism/DrawRaceBoard";
+import { toggleDrawMod } from "../board/component/template/ContextManager";
 
 import { COLOR_SCHOOL_FOCUS, COLOR_STOP_FOCUS } from "./constant";
 
@@ -42,43 +33,40 @@ const disable_shortcut = () =>
 
 // Handler the Undo/Redo from the user
 function undoRedoHandler({ ctrlKey, shiftKey, code }: KeyboardEvent) {
-  if (disable_shortcut()) {
-    return;
-  }
-
-  if (ctrlKey) {
-    // @ts-expect-error: Currently the 'keyboard' field doesn't exist on 'navigator'
-    const keyboard = navigator.keyboard;
-    // @ts-expect-error: The type 'KeyboardLayoutMap' is not available
-    keyboard.getLayoutMap().then((keyboardLayoutMap) => {
-      const upKey = keyboardLayoutMap.get(code);
-      if (upKey === "z") {
-        if (!shiftKey && history.isUndoable()) {
-          history.undo();
-        } else if (shiftKey && history.isRedoable()) {
-          history.redo();
-        }
-      }
-    });
-  }
+  // if (disable_shortcut()) {
+  //   return;
+  // }
+  // if (ctrlKey) {
+  //   // @ts-expect-error: Currently the 'keyboard' field doesn't exist on 'navigator'
+  //   const keyboard = navigator.keyboard;
+  //   // @ts-expect-error: The type 'KeyboardLayoutMap' is not available
+  //   keyboard.getLayoutMap().then((keyboardLayoutMap) => {
+  //     const upKey = keyboardLayoutMap.get(code);
+  //     if (upKey === "z") {
+  //       if (!shiftKey && history.isUndoable()) {
+  //         history.undo();
+  //       } else if (shiftKey && history.isRedoable()) {
+  //         history.redo();
+  //       }
+  //     }
+  //   });
+  // }
 }
 
 function escapeHandler({ code }: KeyboardEvent) {
-  if (disable_shortcut()) {
-    return;
-  }
-
-  if (code === "Escape") {
-    if (onBoard() == "line-draw") {
-      quitModeDrawRace();
-      setCurrentStep(DrawModeStep.start);
-    }
-    changeBoard("line");
-    MapElementUtils.deselectAllPointsAndBusCourses();
-
-    //TODO voir l'impact de la suppression
-    // fetchBusCourses();
-  }
+  // if (disable_shortcut()) {
+  //   return;
+  // }
+  // if (code === "Escape") {
+  //   if (onBoard() == "line-draw") {
+  //     quitModeDrawRace();
+  //     setCurrentStep(DrawModeStep.start);
+  //   }
+  //   changeBoard("line");
+  //   MapElementUtils.deselectAllPointsAndBusCourses();
+  //   //TODO voir l'impact de la suppression
+  //   // fetchBusCourses();
+  // }
 }
 
 export function quitModeDrawRace() {
@@ -90,34 +78,33 @@ export function quitModeDrawRace() {
 }
 
 function enterHandler({ code }: KeyboardEvent) {
-  if (disable_shortcut()) {
-    return;
-  }
-
-  if (code === "Enter") {
-    // if (!isInDrawRaceMode() || currentStep() === DrawModeStep.schoolSelection) {
-    //   return;
-    // }
-    // const resourceInfo = getCourseUnderConstruction().course.points.map(
-    //   function (value) {
-    //     return {
-    //       id_resource: value["id"],
-    //       nature: value["nature"].toLowerCase(),
-    //     };
-    //   }
-    // );
-    // addBusCourse(resourceInfo).then(async (res) => {
-    //   if (!res) {
-    //     console.error("addBusCourse failed");
-    //     return;
-    //   }
-    //   await res.json();
-    //   resetCourseUnderConstruction();
-    //   setModeRead();
-    //   //TODO voir l'impact de la suppression
-    //   // fetchBusCourses();
-    // });
-  }
+  // if (disable_shortcut()) {
+  //   return;
+  // }
+  // if (code === "Enter") {
+  // if (!isInDrawRaceMode() || currentStep() === DrawModeStep.schoolSelection) {
+  //   return;
+  // }
+  // const resourceInfo = getCourseUnderConstruction().course.points.map(
+  //   function (value) {
+  //     return {
+  //       id_resource: value["id"],
+  //       nature: value["nature"].toLowerCase(),
+  //     };
+  //   }
+  // );
+  // addBusCourse(resourceInfo).then(async (res) => {
+  //   if (!res) {
+  //     console.error("addBusCourse failed");
+  //     return;
+  //   }
+  //   await res.json();
+  //   resetCourseUnderConstruction();
+  //   setModeRead();
+  //   //TODO voir l'impact de la suppression
+  //   // fetchBusCourses();
+  // });
+  // }
 }
 
 function toggleCourseUnderConstruction({ code }: KeyboardEvent) {

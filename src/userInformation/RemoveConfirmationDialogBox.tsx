@@ -72,11 +72,11 @@ export default function () {
   }
 
   onMount(() => {
-    document.addEventListener("keyup", exitModal);
+    // document.addEventListener("keyup", exitModal);
   });
 
   onCleanup(() => {
-    document.removeEventListener("keyup", exitModal);
+    // document.removeEventListener("keyup", exitModal);
   });
 
   const [buttonRef, setButtonRef] = createSignal<

@@ -37,7 +37,7 @@ export default function () {
   onMount(() => {
     // Manage shortcut keyboard event
     for (const handler of listHandlerLMap) {
-      document.body.addEventListener("keydown", handler);
+      // document.body.addEventListener("keydown", handler);
     }
 
     mapDiv.addEventListener(
@@ -55,7 +55,7 @@ export default function () {
   onCleanup(() => {
     // Manage shortcut keyboard event
     for (const handler of listHandlerLMap) {
-      document.body.removeEventListener("keydown", handler);
+      // document.body.removeEventListener("keydown", handler);
     }
   });
 

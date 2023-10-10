@@ -30,6 +30,7 @@ import {
 } from "../../../../../signaux";
 import { NatureEnum } from "../../../../../type";
 import { MapElementUtils } from "../../../../../utils/mapElement.utils";
+import { QuantityUtils } from "../../../../../utils/quantity.utils";
 import {
   setRaces,
   setSelectedRace,
@@ -77,12 +78,11 @@ export const [initialRace, setInitialRace] = createStore<RaceType>(
   RaceEntity.defaultRace()
 );
 
-// TODO rename function & file to RaceDrawerBoard
 export function DrawRaceBoard() {
   onMount(() => {
     if (isInUpdate()) {
       setInitialRace(currentRace);
-      //TODO substract toutes les quantité de currentRace aux liste Schools et Stops
+      QuantityUtils.substract(currentRace);
     } else {
       setInitialRace(RaceEntity.defaultRace());
     }
@@ -206,7 +206,7 @@ async function createOrUpdateRace() {
   }
   updateRaces(race);
 
-  //TODO add toutes les quantité de "race" aux liste Schools et Stops
+  QuantityUtils.add(race);
   setRaces((r) => r.id === race.id, "selected", true);
 
   setDisplayCourseMode((prev) =>
@@ -258,8 +258,9 @@ function prevStep() {
       break;
     case DrawModeStep.editCourse:
       if (isInUpdate()) {
-        //TODO add toutes les quantité de initialRace aux liste Schools et Stops
+        QuantityUtils.add(initialRace);
         setSelectedRace(initialRace);
+        updateRaces(initialRace);
         changeBoard("line-details");
       } else {
         setCurrentRace(RaceEntity.defaultRace());

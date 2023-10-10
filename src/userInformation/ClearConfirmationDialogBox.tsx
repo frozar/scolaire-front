@@ -54,11 +54,11 @@ export default function () {
   const displayed = () => displayedClearConfirmationDialogBox()["displayed"];
 
   onMount(() => {
-    document.addEventListener("keyup", exitModal);
+    // document.addEventListener("keyup", exitModal);
   });
 
   onCleanup(() => {
-    document.removeEventListener("keyup", exitModal);
+    // document.removeEventListener("keyup", exitModal);
   });
 
   // TODO  Have to be rewrite to be compliance with Xano

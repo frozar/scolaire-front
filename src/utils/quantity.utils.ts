@@ -1,7 +1,6 @@
 import { AssociatedPointType } from "../_entities/_utils.entity";
 import { RacePointType, RaceType } from "../_entities/race.entity";
 import { SchoolType } from "../_entities/school.entity";
-import { StopType } from "../_entities/stop.entity";
 import { NatureEnum } from "../type";
 import { setSchools } from "../views/content/map/component/organism/SchoolPoints";
 import { setStops } from "../views/content/map/component/organism/StopPoints";
@@ -29,42 +28,37 @@ export namespace QuantityUtils {
   export function set(courses: RaceType[]) {
     courses.forEach((race) => {
       race.schools.forEach((school) => {
-        setSchoolQuantity(school, race.points);
+        setSchoolQuantity(school, race.points, OperationType.set);
       });
 
       race.points.forEach((point) => {
-        setStopQuantity(point, race.schools);
+        setStopQuantity(point, race.schools, OperationType.set);
       });
     });
   }
-  export function add(point: StopType | SchoolType, race: RaceType) {
-    operation(point, race, OperationType.add);
+  export function add(race: RaceType) {
+    operation(race, OperationType.add);
   }
 
-  export function substract(point: StopType | SchoolType, race: RaceType) {
-    operation(point, race, OperationType.substract);
+  export function substract(race: RaceType) {
+    operation(race, OperationType.substract);
   }
 
-  function operation(
-    point: StopType | SchoolType,
-    race: RaceType,
+  function operation(race: RaceType, operation: OperationType) {
+    race.schools.forEach((school) => {
+      setSchoolQuantity(school, race.points, operation);
+    });
+
+    race.points.forEach((point) => {
+      setStopQuantity(point, race.schools, operation);
+    });
+  }
+
+  function setSchoolQuantity(
+    school: SchoolType,
+    points: RacePointType[],
     operation: OperationType
   ) {
-    if (point.nature === NatureEnum.stop) {
-      const stop = point;
-      race.schools.forEach(
-        (school) => school
-        // shoolQuantityOperation(stop.id, school, race.points, operation)
-      );
-
-      race.points.forEach(
-        (point) => point
-        // stopQuantityOperation(stop.id, point, race.schools, operation)
-      );
-    }
-  }
-
-  function setSchoolQuantity(school: SchoolType, points: RacePointType[]) {
     points.forEach((point) => {
       if (point.nature === NatureEnum.stop) {
         setSchools((schools) => {
@@ -72,7 +66,12 @@ export namespace QuantityUtils {
             if (_school.id == school.id) {
               _school.associated.map((stop) => {
                 if (stop.id == point.id) {
-                  stop.usedQuantity = point.quantity;
+                  if (operation === OperationType.set)
+                    stop.usedQuantity = point.quantity;
+                  else if (operation === OperationType.add)
+                    stop.usedQuantity += point.quantity;
+                  else if (operation === OperationType.substract)
+                    stop.usedQuantity -= point.quantity;
                 }
               });
             }
@@ -83,7 +82,11 @@ export namespace QuantityUtils {
     });
   }
 
-  function setStopQuantity(point: RacePointType, schools: SchoolType[]) {
+  function setStopQuantity(
+    point: RacePointType,
+    schools: SchoolType[],
+    operation: OperationType
+  ) {
     if (point.nature === NatureEnum.stop) {
       schools.forEach((school) => {
         setStops((stops) => {
@@ -91,7 +94,12 @@ export namespace QuantityUtils {
             if (stop.id == point.id) {
               stop.associated.map((_school) => {
                 if (_school.id == school.id) {
-                  _school.usedQuantity = point.quantity;
+                  if (operation === OperationType.set)
+                    _school.usedQuantity = point.quantity;
+                  else if (operation === OperationType.add)
+                    _school.usedQuantity += point.quantity;
+                  else if (operation === OperationType.substract)
+                    _school.usedQuantity -= point.quantity;
                 }
               });
             }
