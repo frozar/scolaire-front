@@ -1,4 +1,4 @@
-import { createSignal } from "solid-js";
+import { createSignal, onCleanup } from "solid-js";
 import {
   ClasseType,
   HeureFormat,
@@ -19,9 +19,9 @@ import ClasseBoardHeader from "../molecule/ClasseBoardHeader";
 import TimesInputWrapper from "../molecule/TimesInputWrapper";
 import { schoolDetailsItem, setSchoolDetailsItem } from "./SchoolDetails";
 
-// TODO: Mettre en place vider un signal
 export const [selectedClasse, setSelectedClasse] = createSignal<ClasseType>();
-// ! ??
+
+// TODO: Remove this eslint exception ?
 // eslint-disable-next-line solid/reactivity
 export default function () {
   let defaultClasse: ClasseType;
@@ -47,8 +47,6 @@ export default function () {
       afternoonEnd: classe.afternoonEnd,
     };
   }
-
-  // const classe = selectedClasse() as ClasseType;
 
   const [classeName, setClasseName] = createSignal(defaultClasse.name);
 
@@ -153,10 +151,10 @@ export default function () {
     changeBoard("school-details");
   }
 
+  onCleanup(() => setSelectedClasse());
+
   return (
     <section>
-      {/* <ClasseBoardHeader title="Ajout d'une classe" /> */}
-      {/* <ClasseBoardHeader title="Modifier une classe" /> */}
       <ClasseBoardHeader
         title={
           onBoard() == "school-class-add"

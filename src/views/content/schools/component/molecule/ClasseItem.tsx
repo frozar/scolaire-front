@@ -7,19 +7,14 @@ import { changeBoard } from "../../../board/component/template/ContextManager";
 import { setSelectedClasse } from "../organism/ClasseBoard";
 import "./ClasseItem.css";
 
-// interface ClasseItemProps {
-//   nameClass: string;
-//   NbStudents?: number;
-// }
 interface ClasseItemProps {
-  class: ClasseType;
+  classe: ClasseType;
   NbStudents?: number;
 }
 
 export default function (props: ClasseItemProps) {
   function onClickEdit() {
-    console.log("Edit classe");
-    setSelectedClasse(props.class);
+    setSelectedClasse(props.classe);
     changeBoard("school-class-modify");
   }
 
@@ -30,7 +25,7 @@ export default function (props: ClasseItemProps) {
   return (
     <CardWrapper class="classe-item">
       <div class="left">
-        <CardTitle title={props.class.name} />
+        <CardTitle title={props.classe.name} />
         <p>{props.NbStudents ? props.NbStudents + " élèves" : "Todo élèves"}</p>
       </div>
 

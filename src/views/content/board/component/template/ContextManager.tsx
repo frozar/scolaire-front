@@ -35,10 +35,6 @@ export const changeBoard = (boardName: BoardTags) => setOnBoard(boardName);
 
 export default function () {
   createEffect(() => {
-    console.log("onBoard()", onBoard());
-  });
-
-  createEffect(() => {
     if (isInDrawMod()) {
       changeBoard("course-draw");
     } else {
