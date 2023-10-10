@@ -10,6 +10,7 @@ import {
 } from "../../../board/component/organism/DrawModeBoardContent";
 import { PointInterface } from "../atom/Point";
 import { StopPoint } from "../molecule/StopPoint";
+import { getSelectedLine } from "./BusLines";
 
 const [, { getCourseUnderConstruction }] = useStateAction();
 const [, { nextLeafletPointId }] = useStateGui();
@@ -67,8 +68,14 @@ async function updateStop() {
 //TODO Delete and replace with displayedStop signal
 export function leafletStopsFilter(): StopType[] {
   const schools = getCourseUnderConstruction().course.schools;
-
-  const stops = getStops();
+  const stops = getStops().filter((stop) =>
+    getSelectedLine()
+      ? getSelectedLine()
+          ?.stops.map((stop) => stop.id)
+          .includes(stop.id)
+      : true
+  );
+  console.log(getSelectedLine());
   if (currentStep() === drawModeStep.start) {
     return stops;
   }

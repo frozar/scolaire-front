@@ -9,6 +9,7 @@ import {
 } from "../../../board/component/organism/DrawModeBoardContent";
 import { onBoard } from "../../../board/component/template/ContextManager";
 import { SchoolPoint } from "../molecule/SchoolPoint";
+import { getSelectedLine } from "./BusLines";
 
 const [, { getCourseUnderConstruction }] = useStateAction();
 
@@ -38,7 +39,13 @@ async function updateSchools() {
 
 //TODO Delete and replace with displayedSchool signal
 function schoolsFilter(): SchoolType[] {
-  let schools = getSchools();
+  let schools = getSchools().filter((school) =>
+    getSelectedLine()
+      ? getSelectedLine()
+          ?.schools.map((schoolMap) => schoolMap.id)
+          .includes(school.id)
+      : true
+  );
 
   if (onBoard() == "course-draw") {
     const schoolsSelected = getCourseUnderConstruction().course.schools;
