@@ -10,7 +10,7 @@ import { RacesList } from "../../../schools/component/organism/RacesList";
 import StopDetailsHeader from "../molecul/StopDetailsHeader";
 import StopDetailsPanelsButton from "../molecul/StopDetailsPanelsButton";
 import "./StopDetails.css";
-import StudentSchoolClassList from "./StudentSchoolClassList";
+import ClassStudentToSchoolList from "./StudentSchoolClassList";
 
 export const [stopDetailsItem, setStopDetailsItem] = createSignal<StopType>();
 
@@ -24,6 +24,8 @@ export default function () {
   const [editItem, setEditItem] = createSignal<boolean>(false);
 
   onMount(() => {
+    console.log("Stop details: ", stopDetailsItem());
+
     if (stopDetailsItem() == undefined) {
       changeBoard("schools");
       MapElementUtils.deselectAllPointsAndBusRaces();
@@ -43,7 +45,7 @@ export default function () {
     return races;
   }
 
-  function appendClassToStop(classItem: AssociatedPointType) {
+  function appendClassStudentToSchoolOfStop(classItem: AssociatedPointType) {
     setStopDetailsItem((prev) => {
       let currentItem;
       if (prev != undefined) {
@@ -55,7 +57,22 @@ export default function () {
     });
   }
 
-  function removeClassToSchool(id: number) {
+  function updateClassStudentToSchoolOfStop(classItem: AssociatedPointType) {
+    setStopDetailsItem((prev) => {
+      let currentItem;
+      if (prev != undefined) {
+        currentItem = { ...prev };
+        const index = currentItem?.associated.findIndex(
+          (item) => item.id == classItem.id
+        );
+        currentItem.associated[index] = classItem;
+      }
+
+      return currentItem;
+    });
+  }
+
+  function removeClassStudentToSchoolOfStop(id: number) {
     setStopDetailsItem((prev) => {
       let currentItem;
       if (prev != undefined) {
@@ -91,18 +108,19 @@ export default function () {
       <div class="content mt-2">
         <Switch>
           <Match when={onPanel() == StopPanels.classes}>
-            <StudentSchoolClassList
+            <ClassStudentToSchoolList
               schools={stopDetailsItem()?.associated as AssociatedPointType[]}
-              removeClassStudentToSchoolItem={removeClassToSchool}
+              removeClassStudentToSchoolItem={removeClassStudentToSchoolOfStop}
+              updateClassStudentToSchoolOfStop={
+                updateClassStudentToSchoolOfStop
+              }
             />
 
             <Show when={editItem()}>
-              {/* TODO editStop to fix ? */}
-              {/* <EditStop
-                appendClassToList={appendClassToStop}
+              <EditStop
+                appendClassToList={appendClassStudentToSchoolOfStop}
                 close={toggleEditItem}
-                stopID={stopDetailsItem()?.id as number}
-              /> */}
+              />
             </Show>
           </Match>
           <Match when={onPanel() == StopPanels.lines}>

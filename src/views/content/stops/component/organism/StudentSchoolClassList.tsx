@@ -5,6 +5,7 @@ import SchoolItem from "../molecul/StudentSchoolClassItem";
 export default function (props: {
   schools: AssociatedPointType[];
   removeClassStudentToSchoolItem: (id: number) => void;
+  updateClassStudentToSchoolOfStop: (classItem: AssociatedPointType) => void;
 }) {
   return (
     <For each={props.schools}>
@@ -12,6 +13,9 @@ export default function (props: {
         <SchoolItem
           school={school}
           removeClassStudentToSchoolItem={props.removeClassStudentToSchoolItem}
+          updateClassStudentToSchoolOfStop={
+            props.updateClassStudentToSchoolOfStop
+          }
         />
       )}
     </For>
