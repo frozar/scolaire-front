@@ -1,19 +1,6 @@
-import { StudentToSchool } from "../_services/student-to-school.service";
 import { ClasseType } from "./classe.entity";
 
 export namespace ClassStudentToSchool {
-  export function build(
-    dbData: ClassStudentToSchoolTypeFormated
-  ): StudentToSchool {
-    return {
-      id: dbData.id,
-      quantity: dbData.quantity,
-      stop_name: dbData.stop.name,
-      school_name: dbData.school.name,
-      class_name: dbData.class.name,
-    };
-  }
-
   export function dbFormat(
     classStudentToSchool: Omit<ClassStudentToSchoolType, "id">
   ): Omit<ClassStudentToSchoolDBType, "id"> {
@@ -26,7 +13,7 @@ export namespace ClassStudentToSchool {
   }
 }
 
-type ClassStudentToSchoolTypeFormated = {
+export type ClassStudentToSchoolTypeFormated = {
   id: number;
   quantity: number;
   class: Omit<

@@ -5,22 +5,22 @@ import {
 } from "../_entities/school.entity";
 import { StopDBType, StopEntity, StopType } from "../_entities/stop.entity";
 import {
-  ClassStudentToSchool,
   ClassStudentToSchoolDBType,
+  ClassStudentToSchoolTypeFormated,
 } from "../_entities/student-to-school.entity";
 import { ServiceUtils } from "./_utils.service";
 
-export type StudentToSchool = {
-  id: number;
-  school_name: string;
-  stop_name: string;
-  class_name: string;
-  quantity: number;
-};
+// export type StudentToSchool = {
+//   id: number;
+//   school_name: string;
+//   stop_name: string;
+//   class_name: string;
+//   quantity: number;
+// };
 
 export class StudentToSchoolService {
   static async import(
-    students_to_schools: StudentToSchool[]
+    students_to_schools: ClassStudentToSchoolTypeFormated[]
   ): Promise<{ schools: SchoolType[]; stops: StopType[] }> {
     const xanoResult: { schools: SchoolDBType[]; stops: StopDBType[] } =
       await ServiceUtils.post("/student-to-school/import", {
@@ -40,8 +40,11 @@ export class StudentToSchoolService {
 
   static async create(
     props: Omit<ClassStudentToSchoolDBType, "id">
-  ): Promise<StudentToSchool> {
-    const response = await ServiceUtils.post("/student-to-school", props);
-    return ClassStudentToSchool.build(response);
+  ): Promise<ClassStudentToSchoolTypeFormated> {
+    const response: ClassStudentToSchoolTypeFormated = await ServiceUtils.post(
+      "/student-to-school",
+      props
+    );
+    return response;
   }
 }
