@@ -23,7 +23,10 @@ export class SchoolEntity {
       name: dbSchool.name,
       nature: NatureEnum.school,
       associated: EntityUtils.formatAssociatedPoints(dbSchool.associated),
-      classes: dbSchool.classes.map((classe) => ClasseEntity.build(classe)),
+      classes:
+        dbSchool.classes != undefined
+          ? dbSchool.classes.map((classe) => ClasseEntity.build(classe))
+          : [],
       leafletId: nextLeafletPointId(),
       selected: selected,
       setSelected: setSelected,

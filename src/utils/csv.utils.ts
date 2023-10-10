@@ -5,7 +5,10 @@ import {
   SchoolType,
 } from "../_entities/school.entity";
 import { StopDBType, StopEntity, StopType } from "../_entities/stop.entity";
-import { ClassStudentToSchoolTypeFormated } from "../_entities/student-to-school.entity";
+import {
+  CSVFormatStudentToSchool,
+  ClassStudentToSchoolTypeFormated,
+} from "../_entities/student-to-school.entity";
 import { SchoolService } from "../_services/school.service";
 import { StopService } from "../_services/stop.service";
 import { StudentToSchoolService } from "../_services/student-to-school.service";
@@ -178,9 +181,12 @@ export namespace CsvUtils {
 
     return StopEntity.dataToDB(parsedData);
   }
+
   async function parsedCsvFileToStudentToSchoolData(
     file: File
-  ): Promise<ClassStudentToSchoolTypeFormated[] | undefined> {
+  ): Promise<
+    Omit<ClassStudentToSchoolTypeFormated, "class" | "id">[] | undefined
+  > {
     const parsedFile = await parseFile(file);
 
     const correctHeader = ["school_name", "stop_name", "quantity"];
@@ -188,12 +194,39 @@ export namespace CsvUtils {
       return;
     }
 
-    let parsedData = parsedFile.data as ClassStudentToSchoolTypeFormated[];
-    parsedData = parsedData.filter(
-      (data) => data.school.name && data.stop.name && data.quantity
-    );
+    function CSVFormatToFormatedType(
+      data: CSVFormatStudentToSchool
+    ): Omit<ClassStudentToSchoolTypeFormated, "class" | "id"> | undefined {
+      if (data.school_name && data.quantity && data.stop_name) {
+        return {
+          quantity: data.quantity,
+          school: {
+            name: data.school_name,
+          },
+          stop: {
+            name: data.stop_name,
+          },
+        };
+      }
+    }
 
-    return parsedData;
+    const parsedDataCSVFormat = parsedFile.data as CSVFormatStudentToSchool[];
+    const parsedDataFormated: Omit<
+      ClassStudentToSchoolTypeFormated,
+      "class" | "id"
+    >[] = [];
+
+    for (const row of parsedDataCSVFormat) {
+      if (CSVFormatToFormatedType(row) != undefined) {
+        parsedDataFormated.push(
+          CSVFormatToFormatedType(row) as Omit<
+            ClassStudentToSchoolTypeFormated,
+            "class" | "id"
+          >
+        );
+      }
+    }
+    return parsedDataFormated;
   }
 
   function isSchoolFile(fileName: string) {

@@ -45,3 +45,9 @@ export type ClassStudentToSchoolType = {
   quantity: number;
   classId: number;
 };
+
+export type CSVFormatStudentToSchool = {
+  quantity: 4;
+  school_name: string;
+  stop_name: string;
+};
