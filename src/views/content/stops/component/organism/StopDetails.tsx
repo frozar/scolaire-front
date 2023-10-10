@@ -45,19 +45,15 @@ export default function () {
   }
 
   function appendClassToStop(classItem: AssociatedPointType) {
-    console.log("append class to list");
-
     setStopDetailsItem((prev) => {
       let currentItem;
       if (prev != undefined) {
         currentItem = { ...prev };
         currentItem?.associated.push(classItem);
-        console.log("after:", currentItem?.associated);
       }
 
       return currentItem;
     });
-    // console.log(classItem);
   }
 
   return (
