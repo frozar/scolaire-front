@@ -14,11 +14,12 @@ export default function (props: {
   setStopSelected: SetStoreFunction<AssociatedItem[]>;
 }) {
   onMount(() => {
-    props.setStopSelected(
-      props.school.associated.map((elem) => {
+    props.setStopSelected([
+      ...props.stopSelected,
+      ...props.school.associated.map((elem) => {
         return { associated: elem, done: true };
-      })
-    );
+      }),
+    ]);
   });
 
   return (

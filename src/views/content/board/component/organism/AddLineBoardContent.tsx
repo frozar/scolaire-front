@@ -21,6 +21,7 @@ import { getStops } from "../../../map/component/organism/StopPoints";
 import { displayBusLine } from "../../../schools/component/molecule/BusLineItem";
 import SelectedSchool from "../atom/SelectedSchool";
 import LabeledInputField from "../molecule/LabeledInputField";
+import "./AddLineBoardContent.css";
 import CollapsibleCheckableElement, {
   AssociatedItem,
 } from "./CollapsibleCheckableElement";
@@ -92,7 +93,7 @@ export default function () {
           />
         </div>
 
-        <fieldset>
+        <fieldset class="line-stop-selection">
           <For each={addLineSelectedSchool()}>
             {(school_elem) => {
               return (
@@ -172,12 +173,14 @@ async function nextStep() {
       }
 
       updatePointColor();
+
       const stops = getStops().filter((elem) =>
         stopSelected
           .filter((elem) => elem.done)
           .map((val) => val.associated.id)
           .includes(elem.id)
       );
+
       setCurrentLine({
         ...(currentLine() ?? BusLineEntity.defaultBusLine()),
         stops,

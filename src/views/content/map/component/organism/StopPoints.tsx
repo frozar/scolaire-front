@@ -10,6 +10,7 @@ import {
 } from "../../../board/component/organism/DrawRaceBoard";
 import { PointInterface } from "../atom/Point";
 import { StopPoint } from "../molecule/StopPoint";
+import { getSelectedLine } from "./BusLines";
 
 const [, { nextLeafletPointId }] = useStateGui();
 
@@ -65,14 +66,21 @@ async function updateStop() {
 
 //TODO Delete and replace with displayedStop signal
 export function leafletStopsFilter(): StopType[] {
-  const stops = getStops();
+  const schools = currentRace.schools;
+  const stops = getStops().filter((stop) =>
+    getSelectedLine()
+      ? getSelectedLine()
+          ?.stops.map((stop) => stop.id)
+          .includes(stop.id)
+      : true
+  );
+  console.log(getSelectedLine());
   if (currentStep() === DrawModeStep.start) {
     return stops;
   }
   if (currentStep() === DrawModeStep.schoolSelection) {
     return [];
   }
-  const schools = currentRace.schools;
   return stops.filter((stop) =>
     stop.associated.some(
       (school) => schools.find((e) => e.id === school.id)

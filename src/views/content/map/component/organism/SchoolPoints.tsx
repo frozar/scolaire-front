@@ -9,6 +9,7 @@ import {
 } from "../../../board/component/organism/DrawRaceBoard";
 import { onBoard } from "../../../board/component/template/ContextManager";
 import { SchoolPoint } from "../molecule/SchoolPoint";
+import { getSelectedLine } from "./BusLines";
 
 export interface SchoolPointsProps {
   leafletMap: L.Map;
@@ -36,7 +37,13 @@ async function updateSchools() {
 
 //TODO Delete and replace with displayedSchool signal
 function schoolsFilter(): SchoolType[] {
-  let schools = getSchools();
+  let schools = getSchools().filter((school) =>
+    getSelectedLine()
+      ? getSelectedLine()
+          ?.schools.map((schoolMap) => schoolMap.id)
+          .includes(school.id)
+      : true
+  );
 
   if (onBoard() == "race-draw") {
     const schoolsSelected = currentRace.schools;
