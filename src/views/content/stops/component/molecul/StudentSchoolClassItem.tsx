@@ -1,4 +1,5 @@
 import { AssociatedPointType } from "../../../../../_entities/_utils.entity";
+import { StudentToSchoolService } from "../../../../../_services/student-to-school.service";
 import CardTitle from "../../../../../component/atom/CardTitle";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
 import PencilIcon from "../../../../../icons/PencilIcon";
@@ -7,9 +8,15 @@ import { QuantityUtils } from "../../../../../utils/quantity.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import "./StudentSchoolClassItem.css";
 
-export default function (props: { school: AssociatedPointType }) {
-  function onClickDelete() {
-    console.log("delete school");
+export default function (props: {
+  school: AssociatedPointType;
+  removeClassStudentToSchoolItem: (id: number) => void;
+}) {
+  async function onClickDelete() {
+    const response = await StudentToSchoolService.delete(
+      props.school.studentSchoolId
+    );
+    props.removeClassStudentToSchoolItem(response);
   }
 
   function onClickEdit() {
