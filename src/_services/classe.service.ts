@@ -13,4 +13,14 @@ export namespace ClasseService {
     const dbClasse: ClasseDBType = await ServiceUtils.post("/classe", data);
     return ClasseEntity.build(dbClasse);
   }
+
+  export async function update(classe: ClasseType): Promise<ClasseType> {
+    const data = ClasseEntity.dbFormat(classe);
+    const dbClasse: ClasseDBType = await ServiceUtils.patch(
+      "/classe/" + classe.id,
+      data
+    );
+    if (dbClasse == null) return dbClasse;
+    return ClasseEntity.build(dbClasse);
+  }
 }

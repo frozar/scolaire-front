@@ -19,7 +19,7 @@ interface ClasseItemProps {
 export default function (props: ClasseItemProps) {
   function onClickEdit() {
     console.log("Edit classe");
-    setSelectedClasse(props.class.id);
+    setSelectedClasse(props.class);
     changeBoard("school-class-modify");
   }
 

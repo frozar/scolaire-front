@@ -1,11 +1,15 @@
 // TODO: Refactor whit ClasseBoard.tsx
 
 import { createSignal } from "solid-js";
-import { SchoolType } from "../../../../../_entities/school.entity";
+import { ClasseType } from "../../../../../_entities/classe.entity";
+import { ClasseService } from "../../../../../_services/classe.service";
 import BoardFooterActions from "../../../board/component/molecule/BoardFooterActions";
 import LabeledInputField from "../../../board/component/molecule/LabeledInputField";
 import { changeBoard } from "../../../board/component/template/ContextManager";
-import { getSchools } from "../../../map/component/organism/SchoolPoints";
+import {
+  getSchools,
+  setSchools,
+} from "../../../map/component/organism/SchoolPoints";
 import ClasseLinkedSchool from "../atom/ClasseLinkedSchool";
 import ClasseBoardHeader from "../molecule/ClasseBoardHeader";
 import TimesInputWrapper from "../molecule/TimesInputWrapper";
@@ -16,18 +20,21 @@ type HeureFormat = {
   minutes: number;
 };
 // TODO: Mettre en place vider un signal
-export const [selectedClasse, setSelectedClasse] = createSignal<number>();
-
+export const [selectedClasse, setSelectedClasse] = createSignal<ClasseType>();
+// ! ??
+// eslint-disable-next-line solid/reactivity
 export default function () {
   // const defaultTime = {
   //   hour: 0,
   //   minutes: 0,
   // };
-  const school = schoolDetailsItem() as SchoolType;
+  // const school = schoolDetailsItem() as SchoolType;
   // if (!school) return <></>;
-  const classe = school.classes.filter(
-    (classe) => classe.id == selectedClasse()
-  )[0];
+
+  // const classe = school.classes.filter(
+  //   (classe) => classe.id == selectedClasse()
+  // )[0];
+  const classe = selectedClasse() as ClasseType;
 
   const [classeName, setClasseName] = createSignal(classe.name);
 
@@ -52,36 +59,55 @@ export default function () {
     setClasseName(e.target.value);
   }
 
-  async function onClickAddClasse() {
+  // async function onClickAddClasse() {
+  //   const schoolId = schoolDetailsItem()?.id;
+  //   if (!schoolId) return;
+
+  //   setSchoolDetailsItem(
+  //     getSchools().filter((school) => school.id == schoolId)[0]
+  //   );
+  //   changeBoard("school-details");
+  // }
+  // TODO:
+  async function onClickModifyClasse() {
     const schoolId = schoolDetailsItem()?.id;
     if (!schoolId) return;
+    console.log("selectedClasse() ====>", selectedClasse());
+    const modifiedClasse: ClasseType = {
+      ...selectedClasse(),
+      name: classeName(),
+      morningStart: morningStart(),
+      morningEnd: morningEnd(),
+      afternoonStart: afternoonStart(),
+      afternoonEnd: afternoonEnd(),
+    };
+    console.log("modified classe ====>", modifiedClasse);
 
-    // TODO: Verify if schedules input different of "0:0" then display user message and return;
-    // const updatedClasse: ClasseType = {
-    //   schoolId: schoolId,
-    //   name: classeName(),
-    //   morningStart: morningStart(),
-    //   morningEnd: morningEnd(),
-    //   afternoonStart: afternoonStart(),
-    //   afternoonEnd: afternoonEnd(),
-    // };
+    const updatedClasse = await ClasseService.update(modifiedClasse);
+    console.log("updatedClasse", updatedClasse);
+    // TODO: Ajouter aux données locales
+    setSchools((prev) => {
+      const schoolToModify = prev.filter((school) => school.id == schoolId)[0];
+      // TODO: Fix old classe not deleted
+      const newSchools = [...prev].filter((school) => school.id != schoolId);
+      newSchools.push({
+        ...schoolToModify,
+        classes: [
+          ...schoolToModify.classes.filter(
+            (classe) => classe.id != updatedClasse.id
+          ),
+          updatedClasse,
+        ],
+      });
+      return newSchools;
+    });
+    console.log("updated Schools =>", getSchools());
 
-    // const returnedClasse = await ClasseService.create(updatedClasse);
-    // ! ClasseService.update() à mettre en place
-
-    // setSchools((prev) => {
-    //   const schoolToModify = prev.filter((school) => school.id == schoolId)[0];
-    //   const newSchools = [...prev].filter((school) => school.id != schoolId);
-    //   newSchools.push({
-    //     ...schoolToModify,
-    //     classes: [...schoolToModify.classes, returnedClasse],
-    //   });
-    //   return newSchools;
-    // });
-
+    // TODO: Switch de board
     setSchoolDetailsItem(
       getSchools().filter((school) => school.id == schoolId)[0]
     );
+    console.log("updated schoolDetailsItem =>", schoolDetailsItem());
     changeBoard("school-details");
   }
 
@@ -126,7 +152,7 @@ export default function () {
 
       <BoardFooterActions
         nextStep={{
-          callback: onClickAddClasse,
+          callback: onClickModifyClasse,
           label: "Suivant",
         }}
         previousStep={{
