@@ -173,14 +173,12 @@ async function nextStep() {
       }
 
       updatePointColor();
-
       const stops = getStops().filter((elem) =>
         stopSelected
           .filter((elem) => elem.done)
           .map((val) => val.associated.id)
           .includes(elem.id)
       );
-
       setCurrentLine({
         ...(currentLine() ?? BusLineEntity.defaultBusLine()),
         stops,
