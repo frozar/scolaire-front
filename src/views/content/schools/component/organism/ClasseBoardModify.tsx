@@ -1,7 +1,10 @@
 // TODO: Refactor whit ClasseBoard.tsx
 
 import { createSignal } from "solid-js";
-import { ClasseType } from "../../../../../_entities/classe.entity";
+import {
+  ClasseType,
+  HeureFormat,
+} from "../../../../../_entities/classe.entity";
 import { ClasseService } from "../../../../../_services/classe.service";
 import BoardFooterActions from "../../../board/component/molecule/BoardFooterActions";
 import LabeledInputField from "../../../board/component/molecule/LabeledInputField";
@@ -15,10 +18,6 @@ import ClasseBoardHeader from "../molecule/ClasseBoardHeader";
 import TimesInputWrapper from "../molecule/TimesInputWrapper";
 import { schoolDetailsItem, setSchoolDetailsItem } from "./SchoolDetails";
 
-type HeureFormat = {
-  hour: number;
-  minutes: number;
-};
 // TODO: Mettre en place vider un signal
 export const [selectedClasse, setSelectedClasse] = createSignal<ClasseType>();
 // ! ??
