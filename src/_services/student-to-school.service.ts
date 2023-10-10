@@ -39,4 +39,9 @@ export class StudentToSchoolService {
     );
     return response;
   }
+
+  static async delete(id: number): Promise<number> {
+    const response = await ServiceUtils.delete("/student-to-school/" + id);
+    return response;
+  }
 }
