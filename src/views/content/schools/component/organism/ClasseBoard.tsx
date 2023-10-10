@@ -21,10 +21,10 @@ import { schoolDetailsItem, setSchoolDetailsItem } from "./SchoolDetails";
 
 export const [selectedClasse, setSelectedClasse] = createSignal<ClasseType>();
 
-// TODO: Remove this eslint exception ?
 // eslint-disable-next-line solid/reactivity
 export default function () {
   let defaultClasse: ClasseType;
+  // Case adding a new classe
   if (onBoard() == "school-class-add") {
     const defaultTime = {
       hour: 0,
@@ -37,6 +37,7 @@ export default function () {
       afternoonStart: defaultTime,
       afternoonEnd: defaultTime,
     };
+    // Case modifying an existing classe
   } else {
     const classe = selectedClasse() as ClasseType;
     defaultClasse = {
@@ -76,23 +77,22 @@ export default function () {
     if (!schoolId) return;
 
     // TODO: Verify if schedules input different of "0:0" then display user message and return;
-    const newClasse: ClasseType = {
+
+    const newClasse = await ClasseService.create({
       schoolId: schoolId,
       name: classeName(),
       morningStart: morningStart(),
       morningEnd: morningEnd(),
       afternoonStart: afternoonStart(),
       afternoonEnd: afternoonEnd(),
-    };
-
-    const returnedClasse = await ClasseService.create(newClasse);
+    });
 
     setSchools((prev) => {
       const schoolToModify = prev.filter((school) => school.id == schoolId)[0];
       const newSchools = [...prev].filter((school) => school.id != schoolId);
       newSchools.push({
         ...schoolToModify,
-        classes: [...schoolToModify.classes, returnedClasse],
+        classes: [...schoolToModify.classes, newClasse],
       });
       return newSchools;
     });
@@ -103,7 +103,6 @@ export default function () {
     changeBoard("school-details");
   }
 
-  // TODO: Clean
   async function onClickModifyClasse() {
     const schoolId = schoolDetailsItem()?.id;
     if (!schoolId) return;
