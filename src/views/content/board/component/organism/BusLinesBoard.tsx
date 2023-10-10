@@ -1,5 +1,4 @@
 import { createSignal } from "solid-js";
-import { LineType } from "../../../../../_entities/line.entity";
 import PlusIcon from "../../../../../icons/PlusIcon";
 import { displayAddCourseMessage } from "../../../../../userInformation/utils";
 import { getLines } from "../../../map/component/organism/BusLines";
@@ -14,7 +13,6 @@ import ButtonIcon from "../molecule/ButtonIcon";
 import { changeBoard, onBoard } from "../template/ContextManager";
 import "./BusLines.css";
 
-export const [currentBusLine, setCurrentBusLine] = createSignal<LineType>();
 export default function () {
   const [searchKeyword, setSearchKeyword] = createSignal<string>("");
 

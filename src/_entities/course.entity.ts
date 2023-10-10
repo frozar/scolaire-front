@@ -47,7 +47,7 @@ export class BusCourseEntity {
     }
 
     setMetrics(dbData.metrics);
-    console.log("dbData", dbData);
+
     return {
       id: dbData.id,
       schools: [school],

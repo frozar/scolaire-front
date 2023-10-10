@@ -3,15 +3,16 @@ import CardTitle from "../../../../../component/atom/CardTitle";
 import Pellet from "../../../../../component/atom/Pellet";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
 import ArretsLogo from "../../../../../icons/ArretsLogo";
-import { setCurrentBusLine } from "../../../board/component/organism/BusLinesBoard";
 import { setOnBoard } from "../../../board/component/template/ContextManager";
+import { deselectAllLines } from "../../../map/component/organism/BusLines";
 import { setCourses } from "../../../map/component/organism/Courses";
 import ClasseLinkedSchool from "../atom/ClasseLinkedSchool";
 import "./CourseItem.css";
 
 export function displayBusLine(line: LineType): void {
-  setCurrentBusLine(line);
-  console.log("line", line);
+  deselectAllLines();
+  line.setSelected(true);
+
   setCourses(line.courses.length > 0 ? line.courses : []);
   setOnBoard("course");
 }

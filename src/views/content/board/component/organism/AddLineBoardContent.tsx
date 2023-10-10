@@ -127,6 +127,8 @@ export default function () {
   );
 }
 
+//TODO Externaliser les fonctions ci dessous
+
 const setColorOnLine = (color: string): LineType | undefined => {
   const line: LineType | undefined = currentLine();
 

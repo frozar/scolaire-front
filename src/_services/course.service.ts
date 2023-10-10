@@ -4,7 +4,7 @@ import {
   CourseType,
 } from "../_entities/course.entity";
 import { BusLineEntity, LineDBType, LineType } from "../_entities/line.entity";
-import { currentBusLine } from "../views/content/board/component/organism/BusLinesBoard";
+import { getSelectedLine } from "../views/content/map/component/organism/BusLines";
 import { ServiceUtils } from "./_utils.service";
 
 export class BusCourseService {
@@ -19,7 +19,7 @@ export class BusCourseService {
     const data = BusCourseEntity.dbFormat(line);
 
     const dbBusCourse: { bus_lines: LineDBType[] } = await ServiceUtils.post(
-      "/busline/" + currentBusLine()?.id + "/bus-course_v2", //TODO tester la v2
+      "/busline/" + getSelectedLine()?.id + "/bus-course_v2", //TODO tester la v2
       data
     );
 

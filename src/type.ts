@@ -1,5 +1,6 @@
 import { Accessor, JSX, Setter } from "solid-js";
 import { CourseType } from "./_entities/course.entity";
+import { LineType } from "./_entities/line.entity";
 import { StopType } from "./_entities/stop.entity";
 import { PointType } from "./views/content/map/component/atom/Point";
 
@@ -86,7 +87,7 @@ export type userInformationType = {
 
 export type removeConfirmationType = {
   displayed: boolean;
-  course: CourseType | null;
+  course: CourseType | null | LineType;
 };
 
 export type removeRamassageConfirmationType = {

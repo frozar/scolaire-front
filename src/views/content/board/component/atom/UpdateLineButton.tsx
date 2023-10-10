@@ -1,13 +1,11 @@
-import { CourseType } from "../../../../../_entities/course.entity";
-
 import { createSignal } from "solid-js";
+import { LineType } from "../../../../../_entities/line.entity";
 import UpdateButton from "../../../../../icons/UpdatePen";
 import "./DrawUpdateButton.css";
 
-export const [unmodifiedCourse, setUnmodifiedCourse] =
-  createSignal<CourseType>();
+export const [unmodifiedCourse, setUnmodifiedCourse] = createSignal<LineType>();
 
-export default function (props: { course: CourseType }) {
+export default function (props: { line: LineType }) {
   async function onclick() {
     console.log("course update", props);
     // setLineUnderConstruction({

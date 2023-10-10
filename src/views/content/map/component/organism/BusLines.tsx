@@ -68,6 +68,11 @@ export const getSelectedLine = (): LineType | undefined => {
   return selectedLine;
 };
 
+// export const setSelectedLine = (newBusLine: LineType) => {
+//   deselectAllLines();
+//   newBusLine.setSelected(true);
+// };
+
 export function updateBusLines(line: LineType) {
   let newBusLines = getLines();
   if (line.id) {

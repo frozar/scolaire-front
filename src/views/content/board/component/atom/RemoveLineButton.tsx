@@ -1,22 +1,21 @@
-import { CourseType } from "../../../../../_entities/course.entity";
+import { LineType } from "../../../../../_entities/line.entity";
 import TrashIcon from "../../../../../icons/TrashIcon";
-import { setRemoveConfirmation } from "../../../../../signaux";
-import { deselectAllPoints } from "../../../map/component/organism/Points";
 import ButtonIcon from "../molecule/ButtonIcon";
 
 export interface RemoveLineButtonProps {
-  course: CourseType;
+  line: LineType;
 }
 
 export default function (props: RemoveLineButtonProps) {
   const onclick = () => {
-    deselectAllPoints();
-    if (props.course.id) {
-      setRemoveConfirmation({
-        displayed: true,
-        course: props.course,
-      });
-    }
+    console.log(" delete line :", props);
+    // deselectAllPoints();
+    // if (props.line.id) {
+    //   setRemoveConfirmation({
+    //     displayed: true,
+    //     course: props.line,
+    //   });
+    // }
   };
 
   return (
