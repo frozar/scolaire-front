@@ -17,6 +17,7 @@ import { getSchools } from "../../../map/component/organism/SchoolPoints";
 import ClasseSelection from "../atom/ClasseSelection";
 import InputNumber from "../atom/InputNumber";
 import SchoolSelect from "../atom/SchoolSelection";
+import { stopDetailsItem } from "../organism/StopDetails";
 import "./EditStudentSchoolClassItem.css";
 
 interface EditStopProps {
@@ -24,7 +25,6 @@ interface EditStopProps {
   updateClassStudentToSchoolOfStop?: (item: AssociatedPointType) => void;
   appendClassToList?: (classItem: AssociatedPointType) => void;
   close: () => void;
-  stopID: number;
 }
 
 export default function (props: EditStopProps) {
@@ -88,7 +88,7 @@ export default function (props: EditStopProps) {
   > {
     return ClassStudentToSchool.dbFormat({
       schoolId: Number(schoolSelectRef().value),
-      stopId: Number(props.stopID),
+      stopId: Number(stopDetailsItem()?.id),
       quantity: Number(quantityInputRef().value),
       classId: Number(classeSelectRef().value),
     });
