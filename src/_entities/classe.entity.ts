@@ -1,5 +1,3 @@
-import { HeureFormat } from "../views/content/schools/component/organism/ClasseBoard";
-
 export namespace ClasseEntity {
   export function build(dbData: ClasseDBType): ClasseType {
     return {
@@ -32,6 +30,11 @@ export namespace ClasseEntity {
     };
   }
 }
+
+export type HeureFormat = {
+  hour: number;
+  minutes: number;
+};
 
 export type ClasseDBType = {
   id: number;

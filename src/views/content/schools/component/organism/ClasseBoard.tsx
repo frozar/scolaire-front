@@ -1,5 +1,8 @@
 import { createSignal } from "solid-js";
-import { ClasseType } from "../../../../../_entities/classe.entity";
+import {
+  ClasseType,
+  HeureFormat,
+} from "../../../../../_entities/classe.entity";
 import { ClasseService } from "../../../../../_services/classe.service";
 import BoardFooterActions from "../../../board/component/molecule/BoardFooterActions";
 import LabeledInputField from "../../../board/component/molecule/LabeledInputField";
@@ -12,11 +15,6 @@ import ClasseLinkedSchool from "../atom/ClasseLinkedSchool";
 import ClasseBoardHeader from "../molecule/ClasseBoardHeader";
 import TimesInputWrapper from "../molecule/TimesInputWrapper";
 import { schoolDetailsItem, setSchoolDetailsItem } from "./SchoolDetails";
-
-export type HeureFormat = {
-  hour: number;
-  minutes: number;
-};
 
 export default function () {
   const defaultTime = {

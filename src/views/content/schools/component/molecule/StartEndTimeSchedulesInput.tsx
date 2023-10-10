@@ -1,6 +1,6 @@
 import { Accessor, Setter } from "solid-js";
+import { HeureFormat } from "../../../../../_entities/classe.entity";
 import TimeInput from "../atom/TimeInput";
-import { HeureFormat } from "../organism/ClasseBoard";
 
 interface TimeSchedulesInputProps {
   startSetter: Setter<HeureFormat>;
