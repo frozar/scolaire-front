@@ -1,6 +1,12 @@
 import { createSignal, onMount } from "solid-js";
+import { AssociatedPointType } from "../../../../../_entities/_utils.entity";
 import { ClasseType } from "../../../../../_entities/classe.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
+import {
+  ClassStudentToSchool,
+  ClassStudentToSchoolDBType,
+} from "../../../../../_entities/student-to-school.entity";
+import { StudentToSchoolService } from "../../../../../_services/student-to-school.service";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
 import CheckIcon from "../../../../../icons/CheckIcon";
 import { addNewUserInformation } from "../../../../../signaux";
@@ -8,22 +14,24 @@ import { MessageLevelEnum, MessageTypeEnum } from "../../../../../type";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { getSchools } from "../../../map/component/organism/SchoolPoints";
 import ClasseSelection from "../atom/ClasseSelection";
-import SchoolSelect from "../atom/SchoolSelect";
-import "./EditStop.css";
+import InputNumber from "../atom/InputNumber";
+import SchoolSelect from "../atom/SchoolSelection";
+import "./EditStudentSchoolClassItem.css";
 
 interface EditStopProps {
+  appendClassToList: (classItem: AssociatedPointType) => void;
   close: () => void;
   stopID: number;
 }
 
 export default function (props: EditStopProps) {
+  const seletElement = document.createElement("select");
+
   const [selectedSchool, setSelectedSchool] = createSignal<SchoolType>();
-  const [schoolSelectRef, setSchoolSelectRef] = createSignal<HTMLSelectElement>(
-    document.createElement("select")
-  );
-  const [classeSelectRef, setClasseSelectRef] = createSignal<HTMLSelectElement>(
-    document.createElement("select")
-  );
+  const [schoolSelectRef, setSchoolSelectRef] =
+    createSignal<HTMLSelectElement>(seletElement);
+  const [classeSelectRef, setClasseSelectRef] =
+    createSignal<HTMLSelectElement>(seletElement);
   const [quantityInputRef, setQuantityInputRef] =
     createSignal<HTMLInputElement>(document.createElement("input"));
 
@@ -61,37 +69,53 @@ export default function (props: EditStopProps) {
     classeSelectRef().disabled = false;
   };
 
-  async function validate() {
-    // TODO make request to add student quantity from class of school to the stop
-    console.log(
-      "TODO make request to add student quantity from class of school to the stop"
-    );
+  function getClassStudentToSchool(): Omit<ClassStudentToSchoolDBType, "id"> {
+    return ClassStudentToSchool.dbFormat({
+      schoolId: Number(schoolSelectRef().value),
+      stopId: Number(props.stopID),
+      quantity: Number(quantityInputRef().value),
+      classId: Number(classeSelectRef().value),
+    });
+  }
 
-    console.log("selected school", schoolSelectRef().value);
-    console.log(
-      "selected class",
-      classeSelectRef().value == ""
-        ? "no classe selected"
-        : classeSelectRef().value
-    );
-    console.log("choosen student quantity", quantityInputRef().value);
+  function getAssociatedPoint(id: number): AssociatedPointType {
+    return {
+      class: {
+        id: Number(classeSelectRef().value),
+        name: classeSelectRef().selectedOptions[0].text,
+      },
+      id: Number(schoolSelectRef().value),
+      name: schoolSelectRef().selectedOptions[0].text,
+      quantity: Number(quantityInputRef().value),
+      studentSchoolId: id,
+      usedQuantity: 0,
+    };
+  }
 
-    if (
-      schoolSelectRef().value == "" ||
+  function checkAllSelectorHaveSelectedValue() {
+    return (
+      schoolSelectRef().value == "default" ||
       quantityInputRef().value == "0" ||
-      classeSelectRef().value == "default" ||
-      classeSelectRef().value == ""
-    ) {
+      classeSelectRef().value == "default"
+    );
+  }
+
+  async function validate() {
+    if (checkAllSelectorHaveSelectedValue()) {
       return addNewUserInformation({
         displayed: true,
-        level: MessageLevelEnum.error,
+        level: MessageLevelEnum.warning,
         type: MessageTypeEnum.global,
         content: "Veuillez compléter tous les champs !",
       });
-    } else {
-      // TODO make request here
-      props.close();
     }
+
+    const response = await StudentToSchoolService.create(
+      getClassStudentToSchool()
+    );
+
+    props.appendClassToList(getAssociatedPoint(response.id));
+    props.close();
   }
 
   function onChangeSelectClasse() {
@@ -105,7 +129,7 @@ export default function (props: EditStopProps) {
 
   return (
     <CardWrapper class="edit-stop">
-      <div class="flex justify-between my-2">
+      <div class="edit-stop-top-line">
         <SchoolSelect
           onChange={onChangeSchoolSelect}
           refSelectSetter={setSchoolSelectRef}
@@ -115,18 +139,17 @@ export default function (props: EditStopProps) {
         <ButtonIcon icon={<CheckIcon />} onClick={validate} />
       </div>
 
-      <div class="flex gap-1 w-[100%]">
+      <div class="edit-stop-bottom-line">
         <ClasseSelection
           refSelectSetter={setClasseSelectRef}
           classes={selectedSchool()?.classes as ClasseType[]}
           onChange={onChangeSelectClasse}
         />
-        <input
+        <InputNumber
           ref={setQuantityInputRef}
           class="input-form w-full"
           min={0}
-          value={0}
-          type="number"
+          defaultValue={0}
           placeholder="Quantité"
         />
       </div>

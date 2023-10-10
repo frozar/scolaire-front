@@ -7,11 +7,11 @@ import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { changeBoard } from "../../../board/component/template/ContextManager";
 import { getCourses } from "../../../map/component/organism/Courses";
 import CoursesList from "../../../schools/component/organism/CoursesList";
-import EditStop from "../molecul/EditStop";
+import EditStop from "../molecul/EditStudentSchoolClassItem";
 import StopDetailsHeader from "../molecul/StopDetailsHeader";
 import StopDetailsPanelsButton from "../molecul/StopDetailsPanelsButton";
-import SchoolList from "./SchoolList";
 import "./StopDetails.css";
+import StudentSchoolClassList from "./StudentSchoolClassList";
 
 export const [stopDetailsItem, setStopDetailsItem] = createSignal<StopType>();
 
@@ -44,6 +44,18 @@ export default function () {
     return lines;
   }
 
+  function appendClassToStop(classItem: AssociatedPointType) {
+    setStopDetailsItem((prev) => {
+      let currentItem;
+      if (prev != undefined) {
+        currentItem = { ...prev };
+        currentItem?.associated.push(classItem);
+      }
+
+      return currentItem;
+    });
+  }
+
   return (
     <section>
       <StopDetailsHeader stop={stopDetailsItem() as StopType} />
@@ -66,12 +78,13 @@ export default function () {
       <div class="content mt-2">
         <Switch>
           <Match when={onPanel() == StopPanels.classes}>
-            <SchoolList
+            <StudentSchoolClassList
               schools={stopDetailsItem()?.associated as AssociatedPointType[]}
             />
 
             <Show when={editItem()}>
               <EditStop
+                appendClassToList={appendClassToStop}
                 close={toggleEditItem}
                 stopID={stopDetailsItem()?.id as number}
               />

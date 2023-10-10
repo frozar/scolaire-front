@@ -5,7 +5,7 @@ import PencilIcon from "../../../../../icons/PencilIcon";
 import TrashIcon from "../../../../../icons/TrashIcon";
 import { QuantityUtils } from "../../../../../utils/quantity.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
-import "./StopSchoolItem.css";
+import "./StudentSchoolClassItem.css";
 
 export default function (props: { school: AssociatedPointType }) {
   function onClickDelete() {
