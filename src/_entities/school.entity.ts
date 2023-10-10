@@ -2,7 +2,7 @@ import { Accessor, Setter, createSignal } from "solid-js";
 import { useStateGui } from "../StateGui";
 import { NatureEnum } from "../type";
 import { QuantityUtils } from "../utils/quantity.utils";
-import { getCourses } from "../views/content/map/component/organism/Courses";
+import { getRaces } from "../views/content/map/component/organism/Races";
 import {
   AssociatedDBPointType,
   AssociatedPointType,
@@ -52,6 +52,7 @@ export class SchoolEntity {
     });
   }
 
+  // TODO à place dans un SchoolUtils
   static getTotalQuantity(school: SchoolType) {
     let quantity = 0;
     for (const stop of school.associated) {
@@ -60,6 +61,7 @@ export class SchoolEntity {
     return quantity;
   }
 
+  // TODO à place dans un SchoolUtils
   static getRemainingQuantity(school: SchoolType) {
     let quantity = 0;
     for (const stop of school.associated) {
@@ -68,10 +70,11 @@ export class SchoolEntity {
     return quantity;
   }
 
-  static getSchoolCourses(currentSchoolId: number) {
+  // TODO à place dans un SchoolUtils
+  static getSchoolRaces(currentSchoolId: number) {
     const lines = [];
 
-    for (const line of getCourses()) {
+    for (const line of getRaces) {
       const _line = line.schools.filter((l) => l.id == currentSchoolId);
       if (_line.length > 0) lines.push(line);
     }

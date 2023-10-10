@@ -1,4 +1,4 @@
-.school-details-line-list{
+.races-list{
   @apply pl-4;
   overflow-y:auto;
   padding-right: 0.5rem;

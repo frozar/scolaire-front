@@ -4,18 +4,16 @@ import {
   setSchoolPointsColor,
   setStopPointsColor,
 } from "../../../leafletUtils";
-import { addBusCourse } from "../../../request";
 import {
   displayedClearConfirmationDialogBox,
   getDisplayedGeneratorDialogBox,
   getExportConfirmationDialogBox,
   getRemoveConfirmation,
 } from "../../../signaux";
-import { displayAddCourseMessage } from "../../../userInformation/utils";
 import { MapElementUtils } from "../../../utils/mapElement.utils";
 import {
-  currentStep,
-  drawModeStep,
+  DrawModeStep,
+  setCurrentRace,
   setCurrentStep,
 } from "../board/component/organism/DrawModeBoardContent";
 import {
@@ -23,29 +21,20 @@ import {
   onBoard,
   toggleDrawMod,
 } from "../board/component/template/ContextManager";
-import { displayedConfirmStopAddCourse } from "./ConfirmStopAddCourseBox";
 
 import { deselectAllPoints } from "./component/organism/Points";
 import { COLOR_SCHOOL_FOCUS, COLOR_STOP_FOCUS } from "./constant";
 
-const [
-  ,
-  {
-    setModeAddCourse,
-    isInAddCourseMode,
-    resetCourseUnderConstruction,
-    getCourseUnderConstruction,
-    setModeRead,
-  },
-  history,
-] = useStateAction();
+const [, { setModeDrawRace, isInDrawRaceMode, setModeRead }, history] =
+  useStateAction();
 
 const isOpenedModal = () =>
   getExportConfirmationDialogBox().displayed ||
   getDisplayedGeneratorDialogBox() ||
   displayedClearConfirmationDialogBox().displayed ||
-  getRemoveConfirmation().displayed ||
-  displayedConfirmStopAddCourse();
+  getRemoveConfirmation().displayed;
+// TODO MAYBE_ERROR
+// || displayedConfirmStopDrawRace();
 
 const [, { getSelectedMenu }] = useStateGui();
 
@@ -81,9 +70,9 @@ function escapeHandler({ code }: KeyboardEvent) {
   }
 
   if (code === "Escape") {
-    if (onBoard() == "course-draw") {
-      quitModeAddCourse();
-      setCurrentStep(drawModeStep.start);
+    if (onBoard() == "line-draw") {
+      quitModeDrawRace();
+      setCurrentStep(DrawModeStep.start);
     }
     changeBoard("line");
     MapElementUtils.deselectAllPointsAndBusCourses();
@@ -93,9 +82,9 @@ function escapeHandler({ code }: KeyboardEvent) {
   }
 }
 
-export function quitModeAddCourse() {
+export function quitModeDrawRace() {
   // setModeRead();
-  resetCourseUnderConstruction();
+  setCurrentRace({});
   setStopPointsColor([], COLOR_STOP_FOCUS);
   setSchoolPointsColor([], COLOR_SCHOOL_FOCUS);
   toggleDrawMod();
@@ -107,34 +96,28 @@ function enterHandler({ code }: KeyboardEvent) {
   }
 
   if (code === "Enter") {
-    if (
-      !isInAddCourseMode() ||
-      currentStep() === drawModeStep.schoolSelection
-    ) {
-      return;
-    }
-    const resourceInfo = getCourseUnderConstruction().course.points.map(
-      function (value) {
-        return {
-          id_resource: value["id"],
-          nature: value["nature"].toLowerCase(),
-        };
-      }
-    );
-
-    addBusCourse(resourceInfo).then(async (res) => {
-      if (!res) {
-        console.error("addBusCourse failed");
-        return;
-      }
-
-      await res.json();
-
-      resetCourseUnderConstruction();
-      setModeRead();
-      //TODO voir l'impact de la suppression
-      // fetchBusCourses();
-    });
+    // if (!isInDrawRaceMode() || currentStep() === DrawModeStep.schoolSelection) {
+    //   return;
+    // }
+    // const resourceInfo = getCourseUnderConstruction().course.points.map(
+    //   function (value) {
+    //     return {
+    //       id_resource: value["id"],
+    //       nature: value["nature"].toLowerCase(),
+    //     };
+    //   }
+    // );
+    // addBusCourse(resourceInfo).then(async (res) => {
+    //   if (!res) {
+    //     console.error("addBusCourse failed");
+    //     return;
+    //   }
+    //   await res.json();
+    //   resetCourseUnderConstruction();
+    //   setModeRead();
+    //   //TODO voir l'impact de la suppression
+    //   // fetchBusCourses();
+    // });
   }
 }
 
@@ -149,16 +132,13 @@ function toggleCourseUnderConstruction({ code }: KeyboardEvent) {
   keyboard.getLayoutMap().then((keyboardLayoutMap) => {
     const upKey = keyboardLayoutMap.get(code);
     if (upKey === "l") {
-      if (isInAddCourseMode()) {
+      if (isInDrawRaceMode()) {
         setModeRead();
-        //TODO voir l'impact de la suppression
-        // fetchBusCourses();
       } else {
         deselectAllPoints();
-        setModeAddCourse();
-        //TODO voir l'impact de la suppression
-        // fetchBusCourses();
-        displayAddCourseMessage();
+        setModeDrawRace();
+        // TODO MAYBE_ERROR
+        // displayDrawRaceMessage();
       }
     }
   });

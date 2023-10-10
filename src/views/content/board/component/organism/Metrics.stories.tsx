@@ -16,7 +16,7 @@ export const Label: Story = {
   },
 
   args: {
-    line: {
+    race: {
       metrics: () => {
         return { distance: 0 };
       },

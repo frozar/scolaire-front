@@ -12,6 +12,13 @@ export class EntityUtils {
     };
   }
 
+  static formatColorForDB(color: string) {
+    if (color.startsWith("#")) {
+      return color.replace("#", "");
+    }
+    return color;
+  }
+
   static buildLocationPath(latLngs: L.LatLng[]): LocationPathDBType {
     return {
       type: LocationDBTypeEnum.path,

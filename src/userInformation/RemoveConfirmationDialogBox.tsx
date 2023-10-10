@@ -8,15 +8,12 @@ import {
   getRemoveConfirmation,
 } from "../signaux";
 
-import { BusCourseService } from "../_services/course.service";
+import { RaceService } from "../_services/race.service";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { assertIsNode } from "../utils";
 import { MapElementUtils } from "../utils/mapElement.utils";
 import { changeBoard } from "../views/content/board/component/template/ContextManager";
-import {
-  getCourses,
-  setCourses,
-} from "../views/content/map/component/organism/Courses";
+import { setRaces } from "../views/content/map/component/organism/Races";
 
 // HACK for the documentation to preserve the ClickOutside directive on save
 // https://www.solidjs.com/guides/typescript#use___
@@ -34,11 +31,13 @@ export default function () {
 
     const idToRemove: number = idToCheck;
 
-    const isDeleted: boolean = await BusCourseService.delete(idToRemove);
+    const isDeleted: boolean = await RaceService.delete(idToRemove);
     if (isDeleted) {
       closeRemoveConfirmationBox();
 
-      setCourses(getCourses().filter((line) => line.id != idToRemove));
+      setRaces((races) => {
+        return races.filter((race) => race.id != idToRemove);
+      });
 
       addNewUserInformation({
         displayed: true,

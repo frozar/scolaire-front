@@ -1,17 +1,16 @@
 import L from "leaflet";
 import { For, createEffect, createSignal } from "solid-js";
-import { useStateAction } from "../../../../../StateAction";
 import { useStateGui } from "../../../../../StateGui";
 import { StopType } from "../../../../../_entities/stop.entity";
 import { StopService } from "../../../../../_services/stop.service";
 import {
+  DrawModeStep,
+  currentRace,
   currentStep,
-  drawModeStep,
 } from "../../../board/component/organism/DrawModeBoardContent";
 import { PointInterface } from "../atom/Point";
 import { StopPoint } from "../molecule/StopPoint";
 
-const [, { getCourseUnderConstruction }] = useStateAction();
 const [, { nextLeafletPointId }] = useStateGui();
 
 export interface StopPointsProps {
@@ -66,15 +65,14 @@ async function updateStop() {
 
 //TODO Delete and replace with displayedStop signal
 export function leafletStopsFilter(): StopType[] {
-  const schools = getCourseUnderConstruction().course.schools;
-
   const stops = getStops();
-  if (currentStep() === drawModeStep.start) {
+  if (currentStep() === DrawModeStep.start) {
     return stops;
   }
-  if (currentStep() === drawModeStep.schoolSelection) {
+  if (currentStep() === DrawModeStep.schoolSelection) {
     return [];
   }
+  const schools = currentRace.schools;
   return stops.filter((stop) =>
     stop.associated.some(
       (school) => schools.find((e) => e.id === school.id)

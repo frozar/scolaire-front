@@ -1,24 +1,27 @@
-import { Show, createEffect, createSignal } from "solid-js";
-import {
-  defaultCourseUnderConstruction,
-  useStateAction,
-} from "../../../../../StateAction";
+import { Show, createSignal } from "solid-js";
 
 import SelectedSchool from "../atom/SelectedSchool";
-
-import {
-  CourseType,
-  updatePolylineWithOsrm,
-} from "../../../../../_entities/course.entity";
-import { BusCourseService } from "../../../../../_services/course.service";
 
 import BoardFooterActions from "../molecule/BoardFooterActions";
 
 import "../../../../../css/timeline.css";
-import { CourseUnderConstructionType } from "../../../../../type";
-import { ColorPicker } from "../../../board/component/atom/ColorPicker";
 
-import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
+import _ from "lodash";
+import { createStore } from "solid-js/store";
+import {
+  RaceEntity,
+  RacePointType,
+  RaceType,
+} from "../../../../../_entities/race.entity";
+import { SchoolType } from "../../../../../_entities/school.entity";
+import { StopType } from "../../../../../_entities/stop.entity";
+import {
+  WaypointEntity,
+  WaypointType,
+} from "../../../../../_entities/waypoint.entity";
+import { OsrmService } from "../../../../../_services/osrm.service";
+import { RaceService } from "../../../../../_services/race.service";
+import CheckIcon from "../../../../../icons/CheckIcon";
 import CurvedLine from "../../../../../icons/CurvedLine";
 import SimpleCourse from "../../../../../icons/SimpleLine";
 import { updatePointColor } from "../../../../../leafletUtils";
@@ -26,45 +29,29 @@ import {
   disableSpinningWheel,
   enableSpinningWheel,
 } from "../../../../../signaux";
+import { NatureEnum } from "../../../../../type";
 import { MapElementUtils } from "../../../../../utils/mapElement.utils";
-import { setLines } from "../../../map/component/organism/BusLines";
-import {
-  getCourses,
-  setCourses,
-  updateBusCourses,
-} from "../../../map/component/organism/Courses";
-import { quitModeAddCourse } from "../../../map/shortcut";
+import { setRaces, updateRaces } from "../../../map/component/organism/Races";
+import { quitModeDrawRace } from "../../../map/shortcut";
 import { DrawHelperButton } from "../atom/DrawHelperButton";
-import {
-  setUnmodifiedBusCourse,
-  unmodifiedBusCourse,
-} from "../atom/UpdateCourseButton";
 import ButtonIcon from "../molecule/ButtonIcon";
 import LabeledInputField from "../molecule/LabeledInputField";
+import { RaceColorPicker } from "../molecule/RaceColorPicker";
 import SchoolsEnumeration from "../molecule/SchoolsEnumeration";
 import { changeBoard } from "../template/ContextManager";
 import CollapsibleElement from "./CollapsibleElement";
 import "./DrawModeBoardContent.css";
 import Metrics from "./Metrics";
-import Timeline from "./Timeline";
+import { RaceTimeline } from "./RaceTimeline";
 
-const [
-  ,
-  {
-    getCourseUnderConstruction,
-    setCourseUnderConstruction,
-    updateNameCourseUnderConstruction,
-  },
-] = useStateAction();
-
-export enum drawModeStep {
+export enum DrawModeStep {
   start,
   schoolSelection,
   editCourse,
 }
 
-export const [currentStep, setCurrentStep] = createSignal<drawModeStep>(
-  drawModeStep.start
+export const [currentStep, setCurrentStep] = createSignal<DrawModeStep>(
+  DrawModeStep.start
 );
 
 export enum displayCourseModeEnum {
@@ -72,109 +59,52 @@ export enum displayCourseModeEnum {
   onRoad = "onRoad",
 }
 
-const setColorOnCourse = (color: string): CourseType | undefined => {
-  const line: CourseUnderConstructionType | undefined =
-    getCourseUnderConstruction();
-
-  if (!line) return;
-
-  line.course.setColor(color);
-
-  return line.course;
-};
-
-const onInput = (color: string) => {
-  const line: CourseType | undefined = setColorOnCourse(color);
-
-  if (!line) return;
-};
-
-const onChange = async (color: string) => {
-  const line: CourseType | undefined = setColorOnCourse(color);
-
-  if (!line) return;
-};
-
-async function onClick() {
-  if (displayCourseMode() == displayCourseModeEnum.straight) {
-    if (getCourseUnderConstruction().course.points.length < 2) {
-      return;
-    }
-    if (!getCourseUnderConstruction().course.waypoints) {
-      const waypoints = WaypointEntity.createWaypointsFromPoints(
-        getCourseUnderConstruction().course
-      );
-      setCourseUnderConstruction({
-        ...getCourseUnderConstruction(),
-        course: {
-          ...getCourseUnderConstruction().course,
-          waypoints,
-        },
-      });
-    }
-    await updatePolylineWithOsrm(getCourseUnderConstruction().course);
-
-    setDisplayCourseMode(displayCourseModeEnum.onRoad);
-  } else if (displayCourseMode() == displayCourseModeEnum.onRoad) {
-    getCourseUnderConstruction().course.setLatLngs([]);
-
-    setDisplayCourseMode(displayCourseModeEnum.straight);
-  }
-}
-
 export const [displayCourseMode, setDisplayCourseMode] =
   createSignal<displayCourseModeEnum>(displayCourseModeEnum.straight);
 
+export const [currentRace, setCurrentRace] = createStore<RaceType>(
+  RaceEntity.defaultRace()
+);
+
+export const [currentRaceIndex, setCurrentRaceIndex] = createSignal(0);
+
+// TODO rename function & file to RaceDrawerBoard
 export default function () {
-  const [lineName, setCourseName] = createSignal<string>(
-    getCourseUnderConstruction().course.name ??
-      getCourseUnderConstruction().course.schools[0].name
-  );
-
-  const etablissementSelected = () => {
-    return getCourseUnderConstruction().course.schools;
-  };
-
-  createEffect(() => {
-    updateNameCourseUnderConstruction(lineName());
-  });
-
   return (
     <div class="add-line-information-board-content">
-      <Show when={currentStep() == drawModeStep.schoolSelection}>
-        <SelectedSchool schoolSelected={etablissementSelected()} />
+      <Show when={currentStep() == DrawModeStep.schoolSelection}>
+        <SelectedSchool schoolSelected={currentRace.schools} />
       </Show>
 
-      <Show when={currentStep() == drawModeStep.editCourse}>
+      <Show when={currentStep() == DrawModeStep.editCourse}>
         <div class="bus-course-information-board-content-schools">
           <SchoolsEnumeration
-            schoolsName={getCourseUnderConstruction().course.schools.map(
-              (school) => school.name
-            )}
+            schoolsName={currentRace.schools.map((school) => school.name)}
           />
-          <Show when={getCourseUnderConstruction().course.points.length > 0}>
-            <DrawHelperButton
-              schools={getCourseUnderConstruction().course.schools}
-            />
+          <Show when={currentRace.points.length > 0}>
+            <DrawHelperButton schools={currentRace.schools} />
           </Show>
         </div>
         <CollapsibleElement title="Métriques">
-          <Metrics line={getCourseUnderConstruction().course} />
+          <Metrics race={currentRace} />
         </CollapsibleElement>
         <LabeledInputField
           label="Nom de la course"
-          value={lineName()}
-          onInput={(e) => setCourseName(e.target.value)}
+          value={currentRace.name}
+          onInput={(e) => setCurrentRace("name", e.target.value)}
           name="line-name"
           placeholder="Entrer le nom de la course"
         />
+        <ButtonIcon
+          icon={<CheckIcon />}
+          onClick={onClickTest}
+          class="line-to-road-btn-icon"
+        />
 
         <div class="flex mt-4 justify-between">
-          <ColorPicker
-            defaultColor={getCourseUnderConstruction().course.color()}
-            title="Couleur de la course"
-            onInput={onInput}
-            onChange={onChange}
+          <RaceColorPicker
+            defaultColor={currentRace.color}
+            onChange={(color) => setCurrentRace("color", color)}
           />
 
           <Show
@@ -196,17 +126,21 @@ export default function () {
         </div>
       </Show>
 
-      <Show when={currentStep() == drawModeStep.editCourse}>
+      <Show when={currentStep() == DrawModeStep.editCourse}>
         <div class="bus-course-information-board-content">
           <Show
-            when={getCourseUnderConstruction().course.points.length > 0}
+            when={currentRace.points.length > 0}
             fallback={
               <div class="flex w-4/5 text-xs justify-center absolute bottom-[500px]">
                 Veuillez sélectionner des points sur la carte
               </div>
             }
           >
-            <Timeline />
+            <RaceTimeline
+              race={currentRace}
+              setRace={setCurrentRace}
+              inDraw={true}
+            />
           </Show>
         </div>
       </Show>
@@ -215,12 +149,12 @@ export default function () {
         nextStep={{
           callback: nextStep,
           label:
-            currentStep() == drawModeStep.editCourse ? "Valider" : "Suivant",
+            currentStep() == DrawModeStep.editCourse ? "Valider" : "Suivant",
         }}
         previousStep={{
           callback: prevStep,
           label:
-            currentStep() === drawModeStep.schoolSelection
+            currentStep() === DrawModeStep.schoolSelection
               ? "Annuler"
               : "Précédant",
         }}
@@ -228,68 +162,74 @@ export default function () {
     </div>
   );
 }
-async function createOrUpdateBusCourse(course: CourseType) {
-  course.setSelected(true);
-  if (course.id == undefined) {
-    await createBusCourse(course);
+
+export function removeSchoolToRace(school: SchoolType) {
+  setCurrentRace("schools", []);
+}
+export function addPointToRace(point: RacePointType) {
+  setCurrentRace("points", (points: RacePointType[]) => {
+    // TODO richard pourquoi cette condition ?
+    // TODO MAYBE_ERROR
+    if (!_.isEqual(points.at(-1), point)) {
+      points.splice(currentRaceIndex(), 0, point);
+    }
+    setCurrentRaceIndex(points.length);
+    return points;
+  });
+}
+
+export function addSchoolToRace(school: SchoolType) {
+  setCurrentRace("schools", [school]);
+}
+
+// TODO delete (use for testing)
+function onClickTest() {
+  console.log(currentRace);
+}
+
+async function createOrUpdateRace() {
+  let race: RaceType = currentRace;
+  if (currentRace.id == undefined) {
+    race = await RaceService.create(currentRace);
   } else {
-    await updateBusCourse(course);
+    race = await RaceService.update(currentRace);
   }
-  quitModeAddCourse();
-  setCurrentStep(drawModeStep.start);
+  updateRaces(race);
+  setRaces((r) => r.id === race.id, "selected", true);
+
+  //TODO to change
   setDisplayCourseMode((prev) =>
     prev == displayCourseModeEnum.straight
       ? prev
       : displayCourseModeEnum.straight
   );
-  selectedUpdatedBusCourse(getCourses().at(-1) as CourseType);
-}
-
-function selectedUpdatedBusCourse(course: CourseType) {
-  getCourses()
-    .filter((line) => line.id === course.id)[0]
-    .setSelected(true);
-}
-
-async function createBusCourse(course: CourseType) {
-  setLines((await BusCourseService.create(course)) ?? []);
-}
-
-//TODO À faire
-async function updateBusCourse(course: CourseType) {
-  const updatedBusCourse: CourseType = await BusCourseService.update(course);
-  updateBusCourses(updatedBusCourse);
+  setCurrentStep(DrawModeStep.start);
+  quitModeDrawRace();
 }
 
 async function nextStep() {
   enableSpinningWheel();
   switch (currentStep()) {
-    case drawModeStep.schoolSelection:
-      if (getCourseUnderConstruction().course.schools.length < 1) {
+    case DrawModeStep.schoolSelection:
+      if (currentRace.schools.length < 1) {
         break;
       }
-      setCurrentStep(drawModeStep.editCourse);
-    case drawModeStep.editCourse:
-      if (getCourseUnderConstruction().course.points.length < 2) {
+      setCurrentStep(DrawModeStep.editCourse);
+    case DrawModeStep.editCourse:
+      if (currentRace.points.length < 2) {
         break;
       }
-      if (!getCourseUnderConstruction().course.waypoints) {
-        const waypoints = WaypointEntity.createWaypointsFromPoints(
-          getCourseUnderConstruction().course
-        );
-        setCourseUnderConstruction({
-          ...getCourseUnderConstruction(),
-          course: {
-            ...getCourseUnderConstruction().course,
-            waypoints,
-          },
-        });
+      if (!currentRace.waypoints) {
+        // TODO doublon avec autre code plus haut
+        const waypoints = WaypointEntity.createWaypointsFromRace(currentRace);
+        setCurrentRace("waypoints", waypoints);
       }
       if (displayCourseMode() == displayCourseModeEnum.straight) {
-        await updatePolylineWithOsrm(getCourseUnderConstruction().course);
+        // TODO polyline
+        await updatePolylineWithOsrm(currentRace);
       }
 
-      await createOrUpdateBusCourse(getCourseUnderConstruction().course);
+      await createOrUpdateRace();
       changeBoard("line-details");
       updatePointColor();
   }
@@ -298,37 +238,37 @@ async function nextStep() {
 
 function prevStep() {
   switch (currentStep()) {
-    case drawModeStep.schoolSelection:
-      setCourseUnderConstruction(defaultCourseUnderConstruction());
-      quitModeAddCourse();
+    case DrawModeStep.schoolSelection:
+      setCurrentRace(RaceEntity.defaultRace());
+      quitModeDrawRace();
 
-      setCurrentStep(drawModeStep.start);
+      setCurrentStep(DrawModeStep.start);
       changeBoard("line");
       MapElementUtils.deselectAllPointsAndBusCourses();
 
       break;
-    case drawModeStep.editCourse:
-      const course = unmodifiedBusCourse();
-      if (course) {
-        setCourses((buscourses) => {
-          buscourses = [
-            ...buscourses.filter(
-              (course) => course.id != getCourseUnderConstruction().course.id
-            ),
-          ];
-          buscourses.push(course);
-          return buscourses;
-        });
-        setUnmodifiedBusCourse(undefined);
-      }
+    case DrawModeStep.editCourse:
+      //TODO maybe unused
+      // const course = unmodifiedBusCourse();
+      // if (course) {
+      //   setCourses((buscourses) => {
+      //     buscourses = [
+      //       ...buscourses.filter((course) => course.id != currentRace.id),
+      //     ];
+      //     buscourses.push(course);
+      //     return buscourses;
+      //   });
+      //   setUnmodifiedBusCourse(undefined);
+      // }
 
-      setCourseUnderConstruction(defaultCourseUnderConstruction());
+      setCurrentRace(RaceEntity.defaultRace());
 
       if (displayCourseMode() == displayCourseModeEnum.onRoad) {
-        getCourseUnderConstruction().course.setLatLngs([]);
+        // TODO me semble étrange
+        setCurrentRace("latLngs", []);
       }
 
-      setCurrentStep(drawModeStep.schoolSelection);
+      setCurrentStep(DrawModeStep.schoolSelection);
       break;
   }
   setDisplayCourseMode((prev) =>
@@ -336,4 +276,125 @@ function prevStep() {
       ? prev
       : displayCourseModeEnum.straight
   );
+}
+
+async function onClick() {
+  if (displayCourseMode() == displayCourseModeEnum.straight) {
+    if (currentRace.points.length < 2) {
+      return;
+    }
+    if (!currentRace.waypoints) {
+      //TODO doublon
+      const waypoints = WaypointEntity.createWaypointsFromRace(currentRace);
+      setCurrentRace("waypoints", waypoints);
+    }
+    await updatePolylineWithOsrm(currentRace);
+
+    setDisplayCourseMode(displayCourseModeEnum.onRoad);
+  } else if (displayCourseMode() == displayCourseModeEnum.onRoad) {
+    // TODO m'a l'aire problèmatique
+    setCurrentRace("latLngs", []);
+
+    setDisplayCourseMode(displayCourseModeEnum.straight);
+  }
+}
+
+export function removePoint(point: StopType | SchoolType) {
+  setCurrentRace("points", (points) => {
+    return points.filter(
+      (p) => p.id != point.id && p.lat != point.lat && p.lon != point.lon
+    );
+  });
+}
+
+export function updateWaypoints(waypoints: WaypointType[]) {
+  setCurrentRace("waypoints", waypoints);
+
+  // TODO ajouter condition si l'on est en displayCourseModeEnum.onRoad ?
+  if (displayCourseMode() == displayCourseModeEnum.onRoad) {
+    updatePolylineWithOsrm(currentRace);
+  }
+}
+
+export function updatePoints(points: RacePointType[]) {
+  setCurrentRace("points", points);
+  setWaypointsFromPoints(points);
+  updatePolylineWithOsrm(currentRace);
+}
+
+export async function updatePolylineWithOsrm(race: RaceType) {
+  enableSpinningWheel();
+  const { latlngs, projectedLatlngs, metrics } =
+    await OsrmService.getRoadPolyline(race);
+
+  setCurrentRace("latLngs", latlngs);
+  setCurrentRace("metrics", metrics);
+  setWaypoints(projectedLatlngs);
+  disableSpinningWheel();
+}
+
+// TODO MAYBE_ERROR
+function setWaypoints(projectedLatlngs: L.LatLng[]) {
+  if (!currentRace.waypoints) {
+    return;
+  }
+  let waypoints = [...currentRace.waypoints];
+  waypoints = waypoints.map((waypoint, i) => {
+    return {
+      ...waypoint,
+      onRoadLat: projectedLatlngs[i].lat,
+      onRoadLon: projectedLatlngs[i].lng,
+    };
+  });
+
+  setCurrentRace("waypoints", waypoints);
+}
+// TODO to delete initial code for setWaypoints()
+// function setOnRoad(course: CourseType, projectedLatlngs: L.LatLng[]) {
+//   if (projectedLatlngs.length == 0) {
+//     setCourseUnderConstruction({
+//       ...getCourseUnderConstruction(),
+//       course: course,
+//     });
+//     return;
+//   }
+//   let waypoints = course.waypoints;
+//   if (!waypoints) {
+//     return;
+//   }
+//   waypoints = [...waypoints].map((waypoint, i) => {
+//     return {
+//       ...waypoint,
+//       onRoadLat: projectedLatlngs[i].lat,
+//       onRoadLon: projectedLatlngs[i].lng,
+//     };
+//   });
+
+//   setCourseUnderConstruction({
+//     ...getCourseUnderConstruction(),
+//     course: {
+//       ...getCourseUnderConstruction().course,
+//       waypoints,
+//     },
+//   });
+// }
+
+function setWaypointsFromPoints(points: RacePointType[]) {
+  const waypoints: WaypointType[] = [];
+  for (const point of points) {
+    if (point.nature == NatureEnum.school) {
+      waypoints.push({
+        idSchool: point.id,
+        lon: point.lon,
+        lat: point.lat,
+      });
+    } else if (point.nature == NatureEnum.stop) {
+      waypoints.push({
+        idStop: point.id,
+        lon: point.lon,
+        lat: point.lat,
+      });
+    }
+  }
+  setCurrentRace("waypoints", waypoints);
 }

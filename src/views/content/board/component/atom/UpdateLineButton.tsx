@@ -1,6 +1,9 @@
 import { createSignal } from "solid-js";
 import { LineType } from "../../../../../_entities/line.entity";
 import UpdateButton from "../../../../../icons/UpdatePen";
+import { MapElementUtils } from "../../../../../utils/mapElement.utils";
+import { DrawModeStep, setCurrentStep } from "../organism/DrawModeBoardContent";
+import { changeBoard, toggleDrawMod } from "../template/ContextManager";
 import "./DrawUpdateButton.css";
 
 export const [unmodifiedCourse, setUnmodifiedCourse] = createSignal<LineType>();
@@ -15,11 +18,11 @@ export default function (props: { line: LineType }) {
     // const [color, setColor] = createSignal<string>(props.course.color());
     // setUnmodifiedCourse({ ...props.course, color, setColor });
 
-    // MapElementUtils.deselectAllPointsAndBusCourses();
-    // toggleDrawMod();
-    // setCurrentStep(AddLineStep.editLine);
-    // changeBoard("course-draw");
-    // setModeAddLine();
+    MapElementUtils.deselectAllPointsAndCourses();
+    toggleDrawMod();
+    setCurrentStep(DrawModeStep.editLine);
+    changeBoard("line-draw");
+    setModeAddLine();
   }
 
   return (

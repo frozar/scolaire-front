@@ -7,9 +7,9 @@ import StopBoard from "../../../stops/component/organism/StopBoard";
 import StopDetails from "../../../stops/component/organism/StopDetails";
 import AddLineBoardContent from "../organism/AddLineBoardContent";
 import BusLinesBoard from "../organism/BusLinesBoard";
-import { BusCourseInformationBoardContent } from "../organism/CourseInformationBoardContent";
-import CoursesBoard from "../organism/CoursesBoard";
 import DrawModeBoardContent from "../organism/DrawModeBoardContent";
+import { RaceBoard } from "../organism/RaceBoard";
+import { RacesBoard } from "../organism/RacesBoard";
 import InformationBoardLayout from "./InformationBoardLayout";
 
 //TODO utiliser ou supprimer "schools" et "stops"
@@ -57,7 +57,7 @@ export default function () {
             <AddLineBoardContent />
           </Match>
           <Match when={onBoard() == "course"}>
-            <CoursesBoard />
+            <RacesBoard />
           </Match>
           <Match when={onBoard() == "course-draw"}>
             <DrawModeBoardContent />
@@ -91,7 +91,7 @@ export default function () {
           </Match>
 
           <Match when={onBoard() == "line-details"}>
-            <BusCourseInformationBoardContent />
+            <RaceBoard />
           </Match>
         </Switch>
       </InformationBoardLayout>

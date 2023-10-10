@@ -3,13 +3,13 @@ import { Transition } from "solid-transition-group";
 import { useStateAction } from "../../../StateAction";
 import ClickOutside from "../../../component/ClickOutside";
 import { assertIsNode } from "../../../utils";
+import { currentRace } from "../board/component/organism/DrawModeBoardContent";
 
 // HACK for the documentation to preserve the ClickOutside directive on save
 // https://www.solidjs.com/guides/typescript#use___
 false && ClickOutside;
 
-const [, { isInAddCourseMode, getCourseUnderConstruction, setModeRead }] =
-  useStateAction();
+const [, { isInDrawRaceMode, setModeRead }] = useStateAction();
 
 export const [displayedConfirmStopAddCourse, setDisplayedConfirmStopAddCourse] =
   createSignal(false);
@@ -25,10 +25,9 @@ export function defineModalToOpen(obj: () => void) {
 }
 
 export const confirmAbortEditionNeedToBeCall = () => {
-  const hasCourseUnderConstruction =
-    getCourseUnderConstruction().stops.length > 0;
+  const hasCourseUnderConstruction = currentRace.points.length > 0;
 
-  if (isInAddCourseMode() && hasCourseUnderConstruction) {
+  if (isInDrawRaceMode() && hasCourseUnderConstruction) {
     toggleConfirmStopAddCourse();
   } else {
     modalToOpen();

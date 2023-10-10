@@ -7,17 +7,16 @@ import {
 } from "../../../board/component/template/ContextManager";
 import { COLOR_STOP_FOCUS, COLOR_STOP_LIGHT } from "../../constant";
 import Point from "../atom/Point";
-import { deselectAllCourses } from "../organism/Courses";
+import { deselectAllRaces } from "../organism/Races";
 
-import {
-  CourseType,
-  updatePolylineWithOsrm,
-} from "../../../../../_entities/course.entity";
 import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
 import { updatePointColor } from "../../../../../leafletUtils";
+import { QuantityUtils } from "../../../../../utils/quantity.utils";
 import {
-  displayCourseMode,
-  displayCourseModeEnum,
+  addPointToRace,
+  currentRace,
+  removePoint,
+  updateWaypoints,
 } from "../../../board/component/organism/DrawModeBoardContent";
 import { setStopDetailsItem } from "../../../stops/component/organism/StopDetails";
 import { setIsOverMapItem } from "../../l7MapBuilder";
@@ -29,19 +28,9 @@ import {
   setBlinkingSchools,
   setCursorIsOverPoint,
 } from "../organism/Points";
-import { draggingCourse, setDraggingCourse } from "./Course";
+import { draggingCourse, setDraggingCourse } from "./Race";
 
-const [
-  ,
-  {
-    isInReadMode,
-    addPointToCourseUnderConstruction,
-    getCourseUnderConstruction,
-    isInAddCourseMode,
-    removePointToCourseUnderConstruction,
-    setCourseUnderConstruction,
-  },
-] = useStateAction();
+const [, { isInReadMode, isInDrawRaceMode }] = useStateAction();
 
 export interface StopPointProps {
   point: StopType;
@@ -54,35 +43,16 @@ const minRadius = 5;
 const maxRadius = 10;
 const rangeRadius = maxRadius - minRadius;
 
-//TODO Modify when we use multiple schools
+//TODO Ne doit pas être placé ici
 function getAssociatedQuantity(point: StopType) {
   return point.associated.filter(
-    (associatedSchool) =>
-      associatedSchool.id === getCourseUnderConstruction().course.schools[0].id
+    (associatedSchool) => associatedSchool.id === currentRace.schools[0].id
   )[0].quantity;
 }
 
-function updateWaypoints(point: StopType) {
-  const actualWaypoints = getCourseUnderConstruction().course.waypoints;
-  if (actualWaypoints) {
-    const waypoints = WaypointEntity.updateWaypoints(
-      point,
-      actualWaypoints,
-      getCourseUnderConstruction().course.points
-    );
-    setCourseUnderConstruction({
-      ...getCourseUnderConstruction(),
-      course: {
-        ...getCourseUnderConstruction().course,
-        waypoints,
-      },
-    });
-  }
-}
-
 function onClick(point: StopType) {
-  if (onBoard() != "course-draw") {
-    deselectAllCourses();
+  if (onBoard() != "line-draw") {
+    deselectAllRaces();
     deselectAllPoints();
     point.setSelected(true);
     setStopDetailsItem(point);
@@ -96,17 +66,26 @@ function onClick(point: StopType) {
 
   // TODO: when add line with an etablissement point the line destroy after next point click
   // Wait Richard/Hugo finish the line underconstruction
-  const lastPoint = getCourseUnderConstruction().course.points.at(-1);
-  addPointToCourseUnderConstruction({ ...point, quantity: associatedQuantity });
+  const lastPoint = currentRace.points.at(-1);
+
+  // TODO fix les quantités
+  QuantityUtils.add(point, currentRace);
+  addPointToRace({ ...point, quantity: associatedQuantity });
+
   if (!lastPoint || point.leafletId != lastPoint.leafletId) {
-    updateWaypoints(point);
-    if (displayCourseMode() == displayCourseModeEnum.onRoad) {
-      updatePolylineWithOsrm(getCourseUnderConstruction().course);
+    const waypoints = currentRace.waypoints;
+    if (waypoints) {
+      const newWaypoints = WaypointEntity.updateWaypoints(
+        point,
+        waypoints,
+        currentRace.points
+      );
+      updateWaypoints(newWaypoints);
     }
   }
 
   //TODO pourquoi cette condition ?
-  if (!(1 < getCourseUnderConstruction().course.points.length)) {
+  if (!(1 < currentRace.points.length)) {
     return;
   }
 }
@@ -133,11 +112,19 @@ const onMouseUp = (point: StopType) => {
   if (draggingCourse()) {
     const associatedQuantity = getAssociatedQuantity(point);
 
-    addPointToCourseUnderConstruction({
-      ...point,
-      quantity: associatedQuantity,
-    });
-    updateWaypoints(point);
+    // TODO Fix add quantity
+    QuantityUtils.add(point, currentRace);
+    addPointToRace({ ...point, quantity: associatedQuantity });
+
+    const waypoints = currentRace.waypoints;
+    if (waypoints) {
+      const newWaypoints = WaypointEntity.updateWaypoints(
+        point,
+        waypoints,
+        currentRace.points
+      );
+      updateWaypoints(newWaypoints);
+    }
 
     setDraggingCourse(false);
   }
@@ -167,37 +154,24 @@ export function StopPoint(props: StopPointProps) {
 
   const onRightClick = () => {
     const circle = linkMap.get(props.point.leafletId);
-    const isInCourseUnderConstruction =
-      getCourseUnderConstruction().course.points.filter(
-        (_point) => _point.id == props.point.id
-      )[0];
+    const isInCourseUnderConstruction = currentRace.points.filter(
+      (_point) => _point.id == props.point.id
+    )[0];
 
-    if (
-      onBoard() == "course-draw" &&
-      isInCourseUnderConstruction != undefined
-    ) {
-      removePointToCourseUnderConstruction(props.point);
+    if (onBoard() == "line-draw" && isInCourseUnderConstruction != undefined) {
+      QuantityUtils.substract(props.point, currentRace);
+
+      removePoint(props.point);
+
       // Update waypoints
-      const waypoints = getCourseUnderConstruction().course.waypoints;
+      const waypoints = currentRace.waypoints;
       if (waypoints) {
         const newWaypoints = WaypointEntity.deleteSchoolOrStopWaypoint(
           waypoints,
           props.point.id,
           props.point.nature
         );
-
-        const newBusCourse: CourseType = {
-          ...getCourseUnderConstruction().course,
-          waypoints: newWaypoints,
-        };
-        if (displayCourseMode() == displayCourseModeEnum.onRoad) {
-          updatePolylineWithOsrm(newBusCourse);
-        } else {
-          setCourseUnderConstruction({
-            ...getCourseUnderConstruction(),
-            course: newBusCourse,
-          });
-        }
+        updateWaypoints(newWaypoints);
       }
 
       circle?.setStyle({ fillColor: COLOR_STOP_FOCUS });
@@ -205,7 +179,7 @@ export function StopPoint(props: StopPointProps) {
   };
 
   const color = () => {
-    if (isInAddCourseMode()) {
+    if (isInDrawRaceMode()) {
       return COLOR_STOP_LIGHT;
     } else return COLOR_STOP_FOCUS;
   };

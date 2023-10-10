@@ -1,10 +1,10 @@
 import L from "leaflet";
 import {
-  CourseMetricType,
-  CoursePointType,
-  CourseType,
-  WaypointType,
-} from "../_entities/course.entity";
+  RaceMetricType,
+  RacePointType,
+  RaceType,
+} from "../_entities/race.entity";
+import { WaypointType } from "../_entities/waypoint.entity";
 import { ServiceUtils } from "./_utils.service";
 
 const osrm = import.meta.env.VITE_API_OSRM_URL;
@@ -12,13 +12,13 @@ const osrm = import.meta.env.VITE_API_OSRM_URL;
 type osrmResponseType = { routes: routesType[] };
 
 export class OsrmService {
-  static async getRoadPolyline(course: CourseType): Promise<{
+  static async getRoadPolyline(race: RaceType): Promise<{
     latlngs: L.LatLng[];
     projectedLatlngs: L.LatLng[];
-    metrics: CourseMetricType;
+    metrics: RaceMetricType;
   }> {
-    const points: CoursePointType[] = course.points;
-    let waypoints: WaypointType[] = course.waypoints ?? points;
+    const points: RacePointType[] = race.points;
+    let waypoints: WaypointType[] = race.waypoints ?? points;
     waypoints = waypoints.length > 0 ? waypoints : points;
     if (waypoints.length <= 1) {
       return { latlngs: [], projectedLatlngs: [], metrics: {} };
@@ -52,16 +52,16 @@ export class OsrmService {
   private static formatResponse(
     response: osrmResponseType,
     response_direct: osrmResponseType,
-    points: CoursePointType[],
+    points: RacePointType[],
     waypoints: waypointsType[]
   ): {
     latlngs: L.LatLng[];
     projectedLatlngs: L.LatLng[];
-    metrics: CourseMetricType;
+    metrics: RaceMetricType;
   } {
     let latlngs: L.LatLng[] = [];
     let projectedLatlngs: L.LatLng[] = [];
-    let metrics: CourseMetricType = {};
+    let metrics: RaceMetricType = {};
     if (!response || response.routes[0] == undefined)
       return { latlngs, projectedLatlngs, metrics };
 
@@ -101,7 +101,7 @@ type routesType = {
 function getMetrics(
   response: osrmResponseType,
   response_direct: osrmResponseType,
-  points: CoursePointType[]
+  points: RacePointType[]
 ) {
   const distance = response.routes[0].distance;
 
@@ -119,7 +119,7 @@ function getMetrics(
 
 function getKmPassagers(
   response: osrmResponseType,
-  points: CoursePointType[],
+  points: RacePointType[],
   distance: number
 ) {
   let kmPassager = 0;

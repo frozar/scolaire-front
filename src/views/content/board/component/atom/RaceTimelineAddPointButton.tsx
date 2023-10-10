@@ -1,18 +1,16 @@
 import { FaSolidPlus } from "solid-icons/fa";
-import { useStateAction } from "../../../../../StateAction";
-import "./TimelineAddPointButton.css";
-
-const [, { setCourseUnderConstructionNextIndex }] = useStateAction();
+import { setCurrentRaceIndex } from "../organism/DrawModeBoardContent";
+import "./RaceTimelineAddPointButton.css";
 
 // TODO Create stories and cypress
-export function TimelineAddPointButton(props: { indice: number }) {
+export function RaceTimelineAddPointButton(props: { indice: number }) {
   return (
     <div class="v-timeline-item-add">
       <div class="v-timeline-divider ">
         <div class="v-timeline-divider__dot v-timeline-divider__dot--size-very-small timeline-add-point-button">
           <button
             class=""
-            onClick={() => setCourseUnderConstructionNextIndex(props.indice)}
+            onClick={() => setCurrentRaceIndex(props.indice)}
             title="Ajouter un point"
           >
             <FaSolidPlus />

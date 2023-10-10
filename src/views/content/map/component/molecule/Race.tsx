@@ -1,14 +1,7 @@
 import L, { LeafletMouseEvent } from "leaflet";
 import { For, Show, createEffect, createSignal } from "solid-js";
-import { useStateAction } from "../../../../../StateAction";
-import {
-  CoursePointType,
-  CourseType,
-  WaypointType,
-} from "../../../../../_entities/course.entity";
 
 import { NatureEnum } from "../../../../../type";
-import { setPickerColor } from "../../../board/component/atom/ColorPicker";
 import {
   changeBoard,
   onBoard,
@@ -21,14 +14,18 @@ import {
 import Line from "../atom/Line";
 import PolylineDragMarker from "../atom/PolylineDragMarker";
 import WaypointMarker from "../atom/WaypointMarker";
-import { deselectAllCourses } from "../organism/Courses";
+import { deselectAllRaces, setSelectedRace } from "../organism/Races";
 
+import { RacePointType, RaceType } from "../../../../../_entities/race.entity";
+import { WaypointType } from "../../../../../_entities/waypoint.entity";
 import { updatePointColor } from "../../../../../leafletUtils";
 import {
+  DrawModeStep,
+  currentRace,
   currentStep,
   displayCourseMode,
   displayCourseModeEnum,
-  drawModeStep,
+  setCurrentRaceIndex,
 } from "../../../board/component/organism/DrawModeBoardContent";
 import { setIsOverMapItem } from "../../l7MapBuilder";
 import {
@@ -37,22 +34,14 @@ import {
   linkMap,
 } from "../organism/Points";
 
-const [, { getCourseUnderConstruction, setCourseUnderConstructionNextIndex }] =
-  useStateAction();
-
 export const [draggingCourse, setDraggingCourse] = createSignal<boolean>(false);
 
-export type CourseProps = {
-  course: CourseType;
-  map: L.Map;
-};
-
-export function onClickBusCourse(line: CourseType) {
-  if (onBoard() != "course-draw") {
-    deselectAllCourses();
+export function onClickBusCourse(race: RaceType) {
+  if (onBoard() != "line-draw") {
+    deselectAllRaces();
     deselectAllPoints();
-    setPickerColor(line.color());
-    line.setSelected(true);
+
+    setSelectedRace(race);
 
     changeBoard("line-details");
 
@@ -60,8 +49,7 @@ export function onClickBusCourse(line: CourseType) {
   }
 }
 
-export function Course(props: CourseProps) {
-  console.log("CourseProps", props);
+export function Race(props: { race: RaceType; map: L.Map }) {
   const [localLatLngs, setLocalLatLngs] = createSignal<L.LatLng[]>([]);
   const [localOpacity, setLocalOpacity] = createSignal<number>(1);
   createEffect(() => {
@@ -69,17 +57,18 @@ export function Course(props: CourseProps) {
       displayCourseMode() == displayCourseModeEnum.onRoad ||
       onBoard() != "course-draw"
     ) {
-      setLocalLatLngs(props.course.latLngs());
+      setLocalLatLngs(props.race.latLngs);
       setLocalOpacity(0.8);
     } else {
-      setLocalLatLngs(getLatLngsFromPoint(props.course.points));
+      setLocalLatLngs(getLatLngsFromPoint(props.race.points));
       setLocalOpacity(1);
     }
   });
 
   let pointFocus: { circle: L.CircleMarker; nature: NatureEnum }[] = [];
   createEffect(() => {
-    if (getCourseUnderConstruction().course === props.course) {
+    // TODO passer en mode race
+    if (currentRace === props.race) {
       pointFocus.map((point) => {
         point.circle.setStyle({
           fillColor:
@@ -89,7 +78,7 @@ export function Course(props: CourseProps) {
         });
       });
       pointFocus = [];
-      props.course.points.map((point) => {
+      props.race.points.map((point) => {
         const circle = linkMap.get(point.leafletId);
         circle?.setStyle({ fillColor: COLOR_STOP_EMPHASE });
         pointFocus.push({
@@ -110,8 +99,8 @@ export function Course(props: CourseProps) {
   const onMouseOut = (polyline: L.Polyline, arrows: L.Marker[]) => {
     setIsOverMapItem(false);
     // if (!line.selected() && (isInRemoveCourseMode() || isInReadMode())) {
-    if (onBoard() != "course-draw") {
-      buscourseSetNormalStyle(polyline, arrows, props.course.color());
+    if (onBoard() != "line-draw") {
+      buscourseSetNormalStyle(polyline, arrows, props.race.color);
     }
   };
 
@@ -119,7 +108,7 @@ export function Course(props: CourseProps) {
     // if (displayCourseMode() == displayCourseModeEnum.straight && !isInReadMode()) {
     if (
       displayCourseMode() == displayCourseModeEnum.straight &&
-      currentStep() == drawModeStep.editCourse
+      currentStep() == DrawModeStep.editCourse
     ) {
       props.map.dragging.disable();
 
@@ -177,7 +166,7 @@ export function Course(props: CourseProps) {
         });
       });
 
-      setCourseUnderConstructionNextIndex(indice + 1);
+      setCurrentRaceIndex(indice + 1);
 
       function handleMouseUp() {
         props.map?.off("mousemove");
@@ -192,7 +181,7 @@ export function Course(props: CourseProps) {
             prev.splice(indice + 1, 1);
             return [...prev];
           });
-          setCourseUnderConstructionNextIndex(localLatLngs().length);
+          setCurrentRaceIndex(localLatLngs().length);
           setDraggingCourse(false);
         }
         document.removeEventListener("mouseup", handleMouseUp);
@@ -201,19 +190,19 @@ export function Course(props: CourseProps) {
     }
   }
 
-  const latLngList = () => props.course.latLngs();
+  const latLngList = () => props.race.latLngs;
 
   return (
     <>
       <Line
         latlngs={localLatLngs()}
         leafletMap={props.map}
-        color={props.course.color()}
+        color={props.race.color}
         opacity={localOpacity()}
-        lineId={props.course.id}
+        lineId={props.race.id}
         onMouseOver={onMouseOver}
         onMouseOut={onMouseOut}
-        onClick={() => onClickBusCourse(props.course)}
+        onClick={() => onClickBusCourse(props.race)}
         onMouseDown={onMouseDown}
       />
       <Show
@@ -228,7 +217,7 @@ export function Course(props: CourseProps) {
 
             const pointProjectedCoord: L.LatLng[] = [];
 
-            const waypoints = props.course.waypoints;
+            const waypoints = props.race.waypoints;
             if (!waypoints) {
               return <></>;
             }
@@ -269,8 +258,8 @@ export function Course(props: CourseProps) {
             );
           }}
         </For>
-        <Show when={getCourseUnderConstruction().course.waypoints}>
-          <For each={getCourseUnderConstruction().course.waypoints}>
+        <Show when={currentRace.waypoints}>
+          <For each={currentRace.waypoints}>
             {(waypoint: WaypointType, i) => {
               if (!waypoint.idSchool && !waypoint.idStop) {
                 return (
@@ -289,7 +278,7 @@ export function Course(props: CourseProps) {
   );
 }
 
-function getLatLngsFromPoint(points: CoursePointType[]): L.LatLng[] {
+function getLatLngsFromPoint(points: RacePointType[]): L.LatLng[] {
   return points.map((point) => L.latLng(point.lat, point.lon));
 }
 

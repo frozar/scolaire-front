@@ -15,7 +15,7 @@ import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { assertIsNode } from "../utils";
 
 import ClickOutside from "../component/ClickOutside";
-import { getCourses } from "../views/content/map/component/organism/Courses";
+import { getRaces } from "../views/content/map/component/organism/Races";
 import { getSchools } from "../views/content/map/component/organism/SchoolPoints";
 import { getStops } from "../views/content/map/component/organism/StopPoints";
 
@@ -224,7 +224,7 @@ export default function () {
                           </li>
                           <li>
                             <span class="font-semibold text-sm text-gray-900">
-                              {getCourses().length + " "}
+                              {getRaces.length + " "}
                             </span>
                             ligne(s) présente(s) sur la carte,
                           </li>

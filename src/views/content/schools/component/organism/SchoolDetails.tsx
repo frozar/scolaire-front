@@ -11,7 +11,7 @@ import { changeBoard } from "../../../board/component/template/ContextManager";
 import SchoolDetailsHeader from "../molecule/SchoolDetailsHeader";
 import SchoolDetailsPanelsButton from "../molecule/SchoolDetailsPanelsButton";
 import ClasseList from "./ClasseList";
-import CourseList from "./CoursesList";
+import { RacesList } from "./RacesList";
 import "./SchoolDetails.css";
 
 export const [schoolDetailsItem, setSchoolDetailsItem] =
@@ -45,7 +45,7 @@ export default function () {
           setOnPanel={setOnPanel}
           onPanel={onPanel}
           NbCourses={
-            SchoolEntity.getSchoolCourses(schoolDetailsItem()?.id as number)
+            SchoolEntity.getSchoolRaces(schoolDetailsItem()?.id as number)
               .length
           }
         />
@@ -61,8 +61,8 @@ export default function () {
             />
           </Match>
           <Match when={onPanel() == Panels.lines}>
-            <CourseList
-              courses={SchoolEntity.getSchoolCourses(
+            <RacesList
+              races={SchoolEntity.getSchoolRaces(
                 schoolDetailsItem()?.id as number
               )}
             />
