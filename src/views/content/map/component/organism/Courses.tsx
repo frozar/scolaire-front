@@ -1,15 +1,13 @@
 import L from "leaflet";
-import { For, createEffect, createSignal, onCleanup } from "solid-js";
+import { For, createSignal, onCleanup } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
 import { CourseType } from "../../../../../_entities/course.entity";
-import { BusCourse } from "../molecule/Course";
+import { Course } from "../molecule/Course";
 
-import { CourseUtils } from "../../../../../utils/course.utils";
 import {
   currentStep,
   drawModeStep,
 } from "../../../board/component/organism/DrawModeBoardContent";
-import { pointsReady } from "./Points";
 
 const [, { getCourseUnderConstruction }] = useStateAction();
 
@@ -28,11 +26,6 @@ export type BusCoursesProps = {
 
 export function BusCourses(props: BusCoursesProps) {
   // eslint-disable-next-line solid/reactivity
-  createEffect(async () => {
-    if (pointsReady()) {
-      await CourseUtils.set();
-    }
-  });
 
   onCleanup(() => {
     setCourses([]);
@@ -54,14 +47,14 @@ export function BusCourses(props: BusCoursesProps) {
   return (
     <For each={coursesFilter()}>
       {(line) => {
-        return <BusCourse course={line} map={props.map} />;
+        return <Course course={line} map={props.map} />;
       }}
     </For>
   );
 }
 
 export function deselectAllCourses() {
-  getCourses().map((course) => course.setSelected(false));
+  getCourses().forEach((course) => course.setSelected(false));
 }
 
 export const getSelectedCourse = (): CourseType | undefined => {
@@ -74,12 +67,12 @@ export const getSelectedCourse = (): CourseType | undefined => {
   return selectedCourse;
 };
 
-export function updateBusCourses(course: CourseType) {
-  let newBusCourses = getCourses();
-  if (course.id) {
-    newBusCourses = getCourses().filter(
-      (buscourse) => buscourse.id != course.id
-    );
-  }
-  setCourses([...newBusCourses, course]);
+export function updateBusCourses(courses: CourseType[]) {
+  // let newBusCourses = getCourses();
+  // if (course.id) {
+  //   newBusCourses = getCourses().filter(
+  //     (buscourse) => buscourse.id != course.id
+  //   );
+  // }
+  setCourses(courses);
 }

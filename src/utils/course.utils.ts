@@ -6,9 +6,9 @@ import { QuantityUtils } from "./quantity.utils";
 
 export namespace CourseUtils {
   export async function set() {
-    const lines = await BusCourseService.getAll();
-    setCourses(lines);
-    QuantityUtils.set(lines);
+    const courses = await BusCourseService.getAll();
+    setCourses(courses);
+    QuantityUtils.set(courses);
     console.log("Schools", getSchools());
     console.log("Stops", getStops());
   }

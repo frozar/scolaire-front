@@ -81,7 +81,7 @@ function updateWaypoints(point: StopType) {
 }
 
 function onClick(point: StopType) {
-  if (onBoard() != "line-draw") {
+  if (onBoard() != "course-draw") {
     deselectAllCourses();
     deselectAllPoints();
     point.setSelected(true);
@@ -172,7 +172,10 @@ export function StopPoint(props: StopPointProps) {
         (_point) => _point.id == props.point.id
       )[0];
 
-    if (onBoard() == "line-draw" && isInCourseUnderConstruction != undefined) {
+    if (
+      onBoard() == "course-draw" &&
+      isInCourseUnderConstruction != undefined
+    ) {
       removePointToCourseUnderConstruction(props.point);
       // Update waypoints
       const waypoints = getCourseUnderConstruction().course.waypoints;

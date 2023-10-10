@@ -86,7 +86,7 @@ export default function (props: TimelineItemAddType) {
         >
           <div class={"v-timeline-divider__inner-dot " + pointColor()}>
             <i class="" aria-hidden="true" />
-            <Show when={onBoard() == "line-draw"}>
+            <Show when={onBoard() == "course-draw"}>
               <TimelineRemovePointButton
                 indice={props.indice}
                 setter={setCourseUnderConstruction}

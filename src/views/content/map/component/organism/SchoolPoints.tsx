@@ -34,14 +34,13 @@ export function SchoolPoints(props: SchoolPointsProps) {
 async function updateSchools() {
   const schools: SchoolType[] = await SchoolService.getAll();
   setSchools(schools);
-  console.log("Schools préléminaire", schools);
 }
 
 //TODO Delete and replace with displayedSchool signal
 function schoolsFilter(): SchoolType[] {
   let schools = getSchools();
 
-  if (onBoard() == "line-draw") {
+  if (onBoard() == "course-draw") {
     const schoolsSelected = getCourseUnderConstruction().course.schools;
     if (currentStep() === drawModeStep.schoolSelection) {
       return schools;

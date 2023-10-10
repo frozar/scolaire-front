@@ -1,5 +1,6 @@
 import { For, Show, createEffect, createSignal } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
+import { MapElementUtils } from "../../../../../utils/mapElement.utils";
 import { getSelectedCourse } from "../../../map/component/organism/Courses";
 import { schoolDetailsItem } from "../../../schools/component/organism/SchoolDetails";
 import { stopDetailsItem } from "../../../stops/component/organism/StopDetails";
@@ -20,7 +21,7 @@ export default function () {
 
   createEffect(() => {
     switch (onBoard()) {
-      case "line-draw":
+      case "course-draw":
         if (getCourseUnderConstruction().course.schools.length > 0) {
           setCrumbs([{ text: "Editer votre course" }]);
           break;
@@ -88,6 +89,7 @@ export default function () {
             text: "Lignes",
             onClick: () => {
               changeBoard("line");
+              MapElementUtils.deselectAllPointsAndBusCourses();
             },
           },
           {

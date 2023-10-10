@@ -1,35 +1,30 @@
 import { createSignal } from "solid-js";
 import PlusIcon from "../../../../../icons/PlusIcon";
-import { displayAddLineMessage } from "../../../../../userInformation/utils";
+import { displayAddCourseMessage } from "../../../../../userInformation/utils";
+import { getLines } from "../../../map/component/organism/BusLines";
 import {
   deselectAllCourses,
   getCourses,
 } from "../../../map/component/organism/Courses";
 import { deselectAllPoints } from "../../../map/component/organism/Points";
 import InputSearch from "../../../schools/component/molecule/InputSearch";
-import LinesList from "../../../schools/component/organism/LinesList";
+import BusLinesList from "../../../schools/component/organism/BusLinesList";
 import ButtonIcon from "../molecule/ButtonIcon";
-import { onBoard, toggleDrawMod } from "../template/ContextManager";
-import { drawModeStep, setCurrentStep } from "./DrawModeBoardContent";
-import "./LinesBoard.css";
+import { changeBoard, onBoard } from "../template/ContextManager";
+import "./BusLines.css";
 
 export default function () {
   const [searchKeyword, setSearchKeyword] = createSignal<string>("");
 
-  const filteredLines = () =>
-    getCourses().filter((line) => line.name?.includes(searchKeyword()));
-
   function addLine() {
-    if (onBoard() == "line-draw") {
-      toggleDrawMod();
-      setCurrentStep(drawModeStep.start);
+    if (onBoard() == "line-add") {
+      changeBoard("line");
     } else {
       deselectAllPoints();
       deselectAllCourses();
-      toggleDrawMod();
 
-      setCurrentStep(drawModeStep.schoolSelection);
-      displayAddLineMessage();
+      changeBoard("line-add");
+      displayAddCourseMessage();
     }
   }
 
@@ -41,14 +36,21 @@ export default function () {
     <section>
       <header class="line-board-header">
         <div class="line-board-header-infos">
-          <p>Total des courses: {getCourses().length}</p>
+          <p>Total des lignes: {getCourses().length}</p>
           <ButtonIcon icon={<PlusIcon />} onClick={addLine} />
         </div>
 
         <InputSearch onInput={onInputSearch} />
       </header>
 
-      <LinesList lines={filteredLines()} />
+      <BusLinesList
+        lines={
+          getLines().filter((line) => line.name?.includes(searchKeyword()))
+            .length == 0
+            ? []
+            : getLines().filter((line) => line.name?.includes(searchKeyword()))
+        }
+      />
     </section>
   );
 }

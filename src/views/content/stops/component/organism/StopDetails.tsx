@@ -78,7 +78,7 @@ export default function () {
             </Show>
           </Match>
           <Match when={onPanel() == StopPanels.lines}>
-            <CoursesList lines={getStopCourses()} />
+            <CoursesList courses={getStopCourses()} />
           </Match>
         </Switch>
       </div>

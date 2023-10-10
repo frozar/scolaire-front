@@ -5,6 +5,8 @@ import SchoolsBoard from "../../../schools/component/organism/SchoolBoard";
 import SchoolDetails from "../../../schools/component/organism/SchoolDetails";
 import StopBoard from "../../../stops/component/organism/StopBoard";
 import StopDetails from "../../../stops/component/organism/StopDetails";
+import AddLineBoardContent from "../organism/AddLineBoardContent";
+import BusLinesBoard from "../organism/BusLinesBoard";
 import { BusCourseInformationBoardContent } from "../organism/CourseInformationBoardContent";
 import CoursesBoard from "../organism/CoursesBoard";
 import DrawModeBoardContent from "../organism/DrawModeBoardContent";
@@ -17,8 +19,10 @@ export type BoardTags =
   | "school-class"
   | "stops"
   | "stop-details"
-  | "line-draw"
+  | "course"
+  | "course-draw"
   | "line"
+  | "line-add"
   | "line-details"
   | undefined;
 
@@ -31,10 +35,10 @@ export const changeBoard = (boardName: BoardTags) => setOnBoard(boardName);
 export default function () {
   createEffect(() => {
     if (isInDrawMod()) {
-      changeBoard("line-draw");
+      changeBoard("course-draw");
     } else {
       setOnBoard((prev) => {
-        return prev == "line-draw" ? "line" : prev;
+        return prev == "course-draw" ? "line" : prev;
       });
     }
   });
@@ -44,9 +48,17 @@ export default function () {
       <InformationBoardLayout>
         <Switch>
           <Match when={onBoard() == "line"}>
+            {/* <CoursesBoard /> */}
+            <BusLinesBoard />
+          </Match>
+          <Match when={onBoard() == "line-add"}>
+            {/* <CoursesBoard /> */}
+            <AddLineBoardContent />
+          </Match>
+          <Match when={onBoard() == "course"}>
             <CoursesBoard />
           </Match>
-          <Match when={onBoard() == "line-draw"}>
+          <Match when={onBoard() == "course-draw"}>
             <DrawModeBoardContent />
           </Match>
 

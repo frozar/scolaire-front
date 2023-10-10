@@ -1,0 +1,38 @@
+.collapsible-checkable--element{
+  @apply mb-1
+}
+.accordion {
+  display:flex;
+  cursor: pointer;
+  border: none;
+  text-align: left;
+  outline: none;
+  transition: 0.4s;
+}
+
+.accordion-element{
+  display: flex;
+  justify-content: flex-start;
+}
+
+
+.accordion-panel {
+  padding: 0 18px;
+  background-color: white;
+  max-height: 0;
+  overflow: hidden;
+  
+}
+
+.display-accordion{
+  max-height: 100%;
+  transition: max-height 0.2s ease-out;
+}
+
+.button-icon {
+  color: #777;
+  font-weight: bold;
+  float: right;
+  margin-left: 5px;
+  margin-top: 5px
+}

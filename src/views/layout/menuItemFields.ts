@@ -25,7 +25,7 @@ const menuItems: MenuItemType[] = [
     label: "Graphicage",
     isDisabled: false,
     onClick: () => {
-      if (onBoard() != "line-draw") {
+      if (onBoard() != "course-draw") {
         changeBoard("line");
         MapElementUtils.deselectAllPointsAndBusCourses();
       }

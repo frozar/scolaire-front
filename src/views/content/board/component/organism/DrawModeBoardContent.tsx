@@ -27,6 +27,7 @@ import {
   enableSpinningWheel,
 } from "../../../../../signaux";
 import { MapElementUtils } from "../../../../../utils/mapElement.utils";
+import { setLines } from "../../../map/component/organism/BusLines";
 import {
   getCourses,
   setCourses,
@@ -251,10 +252,10 @@ function selectedUpdatedBusCourse(course: CourseType) {
 }
 
 async function createBusCourse(course: CourseType) {
-  const newBusCourse: CourseType = await BusCourseService.create(course);
-  updateBusCourses(newBusCourse);
+  setLines((await BusCourseService.create(course)) ?? []);
 }
 
+//TODO À faire
 async function updateBusCourse(course: CourseType) {
   const updatedBusCourse: CourseType = await BusCourseService.update(course);
   updateBusCourses(updatedBusCourse);

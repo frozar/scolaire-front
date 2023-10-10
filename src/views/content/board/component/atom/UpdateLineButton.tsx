@@ -1,32 +1,25 @@
-import { useStateAction } from "../../../../../StateAction";
-import { CourseType } from "../../../../../_entities/course.entity";
-
 import { createSignal } from "solid-js";
+import { LineType } from "../../../../../_entities/line.entity";
 import UpdateButton from "../../../../../icons/UpdatePen";
-import { MapElementUtils } from "../../../../../utils/mapElement.utils";
-import { drawModeStep, setCurrentStep } from "../organism/DrawModeBoardContent";
-import { changeBoard, toggleDrawMod } from "../template/ContextManager";
 import "./DrawUpdateButton.css";
 
-const [, { setLineUnderConstruction, setModeAddLine }] = useStateAction();
+export const [unmodifiedCourse, setUnmodifiedCourse] = createSignal<LineType>();
 
-export const [unmodifiedCourse, setUnmodifiedCourse] =
-  createSignal<CourseType>();
-
-export default function (props: { course: CourseType }) {
+export default function (props: { line: LineType }) {
   async function onclick() {
-    setLineUnderConstruction({
-      course: props.course,
-      nextIndex: props.course.points.length ?? 0,
-    });
-    const [color, setColor] = createSignal<string>(props.course.color());
-    setUnmodifiedCourse({ ...props.course, color, setColor });
+    console.log("course update", props);
+    // setLineUnderConstruction({
+    //   course: props.course,
+    //   nextIndex: props.course.points.length ?? 0,
+    // });
+    // const [color, setColor] = createSignal<string>(props.course.color());
+    // setUnmodifiedCourse({ ...props.course, color, setColor });
 
-    MapElementUtils.deselectAllPointsAndCourses();
-    toggleDrawMod();
-    setCurrentStep(drawModeStep.editLine);
-    changeBoard("line-draw");
-    setModeAddLine();
+    // MapElementUtils.deselectAllPointsAndBusCourses();
+    // toggleDrawMod();
+    // setCurrentStep(AddLineStep.editLine);
+    // changeBoard("course-draw");
+    // setModeAddLine();
   }
 
   return (

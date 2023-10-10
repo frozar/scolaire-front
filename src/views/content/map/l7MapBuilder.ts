@@ -93,7 +93,7 @@ export function buildMapL7(div: HTMLDivElement) {
   });
 
   leafletMap.addEventListener("click", () => {
-    if (!isOverMapItem() && onBoard() != "line-draw") {
+    if (!isOverMapItem() && onBoard() != "course-draw") {
       changeBoard("line");
       MapElementUtils.deselectAllPointsAndBusCourses();
     }

@@ -10,7 +10,7 @@ import { useStateGui } from "./StateGui";
 import { CourseMetricType, CoursePointType } from "./_entities/course.entity";
 import { SchoolType } from "./_entities/school.entity";
 import { StopType } from "./_entities/stop.entity";
-import { COLOR_LINE_UNDER_CONSTRUCTION } from "./views/content/map/constant";
+import { COLOR_DEFAULT_COURSE } from "./views/content/map/constant";
 
 const [, { setDisplayedInformationBoard }] = useStateGui();
 
@@ -26,7 +26,7 @@ type StateActionType = {
 
 export function defaultCourseUnderConstruction(): CourseUnderConstructionType {
   const [latLngs, setLatLngs] = createSignal<L.LatLng[]>([]);
-  const [color, setColor] = createSignal<string>(COLOR_LINE_UNDER_CONSTRUCTION);
+  const [color, setColor] = createSignal<string>(COLOR_DEFAULT_COURSE);
   const [selected, setSelected] = createSignal<boolean>(false);
   const [metrics, setMetrics] = createSignal<CourseMetricType>({});
 
