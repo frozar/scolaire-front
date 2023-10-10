@@ -191,7 +191,7 @@ export default function () {
             onBoard() == "school-class-add"
               ? onClickAddClasse
               : onClickModifyClasse,
-          label: "Suivant",
+          label: "Valider",
         }}
         previousStep={{
           callback: onClickCancel,
