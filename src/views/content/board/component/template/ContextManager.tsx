@@ -1,7 +1,6 @@
 import { Match, Switch, createEffect, createSignal } from "solid-js";
 
-import ClasseBoard from "../../../schools/component/organism/ClasseBoard";
-import ClasseBoardModify from "../../../schools/component/organism/ClasseBoardModify";
+import ClasseBoardModifyRefactored from "../../../schools/component/organism/ClasseBoardModifyRefactored";
 import SchoolsBoard from "../../../schools/component/organism/SchoolBoard";
 import SchoolDetails from "../../../schools/component/organism/SchoolDetails";
 import StopBoard from "../../../stops/component/organism/StopBoard";
@@ -77,13 +76,13 @@ export default function () {
             <SchoolDetails />
           </Match>
 
-          <Match when={onBoard() == "school-class-add"}>
-            <ClasseBoard />
-          </Match>
-
-          <Match when={onBoard() == "school-class-modify"}>
-            {/* TODO: Refactor ClasseBoardModify */}
-            <ClasseBoardModify />
+          <Match
+            when={
+              onBoard() == "school-class-add" ||
+              onBoard() == "school-class-modify"
+            }
+          >
+            <ClasseBoardModifyRefactored />
           </Match>
 
           {/* Stops */}
