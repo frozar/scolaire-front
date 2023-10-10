@@ -71,7 +71,6 @@ export default function () {
     setClasseName(e.target.value);
   }
 
-  // TODO: Clean
   async function onClickAddClasse() {
     const schoolId = schoolDetailsItem()?.id;
     if (!schoolId) return;
@@ -108,24 +107,20 @@ export default function () {
   async function onClickModifyClasse() {
     const schoolId = schoolDetailsItem()?.id;
     if (!schoolId) return;
-    console.log("selectedClasse() ====>", selectedClasse());
-    const modifiedClasse: ClasseType = {
+
+    const updatedClasse = await ClasseService.update({
       ...selectedClasse(),
       name: classeName(),
       morningStart: morningStart(),
       morningEnd: morningEnd(),
       afternoonStart: afternoonStart(),
       afternoonEnd: afternoonEnd(),
-    };
-    console.log("modified classe ====>", modifiedClasse);
+    });
 
-    const updatedClasse = await ClasseService.update(modifiedClasse);
-    console.log("updatedClasse", updatedClasse);
-    // TODO: Ajouter aux données locales
     setSchools((prev) => {
       const schoolToModify = prev.filter((school) => school.id == schoolId)[0];
-      // TODO: Fix old classe not deleted
       const newSchools = [...prev].filter((school) => school.id != schoolId);
+
       newSchools.push({
         ...schoolToModify,
         classes: [
@@ -135,15 +130,13 @@ export default function () {
           updatedClasse,
         ],
       });
+
       return newSchools;
     });
-    console.log("updated Schools =>", getSchools());
 
-    // TODO: Switch de board
     setSchoolDetailsItem(
       getSchools().filter((school) => school.id == schoolId)[0]
     );
-    console.log("updated schoolDetailsItem =>", schoolDetailsItem());
     changeBoard("school-details");
   }
 
