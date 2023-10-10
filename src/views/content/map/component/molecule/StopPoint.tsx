@@ -11,7 +11,6 @@ import { deselectAllRaces } from "../organism/Races";
 
 import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
 import { updatePointColor } from "../../../../../leafletUtils";
-import { QuantityUtils } from "../../../../../utils/quantity.utils";
 import {
   addPointToRace,
   currentRace,
@@ -68,8 +67,6 @@ function onClick(point: StopType) {
   // Wait Richard/Hugo finish the line underconstruction
   const lastPoint = currentRace.points.at(-1);
 
-  // TODO fix les quantités
-  QuantityUtils.add(point, currentRace);
   addPointToRace({ ...point, quantity: associatedQuantity });
 
   if (!lastPoint || point.leafletId != lastPoint.leafletId) {
@@ -112,8 +109,6 @@ const onMouseUp = (point: StopType) => {
   if (draggingCourse()) {
     const associatedQuantity = getAssociatedQuantity(point);
 
-    // TODO Fix add quantity
-    QuantityUtils.add(point, currentRace);
     addPointToRace({ ...point, quantity: associatedQuantity });
 
     const waypoints = currentRace.waypoints;
@@ -159,8 +154,6 @@ export function StopPoint(props: StopPointProps) {
     )[0];
 
     if (onBoard() == "line-draw" && isInCourseUnderConstruction != undefined) {
-      QuantityUtils.substract(props.point, currentRace);
-
       removePoint(props.point);
 
       // Update waypoints

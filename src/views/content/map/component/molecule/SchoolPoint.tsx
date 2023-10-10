@@ -3,7 +3,6 @@ import { SchoolType } from "../../../../../_entities/school.entity";
 import { StopType } from "../../../../../_entities/stop.entity";
 import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
 import { updatePointColor } from "../../../../../leafletUtils";
-import { QuantityUtils } from "../../../../../utils/quantity.utils";
 import {
   DrawModeStep,
   addPointToRace,
@@ -125,8 +124,6 @@ const onRightClick = (point: SchoolType) => {
   )[0];
 
   if (onBoard() == "line-draw" && isInCourseUnderConstruction != undefined) {
-    QuantityUtils.substract(point, currentRace);
-
     removePoint(point);
 
     const waypoints = currentRace.waypoints;

@@ -22,7 +22,6 @@ import {
   toggleDrawMod,
 } from "../board/component/template/ContextManager";
 
-import { deselectAllPoints } from "./component/organism/Points";
 import { COLOR_SCHOOL_FOCUS, COLOR_STOP_FOCUS } from "./constant";
 
 const [, { setModeDrawRace, isInDrawRaceMode, setModeRead }, history] =
@@ -122,26 +121,25 @@ function enterHandler({ code }: KeyboardEvent) {
 }
 
 function toggleCourseUnderConstruction({ code }: KeyboardEvent) {
-  if (disable_shortcut()) {
-    return;
-  }
-
-  // @ts-expect-error: Currently the 'keyboard' field doesn't exist on 'navigator'
-  const keyboard = navigator.keyboard;
-  // @ts-expect-error: The type 'KeyboardLayoutMap' is not available
-  keyboard.getLayoutMap().then((keyboardLayoutMap) => {
-    const upKey = keyboardLayoutMap.get(code);
-    if (upKey === "l") {
-      if (isInDrawRaceMode()) {
-        setModeRead();
-      } else {
-        deselectAllPoints();
-        setModeDrawRace();
-        // TODO MAYBE_ERROR
-        // displayDrawRaceMessage();
-      }
-    }
-  });
+  // if (disable_shortcut()) {
+  //   return;
+  // }
+  // // @ts-expect-error: Currently the 'keyboard' field doesn't exist on 'navigator'
+  // const keyboard = navigator.keyboard;
+  // // @ts-expect-error: The type 'KeyboardLayoutMap' is not available
+  // keyboard.getLayoutMap().then((keyboardLayoutMap) => {
+  //   const upKey = keyboardLayoutMap.get(code);
+  //   if (upKey === "l") {
+  //     if (isInDrawRaceMode()) {
+  //       setModeRead();
+  //     } else {
+  //       deselectAllPoints();
+  //       setModeDrawRace();
+  //       // TODO MAYBE_ERROR
+  //       // displayDrawRaceMessage();
+  //     }
+  //   }
+  // });
 }
 
 export const listHandlerLMap = [

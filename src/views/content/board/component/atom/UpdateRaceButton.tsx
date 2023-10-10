@@ -7,6 +7,7 @@ import {
   DrawModeStep,
   setCurrentRace,
   setCurrentStep,
+  setIsInUpdate,
 } from "../organism/DrawRaceBoard";
 import { changeBoard, toggleDrawMod } from "../template/ContextManager";
 import "./DrawUpdateButton.css";
@@ -16,6 +17,7 @@ const [, { setModeDrawRace }] = useStateAction();
 export function UpdateRaceButton(props: { race: RaceType }) {
   async function onclick() {
     setCurrentRace(props.race);
+    setIsInUpdate(true);
 
     MapElementUtils.deselectAllPointsAndBusCourses();
     toggleDrawMod();

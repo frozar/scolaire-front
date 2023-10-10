@@ -3,14 +3,8 @@ import { RacePointType, RaceType } from "../_entities/race.entity";
 import { SchoolType } from "../_entities/school.entity";
 import { StopType } from "../_entities/stop.entity";
 import { NatureEnum } from "../type";
-import {
-  getSchools,
-  setSchools,
-} from "../views/content/map/component/organism/SchoolPoints";
-import {
-  getStops,
-  setStops,
-} from "../views/content/map/component/organism/StopPoints";
+import { setSchools } from "../views/content/map/component/organism/SchoolPoints";
+import { setStops } from "../views/content/map/component/organism/StopPoints";
 
 enum OperationType {
   set,
@@ -19,16 +13,8 @@ enum OperationType {
 }
 
 export namespace QuantityUtils {
-  export function set(courses: RaceType[]) {
-    courses.forEach((course) => {
-      course.schools.forEach((school) => {
-        setSchoolQuantity(school, course.points);
-      });
-
-      course.points.forEach((point) => {
-        setStopQuantity(point, course.schools);
-      });
-    });
+  export function remaining(point: AssociatedPointType) {
+    return point.quantity - point.usedQuantity;
   }
 
   export function remainingQuantities(points: AssociatedPointType[]) {
@@ -40,98 +26,41 @@ export namespace QuantityUtils {
     return quantity;
   }
 
-  export function remaining(point: AssociatedPointType) {
-    return point.quantity - point.usedQuantity;
+  export function set(courses: RaceType[]) {
+    courses.forEach((race) => {
+      race.schools.forEach((school) => {
+        setSchoolQuantity(school, race.points);
+      });
+
+      race.points.forEach((point) => {
+        setStopQuantity(point, race.schools);
+      });
+    });
+  }
+  export function add(point: StopType | SchoolType, race: RaceType) {
+    operation(point, race, OperationType.add);
   }
 
-  export function substract(point: StopType | SchoolType, course: RaceType) {
-    operation(point, course, OperationType.substract);
-
-    console.log("SUBSTRACT------------------");
-    console.log("Schools", getSchools());
-    console.log("Stops", getStops());
-  }
-
-  export function add(point: StopType | SchoolType, course: RaceType) {
-    operation(point, course, OperationType.add);
-
-    console.log("ADD------------------");
-    console.log("Schools", getSchools());
-    console.log("Stops", getStops());
+  export function substract(point: StopType | SchoolType, race: RaceType) {
+    operation(point, race, OperationType.substract);
   }
 
   function operation(
     point: StopType | SchoolType,
-    course: RaceType,
+    race: RaceType,
     operation: OperationType
   ) {
     if (point.nature === NatureEnum.stop) {
       const stop = point;
-      course.schools.forEach((school) =>
-        shoolQuantityOperation(stop.id, school, course.points, operation)
+      race.schools.forEach(
+        (school) => school
+        // shoolQuantityOperation(stop.id, school, race.points, operation)
       );
 
-      course.points.forEach((point) =>
-        stopQuantityOperation(stop.id, point, course.schools, operation)
+      race.points.forEach(
+        (point) => point
+        // stopQuantityOperation(stop.id, point, race.schools, operation)
       );
-    }
-  }
-  function shoolQuantityOperation(
-    stopId: number,
-    school: SchoolType,
-    points: RacePointType[],
-    operation: OperationType
-  ) {
-    // TODO non opérationnel
-    points.forEach((point) => {
-      if (point.nature === NatureEnum.stop && point.id == stopId) {
-        setSchools((schools) => {
-          schools.map((_school) => {
-            if (_school.id == school.id) {
-              _school.associated.map((stop) => {
-                if (stop.id == point.id) {
-                  if (operation === OperationType.set)
-                    stop.usedQuantity = point.quantity;
-                  else if (operation === OperationType.add)
-                    stop.usedQuantity += point.quantity;
-                  else if (operation === OperationType.substract)
-                    stop.usedQuantity -= point.quantity;
-                }
-              });
-            }
-          });
-          return schools;
-        });
-      }
-    });
-  }
-
-  function stopQuantityOperation(
-    stopId: number,
-    point: RacePointType,
-    schools: SchoolType[],
-    operation: OperationType
-  ) {
-    if (point.nature === NatureEnum.stop && point.id == stopId) {
-      schools.forEach((school) => {
-        setStops((stops) => {
-          stops.map((stop) => {
-            if (stop.id == point.id) {
-              stop.associated.map((_school) => {
-                if (_school.id == school.id) {
-                  if (operation === OperationType.set)
-                    _school.usedQuantity = point.quantity;
-                  else if (operation === OperationType.add)
-                    _school.usedQuantity += point.quantity;
-                  else if (operation === OperationType.substract)
-                    _school.usedQuantity -= point.quantity;
-                }
-              });
-            }
-          });
-          return stops;
-        });
-      });
     }
   }
 
