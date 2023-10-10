@@ -21,7 +21,7 @@ import {
   getStops,
   leafletStopsFilter,
 } from "../../../map/component/organism/StopPoints";
-import { currentRace, updatePoints } from "../organism/DrawModeBoardContent";
+import { currentRace, updatePoints } from "../organism/DrawRaceBoard";
 import "./DrawHelperButton.css";
 
 interface DrawHelperButtonProps {

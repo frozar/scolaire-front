@@ -1,5 +1,5 @@
 import { FaSolidPlus } from "solid-icons/fa";
-import { setCurrentRaceIndex } from "../organism/DrawModeBoardContent";
+import { setCurrentRaceIndex } from "../organism/DrawRaceBoard";
 import "./RaceTimelineAddPointButton.css";
 
 // TODO Create stories and cypress

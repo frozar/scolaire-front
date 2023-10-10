@@ -7,7 +7,7 @@ import {
   DrawModeStep,
   currentRace,
   currentStep,
-} from "../../../board/component/organism/DrawModeBoardContent";
+} from "../../../board/component/organism/DrawRaceBoard";
 import { PointInterface } from "../atom/Point";
 import { StopPoint } from "../molecule/StopPoint";
 

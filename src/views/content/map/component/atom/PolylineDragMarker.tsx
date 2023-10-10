@@ -4,7 +4,7 @@ import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
 import {
   currentRace,
   updateWaypoints,
-} from "../../../board/component/organism/DrawModeBoardContent";
+} from "../../../board/component/organism/DrawRaceBoard";
 import { COLOR_WAYPOINT } from "../../constant";
 
 type PolylineDragMarkersProps = {

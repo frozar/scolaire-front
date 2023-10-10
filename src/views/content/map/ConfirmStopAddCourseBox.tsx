@@ -3,7 +3,7 @@ import { Transition } from "solid-transition-group";
 import { useStateAction } from "../../../StateAction";
 import ClickOutside from "../../../component/ClickOutside";
 import { assertIsNode } from "../../../utils";
-import { currentRace } from "../board/component/organism/DrawModeBoardContent";
+import { currentRace } from "../board/component/organism/DrawRaceBoard";
 
 // HACK for the documentation to preserve the ClickOutside directive on save
 // https://www.solidjs.com/guides/typescript#use___

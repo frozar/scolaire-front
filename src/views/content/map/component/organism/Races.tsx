@@ -9,7 +9,7 @@ import {
   DrawModeStep,
   currentRace,
   currentStep,
-} from "../../../board/component/organism/DrawModeBoardContent";
+} from "../../../board/component/organism/DrawRaceBoard";
 import { pointsReady } from "./Points";
 
 export const arrowsMap = new Map<number, L.Marker[]>();

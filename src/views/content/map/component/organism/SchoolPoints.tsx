@@ -6,7 +6,7 @@ import {
   DrawModeStep,
   currentRace,
   currentStep,
-} from "../../../board/component/organism/DrawModeBoardContent";
+} from "../../../board/component/organism/DrawRaceBoard";
 import { onBoard } from "../../../board/component/template/ContextManager";
 import { SchoolPoint } from "../molecule/SchoolPoint";
 

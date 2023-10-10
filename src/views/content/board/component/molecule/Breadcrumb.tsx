@@ -5,7 +5,7 @@ import { schoolDetailsItem } from "../../../schools/component/organism/SchoolDet
 import { stopDetailsItem } from "../../../stops/component/organism/StopDetails";
 import BreadcrumbButton from "../atom/BreadcrumbButton";
 import DisplayBreadcrumbText from "../atom/DisplayBreadcrumbText";
-import { currentRace } from "../organism/DrawModeBoardContent";
+import { currentRace } from "../organism/DrawRaceBoard";
 import { changeBoard, onBoard } from "../template/ContextManager";
 import "./Breadcrumb.css";
 

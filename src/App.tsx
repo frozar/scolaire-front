@@ -10,7 +10,7 @@ import DisplayUserInformation from "./userInformation/DisplayUserInformation";
 import DragAndDropSummary from "./userInformation/DragAndDropSummary";
 import GeneratorDialogBox from "./userInformation/GeneratorDialogBox";
 import RemoveConfirmationDialogBox from "./userInformation/RemoveConfirmationDialogBox";
-import { currentRace } from "./views/content/board/component/organism/DrawModeBoardContent";
+import { currentRace } from "./views/content/board/component/organism/DrawRaceBoard";
 import ContextManager from "./views/content/board/component/template/ContextManager";
 import Dashboard from "./views/content/dashboard/Dashboard";
 import Map from "./views/content/map/Map";

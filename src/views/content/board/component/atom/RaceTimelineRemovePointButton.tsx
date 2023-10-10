@@ -6,7 +6,7 @@ import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
 import { NatureEnum } from "../../../../../type";
 import { linkMap } from "../../../map/component/organism/Points";
 import { COLOR_SCHOOL_FOCUS, COLOR_STOP_FOCUS } from "../../../map/constant";
-import { updateWaypoints } from "../organism/DrawModeBoardContent";
+import { updateWaypoints } from "../organism/DrawRaceBoard";
 import "./RaceTimelineRemovePointButton.css";
 
 export function RaceTimelineRemovePointButton(props: {

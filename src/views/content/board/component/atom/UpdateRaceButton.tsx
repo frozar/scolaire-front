@@ -7,7 +7,7 @@ import {
   DrawModeStep,
   setCurrentRace,
   setCurrentStep,
-} from "../organism/DrawModeBoardContent";
+} from "../organism/DrawRaceBoard";
 import { changeBoard, toggleDrawMod } from "../template/ContextManager";
 import "./DrawUpdateButton.css";
 

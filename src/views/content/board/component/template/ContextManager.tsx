@@ -5,9 +5,7 @@ import SchoolsBoard from "../../../schools/component/organism/SchoolBoard";
 import SchoolDetails from "../../../schools/component/organism/SchoolDetails";
 import StopBoard from "../../../stops/component/organism/StopBoard";
 import StopDetails from "../../../stops/component/organism/StopDetails";
-import AddLineBoardContent from "../organism/AddLineBoardContent";
-import BusLinesBoard from "../organism/BusLinesBoard";
-import DrawModeBoardContent from "../organism/DrawModeBoardContent";
+import { DrawRaceBoard } from "../organism/DrawRaceBoard";
 import { RaceBoard } from "../organism/RaceBoard";
 import { RacesBoard } from "../organism/RacesBoard";
 import InformationBoardLayout from "./InformationBoardLayout";
@@ -59,8 +57,8 @@ export default function () {
           <Match when={onBoard() == "course"}>
             <RacesBoard />
           </Match>
-          <Match when={onBoard() == "course-draw"}>
-            <DrawModeBoardContent />
+          <Match when={onBoard() == "line-draw"}>
+            <DrawRaceBoard />
           </Match>
 
           {/* Schools */}

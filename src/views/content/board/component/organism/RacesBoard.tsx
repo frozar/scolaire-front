@@ -10,7 +10,7 @@ import InputSearch from "../../../schools/component/molecule/InputSearch";
 import { RacesList } from "../../../schools/component/organism/RacesList";
 import ButtonIcon from "../molecule/ButtonIcon";
 import { onBoard, toggleDrawMod } from "../template/ContextManager";
-import { DrawModeStep, setCurrentStep } from "./DrawModeBoardContent";
+import { DrawModeStep, setCurrentStep } from "./DrawRaceBoard";
 import "./RacesBoard.css";
 
 export function RacesBoard() {

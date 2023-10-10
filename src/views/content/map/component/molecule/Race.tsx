@@ -26,7 +26,7 @@ import {
   displayCourseMode,
   displayCourseModeEnum,
   setCurrentRaceIndex,
-} from "../../../board/component/organism/DrawModeBoardContent";
+} from "../../../board/component/organism/DrawRaceBoard";
 import { setIsOverMapItem } from "../../l7MapBuilder";
 import {
   cursorIsOverPoint,

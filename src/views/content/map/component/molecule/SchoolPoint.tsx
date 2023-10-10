@@ -12,7 +12,7 @@ import {
   currentStep,
   removePoint,
   updateWaypoints,
-} from "../../../board/component/organism/DrawModeBoardContent";
+} from "../../../board/component/organism/DrawRaceBoard";
 import {
   changeBoard,
   onBoard,

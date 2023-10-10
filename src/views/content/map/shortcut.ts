@@ -15,7 +15,7 @@ import {
   DrawModeStep,
   setCurrentRace,
   setCurrentStep,
-} from "../board/component/organism/DrawModeBoardContent";
+} from "../board/component/organism/DrawRaceBoard";
 import {
   changeBoard,
   onBoard,

@@ -1,6 +1,6 @@
 import { FaSolidMinus } from "solid-icons/fa";
 import { SchoolType } from "../../../../../_entities/school.entity";
-import { removeSchoolToRace } from "../organism/DrawModeBoardContent";
+import { removeSchoolToRace } from "../organism/DrawRaceBoard";
 import "./SelectedSchoolItem.css";
 
 export default function (props: { school: SchoolType }) {

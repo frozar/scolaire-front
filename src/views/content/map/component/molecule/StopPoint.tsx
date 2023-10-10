@@ -17,7 +17,7 @@ import {
   currentRace,
   removePoint,
   updateWaypoints,
-} from "../../../board/component/organism/DrawModeBoardContent";
+} from "../../../board/component/organism/DrawRaceBoard";
 import { setStopDetailsItem } from "../../../stops/component/organism/StopDetails";
 import { setIsOverMapItem } from "../../l7MapBuilder";
 import {

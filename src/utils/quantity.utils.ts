@@ -1,5 +1,5 @@
 import { AssociatedPointType } from "../_entities/_utils.entity";
-import { CoursePointType, CourseType } from "../_entities/course.entity";
+import { RacePointType, RaceType } from "../_entities/race.entity";
 import { SchoolType } from "../_entities/school.entity";
 import { StopType } from "../_entities/stop.entity";
 import { NatureEnum } from "../type";
@@ -19,7 +19,7 @@ enum OperationType {
 }
 
 export namespace QuantityUtils {
-  export function set(courses: CourseType[]) {
+  export function set(courses: RaceType[]) {
     courses.forEach((course) => {
       course.schools.forEach((school) => {
         setSchoolQuantity(school, course.points);
@@ -44,7 +44,7 @@ export namespace QuantityUtils {
     return point.quantity - point.usedQuantity;
   }
 
-  export function substract(point: StopType | SchoolType, course: CourseType) {
+  export function substract(point: StopType | SchoolType, course: RaceType) {
     operation(point, course, OperationType.substract);
 
     console.log("SUBSTRACT------------------");
@@ -52,7 +52,7 @@ export namespace QuantityUtils {
     console.log("Stops", getStops());
   }
 
-  export function add(point: StopType | SchoolType, course: CourseType) {
+  export function add(point: StopType | SchoolType, course: RaceType) {
     operation(point, course, OperationType.add);
 
     console.log("ADD------------------");
@@ -62,7 +62,7 @@ export namespace QuantityUtils {
 
   function operation(
     point: StopType | SchoolType,
-    course: CourseType,
+    course: RaceType,
     operation: OperationType
   ) {
     if (point.nature === NatureEnum.stop) {
@@ -79,7 +79,7 @@ export namespace QuantityUtils {
   function shoolQuantityOperation(
     stopId: number,
     school: SchoolType,
-    points: CoursePointType[],
+    points: RacePointType[],
     operation: OperationType
   ) {
     // TODO non opérationnel
@@ -108,7 +108,7 @@ export namespace QuantityUtils {
 
   function stopQuantityOperation(
     stopId: number,
-    point: CoursePointType,
+    point: RacePointType,
     schools: SchoolType[],
     operation: OperationType
   ) {
@@ -135,7 +135,7 @@ export namespace QuantityUtils {
     }
   }
 
-  function setSchoolQuantity(school: SchoolType, points: CoursePointType[]) {
+  function setSchoolQuantity(school: SchoolType, points: RacePointType[]) {
     points.forEach((point) => {
       if (point.nature === NatureEnum.stop) {
         setSchools((schools) => {
@@ -154,7 +154,7 @@ export namespace QuantityUtils {
     });
   }
 
-  function setStopQuantity(point: CoursePointType, schools: SchoolType[]) {
+  function setStopQuantity(point: RacePointType, schools: SchoolType[]) {
     if (point.nature === NatureEnum.stop) {
       schools.forEach((school) => {
         setStops((stops) => {
