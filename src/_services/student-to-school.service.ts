@@ -10,14 +10,6 @@ import {
 } from "../_entities/student-to-school.entity";
 import { ServiceUtils } from "./_utils.service";
 
-// export type StudentToSchool = {
-//   id: number;
-//   school_name: string;
-//   stop_name: string;
-//   class_name: string;
-//   quantity: number;
-// };
-
 export class StudentToSchoolService {
   static async import(
     students_to_schools: ClassStudentToSchoolTypeFormated[]
