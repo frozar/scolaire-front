@@ -1,6 +1,6 @@
 import { Match, Switch, createEffect, createSignal } from "solid-js";
 
-import ClasseBoardModifyRefactored from "../../../schools/component/organism/ClasseBoardModifyRefactored";
+import ClasseBoard from "../../../schools/component/organism/ClasseBoard";
 import SchoolsBoard from "../../../schools/component/organism/SchoolBoard";
 import SchoolDetails from "../../../schools/component/organism/SchoolDetails";
 import StopBoard from "../../../stops/component/organism/StopBoard";
@@ -82,7 +82,7 @@ export default function () {
               onBoard() == "school-class-modify"
             }
           >
-            <ClasseBoardModifyRefactored />
+            <ClasseBoard />
           </Match>
 
           {/* Stops */}

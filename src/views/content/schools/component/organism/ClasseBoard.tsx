@@ -6,7 +6,10 @@ import {
 import { ClasseService } from "../../../../../_services/classe.service";
 import BoardFooterActions from "../../../board/component/molecule/BoardFooterActions";
 import LabeledInputField from "../../../board/component/molecule/LabeledInputField";
-import { changeBoard } from "../../../board/component/template/ContextManager";
+import {
+  changeBoard,
+  onBoard,
+} from "../../../board/component/template/ContextManager";
 import {
   getSchools,
   setSchools,
@@ -16,20 +19,51 @@ import ClasseBoardHeader from "../molecule/ClasseBoardHeader";
 import TimesInputWrapper from "../molecule/TimesInputWrapper";
 import { schoolDetailsItem, setSchoolDetailsItem } from "./SchoolDetails";
 
+// TODO: Mettre en place vider un signal
+export const [selectedClasse, setSelectedClasse] = createSignal<ClasseType>();
+// ! ??
+// eslint-disable-next-line solid/reactivity
 export default function () {
-  const defaultTime = {
-    hour: 0,
-    minutes: 0,
-  };
-  const [classeName, setClasseName] = createSignal("Nom de classe par défaut");
+  let defaultClasse: ClasseType;
+  if (onBoard() == "school-class-add") {
+    const defaultTime = {
+      hour: 0,
+      minutes: 0,
+    };
+    defaultClasse = {
+      name: "Nom de classe par défaut",
+      morningStart: defaultTime,
+      morningEnd: defaultTime,
+      afternoonStart: defaultTime,
+      afternoonEnd: defaultTime,
+    };
+  } else {
+    const classe = selectedClasse() as ClasseType;
+    defaultClasse = {
+      name: classe.name,
+      morningStart: classe.morningStart,
+      morningEnd: classe.morningEnd,
+      afternoonStart: classe.afternoonStart,
+      afternoonEnd: classe.afternoonEnd,
+    };
+  }
 
-  const [morningStart, setMorningStart] =
-    createSignal<HeureFormat>(defaultTime);
-  const [morningEnd, setMorningEnd] = createSignal<HeureFormat>(defaultTime);
-  const [afternoonEnd, setAfternoonEnd] =
-    createSignal<HeureFormat>(defaultTime);
-  const [afternoonStart, setAfternoonStart] =
-    createSignal<HeureFormat>(defaultTime);
+  // const classe = selectedClasse() as ClasseType;
+
+  const [classeName, setClasseName] = createSignal(defaultClasse.name);
+
+  const [morningStart, setMorningStart] = createSignal<HeureFormat>(
+    defaultClasse.morningStart
+  );
+  const [morningEnd, setMorningEnd] = createSignal<HeureFormat>(
+    defaultClasse.morningEnd
+  );
+  const [afternoonEnd, setAfternoonEnd] = createSignal<HeureFormat>(
+    defaultClasse.afternoonEnd
+  );
+  const [afternoonStart, setAfternoonStart] = createSignal<HeureFormat>(
+    defaultClasse.afternoonStart
+  );
 
   function onInputClasseName(
     e: Event & {
@@ -39,6 +73,7 @@ export default function () {
     setClasseName(e.target.value);
   }
 
+  // TODO: Clean
   async function onClickAddClasse() {
     const schoolId = schoolDetailsItem()?.id;
     if (!schoolId) return;
@@ -71,13 +106,64 @@ export default function () {
     changeBoard("school-details");
   }
 
+  // TODO: Clean
+  async function onClickModifyClasse() {
+    const schoolId = schoolDetailsItem()?.id;
+    if (!schoolId) return;
+    console.log("selectedClasse() ====>", selectedClasse());
+    const modifiedClasse: ClasseType = {
+      ...selectedClasse(),
+      name: classeName(),
+      morningStart: morningStart(),
+      morningEnd: morningEnd(),
+      afternoonStart: afternoonStart(),
+      afternoonEnd: afternoonEnd(),
+    };
+    console.log("modified classe ====>", modifiedClasse);
+
+    const updatedClasse = await ClasseService.update(modifiedClasse);
+    console.log("updatedClasse", updatedClasse);
+    // TODO: Ajouter aux données locales
+    setSchools((prev) => {
+      const schoolToModify = prev.filter((school) => school.id == schoolId)[0];
+      // TODO: Fix old classe not deleted
+      const newSchools = [...prev].filter((school) => school.id != schoolId);
+      newSchools.push({
+        ...schoolToModify,
+        classes: [
+          ...schoolToModify.classes.filter(
+            (classe) => classe.id != updatedClasse.id
+          ),
+          updatedClasse,
+        ],
+      });
+      return newSchools;
+    });
+    console.log("updated Schools =>", getSchools());
+
+    // TODO: Switch de board
+    setSchoolDetailsItem(
+      getSchools().filter((school) => school.id == schoolId)[0]
+    );
+    console.log("updated schoolDetailsItem =>", schoolDetailsItem());
+    changeBoard("school-details");
+  }
+
   function onClickCancel() {
     changeBoard("school-details");
   }
 
   return (
     <section>
-      <ClasseBoardHeader title="Ajout d'une classe" />
+      {/* <ClasseBoardHeader title="Ajout d'une classe" /> */}
+      {/* <ClasseBoardHeader title="Modifier une classe" /> */}
+      <ClasseBoardHeader
+        title={
+          onBoard() == "school-class-add"
+            ? "Ajout d'une classe"
+            : "Modifier une classe"
+        }
+      />
 
       <div class="content">
         <div class="line-height-1">
@@ -111,7 +197,10 @@ export default function () {
 
       <BoardFooterActions
         nextStep={{
-          callback: onClickAddClasse,
+          callback:
+            onBoard() == "school-class-add"
+              ? onClickAddClasse
+              : onClickModifyClasse,
           label: "Suivant",
         }}
         previousStep={{

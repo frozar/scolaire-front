@@ -4,7 +4,7 @@ import CardTitle from "../../../../../component/atom/CardTitle";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { changeBoard } from "../../../board/component/template/ContextManager";
-import { setSelectedClasse } from "../organism/ClasseBoardModifyRefactored";
+import { setSelectedClasse } from "../organism/ClasseBoard";
 import "./ClasseItem.css";
 
 // interface ClasseItemProps {
