@@ -74,7 +74,10 @@ export default function () {
           label="Nom de la line"
           value={currentLine()?.name ?? " default name"}
           onInput={(e) =>
-            setCurrentLine({ ...currentLine(), name: e.target.value })
+            setCurrentLine({
+              ...(currentLine() ?? BusLineEntity.defaultBusLine()),
+              name: e.target.value,
+            })
           }
           name="line-name"
           placeholder="Entrer le nom de la line"
@@ -146,9 +149,7 @@ const onChange = async (color: string) => {
   if (!line) return;
 };
 
-export const [currentLine, setCurrentLine] = createSignal<LineType>(
-  BusLineEntity.defaultBusLine()
-);
+export const [currentLine, setCurrentLine] = createSignal<LineType>();
 
 async function nextStep() {
   enableSpinningWheel();
@@ -158,7 +159,10 @@ async function nextStep() {
         break;
       }
       setAddLineCurrentStep(AddLineStep.editLine);
-      setCurrentLine({ ...currentLine(), schools: addLineSelectedSchool() });
+      setCurrentLine({
+        ...(currentLine() ?? BusLineEntity.defaultBusLine()),
+        schools: addLineSelectedSchool(),
+      });
       break;
     case AddLineStep.editLine:
       if (stopSelected.length < 2) {
@@ -176,17 +180,22 @@ async function nextStep() {
           .map((val) => val.associated.id)
           .includes(elem.id)
       );
-      setCurrentLine({ ...currentLine(), stops });
+      setCurrentLine({
+        ...(currentLine() ?? BusLineEntity.defaultBusLine()),
+        stops,
+      });
       await createBusLine(currentLine());
   }
   disableSpinningWheel();
 }
 
-async function createBusLine(line: LineType) {
-  const newBusLine: LineType = await BusLineService.create(line);
-  deselectAllLines();
-  newBusLine.setSelected(true);
-  displayBusLine(newBusLine);
+async function createBusLine(line: LineType | undefined) {
+  if (line) {
+    const newBusLine: LineType = await BusLineService.create(line);
+    deselectAllLines();
+    newBusLine.setSelected(true);
+    displayBusLine(newBusLine);
+  }
   // updateBusLines(newBusLine);
 }
 

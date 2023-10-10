@@ -3,13 +3,13 @@ import "leaflet/dist/leaflet.css";
 import { Meta, StoryObj } from "storybook-solidjs";
 import { initialiseMap } from "../../../../../../testing/utils/mapWrapper";
 
-import { LeafletMouseEvent } from "leaflet";
 import { splitProps } from "solid-js";
 import {
   createPoint,
   getDivFullId,
   mapDecorators,
 } from "../../../../../../testing/utils/TestUtils";
+import { NatureEnum } from "../../../../../type";
 import PointComponent from "./Point";
 
 const meta = {
@@ -18,8 +18,7 @@ const meta = {
   decorators: mapDecorators,
   argTypes: {
     onClick: () => console.log("onClick"),
-    onDBLClick: (event: LeafletMouseEvent) =>
-      console.log("onDBLClick, event:", event),
+
     onMouseOver: () => console.log("onMouseOver"),
     onMouseOut: () => console.log("onMouseOut"),
     onMouseUp: () => console.log("onMouseUp"),
@@ -57,11 +56,11 @@ export const PointStories: Story = {
       <PointComponent
         point={createPoint({
           id: 1,
-          idPoint: 50,
+          leafletId: 50,
           lat: -20.9466588303741,
           lon: 55.5343806753509,
           name: "name",
-          quantity: 5,
+          nature: NatureEnum.school,
         })}
         map={initialiseMap(fullId)}
         {...others}
@@ -89,11 +88,11 @@ export const PointStories2: Story = {
       <PointComponent
         point={createPoint({
           id: 1,
-          idPoint: 50,
+          leafletId: 50,
           lat: -20.9466588303741,
           lon: 55.5343806753519,
           name: "name",
-          quantity: 5,
+          nature: NatureEnum.stop,
         })}
         map={initialiseMap(fullId)}
         {...others}
@@ -101,7 +100,6 @@ export const PointStories2: Story = {
         fillColor={local.fillColor as string}
         // TODO: Use argtypes as the first story do
         onClick={() => console.log("onClick")}
-        onDBLClick={() => console.log("onDBLClick")}
         onMouseOut={() => console.log("onMouseOut")}
         onMouseOver={() => console.log("onMouseOver")}
         onMouseUp={() => console.log("onMouseUp")}
