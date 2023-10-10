@@ -40,6 +40,16 @@ export class StudentToSchoolService {
     return response;
   }
 
+  static async update(
+    ClassStudentToSchool: ClassStudentToSchoolDBType
+  ): Promise<ClassStudentToSchoolTypeFormated> {
+    const response: ClassStudentToSchoolTypeFormated = await ServiceUtils.patch(
+      "/student-to-school/" + ClassStudentToSchool.id,
+      ClassStudentToSchool
+    );
+    return response;
+  }
+
   static async delete(id: number): Promise<number> {
     const response = await ServiceUtils.delete("/student-to-school/" + id);
     return response;
