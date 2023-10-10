@@ -15,14 +15,13 @@ export namespace ClassStudentToSchool {
   }
 
   export function dbFormat(
-    classStudentToSchool: ClassStudentToSchoolDBType
-  ): ClassStudentToSchoolType {
+    classStudentToSchool: Omit<ClassStudentToSchoolType, "id">
+  ): Omit<ClassStudentToSchoolDBType, "id"> {
     return {
-      id: classStudentToSchool.id,
-      stopId: classStudentToSchool.stop_id,
-      schoolId: classStudentToSchool.school_id,
+      stop_id: classStudentToSchool.stopId,
+      school_id: classStudentToSchool.schoolId,
       quantity: classStudentToSchool.quantity,
-      classId: classStudentToSchool.class_id,
+      class_id: classStudentToSchool.classId,
     };
   }
 }

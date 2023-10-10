@@ -2,7 +2,10 @@ import { createSignal, onMount } from "solid-js";
 import { AssociatedPointType } from "../../../../../_entities/_utils.entity";
 import { ClasseType } from "../../../../../_entities/classe.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
-import { ClassStudentToSchoolDBType } from "../../../../../_entities/student-to-school.entity";
+import {
+  ClassStudentToSchool,
+  ClassStudentToSchoolDBType,
+} from "../../../../../_entities/student-to-school.entity";
 import { StudentToSchoolService } from "../../../../../_services/student-to-school.service";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
 import CheckIcon from "../../../../../icons/CheckIcon";
@@ -67,12 +70,12 @@ export default function (props: EditStopProps) {
   };
 
   function getClassStudentToSchool(): Omit<ClassStudentToSchoolDBType, "id"> {
-    return {
-      school_id: Number(schoolSelectRef().value),
-      stop_id: Number(props.stopID),
+    return ClassStudentToSchool.dbFormat({
+      schoolId: Number(schoolSelectRef().value),
+      stopId: Number(props.stopID),
       quantity: Number(quantityInputRef().value),
-      class_id: Number(classeSelectRef().value),
-    };
+      classId: Number(classeSelectRef().value),
+    });
   }
 
   function getAssociatedPoint(id: number): AssociatedPointType {
