@@ -65,7 +65,8 @@ export default function () {
         ]);
         break;
 
-      case "school-class":
+      case "school-class-add":
+      case "school-class-modify":
         setCrumbs([
           {
             text: "Ecoles",

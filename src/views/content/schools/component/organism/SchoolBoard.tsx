@@ -21,7 +21,7 @@ export default function () {
   return (
     <section>
       <header>
-        <div class=".school-board-header">
+        <div class="school-board-header">
           <p>Nombre total d'établissements : {getSchools().length}</p>
           <ButtonIcon
             icon={<FaSolidPlus class="fill-green-base" />}

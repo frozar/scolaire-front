@@ -1,9 +1,15 @@
-import { createSignal } from "solid-js";
-import { ClasseType } from "../../../../../_entities/classe.entity";
+import { createSignal, onCleanup } from "solid-js";
+import {
+  ClasseType,
+  HeureFormat,
+} from "../../../../../_entities/classe.entity";
 import { ClasseService } from "../../../../../_services/classe.service";
 import BoardFooterActions from "../../../board/component/molecule/BoardFooterActions";
 import LabeledInputField from "../../../board/component/molecule/LabeledInputField";
-import { changeBoard } from "../../../board/component/template/ContextManager";
+import {
+  changeBoard,
+  onBoard,
+} from "../../../board/component/template/ContextManager";
 import {
   getSchools,
   setSchools,
@@ -13,25 +19,50 @@ import ClasseBoardHeader from "../molecule/ClasseBoardHeader";
 import TimesInputWrapper from "../molecule/TimesInputWrapper";
 import { schoolDetailsItem, setSchoolDetailsItem } from "./SchoolDetails";
 
-export type HeureFormat = {
-  hour: number;
-  minutes: number;
-};
+export const [selectedClasse, setSelectedClasse] = createSignal<ClasseType>();
 
+// eslint-disable-next-line solid/reactivity
 export default function () {
-  const defaultTime = {
-    hour: 0,
-    minutes: 0,
-  };
-  const [classeName, setClasseName] = createSignal("Nom de classe par défaut");
+  let defaultClasse: ClasseType;
+  // Case adding a new classe
+  if (onBoard() == "school-class-add") {
+    const defaultTime = {
+      hour: 0,
+      minutes: 0,
+    };
+    defaultClasse = {
+      name: "Nom de classe par défaut",
+      morningStart: defaultTime,
+      morningEnd: defaultTime,
+      afternoonStart: defaultTime,
+      afternoonEnd: defaultTime,
+    };
+    // Case modifying an existing classe
+  } else {
+    const classe = selectedClasse() as ClasseType;
+    defaultClasse = {
+      name: classe.name,
+      morningStart: classe.morningStart,
+      morningEnd: classe.morningEnd,
+      afternoonStart: classe.afternoonStart,
+      afternoonEnd: classe.afternoonEnd,
+    };
+  }
 
-  const [morningStart, setMorningStart] =
-    createSignal<HeureFormat>(defaultTime);
-  const [morningEnd, setMorningEnd] = createSignal<HeureFormat>(defaultTime);
-  const [afternoonEnd, setAfternoonEnd] =
-    createSignal<HeureFormat>(defaultTime);
-  const [afternoonStart, setAfternoonStart] =
-    createSignal<HeureFormat>(defaultTime);
+  const [classeName, setClasseName] = createSignal(defaultClasse.name);
+
+  const [morningStart, setMorningStart] = createSignal<HeureFormat>(
+    defaultClasse.morningStart
+  );
+  const [morningEnd, setMorningEnd] = createSignal<HeureFormat>(
+    defaultClasse.morningEnd
+  );
+  const [afternoonEnd, setAfternoonEnd] = createSignal<HeureFormat>(
+    defaultClasse.afternoonEnd
+  );
+  const [afternoonStart, setAfternoonStart] = createSignal<HeureFormat>(
+    defaultClasse.afternoonStart
+  );
 
   function onInputClasseName(
     e: Event & {
@@ -46,24 +77,59 @@ export default function () {
     if (!schoolId) return;
 
     // TODO: Verify if schedules input different of "0:0" then display user message and return;
-    const newClasse: ClasseType = {
+
+    const newClasse = await ClasseService.create({
       schoolId: schoolId,
       name: classeName(),
       morningStart: morningStart(),
       morningEnd: morningEnd(),
       afternoonStart: afternoonStart(),
       afternoonEnd: afternoonEnd(),
-    };
-
-    const returnedClasse = await ClasseService.create(newClasse);
+    });
 
     setSchools((prev) => {
       const schoolToModify = prev.filter((school) => school.id == schoolId)[0];
       const newSchools = [...prev].filter((school) => school.id != schoolId);
       newSchools.push({
         ...schoolToModify,
-        classes: [...schoolToModify.classes, returnedClasse],
+        classes: [...schoolToModify.classes, newClasse],
       });
+      return newSchools;
+    });
+
+    setSchoolDetailsItem(
+      getSchools().filter((school) => school.id == schoolId)[0]
+    );
+    changeBoard("school-details");
+  }
+
+  async function onClickModifyClasse() {
+    const schoolId = schoolDetailsItem()?.id;
+    if (!schoolId) return;
+
+    const updatedClasse = await ClasseService.update({
+      ...selectedClasse(),
+      name: classeName(),
+      morningStart: morningStart(),
+      morningEnd: morningEnd(),
+      afternoonStart: afternoonStart(),
+      afternoonEnd: afternoonEnd(),
+    });
+
+    setSchools((prev) => {
+      const schoolToModify = prev.filter((school) => school.id == schoolId)[0];
+      const newSchools = [...prev].filter((school) => school.id != schoolId);
+
+      newSchools.push({
+        ...schoolToModify,
+        classes: [
+          ...schoolToModify.classes.filter(
+            (classe) => classe.id != updatedClasse.id
+          ),
+          updatedClasse,
+        ],
+      });
+
       return newSchools;
     });
 
@@ -77,9 +143,17 @@ export default function () {
     changeBoard("school-details");
   }
 
+  onCleanup(() => setSelectedClasse());
+
   return (
     <section>
-      <ClasseBoardHeader title="Ajout d'une classe" />
+      <ClasseBoardHeader
+        title={
+          onBoard() == "school-class-add"
+            ? "Ajout d'une classe"
+            : "Modifier une classe"
+        }
+      />
 
       <div class="content">
         <div class="line-height-1">
@@ -113,8 +187,11 @@ export default function () {
 
       <BoardFooterActions
         nextStep={{
-          callback: onClickAddClasse,
-          label: "Suivant",
+          callback:
+            onBoard() == "school-class-add"
+              ? onClickAddClasse
+              : onClickModifyClasse,
+          label: "Valider",
         }}
         previousStep={{
           callback: onClickCancel,

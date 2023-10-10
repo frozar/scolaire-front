@@ -1,5 +1,5 @@
 import { Accessor, Setter } from "solid-js";
-import { HeureFormat } from "../organism/ClasseBoard";
+import { HeureFormat } from "../../../../../_entities/classe.entity";
 import StartEndTimeSchedulesInput from "./StartEndTimeSchedulesInput";
 
 interface TimesInputWrapper {

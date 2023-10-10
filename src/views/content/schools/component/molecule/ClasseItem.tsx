@@ -1,17 +1,21 @@
 import { FaRegularTrashCan, FaSolidPen } from "solid-icons/fa";
+import { ClasseType } from "../../../../../_entities/classe.entity";
 import CardTitle from "../../../../../component/atom/CardTitle";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
+import { changeBoard } from "../../../board/component/template/ContextManager";
+import { setSelectedClasse } from "../organism/ClasseBoard";
 import "./ClasseItem.css";
 
 interface ClasseItemProps {
-  nameClass: string;
+  classe: ClasseType;
   NbStudents?: number;
 }
 
 export default function (props: ClasseItemProps) {
   function onClickEdit() {
-    console.log("Edit classe");
+    setSelectedClasse(props.classe);
+    changeBoard("school-class-modify");
   }
 
   function onClickDelete() {
@@ -21,7 +25,7 @@ export default function (props: ClasseItemProps) {
   return (
     <CardWrapper class="classe-item">
       <div class="left">
-        <CardTitle title={props.nameClass} />
+        <CardTitle title={props.classe.name} />
         <p>{props.NbStudents ? props.NbStudents + " élèves" : "Todo élèves"}</p>
       </div>
 
