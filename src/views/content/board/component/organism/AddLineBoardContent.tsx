@@ -16,7 +16,6 @@ import {
   disableSpinningWheel,
   enableSpinningWheel,
 } from "../../../../../signaux";
-import { deselectAllLines } from "../../../map/component/organism/BusLines";
 import { getSchools } from "../../../map/component/organism/SchoolPoints";
 import { getStops } from "../../../map/component/organism/StopPoints";
 import { displayBusLine } from "../../../schools/component/molecule/BusLineItem";
@@ -171,10 +170,6 @@ async function nextStep() {
         break;
       }
 
-      // await createOrUpdateBusCourse(getCourseUnderConstruction().course); TODO fetch la line
-      // changeBoard("line-details");
-      console.log(addLineSelectedSchool());
-
       updatePointColor();
       const stops = getStops().filter((elem) =>
         stopSelected
@@ -194,8 +189,6 @@ async function nextStep() {
 async function createBusLine(line: LineType | undefined) {
   if (line) {
     const newBusLine: LineType = await BusLineService.create(line);
-    deselectAllLines();
-    newBusLine.setSelected(true);
     displayBusLine(newBusLine);
   }
   // updateBusLines(newBusLine);

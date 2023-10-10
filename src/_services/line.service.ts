@@ -4,6 +4,7 @@ import {
   LineDBType,
   LineType,
 } from "../_entities/line.entity";
+import { getLines } from "../views/content/map/component/organism/BusLines";
 import { ServiceUtils } from "./_utils.service";
 
 export class BusLineService {
@@ -22,13 +23,13 @@ export class BusLineService {
 
     const dbData: DbDataLineType = await ServiceUtils.post("/bus_line", data);
 
-    const dbLine: LineDBType = dbData.bus_lines.bus_lines.filter(
+    BusLineEntity.updateLines(dbData.bus_lines.bus_lines);
+
+    const busLine = getLines().filter(
       (line) => line.id === dbData.new_bus_line.id
     )[0];
 
-    BusLineEntity.updateLines(dbData.bus_lines.bus_lines);
-
-    return BusLineEntity.build(dbLine);
+    return busLine;
   }
 
   //TODO faire l'update
