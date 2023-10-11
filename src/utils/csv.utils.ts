@@ -7,7 +7,7 @@ import {
 import { StopDBType, StopEntity, StopType } from "../_entities/stop.entity";
 import {
   CSVFormatStudentToSchool,
-  ClassStudentToSchoolTypeFormated,
+  ClassToSchoolTypeFormated,
 } from "../_entities/student-to-school.entity";
 import { SchoolService } from "../_services/school.service";
 import { StopService } from "../_services/stop.service";
@@ -37,7 +37,7 @@ export namespace CsvUtils {
           );
         } else if (isStudentToSchoolFile(fileName)) {
           return importStudentToSchoolCSVFile(
-            parsedFileData as ClassStudentToSchoolTypeFormated[]
+            parsedFileData as ClassToSchoolTypeFormated[]
           );
         } else {
           addNewGlobalWarningInformation("Nom de fichier non reconnu");
@@ -88,7 +88,7 @@ export namespace CsvUtils {
   }
 
   async function importStudentToSchoolCSVFile(
-    parsedFileData: ClassStudentToSchoolTypeFormated[]
+    parsedFileData: ClassToSchoolTypeFormated[]
   ) {
     const { schools, stops } = await StudentToSchoolService.import(
       parsedFileData
@@ -184,9 +184,7 @@ export namespace CsvUtils {
 
   async function parsedCsvFileToStudentToSchoolData(
     file: File
-  ): Promise<
-    Omit<ClassStudentToSchoolTypeFormated, "class" | "id">[] | undefined
-  > {
+  ): Promise<Omit<ClassToSchoolTypeFormated, "class" | "id">[] | undefined> {
     const parsedFile = await parseFile(file);
 
     const correctHeader = ["school_name", "stop_name", "quantity"];
@@ -196,7 +194,7 @@ export namespace CsvUtils {
 
     function CSVFormatToFormatedType(
       data: CSVFormatStudentToSchool
-    ): Omit<ClassStudentToSchoolTypeFormated, "class" | "id"> | undefined {
+    ): Omit<ClassToSchoolTypeFormated, "class" | "id"> | undefined {
       if (data.school_name && data.quantity && data.stop_name) {
         return {
           quantity: data.quantity,
@@ -212,7 +210,7 @@ export namespace CsvUtils {
 
     const parsedDataCSVFormat = parsedFile.data as CSVFormatStudentToSchool[];
     const parsedDataFormated: Omit<
-      ClassStudentToSchoolTypeFormated,
+      ClassToSchoolTypeFormated,
       "class" | "id"
     >[] = [];
 
@@ -220,7 +218,7 @@ export namespace CsvUtils {
       if (CSVFormatToFormatedType(row) != undefined) {
         parsedDataFormated.push(
           CSVFormatToFormatedType(row) as Omit<
-            ClassStudentToSchoolTypeFormated,
+            ClassToSchoolTypeFormated,
             "class" | "id"
           >
         );
