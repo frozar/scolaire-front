@@ -1,4 +1,7 @@
-import { setStops } from "../views/content/map/component/organism/StopPoints";
+import {
+  getStops,
+  setStops,
+} from "../views/content/map/component/organism/StopPoints";
 import {
   setStopDetailsItem,
   stopDetailsItem,
@@ -28,10 +31,15 @@ export namespace ClassStudentToSchool {
 
   function updateStopDetailsItem(stopId: number) {
     if (stopDetailsItem() != undefined && stopDetailsItem()?.id == stopId) {
+      const stopIndex = getStops().findIndex((prev) => prev.id == stopId);
+      const stop = getStops()[stopIndex];
+
       setStopDetailsItem((prev) => {
-        let currentItem;
-        if (prev != undefined) currentItem = { ...prev };
-        return currentItem;
+        if (prev != undefined) {
+          const currentItem = { ...stop };
+          return currentItem;
+        }
+        return prev;
       });
     }
   }
@@ -60,9 +68,31 @@ export namespace ClassStudentToSchool {
       if (prev != undefined) {
         const stops = [...prev];
         const indexOfStop = stops.findIndex((prev) => prev.id == stopId);
+
+        console.log("STOP ASSO:", stops[indexOfStop], indexOfStop);
+
         stops[indexOfStop].associated = stops[indexOfStop].associated.filter(
           (prev) => prev.id != classStudentToSchoolID
         );
+        return stops;
+      }
+      return prev;
+    });
+    updateStopDetailsItem(stopId);
+  }
+
+  export function updateFromStop(
+    classStudentToSchool: ClassToSchoolTypeFormatedWithUsedQuantity,
+    stopId: number
+  ) {
+    setStops((prev) => {
+      if (prev != undefined) {
+        const stops = [...prev];
+        const indexOfStop = stops.findIndex((prev) => prev.id == stopId);
+        const indexOfClass = stops[indexOfStop].associated.findIndex(
+          (prev) => prev.id == classStudentToSchool.id
+        );
+        stops[indexOfStop].associated[indexOfClass] = classStudentToSchool;
         return stops;
       }
       return prev;
