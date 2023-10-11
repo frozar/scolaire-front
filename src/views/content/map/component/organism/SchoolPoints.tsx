@@ -3,6 +3,11 @@ import { For, createEffect, createSignal } from "solid-js";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { SchoolService } from "../../../../../_services/school.service";
 import {
+  AddLineStep,
+  addLineCurrentStep,
+  addLineSelectedSchool,
+} from "../../../board/component/organism/AddLineBoardContent";
+import {
   DrawModeStep,
   currentRace,
   currentStep,
@@ -55,6 +60,14 @@ function schoolsFilter(): SchoolType[] {
       schoolsSelected.some(
         (etablissementInfo) => etablissementInfo.id === value.id
       )
+    );
+  }
+
+  if (onBoard() == "line-add" && addLineCurrentStep() == AddLineStep.editLine) {
+    return schools.filter((school) =>
+      addLineSelectedSchool()
+        .map((schoolSelected) => schoolSelected.id)
+        .includes(school.id)
     );
   }
   return schools;

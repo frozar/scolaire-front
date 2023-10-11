@@ -79,6 +79,10 @@ const onClick = (point: SchoolType) => {
       circle?.setStyle({ fillColor: COLOR_SCHOOL_FOCUS });
     }
   }
+  if (onBoard() == "line-add" && addLineCurrentStep() == AddLineStep.editLine) {
+    console.log("No action in this mode ");
+    return;
+  }
 
   if (currentStep() === DrawModeStep.schoolSelection) {
     if (schoolsSelected?.find((p) => p.id === point.id)) {
