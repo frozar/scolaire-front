@@ -1,9 +1,23 @@
+import { setStops } from "../views/content/map/component/organism/StopPoints";
+import {
+  setStopDetailsItem,
+  stopDetailsItem,
+} from "../views/content/stops/component/organism/StopDetails";
 import { ClasseType } from "./classe.entity";
 
 export namespace ClassStudentToSchool {
+  export function build(
+    classToSchool: ClassToSchoolTypeFormated
+  ): ClassToSchoolTypeFormatedWithUsedQuantity {
+    return {
+      ...classToSchool,
+      usedQuantity: 0,
+    };
+  }
+
   export function dbFormat(
     classStudentToSchool: Omit<ClassStudentToSchoolType, "id">
-  ): Omit<ClassStudentToSchoolDBType, "id"> {
+  ): Omit<ClassToSchoolDBType, "id"> {
     return {
       stop_id: classStudentToSchool.stopId,
       school_id: classStudentToSchool.schoolId,
@@ -11,14 +25,59 @@ export namespace ClassStudentToSchool {
       class_id: classStudentToSchool.classId,
     };
   }
+
+  function updateStopDetailsItem(stopId: number) {
+    if (stopDetailsItem() != undefined && stopDetailsItem()?.id == stopId) {
+      setStopDetailsItem((prev) => {
+        let currentItem;
+        if (prev != undefined) currentItem = { ...prev };
+        return currentItem;
+      });
+    }
+  }
+
+  export function appendToStop(
+    classItem: ClassToSchoolTypeFormatedWithUsedQuantity,
+    stopId: number
+  ) {
+    setStops((prev) => {
+      if (prev != undefined) {
+        const stops = [...prev];
+        const indexOf = stops.findIndex((prev) => prev.id == stopId);
+        stops[indexOf].associated.push(classItem);
+        return stops;
+      }
+      return prev;
+    });
+    updateStopDetailsItem(stopId);
+  }
+
+  export function removeFromStop(
+    classStudentToSchoolID: number,
+    stopId: number
+  ) {
+    setStops((prev) => {
+      if (prev != undefined) {
+        const stops = [...prev];
+        const indexOfStop = stops.findIndex((prev) => prev.id == stopId);
+        const indexOfClassStudent = stops[indexOfStop].associated.findIndex(
+          (prev) => prev.id == classStudentToSchoolID
+        );
+        delete stops[indexOfStop].associated[indexOfClassStudent];
+        return stops;
+      }
+      return prev;
+    });
+    updateStopDetailsItem(stopId);
+  }
 }
 
-export type ClassStudentToSchoolTypeFormated = {
+export type ClassToSchoolTypeFormated = {
   id: number;
   quantity: number;
   class: Omit<
     ClasseType,
-    "afternoonStart" | "afternoonStart" | "morningEnd" | "morningStart"
+    "afternoonStart" | "afternoonEnd" | "morningEnd" | "morningStart"
   >;
   school: {
     id?: number;
@@ -30,7 +89,11 @@ export type ClassStudentToSchoolTypeFormated = {
   };
 };
 
-export type ClassStudentToSchoolDBType = {
+export type ClassToSchoolTypeFormatedWithUsedQuantity = {
+  usedQuantity: number;
+} & ClassToSchoolTypeFormated;
+
+export type ClassToSchoolDBType = {
   id: number;
   stop_id: number;
   school_id: number;
