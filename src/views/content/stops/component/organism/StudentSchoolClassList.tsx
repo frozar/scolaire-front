@@ -1,23 +1,11 @@
 import { For } from "solid-js";
-import { AssociatedPointType } from "../../../../../_entities/_utils.entity";
+import { ClassToSchoolTypeFormatedWithUsedQuantity } from "../../../../../_entities/student-to-school.entity";
 import SchoolItem from "../molecul/StudentSchoolClassItem";
 
 export default function (props: {
-  schools: AssociatedPointType[];
-  removeClassStudentToSchoolItem: (id: number) => void;
-  updateClassStudentToSchoolOfStop: (classItem: AssociatedPointType) => void;
+  schools: ClassToSchoolTypeFormatedWithUsedQuantity[];
 }) {
   return (
-    <For each={props.schools}>
-      {(school) => (
-        <SchoolItem
-          school={school}
-          removeClassStudentToSchoolItem={props.removeClassStudentToSchoolItem}
-          updateClassStudentToSchoolOfStop={
-            props.updateClassStudentToSchoolOfStop
-          }
-        />
-      )}
-    </For>
+    <For each={props.schools}>{(school) => <SchoolItem school={school} />}</For>
   );
 }
