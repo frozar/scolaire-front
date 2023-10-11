@@ -60,10 +60,9 @@ export namespace ClassStudentToSchool {
       if (prev != undefined) {
         const stops = [...prev];
         const indexOfStop = stops.findIndex((prev) => prev.id == stopId);
-        const indexOfClassStudent = stops[indexOfStop].associated.findIndex(
-          (prev) => prev.id == classStudentToSchoolID
+        stops[indexOfStop].associated = stops[indexOfStop].associated.filter(
+          (prev) => prev.id != classStudentToSchoolID
         );
-        delete stops[indexOfStop].associated[indexOfClassStudent];
         return stops;
       }
       return prev;
