@@ -1,4 +1,5 @@
 import { Accessor, JSX, Setter } from "solid-js";
+import { ClasseType } from "./_entities/classe.entity";
 import { LineType } from "./_entities/line.entity";
 import { RaceType } from "./_entities/race.entity";
 import { StopType } from "./_entities/stop.entity";
@@ -93,6 +94,11 @@ export type removeConfirmationType = {
 export type removeRamassageConfirmationType = {
   displayed: boolean;
   item: StopType | null;
+};
+
+export type removeClasseConfirmationType = {
+  displayed: boolean;
+  classe: ClasseType | null;
 };
 
 export type clearConfirmationType = {
