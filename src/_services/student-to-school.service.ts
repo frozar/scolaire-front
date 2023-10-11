@@ -5,7 +5,8 @@ import {
 } from "../_entities/school.entity";
 import { StopDBType, StopEntity, StopType } from "../_entities/stop.entity";
 import {
-  ClassStudentToSchoolDBType,
+  ClassStudentToSchool,
+  ClassStudentToSchoolType,
   ClassStudentToSchoolTypeFormated,
 } from "../_entities/student-to-school.entity";
 import { ServiceUtils } from "./_utils.service";
@@ -31,21 +32,23 @@ export class StudentToSchoolService {
   }
 
   static async create(
-    props: Omit<ClassStudentToSchoolDBType, "id">
+    props: Omit<ClassStudentToSchoolType, "id">
   ): Promise<ClassStudentToSchoolTypeFormated> {
+    const dbFormat = ClassStudentToSchool.dbFormat(props);
     const response: ClassStudentToSchoolTypeFormated = await ServiceUtils.post(
       "/student-to-school",
-      props
+      dbFormat
     );
     return response;
   }
 
   static async update(
-    ClassStudentToSchool: ClassStudentToSchoolDBType
+    ClassStudentToSchoolProps: ClassStudentToSchoolType
   ): Promise<ClassStudentToSchoolTypeFormated> {
+    const dbFormat = ClassStudentToSchool.dbFormat(ClassStudentToSchoolProps);
     const response: ClassStudentToSchoolTypeFormated = await ServiceUtils.patch(
-      "/student-to-school/" + ClassStudentToSchool.id,
-      ClassStudentToSchool
+      "/student-to-school/" + ClassStudentToSchoolProps.id,
+      dbFormat
     );
     return response;
   }
