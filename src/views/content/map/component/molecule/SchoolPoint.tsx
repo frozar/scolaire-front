@@ -23,7 +23,7 @@ import {
   onBoard,
 } from "../../../board/component/template/ContextManager";
 import { setSchoolDetailsItem } from "../../../schools/component/organism/SchoolDetails";
-import { COLOR_SCHOOL_FOCUS } from "../../constant";
+import { COLOR_SCHOOL_FOCUS, COLOR_SCHOOL_LIGHT } from "../../constant";
 import { setIsOverMapItem } from "../../l7MapBuilder";
 import Point from "../atom/Point";
 import {
@@ -68,11 +68,15 @@ const onClick = (point: SchoolType) => {
 
     const index = currentSelectedSchools.indexOf(point, 0);
 
+    const circle = linkMap.get(point.leafletId);
+
     if (index > -1) {
       currentSelectedSchools.splice(index, 1);
       setaddLineSelectedSchool(currentSelectedSchools);
+      circle?.setStyle({ fillColor: COLOR_SCHOOL_LIGHT });
     } else {
       setaddLineSelectedSchool([...currentSelectedSchools, point]);
+      circle?.setStyle({ fillColor: COLOR_SCHOOL_FOCUS });
     }
   }
 
