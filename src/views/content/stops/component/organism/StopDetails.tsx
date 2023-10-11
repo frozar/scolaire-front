@@ -1,6 +1,6 @@
 import { Match, Show, Switch, createSignal, onMount } from "solid-js";
-import { AssociatedPointType } from "../../../../../_entities/_utils.entity";
 import { StopType } from "../../../../../_entities/stop.entity";
+import { ClassToSchoolTypeFormatedWithUsedQuantity } from "../../../../../_entities/student-to-school.entity";
 import PlusIcon from "../../../../../icons/PlusIcon";
 import { MapElementUtils } from "../../../../../utils/mapElement.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
@@ -35,54 +35,12 @@ export default function () {
 
   function getStopCourses() {
     const lines = [];
-
     for (const line of getCourses()) {
       const _line = line.points.filter((l) => l.id == stopDetailsItem()?.id);
       if (_line.length > 0) lines.push(line);
     }
 
     return lines;
-  }
-
-  function appendClassStudentToSchoolOfStop(classItem: AssociatedPointType) {
-    setStopDetailsItem((prev) => {
-      let currentItem;
-      if (prev != undefined) {
-        currentItem = { ...prev };
-        currentItem?.associated.push(classItem);
-      }
-
-      return currentItem;
-    });
-  }
-
-  function updateClassStudentToSchoolOfStop(classItem: AssociatedPointType) {
-    setStopDetailsItem((prev) => {
-      let currentItem;
-      if (prev != undefined) {
-        currentItem = { ...prev };
-        const index = currentItem?.associated.findIndex(
-          (item) => item.id == classItem.id
-        );
-        currentItem.associated[index] = classItem;
-      }
-
-      return currentItem;
-    });
-  }
-
-  function removeClassStudentToSchoolOfStop(id: number) {
-    setStopDetailsItem((prev) => {
-      let currentItem;
-      if (prev != undefined) {
-        currentItem = { ...prev };
-        currentItem.associated = currentItem.associated.filter(
-          (item) => item.studentSchoolId != id
-        );
-      }
-
-      return currentItem;
-    });
   }
 
   return (
@@ -108,18 +66,14 @@ export default function () {
         <Switch>
           <Match when={onPanel() == StopPanels.classes}>
             <ClassStudentToSchoolList
-              schools={stopDetailsItem()?.associated as AssociatedPointType[]}
-              removeClassStudentToSchoolItem={removeClassStudentToSchoolOfStop}
-              updateClassStudentToSchoolOfStop={
-                updateClassStudentToSchoolOfStop
+              schools={
+                stopDetailsItem()
+                  ?.associated as ClassToSchoolTypeFormatedWithUsedQuantity[]
               }
             />
 
             <Show when={editItem()}>
-              <EditStop
-                appendClassToList={appendClassStudentToSchoolOfStop}
-                close={toggleEditItem}
-              />
+              <EditStop close={toggleEditItem} />
             </Show>
           </Match>
           <Match when={onPanel() == StopPanels.lines}>
