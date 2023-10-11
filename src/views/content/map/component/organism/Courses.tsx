@@ -8,6 +8,7 @@ import {
   currentStep,
   drawModeStep,
 } from "../../../board/component/organism/DrawModeBoardContent";
+import { onBoard } from "../../../board/component/template/ContextManager";
 
 const [, { getCourseUnderConstruction }] = useStateAction();
 
@@ -40,6 +41,9 @@ export function BusCourses(props: BusCoursesProps) {
       arrowsMap.clear();
 
       return [getCourseUnderConstruction().course];
+    }
+    if (onBoard() == "line-add") {
+      return [];
     }
     return getCourses();
   };

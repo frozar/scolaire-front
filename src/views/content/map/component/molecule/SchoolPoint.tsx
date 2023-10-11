@@ -9,6 +9,12 @@ import { StopType } from "../../../../../_entities/stop.entity";
 import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
 import { updatePointColor } from "../../../../../leafletUtils";
 import {
+  AddLineStep,
+  addLineCurrentStep,
+  addLineSelectedSchool,
+  setaddLineSelectedSchool,
+} from "../../../board/component/organism/AddLineBoardContent";
+import {
   currentStep,
   displayCourseMode,
   displayCourseModeEnum,
@@ -50,7 +56,7 @@ export interface SchoolPointProps {
 }
 
 const onClick = (point: SchoolType) => {
-  if (onBoard() != "course-draw") {
+  if (onBoard() != "course-draw" && onBoard() != "line-add") {
     deselectAllCourses();
     deselectAllPoints();
     point.setSelected(true);
@@ -62,6 +68,26 @@ const onClick = (point: SchoolType) => {
   }
 
   const etablissementSelected = getCourseUnderConstruction().course.schools;
+  if (
+    onBoard() == "line-add" &&
+    addLineCurrentStep() == AddLineStep.schoolSelection
+  ) {
+    console.log(
+      "addLineSelectedSchool",
+      addLineSelectedSchool().includes(point)
+    );
+
+    const currentSelectedSchools = [...addLineSelectedSchool()];
+
+    const index = currentSelectedSchools.indexOf(point, 0);
+
+    if (index > -1) {
+      currentSelectedSchools.splice(index, 1);
+      setaddLineSelectedSchool(currentSelectedSchools);
+    } else {
+      setaddLineSelectedSchool([...currentSelectedSchools, point]);
+    }
+  }
 
   if (currentStep() === drawModeStep.schoolSelection) {
     if (etablissementSelected?.find((p) => p.id === point.id)) {
