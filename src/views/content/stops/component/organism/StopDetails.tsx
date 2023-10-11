@@ -24,8 +24,6 @@ export default function () {
   const [editItem, setEditItem] = createSignal<boolean>(false);
 
   onMount(() => {
-    console.log("Stop details: ", stopDetailsItem());
-
     if (stopDetailsItem() == undefined) {
       changeBoard("schools");
       MapElementUtils.deselectAllPointsAndBusRaces();
