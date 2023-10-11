@@ -10,7 +10,11 @@ import { deselectAllPoints } from "../../../map/component/organism/Points";
 import InputSearch from "../../../schools/component/molecule/InputSearch";
 import BusLinesList from "../../../schools/component/organism/BusLinesList";
 import ButtonIcon from "../molecule/ButtonIcon";
-import { changeBoard, onBoard } from "../template/ContextManager";
+import {
+  changeBoard,
+  onBoard,
+  toggleDrawMod,
+} from "../template/ContextManager";
 import "./BusLines.css";
 
 export default function () {
@@ -19,11 +23,13 @@ export default function () {
   function addLine() {
     if (onBoard() == "line-add") {
       changeBoard("line");
+      toggleDrawMod();
     } else {
       deselectAllPoints();
       deselectAllCourses();
 
       changeBoard("line-add");
+      toggleDrawMod();
       displayAddCourseMessage();
     }
   }

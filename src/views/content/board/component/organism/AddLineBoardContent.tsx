@@ -10,6 +10,7 @@ import { ColorPicker } from "../atom/ColorPicker";
 import { createStore } from "solid-js/store";
 import { AssociatedPointType } from "../../../../../_entities/_utils.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
+import { manageStatusCode } from "../../../../../_services/_utils.service";
 import { BusLineService } from "../../../../../_services/line.service";
 import { updatePointColor } from "../../../../../leafletUtils";
 import {
@@ -21,6 +22,7 @@ import { getStops } from "../../../map/component/organism/StopPoints";
 import { displayBusLine } from "../../../schools/component/molecule/BusLineItem";
 import SelectedSchool from "../atom/SelectedSchool";
 import LabeledInputField from "../molecule/LabeledInputField";
+import { toggleDrawMod } from "../template/ContextManager";
 import "./AddLineBoardContent.css";
 import CollapsibleCheckableElement, {
   AssociatedItem,
@@ -181,18 +183,32 @@ async function nextStep() {
         ...(currentLine() ?? BusLineEntity.defaultBusLine()),
         stops,
       });
-      await createBusLine(currentLine());
+      try {
+        const creating_line = currentLine();
+        if (creating_line) {
+          const newBusLine: LineType = await BusLineService.create(
+            creating_line
+          );
+          toggleDrawMod();
+          displayBusLine(newBusLine);
+          //TODO faire updateBusLines(newBusLine);
+        }
+      } catch (error) {
+        console.log("error", error);
+        manageStatusCode(error as Response);
+      }
   }
   disableSpinningWheel();
 }
 
-async function createBusLine(line: LineType | undefined) {
-  if (line) {
-    const newBusLine: LineType = await BusLineService.create(line);
-    displayBusLine(newBusLine);
-  }
-  // updateBusLines(newBusLine);
-}
+// async function createBusLine(line: LineType | undefined) {
+//   if (line) {
+//     const newBusLine: LineType = await BusLineService.create(line);
+//     return
+//     displayBusLine(newBusLine);
+//   }
+
+// }
 
 // async function updateBusLine(line: LineType) {
 //   const updatedBusLine: LineType = await BusLineService.update(line);
