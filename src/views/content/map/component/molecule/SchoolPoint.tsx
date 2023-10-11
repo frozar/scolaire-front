@@ -4,6 +4,12 @@ import { StopType } from "../../../../../_entities/stop.entity";
 import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
 import { updatePointColor } from "../../../../../leafletUtils";
 import {
+  AddLineStep,
+  addLineCurrentStep,
+  addLineSelectedSchool,
+  setaddLineSelectedSchool,
+} from "../../../board/component/organism/AddLineBoardContent";
+import {
   DrawModeStep,
   addPointToRace,
   addSchoolToRace,
@@ -49,6 +55,26 @@ const onClick = (point: SchoolType) => {
   }
 
   const schoolsSelected = currentRace.schools;
+  if (
+    onBoard() == "line-add" &&
+    addLineCurrentStep() == AddLineStep.schoolSelection
+  ) {
+    console.log(
+      "addLineSelectedSchool",
+      addLineSelectedSchool().includes(point)
+    );
+
+    const currentSelectedSchools = [...addLineSelectedSchool()];
+
+    const index = currentSelectedSchools.indexOf(point, 0);
+
+    if (index > -1) {
+      currentSelectedSchools.splice(index, 1);
+      setaddLineSelectedSchool(currentSelectedSchools);
+    } else {
+      setaddLineSelectedSchool([...currentSelectedSchools, point]);
+    }
+  }
 
   if (currentStep() === DrawModeStep.schoolSelection) {
     if (schoolsSelected?.find((p) => p.id === point.id)) {

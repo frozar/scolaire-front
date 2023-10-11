@@ -10,6 +10,7 @@ import {
   currentRace,
   currentStep,
 } from "../../../board/component/organism/DrawRaceBoard";
+import { onBoard } from "../../../board/component/template/ContextManager";
 import { pointsReady } from "./Points";
 
 export const arrowsMap = new Map<number, L.Marker[]>();
@@ -49,6 +50,10 @@ export function Races(props: { map: L.Map }) {
 
       return [currentRace];
     }
+    if (onBoard() == "line-add") {
+      return [];
+    }
+
     return getRaces;
   };
 
