@@ -1,6 +1,11 @@
 import { ClasseType } from "./classe.entity";
 import { SchoolType } from "./school.entity";
 import { StopType } from "./stop.entity";
+import {
+  ClassToSchoolTypeFormated,
+  ClassToSchoolTypeFormatedWithUsedQuantity,
+} from "./student-to-school.entity";
+
 export class EntityUtils {
   static builLocationPoint(lng: number, lat: number): LocationDBType {
     return {
@@ -31,17 +36,13 @@ export class EntityUtils {
     };
   }
 
-  static formatAssociatedPoints(
-    associatedDBPoint: AssociatedDBPointType[]
-  ): AssociatedPointType[] {
+  static formatAssociatedClassToSchool(
+    associatedDBPoint: ClassToSchoolTypeFormated[]
+  ): ClassToSchoolTypeFormatedWithUsedQuantity[] {
     return associatedDBPoint.map((item) => {
       return {
-        id: item.entity.id,
-        studentSchoolId: item.id,
-        name: item.entity.name,
-        quantity: item.quantity,
+        ...item,
         usedQuantity: 0,
-        class: item.class,
       };
     });
   }
@@ -61,29 +62,10 @@ export type AssociatedPointType = {
   >;
 };
 
-export type AssociatedDBPointType = {
-  // ! ID of StudentToSchool association
-  id: number;
-  entity: {
-    // ! associated School entity
-    id: number;
-    name: string;
-  };
-  quantity: number;
-  class: ClasseType;
-};
-
 export enum LocationDBTypeEnum {
   point = "point",
   path = "path",
 }
-
-export type DBPointType = {
-  id: number;
-  name: string;
-  location: LocationDBType;
-  associated: AssociatedDBPointType[];
-};
 
 export type LocationDBType = {
   type: LocationDBTypeEnum;

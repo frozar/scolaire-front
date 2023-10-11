@@ -1,6 +1,7 @@
 import { AssociatedPointType } from "../_entities/_utils.entity";
 import { RacePointType, RaceType } from "../_entities/race.entity";
 import { SchoolType } from "../_entities/school.entity";
+import { ClassToSchoolTypeFormatedWithUsedQuantity } from "../_entities/student-to-school.entity";
 import { NatureEnum } from "../type";
 import { setSchools } from "../views/content/map/component/organism/SchoolPoints";
 import { setStops } from "../views/content/map/component/organism/StopPoints";
@@ -16,7 +17,9 @@ export namespace QuantityUtils {
     return point.quantity - point.usedQuantity;
   }
 
-  export function remainingQuantities(points: AssociatedPointType[]) {
+  export function remainingQuantities(
+    points: ClassToSchoolTypeFormatedWithUsedQuantity[]
+  ) {
     let quantity = 0;
     points.forEach((point) => {
       quantity += remaining(point);

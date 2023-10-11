@@ -7,13 +7,14 @@ import { StopDBType, StopEntity, StopType } from "../_entities/stop.entity";
 import {
   ClassStudentToSchool,
   ClassStudentToSchoolType,
-  ClassStudentToSchoolTypeFormated,
+  ClassToSchoolTypeFormated,
+  ClassToSchoolTypeFormatedWithUsedQuantity,
 } from "../_entities/student-to-school.entity";
 import { ServiceUtils } from "./_utils.service";
 
 export class StudentToSchoolService {
   static async import(
-    students_to_schools: ClassStudentToSchoolTypeFormated[]
+    students_to_schools: ClassToSchoolTypeFormated[]
   ): Promise<{ schools: SchoolType[]; stops: StopType[] }> {
     const xanoResult: { schools: SchoolDBType[]; stops: StopDBType[] } =
       await ServiceUtils.post("/student-to-school/import", {
@@ -33,26 +34,27 @@ export class StudentToSchoolService {
 
   static async create(
     props: Omit<ClassStudentToSchoolType, "id">
-  ): Promise<ClassStudentToSchoolTypeFormated> {
+  ): Promise<ClassToSchoolTypeFormatedWithUsedQuantity> {
     const dbFormat = ClassStudentToSchool.dbFormat(props);
-    const response: ClassStudentToSchoolTypeFormated = await ServiceUtils.post(
+    const response: ClassToSchoolTypeFormated = await ServiceUtils.post(
       "/student-to-school",
       dbFormat
     );
-    return response;
+    return ClassStudentToSchool.build(response);
   }
 
   static async update(
     ClassStudentToSchoolProps: ClassStudentToSchoolType
-  ): Promise<ClassStudentToSchoolTypeFormated> {
+  ): Promise<ClassToSchoolTypeFormatedWithUsedQuantity> {
     const dbFormat = ClassStudentToSchool.dbFormat(ClassStudentToSchoolProps);
-    const response: ClassStudentToSchoolTypeFormated = await ServiceUtils.patch(
+    const response: ClassToSchoolTypeFormated = await ServiceUtils.patch(
       "/student-to-school/" + ClassStudentToSchoolProps.id,
       dbFormat
     );
-    return response;
+    return ClassStudentToSchool.build(response);
   }
 
+  // Backend will return only the id deleted
   static async delete(id: number): Promise<number> {
     const response = await ServiceUtils.delete("/student-to-school/" + id);
     return response;
