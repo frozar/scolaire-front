@@ -1,11 +1,22 @@
 import { FaRegularTrashCan, FaSolidPen } from "solid-icons/fa";
 import { ClasseType } from "../../../../../_entities/classe.entity";
+import { ClasseService } from "../../../../../_services/classe.service";
 import CardTitle from "../../../../../component/atom/CardTitle";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
-import { setRemoveClasseConfirmation } from "../../../../../signaux";
+import { addNewUserInformation } from "../../../../../signaux";
+import { MessageLevelEnum, MessageTypeEnum } from "../../../../../type";
+import { setRemoveConfirmation } from "../../../../../userInformation/RemoveConfirmation";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { changeBoard } from "../../../board/component/template/ContextManager";
+import {
+  getSchools,
+  setSchools,
+} from "../../../map/component/organism/SchoolPoints";
 import { setSelectedClasse } from "../organism/ClasseBoard";
+import {
+  schoolDetailsItem,
+  setSchoolDetailsItem,
+} from "../organism/SchoolDetails";
 import "./ClasseItem.css";
 
 interface ClasseItemProps {
@@ -19,10 +30,48 @@ export default function (props: ClasseItemProps) {
     changeBoard("school-class-modify");
   }
 
+  async function deleteClasse() {
+    const isDeleted = await ClasseService.delete(props.classe?.id as number);
+
+    // TODO: Display user message feedback
+    if (isDeleted) {
+      // eslint-disable-next-line solid/reactivity
+      setSchools((prev) => {
+        return [...prev].map((school) => {
+          return {
+            ...school,
+            classes: school.classes.filter(
+              (classe) => classe.id != props.classe?.id
+            ),
+          };
+        });
+      });
+      const schoolDetailsItemId = schoolDetailsItem()?.id as number;
+      setSchoolDetailsItem(
+        getSchools().filter((school) => school.id == schoolDetailsItemId)[0]
+      );
+      // TODO: Refactor ?
+      addNewUserInformation({
+        displayed: true,
+        level: MessageLevelEnum.success,
+        type: MessageTypeEnum.global,
+        content: "La classe a bien été supprimée.",
+      });
+    } else {
+      addNewUserInformation({
+        displayed: true,
+        level: MessageLevelEnum.error,
+        type: MessageTypeEnum.removeCourse, // TODO: Check if it's useless
+        content: "Impossible de supprimer la classe.",
+      });
+    }
+  }
+
   async function onClickDelete() {
-    setRemoveClasseConfirmation({
-      displayed: true,
-      classe: props.classe,
+    setRemoveConfirmation({
+      textToDisplay: "Êtes-vous sûr de vouloir supprimer la classe",
+      itemName: props.classe.name,
+      validate: deleteClasse,
     });
   }
 

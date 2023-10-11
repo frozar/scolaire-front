@@ -9,8 +9,7 @@ import ClearConfirmationDialogBox from "./userInformation/ClearConfirmationDialo
 import DisplayUserInformation from "./userInformation/DisplayUserInformation";
 import DragAndDropSummary from "./userInformation/DragAndDropSummary";
 import GeneratorDialogBox from "./userInformation/GeneratorDialogBox";
-import RemoveClasseConfirmation from "./userInformation/RemoveClasseConfirmation";
-import RemoveConfirmationDialogBox from "./userInformation/RemoveConfirmationDialogBox";
+import RemoveConfirmation from "./userInformation/RemoveConfirmation";
 import { currentRace } from "./views/content/board/component/organism/DrawRaceBoard";
 import ContextManager from "./views/content/board/component/template/ContextManager";
 import Dashboard from "./views/content/dashboard/Dashboard";
@@ -85,11 +84,12 @@ export default () => {
 
         <DisplayUserInformation />
         <DragAndDropSummary />
-        <RemoveConfirmationDialogBox />
+        {/* <RemoveConfirmationDialogBox /> */}
         <ClearConfirmationDialogBox />
         <ExportConfirmationDialogBox />
         <GeneratorDialogBox />
-        <RemoveClasseConfirmation />
+        {/* <RemoveClasseConfirmation /> */}
+        <RemoveConfirmation />
       </Layout>
       <SpinningWheel />
     </div>
