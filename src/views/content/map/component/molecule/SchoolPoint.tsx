@@ -1,4 +1,5 @@
 import L from "leaflet";
+import { createEffect } from "solid-js";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { StopType } from "../../../../../_entities/stop.entity";
 import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
@@ -175,6 +176,25 @@ const onRightClick = (point: SchoolType) => {
 };
 
 export function SchoolPoint(props: SchoolPointProps) {
+  createEffect(() => {
+    //TODO dont Work
+    console.log(
+      "addline",
+      addLineCurrentStep() === AddLineStep.schoolSelection
+    );
+    if (addLineCurrentStep() === AddLineStep.schoolSelection) {
+      const stopFiltering = addLineSelectedSchool().filter(
+        (school) => school.id == props.point.id
+      );
+      const circle = linkMap.get(props.point.leafletId);
+      if (stopFiltering.length > 0) {
+        circle?.setStyle({ fillColor: COLOR_SCHOOL_FOCUS });
+      } else {
+        circle?.setStyle({ fillColor: COLOR_SCHOOL_LIGHT });
+      }
+    }
+  });
+
   return (
     <Point
       point={props.point}

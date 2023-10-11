@@ -1,31 +1,21 @@
-import { For, Show, onMount } from "solid-js";
+import { For, Show } from "solid-js";
 
-import { SetStoreFunction } from "solid-js/store";
-import { AssociatedPointType } from "../../../../../_entities/_utils.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
+import { StopType } from "../../../../../_entities/stop.entity";
+import { setStopSelected, stopSelected } from "./AddLineBoardContent";
 import "./CollapsibleCheckableElement.css";
 import CollapsibleElement from "./CollapsibleElement";
 
-export type AssociatedItem = { associated: AssociatedPointType; done: boolean };
+export type AssociatedItem = { associated: StopType; done: boolean };
 
-export default function (props: {
-  school: SchoolType;
-  stopSelected: AssociatedItem[];
-  setStopSelected: SetStoreFunction<AssociatedItem[]>;
-}) {
-  onMount(() => {
-    props.setStopSelected([
-      ...props.stopSelected,
-      ...props.school.associated.map((elem) => {
-        return { associated: elem, done: true };
-      }),
-    ]);
-  });
-
+export default function (props: { school: SchoolType }) {
   return (
     <CollapsibleElement title={props.school.name}>
-      <For each={props.stopSelected}>
+      <For each={stopSelected()}>
         {(school_elem, i) => {
+          {
+            console.log(props.school);
+          }
           return (
             <Show
               when={props.school.associated
@@ -39,7 +29,9 @@ export default function (props: {
                   type="checkbox"
                   checked={school_elem.done}
                   onChange={(e) => {
-                    props.setStopSelected(i(), "done", e.currentTarget.checked);
+                    const prev = [...stopSelected()];
+                    prev[i()] = { ...prev[i()], done: e.currentTarget.checked };
+                    setStopSelected(prev);
                   }}
                   class="h-4 w-5 mr-4 rounded border-gray-300 text-green-base focus:ring-green-base"
                 />

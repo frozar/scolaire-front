@@ -7,7 +7,6 @@ import BoardFooterActions from "../molecule/BoardFooterActions";
 import "../../../../../css/timeline.css";
 import { ColorPicker } from "../atom/ColorPicker";
 
-import { createStore } from "solid-js/store";
 import { AssociatedPointType } from "../../../../../_entities/_utils.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { manageStatusCode } from "../../../../../_services/_utils.service";
@@ -40,7 +39,9 @@ export const [addLineSelectedSchool, setaddLineSelectedSchool] = createSignal<
   SchoolType[]
 >([]);
 
-const [stopSelected, setStopSelected] = createStore<AssociatedItem[]>([]);
+export const [stopSelected, setStopSelected] = createSignal<AssociatedItem[]>(
+  []
+);
 
 export const [addLineCurrentStep, setAddLineCurrentStep] =
   createSignal<AddLineStep>(AddLineStep.start);
@@ -98,13 +99,7 @@ export default function () {
         <fieldset class="line-stop-selection">
           <For each={addLineSelectedSchool()}>
             {(school_elem) => {
-              return (
-                <CollapsibleCheckableElement
-                  school={school_elem}
-                  stopSelected={stopSelected}
-                  setStopSelected={setStopSelected}
-                />
-              );
+              return <CollapsibleCheckableElement school={school_elem} />;
             }}
           </For>
         </fieldset>
@@ -164,6 +159,13 @@ async function nextStep() {
         break;
       }
       setAddLineCurrentStep(AddLineStep.editLine);
+
+      setStopSelected([
+        ...getStops().map((stop) => {
+          return { done: true, associated: stop };
+        }),
+      ]);
+
       setCurrentLine({
         ...(currentLine() ?? BusLineEntity.defaultBusLine()),
         schools: addLineSelectedSchool(),
@@ -176,7 +178,7 @@ async function nextStep() {
 
       updatePointColor();
       const stops = getStops().filter((elem) =>
-        stopSelected
+        stopSelected()
           .filter((elem) => elem.done)
           .map((val) => val.associated.id)
           .includes(elem.id)
