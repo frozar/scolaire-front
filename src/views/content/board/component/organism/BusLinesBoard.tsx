@@ -15,6 +15,7 @@ import {
   onBoard,
   toggleDrawMod,
 } from "../template/ContextManager";
+import { AddLineStep, setAddLineCurrentStep } from "./AddLineBoardContent";
 import "./BusLines.css";
 
 export default function () {
@@ -29,6 +30,7 @@ export default function () {
       deselectAllCourses();
 
       changeBoard("line-add");
+      setAddLineCurrentStep(AddLineStep.schoolSelection);
       toggleDrawMod();
       displayAddCourseMessage();
     }
