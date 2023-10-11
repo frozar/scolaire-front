@@ -4,6 +4,10 @@ import { useStateGui } from "../../../../../StateGui";
 import { StopType } from "../../../../../_entities/stop.entity";
 import { StopService } from "../../../../../_services/stop.service";
 import {
+  AddLineStep,
+  addLineCurrentStep,
+} from "../../../board/component/organism/AddLineBoardContent";
+import {
   DrawModeStep,
   currentRace,
   currentStep,
@@ -81,6 +85,19 @@ export function leafletStopsFilter(): StopType[] {
   if (currentStep() === DrawModeStep.schoolSelection) {
     return [];
   }
+  console.log(currentStep() === DrawModeStep.schoolSelection);
+
+  if (
+    currentStep() === DrawModeStep.schoolSelection ||
+    addLineCurrentStep() === AddLineStep.schoolSelection
+  ) {
+    return [];
+  }
+
+  if (currentStep() === DrawModeStep.start) {
+    return stops;
+  }
+
   return stops.filter((stop) =>
     stop.associated.some(
       (school) => schools.find((e) => e.id === school.id)

@@ -22,7 +22,7 @@ import { getStops } from "../../../map/component/organism/StopPoints";
 import { displayBusLine } from "../../../schools/component/molecule/BusLineItem";
 import SelectedSchool from "../atom/SelectedSchool";
 import LabeledInputField from "../molecule/LabeledInputField";
-import { toggleDrawMod } from "../template/ContextManager";
+import { setOnBoard, toggleDrawMod } from "../template/ContextManager";
 import "./AddLineBoardContent.css";
 import CollapsibleCheckableElement, {
   AssociatedItem,
@@ -43,7 +43,7 @@ export const [addLineSelectedSchool, setaddLineSelectedSchool] = createSignal<
 const [stopSelected, setStopSelected] = createStore<AssociatedItem[]>([]);
 
 export const [addLineCurrentStep, setAddLineCurrentStep] =
-  createSignal<AddLineStep>(AddLineStep.schoolSelection);
+  createSignal<AddLineStep>(AddLineStep.start);
 
 // eslint-disable-next-line solid/reactivity
 export default function () {
@@ -119,7 +119,7 @@ export default function () {
               : "Suivant",
         }}
         previousStep={{
-          callback: nextStep,
+          callback: previousStep,
           label:
             addLineCurrentStep() === AddLineStep.schoolSelection
               ? "Annuler"
@@ -199,6 +199,23 @@ async function nextStep() {
         console.log("error", error);
         manageStatusCode(error as Response);
       }
+  }
+  disableSpinningWheel();
+}
+
+async function previousStep() {
+  enableSpinningWheel();
+  switch (addLineCurrentStep()) {
+    case AddLineStep.schoolSelection:
+      setAddLineCurrentStep(AddLineStep.start);
+      setaddLineSelectedSchool([]);
+      setStopSelected([]);
+      toggleDrawMod();
+      setOnBoard("line");
+      break;
+    case AddLineStep.editLine:
+      setAddLineCurrentStep(AddLineStep.schoolSelection);
+      setStopSelected([]);
   }
   disableSpinningWheel();
 }

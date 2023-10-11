@@ -13,6 +13,7 @@ import {
   onBoard,
   toggleDrawMod,
 } from "../template/ContextManager";
+import { AddLineStep, setAddLineCurrentStep } from "./AddLineBoardContent";
 import "./BusLines.css";
 import { DrawModeStep, setCurrentStep } from "./DrawRaceBoard";
 
@@ -36,6 +37,7 @@ export default function () {
       // TODO corriger
       // displayAddLineMessage();
       changeBoard("line-add");
+      setAddLineCurrentStep(AddLineStep.schoolSelection);
       toggleDrawMod();
       displayAddCourseMessage();
     }
