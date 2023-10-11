@@ -1,10 +1,9 @@
-import { SchoolEntity } from "../_entities/school.entity";
 import { StopDBType, StopEntity, StopType } from "../_entities/stop.entity";
 import { ServiceUtils } from "./_utils.service";
 
 export class StopService {
   static async getAll(): Promise<StopType[]> {
-    const dbStops: StopDBType[] = await ServiceUtils.get("/stop");
+    const dbStops: StopDBType[] = await ServiceUtils.get("/stops");
     return dbStops
       ? dbStops.map((dbStop: StopDBType) => StopEntity.build(dbStop))
       : [];
@@ -17,7 +16,7 @@ export class StopService {
       stops: stops,
     });
 
-    return xanoResult.map((dbSchool) => SchoolEntity.build(dbSchool));
+    return xanoResult.map((dbSchool) => StopEntity.build(dbSchool));
   }
 
   static async create(
