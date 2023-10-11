@@ -2,11 +2,7 @@ import { createSignal, onMount } from "solid-js";
 import { AssociatedPointType } from "../../../../../_entities/_utils.entity";
 import { ClasseType } from "../../../../../_entities/classe.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
-import {
-  ClassStudentToSchool,
-  ClassStudentToSchoolDBType,
-  ClassStudentToSchoolTypeFormated,
-} from "../../../../../_entities/student-to-school.entity";
+import { ClassStudentToSchoolTypeFormated } from "../../../../../_entities/student-to-school.entity";
 import { StudentToSchoolService } from "../../../../../_services/student-to-school.service";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
 import CheckIcon from "../../../../../icons/CheckIcon";
@@ -82,18 +78,6 @@ export default function (props: EditStopProps) {
     classeSelectRef().disabled = false;
   };
 
-  function FormatSelectorsInputToClassStudentToSchoolDBType(): Omit<
-    ClassStudentToSchoolDBType,
-    "id"
-  > {
-    return ClassStudentToSchool.dbFormat({
-      schoolId: Number(schoolSelectRef().value),
-      stopId: Number(stopDetailsItem()?.id),
-      quantity: Number(quantityInputRef().value),
-      classId: Number(classeSelectRef().value),
-    });
-  }
-
   function FormatToAssociatedPoint(
     id: number,
     classTopSchool?: ClassStudentToSchoolTypeFormated
@@ -138,9 +122,13 @@ export default function (props: EditStopProps) {
         content: "Veuillez compléter tous les champs !",
       });
     }
-    const response = await StudentToSchoolService.create(
-      FormatSelectorsInputToClassStudentToSchoolDBType()
-    );
+    const response = await StudentToSchoolService.create({
+      schoolId: Number(schoolSelectRef().value),
+      stopId: Number(stopDetailsItem()?.id),
+      quantity: Number(quantityInputRef().value),
+      classId: Number(classeSelectRef().value),
+    });
+
     if (props.appendClassToList) {
       props.appendClassToList(FormatToAssociatedPoint(response.id));
     }
@@ -151,7 +139,10 @@ export default function (props: EditStopProps) {
     if (!props.classStudentToSchool) return;
     const classToSchool = await StudentToSchoolService.update({
       id: props.classStudentToSchool.studentSchoolId,
-      ...FormatSelectorsInputToClassStudentToSchoolDBType(),
+      schoolId: Number(schoolSelectRef().value),
+      stopId: Number(stopDetailsItem()?.id),
+      quantity: Number(quantityInputRef().value),
+      classId: Number(classeSelectRef().value),
     });
 
     if (props.updateClassStudentToSchoolOfStop) {
