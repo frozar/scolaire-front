@@ -1,5 +1,6 @@
 import { createSignal } from "solid-js";
 import PlusIcon from "../../../../../icons/PlusIcon";
+import { displayAddCourseMessage } from "../../../../../userInformation/utils";
 import { deselectAllPoints } from "../../../map/component/organism/Points";
 import {
   deselectAllRaces,
@@ -7,7 +8,11 @@ import {
 } from "../../../map/component/organism/Races";
 import InputSearch from "../../../schools/component/molecule/InputSearch";
 import ButtonIcon from "../molecule/ButtonIcon";
-import { onBoard, toggleDrawMod } from "../template/ContextManager";
+import {
+  changeBoard,
+  onBoard,
+  toggleDrawMod,
+} from "../template/ContextManager";
 import "./BusLines.css";
 import { DrawModeStep, setCurrentStep } from "./DrawRaceBoard";
 
@@ -30,6 +35,9 @@ export default function () {
       setCurrentStep(DrawModeStep.schoolSelection);
       // TODO corriger
       // displayAddLineMessage();
+      changeBoard("line-add");
+      toggleDrawMod();
+      displayAddCourseMessage();
     }
   }
 

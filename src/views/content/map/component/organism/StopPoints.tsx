@@ -66,12 +66,7 @@ async function updateStop() {
 
 //TODO Delete and replace with displayedStop signal
 export function leafletStopsFilter(): StopType[] {
-<<<<<<< HEAD
   const schools = currentRace.schools;
-=======
-  const schools = getCourseUnderConstruction().course.schools;
-
->>>>>>> 3b10448e (Cleaning)
   const stops = getStops().filter((stop) =>
     getSelectedLine()
       ? getSelectedLine()
@@ -79,12 +74,8 @@ export function leafletStopsFilter(): StopType[] {
           .includes(stop.id)
       : true
   );
-<<<<<<< HEAD
   console.log(getSelectedLine());
   if (currentStep() === DrawModeStep.start) {
-=======
-  if (currentStep() === drawModeStep.start) {
->>>>>>> 3b10448e (Cleaning)
     return stops;
   }
   if (currentStep() === DrawModeStep.schoolSelection) {

@@ -36,7 +36,16 @@ export const changeBoard = (boardName: BoardTags) => setOnBoard(boardName);
 export default function () {
   createEffect(() => {
     if (isInDrawMod()) {
-      changeBoard("race-draw");
+      switch (onBoard()) {
+        case "course": {
+          changeBoard("race-draw");
+          break;
+        }
+        case "line": {
+          changeBoard("line-add");
+          break;
+        }
+      }
     } else {
       setOnBoard((prev) => {
         return prev == "race-draw" ? "line" : prev;
