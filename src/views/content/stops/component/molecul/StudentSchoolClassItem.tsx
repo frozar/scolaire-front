@@ -33,7 +33,6 @@ export default function (props: {
     <Show
       when={!editingMode()}
       fallback={
-        // <button>test</button>
         <EditStudentSchoolClassItem
           classStudentToSchool={props.school}
           close={() => setEditingMode(false)}
