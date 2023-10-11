@@ -25,45 +25,16 @@ import {
 false && ClickOutside;
 
 export default function () {
-  // const displayed = () => getRemoveConfirmation()["displayed"];
-  // const course = () => getRemoveConfirmation()["course"];
   const displayed = () => getRemoveClasseConfirmation()["displayed"];
   const classe = () => getRemoveClasseConfirmation()["classe"];
 
   // TODO: Move
   async function handlerOnClickValider() {
-    // const idToCheck = course()?.id;
-    // if (!idToCheck) {
-    //   return;
-    // }
-    // const idToRemove: number = idToCheck;
-    // const isDeleted: boolean = await BusCourseService.delete(idToRemove);
-    // if (isDeleted) {
-    //   closeRemoveConfirmationBox();
-    //   setCourses(getCourses().filter((line) => line.id != idToRemove));
-    //   addNewUserInformation({
-    //     displayed: true,
-    //     level: MessageLevelEnum.success,
-    //     type: MessageTypeEnum.global,
-    //     content: "La course a bien été supprimée.",
-    //   });
-    // } else {
-    //   closeRemoveConfirmationBox();
-    //   addNewUserInformation({
-    //     displayed: true,
-    //     level: MessageLevelEnum.error,
-    //     type: MessageTypeEnum.removeCourse,
-    //     content: "Impossible de supprimer la ligne de bus.",
-    //   });
-    // }
-    // changeBoard("line");
-    // MapElementUtils.deselectAllPointsAndBusCourses();
-    // ------------------------------------
     const isDeleted = await ClasseService.delete(
       getRemoveClasseConfirmation().classe?.id as number
     );
-    console.log("isDeleted", isDeleted);
 
+    // TODO: Display user message feedback
     if (isDeleted) {
       // eslint-disable-next-line solid/reactivity
       setSchools((prev) => {
@@ -81,8 +52,9 @@ export default function () {
     setSchoolDetailsItem(
       getSchools().filter((school) => school.id == schoolDetailsItemId)[0]
     );
-    onClickCloseConfirmationBox();
+    closeConfirmationBox();
   }
+  // TODO: Add else and display corresponding user message feedback
 
   function exitModal({ code }: KeyboardEvent) {
     // @ts-expect-error: Currently the 'keyboard' field doesn't exist on 'navigator'
@@ -91,13 +63,13 @@ export default function () {
     keyboard.getLayoutMap().then(() => {
       if (code === "Escape") {
         if (getRemoveClasseConfirmation().displayed) {
-          onClickCloseConfirmationBox();
+          closeConfirmationBox();
         }
       }
     });
   }
 
-  function onClickCloseConfirmationBox() {
+  function closeConfirmationBox() {
     setRemoveClasseConfirmation({
       displayed: false,
       classe: null,
@@ -110,7 +82,7 @@ export default function () {
 
   onCleanup(() => {
     document.removeEventListener("keyup", exitModal);
-    onClickCloseConfirmationBox();
+    closeConfirmationBox();
   });
 
   const [buttonRef, setButtonRef] = createSignal<
@@ -172,8 +144,7 @@ export default function () {
 
                     assertIsNode(e.target);
                     if (!refDialogBox.contains(e.target)) {
-                      // closeRemoveConfirmationBox();
-                      onClickCloseConfirmationBox();
+                      closeConfirmationBox();
                     }
                   }}
                 >
@@ -181,7 +152,7 @@ export default function () {
                     <button
                       type="button"
                       class="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                      onClick={onClickCloseConfirmationBox}
+                      onClick={closeConfirmationBox}
                     >
                       <span class="sr-only">Close</span>
                       <svg
@@ -244,7 +215,7 @@ export default function () {
                     <button
                       type="button"
                       class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
-                      onClick={onClickCloseConfirmationBox}
+                      onClick={closeConfirmationBox}
                     >
                       Annuler
                     </button>

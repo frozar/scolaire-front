@@ -20,7 +20,6 @@ export default function (props: ClasseItemProps) {
   }
 
   async function onClickDelete() {
-    console.log("Delete classe");
     setRemoveClasseConfirmation({
       displayed: true,
       classe: props.classe,
