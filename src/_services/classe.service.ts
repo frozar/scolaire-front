@@ -8,7 +8,11 @@ import { ServiceUtils } from "./_utils.service";
 export class ClasseService {
   static async create(classe: ClasseType): Promise<ClasseType> {
     const data = ClasseEntity.dbFormat(classe);
-    const dbClasse: ClasseDBType = await ServiceUtils.post("/classe", data);
+    const dbClasse: ClasseDBType = await ServiceUtils.post(
+      "/classe",
+      data,
+      false
+    );
     return ClasseEntity.build(dbClasse);
   }
 
@@ -16,13 +20,14 @@ export class ClasseService {
     const data = ClasseEntity.dbFormat(classe);
     const dbClasse: ClasseDBType = await ServiceUtils.patch(
       "/classe/" + classe.id,
-      data
+      data,
+      false
     );
     if (dbClasse == null) return dbClasse;
     return ClasseEntity.build(dbClasse);
   }
 
   static async delete(id: number): Promise<boolean> {
-    return await ServiceUtils.delete("/classe/" + id);
+    return await ServiceUtils.delete("/classe/" + id, false);
   }
 }
