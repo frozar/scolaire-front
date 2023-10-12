@@ -1,8 +1,5 @@
 import { createSignal } from "solid-js";
 import PlusIcon from "../../../../../icons/PlusIcon";
-<<<<<<< HEAD:src/views/content/board/component/organism/BusLinesBoard.tsx
-=======
->>>>>>> 4796db34 (refacto course management to race, and clean the StateAction (delete reference to courseUnderConstruction)):src/views/content/board/component/organism/LinesBoard.tsx
 import { deselectAllPoints } from "../../../map/component/organism/Points";
 import {
   deselectAllRaces,
@@ -11,8 +8,8 @@ import {
 import InputSearch from "../../../schools/component/molecule/InputSearch";
 import ButtonIcon from "../molecule/ButtonIcon";
 import { onBoard, toggleDrawMod } from "../template/ContextManager";
+import "./BusLines.css";
 import { DrawModeStep, setCurrentStep } from "./DrawRaceBoard";
-import "./LinesBoard.css";
 
 export default function () {
   const [searchKeyword, setSearchKeyword] = createSignal<string>("");

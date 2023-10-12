@@ -5,15 +5,15 @@ import CardWrapper from "../../../../../component/molecule/CardWrapper";
 import ArretsLogo from "../../../../../icons/ArretsLogo";
 import { setOnBoard } from "../../../board/component/template/ContextManager";
 import { deselectAllLines } from "../../../map/component/organism/BusLines";
-import { setCourses } from "../../../map/component/organism/Courses";
 import ClasseLinkedSchool from "../atom/ClasseLinkedSchool";
-import "./CourseItem.css";
+import "./RaceItem.css";
 
 export function displayBusLine(line: LineType): void {
   deselectAllLines();
   line.setSelected(true);
 
-  setCourses(line.courses.length > 0 ? line.courses : []);
+  // TODO to fix race
+  // setCourses(line.courses.length > 0 ? line.courses : []);
   setOnBoard("course");
 }
 

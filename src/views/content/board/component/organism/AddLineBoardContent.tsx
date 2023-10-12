@@ -24,7 +24,8 @@ import LabeledInputField from "../molecule/LabeledInputField";
 import CollapsibleCheckableElement, {
   AssociatedItem,
 } from "./CollapsibleCheckableElement";
-import "./DrawModeBoardContent.css";
+// TODO to fix -> doit importer un AddLineBoardContent ou similaire
+import "./DrawRaceBoard.css";
 
 export enum AddLineStep {
   start,
