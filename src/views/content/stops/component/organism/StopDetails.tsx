@@ -17,7 +17,7 @@ export const [stopDetailsItem, setStopDetailsItem] = createSignal<StopType>();
 
 export enum StopPanels {
   classes = "schools",
-  lines = "lines",
+  races = "races",
 }
 
 export default function () {
@@ -77,7 +77,7 @@ export default function () {
               <EditStudentSchoolClassItem close={toggleEditItem} />
             </Show>
           </Match>
-          <Match when={onPanel() == StopPanels.lines}>
+          <Match when={onPanel() == StopPanels.races}>
             <RacesList races={getStopRaces()} />
           </Match>
         </Switch>

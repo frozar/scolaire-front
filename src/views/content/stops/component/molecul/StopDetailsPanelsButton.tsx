@@ -22,8 +22,8 @@ export default function (props: PanelsButtonProps) {
 
       <button
         class="panel-button"
-        classList={{ active: props.onPanel() == StopPanels.lines }}
-        onClick={() => props.setOnPanel(StopPanels.lines)}
+        classList={{ active: props.onPanel() == StopPanels.races }}
+        onClick={() => props.setOnPanel(StopPanels.races)}
       >
         Races: {props.NbRaces}
       </button>
