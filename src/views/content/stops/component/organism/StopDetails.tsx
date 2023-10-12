@@ -7,6 +7,7 @@ import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { changeBoard } from "../../../board/component/template/ContextManager";
 import { getRaces } from "../../../map/component/organism/Races";
 import { RacesList } from "../../../schools/component/organism/RacesList";
+import EditStudentSchoolClassItem from "../molecul/EditStudentSchoolClassItem";
 import StopDetailsHeader from "../molecul/StopDetailsHeader";
 import StopDetailsPanelsButton from "../molecul/StopDetailsPanelsButton";
 import "./StopDetails.css";
@@ -73,7 +74,7 @@ export default function () {
             />
 
             <Show when={editItem()}>
-              <EditStop close={toggleEditItem} />
+              <EditStudentSchoolClassItem close={toggleEditItem} />
             </Show>
           </Match>
           <Match when={onPanel() == StopPanels.lines}>

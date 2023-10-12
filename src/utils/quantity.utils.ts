@@ -1,4 +1,3 @@
-import { AssociatedPointType } from "../_entities/_utils.entity";
 import { RacePointType, RaceType } from "../_entities/race.entity";
 import { SchoolType } from "../_entities/school.entity";
 import { ClassToSchoolTypeFormatedWithUsedQuantity } from "../_entities/student-to-school.entity";
@@ -13,7 +12,7 @@ enum OperationType {
 }
 
 export namespace QuantityUtils {
-  export function remaining(point: AssociatedPointType) {
+  export function remaining(point: ClassToSchoolTypeFormatedWithUsedQuantity) {
     return point.quantity - point.usedQuantity;
   }
 
