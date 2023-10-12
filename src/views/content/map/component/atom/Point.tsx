@@ -4,6 +4,12 @@ import { Accessor, Setter, createEffect, onCleanup, onMount } from "solid-js";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { StopType } from "../../../../../_entities/stop.entity";
 import { NatureEnum } from "../../../../../type";
+import {
+  AddLineStep,
+  addLineCurrentStep,
+  stopSelected,
+} from "../../../board/component/organism/AddLineBoardContent";
+import { COLOR_STOP_FOCUS, COLOR_STOP_LIGHT } from "../../constant";
 import { linkMap } from "../organism/Points";
 import "./Point.css";
 
@@ -110,6 +116,29 @@ export default function (props: PointProps) {
       circle
         .getElement()
         ?.setAttribute("stroke-width", props.weight.toString());
+    }
+  });
+
+  createEffect(() => {
+    console.log("test create");
+    if (props.point.nature == NatureEnum.stop) {
+      // const circle = linkMap.get(props.point.leafletId);
+      console.log("circle", circle);
+      if (addLineCurrentStep() === AddLineStep.editLine) {
+        circle?.setStyle({ fillColor: COLOR_STOP_LIGHT });
+        console.log("test set style");
+        if (
+          stopSelected()
+            .map((stop) => stop.associated.id)
+            .includes(props.point.id)
+        ) {
+          circle?.setStyle({ fillColor: COLOR_STOP_FOCUS });
+          // console.log("test");
+        } else {
+          circle?.setStyle({ fillColor: COLOR_STOP_LIGHT });
+          console.log("test2");
+        }
+      }
     }
   });
 

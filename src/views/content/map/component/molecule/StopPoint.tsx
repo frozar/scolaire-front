@@ -9,14 +9,8 @@ import { COLOR_STOP_FOCUS, COLOR_STOP_LIGHT } from "../../constant";
 import Point from "../atom/Point";
 import { deselectAllRaces } from "../organism/Races";
 
-import { createEffect } from "solid-js";
 import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
 import { updatePointColor } from "../../../../../leafletUtils";
-import {
-  AddLineStep,
-  addLineCurrentStep,
-  stopSelected,
-} from "../../../board/component/organism/AddLineBoardContent";
 import {
   addPointToRace,
   currentRace,
@@ -182,23 +176,6 @@ export function StopPoint(props: StopPointProps) {
       return COLOR_STOP_LIGHT;
     } else return COLOR_STOP_FOCUS;
   };
-
-  createEffect(() => {
-    const circle = linkMap.get(props.point.leafletId);
-    if (addLineCurrentStep() === AddLineStep.editLine) {
-      if (
-        stopSelected()
-          .map((stop) => stop.associated.id)
-          .includes(props.point.id)
-      ) {
-        circle?.setStyle({ fillColor: COLOR_STOP_FOCUS });
-        console.log("test");
-      } else {
-        circle?.setStyle({ fillColor: COLOR_STOP_LIGHT });
-        console.log("test2");
-      }
-    }
-  });
 
   return (
     <Point
