@@ -15,7 +15,7 @@ import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { assertIsNode } from "../utils";
 
 import ClickOutside from "../component/ClickOutside";
-import { getCourses } from "../views/content/map/component/organism/Courses";
+import { getRaces } from "../views/content/map/component/organism/Races";
 import { getSchools } from "../views/content/map/component/organism/SchoolPoints";
 import { getStops } from "../views/content/map/component/organism/StopPoints";
 
@@ -54,11 +54,11 @@ export default function () {
   const displayed = () => displayedClearConfirmationDialogBox()["displayed"];
 
   onMount(() => {
-    document.addEventListener("keyup", exitModal);
+    // document.addEventListener("keyup", exitModal);
   });
 
   onCleanup(() => {
-    document.removeEventListener("keyup", exitModal);
+    // document.removeEventListener("keyup", exitModal);
   });
 
   // TODO  Have to be rewrite to be compliance with Xano
@@ -224,7 +224,7 @@ export default function () {
                           </li>
                           <li>
                             <span class="font-semibold text-sm text-gray-900">
-                              {getCourses().length + " "}
+                              {getRaces.length + " "}
                             </span>
                             ligne(s) présente(s) sur la carte,
                           </li>

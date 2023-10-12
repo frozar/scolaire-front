@@ -7,18 +7,17 @@ import {
   onCleanup,
   onMount,
 } from "solid-js";
-import ClickOutside from "../../../../../component/ClickOutside";
+import { Transition } from "solid-transition-group";
 import {
   closeExportConfirmationBox,
   getExportConfirmationDialogBox,
   setExportType,
 } from "../../../../../signaux";
-import { Transition } from "solid-transition-group";
-import { assertIsNode } from "../../../../../utils";
 import { ExportTypeEnum } from "../../../../../type";
-import { exportData } from "./utils";
+import { assertIsNode } from "../../../../../utils";
 import GtfsExportLogo from "./logo/GtfsExportLogo";
 import ImageExportLogo from "./logo/ImageExportLogo";
+import { exportData } from "./utils";
 
 const [selected, setSelected] = createSignal<string | null>(null);
 
@@ -84,11 +83,11 @@ export default function () {
   let refDialogueBox!: HTMLDivElement;
 
   onMount(() => {
-    document.addEventListener("keyup", exitModal);
+    // document.addEventListener("keyup", exitModal);
   });
 
   onCleanup(() => {
-    document.removeEventListener("keyup", exitModal);
+    // document.removeEventListener("keyup", exitModal);
   });
 
   const displayed = () => getExportConfirmationDialogBox()["displayed"];

@@ -1,24 +1,25 @@
 import { createSignal } from "solid-js";
 import PlusIcon from "../../../../../icons/PlusIcon";
+import { displayAddCourseMessage } from "../../../../../userInformation/utils";
 import { deselectAllPoints } from "../../../map/component/organism/Points";
 import {
   deselectAllRaces,
   getRaces,
 } from "../../../map/component/organism/Races";
 import InputSearch from "../../../schools/component/molecule/InputSearch";
+import { RacesList } from "../../../schools/component/organism/RacesList";
 import ButtonIcon from "../molecule/ButtonIcon";
 import { onBoard, toggleDrawMod } from "../template/ContextManager";
-import "./BusLines.css";
 import { DrawModeStep, setCurrentStep } from "./DrawRaceBoard";
+import "./RacesBoard.css";
 
-export default function () {
+export function RacesBoard() {
   const [searchKeyword, setSearchKeyword] = createSignal<string>("");
 
-  // TODO corriger
-  // const filteredLines = () =>
-  //   getRaces.filter((race) => race.name?.includes(searchKeyword()));
+  const filteredCourses = () =>
+    getRaces.filter((line) => line.name?.includes(searchKeyword()));
 
-  function addLine() {
+  function addCourse() {
     if (onBoard() == "race-draw") {
       toggleDrawMod();
       setCurrentStep(DrawModeStep.start);
@@ -28,8 +29,7 @@ export default function () {
       toggleDrawMod();
 
       setCurrentStep(DrawModeStep.schoolSelection);
-      // TODO corriger
-      // displayAddLineMessage();
+      displayAddCourseMessage();
     }
   }
 
@@ -39,17 +39,16 @@ export default function () {
 
   return (
     <section>
-      <header class="line-board-header">
-        <div class="line-board-header-infos">
+      <header class="races-board-header">
+        <div class="races-board-header-infos">
           <p>Total des courses: {getRaces.length}</p>
-          <ButtonIcon icon={<PlusIcon />} onClick={addLine} />
+          <ButtonIcon icon={<PlusIcon />} onClick={addCourse} />
         </div>
 
         <InputSearch onInput={onInputSearch} />
       </header>
 
-      {/* TODO à corriger */}
-      {/* <LinesList lines={filteredLines()} /> */}
+      <RacesList races={filteredCourses()} />
     </section>
   );
 }

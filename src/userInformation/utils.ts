@@ -3,10 +3,10 @@ import { addNewUserInformation } from "../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import DisplayAddCourseMessageContent from "./DisplayAddCourseMessageContent";
 import DisplayRemoveCourseMessageContent from "./DisplayRemoveCourseMessageContent";
-const [, { isInAddCourseMode }] = useStateAction();
+const [, { isInDrawRaceMode }] = useStateAction();
 
 export function displayAddCourseMessage() {
-  if (isInAddCourseMode()) {
+  if (isInDrawRaceMode()) {
     addNewUserInformation({
       displayed: true,
       level: MessageLevelEnum.info,

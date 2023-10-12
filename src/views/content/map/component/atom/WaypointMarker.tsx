@@ -1,15 +1,12 @@
 import L from "leaflet";
 import { onCleanup } from "solid-js";
-import { useStateAction } from "../../../../../StateAction";
-import {
-  CourseType,
-  updatePolylineWithOsrm,
-} from "../../../../../_entities/course.entity";
 
 import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
+import {
+  currentRace,
+  updateWaypoints,
+} from "../../../board/component/organism/DrawRaceBoard";
 import { COLOR_WAYPOINT } from "../../constant";
-
-const [, { getCourseUnderConstruction }] = useStateAction();
 
 type PolylineDragMarkersProps = {
   map: L.Map;
@@ -19,17 +16,12 @@ type PolylineDragMarkersProps = {
 
 export default function (props: PolylineDragMarkersProps) {
   function onRightClick() {
-    const waypoints = getCourseUnderConstruction().course.waypoints;
+    const waypoints = currentRace.waypoints;
     if (!waypoints) {
       return;
     }
     const newWaypoints = WaypointEntity.deleteWaypoint(waypoints, props.index);
-
-    const newBusCourse: CourseType = {
-      ...getCourseUnderConstruction().course,
-      waypoints: newWaypoints,
-    };
-    updatePolylineWithOsrm(newBusCourse);
+    updateWaypoints(newWaypoints);
   }
   // eslint-disable-next-line solid/reactivity
   const waypointMarker = L.circleMarker(props.latlngs, {

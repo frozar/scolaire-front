@@ -1,22 +1,23 @@
-import { CourseType } from "../../../../../_entities/course.entity";
-
-import { createSignal } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
+
+import { RaceType } from "../../../../../_entities/race.entity";
 import UpdateButton from "../../../../../icons/UpdatePen";
 import { MapElementUtils } from "../../../../../utils/mapElement.utils";
-import { DrawModeStep, setCurrentStep } from "../organism/DrawRaceBoard";
+import {
+  DrawModeStep,
+  setCurrentRace,
+  setCurrentStep,
+  setIsInUpdate,
+} from "../organism/DrawRaceBoard";
 import { changeBoard, toggleDrawMod } from "../template/ContextManager";
 import "./DrawUpdateButton.css";
 
 const [, { setModeDrawRace }] = useStateAction();
 
-export const [unmodifiedBusCourse, setUnmodifiedBusCourse] =
-  createSignal<CourseType>();
-
-export default function (props: { course: CourseType }) {
+export function UpdateRaceButton(props: { race: RaceType }) {
   async function onclick() {
-    const [color, setColor] = createSignal<string>(props.course.color());
-    setUnmodifiedBusCourse({ ...props.course, color, setColor });
+    setCurrentRace(props.race);
+    setIsInUpdate(true);
 
     MapElementUtils.deselectAllPointsAndBusCourses();
     toggleDrawMod();

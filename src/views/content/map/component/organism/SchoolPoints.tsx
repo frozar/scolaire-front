@@ -1,16 +1,14 @@
 import L from "leaflet";
 import { For, createEffect, createSignal } from "solid-js";
-import { useStateAction } from "../../../../../StateAction";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { SchoolService } from "../../../../../_services/school.service";
 import {
+  DrawModeStep,
+  currentRace,
   currentStep,
-  drawModeStep,
-} from "../../../board/component/organism/DrawModeBoardContent";
+} from "../../../board/component/organism/DrawRaceBoard";
 import { onBoard } from "../../../board/component/template/ContextManager";
 import { SchoolPoint } from "../molecule/SchoolPoint";
-
-const [, { getCourseUnderConstruction }] = useStateAction();
 
 export interface SchoolPointsProps {
   leafletMap: L.Map;
@@ -40,9 +38,9 @@ async function updateSchools() {
 function schoolsFilter(): SchoolType[] {
   let schools = getSchools();
 
-  if (onBoard() == "course-draw") {
-    const schoolsSelected = getCourseUnderConstruction().course.schools;
-    if (currentStep() === drawModeStep.schoolSelection) {
+  if (onBoard() == "race-draw") {
+    const schoolsSelected = currentRace.schools;
+    if (currentStep() === DrawModeStep.schoolSelection) {
       return schools;
     }
 

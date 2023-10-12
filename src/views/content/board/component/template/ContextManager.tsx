@@ -7,9 +7,9 @@ import StopBoard from "../../../stops/component/organism/StopBoard";
 import StopDetails from "../../../stops/component/organism/StopDetails";
 import AddLineBoardContent from "../organism/AddLineBoardContent";
 import BusLinesBoard from "../organism/BusLinesBoard";
-import { BusCourseInformationBoardContent } from "../organism/CourseInformationBoardContent";
-import CoursesBoard from "../organism/CoursesBoard";
-import DrawModeBoardContent from "../organism/DrawModeBoardContent";
+import { DrawRaceBoard } from "../organism/DrawRaceBoard";
+import { RaceBoard } from "../organism/RaceBoard";
+import { RacesBoard } from "../organism/RacesBoard";
 import InformationBoardLayout from "./InformationBoardLayout";
 
 //TODO utiliser ou supprimer "schools" et "stops"
@@ -21,7 +21,7 @@ export type BoardTags =
   | "stops"
   | "stop-details"
   | "course"
-  | "course-draw"
+  | "race-draw"
   | "line"
   | "line-add"
   | "line-details"
@@ -36,10 +36,10 @@ export const changeBoard = (boardName: BoardTags) => setOnBoard(boardName);
 export default function () {
   createEffect(() => {
     if (isInDrawMod()) {
-      changeBoard("course-draw");
+      changeBoard("race-draw");
     } else {
       setOnBoard((prev) => {
-        return prev == "course-draw" ? "line" : prev;
+        return prev == "race-draw" ? "line" : prev;
       });
     }
   });
@@ -57,10 +57,10 @@ export default function () {
             <AddLineBoardContent />
           </Match>
           <Match when={onBoard() == "course"}>
-            <CoursesBoard />
+            <RacesBoard />
           </Match>
-          <Match when={onBoard() == "course-draw"}>
-            <DrawModeBoardContent />
+          <Match when={onBoard() == "race-draw"}>
+            <DrawRaceBoard />
           </Match>
 
           {/* Schools */}
@@ -91,7 +91,7 @@ export default function () {
           </Match>
 
           <Match when={onBoard() == "line-details"}>
-            <BusCourseInformationBoardContent />
+            <RaceBoard />
           </Match>
         </Switch>
       </InformationBoardLayout>

@@ -1,8 +1,8 @@
-.line-item{
+.race-item{
   @apply flex w-full items-center relative cursor-pointer;
 }
 
-.line-item > .pellet {
+.race-item > .pellet {
   @apply absolute left-[-16px] w-[35px] h-[35px];
   border: 4px solid white;
 }
@@ -14,15 +14,15 @@
   @apply fill-green-base;
 }
 
-.line-content{
+.race-content{
   @apply ml-2;
   user-select: none;
 }
 
-.line-name{
+.race-name{
   @apply text-lg;
 }
 
-.line-stops-count{
+.race-stops-count{
   @apply flex;
 }

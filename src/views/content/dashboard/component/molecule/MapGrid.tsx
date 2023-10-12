@@ -46,15 +46,15 @@ const shortcuts = [keyboardHandler];
 export default function (props: MapGridProps) {
   onMount(() => {
     for (const handler of shortcuts) {
-      document.body.addEventListener("keydown", handler);
-      document.body.addEventListener("keyup", handler);
+      // document.body.addEventListener("keydown", handler);
+      // document.body.addEventListener("keyup", handler);
     }
   });
 
   onCleanup(() => {
     for (const handler of shortcuts) {
-      document.body.removeEventListener("keydown", handler);
-      document.body.removeEventListener("keyup", handler);
+      // document.body.removeEventListener("keydown", handler);
+      // document.body.removeEventListener("keyup", handler);
     }
   });
 

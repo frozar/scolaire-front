@@ -5,9 +5,8 @@ import PlusIcon from "../../../../../icons/PlusIcon";
 import { MapElementUtils } from "../../../../../utils/mapElement.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { changeBoard } from "../../../board/component/template/ContextManager";
-import { getCourses } from "../../../map/component/organism/Courses";
-import CoursesList from "../../../schools/component/organism/CoursesList";
-import EditStop from "../molecul/EditStudentSchoolClassItem";
+import { getRaces } from "../../../map/component/organism/Races";
+import { RacesList } from "../../../schools/component/organism/RacesList";
 import StopDetailsHeader from "../molecul/StopDetailsHeader";
 import StopDetailsPanelsButton from "../molecul/StopDetailsPanelsButton";
 import "./StopDetails.css";
@@ -33,15 +32,15 @@ export default function () {
 
   const toggleEditItem = () => setEditItem((bool) => !bool);
 
-  function getStopCourses() {
-    const lines = [];
+  function getStopRaces() {
+    const races = [];
 
-    for (const line of getCourses()) {
-      const _line = line.points.filter((l) => l.id == stopDetailsItem()?.id);
-      if (_line.length > 0) lines.push(line);
+    for (const race of getRaces) {
+      const _race = race.points.filter((r) => r.id == stopDetailsItem()?.id);
+      if (_race.length > 0) races.push(race);
     }
 
-    return lines;
+    return races;
   }
 
   function appendClassToStop(classItem: AssociatedPointType) {
@@ -81,7 +80,7 @@ export default function () {
           onPanel={onPanel}
           setOnPanel={setOnPanel}
           NbSchool={stopDetailsItem()?.associated.length as number}
-          NbCourses={getStopCourses().length}
+          NbCourses={getStopRaces().length}
         />
 
         <Show when={onPanel() == "schools"}>
@@ -98,15 +97,16 @@ export default function () {
             />
 
             <Show when={editItem()}>
-              <EditStop
+              {/* TODO editStop to fix ? */}
+              {/* <EditStop
                 appendClassToList={appendClassToStop}
                 close={toggleEditItem}
                 stopID={stopDetailsItem()?.id as number}
-              />
+              /> */}
             </Show>
           </Match>
           <Match when={onPanel() == StopPanels.lines}>
-            <CoursesList courses={getStopCourses()} />
+            <RacesList races={getStopRaces()} />
           </Match>
         </Switch>
       </div>

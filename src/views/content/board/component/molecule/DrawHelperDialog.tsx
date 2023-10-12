@@ -44,11 +44,11 @@ export default function (props: {
     });
   }
   onMount(() => {
-    document.addEventListener("keyup", exitModal);
+    // document.addEventListener("keyup", exitModal);
   });
 
   onCleanup(() => {
-    document.removeEventListener("keyup", exitModal);
+    // document.removeEventListener("keyup", exitModal);
   });
 
   const displayed = () => getDisplayedDrawHelperDialog();

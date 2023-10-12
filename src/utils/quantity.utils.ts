@@ -1,20 +1,19 @@
 import { AssociatedPointType } from "../_entities/_utils.entity";
-import { CoursePointType, CourseType } from "../_entities/course.entity";
+import { RacePointType, RaceType } from "../_entities/race.entity";
 import { SchoolType } from "../_entities/school.entity";
 import { NatureEnum } from "../type";
 import { setSchools } from "../views/content/map/component/organism/SchoolPoints";
 import { setStops } from "../views/content/map/component/organism/StopPoints";
-export namespace QuantityUtils {
-  export function set(courses: CourseType[]) {
-    courses.forEach((course) => {
-      course.schools.forEach((school) => {
-        setSchoolQuantity(school, course.points);
-      });
 
-      course.points.forEach((point) => {
-        setStopQuantity(point, course.schools);
-      });
-    });
+enum OperationType {
+  set,
+  substract,
+  add,
+}
+
+export namespace QuantityUtils {
+  export function remaining(point: AssociatedPointType) {
+    return point.quantity - point.usedQuantity;
   }
 
   export function remainingQuantities(points: AssociatedPointType[]) {
@@ -26,20 +25,40 @@ export namespace QuantityUtils {
     return quantity;
   }
 
-  export function remaining(point: AssociatedPointType) {
-    return point.quantity - point.usedQuantity;
+  export function set(courses: RaceType[]) {
+    courses.forEach((race) => {
+      race.schools.forEach((school) => {
+        setSchoolQuantity(school, race.points, OperationType.set);
+      });
+
+      race.points.forEach((point) => {
+        setStopQuantity(point, race.schools, OperationType.set);
+      });
+    });
+  }
+  export function add(race: RaceType) {
+    operation(race, OperationType.add);
   }
 
-  // export function substract(course: CourseType) {
-  //   // Foreach substract quantity on Stops with School_id
-  //   // Foreach substract quantity on Schools with Stop_id
-  // }
-  // export function add(course: CourseType) {
-  //   // Foreach add quantity on Stops with School_id
-  //   // Foreach add quantity on Schools with Stop_id
-  // }
+  export function substract(race: RaceType) {
+    operation(race, OperationType.substract);
+  }
 
-  function setSchoolQuantity(school: SchoolType, points: CoursePointType[]) {
+  function operation(race: RaceType, operation: OperationType) {
+    race.schools.forEach((school) => {
+      setSchoolQuantity(school, race.points, operation);
+    });
+
+    race.points.forEach((point) => {
+      setStopQuantity(point, race.schools, operation);
+    });
+  }
+
+  function setSchoolQuantity(
+    school: SchoolType,
+    points: RacePointType[],
+    operation: OperationType
+  ) {
     points.forEach((point) => {
       if (point.nature === NatureEnum.stop) {
         setSchools((schools) => {
@@ -47,7 +66,12 @@ export namespace QuantityUtils {
             if (_school.id == school.id) {
               _school.associated.map((stop) => {
                 if (stop.id == point.id) {
-                  stop.usedQuantity = point.quantity;
+                  if (operation === OperationType.set)
+                    stop.usedQuantity = point.quantity;
+                  else if (operation === OperationType.add)
+                    stop.usedQuantity += point.quantity;
+                  else if (operation === OperationType.substract)
+                    stop.usedQuantity -= point.quantity;
                 }
               });
             }
@@ -58,7 +82,11 @@ export namespace QuantityUtils {
     });
   }
 
-  function setStopQuantity(point: CoursePointType, schools: SchoolType[]) {
+  function setStopQuantity(
+    point: RacePointType,
+    schools: SchoolType[],
+    operation: OperationType
+  ) {
     if (point.nature === NatureEnum.stop) {
       schools.forEach((school) => {
         setStops((stops) => {
@@ -66,7 +94,12 @@ export namespace QuantityUtils {
             if (stop.id == point.id) {
               stop.associated.map((_school) => {
                 if (_school.id == school.id) {
-                  _school.usedQuantity = point.quantity;
+                  if (operation === OperationType.set)
+                    _school.usedQuantity = point.quantity;
+                  else if (operation === OperationType.add)
+                    _school.usedQuantity += point.quantity;
+                  else if (operation === OperationType.substract)
+                    _school.usedQuantity -= point.quantity;
                 }
               });
             }

@@ -1,13 +1,15 @@
 import { NatureEnum } from "../type";
-import { CoursePointType, CourseType, WaypointType } from "./course.entity";
+import { LocationDBType, LocationDBTypeEnum } from "./_utils.entity";
+import { RacePointType, RaceType } from "./race.entity";
 import { SchoolType } from "./school.entity";
 import { StopType } from "./stop.entity";
 
 export namespace WaypointEntity {
-  export function createWaypointsFromPoints(course: CourseType) {
+  // TODO unused ?
+  export function createWaypointsFromRace(race: RaceType) {
     const waypoints: WaypointType[] = [];
 
-    for (const point of course.points) {
+    for (const point of race.points) {
       if (point.nature == NatureEnum.school) {
         waypoints.push({
           idSchool: point.id,
@@ -25,10 +27,51 @@ export namespace WaypointEntity {
     return waypoints;
   }
 
+  export function formatWaypointType(
+    waypoints: WaypointDBType[]
+  ): WaypointType[] {
+    return waypoints.map((waypoint) => {
+      return {
+        idSchool: waypoint.school_id ? waypoint.school_id : undefined,
+        idStop: waypoint.stop_id ? waypoint.stop_id : undefined,
+        lat: waypoint.location.data.lat,
+        lon: waypoint.location.data.lng,
+        onRoadLat: waypoint.on_road_location.data.lat,
+        onRoadLon: waypoint.on_road_location.data.lng,
+      };
+    });
+  }
+
+  export function formatWaypointDBType(
+    waypoints: WaypointType[]
+  ): WaypointDBType[] {
+    return waypoints.map((waypoint) => {
+      return {
+        stop_id: waypoint.idStop ? waypoint.idStop : undefined,
+        school_id: waypoint.idSchool ? waypoint.idSchool : undefined,
+        location: {
+          type: LocationDBTypeEnum.point,
+          data: {
+            lng: waypoint.lon,
+            lat: waypoint.lat,
+          },
+        },
+        on_road_location: {
+          type: LocationDBTypeEnum.point,
+          data: {
+            lng: waypoint.onRoadLon as number,
+            lat: waypoint.onRoadLat as number,
+          },
+        },
+      };
+    });
+  }
+
+  // TODO revoir si doit être placé ici
   export function updateWaypoints(
     point: StopType | SchoolType,
     waypoints: WaypointType[],
-    points: CoursePointType[]
+    points: RacePointType[]
   ) {
     const newWaypoints = [...waypoints];
 
@@ -122,3 +165,18 @@ export namespace WaypointEntity {
     return newWaypoints;
   }
 }
+export type WaypointType = {
+  idSchool?: number;
+  idStop?: number;
+  lat: number;
+  lon: number;
+  onRoadLat?: number;
+  onRoadLon?: number;
+};
+
+export type WaypointDBType = {
+  stop_id?: number;
+  school_id?: number;
+  location: LocationDBType;
+  on_road_location: LocationDBType;
+};
