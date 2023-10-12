@@ -48,14 +48,14 @@ import "./DrawRaceBoard.css";
 import Metrics from "./Metrics";
 import { RaceTimeline } from "./RaceTimeline";
 
-export enum DrawModeStep {
-  start,
+export enum DrawRaceStep {
+  initial,
   schoolSelection,
   editRace,
 }
 
-export const [currentStep, setCurrentStep] = createSignal<DrawModeStep>(
-  DrawModeStep.start
+export const [currentStep, setCurrentStep] = createSignal<DrawRaceStep>(
+  DrawRaceStep.initial
 );
 
 export enum displayRaceModeEnum {
@@ -93,11 +93,11 @@ export function DrawRaceBoard() {
 
   return (
     <div class="add-line-information-board-content">
-      <Show when={currentStep() == DrawModeStep.schoolSelection}>
+      <Show when={currentStep() == DrawRaceStep.schoolSelection}>
         <SelectedSchool schoolSelected={currentRace.schools} />
       </Show>
 
-      <Show when={currentStep() == DrawModeStep.editRace}>
+      <Show when={currentStep() == DrawRaceStep.editRace}>
         <div class="bus-course-information-board-content-schools">
           <SchoolsEnumeration
             schoolsName={currentRace.schools.map((school) => school.name)}
@@ -142,7 +142,7 @@ export function DrawRaceBoard() {
         </div>
       </Show>
 
-      <Show when={currentStep() == DrawModeStep.editRace}>
+      <Show when={currentStep() == DrawRaceStep.editRace}>
         <div class="bus-course-information-board-content">
           <Show
             when={currentRace.points.length > 0}
@@ -164,12 +164,12 @@ export function DrawRaceBoard() {
       <BoardFooterActions
         nextStep={{
           callback: nextStep,
-          label: currentStep() == DrawModeStep.editRace ? "Valider" : "Suivant",
+          label: currentStep() == DrawRaceStep.editRace ? "Valider" : "Suivant",
         }}
         previousStep={{
           callback: prevStep,
           label:
-            currentStep() === DrawModeStep.schoolSelection
+            currentStep() === DrawRaceStep.schoolSelection
               ? "Annuler"
               : "Précédant",
         }}
@@ -180,6 +180,7 @@ export function DrawRaceBoard() {
 
 export function removeSchoolToRace(school: SchoolType) {
   setCurrentRace("schools", []);
+  console.log(school);
 }
 export function addPointToRace(point: RacePointType) {
   setCurrentRace("points", (points: RacePointType[]) => {
@@ -195,8 +196,8 @@ export function addPointToRace(point: RacePointType) {
 export function addSchoolToRace(school: SchoolType) {
   setCurrentRace("schools", [school]);
 }
-
 async function createOrUpdateRace() {
+  // eslint-disable-next-line solid/reactivity
   let race: RaceType = currentRace;
   if (currentRace.id == undefined) {
     race = await RaceService.create(currentRace);
@@ -211,19 +212,19 @@ async function createOrUpdateRace() {
   setDisplayRaceMode((prev) =>
     prev == displayRaceModeEnum.straight ? prev : displayRaceModeEnum.straight
   );
-  setCurrentStep(DrawModeStep.start);
+  setCurrentStep(DrawRaceStep.initial);
   quitModeDrawRace();
 }
 
 async function nextStep() {
   enableSpinningWheel();
   switch (currentStep()) {
-    case DrawModeStep.schoolSelection:
+    case DrawRaceStep.schoolSelection:
       if (currentRace.schools.length < 1) {
         break;
       }
-      setCurrentStep(DrawModeStep.editRace);
-    case DrawModeStep.editRace:
+      setCurrentStep(DrawRaceStep.editRace);
+    case DrawRaceStep.editRace:
       if (currentRace.points.length < 2) {
         break;
       }
@@ -244,16 +245,16 @@ async function nextStep() {
 
 function prevStep() {
   switch (currentStep()) {
-    case DrawModeStep.schoolSelection:
+    case DrawRaceStep.schoolSelection:
       setCurrentRace(RaceEntity.defaultRace());
       quitModeDrawRace();
 
-      setCurrentStep(DrawModeStep.start);
+      setCurrentStep(DrawRaceStep.initial);
       changeBoard("line");
       MapElementUtils.deselectAllPointsAndBusRaces();
 
       break;
-    case DrawModeStep.editRace:
+    case DrawRaceStep.editRace:
       if (isInUpdate()) {
         QuantityUtils.add(initialRace);
         setSelectedRace(initialRace);
@@ -264,7 +265,7 @@ function prevStep() {
         if (displayRaceMode() == displayRaceModeEnum.onRoad) {
           setCurrentRace("latLngs", []);
         }
-        setCurrentStep(DrawModeStep.schoolSelection);
+        setCurrentStep(DrawRaceStep.schoolSelection);
       }
       break;
   }

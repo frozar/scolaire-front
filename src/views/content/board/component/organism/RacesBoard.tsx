@@ -10,7 +10,7 @@ import InputSearch from "../../../schools/component/molecule/InputSearch";
 import { RacesList } from "../../../schools/component/organism/RacesList";
 import ButtonIcon from "../molecule/ButtonIcon";
 import { onBoard, toggleDrawMod } from "../template/ContextManager";
-import { DrawModeStep, setCurrentStep } from "./DrawRaceBoard";
+import { DrawRaceStep, setCurrentStep } from "./DrawRaceBoard";
 import "./RacesBoard.css";
 
 export function RacesBoard() {
@@ -22,13 +22,13 @@ export function RacesBoard() {
   function addRace() {
     if (onBoard() == "race-draw") {
       toggleDrawMod();
-      setCurrentStep(DrawModeStep.start);
+      setCurrentStep(DrawRaceStep.initial);
     } else {
       deselectAllPoints();
       deselectAllRaces();
       toggleDrawMod();
 
-      setCurrentStep(DrawModeStep.schoolSelection);
+      setCurrentStep(DrawRaceStep.schoolSelection);
       displayAddRaceMessage();
     }
   }

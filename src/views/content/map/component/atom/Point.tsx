@@ -120,23 +120,17 @@ export default function (props: PointProps) {
   });
 
   createEffect(() => {
-    console.log("test create");
     if (props.point.nature == NatureEnum.stop) {
-      // const circle = linkMap.get(props.point.leafletId);
-      console.log("circle", circle);
-      if (addLineCurrentStep() === AddLineStep.editLine) {
+      if (addLineCurrentStep() === AddLineStep.stopSelection) {
         circle?.setStyle({ fillColor: COLOR_STOP_LIGHT });
-        console.log("test set style");
         if (
           stopSelected()
             .map((stop) => stop.associated.id)
             .includes(props.point.id)
         ) {
           circle?.setStyle({ fillColor: COLOR_STOP_FOCUS });
-          // console.log("test");
         } else {
           circle?.setStyle({ fillColor: COLOR_STOP_LIGHT });
-          console.log("test2");
         }
       }
     }

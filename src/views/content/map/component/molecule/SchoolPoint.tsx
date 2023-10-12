@@ -11,7 +11,7 @@ import {
   setaddLineSelectedSchool,
 } from "../../../board/component/organism/AddLineBoardContent";
 import {
-  DrawModeStep,
+  DrawRaceStep,
   addPointToRace,
   addSchoolToRace,
   currentRace,
@@ -44,7 +44,7 @@ export interface SchoolPointProps {
 }
 
 const onClick = (point: SchoolType) => {
-  if (onBoard() != "race-draw") {
+  if (onBoard() != "race-draw" && onBoard() != "line-add") {
     deselectAllRaces();
     deselectAllPoints();
     point.setSelected(true);
@@ -80,12 +80,15 @@ const onClick = (point: SchoolType) => {
       circle?.setStyle({ fillColor: COLOR_SCHOOL_FOCUS });
     }
   }
-  if (onBoard() == "line-add" && addLineCurrentStep() == AddLineStep.editLine) {
+  if (
+    onBoard() == "line-add" &&
+    addLineCurrentStep() == AddLineStep.stopSelection
+  ) {
     console.log("No action in this mode ");
     return;
   }
 
-  if (currentStep() === DrawModeStep.schoolSelection) {
+  if (currentStep() === DrawRaceStep.schoolSelection) {
     if (schoolsSelected?.find((p) => p.id === point.id)) {
       return;
     }
@@ -178,10 +181,7 @@ const onRightClick = (point: SchoolType) => {
 export function SchoolPoint(props: SchoolPointProps) {
   createEffect(() => {
     //TODO dont Work
-    console.log(
-      "addline",
-      addLineCurrentStep() === AddLineStep.schoolSelection
-    );
+
     if (addLineCurrentStep() === AddLineStep.schoolSelection) {
       const stopFiltering = addLineSelectedSchool().filter(
         (school) => school.id == props.point.id

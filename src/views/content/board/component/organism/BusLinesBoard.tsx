@@ -3,10 +3,7 @@ import PlusIcon from "../../../../../icons/PlusIcon";
 import { displayAddRaceMessage } from "../../../../../userInformation/utils";
 import { getLines } from "../../../map/component/organism/BusLines";
 import { deselectAllPoints } from "../../../map/component/organism/Points";
-import {
-  deselectAllRaces,
-  getRaces,
-} from "../../../map/component/organism/Races";
+import { deselectAllRaces } from "../../../map/component/organism/Races";
 import InputSearch from "../../../schools/component/molecule/InputSearch";
 import BusLinesList from "../../../schools/component/organism/BusLinesList";
 import ButtonIcon from "../molecule/ButtonIcon";
@@ -17,25 +14,23 @@ import {
 } from "../template/ContextManager";
 import { AddLineStep, setAddLineCurrentStep } from "./AddLineBoardContent";
 import "./BusLines.css";
-import { DrawModeStep, setCurrentStep } from "./DrawRaceBoard";
+import { DrawRaceStep, setCurrentStep } from "./DrawRaceBoard";
 
 export default function () {
   const [searchKeyword, setSearchKeyword] = createSignal<string>("");
 
   // TODO corriger
-  const filteredLines = () =>
-    getRaces.filter((race) => race.name?.includes(searchKeyword()));
+  // const filteredLines = () =>
+  //   getRaces.filter((race) => race.name?.includes(searchKeyword()));
 
   function addLine() {
     if (onBoard() == "line-add") {
       toggleDrawMod();
-      setCurrentStep(DrawModeStep.start);
+      setCurrentStep(DrawRaceStep.initial);
     } else {
       deselectAllPoints();
       deselectAllRaces();
-      toggleDrawMod();
 
-      setCurrentStep(DrawModeStep.schoolSelection);
       // TODO corriger
       // displayAddLineMessage();
       changeBoard("line-add");

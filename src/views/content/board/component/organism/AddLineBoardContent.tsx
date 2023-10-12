@@ -32,7 +32,7 @@ import "./DrawRaceBoard.css";
 export enum AddLineStep {
   start,
   schoolSelection,
-  editLine,
+  stopSelection,
 }
 
 export const [addLineSelectedSchool, setaddLineSelectedSchool] = createSignal<
@@ -73,7 +73,7 @@ export default function () {
         <SelectedSchool schoolSelected={addLineSelectedSchool()} />
       </Show>
 
-      <Show when={addLineCurrentStep() == AddLineStep.editLine}>
+      <Show when={addLineCurrentStep() == AddLineStep.stopSelection}>
         <LabeledInputField
           label="Nom de la line"
           value={currentLine()?.name ?? " default name"}
@@ -109,7 +109,7 @@ export default function () {
         nextStep={{
           callback: nextStep,
           label:
-            addLineCurrentStep() == AddLineStep.editLine
+            addLineCurrentStep() == AddLineStep.stopSelection
               ? "Valider"
               : "Suivant",
         }}
@@ -158,7 +158,6 @@ async function nextStep() {
       if (addLineSelectedSchool().length < 1) {
         break;
       }
-      setAddLineCurrentStep(AddLineStep.editLine);
 
       setStopSelected([
         ...getStops().map((stop) => {
@@ -170,37 +169,44 @@ async function nextStep() {
         ...(currentLine() ?? BusLineEntity.defaultBusLine()),
         schools: addLineSelectedSchool(),
       });
+
+      setAddLineCurrentStep(AddLineStep.stopSelection);
       break;
-    case AddLineStep.editLine:
-      if (stopSelected.length < 2) {
+
+    case AddLineStep.stopSelection:
+      if (stopSelected().length < 2) {
         break;
       }
 
       updatePointColor();
-      const stops = getStops().filter((elem) =>
-        stopSelected()
-          .filter((elem) => elem.done)
-          .map((val) => val.associated.id)
-          .includes(elem.id)
-      );
+
+      const stops = stopSelected()
+        .filter((stop) => stop.done)
+        .map((stop) => stop.associated);
       setCurrentLine({
         ...(currentLine() ?? BusLineEntity.defaultBusLine()),
         stops,
       });
+
       try {
         const creating_line = currentLine();
+
         if (creating_line) {
           const newBusLine: LineType = await BusLineService.create(
             creating_line
           );
+          setAddLineCurrentStep(AddLineStep.start);
+
           toggleDrawMod();
           displayBusLine(newBusLine);
+
           //TODO faire updateBusLines(newBusLine);
         }
       } catch (error) {
         console.log("error", error);
         manageStatusCode(error as Response);
       }
+      setAddLineCurrentStep(AddLineStep.start);
   }
   disableSpinningWheel();
 }
@@ -215,7 +221,7 @@ async function previousStep() {
       toggleDrawMod();
       setOnBoard("line");
       break;
-    case AddLineStep.editLine:
+    case AddLineStep.stopSelection:
       setAddLineCurrentStep(AddLineStep.schoolSelection);
       setStopSelected([]);
   }

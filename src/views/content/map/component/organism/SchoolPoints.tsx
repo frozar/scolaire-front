@@ -8,7 +8,7 @@ import {
   addLineSelectedSchool,
 } from "../../../board/component/organism/AddLineBoardContent";
 import {
-  DrawModeStep,
+  DrawRaceStep,
   currentRace,
   currentStep,
 } from "../../../board/component/organism/DrawRaceBoard";
@@ -52,7 +52,7 @@ function schoolsFilter(): SchoolType[] {
 
   if (onBoard() == "race-draw") {
     const schoolsSelected = currentRace.schools;
-    if (currentStep() === DrawModeStep.schoolSelection) {
+    if (currentStep() === DrawRaceStep.schoolSelection) {
       return schools;
     }
 
@@ -63,7 +63,10 @@ function schoolsFilter(): SchoolType[] {
     );
   }
 
-  if (onBoard() == "line-add" && addLineCurrentStep() == AddLineStep.editLine) {
+  if (
+    onBoard() == "line-add" &&
+    addLineCurrentStep() == AddLineStep.stopSelection
+  ) {
     return schools.filter((school) =>
       addLineSelectedSchool()
         .map((schoolSelected) => schoolSelected.id)

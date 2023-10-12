@@ -6,15 +6,19 @@ import { StopService } from "../../../../../_services/stop.service";
 import {
   AddLineStep,
   addLineCurrentStep,
+  addLineSelectedSchool,
+  stopSelected,
 } from "../../../board/component/organism/AddLineBoardContent";
 import {
-  DrawModeStep,
+  DrawRaceStep,
   currentRace,
   currentStep,
 } from "../../../board/component/organism/DrawRaceBoard";
+import { onBoard } from "../../../board/component/template/ContextManager";
 import { PointInterface } from "../atom/Point";
 import { StopPoint } from "../molecule/StopPoint";
 import { getSelectedLine } from "./BusLines";
+import { getSchools } from "./SchoolPoints";
 
 const [, { nextLeafletPointId }] = useStateGui();
 
@@ -70,32 +74,42 @@ async function updateStop() {
 
 //TODO Delete and replace with displayedStop signal
 export function leafletStopsFilter(): StopType[] {
-  const schools = currentRace.schools;
-  const stops = getStops().filter((stop) =>
-    getSelectedLine()
-      ? getSelectedLine()
-          ?.stops.map((stop) => stop.id)
-          .includes(stop.id)
-      : true
-  );
-  console.log(getSelectedLine());
-  if (currentStep() === DrawModeStep.start) {
-    return stops;
-  }
-  if (currentStep() === DrawModeStep.schoolSelection) {
-    return [];
-  }
-  console.log(currentStep() === DrawModeStep.schoolSelection);
+  let schools = getSchools();
+  let stops = getStops();
 
-  if (
-    currentStep() === DrawModeStep.schoolSelection ||
-    addLineCurrentStep() === AddLineStep.schoolSelection
-  ) {
-    return [];
-  }
+  switch (onBoard()) {
+    case "line-add":
+      schools = addLineSelectedSchool();
+      stops = stopSelected().map((associated) => {
+        return associated.associated;
+      });
+      if (addLineCurrentStep() == AddLineStep.stopSelection) {
+        const associatedIdSelected = schools
+          .map((school) => school.associated.map((value) => value.id))
+          .flat();
 
-  if (currentStep() === DrawModeStep.start) {
-    return stops;
+        return stops.filter((stop) => associatedIdSelected.includes(stop.id));
+      }
+      break;
+    case "race-draw":
+      schools = currentRace.schools;
+
+      stops = getStops().filter((stop) =>
+        getSelectedLine()
+          ? getSelectedLine()
+              ?.stops.map((stop) => stop.id)
+              .includes(stop.id)
+          : true
+      );
+
+      if (currentStep() === DrawRaceStep.schoolSelection) {
+        return [];
+      }
+
+      if (currentStep() === DrawRaceStep.initial) {
+        return stops;
+      }
+      break;
   }
 
   return stops.filter((stop) =>

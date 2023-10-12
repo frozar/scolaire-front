@@ -13,9 +13,6 @@ export default function (props: { school: SchoolType }) {
     <CollapsibleElement title={props.school.name}>
       <For each={stopSelected()}>
         {(school_elem, i) => {
-          {
-            console.log(props.school);
-          }
           return (
             <Show
               when={props.school.associated

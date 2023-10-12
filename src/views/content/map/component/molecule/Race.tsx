@@ -20,7 +20,7 @@ import { RacePointType, RaceType } from "../../../../../_entities/race.entity";
 import { WaypointType } from "../../../../../_entities/waypoint.entity";
 import { updatePointColor } from "../../../../../leafletUtils";
 import {
-  DrawModeStep,
+  DrawRaceStep,
   currentRace,
   currentStep,
   displayRaceMode,
@@ -108,7 +108,7 @@ export function Race(props: { race: RaceType; map: L.Map }) {
     // if (displayRaceMode() == displayRaceModeEnum.straight && !isInReadMode()) {
     if (
       displayRaceMode() == displayRaceModeEnum.straight &&
-      currentStep() == DrawModeStep.editRace
+      currentStep() == DrawRaceStep.editRace
     ) {
       props.map.dragging.disable();
 

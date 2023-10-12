@@ -5,12 +5,12 @@ import { Race } from "../molecule/Race";
 import { createStore } from "solid-js/store";
 import { RaceType } from "../../../../../_entities/race.entity";
 import {
-  DrawModeStep,
+  DrawRaceStep,
   currentRace,
   currentStep,
 } from "../../../board/component/organism/DrawRaceBoard";
 import { onBoard } from "../../../board/component/template/ContextManager";
-import { getSelectedLine } from "./BusLines";
+import { getLines, getSelectedLine } from "./BusLines";
 
 export const arrowsMap = new Map<number, L.Marker[]>();
 
@@ -33,7 +33,6 @@ export function Races(props: { map: L.Map }) {
 
   createEffect(() => {
     setRaces(getSelectedLine()?.courses ?? []);
-    const race = selectedRace();
   });
 
   onCleanup(() => {
@@ -41,7 +40,7 @@ export function Races(props: { map: L.Map }) {
   });
 
   const racesFilter = () => {
-    if (currentStep() > DrawModeStep.start) {
+    if (currentStep() > DrawRaceStep.initial) {
       // delete all arrows
       arrowsMap.forEach((arrows) =>
         arrows.map((arrow) => props.map.removeLayer(arrow))
@@ -52,6 +51,11 @@ export function Races(props: { map: L.Map }) {
     }
     if (onBoard() == "line-add") {
       return [];
+    }
+    if (onBoard() == "line") {
+      return getLines()
+        .map((line) => line.courses)
+        .flat();
     }
 
     return getRaces;

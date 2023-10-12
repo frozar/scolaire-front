@@ -2,7 +2,7 @@ import { createSignal } from "solid-js";
 import { LineType } from "../../../../../_entities/line.entity";
 import UpdateButton from "../../../../../icons/UpdatePen";
 import { MapElementUtils } from "../../../../../utils/mapElement.utils";
-import { DrawModeStep, setCurrentStep } from "../organism/DrawRaceBoard";
+import { DrawRaceStep, setCurrentStep } from "../organism/DrawRaceBoard";
 import { changeBoard, toggleDrawMod } from "../template/ContextManager";
 import "./DrawUpdateButton.css";
 
@@ -20,7 +20,7 @@ export default function (props: { line: LineType }) {
 
     MapElementUtils.deselectAllPointsAndRaces();
     toggleDrawMod();
-    setCurrentStep(DrawModeStep.editLine);
+    setCurrentStep(DrawRaceStep.editLine);
     changeBoard("race-draw");
     setModeAddLine();
   }
