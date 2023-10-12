@@ -195,10 +195,8 @@ export function addPointToRace(point: RacePointType) {
   setCurrentRace((race: RaceType) => {
     // TODO richard pourquoi cette condition ?
     const points = race.points;
-    console.log("je rentre ici", points);
     if (!_.isEqual(points.at(-1), point)) {
       points.splice(currentRaceIndex(), 0, point);
-      console.log("j'ajoute", points);
     }
     setCurrentRaceIndex(points.length);
     return { ...race, points };

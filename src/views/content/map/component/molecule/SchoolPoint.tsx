@@ -56,17 +56,10 @@ const onClick = (point: SchoolType) => {
   }
 
   const schoolsSelected = currentRace().schools;
-  console.log("onBoard", onBoard());
-  console.log("currentStep", currentStep());
   switch (onBoard()) {
     case "line-add":
       switch (addLineCurrentStep()) {
         case AddLineStep.schoolSelection:
-          console.log(
-            "addLineSelectedSchool",
-            addLineSelectedSchool().includes(point)
-          );
-
           const currentSelectedSchools = [...addLineSelectedSchool()];
 
           const index = currentSelectedSchools.indexOf(point, 0);
@@ -83,7 +76,6 @@ const onClick = (point: SchoolType) => {
           }
           break;
         case AddLineStep.schoolSelection:
-          console.log("No action in this mode ");
           return;
       }
       break;
@@ -96,7 +88,6 @@ const onClick = (point: SchoolType) => {
           addSchoolToRace(point);
           return;
         case DrawRaceStep.editRace:
-          console.log("ici");
           break;
       }
       break;
