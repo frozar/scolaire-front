@@ -1,11 +1,11 @@
 import { Match, Show, Switch, createSignal, onMount } from "solid-js";
+import { RaceEntity } from "../../../../../_entities/race.entity";
 import { StopType } from "../../../../../_entities/stop.entity";
 import { ClassToSchoolTypeFormatedWithUsedQuantity } from "../../../../../_entities/student-to-school.entity";
 import PlusIcon from "../../../../../icons/PlusIcon";
 import { MapElementUtils } from "../../../../../utils/mapElement.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { changeBoard } from "../../../board/component/template/ContextManager";
-import { getRaces } from "../../../map/component/organism/Races";
 import { RacesList } from "../../../schools/component/organism/RacesList";
 import EditStudentSchoolClassItem from "../molecul/EditStudentSchoolClassItem";
 import StopDetailsHeader from "../molecul/StopDetailsHeader";
@@ -33,17 +33,6 @@ export default function () {
 
   const toggleEditItem = () => setEditItem((bool) => !bool);
 
-  function getStopRaces() {
-    const races = [];
-
-    for (const race of getRaces) {
-      const _race = race.points.filter((r) => r.id == stopDetailsItem()?.id);
-      if (_race.length > 0) races.push(race);
-    }
-
-    return races;
-  }
-
   return (
     <section>
       <StopDetailsHeader stop={stopDetailsItem() as StopType} />
@@ -55,7 +44,9 @@ export default function () {
           onPanel={onPanel}
           setOnPanel={setOnPanel}
           NbSchool={stopDetailsItem()?.associated.length as number}
-          NbRaces={getStopRaces().length}
+          NbRaces={
+            RaceEntity.getStopRaces(stopDetailsItem()?.id as number).length
+          }
         />
 
         <Show when={onPanel() == "schools"}>
@@ -78,7 +69,9 @@ export default function () {
             </Show>
           </Match>
           <Match when={onPanel() == StopPanels.races}>
-            <RacesList races={getStopRaces()} />
+            <RacesList
+              races={RaceEntity.getStopRaces(stopDetailsItem()?.id as number)}
+            />
           </Match>
         </Switch>
       </div>
