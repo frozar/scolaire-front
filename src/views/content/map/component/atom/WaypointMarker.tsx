@@ -16,7 +16,7 @@ type PolylineDragMarkersProps = {
 
 export default function (props: PolylineDragMarkersProps) {
   function onRightClick() {
-    const waypoints = currentRace.waypoints;
+    const waypoints = currentRace().waypoints;
     if (!waypoints) {
       return;
     }

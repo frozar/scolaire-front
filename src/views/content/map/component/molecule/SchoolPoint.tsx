@@ -55,47 +55,44 @@ const onClick = (point: SchoolType) => {
     return;
   }
 
-  const schoolsSelected = currentRace.schools;
-  if (
-    onBoard() == "line-add" &&
-    addLineCurrentStep() == AddLineStep.schoolSelection
-  ) {
-    console.log(
-      "addLineSelectedSchool",
-      addLineSelectedSchool().includes(point)
-    );
+  const schoolsSelected = currentRace().schools;
+  switch (onBoard()) {
+    case "line-add":
+      switch (addLineCurrentStep()) {
+        case AddLineStep.schoolSelection:
+          const currentSelectedSchools = [...addLineSelectedSchool()];
 
-    const currentSelectedSchools = [...addLineSelectedSchool()];
+          const index = currentSelectedSchools.indexOf(point, 0);
 
-    const index = currentSelectedSchools.indexOf(point, 0);
+          const circle = linkMap.get(point.leafletId);
 
-    const circle = linkMap.get(point.leafletId);
-
-    if (index > -1) {
-      currentSelectedSchools.splice(index, 1);
-      setaddLineSelectedSchool(currentSelectedSchools);
-      circle?.setStyle({ fillColor: COLOR_SCHOOL_LIGHT });
-    } else {
-      setaddLineSelectedSchool([...currentSelectedSchools, point]);
-      circle?.setStyle({ fillColor: COLOR_SCHOOL_FOCUS });
-    }
+          if (index > -1) {
+            currentSelectedSchools.splice(index, 1);
+            setaddLineSelectedSchool(currentSelectedSchools);
+            circle?.setStyle({ fillColor: COLOR_SCHOOL_LIGHT });
+          } else {
+            setaddLineSelectedSchool([...currentSelectedSchools, point]);
+            circle?.setStyle({ fillColor: COLOR_SCHOOL_FOCUS });
+          }
+          break;
+        case AddLineStep.schoolSelection:
+          return;
+      }
+      break;
+    case "race-draw":
+      switch (currentStep()) {
+        case DrawRaceStep.schoolSelection:
+          if (schoolsSelected?.find((p) => p.id === point.id)) {
+            return;
+          }
+          addSchoolToRace(point);
+          return;
+        case DrawRaceStep.editRace:
+          break;
+      }
+      break;
   }
-  if (
-    onBoard() == "line-add" &&
-    addLineCurrentStep() == AddLineStep.stopSelection
-  ) {
-    console.log("No action in this mode ");
-    return;
-  }
-
-  if (currentStep() === DrawRaceStep.schoolSelection) {
-    if (schoolsSelected?.find((p) => p.id === point.id)) {
-      return;
-    }
-    addSchoolToRace(point);
-    return;
-  }
-  const lastPoint = currentRace.points.at(-1);
+  const lastPoint = currentRace().points.at(-1);
 
   // TODO  add quantity pour school ?!
   addPointToRace({
@@ -104,28 +101,28 @@ const onClick = (point: SchoolType) => {
   });
 
   if (!lastPoint || point.leafletId != lastPoint.leafletId) {
-    const waypoints = currentRace.waypoints;
+    const waypoints = currentRace().waypoints;
     if (waypoints) {
       const newWaypoints = WaypointEntity.updateWaypoints(
         point,
         waypoints,
-        currentRace.points
+        currentRace().points
       );
 
       updateWaypoints(newWaypoints);
     }
   }
 
-  //TODO pourquoi cette condition ?
-  if (!(1 < currentRace.points.length)) {
-    return;
-  }
+  // //TODO pourquoi cette condition ?
+  // if (!(1 < currentRace().points.length)) {
+  //   return;
+  // }
 };
 
 const onMouseUp = (point: StopType) => {
   if (draggingRace()) {
     const associatedQuantity = point.associated.filter(
-      (associatedSchool) => associatedSchool.id === currentRace.schools[0].id
+      (associatedSchool) => associatedSchool.id === currentRace().schools[0].id
     )[0].quantity;
 
     // TODO  add quantity pour school ?!
@@ -157,14 +154,14 @@ const onMouseOut = () => {
 
 const onRightClick = (point: SchoolType) => {
   const circle = linkMap.get(point.leafletId);
-  const isInRaceUnderConstruction = currentRace.points.filter(
+  const isInRaceUnderConstruction = currentRace().points.filter(
     (_point) => _point.id == point.id
   )[0];
 
   if (onBoard() == "race-draw" && isInRaceUnderConstruction != undefined) {
     removePoint(point);
 
-    const waypoints = currentRace.waypoints;
+    const waypoints = currentRace().waypoints;
     if (waypoints) {
       const newWaypoints = WaypointEntity.deleteSchoolOrStopWaypoint(
         waypoints,

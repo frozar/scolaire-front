@@ -33,7 +33,7 @@ export default () => {
     // This line is to disable right click menu, necessary to remove point in line under construction with the right click
     document.addEventListener("contextmenu", (e) => e.preventDefault());
 
-    if (isInDrawRaceMode() && 0 < currentRace.points.length) {
+    if (isInDrawRaceMode() && 0 < currentRace().points.length) {
       if (
         refApp &&
         String(refApp.style) !== "cursor: url('/pencil.png'), auto;"

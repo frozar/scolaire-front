@@ -47,7 +47,7 @@ export function Races(props: { map: L.Map }) {
       );
       arrowsMap.clear();
 
-      return [currentRace];
+      return [currentRace()];
     }
     if (onBoard() == "line-add") {
       return [];

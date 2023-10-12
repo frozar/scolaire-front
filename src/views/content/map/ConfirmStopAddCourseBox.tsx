@@ -25,7 +25,7 @@ export function defineModalToOpen(obj: () => void) {
 }
 
 export const confirmAbortEditionNeedToBeCall = () => {
-  const hasRaceUnderConstruction = currentRace.points.length > 0;
+  const hasRaceUnderConstruction = currentRace().points.length > 0;
 
   if (isInDrawRaceMode() && hasRaceUnderConstruction) {
     toggleConfirmStopAddRace();

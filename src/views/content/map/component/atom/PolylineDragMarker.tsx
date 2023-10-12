@@ -27,7 +27,7 @@ export default function (props: PolylineDragMarkersProps) {
     function handleMouseUp() {
       props.map.off("mousemove");
       props.map.dragging.enable();
-      const waypoints = currentRace.waypoints;
+      const waypoints = currentRace().waypoints;
       if (!waypoints) {
         return;
       }

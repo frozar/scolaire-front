@@ -68,7 +68,7 @@ export function Race(props: { race: RaceType; map: L.Map }) {
   let pointFocus: { circle: L.CircleMarker; nature: NatureEnum }[] = [];
   createEffect(() => {
     // TODO passer en mode race
-    if (currentRace === props.race) {
+    if (currentRace() === props.race) {
       pointFocus.map((point) => {
         point.circle.setStyle({
           fillColor:
@@ -258,8 +258,8 @@ export function Race(props: { race: RaceType; map: L.Map }) {
             );
           }}
         </For>
-        <Show when={currentRace.waypoints}>
-          <For each={currentRace.waypoints}>
+        <Show when={currentRace().waypoints}>
+          <For each={currentRace().waypoints}>
             {(waypoint: WaypointType, i) => {
               if (!waypoint.idSchool && !waypoint.idStop) {
                 return (

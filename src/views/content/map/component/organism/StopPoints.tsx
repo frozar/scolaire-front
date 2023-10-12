@@ -92,7 +92,7 @@ export function leafletStopsFilter(): StopType[] {
       }
       break;
     case "race-draw":
-      schools = currentRace.schools;
+      schools = currentRace().schools;
 
       stops = getStops().filter((stop) =>
         getSelectedLine()

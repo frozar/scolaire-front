@@ -21,7 +21,7 @@ export default function () {
   createEffect(() => {
     switch (onBoard()) {
       case "race-draw":
-        if (currentRace.schools.length > 0) {
+        if (currentRace().schools.length > 0) {
           setCrumbs([{ text: "Editer votre course" }]);
           break;
         }
