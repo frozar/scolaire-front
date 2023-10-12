@@ -4,7 +4,7 @@ import { openGeneratorDialogBox } from "../../../../../../signaux";
 import {
   confirmAbortEditionNeedToBeCall,
   defineModalToOpen,
-} from "../../../ConfirmStopAddRaceBox";
+} from "../../../ConfirmStopAddCourseBox";
 import ButtonGraphicageRightMenu, {
   OffsetType,
 } from "../molecule/ButtonGraphicageRightMenu";

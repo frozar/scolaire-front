@@ -2,6 +2,7 @@ import { FaRegularTrashCan, FaSolidPen } from "solid-icons/fa";
 import { ClasseType } from "../../../../../_entities/classe.entity";
 import CardTitle from "../../../../../component/atom/CardTitle";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
+import { setRemoveClasseConfirmation } from "../../../../../signaux";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { changeBoard } from "../../../board/component/template/ContextManager";
 import { setSelectedClasse } from "../organism/ClasseBoard";
@@ -18,8 +19,11 @@ export default function (props: ClasseItemProps) {
     changeBoard("school-class-modify");
   }
 
-  function onClickDelete() {
-    console.log("Delete classe");
+  async function onClickDelete() {
+    setRemoveClasseConfirmation({
+      displayed: true,
+      classe: props.classe,
+    });
   }
 
   return (
