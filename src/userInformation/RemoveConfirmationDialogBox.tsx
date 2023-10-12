@@ -50,12 +50,12 @@ export default function () {
       addNewUserInformation({
         displayed: true,
         level: MessageLevelEnum.error,
-        type: MessageTypeEnum.removeCourse,
+        type: MessageTypeEnum.removeRace,
         content: "Impossible de supprimer la ligne de bus.",
       });
     }
     changeBoard("line");
-    MapElementUtils.deselectAllPointsAndBusCourses();
+    MapElementUtils.deselectAllPointsAndBusRaces();
   }
 
   function exitModal({ code }: KeyboardEvent) {

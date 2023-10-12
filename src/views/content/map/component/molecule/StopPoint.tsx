@@ -27,7 +27,7 @@ import {
   setBlinkingSchools,
   setCursorIsOverPoint,
 } from "../organism/Points";
-import { draggingCourse, setDraggingCourse } from "./Race";
+import { draggingRace, setDraggingRace } from "./Race";
 
 const [, { isInReadMode, isInDrawRaceMode }] = useStateAction();
 
@@ -91,7 +91,7 @@ const onMouseOver = (stop: StopType) => {
   setIsOverMapItem(true);
   setBlinkingSchools(stop.associated.map((school) => school.id));
 
-  if (draggingCourse()) {
+  if (draggingRace()) {
     setCursorIsOverPoint(true);
   }
 };
@@ -100,13 +100,13 @@ const onMouseOut = () => {
   setIsOverMapItem(false);
   setBlinkingSchools([]);
 
-  if (draggingCourse() || cursorIsOverPoint()) {
+  if (draggingRace() || cursorIsOverPoint()) {
     setCursorIsOverPoint(false);
   }
 };
 
 const onMouseUp = (point: StopType) => {
-  if (draggingCourse()) {
+  if (draggingRace()) {
     const associatedQuantity = getAssociatedQuantity(point);
 
     addPointToRace({ ...point, quantity: associatedQuantity });
@@ -121,7 +121,7 @@ const onMouseUp = (point: StopType) => {
       updateWaypoints(newWaypoints);
     }
 
-    setDraggingCourse(false);
+    setDraggingRace(false);
   }
 };
 
@@ -149,11 +149,11 @@ export function StopPoint(props: StopPointProps) {
 
   const onRightClick = () => {
     const circle = linkMap.get(props.point.leafletId);
-    const isInCourseUnderConstruction = currentRace.points.filter(
+    const isInRaceUnderConstruction = currentRace.points.filter(
       (_point) => _point.id == props.point.id
     )[0];
 
-    if (onBoard() == "race-draw" && isInCourseUnderConstruction != undefined) {
+    if (onBoard() == "race-draw" && isInRaceUnderConstruction != undefined) {
       removePoint(props.point);
 
       // Update waypoints

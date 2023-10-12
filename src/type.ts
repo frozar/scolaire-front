@@ -1,6 +1,6 @@
 import { Accessor, JSX, Setter } from "solid-js";
-import { CourseType } from "./_entities/course.entity";
 import { LineType } from "./_entities/line.entity";
+import { RaceType } from "./_entities/race.entity";
 import { StopType } from "./_entities/stop.entity";
 import { PointType } from "./views/content/map/component/atom/Point";
 
@@ -44,22 +44,22 @@ export function isLeafletSchoolType(pt: PointType) {
   return pt.nature === NatureEnum.school;
 }
 
-export type CourseUnderConstructionType = {
+export type RaceUnderConstructionType = {
   nextIndex: number;
-  course: CourseType;
+  course: RaceType;
 };
 
 export enum ModeEnum {
   read,
-  addCourse,
-  removeCourse,
+  addRace,
+  removeRace,
 }
 
 export enum MessageTypeEnum {
-  enterRemoveCourse,
-  enterAddCourse,
-  removeCourse,
-  addCourse,
+  enterRemoveRace,
+  enterAddRace,
+  removeRace,
+  addRace,
   global,
   clear,
 }
@@ -87,7 +87,7 @@ export type userInformationType = {
 
 export type removeConfirmationType = {
   displayed: boolean;
-  course: CourseType | null | LineType;
+  course: RaceType | null | LineType;
 };
 
 export type removeRamassageConfirmationType = {
@@ -170,7 +170,7 @@ export type StopItemType = {
   id: number;
   name: string;
   quantity: number;
-  nbCourse: number;
+  nbRace: number;
   nbEtablissement: number;
   lon: number;
   lat: number;
@@ -181,7 +181,7 @@ export type EtablissementItemType = {
   id: number;
   name: string;
   quantity: number;
-  nbCourse: number;
+  nbRace: number;
   lon: number;
   lat: number;
   selected: boolean;

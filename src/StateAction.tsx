@@ -37,13 +37,10 @@ const makeStateActionContext = () => {
 
   const types: { [key in ModeEnum]: MessageTypeEnum[] } = {
     [ModeEnum.read]: [MessageTypeEnum.global],
-    [ModeEnum.addCourse]: [
-      MessageTypeEnum.addCourse,
-      MessageTypeEnum.enterAddCourse,
-    ],
-    [ModeEnum.removeCourse]: [
-      MessageTypeEnum.removeCourse,
-      MessageTypeEnum.enterRemoveCourse,
+    [ModeEnum.addRace]: [MessageTypeEnum.addRace, MessageTypeEnum.enterAddRace],
+    [ModeEnum.removeRace]: [
+      MessageTypeEnum.removeRace,
+      MessageTypeEnum.enterRemoveRace,
     ],
   };
 
@@ -70,7 +67,7 @@ const makeStateActionContext = () => {
 
   function setModeDrawRace() {
     setDisplayedInformationBoard(true);
-    changeMode(ModeEnum.addCourse);
+    changeMode(ModeEnum.addRace);
   }
 
   function setModeRead() {
@@ -78,7 +75,7 @@ const makeStateActionContext = () => {
   }
 
   function isInDrawRaceMode() {
-    return state.mode === ModeEnum.addCourse;
+    return state.mode === ModeEnum.addRace;
   }
 
   function isInReadMode() {

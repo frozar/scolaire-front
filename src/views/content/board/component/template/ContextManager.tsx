@@ -58,11 +58,11 @@ export default function () {
       <InformationBoardLayout>
         <Switch>
           <Match when={onBoard() == "line"}>
-            {/* <CoursesBoard /> */}
+            {/* <RacesBoard /> */}
             <BusLinesBoard />
           </Match>
           <Match when={onBoard() == "line-add"}>
-            {/* <CoursesBoard /> */}
+            {/* <RacesBoard /> */}
             <AddLineBoardContent />
           </Match>
           <Match when={onBoard() == "course"}>

@@ -3,7 +3,7 @@ import Metrics from "./Metrics";
 
 import { RaceEntity, RaceType } from "../../../../../_entities/race.entity";
 import { selectedRace } from "../../../map/component/organism/Races";
-import RemoveCourseButton from "../atom/RemoveCourseButton";
+import RemoveRaceButton from "../atom/RemoveCourseButton";
 import { UpdateRaceButton } from "../atom/UpdateRaceButton";
 import CollapsibleElement from "./CollapsibleElement";
 import "./CourseInformationBoardContent.css";
@@ -19,7 +19,7 @@ export function RaceBoard() {
           {selectedRace()?.name}
         </div>
         <UpdateRaceButton race={selectedRace() as RaceType} />
-        <RemoveCourseButton course={selectedRace() as RaceType} />
+        <RemoveRaceButton course={selectedRace() as RaceType} />
       </div>
       <div class="bus-course-information-board-content-schools">
         <SchoolsEnumeration

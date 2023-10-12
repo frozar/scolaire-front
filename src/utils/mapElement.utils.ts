@@ -7,7 +7,7 @@ import {
 } from "../views/content/map/constant";
 
 export namespace MapElementUtils {
-  export function deselectAllPointsAndBusCourses() {
+  export function deselectAllPointsAndBusRaces() {
     deselectAllPoints();
     deselectAllRaces();
     setStopPointsColor([], COLOR_STOP_FOCUS);

@@ -1,12 +1,12 @@
 import { For } from "solid-js";
-import { CourseType } from "../../../../../_entities/course.entity";
-import CourseItem from "../molecule/CourseItem";
-import "./CoursesList.css";
+import { RaceType } from "../../../../../_entities/race.entity";
+import RaceItem from "../molecule/RaceItem";
+import "./RacesList.css";
 
-export default function (props: { courses: CourseType[] }) {
+export default function (props: { courses: RaceType[] }) {
   return (
     <div class="school-details-line-list">
-      <For each={props.courses}>{(item) => <CourseItem line={item} />}</For>
+      <For each={props.courses}>{(item) => <RaceItem line={item} />}</For>
     </div>
   );
 }

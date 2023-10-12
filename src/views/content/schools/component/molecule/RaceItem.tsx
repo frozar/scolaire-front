@@ -3,16 +3,17 @@ import CardTitle from "../../../../../component/atom/CardTitle";
 import Pellet from "../../../../../component/atom/Pellet";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
 import ArretsLogo from "../../../../../icons/ArretsLogo";
-import { onClickBusCourse } from "../../../map/component/molecule/Race";
+import { onClickBusRace } from "../../../map/component/molecule/Race";
 import ClasseLinkedSchool from "../atom/ClasseLinkedSchool";
 import "./RaceItem.css";
 
 export function RaceItem(props: { race: RaceType }) {
+  console.log("props.race.schools", props);
   const schoolNames = () =>
     props.race.schools.map((school) => school.name ?? "");
 
   return (
-    <CardWrapper class="race-item" onClick={() => onClickBusCourse(props.race)}>
+    <CardWrapper class="race-item" onClick={() => onClickBusRace(props.race)}>
       <Pellet color={props.race.color} />
       <div class="race-content">
         <CardTitle title={props.race.name ?? "Pas de nom de course"} />

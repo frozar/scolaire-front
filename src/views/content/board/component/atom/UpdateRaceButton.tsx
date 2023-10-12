@@ -19,9 +19,9 @@ export function UpdateRaceButton(props: { race: RaceType }) {
     setCurrentRace(props.race);
     setIsInUpdate(true);
 
-    MapElementUtils.deselectAllPointsAndBusCourses();
+    MapElementUtils.deselectAllPointsAndBusRaces();
     toggleDrawMod();
-    setCurrentStep(DrawModeStep.editCourse);
+    setCurrentStep(DrawModeStep.editRace);
     changeBoard("race-draw");
     setModeDrawRace();
   }

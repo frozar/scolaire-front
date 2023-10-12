@@ -28,7 +28,7 @@ export default function () {
   onMount(() => {
     if (schoolDetailsItem() == undefined) {
       changeBoard("schools");
-      MapElementUtils.deselectAllPointsAndBusCourses();
+      MapElementUtils.deselectAllPointsAndBusRaces();
     }
   });
 
@@ -44,7 +44,7 @@ export default function () {
         <SchoolDetailsPanelsButton
           setOnPanel={setOnPanel}
           onPanel={onPanel}
-          NbCourses={
+          NbRaces={
             SchoolEntity.getSchoolRaces(schoolDetailsItem()?.id as number)
               .length
           }

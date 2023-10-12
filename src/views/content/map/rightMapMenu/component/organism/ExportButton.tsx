@@ -4,7 +4,7 @@ import { openExportConfirmationBox } from "../../../../../../signaux";
 import {
   confirmAbortEditionNeedToBeCall,
   defineModalToOpen,
-} from "../../../ConfirmStopAddCourseBox";
+} from "../../../ConfirmStopAddRaceBox";
 import ButtonGraphicageRightMenu, {
   OffsetType,
 } from "../molecule/ButtonGraphicageRightMenu";

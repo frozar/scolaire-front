@@ -22,7 +22,7 @@ import {
 import { OsrmService } from "../../../../../_services/osrm.service";
 import { RaceService } from "../../../../../_services/race.service";
 import CurvedLine from "../../../../../icons/CurvedLine";
-import SimpleCourse from "../../../../../icons/SimpleLine";
+import SimpleRace from "../../../../../icons/SimpleLine";
 import { updatePointColor } from "../../../../../leafletUtils";
 import {
   disableSpinningWheel,
@@ -51,20 +51,20 @@ import { RaceTimeline } from "./RaceTimeline";
 export enum DrawModeStep {
   start,
   schoolSelection,
-  editCourse,
+  editRace,
 }
 
 export const [currentStep, setCurrentStep] = createSignal<DrawModeStep>(
   DrawModeStep.start
 );
 
-export enum displayCourseModeEnum {
+export enum displayRaceModeEnum {
   straight = "straight",
   onRoad = "onRoad",
 }
 
-export const [displayCourseMode, setDisplayCourseMode] =
-  createSignal<displayCourseModeEnum>(displayCourseModeEnum.straight);
+export const [displayRaceMode, setDisplayRaceMode] =
+  createSignal<displayRaceModeEnum>(displayRaceModeEnum.straight);
 
 export const [currentRace, setCurrentRace] = createStore<RaceType>(
   RaceEntity.defaultRace()
@@ -97,7 +97,7 @@ export function DrawRaceBoard() {
         <SelectedSchool schoolSelected={currentRace.schools} />
       </Show>
 
-      <Show when={currentStep() == DrawModeStep.editCourse}>
+      <Show when={currentStep() == DrawModeStep.editRace}>
         <div class="bus-course-information-board-content-schools">
           <SchoolsEnumeration
             schoolsName={currentRace.schools.map((school) => school.name)}
@@ -124,10 +124,10 @@ export function DrawRaceBoard() {
           />
 
           <Show
-            when={displayCourseMode() == displayCourseModeEnum.straight}
+            when={displayRaceMode() == displayRaceModeEnum.straight}
             fallback={
               <ButtonIcon
-                icon={<SimpleCourse />}
+                icon={<SimpleRace />}
                 onClick={onClick}
                 class="line-to-road-btn-icon"
               />
@@ -142,7 +142,7 @@ export function DrawRaceBoard() {
         </div>
       </Show>
 
-      <Show when={currentStep() == DrawModeStep.editCourse}>
+      <Show when={currentStep() == DrawModeStep.editRace}>
         <div class="bus-course-information-board-content">
           <Show
             when={currentRace.points.length > 0}
@@ -164,8 +164,7 @@ export function DrawRaceBoard() {
       <BoardFooterActions
         nextStep={{
           callback: nextStep,
-          label:
-            currentStep() == DrawModeStep.editCourse ? "Valider" : "Suivant",
+          label: currentStep() == DrawModeStep.editRace ? "Valider" : "Suivant",
         }}
         previousStep={{
           callback: prevStep,
@@ -209,10 +208,8 @@ async function createOrUpdateRace() {
   QuantityUtils.add(race);
   setRaces((r) => r.id === race.id, "selected", true);
 
-  setDisplayCourseMode((prev) =>
-    prev == displayCourseModeEnum.straight
-      ? prev
-      : displayCourseModeEnum.straight
+  setDisplayRaceMode((prev) =>
+    prev == displayRaceModeEnum.straight ? prev : displayRaceModeEnum.straight
   );
   setCurrentStep(DrawModeStep.start);
   quitModeDrawRace();
@@ -225,8 +222,8 @@ async function nextStep() {
       if (currentRace.schools.length < 1) {
         break;
       }
-      setCurrentStep(DrawModeStep.editCourse);
-    case DrawModeStep.editCourse:
+      setCurrentStep(DrawModeStep.editRace);
+    case DrawModeStep.editRace:
       if (currentRace.points.length < 2) {
         break;
       }
@@ -234,7 +231,7 @@ async function nextStep() {
         const waypoints = WaypointEntity.createWaypointsFromRace(currentRace);
         setCurrentRace("waypoints", waypoints);
       }
-      if (displayCourseMode() == displayCourseModeEnum.straight) {
+      if (displayRaceMode() == displayRaceModeEnum.straight) {
         await updatePolylineWithOsrm(currentRace);
       }
 
@@ -253,10 +250,10 @@ function prevStep() {
 
       setCurrentStep(DrawModeStep.start);
       changeBoard("line");
-      MapElementUtils.deselectAllPointsAndBusCourses();
+      MapElementUtils.deselectAllPointsAndBusRaces();
 
       break;
-    case DrawModeStep.editCourse:
+    case DrawModeStep.editRace:
       if (isInUpdate()) {
         QuantityUtils.add(initialRace);
         setSelectedRace(initialRace);
@@ -264,22 +261,20 @@ function prevStep() {
         changeBoard("line-details");
       } else {
         setCurrentRace(RaceEntity.defaultRace());
-        if (displayCourseMode() == displayCourseModeEnum.onRoad) {
+        if (displayRaceMode() == displayRaceModeEnum.onRoad) {
           setCurrentRace("latLngs", []);
         }
         setCurrentStep(DrawModeStep.schoolSelection);
       }
       break;
   }
-  setDisplayCourseMode((prev) =>
-    prev == displayCourseModeEnum.straight
-      ? prev
-      : displayCourseModeEnum.straight
+  setDisplayRaceMode((prev) =>
+    prev == displayRaceModeEnum.straight ? prev : displayRaceModeEnum.straight
   );
 }
 
 async function onClick() {
-  if (displayCourseMode() == displayCourseModeEnum.straight) {
+  if (displayRaceMode() == displayRaceModeEnum.straight) {
     if (currentRace.points.length < 2) {
       return;
     }
@@ -289,12 +284,12 @@ async function onClick() {
     }
     await updatePolylineWithOsrm(currentRace);
 
-    setDisplayCourseMode(displayCourseModeEnum.onRoad);
-  } else if (displayCourseMode() == displayCourseModeEnum.onRoad) {
+    setDisplayRaceMode(displayRaceModeEnum.onRoad);
+  } else if (displayRaceMode() == displayRaceModeEnum.onRoad) {
     // TODO me semble étrange
     setCurrentRace("latLngs", []);
 
-    setDisplayCourseMode(displayCourseModeEnum.straight);
+    setDisplayRaceMode(displayRaceModeEnum.straight);
   }
 }
 
@@ -308,7 +303,7 @@ export function removePoint(point: StopType | SchoolType) {
 
 export function updateWaypoints(waypoints: WaypointType[]) {
   setCurrentRace("waypoints", waypoints);
-  if (displayCourseMode() == displayCourseModeEnum.onRoad) {
+  if (displayRaceMode() == displayRaceModeEnum.onRoad) {
     updatePolylineWithOsrm(currentRace);
   }
 }

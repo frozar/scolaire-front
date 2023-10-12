@@ -40,12 +40,12 @@ function clearUserInformation(content: string, level: MessageLevelEnum) {
   addNewUserInformation({
     displayed: true,
     level,
-    type: MessageTypeEnum.removeCourse,
+    type: MessageTypeEnum.removeRace,
     content,
   });
   setPoints([]);
   //TODO voir l'impact de la suppression
-  // fetchBusCourses();
+  // fetchBusRaces();
   disableSpinningWheel();
   closeClearConfirmationBox();
 }

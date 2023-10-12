@@ -9,7 +9,7 @@ import {
 } from "../../../../../signaux";
 import {
   displayDownloadSuccessMessage,
-  displayNoCourseMessage,
+  displayNoRaceMessage,
 } from "../../../../../userInformation/utils";
 import { getScreenshoter } from "./screenShoter";
 import { getTimestamp } from "./utils";
@@ -51,7 +51,7 @@ function moveEndEvent(
   });
 }
 
-function exportCourse(
+function exportRace(
   line: L.Polyline,
   leafletMap: L.Map,
   screenShoter: SimpleMapScreenshoter
@@ -62,14 +62,14 @@ function exportCourse(
   });
 }
 
-async function exportCoursesImages(
+async function exportRacesImages(
   screenshoter: SimpleMapScreenshoter,
   lines: L.Polyline[],
   leafletMap: L.Map
 ) {
   for (const line of lines) {
     line.getElement()?.classList.remove("hidden");
-    await exportCourse(line, leafletMap, screenshoter);
+    await exportRace(line, leafletMap, screenshoter);
     line.getElement()?.classList.add("hidden");
   }
   lines.map((line) => line.getElement()?.classList.remove("hidden"));
@@ -83,7 +83,7 @@ async function exportMapImage(
   await moveEndEvent(leafletMap, screenShoter, lineBoundBox);
 }
 
-function getCoursesBoundBox(lines: L.Polyline[]): LatLngBounds {
+function getRacesBoundBox(lines: L.Polyline[]): LatLngBounds {
   const linesBoundBox = lines.reduce(
     (bounds, line) => bounds.extend(line.getBounds()),
     new LatLngBounds([])
@@ -100,7 +100,7 @@ function getPolylines(leafletMap: L.Map): L.Polyline[] | null {
     }
   });
   if (polylines.length === 0) {
-    displayNoCourseMessage();
+    displayNoRaceMessage();
     return null;
   }
   return polylines;
@@ -121,12 +121,12 @@ export async function exportImages() {
     return;
   }
 
-  lineBoundBox = getCoursesBoundBox(polylines);
+  lineBoundBox = getRacesBoundBox(polylines);
   enableSpinningWheel();
   await exportMapImage(screenShoter, leafletMap, lineBoundBox);
   console.log(polylines);
   polylines.map((line) => line.getElement()?.classList.add("hidden"));
-  await exportCoursesImages(screenShoter, polylines, leafletMap);
+  await exportRacesImages(screenShoter, polylines, leafletMap);
   zip.generateAsync({ type: "blob" }).then((content) => {
     const { year, month, day, hour, minute } = getTimestamp();
     const fileName = `${year}-${month}-${day}_${hour}-${minute}_bus-course.zip`;

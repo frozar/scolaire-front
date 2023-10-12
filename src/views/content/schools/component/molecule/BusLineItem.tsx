@@ -13,7 +13,7 @@ export function displayBusLine(line: LineType): void {
   line.setSelected(true);
 
   // TODO to fix race
-  // setCourses(line.courses.length > 0 ? line.courses : []);
+  // setRaces(line.courses.length > 0 ? line.courses : []);
   setOnBoard("course");
 }
 

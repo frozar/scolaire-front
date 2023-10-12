@@ -4,18 +4,17 @@ import { Race } from "../molecule/Race";
 
 import { createStore } from "solid-js/store";
 import { RaceType } from "../../../../../_entities/race.entity";
-import { RaceUtils } from "../../../../../utils/race.utils";
 import {
   DrawModeStep,
   currentRace,
   currentStep,
 } from "../../../board/component/organism/DrawRaceBoard";
 import { onBoard } from "../../../board/component/template/ContextManager";
-import { pointsReady } from "./Points";
+import { getSelectedLine } from "./BusLines";
 
 export const arrowsMap = new Map<number, L.Marker[]>();
 
-export type leafletBusCourseType = {
+export type leafletBusRaceType = {
   polyline: L.Polyline;
   arrows: L.Marker[];
 };
@@ -26,13 +25,14 @@ export const [selectedRace, setSelectedRace] = createSignal<RaceType>();
 
 export function Races(props: { map: L.Map }) {
   // eslint-disable-next-line solid/reactivity
-  createEffect(async () => {
-    if (pointsReady()) {
-      await RaceUtils.set();
-    }
-  });
+  // createEffect(async () => {
+  //   if (pointsReady()) {
+  //     await RaceUtils.set();
+  //   }
+  // });
 
   createEffect(() => {
+    setRaces(getSelectedLine()?.courses ?? []);
     const race = selectedRace();
   });
 

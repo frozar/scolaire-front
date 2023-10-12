@@ -11,11 +11,11 @@ false && ClickOutside;
 
 const [, { isInDrawRaceMode, setModeRead }] = useStateAction();
 
-export const [displayedConfirmStopAddCourse, setDisplayedConfirmStopAddCourse] =
+export const [displayedConfirmStopAddRace, setDisplayedConfirmStopAddRace] =
   createSignal(false);
 
-const toggleConfirmStopAddCourse = () =>
-  setDisplayedConfirmStopAddCourse(!displayedConfirmStopAddCourse());
+const toggleConfirmStopAddRace = () =>
+  setDisplayedConfirmStopAddRace(!displayedConfirmStopAddRace());
 
 let refDialogue: HTMLDivElement;
 
@@ -25,10 +25,10 @@ export function defineModalToOpen(obj: () => void) {
 }
 
 export const confirmAbortEditionNeedToBeCall = () => {
-  const hasCourseUnderConstruction = currentRace.points.length > 0;
+  const hasRaceUnderConstruction = currentRace.points.length > 0;
 
-  if (isInDrawRaceMode() && hasCourseUnderConstruction) {
-    toggleConfirmStopAddCourse();
+  if (isInDrawRaceMode() && hasRaceUnderConstruction) {
+    toggleConfirmStopAddRace();
   } else {
     modalToOpen();
   }
@@ -40,8 +40,8 @@ function exitModal({ code }: KeyboardEvent) {
   // eslint-disable-next-line solid/reactivity
   keyboard.getLayoutMap().then(() => {
     if (code === "Escape") {
-      if (displayedConfirmStopAddCourse()) {
-        setDisplayedConfirmStopAddCourse(false);
+      if (displayedConfirmStopAddRace()) {
+        setDisplayedConfirmStopAddRace(false);
       }
     }
   });
@@ -51,8 +51,8 @@ export default function () {
   const confirmStopingEdition = () => {
     setModeRead();
     //TODO voir l'impact de la suppression
-    // fetchBusCourses();
-    toggleConfirmStopAddCourse();
+    // fetchBusRaces();
+    toggleConfirmStopAddRace();
     modalToOpen();
   };
 
@@ -74,7 +74,7 @@ export default function () {
       exitClass="opacity-100"
       exitToClass="opacity-0"
     >
-      <Show when={displayedConfirmStopAddCourse()}>
+      <Show when={displayedConfirmStopAddRace()}>
         <div
           class="relative z-[1400]"
           aria-labelledby="modal-title"
@@ -110,7 +110,7 @@ export default function () {
 
                     assertIsNode(e.target);
                     if (!refDialogue.contains(e.target)) {
-                      setDisplayedConfirmStopAddCourse(false);
+                      setDisplayedConfirmStopAddRace(false);
                     }
                   }}
                 >
@@ -128,7 +128,7 @@ export default function () {
                     <button
                       type="button"
                       class="export-modal-cancel"
-                      onClick={toggleConfirmStopAddCourse}
+                      onClick={toggleConfirmStopAddRace}
                     >
                       Non
                     </button>

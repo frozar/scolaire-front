@@ -26,7 +26,7 @@ export default function () {
   onMount(() => {
     if (stopDetailsItem() == undefined) {
       changeBoard("schools");
-      MapElementUtils.deselectAllPointsAndBusCourses();
+      MapElementUtils.deselectAllPointsAndBusRaces();
     }
   });
 
@@ -80,7 +80,7 @@ export default function () {
           onPanel={onPanel}
           setOnPanel={setOnPanel}
           NbSchool={stopDetailsItem()?.associated.length as number}
-          NbCourses={getStopRaces().length}
+          NbRaces={getStopRaces().length}
         />
 
         <Show when={onPanel() == "schools"}>

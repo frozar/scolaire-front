@@ -5,6 +5,7 @@ export class RaceService {
   static async getAll(): Promise<RaceType[]> {
     // TODO changer endpoint Xano pour /race
     const dbStops: RaceDBType[] = await ServiceUtils.get("/bus-course");
+    console.log("dbStops", dbStops);
     return dbStops
       ? dbStops.map((dbStop: RaceDBType) => RaceEntity.build(dbStop))
       : [];

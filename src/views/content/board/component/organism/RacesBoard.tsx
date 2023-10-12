@@ -1,6 +1,6 @@
 import { createSignal } from "solid-js";
 import PlusIcon from "../../../../../icons/PlusIcon";
-import { displayAddCourseMessage } from "../../../../../userInformation/utils";
+import { displayAddRaceMessage } from "../../../../../userInformation/utils";
 import { deselectAllPoints } from "../../../map/component/organism/Points";
 import {
   deselectAllRaces,
@@ -16,10 +16,10 @@ import "./RacesBoard.css";
 export function RacesBoard() {
   const [searchKeyword, setSearchKeyword] = createSignal<string>("");
 
-  const filteredCourses = () =>
+  const filteredRaces = () =>
     getRaces.filter((line) => line.name?.includes(searchKeyword()));
 
-  function addCourse() {
+  function addRace() {
     if (onBoard() == "race-draw") {
       toggleDrawMod();
       setCurrentStep(DrawModeStep.start);
@@ -29,7 +29,7 @@ export function RacesBoard() {
       toggleDrawMod();
 
       setCurrentStep(DrawModeStep.schoolSelection);
-      displayAddCourseMessage();
+      displayAddRaceMessage();
     }
   }
 
@@ -42,13 +42,13 @@ export function RacesBoard() {
       <header class="races-board-header">
         <div class="races-board-header-infos">
           <p>Total des courses: {getRaces.length}</p>
-          <ButtonIcon icon={<PlusIcon />} onClick={addCourse} />
+          <ButtonIcon icon={<PlusIcon />} onClick={addRace} />
         </div>
 
         <InputSearch onInput={onInputSearch} />
       </header>
 
-      <RacesList races={filteredCourses()} />
+      <RacesList races={filteredRaces()} />
     </section>
   );
 }
