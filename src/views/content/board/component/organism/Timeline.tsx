@@ -18,7 +18,7 @@ export default function () {
 
   createEffect(() => {
     const displayedPoints =
-      onBoard() === "course-draw"
+      onBoard() === "race-draw"
         ? getCourseUnderConstruction().course
         : (getSelectedCourse() as CourseType);
 
@@ -33,7 +33,7 @@ export default function () {
         <For each={displayBusCourse()?.points}>
           {(stop, i) => (
             <div class="timeline-block">
-              <Show when={onBoard() == "course-draw"}>
+              <Show when={onBoard() == "race-draw"}>
                 <TimelineAddPointButton indice={i()} />
               </Show>
 

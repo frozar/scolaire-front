@@ -21,7 +21,7 @@ export default function (props: { line: LineType }) {
     MapElementUtils.deselectAllPointsAndCourses();
     toggleDrawMod();
     setCurrentStep(DrawModeStep.editLine);
-    changeBoard("line-draw");
+    changeBoard("race-draw");
     setModeAddLine();
   }
 

@@ -22,7 +22,7 @@ export default function () {
   //   getRaces.filter((race) => race.name?.includes(searchKeyword()));
 
   function addLine() {
-    if (onBoard() == "line-draw") {
+    if (onBoard() == "race-draw") {
       toggleDrawMod();
       setCurrentStep(DrawModeStep.start);
     } else {

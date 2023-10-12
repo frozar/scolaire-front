@@ -20,7 +20,7 @@ export function RacesBoard() {
     getRaces.filter((line) => line.name?.includes(searchKeyword()));
 
   function addCourse() {
-    if (onBoard() == "course-draw") {
+    if (onBoard() == "race-draw") {
       toggleDrawMod();
       setCurrentStep(DrawModeStep.start);
     } else {

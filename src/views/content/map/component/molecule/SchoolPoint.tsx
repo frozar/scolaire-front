@@ -37,7 +37,7 @@ export interface SchoolPointProps {
 }
 
 const onClick = (point: SchoolType) => {
-  if (onBoard() != "line-draw") {
+  if (onBoard() != "race-board") {
     deselectAllRaces();
     deselectAllPoints();
     point.setSelected(true);
@@ -123,7 +123,7 @@ const onRightClick = (point: SchoolType) => {
     (_point) => _point.id == point.id
   )[0];
 
-  if (onBoard() == "line-draw" && isInCourseUnderConstruction != undefined) {
+  if (onBoard() == "race-board" && isInCourseUnderConstruction != undefined) {
     removePoint(point);
 
     const waypoints = currentRace.waypoints;

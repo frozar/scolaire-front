@@ -22,7 +22,7 @@ export function UpdateRaceButton(props: { race: RaceType }) {
     MapElementUtils.deselectAllPointsAndBusCourses();
     toggleDrawMod();
     setCurrentStep(DrawModeStep.editCourse);
-    changeBoard("line-draw");
+    changeBoard("race-draw");
     setModeDrawRace();
   }
 

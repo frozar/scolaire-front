@@ -19,7 +19,7 @@ export function RaceTimeline(props: {
         <For each={props.race.points}>
           {(point, i) => (
             <div class="timeline-block">
-              <Show when={onBoard() == "line-draw"}>
+              <Show when={onBoard() == "race-draw"}>
                 <RaceTimelineAddPointButton indice={i()} />
               </Show>
 

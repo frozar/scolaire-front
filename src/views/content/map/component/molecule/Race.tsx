@@ -37,7 +37,7 @@ import {
 export const [draggingCourse, setDraggingCourse] = createSignal<boolean>(false);
 
 export function onClickBusCourse(race: RaceType) {
-  if (onBoard() != "line-draw") {
+  if (onBoard() != "race-draw") {
     deselectAllRaces();
     deselectAllPoints();
 
@@ -55,7 +55,7 @@ export function Race(props: { race: RaceType; map: L.Map }) {
   createEffect(() => {
     if (
       displayCourseMode() == displayCourseModeEnum.onRoad ||
-      onBoard() != "course-draw"
+      onBoard() != "race-draw"
     ) {
       setLocalLatLngs(props.race.latLngs);
       setLocalOpacity(0.8);
@@ -91,7 +91,7 @@ export function Race(props: { race: RaceType; map: L.Map }) {
 
   const onMouseOver = (polyline: L.Polyline, arrows: L.Marker[]) => {
     setIsOverMapItem(true);
-    if (onBoard() != "course-draw") {
+    if (onBoard() != "race-draw") {
       buscourseSetBoldStyle(polyline, arrows, "white");
     }
   };
@@ -99,7 +99,7 @@ export function Race(props: { race: RaceType; map: L.Map }) {
   const onMouseOut = (polyline: L.Polyline, arrows: L.Marker[]) => {
     setIsOverMapItem(false);
     // if (!line.selected() && (isInRemoveCourseMode() || isInReadMode())) {
-    if (onBoard() != "line-draw") {
+    if (onBoard() != "race-draw") {
       buscourseSetNormalStyle(polyline, arrows, props.race.color);
     }
   };
@@ -208,7 +208,7 @@ export function Race(props: { race: RaceType; map: L.Map }) {
       <Show
         when={
           displayCourseMode() == displayCourseModeEnum.onRoad &&
-          onBoard() == "course-draw"
+          onBoard() == "race-draw"
         }
       >
         <For each={latLngList()}>
