@@ -1,5 +1,6 @@
 import { useStateAction } from "../../../StateAction";
 import { useStateGui } from "../../../StateGui";
+import { RaceEntity } from "../../../_entities/race.entity";
 import {
   setSchoolPointsColor,
   setStopPointsColor,
@@ -71,7 +72,7 @@ function escapeHandler({ code }: KeyboardEvent) {
 
 export function quitModeDrawRace() {
   // setModeRead();
-  setCurrentRace({});
+  setCurrentRace(RaceEntity.defaultRace());
   setStopPointsColor([], COLOR_STOP_FOCUS);
   setSchoolPointsColor([], COLOR_SCHOOL_FOCUS);
   toggleDrawMod();

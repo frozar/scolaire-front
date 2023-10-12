@@ -45,7 +45,7 @@ const rangeRadius = maxRadius - minRadius;
 //TODO Ne doit pas être placé ici
 function getAssociatedQuantity(point: StopType) {
   return point.associated.filter(
-    (associatedSchool) => associatedSchool.id === currentRace.schools[0].id
+    (associatedSchool) => associatedSchool.id === currentRace().schools[0].id
   )[0].quantity;
 }
 
@@ -65,24 +65,24 @@ function onClick(point: StopType) {
 
   // TODO: when add line with an etablissement point the line destroy after next point click
   // Wait Richard/Hugo finish the line underconstruction
-  const lastPoint = currentRace.points.at(-1);
+  const lastPoint = currentRace().points.at(-1);
 
   addPointToRace({ ...point, quantity: associatedQuantity });
 
   if (!lastPoint || point.leafletId != lastPoint.leafletId) {
-    const waypoints = currentRace.waypoints;
+    const waypoints = currentRace().waypoints;
     if (waypoints) {
       const newWaypoints = WaypointEntity.updateWaypoints(
         point,
         waypoints,
-        currentRace.points
+        currentRace().points
       );
       updateWaypoints(newWaypoints);
     }
   }
 
   //TODO pourquoi cette condition ?
-  if (!(1 < currentRace.points.length)) {
+  if (!(1 < currentRace().points.length)) {
     return;
   }
 }
@@ -111,12 +111,12 @@ const onMouseUp = (point: StopType) => {
 
     addPointToRace({ ...point, quantity: associatedQuantity });
 
-    const waypoints = currentRace.waypoints;
+    const waypoints = currentRace().waypoints;
     if (waypoints) {
       const newWaypoints = WaypointEntity.updateWaypoints(
         point,
         waypoints,
-        currentRace.points
+        currentRace().points
       );
       updateWaypoints(newWaypoints);
     }
@@ -149,7 +149,7 @@ export function StopPoint(props: StopPointProps) {
 
   const onRightClick = () => {
     const circle = linkMap.get(props.point.leafletId);
-    const isInRaceUnderConstruction = currentRace.points.filter(
+    const isInRaceUnderConstruction = currentRace().points.filter(
       (_point) => _point.id == props.point.id
     )[0];
 
@@ -157,7 +157,7 @@ export function StopPoint(props: StopPointProps) {
       removePoint(props.point);
 
       // Update waypoints
-      const waypoints = currentRace.waypoints;
+      const waypoints = currentRace().waypoints;
       if (waypoints) {
         const newWaypoints = WaypointEntity.deleteSchoolOrStopWaypoint(
           waypoints,

@@ -51,7 +51,7 @@ function schoolsFilter(): SchoolType[] {
   );
 
   if (onBoard() == "race-draw") {
-    const schoolsSelected = currentRace.schools;
+    const schoolsSelected = currentRace().schools;
     if (currentStep() === DrawRaceStep.schoolSelection) {
       return schools;
     }
