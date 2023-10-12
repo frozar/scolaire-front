@@ -1,5 +1,6 @@
 import L from "leaflet";
 import { NatureEnum } from "../type";
+import { getLines } from "../views/content/map/component/organism/BusLines";
 import { getSchools } from "../views/content/map/component/organism/SchoolPoints";
 import { getStops } from "../views/content/map/component/organism/StopPoints";
 import { COLOR_GREEN_BASE } from "../views/content/map/constant";
@@ -118,6 +119,20 @@ export namespace RaceEntity {
     }
 
     return output;
+  }
+
+  export function getStopRaces(stopId: number) {
+    const races: RaceType[] = [];
+
+    for (const line of getLines()) {
+      line.courses.map((race) => {
+        race.points.map((point) => {
+          if (point.nature == NatureEnum.stop && point.id == stopId)
+            races.push(race);
+        });
+      });
+    }
+    return races;
   }
 }
 
