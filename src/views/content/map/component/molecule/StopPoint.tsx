@@ -50,7 +50,7 @@ function getAssociatedQuantity(point: StopType) {
 }
 
 function onClick(point: StopType) {
-  if (onBoard() != "race-board") {
+  if (onBoard() != "race-draw") {
     deselectAllRaces();
     deselectAllPoints();
     point.setSelected(true);
@@ -153,7 +153,7 @@ export function StopPoint(props: StopPointProps) {
       (_point) => _point.id == props.point.id
     )[0];
 
-    if (onBoard() == "race-board" && isInCourseUnderConstruction != undefined) {
+    if (onBoard() == "race-draw" && isInCourseUnderConstruction != undefined) {
       removePoint(props.point);
 
       // Update waypoints

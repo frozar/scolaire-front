@@ -38,7 +38,7 @@ async function updateSchools() {
 function schoolsFilter(): SchoolType[] {
   let schools = getSchools();
 
-  if (onBoard() == "race-board") {
+  if (onBoard() == "race-draw") {
     const schoolsSelected = currentRace.schools;
     if (currentStep() === DrawModeStep.schoolSelection) {
       return schools;
