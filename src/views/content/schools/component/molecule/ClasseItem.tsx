@@ -3,8 +3,6 @@ import { ClasseType } from "../../../../../_entities/classe.entity";
 import { ClasseService } from "../../../../../_services/classe.service";
 import CardTitle from "../../../../../component/atom/CardTitle";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
-import { addNewUserInformation } from "../../../../../signaux";
-import { MessageLevelEnum, MessageTypeEnum } from "../../../../../type";
 import { setRemoveConfirmation } from "../../../../../userInformation/RemoveConfirmation";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { changeBoard } from "../../../board/component/template/ContextManager";
@@ -31,18 +29,18 @@ export default function (props: ClasseItemProps) {
   }
 
   async function deleteClasse() {
-    const isDeleted = await ClasseService.delete(props.classe?.id as number);
+    const classeId = props.classe?.id;
+    if (!classeId) return false;
 
-    // TODO: Display user message feedback
+    const isDeleted = await ClasseService.delete(classeId);
+
     if (isDeleted) {
       // eslint-disable-next-line solid/reactivity
       setSchools((prev) => {
         return [...prev].map((school) => {
           return {
             ...school,
-            classes: school.classes.filter(
-              (classe) => classe.id != props.classe?.id
-            ),
+            classes: school.classes.filter((classe) => classe.id != classeId),
           };
         });
       });
@@ -50,26 +48,13 @@ export default function (props: ClasseItemProps) {
       setSchoolDetailsItem(
         getSchools().filter((school) => school.id == schoolDetailsItemId)[0]
       );
-      // TODO: Refactor ?
-      addNewUserInformation({
-        displayed: true,
-        level: MessageLevelEnum.success,
-        type: MessageTypeEnum.global,
-        content: "La classe a bien été supprimée.",
-      });
-    } else {
-      addNewUserInformation({
-        displayed: true,
-        level: MessageLevelEnum.error,
-        type: MessageTypeEnum.removeCourse, // TODO: Check if it's useless
-        content: "Impossible de supprimer la classe.",
-      });
     }
+    return isDeleted;
   }
 
   async function onClickDelete() {
     setRemoveConfirmation({
-      textToDisplay: "Êtes-vous sûr de vouloir supprimer la classe",
+      textToDisplay: "Êtes-vous sûr de vouloir supprimer la classe : ",
       itemName: props.classe.name,
       validate: deleteClasse,
     });

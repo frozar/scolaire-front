@@ -2,34 +2,51 @@ import { Show, createEffect, createSignal, onCleanup, onMount } from "solid-js";
 import { Transition } from "solid-transition-group";
 
 import ClickOutside from "../component/ClickOutside";
-import { getRemoveConfirmation } from "../signaux";
+import { addNewUserInformation, getRemoveConfirmation } from "../signaux";
 
+import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { assertIsNode } from "../utils";
 
-type removeConfirmationType = {
+type RemoveConfirmationType = {
   textToDisplay: string;
   itemName: string;
-  validate: () => void;
+  validate: () => Promise<boolean>;
 };
 
 export const [removeConfirmation, setRemoveConfirmation] =
-  createSignal<removeConfirmationType>();
+  createSignal<RemoveConfirmationType>();
 
 // HACK for the documentation to preserve the ClickOutside directive on save
 // https://www.solidjs.com/guides/typescript#use___
 false && ClickOutside;
 
 export default function () {
-  function handlerOnClickValider() {
-    const validate = removeConfirmation()?.validate;
-    if (validate) {
-      validate();
-      closeConfirmationBox();
-    }
-  }
-
   function closeConfirmationBox() {
     setRemoveConfirmation();
+  }
+
+  async function handlerOnClickValider() {
+    const removeConfirmationItem = removeConfirmation();
+    if (!removeConfirmationItem) return false;
+
+    const isDeleted = await removeConfirmationItem.validate();
+    closeConfirmationBox();
+
+    if (isDeleted) {
+      addNewUserInformation({
+        displayed: true,
+        level: MessageLevelEnum.success,
+        type: MessageTypeEnum.global,
+        content: removeConfirmationItem.itemName + " a bien été supprimée.",
+      });
+    } else {
+      addNewUserInformation({
+        displayed: true,
+        level: MessageLevelEnum.error,
+        type: MessageTypeEnum.global,
+        content: "Impossible de supprimer " + removeConfirmationItem.itemName,
+      });
+    }
   }
 
   function exitModal({ code }: KeyboardEvent) {
@@ -166,7 +183,7 @@ export default function () {
                       </h3>
                       <div class="mt-2">
                         <p class="text-sm text-gray-500">
-                          {removeConfirmation()?.textToDisplay} :{" "}
+                          {removeConfirmation()?.textToDisplay}
                           {removeConfirmation()?.itemName}
                         </p>
                       </div>

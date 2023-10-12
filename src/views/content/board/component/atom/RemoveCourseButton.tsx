@@ -17,9 +17,7 @@ export interface RemoveRaceButtonProps {
 export default function (props: RemoveRaceButtonProps) {
   async function deleteRace() {
     const idToCheck = props.course.id;
-    if (!idToCheck) {
-      return;
-    }
+    if (!idToCheck) return false;
 
     const idToRemove: number = idToCheck;
     const isDeleted: boolean = await BusRaceService.delete(idToRemove);
@@ -42,14 +40,16 @@ export default function (props: RemoveRaceButtonProps) {
         content: "Impossible de supprimer la ligne de bus.",
       });
     }
+
     changeBoard("line");
     MapElementUtils.deselectAllPointsAndBusRaces();
+    return isDeleted;
   }
   const onclick = () => {
     deselectAllPoints();
     if (props.course.id) {
       setRemoveConfirmation({
-        textToDisplay: "Êtes-vous sûr de vouloir supprimer la course",
+        textToDisplay: "Êtes-vous sûr de vouloir supprimer la course : ",
         itemName: props.course.name as string,
         validate: deleteRace,
       });
