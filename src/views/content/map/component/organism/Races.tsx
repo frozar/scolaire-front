@@ -4,17 +4,17 @@ import { Race } from "../molecule/Race";
 
 import { createStore } from "solid-js/store";
 import { RaceType } from "../../../../../_entities/race.entity";
-import { RaceUtils } from "../../../../../utils/race.utils";
 import {
-  DrawModeStep,
+  DrawRaceStep,
   currentRace,
   currentStep,
 } from "../../../board/component/organism/DrawRaceBoard";
-import { pointsReady } from "./Points";
+import { onBoard } from "../../../board/component/template/ContextManager";
+import { getLines, getSelectedLine } from "./BusLines";
 
 export const arrowsMap = new Map<number, L.Marker[]>();
 
-export type leafletBusCourseType = {
+export type leafletBusRaceType = {
   polyline: L.Polyline;
   arrows: L.Marker[];
 };
@@ -25,14 +25,14 @@ export const [selectedRace, setSelectedRace] = createSignal<RaceType>();
 
 export function Races(props: { map: L.Map }) {
   // eslint-disable-next-line solid/reactivity
-  createEffect(async () => {
-    if (pointsReady()) {
-      await RaceUtils.set();
-    }
-  });
+  // createEffect(async () => {
+  //   if (pointsReady()) {
+  //     await RaceUtils.set();
+  //   }
+  // });
 
   createEffect(() => {
-    const race = selectedRace();
+    setRaces(getSelectedLine()?.courses ?? []);
   });
 
   onCleanup(() => {
@@ -40,7 +40,7 @@ export function Races(props: { map: L.Map }) {
   });
 
   const racesFilter = () => {
-    if (currentStep() > DrawModeStep.start) {
+    if (currentStep() > DrawRaceStep.initial) {
       // delete all arrows
       arrowsMap.forEach((arrows) =>
         arrows.map((arrow) => props.map.removeLayer(arrow))
@@ -49,6 +49,15 @@ export function Races(props: { map: L.Map }) {
 
       return [currentRace];
     }
+    if (onBoard() == "line-add") {
+      return [];
+    }
+    if (onBoard() == "line") {
+      return getLines()
+        .map((line) => line.courses)
+        .flat();
+    }
+
     return getRaces;
   };
 

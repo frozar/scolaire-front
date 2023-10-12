@@ -89,7 +89,7 @@ export default function () {
             text: "Lignes",
             onClick: () => {
               changeBoard("line");
-              MapElementUtils.deselectAllPointsAndBusCourses();
+              MapElementUtils.deselectAllPointsAndBusRaces();
             },
           },
           {

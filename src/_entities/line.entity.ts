@@ -3,7 +3,7 @@ import { setLines } from "../views/content/map/component/organism/BusLines";
 import { getSchools } from "../views/content/map/component/organism/SchoolPoints";
 import { getStops } from "../views/content/map/component/organism/StopPoints";
 import { COLOR_DEFAULT_LINE } from "../views/content/map/constant";
-import { BusCourseEntity, CourseDBType, CourseType } from "./course.entity";
+import { RaceDBType, RaceEntity, RaceType } from "./race.entity";
 import { SchoolType } from "./school.entity";
 import { StopType } from "./stop.entity";
 
@@ -13,8 +13,8 @@ export class BusLineEntity {
 
     const stops: StopType[] = BusLineEntity.dbStopsToStopsType(dbLine);
 
-    const courses = dbLine.courses.map((dbCourse) =>
-      BusCourseEntity.build(dbCourse.course)
+    const courses = dbLine.courses.map((dbRace) =>
+      RaceEntity.build(dbRace.course)
     );
 
     const [selected, setSelected] = createSignal<boolean>(false);
@@ -126,7 +126,7 @@ export type LineType = {
   id?: number;
   schools: SchoolType[];
   stops: StopType[];
-  courses: CourseType[];
+  courses: RaceType[];
   name?: string;
   color: Accessor<string>;
   setColor: Setter<string>;
@@ -141,7 +141,7 @@ export type LineDBType = {
   color: string;
   schools: { school_id: number }[];
   stops: { stop_id: number }[];
-  courses: { course_id: number; course: CourseDBType }[];
+  courses: { course_id: number; course: RaceDBType }[];
 };
 
 export type DbDataLineType = {

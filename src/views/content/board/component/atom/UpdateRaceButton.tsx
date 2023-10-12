@@ -4,7 +4,7 @@ import { RaceType } from "../../../../../_entities/race.entity";
 import UpdateButton from "../../../../../icons/UpdatePen";
 import { MapElementUtils } from "../../../../../utils/mapElement.utils";
 import {
-  DrawModeStep,
+  DrawRaceStep,
   setCurrentRace,
   setCurrentStep,
   setIsInUpdate,
@@ -19,9 +19,9 @@ export function UpdateRaceButton(props: { race: RaceType }) {
     setCurrentRace(props.race);
     setIsInUpdate(true);
 
-    MapElementUtils.deselectAllPointsAndBusCourses();
+    MapElementUtils.deselectAllPointsAndBusRaces();
     toggleDrawMod();
-    setCurrentStep(DrawModeStep.editCourse);
+    setCurrentStep(DrawRaceStep.editRace);
     changeBoard("race-draw");
     setModeDrawRace();
   }

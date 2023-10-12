@@ -1,6 +1,6 @@
 import _ from "lodash";
 import { useStateAction } from "../../../StateAction";
-import { addBusCourse } from "../../../request";
+import { addBusRace } from "../../../request";
 import {
   addNewUserInformation,
   disableSpinningWheel,
@@ -44,7 +44,7 @@ export function generateCircuit(
 
   // TODO To improve with new Type (post Xano)
   // const planned_stops: PointIdentityType[] = _.flattenDeep(
-  //   coursesOld().map((elt: CourseType) => elt.stops)
+  //   coursesOld().map((elt: RaceType) => elt.stops)
   // );
   const planned_stops: PointIdentityType[] = [];
 
@@ -149,14 +149,14 @@ export function generateCircuit(
           );
 
           // TODO: differ add line with a dialog box
-          // const res = await addBusCourse(idsPoint);
-          await addBusCourse(resourceInfo);
+          // const res = await addBusRace(idsPoint);
+          await addBusRace(resourceInfo);
 
           // TODO: Deal case of error
           // await res.json();
           setModeRead();
           //TODO voir l'impact de la suppression
-          // fetchBusCourses();
+          // fetchBusRaces();
           disableSpinningWheel();
         }
       })

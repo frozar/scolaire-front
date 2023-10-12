@@ -3,12 +3,18 @@ import { For, createEffect, createSignal } from "solid-js";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { SchoolService } from "../../../../../_services/school.service";
 import {
-  DrawModeStep,
+  AddLineStep,
+  addLineCurrentStep,
+  addLineSelectedSchool,
+} from "../../../board/component/organism/AddLineBoardContent";
+import {
+  DrawRaceStep,
   currentRace,
   currentStep,
 } from "../../../board/component/organism/DrawRaceBoard";
 import { onBoard } from "../../../board/component/template/ContextManager";
 import { SchoolPoint } from "../molecule/SchoolPoint";
+import { getSelectedLine } from "./BusLines";
 
 export interface SchoolPointsProps {
   leafletMap: L.Map;
@@ -36,11 +42,17 @@ async function updateSchools() {
 
 //TODO Delete and replace with displayedSchool signal
 function schoolsFilter(): SchoolType[] {
-  let schools = getSchools();
+  let schools = getSchools().filter((school) =>
+    getSelectedLine()
+      ? getSelectedLine()
+          ?.schools.map((schoolMap) => schoolMap.id)
+          .includes(school.id)
+      : true
+  );
 
   if (onBoard() == "race-draw") {
     const schoolsSelected = currentRace.schools;
-    if (currentStep() === DrawModeStep.schoolSelection) {
+    if (currentStep() === DrawRaceStep.schoolSelection) {
       return schools;
     }
 
@@ -48,6 +60,17 @@ function schoolsFilter(): SchoolType[] {
       schoolsSelected.some(
         (etablissementInfo) => etablissementInfo.id === value.id
       )
+    );
+  }
+
+  if (
+    onBoard() == "line-add" &&
+    addLineCurrentStep() == AddLineStep.stopSelection
+  ) {
+    return schools.filter((school) =>
+      addLineSelectedSchool()
+        .map((schoolSelected) => schoolSelected.id)
+        .includes(school.id)
     );
   }
   return schools;

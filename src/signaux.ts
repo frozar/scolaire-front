@@ -193,11 +193,10 @@ export function addNewUserInformation(
   const id = generateUniqueID();
 
   setUserInformations((currentArray) => {
-    if (userInformation.type === MessageTypeEnum.enterAddCourse) {
+    if (userInformation.type === MessageTypeEnum.enterAddRace) {
       const doesContainEnterAddline =
-        currentArray.filter(
-          (elt) => elt.type === MessageTypeEnum.enterAddCourse
-        ).length != 0;
+        currentArray.filter((elt) => elt.type === MessageTypeEnum.enterAddRace)
+          .length != 0;
 
       if (doesContainEnterAddline) {
         return currentArray;

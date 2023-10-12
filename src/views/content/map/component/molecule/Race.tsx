@@ -20,11 +20,11 @@ import { RacePointType, RaceType } from "../../../../../_entities/race.entity";
 import { WaypointType } from "../../../../../_entities/waypoint.entity";
 import { updatePointColor } from "../../../../../leafletUtils";
 import {
-  DrawModeStep,
+  DrawRaceStep,
   currentRace,
   currentStep,
-  displayCourseMode,
-  displayCourseModeEnum,
+  displayRaceMode,
+  displayRaceModeEnum,
   setCurrentRaceIndex,
 } from "../../../board/component/organism/DrawRaceBoard";
 import { setIsOverMapItem } from "../../l7MapBuilder";
@@ -34,9 +34,9 @@ import {
   linkMap,
 } from "../organism/Points";
 
-export const [draggingCourse, setDraggingCourse] = createSignal<boolean>(false);
+export const [draggingRace, setDraggingRace] = createSignal<boolean>(false);
 
-export function onClickBusCourse(race: RaceType) {
+export function onClickBusRace(race: RaceType) {
   if (onBoard() != "race-draw") {
     deselectAllRaces();
     deselectAllPoints();
@@ -54,7 +54,7 @@ export function Race(props: { race: RaceType; map: L.Map }) {
   const [localOpacity, setLocalOpacity] = createSignal<number>(1);
   createEffect(() => {
     if (
-      displayCourseMode() == displayCourseModeEnum.onRoad ||
+      displayRaceMode() == displayRaceModeEnum.onRoad ||
       onBoard() != "race-draw"
     ) {
       setLocalLatLngs(props.race.latLngs);
@@ -98,21 +98,21 @@ export function Race(props: { race: RaceType; map: L.Map }) {
 
   const onMouseOut = (polyline: L.Polyline, arrows: L.Marker[]) => {
     setIsOverMapItem(false);
-    // if (!line.selected() && (isInRemoveCourseMode() || isInReadMode())) {
+    // if (!line.selected() && (isInRemoveRaceMode() || isInReadMode())) {
     if (onBoard() != "race-draw") {
       buscourseSetNormalStyle(polyline, arrows, props.race.color);
     }
   };
 
   function onMouseDown(e: LeafletMouseEvent) {
-    // if (displayCourseMode() == displayCourseModeEnum.straight && !isInReadMode()) {
+    // if (displayRaceMode() == displayRaceModeEnum.straight && !isInReadMode()) {
     if (
-      displayCourseMode() == displayCourseModeEnum.straight &&
-      currentStep() == DrawModeStep.editCourse
+      displayRaceMode() == displayRaceModeEnum.straight &&
+      currentStep() == DrawRaceStep.editRace
     ) {
       props.map.dragging.disable();
 
-      function pointToCourseDistance(
+      function pointToRaceDistance(
         clickCoordinate: L.LatLng,
         point1: L.LatLng,
         point2: L.LatLng
@@ -133,7 +133,7 @@ export function Race(props: { race: RaceType; map: L.Map }) {
       }
       const coordinates: L.LatLng[] = e.target._latlngs;
 
-      let distance = pointToCourseDistance(
+      let distance = pointToRaceDistance(
         e.latlng,
         coordinates[0],
         coordinates[1]
@@ -141,7 +141,7 @@ export function Race(props: { race: RaceType; map: L.Map }) {
       let indice = 0;
 
       for (let i = 1; i < coordinates.length - 1; i++) {
-        const actualDistance = pointToCourseDistance(
+        const actualDistance = pointToRaceDistance(
           e.latlng,
           coordinates[i],
           coordinates[i + 1]
@@ -155,7 +155,7 @@ export function Race(props: { race: RaceType; map: L.Map }) {
         prev.splice(indice + 1, 0, e.latlng);
         return [...prev];
       });
-      setDraggingCourse(true);
+      setDraggingRace(true);
 
       createEffect(() => {
         props.map?.on("mousemove", ({ latlng }) => {
@@ -182,7 +182,7 @@ export function Race(props: { race: RaceType; map: L.Map }) {
             return [...prev];
           });
           setCurrentRaceIndex(localLatLngs().length);
-          setDraggingCourse(false);
+          setDraggingRace(false);
         }
         document.removeEventListener("mouseup", handleMouseUp);
       }
@@ -202,12 +202,12 @@ export function Race(props: { race: RaceType; map: L.Map }) {
         lineId={props.race.id}
         onMouseOver={onMouseOver}
         onMouseOut={onMouseOut}
-        onClick={() => onClickBusCourse(props.race)}
+        onClick={() => onClickBusRace(props.race)}
         onMouseDown={onMouseDown}
       />
       <Show
         when={
-          displayCourseMode() == displayCourseModeEnum.onRoad &&
+          displayRaceMode() == displayRaceModeEnum.onRoad &&
           onBoard() == "race-draw"
         }
       >

@@ -7,9 +7,9 @@ import BoardFooterActions from "../molecule/BoardFooterActions";
 import "../../../../../css/timeline.css";
 import { ColorPicker } from "../atom/ColorPicker";
 
-import { createStore } from "solid-js/store";
 import { AssociatedPointType } from "../../../../../_entities/_utils.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
+import { manageStatusCode } from "../../../../../_services/_utils.service";
 import { BusLineService } from "../../../../../_services/line.service";
 import { updatePointColor } from "../../../../../leafletUtils";
 import {
@@ -21,6 +21,8 @@ import { getStops } from "../../../map/component/organism/StopPoints";
 import { displayBusLine } from "../../../schools/component/molecule/BusLineItem";
 import SelectedSchool from "../atom/SelectedSchool";
 import LabeledInputField from "../molecule/LabeledInputField";
+import { setOnBoard, toggleDrawMod } from "../template/ContextManager";
+import "./AddLineBoardContent.css";
 import CollapsibleCheckableElement, {
   AssociatedItem,
 } from "./CollapsibleCheckableElement";
@@ -30,17 +32,19 @@ import "./DrawRaceBoard.css";
 export enum AddLineStep {
   start,
   schoolSelection,
-  editLine,
+  stopSelection,
 }
 
 export const [addLineSelectedSchool, setaddLineSelectedSchool] = createSignal<
   SchoolType[]
 >([]);
 
-const [stopSelected, setStopSelected] = createStore<AssociatedItem[]>([]);
+export const [stopSelected, setStopSelected] = createSignal<AssociatedItem[]>(
+  []
+);
 
 export const [addLineCurrentStep, setAddLineCurrentStep] =
-  createSignal<AddLineStep>(AddLineStep.schoolSelection);
+  createSignal<AddLineStep>(AddLineStep.start);
 
 // eslint-disable-next-line solid/reactivity
 export default function () {
@@ -69,7 +73,7 @@ export default function () {
         <SelectedSchool schoolSelected={addLineSelectedSchool()} />
       </Show>
 
-      <Show when={addLineCurrentStep() == AddLineStep.editLine}>
+      <Show when={addLineCurrentStep() == AddLineStep.stopSelection}>
         <LabeledInputField
           label="Nom de la line"
           value={currentLine()?.name ?? " default name"}
@@ -92,16 +96,10 @@ export default function () {
           />
         </div>
 
-        <fieldset>
+        <fieldset class="line-stop-selection">
           <For each={addLineSelectedSchool()}>
             {(school_elem) => {
-              return (
-                <CollapsibleCheckableElement
-                  school={school_elem}
-                  stopSelected={stopSelected}
-                  setStopSelected={setStopSelected}
-                />
-              );
+              return <CollapsibleCheckableElement school={school_elem} />;
             }}
           </For>
         </fieldset>
@@ -111,12 +109,12 @@ export default function () {
         nextStep={{
           callback: nextStep,
           label:
-            addLineCurrentStep() == AddLineStep.editLine
+            addLineCurrentStep() == AddLineStep.stopSelection
               ? "Valider"
               : "Suivant",
         }}
         previousStep={{
-          callback: nextStep,
+          callback: previousStep,
           label:
             addLineCurrentStep() === AddLineStep.schoolSelection
               ? "Annuler"
@@ -160,40 +158,84 @@ async function nextStep() {
       if (addLineSelectedSchool().length < 1) {
         break;
       }
-      setAddLineCurrentStep(AddLineStep.editLine);
+
+      setStopSelected([
+        ...getStops().map((stop) => {
+          return { done: true, associated: stop };
+        }),
+      ]);
+
       setCurrentLine({
         ...(currentLine() ?? BusLineEntity.defaultBusLine()),
         schools: addLineSelectedSchool(),
       });
+
+      setAddLineCurrentStep(AddLineStep.stopSelection);
       break;
-    case AddLineStep.editLine:
-      if (stopSelected.length < 2) {
+
+    case AddLineStep.stopSelection:
+      if (stopSelected().length < 2) {
         break;
       }
 
       updatePointColor();
-      const stops = getStops().filter((elem) =>
-        stopSelected
-          .filter((elem) => elem.done)
-          .map((val) => val.associated.id)
-          .includes(elem.id)
-      );
+
+      const stops = stopSelected()
+        .filter((stop) => stop.done)
+        .map((stop) => stop.associated);
       setCurrentLine({
         ...(currentLine() ?? BusLineEntity.defaultBusLine()),
         stops,
       });
-      await createBusLine(currentLine());
+
+      try {
+        const creating_line = currentLine();
+
+        if (creating_line) {
+          const newBusLine: LineType = await BusLineService.create(
+            creating_line
+          );
+          setAddLineCurrentStep(AddLineStep.start);
+
+          toggleDrawMod();
+          displayBusLine(newBusLine);
+
+          //TODO faire updateBusLines(newBusLine);
+        }
+      } catch (error) {
+        console.log("error", error);
+        manageStatusCode(error as Response);
+      }
+      setAddLineCurrentStep(AddLineStep.start);
   }
   disableSpinningWheel();
 }
 
-async function createBusLine(line: LineType | undefined) {
-  if (line) {
-    const newBusLine: LineType = await BusLineService.create(line);
-    displayBusLine(newBusLine);
+async function previousStep() {
+  enableSpinningWheel();
+  switch (addLineCurrentStep()) {
+    case AddLineStep.schoolSelection:
+      setAddLineCurrentStep(AddLineStep.start);
+      setaddLineSelectedSchool([]);
+      setStopSelected([]);
+      toggleDrawMod();
+      setOnBoard("line");
+      break;
+    case AddLineStep.stopSelection:
+      setAddLineCurrentStep(AddLineStep.schoolSelection);
+      setStopSelected([]);
   }
-  // updateBusLines(newBusLine);
+  disableSpinningWheel();
 }
+
+// async function createBusLine(line: LineType | undefined) {
+//   if (line) {
+//     const newBusLine: LineType = await BusLineService.create(line);
+//     return
+//     displayBusLine(newBusLine);
+//   }
+
+// }
 
 // async function updateBusLine(line: LineType) {
 //   const updatedBusLine: LineType = await BusLineService.update(line);

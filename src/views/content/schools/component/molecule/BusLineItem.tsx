@@ -9,12 +9,12 @@ import ClasseLinkedSchool from "../atom/ClasseLinkedSchool";
 import "./RaceItem.css";
 
 export function displayBusLine(line: LineType): void {
+  setOnBoard("course");
   deselectAllLines();
   line.setSelected(true);
 
   // TODO to fix race
-  // setCourses(line.courses.length > 0 ? line.courses : []);
-  setOnBoard("course");
+  // setRaces(line.courses.length > 0 ? line.courses : []);
 }
 
 export default function (props: { line: LineType }) {

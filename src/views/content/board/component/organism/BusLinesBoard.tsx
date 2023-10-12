@@ -1,15 +1,20 @@
 import { createSignal } from "solid-js";
 import PlusIcon from "../../../../../icons/PlusIcon";
+import { displayAddRaceMessage } from "../../../../../userInformation/utils";
+import { getLines } from "../../../map/component/organism/BusLines";
 import { deselectAllPoints } from "../../../map/component/organism/Points";
-import {
-  deselectAllRaces,
-  getRaces,
-} from "../../../map/component/organism/Races";
+import { deselectAllRaces } from "../../../map/component/organism/Races";
 import InputSearch from "../../../schools/component/molecule/InputSearch";
+import BusLinesList from "../../../schools/component/organism/BusLinesList";
 import ButtonIcon from "../molecule/ButtonIcon";
-import { onBoard, toggleDrawMod } from "../template/ContextManager";
+import {
+  changeBoard,
+  onBoard,
+  toggleDrawMod,
+} from "../template/ContextManager";
+import { AddLineStep, setAddLineCurrentStep } from "./AddLineBoardContent";
 import "./BusLines.css";
-import { DrawModeStep, setCurrentStep } from "./DrawRaceBoard";
+import { DrawRaceStep, setCurrentStep } from "./DrawRaceBoard";
 
 export default function () {
   const [searchKeyword, setSearchKeyword] = createSignal<string>("");
@@ -19,17 +24,19 @@ export default function () {
   //   getRaces.filter((race) => race.name?.includes(searchKeyword()));
 
   function addLine() {
-    if (onBoard() == "race-draw") {
+    if (onBoard() == "line-add") {
       toggleDrawMod();
-      setCurrentStep(DrawModeStep.start);
+      setCurrentStep(DrawRaceStep.initial);
     } else {
       deselectAllPoints();
       deselectAllRaces();
-      toggleDrawMod();
 
-      setCurrentStep(DrawModeStep.schoolSelection);
       // TODO corriger
       // displayAddLineMessage();
+      changeBoard("line-add");
+      setAddLineCurrentStep(AddLineStep.schoolSelection);
+      toggleDrawMod();
+      displayAddRaceMessage();
     }
   }
 
@@ -41,15 +48,21 @@ export default function () {
     <section>
       <header class="line-board-header">
         <div class="line-board-header-infos">
-          <p>Total des courses: {getRaces.length}</p>
+          <p>Total des courses: {getLines().length}</p>
           <ButtonIcon icon={<PlusIcon />} onClick={addLine} />
         </div>
 
         <InputSearch onInput={onInputSearch} />
       </header>
 
-      {/* TODO à corriger */}
-      {/* <LinesList lines={filteredLines()} /> */}
+      <BusLinesList
+        lines={
+          getLines().filter((line) => line.name?.includes(searchKeyword()))
+            .length == 0
+            ? []
+            : getLines().filter((line) => line.name?.includes(searchKeyword()))
+        }
+      />
     </section>
   );
 }

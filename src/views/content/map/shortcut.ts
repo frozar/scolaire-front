@@ -63,9 +63,9 @@ function escapeHandler({ code }: KeyboardEvent) {
   //     setCurrentStep(DrawModeStep.start);
   //   }
   //   changeBoard("line");
-  //   MapElementUtils.deselectAllPointsAndBusCourses();
+  //   MapElementUtils.deselectAllPointsAndBusRaces();
   //   //TODO voir l'impact de la suppression
-  //   // fetchBusCourses();
+  //   // fetchBusRaces();
   // }
 }
 
@@ -85,7 +85,7 @@ function enterHandler({ code }: KeyboardEvent) {
   // if (!isInDrawRaceMode() || currentStep() === DrawModeStep.schoolSelection) {
   //   return;
   // }
-  // const resourceInfo = getCourseUnderConstruction().course.points.map(
+  // const resourceInfo = getRaceUnderConstruction().course.points.map(
   //   function (value) {
   //     return {
   //       id_resource: value["id"],
@@ -93,21 +93,21 @@ function enterHandler({ code }: KeyboardEvent) {
   //     };
   //   }
   // );
-  // addBusCourse(resourceInfo).then(async (res) => {
+  // addBusRace(resourceInfo).then(async (res) => {
   //   if (!res) {
-  //     console.error("addBusCourse failed");
+  //     console.error("addBusRace failed");
   //     return;
   //   }
   //   await res.json();
-  //   resetCourseUnderConstruction();
+  //   resetRaceUnderConstruction();
   //   setModeRead();
   //   //TODO voir l'impact de la suppression
-  //   // fetchBusCourses();
+  //   // fetchBusRaces();
   // });
   // }
 }
 
-function toggleCourseUnderConstruction({ code }: KeyboardEvent) {
+function toggleRaceUnderConstruction({ code }: KeyboardEvent) {
   // if (disable_shortcut()) {
   //   return;
   // }
@@ -133,5 +133,5 @@ export const listHandlerLMap = [
   undoRedoHandler,
   escapeHandler,
   enterHandler,
-  toggleCourseUnderConstruction,
+  toggleRaceUnderConstruction,
 ];

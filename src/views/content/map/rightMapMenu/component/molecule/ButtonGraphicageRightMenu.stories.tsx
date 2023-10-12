@@ -24,14 +24,14 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const AddCourse: Story = {
+export const AddRace: Story = {
   args: {
     tooltip: "Ajouter une course",
     icon: <FaSolidPlus class="w-full p-0 h-2/3" />,
   },
 };
 
-export const RemoveCourse: Story = {
+export const RemoveRace: Story = {
   args: {
     tooltip: "Supprimer une course",
     icon: <FaSolidMinus class="w-full p-0 h-2/3" />,

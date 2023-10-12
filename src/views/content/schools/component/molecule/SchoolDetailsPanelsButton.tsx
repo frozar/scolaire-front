@@ -5,7 +5,7 @@ import "./SchoolDetailsPanelsButton.css";
 interface PanelsButtonProps {
   setOnPanel: Setter<Panels>;
   onPanel: Accessor<Panels>;
-  NbCourses?: number;
+  NbRaces?: number;
 }
 
 export default function (props: PanelsButtonProps) {
@@ -24,7 +24,7 @@ export default function (props: PanelsButtonProps) {
         classList={{ active: props.onPanel() == Panels.lines }}
         onClick={() => props.setOnPanel(Panels.lines)}
       >
-        Courses: {props.NbCourses ?? "Todo"}
+        Races: {props.NbRaces ?? "Todo"}
       </button>
     </div>
   );

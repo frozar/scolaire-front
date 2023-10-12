@@ -24,6 +24,14 @@
   flex-direction: space-between;
 }
 
+
+.line-stop-selection{
+  @apply pl-4;
+  overflow-y:auto;
+  padding-right: 0.5rem;
+  max-height: 70vh;
+}
+
 .confirm-etablissement-selection {
   display: flex;
   width: 100%;

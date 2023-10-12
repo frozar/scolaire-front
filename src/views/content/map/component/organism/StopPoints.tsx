@@ -4,12 +4,21 @@ import { useStateGui } from "../../../../../StateGui";
 import { StopType } from "../../../../../_entities/stop.entity";
 import { StopService } from "../../../../../_services/stop.service";
 import {
-  DrawModeStep,
+  AddLineStep,
+  addLineCurrentStep,
+  addLineSelectedSchool,
+  stopSelected,
+} from "../../../board/component/organism/AddLineBoardContent";
+import {
+  DrawRaceStep,
   currentRace,
   currentStep,
 } from "../../../board/component/organism/DrawRaceBoard";
+import { onBoard } from "../../../board/component/template/ContextManager";
 import { PointInterface } from "../atom/Point";
 import { StopPoint } from "../molecule/StopPoint";
+import { getSelectedLine } from "./BusLines";
+import { getSchools } from "./SchoolPoints";
 
 const [, { nextLeafletPointId }] = useStateGui();
 
@@ -65,19 +74,49 @@ async function updateStop() {
 
 //TODO Delete and replace with displayedStop signal
 export function leafletStopsFilter(): StopType[] {
-  const stops = getStops();
-  if (currentStep() === DrawModeStep.start) {
-    return stops;
+  let schools = getSchools();
+  let stops = getStops();
+
+  switch (onBoard()) {
+    case "line-add":
+      schools = addLineSelectedSchool();
+      stops = stopSelected().map((associated) => {
+        return associated.associated;
+      });
+      if (addLineCurrentStep() == AddLineStep.stopSelection) {
+        const associatedIdSelected = schools
+          .map((school) => school.associated.map((value) => value.id))
+          .flat();
+
+        return stops.filter((stop) => associatedIdSelected.includes(stop.id));
+      }
+      break;
+    case "race-draw":
+      schools = currentRace.schools;
+
+      stops = getStops().filter((stop) =>
+        getSelectedLine()
+          ? getSelectedLine()
+              ?.stops.map((stop) => stop.id)
+              .includes(stop.id)
+          : true
+      );
+
+      if (currentStep() === DrawRaceStep.schoolSelection) {
+        return [];
+      }
+
+      if (currentStep() === DrawRaceStep.initial) {
+        return stops;
+      }
+      break;
   }
-  if (currentStep() === DrawModeStep.schoolSelection) {
-    return [];
-  }
-  const schools = currentRace.schools;
+
   return stops.filter((stop) =>
     stop.associated.some(
       (school) => schools.find((e) => e.id === school.id)
-      // TODO don't display stop with no remaining quantity in new Course Creation
-      // TODO creation a display error if the stop is in the updating Course
+      // TODO don't display stop with no remaining quantity in new Race Creation
+      // TODO creation a display error if the stop is in the updating Race
       // && QuantityUtils.remaining(school) > 0
     )
   );

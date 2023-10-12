@@ -20,7 +20,7 @@ export function BusLines() {
 
   // eslint-disable-next-line solid/reactivity
   createEffect(async () => {
-    setDisplayedCourses();
+    setDisplayedRaces();
   });
 
   onCleanup(() => {
@@ -40,13 +40,13 @@ export function BusLines() {
   );
 }
 
-function setDisplayedCourses() {
-  const allCourses = getLines()
+function setDisplayedRaces() {
+  const allRaces = getLines()
     ?.map((line) => line.courses)
     .flatMap((e) => [...e]);
 
   //TODO to fix race
-  // setCourses(getSelectedLine()?.courses ?? allCourses);
+  // setRaces(getSelectedLine()?.courses ?? allRaces);
 }
 
 export function deselectAllLines() {
@@ -55,7 +55,7 @@ export function deselectAllLines() {
   setLines(deselectedLines);
 
   // TODO to fix race
-  // deselectAllCourses();
+  // deselectAllRaces();
   deselectAllPoints();
 }
 

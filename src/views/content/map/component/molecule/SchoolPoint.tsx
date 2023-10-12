@@ -1,10 +1,17 @@
 import L from "leaflet";
+import { createEffect } from "solid-js";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { StopType } from "../../../../../_entities/stop.entity";
 import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
 import { updatePointColor } from "../../../../../leafletUtils";
 import {
-  DrawModeStep,
+  AddLineStep,
+  addLineCurrentStep,
+  addLineSelectedSchool,
+  setaddLineSelectedSchool,
+} from "../../../board/component/organism/AddLineBoardContent";
+import {
+  DrawRaceStep,
   addPointToRace,
   addSchoolToRace,
   currentRace,
@@ -17,7 +24,7 @@ import {
   onBoard,
 } from "../../../board/component/template/ContextManager";
 import { setSchoolDetailsItem } from "../../../schools/component/organism/SchoolDetails";
-import { COLOR_SCHOOL_FOCUS } from "../../constant";
+import { COLOR_SCHOOL_FOCUS, COLOR_SCHOOL_LIGHT } from "../../constant";
 import { setIsOverMapItem } from "../../l7MapBuilder";
 import Point from "../atom/Point";
 import {
@@ -29,7 +36,7 @@ import {
   setCursorIsOverPoint,
 } from "../organism/Points";
 import { deselectAllRaces } from "../organism/Races";
-import { draggingCourse, setDraggingCourse } from "./Race";
+import { draggingRace, setDraggingRace } from "./Race";
 
 export interface SchoolPointProps {
   point: SchoolType;
@@ -37,7 +44,7 @@ export interface SchoolPointProps {
 }
 
 const onClick = (point: SchoolType) => {
-  if (onBoard() != "race-draw") {
+  if (onBoard() != "race-draw" && onBoard() != "line-add") {
     deselectAllRaces();
     deselectAllPoints();
     point.setSelected(true);
@@ -49,8 +56,39 @@ const onClick = (point: SchoolType) => {
   }
 
   const schoolsSelected = currentRace.schools;
+  if (
+    onBoard() == "line-add" &&
+    addLineCurrentStep() == AddLineStep.schoolSelection
+  ) {
+    console.log(
+      "addLineSelectedSchool",
+      addLineSelectedSchool().includes(point)
+    );
 
-  if (currentStep() === DrawModeStep.schoolSelection) {
+    const currentSelectedSchools = [...addLineSelectedSchool()];
+
+    const index = currentSelectedSchools.indexOf(point, 0);
+
+    const circle = linkMap.get(point.leafletId);
+
+    if (index > -1) {
+      currentSelectedSchools.splice(index, 1);
+      setaddLineSelectedSchool(currentSelectedSchools);
+      circle?.setStyle({ fillColor: COLOR_SCHOOL_LIGHT });
+    } else {
+      setaddLineSelectedSchool([...currentSelectedSchools, point]);
+      circle?.setStyle({ fillColor: COLOR_SCHOOL_FOCUS });
+    }
+  }
+  if (
+    onBoard() == "line-add" &&
+    addLineCurrentStep() == AddLineStep.stopSelection
+  ) {
+    console.log("No action in this mode ");
+    return;
+  }
+
+  if (currentStep() === DrawRaceStep.schoolSelection) {
     if (schoolsSelected?.find((p) => p.id === point.id)) {
       return;
     }
@@ -85,7 +123,7 @@ const onClick = (point: SchoolType) => {
 };
 
 const onMouseUp = (point: StopType) => {
-  if (draggingCourse()) {
+  if (draggingRace()) {
     const associatedQuantity = point.associated.filter(
       (associatedSchool) => associatedSchool.id === currentRace.schools[0].id
     )[0].quantity;
@@ -95,7 +133,7 @@ const onMouseUp = (point: StopType) => {
       ...point,
       quantity: associatedQuantity,
     });
-    setDraggingCourse(false);
+    setDraggingRace(false);
   }
 };
 
@@ -103,7 +141,7 @@ const onMouseOver = (school: SchoolType) => {
   setIsOverMapItem(true);
   setBlinkingStops(school.associated.map((stop) => stop.id));
 
-  if (draggingCourse()) {
+  if (draggingRace()) {
     setCursorIsOverPoint(true);
   }
 };
@@ -112,18 +150,18 @@ const onMouseOut = () => {
   setIsOverMapItem(false);
   setBlinkingStops([]);
 
-  if (draggingCourse() || cursorIsOverPoint()) {
+  if (draggingRace() || cursorIsOverPoint()) {
     setCursorIsOverPoint(false);
   }
 };
 
 const onRightClick = (point: SchoolType) => {
   const circle = linkMap.get(point.leafletId);
-  const isInCourseUnderConstruction = currentRace.points.filter(
+  const isInRaceUnderConstruction = currentRace.points.filter(
     (_point) => _point.id == point.id
   )[0];
 
-  if (onBoard() == "race-draw" && isInCourseUnderConstruction != undefined) {
+  if (onBoard() == "race-draw" && isInRaceUnderConstruction != undefined) {
     removePoint(point);
 
     const waypoints = currentRace.waypoints;
@@ -141,6 +179,22 @@ const onRightClick = (point: SchoolType) => {
 };
 
 export function SchoolPoint(props: SchoolPointProps) {
+  createEffect(() => {
+    //TODO dont Work
+
+    if (addLineCurrentStep() === AddLineStep.schoolSelection) {
+      const stopFiltering = addLineSelectedSchool().filter(
+        (school) => school.id == props.point.id
+      );
+      const circle = linkMap.get(props.point.leafletId);
+      if (stopFiltering.length > 0) {
+        circle?.setStyle({ fillColor: COLOR_SCHOOL_FOCUS });
+      } else {
+        circle?.setStyle({ fillColor: COLOR_SCHOOL_LIGHT });
+      }
+    }
+  });
+
   return (
     <Point
       point={props.point}
