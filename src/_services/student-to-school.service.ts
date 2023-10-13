@@ -65,8 +65,6 @@ export class StudentToSchoolService {
       dbFormat
     );
 
-    console.log("update Response:", response);
-
     return ClassStudentToSchoolEntity.build(response);
   }
 

@@ -128,7 +128,6 @@ export function leafletStopsFilter(): StopType[] {
   let stops = getStops();
   switch (onBoard()) {
     case "course":
-      console.log(getSelectedLine()?.stops);
       return stops.filter((stop) =>
         getSelectedLine()
           ?.stops.map((stopOfSelected) => stopOfSelected.id)
