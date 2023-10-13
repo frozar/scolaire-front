@@ -92,7 +92,6 @@ export default function () {
             onClick: () => changeBoard("school-details"),
           },
           {
-            // ! Fix long text display style in breadcrumb
             text:
               onBoard() == "school-class-add"
                 ? "Ajouter une classe"
