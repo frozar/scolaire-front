@@ -2,60 +2,51 @@ import { Show, createEffect, createSignal, onCleanup, onMount } from "solid-js";
 import { Transition } from "solid-transition-group";
 
 import ClickOutside from "../component/ClickOutside";
-import {
-  addNewUserInformation,
-  closeRemoveConfirmationBox,
-  getRemoveConfirmation,
-} from "../signaux";
+import { addNewUserInformation, getRemoveConfirmation } from "../signaux";
 
-import { RaceService } from "../_services/race.service";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { assertIsNode } from "../utils";
-import { MapElementUtils } from "../utils/mapElement.utils";
-import { changeBoard } from "../views/content/board/component/template/ContextManager";
-import { setRaces } from "../views/content/map/component/organism/Races";
+
+type RemoveConfirmationType = {
+  textToDisplay: string;
+  itemName: string;
+  validate: () => Promise<boolean>;
+};
+
+export const [removeConfirmation, setRemoveConfirmation] =
+  createSignal<RemoveConfirmationType>();
 
 // HACK for the documentation to preserve the ClickOutside directive on save
 // https://www.solidjs.com/guides/typescript#use___
 false && ClickOutside;
 
 export default function () {
-  const displayed = () => getRemoveConfirmation()["displayed"];
-  const course = () => getRemoveConfirmation()["course"];
+  function closeConfirmationBox() {
+    setRemoveConfirmation();
+  }
 
   async function handlerOnClickValider() {
-    const idToCheck = course()?.id;
-    if (!idToCheck) {
-      return;
-    }
+    const removeConfirmationItem = removeConfirmation();
+    if (!removeConfirmationItem) return false;
 
-    const idToRemove: number = idToCheck;
+    const isDeleted = await removeConfirmationItem.validate();
+    closeConfirmationBox();
 
-    const isDeleted: boolean = await RaceService.delete(idToRemove);
     if (isDeleted) {
-      closeRemoveConfirmationBox();
-
-      setRaces((races) => {
-        return races.filter((race) => race.id != idToRemove);
-      });
-
       addNewUserInformation({
         displayed: true,
         level: MessageLevelEnum.success,
         type: MessageTypeEnum.global,
-        content: "La course a bien été supprimée.",
+        content: removeConfirmationItem.itemName + " a bien été supprimée.",
       });
     } else {
-      closeRemoveConfirmationBox();
       addNewUserInformation({
         displayed: true,
         level: MessageLevelEnum.error,
-        type: MessageTypeEnum.removeRace,
-        content: "Impossible de supprimer la ligne de bus.",
+        type: MessageTypeEnum.global,
+        content: "Impossible de supprimer " + removeConfirmationItem.itemName,
       });
     }
-    changeBoard("line");
-    MapElementUtils.deselectAllPointsAndBusRaces();
   }
 
   function exitModal({ code }: KeyboardEvent) {
@@ -64,19 +55,20 @@ export default function () {
     // eslint-disable-next-line solid/reactivity
     keyboard.getLayoutMap().then(() => {
       if (code === "Escape") {
-        if (getRemoveConfirmation().displayed) {
-          closeRemoveConfirmationBox();
+        if (getRemoveConfirmation()) {
+          closeConfirmationBox();
         }
       }
     });
   }
 
   onMount(() => {
-    // document.addEventListener("keyup", exitModal);
+    document.addEventListener("keyup", exitModal);
   });
 
   onCleanup(() => {
-    // document.removeEventListener("keyup", exitModal);
+    document.removeEventListener("keyup", exitModal);
+    setRemoveConfirmation();
   });
 
   const [buttonRef, setButtonRef] = createSignal<
@@ -99,7 +91,7 @@ export default function () {
       exitClass="opacity-100"
       exitToClass="opacity-0"
     >
-      <Show when={displayed()}>
+      <Show when={removeConfirmation()}>
         <div
           class="relative z-[1400]"
           aria-labelledby="modal-title"
@@ -138,7 +130,7 @@ export default function () {
 
                     assertIsNode(e.target);
                     if (!refDialogBox.contains(e.target)) {
-                      closeRemoveConfirmationBox();
+                      closeConfirmationBox();
                     }
                   }}
                 >
@@ -146,7 +138,7 @@ export default function () {
                     <button
                       type="button"
                       class="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                      onClick={closeRemoveConfirmationBox}
+                      onClick={closeConfirmationBox}
                     >
                       <span class="sr-only">Close</span>
                       <svg
@@ -187,12 +179,12 @@ export default function () {
                         class="text-base font-semibold leading-6 text-gray-900"
                         id="modal-title"
                       >
-                        Supprimer une course
+                        Suppression
                       </h3>
                       <div class="mt-2">
                         <p class="text-sm text-gray-500">
-                          Etes-vous sûr de vouloir supprimer la course :{" "}
-                          {course()?.name} ?
+                          {removeConfirmation()?.textToDisplay}
+                          {removeConfirmation()?.itemName}
                         </p>
                       </div>
                     </div>
@@ -209,7 +201,7 @@ export default function () {
                     <button
                       type="button"
                       class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
-                      onClick={closeRemoveConfirmationBox}
+                      onClick={closeConfirmationBox}
                     >
                       Annuler
                     </button>

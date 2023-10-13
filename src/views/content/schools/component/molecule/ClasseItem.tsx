@@ -1,11 +1,20 @@
 import { FaRegularTrashCan, FaSolidPen } from "solid-icons/fa";
 import { ClasseType } from "../../../../../_entities/classe.entity";
+import { ClasseService } from "../../../../../_services/classe.service";
 import CardTitle from "../../../../../component/atom/CardTitle";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
-import { setRemoveClasseConfirmation } from "../../../../../signaux";
+import { setRemoveConfirmation } from "../../../../../userInformation/RemoveConfirmation";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { changeBoard } from "../../../board/component/template/ContextManager";
+import {
+  getSchools,
+  setSchools,
+} from "../../../map/component/organism/SchoolPoints";
 import { setSelectedClasse } from "../organism/ClasseBoard";
+import {
+  schoolDetailsItem,
+  setSchoolDetailsItem,
+} from "../organism/SchoolDetails";
 import "./ClasseItem.css";
 
 interface ClasseItemProps {
@@ -19,10 +28,35 @@ export default function (props: ClasseItemProps) {
     changeBoard("school-class-modify");
   }
 
+  async function deleteClasse() {
+    const classeId = props.classe?.id;
+    if (!classeId) return false;
+
+    const isDeleted = await ClasseService.delete(classeId);
+
+    if (isDeleted) {
+      // eslint-disable-next-line solid/reactivity
+      setSchools((prev) => {
+        return [...prev].map((school) => {
+          return {
+            ...school,
+            classes: school.classes.filter((classe) => classe.id != classeId),
+          };
+        });
+      });
+      const schoolDetailsItemId = schoolDetailsItem()?.id as number;
+      setSchoolDetailsItem(
+        getSchools().filter((school) => school.id == schoolDetailsItemId)[0]
+      );
+    }
+    return isDeleted;
+  }
+
   async function onClickDelete() {
-    setRemoveClasseConfirmation({
-      displayed: true,
-      classe: props.classe,
+    setRemoveConfirmation({
+      textToDisplay: "Êtes-vous sûr de vouloir supprimer la classe : ",
+      itemName: props.classe.name,
+      validate: deleteClasse,
     });
   }
 
