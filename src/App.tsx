@@ -84,11 +84,9 @@ export default () => {
 
         <DisplayUserInformation />
         <DragAndDropSummary />
-        {/* <RemoveConfirmationDialogBox /> */}
         <ClearConfirmationDialogBox />
         <ExportConfirmationDialogBox />
         <GeneratorDialogBox />
-        {/* <RemoveClasseConfirmation /> */}
         <RemoveConfirmation />
       </Layout>
       <SpinningWheel />

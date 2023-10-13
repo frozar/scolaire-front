@@ -1,5 +1,4 @@
 import { BusLineEntity, LineDBType, LineType } from "../_entities/line.entity";
-// import { RaceEntity, RaceDBType, RaceType } from "../_entities/race.entity";
 import { RaceDBType, RaceEntity, RaceType } from "../_entities/race.entity";
 import { getSelectedLine } from "../views/content/map/component/organism/BusLines";
 import { ServiceUtils } from "./_utils.service";
