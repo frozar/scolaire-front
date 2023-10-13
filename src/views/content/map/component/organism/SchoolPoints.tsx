@@ -42,36 +42,40 @@ async function updateSchools() {
 
 //TODO Delete and replace with displayedSchool signal
 function schoolsFilter(): SchoolType[] {
-  let schools = getSchools().filter((school) =>
-    getSelectedLine()
-      ? getSelectedLine()
-          ?.schools.map((schoolMap) => schoolMap.id)
-          .includes(school.id)
-      : true
-  );
+  switch (onBoard()) {
+    case "line-add":
+      switch (addLineCurrentStep()) {
+        case AddLineStep.stopSelection:
+          return getSchools().filter((schoolToFilter) =>
+            addLineSelectedSchool()
+              .map((school) => school.id)
+              .includes(schoolToFilter.id)
+          );
+      }
+      break;
 
-  if (onBoard() == "race-draw") {
-    const schoolsSelected = currentRace().schools;
-    if (currentStep() === DrawRaceStep.schoolSelection) {
-      return schools;
-    }
-
-    schools = schools.filter((value) =>
-      schoolsSelected.some(
-        (etablissementInfo) => etablissementInfo.id === value.id
-      )
-    );
+    case "course":
+      return getSchools().filter((schoolFilter) =>
+        getSelectedLine()
+          ?.schools.map((school) => school.id)
+          .includes(schoolFilter.id)
+      );
+    case "race-draw":
+      switch (currentStep()) {
+        case DrawRaceStep.schoolSelection:
+          return getSchools().filter((schoolFilter) =>
+            getSelectedLine()
+              ?.schools.map((school) => school.id)
+              .includes(schoolFilter.id)
+          );
+        case DrawRaceStep.editRace:
+          return getSchools().filter((schoolTofilter) =>
+            currentRace()
+              .schools.map((school) => school.id)
+              .includes(schoolTofilter.id)
+          );
+      }
   }
 
-  if (
-    onBoard() == "line-add" &&
-    addLineCurrentStep() == AddLineStep.stopSelection
-  ) {
-    return schools.filter((school) =>
-      addLineSelectedSchool()
-        .map((schoolSelected) => schoolSelected.id)
-        .includes(school.id)
-    );
-  }
-  return schools;
+  return getSchools();
 }
