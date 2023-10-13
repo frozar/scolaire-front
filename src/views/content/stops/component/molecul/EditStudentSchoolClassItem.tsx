@@ -2,7 +2,6 @@ import { createSignal, onMount } from "solid-js";
 import { AssociatedPointType } from "../../../../../_entities/_utils.entity";
 import { ClasseType } from "../../../../../_entities/classe.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
-import { ClassStudentToSchoolEntity } from "../../../../../_entities/student-to-school.entity";
 import { StudentToSchoolService } from "../../../../../_services/student-to-school.service";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
 import CheckIcon from "../../../../../icons/CheckIcon";
@@ -10,6 +9,10 @@ import { addNewUserInformation } from "../../../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../../../type";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { getSchools } from "../../../map/component/organism/SchoolPoints";
+import {
+  appendToStop,
+  updateFromStop,
+} from "../../../map/component/organism/StopPoints";
 import ClasseSelection from "../atom/ClasseSelection";
 import InputNumber from "../atom/InputNumber";
 import SchoolSelect from "../atom/SchoolSelection";
@@ -110,10 +113,7 @@ export default function (props: EditStopProps) {
       classId: Number(classeSelectRef().value),
     });
 
-    ClassStudentToSchoolEntity.appendToStop(
-      classToSchool,
-      stopDetailsItem()?.id as number
-    );
+    appendToStop(classToSchool, stopDetailsItem()?.id as number);
   }
 
   async function update() {
@@ -126,10 +126,7 @@ export default function (props: EditStopProps) {
       classId: Number(classeSelectRef().value),
     });
 
-    ClassStudentToSchoolEntity.updateFromStop(
-      classToSchool,
-      stopDetailsItem()?.id as number
-    );
+    updateFromStop(classToSchool, stopDetailsItem()?.id as number);
 
     // TODO lucas même update mais pour school
   }

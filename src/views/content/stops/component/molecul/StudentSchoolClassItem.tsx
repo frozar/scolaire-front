@@ -1,6 +1,5 @@
 import { Show, createSignal } from "solid-js";
 import { AssociatedPointType } from "../../../../../_entities/_utils.entity";
-import { ClassStudentToSchoolEntity } from "../../../../../_entities/student-to-school.entity";
 import { StudentToSchoolService } from "../../../../../_services/student-to-school.service";
 import CardTitle from "../../../../../component/atom/CardTitle";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
@@ -8,6 +7,7 @@ import PencilIcon from "../../../../../icons/PencilIcon";
 import TrashIcon from "../../../../../icons/TrashIcon";
 import { QuantityUtils } from "../../../../../utils/quantity.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
+import { removeFromStop } from "../../../map/component/organism/StopPoints";
 import { stopDetailsItem } from "../organism/StopDetails";
 import EditStudentSchoolClassItem from "./EditStudentSchoolClassItem";
 import "./StudentSchoolClassItem.css";
@@ -21,10 +21,7 @@ export default function (props: { school: AssociatedPointType }) {
     );
     console.log("delete class to school response", response);
 
-    ClassStudentToSchoolEntity.removeFromStop(
-      response,
-      stopDetailsItem()?.id as number
-    );
+    removeFromStop(response, stopDetailsItem()?.id as number);
   }
 
   function onClickEdit() {

@@ -6,6 +6,7 @@ import PlusIcon from "../../../../../icons/PlusIcon";
 import { MapElementUtils } from "../../../../../utils/mapElement.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { changeBoard } from "../../../board/component/template/ContextManager";
+import { getStops } from "../../../map/component/organism/StopPoints";
 import { RacesList } from "../../../schools/component/organism/RacesList";
 import EditStudentSchoolClassItem from "../molecul/EditStudentSchoolClassItem";
 import StopDetailsHeader from "../molecul/StopDetailsHeader";
@@ -14,7 +15,20 @@ import "./StopDetails.css";
 import ClassStudentToSchoolList from "./StudentSchoolClassList";
 
 export const [stopDetailsItem, setStopDetailsItem] = createSignal<StopType>();
+export function updateStopDetailsItem(stopId: number) {
+  if (stopDetailsItem() != undefined && stopDetailsItem()?.id == stopId) {
+    const stopIndex = getStops().findIndex((prev) => prev.id == stopId);
+    const stop = getStops()[stopIndex];
 
+    setStopDetailsItem((prev) => {
+      if (prev != undefined) {
+        const currentItem = { ...stop };
+        return currentItem;
+      }
+      return prev;
+    });
+  }
+}
 export enum StopPanels {
   classes = "schools",
   races = "races",
