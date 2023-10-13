@@ -1,4 +1,4 @@
-import { For, Show, createEffect } from "solid-js";
+import { For, Show } from "solid-js";
 import { MapElementUtils } from "../../../../../utils/mapElement.utils";
 import {
   deselectAllLines,
@@ -113,13 +113,11 @@ export default function () {
             onClick: () => {
               changeBoard("course");
               deselectAllLines();
-              console.log("getSelectedLine()", getSelectedLine());
               const line = getLines().filter((line) =>
                 line.courses
                   .map((course) => course.id)
                   .includes(selectedRace()?.id)
               )[0];
-              console.log("selected line", line);
               line.setSelected(true);
             },
           },
@@ -131,10 +129,6 @@ export default function () {
         return [];
     }
   }
-
-  createEffect(() => {
-    console.log("onBoard", onBoard());
-  });
 
   return (
     <div class="breadcrumb-list">
