@@ -1,5 +1,5 @@
 import { RaceType } from "../../../../../_entities/race.entity";
-import { BusRaceService } from "../../../../../_services/course.service";
+import { RaceService } from "../../../../../_services/race.service";
 import TrashIcon from "../../../../../icons/TrashIcon";
 import { setRemoveConfirmation } from "../../../../../userInformation/RemoveConfirmation";
 import { MapElementUtils } from "../../../../../utils/mapElement.utils";
@@ -18,7 +18,7 @@ export default function (props: RemoveRaceButtonProps) {
     if (!idToCheck) return false;
 
     const idToRemove: number = idToCheck;
-    const isDeleted: boolean = await BusRaceService.delete(idToRemove);
+    const isDeleted: boolean = await RaceService.delete(idToRemove);
 
     if (isDeleted) {
       setRaces(getRaces.filter((line) => line.id != idToRemove));
