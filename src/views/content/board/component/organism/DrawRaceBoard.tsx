@@ -239,6 +239,7 @@ async function createOrUpdateRace() {
   )[0];
 
   displayBusLine(currentLine);
+  // setOnBoard("line-details");
 }
 
 async function nextStep() {
@@ -381,7 +382,7 @@ function setWaypoints(projectedLatlngs: L.LatLng[]) {
   if (!currentRace().waypoints) {
     return;
   }
-  let waypoints = [...currentRace().waypoints];
+  let waypoints = currentRace().waypoints as WaypointType[];
   waypoints = waypoints.map((waypoint, i) => {
     return {
       ...waypoint,
