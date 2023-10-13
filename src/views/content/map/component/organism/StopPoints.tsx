@@ -3,7 +3,6 @@ import { For, createEffect, createSignal } from "solid-js";
 import { useStateGui } from "../../../../../StateGui";
 import { AssociatedPointType } from "../../../../../_entities/_utils.entity";
 import { StopType } from "../../../../../_entities/stop.entity";
-import { StopService } from "../../../../../_services/stop.service";
 import {
   AddLineStep,
   addLineCurrentStep,
@@ -26,6 +25,7 @@ const [, { nextLeafletPointId }] = useStateGui();
 
 export interface StopPointsProps {
   leafletMap: L.Map;
+  stops: StopType[];
 }
 
 export const [getStops, setStops] = createSignal<StopType[]>([]);
@@ -83,9 +83,7 @@ export const [ramassages, setRamassages] = createSignal<PointInterface[]>([]);
 
 export function StopPoints(props: StopPointsProps) {
   // eslint-disable-next-line solid/reactivity
-  createEffect(async () => {
-    if (getSchools().length != 0) await updateStop();
-  });
+  createEffect(() => setStops(props.stops));
 
   const quantities = () => {
     return getStops().map((stop) => {
@@ -117,11 +115,6 @@ export function StopPoints(props: StopPointsProps) {
       }}
     </For>
   );
-}
-
-async function updateStop() {
-  const stops: StopType[] = buildStops(await StopService.getAll());
-  setStops(stops);
 }
 
 //TODO Delete and replace with displayedStop signal

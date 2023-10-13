@@ -1,4 +1,4 @@
-import { Show, createSignal, onCleanup, onMount } from "solid-js";
+import { Show, createEffect, createSignal, onCleanup, onMount } from "solid-js";
 
 import { useStateGui } from "../../../StateGui";
 
@@ -12,7 +12,12 @@ import ConfirmStopAddRace from "./ConfirmStopAddCourseBox";
 import { listHandlerLMap } from "./shortcut";
 
 import "leaflet/dist/leaflet.css";
-import { addNewUserInformation, getLeafletMap } from "../../../signaux";
+import { InitService, InitType } from "../../../_services/init.service";
+import {
+  addNewUserInformation,
+  getAuthenticatedUser,
+  getLeafletMap,
+} from "../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../type";
 import { BusLines } from "./component/organism/BusLines";
 import { Points } from "./component/organism/Points";
@@ -29,11 +34,14 @@ function buildMap(div: HTMLDivElement) {
 }
 
 let mapDiv: HTMLDivElement;
+const [init, setinit] = createSignal<InitType>();
 
 export default function () {
   const [displayImportCsvCanvas, setDisplayImportCsvCanvas] =
     createSignal(false);
-
+  createEffect(async () => {
+    if (getAuthenticatedUser()) setinit(await InitService.getAll());
+  });
   onMount(() => {
     // Manage shortcut keyboard event
     for (const handler of listHandlerLMap) {
@@ -74,8 +82,12 @@ export default function () {
         }}
       />
       <div ref={mapDiv} id="main-map" />
-      <Points leafletMap={getLeafletMap() as L.Map} />
-      <BusLines />
+      <Points
+        leafletMap={getLeafletMap() as L.Map}
+        stops={init()?.stops ?? []}
+        schools={init()?.schools ?? []}
+      />
+      <BusLines busLines={init()?.busLines ?? []} />
       <Races map={getLeafletMap() as L.Map} />
       {/* <div class="z-[1000] absolute top-[45%] right-[15px]">
         <RightMapMenu />

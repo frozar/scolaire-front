@@ -1,13 +1,13 @@
-import { Show, createSignal, onMount } from "solid-js";
+import { Show, createSignal } from "solid-js";
 import { Transition } from "solid-transition-group";
 
 import ClickOutside from "../../../../component/ClickOutside";
-import { getAuthenticatedUser, setAuthenticated } from "../../../../signaux";
+import { getAuthenticatedUser } from "../../../../signaux";
 
 import LoginMenu from "../atom/LoginMenu";
 import LoginAvatar from "../molecule/LoginAvatar";
 
-import { isAuthenticated, login, logout } from "../../authentication";
+import { login, logout } from "../../authentication";
 
 import "./LoginDropdown.css";
 
@@ -34,10 +34,6 @@ export default function (props: LoginDropdownProps) {
   };
 
   let refLoginButton!: HTMLButtonElement;
-
-  onMount(async () => {
-    setAuthenticated(await isAuthenticated());
-  });
 
   // Local signal
   const [displayedSubComponent, setDisplayedSubComponent] = createSignal(false);

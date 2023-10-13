@@ -4,12 +4,15 @@ import Pellet from "../../../../../component/atom/Pellet";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
 import ArretsLogo from "../../../../../icons/ArretsLogo";
 import { onClickBusRace } from "../../../map/component/molecule/Race";
+import { getSelectedLine } from "../../../map/component/organism/BusLines";
 import ClasseLinkedSchool from "../atom/ClasseLinkedSchool";
 import "./RaceItem.css";
 
 export function RaceItem(props: { race: RaceType }) {
-  const schoolNames = () =>
-    props.race.schools.map((school) => school.name ?? "");
+  const schoolNames = () => {
+    console.log("race", getSelectedLine());
+    return props.race.schools.map((school) => school.name ?? "");
+  };
 
   return (
     <CardWrapper class="race-item" onClick={() => onClickBusRace(props.race)}>
