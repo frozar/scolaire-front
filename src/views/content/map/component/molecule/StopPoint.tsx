@@ -12,6 +12,10 @@ import { deselectAllRaces } from "../organism/Races";
 import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
 import { updatePointColor } from "../../../../../leafletUtils";
 import {
+  setStopSelected,
+  stopSelected,
+} from "../../../board/component/organism/AddLineBoardContent";
+import {
   addPointToRace,
   currentRace,
   removePoint,
@@ -50,7 +54,7 @@ function getAssociatedQuantity(point: StopType) {
 }
 
 function onClick(point: StopType) {
-  if (onBoard() != "race-draw") {
+  if (onBoard() != "race-draw" && onBoard() != "line-add") {
     deselectAllRaces();
     deselectAllPoints();
     point.setSelected(true);
@@ -61,6 +65,17 @@ function onClick(point: StopType) {
     return;
   }
 
+  if (onBoard() == "line-add") {
+    setStopSelected([
+      ...stopSelected().map((stop) => {
+        if (stop.associated.id == point.id) {
+          return { ...stop, done: !stop.done };
+        }
+        return stop;
+      }),
+    ]);
+    return;
+  }
   const associatedQuantity = getAssociatedQuantity(point);
 
   // TODO: when add line with an etablissement point the line destroy after next point click
