@@ -40,6 +40,7 @@ export function Races(props: { map: L.Map }) {
   });
 
   const racesFilter = () => {
+    console.log("onBoard()", onBoard());
     if (currentStep() > DrawRaceStep.initial) {
       // delete all arrows
       arrowsMap.forEach((arrows) =>
@@ -53,9 +54,13 @@ export function Races(props: { map: L.Map }) {
       return [];
     }
     if (onBoard() == "line") {
+      console.log("getLines()", getLines());
       return getLines()
         .map((line) => line.courses)
         .flat();
+    }
+    if (onBoard() == "line-details") {
+      return [selectedRace() as RaceType];
     }
 
     return getRaces;
@@ -64,6 +69,7 @@ export function Races(props: { map: L.Map }) {
   return (
     <For each={racesFilter()}>
       {(race) => {
+        console.log("race =>", race);
         return <Race race={race} map={props.map} />;
       }}
     </For>
