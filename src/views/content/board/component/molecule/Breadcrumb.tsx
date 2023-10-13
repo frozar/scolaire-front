@@ -1,7 +1,12 @@
-import { For, Show, createEffect, createSignal } from "solid-js";
+import { For, Show, createEffect } from "solid-js";
 import { MapElementUtils } from "../../../../../utils/mapElement.utils";
-import { getSelectedLine } from "../../../map/component/organism/BusLines";
+import {
+  deselectAllLines,
+  getLines,
+  getSelectedLine,
+} from "../../../map/component/organism/BusLines";
 import { selectedRace } from "../../../map/component/organism/Races";
+import { selectedClasse } from "../../../schools/component/organism/ClasseBoard";
 import { schoolDetailsItem } from "../../../schools/component/organism/SchoolDetails";
 import { stopDetailsItem } from "../../../stops/component/organism/StopDetails";
 import BreadcrumbButton from "../atom/BreadcrumbButton";
@@ -16,21 +21,14 @@ type CrumbType = {
 };
 
 // TODO le Breadcrumb est à revoir
+// ! Rename classe => classes; line-details => classe
 export default function () {
-  // ! Signal dérivé ?
-  const [crumbs, setCrumbs] = createSignal<CrumbType[]>([{ text: "Lignes" }]);
-
-  createEffect(() => {
-    console.log("onBoard", onBoard());
-  });
-
-  createEffect(() => {
+  function crumbs(): CrumbType[] {
     switch (onBoard()) {
       case "line":
-        setCrumbs([{ text: "Lignes" }]);
-        break;
+        return [{ text: "Lignes" }];
       case "course":
-        setCrumbs([
+        return [
           {
             text: "Lignes",
             onClick: () => {
@@ -41,26 +39,21 @@ export default function () {
           {
             text: getSelectedLine()?.name as string,
           },
-        ]);
-        break;
+        ];
       case "race-draw":
         if (currentRace().schools.length > 0) {
-          setCrumbs([{ text: "Editer votre course" }]);
-          break;
+          return [{ text: "Editer votre course" }];
         }
-        setCrumbs([{ text: "Création d'une course" }]);
-        break;
+        return [{ text: "Création d'une course" }];
 
       case "schools":
-        setCrumbs([{ text: "Ecoles" }]);
-        break;
+        return [{ text: "Ecoles" }];
 
       case "stops":
-        setCrumbs([{ text: "Arrêts" }]);
-        break;
+        return [{ text: "Arrêts" }];
 
       case "stop-details":
-        setCrumbs([
+        return [
           {
             text: "Arrêts",
             onClick: () => {
@@ -70,11 +63,10 @@ export default function () {
           {
             text: stopDetailsItem()?.name.toLowerCase() as string,
           },
-        ]);
-        break;
+        ];
 
       case "school-details":
-        setCrumbs([
+        return [
           {
             text: "Ecoles",
             onClick: () => {
@@ -84,12 +76,11 @@ export default function () {
           {
             text: schoolDetailsItem()?.name.toLowerCase() as string,
           },
-        ]);
-        break;
+        ];
 
       case "school-class-add":
       case "school-class-modify":
-        setCrumbs([
+        return [
           {
             text: "Ecoles",
             onClick: () => {
@@ -101,13 +92,16 @@ export default function () {
             onClick: () => changeBoard("school-details"),
           },
           {
-            text: "classe",
+            // ! Fix long text display style in breadcrumb
+            text:
+              onBoard() == "school-class-add"
+                ? "Ajouter une classe"
+                : (selectedClasse()?.name as string),
           },
-        ]);
-        break;
+        ];
 
       case "line-details":
-        setCrumbs([
+        return [
           {
             text: "Lignes",
             onClick: () => {
@@ -116,10 +110,31 @@ export default function () {
             },
           },
           {
+            text: getSelectedLine()?.name as string,
+            onClick: () => {
+              changeBoard("course");
+              deselectAllLines();
+              console.log("getSelectedLine()", getSelectedLine());
+              const line = getLines().filter((line) =>
+                line.courses
+                  .map((course) => course.id)
+                  .includes(selectedRace()?.id)
+              )[0];
+              console.log("selected line", line);
+              line.setSelected(true);
+            },
+          },
+          {
             text: selectedRace()?.name?.toLowerCase() as string,
           },
-        ]);
+        ];
+      default:
+        return [];
     }
+  }
+
+  createEffect(() => {
+    console.log("onBoard", onBoard());
   });
 
   return (
