@@ -76,8 +76,6 @@ async function updateStop() {
 export function leafletStopsFilter(): StopType[] {
   let schools = getSchools();
   let stops = getStops();
-  console.log("onBoard", onBoard());
-
   switch (onBoard()) {
     case "course":
       console.log(getSelectedLine()?.stops);
@@ -87,17 +85,22 @@ export function leafletStopsFilter(): StopType[] {
           .includes(stop.id)
       );
     case "line-add":
-      schools = addLineSelectedSchool();
-      stops = stopSelected().map((associated) => {
-        return associated.associated;
-      });
-      if (addLineCurrentStep() == AddLineStep.stopSelection) {
-        const associatedIdSelected = schools
-          .map((school) => school.associated.map((value) => value.id))
-          .flat();
-
-        return stops.filter((stop) => associatedIdSelected.includes(stop.id));
+      switch (addLineCurrentStep()) {
+        case AddLineStep.schoolSelection:
+          return [];
+        case AddLineStep.stopSelection:
+          schools = addLineSelectedSchool();
+          stops = stopSelected().map((associated) => {
+            return associated.associated;
+          });
+          const associatedIdSelected = schools
+            .map((school) => school.associated.map((value) => value.id))
+            .flat();
+          getStops().filter((stoptofilter) =>
+            associatedIdSelected.includes(stoptofilter.id)
+          );
       }
+
       break;
     case "race-draw":
       schools = currentRace().schools;
