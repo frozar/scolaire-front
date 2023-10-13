@@ -21,7 +21,7 @@ type CrumbType = {
 };
 
 // TODO le Breadcrumb est à revoir
-// TODO: Rename classe => classes; line-details => classe
+// TODO: Rename course => races; line-details => race
 export default function () {
   function crumbs(): CrumbType[] {
     switch (onBoard()) {
