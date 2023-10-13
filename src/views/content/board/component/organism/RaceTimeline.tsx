@@ -1,11 +1,11 @@
-import { Accessor, For, Setter, Show } from "solid-js";
+import { For, Setter, Show } from "solid-js";
 import { RaceType } from "../../../../../_entities/race.entity";
 import { RaceTimelineAddPointButton } from "../atom/RaceTimelineAddPointButton";
 import { RaceTimelineItem } from "../atom/RaceTimelineItem";
 import { onBoard } from "../template/ContextManager";
 
 export function RaceTimeline(props: {
-  race: Accessor<RaceType>;
+  race: RaceType;
   setRace?: Setter<RaceType>;
   inDraw: boolean;
 }) {
@@ -15,7 +15,7 @@ export function RaceTimeline(props: {
         class="timeline-items "
         style={{ "--v-timeline-line-thickness": "2px" }}
       >
-        <For each={props.race().points}>
+        <For each={props.race.points}>
           {(point, i) => (
             <div class="timeline-block">
               <Show when={onBoard() == "race-draw"}>
