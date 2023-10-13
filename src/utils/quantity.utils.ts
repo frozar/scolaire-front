@@ -54,7 +54,9 @@ export namespace QuantityUtils {
     });
   }
 
+  // TODO quentin
   function setSchoolQuantity(
+    // classe : ClassType
     school: SchoolType,
     points: RacePointType[],
     operation: OperationType
@@ -63,6 +65,21 @@ export namespace QuantityUtils {
       if (point.nature === NatureEnum.stop) {
         setSchools((schools) => {
           schools.map((_school) => {
+            // school.classes.map((_classe) => {
+            // if (_classe.id == classe.id) {
+            //   _classe.associated.map((stop) => {
+            //     if (stop.id == point.id) {
+            //       if (operation === OperationType.set)
+            //         stop.usedQuantity = point.quantity;
+            //       else if (operation === OperationType.add)
+            //         stop.usedQuantity += point.quantity;
+            //       else if (operation === OperationType.substract)
+            //         stop.usedQuantity -= point.quantity;
+            //     }
+            //   });
+            // }
+            //   return _classe;
+            // });
             if (_school.id == school.id) {
               _school.associated.map((stop) => {
                 if (stop.id == point.id) {
@@ -82,12 +99,15 @@ export namespace QuantityUtils {
     });
   }
 
+  // TODO quentin
   function setStopQuantity(
     point: RacePointType,
+    // classes : ClasseType[]
     schools: SchoolType[],
     operation: OperationType
   ) {
     if (point.nature === NatureEnum.stop) {
+      // classes.forEach((classe) => {
       schools.forEach((school) => {
         setStops((stops) => {
           stops.map((stop) => {
