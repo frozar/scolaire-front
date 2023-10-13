@@ -1,5 +1,6 @@
 import { For, Show, createEffect, createSignal } from "solid-js";
 import { MapElementUtils } from "../../../../../utils/mapElement.utils";
+import { getSelectedLine } from "../../../map/component/organism/BusLines";
 import { selectedRace } from "../../../map/component/organism/Races";
 import { schoolDetailsItem } from "../../../schools/component/organism/SchoolDetails";
 import { stopDetailsItem } from "../../../stops/component/organism/StopDetails";
@@ -16,10 +17,32 @@ type CrumbType = {
 
 // TODO le Breadcrumb est à revoir
 export default function () {
+  // ! Signal dérivé ?
   const [crumbs, setCrumbs] = createSignal<CrumbType[]>([{ text: "Lignes" }]);
 
   createEffect(() => {
+    console.log("onBoard", onBoard());
+  });
+
+  createEffect(() => {
     switch (onBoard()) {
+      case "line":
+        setCrumbs([{ text: "Lignes" }]);
+        break;
+      case "course":
+        setCrumbs([
+          {
+            text: "Lignes",
+            onClick: () => {
+              changeBoard("line");
+              MapElementUtils.deselectAllPointsAndBusRaces();
+            },
+          },
+          {
+            text: getSelectedLine()?.name as string,
+          },
+        ]);
+        break;
       case "race-draw":
         if (currentRace().schools.length > 0) {
           setCrumbs([{ text: "Editer votre course" }]);

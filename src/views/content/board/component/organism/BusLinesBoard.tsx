@@ -48,7 +48,7 @@ export default function () {
     <section>
       <header class="line-board-header">
         <div class="line-board-header-infos">
-          <p>Total des courses: {getLines().length}</p>
+          <p>Total des lignes: {getLines().length}</p>
           <ButtonIcon icon={<PlusIcon />} onClick={addLine} />
         </div>
 
