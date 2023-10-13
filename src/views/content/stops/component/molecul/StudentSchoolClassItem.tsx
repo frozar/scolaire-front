@@ -1,6 +1,6 @@
 import { Show, createSignal } from "solid-js";
 import {
-  ClassStudentToSchool,
+  ClassStudentToSchoolEntity,
   ClassToSchoolTypeFormatedWithUsedQuantity,
 } from "../../../../../_entities/student-to-school.entity";
 import { StudentToSchoolService } from "../../../../../_services/student-to-school.service";
@@ -21,7 +21,7 @@ export default function (props: {
 
   async function onClickDelete() {
     const response = await StudentToSchoolService.delete(props.school.id);
-    ClassStudentToSchool.removeFromStop(
+    ClassStudentToSchoolEntity.removeFromStop(
       response,
       stopDetailsItem()?.id as number
     );

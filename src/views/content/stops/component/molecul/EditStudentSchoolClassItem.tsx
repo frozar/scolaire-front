@@ -2,7 +2,7 @@ import { createSignal, onMount } from "solid-js";
 import { ClasseType } from "../../../../../_entities/classe.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import {
-  ClassStudentToSchool,
+  ClassStudentToSchoolEntity,
   ClassToSchoolTypeFormatedWithUsedQuantity,
 } from "../../../../../_entities/student-to-school.entity";
 import { StudentToSchoolService } from "../../../../../_services/student-to-school.service";
@@ -110,7 +110,7 @@ export default function (props: EditStopProps) {
       classId: Number(classeSelectRef().value),
     });
 
-    ClassStudentToSchool.appendToStop(
+    ClassStudentToSchoolEntity.appendToStop(
       classToSchool,
       stopDetailsItem()?.id as number
     );
@@ -126,10 +126,12 @@ export default function (props: EditStopProps) {
       classId: Number(classeSelectRef().value),
     });
 
-    ClassStudentToSchool.updateFromStop(
+    ClassStudentToSchoolEntity.updateFromStop(
       classToSchool,
       stopDetailsItem()?.id as number
     );
+
+    // TODO lucas même update mais pour school
   }
 
   async function validate() {

@@ -5,7 +5,7 @@ import {
 } from "../_entities/school.entity";
 import { StopDBType, StopEntity, StopType } from "../_entities/stop.entity";
 import {
-  ClassStudentToSchool,
+  ClassStudentToSchoolEntity,
   ClassStudentToSchoolType,
   ClassToSchoolTypeFormated,
   ClassToSchoolTypeFormatedWithUsedQuantity,
@@ -35,23 +35,25 @@ export class StudentToSchoolService {
   static async create(
     props: Omit<ClassStudentToSchoolType, "id">
   ): Promise<ClassToSchoolTypeFormatedWithUsedQuantity> {
-    const dbFormat = ClassStudentToSchool.dbFormat(props);
+    const dbFormat = ClassStudentToSchoolEntity.dbFormat(props);
     const response: ClassToSchoolTypeFormated = await ServiceUtils.post(
       "/student-to-school",
       dbFormat
     );
-    return ClassStudentToSchool.build(response);
+    return ClassStudentToSchoolEntity.build(response);
   }
 
   static async update(
     ClassStudentToSchoolProps: ClassStudentToSchoolType
   ): Promise<ClassToSchoolTypeFormatedWithUsedQuantity> {
-    const dbFormat = ClassStudentToSchool.dbFormat(ClassStudentToSchoolProps);
+    const dbFormat = ClassStudentToSchoolEntity.dbFormat(
+      ClassStudentToSchoolProps
+    );
     const response: ClassToSchoolTypeFormated = await ServiceUtils.patch(
       "/student-to-school/" + ClassStudentToSchoolProps.id,
       dbFormat
     );
-    return ClassStudentToSchool.build(response);
+    return ClassStudentToSchoolEntity.build(response);
   }
 
   // Backend will return only the id deleted

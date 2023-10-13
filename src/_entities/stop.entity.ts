@@ -51,6 +51,7 @@ export type StopType = {
   name: string;
   lon: number;
   lat: number;
+  // TODO lucas doit être associatedPointType
   associated: ClassToSchoolTypeFormatedWithUsedQuantity[];
   nature: NatureEnum;
 

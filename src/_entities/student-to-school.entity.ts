@@ -8,9 +8,10 @@ import {
 } from "../views/content/stops/component/organism/StopDetails";
 import { ClasseType } from "./classe.entity";
 
-export namespace ClassStudentToSchool {
+export namespace ClassStudentToSchoolEntity {
   export function build(
     classToSchool: ClassToSchoolTypeFormated
+    //TODO lucas associatedPointType
   ): ClassToSchoolTypeFormatedWithUsedQuantity {
     return {
       ...classToSchool,
@@ -81,6 +82,7 @@ export namespace ClassStudentToSchool {
     updateStopDetailsItem(stopId);
   }
 
+  // TODO lucas à placer dans Stop component
   export function updateFromStop(
     classStudentToSchool: ClassToSchoolTypeFormatedWithUsedQuantity,
     stopId: number
@@ -92,7 +94,8 @@ export namespace ClassStudentToSchool {
         const indexOfClass = stops[indexOfStop].associated.findIndex(
           (prev) => prev.id == classStudentToSchool.id
         );
-        stops[indexOfStop].associated[indexOfClass] = classStudentToSchool;
+        stops[indexOfStop].associated[indexOfClass].quantity =
+          classStudentToSchool.quantity;
         return stops;
       }
       return prev;

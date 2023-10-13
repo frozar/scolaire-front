@@ -36,8 +36,11 @@ export class EntityUtils {
     };
   }
 
+  // TODO lucas formatAssociatedPointType
   static formatAssociatedClassToSchool(
+    // TODO lucas associatedPointDBType
     associatedDBPoint: ClassToSchoolTypeFormated[]
+    // TODO associatedPointType (comme avant avec nature et companie)
   ): ClassToSchoolTypeFormatedWithUsedQuantity[] {
     return associatedDBPoint.map((item) => {
       return {
