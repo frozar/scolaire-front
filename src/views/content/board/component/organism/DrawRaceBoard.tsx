@@ -7,6 +7,7 @@ import BoardFooterActions from "../molecule/BoardFooterActions";
 import "../../../../../css/timeline.css";
 
 import _ from "lodash";
+import { LineType } from "../../../../../_entities/line.entity";
 import {
   RaceEntity,
   RacePointType,
@@ -30,12 +31,14 @@ import {
 import { NatureEnum } from "../../../../../type";
 import { MapElementUtils } from "../../../../../utils/mapElement.utils";
 import { QuantityUtils } from "../../../../../utils/quantity.utils";
+import { getLines, setLines } from "../../../map/component/organism/BusLines";
 import {
   setRaces,
   setSelectedRace,
   updateRaces,
 } from "../../../map/component/organism/Races";
 import { quitModeDrawRace } from "../../../map/shortcut";
+import { displayBusLine } from "../../../schools/component/molecule/BusLineItem";
 import { DrawHelperButton } from "../atom/DrawHelperButton";
 import ButtonIcon from "../molecule/ButtonIcon";
 import LabeledInputField from "../molecule/LabeledInputField";
@@ -160,7 +163,7 @@ export function DrawRaceBoard() {
             }
           >
             <RaceTimeline
-              race={currentRace}
+              race={currentRace()}
               setRace={setCurrentRace}
               inDraw={true}
             />
@@ -211,12 +214,16 @@ export function addSchoolToRace(school: SchoolType) {
 async function createOrUpdateRace() {
   // eslint-disable-next-line solid/reactivity
   let race: RaceType = currentRace();
+
   if (currentRace().id == undefined) {
-    race = await RaceService.create(currentRace());
+    const dbRes: { busLines: LineType[]; newRace: RaceType } =
+      await RaceService.create(currentRace());
+    setLines(dbRes.busLines);
+    race = dbRes.newRace;
   } else {
     race = await RaceService.update(currentRace());
+    updateRaces(race);
   }
-  updateRaces(race);
 
   QuantityUtils.add(race);
   setRaces((r) => r.id === race.id, "selected", true);
@@ -224,8 +231,15 @@ async function createOrUpdateRace() {
   setDisplayRaceMode((prev) =>
     prev == displayRaceModeEnum.straight ? prev : displayRaceModeEnum.straight
   );
+
   setCurrentStep(DrawRaceStep.initial);
   quitModeDrawRace();
+  const currentLine = getLines().filter((line) =>
+    line.courses.map((course) => course.id).includes(race.id)
+  )[0];
+
+  displayBusLine(currentLine);
+  // setOnBoard("line-details");
 }
 
 async function nextStep() {
@@ -251,7 +265,13 @@ async function nextStep() {
       }
 
       await createOrUpdateRace();
-      changeBoard("line-details");
+
+      setCurrentRace(RaceEntity.defaultRace());
+      setCurrentRaceIndex(0);
+      setIsInUpdate(false);
+      setInitialRace(RaceEntity.defaultRace());
+
+      setCurrentStep(DrawRaceStep.initial);
       updatePointColor();
   }
   disableSpinningWheel();
@@ -362,7 +382,7 @@ function setWaypoints(projectedLatlngs: L.LatLng[]) {
   if (!currentRace().waypoints) {
     return;
   }
-  let waypoints = [...currentRace().waypoints];
+  let waypoints = currentRace().waypoints as WaypointType[];
   waypoints = waypoints.map((waypoint, i) => {
     return {
       ...waypoint,

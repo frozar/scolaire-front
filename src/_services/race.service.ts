@@ -1,4 +1,6 @@
+import { BusLineEntity, LineDBType, LineType } from "../_entities/line.entity";
 import { RaceDBType, RaceEntity, RaceType } from "../_entities/race.entity";
+import { getSelectedLine } from "../views/content/map/component/organism/BusLines";
 import { ServiceUtils } from "./_utils.service";
 
 export class RaceService {
@@ -11,11 +13,28 @@ export class RaceService {
       : [];
   }
 
-  static async create(line: RaceType): Promise<RaceType> {
+  static async create(
+    line: RaceType
+  ): Promise<{ newRace: RaceType; busLines: LineType[] }> {
     const data = RaceEntity.dbFormat(line);
-    // TODO changer endpoint Xano pour /race
-    const dbRace: RaceDBType = await ServiceUtils.post("/bus-course", data);
-    return RaceEntity.build(dbRace);
+
+    const dbBusRace: {
+      bus_lines: { bus_lines: LineDBType[] };
+      new_race: RaceDBType;
+    } = await ServiceUtils.post(
+      "/busline/" + getSelectedLine()?.id + "/bus-course_v2", //TODO tester la v2
+      data
+    );
+    console.log("dbBusRace", dbBusRace);
+
+    const bus_lines = dbBusRace.bus_lines.bus_lines;
+
+    return {
+      newRace: RaceEntity.build(dbBusRace.new_race),
+      busLines: bus_lines
+        ? bus_lines.map((dbLine: LineDBType) => BusLineEntity.build(dbLine))
+        : [],
+    };
   }
 
   static async update(line: Partial<RaceType>): Promise<RaceType> {
