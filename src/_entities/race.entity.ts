@@ -27,14 +27,6 @@ export namespace RaceEntity {
 
     const school: SchoolType = filteredShools[0];
 
-    const latLngs = [];
-
-    if (dbData.polyline != null) {
-      const latLngs = dbData.polyline.data.map((item) =>
-        L.latLng(item.lat, item.lng)
-      );
-    }
-
     return {
       id: dbData.id,
       schools: [school],
@@ -46,7 +38,7 @@ export namespace RaceEntity {
         ? dbData.polyline.data.map((item) => L.latLng(item.lat, item.lng))
         : [],
       selected: false,
-      metrics: {},
+      metrics: dbData.metrics,
     };
   }
 
