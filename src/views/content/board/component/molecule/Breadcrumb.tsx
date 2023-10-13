@@ -138,7 +138,7 @@ export default function () {
   });
 
   return (
-    <div class="breadcrumb">
+    <div class="breadcrumb-list">
       <For each={crumbs()}>
         {(crumb, i) => (
           <Show
