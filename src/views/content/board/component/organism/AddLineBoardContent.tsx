@@ -161,7 +161,7 @@ async function nextStep() {
 
       setStopSelected([
         ...getStops().map((stop) => {
-          return { done: true, associated: stop };
+          return { done: false, associated: stop };
         }),
       ]);
 
