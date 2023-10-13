@@ -1,4 +1,4 @@
-import { Accessor, Setter, Show, createEffect } from "solid-js";
+import { Setter, Show, createEffect } from "solid-js";
 
 import { RacePointType, RaceType } from "../../../../../_entities/race.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
@@ -6,16 +6,17 @@ import { NatureEnum } from "../../../../../type";
 import { RaceTimelineRemovePointButton } from "./RaceTimelineRemovePointButton";
 
 export function RaceTimelineItem(props: {
-  race: Accessor<RaceType>;
+  race: RaceType;
   setRace?: Setter<RaceType>;
   point: RacePointType;
   indice: number;
 }) {
   const pointColor =
+    // eslint-disable-next-line solid/reactivity
     props.point.nature == NatureEnum.stop ? " !bg-blue-base" : " !bg-red-base";
 
   createEffect(() => {
-    setDividerColor(props.race().color);
+    setDividerColor(props.race.color);
   });
 
   return (
@@ -28,8 +29,8 @@ export function RaceTimelineItem(props: {
                 ? "+ " + props.point.quantity
                 : " " +
                   SumQuantity(
-                    props.race().points,
-                    props.race().schools[0],
+                    props.race.points,
+                    props.race.schools[0],
                     props.indice - 1
                   ) *
                     -1}
@@ -40,14 +41,14 @@ export function RaceTimelineItem(props: {
             {props.point.nature === NatureEnum.stop
               ? " + " +
                 SumQuantity(
-                  props.race().points,
-                  props.race().schools[0],
+                  props.race.points,
+                  props.race.schools[0],
                   props.indice
                 )
               : " " +
                 SumQuantity(
-                  props.race().points,
-                  props.race().schools[0],
+                  props.race.points,
+                  props.race.schools[0],
                   props.indice
                 ) *
                   -1}
