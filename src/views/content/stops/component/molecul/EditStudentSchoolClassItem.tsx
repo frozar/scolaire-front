@@ -1,10 +1,8 @@
 import { createSignal, onMount } from "solid-js";
+import { AssociatedPointType } from "../../../../../_entities/_utils.entity";
 import { ClasseType } from "../../../../../_entities/classe.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
-import {
-  ClassStudentToSchoolEntity,
-  ClassToSchoolTypeFormatedWithUsedQuantity,
-} from "../../../../../_entities/student-to-school.entity";
+import { ClassStudentToSchoolEntity } from "../../../../../_entities/student-to-school.entity";
 import { StudentToSchoolService } from "../../../../../_services/student-to-school.service";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
 import CheckIcon from "../../../../../icons/CheckIcon";
@@ -19,7 +17,7 @@ import { stopDetailsItem } from "../organism/StopDetails";
 import "./EditStudentSchoolClassItem.css";
 
 interface EditStopProps {
-  classStudentToSchool?: ClassToSchoolTypeFormatedWithUsedQuantity;
+  classStudentToSchool?: AssociatedPointType;
   close: () => void;
 }
 
@@ -36,17 +34,19 @@ export default function (props: EditStopProps) {
 
   if (props.classStudentToSchool != undefined) {
     const school = getSchools().filter(
-      (school) => school.id == props.classStudentToSchool?.school?.id
+      (school) => school.id == props.classStudentToSchool?.id
     )[0];
     setSelectedSchool(school);
   }
 
   onMount(() => {
+    console.log("Class:", props.classStudentToSchool);
+
     if (props.classStudentToSchool != undefined) {
       schoolSelectRef().value =
-        props.classStudentToSchool.school.id?.toString() ?? "default";
+        props.classStudentToSchool.id?.toString() ?? "default";
       classeSelectRef().value =
-        props.classStudentToSchool.class.id?.toString() ?? "default";
+        props.classStudentToSchool.classId?.toString() ?? "default";
       quantityInputRef().value =
         props.classStudentToSchool.quantity.toString() ?? 0;
       return;
@@ -119,7 +119,7 @@ export default function (props: EditStopProps) {
   async function update() {
     if (!props.classStudentToSchool) return;
     const classToSchool = await StudentToSchoolService.update({
-      id: props.classStudentToSchool?.id as number,
+      id: props.classStudentToSchool?.studentSchoolId as number,
       schoolId: Number(schoolSelectRef().value),
       stopId: Number(stopDetailsItem()?.id),
       quantity: Number(quantityInputRef().value),

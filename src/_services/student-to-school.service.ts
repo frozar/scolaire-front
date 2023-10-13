@@ -1,4 +1,8 @@
 import {
+  AssociatedDBPointType,
+  AssociatedPointType,
+} from "../_entities/_utils.entity";
+import {
   SchoolDBType,
   SchoolEntity,
   SchoolType,
@@ -7,14 +11,20 @@ import { StopDBType, StopEntity, StopType } from "../_entities/stop.entity";
 import {
   ClassStudentToSchoolEntity,
   ClassStudentToSchoolType,
-  ClassToSchoolTypeFormated,
-  ClassToSchoolTypeFormatedWithUsedQuantity,
 } from "../_entities/student-to-school.entity";
 import { ServiceUtils } from "./_utils.service";
 
+export type StudentToSchool = {
+  id: number;
+  school_name: string;
+  stop_name: string;
+  class_name: string;
+  quantity: number;
+};
+
 export class StudentToSchoolService {
   static async import(
-    students_to_schools: ClassToSchoolTypeFormated[]
+    students_to_schools: StudentToSchool[]
   ): Promise<{ schools: SchoolType[]; stops: StopType[] }> {
     const xanoResult: { schools: SchoolDBType[]; stops: StopDBType[] } =
       await ServiceUtils.post("/student-to-school/import", {
@@ -34,9 +44,10 @@ export class StudentToSchoolService {
 
   static async create(
     props: Omit<ClassStudentToSchoolType, "id">
-  ): Promise<ClassToSchoolTypeFormatedWithUsedQuantity> {
+  ): Promise<AssociatedPointType> {
     const dbFormat = ClassStudentToSchoolEntity.dbFormat(props);
-    const response: ClassToSchoolTypeFormated = await ServiceUtils.post(
+
+    const response: AssociatedDBPointType = await ServiceUtils.post(
       "/student-to-school",
       dbFormat
     );
@@ -45,14 +56,17 @@ export class StudentToSchoolService {
 
   static async update(
     ClassStudentToSchoolProps: ClassStudentToSchoolType
-  ): Promise<ClassToSchoolTypeFormatedWithUsedQuantity> {
+  ): Promise<AssociatedPointType> {
     const dbFormat = ClassStudentToSchoolEntity.dbFormat(
       ClassStudentToSchoolProps
     );
-    const response: ClassToSchoolTypeFormated = await ServiceUtils.patch(
+    const response: AssociatedDBPointType = await ServiceUtils.patch(
       "/student-to-school/" + ClassStudentToSchoolProps.id,
       dbFormat
     );
+
+    console.log("update Response:", response);
+
     return ClassStudentToSchoolEntity.build(response);
   }
 

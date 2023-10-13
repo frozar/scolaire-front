@@ -3,9 +3,13 @@ import { useStateGui } from "../StateGui";
 import { NatureEnum } from "../type";
 import { QuantityUtils } from "../utils/quantity.utils";
 import { getRaces } from "../views/content/map/component/organism/Races";
-import { EntityUtils, LocationDBType } from "./_utils.entity";
+import {
+  AssociatedDBPointType,
+  AssociatedPointType,
+  EntityUtils,
+  LocationDBType,
+} from "./_utils.entity";
 import { ClasseDBType, ClasseEntity, ClasseType } from "./classe.entity";
-import { ClassToSchoolTypeFormatedWithUsedQuantity } from "./student-to-school.entity";
 
 const [, { nextLeafletPointId }] = useStateGui();
 
@@ -86,7 +90,7 @@ export type SchoolType = {
   name: string;
   lon: number;
   lat: number;
-  associated: ClassToSchoolTypeFormatedWithUsedQuantity[];
+  associated: AssociatedPointType[];
   nature: NatureEnum;
   classes: ClasseType[];
   leafletId: number;
@@ -98,7 +102,7 @@ export type SchoolDBType = {
   id: number;
   name: string;
   location: LocationDBType;
-  associated: ClassToSchoolTypeFormatedWithUsedQuantity[];
+  associated: AssociatedDBPointType[];
   classes: ClasseDBType[];
 };
 

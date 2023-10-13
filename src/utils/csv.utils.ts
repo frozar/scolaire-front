@@ -5,13 +5,12 @@ import {
   SchoolType,
 } from "../_entities/school.entity";
 import { StopDBType, StopEntity, StopType } from "../_entities/stop.entity";
-import {
-  CSVFormatStudentToSchool,
-  ClassToSchoolTypeFormated,
-} from "../_entities/student-to-school.entity";
 import { SchoolService } from "../_services/school.service";
 import { StopService } from "../_services/stop.service";
-import { StudentToSchoolService } from "../_services/student-to-school.service";
+import {
+  StudentToSchool,
+  StudentToSchoolService,
+} from "../_services/student-to-school.service";
 import {
   addNewGlobalWarningInformation,
   addNewUserInformation,
@@ -37,7 +36,7 @@ export namespace CsvUtils {
           );
         } else if (isStudentToSchoolFile(fileName)) {
           return importStudentToSchoolCSVFile(
-            parsedFileData as ClassToSchoolTypeFormated[]
+            parsedFileData as StudentToSchool[]
           );
         } else {
           addNewGlobalWarningInformation("Nom de fichier non reconnu");
@@ -88,7 +87,7 @@ export namespace CsvUtils {
   }
 
   async function importStudentToSchoolCSVFile(
-    parsedFileData: ClassToSchoolTypeFormated[]
+    parsedFileData: StudentToSchool[]
   ) {
     const { schools, stops } = await StudentToSchoolService.import(
       parsedFileData
@@ -184,47 +183,17 @@ export namespace CsvUtils {
 
   async function parsedCsvFileToStudentToSchoolData(
     file: File
-  ): Promise<Omit<ClassToSchoolTypeFormated, "class" | "id">[] | undefined> {
+  ): Promise<StudentToSchool[] | undefined> {
     const parsedFile = await parseFile(file);
-
     const correctHeader = ["school_name", "stop_name", "quantity"];
     if (!isCorrectHeader(parsedFile.meta.fields, correctHeader)) {
       return;
     }
-
-    function CSVFormatToFormatedType(
-      data: CSVFormatStudentToSchool
-    ): Omit<ClassToSchoolTypeFormated, "class" | "id"> | undefined {
-      if (data.school_name && data.quantity && data.stop_name) {
-        return {
-          quantity: data.quantity,
-          school: {
-            name: data.school_name,
-          },
-          stop: {
-            name: data.stop_name,
-          },
-        };
-      }
-    }
-
-    const parsedDataCSVFormat = parsedFile.data as CSVFormatStudentToSchool[];
-    const parsedDataFormated: Omit<
-      ClassToSchoolTypeFormated,
-      "class" | "id"
-    >[] = [];
-
-    for (const row of parsedDataCSVFormat) {
-      if (CSVFormatToFormatedType(row) != undefined) {
-        parsedDataFormated.push(
-          CSVFormatToFormatedType(row) as Omit<
-            ClassToSchoolTypeFormated,
-            "class" | "id"
-          >
-        );
-      }
-    }
-    return parsedDataFormated;
+    let parsedData = parsedFile.data as StudentToSchool[];
+    parsedData = parsedData.filter(
+      (data) => data.school_name && data.stop_name && data.quantity
+    );
+    return parsedData;
   }
 
   function isSchoolFile(fileName: string) {

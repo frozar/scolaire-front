@@ -1,7 +1,7 @@
 import { Match, Show, Switch, createSignal, onMount } from "solid-js";
+import { AssociatedPointType } from "../../../../../_entities/_utils.entity";
 import { RaceEntity } from "../../../../../_entities/race.entity";
 import { StopType } from "../../../../../_entities/stop.entity";
-import { ClassToSchoolTypeFormatedWithUsedQuantity } from "../../../../../_entities/student-to-school.entity";
 import PlusIcon from "../../../../../icons/PlusIcon";
 import { MapElementUtils } from "../../../../../utils/mapElement.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
@@ -58,10 +58,7 @@ export default function () {
         <Switch>
           <Match when={onPanel() == StopPanels.classes}>
             <ClassStudentToSchoolList
-              schools={
-                stopDetailsItem()
-                  ?.associated as ClassToSchoolTypeFormatedWithUsedQuantity[]
-              }
+              schools={stopDetailsItem()?.associated as AssociatedPointType[]}
             />
 
             <Show when={editItem()}>

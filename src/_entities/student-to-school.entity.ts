@@ -6,15 +6,18 @@ import {
   setStopDetailsItem,
   stopDetailsItem,
 } from "../views/content/stops/component/organism/StopDetails";
-import { ClasseType } from "./classe.entity";
+import { AssociatedDBPointType, AssociatedPointType } from "./_utils.entity";
 
 export namespace ClassStudentToSchoolEntity {
   export function build(
-    classToSchool: ClassToSchoolTypeFormated
-    //TODO lucas associatedPointType
-  ): ClassToSchoolTypeFormatedWithUsedQuantity {
+    classToSchool: AssociatedDBPointType
+  ): AssociatedPointType {
     return {
-      ...classToSchool,
+      name: classToSchool.entity.name,
+      id: classToSchool.entity.id,
+      studentSchoolId: classToSchool.id,
+      classId: classToSchool.class_id,
+      quantity: classToSchool.quantity,
       usedQuantity: 0,
     };
   }
@@ -45,10 +48,7 @@ export namespace ClassStudentToSchoolEntity {
     }
   }
 
-  export function appendToStop(
-    classItem: ClassToSchoolTypeFormatedWithUsedQuantity,
-    stopId: number
-  ) {
+  export function appendToStop(classItem: AssociatedPointType, stopId: number) {
     setStops((prev) => {
       if (prev != undefined) {
         const stops = [...prev];
@@ -70,10 +70,8 @@ export namespace ClassStudentToSchoolEntity {
         const stops = [...prev];
         const indexOfStop = stops.findIndex((prev) => prev.id == stopId);
 
-        console.log("STOP ASSO:", stops[indexOfStop], indexOfStop);
-
         stops[indexOfStop].associated = stops[indexOfStop].associated.filter(
-          (prev) => prev.id != classStudentToSchoolID
+          (prev) => prev.studentSchoolId != classStudentToSchoolID
         );
         return stops;
       }
@@ -84,7 +82,7 @@ export namespace ClassStudentToSchoolEntity {
 
   // TODO lucas à placer dans Stop component
   export function updateFromStop(
-    classStudentToSchool: ClassToSchoolTypeFormatedWithUsedQuantity,
+    classStudentToSchool: AssociatedPointType,
     stopId: number
   ) {
     setStops((prev) => {
@@ -103,27 +101,6 @@ export namespace ClassStudentToSchoolEntity {
     updateStopDetailsItem(stopId);
   }
 }
-
-export type ClassToSchoolTypeFormated = {
-  id: number;
-  quantity: number;
-  class: Omit<
-    ClasseType,
-    "afternoonStart" | "afternoonEnd" | "morningEnd" | "morningStart"
-  >;
-  school: {
-    id?: number;
-    name: string;
-  };
-  stop: {
-    id?: number;
-    name: string;
-  };
-};
-
-export type ClassToSchoolTypeFormatedWithUsedQuantity = {
-  usedQuantity: number;
-} & ClassToSchoolTypeFormated;
 
 export type ClassToSchoolDBType = {
   id: number;

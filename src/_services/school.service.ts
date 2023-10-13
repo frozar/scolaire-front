@@ -7,7 +7,7 @@ import { ServiceUtils } from "./_utils.service";
 
 export class SchoolService {
   static async getAll(): Promise<SchoolType[]> {
-    const dbSchools: SchoolDBType[] = await ServiceUtils.get("/schools");
+    const dbSchools: SchoolDBType[] = await ServiceUtils.get("/school");
     return dbSchools
       ? dbSchools.map((dbSchool) => SchoolEntity.build(dbSchool))
       : [];

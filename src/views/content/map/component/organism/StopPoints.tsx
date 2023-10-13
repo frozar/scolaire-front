@@ -125,7 +125,7 @@ export function leafletStopsFilter(): StopType[] {
 
   return stops.filter((stop) =>
     stop.associated.some(
-      (ClassToSchool) => schools.find((e) => e.id === ClassToSchool.school.id)
+      (ClassToSchool) => schools.find((e) => e.id === ClassToSchool.id)
       // TODO don't display stop with no remaining quantity in new Race Creation
       // TODO creation a display error if the stop is in the updating Race
       // && QuantityUtils.remaining(school) > 0
