@@ -76,8 +76,16 @@ async function updateStop() {
 export function leafletStopsFilter(): StopType[] {
   let schools = getSchools();
   let stops = getStops();
+  console.log("onBoard", onBoard());
 
   switch (onBoard()) {
+    case "course":
+      console.log(getSelectedLine()?.stops);
+      return stops.filter((stop) =>
+        getSelectedLine()
+          ?.stops.map((stopOfSelected) => stopOfSelected.id)
+          .includes(stop.id)
+      );
     case "line-add":
       schools = addLineSelectedSchool();
       stops = stopSelected().map((associated) => {

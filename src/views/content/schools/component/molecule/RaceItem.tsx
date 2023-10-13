@@ -8,7 +8,6 @@ import ClasseLinkedSchool from "../atom/ClasseLinkedSchool";
 import "./RaceItem.css";
 
 export function RaceItem(props: { race: RaceType }) {
-  console.log("props.race.schools", props);
   const schoolNames = () =>
     props.race.schools.map((school) => school.name ?? "");
 

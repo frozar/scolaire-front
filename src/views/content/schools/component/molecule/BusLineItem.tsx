@@ -4,15 +4,19 @@ import Pellet from "../../../../../component/atom/Pellet";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
 import ArretsLogo from "../../../../../icons/ArretsLogo";
 import { setOnBoard } from "../../../board/component/template/ContextManager";
-import { deselectAllLines } from "../../../map/component/organism/BusLines";
+import {
+  deselectAllLines,
+  getLines,
+} from "../../../map/component/organism/BusLines";
 import ClasseLinkedSchool from "../atom/ClasseLinkedSchool";
 import "./RaceItem.css";
 
 export function displayBusLine(line: LineType): void {
   setOnBoard("course");
   deselectAllLines();
-  line.setSelected(true);
-
+  getLines()
+    .filter((filterline) => filterline.id === line.id)[0]
+    .setSelected(true);
   // TODO to fix race
   // setRaces(line.courses.length > 0 ? line.courses : []);
 }
