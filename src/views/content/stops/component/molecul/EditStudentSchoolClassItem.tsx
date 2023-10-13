@@ -43,8 +43,6 @@ export default function (props: EditStopProps) {
   }
 
   onMount(() => {
-    console.log("Class:", props.classStudentToSchool);
-
     if (props.classStudentToSchool != undefined) {
       schoolSelectRef().value =
         props.classStudentToSchool.id?.toString() ?? "default";
