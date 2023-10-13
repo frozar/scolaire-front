@@ -57,6 +57,9 @@ export function Races(props: { map: L.Map }) {
         .map((line) => line.courses)
         .flat();
     }
+    if (onBoard() == "line-details") {
+      return [selectedRace() as RaceType];
+    }
 
     return getRaces;
   };
