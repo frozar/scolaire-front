@@ -28,7 +28,6 @@ interface PointsProps {
 
 export function Points(props: PointsProps) {
   createEffect(() => {
-    console.log(getSchools());
     if (getSchools().length == 0 || getStops().length == 0) {
       return;
     }

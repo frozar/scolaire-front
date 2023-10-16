@@ -35,7 +35,6 @@ import {
   setBlinkingStops,
   setCursorIsOverPoint,
 } from "../organism/Points";
-import { deselectAllRaces } from "../organism/Races";
 import { draggingRace, setDraggingRace } from "./Race";
 
 export interface SchoolPointProps {
@@ -44,17 +43,6 @@ export interface SchoolPointProps {
 }
 
 const onClick = (point: SchoolType) => {
-  if (onBoard() != "race-draw" && onBoard() != "line-add") {
-    deselectAllRaces();
-    deselectAllPoints();
-    point.setSelected(true);
-    setSchoolDetailsItem(point);
-    changeBoard("school-details");
-    updatePointColor(point);
-
-    return;
-  }
-
   const schoolsSelected = currentRace().schools;
   switch (onBoard()) {
     case "line-add":
@@ -79,6 +67,12 @@ const onClick = (point: SchoolType) => {
           return;
       }
       break;
+
+    case "line-details":
+      //TODO display school informations
+      console.log("TODO display school informations");
+      return;
+
     case "race-draw":
       switch (currentStep()) {
         case DrawRaceStep.schoolSelection:
@@ -87,36 +81,40 @@ const onClick = (point: SchoolType) => {
           }
           addSchoolToRace(point);
           return;
+
         case DrawRaceStep.editRace:
+          const lastPoint = currentRace().points.at(-1);
+
+          // TODO  add quantity pour school ?!
+          addPointToRace({
+            ...point,
+            quantity: 0,
+          });
+
+          if (!lastPoint || point.leafletId != lastPoint.leafletId) {
+            const waypoints = currentRace().waypoints;
+            if (waypoints) {
+              const newWaypoints = WaypointEntity.updateWaypoints(
+                point,
+                waypoints,
+                currentRace().points
+              );
+
+              updateWaypoints(newWaypoints);
+            }
+          }
           break;
       }
       break;
+
+    default:
+      // deselectAllRaces();
+      deselectAllPoints();
+      point.setSelected(true);
+      setSchoolDetailsItem(point);
+      changeBoard("school-details");
+      updatePointColor(point);
   }
-  const lastPoint = currentRace().points.at(-1);
-
-  // TODO  add quantity pour school ?!
-  addPointToRace({
-    ...point,
-    quantity: 0,
-  });
-
-  if (!lastPoint || point.leafletId != lastPoint.leafletId) {
-    const waypoints = currentRace().waypoints;
-    if (waypoints) {
-      const newWaypoints = WaypointEntity.updateWaypoints(
-        point,
-        waypoints,
-        currentRace().points
-      );
-
-      updateWaypoints(newWaypoints);
-    }
-  }
-
-  // //TODO pourquoi cette condition ?
-  // if (!(1 < currentRace().points.length)) {
-  //   return;
-  // }
 };
 
 const onMouseUp = (point: StopType) => {

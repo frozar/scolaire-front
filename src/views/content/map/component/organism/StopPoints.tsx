@@ -1,6 +1,5 @@
 import L from "leaflet";
 import { For, createEffect, createSignal } from "solid-js";
-import { useStateGui } from "../../../../../StateGui";
 import { AssociatedPointType } from "../../../../../_entities/_utils.entity";
 import { StopType } from "../../../../../_entities/stop.entity";
 import {
@@ -21,7 +20,7 @@ import { StopPoint } from "../molecule/StopPoint";
 import { getSelectedLine } from "./BusLines";
 import { getSchools } from "./SchoolPoints";
 
-const [, { nextLeafletPointId }] = useStateGui();
+// const [, { nextLeafletPointId }] = useStateGui();
 
 export interface StopPointsProps {
   leafletMap: L.Map;
@@ -181,14 +180,15 @@ export function leafletStopsFilter(): StopType[] {
   );
 }
 
-function buildStops(stops: StopType[]): StopType[] {
-  return stops.map((stop) => {
-    const [selected, setSelected] = createSignal(false);
-    return {
-      ...stop,
-      setSelected,
-      selected,
-      leafletId: nextLeafletPointId(),
-    };
-  });
-}
+//TODO To delete ?
+// function buildStops(stops: StopType[]): StopType[] {
+//   return stops.map((stop) => {
+//     const [selected, setSelected] = createSignal(false);
+//     return {
+//       ...stop,
+//       setSelected,
+//       selected,
+//       leafletId: nextLeafletPointId(),
+//     };
+//   });
+// }
