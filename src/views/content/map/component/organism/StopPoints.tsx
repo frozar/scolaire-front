@@ -191,8 +191,6 @@ export function leafletStopsFilter(): StopType[] {
 function buildStops(stops: StopType[]): StopType[] {
   return stops.map((stop) => {
     const [selected, setSelected] = createSignal(false);
-    console.log("in stop build");
-
     return {
       ...stop,
       setSelected,
