@@ -1,7 +1,11 @@
-.breadcrumb{
-  @apply text-green-base flex gap-1;
+.breadcrumb-list {
+  @apply text-green-base flex flex-wrap gap-1;
 }
 
-.sub-crumb{
-  @apply text-blue-base;
+.breadcrumb {
+  @apply text-green-base gap-1 w-fit;
+}
+
+.sub-crumb {
+  @apply text-blue-base w-fit;
 }

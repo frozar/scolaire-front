@@ -1,6 +1,13 @@
-import { For, Show, createEffect, createSignal } from "solid-js";
+import { For, Show } from "solid-js";
 import { MapElementUtils } from "../../../../../utils/mapElement.utils";
+import {
+  deselectAllLines,
+  getLines,
+  getSelectedLine,
+} from "../../../map/component/organism/BusLines";
 import { selectedRace } from "../../../map/component/organism/Races";
+import { getSchools } from "../../../map/component/organism/SchoolPoints";
+import { selectedClasse } from "../../../schools/component/organism/ClasseBoard";
 import { schoolDetailsItem } from "../../../schools/component/organism/SchoolDetails";
 import { stopDetailsItem } from "../../../stops/component/organism/StopDetails";
 import BreadcrumbButton from "../atom/BreadcrumbButton";
@@ -16,63 +23,92 @@ type CrumbType = {
 
 // TODO le Breadcrumb est à revoir
 export default function () {
-  const [crumbs, setCrumbs] = createSignal<CrumbType[]>([{ text: "Lignes" }]);
+  function crumbs(): CrumbType[] {
+    const linesCrumb: CrumbType = {
+      text: "Lignes",
+      onClick: () => {
+        changeBoard("line");
+        MapElementUtils.deselectAllPointsAndBusRaces();
+      },
+    };
 
-  createEffect(() => {
+    const schoolsCrumb: CrumbType = {
+      text: "Ecoles",
+      onClick: () => changeBoard("schools"),
+    };
+
+    function racesCrumb(): CrumbType {
+      const line = getLines().filter((line) =>
+        line.courses.map((course) => course.id).includes(selectedRace()?.id)
+      )[0];
+      return {
+        text: line.name?.toLowerCase() as string,
+        onClick: () => {
+          changeBoard("course");
+          deselectAllLines();
+          line.setSelected(true);
+        },
+      };
+    }
+
     switch (onBoard()) {
-      case "race-draw":
-        if (currentRace().schools.length > 0) {
-          setCrumbs([{ text: "Editer votre course" }]);
-          break;
-        }
-        setCrumbs([{ text: "Création d'une course" }]);
-        break;
-
+      case "line":
+        return [{ text: "Lignes" }];
       case "schools":
-        setCrumbs([{ text: "Ecoles" }]);
-        break;
-
+        return [{ text: "Ecoles" }];
       case "stops":
-        setCrumbs([{ text: "Arrêts" }]);
-        break;
+        return [{ text: "Arrêts" }];
 
+      case "course":
+        return [
+          linesCrumb,
+          {
+            text: getSelectedLine()?.name?.toLowerCase() as string,
+          },
+        ];
       case "stop-details":
-        setCrumbs([
+        return [
           {
             text: "Arrêts",
-            onClick: () => {
-              changeBoard("stops");
-            },
+            onClick: () => changeBoard("stops"),
           },
           {
             text: stopDetailsItem()?.name.toLowerCase() as string,
           },
-        ]);
-        break;
-
+        ];
       case "school-details":
-        setCrumbs([
-          {
-            text: "Ecoles",
-            onClick: () => {
-              changeBoard("schools");
-            },
-          },
+        return [
+          schoolsCrumb,
           {
             text: schoolDetailsItem()?.name.toLowerCase() as string,
           },
-        ]);
-        break;
-
-      case "school-class-add":
-      case "school-class-modify":
-        setCrumbs([
+        ];
+      case "line-details":
+        return [
+          linesCrumb,
+          racesCrumb(),
           {
-            text: "Ecoles",
-            onClick: () => {
-              changeBoard("schools");
-            },
+            text: selectedRace()?.name?.toLowerCase() as string,
           },
+        ];
+
+      case "school-class-modify":
+        const school = getSchools().filter((school) =>
+          school.classes.find((classe) => classe.id == selectedClasse()?.id)
+        )[0];
+        return [
+          schoolsCrumb,
+          {
+            text: school.name.toLowerCase(),
+            onClick: () => changeBoard("school-details"),
+          },
+          {
+            text: selectedClasse()?.name.toLowerCase() as string,
+          },
+        ];
+      case "school-class-add":
+        return [
+          schoolsCrumb,
           {
             text: schoolDetailsItem()?.name.toLowerCase() as string,
             onClick: () => changeBoard("school-details"),
@@ -80,27 +116,21 @@ export default function () {
           {
             text: "classe",
           },
-        ]);
-        break;
+        ];
 
-      case "line-details":
-        setCrumbs([
-          {
-            text: "Lignes",
-            onClick: () => {
-              changeBoard("line");
-              MapElementUtils.deselectAllPointsAndBusRaces();
-            },
-          },
-          {
-            text: selectedRace()?.name?.toLowerCase() as string,
-          },
-        ]);
+      case "race-draw":
+        if (currentRace().schools.length > 0) {
+          return [{ text: "Editer votre course" }];
+        }
+        return [{ text: "Création d'une course" }];
+
+      default:
+        return [];
     }
-  });
+  }
 
   return (
-    <div class="breadcrumb">
+    <div class="breadcrumb-list">
       <For each={crumbs()}>
         {(crumb, i) => (
           <Show
