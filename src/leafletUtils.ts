@@ -41,7 +41,11 @@ export function updatePointColor(point?: PointType) {
 
     for (const associated of point.associated) {
       const leafletPoint = points.filter(
-        (item) => item.id == associated.schoolId
+        (item) =>
+          item.id ==
+          (nature == NatureEnum.school
+            ? associated.stopId
+            : associated.schoolId)
       )[0];
       ids.push(leafletPoint.leafletId);
     }
