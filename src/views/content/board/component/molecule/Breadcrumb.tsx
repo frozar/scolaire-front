@@ -41,6 +41,7 @@ export default function () {
       const line = getLines().filter((line) =>
         line.courses.map((course) => course.id).includes(selectedRace()?.id)
       )[0];
+      console.log("line", line);
       return {
         text: line.name?.toLowerCase() as string,
         onClick: () => {
@@ -50,6 +51,7 @@ export default function () {
         },
       };
     }
+    console.log("onBoard()", onBoard());
 
     switch (onBoard()) {
       case "line":
