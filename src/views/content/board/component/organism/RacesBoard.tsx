@@ -17,7 +17,7 @@ export function RacesBoard() {
   const [searchKeyword, setSearchKeyword] = createSignal<string>("");
 
   const filteredRaces = () =>
-    getRaces.filter((line) => line.name?.includes(searchKeyword()));
+    getRaces().filter((line) => line.name?.includes(searchKeyword()));
 
   function addRace() {
     if (onBoard() == "race-draw") {
@@ -41,7 +41,7 @@ export function RacesBoard() {
     <section>
       <header class="races-board-header">
         <div class="races-board-header-infos">
-          <p>Total des courses: {getRaces.length}</p>
+          <p>Total des courses: {getRaces().length}</p>
           <ButtonIcon icon={<PlusIcon />} onClick={addRace} />
         </div>
 

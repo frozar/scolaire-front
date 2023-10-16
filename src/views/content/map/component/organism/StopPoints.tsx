@@ -155,15 +155,14 @@ export function leafletStopsFilter(): StopType[] {
               .includes(stop.id)
           : true
       );
-
-      if (currentStep() === DrawRaceStep.schoolSelection) {
-        return [];
+      switch (currentStep()) {
+        case DrawRaceStep.schoolSelection:
+          return [];
+        case DrawRaceStep.editRace:
+        case DrawRaceStep.initial:
+          return stops;
       }
 
-      if (currentStep() === DrawRaceStep.initial) {
-        return stops;
-      }
-      break;
     case "schools":
       return [];
     default:

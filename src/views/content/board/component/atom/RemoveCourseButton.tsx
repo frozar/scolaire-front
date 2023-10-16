@@ -21,7 +21,7 @@ export default function (props: RemoveRaceButtonProps) {
     const isDeleted: boolean = await RaceService.delete(idToRemove);
 
     if (isDeleted) {
-      setRaces(getRaces.filter((line) => line.id != idToRemove));
+      setRaces(getRaces().filter((line) => line.id != idToRemove));
     }
 
     changeBoard("line");
