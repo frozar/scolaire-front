@@ -1,5 +1,5 @@
 import L from "leaflet";
-import { createEffect, onCleanup } from "solid-js";
+import { createEffect, createSignal, onCleanup } from "solid-js";
 import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
 import {
   currentRace,
@@ -12,6 +12,8 @@ type PolylineDragMarkersProps = {
   latlngs: L.LatLng;
   index: number;
 };
+
+export const [isDraggingWaypoint, setIsDraggingWaypoint] = createSignal(false);
 
 export default function (props: PolylineDragMarkersProps) {
   // eslint-disable-next-line solid/reactivity
@@ -41,8 +43,10 @@ export default function (props: PolylineDragMarkersProps) {
 
       updateWaypoints(newWaypoints);
 
+      setIsDraggingWaypoint(false);
       polylineDragMarker.off("mouseup", handleMouseUp);
     }
+    setIsDraggingWaypoint(true);
     polylineDragMarker.on("mouseup", handleMouseUp);
     props.map.dragging.disable();
     createEffect(() => {

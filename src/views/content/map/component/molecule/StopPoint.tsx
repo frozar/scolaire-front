@@ -5,7 +5,11 @@ import {
   changeBoard,
   onBoard,
 } from "../../../board/component/template/ContextManager";
-import { COLOR_STOP_FOCUS, COLOR_STOP_LIGHT } from "../../constant";
+import {
+  COLOR_STOP_FOCUS,
+  COLOR_STOP_LIGHT,
+  COLOR_WAYPOINT,
+} from "../../constant";
 import Point from "../atom/Point";
 
 import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
@@ -24,6 +28,7 @@ import {
 } from "../../../board/component/organism/DrawRaceBoard";
 import { setStopDetailsItem } from "../../../stops/component/organism/StopDetails";
 import { setIsOverMapItem } from "../../l7MapBuilder";
+import { isDraggingWaypoint } from "../atom/PolylineDragMarker";
 import {
   blinkingStops,
   cursorIsOverPoint,
@@ -108,23 +113,27 @@ function onClick(point: StopType) {
   }
 }
 
-const onMouseOver = (stop: StopType) => {
-  setIsOverMapItem(true);
-  setBlinkingSchools(stop.associated.map((school) => school.schoolId));
+// const onMouseOver = (stop: StopType) => {
+//   if (isDraggingWaypoint()) {
+//     const circle = linkMap.get(props.point.leafletId);
 
-  if (draggingRace()) {
-    setCursorIsOverPoint(true);
-  }
-};
+//   }
+//   setIsOverMapItem(true);
+//   setBlinkingSchools(stop.associated.map((school) => school.schoolId));
 
-const onMouseOut = () => {
-  setIsOverMapItem(false);
-  setBlinkingSchools([]);
+//   if (draggingRace()) {
+//     setCursorIsOverPoint(true);
+//   }
+// };
 
-  if (draggingRace() || cursorIsOverPoint()) {
-    setCursorIsOverPoint(false);
-  }
-};
+// const onMouseOut = () => {
+//   setIsOverMapItem(false);
+//   setBlinkingSchools([]);
+
+//   if (draggingRace() || cursorIsOverPoint()) {
+//     setCursorIsOverPoint(false);
+//   }
+// };
 
 const onMouseUp = (point: StopType) => {
   if (draggingRace()) {
@@ -189,6 +198,34 @@ export function StopPoint(props: StopPointProps) {
       }
 
       circle?.setStyle({ fillColor: COLOR_STOP_FOCUS });
+    }
+  };
+
+  const onMouseOver = (stop: StopType) => {
+    if (isDraggingWaypoint()) {
+      console.log("mouseover point");
+      const circle = linkMap.get(props.point.leafletId);
+      circle?.setStyle({ radius: 10, weight: 4, color: COLOR_WAYPOINT });
+    }
+    setIsOverMapItem(true);
+    setBlinkingSchools(stop.associated.map((school) => school.schoolId));
+
+    if (draggingRace()) {
+      setCursorIsOverPoint(true);
+    }
+  };
+
+  const onMouseOut = () => {
+    if (isDraggingWaypoint()) {
+      console.log("mouseout point");
+      const circle = linkMap.get(props.point.leafletId);
+      circle?.setStyle({ radius: 5, weight: 0 }); // ! reset color ?
+    }
+    setIsOverMapItem(false);
+    setBlinkingSchools([]);
+
+    if (draggingRace() || cursorIsOverPoint()) {
+      setCursorIsOverPoint(false);
     }
   };
 
