@@ -77,8 +77,9 @@ function onClick(point: StopType) {
           return;
 
         case DrawRaceStep.editRace:
-          const associatedQuantity = getAssociatedQuantity(point);
-
+          // TODO: FIX
+          // const associatedQuantity = getAssociatedQuantity(point);
+          const associatedQuantity = 1;
           const lastPoint = currentRace().points.at(-1);
 
           addPointToRace({ ...point, quantity: associatedQuantity });
