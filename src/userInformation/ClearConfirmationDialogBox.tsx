@@ -23,18 +23,18 @@ import { getStops } from "../views/content/map/component/organism/StopPoints";
 // https://www.solidjs.com/guides/typescript#use___
 false && ClickOutside;
 
-function exitModal({ code }: KeyboardEvent) {
-  // @ts-expect-error: Currently the 'keyboard' field doesn't exist on 'navigator'
-  const keyboard = navigator.keyboard;
-  // eslint-disable-next-line solid/reactivity
-  keyboard.getLayoutMap().then(() => {
-    if (code === "Escape") {
-      if (displayedClearConfirmationDialogBox()["displayed"]) {
-        closeClearConfirmationBox();
-      }
-    }
-  });
-}
+// function exitModal({ code }: KeyboardEvent) {
+//   // @ts-expect-error: Currently the 'keyboard' field doesn't exist on 'navigator'
+//   const keyboard = navigator.keyboard;
+//   // eslint-disable-next-line solid/reactivity
+//   keyboard.getLayoutMap().then(() => {
+//     if (code === "Escape") {
+//       if (displayedClearConfirmationDialogBox()["displayed"]) {
+//         closeClearConfirmationBox();
+//       }
+//     }
+//   });
+// }
 
 function clearUserInformation(content: string, level: MessageLevelEnum) {
   addNewUserInformation({
@@ -224,7 +224,7 @@ export default function () {
                           </li>
                           <li>
                             <span class="font-semibold text-sm text-gray-900">
-                              {getRaces.length + " "}
+                              {getRaces().length + " "}
                             </span>
                             ligne(s) présente(s) sur la carte,
                           </li>

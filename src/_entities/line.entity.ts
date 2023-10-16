@@ -65,7 +65,13 @@ export class BusLineEntity {
     };
   }
 
-  static dbFormat(line: LineType): Omit<LineDBType, "id"> {
+  static dbFormat(line: LineType): {
+    color: string;
+    name: string;
+    schools: number[];
+    stops: number[];
+    courses: RaceType[];
+  } {
     const name = line.name ? line.name : "";
     return {
       color: formatColorForDB(line.color()),

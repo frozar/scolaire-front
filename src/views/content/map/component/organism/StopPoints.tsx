@@ -1,9 +1,7 @@
 import L from "leaflet";
 import { For, createEffect, createSignal } from "solid-js";
-import { useStateGui } from "../../../../../StateGui";
 import { AssociatedPointType } from "../../../../../_entities/_utils.entity";
 import { StopType } from "../../../../../_entities/stop.entity";
-import { StopService } from "../../../../../_services/stop.service";
 import {
   AddLineStep,
   addLineCurrentStep,
@@ -22,10 +20,11 @@ import { StopPoint } from "../molecule/StopPoint";
 import { getSelectedLine } from "./BusLines";
 import { getSchools } from "./SchoolPoints";
 
-const [, { nextLeafletPointId }] = useStateGui();
+// const [, { nextLeafletPointId }] = useStateGui();
 
 export interface StopPointsProps {
   leafletMap: L.Map;
+  stops: StopType[];
 }
 
 export const [getStops, setStops] = createSignal<StopType[]>([]);
@@ -83,9 +82,7 @@ export const [ramassages, setRamassages] = createSignal<PointInterface[]>([]);
 
 export function StopPoints(props: StopPointsProps) {
   // eslint-disable-next-line solid/reactivity
-  createEffect(async () => {
-    if (getSchools().length != 0) await updateStop();
-  });
+  createEffect(() => setStops(props.stops));
 
   const quantities = () => {
     return getStops().map((stop) => {
@@ -117,11 +114,6 @@ export function StopPoints(props: StopPointsProps) {
       }}
     </For>
   );
-}
-
-async function updateStop() {
-  const stops: StopType[] = buildStops(await StopService.getAll());
-  setStops(stops);
 }
 
 //TODO Delete and replace with displayedStop signal
@@ -163,15 +155,14 @@ export function leafletStopsFilter(): StopType[] {
               .includes(stop.id)
           : true
       );
-
-      if (currentStep() === DrawRaceStep.schoolSelection) {
-        return [];
+      switch (currentStep()) {
+        case DrawRaceStep.schoolSelection:
+          return [];
+        case DrawRaceStep.editRace:
+        case DrawRaceStep.initial:
+          return stops;
       }
 
-      if (currentStep() === DrawRaceStep.initial) {
-        return stops;
-      }
-      break;
     case "schools":
       return [];
     default:
@@ -188,14 +179,15 @@ export function leafletStopsFilter(): StopType[] {
   );
 }
 
-function buildStops(stops: StopType[]): StopType[] {
-  return stops.map((stop) => {
-    const [selected, setSelected] = createSignal(false);
-    return {
-      ...stop,
-      setSelected,
-      selected,
-      leafletId: nextLeafletPointId(),
-    };
-  });
-}
+//TODO To delete ?
+// function buildStops(stops: StopType[]): StopType[] {
+//   return stops.map((stop) => {
+//     const [selected, setSelected] = createSignal(false);
+//     return {
+//       ...stop,
+//       setSelected,
+//       selected,
+//       leafletId: nextLeafletPointId(),
+//     };
+//   });
+// }

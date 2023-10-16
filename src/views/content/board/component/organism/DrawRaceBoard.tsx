@@ -226,7 +226,15 @@ async function createOrUpdateRace() {
   }
 
   QuantityUtils.add(race);
-  setRaces((r) => r.id === race.id, "selected", true);
+  setRaces((races) => {
+    return races.map((currentRace) => {
+      if (currentRace.id === race.id) {
+        return { ...currentRace, selected: true };
+      } else {
+        return currentRace;
+      }
+    });
+  });
 
   setDisplayRaceMode((prev) =>
     prev == displayRaceModeEnum.straight ? prev : displayRaceModeEnum.straight

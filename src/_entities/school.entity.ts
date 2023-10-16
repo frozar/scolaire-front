@@ -77,7 +77,7 @@ export class SchoolEntity {
   static getSchoolRaces(currentSchoolId: number) {
     const lines = [];
 
-    for (const line of getRaces) {
+    for (const line of getRaces()) {
       const _line = line.schools.filter((l) => l.id == currentSchoolId);
       if (_line.length > 0) lines.push(line);
     }

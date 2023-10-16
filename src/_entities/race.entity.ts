@@ -226,8 +226,8 @@ function formatRacePointType(points: RacePointDBType[]): RacePointType[] {
 }
 
 function getAssociatedRacePoint(dbPoint: RacePointDBType): PointType {
-  if (dbPoint.school_id != 0) {
-    return getSchools().filter((item) => item.id == dbPoint.school_id)[0];
+  if (dbPoint.stop_id != 0) {
+    return getStops().filter((item) => item.id == dbPoint.stop_id)[0];
   }
-  return getStops().filter((item) => item.id == dbPoint.stop_id)[0];
+  return getSchools().filter((item) => item.id == dbPoint.school_id)[0];
 }

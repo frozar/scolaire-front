@@ -8,8 +8,9 @@ import ClasseLinkedSchool from "../atom/ClasseLinkedSchool";
 import "./RaceItem.css";
 
 export function RaceItem(props: { race: RaceType }) {
-  const schoolNames = () =>
-    props.race.schools.map((school) => school.name ?? "");
+  const schoolNames = () => {
+    return props.race.schools.map((school) => school.name ?? "");
+  };
 
   return (
     <CardWrapper class="race-item" onClick={() => onClickBusRace(props.race)}>

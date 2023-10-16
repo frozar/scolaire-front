@@ -7,7 +7,6 @@ import {
 } from "../../../board/component/template/ContextManager";
 import { COLOR_STOP_FOCUS, COLOR_STOP_LIGHT } from "../../constant";
 import Point from "../atom/Point";
-import { deselectAllRaces } from "../organism/Races";
 
 import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
 import { updatePointColor } from "../../../../../leafletUtils";
@@ -16,8 +15,10 @@ import {
   stopSelected,
 } from "../../../board/component/organism/AddLineBoardContent";
 import {
+  DrawRaceStep,
   addPointToRace,
   currentRace,
+  currentStep,
   removePoint,
   updateWaypoints,
 } from "../../../board/component/organism/DrawRaceBoard";
@@ -55,51 +56,54 @@ function getAssociatedQuantity(point: StopType) {
 }
 
 function onClick(point: StopType) {
-  if (onBoard() != "race-draw" && onBoard() != "line-add") {
-    deselectAllRaces();
-    deselectAllPoints();
-    point.setSelected(true);
-    setStopDetailsItem(point);
-    changeBoard("stop-details");
-    updatePointColor(point);
+  switch (onBoard()) {
+    case "line-add":
+      setStopSelected([
+        ...stopSelected().map((stop) => {
+          if (stop.associated.id == point.id) {
+            return { ...stop, done: !stop.done };
+          }
+          return stop;
+        }),
+      ]);
+      break;
+    case "line-details":
+      //TODO display stop informations
+      console.log("TODO display stop informations");
+      return;
+    case "race-draw":
+      switch (currentStep()) {
+        case DrawRaceStep.schoolSelection:
+          return;
 
-    return;
-  }
+        case DrawRaceStep.editRace:
+          const associatedQuantity = getAssociatedQuantity(point);
 
-  if (onBoard() == "line-add") {
-    setStopSelected([
-      ...stopSelected().map((stop) => {
-        if (stop.associated.id == point.id) {
-          return { ...stop, done: !stop.done };
-        }
-        return stop;
-      }),
-    ]);
-    return;
-  }
-  const associatedQuantity = getAssociatedQuantity(point);
+          const lastPoint = currentRace().points.at(-1);
 
-  // TODO: when add line with an etablissement point the line destroy after next point click
-  // Wait Richard/Hugo finish the line underconstruction
-  const lastPoint = currentRace().points.at(-1);
+          addPointToRace({ ...point, quantity: associatedQuantity });
 
-  addPointToRace({ ...point, quantity: associatedQuantity });
-
-  if (!lastPoint || point.leafletId != lastPoint.leafletId) {
-    const waypoints = currentRace().waypoints;
-    if (waypoints) {
-      const newWaypoints = WaypointEntity.updateWaypoints(
-        point,
-        waypoints,
-        currentRace().points
-      );
-      updateWaypoints(newWaypoints);
-    }
-  }
-
-  //TODO pourquoi cette condition ?
-  if (!(1 < currentRace().points.length)) {
-    return;
+          if (!lastPoint || point.leafletId != lastPoint.leafletId) {
+            const waypoints = currentRace().waypoints;
+            if (waypoints) {
+              const newWaypoints = WaypointEntity.updateWaypoints(
+                point,
+                waypoints,
+                currentRace().points
+              );
+              updateWaypoints(newWaypoints);
+            }
+          }
+          break;
+      }
+      break;
+    default:
+      // deselectAllRaces();
+      deselectAllPoints();
+      point.setSelected(true);
+      setStopDetailsItem(point);
+      changeBoard("stop-details");
+      updatePointColor(point);
   }
 }
 

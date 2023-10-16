@@ -1,0 +1,273 @@
+[
+  {
+    "id": 305,
+    "lon": 55.534380675351,
+    "lat": -20.946658830374,
+    "name": "Ecole DE BEAUMONT",
+    "nature": "school",
+    "associated": [
+      {
+        "schoolName": "Ecole DE BEAUMONT",
+        "schoolId": 305,
+        "quantity": 6,
+        "usedQuantity": 0
+      },
+      {
+        "schoolName": "Ecole DE BEAUMONT",
+        "schoolId": 305,
+        "quantity": 5,
+        "usedQuantity": 0
+      },
+      {
+        "schoolName": "Ecole DE BEAUMONT",
+        "schoolId": 305,
+        "quantity": 4,
+        "usedQuantity": 0
+      },
+      {
+        "schoolName": "Ecole DE BEAUMONT",
+        "schoolId": 305,
+        "quantity": 4,
+        "usedQuantity": 0
+      },
+      {
+        "schoolName": "Ecole DE BEAUMONT",
+        "schoolId": 305,
+        "quantity": 3,
+        "usedQuantity": 0
+      },
+      {
+        "schoolName": "Ecole DE BEAUMONT",
+        "schoolId": 305,
+        "quantity": 5,
+        "usedQuantity": 0
+      },
+      {
+        "schoolName": "Ecole DE BEAUMONT",
+        "schoolId": 305,
+        "quantity": 5,
+        "usedQuantity": 0
+      },
+      {
+        "schoolName": "Ecole DE BEAUMONT",
+        "schoolId": 305,
+        "quantity": 2,
+        "usedQuantity": 0
+      },
+      {
+        "schoolName": "Ecole DE BEAUMONT",
+        "schoolId": 305,
+        "quantity": 7,
+        "usedQuantity": 0
+      },
+      {
+        "schoolName": "Ecole DE BEAUMONT",
+        "schoolId": 305,
+        "quantity": 5,
+        "usedQuantity": 0
+      },
+      {
+        "schoolName": "Ecole DE BEAUMONT",
+        "schoolId": 305,
+        "quantity": 4,
+        "usedQuantity": 0
+      },
+      {
+        "schoolName": "Ecole DE BEAUMONT",
+        "schoolId": 305,
+        "quantity": 8,
+        "usedQuantity": 0
+      },
+      {
+        "schoolName": "Ecole DE BEAUMONT",
+        "schoolId": 305,
+        "quantity": 12,
+        "usedQuantity": 0
+      },
+      {
+        "schoolName": "Ecole DE BEAUMONT",
+        "schoolId": 305,
+        "quantity": 3,
+        "usedQuantity": 0
+      },
+      {
+        "schoolName": "Ecole DE BEAUMONT",
+        "schoolId": 305,
+        "quantity": 1,
+        "usedQuantity": 0
+      },
+      {
+        "schoolName": "Ecole DE BEAUMONT",
+        "schoolId": 305,
+        "quantity": 6,
+        "usedQuantity": 0
+      },
+      {
+        "schoolName": "Ecole DE BEAUMONT",
+        "schoolId": 305,
+        "quantity": 2,
+        "usedQuantity": 0
+      },
+      {
+        "schoolName": "Ecole DE BEAUMONT",
+        "schoolId": 305,
+        "quantity": 2,
+        "usedQuantity": 0
+      },
+      {
+        "schoolName": "Ecole DE BEAUMONT",
+        "schoolId": 305,
+        "quantity": 1,
+        "usedQuantity": 0
+      },
+      {
+        "schoolName": "Ecole DE BEAUMONT",
+        "schoolId": 305,
+        "quantity": 5,
+        "usedQuantity": 0
+      },
+      {
+        "schoolName": "Ecole DE BEAUMONT",
+        "schoolId": 305,
+        "quantity": 1,
+        "usedQuantity": 0
+      },
+      {
+        "schoolName": "Ecole DE BEAUMONT",
+        "schoolId": 305,
+        "quantity": 2,
+        "usedQuantity": 0
+      },
+      {
+        "schoolName": "Ecole DE BEAUMONT",
+        "schoolId": 305,
+        "quantity": 7,
+        "usedQuantity": 0
+      },
+      {
+        "schoolName": "Ecole DE BEAUMONT",
+        "schoolId": 305,
+        "quantity": 7,
+        "usedQuantity": 0
+      },
+      {
+        "schoolName": "Ecole DE BEAUMONT",
+        "schoolId": 305,
+        "quantity": 5,
+        "usedQuantity": 0
+      },
+      {
+        "schoolName": "Ecole DE BEAUMONT",
+        "schoolId": 305,
+        "quantity": 1,
+        "usedQuantity": 0
+      },
+      {
+        "schoolName": "Ecole DE BEAUMONT",
+        "schoolId": 305,
+        "quantity": 4,
+        "usedQuantity": 0
+      },
+      {
+        "schoolName": "Ecole DE BEAUMONT",
+        "schoolId": 305,
+        "quantity": 45,
+        "usedQuantity": 0
+      },
+      {
+        "schoolName": "Ecole DE BEAUMONT",
+        "schoolId": 305,
+        "quantity": 5,
+        "usedQuantity": 0
+      },
+      {
+        "schoolName": "Ecole DE BEAUMONT",
+        "schoolId": 305,
+        "quantity": 13,
+        "usedQuantity": 0
+      }
+    ],
+    "classes": [
+      {
+        "id": 73,
+        "name": "Classe de Lucas",
+        "morningStart": {
+          "hour": 0,
+          "minutes": 0
+        },
+        "morningEnd": {
+          "hour": 0,
+          "minutes": 0
+        },
+        "afternoonStart": {
+          "hour": 0,
+          "minutes": 0
+        },
+        "afternoonEnd": {
+          "hour": 0,
+          "minutes": 0
+        }
+      }
+    ],
+    "leafletId": 177475
+  },
+  {
+    "id": 306,
+    "lon": 55.531434407415,
+    "lat": -20.921777445981,
+    "name": "Ecole DE BOIS ROUGE",
+    "nature": "school",
+    "associated": [
+      {
+        "schoolName": "Ecole DE BOIS ROUGE",
+        "schoolId": 306,
+        "quantity": 6,
+        "usedQuantity": 0
+      },
+      {
+        "schoolName": "Ecole DE BOIS ROUGE",
+        "schoolId": 306,
+        "quantity": 7,
+        "usedQuantity": 0
+      },
+      {
+        "schoolName": "Ecole DE BOIS ROUGE",
+        "schoolId": 306,
+        "quantity": 3,
+        "usedQuantity": 0
+      },
+      {
+        "schoolName": "Ecole DE BOIS ROUGE",
+        "schoolId": 306,
+        "quantity": 11,
+        "usedQuantity": 0
+      },
+      {
+        "schoolName": "Ecole DE BOIS ROUGE",
+        "schoolId": 306,
+        "quantity": 3,
+        "usedQuantity": 0
+      },
+      {
+        "schoolName": "Ecole DE BOIS ROUGE",
+        "schoolId": 306,
+        "quantity": 5,
+        "usedQuantity": 0
+      },
+      {
+        "schoolName": "Ecole DE BOIS ROUGE",
+        "schoolId": 306,
+        "quantity": 12,
+        "usedQuantity": 0
+      },
+      {
+        "schoolName": "Ecole DE BOIS ROUGE",
+        "schoolId": 306,
+        "quantity": 7,
+        "usedQuantity": 0
+      }
+    ],
+    "classes": [],
+    "leafletId": 177476
+  }
+]

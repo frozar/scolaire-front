@@ -37,15 +37,19 @@ import {
 export const [draggingRace, setDraggingRace] = createSignal<boolean>(false);
 
 export function onClickBusRace(race: RaceType) {
-  if (onBoard() != "race-draw") {
-    deselectAllRaces();
-    deselectAllPoints();
+  console.log("race", race);
+  switch (onBoard()) {
+    case "line-details":
+      return;
+    default:
+      deselectAllRaces();
+      deselectAllPoints();
 
-    setSelectedRace(race);
+      setSelectedRace(race);
 
-    changeBoard("line-details");
+      changeBoard("line-details");
 
-    updatePointColor();
+      updatePointColor();
   }
 }
 
