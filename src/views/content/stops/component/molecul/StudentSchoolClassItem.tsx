@@ -16,9 +16,7 @@ export default function (props: { school: AssociatedPointType }) {
   const [editingMode, setEditingMode] = createSignal(false);
 
   async function onClickDelete() {
-    const response = await StudentToSchoolService.delete(
-      props.school.studentSchoolId
-    );
+    const response = await StudentToSchoolService.delete(props.school.id);
     console.log("delete class to school response", response);
 
     removeFromStop(response, stopDetailsItem()?.id as number);
@@ -40,7 +38,7 @@ export default function (props: { school: AssociatedPointType }) {
     >
       <CardWrapper class="school-list-item">
         <div class="school-list-item-content">
-          <CardTitle title={props.school.name} />
+          <CardTitle title={props.school.schoolName} />
           <p class="school-list-item-quantity">
             {/* TODO: Lucas fix remaining with new type */}
             {QuantityUtils.remaining(props.school) +

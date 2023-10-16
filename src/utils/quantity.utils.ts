@@ -65,7 +65,7 @@ export namespace QuantityUtils {
           schools.map((_school) => {
             if (_school.id == school.id) {
               _school.associated.map((stop) => {
-                if (stop.id == point.id) {
+                if (stop.schoolId == point.id) {
                   if (operation === OperationType.set)
                     stop.usedQuantity = point.quantity;
                   else if (operation === OperationType.add)
@@ -93,7 +93,7 @@ export namespace QuantityUtils {
           stops.map((stop) => {
             if (stop.id == point.id) {
               stop.associated.map((_school) => {
-                if (_school.id == school.id) {
+                if (_school.schoolId == school.id) {
                   if (operation === OperationType.set)
                     _school.usedQuantity = point.quantity;
                   else if (operation === OperationType.add)

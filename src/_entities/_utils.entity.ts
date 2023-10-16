@@ -50,12 +50,13 @@ export class EntityUtils {
       }
 
       return {
-        name: school?.name as string,
-        id: school?.id as number,
-        studentSchoolId: item.id,
+        schoolName: school?.name as string,
+        schoolId: school?.id as number,
+        id: item.id,
         classId: item.class_id,
         quantity: item.quantity,
         usedQuantity: 0,
+        stopId: item.stop_id,
       };
     });
   }
@@ -64,28 +65,16 @@ export class EntityUtils {
 export type PointType = SchoolType | StopType;
 
 export type AssociatedPointType = {
-  studentSchoolId: number;
   id: number;
-  name: string;
+  schoolId: number;
+  schoolName: string;
   quantity: number;
   usedQuantity: number;
   classId: number;
+  stopId?: number;
 };
 
-// export type AssociatedDBPointType = {
-//   // ! ID of StudentToSchool association
-//   id: number;
-//   entity: {
-//     // ! associated School entity
-//     id: number;
-//     name: string;
-//   };
-//   quantity: number;
-//   class_id: number;
-// };
-
 export type AssociatedDBPointType = {
-  // ! ID of StudentToSchool association
   id: number;
   quantity: number;
   class_id: number;

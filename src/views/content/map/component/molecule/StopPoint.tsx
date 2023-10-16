@@ -49,7 +49,8 @@ const rangeRadius = maxRadius - minRadius;
 //TODO Ne doit pas être placé ici
 function getAssociatedQuantity(point: StopType) {
   return point.associated.filter(
-    (associatedSchool) => associatedSchool.id === currentRace().schools[0].id
+    (associatedSchool) =>
+      associatedSchool.schoolId === currentRace().schools[0].id
   )[0].quantity;
 }
 
@@ -104,7 +105,7 @@ function onClick(point: StopType) {
 
 const onMouseOver = (stop: StopType) => {
   setIsOverMapItem(true);
-  setBlinkingSchools(stop.associated.map((school) => school.id));
+  setBlinkingSchools(stop.associated.map((school) => school.schoolId));
 
   if (draggingRace()) {
     setCursorIsOverPoint(true);

@@ -122,7 +122,8 @@ const onClick = (point: SchoolType) => {
 const onMouseUp = (point: StopType) => {
   if (draggingRace()) {
     const associatedQuantity = point.associated.filter(
-      (associatedSchool) => associatedSchool.id === currentRace().schools[0].id
+      (associatedSchool) =>
+        associatedSchool.schoolId === currentRace().schools[0].id
     )[0].quantity;
 
     // TODO  add quantity pour school ?!
@@ -136,7 +137,7 @@ const onMouseUp = (point: StopType) => {
 
 const onMouseOver = (school: SchoolType) => {
   setIsOverMapItem(true);
-  setBlinkingStops(school.associated.map((stop) => stop.id));
+  setBlinkingStops(school.associated.map((stop) => stop.schoolId));
 
   if (draggingRace()) {
     setCursorIsOverPoint(true);

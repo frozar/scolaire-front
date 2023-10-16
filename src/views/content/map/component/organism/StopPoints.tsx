@@ -50,7 +50,7 @@ export function removeFromStop(classStudentToSchoolID: number, stopId: number) {
       const indexOfStop = stops.findIndex((prev) => prev.id == stopId);
 
       stops[indexOfStop].associated = stops[indexOfStop].associated.filter(
-        (prev) => prev.studentSchoolId != classStudentToSchoolID
+        (prev) => prev.id != classStudentToSchoolID
       );
       return stops;
     }
@@ -68,7 +68,7 @@ export function updateFromStop(
       const stops = [...prev];
       const indexOfStop = stops.findIndex((prev) => prev.id == stopId);
       const indexOfClass = stops[indexOfStop].associated.findIndex(
-        (prev) => prev.id == classStudentToSchool.id
+        (prev) => prev.schoolId == classStudentToSchool.schoolId
       );
       stops[indexOfStop].associated[indexOfClass] = classStudentToSchool;
       return stops;
@@ -145,7 +145,7 @@ export function leafletStopsFilter(): StopType[] {
             return associated.associated;
           });
           const associatedIdSelected = schools
-            .map((school) => school.associated.map((value) => value.id))
+            .map((school) => school.associated.map((value) => value.schoolId))
             .flat();
           getStops().filter((stoptofilter) =>
             associatedIdSelected.includes(stoptofilter.id)
@@ -180,7 +180,7 @@ export function leafletStopsFilter(): StopType[] {
 
   return stops.filter((stop) =>
     stop.associated.some(
-      (ClassToSchool) => schools.find((e) => e.id === ClassToSchool.id)
+      (ClassToSchool) => schools.find((e) => e.id === ClassToSchool.schoolId)
       // TODO don't display stop with no remaining quantity in new Race Creation
       // TODO creation a display error if the stop is in the updating Race
       // && QuantityUtils.remaining(school) > 0
