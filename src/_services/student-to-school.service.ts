@@ -59,7 +59,7 @@ export class StudentToSchoolService {
   ): Promise<AssociatedPointType> {
     const dbFormat = ClassStudentToSchoolEntity.dbFormat(classToSchool);
     const response: AssociatedDBPointType = await ServiceUtils.patch(
-      "/student-to-school_v2/" + classToSchool.id,
+      "/student-to-school/" + classToSchool.id + "/v2",
       dbFormat
     );
     return EntityUtils.formatAssociatedClassToSchool([response])[0];
@@ -67,7 +67,9 @@ export class StudentToSchoolService {
 
   // Backend will return only the id deleted
   static async delete(id: number): Promise<number> {
-    const response = await ServiceUtils.delete("/student-to-school/" + id);
+    const response = await ServiceUtils.delete(
+      "/student-to-school/" + id + "/v2"
+    );
     return response;
   }
 }
