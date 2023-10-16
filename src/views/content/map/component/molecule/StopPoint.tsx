@@ -246,7 +246,12 @@ export function StopPoint(props: StopPointProps) {
 
   const onMouseUp = (point: StopType) => {
     const nextIndex = draggingWaypointIndex();
-    if (nextIndex) {
+    if (
+      nextIndex &&
+      !currentRace()
+        .points.map((point) => point.id)
+        .includes(point.id)
+    ) {
       setDraggingWaypointIndex();
       console.log("nextIndex", nextIndex);
       console.log("mouseUp stop");
