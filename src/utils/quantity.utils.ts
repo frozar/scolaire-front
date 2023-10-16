@@ -1,4 +1,4 @@
-import { AssociatedPointType } from "../_entities/_utils.entity";
+import { AssociatedSchoolType } from "../_entities/_utils.entity";
 import { RacePointType, RaceType } from "../_entities/race.entity";
 import { SchoolType } from "../_entities/school.entity";
 import { NatureEnum } from "../type";
@@ -12,11 +12,11 @@ enum OperationType {
 }
 
 export namespace QuantityUtils {
-  export function remaining(point: AssociatedPointType) {
+  export function remaining(point: AssociatedSchoolType) {
     return point.quantity - point.usedQuantity;
   }
 
-  export function remainingQuantities(points: AssociatedPointType[]) {
+  export function remainingQuantities(points: AssociatedSchoolType[]) {
     let quantity = 0;
     points.forEach((point) => {
       quantity += remaining(point);

@@ -1,4 +1,5 @@
-import { AssociatedDBPointType, AssociatedPointType } from "./_utils.entity";
+import { AssociatedSchoolType } from "./_utils.entity";
+import { DBAssociatedStop } from "./stop.entity";
 
 export namespace ClasseEntity {
   export function build(dbData: ClasseDBType): ClasseType {
@@ -46,7 +47,7 @@ export type ClasseDBType = {
   morning_end: string;
   afternoon_start: string;
   afternoon_end: string;
-  associated?: AssociatedDBPointType[];
+  associated?: DBAssociatedStop[];
 };
 
 export type ClasseType = {
@@ -57,5 +58,5 @@ export type ClasseType = {
   morningEnd: HeureFormat;
   afternoonStart: HeureFormat;
   afternoonEnd: HeureFormat;
-  associated?: AssociatedPointType[];
+  associated?: AssociatedSchoolType[];
 };

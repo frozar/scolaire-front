@@ -1,9 +1,6 @@
-import {
-  getSchoolWhereClassId,
-  getSchools,
-} from "../views/content/map/component/organism/SchoolPoints";
+import { getSchoolWhereClassId } from "../views/content/map/component/organism/SchoolPoints";
 import { SchoolType } from "./school.entity";
-import { StopType } from "./stop.entity";
+import { DBAssociatedStop, StopType } from "./stop.entity";
 
 export class EntityUtils {
   static builLocationPoint(lng: number, lat: number): LocationDBType {
@@ -35,28 +32,35 @@ export class EntityUtils {
     };
   }
 
-  static formatAssociatedClassToSchool(
-    associatedDBPoint: AssociatedDBPointType[],
-    school?: { id: number; name: string }
+  static formatAssociatedClassToSchoolForStop(
+    associatedDBPoint: DBAssociatedStop[]
+    // associatedDBPoint: AssociatedDBPointType[],
     // TODO associatedPointType (comme avant avec nature et companie)
-  ): AssociatedPointType[] {
+  ): AssociatedSchoolType[] {
     return associatedDBPoint.map((item) => {
-      if (getSchools().length != 0) {
-        const bufferSchool = getSchoolWhereClassId(item.class_id);
-        school = {
-          id: bufferSchool?.id as number,
-          name: bufferSchool?.name as string,
-        };
-      }
+      const school = getSchoolWhereClassId(item.class_id);
 
       return {
         schoolName: school?.name as string,
         schoolId: school?.id as number,
-        id: item.id,
+        idClassToSchool: item.id,
         classId: item.class_id,
         quantity: item.quantity,
         usedQuantity: 0,
-        stopId: item.stop_id,
+      };
+    });
+  }
+
+  static formatAssociatedClassToSchoolForSchool(
+    associatedDBPoint: DBAssociatedStop[],
+    classId: number
+  ): AssociatedStopType[] {
+    return associatedDBPoint.map((item) => {
+      return {
+        idClassToSchool: item.id,
+        classId,
+        quantity: item.quantity,
+        stopId: item.stop_id as number,
       };
     });
   }
@@ -64,21 +68,20 @@ export class EntityUtils {
 
 export type PointType = SchoolType | StopType;
 
-export type AssociatedPointType = {
-  id: number;
+export type AssociatedSchoolType = {
+  idClassToSchool: number;
   schoolId: number;
   schoolName: string;
   quantity: number;
   usedQuantity: number;
   classId: number;
-  stopId?: number;
 };
 
-export type AssociatedDBPointType = {
-  id: number;
+export type AssociatedStopType = {
+  idClassToSchool: number;
+  stopId: number;
   quantity: number;
-  class_id: number;
-  stop_id?: number;
+  classId: number;
 };
 
 export enum LocationDBTypeEnum {

@@ -7,7 +7,7 @@ import BoardFooterActions from "../molecule/BoardFooterActions";
 import "../../../../../css/timeline.css";
 import { ColorPicker } from "../atom/ColorPicker";
 
-import { AssociatedPointType } from "../../../../../_entities/_utils.entity";
+import { AssociatedSchoolType } from "../../../../../_entities/_utils.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { manageStatusCode } from "../../../../../_services/_utils.service";
 import { BusLineService } from "../../../../../_services/line.service";
@@ -49,7 +49,7 @@ export const [addLineCurrentStep, setAddLineCurrentStep] =
 // eslint-disable-next-line solid/reactivity
 export default function () {
   createEffect(() => {
-    const selectedAssociated: AssociatedPointType[] = [];
+    const selectedAssociated: AssociatedSchoolType[] = [];
     addLineSelectedSchool().forEach((elem) => {
       elem.associated.forEach((associatedValue) =>
         selectedAssociated.includes(associatedValue)
