@@ -1,18 +1,31 @@
 import {
+  AssociatedDBPointType,
+  AssociatedPointType,
+  EntityUtils,
+} from "../_entities/_utils.entity";
+import {
   SchoolDBType,
   SchoolEntity,
   SchoolType,
 } from "../_entities/school.entity";
 import { StopDBType, StopEntity, StopType } from "../_entities/stop.entity";
 import {
-  ClassStudentToSchoolDBType,
-  ClassStudentToSchoolTypeFormated,
+  ClassStudentToSchoolEntity,
+  ClassStudentToSchoolType,
 } from "../_entities/student-to-school.entity";
 import { ServiceUtils } from "./_utils.service";
 
+export type StudentToSchool = {
+  id: number;
+  school_name: string;
+  stop_name: string;
+  class_name: string;
+  quantity: number;
+};
+
 export class StudentToSchoolService {
   static async import(
-    students_to_schools: ClassStudentToSchoolTypeFormated[]
+    students_to_schools: StudentToSchool[]
   ): Promise<{ schools: SchoolType[]; stops: StopType[] }> {
     const xanoResult: { schools: SchoolDBType[]; stops: StopDBType[] } =
       await ServiceUtils.post("/student-to-school/import", {
@@ -31,17 +44,32 @@ export class StudentToSchoolService {
   }
 
   static async create(
-    props: Omit<ClassStudentToSchoolDBType, "id">
-  ): Promise<ClassStudentToSchoolTypeFormated> {
-    const response: ClassStudentToSchoolTypeFormated = await ServiceUtils.post(
+    classToSchool: Omit<ClassStudentToSchoolType, "id">
+  ): Promise<AssociatedPointType> {
+    const dbFormat = ClassStudentToSchoolEntity.dbFormat(classToSchool);
+    const response: AssociatedDBPointType = await ServiceUtils.post(
       "/student-to-school",
-      props
+      dbFormat
     );
-    return response;
+    return EntityUtils.formatAssociatedClassToSchool([response])[0];
   }
 
+  static async update(
+    classToSchool: ClassStudentToSchoolType
+  ): Promise<AssociatedPointType> {
+    const dbFormat = ClassStudentToSchoolEntity.dbFormat(classToSchool);
+    const response: AssociatedDBPointType = await ServiceUtils.patch(
+      "/student-to-school/" + classToSchool.id + "/v2",
+      dbFormat
+    );
+    return EntityUtils.formatAssociatedClassToSchool([response])[0];
+  }
+
+  // Backend will return only the id deleted
   static async delete(id: number): Promise<number> {
-    const response = await ServiceUtils.delete("/student-to-school/" + id);
+    const response = await ServiceUtils.delete(
+      "/student-to-school/" + id + "/v2"
+    );
     return response;
   }
 }

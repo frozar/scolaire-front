@@ -22,6 +22,16 @@ export interface SchoolPointsProps {
 
 export const [getSchools, setSchools] = createSignal<SchoolType[]>([]);
 
+export function getSchoolWhereClassId(classId: number): SchoolType | undefined {
+  let school: SchoolType | undefined;
+  for (const school_ of getSchools()) {
+    school_.classes.map((classe) => {
+      if (classe.id == classId) school = school_;
+    });
+  }
+  return school;
+}
+
 export function SchoolPoints(props: SchoolPointsProps) {
   // eslint-disable-next-line solid/reactivity
   createEffect(async () => updateSchools());

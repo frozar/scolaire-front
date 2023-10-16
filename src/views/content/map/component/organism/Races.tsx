@@ -3,13 +3,14 @@ import { For, createEffect, createSignal, onCleanup } from "solid-js";
 import { Race } from "../molecule/Race";
 
 import { createStore } from "solid-js/store";
-import { RaceType } from "../../../../../_entities/race.entity";
+import { RaceEntity, RaceType } from "../../../../../_entities/race.entity";
 import {
   DrawRaceStep,
   currentRace,
   currentStep,
 } from "../../../board/component/organism/DrawRaceBoard";
 import { onBoard } from "../../../board/component/template/ContextManager";
+import { stopDetailsItem } from "../../../stops/component/organism/StopDetails";
 import { getLines, getSelectedLine } from "./BusLines";
 
 export const arrowsMap = new Map<number, L.Marker[]>();
@@ -49,19 +50,24 @@ export function Races(props: { map: L.Map }) {
 
       return [currentRace()];
     }
-    if (onBoard() == "line-add") {
-      return [];
-    }
-    if (onBoard() == "line") {
-      return getLines()
-        .map((line) => line.courses)
-        .flat();
-    }
-    if (onBoard() == "line-details") {
-      return [selectedRace() as RaceType];
-    }
 
-    return getRaces;
+    switch (onBoard()) {
+      case "line-add":
+        return [];
+
+      case "line":
+        return getLines()
+          .map((line) => line.courses)
+          .flat();
+
+      case "stop-details":
+        const stopId = stopDetailsItem()?.id;
+        if (!stopId) return [];
+        return RaceEntity.getStopRaces(stopId);
+
+      case "line-details":
+        return [selectedRace() as RaceType];
+    }
   };
 
   return (

@@ -1,22 +1,37 @@
 import { Match, Show, Switch, createSignal, onMount } from "solid-js";
 import { AssociatedPointType } from "../../../../../_entities/_utils.entity";
+import { RaceEntity } from "../../../../../_entities/race.entity";
 import { StopType } from "../../../../../_entities/stop.entity";
 import PlusIcon from "../../../../../icons/PlusIcon";
 import { MapElementUtils } from "../../../../../utils/mapElement.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { changeBoard } from "../../../board/component/template/ContextManager";
-import { getRaces } from "../../../map/component/organism/Races";
+import { getStops } from "../../../map/component/organism/StopPoints";
 import { RacesList } from "../../../schools/component/organism/RacesList";
+import EditStudentSchoolClassItem from "../molecul/EditStudentSchoolClassItem";
 import StopDetailsHeader from "../molecul/StopDetailsHeader";
 import StopDetailsPanelsButton from "../molecul/StopDetailsPanelsButton";
 import "./StopDetails.css";
-import StudentSchoolClassList from "./StudentSchoolClassList";
+import ClassStudentToSchoolList from "./StudentSchoolClassList";
 
 export const [stopDetailsItem, setStopDetailsItem] = createSignal<StopType>();
+export function updateStopDetailsItem(stopId: number) {
+  if (stopDetailsItem() != undefined && stopDetailsItem()?.id == stopId) {
+    const stopIndex = getStops().findIndex((prev) => prev.id == stopId);
+    const stop = getStops()[stopIndex];
 
+    setStopDetailsItem((prev) => {
+      if (prev != undefined) {
+        const currentItem = { ...stop };
+        return currentItem;
+      }
+      return prev;
+    });
+  }
+}
 export enum StopPanels {
   classes = "schools",
-  lines = "lines",
+  races = "races",
 }
 
 export default function () {
@@ -32,43 +47,6 @@ export default function () {
 
   const toggleEditItem = () => setEditItem((bool) => !bool);
 
-  function getStopRaces() {
-    const races = [];
-
-    for (const race of getRaces) {
-      const _race = race.points.filter((r) => r.id == stopDetailsItem()?.id);
-      if (_race.length > 0) races.push(race);
-    }
-
-    return races;
-  }
-
-  function appendClassToStop(classItem: AssociatedPointType) {
-    setStopDetailsItem((prev) => {
-      let currentItem;
-      if (prev != undefined) {
-        currentItem = { ...prev };
-        currentItem?.associated.push(classItem);
-      }
-
-      return currentItem;
-    });
-  }
-
-  function removeClassToSchool(id: number) {
-    setStopDetailsItem((prev) => {
-      let currentItem;
-      if (prev != undefined) {
-        currentItem = { ...prev };
-        currentItem.associated = currentItem.associated.filter(
-          (item) => item.studentSchoolId != id
-        );
-      }
-
-      return currentItem;
-    });
-  }
-
   return (
     <section>
       <StopDetailsHeader stop={stopDetailsItem() as StopType} />
@@ -80,7 +58,9 @@ export default function () {
           onPanel={onPanel}
           setOnPanel={setOnPanel}
           NbSchool={stopDetailsItem()?.associated.length as number}
-          NbRaces={getStopRaces().length}
+          NbRaces={
+            RaceEntity.getStopRaces(stopDetailsItem()?.id as number).length
+          }
         />
 
         <Show when={onPanel() == "schools"}>
@@ -91,22 +71,18 @@ export default function () {
       <div class="content mt-2">
         <Switch>
           <Match when={onPanel() == StopPanels.classes}>
-            <StudentSchoolClassList
+            <ClassStudentToSchoolList
               schools={stopDetailsItem()?.associated as AssociatedPointType[]}
-              removeClassStudentToSchoolItem={removeClassToSchool}
             />
 
             <Show when={editItem()}>
-              {/* TODO editStop to fix ? */}
-              {/* <EditStop
-                appendClassToList={appendClassToStop}
-                close={toggleEditItem}
-                stopID={stopDetailsItem()?.id as number}
-              /> */}
+              <EditStudentSchoolClassItem close={toggleEditItem} />
             </Show>
           </Match>
-          <Match when={onPanel() == StopPanels.lines}>
-            <RacesList races={getStopRaces()} />
+          <Match when={onPanel() == StopPanels.races}>
+            <RacesList
+              races={RaceEntity.getStopRaces(stopDetailsItem()?.id as number)}
+            />
           </Match>
         </Switch>
       </div>

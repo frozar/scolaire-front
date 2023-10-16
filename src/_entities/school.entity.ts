@@ -22,7 +22,10 @@ export class SchoolEntity {
       lat: dbSchool.location.data.lat,
       name: dbSchool.name,
       nature: NatureEnum.school,
-      associated: EntityUtils.formatAssociatedPoints(dbSchool.associated),
+      associated: EntityUtils.formatAssociatedClassToSchool(
+        dbSchool.associated,
+        { id: dbSchool.id, name: dbSchool.name }
+      ),
       classes:
         dbSchool.classes != undefined
           ? dbSchool.classes.map((classe) => ClasseEntity.build(classe))

@@ -13,13 +13,14 @@ const [, { nextLeafletPointId }] = useStateGui();
 export class StopEntity {
   static build(dbStop: StopDBType): StopType {
     const [selected, setSelected] = createSignal<boolean>(false);
+
     return {
       id: dbStop.id,
       lon: dbStop.location.data.lng,
       lat: dbStop.location.data.lat,
       name: dbStop.name,
       nature: NatureEnum.stop,
-      associated: EntityUtils.formatAssociatedPoints(dbStop.associated),
+      associated: EntityUtils.formatAssociatedClassToSchool(dbStop.associated),
 
       leafletId: nextLeafletPointId(),
       selected: selected,

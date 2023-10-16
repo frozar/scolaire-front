@@ -1,9 +1,7 @@
-import { ClasseType } from "./classe.entity";
-
-export namespace ClassStudentToSchool {
+export namespace ClassStudentToSchoolEntity {
   export function dbFormat(
     classStudentToSchool: Omit<ClassStudentToSchoolType, "id">
-  ): Omit<ClassStudentToSchoolDBType, "id"> {
+  ): Omit<ClassToSchoolDBType, "id"> {
     return {
       stop_id: classStudentToSchool.stopId,
       school_id: classStudentToSchool.schoolId,
@@ -13,24 +11,7 @@ export namespace ClassStudentToSchool {
   }
 }
 
-export type ClassStudentToSchoolTypeFormated = {
-  id: number;
-  quantity: number;
-  class: Omit<
-    ClasseType,
-    "afternoonStart" | "afternoonStart" | "morningEnd" | "morningStart"
-  >;
-  school: {
-    id?: number;
-    name: string;
-  };
-  stop: {
-    id?: number;
-    name: string;
-  };
-};
-
-export type ClassStudentToSchoolDBType = {
+export type ClassToSchoolDBType = {
   id: number;
   stop_id: number;
   school_id: number;

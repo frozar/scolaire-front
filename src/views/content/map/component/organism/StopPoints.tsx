@@ -1,6 +1,7 @@
 import L from "leaflet";
 import { For, createEffect, createSignal } from "solid-js";
 import { useStateGui } from "../../../../../StateGui";
+import { AssociatedPointType } from "../../../../../_entities/_utils.entity";
 import { StopType } from "../../../../../_entities/stop.entity";
 import { StopService } from "../../../../../_services/stop.service";
 import {
@@ -15,6 +16,7 @@ import {
   currentStep,
 } from "../../../board/component/organism/DrawRaceBoard";
 import { onBoard } from "../../../board/component/template/ContextManager";
+import { updateStopDetailsItem } from "../../../stops/component/organism/StopDetails";
 import { PointInterface } from "../atom/Point";
 import { StopPoint } from "../molecule/StopPoint";
 import { getSelectedLine } from "./BusLines";
@@ -28,12 +30,62 @@ export interface StopPointsProps {
 
 export const [getStops, setStops] = createSignal<StopType[]>([]);
 
+export function appendToStop(classItem: AssociatedPointType, stopId: number) {
+  setStops((prev) => {
+    if (prev != undefined) {
+      const stops = [...prev];
+      const indexOf = stops.findIndex((prev) => prev.id == stopId);
+      stops[indexOf].associated.push(classItem);
+      return stops;
+    }
+    return prev;
+  });
+  updateStopDetailsItem(stopId);
+}
+
+export function removeFromStop(classStudentToSchoolID: number, stopId: number) {
+  setStops((prev) => {
+    if (prev != undefined) {
+      const stops = [...prev];
+      const indexOfStop = stops.findIndex((prev) => prev.id == stopId);
+
+      stops[indexOfStop].associated = stops[indexOfStop].associated.filter(
+        (prev) => prev.studentSchoolId != classStudentToSchoolID
+      );
+      return stops;
+    }
+    return prev;
+  });
+  updateStopDetailsItem(stopId);
+}
+// TODO lucas à placer dans Stop component
+export function updateFromStop(
+  classStudentToSchool: AssociatedPointType,
+  stopId: number
+) {
+  setStops((prev) => {
+    if (prev != undefined) {
+      const stops = [...prev];
+      const indexOfStop = stops.findIndex((prev) => prev.id == stopId);
+      const indexOfClass = stops[indexOfStop].associated.findIndex(
+        (prev) => prev.id == classStudentToSchool.id
+      );
+      stops[indexOfStop].associated[indexOfClass] = classStudentToSchool;
+      return stops;
+    }
+    return prev;
+  });
+  updateStopDetailsItem(stopId);
+}
+
 // TODO to delete and all reference
 export const [ramassages, setRamassages] = createSignal<PointInterface[]>([]);
 
 export function StopPoints(props: StopPointsProps) {
   // eslint-disable-next-line solid/reactivity
-  createEffect(async () => await updateStop());
+  createEffect(async () => {
+    if (getSchools().length != 0) await updateStop();
+  });
 
   const quantities = () => {
     return getStops().map((stop) => {
@@ -78,7 +130,6 @@ export function leafletStopsFilter(): StopType[] {
   let stops = getStops();
   switch (onBoard()) {
     case "course":
-      console.log(getSelectedLine()?.stops);
       return stops.filter((stop) =>
         getSelectedLine()
           ?.stops.map((stopOfSelected) => stopOfSelected.id)
@@ -121,11 +172,15 @@ export function leafletStopsFilter(): StopType[] {
         return stops;
       }
       break;
+    case "schools":
+      return [];
+    default:
+      return stops;
   }
 
   return stops.filter((stop) =>
     stop.associated.some(
-      (school) => schools.find((e) => e.id === school.id)
+      (ClassToSchool) => schools.find((e) => e.id === ClassToSchool.id)
       // TODO don't display stop with no remaining quantity in new Race Creation
       // TODO creation a display error if the stop is in the updating Race
       // && QuantityUtils.remaining(school) > 0

@@ -2,10 +2,6 @@ import { createSignal, onMount } from "solid-js";
 import { AssociatedPointType } from "../../../../../_entities/_utils.entity";
 import { ClasseType } from "../../../../../_entities/classe.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
-import {
-  ClassStudentToSchool,
-  ClassStudentToSchoolDBType,
-} from "../../../../../_entities/student-to-school.entity";
 import { StudentToSchoolService } from "../../../../../_services/student-to-school.service";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
 import CheckIcon from "../../../../../icons/CheckIcon";
@@ -13,21 +9,25 @@ import { addNewUserInformation } from "../../../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../../../type";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { getSchools } from "../../../map/component/organism/SchoolPoints";
+import {
+  appendToStop,
+  updateFromStop,
+} from "../../../map/component/organism/StopPoints";
 import ClasseSelection from "../atom/ClasseSelection";
 import InputNumber from "../atom/InputNumber";
 import SchoolSelect from "../atom/SchoolSelection";
+import { stopDetailsItem } from "../organism/StopDetails";
 import "./EditStudentSchoolClassItem.css";
 
 interface EditStopProps {
-  appendClassToList: (classItem: AssociatedPointType) => void;
+  classStudentToSchool?: AssociatedPointType;
   close: () => void;
-  stopID: number;
 }
 
 export default function (props: EditStopProps) {
   const seletElement = document.createElement("select");
-
   const [selectedSchool, setSelectedSchool] = createSignal<SchoolType>();
+
   const [schoolSelectRef, setSchoolSelectRef] =
     createSignal<HTMLSelectElement>(seletElement);
   const [classeSelectRef, setClasseSelectRef] =
@@ -35,7 +35,23 @@ export default function (props: EditStopProps) {
   const [quantityInputRef, setQuantityInputRef] =
     createSignal<HTMLInputElement>(document.createElement("input"));
 
+  if (props.classStudentToSchool != undefined) {
+    const school = getSchools().filter(
+      (school) => school.id == props.classStudentToSchool?.id
+    )[0];
+    setSelectedSchool(school);
+  }
+
   onMount(() => {
+    if (props.classStudentToSchool != undefined) {
+      schoolSelectRef().value =
+        props.classStudentToSchool.id?.toString() ?? "default";
+      classeSelectRef().value =
+        props.classStudentToSchool.classId?.toString() ?? "default";
+      quantityInputRef().value =
+        props.classStudentToSchool.quantity.toString() ?? 0;
+      return;
+    }
     classeSelectRef().disabled = true;
     quantityInputRef().disabled = true;
   });
@@ -52,71 +68,14 @@ export default function (props: EditStopProps) {
       (school) => school.id == parseInt(schoolSelectRef().value)
     )[0];
 
-    if (!school) return resetClasseAndQuantity();
-
-    if (!selectedSchool()) {
-      classeSelectRef().disabled = false;
-      setSelectedSchool(school);
-    }
-
-    if (school.id != selectedSchool()?.id) {
+    if (!school) {
+      return resetClasseAndQuantity();
+    } else if (school.id != selectedSchool()?.id) {
       resetClasseAndQuantity();
-      setSelectedSchool();
-      setSelectedSchool(school);
-      return;
     }
-
     classeSelectRef().disabled = false;
+    setSelectedSchool(school);
   };
-
-  function getClassStudentToSchool(): Omit<ClassStudentToSchoolDBType, "id"> {
-    return ClassStudentToSchool.dbFormat({
-      schoolId: Number(schoolSelectRef().value),
-      stopId: Number(props.stopID),
-      quantity: Number(quantityInputRef().value),
-      classId: Number(classeSelectRef().value),
-    });
-  }
-
-  function getAssociatedPoint(id: number): AssociatedPointType {
-    return {
-      class: {
-        id: Number(classeSelectRef().value),
-        name: classeSelectRef().selectedOptions[0].text,
-      },
-      id: Number(schoolSelectRef().value),
-      name: schoolSelectRef().selectedOptions[0].text,
-      quantity: Number(quantityInputRef().value),
-      studentSchoolId: id,
-      usedQuantity: 0,
-    };
-  }
-
-  function checkAllSelectorHaveSelectedValue() {
-    return (
-      schoolSelectRef().value == "default" ||
-      quantityInputRef().value == "0" ||
-      classeSelectRef().value == "default"
-    );
-  }
-
-  async function validate() {
-    if (checkAllSelectorHaveSelectedValue()) {
-      return addNewUserInformation({
-        displayed: true,
-        level: MessageLevelEnum.warning,
-        type: MessageTypeEnum.global,
-        content: "Veuillez compléter tous les champs !",
-      });
-    }
-
-    const response = await StudentToSchoolService.create(
-      getClassStudentToSchool()
-    );
-
-    props.appendClassToList(getAssociatedPoint(response.id));
-    props.close();
-  }
 
   function onChangeSelectClasse() {
     if (classeSelectRef().value != "default") {
@@ -125,6 +84,55 @@ export default function (props: EditStopProps) {
       quantityInputRef().disabled = true;
       quantityInputRef().value = "0";
     }
+  }
+
+  function checkAllInputsValue() {
+    const validInputs =
+      schoolSelectRef().value == "default" ||
+      quantityInputRef().value == "0" ||
+      classeSelectRef().value == "default";
+    if (validInputs) {
+      return addNewUserInformation({
+        displayed: true,
+        level: MessageLevelEnum.warning,
+        type: MessageTypeEnum.global,
+        content: "Veuillez compléter tous les champs !",
+      });
+    }
+    return validInputs;
+  }
+
+  async function create() {
+    if (checkAllInputsValue()) return;
+    const classToSchool = await StudentToSchoolService.create({
+      schoolId: Number(schoolSelectRef().value),
+      stopId: Number(stopDetailsItem()?.id),
+      quantity: Number(quantityInputRef().value),
+      classId: Number(classeSelectRef().value),
+    });
+
+    appendToStop(classToSchool, stopDetailsItem()?.id as number);
+  }
+
+  async function update() {
+    if (!props.classStudentToSchool) return;
+    const classToSchool = await StudentToSchoolService.update({
+      id: props.classStudentToSchool?.studentSchoolId as number,
+      schoolId: Number(schoolSelectRef().value),
+      stopId: Number(stopDetailsItem()?.id),
+      quantity: Number(quantityInputRef().value),
+      classId: Number(classeSelectRef().value),
+    });
+
+    updateFromStop(classToSchool, stopDetailsItem()?.id as number);
+
+    // TODO lucas même update mais pour school
+  }
+
+  async function validate() {
+    if (props.classStudentToSchool) await update();
+    else await create();
+    props.close();
   }
 
   return (
