@@ -41,7 +41,10 @@ export class StudentToSchoolService {
   }
 
   static async create(
-    classToSchool: Omit<AssociatedPointType, "id">
+    classToSchool: Omit<
+      AssociatedPointType,
+      "id" | "schoolName" | "usedQuantity"
+    >
   ): Promise<AssociatedPointType> {
     const dbFormat = ClassStudentToSchoolEntity.dbFormat(classToSchool);
     const response: AssociatedDBPointType = await ServiceUtils.post(
@@ -52,7 +55,7 @@ export class StudentToSchoolService {
   }
 
   static async update(
-    classToSchool: AssociatedPointType
+    classToSchool: Omit<AssociatedPointType, "schoolName" | "usedQuantity">
   ): Promise<AssociatedPointType> {
     const dbFormat = ClassStudentToSchoolEntity.dbFormat(classToSchool);
     const response: AssociatedDBPointType = await ServiceUtils.patch(

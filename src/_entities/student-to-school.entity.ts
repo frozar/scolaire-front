@@ -2,7 +2,10 @@ import { AssociatedPointType } from "./_utils.entity";
 
 export namespace ClassStudentToSchoolEntity {
   export function dbFormat(
-    classStudentToSchool: Omit<AssociatedPointType, "id">
+    classStudentToSchool: Omit<
+      AssociatedPointType,
+      "id" | "schoolName" | "usedQuantity"
+    >
   ): Omit<ClassToSchoolDBType, "id"> {
     return {
       stop_id: classStudentToSchool.stopId as number,
