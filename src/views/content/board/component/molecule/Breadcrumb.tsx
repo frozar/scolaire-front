@@ -6,6 +6,7 @@ import {
   getSelectedLine,
 } from "../../../map/component/organism/BusLines";
 import { selectedRace } from "../../../map/component/organism/Races";
+import { getSchools } from "../../../map/component/organism/SchoolPoints";
 import { selectedClasse } from "../../../schools/component/organism/ClasseBoard";
 import { schoolDetailsItem } from "../../../schools/component/organism/SchoolDetails";
 import { stopDetailsItem } from "../../../stops/component/organism/StopDetails";
@@ -21,110 +22,110 @@ type CrumbType = {
 };
 
 // TODO le Breadcrumb est à revoir
-// TODO: Rename course => races; line-details => race
 export default function () {
   function crumbs(): CrumbType[] {
+    const linesCrumb: CrumbType = {
+      text: "Lignes",
+      onClick: () => {
+        changeBoard("line");
+        MapElementUtils.deselectAllPointsAndBusRaces();
+      },
+    };
+
+    function schoolsCrumb(): CrumbType {
+      return {
+        text: "Ecoles",
+        onClick: () => changeBoard("schools"),
+      };
+    }
+
+    function racesCrumb(): CrumbType {
+      const line = getLines().filter((line) =>
+        line.courses.map((course) => course.id).includes(selectedRace()?.id)
+      )[0];
+      return {
+        text: line.name?.toLowerCase() as string,
+        onClick: () => {
+          changeBoard("course");
+          deselectAllLines();
+          line.setSelected(true);
+        },
+      };
+    }
+
     switch (onBoard()) {
       case "line":
         return [{ text: "Lignes" }];
+      case "schools":
+        return [{ text: "Ecoles" }];
+      case "stops":
+        return [{ text: "Arrêts" }];
+
       case "course":
         return [
+          linesCrumb,
           {
-            text: "Lignes",
-            onClick: () => {
-              changeBoard("line");
-              MapElementUtils.deselectAllPointsAndBusRaces();
-            },
-          },
-          {
-            text: getSelectedLine()?.name as string,
+            text: getSelectedLine()?.name?.toLowerCase() as string,
           },
         ];
+      case "stop-details":
+        return [
+          {
+            text: "Arrêts",
+            onClick: () => changeBoard("stops"),
+          },
+          {
+            text: stopDetailsItem()?.name.toLowerCase() as string,
+          },
+        ];
+      case "school-details":
+        return [
+          schoolsCrumb(),
+          {
+            text: schoolDetailsItem()?.name.toLowerCase() as string,
+          },
+        ];
+      case "line-details":
+        return [
+          linesCrumb,
+          racesCrumb(),
+          {
+            text: selectedRace()?.name?.toLowerCase() as string,
+          },
+        ];
+
+      case "school-class-modify":
+        const school = getSchools().filter((school) =>
+          school.classes.find((classe) => classe.id == selectedClasse()?.id)
+        )[0];
+        return [
+          schoolsCrumb(),
+          {
+            text: school.name.toLowerCase(),
+            onClick: () => changeBoard("school-details"),
+          },
+          {
+            text: selectedClasse()?.name.toLowerCase() as string,
+          },
+        ];
+      case "school-class-add":
+        return [
+          schoolsCrumb(),
+          {
+            text: schoolDetailsItem()?.name.toLowerCase() as string,
+            onClick: () => changeBoard("school-details"),
+          },
+          {
+            text: "classe",
+          },
+        ];
+
       case "race-draw":
         if (currentRace().schools.length > 0) {
           return [{ text: "Editer votre course" }];
         }
         return [{ text: "Création d'une course" }];
 
-      case "schools":
-        return [{ text: "Ecoles" }];
-
-      case "stops":
-        return [{ text: "Arrêts" }];
-
-      case "stop-details":
-        return [
-          {
-            text: "Arrêts",
-            onClick: () => {
-              changeBoard("stops");
-            },
-          },
-          {
-            text: stopDetailsItem()?.name.toLowerCase() as string,
-          },
-        ];
-
-      case "school-details":
-        return [
-          {
-            text: "Ecoles",
-            onClick: () => {
-              changeBoard("schools");
-            },
-          },
-          {
-            text: schoolDetailsItem()?.name.toLowerCase() as string,
-          },
-        ];
-
-      case "school-class-add":
-      case "school-class-modify":
-        return [
-          {
-            text: "Ecoles",
-            onClick: () => {
-              changeBoard("schools");
-            },
-          },
-          {
-            text: schoolDetailsItem()?.name.toLowerCase() as string,
-            onClick: () => changeBoard("school-details"),
-          },
-          {
-            text:
-              onBoard() == "school-class-add"
-                ? "Ajouter une classe"
-                : (selectedClasse()?.name as string),
-          },
-        ];
-
-      case "line-details":
-        return [
-          {
-            text: "Lignes",
-            onClick: () => {
-              changeBoard("line");
-              MapElementUtils.deselectAllPointsAndBusRaces();
-            },
-          },
-          {
-            text: getSelectedLine()?.name as string,
-            onClick: () => {
-              changeBoard("course");
-              deselectAllLines();
-              const line = getLines().filter((line) =>
-                line.courses
-                  .map((course) => course.id)
-                  .includes(selectedRace()?.id)
-              )[0];
-              line.setSelected(true);
-            },
-          },
-          {
-            text: selectedRace()?.name?.toLowerCase() as string,
-          },
-        ];
       default:
         return [];
     }
