@@ -13,7 +13,8 @@ type PolylineDragMarkersProps = {
   index: number;
 };
 
-export const [isDraggingWaypoint, setIsDraggingWaypoint] = createSignal(false);
+export const [draggingWaypointIndex, setDraggingWaypointIndex] =
+  createSignal<number>();
 
 export default function (props: PolylineDragMarkersProps) {
   // eslint-disable-next-line solid/reactivity
@@ -43,10 +44,23 @@ export default function (props: PolylineDragMarkersProps) {
 
       updateWaypoints(newWaypoints);
 
-      setIsDraggingWaypoint(false);
+      setDraggingWaypointIndex();
       polylineDragMarker.off("mouseup", handleMouseUp);
     }
-    setIsDraggingWaypoint(true);
+    // ! Get correct nextIndex from waypoints
+    let correctIndex = 0;
+    for (let i = 0; i < props.index; i++) {
+      if (
+        currentRace().waypoints?.at(i)?.idSchool != undefined ||
+        currentRace().waypoints?.at(i)?.idStop != undefined
+      ) {
+        correctIndex += 1;
+      }
+    }
+    console.log("currentRace()", currentRace());
+    console.log("current wypoint index", correctIndex);
+
+    setDraggingWaypointIndex(correctIndex);
     polylineDragMarker.on("mouseup", handleMouseUp);
     props.map.dragging.disable();
     createEffect(() => {

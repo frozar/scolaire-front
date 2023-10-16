@@ -24,11 +24,15 @@ import {
   currentRace,
   currentStep,
   removePoint,
+  setCurrentRaceIndex,
   updateWaypoints,
 } from "../../../board/component/organism/DrawRaceBoard";
 import { setStopDetailsItem } from "../../../stops/component/organism/StopDetails";
 import { setIsOverMapItem } from "../../l7MapBuilder";
-import { isDraggingWaypoint } from "../atom/PolylineDragMarker";
+import {
+  draggingWaypointIndex,
+  setDraggingWaypointIndex,
+} from "../atom/PolylineDragMarker";
 import {
   blinkingStops,
   cursorIsOverPoint,
@@ -135,25 +139,32 @@ function onClick(point: StopType) {
 //   }
 // };
 
-const onMouseUp = (point: StopType) => {
-  if (draggingRace()) {
-    const associatedQuantity = getAssociatedQuantity(point);
+// const onMouseUp = (point: StopType) => {
+//   console.log("mouseUp stop")
+//   if (draggingWaypointNextIndex()) {
+//     // console.log("mouseout point");
+//     const circle = linkMap.get(props.point.leafletId);
+//     circle?.setStyle({ radius: 5, weight: 0 }); // ! reset color ?
+//   }
 
-    addPointToRace({ ...point, quantity: associatedQuantity });
+//   if (draggingRace()) {
+//     const associatedQuantity = getAssociatedQuantity(point);
 
-    const waypoints = currentRace().waypoints;
-    if (waypoints) {
-      const newWaypoints = WaypointEntity.updateWaypoints(
-        point,
-        waypoints,
-        currentRace().points
-      );
-      updateWaypoints(newWaypoints);
-    }
+//     addPointToRace({ ...point, quantity: associatedQuantity });
 
-    setDraggingRace(false);
-  }
-};
+//     const waypoints = currentRace().waypoints;
+//     if (waypoints) {
+//       const newWaypoints = WaypointEntity.updateWaypoints(
+//         point,
+//         waypoints,
+//         currentRace().points
+//       );
+//       updateWaypoints(newWaypoints);
+//     }
+
+//     setDraggingRace(false);
+//   }
+// };
 
 export function StopPoint(props: StopPointProps) {
   const rad = (): number => {
@@ -202,8 +213,12 @@ export function StopPoint(props: StopPointProps) {
   };
 
   const onMouseOver = (stop: StopType) => {
-    if (isDraggingWaypoint()) {
-      console.log("mouseover point");
+    if (
+      draggingWaypointIndex() &&
+      !currentRace()
+        .points.map((point) => point.id)
+        .includes(stop.id)
+    ) {
       const circle = linkMap.get(props.point.leafletId);
       circle?.setStyle({ radius: 10, weight: 4, color: COLOR_WAYPOINT });
     }
@@ -216,9 +231,9 @@ export function StopPoint(props: StopPointProps) {
   };
 
   const onMouseOut = () => {
-    if (isDraggingWaypoint()) {
-      console.log("mouseout point");
+    if (draggingWaypointIndex()) {
       const circle = linkMap.get(props.point.leafletId);
+      // ! Reset seulement si necessaire, vérif d'abord
       circle?.setStyle({ radius: 5, weight: 0 }); // ! reset color ?
     }
     setIsOverMapItem(false);
@@ -226,6 +241,53 @@ export function StopPoint(props: StopPointProps) {
 
     if (draggingRace() || cursorIsOverPoint()) {
       setCursorIsOverPoint(false);
+    }
+  };
+
+  const onMouseUp = (point: StopType) => {
+    const nextIndex = draggingWaypointIndex();
+    if (nextIndex) {
+      setDraggingWaypointIndex();
+      console.log("nextIndex", nextIndex);
+      console.log("mouseUp stop");
+      setCurrentRaceIndex(nextIndex);
+
+      const associatedQuantity = 1;
+      const lastPoint = currentRace().points.at(-1);
+
+      addPointToRace({ ...point, quantity: associatedQuantity });
+
+      if (!lastPoint || point.leafletId != lastPoint.leafletId) {
+        const waypoints = currentRace().waypoints;
+        if (waypoints) {
+          const newWaypoints = WaypointEntity.updateWaypoints(
+            point,
+            waypoints,
+            currentRace().points
+          );
+          updateWaypoints(newWaypoints);
+        }
+      }
+      const circle = linkMap.get(props.point.leafletId);
+      circle?.setStyle({ radius: 5, weight: 0 });
+    }
+
+    if (draggingRace()) {
+      const associatedQuantity = getAssociatedQuantity(point);
+
+      addPointToRace({ ...point, quantity: associatedQuantity });
+
+      const waypoints = currentRace().waypoints;
+      if (waypoints) {
+        const newWaypoints = WaypointEntity.updateWaypoints(
+          point,
+          waypoints,
+          currentRace().points
+        );
+        updateWaypoints(newWaypoints);
+      }
+
+      setDraggingRace(false);
     }
   };
 
