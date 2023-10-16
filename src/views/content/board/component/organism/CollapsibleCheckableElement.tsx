@@ -16,7 +16,7 @@ export default function (props: { school: SchoolType }) {
           return (
             <Show
               when={props.school.associated
-                .map((value) => value.id)
+                .map((value) => value.schoolId)
                 .includes(school_elem.associated.id)}
             >
               <div class="flex items-center">

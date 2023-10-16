@@ -37,7 +37,7 @@ export default function (props: EditStopProps) {
 
   if (props.classStudentToSchool != undefined) {
     const school = getSchools().filter(
-      (school) => school.id == props.classStudentToSchool?.id
+      (school) => school.id == props.classStudentToSchool?.schoolId
     )[0];
     setSelectedSchool(school);
   }
@@ -45,7 +45,7 @@ export default function (props: EditStopProps) {
   onMount(() => {
     if (props.classStudentToSchool != undefined) {
       schoolSelectRef().value =
-        props.classStudentToSchool.id?.toString() ?? "default";
+        props.classStudentToSchool.schoolId?.toString() ?? "default";
       classeSelectRef().value =
         props.classStudentToSchool.classId?.toString() ?? "default";
       quantityInputRef().value =
@@ -117,7 +117,7 @@ export default function (props: EditStopProps) {
   async function update() {
     if (!props.classStudentToSchool) return;
     const classToSchool = await StudentToSchoolService.update({
-      id: props.classStudentToSchool?.studentSchoolId as number,
+      id: props.classStudentToSchool?.id as number,
       schoolId: Number(schoolSelectRef().value),
       stopId: Number(stopDetailsItem()?.id),
       quantity: Number(quantityInputRef().value),

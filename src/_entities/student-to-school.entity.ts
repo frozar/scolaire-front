@@ -1,9 +1,11 @@
+import { AssociatedPointType } from "./_utils.entity";
+
 export namespace ClassStudentToSchoolEntity {
   export function dbFormat(
-    classStudentToSchool: Omit<ClassStudentToSchoolType, "id">
+    classStudentToSchool: Omit<AssociatedPointType, "id">
   ): Omit<ClassToSchoolDBType, "id"> {
     return {
-      stop_id: classStudentToSchool.stopId,
+      stop_id: classStudentToSchool.stopId as number,
       school_id: classStudentToSchool.schoolId,
       quantity: classStudentToSchool.quantity,
       class_id: classStudentToSchool.classId,
@@ -17,14 +19,6 @@ export type ClassToSchoolDBType = {
   school_id: number;
   quantity: number;
   class_id: number;
-};
-
-export type ClassStudentToSchoolType = {
-  id: number;
-  stopId: number;
-  schoolId: number;
-  quantity: number;
-  classId: number;
 };
 
 export type CSVFormatStudentToSchool = {

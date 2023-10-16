@@ -9,10 +9,7 @@ import {
   SchoolType,
 } from "../_entities/school.entity";
 import { StopDBType, StopEntity, StopType } from "../_entities/stop.entity";
-import {
-  ClassStudentToSchoolEntity,
-  ClassStudentToSchoolType,
-} from "../_entities/student-to-school.entity";
+import { ClassStudentToSchoolEntity } from "../_entities/student-to-school.entity";
 import { ServiceUtils } from "./_utils.service";
 
 export type StudentToSchool = {
@@ -44,7 +41,7 @@ export class StudentToSchoolService {
   }
 
   static async create(
-    classToSchool: Omit<ClassStudentToSchoolType, "id">
+    classToSchool: Omit<AssociatedPointType, "id">
   ): Promise<AssociatedPointType> {
     const dbFormat = ClassStudentToSchoolEntity.dbFormat(classToSchool);
     const response: AssociatedDBPointType = await ServiceUtils.post(
@@ -55,7 +52,7 @@ export class StudentToSchoolService {
   }
 
   static async update(
-    classToSchool: ClassStudentToSchoolType
+    classToSchool: AssociatedPointType
   ): Promise<AssociatedPointType> {
     const dbFormat = ClassStudentToSchoolEntity.dbFormat(classToSchool);
     const response: AssociatedDBPointType = await ServiceUtils.patch(

@@ -16,9 +16,7 @@ export default function (props: { school: AssociatedPointType }) {
   const [editingMode, setEditingMode] = createSignal(false);
 
   async function onClickDelete() {
-    const response = await StudentToSchoolService.delete(
-      props.school.studentSchoolId
-    );
+    const response = await StudentToSchoolService.delete(props.school.id);
     console.log("delete class to school response", response);
 
     removeFromStop(response, stopDetailsItem()?.id as number);
