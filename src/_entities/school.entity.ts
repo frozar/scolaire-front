@@ -23,7 +23,8 @@ export class SchoolEntity {
       name: dbSchool.name,
       nature: NatureEnum.school,
       associated: EntityUtils.formatAssociatedClassToSchool(
-        dbSchool.associated
+        dbSchool.associated,
+        { id: dbSchool.id, name: dbSchool.name }
       ),
       classes:
         dbSchool.classes != undefined

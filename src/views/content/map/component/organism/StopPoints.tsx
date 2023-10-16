@@ -83,7 +83,9 @@ export const [ramassages, setRamassages] = createSignal<PointInterface[]>([]);
 
 export function StopPoints(props: StopPointsProps) {
   // eslint-disable-next-line solid/reactivity
-  createEffect(async () => await updateStop());
+  createEffect(async () => {
+    if (getSchools().length != 0) await updateStop();
+  });
 
   const quantities = () => {
     return getStops().map((stop) => {
@@ -170,6 +172,10 @@ export function leafletStopsFilter(): StopType[] {
         return stops;
       }
       break;
+    case "schools":
+      return [];
+    default:
+      return stops;
   }
 
   return stops.filter((stop) =>
@@ -185,6 +191,8 @@ export function leafletStopsFilter(): StopType[] {
 function buildStops(stops: StopType[]): StopType[] {
   return stops.map((stop) => {
     const [selected, setSelected] = createSignal(false);
+    console.log("in stop build");
+
     return {
       ...stop,
       setSelected,

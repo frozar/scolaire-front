@@ -1,6 +1,7 @@
 import {
   AssociatedDBPointType,
   AssociatedPointType,
+  EntityUtils,
 } from "../_entities/_utils.entity";
 import {
   SchoolDBType,
@@ -43,29 +44,25 @@ export class StudentToSchoolService {
   }
 
   static async create(
-    props: Omit<ClassStudentToSchoolType, "id">
+    classToSchool: Omit<ClassStudentToSchoolType, "id">
   ): Promise<AssociatedPointType> {
-    const dbFormat = ClassStudentToSchoolEntity.dbFormat(props);
-
+    const dbFormat = ClassStudentToSchoolEntity.dbFormat(classToSchool);
     const response: AssociatedDBPointType = await ServiceUtils.post(
       "/student-to-school",
       dbFormat
     );
-    return ClassStudentToSchoolEntity.build(response);
+    return EntityUtils.formatAssociatedClassToSchool([response])[0];
   }
 
   static async update(
-    ClassStudentToSchoolProps: ClassStudentToSchoolType
+    classToSchool: ClassStudentToSchoolType
   ): Promise<AssociatedPointType> {
-    const dbFormat = ClassStudentToSchoolEntity.dbFormat(
-      ClassStudentToSchoolProps
-    );
+    const dbFormat = ClassStudentToSchoolEntity.dbFormat(classToSchool);
     const response: AssociatedDBPointType = await ServiceUtils.patch(
-      "/student-to-school/" + ClassStudentToSchoolProps.id,
+      "/student-to-school_v2/" + classToSchool.id,
       dbFormat
     );
-
-    return ClassStudentToSchoolEntity.build(response);
+    return EntityUtils.formatAssociatedClassToSchool([response])[0];
   }
 
   // Backend will return only the id deleted

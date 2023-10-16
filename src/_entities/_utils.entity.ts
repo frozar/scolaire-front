@@ -1,3 +1,7 @@
+import {
+  getSchoolWhereClassId,
+  getSchools,
+} from "../views/content/map/component/organism/SchoolPoints";
 import { SchoolType } from "./school.entity";
 import { StopType } from "./stop.entity";
 
@@ -32,14 +36,23 @@ export class EntityUtils {
   }
 
   static formatAssociatedClassToSchool(
-    associatedDBPoint: AssociatedDBPointType[]
+    associatedDBPoint: AssociatedDBPointType[],
+    school?: { id: number; name: string }
     // TODO associatedPointType (comme avant avec nature et companie)
   ): AssociatedPointType[] {
     return associatedDBPoint.map((item) => {
+      if (getSchools().length != 0) {
+        const bufferSchool = getSchoolWhereClassId(item.class_id);
+        school = {
+          id: bufferSchool?.id as number,
+          name: bufferSchool?.name as string,
+        };
+      }
+
       return {
-        name: item.entity.name,
+        name: school?.name as string,
+        id: school?.id as number,
         studentSchoolId: item.id,
-        id: item.entity.id,
         classId: item.class_id,
         quantity: item.quantity,
         usedQuantity: 0,
@@ -59,16 +72,24 @@ export type AssociatedPointType = {
   classId: number;
 };
 
+// export type AssociatedDBPointType = {
+//   // ! ID of StudentToSchool association
+//   id: number;
+//   entity: {
+//     // ! associated School entity
+//     id: number;
+//     name: string;
+//   };
+//   quantity: number;
+//   class_id: number;
+// };
+
 export type AssociatedDBPointType = {
   // ! ID of StudentToSchool association
   id: number;
-  entity: {
-    // ! associated School entity
-    id: number;
-    name: string;
-  };
   quantity: number;
   class_id: number;
+  stop_id?: number;
 };
 
 export enum LocationDBTypeEnum {

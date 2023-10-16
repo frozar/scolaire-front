@@ -1,19 +1,4 @@
-import { AssociatedDBPointType, AssociatedPointType } from "./_utils.entity";
-
 export namespace ClassStudentToSchoolEntity {
-  export function build(
-    classToSchool: AssociatedDBPointType
-  ): AssociatedPointType {
-    return {
-      name: classToSchool.entity.name,
-      id: classToSchool.entity.id,
-      studentSchoolId: classToSchool.id,
-      classId: classToSchool.class_id,
-      quantity: classToSchool.quantity,
-      usedQuantity: 0,
-    };
-  }
-
   export function dbFormat(
     classStudentToSchool: Omit<ClassStudentToSchoolType, "id">
   ): Omit<ClassToSchoolDBType, "id"> {
