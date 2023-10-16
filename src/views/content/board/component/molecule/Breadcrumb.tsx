@@ -32,12 +32,10 @@ export default function () {
       },
     };
 
-    function schoolsCrumb(): CrumbType {
-      return {
-        text: "Ecoles",
-        onClick: () => changeBoard("schools"),
-      };
-    }
+    const schoolsCrumb: CrumbType = {
+      text: "Ecoles",
+      onClick: () => changeBoard("schools"),
+    };
 
     function racesCrumb(): CrumbType {
       const line = getLines().filter((line) =>
@@ -80,7 +78,7 @@ export default function () {
         ];
       case "school-details":
         return [
-          schoolsCrumb(),
+          schoolsCrumb,
           {
             text: schoolDetailsItem()?.name.toLowerCase() as string,
           },
@@ -99,7 +97,7 @@ export default function () {
           school.classes.find((classe) => classe.id == selectedClasse()?.id)
         )[0];
         return [
-          schoolsCrumb(),
+          schoolsCrumb,
           {
             text: school.name.toLowerCase(),
             onClick: () => changeBoard("school-details"),
@@ -110,7 +108,7 @@ export default function () {
         ];
       case "school-class-add":
         return [
-          schoolsCrumb(),
+          schoolsCrumb,
           {
             text: schoolDetailsItem()?.name.toLowerCase() as string,
             onClick: () => changeBoard("school-details"),
