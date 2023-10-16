@@ -1,0 +1,548 @@
+[
+  {
+    "id": 1766,
+    "lon": 55.530883789062,
+    "lat": -20.929979324341,
+    "name": "RESSOURCE",
+    "nature": "stop",
+    "associated": [
+      {
+        "id": 1950,
+        "classId": 73,
+        "quantity": 5,
+        "usedQuantity": 0
+      },
+      {
+        "id": 1951,
+        "classId": 73,
+        "quantity": 4,
+        "usedQuantity": 0
+      },
+      {
+        "id": 1948,
+        "classId": 73,
+        "quantity": 5,
+        "usedQuantity": 0
+      },
+      {
+        "id": 1949,
+        "classId": 73,
+        "quantity": 2,
+        "usedQuantity": 0
+      }
+    ],
+    "leafletId": 177477
+  },
+  {
+    "id": 1767,
+    "lon": 55.529216766357,
+    "lat": -20.936395645142,
+    "name": "TAKAMAKA",
+    "nature": "stop",
+    "associated": [
+      {
+        "id": 1947,
+        "classId": 73,
+        "quantity": 5,
+        "usedQuantity": 0
+      },
+      {
+        "id": 1940,
+        "classId": 60,
+        "quantity": 7,
+        "usedQuantity": 0
+      }
+    ],
+    "leafletId": 177478
+  },
+  {
+    "id": 1768,
+    "lon": 55.533889770508,
+    "lat": -20.944295883179,
+    "name": "TALIPOT",
+    "nature": "stop",
+    "associated": [
+      {
+        "id": 1941,
+        "classId": 60,
+        "quantity": 5,
+        "usedQuantity": 0
+      }
+    ],
+    "leafletId": 177479
+  },
+  {
+    "id": 1769,
+    "lon": 55.533256530762,
+    "lat": -20.933179855347,
+    "name": "VIERGE BLANCHE",
+    "nature": "stop",
+    "associated": [],
+    "leafletId": 177480
+  },
+  {
+    "id": 1770,
+    "lon": 55.531314849854,
+    "lat": -20.932321548462,
+    "name": "ALLEES COCO",
+    "nature": "stop",
+    "associated": [],
+    "leafletId": 177481
+  },
+  {
+    "id": 1771,
+    "lon": 55.537635803223,
+    "lat": -20.922954559326,
+    "name": "BABA FIGUES",
+    "nature": "stop",
+    "associated": [
+      {
+        "id": 1942,
+        "classId": 60,
+        "quantity": 6,
+        "usedQuantity": 0
+      }
+    ],
+    "leafletId": 177482
+  },
+  {
+    "id": 1772,
+    "lon": 55.529098510742,
+    "lat": -20.938499450684,
+    "name": "BENJOINS",
+    "nature": "stop",
+    "associated": [
+      {
+        "id": 1789,
+        "classId": 0,
+        "quantity": 4,
+        "usedQuantity": 0
+      },
+      {
+        "id": 1814,
+        "classId": 0,
+        "quantity": 6,
+        "usedQuantity": 0
+      }
+    ],
+    "leafletId": 177483
+  },
+  {
+    "id": 1773,
+    "lon": 55.528949737549,
+    "lat": -20.93815612793,
+    "name": "CANNELLE",
+    "nature": "stop",
+    "associated": [
+      {
+        "id": 1790,
+        "classId": 0,
+        "quantity": 8,
+        "usedQuantity": 0
+      },
+      {
+        "id": 1815,
+        "classId": 0,
+        "quantity": 7,
+        "usedQuantity": 0
+      }
+    ],
+    "leafletId": 177484
+  },
+  {
+    "id": 1774,
+    "lon": 55.528800964355,
+    "lat": -20.939636230469,
+    "name": "CHEMIN DU BASSIN",
+    "nature": "stop",
+    "associated": [
+      {
+        "id": 1791,
+        "classId": 0,
+        "quantity": 12,
+        "usedQuantity": 0
+      },
+      {
+        "id": 1816,
+        "classId": 0,
+        "quantity": 3,
+        "usedQuantity": 0
+      }
+    ],
+    "leafletId": 177485
+  },
+  {
+    "id": 1775,
+    "lon": 55.532291412354,
+    "lat": -20.948383331299,
+    "name": "CHEMIN HERMAN",
+    "nature": "stop",
+    "associated": [
+      {
+        "id": 1916,
+        "classId": 50,
+        "quantity": 3,
+        "usedQuantity": 0
+      },
+      {
+        "id": 1792,
+        "classId": 0,
+        "quantity": 3,
+        "usedQuantity": 0
+      }
+    ],
+    "leafletId": 177486
+  },
+  {
+    "id": 1776,
+    "lon": 55.522065019576,
+    "lat": -20.919910585688,
+    "name": "CHEMIN PITON ROUGE",
+    "nature": "stop",
+    "associated": [
+      {
+        "id": 1915,
+        "classId": 50,
+        "quantity": 4,
+        "usedQuantity": 0
+      }
+    ],
+    "leafletId": 177487
+  },
+  {
+    "id": 1777,
+    "lon": 55.536270141602,
+    "lat": -20.946746826172,
+    "name": "Chemin Robert",
+    "nature": "stop",
+    "associated": [
+      {
+        "id": 1793,
+        "classId": 0,
+        "quantity": 1,
+        "usedQuantity": 0
+      }
+    ],
+    "leafletId": 177488
+  },
+  {
+    "id": 1778,
+    "lon": 55.531410217285,
+    "lat": -20.936262130737,
+    "name": "Colombo",
+    "nature": "stop",
+    "associated": [
+      {
+        "id": 1818,
+        "classId": 0,
+        "quantity": 11,
+        "usedQuantity": 0
+      }
+    ],
+    "leafletId": 177489
+  },
+  {
+    "id": 1779,
+    "lon": 55.540046691895,
+    "lat": -20.950031280518,
+    "name": "CONTEUR",
+    "nature": "stop",
+    "associated": [
+      {
+        "id": 1794,
+        "classId": 0,
+        "quantity": 6,
+        "usedQuantity": 0
+      }
+    ],
+    "leafletId": 177490
+  },
+  {
+    "id": 1780,
+    "lon": 55.530689239502,
+    "lat": -20.938243865967,
+    "name": "HUBERT GRONDIN",
+    "nature": "stop",
+    "associated": [
+      {
+        "id": 1819,
+        "classId": 0,
+        "quantity": 3,
+        "usedQuantity": 0
+      }
+    ],
+    "leafletId": 177491
+  },
+  {
+    "id": 1781,
+    "lon": 55.531959533691,
+    "lat": -20.935047149658,
+    "name": "LAGRANGE",
+    "nature": "stop",
+    "associated": [
+      {
+        "id": 1820,
+        "classId": 0,
+        "quantity": 5,
+        "usedQuantity": 0
+      }
+    ],
+    "leafletId": 177492
+  },
+  {
+    "id": 1782,
+    "lon": 55.53443145752,
+    "lat": -20.948934555054,
+    "name": "LES BEGONIAS",
+    "nature": "stop",
+    "associated": [
+      {
+        "id": 1795,
+        "classId": 0,
+        "quantity": 2,
+        "usedQuantity": 0
+      }
+    ],
+    "leafletId": 177493
+  },
+  {
+    "id": 1783,
+    "lon": 55.566505000083,
+    "lat": -20.909284999892,
+    "name": "LES CAPUCINES",
+    "nature": "stop",
+    "associated": [
+      {
+        "id": 1796,
+        "classId": 0,
+        "quantity": 2,
+        "usedQuantity": 0
+      }
+    ],
+    "leafletId": 177494
+  },
+  {
+    "id": 1784,
+    "lon": 55.53450012207,
+    "lat": -20.955791473389,
+    "name": "LES EGLANTINES",
+    "nature": "stop",
+    "associated": [
+      {
+        "id": 1797,
+        "classId": 0,
+        "quantity": 1,
+        "usedQuantity": 0
+      }
+    ],
+    "leafletId": 177495
+  },
+  {
+    "id": 1785,
+    "lon": 55.528938293457,
+    "lat": -20.941434860229,
+    "name": "LES FANJANS",
+    "nature": "stop",
+    "associated": [
+      {
+        "id": 1798,
+        "classId": 0,
+        "quantity": 5,
+        "usedQuantity": 0
+      }
+    ],
+    "leafletId": 177496
+  },
+  {
+    "id": 1786,
+    "lon": 55.533264160156,
+    "lat": -20.959114074707,
+    "name": "LES FRANCISEAS",
+    "nature": "stop",
+    "associated": [
+      {
+        "id": 1799,
+        "classId": 0,
+        "quantity": 1,
+        "usedQuantity": 0
+      }
+    ],
+    "leafletId": 177497
+  },
+  {
+    "id": 1787,
+    "lon": 55.533748626709,
+    "lat": -20.938142776489,
+    "name": "LES GREVILIAIRES",
+    "nature": "stop",
+    "associated": [
+      {
+        "id": 1800,
+        "classId": 0,
+        "quantity": 2,
+        "usedQuantity": 0
+      }
+    ],
+    "leafletId": 177498
+  },
+  {
+    "id": 1788,
+    "lon": 55.530277252197,
+    "lat": -20.963579177856,
+    "name": "LES HORTENSIAS",
+    "nature": "stop",
+    "associated": [
+      {
+        "id": 1801,
+        "classId": 0,
+        "quantity": 7,
+        "usedQuantity": 0
+      }
+    ],
+    "leafletId": 177499
+  },
+  {
+    "id": 1789,
+    "lon": 55.528339385986,
+    "lat": -20.969116210938,
+    "name": "LES JACINTHES",
+    "nature": "stop",
+    "associated": [
+      {
+        "id": 1802,
+        "classId": 0,
+        "quantity": 7,
+        "usedQuantity": 0
+      }
+    ],
+    "leafletId": 177500
+  },
+  {
+    "id": 1790,
+    "lon": 55.52689743042,
+    "lat": -20.969963073731,
+    "name": "LES KAKIS",
+    "nature": "stop",
+    "associated": [
+      {
+        "id": 1803,
+        "classId": 0,
+        "quantity": 5,
+        "usedQuantity": 0
+      }
+    ],
+    "leafletId": 177501
+  },
+  {
+    "id": 1791,
+    "lon": 55.53462600708,
+    "lat": -20.938701629639,
+    "name": "LES LATANIERS",
+    "nature": "stop",
+    "associated": [
+      {
+        "id": 1804,
+        "classId": 0,
+        "quantity": 1,
+        "usedQuantity": 0
+      }
+    ],
+    "leafletId": 177502
+  },
+  {
+    "id": 1792,
+    "lon": 55.532814025879,
+    "lat": -20.91551399231,
+    "name": "LES LUCAS",
+    "nature": "stop",
+    "associated": [
+      {
+        "id": 1821,
+        "classId": 0,
+        "quantity": 12,
+        "usedQuantity": 0
+      }
+    ],
+    "leafletId": 177503
+  },
+  {
+    "id": 1793,
+    "lon": 55.529140472412,
+    "lat": -20.935249328613,
+    "name": "LES NATTES",
+    "nature": "stop",
+    "associated": [
+      {
+        "id": 1805,
+        "classId": 0,
+        "quantity": 4,
+        "usedQuantity": 0
+      }
+    ],
+    "leafletId": 177504
+  },
+  {
+    "id": 1794,
+    "lon": 55.529266357422,
+    "lat": -20.944021224976,
+    "name": "MADORE",
+    "nature": "stop",
+    "associated": [
+      {
+        "id": 1806,
+        "classId": 0,
+        "quantity": 45,
+        "usedQuantity": 0
+      }
+    ],
+    "leafletId": 177505
+  },
+  {
+    "id": 1795,
+    "lon": 55.527519226074,
+    "lat": -20.935884475708,
+    "name": "PARNY",
+    "nature": "stop",
+    "associated": [
+      {
+        "id": 1822,
+        "classId": 0,
+        "quantity": 7,
+        "usedQuantity": 0
+      }
+    ],
+    "leafletId": 177506
+  },
+  {
+    "id": 1796,
+    "lon": 55.530792236328,
+    "lat": -20.949337005615,
+    "name": "PITON CAILLOUX",
+    "nature": "stop",
+    "associated": [
+      {
+        "id": 1807,
+        "classId": 0,
+        "quantity": 5,
+        "usedQuantity": 0
+      }
+    ],
+    "leafletId": 177507
+  },
+  {
+    "id": 1797,
+    "lon": 55.524017333984,
+    "lat": -20.972494125366,
+    "name": "PITON FOUGERES",
+    "nature": "stop",
+    "associated": [
+      {
+        "id": 1808,
+        "classId": 0,
+        "quantity": 13,
+        "usedQuantity": 0
+      }
+    ],
+    "leafletId": 177508
+  }
+]
