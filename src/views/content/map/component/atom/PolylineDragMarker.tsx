@@ -34,7 +34,6 @@ function handleMouseUp(
     polylineDragMarker.getLatLng().lat,
     polylineDragMarker.getLatLng().lng
   );
-  console.log("new waypoints => ", newWaypoints);
 
   updateWaypoints(newWaypoints);
 
@@ -58,8 +57,6 @@ function handleMouseDown(
       pointNextIndex += 1;
     }
   }
-  // console.log("currentRace()", currentRace());
-  console.log("current wypoint index", pointNextIndex);
 
   setDraggingWaypointIndex(pointNextIndex);
   polylineDragMarker.on("mouseup", () =>
