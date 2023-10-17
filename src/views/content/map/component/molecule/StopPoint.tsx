@@ -175,9 +175,7 @@ const onMouseUp = (stop: StopType, map: L.Map) => {
       map.off("mousemove");
       map.dragging.enable();
     }
-  }
-
-  if (draggingRace()) {
+  } else if (draggingRace()) {
     updateRaceAndWaypoints(stop);
 
     setDraggingRace(false);

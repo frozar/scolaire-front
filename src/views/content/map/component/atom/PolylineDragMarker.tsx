@@ -72,6 +72,7 @@ function handleMouseDown(
 
 export default function (props: PolylineDragMarkersProps) {
   createEffect(() => {
+    // case dragMarker is drag&drop over a stop already in the race
     if (
       !draggingWaypointIndex() &&
       polylineDragMarker.hasEventListeners("mouseup")
