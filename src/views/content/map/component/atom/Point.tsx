@@ -125,7 +125,7 @@ export default function (props: PointProps) {
         circle?.setStyle({ fillColor: COLOR_STOP_LIGHT });
         if (
           stopSelected()
-            .map((stop) => stop.associated.id)
+            .map((stop) => stop.stopItem.id)
             .includes(props.point.id)
         ) {
           circle?.setStyle({ fillColor: COLOR_STOP_FOCUS });
