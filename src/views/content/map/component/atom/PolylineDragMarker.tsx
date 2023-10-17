@@ -70,18 +70,12 @@ function handleMouseDown(
 }
 
 export default function (props: PolylineDragMarkersProps) {
-  // ! Check if working properly
   createEffect(() => {
     if (
       !draggingWaypointIndex() &&
       polylineDragMarker.hasEventListeners("mouseup")
     ) {
       polylineDragMarker.off("mouseup");
-      // console.log("mouseup event listener removed");
-      // console.log(
-      //   "event still present ? => ",
-      //   polylineDragMarker.hasEventListeners("mouseup")
-      // );
       polylineDragMarker.setLatLng(props.latlngs);
     }
   });
@@ -111,6 +105,7 @@ export default function (props: PolylineDragMarkersProps) {
   polylineDragMarker.addTo(props.map);
 
   onCleanup(() => {
+    console.log("cleanup");
     polylineDragMarker.remove();
   });
   return <></>;
