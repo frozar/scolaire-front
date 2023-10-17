@@ -1,6 +1,6 @@
 import L from "leaflet";
 import { For, createEffect, createSignal } from "solid-js";
-import { AssociatedPointType } from "../../../../../_entities/_utils.entity";
+import { AssociatedSchoolType } from "../../../../../_entities/_utils.entity";
 import { StopType } from "../../../../../_entities/stop.entity";
 import {
   AddLineStep,
@@ -29,7 +29,7 @@ export interface StopPointsProps {
 
 export const [getStops, setStops] = createSignal<StopType[]>([]);
 
-export function appendToStop(classItem: AssociatedPointType, stopId: number) {
+export function appendToStop(classItem: AssociatedSchoolType, stopId: number) {
   setStops((prev) => {
     if (prev != undefined) {
       const stops = [...prev];
@@ -49,7 +49,7 @@ export function removeFromStop(classStudentToSchoolID: number, stopId: number) {
       const indexOfStop = stops.findIndex((prev) => prev.id == stopId);
 
       stops[indexOfStop].associated = stops[indexOfStop].associated.filter(
-        (prev) => prev.id != classStudentToSchoolID
+        (prev) => prev.idClassToSchool != classStudentToSchoolID
       );
       return stops;
     }
@@ -59,7 +59,7 @@ export function removeFromStop(classStudentToSchoolID: number, stopId: number) {
 }
 // TODO lucas à placer dans Stop component
 export function updateFromStop(
-  classStudentToSchool: AssociatedPointType,
+  classStudentToSchool: AssociatedSchoolType,
   stopId: number
 ) {
   setStops((prev) => {

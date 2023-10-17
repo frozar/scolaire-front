@@ -1,9 +1,9 @@
-import { AssociatedPointType } from "./_utils.entity";
+import { AssociatedSchoolType } from "./_utils.entity";
 
 export namespace ClassStudentToSchoolEntity {
   export function dbFormat(
     classStudentToSchool: Omit<
-      AssociatedPointType,
+      AssociatedSchoolType,
       "id" | "schoolName" | "usedQuantity"
     >
   ): Omit<ClassToSchoolDBType, "id"> {

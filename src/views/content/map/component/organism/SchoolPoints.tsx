@@ -23,13 +23,9 @@ export interface SchoolPointsProps {
 export const [getSchools, setSchools] = createSignal<SchoolType[]>([]);
 
 export function getSchoolWhereClassId(classId: number): SchoolType | undefined {
-  let school: SchoolType | undefined;
-  for (const school_ of getSchools()) {
-    school_.classes.map((classe) => {
-      if (classe.id == classId) school = school_;
-    });
-  }
-  return school;
+  return getSchools().filter((school) =>
+    school.classes.map((classe) => classe.id).includes(classId)
+  )[0];
 }
 
 export function SchoolPoints(props: SchoolPointsProps) {

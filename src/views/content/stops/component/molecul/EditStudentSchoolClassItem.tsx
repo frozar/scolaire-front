@@ -1,26 +1,20 @@
-import { createSignal, onMount } from "solid-js";
-import { AssociatedPointType } from "../../../../../_entities/_utils.entity";
+import { createEffect, createSignal, onMount } from "solid-js";
+import { AssociatedSchoolType } from "../../../../../_entities/_utils.entity";
 import { ClasseType } from "../../../../../_entities/classe.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
-import { StudentToSchoolService } from "../../../../../_services/student-to-school.service";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
 import CheckIcon from "../../../../../icons/CheckIcon";
 import { addNewUserInformation } from "../../../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../../../type";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { getSchools } from "../../../map/component/organism/SchoolPoints";
-import {
-  appendToStop,
-  updateFromStop,
-} from "../../../map/component/organism/StopPoints";
 import ClasseSelection from "../atom/ClasseSelection";
 import InputNumber from "../atom/InputNumber";
 import SchoolSelect from "../atom/SchoolSelection";
-import { stopDetailsItem } from "../organism/StopDetails";
 import "./EditStudentSchoolClassItem.css";
 
 interface EditStopProps {
-  classStudentToSchool?: AssociatedPointType;
+  classStudentToSchool?: AssociatedSchoolType;
   close: () => void;
 }
 
@@ -35,12 +29,14 @@ export default function (props: EditStopProps) {
   const [quantityInputRef, setQuantityInputRef] =
     createSignal<HTMLInputElement>(document.createElement("input"));
 
-  if (props.classStudentToSchool != undefined) {
-    const school = getSchools().filter(
-      (school) => school.id == props.classStudentToSchool?.schoolId
-    )[0];
-    setSelectedSchool(school);
-  }
+  createEffect(() => {
+    if (props.classStudentToSchool != undefined) {
+      const school = getSchools().filter(
+        (school) => school.id == props.classStudentToSchool?.schoolId
+      )[0];
+      setSelectedSchool(school);
+    }
+  });
 
   onMount(() => {
     if (props.classStudentToSchool != undefined) {
@@ -96,37 +92,38 @@ export default function (props: EditStopProps) {
         displayed: true,
         level: MessageLevelEnum.warning,
         type: MessageTypeEnum.global,
-        content: "Veuillez compléter tous les champs !",
+        content: "Veuillez compléter tous les champs",
       });
     }
     return validInputs;
   }
 
   async function create() {
+    // TODO to fix
     if (checkAllInputsValue()) return;
-    const classToSchool = await StudentToSchoolService.create({
-      schoolId: Number(schoolSelectRef().value),
-      stopId: Number(stopDetailsItem()?.id),
-      quantity: Number(quantityInputRef().value),
-      classId: Number(classeSelectRef().value),
-    });
-
-    appendToStop(classToSchool, stopDetailsItem()?.id as number);
+    // const classToSchool = await StudentToSchoolService.create({
+    //   schoolId: Number(schoolSelectRef().value),
+    //   stopId: Number(stopDetailsItem()?.id),
+    //   quantity: Number(quantityInputRef().value),
+    //   classId: Number(classeSelectRef().value),
+    // });
+    // appendToStop(classToSchool, stopDetailsItem()?.id as number);
   }
 
   async function update() {
     if (!props.classStudentToSchool) return;
-    const classToSchool = await StudentToSchoolService.update({
-      id: props.classStudentToSchool?.id as number,
-      schoolId: Number(schoolSelectRef().value),
-      stopId: Number(stopDetailsItem()?.id),
-      quantity: Number(quantityInputRef().value),
-      classId: Number(classeSelectRef().value),
-    });
+    // const classToSchool = await StudentToSchoolService.update({
+    //   idClassToSchool: props.classStudentToSchool?.idClassToSchool as number,
+    //   schoolId: Number(schoolSelectRef().value),
+    //   stopId: Number(stopDetailsItem()?.id),
+    //   quantity: Number(quantityInputRef().value),
+    //   classId: Number(classeSelectRef().value),
+    // });
 
-    updateFromStop(classToSchool, stopDetailsItem()?.id as number);
+    // updateFromStop(classToSchool, stopDetailsItem()?.id as number);
 
     // TODO lucas même update mais pour school
+    console.log("update student to class");
   }
 
   async function validate() {

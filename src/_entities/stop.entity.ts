@@ -2,8 +2,7 @@ import { Accessor, Setter, createSignal } from "solid-js";
 import { useStateGui } from "../StateGui";
 import { NatureEnum } from "../type";
 import {
-  AssociatedDBPointType,
-  AssociatedPointType,
+  AssociatedSchoolType,
   EntityUtils,
   LocationDBType,
 } from "./_utils.entity";
@@ -20,7 +19,9 @@ export class StopEntity {
       lat: dbStop.location.data.lat,
       name: dbStop.name,
       nature: NatureEnum.stop,
-      associated: EntityUtils.formatAssociatedClassToSchool(dbStop.associated),
+      associated: EntityUtils.formatAssociatedClassToSchoolForStop(
+        dbStop.associated_class
+      ),
 
       leafletId: nextLeafletPointId(),
       selected: selected,
@@ -31,9 +32,14 @@ export class StopEntity {
   static dbFormat(
     stop: Omit<
       StopType,
-      "id" | "selected" | "associated" | "setSelected" | "nature" | "leafletId"
+      | "id"
+      | "selected"
+      | "associated_class"
+      | "setSelected"
+      | "nature"
+      | "leafletId"
     >
-  ): Omit<StopDBType, "id" | "associated"> {
+  ): Omit<StopDBType, "id" | "associated_class"> {
     return {
       name: stop.name,
       location: EntityUtils.builLocationPoint(stop.lon, stop.lat),
@@ -56,7 +62,7 @@ export type StopType = {
   name: string;
   lon: number;
   lat: number;
-  associated: AssociatedPointType[];
+  associated: AssociatedSchoolType[];
   nature: NatureEnum;
 
   leafletId: number;
@@ -64,9 +70,16 @@ export type StopType = {
   setSelected: Setter<boolean>;
 };
 
+export type DBAssociatedStop = {
+  id: number; // TODO id of the association v2_student_to_school -> to delete
+  stop_id?: number;
+  quantity: number;
+  class_id: number;
+};
+
 export type StopDBType = {
   id: number;
   name: string;
   location: LocationDBType;
-  associated: AssociatedDBPointType[];
+  associated_class: DBAssociatedStop[];
 };

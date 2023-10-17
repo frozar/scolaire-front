@@ -1,5 +1,5 @@
 import { Show, createSignal } from "solid-js";
-import { AssociatedPointType } from "../../../../../_entities/_utils.entity";
+import { AssociatedSchoolType } from "../../../../../_entities/_utils.entity";
 import { StudentToSchoolService } from "../../../../../_services/student-to-school.service";
 import CardTitle from "../../../../../component/atom/CardTitle";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
@@ -12,11 +12,13 @@ import { stopDetailsItem } from "../organism/StopDetails";
 import EditStudentSchoolClassItem from "./EditStudentSchoolClassItem";
 import "./StudentSchoolClassItem.css";
 
-export default function (props: { school: AssociatedPointType }) {
+export default function (props: { school: AssociatedSchoolType }) {
   const [editingMode, setEditingMode] = createSignal(false);
 
   async function onClickDelete() {
-    const response = await StudentToSchoolService.delete(props.school.id);
+    const response = await StudentToSchoolService.delete(
+      props.school.idClassToSchool
+    );
     console.log("delete class to school response", response);
 
     removeFromStop(response, stopDetailsItem()?.id as number);

@@ -58,7 +58,12 @@ describe("RaceService", () => {
           // TODO add classes in test
           classes: [],
           associated: [
-            { id: 7, name: "BENJOINS", quantity: 4, usedQuantity: 0 },
+            {
+              idClassToSchool: 7,
+              name: "BENJOINS",
+              quantity: 4,
+              usedQuantity: 0,
+            },
           ],
           selected: schoolSelected,
           setSelected: setSelected,
