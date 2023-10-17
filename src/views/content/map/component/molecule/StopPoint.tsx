@@ -123,30 +123,6 @@ function onClick(point: StopType) {
   }
 }
 
-const onRightClick = (stop: StopType) => {
-  const circle = linkMap.get(stop.leafletId);
-  const isInRaceUnderConstruction = currentRace().points.filter(
-    (_point) => _point.id == stop.id
-  )[0];
-
-  if (onBoard() == "race-draw" && isInRaceUnderConstruction != undefined) {
-    removePoint(stop);
-
-    // Update waypoints
-    const waypoints = currentRace().waypoints;
-    if (waypoints) {
-      const newWaypoints = WaypointEntity.deleteSchoolOrStopWaypoint(
-        waypoints,
-        stop.id,
-        stop.nature
-      );
-      updateWaypoints(newWaypoints);
-    }
-
-    circle?.setStyle({ fillColor: COLOR_STOP_FOCUS });
-  }
-};
-
 const onMouseOver = (stop: StopType) => {
   if (
     draggingWaypointIndex() &&
@@ -205,6 +181,30 @@ const onMouseUp = (stop: StopType, map: L.Map) => {
     updateRaceAndWaypoints(stop);
 
     setDraggingRace(false);
+  }
+};
+
+const onRightClick = (stop: StopType) => {
+  const circle = linkMap.get(stop.leafletId);
+  const isInRaceUnderConstruction = currentRace().points.filter(
+    (_point) => _point.id == stop.id
+  )[0];
+
+  if (onBoard() == "race-draw" && isInRaceUnderConstruction != undefined) {
+    removePoint(stop);
+
+    // Update waypoints
+    const waypoints = currentRace().waypoints;
+    if (waypoints) {
+      const newWaypoints = WaypointEntity.deleteSchoolOrStopWaypoint(
+        waypoints,
+        stop.id,
+        stop.nature
+      );
+      updateWaypoints(newWaypoints);
+    }
+
+    circle?.setStyle({ fillColor: COLOR_STOP_FOCUS });
   }
 };
 
