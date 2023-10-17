@@ -57,11 +57,34 @@ const maxRadius = 10;
 const rangeRadius = maxRadius - minRadius;
 
 //TODO Ne doit pas être placé ici
+// TODO: FIX
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function getAssociatedQuantity(point: StopType) {
   return point.associated.filter(
     (associatedSchool) =>
       associatedSchool.schoolId === currentRace().schools[0].id
   )[0].quantity;
+}
+
+function updateRaceAndWaypoints(point: StopType) {
+  // TODO: FIX
+  // const associatedQuantity = getAssociatedQuantity(point);
+  const associatedQuantity = 1;
+  const lastPoint = currentRace().points.at(-1);
+
+  addPointToRace({ ...point, quantity: associatedQuantity });
+
+  if (!lastPoint || point.leafletId != lastPoint.leafletId) {
+    const waypoints = currentRace().waypoints;
+    if (waypoints) {
+      const newWaypoints = WaypointEntity.updateWaypoints(
+        point,
+        waypoints,
+        currentRace().points
+      );
+      updateWaypoints(newWaypoints);
+    }
+  }
 }
 
 function onClick(point: StopType) {
@@ -86,24 +109,7 @@ function onClick(point: StopType) {
           return;
 
         case DrawRaceStep.editRace:
-          // TODO: FIX
-          // const associatedQuantity = getAssociatedQuantity(point);
-          const associatedQuantity = 1;
-          const lastPoint = currentRace().points.at(-1);
-
-          addPointToRace({ ...point, quantity: associatedQuantity });
-
-          if (!lastPoint || point.leafletId != lastPoint.leafletId) {
-            const waypoints = currentRace().waypoints;
-            if (waypoints) {
-              const newWaypoints = WaypointEntity.updateWaypoints(
-                point,
-                waypoints,
-                currentRace().points
-              );
-              updateWaypoints(newWaypoints);
-            }
-          }
+          updateRaceAndWaypoints(point);
           break;
       }
       break;
@@ -205,22 +211,8 @@ export function StopPoint(props: StopPointProps) {
         setDraggingWaypointIndex();
         setCurrentRaceIndex(nextIndex);
 
-        const associatedQuantity = 1;
-        const lastPoint = currentRace().points.at(-1);
+        updateRaceAndWaypoints(point);
 
-        addPointToRace({ ...point, quantity: associatedQuantity });
-
-        if (!lastPoint || point.leafletId != lastPoint.leafletId) {
-          const waypoints = currentRace().waypoints;
-          if (waypoints) {
-            const newWaypoints = WaypointEntity.updateWaypoints(
-              point,
-              waypoints,
-              currentRace().points
-            );
-            updateWaypoints(newWaypoints);
-          }
-        }
         const circle = linkMap.get(props.point.leafletId);
         circle?.setStyle({ radius: 5, weight: 0 });
         // ! need to reset back currentRaceIndex ?
@@ -235,19 +227,7 @@ export function StopPoint(props: StopPointProps) {
     }
 
     if (draggingRace()) {
-      const associatedQuantity = getAssociatedQuantity(point);
-
-      addPointToRace({ ...point, quantity: associatedQuantity });
-
-      const waypoints = currentRace().waypoints;
-      if (waypoints) {
-        const newWaypoints = WaypointEntity.updateWaypoints(
-          point,
-          waypoints,
-          currentRace().points
-        );
-        updateWaypoints(newWaypoints);
-      }
+      updateRaceAndWaypoints(point);
 
       setDraggingRace(false);
     }
