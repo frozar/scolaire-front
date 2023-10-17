@@ -17,6 +17,26 @@ export const [draggingWaypointIndex, setDraggingWaypointIndex] =
   createSignal<number>();
 
 export default function (props: PolylineDragMarkersProps) {
+  function handleMouseUp() {
+    props.map.off("mousemove");
+    props.map.dragging.enable();
+    const waypoints = currentRace().waypoints;
+    if (!waypoints) {
+      return;
+    }
+
+    const newWaypoints = WaypointEntity.createWaypoint(
+      waypoints,
+      props.index,
+      polylineDragMarker.getLatLng().lat,
+      polylineDragMarker.getLatLng().lng
+    );
+
+    updateWaypoints(newWaypoints);
+
+    setDraggingWaypointIndex();
+    polylineDragMarker.off("mouseup", handleMouseUp);
+  }
   // eslint-disable-next-line solid/reactivity
   const polylineDragMarker = L.circleMarker(props.latlngs, {
     fillColor: COLOR_WAYPOINT,
@@ -27,27 +47,6 @@ export default function (props: PolylineDragMarkersProps) {
     className: "dragMarker",
     // eslint-disable-next-line solid/reactivity
   }).on("mousedown", () => {
-    function handleMouseUp() {
-      props.map.off("mousemove");
-      props.map.dragging.enable();
-      const waypoints = currentRace().waypoints;
-      if (!waypoints) {
-        return;
-      }
-
-      const newWaypoints = WaypointEntity.createWaypoint(
-        waypoints,
-        props.index,
-        polylineDragMarker.getLatLng().lat,
-        polylineDragMarker.getLatLng().lng
-      );
-
-      updateWaypoints(newWaypoints);
-
-      setDraggingWaypointIndex();
-      polylineDragMarker.off("mouseup", handleMouseUp);
-    }
-    // ! Get correct nextIndex from waypoints
     let correctIndex = 0;
     for (let i = 0; i < props.index; i++) {
       if (
@@ -57,7 +56,7 @@ export default function (props: PolylineDragMarkersProps) {
         correctIndex += 1;
       }
     }
-    console.log("currentRace()", currentRace());
+    // console.log("currentRace()", currentRace());
     console.log("current wypoint index", correctIndex);
 
     setDraggingWaypointIndex(correctIndex);

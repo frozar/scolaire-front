@@ -117,55 +117,6 @@ function onClick(point: StopType) {
   }
 }
 
-// const onMouseOver = (stop: StopType) => {
-//   if (isDraggingWaypoint()) {
-//     const circle = linkMap.get(props.point.leafletId);
-
-//   }
-//   setIsOverMapItem(true);
-//   setBlinkingSchools(stop.associated.map((school) => school.schoolId));
-
-//   if (draggingRace()) {
-//     setCursorIsOverPoint(true);
-//   }
-// };
-
-// const onMouseOut = () => {
-//   setIsOverMapItem(false);
-//   setBlinkingSchools([]);
-
-//   if (draggingRace() || cursorIsOverPoint()) {
-//     setCursorIsOverPoint(false);
-//   }
-// };
-
-// const onMouseUp = (point: StopType) => {
-//   console.log("mouseUp stop")
-//   if (draggingWaypointNextIndex()) {
-//     // console.log("mouseout point");
-//     const circle = linkMap.get(props.point.leafletId);
-//     circle?.setStyle({ radius: 5, weight: 0 }); // ! reset color ?
-//   }
-
-//   if (draggingRace()) {
-//     const associatedQuantity = getAssociatedQuantity(point);
-
-//     addPointToRace({ ...point, quantity: associatedQuantity });
-
-//     const waypoints = currentRace().waypoints;
-//     if (waypoints) {
-//       const newWaypoints = WaypointEntity.updateWaypoints(
-//         point,
-//         waypoints,
-//         currentRace().points
-//       );
-//       updateWaypoints(newWaypoints);
-//     }
-
-//     setDraggingRace(false);
-//   }
-// };
-
 export function StopPoint(props: StopPointProps) {
   const rad = (): number => {
     if (isInReadMode()) return 5;
@@ -233,8 +184,7 @@ export function StopPoint(props: StopPointProps) {
   const onMouseOut = () => {
     if (draggingWaypointIndex()) {
       const circle = linkMap.get(props.point.leafletId);
-      // ! Reset seulement si necessaire, vérif d'abord
-      circle?.setStyle({ radius: 5, weight: 0 }); // ! reset color ?
+      circle?.setStyle({ radius: 5, weight: 0, color: COLOR_STOP_FOCUS });
     }
     setIsOverMapItem(false);
     setBlinkingSchools([]);
