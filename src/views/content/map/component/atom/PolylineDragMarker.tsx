@@ -44,8 +44,11 @@ function handleMouseUp(
 function handleMouseDown(
   waypointIndex: number,
   map: L.Map,
-  polylineDragMarker: L.CircleMarker
+  polylineDragMarker: L.CircleMarker,
+  event: L.LeafletMouseEvent
 ) {
+  if (event.originalEvent.button != 0) return;
+
   let pointNextIndex = 0;
   for (let i = 0; i < waypointIndex; i++) {
     if (
@@ -92,9 +95,9 @@ export default function (props: PolylineDragMarkersProps) {
 
   polylineDragMarker
     // eslint-disable-next-line solid/reactivity
-    .on("mousedown", () =>
-      handleMouseDown(props.index, props.map, polylineDragMarker)
-    )
+    .on("mousedown", (e) => {
+      handleMouseDown(props.index, props.map, polylineDragMarker, e);
+    })
     .on("mouseover", () => {
       polylineDragMarker.setStyle({ fillOpacity: 100 });
     })
