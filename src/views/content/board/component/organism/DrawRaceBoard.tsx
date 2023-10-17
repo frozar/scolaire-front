@@ -50,6 +50,8 @@ import "./DrawRaceBoard.css";
 import Metrics from "./Metrics";
 import { RaceTimeline } from "./RaceTimeline";
 
+// const [, { setModeRead }] = useStateAction();
+
 export enum DrawRaceStep {
   initial,
   schoolSelection,
@@ -83,7 +85,10 @@ export const [initialRace, setInitialRace] = createSignal<RaceType>(
 export function DrawRaceBoard() {
   onMount(() => {
     if (isInUpdate()) {
-      setInitialRace(currentRace);
+      setInitialRace(currentRace());
+      console.log("initialRace set to currentRace");
+      console.log("currentRace at the beginning =>", currentRace());
+      console.log("initialRace at the beginning =>", initialRace());
       QuantityUtils.substract(currentRace());
     } else {
       setInitialRace(RaceEntity.defaultRace());
@@ -286,6 +291,8 @@ async function nextStep() {
 }
 
 function prevStep() {
+  console.log("this prevStep is triggered");
+  console.log("actual currentStep => ", currentStep());
   switch (currentStep()) {
     case DrawRaceStep.schoolSelection:
       setCurrentRace(RaceEntity.defaultRace());
@@ -298,9 +305,24 @@ function prevStep() {
       break;
     case DrawRaceStep.editRace:
       if (isInUpdate()) {
-        QuantityUtils.add(initialRace());
-        setSelectedRace(initialRace);
+        console.log("is in update");
+        console.log("currentRace", currentRace());
+        console.log("initialRace", initialRace());
+        QuantityUtils.add(initialRace()); // ! ?
+        // ! fix initialRace()
+        quitModeDrawRace();
+        setSelectedRace(initialRace());
         updateRaces(initialRace());
+        setIsInUpdate(false);
+        // ! Use both ?
+        // toggleDrawMod();
+        // setModeRead();
+
+        // quitModeDrawRace();
+
+        setCurrentStep(DrawRaceStep.initial);
+        // setSelectedRace(initialRace());
+        // updateRaces(initialRace());
         changeBoard("line-details");
       } else {
         setCurrentRace(RaceEntity.defaultRace());

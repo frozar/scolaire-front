@@ -12,7 +12,7 @@ const [, { setModeDrawRace }] = useStateAction();
 
 export const [unmodifiedBusRace, setUnmodifiedBusRace] =
   createSignal<RaceType>();
-
+// TODO: Delete ? (It's unsused)
 export default function (props: { course: RaceType }) {
   async function onclick() {
     const [color, setColor] = createSignal<string>(props.course.color());
