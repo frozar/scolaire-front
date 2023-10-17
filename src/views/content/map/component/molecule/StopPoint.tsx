@@ -123,6 +123,91 @@ function onClick(point: StopType) {
   }
 }
 
+const onRightClick = (stop: StopType) => {
+  const circle = linkMap.get(stop.leafletId);
+  const isInRaceUnderConstruction = currentRace().points.filter(
+    (_point) => _point.id == stop.id
+  )[0];
+
+  if (onBoard() == "race-draw" && isInRaceUnderConstruction != undefined) {
+    removePoint(stop);
+
+    // Update waypoints
+    const waypoints = currentRace().waypoints;
+    if (waypoints) {
+      const newWaypoints = WaypointEntity.deleteSchoolOrStopWaypoint(
+        waypoints,
+        stop.id,
+        stop.nature
+      );
+      updateWaypoints(newWaypoints);
+    }
+
+    circle?.setStyle({ fillColor: COLOR_STOP_FOCUS });
+  }
+};
+
+const onMouseOver = (stop: StopType) => {
+  if (
+    draggingWaypointIndex() &&
+    !currentRace()
+      .points.map((point) => point.id)
+      .includes(stop.id)
+  ) {
+    const circle = linkMap.get(stop.leafletId);
+    circle?.setStyle({ radius: 10, weight: 4, color: COLOR_WAYPOINT });
+  }
+  setIsOverMapItem(true);
+  setBlinkingSchools(stop.associated.map((school) => school.schoolId));
+
+  if (draggingRace()) {
+    setCursorIsOverPoint(true);
+  }
+};
+
+const onMouseOut = (stop: StopType) => {
+  if (draggingWaypointIndex()) {
+    const circle = linkMap.get(stop.leafletId);
+    circle?.setStyle({ radius: 5, weight: 0, color: COLOR_STOP_FOCUS });
+  }
+  setIsOverMapItem(false);
+  setBlinkingSchools([]);
+
+  if (draggingRace() || cursorIsOverPoint()) {
+    setCursorIsOverPoint(false);
+  }
+};
+
+const onMouseUp = (stop: StopType, map: L.Map) => {
+  const nextIndex = draggingWaypointIndex();
+  if (nextIndex) {
+    if (
+      !currentRace()
+        .points.map((point) => point.id)
+        .includes(stop.id)
+    ) {
+      setDraggingWaypointIndex();
+      setCurrentRaceIndex(nextIndex);
+
+      updateRaceAndWaypoints(stop);
+
+      const circle = linkMap.get(stop.leafletId);
+      circle?.setStyle({ radius: 5, weight: 0 });
+    } else {
+      setCurrentRaceIndex(currentRace().points.length);
+      setDraggingWaypointIndex();
+      map.off("mousemove");
+      map.dragging.enable();
+    }
+  }
+
+  if (draggingRace()) {
+    updateRaceAndWaypoints(stop);
+
+    setDraggingRace(false);
+  }
+};
+
 export function StopPoint(props: StopPointProps) {
   const rad = (): number => {
     if (isInReadMode()) return 5;
@@ -145,93 +230,6 @@ export function StopPoint(props: StopPointProps) {
     return radiusValue;
   };
 
-  const onRightClick = () => {
-    const circle = linkMap.get(props.point.leafletId);
-    const isInRaceUnderConstruction = currentRace().points.filter(
-      (_point) => _point.id == props.point.id
-    )[0];
-
-    if (onBoard() == "race-draw" && isInRaceUnderConstruction != undefined) {
-      removePoint(props.point);
-
-      // Update waypoints
-      const waypoints = currentRace().waypoints;
-      if (waypoints) {
-        const newWaypoints = WaypointEntity.deleteSchoolOrStopWaypoint(
-          waypoints,
-          props.point.id,
-          props.point.nature
-        );
-        updateWaypoints(newWaypoints);
-      }
-
-      circle?.setStyle({ fillColor: COLOR_STOP_FOCUS });
-    }
-  };
-
-  const onMouseOver = (stop: StopType) => {
-    if (
-      draggingWaypointIndex() &&
-      !currentRace()
-        .points.map((point) => point.id)
-        .includes(stop.id)
-    ) {
-      const circle = linkMap.get(props.point.leafletId);
-      circle?.setStyle({ radius: 10, weight: 4, color: COLOR_WAYPOINT });
-    }
-    setIsOverMapItem(true);
-    setBlinkingSchools(stop.associated.map((school) => school.schoolId));
-
-    if (draggingRace()) {
-      setCursorIsOverPoint(true);
-    }
-  };
-
-  const onMouseOut = () => {
-    if (draggingWaypointIndex()) {
-      const circle = linkMap.get(props.point.leafletId);
-      circle?.setStyle({ radius: 5, weight: 0, color: COLOR_STOP_FOCUS });
-    }
-    setIsOverMapItem(false);
-    setBlinkingSchools([]);
-
-    if (draggingRace() || cursorIsOverPoint()) {
-      setCursorIsOverPoint(false);
-    }
-  };
-  // ! Clean / refactor (sub function to move to polylineDragMarker.ts ?)
-  const onMouseUp = (point: StopType) => {
-    const nextIndex = draggingWaypointIndex();
-    if (nextIndex) {
-      if (
-        !currentRace()
-          .points.map((point) => point.id)
-          .includes(point.id)
-      ) {
-        setDraggingWaypointIndex();
-        setCurrentRaceIndex(nextIndex);
-
-        updateRaceAndWaypoints(point);
-
-        const circle = linkMap.get(props.point.leafletId);
-        circle?.setStyle({ radius: 5, weight: 0 });
-      } else {
-        setCurrentRaceIndex(currentRace().points.length);
-        setDraggingWaypointIndex();
-        props.map.off("mousemove");
-        props.map.dragging.enable();
-        // TODO: Use this
-        // polylineDragMarker.off("mouseup", handleMouseUp);
-      }
-    }
-
-    if (draggingRace()) {
-      updateRaceAndWaypoints(point);
-
-      setDraggingRace(false);
-    }
-  };
-
   const color = () => {
     if (isInDrawRaceMode()) {
       return COLOR_STOP_LIGHT;
@@ -249,9 +247,9 @@ export function StopPoint(props: StopPointProps) {
       weight={0}
       onClick={() => onClick(props.point)}
       onMouseOver={() => onMouseOver(props.point)}
-      onMouseOut={() => onMouseOut()}
-      onRightClick={onRightClick}
-      onMouseUp={() => onMouseUp(props.point)}
+      onMouseOut={() => onMouseOut(props.point)}
+      onRightClick={() => onRightClick(props.point)}
+      onMouseUp={() => onMouseUp(props.point, props.map)}
     />
   );
 }

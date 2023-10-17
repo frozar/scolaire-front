@@ -34,6 +34,7 @@ function handleMouseUp(
     polylineDragMarker.getLatLng().lat,
     polylineDragMarker.getLatLng().lng
   );
+  console.log("new waypoints => ", newWaypoints);
 
   updateWaypoints(newWaypoints);
 
@@ -41,25 +42,25 @@ function handleMouseUp(
 }
 
 function handleMouseDown(
-  index: number,
+  waypointIndex: number,
   map: L.Map,
   polylineDragMarker: L.CircleMarker
 ) {
-  let correctIndex = 0;
-  for (let i = 0; i < index; i++) {
+  let pointNextIndex = 0;
+  for (let i = 0; i < waypointIndex; i++) {
     if (
       currentRace().waypoints?.at(i)?.idSchool != undefined ||
       currentRace().waypoints?.at(i)?.idStop != undefined
     ) {
-      correctIndex += 1;
+      pointNextIndex += 1;
     }
   }
   // console.log("currentRace()", currentRace());
-  console.log("current wypoint index", correctIndex);
+  console.log("current wypoint index", pointNextIndex);
 
-  setDraggingWaypointIndex(correctIndex);
+  setDraggingWaypointIndex(pointNextIndex);
   polylineDragMarker.on("mouseup", () =>
-    handleMouseUp(map, index, polylineDragMarker)
+    handleMouseUp(map, waypointIndex, polylineDragMarker)
   );
   map.dragging.disable();
   createEffect(() => {
@@ -105,7 +106,6 @@ export default function (props: PolylineDragMarkersProps) {
   polylineDragMarker.addTo(props.map);
 
   onCleanup(() => {
-    console.log("cleanup");
     polylineDragMarker.remove();
   });
   return <></>;

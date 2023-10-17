@@ -76,7 +76,6 @@ export default function (props: PointProps) {
         radius: props.radius,
         fillOpacity: 1,
         weight: props.weight,
-        // pane: "shadowPane",
         pane: "markerPane",
         className: "map-point",
       })
