@@ -215,7 +215,6 @@ export function StopPoint(props: StopPointProps) {
 
         const circle = linkMap.get(props.point.leafletId);
         circle?.setStyle({ radius: 5, weight: 0 });
-        // ! need to reset back currentRaceIndex ?
       } else {
         setCurrentRaceIndex(currentRace().points.length);
         setDraggingWaypointIndex();

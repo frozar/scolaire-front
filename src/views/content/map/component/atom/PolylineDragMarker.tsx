@@ -17,6 +17,21 @@ export const [draggingWaypointIndex, setDraggingWaypointIndex] =
   createSignal<number>();
 
 export default function (props: PolylineDragMarkersProps) {
+  // ! Check if working properly
+  createEffect(() => {
+    if (
+      !draggingWaypointIndex() &&
+      polylineDragMarker.hasEventListeners("mouseup")
+    ) {
+      polylineDragMarker.off("mouseup", handleMouseUp);
+      // console.log("mouseup event listener removed");
+      // console.log(
+      //   "event still present ? => ",
+      //   polylineDragMarker.hasEventListeners("mouseup")
+      // );
+      polylineDragMarker.setLatLng(props.latlngs);
+    }
+  });
   function handleMouseUp() {
     props.map.off("mousemove");
     props.map.dragging.enable();
@@ -35,7 +50,7 @@ export default function (props: PolylineDragMarkersProps) {
     updateWaypoints(newWaypoints);
 
     setDraggingWaypointIndex();
-    polylineDragMarker.off("mouseup", handleMouseUp);
+    // polylineDragMarker.off("mouseup", handleMouseUp);
   }
   // eslint-disable-next-line solid/reactivity
   const polylineDragMarker = L.circleMarker(props.latlngs, {
@@ -47,6 +62,7 @@ export default function (props: PolylineDragMarkersProps) {
     className: "dragMarker",
     // eslint-disable-next-line solid/reactivity
   }).on("mousedown", () => {
+    // ! Create handleMouseDown function
     let correctIndex = 0;
     for (let i = 0; i < props.index; i++) {
       if (
