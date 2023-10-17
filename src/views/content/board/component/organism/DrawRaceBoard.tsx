@@ -1,4 +1,4 @@
-import { Show, createSignal, onCleanup, onMount } from "solid-js";
+import { Show, createEffect, createSignal, onCleanup, onMount } from "solid-js";
 
 import SelectedSchool from "../atom/SelectedSchool";
 
@@ -89,6 +89,9 @@ export function DrawRaceBoard() {
       setInitialRace(RaceEntity.defaultRace());
     }
   });
+  createEffect(() =>
+    console.log("createEffect of currentRaceIndex", currentRaceIndex())
+  );
   onCleanup(() => {
     setIsInUpdate(false);
   });

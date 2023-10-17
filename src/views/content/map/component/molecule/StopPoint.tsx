@@ -193,38 +193,45 @@ export function StopPoint(props: StopPointProps) {
       setCursorIsOverPoint(false);
     }
   };
-
+  // ! Clean / refactor (sub function to move to polylineDragMarker.ts ?)
   const onMouseUp = (point: StopType) => {
     const nextIndex = draggingWaypointIndex();
-    if (
-      nextIndex &&
-      !currentRace()
-        .points.map((point) => point.id)
-        .includes(point.id)
-    ) {
-      setDraggingWaypointIndex();
-      console.log("nextIndex", nextIndex);
-      console.log("mouseUp stop");
-      setCurrentRaceIndex(nextIndex);
+    if (nextIndex) {
+      if (
+        !currentRace()
+          .points.map((point) => point.id)
+          .includes(point.id)
+      ) {
+        setDraggingWaypointIndex();
+        setCurrentRaceIndex(nextIndex);
 
-      const associatedQuantity = 1;
-      const lastPoint = currentRace().points.at(-1);
+        const associatedQuantity = 1;
+        const lastPoint = currentRace().points.at(-1);
 
-      addPointToRace({ ...point, quantity: associatedQuantity });
+        addPointToRace({ ...point, quantity: associatedQuantity });
 
-      if (!lastPoint || point.leafletId != lastPoint.leafletId) {
-        const waypoints = currentRace().waypoints;
-        if (waypoints) {
-          const newWaypoints = WaypointEntity.updateWaypoints(
-            point,
-            waypoints,
-            currentRace().points
-          );
-          updateWaypoints(newWaypoints);
+        if (!lastPoint || point.leafletId != lastPoint.leafletId) {
+          const waypoints = currentRace().waypoints;
+          if (waypoints) {
+            const newWaypoints = WaypointEntity.updateWaypoints(
+              point,
+              waypoints,
+              currentRace().points
+            );
+            updateWaypoints(newWaypoints);
+          }
         }
+        const circle = linkMap.get(props.point.leafletId);
+        circle?.setStyle({ radius: 5, weight: 0 });
+        // ! need to reset back currentRaceIndex ?
+      } else {
+        setCurrentRaceIndex(currentRace().points.length);
+        setDraggingWaypointIndex();
+        props.map.off("mousemove");
+        props.map.dragging.enable();
+        // TODO: Use this
+        // polylineDragMarker.off("mouseup", handleMouseUp);
       }
-      const circle = linkMap.get(props.point.leafletId);
-      circle?.setStyle({ radius: 5, weight: 0 });
     }
 
     if (draggingRace()) {

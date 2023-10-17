@@ -6,6 +6,7 @@ import { MapElementUtils } from "../../../../../utils/mapElement.utils";
 import {
   DrawRaceStep,
   setCurrentRace,
+  setCurrentRaceIndex,
   setCurrentStep,
   setIsInUpdate,
 } from "../organism/DrawRaceBoard";
@@ -18,6 +19,7 @@ export function UpdateRaceButton(props: { race: RaceType }) {
   async function onclick() {
     changeBoard("race-draw");
     setCurrentRace(props.race);
+    setCurrentRaceIndex(props.race.points.length);
     setIsInUpdate(true);
 
     MapElementUtils.deselectAllPointsAndBusRaces();
