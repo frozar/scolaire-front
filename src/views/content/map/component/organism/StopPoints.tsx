@@ -120,7 +120,6 @@ export function StopPoints(props: StopPointsProps) {
 export function leafletStopsFilter(): StopType[] {
   let schools = getSchools();
   let stops = getStops();
-  // console.log("onBoard()", onBoard());
   switch (onBoard()) {
     case "course":
       return stops.filter((stop) =>
@@ -147,7 +146,6 @@ export function leafletStopsFilter(): StopType[] {
 
       break;
     case "race-draw":
-      // console.log("currentStep()", currentStep());
       schools = currentRace().schools;
 
       stops = getStops().filter((stop) =>
@@ -162,14 +160,12 @@ export function leafletStopsFilter(): StopType[] {
           return [];
         case DrawRaceStep.editRace:
         case DrawRaceStep.initial:
-          // console.log("stops", stops);
           return stops;
       }
 
     case "schools":
       return [];
     default:
-      // console.log("default return stops => ", stops);
       return stops;
   }
 
