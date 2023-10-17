@@ -92,7 +92,7 @@ function onClick(point: StopType) {
     case "line-add":
       setStopSelected([
         ...stopSelected().map((stop) => {
-          if (stop.associated.id == point.id) {
+          if (stop.stopItem.id == point.id) {
             return { ...stop, done: !stop.done };
           }
           return stop;

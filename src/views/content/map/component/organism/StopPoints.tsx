@@ -120,6 +120,9 @@ export function StopPoints(props: StopPointsProps) {
 export function leafletStopsFilter(): StopType[] {
   let schools = getSchools();
   let stops = getStops();
+  console.log("onBoard", onBoard());
+  console.log("addLineCurrentStep()", addLineCurrentStep());
+
   switch (onBoard()) {
     case "course":
       return stops.filter((stop) =>
@@ -132,14 +135,16 @@ export function leafletStopsFilter(): StopType[] {
         case AddLineStep.schoolSelection:
           return [];
         case AddLineStep.stopSelection:
+          console.log("on est la");
           schools = addLineSelectedSchool();
           stops = stopSelected().map((associated) => {
-            return associated.associated;
+            return associated.stopItem;
           });
+
           const associatedIdSelected = schools
-            .map((school) => school.associated.map((value) => value.schoolId))
+            .map((school) => school.classes.map((value) => value.schoolId))
             .flat();
-          getStops().filter((stoptofilter) =>
+          return getStops().filter((stoptofilter) =>
             associatedIdSelected.includes(stoptofilter.id)
           );
       }
