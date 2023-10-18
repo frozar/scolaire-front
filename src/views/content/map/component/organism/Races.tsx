@@ -2,6 +2,7 @@ import L from "leaflet";
 import { For, createEffect, createSignal, onCleanup } from "solid-js";
 import { Race } from "../molecule/Race";
 
+import { LineType } from "../../../../../_entities/line.entity";
 import { RaceEntity, RaceType } from "../../../../../_entities/race.entity";
 import {
   DrawRaceStep,
@@ -10,7 +11,7 @@ import {
 } from "../../../board/component/organism/DrawRaceBoard";
 import { onBoard } from "../../../board/component/template/ContextManager";
 import { stopDetailsItem } from "../../../stops/component/organism/StopDetails";
-import { getLines, getSelectedLine } from "./BusLines";
+import { getLines, getSelectedLine, setLines } from "./BusLines";
 
 export const arrowsMap = new Map<number, L.Marker[]>();
 
@@ -85,5 +86,32 @@ export function updateRaces(race: RaceType) {
     const updated = races.filter((r) => r.id != race.id);
     updated.push(race);
     return updated;
+  });
+}
+
+export function resetRaceInLine(initialRace: RaceType) {
+  setLines((prev) => {
+    console.log("initialRace.id", initialRace.id);
+    const lines = [...prev].filter(
+      (line) => !line.courses.some((race) => race.id === initialRace.id)
+    );
+
+    console.log("lines", lines);
+    const lineToModify = [...prev].filter((line) =>
+      line.courses.some((race) => race.id == initialRace.id)
+    )[0];
+    console.log("specificLine", lineToModify);
+    const racesUpdated = lineToModify.courses.map((race) => {
+      if (race.id == initialRace.id) return initialRace;
+      else return race;
+    });
+    console.log("newRaces", racesUpdated);
+    const finalLines: LineType[] = [
+      ...lines,
+      { ...lineToModify, courses: racesUpdated },
+    ];
+    console.log("final lines", finalLines);
+
+    return finalLines;
   });
 }

@@ -33,6 +33,7 @@ import { MapElementUtils } from "../../../../../utils/mapElement.utils";
 import { QuantityUtils } from "../../../../../utils/quantity.utils";
 import { getLines, setLines } from "../../../map/component/organism/BusLines";
 import {
+  resetRaceInLine,
   setRaces,
   setSelectedRace,
   updateRaces,
@@ -49,8 +50,6 @@ import CollapsibleElement from "./CollapsibleElement";
 import "./DrawRaceBoard.css";
 import Metrics from "./Metrics";
 import { RaceTimeline } from "./RaceTimeline";
-
-// const [, { setModeRead }] = useStateAction();
 
 export enum DrawRaceStep {
   initial,
@@ -89,9 +88,6 @@ export function DrawRaceBoard() {
         ...currentRace(),
         points: [...currentRace().points],
       });
-      // console.log("initialRace set to currentRace");
-      // console.log("currentRace at the beginning =>", currentRace());
-      // console.log("initialRace at the beginning =>", initialRace());
       QuantityUtils.substract(currentRace());
     } else {
       setInitialRace(RaceEntity.defaultRace());
@@ -187,7 +183,7 @@ export function DrawRaceBoard() {
         previousStep={{
           callback: prevStep,
           label:
-            currentStep() === DrawRaceStep.schoolSelection
+            currentStep() === DrawRaceStep.schoolSelection || isInUpdate()
               ? "Annuler"
               : "Précédant",
         }}
@@ -294,8 +290,6 @@ async function nextStep() {
 }
 
 function prevStep() {
-  // console.log("this prevStep is triggered");
-  // console.log("actual currentStep => ", currentStep());
   switch (currentStep()) {
     case DrawRaceStep.schoolSelection:
       setCurrentRace(RaceEntity.defaultRace());
@@ -308,25 +302,13 @@ function prevStep() {
       break;
     case DrawRaceStep.editRace:
       if (isInUpdate()) {
-        // console.log("is in update");
-        // console.log("currentRace", currentRace());
-        // console.log("initialRace", initialRace());
-        QuantityUtils.add(initialRace()); // ! ?
-        // ! fix initialRace()
+        QuantityUtils.add(initialRace());
         quitModeDrawRace();
         setSelectedRace(initialRace());
-        // updateRaces(initialRace()); // ! ?
-        resetLines(initialRace());
+        resetRaceInLine(initialRace());
         setIsInUpdate(false);
-        // ! Use both ?
-        // toggleDrawMod();
-        // setModeRead();
-
-        // quitModeDrawRace();
 
         setCurrentStep(DrawRaceStep.initial);
-        // setSelectedRace(initialRace());
-        // updateRaces(initialRace());
         changeBoard("line-details");
       } else {
         setCurrentRace(RaceEntity.defaultRace());
@@ -342,33 +324,6 @@ function prevStep() {
   setDisplayRaceMode((prev) =>
     prev == displayRaceModeEnum.straight ? prev : displayRaceModeEnum.straight
   );
-}
-// ! Move
-function resetLines(initialRace: RaceType) {
-  setLines((prev) => {
-    console.log("initialRace.id", initialRace.id);
-    const lines = [...prev].filter(
-      (line) => !line.courses.some((race) => race.id === initialRace.id)
-    );
-
-    console.log("lines", lines);
-    const specificLine = [...prev].filter((line) =>
-      line.courses.some((race) => race.id == initialRace.id)
-    )[0];
-    console.log("specificLine", specificLine);
-    const newRaces = specificLine.courses.map((race) => {
-      if (race.id == initialRace.id) return initialRace;
-      else return race;
-    });
-    console.log("newRaces", newRaces);
-    const finalLines: LineType[] = [
-      ...lines,
-      { ...specificLine, courses: newRaces },
-    ];
-    console.log("final lines", finalLines);
-
-    return finalLines;
-  });
 }
 
 async function onClick() {
