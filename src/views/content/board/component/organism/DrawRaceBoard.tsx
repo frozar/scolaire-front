@@ -68,6 +68,7 @@ export enum displayRaceModeEnum {
 export const [displayRaceMode, setDisplayRaceMode] =
   createSignal<displayRaceModeEnum>(displayRaceModeEnum.straight);
 
+// TODO: Rename currentDrawRace and setCurrentDrawRace
 export const [currentRace, setCurrentRace] = createSignal<RaceType>(
   RaceEntity.defaultRace()
 );
@@ -76,17 +77,12 @@ export const [currentRaceIndex, setCurrentRaceIndex] = createSignal(0);
 
 export const [isInUpdate, setIsInUpdate] = createSignal(false);
 
-export const [initialRace, setInitialRace] = createSignal<RaceType>(
-  RaceEntity.defaultRace()
-);
-
 export function DrawRaceBoard() {
   onMount(() => {
     if (isInUpdate()) {
-      setInitialRace(currentRace);
       QuantityUtils.substract(currentRace());
     } else {
-      setInitialRace(RaceEntity.defaultRace());
+      setCurrentRace(RaceEntity.defaultRace());
     }
   });
   onCleanup(() => {
@@ -179,7 +175,7 @@ export function DrawRaceBoard() {
         previousStep={{
           callback: prevStep,
           label:
-            currentStep() === DrawRaceStep.schoolSelection
+            currentStep() === DrawRaceStep.schoolSelection || isInUpdate()
               ? "Annuler"
               : "Précédant",
         }}
@@ -277,7 +273,7 @@ async function nextStep() {
       setCurrentRace(RaceEntity.defaultRace());
       setCurrentRaceIndex(0);
       setIsInUpdate(false);
-      setInitialRace(RaceEntity.defaultRace());
+      setCurrentRace(RaceEntity.defaultRace());
 
       setCurrentStep(DrawRaceStep.initial);
       updatePointColor();
@@ -298,9 +294,18 @@ function prevStep() {
       break;
     case DrawRaceStep.editRace:
       if (isInUpdate()) {
-        QuantityUtils.add(initialRace());
-        setSelectedRace(initialRace);
-        updateRaces(initialRace());
+        QuantityUtils.add(currentRace());
+        quitModeDrawRace();
+        // eslint-disable-next-line solid/reactivity
+        setSelectedRace(() => {
+          return getLines()
+            .map((line) => line.courses)
+            .flat()
+            .filter((race) => race.id == currentRace().id)[0];
+        });
+        setIsInUpdate(false);
+
+        setCurrentStep(DrawRaceStep.initial);
         changeBoard("line-details");
       } else {
         setCurrentRace(RaceEntity.defaultRace());

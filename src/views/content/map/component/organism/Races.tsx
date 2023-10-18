@@ -19,6 +19,7 @@ export type leafletBusRaceType = {
   arrows: L.Marker[];
 };
 
+// TODO: Rename
 export const [getRaces, setRaces] = createSignal<RaceType[]>([]);
 
 export const [selectedRace, setSelectedRace] = createSignal<RaceType>();
