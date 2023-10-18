@@ -20,7 +20,7 @@ export type leafletBusRaceType = {
 };
 
 export const [getRaces, setRaces] = createSignal<RaceType[]>([]);
-
+// ! Difference of use between getRaces and selectedRace ????
 export const [selectedRace, setSelectedRace] = createSignal<RaceType>();
 
 export function Races(props: { map: L.Map }) {

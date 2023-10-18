@@ -85,7 +85,10 @@ export const [initialRace, setInitialRace] = createSignal<RaceType>(
 export function DrawRaceBoard() {
   onMount(() => {
     if (isInUpdate()) {
-      setInitialRace(currentRace());
+      setInitialRace({
+        ...currentRace(),
+        points: [...currentRace().points],
+      });
       // console.log("initialRace set to currentRace");
       // console.log("currentRace at the beginning =>", currentRace());
       // console.log("initialRace at the beginning =>", initialRace());
@@ -312,7 +315,8 @@ function prevStep() {
         // ! fix initialRace()
         quitModeDrawRace();
         setSelectedRace(initialRace());
-        updateRaces(initialRace());
+        // updateRaces(initialRace()); // ! ?
+        resetLines(initialRace());
         setIsInUpdate(false);
         // ! Use both ?
         // toggleDrawMod();
@@ -338,6 +342,33 @@ function prevStep() {
   setDisplayRaceMode((prev) =>
     prev == displayRaceModeEnum.straight ? prev : displayRaceModeEnum.straight
   );
+}
+// ! Move
+function resetLines(initialRace: RaceType) {
+  setLines((prev) => {
+    console.log("initialRace.id", initialRace.id);
+    const lines = [...prev].filter(
+      (line) => !line.courses.some((race) => race.id === initialRace.id)
+    );
+
+    console.log("lines", lines);
+    const specificLine = [...prev].filter((line) =>
+      line.courses.some((race) => race.id == initialRace.id)
+    )[0];
+    console.log("specificLine", specificLine);
+    const newRaces = specificLine.courses.map((race) => {
+      if (race.id == initialRace.id) return initialRace;
+      else return race;
+    });
+    console.log("newRaces", newRaces);
+    const finalLines: LineType[] = [
+      ...lines,
+      { ...specificLine, courses: newRaces },
+    ];
+    console.log("final lines", finalLines);
+
+    return finalLines;
+  });
 }
 
 async function onClick() {
