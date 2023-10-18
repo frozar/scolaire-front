@@ -5,7 +5,11 @@ import {
   changeBoard,
   onBoard,
 } from "../../../board/component/template/ContextManager";
-import { COLOR_STOP_FOCUS, COLOR_STOP_LIGHT } from "../../constant";
+import {
+  COLOR_STOP_FOCUS,
+  COLOR_STOP_LIGHT,
+  COLOR_WAYPOINT,
+} from "../../constant";
 import Point from "../atom/Point";
 
 import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
@@ -20,10 +24,15 @@ import {
   currentRace,
   currentStep,
   removePoint,
+  setCurrentRaceIndex,
   updateWaypoints,
 } from "../../../board/component/organism/DrawRaceBoard";
 import { setStopDetailsItem } from "../../../stops/component/organism/StopDetails";
 import { setIsOverMapItem } from "../../l7MapBuilder";
+import {
+  draggingWaypointIndex,
+  setDraggingWaypointIndex,
+} from "../atom/PolylineDragMarker";
 import {
   blinkingStops,
   cursorIsOverPoint,
@@ -48,11 +57,34 @@ const maxRadius = 10;
 const rangeRadius = maxRadius - minRadius;
 
 //TODO Ne doit pas être placé ici
+// TODO: FIX
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function getAssociatedQuantity(point: StopType) {
   return point.associated.filter(
     (associatedSchool) =>
       associatedSchool.schoolId === currentRace().schools[0].id
   )[0].quantity;
+}
+
+function updateRaceAndWaypoints(point: StopType) {
+  // TODO: FIX
+  // const associatedQuantity = getAssociatedQuantity(point);
+  const associatedQuantity = 1;
+  const lastPoint = currentRace().points.at(-1);
+
+  addPointToRace({ ...point, quantity: associatedQuantity });
+
+  if (!lastPoint || point.leafletId != lastPoint.leafletId) {
+    const waypoints = currentRace().waypoints;
+    if (waypoints) {
+      const newWaypoints = WaypointEntity.updateWaypoints(
+        point,
+        waypoints,
+        currentRace().points
+      );
+      updateWaypoints(newWaypoints);
+    }
+  }
 }
 
 function onClick(point: StopType) {
@@ -77,23 +109,7 @@ function onClick(point: StopType) {
           return;
 
         case DrawRaceStep.editRace:
-          const associatedQuantity = getAssociatedQuantity(point);
-
-          const lastPoint = currentRace().points.at(-1);
-
-          addPointToRace({ ...point, quantity: associatedQuantity });
-
-          if (!lastPoint || point.leafletId != lastPoint.leafletId) {
-            const waypoints = currentRace().waypoints;
-            if (waypoints) {
-              const newWaypoints = WaypointEntity.updateWaypoints(
-                point,
-                waypoints,
-                currentRace().points
-              );
-              updateWaypoints(newWaypoints);
-            }
-          }
+          updateRaceAndWaypoints(point);
           break;
       }
       break;
@@ -108,6 +124,15 @@ function onClick(point: StopType) {
 }
 
 const onMouseOver = (stop: StopType) => {
+  if (
+    draggingWaypointIndex() &&
+    !currentRace()
+      .points.map((point) => point.id)
+      .includes(stop.id)
+  ) {
+    const circle = linkMap.get(stop.leafletId);
+    circle?.setStyle({ radius: 10, weight: 4, color: COLOR_WAYPOINT });
+  }
   setIsOverMapItem(true);
   setBlinkingSchools(stop.associated.map((school) => school.schoolId));
 
@@ -116,7 +141,11 @@ const onMouseOver = (stop: StopType) => {
   }
 };
 
-const onMouseOut = () => {
+const onMouseOut = (stop: StopType) => {
+  if (draggingWaypointIndex()) {
+    const circle = linkMap.get(stop.leafletId);
+    circle?.setStyle({ radius: 5, weight: 0, color: COLOR_STOP_FOCUS });
+  }
   setIsOverMapItem(false);
   setBlinkingSchools([]);
 
@@ -125,23 +154,55 @@ const onMouseOut = () => {
   }
 };
 
-const onMouseUp = (point: StopType) => {
-  if (draggingRace()) {
-    const associatedQuantity = getAssociatedQuantity(point);
+const onMouseUp = (stop: StopType, map: L.Map) => {
+  const nextIndex = draggingWaypointIndex();
+  if (nextIndex) {
+    if (
+      !currentRace()
+        .points.map((point) => point.id)
+        .includes(stop.id)
+    ) {
+      setDraggingWaypointIndex();
+      setCurrentRaceIndex(nextIndex);
 
-    addPointToRace({ ...point, quantity: associatedQuantity });
+      updateRaceAndWaypoints(stop);
 
+      const circle = linkMap.get(stop.leafletId);
+      circle?.setStyle({ radius: 5, weight: 0 });
+    } else {
+      setCurrentRaceIndex(currentRace().points.length);
+      setDraggingWaypointIndex();
+      map.off("mousemove");
+      map.dragging.enable();
+    }
+  } else if (draggingRace()) {
+    updateRaceAndWaypoints(stop);
+
+    setDraggingRace(false);
+  }
+};
+
+const onRightClick = (stop: StopType) => {
+  const circle = linkMap.get(stop.leafletId);
+  const isInRaceUnderConstruction = currentRace().points.filter(
+    (_point) => _point.id == stop.id
+  )[0];
+
+  if (onBoard() == "race-draw" && isInRaceUnderConstruction != undefined) {
+    removePoint(stop);
+
+    // Update waypoints
     const waypoints = currentRace().waypoints;
     if (waypoints) {
-      const newWaypoints = WaypointEntity.updateWaypoints(
-        point,
+      const newWaypoints = WaypointEntity.deleteSchoolOrStopWaypoint(
         waypoints,
-        currentRace().points
+        stop.id,
+        stop.nature
       );
       updateWaypoints(newWaypoints);
     }
 
-    setDraggingRace(false);
+    circle?.setStyle({ fillColor: COLOR_STOP_FOCUS });
   }
 };
 
@@ -167,30 +228,6 @@ export function StopPoint(props: StopPointProps) {
     return radiusValue;
   };
 
-  const onRightClick = () => {
-    const circle = linkMap.get(props.point.leafletId);
-    const isInRaceUnderConstruction = currentRace().points.filter(
-      (_point) => _point.id == props.point.id
-    )[0];
-
-    if (onBoard() == "race-draw" && isInRaceUnderConstruction != undefined) {
-      removePoint(props.point);
-
-      // Update waypoints
-      const waypoints = currentRace().waypoints;
-      if (waypoints) {
-        const newWaypoints = WaypointEntity.deleteSchoolOrStopWaypoint(
-          waypoints,
-          props.point.id,
-          props.point.nature
-        );
-        updateWaypoints(newWaypoints);
-      }
-
-      circle?.setStyle({ fillColor: COLOR_STOP_FOCUS });
-    }
-  };
-
   const color = () => {
     if (isInDrawRaceMode()) {
       return COLOR_STOP_LIGHT;
@@ -208,9 +245,9 @@ export function StopPoint(props: StopPointProps) {
       weight={0}
       onClick={() => onClick(props.point)}
       onMouseOver={() => onMouseOver(props.point)}
-      onMouseOut={() => onMouseOut()}
-      onRightClick={onRightClick}
-      onMouseUp={() => onMouseUp(props.point)}
+      onMouseOut={() => onMouseOut(props.point)}
+      onRightClick={() => onRightClick(props.point)}
+      onMouseUp={() => onMouseUp(props.point, props.map)}
     />
   );
 }
