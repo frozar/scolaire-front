@@ -197,8 +197,6 @@ async function nextStep() {
             creating_line
           );
 
-          console.log("newBusLine", newBusLine);
-
           setLines((oldLines) => [...oldLines, newBusLine]);
           setAddLineCurrentStep(AddLineStep.start);
 
