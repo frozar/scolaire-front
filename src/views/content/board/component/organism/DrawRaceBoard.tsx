@@ -33,7 +33,7 @@ import { MapElementUtils } from "../../../../../utils/mapElement.utils";
 import { QuantityUtils } from "../../../../../utils/quantity.utils";
 import { getLines, setLines } from "../../../map/component/organism/BusLines";
 import {
-  resetRaceInLine,
+  getRaces,
   setRaces,
   setSelectedRace,
   updateRaces,
@@ -69,6 +69,7 @@ export enum displayRaceModeEnum {
 export const [displayRaceMode, setDisplayRaceMode] =
   createSignal<displayRaceModeEnum>(displayRaceModeEnum.straight);
 
+// ! Used only for drawRaceMode ?
 export const [currentRace, setCurrentRace] = createSignal<RaceType>(
   RaceEntity.defaultRace()
 );
@@ -77,20 +78,12 @@ export const [currentRaceIndex, setCurrentRaceIndex] = createSignal(0);
 
 export const [isInUpdate, setIsInUpdate] = createSignal(false);
 
-export const [initialRace, setInitialRace] = createSignal<RaceType>(
-  RaceEntity.defaultRace()
-);
-
 export function DrawRaceBoard() {
   onMount(() => {
     if (isInUpdate()) {
-      setInitialRace({
-        ...currentRace(),
-        points: [...currentRace().points],
-      });
       QuantityUtils.substract(currentRace());
     } else {
-      setInitialRace(RaceEntity.defaultRace());
+      setCurrentRace(RaceEntity.defaultRace());
     }
   });
   onCleanup(() => {
@@ -281,7 +274,7 @@ async function nextStep() {
       setCurrentRace(RaceEntity.defaultRace());
       setCurrentRaceIndex(0);
       setIsInUpdate(false);
-      setInitialRace(RaceEntity.defaultRace());
+      setCurrentRace(RaceEntity.defaultRace());
 
       setCurrentStep(DrawRaceStep.initial);
       updatePointColor();
@@ -302,10 +295,18 @@ function prevStep() {
       break;
     case DrawRaceStep.editRace:
       if (isInUpdate()) {
-        QuantityUtils.add(initialRace());
+        QuantityUtils.add(currentRace());
         quitModeDrawRace();
-        setSelectedRace(initialRace());
-        resetRaceInLine(initialRace());
+        // ! Use getRaces instead ? getRaces needs to be fixed ?
+        console.log("getRaces", getRaces().length);
+        // eslint-disable-next-line solid/reactivity
+        setSelectedRace(() => {
+          return getLines()
+            .find((line) =>
+              line.courses.some((course) => course.id == currentRace().id)
+            )
+            ?.courses.filter((course) => course.id == currentRace().id)[0];
+        });
         setIsInUpdate(false);
 
         setCurrentStep(DrawRaceStep.initial);

@@ -2,7 +2,6 @@ import L from "leaflet";
 import { For, createEffect, createSignal, onCleanup } from "solid-js";
 import { Race } from "../molecule/Race";
 
-import { LineType } from "../../../../../_entities/line.entity";
 import { RaceEntity, RaceType } from "../../../../../_entities/race.entity";
 import {
   DrawRaceStep,
@@ -11,7 +10,7 @@ import {
 } from "../../../board/component/organism/DrawRaceBoard";
 import { onBoard } from "../../../board/component/template/ContextManager";
 import { stopDetailsItem } from "../../../stops/component/organism/StopDetails";
-import { getLines, getSelectedLine, setLines } from "./BusLines";
+import { getLines, getSelectedLine } from "./BusLines";
 
 export const arrowsMap = new Map<number, L.Marker[]>();
 
@@ -21,7 +20,7 @@ export type leafletBusRaceType = {
 };
 
 export const [getRaces, setRaces] = createSignal<RaceType[]>([]);
-
+// ! Which do what ?
 export const [selectedRace, setSelectedRace] = createSignal<RaceType>();
 
 export function Races(props: { map: L.Map }) {
@@ -86,27 +85,5 @@ export function updateRaces(race: RaceType) {
     const updated = races.filter((r) => r.id != race.id);
     updated.push(race);
     return updated;
-  });
-}
-
-export function resetRaceInLine(initialRace: RaceType) {
-  setLines((prev) => {
-    const lines = [...prev].filter(
-      (line) => !line.courses.some((race) => race.id === initialRace.id)
-    );
-
-    const lineToModify = [...prev].filter((line) =>
-      line.courses.some((race) => race.id == initialRace.id)
-    )[0];
-    const racesUpdated = lineToModify.courses.map((race) => {
-      if (race.id == initialRace.id) return initialRace;
-      else return race;
-    });
-    const finalLines: LineType[] = [
-      ...lines,
-      { ...lineToModify, courses: racesUpdated },
-    ];
-
-    return finalLines;
   });
 }

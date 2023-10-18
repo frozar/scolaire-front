@@ -120,6 +120,7 @@ export function StopPoints(props: StopPointsProps) {
 export function leafletStopsFilter(): StopType[] {
   let schools = getSchools();
   let stops = getStops();
+  console.log("onBoard()", onBoard());
   switch (onBoard()) {
     case "course":
       return stops.filter((stop) =>

@@ -18,7 +18,7 @@ const [, { setModeDrawRace }] = useStateAction();
 export function UpdateRaceButton(props: { race: RaceType }) {
   async function onclick() {
     setIsInUpdate(true);
-    setCurrentRace(props.race);
+    setCurrentRace({ ...props.race, points: [...props.race.points] });
     changeBoard("race-draw");
     setCurrentRaceIndex(props.race.points.length);
 
