@@ -1,10 +1,4 @@
-import {
-  BusLineEntity,
-  DbDataLineType,
-  LineDBType,
-  LineType,
-} from "../_entities/line.entity";
-import { getLines } from "../views/content/map/component/organism/BusLines";
+import { BusLineEntity, LineDBType, LineType } from "../_entities/line.entity";
 import { ServiceUtils } from "./_utils.service";
 
 export class BusLineService {
@@ -21,15 +15,9 @@ export class BusLineService {
   static async create(line: LineType): Promise<LineType> {
     const data = BusLineEntity.dbFormat(line);
 
-    const dbData: DbDataLineType = await ServiceUtils.post("/bus_line", data);
+    const dbLine: LineDBType = await ServiceUtils.post("/bus_line", data);
 
-    BusLineEntity.updateLines(dbData.bus_lines.bus_lines);
-
-    const busLine = getLines().filter(
-      (line) => line.id === dbData.new_bus_line.id
-    )[0];
-
-    return busLine;
+    return BusLineEntity.build(dbLine);
   }
 
   //TODO faire l'update
@@ -44,7 +32,7 @@ export class BusLineService {
     return BusLineEntity.build(dbBusLine);
   }
 
-  static async delete(id: number): Promise<boolean> {
+  static async delete(id: number): Promise<number> {
     return await ServiceUtils.delete("/bus_line/" + id);
   }
 }

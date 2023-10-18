@@ -1,8 +1,8 @@
 export default function () {
   return (
     <svg
-      width="30"
-      height="25"
+      width="auto"
+      height="auto"
       viewBox="0 0 30 25"
       xmlns="http://www.w3.org/2000/svg"
     >

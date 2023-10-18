@@ -27,6 +27,7 @@ import CollapsibleCheckableElement, {
   AssociatedItem,
 } from "./CollapsibleCheckableElement";
 // TODO to fix -> doit importer un AddLineBoardContent ou similaire
+import { setLines } from "../../../map/component/organism/BusLines";
 import "./DrawRaceBoard.css";
 
 export enum AddLineStep {
@@ -195,6 +196,10 @@ async function nextStep() {
           const newBusLine: LineType = await BusLineService.create(
             creating_line
           );
+
+          console.log("newBusLine", newBusLine);
+
+          setLines((oldLines) => [...oldLines, newBusLine]);
           setAddLineCurrentStep(AddLineStep.start);
 
           toggleDrawMod();

@@ -1,5 +1,4 @@
 import { Accessor, Setter, createSignal } from "solid-js";
-import { setLines } from "../views/content/map/component/organism/BusLines";
 import { getSchools } from "../views/content/map/component/organism/SchoolPoints";
 import { getStops } from "../views/content/map/component/organism/StopPoints";
 import { COLOR_DEFAULT_LINE } from "../views/content/map/constant";
@@ -105,14 +104,6 @@ export class BusLineEntity {
 
     return output;
   }
-
-  static updateLines(bus_lines: LineDBType[]) {
-    setLines(
-      bus_lines
-        ? bus_lines.map((dbLine: LineDBType) => BusLineEntity.build(dbLine))
-        : []
-    );
-  }
 }
 
 function formatColorForDB(color: string) {
@@ -148,9 +139,4 @@ export type LineDBType = {
   schools: { school_id: number }[];
   stops: { stop_id: number }[];
   courses: { course_id: number; course: RaceDBType }[];
-};
-
-export type DbDataLineType = {
-  bus_lines: { bus_lines: LineDBType[] };
-  new_bus_line: LineDBType;
 };
