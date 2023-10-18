@@ -134,12 +134,12 @@ export function leafletStopsFilter(): StopType[] {
         case AddLineStep.stopSelection:
           schools = addLineSelectedSchool();
           stops = stopSelected().map((associated) => {
-            return associated.associated;
+            return associated.stopItem;
           });
           const associatedIdSelected = schools
-            .map((school) => school.associated.map((value) => value.schoolId))
+            .map((school) => school.classes.map((value) => value.schoolId))
             .flat();
-          getStops().filter((stoptofilter) =>
+          return getStops().filter((stoptofilter) =>
             associatedIdSelected.includes(stoptofilter.id)
           );
       }

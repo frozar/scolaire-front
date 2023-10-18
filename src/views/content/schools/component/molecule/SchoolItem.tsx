@@ -7,6 +7,8 @@ import {
 import CardTitle from "../../../../../component/atom/CardTitle";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
 import { updatePointColor } from "../../../../../leafletUtils";
+import { setRemoveConfirmation } from "../../../../../userInformation/RemoveConfirmation";
+import { SchoolUtils } from "../../../../../utils/school.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { changeBoard } from "../../../board/component/template/ContextManager";
 import { setSchoolDetailsItem } from "../organism/SchoolDetails";
@@ -20,10 +22,11 @@ export default function (props: SchoolItemProps) {
   const [refTrashButton, setRefTrashButton] = createSignal<HTMLButtonElement>();
 
   async function onClickDelete() {
-    console.log("delete");
-    // TODO: standby
-    // const response = await SchoolService.delete(props.school.id);
-    // console.log(response);
+    setRemoveConfirmation({
+      textToDisplay: "Êtes-vous sûr de vouloir supprimer la classe : ",
+      itemName: props.school.name,
+      validate: () => SchoolUtils.DeleteSchool(props.school.id),
+    });
   }
 
   async function onClickEdit() {

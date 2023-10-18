@@ -7,7 +7,7 @@ import BoardFooterActions from "../molecule/BoardFooterActions";
 import "../../../../../css/timeline.css";
 import { ColorPicker } from "../atom/ColorPicker";
 
-import { AssociatedSchoolType } from "../../../../../_entities/_utils.entity";
+import { AssociatedStopType } from "../../../../../_entities/_utils.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { manageStatusCode } from "../../../../../_services/_utils.service";
 import { BusLineService } from "../../../../../_services/line.service";
@@ -49,7 +49,7 @@ export const [addLineCurrentStep, setAddLineCurrentStep] =
 // eslint-disable-next-line solid/reactivity
 export default function () {
   createEffect(() => {
-    const selectedAssociated: AssociatedSchoolType[] = [];
+    const selectedAssociated: AssociatedStopType[] = [];
     addLineSelectedSchool().forEach((elem) => {
       elem.associated.forEach((associatedValue) =>
         selectedAssociated.includes(associatedValue)
@@ -161,7 +161,7 @@ async function nextStep() {
 
       setStopSelected([
         ...getStops().map((stop) => {
-          return { done: false, associated: stop };
+          return { done: false, stopItem: stop };
         }),
       ]);
 
@@ -182,7 +182,7 @@ async function nextStep() {
 
       const stops = stopSelected()
         .filter((stop) => stop.done)
-        .map((stop) => stop.associated);
+        .map((stop) => stop.stopItem);
       setCurrentLine({
         ...(currentLine() ?? BusLineEntity.defaultBusLine()),
         stops,

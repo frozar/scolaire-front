@@ -52,7 +52,7 @@ export class SchoolService {
   }
 
   // TODO no tested : school supression process on stand by
-  static async delete(id: number): Promise<boolean> {
+  static async delete(id: number): Promise<number> {
     return await ServiceUtils.delete("/school/" + id);
   }
 }
