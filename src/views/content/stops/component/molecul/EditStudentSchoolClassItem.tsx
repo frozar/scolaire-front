@@ -2,15 +2,18 @@ import { createEffect, createSignal, onMount } from "solid-js";
 import { AssociatedSchoolType } from "../../../../../_entities/_utils.entity";
 import { ClasseType } from "../../../../../_entities/classe.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
+import { StudentToSchoolService } from "../../../../../_services/student-to-school.service";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
 import CheckIcon from "../../../../../icons/CheckIcon";
 import { addNewUserInformation } from "../../../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../../../type";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { getSchools } from "../../../map/component/organism/SchoolPoints";
+import { appendToStop } from "../../../map/component/organism/StopPoints";
 import ClasseSelection from "../atom/ClasseSelection";
 import InputNumber from "../atom/InputNumber";
 import SchoolSelect from "../atom/SchoolSelection";
+import { stopDetailsItem } from "../organism/StopDetails";
 import "./EditStudentSchoolClassItem.css";
 
 interface EditStopProps {
@@ -101,13 +104,17 @@ export default function (props: EditStopProps) {
   async function create() {
     // TODO to fix
     if (checkAllInputsValue()) return;
-    // const classToSchool = await StudentToSchoolService.create({
-    //   schoolId: Number(schoolSelectRef().value),
-    //   stopId: Number(stopDetailsItem()?.id),
-    //   quantity: Number(quantityInputRef().value),
-    //   classId: Number(classeSelectRef().value),
-    // });
-    // appendToStop(classToSchool, stopDetailsItem()?.id as number);
+    const associatedStopT = {
+      stopId: Number(stopDetailsItem()?.id),
+      quantity: Number(quantityInputRef().value),
+      classId: Number(classeSelectRef().value),
+    };
+
+    const classToSchool = await StudentToSchoolService.create(
+      associatedStopT,
+      Number(schoolSelectRef().value)
+    );
+    appendToStop(classToSchool, stopDetailsItem()?.id as number);
   }
 
   async function update() {

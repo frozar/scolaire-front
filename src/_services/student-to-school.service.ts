@@ -1,6 +1,6 @@
 import {
-  AssociatedDBPointType,
   AssociatedSchoolType,
+  AssociatedStopType,
   EntityUtils,
 } from "../_entities/_utils.entity";
 import {
@@ -8,7 +8,12 @@ import {
   SchoolEntity,
   SchoolType,
 } from "../_entities/school.entity";
-import { StopDBType, StopEntity, StopType } from "../_entities/stop.entity";
+import {
+  DBAssociatedStop,
+  StopDBType,
+  StopEntity,
+  StopType,
+} from "../_entities/stop.entity";
 import { ClassStudentToSchoolEntity } from "../_entities/student-to-school.entity";
 import { ServiceUtils } from "./_utils.service";
 
@@ -41,28 +46,33 @@ export class StudentToSchoolService {
   }
 
   static async create(
-    classToSchool: Omit<
-      AssociatedSchoolType,
-      "id" | "schoolName" | "usedQuantity"
-    >
+    classToSchool: Omit<AssociatedStopType, "idClassToSchool">,
+    schoolId: number
   ): Promise<AssociatedSchoolType> {
-    const dbFormat = ClassStudentToSchoolEntity.dbFormat(classToSchool);
-    const response: AssociatedDBPointType = await ServiceUtils.post(
+    const dbFormat = ClassStudentToSchoolEntity.dbFormat(
+      classToSchool,
+      schoolId
+    );
+    const response: DBAssociatedStop = await ServiceUtils.post(
       "/student-to-school",
       dbFormat
     );
-    return EntityUtils.formatAssociatedClassToSchool([response])[0];
+    return EntityUtils.formatAssociatedClassToSchoolForStop([response])[0];
   }
 
   static async update(
-    classToSchool: Omit<AssociatedSchoolType, "schoolName" | "usedQuantity">
+    classToSchool: AssociatedStopType,
+    schoolId: number
   ): Promise<AssociatedSchoolType> {
-    const dbFormat = ClassStudentToSchoolEntity.dbFormat(classToSchool);
-    const response: AssociatedDBPointType = await ServiceUtils.patch(
+    const dbFormat = ClassStudentToSchoolEntity.dbFormat(
+      classToSchool,
+      schoolId
+    );
+    const response: DBAssociatedStop = await ServiceUtils.patch(
       "/student-to-school/" + classToSchool.idClassToSchool + "/v2",
       dbFormat
     );
-    return EntityUtils.formatAssociatedClassToSchool([response])[0];
+    return EntityUtils.formatAssociatedClassToSchoolForStop([response])[0];
   }
 
   // Backend will return only the id deleted
