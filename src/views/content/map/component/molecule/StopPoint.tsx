@@ -3,6 +3,7 @@ import { useStateAction } from "../../../../../StateAction";
 import { StopType } from "../../../../../_entities/stop.entity";
 import {
   changeBoard,
+  isInDrawMod,
   onBoard,
 } from "../../../board/component/template/ContextManager";
 import {
@@ -43,7 +44,7 @@ import {
 } from "../organism/Points";
 import { draggingRace, setDraggingRace } from "./Race";
 
-const [, { isInReadMode, isInDrawRaceMode }] = useStateAction();
+const [, { isInReadMode }] = useStateAction();
 
 export interface StopPointProps {
   point: StopType;
@@ -229,7 +230,7 @@ export function StopPoint(props: StopPointProps) {
   };
 
   const color = () => {
-    if (isInDrawRaceMode()) {
+    if (isInDrawMod()) {
       return COLOR_STOP_LIGHT;
     } else return COLOR_STOP_FOCUS;
   };
