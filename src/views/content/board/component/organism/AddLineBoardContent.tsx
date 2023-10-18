@@ -158,10 +158,12 @@ async function nextStep() {
       if (addLineSelectedSchool().length < 1) {
         break;
       }
-      const test = getStops().map((stop) => {
-        return { done: false, stopItem: stop };
-      });
-      setStopSelected(test);
+
+      setStopSelected([
+        ...getStops().map((stop) => {
+          return { done: false, stopItem: stop };
+        }),
+      ]);
 
       setCurrentLine({
         ...(currentLine() ?? BusLineEntity.defaultBusLine()),

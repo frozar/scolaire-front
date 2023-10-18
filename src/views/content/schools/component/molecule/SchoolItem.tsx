@@ -34,11 +34,14 @@ export default function (props: SchoolItemProps) {
       validate: Delete,
     });
   }
+
   async function Delete() {
     const id_school: number = await SchoolService.delete(props.school.id);
+
     const deletedSchool = getSchools().filter(
       (school) => school.id == id_school
     );
+
     const deletedClasses = deletedSchool
       .map((school) => school.classes.flatMap((classe) => classe.id as number))
       .flat();
@@ -51,6 +54,7 @@ export default function (props: SchoolItemProps) {
         ),
       };
     });
+
     setStops(newStops);
 
     const newLines = getLines().map((line) => {
@@ -69,8 +73,7 @@ export default function (props: SchoolItemProps) {
     setLines(newLines);
 
     setSchools(getSchools().filter((school) => school.id != id_school));
-    console.log("response", id_school);
-    // TODO to review
+
     if (!id_school) return false;
     return true;
   }
