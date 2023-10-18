@@ -19,8 +19,9 @@ export type leafletBusRaceType = {
   arrows: L.Marker[];
 };
 
+// TODO: Rename
 export const [getRaces, setRaces] = createSignal<RaceType[]>([]);
-// ! Which do what ?
+
 export const [selectedRace, setSelectedRace] = createSignal<RaceType>();
 
 export function Races(props: { map: L.Map }) {

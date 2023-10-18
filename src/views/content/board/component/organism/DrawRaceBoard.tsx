@@ -33,7 +33,6 @@ import { MapElementUtils } from "../../../../../utils/mapElement.utils";
 import { QuantityUtils } from "../../../../../utils/quantity.utils";
 import { getLines, setLines } from "../../../map/component/organism/BusLines";
 import {
-  getRaces,
   setRaces,
   setSelectedRace,
   updateRaces,
@@ -69,7 +68,7 @@ export enum displayRaceModeEnum {
 export const [displayRaceMode, setDisplayRaceMode] =
   createSignal<displayRaceModeEnum>(displayRaceModeEnum.straight);
 
-// ! Used only for drawRaceMode ?
+// TODO: Rename currentDrawRace and setCurrentDrawRace
 export const [currentRace, setCurrentRace] = createSignal<RaceType>(
   RaceEntity.defaultRace()
 );
@@ -297,8 +296,6 @@ function prevStep() {
       if (isInUpdate()) {
         QuantityUtils.add(currentRace());
         quitModeDrawRace();
-        // ! Use getRaces instead ? getRaces needs to be fixed ?
-        console.log("getRaces", getRaces().length);
         // eslint-disable-next-line solid/reactivity
         setSelectedRace(() => {
           return getLines()
