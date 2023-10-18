@@ -91,26 +91,21 @@ export function updateRaces(race: RaceType) {
 
 export function resetRaceInLine(initialRace: RaceType) {
   setLines((prev) => {
-    console.log("initialRace.id", initialRace.id);
     const lines = [...prev].filter(
       (line) => !line.courses.some((race) => race.id === initialRace.id)
     );
 
-    console.log("lines", lines);
     const lineToModify = [...prev].filter((line) =>
       line.courses.some((race) => race.id == initialRace.id)
     )[0];
-    console.log("specificLine", lineToModify);
     const racesUpdated = lineToModify.courses.map((race) => {
       if (race.id == initialRace.id) return initialRace;
       else return race;
     });
-    console.log("newRaces", racesUpdated);
     const finalLines: LineType[] = [
       ...lines,
       { ...lineToModify, courses: racesUpdated },
     ];
-    console.log("final lines", finalLines);
 
     return finalLines;
   });
