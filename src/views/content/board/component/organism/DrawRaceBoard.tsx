@@ -302,10 +302,9 @@ function prevStep() {
         // eslint-disable-next-line solid/reactivity
         setSelectedRace(() => {
           return getLines()
-            .find((line) =>
-              line.courses.some((course) => course.id == currentRace().id)
-            )
-            ?.courses.filter((course) => course.id == currentRace().id)[0];
+            .map((line) => line.courses)
+            .flat()
+            .filter((race) => race.id == currentRace().id)[0];
         });
         setIsInUpdate(false);
 
