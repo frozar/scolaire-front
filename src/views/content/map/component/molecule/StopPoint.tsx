@@ -165,6 +165,7 @@ const onMouseUp = (stop: StopType, map: L.Map) => {
 
       const circle = linkMap.get(stop.leafletId);
       circle?.setStyle({ radius: 5, weight: 0 });
+      map.dragging.enable();
     } else {
       setCurrentRaceIndex(currentDrawRace().points.length);
       setDraggingWaypointIndex();
