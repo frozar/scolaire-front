@@ -3,7 +3,7 @@ import { onCleanup } from "solid-js";
 
 import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
 import {
-  currentRace,
+  currentDrawRace,
   updateWaypoints,
 } from "../../../board/component/organism/DrawRaceBoard";
 import { COLOR_WAYPOINT } from "../../constant";
@@ -16,7 +16,7 @@ type PolylineDragMarkersProps = {
 
 export default function (props: PolylineDragMarkersProps) {
   function onRightClick() {
-    const waypoints = currentRace().waypoints;
+    const waypoints = currentDrawRace().waypoints;
     if (!waypoints) {
       return;
     }

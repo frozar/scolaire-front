@@ -14,7 +14,7 @@ import {
   DrawRaceStep,
   addPointToRace,
   addSchoolToRace,
-  currentRace,
+  currentDrawRace,
   currentStep,
   removePoint,
   updateWaypoints,
@@ -43,7 +43,7 @@ export interface SchoolPointProps {
 }
 
 const onClick = (point: SchoolType) => {
-  const schoolsSelected = currentRace().schools;
+  const schoolsSelected = currentDrawRace().schools;
   switch (onBoard()) {
     case "line-add":
       switch (addLineCurrentStep()) {
@@ -83,7 +83,7 @@ const onClick = (point: SchoolType) => {
           return;
 
         case DrawRaceStep.editRace:
-          const lastPoint = currentRace().points.at(-1);
+          const lastPoint = currentDrawRace().points.at(-1);
 
           // TODO  add quantity pour school ?!
           addPointToRace({
@@ -92,12 +92,12 @@ const onClick = (point: SchoolType) => {
           });
 
           if (!lastPoint || point.leafletId != lastPoint.leafletId) {
-            const waypoints = currentRace().waypoints;
+            const waypoints = currentDrawRace().waypoints;
             if (waypoints) {
               const newWaypoints = WaypointEntity.updateWaypoints(
                 point,
                 waypoints,
-                currentRace().points
+                currentDrawRace().points
               );
 
               updateWaypoints(newWaypoints);
@@ -121,7 +121,7 @@ const onMouseUp = (point: StopType) => {
   if (draggingRace()) {
     const associatedQuantity = point.associated.filter(
       (associatedSchool) =>
-        associatedSchool.schoolId === currentRace().schools[0].id
+        associatedSchool.schoolId === currentDrawRace().schools[0].id
     )[0].quantity;
 
     // TODO  add quantity pour school ?!
@@ -153,14 +153,14 @@ const onMouseOut = () => {
 
 const onRightClick = (point: SchoolType) => {
   const circle = linkMap.get(point.leafletId);
-  const isInRaceUnderConstruction = currentRace().points.filter(
+  const isInRaceUnderConstruction = currentDrawRace().points.filter(
     (_point) => _point.id == point.id
   )[0];
 
   if (onBoard() == "race-draw" && isInRaceUnderConstruction != undefined) {
     removePoint(point);
 
-    const waypoints = currentRace().waypoints;
+    const waypoints = currentDrawRace().waypoints;
     if (waypoints) {
       const newWaypoints = WaypointEntity.deleteSchoolOrStopWaypoint(
         waypoints,

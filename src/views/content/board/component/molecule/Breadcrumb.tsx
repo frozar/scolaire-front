@@ -12,7 +12,7 @@ import { schoolDetailsItem } from "../../../schools/component/organism/SchoolDet
 import { stopDetailsItem } from "../../../stops/component/organism/StopDetails";
 import BreadcrumbButton from "../atom/BreadcrumbButton";
 import DisplayBreadcrumbText from "../atom/DisplayBreadcrumbText";
-import { currentRace } from "../organism/DrawRaceBoard";
+import { currentDrawRace } from "../organism/DrawRaceBoard";
 import { changeBoard, onBoard } from "../template/ContextManager";
 import "./Breadcrumb.css";
 
@@ -119,7 +119,7 @@ export default function () {
         ];
 
       case "race-draw":
-        if (currentRace().schools.length > 0) {
+        if (currentDrawRace().schools.length > 0) {
           return [{ text: "Editer votre course" }];
         }
         return [{ text: "Création d'une course" }];

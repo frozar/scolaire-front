@@ -21,7 +21,7 @@ import {
   getStops,
   leafletStopsFilter,
 } from "../../../map/component/organism/StopPoints";
-import { currentRace, updatePoints } from "../organism/DrawRaceBoard";
+import { currentDrawRace, updatePoints } from "../organism/DrawRaceBoard";
 import "./DrawHelperButton.css";
 
 interface DrawHelperButtonProps {
@@ -48,7 +48,7 @@ export function DrawHelperButton(props: DrawHelperButtonProps) {
         ? JSON.parse(JSON.stringify(props.schools))
         : [];
 
-    const selectedStops = JSON.parse(JSON.stringify(currentRace().points));
+    const selectedStops = JSON.parse(JSON.stringify(currentDrawRace().points));
 
     const stops = leafletStopsFilter();
 
@@ -71,7 +71,7 @@ export function DrawHelperButton(props: DrawHelperButtonProps) {
   return (
     <div class="graphicage-draw-helper-button">
       <DrawHelperDialog requestCircuit={requestCircuit} />
-      <Show when={currentRace().points.length > 0}>
+      <Show when={currentDrawRace().points.length > 0}>
         <button onClick={onclick}>
           <FaSolidWandMagicSparkles />
         </button>
