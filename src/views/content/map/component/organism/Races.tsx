@@ -31,6 +31,10 @@ export function Races(props: { map: L.Map }) {
     setRaces(getSelectedLine()?.courses ?? []);
   });
 
+  createEffect(() => {
+    console.log("getRaces() createEffect", getRaces());
+  });
+
   onCleanup(() => {
     setRaces([]);
   });

@@ -41,8 +41,8 @@ export default function () {
       const line = getLines().filter((line) =>
         line.courses.map((course) => course.id).includes(selectedRace()?.id)
       )[0];
-      console.log("selectedRace()", selectedRace());
-      console.log("line => ", line);
+      // console.log("selectedRace()", selectedRace());
+      // console.log("line => ", line);
       return {
         text: line.name?.toLowerCase() as string,
         onClick: () => {

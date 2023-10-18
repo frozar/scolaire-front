@@ -86,9 +86,9 @@ export function DrawRaceBoard() {
   onMount(() => {
     if (isInUpdate()) {
       setInitialRace(currentRace());
-      console.log("initialRace set to currentRace");
-      console.log("currentRace at the beginning =>", currentRace());
-      console.log("initialRace at the beginning =>", initialRace());
+      // console.log("initialRace set to currentRace");
+      // console.log("currentRace at the beginning =>", currentRace());
+      // console.log("initialRace at the beginning =>", initialRace());
       QuantityUtils.substract(currentRace());
     } else {
       setInitialRace(RaceEntity.defaultRace());
@@ -291,8 +291,8 @@ async function nextStep() {
 }
 
 function prevStep() {
-  console.log("this prevStep is triggered");
-  console.log("actual currentStep => ", currentStep());
+  // console.log("this prevStep is triggered");
+  // console.log("actual currentStep => ", currentStep());
   switch (currentStep()) {
     case DrawRaceStep.schoolSelection:
       setCurrentRace(RaceEntity.defaultRace());
@@ -305,9 +305,9 @@ function prevStep() {
       break;
     case DrawRaceStep.editRace:
       if (isInUpdate()) {
-        console.log("is in update");
-        console.log("currentRace", currentRace());
-        console.log("initialRace", initialRace());
+        // console.log("is in update");
+        // console.log("currentRace", currentRace());
+        // console.log("initialRace", initialRace());
         QuantityUtils.add(initialRace()); // ! ?
         // ! fix initialRace()
         quitModeDrawRace();
