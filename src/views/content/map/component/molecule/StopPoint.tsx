@@ -3,14 +3,9 @@ import { useStateAction } from "../../../../../StateAction";
 import { StopType } from "../../../../../_entities/stop.entity";
 import {
   changeBoard,
-  isInDrawMod,
   onBoard,
 } from "../../../board/component/template/ContextManager";
-import {
-  COLOR_STOP_FOCUS,
-  COLOR_STOP_LIGHT,
-  COLOR_WAYPOINT,
-} from "../../constant";
+import { COLOR_STOP_FOCUS, COLOR_WAYPOINT } from "../../constant";
 import Point from "../atom/Point";
 
 import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
@@ -229,19 +224,13 @@ export function StopPoint(props: StopPointProps) {
     return radiusValue;
   };
 
-  const color = () => {
-    if (isInDrawMod()) {
-      return COLOR_STOP_LIGHT;
-    } else return COLOR_STOP_FOCUS;
-  };
-
   return (
     <Point
       point={props.point}
       map={props.map}
       isBlinking={blinkingStops().includes(props.point.id)}
-      borderColor={color()}
-      fillColor={color()}
+      borderColor={COLOR_STOP_FOCUS}
+      fillColor={COLOR_STOP_FOCUS}
       radius={rad()}
       weight={0}
       onClick={() => onClick(props.point)}
