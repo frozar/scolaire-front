@@ -17,7 +17,6 @@ const [, { setModeDrawRace }] = useStateAction();
 
 export function UpdateRaceButton(props: { race: RaceType }) {
   async function onclick() {
-    console.log("this update button is used");
     setIsInUpdate(true);
     setCurrentRace(props.race);
     changeBoard("race-draw");

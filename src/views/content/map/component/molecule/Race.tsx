@@ -37,7 +37,6 @@ import {
 export const [draggingRace, setDraggingRace] = createSignal<boolean>(false);
 
 export function onClickBusRace(race: RaceType) {
-  // console.log("race", race);
   switch (onBoard()) {
     case "line-details":
       return;

@@ -17,10 +17,6 @@ export function BusLines(props: { busLines: LineType[] }) {
     }
   });
 
-  createEffect(() => {
-    console.log("getLines() createEffect", getLines());
-  });
-
   // eslint-disable-next-line solid/reactivity
   createEffect(async () => {
     setDisplayedRaces();

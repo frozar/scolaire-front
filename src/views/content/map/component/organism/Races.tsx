@@ -20,19 +20,14 @@ export type leafletBusRaceType = {
 };
 
 export const [getRaces, setRaces] = createSignal<RaceType[]>([]);
-// ! Difference of use between getRaces and selectedRace ????
+
 export const [selectedRace, setSelectedRace] = createSignal<RaceType>();
 
 export function Races(props: { map: L.Map }) {
-  console.log("races compoenent mounted");
   // eslint-disable-next-line solid/reactivity
 
   createEffect(() => {
     setRaces(getSelectedLine()?.courses ?? []);
-  });
-
-  createEffect(() => {
-    console.log("getRaces() createEffect", getRaces());
   });
 
   onCleanup(() => {
@@ -87,14 +82,8 @@ export function deselectAllRaces() {
 
 export function updateRaces(race: RaceType) {
   setRaces((races) => {
-    // const updated = races.filter((r) => r.id != race.id);
-    console.log("races => ", JSON.stringify(races));
-    const updated = races.filter((r) => {
-      console.log("ids comparison");
-      return r.id != race.id;
-    });
+    const updated = races.filter((r) => r.id != race.id);
     updated.push(race);
-    console.log("updated races after canceling modification", updated);
     return updated;
   });
 }
