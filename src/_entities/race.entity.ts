@@ -87,6 +87,9 @@ export namespace RaceEntity {
     if (line.color) {
       output = { ...output, color: EntityUtils.formatColorForDB(line.color) };
     }
+    if (line.schools) {
+      output = { ...output, school_id: line.schools[0].id };
+    }
     if (line.latLngs) {
       output = {
         ...output,
