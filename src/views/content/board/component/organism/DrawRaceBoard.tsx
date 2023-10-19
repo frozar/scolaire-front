@@ -35,7 +35,6 @@ import { getLines, setLines } from "../../../map/component/organism/BusLines";
 import {
   setRaces,
   setSelectedRace,
-  updateRaces,
 } from "../../../map/component/organism/Races";
 import { quitModeDrawRace } from "../../../map/shortcut";
 import { displayBusLine } from "../../../schools/component/molecule/BusLineItem";
@@ -208,22 +207,31 @@ export function addSchoolToRace(school: SchoolType) {
 }
 async function createOrUpdateRace() {
   // eslint-disable-next-line solid/reactivity
-  let race: RaceType = currentDrawRace();
+  let updatedRace: RaceType = currentDrawRace();
 
   if (currentDrawRace().id == undefined) {
     const dbRes: { busLines: LineType[]; newRace: RaceType } =
       await RaceService.create(currentDrawRace());
     setLines(dbRes.busLines);
-    race = dbRes.newRace;
+    updatedRace = dbRes.newRace;
   } else {
-    race = await RaceService.update(currentDrawRace());
-    updateRaces(race);
+    updatedRace = await RaceService.update(currentDrawRace());
+    setLines((prev) =>
+      prev.map((line) => {
+        return {
+          ...line,
+          courses: line.courses.map((course) =>
+            course.id == updatedRace.id ? updatedRace : course
+          ),
+        };
+      })
+    );
   }
 
-  QuantityUtils.add(race);
+  QuantityUtils.add(updatedRace);
   setRaces((races) => {
     return races.map((currentRace) => {
-      if (currentRace.id === race.id) {
+      if (currentRace.id === updatedRace.id) {
         return { ...currentRace, selected: true };
       } else {
         return currentRace;
@@ -238,7 +246,7 @@ async function createOrUpdateRace() {
   setCurrentStep(DrawRaceStep.initial);
   quitModeDrawRace();
   const currentLine = getLines().filter((line) =>
-    line.courses.map((course) => course.id).includes(race.id)
+    line.courses.map((course) => course.id).includes(updatedRace.id)
   )[0];
 
   displayBusLine(currentLine);
