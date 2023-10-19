@@ -45,6 +45,7 @@ export default function (props: StopItemProps) {
           refSetter={setRefTrashButton}
           icon={<TrashIcon />}
           onClick={onClickDelete}
+          disable={true}
         />
       </div>
     </CardWrapper>
