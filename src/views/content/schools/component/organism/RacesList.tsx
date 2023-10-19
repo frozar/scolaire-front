@@ -1,12 +1,12 @@
 import { For } from "solid-js";
-import { RaceType } from "../../../../../_entities/race.entity";
+import { RaceType } from "../../../../../_entities/trip.entity";
 import { RaceItem } from "../molecule/RaceItem";
 import "./RacesList.css";
 
-export function RacesList(props: { races: RaceType[] }) {
+export function RacesList(props: { trips: RaceType[] }) {
   return (
-    <div class="races-list">
-      <For each={props.races}>{(race) => <RaceItem race={race} />}</For>
+    <div class="trips-list">
+      <For each={props.trips}>{(trip) => <RaceItem trip={trip} />}</For>
     </div>
   );
 }

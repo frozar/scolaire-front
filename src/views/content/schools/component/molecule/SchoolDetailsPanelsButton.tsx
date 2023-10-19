@@ -24,7 +24,7 @@ export default function (props: PanelsButtonProps) {
         classList={{ active: props.onPanel() == Panels.lines }}
         onClick={() => props.setOnPanel(Panels.lines)}
       >
-        Races: {props.NbRaces ?? "Todo"}
+        Trips: {props.NbRaces ?? "Todo"}
       </button>
     </div>
   );

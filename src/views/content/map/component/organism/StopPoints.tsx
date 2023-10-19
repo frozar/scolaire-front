@@ -145,7 +145,7 @@ export function leafletStopsFilter(): StopType[] {
       }
 
       break;
-    case "race-draw":
+    case "trip-draw":
       schools = currentDrawRace().schools;
 
       stops = getStops().filter((stop) =>
@@ -172,8 +172,8 @@ export function leafletStopsFilter(): StopType[] {
   return stops.filter((stop) =>
     stop.associated.some(
       (ClassToSchool) => schools.find((e) => e.id === ClassToSchool.schoolId)
-      // TODO don't display stop with no remaining quantity in new Race Creation
-      // TODO creation a display error if the stop is in the updating Race
+      // TODO don't display stop with no remaining quantity in new Trip Creation
+      // TODO creation a display error if the stop is in the updating Trip
       // && QuantityUtils.remaining(school) > 0
     )
   );

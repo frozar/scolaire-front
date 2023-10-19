@@ -5,8 +5,8 @@ import {
   getLines,
   getSelectedLine,
 } from "../../../map/component/organism/BusLines";
-import { selectedRace } from "../../../map/component/organism/Races";
 import { getSchools } from "../../../map/component/organism/SchoolPoints";
+import { selectedRace } from "../../../map/component/organism/Trips";
 import { selectedClasse } from "../../../schools/component/organism/ClasseBoard";
 import { schoolDetailsItem } from "../../../schools/component/organism/SchoolDetails";
 import { stopDetailsItem } from "../../../stops/component/organism/StopDetails";
@@ -118,7 +118,7 @@ export default function () {
           },
         ];
 
-      case "race-draw":
+      case "trip-draw":
         if (currentDrawRace().schools.length > 0) {
           return [{ text: "Editer votre course" }];
         }

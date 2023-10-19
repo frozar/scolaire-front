@@ -37,7 +37,7 @@ import {
   setBlinkingSchools,
   setCursorIsOverPoint,
 } from "../organism/Points";
-import { draggingRace, setDraggingRace } from "./Race";
+import { draggingRace, setDraggingRace } from "./Trip";
 
 const [, { isInReadMode }] = useStateAction();
 
@@ -99,7 +99,7 @@ function onClick(point: StopType) {
       //TODO display stop informations
       console.log("TODO display stop informations");
       return;
-    case "race-draw":
+    case "trip-draw":
       switch (currentStep()) {
         case DrawRaceStep.schoolSelection:
           return;
@@ -153,7 +153,7 @@ const onMouseOut = (stop: StopType) => {
 const onMouseUp = (stop: StopType, map: L.Map) => {
   const nextIndex = draggingWaypointIndex();
   if (nextIndex) {
-    // case mouseUp on a stop not already in the race
+    // case mouseUp on a stop not already in the trip
     if (
       !currentDrawRace()
         .points.map((point) => point.id)
@@ -185,7 +185,7 @@ const onRightClick = (stop: StopType) => {
     (_point) => _point.id == stop.id
   )[0];
 
-  if (onBoard() == "race-draw" && isInRaceUnderConstruction != undefined) {
+  if (onBoard() == "trip-draw" && isInRaceUnderConstruction != undefined) {
     removePoint(stop);
 
     // Update waypoints

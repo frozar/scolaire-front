@@ -1,8 +1,8 @@
 import L from "leaflet";
 import { For, createEffect, createSignal, onCleanup } from "solid-js";
-import { Race } from "../molecule/Race";
+import { Trip } from "../molecule/Trip";
 
-import { RaceEntity, RaceType } from "../../../../../_entities/race.entity";
+import { RaceEntity, RaceType } from "../../../../../_entities/trip.entity";
 import {
   DrawRaceStep,
   currentDrawRace,
@@ -24,7 +24,7 @@ export const [getRaces, setRaces] = createSignal<RaceType[]>([]);
 
 export const [selectedRace, setSelectedRace] = createSignal<RaceType>();
 
-export function Races(props: { map: L.Map }) {
+export function Trips(props: { map: L.Map }) {
   // eslint-disable-next-line solid/reactivity
 
   createEffect(() => {
@@ -45,7 +45,7 @@ export function Races(props: { map: L.Map }) {
         return getLines()
           .map((line) => line.courses)
           .flat();
-      case "race-draw":
+      case "trip-draw":
         switch (currentStep()) {
           case DrawRaceStep.editRace:
             // delete all arrows
@@ -70,8 +70,8 @@ export function Races(props: { map: L.Map }) {
 
   return (
     <For each={racesFilter()}>
-      {(race) => {
-        return <Race race={race} map={props.map} />;
+      {(trip) => {
+        return <Trip trip={trip} map={props.map} />;
       }}
     </For>
   );
@@ -81,10 +81,10 @@ export function deselectAllRaces() {
   setSelectedRace();
 }
 
-export function updateRaces(race: RaceType) {
-  setRaces((races) => {
-    const updated = races.filter((r) => r.id != race.id);
-    updated.push(race);
+export function updateRaces(trip: RaceType) {
+  setRaces((trips) => {
+    const updated = trips.filter((r) => r.id != trip.id);
+    updated.push(trip);
     return updated;
   });
 }

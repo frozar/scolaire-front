@@ -4,7 +4,7 @@ import { useStateGui } from "../../../StateGui";
 
 import { buildMapL7 } from "./l7MapBuilder";
 
-import { Races } from "./component/organism/Races";
+import { Trips } from "./component/organism/Trips";
 
 import ImportCsvCanvas from "../../../component/ImportCsvCanvas";
 import ConfirmStopAddRace from "./ConfirmStopAddCourseBox";
@@ -88,7 +88,7 @@ export default function () {
         schools={init()?.schools ?? []}
       />
       <BusLines busLines={init()?.busLines ?? []} />
-      <Races map={getLeafletMap() as L.Map} />
+      <Trips map={getLeafletMap() as L.Map} />
       {/* <div class="z-[1000] absolute top-[45%] right-[15px]">
         <RightMapMenu />
       </div> */}

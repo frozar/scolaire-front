@@ -125,17 +125,17 @@ export namespace RaceEntity {
   }
 
   export function getStopRaces(stopId: number) {
-    const races: RaceType[] = [];
+    const trips: RaceType[] = [];
 
     for (const line of getLines()) {
-      line.courses.map((race) => {
-        race.points.map((point) => {
+      line.courses.map((trip) => {
+        trip.points.map((point) => {
           if (point.nature == NatureEnum.stop && point.id == stopId)
-            races.push(race);
+            trips.push(trip);
         });
       });
     }
-    return races;
+    return trips;
   }
 }
 

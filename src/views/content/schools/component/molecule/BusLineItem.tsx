@@ -18,7 +18,7 @@ export function displayBusLine(line: LineType): void {
   getLines()
     .filter((filterline) => filterline.id === line.id)[0]
     .setSelected(true);
-  // TODO to fix race
+  // TODO to fix trip
   // setRaces(line.courses.length > 0 ? line.courses : []);
 }
 

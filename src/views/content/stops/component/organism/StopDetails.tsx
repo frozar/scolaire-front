@@ -1,7 +1,7 @@
 import { Match, Show, Switch, createSignal, onMount } from "solid-js";
 import { AssociatedSchoolType } from "../../../../../_entities/_utils.entity";
-import { RaceEntity } from "../../../../../_entities/race.entity";
 import { StopType } from "../../../../../_entities/stop.entity";
+import { RaceEntity } from "../../../../../_entities/trip.entity";
 import PlusIcon from "../../../../../icons/PlusIcon";
 import { MapElementUtils } from "../../../../../utils/mapElement.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
@@ -31,7 +31,7 @@ export function updateStopDetailsItem(stopId: number) {
 }
 export enum StopPanels {
   classes = "schools",
-  races = "races",
+  trips = "trips",
 }
 
 export default function () {
@@ -79,9 +79,9 @@ export default function () {
               <EditStudentSchoolClassItem close={toggleEditItem} />
             </Show>
           </Match>
-          <Match when={onPanel() == StopPanels.races}>
+          <Match when={onPanel() == StopPanels.trips}>
             <RacesList
-              races={RaceEntity.getStopRaces(stopDetailsItem()?.id as number)}
+              trips={RaceEntity.getStopRaces(stopDetailsItem()?.id as number)}
             />
           </Match>
         </Switch>

@@ -3,7 +3,7 @@ import PlusIcon from "../../../../../icons/PlusIcon";
 import { displayAddRaceMessage } from "../../../../../userInformation/utils";
 import { getLines } from "../../../map/component/organism/BusLines";
 import { deselectAllPoints } from "../../../map/component/organism/Points";
-import { deselectAllRaces } from "../../../map/component/organism/Races";
+import { deselectAllRaces } from "../../../map/component/organism/Trips";
 import InputSearch from "../../../schools/component/molecule/InputSearch";
 import BusLinesList from "../../../schools/component/organism/BusLinesList";
 import ButtonIcon from "../molecule/ButtonIcon";
@@ -21,7 +21,7 @@ export default function () {
 
   // TODO corriger
   // const filteredLines = () =>
-  //   getRaces.filter((race) => race.name?.includes(searchKeyword()));
+  //   getRaces.filter((trip) => trip.name?.includes(searchKeyword()));
 
   function addLine() {
     if (onBoard() == "line-add") {

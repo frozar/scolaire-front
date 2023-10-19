@@ -1,9 +1,9 @@
 import { PointType } from "./_entities/_utils.entity";
 import { NatureEnum } from "./type";
 import { linkMap } from "./views/content/map/component/organism/Points";
-import { selectedRace } from "./views/content/map/component/organism/Races";
 import { getSchools } from "./views/content/map/component/organism/SchoolPoints";
 import { getStops } from "./views/content/map/component/organism/StopPoints";
+import { selectedRace } from "./views/content/map/component/organism/Trips";
 import {
   COLOR_SCHOOL_FOCUS,
   COLOR_SCHOOL_LIGHT,
@@ -55,11 +55,11 @@ export function updatePointColor(point?: PointType) {
       circle?.setStyle({ fillColor: COLOR_SCHOOL_FOCUS });
     }
   } else {
-    const race = selectedRace();
-    if (!race) {
+    const trip = selectedRace();
+    if (!trip) {
       return;
     }
-    ids.push(...race.points.map((point) => point.leafletId));
+    ids.push(...trip.points.map((point) => point.leafletId));
   }
 
   setSchoolPointsColor(ids, COLOR_SCHOOL_LIGHT);

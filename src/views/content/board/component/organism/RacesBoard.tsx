@@ -11,7 +11,7 @@ import { deselectAllPoints } from "../../../map/component/organism/Points";
 import {
   deselectAllRaces,
   getRaces,
-} from "../../../map/component/organism/Races";
+} from "../../../map/component/organism/Trips";
 import InputSearch from "../../../schools/component/molecule/InputSearch";
 import { RacesList } from "../../../schools/component/organism/RacesList";
 import BoardTitle from "../atom/BoardTitle";
@@ -31,7 +31,7 @@ export function RacesBoard(props: { line: LineType }) {
     getRaces().filter((line) => line.name?.includes(searchKeyword()));
 
   function addRace() {
-    if (onBoard() == "race-draw") {
+    if (onBoard() == "trip-draw") {
       toggleDrawMod();
       setCurrentStep(DrawRaceStep.initial);
     } else {
@@ -72,7 +72,7 @@ export function RacesBoard(props: { line: LineType }) {
 
   return (
     <section>
-      <header class="races-board-header">
+      <header class="trips-board-header">
         <div class="flex justify-between">
           <BoardTitle
             title={
@@ -87,7 +87,7 @@ export function RacesBoard(props: { line: LineType }) {
             <ButtonIcon icon={<PencilIcon />} onClick={onClickUpdateLine} />
           </div>
         </div>
-        <div class="races-board-header-infos">
+        <div class="trips-board-header-infos">
           <p>Total des courses: {getRaces().length}</p>
           <ButtonIcon icon={<PlusIcon />} onClick={addRace} />
         </div>
@@ -95,7 +95,7 @@ export function RacesBoard(props: { line: LineType }) {
         <InputSearch onInput={onInputSearch} />
       </header>
 
-      <RacesList races={filteredRaces()} />
+      <RacesList trips={filteredRaces()} />
     </section>
   );
 }

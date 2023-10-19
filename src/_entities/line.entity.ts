@@ -2,9 +2,9 @@ import { Accessor, Setter, createSignal } from "solid-js";
 import { getSchools } from "../views/content/map/component/organism/SchoolPoints";
 import { getStops } from "../views/content/map/component/organism/StopPoints";
 import { COLOR_DEFAULT_LINE } from "../views/content/map/constant";
-import { RaceDBType, RaceEntity, RaceType } from "./race.entity";
 import { SchoolType } from "./school.entity";
 import { StopType } from "./stop.entity";
+import { RaceDBType, RaceEntity, RaceType } from "./trip.entity";
 
 export class BusLineEntity {
   static build(dbLine: LineDBType): LineType {

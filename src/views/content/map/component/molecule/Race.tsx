@@ -14,9 +14,9 @@ import {
 import Line from "../atom/Line";
 import PolylineDragMarker from "../atom/PolylineDragMarker";
 import WaypointMarker from "../atom/WaypointMarker";
-import { deselectAllRaces, setSelectedRace } from "../organism/Races";
+import { deselectAllRaces, setSelectedRace } from "../organism/Trips";
 
-import { RacePointType, RaceType } from "../../../../../_entities/race.entity";
+import { RacePointType, RaceType } from "../../../../../_entities/trip.entity";
 import { WaypointType } from "../../../../../_entities/waypoint.entity";
 import { updatePointColor } from "../../../../../leafletUtils";
 import {
@@ -36,8 +36,8 @@ import {
 
 export const [draggingRace, setDraggingRace] = createSignal<boolean>(false);
 
-export function onClickBusRace(race: RaceType) {
-  console.log("race", race);
+export function onClickBusRace(trip: RaceType) {
+  console.log("trip", trip);
   switch (onBoard()) {
     case "line-details":
       return;
@@ -45,7 +45,7 @@ export function onClickBusRace(race: RaceType) {
       deselectAllRaces();
       deselectAllPoints();
 
-      setSelectedRace(race);
+      setSelectedRace(trip);
 
       changeBoard("line-details");
 
@@ -53,26 +53,26 @@ export function onClickBusRace(race: RaceType) {
   }
 }
 
-export function Race(props: { race: RaceType; map: L.Map }) {
+export function Trip(props: { trip: RaceType; map: L.Map }) {
   const [localLatLngs, setLocalLatLngs] = createSignal<L.LatLng[]>([]);
   const [localOpacity, setLocalOpacity] = createSignal<number>(1);
   createEffect(() => {
     if (
       displayRaceMode() == displayRaceModeEnum.onRoad ||
-      onBoard() != "race-draw"
+      onBoard() != "trip-draw"
     ) {
-      setLocalLatLngs(props.race.latLngs);
+      setLocalLatLngs(props.trip.latLngs);
       setLocalOpacity(0.8);
     } else {
-      setLocalLatLngs(getLatLngsFromPoint(props.race.points));
+      setLocalLatLngs(getLatLngsFromPoint(props.trip.points));
       setLocalOpacity(1);
     }
   });
 
   let pointFocus: { circle: L.CircleMarker; nature: NatureEnum }[] = [];
   createEffect(() => {
-    // TODO passer en mode race
-    if (currentDrawRace() === props.race) {
+    // TODO passer en mode trip
+    if (currentDrawRace() === props.trip) {
       pointFocus.map((point) => {
         point.circle.setStyle({
           fillColor:
@@ -82,7 +82,7 @@ export function Race(props: { race: RaceType; map: L.Map }) {
         });
       });
       pointFocus = [];
-      props.race.points.map((point) => {
+      props.trip.points.map((point) => {
         const circle = linkMap.get(point.leafletId);
         circle?.setStyle({ fillColor: COLOR_STOP_EMPHASE });
         pointFocus.push({
@@ -95,7 +95,7 @@ export function Race(props: { race: RaceType; map: L.Map }) {
 
   const onMouseOver = (polyline: L.Polyline, arrows: L.Marker[]) => {
     setIsOverMapItem(true);
-    if (onBoard() != "race-draw") {
+    if (onBoard() != "trip-draw") {
       buscourseSetBoldStyle(polyline, arrows, "white");
     }
   };
@@ -103,8 +103,8 @@ export function Race(props: { race: RaceType; map: L.Map }) {
   const onMouseOut = (polyline: L.Polyline, arrows: L.Marker[]) => {
     setIsOverMapItem(false);
     // if (!line.selected() && (isInRemoveRaceMode() || isInReadMode())) {
-    if (onBoard() != "race-draw") {
-      buscourseSetNormalStyle(polyline, arrows, props.race.color);
+    if (onBoard() != "trip-draw") {
+      buscourseSetNormalStyle(polyline, arrows, props.trip.color);
     }
   };
 
@@ -194,25 +194,25 @@ export function Race(props: { race: RaceType; map: L.Map }) {
     }
   }
 
-  const latLngList = () => props.race.latLngs;
+  const latLngList = () => props.trip.latLngs;
 
   return (
     <>
       <Line
         latlngs={localLatLngs()}
         leafletMap={props.map}
-        color={props.race.color}
+        color={props.trip.color}
         opacity={localOpacity()}
-        lineId={props.race.id}
+        lineId={props.trip.id}
         onMouseOver={onMouseOver}
         onMouseOut={onMouseOut}
-        onClick={() => onClickBusRace(props.race)}
+        onClick={() => onClickBusRace(props.trip)}
         onMouseDown={onMouseDown}
       />
       <Show
         when={
           displayRaceMode() == displayRaceModeEnum.onRoad &&
-          onBoard() == "race-draw"
+          onBoard() == "trip-draw"
         }
       >
         <For each={latLngList()}>
@@ -221,7 +221,7 @@ export function Race(props: { race: RaceType; map: L.Map }) {
 
             const pointProjectedCoord: L.LatLng[] = [];
 
-            const waypoints = props.race.waypoints;
+            const waypoints = props.trip.waypoints;
             if (!waypoints) {
               return <></>;
             }

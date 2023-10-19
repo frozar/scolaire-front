@@ -62,7 +62,7 @@ export default function () {
           </Match>
           <Match when={onPanel() == Panels.lines}>
             <RacesList
-              races={SchoolEntity.getSchoolRaces(
+              trips={SchoolEntity.getSchoolRaces(
                 schoolDetailsItem()?.id as number
               )}
             />

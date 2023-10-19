@@ -1,7 +1,7 @@
 import { LineString } from "geojson";
 import L, { LeafletMouseEvent } from "leaflet";
 import { createEffect, onCleanup } from "solid-js";
-import { arrowsMap } from "../organism/Races";
+import { arrowsMap } from "../organism/Trips";
 
 interface LineProps {
   latlngs: L.LatLng[];

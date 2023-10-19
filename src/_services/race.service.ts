@@ -1,11 +1,11 @@
 import { BusLineEntity, LineDBType, LineType } from "../_entities/line.entity";
-import { RaceDBType, RaceEntity, RaceType } from "../_entities/race.entity";
+import { RaceDBType, RaceEntity, RaceType } from "../_entities/trip.entity";
 import { getSelectedLine } from "../views/content/map/component/organism/BusLines";
 import { ServiceUtils } from "./_utils.service";
 
 export class RaceService {
   static async getAll(): Promise<RaceType[]> {
-    // TODO changer endpoint Xano pour /race
+    // TODO changer endpoint Xano pour /trip
     const dbStops: RaceDBType[] = await ServiceUtils.get("/bus-course");
     console.log("dbStops", dbStops);
     return dbStops
@@ -37,11 +37,11 @@ export class RaceService {
     };
   }
 
-  static async update(race: Partial<RaceType>): Promise<RaceType> {
-    const data = RaceEntity.dbPartialFormat(race);
-    // TODO changer endpoint Xano pour /race
+  static async update(trip: Partial<RaceType>): Promise<RaceType> {
+    const data = RaceEntity.dbPartialFormat(trip);
+    // TODO changer endpoint Xano pour /trip
     const dbRace: RaceDBType = await ServiceUtils.patch(
-      "/busline/" + getSelectedLine()?.id + "/course/" + race.id,
+      "/busline/" + getSelectedLine()?.id + "/course/" + trip.id,
       data
     );
     if (dbRace == null) return dbRace;
@@ -49,7 +49,7 @@ export class RaceService {
   }
 
   static async delete(id: number): Promise<number> {
-    // TODO changer endpoint Xano pour /race
+    // TODO changer endpoint Xano pour /trip
     return await ServiceUtils.delete(
       "/busline/" + getSelectedLine()?.id + "/course/" + id
     );

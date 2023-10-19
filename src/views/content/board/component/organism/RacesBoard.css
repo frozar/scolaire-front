@@ -1,7 +1,7 @@
-.races-board-header{
+.trips-board-header{
   @apply my-6;
 }
 
-.races-board-header-infos{
+.trips-board-header-infos{
   @apply flex justify-between my-3;
 }

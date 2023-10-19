@@ -1,4 +1,4 @@
-import { RaceType } from "../../../../../_entities/race.entity";
+import { RaceType } from "../../../../../_entities/trip.entity";
 
 import { createSignal } from "solid-js";
 import { useStateAction } from "../../../../../StateAction";
@@ -21,7 +21,7 @@ export default function (props: { course: RaceType }) {
     MapElementUtils.deselectAllPointsAndBusRaces();
     toggleDrawMod();
     setCurrentStep(DrawRaceStep.editRace);
-    changeBoard("race-draw");
+    changeBoard("trip-draw");
     setModeDrawRace();
   }
 

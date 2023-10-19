@@ -3,7 +3,7 @@ import { For, createEffect, createSignal, onCleanup } from "solid-js";
 import { LineType } from "../../../../../_entities/line.entity";
 
 import { deselectAllPoints, pointsReady } from "./Points";
-import { setRaces } from "./Races";
+import { setRaces } from "./Trips";
 
 export const arrowsMap = new Map<number, L.Marker[]>();
 
@@ -44,7 +44,7 @@ function setDisplayedRaces() {
     ?.map((line) => line.courses)
     .flatMap((e) => [...e]);
 
-  //TODO to fix race
+  //TODO to fix trip
   setRaces(getSelectedLine()?.courses ?? allRaces);
 }
 
@@ -53,7 +53,7 @@ export function deselectAllLines() {
   deselectedLines.forEach((line) => line.setSelected(false));
   setLines(deselectedLines);
 
-  // TODO to fix race
+  // TODO to fix trip
   // deselectAllRaces();
   deselectAllPoints();
 }

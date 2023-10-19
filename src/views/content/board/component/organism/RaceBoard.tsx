@@ -1,15 +1,15 @@
 import SchoolsEnumeration from "../molecule/SchoolsEnumeration";
 import Metrics from "./Metrics";
 
-import { RaceEntity, RaceType } from "../../../../../_entities/race.entity";
-import { selectedRace } from "../../../map/component/organism/Races";
+import { RaceEntity, RaceType } from "../../../../../_entities/trip.entity";
+import { selectedRace } from "../../../map/component/organism/Trips";
 import RemoveRaceButton from "../atom/RemoveCourseButton";
 import { UpdateRaceButton } from "../atom/UpdateRaceButton";
 import CollapsibleElement from "./CollapsibleElement";
 import "./CourseInformationBoardContent.css";
 import { RaceTimeline } from "./RaceTimeline";
 export function RaceBoard() {
-  // TODO revoir le code pour setter une const race
+  // TODO revoir le code pour setter une const trip
 
   return (
     <div class="bus-course-information-board-content">
@@ -18,7 +18,7 @@ export function RaceBoard() {
         <div class="bus-course-information-board-content-name">
           {selectedRace()?.name}
         </div>
-        <UpdateRaceButton race={selectedRace() as RaceType} />
+        <UpdateRaceButton trip={selectedRace() as RaceType} />
         <RemoveRaceButton course={selectedRace() as RaceType} />
       </div>
       <div class="bus-course-information-board-content-schools">
@@ -30,12 +30,12 @@ export function RaceBoard() {
       </div>
 
       <CollapsibleElement title="Métriques">
-        <Metrics race={selectedRace()} />
+        <Metrics trip={selectedRace()} />
       </CollapsibleElement>
 
       <CollapsibleElement title="TimeLine" class="timeline-collapsise">
         <RaceTimeline
-          race={selectedRace() ?? RaceEntity.defaultRace()}
+          trip={selectedRace() ?? RaceEntity.defaultRace()}
           inDraw={false}
         />
       </CollapsibleElement>

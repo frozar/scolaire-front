@@ -95,7 +95,7 @@ export function buildMapL7(div: HTMLDivElement) {
   leafletMap.addEventListener("click", () => {
     if (
       !isOverMapItem() &&
-      onBoard() != "race-draw" &&
+      onBoard() != "trip-draw" &&
       onBoard() != "line-add"
     ) {
       changeBoard("line");

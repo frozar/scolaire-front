@@ -1,5 +1,5 @@
-import { RaceType } from "../../../../../_entities/race.entity";
-import { RaceService } from "../../../../../_services/race.service";
+import { RaceType } from "../../../../../_entities/trip.entity";
+import { RaceService } from "../../../../../_services/trip.service";
 import TrashIcon from "../../../../../icons/TrashIcon";
 import { setRemoveConfirmation } from "../../../../../userInformation/RemoveConfirmation";
 import { MapElementUtils } from "../../../../../utils/mapElement.utils";

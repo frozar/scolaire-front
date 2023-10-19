@@ -61,7 +61,7 @@ function schoolsFilter(): SchoolType[] {
           ?.schools.map((school) => school.id)
           .includes(schoolFilter.id)
       );
-    case "race-draw":
+    case "trip-draw":
       switch (currentStep()) {
         case DrawRaceStep.schoolSelection:
           return getSchools().filter((schoolFilter) =>

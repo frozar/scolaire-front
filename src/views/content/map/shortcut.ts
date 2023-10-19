@@ -57,7 +57,7 @@ function escapeHandler({ code }: KeyboardEvent) {
   //   return;
   // }
   // if (code === "Escape") {
-  //   if (onBoard() == "race-draw") {
+  //   if (onBoard() == "trip-draw") {
   //     quitModeDrawRace();
   //     setCurrentStep(DrawModeStep.start);
   //   }

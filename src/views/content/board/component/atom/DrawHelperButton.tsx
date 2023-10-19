@@ -15,7 +15,7 @@ import DrawHelperDialog, {
   openDrawHelperDialog,
 } from "../molecule/DrawHelperDialog";
 
-import { RacePointType } from "../../../../../_entities/race.entity";
+import { RacePointType } from "../../../../../_entities/trip.entity";
 import { getSchools } from "../../../map/component/organism/SchoolPoints";
 import {
   getStops,

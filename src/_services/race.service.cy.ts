@@ -1,9 +1,9 @@
 import { createSignal } from "solid-js";
 import { useStateGui } from "../StateGui";
-import { RaceEntity } from "../_entities/race.entity";
+import { RaceEntity } from "../_entities/trip.entity";
 import { NatureEnum } from "../type";
 import { ServiceUtils } from "./_utils.service";
-import { RaceService } from "./race.service";
+import { RaceService } from "./trip.service";
 
 const [, { setActiveMapId }] = useStateGui();
 

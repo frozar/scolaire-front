@@ -35,7 +35,7 @@ import {
   setBlinkingStops,
   setCursorIsOverPoint,
 } from "../organism/Points";
-import { draggingRace, setDraggingRace } from "./Race";
+import { draggingRace, setDraggingRace } from "./Trip";
 
 export interface SchoolPointProps {
   point: SchoolType;
@@ -73,7 +73,7 @@ const onClick = (point: SchoolType) => {
       console.log("TODO display school informations");
       return;
 
-    case "race-draw":
+    case "trip-draw":
       switch (currentStep()) {
         case DrawRaceStep.schoolSelection:
           if (schoolsSelected?.find((p) => p.id === point.id)) {
@@ -157,7 +157,7 @@ const onRightClick = (point: SchoolType) => {
     (_point) => _point.id == point.id
   )[0];
 
-  if (onBoard() == "race-draw" && isInRaceUnderConstruction != undefined) {
+  if (onBoard() == "trip-draw" && isInRaceUnderConstruction != undefined) {
     removePoint(point);
 
     const waypoints = currentDrawRace().waypoints;

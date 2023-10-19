@@ -1,11 +1,11 @@
 import { For, Setter, Show } from "solid-js";
-import { RaceType } from "../../../../../_entities/race.entity";
+import { RaceType } from "../../../../../_entities/trip.entity";
 import { RaceTimelineAddPointButton } from "../atom/RaceTimelineAddPointButton";
 import { RaceTimelineItem } from "../atom/RaceTimelineItem";
 import { onBoard } from "../template/ContextManager";
 
 export function RaceTimeline(props: {
-  race: RaceType;
+  trip: RaceType;
   setRace?: Setter<RaceType>;
   inDraw: boolean;
 }) {
@@ -15,17 +15,17 @@ export function RaceTimeline(props: {
         class="timeline-items "
         style={{ "--v-timeline-line-thickness": "2px" }}
       >
-        <For each={props.race.points}>
+        <For each={props.trip.points}>
           {(point, i) => (
             <div class="timeline-block">
-              <Show when={onBoard() == "race-draw"}>
+              <Show when={onBoard() == "trip-draw"}>
                 <RaceTimelineAddPointButton indice={i()} />
               </Show>
 
               <RaceTimelineItem
                 point={point}
                 indice={i()}
-                race={props.race}
+                trip={props.trip}
                 setRace={props.setRace}
               />
             </div>

@@ -1,12 +1,12 @@
 import { Setter, Show, createEffect } from "solid-js";
 
-import { RacePointType, RaceType } from "../../../../../_entities/race.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
+import { RacePointType, RaceType } from "../../../../../_entities/trip.entity";
 import { NatureEnum } from "../../../../../type";
 import { RaceTimelineRemovePointButton } from "./RaceTimelineRemovePointButton";
 
 export function RaceTimelineItem(props: {
-  race: RaceType;
+  trip: RaceType;
   setRace?: Setter<RaceType>;
   point: RacePointType;
   indice: number;
@@ -16,7 +16,7 @@ export function RaceTimelineItem(props: {
     props.point.nature == NatureEnum.stop ? " !bg-blue-base" : " !bg-red-base";
 
   createEffect(() => {
-    setDividerColor(props.race.color);
+    setDividerColor(props.trip.color);
   });
 
   return (
@@ -29,8 +29,8 @@ export function RaceTimelineItem(props: {
                 ? "+ " + props.point.quantity
                 : " " +
                   SumQuantity(
-                    props.race.points,
-                    props.race.schools[0],
+                    props.trip.points,
+                    props.trip.schools[0],
                     props.indice - 1
                   ) *
                     -1}
@@ -41,14 +41,14 @@ export function RaceTimelineItem(props: {
             {props.point.nature === NatureEnum.stop
               ? " + " +
                 SumQuantity(
-                  props.race.points,
-                  props.race.schools[0],
+                  props.trip.points,
+                  props.trip.schools[0],
                   props.indice
                 )
               : " " +
                 SumQuantity(
-                  props.race.points,
-                  props.race.schools[0],
+                  props.trip.points,
+                  props.trip.schools[0],
                   props.indice
                 ) *
                   -1}
@@ -71,7 +71,7 @@ export function RaceTimelineItem(props: {
               <RaceTimelineRemovePointButton
                 indice={props.indice}
                 setRace={props.setRace}
-                race={props.race}
+                trip={props.trip}
               />
             </Show>
           </div>

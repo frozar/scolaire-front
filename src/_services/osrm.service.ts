@@ -3,7 +3,7 @@ import {
   RaceMetricType,
   RacePointType,
   RaceType,
-} from "../_entities/race.entity";
+} from "../_entities/trip.entity";
 import { WaypointType } from "../_entities/waypoint.entity";
 import { ServiceUtils } from "./_utils.service";
 
@@ -12,13 +12,13 @@ const osrm = import.meta.env.VITE_API_OSRM_URL;
 type osrmResponseType = { routes: routesType[] };
 
 export class OsrmService {
-  static async getRoadPolyline(race: RaceType): Promise<{
+  static async getRoadPolyline(trip: RaceType): Promise<{
     latlngs: L.LatLng[];
     projectedLatlngs: L.LatLng[];
     metrics: RaceMetricType;
   }> {
-    const points: RacePointType[] = race.points;
-    let waypoints: WaypointType[] = race.waypoints ?? points;
+    const points: RacePointType[] = trip.points;
+    let waypoints: WaypointType[] = trip.waypoints ?? points;
     waypoints = waypoints.length > 0 ? waypoints : points;
     if (waypoints.length <= 1) {
       return { latlngs: [], projectedLatlngs: [], metrics: {} };

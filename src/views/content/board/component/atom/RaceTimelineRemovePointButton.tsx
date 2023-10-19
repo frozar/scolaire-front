@@ -1,7 +1,7 @@
 import { FaRegularTrashCan } from "solid-icons/fa";
 
 import { Setter } from "solid-js";
-import { RaceType } from "../../../../../_entities/race.entity";
+import { RaceType } from "../../../../../_entities/trip.entity";
 import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
 import { NatureEnum } from "../../../../../type";
 import { linkMap } from "../../../map/component/organism/Points";
@@ -11,29 +11,29 @@ import "./RaceTimelineRemovePointButton.css";
 
 export function RaceTimelineRemovePointButton(props: {
   indice: number;
-  race: RaceType;
+  trip: RaceType;
   setRace?: Setter<RaceType>;
 }) {
   const deletePoint = (indice: number) => {
     if (props.setRace) {
-      const points = [...props.race.points];
+      const points = [...props.trip.points];
       const pointId = points[indice].id;
       const nature = points[indice].nature;
 
       // TODO pas de l'ordre de la timeline !!
-      const circle = linkMap.get(props.race.points[indice].leafletId);
+      const circle = linkMap.get(props.trip.points[indice].leafletId);
       nature == NatureEnum.stop
         ? circle?.setStyle({ fillColor: COLOR_STOP_FOCUS })
         : circle?.setStyle({ fillColor: COLOR_SCHOOL_FOCUS });
 
       points.splice(indice, 1);
 
-      props.setRace((race) => {
-        return { ...race, points };
+      props.setRace((trip) => {
+        return { ...trip, points };
       });
 
       // Update waypoints array
-      const waypoints = props.race.waypoints;
+      const waypoints = props.trip.waypoints;
       if (waypoints) {
         let newWaypoints = [...waypoints];
 

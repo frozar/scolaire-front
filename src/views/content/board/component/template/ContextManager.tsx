@@ -23,7 +23,7 @@ export type BoardTags =
   | "stops"
   | "stop-details"
   | "course"
-  | "race-draw"
+  | "trip-draw"
   | "line"
   | "line-add"
   | "line-details"
@@ -40,7 +40,7 @@ export default function () {
     if (isInDrawMod()) {
       switch (onBoard()) {
         case "course": {
-          changeBoard("race-draw");
+          changeBoard("trip-draw");
           break;
         }
         case "line": {
@@ -50,7 +50,7 @@ export default function () {
       }
     } else {
       setOnBoard((prev) => {
-        return prev == "race-draw" ? "line" : prev;
+        return prev == "trip-draw" ? "line" : prev;
       });
     }
   });
@@ -70,7 +70,7 @@ export default function () {
           <Match when={onBoard() == "course"}>
             <RacesBoard line={getSelectedLine() as LineType} />
           </Match>
-          <Match when={onBoard() == "race-draw"}>
+          <Match when={onBoard() == "trip-draw"}>
             <DrawRaceBoard />
           </Match>
 

@@ -1,5 +1,5 @@
 import { For } from "solid-js";
-import { RaceType } from "../../../../../_entities/race.entity";
+import { RaceType } from "../../../../../_entities/trip.entity";
 import RaceItem from "../molecule/RaceItem";
 import "./RacesList.css";
 

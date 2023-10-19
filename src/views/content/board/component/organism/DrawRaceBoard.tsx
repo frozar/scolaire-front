@@ -8,19 +8,19 @@ import "../../../../../css/timeline.css";
 
 import _ from "lodash";
 import { LineType } from "../../../../../_entities/line.entity";
+import { SchoolType } from "../../../../../_entities/school.entity";
+import { StopType } from "../../../../../_entities/stop.entity";
 import {
   RaceEntity,
   RacePointType,
   RaceType,
-} from "../../../../../_entities/race.entity";
-import { SchoolType } from "../../../../../_entities/school.entity";
-import { StopType } from "../../../../../_entities/stop.entity";
+} from "../../../../../_entities/trip.entity";
 import {
   WaypointEntity,
   WaypointType,
 } from "../../../../../_entities/waypoint.entity";
 import { OsrmService } from "../../../../../_services/osrm.service";
-import { RaceService } from "../../../../../_services/race.service";
+import { RaceService } from "../../../../../_services/trip.service";
 import CurvedLine from "../../../../../icons/CurvedLine";
 import SimpleRace from "../../../../../icons/SimpleLine";
 import { updatePointColor } from "../../../../../leafletUtils";
@@ -35,7 +35,7 @@ import { getLines, setLines } from "../../../map/component/organism/BusLines";
 import {
   setRaces,
   setSelectedRace,
-} from "../../../map/component/organism/Races";
+} from "../../../map/component/organism/Trips";
 import { quitModeDrawRace } from "../../../map/shortcut";
 import { displayBusLine } from "../../../schools/component/molecule/BusLineItem";
 import { DrawHelperButton } from "../atom/DrawHelperButton";
@@ -103,14 +103,14 @@ export function DrawRaceBoard() {
           </Show>
         </div>
         <CollapsibleElement title="Métriques">
-          <Metrics race={currentDrawRace()} />
+          <Metrics trip={currentDrawRace()} />
         </CollapsibleElement>
         <LabeledInputField
           label="Nom de la course"
           value={currentDrawRace().name}
           onInput={(e) =>
-            setCurrentDrawRace((race) => {
-              return { ...race, name: e.target.value };
+            setCurrentDrawRace((trip) => {
+              return { ...trip, name: e.target.value };
             })
           }
           name="line-name"
@@ -121,8 +121,8 @@ export function DrawRaceBoard() {
           <RaceColorPicker
             defaultColor={currentDrawRace().color}
             onChange={(color) =>
-              setCurrentDrawRace((race) => {
-                return { ...race, color: color };
+              setCurrentDrawRace((trip) => {
+                return { ...trip, color: color };
               })
             }
           />
@@ -157,7 +157,7 @@ export function DrawRaceBoard() {
             }
           >
             <RaceTimeline
-              race={currentDrawRace()}
+              trip={currentDrawRace()}
               setRace={setCurrentDrawRace}
               inDraw={true}
             />
@@ -183,26 +183,26 @@ export function DrawRaceBoard() {
 }
 
 export function removeSchoolToRace(school: SchoolType) {
-  setCurrentDrawRace((race) => {
-    return { ...race, schools: [] };
+  setCurrentDrawRace((trip) => {
+    return { ...trip, schools: [] };
   });
   console.log(school);
 }
 export function addPointToRace(point: RacePointType) {
-  setCurrentDrawRace((race: RaceType) => {
+  setCurrentDrawRace((trip: RaceType) => {
     // TODO richard pourquoi cette condition ?
-    const points = race.points;
+    const points = trip.points;
     if (!_.isEqual(points.at(-1), point)) {
       points.splice(currentRaceIndex(), 0, point);
     }
     setCurrentRaceIndex(points.length);
-    return { ...race, points };
+    return { ...trip, points };
   });
 }
 
 export function addSchoolToRace(school: SchoolType) {
-  setCurrentDrawRace((race) => {
-    return { ...race, schools: [school] };
+  setCurrentDrawRace((trip) => {
+    return { ...trip, schools: [school] };
   });
 }
 async function createOrUpdateRace() {
@@ -229,8 +229,8 @@ async function createOrUpdateRace() {
   }
 
   QuantityUtils.add(updatedRace);
-  setRaces((races) => {
-    return races.map((currentRace) => {
+  setRaces((trips) => {
+    return trips.map((currentRace) => {
       if (currentRace.id === updatedRace.id) {
         return { ...currentRace, selected: true };
       } else {
@@ -269,8 +269,8 @@ async function nextStep() {
         const waypoints = WaypointEntity.createWaypointsFromRace(
           currentDrawRace()
         );
-        setCurrentDrawRace((race) => {
-          return { ...race, waypoints: waypoints };
+        setCurrentDrawRace((trip) => {
+          return { ...trip, waypoints: waypoints };
         });
       }
       if (displayRaceMode() == displayRaceModeEnum.straight) {
@@ -310,7 +310,7 @@ function prevStep() {
           return getLines()
             .map((line) => line.courses)
             .flat()
-            .filter((race) => race.id == currentDrawRace().id)[0];
+            .filter((trip) => trip.id == currentDrawRace().id)[0];
         });
         setIsInUpdate(false);
 
@@ -319,8 +319,8 @@ function prevStep() {
       } else {
         setCurrentDrawRace(RaceEntity.defaultRace());
         if (displayRaceMode() == displayRaceModeEnum.onRoad) {
-          setCurrentDrawRace((race) => {
-            return { ...race, latLngs: [] };
+          setCurrentDrawRace((trip) => {
+            return { ...trip, latLngs: [] };
           });
         }
         setCurrentStep(DrawRaceStep.schoolSelection);
@@ -341,8 +341,8 @@ async function onClick() {
       const waypoints = WaypointEntity.createWaypointsFromRace(
         currentDrawRace()
       );
-      setCurrentDrawRace((race) => {
-        return { ...race, waypoints: waypoints };
+      setCurrentDrawRace((trip) => {
+        return { ...trip, waypoints: waypoints };
       });
     }
     await updatePolylineWithOsrm(currentDrawRace());
@@ -350,8 +350,8 @@ async function onClick() {
     setDisplayRaceMode(displayRaceModeEnum.onRoad);
   } else if (displayRaceMode() == displayRaceModeEnum.onRoad) {
     // TODO me semble étrange
-    setCurrentDrawRace((race) => {
-      return { ...race, latLngs: [] };
+    setCurrentDrawRace((trip) => {
+      return { ...trip, latLngs: [] };
     });
 
     setDisplayRaceMode(displayRaceModeEnum.straight);
@@ -359,10 +359,10 @@ async function onClick() {
 }
 
 export function removePoint(point: StopType | SchoolType) {
-  setCurrentDrawRace((race) => {
+  setCurrentDrawRace((trip) => {
     return {
-      ...race,
-      points: race.points.filter(
+      ...trip,
+      points: trip.points.filter(
         (p) => p.id != point.id && p.lat != point.lat && p.lon != point.lon
       ),
     };
@@ -370,8 +370,8 @@ export function removePoint(point: StopType | SchoolType) {
 }
 
 export function updateWaypoints(waypoints: WaypointType[]) {
-  setCurrentDrawRace((race) => {
-    return { ...race, waypoints: waypoints };
+  setCurrentDrawRace((trip) => {
+    return { ...trip, waypoints: waypoints };
   });
   if (displayRaceMode() == displayRaceModeEnum.onRoad) {
     updatePolylineWithOsrm(currentDrawRace());
@@ -379,23 +379,23 @@ export function updateWaypoints(waypoints: WaypointType[]) {
 }
 
 export function updatePoints(points: RacePointType[]) {
-  setCurrentDrawRace((race) => {
-    return { ...race, points: points };
+  setCurrentDrawRace((trip) => {
+    return { ...trip, points: points };
   });
   setWaypointsFromPoints(points);
   updatePolylineWithOsrm(currentDrawRace());
 }
 
-export async function updatePolylineWithOsrm(race: RaceType) {
+export async function updatePolylineWithOsrm(trip: RaceType) {
   enableSpinningWheel();
   const { latlngs, projectedLatlngs, metrics } =
-    await OsrmService.getRoadPolyline(race);
+    await OsrmService.getRoadPolyline(trip);
 
-  setCurrentDrawRace((race) => {
-    return { ...race, latLngs: latlngs };
+  setCurrentDrawRace((trip) => {
+    return { ...trip, latLngs: latlngs };
   });
-  setCurrentDrawRace((race) => {
-    return { ...race, metrics: metrics };
+  setCurrentDrawRace((trip) => {
+    return { ...trip, metrics: metrics };
   });
   setWaypoints(projectedLatlngs);
   disableSpinningWheel();
@@ -415,8 +415,8 @@ function setWaypoints(projectedLatlngs: L.LatLng[]) {
     };
   });
 
-  setCurrentDrawRace((race) => {
-    return { ...race, waypoints: waypoints };
+  setCurrentDrawRace((trip) => {
+    return { ...trip, waypoints: waypoints };
   });
 }
 
@@ -437,7 +437,7 @@ function setWaypointsFromPoints(points: RacePointType[]) {
       });
     }
   }
-  setCurrentDrawRace((race) => {
-    return { ...race, waypoints: waypoints };
+  setCurrentDrawRace((trip) => {
+    return { ...trip, waypoints: waypoints };
   });
 }

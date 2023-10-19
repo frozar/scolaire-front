@@ -1,6 +1,6 @@
 import { setSchoolPointsColor, setStopPointsColor } from "../leafletUtils";
 import { deselectAllPoints } from "../views/content/map/component/organism/Points";
-import { deselectAllRaces } from "../views/content/map/component/organism/Races";
+import { deselectAllRaces } from "../views/content/map/component/organism/Trips";
 import {
   COLOR_SCHOOL_FOCUS,
   COLOR_STOP_FOCUS,

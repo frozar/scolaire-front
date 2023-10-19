@@ -2,7 +2,7 @@ import { Accessor, Setter, createSignal } from "solid-js";
 import { useStateGui } from "../StateGui";
 import { NatureEnum } from "../type";
 import { QuantityUtils } from "../utils/quantity.utils";
-import { getRaces } from "../views/content/map/component/organism/Races";
+import { getRaces } from "../views/content/map/component/organism/Trips";
 import {
   AssociatedStopType,
   EntityUtils,
