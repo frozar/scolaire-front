@@ -3,8 +3,8 @@ import { RaceService } from "../../../../../_services/race.service";
 import TrashIcon from "../../../../../icons/TrashIcon";
 import { setRemoveConfirmation } from "../../../../../userInformation/RemoveConfirmation";
 import { MapElementUtils } from "../../../../../utils/mapElement.utils";
+import { setLines } from "../../../map/component/organism/BusLines";
 import { deselectAllPoints } from "../../../map/component/organism/Points";
-import { getRaces, setRaces } from "../../../map/component/organism/Races";
 import ButtonIcon from "../molecule/ButtonIcon";
 import { changeBoard } from "../template/ContextManager";
 
@@ -18,15 +18,26 @@ export default function (props: RemoveRaceButtonProps) {
     if (!idToCheck) return false;
 
     const idToRemove: number = idToCheck;
-    const isDeleted: boolean = await RaceService.delete(idToRemove);
+    const deletedRaceId: number = await RaceService.delete(idToRemove);
 
-    if (isDeleted) {
-      setRaces(getRaces().filter((line) => line.id != idToRemove));
+    if (deletedRaceId) {
+      changeBoard("course");
+      MapElementUtils.deselectAllPointsAndBusRaces();
+
+      setLines((prev) =>
+        prev.map((line) => {
+          return {
+            ...line,
+            courses: line.courses.filter(
+              (course) => course.id != deletedRaceId
+            ),
+          };
+        })
+      );
+      return true;
+    } else {
+      return false;
     }
-
-    changeBoard("line");
-    MapElementUtils.deselectAllPointsAndBusRaces();
-    return isDeleted;
   }
   const onclick = () => {
     deselectAllPoints();
