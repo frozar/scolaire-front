@@ -5,11 +5,7 @@ import {
   changeBoard,
   onBoard,
 } from "../../../board/component/template/ContextManager";
-import {
-  COLOR_STOP_FOCUS,
-  COLOR_STOP_LIGHT,
-  COLOR_WAYPOINT,
-} from "../../constant";
+import { COLOR_STOP_FOCUS, COLOR_WAYPOINT } from "../../constant";
 import Point from "../atom/Point";
 
 import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
@@ -43,7 +39,7 @@ import {
 } from "../organism/Points";
 import { draggingRace, setDraggingRace } from "./Race";
 
-const [, { isInReadMode, isInDrawRaceMode }] = useStateAction();
+const [, { isInReadMode }] = useStateAction();
 
 export interface StopPointProps {
   point: StopType;
@@ -228,19 +224,13 @@ export function StopPoint(props: StopPointProps) {
     return radiusValue;
   };
 
-  const color = () => {
-    if (isInDrawRaceMode()) {
-      return COLOR_STOP_LIGHT;
-    } else return COLOR_STOP_FOCUS;
-  };
-
   return (
     <Point
       point={props.point}
       map={props.map}
       isBlinking={blinkingStops().includes(props.point.id)}
-      borderColor={color()}
-      fillColor={color()}
+      borderColor={COLOR_STOP_FOCUS}
+      fillColor={COLOR_STOP_FOCUS}
       radius={rad()}
       weight={0}
       onClick={() => onClick(props.point)}
