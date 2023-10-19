@@ -47,7 +47,7 @@ export function isLeafletSchoolType(pt: PointType) {
 
 export type TripUnderConstructionType = {
   nextIndex: number;
-  course: TripType;
+  trip: TripType;
 };
 
 export enum ModeEnum {
@@ -88,7 +88,7 @@ export type userInformationType = {
 
 export type removeConfirmationType = {
   displayed: boolean;
-  course: TripType | null | LineType;
+  trip: TripType | null | LineType;
 };
 
 export type removeRamassageConfirmationType = {

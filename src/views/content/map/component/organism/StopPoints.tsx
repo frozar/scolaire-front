@@ -121,7 +121,7 @@ export function leafletStopsFilter(): StopType[] {
   let schools = getSchools();
   let stops = getStops();
   switch (onBoard()) {
-    case "course":
+    case "trip":
       return stops.filter((stop) =>
         getSelectedLine()
           ?.stops.map((stopOfSelected) => stopOfSelected.id)

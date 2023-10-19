@@ -16,7 +16,7 @@ export function TripItem(props: { trip: TripType }) {
     <CardWrapper class="trip-item" onClick={() => onClickBusTrip(props.trip)}>
       <Pellet color={props.trip.color} />
       <div class="trip-content">
-        <CardTitle title={props.trip.name ?? "Pas de nom de course"} />
+        <CardTitle title={props.trip.name ?? "Pas de nom de trip"} />
         <ClasseLinkedSchool schools={schoolNames()} />
 
         <div class="trip-stops-count">

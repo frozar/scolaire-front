@@ -9,28 +9,26 @@ import ButtonIcon from "../molecule/ButtonIcon";
 import { changeBoard } from "../template/ContextManager";
 
 export interface RemoveTripButtonProps {
-  course: TripType;
+  trip: TripType;
 }
 
 export default function (props: RemoveTripButtonProps) {
   async function deleteTrip() {
-    const idToCheck = props.course.id;
+    const idToCheck = props.trip.id;
     if (!idToCheck) return false;
 
     const idToRemove: number = idToCheck;
     const deletedTripId: number = await TripService.delete(idToRemove);
 
     if (deletedTripId) {
-      changeBoard("course");
+      changeBoard("trip");
       MapElementUtils.deselectAllPointsAndBusTrips();
 
       setLines((prev) =>
         prev.map((line) => {
           return {
             ...line,
-            courses: line.courses.filter(
-              (course) => course.id != deletedTripId
-            ),
+            trips: line.trips.filter((trip) => trip.id != deletedTripId),
           };
         })
       );
@@ -41,10 +39,10 @@ export default function (props: RemoveTripButtonProps) {
   }
   const onclick = () => {
     deselectAllPoints();
-    if (props.course.id) {
+    if (props.trip.id) {
       setRemoveConfirmation({
-        textToDisplay: "Êtes-vous sûr de vouloir supprimer la course : ",
-        itemName: props.course.name as string,
+        textToDisplay: "Êtes-vous sûr de vouloir supprimer la trip : ",
+        itemName: props.trip.name as string,
         validate: deleteTrip,
       });
     }

@@ -129,7 +129,7 @@ export async function exportImages() {
   await exportTripsImages(screenShoter, polylines, leafletMap);
   zip.generateAsync({ type: "blob" }).then((content) => {
     const { year, month, day, hour, minute } = getTimestamp();
-    const fileName = `${year}-${month}-${day}_${hour}-${minute}_bus-course.zip`;
+    const fileName = `${year}-${month}-${day}_${hour}-${minute}_bus-trip.zip`;
     saveAs(content, fileName);
     displayDownloadSuccessMessage();
   });

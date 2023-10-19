@@ -17,7 +17,7 @@ describe("TripService", () => {
 
   // TODO: check why TripEntity.build is not catch with cy.spy
   // ERROR: AssertionError: expected build to have been called at least once, but it was never called
-  // TESTED: in bus-course.service, place TripEntity.build in var and return the var | same result
+  // TESTED: in bus-trip.service, place TripEntity.build in var and return the var | same result
 
   it("GetAll, spy on: generic, buildXanoUrl & get from ServiceUtils, build from TripEntity", () => {
     // Spy on: buildXanoUrl, generic, post, build

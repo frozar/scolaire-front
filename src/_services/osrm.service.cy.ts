@@ -3,7 +3,7 @@ describe("OSRMService", () => {
   const interceptURL = host + "/1,1;2,2?geometries=geojson&overview=full";
 
   //TODO Test mort => doit changer la variable d'entrée de getRoadPolyline()
-  // const coursePoint = [
+  // const tripPoint = [
   //   {
   //     id: 1,
   //     leafletId: 1,
@@ -27,7 +27,7 @@ describe("OSRMService", () => {
   // it("getRoadPolyline, URL check ", () => {
   //   cy.intercept("GET", interceptURL).as("intercept");
 
-  //   OsrmService.getRoadPolyline(coursePoint);
+  //   OsrmService.getRoadPolyline(tripPoint);
 
   //   cy.wait("@intercept").then((interception) => {
   //     expect(interception.request.method).to.eq("GET");

@@ -26,14 +26,14 @@ type Story = StoryObj<typeof meta>;
 
 export const AddTrip: Story = {
   args: {
-    tooltip: "Ajouter une course",
+    tooltip: "Ajouter une trip",
     icon: <FaSolidPlus class="w-full p-0 h-2/3" />,
   },
 };
 
 export const RemoveTrip: Story = {
   args: {
-    tooltip: "Supprimer une course",
+    tooltip: "Supprimer une trip",
     icon: <FaSolidMinus class="w-full p-0 h-2/3" />,
   },
 };

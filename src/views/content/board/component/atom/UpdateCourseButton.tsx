@@ -13,10 +13,10 @@ const [, { setModeDrawTrip }] = useStateAction();
 export const [unmodifiedBusTrip, setUnmodifiedBusTrip] =
   createSignal<TripType>();
 
-export default function (props: { course: TripType }) {
+export default function (props: { trip: TripType }) {
   async function onclick() {
-    const [color, setColor] = createSignal<string>(props.course.color());
-    setUnmodifiedBusTrip({ ...props.course, color, setColor });
+    const [color, setColor] = createSignal<string>(props.trip.color());
+    setUnmodifiedBusTrip({ ...props.trip, color, setColor });
 
     MapElementUtils.deselectAllPointsAndBusTrips();
     toggleDrawMod();

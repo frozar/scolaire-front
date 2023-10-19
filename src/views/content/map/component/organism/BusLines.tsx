@@ -41,11 +41,11 @@ export function BusLines(props: { busLines: LineType[] }) {
 
 function setDisplayedTrips() {
   const allTrips = getLines()
-    ?.map((line) => line.courses)
-    .flatMap((e) => [...e]);
+    ?.map((line) => line.trips)
+    .flat();
 
   //TODO to fix trip
-  setTrips(getSelectedLine()?.courses ?? allTrips);
+  setTrips(getSelectedLine()?.trips ?? allTrips);
 }
 
 export function deselectAllLines() {

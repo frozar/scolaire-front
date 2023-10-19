@@ -10,13 +10,13 @@ export const [unmodifiedTrip, setUnmodifiedTrip] = createSignal<LineType>();
 
 export default function (props: { line: LineType }) {
   async function onclick() {
-    console.log("course update", props);
+    console.log("trip update", props);
     // setLineUnderConstruction({
-    //   course: props.course,
-    //   nextIndex: props.course.points.length ?? 0,
+    //   trip: props.trip,
+    //   nextIndex: props.trip.points.length ?? 0,
     // });
-    // const [color, setColor] = createSignal<string>(props.course.color());
-    // setUnmodifiedTrip({ ...props.course, color, setColor });
+    // const [color, setColor] = createSignal<string>(props.trip.color());
+    // setUnmodifiedTrip({ ...props.trip, color, setColor });
 
     MapElementUtils.deselectAllPointsAndTrips();
     toggleDrawMod();

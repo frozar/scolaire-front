@@ -39,18 +39,18 @@ export default function () {
 
     function tripsCrumb(): CrumbType {
       const line = getLines().filter((line) =>
-        line.courses.map((course) => course.id).includes(selectedTrip()?.id)
+        line.trips.map((trip) => trip.id).includes(selectedTrip()?.id)
       )[0];
       return {
         text: line.name?.toLowerCase() as string,
         onClick: () => {
-          changeBoard("course");
+          changeBoard("trip");
           deselectAllLines();
           line.setSelected(true);
         },
       };
     }
-
+    console.log("onBoard()", onBoard());
     switch (onBoard()) {
       case "line":
         return [{ text: "Lignes" }];
@@ -59,7 +59,7 @@ export default function () {
       case "stops":
         return [{ text: "Arrêts" }];
 
-      case "course":
+      case "trip":
         return [
           linesCrumb,
           {
@@ -120,9 +120,9 @@ export default function () {
 
       case "trip-draw":
         if (currentDrawTrip().schools.length > 0) {
-          return [{ text: "Editer votre course" }];
+          return [{ text: "Editer votre trip" }];
         }
-        return [{ text: "Création d'une course" }];
+        return [{ text: "Création d'une trip" }];
 
       default:
         return [];

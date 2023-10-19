@@ -7,7 +7,6 @@ import BoardFooterActions from "../molecule/BoardFooterActions";
 import "../../../../../css/timeline.css";
 
 import _ from "lodash";
-import { LineType } from "../../../../../_entities/line.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { StopType } from "../../../../../_entities/stop.entity";
 import {
@@ -31,13 +30,13 @@ import {
 import { NatureEnum } from "../../../../../type";
 import { MapElementUtils } from "../../../../../utils/mapElement.utils";
 import { QuantityUtils } from "../../../../../utils/quantity.utils";
-import { getLines, setLines } from "../../../map/component/organism/BusLines";
 import {
-  setTrips,
-  setselectedTrip,
-} from "../../../map/component/organism/Trips";
+  getLines,
+  getSelectedLine,
+  setLines,
+} from "../../../map/component/organism/BusLines";
+import { setselectedTrip } from "../../../map/component/organism/Trips";
 import { quitModeDrawTrip } from "../../../map/shortcut";
-import { displayBusLine } from "../../../schools/component/molecule/BusLineItem";
 import { DrawHelperButton } from "../atom/DrawHelperButton";
 import ButtonIcon from "../molecule/ButtonIcon";
 import LabeledInputField from "../molecule/LabeledInputField";
@@ -94,7 +93,7 @@ export function DrawTripBoard() {
       </Show>
 
       <Show when={currentStep() == DrawTripStep.editTrip}>
-        <div class="bus-course-information-board-content-schools">
+        <div class="bus-trip-information-board-content-schools">
           <SchoolsEnumeration
             schoolsName={currentDrawTrip().schools.map((school) => school.name)}
           />
@@ -106,7 +105,7 @@ export function DrawTripBoard() {
           <Metrics trip={currentDrawTrip()} />
         </CollapsibleElement>
         <LabeledInputField
-          label="Nom de la course"
+          label="Nom de la trip"
           value={currentDrawTrip().name}
           onInput={(e) =>
             setCurrentDrawTrip((trip) => {
@@ -114,7 +113,7 @@ export function DrawTripBoard() {
             })
           }
           name="line-name"
-          placeholder="Entrer le nom de la course"
+          placeholder="Entrer le nom de la trip"
         />
 
         <div class="flex mt-4 justify-between">
@@ -147,7 +146,7 @@ export function DrawTripBoard() {
       </Show>
 
       <Show when={currentStep() == DrawTripStep.editTrip}>
-        <div class="bus-course-information-board-content">
+        <div class="bus-trip-information-board-content">
           <Show
             when={currentDrawTrip().points.length > 0}
             fallback={
@@ -208,36 +207,39 @@ export function addSchoolToTrip(school: SchoolType) {
 async function createOrUpdateTrip() {
   // eslint-disable-next-line solid/reactivity
   let updatedTrip: TripType = currentDrawTrip();
-
   if (currentDrawTrip().id == undefined) {
-    const dbRes: { busLines: LineType[]; newTrip: TripType } =
-      await TripService.create(currentDrawTrip());
-    setLines(dbRes.busLines);
-    updatedTrip = dbRes.newTrip;
+    updatedTrip = await TripService.create(currentDrawTrip());
+    const selectedLineId = getSelectedLine()?.id as number;
+
+    setLines((lines) =>
+      lines.map((line) =>
+        line.id != selectedLineId
+          ? line
+          : { ...line, trips: [...line.trips, updatedTrip] }
+      )
+    );
   } else {
     updatedTrip = await TripService.update(currentDrawTrip());
+
     setLines((prev) =>
       prev.map((line) => {
         return {
           ...line,
-          courses: line.courses.map((course) =>
-            course.id == updatedTrip.id ? updatedTrip : course
+          trips: line.trips.map((trip) =>
+            trip.id == updatedTrip.id ? updatedTrip : trip
           ),
         };
       })
     );
   }
+  setselectedTrip(
+    getLines()
+      .map((line) => line.trips)
+      .flat()
+      .filter((trip) => trip.id == updatedTrip.id)[0]
+  );
 
   QuantityUtils.add(updatedTrip);
-  setTrips((trips) => {
-    return trips.map((currentTrip) => {
-      if (currentTrip.id === updatedTrip.id) {
-        return { ...currentTrip, selected: true };
-      } else {
-        return currentTrip;
-      }
-    });
-  });
 
   setDisplayTripMode((prev) =>
     prev == displayTripModeEnum.straight ? prev : displayTripModeEnum.straight
@@ -246,11 +248,10 @@ async function createOrUpdateTrip() {
   setCurrentStep(DrawTripStep.initial);
   quitModeDrawTrip();
   const currentLine = getLines().filter((line) =>
-    line.courses.map((course) => course.id).includes(updatedTrip.id)
+    line.trips.map((trip) => trip.id).includes(updatedTrip.id)
   )[0];
 
-  displayBusLine(currentLine);
-  // setOnBoard("line-details");
+  changeBoard("line-details");
 }
 
 async function nextStep() {
@@ -282,7 +283,7 @@ async function nextStep() {
       setCurrentDrawTrip(TripEntity.defaultTrip());
       setCurrentTripIndex(0);
       setIsInUpdate(false);
-      setCurrentDrawTrip(TripEntity.defaultTrip());
+      // setCurrentDrawTrip(TripEntity.defaultTrip());
 
       setCurrentStep(DrawTripStep.initial);
       updatePointColor();
@@ -308,7 +309,7 @@ function prevStep() {
         // eslint-disable-next-line solid/reactivity
         setselectedTrip(() => {
           return getLines()
-            .map((line) => line.courses)
+            .map((line) => line.trips)
             .flat()
             .filter((trip) => trip.id == currentDrawTrip().id)[0];
         });

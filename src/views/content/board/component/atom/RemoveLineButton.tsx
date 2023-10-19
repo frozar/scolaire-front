@@ -13,7 +13,7 @@ export default function (props: RemoveLineButtonProps) {
     // if (props.line.id) {
     //   setRemoveConfirmation({
     //     displayed: true,
-    //     course: props.line,
+    //     trip: props.line,
     //   });
     // }
   };

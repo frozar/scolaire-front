@@ -18,22 +18,23 @@ interface LineProps {
 }
 
 export default function (props: LineProps) {
-  let coursePolyline: L.Polyline;
+  let tripPolyline: L.Polyline;
   let arrows: L.Marker[] = [];
 
   createEffect(() => {
+    // console.log("getlines", getLines());
     const latlngs = props.latlngs;
     const leafletMap = props.leafletMap;
 
     const color = props.color;
     const opacity = props.opacity;
 
-    if (coursePolyline) {
-      props.leafletMap.removeLayer(coursePolyline);
-      coursePolyline.remove();
+    if (tripPolyline) {
+      props.leafletMap.removeLayer(tripPolyline);
+      tripPolyline.remove();
     }
 
-    coursePolyline = buildLeafletPolyline(color, latlngs, opacity);
+    tripPolyline = buildLeafletPolyline(color, latlngs, opacity);
 
     if (arrows) {
       arrows.map((arrow) => leafletMap.removeLayer(arrow));
@@ -43,7 +44,7 @@ export default function (props: LineProps) {
 
     // Add events to Line & Arrows
     if (props.onMouseOver || props.onMouseOut || props.onClick) {
-      let leafletLineElems: (L.Polyline | L.Marker)[] = [coursePolyline];
+      let leafletLineElems: (L.Polyline | L.Marker)[] = [tripPolyline];
       if (props.lineId) {
         leafletLineElems = [...leafletLineElems, ...arrows];
       }
@@ -51,16 +52,14 @@ export default function (props: LineProps) {
       if (props.onMouseOver != undefined) {
         leafletLineElems.map((elem) =>
           // eslint-disable-next-line solid/reactivity
-          elem.on("mouseover", () =>
-            props.onMouseOver?.(coursePolyline, arrows)
-          )
+          elem.on("mouseover", () => props.onMouseOver?.(tripPolyline, arrows))
         );
       }
 
       if (props.onMouseOut != undefined) {
         leafletLineElems.map((elem) =>
           // eslint-disable-next-line solid/reactivity
-          elem.on("mouseout", () => props.onMouseOut?.(coursePolyline, arrows))
+          elem.on("mouseout", () => props.onMouseOut?.(tripPolyline, arrows))
         );
       }
       if (props.onClick) {
@@ -78,7 +77,7 @@ export default function (props: LineProps) {
     }
 
     // Add Line & Arrows to the map
-    coursePolyline.addTo(leafletMap);
+    tripPolyline.addTo(leafletMap);
     if (props.lineId) {
       for (const arrow of arrows) {
         arrow.addTo(leafletMap);
@@ -89,9 +88,9 @@ export default function (props: LineProps) {
   });
 
   onCleanup(() => {
-    if (coursePolyline) {
-      props.leafletMap.removeLayer(coursePolyline);
-      coursePolyline.remove();
+    if (tripPolyline) {
+      props.leafletMap.removeLayer(tripPolyline);
+      tripPolyline.remove();
     }
     if (arrows) {
       arrows.map((arrow) => props.leafletMap.removeLayer(arrow));
@@ -135,7 +134,7 @@ function buildArrows(latLngs: L.LatLng[], color: string): L.Marker[] {
     const arrowAngle = (Math.atan2(diffX, diffY) * 180) / Math.PI + 180;
 
     const arrowIcon = L.divIcon({
-      className: "bus-course-arrow",
+      className: "bus-trip-arrow",
       html: getArrowSVG(color, arrowAngle),
     });
 

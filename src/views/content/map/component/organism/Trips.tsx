@@ -28,7 +28,7 @@ export function Trips(props: { map: L.Map }) {
   // eslint-disable-next-line solid/reactivity
 
   createEffect(() => {
-    setTrips(getSelectedLine()?.courses ?? []);
+    setTrips(getSelectedLine()?.trips ?? []);
   });
 
   onCleanup(() => {
@@ -39,11 +39,11 @@ export function Trips(props: { map: L.Map }) {
     switch (onBoard()) {
       case "line-add":
         return [];
-      case "course":
-        return getSelectedLine()?.courses;
+      case "trip":
+        return getSelectedLine()?.trips;
       case "line":
         return getLines()
-          .map((line) => line.courses)
+          .map((line) => line.trips)
           .flat();
       case "trip-draw":
         switch (currentStep()) {

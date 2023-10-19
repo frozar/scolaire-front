@@ -12,16 +12,16 @@ export function TripBoard() {
   // TODO revoir le code pour setter une const trip
 
   return (
-    <div class="bus-course-information-board-content">
+    <div class="bus-trip-information-board-content">
       {/* TODO Put th e2 next component in "organism" */}
-      <div class="bus-course-information-board-content-title">
-        <div class="bus-course-information-board-content-name">
+      <div class="bus-trip-information-board-content-title">
+        <div class="bus-trip-information-board-content-name">
           {selectedTrip()?.name}
         </div>
         <UpdateTripButton trip={selectedTrip() as TripType} />
-        <RemoveTripButton course={selectedTrip() as TripType} />
+        <RemoveTripButton trip={selectedTrip() as TripType} />
       </div>
-      <div class="bus-course-information-board-content-schools">
+      <div class="bus-trip-information-board-content-schools">
         <SchoolsEnumeration
           schoolsName={
             selectedTrip()?.schools.map((school) => school.name) ?? []

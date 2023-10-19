@@ -34,7 +34,7 @@ function ExportTypeSelect() {
             <div
               id="export-type"
               onClick={() => {
-                if (selected() !== null && selected() === exportType) {
+                if (selected() != null && selected() === exportType) {
                   setSelected(null);
                 } else {
                   setSelected(exportType as string);

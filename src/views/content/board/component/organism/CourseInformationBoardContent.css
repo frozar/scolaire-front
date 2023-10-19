@@ -2,14 +2,14 @@
   @apply flex-[0.95] overflow-y-hidden flex flex-col;
 }
 
-.bus-course-information-board-content{
+.bus-trip-information-board-content{
   @apply flex flex-col h-full;
 }
 
-.bus-course-information-board-content-title {
+.bus-trip-information-board-content-title {
   @apply flex justify-between;
 }
 
-.bus-course-information-board-content-name{
+.bus-trip-information-board-content-name{
   @apply text-2xl mb-4 mt-4 text-blue-base;
 }

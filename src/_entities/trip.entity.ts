@@ -14,6 +14,7 @@ import {
 
 export namespace TripEntity {
   export function build(dbData: TripDBType): TripType {
+    console.log("dbData", dbData);
     const filteredShools: SchoolType[] = getSchools().filter(
       (item) => item.id == dbData.school_id
     );
@@ -27,6 +28,8 @@ export namespace TripEntity {
     }
 
     const school: SchoolType = filteredShools[0];
+
+    console.log("dbData.name", dbData.name);
 
     return {
       id: dbData.id,
@@ -128,7 +131,7 @@ export namespace TripEntity {
     const trips: TripType[] = [];
 
     for (const line of getLines()) {
-      line.courses.map((trip) => {
+      line.trips.map((trip) => {
         trip.points.map((point) => {
           if (point.nature == NatureEnum.stop && point.id == stopId)
             trips.push(trip);
@@ -205,6 +208,7 @@ function formatTripPointDBType(points: TripPointType[]): TripPointDBType[] {
  */
 function formatTripPointType(points: TripPointDBType[]): TripPointType[] {
   //TODO Investigate the problem during switching between map [old comment to investigate]
+  console.log("points", points);
   return points
     .map((dbPoint) => {
       const associatedPoint: PointType = getAssociatedTripPoint(dbPoint);

@@ -58,7 +58,7 @@ const makeStateActionContext = () => {
   function changeMode(mode: ModeEnum) {
     clearMessage(mode);
     setState("mode", (currentMode) => {
-      if (currentMode !== mode) {
+      if (currentMode != mode) {
         return mode;
       }
       return currentMode;

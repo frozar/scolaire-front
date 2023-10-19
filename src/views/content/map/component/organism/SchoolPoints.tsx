@@ -55,7 +55,7 @@ function schoolsFilter(): SchoolType[] {
       }
       break;
 
-    case "course":
+    case "trip":
       return getSchools().filter((schoolFilter) =>
         getSelectedLine()
           ?.schools.map((school) => school.id)

@@ -22,7 +22,7 @@ export type BoardTags =
   | "school-class-modify"
   | "stops"
   | "stop-details"
-  | "course"
+  | "trip"
   | "trip-draw"
   | "line"
   | "line-add"
@@ -39,7 +39,7 @@ export default function () {
   createEffect(() => {
     if (isInDrawMod()) {
       switch (onBoard()) {
-        case "course": {
+        case "trip": {
           changeBoard("trip-draw");
           break;
         }
@@ -49,9 +49,9 @@ export default function () {
         }
       }
     } else {
-      setOnBoard((prev) => {
-        return prev == "trip-draw" ? "line" : prev;
-      });
+      // setOnBoard((prev) => {
+      //   return prev == "trip-draw" ? "line" : prev;
+      // });
     }
   });
 
@@ -67,7 +67,7 @@ export default function () {
             {/* <TripsBoard /> */}
             <AddLineBoardContent />
           </Match>
-          <Match when={onBoard() == "course"}>
+          <Match when={onBoard() == "trip"}>
             <TripsBoard line={getSelectedLine() as LineType} />
           </Match>
           <Match when={onBoard() == "trip-draw"}>

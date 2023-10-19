@@ -96,7 +96,7 @@ export function Trip(props: { trip: TripType; map: L.Map }) {
   const onMouseOver = (polyline: L.Polyline, arrows: L.Marker[]) => {
     setIsOverMapItem(true);
     if (onBoard() != "trip-draw") {
-      buscourseSetBoldStyle(polyline, arrows, "white");
+      bustripSetBoldStyle(polyline, arrows, "white");
     }
   };
 
@@ -104,7 +104,7 @@ export function Trip(props: { trip: TripType; map: L.Map }) {
     setIsOverMapItem(false);
     // if (!line.selected() && (isInRemoveTripMode() || isInReadMode())) {
     if (onBoard() != "trip-draw") {
-      buscourseSetNormalStyle(polyline, arrows, props.trip.color);
+      bustripSetNormalStyle(polyline, arrows, props.trip.color);
     }
   };
 
@@ -286,7 +286,7 @@ function getLatLngsFromPoint(points: TripPointType[]): L.LatLng[] {
   return points.map((point) => L.latLng(point.lat, point.lon));
 }
 
-export function buscourseSetNormalStyle(
+export function bustripSetNormalStyle(
   polyline: L.Polyline,
   arrowsLinked: L.Marker[],
   color: string
@@ -295,7 +295,7 @@ export function buscourseSetNormalStyle(
   arrowsSetNormalStyle(arrowsLinked, color);
 }
 
-export function buscourseSetBoldStyle(
+export function bustripSetBoldStyle(
   polyline: L.Polyline,
   arrowsLinked: L.Marker[],
   color: string

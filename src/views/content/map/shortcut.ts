@@ -84,7 +84,7 @@ function enterHandler({ code }: KeyboardEvent) {
   // if (!isInDrawTripMode() || currentStep() === DrawModeStep.schoolSelection) {
   //   return;
   // }
-  // const resourceInfo = getTripUnderConstruction().course.points.map(
+  // const resourceInfo = getTripUnderConstruction().trip.points.map(
   //   function (value) {
   //     return {
   //       id_resource: value["id"],

@@ -11,10 +11,8 @@ export class BusLineEntity {
     const schools: SchoolType[] = BusLineEntity.dbSchoolsToSchoolType(dbLine);
 
     const stops: StopType[] = BusLineEntity.dbStopsToStopsType(dbLine);
-
-    const courses = dbLine.courses.map((dbTrip) =>
-      TripEntity.build(dbTrip.course)
-    );
+    console.log("dbLine", dbLine);
+    const trips = dbLine.trips.map((dbTrip) => TripEntity.build(dbTrip.trip));
 
     const [selected, setSelected] = createSignal<boolean>(false);
     const [color, setColor] = createSignal<string>("#" + dbLine.color);
@@ -23,7 +21,7 @@ export class BusLineEntity {
       id: dbLine.id,
       schools,
       stops,
-      courses,
+      trips,
       name: dbLine.name,
       color: color,
       setColor: setColor,
@@ -57,7 +55,7 @@ export class BusLineEntity {
       setColor: setColor,
       stops: [],
       schools: [],
-      courses: [],
+      trips: [],
       name: "my default name",
       selected: selected,
       setSelected: setSelected,
@@ -69,7 +67,7 @@ export class BusLineEntity {
     name: string;
     schools: number[];
     stops: number[];
-    courses: TripType[];
+    trips: TripType[];
   } {
     const name = line.name ? line.name : "";
     return {
@@ -77,7 +75,7 @@ export class BusLineEntity {
       name: name,
       schools: line.schools.map((school) => school.id),
       stops: line.stops.map((stop) => stop.id),
-      courses: line.courses,
+      trips: line.trips,
     };
   }
 
@@ -123,7 +121,7 @@ export type LineType = {
   id?: number;
   schools: SchoolType[];
   stops: StopType[];
-  courses: TripType[];
+  trips: TripType[];
   name?: string;
   color: Accessor<string>;
   setColor: Setter<string>;
@@ -138,5 +136,5 @@ export type LineDBType = {
   color: string;
   schools: { school_id: number }[];
   stops: { stop_id: number }[];
-  courses: { course_id: number; course: TripDBType }[];
+  trips: { trip_id: number; trip: TripDBType }[];
 };

@@ -25,8 +25,8 @@ export namespace QuantityUtils {
     return quantity;
   }
 
-  export function set(courses: TripType[]) {
-    courses.forEach((trip) => {
+  export function set(trips: TripType[]) {
+    trips.forEach((trip) => {
       trip.schools.forEach((school) => {
         setSchoolQuantity(school, trip.points, OperationType.set);
       });
