@@ -39,13 +39,11 @@ export class RaceService {
 
   static async update(race: Partial<RaceType>): Promise<RaceType> {
     const data = RaceEntity.dbPartialFormat(race);
-    console.log("partial", data);
     // TODO changer endpoint Xano pour /race
     const dbRace: RaceDBType = await ServiceUtils.patch(
       "/busline/" + getSelectedLine()?.id + "/course/" + race.id,
       data
     );
-    console.log("dbRace", dbRace);
     if (dbRace == null) return dbRace;
     return RaceEntity.build(dbRace);
   }
