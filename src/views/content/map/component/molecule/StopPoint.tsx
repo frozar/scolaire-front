@@ -153,6 +153,7 @@ const onMouseOut = (stop: StopType) => {
 const onMouseUp = (stop: StopType, map: L.Map) => {
   const nextIndex = draggingWaypointIndex();
   if (nextIndex) {
+    // case mouseUp on a stop not already in the race
     if (
       !currentDrawRace()
         .points.map((point) => point.id)
@@ -169,8 +170,8 @@ const onMouseUp = (stop: StopType, map: L.Map) => {
       setCurrentRaceIndex(currentDrawRace().points.length);
       setDraggingWaypointIndex();
       map.off("mousemove");
-      map.dragging.enable();
     }
+    map.dragging.enable();
   } else if (draggingRace()) {
     updateRaceAndWaypoints(stop);
 
