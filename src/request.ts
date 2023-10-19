@@ -16,7 +16,7 @@ export async function clear() {
   });
 }
 
-export async function addBusRace(
+export async function addBusTrip(
   stops: { id_resource: number; nature: string }[]
 ) {
   return authenticateWrap((headers) => {
@@ -52,13 +52,13 @@ export async function uploadFile(formData: FormData) {
   }, true);
 }
 
-export async function updateBusRace(selectedBusRaceId: number, color: string) {
+export async function updateBusTrip(selectedBusTripId: number, color: string) {
   return authenticateWrap((headers) => {
     const colorWk = color.length === 6 ? color : color.substring(1);
 
     return fetch(
       import.meta.env.VITE_BACK_URL +
-        `/map/${getActiveMapId()}/bus_line/${selectedBusRaceId}`,
+        `/map/${getActiveMapId()}/bus_line/${selectedBusTripId}`,
       {
         headers,
         method: "PATCH",

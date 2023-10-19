@@ -3,7 +3,7 @@ import { For, createEffect, createSignal, onCleanup } from "solid-js";
 import { LineType } from "../../../../../_entities/line.entity";
 
 import { deselectAllPoints, pointsReady } from "./Points";
-import { setRaces } from "./Trips";
+import { setTrips } from "./Trips";
 
 export const arrowsMap = new Map<number, L.Marker[]>();
 
@@ -19,7 +19,7 @@ export function BusLines(props: { busLines: LineType[] }) {
 
   // eslint-disable-next-line solid/reactivity
   createEffect(async () => {
-    setDisplayedRaces();
+    setDisplayedTrips();
   });
 
   onCleanup(() => {
@@ -39,13 +39,13 @@ export function BusLines(props: { busLines: LineType[] }) {
   );
 }
 
-function setDisplayedRaces() {
-  const allRaces = getLines()
+function setDisplayedTrips() {
+  const allTrips = getLines()
     ?.map((line) => line.courses)
     .flatMap((e) => [...e]);
 
   //TODO to fix trip
-  setRaces(getSelectedLine()?.courses ?? allRaces);
+  setTrips(getSelectedLine()?.courses ?? allTrips);
 }
 
 export function deselectAllLines() {
@@ -54,7 +54,7 @@ export function deselectAllLines() {
   setLines(deselectedLines);
 
   // TODO to fix trip
-  // deselectAllRaces();
+  // deselectAllTrips();
   deselectAllPoints();
 }
 

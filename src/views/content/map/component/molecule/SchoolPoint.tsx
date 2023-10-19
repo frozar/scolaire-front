@@ -11,14 +11,14 @@ import {
   setaddLineSelectedSchool,
 } from "../../../board/component/organism/AddLineBoardContent";
 import {
-  DrawRaceStep,
-  addPointToRace,
-  addSchoolToRace,
-  currentDrawRace,
+  DrawTripStep,
+  addPointToTrip,
+  addSchoolToTrip,
+  currentDrawTrip,
   currentStep,
   removePoint,
   updateWaypoints,
-} from "../../../board/component/organism/DrawRaceBoard";
+} from "../../../board/component/organism/DrawTripBoard";
 import {
   changeBoard,
   onBoard,
@@ -35,7 +35,7 @@ import {
   setBlinkingStops,
   setCursorIsOverPoint,
 } from "../organism/Points";
-import { draggingRace, setDraggingRace } from "./Trip";
+import { draggingTrip, setDraggingTrip } from "./Trip";
 
 export interface SchoolPointProps {
   point: SchoolType;
@@ -43,7 +43,7 @@ export interface SchoolPointProps {
 }
 
 const onClick = (point: SchoolType) => {
-  const schoolsSelected = currentDrawRace().schools;
+  const schoolsSelected = currentDrawTrip().schools;
   switch (onBoard()) {
     case "line-add":
       switch (addLineCurrentStep()) {
@@ -75,29 +75,29 @@ const onClick = (point: SchoolType) => {
 
     case "trip-draw":
       switch (currentStep()) {
-        case DrawRaceStep.schoolSelection:
+        case DrawTripStep.schoolSelection:
           if (schoolsSelected?.find((p) => p.id === point.id)) {
             return;
           }
-          addSchoolToRace(point);
+          addSchoolToTrip(point);
           return;
 
-        case DrawRaceStep.editRace:
-          const lastPoint = currentDrawRace().points.at(-1);
+        case DrawTripStep.editTrip:
+          const lastPoint = currentDrawTrip().points.at(-1);
 
           // TODO  add quantity pour school ?!
-          addPointToRace({
+          addPointToTrip({
             ...point,
             quantity: 0,
           });
 
           if (!lastPoint || point.leafletId != lastPoint.leafletId) {
-            const waypoints = currentDrawRace().waypoints;
+            const waypoints = currentDrawTrip().waypoints;
             if (waypoints) {
               const newWaypoints = WaypointEntity.updateWaypoints(
                 point,
                 waypoints,
-                currentDrawRace().points
+                currentDrawTrip().points
               );
 
               updateWaypoints(newWaypoints);
@@ -108,7 +108,7 @@ const onClick = (point: SchoolType) => {
       break;
 
     default:
-      // deselectAllRaces();
+      // deselectAllTrips();
       deselectAllPoints();
       point.setSelected(true);
       setSchoolDetailsItem(point);
@@ -118,18 +118,18 @@ const onClick = (point: SchoolType) => {
 };
 
 const onMouseUp = (point: StopType) => {
-  if (draggingRace()) {
+  if (draggingTrip()) {
     const associatedQuantity = point.associated.filter(
       (associatedSchool) =>
-        associatedSchool.schoolId === currentDrawRace().schools[0].id
+        associatedSchool.schoolId === currentDrawTrip().schools[0].id
     )[0].quantity;
 
     // TODO  add quantity pour school ?!
-    addPointToRace({
+    addPointToTrip({
       ...point,
       quantity: associatedQuantity,
     });
-    setDraggingRace(false);
+    setDraggingTrip(false);
   }
 };
 
@@ -137,7 +137,7 @@ const onMouseOver = (school: SchoolType) => {
   setIsOverMapItem(true);
   setBlinkingStops(school.associated.map((stop) => stop.schoolId));
 
-  if (draggingRace()) {
+  if (draggingTrip()) {
     setCursorIsOverPoint(true);
   }
 };
@@ -146,21 +146,21 @@ const onMouseOut = () => {
   setIsOverMapItem(false);
   setBlinkingStops([]);
 
-  if (draggingRace() || cursorIsOverPoint()) {
+  if (draggingTrip() || cursorIsOverPoint()) {
     setCursorIsOverPoint(false);
   }
 };
 
 const onRightClick = (point: SchoolType) => {
   const circle = linkMap.get(point.leafletId);
-  const isInRaceUnderConstruction = currentDrawRace().points.filter(
+  const isInTripUnderConstruction = currentDrawTrip().points.filter(
     (_point) => _point.id == point.id
   )[0];
 
-  if (onBoard() == "trip-draw" && isInRaceUnderConstruction != undefined) {
+  if (onBoard() == "trip-draw" && isInTripUnderConstruction != undefined) {
     removePoint(point);
 
-    const waypoints = currentDrawRace().waypoints;
+    const waypoints = currentDrawTrip().waypoints;
     if (waypoints) {
       const newWaypoints = WaypointEntity.deleteSchoolOrStopWaypoint(
         waypoints,

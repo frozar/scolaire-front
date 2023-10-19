@@ -15,13 +15,13 @@ import DrawHelperDialog, {
   openDrawHelperDialog,
 } from "../molecule/DrawHelperDialog";
 
-import { RacePointType } from "../../../../../_entities/trip.entity";
+import { TripPointType } from "../../../../../_entities/trip.entity";
 import { getSchools } from "../../../map/component/organism/SchoolPoints";
 import {
   getStops,
   leafletStopsFilter,
 } from "../../../map/component/organism/StopPoints";
-import { currentDrawRace, updatePoints } from "../organism/DrawRaceBoard";
+import { currentDrawTrip, updatePoints } from "../organism/DrawTripBoard";
 import "./DrawHelperButton.css";
 
 interface DrawHelperButtonProps {
@@ -32,7 +32,7 @@ async function drawHelper(data: DrawHelperDataType) {
   enableSpinningWheel();
   const response = await GraphicageService.drawHelper(data);
   //TODO Resolve type problem and add quantity here ?
-  const points: RacePointType[] = formatRacePoints(response);
+  const points: TripPointType[] = formatTripPoints(response);
   updatePoints(points);
   disableSpinningWheel();
 }
@@ -48,7 +48,7 @@ export function DrawHelperButton(props: DrawHelperButtonProps) {
         ? JSON.parse(JSON.stringify(props.schools))
         : [];
 
-    const selectedStops = JSON.parse(JSON.stringify(currentDrawRace().points));
+    const selectedStops = JSON.parse(JSON.stringify(currentDrawTrip().points));
 
     const stops = leafletStopsFilter();
 
@@ -71,7 +71,7 @@ export function DrawHelperButton(props: DrawHelperButtonProps) {
   return (
     <div class="graphicage-draw-helper-button">
       <DrawHelperDialog requestCircuit={requestCircuit} />
-      <Show when={currentDrawRace().points.length > 0}>
+      <Show when={currentDrawTrip().points.length > 0}>
         <button onClick={onclick}>
           <FaSolidWandMagicSparkles />
         </button>
@@ -80,9 +80,9 @@ export function DrawHelperButton(props: DrawHelperButtonProps) {
   );
 }
 
-function formatRacePoints(
+function formatTripPoints(
   data: { id: number; leafletId: number; nature: string; quantity: number }[]
-): RacePointType[] {
+): TripPointType[] {
   const points = [...getSchools(), ...getStops()];
   const output = [];
   for (const item of data) {

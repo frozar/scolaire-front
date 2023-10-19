@@ -1,10 +1,10 @@
 import { FaSolidMinus } from "solid-icons/fa";
 import { SchoolType } from "../../../../../_entities/school.entity";
-import { removeSchoolToRace } from "../organism/DrawRaceBoard";
+import { removeSchoolToTrip } from "../organism/DrawTripBoard";
 import "./SelectedSchoolItem.css";
 
 export default function (props: { school: SchoolType }) {
-  const onClick = () => removeSchoolToRace(props.school);
+  const onClick = () => removeSchoolToTrip(props.school);
 
   return (
     <div class="selected-school-item">

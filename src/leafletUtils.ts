@@ -3,7 +3,7 @@ import { NatureEnum } from "./type";
 import { linkMap } from "./views/content/map/component/organism/Points";
 import { getSchools } from "./views/content/map/component/organism/SchoolPoints";
 import { getStops } from "./views/content/map/component/organism/StopPoints";
-import { selectedRace } from "./views/content/map/component/organism/Trips";
+import { selectedTrip } from "./views/content/map/component/organism/Trips";
 import {
   COLOR_SCHOOL_FOCUS,
   COLOR_SCHOOL_LIGHT,
@@ -55,7 +55,7 @@ export function updatePointColor(point?: PointType) {
       circle?.setStyle({ fillColor: COLOR_SCHOOL_FOCUS });
     }
   } else {
-    const trip = selectedRace();
+    const trip = selectedTrip();
     if (!trip) {
       return;
     }

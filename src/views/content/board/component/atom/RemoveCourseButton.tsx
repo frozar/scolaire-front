@@ -1,5 +1,5 @@
-import { RaceType } from "../../../../../_entities/trip.entity";
-import { RaceService } from "../../../../../_services/trip.service";
+import { TripType } from "../../../../../_entities/trip.entity";
+import { TripService } from "../../../../../_services/trip.service";
 import TrashIcon from "../../../../../icons/TrashIcon";
 import { setRemoveConfirmation } from "../../../../../userInformation/RemoveConfirmation";
 import { MapElementUtils } from "../../../../../utils/mapElement.utils";
@@ -8,28 +8,28 @@ import { deselectAllPoints } from "../../../map/component/organism/Points";
 import ButtonIcon from "../molecule/ButtonIcon";
 import { changeBoard } from "../template/ContextManager";
 
-export interface RemoveRaceButtonProps {
-  course: RaceType;
+export interface RemoveTripButtonProps {
+  course: TripType;
 }
 
-export default function (props: RemoveRaceButtonProps) {
-  async function deleteRace() {
+export default function (props: RemoveTripButtonProps) {
+  async function deleteTrip() {
     const idToCheck = props.course.id;
     if (!idToCheck) return false;
 
     const idToRemove: number = idToCheck;
-    const deletedRaceId: number = await RaceService.delete(idToRemove);
+    const deletedTripId: number = await TripService.delete(idToRemove);
 
-    if (deletedRaceId) {
+    if (deletedTripId) {
       changeBoard("course");
-      MapElementUtils.deselectAllPointsAndBusRaces();
+      MapElementUtils.deselectAllPointsAndBusTrips();
 
       setLines((prev) =>
         prev.map((line) => {
           return {
             ...line,
             courses: line.courses.filter(
-              (course) => course.id != deletedRaceId
+              (course) => course.id != deletedTripId
             ),
           };
         })
@@ -45,7 +45,7 @@ export default function (props: RemoveRaceButtonProps) {
       setRemoveConfirmation({
         textToDisplay: "Êtes-vous sûr de vouloir supprimer la course : ",
         itemName: props.course.name as string,
-        validate: deleteRace,
+        validate: deleteTrip,
       });
     }
   };

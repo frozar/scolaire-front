@@ -19,7 +19,7 @@ export function displayBusLine(line: LineType): void {
     .filter((filterline) => filterline.id === line.id)[0]
     .setSelected(true);
   // TODO to fix trip
-  // setRaces(line.courses.length > 0 ? line.courses : []);
+  // setTrips(line.courses.length > 0 ? line.courses : []);
 }
 
 export default function (props: { line: LineType }) {

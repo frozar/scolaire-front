@@ -6,13 +6,13 @@ import {
   getSelectedLine,
 } from "../../../map/component/organism/BusLines";
 import { getSchools } from "../../../map/component/organism/SchoolPoints";
-import { selectedRace } from "../../../map/component/organism/Trips";
+import { selectedTrip } from "../../../map/component/organism/Trips";
 import { selectedClasse } from "../../../schools/component/organism/ClasseBoard";
 import { schoolDetailsItem } from "../../../schools/component/organism/SchoolDetails";
 import { stopDetailsItem } from "../../../stops/component/organism/StopDetails";
 import BreadcrumbButton from "../atom/BreadcrumbButton";
 import DisplayBreadcrumbText from "../atom/DisplayBreadcrumbText";
-import { currentDrawRace } from "../organism/DrawRaceBoard";
+import { currentDrawTrip } from "../organism/DrawTripBoard";
 import { changeBoard, onBoard } from "../template/ContextManager";
 import "./Breadcrumb.css";
 
@@ -28,7 +28,7 @@ export default function () {
       text: "Lignes",
       onClick: () => {
         changeBoard("line");
-        MapElementUtils.deselectAllPointsAndBusRaces();
+        MapElementUtils.deselectAllPointsAndBusTrips();
       },
     };
 
@@ -37,9 +37,9 @@ export default function () {
       onClick: () => changeBoard("schools"),
     };
 
-    function racesCrumb(): CrumbType {
+    function tripsCrumb(): CrumbType {
       const line = getLines().filter((line) =>
-        line.courses.map((course) => course.id).includes(selectedRace()?.id)
+        line.courses.map((course) => course.id).includes(selectedTrip()?.id)
       )[0];
       return {
         text: line.name?.toLowerCase() as string,
@@ -86,9 +86,9 @@ export default function () {
       case "line-details":
         return [
           linesCrumb,
-          racesCrumb(),
+          tripsCrumb(),
           {
-            text: selectedRace()?.name?.toLowerCase() as string,
+            text: selectedTrip()?.name?.toLowerCase() as string,
           },
         ];
 
@@ -119,7 +119,7 @@ export default function () {
         ];
 
       case "trip-draw":
-        if (currentDrawRace().schools.length > 0) {
+        if (currentDrawTrip().schools.length > 0) {
           return [{ text: "Editer votre course" }];
         }
         return [{ text: "Création d'une course" }];

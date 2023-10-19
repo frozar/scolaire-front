@@ -3,19 +3,19 @@ import { Transition } from "solid-transition-group";
 import { useStateAction } from "../../../StateAction";
 import ClickOutside from "../../../component/ClickOutside";
 import { assertIsNode } from "../../../utils";
-import { currentDrawRace } from "../board/component/organism/DrawRaceBoard";
+import { currentDrawTrip } from "../board/component/organism/DrawTripBoard";
 
 // HACK for the documentation to preserve the ClickOutside directive on save
 // https://www.solidjs.com/guides/typescript#use___
 false && ClickOutside;
 
-const [, { isInDrawRaceMode, setModeRead }] = useStateAction();
+const [, { isInDrawTripMode, setModeRead }] = useStateAction();
 
-export const [displayedConfirmStopAddRace, setDisplayedConfirmStopAddRace] =
+export const [displayedConfirmStopAddTrip, setDisplayedConfirmStopAddTrip] =
   createSignal(false);
 
-const toggleConfirmStopAddRace = () =>
-  setDisplayedConfirmStopAddRace(!displayedConfirmStopAddRace());
+const toggleConfirmStopAddTrip = () =>
+  setDisplayedConfirmStopAddTrip(!displayedConfirmStopAddTrip());
 
 let refDialogue: HTMLDivElement;
 
@@ -25,10 +25,10 @@ export function defineModalToOpen(obj: () => void) {
 }
 
 export const confirmAbortEditionNeedToBeCall = () => {
-  const hasRaceUnderConstruction = currentDrawRace().points.length > 0;
+  const hasTripUnderConstruction = currentDrawTrip().points.length > 0;
 
-  if (isInDrawRaceMode() && hasRaceUnderConstruction) {
-    toggleConfirmStopAddRace();
+  if (isInDrawTripMode() && hasTripUnderConstruction) {
+    toggleConfirmStopAddTrip();
   } else {
     modalToOpen();
   }
@@ -40,8 +40,8 @@ function exitModal({ code }: KeyboardEvent) {
   // eslint-disable-next-line solid/reactivity
   keyboard.getLayoutMap().then(() => {
     if (code === "Escape") {
-      if (displayedConfirmStopAddRace()) {
-        setDisplayedConfirmStopAddRace(false);
+      if (displayedConfirmStopAddTrip()) {
+        setDisplayedConfirmStopAddTrip(false);
       }
     }
   });
@@ -51,8 +51,8 @@ export default function () {
   const confirmStopingEdition = () => {
     setModeRead();
     //TODO voir l'impact de la suppression
-    // fetchBusRaces();
-    toggleConfirmStopAddRace();
+    // fetchBusTrips();
+    toggleConfirmStopAddTrip();
     modalToOpen();
   };
 
@@ -74,7 +74,7 @@ export default function () {
       exitClass="opacity-100"
       exitToClass="opacity-0"
     >
-      <Show when={displayedConfirmStopAddRace()}>
+      <Show when={displayedConfirmStopAddTrip()}>
         <div
           class="relative z-[1400]"
           aria-labelledby="modal-title"
@@ -110,7 +110,7 @@ export default function () {
 
                     assertIsNode(e.target);
                     if (!refDialogue.contains(e.target)) {
-                      setDisplayedConfirmStopAddRace(false);
+                      setDisplayedConfirmStopAddTrip(false);
                     }
                   }}
                 >
@@ -128,7 +128,7 @@ export default function () {
                     <button
                       type="button"
                       class="export-modal-cancel"
-                      onClick={toggleConfirmStopAddRace}
+                      onClick={toggleConfirmStopAddTrip}
                     >
                       Non
                     </button>

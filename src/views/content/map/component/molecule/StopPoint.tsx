@@ -15,14 +15,14 @@ import {
   stopSelected,
 } from "../../../board/component/organism/AddLineBoardContent";
 import {
-  DrawRaceStep,
-  addPointToRace,
-  currentDrawRace,
+  DrawTripStep,
+  addPointToTrip,
+  currentDrawTrip,
   currentStep,
   removePoint,
-  setCurrentRaceIndex,
+  setCurrentTripIndex,
   updateWaypoints,
-} from "../../../board/component/organism/DrawRaceBoard";
+} from "../../../board/component/organism/DrawTripBoard";
 import { setStopDetailsItem } from "../../../stops/component/organism/StopDetails";
 import { setIsOverMapItem } from "../../l7MapBuilder";
 import {
@@ -37,7 +37,7 @@ import {
   setBlinkingSchools,
   setCursorIsOverPoint,
 } from "../organism/Points";
-import { draggingRace, setDraggingRace } from "./Trip";
+import { draggingTrip, setDraggingTrip } from "./Trip";
 
 const [, { isInReadMode }] = useStateAction();
 
@@ -58,25 +58,25 @@ const rangeRadius = maxRadius - minRadius;
 function getAssociatedQuantity(point: StopType) {
   return point.associated.filter(
     (associatedSchool) =>
-      associatedSchool.schoolId === currentDrawRace().schools[0].id
+      associatedSchool.schoolId === currentDrawTrip().schools[0].id
   )[0].quantity;
 }
 
-function updateRaceAndWaypoints(point: StopType) {
+function updateTripAndWaypoints(point: StopType) {
   // TODO: FIX
   // const associatedQuantity = getAssociatedQuantity(point);
   const associatedQuantity = 1;
-  const lastPoint = currentDrawRace().points.at(-1);
+  const lastPoint = currentDrawTrip().points.at(-1);
 
-  addPointToRace({ ...point, quantity: associatedQuantity });
+  addPointToTrip({ ...point, quantity: associatedQuantity });
 
   if (!lastPoint || point.leafletId != lastPoint.leafletId) {
-    const waypoints = currentDrawRace().waypoints;
+    const waypoints = currentDrawTrip().waypoints;
     if (waypoints) {
       const newWaypoints = WaypointEntity.updateWaypoints(
         point,
         waypoints,
-        currentDrawRace().points
+        currentDrawTrip().points
       );
       updateWaypoints(newWaypoints);
     }
@@ -101,16 +101,16 @@ function onClick(point: StopType) {
       return;
     case "trip-draw":
       switch (currentStep()) {
-        case DrawRaceStep.schoolSelection:
+        case DrawTripStep.schoolSelection:
           return;
 
-        case DrawRaceStep.editRace:
-          updateRaceAndWaypoints(point);
+        case DrawTripStep.editTrip:
+          updateTripAndWaypoints(point);
           break;
       }
       break;
     default:
-      // deselectAllRaces();
+      // deselectAllTrips();
       deselectAllPoints();
       point.setSelected(true);
       setStopDetailsItem(point);
@@ -122,7 +122,7 @@ function onClick(point: StopType) {
 const onMouseOver = (stop: StopType) => {
   if (
     draggingWaypointIndex() &&
-    !currentDrawRace()
+    !currentDrawTrip()
       .points.map((point) => point.id)
       .includes(stop.id)
   ) {
@@ -132,7 +132,7 @@ const onMouseOver = (stop: StopType) => {
   setIsOverMapItem(true);
   setBlinkingSchools(stop.associated.map((school) => school.schoolId));
 
-  if (draggingRace()) {
+  if (draggingTrip()) {
     setCursorIsOverPoint(true);
   }
 };
@@ -145,7 +145,7 @@ const onMouseOut = (stop: StopType) => {
   setIsOverMapItem(false);
   setBlinkingSchools([]);
 
-  if (draggingRace() || cursorIsOverPoint()) {
+  if (draggingTrip() || cursorIsOverPoint()) {
     setCursorIsOverPoint(false);
   }
 };
@@ -155,41 +155,41 @@ const onMouseUp = (stop: StopType, map: L.Map) => {
   if (nextIndex) {
     // case mouseUp on a stop not already in the trip
     if (
-      !currentDrawRace()
+      !currentDrawTrip()
         .points.map((point) => point.id)
         .includes(stop.id)
     ) {
       setDraggingWaypointIndex();
-      setCurrentRaceIndex(nextIndex);
+      setCurrentTripIndex(nextIndex);
 
-      updateRaceAndWaypoints(stop);
+      updateTripAndWaypoints(stop);
 
       const circle = linkMap.get(stop.leafletId);
       circle?.setStyle({ radius: 5, weight: 0 });
     } else {
-      setCurrentRaceIndex(currentDrawRace().points.length);
+      setCurrentTripIndex(currentDrawTrip().points.length);
       setDraggingWaypointIndex();
       map.off("mousemove");
     }
     map.dragging.enable();
-  } else if (draggingRace()) {
-    updateRaceAndWaypoints(stop);
+  } else if (draggingTrip()) {
+    updateTripAndWaypoints(stop);
 
-    setDraggingRace(false);
+    setDraggingTrip(false);
   }
 };
 
 const onRightClick = (stop: StopType) => {
   const circle = linkMap.get(stop.leafletId);
-  const isInRaceUnderConstruction = currentDrawRace().points.filter(
+  const isInTripUnderConstruction = currentDrawTrip().points.filter(
     (_point) => _point.id == stop.id
   )[0];
 
-  if (onBoard() == "trip-draw" && isInRaceUnderConstruction != undefined) {
+  if (onBoard() == "trip-draw" && isInTripUnderConstruction != undefined) {
     removePoint(stop);
 
     // Update waypoints
-    const waypoints = currentDrawRace().waypoints;
+    const waypoints = currentDrawTrip().waypoints;
     if (waypoints) {
       const newWaypoints = WaypointEntity.deleteSchoolOrStopWaypoint(
         waypoints,

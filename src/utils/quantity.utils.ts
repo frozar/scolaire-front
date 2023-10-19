@@ -1,6 +1,6 @@
 import { AssociatedSchoolType } from "../_entities/_utils.entity";
 import { SchoolType } from "../_entities/school.entity";
-import { RacePointType, RaceType } from "../_entities/trip.entity";
+import { TripPointType, TripType } from "../_entities/trip.entity";
 import { NatureEnum } from "../type";
 import { setSchools } from "../views/content/map/component/organism/SchoolPoints";
 import { setStops } from "../views/content/map/component/organism/StopPoints";
@@ -25,7 +25,7 @@ export namespace QuantityUtils {
     return quantity;
   }
 
-  export function set(courses: RaceType[]) {
+  export function set(courses: TripType[]) {
     courses.forEach((trip) => {
       trip.schools.forEach((school) => {
         setSchoolQuantity(school, trip.points, OperationType.set);
@@ -36,15 +36,15 @@ export namespace QuantityUtils {
       });
     });
   }
-  export function add(trip: RaceType) {
+  export function add(trip: TripType) {
     operation(trip, OperationType.add);
   }
 
-  export function substract(trip: RaceType) {
+  export function substract(trip: TripType) {
     operation(trip, OperationType.substract);
   }
 
-  function operation(trip: RaceType, operation: OperationType) {
+  function operation(trip: TripType, operation: OperationType) {
     trip.schools.forEach((school) => {
       setSchoolQuantity(school, trip.points, operation);
     });
@@ -56,7 +56,7 @@ export namespace QuantityUtils {
 
   function setSchoolQuantity(
     school: SchoolType,
-    points: RacePointType[],
+    points: TripPointType[],
     operation: OperationType
   ) {
     points.forEach((point) => {
@@ -83,7 +83,7 @@ export namespace QuantityUtils {
   }
 
   function setStopQuantity(
-    point: RacePointType,
+    point: TripPointType,
     schools: SchoolType[],
     operation: OperationType
   ) {

@@ -9,10 +9,10 @@ import {
   stopSelected,
 } from "../../../board/component/organism/AddLineBoardContent";
 import {
-  DrawRaceStep,
-  currentDrawRace,
+  DrawTripStep,
+  currentDrawTrip,
   currentStep,
-} from "../../../board/component/organism/DrawRaceBoard";
+} from "../../../board/component/organism/DrawTripBoard";
 import { onBoard } from "../../../board/component/template/ContextManager";
 import { updateStopDetailsItem } from "../../../stops/component/organism/StopDetails";
 import { PointInterface } from "../atom/Point";
@@ -146,7 +146,7 @@ export function leafletStopsFilter(): StopType[] {
 
       break;
     case "trip-draw":
-      schools = currentDrawRace().schools;
+      schools = currentDrawTrip().schools;
 
       stops = getStops().filter((stop) =>
         getSelectedLine()
@@ -156,10 +156,10 @@ export function leafletStopsFilter(): StopType[] {
           : true
       );
       switch (currentStep()) {
-        case DrawRaceStep.schoolSelection:
+        case DrawTripStep.schoolSelection:
           return [];
-        case DrawRaceStep.editRace:
-        case DrawRaceStep.initial:
+        case DrawTripStep.editTrip:
+        case DrawTripStep.initial:
           return stops;
       }
 

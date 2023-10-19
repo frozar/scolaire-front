@@ -1,9 +1,9 @@
 import { createSignal } from "solid-js";
 import PlusIcon from "../../../../../icons/PlusIcon";
-import { displayAddRaceMessage } from "../../../../../userInformation/utils";
+import { displayAddTripMessage } from "../../../../../userInformation/utils";
 import { getLines } from "../../../map/component/organism/BusLines";
 import { deselectAllPoints } from "../../../map/component/organism/Points";
-import { deselectAllRaces } from "../../../map/component/organism/Trips";
+import { deselectAllTrips } from "../../../map/component/organism/Trips";
 import InputSearch from "../../../schools/component/molecule/InputSearch";
 import BusLinesList from "../../../schools/component/organism/BusLinesList";
 import ButtonIcon from "../molecule/ButtonIcon";
@@ -14,29 +14,29 @@ import {
 } from "../template/ContextManager";
 import { AddLineStep, setAddLineCurrentStep } from "./AddLineBoardContent";
 import "./BusLines.css";
-import { DrawRaceStep, setCurrentStep } from "./DrawRaceBoard";
+import { DrawTripStep, setCurrentStep } from "./DrawTripBoard";
 
 export default function () {
   const [searchKeyword, setSearchKeyword] = createSignal<string>("");
 
   // TODO corriger
   // const filteredLines = () =>
-  //   getRaces.filter((trip) => trip.name?.includes(searchKeyword()));
+  //   getTrips.filter((trip) => trip.name?.includes(searchKeyword()));
 
   function addLine() {
     if (onBoard() == "line-add") {
       toggleDrawMod();
-      setCurrentStep(DrawRaceStep.initial);
+      setCurrentStep(DrawTripStep.initial);
     } else {
       deselectAllPoints();
-      deselectAllRaces();
+      deselectAllTrips();
 
       // TODO corriger
       // displayAddLineMessage();
       changeBoard("line-add");
       setAddLineCurrentStep(AddLineStep.schoolSelection);
       toggleDrawMod();
-      displayAddRaceMessage();
+      displayAddTripMessage();
     }
   }
 

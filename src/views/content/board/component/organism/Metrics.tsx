@@ -1,11 +1,11 @@
-import { RaceType } from "../../../../../_entities/trip.entity";
+import { TripType } from "../../../../../_entities/trip.entity";
 import { MetricItem, MetricItemProps } from "../atom/MetricItem";
 
 export interface MetricsEnumerationProps {
   metrics: MetricItemProps[];
 }
 export type MetricsProps = {
-  trip?: Pick<RaceType, "metrics">;
+  trip?: Pick<TripType, "metrics">;
 };
 
 export default function (props: MetricsProps) {

@@ -1,7 +1,0 @@
-.trips-board-header{
-  @apply my-6;
-}
-
-.trips-board-header-infos{
-  @apply flex justify-between my-3;
-}

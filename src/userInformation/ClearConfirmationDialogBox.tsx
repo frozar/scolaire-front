@@ -17,7 +17,7 @@ import { assertIsNode } from "../utils";
 import ClickOutside from "../component/ClickOutside";
 import { getSchools } from "../views/content/map/component/organism/SchoolPoints";
 import { getStops } from "../views/content/map/component/organism/StopPoints";
-import { getRaces } from "../views/content/map/component/organism/Trips";
+import { getTrips } from "../views/content/map/component/organism/Trips";
 
 // HACK for the documentation to preserve the ClickOutside directive on save
 // https://www.solidjs.com/guides/typescript#use___
@@ -40,12 +40,12 @@ function clearUserInformation(content: string, level: MessageLevelEnum) {
   addNewUserInformation({
     displayed: true,
     level,
-    type: MessageTypeEnum.removeRace,
+    type: MessageTypeEnum.removeTrip,
     content,
   });
   setPoints([]);
   //TODO voir l'impact de la suppression
-  // fetchBusRaces();
+  // fetchBusTrips();
   disableSpinningWheel();
   closeClearConfirmationBox();
 }
@@ -224,7 +224,7 @@ export default function () {
                           </li>
                           <li>
                             <span class="font-semibold text-sm text-gray-900">
-                              {getRaces().length + " "}
+                              {getTrips().length + " "}
                             </span>
                             ligne(s) présente(s) sur la carte,
                           </li>

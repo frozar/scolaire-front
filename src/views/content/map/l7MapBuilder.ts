@@ -99,7 +99,7 @@ export function buildMapL7(div: HTMLDivElement) {
       onBoard() != "line-add"
     ) {
       changeBoard("line");
-      MapElementUtils.deselectAllPointsAndBusRaces();
+      MapElementUtils.deselectAllPointsAndBusTrips();
     }
   });
 

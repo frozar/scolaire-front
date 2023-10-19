@@ -2,9 +2,9 @@ import L from "leaflet";
 import { createEffect, createSignal, onCleanup } from "solid-js";
 import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
 import {
-  currentDrawRace,
+  currentDrawTrip,
   updateWaypoints,
-} from "../../../board/component/organism/DrawRaceBoard";
+} from "../../../board/component/organism/DrawTripBoard";
 import { COLOR_WAYPOINT } from "../../constant";
 
 type PolylineDragMarkersProps = {
@@ -23,7 +23,7 @@ function handleMouseUp(
 ) {
   map.off("mousemove");
   map.dragging.enable();
-  const waypoints = currentDrawRace().waypoints;
+  const waypoints = currentDrawTrip().waypoints;
   if (!waypoints) {
     return;
   }
@@ -51,8 +51,8 @@ function handleMouseDown(
   let pointNextIndex = 0;
   for (let i = 0; i < waypointIndex; i++) {
     if (
-      currentDrawRace().waypoints?.at(i)?.idSchool != undefined ||
-      currentDrawRace().waypoints?.at(i)?.idStop != undefined
+      currentDrawTrip().waypoints?.at(i)?.idSchool != undefined ||
+      currentDrawTrip().waypoints?.at(i)?.idStop != undefined
     ) {
       pointNextIndex += 1;
     }

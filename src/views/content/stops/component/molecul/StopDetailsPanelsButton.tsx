@@ -5,7 +5,7 @@ import "./StopDetailsPanelsButton.css";
 interface PanelsButtonProps {
   setOnPanel: Setter<StopPanels>;
   onPanel: Accessor<StopPanels>;
-  NbRaces?: number;
+  NbTrips?: number;
   NbSchool: number;
 }
 
@@ -25,7 +25,7 @@ export default function (props: PanelsButtonProps) {
         classList={{ active: props.onPanel() == StopPanels.trips }}
         onClick={() => props.setOnPanel(StopPanels.trips)}
       >
-        Trips: {props.NbRaces}
+        Trips: {props.NbTrips}
       </button>
     </div>
   );

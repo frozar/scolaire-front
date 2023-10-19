@@ -14,7 +14,7 @@ import { toggleDrawMod } from "../board/component/template/ContextManager";
 
 import { COLOR_SCHOOL_FOCUS, COLOR_STOP_FOCUS } from "./constant";
 
-const [, { setModeDrawRace, isInDrawRaceMode, setModeRead }, history] =
+const [, { setModeDrawTrip, isInDrawTripMode, setModeRead }, history] =
   useStateAction();
 
 const isOpenedModal = () =>
@@ -23,7 +23,7 @@ const isOpenedModal = () =>
   displayedClearConfirmationDialogBox().displayed ||
   getRemoveConfirmation().displayed;
 // TODO MAYBE_ERROR
-// || displayedConfirmStopDrawRace();
+// || displayedConfirmStopDrawTrip();
 
 const [, { getSelectedMenu }] = useStateGui();
 
@@ -58,17 +58,17 @@ function escapeHandler({ code }: KeyboardEvent) {
   // }
   // if (code === "Escape") {
   //   if (onBoard() == "trip-draw") {
-  //     quitModeDrawRace();
+  //     quitModeDrawTrip();
   //     setCurrentStep(DrawModeStep.start);
   //   }
   //   changeBoard("line");
-  //   MapElementUtils.deselectAllPointsAndBusRaces();
+  //   MapElementUtils.deselectAllPointsAndBusTrips();
   //   //TODO voir l'impact de la suppression
-  //   // fetchBusRaces();
+  //   // fetchBusTrips();
   // }
 }
 
-export function quitModeDrawRace() {
+export function quitModeDrawTrip() {
   // setModeRead();
 
   setStopPointsColor([], COLOR_STOP_FOCUS);
@@ -81,10 +81,10 @@ function enterHandler({ code }: KeyboardEvent) {
   //   return;
   // }
   // if (code === "Enter") {
-  // if (!isInDrawRaceMode() || currentStep() === DrawModeStep.schoolSelection) {
+  // if (!isInDrawTripMode() || currentStep() === DrawModeStep.schoolSelection) {
   //   return;
   // }
-  // const resourceInfo = getRaceUnderConstruction().course.points.map(
+  // const resourceInfo = getTripUnderConstruction().course.points.map(
   //   function (value) {
   //     return {
   //       id_resource: value["id"],
@@ -92,21 +92,21 @@ function enterHandler({ code }: KeyboardEvent) {
   //     };
   //   }
   // );
-  // addBusRace(resourceInfo).then(async (res) => {
+  // addBusTrip(resourceInfo).then(async (res) => {
   //   if (!res) {
-  //     console.error("addBusRace failed");
+  //     console.error("addBusTrip failed");
   //     return;
   //   }
   //   await res.json();
-  //   resetRaceUnderConstruction();
+  //   resetTripUnderConstruction();
   //   setModeRead();
   //   //TODO voir l'impact de la suppression
-  //   // fetchBusRaces();
+  //   // fetchBusTrips();
   // });
   // }
 }
 
-function toggleRaceUnderConstruction({ code }: KeyboardEvent) {
+function toggleTripUnderConstruction({ code }: KeyboardEvent) {
   // if (disable_shortcut()) {
   //   return;
   // }
@@ -116,13 +116,13 @@ function toggleRaceUnderConstruction({ code }: KeyboardEvent) {
   // keyboard.getLayoutMap().then((keyboardLayoutMap) => {
   //   const upKey = keyboardLayoutMap.get(code);
   //   if (upKey === "l") {
-  //     if (isInDrawRaceMode()) {
+  //     if (isInDrawTripMode()) {
   //       setModeRead();
   //     } else {
   //       deselectAllPoints();
-  //       setModeDrawRace();
+  //       setModeDrawTrip();
   //       // TODO MAYBE_ERROR
-  //       // displayDrawRaceMessage();
+  //       // displayDrawTripMessage();
   //     }
   //   }
   // });
@@ -132,5 +132,5 @@ export const listHandlerLMap = [
   undoRedoHandler,
   escapeHandler,
   enterHandler,
-  toggleRaceUnderConstruction,
+  toggleTripUnderConstruction,
 ];

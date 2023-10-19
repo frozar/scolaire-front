@@ -7,7 +7,7 @@ import { buildMapL7 } from "./l7MapBuilder";
 import { Trips } from "./component/organism/Trips";
 
 import ImportCsvCanvas from "../../../component/ImportCsvCanvas";
-import ConfirmStopAddRace from "./ConfirmStopAddCourseBox";
+import ConfirmStopAddTrip from "./ConfirmStopAddCourseBox";
 
 import { listHandlerLMap } from "./shortcut";
 
@@ -93,7 +93,7 @@ export default function () {
         <RightMapMenu />
       </div> */}
       {/* TODO Modify and re-activate export and generate functionalities */}
-      <ConfirmStopAddRace />
+      <ConfirmStopAddTrip />
     </Show>
   );
 }

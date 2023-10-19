@@ -2,11 +2,11 @@ import { NatureEnum } from "../type";
 import { LocationDBType, LocationDBTypeEnum } from "./_utils.entity";
 import { SchoolType } from "./school.entity";
 import { StopType } from "./stop.entity";
-import { RacePointType, RaceType } from "./trip.entity";
+import { TripPointType, TripType } from "./trip.entity";
 
 export namespace WaypointEntity {
   // TODO unused ?
-  export function createWaypointsFromRace(trip: RaceType) {
+  export function createWaypointsFromTrip(trip: TripType) {
     const waypoints: WaypointType[] = [];
 
     for (const point of trip.points) {
@@ -71,7 +71,7 @@ export namespace WaypointEntity {
   export function updateWaypoints(
     point: StopType | SchoolType,
     waypoints: WaypointType[],
-    points: RacePointType[]
+    points: TripPointType[]
   ) {
     const newWaypoints = [...waypoints];
 
