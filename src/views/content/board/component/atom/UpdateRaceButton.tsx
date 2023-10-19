@@ -5,7 +5,7 @@ import UpdateButton from "../../../../../icons/UpdatePen";
 import { MapElementUtils } from "../../../../../utils/mapElement.utils";
 import {
   DrawRaceStep,
-  setCurrentRace,
+  setCurrentDrawRace,
   setCurrentRaceIndex,
   setCurrentStep,
   setIsInUpdate,
@@ -18,7 +18,7 @@ const [, { setModeDrawRace }] = useStateAction();
 export function UpdateRaceButton(props: { race: RaceType }) {
   async function onclick() {
     setIsInUpdate(true);
-    setCurrentRace({ ...props.race, points: [...props.race.points] });
+    setCurrentDrawRace({ ...props.race, points: [...props.race.points] });
     changeBoard("race-draw");
     setCurrentRaceIndex(props.race.points.length);
 

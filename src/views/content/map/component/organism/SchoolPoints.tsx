@@ -8,7 +8,7 @@ import {
 } from "../../../board/component/organism/AddLineBoardContent";
 import {
   DrawRaceStep,
-  currentRace,
+  currentDrawRace,
   currentStep,
 } from "../../../board/component/organism/DrawRaceBoard";
 import { onBoard } from "../../../board/component/template/ContextManager";
@@ -71,7 +71,7 @@ function schoolsFilter(): SchoolType[] {
           );
         case DrawRaceStep.editRace:
           return getSchools().filter((schoolTofilter) =>
-            currentRace()
+            currentDrawRace()
               .schools.map((school) => school.id)
               .includes(schoolTofilter.id)
           );

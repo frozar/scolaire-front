@@ -5,7 +5,7 @@ import { Race } from "../molecule/Race";
 import { RaceEntity, RaceType } from "../../../../../_entities/race.entity";
 import {
   DrawRaceStep,
-  currentRace,
+  currentDrawRace,
   currentStep,
 } from "../../../board/component/organism/DrawRaceBoard";
 import { onBoard } from "../../../board/component/template/ContextManager";
@@ -54,7 +54,7 @@ export function Races(props: { map: L.Map }) {
             );
             arrowsMap.clear();
 
-            return [currentRace()];
+            return [currentDrawRace()];
         }
         break;
 

@@ -21,7 +21,7 @@ import { WaypointType } from "../../../../../_entities/waypoint.entity";
 import { updatePointColor } from "../../../../../leafletUtils";
 import {
   DrawRaceStep,
-  currentRace,
+  currentDrawRace,
   currentStep,
   displayRaceMode,
   displayRaceModeEnum,
@@ -72,7 +72,7 @@ export function Race(props: { race: RaceType; map: L.Map }) {
   let pointFocus: { circle: L.CircleMarker; nature: NatureEnum }[] = [];
   createEffect(() => {
     // TODO passer en mode race
-    if (currentRace() === props.race) {
+    if (currentDrawRace() === props.race) {
       pointFocus.map((point) => {
         point.circle.setStyle({
           fillColor:
@@ -262,8 +262,8 @@ export function Race(props: { race: RaceType; map: L.Map }) {
             );
           }}
         </For>
-        <Show when={currentRace().waypoints}>
-          <For each={currentRace().waypoints}>
+        <Show when={currentDrawRace().waypoints}>
+          <For each={currentDrawRace().waypoints}>
             {(waypoint: WaypointType, i) => {
               if (!waypoint.idSchool && !waypoint.idStop) {
                 return (

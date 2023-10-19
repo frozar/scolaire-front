@@ -21,7 +21,7 @@ import {
 import {
   DrawRaceStep,
   addPointToRace,
-  currentRace,
+  currentDrawRace,
   currentStep,
   removePoint,
   setCurrentRaceIndex,
@@ -62,7 +62,7 @@ const rangeRadius = maxRadius - minRadius;
 function getAssociatedQuantity(point: StopType) {
   return point.associated.filter(
     (associatedSchool) =>
-      associatedSchool.schoolId === currentRace().schools[0].id
+      associatedSchool.schoolId === currentDrawRace().schools[0].id
   )[0].quantity;
 }
 
@@ -70,17 +70,17 @@ function updateRaceAndWaypoints(point: StopType) {
   // TODO: FIX
   // const associatedQuantity = getAssociatedQuantity(point);
   const associatedQuantity = 1;
-  const lastPoint = currentRace().points.at(-1);
+  const lastPoint = currentDrawRace().points.at(-1);
 
   addPointToRace({ ...point, quantity: associatedQuantity });
 
   if (!lastPoint || point.leafletId != lastPoint.leafletId) {
-    const waypoints = currentRace().waypoints;
+    const waypoints = currentDrawRace().waypoints;
     if (waypoints) {
       const newWaypoints = WaypointEntity.updateWaypoints(
         point,
         waypoints,
-        currentRace().points
+        currentDrawRace().points
       );
       updateWaypoints(newWaypoints);
     }
@@ -126,7 +126,7 @@ function onClick(point: StopType) {
 const onMouseOver = (stop: StopType) => {
   if (
     draggingWaypointIndex() &&
-    !currentRace()
+    !currentDrawRace()
       .points.map((point) => point.id)
       .includes(stop.id)
   ) {
@@ -158,7 +158,7 @@ const onMouseUp = (stop: StopType, map: L.Map) => {
   const nextIndex = draggingWaypointIndex();
   if (nextIndex) {
     if (
-      !currentRace()
+      !currentDrawRace()
         .points.map((point) => point.id)
         .includes(stop.id)
     ) {
@@ -170,7 +170,7 @@ const onMouseUp = (stop: StopType, map: L.Map) => {
       const circle = linkMap.get(stop.leafletId);
       circle?.setStyle({ radius: 5, weight: 0 });
     } else {
-      setCurrentRaceIndex(currentRace().points.length);
+      setCurrentRaceIndex(currentDrawRace().points.length);
       setDraggingWaypointIndex();
       map.off("mousemove");
       map.dragging.enable();
@@ -184,7 +184,7 @@ const onMouseUp = (stop: StopType, map: L.Map) => {
 
 const onRightClick = (stop: StopType) => {
   const circle = linkMap.get(stop.leafletId);
-  const isInRaceUnderConstruction = currentRace().points.filter(
+  const isInRaceUnderConstruction = currentDrawRace().points.filter(
     (_point) => _point.id == stop.id
   )[0];
 
@@ -192,7 +192,7 @@ const onRightClick = (stop: StopType) => {
     removePoint(stop);
 
     // Update waypoints
-    const waypoints = currentRace().waypoints;
+    const waypoints = currentDrawRace().waypoints;
     if (waypoints) {
       const newWaypoints = WaypointEntity.deleteSchoolOrStopWaypoint(
         waypoints,

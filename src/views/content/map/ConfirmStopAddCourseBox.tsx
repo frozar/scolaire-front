@@ -3,7 +3,7 @@ import { Transition } from "solid-transition-group";
 import { useStateAction } from "../../../StateAction";
 import ClickOutside from "../../../component/ClickOutside";
 import { assertIsNode } from "../../../utils";
-import { currentRace } from "../board/component/organism/DrawRaceBoard";
+import { currentDrawRace } from "../board/component/organism/DrawRaceBoard";
 
 // HACK for the documentation to preserve the ClickOutside directive on save
 // https://www.solidjs.com/guides/typescript#use___
@@ -25,7 +25,7 @@ export function defineModalToOpen(obj: () => void) {
 }
 
 export const confirmAbortEditionNeedToBeCall = () => {
-  const hasRaceUnderConstruction = currentRace().points.length > 0;
+  const hasRaceUnderConstruction = currentDrawRace().points.length > 0;
 
   if (isInDrawRaceMode() && hasRaceUnderConstruction) {
     toggleConfirmStopAddRace();

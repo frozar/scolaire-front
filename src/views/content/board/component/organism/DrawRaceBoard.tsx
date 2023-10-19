@@ -68,8 +68,7 @@ export enum displayRaceModeEnum {
 export const [displayRaceMode, setDisplayRaceMode] =
   createSignal<displayRaceModeEnum>(displayRaceModeEnum.straight);
 
-// TODO: Rename currentDrawRace and setCurrentDrawRace
-export const [currentRace, setCurrentRace] = createSignal<RaceType>(
+export const [currentDrawRace, setCurrentDrawRace] = createSignal<RaceType>(
   RaceEntity.defaultRace()
 );
 
@@ -80,9 +79,9 @@ export const [isInUpdate, setIsInUpdate] = createSignal(false);
 export function DrawRaceBoard() {
   onMount(() => {
     if (isInUpdate()) {
-      QuantityUtils.substract(currentRace());
+      QuantityUtils.substract(currentDrawRace());
     } else {
-      setCurrentRace(RaceEntity.defaultRace());
+      setCurrentDrawRace(RaceEntity.defaultRace());
     }
   });
   onCleanup(() => {
@@ -92,26 +91,26 @@ export function DrawRaceBoard() {
   return (
     <div class="add-line-information-board-content">
       <Show when={currentStep() == DrawRaceStep.schoolSelection}>
-        <SelectedSchool schoolSelected={currentRace().schools} />
+        <SelectedSchool schoolSelected={currentDrawRace().schools} />
       </Show>
 
       <Show when={currentStep() == DrawRaceStep.editRace}>
         <div class="bus-course-information-board-content-schools">
           <SchoolsEnumeration
-            schoolsName={currentRace().schools.map((school) => school.name)}
+            schoolsName={currentDrawRace().schools.map((school) => school.name)}
           />
-          <Show when={currentRace().points.length > 0}>
-            <DrawHelperButton schools={currentRace().schools} />
+          <Show when={currentDrawRace().points.length > 0}>
+            <DrawHelperButton schools={currentDrawRace().schools} />
           </Show>
         </div>
         <CollapsibleElement title="Métriques">
-          <Metrics race={currentRace()} />
+          <Metrics race={currentDrawRace()} />
         </CollapsibleElement>
         <LabeledInputField
           label="Nom de la course"
-          value={currentRace().name}
+          value={currentDrawRace().name}
           onInput={(e) =>
-            setCurrentRace((race) => {
+            setCurrentDrawRace((race) => {
               return { ...race, name: e.target.value };
             })
           }
@@ -121,9 +120,9 @@ export function DrawRaceBoard() {
 
         <div class="flex mt-4 justify-between">
           <RaceColorPicker
-            defaultColor={currentRace().color}
+            defaultColor={currentDrawRace().color}
             onChange={(color) =>
-              setCurrentRace((race) => {
+              setCurrentDrawRace((race) => {
                 return { ...race, color: color };
               })
             }
@@ -151,7 +150,7 @@ export function DrawRaceBoard() {
       <Show when={currentStep() == DrawRaceStep.editRace}>
         <div class="bus-course-information-board-content">
           <Show
-            when={currentRace().points.length > 0}
+            when={currentDrawRace().points.length > 0}
             fallback={
               <div class="flex w-4/5 text-xs justify-center absolute bottom-[500px]">
                 Veuillez sélectionner des points sur la carte
@@ -159,8 +158,8 @@ export function DrawRaceBoard() {
             }
           >
             <RaceTimeline
-              race={currentRace()}
-              setRace={setCurrentRace}
+              race={currentDrawRace()}
+              setRace={setCurrentDrawRace}
               inDraw={true}
             />
           </Show>
@@ -185,13 +184,13 @@ export function DrawRaceBoard() {
 }
 
 export function removeSchoolToRace(school: SchoolType) {
-  setCurrentRace((race) => {
+  setCurrentDrawRace((race) => {
     return { ...race, schools: [] };
   });
   console.log(school);
 }
 export function addPointToRace(point: RacePointType) {
-  setCurrentRace((race: RaceType) => {
+  setCurrentDrawRace((race: RaceType) => {
     // TODO richard pourquoi cette condition ?
     const points = race.points;
     if (!_.isEqual(points.at(-1), point)) {
@@ -203,21 +202,21 @@ export function addPointToRace(point: RacePointType) {
 }
 
 export function addSchoolToRace(school: SchoolType) {
-  setCurrentRace((race) => {
+  setCurrentDrawRace((race) => {
     return { ...race, schools: [school] };
   });
 }
 async function createOrUpdateRace() {
   // eslint-disable-next-line solid/reactivity
-  let race: RaceType = currentRace();
+  let race: RaceType = currentDrawRace();
 
-  if (currentRace().id == undefined) {
+  if (currentDrawRace().id == undefined) {
     const dbRes: { busLines: LineType[]; newRace: RaceType } =
-      await RaceService.create(currentRace());
+      await RaceService.create(currentDrawRace());
     setLines(dbRes.busLines);
     race = dbRes.newRace;
   } else {
-    race = await RaceService.update(currentRace());
+    race = await RaceService.update(currentDrawRace());
     updateRaces(race);
   }
 
@@ -250,30 +249,32 @@ async function nextStep() {
   enableSpinningWheel();
   switch (currentStep()) {
     case DrawRaceStep.schoolSelection:
-      if (currentRace().schools.length < 1) {
+      if (currentDrawRace().schools.length < 1) {
         break;
       }
       setCurrentStep(DrawRaceStep.editRace);
     case DrawRaceStep.editRace:
-      if (currentRace().points.length < 2) {
+      if (currentDrawRace().points.length < 2) {
         break;
       }
-      if (!currentRace().waypoints) {
-        const waypoints = WaypointEntity.createWaypointsFromRace(currentRace());
-        setCurrentRace((race) => {
+      if (!currentDrawRace().waypoints) {
+        const waypoints = WaypointEntity.createWaypointsFromRace(
+          currentDrawRace()
+        );
+        setCurrentDrawRace((race) => {
           return { ...race, waypoints: waypoints };
         });
       }
       if (displayRaceMode() == displayRaceModeEnum.straight) {
-        await updatePolylineWithOsrm(currentRace());
+        await updatePolylineWithOsrm(currentDrawRace());
       }
 
       await createOrUpdateRace();
 
-      setCurrentRace(RaceEntity.defaultRace());
+      setCurrentDrawRace(RaceEntity.defaultRace());
       setCurrentRaceIndex(0);
       setIsInUpdate(false);
-      setCurrentRace(RaceEntity.defaultRace());
+      setCurrentDrawRace(RaceEntity.defaultRace());
 
       setCurrentStep(DrawRaceStep.initial);
       updatePointColor();
@@ -284,7 +285,7 @@ async function nextStep() {
 function prevStep() {
   switch (currentStep()) {
     case DrawRaceStep.schoolSelection:
-      setCurrentRace(RaceEntity.defaultRace());
+      setCurrentDrawRace(RaceEntity.defaultRace());
       quitModeDrawRace();
 
       setCurrentStep(DrawRaceStep.initial);
@@ -294,23 +295,23 @@ function prevStep() {
       break;
     case DrawRaceStep.editRace:
       if (isInUpdate()) {
-        QuantityUtils.add(currentRace());
+        QuantityUtils.add(currentDrawRace());
         quitModeDrawRace();
         // eslint-disable-next-line solid/reactivity
         setSelectedRace(() => {
           return getLines()
             .map((line) => line.courses)
             .flat()
-            .filter((race) => race.id == currentRace().id)[0];
+            .filter((race) => race.id == currentDrawRace().id)[0];
         });
         setIsInUpdate(false);
 
         setCurrentStep(DrawRaceStep.initial);
         changeBoard("line-details");
       } else {
-        setCurrentRace(RaceEntity.defaultRace());
+        setCurrentDrawRace(RaceEntity.defaultRace());
         if (displayRaceMode() == displayRaceModeEnum.onRoad) {
-          setCurrentRace((race) => {
+          setCurrentDrawRace((race) => {
             return { ...race, latLngs: [] };
           });
         }
@@ -325,21 +326,23 @@ function prevStep() {
 
 async function onClick() {
   if (displayRaceMode() == displayRaceModeEnum.straight) {
-    if (currentRace().points.length < 2) {
+    if (currentDrawRace().points.length < 2) {
       return;
     }
-    if (!currentRace().waypoints) {
-      const waypoints = WaypointEntity.createWaypointsFromRace(currentRace());
-      setCurrentRace((race) => {
+    if (!currentDrawRace().waypoints) {
+      const waypoints = WaypointEntity.createWaypointsFromRace(
+        currentDrawRace()
+      );
+      setCurrentDrawRace((race) => {
         return { ...race, waypoints: waypoints };
       });
     }
-    await updatePolylineWithOsrm(currentRace());
+    await updatePolylineWithOsrm(currentDrawRace());
 
     setDisplayRaceMode(displayRaceModeEnum.onRoad);
   } else if (displayRaceMode() == displayRaceModeEnum.onRoad) {
     // TODO me semble étrange
-    setCurrentRace((race) => {
+    setCurrentDrawRace((race) => {
       return { ...race, latLngs: [] };
     });
 
@@ -348,7 +351,7 @@ async function onClick() {
 }
 
 export function removePoint(point: StopType | SchoolType) {
-  setCurrentRace((race) => {
+  setCurrentDrawRace((race) => {
     return {
       ...race,
       points: race.points.filter(
@@ -359,20 +362,20 @@ export function removePoint(point: StopType | SchoolType) {
 }
 
 export function updateWaypoints(waypoints: WaypointType[]) {
-  setCurrentRace((race) => {
+  setCurrentDrawRace((race) => {
     return { ...race, waypoints: waypoints };
   });
   if (displayRaceMode() == displayRaceModeEnum.onRoad) {
-    updatePolylineWithOsrm(currentRace());
+    updatePolylineWithOsrm(currentDrawRace());
   }
 }
 
 export function updatePoints(points: RacePointType[]) {
-  setCurrentRace((race) => {
+  setCurrentDrawRace((race) => {
     return { ...race, points: points };
   });
   setWaypointsFromPoints(points);
-  updatePolylineWithOsrm(currentRace());
+  updatePolylineWithOsrm(currentDrawRace());
 }
 
 export async function updatePolylineWithOsrm(race: RaceType) {
@@ -380,10 +383,10 @@ export async function updatePolylineWithOsrm(race: RaceType) {
   const { latlngs, projectedLatlngs, metrics } =
     await OsrmService.getRoadPolyline(race);
 
-  setCurrentRace((race) => {
+  setCurrentDrawRace((race) => {
     return { ...race, latLngs: latlngs };
   });
-  setCurrentRace((race) => {
+  setCurrentDrawRace((race) => {
     return { ...race, metrics: metrics };
   });
   setWaypoints(projectedLatlngs);
@@ -392,10 +395,10 @@ export async function updatePolylineWithOsrm(race: RaceType) {
 
 // TODO MAYBE_ERROR
 function setWaypoints(projectedLatlngs: L.LatLng[]) {
-  if (!currentRace().waypoints) {
+  if (!currentDrawRace().waypoints) {
     return;
   }
-  let waypoints = currentRace().waypoints as WaypointType[];
+  let waypoints = currentDrawRace().waypoints as WaypointType[];
   waypoints = waypoints.map((waypoint, i) => {
     return {
       ...waypoint,
@@ -404,7 +407,7 @@ function setWaypoints(projectedLatlngs: L.LatLng[]) {
     };
   });
 
-  setCurrentRace((race) => {
+  setCurrentDrawRace((race) => {
     return { ...race, waypoints: waypoints };
   });
 }
@@ -426,7 +429,7 @@ function setWaypointsFromPoints(points: RacePointType[]) {
       });
     }
   }
-  setCurrentRace((race) => {
+  setCurrentDrawRace((race) => {
     return { ...race, waypoints: waypoints };
   });
 }

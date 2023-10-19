@@ -10,7 +10,7 @@ import {
 } from "../../../board/component/organism/AddLineBoardContent";
 import {
   DrawRaceStep,
-  currentRace,
+  currentDrawRace,
   currentStep,
 } from "../../../board/component/organism/DrawRaceBoard";
 import { onBoard } from "../../../board/component/template/ContextManager";
@@ -146,7 +146,7 @@ export function leafletStopsFilter(): StopType[] {
 
       break;
     case "race-draw":
-      schools = currentRace().schools;
+      schools = currentDrawRace().schools;
 
       stops = getStops().filter((stop) =>
         getSelectedLine()
