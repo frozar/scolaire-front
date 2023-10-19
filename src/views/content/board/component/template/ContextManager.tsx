@@ -1,5 +1,7 @@
 import { Match, Switch, createEffect, createSignal } from "solid-js";
 
+import { LineType } from "../../../../../_entities/line.entity";
+import { getSelectedLine } from "../../../map/component/organism/BusLines";
 import ClasseBoard from "../../../schools/component/organism/ClasseBoard";
 import SchoolsBoard from "../../../schools/component/organism/SchoolBoard";
 import SchoolDetails from "../../../schools/component/organism/SchoolDetails";
@@ -66,7 +68,7 @@ export default function () {
             <AddLineBoardContent />
           </Match>
           <Match when={onBoard() == "course"}>
-            <RacesBoard />
+            <RacesBoard line={getSelectedLine() as LineType} />
           </Match>
           <Match when={onBoard() == "race-draw"}>
             <DrawRaceBoard />

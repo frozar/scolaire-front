@@ -3,13 +3,14 @@ import CardTitle from "../../../../../component/atom/CardTitle";
 import Pellet from "../../../../../component/atom/Pellet";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
 import ArretsLogo from "../../../../../icons/ArretsLogo";
+import EtablissementLogo from "../../../../../icons/EtablissementLogo";
+import VoirieLogo from "../../../../../icons/VoirieLogo";
 import { setOnBoard } from "../../../board/component/template/ContextManager";
 import {
   deselectAllLines,
   getLines,
 } from "../../../map/component/organism/BusLines";
-import ClasseLinkedSchool from "../atom/ClasseLinkedSchool";
-import "./RaceItem.css";
+import "./BusLineItem.css";
 
 export function displayBusLine(line: LineType): void {
   setOnBoard("course");
@@ -22,21 +23,32 @@ export function displayBusLine(line: LineType): void {
 }
 
 export default function (props: { line: LineType }) {
-  const schoolNames = () =>
-    props.line.schools.map((school) => school.name ?? "");
-
   return (
     <CardWrapper class="line-item" onClick={() => displayBusLine(props.line)}>
       <Pellet color={props.line.color()} />
       <div class="line-content">
         <CardTitle title={props.line.name ?? "Pas de nom de course"} />
-        <ClasseLinkedSchool schools={schoolNames()} />
-
-        <div class="line-stops-count">
-          <div class="stop-logo">
-            <ArretsLogo />
+        <div class="flex gap-2">
+          <div class="line-stops-count">
+            <div class="stop-logo">
+              <ArretsLogo />
+            </div>
+            <p>{props.line.stops.length}</p>
           </div>
-          <p>{props.line.courses.length + " courses déservies"}</p>
+
+          <div class="line-stops-count">
+            <div class="stop-logo">
+              <EtablissementLogo />
+            </div>
+            <p>{props.line.schools.length}</p>
+          </div>
+
+          <div class="line-stops-count">
+            <div class="stop-logo">
+              <VoirieLogo />
+            </div>
+            <p>{props.line.courses.length}</p>
+          </div>
         </div>
       </div>
     </CardWrapper>
