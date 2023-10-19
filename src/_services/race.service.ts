@@ -48,8 +48,10 @@ export class RaceService {
     return RaceEntity.build(dbRace);
   }
 
-  static async delete(id: number): Promise<boolean> {
+  static async delete(id: number): Promise<number> {
     // TODO changer endpoint Xano pour /race
-    return await ServiceUtils.delete("/bus-course/" + id);
+    return await ServiceUtils.delete(
+      "/busline/" + getSelectedLine()?.id + "/course/" + id
+    );
   }
 }
