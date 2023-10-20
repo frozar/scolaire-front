@@ -11,7 +11,6 @@ import {
   clearConfirmationType,
   exportConfirmationType,
   removeClasseConfirmationType,
-  removeConfirmationType,
   removeRamassageConfirmationType,
   userInformationType,
 } from "./type";
@@ -59,11 +58,6 @@ export const [getAuthenticatedUser, setAuthenticatedUser] = createSignal<
 >();
 
 export const [authenticated, setAuthenticated] = createSignal(false);
-
-export const [getRemoveConfirmation, setRemoveConfirmation] = createSignal({
-  displayed: false,
-  course: null,
-}) as Signal<removeConfirmationType>;
 
 export const [getImportCsvBox, setImportCsvBox] =
   createSignal<ImportCsvBoxType>({
@@ -135,12 +129,6 @@ export function openImportCsvBox() {
   });
 }
 
-export function closeRemoveConfirmationBox() {
-  setRemoveConfirmation({
-    displayed: false,
-    course: null,
-  });
-}
 export function closeRemoveRamassageConfirmationBox() {
   setRemoveStopConfirmation({
     displayed: false,
@@ -200,9 +188,9 @@ export function addNewUserInformation(
   const id = generateUniqueID();
 
   setUserInformations((currentArray) => {
-    if (userInformation.type === MessageTypeEnum.enterAddRace) {
+    if (userInformation.type === MessageTypeEnum.enterAddTrip) {
       const doesContainEnterAddline =
-        currentArray.filter((elt) => elt.type === MessageTypeEnum.enterAddRace)
+        currentArray.filter((elt) => elt.type === MessageTypeEnum.enterAddTrip)
           .length != 0;
 
       if (doesContainEnterAddline) {
@@ -242,7 +230,7 @@ export function addNewGlobalSuccessInformation(message: string) {
 
 export function removeUserInformation(id: number) {
   setUserInformations((prevUserInformations) =>
-    prevUserInformations.filter((userInformation) => userInformation.id !== id)
+    prevUserInformations.filter((userInformation) => userInformation.id != id)
   );
 }
 

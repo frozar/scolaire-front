@@ -1,9 +1,9 @@
 import L from "leaflet";
 import {
-  RaceMetricType,
-  RacePointType,
-  RaceType,
-} from "../_entities/race.entity";
+  TripMetricType,
+  TripPointType,
+  TripType,
+} from "../_entities/trip.entity";
 import { WaypointType } from "../_entities/waypoint.entity";
 import { ServiceUtils } from "./_utils.service";
 
@@ -12,13 +12,13 @@ const osrm = import.meta.env.VITE_API_OSRM_URL;
 type osrmResponseType = { routes: routesType[] };
 
 export class OsrmService {
-  static async getRoadPolyline(race: RaceType): Promise<{
+  static async getRoadPolyline(trip: TripType): Promise<{
     latlngs: L.LatLng[];
     projectedLatlngs: L.LatLng[];
-    metrics: RaceMetricType;
+    metrics: TripMetricType;
   }> {
-    const points: RacePointType[] = race.points;
-    let waypoints: WaypointType[] = race.waypoints ?? points;
+    const points: TripPointType[] = trip.points;
+    let waypoints: WaypointType[] = trip.waypoints ?? points;
     waypoints = waypoints.length > 0 ? waypoints : points;
     if (waypoints.length <= 1) {
       return { latlngs: [], projectedLatlngs: [], metrics: {} };
@@ -52,16 +52,16 @@ export class OsrmService {
   private static formatResponse(
     response: osrmResponseType,
     response_direct: osrmResponseType,
-    points: RacePointType[],
+    points: TripPointType[],
     waypoints: waypointsType[]
   ): {
     latlngs: L.LatLng[];
     projectedLatlngs: L.LatLng[];
-    metrics: RaceMetricType;
+    metrics: TripMetricType;
   } {
     let latlngs: L.LatLng[] = [];
     let projectedLatlngs: L.LatLng[] = [];
-    let metrics: RaceMetricType = {};
+    let metrics: TripMetricType = {};
     if (!response || response.routes[0] == undefined)
       return { latlngs, projectedLatlngs, metrics };
 
@@ -101,7 +101,7 @@ type routesType = {
 function getMetrics(
   response: osrmResponseType,
   response_direct: osrmResponseType,
-  points: RacePointType[]
+  points: TripPointType[]
 ) {
   const distance = response.routes[0].distance;
 
@@ -119,7 +119,7 @@ function getMetrics(
 
 function getKmPassagers(
   response: osrmResponseType,
-  points: RacePointType[],
+  points: TripPointType[],
   distance: number
 ) {
   let kmPassager = 0;

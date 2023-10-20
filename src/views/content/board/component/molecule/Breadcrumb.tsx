@@ -5,14 +5,14 @@ import {
   getLines,
   getSelectedLine,
 } from "../../../map/component/organism/BusLines";
-import { selectedRace } from "../../../map/component/organism/Races";
 import { getSchools } from "../../../map/component/organism/SchoolPoints";
+import { selectedTrip } from "../../../map/component/organism/Trips";
 import { selectedClasse } from "../../../schools/component/organism/ClasseBoard";
 import { schoolDetailsItem } from "../../../schools/component/organism/SchoolDetails";
 import { stopDetailsItem } from "../../../stops/component/organism/StopDetails";
 import BreadcrumbButton from "../atom/BreadcrumbButton";
 import DisplayBreadcrumbText from "../atom/DisplayBreadcrumbText";
-import { currentDrawRace } from "../organism/DrawRaceBoard";
+import { currentDrawTrip } from "../organism/DrawTripBoard";
 import { changeBoard, onBoard } from "../template/ContextManager";
 import "./Breadcrumb.css";
 
@@ -28,7 +28,7 @@ export default function () {
       text: "Lignes",
       onClick: () => {
         changeBoard("line");
-        MapElementUtils.deselectAllPointsAndBusRaces();
+        MapElementUtils.deselectAllPointsAndBusTrips();
       },
     };
 
@@ -37,20 +37,20 @@ export default function () {
       onClick: () => changeBoard("schools"),
     };
 
-    function racesCrumb(): CrumbType {
+    function tripsCrumb(): CrumbType {
       const line = getLines().filter((line) =>
-        line.courses.map((course) => course.id).includes(selectedRace()?.id)
+        line.trips.map((trip) => trip.id).includes(selectedTrip()?.id)
       )[0];
       return {
         text: line.name?.toLowerCase() as string,
         onClick: () => {
-          changeBoard("course");
+          changeBoard("trip");
           deselectAllLines();
           line.setSelected(true);
         },
       };
     }
-
+    console.log("onBoard()", onBoard());
     switch (onBoard()) {
       case "line":
         return [{ text: "Lignes" }];
@@ -59,7 +59,7 @@ export default function () {
       case "stops":
         return [{ text: "Arrêts" }];
 
-      case "course":
+      case "trip":
         return [
           linesCrumb,
           {
@@ -86,9 +86,9 @@ export default function () {
       case "line-details":
         return [
           linesCrumb,
-          racesCrumb(),
+          tripsCrumb(),
           {
-            text: selectedRace()?.name?.toLowerCase() as string,
+            text: selectedTrip()?.name?.toLowerCase() as string,
           },
         ];
 
@@ -118,11 +118,11 @@ export default function () {
           },
         ];
 
-      case "race-draw":
-        if (currentDrawRace().schools.length > 0) {
-          return [{ text: "Editer votre course" }];
+      case "trip-draw":
+        if (currentDrawTrip().schools.length > 0) {
+          return [{ text: "Editer votre trip" }];
         }
-        return [{ text: "Création d'une course" }];
+        return [{ text: "Création d'une trip" }];
 
       default:
         return [];

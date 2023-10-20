@@ -12,8 +12,8 @@ import {
   WaypointType,
 } from "./waypoint.entity";
 
-export namespace RaceEntity {
-  export function build(dbData: RaceDBType): RaceType {
+export namespace TripEntity {
+  export function build(dbData: TripDBType): TripType {
     const filteredShools: SchoolType[] = getSchools().filter(
       (item) => item.id == dbData.school_id
     );
@@ -33,7 +33,7 @@ export namespace RaceEntity {
       schools: [school],
       name: dbData.name,
       color: "#" + dbData.color,
-      points: formatRacePointType(dbData.bus_line_stop),
+      points: formatTripPointType(dbData.bus_line_stop),
       waypoints: WaypointEntity.formatWaypointType(dbData.waypoint),
       latLngs: dbData.polyline
         ? dbData.polyline.data.map((item) => L.latLng(item.lat, item.lng))
@@ -43,7 +43,7 @@ export namespace RaceEntity {
     };
   }
 
-  export function defaultRace(): RaceType {
+  export function defaultTrip(): TripType {
     return {
       schools: [],
       name: "My Default Name",
@@ -56,13 +56,13 @@ export namespace RaceEntity {
     };
   }
 
-  export function dbFormat(line: RaceType): Partial<RaceDBType> {
+  export function dbFormat(line: TripType): Partial<TripDBType> {
     const name = line.name ? line.name : "";
     return {
       color: EntityUtils.formatColorForDB(line.color),
       name: name,
       school_id: line.schools[0].id,
-      bus_line_stop: formatRacePointDBType(line.points),
+      bus_line_stop: formatTripPointDBType(line.points),
       polyline: EntityUtils.buildLocationPath(line.latLngs),
       metrics: {
         distance: line.metrics?.distance,
@@ -80,8 +80,8 @@ export namespace RaceEntity {
   }
 
   export function dbPartialFormat(
-    line: Partial<RaceType>
-  ): Partial<RaceDBType> {
+    line: Partial<TripType>
+  ): Partial<TripDBType> {
     let output = {};
 
     if (line.color) {
@@ -105,7 +105,7 @@ export namespace RaceEntity {
     if (line.points) {
       output = {
         ...output,
-        bus_line_stop: formatRacePointDBType(line.points),
+        bus_line_stop: formatTripPointDBType(line.points),
       };
     }
     if (line.waypoints) {
@@ -124,34 +124,34 @@ export namespace RaceEntity {
     return output;
   }
 
-  export function getStopRaces(stopId: number) {
-    const races: RaceType[] = [];
+  export function getStopTrips(stopId: number) {
+    const trips: TripType[] = [];
 
     for (const line of getLines()) {
-      line.courses.map((race) => {
-        race.points.map((point) => {
+      line.trips.map((trip) => {
+        trip.points.map((point) => {
           if (point.nature == NatureEnum.stop && point.id == stopId)
-            races.push(race);
+            trips.push(trip);
         });
       });
     }
-    return races;
+    return trips;
   }
 }
 
-export type RaceType = {
+export type TripType = {
   id?: number;
   schools: SchoolType[];
   name: string;
   color: string;
-  points: RacePointType[];
+  points: TripPointType[];
   waypoints?: WaypointType[];
   latLngs: L.LatLng[];
   selected: boolean;
-  metrics?: RaceMetricType;
+  metrics?: TripMetricType;
 };
 
-export type RacePointType = {
+export type TripPointType = {
   id: number;
   leafletId: number;
   name: string;
@@ -161,24 +161,24 @@ export type RacePointType = {
   nature: NatureEnum;
 };
 
-export type RaceDBType = {
+export type TripDBType = {
   id: number;
   school_id: number;
   name: string;
   color: string;
-  bus_line_stop: RacePointDBType[];
+  bus_line_stop: TripPointDBType[];
   polyline: LocationPathDBType;
-  metrics: RaceMetricType;
+  metrics: TripMetricType;
   waypoint: WaypointDBType[];
 };
 
-export type RacePointDBType = {
+export type TripPointDBType = {
   stop_id: number;
   school_id: number;
   quantity: number;
 };
 
-export type RaceMetricType = {
+export type TripMetricType = {
   distance?: number;
   duration?: number;
   distancePCC?: number;
@@ -188,7 +188,7 @@ export type RaceMetricType = {
   CO2?: number;
 };
 
-function formatRacePointDBType(points: RacePointType[]): RacePointDBType[] {
+function formatTripPointDBType(points: TripPointType[]): TripPointDBType[] {
   return points.map((point) => {
     return {
       stop_id: point.nature == NatureEnum.stop ? point.id : 0,
@@ -203,11 +203,11 @@ function formatRacePointDBType(points: RacePointType[]): RacePointDBType[] {
  * @param points
  * @returns
  */
-function formatRacePointType(points: RacePointDBType[]): RacePointType[] {
+function formatTripPointType(points: TripPointDBType[]): TripPointType[] {
   //TODO Investigate the problem during switching between map [old comment to investigate]
   return points
     .map((dbPoint) => {
-      const associatedPoint: PointType = getAssociatedRacePoint(dbPoint);
+      const associatedPoint: PointType = getAssociatedTripPoint(dbPoint);
       if (associatedPoint) {
         return {
           id: associatedPoint.id,
@@ -225,10 +225,10 @@ function formatRacePointType(points: RacePointDBType[]): RacePointType[] {
         );
       }
     })
-    .filter((elem) => elem != undefined) as RacePointType[]; // temporary FIX Filter to delete undefined data
+    .filter((elem) => elem != undefined) as TripPointType[]; // temporary FIX Filter to delete undefined data
 }
 
-function getAssociatedRacePoint(dbPoint: RacePointDBType): PointType {
+function getAssociatedTripPoint(dbPoint: TripPointDBType): PointType {
   if (dbPoint.stop_id != 0) {
     return getStops().filter((item) => item.id == dbPoint.stop_id)[0];
   }

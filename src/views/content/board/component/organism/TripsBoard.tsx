@@ -5,15 +5,15 @@ import PencilIcon from "../../../../../icons/PencilIcon";
 import PlusIcon from "../../../../../icons/PlusIcon";
 import TrashIcon from "../../../../../icons/TrashIcon";
 import { setRemoveConfirmation } from "../../../../../userInformation/RemoveConfirmation";
-import { displayAddRaceMessage } from "../../../../../userInformation/utils";
+import { displayAddTripMessage } from "../../../../../userInformation/utils";
 import { getLines, setLines } from "../../../map/component/organism/BusLines";
 import { deselectAllPoints } from "../../../map/component/organism/Points";
 import {
-  deselectAllRaces,
-  getRaces,
-} from "../../../map/component/organism/Races";
+  deselectAllTrips,
+  getTrips,
+} from "../../../map/component/organism/Trips";
 import InputSearch from "../../../schools/component/molecule/InputSearch";
-import { RacesList } from "../../../schools/component/organism/RacesList";
+import { TripsList } from "../../../schools/component/organism/TripsList";
 import BoardTitle from "../atom/BoardTitle";
 import ButtonIcon from "../molecule/ButtonIcon";
 import {
@@ -21,26 +21,26 @@ import {
   onBoard,
   toggleDrawMod,
 } from "../template/ContextManager";
-import { DrawRaceStep, setCurrentStep } from "./DrawRaceBoard";
-import "./RacesBoard.css";
+import { DrawTripStep, setCurrentStep } from "./DrawTripBoard";
+import "./TripsBoard.css";
 
-export function RacesBoard(props: { line: LineType }) {
+export function TripsBoard(props: { line: LineType }) {
   const [searchKeyword, setSearchKeyword] = createSignal<string>("");
 
-  const filteredRaces = () =>
-    getRaces().filter((line) => line.name?.includes(searchKeyword()));
+  const filteredTrips = () =>
+    getTrips().filter((line) => line.name?.includes(searchKeyword()));
 
-  function addRace() {
-    if (onBoard() == "race-draw") {
+  function addTrip() {
+    if (onBoard() == "trip-draw") {
       toggleDrawMod();
-      setCurrentStep(DrawRaceStep.initial);
+      setCurrentStep(DrawTripStep.initial);
     } else {
       deselectAllPoints();
-      deselectAllRaces();
+      deselectAllTrips();
       toggleDrawMod();
 
-      setCurrentStep(DrawRaceStep.schoolSelection);
-      displayAddRaceMessage();
+      setCurrentStep(DrawTripStep.schoolSelection);
+      displayAddTripMessage();
     }
   }
 
@@ -72,7 +72,7 @@ export function RacesBoard(props: { line: LineType }) {
 
   return (
     <section>
-      <header class="races-board-header">
+      <header class="trips-board-header">
         <div class="flex justify-between">
           <BoardTitle
             title={
@@ -84,18 +84,22 @@ export function RacesBoard(props: { line: LineType }) {
 
           <div class="actions flex gap-5 items-center">
             <ButtonIcon icon={<TrashIcon />} onClick={onClickDeleteLine} />
-            <ButtonIcon icon={<PencilIcon />} onClick={onClickUpdateLine} />
+            <ButtonIcon
+              icon={<PencilIcon />}
+              onClick={onClickUpdateLine}
+              disable={true}
+            />
           </div>
         </div>
-        <div class="races-board-header-infos">
-          <p>Total des courses: {getRaces().length}</p>
-          <ButtonIcon icon={<PlusIcon />} onClick={addRace} />
+        <div class="trips-board-header-infos">
+          <p>Total des trips: {getTrips().length}</p>
+          <ButtonIcon icon={<PlusIcon />} onClick={addTrip} />
         </div>
 
         <InputSearch onInput={onInputSearch} />
       </header>
 
-      <RacesList races={filteredRaces()} />
+      <TripsList trips={filteredTrips()} />
     </section>
   );
 }

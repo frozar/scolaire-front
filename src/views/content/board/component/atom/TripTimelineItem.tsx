@@ -1,14 +1,14 @@
 import { Setter, Show, createEffect } from "solid-js";
 
-import { RacePointType, RaceType } from "../../../../../_entities/race.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
+import { TripPointType, TripType } from "../../../../../_entities/trip.entity";
 import { NatureEnum } from "../../../../../type";
-import { RaceTimelineRemovePointButton } from "./RaceTimelineRemovePointButton";
+import { TripTimelineRemovePointButton } from "./TripTimelineRemovePointButton";
 
-export function RaceTimelineItem(props: {
-  race: RaceType;
-  setRace?: Setter<RaceType>;
-  point: RacePointType;
+export function TripTimelineItem(props: {
+  trip: TripType;
+  setTrip?: Setter<TripType>;
+  point: TripPointType;
   indice: number;
 }) {
   const pointColor =
@@ -16,7 +16,7 @@ export function RaceTimelineItem(props: {
     props.point.nature == NatureEnum.stop ? " !bg-blue-base" : " !bg-red-base";
 
   createEffect(() => {
-    setDividerColor(props.race.color);
+    setDividerColor(props.trip.color);
   });
 
   return (
@@ -29,8 +29,8 @@ export function RaceTimelineItem(props: {
                 ? "+ " + props.point.quantity
                 : " " +
                   SumQuantity(
-                    props.race.points,
-                    props.race.schools[0],
+                    props.trip.points,
+                    props.trip.schools[0],
                     props.indice - 1
                   ) *
                     -1}
@@ -41,14 +41,14 @@ export function RaceTimelineItem(props: {
             {props.point.nature === NatureEnum.stop
               ? " + " +
                 SumQuantity(
-                  props.race.points,
-                  props.race.schools[0],
+                  props.trip.points,
+                  props.trip.schools[0],
                   props.indice
                 )
               : " " +
                 SumQuantity(
-                  props.race.points,
-                  props.race.schools[0],
+                  props.trip.points,
+                  props.trip.schools[0],
                   props.indice
                 ) *
                   -1}
@@ -67,11 +67,11 @@ export function RaceTimelineItem(props: {
           <div class={"v-timeline-divider__inner-dot " + pointColor}>
             <i class="" aria-hidden="true" />
             {/* TODO merge */}
-            <Show when={props.setRace}>
-              <RaceTimelineRemovePointButton
+            <Show when={props.setTrip}>
+              <TripTimelineRemovePointButton
                 indice={props.indice}
-                setRace={props.setRace}
-                race={props.race}
+                setTrip={props.setTrip}
+                trip={props.trip}
               />
             </Show>
           </div>
@@ -98,7 +98,7 @@ function setDividerColor(color: string) {
 }
 
 function SumQuantity(
-  stops: RacePointType[],
+  stops: TripPointType[],
   selectedSchool: SchoolType,
   indice: number
 ) {

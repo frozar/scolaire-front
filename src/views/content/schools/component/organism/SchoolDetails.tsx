@@ -11,8 +11,8 @@ import { changeBoard } from "../../../board/component/template/ContextManager";
 import SchoolDetailsHeader from "../molecule/SchoolDetailsHeader";
 import SchoolDetailsPanelsButton from "../molecule/SchoolDetailsPanelsButton";
 import ClasseList from "./ClasseList";
-import { RacesList } from "./RacesList";
 import "./SchoolDetails.css";
+import { TripsList } from "./TripsList";
 
 export const [schoolDetailsItem, setSchoolDetailsItem] =
   createSignal<SchoolType>();
@@ -28,7 +28,7 @@ export default function () {
   onMount(() => {
     if (schoolDetailsItem() == undefined) {
       changeBoard("schools");
-      MapElementUtils.deselectAllPointsAndBusRaces();
+      MapElementUtils.deselectAllPointsAndBusTrips();
     }
   });
 
@@ -44,8 +44,8 @@ export default function () {
         <SchoolDetailsPanelsButton
           setOnPanel={setOnPanel}
           onPanel={onPanel}
-          NbRaces={
-            SchoolEntity.getSchoolRaces(schoolDetailsItem()?.id as number)
+          NbTrips={
+            SchoolEntity.getSchoolTrips(schoolDetailsItem()?.id as number)
               .length
           }
         />
@@ -61,8 +61,8 @@ export default function () {
             />
           </Match>
           <Match when={onPanel() == Panels.lines}>
-            <RacesList
-              races={SchoolEntity.getSchoolRaces(
+            <TripsList
+              trips={SchoolEntity.getSchoolTrips(
                 schoolDetailsItem()?.id as number
               )}
             />

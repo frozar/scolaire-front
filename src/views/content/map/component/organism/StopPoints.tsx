@@ -9,10 +9,10 @@ import {
   stopSelected,
 } from "../../../board/component/organism/AddLineBoardContent";
 import {
-  DrawRaceStep,
-  currentDrawRace,
+  DrawTripStep,
+  currentDrawTrip,
   currentStep,
-} from "../../../board/component/organism/DrawRaceBoard";
+} from "../../../board/component/organism/DrawTripBoard";
 import { onBoard } from "../../../board/component/template/ContextManager";
 import { updateStopDetailsItem } from "../../../stops/component/organism/StopDetails";
 import { PointInterface } from "../atom/Point";
@@ -121,7 +121,7 @@ export function leafletStopsFilter(): StopType[] {
   let schools = getSchools();
   let stops = getStops();
   switch (onBoard()) {
-    case "course":
+    case "trip":
       return stops.filter((stop) =>
         getSelectedLine()
           ?.stops.map((stopOfSelected) => stopOfSelected.id)
@@ -145,8 +145,8 @@ export function leafletStopsFilter(): StopType[] {
       }
 
       break;
-    case "race-draw":
-      schools = currentDrawRace().schools;
+    case "trip-draw":
+      schools = currentDrawTrip().schools;
 
       stops = getStops().filter((stop) =>
         getSelectedLine()
@@ -156,10 +156,10 @@ export function leafletStopsFilter(): StopType[] {
           : true
       );
       switch (currentStep()) {
-        case DrawRaceStep.schoolSelection:
+        case DrawTripStep.schoolSelection:
           return [];
-        case DrawRaceStep.editRace:
-        case DrawRaceStep.initial:
+        case DrawTripStep.editTrip:
+        case DrawTripStep.initial:
           return stops;
       }
 
@@ -172,8 +172,8 @@ export function leafletStopsFilter(): StopType[] {
   return stops.filter((stop) =>
     stop.associated.some(
       (ClassToSchool) => schools.find((e) => e.id === ClassToSchool.schoolId)
-      // TODO don't display stop with no remaining quantity in new Race Creation
-      // TODO creation a display error if the stop is in the updating Race
+      // TODO don't display stop with no remaining quantity in new Trip Creation
+      // TODO creation a display error if the stop is in the updating Trip
       // && QuantityUtils.remaining(school) > 0
     )
   );

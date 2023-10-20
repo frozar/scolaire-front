@@ -2,7 +2,7 @@ import { Accessor, Setter, createSignal } from "solid-js";
 import { useStateGui } from "../StateGui";
 import { NatureEnum } from "../type";
 import { QuantityUtils } from "../utils/quantity.utils";
-import { getRaces } from "../views/content/map/component/organism/Races";
+import { getTrips } from "../views/content/map/component/organism/Trips";
 import {
   AssociatedStopType,
   EntityUtils,
@@ -78,10 +78,10 @@ export class SchoolEntity {
   }
 
   // TODO à place dans un SchoolUtils
-  static getSchoolRaces(currentSchoolId: number) {
+  static getSchoolTrips(currentSchoolId: number) {
     const lines = [];
 
-    for (const line of getRaces()) {
+    for (const line of getTrips()) {
       const _line = line.schools.filter((l) => l.id == currentSchoolId);
       if (_line.length > 0) lines.push(line);
     }

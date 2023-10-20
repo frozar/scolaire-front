@@ -7,10 +7,10 @@ import {
   addLineSelectedSchool,
 } from "../../../board/component/organism/AddLineBoardContent";
 import {
-  DrawRaceStep,
-  currentDrawRace,
+  DrawTripStep,
+  currentDrawTrip,
   currentStep,
-} from "../../../board/component/organism/DrawRaceBoard";
+} from "../../../board/component/organism/DrawTripBoard";
 import { onBoard } from "../../../board/component/template/ContextManager";
 import { SchoolPoint } from "../molecule/SchoolPoint";
 import { getSelectedLine } from "./BusLines";
@@ -55,23 +55,23 @@ function schoolsFilter(): SchoolType[] {
       }
       break;
 
-    case "course":
+    case "trip":
       return getSchools().filter((schoolFilter) =>
         getSelectedLine()
           ?.schools.map((school) => school.id)
           .includes(schoolFilter.id)
       );
-    case "race-draw":
+    case "trip-draw":
       switch (currentStep()) {
-        case DrawRaceStep.schoolSelection:
+        case DrawTripStep.schoolSelection:
           return getSchools().filter((schoolFilter) =>
             getSelectedLine()
               ?.schools.map((school) => school.id)
               .includes(schoolFilter.id)
           );
-        case DrawRaceStep.editRace:
+        case DrawTripStep.editTrip:
           return getSchools().filter((schoolTofilter) =>
-            currentDrawRace()
+            currentDrawTrip()
               .schools.map((school) => school.id)
               .includes(schoolTofilter.id)
           );

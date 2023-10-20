@@ -1,8 +1,8 @@
 import { Accessor, JSX, Setter } from "solid-js";
 import { ClasseType } from "./_entities/classe.entity";
 import { LineType } from "./_entities/line.entity";
-import { RaceType } from "./_entities/race.entity";
 import { StopType } from "./_entities/stop.entity";
+import { TripType } from "./_entities/trip.entity";
 import { PointType } from "./views/content/map/component/atom/Point";
 
 export enum NatureEnum {
@@ -45,22 +45,22 @@ export function isLeafletSchoolType(pt: PointType) {
   return pt.nature === NatureEnum.school;
 }
 
-export type RaceUnderConstructionType = {
+export type TripUnderConstructionType = {
   nextIndex: number;
-  course: RaceType;
+  trip: TripType;
 };
 
 export enum ModeEnum {
   read,
-  addRace,
-  removeRace,
+  addTrip,
+  removeTrip,
 }
 
 export enum MessageTypeEnum {
-  enterRemoveRace,
-  enterAddRace,
-  removeRace,
-  addRace,
+  enterRemoveTrip,
+  enterAddTrip,
+  removeTrip,
+  addTrip,
   global,
   clear,
 }
@@ -88,7 +88,7 @@ export type userInformationType = {
 
 export type removeConfirmationType = {
   displayed: boolean;
-  course: RaceType | null | LineType;
+  trip: TripType | null | LineType;
 };
 
 export type removeRamassageConfirmationType = {
@@ -176,7 +176,7 @@ export type StopItemType = {
   id: number;
   name: string;
   quantity: number;
-  nbRace: number;
+  nbTrip: number;
   nbEtablissement: number;
   lon: number;
   lat: number;
@@ -187,7 +187,7 @@ export type EtablissementItemType = {
   id: number;
   name: string;
   quantity: number;
-  nbRace: number;
+  nbTrip: number;
   lon: number;
   lat: number;
   selected: boolean;

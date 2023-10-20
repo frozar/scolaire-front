@@ -1,6 +1,6 @@
 import { AssociatedSchoolType } from "../_entities/_utils.entity";
-import { RacePointType, RaceType } from "../_entities/race.entity";
 import { SchoolType } from "../_entities/school.entity";
+import { TripPointType, TripType } from "../_entities/trip.entity";
 import { NatureEnum } from "../type";
 import { setSchools } from "../views/content/map/component/organism/SchoolPoints";
 import { setStops } from "../views/content/map/component/organism/StopPoints";
@@ -25,38 +25,38 @@ export namespace QuantityUtils {
     return quantity;
   }
 
-  export function set(courses: RaceType[]) {
-    courses.forEach((race) => {
-      race.schools.forEach((school) => {
-        setSchoolQuantity(school, race.points, OperationType.set);
+  export function set(trips: TripType[]) {
+    trips.forEach((trip) => {
+      trip.schools.forEach((school) => {
+        setSchoolQuantity(school, trip.points, OperationType.set);
       });
 
-      race.points.forEach((point) => {
-        setStopQuantity(point, race.schools, OperationType.set);
+      trip.points.forEach((point) => {
+        setStopQuantity(point, trip.schools, OperationType.set);
       });
     });
   }
-  export function add(race: RaceType) {
-    operation(race, OperationType.add);
+  export function add(trip: TripType) {
+    operation(trip, OperationType.add);
   }
 
-  export function substract(race: RaceType) {
-    operation(race, OperationType.substract);
+  export function substract(trip: TripType) {
+    operation(trip, OperationType.substract);
   }
 
-  function operation(race: RaceType, operation: OperationType) {
-    race.schools.forEach((school) => {
-      setSchoolQuantity(school, race.points, operation);
+  function operation(trip: TripType, operation: OperationType) {
+    trip.schools.forEach((school) => {
+      setSchoolQuantity(school, trip.points, operation);
     });
 
-    race.points.forEach((point) => {
-      setStopQuantity(point, race.schools, operation);
+    trip.points.forEach((point) => {
+      setStopQuantity(point, trip.schools, operation);
     });
   }
 
   function setSchoolQuantity(
     school: SchoolType,
-    points: RacePointType[],
+    points: TripPointType[],
     operation: OperationType
   ) {
     points.forEach((point) => {
@@ -83,7 +83,7 @@ export namespace QuantityUtils {
   }
 
   function setStopQuantity(
-    point: RacePointType,
+    point: TripPointType,
     schools: SchoolType[],
     operation: OperationType
   ) {

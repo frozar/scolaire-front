@@ -1,11 +1,11 @@
-import { RaceType } from "../../../../../_entities/race.entity";
+import { TripType } from "../../../../../_entities/trip.entity";
 import { MetricItem, MetricItemProps } from "../atom/MetricItem";
 
 export interface MetricsEnumerationProps {
   metrics: MetricItemProps[];
 }
 export type MetricsProps = {
-  race?: Pick<RaceType, "metrics">;
+  trip?: Pick<TripType, "metrics">;
 };
 
 export default function (props: MetricsProps) {
@@ -13,36 +13,36 @@ export default function (props: MetricsProps) {
     <>
       <MetricItem
         title={"Distance parcourue"}
-        value={displayedDistance(props.race?.metrics?.distance) + " km"}
+        value={displayedDistance(props.trip?.metrics?.distance) + " km"}
       />
 
       <MetricItem
         title={"Degré de déviation"}
-        value={(displayRoundedValue(props.race?.metrics?.deviation) ?? "") + ""}
+        value={(displayRoundedValue(props.trip?.metrics?.deviation) ?? "") + ""}
       />
 
       <MetricItem
         title={"Temps de parcours"}
-        value={displayedTime(props.race?.metrics?.duration)}
+        value={displayedTime(props.trip?.metrics?.duration)}
       />
 
       <MetricItem
         title={"Kilomètre passager"}
         value={
-          (displayRoundedValue(props.race?.metrics?.kmPassager) ?? "") + ""
+          (displayRoundedValue(props.trip?.metrics?.kmPassager) ?? "") + ""
         }
       />
 
       <MetricItem
         title={"Taux de remplissage moyen"}
         value={
-          (displayRoundedValue(props.race?.metrics?.txRemplissMoy) ?? "") + ""
+          (displayRoundedValue(props.trip?.metrics?.txRemplissMoy) ?? "") + ""
         }
       />
 
       <MetricItem
         title={"Économie CO²"}
-        value={(props.race?.metrics?.CO2 ?? "") + ""}
+        value={(props.trip?.metrics?.CO2 ?? "") + ""}
       />
     </>
   );

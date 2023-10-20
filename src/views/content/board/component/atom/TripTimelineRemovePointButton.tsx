@@ -1,39 +1,39 @@
 import { FaRegularTrashCan } from "solid-icons/fa";
 
 import { Setter } from "solid-js";
-import { RaceType } from "../../../../../_entities/race.entity";
+import { TripType } from "../../../../../_entities/trip.entity";
 import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
 import { NatureEnum } from "../../../../../type";
 import { linkMap } from "../../../map/component/organism/Points";
 import { COLOR_SCHOOL_FOCUS, COLOR_STOP_FOCUS } from "../../../map/constant";
-import { updateWaypoints } from "../organism/DrawRaceBoard";
-import "./RaceTimelineRemovePointButton.css";
+import { updateWaypoints } from "../organism/DrawTripBoard";
+import "./TripTimelineRemovePointButton.css";
 
-export function RaceTimelineRemovePointButton(props: {
+export function TripTimelineRemovePointButton(props: {
   indice: number;
-  race: RaceType;
-  setRace?: Setter<RaceType>;
+  trip: TripType;
+  setTrip?: Setter<TripType>;
 }) {
   const deletePoint = (indice: number) => {
-    if (props.setRace) {
-      const points = [...props.race.points];
+    if (props.setTrip) {
+      const points = [...props.trip.points];
       const pointId = points[indice].id;
       const nature = points[indice].nature;
 
       // TODO pas de l'ordre de la timeline !!
-      const circle = linkMap.get(props.race.points[indice].leafletId);
+      const circle = linkMap.get(props.trip.points[indice].leafletId);
       nature == NatureEnum.stop
         ? circle?.setStyle({ fillColor: COLOR_STOP_FOCUS })
         : circle?.setStyle({ fillColor: COLOR_SCHOOL_FOCUS });
 
       points.splice(indice, 1);
 
-      props.setRace((race) => {
-        return { ...race, points };
+      props.setTrip((trip) => {
+        return { ...trip, points };
       });
 
       // Update waypoints array
-      const waypoints = props.race.waypoints;
+      const waypoints = props.trip.waypoints;
       if (waypoints) {
         let newWaypoints = [...waypoints];
 

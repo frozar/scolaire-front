@@ -14,19 +14,19 @@ import {
 import Line from "../atom/Line";
 import PolylineDragMarker from "../atom/PolylineDragMarker";
 import WaypointMarker from "../atom/WaypointMarker";
-import { deselectAllRaces, setSelectedRace } from "../organism/Races";
+import { deselectAllTrips, setselectedTrip } from "../organism/Trips";
 
-import { RacePointType, RaceType } from "../../../../../_entities/race.entity";
+import { TripPointType, TripType } from "../../../../../_entities/trip.entity";
 import { WaypointType } from "../../../../../_entities/waypoint.entity";
 import { updatePointColor } from "../../../../../leafletUtils";
 import {
-  DrawRaceStep,
-  currentDrawRace,
+  DrawTripStep,
+  currentDrawTrip,
   currentStep,
-  displayRaceMode,
-  displayRaceModeEnum,
-  setCurrentRaceIndex,
-} from "../../../board/component/organism/DrawRaceBoard";
+  displayTripMode,
+  displayTripModeEnum,
+  setCurrentTripIndex,
+} from "../../../board/component/organism/DrawTripBoard";
 import { setIsOverMapItem } from "../../l7MapBuilder";
 import {
   cursorIsOverPoint,
@@ -34,18 +34,17 @@ import {
   linkMap,
 } from "../organism/Points";
 
-export const [draggingRace, setDraggingRace] = createSignal<boolean>(false);
+export const [draggingTrip, setDraggingTrip] = createSignal<boolean>(false);
 
-export function onClickBusRace(race: RaceType) {
-  console.log("race", race);
+export function onClickBusTrip(trip: TripType) {
   switch (onBoard()) {
     case "line-details":
       return;
     default:
-      deselectAllRaces();
+      deselectAllTrips();
       deselectAllPoints();
 
-      setSelectedRace(race);
+      setselectedTrip(trip);
 
       changeBoard("line-details");
 
@@ -53,26 +52,26 @@ export function onClickBusRace(race: RaceType) {
   }
 }
 
-export function Race(props: { race: RaceType; map: L.Map }) {
+export function Trip(props: { trip: TripType; map: L.Map }) {
   const [localLatLngs, setLocalLatLngs] = createSignal<L.LatLng[]>([]);
   const [localOpacity, setLocalOpacity] = createSignal<number>(1);
   createEffect(() => {
     if (
-      displayRaceMode() == displayRaceModeEnum.onRoad ||
-      onBoard() != "race-draw"
+      displayTripMode() == displayTripModeEnum.onRoad ||
+      onBoard() != "trip-draw"
     ) {
-      setLocalLatLngs(props.race.latLngs);
+      setLocalLatLngs(props.trip.latLngs);
       setLocalOpacity(0.8);
     } else {
-      setLocalLatLngs(getLatLngsFromPoint(props.race.points));
+      setLocalLatLngs(getLatLngsFromPoint(props.trip.points));
       setLocalOpacity(1);
     }
   });
 
   let pointFocus: { circle: L.CircleMarker; nature: NatureEnum }[] = [];
   createEffect(() => {
-    // TODO passer en mode race
-    if (currentDrawRace() === props.race) {
+    // TODO passer en mode trip
+    if (currentDrawTrip() === props.trip) {
       pointFocus.map((point) => {
         point.circle.setStyle({
           fillColor:
@@ -82,7 +81,7 @@ export function Race(props: { race: RaceType; map: L.Map }) {
         });
       });
       pointFocus = [];
-      props.race.points.map((point) => {
+      props.trip.points.map((point) => {
         const circle = linkMap.get(point.leafletId);
         circle?.setStyle({ fillColor: COLOR_STOP_EMPHASE });
         pointFocus.push({
@@ -95,28 +94,28 @@ export function Race(props: { race: RaceType; map: L.Map }) {
 
   const onMouseOver = (polyline: L.Polyline, arrows: L.Marker[]) => {
     setIsOverMapItem(true);
-    if (onBoard() != "race-draw") {
-      buscourseSetBoldStyle(polyline, arrows, "white");
+    if (onBoard() != "trip-draw") {
+      bustripSetBoldStyle(polyline, arrows, "white");
     }
   };
 
   const onMouseOut = (polyline: L.Polyline, arrows: L.Marker[]) => {
     setIsOverMapItem(false);
-    // if (!line.selected() && (isInRemoveRaceMode() || isInReadMode())) {
-    if (onBoard() != "race-draw") {
-      buscourseSetNormalStyle(polyline, arrows, props.race.color);
+    // if (!line.selected() && (isInRemoveTripMode() || isInReadMode())) {
+    if (onBoard() != "trip-draw") {
+      bustripSetNormalStyle(polyline, arrows, props.trip.color);
     }
   };
 
   function onMouseDown(e: LeafletMouseEvent) {
-    // if (displayRaceMode() == displayRaceModeEnum.straight && !isInReadMode()) {
+    // if (displayTripMode() == displayTripModeEnum.straight && !isInReadMode()) {
     if (
-      displayRaceMode() == displayRaceModeEnum.straight &&
-      currentStep() == DrawRaceStep.editRace
+      displayTripMode() == displayTripModeEnum.straight &&
+      currentStep() == DrawTripStep.editTrip
     ) {
       props.map.dragging.disable();
 
-      function pointToRaceDistance(
+      function pointToTripDistance(
         clickCoordinate: L.LatLng,
         point1: L.LatLng,
         point2: L.LatLng
@@ -137,7 +136,7 @@ export function Race(props: { race: RaceType; map: L.Map }) {
       }
       const coordinates: L.LatLng[] = e.target._latlngs;
 
-      let distance = pointToRaceDistance(
+      let distance = pointToTripDistance(
         e.latlng,
         coordinates[0],
         coordinates[1]
@@ -145,7 +144,7 @@ export function Race(props: { race: RaceType; map: L.Map }) {
       let indice = 0;
 
       for (let i = 1; i < coordinates.length - 1; i++) {
-        const actualDistance = pointToRaceDistance(
+        const actualDistance = pointToTripDistance(
           e.latlng,
           coordinates[i],
           coordinates[i + 1]
@@ -159,7 +158,7 @@ export function Race(props: { race: RaceType; map: L.Map }) {
         prev.splice(indice + 1, 0, e.latlng);
         return [...prev];
       });
-      setDraggingRace(true);
+      setDraggingTrip(true);
 
       createEffect(() => {
         props.map?.on("mousemove", ({ latlng }) => {
@@ -170,7 +169,7 @@ export function Race(props: { race: RaceType; map: L.Map }) {
         });
       });
 
-      setCurrentRaceIndex(indice + 1);
+      setCurrentTripIndex(indice + 1);
 
       function handleMouseUp() {
         props.map?.off("mousemove");
@@ -185,8 +184,8 @@ export function Race(props: { race: RaceType; map: L.Map }) {
             prev.splice(indice + 1, 1);
             return [...prev];
           });
-          setCurrentRaceIndex(localLatLngs().length);
-          setDraggingRace(false);
+          setCurrentTripIndex(localLatLngs().length);
+          setDraggingTrip(false);
         }
         document.removeEventListener("mouseup", handleMouseUp);
       }
@@ -194,25 +193,25 @@ export function Race(props: { race: RaceType; map: L.Map }) {
     }
   }
 
-  const latLngList = () => props.race.latLngs;
+  const latLngList = () => props.trip.latLngs;
 
   return (
     <>
       <Line
         latlngs={localLatLngs()}
         leafletMap={props.map}
-        color={props.race.color}
+        color={props.trip.color}
         opacity={localOpacity()}
-        lineId={props.race.id}
+        lineId={props.trip.id}
         onMouseOver={onMouseOver}
         onMouseOut={onMouseOut}
-        onClick={() => onClickBusRace(props.race)}
+        onClick={() => onClickBusTrip(props.trip)}
         onMouseDown={onMouseDown}
       />
       <Show
         when={
-          displayRaceMode() == displayRaceModeEnum.onRoad &&
-          onBoard() == "race-draw"
+          displayTripMode() == displayTripModeEnum.onRoad &&
+          onBoard() == "trip-draw"
         }
       >
         <For each={latLngList()}>
@@ -221,7 +220,7 @@ export function Race(props: { race: RaceType; map: L.Map }) {
 
             const pointProjectedCoord: L.LatLng[] = [];
 
-            const waypoints = props.race.waypoints;
+            const waypoints = props.trip.waypoints;
             if (!waypoints) {
               return <></>;
             }
@@ -262,8 +261,8 @@ export function Race(props: { race: RaceType; map: L.Map }) {
             );
           }}
         </For>
-        <Show when={currentDrawRace().waypoints}>
-          <For each={currentDrawRace().waypoints}>
+        <Show when={currentDrawTrip().waypoints}>
+          <For each={currentDrawTrip().waypoints}>
             {(waypoint: WaypointType, i) => {
               if (!waypoint.idSchool && !waypoint.idStop) {
                 return (
@@ -282,11 +281,11 @@ export function Race(props: { race: RaceType; map: L.Map }) {
   );
 }
 
-function getLatLngsFromPoint(points: RacePointType[]): L.LatLng[] {
+function getLatLngsFromPoint(points: TripPointType[]): L.LatLng[] {
   return points.map((point) => L.latLng(point.lat, point.lon));
 }
 
-export function buscourseSetNormalStyle(
+export function bustripSetNormalStyle(
   polyline: L.Polyline,
   arrowsLinked: L.Marker[],
   color: string
@@ -295,7 +294,7 @@ export function buscourseSetNormalStyle(
   arrowsSetNormalStyle(arrowsLinked, color);
 }
 
-export function buscourseSetBoldStyle(
+export function bustripSetBoldStyle(
   polyline: L.Polyline,
   arrowsLinked: L.Marker[],
   color: string

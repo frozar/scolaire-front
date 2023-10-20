@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from "storybook-solidjs";
-import { RaceType } from "../../../../../_entities/race.entity";
+import { TripType } from "../../../../../_entities/trip.entity";
 import Metrics, { MetricsProps } from "./Metrics";
 
 const meta = {
@@ -16,10 +16,10 @@ export const Label: Story = {
   },
 
   args: {
-    race: {
+    trip: {
       metrics: () => {
         return { distance: 0 };
       },
-    } as Pick<RaceType, "metrics">,
+    } as Pick<TripType, "metrics">,
   },
 };

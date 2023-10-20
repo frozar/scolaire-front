@@ -53,7 +53,7 @@ export default function (props: SchoolItemProps) {
         </div>
       </div>
       <div class="school-item-content">
-        <p>Races: {SchoolEntity.getSchoolRaces(props.school.id).length}</p>
+        <p>Trips: {SchoolEntity.getSchoolTrips(props.school.id).length}</p>
         <p>classes: {props.school.classes.length ?? "-"}</p>
         <p>élèves: {SchoolEntity.getTotalQuantity(props.school)}</p>
       </div>

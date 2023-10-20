@@ -1,37 +1,25 @@
-import { useStateAction } from "../../../StateAction";
-import { useStateGui } from "../../../StateGui";
 import {
   setSchoolPointsColor,
   setStopPointsColor,
 } from "../../../leafletUtils";
-import {
-  displayedClearConfirmationDialogBox,
-  getDisplayedGeneratorDialogBox,
-  getExportConfirmationDialogBox,
-  getRemoveConfirmation,
-} from "../../../signaux";
 import { toggleDrawMod } from "../board/component/template/ContextManager";
 
 import { COLOR_SCHOOL_FOCUS, COLOR_STOP_FOCUS } from "./constant";
 
-const [, { setModeDrawRace, isInDrawRaceMode, setModeRead }, history] =
-  useStateAction();
-
-const isOpenedModal = () =>
-  getExportConfirmationDialogBox().displayed ||
-  getDisplayedGeneratorDialogBox() ||
-  displayedClearConfirmationDialogBox().displayed ||
-  getRemoveConfirmation().displayed;
+// const isOpenedModal = () =>
+//   getExportConfirmationDialogBox().displayed ||
+//   getDisplayedGeneratorDialogBox() ||
+//   displayedClearConfirmationDialogBox().displayed ||
+// getRemoveConfirmation().displayed;
 // TODO MAYBE_ERROR
-// || displayedConfirmStopDrawRace();
+// || displayedConfirmStopDrawTrip();
 
-const [, { getSelectedMenu }] = useStateGui();
-
-const disable_shortcut = () =>
-  getSelectedMenu() != "graphicage" || isOpenedModal();
+// const disable_shortcut = () =>
+//   getSelectedMenu() != "graphicage" || isOpenedModal();
 
 // Handler the Undo/Redo from the user
 function undoRedoHandler({ ctrlKey, shiftKey, code }: KeyboardEvent) {
+  console.log(ctrlKey, shiftKey, code);
   // if (disable_shortcut()) {
   //   return;
   // }
@@ -53,22 +41,23 @@ function undoRedoHandler({ ctrlKey, shiftKey, code }: KeyboardEvent) {
 }
 
 function escapeHandler({ code }: KeyboardEvent) {
+  console.log(code);
   // if (disable_shortcut()) {
   //   return;
   // }
   // if (code === "Escape") {
-  //   if (onBoard() == "race-draw") {
-  //     quitModeDrawRace();
+  //   if (onBoard() == "trip-draw") {
+  //     quitModeDrawTrip();
   //     setCurrentStep(DrawModeStep.start);
   //   }
   //   changeBoard("line");
-  //   MapElementUtils.deselectAllPointsAndBusRaces();
+  //   MapElementUtils.deselectAllPointsAndBusTrips();
   //   //TODO voir l'impact de la suppression
-  //   // fetchBusRaces();
+  //   // fetchBusTrips();
   // }
 }
 
-export function quitModeDrawRace() {
+export function quitModeDrawTrip() {
   // setModeRead();
 
   setStopPointsColor([], COLOR_STOP_FOCUS);
@@ -77,14 +66,16 @@ export function quitModeDrawRace() {
 }
 
 function enterHandler({ code }: KeyboardEvent) {
+  console.log(code);
+
   // if (disable_shortcut()) {
   //   return;
   // }
   // if (code === "Enter") {
-  // if (!isInDrawRaceMode() || currentStep() === DrawModeStep.schoolSelection) {
+  // if (!isInDrawTripMode() || currentStep() === DrawModeStep.schoolSelection) {
   //   return;
   // }
-  // const resourceInfo = getRaceUnderConstruction().course.points.map(
+  // const resourceInfo = getTripUnderConstruction().trip.points.map(
   //   function (value) {
   //     return {
   //       id_resource: value["id"],
@@ -92,21 +83,23 @@ function enterHandler({ code }: KeyboardEvent) {
   //     };
   //   }
   // );
-  // addBusRace(resourceInfo).then(async (res) => {
+  // addBusTrip(resourceInfo).then(async (res) => {
   //   if (!res) {
-  //     console.error("addBusRace failed");
+  //     console.error("addBusTrip failed");
   //     return;
   //   }
   //   await res.json();
-  //   resetRaceUnderConstruction();
+  //   resetTripUnderConstruction();
   //   setModeRead();
   //   //TODO voir l'impact de la suppression
-  //   // fetchBusRaces();
+  //   // fetchBusTrips();
   // });
   // }
 }
 
-function toggleRaceUnderConstruction({ code }: KeyboardEvent) {
+function toggleTripUnderConstruction({ code }: KeyboardEvent) {
+  console.log(code);
+
   // if (disable_shortcut()) {
   //   return;
   // }
@@ -116,13 +109,13 @@ function toggleRaceUnderConstruction({ code }: KeyboardEvent) {
   // keyboard.getLayoutMap().then((keyboardLayoutMap) => {
   //   const upKey = keyboardLayoutMap.get(code);
   //   if (upKey === "l") {
-  //     if (isInDrawRaceMode()) {
+  //     if (isInDrawTripMode()) {
   //       setModeRead();
   //     } else {
   //       deselectAllPoints();
-  //       setModeDrawRace();
+  //       setModeDrawTrip();
   //       // TODO MAYBE_ERROR
-  //       // displayDrawRaceMessage();
+  //       // displayDrawTripMessage();
   //     }
   //   }
   // });
@@ -132,5 +125,5 @@ export const listHandlerLMap = [
   undoRedoHandler,
   escapeHandler,
   enterHandler,
-  toggleRaceUnderConstruction,
+  toggleTripUnderConstruction,
 ];

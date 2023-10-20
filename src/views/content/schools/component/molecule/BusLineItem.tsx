@@ -13,13 +13,13 @@ import {
 import "./BusLineItem.css";
 
 export function displayBusLine(line: LineType): void {
-  setOnBoard("course");
+  setOnBoard("trip");
   deselectAllLines();
   getLines()
     .filter((filterline) => filterline.id === line.id)[0]
     .setSelected(true);
-  // TODO to fix race
-  // setRaces(line.courses.length > 0 ? line.courses : []);
+  // TODO to fix trip
+  // setTrips(line.trips.length > 0 ? line.trips : []);
 }
 
 export default function (props: { line: LineType }) {
@@ -27,7 +27,7 @@ export default function (props: { line: LineType }) {
     <CardWrapper class="line-item" onClick={() => displayBusLine(props.line)}>
       <Pellet color={props.line.color()} />
       <div class="line-content">
-        <CardTitle title={props.line.name ?? "Pas de nom de course"} />
+        <CardTitle title={props.line.name ?? "Pas de nom de trip"} />
         <div class="flex gap-2">
           <div class="line-stops-count">
             <div class="stop-logo">
@@ -47,7 +47,7 @@ export default function (props: { line: LineType }) {
             <div class="stop-logo">
               <VoirieLogo />
             </div>
-            <p>{props.line.courses.length}</p>
+            <p>{props.line.trips.length}</p>
           </div>
         </div>
       </div>

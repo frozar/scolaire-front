@@ -104,7 +104,7 @@ export const manageStatusCode = async (response: Response) => {
       break;
   }
 
-  if (response.status !== 200) {
+  if (response.status != 200) {
     const json = await response.json();
     const message =
       json.detail ?? "Une erreur est survenue lors du chargement des données.";

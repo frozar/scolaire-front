@@ -37,10 +37,10 @@ const makeStateActionContext = () => {
 
   const types: { [key in ModeEnum]: MessageTypeEnum[] } = {
     [ModeEnum.read]: [MessageTypeEnum.global],
-    [ModeEnum.addRace]: [MessageTypeEnum.addRace, MessageTypeEnum.enterAddRace],
-    [ModeEnum.removeRace]: [
-      MessageTypeEnum.removeRace,
-      MessageTypeEnum.enterRemoveRace,
+    [ModeEnum.addTrip]: [MessageTypeEnum.addTrip, MessageTypeEnum.enterAddTrip],
+    [ModeEnum.removeTrip]: [
+      MessageTypeEnum.removeTrip,
+      MessageTypeEnum.enterRemoveTrip,
     ],
   };
 
@@ -58,24 +58,24 @@ const makeStateActionContext = () => {
   function changeMode(mode: ModeEnum) {
     clearMessage(mode);
     setState("mode", (currentMode) => {
-      if (currentMode !== mode) {
+      if (currentMode != mode) {
         return mode;
       }
       return currentMode;
     });
   }
 
-  function setModeDrawRace() {
+  function setModeDrawTrip() {
     setDisplayedInformationBoard(true);
-    changeMode(ModeEnum.addRace);
+    changeMode(ModeEnum.addTrip);
   }
 
   function setModeRead() {
     changeMode(ModeEnum.read);
   }
 
-  function isInDrawRaceMode() {
-    return state.mode === ModeEnum.addRace;
+  function isInDrawTripMode() {
+    return state.mode === ModeEnum.addTrip;
   }
 
   function isInReadMode() {
@@ -87,9 +87,9 @@ const makeStateActionContext = () => {
     {
       toggleAltimetryAnimation,
       getAnimationSettings,
-      setModeDrawRace,
+      setModeDrawTrip,
       setModeRead,
-      isInDrawRaceMode,
+      isInDrawTripMode,
       isInReadMode,
     },
     history,

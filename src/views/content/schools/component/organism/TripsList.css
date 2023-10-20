@@ -1,4 +1,4 @@
-.races-list{
+.trips-list{
   @apply pl-4;
   overflow-y:auto;
   padding-right: 0.5rem;

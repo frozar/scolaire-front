@@ -1,90 +1,90 @@
 import L from "leaflet";
 import { For, createEffect, createSignal, onCleanup } from "solid-js";
-import { Race } from "../molecule/Race";
+import { Trip } from "../molecule/Trip";
 
-import { RaceEntity, RaceType } from "../../../../../_entities/race.entity";
+import { TripEntity, TripType } from "../../../../../_entities/trip.entity";
 import {
-  DrawRaceStep,
-  currentDrawRace,
+  DrawTripStep,
+  currentDrawTrip,
   currentStep,
-} from "../../../board/component/organism/DrawRaceBoard";
+} from "../../../board/component/organism/DrawTripBoard";
 import { onBoard } from "../../../board/component/template/ContextManager";
 import { stopDetailsItem } from "../../../stops/component/organism/StopDetails";
 import { getLines, getSelectedLine } from "./BusLines";
 
 export const arrowsMap = new Map<number, L.Marker[]>();
 
-export type leafletBusRaceType = {
+export type leafletBusTripType = {
   polyline: L.Polyline;
   arrows: L.Marker[];
 };
 
 // TODO: Rename
-export const [getRaces, setRaces] = createSignal<RaceType[]>([]);
+export const [getTrips, setTrips] = createSignal<TripType[]>([]);
 
-export const [selectedRace, setSelectedRace] = createSignal<RaceType>();
+export const [selectedTrip, setselectedTrip] = createSignal<TripType>();
 
-export function Races(props: { map: L.Map }) {
+export function Trips(props: { map: L.Map }) {
   // eslint-disable-next-line solid/reactivity
 
   createEffect(() => {
-    setRaces(getSelectedLine()?.courses ?? []);
+    setTrips(getSelectedLine()?.trips ?? []);
   });
 
   onCleanup(() => {
-    setRaces([]);
+    setTrips([]);
   });
 
-  const racesFilter = () => {
+  const tripsFilter = () => {
     switch (onBoard()) {
       case "line-add":
         return [];
-      case "course":
-        return getSelectedLine()?.courses;
+      case "trip":
+        return getSelectedLine()?.trips;
       case "line":
         return getLines()
-          .map((line) => line.courses)
+          .map((line) => line.trips)
           .flat();
-      case "race-draw":
+      case "trip-draw":
         switch (currentStep()) {
-          case DrawRaceStep.editRace:
+          case DrawTripStep.editTrip:
             // delete all arrows
             arrowsMap.forEach((arrows) =>
               arrows.map((arrow) => props.map.removeLayer(arrow))
             );
             arrowsMap.clear();
 
-            return [currentDrawRace()];
+            return [currentDrawTrip()];
         }
         break;
 
       case "stop-details":
         const stopId = stopDetailsItem()?.id;
         if (!stopId) return [];
-        return RaceEntity.getStopRaces(stopId);
+        return TripEntity.getStopTrips(stopId);
 
       case "line-details":
-        return [selectedRace() as RaceType];
+        return [selectedTrip() as TripType];
     }
   };
 
   return (
-    <For each={racesFilter()}>
-      {(race) => {
-        return <Race race={race} map={props.map} />;
+    <For each={tripsFilter()}>
+      {(trip) => {
+        return <Trip trip={trip} map={props.map} />;
       }}
     </For>
   );
 }
 
-export function deselectAllRaces() {
-  setSelectedRace();
+export function deselectAllTrips() {
+  setselectedTrip();
 }
 
-export function updateRaces(race: RaceType) {
-  setRaces((races) => {
-    const updated = races.filter((r) => r.id != race.id);
-    updated.push(race);
+export function updateTrips(trip: TripType) {
+  setTrips((trips) => {
+    const updated = trips.filter((r) => r.id != trip.id);
+    updated.push(trip);
     return updated;
   });
 }

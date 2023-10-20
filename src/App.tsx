@@ -29,7 +29,7 @@ export default () => {
   });
 
   createEffect(() => {
-    if (getSelectedMenu() !== "graphicage") {
+    if (getSelectedMenu() != "graphicage") {
       setPointsReady(false);
     }
   });

@@ -28,7 +28,7 @@ import CollapsibleCheckableElement, {
 } from "./CollapsibleCheckableElement";
 // TODO to fix -> doit importer un AddLineBoardContent ou similaire
 import { setLines } from "../../../map/component/organism/BusLines";
-import "./DrawRaceBoard.css";
+import "./DrawTripBoard.css";
 
 export enum AddLineStep {
   start,

@@ -1,13 +1,13 @@
 import { Match, Show, Switch, createSignal, onMount } from "solid-js";
 import { AssociatedSchoolType } from "../../../../../_entities/_utils.entity";
-import { RaceEntity } from "../../../../../_entities/race.entity";
 import { StopType } from "../../../../../_entities/stop.entity";
+import { TripEntity } from "../../../../../_entities/trip.entity";
 import PlusIcon from "../../../../../icons/PlusIcon";
 import { MapElementUtils } from "../../../../../utils/mapElement.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { changeBoard } from "../../../board/component/template/ContextManager";
 import { getStops } from "../../../map/component/organism/StopPoints";
-import { RacesList } from "../../../schools/component/organism/RacesList";
+import { TripsList } from "../../../schools/component/organism/TripsList";
 import EditStudentSchoolClassItem from "../molecul/EditStudentSchoolClassItem";
 import StopDetailsHeader from "../molecul/StopDetailsHeader";
 import StopDetailsPanelsButton from "../molecul/StopDetailsPanelsButton";
@@ -31,7 +31,7 @@ export function updateStopDetailsItem(stopId: number) {
 }
 export enum StopPanels {
   classes = "schools",
-  races = "races",
+  trips = "trips",
 }
 
 export default function () {
@@ -41,7 +41,7 @@ export default function () {
   onMount(() => {
     if (stopDetailsItem() == undefined) {
       changeBoard("schools");
-      MapElementUtils.deselectAllPointsAndBusRaces();
+      MapElementUtils.deselectAllPointsAndBusTrips();
     }
   });
 
@@ -58,8 +58,8 @@ export default function () {
           onPanel={onPanel}
           setOnPanel={setOnPanel}
           NbSchool={stopDetailsItem()?.associated.length as number}
-          NbRaces={
-            RaceEntity.getStopRaces(stopDetailsItem()?.id as number).length
+          NbTrips={
+            TripEntity.getStopTrips(stopDetailsItem()?.id as number).length
           }
         />
 
@@ -79,9 +79,9 @@ export default function () {
               <EditStudentSchoolClassItem close={toggleEditItem} />
             </Show>
           </Match>
-          <Match when={onPanel() == StopPanels.races}>
-            <RacesList
-              races={RaceEntity.getStopRaces(stopDetailsItem()?.id as number)}
+          <Match when={onPanel() == StopPanels.trips}>
+            <TripsList
+              trips={TripEntity.getStopTrips(stopDetailsItem()?.id as number)}
             />
           </Match>
         </Switch>

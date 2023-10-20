@@ -1,22 +1,22 @@
 import { useStateAction } from "../StateAction";
 import { addNewUserInformation } from "../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
-import DisplayAddRaceMessageContent from "./DisplayAddCourseMessageContent";
-import DisplayRemoveRaceMessageContent from "./DisplayRemoveCourseMessageContent";
-const [, { isInDrawRaceMode }] = useStateAction();
+import DisplayAddTripMessageContent from "./DisplayAddTripMessageContent";
+import DisplayRemoveTripMessageContent from "./DisplayRemoveTripMessageContent";
+const [, { isInDrawTripMode }] = useStateAction();
 
-export function displayAddRaceMessage() {
-  if (isInDrawRaceMode()) {
+export function displayAddTripMessage() {
+  if (isInDrawTripMode()) {
     addNewUserInformation({
       displayed: true,
       level: MessageLevelEnum.info,
-      type: MessageTypeEnum.enterAddRace,
-      content: DisplayAddRaceMessageContent(),
+      type: MessageTypeEnum.enterAddTrip,
+      content: DisplayAddTripMessageContent(),
     });
   }
 }
 
-export function displayNoRaceMessage() {
+export function displayNoTripMessage() {
   addNewUserInformation({
     displayed: true,
     level: MessageLevelEnum.error,
@@ -25,12 +25,12 @@ export function displayNoRaceMessage() {
   });
 }
 
-export function displayRemoveRaceMessage() {
+export function displayRemoveTripMessage() {
   addNewUserInformation({
     displayed: true,
     level: MessageLevelEnum.info,
-    type: MessageTypeEnum.enterRemoveRace,
-    content: DisplayRemoveRaceMessageContent(),
+    type: MessageTypeEnum.enterRemoveTrip,
+    content: DisplayRemoveTripMessageContent(),
   });
 }
 

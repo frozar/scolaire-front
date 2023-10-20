@@ -9,9 +9,9 @@ import StopBoard from "../../../stops/component/organism/StopBoard";
 import StopDetails from "../../../stops/component/organism/StopDetails";
 import AddLineBoardContent from "../organism/AddLineBoardContent";
 import BusLinesBoard from "../organism/BusLinesBoard";
-import { DrawRaceBoard } from "../organism/DrawRaceBoard";
-import { RaceBoard } from "../organism/RaceBoard";
-import { RacesBoard } from "../organism/RacesBoard";
+import { DrawTripBoard } from "../organism/DrawTripBoard";
+import { TripBoard } from "../organism/TripBoard";
+import { TripsBoard } from "../organism/TripsBoard";
 import InformationBoardLayout from "./InformationBoardLayout";
 
 //TODO utiliser ou supprimer "schools" et "stops"
@@ -22,8 +22,8 @@ export type BoardTags =
   | "school-class-modify"
   | "stops"
   | "stop-details"
-  | "course"
-  | "race-draw"
+  | "trip"
+  | "trip-draw"
   | "line"
   | "line-add"
   | "line-details"
@@ -39,8 +39,8 @@ export default function () {
   createEffect(() => {
     if (isInDrawMod()) {
       switch (onBoard()) {
-        case "course": {
-          changeBoard("race-draw");
+        case "trip": {
+          changeBoard("trip-draw");
           break;
         }
         case "line": {
@@ -49,9 +49,9 @@ export default function () {
         }
       }
     } else {
-      setOnBoard((prev) => {
-        return prev == "race-draw" ? "line" : prev;
-      });
+      // setOnBoard((prev) => {
+      //   return prev == "trip-draw" ? "line" : prev;
+      // });
     }
   });
 
@@ -60,18 +60,18 @@ export default function () {
       <InformationBoardLayout>
         <Switch>
           <Match when={onBoard() == "line"}>
-            {/* <RacesBoard /> */}
+            {/* <TripsBoard /> */}
             <BusLinesBoard />
           </Match>
           <Match when={onBoard() == "line-add"}>
-            {/* <RacesBoard /> */}
+            {/* <TripsBoard /> */}
             <AddLineBoardContent />
           </Match>
-          <Match when={onBoard() == "course"}>
-            <RacesBoard line={getSelectedLine() as LineType} />
+          <Match when={onBoard() == "trip"}>
+            <TripsBoard line={getSelectedLine() as LineType} />
           </Match>
-          <Match when={onBoard() == "race-draw"}>
-            <DrawRaceBoard />
+          <Match when={onBoard() == "trip-draw"}>
+            <DrawTripBoard />
           </Match>
 
           {/* Schools */}
@@ -102,7 +102,7 @@ export default function () {
           </Match>
 
           <Match when={onBoard() == "line-details"}>
-            <RaceBoard />
+            <TripBoard />
           </Match>
         </Switch>
       </InformationBoardLayout>

@@ -1,15 +1,13 @@
-import { Show, createEffect, createSignal, onCleanup, onMount } from "solid-js";
+import { Show, createEffect, createSignal, onMount } from "solid-js";
 
 import { useStateGui } from "../../../StateGui";
 
 import { buildMapL7 } from "./l7MapBuilder";
 
-import { Races } from "./component/organism/Races";
+import { Trips } from "./component/organism/Trips";
 
 import ImportCsvCanvas from "../../../component/ImportCsvCanvas";
-import ConfirmStopAddRace from "./ConfirmStopAddCourseBox";
-
-import { listHandlerLMap } from "./shortcut";
+import ConfirmStopAddTrip from "./ConfirmStopAddTripBox";
 
 import "leaflet/dist/leaflet.css";
 import { InitService, InitType } from "../../../_services/init.service";
@@ -39,14 +37,15 @@ const [init, setinit] = createSignal<InitType>();
 export default function () {
   const [displayImportCsvCanvas, setDisplayImportCsvCanvas] =
     createSignal(false);
+  // eslint-disable-next-line solid/reactivity
   createEffect(async () => {
     if (getAuthenticatedUser()) setinit(await InitService.getAll());
   });
   onMount(() => {
     // Manage shortcut keyboard event
-    for (const handler of listHandlerLMap) {
-      // document.body.addEventListener("keydown", handler);
-    }
+    // for (const handler of listHandlerLMap) {
+    // document.body.addEventListener("keydown", handler);
+    // }
 
     mapDiv.addEventListener(
       "dragenter",
@@ -60,12 +59,12 @@ export default function () {
     buildMap(mapDiv);
   });
 
-  onCleanup(() => {
-    // Manage shortcut keyboard event
-    for (const handler of listHandlerLMap) {
-      // document.body.removeEventListener("keydown", handler);
-    }
-  });
+  // onCleanup(() => {
+  //   // Manage shortcut keyboard event
+  //   for (const handler of listHandlerLMap) {
+  //     // document.body.removeEventListener("keydown", handler);
+  //   }
+  // });
 
   return (
     <Show when={getActiveMapId()} fallback={<div>Sélectionner une carte</div>}>
@@ -88,12 +87,12 @@ export default function () {
         schools={init()?.schools ?? []}
       />
       <BusLines busLines={init()?.busLines ?? []} />
-      <Races map={getLeafletMap() as L.Map} />
+      <Trips map={getLeafletMap() as L.Map} />
       {/* <div class="z-[1000] absolute top-[45%] right-[15px]">
         <RightMapMenu />
       </div> */}
       {/* TODO Modify and re-activate export and generate functionalities */}
-      <ConfirmStopAddRace />
+      <ConfirmStopAddTrip />
     </Show>
   );
 }
