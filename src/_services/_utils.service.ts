@@ -103,8 +103,6 @@ export const manageStatusCode = async (response: Response) => {
         "Trop de requêtes effectuer, veuillez essayer ultérieurement";
       break;
   }
-  console.log("response.status", response.status);
-  console.log("response", response);
 
   if (response.status != 200) {
     const json = await response.json();

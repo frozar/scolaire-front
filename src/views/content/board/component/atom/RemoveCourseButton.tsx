@@ -41,7 +41,7 @@ export default function (props: RemoveTripButtonProps) {
     deselectAllPoints();
     if (props.trip.id) {
       setRemoveConfirmation({
-        textToDisplay: "Êtes-vous sûr de vouloir supprimer la trip : ",
+        textToDisplay: "Êtes-vous sûr de vouloir supprimer la course : ",
         itemName: props.trip.name as string,
         validate: deleteTrip,
       });

@@ -84,7 +84,11 @@ export function TripsBoard(props: { line: LineType }) {
 
           <div class="actions flex gap-5 items-center">
             <ButtonIcon icon={<TrashIcon />} onClick={onClickDeleteLine} />
-            <ButtonIcon icon={<PencilIcon />} onClick={onClickUpdateLine} />
+            <ButtonIcon
+              icon={<PencilIcon />}
+              onClick={onClickUpdateLine}
+              disable={true}
+            />
           </div>
         </div>
         <div class="trips-board-header-infos">

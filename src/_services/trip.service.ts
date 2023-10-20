@@ -6,7 +6,6 @@ export class TripService {
   static async getAll(): Promise<TripType[]> {
     // TODO changer endpoint Xano pour /trip
     const dbStops: TripDBType[] = await ServiceUtils.get("/trip");
-    console.log("dbStops", dbStops);
     return dbStops
       ? dbStops.map((dbStop: TripDBType) => TripEntity.build(dbStop))
       : [];

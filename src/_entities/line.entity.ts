@@ -11,7 +11,6 @@ export class BusLineEntity {
     const schools: SchoolType[] = BusLineEntity.dbSchoolsToSchoolType(dbLine);
 
     const stops: StopType[] = BusLineEntity.dbStopsToStopsType(dbLine);
-    console.log("dbLine", dbLine);
     const trips = dbLine.trips.map((dbTrip) => TripEntity.build(dbTrip.trip));
 
     const [selected, setSelected] = createSignal<boolean>(false);
