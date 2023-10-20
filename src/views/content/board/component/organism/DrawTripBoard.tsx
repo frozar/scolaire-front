@@ -247,9 +247,6 @@ async function createOrUpdateTrip() {
 
   setCurrentStep(DrawTripStep.initial);
   quitModeDrawTrip();
-  const currentLine = getLines().filter((line) =>
-    line.trips.map((trip) => trip.id).includes(updatedTrip.id)
-  )[0];
 
   changeBoard("line-details");
 }
