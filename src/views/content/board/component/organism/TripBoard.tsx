@@ -3,10 +3,14 @@ import Metrics from "./Metrics";
 
 import { useStateAction } from "../../../../../StateAction";
 import { TripEntity, TripType } from "../../../../../_entities/trip.entity";
+import { TripService } from "../../../../../_services/trip.service";
+import TrashIcon from "../../../../../icons/TrashIcon";
 import UpdatePen from "../../../../../icons/UpdatePen";
+import { setRemoveConfirmation } from "../../../../../userInformation/RemoveConfirmation";
 import { MapElementUtils } from "../../../../../utils/mapElement.utils";
+import { setLines } from "../../../map/component/organism/BusLines";
+import { deselectAllPoints } from "../../../map/component/organism/Points";
 import { selectedTrip } from "../../../map/component/organism/Trips";
-import RemoveTripButton from "../atom/RemoveCourseButton";
 import ButtonIcon from "../molecule/ButtonIcon";
 import { changeBoard, toggleDrawMod } from "../template/ContextManager";
 import CollapsibleElement from "./CollapsibleElement";
@@ -32,9 +36,7 @@ export function TripBoard() {
           {selectedTrip()?.name}
         </div>
         <ButtonIcon icon={<UpdatePen />} onClick={addTrip} />
-
-        {/* <UpdateTripButton trip={selectedTrip() as TripType} /> */}
-        <RemoveTripButton trip={selectedTrip() as TripType} />
+        <ButtonIcon icon={<TrashIcon />} onClick={displayRemoveConfirmation} />
       </div>
       <div class="bus-trip-information-board-content-schools">
         <SchoolsEnumeration
@@ -71,4 +73,39 @@ async function addTrip() {
   toggleDrawMod();
   setCurrentStep(DrawTripStep.editTrip);
   setModeDrawTrip();
+}
+
+function displayRemoveConfirmation() {
+  async function deleteTrip() {
+    const idToCheck = (selectedTrip() as TripType).id;
+    if (!idToCheck) return false;
+
+    const idToRemove: number = idToCheck;
+    const deletedTripId: number = await TripService.delete(idToRemove);
+
+    if (deletedTripId) {
+      changeBoard("trip");
+      MapElementUtils.deselectAllPointsAndBusTrips();
+
+      setLines((prev) =>
+        prev.map((line) => {
+          return {
+            ...line,
+            trips: line.trips.filter((trip) => trip.id != deletedTripId),
+          };
+        })
+      );
+      return true;
+    } else {
+      return false;
+    }
+  }
+  deselectAllPoints();
+  if ((selectedTrip() as TripType).id) {
+    setRemoveConfirmation({
+      textToDisplay: "Êtes-vous sûr de vouloir supprimer la course : ",
+      itemName: (selectedTrip() as TripType).name as string,
+      validate: deleteTrip,
+    });
+  }
 }

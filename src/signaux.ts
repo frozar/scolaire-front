@@ -60,6 +60,7 @@ export const [getAuthenticatedUser, setAuthenticatedUser] = createSignal<
 
 export const [authenticated, setAuthenticated] = createSignal(false);
 
+// TODO: Delete ? setRemoveConfirmation also exist in `RemoveCourseButton.tsx` and is more recent
 export const [getRemoveConfirmation, setRemoveConfirmation] = createSignal({
   displayed: false,
   trip: null,
