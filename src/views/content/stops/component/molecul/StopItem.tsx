@@ -6,7 +6,7 @@ import TrashIcon from "../../../../../icons/TrashIcon";
 import { updatePointColor } from "../../../../../leafletUtils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { changeBoard } from "../../../board/component/template/ContextManager";
-import ClasseLinkedSchool from "../../../schools/component/atom/ClasseLinkedSchool";
+import GradeLinkedSchool from "../../../schools/component/atom/GradeLinkedSchool";
 import { setStopDetailsItem } from "../organism/StopDetails";
 import "./StopItem.css";
 
@@ -37,7 +37,7 @@ export default function (props: StopItemProps) {
     >
       <div class="stop-item-content">
         <CardTitle title={props.stop.name} />
-        <ClasseLinkedSchool schools={schoolNames()} />
+        <GradeLinkedSchool schools={schoolNames()} />
       </div>
 
       <div class="stop-item-actions">

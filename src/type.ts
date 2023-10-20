@@ -1,5 +1,5 @@
 import { Accessor, JSX, Setter } from "solid-js";
-import { ClasseType } from "./_entities/classe.entity";
+import { GradeType } from "./_entities/grade.entity";
 import { LineType } from "./_entities/line.entity";
 import { StopType } from "./_entities/stop.entity";
 import { TripType } from "./_entities/trip.entity";
@@ -96,9 +96,9 @@ export type removeRamassageConfirmationType = {
   item: StopType | null;
 };
 
-export type removeClasseConfirmationType = {
+export type removeGradeConfirmationType = {
   displayed: boolean;
-  classe: ClasseType | null;
+  grade: GradeType | null;
 };
 
 export type clearConfirmationType = {

@@ -1,14 +1,14 @@
 import { For, Setter } from "solid-js";
-import { ClasseType } from "../../../../../_entities/classe.entity";
-import "./ClasseSelection.css";
+import { GradeType } from "../../../../../_entities/grade.entity";
+import "./GradeSelection.css";
 
-interface ClasseSelectProps {
+interface GradeSelectProps {
   refSelectSetter: Setter<HTMLInputElement>;
   onChange: () => void;
-  classes: ClasseType[];
+  classes: GradeType[];
 }
 
-export default function (props: ClasseSelectProps) {
+export default function (props: GradeSelectProps) {
   return (
     <select
       class="class-selection"
@@ -16,10 +16,10 @@ export default function (props: ClasseSelectProps) {
       ref={props.refSelectSetter}
     >
       <option selected value="default">
-        Sélectionner une classe
+        Sélectionner une grade
       </option>
       <For each={props.classes}>
-        {(classe) => <option value={classe.id}>{classe.name}</option>}
+        {(grade) => <option value={grade.id}>{grade.name}</option>}
       </For>
     </select>
   );

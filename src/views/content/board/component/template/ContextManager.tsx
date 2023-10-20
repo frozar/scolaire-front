@@ -2,7 +2,7 @@ import { Match, Switch, createEffect, createSignal } from "solid-js";
 
 import { LineType } from "../../../../../_entities/line.entity";
 import { getSelectedLine } from "../../../map/component/organism/BusLines";
-import ClasseBoard from "../../../schools/component/organism/ClasseBoard";
+import GradeBoard from "../../../schools/component/organism/GradeBoard";
 import SchoolsBoard from "../../../schools/component/organism/SchoolBoard";
 import SchoolDetails from "../../../schools/component/organism/SchoolDetails";
 import StopBoard from "../../../stops/component/organism/StopBoard";
@@ -89,7 +89,7 @@ export default function () {
               onBoard() == "school-class-modify"
             }
           >
-            <ClasseBoard />
+            <GradeBoard />
           </Match>
 
           {/* Stops */}

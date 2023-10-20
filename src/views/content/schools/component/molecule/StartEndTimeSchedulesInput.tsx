@@ -1,5 +1,5 @@
 import { Accessor, Setter } from "solid-js";
-import { HeureFormat } from "../../../../../_entities/classe.entity";
+import { HeureFormat } from "../../../../../_entities/grade.entity";
 import TimeInput from "../atom/TimeInput";
 
 interface TimeSchedulesInputProps {

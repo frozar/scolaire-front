@@ -24,7 +24,7 @@ export const [getSchools, setSchools] = createSignal<SchoolType[]>([]);
 
 export function getSchoolWhereClassId(classId: number): SchoolType | undefined {
   return getSchools().filter((school) =>
-    school.classes.map((classe) => classe.id).includes(classId)
+    school.classes.map((grade) => grade.id).includes(classId)
   )[0];
 }
 

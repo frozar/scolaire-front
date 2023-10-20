@@ -1,8 +1,8 @@
 import { AssociatedSchoolType } from "./_utils.entity";
 import { DBAssociatedStop } from "./stop.entity";
 
-export namespace ClasseEntity {
-  export function build(dbData: ClasseDBType): ClasseType {
+export namespace GradeEntity {
+  export function build(dbData: GradeDBType): GradeType {
     return {
       id: dbData.id,
       name: dbData.name,
@@ -12,14 +12,14 @@ export namespace ClasseEntity {
       afternoonEnd: getHourFormatFromString(dbData.afternoon_end),
     };
   }
-  export function dbFormat(classe: ClasseType): Omit<ClasseDBType, "id"> {
+  export function dbFormat(grade: GradeType): Omit<GradeDBType, "id"> {
     return {
-      school_id: classe.schoolId as number,
-      name: classe.name,
-      morning_start: getStringFromHeureFormat(classe.morningStart),
-      morning_end: getStringFromHeureFormat(classe.morningEnd),
-      afternoon_start: getStringFromHeureFormat(classe.afternoonStart),
-      afternoon_end: getStringFromHeureFormat(classe.afternoonEnd),
+      school_id: grade.schoolId as number,
+      name: grade.name,
+      morning_start: getStringFromHeureFormat(grade.morningStart),
+      morning_end: getStringFromHeureFormat(grade.morningEnd),
+      afternoon_start: getStringFromHeureFormat(grade.afternoonStart),
+      afternoon_end: getStringFromHeureFormat(grade.afternoonEnd),
     };
   }
   function getStringFromHeureFormat(time: HeureFormat) {
@@ -39,7 +39,7 @@ export type HeureFormat = {
   minutes: number;
 };
 
-export type ClasseDBType = {
+export type GradeDBType = {
   id: number;
   school_id: number;
   name: string;
@@ -50,7 +50,7 @@ export type ClasseDBType = {
   associated?: DBAssociatedStop[];
 };
 
-export type ClasseType = {
+export type GradeType = {
   id?: number;
   schoolId?: number;
   name: string;

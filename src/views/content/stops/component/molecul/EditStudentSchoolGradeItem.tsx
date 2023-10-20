@@ -1,6 +1,6 @@
 import { createEffect, createSignal, onMount } from "solid-js";
 import { AssociatedSchoolType } from "../../../../../_entities/_utils.entity";
-import { ClasseType } from "../../../../../_entities/classe.entity";
+import { GradeType } from "../../../../../_entities/grade.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { StudentToSchoolService } from "../../../../../_services/student-to-school.service";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
@@ -10,7 +10,7 @@ import { MessageLevelEnum, MessageTypeEnum } from "../../../../../type";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { getSchools } from "../../../map/component/organism/SchoolPoints";
 import { appendToStop } from "../../../map/component/organism/StopPoints";
-import ClasseSelection from "../atom/ClasseSelection";
+import GradeSelection from "../atom/GradeSelection";
 import InputNumber from "../atom/InputNumber";
 import SchoolSelect from "../atom/SchoolSelection";
 import { stopDetailsItem } from "../organism/StopDetails";
@@ -27,7 +27,7 @@ export default function (props: EditStopProps) {
 
   const [schoolSelectRef, setSchoolSelectRef] =
     createSignal<HTMLSelectElement>(seletElement);
-  const [classeSelectRef, setClasseSelectRef] =
+  const [classeSelectRef, setGradeSelectRef] =
     createSignal<HTMLSelectElement>(seletElement);
   const [quantityInputRef, setQuantityInputRef] =
     createSignal<HTMLInputElement>(document.createElement("input"));
@@ -55,7 +55,7 @@ export default function (props: EditStopProps) {
     quantityInputRef().disabled = true;
   });
 
-  function resetClasseAndQuantity() {
+  function resetGradeAndQuantity() {
     classeSelectRef().disabled = true;
     classeSelectRef().value = "default";
     quantityInputRef().disabled = true;
@@ -68,15 +68,15 @@ export default function (props: EditStopProps) {
     )[0];
 
     if (!school) {
-      return resetClasseAndQuantity();
+      return resetGradeAndQuantity();
     } else if (school.id != selectedSchool()?.id) {
-      resetClasseAndQuantity();
+      resetGradeAndQuantity();
     }
     classeSelectRef().disabled = false;
     setSelectedSchool(school);
   };
 
-  function onChangeSelectClasse() {
+  function onChangeSelectGrade() {
     if (classeSelectRef().value != "default") {
       quantityInputRef().disabled = false;
     } else {
@@ -152,10 +152,10 @@ export default function (props: EditStopProps) {
       </div>
 
       <div class="edit-stop-bottom-line">
-        <ClasseSelection
-          refSelectSetter={setClasseSelectRef}
-          classes={selectedSchool()?.classes as ClasseType[]}
-          onChange={onChangeSelectClasse}
+        <GradeSelection
+          refSelectSetter={setGradeSelectRef}
+          classes={selectedSchool()?.classes as GradeType[]}
+          onChange={onChangeSelectGrade}
         />
         <InputNumber
           ref={setQuantityInputRef}

@@ -10,7 +10,7 @@ import {
   ReturnMessageType,
   clearConfirmationType,
   exportConfirmationType,
-  removeClasseConfirmationType,
+  removeGradeConfirmationType,
   removeRamassageConfirmationType,
   userInformationType,
 } from "./type";
@@ -70,11 +70,11 @@ export const [getRemoveStopConfirmation, setRemoveStopConfirmation] =
     item: null,
   }) as Signal<removeRamassageConfirmationType>;
 
-export const [getRemoveClasseConfirmation, setRemoveClasseConfirmation] =
+export const [getRemoveGradeConfirmation, setRemoveGradeConfirmation] =
   createSignal({
     displayed: false,
-    classe: null,
-  }) as Signal<removeClasseConfirmationType>;
+    grade: null,
+  }) as Signal<removeGradeConfirmationType>;
 
 export const [
   displayedClearConfirmationDialogBox,

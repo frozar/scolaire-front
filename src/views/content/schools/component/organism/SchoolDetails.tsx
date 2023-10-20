@@ -1,5 +1,5 @@
 import { Match, Show, Switch, createSignal, onMount } from "solid-js";
-import { ClasseType } from "../../../../../_entities/classe.entity";
+import { GradeType } from "../../../../../_entities/grade.entity";
 import {
   SchoolEntity,
   SchoolType,
@@ -10,7 +10,7 @@ import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { changeBoard } from "../../../board/component/template/ContextManager";
 import SchoolDetailsHeader from "../molecule/SchoolDetailsHeader";
 import SchoolDetailsPanelsButton from "../molecule/SchoolDetailsPanelsButton";
-import ClasseList from "./ClasseList";
+import GradeList from "./GradeList";
 import "./SchoolDetails.css";
 import { TripsList } from "./TripsList";
 
@@ -32,7 +32,7 @@ export default function () {
     }
   });
 
-  function onClickAddClasse() {
+  function onClickAddGrade() {
     changeBoard("school-class-add");
   }
 
@@ -50,15 +50,13 @@ export default function () {
           }
         />
         <Show when={onPanel() == Panels.classes}>
-          <ButtonIcon icon={<PlusIcon />} onClick={onClickAddClasse} />
+          <ButtonIcon icon={<PlusIcon />} onClick={onClickAddGrade} />
         </Show>
       </div>
       <div class="board-content">
         <Switch>
           <Match when={onPanel() == Panels.classes}>
-            <ClasseList
-              classes={schoolDetailsItem()?.classes as ClasseType[]}
-            />
+            <GradeList classes={schoolDetailsItem()?.classes as GradeType[]} />
           </Match>
           <Match when={onPanel() == Panels.lines}>
             <TripsList

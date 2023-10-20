@@ -11,16 +11,16 @@ export type AssociatedItem = { stopItem: StopType; done: boolean };
 export default function (props: { school: SchoolType }) {
   function classInStopAndSchool(stop_elem: StopType) {
     const allclassIDInSchool = props.school.classes.map(
-      (classe) => classe.id
+      (grade) => grade.id
     ) as number[];
 
     const allClassIdInStop = stop_elem.associated.map(
       (associated_item) => associated_item.classId
     );
-    const intersectionClasses = allclassIDInSchool.filter((classId) =>
+    const intersectionGrades = allclassIDInSchool.filter((classId) =>
       allClassIdInStop.includes(classId)
     );
-    return intersectionClasses.length > 0;
+    return intersectionGrades.length > 0;
   }
 
   return (

@@ -23,7 +23,7 @@ export default function (props: SchoolItemProps) {
 
   async function onClickDelete() {
     setRemoveConfirmation({
-      textToDisplay: "Êtes-vous sûr de vouloir supprimer la classe : ",
+      textToDisplay: "Êtes-vous sûr de vouloir supprimer la grade : ",
       itemName: props.school.name,
       validate: () => SchoolUtils.DeleteSchool(props.school.id),
     });
