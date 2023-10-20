@@ -1,8 +1,8 @@
 import { useStateAction } from "../StateAction";
 import { addNewUserInformation } from "../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
-import DisplayAddTripMessageContent from "./DisplayAddCourseMessageContent";
-import DisplayRemoveTripMessageContent from "./DisplayRemoveCourseMessageContent";
+import DisplayAddTripMessageContent from "./DisplayAddTripMessageContent";
+import DisplayRemoveTripMessageContent from "./DisplayRemoveTripMessageContent";
 const [, { isInDrawTripMode }] = useStateAction();
 
 export function displayAddTripMessage() {

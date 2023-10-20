@@ -34,18 +34,18 @@ export const confirmAbortEditionNeedToBeCall = () => {
   }
 };
 
-function exitModal({ code }: KeyboardEvent) {
-  // @ts-expect-error: Currently the 'keyboard' field doesn't exist on 'navigator'
-  const keyboard = navigator.keyboard;
-  // eslint-disable-next-line solid/reactivity
-  keyboard.getLayoutMap().then(() => {
-    if (code === "Escape") {
-      if (displayedConfirmStopAddTrip()) {
-        setDisplayedConfirmStopAddTrip(false);
-      }
-    }
-  });
-}
+// function exitModal({ code }: KeyboardEvent) {
+//   // @ts-expect-error: Currently the 'keyboard' field doesn't exist on 'navigator'
+//   const keyboard = navigator.keyboard;
+//   // eslint-disable-next-line solid/reactivity
+//   keyboard.getLayoutMap().then(() => {
+//     if (code === "Escape") {
+//       if (displayedConfirmStopAddTrip()) {
+//         setDisplayedConfirmStopAddTrip(false);
+//       }
+//     }
+//   });
+// }
 
 export default function () {
   const confirmStopingEdition = () => {

@@ -14,7 +14,6 @@ import { selectedTrip } from "../../../map/component/organism/Trips";
 import ButtonIcon from "../molecule/ButtonIcon";
 import { changeBoard, toggleDrawMod } from "../template/ContextManager";
 import CollapsibleElement from "./CollapsibleElement";
-import "./CourseInformationBoardContent.css";
 import {
   DrawTripStep,
   setCurrentDrawTrip,
@@ -22,6 +21,7 @@ import {
   setCurrentTripIndex,
   setIsInUpdate,
 } from "./DrawTripBoard";
+import "./TripInformationBoardContent.css";
 import { TripTimeline } from "./TripTimeline";
 const [, { setModeDrawTrip }] = useStateAction();
 

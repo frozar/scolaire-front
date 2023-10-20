@@ -11,7 +11,6 @@ import {
   clearConfirmationType,
   exportConfirmationType,
   removeClasseConfirmationType,
-  removeConfirmationType,
   removeRamassageConfirmationType,
   userInformationType,
 } from "./type";
@@ -59,12 +58,6 @@ export const [getAuthenticatedUser, setAuthenticatedUser] = createSignal<
 >();
 
 export const [authenticated, setAuthenticated] = createSignal(false);
-
-// TODO: Delete ? setRemoveConfirmation also exist in `RemoveCourseButton.tsx` and is more recent
-export const [getRemoveConfirmation, setRemoveConfirmation] = createSignal({
-  displayed: false,
-  trip: null,
-}) as Signal<removeConfirmationType>;
 
 export const [getImportCsvBox, setImportCsvBox] =
   createSignal<ImportCsvBoxType>({
@@ -136,12 +129,6 @@ export function openImportCsvBox() {
   });
 }
 
-export function closeRemoveConfirmationBox() {
-  setRemoveConfirmation({
-    displayed: false,
-    trip: null,
-  });
-}
 export function closeRemoveRamassageConfirmationBox() {
   setRemoveStopConfirmation({
     displayed: false,

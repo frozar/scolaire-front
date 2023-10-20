@@ -1,37 +1,25 @@
-import { useStateAction } from "../../../StateAction";
-import { useStateGui } from "../../../StateGui";
 import {
   setSchoolPointsColor,
   setStopPointsColor,
 } from "../../../leafletUtils";
-import {
-  displayedClearConfirmationDialogBox,
-  getDisplayedGeneratorDialogBox,
-  getExportConfirmationDialogBox,
-  getRemoveConfirmation,
-} from "../../../signaux";
 import { toggleDrawMod } from "../board/component/template/ContextManager";
 
 import { COLOR_SCHOOL_FOCUS, COLOR_STOP_FOCUS } from "./constant";
 
-const [, { setModeDrawTrip, isInDrawTripMode, setModeRead }, history] =
-  useStateAction();
-
-const isOpenedModal = () =>
-  getExportConfirmationDialogBox().displayed ||
-  getDisplayedGeneratorDialogBox() ||
-  displayedClearConfirmationDialogBox().displayed ||
-  getRemoveConfirmation().displayed;
+// const isOpenedModal = () =>
+//   getExportConfirmationDialogBox().displayed ||
+//   getDisplayedGeneratorDialogBox() ||
+//   displayedClearConfirmationDialogBox().displayed ||
+// getRemoveConfirmation().displayed;
 // TODO MAYBE_ERROR
 // || displayedConfirmStopDrawTrip();
 
-const [, { getSelectedMenu }] = useStateGui();
-
-const disable_shortcut = () =>
-  getSelectedMenu() != "graphicage" || isOpenedModal();
+// const disable_shortcut = () =>
+//   getSelectedMenu() != "graphicage" || isOpenedModal();
 
 // Handler the Undo/Redo from the user
 function undoRedoHandler({ ctrlKey, shiftKey, code }: KeyboardEvent) {
+  console.log(ctrlKey, shiftKey, code);
   // if (disable_shortcut()) {
   //   return;
   // }
@@ -53,6 +41,7 @@ function undoRedoHandler({ ctrlKey, shiftKey, code }: KeyboardEvent) {
 }
 
 function escapeHandler({ code }: KeyboardEvent) {
+  console.log(code);
   // if (disable_shortcut()) {
   //   return;
   // }
@@ -77,6 +66,8 @@ export function quitModeDrawTrip() {
 }
 
 function enterHandler({ code }: KeyboardEvent) {
+  console.log(code);
+
   // if (disable_shortcut()) {
   //   return;
   // }
@@ -107,6 +98,8 @@ function enterHandler({ code }: KeyboardEvent) {
 }
 
 function toggleTripUnderConstruction({ code }: KeyboardEvent) {
+  console.log(code);
+
   // if (disable_shortcut()) {
   //   return;
   // }

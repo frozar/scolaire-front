@@ -2,7 +2,7 @@ import { Show, createEffect, createSignal, onCleanup, onMount } from "solid-js";
 import { Transition } from "solid-transition-group";
 
 import ClickOutside from "../component/ClickOutside";
-import { addNewUserInformation, getRemoveConfirmation } from "../signaux";
+import { addNewUserInformation } from "../signaux";
 
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { assertIsNode } from "../utils";
@@ -55,7 +55,7 @@ export default function () {
     // eslint-disable-next-line solid/reactivity
     keyboard.getLayoutMap().then(() => {
       if (code === "Escape") {
-        if (getRemoveConfirmation()) {
+        if (removeConfirmation()) {
           closeConfirmationBox();
         }
       }

@@ -40,10 +40,7 @@ export namespace SchoolUtils {
         ...line,
         schools: line.schools.filter((school) => school.id != id_school),
         trips: line.trips.filter(
-          (trip) =>
-            !trip.schools
-              .map((schoolCourse) => schoolCourse.id)
-              .includes(id_school)
+          (trip) => !trip.schools.map((school) => school.id).includes(id_school)
         ),
       };
     });
