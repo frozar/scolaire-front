@@ -21,14 +21,14 @@ export namespace SchoolUtils {
     );
 
     const deletedGrades = deletedSchool
-      .map((school) => school.classes.flatMap((grade) => grade.id as number))
+      .map((school) => school.grades.flatMap((grade) => grade.id as number))
       .flat();
 
     const newStops = getStops().map((stop) => {
       return {
         ...stop,
         associated: stop.associated.filter((grade) =>
-          deletedGrades.includes(grade.classId)
+          deletedGrades.includes(grade.gradeId)
         ),
       };
     });

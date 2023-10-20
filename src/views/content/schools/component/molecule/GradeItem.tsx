@@ -25,22 +25,23 @@ interface GradeItemProps {
 export default function (props: GradeItemProps) {
   function onClickEdit() {
     setSelectedGrade(props.grade);
-    changeBoard("school-class-modify");
+    changeBoard("school-grade-modify");
   }
 
   async function deleteGrade() {
-    const classeId = props.grade?.id;
-    if (!classeId) return false;
+    const gradeId = props.grade?.id;
+    if (!gradeId) return false;
 
-    const isDeleted = await GradeService.delete(classeId);
+    const deletedGradeId = await GradeService.delete(gradeId);
+    if (!deletedGradeId) return false;
 
-    if (isDeleted) {
+    if (deletedGradeId) {
       // eslint-disable-next-line solid/reactivity
       setSchools((prev) => {
         return [...prev].map((school) => {
           return {
             ...school,
-            classes: school.classes.filter((grade) => grade.id != classeId),
+            grades: school.grades.filter((grade) => grade.id != gradeId),
           };
         });
       });
@@ -49,7 +50,7 @@ export default function (props: GradeItemProps) {
         getSchools().filter((school) => school.id == schoolDetailsItemId)[0]
       );
     }
-    return isDeleted;
+    return true;
   }
 
   async function onClickDelete() {

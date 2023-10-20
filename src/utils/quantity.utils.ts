@@ -54,6 +54,7 @@ export namespace QuantityUtils {
     });
   }
 
+  //TODO to check and fix
   function setSchoolQuantity(
     school: SchoolType,
     points: TripPointType[],
@@ -65,13 +66,13 @@ export namespace QuantityUtils {
           schools.map((_school) => {
             if (_school.id == school.id) {
               _school.associated.map((stop) => {
-                if (stop.schoolId == point.id) {
+                if (stop.stopId == point.id) {
                   if (operation === OperationType.set)
-                    stop.usedQuantity = point.quantity;
+                    stop.quantity = point.quantity;
                   else if (operation === OperationType.add)
-                    stop.usedQuantity += point.quantity;
+                    stop.quantity += point.quantity;
                   else if (operation === OperationType.substract)
-                    stop.usedQuantity -= point.quantity;
+                    stop.quantity -= point.quantity;
                 }
               });
             }

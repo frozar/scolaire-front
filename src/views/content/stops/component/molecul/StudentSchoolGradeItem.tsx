@@ -9,8 +9,8 @@ import { QuantityUtils } from "../../../../../utils/quantity.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { removeFromStop } from "../../../map/component/organism/StopPoints";
 import { stopDetailsItem } from "../organism/StopDetails";
-import EditStudentSchoolClassItem from "./EditStudentSchoolClassItem";
-import "./StudentSchoolClassItem.css";
+import EditStudentSchoolGradeItem from "./EditStudentSchoolGradeItem";
+import "./StudentSchoolGradeItem.css";
 
 export default function (props: { school: AssociatedSchoolType }) {
   const [editingMode, setEditingMode] = createSignal(false);
@@ -32,8 +32,8 @@ export default function (props: { school: AssociatedSchoolType }) {
     <Show
       when={!editingMode()}
       fallback={
-        <EditStudentSchoolClassItem
-          classStudentToSchool={props.school}
+        <EditStudentSchoolGradeItem
+          gradeStudentToSchool={props.school}
           close={() => setEditingMode(false)}
         />
       }

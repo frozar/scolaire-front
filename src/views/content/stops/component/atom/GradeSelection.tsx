@@ -5,20 +5,20 @@ import "./GradeSelection.css";
 interface GradeSelectProps {
   refSelectSetter: Setter<HTMLInputElement>;
   onChange: () => void;
-  classes: GradeType[];
+  grades: GradeType[];
 }
 
 export default function (props: GradeSelectProps) {
   return (
     <select
-      class="class-selection"
+      class="grade-selection"
       onChange={() => props.onChange()}
       ref={props.refSelectSetter}
     >
       <option selected value="default">
         Sélectionner une grade
       </option>
-      <For each={props.classes}>
+      <For each={props.grades}>
         {(grade) => <option value={grade.id}>{grade.name}</option>}
       </For>
     </select>

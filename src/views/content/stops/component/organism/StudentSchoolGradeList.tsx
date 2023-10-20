@@ -1,6 +1,6 @@
 import { For } from "solid-js";
 import { AssociatedSchoolType } from "../../../../../_entities/_utils.entity";
-import SchoolItem from "../molecul/StudentSchoolClassItem";
+import SchoolItem from "../molecul/StudentSchoolGradeItem";
 
 export default function (props: { schools: AssociatedSchoolType[] }) {
   return (

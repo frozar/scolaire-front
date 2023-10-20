@@ -2,14 +2,14 @@ import { AssociatedStopType } from "./_utils.entity";
 
 export namespace ClassStudentToSchoolEntity {
   export function dbFormat(
-    classStudentToSchool: Omit<AssociatedStopType, "idClassToSchool">,
+    gradeStudentToSchool: Omit<AssociatedStopType, "idClassToSchool">,
     schoolId: number
   ): Omit<ClassToSchoolDBType, "id"> {
     return {
       school_id: schoolId,
-      stop_id: classStudentToSchool.stopId as number,
-      quantity: classStudentToSchool.quantity,
-      class_id: classStudentToSchool.classId,
+      stop_id: gradeStudentToSchool.stopId as number,
+      quantity: gradeStudentToSchool.quantity,
+      grade_id: gradeStudentToSchool.gradeId,
     };
   }
 }
@@ -19,7 +19,7 @@ export type ClassToSchoolDBType = {
   stop_id: number;
   school_id: number;
   quantity: number;
-  class_id: number;
+  grade_id: number;
 };
 
 export type CSVFormatStudentToSchool = {

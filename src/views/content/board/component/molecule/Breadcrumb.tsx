@@ -92,9 +92,9 @@ export default function () {
           },
         ];
 
-      case "school-class-modify":
+      case "school-grade-modify":
         const school = getSchools().filter((school) =>
-          school.classes.find((grade) => grade.id == selectedGrade()?.id)
+          school.grades.find((grade) => grade.id == selectedGrade()?.id)
         )[0];
         return [
           schoolsCrumb,
@@ -106,7 +106,7 @@ export default function () {
             text: selectedGrade()?.name.toLowerCase() as string,
           },
         ];
-      case "school-class-add":
+      case "school-grade-add":
         return [
           schoolsCrumb,
           {

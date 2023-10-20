@@ -16,7 +16,7 @@ interface StopItemProps {
 
 export default function (props: StopItemProps) {
   const schoolNames = () =>
-    props.stop.associated.map((classToSchool) => classToSchool.schoolName);
+    props.stop.associated.map((gradeToSchool) => gradeToSchool.schoolName);
   const [refTrashButton, setRefTrashButton] = createSignal<HTMLButtonElement>();
 
   const onClickDelete = () => {

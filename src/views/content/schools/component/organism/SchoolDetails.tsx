@@ -18,12 +18,12 @@ export const [schoolDetailsItem, setSchoolDetailsItem] =
   createSignal<SchoolType>();
 
 export enum Panels {
-  classes = "classes",
+  grades = "grades",
   lines = "lines",
 }
 
 export default function () {
-  const [onPanel, setOnPanel] = createSignal<Panels>(Panels.classes);
+  const [onPanel, setOnPanel] = createSignal<Panels>(Panels.grades);
 
   onMount(() => {
     if (schoolDetailsItem() == undefined) {
@@ -33,7 +33,7 @@ export default function () {
   });
 
   function onClickAddGrade() {
-    changeBoard("school-class-add");
+    changeBoard("school-grade-add");
   }
 
   return (
@@ -49,14 +49,14 @@ export default function () {
               .length
           }
         />
-        <Show when={onPanel() == Panels.classes}>
+        <Show when={onPanel() == Panels.grades}>
           <ButtonIcon icon={<PlusIcon />} onClick={onClickAddGrade} />
         </Show>
       </div>
       <div class="board-content">
         <Switch>
-          <Match when={onPanel() == Panels.classes}>
-            <GradeList classes={schoolDetailsItem()?.classes as GradeType[]} />
+          <Match when={onPanel() == Panels.grades}>
+            <GradeList grades={schoolDetailsItem()?.grades as GradeType[]} />
           </Match>
           <Match when={onPanel() == Panels.lines}>
             <TripsList

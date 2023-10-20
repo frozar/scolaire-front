@@ -18,8 +18,8 @@ import InformationBoardLayout from "./InformationBoardLayout";
 export type BoardTags =
   | "schools"
   | "school-details"
-  | "school-class-add"
-  | "school-class-modify"
+  | "school-grade-add"
+  | "school-grade-modify"
   | "stops"
   | "stop-details"
   | "trip"
@@ -85,8 +85,8 @@ export default function () {
 
           <Match
             when={
-              onBoard() == "school-class-add" ||
-              onBoard() == "school-class-modify"
+              onBoard() == "school-grade-add" ||
+              onBoard() == "school-grade-modify"
             }
           >
             <GradeBoard />

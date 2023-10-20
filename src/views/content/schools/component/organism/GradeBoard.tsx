@@ -22,7 +22,7 @@ export const [selectedGrade, setSelectedGrade] = createSignal<GradeType>();
 export default function () {
   let defaultGrade: GradeType;
   // Case adding a new grade
-  if (onBoard() == "school-class-add") {
+  if (onBoard() == "school-grade-add") {
     const defaultTime = {
       hour: 0,
       minutes: 0,
@@ -46,7 +46,7 @@ export default function () {
     };
   }
 
-  const [classeName, setGradeName] = createSignal(defaultGrade.name);
+  const [gradeName, setGradeName] = createSignal(defaultGrade.name);
 
   const [morningStart, setMorningStart] = createSignal<HeureFormat>(
     defaultGrade.morningStart
@@ -77,7 +77,7 @@ export default function () {
 
     const newGrade = await GradeService.create({
       schoolId: schoolId,
-      name: classeName(),
+      name: gradeName(),
       morningStart: morningStart(),
       morningEnd: morningEnd(),
       afternoonStart: afternoonStart(),
@@ -89,7 +89,7 @@ export default function () {
       const newSchools = [...prev].filter((school) => school.id != schoolId);
       newSchools.push({
         ...schoolToModify,
-        classes: [...schoolToModify.classes, newGrade],
+        grades: [...schoolToModify.grades, newGrade],
       });
       return newSchools;
     });
@@ -106,7 +106,7 @@ export default function () {
 
     const updatedGrade = await GradeService.update({
       ...selectedGrade(),
-      name: classeName(),
+      name: gradeName(),
       morningStart: morningStart(),
       morningEnd: morningEnd(),
       afternoonStart: afternoonStart(),
@@ -119,8 +119,8 @@ export default function () {
 
       newSchools.push({
         ...schoolToModify,
-        classes: [
-          ...schoolToModify.classes.filter(
+        grades: [
+          ...schoolToModify.grades.filter(
             (grade) => grade.id != updatedGrade.id
           ),
           updatedGrade,
@@ -146,7 +146,7 @@ export default function () {
     <section>
       <GradeBoardHeader
         title={
-          onBoard() == "school-class-add"
+          onBoard() == "school-grade-add"
             ? "Ajout d'une grade"
             : "Modifier une grade"
         }
@@ -161,7 +161,7 @@ export default function () {
         <LabeledInputField
           name="grade-name"
           onInput={onInputGradeName}
-          value={classeName()}
+          value={gradeName()}
           label="Nom de la grade"
           placeholder="Nom de la grade"
         />
@@ -185,7 +185,7 @@ export default function () {
       <BoardFooterActions
         nextStep={{
           callback:
-            onBoard() == "school-class-add"
+            onBoard() == "school-grade-add"
               ? onClickAddGrade
               : onClickModifyGrade,
           label: "Valider",

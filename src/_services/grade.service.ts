@@ -2,20 +2,16 @@ import { GradeDBType, GradeEntity, GradeType } from "../_entities/grade.entity";
 import { ServiceUtils } from "./_utils.service";
 
 export class GradeService {
-  static async create(classe: GradeType): Promise<GradeType> {
-    const data = GradeEntity.dbFormat(classe);
-    const dbGrade: GradeDBType = await ServiceUtils.post(
-      "/classe",
-      data,
-      false
-    );
+  static async create(grade: GradeType): Promise<GradeType> {
+    const data = GradeEntity.dbFormat(grade);
+    const dbGrade: GradeDBType = await ServiceUtils.post("/grade", data, false);
     return GradeEntity.build(dbGrade);
   }
 
-  static async update(classe: GradeType): Promise<GradeType> {
-    const data = GradeEntity.dbFormat(classe);
+  static async update(grade: GradeType): Promise<GradeType> {
+    const data = GradeEntity.dbFormat(grade);
     const dbGrade: GradeDBType = await ServiceUtils.patch(
-      "/classe/" + classe.id,
+      "/classe/" + grade.id,
       data,
       false
     );
@@ -23,7 +19,7 @@ export class GradeService {
     return GradeEntity.build(dbGrade);
   }
 
-  static async delete(id: number): Promise<boolean> {
-    return await ServiceUtils.delete("/classe/" + id, false);
+  static async delete(id: number): Promise<number> {
+    return await ServiceUtils.delete("/grade/" + id);
   }
 }

@@ -14,8 +14,8 @@ export default function (props: PanelsButtonProps) {
     <div class="stop-details-panels-buttons">
       <button
         class="panel-button"
-        classList={{ active: props.onPanel() == StopPanels.classes }}
-        onClick={() => props.setOnPanel(StopPanels.classes)}
+        classList={{ active: props.onPanel() == StopPanels.grades }}
+        onClick={() => props.setOnPanel(StopPanels.grades)}
       >
         écoles: {props.NbSchool}
       </button>

@@ -13,8 +13,8 @@ export default function (props: PanelsButtonProps) {
     <div class="school-details-panels-buttons">
       <button
         class="panel-button"
-        classList={{ active: props.onPanel() == Panels.classes }}
-        onClick={() => props.setOnPanel(Panels.classes)}
+        classList={{ active: props.onPanel() == Panels.grades }}
+        onClick={() => props.setOnPanel(Panels.grades)}
       >
         classes
       </button>

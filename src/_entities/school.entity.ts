@@ -22,7 +22,8 @@ export class SchoolEntity {
       lat: dbSchool.location.data.lat,
       name: dbSchool.name,
       nature: NatureEnum.school,
-      associated: dbSchool.classes
+      //TODO Delete associated
+      associated: dbSchool.grades
         .map((grade) =>
           EntityUtils.formatAssociatedClassToSchoolForSchool(
             grade.associated as DBAssociatedStop[],
@@ -30,9 +31,9 @@ export class SchoolEntity {
           )
         )
         .flat(),
-      classes:
-        dbSchool.classes != undefined
-          ? dbSchool.classes.map((grade) => GradeEntity.build(grade))
+      grades:
+        dbSchool.grades != undefined
+          ? dbSchool.grades.map((grade) => GradeEntity.build(grade))
           : [],
       leafletId: nextLeafletPointId(),
       selected: selected,
@@ -97,7 +98,7 @@ export type SchoolType = {
   lat: number;
   associated: AssociatedStopType[];
   nature: NatureEnum;
-  classes: GradeType[];
+  grades: GradeType[];
   leafletId: number;
   selected: Accessor<boolean>;
   setSelected: Setter<boolean>;
@@ -107,7 +108,7 @@ export type SchoolDBType = {
   id: number;
   name: string;
   location: LocationDBType;
-  classes: GradeDBType[];
+  grades: GradeDBType[];
 };
 
 export type LeafletShoolType = SchoolType & {
