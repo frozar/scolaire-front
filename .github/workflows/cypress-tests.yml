@@ -5,7 +5,7 @@ on:
   pull_request:
     branches:
       - "**"
-
+#TODO fixer la version de ubuntu
 jobs:
   cypress-run:
     timeout-minutes: 60
