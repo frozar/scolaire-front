@@ -22,7 +22,6 @@ export default function (props: LineProps) {
   let arrows: L.Marker[] = [];
 
   createEffect(() => {
-    // console.log("getlines", getLines());
     const latlngs = props.latlngs;
     const leafletMap = props.leafletMap;
 

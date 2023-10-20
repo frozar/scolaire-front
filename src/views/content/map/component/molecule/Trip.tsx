@@ -37,7 +37,6 @@ import {
 export const [draggingTrip, setDraggingTrip] = createSignal<boolean>(false);
 
 export function onClickBusTrip(trip: TripType) {
-  console.log("trip", trip);
   switch (onBoard()) {
     case "line-details":
       return;
