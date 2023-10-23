@@ -12,10 +12,13 @@ export class StopService {
   static async import(
     stops: Pick<StopDBType, "name" | "location">[]
   ): Promise<StopType[]> {
-    const xanoResult: StopDBType[] = await ServiceUtils.post("/stop/import", {
-      stops: stops,
-    });
-    return xanoResult.map((dbSchool) => StopEntity.build(dbSchool));
+    const xanoResult: { stop: StopDBType[] } = await ServiceUtils.post(
+      "/stop/import",
+      {
+        stops: stops,
+      }
+    );
+    return xanoResult.stop.map((dbSchool) => StopEntity.build(dbSchool));
   }
 
   static async create(
