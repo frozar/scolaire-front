@@ -20,7 +20,7 @@ export class StopEntity {
       name: dbStop.name,
       nature: NatureEnum.stop,
       associated: EntityUtils.formatAssociatedClassToSchoolForStop(
-        dbStop.associated_class
+        dbStop.associated_grade
       ),
 
       leafletId: nextLeafletPointId(),
@@ -34,12 +34,12 @@ export class StopEntity {
       StopType,
       | "id"
       | "selected"
-      | "associated_class"
+      | "associated_grade"
       | "setSelected"
       | "nature"
       | "leafletId"
     >
-  ): Omit<StopDBType, "id" | "associated_class"> {
+  ): Omit<StopDBType, "id" | "associated_grade"> {
     return {
       name: stop.name,
       location: EntityUtils.builLocationPoint(stop.lon, stop.lat),
@@ -74,12 +74,12 @@ export type DBAssociatedStop = {
   id: number; // TODO id of the association v2_student_to_school -> to delete
   stop_id?: number;
   quantity: number;
-  class_id: number;
+  grade_id: number;
 };
 
 export type StopDBType = {
   id: number;
   name: string;
   location: LocationDBType;
-  associated_class: DBAssociatedStop[];
+  associated_grade: DBAssociatedStop[];
 };

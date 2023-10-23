@@ -20,15 +20,15 @@ export namespace SchoolUtils {
       (school) => school.id == id_school
     );
 
-    const deletedClasses = deletedSchool
-      .map((school) => school.classes.flatMap((classe) => classe.id as number))
+    const deletedGrades = deletedSchool
+      .map((school) => school.grades.flatMap((grade) => grade.id as number))
       .flat();
 
     const newStops = getStops().map((stop) => {
       return {
         ...stop,
-        associated: stop.associated.filter((classe) =>
-          deletedClasses.includes(classe.classId)
+        associated: stop.associated.filter((grade) =>
+          deletedGrades.includes(grade.gradeId)
         ),
       };
     });

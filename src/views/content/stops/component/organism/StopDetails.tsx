@@ -8,11 +8,11 @@ import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { changeBoard } from "../../../board/component/template/ContextManager";
 import { getStops } from "../../../map/component/organism/StopPoints";
 import { TripsList } from "../../../schools/component/organism/TripsList";
-import EditStudentSchoolClassItem from "../molecul/EditStudentSchoolClassItem";
+import EditStudentSchoolGradeItem from "../molecul/EditStudentSchoolGradeItem";
 import StopDetailsHeader from "../molecul/StopDetailsHeader";
 import StopDetailsPanelsButton from "../molecul/StopDetailsPanelsButton";
 import "./StopDetails.css";
-import ClassStudentToSchoolList from "./StudentSchoolClassList";
+import ClassStudentToSchoolList from "./StudentSchoolGradeList";
 
 export const [stopDetailsItem, setStopDetailsItem] = createSignal<StopType>();
 export function updateStopDetailsItem(stopId: number) {
@@ -30,12 +30,12 @@ export function updateStopDetailsItem(stopId: number) {
   }
 }
 export enum StopPanels {
-  classes = "schools",
+  grades = "grades",
   trips = "trips",
 }
 
 export default function () {
-  const [onPanel, setOnPanel] = createSignal<StopPanels>(StopPanels.classes);
+  const [onPanel, setOnPanel] = createSignal<StopPanels>(StopPanels.grades);
   const [editItem, setEditItem] = createSignal<boolean>(false);
 
   onMount(() => {
@@ -63,20 +63,20 @@ export default function () {
           }
         />
 
-        <Show when={onPanel() == "schools"}>
+        <Show when={onPanel() == "grades"}>
           <ButtonIcon icon={<PlusIcon />} onClick={toggleEditItem} />
         </Show>
       </div>
 
       <div class="content mt-2">
         <Switch>
-          <Match when={onPanel() == StopPanels.classes}>
+          <Match when={onPanel() == StopPanels.grades}>
             <ClassStudentToSchoolList
               schools={stopDetailsItem()?.associated as AssociatedSchoolType[]}
             />
 
             <Show when={editItem()}>
-              <EditStudentSchoolClassItem close={toggleEditItem} />
+              <EditStudentSchoolGradeItem close={toggleEditItem} />
             </Show>
           </Match>
           <Match when={onPanel() == StopPanels.trips}>

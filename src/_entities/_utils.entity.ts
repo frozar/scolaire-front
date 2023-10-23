@@ -38,13 +38,13 @@ export class EntityUtils {
     // TODO associatedPointType (comme avant avec nature et companie)
   ): AssociatedSchoolType[] {
     return associatedDBPoint.map((item) => {
-      const school = getSchoolWhereClassId(item.class_id);
+      const school = getSchoolWhereClassId(item.grade_id);
 
       return {
         schoolName: school?.name as string,
         schoolId: school?.id as number,
         idClassToSchool: item.id,
-        classId: item.class_id,
+        gradeId: item.grade_id,
         quantity: item.quantity,
         usedQuantity: 0,
       };
@@ -53,12 +53,12 @@ export class EntityUtils {
 
   static formatAssociatedClassToSchoolForSchool(
     associatedDBPoint: DBAssociatedStop[],
-    classId: number
+    gradeId: number
   ): AssociatedStopType[] {
     return associatedDBPoint.map((item) => {
       return {
         idClassToSchool: item.id,
-        classId,
+        gradeId,
         quantity: item.quantity,
         stopId: item.stop_id as number,
       };
@@ -74,14 +74,14 @@ export type AssociatedSchoolType = {
   schoolName: string;
   quantity: number;
   usedQuantity: number;
-  classId: number;
+  gradeId: number;
 };
 
 export type AssociatedStopType = {
   idClassToSchool: number;
   stopId: number;
   quantity: number;
-  classId: number;
+  gradeId: number;
 };
 
 export enum LocationDBTypeEnum {

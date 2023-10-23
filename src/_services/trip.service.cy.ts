@@ -55,8 +55,8 @@ describe("TripService", () => {
           lat: -20.946658830374,
           name: "Ecole DE BEAUMONT",
           nature: NatureEnum.school,
-          // TODO add classes in test
-          classes: [],
+          // TODO add grades in test
+          grades: [],
           associated: [
             {
               idClassToSchool: 7,

@@ -17,7 +17,7 @@ export const Label: Story = {
 
   args: {
     icon: <AiOutlinePlus />,
-    class: "Entrer un classe",
+    class: "Entrer un grade",
   },
 
   argTypes: {

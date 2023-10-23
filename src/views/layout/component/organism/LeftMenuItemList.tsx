@@ -28,8 +28,8 @@ export default function (props: LeftMenuItemProps) {
       [
         "schools",
         "school-details",
-        "school-class-add",
-        "school-class-modify",
+        "school-grade-add",
+        "school-grade-modify",
       ].includes(onBoardMode)
     ) {
       setSelectedMenu("schools");

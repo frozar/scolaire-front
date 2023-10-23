@@ -7,7 +7,7 @@ import {
 } from "../../../map/component/organism/BusLines";
 import { getSchools } from "../../../map/component/organism/SchoolPoints";
 import { selectedTrip } from "../../../map/component/organism/Trips";
-import { selectedClasse } from "../../../schools/component/organism/ClasseBoard";
+import { selectedGrade } from "../../../schools/component/organism/GradeBoard";
 import { schoolDetailsItem } from "../../../schools/component/organism/SchoolDetails";
 import { stopDetailsItem } from "../../../stops/component/organism/StopDetails";
 import BreadcrumbButton from "../atom/BreadcrumbButton";
@@ -50,7 +50,7 @@ export default function () {
         },
       };
     }
-    console.log("onBoard()", onBoard());
+
     switch (onBoard()) {
       case "line":
         return [{ text: "Lignes" }];
@@ -92,9 +92,9 @@ export default function () {
           },
         ];
 
-      case "school-class-modify":
+      case "school-grade-modify":
         const school = getSchools().filter((school) =>
-          school.classes.find((classe) => classe.id == selectedClasse()?.id)
+          school.grades.find((grade) => grade.id == selectedGrade()?.id)
         )[0];
         return [
           schoolsCrumb,
@@ -103,10 +103,10 @@ export default function () {
             onClick: () => changeBoard("school-details"),
           },
           {
-            text: selectedClasse()?.name.toLowerCase() as string,
+            text: selectedGrade()?.name.toLowerCase() as string,
           },
         ];
-      case "school-class-add":
+      case "school-grade-add":
         return [
           schoolsCrumb,
           {
@@ -114,7 +114,7 @@ export default function () {
             onClick: () => changeBoard("school-details"),
           },
           {
-            text: "classe",
+            text: "grade",
           },
         ];
 

@@ -1,10 +1,10 @@
 import BoardTitle from "../../../board/component/atom/BoardTitle";
 
-interface ClasseBoardHeaderProps {
+interface GradeBoardHeaderProps {
   title: string;
 }
 
-export default function (props: ClasseBoardHeaderProps) {
+export default function (props: GradeBoardHeaderProps) {
   return (
     <header class="my-6">
       <BoardTitle title={props.title} />

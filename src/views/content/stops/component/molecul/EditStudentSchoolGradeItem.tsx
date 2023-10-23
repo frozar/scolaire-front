@@ -1,6 +1,6 @@
 import { createEffect, createSignal, onMount } from "solid-js";
 import { AssociatedSchoolType } from "../../../../../_entities/_utils.entity";
-import { ClasseType } from "../../../../../_entities/classe.entity";
+import { GradeType } from "../../../../../_entities/grade.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { StudentToSchoolService } from "../../../../../_services/student-to-school.service";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
@@ -10,14 +10,14 @@ import { MessageLevelEnum, MessageTypeEnum } from "../../../../../type";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { getSchools } from "../../../map/component/organism/SchoolPoints";
 import { appendToStop } from "../../../map/component/organism/StopPoints";
-import ClasseSelection from "../atom/ClasseSelection";
+import GradeSelection from "../atom/GradeSelection";
 import InputNumber from "../atom/InputNumber";
 import SchoolSelect from "../atom/SchoolSelection";
 import { stopDetailsItem } from "../organism/StopDetails";
-import "./EditStudentSchoolClassItem.css";
+import "./EditStudentSchoolGradeItem.css";
 
 interface EditStopProps {
-  classStudentToSchool?: AssociatedSchoolType;
+  gradeStudentToSchool?: AssociatedSchoolType;
   close: () => void;
 }
 
@@ -27,37 +27,37 @@ export default function (props: EditStopProps) {
 
   const [schoolSelectRef, setSchoolSelectRef] =
     createSignal<HTMLSelectElement>(seletElement);
-  const [classeSelectRef, setClasseSelectRef] =
+  const [gradeSelectRef, setGradeSelectRef] =
     createSignal<HTMLSelectElement>(seletElement);
   const [quantityInputRef, setQuantityInputRef] =
     createSignal<HTMLInputElement>(document.createElement("input"));
 
   createEffect(() => {
-    if (props.classStudentToSchool != undefined) {
+    if (props.gradeStudentToSchool != undefined) {
       const school = getSchools().filter(
-        (school) => school.id == props.classStudentToSchool?.schoolId
+        (school) => school.id == props.gradeStudentToSchool?.schoolId
       )[0];
       setSelectedSchool(school);
     }
   });
 
   onMount(() => {
-    if (props.classStudentToSchool != undefined) {
+    if (props.gradeStudentToSchool != undefined) {
       schoolSelectRef().value =
-        props.classStudentToSchool.schoolId?.toString() ?? "default";
-      classeSelectRef().value =
-        props.classStudentToSchool.classId?.toString() ?? "default";
+        props.gradeStudentToSchool.schoolId?.toString() ?? "default";
+      gradeSelectRef().value =
+        props.gradeStudentToSchool.gradeId?.toString() ?? "default";
       quantityInputRef().value =
-        props.classStudentToSchool.quantity.toString() ?? 0;
+        props.gradeStudentToSchool.quantity.toString() ?? 0;
       return;
     }
-    classeSelectRef().disabled = true;
+    gradeSelectRef().disabled = true;
     quantityInputRef().disabled = true;
   });
 
-  function resetClasseAndQuantity() {
-    classeSelectRef().disabled = true;
-    classeSelectRef().value = "default";
+  function resetGradeAndQuantity() {
+    gradeSelectRef().disabled = true;
+    gradeSelectRef().value = "default";
     quantityInputRef().disabled = true;
     quantityInputRef().value = "0";
   }
@@ -68,16 +68,16 @@ export default function (props: EditStopProps) {
     )[0];
 
     if (!school) {
-      return resetClasseAndQuantity();
+      return resetGradeAndQuantity();
     } else if (school.id != selectedSchool()?.id) {
-      resetClasseAndQuantity();
+      resetGradeAndQuantity();
     }
-    classeSelectRef().disabled = false;
+    gradeSelectRef().disabled = false;
     setSelectedSchool(school);
   };
 
-  function onChangeSelectClasse() {
-    if (classeSelectRef().value != "default") {
+  function onChangeSelectGrade() {
+    if (gradeSelectRef().value != "default") {
       quantityInputRef().disabled = false;
     } else {
       quantityInputRef().disabled = true;
@@ -89,7 +89,7 @@ export default function (props: EditStopProps) {
     const validInputs =
       schoolSelectRef().value == "default" ||
       quantityInputRef().value == "0" ||
-      classeSelectRef().value == "default";
+      gradeSelectRef().value == "default";
     if (validInputs) {
       return addNewUserInformation({
         displayed: true,
@@ -107,34 +107,34 @@ export default function (props: EditStopProps) {
     const associatedStopT = {
       stopId: Number(stopDetailsItem()?.id),
       quantity: Number(quantityInputRef().value),
-      classId: Number(classeSelectRef().value),
+      gradeId: Number(gradeSelectRef().value),
     };
 
-    const classToSchool = await StudentToSchoolService.create(
+    const gradeToSchool = await StudentToSchoolService.create(
       associatedStopT,
       Number(schoolSelectRef().value)
     );
-    appendToStop(classToSchool, stopDetailsItem()?.id as number);
+    appendToStop(gradeToSchool, stopDetailsItem()?.id as number);
   }
 
   async function update() {
-    if (!props.classStudentToSchool) return;
-    // const classToSchool = await StudentToSchoolService.update({
-    //   idClassToSchool: props.classStudentToSchool?.idClassToSchool as number,
+    if (!props.gradeStudentToSchool) return;
+    // const gradeToSchool = await StudentToSchoolService.update({
+    //   idClassToSchool: props.gradeStudentToSchool?.idClassToSchool as number,
     //   schoolId: Number(schoolSelectRef().value),
     //   stopId: Number(stopDetailsItem()?.id),
     //   quantity: Number(quantityInputRef().value),
-    //   classId: Number(classeSelectRef().value),
+    //   gradeId: Number(gradeSelectRef().value),
     // });
 
-    // updateFromStop(classToSchool, stopDetailsItem()?.id as number);
+    // updateFromStop(gradeToSchool, stopDetailsItem()?.id as number);
 
     // TODO lucas même update mais pour school
-    console.log("update student to class");
+    console.log("update student to grade");
   }
 
   async function validate() {
-    if (props.classStudentToSchool) await update();
+    if (props.gradeStudentToSchool) await update();
     else await create();
     props.close();
   }
@@ -152,10 +152,10 @@ export default function (props: EditStopProps) {
       </div>
 
       <div class="edit-stop-bottom-line">
-        <ClasseSelection
-          refSelectSetter={setClasseSelectRef}
-          classes={selectedSchool()?.classes as ClasseType[]}
-          onChange={onChangeSelectClasse}
+        <GradeSelection
+          refSelectSetter={setGradeSelectRef}
+          grades={selectedSchool()?.grades as GradeType[]}
+          onChange={onChangeSelectGrade}
         />
         <InputNumber
           ref={setQuantityInputRef}

@@ -1,7 +1,7 @@
-.classe-item{
+.grade-item{
   @apply flex justify-between; 
 }
 
-.classe-item-actions{
+.grade-item-actions{
   @apply flex gap-2 
 }

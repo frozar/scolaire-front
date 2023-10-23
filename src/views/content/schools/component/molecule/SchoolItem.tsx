@@ -23,7 +23,7 @@ export default function (props: SchoolItemProps) {
 
   async function onClickDelete() {
     setRemoveConfirmation({
-      textToDisplay: "Êtes-vous sûr de vouloir supprimer la classe : ",
+      textToDisplay: "Êtes-vous sûr de vouloir supprimer la grade : ",
       itemName: props.school.name,
       validate: () => SchoolUtils.DeleteSchool(props.school.id),
     });
@@ -49,12 +49,13 @@ export default function (props: SchoolItemProps) {
             refSetter={setRefTrashButton}
             icon={<FaRegularTrashCan class="fill-red-base" />}
             onClick={onClickDelete}
+            disable={true}
           />
         </div>
       </div>
       <div class="school-item-content">
         <p>Trips: {SchoolEntity.getSchoolTrips(props.school.id).length}</p>
-        <p>classes: {props.school.classes.length ?? "-"}</p>
+        <p>classes: {props.school.grades.length ?? "-"}</p>
         <p>élèves: {SchoolEntity.getTotalQuantity(props.school)}</p>
       </div>
     </CardWrapper>

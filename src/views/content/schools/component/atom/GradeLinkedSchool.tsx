@@ -1,11 +1,11 @@
 import { For } from "solid-js";
-import "./ClasseLinkedSchool.css";
+import "./GradeLinkedSchool.css";
 
-interface ClasseLinkedSchoolProps {
+interface GradeLinkedSchoolProps {
   schools: string[];
 }
 
-export default function (props: ClasseLinkedSchoolProps) {
+export default function (props: GradeLinkedSchoolProps) {
   return (
     <div class="linked-schools-item">
       <For each={props.schools}>{(school) => <p>{school}</p>}</For>

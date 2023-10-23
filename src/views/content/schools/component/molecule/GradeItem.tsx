@@ -1,6 +1,6 @@
 import { FaRegularTrashCan, FaSolidPen } from "solid-icons/fa";
-import { ClasseType } from "../../../../../_entities/classe.entity";
-import { ClasseService } from "../../../../../_services/classe.service";
+import { GradeType } from "../../../../../_entities/grade.entity";
+import { GradeService } from "../../../../../_services/grade.service";
 import CardTitle from "../../../../../component/atom/CardTitle";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
 import { setRemoveConfirmation } from "../../../../../userInformation/RemoveConfirmation";
@@ -10,37 +10,38 @@ import {
   getSchools,
   setSchools,
 } from "../../../map/component/organism/SchoolPoints";
-import { setSelectedClasse } from "../organism/ClasseBoard";
+import { setSelectedGrade } from "../organism/GradeBoard";
 import {
   schoolDetailsItem,
   setSchoolDetailsItem,
 } from "../organism/SchoolDetails";
-import "./ClasseItem.css";
+import "./GradeItem.css";
 
-interface ClasseItemProps {
-  classe: ClasseType;
+interface GradeItemProps {
+  grade: GradeType;
   NbStudents?: number;
 }
 
-export default function (props: ClasseItemProps) {
+export default function (props: GradeItemProps) {
   function onClickEdit() {
-    setSelectedClasse(props.classe);
-    changeBoard("school-class-modify");
+    setSelectedGrade(props.grade);
+    changeBoard("school-grade-modify");
   }
 
-  async function deleteClasse() {
-    const classeId = props.classe?.id;
-    if (!classeId) return false;
+  async function deleteGrade() {
+    const gradeId = props.grade?.id;
+    if (!gradeId) return false;
 
-    const isDeleted = await ClasseService.delete(classeId);
+    const deletedGradeId = await GradeService.delete(gradeId);
+    if (!deletedGradeId) return false;
 
-    if (isDeleted) {
+    if (deletedGradeId) {
       // eslint-disable-next-line solid/reactivity
       setSchools((prev) => {
         return [...prev].map((school) => {
           return {
             ...school,
-            classes: school.classes.filter((classe) => classe.id != classeId),
+            grades: school.grades.filter((grade) => grade.id != gradeId),
           };
         });
       });
@@ -49,25 +50,25 @@ export default function (props: ClasseItemProps) {
         getSchools().filter((school) => school.id == schoolDetailsItemId)[0]
       );
     }
-    return isDeleted;
+    return true;
   }
 
   async function onClickDelete() {
     setRemoveConfirmation({
-      textToDisplay: "Êtes-vous sûr de vouloir supprimer la classe : ",
-      itemName: props.classe.name,
-      validate: deleteClasse,
+      textToDisplay: "Êtes-vous sûr de vouloir supprimer la grade : ",
+      itemName: props.grade.name,
+      validate: deleteGrade,
     });
   }
 
   return (
-    <CardWrapper class="classe-item">
+    <CardWrapper class="grade-item">
       <div class="left">
-        <CardTitle title={props.classe.name} />
+        <CardTitle title={props.grade.name} />
         <p>{props.NbStudents ? props.NbStudents + " élèves" : "Todo élèves"}</p>
       </div>
 
-      <div class="classe-item-actions">
+      <div class="grade-item-actions">
         <ButtonIcon
           icon={<FaRegularTrashCan class="fill-red-base" />}
           onClick={onClickDelete}

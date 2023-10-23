@@ -1,5 +1,5 @@
 import { Match, Show, Switch, createSignal, onMount } from "solid-js";
-import { ClasseType } from "../../../../../_entities/classe.entity";
+import { GradeType } from "../../../../../_entities/grade.entity";
 import {
   SchoolEntity,
   SchoolType,
@@ -10,7 +10,7 @@ import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { changeBoard } from "../../../board/component/template/ContextManager";
 import SchoolDetailsHeader from "../molecule/SchoolDetailsHeader";
 import SchoolDetailsPanelsButton from "../molecule/SchoolDetailsPanelsButton";
-import ClasseList from "./ClasseList";
+import GradeList from "./GradeList";
 import "./SchoolDetails.css";
 import { TripsList } from "./TripsList";
 
@@ -18,12 +18,12 @@ export const [schoolDetailsItem, setSchoolDetailsItem] =
   createSignal<SchoolType>();
 
 export enum Panels {
-  classes = "classes",
+  grades = "grades",
   lines = "lines",
 }
 
 export default function () {
-  const [onPanel, setOnPanel] = createSignal<Panels>(Panels.classes);
+  const [onPanel, setOnPanel] = createSignal<Panels>(Panels.grades);
 
   onMount(() => {
     if (schoolDetailsItem() == undefined) {
@@ -32,8 +32,8 @@ export default function () {
     }
   });
 
-  function onClickAddClasse() {
-    changeBoard("school-class-add");
+  function onClickAddGrade() {
+    changeBoard("school-grade-add");
   }
 
   return (
@@ -49,16 +49,14 @@ export default function () {
               .length
           }
         />
-        <Show when={onPanel() == Panels.classes}>
-          <ButtonIcon icon={<PlusIcon />} onClick={onClickAddClasse} />
+        <Show when={onPanel() == Panels.grades}>
+          <ButtonIcon icon={<PlusIcon />} onClick={onClickAddGrade} />
         </Show>
       </div>
       <div class="board-content">
         <Switch>
-          <Match when={onPanel() == Panels.classes}>
-            <ClasseList
-              classes={schoolDetailsItem()?.classes as ClasseType[]}
-            />
+          <Match when={onPanel() == Panels.grades}>
+            <GradeList grades={schoolDetailsItem()?.grades as GradeType[]} />
           </Match>
           <Match when={onPanel() == Panels.lines}>
             <TripsList

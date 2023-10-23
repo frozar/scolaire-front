@@ -40,7 +40,7 @@ const school = {
     },
   ],
   nature: NatureEnum.school,
-  classes: [],
+  grades: [],
   leafletId: 1,
 };
 const [stopSelected, setStopSelected] = createStore<AssociatedItem[]>(

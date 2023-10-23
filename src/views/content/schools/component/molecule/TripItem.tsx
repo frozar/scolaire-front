@@ -4,7 +4,7 @@ import Pellet from "../../../../../component/atom/Pellet";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
 import ArretsLogo from "../../../../../icons/ArretsLogo";
 import { onClickBusTrip } from "../../../map/component/molecule/Trip";
-import ClasseLinkedSchool from "../atom/ClasseLinkedSchool";
+import GradeLinkedSchool from "../atom/GradeLinkedSchool";
 import "./TripItem.css";
 
 export function TripItem(props: { trip: TripType }) {
@@ -17,7 +17,7 @@ export function TripItem(props: { trip: TripType }) {
       <Pellet color={props.trip.color} />
       <div class="trip-content">
         <CardTitle title={props.trip.name ?? "Pas de nom de trip"} />
-        <ClasseLinkedSchool schools={schoolNames()} />
+        <GradeLinkedSchool schools={schoolNames()} />
 
         <div class="trip-stops-count">
           <div class="stop-logo">

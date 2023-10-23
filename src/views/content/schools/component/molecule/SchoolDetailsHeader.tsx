@@ -39,7 +39,7 @@ export default function (props: { school: SchoolType }) {
 
       <InputSearch
         onInput={() => {
-          console.log("search for school classes / lines");
+          console.log("search for school grades / lines");
         }}
       />
     </header>

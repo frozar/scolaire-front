@@ -29,12 +29,12 @@ export interface StopPointsProps {
 
 export const [getStops, setStops] = createSignal<StopType[]>([]);
 
-export function appendToStop(classItem: AssociatedSchoolType, stopId: number) {
+export function appendToStop(gradeItem: AssociatedSchoolType, stopId: number) {
   setStops((prev) => {
     if (prev != undefined) {
       const stops = [...prev];
       const indexOf = stops.findIndex((prev) => prev.id == stopId);
-      stops[indexOf].associated.push(classItem);
+      stops[indexOf].associated.push(gradeItem);
       return stops;
     }
     return prev;
@@ -42,14 +42,14 @@ export function appendToStop(classItem: AssociatedSchoolType, stopId: number) {
   updateStopDetailsItem(stopId);
 }
 
-export function removeFromStop(classStudentToSchoolID: number, stopId: number) {
+export function removeFromStop(gradeStudentToSchoolID: number, stopId: number) {
   setStops((prev) => {
     if (prev != undefined) {
       const stops = [...prev];
       const indexOfStop = stops.findIndex((prev) => prev.id == stopId);
 
       stops[indexOfStop].associated = stops[indexOfStop].associated.filter(
-        (prev) => prev.idClassToSchool != classStudentToSchoolID
+        (prev) => prev.idClassToSchool != gradeStudentToSchoolID
       );
       return stops;
     }
@@ -59,7 +59,7 @@ export function removeFromStop(classStudentToSchoolID: number, stopId: number) {
 }
 // TODO lucas à placer dans Stop component
 export function updateFromStop(
-  classStudentToSchool: AssociatedSchoolType,
+  gradeStudentToSchool: AssociatedSchoolType,
   stopId: number
 ) {
   setStops((prev) => {
@@ -67,9 +67,9 @@ export function updateFromStop(
       const stops = [...prev];
       const indexOfStop = stops.findIndex((prev) => prev.id == stopId);
       const indexOfClass = stops[indexOfStop].associated.findIndex(
-        (prev) => prev.schoolId == classStudentToSchool.schoolId
+        (prev) => prev.schoolId == gradeStudentToSchool.schoolId
       );
-      stops[indexOfStop].associated[indexOfClass] = classStudentToSchool;
+      stops[indexOfStop].associated[indexOfClass] = gradeStudentToSchool;
       return stops;
     }
     return prev;
@@ -137,7 +137,7 @@ export function leafletStopsFilter(): StopType[] {
             return associated.stopItem;
           });
           const associatedIdSelected = schools
-            .map((school) => school.classes.map((value) => value.schoolId))
+            .map((school) => school.grades.map((value) => value.schoolId))
             .flat();
           return getStops().filter((stoptofilter) =>
             associatedIdSelected.includes(stoptofilter.id)

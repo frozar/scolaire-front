@@ -9,18 +9,18 @@ import CollapsibleElement from "./CollapsibleElement";
 export type AssociatedItem = { stopItem: StopType; done: boolean };
 
 export default function (props: { school: SchoolType }) {
-  function classInStopAndSchool(stop_elem: StopType) {
-    const allclassIDInSchool = props.school.classes.map(
-      (classe) => classe.id
+  function gradeInStopAndSchool(stop_elem: StopType) {
+    const allGradeIDInSchool = props.school.grades.map(
+      (grade) => grade.id
     ) as number[];
 
     const allClassIdInStop = stop_elem.associated.map(
-      (associated_item) => associated_item.classId
+      (associated_item) => associated_item.gradeId
     );
-    const intersectionClasses = allclassIDInSchool.filter((classId) =>
-      allClassIdInStop.includes(classId)
+    const intersectionGrades = allGradeIDInSchool.filter((gradeId) =>
+      allClassIdInStop.includes(gradeId)
     );
-    return intersectionClasses.length > 0;
+    return intersectionGrades.length > 0;
   }
 
   return (
@@ -28,7 +28,7 @@ export default function (props: { school: SchoolType }) {
       <For each={stopSelected()}>
         {(stop_elem, i) => {
           return (
-            <Show when={classInStopAndSchool(stop_elem.stopItem)}>
+            <Show when={gradeInStopAndSchool(stop_elem.stopItem)}>
               <div class="flex items-center">
                 <input
                   id="comments"
