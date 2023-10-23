@@ -50,7 +50,7 @@ export default function () {
         },
       };
     }
-    console.log("onBoard()", onBoard());
+
     switch (onBoard()) {
       case "line":
         return [{ text: "Lignes" }];
