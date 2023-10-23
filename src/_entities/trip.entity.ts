@@ -151,6 +151,7 @@ export type TripType = {
   metrics?: TripMetricType;
 };
 
+// ! Ajouter associated ?
 export type TripPointType = {
   id: number;
   leafletId: number;

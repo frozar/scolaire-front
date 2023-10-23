@@ -38,7 +38,6 @@ export class EntityUtils {
     // TODO associatedPointType (comme avant avec nature et companie)
   ): AssociatedSchoolType[] {
     return associatedDBPoint.map((item) => {
-      console.log("item => ", item);
       const school = getSchoolWhereClassId(item.grade_id);
 
       return {

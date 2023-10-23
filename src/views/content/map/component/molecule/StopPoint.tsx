@@ -8,6 +8,7 @@ import {
 import { COLOR_STOP_FOCUS, COLOR_WAYPOINT } from "../../constant";
 import Point from "../atom/Point";
 
+import { AssociatedSchoolType } from "../../../../../_entities/_utils.entity";
 import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
 import { updatePointColor } from "../../../../../leafletUtils";
 import {
@@ -36,6 +37,7 @@ import {
   setBlinkingSchools,
   setCursorIsOverPoint,
 } from "../organism/Points";
+import { getStops, setStops } from "../organism/StopPoints";
 import { draggingTrip, setDraggingTrip } from "./Trip";
 
 const [, { isInReadMode }] = useStateAction();
@@ -68,18 +70,43 @@ function updateTripAndWaypoints(point: StopType) {
   // ! Ici
   // const associatedQuantity = 1;
   // ! Vérif vas dans l'école correspondante
-  // ! Mettre à jour usedQuantity
   let associatedQuantityCount = 0;
   const targetSchoolId = currentDrawTrip().schools[0].id;
+
+  const associatedUpdated: AssociatedSchoolType[] = [];
 
   point.associated.map((associated) => {
     if (associated.schoolId == targetSchoolId) {
       associatedQuantityCount += associated.quantity - associated.usedQuantity;
+
+      associatedUpdated.push({
+        ...associated,
+        usedQuantity: associated.quantity,
+      });
+    } else {
+      associatedUpdated.push(associated);
     }
   });
+  console.log("associatedUpdated", associatedUpdated);
+
+  // ! Mettre à jour usedQuantity
+  // ! Utiliser QuantityUtils ?!
+  setStops((prev) => {
+    const newStops = [...prev].map((prevPoint) => {
+      return prevPoint.id != point.id
+        ? prevPoint
+        : { ...point, associated: associatedUpdated };
+    });
+    return newStops;
+  });
+  console.log("getStops", getStops());
 
   // ! Fix
   // addPointToTrip({ ...point, quantity: associatedQuantityCount });
+  // const lastPoint = currentDrawTrip().points.at(-1);
+
+  // addPointToTrip({ ...point, quantity: associatedQuantityCount });
+  console.log("currentDrawTrip()", currentDrawTrip());
 
   if (!lastPoint || point.leafletId != lastPoint.leafletId) {
     const waypoints = currentDrawTrip().waypoints;
