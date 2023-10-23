@@ -13,8 +13,10 @@ enum OperationType {
 
 export namespace QuantityUtils {
   export function remaining(point: AssociatedSchoolType) {
-    console.log("point.quantity", point.quantity);
-    console.log("point.usedQuantity", point.usedQuantity);
+    // console.log("point.quantity", point.quantity);
+    // console.log("point.usedQuantity", point.usedQuantity);
+
+    // const test = getLines().map((line) => line.trips.map((trip) => trip.points)).flat().flat().map((point) => point.id).includes(point.i)
 
     return point.quantity - point.usedQuantity;
   }

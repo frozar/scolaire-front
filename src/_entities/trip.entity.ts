@@ -58,6 +58,9 @@ export namespace TripEntity {
 
   export function dbFormat(line: TripType): Partial<TripDBType> {
     const name = line.name ? line.name : "";
+    // const tripStopIds = line.points
+    // .filter((point) => point.nature == NatureEnum.stop)
+    // .map((point) => point.id);
     return {
       color: EntityUtils.formatColorForDB(line.color),
       name: name,
@@ -76,6 +79,15 @@ export namespace TripEntity {
       waypoint: WaypointEntity.formatWaypointDBType(
         line.waypoints as WaypointType[]
       ),
+      // grade_id: getStops((stop) => )
+      // associated: getStops()
+      //   .map((stop) => {
+      //     if (tripStopIds.includes(stop.id)) {
+      //       return stop.associated;
+      //     }
+      //   })
+      //   .flat(),
+      // associated: getStops().map((stop) => stop.associated).flat().filter((assoc) => line.points.map((point) => point.id).flat().includes(assoc.))
     };
   }
 
@@ -166,6 +178,7 @@ export type TripPointType = {
 export type TripDBType = {
   id: number;
   school_id: number;
+  grade_id: number[];
   name: string;
   color: string;
   trip_stop: TripPointDBType[];

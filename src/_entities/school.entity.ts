@@ -1,7 +1,7 @@
 import { Accessor, Setter, createSignal } from "solid-js";
 import { useStateGui } from "../StateGui";
 import { NatureEnum } from "../type";
-import { QuantityUtils } from "../utils/quantity.utils";
+import { getLines } from "../views/content/map/component/organism/BusLines";
 import { getTrips } from "../views/content/map/component/organism/Trips";
 import {
   AssociatedStopType,
@@ -70,12 +70,43 @@ export class SchoolEntity {
   }
 
   // TODO à place dans un SchoolUtils
+  // static getRemainingQuantity(school: SchoolType) {
+  //   console.log("school ===> ", school);
+  //   const quantity = 0;
+  //   for (const stop of school.associated) {
+  //     // quantity += QuantityUtils.remaining(stop);
+  //     const test = getLines()
+  //       .map((line) => line.trips.map((trip) => trip.points))
+  //       .flat()
+  //       .flat()
+  //       .map((point) => point.id)
+  //       .includes(stop.stopId);
+  //     // ! Fix pas forcement tout ou rien mais seulement tout ou rien sur la qté d'une grade à un stop
+  //     return test ? 0 : SchoolEntity.getTotalQuantity(school);
+  //   }
+
+  //   return quantity;
+  // }
+
   static getRemainingQuantity(school: SchoolType) {
+    console.log("school ===> ", school);
     let quantity = 0;
     for (const stop of school.associated) {
-      quantity += QuantityUtils.remaining(stop);
+      // quantity += QuantityUtils.remaining(stop);
+      const test = getLines()
+        .map((line) => line.trips.map((trip) => trip.points))
+        .flat()
+        .flat()
+        .map((point) => point.id)
+        .includes(stop.stopId);
+      if (test) {
+        quantity += stop.quantity;
+      }
+      // ! Fix pas forcement tout ou rien mais seulement tout ou rien sur la qté d'une grade à un stop
+      // return test ? 0 : SchoolEntity.getTotalQuantity(school);
     }
-    return quantity;
+
+    return SchoolEntity.getTotalQuantity(school) - quantity;
   }
 
   // TODO à place dans un SchoolUtils
