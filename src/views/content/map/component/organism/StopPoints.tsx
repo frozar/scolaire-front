@@ -42,14 +42,14 @@ export function appendToStop(gradeItem: AssociatedSchoolType, stopId: number) {
   updateStopDetailsItem(stopId);
 }
 
-export function removeFromStop(gradeStudentToSchoolID: number, stopId: number) {
+export function removeFromStop(gradeStudentToGradeID: number, stopId: number) {
   setStops((prev) => {
     if (prev != undefined) {
       const stops = [...prev];
       const indexOfStop = stops.findIndex((prev) => prev.id == stopId);
 
       stops[indexOfStop].associated = stops[indexOfStop].associated.filter(
-        (prev) => prev.idClassToSchool != gradeStudentToSchoolID
+        (prev) => prev.idClassToSchool != gradeStudentToGradeID
       );
       return stops;
     }
@@ -59,7 +59,7 @@ export function removeFromStop(gradeStudentToSchoolID: number, stopId: number) {
 }
 // TODO lucas à placer dans Stop component
 export function updateFromStop(
-  gradeStudentToSchool: AssociatedSchoolType,
+  gradeStudentToGrade: AssociatedSchoolType,
   stopId: number
 ) {
   setStops((prev) => {
@@ -67,9 +67,9 @@ export function updateFromStop(
       const stops = [...prev];
       const indexOfStop = stops.findIndex((prev) => prev.id == stopId);
       const indexOfClass = stops[indexOfStop].associated.findIndex(
-        (prev) => prev.schoolId == gradeStudentToSchool.schoolId
+        (prev) => prev.schoolId == gradeStudentToGrade.schoolId
       );
-      stops[indexOfStop].associated[indexOfClass] = gradeStudentToSchool;
+      stops[indexOfStop].associated[indexOfClass] = gradeStudentToGrade;
       return stops;
     }
     return prev;

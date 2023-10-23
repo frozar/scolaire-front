@@ -2,7 +2,7 @@ import { createEffect, createSignal, onMount } from "solid-js";
 import { AssociatedSchoolType } from "../../../../../_entities/_utils.entity";
 import { GradeType } from "../../../../../_entities/grade.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
-import { StudentToSchoolService } from "../../../../../_services/student-to-school.service";
+import { StudentToGradeService } from "../../../../../_services/student-to-school.service";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
 import CheckIcon from "../../../../../icons/CheckIcon";
 import { addNewUserInformation } from "../../../../../signaux";
@@ -17,7 +17,7 @@ import { stopDetailsItem } from "../organism/StopDetails";
 import "./EditStudentSchoolGradeItem.css";
 
 interface EditStopProps {
-  gradeStudentToSchool?: AssociatedSchoolType;
+  gradeStudentToGrade?: AssociatedSchoolType;
   close: () => void;
 }
 
@@ -33,22 +33,22 @@ export default function (props: EditStopProps) {
     createSignal<HTMLInputElement>(document.createElement("input"));
 
   createEffect(() => {
-    if (props.gradeStudentToSchool != undefined) {
+    if (props.gradeStudentToGrade != undefined) {
       const school = getSchools().filter(
-        (school) => school.id == props.gradeStudentToSchool?.schoolId
+        (school) => school.id == props.gradeStudentToGrade?.schoolId
       )[0];
       setSelectedSchool(school);
     }
   });
 
   onMount(() => {
-    if (props.gradeStudentToSchool != undefined) {
+    if (props.gradeStudentToGrade != undefined) {
       schoolSelectRef().value =
-        props.gradeStudentToSchool.schoolId?.toString() ?? "default";
+        props.gradeStudentToGrade.schoolId?.toString() ?? "default";
       gradeSelectRef().value =
-        props.gradeStudentToSchool.gradeId?.toString() ?? "default";
+        props.gradeStudentToGrade.gradeId?.toString() ?? "default";
       quantityInputRef().value =
-        props.gradeStudentToSchool.quantity.toString() ?? 0;
+        props.gradeStudentToGrade.quantity.toString() ?? 0;
       return;
     }
     gradeSelectRef().disabled = true;
@@ -110,7 +110,7 @@ export default function (props: EditStopProps) {
       gradeId: Number(gradeSelectRef().value),
     };
 
-    const gradeToSchool = await StudentToSchoolService.create(
+    const gradeToSchool = await StudentToGradeService.create(
       associatedStopT,
       Number(schoolSelectRef().value)
     );
@@ -118,9 +118,9 @@ export default function (props: EditStopProps) {
   }
 
   async function update() {
-    if (!props.gradeStudentToSchool) return;
-    // const gradeToSchool = await StudentToSchoolService.update({
-    //   idClassToSchool: props.gradeStudentToSchool?.idClassToSchool as number,
+    if (!props.gradeStudentToGrade) return;
+    // const gradeToSchool = await StudentToGradeService.update({
+    //   idClassToSchool: props.gradeStudentToGrade?.idClassToSchool as number,
     //   schoolId: Number(schoolSelectRef().value),
     //   stopId: Number(stopDetailsItem()?.id),
     //   quantity: Number(quantityInputRef().value),
@@ -134,7 +134,7 @@ export default function (props: EditStopProps) {
   }
 
   async function validate() {
-    if (props.gradeStudentToSchool) await update();
+    if (props.gradeStudentToGrade) await update();
     else await create();
     props.close();
   }

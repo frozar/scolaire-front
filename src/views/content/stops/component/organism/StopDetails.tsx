@@ -12,7 +12,7 @@ import EditStudentSchoolGradeItem from "../molecul/EditStudentSchoolGradeItem";
 import StopDetailsHeader from "../molecul/StopDetailsHeader";
 import StopDetailsPanelsButton from "../molecul/StopDetailsPanelsButton";
 import "./StopDetails.css";
-import ClassStudentToSchoolList from "./StudentSchoolGradeList";
+import ClassStudentToGradeList from "./StudentSchoolGradeList";
 
 export const [stopDetailsItem, setStopDetailsItem] = createSignal<StopType>();
 export function updateStopDetailsItem(stopId: number) {
@@ -71,7 +71,7 @@ export default function () {
       <div class="content mt-2">
         <Switch>
           <Match when={onPanel() == StopPanels.grades}>
-            <ClassStudentToSchoolList
+            <ClassStudentToGradeList
               schools={stopDetailsItem()?.associated as AssociatedSchoolType[]}
             />
 

@@ -32,7 +32,7 @@ export class EntityUtils {
     };
   }
 
-  static formatAssociatedClassToSchoolForStop(
+  static formatAssociatedGradeToSchoolForStop(
     associatedDBPoint: DBAssociatedStop[]
     // associatedDBPoint: AssociatedDBPointType[],
     // TODO associatedPointType (comme avant avec nature et companie)

@@ -8,8 +8,8 @@ import { StopDBType, StopEntity, StopType } from "../_entities/stop.entity";
 import { SchoolService } from "../_services/school.service";
 import { StopService } from "../_services/stop.service";
 import {
-  StudentToSchool,
-  StudentToSchoolService,
+  StudentToGrade,
+  StudentToGradeService,
 } from "../_services/student-to-school.service";
 import {
   addNewGlobalWarningInformation,
@@ -34,9 +34,9 @@ export namespace CsvUtils {
           return importStopCSVFile(
             parsedFileData as Pick<StopDBType, "name" | "location">[]
           );
-        } else if (isStudentToSchoolFile(fileName)) {
-          return importStudentToSchoolCSVFile(
-            parsedFileData as StudentToSchool[]
+        } else if (isStudentToGradeFile(fileName)) {
+          return importStudentToGradeCSVFile(
+            parsedFileData as StudentToGrade[]
           );
         } else {
           addNewGlobalWarningInformation("Nom de fichier non reconnu");
@@ -86,10 +86,8 @@ export namespace CsvUtils {
     return false;
   }
 
-  async function importStudentToSchoolCSVFile(
-    parsedFileData: StudentToSchool[]
-  ) {
-    const { schools, stops } = await StudentToSchoolService.import(
+  async function importStudentToGradeCSVFile(parsedFileData: StudentToGrade[]) {
+    const { schools, stops } = await StudentToGradeService.import(
       parsedFileData
     );
     if (stops && schools) {
@@ -181,15 +179,15 @@ export namespace CsvUtils {
     return StopEntity.dataToDB(parsedData);
   }
 
-  async function parsedCsvFileToStudentToSchoolData(
+  async function parsedCsvFileToStudentToGradeData(
     file: File
-  ): Promise<StudentToSchool[] | undefined> {
+  ): Promise<StudentToGrade[] | undefined> {
     const parsedFile = await parseFile(file);
     const correctHeader = ["school_name", "stop_name", "quantity"];
     if (!isCorrectHeader(parsedFile.meta.fields, correctHeader)) {
       return;
     }
-    let parsedData = parsedFile.data as StudentToSchool[];
+    let parsedData = parsedFile.data as StudentToGrade[];
     parsedData = parsedData.filter(
       (data) => data.school_name && data.stop_name && data.quantity
     );
@@ -204,7 +202,7 @@ export namespace CsvUtils {
     return fileNameIsCorrect(fileName, "ramassage");
   }
 
-  function isStudentToSchoolFile(fileName: string) {
+  function isStudentToGradeFile(fileName: string) {
     return fileNameIsCorrect(fileName, "eleve_vers_etablissement");
   }
 
@@ -214,8 +212,8 @@ export namespace CsvUtils {
       return await parsedCsvFileToSchoolData(file);
     } else if (isStopFile(fileName)) {
       return await parsedCsvFileToStopData(file);
-    } else if (isStudentToSchoolFile(fileName)) {
-      return await parsedCsvFileToStudentToSchoolData(file);
+    } else if (isStudentToGradeFile(fileName)) {
+      return await parsedCsvFileToStudentToGradeData(file);
     } else return;
   }
 }
