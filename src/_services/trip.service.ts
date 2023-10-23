@@ -15,7 +15,7 @@ export class TripService {
     const data = TripEntity.dbFormat(line);
 
     const dbBusTrip: TripDBType = await ServiceUtils.post(
-      "/busline/" + getSelectedLine()?.id + "/trip", //TODO tester la v2
+      "/busline/" + getSelectedLine()?.id + "/trip",
       data
     );
 
