@@ -14,7 +14,7 @@ import {
   StopEntity,
   StopType,
 } from "../_entities/stop.entity";
-import { StudentToGradeEntity } from "../_entities/student-to-school.entity";
+import { StudentToGradeEntity } from "../_entities/student-to-grade.entity";
 import { ServiceUtils } from "./_utils.service";
 
 export type StudentToGrade = {

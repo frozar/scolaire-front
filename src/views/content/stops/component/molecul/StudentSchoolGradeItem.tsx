@@ -1,6 +1,6 @@
 import { Show, createSignal } from "solid-js";
 import { AssociatedSchoolType } from "../../../../../_entities/_utils.entity";
-import { StudentToGradeService } from "../../../../../_services/student-to-school.service";
+import { StudentToGradeService } from "../../../../../_services/student-to-grade.service";
 import CardTitle from "../../../../../component/atom/CardTitle";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
 import PencilIcon from "../../../../../icons/PencilIcon";

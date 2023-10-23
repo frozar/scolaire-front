@@ -10,7 +10,7 @@ import { StopService } from "../_services/stop.service";
 import {
   StudentToGrade,
   StudentToGradeService,
-} from "../_services/student-to-school.service";
+} from "../_services/student-to-grade.service";
 import {
   addNewGlobalWarningInformation,
   addNewUserInformation,
