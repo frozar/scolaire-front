@@ -19,7 +19,7 @@ export class StopEntity {
       lat: dbStop.location.data.lat,
       name: dbStop.name,
       nature: NatureEnum.stop,
-      associated: EntityUtils.formatAssociatedClassToSchoolForStop(
+      associated: EntityUtils.formatAssociatedGradeToSchoolForStop(
         dbStop.associated_grade
       ),
 
@@ -71,7 +71,7 @@ export type StopType = {
 };
 
 export type DBAssociatedStop = {
-  id: number; // TODO id of the association v2_student_to_school -> to delete
+  id: number; // TODO id of the association v2_student_to_grade -> to delete
   stop_id?: number;
   quantity: number;
   grade_id: number;

@@ -1,6 +1,6 @@
 import { Show, createSignal } from "solid-js";
 import { AssociatedSchoolType } from "../../../../../_entities/_utils.entity";
-import { StudentToSchoolService } from "../../../../../_services/student-to-school.service";
+import { StudentToGradeService } from "../../../../../_services/student-to-grade.service";
 import CardTitle from "../../../../../component/atom/CardTitle";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
 import PencilIcon from "../../../../../icons/PencilIcon";
@@ -16,7 +16,7 @@ export default function (props: { school: AssociatedSchoolType }) {
   const [editingMode, setEditingMode] = createSignal(false);
 
   async function onClickDelete() {
-    const response = await StudentToSchoolService.delete(
+    const response = await StudentToGradeService.delete(
       props.school.idClassToSchool
     );
     console.log("delete class to school response", response);
@@ -33,7 +33,7 @@ export default function (props: { school: AssociatedSchoolType }) {
       when={!editingMode()}
       fallback={
         <EditStudentSchoolGradeItem
-          gradeStudentToSchool={props.school}
+          gradeStudentToGrade={props.school}
           close={() => setEditingMode(false)}
         />
       }

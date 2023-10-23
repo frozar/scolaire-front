@@ -14,10 +14,10 @@ import {
   StopEntity,
   StopType,
 } from "../_entities/stop.entity";
-import { ClassStudentToSchoolEntity } from "../_entities/student-to-school.entity";
+import { StudentToGradeEntity } from "../_entities/student-to-grade.entity";
 import { ServiceUtils } from "./_utils.service";
 
-export type StudentToSchool = {
+export type StudentToGrade = {
   id: number;
   school_name: string;
   stop_name: string;
@@ -25,13 +25,13 @@ export type StudentToSchool = {
   quantity: number;
 };
 
-export class StudentToSchoolService {
+export class StudentToGradeService {
   static async import(
-    students_to_schools: StudentToSchool[]
+    students_to_grades: StudentToGrade[]
   ): Promise<{ schools: SchoolType[]; stops: StopType[] }> {
     const xanoResult: { schools: SchoolDBType[]; stops: StopDBType[] } =
-      await ServiceUtils.post("/student-to-school/import", {
-        students_to_schools: students_to_schools,
+      await ServiceUtils.post("/student-to-grade/import", {
+        students_to_grades: students_to_grades,
       });
 
     const new_schools = xanoResult.schools.map((dbSchool) =>
@@ -46,40 +46,32 @@ export class StudentToSchoolService {
   }
 
   static async create(
-    classToSchool: Omit<AssociatedStopType, "idClassToSchool">,
+    gradeToSchool: Omit<AssociatedStopType, "idClassToSchool">,
     schoolId: number
   ): Promise<AssociatedSchoolType> {
-    const dbFormat = ClassStudentToSchoolEntity.dbFormat(
-      classToSchool,
-      schoolId
-    );
+    const dbFormat = StudentToGradeEntity.dbFormat(gradeToSchool, schoolId);
     const response: DBAssociatedStop = await ServiceUtils.post(
-      "/student-to-school",
+      "/student-to-grade",
       dbFormat
     );
-    return EntityUtils.formatAssociatedClassToSchoolForStop([response])[0];
+    return EntityUtils.formatAssociatedGradeToSchoolForStop([response])[0];
   }
 
   static async update(
-    classToSchool: AssociatedStopType,
+    gradeToSchool: AssociatedStopType,
     schoolId: number
   ): Promise<AssociatedSchoolType> {
-    const dbFormat = ClassStudentToSchoolEntity.dbFormat(
-      classToSchool,
-      schoolId
-    );
+    const dbFormat = StudentToGradeEntity.dbFormat(gradeToSchool, schoolId);
     const response: DBAssociatedStop = await ServiceUtils.patch(
-      "/student-to-school/" + classToSchool.idClassToSchool + "/v2",
+      "/student-to-grade/" + gradeToSchool.idClassToSchool,
       dbFormat
     );
-    return EntityUtils.formatAssociatedClassToSchoolForStop([response])[0];
+    return EntityUtils.formatAssociatedGradeToSchoolForStop([response])[0];
   }
 
   // Backend will return only the id deleted
   static async delete(id: number): Promise<number> {
-    const response = await ServiceUtils.delete(
-      "/student-to-school/" + id + "/v2"
-    );
+    const response = await ServiceUtils.delete("/student-to-grade/" + id);
     return response;
   }
 }
