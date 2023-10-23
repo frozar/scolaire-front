@@ -30,7 +30,7 @@ export class StudentToGradeService {
     students_to_grades: StudentToGrade[]
   ): Promise<{ schools: SchoolType[]; stops: StopType[] }> {
     const xanoResult: { schools: SchoolDBType[]; stops: StopDBType[] } =
-      await ServiceUtils.post("/student-to-school/import", {
+      await ServiceUtils.post("/student-to-grade/import", {
         students_to_grades: students_to_grades,
       });
 
@@ -51,7 +51,7 @@ export class StudentToGradeService {
   ): Promise<AssociatedSchoolType> {
     const dbFormat = StudentToGradeEntity.dbFormat(gradeToSchool, schoolId);
     const response: DBAssociatedStop = await ServiceUtils.post(
-      "/student-to-school",
+      "/student-to-grade",
       dbFormat
     );
     return EntityUtils.formatAssociatedGradeToSchoolForStop([response])[0];
@@ -63,7 +63,7 @@ export class StudentToGradeService {
   ): Promise<AssociatedSchoolType> {
     const dbFormat = StudentToGradeEntity.dbFormat(gradeToSchool, schoolId);
     const response: DBAssociatedStop = await ServiceUtils.patch(
-      "/student-to-school/" + gradeToSchool.idClassToSchool + "/v2",
+      "/student-to-grade/" + gradeToSchool.idClassToSchool,
       dbFormat
     );
     return EntityUtils.formatAssociatedGradeToSchoolForStop([response])[0];
@@ -71,9 +71,7 @@ export class StudentToGradeService {
 
   // Backend will return only the id deleted
   static async delete(id: number): Promise<number> {
-    const response = await ServiceUtils.delete(
-      "/student-to-grade/" + id + "/v2"
-    );
+    const response = await ServiceUtils.delete("/student-to-grade/" + id);
     return response;
   }
 }
