@@ -11,7 +11,7 @@ export class BusLineEntity {
     const schools: SchoolType[] = BusLineEntity.dbSchoolsToSchoolType(dbLine);
 
     const stops: StopType[] = BusLineEntity.dbStopsToStopsType(dbLine);
-    const trips = dbLine.trips.map((dbTrip) => TripEntity.build(dbTrip.trip));
+    const trips = dbLine.trips.map((dbTrip) => TripEntity.build(dbTrip));
 
     const [selected, setSelected] = createSignal<boolean>(false);
     const [color, setColor] = createSignal<string>("#" + dbLine.color);
@@ -135,5 +135,5 @@ export type LineDBType = {
   color: string;
   schools: { school_id: number }[];
   stops: { stop_id: number }[];
-  trips: { trip_id: number; trip: TripDBType }[];
+  trips: TripDBType[];
 };
