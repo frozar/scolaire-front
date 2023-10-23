@@ -210,6 +210,7 @@ async function createOrUpdateTrip() {
   let updatedTrip: TripType = currentDrawTrip();
   if (currentDrawTrip().id == undefined) {
     updatedTrip = await TripService.create(currentDrawTrip());
+    console.log("currentDrawTrip()", currentDrawTrip());
     const selectedLineId = getSelectedLine()?.id as number;
 
     setLines((lines) =>
@@ -221,6 +222,7 @@ async function createOrUpdateTrip() {
     );
   } else {
     updatedTrip = await TripService.update(currentDrawTrip());
+    console.log("currentDrawTrip()", currentDrawTrip());
 
     setLines((prev) =>
       prev.map((line) => {

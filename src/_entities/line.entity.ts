@@ -12,6 +12,7 @@ export class BusLineEntity {
 
     const stops: StopType[] = BusLineEntity.dbStopsToStopsType(dbLine);
     const trips = dbLine.trips.map((dbTrip) => TripEntity.build(dbTrip));
+    console.log("trips", trips);
 
     const [selected, setSelected] = createSignal<boolean>(false);
     const [color, setColor] = createSignal<string>("#" + dbLine.color);

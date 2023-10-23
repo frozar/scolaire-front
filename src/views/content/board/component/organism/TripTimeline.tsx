@@ -1,4 +1,4 @@
-import { For, Setter, Show, createEffect } from "solid-js";
+import { For, Setter, Show } from "solid-js";
 import { TripType } from "../../../../../_entities/trip.entity";
 import { TripTimelineAddPointButton } from "../atom/TripTimelineAddPointButton";
 import { TripTimelineItem } from "../atom/TripTimelineItem";
@@ -9,9 +9,9 @@ export function TripTimeline(props: {
   setTrip?: Setter<TripType>;
   inDraw: boolean;
 }) {
-  createEffect(() => {
-    console.log("props.trip", props.trip);
-  });
+  // createEffect(() => {
+  //   console.log("props.trip", props.trip);
+  // });
   return (
     <div class="timeline">
       <div

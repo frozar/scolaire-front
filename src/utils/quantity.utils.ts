@@ -13,6 +13,9 @@ enum OperationType {
 
 export namespace QuantityUtils {
   export function remaining(point: AssociatedSchoolType) {
+    console.log("point.quantity", point.quantity);
+    console.log("point.usedQuantity", point.usedQuantity);
+
     return point.quantity - point.usedQuantity;
   }
 

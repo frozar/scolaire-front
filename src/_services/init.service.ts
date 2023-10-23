@@ -45,9 +45,24 @@ export namespace InitService {
     const busLines = dbInit.bus_lines.map((dbLine: LineDBType) =>
       BusLineEntity.build(dbLine)
     );
-    console.log("dbInit.lines => ", dbInit.bus_lines);
-    console.log("init lines => ", busLines);
+    // console.log("dbInit.lines => ", dbInit.bus_lines);
+    // console.log("init lines => ", busLines);
     setLines(busLines);
+
+    // const tripPoints = busLines
+    //   .map((busline) => busline.trips)
+    //   .flat()
+    //   .map((trip) => trip.points)
+    //   .flat();
+    // setStops((prev) => {
+    //   for (const stop of prev) {
+    //     const tripPoint = tripPoints.find((tripPoint) => tripPoint.id == stop.id)
+    //     if (tripPoint) {
+
+    //     }
+
+    //   }
+    // })
 
     return { schools, stops, busLines };
   }
