@@ -16,12 +16,12 @@ export class SchoolService {
   static async import(
     schools: Pick<SchoolDBType, "name" | "location">[]
   ): Promise<SchoolType[]> {
-    const xanoResult: SchoolDBType[] = await ServiceUtils.post(
+    const xanoResult: { school: SchoolDBType[] } = await ServiceUtils.post(
       "/school/import",
       { schools: schools }
     );
 
-    return xanoResult.map((dbSchool) => SchoolEntity.build(dbSchool));
+    return xanoResult.school.map((dbSchool) => SchoolEntity.build(dbSchool));
   }
 
   //TODO change Omit to Pick
