@@ -14,7 +14,7 @@ import {
   StopEntity,
   StopType,
 } from "../_entities/stop.entity";
-import { ClassStudentToGradeEntity } from "../_entities/student-to-school.entity";
+import { StudentToGradeEntity } from "../_entities/student-to-school.entity";
 import { ServiceUtils } from "./_utils.service";
 
 export type StudentToGrade = {
@@ -49,10 +49,7 @@ export class StudentToGradeService {
     gradeToSchool: Omit<AssociatedStopType, "idClassToSchool">,
     schoolId: number
   ): Promise<AssociatedSchoolType> {
-    const dbFormat = ClassStudentToGradeEntity.dbFormat(
-      gradeToSchool,
-      schoolId
-    );
+    const dbFormat = StudentToGradeEntity.dbFormat(gradeToSchool, schoolId);
     const response: DBAssociatedStop = await ServiceUtils.post(
       "/student-to-school",
       dbFormat
@@ -64,10 +61,7 @@ export class StudentToGradeService {
     gradeToSchool: AssociatedStopType,
     schoolId: number
   ): Promise<AssociatedSchoolType> {
-    const dbFormat = ClassStudentToGradeEntity.dbFormat(
-      gradeToSchool,
-      schoolId
-    );
+    const dbFormat = StudentToGradeEntity.dbFormat(gradeToSchool, schoolId);
     const response: DBAssociatedStop = await ServiceUtils.patch(
       "/student-to-school/" + gradeToSchool.idClassToSchool + "/v2",
       dbFormat
@@ -78,7 +72,7 @@ export class StudentToGradeService {
   // Backend will return only the id deleted
   static async delete(id: number): Promise<number> {
     const response = await ServiceUtils.delete(
-      "/student-to-school/" + id + "/v2"
+      "/student-to-grade/" + id + "/v2"
     );
     return response;
   }

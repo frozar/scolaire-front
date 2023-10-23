@@ -1,15 +1,15 @@
 import { AssociatedStopType } from "./_utils.entity";
 
-export namespace ClassStudentToGradeEntity {
+export namespace StudentToGradeEntity {
   export function dbFormat(
-    gradeStudentToGrade: Omit<AssociatedStopType, "idClassToSchool">,
+    associatedStop: Omit<AssociatedStopType, "idClassToSchool">,
     schoolId: number
   ): Omit<ClassToSchoolDBType, "id"> {
     return {
       school_id: schoolId,
-      stop_id: gradeStudentToGrade.stopId as number,
-      quantity: gradeStudentToGrade.quantity,
-      grade_id: gradeStudentToGrade.gradeId,
+      stop_id: associatedStop.stopId as number,
+      quantity: associatedStop.quantity,
+      grade_id: associatedStop.gradeId,
     };
   }
 }
