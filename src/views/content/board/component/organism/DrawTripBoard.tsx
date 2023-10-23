@@ -85,6 +85,7 @@ export function DrawTripBoard() {
   onCleanup(() => {
     setIsInUpdate(false);
   });
+  console.log("currentDrawTrip", currentDrawTrip());
 
   return (
     <div class="add-line-information-board-content">

@@ -83,6 +83,33 @@ export namespace QuantityUtils {
     });
   }
 
+  // function setStopQuantity(
+  //   point: TripPointType,
+  //   schools: SchoolType[],
+  //   operation: OperationType
+  // ) {
+  //   if (point.nature === NatureEnum.stop) {
+  //     schools.forEach((school) => {
+  //       setStops((stops) => {
+  //         stops.map((stop) => {
+  //           if (stop.id == point.id) {
+  //             stop.associated.map((_school) => {
+  //               if (_school.schoolId == school.id) {
+  //                 if (operation === OperationType.set)
+  //                   _school.usedQuantity = point.quantity;
+  //                 else if (operation === OperationType.add)
+  //                   _school.usedQuantity += point.quantity;
+  //                 else if (operation === OperationType.substract)
+  //                   _school.usedQuantity -= point.quantity;
+  //               }
+  //             });
+  //           }
+  //         });
+  //         return stops;
+  //       });
+  //     });
+  //   }
+  // }
   function setStopQuantity(
     point: TripPointType,
     schools: SchoolType[],

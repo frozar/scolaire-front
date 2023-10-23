@@ -16,7 +16,6 @@ import {
 } from "../../../board/component/organism/AddLineBoardContent";
 import {
   DrawTripStep,
-  addPointToTrip,
   currentDrawTrip,
   currentStep,
   removePoint,
@@ -65,10 +64,22 @@ function getAssociatedQuantity(point: StopType) {
 function updateTripAndWaypoints(point: StopType) {
   // TODO: FIX
   // const associatedQuantity = getAssociatedQuantity(point);
-  const associatedQuantity = 1;
   const lastPoint = currentDrawTrip().tripPoints.at(-1);
+  // ! Ici
+  // const associatedQuantity = 1;
+  // ! Vérif vas dans l'école correspondante
+  // ! Mettre à jour usedQuantity
+  let associatedQuantityCount = 0;
+  const targetSchoolId = currentDrawTrip().schools[0].id;
 
-  addPointToTrip({ ...point, quantity: associatedQuantity });
+  point.associated.map((associated) => {
+    if (associated.schoolId == targetSchoolId) {
+      associatedQuantityCount += associated.quantity - associated.usedQuantity;
+    }
+  });
+
+  // ! Fix
+  // addPointToTrip({ ...point, quantity: associatedQuantityCount });
 
   if (!lastPoint || point.leafletId != lastPoint.leafletId) {
     const waypoints = currentDrawTrip().waypoints;
