@@ -20,9 +20,7 @@ import { MessageLevelEnum, MessageTypeEnum } from "../../../type";
 import { BusLines } from "./component/organism/BusLines";
 import { Points } from "./component/organism/Points";
 
-const [, { getActiveMapId, setActiveMapId }] = useStateGui();
-// ! ActiveMapId to set !
-// setActiveMapId(null);
+const [, { getActiveMapId }] = useStateGui();
 function buildMap(div: HTMLDivElement) {
   const option = "l7";
   switch (option) {
@@ -48,18 +46,17 @@ export default function () {
     // for (const handler of listHandlerLMap) {
     // document.body.addEventListener("keydown", handler);
     // }
-
-    mapDiv.addEventListener(
-      "dragenter",
-      (e) => {
-        // console.log("=>", 0);
-        e.preventDefault();
-        setDisplayImportCsvCanvas(true);
-      },
-      false
-    );
-    // console.log("=>", 1);
-    buildMap(mapDiv);
+    if (getActiveMapId()) {
+      mapDiv.addEventListener(
+        "dragenter",
+        (e) => {
+          e.preventDefault();
+          setDisplayImportCsvCanvas(true);
+        },
+        false
+      );
+      buildMap(mapDiv);
+    }
   });
 
   // onCleanup(() => {
@@ -68,12 +65,10 @@ export default function () {
   //     // document.body.removeEventListener("keydown", handler);
   //   }
   // });
-  console.log("getActiveMapId()", getActiveMapId());
+  // console.log("getActiveMapId()", getActiveMapId());
+  // TODO: Fallback => Display message "Please connect"
   return (
-    <Show
-      when={getActiveMapId() != null}
-      fallback={<div>Sélectionner une carte</div>}
-    >
+    <Show when={getActiveMapId()} fallback={<div>Sélectionner une carte</div>}>
       <ImportCsvCanvas
         display={displayImportCsvCanvas()}
         setDisplay={setDisplayImportCsvCanvas}
