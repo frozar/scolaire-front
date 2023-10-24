@@ -62,7 +62,7 @@ export namespace TripEntity {
       color: EntityUtils.formatColorForDB(line.color),
       name: name,
       school_id: line.schools[0].id,
-      bus_line_stop: formatTripPointDBType(line.points),
+      trip_stop: formatTripPointDBType(line.points),
       polyline: EntityUtils.buildLocationPath(line.latLngs),
       metrics: {
         distance: line.metrics?.distance,
@@ -105,7 +105,7 @@ export namespace TripEntity {
     if (line.points) {
       output = {
         ...output,
-        bus_line_stop: formatTripPointDBType(line.points),
+        trip_stop: formatTripPointDBType(line.points),
       };
     }
     if (line.waypoints) {
@@ -196,6 +196,7 @@ function formatTripPointDBType(points: TripPointType[]): TripPointDBType[] {
       stop_id: point.nature == NatureEnum.stop ? point.id : 0,
       school_id: point.nature == NatureEnum.school ? point.id : 0,
       quantity: point.quantity,
+      grade_id: point.grade_id,
     };
   });
 }
