@@ -2,13 +2,6 @@ import { StopDBType, StopEntity, StopType } from "../_entities/stop.entity";
 import { ServiceUtils } from "./_utils.service";
 
 export class StopService {
-  static async getAll(): Promise<StopType[]> {
-    const dbStops: { stop: StopDBType[] } = await ServiceUtils.get("/stops_v2");
-    return dbStops
-      ? dbStops.stop.map((dbStop: StopDBType) => StopEntity.build(dbStop))
-      : [];
-  }
-
   static async import(
     stops: Pick<StopDBType, "name" | "location">[]
   ): Promise<StopType[]> {

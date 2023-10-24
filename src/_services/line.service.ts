@@ -2,16 +2,6 @@ import { BusLineEntity, LineDBType, LineType } from "../_entities/line.entity";
 import { ServiceUtils } from "./_utils.service";
 
 export class BusLineService {
-  static async getAll(): Promise<LineType[]> {
-    const dbLines = await ServiceUtils.get("/bus_line");
-
-    const bus_lines: LineDBType[] = dbLines.bus_lines;
-
-    return bus_lines
-      ? bus_lines.map((dbLine: LineDBType) => BusLineEntity.build(dbLine))
-      : [];
-  }
-
   static async create(line: LineType): Promise<LineType> {
     const data = BusLineEntity.dbFormat(line);
 
