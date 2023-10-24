@@ -20,7 +20,7 @@ export default function (props: LeftMenuItemProps) {
     const onBoardMode = onBoard();
 
     if (!onBoardMode) {
-      if (getSelectedMenu() != "calendar") setSelectedMenu("dashboard");
+      if (getSelectedMenu() == "graphicage") setSelectedMenu("dashboard");
       return;
     }
 

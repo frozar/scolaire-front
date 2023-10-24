@@ -62,8 +62,8 @@ const menuItems: MenuItemType[] = [
     label: "Calendrier",
     isDisabled: false,
     onClick: () => {
-      changeBoard(undefined);
       setSelectedMenu("calendar");
+      changeBoard(undefined);
     },
   },
   // {
