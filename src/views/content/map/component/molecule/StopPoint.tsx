@@ -8,7 +8,7 @@ import {
 import { COLOR_STOP_FOCUS, COLOR_WAYPOINT } from "../../constant";
 import Point from "../atom/Point";
 
-import { AssociatedSchoolType } from "../../../../../_entities/_utils.entity";
+import { GradeTripType } from "../../../../../_entities/grade.entity";
 import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
 import { updatePointColor } from "../../../../../leafletUtils";
 import {
@@ -17,6 +17,7 @@ import {
 } from "../../../board/component/organism/AddLineBoardContent";
 import {
   DrawTripStep,
+  addPointToTrip,
   currentDrawTrip,
   currentStep,
   removePoint,
@@ -37,7 +38,6 @@ import {
   setBlinkingSchools,
   setCursorIsOverPoint,
 } from "../organism/Points";
-import { getStops, setStops } from "../organism/StopPoints";
 import { draggingTrip, setDraggingTrip } from "./Trip";
 
 const [, { isInReadMode }] = useStateAction();
@@ -67,45 +67,68 @@ function updateTripAndWaypoints(point: StopType) {
   // TODO: FIX
   // const associatedQuantity = getAssociatedQuantity(point);
   const lastPoint = currentDrawTrip().tripPoints.at(-1);
-  // ! Ici
-  // const associatedQuantity = 1;
   // ! Vérif vas dans l'école correspondante
-  let associatedQuantityCount = 0;
+  // const associatedQuantityCount = 0;
   const targetSchoolId = currentDrawTrip().schools[0].id;
 
-  const associatedUpdated: AssociatedSchoolType[] = [];
-
+  // TODO: Setup filter (selected grades during drawTrip creation)
+  // ! Create qty / gradeId couple
+  const grades: GradeTripType[] = [];
   point.associated.map((associated) => {
     if (associated.schoolId == targetSchoolId) {
-      associatedQuantityCount += associated.quantity - associated.usedQuantity;
-
-      associatedUpdated.push({
-        ...associated,
-        usedQuantity: associated.quantity,
+      grades.push({
+        quantity: associated.quantity,
+        gradeId: associated.gradeId,
       });
-    } else {
-      associatedUpdated.push(associated);
     }
   });
-  console.log("associatedUpdated", associatedUpdated);
 
-  // ! Mettre à jour usedQuantity
-  // ! Utiliser QuantityUtils ?!
-  setStops((prev) => {
-    const newStops = [...prev].map((prevPoint) => {
-      return prevPoint.id != point.id
-        ? prevPoint
-        : { ...point, associated: associatedUpdated };
-    });
-    return newStops;
-  });
-  console.log("getStops", getStops());
+  // ! Ne pas utiliser used quantity
+  // const associatedUpdated: AssociatedSchoolType[] = [];
+
+  // point.associated.map((associated) => {
+  //   if (associated.schoolId == targetSchoolId) {
+  //     associatedQuantityCount += associated.quantity - associated.usedQuantity;
+
+  //     associatedUpdated.push({
+  //       ...associated,
+  //       usedQuantity: associated.quantity,
+  //     });
+  //   } else {
+  //     associatedUpdated.push(associated);
+  //   }
+  // });
+  // console.log("associatedUpdated", associatedUpdated);
+
+  // // ! Mettre à jour usedQuantity
+  // // ! Utiliser QuantityUtils ?!
+  // setStops((prev) => {
+  //   const newStops = [...prev].map((prevPoint) => {
+  //     return prevPoint.id != point.id
+  //       ? prevPoint
+  //       : { ...point, associated: associatedUpdated };
+  //   });
+  //   return newStops;
+  // });
 
   // ! Fix
-  // addPointToTrip({ ...point, quantity: associatedQuantityCount });
-  // const lastPoint = currentDrawTrip().points.at(-1);
+  console.log(
+    "currentDrawTrip before adding tripPoints",
+    JSON.stringify(currentDrawTrip().tripPoints)
+  );
 
-  // addPointToTrip({ ...point, quantity: associatedQuantityCount });
+  addPointToTrip({
+    id: point.id,
+    leafletId: point.leafletId,
+    name: point.name,
+    lon: point.lon,
+    lat: point.lat,
+    quantity: 1, // ! TO DELETE
+    nature: point.nature,
+    // gradeId: 0, // ! TO DELETE
+    grades,
+  });
+
   console.log("currentDrawTrip()", currentDrawTrip());
 
   if (!lastPoint || point.leafletId != lastPoint.leafletId) {

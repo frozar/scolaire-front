@@ -5,6 +5,7 @@ import { getSchools } from "../views/content/map/component/organism/SchoolPoints
 import { getStops } from "../views/content/map/component/organism/StopPoints";
 import { COLOR_GREEN_BASE } from "../views/content/map/constant";
 import { EntityUtils, LocationPathDBType, PointType } from "./_utils.entity";
+import { GradeTripDBType, GradeTripType } from "./grade.entity";
 import { SchoolType } from "./school.entity";
 import {
   WaypointDBType,
@@ -170,9 +171,10 @@ export type TripPointType = {
   name: string;
   lon: number;
   lat: number;
-  quantity: number;
+  quantity: number; // ! TO DELETE
   nature: NatureEnum;
-  gradeId: number;
+  // gradeId: number; // ! TO DELETE
+  grades: GradeTripType[];
 };
 
 export type TripDBType = {
@@ -190,8 +192,9 @@ export type TripDBType = {
 export type TripPointDBType = {
   stop_id: number;
   school_id: number;
-  quantity: number;
-  grade_id: number;
+  quantity: number; // ! TO DELETE
+  // grade_id: number; // ! TO DELETE
+  grades: GradeTripDBType[];
 };
 
 export type TripMetricType = {
@@ -210,7 +213,10 @@ function formatTripPointDBType(points: TripPointType[]): TripPointDBType[] {
       stop_id: point.nature == NatureEnum.stop ? point.id : 0,
       school_id: point.nature == NatureEnum.school ? point.id : 0,
       quantity: point.quantity,
-      grade_id: point.gradeId,
+      // grade_id: point.gradeId,
+      grades: point.grades.map((grade) => {
+        return { grade_id: grade.gradeId, quantity: grade.quantity };
+      }),
     };
   });
 }
@@ -234,7 +240,10 @@ function formatTripPointType(points: TripPointDBType[]): TripPointType[] {
           lat: associatedPoint.lat,
           nature: associatedPoint.nature,
           quantity: dbPoint.quantity,
-          gradeId: dbPoint.grade_id,
+          grades: dbPoint.grades.map((grade) => {
+            return { gradeId: grade.grade_id, quantity: grade.quantity };
+          }),
+          // gradeId: dbPoint.grade_id,
         };
       } else {
         //TODO Error log to improve

@@ -86,10 +86,25 @@ const onClick = (point: SchoolType) => {
           const lastPoint = currentDrawTrip().tripPoints.at(-1);
 
           // TODO  add quantity pour school ?!
+          // addPointToTrip({
+          //   ...point,
+          //   quantity: 0,
+          // });
           addPointToTrip({
-            ...point,
-            quantity: 0,
+            id: point.id,
+            leafletId: point.leafletId,
+            name: point.name,
+            lon: point.lon,
+            lat: point.lat,
+            quantity: 0, // ! TO DELETE
+            nature: point.nature,
+            // gradeId: 0, // ! TO DELETE
+            grades: [], // ! Change it ?
           });
+          console.log(
+            "currentDrawTrip() after school added",
+            currentDrawTrip()
+          );
 
           if (!lastPoint || point.leafletId != lastPoint.leafletId) {
             const waypoints = currentDrawTrip().waypoints;
