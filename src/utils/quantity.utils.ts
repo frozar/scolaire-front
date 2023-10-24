@@ -28,10 +28,10 @@ export namespace QuantityUtils {
   export function set(trips: TripType[]) {
     trips.forEach((trip) => {
       trip.schools.forEach((school) => {
-        setSchoolQuantity(school, trip.points, OperationType.set);
+        setSchoolQuantity(school, trip.tripPoints, OperationType.set);
       });
 
-      trip.points.forEach((point) => {
+      trip.tripPoints.forEach((point) => {
         setStopQuantity(point, trip.schools, OperationType.set);
       });
     });
@@ -46,10 +46,10 @@ export namespace QuantityUtils {
 
   function operation(trip: TripType, operation: OperationType) {
     trip.schools.forEach((school) => {
-      setSchoolQuantity(school, trip.points, operation);
+      setSchoolQuantity(school, trip.tripPoints, operation);
     });
 
-    trip.points.forEach((point) => {
+    trip.tripPoints.forEach((point) => {
       setStopQuantity(point, trip.schools, operation);
     });
   }

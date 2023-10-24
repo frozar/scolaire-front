@@ -97,7 +97,7 @@ export function DrawTripBoard() {
           <SchoolsEnumeration
             schoolsName={currentDrawTrip().schools.map((school) => school.name)}
           />
-          <Show when={currentDrawTrip().points.length > 0}>
+          <Show when={currentDrawTrip().tripPoints.length > 0}>
             <DrawHelperButton schools={currentDrawTrip().schools} />
           </Show>
         </div>
@@ -148,7 +148,7 @@ export function DrawTripBoard() {
       <Show when={currentStep() == DrawTripStep.editTrip}>
         <div class="bus-trip-information-board-content">
           <Show
-            when={currentDrawTrip().points.length > 0}
+            when={currentDrawTrip().tripPoints.length > 0}
             fallback={
               <div class="flex w-4/5 text-xs justify-center absolute bottom-[500px]">
                 Veuillez sélectionner des points sur la carte
@@ -190,7 +190,7 @@ export function removeSchoolToTrip(school: SchoolType) {
 export function addPointToTrip(point: TripPointType) {
   setCurrentDrawTrip((trip: TripType) => {
     // TODO richard pourquoi cette condition ?
-    const points = trip.points;
+    const points = trip.tripPoints;
     if (!_.isEqual(points.at(-1), point)) {
       points.splice(currentTripIndex(), 0, point);
     }
@@ -260,7 +260,7 @@ async function nextStep() {
       }
       setCurrentStep(DrawTripStep.editTrip);
     case DrawTripStep.editTrip:
-      if (currentDrawTrip().points.length < 2) {
+      if (currentDrawTrip().tripPoints.length < 2) {
         break;
       }
       if (!currentDrawTrip().waypoints) {
@@ -332,7 +332,7 @@ function prevStep() {
 
 async function onClick() {
   if (displayTripMode() == displayTripModeEnum.straight) {
-    if (currentDrawTrip().points.length < 2) {
+    if (currentDrawTrip().tripPoints.length < 2) {
       return;
     }
     if (!currentDrawTrip().waypoints) {
@@ -360,7 +360,7 @@ export function removePoint(point: StopType | SchoolType) {
   setCurrentDrawTrip((trip) => {
     return {
       ...trip,
-      points: trip.points.filter(
+      points: trip.tripPoints.filter(
         (p) => p.id != point.id && p.lat != point.lat && p.lon != point.lon
       ),
     };

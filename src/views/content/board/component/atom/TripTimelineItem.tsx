@@ -29,7 +29,7 @@ export function TripTimelineItem(props: {
                 ? "+ " + props.point.quantity
                 : " " +
                   SumQuantity(
-                    props.trip.points,
+                    props.trip.tripPoints,
                     props.trip.schools[0],
                     props.indice - 1
                   ) *
@@ -41,13 +41,13 @@ export function TripTimelineItem(props: {
             {props.point.nature === NatureEnum.stop
               ? " + " +
                 SumQuantity(
-                  props.trip.points,
+                  props.trip.tripPoints,
                   props.trip.schools[0],
                   props.indice
                 )
               : " " +
                 SumQuantity(
-                  props.trip.points,
+                  props.trip.tripPoints,
                   props.trip.schools[0],
                   props.indice
                 ) *

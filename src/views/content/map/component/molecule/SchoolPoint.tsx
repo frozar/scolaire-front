@@ -83,7 +83,7 @@ const onClick = (point: SchoolType) => {
           return;
 
         case DrawTripStep.editTrip:
-          const lastPoint = currentDrawTrip().points.at(-1);
+          const lastPoint = currentDrawTrip().tripPoints.at(-1);
 
           // TODO  add quantity pour school ?!
           addPointToTrip({
@@ -97,7 +97,7 @@ const onClick = (point: SchoolType) => {
               const newWaypoints = WaypointEntity.updateWaypoints(
                 point,
                 waypoints,
-                currentDrawTrip().points
+                currentDrawTrip().tripPoints
               );
 
               updateWaypoints(newWaypoints);
@@ -153,7 +153,7 @@ const onMouseOut = () => {
 
 const onRightClick = (point: SchoolType) => {
   const circle = linkMap.get(point.leafletId);
-  const isInTripUnderConstruction = currentDrawTrip().points.filter(
+  const isInTripUnderConstruction = currentDrawTrip().tripPoints.filter(
     (_point) => _point.id == point.id
   )[0];
 

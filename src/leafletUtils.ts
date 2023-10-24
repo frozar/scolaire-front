@@ -59,7 +59,7 @@ export function updatePointColor(point?: PointType) {
     if (!trip) {
       return;
     }
-    ids.push(...trip.points.map((point) => point.leafletId));
+    ids.push(...trip.tripPoints.map((point) => point.leafletId));
   }
 
   setSchoolPointsColor(ids, COLOR_SCHOOL_LIGHT);

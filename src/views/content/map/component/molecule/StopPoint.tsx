@@ -66,7 +66,7 @@ function updateTripAndWaypoints(point: StopType) {
   // TODO: FIX
   // const associatedQuantity = getAssociatedQuantity(point);
   const associatedQuantity = 1;
-  const lastPoint = currentDrawTrip().points.at(-1);
+  const lastPoint = currentDrawTrip().tripPoints.at(-1);
 
   addPointToTrip({ ...point, quantity: associatedQuantity });
 
@@ -76,7 +76,7 @@ function updateTripAndWaypoints(point: StopType) {
       const newWaypoints = WaypointEntity.updateWaypoints(
         point,
         waypoints,
-        currentDrawTrip().points
+        currentDrawTrip().tripPoints
       );
       updateWaypoints(newWaypoints);
     }
@@ -123,7 +123,7 @@ const onMouseOver = (stop: StopType) => {
   if (
     draggingWaypointIndex() &&
     !currentDrawTrip()
-      .points.map((point) => point.id)
+      .tripPoints.map((point) => point.id)
       .includes(stop.id)
   ) {
     const circle = linkMap.get(stop.leafletId);
@@ -156,7 +156,7 @@ const onMouseUp = (stop: StopType, map: L.Map) => {
     // case mouseUp on a stop not already in the trip
     if (
       !currentDrawTrip()
-        .points.map((point) => point.id)
+        .tripPoints.map((point) => point.id)
         .includes(stop.id)
     ) {
       setDraggingWaypointIndex();
@@ -167,7 +167,7 @@ const onMouseUp = (stop: StopType, map: L.Map) => {
       const circle = linkMap.get(stop.leafletId);
       circle?.setStyle({ radius: 5, weight: 0 });
     } else {
-      setCurrentTripIndex(currentDrawTrip().points.length);
+      setCurrentTripIndex(currentDrawTrip().tripPoints.length);
       setDraggingWaypointIndex();
       map.off("mousemove");
     }
@@ -181,7 +181,7 @@ const onMouseUp = (stop: StopType, map: L.Map) => {
 
 const onRightClick = (stop: StopType) => {
   const circle = linkMap.get(stop.leafletId);
-  const isInTripUnderConstruction = currentDrawTrip().points.filter(
+  const isInTripUnderConstruction = currentDrawTrip().tripPoints.filter(
     (_point) => _point.id == stop.id
   )[0];
 

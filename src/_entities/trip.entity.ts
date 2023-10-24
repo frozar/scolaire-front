@@ -33,7 +33,7 @@ export namespace TripEntity {
       schools: [school],
       name: dbData.name,
       color: "#" + dbData.color,
-      points: formatTripPointType(dbData.trip_stop),
+      tripPoints: formatTripPointType(dbData.trip_stop),
       waypoints: WaypointEntity.formatWaypointType(dbData.waypoint),
       latLngs: dbData.polyline
         ? dbData.polyline.data.map((item) => L.latLng(item.lat, item.lng))
@@ -48,7 +48,7 @@ export namespace TripEntity {
       schools: [],
       name: "My Default Name",
       color: COLOR_GREEN_BASE,
-      points: [],
+      tripPoints: [],
       waypoints: [],
       latLngs: [],
       selected: false,
@@ -62,7 +62,7 @@ export namespace TripEntity {
       color: EntityUtils.formatColorForDB(line.color),
       name: name,
       school_id: line.schools[0].id,
-      trip_stop: formatTripPointDBType(line.points),
+      trip_stop: formatTripPointDBType(line.tripPoints),
       polyline: EntityUtils.buildLocationPath(line.latLngs),
       metrics: {
         distance: line.metrics?.distance,
@@ -102,10 +102,10 @@ export namespace TripEntity {
         name: line.name,
       };
     }
-    if (line.points) {
+    if (line.tripPoints) {
       output = {
         ...output,
-        trip_stop: formatTripPointDBType(line.points),
+        trip_stop: formatTripPointDBType(line.tripPoints),
       };
     }
     if (line.waypoints) {
@@ -129,7 +129,7 @@ export namespace TripEntity {
 
     for (const line of getLines()) {
       line.trips.map((trip) => {
-        trip.points.map((point) => {
+        trip.tripPoints.map((point) => {
           if (point.nature == NatureEnum.stop && point.id == stopId)
             trips.push(trip);
         });
@@ -144,7 +144,7 @@ export type TripType = {
   schools: SchoolType[];
   name: string;
   color: string;
-  points: TripPointType[];
+  tripPoints: TripPointType[];
   waypoints?: WaypointType[];
   latLngs: L.LatLng[];
   selected: boolean;
