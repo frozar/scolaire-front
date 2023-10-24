@@ -159,7 +159,7 @@ export type TripPointType = {
   lat: number;
   quantity: number;
   nature: NatureEnum;
-  grade_id: number;
+  gradeId: number;
 };
 
 export type TripDBType = {
@@ -196,7 +196,7 @@ function formatTripPointDBType(points: TripPointType[]): TripPointDBType[] {
       stop_id: point.nature == NatureEnum.stop ? point.id : 0,
       school_id: point.nature == NatureEnum.school ? point.id : 0,
       quantity: point.quantity,
-      grade_id: point.grade_id,
+      grade_id: point.gradeId,
     };
   });
 }
@@ -220,7 +220,7 @@ function formatTripPointType(points: TripPointDBType[]): TripPointType[] {
           lat: associatedPoint.lat,
           nature: associatedPoint.nature,
           quantity: dbPoint.quantity,
-          grade_id: dbPoint.grade_id,
+          gradeId: dbPoint.grade_id,
         };
       } else {
         //TODO Error log to improve
