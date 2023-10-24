@@ -21,6 +21,7 @@ const menuItems: MenuItemType[] = [
     isDisabled: false,
     onClick: () => {
       changeBoard(undefined);
+      setSelectedMenu("dashboard");
     },
   },
   {
