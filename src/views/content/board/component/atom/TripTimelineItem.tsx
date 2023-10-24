@@ -26,7 +26,11 @@ export function TripTimelineItem(props: {
           <div class="first-items">
             <div class="me-4">
               {props.point.nature === NatureEnum.stop
-                ? "+ " + props.point.quantity
+                ? // ? "+ " + props.point.quantity
+                  "+ " +
+                  props.point.grades
+                    .map((grade) => grade.quantity)
+                    .reduce((a, b) => a + b, 0)
                 : " " +
                   SumQuantity(
                     props.trip.tripPoints,
@@ -97,29 +101,66 @@ function setDividerColor(color: string) {
   }
 }
 
+// function SumQuantity(
+//   stops: TripPointType[],
+//   selectedSchool: SchoolType,
+//   indice: number
+// ) {
+//   const school = stops.filter(
+//     (point) =>
+//       point.id === selectedSchool.id && point.nature === NatureEnum.school
+//   )[0];
+
+//   let subList = stops.slice(0, indice + 1);
+
+//   let deb = subList.lastIndexOf(school);
+
+//   deb = deb > -1 ? deb + 1 : 0;
+
+//   subList = subList.slice(deb);
+
+//   let sum = 0;
+
+//   subList.map((point) => {
+//     sum += point.quantity;
+//   });
+
+//   return sum;
+// }
+
 function SumQuantity(
   stops: TripPointType[],
   selectedSchool: SchoolType,
   indice: number
 ) {
-  const school = stops.filter(
-    (point) =>
-      point.id === selectedSchool.id && point.nature === NatureEnum.school
-  )[0];
-
-  let subList = stops.slice(0, indice + 1);
-
-  let deb = subList.lastIndexOf(school);
-
-  deb = deb > -1 ? deb + 1 : 0;
-
-  subList = subList.slice(deb);
-
   let sum = 0;
-
-  subList.map((point) => {
-    sum += point.quantity;
-  });
-
+  for (let i = 0; i < indice + 1; i++) {
+    if (stops[i].nature == NatureEnum.stop) {
+      // ! Necessaire ?
+      sum += stops[i].grades
+        .map((grade) => grade.quantity)
+        .reduce((a, b) => a + b, 0);
+    }
+  }
   return sum;
+  // const school = stops.filter(
+  //   (point) =>
+  //     point.id === selectedSchool.id && point.nature === NatureEnum.school
+  // )[0];
+
+  // let subList = stops.slice(0, indice + 1);
+
+  // let deb = subList.lastIndexOf(school);
+
+  // deb = deb > -1 ? deb + 1 : 0;
+
+  // subList = subList.slice(deb);
+
+  // let sum = 0;
+
+  // subList.map((point) => {
+  //   sum += point.quantity;
+  // });
+
+  // return sum;
 }
