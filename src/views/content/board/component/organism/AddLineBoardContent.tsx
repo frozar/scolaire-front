@@ -25,7 +25,7 @@ import { setOnBoard, toggleDrawMod } from "../template/ContextManager";
 import "./AddLineBoardContent.css";
 import CollapsibleCheckableElement, {
   AssociatedItem,
-} from "./CollapsibleCheckableElement";
+} from "./CollapsibleCheckableStops";
 // TODO to fix -> doit importer un AddLineBoardContent ou similaire
 import { setLines } from "../../../map/component/organism/BusLines";
 import "./DrawTripBoard.css";

@@ -1,4 +1,4 @@
-import { Show, createSignal, onCleanup, onMount } from "solid-js";
+import { For, Show, createSignal, onCleanup, onMount } from "solid-js";
 
 import SelectedSchool from "../atom/SelectedSchool";
 
@@ -51,6 +51,7 @@ import { TripTimeline } from "./TripTimeline";
 export enum DrawTripStep {
   initial,
   schoolSelection,
+  gradeSelection,
   editTrip,
 }
 
@@ -90,6 +91,35 @@ export function DrawTripBoard() {
     <div class="add-line-information-board-content">
       <Show when={currentStep() == DrawTripStep.schoolSelection}>
         <SelectedSchool schoolSelected={currentDrawTrip().schools} />
+      </Show>
+
+      <Show when={currentStep() == DrawTripStep.gradeSelection}>
+        <fieldset class="line-stop-selection">
+          test
+          <For
+            each={currentDrawTrip()
+              .schools.map((school) => school.grades)
+              .flat()}
+          >
+            {(grade) => {
+              return (
+                <div class="flex items-center">
+                  <input
+                    id="comments"
+                    name="comments"
+                    type="checkbox"
+                    checked={true}
+                    onChange={(e) => {
+                      console.log("todo");
+                    }}
+                    class="h-4 w-5 mr-4 rounded border-gray-300 text-green-base focus:ring-green-base"
+                  />
+                  <p>{grade.name}</p>
+                </div>
+              );
+            }}
+          </For>
+        </fieldset>
       </Show>
 
       <Show when={currentStep() == DrawTripStep.editTrip}>
@@ -258,7 +288,14 @@ async function nextStep() {
       if (currentDrawTrip().schools.length < 1) {
         break;
       }
+      setCurrentStep(DrawTripStep.gradeSelection);
+      break;
+
+    case DrawTripStep.gradeSelection:
+      console.log("todo");
       setCurrentStep(DrawTripStep.editTrip);
+      break;
+
     case DrawTripStep.editTrip:
       if (currentDrawTrip().tripPoints.length < 2) {
         break;
@@ -299,6 +336,10 @@ function prevStep() {
       MapElementUtils.deselectAllPointsAndBusTrips();
 
       break;
+    case DrawTripStep.gradeSelection:
+      console.log("todo");
+      setCurrentStep(DrawTripStep.schoolSelection);
+      break;
     case DrawTripStep.editTrip:
       if (isInUpdate()) {
         QuantityUtils.add(currentDrawTrip());
@@ -321,7 +362,7 @@ function prevStep() {
             return { ...trip, latLngs: [] };
           });
         }
-        setCurrentStep(DrawTripStep.schoolSelection);
+        setCurrentStep(DrawTripStep.gradeSelection);
       }
       break;
   }

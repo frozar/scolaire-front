@@ -4,7 +4,7 @@ import { Meta, StoryObj } from "storybook-solidjs";
 import { NatureEnum } from "../../../../../type";
 import CollapsibleCheckableElement, {
   AssociatedItem,
-} from "./CollapsibleCheckableElement";
+} from "./CollapsibleCheckableStops";
 
 const meta = {
   component: CollapsibleCheckableElement,
