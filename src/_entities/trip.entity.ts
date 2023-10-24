@@ -33,7 +33,7 @@ export namespace TripEntity {
       schools: [school],
       name: dbData.name,
       color: "#" + dbData.color,
-      points: formatTripPointType(dbData.bus_line_stop),
+      points: formatTripPointType(dbData.trip_stop),
       waypoints: WaypointEntity.formatWaypointType(dbData.waypoint),
       latLngs: dbData.polyline
         ? dbData.polyline.data.map((item) => L.latLng(item.lat, item.lng))
@@ -159,6 +159,7 @@ export type TripPointType = {
   lat: number;
   quantity: number;
   nature: NatureEnum;
+  grade_id: number;
 };
 
 export type TripDBType = {
@@ -166,7 +167,7 @@ export type TripDBType = {
   school_id: number;
   name: string;
   color: string;
-  bus_line_stop: TripPointDBType[];
+  trip_stop: TripPointDBType[];
   polyline: LocationPathDBType;
   metrics: TripMetricType;
   waypoint: WaypointDBType[];
@@ -176,6 +177,7 @@ export type TripPointDBType = {
   stop_id: number;
   school_id: number;
   quantity: number;
+  grade_id: number;
 };
 
 export type TripMetricType = {
@@ -217,6 +219,7 @@ function formatTripPointType(points: TripPointDBType[]): TripPointType[] {
           lat: associatedPoint.lat,
           nature: associatedPoint.nature,
           quantity: dbPoint.quantity,
+          grade_id: dbPoint.grade_id,
         };
       } else {
         //TODO Error log to improve
