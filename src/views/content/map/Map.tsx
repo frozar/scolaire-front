@@ -46,17 +46,17 @@ export default function () {
     // for (const handler of listHandlerLMap) {
     // document.body.addEventListener("keydown", handler);
     // }
-
-    mapDiv.addEventListener(
-      "dragenter",
-      (e) => {
-        e.preventDefault();
-        setDisplayImportCsvCanvas(true);
-      },
-      false
-    );
-
-    buildMap(mapDiv);
+    if (getActiveMapId()) {
+      mapDiv.addEventListener(
+        "dragenter",
+        (e) => {
+          e.preventDefault();
+          setDisplayImportCsvCanvas(true);
+        },
+        false
+      );
+      buildMap(mapDiv);
+    }
   });
 
   // onCleanup(() => {
@@ -65,9 +65,8 @@ export default function () {
   //     // document.body.removeEventListener("keydown", handler);
   //   }
   // });
-
   return (
-    <Show when={getActiveMapId()} fallback={<div>Sélectionner une carte</div>}>
+    <Show when={getActiveMapId()}>
       <ImportCsvCanvas
         display={displayImportCsvCanvas()}
         setDisplay={setDisplayImportCsvCanvas}

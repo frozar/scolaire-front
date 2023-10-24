@@ -1,5 +1,6 @@
 import { Match, Switch, createEffect, createSignal } from "solid-js";
 
+import { useStateGui } from "../../../../../StateGui";
 import { LineType } from "../../../../../_entities/line.entity";
 import { getSelectedLine } from "../../../map/component/organism/BusLines";
 import GradeBoard from "../../../schools/component/organism/GradeBoard";
@@ -13,6 +14,8 @@ import { DrawTripBoard } from "../organism/DrawTripBoard";
 import { TripBoard } from "../organism/TripBoard";
 import { TripsBoard } from "../organism/TripsBoard";
 import InformationBoardLayout from "./InformationBoardLayout";
+
+const [, { getActiveMapId }] = useStateGui();
 
 //TODO utiliser ou supprimer "schools" et "stops"
 export type BoardTags =
@@ -32,8 +35,11 @@ export type BoardTags =
 export const [isInDrawMod, setIsDrawMod] = createSignal<boolean>(false);
 export const toggleDrawMod = () => setIsDrawMod((bool) => !bool);
 
-export const [onBoard, setOnBoard] = createSignal<BoardTags>("line");
+export const [onBoard, setOnBoard] = createSignal<BoardTags>(undefined);
 export const changeBoard = (boardName: BoardTags) => setOnBoard(boardName);
+if (getActiveMapId()) {
+  changeBoard("line");
+}
 
 export default function () {
   createEffect(() => {
