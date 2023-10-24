@@ -15,7 +15,7 @@ export function TripTimeline(props: {
         class="timeline-items "
         style={{ "--v-timeline-line-thickness": "2px" }}
       >
-        <For each={props.trip.points}>
+        <For each={props.trip.tripPoints}>
           {(point, i) => (
             <div class="timeline-block">
               <Show when={onBoard() == "trip-draw"}>

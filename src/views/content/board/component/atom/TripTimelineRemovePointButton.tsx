@@ -16,12 +16,12 @@ export function TripTimelineRemovePointButton(props: {
 }) {
   const deletePoint = (indice: number) => {
     if (props.setTrip) {
-      const points = [...props.trip.points];
+      const points = [...props.trip.tripPoints];
       const pointId = points[indice].id;
       const nature = points[indice].nature;
 
       // TODO pas de l'ordre de la timeline !!
-      const circle = linkMap.get(props.trip.points[indice].leafletId);
+      const circle = linkMap.get(props.trip.tripPoints[indice].leafletId);
       nature == NatureEnum.stop
         ? circle?.setStyle({ fillColor: COLOR_STOP_FOCUS })
         : circle?.setStyle({ fillColor: COLOR_SCHOOL_FOCUS });

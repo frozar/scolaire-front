@@ -63,7 +63,7 @@ export function Trip(props: { trip: TripType; map: L.Map }) {
       setLocalLatLngs(props.trip.latLngs);
       setLocalOpacity(0.8);
     } else {
-      setLocalLatLngs(getLatLngsFromPoint(props.trip.points));
+      setLocalLatLngs(getLatLngsFromPoint(props.trip.tripPoints));
       setLocalOpacity(1);
     }
   });
@@ -81,7 +81,7 @@ export function Trip(props: { trip: TripType; map: L.Map }) {
         });
       });
       pointFocus = [];
-      props.trip.points.map((point) => {
+      props.trip.tripPoints.map((point) => {
         const circle = linkMap.get(point.leafletId);
         circle?.setStyle({ fillColor: COLOR_STOP_EMPHASE });
         pointFocus.push({

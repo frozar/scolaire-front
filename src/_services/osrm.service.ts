@@ -17,7 +17,7 @@ export class OsrmService {
     projectedLatlngs: L.LatLng[];
     metrics: TripMetricType;
   }> {
-    const points: TripPointType[] = trip.points;
+    const points: TripPointType[] = trip.tripPoints;
     let waypoints: WaypointType[] = trip.waypoints ?? points;
     waypoints = waypoints.length > 0 ? waypoints : points;
     if (waypoints.length <= 1) {

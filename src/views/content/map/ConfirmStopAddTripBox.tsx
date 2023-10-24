@@ -25,7 +25,7 @@ export function defineModalToOpen(obj: () => void) {
 }
 
 export const confirmAbortEditionNeedToBeCall = () => {
-  const hasTripUnderConstruction = currentDrawTrip().points.length > 0;
+  const hasTripUnderConstruction = currentDrawTrip().tripPoints.length > 0;
 
   if (isInDrawTripMode() && hasTripUnderConstruction) {
     toggleConfirmStopAddTrip();

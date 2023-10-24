@@ -70,7 +70,7 @@ describe("TripService", () => {
           leafletId: 1,
         },
       ],
-      points: [
+      tripPoints: [
         {
           id: 1,
           leafletId: 1,

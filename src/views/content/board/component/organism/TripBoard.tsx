@@ -64,10 +64,10 @@ async function addTrip() {
   setIsInUpdate(true);
   setCurrentDrawTrip({
     ...(selectedTrip() as TripType),
-    points: [...(selectedTrip() as TripType).points],
+    points: [...(selectedTrip() as TripType).tripPoints],
   });
   changeBoard("trip-draw");
-  setCurrentTripIndex((selectedTrip() as TripType).points.length);
+  setCurrentTripIndex((selectedTrip() as TripType).tripPoints.length);
 
   MapElementUtils.deselectAllPointsAndBusTrips();
   toggleDrawMod();

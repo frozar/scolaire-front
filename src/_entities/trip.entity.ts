@@ -33,7 +33,7 @@ export namespace TripEntity {
       schools: [school],
       name: dbData.name,
       color: "#" + dbData.color,
-      points: formatTripPointType(dbData.bus_line_stop),
+      tripPoints: formatTripPointType(dbData.trip_stop),
       waypoints: WaypointEntity.formatWaypointType(dbData.waypoint),
       latLngs: dbData.polyline
         ? dbData.polyline.data.map((item) => L.latLng(item.lat, item.lng))
@@ -48,7 +48,7 @@ export namespace TripEntity {
       schools: [],
       name: "My Default Name",
       color: COLOR_GREEN_BASE,
-      points: [],
+      tripPoints: [],
       waypoints: [],
       latLngs: [],
       selected: false,
@@ -62,7 +62,7 @@ export namespace TripEntity {
       color: EntityUtils.formatColorForDB(line.color),
       name: name,
       school_id: line.schools[0].id,
-      bus_line_stop: formatTripPointDBType(line.points),
+      trip_stop: formatTripPointDBType(line.tripPoints),
       polyline: EntityUtils.buildLocationPath(line.latLngs),
       metrics: {
         distance: line.metrics?.distance,
@@ -102,10 +102,10 @@ export namespace TripEntity {
         name: line.name,
       };
     }
-    if (line.points) {
+    if (line.tripPoints) {
       output = {
         ...output,
-        bus_line_stop: formatTripPointDBType(line.points),
+        trip_stop: formatTripPointDBType(line.tripPoints),
       };
     }
     if (line.waypoints) {
@@ -129,7 +129,7 @@ export namespace TripEntity {
 
     for (const line of getLines()) {
       line.trips.map((trip) => {
-        trip.points.map((point) => {
+        trip.tripPoints.map((point) => {
           if (point.nature == NatureEnum.stop && point.id == stopId)
             trips.push(trip);
         });
@@ -144,7 +144,7 @@ export type TripType = {
   schools: SchoolType[];
   name: string;
   color: string;
-  points: TripPointType[];
+  tripPoints: TripPointType[];
   waypoints?: WaypointType[];
   latLngs: L.LatLng[];
   selected: boolean;
@@ -159,6 +159,7 @@ export type TripPointType = {
   lat: number;
   quantity: number;
   nature: NatureEnum;
+  gradeId: number;
 };
 
 export type TripDBType = {
@@ -166,7 +167,7 @@ export type TripDBType = {
   school_id: number;
   name: string;
   color: string;
-  bus_line_stop: TripPointDBType[];
+  trip_stop: TripPointDBType[];
   polyline: LocationPathDBType;
   metrics: TripMetricType;
   waypoint: WaypointDBType[];
@@ -176,6 +177,7 @@ export type TripPointDBType = {
   stop_id: number;
   school_id: number;
   quantity: number;
+  grade_id: number;
 };
 
 export type TripMetricType = {
@@ -194,6 +196,7 @@ function formatTripPointDBType(points: TripPointType[]): TripPointDBType[] {
       stop_id: point.nature == NatureEnum.stop ? point.id : 0,
       school_id: point.nature == NatureEnum.school ? point.id : 0,
       quantity: point.quantity,
+      grade_id: point.gradeId,
     };
   });
 }
@@ -217,6 +220,7 @@ function formatTripPointType(points: TripPointDBType[]): TripPointType[] {
           lat: associatedPoint.lat,
           nature: associatedPoint.nature,
           quantity: dbPoint.quantity,
+          gradeId: dbPoint.grade_id,
         };
       } else {
         //TODO Error log to improve

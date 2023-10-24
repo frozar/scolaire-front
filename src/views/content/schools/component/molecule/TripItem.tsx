@@ -23,7 +23,7 @@ export function TripItem(props: { trip: TripType }) {
           <div class="stop-logo">
             <ArretsLogo />
           </div>
-          <p>{props.trip.points.length + " arrêts déservis"}</p>
+          <p>{props.trip.tripPoints.length + " arrêts déservis"}</p>
         </div>
       </div>
     </CardWrapper>

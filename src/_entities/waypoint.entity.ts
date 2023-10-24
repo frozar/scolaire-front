@@ -9,7 +9,7 @@ export namespace WaypointEntity {
   export function createWaypointsFromTrip(trip: TripType) {
     const waypoints: WaypointType[] = [];
 
-    for (const point of trip.points) {
+    for (const point of trip.tripPoints) {
       if (point.nature == NatureEnum.school) {
         waypoints.push({
           idSchool: point.id,
