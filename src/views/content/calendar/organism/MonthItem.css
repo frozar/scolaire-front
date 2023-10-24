@@ -1,0 +1,9 @@
+.month-item {
+  @apply w-auto px-2;
+  border-left: 1px solid black;
+}
+
+.month-days {
+  @apply flex gap-1;
+  font-size: 10px;
+}

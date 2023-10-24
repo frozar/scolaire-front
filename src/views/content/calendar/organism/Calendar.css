@@ -1,0 +1,24 @@
+.page-layout {
+  @apply px-10 w-full bg-white pt-5;
+}
+
+.page-title {
+  @apply text-2xl;
+}
+
+.months-container {
+  @apply flex items-center overflow-x-hidden;
+}
+
+.day-item {
+  @apply bg-slate-200;
+}
+
+.month-list-wrapper {
+  @apply mx-auto flex;
+  width: 95%;
+}
+
+.month-next-button {
+  width: 10px;
+}
