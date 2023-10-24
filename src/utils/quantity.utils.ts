@@ -2,6 +2,7 @@ import { AssociatedSchoolType } from "../_entities/_utils.entity";
 import { SchoolType } from "../_entities/school.entity";
 import { TripPointType, TripType } from "../_entities/trip.entity";
 import { NatureEnum } from "../type";
+import { getLines } from "../views/content/map/component/organism/BusLines";
 import { setSchools } from "../views/content/map/component/organism/SchoolPoints";
 import { setStops } from "../views/content/map/component/organism/StopPoints";
 
@@ -13,12 +14,20 @@ enum OperationType {
 
 export namespace QuantityUtils {
   export function remaining(point: AssociatedSchoolType) {
-    // console.log("point.quantity", point.quantity);
-    // console.log("point.usedQuantity", point.usedQuantity);
+    // console.log("gradeId", point.gradeId);
+    // ! chercher dans les tripPoint le même gradeId que celui çi
+    // console.log("getLines()", getLines());
+    // getLines().find((line) => line.stops.some((stop) => stop.associated.some((assoc) => assoc.idClassToSchool == point.idClassToSchool)))
+    const test = getLines().some((line) =>
+      line.trips.some((trip) =>
+        trip.points.some((tripPoint) => tripPoint.grade_id == point.gradeId)
+      )
+    );
 
-    // const test = getLines().map((line) => line.trips.map((trip) => trip.points)).flat().flat().map((point) => point.id).includes(point.i)
+    if (test) return 0;
+    else return point.quantity;
 
-    return point.quantity - point.usedQuantity;
+    // return point.quantity - point.usedQuantity
   }
 
   export function remainingQuantities(points: AssociatedSchoolType[]) {
