@@ -1,4 +1,6 @@
+import { useStateGui } from "../../StateGui";
 import ArretsLogo from "../../icons/ArretsLogo";
+import CalendarIcon from "../../icons/CalendarIcon";
 import DashboardLogo from "../../icons/DashboardLogo";
 import EtablissementLogo from "../../icons/EtablissementLogo";
 import GraphicageLogo from "../../icons/GraphicageLogo";
@@ -9,6 +11,8 @@ import {
   onBoard,
 } from "../content/board/component/template/ContextManager";
 
+const [, { setSelectedMenu }] = useStateGui();
+
 const menuItems: MenuItemType[] = [
   {
     menuItem: "dashboard",
@@ -17,6 +21,7 @@ const menuItems: MenuItemType[] = [
     isDisabled: false,
     onClick: () => {
       changeBoard(undefined);
+      setSelectedMenu("dashboard");
     },
   },
   {
@@ -49,6 +54,16 @@ const menuItems: MenuItemType[] = [
     onClick: () => {
       changeBoard("stops");
       MapElementUtils.deselectAllPointsAndBusTrips();
+    },
+  },
+  {
+    menuItem: "calendar",
+    Logo: CalendarIcon,
+    label: "Calendrier",
+    isDisabled: false,
+    onClick: () => {
+      setSelectedMenu("calendar");
+      changeBoard(undefined);
     },
   },
   // {

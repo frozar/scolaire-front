@@ -10,6 +10,7 @@ import DragAndDropSummary from "./userInformation/DragAndDropSummary";
 import GeneratorDialogBox from "./userInformation/GeneratorDialogBox";
 import RemoveConfirmation from "./userInformation/RemoveConfirmation";
 import ContextManager from "./views/content/board/component/template/ContextManager";
+import Calendar from "./views/content/calendar/Calendar";
 import Dashboard from "./views/content/dashboard/Dashboard";
 import Map from "./views/content/map/Map";
 import { setPointsReady } from "./views/content/map/component/organism/Points";
@@ -40,6 +41,10 @@ export default () => {
         <Switch>
           <Match when={getSelectedMenu() == "dashboard"}>
             <Dashboard />
+          </Match>
+
+          <Match when={getSelectedMenu() == "calendar"}>
+            <Calendar />
           </Match>
 
           <Match when={getSelectedMenu() != "dashboard"}>

@@ -157,6 +157,7 @@ export type ReturnMessageType = {
 
 export type SelectedMenuType =
   | "graphicage"
+  | "calendar"
   | "dashboard"
   | "stops"
   | "voirie"

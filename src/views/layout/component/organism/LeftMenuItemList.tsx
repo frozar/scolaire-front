@@ -18,10 +18,9 @@ export default function (props: LeftMenuItemProps) {
   const mergedProps = mergeProps({ getSelectedMenu, setSelectedMenu }, props);
   createEffect(() => {
     const onBoardMode = onBoard();
-    if (!onBoardMode) {
-      setSelectedMenu("dashboard");
-      return;
-    }
+
+    if (!onBoardMode) return;
+
     if (["line", "trip-draw", "line-details", "trip"].includes(onBoardMode)) {
       setSelectedMenu("graphicage");
     } else if (
