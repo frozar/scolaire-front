@@ -73,6 +73,7 @@ export class ServiceUtils {
 
   static buildXanoUrl(url: string, urlNeedMap: boolean) {
     let buildUrl = import.meta.env.VITE_XANO_URL;
+    console.log("import.meta.env.VITE_XANO_URL", import.meta.env.VITE_XANO_URL);
     if (urlNeedMap) {
       buildUrl += "/map/" + getActiveMapId();
     }

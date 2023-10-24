@@ -20,7 +20,9 @@ import { MessageLevelEnum, MessageTypeEnum } from "../../../type";
 import { BusLines } from "./component/organism/BusLines";
 import { Points } from "./component/organism/Points";
 
-const [, { getActiveMapId }] = useStateGui();
+const [, { getActiveMapId, setActiveMapId }] = useStateGui();
+// ! ActiveMapId to set !
+// setActiveMapId(null);
 function buildMap(div: HTMLDivElement) {
   const option = "l7";
   switch (option) {
@@ -50,12 +52,13 @@ export default function () {
     mapDiv.addEventListener(
       "dragenter",
       (e) => {
+        // console.log("=>", 0);
         e.preventDefault();
         setDisplayImportCsvCanvas(true);
       },
       false
     );
-
+    // console.log("=>", 1);
     buildMap(mapDiv);
   });
 
@@ -65,9 +68,12 @@ export default function () {
   //     // document.body.removeEventListener("keydown", handler);
   //   }
   // });
-
+  console.log("getActiveMapId()", getActiveMapId());
   return (
-    <Show when={getActiveMapId()} fallback={<div>Sélectionner une carte</div>}>
+    <Show
+      when={getActiveMapId() != null}
+      fallback={<div>Sélectionner une carte</div>}
+    >
       <ImportCsvCanvas
         display={displayImportCsvCanvas()}
         setDisplay={setDisplayImportCsvCanvas}

@@ -80,6 +80,7 @@ const makeStateGuiContext = () => {
   }
 
   function setActiveMapId(id: number) {
+    console.log("activeMapId set to ", id);
     setState("activeMapId", id);
   }
 
