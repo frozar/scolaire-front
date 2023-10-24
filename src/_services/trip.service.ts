@@ -3,14 +3,6 @@ import { getSelectedLine } from "../views/content/map/component/organism/BusLine
 import { ServiceUtils } from "./_utils.service";
 
 export class TripService {
-  static async getAll(): Promise<TripType[]> {
-    // TODO changer endpoint Xano pour /trip
-    const dbStops: TripDBType[] = await ServiceUtils.get("/trip");
-    return dbStops
-      ? dbStops.map((dbStop: TripDBType) => TripEntity.build(dbStop))
-      : [];
-  }
-
   static async create(line: TripType): Promise<TripType> {
     const data = TripEntity.dbFormat(line);
 

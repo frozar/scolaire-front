@@ -6,13 +6,6 @@ import {
 import { ServiceUtils } from "./_utils.service";
 
 export class SchoolService {
-  static async getAll(): Promise<SchoolType[]> {
-    const dbSchools: SchoolDBType[] = await ServiceUtils.get("/schools_v2");
-    return dbSchools
-      ? dbSchools.map((dbSchool) => SchoolEntity.build(dbSchool))
-      : [];
-  }
-
   static async import(
     schools: Pick<SchoolDBType, "name" | "location">[]
   ): Promise<SchoolType[]> {

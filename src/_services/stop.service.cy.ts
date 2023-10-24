@@ -17,22 +17,6 @@ describe("StopService", () => {
   // ERROR: AssertionError: expected build to have been called at least once, but it was never called
   // TESTED: in bus-trip.service, place StopEntity.build in var and return the var | same result
 
-  it("getAll, spy on: generic, buildXanoUrl & get from ServiceUtils, build from StopEntity", () => {
-    const spyBuildXanoUrl = cy.spy(ServiceUtils, "buildXanoUrl");
-    const spyGeneric = cy.spy(ServiceUtils, "generic");
-    const spyGet = cy.spy(ServiceUtils, "get");
-
-    // const spyStopEntityBuild = cy.spy(StopEntity, "build");
-
-    StopService.getAll();
-
-    expect(spyBuildXanoUrl).to.be.called;
-    expect(spyGeneric).to.be.called;
-    expect(spyGet).to.be.called;
-
-    // expect(spyStopEntityBuild).to.be.called;
-  });
-
   it("Create, spy on: generic, buildXanoUrl & post from ServiceUtils, build & dbFormat from StopEntity", () => {
     const spyBuildXanoUrl = cy.spy(ServiceUtils, "buildXanoUrl");
     const spyGeneric = cy.spy(ServiceUtils, "generic");

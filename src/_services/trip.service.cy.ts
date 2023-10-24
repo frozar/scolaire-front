@@ -19,21 +19,6 @@ describe("TripService", () => {
   // ERROR: AssertionError: expected build to have been called at least once, but it was never called
   // TESTED: in bus-trip.service, place TripEntity.build in var and return the var | same result
 
-  it("GetAll, spy on: generic, buildXanoUrl & get from ServiceUtils, build from TripEntity", () => {
-    // Spy on: buildXanoUrl, generic, post, build
-    // const spyTripEntityBuild = cy.spy(TripEntity, "build");
-    const spyBuildXanoUrl = cy.spy(ServiceUtils, "buildXanoUrl");
-    const spyGeneric = cy.spy(ServiceUtils, "generic");
-    const spyGet = cy.spy(ServiceUtils, "get");
-
-    TripService.getAll();
-
-    // expect(spyTripEntityBuild).to.be.called;
-    expect(spyBuildXanoUrl).to.be.called;
-    expect(spyGeneric).to.be.called;
-    expect(spyGet).to.be.called;
-  });
-
   it("Create, check: spy on generic & buildXanoUrl & get from ServiceUtils &   ", () => {
     // Spy on: buildXanoUrl, generic, post, build, dbFormat
     const spyTripEntityDBFormat = cy.spy(TripEntity, "dbFormat");
