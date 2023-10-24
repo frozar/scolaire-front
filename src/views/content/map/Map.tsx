@@ -65,10 +65,8 @@ export default function () {
   //     // document.body.removeEventListener("keydown", handler);
   //   }
   // });
-  // console.log("getActiveMapId()", getActiveMapId());
-  // TODO: Fallback => Display message "Please connect"
   return (
-    <Show when={getActiveMapId()} fallback={<div>Sélectionner une carte</div>}>
+    <Show when={getActiveMapId()}>
       <ImportCsvCanvas
         display={displayImportCsvCanvas()}
         setDisplay={setDisplayImportCsvCanvas}
