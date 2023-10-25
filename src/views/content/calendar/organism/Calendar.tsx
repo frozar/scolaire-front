@@ -59,6 +59,7 @@ export default function () {
           onClick={previousMonth}
           class="month-next-button"
         />
+
         <div class="month-list-wrapper">
           <MonthList months={displayMonths()} />
         </div>
