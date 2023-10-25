@@ -1,8 +1,29 @@
-import { MonthType } from "./Calendar";
+import { MonthType } from "./template/Calendar";
 
 interface JourFerie {
   date: string;
   dayName: string;
+}
+
+export namespace CalendarUtils {
+  export function getMonthName(date: Date): string {
+    return date.toLocaleString("default", {
+      month: "long",
+    });
+  }
+
+  export function getDaysOfMonth(date: Date): number[] {
+    const days = [];
+    const numberOfDay = new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      0
+    ).getDate();
+    for (let i = 1; i <= numberOfDay; i++) {
+      days.push(i);
+    }
+    return days;
+  }
 }
 
 export function getAllMonthsAndDays(year: number) {

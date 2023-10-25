@@ -1,4 +1,4 @@
 .day-item {
-  @apply flex justify-center;
-  width: 10px;
+  @apply text-center text-[9px] text-gray-base ;
+  width: 18px;
 }
