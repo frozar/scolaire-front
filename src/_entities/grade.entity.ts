@@ -60,3 +60,13 @@ export type GradeType = {
   afternoonEnd: HeureFormat;
   associated?: AssociatedSchoolType[];
 };
+
+export type GradeTripType = {
+  gradeId: number;
+  quantity: number;
+};
+
+export type GradeTripDBType = {
+  grade_id: number;
+  quantity: number;
+};

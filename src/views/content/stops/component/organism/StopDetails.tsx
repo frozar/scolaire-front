@@ -46,12 +46,19 @@ export default function () {
   });
 
   const toggleEditItem = () => setEditItem((bool) => !bool);
+  // TODO: Placer dans stopUtils
+  function totalStudentOnStop() {
+    let total = 0;
+    stopDetailsItem()?.associated.map((assoc) => (total += assoc.quantity));
+
+    return total;
+  }
 
   return (
     <section>
       <StopDetailsHeader stop={stopDetailsItem() as StopType} />
 
-      <p>TODO élèves</p>
+      <p>{totalStudentOnStop()} élèves</p>
 
       <div class="stop-details-actions">
         <StopDetailsPanelsButton

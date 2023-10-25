@@ -8,7 +8,10 @@ import CheckIcon from "../../../../../icons/CheckIcon";
 import { addNewUserInformation } from "../../../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../../../type";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
-import { getSchools } from "../../../map/component/organism/SchoolPoints";
+import {
+  getSchools,
+  setSchools,
+} from "../../../map/component/organism/SchoolPoints";
 import { appendToStop } from "../../../map/component/organism/StopPoints";
 import GradeSelection from "../atom/GradeSelection";
 import InputNumber from "../atom/InputNumber";
@@ -115,6 +118,19 @@ export default function (props: EditStopProps) {
       Number(schoolSelectRef().value)
     );
     appendToStop(gradeToSchool, stopDetailsItem()?.id as number);
+    // TODO: Refactor and put in the right place
+    setSchools((prev) => {
+      const newSchools = [...prev];
+      newSchools
+        .filter((school) => school.id == gradeToSchool.schoolId)[0]
+        .associated.push({
+          idClassToSchool: gradeToSchool.idClassToSchool,
+          stopId: Number(stopDetailsItem()?.id),
+          quantity: gradeToSchool.quantity,
+          gradeId: gradeToSchool.gradeId,
+        });
+      return newSchools;
+    });
   }
 
   async function update() {

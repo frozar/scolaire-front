@@ -8,6 +8,7 @@ import {
 import { COLOR_STOP_FOCUS, COLOR_WAYPOINT } from "../../constant";
 import Point from "../atom/Point";
 
+import { GradeTripType } from "../../../../../_entities/grade.entity";
 import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
 import { updatePointColor } from "../../../../../leafletUtils";
 import {
@@ -29,6 +30,7 @@ import {
   draggingWaypointIndex,
   setDraggingWaypointIndex,
 } from "../atom/PolylineDragMarker";
+import { getLines } from "../organism/BusLines";
 import {
   blinkingStops,
   cursorIsOverPoint,
@@ -63,12 +65,53 @@ function getAssociatedQuantity(point: StopType) {
 }
 
 function updateTripAndWaypoints(point: StopType) {
-  // TODO: FIX
-  // const associatedQuantity = getAssociatedQuantity(point);
-  const associatedQuantity = 1;
   const lastPoint = currentDrawTrip().tripPoints.at(-1);
 
-  addPointToTrip({ ...point, quantity: associatedQuantity });
+  // TODO: Setup filter (selected grades during drawTrip creation)
+  const targetSchoolId = currentDrawTrip().schools[0].id; // TODO: Delete when filter is setup
+  const grades: GradeTripType[] = [];
+  point.associated.map((associated) => {
+    if (associated.schoolId == targetSchoolId) {
+      grades.push({
+        quantity: associated.quantity,
+        gradeId: associated.gradeId,
+      });
+    }
+  });
+
+  // TODO: Refactor, move and rename
+  function updateGradesWithRemainingQuantity(
+    grades: GradeTripType[],
+    point: StopType
+  ): GradeTripType[] {
+    // Get all corresponding gradeTrip
+    const gradeTrips = getLines()
+      .flatMap((line) => line.trips)
+      .flatMap((trip) => trip.tripPoints)
+      .filter((tripPoint) => tripPoint.id == point.id)
+      .flatMap((_tripPoint) => _tripPoint.grades);
+
+    // Substract used quantity
+    grades.forEach((grade) => {
+      gradeTrips.forEach((_gradeTrip) => {
+        if (_gradeTrip.gradeId == grade.gradeId) {
+          grade.quantity -= _gradeTrip.quantity;
+        }
+      });
+    });
+    return grades;
+  }
+
+  addPointToTrip({
+    id: point.id,
+    leafletId: point.leafletId,
+    name: point.name,
+    lon: point.lon,
+    lat: point.lat,
+    quantity: 1, // TODO: Delete when unused
+    nature: point.nature,
+    grades: updateGradesWithRemainingQuantity(grades, point),
+  });
 
   if (!lastPoint || point.leafletId != lastPoint.leafletId) {
     const waypoints = currentDrawTrip().waypoints;

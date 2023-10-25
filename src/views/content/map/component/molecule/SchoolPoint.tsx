@@ -87,8 +87,14 @@ const onClick = (point: SchoolType) => {
 
           // TODO  add quantity pour school ?!
           addPointToTrip({
-            ...point,
-            quantity: 0,
+            id: point.id,
+            leafletId: point.leafletId,
+            name: point.name,
+            lon: point.lon,
+            lat: point.lat,
+            quantity: 0, // TODO: Delete when unused
+            nature: point.nature,
+            grades: [],
           });
 
           if (!lastPoint || point.leafletId != lastPoint.leafletId) {
@@ -125,6 +131,7 @@ const onMouseUp = (point: StopType) => {
     )[0].quantity;
 
     // TODO  add quantity pour school ?!
+    // TODO: Fix or delete this handler if school must always be at the end of a trip
     addPointToTrip({
       ...point,
       quantity: associatedQuantity,

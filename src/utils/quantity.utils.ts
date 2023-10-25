@@ -12,8 +12,10 @@ enum OperationType {
 }
 
 export namespace QuantityUtils {
+  // TODO
   export function remaining(point: AssociatedSchoolType) {
-    return point.quantity - point.usedQuantity;
+    console.log("gradeId", point.gradeId);
+    return 42;
   }
 
   export function remainingQuantities(points: AssociatedSchoolType[]) {
