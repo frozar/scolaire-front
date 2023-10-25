@@ -2,6 +2,7 @@ import { Accessor, Setter, createSignal } from "solid-js";
 import { useStateGui } from "../StateGui";
 import { NatureEnum } from "../type";
 import { getLines } from "../views/content/map/component/organism/BusLines";
+import { getSchools } from "../views/content/map/component/organism/SchoolPoints";
 import { getTrips } from "../views/content/map/component/organism/Trips";
 import {
   AssociatedStopType,
@@ -60,10 +61,23 @@ export class SchoolEntity {
     });
   }
 
+  // // TODO à place dans un SchoolUtils
+  // // ! En faire un signal dérivé ?
+  // static getTotalQuantity(school: SchoolType) {
+  //   let quantity = 0;
+  //   for (const stop of school.associated) {
+  //     quantity += stop.quantity;
+  //   }
+  //   return quantity;
+  // }
   // TODO à place dans un SchoolUtils
+  // ! En faire un signal dérivé ?
   static getTotalQuantity(school: SchoolType) {
     let quantity = 0;
-    for (const stop of school.associated) {
+    const schoolDisplayed = getSchools().filter(
+      (_school) => _school.id == school.id
+    )[0];
+    for (const stop of schoolDisplayed.associated) {
       quantity += stop.quantity;
     }
     return quantity;
@@ -89,6 +103,7 @@ export class SchoolEntity {
   // }
 
   // ! clean
+  // ! Verify reactivity
   static getRemainingQuantity(school: SchoolType) {
     console.log("school ===> ", school);
     // ! Faire la somme des qtys par grades (school.associated)

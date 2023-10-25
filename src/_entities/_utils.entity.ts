@@ -77,6 +77,7 @@ export type AssociatedSchoolType = {
   gradeId: number;
 };
 
+// TODO: Rename
 export type AssociatedStopType = {
   idClassToSchool: number;
   stopId: number;
