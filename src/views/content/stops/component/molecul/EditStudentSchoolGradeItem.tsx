@@ -118,8 +118,7 @@ export default function (props: EditStopProps) {
       Number(schoolSelectRef().value)
     );
     appendToStop(gradeToSchool, stopDetailsItem()?.id as number);
-    // ! Also update schools associatedStopType
-    // ! Create function updateSchoolsAssociated and put in the right place
+    // TODO: Refactor and put in the right place
     setSchools((prev) => {
       const newSchools = [...prev];
       newSchools

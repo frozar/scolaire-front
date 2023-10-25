@@ -12,23 +12,10 @@ enum OperationType {
 }
 
 export namespace QuantityUtils {
+  // TODO
   export function remaining(point: AssociatedSchoolType) {
     console.log("gradeId", point.gradeId);
-    // ! chercher dans les tripPoint le même gradeId que celui çi
-    // console.log("getLines()", getLines());
-    // getLines().find((line) => line.stops.some((stop) => stop.associated.some((assoc) => assoc.idClassToSchool == point.idClassToSchool)))
-    // --
-    // const test = getLines().some((line) =>
-    //   line.trips.some((trip) =>
-    //     trip.points.some((tripPoint) => tripPoint.grade_id == point.gradeId)
-    //   )
-    // );
-
-    // if (test) return 0;
-    // else return point.quantity;
-    // ! Additionner toutes les qtys des couples qty / gradeId liée à point.gradeId
     return 42;
-    // return point.quantity - point.usedQuantity
   }
 
   export function remainingQuantities(points: AssociatedSchoolType[]) {
@@ -98,33 +85,6 @@ export namespace QuantityUtils {
     });
   }
 
-  // function setStopQuantity(
-  //   point: TripPointType,
-  //   schools: SchoolType[],
-  //   operation: OperationType
-  // ) {
-  //   if (point.nature === NatureEnum.stop) {
-  //     schools.forEach((school) => {
-  //       setStops((stops) => {
-  //         stops.map((stop) => {
-  //           if (stop.id == point.id) {
-  //             stop.associated.map((_school) => {
-  //               if (_school.schoolId == school.id) {
-  //                 if (operation === OperationType.set)
-  //                   _school.usedQuantity = point.quantity;
-  //                 else if (operation === OperationType.add)
-  //                   _school.usedQuantity += point.quantity;
-  //                 else if (operation === OperationType.substract)
-  //                   _school.usedQuantity -= point.quantity;
-  //               }
-  //             });
-  //           }
-  //         });
-  //         return stops;
-  //       });
-  //     });
-  //   }
-  // }
   function setStopQuantity(
     point: TripPointType,
     schools: SchoolType[],

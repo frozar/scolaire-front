@@ -1,6 +1,5 @@
 import { Setter, Show, createEffect } from "solid-js";
 
-import { SchoolType } from "../../../../../_entities/school.entity";
 import { TripPointType, TripType } from "../../../../../_entities/trip.entity";
 import { NatureEnum } from "../../../../../type";
 import { TripTimelineRemovePointButton } from "./TripTimelineRemovePointButton";
@@ -26,36 +25,19 @@ export function TripTimelineItem(props: {
           <div class="first-items">
             <div class="me-4">
               {props.point.nature === NatureEnum.stop
-                ? // ? "+ " + props.point.quantity
-                  "+ " +
+                ? "+ " +
                   props.point.grades
                     .map((grade) => grade.quantity)
                     .reduce((a, b) => a + b, 0)
                 : " " +
-                  SumQuantity(
-                    props.trip.tripPoints,
-                    props.trip.schools[0],
-                    props.indice - 1
-                  ) *
-                    -1}
+                  SumQuantity(props.trip.tripPoints, props.indice - 1) * -1}
             </div>
             <p class="resource-name">{props.point.name}</p>
           </div>
           <div class="ms-4">
             {props.point.nature === NatureEnum.stop
-              ? " + " +
-                SumQuantity(
-                  props.trip.tripPoints,
-                  props.trip.schools[0],
-                  props.indice
-                )
-              : " " +
-                SumQuantity(
-                  props.trip.tripPoints,
-                  props.trip.schools[0],
-                  props.indice
-                ) *
-                  -1}
+              ? " + " + SumQuantity(props.trip.tripPoints, props.indice)
+              : " " + SumQuantity(props.trip.tripPoints, props.indice) * -1}
           </div>
         </div>
       </div>
@@ -101,66 +83,14 @@ function setDividerColor(color: string) {
   }
 }
 
-// function SumQuantity(
-//   stops: TripPointType[],
-//   selectedSchool: SchoolType,
-//   indice: number
-// ) {
-//   const school = stops.filter(
-//     (point) =>
-//       point.id === selectedSchool.id && point.nature === NatureEnum.school
-//   )[0];
-
-//   let subList = stops.slice(0, indice + 1);
-
-//   let deb = subList.lastIndexOf(school);
-
-//   deb = deb > -1 ? deb + 1 : 0;
-
-//   subList = subList.slice(deb);
-
-//   let sum = 0;
-
-//   subList.map((point) => {
-//     sum += point.quantity;
-//   });
-
-//   return sum;
-// }
-
-function SumQuantity(
-  stops: TripPointType[],
-  selectedSchool: SchoolType,
-  indice: number
-) {
+function SumQuantity(tripPoints: TripPointType[], indice: number) {
   let sum = 0;
   for (let i = 0; i < indice + 1; i++) {
-    if (stops[i].nature == NatureEnum.stop) {
-      // ! Necessaire ?
-      sum += stops[i].grades
+    if (tripPoints[i].nature == NatureEnum.stop) {
+      sum += tripPoints[i].grades
         .map((grade) => grade.quantity)
         .reduce((a, b) => a + b, 0);
     }
   }
   return sum;
-  // const school = stops.filter(
-  //   (point) =>
-  //     point.id === selectedSchool.id && point.nature === NatureEnum.school
-  // )[0];
-
-  // let subList = stops.slice(0, indice + 1);
-
-  // let deb = subList.lastIndexOf(school);
-
-  // deb = deb > -1 ? deb + 1 : 0;
-
-  // subList = subList.slice(deb);
-
-  // let sum = 0;
-
-  // subList.map((point) => {
-  //   sum += point.quantity;
-  // });
-
-  // return sum;
 }

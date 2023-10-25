@@ -59,9 +59,6 @@ export namespace TripEntity {
 
   export function dbFormat(line: TripType): Partial<TripDBType> {
     const name = line.name ? line.name : "";
-    // const tripStopIds = line.points
-    // .filter((point) => point.nature == NatureEnum.stop)
-    // .map((point) => point.id);
     return {
       color: EntityUtils.formatColorForDB(line.color),
       name: name,
@@ -80,15 +77,6 @@ export namespace TripEntity {
       waypoint: WaypointEntity.formatWaypointDBType(
         line.waypoints as WaypointType[]
       ),
-      // grade_id: getStops((stop) => )
-      // associated: getStops()
-      //   .map((stop) => {
-      //     if (tripStopIds.includes(stop.id)) {
-      //       return stop.associated;
-      //     }
-      //   })
-      //   .flat(),
-      // associated: getStops().map((stop) => stop.associated).flat().filter((assoc) => line.points.map((point) => point.id).flat().includes(assoc.))
     };
   }
 
@@ -164,16 +152,14 @@ export type TripType = {
   metrics?: TripMetricType;
 };
 
-// ! Ajouter associated ?
 export type TripPointType = {
   id: number;
   leafletId: number;
   name: string;
   lon: number;
   lat: number;
-  quantity: number; // ! TO DELETE
+  quantity: number; // TODO: Delete when unsed
   nature: NatureEnum;
-  // gradeId: number; // ! TO DELETE
   grades: GradeTripType[];
 };
 
@@ -192,8 +178,7 @@ export type TripDBType = {
 export type TripPointDBType = {
   stop_id: number;
   school_id: number;
-  quantity: number; // ! TO DELETE
-  // grade_id: number; // ! TO DELETE
+  quantity: number; // TODO: Delete when unsed
   grades: GradeTripDBType[];
 };
 
@@ -213,7 +198,6 @@ function formatTripPointDBType(points: TripPointType[]): TripPointDBType[] {
       stop_id: point.nature == NatureEnum.stop ? point.id : 0,
       school_id: point.nature == NatureEnum.school ? point.id : 0,
       quantity: point.quantity,
-      // grade_id: point.gradeId,
       grades: point.grades.map((grade) => {
         return { grade_id: grade.gradeId, quantity: grade.quantity };
       }),
@@ -243,7 +227,6 @@ function formatTripPointType(points: TripPointDBType[]): TripPointType[] {
           grades: dbPoint.grades.map((grade) => {
             return { gradeId: grade.grade_id, quantity: grade.quantity };
           }),
-          // gradeId: dbPoint.grade_id,
         };
       } else {
         //TODO Error log to improve

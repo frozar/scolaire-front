@@ -64,15 +64,10 @@ function getAssociatedQuantity(point: StopType) {
 }
 
 function updateTripAndWaypoints(point: StopType) {
-  // TODO: FIX
-  // const associatedQuantity = getAssociatedQuantity(point);
   const lastPoint = currentDrawTrip().tripPoints.at(-1);
-  // ! Vérif vas dans l'école correspondante
-  // const associatedQuantityCount = 0;
-  const targetSchoolId = currentDrawTrip().schools[0].id;
 
   // TODO: Setup filter (selected grades during drawTrip creation)
-  // ! Create qty / gradeId couple
+  const targetSchoolId = currentDrawTrip().schools[0].id; // TODO: Delete when filter is setup
   const grades: GradeTripType[] = [];
   point.associated.map((associated) => {
     if (associated.schoolId == targetSchoolId) {
@@ -83,53 +78,16 @@ function updateTripAndWaypoints(point: StopType) {
     }
   });
 
-  // ! Ne pas utiliser used quantity
-  // const associatedUpdated: AssociatedSchoolType[] = [];
-
-  // point.associated.map((associated) => {
-  //   if (associated.schoolId == targetSchoolId) {
-  //     associatedQuantityCount += associated.quantity - associated.usedQuantity;
-
-  //     associatedUpdated.push({
-  //       ...associated,
-  //       usedQuantity: associated.quantity,
-  //     });
-  //   } else {
-  //     associatedUpdated.push(associated);
-  //   }
-  // });
-  // console.log("associatedUpdated", associatedUpdated);
-
-  // // ! Mettre à jour usedQuantity
-  // // ! Utiliser QuantityUtils ?!
-  // setStops((prev) => {
-  //   const newStops = [...prev].map((prevPoint) => {
-  //     return prevPoint.id != point.id
-  //       ? prevPoint
-  //       : { ...point, associated: associatedUpdated };
-  //   });
-  //   return newStops;
-  // });
-
-  // ! Fix
-  console.log(
-    "currentDrawTrip before adding tripPoints",
-    JSON.stringify(currentDrawTrip().tripPoints)
-  );
-
   addPointToTrip({
     id: point.id,
     leafletId: point.leafletId,
     name: point.name,
     lon: point.lon,
     lat: point.lat,
-    quantity: 1, // ! TO DELETE
+    quantity: 1, // TODO: Delete when unused
     nature: point.nature,
-    // gradeId: 0, // ! TO DELETE
     grades,
   });
-
-  console.log("currentDrawTrip()", currentDrawTrip());
 
   if (!lastPoint || point.leafletId != lastPoint.leafletId) {
     const waypoints = currentDrawTrip().waypoints;

@@ -9,9 +9,6 @@ export function TripTimeline(props: {
   setTrip?: Setter<TripType>;
   inDraw: boolean;
 }) {
-  // createEffect(() => {
-  //   console.log("props.trip", props.trip);
-  // });
   return (
     <div class="timeline">
       <div

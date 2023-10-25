@@ -27,7 +27,6 @@ export class TripService {
 
   static async delete(id: number): Promise<number> {
     // TODO changer endpoint Xano pour /trip
-    console.log("getSelectedLine()?.id", getSelectedLine()?.id);
     return await ServiceUtils.delete(
       "/busline/" + getSelectedLine()?.id + "/trip/" + id
     );

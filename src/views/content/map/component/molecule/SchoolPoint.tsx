@@ -86,25 +86,16 @@ const onClick = (point: SchoolType) => {
           const lastPoint = currentDrawTrip().tripPoints.at(-1);
 
           // TODO  add quantity pour school ?!
-          // addPointToTrip({
-          //   ...point,
-          //   quantity: 0,
-          // });
           addPointToTrip({
             id: point.id,
             leafletId: point.leafletId,
             name: point.name,
             lon: point.lon,
             lat: point.lat,
-            quantity: 0, // ! TO DELETE
+            quantity: 0, // TODO: Delete when unused
             nature: point.nature,
-            // gradeId: 0, // ! TO DELETE
-            grades: [], // ! Change it ?
+            grades: [],
           });
-          console.log(
-            "currentDrawTrip() after school added",
-            currentDrawTrip()
-          );
 
           if (!lastPoint || point.leafletId != lastPoint.leafletId) {
             const waypoints = currentDrawTrip().waypoints;
@@ -140,6 +131,7 @@ const onMouseUp = (point: StopType) => {
     )[0].quantity;
 
     // TODO  add quantity pour school ?!
+    // TODO: Fix or delete this handler if school must always be at the end of a trip
     addPointToTrip({
       ...point,
       quantity: associatedQuantity,
