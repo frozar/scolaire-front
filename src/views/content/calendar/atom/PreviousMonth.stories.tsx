@@ -1,17 +1,17 @@
 import { Meta, StoryObj } from "storybook-solidjs";
-import { PreviousMonth } from "./PreviousMonth";
+import { PreviousMonth as PreviousMonthComponent } from "./PreviousMonth";
 
 const meta = {
-  component: PreviousMonth,
+  component: PreviousMonthComponent,
   tags: ["autodocs"],
-} satisfies Meta<typeof PreviousMonth>;
+} satisfies Meta<typeof PreviousMonthComponent>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Label: Story = {
+export const PreviousMonthButton: Story = {
   render: (props: { month: Date }) => {
-    return <PreviousMonth {...props} />;
+    return <PreviousMonthComponent {...props} />;
   },
 
   args: {

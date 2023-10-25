@@ -8,8 +8,8 @@ export function NextMonth(props: { month: Date }) {
     setCurrentMonth(
       new Date(props.month.getFullYear(), props.month.getMonth() + 1)
     );
-    //
   }
+
   return (
     <ButtonIcon
       icon={<LeftChevronIcon />}
