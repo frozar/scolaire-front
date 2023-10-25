@@ -1,5 +1,6 @@
 import { NextMonth } from "../atom/NextMonth";
 import { PreviousMonth } from "../atom/PreviousMonth";
+import "./CalendarHeader.css";
 import MonthList from "./MonthList";
 
 export function CalendarHeader(props: { month: Date }) {
