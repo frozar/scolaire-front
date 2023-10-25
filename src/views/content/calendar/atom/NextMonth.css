@@ -1,0 +1,4 @@
+.month-next-button {
+  @apply rotate-180;
+  width: 10px;
+}

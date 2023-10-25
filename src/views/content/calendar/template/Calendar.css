@@ -14,11 +14,6 @@
   @apply mx-auto flex;
   width: 98%;
 }
-
-.month-next-button {
-  width: 10px;
-}
-
 .calendar-cells {
   @apply flex gap-1;
   font-size: 8px;

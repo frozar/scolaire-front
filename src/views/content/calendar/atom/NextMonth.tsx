@@ -1,6 +1,7 @@
 import LeftChevronIcon from "../../../../icons/LeftChevronIcon";
 import ButtonIcon from "../../board/component/molecule/ButtonIcon";
 import { setCurrentMonth } from "../template/Calendar";
+import "./NextMonth.css";
 
 export function NextMonth(props: { month: Date }) {
   function nextMonth() {
