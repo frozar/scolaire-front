@@ -30,6 +30,7 @@ import {
   draggingWaypointIndex,
   setDraggingWaypointIndex,
 } from "../atom/PolylineDragMarker";
+import { getLines } from "../organism/BusLines";
 import {
   blinkingStops,
   cursorIsOverPoint,
@@ -78,6 +79,32 @@ function updateTripAndWaypoints(point: StopType) {
     }
   });
 
+  // TODO: Refactor, move and rename
+  function updateGradesWithRemainingQuantity(
+    grades: GradeTripType[],
+    point: StopType
+  ): GradeTripType[] {
+    // Get all corresponding gradeTrip
+    const gradeTrips = getLines()
+      .map((line) => line.trips)
+      .flat()
+      .map((trip) => trip.tripPoints)
+      .flat()
+      .filter((tripPoint) => tripPoint.id == point.id)
+      .map((_tripPoint) => _tripPoint.grades)
+      .flat();
+
+    // Substract used quantity
+    grades.forEach((grade) => {
+      gradeTrips.forEach((_gradeTrip) => {
+        if (_gradeTrip.gradeId == grade.gradeId) {
+          grade.quantity -= _gradeTrip.quantity;
+        }
+      });
+    });
+    return grades;
+  }
+
   addPointToTrip({
     id: point.id,
     leafletId: point.leafletId,
@@ -86,7 +113,7 @@ function updateTripAndWaypoints(point: StopType) {
     lat: point.lat,
     quantity: 1, // TODO: Delete when unused
     nature: point.nature,
-    grades,
+    grades: updateGradesWithRemainingQuantity(grades, point),
   });
 
   if (!lastPoint || point.leafletId != lastPoint.leafletId) {
