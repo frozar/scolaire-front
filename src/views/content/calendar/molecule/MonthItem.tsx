@@ -1,6 +1,6 @@
 import { For } from "solid-js";
-import DayItem from "../molecule/DayItem";
-import { MonthType } from "./Calendar";
+import DayItem from "../atom/DayItem";
+import { MonthType } from "../organism/Calendar";
 import "./MonthItem.css";
 
 export default function (props: { month: MonthType }) {
