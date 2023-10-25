@@ -2,8 +2,10 @@ import { AssociatedSchoolType } from "../_entities/_utils.entity";
 import { SchoolType } from "../_entities/school.entity";
 import { TripPointType, TripType } from "../_entities/trip.entity";
 import { NatureEnum } from "../type";
+import { getLines } from "../views/content/map/component/organism/BusLines";
 import { setSchools } from "../views/content/map/component/organism/SchoolPoints";
 import { setStops } from "../views/content/map/component/organism/StopPoints";
+import { stopDetailsItem } from "../views/content/stops/component/organism/StopDetails";
 
 enum OperationType {
   set,
@@ -12,10 +14,30 @@ enum OperationType {
 }
 
 export namespace QuantityUtils {
-  // TODO
+  // TODO: Delete when unused
   export function remaining(point: AssociatedSchoolType) {
     console.log("gradeId", point.gradeId);
     return 42;
+  }
+  // ! Rename
+  // TODO: Empêcher la création de plusieurs student to school ayant le même gradeId sur un même stop depuis le board "stop-details"
+  // TODO: Rename
+  export function remainingPerStop(point: AssociatedSchoolType) {
+    // ! Combinaison gradeId / stopId unique
+    const gradeId = point.gradeId;
+    const stopId = stopDetailsItem()?.id;
+    const gradeTrips = getLines()
+      .flatMap((line) => line.trips)
+      .flatMap((trip) => trip.tripPoints)
+      .filter((tripPoint) => tripPoint.id == stopId)
+      .flatMap((_tripPoint) => _tripPoint.grades)
+      .filter((grade) => grade.gradeId == gradeId);
+    if (gradeTrips.length == 0) return point.quantity;
+    else {
+      let usedQuantity = 0;
+      gradeTrips.forEach((gradeTrip) => (usedQuantity += gradeTrip.quantity));
+      return point.quantity - usedQuantity;
+    }
   }
 
   export function remainingQuantities(points: AssociatedSchoolType[]) {
