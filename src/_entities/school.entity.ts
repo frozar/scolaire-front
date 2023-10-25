@@ -98,7 +98,6 @@ export class SchoolEntity {
           remainingQty[gradeTrip.gradeId] -= gradeTrip.quantity;
         }
       });
-    console.log("remainingQty after substraction", remainingQty);
 
     // Sum remaining qtys
     let totalRemainingQty = 0;

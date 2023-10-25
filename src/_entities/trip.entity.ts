@@ -166,7 +166,6 @@ export type TripPointType = {
 export type TripDBType = {
   id: number;
   school_id: number;
-  grade_id: number[];
   name: string;
   color: string;
   trip_stop: TripPointDBType[];

@@ -29,13 +29,11 @@ export namespace InitService {
     const schools = dbInit.school.map((dbSchool) =>
       SchoolEntity.build(dbSchool)
     );
-
     setSchools(schools);
 
     const stops = dbInit.stops.map((dbStop: StopDBType) =>
       StopEntity.build(dbStop)
     );
-
     setStops(stops);
 
     const busLines = dbInit.bus_lines.map((dbLine: LineDBType) =>
