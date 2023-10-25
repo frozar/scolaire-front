@@ -13,7 +13,7 @@ export type MonthType = {
 
 export const [displayMonths, setDisplayMonths] = createSignal<MonthType[]>([]);
 export default function () {
-  let displayIndex = 2;
+  let displayIndex = 3;
   let months: MonthType[] = [];
 
   onMount(() => {

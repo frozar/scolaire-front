@@ -1,4 +1,4 @@
 .day-item {
   @apply flex justify-center;
-  width: 15px;
+  width: 10px;
 }
