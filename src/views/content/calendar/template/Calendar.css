@@ -5,3 +5,8 @@
 .page-title {
   @apply text-2xl;
 }
+
+.calendar-cells {
+  @apply flex gap-1;
+  font-size: 8px;
+}

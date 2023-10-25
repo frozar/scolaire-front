@@ -1,0 +1,4 @@
+.month-list-wrapper {
+  @apply mx-auto flex;
+  width: 98%;
+}

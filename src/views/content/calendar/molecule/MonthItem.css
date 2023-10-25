@@ -1,0 +1,12 @@
+.month-item {
+  @apply w-auto;
+  border-left: 1px solid black;
+}
+
+.month-item-name{
+ @apply capitalize px-4;
+}
+
+.month-item-days {
+  @apply flex mt-3;
+}

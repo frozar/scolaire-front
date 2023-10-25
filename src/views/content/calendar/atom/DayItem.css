@@ -1,0 +1,4 @@
+.day-item {
+  @apply text-center text-[9px] text-gray-base ;
+  width: 18px;
+}
