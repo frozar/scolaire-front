@@ -6,14 +6,6 @@
   @apply text-2xl;
 }
 
-.months-container {
-  @apply flex items-center overflow-x-hidden;
-}
-
-.month-list-wrapper {
-  @apply mx-auto flex;
-  width: 98%;
-}
 .calendar-cells {
   @apply flex gap-1;
   font-size: 8px;

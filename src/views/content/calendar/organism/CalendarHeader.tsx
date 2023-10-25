@@ -7,10 +7,7 @@ export function CalendarHeader(props: { month: Date }) {
   return (
     <div class="calendar-header">
       <PreviousMonth month={props.month} />
-
-      <div class="month-list-wrapper">
-        <MonthList month={props.month} />
-      </div>
+      <MonthList month={props.month} />
       <NextMonth month={props.month} />
     </div>
   );
