@@ -88,12 +88,9 @@ export class SchoolEntity {
     });
     // Update remainingQty with grade qty in trips
     getLines()
-      .map((line) => line.trips.map((trip) => trip.tripPoints))
-      .flat()
-      .flat()
-      .map((tripPoint) => tripPoint.grades)
-      .flat()
-      .map((gradeTrip) => {
+      .flatMap((line) => line.trips.flatMap((trip) => trip.tripPoints))
+      .flatMap((tripPoint) => tripPoint.grades)
+      .forEach((gradeTrip) => {
         if (remainingQty[gradeTrip.gradeId]) {
           remainingQty[gradeTrip.gradeId] -= gradeTrip.quantity;
         }

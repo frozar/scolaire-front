@@ -86,13 +86,10 @@ function updateTripAndWaypoints(point: StopType) {
   ): GradeTripType[] {
     // Get all corresponding gradeTrip
     const gradeTrips = getLines()
-      .map((line) => line.trips)
-      .flat()
-      .map((trip) => trip.tripPoints)
-      .flat()
+      .flatMap((line) => line.trips)
+      .flatMap((trip) => trip.tripPoints)
       .filter((tripPoint) => tripPoint.id == point.id)
-      .map((_tripPoint) => _tripPoint.grades)
-      .flat();
+      .flatMap((_tripPoint) => _tripPoint.grades);
 
     // Substract used quantity
     grades.forEach((grade) => {
