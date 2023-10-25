@@ -11,10 +11,10 @@ export type MonthType = {
   days: number[];
 };
 
+export const [displayMonths, setDisplayMonths] = createSignal<MonthType[]>([]);
 export default function () {
-  let displayIndex = 3;
+  let displayIndex = 2;
   let months: MonthType[] = [];
-  const [displayMonths, setDisplayMonths] = createSignal<MonthType[]>([]);
 
   onMount(() => {
     const currentYear = new Date().getFullYear();
@@ -62,6 +62,7 @@ export default function () {
         <div class="month-list-wrapper">
           <MonthList months={displayMonths()} />
         </div>
+
         <ButtonIcon
           icon={<LeftChevronIcon />}
           onClick={nextMonth}

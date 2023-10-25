@@ -11,6 +11,10 @@ export default function (props: { month: MonthType }) {
           {(index) => <div class="day-item">{index}</div>}
         </For>
       </div>
+
+      <div class="calendar-cells">
+        <For each={props.month.days}>{() => <div class="cell-item  " />}</For>
+      </div>
     </div>
   );
 }
