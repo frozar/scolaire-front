@@ -88,25 +88,61 @@ export class SchoolEntity {
   //   return quantity;
   // }
 
+  // ! clean
   static getRemainingQuantity(school: SchoolType) {
     console.log("school ===> ", school);
-    let quantity = 0;
-    for (const stop of school.associated) {
-      // quantity += QuantityUtils.remaining(stop);
-      const test = getLines()
-        .map((line) => line.trips.map((trip) => trip.points))
-        .flat()
-        .flat()
-        .map((point) => point.id)
-        .includes(stop.stopId);
-      if (test) {
-        quantity += stop.quantity;
+    // ! Faire la somme des qtys par grades (school.associated)
+    const remainingQty: { [gradeId: number]: number } = {};
+    school.associated.map((assoc) => {
+      if (!remainingQty[assoc.gradeId]) {
+        remainingQty[assoc.gradeId] = assoc.quantity;
+      } else {
+        remainingQty[assoc.gradeId] += assoc.quantity;
       }
-      // ! Fix pas forcement tout ou rien mais seulement tout ou rien sur la qté d'une grade à un stop
-      // return test ? 0 : SchoolEntity.getTotalQuantity(school);
-    }
+    });
+    console.log("remainingQty before substraction", remainingQty);
+    // ! Comparer avec la somme des qtys utilisé dans les trips
+    getLines()
+      .map((line) => line.trips.map((trip) => trip.tripPoints))
+      .flat()
+      .flat()
+      .map((tripPoint) => tripPoint.grades)
+      .flat()
+      .map((gradeTrip) => {
+        if (remainingQty[gradeTrip.gradeId]) {
+          remainingQty[gradeTrip.gradeId] -= gradeTrip.quantity;
+        }
+      });
+    console.log("remainingQty after substraction", remainingQty);
 
-    return SchoolEntity.getTotalQuantity(school) - quantity;
+    // ! Additioner les remaining qtys
+    let totalRemainingQty = 0;
+    Object.entries(remainingQty).forEach((key) => {
+      totalRemainingQty += key[1];
+    });
+
+    return totalRemainingQty;
+    // for (const key of remainingQty) {
+
+    // }
+
+    // let quantity = 0;
+    // for (const stop of school.associated) {
+    // quantity += QuantityUtils.remaining(stop);
+    // const test = getLines()
+    //   .map((line) => line.trips.map((trip) => trip.tripPoints))
+    //   .flat()
+    //   .flat()
+    //   .map((tripPoints) => tripPoints.id)
+    //   .includes(stop.stopId);
+    // if (test) {
+    //   quantity += stop.quantity;
+    // }
+    // ! Fix pas forcement tout ou rien mais seulement tout ou rien sur la qté d'une grade à un stop
+    // return test ? 0 : SchoolEntity.getTotalQuantity(school);
+    // }
+
+    // return SchoolEntity.getTotalQuantity(school) - quantity;
   }
 
   // TODO à place dans un SchoolUtils
