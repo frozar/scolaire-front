@@ -7,6 +7,6 @@
 }
 
 .calendar-cells {
-  @apply flex gap-1;
-  font-size: 8px;
+  @apply flex;
+  font-size: 9px;
 }

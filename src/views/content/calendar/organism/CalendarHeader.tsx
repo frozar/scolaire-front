@@ -6,9 +6,11 @@ import MonthList from "./MonthList";
 export function CalendarHeader(props: { month: Date }) {
   return (
     <div class="calendar-header">
-      <PreviousMonth month={props.month} />
+      <div class="calendar-header-actions">
+        <PreviousMonth month={props.month} />
+        <NextMonth month={props.month} />
+      </div>
       <MonthList month={props.month} />
-      <NextMonth month={props.month} />
     </div>
   );
 }
