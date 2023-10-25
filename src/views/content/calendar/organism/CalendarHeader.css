@@ -1,0 +1,3 @@
+.calendar-header {
+  @apply flex items-start mt-5;
+}
