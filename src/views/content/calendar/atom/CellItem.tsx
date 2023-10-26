@@ -1,5 +1,17 @@
 import "./CellItem.css";
 
-export default function () {
-  return <div class="cell-item" />;
+interface CellItemProps {
+  isWeekend: boolean;
+  isActive: boolean;
+  onClick: () => void;
+}
+
+export default function (props: CellItemProps) {
+  return (
+    <div
+      classList={{ "weekend-cell": props.isWeekend }}
+      class="cell-item"
+      onClick={props.onClick}
+    />
+  );
 }
