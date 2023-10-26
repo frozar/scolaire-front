@@ -36,7 +36,7 @@ export namespace QuantityUtils {
     }
   }
 
-  export function totalQuantityPerGrade(gradeId: number) {
+  export function totalGradeQuantity(gradeId: number) {
     let quantity = 0;
 
     getSchools().forEach((school) =>
@@ -48,8 +48,8 @@ export namespace QuantityUtils {
     return quantity;
   }
 
-  export function remainingQuantityPerGrade(gradeId: number) {
-    const totalQuantity = totalQuantityPerGrade(gradeId);
+  export function remainingGradeQuantity(gradeId: number) {
+    const totalQuantity = totalGradeQuantity(gradeId);
     let usedQuantity = 0;
 
     getLines()
