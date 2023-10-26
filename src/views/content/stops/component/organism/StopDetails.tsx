@@ -53,7 +53,9 @@ export default function () {
       <StopDetailsHeader stop={stopDetailsItem() as StopType} />
 
       <p>
-        {StopUtils.getTotalQuantity(stopDetailsItem()?.id as number)} élèves
+        {StopUtils.getRemainingQuantity(stopDetailsItem()?.id as number) +
+          " élèves restant sur " +
+          StopUtils.getTotalQuantity(stopDetailsItem()?.id as number)}
       </p>
 
       <div class="stop-details-actions">
