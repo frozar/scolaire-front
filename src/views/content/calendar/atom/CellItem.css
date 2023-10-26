@@ -5,5 +5,5 @@
 }
 
 .weekend-cell {
-  @apply bg-gray-400;
+  @apply bg-gray-base;
 }
