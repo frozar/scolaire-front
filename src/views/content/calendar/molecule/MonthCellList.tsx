@@ -25,16 +25,15 @@ export function MonthCellList(props: { month: Date; calendar: CalendarType }) {
               dayFullName() == "saturday" || dayFullName() == "sunday";
 
             // Véifie si la date de la cellule fait parti des jours autorisé
-            const isDateInRules = () => {
-              return props.calendar.rules.includes(dayFullName());
-            };
+            const isDateInRules = () =>
+              props.calendar.rules.includes(dayFullName());
 
             // Vérifie si la date de la cellule fait parti des dates ou il n'y pas d'activité
             const isDeletedDate = () => {
               let isDeleted = false;
               props.calendar.dated_deleted.map((dateDeleted) => {
-                const addedDate = stringToDate(dateDeleted);
-                if (addedDate.getTime() == currentDate().getTime()) {
+                const date = stringToDate(dateDeleted);
+                if (date.getTime() == currentDate().getTime()) {
                   isDeleted = true;
                 }
               });
