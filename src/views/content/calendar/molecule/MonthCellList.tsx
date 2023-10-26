@@ -4,6 +4,11 @@ import { CalendarUtils } from "../calendar.utils";
 import { CalendarType } from "../template/Calendar";
 import "./MonthCellList.css";
 
+const stringToDate = (dateString: string): Date => {
+  const [day, month, year] = dateString.split("-");
+  return new Date([month, day, year].join("/"));
+};
+
 export function MonthCellList(props: { month: Date; calendar: CalendarType }) {
   return (
     <div class="month-item">
@@ -13,20 +18,54 @@ export function MonthCellList(props: { month: Date; calendar: CalendarType }) {
             const currentDate = () =>
               new Date(props.month.getFullYear(), props.month.getMonth(), day);
 
-            const getCurrentDateToString = () => currentDate().toString();
-            const getDayString = () => getCurrentDateToString().substring(0, 3);
-            const isWeekend = () =>
-              getDayString() == "Sat" || getDayString() == "Sun";
+            const dayFullName = () =>
+              CalendarUtils.getNameDay(currentDate()).toLowerCase();
 
-            function onCLick() {
-              console.log("Cell click");
+            const isWeekend = () =>
+              dayFullName() == "saturday" || dayFullName() == "sunday";
+
+            // Véifie si la date de la cellule fait parti des jours autorisé
+            const isDateInRules = () => {
+              return props.calendar.rules.includes(dayFullName());
+            };
+
+            // Vérifie si la date de la cellule fait parti des dates ou il n'y pas d'activité
+            const isDeletedDate = () => {
+              let isDeleted = false;
+              props.calendar.dated_deleted.map((dateDeleted) => {
+                const addedDate = stringToDate(dateDeleted);
+                if (addedDate.getTime() == currentDate().getTime()) {
+                  isDeleted = true;
+                }
+              });
+              return isDeleted;
+            };
+
+            // Vérifie si la date de la cellule fait parti des dates avec une activité
+            const activeDate = () => {
+              let isActive = false;
+              props.calendar.date_added.map((date) => {
+                const addedDate = stringToDate(date);
+                if (addedDate.getTime() == currentDate().getTime()) {
+                  isActive = true;
+                }
+              });
+              return isActive;
+            };
+
+            function isActive() {
+              return isDateInRules() && activeDate() && !isDeletedDate();
+            }
+
+            function onClick() {
+              console.log("Cell click, day:", dayFullName());
             }
 
             return (
               <CellItem
-                isActive={false}
+                isActive={isActive()}
                 isWeekend={isWeekend()}
-                onClick={onCLick}
+                onClick={onClick}
               />
             );
           }}

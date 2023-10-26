@@ -26,26 +26,26 @@ export default function () {
   const calendarsJson: CalendarType[] = [
     {
       calendarName: "Calendrier Maternel",
-      rules: ["monday", "tuesday", "thursday", "friday"],
-      date_added: ["01-01-2023"],
-      dated_deleted: ["02-01-2023"],
+      rules: ["monday", "tuesday", "wednesday", "thursday", "friday"],
+      date_added: ["04-10-2023"],
+      dated_deleted: ["05-10-2023"],
     },
     {
       calendarName: "Calendrier Internat Lundi",
       rules: ["monday", "tuesday", "thursday", "friday"],
-      date_added: ["01-01-2023"],
+      date_added: ["04-10-2023"],
       dated_deleted: ["02-01-2023"],
     },
     {
       calendarName: "Calendrier Collège",
       rules: ["monday", "tuesday", "thursday", "friday"],
-      date_added: ["01-01-2023"],
+      date_added: ["04-10-2023"],
       dated_deleted: ["02-01-2023"],
     },
     {
       calendarName: "Calendrier Collège Mercredi",
       rules: ["monday", "tuesday", "thursday", "friday"],
-      date_added: ["01-01-2023"],
+      date_added: ["04-10-2023"],
       dated_deleted: ["02-01-2023"],
     },
   ];

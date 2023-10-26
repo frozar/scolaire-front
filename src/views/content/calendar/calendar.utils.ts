@@ -19,6 +19,12 @@ export namespace CalendarUtils {
     }
     return days;
   }
+
+  export function getNameDay(date: Date): string {
+    return date.toLocaleString("en-EN", {
+      weekday: "long",
+    });
+  }
 }
 
 export function getAllMonthsAndDays(year: number) {
