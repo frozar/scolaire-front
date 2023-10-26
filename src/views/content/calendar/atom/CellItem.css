@@ -11,3 +11,7 @@
 .weekend-cell {
   @apply bg-gray-base;
 }
+
+.active-cell {
+  @apply bg-green-base;
+}
