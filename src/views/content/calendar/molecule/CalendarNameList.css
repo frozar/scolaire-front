@@ -1,0 +1,10 @@
+.calendar-names {
+  padding-right: 5px;
+}
+
+.calendar-name-item {
+  @apply flex items-end;
+  font-size: 11px;
+  height: 40px;
+  text-wrap: nowrap;
+}

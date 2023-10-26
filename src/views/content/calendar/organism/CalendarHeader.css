@@ -1,3 +1,6 @@
 .calendar-header {
-  @apply flex items-start mt-5;
+  @apply mt-5;
+}
+.calendar-header-actions {
+  @apply flex w-full justify-between my-5;
 }
