@@ -1,3 +1,4 @@
+import { AssociatedSchoolType } from "../_entities/_utils.entity";
 import { SchoolType } from "../_entities/school.entity";
 import { SchoolService } from "../_services/school.service";
 import {
@@ -95,5 +96,23 @@ export namespace SchoolUtils {
     });
 
     return totalRemainingQty;
+  }
+
+  export function addGradeToSchool(
+    gradeToSchool: AssociatedSchoolType,
+    stopId: number
+  ) {
+    setSchools((prev) => {
+      const newSchools = [...prev];
+      newSchools
+        .filter((school) => school.id == gradeToSchool.schoolId)[0]
+        .associated.push({
+          idClassToSchool: gradeToSchool.idClassToSchool,
+          stopId,
+          quantity: gradeToSchool.quantity,
+          gradeId: gradeToSchool.gradeId,
+        });
+      return newSchools;
+    });
   }
 }
