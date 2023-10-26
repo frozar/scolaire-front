@@ -1,20 +1,16 @@
+import { For } from "solid-js";
+import { CalendarType } from "../template/Calendar";
 import "./CalendarContent.css";
-import CellList from "./CellList";
+import CellList from "./MonthListContent";
 
-export default function (props: { month: Date }) {
-  // const calendarsJson = [
-  //   {
-  //     calendarName: "Calendrier maternel",
-  //     rules: ["monday", "tuesday", "thursday", "friday"],
-  //     date_added: ["01-01-2023"],
-  //     dated_deleted: ["02-01-2023"],
-  //   },
-  // ];
-
+export default function (props: { month: Date; calendars: CalendarType[] }) {
   return (
-    <div class="calendar-cells">
-      <p class="calendar-name">tets</p>
-      <CellList month={props.month} />
-    </div>
+    <For each={props.calendars}>
+      {(calendar) => (
+        <div class="calendar-cells">
+          <CellList month={props.month} calendar={calendar} />
+        </div>
+      )}
+    </For>
   );
 }
