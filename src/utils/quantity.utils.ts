@@ -3,9 +3,11 @@ import { SchoolType } from "../_entities/school.entity";
 import { TripPointType, TripType } from "../_entities/trip.entity";
 import { NatureEnum } from "../type";
 import { getLines } from "../views/content/map/component/organism/BusLines";
-import { setSchools } from "../views/content/map/component/organism/SchoolPoints";
+import {
+  getSchools,
+  setSchools,
+} from "../views/content/map/component/organism/SchoolPoints";
 import { setStops } from "../views/content/map/component/organism/StopPoints";
-import { stopDetailsItem } from "../views/content/stops/component/organism/StopDetails";
 
 enum OperationType {
   set,
@@ -14,18 +16,12 @@ enum OperationType {
 }
 
 export namespace QuantityUtils {
-  // TODO: Delete when unused
-  export function remaining(point: AssociatedSchoolType) {
-    console.log("gradeId", point.gradeId);
-    return 42;
-  }
-  // ! Rename
   // TODO: Empêcher la création de plusieurs student to school ayant le même gradeId sur un même stop depuis le board "stop-details"
-  // TODO: Rename
-  export function remainingPerStop(point: AssociatedSchoolType) {
-    // ! Combinaison gradeId / stopId unique
+  export function remainingStudentToGradeQuantity(
+    point: AssociatedSchoolType,
+    stopId: number
+  ) {
     const gradeId = point.gradeId;
-    const stopId = stopDetailsItem()?.id;
     const gradeTrips = getLines()
       .flatMap((line) => line.trips)
       .flatMap((trip) => trip.tripPoints)
@@ -40,13 +36,30 @@ export namespace QuantityUtils {
     }
   }
 
-  export function remainingQuantities(points: AssociatedSchoolType[]) {
+  export function totalQuantityPerGrade(gradeId: number) {
     let quantity = 0;
-    points.forEach((point) => {
-      quantity += remaining(point);
-    });
-    console.log(quantity);
+
+    getSchools().forEach((school) =>
+      school.associated.forEach((assoc) => {
+        if (assoc.gradeId == gradeId) quantity += assoc.quantity;
+      })
+    );
+
     return quantity;
+  }
+
+  export function remainingQuantityPerGrade(gradeId: number) {
+    const totalQuantity = totalQuantityPerGrade(gradeId);
+    let usedQuantity = 0;
+
+    getLines()
+      .flatMap((line) => line.trips.flatMap((trip) => trip.tripPoints))
+      .flatMap((tripPoint) => tripPoint.grades)
+      .forEach((gradeTrip) => {
+        if (gradeTrip.gradeId == gradeId) usedQuantity += gradeTrip.quantity;
+      });
+
+    return totalQuantity - usedQuantity;
   }
 
   export function set(trips: TripType[]) {

@@ -43,7 +43,10 @@ export default function (props: { school: AssociatedSchoolType }) {
           <CardTitle title={props.school.schoolName} />
           <p class="school-list-item-quantity">
             {/* TODO: Lucas fix remaining with new type */}
-            {QuantityUtils.remainingPerStop(props.school) +
+            {QuantityUtils.remainingStudentToGradeQuantity(
+              props.school,
+              stopDetailsItem()?.id as number
+            ) +
               " élèves restant sur " +
               props.school.quantity}
           </p>
