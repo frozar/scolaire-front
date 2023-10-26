@@ -9,7 +9,27 @@ export function MonthCellList(props: { month: Date; calendar: CalendarType }) {
     <div class="month-item">
       <div class="month-item-cells">
         <For each={CalendarUtils.getDaysOfMonth(props.month)}>
-          {() => <CellItem />}
+          {(day) => {
+            const currentDate = () =>
+              new Date(props.month.getFullYear(), props.month.getMonth(), day);
+
+            const getCurrentDateToString = () => currentDate().toString();
+            const getDayString = () => getCurrentDateToString().substring(0, 3);
+            const isWeekend = () =>
+              getDayString() == "Sat" || getDayString() == "Sun";
+
+            function onCLick() {
+              console.log("Cell click");
+            }
+
+            return (
+              <CellItem
+                isActive={false}
+                isWeekend={isWeekend()}
+                onClick={onCLick}
+              />
+            );
+          }}
         </For>
       </div>
     </div>
