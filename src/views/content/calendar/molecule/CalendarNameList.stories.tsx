@@ -17,7 +17,7 @@ export const CalendarNameList: Story = {
 
   args: {
     month: new Date(),
-    calendar: [
+    calendars: [
       {
         calendarName: "Calendrier Maternel",
         rules: ["monday", "tuesday", "thursday", "friday"],
