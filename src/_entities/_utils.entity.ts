@@ -73,7 +73,7 @@ export type AssociatedSchoolType = {
   schoolId: number;
   schoolName: string;
   quantity: number;
-  usedQuantity: number;
+  usedQuantity: number; // TODO: Delete
   gradeId: number;
 };
 
