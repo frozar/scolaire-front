@@ -1,22 +1,21 @@
 import { Meta, StoryObj } from "storybook-solidjs";
 import { CalendarType } from "../template/Calendar";
-import { CalendarTable as CalendarTableComponent } from "./CalendarTable";
-
+import CalendarContentComponent from "./CalendarContent";
 const meta = {
-  component: CalendarTableComponent,
+  component: CalendarContentComponent,
   tags: ["autodocs"],
-} satisfies Meta<typeof CalendarTableComponent>;
+} satisfies Meta<typeof CalendarContentComponent>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const CalendarTable: Story = {
-  render: (props: { currentMonth: Date; calendars: CalendarType[] }) => {
-    return <CalendarTableComponent {...props} />;
+export const CalendarContent: Story = {
+  render: (props: { month: Date; calendars: CalendarType[] }) => {
+    return <CalendarContentComponent {...props} />;
   },
 
   args: {
-    currentMonth: new Date(),
+    month: new Date(),
     calendars: [
       {
         calendarName: "Calendrier Maternel",

@@ -9,7 +9,7 @@ export function MonthCellList(props: { month: Date; calendar: CalendarType }) {
     <div class="month-item">
       <div class="month-item-cells">
         <For each={CalendarUtils.getDaysOfMonth(props.month)}>
-          {() => <CellItem calendar={props.calendar} />}
+          {() => <CellItem />}
         </For>
       </div>
     </div>

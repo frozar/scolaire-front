@@ -7,16 +7,16 @@ import "./CalendarTable.css";
 
 export function CalendarTable(props: {
   currentMonth: Date;
-  calendarsJson: CalendarType[];
+  calendars: CalendarType[];
 }) {
   return (
     <div class="calendar-table flex items-end">
-      <CalendarNameList calendarsJson={props.calendarsJson} />
+      <CalendarNameList calendars={props.calendars} />
       <div>
         <CalendarHeader month={props.currentMonth} />
         <CalendarContent
           month={props.currentMonth}
-          calendars={props.calendarsJson}
+          calendars={props.calendars}
         />
       </div>
       {/* CalendarAdd */}

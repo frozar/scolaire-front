@@ -1,3 +1,8 @@
+.calendar-cells {
+  @apply flex;
+  font-size: 9px;
+}
+
 .calendar-name {
   position: absolute;
 }

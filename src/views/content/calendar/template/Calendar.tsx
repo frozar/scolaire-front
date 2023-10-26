@@ -54,10 +54,7 @@ export default function () {
     <section class="page-layout">
       <p class="page-title">Gestion des calendriers</p>
 
-      <CalendarTable
-        currentMonth={currentMonth()}
-        calendarsJson={calendarsJson}
-      />
+      <CalendarTable currentMonth={currentMonth()} calendars={calendarsJson} />
     </section>
   );
 }
