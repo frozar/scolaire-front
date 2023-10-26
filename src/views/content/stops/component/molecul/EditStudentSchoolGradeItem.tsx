@@ -7,11 +7,9 @@ import CardWrapper from "../../../../../component/molecule/CardWrapper";
 import CheckIcon from "../../../../../icons/CheckIcon";
 import { addNewUserInformation } from "../../../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../../../type";
+import { SchoolUtils } from "../../../../../utils/school.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
-import {
-  getSchools,
-  setSchools,
-} from "../../../map/component/organism/SchoolPoints";
+import { getSchools } from "../../../map/component/organism/SchoolPoints";
 import { appendToStop } from "../../../map/component/organism/StopPoints";
 import GradeSelection from "../atom/GradeSelection";
 import InputNumber from "../atom/InputNumber";
@@ -105,6 +103,7 @@ export default function (props: EditStopProps) {
   }
 
   async function create() {
+    console.log("used");
     // TODO to fix
     if (checkAllInputsValue()) return;
     const associatedStopT = {
@@ -118,19 +117,11 @@ export default function (props: EditStopProps) {
       Number(schoolSelectRef().value)
     );
     appendToStop(gradeToSchool, stopDetailsItem()?.id as number);
-    // TODO: Refactor and put in the right place
-    setSchools((prev) => {
-      const newSchools = [...prev];
-      newSchools
-        .filter((school) => school.id == gradeToSchool.schoolId)[0]
-        .associated.push({
-          idClassToSchool: gradeToSchool.idClassToSchool,
-          stopId: Number(stopDetailsItem()?.id),
-          quantity: gradeToSchool.quantity,
-          gradeId: gradeToSchool.gradeId,
-        });
-      return newSchools;
-    });
+
+    SchoolUtils.addGradeToSchool(
+      gradeToSchool,
+      stopDetailsItem()?.id as number
+    );
   }
 
   async function update() {

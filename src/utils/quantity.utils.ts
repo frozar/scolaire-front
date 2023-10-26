@@ -1,5 +1,7 @@
 import { AssociatedSchoolType } from "../_entities/_utils.entity";
+import { GradeTripType } from "../_entities/grade.entity";
 import { SchoolType } from "../_entities/school.entity";
+import { StopType } from "../_entities/stop.entity";
 import { TripPointType, TripType } from "../_entities/trip.entity";
 import { NatureEnum } from "../type";
 import { getLines } from "../views/content/map/component/organism/BusLines";
@@ -60,6 +62,28 @@ export namespace QuantityUtils {
       });
 
     return totalQuantity - usedQuantity;
+  }
+
+  export function updateGradeTripQuantity(
+    grades: GradeTripType[],
+    point: StopType
+  ): GradeTripType[] {
+    // Get all corresponding gradeTrip
+    const gradeTrips = getLines()
+      .flatMap((line) => line.trips)
+      .flatMap((trip) => trip.tripPoints)
+      .filter((tripPoint) => tripPoint.id == point.id)
+      .flatMap((_tripPoint) => _tripPoint.grades);
+
+    // Substract used quantity
+    grades.forEach((grade) => {
+      gradeTrips.forEach((_gradeTrip) => {
+        if (_gradeTrip.gradeId == grade.gradeId) {
+          grade.quantity -= _gradeTrip.quantity;
+        }
+      });
+    });
+    return grades;
   }
 
   export function set(trips: TripType[]) {

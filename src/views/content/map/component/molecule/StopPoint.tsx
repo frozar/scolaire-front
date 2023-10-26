@@ -11,6 +11,7 @@ import Point from "../atom/Point";
 import { GradeTripType } from "../../../../../_entities/grade.entity";
 import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
 import { updatePointColor } from "../../../../../leafletUtils";
+import { QuantityUtils } from "../../../../../utils/quantity.utils";
 import {
   setStopSelected,
   stopSelected,
@@ -30,7 +31,6 @@ import {
   draggingWaypointIndex,
   setDraggingWaypointIndex,
 } from "../atom/PolylineDragMarker";
-import { getLines } from "../organism/BusLines";
 import {
   blinkingStops,
   cursorIsOverPoint,
@@ -79,29 +79,6 @@ function updateTripAndWaypoints(point: StopType) {
     }
   });
 
-  // TODO: Refactor, move and rename
-  function updateGradesWithRemainingQuantity(
-    grades: GradeTripType[],
-    point: StopType
-  ): GradeTripType[] {
-    // Get all corresponding gradeTrip
-    const gradeTrips = getLines()
-      .flatMap((line) => line.trips)
-      .flatMap((trip) => trip.tripPoints)
-      .filter((tripPoint) => tripPoint.id == point.id)
-      .flatMap((_tripPoint) => _tripPoint.grades);
-
-    // Substract used quantity
-    grades.forEach((grade) => {
-      gradeTrips.forEach((_gradeTrip) => {
-        if (_gradeTrip.gradeId == grade.gradeId) {
-          grade.quantity -= _gradeTrip.quantity;
-        }
-      });
-    });
-    return grades;
-  }
-
   addPointToTrip({
     id: point.id,
     leafletId: point.leafletId,
@@ -110,7 +87,7 @@ function updateTripAndWaypoints(point: StopType) {
     lat: point.lat,
     quantity: 1, // TODO: Delete when unused
     nature: point.nature,
-    grades: updateGradesWithRemainingQuantity(grades, point),
+    grades: QuantityUtils.updateGradeTripQuantity(grades, point),
   });
 
   if (!lastPoint || point.leafletId != lastPoint.leafletId) {
