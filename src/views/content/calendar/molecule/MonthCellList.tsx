@@ -1,9 +1,9 @@
 import { For } from "solid-js";
 import CellItem from "../atom/CellItem";
 import { CalendarUtils } from "../calendar.utils";
-import "./MonthCellItem.css";
+import "./MonthCellList.css";
 
-export function MonthCellItem(props: { month: Date }) {
+export function MonthCellList(props: { month: Date }) {
   return (
     <div class="month-item">
       <div class="month-item-cells">
