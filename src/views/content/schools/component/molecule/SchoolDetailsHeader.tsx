@@ -1,9 +1,7 @@
 import { createSignal } from "solid-js";
-import {
-  SchoolEntity,
-  SchoolType,
-} from "../../../../../_entities/school.entity";
+import { SchoolType } from "../../../../../_entities/school.entity";
 import PencilIcon from "../../../../../icons/PencilIcon";
+import { SchoolUtils } from "../../../../../utils/school.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import InputSearch from "./InputSearch";
 import "./SchoolDetailsHeader.css";
@@ -33,8 +31,8 @@ export default function (props: { school: SchoolType }) {
       </div>
 
       <p>
-        {SchoolEntity.getRemainingQuantity(props.school)} élèves restant sur{" "}
-        {SchoolEntity.getTotalQuantity(props.school)}
+        {SchoolUtils.getRemainingQuantity(props.school)} élèves restant sur{" "}
+        {SchoolUtils.getTotalQuantity(props.school)}
       </p>
 
       <InputSearch
