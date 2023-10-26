@@ -4,6 +4,7 @@ import { GradeService } from "../../../../../_services/grade.service";
 import CardTitle from "../../../../../component/atom/CardTitle";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
 import { setRemoveConfirmation } from "../../../../../userInformation/RemoveConfirmation";
+import { QuantityUtils } from "../../../../../utils/quantity.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { changeBoard } from "../../../board/component/template/ContextManager";
 import {
@@ -60,12 +61,15 @@ export default function (props: GradeItemProps) {
       validate: deleteGrade,
     });
   }
-
   return (
     <CardWrapper class="grade-item">
       <div class="left">
         <CardTitle title={props.grade.name} />
-        <p>{props.NbStudents ? props.NbStudents + " élèves" : "Todo élèves"}</p>
+        <p>
+          {QuantityUtils.remainingGradeQuantity(props.grade.id as number) +
+            " élèves restant sur " +
+            QuantityUtils.totalGradeQuantity(props.grade.id as number)}
+        </p>
       </div>
 
       <div class="grade-item-actions">

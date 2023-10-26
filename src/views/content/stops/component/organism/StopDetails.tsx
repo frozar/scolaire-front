@@ -4,6 +4,7 @@ import { StopType } from "../../../../../_entities/stop.entity";
 import { TripEntity } from "../../../../../_entities/trip.entity";
 import PlusIcon from "../../../../../icons/PlusIcon";
 import { MapElementUtils } from "../../../../../utils/mapElement.utils";
+import { StopUtils } from "../../../../../utils/stop.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { changeBoard } from "../../../board/component/template/ContextManager";
 import { getStops } from "../../../map/component/organism/StopPoints";
@@ -46,19 +47,14 @@ export default function () {
   });
 
   const toggleEditItem = () => setEditItem((bool) => !bool);
-  // TODO: Placer dans stopUtils
-  function totalStudentOnStop() {
-    let total = 0;
-    stopDetailsItem()?.associated.map((assoc) => (total += assoc.quantity));
-
-    return total;
-  }
 
   return (
     <section>
       <StopDetailsHeader stop={stopDetailsItem() as StopType} />
 
-      <p>{totalStudentOnStop()} élèves</p>
+      <p>
+        {StopUtils.getTotalQuantity(stopDetailsItem()?.id as number)} élèves
+      </p>
 
       <div class="stop-details-actions">
         <StopDetailsPanelsButton

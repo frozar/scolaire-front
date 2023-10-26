@@ -1,3 +1,4 @@
+import { SchoolType } from "../_entities/school.entity";
 import { SchoolService } from "../_services/school.service";
 import {
   getLines,
@@ -51,5 +52,48 @@ export namespace SchoolUtils {
 
     if (!id_school) return false;
     return true;
+  }
+
+  export function getTotalQuantity(school: SchoolType) {
+    let quantity = 0;
+    const schoolDisplayed = getSchools().filter(
+      (_school) => _school.id == school.id
+    )[0];
+
+    schoolDisplayed.associated.map((associated) => {
+      quantity += associated.quantity;
+    });
+
+    return quantity;
+  }
+
+  // TODO: Refactor
+  export function getRemainingQuantity(school: SchoolType) {
+    // Sum all grades qty link to this school
+    const remainingQty: { [gradeId: number]: number } = {};
+    school.associated.map((assoc) => {
+      if (!remainingQty[assoc.gradeId]) {
+        remainingQty[assoc.gradeId] = assoc.quantity;
+      } else {
+        remainingQty[assoc.gradeId] += assoc.quantity;
+      }
+    });
+    // Update remainingQty with grade qty in trips
+    getLines()
+      .flatMap((line) => line.trips.flatMap((trip) => trip.tripPoints))
+      .flatMap((tripPoint) => tripPoint.grades)
+      .forEach((gradeTrip) => {
+        if (remainingQty[gradeTrip.gradeId]) {
+          remainingQty[gradeTrip.gradeId] -= gradeTrip.quantity;
+        }
+      });
+
+    // Sum remaining qtys
+    let totalRemainingQty = 0;
+    Object.entries(remainingQty).forEach((key) => {
+      totalRemainingQty += key[1];
+    });
+
+    return totalRemainingQty;
   }
 }

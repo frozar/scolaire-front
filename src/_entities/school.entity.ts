@@ -1,8 +1,6 @@
 import { Accessor, Setter, createSignal } from "solid-js";
 import { useStateGui } from "../StateGui";
 import { NatureEnum } from "../type";
-import { getLines } from "../views/content/map/component/organism/BusLines";
-import { getSchools } from "../views/content/map/component/organism/SchoolPoints";
 import { getTrips } from "../views/content/map/component/organism/Trips";
 import {
   AssociatedStopType,
@@ -59,50 +57,6 @@ export class SchoolEntity {
         lon: +data.lon,
       });
     });
-  }
-  // TODO à place dans un SchoolUtils
-  static getTotalQuantity(school: SchoolType) {
-    let quantity = 0;
-    const schoolDisplayed = getSchools().filter(
-      (_school) => _school.id == school.id
-    )[0];
-
-    schoolDisplayed.associated.map((associated) => {
-      quantity += associated.quantity;
-    });
-
-    return quantity;
-  }
-
-  // TODO à place dans un SchoolUtils
-  // TODO: Refactor
-  static getRemainingQuantity(school: SchoolType) {
-    // Sum all grades qty link to this school
-    const remainingQty: { [gradeId: number]: number } = {};
-    school.associated.map((assoc) => {
-      if (!remainingQty[assoc.gradeId]) {
-        remainingQty[assoc.gradeId] = assoc.quantity;
-      } else {
-        remainingQty[assoc.gradeId] += assoc.quantity;
-      }
-    });
-    // Update remainingQty with grade qty in trips
-    getLines()
-      .flatMap((line) => line.trips.flatMap((trip) => trip.tripPoints))
-      .flatMap((tripPoint) => tripPoint.grades)
-      .forEach((gradeTrip) => {
-        if (remainingQty[gradeTrip.gradeId]) {
-          remainingQty[gradeTrip.gradeId] -= gradeTrip.quantity;
-        }
-      });
-
-    // Sum remaining qtys
-    let totalRemainingQty = 0;
-    Object.entries(remainingQty).forEach((key) => {
-      totalRemainingQty += key[1];
-    });
-
-    return totalRemainingQty;
   }
 
   // TODO à place dans un SchoolUtils
