@@ -16,6 +16,27 @@ type StateGuiType = {
   nextLeafletPointId: number;
 };
 
+const defaultStateGui: StateGuiType = {
+  selectedMenu: "dashboard",
+  informationBoardSelectedTab: "information",
+  activeMapId: null,
+  displayedLeftMenu: false,
+  displayedRightMenu: false,
+  selectedReadModeTile: "OpenStreetMap_Mapnik",
+  selectedEditModeTile: "Stadia_AlidadeSmoothDark",
+  displayedInformationBoard: false,
+  nextLeafletPointId: 0,
+};
+
+// Check if the local storage has the correct keys
+// TODO: Check if the activeMapId exist
+function isSafe(stateGuiFromLocalStorage: StateGuiType) {
+  const keysByDefault = Object.keys(defaultStateGui);
+
+  const currentLocalStorageKey = Object.keys(stateGuiFromLocalStorage);
+  return _.eq(keysByDefault.sort(), currentLocalStorageKey.sort());
+}
+
 // Documentation link:
 // https://stackoverflow.com/questions/70030144/how-to-update-local-storage-values-in-solidjs-using-hooks#answer-72339551
 function createLocalStore<T extends object>(
@@ -25,11 +46,18 @@ function createLocalStore<T extends object>(
 
   const stateGuiString = localStorage.getItem("stateGui");
 
-  if (stateGuiString) {
+  if (!stateGuiString) {
+    setState(() => initState);
+  } else {
     try {
       const stateGuiFromLocalStorage: StateGuiType = JSON.parse(stateGuiString);
-      const mergeState = _.merge(initState, stateGuiFromLocalStorage);
-      setState(mergeState);
+
+      if (!isSafe(stateGuiFromLocalStorage)) {
+        setState(() => initState);
+      } else {
+        const mergeState = _.merge(initState, stateGuiFromLocalStorage);
+        setState(mergeState);
+      }
     } catch (error) {
       setState(() => initState);
     }
@@ -43,18 +71,6 @@ function createLocalStore<T extends object>(
 }
 
 const makeStateGuiContext = () => {
-  const defaultStateGui: StateGuiType = {
-    selectedMenu: "dashboard",
-    informationBoardSelectedTab: "information",
-    activeMapId: null,
-    displayedLeftMenu: false,
-    displayedRightMenu: false,
-    selectedReadModeTile: "OpenStreetMap_Mapnik",
-    selectedEditModeTile: "Stadia_AlidadeSmoothDark",
-    displayedInformationBoard: false,
-    nextLeafletPointId: 0,
-  };
-
   const [state, setState] = createLocalStore(defaultStateGui);
 
   function nextLeafletPointId(): number {
