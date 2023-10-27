@@ -16,6 +16,37 @@ type StateGuiType = {
   nextLeafletPointId: number;
 };
 
+const defaultStateGui: StateGuiType = {
+  selectedMenu: "dashboard",
+  informationBoardSelectedTab: "information",
+  activeMapId: null,
+  displayedLeftMenu: false,
+  displayedRightMenu: false,
+  selectedReadModeTile: "OpenStreetMap_Mapnik",
+  selectedEditModeTile: "Stadia_AlidadeSmoothDark",
+  displayedInformationBoard: false,
+  nextLeafletPointId: 0,
+};
+
+console.log("StateGuiType keys", Object.keys(defaultStateGui));
+
+// Check if the local storage has the correct keys
+function isSafe(stateGuiFromLocalStorage: StateGuiType) {
+  const keysByDefault = Object.keys(defaultStateGui);
+  let res = true;
+
+  // If the current local storage has more keys than the default one,
+  // it's not safe
+  for (const key of Object.keys(stateGuiFromLocalStorage)) {
+    if (!keysByDefault.includes(key)) {
+      res = false;
+      break;
+    }
+  }
+
+  return res;
+}
+
 // Documentation link:
 // https://stackoverflow.com/questions/70030144/how-to-update-local-storage-values-in-solidjs-using-hooks#answer-72339551
 function createLocalStore<T extends object>(
@@ -25,12 +56,22 @@ function createLocalStore<T extends object>(
 
   const stateGuiString = localStorage.getItem("stateGui");
 
-  if (stateGuiString) {
+  if (!stateGuiString) {
+    setState(() => initState);
+  } else {
     try {
+      console.log("in TRY");
       const stateGuiFromLocalStorage: StateGuiType = JSON.parse(stateGuiString);
-      const mergeState = _.merge(initState, stateGuiFromLocalStorage);
-      setState(mergeState);
+
+      // TODO: sanity check of the localStorage
+      if (!isSafe(stateGuiFromLocalStorage)) {
+        setState(() => initState);
+      } else {
+        const mergeState = _.merge(initState, stateGuiFromLocalStorage);
+        setState(mergeState);
+      }
     } catch (error) {
+      console.log("in CATCH");
       setState(() => initState);
     }
   }
@@ -39,22 +80,11 @@ function createLocalStore<T extends object>(
     localStorage.stateGui = JSON.stringify(state);
   });
 
+  console.log("FINAL state", JSON.parse(JSON.stringify(state)));
   return [state, setState];
 }
 
 const makeStateGuiContext = () => {
-  const defaultStateGui: StateGuiType = {
-    selectedMenu: "dashboard",
-    informationBoardSelectedTab: "information",
-    activeMapId: null,
-    displayedLeftMenu: false,
-    displayedRightMenu: false,
-    selectedReadModeTile: "OpenStreetMap_Mapnik",
-    selectedEditModeTile: "Stadia_AlidadeSmoothDark",
-    displayedInformationBoard: false,
-    nextLeafletPointId: 0,
-  };
-
   const [state, setState] = createLocalStore(defaultStateGui);
 
   function nextLeafletPointId(): number {
