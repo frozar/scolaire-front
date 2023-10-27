@@ -4,12 +4,6 @@ import { StopType } from "../_entities/stop.entity";
 import { getLines } from "../views/content/map/component/organism/BusLines";
 import { getSchools } from "../views/content/map/component/organism/SchoolPoints";
 
-// enum OperationType {
-//   set,
-//   substract,
-//   add,
-// }
-
 export namespace QuantityUtils {
   // TODO: Empêcher la création de plusieurs student to school ayant le même gradeId sur un même stop depuis le board "stop-details"
   export function remainingStudentToGradeQuantity(
@@ -78,95 +72,4 @@ export namespace QuantityUtils {
     });
     return grades;
   }
-
-  // export function set(trips: TripType[]) {
-  //   trips.forEach((trip) => {
-  //     trip.schools.forEach((school) => {
-  //       setSchoolQuantity(school, trip.tripPoints, OperationType.set);
-  //     });
-
-  //     trip.tripPoints.forEach((point) => {
-  //       setStopQuantity(point, trip.schools, OperationType.set);
-  //     });
-  //   });
-  // }
-  // ! Apporter les modifs liées aux associated de school et stops (quantity => valeurs totales => redondance ?)
-  // ! => à mettre à jour quand :
-  // ! - studentToGrade quantity est modifié (modifier la qté correspondante)
-  // ! - modification / suppr d'une course => certains stop ne deserve plus le school (suppr l'associated correspondant)
-  // ! - modification / ajout d'une course => cetrains stop supplémentaire deserve le school (ajouter l'associated correspondant)
-  // export function add(trip: TripType) {
-  //   operation(trip, OperationType.add);
-  // }
-
-  // export function substract(trip: TripType) {
-  //   operation(trip, OperationType.substract);
-  // }
-
-  // function operation(trip: TripType, operation: OperationType) {
-  //   trip.schools.forEach((school) => {
-  //     setSchoolQuantity(school, trip.tripPoints, operation);
-  //   });
-
-  //   trip.tripPoints.forEach((point) => {
-  //     setStopQuantity(point, trip.schools, operation);
-  //   });
-  // }
-
-  // //TODO to check and fix
-  // function setSchoolQuantity(
-  //   school: SchoolType,
-  //   points: TripPointType[],
-  //   operation: OperationType
-  // ) {
-  //   points.forEach((point) => {
-  //     if (point.nature === NatureEnum.stop) {
-  //       setSchools((schools) => {
-  //         schools.map((_school) => {
-  //           if (_school.id == school.id) {
-  //             _school.associated.map((stop) => {
-  //               if (stop.stopId == point.id) {
-  //                 if (operation === OperationType.set)
-  //                   stop.quantity = point.quantity;
-  //                 else if (operation === OperationType.add)
-  //                   stop.quantity += point.quantity;
-  //                 else if (operation === OperationType.substract)
-  //                   stop.quantity -= point.quantity;
-  //               }
-  //             });
-  //           }
-  //         });
-  //         return schools;
-  //       });
-  //     }
-  //   });
-  // }
-
-  // function setStopQuantity(
-  //   point: TripPointType,
-  //   schools: SchoolType[],
-  //   operation: OperationType
-  // ) {
-  //   if (point.nature === NatureEnum.stop) {
-  //     schools.forEach((school) => {
-  //       setStops((stops) => {
-  //         stops.map((stop) => {
-  //           if (stop.id == point.id) {
-  //             stop.associated.map((_school) => {
-  //               if (_school.schoolId == school.id) {
-  //                 if (operation === OperationType.set)
-  //                   _school.usedQuantity = point.quantity;
-  //                 else if (operation === OperationType.add)
-  //                   _school.usedQuantity += point.quantity;
-  //                 else if (operation === OperationType.substract)
-  //                   _school.usedQuantity -= point.quantity;
-  //               }
-  //             });
-  //           }
-  //         });
-  //         return stops;
-  //       });
-  //     });
-  //   }
-  // }
 }

@@ -76,7 +76,6 @@ export const [isInUpdate, setIsInUpdate] = createSignal(false);
 export function DrawTripBoard() {
   onMount(() => {
     if (isInUpdate()) {
-      // QuantityUtils.substract(currentDrawTrip());
     } else {
       setCurrentDrawTrip(TripEntity.defaultTrip());
     }
@@ -238,8 +237,6 @@ async function createOrUpdateTrip() {
       .filter((trip) => trip.id == updatedTrip.id)[0]
   );
 
-  // QuantityUtils.add(updatedTrip);
-
   setDisplayTripMode((prev) =>
     prev == displayTripModeEnum.straight ? prev : displayTripModeEnum.straight
   );
@@ -300,7 +297,6 @@ function prevStep() {
       break;
     case DrawTripStep.editTrip:
       if (isInUpdate()) {
-        // QuantityUtils.add(currentDrawTrip());
         quitModeDrawTrip();
         // eslint-disable-next-line solid/reactivity
         setselectedTrip(() => {
