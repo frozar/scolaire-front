@@ -22,7 +22,7 @@ export function CellItemLogic(props: {
   // Vérifie si la date de la cellule fait parti des dates ou il n'y pas d'activité
   const isDeletedDate = () => {
     let isDeleted = false;
-    props.calendar.dated_deleted.map((dateDeleted) => {
+    props.calendar.date_deleted.map((dateDeleted) => {
       const date = CalendarUtils.stringToDate(dateDeleted);
       if (date.getTime() == currentDate().getTime()) {
         isDeleted = true;

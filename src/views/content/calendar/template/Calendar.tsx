@@ -12,7 +12,7 @@ export type CalendarType = {
   calendarName: string;
   rules: string[];
   date_added: string[];
-  dated_deleted: string[];
+  date_deleted: string[];
 };
 
 export const [currentMonth, setCurrentMonth] = createSignal<Date>(new Date());
@@ -28,25 +28,25 @@ export default function () {
       calendarName: "Calendrier Maternel",
       rules: ["monday", "tuesday", "wednesday", "thursday", "friday"],
       date_added: ["04-10-2023"],
-      dated_deleted: ["05-10-2023"],
+      date_deleted: ["05-10-2023"],
     },
     {
       calendarName: "Calendrier Internat Lundi",
       rules: ["monday", "tuesday", "thursday", "friday"],
       date_added: ["04-10-2023"],
-      dated_deleted: ["02-01-2023"],
+      date_deleted: ["02-01-2023"],
     },
     {
       calendarName: "Calendrier Collège",
       rules: ["monday", "tuesday", "thursday", "friday"],
       date_added: ["04-10-2023"],
-      dated_deleted: ["02-01-2023"],
+      date_deleted: ["02-01-2023"],
     },
     {
       calendarName: "Calendrier Collège Mercredi",
       rules: ["monday", "tuesday", "thursday", "friday"],
       date_added: ["04-10-2023"],
-      dated_deleted: ["02-01-2023"],
+      date_deleted: ["02-01-2023"],
     },
   ];
 
