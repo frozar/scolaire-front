@@ -21,3 +21,4 @@ jobs:
       - run: flyctl deploy --remote-only
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+          VITE_XANO_URL: https://x8ki-letl-twmt.n7.xano.io/api:DL_gv4vw
