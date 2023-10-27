@@ -5,6 +5,7 @@ import "./LeftMenuItemLabel.css";
 export interface LeftMenuItemLabelProps {
   isActive?: boolean;
   isDisabled?: boolean;
+  isDisplayed: boolean;
   label: string;
 }
 
@@ -17,6 +18,7 @@ export default function (props: LeftMenuItemLabelProps) {
       classList={{
         disabled: mergedProps.isDisabled,
         active: !mergedProps.isDisabled && mergedProps.isActive,
+        hide: !mergedProps.isDisplayed,
       }}
     >
       {mergedProps.label}
