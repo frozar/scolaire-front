@@ -2,7 +2,7 @@ import { AssociatedSchoolType } from "../_entities/_utils.entity";
 import { GradeTripType } from "../_entities/grade.entity";
 import { StopType } from "../_entities/stop.entity";
 import { getLines } from "../views/content/map/component/organism/BusLines";
-import { getSchools } from "../views/content/map/component/organism/SchoolPoints";
+import { getStops } from "../views/content/map/component/organism/StopPoints";
 
 export namespace QuantityUtils {
   // TODO: Empêcher la création de plusieurs student to school ayant le même gradeId sur un même stop depuis le board "stop-details"
@@ -28,11 +28,10 @@ export namespace QuantityUtils {
   export function totalGradeQuantity(gradeId: number) {
     let quantity = 0;
 
-    getSchools().forEach((school) =>
-      school.associated.forEach((assoc) => {
-        if (assoc.gradeId == gradeId) quantity += assoc.quantity;
-      })
-    );
+    getStops()
+      .flatMap((stop) => stop.associated)
+      .filter((assoc) => assoc.gradeId == gradeId)
+      .forEach((_assoc) => (quantity += _assoc.quantity));
 
     return quantity;
   }
