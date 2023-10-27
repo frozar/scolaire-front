@@ -41,8 +41,6 @@ export default function () {
   createEffect(async () => {
     if (getAuthenticatedUser()) setinit(await InitService.getAll());
   });
-  createEffect(() => console.log("init()?.schools", init()?.schools));
-  createEffect(() => console.log("init()?.stops", init()?.stops));
 
   onMount(() => {
     // Manage shortcut keyboard event
