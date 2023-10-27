@@ -60,7 +60,13 @@ export default function () {
         "2023-10-30",
         "2023-10-31",
       ],
-      date_deleted: ["01-10-2023"],
+      date_deleted: [
+        "2023-10-16",
+        "2023-10-17",
+        "2023-10-18",
+        "2023-10-19",
+        "2023-10-20",
+      ],
     },
     // {
     //   calendarName: "Calendrier Internat Lundi",
