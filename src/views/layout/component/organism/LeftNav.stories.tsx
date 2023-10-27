@@ -20,7 +20,6 @@ function toggleFakeDisplayedLeftMenu() {
 
 export const LeftNav: Story = {
   args: {
-    displayedLabel: true,
     getDisplayedLeftMenu: fakeGetDisplayedLeftMenu,
     toggleDisplayedLeftMenu: toggleFakeDisplayedLeftMenu,
   },

@@ -35,7 +35,7 @@ export default function (props: LeftNavProps) {
           <EnterpriseLogo />
         </div>
 
-        <LeftMenuItemList />
+        <LeftMenuItemList displayedLabel={mergedProps.getDisplayedLeftMenu()} />
 
         <button
           id="left-nav-btn-colapse"

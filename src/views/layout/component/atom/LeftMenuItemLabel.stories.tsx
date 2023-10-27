@@ -12,6 +12,7 @@ type Story = StoryObj<typeof meta>;
 
 export const LeftMenuItemLabel: Story = {
   args: {
+    isDisplayed: true,
     isActive: false,
     isDisabled: false,
   },

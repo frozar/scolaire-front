@@ -8,6 +8,7 @@ import "./LeftMenuItem.css";
 
 export interface LeftMenuItemProps {
   isDisabled?: boolean;
+  displayedLabel: boolean;
   label: string;
 
   isSelected: boolean;
@@ -40,6 +41,7 @@ export default function (props: LeftMenuItemProps) {
       </LeftMenuButtonLogo>
 
       <LeftMenuItemLabel
+        isDisplayed={mergedProps.displayedLabel}
         isActive={mergedProps.isSelected}
         isDisabled={mergedProps.isDisabled}
         label={mergedProps.label}

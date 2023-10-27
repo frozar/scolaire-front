@@ -12,6 +12,7 @@ const [, { setSelectedMenu, getSelectedMenu }] = useStateGui();
 export interface LeftMenuItemProps {
   getSelectedMenu?: () => SelectedMenuType;
   setSelectedMenu?: (itemMenu: SelectedMenuType) => void;
+  displayedLabel: boolean;
 }
 
 export default function (props: LeftMenuItemProps) {
@@ -49,6 +50,7 @@ export default function (props: LeftMenuItemProps) {
 
           return (
             <LeftMenuItem
+              displayedLabel={mergedProps.displayedLabel}
               isDisabled={isDisabled}
               Logo={Logo}
               label={label}
