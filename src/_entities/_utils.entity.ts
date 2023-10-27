@@ -78,7 +78,7 @@ export type AssociatedSchoolType = {
   gradeId: number;
 };
 
-// TODO: Delete ? Redundant with AssociatedSchoolType
+// TODO: Delete ? Or use only for associated stopId ? `quantity` Redundant with AssociatedSchoolType
 export type AssociatedStopType = {
   idClassToSchool: number;
   stopId: number;
