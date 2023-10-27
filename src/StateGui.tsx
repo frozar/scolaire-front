@@ -34,7 +34,11 @@ function isSafe(stateGuiFromLocalStorage: StateGuiType) {
   const keysByDefault = Object.keys(defaultStateGui);
 
   const currentLocalStorageKey = Object.keys(stateGuiFromLocalStorage);
+<<<<<<< HEAD
   return _.isEqual(keysByDefault.sort(), currentLocalStorageKey.sort());
+=======
+  return _.eq(keysByDefault.sort(), currentLocalStorageKey.sort());
+>>>>>>> 55b12d8f (Improve the localStorage sanity check.)
 }
 
 // TODO : Initialiser correctement le ContextManager en fonction de la valeur
@@ -74,10 +78,8 @@ function createLocalStore<T extends object>(
     setState(() => initState);
   } else {
     try {
-      console.log("in TRY");
       const stateGuiFromLocalStorage: StateGuiType = JSON.parse(stateGuiString);
 
-      // TODO: sanity check of the localStorage
       if (!isSafe(stateGuiFromLocalStorage)) {
         setState(() => initState);
       } else {
@@ -85,7 +87,6 @@ function createLocalStore<T extends object>(
         setState(mergeState);
       }
     } catch (error) {
-      console.log("in CATCH");
       setState(() => initState);
     }
   }
