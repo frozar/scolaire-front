@@ -3,7 +3,6 @@ dist
 tmp
 PRIVATE.md
 .env.development
-.env.production
 storybook-static
 cypress/videos
 cypress-visual-report
