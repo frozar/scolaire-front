@@ -6,7 +6,7 @@ kill_timeout = 5
 processes = []
 
 [env]
-  VITE_XANO_URL= "https://x8ki-letl-twmt.n7.xano.io/api:DL_gv4vw"
+  VITE_XANO_URL = "https://x8ki-letl-twmt.n7.xano.io/api:DL_gv4vw"
 
 [experimental]
   allowed_public_ports = []
