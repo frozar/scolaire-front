@@ -68,16 +68,17 @@ export class EntityUtils {
 
 export type PointType = SchoolType | StopType;
 
+// TODO: Rename
 export type AssociatedSchoolType = {
   idClassToSchool: number;
   schoolId: number;
   schoolName: string;
   quantity: number;
-  usedQuantity: number;
+  usedQuantity: number; // TODO: Delete
   gradeId: number;
 };
 
-// TODO: Rename
+// TODO: Delete ? Redundant with AssociatedSchoolType
 export type AssociatedStopType = {
   idClassToSchool: number;
   stopId: number;
