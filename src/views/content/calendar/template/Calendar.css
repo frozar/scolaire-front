@@ -1,5 +1,5 @@
 .page-layout {
-  @apply px-10 w-full bg-white pt-5;
+  @apply pl-10 w-full bg-white pt-5;
 }
 
 .page-title {
