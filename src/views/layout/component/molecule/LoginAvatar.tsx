@@ -9,6 +9,13 @@ export interface LoginAvatarProps {
 }
 
 export default function (props: LoginAvatarProps) {
+  // const mergedProps = mergeProps(
+  //   {
+  //     drawAttention: true,
+  //     profilePicture: props.profilePicture ? props.profilePicture : "",
+  //   },
+  //   props
+  // );
   const logoPath = () => (props.profilePicture ? props.profilePicture : "");
 
   return (
@@ -17,6 +24,7 @@ export default function (props: LoginAvatarProps) {
       fallback={<UnloggedUserLogo drawAttention={props.drawAttention} />}
     >
       <LoggedInUserLogo path={logoPath()} />
+      {/* <LoggedInUserLogo path={mergedProps.profilePicture} /> */}
     </Show>
   );
 }
