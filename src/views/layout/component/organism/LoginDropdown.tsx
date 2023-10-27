@@ -58,7 +58,10 @@ export default function (props: LoginDropdownProps) {
         }
       }}
     >
-      <LoginAvatar profilePicture={getAuthenticatedUser()?.picture} />
+      <LoginAvatar
+        profilePicture={getAuthenticatedUser()?.picture}
+        drawAttention={!displayedSubComponent()}
+      />
 
       <Transition
         enterActiveClass="transition ease-out duration-200"

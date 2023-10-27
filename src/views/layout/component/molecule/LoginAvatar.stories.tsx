@@ -11,6 +11,7 @@ type Story = StoryObj<typeof meta>;
 export const LoginAvatar: Story = {
   args: {
     authenticated: false,
+    drawAttention: true,
   },
   argTypes: {
     profilePicture: {
