@@ -20,7 +20,7 @@ export namespace CalendarUtils {
     return days;
   }
 
-  export function getNameDay(date: Date): string {
+  export function getDayName(date: Date): string {
     return date.toLocaleString("en-EN", {
       weekday: "long",
     });
@@ -49,7 +49,7 @@ export namespace CalendarUtils {
 
     calendar.date_added.map((strDate) => {
       const date = CalendarUtils.stringToDate(strDate);
-      const dayName = CalendarUtils.getNameDay(date).toLowerCase();
+      const dayName = CalendarUtils.getDayName(date).toLowerCase();
 
       if (
         date.getMonth() == month.getMonth() &&
@@ -65,7 +65,7 @@ export namespace CalendarUtils {
   }
 
   export function isWeekend(date: Date): boolean {
-    const dayName = CalendarUtils.getNameDay(date).toLowerCase();
+    const dayName = CalendarUtils.getDayName(date).toLowerCase();
     return dayName == "saturday" || dayName == "sunday";
   }
 
@@ -73,7 +73,7 @@ export namespace CalendarUtils {
     if (
       date.getFullYear() == toCompare.getFullYear() &&
       date.getMonth() == toCompare.getMonth() &&
-      CalendarUtils.getNameDay(date) == CalendarUtils.getNameDay(toCompare)
+      CalendarUtils.getDayName(date) == CalendarUtils.getDayName(toCompare)
     )
       return true;
     else return false;
@@ -95,7 +95,6 @@ export namespace CalendarUtils {
     return holidays;
   }
 
-  // Fonction pour calculer la date de Pâques (Méthode de Gauss)
   function calculPaque(year: number): Date {
     const a = year % 19;
     const b = Math.floor(year / 100);

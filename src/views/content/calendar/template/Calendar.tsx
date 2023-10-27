@@ -78,30 +78,17 @@ export default function () {
       date_added: [],
       date_deleted: [],
     },
-    // {
-    //   calendarName: "Calendrier Internat Lundi",
-    //   rules: ["monday", "tuesday", "thursday", "friday"],
-    //   date_added: ["05-10-2023"],
-    //   date_deleted: ["02-01-2023"],
-    // },
-    // {
-    //   calendarName: "Calendrier Collège",
-    //   rules: ["monday", "tuesday", "thursday", "friday"],
-    //   date_added: ["04-10-2023"],
-    //   date_deleted: ["02-01-2023"],
-    // },
-    // {
-    //   calendarName: "Calendrier Collège Mercredi",
-    //   rules: ["monday", "tuesday", "thursday", "friday"],
-    //   date_added: ["04-10-2023"],
-    //   date_deleted: ["02-01-2023"],
-    // },
+    {
+      calendarName: "Calendrier Internat Lundi",
+      rules: ["monday", "tuesday", "thursday", "friday"],
+      date_added: ["2023-11-01"],
+      date_deleted: [],
+    },
   ];
 
   return (
     <section class="page-layout">
       <p class="page-title">Gestion des calendriers</p>
-
       <CalendarTable currentMonth={currentMonth()} calendars={calendarsJson} />
     </section>
   );
