@@ -79,7 +79,11 @@ export default function (props: LeftMenuItemProps) {
           return (
             <LeftMenuItem
               displayedLabel={mergedProps.displayedLabel}
+<<<<<<< HEAD
               isDisabled={effectiveIsDisabled()}
+=======
+              isDisabled={isDisabled}
+>>>>>>> b0c2bb6a (Fix the default state of left-menu-item-label)
               Logo={Logo}
               label={label}
               isSelected={isSelected()}
