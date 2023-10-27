@@ -41,7 +41,6 @@ export default function () {
   createEffect(async () => {
     if (getAuthenticatedUser()) setinit(await InitService.getAll());
   });
-
   onMount(() => {
     // Manage shortcut keyboard event
     // for (const handler of listHandlerLMap) {
