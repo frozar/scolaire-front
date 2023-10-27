@@ -95,7 +95,6 @@ function createLocalStore<T extends object>(
     localStorage.stateGui = JSON.stringify(state);
   });
 
-  console.log("FINAL state", JSON.parse(JSON.stringify(state)));
   return [state, setState];
 }
 
