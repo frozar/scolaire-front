@@ -28,8 +28,6 @@ const defaultStateGui: StateGuiType = {
   nextLeafletPointId: 0,
 };
 
-console.log("StateGuiType keys", Object.keys(defaultStateGui));
-
 // Check if the local storage has the correct keys
 // TODO: Check if the activeMapId exist
 function isSafe(stateGuiFromLocalStorage: StateGuiType) {
@@ -69,7 +67,6 @@ function createLocalStore<T extends object>(
     localStorage.stateGui = JSON.stringify(state);
   });
 
-  console.log("FINAL state", JSON.parse(JSON.stringify(state)));
   return [state, setState];
 }
 
