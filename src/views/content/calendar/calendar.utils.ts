@@ -25,6 +25,11 @@ export namespace CalendarUtils {
       weekday: "long",
     });
   }
+
+  export function stringToDate(dateString: string): Date {
+    const [day, month, year] = dateString.split("-");
+    return new Date([month, day, year].join("/"));
+  }
 }
 
 export function getAllMonthsAndDays(year: number) {
