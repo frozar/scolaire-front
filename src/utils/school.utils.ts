@@ -1,5 +1,4 @@
 import { AssociatedSchoolType } from "../_entities/_utils.entity";
-import { SchoolType } from "../_entities/school.entity";
 import { SchoolService } from "../_services/school.service";
 import {
   getLines,
@@ -66,34 +65,21 @@ export namespace SchoolUtils {
     return quantity;
   }
 
-  // TODO: Refactor (use getTotalQuantity)
-  export function getRemainingQuantity(school: SchoolType) {
-    // Sum all grades qty link to this school
-    const remainingQty: { [gradeId: number]: number } = {};
-    school.associated.map((assoc) => {
-      if (!remainingQty[assoc.gradeId]) {
-        remainingQty[assoc.gradeId] = assoc.quantity;
-      } else {
-        remainingQty[assoc.gradeId] += assoc.quantity;
-      }
-    });
-    // Update remainingQty with grade qty in trips
+  export function getRemainingQuantity(schoolId: number) {
+    let remainingQuantity = getTotalQuantity(schoolId);
+    const school = getSchools().filter((school) => school.id == schoolId)[0];
+    const gradeIds = school.grades.map((grade) => grade.id as number);
+
     getLines()
-      .flatMap((line) => line.trips.flatMap((trip) => trip.tripPoints))
+      .flatMap((line) => line.trips)
+      .flatMap((trip) => trip.tripPoints)
       .flatMap((tripPoint) => tripPoint.grades)
-      .forEach((gradeTrip) => {
-        if (remainingQty[gradeTrip.gradeId]) {
-          remainingQty[gradeTrip.gradeId] -= gradeTrip.quantity;
-        }
+      .forEach((grade) => {
+        if (gradeIds.includes(grade.gradeId))
+          remainingQuantity -= grade.quantity;
       });
 
-    // Sum remaining qtys
-    let totalRemainingQty = 0;
-    Object.entries(remainingQty).forEach((key) => {
-      totalRemainingQty += key[1];
-    });
-
-    return totalRemainingQty;
+    return remainingQuantity;
   }
 
   export function addGradeToSchool(
