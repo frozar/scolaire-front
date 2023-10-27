@@ -55,20 +55,18 @@ export namespace SchoolUtils {
     return true;
   }
 
-  export function getTotalQuantity(school: SchoolType) {
+  export function getTotalQuantity(schoolId: number) {
     let quantity = 0;
-    const schoolDisplayed = getSchools().filter(
-      (_school) => _school.id == school.id
-    )[0];
-
-    schoolDisplayed.associated.map((associated) => {
-      quantity += associated.quantity;
-    });
+    getStops()
+      .flatMap((stop) => stop.associated)
+      .forEach((assoc) => {
+        if (assoc.schoolId == schoolId) quantity += assoc.quantity;
+      });
 
     return quantity;
   }
 
-  // TODO: Refactor
+  // TODO: Refactor (use getTotalQuantity)
   export function getRemainingQuantity(school: SchoolType) {
     // Sum all grades qty link to this school
     const remainingQty: { [gradeId: number]: number } = {};

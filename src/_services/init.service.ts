@@ -30,11 +30,13 @@ export namespace InitService {
       SchoolEntity.build(dbSchool)
     );
     setSchools(schools);
+    console.log("init schools", schools);
 
     const stops = dbInit.stops.map((dbStop: StopDBType) =>
       StopEntity.build(dbStop)
     );
     setStops(stops);
+    console.log("init stops", stops);
 
     const busLines = dbInit.bus_lines.map((dbLine: LineDBType) =>
       BusLineEntity.build(dbLine)

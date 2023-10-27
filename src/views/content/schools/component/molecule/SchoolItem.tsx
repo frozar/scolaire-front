@@ -56,7 +56,7 @@ export default function (props: SchoolItemProps) {
       <div class="school-item-content">
         <p>Trips: {SchoolEntity.getSchoolTrips(props.school.id).length}</p>
         <p>classes: {props.school.grades.length ?? "-"}</p>
-        <p>élèves: {SchoolUtils.getTotalQuantity(props.school)}</p>
+        <p>élèves: {SchoolUtils.getTotalQuantity(props.school.id)}</p>
       </div>
     </CardWrapper>
   );

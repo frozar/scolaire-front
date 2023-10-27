@@ -31,6 +31,7 @@ export function getSchoolWhereClassId(gradeId: number): SchoolType | undefined {
 export function SchoolPoints(props: SchoolPointsProps) {
   // eslint-disable-next-line solid/reactivity
   createEffect(() => setSchools(props.schools));
+  createEffect(() => console.log("getSchools", getSchools()));
 
   return (
     <For each={schoolsFilter()}>
