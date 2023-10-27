@@ -11,7 +11,7 @@ export namespace CalendarUtils {
     const days = [];
     const numberOfDay = new Date(
       date.getFullYear(),
-      date.getMonth() + 1,
+      date.getMonth(),
       0
     ).getDate();
     for (let i = 1; i <= numberOfDay; i++) {
@@ -27,8 +27,8 @@ export namespace CalendarUtils {
   }
 
   export function stringToDate(dateString: string): Date {
-    const [day, month, year] = dateString.split("-");
-    return new Date([month, day, year].join("/"));
+    const [year, month, day] = dateString.split("-");
+    return new Date(Number(year), Number(month), Number(day));
   }
 
   export function isHoliday(date: Date): boolean {

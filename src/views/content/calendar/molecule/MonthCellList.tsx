@@ -13,23 +13,20 @@ export function MonthCellList(props: { month: Date; calendar: CalendarType }) {
       <div class="month-item-cells">
         <For each={CalendarUtils.getDaysOfMonth(props.month)}>
           {(day) => {
-            const currentDate = new Date(
-              props.month.getFullYear(),
-              props.month.getMonth(),
-              day
-            );
+            const currentDate = () =>
+              new Date(props.month.getFullYear(), props.month.getMonth(), day);
 
             const isActive = () =>
               actifDays().find(
-                (date) => date.getTime() == currentDate.getTime()
+                (date) => date.getTime() == currentDate().getTime()
               ) != undefined;
 
             return (
               <CellItem
                 isActive={isActive()}
-                isWeekend={CalendarUtils.isWeekend(currentDate)}
+                isWeekend={CalendarUtils.isWeekend(currentDate())}
                 onClick={() => {
-                  console.log(CalendarUtils.getNameDay(currentDate));
+                  console.log(CalendarUtils.getNameDay(currentDate()));
                   console.log(isActive());
                 }}
               />
