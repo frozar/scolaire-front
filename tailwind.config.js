@@ -8,7 +8,7 @@ module.exports = {
     zIndex: {
       innerModal: "1399",
       layoutTop: "1400",
-      layoutLeft: "1401",
+      layoutLeft: "1400",
       userInformations: "1402",
       modal: "1410",
     },
