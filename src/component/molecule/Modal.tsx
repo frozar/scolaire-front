@@ -1,5 +1,5 @@
+import { JSX, Show, children, createEffect } from "solid-js";
 import { Transition } from "solid-transition-group";
-import { JSX, Show, children } from "solid-js";
 
 interface ModalProps {
   show: boolean;
@@ -8,6 +8,12 @@ interface ModalProps {
 
 export default function (props: ModalProps) {
   const subComponent = children(() => props.children);
+
+  createEffect(() => {
+    console.log("modal props", props);
+    console.log("modal subComponent", subComponent);
+    console.log("modal subComponent()", subComponent());
+  });
 
   return (
     <Transition
@@ -27,6 +33,9 @@ export default function (props: ModalProps) {
           aria-modal="true"
         >
           <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+
+          {/* Forum github pour les nested transitions
+          https://github.com/reactjs/react-transition-group/issues/558 */}
           <Transition
             name="slide-fade"
             enterActiveClass="ease-out duration-300"
@@ -37,7 +46,11 @@ export default function (props: ModalProps) {
             exitToClass="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             appear
           >
-            {subComponent()}
+            <div class="fixed inset-0 z-10 overflow-y-auto">
+              <div class="flex min-h-full items-center justify-center text-center">
+                {subComponent()}
+              </div>
+            </div>
           </Transition>
         </div>
       </Show>
