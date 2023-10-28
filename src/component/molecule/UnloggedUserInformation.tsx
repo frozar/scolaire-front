@@ -25,7 +25,7 @@ export default function (props: DialogueBoxProps) {
   });
 
   const userMessages = [
-    "En haut, à droite, pour vous connectez",
+    "En haut, à droite, pour vous connecter",
     "Vous devriez vous connecter",
     "En haut, à droite, vous trouverez le bouton de connection",
   ];

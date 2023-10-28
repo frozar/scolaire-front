@@ -17,7 +17,9 @@ import InformationBoardLayout from "./InformationBoardLayout";
 
 const [, { getActiveMapId }] = useStateGui();
 
-//TODO utiliser ou supprimer "schools" et "stops"
+// TODO retirer le type "undefined" du type "BoardTags" : c'est une erreur de conception
+//      le type "BoardTags" doit indiquer quel board est en train d'être utilisé.
+// TODO utiliser ou supprimer "schools" et "stops"
 export type BoardTags =
   | "schools"
   | "school-details"
@@ -37,6 +39,7 @@ export const toggleDrawMod = () => setIsDrawMod((bool) => !bool);
 
 export const [onBoard, setOnBoard] = createSignal<BoardTags>(undefined);
 export const changeBoard = (boardName: BoardTags) => setOnBoard(boardName);
+
 if (getActiveMapId()) {
   changeBoard("line");
 }

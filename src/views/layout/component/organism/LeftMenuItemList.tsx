@@ -1,13 +1,14 @@
-import { For, createEffect, mergeProps } from "solid-js";
+import { For, createEffect, createSignal, mergeProps } from "solid-js";
 
 import { useStateGui } from "../../../../StateGui";
 import { SelectedMenuType } from "../../../../type";
 
+import { getAuthenticatedUser } from "../../../../signaux";
 import { onBoard } from "../../../content/board/component/template/ContextManager";
 import menuItems from "../../menuItemFields";
 import LeftMenuItem from "../molecule/LeftMenuItem";
 
-const [, { setSelectedMenu, getSelectedMenu }] = useStateGui();
+const [, { getActiveMapId, setSelectedMenu, getSelectedMenu }] = useStateGui();
 
 export interface LeftMenuItemProps {
   getSelectedMenu?: () => SelectedMenuType;
@@ -17,6 +18,7 @@ export interface LeftMenuItemProps {
 
 export default function (props: LeftMenuItemProps) {
   const mergedProps = mergeProps({ getSelectedMenu, setSelectedMenu }, props);
+
   createEffect(() => {
     const onBoardMode = onBoard();
 
@@ -38,11 +40,37 @@ export default function (props: LeftMenuItemProps) {
     }
   });
 
+  const [previousAuthenticatedUser, setPreviousAuthenticatedUser] =
+    createSignal(getAuthenticatedUser());
+
+  createEffect(() => {
+    if (
+      previousAuthenticatedUser() == undefined &&
+      previousAuthenticatedUser() != getAuthenticatedUser()
+    ) {
+      setSelectedMenu("dashboard");
+    }
+
+    if (previousAuthenticatedUser() != getAuthenticatedUser()) {
+      setPreviousAuthenticatedUser(getAuthenticatedUser());
+    }
+  });
+
   return (
     <ul>
       <For each={menuItems}>
         {(menuItemArg) => {
           const { label, menuItem, Logo, isDisabled } = menuItemArg;
+
+          const effectiveIsDisabled = () => {
+            return (
+              isDisabled ||
+              (!isDisabled &&
+                menuItem != "dashboard" &&
+                getAuthenticatedUser() != undefined &&
+                getActiveMapId() == null)
+            );
+          };
 
           function isSelected() {
             return menuItem == mergedProps.getSelectedMenu() ? true : false;
@@ -51,7 +79,7 @@ export default function (props: LeftMenuItemProps) {
           return (
             <LeftMenuItem
               displayedLabel={mergedProps.displayedLabel}
-              isDisabled={isDisabled}
+              isDisabled={effectiveIsDisabled()}
               Logo={Logo}
               label={label}
               isSelected={isSelected()}
