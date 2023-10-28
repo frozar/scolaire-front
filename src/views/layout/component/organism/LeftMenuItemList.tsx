@@ -1,4 +1,4 @@
-import { For, createEffect, mergeProps } from "solid-js";
+import { For, createEffect, createSignal, mergeProps } from "solid-js";
 
 import { useStateGui } from "../../../../StateGui";
 import { SelectedMenuType } from "../../../../type";
@@ -37,6 +37,22 @@ export default function (props: LeftMenuItemProps) {
       setSelectedMenu("schools");
     } else if (["stops", "stop-details"].includes(onBoardMode)) {
       setSelectedMenu("stops");
+    }
+  });
+
+  const [previousAuthenticatedUser, setPreviousAuthenticatedUser] =
+    createSignal(getAuthenticatedUser());
+
+  createEffect(() => {
+    if (
+      previousAuthenticatedUser() == undefined &&
+      previousAuthenticatedUser() != getAuthenticatedUser()
+    ) {
+      setSelectedMenu("dashboard");
+    }
+
+    if (previousAuthenticatedUser() != getAuthenticatedUser()) {
+      setPreviousAuthenticatedUser(getAuthenticatedUser());
     }
   });
 
