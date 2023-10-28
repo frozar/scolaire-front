@@ -3,6 +3,7 @@ import { For, createEffect, mergeProps } from "solid-js";
 import { useStateGui } from "../../../../StateGui";
 import { SelectedMenuType } from "../../../../type";
 
+import { getAuthenticatedUser } from "../../../../signaux";
 import { onBoard } from "../../../content/board/component/template/ContextManager";
 import menuItems from "../../menuItemFields";
 import LeftMenuItem from "../molecule/LeftMenuItem";
@@ -50,6 +51,7 @@ export default function (props: LeftMenuItemProps) {
               isDisabled ||
               (!isDisabled &&
                 menuItem != "dashboard" &&
+                getAuthenticatedUser() != undefined &&
                 getActiveMapId() == null)
             );
           };
