@@ -37,6 +37,8 @@ function isSafe(stateGuiFromLocalStorage: StateGuiType) {
   return _.isEqual(keysByDefault.sort(), currentLocalStorageKey.sort());
 }
 
+// TODO : Initialiser correctement le ContextManager en fonction de la valeur
+//        restaurer depuis le localStorage
 // Documentation link:
 // https://stackoverflow.com/questions/70030144/how-to-update-local-storage-values-in-solidjs-using-hooks#answer-72339551
 function createLocalStore<T extends object>(
