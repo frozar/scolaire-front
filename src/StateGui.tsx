@@ -34,11 +34,7 @@ function isSafe(stateGuiFromLocalStorage: StateGuiType) {
   const keysByDefault = Object.keys(defaultStateGui);
 
   const currentLocalStorageKey = Object.keys(stateGuiFromLocalStorage);
-<<<<<<< HEAD
   return _.isEqual(keysByDefault.sort(), currentLocalStorageKey.sort());
-=======
-  return _.eq(keysByDefault.sort(), currentLocalStorageKey.sort());
->>>>>>> 55b12d8f (Improve the localStorage sanity check.)
 }
 
 // TODO : Initialiser correctement le ContextManager en fonction de la valeur
