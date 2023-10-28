@@ -255,7 +255,7 @@
 }
 
 .resource-name{
-  @apply text-blue-base;
+  @apply text-dark-teal;
   font-size: 0.63rem;
   line-height: 1rem;
 }

@@ -15,7 +15,7 @@
 }
  
 *::-webkit-scrollbar-thumb {
-  @apply outline-blue-base bg-blue-base rounded-md
+  @apply outline-dark-teal bg-dark-teal rounded-md
 }
 
 body,

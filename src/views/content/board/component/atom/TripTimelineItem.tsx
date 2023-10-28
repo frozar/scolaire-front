@@ -12,7 +12,7 @@ export function TripTimelineItem(props: {
 }) {
   const pointColor =
     // eslint-disable-next-line solid/reactivity
-    props.point.nature == NatureEnum.stop ? " !bg-blue-base" : " !bg-red-base";
+    props.point.nature == NatureEnum.stop ? " !bg-dark-teal" : " !bg-red-base";
 
   createEffect(() => {
     setDividerColor(props.trip.color);

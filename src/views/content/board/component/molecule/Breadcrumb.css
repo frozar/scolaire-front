@@ -7,5 +7,5 @@
 }
 
 .sub-crumb {
-  @apply text-blue-base w-fit;
+  @apply text-dark-teal w-fit;
 }
