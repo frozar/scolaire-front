@@ -11,7 +11,11 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 function DummyComponent() {
-  return <h1>Dummy Component</h1>;
+  return (
+    <div class="flex h-full items-center justify-center">
+      <h1>Dummy Component</h1>
+    </div>
+  );
 }
 
 export const DialogueBox: Story = {

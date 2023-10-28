@@ -62,7 +62,7 @@ export default () => {
           </Switch>
 
           <InnerModal show={!logged()}>
-            <div class="flex h-full w-full items-center justify-center text-center">
+            <div class="flex h-full w-full items-center justify-center">
               <UnloggedUserInformation />
             </div>
           </InnerModal>
