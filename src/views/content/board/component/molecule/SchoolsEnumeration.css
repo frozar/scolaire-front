@@ -3,6 +3,6 @@
 }
 
 .edit-mode-school-title{
-  @apply flex flex-col text-sm text-blue-base mb-1 ;
+  @apply flex flex-col text-sm text-dark-teal mb-1 ;
 }
 

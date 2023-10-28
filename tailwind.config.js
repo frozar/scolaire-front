@@ -9,6 +9,7 @@ module.exports = {
       layoutTop: "1400",
       layoutLeft: "1401",
       userInformations: "1402",
+      modal: "1410",
     },
     extend: {
       colors: {
@@ -20,7 +21,6 @@ module.exports = {
         "gray-base": "#aeb8b4",
         "gray-shade-base": "#ccd6d2",
         "gray-light": "#E8EFEC",
-        "blue-base": "#062F3F",
       },
     },
   },
