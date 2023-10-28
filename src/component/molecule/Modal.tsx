@@ -1,4 +1,4 @@
-import { JSX, Show, children, createEffect } from "solid-js";
+import { JSX, Show, children } from "solid-js";
 import { Transition } from "solid-transition-group";
 
 interface ModalProps {
@@ -8,12 +8,6 @@ interface ModalProps {
 
 export default function (props: ModalProps) {
   const subComponent = children(() => props.children);
-
-  createEffect(() => {
-    console.log("modal props", props);
-    console.log("modal subComponent", subComponent);
-    console.log("modal subComponent()", subComponent());
-  });
 
   return (
     <Transition
