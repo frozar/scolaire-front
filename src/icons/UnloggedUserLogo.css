@@ -1,0 +1,24 @@
+:root {
+  --animation-duration: 1200ms;
+}
+
+#unlogged-user-logo-border {
+  transition: all var(--animation-duration) ease;
+  animation: attention var(--animation-duration);
+  animation-iteration-count: infinite;
+}
+
+@keyframes attention {
+  from {
+    r: 20px;
+    fill: white;
+    stroke: white;
+    stroke-width: 3;
+  }
+  to {
+    r: 28px;
+    fill: #fff0;
+    stroke: #fff0;
+    stroke-width: 0;
+  }
+}

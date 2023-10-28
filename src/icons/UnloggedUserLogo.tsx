@@ -1,12 +1,22 @@
-export default function () {
+import { Show } from "solid-js";
+import "./UnloggedUserLogo.css";
+
+export interface UnloggedUserLogoProps {
+  drawAttention: boolean;
+}
+
+export default function (props: UnloggedUserLogoProps) {
   return (
     <svg
-      width="40"
-      height="40"
-      viewBox="0 0 40 40"
+      width="60"
+      height="60"
+      viewBox="-10 -10 60 60"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
+      <Show when={props.drawAttention}>
+        <circle id="unlogged-user-logo-border" cx="20" cy="20" />
+      </Show>
       <circle cx="20" cy="20" r="20" fill="#0CC683" />
       <path
         d="M22.4448 32.9408C21.6544 32.9767 20.8521 32.9944 20.0498 32.9944C12.511 32.9944 4.95128 31.4209 7.00946 28.2801C7.75495 27.1425 8.55049 26.1017 9.3893 25.168C9.46541 25.3734 9.57958 25.5602 9.72242 25.7209C9.86057 25.8759 10.0258 26.006 10.2104 26.1043C9.4529 26.9594 8.7267 27.916 8.04481 28.9558C7.92751 29.1348 7.90718 29.2383 7.90405 29.2742C7.90249 29.2924 7.9004 29.3168 7.9296 29.3709C7.97756 29.4593 8.1986 29.7767 9.03949 30.1673C9.7464 30.4955 10.6895 30.7847 11.8437 31.0271C14.0927 31.5 17.0074 31.76 20.0498 31.76C20.7948 31.76 21.5319 31.7444 22.2529 31.7138C22.2279 31.8308 22.2149 31.9525 22.2149 32.0774C22.2149 32.1637 22.2211 32.249 22.2336 32.3322C22.2654 32.5507 22.3384 32.7562 22.4448 32.9408V32.9408Z"
