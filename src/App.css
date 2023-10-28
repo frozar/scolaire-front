@@ -1,0 +1,4 @@
+#layout-content {
+  @apply relative w-full top-0 left-0 overflow-y-auto;
+  height: calc(100% - 60px);
+}

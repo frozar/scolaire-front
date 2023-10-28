@@ -3,6 +3,6 @@
 }
 
 #app-container {
-  @apply relative;
+  @apply relative h-full;
   width: calc(100% - 70px);
 }

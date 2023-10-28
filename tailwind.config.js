@@ -6,6 +6,7 @@ module.exports = {
 
   theme: {
     zIndex: {
+      innerModal: "1399",
       layoutTop: "1400",
       layoutLeft: "1401",
       userInformations: "1402",

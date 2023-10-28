@@ -4,6 +4,8 @@ import { useStateGui } from "./StateGui";
 import Layout from "./views/layout/component/template/Layout";
 
 import SpinningWheel from "./component/SpinningWheel";
+import InnerModal from "./component/molecule/InnerModal";
+import { getAuthenticatedUser } from "./signaux";
 import ClearConfirmationDialogBox from "./userInformation/ClearConfirmationDialogBox";
 import DisplayUserInformation from "./userInformation/DisplayUserInformation";
 import DragAndDropSummary from "./userInformation/DragAndDropSummary";
@@ -16,6 +18,9 @@ import Map from "./views/content/map/Map";
 import { setPointsReady } from "./views/content/map/component/organism/Points";
 import ExportConfirmationDialogBox from "./views/content/map/rightMapMenu/export/ExportConfirmationDialogBox";
 import { tryConnection } from "./views/layout/authentication";
+
+import "./App.css";
+import UnloggedUserInformation from "./component/molecule/UnloggedUserInformation";
 
 const [, { getSelectedMenu }] = useStateGui();
 
@@ -35,23 +40,33 @@ export default () => {
     }
   });
 
+  const logged = () => (getAuthenticatedUser() ? true : false);
+
   return (
     <div>
       <Layout>
-        <Switch>
-          <Match when={getSelectedMenu() == "dashboard"}>
-            <Dashboard />
-          </Match>
+        <div id="layout-content">
+          <Switch>
+            <Match when={getSelectedMenu() == "dashboard"}>
+              <Dashboard />
+            </Match>
 
-          <Match when={getSelectedMenu() == "calendar"}>
-            <Calendar />
-          </Match>
+            <Match when={getSelectedMenu() == "calendar"}>
+              <Calendar />
+            </Match>
 
-          <Match when={getSelectedMenu() != "dashboard"}>
-            <Map />
-            <ContextManager />
-          </Match>
-        </Switch>
+            <Match when={getSelectedMenu() != "dashboard"}>
+              <Map />
+              <ContextManager />
+            </Match>
+          </Switch>
+
+          <InnerModal show={!logged()}>
+            <div class="flex h-full w-full items-center justify-center text-center">
+              <UnloggedUserInformation />
+            </div>
+          </InnerModal>
+        </div>
 
         {/* <InformationBoardLayout>
               <InformationBoard />
