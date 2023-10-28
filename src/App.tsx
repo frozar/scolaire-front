@@ -1,4 +1,4 @@
-import { Match, Switch, createEffect, onMount } from "solid-js";
+import { Match, Show, Switch, createEffect, onMount } from "solid-js";
 import { useStateGui } from "./StateGui";
 
 import Layout from "./views/layout/component/template/Layout";
@@ -46,20 +46,22 @@ export default () => {
     <div>
       <Layout>
         <div id="layout-content">
-          <Switch>
-            <Match when={getSelectedMenu() == "dashboard"}>
-              <Dashboard />
-            </Match>
+          <Show when={getAuthenticatedUser()}>
+            <Switch>
+              <Match when={getSelectedMenu() == "dashboard"}>
+                <Dashboard />
+              </Match>
 
-            <Match when={getSelectedMenu() == "calendar"}>
-              <Calendar />
-            </Match>
+              <Match when={getSelectedMenu() == "calendar"}>
+                <Calendar />
+              </Match>
 
-            <Match when={getSelectedMenu() != "dashboard"}>
-              <Map />
-              <ContextManager />
-            </Match>
-          </Switch>
+              <Match when={getSelectedMenu() != "dashboard"}>
+                <Map />
+                <ContextManager />
+              </Match>
+            </Switch>
+          </Show>
 
           <InnerModal show={!logged()}>
             <div class="flex h-full w-full items-center justify-center">
