@@ -21,7 +21,7 @@ export default function (props: ModalProps) {
     >
       <Show when={props.show}>
         <div
-          class="relative z-[1400]"
+          class="relative z-modal"
           aria-labelledby="modal-title"
           role="dialog"
           aria-modal="true"
