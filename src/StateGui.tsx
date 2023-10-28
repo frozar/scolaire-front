@@ -34,7 +34,7 @@ function isSafe(stateGuiFromLocalStorage: StateGuiType) {
   const keysByDefault = Object.keys(defaultStateGui);
 
   const currentLocalStorageKey = Object.keys(stateGuiFromLocalStorage);
-  return _.eq(keysByDefault.sort(), currentLocalStorageKey.sort());
+  return _.isEqual(keysByDefault.sort(), currentLocalStorageKey.sort());
 }
 
 // Documentation link:
