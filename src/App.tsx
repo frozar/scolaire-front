@@ -21,6 +21,7 @@ import { tryConnection } from "./views/layout/authentication";
 
 import "./App.css";
 import UnloggedUserInformation from "./component/molecule/UnloggedUserInformation";
+import UserInstruction from "./component/molecule/UserInstruction";
 
 const [, { getSelectedMenu }] = useStateGui();
 
@@ -68,6 +69,18 @@ export default () => {
               <UnloggedUserInformation />
             </div>
           </InnerModal>
+
+          {/* <div class="absolute w-full right-0 left-0 bottom-2">
+            <div class="flex items-center justify-center bg-green-light rounded-lg mx-4">
+              <span class="text-2xl p-4">TTTTTTTTTTTT</span>
+            </div>
+          </div> */}
+
+          {/* <UserInstructionContainer show={true}>
+            <UserInstructionContent message="Sélectionnez une carte par double clique svp" />
+          </UserInstructionContainer> */}
+
+          <UserInstruction />
         </div>
 
         {/* <InformationBoardLayout>

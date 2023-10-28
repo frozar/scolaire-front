@@ -1,0 +1,4 @@
+#instruction-container {
+  @apply fixed z-innerModal right-3 bottom-4;
+  left: calc(70px + 0.75rem);
+}

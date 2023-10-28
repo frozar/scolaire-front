@@ -44,14 +44,14 @@ export default function (props: LeftMenuItemProps) {
         {(menuItemArg) => {
           const { label, menuItem, Logo, isDisabled } = menuItemArg;
 
-          let effectiveIsDisabled = isDisabled;
-          if (
-            !isDisabled &&
-            menuItem != "dashboard" &&
-            getActiveMapId() == null
-          ) {
-            effectiveIsDisabled = true;
-          }
+          const effectiveIsDisabled = () => {
+            return (
+              isDisabled ||
+              (!isDisabled &&
+                menuItem != "dashboard" &&
+                getActiveMapId() == null)
+            );
+          };
 
           function isSelected() {
             return menuItem == mergedProps.getSelectedMenu() ? true : false;
@@ -60,7 +60,7 @@ export default function (props: LeftMenuItemProps) {
           return (
             <LeftMenuItem
               displayedLabel={mergedProps.displayedLabel}
-              isDisabled={effectiveIsDisabled}
+              isDisabled={effectiveIsDisabled()}
               Logo={Logo}
               label={label}
               isSelected={isSelected()}
