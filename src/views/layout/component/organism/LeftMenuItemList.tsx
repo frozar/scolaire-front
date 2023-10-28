@@ -7,7 +7,7 @@ import { onBoard } from "../../../content/board/component/template/ContextManage
 import menuItems from "../../menuItemFields";
 import LeftMenuItem from "../molecule/LeftMenuItem";
 
-const [, { setSelectedMenu, getSelectedMenu }] = useStateGui();
+const [, { getActiveMapId, setSelectedMenu, getSelectedMenu }] = useStateGui();
 
 export interface LeftMenuItemProps {
   getSelectedMenu?: () => SelectedMenuType;
@@ -44,6 +44,15 @@ export default function (props: LeftMenuItemProps) {
         {(menuItemArg) => {
           const { label, menuItem, Logo, isDisabled } = menuItemArg;
 
+          let effectiveIsDisabled = isDisabled;
+          if (
+            !isDisabled &&
+            menuItem != "dashboard" &&
+            getActiveMapId() == null
+          ) {
+            effectiveIsDisabled = true;
+          }
+
           function isSelected() {
             return menuItem == mergedProps.getSelectedMenu() ? true : false;
           }
@@ -51,7 +60,7 @@ export default function (props: LeftMenuItemProps) {
           return (
             <LeftMenuItem
               displayedLabel={mergedProps.displayedLabel}
-              isDisabled={isDisabled}
+              isDisabled={effectiveIsDisabled}
               Logo={Logo}
               label={label}
               isSelected={isSelected()}
