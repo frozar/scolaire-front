@@ -17,11 +17,11 @@ export const MonthListContent: Story = {
 
   args: {
     month: new Date(),
-    calendars: {
+    calendar: {
       calendarName: "Calendrier Maternel",
       rules: ["monday", "tuesday", "thursday", "friday"],
       date_added: ["01-01-2023"],
-      dated_deleted: ["02-01-2023"],
+      date_deleted: ["02-01-2023"],
     },
   },
 };

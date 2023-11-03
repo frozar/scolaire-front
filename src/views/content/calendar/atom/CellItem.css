@@ -4,6 +4,10 @@
   border: 0.2px solid #00000069;
 }
 
+.active-cell {
+  @apply bg-green-base;
+}
+
 .weekend-cell {
   @apply bg-gray-base;
 }
