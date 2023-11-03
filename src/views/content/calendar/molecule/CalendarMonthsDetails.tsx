@@ -1,14 +1,17 @@
 import { For } from "solid-js";
-import { MonthCellList } from "../molecule/MonthCellList";
-import { CalendarType } from "../template/Calendar";
-import "./MonthListContent.css";
+import { CalendarType } from "../../../../_entities/calendar.entity";
+import { CalendarMonthDetails } from "./CalendarMonthDetails";
+import "./CalendarMonthsDetails.css";
 
-export default function (props: { month: Date; calendar: CalendarType }) {
+export function CalendarMonthsDetails(props: {
+  month: Date;
+  calendar: CalendarType;
+}) {
   return (
-    <div class="month-list-cells-wrapper">
+    <div class="calendar-months-details">
       <For each={[0, 1, 2]}>
         {(index) => (
-          <MonthCellList
+          <CalendarMonthDetails
             month={
               new Date(
                 props.month.getFullYear(),

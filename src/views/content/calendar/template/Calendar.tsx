@@ -1,4 +1,6 @@
 import { createSignal, onMount } from "solid-js";
+import { CalendarType } from "../../../../_entities/calendar.entity";
+import { CalendarService } from "../../../../_services/calendar.service";
 import { CalendarTable } from "../organism/CalendarTable";
 import "./Calendar.css";
 
@@ -8,88 +10,23 @@ export type MonthType = {
   days: number[];
 };
 
-export type CalendarType = {
-  calendarName: string;
-  rules: string[];
-  date_added: string[];
-  date_deleted: string[];
-};
-
 export const [currentMonth, setCurrentMonth] = createSignal<Date>(new Date());
 
+export const [calendars, setCalendars] = createSignal<CalendarType[]>([]);
+
 export default function () {
-  onMount(() => {
+  onMount(async () => {
     const today = new Date();
     setCurrentMonth(new Date(today.getFullYear(), today.getMonth()));
+
+    const calendars = await CalendarService.getAll();
+    setCalendars(calendars);
   });
-
-  const calendarsJson: CalendarType[] = [
-    {
-      calendarName: "Calendrier Maternel",
-      rules: ["monday", "tuesday", "wednesday", "thursday", "friday"],
-      date_added: [
-        "2023-10-01",
-        "2023-10-02",
-        "2023-10-03",
-        "2023-10-04",
-        "2023-10-05",
-        "2023-10-06",
-        "2023-10-07",
-        "2023-10-08",
-        "2023-10-09",
-        "2023-10-10",
-        "2023-10-11",
-        "2023-10-12",
-        "2023-10-13",
-        "2023-10-14",
-        "2023-10-15",
-        "2023-10-16",
-        "2023-10-17",
-        "2023-10-18",
-        "2023-10-19",
-        "2023-10-20",
-        "2023-10-21",
-        "2023-10-22",
-        "2023-10-23",
-        "2023-10-24",
-        "2023-10-25",
-        "2023-10-26",
-        "2023-10-27",
-        "2023-10-28",
-        "2023-10-29",
-        "2023-10-30",
-        "2023-10-31",
-
-        "2023-11-01",
-        "2023-11-02",
-        "2023-11-03",
-      ],
-      date_deleted: [
-        "2023-10-16",
-        "2023-10-17",
-        "2023-10-18",
-        "2023-10-19",
-        "2023-10-20",
-      ],
-    },
-    {
-      calendarName: "Calendrier Internat Lundi",
-      rules: ["monday", "tuesday", "wednesday", "thursday", "friday"],
-      date_added: [],
-      date_deleted: [],
-    },
-    {
-      calendarName: "Calendrier Internat Lundi",
-      rules: ["monday", "tuesday", "thursday", "friday"],
-      date_added: ["2023-11-01"],
-      date_deleted: [],
-    },
-  ];
 
   return (
     <section class="page-layout">
       <p class="page-title">Gestion des calendriers</p>
-      <CalendarTable currentMonth={currentMonth()} calendars={calendarsJson} />
+      <CalendarTable currentMonth={currentMonth()} calendars={calendars()} />
     </section>
   );
 }

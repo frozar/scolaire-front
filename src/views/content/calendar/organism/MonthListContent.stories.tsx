@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from "storybook-solidjs";
 import { CalendarType } from "../template/Calendar";
-import MonthListContentComponent from "./MonthListContent";
+import MonthListContentComponent from "./CalendarLineContent";
 
 const meta = {
   component: MonthListContentComponent,

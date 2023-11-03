@@ -1,8 +1,7 @@
-import CalendarContent from "./CalendarContent";
+import { CalendarContent } from "./CalendarContent";
 import { CalendarHeader } from "./CalendarHeader";
 
-import CalendarNameList from "../molecule/CalendarNameList";
-import { CalendarType } from "../template/Calendar";
+import { CalendarType } from "../../../../_entities/calendar.entity";
 import "./CalendarTable.css";
 
 export function CalendarTable(props: {
@@ -10,15 +9,9 @@ export function CalendarTable(props: {
   calendars: CalendarType[];
 }) {
   return (
-    <div class="calendar-table flex items-end">
-      <CalendarNameList calendars={props.calendars} />
-      <div>
-        <CalendarHeader month={props.currentMonth} />
-        <CalendarContent
-          month={props.currentMonth}
-          calendars={props.calendars}
-        />
-      </div>
+    <div class="calendar-table">
+      <CalendarHeader month={props.currentMonth} />
+      <CalendarContent month={props.currentMonth} calendars={props.calendars} />
       {/* CalendarAdd */}
     </div>
   );
