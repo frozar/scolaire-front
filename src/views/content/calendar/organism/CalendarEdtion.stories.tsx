@@ -10,7 +10,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const CalendarHeader: Story = {
+export const CalendarEdition: Story = {
   render: (props: { calendar: CalendarType; currentMonth: Date }) => {
     return <CalendarEditionComponent {...props} />;
   },
