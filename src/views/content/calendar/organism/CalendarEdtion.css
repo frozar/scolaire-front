@@ -1,0 +1,11 @@
+.calendar-edition {
+  @apply mt-10;
+}
+
+.calendar-edition-title {
+  @apply text-xl;
+}
+
+.calendar-edition-title-active {
+  @apply text-green-base;
+}
