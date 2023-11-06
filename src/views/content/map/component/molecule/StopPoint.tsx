@@ -11,6 +11,7 @@ import Point from "../atom/Point";
 import { GradeTripType } from "../../../../../_entities/grade.entity";
 import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
 import { updatePointColor } from "../../../../../leafletUtils";
+import { CurrentDrawTripUtils } from "../../../../../utils/currentDrawTrip.utils";
 import { QuantityUtils } from "../../../../../utils/quantity.utils";
 import {
   setStopSelected,
@@ -18,13 +19,9 @@ import {
 } from "../../../board/component/organism/AddLineBoardContent";
 import {
   DrawTripStep,
-  addPointToTrip,
   currentDrawTrip,
   currentStep,
-  removePoint,
-  removeTripPoint,
   setCurrentTripIndex,
-  updateWaypoints,
 } from "../../../board/component/organism/DrawTripBoard";
 import { setStopDetailsItem } from "../../../stops/component/organism/StopDetails";
 import { setIsOverMapItem } from "../../l7MapBuilder";
@@ -80,7 +77,7 @@ function updateTripAndWaypoints(point: StopType) {
     }
   });
 
-  addPointToTrip({
+  CurrentDrawTripUtils.addPointToTrip({
     id: point.id,
     leafletId: point.leafletId,
     name: point.name,
@@ -99,7 +96,7 @@ function updateTripAndWaypoints(point: StopType) {
         waypoints,
         currentDrawTrip().tripPoints
       );
-      updateWaypoints(newWaypoints);
+      CurrentDrawTripUtils.updateWaypoints(newWaypoints);
     }
   }
 }
@@ -207,7 +204,7 @@ const onRightClick = (stop: StopType) => {
   )[0];
 
   if (onBoard() == "trip-draw" && isInTripUnderConstruction != undefined) {
-    removePoint(stop);
+    CurrentDrawTripUtils.removePoint(stop);
 
     // Update waypoints
     const waypoints = currentDrawTrip().waypoints;
@@ -217,12 +214,12 @@ const onRightClick = (stop: StopType) => {
         stop.id,
         stop.nature
       );
-      updateWaypoints(newWaypoints);
+      CurrentDrawTripUtils.updateWaypoints(newWaypoints);
     }
 
     circle?.setStyle({ fillColor: COLOR_STOP_FOCUS });
 
-    removeTripPoint(stop.id, stop.nature);
+    CurrentDrawTripUtils.removeTripPoint(stop.id, stop.nature);
   }
 };
 

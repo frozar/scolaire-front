@@ -2,10 +2,8 @@ import L from "leaflet";
 import { onCleanup } from "solid-js";
 
 import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
-import {
-  currentDrawTrip,
-  updateWaypoints,
-} from "../../../board/component/organism/DrawTripBoard";
+import { CurrentDrawTripUtils } from "../../../../../utils/currentDrawTrip.utils";
+import { currentDrawTrip } from "../../../board/component/organism/DrawTripBoard";
 import { COLOR_WAYPOINT } from "../../constant";
 
 type PolylineDragMarkersProps = {
@@ -21,7 +19,7 @@ export default function (props: PolylineDragMarkersProps) {
       return;
     }
     const newWaypoints = WaypointEntity.deleteWaypoint(waypoints, props.index);
-    updateWaypoints(newWaypoints);
+    CurrentDrawTripUtils.updateWaypoints(newWaypoints);
   }
   // eslint-disable-next-line solid/reactivity
   const waypointMarker = L.circleMarker(props.latlngs, {

@@ -16,12 +16,13 @@ import DrawHelperDialog, {
 } from "../molecule/DrawHelperDialog";
 
 import { TripPointType } from "../../../../../_entities/trip.entity";
+import { CurrentDrawTripUtils } from "../../../../../utils/currentDrawTrip.utils";
 import { getSchools } from "../../../map/component/organism/SchoolPoints";
 import {
   getStops,
   leafletStopsFilter,
 } from "../../../map/component/organism/StopPoints";
-import { currentDrawTrip, updatePoints } from "../organism/DrawTripBoard";
+import { currentDrawTrip } from "../organism/DrawTripBoard";
 import "./DrawHelperButton.css";
 
 interface DrawHelperButtonProps {
@@ -33,7 +34,7 @@ async function drawHelper(data: DrawHelperDataType) {
   const response = await GraphicageService.drawHelper(data);
   //TODO Resolve type problem and add quantity here ?
   const points: TripPointType[] = formatTripPoints(response);
-  updatePoints(points);
+  CurrentDrawTripUtils.updatePoints(points);
   disableSpinningWheel();
 }
 
