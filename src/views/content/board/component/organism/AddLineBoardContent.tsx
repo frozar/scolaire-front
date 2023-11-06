@@ -23,9 +23,10 @@ import SelectedSchool from "../atom/SelectedSchool";
 import LabeledInputField from "../molecule/LabeledInputField";
 import { setOnBoard, toggleDrawMod } from "../template/ContextManager";
 import "./AddLineBoardContent.css";
-import CollapsibleCheckableElement, {
+import {
   AssociatedItem,
-} from "./CollapsibleCheckableElement";
+  CheckableStopListBySchool,
+} from "./CheckableStopListBySchool";
 // TODO to fix -> doit importer un AddLineBoardContent ou similaire
 import { setLines } from "../../../map/component/organism/BusLines";
 import "./DrawTripBoard.css";
@@ -101,7 +102,7 @@ export default function () {
         <fieldset class="line-stop-selection">
           <For each={addLineSelectedSchool()}>
             {(school_elem) => {
-              return <CollapsibleCheckableElement school={school_elem} />;
+              return <CheckableStopListBySchool school={school_elem} />;
             }}
           </For>
         </fieldset>

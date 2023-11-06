@@ -1,31 +1,18 @@
-import { JSXElement } from "solid-js";
 import { createStore } from "solid-js/store";
 import { Meta, StoryObj } from "storybook-solidjs";
 import { NatureEnum } from "../../../../../type";
-import CollapsibleCheckableElement, {
+import {
   AssociatedItem,
-} from "./CollapsibleCheckableElement";
+  CheckableStopListBySchool,
+} from "./CheckableStopListBySchool";
 
 const meta = {
-  component: CollapsibleCheckableElement,
+  component: CheckableStopListBySchool,
   tags: ["autodocs"],
-} satisfies Meta<typeof CollapsibleCheckableElement>;
+} satisfies Meta<typeof CheckableStopListBySchool>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
-
-const children: JSXElement = (
-  <ul>
-    <li>Milk</li>
-    <li>
-      Cheese
-      <ul>
-        <li>Blue cheese</li>
-        <li>Feta</li>
-      </ul>
-    </li>
-  </ul>
-);
 
 const school = {
   id: 1,
