@@ -13,13 +13,13 @@ export namespace CalendarEntity {
 }
 
 export enum CalendarDayEnum {
-  monday,
-  tuesday,
-  wednersday,
-  thursday,
-  friday,
-  saturday,
-  sunday,
+  monday = "monday",
+  tuesday = "tuesday",
+  wednersday = "wednersday",
+  thursday = "thursday",
+  friday = "friday",
+  saturday = "saturday",
+  sunday = "sunday",
 }
 
 export type CalendarType = {

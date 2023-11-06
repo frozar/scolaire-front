@@ -1,4 +1,7 @@
-import { CalendarType } from "../../../_entities/calendar.entity";
+import {
+  CalendarDayEnum,
+  CalendarType,
+} from "../../../_entities/calendar.entity";
 
 export namespace CalendarUtils {
   export function getMonthName(date: Date): string {
@@ -41,26 +44,45 @@ export namespace CalendarUtils {
   }
 
   export function isHoliday(date: Date): boolean {
+    const frenchHolidays = CalendarUtils.getFrenchHolidays(date.getFullYear());
+
     let isHoliday = false;
-    // TODO UTiliser une boucle "For" et mettre un "break" en cas de "True"
-    CalendarUtils.getFrenchHolidays(date.getFullYear()).map((feriesDate) => {
-      if (CalendarUtils.compareDate(feriesDate, date)) {
+    for (const holiday of frenchHolidays) {
+      const holidayDate = new Date(holiday);
+      if (CalendarUtils.compareDate(holidayDate, date)) {
         isHoliday = true;
       }
-    });
+    }
     return isHoliday;
   }
 
-  export function isActiveDay(date: Date, calendar: CalendarType): boolean {
-    return (
-      !calendar.deleted.includes(date.getTime()) &&
-      //TODO en erreur
-      // !CalendarUtils.isHoliday(date) &&
-      !CalendarUtils.isWeekend(date) &&
-      //@ts-ignore
-      (calendar.rules.includes(CalendarUtils.getDayName(date, true)) ||
-        calendar.added.includes(date.getTime()))
+  export function isActiveDay(
+    date: Date,
+    calendar: CalendarType,
+    log = false
+  ): boolean {
+    const isDateInRule = calendar.rules.includes(
+      CalendarUtils.getDayName(date, true) as CalendarDayEnum
     );
+    if (log) {
+      console.log("in added date:", calendar.added.includes(date.getTime()));
+      console.log("is holiday:", CalendarUtils.isHoliday(date));
+      console.log("is weekend:", CalendarUtils.isWeekend(date));
+      console.log("is date in rule:", isDateInRule);
+      console.log(
+        "is date deleted:",
+        calendar.deleted.includes(date.getTime())
+      );
+    }
+
+    if (calendar.added.includes(date.getTime())) return true;
+    // TODO review holidays
+    // if (CalendarUtils.isHoliday(date)) return false;
+    if (CalendarUtils.isWeekend(date)) return false;
+    if (!isDateInRule) return false;
+    if (calendar.deleted.includes(date.getTime())) return false;
+
+    return true;
   }
 
   export function isWeekend(date: Date): boolean {
