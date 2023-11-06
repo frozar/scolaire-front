@@ -28,6 +28,7 @@ import {
   setCurrentTripIndex,
 } from "../../../board/component/organism/DrawTripBoard";
 import { setIsOverMapItem } from "../../l7MapBuilder";
+import { getLines } from "../organism/BusLines";
 import {
   cursorIsOverPoint,
   deselectAllPoints,
@@ -44,6 +45,18 @@ export function onClickBusTrip(trip: TripType) {
       deselectAllTrips();
       deselectAllPoints();
 
+      // ! Factoriser avec breadcrumb !
+      getLines().forEach((line) => line.setSelected(false));
+      getLines().forEach((line) => {
+        if (line.trips.some((_trip) => _trip.id == trip.id)) {
+          line.setSelected(true);
+        }
+      });
+      // getLines().forEach((line) =>
+      //   line.trips.some((_trip) => _trip.id == trip.id)
+      //     ? line.setSelected(true)
+      //     : line.setSelected(false)
+      // );
       setselectedTrip(trip);
 
       changeBoard("line-details");
