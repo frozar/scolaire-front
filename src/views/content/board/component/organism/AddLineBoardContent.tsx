@@ -29,6 +29,8 @@ import {
 } from "./CheckableStopListBySchool";
 // TODO to fix -> doit importer un AddLineBoardContent ou similaire
 import { setLines } from "../../../map/component/organism/BusLines";
+import BoardTitle from "../atom/BoardTitle";
+import { CheckableGradeListBySchool } from "./CheckableGradeListBySchool";
 import "./DrawTripBoard.css";
 
 export enum AddLineStep {
@@ -42,9 +44,13 @@ export const [addLineSelectedSchool, setaddLineSelectedSchool] = createSignal<
   SchoolType[]
 >([]);
 
-export const [stopSelected, setStopSelected] = createSignal<AssociatedItem[]>(
+export const [checkableStop, setCheckableStop] = createSignal<AssociatedItem[]>(
   []
 );
+
+export const [checkableGrade, setCheckableGrade] = createSignal<
+  AssociatedItem[]
+>([]);
 
 export const [addLineCurrentStep, setAddLineCurrentStep] =
   createSignal<AddLineStep>(AddLineStep.start);
@@ -74,6 +80,16 @@ export default function () {
     <div class="add-line-information-board-content">
       <Show when={addLineCurrentStep() == AddLineStep.schoolSelection}>
         <SelectedSchool schoolSelected={addLineSelectedSchool()} />
+      </Show>
+
+      <Show when={addLineCurrentStep() == AddLineStep.gradeSelection}>
+        <BoardTitle title={"Séléction des niveaux"} />
+
+        <For each={addLineSelectedSchool()}>
+          {(school_elem) => {
+            return <CheckableGradeListBySchool school={school_elem} />;
+          }}
+        </For>
       </Show>
 
       <Show when={addLineCurrentStep() == AddLineStep.stopSelection}>
@@ -158,13 +174,17 @@ async function nextStep() {
   enableSpinningWheel();
   switch (addLineCurrentStep()) {
     case AddLineStep.schoolSelection:
+      setAddLineCurrentStep(AddLineStep.gradeSelection);
+      break;
+
+    case AddLineStep.gradeSelection:
       if (addLineSelectedSchool().length < 1) {
         break;
       }
 
-      setStopSelected([
+      setCheckableStop([
         ...getStops().map((stop) => {
-          return { done: false, stopItem: stop };
+          return { done: false, item: stop };
         }),
       ]);
 
@@ -177,15 +197,15 @@ async function nextStep() {
       break;
 
     case AddLineStep.stopSelection:
-      if (stopSelected().length < 2) {
+      if (checkableStop().length < 2) {
         break;
       }
 
       updatePointColor();
 
-      const stops = stopSelected()
+      const stops = checkableStop()
         .filter((stop) => stop.done)
-        .map((stop) => stop.stopItem);
+        .map((stop) => stop.item);
       setCurrentLine({
         ...(currentLine() ?? BusLineEntity.defaultBusLine()),
         stops,
@@ -222,13 +242,16 @@ async function previousStep() {
     case AddLineStep.schoolSelection:
       setAddLineCurrentStep(AddLineStep.start);
       setaddLineSelectedSchool([]);
-      setStopSelected([]);
+      setCheckableStop([]);
       toggleDrawMod();
       setOnBoard("line");
       break;
-    case AddLineStep.stopSelection:
+    case AddLineStep.gradeSelection:
       setAddLineCurrentStep(AddLineStep.schoolSelection);
-      setStopSelected([]);
+      break;
+    case AddLineStep.stopSelection:
+      setAddLineCurrentStep(AddLineStep.gradeSelection);
+      setCheckableStop([]);
   }
   disableSpinningWheel();
 }

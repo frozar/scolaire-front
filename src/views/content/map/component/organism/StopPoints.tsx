@@ -8,7 +8,7 @@ import {
   AddLineStep,
   addLineCurrentStep,
   addLineSelectedSchool,
-  stopSelected,
+  checkableStop,
 } from "../../../board/component/organism/AddLineBoardContent";
 import {
   DrawTripStep,
@@ -135,8 +135,8 @@ export function leafletStopsFilter(): StopType[] {
           return [];
         case AddLineStep.stopSelection:
           schools = addLineSelectedSchool();
-          stops = stopSelected().map((associated) => {
-            return associated.stopItem;
+          stops = checkableStop().map((associated) => {
+            return associated.item;
           });
           const associatedIdSelected = schools
             .map((school) => school.grades.map((value) => value.schoolId))

@@ -3,21 +3,21 @@ import { SchoolType } from "../../../../../_entities/school.entity";
 import { StopType } from "../../../../../_entities/stop.entity";
 import { CheckableEventType } from "../atom/CheckableElement";
 import { CheckableElementList } from "../molecule/CheckableElementList";
-import { setStopSelected, stopSelected } from "./AddLineBoardContent";
+import { checkableStop, setCheckableStop } from "./AddLineBoardContent";
 import "./CollapsibleCheckableElement.css";
 
-export type AssociatedItem = { stopItem: StopType; done: boolean };
+export type AssociatedItem = { item: any; done: boolean };
 
 export function CheckableStopListBySchool(props: { school: SchoolType }) {
   return (
     <CheckableElementList
       title={props.school.name}
-      content={stopSelected().map((stop) => {
+      content={checkableStop().map((stop) => {
         return {
-          name: stop.stopItem.name,
+          name: stop.item.name,
           checked: stop.done,
           onChange: onChangeFunction,
-          display: gradeInStopAndSchool(stop.stopItem, props.school.grades),
+          display: gradeInStopAndSchool(stop.item, props.school.grades),
         };
       })}
     />
@@ -37,7 +37,7 @@ function gradeInStopAndSchool(stop_elem: StopType, grades: GradeType[]) {
 }
 
 const onChangeFunction = (e: CheckableEventType, indice: number) => {
-  const prev = [...stopSelected()];
+  const prev = [...checkableStop()];
   prev[indice] = { ...prev[indice], done: e.currentTarget.checked };
-  setStopSelected(prev);
+  setCheckableStop(prev);
 };
