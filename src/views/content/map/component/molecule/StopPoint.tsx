@@ -222,7 +222,7 @@ const onRightClick = (stop: StopType) => {
 
     circle?.setStyle({ fillColor: COLOR_STOP_FOCUS });
 
-    removeTripPoint(stop.id);
+    removeTripPoint(stop.id, stop.nature);
   }
 };
 

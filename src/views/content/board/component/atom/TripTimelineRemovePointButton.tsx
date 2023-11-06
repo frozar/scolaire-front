@@ -18,11 +18,11 @@ export function TripTimelineRemovePointButton(props: {
     if (props.setTrip) {
       const points = [...props.trip.tripPoints];
       const pointId = points[indice].id;
-      const nature = points[indice].nature;
+      const pointNature = points[indice].nature;
 
       // TODO pas de l'ordre de la timeline !!
       const circle = linkMap.get(props.trip.tripPoints[indice].leafletId);
-      nature == NatureEnum.stop
+      pointNature == NatureEnum.stop
         ? circle?.setStyle({ fillColor: COLOR_STOP_FOCUS })
         : circle?.setStyle({ fillColor: COLOR_SCHOOL_FOCUS });
 
@@ -40,12 +40,12 @@ export function TripTimelineRemovePointButton(props: {
         newWaypoints = WaypointEntity.deleteSchoolOrStopWaypoint(
           waypoints,
           pointId,
-          nature
+          pointNature
         );
 
         updateWaypoints(newWaypoints);
 
-        removeTripPoint(pointId);
+        removeTripPoint(pointId, pointNature);
       }
     }
   };

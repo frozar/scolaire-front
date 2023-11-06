@@ -362,14 +362,16 @@ export function removePoint(point: StopType | SchoolType) {
   });
 }
 
-export function removeTripPoint(tripPointId: number) {
+export function removeTripPoint(
+  tripPointId: number,
+  tripPointNature: NatureEnum
+) {
   setCurrentDrawTrip((prev) => {
     const updatedTripPoint: TripPointType[] = [];
 
     prev.tripPoints.forEach((tripPoint) => {
       if (
-        (tripPoint.id != tripPointId && tripPoint.nature == NatureEnum.stop) ||
-        tripPoint.nature == NatureEnum.school
+        !(tripPoint.id == tripPointId && tripPoint.nature == tripPointNature)
       ) {
         updatedTripPoint.push(tripPoint);
       }
