@@ -14,6 +14,7 @@ export function TripTimelineRemovePointButton(props: {
   trip: TripType;
   setTrip?: Setter<TripType>;
 }) {
+  // TODO: Refactor (StopPoint.tsx)
   const deletePoint = (indice: number) => {
     if (props.setTrip) {
       const points = [...props.trip.tripPoints];
@@ -44,6 +45,8 @@ export function TripTimelineRemovePointButton(props: {
         );
 
         updateWaypoints(newWaypoints);
+
+        // ! Update tripPoint
       }
     }
   };
