@@ -1,7 +1,8 @@
-import { For, Show } from "solid-js";
+import { For } from "solid-js";
 
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { StopType } from "../../../../../_entities/stop.entity";
+import { CheckableElement } from "../atom/CheckableElement";
 import { setStopSelected, stopSelected } from "./AddLineBoardContent";
 import "./CollapsibleCheckableElement.css";
 import CollapsibleElement from "./CollapsibleElement";
@@ -23,28 +24,35 @@ export default function (props: { school: SchoolType }) {
     return intersectionGrades.length > 0;
   }
 
+  const onChangeFunction = (
+    e: Event & {
+      currentTarget: HTMLInputElement;
+      target: HTMLInputElement;
+    },
+    indice: number
+  ) => {
+    const prev = [...stopSelected()];
+    prev[indice] = { ...prev[indice], done: e.currentTarget.checked };
+    setStopSelected(prev);
+  };
+
+  type CollapsibleCheckableList = {
+    title: string;
+    content: CheckableElementType[];
+  };
+
   return (
     <CollapsibleElement title={props.school.name}>
       <For each={stopSelected()}>
         {(stop_elem, i) => {
           return (
-            <Show when={gradeInStopAndSchool(stop_elem.stopItem)}>
-              <div class="flex items-center">
-                <input
-                  id="comments"
-                  name="comments"
-                  type="checkbox"
-                  checked={stop_elem.done}
-                  onChange={(e) => {
-                    const prev = [...stopSelected()];
-                    prev[i()] = { ...prev[i()], done: e.currentTarget.checked };
-                    setStopSelected(prev);
-                  }}
-                  class="h-4 w-5 mr-4 rounded border-gray-300 text-green-base focus:ring-green-base"
-                />
-                <p>{stop_elem.stopItem.name}</p>
-              </div>
-            </Show>
+            <CheckableElement
+              name={stop_elem.stopItem.name}
+              checked={stop_elem.done}
+              onChange={onChangeFunction}
+              indice={i()}
+              display={gradeInStopAndSchool(stop_elem.stopItem)}
+            />
           );
         }}
       </For>

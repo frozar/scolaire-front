@@ -33,6 +33,7 @@ import "./DrawTripBoard.css";
 export enum AddLineStep {
   start,
   schoolSelection,
+  gradeSelection,
   stopSelection,
 }
 
