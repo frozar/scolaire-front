@@ -6,7 +6,7 @@ import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
 import { NatureEnum } from "../../../../../type";
 import { linkMap } from "../../../map/component/organism/Points";
 import { COLOR_SCHOOL_FOCUS, COLOR_STOP_FOCUS } from "../../../map/constant";
-import { updateWaypoints } from "../organism/DrawTripBoard";
+import { removeTripPoint, updateWaypoints } from "../organism/DrawTripBoard";
 import "./TripTimelineRemovePointButton.css";
 
 export function TripTimelineRemovePointButton(props: {
@@ -14,7 +14,6 @@ export function TripTimelineRemovePointButton(props: {
   trip: TripType;
   setTrip?: Setter<TripType>;
 }) {
-  // TODO: Refactor (StopPoint.tsx)
   const deletePoint = (indice: number) => {
     if (props.setTrip) {
       const points = [...props.trip.tripPoints];
@@ -46,7 +45,23 @@ export function TripTimelineRemovePointButton(props: {
 
         updateWaypoints(newWaypoints);
 
+        // TODO: Refactor (StopPoint.tsx)
         // ! Update tripPoint
+        removeTripPoint(pointId);
+        // setCurrentDrawTrip((prev) => {
+        //   const updatedTripPoint: TripPointType[] = [];
+
+        //   prev.tripPoints.forEach((tripPoint) => {
+        //     if (
+        //       (tripPoint.id != pointId &&
+        //         tripPoint.nature == NatureEnum.stop) ||
+        //       tripPoint.nature == NatureEnum.school
+        //     ) {
+        //       updatedTripPoint.push(tripPoint);
+        //     }
+        //   });
+        //   return { ...prev, tripPoints: updatedTripPoint };
+        // });
       }
     }
   };

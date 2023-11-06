@@ -362,6 +362,22 @@ export function removePoint(point: StopType | SchoolType) {
   });
 }
 
+export function removeTripPoint(tripPointId: number) {
+  setCurrentDrawTrip((prev) => {
+    const updatedTripPoint: TripPointType[] = [];
+
+    prev.tripPoints.forEach((tripPoint) => {
+      if (
+        (tripPoint.id != tripPointId && tripPoint.nature == NatureEnum.stop) ||
+        tripPoint.nature == NatureEnum.school
+      ) {
+        updatedTripPoint.push(tripPoint);
+      }
+    });
+    return { ...prev, tripPoints: updatedTripPoint };
+  });
+}
+
 export function updateWaypoints(waypoints: WaypointType[]) {
   setCurrentDrawTrip((trip) => {
     return { ...trip, waypoints: waypoints };

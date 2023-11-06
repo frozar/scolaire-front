@@ -9,10 +9,8 @@ import { COLOR_STOP_FOCUS, COLOR_WAYPOINT } from "../../constant";
 import Point from "../atom/Point";
 
 import { GradeTripType } from "../../../../../_entities/grade.entity";
-import { TripPointType } from "../../../../../_entities/trip.entity";
 import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
 import { updatePointColor } from "../../../../../leafletUtils";
-import { NatureEnum } from "../../../../../type";
 import { QuantityUtils } from "../../../../../utils/quantity.utils";
 import {
   setStopSelected,
@@ -24,7 +22,7 @@ import {
   currentDrawTrip,
   currentStep,
   removePoint,
-  setCurrentDrawTrip,
+  removeTripPoint,
   setCurrentTripIndex,
   updateWaypoints,
 } from "../../../board/component/organism/DrawTripBoard";
@@ -203,7 +201,6 @@ const onMouseUp = (stop: StopType, map: L.Map) => {
 };
 
 const onRightClick = (stop: StopType) => {
-  // TODO: Refactor (TripTimelineRemovePointButton.tsx)
   const circle = linkMap.get(stop.leafletId);
   const isInTripUnderConstruction = currentDrawTrip().tripPoints.filter(
     (_point) => _point.id == stop.id
@@ -225,21 +222,22 @@ const onRightClick = (stop: StopType) => {
 
     circle?.setStyle({ fillColor: COLOR_STOP_FOCUS });
 
+    // TODO: Refactor (TripTimelineRemovePointButton.tsx)
     // ! Update tripPoint
-    setCurrentDrawTrip((prev) => {
-      const updatedTripPoint: TripPointType[] = [];
+    removeTripPoint(stop.id);
+    // setCurrentDrawTrip((prev) => {
+    //   const updatedTripPoint: TripPointType[] = [];
 
-      prev.tripPoints.forEach((tripPoint) => {
-        if (
-          (tripPoint.id != stop.id && tripPoint.nature == NatureEnum.stop) ||
-          tripPoint.nature == NatureEnum.school
-        ) {
-          updatedTripPoint.push(tripPoint);
-        }
-      });
-      return { ...prev, tripPoints: updatedTripPoint };
-    });
-    console.log("currentDrawTrip() => ", currentDrawTrip());
+    //   prev.tripPoints.forEach((tripPoint) => {
+    //     if (
+    //       (tripPoint.id != stop.id && tripPoint.nature == NatureEnum.stop) ||
+    //       tripPoint.nature == NatureEnum.school
+    //     ) {
+    //       updatedTripPoint.push(tripPoint);
+    //     }
+    //   });
+    //   return { ...prev, tripPoints: updatedTripPoint };
+    // });
   }
 };
 
