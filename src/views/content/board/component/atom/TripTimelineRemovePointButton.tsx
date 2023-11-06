@@ -45,23 +45,7 @@ export function TripTimelineRemovePointButton(props: {
 
         updateWaypoints(newWaypoints);
 
-        // TODO: Refactor (StopPoint.tsx)
-        // ! Update tripPoint
         removeTripPoint(pointId);
-        // setCurrentDrawTrip((prev) => {
-        //   const updatedTripPoint: TripPointType[] = [];
-
-        //   prev.tripPoints.forEach((tripPoint) => {
-        //     if (
-        //       (tripPoint.id != pointId &&
-        //         tripPoint.nature == NatureEnum.stop) ||
-        //       tripPoint.nature == NatureEnum.school
-        //     ) {
-        //       updatedTripPoint.push(tripPoint);
-        //     }
-        //   });
-        //   return { ...prev, tripPoints: updatedTripPoint };
-        // });
       }
     }
   };

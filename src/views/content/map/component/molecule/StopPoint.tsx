@@ -222,22 +222,7 @@ const onRightClick = (stop: StopType) => {
 
     circle?.setStyle({ fillColor: COLOR_STOP_FOCUS });
 
-    // TODO: Refactor (TripTimelineRemovePointButton.tsx)
-    // ! Update tripPoint
     removeTripPoint(stop.id);
-    // setCurrentDrawTrip((prev) => {
-    //   const updatedTripPoint: TripPointType[] = [];
-
-    //   prev.tripPoints.forEach((tripPoint) => {
-    //     if (
-    //       (tripPoint.id != stop.id && tripPoint.nature == NatureEnum.stop) ||
-    //       tripPoint.nature == NatureEnum.school
-    //     ) {
-    //       updatedTripPoint.push(tripPoint);
-    //     }
-    //   });
-    //   return { ...prev, tripPoints: updatedTripPoint };
-    // });
   }
 };
 
