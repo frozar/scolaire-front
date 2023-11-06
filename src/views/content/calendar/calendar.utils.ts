@@ -135,4 +135,9 @@ export namespace CalendarUtils {
 
     return new Date(year, month - 1, day);
   }
+
+  export function isDateAddedDate(date: Date, calendar: CalendarType) {
+    if (calendar.added.includes(date.getTime())) return true;
+    return false;
+  }
 }

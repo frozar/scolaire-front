@@ -6,6 +6,8 @@ import "./CalendarMonthsDetails.css";
 export function CalendarMonthsDetails(props: {
   month: Date;
   calendar: CalendarType;
+  action?: "add" | "remove";
+  onClickAction?: (date: Date) => void;
 }) {
   return (
     <div class="calendar-months-details">
@@ -19,6 +21,8 @@ export function CalendarMonthsDetails(props: {
               )
             }
             calendar={props.calendar}
+            action={props.action}
+            onClickAction={props.onClickAction}
           />
         )}
       </For>
