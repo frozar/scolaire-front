@@ -46,6 +46,7 @@ export class StopEntity {
     };
   }
 
+  //TODO bug to fix
   static dataToDB(datas: Pick<StopType, "name" | "lon" | "lat">[]) {
     return datas.map((data) => {
       return StopEntity.dbFormat({

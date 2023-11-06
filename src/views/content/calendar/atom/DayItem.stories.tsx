@@ -1,20 +1,20 @@
 import { Meta, StoryObj } from "storybook-solidjs";
-import DayItemComponent from "./DayItem";
+import DayItem from "./DayItem";
 
 const meta = {
-  component: DayItemComponent,
+  component: DayItem,
   tags: ["autodocs"],
-} satisfies Meta<typeof DayItemComponent>;
+} satisfies Meta<typeof DayItem>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const DayItem: Story = {
-  render: (props: { day: number }) => {
-    return <DayItemComponent {...props} />;
+export const DayItemStory: Story = {
+  render: (props: { day: Date }) => {
+    return <DayItem {...props} />;
   },
 
   args: {
-    day: 1,
+    day: new Date(),
   },
 };

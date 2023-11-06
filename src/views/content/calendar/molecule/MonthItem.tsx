@@ -11,7 +11,7 @@ export default function (props: { month: Date }) {
       </p>
       <div class="month-item-days">
         <For each={CalendarUtils.getDaysOfMonth(props.month)}>
-          {(index) => <DayItem day={index} />}
+          {(date) => <DayItem day={date} />}
         </For>
       </div>
     </div>

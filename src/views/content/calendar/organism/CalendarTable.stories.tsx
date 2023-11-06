@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from "storybook-solidjs";
-import { CalendarType } from "../template/Calendar";
+import { CalendarType } from "../../../../_entities/calendar.entity";
 import { CalendarTable as CalendarTableComponent } from "./CalendarTable";
 
 const meta = {

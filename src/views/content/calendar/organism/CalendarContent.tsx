@@ -1,14 +1,17 @@
 import { For } from "solid-js";
-import { CalendarType } from "../template/Calendar";
+import { CalendarType } from "../../../../_entities/calendar.entity";
 import "./CalendarContent.css";
-import MonthListContent from "./MonthListContent";
+import { CalendarLineContent } from "./CalendarLineContent";
 
-export default function (props: { month: Date; calendars: CalendarType[] }) {
+export function CalendarContent(props: {
+  month: Date;
+  calendars: CalendarType[];
+}) {
   return (
     <For each={props.calendars}>
       {(calendar) => (
         <div class="calendar-cells">
-          <MonthListContent month={props.month} calendar={calendar} />
+          <CalendarLineContent month={props.month} calendar={calendar} />
         </div>
       )}
     </For>

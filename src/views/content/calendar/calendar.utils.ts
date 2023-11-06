@@ -1,4 +1,4 @@
-import { CalendarType } from "./template/Calendar";
+import { CalendarType } from "../../../_entities/calendar.entity";
 
 export namespace CalendarUtils {
   export function getMonthName(date: Date): string {
@@ -7,7 +7,7 @@ export namespace CalendarUtils {
     });
   }
 
-  export function getDaysOfMonth(date: Date): number[] {
+  export function getDaysOfMonth(date: Date): Date[] {
     const days = [];
     const numberOfDay = new Date(
       date.getFullYear(),
@@ -15,15 +15,24 @@ export namespace CalendarUtils {
       0
     ).getDate();
     for (let i = 1; i <= numberOfDay; i++) {
-      days.push(i);
+      days.push(new Date(date.getFullYear(), date.getMonth(), i));
     }
     return days;
   }
 
-  export function getNameDay(date: Date): string {
-    return date.toLocaleString("en-EN", {
+  export function getDayName(date: Date, toLower = false): string {
+    const name = date.toLocaleString("en-EN", {
       weekday: "long",
     });
+    return toLower ? name.toLowerCase() : name;
+  }
+
+  export function stringListToDateTimeList(dates: string[]): number[] {
+    const output: number[] = [];
+    dates.forEach((date) => {
+      output.push(stringToDate(date).getTime());
+    });
+    return output;
   }
 
   export function stringToDate(dateString: string): Date {
@@ -33,6 +42,7 @@ export namespace CalendarUtils {
 
   export function isHoliday(date: Date): boolean {
     let isHoliday = false;
+    // TODO UTiliser une boucle "For" et mettre un "break" en cas de "True"
     CalendarUtils.getFrenchHolidays(date.getFullYear()).map((feriesDate) => {
       if (CalendarUtils.compareDate(feriesDate, date)) {
         isHoliday = true;
@@ -41,31 +51,20 @@ export namespace CalendarUtils {
     return isHoliday;
   }
 
-  export function getActifDaysOfMonth(
-    calendar: CalendarType,
-    month: Date
-  ): Date[] {
-    const days: Date[] = [];
-
-    calendar.date_added.map((strDate) => {
-      const date = CalendarUtils.stringToDate(strDate);
-      const dayName = CalendarUtils.getNameDay(date).toLowerCase();
-
-      if (
-        date.getMonth() == month.getMonth() &&
-        !calendar.date_deleted.includes(strDate) &&
-        !CalendarUtils.isHoliday(date) &&
-        !CalendarUtils.isWeekend(date) &&
-        calendar.rules.includes(dayName)
-      ) {
-        days.push(date);
-      }
-    });
-    return days;
+  export function isActiveDay(date: Date, calendar: CalendarType): boolean {
+    return (
+      !calendar.deleted.includes(date.getTime()) &&
+      //TODO en erreur
+      // !CalendarUtils.isHoliday(date) &&
+      !CalendarUtils.isWeekend(date) &&
+      //@ts-ignore
+      (calendar.rules.includes(CalendarUtils.getDayName(date, true)) ||
+        calendar.added.includes(date.getTime()))
+    );
   }
 
   export function isWeekend(date: Date): boolean {
-    const dayName = CalendarUtils.getNameDay(date).toLowerCase();
+    const dayName = CalendarUtils.getDayName(date).toLowerCase();
     return dayName == "saturday" || dayName == "sunday";
   }
 
@@ -73,7 +72,7 @@ export namespace CalendarUtils {
     if (
       date.getFullYear() == toCompare.getFullYear() &&
       date.getMonth() == toCompare.getMonth() &&
-      CalendarUtils.getNameDay(date) == CalendarUtils.getNameDay(toCompare)
+      CalendarUtils.getDayName(date) == CalendarUtils.getDayName(toCompare)
     )
       return true;
     else return false;
@@ -83,6 +82,7 @@ export namespace CalendarUtils {
     const holidays: Date[] = [];
     const paque = calculPaque(year);
 
+    //TODO génère une erreur sur les lundi de décembre de Janvier
     holidays.push(new Date(`${year}-01-01`)); // Jour de l'An
     holidays.push(new Date(`${year}-05-01`)); // Fête du Travail
     holidays.push(new Date(`${year}-05-08`)); // Victoire 1945
@@ -95,7 +95,6 @@ export namespace CalendarUtils {
     return holidays;
   }
 
-  // Fonction pour calculer la date de Pâques (Méthode de Gauss)
   function calculPaque(year: number): Date {
     const a = year % 19;
     const b = Math.floor(year / 100);

@@ -39,6 +39,28 @@ function isSafe(stateGuiFromLocalStorage: StateGuiType) {
 
 // TODO : Initialiser correctement le ContextManager en fonction de la valeur
 //        restaurer depuis le localStorage
+
+// TODO [begin rebase] To keep post rebase ??
+// console.log("StateGuiType keys", Object.keys(defaultStateGui));
+
+// // Check if the local storage has the correct keys
+// function isSafe(stateGuiFromLocalStorage: StateGuiType) {
+//   const keysByDefault = Object.keys(defaultStateGui);
+//   let res = true;
+
+//   // If the current local storage has more keys than the default one,
+//   // it's not safe
+//   for (const key of Object.keys(stateGuiFromLocalStorage)) {
+//     if (!keysByDefault.includes(key)) {
+//       res = false;
+//       break;
+//     }
+//   }
+
+//   return res;
+// }
+// TODO [end of rebase]
+
 // Documentation link:
 // https://stackoverflow.com/questions/70030144/how-to-update-local-storage-values-in-solidjs-using-hooks#answer-72339551
 function createLocalStore<T extends object>(
