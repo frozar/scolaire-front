@@ -22,6 +22,7 @@ import {
   currentDrawTrip,
   currentStep,
   removePoint,
+  removeTripPoint,
   setCurrentTripIndex,
   updateWaypoints,
 } from "../../../board/component/organism/DrawTripBoard";
@@ -220,6 +221,8 @@ const onRightClick = (stop: StopType) => {
     }
 
     circle?.setStyle({ fillColor: COLOR_STOP_FOCUS });
+
+    removeTripPoint(stop.id, stop.nature);
   }
 };
 

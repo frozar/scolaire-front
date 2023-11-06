@@ -17,6 +17,7 @@ import {
   currentDrawTrip,
   currentStep,
   removePoint,
+  removeTripPoint,
   updateWaypoints,
 } from "../../../board/component/organism/DrawTripBoard";
 import {
@@ -178,6 +179,8 @@ const onRightClick = (point: SchoolType) => {
     }
 
     circle?.setStyle({ fillColor: COLOR_SCHOOL_FOCUS });
+
+    removeTripPoint(point.id, point.nature);
   }
 };
 
