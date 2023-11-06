@@ -32,7 +32,10 @@ export default function () {
       <CalendarTable currentMonth={currentMonth()} calendars={calendars()} />
 
       <Show when={currentCalendar() != undefined}>
-        <CalendarEdition calendar={currentCalendar() as CalendarType} />
+        <CalendarEdition
+          calendar={currentCalendar() as CalendarType}
+          currentMonth={currentMonth()}
+        />
       </Show>
     </section>
   );
