@@ -16,7 +16,7 @@ export const CalendarEdition: Story = {
   },
 
   args: {
-    month: new Date(),
+    currentMonth: new Date(),
     calendar: {
       id: 11,
       name: "Mon calendrier",

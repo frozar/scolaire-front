@@ -1,4 +1,5 @@
 .calendar-line-name {
-  @apply  flex items-center pr-[5px] w-[100px] h-[40px];
+  @apply flex items-center pr-[5px] w-[100px] h-[40px];
   text-wrap: nowrap;
+  font-size: 9px;
 }
