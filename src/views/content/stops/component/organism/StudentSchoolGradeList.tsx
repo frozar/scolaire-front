@@ -1,16 +1,13 @@
 import _ from "lodash";
 import { For } from "solid-js";
-import { AssociatedSchoolType } from "../../../../../_entities/_utils.entity";
+import { StopType } from "../../../../../_entities/stop.entity";
+import { StopUtils } from "../../../../../utils/stop.utils";
 import CollapsibleElement from "../../../board/component/organism/CollapsibleElement";
 import StudentSchoolGradeItem from "../molecul/StudentSchoolGradeItem";
 
-export default function (props: { associatedSchools: AssociatedSchoolType[] }) {
+export default function (props: { stop: StopType }) {
   // eslint-disable-next-line solid/reactivity
-  const associatedSchools = _.groupBy(props.associatedSchools, "schoolId");
-  // TODO: Rename and move
-  function getRemaining() {
-    return "TODO";
-  }
+  const associatedSchools = _.groupBy(props.stop.associated, "schoolId");
 
   return (
     <For each={_.keys(associatedSchools)}>
@@ -19,10 +16,12 @@ export default function (props: { associatedSchools: AssociatedSchoolType[] }) {
           title={
             associatedSchools[schoolId][0].schoolName +
             " " +
-            getRemaining() +
-            " / "
-            // +
-            // StopUtils.getTotalQuantityPerSchool()
+            StopUtils.getRemainingQuantityPerSchool(
+              props.stop.id,
+              Number(schoolId)
+            ) +
+            " / " +
+            StopUtils.getTotalQuantityPerSchool(props.stop.id, Number(schoolId))
           }
         >
           <For each={associatedSchools[schoolId]}>
