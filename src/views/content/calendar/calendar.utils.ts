@@ -158,4 +158,14 @@ export namespace CalendarUtils {
     if (calendar.deleted.includes(date.getTime())) return true;
     return false;
   }
+
+  export function isARulesDate(date: Date, calendar: CalendarType): boolean {
+    const dayName = CalendarUtils.getDayName(date, true);
+    if (calendar.rules.includes(dayName as CalendarDayEnum)) return true;
+    return false;
+  }
+
+  export function isDayInRules(day: CalendarDayEnum, calendar: CalendarType) {
+    return calendar.rules.includes(day);
+  }
 }

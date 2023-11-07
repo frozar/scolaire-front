@@ -28,8 +28,6 @@ export enum CalendarDayEnum {
   wednesday = "wednesday",
   thursday = "thursday",
   friday = "friday",
-  saturday = "saturday",
-  sunday = "sunday",
 }
 
 export type CalendarType = {

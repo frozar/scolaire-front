@@ -1,5 +1,8 @@
 import { Show, createSignal, onMount } from "solid-js";
-import { CalendarType } from "../../../../_entities/calendar.entity";
+import {
+  CalendarDayEnum,
+  CalendarType,
+} from "../../../../_entities/calendar.entity";
 import { CalendarService } from "../../../../_services/calendar.service";
 import { CalendarEdition } from "../organism/CalendarEdtion";
 import { CalendarTable } from "../organism/CalendarTable";
@@ -50,6 +53,19 @@ export function toggleDeletedDate(date: Date) {
     if (indexof == -1) data.deleted.push(date.getTime());
     else data.deleted = data.deleted.filter((item) => item != date.getTime());
 
+    return data;
+  });
+}
+
+export function updateCalendarRules(day: CalendarDayEnum) {
+  const indexof = currentCalendar()?.rules.findIndex((item) => item == day);
+
+  setCurrentCalendar((prev) => {
+    if (prev == undefined) return prev;
+    const data = { ...prev };
+
+    if (indexof == -1) data.rules.push(day);
+    else data.rules = data.rules.filter((item) => item != day);
     return data;
   });
 }
