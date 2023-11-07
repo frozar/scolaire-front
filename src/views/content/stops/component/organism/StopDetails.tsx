@@ -1,5 +1,4 @@
 import { Match, Show, Switch, createSignal, onMount } from "solid-js";
-import { AssociatedSchoolType } from "../../../../../_entities/_utils.entity";
 import { StopType } from "../../../../../_entities/stop.entity";
 import { TripEntity } from "../../../../../_entities/trip.entity";
 import PlusIcon from "../../../../../icons/PlusIcon";
@@ -13,7 +12,7 @@ import EditStudentSchoolGradeItem from "../molecul/EditStudentSchoolGradeItem";
 import StopDetailsHeader from "../molecul/StopDetailsHeader";
 import StopDetailsPanelsButton from "../molecul/StopDetailsPanelsButton";
 import "./StopDetails.css";
-import ClassStudentToGradeList from "./StudentSchoolGradeList";
+import StudentSchoolGradeList from "./StudentSchoolGradeList";
 
 export const [stopDetailsItem, setStopDetailsItem] = createSignal<StopType>();
 export function updateStopDetailsItem(stopId: number) {
@@ -76,11 +75,7 @@ export default function () {
       <div class="content mt-2">
         <Switch>
           <Match when={onPanel() == StopPanels.grades}>
-            <ClassStudentToGradeList
-              associatedSchools={
-                stopDetailsItem()?.associated as AssociatedSchoolType[]
-              }
-            />
+            <StudentSchoolGradeList stop={stopDetailsItem() as StopType} />
 
             <Show when={editItem()}>
               <EditStudentSchoolGradeItem close={toggleEditItem} />
