@@ -6,15 +6,16 @@ import CollapsibleElement from "../../../board/component/organism/CollapsibleEle
 import StudentSchoolGradeItem from "../molecul/StudentSchoolGradeItem";
 
 export default function (props: { stop: StopType }) {
-  // eslint-disable-next-line solid/reactivity
-  const associatedSchools = _.groupBy(props.stop.associated, "schoolId");
+  function associatedSchools() {
+    return _.groupBy(props.stop.associated, "schoolId");
+  }
 
   return (
-    <For each={_.keys(associatedSchools)}>
+    <For each={_.keys(associatedSchools())}>
       {(schoolId) => (
         <CollapsibleElement
           title={
-            associatedSchools[schoolId][0].schoolName +
+            associatedSchools()[schoolId][0].schoolName +
             " " +
             StopUtils.getRemainingQuantityPerSchool(
               props.stop.id,
@@ -24,7 +25,7 @@ export default function (props: { stop: StopType }) {
             StopUtils.getTotalQuantityPerSchool(props.stop.id, Number(schoolId))
           }
         >
-          <For each={associatedSchools[schoolId]}>
+          <For each={associatedSchools()[schoolId]}>
             {(associatedSchool) => (
               <StudentSchoolGradeItem school={associatedSchool} />
             )}
