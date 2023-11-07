@@ -10,6 +10,16 @@ export namespace CalendarEntity {
       deleted: CalendarUtils.stringListToDateTimeList(dbCalendar.date_deleted),
     };
   }
+
+  export function format(calendar: CalendarType): CalendarDBType {
+    return {
+      id: calendar.id,
+      name: calendar.name,
+      rules: calendar.rules,
+      date_added: CalendarUtils.dateTimeListToStringList(calendar.added),
+      date_deleted: CalendarUtils.dateTimeListToStringList(calendar.deleted),
+    };
+  }
 }
 
 export enum CalendarDayEnum {

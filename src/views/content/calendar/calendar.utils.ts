@@ -38,6 +38,19 @@ export namespace CalendarUtils {
     return output;
   }
 
+  export function dateTimeListToStringList(dates: number[]): string[] {
+    const output: string[] = [];
+    dates.forEach((date) => {
+      const bufferDate = new Date(date);
+      output.push(
+        `${bufferDate.getFullYear()}-${
+          bufferDate.getMonth() + 1
+        }-${bufferDate.getDate()}`
+      );
+    });
+    return output;
+  }
+
   export function stringToDate(dateString: string): Date {
     const [year, month, day] = dateString.split("-");
     return new Date(Number(year), Number(month) - 1, Number(day));
@@ -75,6 +88,9 @@ export namespace CalendarUtils {
       );
     }
 
+    if (date.getMonth() == 10) {
+      console.log("month, 10:", date, calendar.added.includes(date.getTime()));
+    }
     if (calendar.added.includes(date.getTime())) return true;
     // TODO review holidays
     // if (CalendarUtils.isHoliday(date)) return false;

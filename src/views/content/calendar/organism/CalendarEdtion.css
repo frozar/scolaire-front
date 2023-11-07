@@ -1,5 +1,5 @@
 .calendar-edition {
-  @apply mt-10;
+  @apply mt-10 w-[97%];
 }
 
 .calendar-edition-title {
@@ -8,4 +8,8 @@
 
 .calendar-edition-title-active {
   @apply text-green-base;
+}
+
+.calendar-edition-footer-actions {
+  @apply flex justify-end mt-5;
 }

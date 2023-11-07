@@ -16,7 +16,7 @@ export function CalendarDayCell(props: {
   return (
     <CellItem
       isActive={
-        !props.action
+        props.action == undefined
           ? CalendarUtils.isActiveDay(props.date, props.calendar)
           : CalendarUtils.isDateAddedDate(props.date, props.calendar)
       }

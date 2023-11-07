@@ -9,7 +9,8 @@ export function CalendarTable(props: {
   calendars: CalendarType[];
 }) {
   return (
-    <div class="calendar-table">
+    <div class="calendar-table calendar-list">
+      <p class="calendar-edition-title">Liste des calendrier</p>
       <CalendarHeader month={props.currentMonth} />
       <CalendarContent month={props.currentMonth} calendars={props.calendars} />
       {/* CalendarAdd */}
