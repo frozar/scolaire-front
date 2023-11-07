@@ -34,7 +34,7 @@ export namespace CurrentDrawTripUtils {
       return { ...trip, waypoints: waypoints };
     });
   }
-  // ! Not that
+
   function setWaypointsFromPoints(points: TripPointType[]) {
     const waypoints: WaypointType[] = [];
     for (const point of points) {
@@ -56,53 +56,6 @@ export namespace CurrentDrawTripUtils {
       return { ...trip, waypoints: waypoints };
     });
   }
-
-  // export async function createOrUpdateTrip() {
-  //   // eslint-disable-next-line solid/reactivity
-  //   let updatedTrip: TripType = currentDrawTrip();
-  //   if (currentDrawTrip().id == undefined) {
-  //     // ! ICI ! Utilisation de tripService cause le problème !
-  //     updatedTrip = await TripService.create(currentDrawTrip());
-  //     const selectedLineId = getSelectedLine()?.id as number;
-
-  //     setLines((lines) =>
-  //       lines.map((line) =>
-  //         line.id != selectedLineId
-  //           ? line
-  //           : { ...line, trips: [...line.trips, updatedTrip] }
-  //       )
-  //     );
-  //   } else {
-  //     // ! ICI ! Utilisation de tripService cause le problème !
-  //     updatedTrip = await TripService.update(currentDrawTrip());
-
-  //     setLines((prev) =>
-  //       prev.map((line) => {
-  //         return {
-  //           ...line,
-  //           trips: line.trips.map((trip) =>
-  //             trip.id == updatedTrip.id ? updatedTrip : trip
-  //           ),
-  //         };
-  //       })
-  //     );
-  //   }
-  //   setselectedTrip(
-  //     getLines()
-  //       .map((line) => line.trips)
-  //       .flat()
-  //       .filter((trip) => trip.id == updatedTrip.id)[0]
-  //   );
-
-  //   setDisplayTripMode((prev) =>
-  //     prev == displayTripModeEnum.straight ? prev : displayTripModeEnum.straight
-  //   );
-
-  //   setCurrentStep(DrawTripStep.initial);
-  //   quitModeDrawTrip();
-
-  //   changeBoard("line-details");
-  // }
 
   export function addSchoolToTrip(school: SchoolType) {
     setCurrentDrawTrip((trip) => {
@@ -139,7 +92,7 @@ export namespace CurrentDrawTripUtils {
       };
     });
   }
-  // ! Not that
+
   export function updatePoints(points: TripPointType[]) {
     setCurrentDrawTrip((trip) => {
       return { ...trip, points: points };
@@ -147,7 +100,7 @@ export namespace CurrentDrawTripUtils {
     setWaypointsFromPoints(points);
     updatePolylineWithOsrm(currentDrawTrip());
   }
-  // ! Not that
+
   export function removeTripPoint(
     tripPointId: number,
     tripPointNature: NatureEnum
@@ -166,7 +119,6 @@ export namespace CurrentDrawTripUtils {
     });
   }
 
-  // ! Not that
   export function updateWaypoints(waypoints: WaypointType[]) {
     setCurrentDrawTrip((trip) => {
       return { ...trip, waypoints: waypoints };
@@ -175,7 +127,7 @@ export namespace CurrentDrawTripUtils {
       updatePolylineWithOsrm(currentDrawTrip());
     }
   }
-  // ! Apparently not that
+
   export async function updatePolylineWithOsrm(trip: TripType) {
     enableSpinningWheel();
     const { latlngs, projectedLatlngs, metrics } =
