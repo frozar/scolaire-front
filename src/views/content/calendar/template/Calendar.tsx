@@ -11,6 +11,12 @@ export type MonthType = {
   days: number[];
 };
 
+export enum CalendarActionsEnum {
+  add = "add",
+  remove = "remove",
+  rules = "rules",
+}
+
 export const [currentMonth, setCurrentMonth] = createSignal<Date>(new Date());
 export const [calendars, setCalendars] = createSignal<CalendarType[]>([]);
 export const [currentCalendar, setCurrentCalendar] =
@@ -64,10 +70,8 @@ export default function () {
   onMount(async () => {
     const today = new Date();
     setCurrentMonth(new Date(today.getFullYear(), today.getMonth()));
-
-    const calendars = await CalendarService.getAll();
-    setCalendars(calendars);
-    setCurrentCalendar(calendars[0]);
+    setCalendars(await CalendarService.getAll());
+    setCurrentCalendar(calendars()[0]);
   });
 
   return (

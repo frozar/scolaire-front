@@ -3,6 +3,7 @@ import { CalendarService } from "../../../../_services/calendar.service";
 import Button from "../../../../component/atom/Button";
 import { CalendarSectionTitle } from "../atom/CalendarSectionTitle";
 import {
+  CalendarActionsEnum,
   toggleAddedDate,
   toggleDeletedDate,
   updateCalendars,
@@ -12,17 +13,17 @@ import { CalendarHeader } from "./CalendarHeader";
 import { CalendarLineAction } from "./CalendarLineAction";
 import { CalendarLineContent } from "./CalendarLineContent";
 
-export function CalendarEdition(props: {
+interface CalendarEditionProps {
   calendar: CalendarType;
   currentMonth: Date;
-}) {
+}
+
+export function CalendarEdition(props: CalendarEditionProps) {
   function onClickCellAddDate(cellDate: Date) {
     toggleAddedDate(cellDate);
   }
 
   function onClickCellDeletedDate(cellDate: Date) {
-    console.log("remove date:", cellDate);
-
     toggleDeletedDate(cellDate);
   }
 
@@ -49,7 +50,7 @@ export function CalendarEdition(props: {
         <div class="calendar-cells">
           <CalendarLineAction
             actionName="Ajouté"
-            action="add"
+            action={CalendarActionsEnum.add}
             calendar={props.calendar}
             month={props.currentMonth}
             onClickCell={onClickCellAddDate}
@@ -59,7 +60,7 @@ export function CalendarEdition(props: {
         <div class="calendar-cells">
           <CalendarLineAction
             actionName="Retiré"
-            action="remove"
+            action={CalendarActionsEnum.remove}
             calendar={props.calendar}
             month={props.currentMonth}
             onClickCell={onClickCellDeletedDate}
