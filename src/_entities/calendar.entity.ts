@@ -25,7 +25,7 @@ export namespace CalendarEntity {
 export enum CalendarDayEnum {
   monday = "monday",
   tuesday = "tuesday",
-  wednersday = "wednersday",
+  wednesday = "wednesday",
   thursday = "thursday",
   friday = "friday",
   saturday = "saturday",
