@@ -42,11 +42,11 @@ export function CalendarEdition(props: CalendarEditionProps) {
         <CalendarHeader month={props.currentMonth} />
         <div class="calendar-cells">
           <CalendarLineAction
-            actionName="Calendrier en édition"
+            actionName="Calendrier en fonction des paramètrages"
             action={CalendarActionsEnum.rules}
             calendar={props.calendar}
             month={props.currentMonth}
-            onClickCell={onClickCellAddDate}
+            onClickCell={() => console.log("rule cell")}
           />
         </div>
 
@@ -72,7 +72,10 @@ export function CalendarEdition(props: CalendarEditionProps) {
       </div>
 
       <div class="calendar-edition-footer-actions">
-        <CalendarDaysCheckbox calendar={props.calendar} />
+        <div>
+          <CalendarSectionTitle title="Paramètrage calendrier" />
+          <CalendarDaysCheckbox calendar={props.calendar} />
+        </div>
 
         <Button
           onClick={updateCalendar}

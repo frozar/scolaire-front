@@ -12,6 +12,21 @@ interface LabeledCheckboxProps {
   calendar: CalendarType;
 }
 
+function dayToFrench(day: CalendarDayEnum): string {
+  switch (day) {
+    case CalendarDayEnum.monday:
+      return "Lundi";
+    case CalendarDayEnum.tuesday:
+      return "Mardi";
+    case CalendarDayEnum.wednesday:
+      return "Mercredi";
+    case CalendarDayEnum.thursday:
+      return "Jeudi";
+    case CalendarDayEnum.friday:
+      return "Vendredi";
+  }
+}
+
 export function LabeledCheckbox(props: LabeledCheckboxProps) {
   function onChange() {
     updateCalendarRules(props.day);
@@ -19,7 +34,7 @@ export function LabeledCheckbox(props: LabeledCheckboxProps) {
 
   return (
     <div class="labeled-inline-checkbox">
-      <label for={"day-" + props.day}>{props.day}</label>
+      <label for={"day-" + props.day}>{dayToFrench(props.day)}</label>
       <input
         onChange={onChange}
         type="checkbox"

@@ -3,5 +3,5 @@
 }
 
 .calendar-edition-footer-actions {
-  @apply flex justify-between mt-5;
+  @apply flex justify-between mt-10;
 }
