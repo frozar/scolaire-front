@@ -5,6 +5,7 @@ import CardTitle from "../../../../../component/atom/CardTitle";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
 import PencilIcon from "../../../../../icons/PencilIcon";
 import TrashIcon from "../../../../../icons/TrashIcon";
+import { GradeUtils } from "../../../../../utils/grade.utils";
 import { QuantityUtils } from "../../../../../utils/quantity.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { removeFromStop } from "../../../map/component/organism/StopPoints";
@@ -40,7 +41,7 @@ export default function (props: { school: AssociatedSchoolType }) {
     >
       <CardWrapper class="school-list-item">
         <div class="school-list-item-content">
-          <CardTitle title={props.school.schoolName} />
+          <CardTitle title={GradeUtils.getName(props.school.gradeId)} />
           <p class="school-list-item-quantity">
             {/* TODO: Lucas fix remaining with new type */}
             {QuantityUtils.remainingStudentToGradeQuantity(
