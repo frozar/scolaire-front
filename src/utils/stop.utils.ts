@@ -12,6 +12,15 @@ export namespace StopUtils {
     return quantity;
   }
 
+  export function getTotalQuantityPerSchool(stopId: number, schoolId: number) {
+    let quantity = 0;
+    const stop = getStops().filter((stop) => stop.id == stopId)[0];
+
+    stop.associated.forEach((assoc) => (quantity += assoc.quantity));
+
+    return quantity;
+  }
+
   export function getRemainingQuantity(stopId: number) {
     const totalQuantity = getTotalQuantity(stopId);
 
