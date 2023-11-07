@@ -1,33 +1,24 @@
+import _ from "lodash";
 import { For } from "solid-js";
 import { AssociatedSchoolType } from "../../../../../_entities/_utils.entity";
+import CollapsibleElement from "../../../board/component/organism/CollapsibleElement";
 import StudentSchoolGradeItem from "../molecul/StudentSchoolGradeItem";
 
 export default function (props: { associatedSchools: AssociatedSchoolType[] }) {
-  console.log("associatedSchool => ", props.associatedSchools);
-  // ! Trier par schoolId
-  const associatedSchools: { [id: number]: AssociatedSchoolType[] } = {};
-  const schoolIds: number[] = []; // ! use associatedSchools keys instead ?
-  // ! Rewrite
-  props.associatedSchools.forEach((assoc) => {
-    if (schoolIds.includes(assoc.schoolId)) {
-      associatedSchools[assoc.schoolId].push(assoc);
-    } else {
-      schoolIds.push(assoc.schoolId);
-      associatedSchools[assoc.schoolId] = [assoc];
-    }
-  });
-  console.log("associatedSchools", associatedSchools);
-  console.log("schoolIds", schoolIds);
+  // eslint-disable-next-line solid/reactivity
+  const associatedSchools = _.groupBy(props.associatedSchools, "schoolId");
 
-  // return (
-  //   <For each={props.associatedSchools}>
-  //     {(school) => <StudentSchoolGradeItem school={school} />}
-  //   </For>
-  // );
-  // ! Use collapsible element !
   return (
-    <For each={props.associatedSchools}>
-      {(school) => <StudentSchoolGradeItem school={school} />}
+    <For each={_.keys(associatedSchools)}>
+      {(schoolId) => (
+        <CollapsibleElement title={associatedSchools[schoolId][0].schoolName}>
+          <For each={associatedSchools[schoolId]}>
+            {(associatedSchool) => (
+              <StudentSchoolGradeItem school={associatedSchool} />
+            )}
+          </For>
+        </CollapsibleElement>
+      )}
     </For>
   );
 }
