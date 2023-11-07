@@ -8,6 +8,7 @@ import "../../../../../css/timeline.css";
 
 import { TripEntity, TripType } from "../../../../../_entities/trip.entity";
 import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
+import { TripService } from "../../../../../_services/trip.service";
 import CurvedLine from "../../../../../icons/CurvedLine";
 import SimpleTrip from "../../../../../icons/SimpleLine";
 import { updatePointColor } from "../../../../../leafletUtils";
@@ -17,7 +18,11 @@ import {
 } from "../../../../../signaux";
 import { CurrentDrawTripUtils } from "../../../../../utils/currentDrawTrip.utils";
 import { MapElementUtils } from "../../../../../utils/mapElement.utils";
-import { getLines } from "../../../map/component/organism/BusLines";
+import {
+  getLines,
+  getSelectedLine,
+  setLines,
+} from "../../../map/component/organism/BusLines";
 import { setselectedTrip } from "../../../map/component/organism/Trips";
 import { quitModeDrawTrip } from "../../../map/shortcut";
 import { DrawHelperButton } from "../atom/DrawHelperButton";
@@ -187,7 +192,7 @@ async function nextStep() {
         await CurrentDrawTripUtils.updatePolylineWithOsrm(currentDrawTrip());
       }
 
-      await CurrentDrawTripUtils.createOrUpdateTrip();
+      await createOrUpdateTrip();
 
       setCurrentDrawTrip(TripEntity.defaultTrip());
       setCurrentTripIndex(0);
@@ -265,4 +270,49 @@ async function onClick() {
 
     setDisplayTripMode(displayTripModeEnum.straight);
   }
+}
+
+export async function createOrUpdateTrip() {
+  // eslint-disable-next-line solid/reactivity
+  let updatedTrip: TripType = currentDrawTrip();
+  if (currentDrawTrip().id == undefined) {
+    updatedTrip = await TripService.create(currentDrawTrip());
+    const selectedLineId = getSelectedLine()?.id as number;
+
+    setLines((lines) =>
+      lines.map((line) =>
+        line.id != selectedLineId
+          ? line
+          : { ...line, trips: [...line.trips, updatedTrip] }
+      )
+    );
+  } else {
+    updatedTrip = await TripService.update(currentDrawTrip());
+
+    setLines((prev) =>
+      prev.map((line) => {
+        return {
+          ...line,
+          trips: line.trips.map((trip) =>
+            trip.id == updatedTrip.id ? updatedTrip : trip
+          ),
+        };
+      })
+    );
+  }
+  setselectedTrip(
+    getLines()
+      .map((line) => line.trips)
+      .flat()
+      .filter((trip) => trip.id == updatedTrip.id)[0]
+  );
+
+  setDisplayTripMode((prev) =>
+    prev == displayTripModeEnum.straight ? prev : displayTripModeEnum.straight
+  );
+
+  setCurrentStep(DrawTripStep.initial);
+  quitModeDrawTrip();
+
+  changeBoard("line-details");
 }
