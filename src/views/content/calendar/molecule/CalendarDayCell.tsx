@@ -13,13 +13,16 @@ export function CalendarDayCell(props: {
     return;
   };
 
+  function isActiveCell() {
+    if (props.action == "add")
+      return CalendarUtils.isAnAddedDate(props.date, props.calendar);
+    else if (props.action == "remove")
+      return CalendarUtils.isADeletedDate(props.date, props.calendar);
+    else return CalendarUtils.isActiveDay(props.date, props.calendar);
+  }
   return (
     <CellItem
-      isActive={
-        props.action == undefined
-          ? CalendarUtils.isActiveDay(props.date, props.calendar)
-          : CalendarUtils.isDateAddedDate(props.date, props.calendar)
-      }
+      isActive={isActiveCell()}
       isWeekend={CalendarUtils.isWeekend(props.date)}
       onClick={onClickAction}
     />
