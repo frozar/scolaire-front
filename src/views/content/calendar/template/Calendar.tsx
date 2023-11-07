@@ -16,6 +16,27 @@ export const [calendars, setCalendars] = createSignal<CalendarType[]>([]);
 export const [currentCalendar, setCurrentCalendar] =
   createSignal<CalendarType>();
 
+export function appendAddedDateToCurrentCalendar(date: Date) {
+  setCurrentCalendar((prev) => {
+    if (prev == undefined) return prev;
+    const data = { ...prev };
+    data.added.push(date.getTime());
+    return data;
+  });
+}
+
+export function updateCalendars(calendar: CalendarType) {
+  setCalendars((prev) => {
+    if (prev == undefined) return prev;
+    const calendars = [...prev];
+    const indexOfCalendar = calendars.findIndex(
+      (item) => item.id == calendar.id
+    );
+    calendars[indexOfCalendar] = calendar;
+    return calendars;
+  });
+}
+
 export default function () {
   onMount(async () => {
     const today = new Date();

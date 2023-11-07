@@ -88,9 +88,6 @@ export namespace CalendarUtils {
       );
     }
 
-    if (date.getMonth() == 10) {
-      console.log("month, 10:", date, calendar.added.includes(date.getTime()));
-    }
     if (calendar.added.includes(date.getTime())) return true;
     // TODO review holidays
     // if (CalendarUtils.isHoliday(date)) return false;
