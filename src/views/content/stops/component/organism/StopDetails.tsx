@@ -77,7 +77,9 @@ export default function () {
         <Switch>
           <Match when={onPanel() == StopPanels.grades}>
             <ClassStudentToGradeList
-              schools={stopDetailsItem()?.associated as AssociatedSchoolType[]}
+              associatedSchools={
+                stopDetailsItem()?.associated as AssociatedSchoolType[]
+              }
             />
 
             <Show when={editItem()}>
