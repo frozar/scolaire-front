@@ -4,6 +4,8 @@ import Button from "../../../../component/atom/Button";
 import { CalendarSectionTitle } from "../atom/CalendarSectionTitle";
 import {
   appendAddedDateToCurrentCalendar,
+  currentCalendar,
+  removeAddedDateToCurrentCalendar,
   updateCalendars,
 } from "../template/Calendar";
 import "./CalendarEdtion.css";
@@ -16,7 +18,11 @@ export function CalendarEdition(props: {
   currentMonth: Date;
 }) {
   function onClickCellAddDate(cellDate: Date) {
-    appendAddedDateToCurrentCalendar(cellDate);
+    const indexOfDate = currentCalendar()?.added.findIndex(
+      (item) => item == cellDate.getTime()
+    );
+    if (indexOfDate == -1) appendAddedDateToCurrentCalendar(cellDate);
+    else removeAddedDateToCurrentCalendar(cellDate);
   }
 
   async function updateCalendar() {

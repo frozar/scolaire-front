@@ -25,6 +25,15 @@ export function appendAddedDateToCurrentCalendar(date: Date) {
   });
 }
 
+export function removeAddedDateToCurrentCalendar(date: Date) {
+  setCurrentCalendar((prev) => {
+    if (prev == undefined) return prev;
+    const data = { ...prev };
+    data.added = data.added.filter((item) => item != date.getTime());
+    return data;
+  });
+}
+
 export function updateCalendars(calendar: CalendarType) {
   setCalendars((prev) => {
     if (prev == undefined) return prev;
