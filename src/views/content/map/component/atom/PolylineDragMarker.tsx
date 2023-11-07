@@ -1,10 +1,8 @@
 import L from "leaflet";
 import { createEffect, createSignal, onCleanup } from "solid-js";
 import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
-import {
-  currentDrawTrip,
-  updateWaypoints,
-} from "../../../board/component/organism/DrawTripBoard";
+import { CurrentDrawTripUtils } from "../../../../../utils/currentDrawTrip.utils";
+import { currentDrawTrip } from "../../../board/component/organism/DrawTripBoard";
 import { COLOR_WAYPOINT } from "../../constant";
 
 type PolylineDragMarkersProps = {
@@ -35,7 +33,7 @@ function handleMouseUp(
     polylineDragMarker.getLatLng().lng
   );
 
-  updateWaypoints(newWaypoints);
+  CurrentDrawTripUtils.updateWaypoints(newWaypoints);
 
   setDraggingWaypointIndex();
 }

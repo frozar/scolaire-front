@@ -4,6 +4,7 @@ import { SchoolType } from "../../../../../_entities/school.entity";
 import { StopType } from "../../../../../_entities/stop.entity";
 import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
 import { updatePointColor } from "../../../../../leafletUtils";
+import { CurrentDrawTripUtils } from "../../../../../utils/currentDrawTrip.utils";
 import {
   AddLineStep,
   addLineCurrentStep,
@@ -12,13 +13,8 @@ import {
 } from "../../../board/component/organism/AddLineBoardContent";
 import {
   DrawTripStep,
-  addPointToTrip,
-  addSchoolToTrip,
   currentDrawTrip,
   currentStep,
-  removePoint,
-  removeTripPoint,
-  updateWaypoints,
 } from "../../../board/component/organism/DrawTripBoard";
 import {
   changeBoard,
@@ -80,14 +76,14 @@ const onClick = (point: SchoolType) => {
           if (schoolsSelected?.find((p) => p.id === point.id)) {
             return;
           }
-          addSchoolToTrip(point);
+          CurrentDrawTripUtils.addSchoolToTrip(point);
           return;
 
         case DrawTripStep.editTrip:
           const lastPoint = currentDrawTrip().tripPoints.at(-1);
 
           // TODO  add quantity pour school ?!
-          addPointToTrip({
+          CurrentDrawTripUtils.addPointToTrip({
             id: point.id,
             leafletId: point.leafletId,
             name: point.name,
@@ -107,7 +103,7 @@ const onClick = (point: SchoolType) => {
                 currentDrawTrip().tripPoints
               );
 
-              updateWaypoints(newWaypoints);
+              CurrentDrawTripUtils.updateWaypoints(newWaypoints);
             }
           }
           break;
@@ -133,7 +129,7 @@ const onMouseUp = (point: StopType) => {
 
     // TODO  add quantity pour school ?!
     // TODO: Fix or delete this handler if school must always be at the end of a trip
-    addPointToTrip({
+    CurrentDrawTripUtils.addPointToTrip({
       ...point,
       quantity: associatedQuantity,
     });
@@ -166,7 +162,7 @@ const onRightClick = (point: SchoolType) => {
   )[0];
 
   if (onBoard() == "trip-draw" && isInTripUnderConstruction != undefined) {
-    removePoint(point);
+    CurrentDrawTripUtils.removePoint(point);
 
     const waypoints = currentDrawTrip().waypoints;
     if (waypoints) {
@@ -175,12 +171,12 @@ const onRightClick = (point: SchoolType) => {
         point.id,
         point.nature
       );
-      updateWaypoints(newWaypoints);
+      CurrentDrawTripUtils.updateWaypoints(newWaypoints);
     }
 
     circle?.setStyle({ fillColor: COLOR_SCHOOL_FOCUS });
 
-    removeTripPoint(point.id, point.nature);
+    CurrentDrawTripUtils.removeTripPoint(point.id, point.nature);
   }
 };
 

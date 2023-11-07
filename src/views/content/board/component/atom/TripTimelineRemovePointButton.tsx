@@ -4,9 +4,9 @@ import { Setter } from "solid-js";
 import { TripType } from "../../../../../_entities/trip.entity";
 import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
 import { NatureEnum } from "../../../../../type";
+import { CurrentDrawTripUtils } from "../../../../../utils/currentDrawTrip.utils";
 import { linkMap } from "../../../map/component/organism/Points";
 import { COLOR_SCHOOL_FOCUS, COLOR_STOP_FOCUS } from "../../../map/constant";
-import { removeTripPoint, updateWaypoints } from "../organism/DrawTripBoard";
 import "./TripTimelineRemovePointButton.css";
 
 export function TripTimelineRemovePointButton(props: {
@@ -43,9 +43,9 @@ export function TripTimelineRemovePointButton(props: {
           pointNature
         );
 
-        updateWaypoints(newWaypoints);
+        CurrentDrawTripUtils.updateWaypoints(newWaypoints);
 
-        removeTripPoint(pointId, pointNature);
+        CurrentDrawTripUtils.removeTripPoint(pointId, pointNature);
       }
     }
   };

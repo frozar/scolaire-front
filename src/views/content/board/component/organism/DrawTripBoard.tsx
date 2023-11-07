@@ -6,19 +6,8 @@ import BoardFooterActions from "../molecule/BoardFooterActions";
 
 import "../../../../../css/timeline.css";
 
-import _ from "lodash";
-import { SchoolType } from "../../../../../_entities/school.entity";
-import { StopType } from "../../../../../_entities/stop.entity";
-import {
-  TripEntity,
-  TripPointType,
-  TripType,
-} from "../../../../../_entities/trip.entity";
-import {
-  WaypointEntity,
-  WaypointType,
-} from "../../../../../_entities/waypoint.entity";
-import { OsrmService } from "../../../../../_services/osrm.service";
+import { TripEntity, TripType } from "../../../../../_entities/trip.entity";
+import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
 import { TripService } from "../../../../../_services/trip.service";
 import CurvedLine from "../../../../../icons/CurvedLine";
 import SimpleTrip from "../../../../../icons/SimpleLine";
@@ -27,7 +16,7 @@ import {
   disableSpinningWheel,
   enableSpinningWheel,
 } from "../../../../../signaux";
-import { NatureEnum } from "../../../../../type";
+import { CurrentDrawTripUtils } from "../../../../../utils/currentDrawTrip.utils";
 import { MapElementUtils } from "../../../../../utils/mapElement.utils";
 import {
   getLines,
@@ -179,30 +168,7 @@ export function DrawTripBoard() {
   );
 }
 
-export function removeSchoolToTrip(school: SchoolType) {
-  setCurrentDrawTrip((trip) => {
-    return { ...trip, schools: [] };
-  });
-  console.log(school);
-}
-export function addPointToTrip(point: TripPointType) {
-  setCurrentDrawTrip((trip: TripType) => {
-    // TODO richard pourquoi cette condition ?
-    const points = trip.tripPoints;
-    if (!_.isEqual(points.at(-1), point)) {
-      points.splice(currentTripIndex(), 0, point);
-    }
-    setCurrentTripIndex(points.length);
-    return { ...trip, points };
-  });
-}
-
-export function addSchoolToTrip(school: SchoolType) {
-  setCurrentDrawTrip((trip) => {
-    return { ...trip, schools: [school] };
-  });
-}
-async function createOrUpdateTrip() {
+export async function createOrUpdateTrip() {
   // eslint-disable-next-line solid/reactivity
   let updatedTrip: TripType = currentDrawTrip();
   if (currentDrawTrip().id == undefined) {
@@ -268,7 +234,7 @@ async function nextStep() {
         });
       }
       if (displayTripMode() == displayTripModeEnum.straight) {
-        await updatePolylineWithOsrm(currentDrawTrip());
+        await CurrentDrawTripUtils.updatePolylineWithOsrm(currentDrawTrip());
       }
 
       await createOrUpdateTrip();
@@ -338,7 +304,7 @@ async function onClick() {
         return { ...trip, waypoints: waypoints };
       });
     }
-    await updatePolylineWithOsrm(currentDrawTrip());
+    await CurrentDrawTripUtils.updatePolylineWithOsrm(currentDrawTrip());
 
     setDisplayTripMode(displayTripModeEnum.onRoad);
   } else if (displayTripMode() == displayTripModeEnum.onRoad) {
@@ -349,106 +315,4 @@ async function onClick() {
 
     setDisplayTripMode(displayTripModeEnum.straight);
   }
-}
-
-export function removePoint(point: StopType | SchoolType) {
-  setCurrentDrawTrip((trip) => {
-    return {
-      ...trip,
-      points: trip.tripPoints.filter(
-        (p) => p.id != point.id && p.lat != point.lat && p.lon != point.lon
-      ),
-    };
-  });
-}
-
-export function removeTripPoint(
-  tripPointId: number,
-  tripPointNature: NatureEnum
-) {
-  setCurrentDrawTrip((prev) => {
-    const updatedTripPoint: TripPointType[] = [];
-
-    prev.tripPoints.forEach((tripPoint) => {
-      if (
-        !(tripPoint.id == tripPointId && tripPoint.nature == tripPointNature)
-      ) {
-        updatedTripPoint.push(tripPoint);
-      }
-    });
-    return { ...prev, tripPoints: updatedTripPoint };
-  });
-}
-
-export function updateWaypoints(waypoints: WaypointType[]) {
-  setCurrentDrawTrip((trip) => {
-    return { ...trip, waypoints: waypoints };
-  });
-  if (displayTripMode() == displayTripModeEnum.onRoad) {
-    updatePolylineWithOsrm(currentDrawTrip());
-  }
-}
-
-export function updatePoints(points: TripPointType[]) {
-  setCurrentDrawTrip((trip) => {
-    return { ...trip, points: points };
-  });
-  setWaypointsFromPoints(points);
-  updatePolylineWithOsrm(currentDrawTrip());
-}
-
-export async function updatePolylineWithOsrm(trip: TripType) {
-  enableSpinningWheel();
-  const { latlngs, projectedLatlngs, metrics } =
-    await OsrmService.getRoadPolyline(trip);
-
-  setCurrentDrawTrip((trip) => {
-    return { ...trip, latLngs: latlngs };
-  });
-  setCurrentDrawTrip((trip) => {
-    return { ...trip, metrics: metrics };
-  });
-  setWaypoints(projectedLatlngs);
-  disableSpinningWheel();
-}
-
-// TODO MAYBE_ERROR
-function setWaypoints(projectedLatlngs: L.LatLng[]) {
-  if (!currentDrawTrip().waypoints) {
-    return;
-  }
-  let waypoints = currentDrawTrip().waypoints as WaypointType[];
-  waypoints = waypoints.map((waypoint, i) => {
-    return {
-      ...waypoint,
-      onRoadLat: projectedLatlngs[i].lat,
-      onRoadLon: projectedLatlngs[i].lng,
-    };
-  });
-
-  setCurrentDrawTrip((trip) => {
-    return { ...trip, waypoints: waypoints };
-  });
-}
-
-function setWaypointsFromPoints(points: TripPointType[]) {
-  const waypoints: WaypointType[] = [];
-  for (const point of points) {
-    if (point.nature == NatureEnum.school) {
-      waypoints.push({
-        idSchool: point.id,
-        lon: point.lon,
-        lat: point.lat,
-      });
-    } else if (point.nature == NatureEnum.stop) {
-      waypoints.push({
-        idStop: point.id,
-        lon: point.lon,
-        lat: point.lat,
-      });
-    }
-  }
-  setCurrentDrawTrip((trip) => {
-    return { ...trip, waypoints: waypoints };
-  });
 }
