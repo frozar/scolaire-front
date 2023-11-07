@@ -1,14 +1,17 @@
 import { For } from "solid-js";
 import { CalendarType } from "../../../../_entities/calendar.entity";
+import { CalendarActionsEnum } from "../template/Calendar";
 import { CalendarMonthDetails } from "./CalendarMonthDetails";
 import "./CalendarMonthsDetails.css";
 
-export function CalendarMonthsDetails(props: {
+interface CalendarMonthsDetailsProps {
   month: Date;
   calendar: CalendarType;
-  action?: "add" | "remove";
+  action?: CalendarActionsEnum;
   onClickAction?: (date: Date) => void;
-}) {
+}
+
+export function CalendarMonthsDetails(props: CalendarMonthsDetailsProps) {
   return (
     <div class="calendar-months-details">
       <For each={[0, 1, 2]}>
