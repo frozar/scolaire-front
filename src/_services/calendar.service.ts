@@ -18,11 +18,10 @@ export namespace CalendarService {
   export async function updateCalendar(
     calendar: CalendarType
   ): Promise<CalendarType> {
-    const formatedToDBCalendar: CalendarDBType =
-      CalendarEntity.format(calendar);
     const dbCalendar: CalendarDBType = await ServiceUtils.patch("/calendar", {
-      calendar: formatedToDBCalendar,
+      calendar: CalendarEntity.format(calendar),
     });
+
     return CalendarEntity.build(dbCalendar);
   }
 }
