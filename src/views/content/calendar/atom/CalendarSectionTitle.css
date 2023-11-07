@@ -1,0 +1,7 @@
+.calendar-edition-title {
+  @apply text-xl;
+}
+
+.calendar-edition-title-active {
+  @apply text-green-base;
+}

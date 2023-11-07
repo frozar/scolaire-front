@@ -1,4 +1,7 @@
+.calendar-list {
+  @apply mt-10;
+}
+
 .calendar-table {
-  @apply  flex flex-col ;
-  /* @apply w-[1650px]; */
+  @apply flex flex-col;
 }

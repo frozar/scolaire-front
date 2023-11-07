@@ -14,4 +14,14 @@ export namespace CalendarService {
         })
       : [];
   }
+
+  export async function updateCalendar(
+    calendar: CalendarType
+  ): Promise<CalendarType> {
+    const dbCalendar: CalendarDBType = await ServiceUtils.patch("/calendar", {
+      calendar: CalendarEntity.format(calendar),
+    });
+
+    return CalendarEntity.build(dbCalendar);
+  }
 }

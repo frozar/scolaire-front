@@ -1,7 +1,6 @@
 .calendar-header {
-  @apply mt-5 ml-[100px];
-
+  @apply ml-[100px];
 }
 .calendar-header-actions {
-  @apply flex w-[1600px] justify-between my-5;
+  @apply flex w-[1600px] justify-between my-3;
 }
