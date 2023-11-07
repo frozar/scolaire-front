@@ -1,0 +1,3 @@
+.calendar-checkbox-actions {
+  @apply flex items-center gap-5;
+}

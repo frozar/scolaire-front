@@ -2,6 +2,7 @@ import { CalendarType } from "../../../../_entities/calendar.entity";
 import { CalendarService } from "../../../../_services/calendar.service";
 import Button from "../../../../component/atom/Button";
 import { CalendarSectionTitle } from "../atom/CalendarSectionTitle";
+import { CalendarDaysCheckbox } from "../molecule/CalendarDaysCheckbox";
 import {
   CalendarActionsEnum,
   toggleAddedDate,
@@ -11,7 +12,6 @@ import {
 import "./CalendarEdtion.css";
 import { CalendarHeader } from "./CalendarHeader";
 import { CalendarLineAction } from "./CalendarLineAction";
-import { CalendarLineContent } from "./CalendarLineContent";
 
 interface CalendarEditionProps {
   calendar: CalendarType;
@@ -41,9 +41,12 @@ export function CalendarEdition(props: CalendarEditionProps) {
       <div class="calendar-table">
         <CalendarHeader month={props.currentMonth} />
         <div class="calendar-cells">
-          <CalendarLineContent
-            month={props.currentMonth}
+          <CalendarLineAction
+            actionName="Calendrier en fonction des paramètrages"
+            action={CalendarActionsEnum.rules}
             calendar={props.calendar}
+            month={props.currentMonth}
+            onClickCell={() => console.log("rule cell")}
           />
         </div>
 
@@ -69,6 +72,11 @@ export function CalendarEdition(props: CalendarEditionProps) {
       </div>
 
       <div class="calendar-edition-footer-actions">
+        <div>
+          <CalendarSectionTitle title="Paramètrage calendrier" />
+          <CalendarDaysCheckbox calendar={props.calendar} />
+        </div>
+
         <Button
           onClick={updateCalendar}
           label="Mettre à jour"

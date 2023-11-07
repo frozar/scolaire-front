@@ -17,12 +17,18 @@ export function CalendarDayCell(props: CalendarDayCellProps) {
   };
 
   function isActiveCell() {
-    if (props.action == CalendarActionsEnum.add)
-      return CalendarUtils.isAnAddedDate(props.date, props.calendar);
-    else if (props.action == CalendarActionsEnum.remove)
-      return CalendarUtils.isADeletedDate(props.date, props.calendar);
-    else return CalendarUtils.isActiveDay(props.date, props.calendar);
+    switch (props.action) {
+      case CalendarActionsEnum.add:
+        return CalendarUtils.isAnAddedDate(props.date, props.calendar);
+      case CalendarActionsEnum.remove:
+        return CalendarUtils.isADeletedDate(props.date, props.calendar);
+      case CalendarActionsEnum.rules:
+        return CalendarUtils.isARulesDate(props.date, props.calendar);
+      default:
+        return CalendarUtils.isActiveDay(props.date, props.calendar);
+    }
   }
+
   return (
     <CellItem
       isActive={isActiveCell()}
