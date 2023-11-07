@@ -16,20 +16,34 @@ export const [calendars, setCalendars] = createSignal<CalendarType[]>([]);
 export const [currentCalendar, setCurrentCalendar] =
   createSignal<CalendarType>();
 
-export function appendAddedDateToCurrentCalendar(date: Date) {
+export function toggleAddedDate(date: Date) {
+  const indexof = currentCalendar()?.added.findIndex(
+    (item) => item == date.getTime()
+  );
+
   setCurrentCalendar((prev) => {
     if (prev == undefined) return prev;
     const data = { ...prev };
-    data.added.push(date.getTime());
+
+    if (indexof == -1) data.added.push(date.getTime());
+    else data.added = data.added.filter((item) => item != date.getTime());
+
     return data;
   });
 }
 
-export function removeAddedDateToCurrentCalendar(date: Date) {
+export function toggleDeletedDate(date: Date) {
+  const indexof = currentCalendar()?.deleted.findIndex(
+    (item) => item == date.getTime()
+  );
+
   setCurrentCalendar((prev) => {
     if (prev == undefined) return prev;
     const data = { ...prev };
-    data.added = data.added.filter((item) => item != date.getTime());
+
+    if (indexof == -1) data.deleted.push(date.getTime());
+    else data.deleted = data.deleted.filter((item) => item != date.getTime());
+
     return data;
   });
 }

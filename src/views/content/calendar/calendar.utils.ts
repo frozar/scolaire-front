@@ -149,8 +149,13 @@ export namespace CalendarUtils {
     return new Date(year, month - 1, day);
   }
 
-  export function isDateAddedDate(date: Date, calendar: CalendarType) {
+  export function isAnAddedDate(date: Date, calendar: CalendarType): boolean {
     if (calendar.added.includes(date.getTime())) return true;
+    return false;
+  }
+
+  export function isADeletedDate(date: Date, calendar: CalendarType): boolean {
+    if (calendar.deleted.includes(date.getTime())) return true;
     return false;
   }
 }

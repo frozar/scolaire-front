@@ -7,6 +7,7 @@ export function CalendarLineAction(props: {
   month: Date;
   calendar: CalendarType;
   onClickCell: (cellDate: Date) => void;
+  action?: "add" | "remove";
 }) {
   return (
     <div class="calendar-line-content">
@@ -16,7 +17,7 @@ export function CalendarLineAction(props: {
         calendar={{
           ...props.calendar,
         }}
-        action="add"
+        action={props.action}
         onClickAction={props.onClickCell}
       />
     </div>

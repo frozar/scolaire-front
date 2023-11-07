@@ -3,9 +3,8 @@ import { CalendarService } from "../../../../_services/calendar.service";
 import Button from "../../../../component/atom/Button";
 import { CalendarSectionTitle } from "../atom/CalendarSectionTitle";
 import {
-  appendAddedDateToCurrentCalendar,
-  currentCalendar,
-  removeAddedDateToCurrentCalendar,
+  toggleAddedDate,
+  toggleDeletedDate,
   updateCalendars,
 } from "../template/Calendar";
 import "./CalendarEdtion.css";
@@ -18,11 +17,13 @@ export function CalendarEdition(props: {
   currentMonth: Date;
 }) {
   function onClickCellAddDate(cellDate: Date) {
-    const indexOfDate = currentCalendar()?.added.findIndex(
-      (item) => item == cellDate.getTime()
-    );
-    if (indexOfDate == -1) appendAddedDateToCurrentCalendar(cellDate);
-    else removeAddedDateToCurrentCalendar(cellDate);
+    toggleAddedDate(cellDate);
+  }
+
+  function onClickCellDeletedDate(cellDate: Date) {
+    console.log("remove date:", cellDate);
+
+    toggleDeletedDate(cellDate);
   }
 
   async function updateCalendar() {
@@ -48,9 +49,20 @@ export function CalendarEdition(props: {
         <div class="calendar-cells">
           <CalendarLineAction
             actionName="Ajouté"
+            action="add"
             calendar={props.calendar}
             month={props.currentMonth}
             onClickCell={onClickCellAddDate}
+          />
+        </div>
+
+        <div class="calendar-cells">
+          <CalendarLineAction
+            actionName="Retiré"
+            action="remove"
+            calendar={props.calendar}
+            month={props.currentMonth}
+            onClickCell={onClickCellDeletedDate}
           />
         </div>
       </div>
