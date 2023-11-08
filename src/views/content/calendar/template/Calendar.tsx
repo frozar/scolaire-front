@@ -4,6 +4,11 @@ import {
   CalendarType,
 } from "../../../../_entities/calendar.entity";
 import { CalendarService } from "../../../../_services/calendar.service";
+import {
+  disableSpinningWheel,
+  displayedSpinningWheel,
+  enableSpinningWheel,
+} from "../../../../signaux";
 import { CalendarEdition } from "../organism/CalendarEdtion";
 import { CalendarTable } from "../organism/CalendarTable";
 import "./Calendar.css";
@@ -90,23 +95,29 @@ export function updateCalendars(calendar: CalendarType) {
 }
 
 export default function () {
+  enableSpinningWheel();
+
   onMount(async () => {
     const today = new Date();
     setCurrentMonth(new Date(today.getFullYear(), today.getMonth()));
     setCalendars(await CalendarService.getAll());
     setCurrentCalendar(calendars()[0]);
+    disableSpinningWheel();
   });
 
   return (
     <section class="page-layout">
       <p class="page-title">Gestion des calendriers</p>
-      <CalendarTable currentMonth={currentMonth()} calendars={calendars()} />
 
-      <Show when={currentCalendar() != undefined}>
-        <CalendarEdition
-          calendar={currentCalendar() as CalendarType}
-          currentMonth={currentMonth()}
-        />
+      <Show when={!displayedSpinningWheel()}>
+        <CalendarTable currentMonth={currentMonth()} calendars={calendars()} />
+
+        <Show when={currentCalendar() != undefined}>
+          <CalendarEdition
+            calendar={currentCalendar() as CalendarType}
+            currentMonth={currentMonth()}
+          />
+        </Show>
       </Show>
     </section>
   );
