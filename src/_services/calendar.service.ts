@@ -18,7 +18,18 @@ export namespace CalendarService {
   export async function updateCalendar(
     calendar: CalendarType
   ): Promise<CalendarType> {
-    const dbCalendar: CalendarDBType = await ServiceUtils.patch("/calendar", {
+    const dbCalendar: CalendarDBType = await ServiceUtils.patch(
+      "/calendar/" + calendar.id,
+      { calendar: CalendarEntity.format(calendar) }
+    );
+
+    return CalendarEntity.build(dbCalendar);
+  }
+
+  export async function createCalendar(
+    calendar: Omit<CalendarType, "id">
+  ): Promise<CalendarType> {
+    const dbCalendar: CalendarDBType = await ServiceUtils.post("/calendar", {
       calendar: CalendarEntity.format(calendar),
     });
 

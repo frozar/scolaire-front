@@ -1,0 +1,4 @@
+.calendar-input-name {
+  @apply w-full focus:outline-none focus:border-none;
+  font-size: 9px;
+}

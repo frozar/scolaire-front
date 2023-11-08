@@ -1,0 +1,3 @@
+.calendar-add-input-container {
+  @apply flex items-center w-[100px];
+}
