@@ -2,17 +2,20 @@ import { Setter, Show, createEffect } from "solid-js";
 
 import { TripPointType, TripType } from "../../../../../_entities/trip.entity";
 import { NatureEnum } from "../../../../../type";
+import { GradeUtils } from "../../../../../utils/grade.utils";
 import { TripTimelineRemovePointButton } from "./TripTimelineRemovePointButton";
 
 export function TripTimelineItem(props: {
   trip: TripType;
   setTrip?: Setter<TripType>;
-  point: TripPointType;
+  tripPoint: TripPointType;
   indice: number;
 }) {
   const pointColor =
     // eslint-disable-next-line solid/reactivity
-    props.point.nature == NatureEnum.stop ? " !bg-dark-teal" : " !bg-red-base";
+    props.tripPoint.nature == NatureEnum.stop
+      ? " !bg-dark-teal"
+      : " !bg-red-base";
 
   createEffect(() => {
     setDividerColor(props.trip.color);
@@ -24,20 +27,20 @@ export function TripTimelineItem(props: {
         <div class="d-flex">
           <div class="first-items">
             <div class="me-4">
-              {props.point.nature === NatureEnum.stop
+              {props.tripPoint.nature === NatureEnum.stop
                 ? "+ " +
-                  props.point.grades
+                  props.tripPoint.grades
                     .map((grade) => grade.quantity)
                     .reduce((a, b) => a + b, 0)
                 : " " +
                   SumQuantity(props.trip.tripPoints, props.indice - 1) * -1}
             </div>
-            <p class="resource-name">{props.point.name}</p>
+            <p class="resource-name">{props.tripPoint.name}</p>
           </div>
           <div class="ms-4">
-            {props.point.nature === NatureEnum.stop
-              ? " + " + SumQuantity(props.trip.tripPoints, props.indice)
-              : " " + SumQuantity(props.trip.tripPoints, props.indice) * -1}
+            {props.tripPoint.nature === NatureEnum.stop
+              ? SumQuantity(props.trip.tripPoints, props.indice)
+              : SumQuantity(props.trip.tripPoints, props.indice)}
           </div>
         </div>
       </div>
@@ -83,13 +86,36 @@ function setDividerColor(color: string) {
   }
 }
 
+// TODO: Simplify
 function SumQuantity(tripPoints: TripPointType[], indice: number) {
   let sum = 0;
+  let grades: { gradeId: number; schoolId: number; quantity: number }[] = [];
   for (let i = 0; i < indice + 1; i++) {
-    if (tripPoints[i].nature == NatureEnum.stop) {
-      sum += tripPoints[i].grades
-        .map((grade) => grade.quantity)
-        .reduce((a, b) => a + b, 0);
+    const actualGrades = tripPoints[i].grades.map((grade) => {
+      return {
+        gradeId: grade.gradeId,
+        schoolId: GradeUtils.getSchoolId(grade.gradeId),
+        quantity: grade.quantity,
+      };
+    });
+    grades.push(...actualGrades);
+
+    switch (tripPoints[i].nature) {
+      case NatureEnum.stop:
+        actualGrades.forEach((grade) => (sum += grade.quantity));
+        break;
+      case NatureEnum.school:
+        let quantityToSubstract = 0;
+        grades.forEach((grade) => {
+          if (GradeUtils.getSchoolId(grade.gradeId) == tripPoints[i].id) {
+            quantityToSubstract += grade.quantity;
+          }
+        });
+        grades = grades.filter(
+          (grade) => GradeUtils.getSchoolId(grade.gradeId) != tripPoints[i].id
+        );
+        sum -= quantityToSubstract;
+        break;
     }
   }
   return sum;
