@@ -67,7 +67,7 @@ export namespace WaypointEntity {
     });
   }
 
-  // TODO: Move
+  // TODO revoir si doit être placé ici
   export function updateWaypoints(
     point: StopType | SchoolType,
     waypoints: WaypointType[],

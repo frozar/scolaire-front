@@ -9,7 +9,7 @@ describe("Checkbox component", () => {
     cy.mount(() => (
       <div id="map-container" style={{ width: "100%", height: "500px" }}>
         <SchoolPoint
-          point={createPoint({
+          school={createPoint({
             id: 1,
             leafletId: 1,
             lat: -20.9466588303741,
@@ -29,7 +29,7 @@ describe("Checkbox component", () => {
     cy.mount(() => (
       <div id="map-container" style={{ width: "100%", height: "500px" }}>
         <SchoolPoint
-          point={createPoint(
+          school={createPoint(
             {
               id: 1,
               leafletId: 1,

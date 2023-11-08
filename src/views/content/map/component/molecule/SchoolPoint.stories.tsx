@@ -26,7 +26,7 @@ export const PointEtablissement: Story = {
 
     return (
       <SchoolPoint
-        point={createPoint({
+        school={createPoint({
           id: 1,
           leafletId: 1,
           lat: -20.9466588303741,

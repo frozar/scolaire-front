@@ -55,7 +55,7 @@ export function createSchoolPoint(
 
   return (
     <SchoolPoint
-      point={point}
+      school={point}
       map={initialiseMap(pointmap.fullId, pointmap.withTiles)}
     />
   );
