@@ -15,10 +15,7 @@ export function CalendarTable(props: {
       <CalendarSectionTitle title="Liste des calendrier" />
       <CalendarHeader month={props.currentMonth} />
       <CalendarContent month={props.currentMonth} calendars={props.calendars} />
-      <div class="calendar-cells">
-        <CalendarAddLine month={props.currentMonth} />
-      </div>
-      {/* CalendarAdd */}
+      <CalendarAddLine month={props.currentMonth} />
     </div>
   );
 }

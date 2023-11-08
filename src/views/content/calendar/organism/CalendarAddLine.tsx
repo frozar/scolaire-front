@@ -64,22 +64,24 @@ export function CalendarAddLine(props: CalendarAddLineProps) {
   }
 
   return (
-    <div class="calendar-line-content">
-      <div class="calendar-add-input-container">
-        <CalendarInputText
-          placeholder="Ajouté une ligne"
-          onKeyPress={onKeyPress}
-          onInput={onInput}
-          ref={setInputRef}
+    <div class="calendar-cells">
+      <div class="calendar-line-content">
+        <div class="calendar-add-input-container">
+          <CalendarInputText
+            placeholder="Ajouté une ligne"
+            onKeyPress={onKeyPress}
+            onInput={onInput}
+            ref={setInputRef}
+          />
+          <ButtonIcon icon={<PlusIcon size={12} />} onClick={createCalendar} />
+        </div>
+        <CalendarMonthsDetails
+          action={CalendarActionsEnum.add}
+          calendar={newCalendar}
+          month={props.month}
+          onClickAction={() => undefined}
         />
-        <ButtonIcon icon={<PlusIcon size={12} />} onClick={createCalendar} />
       </div>
-      <CalendarMonthsDetails
-        action={CalendarActionsEnum.add}
-        calendar={newCalendar}
-        month={props.month}
-        onClickAction={() => undefined}
-      />
     </div>
   );
 }
