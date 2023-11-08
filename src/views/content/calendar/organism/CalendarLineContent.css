@@ -1,3 +1,7 @@
 .calendar-line-content {
   @apply flex;
 }
+
+.calendar-line-content.active > .calendar-line-name {
+  @apply bg-green-light border border-[#00000069] border-r-0;
+}

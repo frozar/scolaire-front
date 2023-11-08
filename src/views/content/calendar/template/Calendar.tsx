@@ -101,7 +101,7 @@ export default function () {
     const today = new Date();
     setCurrentMonth(new Date(today.getFullYear(), today.getMonth()));
     setCalendars(await CalendarService.getAll());
-    setCurrentCalendar(calendars()[0]);
+    // setCurrentCalendar(calendars()[0]);
     disableSpinningWheel();
   });
 
