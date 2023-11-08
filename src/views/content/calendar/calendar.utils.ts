@@ -10,6 +10,27 @@ export namespace CalendarUtils {
     });
   }
 
+  export function dayToFrench(day: CalendarDayEnum): string {
+    switch (day) {
+      case CalendarDayEnum.monday:
+        return "Lundi";
+      case CalendarDayEnum.tuesday:
+        return "Mardi";
+      case CalendarDayEnum.wednesday:
+        return "Mercredi";
+      case CalendarDayEnum.thursday:
+        return "Jeudi";
+      case CalendarDayEnum.friday:
+        return "Vendredi";
+      case CalendarDayEnum.saturday:
+        return "Samedi";
+      case CalendarDayEnum.sunday:
+        return "Dimanche";
+      default:
+        return "";
+    }
+  }
+
   export function getDaysOfMonth(date: Date): Date[] {
     const days = [];
     const numberOfDay = new Date(
@@ -69,29 +90,12 @@ export namespace CalendarUtils {
     return isHoliday;
   }
 
-  export function isActiveDay(
-    date: Date,
-    calendar: CalendarType,
-    log = false
-  ): boolean {
+  export function isActiveDay(date: Date, calendar: CalendarType): boolean {
     const isDateInRule = calendar.rules.includes(
       CalendarUtils.getDayName(date, true) as CalendarDayEnum
     );
-    if (log) {
-      console.log("in added date:", calendar.added.includes(date.getTime()));
-      console.log("is holiday:", CalendarUtils.isHoliday(date));
-      console.log("is weekend:", CalendarUtils.isWeekend(date));
-      console.log("is date in rule:", isDateInRule);
-      console.log(
-        "is date deleted:",
-        calendar.deleted.includes(date.getTime())
-      );
-    }
 
     if (calendar.added.includes(date.getTime())) return true;
-    // TODO review holidays
-    // if (CalendarUtils.isHoliday(date)) return false;
-    if (CalendarUtils.isWeekend(date)) return false;
     if (!isDateInRule) return false;
     if (calendar.deleted.includes(date.getTime())) return false;
 
