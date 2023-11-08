@@ -39,8 +39,8 @@ export function TripTimelineItem(props: {
           </div>
           <div class="ms-4">
             {props.tripPoint.nature === NatureEnum.stop
-              ? " + " + SumQuantity(props.trip.tripPoints, props.indice)
-              : " " + SumQuantity(props.trip.tripPoints, props.indice) * -1}
+              ? SumQuantity(props.trip.tripPoints, props.indice)
+              : SumQuantity(props.trip.tripPoints, props.indice)}
           </div>
         </div>
       </div>
@@ -109,18 +109,18 @@ function SumQuantity(tripPoints: TripPointType[], indice: number) {
       // ! Rewrite
       interGrades.forEach((grade) => (sum += grade.quantity));
     } else if (tripPoints[i].nature == NatureEnum.school) {
-      if (i + 1 < indice + 1) {
-        console.log("in if");
-        let test = 0;
-        grades.forEach((grade) => {
-          // ! Fix no entry here
-          if (GradeUtils.getSchoolId(grade.gradeId) == tripPoints[i].id) {
-            test += grade.quantity;
-          }
-        });
-        console.log("valeur soustraite =>", test);
-        sum -= test;
-      }
+      // if (i + 1 < indice + 1) {
+      console.log("in if");
+      let test = 0;
+      grades.forEach((grade) => {
+        // ! Fix no entry here
+        if (GradeUtils.getSchoolId(grade.gradeId) == tripPoints[i].id) {
+          test += grade.quantity;
+        }
+      });
+      console.log("valeur soustraite =>", test);
+      sum -= test;
+      // }
     }
   }
   return sum;
