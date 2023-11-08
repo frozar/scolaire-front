@@ -1,7 +1,6 @@
 import L from "leaflet";
 import { createEffect } from "solid-js";
 import { SchoolType } from "../../../../../_entities/school.entity";
-import { StopType } from "../../../../../_entities/stop.entity";
 import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
 import { updatePointColor } from "../../../../../leafletUtils";
 import { CurrentDrawTripUtils } from "../../../../../utils/currentDrawTrip.utils";
@@ -35,6 +34,7 @@ import {
 import { draggingTrip, setDraggingTrip } from "./Trip";
 
 export interface SchoolPointProps {
+  // ! Rename point => school
   point: SchoolType;
   map: L.Map;
 }
@@ -80,32 +80,33 @@ const onClick = (point: SchoolType) => {
           return;
 
         case DrawTripStep.editTrip:
-          const lastPoint = currentDrawTrip().tripPoints.at(-1);
+          updateTripAndWaypoints(point);
+          // const lastPoint = currentDrawTrip().tripPoints.at(-1);
 
-          // TODO  add quantity pour school ?!
-          CurrentDrawTripUtils.addPointToTrip({
-            id: point.id,
-            leafletId: point.leafletId,
-            name: point.name,
-            lon: point.lon,
-            lat: point.lat,
-            quantity: 0, // TODO: Delete when unused
-            nature: point.nature,
-            grades: [],
-          });
+          // // TODO  add quantity pour school ?!
+          // CurrentDrawTripUtils.addPointToTrip({
+          //   id: point.id,
+          //   leafletId: point.leafletId,
+          //   name: point.name,
+          //   lon: point.lon,
+          //   lat: point.lat,
+          //   quantity: 0, // TODO: Delete when unused
+          //   nature: point.nature,
+          //   grades: [],
+          // });
 
-          if (!lastPoint || point.leafletId != lastPoint.leafletId) {
-            const waypoints = currentDrawTrip().waypoints;
-            if (waypoints) {
-              const newWaypoints = WaypointEntity.updateWaypoints(
-                point,
-                waypoints,
-                currentDrawTrip().tripPoints
-              );
+          // if (!lastPoint || point.leafletId != lastPoint.leafletId) {
+          //   const waypoints = currentDrawTrip().waypoints;
+          //   if (waypoints) {
+          //     const newWaypoints = WaypointEntity.updateWaypoints(
+          //       point,
+          //       waypoints,
+          //       currentDrawTrip().tripPoints
+          //     );
 
-              CurrentDrawTripUtils.updateWaypoints(newWaypoints);
-            }
-          }
+          //     CurrentDrawTripUtils.updateWaypoints(newWaypoints);
+          //   }
+          // }
           break;
       }
       break;
@@ -120,19 +121,49 @@ const onClick = (point: SchoolType) => {
   }
 };
 
-const onMouseUp = (point: StopType) => {
-  if (draggingTrip()) {
-    const associatedQuantity = point.associated.filter(
-      (associatedSchool) =>
-        associatedSchool.schoolId === currentDrawTrip().schools[0].id
-    )[0].quantity;
+// TODO: Rename and move ?
+function updateTripAndWaypoints(school: SchoolType) {
+  const lastPoint = currentDrawTrip().tripPoints.at(-1);
 
-    // TODO  add quantity pour school ?!
-    // TODO: Fix or delete this handler if school must always be at the end of a trip
-    CurrentDrawTripUtils.addPointToTrip({
-      ...point,
-      quantity: associatedQuantity,
-    });
+  // TODO add quantity pour school ?!
+  CurrentDrawTripUtils.addPointToTrip({
+    id: school.id,
+    leafletId: school.leafletId,
+    name: school.name,
+    lon: school.lon,
+    lat: school.lat,
+    quantity: 0, // TODO: Delete when unused
+    nature: school.nature,
+    grades: [],
+  });
+
+  if (!lastPoint || school.leafletId != lastPoint.leafletId) {
+    const waypoints = currentDrawTrip().waypoints;
+    if (waypoints) {
+      const newWaypoints = WaypointEntity.updateWaypoints(
+        school,
+        waypoints,
+        currentDrawTrip().tripPoints
+      );
+
+      CurrentDrawTripUtils.updateWaypoints(newWaypoints);
+    }
+  }
+}
+const onMouseUp = (school: SchoolType) => {
+  if (draggingTrip()) {
+    updateTripAndWaypoints(school);
+    // const associatedQuantity = point.associated.filter(
+    //   (associatedSchool) =>
+    //     associatedSchool.schoolId === currentDrawTrip().schools[0].id
+    // )[0].quantity;
+
+    // // TODO  add quantity pour school ?!
+    // // TODO: Fix this handler
+    // CurrentDrawTripUtils.addPointToTrip({
+    //   ...point,
+    //   quantity: associatedQuantity,
+    // });
     setDraggingTrip(false);
   }
 };
