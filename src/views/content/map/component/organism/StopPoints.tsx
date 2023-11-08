@@ -157,7 +157,7 @@ export function leafletStopsFilter(): StopType[] {
             ? getSelectedLine()
                 ?.stops.map((stop) => stop.id)
                 .includes(stop.id)
-            : true // TODO: Verify if getSelectedLine() is always true in this condition
+            : true // TODO: Verify if getSelectedLine() is always true
       );
 
       // TODO: Filter stops containing grades previously selected for the trip
