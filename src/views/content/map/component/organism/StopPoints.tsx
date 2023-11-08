@@ -2,6 +2,7 @@ import L from "leaflet";
 import { For, createEffect, createSignal } from "solid-js";
 import { AssociatedSchoolType } from "../../../../../_entities/_utils.entity";
 import { StopType } from "../../../../../_entities/stop.entity";
+import { StopUtils } from "../../../../../utils/stop.utils";
 import {
   AddLineStep,
   addLineCurrentStep,
@@ -148,12 +149,21 @@ export function leafletStopsFilter(): StopType[] {
     case "trip-draw":
       schools = currentDrawTrip().schools;
 
-      stops = getStops().filter((stop) =>
-        getSelectedLine()
-          ? getSelectedLine()
-              ?.stops.map((stop) => stop.id)
-              .includes(stop.id)
-          : true
+      // Filter stops that is in selectedLine
+      stops = getStops().filter(
+        (stop) =>
+          getSelectedLine()
+            ? getSelectedLine()
+                ?.stops.map((stop) => stop.id)
+                .includes(stop.id)
+            : true // TODO: Verify if getSelectedLine() is always true in this condition
+      );
+
+      // TODO: Filter stops containing grades previously selected for the trip
+
+      // Filter stops with remaining qty > 0
+      stops = stops.filter(
+        (stop) => StopUtils.getRemainingQuantity(stop.id) > 0
       );
       switch (currentStep()) {
         case DrawTripStep.schoolSelection:
