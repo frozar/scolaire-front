@@ -35,7 +35,7 @@ export function SchoolPoints(props: SchoolPointsProps) {
   return (
     <For each={schoolsFilter()}>
       {(point) => {
-        return <SchoolPoint point={point} map={props.leafletMap} />;
+        return <SchoolPoint school={point} map={props.leafletMap} />;
       }}
     </For>
   );

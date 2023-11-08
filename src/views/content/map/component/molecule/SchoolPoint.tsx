@@ -1,7 +1,6 @@
 import L from "leaflet";
 import { createEffect } from "solid-js";
 import { SchoolType } from "../../../../../_entities/school.entity";
-import { StopType } from "../../../../../_entities/stop.entity";
 import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
 import { updatePointColor } from "../../../../../leafletUtils";
 import { CurrentDrawTripUtils } from "../../../../../utils/currentDrawTrip.utils";
@@ -35,7 +34,7 @@ import {
 import { draggingTrip, setDraggingTrip } from "./Trip";
 
 export interface SchoolPointProps {
-  point: SchoolType;
+  school: SchoolType;
   map: L.Map;
 }
 
@@ -80,32 +79,7 @@ const onClick = (point: SchoolType) => {
           return;
 
         case DrawTripStep.editTrip:
-          const lastPoint = currentDrawTrip().tripPoints.at(-1);
-
-          // TODO  add quantity pour school ?!
-          CurrentDrawTripUtils.addPointToTrip({
-            id: point.id,
-            leafletId: point.leafletId,
-            name: point.name,
-            lon: point.lon,
-            lat: point.lat,
-            quantity: 0, // TODO: Delete when unused
-            nature: point.nature,
-            grades: [],
-          });
-
-          if (!lastPoint || point.leafletId != lastPoint.leafletId) {
-            const waypoints = currentDrawTrip().waypoints;
-            if (waypoints) {
-              const newWaypoints = WaypointEntity.updateWaypoints(
-                point,
-                waypoints,
-                currentDrawTrip().tripPoints
-              );
-
-              CurrentDrawTripUtils.updateWaypoints(newWaypoints);
-            }
-          }
+          updateTripAndWaypoints(point);
           break;
       }
       break;
@@ -120,19 +94,38 @@ const onClick = (point: SchoolType) => {
   }
 };
 
-const onMouseUp = (point: StopType) => {
-  if (draggingTrip()) {
-    const associatedQuantity = point.associated.filter(
-      (associatedSchool) =>
-        associatedSchool.schoolId === currentDrawTrip().schools[0].id
-    )[0].quantity;
+// TODO: Rename and move ?
+function updateTripAndWaypoints(school: SchoolType) {
+  const lastPoint = currentDrawTrip().tripPoints.at(-1);
 
-    // TODO  add quantity pour school ?!
-    // TODO: Fix or delete this handler if school must always be at the end of a trip
-    CurrentDrawTripUtils.addPointToTrip({
-      ...point,
-      quantity: associatedQuantity,
-    });
+  // TODO add quantity pour school ?!
+  CurrentDrawTripUtils.addPointToTrip({
+    id: school.id,
+    leafletId: school.leafletId,
+    name: school.name,
+    lon: school.lon,
+    lat: school.lat,
+    quantity: 0, // TODO: Delete when unused
+    nature: school.nature,
+    grades: [],
+  });
+
+  if (!lastPoint || school.leafletId != lastPoint.leafletId) {
+    const waypoints = currentDrawTrip().waypoints;
+    if (waypoints) {
+      const newWaypoints = WaypointEntity.updateWaypoints(
+        school,
+        waypoints,
+        currentDrawTrip().tripPoints
+      );
+
+      CurrentDrawTripUtils.updateWaypoints(newWaypoints);
+    }
+  }
+}
+const onMouseUp = (school: SchoolType) => {
+  if (draggingTrip()) {
+    updateTripAndWaypoints(school);
     setDraggingTrip(false);
   }
 };
@@ -186,9 +179,9 @@ export function SchoolPoint(props: SchoolPointProps) {
 
     if (addLineCurrentStep() === AddLineStep.schoolSelection) {
       const stopFiltering = addLineSelectedSchool().filter(
-        (school) => school.id == props.point.id
+        (school) => school.id == props.school.id
       );
-      const circle = linkMap.get(props.point.leafletId);
+      const circle = linkMap.get(props.school.leafletId);
       if (stopFiltering.length > 0) {
         circle?.setStyle({ fillColor: COLOR_SCHOOL_FOCUS });
       } else {
@@ -199,18 +192,18 @@ export function SchoolPoint(props: SchoolPointProps) {
 
   return (
     <Point
-      point={props.point}
+      point={props.school}
       map={props.map}
-      isBlinking={blinkingSchools().includes(props.point.id)}
+      isBlinking={blinkingSchools().includes(props.school.id)}
       borderColor={COLOR_SCHOOL_FOCUS}
       fillColor={COLOR_SCHOOL_FOCUS}
       radius={12}
       weight={0}
-      onClick={() => onClick(props.point)}
-      onMouseOver={() => onMouseOver(props.point)}
+      onClick={() => onClick(props.school)}
+      onMouseOver={() => onMouseOver(props.school)}
       onMouseOut={() => onMouseOut()}
-      onMouseUp={() => onMouseUp(props.point)}
-      onRightClick={() => onRightClick(props.point)}
+      onMouseUp={() => onMouseUp(props.school)}
+      onRightClick={() => onRightClick(props.school)}
     />
   );
 }
