@@ -7,12 +7,14 @@ import { TripTimelineRemovePointButton } from "./TripTimelineRemovePointButton";
 export function TripTimelineItem(props: {
   trip: TripType;
   setTrip?: Setter<TripType>;
-  point: TripPointType;
+  tripPoint: TripPointType;
   indice: number;
 }) {
   const pointColor =
     // eslint-disable-next-line solid/reactivity
-    props.point.nature == NatureEnum.stop ? " !bg-dark-teal" : " !bg-red-base";
+    props.tripPoint.nature == NatureEnum.stop
+      ? " !bg-dark-teal"
+      : " !bg-red-base";
 
   createEffect(() => {
     setDividerColor(props.trip.color);
@@ -24,18 +26,18 @@ export function TripTimelineItem(props: {
         <div class="d-flex">
           <div class="first-items">
             <div class="me-4">
-              {props.point.nature === NatureEnum.stop
+              {props.tripPoint.nature === NatureEnum.stop
                 ? "+ " +
-                  props.point.grades
+                  props.tripPoint.grades
                     .map((grade) => grade.quantity)
                     .reduce((a, b) => a + b, 0)
                 : " " +
                   SumQuantity(props.trip.tripPoints, props.indice - 1) * -1}
             </div>
-            <p class="resource-name">{props.point.name}</p>
+            <p class="resource-name">{props.tripPoint.name}</p>
           </div>
           <div class="ms-4">
-            {props.point.nature === NatureEnum.stop
+            {props.tripPoint.nature === NatureEnum.stop
               ? " + " + SumQuantity(props.trip.tripPoints, props.indice)
               : " " + SumQuantity(props.trip.tripPoints, props.indice) * -1}
           </div>
@@ -83,6 +85,7 @@ function setDividerColor(color: string) {
   }
 }
 
+// TODO: Adapt to drop quantity depending on grade school destination
 function SumQuantity(tripPoints: TripPointType[], indice: number) {
   let sum = 0;
   for (let i = 0; i < indice + 1; i++) {
@@ -90,6 +93,12 @@ function SumQuantity(tripPoints: TripPointType[], indice: number) {
       sum += tripPoints[i].grades
         .map((grade) => grade.quantity)
         .reduce((a, b) => a + b, 0);
+    } else if (tripPoints[i].nature == NatureEnum.school) {
+      if (!(i + 1 < indice + 1)) {
+        return sum;
+      } else {
+        sum = 0;
+      }
     }
   }
   return sum;

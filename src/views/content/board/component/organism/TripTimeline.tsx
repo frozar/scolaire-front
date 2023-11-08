@@ -23,7 +23,7 @@ export function TripTimeline(props: {
               </Show>
 
               <TripTimelineItem
-                point={point}
+                tripPoint={point}
                 indice={i()}
                 trip={props.trip}
                 setTrip={props.setTrip}
