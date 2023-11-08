@@ -86,41 +86,36 @@ function setDividerColor(color: string) {
   }
 }
 
-// TODO: Adapt to drop quantity depending on grade school destination
-// ! Vérifier pour chaque grade, l'école de destination !
+// TODO: Simplify
 function SumQuantity(tripPoints: TripPointType[], indice: number) {
-  console.log("--------------");
-  console.log("tripOint", tripPoints);
   let sum = 0;
-  const grades: { gradeId: number; schoolId: number; quantity: number }[] = [];
-  // ! Change to use lodash ?
-  // const schoolSum: { [schoolId: number]: number } = {};
+  let grades: { gradeId: number; schoolId: number; quantity: number }[] = [];
   for (let i = 0; i < indice + 1; i++) {
-    const interGrades = tripPoints[i].grades.map((grade) => {
+    const actualGrades = tripPoints[i].grades.map((grade) => {
       return {
         gradeId: grade.gradeId,
         schoolId: GradeUtils.getSchoolId(grade.gradeId),
         quantity: grade.quantity,
       };
     });
-    grades.push(...interGrades);
-    console.log("grades", grades);
-    if (tripPoints[i].nature == NatureEnum.stop) {
-      // ! Rewrite
-      interGrades.forEach((grade) => (sum += grade.quantity));
-    } else if (tripPoints[i].nature == NatureEnum.school) {
-      // if (i + 1 < indice + 1) {
-      console.log("in if");
-      let test = 0;
-      grades.forEach((grade) => {
-        // ! Fix no entry here
-        if (GradeUtils.getSchoolId(grade.gradeId) == tripPoints[i].id) {
-          test += grade.quantity;
-        }
-      });
-      console.log("valeur soustraite =>", test);
-      sum -= test;
-      // }
+    grades.push(...actualGrades);
+
+    switch (tripPoints[i].nature) {
+      case NatureEnum.stop:
+        actualGrades.forEach((grade) => (sum += grade.quantity));
+        break;
+      case NatureEnum.school:
+        let quantityToSubstract = 0;
+        grades.forEach((grade) => {
+          if (GradeUtils.getSchoolId(grade.gradeId) == tripPoints[i].id) {
+            quantityToSubstract += grade.quantity;
+          }
+        });
+        grades = grades.filter(
+          (grade) => GradeUtils.getSchoolId(grade.gradeId) != tripPoints[i].id
+        );
+        sum -= quantityToSubstract;
+        break;
     }
   }
   return sum;
