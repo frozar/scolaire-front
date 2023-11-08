@@ -7,22 +7,14 @@ export namespace GradeUtils {
       .flatMap((school) => school.grades)
       .filter((grade) => grade.id == gradeId)[0];
   }
-  // ! Useless ?
+
   export function getName(gradeId: number): string {
-    // return getSchools()
-    //   .flatMap((school) => school.grades)
-    //   .filter((grade) => grade.id == gradeId)[0].name;
     return getGrade(gradeId).name;
   }
-  //! useles ?
+
   export function getSchoolId(gradeId: number): number {
-    // const test =  getSchools()
-    //   .flatMap((school) => school.grades)
-    //   .filter((grade) => grade.id == gradeId)[0];
     return getSchools().filter((school) =>
       school.grades.some((grade) => grade.id == gradeId)
     )[0].id;
-    // ! schoolId est manquant (undefined)
-    // return getGrade(gradeId).schoolId as number;
   }
 }
