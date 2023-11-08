@@ -25,6 +25,13 @@ export const [calendars, setCalendars] = createSignal<CalendarType[]>([]);
 export const [currentCalendar, setCurrentCalendar] =
   createSignal<CalendarType>();
 
+export function pushCalendar(calendar: CalendarType) {
+  setCalendars((prev) => {
+    if (prev == undefined) return prev;
+    prev = [...prev, calendar];
+    return prev;
+  });
+}
 export function toggleAddedDate(date: Date) {
   const indexof = currentCalendar()?.added.findIndex(
     (item) => item == date.getTime()

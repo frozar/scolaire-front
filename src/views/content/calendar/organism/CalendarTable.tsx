@@ -3,6 +3,7 @@ import { CalendarHeader } from "./CalendarHeader";
 
 import { CalendarType } from "../../../../_entities/calendar.entity";
 import { CalendarSectionTitle } from "../atom/CalendarSectionTitle";
+import { CalendarAddLine } from "./CalendarAddLine";
 import "./CalendarTable.css";
 
 export function CalendarTable(props: {
@@ -14,7 +15,7 @@ export function CalendarTable(props: {
       <CalendarSectionTitle title="Liste des calendrier" />
       <CalendarHeader month={props.currentMonth} />
       <CalendarContent month={props.currentMonth} calendars={props.calendars} />
-      {/* CalendarAdd */}
+      <CalendarAddLine month={props.currentMonth} />
     </div>
   );
 }

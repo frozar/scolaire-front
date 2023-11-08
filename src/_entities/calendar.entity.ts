@@ -11,9 +11,10 @@ export namespace CalendarEntity {
     };
   }
 
-  export function format(calendar: CalendarType): CalendarDBType {
+  export function format(
+    calendar: Omit<CalendarType, "id">
+  ): Omit<CalendarDBType, "id"> {
     return {
-      id: calendar.id,
       name: calendar.name,
       rules: calendar.rules,
       date_added: CalendarUtils.dateTimeListToStringList(calendar.added),
