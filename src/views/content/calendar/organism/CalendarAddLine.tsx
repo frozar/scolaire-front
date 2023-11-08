@@ -42,6 +42,7 @@ export function CalendarAddLine(props: CalendarAddLineProps) {
         displayed: true,
         level: MessageLevelEnum.info,
         type: MessageTypeEnum.global,
+        // eslint-disable-next-line quotes
         content: 'Le champs "nom du calendrier" est requis.',
       });
       return;
@@ -68,7 +69,7 @@ export function CalendarAddLine(props: CalendarAddLineProps) {
       <div class="calendar-line-content">
         <div class="calendar-add-input-container">
           <CalendarInputText
-            placeholder="Ajouté une ligne"
+            placeholder="Ajouter une ligne"
             onKeyPress={onKeyPress}
             onInput={onInput}
             ref={setInputRef}
