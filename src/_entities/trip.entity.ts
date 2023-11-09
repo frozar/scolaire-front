@@ -158,7 +158,6 @@ export type TripPointType = {
   name: string;
   lon: number;
   lat: number;
-  //quantity: number; // TODO: Delete when unused
   nature: NatureEnum;
   grades: GradeTripType[];
 };
@@ -177,7 +176,6 @@ export type TripDBType = {
 export type TripPointDBType = {
   stop_id: number;
   school_id: number;
-  // quantity: number; // TODO: Delete when unsed
   grades: GradeTripDBType[];
 };
 
@@ -196,7 +194,6 @@ function formatTripPointDBType(points: TripPointType[]): TripPointDBType[] {
     return {
       stop_id: point.nature == NatureEnum.stop ? point.id : 0,
       school_id: point.nature == NatureEnum.school ? point.id : 0,
-      // quantity: point.quantity,
       grades: point.grades.map((grade) => {
         return { grade_id: grade.gradeId, quantity: grade.quantity };
       }),
@@ -222,7 +219,6 @@ function formatTripPointType(points: TripPointDBType[]): TripPointType[] {
           lon: associatedPoint.lon,
           lat: associatedPoint.lat,
           nature: associatedPoint.nature,
-          // quantity: dbPoint.quantity,
           grades: dbPoint.grades.map((grade) => {
             return { gradeId: grade.grade_id, quantity: grade.quantity };
           }),

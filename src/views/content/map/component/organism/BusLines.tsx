@@ -17,10 +17,6 @@ export function BusLines(props: { busLines: LineType[] }) {
     }
   });
 
-  // createEffect(() => {
-  //   console.log(getLines().flatMap((line) => line.trips));
-  // });
-
   // eslint-disable-next-line solid/reactivity
   createEffect(async () => {
     setDisplayedTrips();
