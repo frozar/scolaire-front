@@ -11,6 +11,19 @@ export namespace CalendarEntity {
     };
   }
 
+  export function buildCalendarPeriod(
+    dbCalendarPeriod: CalendarPeriodDBType
+  ): CalendarPeriodType {
+    return {
+      id: dbCalendarPeriod.id,
+      name: dbCalendarPeriod.name,
+      endDate: dbCalendarPeriod.end_date,
+      startDate: dbCalendarPeriod.start_date,
+      publicHolidays: dbCalendarPeriod.public_holidays,
+      vacationsPeriod: dbCalendarPeriod.vacations_period,
+    };
+  }
+
   export function format(
     calendar: Omit<CalendarType, "id">
   ): Omit<CalendarDBType, "id"> {
@@ -47,4 +60,35 @@ export type CalendarDBType = {
   rules: CalendarDayEnum[];
   date_added: string[];
   date_deleted: string[];
+};
+
+// ! --------------------- PERIOD CALENDAR ---------------------
+
+export type PublicHolidayType = {
+  name: string;
+  date: Date;
+};
+
+export type VacationPeriodType = {
+  name: string;
+  start: Date;
+  end: Date;
+};
+
+export type CalendarPeriodType = {
+  id: number;
+  name: string;
+  startDate: Date;
+  endDate: Date;
+  vacationsPeriod: VacationPeriodType[];
+  publicHolidays: PublicHolidayType[];
+};
+
+export type CalendarPeriodDBType = {
+  id: number;
+  name: string;
+  start_date: Date;
+  end_date: Date;
+  vacations_period: VacationPeriodType[];
+  public_holidays: PublicHolidayType[];
 };
