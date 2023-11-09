@@ -83,7 +83,7 @@ function updateTripAndWaypoints(point: StopType) {
     name: point.name,
     lon: point.lon,
     lat: point.lat,
-    quantity: 1, // TODO: Delete when unused
+    // quantity: 1, // TODO: Delete when unused
     nature: point.nature,
     grades: QuantityUtils.updateGradeTripQuantity(grades, point),
   });

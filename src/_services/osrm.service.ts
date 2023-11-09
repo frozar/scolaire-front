@@ -117,17 +117,22 @@ function getMetrics(
   return { distance, duration, deviation, kmPassager, txRemplissMoy };
 }
 
+// TODO: Fix using correct quantity (tripPoint.grades[].quantity)
 function getKmPassagers(
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   response: osrmResponseType,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   points: TripPointType[],
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   distance: number
 ) {
-  let kmPassager = 0;
-  let distance_restante = distance;
-  response.routes[0].legs.map((elem, k) => {
-    kmPassager += (points.at(k)?.quantity ?? 0) * (distance_restante ?? 0);
-    distance_restante -= elem.distance;
-  });
-  kmPassager = kmPassager / 1000;
-  return kmPassager;
+  // let kmPassager = 0;
+  // let distance_restante = distance;
+  // response.routes[0].legs.map((elem, k) => {
+  //   kmPassager += (points.at(k)?.quantity ?? 0) * (distance_restante ?? 0);
+  //   distance_restante -= elem.distance;
+  // });
+  // kmPassager = kmPassager / 1000;
+  // return kmPassager;
+  return 1;
 }

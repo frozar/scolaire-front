@@ -62,7 +62,7 @@ describe("TripService", () => {
           name: "name",
           lon: 1,
           lat: 1,
-          quantity: 1,
+          // quantity: 1,
           nature: NatureEnum.stop,
         },
       ],

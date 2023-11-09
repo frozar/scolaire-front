@@ -105,7 +105,7 @@ function updateTripAndWaypoints(school: SchoolType) {
     name: school.name,
     lon: school.lon,
     lat: school.lat,
-    quantity: 0, // TODO: Delete when unused
+    // quantity: 0, // TODO: Delete when unused
     nature: school.nature,
     grades: [],
   });
