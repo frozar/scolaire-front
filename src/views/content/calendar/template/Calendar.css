@@ -2,6 +2,14 @@
   @apply pl-10 w-full bg-white pt-5;
 }
 
+.calendar-panels-action {
+  @apply flex gap-4;
+}
+
 .page-title {
   @apply text-2xl;
+}
+
+.page-title.active {
+  @apply text-green-base;
 }
