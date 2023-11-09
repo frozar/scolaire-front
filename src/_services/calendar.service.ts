@@ -1,6 +1,7 @@
 import {
   CalendarDBType,
   CalendarEntity,
+  CalendarPeriodDBType,
   CalendarType,
 } from "../_entities/calendar.entity";
 import { ServiceUtils } from "./_utils.service";
@@ -34,5 +35,15 @@ export namespace CalendarService {
     });
 
     return CalendarEntity.build(dbCalendar);
+  }
+
+  export async function getAllCalendarPeriod() {
+    const dbCalendarPeriod: CalendarPeriodDBType[] = await ServiceUtils.get(
+      "/calendar-periods"
+    );
+
+    return dbCalendarPeriod.map((calendar) =>
+      CalendarEntity.buildCalendarPeriod(calendar)
+    );
   }
 }

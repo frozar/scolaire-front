@@ -1,6 +1,7 @@
 import { Match, Show, Switch, createSignal, onMount } from "solid-js";
 import {
   CalendarDayEnum,
+  CalendarPeriodType,
   CalendarType,
 } from "../../../../_entities/calendar.entity";
 import { CalendarService } from "../../../../_services/calendar.service";
@@ -27,6 +28,10 @@ export enum CalendarActionsEnum {
   rules = "rules",
 }
 
+export const [calendarsPeriod, setCalendarsPeriod] = createSignal<
+  CalendarPeriodType[]
+>([]);
+
 export const [currentMonth, setCurrentMonth] = createSignal<Date>(new Date());
 export const [calendars, setCalendars] = createSignal<CalendarType[]>([]);
 export const [currentCalendar, setCurrentCalendar] =
@@ -39,6 +44,7 @@ export function pushCalendar(calendar: CalendarType) {
     return prev;
   });
 }
+
 export function toggleAddedDate(date: Date) {
   const indexof = currentCalendar()?.added.findIndex(
     (item) => item == date.getTime()
@@ -111,6 +117,8 @@ export default function () {
     const today = new Date();
     setCurrentMonth(new Date(today.getFullYear(), today.getMonth()));
     setCalendars(await CalendarService.getAll());
+    setCalendarsPeriod(await CalendarService.getAllCalendarPeriod());
+
     disableSpinningWheel();
   });
 
