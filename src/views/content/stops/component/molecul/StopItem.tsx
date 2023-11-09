@@ -17,7 +17,6 @@ interface StopItemProps {
 
 export default function (props: StopItemProps) {
   const schoolNames = () =>
-    // props.stop.associated.map((gradeToSchool) => gradeToSchool.schoolName);
     props.stop.associated.map((gradeToSchool) =>
       SchoolUtils.getName(gradeToSchool.schoolId)
     );

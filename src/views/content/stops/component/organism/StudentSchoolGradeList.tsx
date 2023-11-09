@@ -16,7 +16,6 @@ export default function (props: { stop: StopType }) {
       {(schoolId) => (
         <CollapsibleElement
           title={
-            // associatedSchools()[schoolId][0].schoolName +
             SchoolUtils.getName(Number(schoolId)) +
             " " +
             StopUtils.getRemainingQuantityPerSchool(
