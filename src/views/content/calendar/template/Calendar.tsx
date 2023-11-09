@@ -4,6 +4,7 @@ import {
   CalendarType,
 } from "../../../../_entities/calendar.entity";
 import { CalendarService } from "../../../../_services/calendar.service";
+import Button from "../../../../component/atom/Button";
 import {
   disableSpinningWheel,
   displayedSpinningWheel,
@@ -124,24 +125,21 @@ export default function () {
   return (
     <section class="page-layout">
       <div class="calendar-panels-action">
-        <button
+        <Button
+          label="Gestion des calendriers"
           onClick={switchCalendarPanel}
-          class="page-title"
-          classList={{
-            active: onCalendarPanel() == CalendarPanelEnum.calendarManager,
-          }}
-        >
-          Gestion des calendriers
-        </button>
-        <button
+          active={onCalendarPanel() == CalendarPanelEnum.calendarManager}
+          variant="borderless"
+          size="3xl"
+        />
+
+        <Button
+          label="Calendrier scolaire"
           onClick={switchCalendarPanel}
-          class="page-title"
-          classList={{
-            active: onCalendarPanel() == CalendarPanelEnum.schoolCalendar,
-          }}
-        >
-          Calendrier scolaire
-        </button>
+          active={onCalendarPanel() == CalendarPanelEnum.schoolCalendar}
+          variant="borderless"
+          size="3xl"
+        />
       </div>
 
       <Show when={!displayedSpinningWheel()}>
