@@ -1,9 +1,10 @@
-import { Show, createSignal, onMount } from "solid-js";
+import { Match, Show, Switch, createSignal, onMount } from "solid-js";
 import {
   CalendarDayEnum,
   CalendarType,
 } from "../../../../_entities/calendar.entity";
 import { CalendarService } from "../../../../_services/calendar.service";
+import Button from "../../../../component/atom/Button";
 import {
   disableSpinningWheel,
   displayedSpinningWheel,
@@ -11,6 +12,7 @@ import {
 } from "../../../../signaux";
 import { CalendarEdition } from "../organism/CalendarEdtion";
 import { CalendarTable } from "../organism/CalendarTable";
+import { SchoolCalendar } from "../organism/SchoolCalendar";
 import "./Calendar.css";
 
 export type MonthType = {
@@ -94,6 +96,14 @@ export function updateCalendars(calendar: CalendarType) {
   });
 }
 
+enum CalendarPanelEnum {
+  calendarManager,
+  schoolCalendar,
+}
+
+export const [onCalendarPanel, setOnCalendarPanel] =
+  createSignal<CalendarPanelEnum>(CalendarPanelEnum.calendarManager);
+
 export default function () {
   enableSpinningWheel();
 
@@ -104,19 +114,54 @@ export default function () {
     disableSpinningWheel();
   });
 
+  function switchCalendarPanel() {
+    const nextCalendarPanel =
+      onCalendarPanel() == CalendarPanelEnum.calendarManager
+        ? CalendarPanelEnum.schoolCalendar
+        : CalendarPanelEnum.calendarManager;
+    setOnCalendarPanel(nextCalendarPanel);
+  }
+
   return (
     <section class="page-layout">
-      <p class="page-title">Gestion des calendriers</p>
+      <div class="calendar-panels-action">
+        <Button
+          label="Gestion des calendriers"
+          onClick={switchCalendarPanel}
+          active={onCalendarPanel() == CalendarPanelEnum.calendarManager}
+          variant="borderless"
+          size="3xl"
+        />
+
+        <Button
+          label="Calendrier scolaire"
+          onClick={switchCalendarPanel}
+          active={onCalendarPanel() == CalendarPanelEnum.schoolCalendar}
+          variant="borderless"
+          size="3xl"
+        />
+      </div>
 
       <Show when={!displayedSpinningWheel()}>
-        <CalendarTable currentMonth={currentMonth()} calendars={calendars()} />
+        <Switch>
+          <Match when={onCalendarPanel() == CalendarPanelEnum.calendarManager}>
+            <CalendarTable
+              currentMonth={currentMonth()}
+              calendars={calendars()}
+            />
 
-        <Show when={currentCalendar() != undefined}>
-          <CalendarEdition
-            calendar={currentCalendar() as CalendarType}
-            currentMonth={currentMonth()}
-          />
-        </Show>
+            <Show when={currentCalendar() != undefined}>
+              <CalendarEdition
+                calendar={currentCalendar() as CalendarType}
+                currentMonth={currentMonth()}
+              />
+            </Show>
+          </Match>
+
+          <Match when={onCalendarPanel() == CalendarPanelEnum.schoolCalendar}>
+            <SchoolCalendar />
+          </Match>
+        </Switch>
       </Show>
     </section>
   );

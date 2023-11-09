@@ -1,3 +1,5 @@
+/* TODO review to have one class .btn that will contain basic btn style & have class that define custom btn (primary, borderless...) */
+
 .btn-primary {
   @apply w-full justify-center rounded-md bg-green-600 px-6 py-2 text-sm font-semibold text-white shadow-sm sm:w-auto duration-150;
 }
@@ -11,17 +13,13 @@
 }
 
 .btn-borderless {
-  @apply text-green-500 text-sm duration-150;
+  @apply duration-150;
 }
 
-.btn-borderless:not([disabled]):hover {
-  @apply text-indigo-600;
+.btn-borderless.active {
+  @apply text-green-base;
 }
 
-.btn-borderless:disabled {
-  @apply text-gray-600 opacity-75;
-}
-
-.btn-danger{
+.btn-danger {
   @apply w-full bg-[#F44434] justify-center rounded-md px-6 py-2 text-sm font-semibold text-white shadow-sm sm:w-auto duration-150 m-2;
 }
