@@ -46,7 +46,6 @@ export class EntityUtils {
         idClassToSchool: item.id,
         gradeId: item.grade_id,
         quantity: item.quantity,
-        usedQuantity: 0,
       };
     });
   }
@@ -74,7 +73,6 @@ export type AssociatedSchoolType = {
   schoolId: number;
   schoolName: string;
   quantity: number;
-  usedQuantity: number; // TODO: Delete
   gradeId: number;
 };
 
