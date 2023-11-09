@@ -14,6 +14,10 @@ import {
 } from "../views/content/map/component/organism/StopPoints";
 
 export namespace SchoolUtils {
+  export function getName(schoolId: number) {
+    return getSchools().filter((school) => school.id == schoolId)[0].name;
+  }
+
   export async function DeleteSchool(schoolId: number) {
     const id_school: number = await SchoolService.delete(schoolId);
 

@@ -71,7 +71,7 @@ export type PointType = SchoolType | StopType;
 export type AssociatedSchoolType = {
   idClassToSchool: number;
   schoolId: number;
-  schoolName: string;
+  schoolName: string; // TODO: Delete this
   quantity: number;
   gradeId: number;
 };
