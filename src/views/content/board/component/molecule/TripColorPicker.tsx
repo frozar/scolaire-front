@@ -10,7 +10,7 @@ export function TripColorPicker(props: TripColorPickeProps) {
     <div class="color-picker">
       <ColorPicker
         defaultColor={props.defaultColor}
-        title="Couleur de la trip"
+        title="Couleur de la course"
         onInput={props.onChange}
         onChange={props.onChange}
       />

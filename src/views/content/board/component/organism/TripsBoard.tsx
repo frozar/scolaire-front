@@ -92,7 +92,7 @@ export function TripsBoard(props: { line: LineType }) {
           </div>
         </div>
         <div class="trips-board-header-infos">
-          <p>Total des trips: {getTrips().length}</p>
+          <p>Nombre de courses: {getTrips().length}</p>
           <ButtonIcon icon={<PlusIcon />} onClick={addTrip} />
         </div>
 

@@ -25,7 +25,7 @@ export default function (props: PanelsButtonProps) {
         classList={{ active: props.onPanel() == StopPanels.trips }}
         onClick={() => props.setOnPanel(StopPanels.trips)}
       >
-        Trips: {props.NbTrips}
+        Courses: {props.NbTrips}
       </button>
     </div>
   );
