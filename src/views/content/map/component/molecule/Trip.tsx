@@ -40,7 +40,9 @@ export const [draggingTrip, setDraggingTrip] = createSignal<boolean>(false);
 export function onClickBusTrip(trip: TripType) {
   switch (onBoard()) {
     case "line-details":
+    case "trip-draw":
       return;
+
     default:
       deselectAllTrips();
       deselectAllPoints();
