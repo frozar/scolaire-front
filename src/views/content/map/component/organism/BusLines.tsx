@@ -1,5 +1,5 @@
 import L from "leaflet";
-import { For, createEffect, createSignal, onCleanup } from "solid-js";
+import { createEffect, createSignal, onCleanup } from "solid-js";
 import { LineType } from "../../../../../_entities/line.entity";
 
 import { deselectAllPoints, pointsReady } from "./Points";
@@ -26,17 +26,7 @@ export function BusLines(props: { busLines: LineType[] }) {
     setLines([]);
   });
 
-  const linesFilter = () => {
-    return getLines();
-  };
-
-  return (
-    <For each={linesFilter()}>
-      {(line) => {
-        return <div>{line.name}</div>;
-      }}
-    </For>
-  );
+  return <></>;
 }
 
 function setDisplayedTrips() {
