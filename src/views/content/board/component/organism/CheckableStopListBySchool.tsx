@@ -1,22 +1,33 @@
+import { Accessor, Setter } from "solid-js";
 import { GradeType } from "../../../../../_entities/grade.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { StopType } from "../../../../../_entities/stop.entity";
 import { CheckableEventType } from "../atom/CheckableElement";
-import { CheckableElementList } from "../molecule/CheckableElementList";
-import { checkableStop, setCheckableStop } from "./AddLineBoardContent";
+import {
+  AssociatedItem,
+  CheckableElementList,
+} from "../molecule/CheckableElementList";
 import "./CollapsibleCheckableElement.css";
 
-export type AssociatedItem = { item: any; done: boolean };
+export function CheckableStopListBySchool(props: {
+  school: SchoolType;
+  checkableStop: Accessor<AssociatedItem[]>;
+  setCheckableStop: Setter<AssociatedItem[]>;
+}) {
+  const onChange = (e: CheckableEventType, indice: number) => {
+    const prev = [...props.checkableStop()];
+    prev[indice] = { ...prev[indice], done: e.currentTarget.checked };
+    props.setCheckableStop(prev);
+  };
 
-export function CheckableStopListBySchool(props: { school: SchoolType }) {
   return (
     <CheckableElementList
       title={props.school.name}
-      content={checkableStop().map((stop) => {
+      content={props.checkableStop().map((stop) => {
         return {
           name: stop.item.name,
           checked: stop.done,
-          onChange: onChangeFunction,
+          onChange,
           display: gradeInStopAndSchool(stop.item, props.school.grades),
         };
       })}
@@ -35,9 +46,3 @@ function gradeInStopAndSchool(stop_elem: StopType, grades: GradeType[]) {
   );
   return intersectionGrades.length > 0;
 }
-
-const onChangeFunction = (e: CheckableEventType, indice: number) => {
-  const prev = [...checkableStop()];
-  prev[indice] = { ...prev[indice], done: e.currentTarget.checked };
-  setCheckableStop(prev);
-};

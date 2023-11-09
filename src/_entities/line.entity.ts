@@ -2,6 +2,7 @@ import { Accessor, Setter, createSignal } from "solid-js";
 import { getSchools } from "../views/content/map/component/organism/SchoolPoints";
 import { getStops } from "../views/content/map/component/organism/StopPoints";
 import { COLOR_DEFAULT_LINE } from "../views/content/map/constant";
+import { GradeType } from "./grade.entity";
 import { SchoolType } from "./school.entity";
 import { StopType } from "./stop.entity";
 import { TripDBType, TripEntity, TripType } from "./trip.entity";
@@ -54,6 +55,7 @@ export class BusLineEntity {
       setColor: setColor,
       stops: [],
       schools: [],
+      grades: [],
       trips: [],
       name: "my default name",
       selected: selected,
@@ -66,6 +68,7 @@ export class BusLineEntity {
     name: string;
     schools: number[];
     stops: number[];
+    grades: number[];
     trips: TripType[];
   } {
     const name = line.name ? line.name : "";
@@ -75,6 +78,7 @@ export class BusLineEntity {
       schools: line.schools.map((school) => school.id),
       stops: line.stops.map((stop) => stop.id),
       trips: line.trips,
+      grades: line.grades.map((grade) => grade.id as number),
     };
   }
 
@@ -121,6 +125,7 @@ export type LineType = {
   schools: SchoolType[];
   stops: StopType[];
   trips: TripType[];
+  grades: GradeType[];
   name?: string;
   color: Accessor<string>;
   setColor: Setter<string>;

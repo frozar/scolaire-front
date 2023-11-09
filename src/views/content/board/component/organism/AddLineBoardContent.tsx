@@ -23,13 +23,11 @@ import SelectedSchool from "../atom/SelectedSchool";
 import LabeledInputField from "../molecule/LabeledInputField";
 import { setOnBoard, toggleDrawMod } from "../template/ContextManager";
 import "./AddLineBoardContent.css";
-import {
-  AssociatedItem,
-  CheckableStopListBySchool,
-} from "./CheckableStopListBySchool";
+import { CheckableStopListBySchool } from "./CheckableStopListBySchool";
 // TODO to fix -> doit importer un AddLineBoardContent ou similaire
 import { setLines } from "../../../map/component/organism/BusLines";
 import BoardTitle from "../atom/BoardTitle";
+import { AssociatedItem } from "../molecule/CheckableElementList";
 import { CheckableGradeListBySchool } from "./CheckableGradeListBySchool";
 import "./DrawTripBoard.css";
 
@@ -87,7 +85,13 @@ export default function () {
 
         <For each={addLineSelectedSchool()}>
           {(school_elem) => {
-            return <CheckableGradeListBySchool school={school_elem} />;
+            return (
+              <CheckableGradeListBySchool
+                school={school_elem}
+                checkableGrade={checkableGrade}
+                setCheckableGrade={setCheckableGrade}
+              />
+            );
           }}
         </For>
       </Show>
@@ -118,7 +122,13 @@ export default function () {
         <fieldset class="line-stop-selection">
           <For each={addLineSelectedSchool()}>
             {(school_elem) => {
-              return <CheckableStopListBySchool school={school_elem} />;
+              return (
+                <CheckableStopListBySchool
+                  school={school_elem}
+                  checkableStop={checkableStop}
+                  setCheckableStop={setCheckableStop}
+                />
+              );
             }}
           </For>
         </fieldset>
@@ -174,14 +184,27 @@ async function nextStep() {
   enableSpinningWheel();
   switch (addLineCurrentStep()) {
     case AddLineStep.schoolSelection:
-      setAddLineCurrentStep(AddLineStep.gradeSelection);
-      break;
-
-    case AddLineStep.gradeSelection:
       if (addLineSelectedSchool().length < 1) {
         break;
       }
 
+      setCheckableGrade(
+        getSchools()
+          .map((school) =>
+            school.grades.map((grade) => {
+              return { item: grade, done: false };
+            })
+          )
+          .flat()
+      );
+
+      setAddLineCurrentStep(AddLineStep.gradeSelection);
+      break;
+
+    case AddLineStep.gradeSelection:
+      if (checkableGrade().filter((grade) => grade.done).length === 0) {
+        break;
+      }
       setCheckableStop([
         ...getStops().map((stop) => {
           return { done: false, item: stop };
@@ -206,10 +229,17 @@ async function nextStep() {
       const stops = checkableStop()
         .filter((stop) => stop.done)
         .map((stop) => stop.item);
+
+      const grades = checkableGrade()
+        .filter((grade) => grade.done)
+        .map((grade) => grade.item);
+
       setCurrentLine({
         ...(currentLine() ?? BusLineEntity.defaultBusLine()),
         stops,
+        grades,
       });
+      console.log("currentLine", currentLine());
 
       try {
         const creating_line = currentLine();

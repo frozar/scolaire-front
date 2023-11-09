@@ -5,6 +5,11 @@ import {
 } from "../atom/CheckableElement";
 import CollapsibleElement from "../organism/CollapsibleElement";
 
+export type AssociatedItem = {
+  item: { name: string; id: number };
+  done: boolean;
+};
+
 type CollapsibleCheckableListType = {
   title: string;
   content: CheckableElementType[];

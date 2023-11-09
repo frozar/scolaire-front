@@ -1,10 +1,8 @@
 import { createStore } from "solid-js/store";
 import { Meta, StoryObj } from "storybook-solidjs";
 import { NatureEnum } from "../../../../../type";
-import {
-  AssociatedItem,
-  CheckableStopListBySchool,
-} from "./CheckableStopListBySchool";
+import { AssociatedItem } from "../molecule/CheckableElementList";
+import { CheckableStopListBySchool } from "./CheckableStopListBySchool";
 
 const meta = {
   component: CheckableStopListBySchool,
