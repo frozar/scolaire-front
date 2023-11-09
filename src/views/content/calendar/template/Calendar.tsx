@@ -58,8 +58,11 @@ export function Calendar() {
   onMount(async () => {
     const today = new Date();
     setCurrentMonth(new Date(today.getFullYear(), today.getMonth()));
+
+    // TODO review like init service, all in one
     setCalendars(await CalendarService.getAll());
     setCalendarsPeriod(await CalendarService.getAllCalendarPeriod());
+    setOnCalendarsPeriod(calendarsPeriod()[0]);
     disableSpinningWheel();
   });
 

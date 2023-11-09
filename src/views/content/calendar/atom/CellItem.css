@@ -19,3 +19,7 @@
 .weekend-cell.active-cell {
   @apply bg-green-light;
 }
+
+.out-period-cell{
+  @apply bg-red-base;
+}

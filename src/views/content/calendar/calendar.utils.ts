@@ -128,4 +128,16 @@ export namespace CalendarUtils {
   export function isDayInRules(day: CalendarDayEnum, calendar: CalendarType) {
     return calendar.rules.includes(day);
   }
+
+  export function dayIsInSchoolPeriod(
+    day: Date,
+    calendarPeriod: CalendarPeriodType
+  ) {
+    if (day.getDate() == 11 && day.getMonth() == 11) {
+      console.log("day", day);
+      console.log("start", calendarPeriod.startDate);
+      console.log("end", calendarPeriod.endDate);
+    }
+    return day > calendarPeriod.startDate && day < calendarPeriod.endDate;
+  }
 }
