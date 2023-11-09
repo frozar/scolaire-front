@@ -47,7 +47,7 @@ describe("TripService", () => {
               idClassToSchool: 7,
               name: "BENJOINS",
               quantity: 4,
-              usedQuantity: 0,
+              // usedQuantity: 0,
             },
           ],
           selected: schoolSelected,
