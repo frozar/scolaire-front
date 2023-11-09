@@ -41,7 +41,6 @@ export class EntityUtils {
       const school = getSchoolWhereClassId(item.grade_id);
 
       return {
-        schoolName: school?.name as string,
         schoolId: school?.id as number,
         idClassToSchool: item.id,
         gradeId: item.grade_id,
@@ -71,7 +70,6 @@ export type PointType = SchoolType | StopType;
 export type AssociatedSchoolType = {
   idClassToSchool: number;
   schoolId: number;
-  schoolName: string;
   quantity: number;
   gradeId: number;
 };

@@ -4,6 +4,7 @@ import CardTitle from "../../../../../component/atom/CardTitle";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
 import TrashIcon from "../../../../../icons/TrashIcon";
 import { updatePointColor } from "../../../../../leafletUtils";
+import { SchoolUtils } from "../../../../../utils/school.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { changeBoard } from "../../../board/component/template/ContextManager";
 import GradeLinkedSchool from "../../../schools/component/atom/GradeLinkedSchool";
@@ -16,7 +17,10 @@ interface StopItemProps {
 
 export default function (props: StopItemProps) {
   const schoolNames = () =>
-    props.stop.associated.map((gradeToSchool) => gradeToSchool.schoolName);
+    props.stop.associated.map((gradeToSchool) =>
+      SchoolUtils.getName(gradeToSchool.schoolId)
+    );
+
   const [refTrashButton, setRefTrashButton] = createSignal<HTMLButtonElement>();
 
   const onClickDelete = () => {
