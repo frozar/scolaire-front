@@ -2,6 +2,8 @@ import L from "leaflet";
 import { For, createEffect, createSignal } from "solid-js";
 import { AssociatedSchoolType } from "../../../../../_entities/_utils.entity";
 import { StopType } from "../../../../../_entities/stop.entity";
+import { StopUtils } from "../../../../../utils/stop.utils";
+import { TripUtils } from "../../../../../utils/trip.utils";
 import {
   AddLineStep,
   addLineCurrentStep,
@@ -148,13 +150,39 @@ export function leafletStopsFilter(): StopType[] {
     case "trip-draw":
       schools = currentDrawTrip().schools;
 
-      stops = getStops().filter((stop) =>
-        getSelectedLine()
-          ? getSelectedLine()
-              ?.stops.map((stop) => stop.id)
-              .includes(stop.id)
-          : true
+      // Filter stops that is in selectedLine
+      stops = getStops().filter(
+        (stop) =>
+          getSelectedLine()
+            ? getSelectedLine()
+                ?.stops.map((stop) => stop.id)
+                .includes(stop.id)
+            : true // TODO: Verify if getSelectedLine() is always true
       );
+
+      // TODO: Filter stops containing grades previously selected for the trip
+
+      function isInModifyingTripMode() {
+        return currentDrawTrip().id ? true : false;
+      }
+      // Filter stops with qty > 0 and stop in modifying trip
+      switch (isInModifyingTripMode()) {
+        case true:
+          const trip = TripUtils.get(currentDrawTrip().id as number);
+          stops = stops.filter(
+            (stop) =>
+              trip.tripPoints.some((tripPoint) => tripPoint.id == stop.id) ||
+              StopUtils.getRemainingQuantity(stop.id) > 0
+          );
+          break;
+
+        case false:
+          stops = stops.filter(
+            (stop) => StopUtils.getRemainingQuantity(stop.id) > 0
+          );
+          break;
+      }
+
       switch (currentStep()) {
         case DrawTripStep.schoolSelection:
           return [];
