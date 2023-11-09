@@ -120,9 +120,9 @@ export default function () {
 
       case "trip-draw":
         if (currentDrawTrip().schools.length > 0) {
-          return [{ text: "Editer votre trip" }];
+          return [{ text: "Editer votre course" }];
         }
-        return [{ text: "Création d'une trip" }];
+        return [{ text: "Création d'une course" }];
 
       default:
         return [];

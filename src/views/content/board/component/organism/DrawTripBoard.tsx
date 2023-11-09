@@ -92,7 +92,7 @@ export function DrawTripBoard() {
           <Metrics trip={currentDrawTrip()} />
         </CollapsibleElement>
         <LabeledInputField
-          label="Nom de la trip"
+          label="Nom de la course"
           value={currentDrawTrip().name}
           onInput={(e) =>
             setCurrentDrawTrip((trip) => {
@@ -100,7 +100,7 @@ export function DrawTripBoard() {
             })
           }
           name="line-name"
-          placeholder="Entrer le nom de la trip"
+          placeholder="Entrer le nom de la course"
         />
 
         <div class="flex mt-4 justify-between">
