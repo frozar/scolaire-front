@@ -118,7 +118,6 @@ export default function () {
     setCurrentMonth(new Date(today.getFullYear(), today.getMonth()));
     setCalendars(await CalendarService.getAll());
     setCalendarsPeriod(await CalendarService.getAllCalendarPeriod());
-
     disableSpinningWheel();
   });
 
