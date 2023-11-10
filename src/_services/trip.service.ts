@@ -16,7 +16,7 @@ export class TripService {
 
   static async update(trip: Partial<TripType>): Promise<TripType> {
     const data = TripEntity.dbPartialFormat(trip);
-    // TODO changer endpoint Xano pour /trip
+
     const dbTrip: TripDBType = await ServiceUtils.patch(
       "/busline/" + getSelectedLine()?.id + "/trip/" + trip.id,
       data
@@ -26,7 +26,6 @@ export class TripService {
   }
 
   static async delete(id: number): Promise<number> {
-    // TODO changer endpoint Xano pour /trip
     return await ServiceUtils.delete(
       "/busline/" + getSelectedLine()?.id + "/trip/" + id
     );
