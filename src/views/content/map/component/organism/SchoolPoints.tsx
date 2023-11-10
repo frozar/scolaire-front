@@ -46,6 +46,8 @@ function schoolsFilter(): SchoolType[] {
   switch (onBoard()) {
     case "line-add":
       switch (addLineCurrentStep()) {
+        case AddLineStep.gradeSelection:
+
         case AddLineStep.stopSelection:
           return getSchools().filter((schoolToFilter) =>
             addLineSelectedSchool()

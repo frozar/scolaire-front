@@ -7,7 +7,7 @@ import { NatureEnum } from "../../../../../type";
 import {
   AddLineStep,
   addLineCurrentStep,
-  stopSelected,
+  checkableStop,
 } from "../../../board/component/organism/AddLineBoardContent";
 import { COLOR_STOP_FOCUS, COLOR_STOP_LIGHT } from "../../constant";
 import { linkMap } from "../organism/Points";
@@ -124,8 +124,8 @@ export default function (props: PointProps) {
       if (addLineCurrentStep() === AddLineStep.stopSelection) {
         circle?.setStyle({ fillColor: COLOR_STOP_LIGHT });
         if (
-          stopSelected()
-            .map((stop) => stop.stopItem.id)
+          checkableStop()
+            .map((stop) => stop.item.id)
             .includes(props.point.id)
         ) {
           circle?.setStyle({ fillColor: COLOR_STOP_FOCUS });

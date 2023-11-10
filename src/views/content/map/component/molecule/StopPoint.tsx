@@ -14,8 +14,8 @@ import { updatePointColor } from "../../../../../leafletUtils";
 import { CurrentDrawTripUtils } from "../../../../../utils/currentDrawTrip.utils";
 import { QuantityUtils } from "../../../../../utils/quantity.utils";
 import {
-  setStopSelected,
-  stopSelected,
+  checkableStop,
+  setCheckableStop,
 } from "../../../board/component/organism/AddLineBoardContent";
 import {
   DrawTripStep,
@@ -103,9 +103,9 @@ function updateTripAndWaypoints(point: StopType) {
 function onClick(point: StopType) {
   switch (onBoard()) {
     case "line-add":
-      setStopSelected([
-        ...stopSelected().map((stop) => {
-          if (stop.stopItem.id == point.id) {
+      setCheckableStop([
+        ...checkableStop().map((stop) => {
+          if (stop.item.id == point.id) {
             return { ...stop, done: !stop.done };
           }
           return stop;
