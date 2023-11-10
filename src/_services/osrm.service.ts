@@ -1,16 +1,16 @@
 import L from "leaflet";
-import _ from "lodash";
 import {
   TripMetricType,
   TripPointType,
   TripType,
 } from "../_entities/trip.entity";
 import { WaypointType } from "../_entities/waypoint.entity";
+import { MetricsUtils } from "../utils/metrics.utils";
 import { ServiceUtils } from "./_utils.service";
 
 const osrm = import.meta.env.VITE_API_OSRM_URL;
 
-type osrmResponseType = { routes: routesType[] };
+export type osrmResponseType = { routes: routesType[] };
 
 export class OsrmService {
   static async getRoadPolyline(trip: TripType): Promise<{
@@ -76,7 +76,7 @@ export class OsrmService {
       L.latLng(waypoint.location[1], waypoint.location[0])
     );
 
-    metrics = getMetrics(response, response_direct, points);
+    metrics = MetricsUtils.getAll(response, response_direct, points);
 
     return { latlngs, projectedLatlngs, metrics };
   }
@@ -98,42 +98,3 @@ type routesType = {
   };
   legs: { weight: number; duration: number; distance: number }[];
 };
-
-function getMetrics(
-  response: osrmResponseType,
-  response_direct: osrmResponseType,
-  points: TripPointType[]
-) {
-  const distance = response.routes[0].distance;
-
-  const duration = response.routes[0].duration;
-
-  const distanceDirect = response_direct.routes[0].distance;
-
-  const deviation = distance / distanceDirect - 1;
-
-  const kmPassager = getKmPassagers(response, points, distance);
-
-  const txRemplissMoy = kmPassager / (distance / 1000);
-  return { distance, duration, deviation, kmPassager, txRemplissMoy };
-}
-
-// TODO: Update to adapt to the case: There is a school not at the end of the trip
-function getKmPassagers(
-  response: osrmResponseType,
-  points: TripPointType[],
-  distance: number
-) {
-  let kmPassager = 0;
-  let distance_restante = distance;
-
-  response.routes[0].legs.map((elem, k) => {
-    const quantity = _.sum(points.at(k)?.grades.map((grade) => grade.quantity));
-
-    kmPassager += (quantity ?? 0) * (distance_restante ?? 0);
-    distance_restante -= elem.distance;
-  });
-
-  kmPassager = kmPassager / 1000;
-  return kmPassager;
-}
