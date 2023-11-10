@@ -1,5 +1,8 @@
 import { For } from "solid-js";
-import { CalendarType } from "../../../../_entities/calendar.entity";
+import {
+  CalendarPeriodType,
+  CalendarType,
+} from "../../../../_entities/calendar.entity";
 import { CalendarUtils } from "../calendar.utils";
 import { CalendarActionsEnum } from "../template/Calendar";
 import { CalendarDayCell } from "./CalendarDayCell";
@@ -7,7 +10,8 @@ import "./CalendarMonthDetails.css";
 
 interface CalendarMonthDetailsProps {
   month: Date;
-  calendar: CalendarType;
+  calendar?: CalendarType;
+  calendarPeriod?: CalendarPeriodType;
   action?: CalendarActionsEnum;
   onClickAction?: (date: Date) => void;
 }
@@ -19,6 +23,7 @@ export function CalendarMonthDetails(props: CalendarMonthDetailsProps) {
         {(date) => (
           <CalendarDayCell
             date={date}
+            calendarPeriod={props.calendarPeriod}
             calendar={props.calendar}
             action={props.action}
             onClickAction={props.onClickAction}
