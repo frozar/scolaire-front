@@ -162,7 +162,7 @@ export function leafletStopsFilter(): StopType[] {
 
       stops = stops.filter((stop) =>
         stop.associated.some((associated) =>
-          getSelectedLine()
+          currentDrawTrip()
             ?.grades.map((grade) => grade.id)
             .includes(associated.gradeId)
         )
