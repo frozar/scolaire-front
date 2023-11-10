@@ -11,16 +11,7 @@ export namespace CalendarUtils {
     });
   }
 
-  export function dayIsInPeriod(
-    day: Date,
-    calendarPeriod: CalendarPeriodType,
-    log = false
-  ) {
-    if (log == true) {
-      console.log(
-        day > calendarPeriod.startDate && day < calendarPeriod.endDate
-      );
-    }
+  export function dayIsInPeriod(day: Date, calendarPeriod: CalendarPeriodType) {
     return day > calendarPeriod.startDate && day < calendarPeriod.endDate;
   }
 
