@@ -16,15 +16,15 @@ export function Filter(props: FilterProps) {
   });
 
   return (
-    <div>
+    <div class="flex items-center">
       {props.title}
-      <label class="switch">
+      <label class="filter-switch">
         <input
           ref={ref}
           type="checkbox"
           onChange={() => props.setter((prev) => (prev ? false : true))}
         />
-        <span class="slider round" />
+        <span class="filter-slider" />
       </label>
     </div>
   );
