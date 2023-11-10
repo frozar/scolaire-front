@@ -1,0 +1,7 @@
+.calendar-period {
+  @apply mt-10;
+}
+
+.calendar-period-calendar {
+  @apply ml-[100px];
+}
