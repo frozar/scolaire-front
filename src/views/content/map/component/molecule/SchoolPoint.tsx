@@ -59,6 +59,7 @@ const onClick = (point: SchoolType) => {
             circle?.setStyle({ fillColor: COLOR_SCHOOL_FOCUS });
           }
           break;
+
         case AddLineStep.schoolSelection:
           return;
       }

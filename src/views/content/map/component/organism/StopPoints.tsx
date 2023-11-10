@@ -7,7 +7,6 @@ import { TripUtils } from "../../../../../utils/trip.utils";
 import {
   AddLineStep,
   addLineCurrentStep,
-  addLineSelectedSchool,
   checkableStop,
 } from "../../../board/component/organism/AddLineBoardContent";
 import {
@@ -126,22 +125,23 @@ export function leafletStopsFilter(): StopType[] {
     case "trip":
       return stops.filter((stop) =>
         getSelectedLine()
-          ?.stops.map((stopOfSelected) => stopOfSelected.id)
+          ?.stops.map((selectedLineStop) => selectedLineStop.id)
           .includes(stop.id)
       );
     case "line-add":
       switch (addLineCurrentStep()) {
         case AddLineStep.schoolSelection:
           return [];
+        case AddLineStep.gradeSelection:
+          return [];
         case AddLineStep.stopSelection:
-          schools = addLineSelectedSchool();
-          stops = checkableStop().map((associated) => {
-            return associated.item;
-          });
-          const associatedIdSelected = schools
-            .map((school) => school.grades.map((value) => value.schoolId))
-            .flat();
-          return getStops().filter((stoptofilter) =>
+          const selectedLineStop = checkableStop().map(
+            (associated) => associated.item
+          ) as StopType[];
+
+          const associatedIdSelected = selectedLineStop.map((stop) => stop.id);
+
+          return stops.filter((stoptofilter) =>
             associatedIdSelected.includes(stoptofilter.id)
           );
       }

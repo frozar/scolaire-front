@@ -207,10 +207,21 @@ async function nextStep() {
       if (checkableGrade().filter((grade) => grade.done).length === 0) {
         break;
       }
+
+      const selectedGradesId = checkableGrade()
+        .filter((grade) => grade.done)
+        .map((grade) => grade.item.id);
+
       setCheckableStop([
-        ...getStops().map((stop) => {
-          return { done: false, item: stop };
-        }),
+        ...getStops()
+          .filter((stop) =>
+            stop.associated.some((associatedschool) =>
+              selectedGradesId.includes(associatedschool.gradeId)
+            )
+          )
+          .map((stop) => {
+            return { done: false, item: stop };
+          }),
       ]);
 
       setCurrentLine({
