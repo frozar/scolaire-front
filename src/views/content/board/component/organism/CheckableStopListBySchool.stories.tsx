@@ -1,4 +1,4 @@
-import { createStore } from "solid-js/store";
+import { createSignal } from "solid-js";
 import { Meta, StoryObj } from "storybook-solidjs";
 import { NatureEnum } from "../../../../../type";
 import { AssociatedItem } from "../molecule/CheckableElementList";
@@ -22,22 +22,23 @@ const school = {
       id: 1,
       name: "Ecole 1",
       quantity: 10,
+      gradeId: 1,
     },
   ],
   nature: NatureEnum.school,
-  grades: [],
+  grades: [{ id: 1 }],
   leafletId: 1,
 };
-const [stopSelected, setStopSelected] = createStore<AssociatedItem[]>(
+const [checkableStop, setCheckableStop] = createSignal<AssociatedItem[]>(
   school.associated.map((elem) => {
-    return { associated: elem, done: true };
+    return { item: { ...elem, associated: [{ gradeId: 1 }] }, done: false };
   })
 );
 
 export const InformationBoardButton: Story = {
   args: {
     school,
-    stopSelected,
-    setStopSelected,
+    checkableStop,
+    setCheckableStop,
   },
 };
