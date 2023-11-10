@@ -1,4 +1,5 @@
 import L from "leaflet";
+import _ from "lodash";
 import {
   TripMetricType,
   TripPointType,
@@ -117,22 +118,22 @@ function getMetrics(
   return { distance, duration, deviation, kmPassager, txRemplissMoy };
 }
 
-// TODO: Fix using correct quantity (tripPoint.grades[].quantity)
+// TODO: Update to adapt to the case: There is a school not at the end of the trip
 function getKmPassagers(
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   response: osrmResponseType,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   points: TripPointType[],
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   distance: number
 ) {
-  // let kmPassager = 0;
-  // let distance_restante = distance;
-  // response.routes[0].legs.map((elem, k) => {
-  //   kmPassager += (points.at(k)?.quantity ?? 0) * (distance_restante ?? 0);
-  //   distance_restante -= elem.distance;
-  // });
-  // kmPassager = kmPassager / 1000;
-  // return kmPassager;
-  return 1;
+  let kmPassager = 0;
+  let distance_restante = distance;
+
+  response.routes[0].legs.map((elem, k) => {
+    const quantity = _.sum(points.at(k)?.grades.map((grade) => grade.quantity));
+
+    kmPassager += (quantity ?? 0) * (distance_restante ?? 0);
+    distance_restante -= elem.distance;
+  });
+
+  kmPassager = kmPassager / 1000;
+  return kmPassager;
 }
