@@ -191,8 +191,15 @@ function getKmPassagers(
       school.grades.some((grade) => grade.id == gradeId)
     )[0].id;
   }
+
   response.routes[0].legs.map((elem, k) => {
     const grades = tripPoints.at(k)?.grades;
+    grades?.forEach((grade) => {
+      kmPassager += grade.quantity * distances[getSchoolId(grade.gradeId)];
+    });
+    for (const key of Object.keys(distances)) {
+      distances[Number(key)] -= elem.distance;
+    }
   });
 
   kmPassager = kmPassager / 1000;
