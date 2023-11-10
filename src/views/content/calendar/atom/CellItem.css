@@ -8,6 +8,10 @@
   @apply bg-green-base;
 }
 
+.outperiod-cell {
+  @apply bg-red-base;
+}
+
 .weekend-cell {
   @apply bg-gray-base;
 }

@@ -1,4 +1,11 @@
-import { Match, Show, Switch, createSignal, onMount } from "solid-js";
+import {
+  Match,
+  Show,
+  Switch,
+  createEffect,
+  createSignal,
+  onMount,
+} from "solid-js";
 import {
   CalendarPeriodType,
   CalendarType,
@@ -27,9 +34,15 @@ export enum CalendarActionsEnum {
   rules = "rules",
 }
 
+export const [onCalendarsPeriod, setOnCalendarsPeriod] =
+  createSignal<CalendarPeriodType>();
 export const [calendarsPeriod, setCalendarsPeriod] = createSignal<
   CalendarPeriodType[]
 >([]);
+
+createEffect(() => {
+  if (calendarsPeriod().length > 0) setOnCalendarsPeriod(calendarsPeriod()[0]);
+});
 
 export const [currentMonth, setCurrentMonth] = createSignal<Date>(new Date());
 export const [calendars, setCalendars] = createSignal<CalendarType[]>([]);
@@ -55,12 +68,8 @@ export function Calendar() {
     disableSpinningWheel();
   });
 
-  function switchCalendarPanel() {
-    const nextCalendarPanel =
-      onCalendarPanel() == CalendarPanelEnum.calendarManager
-        ? CalendarPanelEnum.schoolCalendar
-        : CalendarPanelEnum.calendarManager;
-    setOnCalendarPanel(nextCalendarPanel);
+  function changeCalendarPanel(panel: CalendarPanelEnum) {
+    setOnCalendarPanel(panel);
   }
 
   return (
@@ -68,7 +77,7 @@ export function Calendar() {
       <div class="calendar-panels-action">
         <Button
           label="Gestion des calendriers"
-          onClick={switchCalendarPanel}
+          onClick={() => changeCalendarPanel(CalendarPanelEnum.calendarManager)}
           active={onCalendarPanel() == CalendarPanelEnum.calendarManager}
           variant="borderless"
           size="3xl"
@@ -76,7 +85,7 @@ export function Calendar() {
 
         <Button
           label="Calendrier scolaire"
-          onClick={switchCalendarPanel}
+          onClick={() => changeCalendarPanel(CalendarPanelEnum.schoolCalendar)}
           active={onCalendarPanel() == CalendarPanelEnum.schoolCalendar}
           variant="borderless"
           size="3xl"

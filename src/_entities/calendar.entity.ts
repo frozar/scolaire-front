@@ -17,10 +17,21 @@ export namespace CalendarEntity {
     return {
       id: dbCalendarPeriod.id,
       name: dbCalendarPeriod.name,
-      endDate: dbCalendarPeriod.end_date,
-      startDate: dbCalendarPeriod.start_date,
-      publicHolidays: dbCalendarPeriod.public_holidays,
-      vacationsPeriod: dbCalendarPeriod.vacations_period,
+      endDate: new Date(dbCalendarPeriod.end_date),
+      startDate: new Date(dbCalendarPeriod.start_date),
+      publicHolidays: dbCalendarPeriod.public_holidays.map((item) => {
+        return {
+          name: item.name,
+          date: new Date(item.date),
+        };
+      }),
+      vacationsPeriod: dbCalendarPeriod.vacations_period.map((item) => {
+        return {
+          name: item.name,
+          start: new Date(item.start),
+          end: new Date(item.end),
+        };
+      }),
     };
   }
 
