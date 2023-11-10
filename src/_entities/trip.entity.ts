@@ -5,7 +5,12 @@ import { getSchools } from "../views/content/map/component/organism/SchoolPoints
 import { getStops } from "../views/content/map/component/organism/StopPoints";
 import { COLOR_GREEN_BASE } from "../views/content/map/constant";
 import { EntityUtils, LocationPathDBType, PointType } from "./_utils.entity";
-import { GradeTripDBType, GradeTripType } from "./grade.entity";
+import {
+  GradeEntity,
+  GradeTripDBType,
+  GradeTripType,
+  GradeType,
+} from "./grade.entity";
 import { SchoolType } from "./school.entity";
 import {
   WaypointDBType,
@@ -34,6 +39,10 @@ export namespace TripEntity {
       schools: [school],
       name: dbData.name,
       color: "#" + dbData.color,
+      grades:
+        dbData.grades != undefined
+          ? dbData.grades.map((grade) => GradeEntity.build(grade))
+          : [],
       tripPoints: formatTripPointType(dbData.trip_stop),
       waypoints: WaypointEntity.formatWaypointType(dbData.waypoint),
       latLngs: dbData.polyline
@@ -51,6 +60,7 @@ export namespace TripEntity {
       color: COLOR_GREEN_BASE,
       tripPoints: [],
       waypoints: [],
+      grades: [],
       latLngs: [],
       selected: false,
       metrics: {},
@@ -65,6 +75,7 @@ export namespace TripEntity {
       school_id: line.schools[0].id,
       trip_stop: formatTripPointDBType(line.tripPoints),
       polyline: EntityUtils.buildLocationPath(line.latLngs),
+      grades: line.grades.map((grade) => grade.id),
       metrics: {
         distance: line.metrics?.distance,
         duration: line.metrics?.duration,
@@ -145,6 +156,7 @@ export type TripType = {
   schools: SchoolType[];
   name: string;
   color: string;
+  grades: GradeType[];
   tripPoints: TripPointType[];
   waypoints?: WaypointType[];
   latLngs: L.LatLng[];
@@ -167,6 +179,7 @@ export type TripDBType = {
   school_id: number;
   name: string;
   color: string;
+  grades: GradeDBType[];
   trip_stop: TripPointDBType[];
   polyline: LocationPathDBType;
   metrics: TripMetricType;

@@ -1,4 +1,4 @@
-import { Show, createSignal, onCleanup, onMount } from "solid-js";
+import { For, Show, createSignal, onCleanup, onMount } from "solid-js";
 
 import SelectedSchool from "../atom/SelectedSchool";
 
@@ -6,6 +6,7 @@ import BoardFooterActions from "../molecule/BoardFooterActions";
 
 import "../../../../../css/timeline.css";
 
+import { GradeType } from "../../../../../_entities/grade.entity";
 import { TripEntity, TripType } from "../../../../../_entities/trip.entity";
 import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
 import { TripService } from "../../../../../_services/trip.service";
@@ -25,12 +26,15 @@ import {
 } from "../../../map/component/organism/BusLines";
 import { setselectedTrip } from "../../../map/component/organism/Trips";
 import { quitModeDrawTrip } from "../../../map/shortcut";
+import BoardTitle from "../atom/BoardTitle";
 import { DrawHelperButton } from "../atom/DrawHelperButton";
 import ButtonIcon from "../molecule/ButtonIcon";
+import { AssociatedItem } from "../molecule/CheckableElementList";
 import LabeledInputField from "../molecule/LabeledInputField";
 import SchoolsEnumeration from "../molecule/SchoolsEnumeration";
 import { TripColorPicker } from "../molecule/TripColorPicker";
 import { changeBoard } from "../template/ContextManager";
+import { CheckableGradeListBySchool } from "./CheckableGradeListBySchool";
 import CollapsibleElement from "./CollapsibleElement";
 import "./DrawTripBoard.css";
 import Metrics from "./Metrics";
@@ -39,12 +43,17 @@ import { TripTimeline } from "./TripTimeline";
 export enum DrawTripStep {
   initial,
   schoolSelection,
+  gradeSelection,
   editTrip,
 }
 
 export const [currentStep, setCurrentStep] = createSignal<DrawTripStep>(
   DrawTripStep.initial
 );
+
+export const [drawTripCheckableGrade, setDrawTripCheckableGrade] = createSignal<
+  AssociatedItem[]
+>([]);
 
 export enum displayTripModeEnum {
   straight = "straight",
@@ -77,6 +86,22 @@ export function DrawTripBoard() {
     <div class="add-line-information-board-content">
       <Show when={currentStep() == DrawTripStep.schoolSelection}>
         <SelectedSchool schoolSelected={currentDrawTrip().schools} />
+      </Show>
+
+      <Show when={currentStep() == DrawTripStep.gradeSelection}>
+        <BoardTitle title={"Sélection des niveaux"} />
+
+        <For each={currentDrawTrip().schools}>
+          {(school_elem) => {
+            return (
+              <CheckableGradeListBySchool
+                school={school_elem}
+                checkableGrade={drawTripCheckableGrade}
+                setCheckableGrade={setDrawTripCheckableGrade}
+              />
+            );
+          }}
+        </For>
       </Show>
 
       <Show when={currentStep() == DrawTripStep.editTrip}>
@@ -220,7 +245,40 @@ async function nextStep() {
       if (currentDrawTrip().schools.length < 1) {
         break;
       }
+      const isValidable = (grade: GradeType) => {
+        const selectedGradeId = currentDrawTrip()
+          ?.schools.map((school) =>
+            school.grades.map((gradeMap) => gradeMap.id)
+          )
+          .flat();
+
+        return selectedGradeId.includes(grade.id);
+      };
+
+      setDrawTripCheckableGrade(
+        getSelectedLine()?.grades.map((grade) => {
+          return {
+            item: grade,
+            done: isValidable(grade),
+          };
+        }) as AssociatedItem[]
+      );
+
+      setCurrentStep(DrawTripStep.gradeSelection);
+      break;
+
+    case DrawTripStep.gradeSelection:
+      const grades = drawTripCheckableGrade()
+        .filter((grade) => grade.done)
+        .map((grade) => grade.item) as GradeType[];
+
+      setCurrentDrawTrip((trip) => {
+        return { ...trip, grades };
+      });
+
       setCurrentStep(DrawTripStep.editTrip);
+      break;
+
     case DrawTripStep.editTrip:
       if (currentDrawTrip().tripPoints.length < 2) {
         break;
@@ -230,7 +288,7 @@ async function nextStep() {
           currentDrawTrip()
         );
         setCurrentDrawTrip((trip) => {
-          return { ...trip, waypoints: waypoints };
+          return { ...trip, waypoints };
         });
       }
       if (displayTripMode() == displayTripModeEnum.straight) {
@@ -261,6 +319,11 @@ function prevStep() {
       MapElementUtils.deselectAllPointsAndBusTrips();
 
       break;
+
+    case DrawTripStep.gradeSelection:
+      setCurrentStep(DrawTripStep.schoolSelection);
+      break;
+
     case DrawTripStep.editTrip:
       if (isInUpdate()) {
         quitModeDrawTrip();
@@ -276,13 +339,12 @@ function prevStep() {
         setCurrentStep(DrawTripStep.initial);
         changeBoard("line-details");
       } else {
-        setCurrentDrawTrip(TripEntity.defaultTrip());
         if (displayTripMode() == displayTripModeEnum.onRoad) {
           setCurrentDrawTrip((trip) => {
             return { ...trip, latLngs: [] };
           });
         }
-        setCurrentStep(DrawTripStep.schoolSelection);
+        setCurrentStep(DrawTripStep.gradeSelection);
       }
       break;
   }

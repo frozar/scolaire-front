@@ -27,7 +27,7 @@ import { CheckableStopListBySchool } from "./CheckableStopListBySchool";
 // TODO to fix -> doit importer un AddLineBoardContent ou similaire
 import { GradeType } from "../../../../../_entities/grade.entity";
 import { StopType } from "../../../../../_entities/stop.entity";
-import { setLines } from "../../../map/component/organism/BusLines";
+import { getLines, setLines } from "../../../map/component/organism/BusLines";
 import BoardTitle from "../atom/BoardTitle";
 import { AssociatedItem } from "../molecule/CheckableElementList";
 import { CheckableGradeListBySchool } from "./CheckableGradeListBySchool";
@@ -44,11 +44,11 @@ export const [addLineSelectedSchool, setaddLineSelectedSchool] = createSignal<
   SchoolType[]
 >([]);
 
-export const [checkableStop, setCheckableStop] = createSignal<AssociatedItem[]>(
-  []
-);
+export const [addLineCheckableStop, setAddLineCheckableStop] = createSignal<
+  AssociatedItem[]
+>([]);
 
-export const [checkableGrade, setCheckableGrade] = createSignal<
+export const [addLineCheckableGrade, setAddLineCheckableGrade] = createSignal<
   AssociatedItem[]
 >([]);
 
@@ -83,15 +83,15 @@ export default function () {
       </Show>
 
       <Show when={addLineCurrentStep() == AddLineStep.gradeSelection}>
-        <BoardTitle title={"Séléction des niveaux"} />
+        <BoardTitle title={"Sélection des niveaux"} />
 
         <For each={addLineSelectedSchool()}>
           {(school_elem) => {
             return (
               <CheckableGradeListBySchool
                 school={school_elem}
-                checkableGrade={checkableGrade}
-                setCheckableGrade={setCheckableGrade}
+                checkableGrade={addLineCheckableGrade}
+                setCheckableGrade={setAddLineCheckableGrade}
               />
             );
           }}
@@ -127,8 +127,8 @@ export default function () {
               return (
                 <CheckableStopListBySchool
                   school={school_elem}
-                  checkableStop={checkableStop}
-                  setCheckableStop={setCheckableStop}
+                  checkableStop={addLineCheckableStop}
+                  setCheckableStop={setAddLineCheckableStop}
                 />
               );
             }}
@@ -190,7 +190,7 @@ async function nextStep() {
         break;
       }
 
-      setCheckableGrade(
+      setAddLineCheckableGrade(
         getSchools()
           .map((school) =>
             school.grades.map((grade) => {
@@ -204,15 +204,15 @@ async function nextStep() {
       break;
 
     case AddLineStep.gradeSelection:
-      if (checkableGrade().filter((grade) => grade.done).length === 0) {
+      if (addLineCheckableGrade().filter((grade) => grade.done).length === 0) {
         break;
       }
 
-      const selectedGradesId = checkableGrade()
+      const selectedGradesId = addLineCheckableGrade()
         .filter((grade) => grade.done)
         .map((grade) => grade.item.id);
 
-      setCheckableStop([
+      setAddLineCheckableStop([
         ...getStops()
           .filter((stop) =>
             stop.associated.some((associatedschool) =>
@@ -233,17 +233,17 @@ async function nextStep() {
       break;
 
     case AddLineStep.stopSelection:
-      if (checkableStop().length < 2) {
+      if (addLineCheckableStop().length < 2) {
         break;
       }
 
       updatePointColor();
 
-      const stops = checkableStop()
+      const stops = addLineCheckableStop()
         .filter((stop) => stop.done)
         .map((stop) => stop.item) as StopType[];
 
-      const grades = checkableGrade()
+      const grades = addLineCheckableGrade()
         .filter((grade) => grade.done)
         .map((grade) => grade.item) as GradeType[];
 
@@ -266,6 +266,7 @@ async function nextStep() {
 
           toggleDrawMod();
           displayBusLine(newBusLine);
+          console.log("getLines", getLines());
 
           //TODO faire updateBusLines(newBusLine);
         }
@@ -284,7 +285,7 @@ async function previousStep() {
     case AddLineStep.schoolSelection:
       setAddLineCurrentStep(AddLineStep.start);
       setaddLineSelectedSchool([]);
-      setCheckableStop([]);
+      setAddLineCheckableStop([]);
       toggleDrawMod();
       setOnBoard("line");
       break;
@@ -293,7 +294,7 @@ async function previousStep() {
       break;
     case AddLineStep.stopSelection:
       setAddLineCurrentStep(AddLineStep.gradeSelection);
-      setCheckableStop([]);
+      setAddLineCheckableStop([]);
   }
   disableSpinningWheel();
 }

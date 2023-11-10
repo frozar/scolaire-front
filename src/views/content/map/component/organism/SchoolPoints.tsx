@@ -71,6 +71,12 @@ function schoolsFilter(): SchoolType[] {
               ?.schools.map((school) => school.id)
               .includes(schoolFilter.id)
           );
+        case DrawTripStep.gradeSelection:
+          return getSchools().filter((schoolFilter) =>
+            currentDrawTrip()
+              ?.schools.map((school) => school.id)
+              .includes(schoolFilter.id)
+          );
         case DrawTripStep.editTrip:
           return getSchools().filter((schoolTofilter) =>
             currentDrawTrip()
