@@ -25,6 +25,8 @@ import { setOnBoard, toggleDrawMod } from "../template/ContextManager";
 import "./AddLineBoardContent.css";
 import { CheckableStopListBySchool } from "./CheckableStopListBySchool";
 // TODO to fix -> doit importer un AddLineBoardContent ou similaire
+import { GradeType } from "../../../../../_entities/grade.entity";
+import { StopType } from "../../../../../_entities/stop.entity";
 import { setLines } from "../../../map/component/organism/BusLines";
 import BoardTitle from "../atom/BoardTitle";
 import { AssociatedItem } from "../molecule/CheckableElementList";
@@ -195,7 +197,7 @@ async function nextStep() {
               return { item: grade, done: false };
             })
           )
-          .flat()
+          .flat() as AssociatedItem[]
       );
 
       setAddLineCurrentStep(AddLineStep.gradeSelection);
@@ -228,18 +230,17 @@ async function nextStep() {
 
       const stops = checkableStop()
         .filter((stop) => stop.done)
-        .map((stop) => stop.item);
+        .map((stop) => stop.item) as StopType[];
 
       const grades = checkableGrade()
         .filter((grade) => grade.done)
-        .map((grade) => grade.item);
+        .map((grade) => grade.item) as GradeType[];
 
       setCurrentLine({
         ...(currentLine() ?? BusLineEntity.defaultBusLine()),
         stops,
         grades,
       });
-      console.log("currentLine", currentLine());
 
       try {
         const creating_line = currentLine();

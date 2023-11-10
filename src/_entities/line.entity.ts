@@ -133,7 +133,6 @@ export type LineType = {
   name?: string;
   color: Accessor<string>;
   setColor: Setter<string>;
-
   selected: Accessor<boolean>;
   setSelected: Setter<boolean>;
 };
