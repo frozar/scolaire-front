@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from "storybook-solidjs";
-import CalendarLayout from "./Calendar";
+import { Calendar as CalendarLayout } from "./Calendar";
 
 const meta = {
   component: CalendarLayout,
