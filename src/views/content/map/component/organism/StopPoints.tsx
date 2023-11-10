@@ -2,6 +2,7 @@ import L from "leaflet";
 import { For, createEffect, createSignal } from "solid-js";
 import { AssociatedSchoolType } from "../../../../../_entities/_utils.entity";
 import { StopType } from "../../../../../_entities/stop.entity";
+import { FilterUtils } from "../../../../../utils/filter.utils";
 import { StopUtils } from "../../../../../utils/stop.utils";
 import { TripUtils } from "../../../../../utils/trip.utils";
 import {
@@ -19,6 +20,7 @@ import { updateStopDetailsItem } from "../../../stops/component/organism/StopDet
 import { PointInterface } from "../atom/Point";
 import { StopPoint } from "../molecule/StopPoint";
 import { getSelectedLine } from "./BusLines";
+import { filterEmptyStops } from "./Filters";
 import { getSchools } from "./SchoolPoints";
 
 // const [, { nextLeafletPointId }] = useStateGui();
@@ -185,9 +187,7 @@ export function leafletStopsFilter(): StopType[] {
           break;
 
         case false:
-          stops = stops.filter(
-            (stop) => StopUtils.getRemainingQuantity(stop.id) > 0
-          );
+          stops = FilterUtils.filterEmptyStops(stops);
           break;
       }
 
@@ -201,6 +201,12 @@ export function leafletStopsFilter(): StopType[] {
 
     case "schools":
       return [];
+    case "line":
+      if (filterEmptyStops()) {
+        stops = FilterUtils.filterEmptyStops(stops);
+      }
+      return stops;
+
     default:
       return stops;
   }
