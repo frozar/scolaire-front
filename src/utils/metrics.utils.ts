@@ -23,6 +23,7 @@ export namespace MetricsUtils {
     return { distance, duration, deviation, kmPassager, txRemplissMoy };
   }
 
+  // TODO: Verify in app it works properly with multiple schools in a trip
   function getKmPassagers(
     response: osrmResponseType,
     tripPoints: TripPointType[]
@@ -34,7 +35,7 @@ export namespace MetricsUtils {
       .map((tripPoint) => tripPoint.id);
     let destinationSchoolIds = schoolIds;
 
-    // Compute remaining distances per school destination
+    // Compute distances per school destination
     const remainingDistances: { [schoolId: number]: number } = {};
     response.routes[0].legs.map((elem, k) => {
       destinationSchoolIds.forEach((destination) =>
