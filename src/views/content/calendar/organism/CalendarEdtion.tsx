@@ -2,13 +2,9 @@ import { CalendarType } from "../../../../_entities/calendar.entity";
 import { CalendarService } from "../../../../_services/calendar.service";
 import Button from "../../../../component/atom/Button";
 import { CalendarSectionTitle } from "../atom/CalendarSectionTitle";
+import { CalendarManager } from "../calendar.manager";
 import { CalendarDaysCheckbox } from "../molecule/CalendarDaysCheckbox";
-import {
-  CalendarActionsEnum,
-  toggleAddedDate,
-  toggleDeletedDate,
-  updateCalendars,
-} from "../template/Calendar";
+import { CalendarActionsEnum } from "../template/Calendar";
 import "./CalendarEdtion.css";
 import { CalendarHeader } from "./CalendarHeader";
 import { CalendarLineAction } from "./CalendarLineAction";
@@ -20,15 +16,17 @@ interface CalendarEditionProps {
 
 export function CalendarEdition(props: CalendarEditionProps) {
   function onClickCellAddDate(cellDate: Date) {
-    toggleAddedDate(cellDate);
+    CalendarManager.toggleAddedDate(cellDate);
   }
 
   function onClickCellDeletedDate(cellDate: Date) {
-    toggleDeletedDate(cellDate);
+    CalendarManager.toggleDeletedDate(cellDate);
   }
 
   async function updateCalendar() {
-    updateCalendars(await CalendarService.updateCalendar(props.calendar));
+    CalendarManager.updateCalendar(
+      await CalendarService.updateCalendar(props.calendar)
+    );
   }
 
   return (

@@ -1,5 +1,6 @@
 import {
   CalendarDayEnum,
+  CalendarPeriodType,
   CalendarType,
 } from "../../../_entities/calendar.entity";
 
@@ -8,6 +9,10 @@ export namespace CalendarUtils {
     return date.toLocaleString("default", {
       month: "long",
     });
+  }
+
+  export function dayIsInPeriod(day: Date, calendarPeriod: CalendarPeriodType) {
+    return day > calendarPeriod.startDate && day < calendarPeriod.endDate;
   }
 
   export function dayToFrench(day: CalendarDayEnum): string {

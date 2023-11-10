@@ -7,15 +7,12 @@ import { CalendarService } from "../../../../_services/calendar.service";
 import PlusIcon from "../../../../icons/PlusIcon";
 import { CalendarInputText } from "../atom/CalendarInputText";
 import { CalendarMonthsDetails } from "../molecule/CalendarMonthsDetails";
-import {
-  CalendarActionsEnum,
-  pushCalendar,
-  setCurrentCalendar,
-} from "../template/Calendar";
+import { CalendarActionsEnum, setCurrentCalendar } from "../template/Calendar";
 
 import { addNewUserInformation } from "../../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../../type";
 import ButtonIcon from "../../board/component/molecule/ButtonIcon";
+import { CalendarManager } from "../calendar.manager";
 import "./CalendarAddLine.css";
 import "./CalendarLineContent.css";
 
@@ -48,7 +45,7 @@ export function CalendarAddLine(props: CalendarAddLineProps) {
       return;
     }
     const calendar = await CalendarService.createCalendar(newCalendar);
-    pushCalendar(calendar);
+    CalendarManager.pushCalendar(calendar);
     inputRef().value = "";
     setCurrentCalendar(calendar);
   }
