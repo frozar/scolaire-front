@@ -1,5 +1,6 @@
 import { Accessor, Setter, onMount } from "solid-js";
-// ! filter.tsx
+import "./Filter.css";
+
 interface FilterProps {
   title: string;
   getter: Accessor<boolean>;
@@ -15,14 +16,16 @@ export function Filter(props: FilterProps) {
   });
 
   return (
-    <label class="switch">
+    <div>
       {props.title}
-      <input
-        ref={ref}
-        type="checkbox"
-        onChange={() => props.setter((prev) => (prev ? false : true))}
-      />
-      <span class="slider round" />
-    </label>
+      <label class="switch">
+        <input
+          ref={ref}
+          type="checkbox"
+          onChange={() => props.setter((prev) => (prev ? false : true))}
+        />
+        <span class="slider round" />
+      </label>
+    </div>
   );
 }
