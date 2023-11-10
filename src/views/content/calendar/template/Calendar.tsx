@@ -1,6 +1,5 @@
 import { Match, Show, Switch, createSignal, onMount } from "solid-js";
 import {
-  CalendarDayEnum,
   CalendarPeriodType,
   CalendarType,
 } from "../../../../_entities/calendar.entity";
@@ -12,8 +11,8 @@ import {
   enableSpinningWheel,
 } from "../../../../signaux";
 import { CalendarEdition } from "../organism/CalendarEdtion";
+import { CalendarPeriod } from "../organism/CalendarPeriod";
 import { CalendarTable } from "../organism/CalendarTable";
-import { SchoolCalendar } from "../organism/SchoolCalendar";
 import "./Calendar.css";
 
 export type MonthType = {
@@ -37,71 +36,6 @@ export const [calendars, setCalendars] = createSignal<CalendarType[]>([]);
 export const [currentCalendar, setCurrentCalendar] =
   createSignal<CalendarType>();
 
-export function pushCalendar(calendar: CalendarType) {
-  setCalendars((prev) => {
-    if (prev == undefined) return prev;
-    prev = [...prev, calendar];
-    return prev;
-  });
-}
-
-export function toggleAddedDate(date: Date) {
-  const indexof = currentCalendar()?.added.findIndex(
-    (item) => item == date.getTime()
-  );
-
-  setCurrentCalendar((prev) => {
-    if (prev == undefined) return prev;
-    const data = { ...prev };
-
-    if (indexof == -1) data.added.push(date.getTime());
-    else data.added = data.added.filter((item) => item != date.getTime());
-
-    return data;
-  });
-}
-
-export function toggleDeletedDate(date: Date) {
-  const indexof = currentCalendar()?.deleted.findIndex(
-    (item) => item == date.getTime()
-  );
-
-  setCurrentCalendar((prev) => {
-    if (prev == undefined) return prev;
-    const data = { ...prev };
-
-    if (indexof == -1) data.deleted.push(date.getTime());
-    else data.deleted = data.deleted.filter((item) => item != date.getTime());
-
-    return data;
-  });
-}
-
-export function updateCalendarRules(day: CalendarDayEnum) {
-  const indexof = currentCalendar()?.rules.findIndex((item) => item == day);
-
-  setCurrentCalendar((prev) => {
-    if (prev == undefined) return prev;
-    const data = { ...prev };
-
-    if (indexof == -1) data.rules.push(day);
-    else data.rules = data.rules.filter((item) => item != day);
-    return data;
-  });
-}
-
-export function updateCalendars(calendar: CalendarType) {
-  setCalendars((prev) => {
-    if (prev == undefined) return prev;
-    const calendars = [...prev];
-    const indexOfCalendar = calendars.findIndex(
-      (item) => item.id == calendar.id
-    );
-    calendars[indexOfCalendar] = calendar;
-    return calendars;
-  });
-}
-
 enum CalendarPanelEnum {
   calendarManager,
   schoolCalendar,
@@ -110,7 +44,7 @@ enum CalendarPanelEnum {
 export const [onCalendarPanel, setOnCalendarPanel] =
   createSignal<CalendarPanelEnum>(CalendarPanelEnum.calendarManager);
 
-export default function () {
+export function Calendar() {
   enableSpinningWheel();
 
   onMount(async () => {
@@ -166,7 +100,7 @@ export default function () {
           </Match>
 
           <Match when={onCalendarPanel() == CalendarPanelEnum.schoolCalendar}>
-            <SchoolCalendar />
+            <CalendarPeriod date={currentMonth()} />
           </Match>
         </Switch>
       </Show>
