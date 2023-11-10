@@ -1,0 +1,3 @@
+#filters {
+  @apply absolute w-40 h-40 top-2 right-2 z-layoutTop bg-white border-green-base rounded-md border-2;
+}

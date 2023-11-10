@@ -18,6 +18,7 @@ import {
 } from "../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../type";
 import { BusLines } from "./component/organism/BusLines";
+import { Filters } from "./component/organism/Filters";
 import { Points } from "./component/organism/Points";
 
 const [, { getActiveMapId }] = useStateGui();
@@ -67,6 +68,7 @@ export default function () {
   // });
   return (
     <Show when={getActiveMapId()}>
+      <Filters />
       <ImportCsvCanvas
         display={displayImportCsvCanvas()}
         setDisplay={setDisplayImportCsvCanvas}
