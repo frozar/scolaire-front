@@ -162,6 +162,5 @@ function getKmPassagers(
     }
   });
 
-  kmPassager = kmPassager / 1000;
-  return kmPassager;
+  return kmPassager / 1000;
 }
