@@ -6,7 +6,7 @@ import {
 } from "../_entities/trip.entity";
 import { WaypointType } from "../_entities/waypoint.entity";
 import { NatureEnum } from "../type";
-import { getSchools } from "../views/content/map/component/organism/SchoolPoints";
+import { GradeUtils } from "../utils/grade.utils";
 import { ServiceUtils } from "./_utils.service";
 
 const osrm = import.meta.env.VITE_API_OSRM_URL;
@@ -113,92 +113,52 @@ function getMetrics(
 
   const deviation = distance / distanceDirect - 1;
 
-  const kmPassager = getKmPassagers(response, points, distance);
+  const kmPassager = getKmPassagers(response, points);
 
   const txRemplissMoy = kmPassager / (distance / 1000);
   return { distance, duration, deviation, kmPassager, txRemplissMoy };
 }
 
-// // TODO: Update to adapt to the case: There is a school not at the end of the trip
-// function getKmPassagers(
-//   response: osrmResponseType,
-//   points: TripPointType[],
-//   distance: number
-// ) {
-//   let kmPassager = 0;
-//   // ! Déterminer distance restante par destination
-//   let distance_restante = distance;
-
-//   // ! Multiplier la bonne quantité par la bonne distance restante
-//   // ! Mettre à jour les distances restantes
-//   response.routes[0].legs.map((elem, k) => {
-//     const quantity = _.sum(points.at(k)?.grades.map((grade) => grade.quantity));
-
-//     kmPassager += (quantity ?? 0) * (distance_restante ?? 0);
-//     distance_restante -= elem.distance;
-//   });
-
-//   kmPassager = kmPassager / 1000;
-//   return kmPassager;
-// }
-
-// TODO: Update to adapt to the case: There is a school not at the end of the trip
 function getKmPassagers(
   response: osrmResponseType,
-  tripPoints: TripPointType[],
-  distance: number
+  tripPoints: TripPointType[]
 ) {
   let kmPassager = 0;
-  // let distance_restante = distance;
-  // ! Déterminer distance restante par destination
+
   const schoolIds = tripPoints
     .filter((tripPoint) => tripPoint.nature == NatureEnum.school)
     .map((tripPoint) => tripPoint.id);
-  const distances: { [schoolId: number]: number } = {};
-  let destinationStill = schoolIds;
+  let destinationSchoolIds = schoolIds;
+
+  // Compute remaining distances per school destination
+  const remainingDistances: { [schoolId: number]: number } = {};
   response.routes[0].legs.map((elem, k) => {
-    console.log("k", tripPoints.at(k));
-    // ! Rewrite
-    if (k == 0) {
-      destinationStill.forEach(
-        (destination) => (distances[destination] = elem.distance)
-      );
-    } else {
-      destinationStill.forEach(
-        (destination) => (distances[destination] += elem.distance)
-      );
-    }
+    destinationSchoolIds.forEach((destination) =>
+      k == 0
+        ? (remainingDistances[destination] = elem.distance)
+        : (remainingDistances[destination] += elem.distance)
+    );
+    // If school destination reached, removed from destinationSchoolIds
     if (tripPoints.at(k + 1)?.nature == NatureEnum.school) {
-      destinationStill = destinationStill.filter(
+      destinationSchoolIds = destinationSchoolIds.filter(
         (destination) => destination != tripPoints.at(k + 1)?.id
       );
     }
   });
-  console.log("distances", distances);
-  // ! Multiplier la bonne quantité par la bonne distance restante
-  // ! Mettre à jour les distances restantes
-  // response.routes[0].legs.map((elem, k) => {
-  //   const quantity = _.sum(
-  //     tripPoints.at(k)?.grades.map((grade) => grade.quantity)
-  //   );
-
-  //   kmPassager += (quantity ?? 0) * (distance_restante ?? 0);
-  //   distance_restante -= elem.distance;
-  // });
-  // TODO: Move ?
-  function getSchoolId(gradeId: number) {
-    return getSchools().filter((school) =>
-      school.grades.some((grade) => grade.id == gradeId)
-    )[0].id;
-  }
 
   response.routes[0].legs.map((elem, k) => {
     const grades = tripPoints.at(k)?.grades;
+
+    // Update kmPassager
     grades?.forEach((grade) => {
-      kmPassager += grade.quantity * distances[getSchoolId(grade.gradeId)];
+      kmPassager +=
+        grade.quantity *
+        remainingDistances[GradeUtils.getSchoolId(grade.gradeId)];
     });
-    for (const key of Object.keys(distances)) {
-      distances[Number(key)] -= elem.distance;
+
+    // Update remaining distances
+    for (const key of Object.keys(remainingDistances)) {
+      remainingDistances[Number(key)] -= elem.distance;
     }
   });
 
