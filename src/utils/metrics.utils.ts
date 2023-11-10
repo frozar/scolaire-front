@@ -24,6 +24,7 @@ export namespace MetricsUtils {
   }
 
   // TODO: Verify in app it works properly with multiple schools in a trip
+  // TODO: Refactor (ex: use lodash groupBy to create remainingDistances)
   function getKmPassagers(
     response: osrmResponseType,
     tripPoints: TripPointType[]
