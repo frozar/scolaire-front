@@ -5,13 +5,12 @@ import {
   TripType,
 } from "../_entities/trip.entity";
 import { WaypointType } from "../_entities/waypoint.entity";
-import { NatureEnum } from "../type";
-import { GradeUtils } from "../utils/grade.utils";
+import { MetricsUtils } from "../utils/metrics.utils";
 import { ServiceUtils } from "./_utils.service";
 
 const osrm = import.meta.env.VITE_API_OSRM_URL;
 
-type osrmResponseType = { routes: routesType[] };
+export type osrmResponseType = { routes: routesType[] };
 
 export class OsrmService {
   static async getRoadPolyline(trip: TripType): Promise<{
@@ -77,7 +76,7 @@ export class OsrmService {
       L.latLng(waypoint.location[1], waypoint.location[0])
     );
 
-    metrics = getMetrics(response, response_direct, points);
+    metrics = MetricsUtils.getAll(response, response_direct, points);
 
     return { latlngs, projectedLatlngs, metrics };
   }
@@ -99,68 +98,3 @@ type routesType = {
   };
   legs: { weight: number; duration: number; distance: number }[];
 };
-
-function getMetrics(
-  response: osrmResponseType,
-  response_direct: osrmResponseType,
-  points: TripPointType[]
-) {
-  const distance = response.routes[0].distance;
-
-  const duration = response.routes[0].duration;
-
-  const distanceDirect = response_direct.routes[0].distance;
-
-  const deviation = distance / distanceDirect - 1;
-
-  const kmPassager = getKmPassagers(response, points);
-
-  const txRemplissMoy = kmPassager / (distance / 1000);
-  return { distance, duration, deviation, kmPassager, txRemplissMoy };
-}
-
-function getKmPassagers(
-  response: osrmResponseType,
-  tripPoints: TripPointType[]
-) {
-  let kmPassager = 0;
-
-  const schoolIds = tripPoints
-    .filter((tripPoint) => tripPoint.nature == NatureEnum.school)
-    .map((tripPoint) => tripPoint.id);
-  let destinationSchoolIds = schoolIds;
-
-  // Compute remaining distances per school destination
-  const remainingDistances: { [schoolId: number]: number } = {};
-  response.routes[0].legs.map((elem, k) => {
-    destinationSchoolIds.forEach((destination) =>
-      k == 0
-        ? (remainingDistances[destination] = elem.distance)
-        : (remainingDistances[destination] += elem.distance)
-    );
-    // If school destination reached, removed from destinationSchoolIds
-    if (tripPoints.at(k + 1)?.nature == NatureEnum.school) {
-      destinationSchoolIds = destinationSchoolIds.filter(
-        (destination) => destination != tripPoints.at(k + 1)?.id
-      );
-    }
-  });
-
-  response.routes[0].legs.map((elem, k) => {
-    const grades = tripPoints.at(k)?.grades;
-
-    // Update kmPassager
-    grades?.forEach((grade) => {
-      kmPassager +=
-        grade.quantity *
-        remainingDistances[GradeUtils.getSchoolId(grade.gradeId)];
-    });
-
-    // Update remaining distances
-    for (const key of Object.keys(remainingDistances)) {
-      remainingDistances[Number(key)] -= elem.distance;
-    }
-  });
-
-  return kmPassager / 1000;
-}
