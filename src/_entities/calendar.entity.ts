@@ -45,6 +45,20 @@ export namespace CalendarEntity {
       date_deleted: CalendarUtils.dateTimeListToStringList(calendar.deleted),
     };
   }
+
+  export function formatCalendarPeriod(
+    calendarPeriod: CalendarPeriodType
+  ): CalendarPeriodDBType {
+    return {
+      id: calendarPeriod.id,
+      name: calendarPeriod.name,
+      start_date: calendarPeriod.startDate.toISOString().substring(0, 10),
+      end_date: calendarPeriod.endDate.toISOString().substring(0, 10),
+      // TODO review to have type PublicHolidaysDBType & VacationsPeriodDBType
+      public_holidays: calendarPeriod.publicHolidays,
+      vacations_period: calendarPeriod.vacationsPeriod,
+    };
+  }
 }
 
 export enum CalendarDayEnum {
@@ -74,6 +88,7 @@ export type CalendarDBType = {
 };
 
 // ! --------------------- PERIOD CALENDAR ---------------------
+// TODO review to have type PublicHolidaysDBType & VacationsPeriodDBType
 
 export type PublicHolidayType = {
   name: string;
@@ -98,8 +113,8 @@ export type CalendarPeriodType = {
 export type CalendarPeriodDBType = {
   id: number;
   name: string;
-  start_date: Date;
-  end_date: Date;
+  start_date: string;
+  end_date: string;
   vacations_period: VacationPeriodType[];
   public_holidays: PublicHolidayType[];
 };

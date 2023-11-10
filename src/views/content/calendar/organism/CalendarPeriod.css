@@ -5,3 +5,7 @@
 .calendar-period-calendar {
   @apply ml-[100px];
 }
+
+.edit-school-period {
+  @apply mt-10;
+}

@@ -1,0 +1,11 @@
+.date-input-container {
+  @apply w-[160px];
+}
+
+.input-date-btn {
+  @apply flex items-center gap-5 border-b-slate-700 border-b-[1px] w-full justify-between;
+}
+
+.input-date-btn-hidden-input {
+  @apply w-0 h-0 -translate-y-4;
+}

@@ -12,7 +12,8 @@ export namespace CalendarUtils {
   }
 
   export function dayIsInPeriod(day: Date, calendarPeriod: CalendarPeriodType) {
-    return day > calendarPeriod.startDate && day < calendarPeriod.endDate;
+    // TODO startDate is not included
+    return day >= calendarPeriod.startDate && day <= calendarPeriod.endDate;
   }
 
   export function dayToFrench(day: CalendarDayEnum): string {
