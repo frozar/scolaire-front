@@ -7,6 +7,8 @@ import { CalendarMonthsDetails } from "../molecule/CalendarMonthsDetails";
 import { setCalendarsPeriod, setOnCalendarsPeriod } from "../template/Calendar";
 import { CalendarHeader } from "./CalendarHeader";
 import "./CalendarPeriod.css";
+import { VacationItem } from "./VacationItem";
+import { VacationList } from "./VacationList";
 interface SchoolCalendarProps {
   date: Date;
   calendarPeriod: CalendarPeriodType;
@@ -58,6 +60,7 @@ export function CalendarPeriod(props: SchoolCalendarProps) {
 
         <div class="flex gap-20 mt-5">
           <DateInput
+            disabled={false}
             onChange={onChangeStartDate}
             label="Début d'année"
             defaultValue={props.calendarPeriod.startDate}
@@ -65,12 +68,19 @@ export function CalendarPeriod(props: SchoolCalendarProps) {
           />
 
           <DateInput
+            disabled={false}
             onChange={onChangeEndDate}
             label="Fin d'année"
             defaultValue={props.calendarPeriod.endDate}
             minDate={props.calendarPeriod.startDate}
           />
         </div>
+      </div>
+
+      <div class="edit-school-period">
+        <CalendarSectionTitle title="Vacances" />
+        <VacationList calendarPeriod={props.calendarPeriod} />
+        <VacationItem />
       </div>
 
       <Button label="Save" onClick={save} />

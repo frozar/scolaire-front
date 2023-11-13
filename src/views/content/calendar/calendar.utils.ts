@@ -11,6 +11,23 @@ export namespace CalendarUtils {
     });
   }
 
+  export function dayIsInVacation(
+    day: Date,
+    calendarPeriod: CalendarPeriodType
+  ): boolean {
+    let isInVacation = false;
+    for (const vacation of calendarPeriod.vacationsPeriod) {
+      const startDate = () =>
+        new Date(
+          vacation.start.getFullYear(),
+          vacation.start.getMonth(),
+          vacation.start.getDate()
+        );
+      if (day >= startDate() && day <= vacation.end) isInVacation = true;
+    }
+    return isInVacation;
+  }
+
   export function dayIsInPeriod(day: Date, calendarPeriod: CalendarPeriodType) {
     const startDate = () =>
       new Date(

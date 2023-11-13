@@ -1,0 +1,3 @@
+.vacation-item {
+  @apply flex items-center gap-5 mt-5;
+}
