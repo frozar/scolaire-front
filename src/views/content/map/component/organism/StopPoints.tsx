@@ -121,7 +121,6 @@ export function StopPoints(props: StopPointsProps) {
   );
 }
 
-// TODO: Move
 function filterBySelectedLine(stops: StopType[]) {
   return stops.filter((stop) =>
     getSelectedLine()
@@ -130,13 +129,12 @@ function filterBySelectedLine(stops: StopType[]) {
   );
 }
 
-// TODO: Move
 function filterByGradesOfTrip(stops: StopType[], gradeIds: number[]) {
   return stops.filter((stop) =>
     stop.associated.some((assoc) => gradeIds.includes(assoc.gradeId))
   );
 }
-// TODO: Move
+
 function filterByQuantity(stops: StopType[], gradeIds: number[]) {
   function isInModifyingTripMode() {
     return currentDrawTrip().id ? true : false;
@@ -164,14 +162,14 @@ function filterByQuantity(stops: StopType[], gradeIds: number[]) {
 export function leafletStopsFilter(): StopType[] {
   let stops = getStops();
   switch (onBoard()) {
+    case "schools":
+      return [];
+
     case "stops":
       return stops;
 
     case "stop-details":
       return [stopDetailsItem() as StopType];
-
-    case "schools":
-      return [];
 
     case "line":
       if (filterEmptyStops()) {
