@@ -1,0 +1,30 @@
+/* The switch - the box around the slider */
+.filter-switch {
+  @apply relative inline-block ml-[10px] w-[30px] h-[17px];
+}
+
+/* Hide default HTML checkbox */
+.filter-switch input {
+  @apply opacity-0 w-0 h-0;
+}
+
+/* The slider */
+.filter-slider {
+  @apply absolute cursor-pointer top-0 left-0 right-0 bottom-0 rounded-[17px] duration-[0.4s] bg-gray-shade-base;
+}
+
+.filter-slider:before {
+  @apply absolute content-[""] h-[13px] w-[13px] left-[2px] bottom-[2px] rounded-[50%] bg-white duration-[0.4s];
+}
+
+input:checked + .filter-slider {
+  @apply bg-green-base;
+}
+
+input:focus + .filter-slider {
+  @apply shadow-green-base;
+}
+
+input:checked + .filter-slider:before {
+  @apply translate-x-[13px];
+}
