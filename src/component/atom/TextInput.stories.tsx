@@ -19,7 +19,7 @@ export const TextInput: Story = {
   },
 
   args: {
-    placeholder: "Entrer de texte",
+    placeholder: "Entrée de texte",
   },
 };
 
@@ -34,7 +34,7 @@ export const TextInputDisabled: Story = {
   },
 
   args: {
-    placeholder: "Entrer de texte",
+    placeholder: "Entrée de texte",
     disabled: true,
   },
 };
