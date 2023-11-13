@@ -2,6 +2,7 @@ import { NatureEnum } from "../type";
 import { getLines } from "../views/content/map/component/organism/BusLines";
 import { getStops } from "../views/content/map/component/organism/StopPoints";
 
+// TODO: Refactor
 export namespace StopUtils {
   export function getTotalQuantity(stopId: number) {
     let quantity = 0;
@@ -25,6 +26,28 @@ export namespace StopUtils {
       )
       .flatMap((_tripPoint) => _tripPoint.grades)
       .forEach((grade) => (usedQuantity += grade.quantity));
+
+    return totalQuantity - usedQuantity;
+  }
+
+  // TODO:
+  export function getRemainingQuantityPerGrades(
+    stopId: number,
+    gradeIds: number[]
+  ) {
+    const totalQuantity = getTotalQuantity(stopId);
+
+    let usedQuantity = 0;
+    getLines()
+      .flatMap((line) => line.trips)
+      .flatMap((trip) => trip.tripPoints)
+      .filter(
+        (tripPoint) =>
+          tripPoint.nature == NatureEnum.stop && tripPoint.id == stopId
+      )
+      .flatMap((_tripPoint) => _tripPoint.grades)
+      .filter((grade) => gradeIds.includes(grade.gradeId))
+      .forEach((_grade) => (usedQuantity += _grade.quantity));
 
     return totalQuantity - usedQuantity;
   }

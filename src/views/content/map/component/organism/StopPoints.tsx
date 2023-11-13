@@ -151,8 +151,15 @@ export function leafletStopsFilter(): StopType[] {
       break;
     case "trip-draw":
       schools = currentDrawTrip().schools;
+      /* Liste des filtres:
+        - 01 stops qui sont dans la ligne
+        - 02 stops dont les grades sont  assignées à la trip !
+        - 03 trip modification case => afficher aussi quand qté == 0 si dans la trip OU filtrer qty =0
+      */
 
-      // Filter stops that is in selectedLine
+      // 01 - Filter stops that is in selectedLine
+      console.log("before 01 =>", stops.length);
+
       stops = getStops().filter(
         (stop) =>
           getSelectedLine()
@@ -162,22 +169,38 @@ export function leafletStopsFilter(): StopType[] {
             : true // TODO: Verify if getSelectedLine() is always true
       );
 
-      stops = stops.filter((stop) =>
-        stop.associated.some((associated) =>
-          currentDrawTrip()
-            ?.grades.map((grade) => grade.id)
-            .includes(associated.gradeId)
-        )
-      );
+      console.log("after 01 =>", stops.length);
+
+      // // ! ?
+      // stops = stops.filter((stop) =>
+      //   stop.associated.some((associated) =>
+      //     currentDrawTrip()
+      //       ?.grades.map((grade) => grade.id)
+      //       .includes(associated.gradeId)
+      //   )
+      // );
 
       // TODO: Filter stops containing grades previously selected for the trip
+      // ! 02
+      const gradeIds = currentDrawTrip().grades.map(
+        (grade) => grade.id as number
+      );
+      const gradeNames = currentDrawTrip().grades.map((grade) => grade.name);
+      console.log("gradeNames", gradeNames);
+
+      stops = stops.filter((stop) =>
+        stop.associated.some((assoc) => gradeIds.includes(assoc.gradeId))
+      );
+      console.log("after 02 =>", stops.length);
 
       function isInModifyingTripMode() {
         return currentDrawTrip().id ? true : false;
       }
-      // Filter stops with qty > 0 and stop in modifying trip
+      // 03 - Filter stops with qty > 0 and stop in modifying trip
       switch (isInModifyingTripMode()) {
         case true:
+          console.log("modify mode");
+
           const trip = TripUtils.get(currentDrawTrip().id as number);
           stops = stops.filter(
             (stop) =>
@@ -187,9 +210,23 @@ export function leafletStopsFilter(): StopType[] {
           break;
 
         case false:
-          stops = FilterUtils.filterEmptyStops(stops);
+          console.log("create mode");
+
+          // stops = FilterUtils.filterEmptyStops(stops);
+          // ! Make that filter work
+          console.log("stops =>", stops);
+          stops = stops.filter((stop) => {
+            console.log(
+              StopUtils.getRemainingQuantityPerGrades(stop.id, gradeIds)
+            );
+
+            return (
+              StopUtils.getRemainingQuantityPerGrades(stop.id, gradeIds) > 0
+            );
+          });
           break;
       }
+      console.log("after 03 =>", stops.length);
 
       switch (currentStep()) {
         case DrawTripStep.schoolSelection:
