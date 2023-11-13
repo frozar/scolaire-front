@@ -60,7 +60,6 @@ export function CalendarPeriod(props: SchoolCalendarProps) {
 
         <div class="flex gap-20 mt-5">
           <DateInput
-            disabled={false}
             onChange={onChangeStartDate}
             label="Début d'année"
             defaultValue={props.calendarPeriod.startDate}
@@ -68,7 +67,6 @@ export function CalendarPeriod(props: SchoolCalendarProps) {
           />
 
           <DateInput
-            disabled={false}
             onChange={onChangeEndDate}
             label="Fin d'année"
             defaultValue={props.calendarPeriod.endDate}

@@ -23,7 +23,7 @@ export function DateInput(props: DateInputProps) {
   });
 
   function openInputDateDialog() {
-    if (props.disabled == false) dateInputRef()?.showPicker();
+    if (!props.disabled) dateInputRef()?.showPicker();
   }
 
   function onChange() {
@@ -49,7 +49,7 @@ export function DateInput(props: DateInputProps) {
         ref={setDateInputRef}
         value={props.defaultValue?.toISOString().substring(0, 10)}
         class="input-date-btn-hidden-input"
-        disabled={props.disabled}
+        disabled={props.disabled ?? false}
       />
     </div>
   );
