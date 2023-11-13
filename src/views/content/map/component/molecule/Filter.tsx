@@ -1,4 +1,4 @@
-import { Accessor, Setter, onMount } from "solid-js";
+import { Accessor, Setter, createSignal } from "solid-js";
 import "./Filter.css";
 
 interface FilterProps {
@@ -6,21 +6,25 @@ interface FilterProps {
   getter: Accessor<boolean>;
   setter: Setter<boolean>;
 }
-let ref: HTMLInputElement;
 
 export function Filter(props: FilterProps) {
-  onMount(() => {
-    if (props.getter()) {
-      ref.checked = true;
-    }
-  });
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [ref, setRef] = createSignal<HTMLInputElement>();
 
   return (
     <div class="flex items-center">
       {props.title}
       <label class="filter-switch">
         <input
-          ref={ref}
+          ref={(e) =>
+            setRef(() => {
+              if (!props.getter()) return e;
+              else {
+                e.checked = true;
+                return e;
+              }
+            })
+          }
           type="checkbox"
           onChange={() => props.setter((prev) => (prev ? false : true))}
         />
