@@ -26,10 +26,6 @@ export function BusLines(props: { busLines: LineType[] }) {
     setLines([]);
   });
 
-  createEffect(() => {
-    console.log("getLines()", getLines());
-  });
-
   return <></>;
 }
 

@@ -3,7 +3,6 @@ import { NatureEnum } from "../type";
 import { getLines } from "../views/content/map/component/organism/BusLines";
 import { getStops } from "../views/content/map/component/organism/StopPoints";
 
-// TODO: Refactor
 export namespace StopUtils {
   export function getTotalQuantity(stopId: number) {
     let quantity = 0;
@@ -46,7 +45,6 @@ export namespace StopUtils {
     return totalQuantity - usedQuantity;
   }
 
-  // TODO:
   export function getRemainingQuantityFromGradeIds(
     stopId: number,
     gradeIds: number[]
