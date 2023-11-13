@@ -16,7 +16,10 @@ import {
   currentStep,
 } from "../../../board/component/organism/DrawTripBoard";
 import { onBoard } from "../../../board/component/template/ContextManager";
-import { updateStopDetailsItem } from "../../../stops/component/organism/StopDetails";
+import {
+  stopDetailsItem,
+  updateStopDetailsItem,
+} from "../../../stops/component/organism/StopDetails";
 import { PointInterface } from "../atom/Point";
 import { StopPoint } from "../molecule/StopPoint";
 import { getSelectedLine } from "./BusLines";
@@ -159,9 +162,14 @@ function filterByQuantity(stops: StopType[], gradeIds: number[]) {
 
 //TODO Delete and replace with displayedStop signal
 export function leafletStopsFilter(): StopType[] {
-  // let schools = getSchools();
   let stops = getStops();
   switch (onBoard()) {
+    case "stops":
+      return stops;
+
+    case "stop-details":
+      return [stopDetailsItem() as StopType];
+
     case "schools":
       return [];
 
@@ -192,21 +200,12 @@ export function leafletStopsFilter(): StopType[] {
       }
 
     case "trip-draw":
-      // schools = currentDrawTrip().schools;
       const gradeIds = currentDrawTrip().grades.map(
         (grade) => grade.id as number
       );
-      /* Liste des filtres:
-        - 01 stops qui sont dans la ligne
-        - 02 stops dont les grades sont  assignées à la trip !
-        - 03 trip modification case => afficher aussi quand qté == 0 si dans la trip OU filtrer qty =0
-      */
 
-      // 01 - Filter stops that is in selectedLine
       stops = filterBySelectedLine(stops);
-      // 02 -
       stops = filterByGradesOfTrip(stops, gradeIds);
-      // 03 - Filter stops with qty > 0 and stop in modifying trip
       stops = filterByQuantity(stops, gradeIds);
 
       switch (currentStep()) {
@@ -216,9 +215,9 @@ export function leafletStopsFilter(): StopType[] {
         case DrawTripStep.initial:
           return stops;
       }
+    default:
+      return stops;
   }
-
-  // return stops;
 }
 
 //TODO To delete ?
