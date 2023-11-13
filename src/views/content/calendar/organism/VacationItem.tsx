@@ -11,11 +11,10 @@ interface VacationItemProps {
 }
 
 export function VacationItem(props: VacationItemProps) {
+  const name = () => (props.item ? props.item.name : bufferItem.name);
   const [disabled, setDisabled] = createSignal<boolean>(
     props.item != undefined
   );
-  // let disabled = () => props.item != undefined;
-  const name = () => (props.item ? props.item.name : bufferItem.name);
 
   const bufferItem: VacationPeriodType = {
     name: "",
@@ -67,7 +66,6 @@ export function VacationItem(props: VacationItemProps) {
   }
 
   function removeVacation() {
-    console.log("remove vacation", props.item);
     setOnCalendarsPeriod((prev) => {
       if (!prev) return prev;
       const datas = { ...prev };
