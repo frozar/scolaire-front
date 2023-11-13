@@ -234,6 +234,8 @@ async function nextStep() {
 
     case AddLineStep.stopSelection:
       if (addLineCheckableStop().length < 2) {
+        // TODO: Display user message ?
+        console.log("line must have at least 2 stops");
         break;
       }
 
