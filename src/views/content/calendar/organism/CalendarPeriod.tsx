@@ -16,18 +16,14 @@ export function CalendarPeriod(props: SchoolCalendarProps) {
   function onChangeStartDate(date: Date) {
     setOnCalendarsPeriod((prev) => {
       if (prev == undefined) return prev;
-      const data = { ...prev };
-      data.startDate = date;
-      return data;
+      return { ...prev, startDate: date };
     });
   }
 
   function onChangeEndDate(date: Date) {
     setOnCalendarsPeriod((prev) => {
       if (prev == undefined) return prev;
-      const data = { ...prev };
-      data.endDate = date;
-      return data;
+      return { ...prev, endDate: date };
     });
   }
 
