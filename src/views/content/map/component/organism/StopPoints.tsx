@@ -217,11 +217,11 @@ export function leafletStopsFilter(): StopType[] {
           console.log("stops =>", stops);
           stops = stops.filter((stop) => {
             console.log(
-              StopUtils.getRemainingQuantityPerGrades(stop.id, gradeIds)
+              StopUtils.getRemainingQuantityFromGradeIds(stop.id, gradeIds)
             );
 
             return (
-              StopUtils.getRemainingQuantityPerGrades(stop.id, gradeIds) > 0
+              StopUtils.getRemainingQuantityFromGradeIds(stop.id, gradeIds) > 0
             );
           });
           break;

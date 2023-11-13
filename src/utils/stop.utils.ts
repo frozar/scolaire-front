@@ -4,11 +4,22 @@ import { getStops } from "../views/content/map/component/organism/StopPoints";
 
 // TODO: Refactor
 export namespace StopUtils {
-  export function getTotalQuantity(stopId: number) {
+  function getTotalQuantity(stopId: number) {
     let quantity = 0;
     const stop = getStops().filter((stop) => stop.id == stopId)[0];
 
     stop.associated.forEach((assoc) => (quantity += assoc.quantity));
+
+    return quantity;
+  }
+
+  function getTotalQuantityFromGradeIds(stopId: number, gradeIds: number[]) {
+    let quantity = 0;
+    const stop = getStops().filter((stop) => stop.id == stopId)[0];
+
+    stop.associated.forEach((assoc) => {
+      if (gradeIds.includes(assoc.gradeId)) quantity += assoc.quantity;
+    });
 
     return quantity;
   }
@@ -31,11 +42,11 @@ export namespace StopUtils {
   }
 
   // TODO:
-  export function getRemainingQuantityPerGrades(
+  export function getRemainingQuantityFromGradeIds(
     stopId: number,
     gradeIds: number[]
   ) {
-    const totalQuantity = getTotalQuantity(stopId);
+    const totalQuantity = getTotalQuantityFromGradeIds(stopId, gradeIds);
 
     let usedQuantity = 0;
     getLines()
