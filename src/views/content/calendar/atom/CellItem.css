@@ -8,7 +8,8 @@
   @apply bg-green-base;
 }
 
-.outperiod-cell {
+.outperiod-cell,
+.vacation-cell {
   @apply bg-red-base;
 }
 

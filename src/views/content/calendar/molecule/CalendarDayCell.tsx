@@ -22,6 +22,7 @@ export function CalendarDayCell(props: CalendarDayCellProps) {
 
   function isActiveCell() {
     if (props.calendar)
+      // * Depend on props.action
       switch (props.action) {
         case CalendarActionsEnum.add:
           return CalendarUtils.isAnAddedDate(props.date, props.calendar);
@@ -41,12 +42,19 @@ export function CalendarDayCell(props: CalendarDayCellProps) {
     else return false;
   }
 
+  function isVacation() {
+    if (props.calendarPeriod)
+      return CalendarUtils.dayIsInVacation(props.date, props.calendarPeriod);
+    else return false;
+  }
+
   return (
     <CellItem
       isActive={isActiveCell()}
       isWeekend={CalendarUtils.isWeekend(props.date)}
       onClick={onClickAction}
       outPeriod={outPeriod()}
+      isVacation={isVacation()}
     />
   );
 }

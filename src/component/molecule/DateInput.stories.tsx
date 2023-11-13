@@ -18,6 +18,7 @@ export const DateInput: Story = {
     minDate: Date;
     maxDate: Date;
     defaultValue: Date;
+    disabled: boolean;
   }) => {
     return <DateInputComponent {...props} />;
   },
@@ -27,5 +28,6 @@ export const DateInput: Story = {
     maxDate: new Date(currentDate.getFullYear(), currentDate.getMonth() + 1),
     minDate: new Date(currentDate.getFullYear(), currentDate.getMonth() - 1),
     defaultValue: new Date(Date.now()),
+    disabled: false,
   },
 };

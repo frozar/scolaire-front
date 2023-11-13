@@ -1,4 +1,4 @@
-import { createSignal } from "solid-js";
+import { createSignal, onMount } from "solid-js";
 import CalendarIcon from "../../icons/CalendarIcon";
 import "./DateInput.css";
 
@@ -8,50 +8,33 @@ interface DateInputProps {
   minDate?: Date;
   maxDate?: Date;
   onChange: (date: Date) => void;
+  disabled?: boolean;
 }
 
 export function DateInput(props: DateInputProps) {
   const [dateInputRef, setDateInputRef] = createSignal<HTMLInputElement>();
-  const label = props.label ?? "Entrer une date";
-  const [defaultDate, setDefaultDate] = createSignal(
-    props.defaultValue
-      ? props.defaultValue?.toISOString().substring(0, 10)
-      : label
-  );
+  const [defaultDate, setDefaultDate] = createSignal<string>();
+  const label = () => props.label ?? "Entrer une date";
+
+  onMount(() => {
+    if (props.defaultValue)
+      setDefaultDate(props.defaultValue.toISOString().substring(0, 10));
+    else setDefaultDate(label);
+  });
 
   function openInputDateDialog() {
-    dateInputRef()?.showPicker();
+    if (!props.disabled) dateInputRef()?.showPicker();
   }
 
   function onChange() {
-    props.onChange(new Date(dateInputRef()?.value as string));
-    setDefaultDate(dateInputRef()?.value as string);
-  }
-
-  function minDate() {
-    if (props.minDate) {
-      const month = props.minDate.getMonth() + 1;
-      const day = props.minDate.getDate();
-      return `${props.minDate.getFullYear()}-${
-        month < 10 ? "0" + month : month
-      }-${day < 10 ? "0" + day : day}`;
-    } else return "";
-  }
-
-  function maxDate() {
-    if (props.maxDate) {
-      const month = props.maxDate.getMonth() + 1;
-      const day = props.maxDate.getDate();
-
-      return `${props.maxDate.getFullYear()}-${
-        month < 10 ? "0" + month : month
-      }-${day < 10 ? "0" + day : day}`;
-    } else return "";
+    const date = new Date(dateInputRef()?.value as string);
+    props.onChange(date);
+    setDefaultDate(date.toISOString().substring(0, 10));
   }
 
   return (
     <div class="date-input-container">
-      <label>{label}</label>
+      <label>{label()}</label>
       <button onClick={openInputDateDialog} class="input-date-btn">
         {defaultDate()}
         <div class="w-4">
@@ -61,10 +44,12 @@ export function DateInput(props: DateInputProps) {
       <input
         onChange={onChange}
         type="date"
-        min={minDate()}
-        max={maxDate()}
+        min={props.minDate ? props.minDate.toISOString().substring(0, 10) : ""}
+        max={props.maxDate ? props.maxDate.toISOString().substring(0, 10) : ""}
         ref={setDateInputRef}
+        value={props.defaultValue?.toISOString().substring(0, 10)}
         class="input-date-btn-hidden-input"
+        disabled={props.disabled ?? false}
       />
     </div>
   );
