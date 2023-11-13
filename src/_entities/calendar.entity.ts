@@ -54,9 +54,19 @@ export namespace CalendarEntity {
       name: calendarPeriod.name,
       start_date: calendarPeriod.startDate.toISOString().substring(0, 10),
       end_date: calendarPeriod.endDate.toISOString().substring(0, 10),
-      // TODO review to have type PublicHolidaysDBType & VacationsPeriodDBType
-      public_holidays: calendarPeriod.publicHolidays,
-      vacations_period: calendarPeriod.vacationsPeriod,
+      public_holidays: calendarPeriod.publicHolidays.map((item) => {
+        return {
+          name: item.name,
+          date: item.date.toISOString().substring(0, 10),
+        };
+      }),
+      vacations_period: calendarPeriod.vacationsPeriod.map((item) => {
+        return {
+          name: item.name,
+          start: item.start.toISOString().substring(0, 10),
+          end: item.end.toISOString().substring(0, 10),
+        };
+      }),
     };
   }
 }
@@ -88,17 +98,27 @@ export type CalendarDBType = {
 };
 
 // ! --------------------- PERIOD CALENDAR ---------------------
-// TODO review to have type PublicHolidaysDBType & VacationsPeriodDBType
 
 export type PublicHolidayType = {
   name: string;
   date: Date;
 };
 
+export type PublicHolidayDBType = {
+  name: string;
+  date: string;
+};
+
 export type VacationPeriodType = {
   name: string;
   start: Date;
   end: Date;
+};
+
+export type VacationPeriodDBType = {
+  name: string;
+  start: string;
+  end: string;
 };
 
 export type CalendarPeriodType = {
@@ -115,6 +135,6 @@ export type CalendarPeriodDBType = {
   name: string;
   start_date: string;
   end_date: string;
-  vacations_period: VacationPeriodType[];
-  public_holidays: PublicHolidayType[];
+  vacations_period: VacationPeriodDBType[];
+  public_holidays: PublicHolidayDBType[];
 };
