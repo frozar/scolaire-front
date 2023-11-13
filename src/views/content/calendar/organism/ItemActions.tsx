@@ -1,24 +1,27 @@
 import { Show } from "solid-js";
-import { VacationPeriodType } from "../../../../_entities/calendar.entity";
+import {
+  PublicHolidayType,
+  VacationPeriodType,
+} from "../../../../_entities/calendar.entity";
 import CheckIcon from "../../../../icons/CheckIcon";
 import PencilIcon from "../../../../icons/PencilIcon";
 import PlusIcon from "../../../../icons/PlusIcon";
 import TrashIcon from "../../../../icons/TrashIcon";
 import ButtonIcon from "../../board/component/molecule/ButtonIcon";
 
-interface VacationActionsProps {
-  item?: VacationPeriodType;
-  removeVacation: () => void;
-  appendVacation: () => void;
+interface ItemActionsProps {
+  item?: VacationPeriodType | PublicHolidayType;
+  removeItem: () => void;
+  appendItem: () => void;
   editMode: () => void;
   disabled: boolean;
 }
 
-export function VacationActions(props: VacationActionsProps) {
+export function ItemActions(props: ItemActionsProps) {
   function ItemActions() {
     return (
       <div class="flex gap-2">
-        <ButtonIcon icon={<TrashIcon />} onClick={props.removeVacation} />
+        <ButtonIcon icon={<TrashIcon />} onClick={props.removeItem} />
         <Show
           when={props.disabled && props.item != undefined}
           fallback={
@@ -32,7 +35,7 @@ export function VacationActions(props: VacationActionsProps) {
   }
   return (
     <Show when={props.item == undefined} fallback={<ItemActions />}>
-      <ButtonIcon icon={<PlusIcon />} onClick={props.appendVacation} />
+      <ButtonIcon icon={<PlusIcon />} onClick={props.appendItem} />
     </Show>
   );
 }

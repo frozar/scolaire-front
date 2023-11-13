@@ -48,6 +48,12 @@ export function CalendarDayCell(props: CalendarDayCellProps) {
     else return false;
   }
 
+  function isHoliday() {
+    if (props.calendarPeriod)
+      return CalendarUtils.dayIsHoliday(props.date, props.calendarPeriod);
+    else return false;
+  }
+
   return (
     <CellItem
       isActive={isActiveCell()}
@@ -55,6 +61,7 @@ export function CalendarDayCell(props: CalendarDayCellProps) {
       onClick={onClickAction}
       outPeriod={outPeriod()}
       isVacation={isVacation()}
+      isHoliday={isHoliday()}
     />
   );
 }

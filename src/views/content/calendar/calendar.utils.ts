@@ -11,6 +11,20 @@ export namespace CalendarUtils {
     });
   }
 
+  export function dayIsHoliday(day: Date, calendarPeriod: CalendarPeriodType) {
+    let isHolidayDate = false;
+    for (const ferieDate of calendarPeriod.publicHolidays) {
+      const date = new Date(
+        ferieDate.date.getFullYear(),
+        ferieDate.date.getMonth(),
+        ferieDate.date.getDate()
+      );
+
+      if (date.getTime() == day.getTime()) isHolidayDate = true;
+    }
+    return isHolidayDate;
+  }
+
   export function dayIsInVacation(
     day: Date,
     calendarPeriod: CalendarPeriodType

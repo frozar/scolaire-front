@@ -7,6 +7,8 @@ import { CalendarMonthsDetails } from "../molecule/CalendarMonthsDetails";
 import { setCalendarsPeriod, setOnCalendarsPeriod } from "../template/Calendar";
 import { CalendarHeader } from "./CalendarHeader";
 import "./CalendarPeriod.css";
+import { PublicHolidayItem } from "./PublicHolidayItem";
+import { PublicHolidayList } from "./PublicHolidayList";
 import { VacationItem } from "./VacationItem";
 import { VacationList } from "./VacationList";
 interface SchoolCalendarProps {
@@ -79,6 +81,12 @@ export function CalendarPeriod(props: SchoolCalendarProps) {
         <CalendarSectionTitle title="Vacances" />
         <VacationList calendarPeriod={props.calendarPeriod} />
         <VacationItem />
+      </div>
+
+      <div class="edit-school-period">
+        <CalendarSectionTitle title="Jour férié" />
+        <PublicHolidayList calendarPeriod={props.calendarPeriod} />
+        <PublicHolidayItem />
       </div>
 
       <Button label="Save" onClick={save} />

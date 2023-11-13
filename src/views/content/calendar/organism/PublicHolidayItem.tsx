@@ -1,41 +1,40 @@
 import { createSignal } from "solid-js";
-import { VacationPeriodType } from "../../../../_entities/calendar.entity";
+import { PublicHolidayType } from "../../../../_entities/calendar.entity";
 import { TextInput } from "../../../../component/atom/TextInput";
 import { DateInput } from "../../../../component/molecule/DateInput";
 import { setOnCalendarsPeriod } from "../template/Calendar";
 import { ItemActions } from "./ItemActions";
 import "./VacationItem.css";
 
-interface VacationItemProps {
-  item?: VacationPeriodType;
+interface PublicHolidayItemProps {
+  item?: PublicHolidayType;
 }
 
-export function VacationItem(props: VacationItemProps) {
+export function PublicHolidayItem(props: PublicHolidayItemProps) {
   const name = () => (props.item ? props.item.name : bufferItem.name);
   const [disabled, setDisabled] = createSignal<boolean>(
     props.item != undefined
   );
 
-  const bufferItem: VacationPeriodType = {
+  const bufferItem: PublicHolidayType = {
     name: "",
-    start: new Date(),
-    end: new Date(),
+    date: new Date(),
   };
 
-  function onChangeDate(date: Date, field: "start" | "end") {
+  function onChangeDate(date: Date) {
     if (props.item) {
       setOnCalendarsPeriod((prev) => {
         if (!prev) return prev;
         const datas = { ...prev };
-        const index = datas.vacationsPeriod.findIndex(
+        const index = datas.publicHolidays.findIndex(
           (item) => item.name == props.item?.name
         );
         if (index == -1) return datas;
-        datas.vacationsPeriod[index][field] = date;
+        datas.publicHolidays[index].date = date;
         return datas;
       });
     } else {
-      bufferItem[field] = date;
+      bufferItem.date = date;
     }
   }
 
@@ -44,11 +43,11 @@ export function VacationItem(props: VacationItemProps) {
       setOnCalendarsPeriod((prev) => {
         if (!prev) return prev;
         const datas = { ...prev };
-        const index = datas.vacationsPeriod.findIndex(
+        const index = datas.publicHolidays.findIndex(
           (item) => item.name == props.item?.name
         );
         if (index == -1) return datas;
-        datas.vacationsPeriod[index].name = value;
+        datas.publicHolidays[index].name = value;
         return datas;
       });
     } else {
@@ -56,20 +55,20 @@ export function VacationItem(props: VacationItemProps) {
     }
   }
 
-  function appendVacation() {
+  function appendHoliday() {
     setOnCalendarsPeriod((prev) => {
       if (!prev) return prev;
       const datas = { ...prev };
-      datas.vacationsPeriod.push(bufferItem);
+      datas.publicHolidays.push(bufferItem);
       return datas;
     });
   }
 
-  function removeVacation() {
+  function removeHoliday() {
     setOnCalendarsPeriod((prev) => {
       if (!prev) return prev;
       const datas = { ...prev };
-      datas.vacationsPeriod = datas.vacationsPeriod.filter(
+      datas.publicHolidays = datas.publicHolidays.filter(
         (item) => item.name != props.item?.name
       );
       return datas;
@@ -90,23 +89,15 @@ export function VacationItem(props: VacationItemProps) {
       />
       <DateInput
         label="Début"
-        maxDate={props.item?.end}
-        defaultValue={props.item?.start}
+        defaultValue={props.item?.date}
         disabled={disabled()}
-        onChange={(date: Date) => onChangeDate(date, "start")}
-      />
-      <DateInput
-        label="Fin"
-        minDate={props.item?.start}
-        defaultValue={props.item?.end}
-        disabled={disabled()}
-        onChange={(date: Date) => onChangeDate(date, "end")}
+        onChange={onChangeDate}
       />
       <ItemActions
-        appendItem={appendVacation}
+        appendItem={appendHoliday}
         disabled={disabled()}
         editMode={editMode}
-        removeItem={removeVacation}
+        removeItem={removeHoliday}
         item={props.item}
       />
     </div>

@@ -5,6 +5,7 @@ interface CellItemProps {
   isActive: boolean;
   outPeriod?: boolean;
   isVacation?: boolean;
+  isHoliday?: boolean;
   onClick: () => void;
 }
 
@@ -16,6 +17,7 @@ export default function (props: CellItemProps) {
         "active-cell": props.isActive,
         "outperiod-cell": props.outPeriod,
         "vacation-cell": props.isVacation,
+        "feries-cell": props.isHoliday,
       }}
       class="cell-item"
       onClick={props.onClick}
