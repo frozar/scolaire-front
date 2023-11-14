@@ -40,7 +40,7 @@ export namespace StopUtils {
     updateStopDetailsItem(stopId);
   }
   // TODO: Use it
-  export function updateFromStop(
+  export function updateAssociated(
     gradeStudentToGrade: AssociatedSchoolType,
     stopId: number
   ) {
