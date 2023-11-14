@@ -1,4 +1,4 @@
-import { createSignal } from "solid-js";
+import { createEffect, createSignal } from "solid-js";
 import { VacationPeriodType } from "../../../../_entities/calendar.entity";
 import { TextInput } from "../../../../component/atom/TextInput";
 import { DateInput } from "../../../../component/molecule/DateInput";
@@ -11,57 +11,64 @@ interface VacationItemProps {
 }
 
 export function VacationItem(props: VacationItemProps) {
-  const name = () => (props.item ? props.item.name : bufferItem.name);
+  const name = () => (props.item ? props.item.name : bufferVacation().name);
   const [disabled, setDisabled] = createSignal<boolean>(
     props.item != undefined
   );
 
-  const bufferItem: VacationPeriodType = {
-    name: "",
-    start: new Date(),
-    end: new Date(),
-  };
+  const [bufferVacation, setBufferVacation] = createSignal<VacationPeriodType>(
+    props.item ?? {
+      name: "",
+      start: new Date(),
+      end: new Date(),
+    }
+  );
 
-  function onChangeDate(date: Date, field: "start" | "end") {
-    if (props.item) {
+  createEffect(() => {
+    if (bufferVacation()) {
       setOnCalendarsPeriod((prev) => {
         if (!prev) return prev;
         const datas = { ...prev };
         const index = datas.vacationsPeriod.findIndex(
-          (item) => item.name == props.item?.name
+          (item) => item.name == bufferVacation().name
         );
         if (index == -1) return datas;
-        datas.vacationsPeriod[index][field] = date;
+        datas.vacationsPeriod[index] = bufferVacation();
         return datas;
       });
-    } else {
-      bufferItem[field] = date;
     }
+  });
+
+  function onChangeDate(date: Date, field: "start" | "end") {
+    setBufferVacation((prev) => {
+      if (!prev) return prev;
+      const datas = { ...prev };
+      datas[field] = date;
+      return datas;
+    });
   }
 
   function onInputName(value: string) {
-    if (props.item) {
-      setOnCalendarsPeriod((prev) => {
-        if (!prev) return prev;
-        const datas = { ...prev };
-        const index = datas.vacationsPeriod.findIndex(
-          (item) => item.name == props.item?.name
-        );
-        if (index == -1) return datas;
-        datas.vacationsPeriod[index].name = value;
-        return datas;
-      });
-    } else {
-      bufferItem.name = value;
-    }
+    setBufferVacation((prev) => {
+      if (!prev) return prev;
+      const datas = { ...prev };
+      datas.name = value;
+      return datas;
+    });
   }
 
   function appendVacation() {
     setOnCalendarsPeriod((prev) => {
       if (!prev) return prev;
       const datas = { ...prev };
-      datas.vacationsPeriod.push(bufferItem);
+      datas.vacationsPeriod.push(bufferVacation());
       return datas;
+    });
+
+    setBufferVacation({
+      name: "",
+      start: new Date(Date.now()),
+      end: new Date(Date.now()),
     });
   }
 
@@ -90,15 +97,15 @@ export function VacationItem(props: VacationItemProps) {
       />
       <DateInput
         label="Début"
-        maxDate={props.item?.end}
-        defaultValue={props.item?.start}
+        maxDate={bufferVacation().end}
+        defaultValue={bufferVacation().start}
         disabled={disabled()}
         onChange={(date: Date) => onChangeDate(date, "start")}
       />
       <DateInput
         label="Fin"
-        minDate={props.item?.start}
-        defaultValue={props.item?.end}
+        minDate={bufferVacation().start}
+        defaultValue={bufferVacation().end}
         disabled={disabled()}
         onChange={(date: Date) => onChangeDate(date, "end")}
       />
@@ -107,7 +114,7 @@ export function VacationItem(props: VacationItemProps) {
         disabled={disabled()}
         editMode={editMode}
         removeItem={removeVacation}
-        item={props.item}
+        item={bufferVacation()}
       />
     </div>
   );

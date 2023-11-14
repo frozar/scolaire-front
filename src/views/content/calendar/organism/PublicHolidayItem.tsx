@@ -84,11 +84,11 @@ export function PublicHolidayItem(props: PublicHolidayItemProps) {
       <TextInput
         onInput={onInputName}
         defaultValue={name()}
-        placeholder="Nom vacance"
+        placeholder="Nom du jour férié"
         disabled={disabled()}
       />
       <DateInput
-        label="Début"
+        label="Date"
         defaultValue={props.item?.date}
         disabled={disabled()}
         onChange={onChangeDate}
