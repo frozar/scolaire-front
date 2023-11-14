@@ -1,7 +1,4 @@
-import {
-  CalendarPeriodType,
-  CalendarType,
-} from "../../../../_entities/calendar.entity";
+import { CalendarType } from "../../../../_entities/calendar.entity";
 import { CalendarService } from "../../../../_services/calendar.service";
 import Button from "../../../../component/atom/Button";
 import { CalendarPeriodSelector } from "../atom/CalendarPeriodSelector";
@@ -35,11 +32,11 @@ export function CalendarEdition(props: CalendarEditionProps) {
     );
   }
 
-  function onChangeCalendarPeriodSelector(
-    calendarPeriod: CalendarPeriodType | undefined
-  ) {
-    CalendarManager.linkToPeriodCalendar(calendarPeriod);
-  }
+  // function onChangeCalendarPeriodSelector(
+  //   calendarPeriod: CalendarPeriodType | undefined
+  // ) {
+  //   // CalendarManager.linkToPeriodCalendar(calendarPeriod);
+  // }
 
   return (
     <section class="calendar-edition">
