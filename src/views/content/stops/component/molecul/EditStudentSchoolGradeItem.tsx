@@ -101,7 +101,13 @@ export default function (props: EditStopProps) {
   }
 
   async function validate() {
-    if (props.gradeStudentToGrade) await AssociatedUtils.update();
+    if (props.gradeStudentToGrade)
+      await AssociatedUtils.update(
+        props.gradeStudentToGrade.idClassToSchool,
+        Number(gradeSelectRef().value),
+        Number(schoolSelectRef().value),
+        Number(quantityInputRef().value)
+      );
     else if (!checkAllInputsValue())
       AssociatedUtils.create(
         Number(quantityInputRef().value),

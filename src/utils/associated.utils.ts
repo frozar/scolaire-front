@@ -26,15 +26,23 @@ export namespace AssociatedUtils {
   }
 
   // TODO
-  export async function update() {
-    // const gradeToSchool = await StudentToGradeService.update({
-    //   idClassToSchool: props.gradeStudentToGrade?.idClassToSchool as number,
-    //   schoolId: Number(schoolSelectRef().value),
-    //   stopId: Number(stopDetailsItem()?.id),
-    //   quantity: Number(quantityInputRef().value),
-    //   gradeId: Number(gradeSelectRef().value),
-    // });
-
+  export async function update(
+    studentToGradeId: number,
+    gradeId: number,
+    schoolId: number,
+    quantity: number
+  ) {
+    const gradeToSchool = await StudentToGradeService.update(
+      {
+        idClassToSchool: studentToGradeId,
+        stopId: Number(stopDetailsItem()?.id),
+        quantity,
+        gradeId,
+      },
+      schoolId
+    );
+    // ! Update school associated
+    // ! Update stop associated
     // updateFromStop(gradeToSchool, stopDetailsItem()?.id as number);
 
     // TODO lucas même update mais pour school
