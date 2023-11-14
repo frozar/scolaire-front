@@ -17,12 +17,28 @@ export namespace StopUtils {
       const stops = [...prev];
       const indexOf = stops.findIndex((prev) => prev.id == stopId);
       stops[indexOf].associated.push(gradeItem);
+
       return stops;
     });
     updateStopDetailsItem(stopId);
   }
 
-  export function removeAssociated() {}
+  export function removeAssociated(
+    gradeStudentToGradeID: number,
+    stopId: number
+  ) {
+    setStops((prev) => {
+      const stops = [...prev];
+      const indexOfStop = stops.findIndex((prev) => prev.id == stopId);
+
+      stops[indexOfStop].associated = stops[indexOfStop].associated.filter(
+        (prev) => prev.idClassToSchool != gradeStudentToGradeID
+      );
+
+      return stops;
+    });
+    updateStopDetailsItem(stopId);
+  }
 
   export function getTotalQuantity(stopId: number) {
     let quantity = 0;

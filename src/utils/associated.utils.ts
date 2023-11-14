@@ -1,5 +1,4 @@
 import { StudentToGradeService } from "../_services/student-to-grade.service";
-import { removeFromStop } from "../views/content/map/component/organism/StopPoints";
 import { stopDetailsItem } from "../views/content/stops/component/organism/StopDetails";
 import { SchoolUtils } from "./school.utils";
 import { StopUtils } from "./stop.utils";
@@ -45,7 +44,7 @@ export namespace AssociatedUtils {
   export async function deleteAssociated(StudentToGradeId: number) {
     const response = await StudentToGradeService.delete(StudentToGradeId);
 
-    removeFromStop(response, stopDetailsItem()?.id as number);
+    StopUtils.removeAssociated(response, stopDetailsItem()?.id as number);
 
     SchoolUtils.removeAssociated(StudentToGradeId);
   }
