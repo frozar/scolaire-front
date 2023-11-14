@@ -100,7 +100,6 @@ export default function (props: EditStopProps) {
     return validInputs;
   }
 
-  // ! ICI
   async function validate() {
     if (props.gradeStudentToGrade) await AssociatedUtils.update();
     else if (!checkAllInputsValue())
