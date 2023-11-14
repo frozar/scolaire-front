@@ -12,6 +12,7 @@ interface CalendarDayCellProps {
   calendarPeriod?: CalendarPeriodType;
   action?: CalendarActionsEnum;
   onClickAction?: (date: Date) => void;
+  coloredCell?: boolean;
 }
 
 export function CalendarDayCell(props: CalendarDayCellProps) {
@@ -62,6 +63,7 @@ export function CalendarDayCell(props: CalendarDayCellProps) {
       outPeriod={outPeriod()}
       isVacation={isVacation()}
       isPublicHoliday={isPublicHoliday()}
+      coloredCell={props.coloredCell}
     />
   );
 }

@@ -1,3 +1,4 @@
+import { createSignal } from "solid-js";
 import {
   CalendarPeriodType,
   CalendarType,
@@ -8,7 +9,7 @@ import { CalendarPeriodSelector } from "../atom/CalendarPeriodSelector";
 import { CalendarSectionTitle } from "../atom/CalendarSectionTitle";
 import { CalendarManager } from "../calendar.manager";
 import { CalendarDaysCheckbox } from "../molecule/CalendarDaysCheckbox";
-import { CalendarActionsEnum } from "../template/Calendar";
+import { CalendarActionsEnum, calendarsPeriod } from "../template/Calendar";
 import "./CalendarEdtion.css";
 import { CalendarHeader } from "./CalendarHeader";
 import { CalendarLineAction } from "./CalendarLineAction";
@@ -19,6 +20,14 @@ interface CalendarEditionProps {
 }
 
 export function CalendarEdition(props: CalendarEditionProps) {
+  const [selectedCalendarPeriod, setSelectedCalendarPeriod] =
+    createSignal<CalendarPeriodType>();
+
+  setSelectedCalendarPeriod(
+    // eslint-disable-next-line solid/reactivity
+    calendarsPeriod().find((item) => item.id == props.calendar.calendarPeriodId)
+  );
+
   function onClickCellAddDate(cellDate: Date) {
     CalendarManager.toggleAddedDate(cellDate);
   }
@@ -73,6 +82,18 @@ export function CalendarEdition(props: CalendarEditionProps) {
             calendar={props.calendar}
             month={props.currentMonth}
             onClickCell={onClickCellDeletedDate}
+          />
+        </div>
+
+        <div class="calendar-cells">
+          <CalendarLineAction
+            actionName="Scolaire"
+            action={CalendarActionsEnum.remove}
+            calendar={props.calendar}
+            month={props.currentMonth}
+            onClickCell={onClickCellDeletedDate}
+            calendarPeriod={selectedCalendarPeriod()}
+            coloredCell={true}
           />
         </div>
       </div>
