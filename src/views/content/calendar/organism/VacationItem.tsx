@@ -112,7 +112,7 @@ export function VacationItem(props: VacationItemProps) {
         disabled={disabled()}
         editMode={editMode}
         removeItem={removeVacation}
-        item={bufferVacation()}
+        item={props.item}
       />
     </div>
   );
