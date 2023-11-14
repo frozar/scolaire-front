@@ -1,4 +1,4 @@
-import { createSignal } from "solid-js";
+import { createEffect, createSignal } from "solid-js";
 import { PublicHolidayType } from "../../../../_entities/calendar.entity";
 import { TextInput } from "../../../../component/atom/TextInput";
 import { DateInput } from "../../../../component/molecule/DateInput";
@@ -10,58 +10,61 @@ interface PublicHolidayItemProps {
   item?: PublicHolidayType;
 }
 
+const initalBufferHoliday = {
+  name: "",
+  date: new Date(),
+};
+
 export function PublicHolidayItem(props: PublicHolidayItemProps) {
-  const name = () => (props.item ? props.item.name : bufferItem.name);
+  const [bufferHoliday, setBufferHoliday] = createSignal<PublicHolidayType>(
+    props.item ?? initalBufferHoliday
+  );
+  const name = () => (props.item ? props.item.name : bufferHoliday().name);
   const [disabled, setDisabled] = createSignal<boolean>(
     props.item != undefined
   );
 
-  const bufferItem: PublicHolidayType = {
-    name: "",
-    date: new Date(),
-  };
-
-  function onChangeDate(date: Date) {
-    if (props.item) {
+  createEffect(() => {
+    if (bufferHoliday()) {
       setOnCalendarsPeriod((prev) => {
         if (!prev) return prev;
         const datas = { ...prev };
         const index = datas.publicHolidays.findIndex(
-          (item) => item.name == props.item?.name
+          (item) => item.name == bufferHoliday().name
         );
         if (index == -1) return datas;
-        datas.publicHolidays[index].date = date;
+        datas.publicHolidays[index] = bufferHoliday();
         return datas;
       });
-    } else {
-      bufferItem.date = date;
     }
+  });
+
+  function onChangeDate(date: Date) {
+    setBufferHoliday((prev) => {
+      if (!prev) return prev;
+      const datas = { ...prev };
+      datas.date = date;
+      return datas;
+    });
   }
 
   function onInputName(value: string) {
-    if (props.item) {
-      setOnCalendarsPeriod((prev) => {
-        if (!prev) return prev;
-        const datas = { ...prev };
-        const index = datas.publicHolidays.findIndex(
-          (item) => item.name == props.item?.name
-        );
-        if (index == -1) return datas;
-        datas.publicHolidays[index].name = value;
-        return datas;
-      });
-    } else {
-      bufferItem.name = value;
-    }
+    setBufferHoliday((prev) => {
+      if (!prev) return prev;
+      const datas = { ...prev };
+      datas.name = value;
+      return datas;
+    });
   }
 
   function appendHoliday() {
     setOnCalendarsPeriod((prev) => {
       if (!prev) return prev;
       const datas = { ...prev };
-      datas.publicHolidays.push(bufferItem);
+      datas.publicHolidays.push(bufferHoliday());
       return datas;
     });
+    setBufferHoliday(initalBufferHoliday);
   }
 
   function removeHoliday() {
@@ -89,7 +92,7 @@ export function PublicHolidayItem(props: PublicHolidayItemProps) {
       />
       <DateInput
         label="Date"
-        defaultValue={props.item?.date}
+        defaultValue={bufferHoliday().date}
         disabled={disabled()}
         onChange={onChangeDate}
       />
