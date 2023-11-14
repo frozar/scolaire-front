@@ -65,11 +65,13 @@ function getAssociatedQuantity(point: StopType) {
 function updateTripAndWaypoints(point: StopType) {
   const lastPoint = currentDrawTrip().tripPoints.at(-1);
 
-  // TODO: Setup filter (selected grades during drawTrip creation)
-  const targetSchoolId = currentDrawTrip().schools[0].id; // TODO: Delete when filter is setup
+  const gradeIds = currentDrawTrip().grades.map(
+    (grade) => grade.id
+  ) as number[];
   const grades: GradeTripType[] = [];
+
   point.associated.map((associated) => {
-    if (associated.schoolId == targetSchoolId) {
+    if (gradeIds.includes(associated.gradeId)) {
       grades.push({
         quantity: associated.quantity,
         gradeId: associated.gradeId,
