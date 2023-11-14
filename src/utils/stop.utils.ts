@@ -45,16 +45,13 @@ export namespace StopUtils {
     stopId: number
   ) {
     setStops((prev) => {
-      if (prev != undefined) {
-        const stops = [...prev];
-        const indexOfStop = stops.findIndex((prev) => prev.id == stopId);
-        const indexOfClass = stops[indexOfStop].associated.findIndex(
-          (prev) => prev.schoolId == gradeStudentToGrade.schoolId
-        );
-        stops[indexOfStop].associated[indexOfClass] = gradeStudentToGrade;
-        return stops;
-      }
-      return prev;
+      const stops = [...prev];
+      const indexOfStop = stops.findIndex((prev) => prev.id == stopId);
+      const indexOfClass = stops[indexOfStop].associated.findIndex(
+        (prev) => prev.schoolId == gradeStudentToGrade.schoolId
+      );
+      stops[indexOfStop].associated[indexOfClass] = gradeStudentToGrade;
+      return stops;
     });
     updateStopDetailsItem(stopId);
   }

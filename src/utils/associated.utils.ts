@@ -32,21 +32,19 @@ export namespace AssociatedUtils {
     schoolId: number,
     quantity: number
   ) {
+    const stopId = Number(stopDetailsItem()?.id);
     const gradeToSchool = await StudentToGradeService.update(
       {
         idClassToSchool: studentToGradeId,
-        stopId: Number(stopDetailsItem()?.id),
+        stopId,
         quantity,
         gradeId,
       },
       schoolId
     );
-    // ! Update school associated
     // ! Update stop associated
-    // updateFromStop(gradeToSchool, stopDetailsItem()?.id as number);
-
-    // TODO lucas même update mais pour school
-    console.log("update student to grade");
+    StopUtils.updateAssociated(gradeToSchool, stopId);
+    // ! Update school associated
   }
 
   export async function deleteAssociated(StudentToGradeId: number) {
