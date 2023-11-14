@@ -1,3 +1,4 @@
+import { GradeTripType } from "../_entities/grade.entity";
 import { NatureEnum } from "../type";
 import { getLines } from "../views/content/map/component/organism/BusLines";
 import { getStops } from "../views/content/map/component/organism/StopPoints";
@@ -12,19 +13,49 @@ export namespace StopUtils {
     return quantity;
   }
 
-  export function getRemainingQuantity(stopId: number) {
-    const totalQuantity = getTotalQuantity(stopId);
+  function getTotalQuantityFromGradeIds(stopId: number, gradeIds: number[]) {
+    let quantity = 0;
+    const stop = getStops().filter((stop) => stop.id == stopId)[0];
 
-    let usedQuantity = 0;
-    getLines()
+    stop.associated.forEach((assoc) => {
+      if (gradeIds.includes(assoc.gradeId)) quantity += assoc.quantity;
+    });
+
+    return quantity;
+  }
+
+  function getGradeTrips(stopId: number): GradeTripType[] {
+    return getLines()
       .flatMap((line) => line.trips)
       .flatMap((trip) => trip.tripPoints)
       .filter(
         (tripPoint) =>
           tripPoint.nature == NatureEnum.stop && tripPoint.id == stopId
       )
-      .flatMap((_tripPoint) => _tripPoint.grades)
-      .forEach((grade) => (usedQuantity += grade.quantity));
+      .flatMap((_tripPoint) => _tripPoint.grades);
+  }
+
+  export function getRemainingQuantity(stopId: number) {
+    const totalQuantity = getTotalQuantity(stopId);
+
+    let usedQuantity = 0;
+    const grades = getGradeTrips(stopId);
+    grades.forEach((grade) => (usedQuantity += grade.quantity));
+
+    return totalQuantity - usedQuantity;
+  }
+
+  export function getRemainingQuantityFromGradeIds(
+    stopId: number,
+    gradeIds: number[]
+  ) {
+    const totalQuantity = getTotalQuantityFromGradeIds(stopId, gradeIds);
+
+    let usedQuantity = 0;
+    const grades = getGradeTrips(stopId);
+    grades
+      .filter((grade) => gradeIds.includes(grade.gradeId))
+      .forEach((_grade) => (usedQuantity += _grade.quantity));
 
     return totalQuantity - usedQuantity;
   }
@@ -51,6 +82,7 @@ export namespace StopUtils {
     let usedQuantity = 0;
     getLines()
       .flatMap((line) => line.trips)
+      // TODO: Use grade school destination instead !
       .filter((trip) => trip.schools[0].id == schoolId)
       .flatMap((_trip) => _trip.tripPoints)
       .filter(

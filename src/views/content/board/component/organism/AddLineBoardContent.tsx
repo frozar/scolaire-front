@@ -44,6 +44,7 @@ export const [addLineSelectedSchool, setaddLineSelectedSchool] = createSignal<
   SchoolType[]
 >([]);
 
+// TODO: Fix type issue => addLineCheckableStop.item has stopType properties
 export const [addLineCheckableStop, setAddLineCheckableStop] = createSignal<
   AssociatedItem[]
 >([]);

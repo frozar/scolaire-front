@@ -16,12 +16,14 @@ import {
   currentStep,
 } from "../../../board/component/organism/DrawTripBoard";
 import { onBoard } from "../../../board/component/template/ContextManager";
-import { updateStopDetailsItem } from "../../../stops/component/organism/StopDetails";
+import {
+  stopDetailsItem,
+  updateStopDetailsItem,
+} from "../../../stops/component/organism/StopDetails";
 import { PointInterface } from "../atom/Point";
 import { StopPoint } from "../molecule/StopPoint";
 import { getSelectedLine } from "./BusLines";
 import { filterEmptyStops } from "./Filters";
-import { getSchools } from "./SchoolPoints";
 
 // const [, { nextLeafletPointId }] = useStateGui();
 
@@ -119,21 +121,68 @@ export function StopPoints(props: StopPointsProps) {
   );
 }
 
+function filterBySelectedLine(stops: StopType[]) {
+  return stops.filter((stop) =>
+    getSelectedLine()
+      ?.stops.map((selectedLineStop) => selectedLineStop.id)
+      .includes(stop.id)
+  );
+}
+
+function filterByGradesOfTrip(stops: StopType[], gradeIds: number[]) {
+  return stops.filter((stop) =>
+    stop.associated.some((assoc) => gradeIds.includes(assoc.gradeId))
+  );
+}
+
+function filterByQuantity(stops: StopType[], gradeIds: number[]) {
+  function isInModifyingTripMode() {
+    return currentDrawTrip().id ? true : false;
+  }
+
+  switch (isInModifyingTripMode()) {
+    case true:
+      const trip = TripUtils.get(currentDrawTrip().id as number);
+      return stops.filter(
+        (stop) =>
+          trip.tripPoints.some((tripPoint) => tripPoint.id == stop.id) ||
+          StopUtils.getRemainingQuantity(stop.id) > 0
+      );
+
+    case false:
+      return stops.filter((stop) => {
+        return (
+          StopUtils.getRemainingQuantityFromGradeIds(stop.id, gradeIds) > 0
+        );
+      });
+  }
+}
+
 //TODO Delete and replace with displayedStop signal
 export function leafletStopsFilter(): StopType[] {
-  let schools = getSchools();
   let stops = getStops();
   switch (onBoard()) {
+    case "schools":
+      return [];
+
+    case "stops":
+      return stops;
+
+    case "stop-details":
+      return [stopDetailsItem() as StopType];
+
+    case "line":
+      if (filterEmptyStops()) {
+        stops = FilterUtils.filterEmptyStops(stops);
+      }
+      return stops;
+
     case "trip":
-      return stops.filter((stop) =>
-        getSelectedLine()
-          ?.stops.map((selectedLineStop) => selectedLineStop.id)
-          .includes(stop.id)
-      );
+      return filterBySelectedLine(stops);
+
     case "line-add":
       switch (addLineCurrentStep()) {
         case AddLineStep.schoolSelection:
-          return [];
         case AddLineStep.gradeSelection:
           return [];
         case AddLineStep.stopSelection:
@@ -143,53 +192,19 @@ export function leafletStopsFilter(): StopType[] {
 
           const associatedIdSelected = selectedLineStop.map((stop) => stop.id);
 
-          return stops.filter((stoptofilter) =>
-            associatedIdSelected.includes(stoptofilter.id)
+          return stops.filter((stopToFilter) =>
+            associatedIdSelected.includes(stopToFilter.id)
           );
       }
 
-      break;
     case "trip-draw":
-      schools = currentDrawTrip().schools;
-
-      // Filter stops that is in selectedLine
-      stops = getStops().filter(
-        (stop) =>
-          getSelectedLine()
-            ? getSelectedLine()
-                ?.stops.map((stop) => stop.id)
-                .includes(stop.id)
-            : true // TODO: Verify if getSelectedLine() is always true
+      const gradeIds = currentDrawTrip().grades.map(
+        (grade) => grade.id as number
       );
 
-      stops = stops.filter((stop) =>
-        stop.associated.some((associated) =>
-          currentDrawTrip()
-            ?.grades.map((grade) => grade.id)
-            .includes(associated.gradeId)
-        )
-      );
-
-      // TODO: Filter stops containing grades previously selected for the trip
-
-      function isInModifyingTripMode() {
-        return currentDrawTrip().id ? true : false;
-      }
-      // Filter stops with qty > 0 and stop in modifying trip
-      switch (isInModifyingTripMode()) {
-        case true:
-          const trip = TripUtils.get(currentDrawTrip().id as number);
-          stops = stops.filter(
-            (stop) =>
-              trip.tripPoints.some((tripPoint) => tripPoint.id == stop.id) ||
-              StopUtils.getRemainingQuantity(stop.id) > 0
-          );
-          break;
-
-        case false:
-          stops = FilterUtils.filterEmptyStops(stops);
-          break;
-      }
+      stops = filterBySelectedLine(stops);
+      stops = filterByGradesOfTrip(stops, gradeIds);
+      stops = filterByQuantity(stops, gradeIds);
 
       switch (currentStep()) {
         case DrawTripStep.schoolSelection:
@@ -198,27 +213,9 @@ export function leafletStopsFilter(): StopType[] {
         case DrawTripStep.initial:
           return stops;
       }
-
-    case "schools":
-      return [];
-    case "line":
-      if (filterEmptyStops()) {
-        stops = FilterUtils.filterEmptyStops(stops);
-      }
-      return stops;
-
     default:
       return stops;
   }
-
-  return stops.filter((stop) =>
-    stop.associated.some(
-      (GradeToSchool) => schools.find((e) => e.id === GradeToSchool.schoolId)
-      // TODO don't display stop with no remaining quantity in new Trip Creation
-      // TODO creation a display error if the stop is in the updating Trip
-      // && QuantityUtils.remaining(school) > 0
-    )
-  );
 }
 
 //TODO To delete ?
