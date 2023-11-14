@@ -13,11 +13,11 @@ export namespace CalendarUtils {
 
   export function dayIsHoliday(day: Date, calendarPeriod: CalendarPeriodType) {
     let isHolidayDate = false;
-    for (const ferieDate of calendarPeriod.publicHolidays) {
+    for (const holidayDate of calendarPeriod.publicHolidays) {
       const date = new Date(
-        ferieDate.date.getFullYear(),
-        ferieDate.date.getMonth(),
-        ferieDate.date.getDate()
+        holidayDate.date.getFullYear(),
+        holidayDate.date.getMonth(),
+        holidayDate.date.getDate()
       );
 
       if (date.getTime() == day.getTime()) isHolidayDate = true;
