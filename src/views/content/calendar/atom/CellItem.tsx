@@ -17,7 +17,7 @@ export default function (props: CellItemProps) {
         "active-cell": props.isActive,
         "outperiod-cell": props.outPeriod,
         "vacation-cell": props.isVacation,
-        "feries-cell": props.isHoliday,
+        "public-holiday-cell": props.isHoliday,
       }}
       class="cell-item"
       onClick={props.onClick}
