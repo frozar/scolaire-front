@@ -4,7 +4,7 @@ import { TextInput } from "../../../../component/atom/TextInput";
 import { DateInput } from "../../../../component/molecule/DateInput";
 import { addNewUserInformation } from "../../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../../type";
-import { setOnCalendarsPeriod } from "../template/Calendar";
+import { CalendarManager } from "../calendar.manager";
 import { ItemActions, actionEnum } from "./ItemActions";
 import "./VacationItem.css";
 
@@ -28,18 +28,11 @@ export function VacationItem(props: VacationItemProps) {
   );
 
   createEffect(() => {
-    if (bufferVacation()) {
-      setOnCalendarsPeriod((prev) => {
-        if (!prev) return prev;
-        const datas = { ...prev };
-        const index = datas.vacationsPeriod.findIndex(
-          (item) => item.name == bufferVacation().name
-        );
-        if (index == -1) return datas;
-        datas.vacationsPeriod[index] = bufferVacation();
-        return datas;
-      });
-    }
+    CalendarManager.updateVacation(
+      props.item?.name as string,
+      bufferVacation(),
+      "date"
+    );
   });
 
   function onChangeDate(date: Date, field: "start" | "end") {
@@ -69,28 +62,24 @@ export function VacationItem(props: VacationItemProps) {
         content: "Veuillez compléter touts les champs",
       });
     }
-    setOnCalendarsPeriod((prev) => {
-      if (!prev) return prev;
-      const datas = { ...prev };
-      datas.vacationsPeriod.push(bufferVacation());
-      return datas;
-    });
 
+    CalendarManager.pushVacationToCalendarPeriod(bufferVacation());
     setBufferVacation(initialBufferVacation);
   }
 
   function removeVacation() {
-    setOnCalendarsPeriod((prev) => {
-      if (!prev) return prev;
-      const datas = { ...prev };
-      datas.vacationsPeriod = datas.vacationsPeriod.filter(
-        (item) => item.name != props.item?.name
-      );
-      return datas;
-    });
+    CalendarManager.removeVacation(bufferVacation());
   }
 
   function editMode() {
+    if (actionMode() == actionEnum.isEditing) {
+      CalendarManager.updateVacation(
+        props.item?.name as string,
+        bufferVacation(),
+        "all"
+      );
+    }
+
     setActionMode(
       actionMode() != actionEnum.isEditing
         ? actionEnum.isEditing
