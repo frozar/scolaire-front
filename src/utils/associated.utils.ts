@@ -54,6 +54,6 @@ export namespace AssociatedUtils {
 
     removeFromStop(response, stopDetailsItem()?.id as number);
 
-    // ! Also remove from school !!!!
+    SchoolUtils.removeAssociated(StudentToGradeId);
   }
 }

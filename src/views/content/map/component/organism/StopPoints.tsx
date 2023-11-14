@@ -34,7 +34,7 @@ export interface StopPointsProps {
 
 export const [getStops, setStops] = createSignal<StopType[]>([]);
 
-// TODO: move
+// TODO: move and rename
 export function appendToStop(gradeItem: AssociatedSchoolType, stopId: number) {
   setStops((prev) => {
     if (prev != undefined) {
@@ -48,7 +48,7 @@ export function appendToStop(gradeItem: AssociatedSchoolType, stopId: number) {
   updateStopDetailsItem(stopId);
 }
 
-// TODO: move
+// TODO: move and rename
 export function removeFromStop(gradeStudentToGradeID: number, stopId: number) {
   setStops((prev) => {
     if (prev != undefined) {
