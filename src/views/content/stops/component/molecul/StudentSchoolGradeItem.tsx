@@ -17,12 +17,6 @@ export default function (props: { school: AssociatedSchoolType }) {
 
   async function onClickDelete() {
     AssociatedUtils.deleteAssociated(props.school.idClassToSchool);
-    // const response = await StudentToGradeService.delete(
-    //   props.school.idClassToSchool
-    // );
-    // console.log("delete class to school response", response);
-
-    // removeFromStop(response, stopDetailsItem()?.id as number);
   }
 
   function onClickEdit() {

@@ -6,14 +6,13 @@ import {
 import { stopDetailsItem } from "../views/content/stops/component/organism/StopDetails";
 import { SchoolUtils } from "./school.utils";
 
-// TODO: Add a comment to specify redundancy !
+// Associated data is redundant. When changes both schools.associated and stop.associated must be updated.
 export namespace AssociatedUtils {
   export async function create(
     quantity: number,
     gradeId: number,
     schoolId: number
   ) {
-    // TODO to fix
     const associatedStopT = {
       stopId: Number(stopDetailsItem()?.id),
       quantity,
@@ -50,7 +49,6 @@ export namespace AssociatedUtils {
 
   export async function deleteAssociated(StudentToGradeId: number) {
     const response = await StudentToGradeService.delete(StudentToGradeId);
-    console.log("delete class to school response", response);
 
     removeFromStop(response, stopDetailsItem()?.id as number);
 
