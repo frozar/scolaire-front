@@ -61,7 +61,7 @@ export function CalendarDayCell(props: CalendarDayCellProps) {
       onClick={onClickAction}
       outPeriod={outPeriod()}
       isVacation={isVacation()}
-      isHoliday={isHoliday()}
+      isPublicHoliday={isHoliday()}
     />
   );
 }
