@@ -2,8 +2,10 @@ import { createEffect, createSignal } from "solid-js";
 import { PublicHolidayType } from "../../../../_entities/calendar.entity";
 import { TextInput } from "../../../../component/atom/TextInput";
 import { DateInput } from "../../../../component/molecule/DateInput";
+import { addNewUserInformation } from "../../../../signaux";
+import { MessageLevelEnum, MessageTypeEnum } from "../../../../type";
 import { setOnCalendarsPeriod } from "../template/Calendar";
-import { ItemActions } from "./ItemActions";
+import { ItemActions, actionEnum } from "./ItemActions";
 import "./VacationItem.css";
 
 interface PublicHolidayItemProps {
@@ -16,12 +18,12 @@ const initalBufferHoliday = {
 };
 
 export function PublicHolidayItem(props: PublicHolidayItemProps) {
+  const name = () => (props.item ? props.item.name : bufferHoliday().name);
+  const [actionMode, setActionMode] = createSignal<actionEnum>(
+    !props.item ? actionEnum.append : actionEnum.edit
+  );
   const [bufferHoliday, setBufferHoliday] = createSignal<PublicHolidayType>(
     props.item ?? initalBufferHoliday
-  );
-  const name = () => (props.item ? props.item.name : bufferHoliday().name);
-  const [editingMode, setEditingMode] = createSignal<boolean>(
-    props.item != undefined
   );
 
   createEffect(() => {
@@ -58,6 +60,15 @@ export function PublicHolidayItem(props: PublicHolidayItemProps) {
   }
 
   function appendHoliday() {
+    if (bufferHoliday().name.length == 0) {
+      return addNewUserInformation({
+        displayed: true,
+        level: MessageLevelEnum.info,
+        type: MessageTypeEnum.global,
+        content: "Veuillez compléter touts les champs",
+      });
+    }
+
     setOnCalendarsPeriod((prev) => {
       if (!prev) return prev;
       const datas = { ...prev };
@@ -79,11 +90,11 @@ export function PublicHolidayItem(props: PublicHolidayItemProps) {
   }
 
   function editMode() {
-    setEditingMode(!editingMode());
-  }
-
-  function canAppend() {
-    return props.item == undefined && bufferHoliday().name.length > 0;
+    setActionMode(
+      actionMode() != actionEnum.isEditing
+        ? actionEnum.isEditing
+        : actionEnum.edit
+    );
   }
 
   return (
@@ -92,21 +103,25 @@ export function PublicHolidayItem(props: PublicHolidayItemProps) {
         onInput={onInputName}
         defaultValue={name()}
         placeholder="Nom du jour férié"
-        disabled={editingMode()}
+        disabled={
+          actionMode() != actionEnum.isEditing &&
+          actionMode() != actionEnum.append
+        }
       />
       <DateInput
         label="Date"
         defaultValue={bufferHoliday().date}
-        disabled={editingMode()}
+        disabled={
+          actionMode() != actionEnum.isEditing &&
+          actionMode() != actionEnum.append
+        }
         onChange={onChangeDate}
       />
       <ItemActions
-        isEditing={editingMode()}
+        mode={actionMode()}
         appendItem={appendHoliday}
         editMode={editMode}
         removeItem={removeHoliday}
-        canAppend={canAppend()}
-        canEdit={props.item != undefined}
       />
     </div>
   );

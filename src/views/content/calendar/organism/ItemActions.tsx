@@ -5,36 +5,40 @@ import PlusIcon from "../../../../icons/PlusIcon";
 import TrashIcon from "../../../../icons/TrashIcon";
 import ButtonIcon from "../../board/component/molecule/ButtonIcon";
 
+export enum actionEnum {
+  append,
+  edit,
+  isEditing,
+}
+
 interface ItemActionsProps {
-  canAppend: boolean;
-  isEditing: boolean;
-  canEdit: boolean;
+  mode: actionEnum;
   removeItem: () => void;
   appendItem: () => void;
   editMode: () => void;
 }
 
 export function ItemActions(props: ItemActionsProps) {
+  console.log("props mode:", props.mode);
+
   function ItemActions() {
     return (
-      <Show when={props.canEdit}>
-        <div class="flex gap-2">
-          <ButtonIcon icon={<TrashIcon />} onClick={props.removeItem} />
-          <Show
-            when={props.isEditing}
-            fallback={
-              <ButtonIcon icon={<CheckIcon />} onClick={props.editMode} />
-            }
-          >
-            <ButtonIcon icon={<PencilIcon />} onClick={props.editMode} />
-          </Show>
-        </div>
+      <Show when={props.mode >= actionEnum.edit}>
+        <ButtonIcon icon={<TrashIcon />} onClick={props.removeItem} />
+        <Show
+          when={props.mode != actionEnum.isEditing}
+          fallback={
+            <ButtonIcon icon={<CheckIcon />} onClick={props.editMode} />
+          }
+        >
+          <ButtonIcon icon={<PencilIcon />} onClick={props.editMode} />
+        </Show>
       </Show>
     );
   }
 
   return (
-    <Show when={props.canAppend} fallback={<ItemActions />}>
+    <Show when={props.mode == actionEnum.append} fallback={<ItemActions />}>
       <ButtonIcon icon={<PlusIcon />} onClick={props.appendItem} />
     </Show>
   );

@@ -2,8 +2,10 @@ import { createEffect, createSignal } from "solid-js";
 import { VacationPeriodType } from "../../../../_entities/calendar.entity";
 import { TextInput } from "../../../../component/atom/TextInput";
 import { DateInput } from "../../../../component/molecule/DateInput";
+import { addNewUserInformation } from "../../../../signaux";
+import { MessageLevelEnum, MessageTypeEnum } from "../../../../type";
 import { setOnCalendarsPeriod } from "../template/Calendar";
-import { ItemActions } from "./ItemActions";
+import { ItemActions, actionEnum } from "./ItemActions";
 import "./VacationItem.css";
 
 interface VacationItemProps {
@@ -18,10 +20,9 @@ const initialBufferVacation = {
 
 export function VacationItem(props: VacationItemProps) {
   const name = () => (props.item ? props.item.name : bufferVacation().name);
-  const [editingMode, setEditingMode] = createSignal<boolean>(
-    props.item != undefined
+  const [actionMode, setActionMode] = createSignal<actionEnum>(
+    !props.item ? actionEnum.append : actionEnum.edit
   );
-
   const [bufferVacation, setBufferVacation] = createSignal<VacationPeriodType>(
     props.item ?? initialBufferVacation
   );
@@ -60,6 +61,14 @@ export function VacationItem(props: VacationItemProps) {
   }
 
   function appendVacation() {
+    if (bufferVacation().name.length == 0) {
+      return addNewUserInformation({
+        displayed: true,
+        level: MessageLevelEnum.info,
+        type: MessageTypeEnum.global,
+        content: "Veuillez compléter touts les champs",
+      });
+    }
     setOnCalendarsPeriod((prev) => {
       if (!prev) return prev;
       const datas = { ...prev };
@@ -82,11 +91,11 @@ export function VacationItem(props: VacationItemProps) {
   }
 
   function editMode() {
-    setEditingMode(!editingMode());
-  }
-
-  function canAppend() {
-    return props.item == undefined && bufferVacation().name.length > 0;
+    setActionMode(
+      actionMode() != actionEnum.isEditing
+        ? actionEnum.isEditing
+        : actionEnum.edit
+    );
   }
 
   return (
@@ -95,29 +104,36 @@ export function VacationItem(props: VacationItemProps) {
         onInput={onInputName}
         defaultValue={name()}
         placeholder="Nom vacance"
-        disabled={editingMode()}
+        disabled={
+          actionMode() != actionEnum.isEditing &&
+          actionMode() != actionEnum.append
+        }
       />
       <DateInput
         label="Début"
         maxDate={bufferVacation().end}
         defaultValue={bufferVacation().start}
-        disabled={editingMode()}
+        disabled={
+          actionMode() != actionEnum.isEditing &&
+          actionMode() != actionEnum.append
+        }
         onChange={(date: Date) => onChangeDate(date, "start")}
       />
       <DateInput
         label="Fin"
         minDate={bufferVacation().start}
         defaultValue={bufferVacation().end}
-        disabled={editingMode()}
+        disabled={
+          actionMode() != actionEnum.isEditing &&
+          actionMode() != actionEnum.append
+        }
         onChange={(date: Date) => onChangeDate(date, "end")}
       />
       <ItemActions
-        isEditing={editingMode()}
+        mode={actionMode()}
         appendItem={appendVacation}
         editMode={editMode}
         removeItem={removeVacation}
-        canAppend={canAppend()}
-        canEdit={props.item != undefined}
       />
     </div>
   );
