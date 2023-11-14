@@ -4,7 +4,7 @@ import { TextInput } from "../../../../component/atom/TextInput";
 import { DateInput } from "../../../../component/molecule/DateInput";
 import { addNewUserInformation } from "../../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../../type";
-import { setOnCalendarsPeriod } from "../template/Calendar";
+import { CalendarManager } from "../calendar.manager";
 import { ItemActions, actionEnum } from "./ItemActions";
 import "./VacationItem.css";
 
@@ -28,16 +28,11 @@ export function PublicHolidayItem(props: PublicHolidayItemProps) {
 
   createEffect(() => {
     if (bufferHoliday()) {
-      setOnCalendarsPeriod((prev) => {
-        if (!prev) return prev;
-        const datas = { ...prev };
-        const index = datas.publicHolidays.findIndex(
-          (item) => item.name == bufferHoliday().name
-        );
-        if (index == -1) return datas;
-        datas.publicHolidays[index] = bufferHoliday();
-        return datas;
-      });
+      CalendarManager.updatePublicHoliday(
+        props.item?.name as string,
+        bufferHoliday(),
+        "date"
+      );
     }
   });
 
@@ -69,27 +64,22 @@ export function PublicHolidayItem(props: PublicHolidayItemProps) {
       });
     }
 
-    setOnCalendarsPeriod((prev) => {
-      if (!prev) return prev;
-      const datas = { ...prev };
-      datas.publicHolidays.push(bufferHoliday());
-      return datas;
-    });
+    CalendarManager.pushPublicHolidayToCalendarPeriod(bufferHoliday());
     setBufferHoliday(initalBufferHoliday);
   }
 
   function removeHoliday() {
-    setOnCalendarsPeriod((prev) => {
-      if (!prev) return prev;
-      const datas = { ...prev };
-      datas.publicHolidays = datas.publicHolidays.filter(
-        (item) => item.name != props.item?.name
-      );
-      return datas;
-    });
+    CalendarManager.removePublicHoliday(bufferHoliday());
   }
 
   function editMode() {
+    if (actionMode() == actionEnum.isEditing)
+      CalendarManager.updatePublicHoliday(
+        props.item?.name as string,
+        bufferHoliday(),
+        "all"
+      );
+
     setActionMode(
       actionMode() != actionEnum.isEditing
         ? actionEnum.isEditing

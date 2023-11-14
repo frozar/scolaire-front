@@ -1,11 +1,14 @@
 import {
   CalendarDayEnum,
   CalendarType,
+  PublicHolidayType,
+  VacationPeriodType,
 } from "../../../_entities/calendar.entity";
 import {
   currentCalendar,
   setCalendars,
   setCurrentCalendar,
+  setOnCalendarsPeriod,
 } from "./template/Calendar";
 
 // * this namespace is to manage the editioning calendarPeriod
@@ -74,6 +77,85 @@ export namespace CalendarManager {
       );
       calendars[indexOfCalendar] = calendar;
       return calendars;
+    });
+  }
+
+  export function pushVacationToCalendarPeriod(vacation: VacationPeriodType) {
+    setOnCalendarsPeriod((prev) => {
+      if (!prev) return prev;
+      const datas = { ...prev };
+      datas.vacationsPeriod.push(vacation);
+      return datas;
+    });
+  }
+
+  export function updateVacation(
+    name: string,
+    vacation: VacationPeriodType,
+    fields: "all" | "date"
+  ) {
+    setOnCalendarsPeriod((prev) => {
+      if (!prev) return prev;
+      const datas = { ...prev };
+      const index = datas.vacationsPeriod.findIndex(
+        (item) => item.name == name
+      );
+      if (index == -1) return datas;
+      if (fields == "date") {
+        datas.vacationsPeriod[index].start = vacation.start;
+        datas.vacationsPeriod[index].end = vacation.end;
+      } else datas.vacationsPeriod[index] = vacation;
+      return datas;
+    });
+  }
+
+  export function removeVacation(vacation: VacationPeriodType) {
+    setOnCalendarsPeriod((prev) => {
+      if (!prev) return prev;
+      const datas = { ...prev };
+      datas.vacationsPeriod = datas.vacationsPeriod.filter(
+        (item) => item.name != vacation.name
+      );
+      return datas;
+    });
+  }
+
+  export function pushPublicHolidayToCalendarPeriod(
+    publicHoliday: PublicHolidayType
+  ) {
+    setOnCalendarsPeriod((prev) => {
+      if (!prev) return prev;
+      const datas = { ...prev };
+      datas.publicHolidays.push(publicHoliday);
+      return datas;
+    });
+  }
+
+  export function updatePublicHoliday(
+    name: string,
+    publicHoliday: PublicHolidayType,
+    fields: "all" | "date"
+  ) {
+    setOnCalendarsPeriod((prev) => {
+      if (!prev) return prev;
+      const datas = { ...prev };
+      const index = datas.publicHolidays.findIndex((item) => item.name == name);
+      if (index == -1) return datas;
+      if (fields == "date") {
+        datas.publicHolidays[index].date = publicHoliday.date;
+      } else datas.publicHolidays[index] = publicHoliday;
+      return datas;
+    });
+  }
+
+  export function removePublicHoliday(publicHoliday: PublicHolidayType) {
+    setOnCalendarsPeriod((prev) => {
+      if (!prev) return prev;
+      const datas = { ...prev };
+      datas.publicHolidays = datas.publicHolidays.filter(
+        (item) => item.name != publicHoliday.name
+      );
+      return datas;
     });
   }
 }
