@@ -19,8 +19,6 @@ interface ItemActionsProps {
 }
 
 export function ItemActions(props: ItemActionsProps) {
-  console.log("props mode:", props.mode);
-
   function ItemActions() {
     return (
       <Show when={props.mode >= actionEnum.edit}>
