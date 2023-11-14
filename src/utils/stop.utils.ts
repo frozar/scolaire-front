@@ -1,9 +1,64 @@
+import { AssociatedSchoolType } from "../_entities/_utils.entity";
 import { GradeTripType } from "../_entities/grade.entity";
 import { NatureEnum } from "../type";
 import { getLines } from "../views/content/map/component/organism/BusLines";
-import { getStops } from "../views/content/map/component/organism/StopPoints";
+import {
+  getStops,
+  setStops,
+} from "../views/content/map/component/organism/StopPoints";
+import { updateStopDetailsItem } from "../views/content/stops/component/organism/StopDetails";
 
 export namespace StopUtils {
+  export function addAssociated(
+    gradeItem: AssociatedSchoolType,
+    stopId: number
+  ) {
+    setStops((prev) => {
+      const stops = [...prev];
+      const indexOf = stops.findIndex((prev) => prev.id == stopId);
+      stops[indexOf].associated.push(gradeItem);
+
+      return stops;
+    });
+    updateStopDetailsItem(stopId);
+  }
+
+  export function removeAssociated(
+    gradeStudentToGradeID: number,
+    stopId: number
+  ) {
+    setStops((prev) => {
+      const stops = [...prev];
+      const indexOfStop = stops.findIndex((prev) => prev.id == stopId);
+
+      stops[indexOfStop].associated = stops[indexOfStop].associated.filter(
+        (prev) => prev.idClassToSchool != gradeStudentToGradeID
+      );
+
+      return stops;
+    });
+    updateStopDetailsItem(stopId);
+  }
+  // TODO: Use it
+  export function updateFromStop(
+    gradeStudentToGrade: AssociatedSchoolType,
+    stopId: number
+  ) {
+    setStops((prev) => {
+      if (prev != undefined) {
+        const stops = [...prev];
+        const indexOfStop = stops.findIndex((prev) => prev.id == stopId);
+        const indexOfClass = stops[indexOfStop].associated.findIndex(
+          (prev) => prev.schoolId == gradeStudentToGrade.schoolId
+        );
+        stops[indexOfStop].associated[indexOfClass] = gradeStudentToGrade;
+        return stops;
+      }
+      return prev;
+    });
+    updateStopDetailsItem(stopId);
+  }
+
   export function getTotalQuantity(stopId: number) {
     let quantity = 0;
     const stop = getStops().filter((stop) => stop.id == stopId)[0];

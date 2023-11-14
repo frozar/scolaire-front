@@ -87,7 +87,7 @@ export namespace SchoolUtils {
     return remainingQuantity;
   }
 
-  export function addGradeToSchool(
+  export function addAssociated(
     gradeToSchool: AssociatedSchoolType,
     stopId: number
   ) {

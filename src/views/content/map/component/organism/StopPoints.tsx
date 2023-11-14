@@ -1,6 +1,5 @@
 import L from "leaflet";
 import { For, createEffect, createSignal } from "solid-js";
-import { AssociatedSchoolType } from "../../../../../_entities/_utils.entity";
 import { StopType } from "../../../../../_entities/stop.entity";
 import { FilterUtils } from "../../../../../utils/filter.utils";
 import { StopUtils } from "../../../../../utils/stop.utils";
@@ -16,10 +15,7 @@ import {
   currentStep,
 } from "../../../board/component/organism/DrawTripBoard";
 import { onBoard } from "../../../board/component/template/ContextManager";
-import {
-  stopDetailsItem,
-  updateStopDetailsItem,
-} from "../../../stops/component/organism/StopDetails";
+import { stopDetailsItem } from "../../../stops/component/organism/StopDetails";
 import { PointInterface } from "../atom/Point";
 import { StopPoint } from "../molecule/StopPoint";
 import { getSelectedLine } from "./BusLines";
@@ -33,56 +29,6 @@ export interface StopPointsProps {
 }
 
 export const [getStops, setStops] = createSignal<StopType[]>([]);
-
-// TODO: move and rename
-export function appendToStop(gradeItem: AssociatedSchoolType, stopId: number) {
-  setStops((prev) => {
-    if (prev != undefined) {
-      const stops = [...prev];
-      const indexOf = stops.findIndex((prev) => prev.id == stopId);
-      stops[indexOf].associated.push(gradeItem);
-      return stops;
-    }
-    return prev;
-  });
-  updateStopDetailsItem(stopId);
-}
-
-// TODO: move and rename
-export function removeFromStop(gradeStudentToGradeID: number, stopId: number) {
-  setStops((prev) => {
-    if (prev != undefined) {
-      const stops = [...prev];
-      const indexOfStop = stops.findIndex((prev) => prev.id == stopId);
-
-      stops[indexOfStop].associated = stops[indexOfStop].associated.filter(
-        (prev) => prev.idClassToSchool != gradeStudentToGradeID
-      );
-      return stops;
-    }
-    return prev;
-  });
-  updateStopDetailsItem(stopId);
-}
-// TODO lucas à placer dans Stop component
-export function updateFromStop(
-  gradeStudentToGrade: AssociatedSchoolType,
-  stopId: number
-) {
-  setStops((prev) => {
-    if (prev != undefined) {
-      const stops = [...prev];
-      const indexOfStop = stops.findIndex((prev) => prev.id == stopId);
-      const indexOfClass = stops[indexOfStop].associated.findIndex(
-        (prev) => prev.schoolId == gradeStudentToGrade.schoolId
-      );
-      stops[indexOfStop].associated[indexOfClass] = gradeStudentToGrade;
-      return stops;
-    }
-    return prev;
-  });
-  updateStopDetailsItem(stopId);
-}
 
 // TODO to delete and all reference
 export const [ramassages, setRamassages] = createSignal<PointInterface[]>([]);
