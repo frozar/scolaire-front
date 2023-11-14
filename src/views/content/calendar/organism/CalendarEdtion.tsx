@@ -1,6 +1,10 @@
-import { CalendarType } from "../../../../_entities/calendar.entity";
+import {
+  CalendarPeriodType,
+  CalendarType,
+} from "../../../../_entities/calendar.entity";
 import { CalendarService } from "../../../../_services/calendar.service";
 import Button from "../../../../component/atom/Button";
+import { CalendarPeriodSelector } from "../atom/CalendarPeriodSelector";
 import { CalendarSectionTitle } from "../atom/CalendarSectionTitle";
 import { CalendarManager } from "../calendar.manager";
 import { CalendarDaysCheckbox } from "../molecule/CalendarDaysCheckbox";
@@ -27,6 +31,10 @@ export function CalendarEdition(props: CalendarEditionProps) {
     CalendarManager.updateCalendar(
       await CalendarService.updateCalendar(props.calendar)
     );
+  }
+
+  function onChangeCalendarPeriodSelector(calendarPeriod?: CalendarPeriodType) {
+    CalendarManager.linkToPeriodCalendar(calendarPeriod);
   }
 
   return (
@@ -73,8 +81,17 @@ export function CalendarEdition(props: CalendarEditionProps) {
         <div>
           <CalendarSectionTitle title="Paramètrage calendrier" />
           <CalendarDaysCheckbox calendar={props.calendar} />
+          <div class="inline-grid pt-5">
+            <label class="text-xl">Calendrier scolaire</label>
+            <CalendarPeriodSelector
+              onChange={onChangeCalendarPeriodSelector}
+              defaultValue={props.calendar.calendarPeriodId}
+            />
+          </div>
         </div>
+      </div>
 
+      <div class="flex justify-end w-full">
         <Button
           onClick={updateCalendar}
           label="Mettre à jour"
