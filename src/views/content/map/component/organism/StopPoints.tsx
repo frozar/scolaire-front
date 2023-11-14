@@ -34,6 +34,7 @@ export interface StopPointsProps {
 
 export const [getStops, setStops] = createSignal<StopType[]>([]);
 
+// TODO: move
 export function appendToStop(gradeItem: AssociatedSchoolType, stopId: number) {
   setStops((prev) => {
     if (prev != undefined) {
@@ -88,6 +89,10 @@ export const [ramassages, setRamassages] = createSignal<PointInterface[]>([]);
 export function StopPoints(props: StopPointsProps) {
   // eslint-disable-next-line solid/reactivity
   createEffect(() => setStops(props.stops));
+
+  createEffect(() => {
+    console.log("getStops()", getStops());
+  });
 
   const quantities = () => {
     return getStops().map((stop) => {
