@@ -1,4 +1,7 @@
-import { AssociatedSchoolType } from "../_entities/_utils.entity";
+import {
+  AssociatedSchoolType,
+  AssociatedStopType,
+} from "../_entities/_utils.entity";
 import { SchoolType } from "../_entities/school.entity";
 import { SchoolService } from "../_services/school.service";
 import {
@@ -116,6 +119,30 @@ export namespace SchoolUtils {
         };
       });
 
+      return schools;
+    });
+  }
+
+  export function updateAssociated(
+    associated: AssociatedSchoolType,
+    stopId: number
+  ) {
+    setSchools((prev) => {
+      const schools: SchoolType[] = [...prev].map((school) => {
+        return {
+          ...school,
+          associated: school.associated.map((assoc) =>
+            assoc.idClassToSchool == associated.idClassToSchool
+              ? ({
+                  idClassToSchool: associated.idClassToSchool,
+                  stopId: stopId,
+                  quantity: associated.quantity,
+                  gradeId: associated.gradeId,
+                } as AssociatedStopType)
+              : assoc
+          ),
+        };
+      });
       return schools;
     });
   }

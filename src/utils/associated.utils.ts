@@ -45,6 +45,7 @@ export namespace AssociatedUtils {
     // ! Update stop associated
     StopUtils.updateAssociated(gradeToSchool, stopId);
     // ! Update school associated
+    SchoolUtils.updateAssociated(gradeToSchool, stopId);
   }
 
   export async function deleteAssociated(StudentToGradeId: number) {
