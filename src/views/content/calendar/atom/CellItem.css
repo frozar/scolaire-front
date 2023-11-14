@@ -9,7 +9,7 @@
 }
 
 .outperiod-cell,
-.public-holiday-cell,
+.holiday-cell,
 .vacation-cell {
   @apply bg-red-base;
 }
