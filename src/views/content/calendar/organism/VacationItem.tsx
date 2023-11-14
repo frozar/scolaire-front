@@ -10,6 +10,12 @@ interface VacationItemProps {
   item?: VacationPeriodType;
 }
 
+const initialBufferVacation = {
+  name: "",
+  start: new Date(),
+  end: new Date(),
+};
+
 export function VacationItem(props: VacationItemProps) {
   const name = () => (props.item ? props.item.name : bufferVacation().name);
   const [disabled, setDisabled] = createSignal<boolean>(
@@ -17,11 +23,7 @@ export function VacationItem(props: VacationItemProps) {
   );
 
   const [bufferVacation, setBufferVacation] = createSignal<VacationPeriodType>(
-    props.item ?? {
-      name: "",
-      start: new Date(),
-      end: new Date(),
-    }
+    props.item ?? initialBufferVacation
   );
 
   createEffect(() => {
@@ -65,11 +67,7 @@ export function VacationItem(props: VacationItemProps) {
       return datas;
     });
 
-    setBufferVacation({
-      name: "",
-      start: new Date(Date.now()),
-      end: new Date(Date.now()),
-    });
+    setBufferVacation(initialBufferVacation);
   }
 
   function removeVacation() {
