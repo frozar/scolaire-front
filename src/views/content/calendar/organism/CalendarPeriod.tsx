@@ -77,16 +77,18 @@ export function CalendarPeriod(props: SchoolCalendarProps) {
         </div>
       </div>
 
-      <div class="edit-school-period">
-        <CalendarSectionTitle title="Vacances" />
-        <VacationList calendarPeriod={props.calendarPeriod} />
-        <VacationItem />
-      </div>
+      <div class="flex gap-48 ">
+        <div class="edit-school-period">
+          <CalendarSectionTitle title="Vacances" />
+          <VacationList calendarPeriod={props.calendarPeriod} />
+          <VacationItem />
+        </div>
 
-      <div class="edit-school-period">
-        <CalendarSectionTitle title="Jour férié" />
-        <PublicHolidayList calendarPeriod={props.calendarPeriod} />
-        <PublicHolidayItem />
+        <div class="edit-school-period">
+          <CalendarSectionTitle title="Jour férié" />
+          <PublicHolidayList calendarPeriod={props.calendarPeriod} />
+          <PublicHolidayItem />
+        </div>
       </div>
 
       <Button label="Save" onClick={save} />
