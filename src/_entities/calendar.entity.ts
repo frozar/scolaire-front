@@ -8,6 +8,7 @@ export namespace CalendarEntity {
       rules: dbCalendar.rules,
       added: CalendarUtils.stringListToDateTimeList(dbCalendar.date_added),
       deleted: CalendarUtils.stringListToDateTimeList(dbCalendar.date_deleted),
+      calendarPeriodId: dbCalendar.calendar_period_id,
     };
   }
 
@@ -43,6 +44,7 @@ export namespace CalendarEntity {
       rules: calendar.rules,
       date_added: CalendarUtils.dateTimeListToStringList(calendar.added),
       date_deleted: CalendarUtils.dateTimeListToStringList(calendar.deleted),
+      calendar_period_id: calendar.calendarPeriodId,
     };
   }
 
@@ -87,6 +89,7 @@ export type CalendarType = {
   rules: CalendarDayEnum[];
   added: number[];
   deleted: number[];
+  calendarPeriodId?: number;
 };
 
 export type CalendarDBType = {
@@ -95,6 +98,7 @@ export type CalendarDBType = {
   rules: CalendarDayEnum[];
   date_added: string[];
   date_deleted: string[];
+  calendar_period_id?: number;
 };
 
 // ! --------------------- PERIOD CALENDAR ---------------------

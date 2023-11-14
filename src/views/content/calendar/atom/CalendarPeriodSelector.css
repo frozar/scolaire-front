@@ -1,0 +1,3 @@
+.selector {
+  @apply bg-transparent focus:outline-none border-b-[1px] border-dark-teal py-1;
+}
