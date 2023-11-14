@@ -39,6 +39,25 @@ export namespace StopUtils {
     });
     updateStopDetailsItem(stopId);
   }
+  // TODO: Use it
+  export function updateFromStop(
+    gradeStudentToGrade: AssociatedSchoolType,
+    stopId: number
+  ) {
+    setStops((prev) => {
+      if (prev != undefined) {
+        const stops = [...prev];
+        const indexOfStop = stops.findIndex((prev) => prev.id == stopId);
+        const indexOfClass = stops[indexOfStop].associated.findIndex(
+          (prev) => prev.schoolId == gradeStudentToGrade.schoolId
+        );
+        stops[indexOfStop].associated[indexOfClass] = gradeStudentToGrade;
+        return stops;
+      }
+      return prev;
+    });
+    updateStopDetailsItem(stopId);
+  }
 
   export function getTotalQuantity(stopId: number) {
     let quantity = 0;
