@@ -36,8 +36,7 @@ export function CalendarEdition(props: CalendarEditionProps) {
   function onChangeCalendarPeriodSelector(
     calendarPeriod: CalendarPeriodType | undefined
   ) {
-    console.log("next stop soon", calendarPeriod);
-    // CalendarManager.linkToPeriodCalendar(calendarPeriod);
+    CalendarManager.linkToPeriodCalendar(calendarPeriod);
   }
 
   return (
