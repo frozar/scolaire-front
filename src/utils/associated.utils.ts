@@ -1,10 +1,8 @@
 import { StudentToGradeService } from "../_services/student-to-grade.service";
-import {
-  appendToStop,
-  removeFromStop,
-} from "../views/content/map/component/organism/StopPoints";
+import { removeFromStop } from "../views/content/map/component/organism/StopPoints";
 import { stopDetailsItem } from "../views/content/stops/component/organism/StopDetails";
 import { SchoolUtils } from "./school.utils";
+import { StopUtils } from "./stop.utils";
 
 // Associated data is redundant. When changes both schools.associated and stop.associated must be updated.
 export namespace AssociatedUtils {
@@ -23,12 +21,9 @@ export namespace AssociatedUtils {
       associatedStopT,
       schoolId
     );
-    appendToStop(gradeToSchool, stopDetailsItem()?.id as number);
+    StopUtils.addAssociated(gradeToSchool, stopDetailsItem()?.id as number);
 
-    SchoolUtils.addGradeToSchool(
-      gradeToSchool,
-      stopDetailsItem()?.id as number
-    );
+    SchoolUtils.addAssociated(gradeToSchool, stopDetailsItem()?.id as number);
   }
 
   // TODO

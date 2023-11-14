@@ -35,18 +35,18 @@ export interface StopPointsProps {
 export const [getStops, setStops] = createSignal<StopType[]>([]);
 
 // TODO: move and rename
-export function appendToStop(gradeItem: AssociatedSchoolType, stopId: number) {
-  setStops((prev) => {
-    if (prev != undefined) {
-      const stops = [...prev];
-      const indexOf = stops.findIndex((prev) => prev.id == stopId);
-      stops[indexOf].associated.push(gradeItem);
-      return stops;
-    }
-    return prev;
-  });
-  updateStopDetailsItem(stopId);
-}
+// export function appendToStop(gradeItem: AssociatedSchoolType, stopId: number) {
+//   setStops((prev) => {
+//     if (prev != undefined) {
+//       const stops = [...prev];
+//       const indexOf = stops.findIndex((prev) => prev.id == stopId);
+//       stops[indexOf].associated.push(gradeItem);
+//       return stops;
+//     }
+//     return prev;
+//   });
+//   updateStopDetailsItem(stopId);
+// }
 
 // TODO: move and rename
 export function removeFromStop(gradeStudentToGradeID: number, stopId: number) {

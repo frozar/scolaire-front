@@ -1,9 +1,29 @@
+import { AssociatedSchoolType } from "../_entities/_utils.entity";
 import { GradeTripType } from "../_entities/grade.entity";
 import { NatureEnum } from "../type";
 import { getLines } from "../views/content/map/component/organism/BusLines";
-import { getStops } from "../views/content/map/component/organism/StopPoints";
+import {
+  getStops,
+  setStops,
+} from "../views/content/map/component/organism/StopPoints";
+import { updateStopDetailsItem } from "../views/content/stops/component/organism/StopDetails";
 
 export namespace StopUtils {
+  export function addAssociated(
+    gradeItem: AssociatedSchoolType,
+    stopId: number
+  ) {
+    setStops((prev) => {
+      const stops = [...prev];
+      const indexOf = stops.findIndex((prev) => prev.id == stopId);
+      stops[indexOf].associated.push(gradeItem);
+      return stops;
+    });
+    updateStopDetailsItem(stopId);
+  }
+
+  export function removeAssociated() {}
+
   export function getTotalQuantity(stopId: number) {
     let quantity = 0;
     const stop = getStops().filter((stop) => stop.id == stopId)[0];
