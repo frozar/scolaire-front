@@ -42,9 +42,9 @@ export namespace AssociatedUtils {
       },
       schoolId
     );
-    // ! Update stop associated
+
     StopUtils.updateAssociated(gradeToSchool, stopId);
-    // ! Update school associated
+
     SchoolUtils.updateAssociated(gradeToSchool, stopId);
   }
 
