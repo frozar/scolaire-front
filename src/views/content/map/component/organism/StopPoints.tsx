@@ -37,10 +37,6 @@ export function StopPoints(props: StopPointsProps) {
   // eslint-disable-next-line solid/reactivity
   createEffect(() => setStops(props.stops));
 
-  createEffect(() => {
-    console.log("getStops()", getStops());
-  });
-
   const quantities = () => {
     return getStops().map((stop) => {
       return stop.associated.reduce((acc, stop) => acc + stop.quantity, 0);
