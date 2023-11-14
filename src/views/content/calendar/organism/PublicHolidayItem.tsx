@@ -20,7 +20,7 @@ export function PublicHolidayItem(props: PublicHolidayItemProps) {
     props.item ?? initalBufferHoliday
   );
   const name = () => (props.item ? props.item.name : bufferHoliday().name);
-  const [disabled, setDisabled] = createSignal<boolean>(
+  const [editingMode, setEditingMode] = createSignal<boolean>(
     props.item != undefined
   );
 
@@ -79,7 +79,11 @@ export function PublicHolidayItem(props: PublicHolidayItemProps) {
   }
 
   function editMode() {
-    setDisabled(!disabled());
+    setEditingMode(!editingMode());
+  }
+
+  function canAppend() {
+    return props.item == undefined && bufferHoliday().name.length > 0;
   }
 
   return (
@@ -88,20 +92,21 @@ export function PublicHolidayItem(props: PublicHolidayItemProps) {
         onInput={onInputName}
         defaultValue={name()}
         placeholder="Nom du jour férié"
-        disabled={disabled()}
+        disabled={editingMode()}
       />
       <DateInput
         label="Date"
         defaultValue={bufferHoliday().date}
-        disabled={disabled()}
+        disabled={editingMode()}
         onChange={onChangeDate}
       />
       <ItemActions
+        isEditing={editingMode()}
         appendItem={appendHoliday}
-        disabled={disabled()}
         editMode={editMode}
         removeItem={removeHoliday}
-        item={props.item}
+        canAppend={canAppend()}
+        canEdit={props.item != undefined}
       />
     </div>
   );

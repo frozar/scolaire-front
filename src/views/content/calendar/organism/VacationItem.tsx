@@ -18,7 +18,7 @@ const initialBufferVacation = {
 
 export function VacationItem(props: VacationItemProps) {
   const name = () => (props.item ? props.item.name : bufferVacation().name);
-  const [disabled, setDisabled] = createSignal<boolean>(
+  const [editingMode, setEditingMode] = createSignal<boolean>(
     props.item != undefined
   );
 
@@ -82,7 +82,11 @@ export function VacationItem(props: VacationItemProps) {
   }
 
   function editMode() {
-    setDisabled(!disabled());
+    setEditingMode(!editingMode());
+  }
+
+  function canAppend() {
+    return props.item == undefined && bufferVacation().name.length > 0;
   }
 
   return (
@@ -91,28 +95,29 @@ export function VacationItem(props: VacationItemProps) {
         onInput={onInputName}
         defaultValue={name()}
         placeholder="Nom vacance"
-        disabled={disabled()}
+        disabled={editingMode()}
       />
       <DateInput
         label="Début"
         maxDate={bufferVacation().end}
         defaultValue={bufferVacation().start}
-        disabled={disabled()}
+        disabled={editingMode()}
         onChange={(date: Date) => onChangeDate(date, "start")}
       />
       <DateInput
         label="Fin"
         minDate={bufferVacation().start}
         defaultValue={bufferVacation().end}
-        disabled={disabled()}
+        disabled={editingMode()}
         onChange={(date: Date) => onChangeDate(date, "end")}
       />
       <ItemActions
+        isEditing={editingMode()}
         appendItem={appendVacation}
-        disabled={disabled()}
         editMode={editMode}
         removeItem={removeVacation}
-        item={props.item}
+        canAppend={canAppend()}
+        canEdit={props.item != undefined}
       />
     </div>
   );
