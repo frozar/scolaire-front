@@ -1,5 +1,6 @@
 import {
   CalendarDayEnum,
+  CalendarPeriodType,
   CalendarType,
   PublicHolidayType,
   VacationPeriodType,
@@ -52,6 +53,17 @@ export namespace CalendarManager {
       else data.deleted = data.deleted.filter((item) => item != date.getTime());
 
       return data;
+    });
+  }
+
+  export function linkToPeriodCalendar(
+    calendarPeriod: CalendarPeriodType | undefined
+  ) {
+    setCurrentCalendar((prev) => {
+      if (!prev) return prev;
+      const datas = { ...prev };
+      datas.calendarPeriodId = calendarPeriod?.id;
+      return datas;
     });
   }
 
