@@ -20,6 +20,7 @@ interface EditStopProps {
 }
 
 export default function (props: EditStopProps) {
+  console.log("ceci");
   const seletElement = document.createElement("select");
   const [selectedSchool, setSelectedSchool] = createSignal<SchoolType>();
 
@@ -122,10 +123,10 @@ export default function (props: EditStopProps) {
       <div class="edit-stop-top-line">
         <SchoolSelect
           onChange={onChangeSchoolSelect}
+          isModifying={props.gradeStudentToGrade ? true : false}
           refSelectSetter={setSchoolSelectRef}
           schools={getSchools()}
         />
-
         <ButtonIcon icon={<CheckIcon />} onClick={validate} />
       </div>
 
