@@ -20,10 +20,19 @@ interface EditStopProps {
 }
 
 export default function (props: EditStopProps) {
-  console.log("ceci");
   const seletElement = document.createElement("select");
+  // ! Delete !?
   const [selectedSchool, setSelectedSchool] = createSignal<SchoolType>();
 
+  const [gradeOptionSelected, setGradeOptionSelected] =
+    createSignal<number>(-1);
+
+  const [schoolOptionSelected, setSchoolOptionSelected] =
+    createSignal<number>(-1); // ! If selectedSchool is not deleted, use derived signal instead
+
+  const [quantityInputValue, setQuantityInputValue] = createSignal<number>(0);
+
+  // TODO: Se débarraser de toutes les refs
   const [schoolSelectRef, setSchoolSelectRef] =
     createSignal<HTMLSelectElement>(seletElement);
   const [gradeSelectRef, setGradeSelectRef] =
@@ -41,15 +50,15 @@ export default function (props: EditStopProps) {
   });
 
   onMount(() => {
+    // Modifying case
     if (props.gradeStudentToGrade != undefined) {
-      schoolSelectRef().value =
-        props.gradeStudentToGrade.schoolId?.toString() ?? "default";
-      gradeSelectRef().value =
-        props.gradeStudentToGrade.gradeId?.toString() ?? "default";
-      quantityInputRef().value =
-        props.gradeStudentToGrade.quantity.toString() ?? 0;
+      setGradeOptionSelected(props.gradeStudentToGrade?.gradeId as number);
+      setSchoolOptionSelected(props.gradeStudentToGrade.schoolId);
+      setQuantityInputValue(props.gradeStudentToGrade.quantity);
       return;
     }
+
+    // Creation case
     gradeSelectRef().disabled = true;
     quantityInputRef().disabled = true;
   });
@@ -124,6 +133,7 @@ export default function (props: EditStopProps) {
         <SchoolSelect
           onChange={onChangeSchoolSelect}
           isModifying={props.gradeStudentToGrade ? true : false}
+          selectedOption={schoolOptionSelected()}
           refSelectSetter={setSchoolSelectRef}
           schools={getSchools()}
         />
@@ -133,6 +143,8 @@ export default function (props: EditStopProps) {
       <div class="edit-stop-bottom-line">
         <GradeSelection
           refSelectSetter={setGradeSelectRef}
+          isModifying={props.gradeStudentToGrade ? true : false}
+          selectedOption={gradeOptionSelected()}
           grades={selectedSchool()?.grades as GradeType[]}
           onChange={onChangeSelectGrade}
         />
@@ -140,7 +152,7 @@ export default function (props: EditStopProps) {
           ref={setQuantityInputRef}
           class="input-form w-full"
           min={0}
-          defaultValue={0}
+          defaultValue={quantityInputValue()}
           placeholder="Quantité"
         />
       </div>
