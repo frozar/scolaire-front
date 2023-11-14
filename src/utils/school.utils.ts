@@ -1,4 +1,5 @@
 import { AssociatedSchoolType } from "../_entities/_utils.entity";
+import { SchoolType } from "../_entities/school.entity";
 import { SchoolService } from "../_services/school.service";
 import {
   getLines,
@@ -101,6 +102,21 @@ export namespace SchoolUtils {
           gradeId: gradeToSchool.gradeId,
         });
       return newSchools;
+    });
+  }
+
+  export function removeAssociated(studentToGradeId: number) {
+    setSchools((prev) => {
+      const schools: SchoolType[] = [...prev].map((school) => {
+        return {
+          ...school,
+          associated: school.associated.filter(
+            (assoc) => assoc.idClassToSchool != studentToGradeId
+          ),
+        };
+      });
+
+      return schools;
     });
   }
 }

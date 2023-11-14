@@ -2,19 +2,16 @@ import { createEffect, createSignal, onMount } from "solid-js";
 import { AssociatedSchoolType } from "../../../../../_entities/_utils.entity";
 import { GradeType } from "../../../../../_entities/grade.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
-import { StudentToGradeService } from "../../../../../_services/student-to-grade.service";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
 import CheckIcon from "../../../../../icons/CheckIcon";
 import { addNewUserInformation } from "../../../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../../../type";
-import { SchoolUtils } from "../../../../../utils/school.utils";
+import { AssociatedUtils } from "../../../../../utils/associated.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { getSchools } from "../../../map/component/organism/SchoolPoints";
-import { appendToStop } from "../../../map/component/organism/StopPoints";
 import GradeSelection from "../atom/GradeSelection";
 import InputNumber from "../atom/InputNumber";
 import SchoolSelect from "../atom/SchoolSelection";
-import { stopDetailsItem } from "../organism/StopDetails";
 import "./EditStudentSchoolGradeItem.css";
 
 interface EditStopProps {
@@ -91,8 +88,9 @@ export default function (props: EditStopProps) {
       schoolSelectRef().value == "default" ||
       quantityInputRef().value == "0" ||
       gradeSelectRef().value == "default";
+
     if (validInputs) {
-      return addNewUserInformation({
+      addNewUserInformation({
         displayed: true,
         level: MessageLevelEnum.warning,
         type: MessageTypeEnum.global,
@@ -102,47 +100,14 @@ export default function (props: EditStopProps) {
     return validInputs;
   }
 
-  async function create() {
-    console.log("used");
-    // TODO to fix
-    if (checkAllInputsValue()) return;
-    const associatedStopT = {
-      stopId: Number(stopDetailsItem()?.id),
-      quantity: Number(quantityInputRef().value),
-      gradeId: Number(gradeSelectRef().value),
-    };
-
-    const gradeToSchool = await StudentToGradeService.create(
-      associatedStopT,
-      Number(schoolSelectRef().value)
-    );
-    appendToStop(gradeToSchool, stopDetailsItem()?.id as number);
-
-    SchoolUtils.addGradeToSchool(
-      gradeToSchool,
-      stopDetailsItem()?.id as number
-    );
-  }
-
-  async function update() {
-    if (!props.gradeStudentToGrade) return;
-    // const gradeToSchool = await StudentToGradeService.update({
-    //   idClassToSchool: props.gradeStudentToGrade?.idClassToSchool as number,
-    //   schoolId: Number(schoolSelectRef().value),
-    //   stopId: Number(stopDetailsItem()?.id),
-    //   quantity: Number(quantityInputRef().value),
-    //   gradeId: Number(gradeSelectRef().value),
-    // });
-
-    // updateFromStop(gradeToSchool, stopDetailsItem()?.id as number);
-
-    // TODO lucas même update mais pour school
-    console.log("update student to grade");
-  }
-
   async function validate() {
-    if (props.gradeStudentToGrade) await update();
-    else await create();
+    if (props.gradeStudentToGrade) await AssociatedUtils.update();
+    else if (!checkAllInputsValue())
+      AssociatedUtils.create(
+        Number(quantityInputRef().value),
+        Number(gradeSelectRef().value),
+        Number(schoolSelectRef().value)
+      );
     props.close();
   }
 
