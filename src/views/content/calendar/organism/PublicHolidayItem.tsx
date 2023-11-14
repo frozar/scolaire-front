@@ -1,57 +1,55 @@
 import { createEffect, createSignal } from "solid-js";
-import { VacationPeriodType } from "../../../../_entities/calendar.entity";
+import { PublicHolidayType } from "../../../../_entities/calendar.entity";
 import { TextInput } from "../../../../component/atom/TextInput";
 import { DateInput } from "../../../../component/molecule/DateInput";
 import { setOnCalendarsPeriod } from "../template/Calendar";
 import { ItemActions } from "./ItemActions";
 import "./VacationItem.css";
 
-interface VacationItemProps {
-  item?: VacationPeriodType;
+interface PublicHolidayItemProps {
+  item?: PublicHolidayType;
 }
 
-const initialBufferVacation = {
+const initalBufferHoliday = {
   name: "",
-  start: new Date(),
-  end: new Date(),
+  date: new Date(),
 };
 
-export function VacationItem(props: VacationItemProps) {
-  const name = () => (props.item ? props.item.name : bufferVacation().name);
+export function PublicHolidayItem(props: PublicHolidayItemProps) {
+  const [bufferHoliday, setBufferHoliday] = createSignal<PublicHolidayType>(
+    props.item ?? initalBufferHoliday
+  );
+  const name = () => (props.item ? props.item.name : bufferHoliday().name);
   const [disabled, setDisabled] = createSignal<boolean>(
     props.item != undefined
   );
 
-  const [bufferVacation, setBufferVacation] = createSignal<VacationPeriodType>(
-    props.item ?? initialBufferVacation
-  );
-
   createEffect(() => {
-    if (bufferVacation()) {
+    if (bufferHoliday()) {
       setOnCalendarsPeriod((prev) => {
         if (!prev) return prev;
         const datas = { ...prev };
-        const index = datas.vacationsPeriod.findIndex(
-          (item) => item.name == bufferVacation().name
+        const index = datas.publicHolidays.findIndex(
+          (item) => item.name == bufferHoliday().name
         );
         if (index == -1) return datas;
-        datas.vacationsPeriod[index] = bufferVacation();
+        datas.publicHolidays[index] = bufferHoliday();
         return datas;
       });
     }
   });
 
-  function onChangeDate(date: Date, field: "start" | "end") {
-    setBufferVacation((prev) => {
+  function onChangeDate(date: Date) {
+    setBufferHoliday((prev) => {
       if (!prev) return prev;
       const datas = { ...prev };
-      datas[field] = date;
+      datas.date = date;
       return datas;
     });
   }
 
   function onInputName(value: string) {
-    setBufferVacation((prev) => {
+    setBufferHoliday((prev) => {
       if (!prev) return prev;
       const datas = { ...prev };
       datas.name = value;
@@ -59,22 +57,21 @@ export function VacationItem(props: VacationItemProps) {
     });
   }
 
-  function appendVacation() {
+  function appendHoliday() {
     setOnCalendarsPeriod((prev) => {
       if (!prev) return prev;
       const datas = { ...prev };
-      datas.vacationsPeriod.push(bufferVacation());
+      datas.publicHolidays.push(bufferHoliday());
       return datas;
     });
-
-    setBufferVacation(initialBufferVacation);
+    setBufferHoliday(initalBufferHoliday);
   }
 
-  function removeVacation() {
+  function removeHoliday() {
     setOnCalendarsPeriod((prev) => {
       if (!prev) return prev;
       const datas = { ...prev };
-      datas.vacationsPeriod = datas.vacationsPeriod.filter(
+      datas.publicHolidays = datas.publicHolidays.filter(
         (item) => item.name != props.item?.name
       );
       return datas;
@@ -90,28 +87,20 @@ export function VacationItem(props: VacationItemProps) {
       <TextInput
         onInput={onInputName}
         defaultValue={name()}
-        placeholder="Nom vacance"
+        placeholder="Nom du jour férié"
         disabled={disabled()}
       />
       <DateInput
-        label="Début"
-        maxDate={bufferVacation().end}
-        defaultValue={bufferVacation().start}
+        label="Date"
+        defaultValue={bufferHoliday().date}
         disabled={disabled()}
-        onChange={(date: Date) => onChangeDate(date, "start")}
-      />
-      <DateInput
-        label="Fin"
-        minDate={bufferVacation().start}
-        defaultValue={bufferVacation().end}
-        disabled={disabled()}
-        onChange={(date: Date) => onChangeDate(date, "end")}
+        onChange={onChangeDate}
       />
       <ItemActions
-        appendItem={appendVacation}
+        appendItem={appendHoliday}
         disabled={disabled()}
         editMode={editMode}
-        removeItem={removeVacation}
+        removeItem={removeHoliday}
         item={props.item}
       />
     </div>

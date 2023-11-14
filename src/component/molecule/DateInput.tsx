@@ -1,4 +1,4 @@
-import { createSignal, onMount } from "solid-js";
+import { createEffect, createSignal } from "solid-js";
 import CalendarIcon from "../../icons/CalendarIcon";
 import "./DateInput.css";
 
@@ -16,7 +16,7 @@ export function DateInput(props: DateInputProps) {
   const [defaultDate, setDefaultDate] = createSignal<string>();
   const label = () => props.label ?? "Entrer une date";
 
-  onMount(() => {
+  createEffect(() => {
     if (props.defaultValue)
       setDefaultDate(props.defaultValue.toISOString().substring(0, 10));
     else setDefaultDate(label);
