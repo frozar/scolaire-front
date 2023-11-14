@@ -1,8 +1,12 @@
 import { StudentToGradeService } from "../_services/student-to-grade.service";
-import { appendToStop } from "../views/content/map/component/organism/StopPoints";
+import {
+  appendToStop,
+  removeFromStop,
+} from "../views/content/map/component/organism/StopPoints";
 import { stopDetailsItem } from "../views/content/stops/component/organism/StopDetails";
 import { SchoolUtils } from "./school.utils";
 
+// TODO: Add a comment to specify redundancy !
 export namespace AssociatedUtils {
   export async function create(
     quantity: number,
@@ -42,5 +46,14 @@ export namespace AssociatedUtils {
 
     // TODO lucas même update mais pour school
     console.log("update student to grade");
+  }
+
+  export async function deleteAssociated(StudentToGradeId: number) {
+    const response = await StudentToGradeService.delete(StudentToGradeId);
+    console.log("delete class to school response", response);
+
+    removeFromStop(response, stopDetailsItem()?.id as number);
+
+    // ! Also remove from school !!!!
   }
 }

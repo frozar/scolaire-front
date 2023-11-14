@@ -1,14 +1,13 @@
 import { Show, createSignal } from "solid-js";
 import { AssociatedSchoolType } from "../../../../../_entities/_utils.entity";
-import { StudentToGradeService } from "../../../../../_services/student-to-grade.service";
 import CardTitle from "../../../../../component/atom/CardTitle";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
 import PencilIcon from "../../../../../icons/PencilIcon";
 import TrashIcon from "../../../../../icons/TrashIcon";
+import { AssociatedUtils } from "../../../../../utils/associated.utils";
 import { GradeUtils } from "../../../../../utils/grade.utils";
 import { QuantityUtils } from "../../../../../utils/quantity.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
-import { removeFromStop } from "../../../map/component/organism/StopPoints";
 import { stopDetailsItem } from "../organism/StopDetails";
 import EditStudentSchoolGradeItem from "./EditStudentSchoolGradeItem";
 import "./StudentSchoolGradeItem.css";
@@ -17,12 +16,13 @@ export default function (props: { school: AssociatedSchoolType }) {
   const [editingMode, setEditingMode] = createSignal(false);
 
   async function onClickDelete() {
-    const response = await StudentToGradeService.delete(
-      props.school.idClassToSchool
-    );
-    console.log("delete class to school response", response);
+    AssociatedUtils.deleteAssociated(props.school.idClassToSchool);
+    // const response = await StudentToGradeService.delete(
+    //   props.school.idClassToSchool
+    // );
+    // console.log("delete class to school response", response);
 
-    removeFromStop(response, stopDetailsItem()?.id as number);
+    // removeFromStop(response, stopDetailsItem()?.id as number);
   }
 
   function onClickEdit() {

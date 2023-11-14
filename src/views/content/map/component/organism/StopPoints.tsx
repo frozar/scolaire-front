@@ -48,6 +48,7 @@ export function appendToStop(gradeItem: AssociatedSchoolType, stopId: number) {
   updateStopDetailsItem(stopId);
 }
 
+// TODO: move
 export function removeFromStop(gradeStudentToGradeID: number, stopId: number) {
   setStops((prev) => {
     if (prev != undefined) {
