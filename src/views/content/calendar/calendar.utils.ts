@@ -11,13 +11,16 @@ export namespace CalendarUtils {
     });
   }
 
-  export function dayIsHoliday(day: Date, calendarPeriod: CalendarPeriodType) {
+  export function dayIsPublicHoliday(
+    day: Date,
+    calendarPeriod: CalendarPeriodType
+  ) {
     let isHolidayDate = false;
-    for (const holidayDate of calendarPeriod.publicHolidays) {
+    for (const publicHolidayDate of calendarPeriod.publicHolidays) {
       const date = new Date(
-        holidayDate.date.getFullYear(),
-        holidayDate.date.getMonth(),
-        holidayDate.date.getDate()
+        publicHolidayDate.date.getFullYear(),
+        publicHolidayDate.date.getMonth(),
+        publicHolidayDate.date.getDate()
       );
 
       if (date.getTime() == day.getTime()) isHolidayDate = true;
