@@ -56,9 +56,7 @@ export namespace CalendarManager {
     });
   }
 
-  export function linkToPeriodCalendar(
-    calendarPeriod: CalendarPeriodType | undefined
-  ) {
+  export function linkToPeriodCalendar(calendarPeriod?: CalendarPeriodType) {
     setCurrentCalendar((prev) => {
       if (!prev) return prev;
       const datas = { ...prev };

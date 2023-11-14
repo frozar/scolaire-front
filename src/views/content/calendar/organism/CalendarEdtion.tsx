@@ -33,9 +33,7 @@ export function CalendarEdition(props: CalendarEditionProps) {
     );
   }
 
-  function onChangeCalendarPeriodSelector(
-    calendarPeriod: CalendarPeriodType | undefined
-  ) {
+  function onChangeCalendarPeriodSelector(calendarPeriod?: CalendarPeriodType) {
     CalendarManager.linkToPeriodCalendar(calendarPeriod);
   }
 
