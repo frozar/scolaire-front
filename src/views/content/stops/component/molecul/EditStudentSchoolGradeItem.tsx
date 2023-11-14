@@ -24,21 +24,36 @@ export default function (props: EditStopProps) {
   // ! Delete !?
   const [selectedSchool, setSelectedSchool] = createSignal<SchoolType>();
 
-  const [gradeOptionSelected, setGradeOptionSelected] =
-    createSignal<number>(-1);
+  // const [gradeOptionSelected, setGradeOptionSelected] =
+  //   createSignal<number>(-1);
 
-  const [schoolOptionSelected, setSchoolOptionSelected] =
-    createSignal<number>(-1); // ! If selectedSchool is not deleted, use derived signal instead
+  // const [schoolOptionSelected, setSchoolOptionSelected] =
+  //   createSignal<number>(-1); // ! If selectedSchool is not deleted, use derived signal instead
 
-  const [quantityInputValue, setQuantityInputValue] = createSignal<number>(0);
+  const [schoolSelector, setSchoolSelector] = createSignal<{
+    value: string;
+    disabled: boolean;
+  }>({ value: "default", disabled: false });
+
+  const [gradeSelector, setGradeSelector] = createSignal<{
+    value: string;
+    disabled: boolean;
+  }>({ value: "default", disabled: true });
+
+  const [quantitySelector, setQuantitySelector] = createSignal<{
+    value: number;
+    disabled: boolean;
+  }>({ value: 0, disabled: true });
+
+  // const [quantityInputValue, setQuantityInputValue] = createSignal<number>(0);
 
   // TODO: Se débarraser de toutes les refs
-  const [schoolSelectRef, setSchoolSelectRef] =
-    createSignal<HTMLSelectElement>(seletElement);
-  const [gradeSelectRef, setGradeSelectRef] =
-    createSignal<HTMLSelectElement>(seletElement);
-  const [quantityInputRef, setQuantityInputRef] =
-    createSignal<HTMLInputElement>(document.createElement("input"));
+  // const [schoolSelectRef, setSchoolSelectRef] =
+  //   createSignal<HTMLSelectElement>(seletElement);
+  // const [gradeSelectRef, setGradeSelectRef] =
+  //   createSignal<HTMLSelectElement>(seletElement);
+  // const [quantityInputRef, setQuantityInputRef] =
+  //   createSignal<HTMLInputElement>(document.createElement("input"));
 
   createEffect(() => {
     if (props.gradeStudentToGrade != undefined) {
@@ -51,53 +66,137 @@ export default function (props: EditStopProps) {
 
   onMount(() => {
     // Modifying case
-    if (props.gradeStudentToGrade != undefined) {
-      setGradeOptionSelected(props.gradeStudentToGrade?.gradeId as number);
-      setSchoolOptionSelected(props.gradeStudentToGrade.schoolId);
-      setQuantityInputValue(props.gradeStudentToGrade.quantity);
+    const studentToGrade = props.gradeStudentToGrade;
+    if (studentToGrade != undefined) {
+      // setGradeOptionSelected(props.gradeStudentToGrade?.gradeId as number);
+      setGradeSelector({
+        disabled: true,
+        value: String(props.gradeStudentToGrade?.gradeId),
+      });
+      // setSchoolOptionSelected(props.gradeStudentToGrade.schoolId);
+      setSchoolSelector({
+        disabled: true,
+        value: String(studentToGrade.schoolId),
+      });
+      // setQuantityInputValue(props.gradeStudentToGrade.quantity);
+      setQuantitySelector({
+        disabled: false,
+        value: props.gradeStudentToGrade?.quantity as number,
+      });
       return;
     }
 
     // Creation case
-    gradeSelectRef().disabled = true;
-    quantityInputRef().disabled = true;
+    // gradeSelectRef().disabled = true;
+    // quantityInputRef().disabled = true;
   });
 
+  // function resetGradeAndQuantity() {
+  //   gradeSelectRef().disabled = true;
+  //   gradeSelectRef().value = "default";
+  //   quantityInputRef().disabled = true;
+  //   quantityInputRef().value = "0";
+  // }
   function resetGradeAndQuantity() {
-    gradeSelectRef().disabled = true;
-    gradeSelectRef().value = "default";
-    quantityInputRef().disabled = true;
-    quantityInputRef().value = "0";
+    // gradeSelectRef().disabled = true;
+    // gradeSelectRef().value = "default";
+    setGradeSelector({ value: "default", disabled: false });
+    setQuantitySelector({ value: 0, disabled: false });
+
+    // quantityInputRef().disabled = true;
+    // quantityInputRef().value = "0";
   }
 
-  const onChangeSchoolSelect = () => {
-    const school = getSchools().filter(
-      (school) => school.id == parseInt(schoolSelectRef().value)
-    )[0];
+  // const onChangeSchoolSelect = () => {
+  //   const school = getSchools().filter(
+  //     (school) => school.id == parseInt(schoolSelectRef().value)
+  //   )[0];
 
-    if (!school) {
-      return resetGradeAndQuantity();
-    } else if (school.id != selectedSchool()?.id) {
-      resetGradeAndQuantity();
+  //   if (!school) {
+  //     return resetGradeAndQuantity();
+  //   } else if (school.id != selectedSchool()?.id) {
+  //     resetGradeAndQuantity();
+  //   }
+  //   gradeSelectRef().disabled = false;
+  //   setSelectedSchool(school);
+  // };
+  function onChangeSchoolSelect(element: HTMLSelectElement) {
+    const value = element.value;
+    if (value != "default") {
+      // value = parseInt(value);
+      const school = getSchools().filter(
+        (school) => school.id == parseInt(element.value)
+      )[0];
+      setSelectedSchool(school);
     }
-    gradeSelectRef().disabled = false;
-    setSelectedSchool(school);
-  };
+    resetGradeAndQuantity();
+    setSchoolSelector((prev) => {
+      return { ...prev, value };
+    });
 
-  function onChangeSelectGrade() {
-    if (gradeSelectRef().value != "default") {
-      quantityInputRef().disabled = false;
-    } else {
-      quantityInputRef().disabled = true;
-      quantityInputRef().value = "0";
-    }
+    // if (!school) {
+    //   return resetGradeAndQuantity();
+    // } else if (school.id != selectedSchool()?.id) {
+    //   resetGradeAndQuantity();
+    // }
+    // gradeSelectRef().disabled = false;
+    // setGradeSelector((prev) => {
+    //   return { ...prev, disabled: false };
+    // });
   }
 
+  // function onChangeSelectGrade() {
+  //   if (gradeSelectRef().value != "default") {
+  //     quantityInputRef().disabled = false;
+  //   } else {
+  //     quantityInputRef().disabled = true;
+  //     quantityInputRef().value = "0";
+  //   }
+  // }
+
+  function onChangeSelectGrade(element: HTMLSelectElement) {
+    const value: string = element.value;
+    setGradeSelector((prev) => {
+      return { ...prev, value: value };
+    });
+    setQuantitySelector({ value: 0, disabled: false });
+    // if (value != "default") {
+    //   // quantityInputRef().disabled = false;
+    //   setQuantitySelector({ value: 0, disabled: true });
+    // } else {
+    //   setQuantitySelector({ disabled: false, value: 0 });
+    //   // quantityInputRef().disabled = true;
+    //   // quantityInputRef().value = "0";
+    // }
+  }
+
+  function onChangeQuantity(element: HTMLInputElement) {
+    setQuantitySelector((prev) => {
+      return { ...prev, value: parseInt(element.value) };
+    });
+  }
+
+  // function checkAllInputsValue() {
+  //   const validInputs =
+  //     schoolSelectRef().value == "default" ||
+  //     quantityInputRef().value == "0" ||
+  //     gradeSelectRef().value == "default";
+
+  //   if (validInputs) {
+  //     addNewUserInformation({
+  //       displayed: true,
+  //       level: MessageLevelEnum.warning,
+  //       type: MessageTypeEnum.global,
+  //       content: "Veuillez compléter tous les champs",
+  //     });
+  //   }
+  //   return validInputs;
+  // }
   function checkAllInputsValue() {
     const validInputs =
-      schoolSelectRef().value == "default" ||
-      quantityInputRef().value == "0" ||
-      gradeSelectRef().value == "default";
+      schoolSelector().value == "default" ||
+      quantitySelector().value == 0 ||
+      gradeSelector().value == "default";
 
     if (validInputs) {
       addNewUserInformation({
@@ -110,20 +209,38 @@ export default function (props: EditStopProps) {
     return validInputs;
   }
 
+  // async function validate() {
+  //   if (props.gradeStudentToGrade)
+  //     await AssociatedUtils.update(
+  //       props.gradeStudentToGrade.idClassToSchool,
+  //       Number(gradeSelectRef().value),
+  //       Number(schoolSelectRef().value),
+  //       Number(quantityInputRef().value)
+  //     );
+  //   else if (!checkAllInputsValue())
+  //     AssociatedUtils.create(
+  //       Number(quantityInputRef().value),
+  //       Number(gradeSelectRef().value),
+  //       Number(schoolSelectRef().value)
+  //     );
+  //   props.close();
+  // }
   async function validate() {
-    if (props.gradeStudentToGrade)
+    if (checkAllInputsValue()) return;
+    if (props.gradeStudentToGrade) {
       await AssociatedUtils.update(
         props.gradeStudentToGrade.idClassToSchool,
-        Number(gradeSelectRef().value),
-        Number(schoolSelectRef().value),
-        Number(quantityInputRef().value)
+        parseInt(gradeSelector().value),
+        parseInt(schoolSelector().value),
+        quantitySelector().value
       );
-    else if (!checkAllInputsValue())
+    } else {
       AssociatedUtils.create(
-        Number(quantityInputRef().value),
-        Number(gradeSelectRef().value),
-        Number(schoolSelectRef().value)
+        quantitySelector().value,
+        Number(gradeSelector().value),
+        Number(schoolSelector().value)
       );
+    }
     props.close();
   }
 
@@ -133,8 +250,8 @@ export default function (props: EditStopProps) {
         <SchoolSelect
           onChange={onChangeSchoolSelect}
           isModifying={props.gradeStudentToGrade ? true : false}
-          selectedOption={schoolOptionSelected()}
-          refSelectSetter={setSchoolSelectRef}
+          selector={schoolSelector()}
+          // refSelectSetter={setSchoolSelectRef}
           schools={getSchools()}
         />
         <ButtonIcon icon={<CheckIcon />} onClick={validate} />
@@ -142,17 +259,19 @@ export default function (props: EditStopProps) {
 
       <div class="edit-stop-bottom-line">
         <GradeSelection
-          refSelectSetter={setGradeSelectRef}
+          // refSelectSetter={setGradeSelectRef}
           isModifying={props.gradeStudentToGrade ? true : false}
-          selectedOption={gradeOptionSelected()}
+          selector={gradeSelector()}
           grades={selectedSchool()?.grades as GradeType[]}
           onChange={onChangeSelectGrade}
         />
         <InputNumber
-          ref={setQuantityInputRef}
+          // ref={setQuantityInputRef}
           class="input-form w-full"
           min={0}
-          defaultValue={quantityInputValue()}
+          selector={quantitySelector()}
+          onChange={onChangeQuantity}
+          defaultValue={quantitySelector().value}
           placeholder="Quantité"
         />
       </div>
