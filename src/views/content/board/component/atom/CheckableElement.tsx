@@ -23,7 +23,8 @@ export function CheckableElement(props: {
     // eslint-disable-next-line solid/reactivity
     props.content.id
   );
-  const isElementDisabled = remainingQuantity == 0;
+  // eslint-disable-next-line solid/reactivity
+  const isElementDisabled = remainingQuantity == 0 && props.displayQuantity;
 
   return (
     <Show when={props.content.display}>
