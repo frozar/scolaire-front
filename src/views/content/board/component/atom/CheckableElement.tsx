@@ -15,6 +15,7 @@ export type CheckableEventType = Event & {
 export function CheckableElement(props: {
   content: CheckableElementType;
   indice: number;
+  displayQuantity: boolean;
 }) {
   return (
     <Show when={props.content.display}>
@@ -30,6 +31,9 @@ export function CheckableElement(props: {
           class="h-4 w-5 mr-4 rounded border-gray-300 text-green-base focus:ring-green-base"
         />
         <p>{props.content.name}</p>
+        <Show when={props.displayQuantity}>
+          <div>TODO / TODO</div>
+        </Show>
       </div>
     </Show>
   );
