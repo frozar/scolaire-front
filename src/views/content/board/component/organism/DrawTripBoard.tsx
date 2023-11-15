@@ -95,7 +95,6 @@ export function DrawTripBoard() {
         <For each={currentDrawTrip().schools}>
           {(school_elem) => {
             return (
-              // ! Ne pas passer displayQuanity de props en props à partir de là ?
               <CheckableGradeListBySchool
                 school={school_elem}
                 displayQuantity={true}
