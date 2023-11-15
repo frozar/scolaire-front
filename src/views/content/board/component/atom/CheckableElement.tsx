@@ -23,6 +23,8 @@ export function CheckableElement(props: {
     // eslint-disable-next-line solid/reactivity
     props.content.id
   );
+  const isElementDisabled = remainingQuantity == 0;
+
   return (
     <Show when={props.content.display}>
       <div class="flex items-center">
@@ -30,7 +32,7 @@ export function CheckableElement(props: {
           id="comments"
           name="comments"
           type="checkbox"
-          disabled={remainingQuantity == 0 ? true : false}
+          disabled={isElementDisabled}
           checked={props.content.checked}
           onChange={(e) => {
             props.content.onChange(e, props.indice);
@@ -39,8 +41,8 @@ export function CheckableElement(props: {
         />
         <p
           classList={{
-            "text-gray-base": remainingQuantity == 0,
-            "text-current": remainingQuantity != 0,
+            "text-gray-base": isElementDisabled,
+            "text-current": !isElementDisabled,
           }}
         >
           {props.content.name}
@@ -49,8 +51,8 @@ export function CheckableElement(props: {
           <p
             class="ml-4"
             classList={{
-              "text-gray-base": remainingQuantity == 0,
-              "text-current": remainingQuantity != 0,
+              "text-gray-base": isElementDisabled,
+              "text-current": !isElementDisabled,
             }}
           >
             {remainingQuantity} élèves restants
