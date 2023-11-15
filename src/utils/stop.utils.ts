@@ -7,6 +7,7 @@ import {
   setStops,
 } from "../views/content/map/component/organism/StopPoints";
 import { updateStopDetailsItem } from "../views/content/stops/component/organism/StopDetails";
+import { GradeUtils } from "./grade.utils";
 
 export namespace StopUtils {
   export function addAssociated(
@@ -137,16 +138,18 @@ export namespace StopUtils {
     const totalQuantity = getTotalQuantityPerSchool(stopId, schoolId);
 
     let usedQuantity = 0;
+
     getLines()
       .flatMap((line) => line.trips)
-      // TODO: Use grade school destination instead !
-      .filter((trip) => trip.schools[0].id == schoolId)
-      .flatMap((_trip) => _trip.tripPoints)
+      .flatMap((trip) => trip.tripPoints)
       .filter(
         (tripPoint) =>
           tripPoint.nature == NatureEnum.stop && tripPoint.id == stopId
       )
       .flatMap((_tripPoint) => _tripPoint.grades)
+      .filter(
+        (gradeTrip) => GradeUtils.getSchoolId(gradeTrip.gradeId) == schoolId
+      )
       .forEach((grade) => (usedQuantity += grade.quantity));
 
     return totalQuantity - usedQuantity;
