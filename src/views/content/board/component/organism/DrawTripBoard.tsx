@@ -19,6 +19,7 @@ import {
 } from "../../../../../signaux";
 import { CurrentDrawTripUtils } from "../../../../../utils/currentDrawTrip.utils";
 import { MapElementUtils } from "../../../../../utils/mapElement.utils";
+import { QuantityUtils } from "../../../../../utils/quantity.utils";
 import {
   getLines,
   getSelectedLine,
@@ -96,6 +97,7 @@ export function DrawTripBoard() {
             return (
               <CheckableGradeListBySchool
                 school={school_elem}
+                displayQuantity={true}
                 checkableGrade={drawTripCheckableGrade}
                 setCheckableGrade={setDrawTripCheckableGrade}
               />
@@ -246,6 +248,9 @@ async function nextStep() {
         break;
       }
       const isValidable = (grade: GradeType) => {
+        if (QuantityUtils.remainingGradeQuantity(grade.id as number) == 0)
+          return false;
+
         const selectedGradeId = currentDrawTrip()
           ?.schools.map((school) =>
             school.grades.map((gradeMap) => gradeMap.id)

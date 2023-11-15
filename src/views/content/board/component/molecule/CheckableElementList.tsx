@@ -12,6 +12,7 @@ export type AssociatedItem = {
 
 type CollapsibleCheckableListType = {
   title: string;
+  displayQuantity: boolean;
   content: CheckableElementType[];
 };
 
@@ -20,7 +21,13 @@ export function CheckableElementList(props: CollapsibleCheckableListType) {
     <CollapsibleElement title={props.title}>
       <For each={props.content}>
         {(elem, i) => {
-          return <CheckableElement content={elem} indice={i()} />;
+          return (
+            <CheckableElement
+              content={elem}
+              indice={i()}
+              displayQuantity={props.displayQuantity}
+            />
+          );
         }}
       </For>
     </CollapsibleElement>

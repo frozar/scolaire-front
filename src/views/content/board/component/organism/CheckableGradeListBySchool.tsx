@@ -11,6 +11,7 @@ export function CheckableGradeListBySchool(props: {
   school: SchoolType;
   checkableGrade: Accessor<AssociatedItem[]>;
   setCheckableGrade: Setter<AssociatedItem[]>;
+  displayQuantity: boolean;
 }) {
   const onChangeFunction = (e: CheckableEventType, indice: number) => {
     const prev = [...props.checkableGrade()];
@@ -21,9 +22,11 @@ export function CheckableGradeListBySchool(props: {
   return (
     <CheckableElementList
       title={props.school.name}
+      displayQuantity={props.displayQuantity}
       content={props.checkableGrade().map((grade) => {
         return {
           name: grade.item.name,
+          id: grade.item.id,
           checked: grade.done ?? false,
           onChange: onChangeFunction,
           display: props.school.grades

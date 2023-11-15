@@ -91,6 +91,7 @@ export default function () {
             return (
               <CheckableGradeListBySchool
                 school={school_elem}
+                displayQuantity={false}
                 checkableGrade={addLineCheckableGrade}
                 setCheckableGrade={setAddLineCheckableGrade}
               />
