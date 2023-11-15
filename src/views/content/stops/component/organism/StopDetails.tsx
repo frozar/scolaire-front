@@ -53,7 +53,7 @@ export default function () {
 
       <p>
         {StopUtils.getRemainingQuantity(stopDetailsItem()?.id as number) +
-          " élèves restant sur " +
+          " élèves restants sur " +
           StopUtils.getTotalQuantity(stopDetailsItem()?.id as number)}
       </p>
 

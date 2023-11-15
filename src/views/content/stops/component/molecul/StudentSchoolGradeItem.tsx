@@ -42,7 +42,7 @@ export default function (props: { school: AssociatedSchoolType }) {
               props.school,
               stopDetailsItem()?.id as number
             ) +
-              " élèves restant sur " +
+              " élèves restants sur " +
               props.school.quantity}
           </p>
         </div>

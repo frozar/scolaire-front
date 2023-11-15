@@ -34,7 +34,10 @@ export function CheckableElement(props: {
         />
         <p>{props.content.name}</p>
         <Show when={props.displayQuantity}>
-          <div>TODO / {QuantityUtils.totalGradeQuantity(props.content.id)}</div>
+          <div class="ml-4">
+            {QuantityUtils.remainingGradeQuantity(props.content.id)} élèves
+            restants
+          </div>
         </Show>
       </div>
     </Show>
