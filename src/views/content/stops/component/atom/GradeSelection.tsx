@@ -1,12 +1,10 @@
 import { For } from "solid-js";
 import { GradeType } from "../../../../../_entities/grade.entity";
+import { SelectorType } from "../molecul/EditStudentSchoolGradeItem";
 import "./GradeSelection.css";
 
 interface GradeSelectProps {
-  selector: {
-    value: number | string; // ! Change
-    disabled: boolean;
-  };
+  selector: SelectorType;
   onChange: (element: HTMLSelectElement) => void;
   isModifying: boolean;
   grades: GradeType[];
@@ -22,7 +20,10 @@ export default function (props: GradeSelectProps) {
       <option value="default">Sélectionner une grade</option>
       <For each={props.grades}>
         {(grade) => (
-          <option selected={grade.id == props.selector.value} value={grade.id}>
+          <option
+            selected={grade.id == Number(props.selector.value)}
+            value={grade.id}
+          >
             {grade.name}
           </option>
         )}

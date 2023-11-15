@@ -1,14 +1,12 @@
 import { For } from "solid-js";
 import { SchoolType } from "../../../../../_entities/school.entity";
+import { SelectorType } from "../molecul/EditStudentSchoolGradeItem";
 import "./SchoolSelection.css";
 
 interface SchoolSelectionProps {
   schools: SchoolType[];
   isModifying: boolean;
-  selector: {
-    value: number | string;
-    disabled: boolean;
-  };
+  selector: SelectorType;
   onChange: (element: HTMLSelectElement) => void;
 }
 
@@ -24,7 +22,7 @@ export default function (props: SchoolSelectionProps) {
       <For each={props.schools}>
         {(school) => (
           <option
-            selected={school.id == props.selector.value}
+            selected={school.id == Number(props.selector.value)}
             value={school.id}
           >
             {school.name}

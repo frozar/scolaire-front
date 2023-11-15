@@ -19,24 +19,31 @@ interface EditStopProps {
   close: () => void;
 }
 
+export type SelectorType = {
+  value: string;
+  disabled: boolean;
+};
+
+export type QuantitySelectorType = {
+  value: number;
+  disabled: boolean;
+};
+
 export default function (props: EditStopProps) {
-  // ! Delete !?
   const [selectedSchool, setSelectedSchool] = createSignal<SchoolType>();
 
-  const [schoolSelector, setSchoolSelector] = createSignal<{
-    value: string;
-    disabled: boolean;
-  }>({ value: "default", disabled: false });
+  const [schoolSelector, setSchoolSelector] = createSignal<SelectorType>({
+    value: "default",
+    disabled: false,
+  });
 
-  const [gradeSelector, setGradeSelector] = createSignal<{
-    value: string;
-    disabled: boolean;
-  }>({ value: "default", disabled: true });
+  const [gradeSelector, setGradeSelector] = createSignal<SelectorType>({
+    value: "default",
+    disabled: true,
+  });
 
-  const [quantitySelector, setQuantitySelector] = createSignal<{
-    value: number;
-    disabled: boolean;
-  }>({ value: 0, disabled: true });
+  const [quantitySelector, setQuantitySelector] =
+    createSignal<QuantitySelectorType>({ value: 0, disabled: true });
 
   createEffect(() => {
     if (props.gradeStudentToGrade != undefined) {
@@ -163,7 +170,6 @@ export default function (props: EditStopProps) {
           min={0}
           selector={quantitySelector()}
           onChange={onChangeQuantity}
-          defaultValue={quantitySelector().value}
           placeholder="Quantité"
         />
       </div>
