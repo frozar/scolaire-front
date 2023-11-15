@@ -7,6 +7,7 @@ import {
   setStops,
 } from "../views/content/map/component/organism/StopPoints";
 import { updateStopDetailsItem } from "../views/content/stops/component/organism/StopDetails";
+import { GradeUtils } from "./grade.utils";
 
 export namespace StopUtils {
   export function addAssociated(
@@ -137,17 +138,37 @@ export namespace StopUtils {
     const totalQuantity = getTotalQuantityPerSchool(stopId, schoolId);
 
     let usedQuantity = 0;
+    // getLines()
+    //   .flatMap((line) => line.trips)
+    //   // TODO: Use grade school destination instead !
+    //   .filter((trip) => trip.schools[0].id == schoolId)
+    //   .flatMap((_trip) => _trip.tripPoints)
+    //   .filter(
+    //     (tripPoint) =>
+    //       tripPoint.nature == NatureEnum.stop && tripPoint.id == stopId
+    //   )
+    //   .flatMap((_tripPoint) => _tripPoint.grades)
+    //   .forEach((grade) => (usedQuantity += grade.quantity));
+
     getLines()
       .flatMap((line) => line.trips)
       // TODO: Use grade school destination instead !
-      .filter((trip) => trip.schools[0].id == schoolId)
+      // .filter((trip) => trip.schools[0].id == schoolId)
       .flatMap((_trip) => _trip.tripPoints)
       .filter(
         (tripPoint) =>
           tripPoint.nature == NatureEnum.stop && tripPoint.id == stopId
       )
       .flatMap((_tripPoint) => _tripPoint.grades)
-      .forEach((grade) => (usedQuantity += grade.quantity));
+      .filter(
+        (gradeTrip) => GradeUtils.getSchoolId(gradeTrip.gradeId) == schoolId
+      )
+      .forEach((_grade) => (usedQuantity += _grade.quantity));
+    // console.log("test", test);
+    console.log("schoolId input =>", schoolId);
+
+    // if (test.length > 0)
+    //   console.log("schoolId=>", GradeUtils.getSchoolId(test[0].gradeId));
 
     return totalQuantity - usedQuantity;
   }
