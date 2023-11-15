@@ -1,0 +1,7 @@
+.labeled-inline-checkbox {
+  @apply flex items-center gap-2 justify-between;
+}
+
+.labeled-inline-checkbox.offset {
+  height: 24px;
+}

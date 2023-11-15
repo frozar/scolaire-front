@@ -66,14 +66,16 @@ export namespace CalendarManager {
   }
 
   export function updateCalendarRules(day: CalendarDayEnum) {
-    const indexof = currentCalendar()?.rules.findIndex((item) => item == day);
+    const indexof = currentCalendar()?.rules.findIndex(
+      (item) => item.day == day
+    );
 
     setCurrentCalendar((prev) => {
       if (prev == undefined) return prev;
       const data = { ...prev };
 
-      if (indexof == -1) data.rules.push(day);
-      else data.rules = data.rules.filter((item) => item != day);
+      if (indexof == -1) data.rules.push({ day: day });
+      else data.rules = data.rules.filter((item) => item.day != day);
       return data;
     });
   }

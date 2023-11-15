@@ -1,0 +1,7 @@
+.calendar-rules-list {
+  @apply flex items-end gap-5;
+}
+
+.calendar-rules-actions-list {
+  @apply flex flex-col items-end;
+}

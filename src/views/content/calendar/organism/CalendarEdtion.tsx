@@ -8,7 +8,7 @@ import Button from "../../../../component/atom/Button";
 import { CalendarPeriodSelector } from "../atom/CalendarPeriodSelector";
 import { CalendarSectionTitle } from "../atom/CalendarSectionTitle";
 import { CalendarManager } from "../calendar.manager";
-import { CalendarDaysCheckbox } from "../molecule/CalendarDaysCheckbox";
+import { CalendarRules } from "../molecule/CalendarRules";
 import {
   CalendarActionsEnum,
   calendarsPeriod,
@@ -114,7 +114,7 @@ export function CalendarEdition(props: CalendarEditionProps) {
       <div class="calendar-edition-rules">
         <div>
           <CalendarSectionTitle title="Paramètrage calendrier" />
-          <CalendarDaysCheckbox calendar={props.calendar} />
+          <CalendarRules calendar={props.calendar} />
           <div class="inline-grid pt-5">
             <label class="text-xl">Calendrier scolaire</label>
             <CalendarPeriodSelector
