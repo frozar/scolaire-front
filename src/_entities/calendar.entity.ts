@@ -5,7 +5,12 @@ export namespace CalendarEntity {
     return {
       id: dbCalendar.id,
       name: dbCalendar.name,
-      rules: dbCalendar.rules,
+      rules: dbCalendar.rules.map((item) => {
+        return {
+          day: item.day,
+          tripTypeId: item.trip_type_id,
+        };
+      }),
       added: CalendarUtils.stringListToDateTimeList(dbCalendar.date_added),
       deleted: CalendarUtils.stringListToDateTimeList(dbCalendar.date_deleted),
       calendarPeriodId: dbCalendar.calendar_period_id,
@@ -41,7 +46,12 @@ export namespace CalendarEntity {
   ): Omit<CalendarDBType, "id"> {
     return {
       name: calendar.name,
-      rules: calendar.rules,
+      rules: calendar.rules.map((item) => {
+        return {
+          day: item.day,
+          trip_type_id: item.tripTypeId,
+        };
+      }),
       date_added: CalendarUtils.dateTimeListToStringList(calendar.added),
       date_deleted: CalendarUtils.dateTimeListToStringList(calendar.deleted),
       calendar_period_id: calendar.calendarPeriodId,
@@ -83,10 +93,20 @@ export enum CalendarDayEnum {
   sunday = "sunday",
 }
 
+export type RulesType = {
+  tripTypeId?: number;
+  day: CalendarDayEnum;
+};
+
+export type RulesDBType = {
+  trip_type_id?: number;
+  day: CalendarDayEnum;
+};
+
 export type CalendarType = {
   id: number;
   name: string;
-  rules: CalendarDayEnum[];
+  rules: RulesType[];
   added: number[];
   deleted: number[];
   calendarPeriodId?: number;
@@ -95,7 +115,7 @@ export type CalendarType = {
 export type CalendarDBType = {
   id: number;
   name: string;
-  rules: CalendarDayEnum[];
+  rules: RulesDBType[];
   date_added: string[];
   date_deleted: string[];
   calendar_period_id?: number;

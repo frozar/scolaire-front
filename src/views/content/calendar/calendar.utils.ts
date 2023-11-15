@@ -124,12 +124,8 @@ export namespace CalendarUtils {
   }
 
   export function isActiveDay(date: Date, calendar: CalendarType): boolean {
-    const isDateInRule = calendar.rules.includes(
-      CalendarUtils.getDayName(date, true) as CalendarDayEnum
-    );
-
     if (calendar.added.includes(date.getTime())) return true;
-    if (!isDateInRule) return false;
+    if (!CalendarUtils.isARulesDate(date, calendar)) return false;
     if (calendar.deleted.includes(date.getTime())) return false;
 
     return true;
@@ -161,7 +157,12 @@ export namespace CalendarUtils {
 
   export function isARulesDate(date: Date, calendar: CalendarType): boolean {
     const dayName = CalendarUtils.getDayName(date, true);
-    if (calendar.rules.includes(dayName as CalendarDayEnum)) return true;
+    if (
+      calendar.rules
+        .map((item) => item.day)
+        .includes(dayName as CalendarDayEnum)
+    )
+      return true;
     return false;
   }
 
@@ -169,6 +170,6 @@ export namespace CalendarUtils {
     day: CalendarDayEnum,
     calendar: CalendarType
   ): boolean {
-    return calendar.rules.includes(day);
+    return calendar.rules.map((item) => item.day).includes(day);
   }
 }
