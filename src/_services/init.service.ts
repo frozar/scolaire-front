@@ -1,3 +1,8 @@
+import {
+  CalendarDBType,
+  CalendarEntity,
+  CalendarPeriodDBType,
+} from "../_entities/calendar.entity";
 import { BusLineEntity, LineDBType, LineType } from "../_entities/line.entity";
 import {
   SchoolDBType,
@@ -5,6 +10,10 @@ import {
   SchoolType,
 } from "../_entities/school.entity";
 import { StopDBType, StopEntity, StopType } from "../_entities/stop.entity";
+import {
+  setCalendars,
+  setCalendarsPeriod,
+} from "../views/content/calendar/template/Calendar";
 import { setLines } from "../views/content/map/component/organism/BusLines";
 import { setSchools } from "../views/content/map/component/organism/SchoolPoints";
 import { setStops } from "../views/content/map/component/organism/StopPoints";
@@ -20,6 +29,11 @@ export type InitType = {
   schools: SchoolType[];
   stops: StopType[];
   busLines: LineType[];
+};
+
+export type InitDBCalendarType = {
+  calendars: CalendarDBType[];
+  calendars_period: CalendarPeriodDBType[];
 };
 
 export namespace InitService {
@@ -42,5 +56,19 @@ export namespace InitService {
     setLines(busLines);
 
     return { schools, stops, busLines };
+  }
+
+  export async function loadCalendars(): Promise<void> {
+    const dbInit: InitDBCalendarType = await ServiceUtils.get("/calendars");
+
+    setCalendars(
+      dbInit.calendars.map((calendar) => CalendarEntity.build(calendar))
+    );
+
+    setCalendarsPeriod(
+      dbInit.calendars_period.map((calendarPeriod) =>
+        CalendarEntity.buildCalendarPeriod(calendarPeriod)
+      )
+    );
   }
 }

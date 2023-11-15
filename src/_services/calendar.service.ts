@@ -8,15 +8,6 @@ import {
 import { ServiceUtils } from "./_utils.service";
 
 export namespace CalendarService {
-  export async function getAll(): Promise<CalendarType[]> {
-    const dbCalendars: CalendarDBType[] = await ServiceUtils.get("/calendar");
-    return dbCalendars
-      ? dbCalendars.map((dbCalendar: CalendarDBType) => {
-          return CalendarEntity.build(dbCalendar);
-        })
-      : [];
-  }
-
   export async function updateCalendar(
     calendar: CalendarType
   ): Promise<CalendarType> {
@@ -36,16 +27,6 @@ export namespace CalendarService {
     });
 
     return CalendarEntity.build(dbCalendar);
-  }
-
-  export async function getAllCalendarPeriod() {
-    const dbCalendarPeriod: CalendarPeriodDBType[] = await ServiceUtils.get(
-      "/calendar-periods"
-    );
-
-    return dbCalendarPeriod.map((calendar) =>
-      CalendarEntity.buildCalendarPeriod(calendar)
-    );
   }
 
   export async function updateCalendarPeriod(
