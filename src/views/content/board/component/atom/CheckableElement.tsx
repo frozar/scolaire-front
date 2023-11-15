@@ -1,5 +1,5 @@
 import { Show } from "solid-js";
-import { QuantityUtils } from "../../../../../utils/quantity.utils";
+import { GradeUtils } from "../../../../../utils/grade.utils";
 
 export type CheckableElementType = {
   name: string;
@@ -19,7 +19,7 @@ export function CheckableElement(props: {
   indice: number;
   displayQuantity: boolean;
 }) {
-  const remainingQuantity = QuantityUtils.remainingGradeQuantity(
+  const remainingQuantity = GradeUtils.getRemainingQuantity(
     // eslint-disable-next-line solid/reactivity
     props.content.id
   );
