@@ -19,6 +19,12 @@ export function CheckableGradeListBySchool(props: {
     props.setCheckableGrade(prev);
   };
 
+  // ! Remettre comme c'etait avant !
+  // const onChangeFunction = (checked: boolean, indice: number) => {
+  //   const prev = [...props.checkableGrade()];
+  //   prev[indice] = { ...prev[indice], done: checked };
+  //   props.setCheckableGrade(prev);
+  // };
   return (
     <CheckableElementList
       title={props.school.name}

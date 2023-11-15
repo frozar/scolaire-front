@@ -19,6 +19,10 @@ export function CheckableElement(props: {
   indice: number;
   displayQuantity: boolean;
 }) {
+  // ! Ne pas utiliser en tant que fonction car les boucles sont executés à chaque fois !
+  function getRemainingQuantity() {
+    return QuantityUtils.remainingGradeQuantity(props.content.id);
+  }
   return (
     <Show when={props.content.display}>
       <div class="flex items-center">
@@ -26,18 +30,31 @@ export function CheckableElement(props: {
           id="comments"
           name="comments"
           type="checkbox"
+          disabled={getRemainingQuantity() == 0 ? true : false}
           checked={props.content.checked}
           onChange={(e) => {
             props.content.onChange(e, props.indice);
           }}
           class="h-4 w-5 mr-4 rounded border-gray-300 text-green-base focus:ring-green-base"
         />
-        <p>{props.content.name}</p>
+        <p
+          classList={{
+            "text-gray-base": getRemainingQuantity() == 0,
+            "text-current": getRemainingQuantity() != 0,
+          }}
+        >
+          {props.content.name}
+        </p>
         <Show when={props.displayQuantity}>
-          <div class="ml-4">
-            {QuantityUtils.remainingGradeQuantity(props.content.id)} élèves
-            restants
-          </div>
+          <p
+            class="ml-4"
+            classList={{
+              "text-gray-base": getRemainingQuantity() == 0,
+              "text-current": getRemainingQuantity() != 0,
+            }}
+          >
+            {getRemainingQuantity()} élèves restants
+          </p>
         </Show>
       </div>
     </Show>
