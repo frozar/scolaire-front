@@ -1,4 +1,4 @@
-import { createSignal } from "solid-js";
+import { createEffect, createSignal } from "solid-js";
 import {
   CalendarPeriodType,
   CalendarType,
@@ -23,10 +23,14 @@ export function CalendarEdition(props: CalendarEditionProps) {
   const [selectedCalendarPeriod, setSelectedCalendarPeriod] =
     createSignal<CalendarPeriodType>();
 
-  setSelectedCalendarPeriod(
-    // eslint-disable-next-line solid/reactivity
-    calendarsPeriod().find((item) => item.id == props.calendar.calendarPeriodId)
-  );
+  createEffect(() => {
+    setSelectedCalendarPeriod(
+      // eslint-disable-next-line solid/reactivity
+      calendarsPeriod().find(
+        (item) => item.id == props.calendar.calendarPeriodId
+      )
+    );
+  });
 
   function onClickCellAddDate(cellDate: Date) {
     CalendarManager.toggleAddedDate(cellDate);
