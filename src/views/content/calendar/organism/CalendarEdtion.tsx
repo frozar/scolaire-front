@@ -9,7 +9,11 @@ import { CalendarPeriodSelector } from "../atom/CalendarPeriodSelector";
 import { CalendarSectionTitle } from "../atom/CalendarSectionTitle";
 import { CalendarManager } from "../calendar.manager";
 import { CalendarDaysCheckbox } from "../molecule/CalendarDaysCheckbox";
-import { CalendarActionsEnum, calendarsPeriod } from "../template/Calendar";
+import {
+  CalendarActionsEnum,
+  calendarsPeriod,
+  setCurrentCalendar,
+} from "../template/Calendar";
 import "./CalendarEdtion.css";
 import { CalendarHeader } from "./CalendarHeader";
 import { CalendarLineAction } from "./CalendarLineAction";
@@ -47,6 +51,10 @@ export function CalendarEdition(props: CalendarEditionProps) {
 
   function onChangeCalendarPeriodSelector(calendarPeriod?: CalendarPeriodType) {
     CalendarManager.linkToPeriodCalendar(calendarPeriod);
+  }
+
+  function cancelEdition() {
+    setCurrentCalendar(undefined);
   }
 
   return (
@@ -103,7 +111,7 @@ export function CalendarEdition(props: CalendarEditionProps) {
         </div>
       </div>
 
-      <div class="calendar-edition-footer-actions">
+      <div class="calendar-edition-rules">
         <div>
           <CalendarSectionTitle title="Paramètrage calendrier" />
           <CalendarDaysCheckbox calendar={props.calendar} />
@@ -117,7 +125,13 @@ export function CalendarEdition(props: CalendarEditionProps) {
         </div>
       </div>
 
-      <div class="flex justify-end w-full">
+      <div class=" calendar-edition-footer-actions">
+        <Button
+          onClick={cancelEdition}
+          label="Annuler"
+          variant="danger"
+          isDisabled={false}
+        />
         <Button
           onClick={updateCalendar}
           label="Mettre à jour"

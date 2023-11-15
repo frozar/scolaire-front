@@ -3,5 +3,9 @@
 }
 
 .calendar-edition-footer-actions {
-  @apply flex justify-between mt-10;
+  @apply flex gap-3 justify-end w-full;
+}
+
+.calendar-edition-rules {
+  @apply mt-10 w-full;
 }
