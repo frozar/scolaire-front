@@ -25,20 +25,26 @@ export namespace AssociatedUtils {
     SchoolUtils.addAssociated(gradeToSchool, stopDetailsItem()?.id as number);
   }
 
-  // TODO
-  export async function update() {
-    // const gradeToSchool = await StudentToGradeService.update({
-    //   idClassToSchool: props.gradeStudentToGrade?.idClassToSchool as number,
-    //   schoolId: Number(schoolSelectRef().value),
-    //   stopId: Number(stopDetailsItem()?.id),
-    //   quantity: Number(quantityInputRef().value),
-    //   gradeId: Number(gradeSelectRef().value),
-    // });
+  export async function update(
+    studentToGradeId: number,
+    gradeId: number,
+    schoolId: number,
+    quantity: number
+  ) {
+    const stopId = Number(stopDetailsItem()?.id);
+    const gradeToSchool = await StudentToGradeService.update(
+      {
+        idClassToSchool: studentToGradeId,
+        stopId,
+        quantity,
+        gradeId,
+      },
+      schoolId
+    );
 
-    // updateFromStop(gradeToSchool, stopDetailsItem()?.id as number);
+    StopUtils.updateAssociated(gradeToSchool, stopId);
 
-    // TODO lucas même update mais pour school
-    console.log("update student to grade");
+    SchoolUtils.updateAssociated(gradeToSchool, stopId);
   }
 
   export async function deleteAssociated(StudentToGradeId: number) {

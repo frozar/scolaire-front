@@ -1,10 +1,10 @@
-import { Setter } from "solid-js";
+import { QuantitySelectorType } from "../molecul/EditStudentSchoolGradeItem";
 import "./InputNumber.css";
 
 interface InputNumberProps {
-  ref: Setter<HTMLInputElement>;
+  selector: QuantitySelectorType;
+  onChange: (element: HTMLInputElement) => void;
   min?: number;
-  defaultValue?: number;
   placeholder?: string;
   class?: string;
 }
@@ -12,11 +12,12 @@ interface InputNumberProps {
 export default function (props: InputNumberProps) {
   return (
     <input
-      ref={props.ref}
+      disabled={props.selector.disabled}
       class={"number-input " + (props.class ? props.class : "")}
       min={props.min ? props.min : 0}
-      value={props.defaultValue ? props.defaultValue : 0}
+      value={props.selector.value}
       type="number"
+      onChange={(e) => props.onChange(e.target)}
       placeholder={props.placeholder ? props.placeholder : "Entrer un nombre"}
     />
   );

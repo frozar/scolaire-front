@@ -39,22 +39,24 @@ export namespace StopUtils {
     });
     updateStopDetailsItem(stopId);
   }
-  // TODO: Use it
-  export function updateFromStop(
-    gradeStudentToGrade: AssociatedSchoolType,
+
+  export function updateAssociated(
+    associated: AssociatedSchoolType,
     stopId: number
   ) {
     setStops((prev) => {
-      if (prev != undefined) {
-        const stops = [...prev];
-        const indexOfStop = stops.findIndex((prev) => prev.id == stopId);
-        const indexOfClass = stops[indexOfStop].associated.findIndex(
-          (prev) => prev.schoolId == gradeStudentToGrade.schoolId
-        );
-        stops[indexOfStop].associated[indexOfClass] = gradeStudentToGrade;
-        return stops;
-      }
-      return prev;
+      const stops = [...prev].map((stop) => {
+        return {
+          ...stop,
+          associated: stop.associated.map((assoc) =>
+            assoc.idClassToSchool == associated.idClassToSchool
+              ? associated
+              : assoc
+          ),
+        };
+      });
+
+      return stops;
     });
     updateStopDetailsItem(stopId);
   }

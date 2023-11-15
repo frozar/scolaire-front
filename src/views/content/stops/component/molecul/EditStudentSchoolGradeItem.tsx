@@ -19,16 +19,31 @@ interface EditStopProps {
   close: () => void;
 }
 
+export type SelectorType = {
+  value: string;
+  disabled: boolean;
+};
+
+export type QuantitySelectorType = {
+  value: number;
+  disabled: boolean;
+};
+
 export default function (props: EditStopProps) {
-  const seletElement = document.createElement("select");
   const [selectedSchool, setSelectedSchool] = createSignal<SchoolType>();
 
-  const [schoolSelectRef, setSchoolSelectRef] =
-    createSignal<HTMLSelectElement>(seletElement);
-  const [gradeSelectRef, setGradeSelectRef] =
-    createSignal<HTMLSelectElement>(seletElement);
-  const [quantityInputRef, setQuantityInputRef] =
-    createSignal<HTMLInputElement>(document.createElement("input"));
+  const [schoolSelector, setSchoolSelector] = createSignal<SelectorType>({
+    value: "default",
+    disabled: false,
+  });
+
+  const [gradeSelector, setGradeSelector] = createSignal<SelectorType>({
+    value: "default",
+    disabled: true,
+  });
+
+  const [quantitySelector, setQuantitySelector] =
+    createSignal<QuantitySelectorType>({ value: 0, disabled: true });
 
   createEffect(() => {
     if (props.gradeStudentToGrade != undefined) {
@@ -40,54 +55,66 @@ export default function (props: EditStopProps) {
   });
 
   onMount(() => {
-    if (props.gradeStudentToGrade != undefined) {
-      schoolSelectRef().value =
-        props.gradeStudentToGrade.schoolId?.toString() ?? "default";
-      gradeSelectRef().value =
-        props.gradeStudentToGrade.gradeId?.toString() ?? "default";
-      quantityInputRef().value =
-        props.gradeStudentToGrade.quantity.toString() ?? 0;
+    // Modifying case
+    const studentToGrade = props.gradeStudentToGrade;
+    if (studentToGrade != undefined) {
+      setGradeSelector({
+        disabled: true,
+        value: String(props.gradeStudentToGrade?.gradeId),
+      });
+
+      setSchoolSelector({
+        disabled: true,
+        value: String(studentToGrade.schoolId),
+      });
+
+      setQuantitySelector({
+        disabled: false,
+        value: props.gradeStudentToGrade?.quantity as number,
+      });
+
       return;
     }
-    gradeSelectRef().disabled = true;
-    quantityInputRef().disabled = true;
   });
 
   function resetGradeAndQuantity() {
-    gradeSelectRef().disabled = true;
-    gradeSelectRef().value = "default";
-    quantityInputRef().disabled = true;
-    quantityInputRef().value = "0";
+    setGradeSelector({ value: "default", disabled: false });
+    setQuantitySelector({ value: 0, disabled: false });
   }
 
-  const onChangeSchoolSelect = () => {
-    const school = getSchools().filter(
-      (school) => school.id == parseInt(schoolSelectRef().value)
-    )[0];
-
-    if (!school) {
-      return resetGradeAndQuantity();
-    } else if (school.id != selectedSchool()?.id) {
-      resetGradeAndQuantity();
+  function onChangeSchoolSelect(element: HTMLSelectElement) {
+    const value = element.value;
+    if (value != "default") {
+      const school = getSchools().filter(
+        (school) => school.id == parseInt(element.value)
+      )[0];
+      setSelectedSchool(school);
     }
-    gradeSelectRef().disabled = false;
-    setSelectedSchool(school);
-  };
+    resetGradeAndQuantity();
+    setSchoolSelector((prev) => {
+      return { ...prev, value };
+    });
+  }
 
-  function onChangeSelectGrade() {
-    if (gradeSelectRef().value != "default") {
-      quantityInputRef().disabled = false;
-    } else {
-      quantityInputRef().disabled = true;
-      quantityInputRef().value = "0";
-    }
+  function onChangeSelectGrade(element: HTMLSelectElement) {
+    const value: string = element.value;
+    setGradeSelector((prev) => {
+      return { ...prev, value: value };
+    });
+    setQuantitySelector({ value: 0, disabled: false });
+  }
+
+  function onChangeQuantity(element: HTMLInputElement) {
+    setQuantitySelector((prev) => {
+      return { ...prev, value: parseInt(element.value) };
+    });
   }
 
   function checkAllInputsValue() {
     const validInputs =
-      schoolSelectRef().value == "default" ||
-      quantityInputRef().value == "0" ||
-      gradeSelectRef().value == "default";
+      schoolSelector().value == "default" ||
+      quantitySelector().value == 0 ||
+      gradeSelector().value == "default";
 
     if (validInputs) {
       addNewUserInformation({
@@ -101,13 +128,21 @@ export default function (props: EditStopProps) {
   }
 
   async function validate() {
-    if (props.gradeStudentToGrade) await AssociatedUtils.update();
-    else if (!checkAllInputsValue())
-      AssociatedUtils.create(
-        Number(quantityInputRef().value),
-        Number(gradeSelectRef().value),
-        Number(schoolSelectRef().value)
+    if (checkAllInputsValue()) return;
+    if (props.gradeStudentToGrade) {
+      await AssociatedUtils.update(
+        props.gradeStudentToGrade.idClassToSchool,
+        parseInt(gradeSelector().value),
+        parseInt(schoolSelector().value),
+        quantitySelector().value
       );
+    } else {
+      AssociatedUtils.create(
+        quantitySelector().value,
+        Number(gradeSelector().value),
+        Number(schoolSelector().value)
+      );
+    }
     props.close();
   }
 
@@ -116,24 +151,25 @@ export default function (props: EditStopProps) {
       <div class="edit-stop-top-line">
         <SchoolSelect
           onChange={onChangeSchoolSelect}
-          refSelectSetter={setSchoolSelectRef}
+          isModifying={props.gradeStudentToGrade ? true : false}
+          selector={schoolSelector()}
           schools={getSchools()}
         />
-
         <ButtonIcon icon={<CheckIcon />} onClick={validate} />
       </div>
 
       <div class="edit-stop-bottom-line">
         <GradeSelection
-          refSelectSetter={setGradeSelectRef}
+          isModifying={props.gradeStudentToGrade ? true : false}
+          selector={gradeSelector()}
           grades={selectedSchool()?.grades as GradeType[]}
           onChange={onChangeSelectGrade}
         />
         <InputNumber
-          ref={setQuantityInputRef}
           class="input-form w-full"
           min={0}
-          defaultValue={0}
+          selector={quantitySelector()}
+          onChange={onChangeQuantity}
           placeholder="Quantité"
         />
       </div>

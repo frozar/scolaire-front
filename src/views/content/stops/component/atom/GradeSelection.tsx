@@ -1,10 +1,12 @@
-import { For, Setter } from "solid-js";
+import { For } from "solid-js";
 import { GradeType } from "../../../../../_entities/grade.entity";
+import { SelectorType } from "../molecul/EditStudentSchoolGradeItem";
 import "./GradeSelection.css";
 
 interface GradeSelectProps {
-  refSelectSetter: Setter<HTMLInputElement>;
-  onChange: () => void;
+  selector: SelectorType;
+  onChange: (element: HTMLSelectElement) => void;
+  isModifying: boolean;
   grades: GradeType[];
 }
 
@@ -12,14 +14,19 @@ export default function (props: GradeSelectProps) {
   return (
     <select
       class="grade-selection"
-      onChange={() => props.onChange()}
-      ref={props.refSelectSetter}
+      onChange={(e) => props.onChange(e.target)}
+      disabled={props.selector.disabled}
     >
-      <option selected value="default">
-        Sélectionner une grade
-      </option>
+      <option value="default">Sélectionner une grade</option>
       <For each={props.grades}>
-        {(grade) => <option value={grade.id}>{grade.name}</option>}
+        {(grade) => (
+          <option
+            selected={grade.id == Number(props.selector.value)}
+            value={grade.id}
+          >
+            {grade.name}
+          </option>
+        )}
       </For>
     </select>
   );
