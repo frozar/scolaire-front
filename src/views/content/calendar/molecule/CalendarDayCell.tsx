@@ -31,6 +31,8 @@ export function CalendarDayCell(props: CalendarDayCellProps) {
           return CalendarUtils.isADeletedDate(props.date, props.calendar);
         case CalendarActionsEnum.rules:
           return CalendarUtils.isARulesDate(props.date, props.calendar);
+        case CalendarActionsEnum.period:
+          return false;
         default:
           return CalendarUtils.isActiveDay(props.date, props.calendar);
       }

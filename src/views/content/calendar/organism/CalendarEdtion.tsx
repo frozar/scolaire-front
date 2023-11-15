@@ -92,10 +92,12 @@ export function CalendarEdition(props: CalendarEditionProps) {
         <div class="calendar-cells">
           <CalendarLineAction
             actionName="Scolaire"
-            action={CalendarActionsEnum.remove}
+            action={CalendarActionsEnum.period}
             calendar={props.calendar}
             month={props.currentMonth}
-            onClickCell={onClickCellDeletedDate}
+            onClickCell={() => {
+              false;
+            }}
             calendarPeriod={selectedCalendarPeriod()}
             coloredCell={true}
           />

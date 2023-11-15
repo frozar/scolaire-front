@@ -156,8 +156,7 @@ export namespace CalendarUtils {
   }
 
   export function isADeletedDate(date: Date, calendar: CalendarType): boolean {
-    if (calendar.deleted.includes(date.getTime())) return true;
-    return false;
+    return calendar.deleted.includes(date.getTime());
   }
 
   export function isARulesDate(date: Date, calendar: CalendarType): boolean {
@@ -166,7 +165,10 @@ export namespace CalendarUtils {
     return false;
   }
 
-  export function isDayInRules(day: CalendarDayEnum, calendar: CalendarType) {
+  export function isDayInRules(
+    day: CalendarDayEnum,
+    calendar: CalendarType
+  ): boolean {
     return calendar.rules.includes(day);
   }
 }

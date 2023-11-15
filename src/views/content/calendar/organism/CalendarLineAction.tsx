@@ -22,9 +22,7 @@ export function CalendarLineAction(props: CalendarLineActionProps) {
       <div class="calendar-line-name">{props.actionName}</div>
       <CalendarMonthsDetails
         month={props.month}
-        calendar={{
-          ...props.calendar,
-        }}
+        calendar={props.calendar}
         action={props.action}
         onClickAction={props.onClickCell}
         calendarPeriod={props.calendarPeriod}

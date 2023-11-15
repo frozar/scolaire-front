@@ -26,6 +26,7 @@ export enum CalendarActionsEnum {
   add = "add",
   remove = "remove",
   rules = "rules",
+  period = "period",
 }
 
 export enum CalendarPanelEnum {
@@ -77,7 +78,7 @@ export function Calendar() {
               calendars={calendars()}
             />
 
-            <Show when={currentCalendar() != undefined}>
+            <Show when={currentCalendar()}>
               <CalendarEdition
                 calendar={currentCalendar() as CalendarType}
                 currentMonth={currentMonth()}
@@ -88,7 +89,7 @@ export function Calendar() {
           <Match
             when={
               onCalendarPanel() == CalendarPanelEnum.schoolCalendar &&
-              onCalendarsPeriod() != undefined
+              onCalendarsPeriod()
             }
           >
             <CalendarPeriod
