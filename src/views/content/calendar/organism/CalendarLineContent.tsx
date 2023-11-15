@@ -16,10 +16,9 @@ export function CalendarLineContent(props: {
     setCurrentCalendar(props.calendar);
   }
   const calendar = () => props.calendar;
-  const calendarPeriod = calendarsPeriod().find(
-    // eslint-disable-next-line solid/reactivity
-    (item) => item.id == calendar().calendarPeriodId
-  );
+
+  const calendarPeriod = () =>
+    calendarsPeriod().find((item) => item.id == calendar().calendarPeriodId);
 
   return (
     <div
@@ -33,7 +32,7 @@ export function CalendarLineContent(props: {
       <CalendarMonthsDetails
         month={props.month}
         calendar={props.calendar}
-        calendarPeriod={calendarPeriod}
+        calendarPeriod={calendarPeriod()}
         coloredCell={false}
       />
     </div>
