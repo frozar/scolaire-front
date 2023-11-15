@@ -19,10 +19,10 @@ export function CheckableElement(props: {
   indice: number;
   displayQuantity: boolean;
 }) {
-  // ! Ne pas utiliser en tant que fonction car les boucles sont executés à chaque fois !
-  function getRemainingQuantity() {
-    return QuantityUtils.remainingGradeQuantity(props.content.id);
-  }
+  const remainingQuantity = QuantityUtils.remainingGradeQuantity(
+    // eslint-disable-next-line solid/reactivity
+    props.content.id
+  );
   return (
     <Show when={props.content.display}>
       <div class="flex items-center">
@@ -30,7 +30,7 @@ export function CheckableElement(props: {
           id="comments"
           name="comments"
           type="checkbox"
-          disabled={getRemainingQuantity() == 0 ? true : false}
+          disabled={remainingQuantity == 0 ? true : false}
           checked={props.content.checked}
           onChange={(e) => {
             props.content.onChange(e, props.indice);
@@ -39,8 +39,8 @@ export function CheckableElement(props: {
         />
         <p
           classList={{
-            "text-gray-base": getRemainingQuantity() == 0,
-            "text-current": getRemainingQuantity() != 0,
+            "text-gray-base": remainingQuantity == 0,
+            "text-current": remainingQuantity != 0,
           }}
         >
           {props.content.name}
@@ -49,11 +49,11 @@ export function CheckableElement(props: {
           <p
             class="ml-4"
             classList={{
-              "text-gray-base": getRemainingQuantity() == 0,
-              "text-current": getRemainingQuantity() != 0,
+              "text-gray-base": remainingQuantity == 0,
+              "text-current": remainingQuantity != 0,
             }}
           >
-            {getRemainingQuantity()} élèves restants
+            {remainingQuantity} élèves restants
           </p>
         </Show>
       </div>
