@@ -143,6 +143,7 @@ export namespace SchoolUtils {
           ),
         };
       });
+
       return schools;
     });
   }
