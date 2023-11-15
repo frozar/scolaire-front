@@ -25,7 +25,6 @@ export function CalendarEdition(props: CalendarEditionProps) {
 
   createEffect(() => {
     setSelectedCalendarPeriod(
-      // eslint-disable-next-line solid/reactivity
       calendarsPeriod().find(
         (item) => item.id == props.calendar.calendarPeriodId
       )
