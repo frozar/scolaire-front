@@ -25,6 +25,7 @@ export namespace QuantityUtils {
     }
   }
 
+  // TODO: Move to gradeUtils ?
   export function totalGradeQuantity(gradeId: number) {
     let quantity = 0;
 
@@ -36,6 +37,7 @@ export namespace QuantityUtils {
     return quantity;
   }
 
+  // TODO: Move to gradeUtils ?
   export function remainingGradeQuantity(gradeId: number) {
     const totalQuantity = totalGradeQuantity(gradeId);
     let usedQuantity = 0;

@@ -1,7 +1,9 @@
 import { Show } from "solid-js";
+import { QuantityUtils } from "../../../../../utils/quantity.utils";
 
 export type CheckableElementType = {
   name: string;
+  id: number;
   checked: boolean;
   display: boolean;
   onChange: (e: CheckableEventType, indice: number) => void;
@@ -32,7 +34,7 @@ export function CheckableElement(props: {
         />
         <p>{props.content.name}</p>
         <Show when={props.displayQuantity}>
-          <div>TODO / TODO</div>
+          <div>TODO / {QuantityUtils.totalGradeQuantity(props.content.id)}</div>
         </Show>
       </div>
     </Show>

@@ -26,6 +26,7 @@ export function CheckableGradeListBySchool(props: {
       content={props.checkableGrade().map((grade) => {
         return {
           name: grade.item.name,
+          id: grade.item.id,
           checked: grade.done ?? false,
           onChange: onChangeFunction,
           display: props.school.grades
