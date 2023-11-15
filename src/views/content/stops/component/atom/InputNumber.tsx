@@ -1,14 +1,14 @@
 import "./InputNumber.css";
 
 interface InputNumberProps {
-  // ref: Setter<HTMLInputElement>;
+  // ! Use specific type
   selector: {
     value: number;
     disabled: boolean;
   };
   onChange: (element: HTMLInputElement) => void;
   min?: number;
-  defaultValue?: number;
+  defaultValue?: number; // ! use selector.value instead !?
   placeholder?: string;
   class?: string;
 }
@@ -16,7 +16,6 @@ interface InputNumberProps {
 export default function (props: InputNumberProps) {
   return (
     <input
-      // ref={props.ref}
       disabled={props.selector.disabled}
       class={"number-input " + (props.class ? props.class : "")}
       min={props.min ? props.min : 0}

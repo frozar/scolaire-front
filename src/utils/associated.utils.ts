@@ -25,7 +25,6 @@ export namespace AssociatedUtils {
     SchoolUtils.addAssociated(gradeToSchool, stopDetailsItem()?.id as number);
   }
 
-  // TODO
   export async function update(
     studentToGradeId: number,
     gradeId: number,

@@ -9,40 +9,14 @@ interface SchoolSelectionProps {
     value: number | string;
     disabled: boolean;
   };
-  // refSelectSetter: Setter<HTMLSelectElement>;
   onChange: (element: HTMLSelectElement) => void;
 }
 
-// function onChangeSchoolSelect(element: HTMLSelectElement) {
-//   const school = getSchools().filter(
-//     (school) => school.id == parseInt(element.value)
-//   )[0];
-// }
-
 export default function (props: SchoolSelectionProps) {
-  // onMount(() => {
-  //   if (props.isModifying) {
-  //     console.log("selected option");
-  //     props.refSelectSetter((prev) => {
-  //       const ref = prev;
-  //       ref.disabled = true;
-  //       return ref;
-  //     });
-  //   } else {
-  //     props.refSelectSetter((prev) => {
-  //       const ref = prev;
-  //       ref.value = "default";
-  //       return ref;
-  //     });
-  //   }
-  // });
-
   return (
     <select
       name="school-select"
       onChange={(e) => props.onChange(e.target)}
-      // onChange={(e) => onChangeSchoolSelect(e.target)}
-      // ref={props.refSelectSetter}
       disabled={props.selector.disabled}
       class="school-selection"
     >
