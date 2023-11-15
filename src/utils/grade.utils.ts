@@ -2,7 +2,7 @@ import { GradeType } from "../_entities/grade.entity";
 import { getSchools } from "../views/content/map/component/organism/SchoolPoints";
 
 export namespace GradeUtils {
-  export function getGrade(gradeId: number): GradeType {
+  function getGrade(gradeId: number): GradeType {
     return getSchools()
       .flatMap((school) => school.grades)
       .filter((grade) => grade.id == gradeId)[0];
