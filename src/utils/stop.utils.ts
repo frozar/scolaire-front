@@ -141,7 +141,7 @@ export namespace StopUtils {
 
     getLines()
       .flatMap((line) => line.trips)
-      .flatMap((_trip) => _trip.tripPoints)
+      .flatMap((trip) => trip.tripPoints)
       .filter(
         (tripPoint) =>
           tripPoint.nature == NatureEnum.stop && tripPoint.id == stopId
@@ -150,7 +150,7 @@ export namespace StopUtils {
       .filter(
         (gradeTrip) => GradeUtils.getSchoolId(gradeTrip.gradeId) == schoolId
       )
-      .forEach((_grade) => (usedQuantity += _grade.quantity));
+      .forEach((grade) => (usedQuantity += grade.quantity));
 
     return totalQuantity - usedQuantity;
   }
