@@ -7,6 +7,7 @@ interface CellItemProps {
   isVacation?: boolean;
   isPublicHoliday?: boolean;
   onClick: () => void;
+  coloredCell?: boolean;
 }
 
 export default function (props: CellItemProps) {
@@ -14,13 +15,17 @@ export default function (props: CellItemProps) {
     <div
       classList={{
         "weekend-cell": props.isWeekend,
-        "active-cell": props.isActive,
-        "outperiod-cell": props.outPeriod,
-        "vacation-cell": props.isVacation,
-        "public-holiday-cell": props.isPublicHoliday,
+        "active-cell":
+          props.isActive &&
+          !props.isVacation &&
+          !props.outPeriod &&
+          !props.isPublicHoliday,
+        "outperiod-cell": props.outPeriod && props.coloredCell,
+        "vacation-cell": props.isVacation && props.coloredCell,
+        "public-holiday-cell": props.isPublicHoliday && props.coloredCell,
       }}
       class="cell-item"
-      onClick={props.onClick}
+      onClick={() => props.onClick()}
     />
   );
 }

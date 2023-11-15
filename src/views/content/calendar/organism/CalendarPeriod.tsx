@@ -54,6 +54,7 @@ export function CalendarPeriod(props: SchoolCalendarProps) {
         <CalendarMonthsDetails
           month={props.date}
           calendarPeriod={props.calendarPeriod}
+          coloredCell={true}
         />
       </div>
 
