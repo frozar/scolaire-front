@@ -1,4 +1,5 @@
 import { createSignal } from "solid-js";
+import { GtfsEntity } from "../../../../../_entities/gtfs.entity";
 import Button from "../../../../../component/atom/Button";
 import PlusIcon from "../../../../../icons/PlusIcon";
 import { displayAddTripMessage } from "../../../../../userInformation/utils";
@@ -64,7 +65,10 @@ export default function () {
         }
       />
       {/* ! Emplacement temporaire ! */}
-      <Button onClick={() => console.log("TODO")} label="export gtfs" />
+      <Button
+        onClick={() => console.log(GtfsEntity.formatData())}
+        label="export gtfs"
+      />
     </section>
   );
 }
