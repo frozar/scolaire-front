@@ -47,7 +47,6 @@ export function CalendarPeriodAddLine(props: CalendarAddLineProps) {
     inputRef().value = "";
   }
 
-  // TODO keypress
   function onKeyPress(key: string) {
     if (key == "Enter") {
       createCalendarPeriod();
