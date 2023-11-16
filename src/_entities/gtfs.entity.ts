@@ -57,27 +57,15 @@ type ServiceWindowType = {
 
 export namespace GtfsEntity {
   export function formatData() {
-    const stops = formatStops();
-    console.log("stops =>", stops);
-
     const shapes = formatShapes();
-    console.log("shapes =>", shapes);
-
     const frequencies = formatFrequencies(shapes);
-    console.log("frequencies =>", frequencies);
-
-    const meta = getMetaData();
-    console.log("metaData ==>", meta);
-
-    const serviceWindows = getServiceWindows();
-    console.log("serviceWindows", serviceWindows);
 
     const finalData = {
-      stops,
+      stops: formatStops(),
       shapes,
       frequencies,
-      meta,
-      service_windows: serviceWindows,
+      meta: getMetaData(),
+      service_windows: getServiceWindows(),
     };
 
     console.log("finalData", finalData);
@@ -172,7 +160,6 @@ export namespace GtfsEntity {
 
   function formatStops(): StopElementType[] {
     // ! school considéré comme stops ? => attention aux ids !!!!!
-    // ! stop_code ? stop_desc ?
     const test: StopElementType[] = getStops().map((stop) => {
       return {
         stop_lat: stop.lat,
