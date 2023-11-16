@@ -5,9 +5,11 @@ import {
   PublicHolidayType,
   VacationPeriodType,
 } from "../../../_entities/calendar.entity";
+import { CalendarService } from "../../../_services/calendar.service";
 import {
   currentCalendar,
   setCalendars,
+  setCalendarsPeriod,
   setCurrentCalendar,
   setOnCalendarsPeriod,
 } from "./template/Calendar";
@@ -19,6 +21,36 @@ export namespace CalendarManager {
       if (prev == undefined) return prev;
       prev = [...prev, calendar];
       return prev;
+    });
+  }
+
+  export async function createCalendarPeriod(
+    calendarPeriod: Omit<CalendarPeriodType, "id">
+  ) {
+    const calendarP = await CalendarService.createCalendarPeriod(
+      calendarPeriod
+    );
+    setCalendarsPeriod((prev) => {
+      if (prev == undefined) return prev;
+      prev = [...prev, calendarP];
+      return prev;
+    });
+    setOnCalendarsPeriod(calendarP);
+  }
+
+  export async function updateCalendarPeriod(
+    calendarPeriod: CalendarPeriodType
+  ) {
+    const calendarP = await CalendarService.updateCalendarPeriod(
+      calendarPeriod
+    );
+    setCalendarsPeriod((prev) => {
+      if (prev == undefined) return prev;
+      const datas = [...prev];
+      const index = datas.findIndex((item) => item.id == calendarPeriod.id);
+      if (index == -1) return datas;
+      datas[index] = calendarP;
+      return datas;
     });
   }
 

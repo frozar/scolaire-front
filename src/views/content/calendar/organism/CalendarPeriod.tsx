@@ -1,12 +1,11 @@
 import { CalendarPeriodType } from "../../../../_entities/calendar.entity";
-import { CalendarService } from "../../../../_services/calendar.service";
 import Button from "../../../../component/atom/Button";
 import { DateInput } from "../../../../component/molecule/DateInput";
 import { CalendarSectionTitle } from "../atom/CalendarSectionTitle";
-import { CalendarMonthsDetails } from "../molecule/CalendarMonthsDetails";
-import { setCalendarsPeriod, setOnCalendarsPeriod } from "../template/Calendar";
-import { CalendarHeader } from "./CalendarHeader";
+import { CalendarManager } from "../calendar.manager";
+import { calendarsPeriod, setOnCalendarsPeriod } from "../template/Calendar";
 import "./CalendarPeriod.css";
+import { CalendarPeriodTable } from "./CalendarPeriodTable";
 import { PublicHolidayItem } from "./PublicHolidayItem";
 import { PublicHolidayList } from "./PublicHolidayList";
 import { VacationItem } from "./VacationItem";
@@ -32,31 +31,15 @@ export function CalendarPeriod(props: SchoolCalendarProps) {
   }
 
   async function save() {
-    const calendarPeriod = await CalendarService.updateCalendarPeriod(
-      props.calendarPeriod
-    );
-    setCalendarsPeriod((prev) => {
-      if (prev == undefined) return prev;
-      const datas = [...prev];
-      const index = datas.findIndex((item) => item.id == calendarPeriod.id);
-      if (index == -1) return datas;
-      datas[index] = calendarPeriod;
-      return datas;
-    });
+    await CalendarManager.updateCalendarPeriod(props.calendarPeriod);
   }
 
   return (
     <section class="calendar-period">
-      <CalendarSectionTitle title="Calendrier scolaire" />
-      <CalendarHeader month={props.date} />
-
-      <div class="calendar-period-calendar">
-        <CalendarMonthsDetails
-          month={props.date}
-          calendarPeriod={props.calendarPeriod}
-          coloredCell={true}
-        />
-      </div>
+      <CalendarPeriodTable
+        currentMonth={props.date}
+        calendarsPeriod={calendarsPeriod()}
+      />
 
       <div class="edit-school-period">
         <CalendarSectionTitle title="Edition période scolaire" />
@@ -92,7 +75,9 @@ export function CalendarPeriod(props: SchoolCalendarProps) {
         </div>
       </div>
 
-      <Button label="Save" onClick={save} />
+      <div class="flex justify-end w-[97%]">
+        <Button label="Enregistrer" onClick={save} />
+      </div>
     </section>
   );
 }
