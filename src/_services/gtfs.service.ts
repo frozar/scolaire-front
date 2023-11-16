@@ -36,7 +36,7 @@ export namespace GtfsService {
   export async function get(data: GtfsData) {
     // ! Response type ?
     // TODO: Mettre en place le cas d'erreur !
-    const response = (await postGtfs("/map/4/export/gtfsbis", data)) as Blob;
+    const response = (await postGtfs("/export/gtfsbis", data)) as Blob;
     console.log("response ====>", response);
     const { year, month, day, hour, minute } = getTimestamp();
     const fileName = `${year}-${month}-${day}_${hour}-${minute}_gtfs.zip`;
