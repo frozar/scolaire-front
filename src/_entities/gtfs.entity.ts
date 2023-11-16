@@ -33,6 +33,16 @@ type FrequencyType = {
 };
 
 type MetaDataType = {
+  agency_name: string;
+  agency_url: string;
+  agency_timezone: string;
+  start_date: string;
+  end_date: string;
+  speed_route_type_3: number;
+  speed_route_type_7: number;
+};
+
+type ServiceWindowType = {
   service_window_id: string;
   start_time: string;
   end_time: string;
@@ -56,14 +66,27 @@ export namespace GtfsEntity {
     const frequencies = formatFrequencies(shapes);
     console.log("frequencies =>", frequencies);
 
-    const metaData = getMetaData();
-    console.log("metaData ==>", metaData);
+    const meta = getMetaData();
+    console.log("metaData ==>", meta);
+
+    const serviceWindows = getServiceWindows();
+    console.log("serviceWindows", serviceWindows);
+
+    const finalData = {
+      stops,
+      shapes,
+      frequencies,
+      meta,
+      service_windows: serviceWindows,
+    };
+
+    console.log("finalData", finalData);
   }
 
-  function getMetaData(): MetaDataType[] {
+  function getServiceWindows(): ServiceWindowType[] {
     return [
       {
-        service_window_id: "weekday_peak_number",
+        service_window_id: "weekday_peak_1",
         start_time: "07:00:00",
         end_time: "09:00:00",
         monday: 1,
@@ -73,6 +96,20 @@ export namespace GtfsEntity {
         friday: 1,
         saturday: 0,
         sunday: 0,
+      },
+    ];
+  }
+
+  function getMetaData(): MetaDataType[] {
+    return [
+      {
+        agency_name: "flaxib",
+        agency_url: "https://flaxib.re",
+        agency_timezone: "Indian/Reunion",
+        start_date: "20200101",
+        end_date: "20201231",
+        speed_route_type_3: 20,
+        speed_route_type_7: 30,
       },
     ];
   }
@@ -88,8 +125,6 @@ export namespace GtfsEntity {
     const frequencies: FrequencyType[] = [];
 
     for (const shapeKey of Object.keys(shapes)) {
-      console.log("key =>", shapeKey);
-
       frequencies.push({
         route_short_name: Number(shapeKey),
         route_long_name: `${shapeKey} route`,
