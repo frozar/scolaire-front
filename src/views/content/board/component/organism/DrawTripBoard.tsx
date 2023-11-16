@@ -18,8 +18,8 @@ import {
   enableSpinningWheel,
 } from "../../../../../signaux";
 import { CurrentDrawTripUtils } from "../../../../../utils/currentDrawTrip.utils";
+import { GradeUtils } from "../../../../../utils/grade.utils";
 import { MapElementUtils } from "../../../../../utils/mapElement.utils";
-import { QuantityUtils } from "../../../../../utils/quantity.utils";
 import {
   getLines,
   getSelectedLine,
@@ -248,7 +248,7 @@ async function nextStep() {
         break;
       }
       const isValidable = (grade: GradeType) => {
-        if (QuantityUtils.remainingGradeQuantity(grade.id as number) == 0)
+        if (GradeUtils.getRemainingQuantity(grade.id as number) == 0)
           return false;
 
         const selectedGradeId = currentDrawTrip()
