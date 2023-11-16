@@ -1,4 +1,5 @@
 import { createSignal } from "solid-js";
+import Button from "../../../../../component/atom/Button";
 import PlusIcon from "../../../../../icons/PlusIcon";
 import { displayAddTripMessage } from "../../../../../userInformation/utils";
 import { getLines } from "../../../map/component/organism/BusLines";
@@ -54,7 +55,6 @@ export default function () {
 
         <InputSearch onInput={onInputSearch} />
       </header>
-
       <BusLinesList
         lines={
           getLines().filter((line) => line.name?.includes(searchKeyword()))
@@ -63,6 +63,8 @@ export default function () {
             : getLines().filter((line) => line.name?.includes(searchKeyword()))
         }
       />
+      {/* ! Emplacement temporaire ! */}
+      <Button onClick={() => console.log("TODO")} label="export gtfs" />
     </section>
   );
 }
