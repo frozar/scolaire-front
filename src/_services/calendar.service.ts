@@ -29,6 +29,22 @@ export namespace CalendarService {
     return CalendarEntity.build(dbCalendar);
   }
 
+  export async function createCalendarPeriod(
+    calendar: Omit<CalendarPeriodType, "id">
+  ): Promise<CalendarPeriodType> {
+    const dbCalendar: CalendarPeriodDBType = await ServiceUtils.post(
+      "/calendar-period",
+      {
+        calendar_period: CalendarEntity.formatCalendarPeriod({
+          id: 0,
+          ...calendar,
+        }),
+      }
+    );
+
+    return CalendarEntity.buildCalendarPeriod(dbCalendar);
+  }
+
   export async function updateCalendarPeriod(
     calendarPeriod: CalendarPeriodType
   ) {

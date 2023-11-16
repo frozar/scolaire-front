@@ -1,0 +1,3 @@
+.period-date-inputs {
+  @apply flex gap-20 mt-5;
+}

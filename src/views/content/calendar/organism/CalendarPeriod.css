@@ -1,4 +1,4 @@
-.calendar-period {
+.calendar-period-section {
   @apply mt-10;
 }
 
@@ -7,5 +7,13 @@
 }
 
 .edit-school-period {
-  @apply mt-10;
+  @apply mt-5;
+}
+
+.calendar-period-footer {
+  @apply flex justify-end w-[97%];
+}
+
+.calendar-period-vacation-x-holiday {
+  @apply flex gap-48;
 }
