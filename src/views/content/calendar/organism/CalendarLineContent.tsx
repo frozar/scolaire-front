@@ -35,7 +35,7 @@ export function CalendarLineContent(props: CalendarLineContentProps) {
     else setOnCalendarsPeriod(props.calendarPeriod);
   }
 
-  function activeLine() {
+  function isActiveLine(): boolean {
     if (props.calendar) return currentCalendar()?.id == props.calendar?.id;
     else return onCalendarsPeriod()?.id == calendarPeriod()?.id;
   }
@@ -50,7 +50,7 @@ export function CalendarLineContent(props: CalendarLineContentProps) {
     <div
       class="calendar-line-content"
       onClick={onClick}
-      classList={{ active: activeLine() }}
+      classList={{ active: isActiveLine() }}
     >
       <CalendarLineName name={displayName()} />
       <CalendarMonthsDetails
