@@ -55,20 +55,26 @@ type ServiceWindowType = {
   sunday: number;
 };
 
+type GtfsData = {
+  stops: StopElementType[];
+  shapes: ShapeElementType;
+  frequencies: FrequencyType[];
+  meta: MetaDataType[];
+  service_windows: ServiceWindowType[];
+};
+
 export namespace GtfsEntity {
-  export function formatData() {
+  export function formatData(): GtfsData {
     const shapes = formatShapes();
     const frequencies = formatFrequencies(shapes);
 
-    const finalData = {
+    return {
       stops: formatStops(),
       shapes,
       frequencies,
       meta: getMetaData(),
       service_windows: getServiceWindows(),
     };
-
-    console.log("finalData", finalData);
   }
 
   function getServiceWindows(): ServiceWindowType[] {

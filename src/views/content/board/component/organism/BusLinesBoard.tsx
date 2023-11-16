@@ -65,7 +65,10 @@ export default function () {
         }
       />
       {/* ! Emplacement temporaire ! */}
-      <Button onClick={() => GtfsEntity.formatData()} label="export gtfs" />
+      <Button
+        onClick={() => console.log("gtfs data => ", GtfsEntity.formatData())}
+        label="export gtfs"
+      />
     </section>
   );
 }
