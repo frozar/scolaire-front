@@ -11,6 +11,10 @@ import {
 } from "../_entities/school.entity";
 import { StopDBType, StopEntity, StopType } from "../_entities/stop.entity";
 import {
+  TripDirectionType,
+  setTripDirections,
+} from "../_entities/trip-direction.entity";
+import {
   setCalendars,
   setCalendarsPeriod,
 } from "../views/content/calendar/template/Calendar";
@@ -34,6 +38,7 @@ export type InitType = {
 export type InitDBCalendarType = {
   calendars: CalendarDBType[];
   calendars_period: CalendarPeriodDBType[];
+  trips_direction: TripDirectionType[];
 };
 
 export namespace InitService {
@@ -70,5 +75,7 @@ export namespace InitService {
         CalendarEntity.buildCalendarPeriod(calendarPeriod)
       )
     );
+
+    setTripDirections(dbInit.trips_direction);
   }
 }

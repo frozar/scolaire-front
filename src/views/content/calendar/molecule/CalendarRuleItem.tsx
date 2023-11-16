@@ -1,7 +1,12 @@
+import { createSignal, onMount } from "solid-js";
 import {
   CalendarDayEnum,
   CalendarType,
 } from "../../../../_entities/calendar.entity";
+import {
+  TripDirectionEntity,
+  TripDirectionEnum,
+} from "../../../../_entities/trip-direction.entity";
 import { LabeledCheckbox } from "../../../../component/molecule/LabeledCheckbox";
 import { CalendarManager } from "../calendar.manager";
 import { CalendarUtils } from "../calendar.utils";
@@ -12,24 +17,34 @@ interface CalendarRuleItemProps {
 }
 
 export function CalendarRuleItem(props: CalendarRuleItemProps) {
+  const [direction, setDirection] = createSignal<TripDirectionEnum>();
+
+  onMount(() => {
+    const index = props.calendar.rules.findIndex(
+      (item) => item.day == props.day
+    );
+    const rule = props.calendar.rules[index];
+
+    if (rule && !!rule.tripTypeId) {
+      const tripDirection = TripDirectionEntity.findTripById(rule.tripTypeId);
+      console.log(tripDirection);
+
+      if (!tripDirection) return;
+      setDirection(tripDirection);
+      console.log(direction() == TripDirectionEnum.coming);
+    }
+  });
+
   const isDayChecked = () =>
     CalendarUtils.isDayInRules(props.day as CalendarDayEnum, props.calendar);
 
-  // TODO complete the conditions
-  const roundTripChecked = () => isDayChecked();
-  const goingChecked = () => isDayChecked();
-  const comingChecked = () => isDayChecked();
-
-  function onChangeRoundTrip() {
-    console.log("TODO");
-  }
-
-  function onChangeGoingTrip() {
-    console.log("TODO");
-  }
-
-  function onChangeComingTrip() {
-    console.log("TODO");
+  function onChangeDirectionTrip(event: Event & { target: HTMLInputElement }) {
+    console.log(
+      "current direction:",
+      direction(),
+      "to direction:",
+      event.target.value
+    );
   }
 
   return (
@@ -42,33 +57,35 @@ export function CalendarRuleItem(props: CalendarRuleItemProps) {
           CalendarManager.updateCalendarRules(props.day as CalendarDayEnum);
         }}
       />
-
-      <LabeledCheckbox
-        for={props.day + "-going-coming"}
-        label=""
-        onChange={onChangeRoundTrip}
-        checked={roundTripChecked()}
-        disabled={!isDayChecked()}
-        verticalOffset={true}
-      />
-
-      <LabeledCheckbox
-        for={props.day + "-going"}
-        label=""
-        onChange={onChangeGoingTrip}
-        checked={goingChecked()}
-        disabled={!isDayChecked()}
-        verticalOffset={true}
-      />
-
-      <LabeledCheckbox
-        for={props.day + "-coming"}
-        label=""
-        onChange={onChangeComingTrip}
-        checked={comingChecked()}
-        disabled={!isDayChecked()}
-        verticalOffset={true}
-      />
+      <fieldset class="flex flex-col justify-end align-bottom">
+        <input
+          name={"trip-type-" + props.day}
+          class="my-[5px]"
+          type="radio"
+          disabled={!isDayChecked()}
+          onChange={onChangeDirectionTrip}
+          value="roundTrip"
+          checked={direction() == TripDirectionEnum.roundTrip}
+        />
+        <input
+          name={"trip-type-" + props.day}
+          class="my-[5px]"
+          type="radio"
+          disabled={!isDayChecked()}
+          onChange={onChangeDirectionTrip}
+          value="going"
+          checked={direction() == TripDirectionEnum.going}
+        />
+        <input
+          name={"trip-type-" + props.day}
+          class="my-[5px]"
+          type="radio"
+          disabled={!isDayChecked()}
+          onChange={onChangeDirectionTrip}
+          value="coming"
+          checked={direction() == TripDirectionEnum.coming}
+        />
+      </fieldset>
     </div>
   );
 }
