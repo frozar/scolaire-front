@@ -19,7 +19,11 @@ export type TripDirectionType = {
 export namespace TripDirectionEntity {
   export function findTripById(tripId: number): TripDirectionEnum {
     const index = tripDirections()?.findIndex((item) => item.id == tripId);
-
     return tripDirections()[index].type;
+  }
+
+  export function findTripByDirection(direction: TripDirectionEnum): number {
+    const index = tripDirections().findIndex((item) => item.type == direction);
+    return tripDirections()[index].id;
   }
 }

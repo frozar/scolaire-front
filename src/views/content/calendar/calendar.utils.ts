@@ -3,6 +3,10 @@ import {
   CalendarPeriodType,
   CalendarType,
 } from "../../../_entities/calendar.entity";
+import {
+  TripDirectionEntity,
+  TripDirectionEnum,
+} from "../../../_entities/trip-direction.entity";
 
 export namespace CalendarUtils {
   export function getMonthName(date: Date): string {
@@ -171,5 +175,15 @@ export namespace CalendarUtils {
     calendar: CalendarType
   ): boolean {
     return calendar.rules.map((item) => item.day).includes(day);
+  }
+
+  // Todo next step manage execption day
+  export function dayTripDirection(
+    day: CalendarDayEnum,
+    calendar: CalendarType
+  ): TripDirectionEnum {
+    const rule = calendar.rules.find((item) => item.day == day);
+    if (!rule?.tripTypeId) return TripDirectionEnum.none;
+    return TripDirectionEntity.findTripById(rule.tripTypeId);
   }
 }

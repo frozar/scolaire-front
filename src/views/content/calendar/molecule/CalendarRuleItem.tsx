@@ -39,11 +39,11 @@ export function CalendarRuleItem(props: CalendarRuleItemProps) {
     CalendarUtils.isDayInRules(props.day as CalendarDayEnum, props.calendar);
 
   function onChangeDirectionTrip(event: Event & { target: HTMLInputElement }) {
-    console.log(
-      "current direction:",
-      direction(),
-      "to direction:",
-      event.target.value
+    const directionValue = event.target.value as TripDirectionEnum;
+    CalendarManager.updateTripDirection(
+      props.calendar,
+      props.day,
+      directionValue
     );
   }
 
