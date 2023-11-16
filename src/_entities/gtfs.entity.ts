@@ -55,7 +55,7 @@ type ServiceWindowType = {
   sunday: number;
 };
 
-type GtfsData = {
+export type GtfsData = {
   stops: StopElementType[];
   shapes: ShapeElementType;
   frequencies: FrequencyType[];

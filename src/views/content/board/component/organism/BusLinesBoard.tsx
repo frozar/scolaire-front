@@ -1,5 +1,6 @@
 import { createSignal } from "solid-js";
 import { GtfsEntity } from "../../../../../_entities/gtfs.entity";
+import { GtfsService } from "../../../../../_services/gtfs.service";
 import Button from "../../../../../component/atom/Button";
 import PlusIcon from "../../../../../icons/PlusIcon";
 import { displayAddTripMessage } from "../../../../../userInformation/utils";
@@ -66,7 +67,11 @@ export default function () {
       />
       {/* ! Emplacement temporaire ! */}
       <Button
-        onClick={() => console.log("gtfs data => ", GtfsEntity.formatData())}
+        onClick={() => {
+          const gtfsData = GtfsEntity.formatData();
+          console.log("gtfs data to send => ", gtfsData);
+          GtfsService.get(gtfsData);
+        }}
         label="export gtfs"
       />
     </section>
