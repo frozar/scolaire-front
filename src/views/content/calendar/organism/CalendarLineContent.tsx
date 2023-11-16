@@ -17,6 +17,7 @@ interface CalendarLineContentProps {
   month: Date;
   calendar?: CalendarType;
   calendarPeriod?: CalendarPeriodType;
+  displayIcon?: boolean;
 }
 
 // * Why calendar? & calendarPeriod? is possible undefine ? to avoid to have multiple relatively same component
@@ -58,6 +59,7 @@ export function CalendarLineContent(props: CalendarLineContentProps) {
         calendar={props.calendar}
         calendarPeriod={calendarPeriod()}
         coloredCell={!!props.calendarPeriod}
+        displayIcon={props.displayIcon}
       />
     </div>
   );

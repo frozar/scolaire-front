@@ -1,4 +1,4 @@
-import { Match, Show, Switch } from "solid-js";
+import { Match, Show, Switch, mergeProps } from "solid-js";
 import { TripDirectionEnum } from "../../../../_entities/trip-direction.entity";
 import { BusComingIcon } from "../../../../icons/BusComingIcon";
 import { BusGoingIcon } from "../../../../icons/BusGoingIcon";
@@ -14,9 +14,11 @@ interface CellItemProps {
   onClick: () => void;
   coloredCell?: boolean;
   direction?: TripDirectionEnum;
+  displayIcon?: boolean;
 }
 
 export default function (props: CellItemProps) {
+  const mergedProps = mergeProps({ displayIcon: false }, props);
   const activeCell = () =>
     props.isActive &&
     !props.isVacation &&
@@ -36,7 +38,7 @@ export default function (props: CellItemProps) {
       onClick={() => props.onClick()}
     >
       <div class="cell-icon">
-        <Show when={activeCell()}>
+        <Show when={activeCell() && mergedProps.displayIcon}>
           <Switch>
             <Match when={props.direction == TripDirectionEnum.coming}>
               <BusComingIcon />

@@ -11,7 +11,11 @@ export function CalendarContent(props: {
     <For each={props.calendars}>
       {(calendar) => (
         <div class="calendar-cells">
-          <CalendarLineContent month={props.month} calendar={calendar} />
+          <CalendarLineContent
+            month={props.month}
+            calendar={calendar}
+            displayIcon={true}
+          />
         </div>
       )}
     </For>

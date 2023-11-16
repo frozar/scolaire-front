@@ -14,6 +14,7 @@ interface CalendarDayCellProps {
   action?: CalendarActionsEnum;
   onClickAction?: (date: Date) => void;
   coloredCell?: boolean;
+  displayIcon?: boolean;
 }
 
 export function CalendarDayCell(props: CalendarDayCellProps) {
@@ -71,6 +72,7 @@ export function CalendarDayCell(props: CalendarDayCellProps) {
         CalendarUtils.getDayName(props.date, true) as CalendarDayEnum,
         props.calendar as CalendarType
       )}
+      displayIcon={props.displayIcon}
     />
   );
 }

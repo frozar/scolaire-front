@@ -14,6 +14,7 @@ interface CalendarMonthsDetailsProps {
   action?: CalendarActionsEnum;
   onClickAction?: (date: Date) => void;
   coloredCell?: boolean;
+  displayIcon?: boolean;
 }
 
 export function CalendarMonthsDetails(props: CalendarMonthsDetailsProps) {
@@ -33,6 +34,7 @@ export function CalendarMonthsDetails(props: CalendarMonthsDetailsProps) {
             onClickAction={props.onClickAction}
             calendarPeriod={props.calendarPeriod}
             coloredCell={props.coloredCell}
+            displayIcon={props.displayIcon}
           />
         )}
       </For>
