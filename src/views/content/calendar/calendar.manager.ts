@@ -27,21 +27,21 @@ export namespace CalendarManager {
   export async function createCalendarPeriod(
     calendarPeriod: Omit<CalendarPeriodType, "id">
   ) {
-    const calendarP = await CalendarService.createCalendarPeriod(
+    const _calendarPeriod = await CalendarService.createCalendarPeriod(
       calendarPeriod
     );
     setCalendarsPeriod((prev) => {
       if (prev == undefined) return prev;
-      prev = [...prev, calendarP];
+      prev = [...prev, _calendarPeriod];
       return prev;
     });
-    setOnCalendarsPeriod(calendarP);
+    setOnCalendarsPeriod(_calendarPeriod);
   }
 
   export async function updateCalendarPeriod(
     calendarPeriod: CalendarPeriodType
   ) {
-    const calendarP = await CalendarService.updateCalendarPeriod(
+    const _calendarPeriod = await CalendarService.updateCalendarPeriod(
       calendarPeriod
     );
     setCalendarsPeriod((prev) => {
@@ -49,7 +49,7 @@ export namespace CalendarManager {
       const datas = [...prev];
       const index = datas.findIndex((item) => item.id == calendarPeriod.id);
       if (index == -1) return datas;
-      datas[index] = calendarP;
+      datas[index] = _calendarPeriod;
       return datas;
     });
   }
