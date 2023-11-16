@@ -2,6 +2,7 @@ import { getLines } from "../views/content/map/component/organism/BusLines";
 import { getSchools } from "../views/content/map/component/organism/SchoolPoints";
 import { getStops } from "../views/content/map/component/organism/StopPoints";
 
+// TODO: Verify number / string right type
 type StopElementType = {
   stop_lat: number;
   zone_id: string;
@@ -21,6 +22,29 @@ type ShapeElementType = {
   };
 };
 
+type FrequencyType = {
+  route_short_name: number;
+  route_long_name: string;
+  route_type: number;
+  shape_id: string;
+  service_window_id: string;
+  frequency: number;
+  direction: number;
+};
+
+type MetaDataType = {
+  service_window_id: string;
+  start_time: string;
+  end_time: string;
+  monday: number;
+  tuesday: number;
+  wednesday: number;
+  thursday: number;
+  friday: number;
+  saturday: number;
+  sunday: number;
+};
+
 export namespace GtfsEntity {
   export function formatData() {
     const stops = formatStops();
@@ -28,9 +52,58 @@ export namespace GtfsEntity {
 
     const shapes = formatShapes();
     console.log("shapes =>", shapes);
+
+    const frequencies = formatFrequencies(shapes);
+    console.log("frequencies =>", frequencies);
+
+    const metaData = getMetaData();
+    console.log("metaData ==>", metaData);
   }
 
-  // ! Shapes correspond aux trips ?
+  function getMetaData(): MetaDataType[] {
+    return [
+      {
+        service_window_id: "weekday_peak_number",
+        start_time: "07:00:00",
+        end_time: "09:00:00",
+        monday: 1,
+        tuesday: 1,
+        wednesday: 1,
+        thursday: 1,
+        friday: 1,
+        saturday: 0,
+        sunday: 0,
+      },
+    ];
+  }
+
+  function formatFrequencies(shapes: ShapeElementType): FrequencyType[] {
+    /*
+    Partant du principe que :
+
+    route_short_name correspond à tripId
+    shape_id correspond à String(tripId)
+
+    */
+    const frequencies: FrequencyType[] = [];
+
+    for (const shapeKey of Object.keys(shapes)) {
+      console.log("key =>", shapeKey);
+
+      frequencies.push({
+        route_short_name: Number(shapeKey),
+        route_long_name: `${shapeKey} route`,
+        route_type: 3,
+        shape_id: shapeKey,
+        service_window_id: "weekday_peak_1",
+        frequency: 1,
+        direction: 0,
+      });
+    }
+
+    return frequencies;
+  }
+
   // ! un des latlongs doit correspondre avec un latlong de stops ???
   function formatShapes(): ShapeElementType {
     /*
