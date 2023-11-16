@@ -33,6 +33,20 @@ export namespace GtfsEntity {
   // ! Shapes correspond aux trips ?
   // ! un des latlongs doit correspondre avec un latlong de stops ???
   function formatShapes(): ShapeElementType {
+    /*
+    Partant du principe que :
+    
+    {
+	    id: {
+		    shape_id: number,
+		    coords: number[]
+	    }
+    }
+    
+    id et shape_id correspond à tripId
+    coords correspond aux trip.latlngs
+
+    */
     const shapes: ShapeElementType = {};
     const trips = getLines().flatMap((line) => line.trips);
 
