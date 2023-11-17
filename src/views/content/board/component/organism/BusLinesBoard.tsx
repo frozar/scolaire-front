@@ -1,7 +1,6 @@
 import { createSignal } from "solid-js";
 import { GtfsEntity } from "../../../../../_entities/gtfs.entity";
 import { GtfsService } from "../../../../../_services/gtfs.service";
-import Button from "../../../../../component/atom/Button";
 import PlusIcon from "../../../../../icons/PlusIcon";
 import { displayAddTripMessage } from "../../../../../userInformation/utils";
 import { getLines } from "../../../map/component/organism/BusLines";
@@ -52,6 +51,17 @@ export default function () {
       <header class="line-board-header">
         <div class="line-board-header-infos">
           <p>Total des lignes: {getLines().length}</p>
+          {/* TODO: Use Button component */}
+          <a
+            class="cursor-pointer underline"
+            onClick={() => {
+              const gtfsData = GtfsEntity.formatData();
+              console.log("gtfs data to send => ", gtfsData);
+              GtfsService.get(gtfsData);
+            }}
+          >
+            Exporter
+          </a>
           <ButtonIcon icon={<PlusIcon />} onClick={addLine} />
         </div>
 
@@ -64,15 +74,6 @@ export default function () {
             ? []
             : getLines().filter((line) => line.name?.includes(searchKeyword()))
         }
-      />
-      {/* ! Emplacement temporaire ! */}
-      <Button
-        onClick={() => {
-          const gtfsData = GtfsEntity.formatData();
-          console.log("gtfs data to send => ", gtfsData);
-          GtfsService.get(gtfsData);
-        }}
-        label="export gtfs"
       />
     </section>
   );
