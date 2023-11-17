@@ -1,3 +1,4 @@
+import { TripUtils } from "../utils/trip.utils";
 import { getLines } from "../views/content/map/component/organism/BusLines";
 import { getSchools } from "../views/content/map/component/organism/SchoolPoints";
 import { getStops } from "../views/content/map/component/organism/StopPoints";
@@ -97,6 +98,18 @@ export namespace GtfsEntity {
         saturday: 0,
         sunday: 0,
       },
+      {
+        service_window_id: "weekend_peak_1",
+        start_time: "07:00:00",
+        end_time: "09:00:00",
+        monday: 0,
+        tuesday: 0,
+        wednesday: 0,
+        thursday: 0,
+        friday: 0,
+        saturday: 1,
+        sunday: 1,
+      },
     ];
   }
 
@@ -129,12 +142,16 @@ export namespace GtfsEntity {
     */
     const frequencies: FrequencyType[] = [];
 
-    for (const shapeKey of Object.keys(shapes)) {
+    for (const tripId of Object.keys(shapes)) {
+      // ! Pas itérer la dessus !?
+      const line = TripUtils.getLine(Number(tripId));
       frequencies.push({
-        route_short_name: Number(shapeKey),
-        route_long_name: `${shapeKey} route`,
+        //route_short_name: Number(tripId), // ! Ici mettre l'id de la ligne
+        route_short_name: line.id as number,
+        //route_long_name: `${tripId} route`, // !! Nom de la ligne
+        route_long_name: line.name as string,
         route_type: 3,
-        shape_id: shapeKey,
+        shape_id: tripId,
         service_window_id: "weekday_peak_1",
         frequency: 1,
         direction: 0,
