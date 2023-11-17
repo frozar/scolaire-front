@@ -63,6 +63,7 @@ export namespace CurrentDrawTripUtils {
     });
   }
 
+  // TODO review this nothing is done with school
   export function removeSchoolToTrip(school: SchoolType) {
     setCurrentDrawTrip((trip) => {
       return { ...trip, schools: [] };
