@@ -63,6 +63,7 @@ export namespace CurrentDrawTripUtils {
     });
   }
 
+  // TODO review this nothing is done with school
   export function removeSchoolToTrip(school: SchoolType) {
     setCurrentDrawTrip((trip) => {
       return { ...trip, schools: [] };
@@ -139,6 +140,7 @@ export namespace CurrentDrawTripUtils {
     setCurrentDrawTrip((trip) => {
       return { ...trip, metrics: metrics };
     });
+
     setWaypoints(projectedLatlngs);
     disableSpinningWheel();
   }

@@ -6,6 +6,7 @@ import { getStops } from "../views/content/map/component/organism/StopPoints";
 import { COLOR_GREEN_BASE } from "../views/content/map/constant";
 import { EntityUtils, LocationPathDBType, PointType } from "./_utils.entity";
 import {
+  GradeDBType,
   GradeEntity,
   GradeTripDBType,
   GradeTripType,
@@ -75,7 +76,9 @@ export namespace TripEntity {
       school_id: line.schools[0].id,
       trip_stop: formatTripPointDBType(line.tripPoints),
       polyline: EntityUtils.buildLocationPath(line.latLngs),
-      grades: line.grades.map((grade) => grade.id),
+      grades: line.grades.map((item) => {
+        return { ...GradeEntity.dbFormat(item), id: item.id as number };
+      }),
       metrics: {
         distance: line.metrics?.distance,
         duration: line.metrics?.duration,
@@ -132,6 +135,12 @@ export namespace TripEntity {
         metrics: line.metrics,
       };
     }
+    if (line.grades) {
+      output = {
+        ...output,
+        grades: line.grades.map((item) => item.id),
+      };
+    }
 
     return output;
   }
@@ -172,6 +181,7 @@ export type TripPointType = {
   lat: number;
   nature: NatureEnum;
   grades: GradeTripType[];
+  passageTime: number;
 };
 
 export type TripDBType = {
@@ -190,6 +200,7 @@ export type TripPointDBType = {
   stop_id: number;
   school_id: number;
   grades: GradeTripDBType[];
+  passage_time: number;
 };
 
 export type TripMetricType = {
@@ -210,6 +221,7 @@ function formatTripPointDBType(points: TripPointType[]): TripPointDBType[] {
       grades: point.grades.map((grade) => {
         return { grade_id: grade.gradeId, quantity: grade.quantity };
       }),
+      passage_time: point.passageTime,
     };
   });
 }
