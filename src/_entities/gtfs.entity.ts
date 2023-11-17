@@ -33,9 +33,14 @@ type FrequencyType = {
 };
 
 type MetaDataType = {
+  agency_id: string;
   agency_name: string;
   agency_url: string;
   agency_timezone: string;
+  agency_lang: string;
+  agency_phone: string;
+  agency_fare_url: string;
+  agency_email: string; // ! Ajouter
   start_date: string;
   end_date: string;
   speed_route_type_3: number;
@@ -97,9 +102,14 @@ export namespace GtfsEntity {
   function getMetaData(): MetaDataType[] {
     return [
       {
-        agency_name: "flaxib",
+        agency_id: "FLAXIB",
+        agency_name: "FLAXIB",
         agency_url: "https://flaxib.re",
         agency_timezone: "Indian/Reunion",
+        agency_lang: "fr",
+        agency_phone: "",
+        agency_fare_url: "",
+        agency_email: "", // ! Ajouter
         start_date: "20200101",
         end_date: "20201231",
         speed_route_type_3: 20,
