@@ -6,7 +6,6 @@ import { getStops } from "../views/content/map/component/organism/StopPoints";
 import { COLOR_GREEN_BASE } from "../views/content/map/constant";
 import { EntityUtils, LocationPathDBType, PointType } from "./_utils.entity";
 import {
-  GradeDBType,
   GradeEntity,
   GradeTripDBType,
   GradeTripType,
@@ -34,7 +33,6 @@ export namespace TripEntity {
     }
 
     const school: SchoolType = filteredShools[0];
-
     return {
       id: dbData.id,
       schools: [school],
@@ -76,9 +74,7 @@ export namespace TripEntity {
       school_id: line.schools[0].id,
       trip_stop: formatTripPointDBType(line.tripPoints),
       polyline: EntityUtils.buildLocationPath(line.latLngs),
-      grades: line.grades.map((item) => {
-        return { ...GradeEntity.dbFormat(item), id: item.id as number };
-      }),
+      grades: line.grades.map((item) => item.id) as number[],
       metrics: {
         distance: line.metrics?.distance,
         duration: line.metrics?.duration,
@@ -189,7 +185,7 @@ export type TripDBType = {
   school_id: number;
   name: string;
   color: string;
-  grades: GradeDBType[];
+  grades: number[];
   trip_stop: TripPointDBType[];
   polyline: LocationPathDBType;
   metrics: TripMetricType;
