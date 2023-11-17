@@ -25,13 +25,13 @@ type ShapeElementType = {
 };
 
 type FrequencyType = {
-  route_short_name: number;
-  route_long_name: string;
-  route_type: number;
-  shape_id: string;
-  service_window_id: string;
-  frequency: number;
-  direction: number;
+  route_short_name: number; // => lin id (used by mg library in that way)
+  route_long_name: string; // => line name
+  route_type: 3; // => 3 = bus line
+  shape_id: string; // => id du chemin, different si aller ou retour !
+  service_window_id: string; // TODO: Specify what it is
+  frequency: number; // TODO: Specify what it is
+  direction: number; // TODO: Specify what it is
 };
 
 type MetaDataType = {
@@ -42,7 +42,7 @@ type MetaDataType = {
   agency_lang: string;
   agency_phone: string;
   agency_fare_url: string;
-  agency_email: string; // ! Ajouter
+  agency_email: string;
   start_date: string;
   end_date: string;
   speed_route_type_3: number;
@@ -84,6 +84,7 @@ export namespace GtfsEntity {
     };
   }
 
+  // TODO: Use real data
   function getServiceWindows(): ServiceWindowType[] {
     return [
       {
@@ -113,12 +114,13 @@ export namespace GtfsEntity {
     ];
   }
 
+  // TODO: Use the correct transit agency information
   function getMetaData(): MetaDataType[] {
     return [
       {
-        agency_id: "FLAXIB", // ! FLAXIB n'est pas l'agence de transport
-        agency_name: "FLAXIB", // ! FLAXIB n'est pas l'agence de transport
-        agency_url: "https://flaxib.re", // ! FLAXIB n'est pas l'agence de transport
+        agency_id: "FLAXIB",
+        agency_name: "FLAXIB",
+        agency_url: "https://flaxib.re",
         agency_timezone: "Indian/Reunion",
         agency_lang: "fr",
         agency_phone: "",
@@ -133,13 +135,6 @@ export namespace GtfsEntity {
   }
 
   function formatFrequencies(shapes: ShapeElementType): FrequencyType[] {
-    /*
-    Partant du principe que :
-
-    route_short_name correspond à tripId
-    shape_id correspond à String(tripId)
-
-    */
     const frequencies: FrequencyType[] = [];
 
     for (const tripId of Object.keys(shapes)) {
@@ -172,9 +167,6 @@ export namespace GtfsEntity {
 		    coords: number[]
 	    }
     }
-    
-    id et shape_id correspond à tripId
-    coords correspond aux trip.latlngs
 
     */
     const shapes: ShapeElementType = {};
@@ -201,7 +193,6 @@ export namespace GtfsEntity {
         stop_id: stop.id,
         stop_name: stop.name,
         stop_code: stop.id,
-        // ! ------------------
         zone_id: "",
         parent_station: "",
         // ! Si type = 1 donc parent_station doit être vide
@@ -223,7 +214,6 @@ export namespace GtfsEntity {
         stop_id: school.id,
         stop_name: school.name,
         stop_code: school.id,
-        // ! ------------------
         zone_id: "",
         parent_station: "",
         stop_desc: "",
