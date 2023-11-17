@@ -2,6 +2,10 @@ import SchoolsEnumeration from "../molecule/SchoolsEnumeration";
 import Metrics from "./Metrics";
 
 import { useStateAction } from "../../../../../StateAction";
+import {
+  GradeEntity,
+  HeureFormat,
+} from "../../../../../_entities/grade.entity";
 import { TripEntity, TripType } from "../../../../../_entities/trip.entity";
 import { TripService } from "../../../../../_services/trip.service";
 import TrashIcon from "../../../../../icons/TrashIcon";
@@ -25,9 +29,8 @@ import "./TripInformationBoardContent.css";
 import { TripTimeline } from "./TripTimeline";
 const [, { setModeDrawTrip }] = useStateAction();
 
+// TODO revoir le code pour setter une const trip
 export function TripBoard() {
-  // TODO revoir le code pour setter une const trip
-
   return (
     <div class="bus-trip-information-board-content">
       {/* TODO Put th e2 next component in "organism" */}
@@ -44,6 +47,13 @@ export function TripBoard() {
             selectedTrip()?.schools.map((school) => school.name) ?? []
           }
         />
+      </div>
+
+      <div class="start-bus my-3">
+        <label for="">Horraire de départ:</label>
+        {GradeEntity.getStringFromHeureFormat(
+          selectedTrip()?.startTime as HeureFormat
+        )}
       </div>
 
       <CollapsibleElement title="Métriques">

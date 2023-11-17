@@ -6,7 +6,7 @@ import BoardFooterActions from "../molecule/BoardFooterActions";
 
 import "../../../../../css/timeline.css";
 
-import { GradeType } from "../../../../../_entities/grade.entity";
+import { GradeEntity, GradeType } from "../../../../../_entities/grade.entity";
 import { TripEntity, TripType } from "../../../../../_entities/trip.entity";
 import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
 import { TripService } from "../../../../../_services/trip.service";
@@ -27,6 +27,7 @@ import {
 } from "../../../map/component/organism/BusLines";
 import { setselectedTrip } from "../../../map/component/organism/Trips";
 import { quitModeDrawTrip } from "../../../map/shortcut";
+import TimeInput from "../../../schools/component/atom/TimeInput";
 import BoardTitle from "../atom/BoardTitle";
 import { DrawHelperButton } from "../atom/DrawHelperButton";
 import ButtonIcon from "../molecule/ButtonIcon";
@@ -83,6 +84,14 @@ export function DrawTripBoard() {
     setIsInUpdate(false);
   });
 
+  function onInputStart(value: string) {
+    const formatedSchedule = GradeEntity.getHourFormatFromString(value);
+    if (!formatedSchedule) return;
+    setCurrentDrawTrip((prev) => {
+      return { ...prev, startTime: formatedSchedule };
+    });
+  }
+
   return (
     <div class="add-line-information-board-content">
       <Show when={currentStep() == DrawTripStep.schoolSelection}>
@@ -129,7 +138,15 @@ export function DrawTripBoard() {
           name="line-name"
           placeholder="Entrer le nom de la course"
         />
-
+        <div class="start-bus grid my-3">
+          <label>Horraire de départ:</label>
+          <TimeInput
+            onInput={onInputStart}
+            value={GradeEntity.getStringFromHeureFormat(
+              currentDrawTrip()?.startTime
+            )}
+          />
+        </div>
         <div class="flex mt-4 justify-between">
           <TripColorPicker
             defaultColor={currentDrawTrip().color}

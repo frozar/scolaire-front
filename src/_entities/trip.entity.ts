@@ -10,6 +10,7 @@ import {
   GradeTripDBType,
   GradeTripType,
   GradeType,
+  HeureFormat,
 } from "./grade.entity";
 import { SchoolType } from "./school.entity";
 import {
@@ -49,6 +50,7 @@ export namespace TripEntity {
         : [],
       selected: false,
       metrics: dbData.metrics,
+      startTime: GradeEntity.getHourFormatFromString(dbData.start_time),
     };
   }
 
@@ -63,6 +65,10 @@ export namespace TripEntity {
       latLngs: [],
       selected: false,
       metrics: {},
+      startTime: {
+        hour: 7,
+        minutes: 0,
+      },
     };
   }
 
@@ -95,6 +101,12 @@ export namespace TripEntity {
   ): Partial<TripDBType> {
     let output = {};
 
+    if (line.startTime) {
+      output = {
+        ...output,
+        start_time: GradeEntity.getStringFromHeureFormat(line.startTime),
+      };
+    }
     if (line.color) {
       output = { ...output, color: EntityUtils.formatColorForDB(line.color) };
     }
@@ -167,6 +179,7 @@ export type TripType = {
   latLngs: L.LatLng[];
   selected: boolean;
   metrics?: TripMetricType;
+  startTime: HeureFormat;
 };
 
 export type TripPointType = {
@@ -190,6 +203,7 @@ export type TripDBType = {
   polyline: LocationPathDBType;
   metrics: TripMetricType;
   waypoint: WaypointDBType[];
+  start_time: string;
 };
 
 export type TripPointDBType = {
