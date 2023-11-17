@@ -5,6 +5,7 @@ import {
 import { LabeledCheckbox } from "../../../../component/molecule/LabeledCheckbox";
 import { CalendarManager } from "../calendar.manager";
 import { CalendarUtils } from "../calendar.utils";
+import { RuleItemRadioBtnGroup } from "./RuleItemRadioBtnGroup";
 
 interface CalendarRuleItemProps {
   calendar: CalendarType;
@@ -14,23 +15,6 @@ interface CalendarRuleItemProps {
 export function CalendarRuleItem(props: CalendarRuleItemProps) {
   const isDayChecked = () =>
     CalendarUtils.isDayInRules(props.day as CalendarDayEnum, props.calendar);
-
-  // TODO complete the conditions
-  const roundTripChecked = () => isDayChecked();
-  const goingChecked = () => isDayChecked();
-  const comingChecked = () => isDayChecked();
-
-  function onChangeRoundTrip() {
-    console.log("TODO");
-  }
-
-  function onChangeGoingTrip() {
-    console.log("TODO");
-  }
-
-  function onChangeComingTrip() {
-    console.log("TODO");
-  }
 
   return (
     <div class="calendar-rule-item">
@@ -42,32 +26,10 @@ export function CalendarRuleItem(props: CalendarRuleItemProps) {
           CalendarManager.updateCalendarRules(props.day as CalendarDayEnum);
         }}
       />
-
-      <LabeledCheckbox
-        for={props.day + "-going-coming"}
-        label=""
-        onChange={onChangeRoundTrip}
-        checked={roundTripChecked()}
-        disabled={!isDayChecked()}
-        verticalOffset={true}
-      />
-
-      <LabeledCheckbox
-        for={props.day + "-going"}
-        label=""
-        onChange={onChangeGoingTrip}
-        checked={goingChecked()}
-        disabled={!isDayChecked()}
-        verticalOffset={true}
-      />
-
-      <LabeledCheckbox
-        for={props.day + "-coming"}
-        label=""
-        onChange={onChangeComingTrip}
-        checked={comingChecked()}
-        disabled={!isDayChecked()}
-        verticalOffset={true}
+      <RuleItemRadioBtnGroup
+        calendar={props.calendar}
+        day={props.day}
+        isDayChecked={isDayChecked()}
       />
     </div>
   );

@@ -5,6 +5,10 @@ import {
   PublicHolidayType,
   VacationPeriodType,
 } from "../../../_entities/calendar.entity";
+import {
+  TripDirectionEntity,
+  TripDirectionEnum,
+} from "../../../_entities/trip-direction.entity";
 import { CalendarService } from "../../../_services/calendar.service";
 import {
   currentCalendar,
@@ -16,6 +20,23 @@ import {
 
 // * this namespace is to manage the editioning calendarPeriod
 export namespace CalendarManager {
+  export function updateTripDirection(
+    calendar: CalendarType,
+    day: CalendarDayEnum,
+    direction: TripDirectionEnum
+  ) {
+    const index = calendar.rules.findIndex((item) => item.day == day);
+    if (index == -1) return false;
+    const tripDirectionId = TripDirectionEntity.findTripByDirection(direction);
+
+    setCurrentCalendar((prev) => {
+      if (!prev) return prev;
+      const datas = { ...prev };
+      prev.rules[index].tripTypeId = tripDirectionId;
+      return datas;
+    });
+  }
+
   export function pushCalendar(calendar: CalendarType) {
     setCalendars((prev) => {
       if (prev == undefined) return prev;

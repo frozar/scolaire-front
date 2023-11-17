@@ -21,3 +21,7 @@
 .weekend-cell.active-cell {
   @apply bg-green-light;
 }
+
+.cell-icon {
+  @apply flex items-center h-full;
+}

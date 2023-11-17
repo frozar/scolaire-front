@@ -1,4 +1,5 @@
 import {
+  CalendarDayEnum,
   CalendarPeriodType,
   CalendarType,
 } from "../../../../_entities/calendar.entity";
@@ -13,6 +14,7 @@ interface CalendarDayCellProps {
   action?: CalendarActionsEnum;
   onClickAction?: (date: Date) => void;
   coloredCell?: boolean;
+  displayIcon?: boolean;
 }
 
 export function CalendarDayCell(props: CalendarDayCellProps) {
@@ -66,6 +68,11 @@ export function CalendarDayCell(props: CalendarDayCellProps) {
       isVacation={isVacation()}
       isPublicHoliday={isPublicHoliday()}
       coloredCell={props.coloredCell}
+      direction={CalendarUtils.dayTripDirection(
+        CalendarUtils.getDayName(props.date, true) as CalendarDayEnum,
+        props.calendar as CalendarType
+      )}
+      displayIcon={props.displayIcon}
     />
   );
 }
