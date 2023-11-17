@@ -240,12 +240,7 @@ export async function createOrUpdateTrip() {
       })
     );
   }
-  setselectedTrip(
-    getLines()
-      .map((line) => line.trips)
-      .flat()
-      .filter((trip) => trip.id == updatedTrip.id)[0]
-  );
+  setselectedTrip(updatedTrip);
 
   setDisplayTripMode((prev) =>
     prev == displayTripModeEnum.straight ? prev : displayTripModeEnum.straight
@@ -316,7 +311,6 @@ async function nextStep() {
       if (displayTripMode() == displayTripModeEnum.straight) {
         await CurrentDrawTripUtils.updatePolylineWithOsrm(currentDrawTrip());
       }
-
       await createOrUpdateTrip();
 
       setCurrentDrawTrip(TripEntity.defaultTrip());

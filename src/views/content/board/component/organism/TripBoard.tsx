@@ -31,6 +31,10 @@ const [, { setModeDrawTrip }] = useStateAction();
 
 // TODO revoir le code pour setter une const trip
 export function TripBoard() {
+  const startHour = GradeEntity.getStringFromHeureFormat(
+    selectedTrip()?.startTime as HeureFormat
+  );
+
   return (
     <div class="bus-trip-information-board-content">
       {/* TODO Put th e2 next component in "organism" */}
@@ -51,9 +55,7 @@ export function TripBoard() {
 
       <div class="start-bus my-3">
         <label for="">Horraire de départ:</label>
-        {GradeEntity.getStringFromHeureFormat(
-          selectedTrip()?.startTime as HeureFormat
-        )}
+        {" " + startHour}
       </div>
 
       <CollapsibleElement title="Métriques">

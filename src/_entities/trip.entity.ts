@@ -93,6 +93,7 @@ export namespace TripEntity {
       waypoint: WaypointEntity.formatWaypointDBType(
         line.waypoints as WaypointType[]
       ),
+      start_time: GradeEntity.getStringFromHeureFormat(line.startTime),
     };
   }
 
