@@ -16,6 +16,7 @@ export class TripService {
 
   static async update(trip: Partial<TripType>): Promise<TripType> {
     const data = TripEntity.dbPartialFormat(trip);
+    console.log("data before update", data);
 
     const dbTrip: TripDBType = await ServiceUtils.patch(
       "/busline/" + getSelectedLine()?.id + "/trip/" + trip.id,

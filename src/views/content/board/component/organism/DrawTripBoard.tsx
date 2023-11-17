@@ -296,9 +296,12 @@ async function nextStep() {
           return { ...trip, waypoints };
         });
       }
+      console.log("i'm here before osrm update", currentDrawTrip());
       if (displayTripMode() == displayTripModeEnum.straight) {
         await CurrentDrawTripUtils.updatePolylineWithOsrm(currentDrawTrip());
       }
+
+      console.log("i'm here after osrm update", currentDrawTrip());
 
       await createOrUpdateTrip();
 

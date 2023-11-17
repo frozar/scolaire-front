@@ -58,6 +58,8 @@ export namespace InitService {
     const busLines = dbInit.bus_lines.map((dbLine: LineDBType) =>
       BusLineEntity.build(dbLine)
     );
+    console.log("db busline:", busLines);
+
     setLines(busLines);
 
     return { schools, stops, busLines };

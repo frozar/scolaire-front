@@ -139,6 +139,7 @@ export namespace CurrentDrawTripUtils {
     setCurrentDrawTrip((trip) => {
       return { ...trip, metrics: metrics };
     });
+
     setWaypoints(projectedLatlngs);
     disableSpinningWheel();
   }
