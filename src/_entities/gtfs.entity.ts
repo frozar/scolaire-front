@@ -3,6 +3,7 @@ import { getSchools } from "../views/content/map/component/organism/SchoolPoints
 import { getStops } from "../views/content/map/component/organism/StopPoints";
 
 // TODO: Verify number / string right type
+// TODO: Specify corresponding data to better understand !
 type StopElementType = {
   stop_lat: number;
   zone_id: string;
