@@ -116,14 +116,14 @@ export namespace GtfsEntity {
   function getMetaData(): MetaDataType[] {
     return [
       {
-        agency_id: "FLAXIB",
-        agency_name: "FLAXIB",
-        agency_url: "https://flaxib.re",
+        agency_id: "FLAXIB", // ! FLAXIB n'est pas l'agence de transport
+        agency_name: "FLAXIB", // ! FLAXIB n'est pas l'agence de transport
+        agency_url: "https://flaxib.re", // ! FLAXIB n'est pas l'agence de transport
         agency_timezone: "Indian/Reunion",
         agency_lang: "fr",
         agency_phone: "",
         agency_fare_url: "",
-        agency_email: "", // ! Ajouter
+        agency_email: "",
         start_date: "20200101",
         end_date: "20201231",
         speed_route_type_3: 20,
@@ -204,8 +204,15 @@ export namespace GtfsEntity {
         // ! ------------------
         zone_id: "",
         parent_station: "",
+        // ! Si type = 1 donc parent_station doit être vide
+        // ! Si type = 0 parent_station doit être l'id du stop
+        // !    "parent" etant de type = 1
         stop_desc: "",
         location_type: 0,
+        // ! Selon exemple CAR JAUNE
+        // ! type 1 => gare
+        // ! type 0 => arrêts de bus
+        // ! Les écoles sont soit type 1 soit type 0
       };
     });
 
