@@ -23,5 +23,5 @@
 }
 
 .cell-icon {
-  @apply flex items-center h-full;
+  @apply flex items-center h-full mx-[2px];
 }
