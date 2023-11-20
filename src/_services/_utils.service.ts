@@ -5,10 +5,20 @@ import { getToken } from "../views/layout/authentication";
 
 const [, { getActiveMapId }] = useStateGui();
 
+export enum ResponseTypeEnum {
+  json,
+  blob,
+}
+
 // TODO Need auth0 authentication
 // TODO Refacto error management
 export class ServiceUtils {
-  static async generic(url: string, options = {}, returnError = false) {
+  static async generic(
+    url: string,
+    options = {},
+    returnError = false,
+    responseType = ResponseTypeEnum.json
+  ) {
     let response: Response;
     try {
       response = await fetch(url, { ...options });
@@ -21,7 +31,10 @@ export class ServiceUtils {
     }
 
     if (!(await manageStatusCode(response))) return false;
-    return await response.json();
+
+    if (responseType == ResponseTypeEnum.json) return await response.json();
+    else if (responseType == ResponseTypeEnum.blob)
+      return await response.blob();
   }
 
   static async get(url: string, urlNeedMap = true, returnError = false) {
