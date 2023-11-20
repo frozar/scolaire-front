@@ -25,7 +25,7 @@ type ShapeElementType = {
 };
 
 type FrequencyType = {
-  route_short_name: number; // => lin id (used by mg library in that way)
+  route_short_name: number; // => line id (used by mg library in that way)
   route_long_name: string; // => line name
   route_type: 3; // => 3 = bus line
   shape_id: string; // => id du chemin, different si aller ou retour !

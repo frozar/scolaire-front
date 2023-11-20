@@ -5,6 +5,7 @@ import { getTimestamp } from "../views/content/map/rightMapMenu/export/utils";
 import { connexionError, manageStatusCode } from "./_utils.service";
 
 export namespace GtfsService {
+  // TODO: Move !?
   async function generic(url: string, options = {}, returnError = false) {
     let response: Response;
     try {
@@ -20,7 +21,7 @@ export namespace GtfsService {
     if (!(await manageStatusCode(response))) return false;
     return await response.blob();
   }
-  // TODO: Move !?
+
   async function postGtfs(url: string, data: object) {
     const headers = {
       "Content-Type": "application/json",
@@ -34,12 +35,11 @@ export namespace GtfsService {
   }
 
   export async function get(data: GtfsData) {
-    // ! Response type ?
-    // TODO: Mettre en place le cas d'erreur !
-    const response = (await postGtfs("/export/gtfsbis", data)) as Blob;
-    console.log("response ====>", response);
+    const response = (await postGtfs("/export/gtfs", data)) as Blob;
+
     const { year, month, day, hour, minute } = getTimestamp();
     const fileName = `${year}-${month}-${day}_${hour}-${minute}_gtfs.zip`;
+
     download(fileName, response);
     displayDownloadSuccessMessage();
   }
