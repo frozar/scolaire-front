@@ -1,4 +1,6 @@
 import { createSignal } from "solid-js";
+import { GtfsEntity } from "../../../../../_entities/gtfs.entity";
+import { GtfsService } from "../../../../../_services/gtfs.service";
 import PlusIcon from "../../../../../icons/PlusIcon";
 import { displayAddTripMessage } from "../../../../../userInformation/utils";
 import { getLines } from "../../../map/component/organism/BusLines";
@@ -49,12 +51,21 @@ export default function () {
       <header class="line-board-header">
         <div class="line-board-header-infos">
           <p>Total des lignes: {getLines().length}</p>
+          {/* TODO: Enhance visual */}
+          <a
+            class="cursor-pointer underline"
+            onClick={() => {
+              const gtfsData = GtfsEntity.formatData();
+              GtfsService.get(gtfsData);
+            }}
+          >
+            Exporter
+          </a>
           <ButtonIcon icon={<PlusIcon />} onClick={addLine} />
         </div>
 
         <InputSearch onInput={onInputSearch} />
       </header>
-
       <BusLinesList
         lines={
           getLines().filter((line) => line.name?.includes(searchKeyword()))
