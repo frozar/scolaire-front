@@ -1,9 +1,15 @@
 import { Setter, Show, createEffect } from "solid-js";
 
+import { range } from "lodash";
+import { GradeEntity } from "../../../../../_entities/grade.entity";
 import { TripPointType, TripType } from "../../../../../_entities/trip.entity";
 import { NatureEnum } from "../../../../../type";
 import { GradeUtils } from "../../../../../utils/grade.utils";
+import { TripUtils } from "../../../../../utils/trip.utils";
 import { TripTimelineRemovePointButton } from "./TripTimelineRemovePointButton";
+
+import { DrawTripStep, currentStep } from "../organism/DrawTripBoard";
+import "./TripTimelineItem.css";
 
 export function TripTimelineItem(props: {
   trip: TripType;
@@ -21,6 +27,22 @@ export function TripTimelineItem(props: {
     setDividerColor(props.trip.color);
   });
 
+  const timePassage = (): string => {
+    if (props.indice == 0 || !props.tripPoint.passageTime)
+      return GradeEntity.getStringFromHourFormat(props.trip.startTime);
+
+    const firstHour: string = GradeEntity.getStringFromHourFormat(
+      props.trip.startTime
+    );
+
+    let seconds = 0;
+    for (const i in range(props.indice + 1)) {
+      seconds += props.trip.tripPoints[i].passageTime;
+    }
+
+    const hourMinute = TripUtils.convertSecondesToHourMinute(seconds);
+    return TripUtils.addHourTogether(firstHour, hourMinute);
+  };
   return (
     <div class="v-timeline-item">
       <div class="v-timeline-item__body">
@@ -68,6 +90,9 @@ export function TripTimelineItem(props: {
 
         <div class="v-timeline-divider__after" />
       </div>
+      <Show when={currentStep() == DrawTripStep.initial}>
+        <p class="time-passage">{timePassage()}</p>
+      </Show>
     </div>
   );
 }

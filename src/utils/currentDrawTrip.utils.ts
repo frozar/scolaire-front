@@ -131,14 +131,24 @@ export namespace CurrentDrawTripUtils {
 
   export async function updatePolylineWithOsrm(trip: TripType) {
     enableSpinningWheel();
-    const { latlngs, projectedLatlngs, metrics } =
+    const { latlngs, projectedLatlngs, metrics, legsDurations } =
       await OsrmService.getRoadPolyline(trip);
 
-    setCurrentDrawTrip((trip) => {
-      return { ...trip, latLngs: latlngs };
-    });
-    setCurrentDrawTrip((trip) => {
-      return { ...trip, metrics: metrics };
+    setCurrentDrawTrip((prev) => {
+      if (!prev) return prev;
+      const datas = { ...prev };
+
+      // * One leg_duration is the travel time between the first & second point.
+      // * first tripPoint.time_passage is based on trip.start_time so no need to define it.
+      // * for each another tripPoint we define the time_passage to (n-index) of legsDuration
+      datas.tripPoints.forEach((point, index) => {
+        if (index != 0) {
+          point.passageTime = legsDurations[index - 1];
+        }
+      });
+      datas.metrics = metrics;
+      datas.latLngs = latlngs;
+      return datas;
     });
 
     setWaypoints(projectedLatlngs);
