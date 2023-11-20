@@ -19,6 +19,7 @@ jobs:
         env:
           VITE_XANO_URL: https://x8ki-letl-twmt.n7.xano.io/api:DL_gv4vw
           VITE_API_OSRM_URL: https://osrm.fly.dev/route/v1/car
+          VITE_BACK_URL: https://scolaire-back.fly.dev
       - run: flyctl deploy --remote-only
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
