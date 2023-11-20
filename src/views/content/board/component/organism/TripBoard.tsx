@@ -2,10 +2,7 @@ import SchoolsEnumeration from "../molecule/SchoolsEnumeration";
 import Metrics from "./Metrics";
 
 import { useStateAction } from "../../../../../StateAction";
-import {
-  GradeEntity,
-  HeureFormat,
-} from "../../../../../_entities/grade.entity";
+import { GradeEntity, HourFormat } from "../../../../../_entities/grade.entity";
 import { TripEntity, TripType } from "../../../../../_entities/trip.entity";
 import { TripService } from "../../../../../_services/trip.service";
 import TrashIcon from "../../../../../icons/TrashIcon";
@@ -31,8 +28,8 @@ const [, { setModeDrawTrip }] = useStateAction();
 
 // TODO revoir le code pour setter une const trip
 export function TripBoard() {
-  const startHour = GradeEntity.getStringFromHeureFormat(
-    selectedTrip()?.startTime as HeureFormat
+  const startHour = GradeEntity.getStringFromHourFormat(
+    selectedTrip()?.startTime as HourFormat
   );
 
   return (

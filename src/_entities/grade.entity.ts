@@ -16,14 +16,14 @@ export namespace GradeEntity {
     return {
       school_id: grade.schoolId as number,
       name: grade.name,
-      morning_start: getStringFromHeureFormat(grade.morningStart),
-      morning_end: getStringFromHeureFormat(grade.morningEnd),
-      afternoon_start: getStringFromHeureFormat(grade.afternoonStart),
-      afternoon_end: getStringFromHeureFormat(grade.afternoonEnd),
+      morning_start: getStringFromHourFormat(grade.morningStart),
+      morning_end: getStringFromHourFormat(grade.morningEnd),
+      afternoon_start: getStringFromHourFormat(grade.afternoonStart),
+      afternoon_end: getStringFromHourFormat(grade.afternoonEnd),
     };
   }
 
-  export function getStringFromHeureFormat(time: HeureFormat) {
+  export function getStringFromHourFormat(time: HourFormat) {
     if (time == undefined) return "";
     let houre = time.hour.toString();
     let minutes = time.minutes.toString();
@@ -35,7 +35,7 @@ export namespace GradeEntity {
     return houre + ":" + minutes;
   }
 
-  export function getHourFormatFromString(time: string): HeureFormat {
+  export function getHourFormatFromString(time: string): HourFormat {
     const [houre, minute] = time.split(":");
     if (isNaN(Number(houre)) || isNaN(Number(minute)))
       return {
@@ -51,7 +51,7 @@ export namespace GradeEntity {
   }
 }
 
-export type HeureFormat = {
+export type HourFormat = {
   hour: number;
   minutes: number;
 };
@@ -71,10 +71,10 @@ export type GradeType = {
   id?: number;
   schoolId?: number;
   name: string;
-  morningStart: HeureFormat;
-  morningEnd: HeureFormat;
-  afternoonStart: HeureFormat;
-  afternoonEnd: HeureFormat;
+  morningStart: HourFormat;
+  morningEnd: HourFormat;
+  afternoonStart: HourFormat;
+  afternoonEnd: HourFormat;
   associated?: AssociatedSchoolType[];
 };
 

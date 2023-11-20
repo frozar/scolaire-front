@@ -1,12 +1,12 @@
 import { Accessor, Setter } from "solid-js";
-import { HeureFormat } from "../../../../../_entities/grade.entity";
+import { HourFormat } from "../../../../../_entities/grade.entity";
 import StartEndTimeSchedulesInput from "./StartEndTimeSchedulesInput";
 
 interface TimesInputWrapper {
-  startSetter: Setter<HeureFormat>;
-  start: Accessor<HeureFormat | undefined>;
-  endSetter: Setter<HeureFormat>;
-  end: Accessor<HeureFormat | undefined>;
+  startSetter: Setter<HourFormat>;
+  start: Accessor<HourFormat | undefined>;
+  endSetter: Setter<HourFormat>;
+  end: Accessor<HourFormat | undefined>;
   label: string;
 }
 

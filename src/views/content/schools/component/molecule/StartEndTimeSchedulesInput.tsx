@@ -1,16 +1,13 @@
 import { Accessor, Setter } from "solid-js";
-import {
-  GradeEntity,
-  HeureFormat,
-} from "../../../../../_entities/grade.entity";
+import { GradeEntity, HourFormat } from "../../../../../_entities/grade.entity";
 import TimeInput from "../atom/TimeInput";
 
 interface TimeSchedulesInputProps {
-  startSetter: Setter<HeureFormat>;
-  start: Accessor<HeureFormat | undefined>;
+  startSetter: Setter<HourFormat>;
+  start: Accessor<HourFormat | undefined>;
 
-  endSetter: Setter<HeureFormat>;
-  end: Accessor<HeureFormat | undefined>;
+  endSetter: Setter<HourFormat>;
+  end: Accessor<HourFormat | undefined>;
 }
 
 export default function (props: TimeSchedulesInputProps) {
@@ -30,15 +27,13 @@ export default function (props: TimeSchedulesInputProps) {
     <div class="flex justify-between w-[70%]">
       <TimeInput
         onInput={onInputStart}
-        value={GradeEntity.getStringFromHeureFormat(
-          props.start() as HeureFormat
-        )}
+        value={GradeEntity.getStringFromHourFormat(props.start() as HourFormat)}
       />
 
       <p>à</p>
       <TimeInput
         onInput={onInputEnd}
-        value={GradeEntity.getStringFromHeureFormat(props.end() as HeureFormat)}
+        value={GradeEntity.getStringFromHourFormat(props.end() as HourFormat)}
       />
     </div>
   );

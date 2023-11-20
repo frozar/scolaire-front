@@ -142,7 +142,7 @@ export function DrawTripBoard() {
           <label>Horraire de départ:</label>
           <TimeInput
             onInput={onInputStart}
-            value={GradeEntity.getStringFromHeureFormat(
+            value={GradeEntity.getStringFromHourFormat(
               currentDrawTrip()?.startTime
             )}
           />

@@ -10,7 +10,7 @@ import {
   GradeTripDBType,
   GradeTripType,
   GradeType,
-  HeureFormat,
+  HourFormat,
 } from "./grade.entity";
 import { SchoolType } from "./school.entity";
 import {
@@ -93,7 +93,7 @@ export namespace TripEntity {
       waypoint: WaypointEntity.formatWaypointDBType(
         line.waypoints as WaypointType[]
       ),
-      start_time: GradeEntity.getStringFromHeureFormat(line.startTime),
+      start_time: GradeEntity.getStringFromHourFormat(line.startTime),
     };
   }
 
@@ -105,7 +105,7 @@ export namespace TripEntity {
     if (line.startTime) {
       output = {
         ...output,
-        start_time: GradeEntity.getStringFromHeureFormat(line.startTime),
+        start_time: GradeEntity.getStringFromHourFormat(line.startTime),
       };
     }
     if (line.color) {
@@ -180,7 +180,7 @@ export type TripType = {
   latLngs: L.LatLng[];
   selected: boolean;
   metrics?: TripMetricType;
-  startTime: HeureFormat;
+  startTime: HourFormat;
 };
 
 export type TripPointType = {

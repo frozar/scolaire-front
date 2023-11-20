@@ -1,5 +1,5 @@
 import { createSignal, onCleanup } from "solid-js";
-import { GradeType, HeureFormat } from "../../../../../_entities/grade.entity";
+import { GradeType, HourFormat } from "../../../../../_entities/grade.entity";
 import { GradeService } from "../../../../../_services/grade.service";
 import BoardFooterActions from "../../../board/component/molecule/BoardFooterActions";
 import LabeledInputField from "../../../board/component/molecule/LabeledInputField";
@@ -48,16 +48,16 @@ export default function () {
 
   const [gradeName, setGradeName] = createSignal(defaultGrade.name);
 
-  const [morningStart, setMorningStart] = createSignal<HeureFormat>(
+  const [morningStart, setMorningStart] = createSignal<HourFormat>(
     defaultGrade.morningStart
   );
-  const [morningEnd, setMorningEnd] = createSignal<HeureFormat>(
+  const [morningEnd, setMorningEnd] = createSignal<HourFormat>(
     defaultGrade.morningEnd
   );
-  const [afternoonEnd, setAfternoonEnd] = createSignal<HeureFormat>(
+  const [afternoonEnd, setAfternoonEnd] = createSignal<HourFormat>(
     defaultGrade.afternoonEnd
   );
-  const [afternoonStart, setAfternoonStart] = createSignal<HeureFormat>(
+  const [afternoonStart, setAfternoonStart] = createSignal<HourFormat>(
     defaultGrade.afternoonStart
   );
 
