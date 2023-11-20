@@ -56,7 +56,6 @@ export default function () {
             class="cursor-pointer underline"
             onClick={() => {
               const gtfsData = GtfsEntity.formatData();
-              console.log("gtfs data to send => ", gtfsData);
               GtfsService.get(gtfsData);
             }}
           >
