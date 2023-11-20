@@ -1,8 +1,6 @@
 import { GtfsData } from "../_entities/gtfs.entity";
-import {
-  displayDownloadSuccessMessage,
-  displayOnGoingDownloadMessage,
-} from "../userInformation/utils";
+import { disableSpinningWheel, enableSpinningWheel } from "../signaux";
+import { displayDownloadSuccessMessage } from "../userInformation/utils";
 import { download } from "../utils";
 import { getTimestamp } from "../views/content/map/rightMapMenu/export/utils";
 import { ResponseTypeEnum, ServiceUtils } from "./_utils.service";
@@ -27,7 +25,7 @@ export namespace GtfsService {
   }
 
   export async function get(data: GtfsData) {
-    displayOnGoingDownloadMessage();
+    enableSpinningWheel();
 
     const response = (await getGtfs("/export/gtfs", data)) as Blob;
 
@@ -35,6 +33,7 @@ export namespace GtfsService {
     const fileName = `${year}-${month}-${day}_${hour}-${minute}_gtfs.zip`;
     download(fileName, response);
 
+    disableSpinningWheel();
     displayDownloadSuccessMessage();
   }
 }
