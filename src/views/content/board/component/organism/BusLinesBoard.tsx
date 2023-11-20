@@ -51,7 +51,7 @@ export default function () {
       <header class="line-board-header">
         <div class="line-board-header-infos">
           <p>Total des lignes: {getLines().length}</p>
-          {/* TODO: Use Button component */}
+          {/* TODO: Enhance visual */}
           <a
             class="cursor-pointer underline"
             onClick={() => {

@@ -4,6 +4,7 @@ import { download } from "../utils";
 import { getTimestamp } from "../views/content/map/rightMapMenu/export/utils";
 import { connexionError, manageStatusCode } from "./_utils.service";
 
+// TODO: Clean
 export namespace GtfsService {
   // TODO: Move !?
   async function generic(url: string, options = {}, returnError = false) {

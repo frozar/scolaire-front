@@ -25,9 +25,10 @@ type ShapeElementType = {
 };
 
 type FrequencyType = {
+  // route represent a line !?
   route_short_name: number; // => line id (used by mg library in that way)
-  route_long_name: string; // => line name
-  route_type: 3; // => 3 = bus line
+  route_long_name: string;
+  route_type: 3; // 3 = bus line
   shape_id: string; // => id du chemin, different si aller ou retour !
   service_window_id: string; // TODO: Specify what it is
   frequency: number; // TODO: Specify what it is
@@ -138,12 +139,9 @@ export namespace GtfsEntity {
     const frequencies: FrequencyType[] = [];
 
     for (const tripId of Object.keys(shapes)) {
-      // ! Pas itérer la dessus !?
       const line = TripUtils.getLine(Number(tripId));
       frequencies.push({
-        //route_short_name: Number(tripId), // ! Ici mettre l'id de la ligne
         route_short_name: line.id as number,
-        //route_long_name: `${tripId} route`, // !! Nom de la ligne
         route_long_name: line.name as string,
         route_type: 3,
         shape_id: tripId,
@@ -159,8 +157,6 @@ export namespace GtfsEntity {
   // ! un des latlongs doit correspondre avec un latlong de stops ???
   function formatShapes(): ShapeElementType {
     /*
-    Partant du principe que :
-    
     {
 	    id: {
 		    shape_id: number,
