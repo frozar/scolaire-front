@@ -119,9 +119,9 @@ export namespace GtfsEntity {
   function getMetaData(): MetaDataType[] {
     return [
       {
-        agency_id: "FLAXIB",
-        agency_name: "FLAXIB",
-        agency_url: "https://flaxib.re",
+        agency_id: "AGENCE",
+        agency_name: "AGENCE",
+        agency_url: "https://agence.re",
         agency_timezone: "Indian/Reunion",
         agency_lang: "fr",
         agency_phone: "",
