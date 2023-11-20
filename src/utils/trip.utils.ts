@@ -12,7 +12,8 @@ export namespace TripUtils {
     return getLines().filter((line) =>
       line.trips.some((trip) => trip.id == tripId)
     )[0];
-    
+  }
+
   export function convertSecondesToHourMinute(secondes: number): string {
     const hour: number = Math.floor(secondes / 3600);
     const minutes: number = Math.floor((secondes % 3600) / 60);
