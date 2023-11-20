@@ -16,25 +16,42 @@ export namespace GradeEntity {
     return {
       school_id: grade.schoolId as number,
       name: grade.name,
-      morning_start: getStringFromHeureFormat(grade.morningStart),
-      morning_end: getStringFromHeureFormat(grade.morningEnd),
-      afternoon_start: getStringFromHeureFormat(grade.afternoonStart),
-      afternoon_end: getStringFromHeureFormat(grade.afternoonEnd),
+      morning_start: getStringFromHourFormat(grade.morningStart),
+      morning_end: getStringFromHourFormat(grade.morningEnd),
+      afternoon_start: getStringFromHourFormat(grade.afternoonStart),
+      afternoon_end: getStringFromHourFormat(grade.afternoonEnd),
     };
   }
-  function getStringFromHeureFormat(time: HeureFormat) {
-    return String(time.hour) + ":" + String(time.minutes);
+
+  export function getStringFromHourFormat(time: HourFormat) {
+    if (time == undefined) return "";
+    let houre = time.hour.toString();
+    let minutes = time.minutes.toString();
+
+    if (houre.length == 1) houre = "0" + houre;
+    if (minutes.length == 1) minutes = "0" + minutes;
+    if (Number(minutes) > 59) minutes = "59";
+
+    return houre + ":" + minutes;
   }
 
-  function getHourFormatFromString(time: string) {
+  export function getHourFormatFromString(time: string): HourFormat {
+    const [houre, minute] = time.split(":");
+    if (isNaN(Number(houre)) || isNaN(Number(minute)))
+      return {
+        hour: 0,
+        minutes: 0,
+      };
+    const roundedMinute = Math.round(Number(minute) / 5) * 5;
+
     return {
-      hour: Number(time.split(":")[0]),
-      minutes: Number(time.split(":")[1]),
+      hour: Number(houre),
+      minutes: Number(roundedMinute),
     };
   }
 }
 
-export type HeureFormat = {
+export type HourFormat = {
   hour: number;
   minutes: number;
 };
@@ -54,10 +71,10 @@ export type GradeType = {
   id?: number;
   schoolId?: number;
   name: string;
-  morningStart: HeureFormat;
-  morningEnd: HeureFormat;
-  afternoonStart: HeureFormat;
-  afternoonEnd: HeureFormat;
+  morningStart: HourFormat;
+  morningEnd: HourFormat;
+  afternoonStart: HourFormat;
+  afternoonEnd: HourFormat;
   associated?: AssociatedSchoolType[];
 };
 
