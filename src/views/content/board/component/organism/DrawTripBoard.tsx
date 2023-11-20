@@ -181,7 +181,7 @@ export function DrawTripBoard() {
           <Show
             when={currentDrawTrip().tripPoints.length > 0}
             fallback={
-              <div class="flex w-4/5 text-xs justify-center absolute bottom-[500px]">
+              <div class="flex w-4/5 text-xs justify-center">
                 Veuillez sélectionner des points sur la carte
               </div>
             }
