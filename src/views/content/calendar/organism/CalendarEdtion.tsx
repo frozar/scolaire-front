@@ -114,14 +114,14 @@ export function CalendarEdition(props: CalendarEditionProps) {
       <div class="calendar-edition-rules">
         <div>
           <CalendarSectionTitle title="Paramètrage calendrier" />
-          <CalendarRules calendar={props.calendar} />
-          <div class="inline-grid pt-5">
+          <div class="inline-grid  my-5">
             <label class="text-xl">Calendrier scolaire</label>
             <CalendarPeriodSelector
               onChange={onChangeCalendarPeriodSelector}
               defaultValue={props.calendar.calendarPeriodId}
             />
           </div>
+          <CalendarRules calendar={props.calendar} />
         </div>
       </div>
 

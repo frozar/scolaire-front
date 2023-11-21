@@ -1,0 +1,5 @@
+.time-passage {
+  @apply relative top-2 w-[60px];
+  font-size: 0.63rem;
+  line-height: 1rem;
+}

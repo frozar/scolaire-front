@@ -1,8 +1,5 @@
 import { createSignal } from "solid-js";
-import {
-  CalendarDayEnum,
-  CalendarType,
-} from "../../../../_entities/calendar.entity";
+import { CalendarType } from "../../../../_entities/calendar.entity";
 import { CalendarService } from "../../../../_services/calendar.service";
 import PlusIcon from "../../../../icons/PlusIcon";
 import { CalendarInputText } from "../atom/CalendarInputText";
@@ -28,9 +25,10 @@ export function CalendarAddLine(props: CalendarAddLineProps) {
   const newCalendar: CalendarType = {
     id: 0,
     name: "",
-    rules: Object.values(CalendarDayEnum),
+    rules: [],
     added: [],
     deleted: [],
+    calendarPeriodId: 0,
   };
 
   async function createCalendar() {

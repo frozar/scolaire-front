@@ -255,6 +255,7 @@ function formatTripPointType(points: TripPointDBType[]): TripPointType[] {
           lon: associatedPoint.lon,
           lat: associatedPoint.lat,
           nature: associatedPoint.nature,
+          passageTime: dbPoint.passage_time,
           grades: dbPoint.grades.map((grade) => {
             return { gradeId: grade.grade_id, quantity: grade.quantity };
           }),
