@@ -1,4 +1,4 @@
-import { GtfsData } from "../_entities/gtfs.entity";
+import { MgDataType } from "../_entities/gtfs.entity";
 import { disableSpinningWheel, enableSpinningWheel } from "../signaux";
 import { displayDownloadSuccessMessage } from "../userInformation/utils";
 import { download } from "../utils";
@@ -24,7 +24,7 @@ export namespace GtfsService {
     );
   }
 
-  export async function get(data: GtfsData) {
+  export async function get(data: MgDataType) {
     enableSpinningWheel();
 
     const response = (await getGtfs("/export/gtfs", data)) as Blob;

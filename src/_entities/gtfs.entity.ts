@@ -3,21 +3,25 @@ import { getLines } from "../views/content/map/component/organism/BusLines";
 import { getSchools } from "../views/content/map/component/organism/SchoolPoints";
 import { getStops } from "../views/content/map/component/organism/StopPoints";
 
-// TODO: Verify number / string right type
-// TODO: Specify corresponding data to better understand !
-type StopElementType = {
+// Precise GTFS files field definitions :
+// https://gtfs.org/en/schedule/reference/#field-definitions
+
+// Make_gtfs docs:
+// https://mrcagney.github.io/make_gtfs_docs/
+
+type StopMgType = {
   stop_lat: number;
   zone_id: string;
   stop_lon: number;
   stop_id: string;
-  stop_code: number;
+  stop_code: string;
   parent_station: string;
   stop_name: string;
   stop_desc: string;
   location_type: number;
 };
 
-type ShapeElementType = {
+type ShapeType = {
   [id: number]: {
     shape_id: number;
     coords: [number, number][];
@@ -25,17 +29,18 @@ type ShapeElementType = {
 };
 
 type FrequencyType = {
-  // route represent a line !?
-  route_short_name: number; // => line id (used by mg library in that way)
+  // "route" represent a line
+  route_short_name: number; // => line.id (mg library use that to create route_id)
   route_long_name: string;
   route_type: 3; // 3 = bus line
-  shape_id: string; // => id du chemin, different si aller ou retour !
-  service_window_id: string; // TODO: Specify what it is
+  // shape represent an ordered list of latLngs
+  shape_id: string; // may be way.id
+  service_window_id: string;
   frequency: number; // TODO: Specify what it is
-  direction: number; // TODO: Specify what it is
+  direction: number; // onward or return
 };
 
-type MetaDataType = {
+type MetaType = {
   agency_id: string;
   agency_name: string;
   agency_url: string;
@@ -44,16 +49,16 @@ type MetaDataType = {
   agency_phone: string;
   agency_fare_url: string;
   agency_email: string;
+  // dates when datas is valid
   start_date: string;
   end_date: string;
-  speed_route_type_3: number;
-  speed_route_type_7: number;
 };
 
+// ServiceWindows is used to create calendar.txt
 type ServiceWindowType = {
   service_window_id: string;
-  start_time: string;
-  end_time: string;
+  start_time: string; // start time of the service
+  end_time: string; // end time of the service
   monday: number;
   tuesday: number;
   wednesday: number;
@@ -63,16 +68,16 @@ type ServiceWindowType = {
   sunday: number;
 };
 
-export type GtfsData = {
-  stops: StopElementType[];
-  shapes: ShapeElementType;
+export type MgDataType = {
+  stops: StopMgType[];
+  shapes: ShapeType;
   frequencies: FrequencyType[];
-  meta: MetaDataType[];
+  meta: MetaType[];
   service_windows: ServiceWindowType[];
 };
 
 export namespace GtfsEntity {
-  export function formatData(): GtfsData {
+  export function formatData(): MgDataType {
     const shapes = formatShapes();
     const frequencies = formatFrequencies(shapes);
 
@@ -116,7 +121,7 @@ export namespace GtfsEntity {
   }
 
   // TODO: Use the correct transit agency information
-  function getMetaData(): MetaDataType[] {
+  function getMetaData(): MetaType[] {
     return [
       {
         agency_id: "AGENCE",
@@ -129,13 +134,12 @@ export namespace GtfsEntity {
         agency_email: "",
         start_date: "20200101",
         end_date: "20201231",
-        speed_route_type_3: 20,
-        speed_route_type_7: 30,
       },
     ];
   }
 
-  function formatFrequencies(shapes: ShapeElementType): FrequencyType[] {
+  // TODO: Use real data for service_window_id, frequency, direction
+  function formatFrequencies(shapes: ShapeType): FrequencyType[] {
     const frequencies: FrequencyType[] = [];
 
     for (const tripId of Object.keys(shapes)) {
@@ -154,18 +158,8 @@ export namespace GtfsEntity {
     return frequencies;
   }
 
-  // ! un des latlongs doit correspondre avec un latlong de stops ???
-  function formatShapes(): ShapeElementType {
-    /*
-    {
-	    id: {
-		    shape_id: number,
-		    coords: number[]
-	    }
-    }
-
-    */
-    const shapes: ShapeElementType = {};
+  function formatShapes(): ShapeType {
+    const shapes: ShapeType = {};
     const trips = getLines().flatMap((line) => line.trips);
 
     trips.forEach((trip) => {
@@ -180,14 +174,14 @@ export namespace GtfsEntity {
     return shapes;
   }
 
-  function formatStops(): StopElementType[] {
-    const test: StopElementType[] = getStops().map((stop) => {
+  function formatStops(): StopMgType[] {
+    const test: StopMgType[] = getStops().map((stop) => {
       return {
         stop_lat: stop.lat,
         stop_lon: stop.lon,
         stop_id: stop.id + "-st",
         stop_name: stop.name,
-        stop_code: stop.id,
+        stop_code: "",
         zone_id: "",
         parent_station: "", // Not necessary because location_type = 0
         stop_desc: "",
@@ -201,7 +195,7 @@ export namespace GtfsEntity {
         stop_lon: school.lon,
         stop_id: school.id + "-sc",
         stop_name: school.name,
-        stop_code: school.id,
+        stop_code: "",
         zone_id: "",
         parent_station: "", // Not necessary because location_type = 0
         stop_desc: "",
