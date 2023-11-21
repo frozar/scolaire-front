@@ -42,9 +42,8 @@ export function TripTimelineItem(props: {
 
     let seconds = 0;
     for (const i in range(props.indice + 1)) {
-      seconds += props.trip.tripPoints[i].passageTime;
+      seconds += props.trip.tripPoints[i].passageTime ?? 0;
     }
-
     const hourMinute = TripUtils.convertSecondesToHourMinute(seconds);
     return TripUtils.addHourTogether(firstHour, hourMinute);
   };
