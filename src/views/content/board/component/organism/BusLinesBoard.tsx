@@ -1,5 +1,4 @@
 import { createSignal } from "solid-js";
-import { GtfsEntity } from "../../../../../_entities/gtfs.entity";
 import { GtfsService } from "../../../../../_services/gtfs.service";
 import PlusIcon from "../../../../../icons/PlusIcon";
 import { displayAddTripMessage } from "../../../../../userInformation/utils";
@@ -55,8 +54,7 @@ export default function () {
           <a
             class="cursor-pointer underline"
             onClick={() => {
-              const gtfsData = GtfsEntity.formatData();
-              GtfsService.get(gtfsData);
+              GtfsService.get();
             }}
           >
             Exporter
