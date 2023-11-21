@@ -10,7 +10,15 @@ import { ServiceUtils } from "./_utils.service";
 
 const osrm = import.meta.env.VITE_API_OSRM_URL;
 
-export type osrmResponseType = { routes: routesType[] };
+export type osrmResponseType = {
+  routes: routesType[];
+  waypoints: {
+    name: string;
+    distance: number;
+    hint: string;
+    locations: number[];
+  }[];
+};
 
 export class OsrmService {
   static async getRoadPolyline(trip: TripType): Promise<{

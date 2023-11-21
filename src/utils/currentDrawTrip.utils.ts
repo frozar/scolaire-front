@@ -134,23 +134,43 @@ export namespace CurrentDrawTripUtils {
     const { latlngs, projectedLatlngs, metrics, legsDurations } =
       await OsrmService.getRoadPolyline(trip);
 
+    let someDuration = 0;
+    const newLegsDuration: number[] = [];
+
+    function isWaypoint(item: WaypointType | undefined): boolean {
+      return item ? !item.idSchool && !item.idStop : false;
+    }
+
+    const size = trip.waypoints?.length;
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    for (let index = 1; index <= size - 1; index++) {
+      const item = trip.waypoints ? trip.waypoints[index] : undefined;
+      const legsIndex = index - 1;
+      const duration = legsDurations[legsIndex];
+
+      if (!isWaypoint(item)) {
+        newLegsDuration.push(duration + someDuration);
+        someDuration = 0;
+      } else someDuration += duration;
+    }
+
     setCurrentDrawTrip((prev) => {
       if (!prev) return prev;
       const datas = { ...prev };
-
       // * One leg_duration is the travel time between the first & second point.
       // * first tripPoint.time_passage is based on trip.start_time so no need to define it.
-      // * for each another tripPoint we define the time_passage to (n-index) of legsDuration
+      // * for each another tripPoint we define the time_passage to (index - 1) of legsDuration
       datas.tripPoints.forEach((point, index) => {
-        if (index != 0) {
-          point.passageTime = legsDurations[index - 1];
+        if (index > 0) {
+          point.passageTime = newLegsDuration[index - 1];
         }
       });
       datas.metrics = metrics;
       datas.latLngs = latlngs;
       return datas;
     });
-
     setWaypoints(projectedLatlngs);
     disableSpinningWheel();
   }
