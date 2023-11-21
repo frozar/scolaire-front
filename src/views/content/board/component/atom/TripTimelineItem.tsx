@@ -8,7 +8,12 @@ import { GradeUtils } from "../../../../../utils/grade.utils";
 import { TripUtils } from "../../../../../utils/trip.utils";
 import { TripTimelineRemovePointButton } from "./TripTimelineRemovePointButton";
 
-import { DrawTripStep, currentStep } from "../organism/DrawTripBoard";
+import {
+  DrawTripStep,
+  currentStep,
+  displayTripMode,
+  displayTripModeEnum,
+} from "../organism/DrawTripBoard";
 import "./TripTimelineItem.css";
 
 export function TripTimelineItem(props: {
@@ -90,7 +95,12 @@ export function TripTimelineItem(props: {
 
         <div class="v-timeline-divider__after" />
       </div>
-      <Show when={currentStep() == DrawTripStep.initial}>
+      <Show
+        when={
+          currentStep() == DrawTripStep.initial ||
+          displayTripMode() == displayTripModeEnum.onRoad
+        }
+      >
         <p class="time-passage">{timePassage()}</p>
       </Show>
     </div>
