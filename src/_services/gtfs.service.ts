@@ -1,4 +1,4 @@
-import { GtfsData } from "../_entities/gtfs.entity";
+import { GtfsEntity } from "../_entities/gtfs.entity";
 import { disableSpinningWheel, enableSpinningWheel } from "../signaux";
 import { displayDownloadSuccessMessage } from "../userInformation/utils";
 import { download } from "../utils";
@@ -24,10 +24,10 @@ export namespace GtfsService {
     );
   }
 
-  export async function get(data: GtfsData) {
+  export async function get() {
     enableSpinningWheel();
 
-    const response = (await getGtfs("/export/gtfs", data)) as Blob;
+    const response = await getGtfs("/export/gtfs", GtfsEntity.formatData());
 
     const { year, month, day, hour, minute } = getTimestamp();
     const fileName = `${year}-${month}-${day}_${hour}-${minute}_gtfs.zip`;
