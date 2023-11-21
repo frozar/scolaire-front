@@ -9,7 +9,7 @@ type StopElementType = {
   stop_lat: number;
   zone_id: string;
   stop_lon: number;
-  stop_id: number;
+  stop_id: string;
   stop_code: number;
   parent_station: string;
   stop_name: string;
@@ -181,25 +181,17 @@ export namespace GtfsEntity {
   }
 
   function formatStops(): StopElementType[] {
-    // ! school considéré comme stops ? => attention aux ids !!!!!
     const test: StopElementType[] = getStops().map((stop) => {
       return {
         stop_lat: stop.lat,
         stop_lon: stop.lon,
-        stop_id: stop.id,
+        stop_id: stop.id + "-st",
         stop_name: stop.name,
         stop_code: stop.id,
         zone_id: "",
-        parent_station: "",
-        // ! Si type = 1 donc parent_station doit être vide
-        // ! Si type = 0 parent_station doit être l'id du stop
-        // !    "parent" etant de type = 1
+        parent_station: "", // Not necessary because location_type = 0
         stop_desc: "",
         location_type: 0,
-        // ! Selon exemple CAR JAUNE
-        // ! type 1 => gare
-        // ! type 0 => arrêts de bus
-        // ! Les écoles sont soit type 1 soit type 0
       };
     });
 
@@ -207,11 +199,11 @@ export namespace GtfsEntity {
       test.push({
         stop_lat: school.lat,
         stop_lon: school.lon,
-        stop_id: school.id,
+        stop_id: school.id + "-sc",
         stop_name: school.name,
         stop_code: school.id,
         zone_id: "",
-        parent_station: "",
+        parent_station: "", // Not necessary because location_type = 0
         stop_desc: "",
         location_type: 0,
       });
