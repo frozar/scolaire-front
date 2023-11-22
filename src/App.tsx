@@ -22,6 +22,7 @@ import { tryConnection } from "./views/layout/authentication";
 import "./App.css";
 import UnloggedUserInformation from "./component/molecule/UnloggedUserInformation";
 import UserInstruction from "./component/molecule/UserInstruction";
+import ImportDialog from "./views/content/board/component/molecule/ImportDialog";
 
 const [, { getSelectedMenu }] = useStateGui();
 
@@ -93,6 +94,8 @@ export default () => {
         <ExportConfirmationDialogBox />
         <GeneratorDialogBox />
         <RemoveConfirmation />
+        {/* TODO: Move */}
+        <ImportDialog />
       </Layout>
       <SpinningWheel />
     </div>
