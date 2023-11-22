@@ -1,11 +1,9 @@
-import { onChangeEventType } from "./importDialogContent";
-
 interface LabeledInputRadioProps {
   id: string;
   value: string;
   name: string;
   labelName: string;
-  onChange: (event: onChangeEventType) => void;
+  onChange: (value: string) => void;
 }
 
 export default function (props: LabeledInputRadioProps) {
@@ -16,7 +14,7 @@ export default function (props: LabeledInputRadioProps) {
         id={props.id}
         name={props.name}
         value={props.value}
-        onChange={(e) => props.onChange(e)}
+        onChange={(event) => props.onChange(event.target.value)}
       />
       <label for={props.id}>{props.labelName}</label>
     </div>

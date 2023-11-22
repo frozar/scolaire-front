@@ -2,14 +2,11 @@ import { Setter, createEffect, createSignal } from "solid-js";
 import Button from "../../../../../component/atom/Button";
 import LabeledInputRadio from "./LabeledInputRadio";
 
-enum CsvTypeEnum {
+export enum CsvTypeEnum {
   stop = "stops",
   schools = "schools",
   students = "students",
 }
-
-export type onChangeEventType = Event & { target: HTMLInputElement };
-
 export default function (props: { setIsDisplayed: Setter<boolean> }) {
   const [importCsvType, setImportCsvType] = createSignal<CsvTypeEnum>();
 
@@ -31,9 +28,8 @@ export default function (props: { setIsDisplayed: Setter<boolean> }) {
     closeDialog();
   }
 
-  function changeCsvType(event: onChangeEventType) {
-    const csvType = event.target.value as CsvTypeEnum;
-    setImportCsvType(csvType);
+  function changeCsvType(csvType: string) {
+    setImportCsvType(csvType as CsvTypeEnum);
     console.log("csvType selected =>", importCsvType());
   }
   return (
