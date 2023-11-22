@@ -1,11 +1,4 @@
-import {
-  Match,
-  Show,
-  Switch,
-  createEffect,
-  createSignal,
-  onMount,
-} from "solid-js";
+import { Match, Show, Switch, createEffect, onMount } from "solid-js";
 import { useStateGui } from "./StateGui";
 
 import Layout from "./views/layout/component/template/Layout";
@@ -29,13 +22,13 @@ import { tryConnection } from "./views/layout/authentication";
 import "./App.css";
 import UnloggedUserInformation from "./component/molecule/UnloggedUserInformation";
 import UserInstruction from "./component/molecule/UserInstruction";
-import Dialog from "./views/content/board/component/molecule/Dialog";
+import Dialogs from "./views/content/board/component/organism/Dialogs";
 
 const [, { getSelectedMenu }] = useStateGui();
 
 // TODO: Move in a new file "Dialogs.tsx"
-export const [isImportDialogDisplayed, setIsImportDialogDisplayed] =
-  createSignal<boolean>(false);
+// export const [isImportDialogDisplayed, setIsImportDialogDisplayed] =
+//   createSignal<boolean>(false);
 
 export default () => {
   onMount(async () => {
@@ -107,12 +100,13 @@ export default () => {
         <RemoveConfirmation />
         {/* TODO: Move in a new file "Dialogs.tsx" */}
         {/* <ImportDialog /> */}
-        <Dialog
+        {/* <Dialog
           isDisplayed={isImportDialogDisplayed}
           setIsDisplayed={setIsImportDialogDisplayed}
         >
           <div>TEST</div>
-        </Dialog>
+        </Dialog> */}
+        <Dialogs />
       </Layout>
       <SpinningWheel />
     </div>

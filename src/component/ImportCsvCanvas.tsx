@@ -1,8 +1,9 @@
 import { Setter, onCleanup, onMount } from "solid-js";
-import { setIsImportDialogDisplayed } from "../App";
+// import { setIsImportDialogDisplayed } from "../App";
 import DropZoneLogo from "../icons/DropZoneLogo";
 import { disableSpinningWheel, enableSpinningWheel } from "../signaux";
 import { FileUtils } from "../utils/file.utils";
+import { setIsImportDialogDisplayed } from "../views/content/board/component/organism/Dialogs";
 
 let mapDragDropDiv: HTMLDivElement;
 export default function (props: {
