@@ -10,27 +10,13 @@ import {
 import { Transition } from "solid-transition-group";
 
 import ClickOutside from "../../../../../component/ClickOutside";
-
+import { assertIsNode } from "../../../../../utils";
 import "./Dialog.css";
 
-import { assertIsNode } from "../../../../../utils";
 true && ClickOutside;
 
-// enum CsvTypeEnum {
-//   stop = "stops",
-//   schools = "schools",
-//   students = "students",
-// }
-// ! Externalise
-// export const [getDisplayedImportDialog, setDisplayedImportDialog] =
-//   createSignal<boolean>(false);
-// ! Externalise
-// export function openImportDialog() {
-//   setDisplayedImportDialog(true);
-// }
-
 let refDialogBox: HTMLDivElement;
-//TODO need to be refactored
+
 export default function (props: {
   children: JSXElement;
   isDisplayed: Accessor<boolean>;
@@ -38,29 +24,9 @@ export default function (props: {
 }) {
   const child = children(() => props.children);
 
-  // const [importCsvType, setImportCsvType] = createSignal<CsvTypeEnum>();
-
-  // function onChangeCsvType(event: Event & { target: HTMLInputElement }) {
-  //   const csvType = event.target.value as CsvTypeEnum;
-  //   setImportCsvType(csvType);
-  //   console.log("csvType selected =>", importCsvType());
-  // }
-
-  // function closeDrawHelperDialog() {
-  //   setDisplayedImportDialog(false);
-  // }
-
   function closeDialog() {
     props.setIsDisplayed(false);
   }
-
-  // const displayed = () => getDisplayedImportDialog();
-
-  // async function handlerOnClickSoumettre() {
-  //   console.log("TODO");
-
-  //   closeDrawHelperDialog();
-  // }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [refButton, setRefButton] = createSignal<
@@ -81,7 +47,6 @@ export default function (props: {
       exitClass="opacity-100"
       exitToClass="opacity-0"
     >
-      {/* <Show when={displayed()}> */}
       <Show when={props.isDisplayed()}>
         <div
           class="relative z-[1400]"
@@ -149,58 +114,6 @@ export default function (props: {
                     </button>
                   </div>
                   {child()}
-                  {/* TODO: Refcator: put {childs()} here ! */}
-                  {/* <h3 class="drawer-helper-dialog-title"> */}
-                  {/* Paramètres de la génération de circuit */}
-                  {/* Séléctionner un type de fichier: */}
-                  {/* </h3> */}
-                  {/* <div>
-                    <input
-                      type="radio"
-                      id="schools"
-                      name="import_csv"
-                      value="schools"
-                      onChange={onChangeCsvType}
-                    />
-                    <label for="schools">Établissements</label>
-                  </div> */}
-
-                  {/* <div>
-                    <input
-                      type="radio"
-                      id="stops"
-                      name="import_csv"
-                      value="stops"
-                      onChange={onChangeCsvType}
-                    />
-                    <label for="stops">Arrêts</label>
-                  </div> */}
-
-                  {/* <div>
-                    <input
-                      type="radio"
-                      id="students"
-                      name="import_csv"
-                      value="students"
-                      onChange={onChangeCsvType}
-                    />
-                    <label for="students">Élèves</label>
-                  </div> */}
-                  {/* <div class="draw-helper-dialog-buttons">
-                    <Button
-                      onClick={closeDrawHelperDialog}
-                      label={"Annuler"}
-                      variant="danger"
-                      isDisabled={false}
-                    />
-                    <Button
-                      ref={setRefButton}
-                      onClick={handlerOnClickSoumettre}
-                      label={"Soumettre"}
-                      variant="primary"
-                      isDisabled={false}
-                    />
-                  </div> */}
                 </div>
               </div>
             </div>

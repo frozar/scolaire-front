@@ -34,9 +34,7 @@ export default function (props: { setIsDisplayed: Setter<boolean> }) {
   }
   return (
     <>
-      <h3 class="drawer-helper-dialog-title">
-        Séléctionner un type de fichier:
-      </h3>
+      <h3 class="dialog-title">Séléctionner un type de fichier:</h3>
       <div>
         <input
           type="radio"
@@ -70,7 +68,8 @@ export default function (props: { setIsDisplayed: Setter<boolean> }) {
         <label for="students">Élèves</label>
       </div>
 
-      <div class="draw-helper-dialog-buttons">
+      {/* TODO: Refactor footer dialog content */}
+      <div class="dialog-buttons">
         <Button
           onClick={closeDialog}
           label={"Annuler"}

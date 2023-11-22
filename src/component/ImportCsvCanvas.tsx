@@ -1,5 +1,4 @@
 import { Setter, onCleanup, onMount } from "solid-js";
-// import { setIsImportDialogDisplayed } from "../App";
 import DropZoneLogo from "../icons/DropZoneLogo";
 import { disableSpinningWheel, enableSpinningWheel } from "../signaux";
 import { FileUtils } from "../utils/file.utils";
@@ -40,7 +39,6 @@ export default function (props: {
     const file = await FileUtils.checkFile(files);
     if (file) {
       disableSpinningWheel();
-      // openImportDialog();
       setIsImportDialogDisplayed(true);
     } else {
       props.callbackFail ? props.callbackFail() : "";

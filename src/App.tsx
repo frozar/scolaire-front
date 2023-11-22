@@ -26,10 +26,6 @@ import Dialogs from "./views/content/board/component/organism/Dialogs";
 
 const [, { getSelectedMenu }] = useStateGui();
 
-// TODO: Move in a new file "Dialogs.tsx"
-// export const [isImportDialogDisplayed, setIsImportDialogDisplayed] =
-//   createSignal<boolean>(false);
-
 export default () => {
   onMount(async () => {
     await tryConnection();
