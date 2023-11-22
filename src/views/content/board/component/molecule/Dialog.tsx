@@ -1,51 +1,34 @@
-import { Show, createEffect, createSignal } from "solid-js";
+import {
+  Accessor,
+  JSXElement,
+  Setter,
+  Show,
+  children,
+  createEffect,
+  createSignal,
+} from "solid-js";
 import { Transition } from "solid-transition-group";
 
 import ClickOutside from "../../../../../component/ClickOutside";
-
-import Button from "../../../../../component/atom/Button";
-
-import "./DrawHelperDialog.css";
-
 import { assertIsNode } from "../../../../../utils";
+import "./Dialog.css";
+
 true && ClickOutside;
 
-enum CsvTypeEnum {
-  stop = "stops",
-  schools = "schools",
-  students = "students",
-}
+let refDialogBox: HTMLDivElement;
 
-export const [getDisplayedImportDialog, setDisplayedImportDialog] =
-  createSignal<boolean>(false);
+export default function (props: {
+  children: JSXElement;
+  isDisplayed: Accessor<boolean>;
+  setIsDisplayed: Setter<boolean>;
+}) {
+  const child = children(() => props.children);
 
-export function openImportDialog() {
-  setDisplayedImportDialog(true);
-}
-
-let refDialogueBox: HTMLDivElement;
-//TODO need to be refactored
-export default function () {
-  const [importCsvType, setImportCsvType] = createSignal<CsvTypeEnum>();
-
-  function onChangeCsvType(event: Event & { target: HTMLInputElement }) {
-    const csvType = event.target.value as CsvTypeEnum;
-    setImportCsvType(csvType);
-    console.log("csvType selected =>", importCsvType());
+  function closeDialog() {
+    props.setIsDisplayed(false);
   }
 
-  function closeDrawHelperDialog() {
-    setDisplayedImportDialog(false);
-  }
-
-  const displayed = () => getDisplayedImportDialog();
-
-  async function handlerOnClickSoumettre() {
-    console.log("TODO");
-
-    closeDrawHelperDialog();
-  }
-
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [refButton, setRefButton] = createSignal<
     HTMLButtonElement | undefined
   >();
@@ -64,7 +47,7 @@ export default function () {
       exitClass="opacity-100"
       exitToClass="opacity-0"
     >
-      <Show when={displayed()}>
+      <Show when={props.isDisplayed()}>
         <div
           class="relative z-[1400]"
           aria-labelledby="modal-title"
@@ -89,9 +72,9 @@ export default function () {
               <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
                 <div
                   class="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6"
-                  ref={refDialogueBox}
+                  ref={refDialogBox}
                   use:ClickOutside={(e: MouseEvent) => {
-                    if (!refDialogueBox || !e.target) {
+                    if (!refDialogBox || !e.target) {
                       return;
                     }
 
@@ -102,8 +85,8 @@ export default function () {
                     }
 
                     assertIsNode(e.target);
-                    if (!refDialogueBox.contains(e.target as Node)) {
-                      closeDrawHelperDialog();
+                    if (!refDialogBox.contains(e.target as Node)) {
+                      closeDialog();
                     }
                   }}
                 >
@@ -111,7 +94,7 @@ export default function () {
                     <button
                       type="button"
                       class="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                      onClick={closeDrawHelperDialog}
+                      onClick={closeDialog}
                     >
                       <span class="sr-only">Close</span>
                       <svg
@@ -130,58 +113,7 @@ export default function () {
                       </svg>
                     </button>
                   </div>
-                  {/* TODO: Refcator: put {childs()} here ! */}
-                  <h3 class="drawer-helper-dialog-title">
-                    {/* Paramètres de la génération de circuit */}
-                    Séléctionner un type de fichier:
-                  </h3>
-                  <div>
-                    <input
-                      type="radio"
-                      id="schools"
-                      name="import_csv"
-                      value="schools"
-                      onChange={onChangeCsvType}
-                    />
-                    <label for="schools">Établissements</label>
-                  </div>
-
-                  <div>
-                    <input
-                      type="radio"
-                      id="stops"
-                      name="import_csv"
-                      value="stops"
-                      onChange={onChangeCsvType}
-                    />
-                    <label for="stops">Arrêts</label>
-                  </div>
-
-                  <div>
-                    <input
-                      type="radio"
-                      id="students"
-                      name="import_csv"
-                      value="students"
-                      onChange={onChangeCsvType}
-                    />
-                    <label for="students">Élèves</label>
-                  </div>
-                  <div class="draw-helper-dialog-buttons">
-                    <Button
-                      onClick={closeDrawHelperDialog}
-                      label={"Annuler"}
-                      variant="danger"
-                      isDisabled={false}
-                    />
-                    <Button
-                      ref={setRefButton}
-                      onClick={handlerOnClickSoumettre}
-                      label={"Soumettre"}
-                      variant="primary"
-                      isDisabled={false}
-                    />
-                  </div>
+                  {child()}
                 </div>
               </div>
             </div>
