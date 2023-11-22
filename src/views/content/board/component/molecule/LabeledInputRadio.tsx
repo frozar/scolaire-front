@@ -18,9 +18,7 @@ export default function (props: LabeledInputRadioProps) {
         value={props.value}
         onChange={(event) => props.onChange(event.target.value)}
       />
-      <label class="input-radio-label" for={props.id}>
-        {props.labelName}
-      </label>
+      <label for={props.id}>{props.labelName}</label>
     </div>
   );
 }
