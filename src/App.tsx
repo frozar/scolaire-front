@@ -98,14 +98,6 @@ export default () => {
         <ExportConfirmationDialogBox />
         <GeneratorDialogBox />
         <RemoveConfirmation />
-        {/* TODO: Move in a new file "Dialogs.tsx" */}
-        {/* <ImportDialog /> */}
-        {/* <Dialog
-          isDisplayed={isImportDialogDisplayed}
-          setIsDisplayed={setIsImportDialogDisplayed}
-        >
-          <div>TEST</div>
-        </Dialog> */}
         <Dialogs />
       </Layout>
       <SpinningWheel />

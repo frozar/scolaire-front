@@ -1,7 +1,7 @@
 import { createSignal } from "solid-js";
 
 import Dialog from "../molecule/Dialog";
-import ImportDialogBis from "../molecule/importDialogBis";
+import ImportDialogContent from "../molecule/importDialogContent";
 
 export const [isImportDialogDisplayed, setIsImportDialogDisplayed] =
   createSignal<boolean>(false);
@@ -12,7 +12,7 @@ export default function () {
       isDisplayed={isImportDialogDisplayed}
       setIsDisplayed={setIsImportDialogDisplayed}
     >
-      <ImportDialogBis setIsDisplayed={setIsImportDialogDisplayed} />
+      <ImportDialogContent setIsDisplayed={setIsImportDialogDisplayed} />
     </Dialog>
   );
 }
