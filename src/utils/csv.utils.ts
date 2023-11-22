@@ -19,6 +19,12 @@ import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { setSchools } from "../views/content/map/component/organism/SchoolPoints";
 import { setStops } from "../views/content/map/component/organism/StopPoints";
 
+type SchoolsCsvDiffType = {
+  added: string[]; // schoolNames
+  modified: number[]; // ids
+  deleted: number[]; // ids
+};
+
 export namespace CsvUtils {
   export async function importCsvFile(file: File): Promise<boolean> {
     const parsedFileData = await parsedCsvFileData(file);
@@ -50,6 +56,15 @@ export namespace CsvUtils {
       addNewGlobalWarningInformation("Erreur de lecture du fichier");
       return false;
     }
+  }
+
+  export async function getImportSchoolsCsvDiff(
+    file: File
+  ): Promise<SchoolsCsvDiffType> {
+    const parsedFileData = await parsedCsvFileDataBis(file);
+    console.log("parsedFileData", parsedFileData);
+    // TODO: Use real values
+    return { added: [], modified: [], deleted: [] };
   }
 
   export function fileExtensionIsCsv(fileName: string) {
@@ -215,5 +230,15 @@ export namespace CsvUtils {
     } else if (isStudentToGradeFile(fileName)) {
       return await parsedCsvFileToStudentToGradeData(file);
     } else return;
+  }
+  async function parsedCsvFileDataBis(file: File) {
+    // const fileName = file.name;
+    // if (isSchoolFile(fileName)) {
+    return await parsedCsvFileToSchoolData(file);
+    // } else if (isStopFile(fileName)) {
+    // return await parsedCsvFileToStopData(file);
+    // } else if (isStudentToGradeFile(fileName)) {
+    // return await parsedCsvFileToStudentToGradeData(file);
+    // } else return;
   }
 }
