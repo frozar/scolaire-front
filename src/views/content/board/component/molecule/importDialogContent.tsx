@@ -1,6 +1,7 @@
 import { Setter, createEffect, createSignal } from "solid-js";
 import Button from "../../../../../component/atom/Button";
 import LabeledInputRadio from "./LabeledInputRadio";
+import "./importDialogContent.css";
 
 export enum CsvTypeEnum {
   stop = "stops",
@@ -34,7 +35,7 @@ export default function (props: { setIsDisplayed: Setter<boolean> }) {
   }
   return (
     <>
-      <h3 class="dialog-title">Séléctionner un type de fichier:</h3>
+      <div id="import-dialog-title">Séléctionner le type de fichier:</div>
 
       <LabeledInputRadio
         id="schools"
@@ -61,7 +62,7 @@ export default function (props: { setIsDisplayed: Setter<boolean> }) {
       />
 
       {/* TODO: Refactor footer dialog content */}
-      <div class="dialog-buttons">
+      <div class="import-dialog-buttons">
         <Button
           onClick={closeDialog}
           label={"Annuler"}
@@ -71,7 +72,7 @@ export default function (props: { setIsDisplayed: Setter<boolean> }) {
         <Button
           ref={setRefButton}
           onClick={handlerOnClickSoumettre}
-          label={"Soumettre"}
+          label={"Valider"}
           variant="primary"
           isDisabled={false}
         />

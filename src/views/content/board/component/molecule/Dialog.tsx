@@ -11,7 +11,6 @@ import { Transition } from "solid-transition-group";
 
 import ClickOutside from "../../../../../component/ClickOutside";
 import { assertIsNode } from "../../../../../utils";
-import "./Dialog.css";
 
 true && ClickOutside;
 
@@ -47,6 +46,7 @@ export default function (props: {
       exitClass="opacity-100"
       exitToClass="opacity-0"
     >
+      {/* TODO: Create Dialog.css to clean this file */}
       <Show when={props.isDisplayed()}>
         <div
           class="relative z-[1400]"
@@ -71,7 +71,7 @@ export default function (props: {
             <div class="fixed inset-0 z-10 overflow-y-auto">
               <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
                 <div
-                  class="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6"
+                  class="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:px-8 sm:pt-8 sm:pb-6"
                   ref={refDialogBox}
                   use:ClickOutside={(e: MouseEvent) => {
                     if (!refDialogBox || !e.target) {
