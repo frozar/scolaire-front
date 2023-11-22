@@ -1,7 +1,7 @@
-.input-radio-label {
-  @apply ml-5;
-}
-
 .input-radio {
   @apply ml-6 mb-1;
+}
+
+.input-radio label {
+  @apply ml-5;
 }

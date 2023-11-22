@@ -11,7 +11,6 @@ import { Transition } from "solid-transition-group";
 
 import ClickOutside from "../../../../../component/ClickOutside";
 import { assertIsNode } from "../../../../../utils";
-import "./Dialog.css";
 
 true && ClickOutside;
 
@@ -47,6 +46,7 @@ export default function (props: {
       exitClass="opacity-100"
       exitToClass="opacity-0"
     >
+      {/* TODO: Create Dialog.css to clean this file */}
       <Show when={props.isDisplayed()}>
         <div
           class="relative z-[1400]"

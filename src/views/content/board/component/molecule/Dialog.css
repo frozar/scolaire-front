@@ -1,9 +1,0 @@
-/* TODO: After all dialog boxes refactored, move */
-.dialog-title {
-  @apply text-sm text-left font-semibold leading-6 text-gray-500 mt-7;
-}
-
-/* TODO: After all dialog boxes refactored, move to footer component ? */
-.dialog-buttons {
-  @apply mt-5 sm:mt-4 sm:flex sm:flex-row-reverse;
-}
