@@ -29,8 +29,8 @@ export function CalendarDayCell(props: CalendarDayCellProps) {
       switch (props.action) {
         case CalendarActionsEnum.add:
           return CalendarUtils.isAnAddedDate(props.date, props.calendar);
-        case CalendarActionsEnum.remove:
-          return CalendarUtils.isADeletedDate(props.date, props.calendar);
+        // case CalendarActionsEnum.remove:
+        //   return CalendarUtils.isADeletedDate(props.date, props.calendar);
         case CalendarActionsEnum.rules:
           return CalendarUtils.isARulesDate(props.date, props.calendar);
         case CalendarActionsEnum.period:

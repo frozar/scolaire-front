@@ -1,0 +1,4 @@
+.list-wrapper {
+  max-height: 230px;
+  overflow-y: auto;
+}

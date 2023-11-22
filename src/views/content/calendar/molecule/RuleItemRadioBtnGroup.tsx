@@ -26,11 +26,9 @@ export function RuleItemRadioBtnGroup(props: RuleItemRadioBtnGroupProps) {
 
     if (rule && !!rule.tripTypeId) {
       const tripDirection = TripDirectionEntity.findTripById(rule.tripTypeId);
-      console.log(tripDirection);
 
       if (!tripDirection) return;
       setDirection(tripDirection);
-      console.log(direction() == TripDirectionEnum.coming);
     }
   });
 

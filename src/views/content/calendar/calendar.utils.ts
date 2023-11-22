@@ -127,10 +127,16 @@ export namespace CalendarUtils {
     return new Date(Number(year), Number(month) - 1, Number(day));
   }
 
+  export function dateToString(date: Date | undefined): string {
+    if (!date) return "";
+    return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+  }
+
   export function isActiveDay(date: Date, calendar: CalendarType): boolean {
-    if (calendar.added.includes(date.getTime())) return true;
+    if (calendar.added.map((item) => item.date).includes(date.getTime()))
+      return true;
     if (!CalendarUtils.isARulesDate(date, calendar)) return false;
-    if (calendar.deleted.includes(date.getTime())) return false;
+    // if (calendar.deleted.includes(date.getTime())) return false;
 
     return true;
   }
@@ -151,12 +157,20 @@ export namespace CalendarUtils {
   }
 
   export function isAnAddedDate(date: Date, calendar: CalendarType): boolean {
-    if (calendar.added.includes(date.getTime())) return true;
-    return false;
+    return calendar.added.some((item) => {
+      const addedDate = new Date(item.date);
+      if (
+        addedDate.getFullYear() == date.getFullYear() &&
+        addedDate.getMonth() == date.getMonth() &&
+        addedDate.getDate() == date.getDate()
+      )
+        return true;
+    });
   }
 
   export function isADeletedDate(date: Date, calendar: CalendarType): boolean {
-    return calendar.deleted.includes(date.getTime());
+    // return calendar.deleted.includes(date.getTime());
+    return false;
   }
 
   export function isARulesDate(date: Date, calendar: CalendarType): boolean {

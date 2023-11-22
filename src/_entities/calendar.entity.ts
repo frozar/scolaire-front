@@ -11,8 +11,12 @@ export namespace CalendarEntity {
           tripTypeId: item.trip_type_id,
         };
       }),
-      added: CalendarUtils.stringListToDateTimeList(dbCalendar.date_added),
-      deleted: CalendarUtils.stringListToDateTimeList(dbCalendar.date_deleted),
+      added: dbCalendar.date_added.map((item) => {
+        return {
+          date: CalendarUtils.stringToDate(item.date).getTime(),
+          reference: item.reference,
+        };
+      }),
       calendarPeriodId: dbCalendar.calendar_period_id,
     };
   }
@@ -52,8 +56,17 @@ export namespace CalendarEntity {
           trip_type_id: item.tripTypeId,
         };
       }),
-      date_added: CalendarUtils.dateTimeListToStringList(calendar.added),
-      date_deleted: CalendarUtils.dateTimeListToStringList(calendar.deleted),
+      date_added: calendar.added.map((item) => {
+        const bufferDate = new Date(item.date);
+        return {
+          date: `${bufferDate.getFullYear()}-${
+            bufferDate.getMonth() + 1
+          }-${bufferDate.getDate()}`,
+          reference: item.reference,
+        };
+      }),
+
+      // date_deleted: CalendarUtils.dateTimeListToStringList(calendar.deleted),
       calendar_period_id: calendar.calendarPeriodId,
     };
   }
@@ -103,21 +116,31 @@ export type RulesDBType = {
   day: CalendarDayEnum;
 };
 
+export type DateAddedType = {
+  date: number;
+  reference: CalendarDayEnum;
+};
+
 export type CalendarType = {
   id: number;
   name: string;
   rules: RulesType[];
-  added: number[];
-  deleted: number[];
+  added: DateAddedType[];
+  // deleted: number[];
   calendarPeriodId?: number;
+};
+
+export type DateAddedDBType = {
+  date: string;
+  reference: CalendarDayEnum;
 };
 
 export type CalendarDBType = {
   id: number;
   name: string;
   rules: RulesDBType[];
-  date_added: string[];
-  date_deleted: string[];
+  date_added: DateAddedDBType[];
+  // date_deleted: string[];
   calendar_period_id?: number;
 };
 

@@ -27,7 +27,7 @@ export function CalendarAddLine(props: CalendarAddLineProps) {
     name: "",
     rules: [],
     added: [],
-    deleted: [],
+    // deleted: [],
     calendarPeriodId: 0,
   };
 
