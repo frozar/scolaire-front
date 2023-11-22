@@ -1,11 +1,15 @@
 import { Setter, createEffect, createSignal } from "solid-js";
 import Button from "../../../../../component/atom/Button";
+import LabeledInputRadio from "./LabeledInputRadio";
 
 enum CsvTypeEnum {
   stop = "stops",
   schools = "schools",
   students = "students",
 }
+
+export type onChangeEventType = Event & { target: HTMLInputElement };
+
 export default function (props: { setIsDisplayed: Setter<boolean> }) {
   const [importCsvType, setImportCsvType] = createSignal<CsvTypeEnum>();
 
@@ -27,7 +31,7 @@ export default function (props: { setIsDisplayed: Setter<boolean> }) {
     closeDialog();
   }
 
-  function onChangeCsvType(event: Event & { target: HTMLInputElement }) {
+  function changeCsvType(event: onChangeEventType) {
     const csvType = event.target.value as CsvTypeEnum;
     setImportCsvType(csvType);
     console.log("csvType selected =>", importCsvType());
@@ -35,38 +39,30 @@ export default function (props: { setIsDisplayed: Setter<boolean> }) {
   return (
     <>
       <h3 class="dialog-title">Séléctionner un type de fichier:</h3>
-      <div>
-        <input
-          type="radio"
-          id="schools"
-          name="import_csv"
-          value="schools"
-          onChange={onChangeCsvType}
-        />
-        <label for="schools">Établissements</label>
-      </div>
 
-      <div>
-        <input
-          type="radio"
-          id="stops"
-          name="import_csv"
-          value="stops"
-          onChange={onChangeCsvType}
-        />
-        <label for="stops">Arrêts</label>
-      </div>
+      <LabeledInputRadio
+        id="schools"
+        value="schools"
+        name="import-csv"
+        labelName="Établissements"
+        onChange={changeCsvType}
+      />
 
-      <div>
-        <input
-          type="radio"
-          id="students"
-          name="import_csv"
-          value="students"
-          onChange={onChangeCsvType}
-        />
-        <label for="students">Élèves</label>
-      </div>
+      <LabeledInputRadio
+        id="stops"
+        value="stops"
+        name="import-csv"
+        labelName="Arrêts"
+        onChange={changeCsvType}
+      />
+
+      <LabeledInputRadio
+        id="students"
+        value="students"
+        name="import-csv"
+        labelName="Élèves"
+        onChange={changeCsvType}
+      />
 
       {/* TODO: Refactor footer dialog content */}
       <div class="dialog-buttons">
