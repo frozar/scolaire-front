@@ -1,3 +1,4 @@
+/* TODO: After all dialog boxes refactored, move */
 .dialog-title {
   @apply text-sm text-left font-semibold leading-6 text-gray-500 mt-7;
 }

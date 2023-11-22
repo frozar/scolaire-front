@@ -1,3 +1,5 @@
+import "./labeledInputRadio.css";
+
 interface LabeledInputRadioProps {
   id: string;
   value: string;
@@ -8,7 +10,7 @@ interface LabeledInputRadioProps {
 
 export default function (props: LabeledInputRadioProps) {
   return (
-    <div>
+    <div class="input-radio">
       <input
         type="radio"
         id={props.id}
@@ -16,7 +18,9 @@ export default function (props: LabeledInputRadioProps) {
         value={props.value}
         onChange={(event) => props.onChange(event.target.value)}
       />
-      <label for={props.id}>{props.labelName}</label>
+      <label class="input-radio-label" for={props.id}>
+        {props.labelName}
+      </label>
     </div>
   );
 }
