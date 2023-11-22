@@ -31,22 +31,19 @@ export default function (props: {
   async function dropHandler(e: DragEvent, setDisplay: Setter<boolean>) {
     e.preventDefault();
 
+    setDisplay(false);
     enableSpinningWheel();
 
     const files = e.dataTransfer?.files;
 
-    // ! Clean
-    if (await FileUtils.importFile(files)) {
-      // props.callbackSuccess ? props.callbackSuccess() : "";
-      // ! DialogBox showed here
+    const file = await FileUtils.checkFile(files);
+    if (file) {
       disableSpinningWheel();
       openImportDialog();
     } else {
       props.callbackFail ? props.callbackFail() : "";
+      disableSpinningWheel();
     }
-
-    setDisplay(false);
-    // disableSpinningWheel();
   }
 
   function dragLeaveHandlerAux(e: DragEvent) {

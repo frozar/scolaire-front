@@ -30,22 +30,33 @@ export namespace FileUtils {
     return files && files.length === 1;
   }
 
-  // TODO: Rename "checkFile" ?
+  // TODO: Delete when no longer used
   export async function importFile(
     files: FileList | null | undefined
   ): Promise<boolean> {
     const file = getImportedFile(files);
-
     if (!file) return false;
+    const fileName = file.name;
+    if (CsvUtils.fileExtensionIsCsv(fileName)) {
+      return CsvUtils.importCsvFile(file);
+    }
+    addNewGlobalWarningInformation("Type de Fichier non reconnu");
+    return false;
+  }
+
+  export async function checkFile(
+    files: FileList | null | undefined
+  ): Promise<File | undefined> {
+    const file = getImportedFile(files);
+
+    if (!file) return;
     const fileName = file.name;
 
     if (CsvUtils.fileExtensionIsCsv(fileName)) {
-      console.log("todo: import");
-      return true;
-      // return CsvUtils.importCsvFile(file);
+      return file;
     }
 
     addNewGlobalWarningInformation("Type de Fichier non reconnu");
-    return false;
+    return;
   }
 }
