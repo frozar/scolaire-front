@@ -1,4 +1,11 @@
-import { Match, Show, Switch, createEffect, onMount } from "solid-js";
+import {
+  Match,
+  Show,
+  Switch,
+  createEffect,
+  createSignal,
+  onMount,
+} from "solid-js";
 import { useStateGui } from "./StateGui";
 
 import Layout from "./views/layout/component/template/Layout";
@@ -22,9 +29,13 @@ import { tryConnection } from "./views/layout/authentication";
 import "./App.css";
 import UnloggedUserInformation from "./component/molecule/UnloggedUserInformation";
 import UserInstruction from "./component/molecule/UserInstruction";
-import ImportDialog from "./views/content/board/component/molecule/ImportDialog";
+import Dialog from "./views/content/board/component/molecule/Dialog";
 
 const [, { getSelectedMenu }] = useStateGui();
+
+// TODO: Move in a new file "Dialogs.tsx"
+export const [isImportDialogDisplayed, setIsImportDialogDisplayed] =
+  createSignal<boolean>(false);
 
 export default () => {
   onMount(async () => {
@@ -94,8 +105,14 @@ export default () => {
         <ExportConfirmationDialogBox />
         <GeneratorDialogBox />
         <RemoveConfirmation />
-        {/* TODO: Move */}
-        <ImportDialog />
+        {/* TODO: Move in a new file "Dialogs.tsx" */}
+        {/* <ImportDialog /> */}
+        <Dialog
+          isDisplayed={isImportDialogDisplayed}
+          setIsDisplayed={setIsImportDialogDisplayed}
+        >
+          <div>TEST</div>
+        </Dialog>
       </Layout>
       <SpinningWheel />
     </div>
