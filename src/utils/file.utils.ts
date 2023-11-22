@@ -30,6 +30,7 @@ export namespace FileUtils {
     return files && files.length === 1;
   }
 
+  // TODO: Rename "checkFile" ?
   export async function importFile(
     files: FileList | null | undefined
   ): Promise<boolean> {
@@ -39,7 +40,9 @@ export namespace FileUtils {
     const fileName = file.name;
 
     if (CsvUtils.fileExtensionIsCsv(fileName)) {
-      return CsvUtils.importCsvFile(file);
+      console.log("todo: import");
+      return true;
+      // return CsvUtils.importCsvFile(file);
     }
 
     addNewGlobalWarningInformation("Type de Fichier non reconnu");

@@ -2,6 +2,7 @@ import { Setter, onCleanup, onMount } from "solid-js";
 import DropZoneLogo from "../icons/DropZoneLogo";
 import { disableSpinningWheel, enableSpinningWheel } from "../signaux";
 import { FileUtils } from "../utils/file.utils";
+import { openImportDialog } from "../views/content/board/component/molecule/ImportDialog";
 
 let mapDragDropDiv: HTMLDivElement;
 export default function (props: {
@@ -34,14 +35,18 @@ export default function (props: {
 
     const files = e.dataTransfer?.files;
 
+    // ! Clean
     if (await FileUtils.importFile(files)) {
-      props.callbackSuccess ? props.callbackSuccess() : "";
+      // props.callbackSuccess ? props.callbackSuccess() : "";
+      // ! DialogBox showed here
+      disableSpinningWheel();
+      openImportDialog();
     } else {
       props.callbackFail ? props.callbackFail() : "";
     }
 
     setDisplay(false);
-    disableSpinningWheel();
+    // disableSpinningWheel();
   }
 
   function dragLeaveHandlerAux(e: DragEvent) {
