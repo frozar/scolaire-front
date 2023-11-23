@@ -13,8 +13,6 @@ export enum CsvTypeEnum {
 
 export const [csvToImport, setCsvToImport] = createSignal<File>();
 
-// TODO: Move ?
-// TODO: Transform to a dict ?
 export const [schoolsDiff, setSchoolsDiff] = createSignal<SchoolsCsvDiffType>();
 
 export default function () {
@@ -29,7 +27,6 @@ export default function () {
   });
 
   function closeDialog() {
-    // props.setIsDisplayed(false);
     setDialogToDisplay(DialogToDisplayEnum.none);
     // TODO: Uncheck all radios
   }
@@ -41,7 +38,6 @@ export default function () {
           csvToImport() as File
         );
         console.log("diff =>", diff);
-        // ! Use a derived signal of schoolsDiff to set dialogToDisplay to .diff !?
         setSchoolsDiff(diff);
         setDialogToDisplay(DialogToDisplayEnum.diff);
         return;

@@ -1,15 +1,13 @@
 import { For, Setter } from "solid-js";
 import CollapsibleElement from "../organism/CollapsibleElement";
-import { SchoolDiffEnum, UncheckedType } from "./ImportDiffs";
-
-// TODO: Rename file
+import { SchoolDiffEnum, UncheckedElementType } from "./ImportDiffs";
 
 function onChangeSchoolCheckbox(
   event: Event & {
     currentTarget: HTMLInputElement;
     target: HTMLInputElement;
   },
-  setter: Setter<UncheckedType>,
+  setter: Setter<UncheckedElementType>,
   elem: string | number,
   diffMode: SchoolDiffEnum
 ) {
@@ -21,7 +19,7 @@ function onChangeSchoolCheckbox(
     });
   } else {
     setter((prev) => {
-      const unchecked: UncheckedType = { ...prev };
+      const unchecked: UncheckedElementType = { ...prev };
       unchecked[diffMode].push(elem as string);
       return unchecked;
     });
@@ -29,16 +27,15 @@ function onChangeSchoolCheckbox(
 }
 
 export default function (props: {
-  setter: Setter<UncheckedType>;
+  setter: Setter<UncheckedElementType>;
   title: string;
-  // ! Delete and use dict for schoolsDiffs()!
-  toIterOn: (number | string)[];
+  schools: (number | string)[];
   diffType: SchoolDiffEnum;
 }) {
   return (
     <>
       <CollapsibleElement title={props.title}>
-        <For each={props.toIterOn}>
+        <For each={props.schools}>
           {(elem) => {
             return (
               // TODO: Create a css for this file !

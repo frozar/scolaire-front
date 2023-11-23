@@ -9,15 +9,17 @@ export enum SchoolDiffEnum {
   deleted = "deleted",
 }
 
-export type UncheckedType = { [diffType: string]: (number | string)[] };
+export type UncheckedElementType = {
+  [diffType: string]: (number | string)[];
+};
 
 export default function () {
-  const [uncheckedValues, setUncheckedValues] = createSignal<UncheckedType>({
-    added: [],
-    modified: [],
-    deleted: [],
-  });
-  // ! TODO: Make SchoolsCsvDiffType a dict to clean this !
+  const [uncheckedValues, setUncheckedValues] =
+    createSignal<UncheckedElementType>({
+      added: [],
+      modified: [],
+      deleted: [],
+    });
   function schoolsDiffFiltered(): SchoolsCsvDiffType {
     return {
       added: schoolsDiff()?.added.filter(
@@ -44,20 +46,19 @@ export default function () {
       <DiffsCollapsible
         setter={setUncheckedValues}
         title="Ajouter"
-        // ! Remove toIterOn when SchoolsCsvDiffType is a dict
-        toIterOn={schoolsDiff()?.added as string[]}
+        schools={schoolsDiff()?.added as string[]}
         diffType={SchoolDiffEnum.added}
       />
       <DiffsCollapsible
         setter={setUncheckedValues}
         title="Modifier"
-        toIterOn={schoolsDiff()?.modified as number[]}
+        schools={schoolsDiff()?.modified as number[]}
         diffType={SchoolDiffEnum.modified}
       />
       <DiffsCollapsible
         setter={setUncheckedValues}
         title="Supprimer"
-        toIterOn={schoolsDiff()?.deleted as number[]}
+        schools={schoolsDiff()?.deleted as number[]}
         diffType={SchoolDiffEnum.deleted}
       />
     </>

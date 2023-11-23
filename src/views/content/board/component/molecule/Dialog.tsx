@@ -9,15 +9,10 @@ true && ClickOutside;
 
 let refDialogBox: HTMLDivElement;
 
-export default function (props: {
-  children: JSXElement;
-  // isDisplayed: Accessor<boolean>;
-  // setIsDisplayed: Setter<boolean>;
-}) {
+export default function (props: { children: JSXElement }) {
   const child = children(() => props.children);
 
   function closeDialog() {
-    // props.setIsDisplayed(false);
     setDialogToDisplay(DialogToDisplayEnum.none);
   }
 
@@ -41,7 +36,6 @@ export default function (props: {
       exitToClass="opacity-0"
     >
       {/* TODO: Create Dialog.css to clean this file */}
-      {/* <Show when={props.isDisplayed()}> */}
       <div
         class="relative z-[1400]"
         aria-labelledby="modal-title"
@@ -113,7 +107,6 @@ export default function (props: {
           </div>
         </Transition>
       </div>
-      {/* </Show> */}
     </Transition>
   );
 }

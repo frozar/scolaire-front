@@ -44,7 +44,6 @@ export default function (props: {
     if (file) {
       disableSpinningWheel();
       setCsvToImport(() => file);
-      // setIsImportDialogDisplayed(true);
       setDialogToDisplay(DialogToDisplayEnum.typeSelection);
     } else {
       props.callbackFail ? props.callbackFail() : "";

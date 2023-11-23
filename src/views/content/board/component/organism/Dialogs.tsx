@@ -13,9 +13,6 @@ export enum DialogToDisplayEnum {
 export const [dialogToDisplay, setDialogToDisplay] =
   createSignal<DialogToDisplayEnum>(DialogToDisplayEnum.none);
 
-// export const [isImportDialogDisplayed, setIsImportDialogDisplayed] =
-//   createSignal<boolean>(false);
-
 export default function () {
   return (
     <>
