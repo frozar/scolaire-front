@@ -64,20 +64,20 @@ export namespace CsvUtils {
   export async function getImportSchoolsCsvDiff(
     file: File
   ): Promise<SchoolsCsvDiffType> {
-    // ! Use return; instead of typecast ?
     const parsedFileData = (await parsedCsvFileDataBis(file)) as Pick<
       SchoolDBType,
       "name" | "location"
     >[];
     console.log("parsedFileData", parsedFileData);
 
-    // ! Passer directement les data necessaires pour le traitement ?
+    // ! Passer directement les data necessaires pour le traitement?
+    // ! Pas forcement pcq checkbox à mettre en place
     const diff: SchoolsCsvDiffType = { added: [], modified: [], deleted: [] };
 
-    // ! Check if modified or added
+    // Check if modified or added
     loop: for (const data of parsedFileData) {
       for (const school of getSchools()) {
-        // ! Case modified
+        // Case modified
         console.log("data.name |", data.name + "|");
         console.log("school.name |", school.name + "|");
 
@@ -87,16 +87,21 @@ export namespace CsvUtils {
             data.location.data.lng != school.lon
           ) {
             diff.modified.push(school.id);
-            break loop;
+            continue loop;
           }
         }
       }
 
-      // ! Case added
+      // Case added
       diff.added.push(data.name);
     }
-    // ! Check if deleted
-    // TODO: Use real values
+
+    // Check if deleted
+    for (const school of getSchools()) {
+      if (!parsedFileData.some((data) => data.name == school.name)) {
+        diff.deleted.push(school.id);
+      }
+    }
     return diff;
   }
 
