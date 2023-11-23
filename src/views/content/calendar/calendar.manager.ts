@@ -11,8 +11,6 @@ import {
   TripDirectionEnum,
 } from "../../../_entities/trip-direction.entity";
 import { CalendarService } from "../../../_services/calendar.service";
-import { addNewUserInformation } from "../../../signaux";
-import { MessageLevelEnum, MessageTypeEnum } from "../../../type";
 import { CalendarUtils } from "./calendar.utils";
 import {
   currentCalendar,
@@ -79,27 +77,8 @@ export namespace CalendarManager {
     });
   }
 
-  function isDateExistInAddedDate(date: Date) {
-    const sameDate =
-      currentCalendar()?.added.filter((item) =>
-        CalendarUtils.compareDate(new Date(item.date as number), date)
-      ) ?? [];
-
-    if (sameDate.length > 0) {
-      addNewUserInformation({
-        displayed: true,
-        level: MessageLevelEnum.error,
-        type: MessageTypeEnum.global,
-        content:
-          "Vous ne pouvez pas ajouter une date déjà présente dans les dates ajoutées.",
-      });
-      return true;
-    } else return false;
-  }
-
   export function appendAddedDate(date: DateAddedType): void {
-    if (isDateExistInAddedDate(new Date(date.date))) return;
-
+    if (CalendarUtils.isDateExistInAddedDate(new Date(date.date))) return;
     setCurrentCalendar((prev) => {
       if (prev == undefined) return prev;
       const data = { ...prev };

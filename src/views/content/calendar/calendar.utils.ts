@@ -7,6 +7,9 @@ import {
   TripDirectionEntity,
   TripDirectionEnum,
 } from "../../../_entities/trip-direction.entity";
+import { addNewUserInformation } from "../../../signaux";
+import { MessageLevelEnum, MessageTypeEnum } from "../../../type";
+import { currentCalendar } from "./template/Calendar";
 
 export namespace CalendarUtils {
   export function getMonthName(date: Date): string {
@@ -176,5 +179,23 @@ export namespace CalendarUtils {
     const rule = calendar.rules.find((item) => item.day == day);
     if (!rule?.tripTypeId) return TripDirectionEnum.none;
     return TripDirectionEntity.findTripById(rule.tripTypeId);
+  }
+
+  export function isDateExistInAddedDate(date: Date) {
+    const sameDate =
+      currentCalendar()?.added.filter((item) =>
+        CalendarUtils.compareDate(new Date(item.date as number), date)
+      ) ?? [];
+
+    if (sameDate.length > 0) {
+      addNewUserInformation({
+        displayed: true,
+        level: MessageLevelEnum.error,
+        type: MessageTypeEnum.global,
+        content:
+          "Vous ne pouvez pas ajouter une date déjà présente dans les dates ajoutées.",
+      });
+      return true;
+    } else return false;
   }
 }
