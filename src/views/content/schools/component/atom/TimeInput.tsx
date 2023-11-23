@@ -1,6 +1,9 @@
+import "./TimeInput.css";
+
 interface TimeInputProps {
   value: string;
   onInput: (value: string) => void;
+  disable?: boolean;
 }
 
 export default function (props: TimeInputProps) {
@@ -17,11 +20,12 @@ export default function (props: TimeInputProps) {
 
   return (
     <input
-      value={props.value}
-      name="start-time"
       type="time"
+      class="time-input"
+      value={props.value}
       onFocusOut={onInput}
       onKeyPress={onInput}
+      disabled={props.disable ? props.disable : false}
     />
   );
 }
