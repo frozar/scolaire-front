@@ -30,7 +30,7 @@ export default function () {
     // TODO: Uncheck all radios
   }
 
-  async function handlerOnClickSoumettre() {
+  async function handlerOnClick() {
     switch (importCsvType()) {
       case CsvTypeEnum.schools:
         const diff = await CsvUtils.getImportSchoolsCsvDiff(
@@ -55,7 +55,6 @@ export default function () {
 
   function changeCsvType(csvType: string) {
     setImportCsvType(csvType as CsvTypeEnum);
-    console.log("csvType selected =>", importCsvType());
   }
 
   return (
@@ -96,7 +95,7 @@ export default function () {
         />
         <Button
           ref={setRefButton}
-          onClick={handlerOnClickSoumettre}
+          onClick={handlerOnClick}
           label={"Valider"}
           variant="primary"
           isDisabled={importCsvType() == undefined}

@@ -1,5 +1,7 @@
 import { createEffect, createSignal } from "solid-js";
+import Button from "../../../../../component/atom/Button";
 import { SchoolsCsvDiffType } from "../../../../../utils/csv.utils";
+import { DialogToDisplayEnum, setDialogToDisplay } from "../organism/Dialogs";
 import DiffsCollapsible from "./DiffsCollapsible";
 import { schoolsDiff } from "./importSelection";
 
@@ -20,6 +22,15 @@ export default function () {
       modified: [],
       deleted: [],
     });
+
+  const [refButton, setRefButton] = createSignal<
+    HTMLButtonElement | undefined
+  >();
+
+  createEffect(() => {
+    refButton()?.focus();
+  });
+
   function schoolsDiffFiltered(): SchoolsCsvDiffType {
     return {
       added: schoolsDiff()?.added.filter(
@@ -34,6 +45,17 @@ export default function () {
           !uncheckedValues()[SchoolDiffEnum.deleted].includes(deleted)
       ) as number[],
     };
+  }
+
+  function noElementChecked() {
+    if (
+      schoolsDiffFiltered().added.length == 0 &&
+      schoolsDiffFiltered().modified.length == 0 &&
+      schoolsDiffFiltered().deleted.length == 0
+    ) {
+      return true;
+    }
+    return false;
   }
 
   createEffect(() =>
@@ -61,6 +83,31 @@ export default function () {
         schools={schoolsDiff()?.deleted as number[]}
         diffType={SchoolDiffEnum.deleted}
       />
+      {/* TODO: Refactor footer dialog content */}
+      <div class="import-dialog-buttons">
+        <Button
+          onClick={closeDialog}
+          label={"Annuler"}
+          variant="danger"
+          isDisabled={false}
+        />
+        <Button
+          ref={setRefButton}
+          onClick={handlerOnClick}
+          label={"Valider"}
+          variant="primary"
+          isDisabled={noElementChecked()}
+        />
+      </div>
     </>
   );
+}
+
+function closeDialog() {
+  setDialogToDisplay(DialogToDisplayEnum.none);
+  // ! Signales to set to default ?
+}
+
+function handlerOnClick() {
+  console.log("TODO IMPORT");
 }
