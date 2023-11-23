@@ -94,7 +94,7 @@ export namespace CalendarManager {
     currentDate: DateAddedType,
     newDate: DateAddedType
   ): void {
-    if (isDateExistInAddedDate(new Date(newDate.date))) return;
+    if (CalendarUtils.isDateExistInAddedDate(new Date(newDate.date))) return;
 
     const indexFirst =
       currentCalendar()?.added.findIndex(
