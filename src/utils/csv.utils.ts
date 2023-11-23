@@ -16,8 +16,17 @@ import {
   addNewUserInformation,
 } from "../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
-import { setSchools } from "../views/content/map/component/organism/SchoolPoints";
+import {
+  getSchools,
+  setSchools,
+} from "../views/content/map/component/organism/SchoolPoints";
 import { setStops } from "../views/content/map/component/organism/StopPoints";
+
+type SchoolsCsvDiffType = {
+  added: string[]; // schoolNames
+  modified: number[]; // ids
+  deleted: number[]; // ids
+};
 
 export namespace CsvUtils {
   export async function importCsvFile(file: File): Promise<boolean> {
@@ -50,6 +59,45 @@ export namespace CsvUtils {
       addNewGlobalWarningInformation("Erreur de lecture du fichier");
       return false;
     }
+  }
+
+  export async function getImportSchoolsCsvDiff(
+    file: File
+  ): Promise<SchoolsCsvDiffType> {
+    const parsedFileData = (await parsedCsvFileToSchoolData(file)) as Pick<
+      SchoolDBType,
+      "name" | "location"
+    >[];
+
+    // TODO: Replace names and ids with complete object ?
+    const diff: SchoolsCsvDiffType = { added: [], modified: [], deleted: [] };
+
+    // Check if modified or added
+    loop: for (const data of parsedFileData) {
+      for (const school of getSchools()) {
+        // Case modified
+        if (data.name == school.name) {
+          if (
+            data.location.data.lat != school.lat ||
+            data.location.data.lng != school.lon
+          ) {
+            diff.modified.push(school.id);
+            continue loop;
+          }
+        }
+      }
+
+      // Case added
+      diff.added.push(data.name);
+    }
+
+    // Check if deleted
+    for (const school of getSchools()) {
+      if (!parsedFileData.some((data) => data.name == school.name)) {
+        diff.deleted.push(school.id);
+      }
+    }
+    return diff;
   }
 
   export function fileExtensionIsCsv(fileName: string) {
