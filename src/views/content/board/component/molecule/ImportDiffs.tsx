@@ -1,4 +1,5 @@
 import { createEffect, createSignal } from "solid-js";
+import { SchoolDBType } from "../../../../../_entities/school.entity";
 import Button from "../../../../../component/atom/Button";
 import { SchoolsCsvDiffType } from "../../../../../utils/csv.utils";
 import { DialogToDisplayEnum, setDialogToDisplay } from "../organism/Dialogs";
@@ -105,9 +106,17 @@ export default function () {
 
 function closeDialog() {
   setDialogToDisplay(DialogToDisplayEnum.none);
-  // ! Signales to set to default ?
+  // ! Signals to set to default ?
 }
 
+type importSchoolsDBType = {
+  schools_to_add: Pick<SchoolDBType, "name" | "location">;
+  schools_to_modify: Pick<SchoolDBType, "name" | "location">;
+  schools_to_delete: number[];
+};
+
 function handlerOnClick() {
+  // ! soit récupérer le parsedData déjà existant (signal)
+  // ! soit le créer de nouveau (SchoolEntity.dataToDb)
   console.log("TODO IMPORT");
 }
