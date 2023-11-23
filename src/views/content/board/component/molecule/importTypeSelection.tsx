@@ -13,7 +13,6 @@ export enum CsvTypeEnum {
 
 export const [csvToImport, setCsvToImport] = createSignal<File>();
 
-// TODO: Move this file into organism folder NON ?
 export default function () {
   const [importCsvType, setImportCsvType] = createSignal<CsvTypeEnum>();
 
@@ -59,7 +58,6 @@ export default function () {
   }
 
   return (
-    // TODO: Use <switch> to display type selection or diff NON ?
     <>
       <div id="import-dialog-title">Séléctionner le type d'import :</div>
 
