@@ -16,7 +16,10 @@ import {
   addNewUserInformation,
 } from "../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
-import { setSchools } from "../views/content/map/component/organism/SchoolPoints";
+import {
+  getSchools,
+  setSchools,
+} from "../views/content/map/component/organism/SchoolPoints";
 import { setStops } from "../views/content/map/component/organism/StopPoints";
 
 type SchoolsCsvDiffType = {
@@ -61,10 +64,40 @@ export namespace CsvUtils {
   export async function getImportSchoolsCsvDiff(
     file: File
   ): Promise<SchoolsCsvDiffType> {
-    const parsedFileData = await parsedCsvFileDataBis(file);
+    // ! Use return; instead of typecast ?
+    const parsedFileData = (await parsedCsvFileDataBis(file)) as Pick<
+      SchoolDBType,
+      "name" | "location"
+    >[];
     console.log("parsedFileData", parsedFileData);
+
+    // ! Passer directement les data necessaires pour le traitement ?
+    const diff: SchoolsCsvDiffType = { added: [], modified: [], deleted: [] };
+
+    // ! Check if modified or added
+    loop: for (const data of parsedFileData) {
+      for (const school of getSchools()) {
+        // ! Case modified
+        console.log("data.name |", data.name + "|");
+        console.log("school.name |", school.name + "|");
+
+        if (data.name == school.name) {
+          if (
+            data.location.data.lat != school.lat ||
+            data.location.data.lng != school.lon
+          ) {
+            diff.modified.push(school.id);
+            break loop;
+          }
+        }
+      }
+
+      // ! Case added
+      diff.added.push(data.name);
+    }
+    // ! Check if deleted
     // TODO: Use real values
-    return { added: [], modified: [], deleted: [] };
+    return diff;
   }
 
   export function fileExtensionIsCsv(fileName: string) {

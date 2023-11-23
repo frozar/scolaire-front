@@ -33,7 +33,10 @@ export default function (props: { setIsDisplayed: Setter<boolean> }) {
       case CsvTypeEnum.schools:
         console.log("file =>", csvToImport());
         // ! Faire afficher la page de diffs
-        CsvUtils.getImportSchoolsCsvDiff(csvToImport() as File);
+        const diff = await CsvUtils.getImportSchoolsCsvDiff(
+          csvToImport() as File
+        );
+        console.log("diff =>", diff);
         break;
 
       case CsvTypeEnum.stops:
@@ -58,7 +61,7 @@ export default function (props: { setIsDisplayed: Setter<boolean> }) {
     // ! soit sélection du type de fichier
     // ! soit diffs !
     <>
-      <div id="import-dialog-title">Séléctionner le type de fichier:</div>
+      <div id="import-dialog-title">Séléctionner le type d'import :</div>
 
       <LabeledInputRadio
         id="schools"
