@@ -1,5 +1,6 @@
 import { createEffect, createSignal } from "solid-js";
 import CalendarIcon from "../../icons/CalendarIcon";
+import { CalendarUtils } from "../../views/content/calendar/calendar.utils";
 import "./DateInput.css";
 
 interface DateInputProps {
@@ -18,7 +19,7 @@ export function DateInput(props: DateInputProps) {
 
   createEffect(() => {
     if (props.defaultValue)
-      setDefaultDate(props.defaultValue.toISOString().substring(0, 10));
+      setDefaultDate(CalendarUtils.dateToString(props.defaultValue));
     else setDefaultDate(label);
   });
 
@@ -29,7 +30,7 @@ export function DateInput(props: DateInputProps) {
   function onChange() {
     const date = new Date(dateInputRef()?.value as string);
     props.onChange(date);
-    setDefaultDate(date.toISOString().substring(0, 10));
+    setDefaultDate(CalendarUtils.dateToString(date));
   }
 
   return (
@@ -44,10 +45,10 @@ export function DateInput(props: DateInputProps) {
       <input
         onChange={onChange}
         type="date"
-        min={props.minDate ? props.minDate.toISOString().substring(0, 10) : ""}
-        max={props.maxDate ? props.maxDate.toISOString().substring(0, 10) : ""}
+        min={props.minDate ? CalendarUtils.dateToString(props.minDate) : ""}
+        max={props.maxDate ? CalendarUtils.dateToString(props.maxDate) : ""}
         ref={setDateInputRef}
-        value={props.defaultValue?.toISOString().substring(0, 10)}
+        value={CalendarUtils.dateToString(props.defaultValue)}
         class="input-date-btn-hidden-input"
         disabled={props.disabled ?? false}
       />

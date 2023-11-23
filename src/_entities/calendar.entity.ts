@@ -5,39 +5,9 @@ export namespace CalendarEntity {
     return {
       id: dbCalendar.id,
       name: dbCalendar.name,
-      rules: dbCalendar.rules.map((item) => {
-        return {
-          day: item.day,
-          tripTypeId: item.trip_type_id,
-        };
-      }),
-      added: CalendarUtils.stringListToDateTimeList(dbCalendar.date_added),
-      deleted: CalendarUtils.stringListToDateTimeList(dbCalendar.date_deleted),
+      rules: buildRules(dbCalendar.rules),
+      added: buildAddedDate(dbCalendar.date_added),
       calendarPeriodId: dbCalendar.calendar_period_id,
-    };
-  }
-
-  export function buildCalendarPeriod(
-    dbCalendarPeriod: CalendarPeriodDBType
-  ): CalendarPeriodType {
-    return {
-      id: dbCalendarPeriod.id,
-      name: dbCalendarPeriod.name,
-      endDate: new Date(dbCalendarPeriod.end_date),
-      startDate: new Date(dbCalendarPeriod.start_date),
-      publicHolidays: dbCalendarPeriod.public_holidays.map((item) => {
-        return {
-          name: item.name,
-          date: new Date(item.date),
-        };
-      }),
-      vacationsPeriod: dbCalendarPeriod.vacations_period.map((item) => {
-        return {
-          name: item.name,
-          start: new Date(item.start),
-          end: new Date(item.end),
-        };
-      }),
     };
   }
 
@@ -52,9 +22,30 @@ export namespace CalendarEntity {
           trip_type_id: item.tripTypeId,
         };
       }),
-      date_added: CalendarUtils.dateTimeListToStringList(calendar.added),
-      date_deleted: CalendarUtils.dateTimeListToStringList(calendar.deleted),
+      date_added: calendar.added.map((item) => {
+        const bufferDate = new Date(item.date);
+        return {
+          date: `${bufferDate.getFullYear()}-${
+            bufferDate.getMonth() + 1
+          }-${bufferDate.getDate()}`,
+          reference: item.reference,
+        };
+      }),
+
       calendar_period_id: calendar.calendarPeriodId,
+    };
+  }
+
+  export function buildCalendarPeriod(
+    dbCalendarPeriod: CalendarPeriodDBType
+  ): CalendarPeriodType {
+    return {
+      id: dbCalendarPeriod.id,
+      name: dbCalendarPeriod.name,
+      endDate: new Date(dbCalendarPeriod.end_date),
+      startDate: new Date(dbCalendarPeriod.start_date),
+      publicHolidays: buildPublicHolidays(dbCalendarPeriod.public_holidays),
+      vacationsPeriod: buildVacationsPeriod(dbCalendarPeriod.vacations_period),
     };
   }
 
@@ -64,22 +55,63 @@ export namespace CalendarEntity {
     return {
       id: calendarPeriod.id,
       name: calendarPeriod.name,
-      start_date: calendarPeriod.startDate.toISOString().substring(0, 10),
-      end_date: calendarPeriod.endDate.toISOString().substring(0, 10),
+      start_date: CalendarUtils.dateToString(calendarPeriod.startDate),
+      end_date: CalendarUtils.dateToString(calendarPeriod.endDate),
       public_holidays: calendarPeriod.publicHolidays.map((item) => {
         return {
           name: item.name,
-          date: item.date.toISOString().substring(0, 10),
+          date: CalendarUtils.dateToString(item.date),
         };
       }),
       vacations_period: calendarPeriod.vacationsPeriod.map((item) => {
         return {
           name: item.name,
-          start: item.start.toISOString().substring(0, 10),
-          end: item.end.toISOString().substring(0, 10),
+          start: CalendarUtils.dateToString(item.start),
+          end: CalendarUtils.dateToString(item.end),
         };
       }),
     };
+  }
+
+  function buildAddedDate(addedDates: DateAddedDBType[]): DateAddedType[] {
+    return addedDates.map((item) => {
+      return {
+        date: CalendarUtils.stringToDate(item.date).getTime(),
+        reference: item.reference,
+      };
+    });
+  }
+
+  function buildRules(rules: RulesDBType[]): RulesType[] {
+    return rules.map((item) => {
+      return {
+        day: item.day,
+        tripTypeId: item.trip_type_id,
+      };
+    });
+  }
+
+  function buildPublicHolidays(
+    publicHolidays: PublicHolidayDBType[]
+  ): PublicHolidayType[] {
+    return publicHolidays.map((item) => {
+      return {
+        name: item.name,
+        date: new Date(item.date),
+      };
+    });
+  }
+
+  function buildVacationsPeriod(
+    vacationsPeriod: VacationPeriodDBType[]
+  ): VacationPeriodType[] {
+    return vacationsPeriod.map((item) => {
+      return {
+        name: item.name,
+        start: new Date(item.start),
+        end: new Date(item.end),
+      };
+    });
   }
 }
 
@@ -103,21 +135,29 @@ export type RulesDBType = {
   day: CalendarDayEnum;
 };
 
+export type DateAddedType = {
+  date: number;
+  reference: CalendarDayEnum;
+};
+
 export type CalendarType = {
   id: number;
   name: string;
   rules: RulesType[];
-  added: number[];
-  deleted: number[];
+  added: DateAddedType[];
   calendarPeriodId?: number;
+};
+
+export type DateAddedDBType = {
+  date: string;
+  reference: CalendarDayEnum;
 };
 
 export type CalendarDBType = {
   id: number;
   name: string;
   rules: RulesDBType[];
-  date_added: string[];
-  date_deleted: string[];
+  date_added: DateAddedDBType[];
   calendar_period_id?: number;
 };
 

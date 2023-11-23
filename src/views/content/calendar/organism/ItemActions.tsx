@@ -6,6 +6,7 @@ import TrashIcon from "../../../../icons/TrashIcon";
 import ButtonIcon from "../../board/component/molecule/ButtonIcon";
 
 export enum actionEnum {
+  none,
   append,
   edit,
   isEditing,

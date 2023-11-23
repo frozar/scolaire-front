@@ -7,6 +7,9 @@ import {
   TripDirectionEntity,
   TripDirectionEnum,
 } from "../../../_entities/trip-direction.entity";
+import { addNewUserInformation } from "../../../signaux";
+import { MessageLevelEnum, MessageTypeEnum } from "../../../type";
+import { currentCalendar } from "./template/Calendar";
 
 export namespace CalendarUtils {
   export function getMonthName(date: Date): string {
@@ -101,36 +104,24 @@ export namespace CalendarUtils {
     return toLower ? name.toLowerCase() : name;
   }
 
-  export function stringListToDateTimeList(dates: string[]): number[] {
-    const output: number[] = [];
-    dates.forEach((date) => {
-      output.push(stringToDate(date).getTime());
-    });
-    return output;
-  }
-
-  export function dateTimeListToStringList(dates: number[]): string[] {
-    const output: string[] = [];
-    dates.forEach((date) => {
-      const bufferDate = new Date(date);
-      output.push(
-        `${bufferDate.getFullYear()}-${
-          bufferDate.getMonth() + 1
-        }-${bufferDate.getDate()}`
-      );
-    });
-    return output;
-  }
-
   export function stringToDate(dateString: string): Date {
     const [year, month, day] = dateString.split("-");
     return new Date(Number(year), Number(month) - 1, Number(day));
   }
 
+  export function dateToString(date: Date | undefined): string {
+    if (!date) return "";
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    return `${date.getFullYear()}-${month >= 10 ? month : "0" + month}-${
+      day >= 10 ? day : "0" + day
+    }`;
+  }
+
   export function isActiveDay(date: Date, calendar: CalendarType): boolean {
-    if (calendar.added.includes(date.getTime())) return true;
+    if (calendar.added.map((item) => item.date).includes(date.getTime()))
+      return true;
     if (!CalendarUtils.isARulesDate(date, calendar)) return false;
-    if (calendar.deleted.includes(date.getTime())) return false;
 
     return true;
   }
@@ -151,12 +142,15 @@ export namespace CalendarUtils {
   }
 
   export function isAnAddedDate(date: Date, calendar: CalendarType): boolean {
-    if (calendar.added.includes(date.getTime())) return true;
-    return false;
-  }
-
-  export function isADeletedDate(date: Date, calendar: CalendarType): boolean {
-    return calendar.deleted.includes(date.getTime());
+    return calendar.added.some((item) => {
+      const addedDate = new Date(item.date);
+      if (
+        addedDate.getFullYear() == date.getFullYear() &&
+        addedDate.getMonth() == date.getMonth() &&
+        addedDate.getDate() == date.getDate()
+      )
+        return true;
+    });
   }
 
   export function isARulesDate(date: Date, calendar: CalendarType): boolean {
@@ -185,5 +179,23 @@ export namespace CalendarUtils {
     const rule = calendar.rules.find((item) => item.day == day);
     if (!rule?.tripTypeId) return TripDirectionEnum.none;
     return TripDirectionEntity.findTripById(rule.tripTypeId);
+  }
+
+  export function isDateExistInAddedDate(date: Date) {
+    const sameDate =
+      currentCalendar()?.added.filter((item) =>
+        CalendarUtils.compareDate(new Date(item.date as number), date)
+      ) ?? [];
+
+    if (sameDate.length > 0) {
+      addNewUserInformation({
+        displayed: true,
+        level: MessageLevelEnum.error,
+        type: MessageTypeEnum.global,
+        content:
+          "Vous ne pouvez pas ajouter une date déjà présente dans les dates ajoutées.",
+      });
+      return true;
+    } else return false;
   }
 }

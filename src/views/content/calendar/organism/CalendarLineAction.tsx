@@ -10,7 +10,7 @@ interface CalendarLineActionProps {
   actionName: string;
   month: Date;
   calendar: CalendarType;
-  onClickCell: (cellDate: Date) => void;
+  onClickCell?: (cellDate: Date) => void;
   action?: CalendarActionsEnum;
   calendarPeriod?: CalendarPeriodType;
   coloredCell?: boolean;

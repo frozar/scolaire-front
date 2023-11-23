@@ -14,6 +14,7 @@ import {
   calendarsPeriod,
   setCurrentCalendar,
 } from "../template/Calendar";
+import { CalendarEditionAddedDateWrapper } from "./CalendarEditionAddedDateWrapper";
 import "./CalendarEdtion.css";
 import { CalendarHeader } from "./CalendarHeader";
 import { CalendarLineAction } from "./CalendarLineAction";
@@ -35,14 +36,6 @@ export function CalendarEdition(props: CalendarEditionProps) {
     );
   });
 
-  function onClickCellAddDate(cellDate: Date) {
-    CalendarManager.toggleAddedDate(cellDate);
-  }
-
-  function onClickCellDeletedDate(cellDate: Date) {
-    CalendarManager.toggleDeletedDate(cellDate);
-  }
-
   async function updateCalendar() {
     CalendarManager.updateCalendar(
       await CalendarService.updateCalendar(props.calendar)
@@ -55,6 +48,18 @@ export function CalendarEdition(props: CalendarEditionProps) {
 
   function cancelEdition() {
     setCurrentCalendar(undefined);
+  }
+
+  function LabeledPeriodSelector() {
+    return (
+      <div class="inline-grid my-2">
+        <label class="text-xl">Calendrier scolaire</label>
+        <CalendarPeriodSelector
+          onChange={onChangeCalendarPeriodSelector}
+          defaultValue={props.calendar.calendarPeriodId}
+        />
+      </div>
+    );
   }
 
   return (
@@ -82,17 +87,6 @@ export function CalendarEdition(props: CalendarEditionProps) {
             action={CalendarActionsEnum.add}
             calendar={props.calendar}
             month={props.currentMonth}
-            onClickCell={onClickCellAddDate}
-          />
-        </div>
-
-        <div class="calendar-cells">
-          <CalendarLineAction
-            actionName="Retiré"
-            action={CalendarActionsEnum.remove}
-            calendar={props.calendar}
-            month={props.currentMonth}
-            onClickCell={onClickCellDeletedDate}
           />
         </div>
 
@@ -114,18 +108,18 @@ export function CalendarEdition(props: CalendarEditionProps) {
       <div class="calendar-edition-rules">
         <div>
           <CalendarSectionTitle title="Paramètrage calendrier" />
-          <div class="inline-grid  my-5">
-            <label class="text-xl">Calendrier scolaire</label>
-            <CalendarPeriodSelector
-              onChange={onChangeCalendarPeriodSelector}
-              defaultValue={props.calendar.calendarPeriodId}
-            />
+          <LabeledPeriodSelector />
+        </div>
+
+        <div class="flex gap-10">
+          <div>
+            <CalendarRules calendar={props.calendar} />
           </div>
-          <CalendarRules calendar={props.calendar} />
+          <CalendarEditionAddedDateWrapper dates={props.calendar.added} />
         </div>
       </div>
 
-      <div class=" calendar-edition-footer-actions">
+      <div class="calendar-edition-footer-actions mt-3">
         <Button
           onClick={cancelEdition}
           label="Annuler"
