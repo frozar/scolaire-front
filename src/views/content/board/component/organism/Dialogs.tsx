@@ -18,7 +18,6 @@ export const [dialogToDisplay, setDialogToDisplay] =
 export default function () {
   return (
     <>
-      // TODO: Change from show to switch ?
       <Switch>
         <Match when={dialogToDisplay() == DialogToDisplayEnum.typeSelection}>
           <Dialog>
@@ -32,22 +31,6 @@ export default function () {
           </Dialog>
         </Match>
       </Switch>
-      {/* <Show when={isImportDialogDisplayed()}>
-        <Dialog
-          // isDisplayed={isImportDialogDisplayed}
-          setIsDisplayed={setIsImportDialogDisplayed}
-        >
-          <ImportTypeSelection setIsDisplayed={setIsImportDialogDisplayed} />
-        </Dialog>
-      </Show> */}
-      {/* <Show when={isImportDialogDisplayed()}>
-        <Dialog
-          // isDisplayed={isImportDialogDisplayed}
-          setIsDisplayed={setIsImportDialogDisplayed}
-        >
-          <ImportDialogContent setIsDisplayed={setIsImportDialogDisplayed} />
-        </Dialog>
-      </Show> */}
     </>
   );
 }

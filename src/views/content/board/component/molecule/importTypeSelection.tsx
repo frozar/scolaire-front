@@ -38,7 +38,8 @@ export default function () {
           csvToImport() as File
         );
         console.log("diff =>", diff);
-        break;
+        setDialogToDisplay(DialogToDisplayEnum.diff);
+        return;
 
       case CsvTypeEnum.stops:
         console.log("todo stops");
