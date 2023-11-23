@@ -2,7 +2,7 @@ import { Setter, onCleanup, onMount } from "solid-js";
 import DropZoneLogo from "../icons/DropZoneLogo";
 import { disableSpinningWheel, enableSpinningWheel } from "../signaux";
 import { FileUtils } from "../utils/file.utils";
-import { setCsvToImport } from "../views/content/board/component/molecule/importDialogContent";
+import { setCsvToImport } from "../views/content/board/component/molecule/importTypeSelection";
 import { setIsImportDialogDisplayed } from "../views/content/board/component/organism/Dialogs";
 
 let mapDragDropDiv: HTMLDivElement;

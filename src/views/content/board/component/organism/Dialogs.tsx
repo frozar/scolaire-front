@@ -1,18 +1,31 @@
-import { createSignal } from "solid-js";
+import { Show, createSignal } from "solid-js";
 
 import Dialog from "../molecule/Dialog";
-import ImportDialogContent from "../molecule/importDialogContent";
+import ImportTypeSelection from "../molecule/importTypeSelection";
 
 export const [isImportDialogDisplayed, setIsImportDialogDisplayed] =
   createSignal<boolean>(false);
 
 export default function () {
   return (
-    <Dialog
-      isDisplayed={isImportDialogDisplayed}
-      setIsDisplayed={setIsImportDialogDisplayed}
-    >
-      <ImportDialogContent setIsDisplayed={setIsImportDialogDisplayed} />
-    </Dialog>
+    <>
+      // TODO: Change from show to switch ?
+      <Show when={isImportDialogDisplayed()}>
+        <Dialog
+          // isDisplayed={isImportDialogDisplayed}
+          setIsDisplayed={setIsImportDialogDisplayed}
+        >
+          <ImportTypeSelection setIsDisplayed={setIsImportDialogDisplayed} />
+        </Dialog>
+      </Show>
+      {/* <Show when={isImportDialogDisplayed()}>
+        <Dialog
+          // isDisplayed={isImportDialogDisplayed}
+          setIsDisplayed={setIsImportDialogDisplayed}
+        >
+          <ImportDialogContent setIsDisplayed={setIsImportDialogDisplayed} />
+        </Dialog>
+      </Show> */}
+    </>
   );
 }
