@@ -1,6 +1,7 @@
 import { For, Setter } from "solid-js";
 import CollapsibleElement from "../organism/CollapsibleElement";
 import { SchoolDiffEnum, UncheckedType } from "./ImportDiffs";
+
 // TODO: Rename file
 
 function onChangeSchoolCheckbox(
@@ -40,7 +41,7 @@ export default function (props: {
         <For each={props.toIterOn}>
           {(elem) => {
             return (
-              // TODO: Use as a component and refactor with other checkboxes
+              // TODO: Create a css for this file !
               <div class="input-checkbox">
                 <input
                   type="checkbox"
