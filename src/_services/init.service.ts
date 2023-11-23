@@ -19,7 +19,10 @@ import {
   setCalendarsPeriod,
 } from "../views/content/calendar/template/Calendar";
 import { setLines } from "../views/content/map/component/organism/BusLines";
-import { setSchools } from "../views/content/map/component/organism/SchoolPoints";
+import {
+  getSchools,
+  setSchools,
+} from "../views/content/map/component/organism/SchoolPoints";
 import { setStops } from "../views/content/map/component/organism/StopPoints";
 import { ServiceUtils } from "./_utils.service";
 
@@ -49,6 +52,8 @@ export namespace InitService {
       SchoolEntity.build(dbSchool)
     );
     setSchools(schools);
+
+    console.log(getSchools());
 
     const stops = dbInit.stops.map((dbStop: StopDBType) =>
       StopEntity.build(dbStop)
