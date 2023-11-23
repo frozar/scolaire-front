@@ -12,12 +12,12 @@ interface DateItemProps {
   date?: DateAddedType;
 }
 
-const initalDateAdded: DateAddedType = {
-  date: 0,
-  reference: CalendarDayEnum.monday,
-};
-
 export function DateItem(props: DateItemProps) {
+  const initalDateAdded: DateAddedType = {
+    date: 0,
+    reference: CalendarDayEnum.monday,
+  };
+
   const [bufferAdded, setBufferAdded] = createSignal<DateAddedType>();
   const [actionMode, setActionMode] = createSignal<actionEnum>();
 
