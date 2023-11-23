@@ -108,7 +108,11 @@ export namespace CalendarUtils {
 
   export function dateToString(date: Date | undefined): string {
     if (!date) return "";
-    return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    return `${date.getFullYear()}-${month >= 10 ? month : "0" + month}-${
+      day >= 10 ? day : "0" + day
+    }`;
   }
 
   export function isActiveDay(date: Date, calendar: CalendarType): boolean {
