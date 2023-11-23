@@ -5,43 +5,9 @@ export namespace CalendarEntity {
     return {
       id: dbCalendar.id,
       name: dbCalendar.name,
-      rules: dbCalendar.rules.map((item) => {
-        return {
-          day: item.day,
-          tripTypeId: item.trip_type_id,
-        };
-      }),
-      added: dbCalendar.date_added.map((item) => {
-        return {
-          date: CalendarUtils.stringToDate(item.date).getTime(),
-          reference: item.reference,
-        };
-      }),
+      rules: buildRules(dbCalendar.rules),
+      added: buildAddedDate(dbCalendar.date_added),
       calendarPeriodId: dbCalendar.calendar_period_id,
-    };
-  }
-
-  export function buildCalendarPeriod(
-    dbCalendarPeriod: CalendarPeriodDBType
-  ): CalendarPeriodType {
-    return {
-      id: dbCalendarPeriod.id,
-      name: dbCalendarPeriod.name,
-      endDate: new Date(dbCalendarPeriod.end_date),
-      startDate: new Date(dbCalendarPeriod.start_date),
-      publicHolidays: dbCalendarPeriod.public_holidays.map((item) => {
-        return {
-          name: item.name,
-          date: new Date(item.date),
-        };
-      }),
-      vacationsPeriod: dbCalendarPeriod.vacations_period.map((item) => {
-        return {
-          name: item.name,
-          start: new Date(item.start),
-          end: new Date(item.end),
-        };
-      }),
     };
   }
 
@@ -70,6 +36,19 @@ export namespace CalendarEntity {
     };
   }
 
+  export function buildCalendarPeriod(
+    dbCalendarPeriod: CalendarPeriodDBType
+  ): CalendarPeriodType {
+    return {
+      id: dbCalendarPeriod.id,
+      name: dbCalendarPeriod.name,
+      endDate: new Date(dbCalendarPeriod.end_date),
+      startDate: new Date(dbCalendarPeriod.start_date),
+      publicHolidays: buildPublicHolidays(dbCalendarPeriod.public_holidays),
+      vacationsPeriod: buildVacationsPeriod(dbCalendarPeriod.vacations_period),
+    };
+  }
+
   export function formatCalendarPeriod(
     calendarPeriod: CalendarPeriodType
   ): CalendarPeriodDBType {
@@ -92,6 +71,47 @@ export namespace CalendarEntity {
         };
       }),
     };
+  }
+
+  function buildAddedDate(addedDates: DateAddedDBType[]): DateAddedType[] {
+    return addedDates.map((item) => {
+      return {
+        date: CalendarUtils.stringToDate(item.date).getTime(),
+        reference: item.reference,
+      };
+    });
+  }
+
+  function buildRules(rules: RulesDBType[]): RulesType[] {
+    return rules.map((item) => {
+      return {
+        day: item.day,
+        tripTypeId: item.trip_type_id,
+      };
+    });
+  }
+
+  function buildPublicHolidays(
+    publicHolidays: PublicHolidayDBType[]
+  ): PublicHolidayType[] {
+    return publicHolidays.map((item) => {
+      return {
+        name: item.name,
+        date: new Date(item.date),
+      };
+    });
+  }
+
+  function buildVacationsPeriod(
+    vacationsPeriod: VacationPeriodDBType[]
+  ): VacationPeriodType[] {
+    return vacationsPeriod.map((item) => {
+      return {
+        name: item.name,
+        start: new Date(item.start),
+        end: new Date(item.end),
+      };
+    });
   }
 }
 

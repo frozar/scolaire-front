@@ -101,27 +101,6 @@ export namespace CalendarUtils {
     return toLower ? name.toLowerCase() : name;
   }
 
-  export function stringListToDateTimeList(dates: string[]): number[] {
-    const output: number[] = [];
-    dates.forEach((date) => {
-      output.push(stringToDate(date).getTime());
-    });
-    return output;
-  }
-
-  export function dateTimeListToStringList(dates: number[]): string[] {
-    const output: string[] = [];
-    dates.forEach((date) => {
-      const bufferDate = new Date(date);
-      output.push(
-        `${bufferDate.getFullYear()}-${
-          bufferDate.getMonth() + 1
-        }-${bufferDate.getDate()}`
-      );
-    });
-    return output;
-  }
-
   export function stringToDate(dateString: string): Date {
     const [year, month, day] = dateString.split("-");
     return new Date(Number(year), Number(month) - 1, Number(day));
