@@ -1,14 +1,9 @@
-import {
-  JSXElement,
-  Setter,
-  children,
-  createEffect,
-  createSignal,
-} from "solid-js";
+import { JSXElement, children, createEffect, createSignal } from "solid-js";
 import { Transition } from "solid-transition-group";
 
 import ClickOutside from "../../../../../component/ClickOutside";
 import { assertIsNode } from "../../../../../utils";
+import { DialogToDisplayEnum, setDialogToDisplay } from "../organism/Dialogs";
 
 true && ClickOutside;
 
@@ -17,12 +12,13 @@ let refDialogBox: HTMLDivElement;
 export default function (props: {
   children: JSXElement;
   // isDisplayed: Accessor<boolean>;
-  setIsDisplayed: Setter<boolean>;
+  // setIsDisplayed: Setter<boolean>;
 }) {
   const child = children(() => props.children);
 
   function closeDialog() {
-    props.setIsDisplayed(false);
+    // props.setIsDisplayed(false);
+    setDialogToDisplay(DialogToDisplayEnum.none);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

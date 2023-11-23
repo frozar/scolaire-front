@@ -1,6 +1,7 @@
-import { Setter, createEffect, createSignal } from "solid-js";
+import { createEffect, createSignal } from "solid-js";
 import Button from "../../../../../component/atom/Button";
 import { CsvUtils } from "../../../../../utils/csv.utils";
+import { DialogToDisplayEnum, setDialogToDisplay } from "../organism/Dialogs";
 import LabeledInputRadio from "./LabeledInputRadio";
 import "./importTypeSelection.css";
 
@@ -12,8 +13,8 @@ export enum CsvTypeEnum {
 
 export const [csvToImport, setCsvToImport] = createSignal<File>();
 
-// TODO: Move this file into organism folder
-export default function (props: { setIsDisplayed: Setter<boolean> }) {
+// TODO: Move this file into organism folder NON ?
+export default function () {
   const [importCsvType, setImportCsvType] = createSignal<CsvTypeEnum>();
 
   const [refButton, setRefButton] = createSignal<
@@ -25,7 +26,8 @@ export default function (props: { setIsDisplayed: Setter<boolean> }) {
   });
 
   function closeDialog() {
-    props.setIsDisplayed(false);
+    // props.setIsDisplayed(false);
+    setDialogToDisplay(DialogToDisplayEnum.none);
     // TODO: Uncheck all radios
   }
 
@@ -56,7 +58,7 @@ export default function (props: { setIsDisplayed: Setter<boolean> }) {
   }
 
   return (
-    // TODO: Use <switch> to display type selection or diff
+    // TODO: Use <switch> to display type selection or diff NON ?
     <>
       <div id="import-dialog-title">Séléctionner le type d'import :</div>
 
