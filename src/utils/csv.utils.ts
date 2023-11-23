@@ -22,7 +22,8 @@ import {
 } from "../views/content/map/component/organism/SchoolPoints";
 import { setStops } from "../views/content/map/component/organism/StopPoints";
 
-type SchoolsCsvDiffType = {
+// ! Make a dict instead ?
+export type SchoolsCsvDiffType = {
   added: string[]; // schoolNames
   modified: number[]; // ids
   deleted: number[]; // ids

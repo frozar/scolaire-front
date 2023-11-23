@@ -1,6 +1,6 @@
 import { createEffect, createSignal } from "solid-js";
 import Button from "../../../../../component/atom/Button";
-import { CsvUtils } from "../../../../../utils/csv.utils";
+import { CsvUtils, SchoolsCsvDiffType } from "../../../../../utils/csv.utils";
 import { DialogToDisplayEnum, setDialogToDisplay } from "../organism/Dialogs";
 import LabeledInputRadio from "./LabeledInputRadio";
 import "./importTypeSelection.css";
@@ -12,6 +12,9 @@ export enum CsvTypeEnum {
 }
 
 export const [csvToImport, setCsvToImport] = createSignal<File>();
+
+// TODO: Move ?
+export const [schoolsDiff, setSchoolsDiff] = createSignal<SchoolsCsvDiffType>();
 
 export default function () {
   const [importCsvType, setImportCsvType] = createSignal<CsvTypeEnum>();
@@ -37,6 +40,8 @@ export default function () {
           csvToImport() as File
         );
         console.log("diff =>", diff);
+        // ! Use a derived signal of schoolsDiff to set dialogToDisplay to .diff !?
+        setSchoolsDiff(diff);
         setDialogToDisplay(DialogToDisplayEnum.diff);
         return;
 
