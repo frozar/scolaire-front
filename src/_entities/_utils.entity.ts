@@ -1,4 +1,5 @@
 import { getSchoolWhereClassId } from "../views/content/map/component/organism/SchoolPoints";
+import { HourFormat } from "./grade.entity";
 import { SchoolType } from "./school.entity";
 import { DBAssociatedStop, StopType } from "./stop.entity";
 
@@ -99,4 +100,20 @@ export type LocationPathDBType = {
     lng: number;
     lat: number;
   }[];
+};
+
+export type HoursDBType = {
+  id: number;
+  start_hour_coming: string;
+  end_hour_coming: string;
+  start_hour_going: string;
+  end_hour_going: string;
+};
+
+export type HoursType = {
+  id: number;
+  startHourComing: HourFormat;
+  endHourComing: HourFormat;
+  startHourGoing: HourFormat;
+  endHourGoing: HourFormat;
 };

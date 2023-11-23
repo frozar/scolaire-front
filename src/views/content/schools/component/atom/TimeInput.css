@@ -1,0 +1,3 @@
+.time-input {
+  @apply bg-transparent disabled:bg-transparent w-fit;
+}

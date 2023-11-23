@@ -5,6 +5,8 @@ import { getTrips } from "../views/content/map/component/organism/Trips";
 import {
   AssociatedStopType,
   EntityUtils,
+  HoursDBType,
+  HoursType,
   LocationDBType,
 } from "./_utils.entity";
 import { GradeDBType, GradeEntity, GradeType } from "./grade.entity";
@@ -37,6 +39,7 @@ export class SchoolEntity {
       leafletId: nextLeafletPointId(),
       selected: selected,
       setSelected: setSelected,
+      hours: this.buildHours(dbSchool.hours),
     };
   }
 
@@ -70,6 +73,21 @@ export class SchoolEntity {
 
     return lines;
   }
+
+  static buildHours(hours: HoursDBType | undefined): HoursType | undefined {
+    if (!hours) return undefined;
+    return {
+      id: hours.id,
+      startHourComing: GradeEntity.getHourFormatFromString(
+        hours.start_hour_coming
+      ),
+      startHourGoing: GradeEntity.getHourFormatFromString(
+        hours.start_hour_going
+      ),
+      endHourComing: GradeEntity.getHourFormatFromString(hours.end_hour_coming),
+      endHourGoing: GradeEntity.getHourFormatFromString(hours.end_hour_going),
+    };
+  }
 }
 
 export type SchoolType = {
@@ -83,6 +101,7 @@ export type SchoolType = {
   leafletId: number;
   selected: Accessor<boolean>;
   setSelected: Setter<boolean>;
+  hours?: HoursType;
 };
 
 export type SchoolDBType = {
@@ -90,6 +109,8 @@ export type SchoolDBType = {
   name: string;
   location: LocationDBType;
   grades: GradeDBType[];
+  hours_id?: number;
+  hours?: HoursDBType;
 };
 
 export type LeafletShoolType = SchoolType & {

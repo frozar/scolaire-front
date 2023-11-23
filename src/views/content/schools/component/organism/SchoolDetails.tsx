@@ -12,6 +12,7 @@ import SchoolDetailsHeader from "../molecule/SchoolDetailsHeader";
 import SchoolDetailsPanelsButton from "../molecule/SchoolDetailsPanelsButton";
 import GradeList from "./GradeList";
 import "./SchoolDetails.css";
+import { SchoolHoursSlots } from "./SchoolHoursSlots";
 import { TripsList } from "./TripsList";
 
 export const [schoolDetailsItem, setSchoolDetailsItem] =
@@ -39,6 +40,7 @@ export default function () {
   return (
     <section>
       <SchoolDetailsHeader school={schoolDetailsItem() as SchoolType} />
+      <SchoolHoursSlots school={schoolDetailsItem()} />
 
       <div class="panel-actions">
         <SchoolDetailsPanelsButton
@@ -53,6 +55,7 @@ export default function () {
           <ButtonIcon icon={<PlusIcon />} onClick={onClickAddGrade} />
         </Show>
       </div>
+
       <div class="board-content">
         <Switch>
           <Match when={onPanel() == Panels.grades}>
