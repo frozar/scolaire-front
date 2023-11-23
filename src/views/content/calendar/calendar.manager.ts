@@ -79,8 +79,6 @@ export namespace CalendarManager {
     });
   }
 
-  // * this function will push or remove added date onto the current calendar edition
-
   function isDateExistInAddedDate(date: Date) {
     const sameDate =
       currentCalendar()?.added.filter((item) =>
@@ -98,7 +96,8 @@ export namespace CalendarManager {
       return true;
     } else return false;
   }
-  export function appendDate(date: DateAddedType): void {
+
+  export function appendAddedDate(date: DateAddedType): void {
     if (isDateExistInAddedDate(new Date(date.date))) return;
 
     setCurrentCalendar((prev) => {
@@ -134,49 +133,13 @@ export namespace CalendarManager {
     });
   }
 
-  export function removeDate(date: Date): void {
+  export function removeAddedDate(date: Date): void {
     setCurrentCalendar((prev) => {
       if (prev == undefined) return prev;
       const data = { ...prev };
       data.added = data.added.filter((item) => item.date != date.getTime());
       return data;
     });
-  }
-
-  export function toggleAddedDate(date: Date) {
-    const indexof = currentCalendar()?.added.findIndex(
-      (item) => item.date == date.getTime()
-    );
-
-    setCurrentCalendar((prev) => {
-      if (prev == undefined) return prev;
-      const data = { ...prev };
-
-      if (indexof == -1)
-        data.added.push({
-          date: date.getTime(),
-          // TODO: maybe review
-          reference: CalendarDayEnum.monday,
-        });
-      else
-        data.added = data.added.filter((item) => item.date != date.getTime());
-
-      return data;
-    });
-  }
-
-  // * this function will push or remove deleted date onto the current calendar edition
-  export function toggleDeletedDate(date: Date) {
-    // const indexof = currentCalendar()?.deleted.findIndex(
-    //   (item) => item == date.getTime()
-    // );
-    // setCurrentCalendar((prev) => {
-    //   if (prev == undefined) return prev;
-    //   const data = { ...prev };
-    //   if (indexof == -1) data.deleted.push(date.getTime());
-    //   else data.deleted = data.deleted.filter((item) => item != date.getTime());
-    //   return data;
-    // });
   }
 
   export function linkToPeriodCalendar(calendarPeriod?: CalendarPeriodType) {

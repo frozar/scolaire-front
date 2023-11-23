@@ -36,14 +36,6 @@ export function CalendarEdition(props: CalendarEditionProps) {
     );
   });
 
-  function onClickCellAddDate(cellDate: Date) {
-    console.log("onClickCell", cellDate);
-  }
-
-  // function onClickCellDeletedDate(cellDate: Date) {
-  //   CalendarManager.toggleDeletedDate(cellDate);
-  // }
-
   async function updateCalendar() {
     CalendarManager.updateCalendar(
       await CalendarService.updateCalendar(props.calendar)
@@ -95,19 +87,8 @@ export function CalendarEdition(props: CalendarEditionProps) {
             action={CalendarActionsEnum.add}
             calendar={props.calendar}
             month={props.currentMonth}
-            onClickCell={onClickCellAddDate}
           />
         </div>
-
-        {/* <div class="calendar-cells">
-          <CalendarLineAction
-            actionName="Retiré"
-            action={CalendarActionsEnum.remove}
-            calendar={props.calendar}
-            month={props.currentMonth}
-            onClickCell={onClickCellDeletedDate}
-          />
-        </div> */}
 
         <div class="calendar-cells">
           <CalendarLineAction

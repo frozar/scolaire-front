@@ -54,11 +54,11 @@ export function DateItem(props: DateItemProps) {
   }
 
   function appendDate() {
-    CalendarManager.appendDate(bufferAdded() as DateAddedType);
+    CalendarManager.appendAddedDate(bufferAdded() as DateAddedType);
   }
 
   function removeDate() {
-    CalendarManager.removeDate(new Date(props.date?.date as number));
+    CalendarManager.removeAddedDate(new Date(props.date?.date as number));
   }
 
   function onChangeSelect(value: string) {

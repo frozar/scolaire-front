@@ -136,7 +136,6 @@ export namespace CalendarUtils {
     if (calendar.added.map((item) => item.date).includes(date.getTime()))
       return true;
     if (!CalendarUtils.isARulesDate(date, calendar)) return false;
-    // if (calendar.deleted.includes(date.getTime())) return false;
 
     return true;
   }
@@ -166,11 +165,6 @@ export namespace CalendarUtils {
       )
         return true;
     });
-  }
-
-  export function isADeletedDate(date: Date, calendar: CalendarType): boolean {
-    // return calendar.deleted.includes(date.getTime());
-    return false;
   }
 
   export function isARulesDate(date: Date, calendar: CalendarType): boolean {

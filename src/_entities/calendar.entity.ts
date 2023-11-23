@@ -66,7 +66,6 @@ export namespace CalendarEntity {
         };
       }),
 
-      // date_deleted: CalendarUtils.dateTimeListToStringList(calendar.deleted),
       calendar_period_id: calendar.calendarPeriodId,
     };
   }
@@ -126,7 +125,6 @@ export type CalendarType = {
   name: string;
   rules: RulesType[];
   added: DateAddedType[];
-  // deleted: number[];
   calendarPeriodId?: number;
 };
 
@@ -140,7 +138,6 @@ export type CalendarDBType = {
   name: string;
   rules: RulesDBType[];
   date_added: DateAddedDBType[];
-  // date_deleted: string[];
   calendar_period_id?: number;
 };
 
