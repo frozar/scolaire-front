@@ -74,8 +74,28 @@ export class SchoolEntity {
     return lines;
   }
 
-  static buildHours(hours: HoursDBType | undefined): HoursType | undefined {
-    if (!hours) return undefined;
+  static buildHours(hours: HoursDBType | undefined): HoursType {
+    if (!hours) {
+      return {
+        id: 0,
+        startHourGoing: {
+          hour: 7,
+          minutes: 0,
+        },
+        startHourComing: {
+          hour: 7,
+          minutes: 30,
+        },
+        endHourComing: {
+          hour: 7,
+          minutes: 0,
+        },
+        endHourGoing: {
+          hour: 7,
+          minutes: 30,
+        },
+      };
+    }
     return {
       id: hours.id,
       startHourComing: GradeEntity.getHourFormatFromString(
@@ -101,7 +121,7 @@ export type SchoolType = {
   leafletId: number;
   selected: Accessor<boolean>;
   setSelected: Setter<boolean>;
-  hours?: HoursType;
+  hours: HoursType;
 };
 
 export type SchoolDBType = {

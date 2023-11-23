@@ -8,6 +8,7 @@ interface TimeSchedulesInputProps {
 
   endSetter: Setter<HourFormat>;
   end: Accessor<HourFormat | undefined>;
+  disabled?: boolean;
 }
 
 export default function (props: TimeSchedulesInputProps) {
@@ -28,12 +29,14 @@ export default function (props: TimeSchedulesInputProps) {
       <TimeInput
         onInput={onInputStart}
         value={GradeEntity.getStringFromHourFormat(props.start() as HourFormat)}
+        disabled={props.disabled}
       />
 
       <p>à</p>
       <TimeInput
         onInput={onInputEnd}
         value={GradeEntity.getStringFromHourFormat(props.end() as HourFormat)}
+        disabled={props.disabled}
       />
     </div>
   );

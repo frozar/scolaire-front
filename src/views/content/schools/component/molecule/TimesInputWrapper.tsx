@@ -8,6 +8,7 @@ interface TimesInputWrapper {
   endSetter: Setter<HourFormat>;
   end: Accessor<HourFormat | undefined>;
   label: string;
+  disabled?: boolean;
 }
 
 export default function (props: TimesInputWrapper) {
@@ -19,6 +20,7 @@ export default function (props: TimesInputWrapper) {
         start={props.start}
         endSetter={props.endSetter}
         end={props.end}
+        disabled={props.disabled}
       />
     </div>
   );
