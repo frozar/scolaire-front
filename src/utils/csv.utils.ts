@@ -68,19 +68,14 @@ export namespace CsvUtils {
       SchoolDBType,
       "name" | "location"
     >[];
-    console.log("parsedFileData", parsedFileData);
 
-    // ! Passer directement les data necessaires pour le traitement?
-    // ! Pas forcement pcq checkbox à mettre en place
+    // TODO: Replace names and ids with complete object ?
     const diff: SchoolsCsvDiffType = { added: [], modified: [], deleted: [] };
 
     // Check if modified or added
     loop: for (const data of parsedFileData) {
       for (const school of getSchools()) {
         // Case modified
-        console.log("data.name |", data.name + "|");
-        console.log("school.name |", school.name + "|");
-
         if (data.name == school.name) {
           if (
             data.location.data.lat != school.lat ||

@@ -40,8 +40,7 @@ export default function (props: {
     const file = await FileUtils.checkFile(files);
     if (file) {
       disableSpinningWheel();
-      // ! Understand why type don't match
-      setCsvToImport(file);
+      setCsvToImport(() => file);
       setIsImportDialogDisplayed(true);
     } else {
       props.callbackFail ? props.callbackFail() : "";

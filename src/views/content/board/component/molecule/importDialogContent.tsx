@@ -12,6 +12,7 @@ export enum CsvTypeEnum {
 
 export const [csvToImport, setCsvToImport] = createSignal<File>();
 
+// TODO: Move this file into organism folder
 export default function (props: { setIsDisplayed: Setter<boolean> }) {
   const [importCsvType, setImportCsvType] = createSignal<CsvTypeEnum>();
 
@@ -31,8 +32,6 @@ export default function (props: { setIsDisplayed: Setter<boolean> }) {
   async function handlerOnClickSoumettre() {
     switch (importCsvType()) {
       case CsvTypeEnum.schools:
-        console.log("file =>", csvToImport());
-        // ! Faire afficher la page de diffs
         const diff = await CsvUtils.getImportSchoolsCsvDiff(
           csvToImport() as File
         );
@@ -57,9 +56,7 @@ export default function (props: { setIsDisplayed: Setter<boolean> }) {
   }
 
   return (
-    // ! Ici mettre un switch pour afficher
-    // ! soit sélection du type de fichier
-    // ! soit diffs !
+    // TODO: Use <switch> to display type selection or diff
     <>
       <div id="import-dialog-title">Séléctionner le type d'import :</div>
 
