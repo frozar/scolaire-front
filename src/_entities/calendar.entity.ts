@@ -55,19 +55,19 @@ export namespace CalendarEntity {
     return {
       id: calendarPeriod.id,
       name: calendarPeriod.name,
-      start_date: calendarPeriod.startDate.toISOString().substring(0, 10),
-      end_date: calendarPeriod.endDate.toISOString().substring(0, 10),
+      start_date: CalendarUtils.dateToString(calendarPeriod.startDate),
+      end_date: CalendarUtils.dateToString(calendarPeriod.endDate),
       public_holidays: calendarPeriod.publicHolidays.map((item) => {
         return {
           name: item.name,
-          date: item.date.toISOString().substring(0, 10),
+          date: CalendarUtils.dateToString(item.date),
         };
       }),
       vacations_period: calendarPeriod.vacationsPeriod.map((item) => {
         return {
           name: item.name,
-          start: item.start.toISOString().substring(0, 10),
-          end: item.end.toISOString().substring(0, 10),
+          start: CalendarUtils.dateToString(item.start),
+          end: CalendarUtils.dateToString(item.end),
         };
       }),
     };
