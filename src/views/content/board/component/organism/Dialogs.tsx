@@ -2,7 +2,7 @@ import { Match, Switch, createSignal } from "solid-js";
 
 import Dialog from "../molecule/Dialog";
 import ImportDiffs from "../molecule/ImportDiffs";
-import ImportTypeSelection from "../molecule/importTypeSelection";
+import ImportSelection from "../molecule/importSelection";
 
 export enum DialogToDisplayEnum {
   none,
@@ -19,7 +19,7 @@ export default function () {
       <Switch>
         <Match when={dialogToDisplay() == DialogToDisplayEnum.typeSelection}>
           <Dialog>
-            <ImportTypeSelection />
+            <ImportSelection />
           </Dialog>
         </Match>
 

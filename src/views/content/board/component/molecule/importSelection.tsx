@@ -3,7 +3,7 @@ import Button from "../../../../../component/atom/Button";
 import { CsvUtils, SchoolsCsvDiffType } from "../../../../../utils/csv.utils";
 import { DialogToDisplayEnum, setDialogToDisplay } from "../organism/Dialogs";
 import LabeledInputRadio from "./LabeledInputRadio";
-import "./importTypeSelection.css";
+import "./importSelection.css";
 
 export enum CsvTypeEnum {
   stops = "stops",
@@ -12,7 +12,6 @@ export enum CsvTypeEnum {
 }
 
 export const [csvToImport, setCsvToImport] = createSignal<File>();
-
 export const [schoolsDiff, setSchoolsDiff] = createSignal<SchoolsCsvDiffType>();
 
 export default function () {

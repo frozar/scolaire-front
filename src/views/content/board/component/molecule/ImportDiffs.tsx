@@ -1,7 +1,7 @@
 import { createEffect, createSignal } from "solid-js";
 import { SchoolsCsvDiffType } from "../../../../../utils/csv.utils";
 import DiffsCollapsible from "./DiffsCollapsible";
-import { schoolsDiff } from "./importTypeSelection";
+import { schoolsDiff } from "./importSelection";
 
 export enum SchoolDiffEnum {
   added = "added",
