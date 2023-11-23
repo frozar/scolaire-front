@@ -2,8 +2,11 @@ import { Setter, onCleanup, onMount } from "solid-js";
 import DropZoneLogo from "../icons/DropZoneLogo";
 import { disableSpinningWheel, enableSpinningWheel } from "../signaux";
 import { FileUtils } from "../utils/file.utils";
-import { setCsvToImport } from "../views/content/board/component/molecule/importDialogContent";
-import { setIsImportDialogDisplayed } from "../views/content/board/component/organism/Dialogs";
+import { setCsvToImport } from "../views/content/board/component/molecule/importTypeSelection";
+import {
+  DialogToDisplayEnum,
+  setDialogToDisplay,
+} from "../views/content/board/component/organism/Dialogs";
 
 let mapDragDropDiv: HTMLDivElement;
 export default function (props: {
@@ -41,7 +44,7 @@ export default function (props: {
     if (file) {
       disableSpinningWheel();
       setCsvToImport(() => file);
-      setIsImportDialogDisplayed(true);
+      setDialogToDisplay(DialogToDisplayEnum.typeSelection);
     } else {
       props.callbackFail ? props.callbackFail() : "";
       disableSpinningWheel();

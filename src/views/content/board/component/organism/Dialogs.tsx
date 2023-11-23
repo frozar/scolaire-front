@@ -1,18 +1,34 @@
-import { createSignal } from "solid-js";
+import { Match, Switch, createSignal } from "solid-js";
 
 import Dialog from "../molecule/Dialog";
-import ImportDialogContent from "../molecule/importDialogContent";
+import ImportDiffs from "../molecule/ImportDiffs";
+import ImportTypeSelection from "../molecule/importTypeSelection";
 
-export const [isImportDialogDisplayed, setIsImportDialogDisplayed] =
-  createSignal<boolean>(false);
+export enum DialogToDisplayEnum {
+  none,
+  typeSelection,
+  diff,
+}
+
+export const [dialogToDisplay, setDialogToDisplay] =
+  createSignal<DialogToDisplayEnum>(DialogToDisplayEnum.none);
 
 export default function () {
   return (
-    <Dialog
-      isDisplayed={isImportDialogDisplayed}
-      setIsDisplayed={setIsImportDialogDisplayed}
-    >
-      <ImportDialogContent setIsDisplayed={setIsImportDialogDisplayed} />
-    </Dialog>
+    <>
+      <Switch>
+        <Match when={dialogToDisplay() == DialogToDisplayEnum.typeSelection}>
+          <Dialog>
+            <ImportTypeSelection />
+          </Dialog>
+        </Match>
+
+        <Match when={dialogToDisplay() == DialogToDisplayEnum.diff}>
+          <Dialog>
+            <ImportDiffs />
+          </Dialog>
+        </Match>
+      </Switch>
+    </>
   );
 }
