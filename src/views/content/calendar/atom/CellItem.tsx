@@ -2,7 +2,6 @@ import { Match, Show, Switch, mergeProps } from "solid-js";
 import { TripDirectionEnum } from "../../../../_entities/trip-direction.entity";
 import { BusComingIcon } from "../../../../icons/BusComingIcon";
 import { BusGoingIcon } from "../../../../icons/BusGoingIcon";
-import { BusRoundTripIcon } from "../../../../icons/BusRoundTripIcon";
 import "./CellItem.css";
 
 interface CellItemProps {
@@ -46,10 +45,6 @@ export default function (props: CellItemProps) {
 
             <Match when={props.direction == TripDirectionEnum.going}>
               <BusGoingIcon />
-            </Match>
-
-            <Match when={props.direction == TripDirectionEnum.roundTrip}>
-              <BusRoundTripIcon />
             </Match>
           </Switch>
         </Show>
