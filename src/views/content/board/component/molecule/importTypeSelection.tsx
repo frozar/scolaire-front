@@ -14,6 +14,7 @@ export enum CsvTypeEnum {
 export const [csvToImport, setCsvToImport] = createSignal<File>();
 
 // TODO: Move ?
+// TODO: Transform to a dict ?
 export const [schoolsDiff, setSchoolsDiff] = createSignal<SchoolsCsvDiffType>();
 
 export default function () {

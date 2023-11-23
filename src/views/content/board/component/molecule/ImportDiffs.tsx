@@ -1,84 +1,60 @@
-import { For, Setter, createEffect, createSignal } from "solid-js";
+import { createEffect, createSignal } from "solid-js";
 import { SchoolsCsvDiffType } from "../../../../../utils/csv.utils";
-import CollapsibleElement from "../organism/CollapsibleElement";
+import DiffsTypeCollapsible from "./DiffsTypeCollapsible";
 import { schoolsDiff } from "./importTypeSelection";
 
-enum SchoolDiffEnum {
+export enum SchoolDiffEnum {
   added = "added",
   modified = "modified",
   deleted = "deleted",
 }
 
-// TODO: Clean => do not use switch cases here !
-function onChangeSchoolCheckbox(
-  event: Event & {
-    currentTarget: HTMLInputElement;
-    target: HTMLInputElement;
-  },
-  setter: Setter<SchoolsCsvDiffType>,
-  elem: string | number,
-  diffMode: SchoolDiffEnum
-) {
-  !event.currentTarget.checked
-    ? setter((prev) => {
-        const unchecked = { ...prev };
-        switch (diffMode) {
-          case SchoolDiffEnum.added:
-            unchecked.added.push(elem as string);
-            break;
-          case SchoolDiffEnum.modified:
-            unchecked.modified.push(elem as number);
-            break;
-          case SchoolDiffEnum.deleted:
-            unchecked.deleted.push(elem as number);
-            break;
-        }
-        return unchecked;
-      })
-    : setter((prev) => {
-        let unchecked: {
-          added: string[];
-          modified: number[];
-          deleted: number[];
-        };
-        switch (diffMode) {
-          case SchoolDiffEnum.added:
-            unchecked = {
-              ...prev,
-              added: prev.added.filter((added) => added != elem),
-            };
-            break;
-          case SchoolDiffEnum.modified:
-            unchecked = {
-              ...prev,
-              modified: prev.modified.filter((modified) => modified != elem),
-            };
+export type UncheckedType = { [diffType: string]: (number | string)[] };
 
-            break;
-          case SchoolDiffEnum.deleted:
-            unchecked = {
-              ...prev,
-              deleted: prev.deleted.filter((deleted) => deleted != elem),
-            };
-            break;
-        }
-        return unchecked;
-      });
-}
+// function onChangeSchoolCheckbox(
+//   event: Event & {
+//     currentTarget: HTMLInputElement;
+//     target: HTMLInputElement;
+//   },
+//   setter: Setter<UncheckedType>,
+//   elem: string | number,
+//   diffMode: SchoolDiffEnum
+// ) {
+//   if (event.currentTarget.checked) {
+//     setter((prev) => {
+//       const unchecked = { ...prev };
+//       unchecked[diffMode] = unchecked[diffMode].filter((elt) => elt != elem);
+//       return unchecked;
+//     });
+//   } else {
+//     setter((prev) => {
+//       const unchecked: UncheckedType = { ...prev };
+//       unchecked[diffMode].push(elem as string);
+//       return unchecked;
+//     });
+//   }
+// }
 
 export default function () {
-  const [uncheckedValues, setUncheckedValues] =
-    createSignal<SchoolsCsvDiffType>({
-      added: [],
-      modified: [],
-      deleted: [],
-    });
+  const [uncheckedValues, setUncheckedValues] = createSignal<UncheckedType>({
+    added: [],
+    modified: [],
+    deleted: [],
+  });
 
-  function schoolsDiffFiltered() {
+  function schoolsDiffFiltered(): SchoolsCsvDiffType {
     return {
       added: schoolsDiff()?.added.filter(
-        (added) => !uncheckedValues().added.includes(added)
-      ),
+        (added) => !uncheckedValues()[SchoolDiffEnum.added].includes(added)
+      ) as string[],
+      modified: schoolsDiff()?.modified.filter(
+        (modified) =>
+          !uncheckedValues()[SchoolDiffEnum.modified].includes(modified)
+      ) as number[],
+      deleted: schoolsDiff()?.deleted.filter(
+        (deleted) =>
+          !uncheckedValues()[SchoolDiffEnum.deleted].includes(deleted)
+      ) as number[],
     };
   }
 
@@ -89,7 +65,13 @@ export default function () {
   return (
     <>
       <div id="import-dialog-title">Modifications à appliquer :</div>
-      <CollapsibleElement title="Ajouter">
+      <DiffsTypeCollapsible
+        setter={setUncheckedValues}
+        title="Ajouter"
+        toIterOn={schoolsDiff()?.added as string[]}
+        diffType={SchoolDiffEnum.added}
+      />
+      {/* <CollapsibleElement title="Ajouter">
         <For each={schoolsDiff()?.added as string[]}>
           {(elem) => {
             return (
@@ -98,8 +80,6 @@ export default function () {
                 <input
                   type="checkbox"
                   checked={true}
-                  // id={props.id}
-                  // name={props.name}
                   value={elem}
                   onChange={(event) =>
                     onChangeSchoolCheckbox(
@@ -115,13 +95,69 @@ export default function () {
             );
           }}
         </For>
-      </CollapsibleElement>
-      <CollapsibleElement title="Modifier">
-        <div>TODO</div>
-      </CollapsibleElement>
-      <CollapsibleElement title="Supprimer">
-        <div>TODO</div>
-      </CollapsibleElement>
+      </CollapsibleElement> */}
+      <DiffsTypeCollapsible
+        setter={setUncheckedValues}
+        title="Modifier"
+        toIterOn={schoolsDiff()?.modified as number[]}
+        diffType={SchoolDiffEnum.modified}
+      />
+      {/* <CollapsibleElement title="Modifier">
+        <For each={schoolsDiff()?.modified as number[]}>
+          {(elem) => {
+            return (
+              // TODO: Use as a component and refactor with other checkboxes
+              <div class="input-checkbox">
+                <input
+                  type="checkbox"
+                  checked={true}
+                  value={elem}
+                  onChange={(event) =>
+                    onChangeSchoolCheckbox(
+                      event,
+                      setUncheckedValues,
+                      elem,
+                      SchoolDiffEnum.modified
+                    )
+                  }
+                />
+                <label>{SchoolUtils.getName(elem)}</label>
+              </div>
+            );
+          }}
+        </For>
+      </CollapsibleElement> */}
+      <DiffsTypeCollapsible
+        setter={setUncheckedValues}
+        title="Supprimer"
+        toIterOn={schoolsDiff()?.deleted as number[]}
+        diffType={SchoolDiffEnum.deleted}
+      />
+      {/* <CollapsibleElement title="Supprimer">
+        <For each={schoolsDiff()?.deleted as number[]}>
+          {(elem) => {
+            return (
+              // TODO: Use as a component and refactor with other checkboxes
+              <div class="input-checkbox">
+                <input
+                  type="checkbox"
+                  checked={true}
+                  value={elem}
+                  onChange={(event) =>
+                    onChangeSchoolCheckbox(
+                      event,
+                      setUncheckedValues,
+                      elem,
+                      SchoolDiffEnum.deleted
+                    )
+                  }
+                />
+                <label>{SchoolUtils.getName(elem)}</label>
+              </div>
+            );
+          }}
+        </For>
+      </CollapsibleElement> */}
     </>
   );
 }
