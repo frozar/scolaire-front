@@ -37,16 +37,10 @@ export default function (props: { school: SchoolType }) {
         <Show
           when={!schoolDetailEditing()}
           fallback={
-            <ButtonIcon
-              icon={<CheckIcon />}
-              onClick={SchoolDetailUtils.editSchoolDetail}
-            />
+            <ButtonIcon icon={<CheckIcon />} onClick={SchoolDetailUtils.edit} />
           }
         >
-          <ButtonIcon
-            icon={<PencilIcon />}
-            onClick={SchoolDetailUtils.editSchoolDetail}
-          />
+          <ButtonIcon icon={<PencilIcon />} onClick={SchoolDetailUtils.edit} />
         </Show>
       </div>
 

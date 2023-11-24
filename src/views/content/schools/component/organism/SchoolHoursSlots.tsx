@@ -15,28 +15,28 @@ export function SchoolHoursSlots(props: SchoolHoursSlotsProps) {
 
   function onInputComingStart(value: string) {
     const date = GradeEntity.getHourFormatFromString(value);
-    SchoolDetailUtils.updateSchoolDetails({
+    SchoolDetailUtils.update({
       hours: { ...props.school.hours, startHourComing: date },
     });
   }
 
   function onInputComingEnd(value: string) {
     const date = GradeEntity.getHourFormatFromString(value);
-    SchoolDetailUtils.updateSchoolDetails({
+    SchoolDetailUtils.update({
       hours: { ...props.school.hours, endHourComing: date },
     });
   }
 
   function onInputGoingStart(value: string) {
     const date = GradeEntity.getHourFormatFromString(value);
-    SchoolDetailUtils.updateSchoolDetails({
+    SchoolDetailUtils.update({
       hours: { ...props.school.hours, startHourGoing: date },
     });
   }
 
   function onInputGoingEnd(value: string) {
     const date = GradeEntity.getHourFormatFromString(value);
-    SchoolDetailUtils.updateSchoolDetails({
+    SchoolDetailUtils.update({
       hours: { ...props.school.hours, endHourGoing: date },
     });
   }

@@ -8,7 +8,7 @@ import {
 import { SchoolUtils } from "./school.utils";
 
 export namespace SchoolDetailUtils {
-  export async function editSchoolDetail() {
+  export async function edit() {
     if (!schoolDetailEditing()) {
       setSchoolDetailEditing(true);
     } else {
@@ -22,7 +22,7 @@ export namespace SchoolDetailUtils {
     }
   }
 
-  export function updateSchoolDetails(schoolDetails: Partial<SchoolType>) {
+  export function update(schoolDetails: Partial<SchoolType>) {
     setSchoolDetailsItem((prev) => {
       if (!prev) return prev;
       return { ...prev, ...schoolDetails };
