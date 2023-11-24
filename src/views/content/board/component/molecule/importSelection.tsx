@@ -1,6 +1,7 @@
 import { createEffect, createSignal } from "solid-js";
 import Button from "../../../../../component/atom/Button";
 import { CsvUtils, SchoolsCsvDiffType } from "../../../../../utils/csv.utils";
+import { DialogUtils } from "../../../../../utils/dialog.utils";
 import { DialogToDisplayEnum, setDialogToDisplay } from "../organism/Dialogs";
 import LabeledInputRadio from "./LabeledInputRadio";
 import "./importSelection.css";
@@ -16,7 +17,6 @@ export const [schoolsDiff, setSchoolsDiff] = createSignal<SchoolsCsvDiffType>();
 
 export default function () {
   const [importCsvType, setImportCsvType] = createSignal<CsvTypeEnum>();
-
   const [refButton, setRefButton] = createSignal<
     HTMLButtonElement | undefined
   >();
@@ -24,10 +24,6 @@ export default function () {
   createEffect(() => {
     refButton()?.focus();
   });
-
-  function closeDialog() {
-    setDialogToDisplay(DialogToDisplayEnum.none);
-  }
 
   async function handlerOnClick() {
     switch (importCsvType()) {
@@ -49,7 +45,7 @@ export default function () {
         break;
     }
 
-    closeDialog();
+    DialogUtils.closeDialog();
   }
 
   function changeCsvType(csvType: string) {
@@ -87,7 +83,7 @@ export default function () {
       {/* TODO: Refactor footer dialog content */}
       <div class="import-dialog-buttons">
         <Button
-          onClick={closeDialog}
+          onClick={DialogUtils.closeDialog}
           label={"Annuler"}
           variant="danger"
           isDisabled={false}

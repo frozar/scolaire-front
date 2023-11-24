@@ -7,9 +7,9 @@ import {
   enableSpinningWheel,
 } from "../../../../../signaux";
 import { CsvUtils, SchoolsCsvDiffType } from "../../../../../utils/csv.utils";
+import { DialogUtils } from "../../../../../utils/dialog.utils";
 import { SchoolUtils } from "../../../../../utils/school.utils";
 import { setSchools } from "../../../map/component/organism/SchoolPoints";
-import { DialogToDisplayEnum, setDialogToDisplay } from "../organism/Dialogs";
 import DiffsCollapsible from "./DiffsCollapsible";
 import { csvToImport, schoolsDiff } from "./importSelection";
 
@@ -82,7 +82,7 @@ export default function () {
       diffDbData.schools_to_modify.push({ id: school.id, location });
     });
     console.log("DB Data =>", diffDbData);
-    closeDialog();
+    DialogUtils.closeDialog();
     enableSpinningWheel();
     const schools = await SchoolService.import(diffDbData);
     setSchools(schools);
@@ -128,7 +128,7 @@ export default function () {
       {/* TODO: Refactor footer dialog content */}
       <div class="import-dialog-buttons">
         <Button
-          onClick={closeDialog}
+          onClick={DialogUtils.closeDialog}
           label={"Annuler"}
           variant="danger"
           isDisabled={false}
@@ -143,10 +143,6 @@ export default function () {
       </div>
     </>
   );
-}
-
-function closeDialog() {
-  setDialogToDisplay(DialogToDisplayEnum.none);
 }
 
 export type importSchoolsDBType = {
