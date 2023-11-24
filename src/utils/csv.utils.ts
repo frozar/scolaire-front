@@ -32,7 +32,7 @@ export namespace CsvUtils {
     file: File,
     filteredDiffs: SchoolsCsvDiffType
   ): Promise<SchoolType[]> {
-    const parsedFileData = (await parsedCsvFileToSchoolData(file)) as Pick<
+    const parsedFileData = (await parseCsvFileToSchoolData(file)) as Pick<
       SchoolDBType,
       "name" | "location"
     >[];
@@ -62,7 +62,7 @@ export namespace CsvUtils {
   export async function getImportSchoolsCsvDiff(
     file: File
   ): Promise<SchoolsCsvDiffType> {
-    const schoolsFromCsv = (await parsedCsvFileToSchoolData(file)) as Pick<
+    const schoolsFromCsv = (await parseCsvFileToSchoolData(file)) as Pick<
       SchoolDBType,
       "name" | "location"
     >[];
@@ -182,7 +182,7 @@ export namespace CsvUtils {
     return true;
   }
 
-  export async function parsedCsvFileToSchoolData(
+  export async function parseCsvFileToSchoolData(
     file: File
   ): Promise<Pick<SchoolDBType, "name" | "location">[] | undefined> {
     const parsedFile = await parseFile(file);
@@ -249,7 +249,7 @@ export namespace CsvUtils {
   async function parsedCsvFileData(file: File) {
     const fileName = file.name;
     if (isSchoolFile(fileName)) {
-      return await parsedCsvFileToSchoolData(file);
+      return await parseCsvFileToSchoolData(file);
     } else if (isStopFile(fileName)) {
       return await parsedCsvFileToStopData(file);
     } else if (isStudentToGradeFile(fileName)) {
