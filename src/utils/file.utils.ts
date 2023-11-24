@@ -31,18 +31,18 @@ export namespace FileUtils {
   }
 
   // TODO: Delete when no longer used
-  export async function importFile(
-    files: FileList | null | undefined
-  ): Promise<boolean> {
-    const file = getImportedFile(files);
-    if (!file) return false;
-    const fileName = file.name;
-    if (CsvUtils.fileExtensionIsCsv(fileName)) {
-      return CsvUtils.importCsvFile(file);
-    }
-    addNewGlobalWarningInformation("Type de Fichier non reconnu");
-    return false;
-  }
+  // export async function importFile(
+  //   files: FileList | null | undefined
+  // ): Promise<boolean> {
+  //   const file = getImportedFile(files);
+  //   if (!file) return false;
+  //   const fileName = file.name;
+  //   if (CsvUtils.fileExtensionIsCsv(fileName)) {
+  //     return CsvUtils.importCsvFile(file);
+  //   }
+  //   addNewGlobalWarningInformation("Type de Fichier non reconnu");
+  //   return false;
+  // }
 
   export async function checkFile(
     files: FileList | null | undefined

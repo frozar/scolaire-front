@@ -90,7 +90,7 @@ export default function () {
     closeDialog();
     enableSpinningWheel();
     // ! Requete
-    const schools = await SchoolService.importBis(diffDbData);
+    const schools = await SchoolService.import(diffDbData);
     setSchools(schools);
     disableSpinningWheel();
   }
