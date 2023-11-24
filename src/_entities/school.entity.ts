@@ -43,12 +43,14 @@ export class SchoolEntity {
     };
   }
 
-  static dbFormat(
-    school: Pick<SchoolType, "name" | "lon" | "lat">
-  ): Pick<SchoolDBType, "name" | "location"> {
+  static dbFormat(school: Partial<SchoolType>): Partial<SchoolDBType> {
     return {
       name: school.name,
-      location: EntityUtils.builLocationPoint(school.lon, school.lat),
+      location: EntityUtils.builLocationPoint(
+        school.lon as number,
+        school.lat as number
+      ),
+      hours: SchoolEntity.formatHours(school.hours),
     };
   }
 
@@ -106,6 +108,29 @@ export class SchoolEntity {
       ),
       endHourComing: GradeEntity.getHourFormatFromString(hours.end_hour_coming),
       endHourGoing: GradeEntity.getHourFormatFromString(hours.end_hour_going),
+    };
+  }
+
+  static formatHours(hours: HoursType | undefined): HoursDBType {
+    if (!hours) {
+      return {
+        id: 0,
+        start_hour_coming: "7:0",
+        end_hour_coming: "7:30",
+        start_hour_going: "16:0",
+        end_hour_going: "16:30",
+      };
+    }
+    return {
+      id: hours.id,
+      start_hour_coming: GradeEntity.getStringFromHourFormat(
+        hours.startHourComing
+      ),
+      end_hour_coming: GradeEntity.getStringFromHourFormat(hours.endHourComing),
+      start_hour_going: GradeEntity.getStringFromHourFormat(
+        hours.startHourGoing
+      ),
+      end_hour_going: GradeEntity.getStringFromHourFormat(hours.endHourGoing),
     };
   }
 }

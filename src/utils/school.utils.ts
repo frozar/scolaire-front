@@ -20,7 +20,7 @@ import {
 } from "../views/content/map/component/organism/StopPoints";
 
 export namespace SchoolUtils {
-  export function get(schoolId: number) {
+  export function get(schoolId: number): SchoolType | undefined {
     return getSchools().find((school) => school.id == schoolId);
   }
 
@@ -168,5 +168,20 @@ export namespace SchoolUtils {
     }
 
     return valid;
+  }
+
+  export async function updateSchool(school: SchoolType) {
+    const updatedSchool: SchoolType = await SchoolService.update(school);
+    const schoolIndex = getSchools().findIndex(
+      (item) => item.id == updatedSchool.id
+    );
+    if (schoolIndex == -1) return;
+
+    setSchools((prev) => {
+      if (!prev) return prev;
+      const schools = [...prev];
+      schools[schoolIndex] = updatedSchool;
+      return schools;
+    });
   }
 }

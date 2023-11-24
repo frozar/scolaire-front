@@ -23,8 +23,8 @@ export namespace GradeEntity {
     };
   }
 
-  export function getStringFromHourFormat(time: HourFormat) {
-    if (time == undefined) return "";
+  export function getStringFromHourFormat(time: HourFormat | undefined) {
+    if (time == undefined) return "00:00";
     let houre = time.hour.toString();
     let minutes = time.minutes.toString();
 

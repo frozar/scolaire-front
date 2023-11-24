@@ -2,10 +2,10 @@ import { Show } from "solid-js";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import CheckIcon from "../../../../../icons/CheckIcon";
 import PencilIcon from "../../../../../icons/PencilIcon";
+import { SchoolDetailUtils } from "../../../../../utils/school-details.utils";
 import { SchoolUtils } from "../../../../../utils/school.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import {
-  editSchoolDetail,
   schoolDetailEditing,
   setSchoolDetailsItem,
 } from "../organism/SchoolDetails";
@@ -37,10 +37,16 @@ export default function (props: { school: SchoolType }) {
         <Show
           when={!schoolDetailEditing()}
           fallback={
-            <ButtonIcon icon={<CheckIcon />} onClick={editSchoolDetail} />
+            <ButtonIcon
+              icon={<CheckIcon />}
+              onClick={SchoolDetailUtils.editSchoolDetail}
+            />
           }
         >
-          <ButtonIcon icon={<PencilIcon />} onClick={editSchoolDetail} />
+          <ButtonIcon
+            icon={<PencilIcon />}
+            onClick={SchoolDetailUtils.editSchoolDetail}
+          />
         </Show>
       </div>
 

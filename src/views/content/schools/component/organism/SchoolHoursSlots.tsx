@@ -1,7 +1,8 @@
-import { GradeEntity, HourFormat } from "../../../../../_entities/grade.entity";
+import { GradeEntity } from "../../../../../_entities/grade.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
-import TimeInput from "../atom/TimeInput";
-import { schoolDetailEditing, setSchoolDetailsItem } from "./SchoolDetails";
+import { SchoolDetailUtils } from "../../../../../utils/school-details.utils";
+import TimesInputWrapper from "../molecule/TimesInputWrapper";
+import { schoolDetailEditing } from "./SchoolDetails";
 
 interface SchoolHoursSlotsProps {
   school: SchoolType;
@@ -12,86 +13,52 @@ export function SchoolHoursSlots(props: SchoolHoursSlotsProps) {
     // eslint-disable-next-line solid/reactivity
     props.school.hours;
 
-  function updateSchoolDetailHours(
-    field: "startComing" | "endComing" | "startGoing" | "endGoing",
-    hour: HourFormat
-  ) {
-    setSchoolDetailsItem((prev) => {
-      if (!prev) return prev;
-      const school = { ...prev };
-      switch (field) {
-        case "startComing":
-          school.hours.startHourComing = hour;
-          break;
-        case "endComing":
-          school.hours.endHourComing = hour;
-          break;
-        case "startGoing":
-          school.hours.startHourGoing = hour;
-          break;
-        case "endGoing":
-          school.hours.endHourGoing = hour;
-          break;
-      }
-      return school;
-    });
-  }
   function onInputComingStart(value: string) {
     const date = GradeEntity.getHourFormatFromString(value);
-    updateSchoolDetailHours("startComing", date);
+    SchoolDetailUtils.updateSchoolDetails({
+      hours: { ...props.school.hours, startHourComing: date },
+    });
   }
 
   function onInputComingEnd(value: string) {
     const date = GradeEntity.getHourFormatFromString(value);
-    updateSchoolDetailHours("endComing", date);
+    SchoolDetailUtils.updateSchoolDetails({
+      hours: { ...props.school.hours, endHourComing: date },
+    });
   }
 
   function onInputGoingStart(value: string) {
     const date = GradeEntity.getHourFormatFromString(value);
-    updateSchoolDetailHours("startGoing", date);
+    SchoolDetailUtils.updateSchoolDetails({
+      hours: { ...props.school.hours, startHourGoing: date },
+    });
   }
 
   function onInputGoingEnd(value: string) {
     const date = GradeEntity.getHourFormatFromString(value);
-    updateSchoolDetailHours("endGoing", date);
+    SchoolDetailUtils.updateSchoolDetails({
+      hours: { ...props.school.hours, endHourGoing: date },
+    });
   }
 
   return (
     <>
-      <div>
-        <label>Horraire d'arrivé</label>
-        <div class="flex justify-between w-[70%]">
-          <TimeInput
-            onInput={onInputComingStart}
-            value={GradeEntity.getStringFromHourFormat(startHourComing)}
-            disabled={!schoolDetailEditing()}
-          />
-
-          <p>à</p>
-          <TimeInput
-            onInput={onInputComingEnd}
-            value={GradeEntity.getStringFromHourFormat(endHourComing)}
-            disabled={!schoolDetailEditing()}
-          />
-        </div>
-      </div>
-      <div>
-        <label>Horraires départ</label>
-        <div class="flex justify-between w-[70%]">
-          <TimeInput
-            onInput={onInputGoingStart}
-            value={GradeEntity.getStringFromHourFormat(startHourGoing)}
-            disabled={!schoolDetailEditing()}
-          />
-
-          <p>à</p>
-          <TimeInput
-            onInput={onInputGoingEnd}
-            value={GradeEntity.getStringFromHourFormat(endHourGoing)}
-            disabled={!schoolDetailEditing()}
-          />
-        </div>
-      </div>
+      <TimesInputWrapper
+        label="Horaires matin"
+        startValue={GradeEntity.getStringFromHourFormat(startHourComing)}
+        endValue={GradeEntity.getStringFromHourFormat(endHourComing)}
+        onInputStart={onInputComingStart}
+        onInputEnd={onInputComingEnd}
+        disabled={!schoolDetailEditing()}
+      />
+      <TimesInputWrapper
+        label="Horaires après-midi"
+        startValue={GradeEntity.getStringFromHourFormat(startHourGoing)}
+        endValue={GradeEntity.getStringFromHourFormat(endHourGoing)}
+        onInputStart={onInputGoingStart}
+        onInputEnd={onInputGoingEnd}
+        disabled={!schoolDetailEditing()}
+      />
     </>
   );
 }

@@ -193,7 +193,7 @@ export namespace CsvUtils {
 
   async function parsedCsvFileToSchoolData(
     file: File
-  ): Promise<Pick<SchoolDBType, "name" | "location">[] | undefined> {
+  ): Promise<Partial<SchoolDBType>[] | undefined> {
     const parsedFile = await parseFile(file);
 
     const correctHeader = ["name", "lat", "lon"];
