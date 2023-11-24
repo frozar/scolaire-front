@@ -18,7 +18,7 @@ import {
 import GradeLinkedSchool from "../atom/GradeLinkedSchool";
 import GradeBoardHeader from "../molecule/GradeBoardHeader";
 import TimesInputWrapper from "../molecule/TimesInputWrapper";
-import { schoolDetails, setSchoolDetailsItem } from "./SchoolDetails";
+import { schoolDetailsItem, setSchoolDetailsItem } from "./SchoolDetails";
 
 export const [selectedGrade, setSelectedGrade] = createSignal<GradeType>();
 
@@ -75,7 +75,7 @@ export default function () {
   }
 
   async function onClickAddGrade() {
-    const schoolId = schoolDetails()?.id;
+    const schoolId = schoolDetailsItem()?.id;
     if (!schoolId) return;
 
     // TODO: Verify if schedules input different of "0:0" then display user message and return;
@@ -106,7 +106,7 @@ export default function () {
   }
 
   async function onClickModifyGrade() {
-    const schoolId = schoolDetails()?.id;
+    const schoolId = schoolDetailsItem()?.id;
     if (!schoolId) return;
 
     const updatedGrade = await GradeService.update({
@@ -184,7 +184,7 @@ export default function () {
       <div class="content">
         <div class="line-height-1">
           <p>Ecole:</p>
-          <GradeLinkedSchool schools={[schoolDetails()?.name as string]} />
+          <GradeLinkedSchool schools={[schoolDetailsItem()?.name as string]} />
         </div>
 
         <LabeledInputField

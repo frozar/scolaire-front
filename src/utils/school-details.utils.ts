@@ -1,7 +1,7 @@
 import { SchoolType } from "../_entities/school.entity";
 import {
   schoolDetailEditing,
-  schoolDetails,
+  schoolDetailsItem,
   setSchoolDetailEditing,
   setSchoolDetailsItem,
 } from "../views/content/schools/component/organism/SchoolDetails";
@@ -13,11 +13,11 @@ export namespace SchoolDetailUtils {
       setSchoolDetailEditing(true);
     } else {
       if (
-        SchoolUtils.isValidSchool(schoolDetails() as SchoolType) &&
-        SchoolUtils.get(schoolDetails()?.id ?? 0) != schoolDetails()
+        SchoolUtils.isValidSchool(schoolDetailsItem() as SchoolType) &&
+        SchoolUtils.get(schoolDetailsItem()?.id ?? 0) != schoolDetailsItem()
       ) {
         setSchoolDetailEditing(false);
-        SchoolUtils.updateSchool(schoolDetails() as SchoolType);
+        SchoolUtils.updateSchool(schoolDetailsItem() as SchoolType);
       }
     }
   }
