@@ -146,27 +146,19 @@ export default function () {
   }
 
   function onInputComingStart(value: string) {
-    const formatedSchedule = GradeEntity.getHourFormatFromString(value);
-    if (!formatedSchedule) return;
-    setMorningStart(formatedSchedule);
+    setMorningStart(GradeEntity.getHourFormatFromString(value));
   }
 
   function onInputComingEnd(value: string) {
-    const formatedSchedule = GradeEntity.getHourFormatFromString(value);
-    if (!formatedSchedule) return;
-    setMorningEnd(formatedSchedule);
+    setMorningEnd(GradeEntity.getHourFormatFromString(value));
   }
 
   function onInputGoingStart(value: string) {
-    const formatedSchedule = GradeEntity.getHourFormatFromString(value);
-    if (!formatedSchedule) return;
-    setMorningStart(formatedSchedule);
+    setMorningStart(GradeEntity.getHourFormatFromString(value));
   }
 
   function onInputGoingEnd(value: string) {
-    const formatedSchedule = GradeEntity.getHourFormatFromString(value);
-    if (!formatedSchedule) return;
-    setMorningEnd(formatedSchedule);
+    setMorningEnd(GradeEntity.getHourFormatFromString(value));
   }
 
   onCleanup(() => setSelectedGrade());

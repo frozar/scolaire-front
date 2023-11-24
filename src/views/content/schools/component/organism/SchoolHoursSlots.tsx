@@ -14,37 +14,45 @@ export function SchoolHoursSlots(props: SchoolHoursSlotsProps) {
     props.school.hours;
 
   function onInputComingStart(value: string) {
-    const date = GradeEntity.getHourFormatFromString(value);
     SchoolDetailUtils.update({
-      hours: { ...props.school.hours, startHourComing: date },
+      hours: {
+        ...props.school.hours,
+        startHourComing: GradeEntity.getHourFormatFromString(value),
+      },
     });
   }
 
   function onInputComingEnd(value: string) {
-    const date = GradeEntity.getHourFormatFromString(value);
     SchoolDetailUtils.update({
-      hours: { ...props.school.hours, endHourComing: date },
+      hours: {
+        ...props.school.hours,
+        endHourComing: GradeEntity.getHourFormatFromString(value),
+      },
     });
   }
 
   function onInputGoingStart(value: string) {
-    const date = GradeEntity.getHourFormatFromString(value);
     SchoolDetailUtils.update({
-      hours: { ...props.school.hours, startHourGoing: date },
+      hours: {
+        ...props.school.hours,
+        startHourGoing: GradeEntity.getHourFormatFromString(value),
+      },
     });
   }
 
   function onInputGoingEnd(value: string) {
-    const date = GradeEntity.getHourFormatFromString(value);
     SchoolDetailUtils.update({
-      hours: { ...props.school.hours, endHourGoing: date },
+      hours: {
+        ...props.school.hours,
+        endHourGoing: GradeEntity.getHourFormatFromString(value),
+      },
     });
   }
 
   return (
     <>
       <TimesInputWrapper
-        label="Horaires matin"
+        label="Horaires d'arrivés"
         startValue={GradeEntity.getStringFromHourFormat(startHourComing)}
         endValue={GradeEntity.getStringFromHourFormat(endHourComing)}
         onInputStart={onInputComingStart}
@@ -52,7 +60,7 @@ export function SchoolHoursSlots(props: SchoolHoursSlotsProps) {
         disabled={!schoolDetailEditing()}
       />
       <TimesInputWrapper
-        label="Horaires après-midi"
+        label="Horaires de départs"
         startValue={GradeEntity.getStringFromHourFormat(startHourGoing)}
         endValue={GradeEntity.getStringFromHourFormat(endHourGoing)}
         onInputStart={onInputGoingStart}

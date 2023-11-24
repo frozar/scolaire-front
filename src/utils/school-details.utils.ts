@@ -17,7 +17,7 @@ export namespace SchoolDetailUtils {
         SchoolUtils.get(schoolDetailsItem()?.id ?? 0) != schoolDetailsItem()
       ) {
         setSchoolDetailEditing(false);
-        SchoolUtils.updateSchool(schoolDetailsItem() as SchoolType);
+        SchoolUtils.update(schoolDetailsItem() as SchoolType);
       }
     }
   }
