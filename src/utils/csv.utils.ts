@@ -1,3 +1,4 @@
+import _ from "lodash";
 import Papa from "papaparse";
 import {
   SchoolDBType,
@@ -56,7 +57,6 @@ export namespace CsvUtils {
       )[0].location;
       diffDBData.schools_to_modify.push({ id: school.id, location });
     });
-
     return await SchoolService.import(diffDBData);
   }
   export async function getImportSchoolsCsvDiff(
@@ -75,8 +75,9 @@ export namespace CsvUtils {
         // Case modified
         if (schoolFromCsv.name == school.name) {
           if (
-            schoolFromCsv.location.data.lat != school.lat ||
-            schoolFromCsv.location.data.lng != school.lon
+            // in xano geographical point round with 12 numbers after decimal point
+            _.round(schoolFromCsv.location.data.lat, 12) != school.lat ||
+            _.round(schoolFromCsv.location.data.lng, 12) != school.lon
           ) {
             diff.modified.push(school.id);
             continue loop;
