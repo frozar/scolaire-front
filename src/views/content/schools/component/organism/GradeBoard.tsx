@@ -1,9 +1,11 @@
 import { createSignal, onCleanup, onMount } from "solid-js";
+import { HoursType } from "../../../../../_entities/_utils.entity";
 import {
   GradeEntity,
   GradeType,
   HourFormat,
 } from "../../../../../_entities/grade.entity";
+import { SchoolType } from "../../../../../_entities/school.entity";
 import { GradeService } from "../../../../../_services/grade.service";
 import BoardFooterActions from "../../../board/component/molecule/BoardFooterActions";
 import LabeledInputField from "../../../board/component/molecule/LabeledInputField";
@@ -25,34 +27,7 @@ export const [selectedGrade, setSelectedGrade] = createSignal<GradeType>();
 // TODO Refactor
 // eslint-disable-next-line solid/reactivity
 export default function () {
-  const defaultTime = {
-    hour: 0,
-    minutes: 0,
-  };
-
-  let defaultGrade: GradeType;
-  // Case adding a new grade
-  if (onBoard() == "school-grade-add") {
-    defaultGrade = {
-      name: "Nom de grade par défaut",
-      morningStart: defaultTime,
-      morningEnd: defaultTime,
-      afternoonStart: defaultTime,
-      afternoonEnd: defaultTime,
-    };
-    // Case modifying an existing grade
-  } else {
-    const grade = selectedGrade() as GradeType;
-    defaultGrade = {
-      name: grade.name,
-      morningStart: grade.morningStart,
-      morningEnd: grade.morningEnd,
-      afternoonStart: grade.afternoonStart,
-      afternoonEnd: grade.afternoonEnd,
-    };
-  }
-
-  const [gradeName, setGradeName] = createSignal(defaultGrade.name);
+  const [gradeName, setGradeName] = createSignal(selectedGrade()?.name);
 
   const [morningStart, setMorningStart] = createSignal<HourFormat>();
   const [morningEnd, setMorningEnd] = createSignal<HourFormat>();
@@ -60,84 +35,59 @@ export default function () {
   const [afternoonEnd, setAfternoonEnd] = createSignal<HourFormat>();
 
   onMount(() => {
-    setMorningStart(defaultGrade.morningStart);
-    setMorningEnd(defaultGrade.morningEnd);
-    setAfternoonEnd(defaultGrade.afternoonEnd);
-    setAfternoonStart(defaultGrade.afternoonStart);
+    setMorningStart(selectedGrade()?.hours.startHourComing);
+    setMorningEnd(selectedGrade()?.hours.endHourComing);
+    setAfternoonEnd(selectedGrade()?.hours.endHourGoing);
+    setAfternoonStart(selectedGrade()?.hours.startHourGoing);
   });
 
-  function onInputGradeName(
-    e: Event & {
-      target: HTMLInputElement;
+  function getHours(): HoursType {
+    return {
+      id: selectedGrade()?.hours.id ?? 0,
+      startHourComing: morningStart() as HourFormat,
+      endHourComing: morningEnd() as HourFormat,
+      startHourGoing: afternoonStart() as HourFormat,
+      endHourGoing: afternoonEnd() as HourFormat,
+    };
+  }
+
+  async function nextStep() {
+    let grade: GradeType;
+    const schoolToUpdate = schoolDetailsItem() as SchoolType;
+    if (!schoolDetailsItem()?.id) return;
+
+    if (onBoard() == "school-grade-add") {
+      grade = await GradeService.create({
+        schoolId: schoolDetailsItem()?.id as number,
+        name: gradeName() ?? "",
+        hours: getHours(),
+      });
+      schoolToUpdate?.grades.push(grade);
+    } else {
+      grade = await GradeService.update({
+        ...selectedGrade(),
+        name: gradeName() ?? "",
+        hours: getHours(),
+      });
+      const gradeIndex = schoolToUpdate.grades.findIndex(
+        (item) => item.id == grade.id
+      );
+      schoolToUpdate.grades[gradeIndex] = grade;
     }
-  ) {
-    setGradeName(e.target.value);
-  }
 
-  async function onClickAddGrade() {
-    const schoolId = schoolDetailsItem()?.id;
-    if (!schoolId) return;
-
-    // TODO: Verify if schedules input different of "0:0" then display user message and return;
-
-    const newGrade = await GradeService.create({
-      schoolId: schoolId,
-      name: gradeName(),
-      morningStart: morningStart() as HourFormat,
-      morningEnd: morningEnd() as HourFormat,
-      afternoonStart: afternoonStart() as HourFormat,
-      afternoonEnd: afternoonEnd() as HourFormat,
-    });
+    const schoolIndex = getSchools().findIndex(
+      (item) => item.id == schoolDetailsItem()?.id
+    );
 
     setSchools((prev) => {
-      const schoolToModify = prev.filter((school) => school.id == schoolId)[0];
-      const newSchools = [...prev].filter((school) => school.id != schoolId);
-      newSchools.push({
-        ...schoolToModify,
-        grades: [...schoolToModify.grades, newGrade],
-      });
-      return newSchools;
+      if (!prev) return prev;
+      const schools = [...prev];
+      schools[schoolIndex] = schoolToUpdate;
+
+      return schools;
     });
 
-    setSchoolDetailsItem(
-      getSchools().filter((school) => school.id == schoolId)[0]
-    );
-    changeBoard("school-details");
-  }
-
-  async function onClickModifyGrade() {
-    const schoolId = schoolDetailsItem()?.id;
-    if (!schoolId) return;
-
-    const updatedGrade = await GradeService.update({
-      ...selectedGrade(),
-      name: gradeName(),
-      morningStart: morningStart() as HourFormat,
-      morningEnd: morningEnd() as HourFormat,
-      afternoonStart: afternoonStart() as HourFormat,
-      afternoonEnd: afternoonEnd() as HourFormat,
-    });
-
-    setSchools((prev) => {
-      const schoolToModify = prev.filter((school) => school.id == schoolId)[0];
-      const newSchools = [...prev].filter((school) => school.id != schoolId);
-
-      newSchools.push({
-        ...schoolToModify,
-        grades: [
-          ...schoolToModify.grades.filter(
-            (grade) => grade.id != updatedGrade.id
-          ),
-          updatedGrade,
-        ],
-      });
-
-      return newSchools;
-    });
-
-    setSchoolDetailsItem(
-      getSchools().filter((school) => school.id == schoolId)[0]
-    );
+    setSchoolDetailsItem(schoolToUpdate);
     changeBoard("school-details");
   }
 
@@ -154,15 +104,16 @@ export default function () {
   }
 
   function onInputGoingStart(value: string) {
-    setMorningStart(GradeEntity.getHourFormatFromString(value));
+    setAfternoonStart(GradeEntity.getHourFormatFromString(value));
   }
 
   function onInputGoingEnd(value: string) {
-    setMorningEnd(GradeEntity.getHourFormatFromString(value));
+    setAfternoonEnd(GradeEntity.getHourFormatFromString(value));
   }
 
   onCleanup(() => setSelectedGrade());
 
+  // TODO add checkbox to define if we use school schedule or not to define  grade schedule
   return (
     <section>
       <GradeBoardHeader
@@ -181,8 +132,8 @@ export default function () {
 
         <LabeledInputField
           name="grade-name"
-          onInput={onInputGradeName}
-          value={gradeName()}
+          onInput={(event) => setGradeName(event.target.value)}
+          value={gradeName() ?? ""}
           label="Nom de la grade"
           placeholder="Nom de la grade"
         />
@@ -196,8 +147,8 @@ export default function () {
         />
         <TimesInputWrapper
           label="Horaires après-midi"
-          startValue={GradeEntity.getStringFromHourFormat(setAfternoonStart())}
-          endValue={GradeEntity.getStringFromHourFormat(setAfternoonEnd())}
+          startValue={GradeEntity.getStringFromHourFormat(afternoonStart())}
+          endValue={GradeEntity.getStringFromHourFormat(afternoonEnd())}
           onInputStart={onInputGoingStart}
           onInputEnd={onInputGoingEnd}
         />
@@ -205,10 +156,7 @@ export default function () {
 
       <BoardFooterActions
         nextStep={{
-          callback:
-            onBoard() == "school-grade-add"
-              ? onClickAddGrade
-              : onClickModifyGrade,
+          callback: nextStep,
           label: "Valider",
         }}
         previousStep={{

@@ -11,6 +11,7 @@ import {
 } from "./_utils.entity";
 import { GradeDBType, GradeEntity, GradeType } from "./grade.entity";
 import { DBAssociatedStop } from "./stop.entity";
+import { TimeUtils } from "./time.utils";
 
 const [, { nextLeafletPointId }] = useStateGui();
 
@@ -39,7 +40,7 @@ export class SchoolEntity {
       leafletId: nextLeafletPointId(),
       selected: selected,
       setSelected: setSelected,
-      hours: this.buildHours(dbSchool.hours),
+      hours: TimeUtils.buildHours(dbSchool.hours),
     };
   }
 
@@ -52,7 +53,7 @@ export class SchoolEntity {
         school.lon as number,
         school.lat as number
       ),
-      hours: SchoolEntity.formatHours(school.hours),
+      hours: TimeUtils.formatHours(school.hours),
     };
   }
 
@@ -77,64 +78,6 @@ export class SchoolEntity {
     }
 
     return lines;
-  }
-
-  static buildHours(hours: HoursDBType | undefined): HoursType {
-    if (!hours) {
-      return {
-        id: 0,
-        startHourGoing: {
-          hour: 7,
-          minutes: 0,
-        },
-        startHourComing: {
-          hour: 7,
-          minutes: 30,
-        },
-        endHourComing: {
-          hour: 7,
-          minutes: 0,
-        },
-        endHourGoing: {
-          hour: 7,
-          minutes: 30,
-        },
-      };
-    }
-    return {
-      id: hours.id,
-      startHourComing: GradeEntity.getHourFormatFromString(
-        hours.start_hour_coming
-      ),
-      startHourGoing: GradeEntity.getHourFormatFromString(
-        hours.start_hour_going
-      ),
-      endHourComing: GradeEntity.getHourFormatFromString(hours.end_hour_coming),
-      endHourGoing: GradeEntity.getHourFormatFromString(hours.end_hour_going),
-    };
-  }
-
-  static formatHours(hours: HoursType | undefined): HoursDBType {
-    if (!hours) {
-      return {
-        id: 0,
-        start_hour_coming: "7:0",
-        end_hour_coming: "7:30",
-        start_hour_going: "16:0",
-        end_hour_going: "16:30",
-      };
-    }
-    return {
-      id: hours.id,
-      start_hour_coming: GradeEntity.getStringFromHourFormat(
-        hours.startHourComing
-      ),
-      end_hour_coming: GradeEntity.getStringFromHourFormat(hours.endHourComing),
-      start_hour_going: GradeEntity.getStringFromHourFormat(
-        hours.startHourGoing
-      ),
-      end_hour_going: GradeEntity.getStringFromHourFormat(hours.endHourGoing),
-    };
   }
 }
 

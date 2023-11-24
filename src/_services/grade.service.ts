@@ -12,8 +12,7 @@ export class GradeService {
     const data = GradeEntity.dbFormat(grade);
     const dbGrade: GradeDBType = await ServiceUtils.patch(
       "/grade/" + grade.id,
-      data,
-      false
+      data
     );
     if (dbGrade == null) return dbGrade;
     return GradeEntity.build(dbGrade);
