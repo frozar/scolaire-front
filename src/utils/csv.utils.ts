@@ -88,7 +88,9 @@ export namespace CsvUtils {
       }
 
       // Case added
-      diff.added.push(data.name);
+      if (!getSchools().some((school) => school.name == data.name)) {
+        diff.added.push(data.name);
+      }
     }
 
     // Check if deleted
@@ -121,6 +123,19 @@ export namespace CsvUtils {
     }
     return false;
   }
+
+  // export async function importSchoolCSVFileBis(
+  //   parsedFileData: Pick<SchoolDBType, "name" | "location">[]
+  // ) {
+  //   const schools: SchoolType[] = await SchoolService.importBis(
+  //     parsedFileData as Pick<SchoolDBType, "name" | "location">[]
+  //   );
+  //   if (schools) {
+  //     setSchools(schools);
+  //     return true;
+  //   }
+  //   return false;
+  // }
 
   async function importStopCSVFile(
     parsedFileData: Pick<StopDBType, "name" | "location">[]
@@ -192,7 +207,7 @@ export namespace CsvUtils {
     return true;
   }
 
-  async function parsedCsvFileToSchoolData(
+  export async function parsedCsvFileToSchoolData(
     file: File
   ): Promise<Pick<SchoolDBType, "name" | "location">[] | undefined> {
     const parsedFile = await parseFile(file);

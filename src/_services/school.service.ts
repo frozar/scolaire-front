@@ -3,6 +3,7 @@ import {
   SchoolEntity,
   SchoolType,
 } from "../_entities/school.entity";
+import { importSchoolsDBType } from "../views/content/board/component/molecule/ImportDiffs";
 import { ServiceUtils } from "./_utils.service";
 
 export class SchoolService {
@@ -12,6 +13,15 @@ export class SchoolService {
     const xanoResult: { school: SchoolDBType[] } = await ServiceUtils.post(
       "/school/import",
       { schools: schools }
+    );
+
+    return xanoResult.school.map((dbSchool) => SchoolEntity.build(dbSchool));
+  }
+
+  static async importBis(schools: importSchoolsDBType): Promise<SchoolType[]> {
+    const xanoResult: { school: SchoolDBType[] } = await ServiceUtils.post(
+      "/school/import",
+      schools
     );
 
     return xanoResult.school.map((dbSchool) => SchoolEntity.build(dbSchool));

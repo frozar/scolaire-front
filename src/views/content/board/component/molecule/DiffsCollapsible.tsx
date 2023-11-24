@@ -1,4 +1,5 @@
 import { For, Setter } from "solid-js";
+import { SchoolUtils } from "../../../../../utils/school.utils";
 import CollapsibleElement from "../organism/CollapsibleElement";
 import { SchoolDiffEnum, UncheckedElementType } from "./ImportDiffs";
 
@@ -53,7 +54,11 @@ export default function (props: {
                     )
                   }
                 />
-                <label>{elem}</label>
+                <label>
+                  {props.diffType == SchoolDiffEnum.added
+                    ? elem
+                    : SchoolUtils.getName(elem as number)}
+                </label>
               </div>
             );
           }}

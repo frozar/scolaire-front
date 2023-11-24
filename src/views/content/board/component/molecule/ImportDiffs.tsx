@@ -1,10 +1,19 @@
 import { createEffect, createSignal } from "solid-js";
 import { SchoolDBType } from "../../../../../_entities/school.entity";
+import { SchoolService } from "../../../../../_services/school.service";
 import Button from "../../../../../component/atom/Button";
-import { SchoolsCsvDiffType } from "../../../../../utils/csv.utils";
+import {
+  disableSpinningWheel,
+  enableSpinningWheel,
+} from "../../../../../signaux";
+import { CsvUtils, SchoolsCsvDiffType } from "../../../../../utils/csv.utils";
+import {
+  getSchools,
+  setSchools,
+} from "../../../map/component/organism/SchoolPoints";
 import { DialogToDisplayEnum, setDialogToDisplay } from "../organism/Dialogs";
 import DiffsCollapsible from "./DiffsCollapsible";
-import { schoolsDiff } from "./importSelection";
+import { csvToImport, schoolsDiff } from "./importSelection";
 
 export enum SchoolDiffEnum {
   added = "added",
@@ -46,6 +55,44 @@ export default function () {
           !uncheckedValues()[SchoolDiffEnum.deleted].includes(deleted)
       ) as number[],
     };
+  }
+
+  async function handlerOnClick() {
+    // ! soit récupérer le parsedData déjà existant (signal)
+    // ! soit le créer de nouveau (SchoolEntity.dataToDb)
+    const file = csvToImport() as File;
+    const parsedFileData = (await CsvUtils.parsedCsvFileToSchoolData(
+      file
+    )) as Pick<SchoolDBType, "name" | "location">[];
+
+    // ! Pick<SchoolDBType, "name" | "location">[] TO importSchoolsDBType
+    const diffDbData: importSchoolsDBType = {
+      schools_to_add: [],
+      schools_to_modify: [],
+      schools_to_delete: [],
+    };
+    schoolsDiffFiltered().deleted.forEach((schoolIid) =>
+      diffDbData.schools_to_delete.push(schoolIid)
+    );
+    schoolsDiffFiltered().added.forEach((name) => {
+      const school = parsedFileData.filter((school) => school.name == name)[0];
+      diffDbData.schools_to_add.push(school);
+    });
+    schoolsDiffFiltered().modified.forEach((schoolId) => {
+      // ! Create SchoolUils.get()
+      const school = getSchools().filter((school) => school.id == schoolId)[0];
+      const location = parsedFileData.filter(
+        (data) => data.name == school.name
+      )[0].location;
+      diffDbData.schools_to_modify.push({ id: school.id, location });
+    });
+    console.log("DB Data =>", diffDbData);
+    closeDialog();
+    enableSpinningWheel();
+    // ! Requete
+    const schools = await SchoolService.importBis(diffDbData);
+    setSchools(schools);
+    disableSpinningWheel();
   }
 
   function noElementChecked() {
@@ -109,14 +156,8 @@ function closeDialog() {
   // ! Signals to set to default ?
 }
 
-type importSchoolsDBType = {
-  schools_to_add: Pick<SchoolDBType, "name" | "location">;
-  schools_to_modify: Pick<SchoolDBType, "name" | "location">;
+export type importSchoolsDBType = {
+  schools_to_add: Pick<SchoolDBType, "name" | "location">[];
+  schools_to_modify: Pick<SchoolDBType, "id" | "location">[];
   schools_to_delete: number[];
 };
-
-function handlerOnClick() {
-  // ! soit récupérer le parsedData déjà existant (signal)
-  // ! soit le créer de nouveau (SchoolEntity.dataToDb)
-  console.log("TODO IMPORT");
-}
