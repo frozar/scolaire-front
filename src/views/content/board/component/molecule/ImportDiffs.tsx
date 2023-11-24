@@ -7,10 +7,8 @@ import {
   enableSpinningWheel,
 } from "../../../../../signaux";
 import { CsvUtils, SchoolsCsvDiffType } from "../../../../../utils/csv.utils";
-import {
-  getSchools,
-  setSchools,
-} from "../../../map/component/organism/SchoolPoints";
+import { SchoolUtils } from "../../../../../utils/school.utils";
+import { setSchools } from "../../../map/component/organism/SchoolPoints";
 import { DialogToDisplayEnum, setDialogToDisplay } from "../organism/Dialogs";
 import DiffsCollapsible from "./DiffsCollapsible";
 import { csvToImport, schoolsDiff } from "./importSelection";
@@ -57,15 +55,13 @@ export default function () {
     };
   }
 
+  // TODO: Clean
   async function handlerOnClick() {
-    // ! soit récupérer le parsedData déjà existant (signal)
-    // ! soit le créer de nouveau (SchoolEntity.dataToDb)
     const file = csvToImport() as File;
     const parsedFileData = (await CsvUtils.parsedCsvFileToSchoolData(
       file
     )) as Pick<SchoolDBType, "name" | "location">[];
 
-    // ! Pick<SchoolDBType, "name" | "location">[] TO importSchoolsDBType
     const diffDbData: importSchoolsDBType = {
       schools_to_add: [],
       schools_to_modify: [],
@@ -79,8 +75,7 @@ export default function () {
       diffDbData.schools_to_add.push(school);
     });
     schoolsDiffFiltered().modified.forEach((schoolId) => {
-      // ! Create SchoolUils.get()
-      const school = getSchools().filter((school) => school.id == schoolId)[0];
+      const school = SchoolUtils.get(schoolId);
       const location = parsedFileData.filter(
         (data) => data.name == school.name
       )[0].location;
@@ -89,7 +84,6 @@ export default function () {
     console.log("DB Data =>", diffDbData);
     closeDialog();
     enableSpinningWheel();
-    // ! Requete
     const schools = await SchoolService.import(diffDbData);
     setSchools(schools);
     disableSpinningWheel();
@@ -153,7 +147,6 @@ export default function () {
 
 function closeDialog() {
   setDialogToDisplay(DialogToDisplayEnum.none);
-  // ! Signals to set to default ?
 }
 
 export type importSchoolsDBType = {

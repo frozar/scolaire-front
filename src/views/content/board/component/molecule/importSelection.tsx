@@ -27,7 +27,6 @@ export default function () {
 
   function closeDialog() {
     setDialogToDisplay(DialogToDisplayEnum.none);
-    // TODO: Uncheck all radios
   }
 
   async function handlerOnClick() {

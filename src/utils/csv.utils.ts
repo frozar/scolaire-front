@@ -25,38 +25,6 @@ export type SchoolsCsvDiffType = {
 };
 
 export namespace CsvUtils {
-  // export async function importCsvFile(file: File): Promise<boolean> {
-  //   const parsedFileData = await parsedCsvFileData(file);
-  //   const fileName = file.name;
-
-  //   if (parsedFileData) {
-  //     try {
-  //       if (isSchoolFile(fileName)) {
-  //         return importSchoolCSVFile(
-  //           parsedFileData as Pick<SchoolDBType, "name" | "location">[]
-  //         );
-  //       } else if (isStopFile(fileName)) {
-  //         return importStopCSVFile(
-  //           parsedFileData as Pick<StopDBType, "name" | "location">[]
-  //         );
-  //       } else if (isStudentToGradeFile(fileName)) {
-  //         return importStudentToGradeCSVFile(
-  //           parsedFileData as StudentToGrade[]
-  //         );
-  //       } else {
-  //         addNewGlobalWarningInformation("Nom de fichier non reconnu");
-  //         return false;
-  //       }
-  //     } catch (err) {
-  //       addNewGlobalWarningInformation("Erreur lors de l'importation");
-  //       return false;
-  //     }
-  //   } else {
-  //     addNewGlobalWarningInformation("Erreur de lecture du fichier");
-  //     return false;
-  //   }
-  // }
-
   export async function getImportSchoolsCsvDiff(
     file: File
   ): Promise<SchoolsCsvDiffType> {
@@ -106,32 +74,6 @@ export namespace CsvUtils {
     return true;
   }
 
-  // ! Use that
-  // async function importSchoolCSVFile(
-  //   parsedFileData: Pick<SchoolDBType, "name" | "location">[]
-  // ) {
-  //   const schools: SchoolType[] = await SchoolService.import(
-  //     parsedFileData as Pick<SchoolDBType, "name" | "location">[]
-  //   );
-  //   if (schools) {
-  //     setSchools(schools);
-  //     return true;
-  //   }
-  //   return false;
-  // }
-
-  // export async function importSchoolCSVFileBis(
-  //   parsedFileData: Pick<SchoolDBType, "name" | "location">[]
-  // ) {
-  //   const schools: SchoolType[] = await SchoolService.importBis(
-  //     parsedFileData as Pick<SchoolDBType, "name" | "location">[]
-  //   );
-  //   if (schools) {
-  //     setSchools(schools);
-  //     return true;
-  //   }
-  //   return false;
-  // }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async function importStopCSVFile(
     parsedFileData: Pick<StopDBType, "name" | "location">[]

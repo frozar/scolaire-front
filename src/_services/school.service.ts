@@ -7,17 +7,6 @@ import { importSchoolsDBType } from "../views/content/board/component/molecule/I
 import { ServiceUtils } from "./_utils.service";
 
 export class SchoolService {
-  // static async import(
-  //   schools: Pick<SchoolDBType, "name" | "location">[]
-  // ): Promise<SchoolType[]> {
-  //   const xanoResult: { school: SchoolDBType[] } = await ServiceUtils.post(
-  //     "/school/import",
-  //     { schools: schools }
-  //   );
-
-  //   return xanoResult.school.map((dbSchool) => SchoolEntity.build(dbSchool));
-  // }
-
   static async import(schools: importSchoolsDBType): Promise<SchoolType[]> {
     const xanoResult: { school: SchoolDBType[] } = await ServiceUtils.post(
       "/school/import",
