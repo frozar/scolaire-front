@@ -43,7 +43,9 @@ export class SchoolEntity {
     };
   }
 
-  static dbFormat(school: Partial<SchoolType>): Partial<SchoolDBType> {
+  static dbFormat(
+    school: Pick<SchoolType, "name" | "lon" | "lat" | "hours">
+  ): Pick<SchoolDBType, "name" | "location" | "hours"> {
     return {
       name: school.name,
       location: EntityUtils.builLocationPoint(
@@ -54,12 +56,13 @@ export class SchoolEntity {
     };
   }
 
-  static dataToDB(datas: Pick<SchoolType, "name" | "lon" | "lat">[]) {
+  static dataToDB(datas: Pick<SchoolType, "name" | "lon" | "lat" | "hours">[]) {
     return datas.map((data) => {
       return SchoolEntity.dbFormat({
         name: data.name,
         lat: +data.lat,
         lon: +data.lon,
+        hours: data.hours,
       });
     });
   }
