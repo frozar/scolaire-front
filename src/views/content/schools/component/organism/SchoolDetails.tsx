@@ -1,4 +1,11 @@
-import { Match, Show, Switch, createSignal, onMount } from "solid-js";
+import {
+  Match,
+  Show,
+  Switch,
+  createSignal,
+  onCleanup,
+  onMount,
+} from "solid-js";
 import { GradeType } from "../../../../../_entities/grade.entity";
 import {
   SchoolEntity,
@@ -17,6 +24,8 @@ import { TripsList } from "./TripsList";
 
 export const [schoolDetailsItem, setSchoolDetailsItem] =
   createSignal<SchoolType>();
+export const [schoolDetailEditing, setSchoolDetailEditing] =
+  createSignal<boolean>(false);
 
 export enum Panels {
   grades = "grades",
@@ -37,10 +46,11 @@ export default function () {
     changeBoard("school-grade-add");
   }
 
+  onCleanup(() => setSchoolDetailEditing(false));
   return (
     <section>
       <SchoolDetailsHeader school={schoolDetailsItem() as SchoolType} />
-      <SchoolHoursSlots school={schoolDetailsItem()} />
+      <SchoolHoursSlots school={schoolDetailsItem() as SchoolType} />
 
       <div class="panel-actions">
         <SchoolDetailsPanelsButton

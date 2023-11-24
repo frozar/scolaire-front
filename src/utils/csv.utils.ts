@@ -202,7 +202,7 @@ export namespace CsvUtils {
     }
     let parsedData = parsedFile.data as Pick<
       SchoolType,
-      "name" | "lon" | "lat"
+      "name" | "lon" | "lat" | "hours"
     >[];
     parsedData = parsedData.filter((data) => data.lat && data.lon && data.name);
 

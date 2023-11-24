@@ -1,44 +1,72 @@
-import { createSignal, onMount } from "solid-js";
-import { HourFormat } from "../../../../../_entities/grade.entity";
+import { GradeEntity } from "../../../../../_entities/grade.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
+import { SchoolDetailUtils } from "../../../../../utils/school-details.utils";
 import TimesInputWrapper from "../molecule/TimesInputWrapper";
+import { schoolDetailEditing } from "./SchoolDetails";
 
 interface SchoolHoursSlotsProps {
-  school?: SchoolType;
+  school: SchoolType;
 }
 
 export function SchoolHoursSlots(props: SchoolHoursSlotsProps) {
-  const [comingStart, setComingStart] = createSignal<HourFormat>();
-  const [comingEnd, setComingEnd] = createSignal<HourFormat>();
+  const { startHourComing, endHourComing, endHourGoing, startHourGoing } =
+    // eslint-disable-next-line solid/reactivity
+    props.school.hours;
 
-  const [goingStart, setGoingStart] = createSignal<HourFormat>();
-  const [goingEnd, setGoingEnd] = createSignal<HourFormat>();
+  function onInputComingStart(value: string) {
+    SchoolDetailUtils.update({
+      hours: {
+        ...props.school.hours,
+        startHourComing: GradeEntity.getHourFormatFromString(value),
+      },
+    });
+  }
 
-  onMount(() => {
-    if (props.school?.hours) {
-      setComingStart(props.school.hours.startHourComing);
-      setComingEnd(props.school.hours.endHourComing);
-      setGoingStart(props.school.hours.startHourGoing);
-      setGoingEnd(props.school.hours.endHourGoing);
-    }
-  });
+  function onInputComingEnd(value: string) {
+    SchoolDetailUtils.update({
+      hours: {
+        ...props.school.hours,
+        endHourComing: GradeEntity.getHourFormatFromString(value),
+      },
+    });
+  }
+
+  function onInputGoingStart(value: string) {
+    SchoolDetailUtils.update({
+      hours: {
+        ...props.school.hours,
+        startHourGoing: GradeEntity.getHourFormatFromString(value),
+      },
+    });
+  }
+
+  function onInputGoingEnd(value: string) {
+    SchoolDetailUtils.update({
+      hours: {
+        ...props.school.hours,
+        endHourGoing: GradeEntity.getHourFormatFromString(value),
+      },
+    });
+  }
 
   return (
-    <div>
+    <>
       <TimesInputWrapper
-        label="Horaires d'arrivé"
-        startSetter={setComingStart}
-        start={comingStart}
-        endSetter={setComingEnd}
-        end={comingEnd}
+        label="Horaires d'arrivés"
+        startValue={GradeEntity.getStringFromHourFormat(startHourComing)}
+        endValue={GradeEntity.getStringFromHourFormat(endHourComing)}
+        onInputStart={onInputComingStart}
+        onInputEnd={onInputComingEnd}
+        disabled={!schoolDetailEditing()}
       />
       <TimesInputWrapper
-        label="Horaires de départ"
-        startSetter={setGoingStart}
-        start={goingStart}
-        endSetter={setGoingEnd}
-        end={goingEnd}
+        label="Horaires de départs"
+        startValue={GradeEntity.getStringFromHourFormat(startHourGoing)}
+        endValue={GradeEntity.getStringFromHourFormat(endHourGoing)}
+        onInputStart={onInputGoingStart}
+        onInputEnd={onInputGoingEnd}
+        disabled={!schoolDetailEditing()}
       />
-    </div>
+    </>
   );
 }

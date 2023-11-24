@@ -44,20 +44,25 @@ export class SchoolEntity {
   }
 
   static dbFormat(
-    school: Pick<SchoolType, "name" | "lon" | "lat">
-  ): Pick<SchoolDBType, "name" | "location"> {
+    school: Pick<SchoolType, "name" | "lon" | "lat" | "hours">
+  ): Pick<SchoolDBType, "name" | "location" | "hours"> {
     return {
       name: school.name,
-      location: EntityUtils.builLocationPoint(school.lon, school.lat),
+      location: EntityUtils.builLocationPoint(
+        school.lon as number,
+        school.lat as number
+      ),
+      hours: SchoolEntity.formatHours(school.hours),
     };
   }
 
-  static dataToDB(datas: Pick<SchoolType, "name" | "lon" | "lat">[]) {
+  static dataToDB(datas: Pick<SchoolType, "name" | "lon" | "lat" | "hours">[]) {
     return datas.map((data) => {
       return SchoolEntity.dbFormat({
         name: data.name,
         lat: +data.lat,
         lon: +data.lon,
+        hours: data.hours,
       });
     });
   }
@@ -74,8 +79,28 @@ export class SchoolEntity {
     return lines;
   }
 
-  static buildHours(hours: HoursDBType | undefined): HoursType | undefined {
-    if (!hours) return undefined;
+  static buildHours(hours: HoursDBType | undefined): HoursType {
+    if (!hours) {
+      return {
+        id: 0,
+        startHourGoing: {
+          hour: 7,
+          minutes: 0,
+        },
+        startHourComing: {
+          hour: 7,
+          minutes: 30,
+        },
+        endHourComing: {
+          hour: 7,
+          minutes: 0,
+        },
+        endHourGoing: {
+          hour: 7,
+          minutes: 30,
+        },
+      };
+    }
     return {
       id: hours.id,
       startHourComing: GradeEntity.getHourFormatFromString(
@@ -86,6 +111,29 @@ export class SchoolEntity {
       ),
       endHourComing: GradeEntity.getHourFormatFromString(hours.end_hour_coming),
       endHourGoing: GradeEntity.getHourFormatFromString(hours.end_hour_going),
+    };
+  }
+
+  static formatHours(hours: HoursType | undefined): HoursDBType {
+    if (!hours) {
+      return {
+        id: 0,
+        start_hour_coming: "7:0",
+        end_hour_coming: "7:30",
+        start_hour_going: "16:0",
+        end_hour_going: "16:30",
+      };
+    }
+    return {
+      id: hours.id,
+      start_hour_coming: GradeEntity.getStringFromHourFormat(
+        hours.startHourComing
+      ),
+      end_hour_coming: GradeEntity.getStringFromHourFormat(hours.endHourComing),
+      start_hour_going: GradeEntity.getStringFromHourFormat(
+        hours.startHourGoing
+      ),
+      end_hour_going: GradeEntity.getStringFromHourFormat(hours.endHourGoing),
     };
   }
 }
@@ -101,7 +149,7 @@ export type SchoolType = {
   leafletId: number;
   selected: Accessor<boolean>;
   setSelected: Setter<boolean>;
-  hours?: HoursType;
+  hours: HoursType;
 };
 
 export type SchoolDBType = {

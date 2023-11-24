@@ -1,13 +1,12 @@
-import { Accessor, Setter } from "solid-js";
-import { HourFormat } from "../../../../../_entities/grade.entity";
 import StartEndTimeSchedulesInput from "./StartEndTimeSchedulesInput";
 
 interface TimesInputWrapper {
-  startSetter: Setter<HourFormat>;
-  start: Accessor<HourFormat | undefined>;
-  endSetter: Setter<HourFormat>;
-  end: Accessor<HourFormat | undefined>;
+  onInputStart: (value: string) => void;
+  onInputEnd: (value: string) => void;
+  startValue: string;
+  endValue: string;
   label: string;
+  disabled?: boolean;
 }
 
 export default function (props: TimesInputWrapper) {
@@ -15,10 +14,11 @@ export default function (props: TimesInputWrapper) {
     <div class="schedules-input my-5">
       <p>{props.label}</p>
       <StartEndTimeSchedulesInput
-        startSetter={props.startSetter}
-        start={props.start}
-        endSetter={props.endSetter}
-        end={props.end}
+        onInputStart={props.onInputStart}
+        onInputEnd={props.onInputEnd}
+        startValue={props.startValue}
+        endValue={props.endValue}
+        disabled={props.disabled}
       />
     </div>
   );

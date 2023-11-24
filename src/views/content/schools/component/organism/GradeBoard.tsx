@@ -1,5 +1,9 @@
-import { createSignal, onCleanup } from "solid-js";
-import { GradeType, HourFormat } from "../../../../../_entities/grade.entity";
+import { createSignal, onCleanup, onMount } from "solid-js";
+import {
+  GradeEntity,
+  GradeType,
+  HourFormat,
+} from "../../../../../_entities/grade.entity";
 import { GradeService } from "../../../../../_services/grade.service";
 import BoardFooterActions from "../../../board/component/molecule/BoardFooterActions";
 import LabeledInputField from "../../../board/component/molecule/LabeledInputField";
@@ -18,15 +22,17 @@ import { schoolDetailsItem, setSchoolDetailsItem } from "./SchoolDetails";
 
 export const [selectedGrade, setSelectedGrade] = createSignal<GradeType>();
 
+// TODO Refactor
 // eslint-disable-next-line solid/reactivity
 export default function () {
+  const defaultTime = {
+    hour: 0,
+    minutes: 0,
+  };
+
   let defaultGrade: GradeType;
   // Case adding a new grade
   if (onBoard() == "school-grade-add") {
-    const defaultTime = {
-      hour: 0,
-      minutes: 0,
-    };
     defaultGrade = {
       name: "Nom de grade par défaut",
       morningStart: defaultTime,
@@ -48,18 +54,17 @@ export default function () {
 
   const [gradeName, setGradeName] = createSignal(defaultGrade.name);
 
-  const [morningStart, setMorningStart] = createSignal<HourFormat>(
-    defaultGrade.morningStart
-  );
-  const [morningEnd, setMorningEnd] = createSignal<HourFormat>(
-    defaultGrade.morningEnd
-  );
-  const [afternoonEnd, setAfternoonEnd] = createSignal<HourFormat>(
-    defaultGrade.afternoonEnd
-  );
-  const [afternoonStart, setAfternoonStart] = createSignal<HourFormat>(
-    defaultGrade.afternoonStart
-  );
+  const [morningStart, setMorningStart] = createSignal<HourFormat>();
+  const [morningEnd, setMorningEnd] = createSignal<HourFormat>();
+  const [afternoonStart, setAfternoonStart] = createSignal<HourFormat>();
+  const [afternoonEnd, setAfternoonEnd] = createSignal<HourFormat>();
+
+  onMount(() => {
+    setMorningStart(defaultGrade.morningStart);
+    setMorningEnd(defaultGrade.morningEnd);
+    setAfternoonEnd(defaultGrade.afternoonEnd);
+    setAfternoonStart(defaultGrade.afternoonStart);
+  });
 
   function onInputGradeName(
     e: Event & {
@@ -78,10 +83,10 @@ export default function () {
     const newGrade = await GradeService.create({
       schoolId: schoolId,
       name: gradeName(),
-      morningStart: morningStart(),
-      morningEnd: morningEnd(),
-      afternoonStart: afternoonStart(),
-      afternoonEnd: afternoonEnd(),
+      morningStart: morningStart() as HourFormat,
+      morningEnd: morningEnd() as HourFormat,
+      afternoonStart: afternoonStart() as HourFormat,
+      afternoonEnd: afternoonEnd() as HourFormat,
     });
 
     setSchools((prev) => {
@@ -107,10 +112,10 @@ export default function () {
     const updatedGrade = await GradeService.update({
       ...selectedGrade(),
       name: gradeName(),
-      morningStart: morningStart(),
-      morningEnd: morningEnd(),
-      afternoonStart: afternoonStart(),
-      afternoonEnd: afternoonEnd(),
+      morningStart: morningStart() as HourFormat,
+      morningEnd: morningEnd() as HourFormat,
+      afternoonStart: afternoonStart() as HourFormat,
+      afternoonEnd: afternoonEnd() as HourFormat,
     });
 
     setSchools((prev) => {
@@ -138,6 +143,22 @@ export default function () {
 
   function onClickCancel() {
     changeBoard("school-details");
+  }
+
+  function onInputComingStart(value: string) {
+    setMorningStart(GradeEntity.getHourFormatFromString(value));
+  }
+
+  function onInputComingEnd(value: string) {
+    setMorningEnd(GradeEntity.getHourFormatFromString(value));
+  }
+
+  function onInputGoingStart(value: string) {
+    setMorningStart(GradeEntity.getHourFormatFromString(value));
+  }
+
+  function onInputGoingEnd(value: string) {
+    setMorningEnd(GradeEntity.getHourFormatFromString(value));
   }
 
   onCleanup(() => setSelectedGrade());
@@ -168,17 +189,17 @@ export default function () {
 
         <TimesInputWrapper
           label="Horaires matin"
-          startSetter={setMorningStart}
-          start={morningStart}
-          endSetter={setMorningEnd}
-          end={morningEnd}
+          startValue={GradeEntity.getStringFromHourFormat(morningStart())}
+          endValue={GradeEntity.getStringFromHourFormat(morningEnd())}
+          onInputStart={onInputComingStart}
+          onInputEnd={onInputComingEnd}
         />
         <TimesInputWrapper
           label="Horaires après-midi"
-          startSetter={setAfternoonStart}
-          start={afternoonStart}
-          endSetter={setAfternoonEnd}
-          end={afternoonEnd}
+          startValue={GradeEntity.getStringFromHourFormat(setAfternoonStart())}
+          endValue={GradeEntity.getStringFromHourFormat(setAfternoonEnd())}
+          onInputStart={onInputGoingStart}
+          onInputEnd={onInputGoingEnd}
         />
       </div>
 

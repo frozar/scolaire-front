@@ -4,6 +4,8 @@ import {
 } from "../_entities/_utils.entity";
 import { SchoolType } from "../_entities/school.entity";
 import { SchoolService } from "../_services/school.service";
+import { addNewUserInformation } from "../signaux";
+import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import {
   getLines,
   setLines,
@@ -18,6 +20,10 @@ import {
 } from "../views/content/map/component/organism/StopPoints";
 
 export namespace SchoolUtils {
+  export function get(schoolId: number): SchoolType {
+    return getSchools().filter((school) => school.id == schoolId)[0];
+  }
+
   export function getName(schoolId: number) {
     return getSchools().filter((school) => school.id == schoolId)[0].name;
   }
@@ -144,6 +150,37 @@ export namespace SchoolUtils {
         };
       });
 
+      return schools;
+    });
+  }
+
+  export function isValidSchool(school: SchoolType) {
+    let valid = true;
+    if (!school.hours) {
+      valid = false;
+      addNewUserInformation({
+        displayed: true,
+        level: MessageLevelEnum.error,
+        type: MessageTypeEnum.global,
+        content:
+          "Compléter touts les champs pour définir les plages horraire d'arrivé/départ",
+      });
+    }
+
+    return valid;
+  }
+
+  export async function update(school: SchoolType) {
+    const updatedSchool: SchoolType = await SchoolService.update(school);
+    const schoolIndex = getSchools().findIndex(
+      (item) => item.id == updatedSchool.id
+    );
+    if (schoolIndex == -1) return;
+
+    setSchools((prev) => {
+      if (!prev) return prev;
+      const schools = [...prev];
+      schools[schoolIndex] = updatedSchool;
       return schools;
     });
   }
