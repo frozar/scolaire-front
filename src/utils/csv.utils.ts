@@ -28,22 +28,21 @@ export namespace CsvUtils {
   export async function getImportSchoolsCsvDiff(
     file: File
   ): Promise<SchoolsCsvDiffType> {
-    const parsedFileData = (await parsedCsvFileToSchoolData(file)) as Pick<
+    const schoolsFromCsv = (await parsedCsvFileToSchoolData(file)) as Pick<
       SchoolDBType,
       "name" | "location"
     >[];
 
-    // TODO: Replace names and ids with complete object ?
     const diff: SchoolsCsvDiffType = { added: [], modified: [], deleted: [] };
 
     // Check if modified or added
-    loop: for (const data of parsedFileData) {
+    loop: for (const schoolFromCsv of schoolsFromCsv) {
       for (const school of getSchools()) {
         // Case modified
-        if (data.name == school.name) {
+        if (schoolFromCsv.name == school.name) {
           if (
-            data.location.data.lat != school.lat ||
-            data.location.data.lng != school.lon
+            schoolFromCsv.location.data.lat != school.lat ||
+            schoolFromCsv.location.data.lng != school.lon
           ) {
             diff.modified.push(school.id);
             continue loop;
@@ -52,14 +51,18 @@ export namespace CsvUtils {
       }
 
       // Case added
-      if (!getSchools().some((school) => school.name == data.name)) {
-        diff.added.push(data.name);
+      if (!getSchools().some((school) => school.name == schoolFromCsv.name)) {
+        diff.added.push(schoolFromCsv.name);
       }
     }
 
     // Check if deleted
     for (const school of getSchools()) {
-      if (!parsedFileData.some((data) => data.name == school.name)) {
+      if (
+        !schoolsFromCsv.some(
+          (schoolFromCsv) => schoolFromCsv.name == school.name
+        )
+      ) {
         diff.deleted.push(school.id);
       }
     }
