@@ -9,7 +9,7 @@ true && ClickOutside;
 
 let refDialogBox: HTMLDivElement;
 
-export default function (props: { children: JSXElement }) {
+export function Dialog(props: { children: JSXElement }) {
   const child = children(() => props.children);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

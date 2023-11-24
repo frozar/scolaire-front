@@ -7,8 +7,8 @@ import {
 import { CsvUtils, SchoolsCsvDiffType } from "../../../../../utils/csv.utils";
 import { DialogUtils } from "../../../../../utils/dialog.utils";
 import { setSchools } from "../../../map/component/organism/SchoolPoints";
-import DiffsCollapsible from "./DiffsCollapsible";
-import { csvToImport, schoolsDiff } from "./importSelection";
+import { DiffCollapsible } from "./DiffCollapsible";
+import { csvToImport, schoolsDiff } from "./ImportSelection";
 
 export enum SchoolDiffEnum {
   added = "added",
@@ -20,7 +20,7 @@ export type UncheckedElementType = {
   [diffType: string]: (number | string)[];
 };
 
-export default function () {
+export function ImportDiff() {
   const [uncheckedValues, setUncheckedValues] =
     createSignal<UncheckedElementType>({
       added: [],
@@ -79,19 +79,19 @@ export default function () {
   return (
     <>
       <div id="import-dialog-title">Modifications à appliquer :</div>
-      <DiffsCollapsible
+      <DiffCollapsible
         setter={setUncheckedValues}
         title="Ajouter"
         schools={schoolsDiff()?.added as string[]}
         diffType={SchoolDiffEnum.added}
       />
-      <DiffsCollapsible
+      <DiffCollapsible
         setter={setUncheckedValues}
         title="Modifier"
         schools={schoolsDiff()?.modified as number[]}
         diffType={SchoolDiffEnum.modified}
       />
-      <DiffsCollapsible
+      <DiffCollapsible
         setter={setUncheckedValues}
         title="Supprimer"
         schools={schoolsDiff()?.deleted as number[]}

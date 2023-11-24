@@ -1,7 +1,7 @@
 import { For, Setter } from "solid-js";
 import { SchoolUtils } from "../../../../../utils/school.utils";
 import CollapsibleElement from "../organism/CollapsibleElement";
-import { SchoolDiffEnum, UncheckedElementType } from "./ImportDiffs";
+import { SchoolDiffEnum, UncheckedElementType } from "./ImportDiff";
 
 function onChangeSchoolCheckbox(
   event: Event & {
@@ -27,7 +27,7 @@ function onChangeSchoolCheckbox(
   }
 }
 
-export default function (props: {
+export function DiffCollapsible(props: {
   setter: Setter<UncheckedElementType>;
   title: string;
   schools: (number | string)[];

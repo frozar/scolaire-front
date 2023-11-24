@@ -15,7 +15,7 @@ export enum CsvTypeEnum {
 export const [csvToImport, setCsvToImport] = createSignal<File>();
 export const [schoolsDiff, setSchoolsDiff] = createSignal<SchoolsCsvDiffType>();
 
-export default function () {
+export function ImportSelection() {
   const [importCsvType, setImportCsvType] = createSignal<CsvTypeEnum>();
   const [refButton, setRefButton] = createSignal<
     HTMLButtonElement | undefined

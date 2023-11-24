@@ -22,7 +22,7 @@ import { tryConnection } from "./views/layout/authentication";
 import "./App.css";
 import UnloggedUserInformation from "./component/molecule/UnloggedUserInformation";
 import UserInstruction from "./component/molecule/UserInstruction";
-import Dialogs from "./views/content/board/component/organism/Dialogs";
+import { Dialogs } from "./views/content/board/component/organism/Dialogs";
 
 const [, { getSelectedMenu }] = useStateGui();
 
