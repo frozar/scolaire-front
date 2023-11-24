@@ -20,8 +20,8 @@ import {
 } from "../views/content/map/component/organism/StopPoints";
 
 export namespace SchoolUtils {
-  export function get(schoolId: number): SchoolType | undefined {
-    return getSchools().find((school) => school.id == schoolId);
+  export function get(schoolId: number): SchoolType {
+    return getSchools().filter((school) => school.id == schoolId)[0];
   }
 
   export function getName(schoolId: number) {
