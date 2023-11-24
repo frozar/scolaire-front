@@ -65,9 +65,7 @@ export enum displayTripModeEnum {
 export const [displayTripMode, setDisplayTripMode] =
   createSignal<displayTripModeEnum>(displayTripModeEnum.straight);
 
-export const [currentDrawTrip, setCurrentDrawTrip] = createSignal<TripType>(
-  TripEntity.defaultTrip()
-);
+export const [currentDrawTrip, setCurrentDrawTrip] = createSignal<TripType>();
 
 export const [currentTripIndex, setCurrentTripIndex] = createSignal(0);
 
@@ -75,6 +73,7 @@ export const [isInUpdate, setIsInUpdate] = createSignal(false);
 
 export function DrawTripBoard() {
   onMount(() => {
+    setCurrentDrawTrip(TripEntity.defaultTrip());
     if (isInUpdate()) {
     } else {
       setCurrentDrawTrip(TripEntity.defaultTrip());
@@ -88,6 +87,7 @@ export function DrawTripBoard() {
     const formatedSchedule = GradeEntity.getHourFormatFromString(value);
     if (!formatedSchedule) return;
     setCurrentDrawTrip((prev) => {
+      if (!prev) return prev;
       return { ...prev, startTime: formatedSchedule };
     });
   }
@@ -95,13 +95,13 @@ export function DrawTripBoard() {
   return (
     <div class="add-line-information-board-content">
       <Show when={currentStep() == DrawTripStep.schoolSelection}>
-        <SelectedSchool schoolSelected={currentDrawTrip().schools} />
+        <SelectedSchool schoolSelected={currentDrawTrip()?.schools ?? []} />
       </Show>
 
       <Show when={currentStep() == DrawTripStep.gradeSelection}>
         <BoardTitle title={"Sélection des niveaux"} />
 
-        <For each={currentDrawTrip().schools}>
+        <For each={currentDrawTrip()?.schools}>
           {(school_elem) => {
             return (
               <CheckableGradeListBySchool
@@ -118,10 +118,12 @@ export function DrawTripBoard() {
       <Show when={currentStep() == DrawTripStep.editTrip}>
         <div class="bus-trip-information-board-content-schools">
           <SchoolsEnumeration
-            schoolsName={currentDrawTrip().schools.map((school) => school.name)}
+            schoolsName={
+              currentDrawTrip()?.schools.map((school) => school.name) ?? []
+            }
           />
-          <Show when={currentDrawTrip().tripPoints.length > 0}>
-            <DrawHelperButton schools={currentDrawTrip().schools} />
+          <Show when={(currentDrawTrip()?.tripPoints.length ?? 0) > 0}>
+            <DrawHelperButton schools={currentDrawTrip()?.schools} />
           </Show>
         </div>
         <CollapsibleElement title="Métriques">
@@ -129,9 +131,10 @@ export function DrawTripBoard() {
         </CollapsibleElement>
         <LabeledInputField
           label="Nom de la course"
-          value={currentDrawTrip().name}
+          value={currentDrawTrip()?.name ?? ""}
           onInput={(e) =>
             setCurrentDrawTrip((trip) => {
+              if (!trip) return trip;
               return { ...trip, name: e.target.value };
             })
           }
@@ -149,9 +152,10 @@ export function DrawTripBoard() {
         </div>
         <div class="flex mt-4 justify-between">
           <TripColorPicker
-            defaultColor={currentDrawTrip().color}
+            defaultColor={currentDrawTrip()?.color}
             onChange={(color) =>
               setCurrentDrawTrip((trip) => {
+                if (!trip) return trip;
                 return { ...trip, color: color };
               })
             }
@@ -179,7 +183,7 @@ export function DrawTripBoard() {
       <Show when={currentStep() == DrawTripStep.editTrip}>
         <div class="bus-trip-information-board-content">
           <Show
-            when={currentDrawTrip().tripPoints.length > 0}
+            when={(currentDrawTrip()?.tripPoints.length ?? 0) > 0}
             fallback={
               <div class="flex w-4/5 text-xs justify-center">
                 Veuillez sélectionner des points sur la carte
@@ -187,7 +191,7 @@ export function DrawTripBoard() {
             }
           >
             <TripTimeline
-              trip={currentDrawTrip()}
+              trip={currentDrawTrip() as TripType}
               setTrip={setCurrentDrawTrip}
               inDraw={true}
             />
@@ -214,9 +218,9 @@ export function DrawTripBoard() {
 
 export async function createOrUpdateTrip() {
   // eslint-disable-next-line solid/reactivity
-  let updatedTrip: TripType = currentDrawTrip();
-  if (currentDrawTrip().id == undefined) {
-    updatedTrip = await TripService.create(currentDrawTrip());
+  let updatedTrip: TripType = currentDrawTrip() as TripType;
+  if (currentDrawTrip()?.id == undefined) {
+    updatedTrip = await TripService.create(currentDrawTrip() as TripType);
     const selectedLineId = getSelectedLine()?.id as number;
 
     setLines((lines) =>
@@ -227,7 +231,7 @@ export async function createOrUpdateTrip() {
       )
     );
   } else {
-    updatedTrip = await TripService.update(currentDrawTrip());
+    updatedTrip = await TripService.update(currentDrawTrip() as TripType);
 
     setLines((prev) =>
       prev.map((line) => {
@@ -256,7 +260,7 @@ async function nextStep() {
   enableSpinningWheel();
   switch (currentStep()) {
     case DrawTripStep.schoolSelection:
-      if (currentDrawTrip().schools.length < 1) {
+      if ((currentDrawTrip()?.schools.length ?? 0) < 1) {
         break;
       }
       const isValidable = (grade: GradeType) => {
@@ -269,7 +273,7 @@ async function nextStep() {
           )
           .flat();
 
-        return selectedGradeId.includes(grade.id);
+        return selectedGradeId?.includes(grade.id);
       };
 
       setDrawTripCheckableGrade(
@@ -290,6 +294,7 @@ async function nextStep() {
         .map((grade) => grade.item) as GradeType[];
 
       setCurrentDrawTrip((trip) => {
+        if (!trip) return trip;
         return { ...trip, grades };
       });
 
@@ -297,19 +302,22 @@ async function nextStep() {
       break;
 
     case DrawTripStep.editTrip:
-      if (currentDrawTrip().tripPoints.length < 2) {
+      if ((currentDrawTrip()?.tripPoints.length ?? 0) < 2) {
         break;
       }
-      if (!currentDrawTrip().waypoints) {
+      if (!currentDrawTrip()?.waypoints) {
         const waypoints = WaypointEntity.createWaypointsFromTrip(
-          currentDrawTrip()
+          currentDrawTrip() as TripType
         );
         setCurrentDrawTrip((trip) => {
+          if (!trip) return trip;
           return { ...trip, waypoints };
         });
       }
       if (displayTripMode() == displayTripModeEnum.straight) {
-        await CurrentDrawTripUtils.updatePolylineWithOsrm(currentDrawTrip());
+        await CurrentDrawTripUtils.updatePolylineWithOsrm(
+          currentDrawTrip() as TripType
+        );
       }
       await createOrUpdateTrip();
 
@@ -348,7 +356,7 @@ function prevStep() {
           return getLines()
             .map((line) => line.trips)
             .flat()
-            .filter((trip) => trip.id == currentDrawTrip().id)[0];
+            .filter((trip) => trip.id == currentDrawTrip()?.id)[0];
         });
         setIsInUpdate(false);
 
@@ -357,6 +365,7 @@ function prevStep() {
       } else {
         if (displayTripMode() == displayTripModeEnum.onRoad) {
           setCurrentDrawTrip((trip) => {
+            if (!trip) return trip;
             return { ...trip, latLngs: [] };
           });
         }
@@ -371,23 +380,27 @@ function prevStep() {
 
 async function onClick() {
   if (displayTripMode() == displayTripModeEnum.straight) {
-    if (currentDrawTrip().tripPoints.length < 2) {
+    if ((currentDrawTrip()?.tripPoints.length ?? 0) < 2) {
       return;
     }
-    if (!currentDrawTrip().waypoints) {
+    if (!currentDrawTrip()?.waypoints) {
       const waypoints = WaypointEntity.createWaypointsFromTrip(
-        currentDrawTrip()
+        currentDrawTrip() as TripType
       );
       setCurrentDrawTrip((trip) => {
+        if (!trip) return trip;
         return { ...trip, waypoints: waypoints };
       });
     }
-    await CurrentDrawTripUtils.updatePolylineWithOsrm(currentDrawTrip());
+    await CurrentDrawTripUtils.updatePolylineWithOsrm(
+      currentDrawTrip() as TripType
+    );
 
     setDisplayTripMode(displayTripModeEnum.onRoad);
   } else if (displayTripMode() == displayTripModeEnum.onRoad) {
     // TODO me semble étrange
     setCurrentDrawTrip((trip) => {
+      if (!trip) return trip;
       return { ...trip, latLngs: [] };
     });
 
