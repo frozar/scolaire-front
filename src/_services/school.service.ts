@@ -2,8 +2,8 @@ import {
   SchoolDBType,
   SchoolEntity,
   SchoolType,
+  importSchoolsDBType,
 } from "../_entities/school.entity";
-import { importSchoolsDBType } from "../views/content/board/component/molecule/ImportDiffs";
 import { ServiceUtils } from "./_utils.service";
 
 export class SchoolService {

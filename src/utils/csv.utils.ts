@@ -3,8 +3,10 @@ import {
   SchoolDBType,
   SchoolEntity,
   SchoolType,
+  importSchoolsDBType,
 } from "../_entities/school.entity";
 import { StopDBType, StopEntity, StopType } from "../_entities/stop.entity";
+import { SchoolService } from "../_services/school.service";
 import { StopService } from "../_services/stop.service";
 import {
   StudentToGrade,
@@ -17,6 +19,7 @@ import {
   setSchools,
 } from "../views/content/map/component/organism/SchoolPoints";
 import { setStops } from "../views/content/map/component/organism/StopPoints";
+import { SchoolUtils } from "./school.utils";
 
 export type SchoolsCsvDiffType = {
   added: string[]; // schoolNames
@@ -25,6 +28,37 @@ export type SchoolsCsvDiffType = {
 };
 
 export namespace CsvUtils {
+  export async function importSchools(
+    file: File,
+    filteredDiffs: SchoolsCsvDiffType
+  ): Promise<SchoolType[]> {
+    const parsedFileData = (await parsedCsvFileToSchoolData(file)) as Pick<
+      SchoolDBType,
+      "name" | "location"
+    >[];
+
+    const diffDBData: importSchoolsDBType = {
+      schools_to_add: [],
+      schools_to_modify: [],
+      schools_to_delete: [],
+    };
+    filteredDiffs.deleted.forEach((schoolIid) =>
+      diffDBData.schools_to_delete.push(schoolIid)
+    );
+    filteredDiffs.added.forEach((name) => {
+      const school = parsedFileData.filter((school) => school.name == name)[0];
+      diffDBData.schools_to_add.push(school);
+    });
+    filteredDiffs.modified.forEach((schoolId) => {
+      const school = SchoolUtils.get(schoolId);
+      const location = parsedFileData.filter(
+        (data) => data.name == school.name
+      )[0].location;
+      diffDBData.schools_to_modify.push({ id: school.id, location });
+    });
+
+    return await SchoolService.import(diffDBData);
+  }
   export async function getImportSchoolsCsvDiff(
     file: File
   ): Promise<SchoolsCsvDiffType> {

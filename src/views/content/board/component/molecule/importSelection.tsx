@@ -25,13 +25,13 @@ export default function () {
     refButton()?.focus();
   });
 
-  async function handlerOnClick() {
+  async function onClick() {
     switch (importCsvType()) {
       case CsvTypeEnum.schools:
+        // TODO: Put all this case into a function in CsvUtils
         const diff = await CsvUtils.getImportSchoolsCsvDiff(
           csvToImport() as File
         );
-        console.log("diff =>", diff);
         setSchoolsDiff(diff);
         setDialogToDisplay(DialogToDisplayEnum.diff);
         return;
@@ -90,7 +90,7 @@ export default function () {
         />
         <Button
           ref={setRefButton}
-          onClick={handlerOnClick}
+          onClick={onClick}
           label={"Valider"}
           variant="primary"
           isDisabled={importCsvType() == undefined}

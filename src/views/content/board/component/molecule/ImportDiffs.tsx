@@ -1,6 +1,4 @@
 import { createEffect, createSignal } from "solid-js";
-import { SchoolDBType } from "../../../../../_entities/school.entity";
-import { SchoolService } from "../../../../../_services/school.service";
 import Button from "../../../../../component/atom/Button";
 import {
   disableSpinningWheel,
@@ -8,7 +6,6 @@ import {
 } from "../../../../../signaux";
 import { CsvUtils, SchoolsCsvDiffType } from "../../../../../utils/csv.utils";
 import { DialogUtils } from "../../../../../utils/dialog.utils";
-import { SchoolUtils } from "../../../../../utils/school.utils";
 import { setSchools } from "../../../map/component/organism/SchoolPoints";
 import DiffsCollapsible from "./DiffsCollapsible";
 import { csvToImport, schoolsDiff } from "./importSelection";
@@ -55,36 +52,15 @@ export default function () {
     };
   }
 
-  // TODO: Clean
-  async function handlerOnClick() {
-    const file = csvToImport() as File;
-    const parsedFileData = (await CsvUtils.parsedCsvFileToSchoolData(
-      file
-    )) as Pick<SchoolDBType, "name" | "location">[];
-
-    const diffDbData: importSchoolsDBType = {
-      schools_to_add: [],
-      schools_to_modify: [],
-      schools_to_delete: [],
-    };
-    schoolsDiffFiltered().deleted.forEach((schoolIid) =>
-      diffDbData.schools_to_delete.push(schoolIid)
-    );
-    schoolsDiffFiltered().added.forEach((name) => {
-      const school = parsedFileData.filter((school) => school.name == name)[0];
-      diffDbData.schools_to_add.push(school);
-    });
-    schoolsDiffFiltered().modified.forEach((schoolId) => {
-      const school = SchoolUtils.get(schoolId);
-      const location = parsedFileData.filter(
-        (data) => data.name == school.name
-      )[0].location;
-      diffDbData.schools_to_modify.push({ id: school.id, location });
-    });
-    console.log("DB Data =>", diffDbData);
+  async function onClick() {
     DialogUtils.closeDialog();
     enableSpinningWheel();
-    const schools = await SchoolService.import(diffDbData);
+
+    const schools = await CsvUtils.importSchools(
+      csvToImport() as File,
+      schoolsDiffFiltered()
+    );
+
     setSchools(schools);
     disableSpinningWheel();
   }
@@ -99,10 +75,6 @@ export default function () {
     }
     return false;
   }
-
-  createEffect(() =>
-    console.log("schoolsDiffFiltered()", schoolsDiffFiltered())
-  );
 
   return (
     <>
@@ -135,7 +107,7 @@ export default function () {
         />
         <Button
           ref={setRefButton}
-          onClick={handlerOnClick}
+          onClick={onClick}
           label={"Valider"}
           variant="primary"
           isDisabled={noElementChecked()}
@@ -144,9 +116,3 @@ export default function () {
     </>
   );
 }
-
-export type importSchoolsDBType = {
-  schools_to_add: Pick<SchoolDBType, "name" | "location">[];
-  schools_to_modify: Pick<SchoolDBType, "id" | "location">[];
-  schools_to_delete: number[];
-};
