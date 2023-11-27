@@ -16,7 +16,7 @@ export const [csv, setCsv] = createSignal<File>();
 export const [diff, setDiff] = createSignal<CsvDiffType>();
 
 export function ImportSelection() {
-  const [CsvType, setCsvType] = createSignal<CsvEnum>();
+  const [csvType, setCsvType] = createSignal<CsvEnum>();
   const [refButton, setRefButton] = createSignal<
     HTMLButtonElement | undefined
   >();
@@ -25,17 +25,25 @@ export function ImportSelection() {
     refButton()?.focus();
   });
 
+  createEffect(() => {
+    console.log("csvType =>", csvType());
+  });
+
   async function onClick() {
-    switch (CsvType()) {
+    let diff: CsvDiffType;
+    switch (csvType()) {
       case CsvEnum.schools:
-        const diff = await CsvUtils.getSchoolsDiff(csv() as File);
+        diff = await CsvUtils.getSchoolsDiff(csv() as File);
         setDiff(diff);
         setDialogToDisplay(DialogToDisplayEnum.diff);
         return;
 
       case CsvEnum.stops:
-        console.log("todo stops");
-        break;
+        diff = await CsvUtils.getStopsDiff(csv() as File);
+        setDiff(diff);
+        setDialogToDisplay(DialogToDisplayEnum.diff);
+        // console.log("todo stops");
+        return;
 
       case CsvEnum.students:
         console.log("todo students");
@@ -90,7 +98,7 @@ export function ImportSelection() {
           onClick={onClick}
           label={"Valider"}
           variant="primary"
-          isDisabled={CsvType() == undefined}
+          isDisabled={csvType() == undefined}
         />
       </div>
     </>
