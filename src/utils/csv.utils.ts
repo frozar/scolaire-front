@@ -66,6 +66,10 @@ export namespace CsvUtils {
       SchoolDBType,
       "name" | "location"
     >[];
+    getSchools().forEach((school) =>
+      console.log(school.name, school.lat, "|", school.lon)
+    );
+    console.log("schools from csv", schoolsFromCsv);
 
     const diff: SchoolsCsvDiffType = { added: [], modified: [], deleted: [] };
 
@@ -73,12 +77,61 @@ export namespace CsvUtils {
     loop: for (const schoolFromCsv of schoolsFromCsv) {
       for (const school of getSchools()) {
         // Case modified
+        // if (schoolFromCsv.name == school.name) {
+        //   if (
+        //     // in xano geographical point round with 12 numbers after decimal point
+        //     _.round(schoolFromCsv.location.data.lat, 12) != school.lat ||
+        //     _.round(schoolFromCsv.location.data.lng, 12) != school.lon
+        //   ) {
+        //     console.log(
+        //       "rounded=>",
+        //       _.round(schoolFromCsv.location.data.lat, 12)
+        //     );
+        //     console.log(
+        //       "rounded=>",
+        //       _.round(schoolFromCsv.location.data.lng, 12)
+        //     );
+        //     diff.modified.push(school.id);
+        //     continue loop;
+        //   }
+        // }
+        // if (schoolFromCsv.name == school.name) {
+        //   if (
+        //     // in xano geographical point round with 12 numbers after decimal point
+        //     Math.round(schoolFromCsv.location.data.lat * 1000000000000) /
+        //       1000000000000 !=
+        //       school.lat ||
+        //     Math.round(schoolFromCsv.location.data.lng * 1000000000000) /
+        //       1000000000000 !=
+        //       school.lon
+        //   ) {
+        //     console.log(
+        //       "rounded=>",
+        //       Math.round(-schoolFromCsv.location.data.lat * 1000000000000)
+        //     );
+        //     console.log(
+        //       "rounded=>",
+        //       Math.round(-schoolFromCsv.location.data.lng * 1000000000000)
+        //     );
+        //     diff.modified.push(school.id);
+        //     continue loop;
+        //   }
+        // }
         if (schoolFromCsv.name == school.name) {
           if (
             // in xano geographical point round with 12 numbers after decimal point
-            _.round(schoolFromCsv.location.data.lat, 12) != school.lat ||
-            _.round(schoolFromCsv.location.data.lng, 12) != school.lon
+            _.round(Math.abs(schoolFromCsv.location.data.lat), 12) !=
+              school.lat ||
+            _.round(Math.abs(schoolFromCsv.location.data.lng), 12) != school.lon
           ) {
+            // console.log(
+            //   "rounded=>",
+            //   Math.round(-schoolFromCsv.location.data.lat * 1000000000000)
+            // );
+            // console.log(
+            //   "rounded=>",
+            //   Math.round(-schoolFromCsv.location.data.lng * 1000000000000)
+            // );
             diff.modified.push(school.id);
             continue loop;
           }
