@@ -65,7 +65,9 @@ export enum displayTripModeEnum {
 export const [displayTripMode, setDisplayTripMode] =
   createSignal<displayTripModeEnum>(displayTripModeEnum.straight);
 
-export const [currentDrawTrip, setCurrentDrawTrip] = createSignal<TripType>();
+export const [currentDrawTrip, setCurrentDrawTrip] = createSignal<TripType>(
+  TripEntity.defaultTrip()
+);
 
 export const [currentTripIndex, setCurrentTripIndex] = createSignal(0);
 
