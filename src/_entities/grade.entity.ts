@@ -1,28 +1,25 @@
-import { AssociatedSchoolType } from "./_utils.entity";
+import { AssociatedSchoolType, HoursDBType, HoursType } from "./_utils.entity";
 import { DBAssociatedStop } from "./stop.entity";
+import { TimeUtils } from "./time.utils";
 
 export namespace GradeEntity {
   export function build(dbData: GradeDBType): GradeType {
     return {
       id: dbData.id,
       name: dbData.name,
-      morningStart: getHourFormatFromString(dbData.morning_start),
-      morningEnd: getHourFormatFromString(dbData.morning_end),
-      afternoonStart: getHourFormatFromString(dbData.afternoon_start),
-      afternoonEnd: getHourFormatFromString(dbData.afternoon_end),
+      hours: TimeUtils.buildHours(dbData.hours),
     };
   }
+
   export function dbFormat(grade: GradeType): Omit<GradeDBType, "id"> {
     return {
       school_id: grade.schoolId as number,
       name: grade.name,
-      morning_start: getStringFromHourFormat(grade.morningStart),
-      morning_end: getStringFromHourFormat(grade.morningEnd),
-      afternoon_start: getStringFromHourFormat(grade.afternoonStart),
-      afternoon_end: getStringFromHourFormat(grade.afternoonEnd),
+      hours: TimeUtils.formatHours(grade.hours),
     };
   }
 
+  // TODO Maybe replace these functions into another file ? time.utils.ts
   export function getStringFromHourFormat(time: HourFormat | undefined) {
     if (time == undefined) return "00:00";
     let houre = time.hour.toString();
@@ -60,10 +57,7 @@ export type GradeDBType = {
   id: number;
   school_id: number;
   name: string;
-  morning_start: string;
-  morning_end: string;
-  afternoon_start: string;
-  afternoon_end: string;
+  hours?: HoursDBType;
   associated?: DBAssociatedStop[];
 };
 
@@ -71,10 +65,7 @@ export type GradeType = {
   id?: number;
   schoolId?: number;
   name: string;
-  morningStart: HourFormat;
-  morningEnd: HourFormat;
-  afternoonStart: HourFormat;
-  afternoonEnd: HourFormat;
+  hours: HoursType;
   associated?: AssociatedSchoolType[];
 };
 
