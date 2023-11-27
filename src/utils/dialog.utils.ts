@@ -1,3 +1,4 @@
+import { setCsvType } from "../views/content/board/component/molecule/ImportSelection";
 import {
   DialogToDisplayEnum,
   setDialogToDisplay,
@@ -6,7 +7,6 @@ import {
 export namespace DialogUtils {
   export function closeDialog() {
     setDialogToDisplay(DialogToDisplayEnum.none);
-    // TODO: Fix
-    // setCsvType();
+    setCsvType();
   }
 }

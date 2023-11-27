@@ -11,8 +11,9 @@ import { StopUtils } from "../../../../../utils/stop.utils";
 import { getLines } from "../../../map/component/organism/BusLines";
 import { setSchools } from "../../../map/component/organism/SchoolPoints";
 import { setStops } from "../../../map/component/organism/StopPoints";
+import { DialogToDisplayEnum, setDialogToDisplay } from "../organism/Dialogs";
 import { DiffCollapsible } from "./DiffCollapsible";
-import { CsvEnum, csv, csvType, diff } from "./ImportSelection";
+import { CsvEnum, csv, csvType, diff, setCsvType } from "./ImportSelection";
 
 export enum DiffEnum {
   added = "added",
@@ -55,7 +56,7 @@ export function ImportDiff() {
   }
 
   async function onClick() {
-    DialogUtils.closeDialog();
+    setDialogToDisplay(DialogToDisplayEnum.none);
     enableSpinningWheel();
 
     switch (csvType()) {
@@ -75,6 +76,7 @@ export function ImportDiff() {
         break;
     }
 
+    setCsvType();
     disableSpinningWheel();
   }
 
