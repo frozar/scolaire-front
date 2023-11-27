@@ -15,6 +15,7 @@ import {
 } from "../_services/student-to-grade.service";
 import { addNewUserInformation } from "../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
+import { CsvEnum } from "../views/content/board/component/molecule/ImportSelection";
 import {
   getSchools,
   setSchools,
@@ -139,6 +140,51 @@ export namespace CsvUtils {
     for (const stop of getStops()) {
       if (!csvStops.some((csvStop) => csvStop.name == stop.name)) {
         diff.deleted.push(stop.id);
+      }
+    }
+    return diff;
+  }
+
+  export async function getDiff(file: File, csvType: CsvEnum) {
+    // ! Just use type {name, location} ?
+    // ! parsedCsvFileToStopData => parseCsvSchoolOrStopData
+    const csvItems = (await parsedCsvFileToStopData(file)) as Pick<
+      StopDBType,
+      "name" | "location"
+    >[];
+
+    const diff: CsvDiffType = { added: [], modified: [], deleted: [] };
+
+    let items: (SchoolType | StopType)[];
+    if (csvType == CsvEnum.schools) items = getSchools();
+    else items = getStops();
+
+    // TODO: Rename
+    loop: for (const csvItem of csvItems) {
+      for (const item of items) {
+        // Case modified
+        if (csvItem.name == item.name) {
+          const { lat, lng } = roundLikeXano(
+            csvItem.location.data.lat,
+            csvItem.location.data.lng
+          );
+          if (lat != item.lat || lng != item.lon) {
+            diff.modified.push(item.id);
+            continue loop;
+          }
+        }
+      }
+
+      // Case added
+      if (!items.some((item) => item.name == csvItem.name)) {
+        diff.added.push(csvItem.name);
+      }
+    }
+
+    // Check if deleted
+    for (const item of items) {
+      if (!csvItems.some((csvItem) => csvItem.name == item.name)) {
+        diff.deleted.push(item.id);
       }
     }
     return diff;
