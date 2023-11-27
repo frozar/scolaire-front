@@ -66,10 +66,6 @@ export namespace CsvUtils {
       SchoolDBType,
       "name" | "location"
     >[];
-    getSchools().forEach((school) =>
-      console.log(school.name, school.lat, "|", school.lon)
-    );
-    console.log("schools from csv", schoolsFromCsv);
 
     const diff: SchoolsCsvDiffType = { added: [], modified: [], deleted: [] };
 
@@ -83,7 +79,7 @@ export namespace CsvUtils {
 
       return { lat: _lat, lng: _lng };
     }
-    // Check if modified or added
+
     loop: for (const schoolFromCsv of schoolsFromCsv) {
       for (const school of getSchools()) {
         // Case modified

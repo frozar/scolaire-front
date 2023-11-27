@@ -8,9 +8,9 @@ import { CsvUtils, SchoolsCsvDiffType } from "../../../../../utils/csv.utils";
 import { DialogUtils } from "../../../../../utils/dialog.utils";
 import { setSchools } from "../../../map/component/organism/SchoolPoints";
 import { DiffCollapsible } from "./DiffCollapsible";
-import { csvToImport, schoolsDiff } from "./ImportSelection";
+import { csv, schoolsDiff } from "./ImportSelection";
 
-export enum SchoolDiffEnum {
+export enum DiffEnum {
   added = "added",
   modified = "modified",
   deleted = "deleted",
@@ -39,15 +39,13 @@ export function ImportDiff() {
   function schoolsDiffFiltered(): SchoolsCsvDiffType {
     return {
       added: schoolsDiff()?.added.filter(
-        (added) => !uncheckedValues()[SchoolDiffEnum.added].includes(added)
+        (added) => !uncheckedValues()[DiffEnum.added].includes(added)
       ) as string[],
       modified: schoolsDiff()?.modified.filter(
-        (modified) =>
-          !uncheckedValues()[SchoolDiffEnum.modified].includes(modified)
+        (modified) => !uncheckedValues()[DiffEnum.modified].includes(modified)
       ) as number[],
       deleted: schoolsDiff()?.deleted.filter(
-        (deleted) =>
-          !uncheckedValues()[SchoolDiffEnum.deleted].includes(deleted)
+        (deleted) => !uncheckedValues()[DiffEnum.deleted].includes(deleted)
       ) as number[],
     };
   }
@@ -57,7 +55,7 @@ export function ImportDiff() {
     enableSpinningWheel();
 
     const schools = await CsvUtils.importSchools(
-      csvToImport() as File,
+      csv() as File,
       schoolsDiffFiltered()
     );
 
@@ -83,19 +81,19 @@ export function ImportDiff() {
         setter={setUncheckedValues}
         title="Ajouter"
         schools={schoolsDiff()?.added as string[]}
-        diffType={SchoolDiffEnum.added}
+        diffType={DiffEnum.added}
       />
       <DiffCollapsible
         setter={setUncheckedValues}
         title="Modifier"
         schools={schoolsDiff()?.modified as number[]}
-        diffType={SchoolDiffEnum.modified}
+        diffType={DiffEnum.modified}
       />
       <DiffCollapsible
         setter={setUncheckedValues}
         title="Supprimer"
         schools={schoolsDiff()?.deleted as number[]}
-        diffType={SchoolDiffEnum.deleted}
+        diffType={DiffEnum.deleted}
       />
       {/* TODO: Refactor footer dialog content */}
       <div class="import-dialog-buttons">

@@ -6,17 +6,17 @@ import { DialogToDisplayEnum, setDialogToDisplay } from "../organism/Dialogs";
 import LabeledInputRadio from "./LabeledInputRadio";
 import "./importSelection.css";
 
-export enum CsvTypeEnum {
+export enum CsvEnum {
   stops = "stops",
   schools = "schools",
   students = "students",
 }
 
-export const [csvToImport, setCsvToImport] = createSignal<File>();
+export const [csv, setCsv] = createSignal<File>();
 export const [schoolsDiff, setSchoolsDiff] = createSignal<SchoolsCsvDiffType>();
 
 export function ImportSelection() {
-  const [importCsvType, setImportCsvType] = createSignal<CsvTypeEnum>();
+  const [CsvType, setCsvType] = createSignal<CsvEnum>();
   const [refButton, setRefButton] = createSignal<
     HTMLButtonElement | undefined
   >();
@@ -26,21 +26,18 @@ export function ImportSelection() {
   });
 
   async function onClick() {
-    switch (importCsvType()) {
-      case CsvTypeEnum.schools:
-        // TODO: Put all this case into a function in CsvUtils
-        const diff = await CsvUtils.getImportSchoolsCsvDiff(
-          csvToImport() as File
-        );
+    switch (CsvType()) {
+      case CsvEnum.schools:
+        const diff = await CsvUtils.getImportSchoolsCsvDiff(csv() as File);
         setSchoolsDiff(diff);
         setDialogToDisplay(DialogToDisplayEnum.diff);
         return;
 
-      case CsvTypeEnum.stops:
+      case CsvEnum.stops:
         console.log("todo stops");
         break;
 
-      case CsvTypeEnum.students:
+      case CsvEnum.students:
         console.log("todo students");
         break;
     }
@@ -49,7 +46,7 @@ export function ImportSelection() {
   }
 
   function changeCsvType(csvType: string) {
-    setImportCsvType(csvType as CsvTypeEnum);
+    setCsvType(csvType as CsvEnum);
   }
 
   return (
@@ -93,7 +90,7 @@ export function ImportSelection() {
           onClick={onClick}
           label={"Valider"}
           variant="primary"
-          isDisabled={importCsvType() == undefined}
+          isDisabled={CsvType() == undefined}
         />
       </div>
     </>
