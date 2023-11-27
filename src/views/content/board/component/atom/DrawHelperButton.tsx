@@ -50,7 +50,7 @@ export function DrawHelperButton(props: DrawHelperButtonProps) {
         : [];
 
     const selectedStops = JSON.parse(
-      JSON.stringify(currentDrawTrip().tripPoints)
+      JSON.stringify(currentDrawTrip()?.tripPoints)
     );
 
     const stops = leafletStopsFilter();
@@ -74,7 +74,7 @@ export function DrawHelperButton(props: DrawHelperButtonProps) {
   return (
     <div class="graphicage-draw-helper-button">
       <DrawHelperDialog requestCircuit={requestCircuit} />
-      <Show when={currentDrawTrip().tripPoints.length > 0}>
+      <Show when={currentDrawTrip()?.tripPoints.length ?? 0 > 0}>
         <button onClick={onclick}>
           <FaSolidWandMagicSparkles />
         </button>
