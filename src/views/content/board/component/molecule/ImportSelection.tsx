@@ -26,20 +26,21 @@ export function ImportSelection() {
   });
 
   createEffect(() => {
-    console.log("csvType =>", csvType());
+    console.log("diff =>", diff());
   });
 
   async function onClick() {
     let diff: CsvDiffType;
     switch (csvType()) {
       case CsvEnum.schools:
-        diff = await CsvUtils.getSchoolsDiff(csv() as File);
+        diff = await CsvUtils.getDiff(csv() as File, CsvEnum.schools);
         setDiff(diff);
         setDialogToDisplay(DialogToDisplayEnum.diff);
         return;
 
       case CsvEnum.stops:
-        diff = await CsvUtils.getStopsDiff(csv() as File);
+        diff = await CsvUtils.getDiff(csv() as File, CsvEnum.stops);
+
         setDiff(diff);
         setDialogToDisplay(DialogToDisplayEnum.diff);
         // console.log("todo stops");

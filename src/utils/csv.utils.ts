@@ -1,5 +1,6 @@
 import _ from "lodash";
 import Papa from "papaparse";
+import { LocationDBType } from "../_entities/_utils.entity";
 import {
   SchoolDBType,
   SchoolEntity,
@@ -64,94 +65,12 @@ export namespace CsvUtils {
     return await SchoolService.import(diffDBData);
   }
 
-  export async function getSchoolsDiff(file: File): Promise<CsvDiffType> {
-    const schoolsFromCsv = (await parseCsvFileToSchoolData(file)) as Pick<
-      SchoolDBType,
-      "name" | "location"
-    >[];
-
-    const diff: CsvDiffType = { added: [], modified: [], deleted: [] };
-    // TODO: Refactor
-    loop: for (const schoolFromCsv of schoolsFromCsv) {
-      for (const school of getSchools()) {
-        // Case modified
-        if (schoolFromCsv.name == school.name) {
-          const { lat, lng } = roundLikeXano(
-            schoolFromCsv.location.data.lat,
-            schoolFromCsv.location.data.lng
-          );
-          if (lat != school.lat || lng != school.lon) {
-            diff.modified.push(school.id);
-            continue loop;
-          }
-        }
-      }
-
-      // Case added
-      if (!getSchools().some((school) => school.name == schoolFromCsv.name)) {
-        diff.added.push(schoolFromCsv.name);
-      }
-    }
-
-    // Check if deleted
-    for (const school of getSchools()) {
-      if (
-        !schoolsFromCsv.some(
-          (schoolFromCsv) => schoolFromCsv.name == school.name
-        )
-      ) {
-        diff.deleted.push(school.id);
-      }
-    }
-    return diff;
-  }
-
-  // TODO: Refactor with getStopsDiff
-  export async function getStopsDiff(file: File): Promise<CsvDiffType> {
-    const csvStops = (await parsedCsvFileToStopData(file)) as Pick<
-      StopDBType,
-      "name" | "location"
-    >[];
-
-    const diff: CsvDiffType = { added: [], modified: [], deleted: [] };
-
-    loop: for (const csvStop of csvStops) {
-      for (const stop of getStops()) {
-        // Case modified
-        if (csvStop.name == stop.name) {
-          const { lat, lng } = roundLikeXano(
-            csvStop.location.data.lat,
-            csvStop.location.data.lng
-          );
-          if (lat != stop.lat || lng != stop.lon) {
-            diff.modified.push(stop.id);
-            continue loop;
-          }
-        }
-      }
-
-      // Case added
-      if (!getStops().some((stop) => stop.name == csvStop.name)) {
-        diff.added.push(csvStop.name);
-      }
-    }
-
-    // Check if deleted
-    for (const stop of getStops()) {
-      if (!csvStops.some((csvStop) => csvStop.name == stop.name)) {
-        diff.deleted.push(stop.id);
-      }
-    }
-    return diff;
-  }
-
   export async function getDiff(file: File, csvType: CsvEnum) {
-    // ! Just use type {name, location} ?
-    // ! parsedCsvFileToStopData => parseCsvSchoolOrStopData
-    const csvItems = (await parsedCsvFileToStopData(file)) as Pick<
-      StopDBType,
-      "name" | "location"
-    >[];
+    // TODO: Rename parsedCsvFileToStopData => parseCsvSchoolOrStopData
+    const csvItems = (await parsedCsvFileToStopData(file)) as {
+      name: string;
+      location: LocationDBType;
+    }[];
 
     const diff: CsvDiffType = { added: [], modified: [], deleted: [] };
 
@@ -159,16 +78,15 @@ export namespace CsvUtils {
     if (csvType == CsvEnum.schools) items = getSchools();
     else items = getStops();
 
-    // TODO: Rename
     loop: for (const csvItem of csvItems) {
       for (const item of items) {
         // Case modified
         if (csvItem.name == item.name) {
-          const { lat, lng } = roundLikeXano(
+          const { lat: csvLat, lng: csvLng } = roundLikeXano(
             csvItem.location.data.lat,
             csvItem.location.data.lng
           );
-          if (lat != item.lat || lng != item.lon) {
+          if (csvLat != item.lat || csvLng != item.lon) {
             diff.modified.push(item.id);
             continue loop;
           }
