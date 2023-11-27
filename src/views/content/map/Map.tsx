@@ -6,7 +6,7 @@ import { buildMapL7 } from "./l7MapBuilder";
 
 import { Trips } from "./component/organism/Trips";
 
-import ImportCsvCanvas from "../../../component/ImportCsvCanvas";
+import { ImportCsvCanvas } from "../../../component/ImportCsvCanvas";
 import ConfirmStopAddTrip from "./ConfirmStopAddTripBox";
 
 import "leaflet/dist/leaflet.css";

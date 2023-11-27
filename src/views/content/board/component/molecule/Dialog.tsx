@@ -3,18 +3,14 @@ import { Transition } from "solid-transition-group";
 
 import ClickOutside from "../../../../../component/ClickOutside";
 import { assertIsNode } from "../../../../../utils";
-import { DialogToDisplayEnum, setDialogToDisplay } from "../organism/Dialogs";
+import { DialogUtils } from "../../../../../utils/dialog.utils";
 
 true && ClickOutside;
 
 let refDialogBox: HTMLDivElement;
 
-export default function (props: { children: JSXElement }) {
+export function Dialog(props: { children: JSXElement }) {
   const child = children(() => props.children);
-
-  function closeDialog() {
-    setDialogToDisplay(DialogToDisplayEnum.none);
-  }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [refButton, setRefButton] = createSignal<
@@ -74,7 +70,7 @@ export default function (props: { children: JSXElement }) {
 
                   assertIsNode(e.target);
                   if (!refDialogBox.contains(e.target as Node)) {
-                    closeDialog();
+                    DialogUtils.closeDialog();
                   }
                 }}
               >
@@ -82,7 +78,7 @@ export default function (props: { children: JSXElement }) {
                   <button
                     type="button"
                     class="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                    onClick={closeDialog}
+                    onClick={DialogUtils.closeDialog}
                   >
                     <span class="sr-only">Close</span>
                     <svg

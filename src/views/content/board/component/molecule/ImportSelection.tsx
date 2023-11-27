@@ -1,23 +1,22 @@
 import { createEffect, createSignal } from "solid-js";
 import Button from "../../../../../component/atom/Button";
 import { CsvUtils, SchoolsCsvDiffType } from "../../../../../utils/csv.utils";
+import { DialogUtils } from "../../../../../utils/dialog.utils";
 import { DialogToDisplayEnum, setDialogToDisplay } from "../organism/Dialogs";
 import LabeledInputRadio from "./LabeledInputRadio";
-import "./importTypeSelection.css";
+import "./importSelection.css";
 
-export enum CsvTypeEnum {
+export enum CsvEnum {
   stops = "stops",
   schools = "schools",
   students = "students",
 }
 
-export const [csvToImport, setCsvToImport] = createSignal<File>();
-
+export const [csv, setCsv] = createSignal<File>();
 export const [schoolsDiff, setSchoolsDiff] = createSignal<SchoolsCsvDiffType>();
 
-export default function () {
-  const [importCsvType, setImportCsvType] = createSignal<CsvTypeEnum>();
-
+export function ImportSelection() {
+  const [CsvType, setCsvType] = createSignal<CsvEnum>();
   const [refButton, setRefButton] = createSignal<
     HTMLButtonElement | undefined
   >();
@@ -26,37 +25,28 @@ export default function () {
     refButton()?.focus();
   });
 
-  function closeDialog() {
-    setDialogToDisplay(DialogToDisplayEnum.none);
-    // TODO: Uncheck all radios
-  }
-
-  async function handlerOnClickSoumettre() {
-    switch (importCsvType()) {
-      case CsvTypeEnum.schools:
-        const diff = await CsvUtils.getImportSchoolsCsvDiff(
-          csvToImport() as File
-        );
-        console.log("diff =>", diff);
+  async function onClick() {
+    switch (CsvType()) {
+      case CsvEnum.schools:
+        const diff = await CsvUtils.getImportSchoolsCsvDiff(csv() as File);
         setSchoolsDiff(diff);
         setDialogToDisplay(DialogToDisplayEnum.diff);
         return;
 
-      case CsvTypeEnum.stops:
+      case CsvEnum.stops:
         console.log("todo stops");
         break;
 
-      case CsvTypeEnum.students:
+      case CsvEnum.students:
         console.log("todo students");
         break;
     }
 
-    closeDialog();
+    DialogUtils.closeDialog();
   }
 
   function changeCsvType(csvType: string) {
-    setImportCsvType(csvType as CsvTypeEnum);
-    console.log("csvType selected =>", importCsvType());
+    setCsvType(csvType as CsvEnum);
   }
 
   return (
@@ -90,17 +80,17 @@ export default function () {
       {/* TODO: Refactor footer dialog content */}
       <div class="import-dialog-buttons">
         <Button
-          onClick={closeDialog}
+          onClick={DialogUtils.closeDialog}
           label={"Annuler"}
           variant="danger"
           isDisabled={false}
         />
         <Button
           ref={setRefButton}
-          onClick={handlerOnClickSoumettre}
+          onClick={onClick}
           label={"Valider"}
           variant="primary"
-          isDisabled={importCsvType() == undefined}
+          isDisabled={CsvType() == undefined}
         />
       </div>
     </>

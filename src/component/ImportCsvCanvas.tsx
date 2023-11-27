@@ -2,14 +2,14 @@ import { Setter, onCleanup, onMount } from "solid-js";
 import DropZoneLogo from "../icons/DropZoneLogo";
 import { disableSpinningWheel, enableSpinningWheel } from "../signaux";
 import { FileUtils } from "../utils/file.utils";
-import { setCsvToImport } from "../views/content/board/component/molecule/importTypeSelection";
+import { setCsv } from "../views/content/board/component/molecule/ImportSelection";
 import {
   DialogToDisplayEnum,
   setDialogToDisplay,
 } from "../views/content/board/component/organism/Dialogs";
 
 let mapDragDropDiv: HTMLDivElement;
-export default function (props: {
+export function ImportCsvCanvas(props: {
   display: boolean;
   setDisplay: Setter<boolean>;
   callbackSuccess?: () => void;
@@ -43,7 +43,7 @@ export default function (props: {
     const file = await FileUtils.checkFile(files);
     if (file) {
       disableSpinningWheel();
-      setCsvToImport(() => file);
+      setCsv(() => file);
       setDialogToDisplay(DialogToDisplayEnum.typeSelection);
     } else {
       props.callbackFail ? props.callbackFail() : "";

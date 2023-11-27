@@ -1,6 +1,7 @@
 import { For, Setter } from "solid-js";
+import { SchoolUtils } from "../../../../../utils/school.utils";
 import CollapsibleElement from "../organism/CollapsibleElement";
-import { SchoolDiffEnum, UncheckedElementType } from "./ImportDiffs";
+import { DiffEnum, UncheckedElementType } from "./ImportDiff";
 
 function onChangeSchoolCheckbox(
   event: Event & {
@@ -9,7 +10,7 @@ function onChangeSchoolCheckbox(
   },
   setter: Setter<UncheckedElementType>,
   elem: string | number,
-  diffMode: SchoolDiffEnum
+  diffMode: DiffEnum
 ) {
   if (event.currentTarget.checked) {
     setter((prev) => {
@@ -26,11 +27,11 @@ function onChangeSchoolCheckbox(
   }
 }
 
-export default function (props: {
+export function DiffCollapsible(props: {
   setter: Setter<UncheckedElementType>;
   title: string;
   schools: (number | string)[];
-  diffType: SchoolDiffEnum;
+  diffType: DiffEnum;
 }) {
   return (
     <>
@@ -53,7 +54,11 @@ export default function (props: {
                     )
                   }
                 />
-                <label>{elem}</label>
+                <label>
+                  {props.diffType == DiffEnum.added
+                    ? elem
+                    : SchoolUtils.getName(elem as number)}
+                </label>
               </div>
             );
           }}

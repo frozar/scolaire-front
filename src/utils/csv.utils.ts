@@ -1,8 +1,10 @@
+import _ from "lodash";
 import Papa from "papaparse";
 import {
   SchoolDBType,
   SchoolEntity,
   SchoolType,
+  importSchoolsDBType,
 } from "../_entities/school.entity";
 import { StopDBType, StopEntity, StopType } from "../_entities/stop.entity";
 import { SchoolService } from "../_services/school.service";
@@ -11,16 +13,14 @@ import {
   StudentToGrade,
   StudentToGradeService,
 } from "../_services/student-to-grade.service";
-import {
-  addNewGlobalWarningInformation,
-  addNewUserInformation,
-} from "../signaux";
+import { addNewUserInformation } from "../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import {
   getSchools,
   setSchools,
 } from "../views/content/map/component/organism/SchoolPoints";
 import { setStops } from "../views/content/map/component/organism/StopPoints";
+import { SchoolUtils } from "./school.utils";
 
 export type SchoolsCsvDiffType = {
   added: string[]; // schoolNames
@@ -29,58 +29,66 @@ export type SchoolsCsvDiffType = {
 };
 
 export namespace CsvUtils {
-  export async function importCsvFile(file: File): Promise<boolean> {
-    const parsedFileData = await parsedCsvFileData(file);
-    const fileName = file.name;
-
-    if (parsedFileData) {
-      try {
-        if (isSchoolFile(fileName)) {
-          return importSchoolCSVFile(
-            parsedFileData as Pick<SchoolDBType, "name" | "location">[]
-          );
-        } else if (isStopFile(fileName)) {
-          return importStopCSVFile(
-            parsedFileData as Pick<StopDBType, "name" | "location">[]
-          );
-        } else if (isStudentToGradeFile(fileName)) {
-          return importStudentToGradeCSVFile(
-            parsedFileData as StudentToGrade[]
-          );
-        } else {
-          addNewGlobalWarningInformation("Nom de fichier non reconnu");
-          return false;
-        }
-      } catch (err) {
-        addNewGlobalWarningInformation("Erreur lors de l'importation");
-        return false;
-      }
-    } else {
-      addNewGlobalWarningInformation("Erreur de lecture du fichier");
-      return false;
-    }
-  }
-
-  export async function getImportSchoolsCsvDiff(
-    file: File
-  ): Promise<SchoolsCsvDiffType> {
-    const parsedFileData = (await parsedCsvFileToSchoolData(file)) as Pick<
+  export async function importSchools(
+    file: File,
+    filteredDiffs: SchoolsCsvDiffType
+  ): Promise<SchoolType[]> {
+    const parsedFileData = (await parseCsvFileToSchoolData(file)) as Pick<
       SchoolDBType,
       "name" | "location"
     >[];
 
-    // TODO: Replace names and ids with complete object ?
+    const diffDBData: importSchoolsDBType = {
+      schools_to_add: [],
+      schools_to_modify: [],
+      schools_to_delete: [],
+    };
+    filteredDiffs.deleted.forEach((schoolIid) =>
+      diffDBData.schools_to_delete.push(schoolIid)
+    );
+    filteredDiffs.added.forEach((name) => {
+      const school = parsedFileData.filter((school) => school.name == name)[0];
+      diffDBData.schools_to_add.push(school);
+    });
+    filteredDiffs.modified.forEach((schoolId) => {
+      const school = SchoolUtils.get(schoolId);
+      const location = parsedFileData.filter(
+        (data) => data.name == school.name
+      )[0].location;
+      diffDBData.schools_to_modify.push({ id: school.id, location });
+    });
+    return await SchoolService.import(diffDBData);
+  }
+  export async function getImportSchoolsCsvDiff(
+    file: File
+  ): Promise<SchoolsCsvDiffType> {
+    const schoolsFromCsv = (await parseCsvFileToSchoolData(file)) as Pick<
+      SchoolDBType,
+      "name" | "location"
+    >[];
+
     const diff: SchoolsCsvDiffType = { added: [], modified: [], deleted: [] };
 
-    // Check if modified or added
-    loop: for (const data of parsedFileData) {
+    // in xano geographical point rounded as an absolute number with 12 after decimal point
+    function roundLikeXano(lat: number, lng: number) {
+      let _lat = _.round(Math.abs(lat), 12);
+      if (lat < 0) _lat = -_lat;
+
+      let _lng = _.round(Math.abs(lng), 12);
+      if (lng < 0) _lng = -lng;
+
+      return { lat: _lat, lng: _lng };
+    }
+
+    loop: for (const schoolFromCsv of schoolsFromCsv) {
       for (const school of getSchools()) {
         // Case modified
-        if (data.name == school.name) {
-          if (
-            data.location.data.lat != school.lat ||
-            data.location.data.lng != school.lon
-          ) {
+        if (schoolFromCsv.name == school.name) {
+          const { lat, lng } = roundLikeXano(
+            schoolFromCsv.location.data.lat,
+            schoolFromCsv.location.data.lng
+          );
+          if (lat != school.lat || lng != school.lon) {
             diff.modified.push(school.id);
             continue loop;
           }
@@ -88,12 +96,18 @@ export namespace CsvUtils {
       }
 
       // Case added
-      diff.added.push(data.name);
+      if (!getSchools().some((school) => school.name == schoolFromCsv.name)) {
+        diff.added.push(schoolFromCsv.name);
+      }
     }
 
     // Check if deleted
     for (const school of getSchools()) {
-      if (!parsedFileData.some((data) => data.name == school.name)) {
+      if (
+        !schoolsFromCsv.some(
+          (schoolFromCsv) => schoolFromCsv.name == school.name
+        )
+      ) {
         diff.deleted.push(school.id);
       }
     }
@@ -108,19 +122,7 @@ export namespace CsvUtils {
     return true;
   }
 
-  async function importSchoolCSVFile(
-    parsedFileData: Pick<SchoolDBType, "name" | "location">[]
-  ) {
-    const schools: SchoolType[] = await SchoolService.import(
-      parsedFileData as Pick<SchoolDBType, "name" | "location">[]
-    );
-    if (schools) {
-      setSchools(schools);
-      return true;
-    }
-    return false;
-  }
-
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async function importStopCSVFile(
     parsedFileData: Pick<StopDBType, "name" | "location">[]
   ) {
@@ -133,7 +135,7 @@ export namespace CsvUtils {
     }
     return false;
   }
-
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async function importStudentToGradeCSVFile(parsedFileData: StudentToGrade[]) {
     const { schools, stops } = await StudentToGradeService.import(
       parsedFileData
@@ -191,7 +193,7 @@ export namespace CsvUtils {
     return true;
   }
 
-  async function parsedCsvFileToSchoolData(
+  export async function parseCsvFileToSchoolData(
     file: File
   ): Promise<Pick<SchoolDBType, "name" | "location">[] | undefined> {
     const parsedFile = await parseFile(file);
@@ -253,11 +255,12 @@ export namespace CsvUtils {
   function isStudentToGradeFile(fileName: string) {
     return fileNameIsCorrect(fileName, "eleve_vers_etablissement");
   }
-
+  // TODO: Delete ?
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async function parsedCsvFileData(file: File) {
     const fileName = file.name;
     if (isSchoolFile(fileName)) {
-      return await parsedCsvFileToSchoolData(file);
+      return await parseCsvFileToSchoolData(file);
     } else if (isStopFile(fileName)) {
       return await parsedCsvFileToStopData(file);
     } else if (isStudentToGradeFile(fileName)) {
