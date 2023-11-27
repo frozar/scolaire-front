@@ -59,6 +59,8 @@ export function ImportDiff() {
 
     switch (csvType()) {
       case CsvEnum.schools:
+        console.log("school import");
+
         const schools = await CsvUtils.importSchools(
           csv() as File,
           diffFiltered()
@@ -85,7 +87,7 @@ export function ImportDiff() {
     }
     return false;
   }
-
+  // TODO: Adapt to stops
   function isSchoolUsed(schoolId: number): boolean {
     if (SchoolUtils.get(schoolId).grades.length > 0) return true;
     if (

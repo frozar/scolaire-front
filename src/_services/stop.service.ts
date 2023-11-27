@@ -18,7 +18,7 @@ export class StopService {
   static async import(stops: importItemDBType): Promise<StopType[]> {
     const xanoResult: { stop: StopDBType[] } = await ServiceUtils.post(
       "/stop/import",
-      { stops }
+      stops
     );
     return xanoResult.stop.map((dbSchool) => StopEntity.build(dbSchool));
   }
