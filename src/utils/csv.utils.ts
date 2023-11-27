@@ -34,7 +34,6 @@ export type CsvDiffType = {
 };
 
 export type importItemDBType = {
-  // ! externalise this type !
   items_to_add: Pick<SchoolDBType, "name" | "location">[];
   items_to_modify: Pick<SchoolDBType, "id" | "location">[];
   items_to_delete: number[];
