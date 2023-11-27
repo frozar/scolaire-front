@@ -51,7 +51,6 @@ export function DiffCollapsible(props: {
           {(elem) => {
             const disable = isDisabled(elem);
             return (
-              // TODO: Create a css for this file !
               <div class="input-checkbox">
                 <div class="flex">
                   <input
