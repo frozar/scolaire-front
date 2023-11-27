@@ -5,7 +5,7 @@ import {
 } from "../../../../_entities/calendar.entity";
 import { CalendarService } from "../../../../_services/calendar.service";
 import Button from "../../../../component/atom/Button";
-import { CalendarPeriodSelector } from "../atom/CalendarPeriodSelector";
+import { LabeledInputSelect } from "../../../../component/molecule/LabeledInputSelect";
 import { CalendarSectionTitle } from "../atom/CalendarSectionTitle";
 import { CalendarManager } from "../calendar.manager";
 import { CalendarRules } from "../molecule/CalendarRules";
@@ -42,24 +42,13 @@ export function CalendarEdition(props: CalendarEditionProps) {
     );
   }
 
-  function onChangeCalendarPeriodSelector(calendarPeriod?: CalendarPeriodType) {
+  function onChangeCalendarPeriodSelector(value: number | string) {
+    const calendarPeriod = calendarsPeriod().find((item) => item.id == value);
     CalendarManager.linkToPeriodCalendar(calendarPeriod);
   }
 
   function cancelEdition() {
     setCurrentCalendar(undefined);
-  }
-
-  function LabeledPeriodSelector() {
-    return (
-      <div class="inline-grid my-2">
-        <label class="text-xl">Calendrier scolaire</label>
-        <CalendarPeriodSelector
-          onChange={onChangeCalendarPeriodSelector}
-          defaultValue={props.calendar.calendarPeriodId}
-        />
-      </div>
-    );
   }
 
   return (
@@ -108,7 +97,15 @@ export function CalendarEdition(props: CalendarEditionProps) {
       <div class="calendar-edition-rules">
         <div>
           <CalendarSectionTitle title="Paramètrage calendrier" />
-          <LabeledPeriodSelector />
+          <LabeledInputSelect
+            defaultOptions="Choisir un calendrier scolaire"
+            defaultValue={props.calendar.calendarPeriodId ?? 0}
+            label="Calendrier scolaire"
+            onChange={onChangeCalendarPeriodSelector}
+            options={calendarsPeriod().map((item) => {
+              return { value: item.id, text: item.name };
+            })}
+          />
         </div>
 
         <div class="flex gap-10">
