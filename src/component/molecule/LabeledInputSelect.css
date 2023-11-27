@@ -1,0 +1,7 @@
+.labeled-selector-wrapper {
+  @apply inline-grid my-2;
+}
+
+.selector-label {
+  @apply text-xl;
+}

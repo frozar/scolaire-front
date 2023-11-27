@@ -1,5 +1,5 @@
 import { SelectInput } from "../atom/SelectInput";
-
+import "./LabeledInputSelect.css";
 interface LabeledInputSelectProps {
   label: string;
   defaultValue: number;
@@ -11,8 +11,8 @@ interface LabeledInputSelectProps {
 
 export function LabeledInputSelect(props: LabeledInputSelectProps) {
   return (
-    <div class="inline-grid my-2">
-      <label class="text-xl">{props.label}</label>
+    <div class="labeled-selector-wrapper">
+      <label class="selector-label">{props.label}</label>
       <SelectInput
         defaultOptions={props.defaultOptions}
         options={props.options}

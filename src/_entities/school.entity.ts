@@ -9,6 +9,11 @@ import {
   HoursType,
   LocationDBType,
 } from "./_utils.entity";
+import {
+  CalendarDBType,
+  CalendarEntity,
+  CalendarType,
+} from "./calendar.entity";
 import { GradeDBType, GradeEntity, GradeType } from "./grade.entity";
 import { DBAssociatedStop } from "./stop.entity";
 import { TimeUtils } from "./time.utils";
@@ -41,12 +46,15 @@ export class SchoolEntity {
       selected: selected,
       setSelected: setSelected,
       hours: TimeUtils.buildHours(dbSchool.hours),
+      calendar: dbSchool.calendar
+        ? CalendarEntity.build(dbSchool.calendar)
+        : undefined,
     };
   }
 
   static dbFormat(
-    school: Pick<SchoolType, "name" | "lon" | "lat" | "hours">
-  ): Pick<SchoolDBType, "name" | "location" | "hours"> {
+    school: Pick<SchoolType, "name" | "lon" | "lat" | "hours" | "calendar">
+  ): Pick<SchoolDBType, "name" | "location" | "hours" | "calendar_id"> {
     return {
       name: school.name,
       location: EntityUtils.builLocationPoint(
@@ -54,6 +62,7 @@ export class SchoolEntity {
         school.lat as number
       ),
       hours: TimeUtils.formatHours(school.hours),
+      calendar_id: school?.calendar?.id,
     };
   }
 
@@ -93,6 +102,7 @@ export type SchoolType = {
   selected: Accessor<boolean>;
   setSelected: Setter<boolean>;
   hours: HoursType;
+  calendar?: CalendarType;
 };
 
 export type SchoolDBType = {
@@ -102,6 +112,8 @@ export type SchoolDBType = {
   grades: GradeDBType[];
   hours_id?: number;
   hours?: HoursDBType;
+  calendar_id?: number;
+  calendar?: CalendarDBType;
 };
 
 export type LeafletShoolType = SchoolType & {
