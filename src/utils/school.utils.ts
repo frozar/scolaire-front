@@ -187,7 +187,7 @@ export namespace SchoolUtils {
     });
   }
 
-  export function linkCalendarToSchool(calendarId: number) {
+  export function linkSchoolToCalendar(calendarId: number) {
     const calendar = calendars()?.find((item) => item.id == calendarId);
     setSchoolDetailsItem((prev) => {
       if (!prev) return prev;
