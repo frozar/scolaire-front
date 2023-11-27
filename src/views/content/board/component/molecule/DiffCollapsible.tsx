@@ -5,37 +5,15 @@ import { DiffEnum, UncheckedElementType } from "./ImportDiff";
 
 import "./DiffCollapsible.css";
 
-function onChangeSchoolCheckbox(
-  event: Event & {
-    currentTarget: HTMLInputElement;
-    target: HTMLInputElement;
-  },
-  setter: Setter<UncheckedElementType>,
-  elem: string | number,
-  diffMode: DiffEnum
-) {
-  if (event.currentTarget.checked) {
-    setter((prev) => {
-      const unchecked = { ...prev };
-      unchecked[diffMode] = unchecked[diffMode].filter((elt) => elt != elem);
-      return unchecked;
-    });
-  } else {
-    setter((prev) => {
-      const unchecked: UncheckedElementType = { ...prev };
-      unchecked[diffMode].push(elem as string);
-      return unchecked;
-    });
-  }
-}
-
-export function DiffCollapsible(props: {
+interface DiffCollapsibleProps {
   uncheckedValues: Accessor<UncheckedElementType>;
   setter: Setter<UncheckedElementType>;
   title: string;
   schools: (number | string)[];
   diffType: DiffEnum;
-}) {
+}
+
+export function DiffCollapsible(props: DiffCollapsibleProps) {
   function isDisabled(school: number | string) {
     if (props.diffType != DiffEnum.deleted) return false;
 
@@ -83,4 +61,28 @@ export function DiffCollapsible(props: {
       </CollapsibleElement>
     </>
   );
+}
+
+function onChangeSchoolCheckbox(
+  event: Event & {
+    currentTarget: HTMLInputElement;
+    target: HTMLInputElement;
+  },
+  setter: Setter<UncheckedElementType>,
+  elem: string | number,
+  diffMode: DiffEnum
+) {
+  if (event.currentTarget.checked) {
+    setter((prev) => {
+      const unchecked = { ...prev };
+      unchecked[diffMode] = unchecked[diffMode].filter((elt) => elt != elem);
+      return unchecked;
+    });
+  } else {
+    setter((prev) => {
+      const unchecked: UncheckedElementType = { ...prev };
+      unchecked[diffMode].push(elem as string);
+      return unchecked;
+    });
+  }
 }

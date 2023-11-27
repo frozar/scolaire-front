@@ -82,8 +82,9 @@ export function ImportDiff() {
       getLines().some((line) =>
         line.schools.some((school) => school.id == schoolId)
       )
-    )
+    ) {
       return true;
+    }
 
     return false;
   }
