@@ -9,8 +9,9 @@ import { DialogUtils } from "../../../../../utils/dialog.utils";
 import { SchoolUtils } from "../../../../../utils/school.utils";
 import { getLines } from "../../../map/component/organism/BusLines";
 import { setSchools } from "../../../map/component/organism/SchoolPoints";
+import { setStops } from "../../../map/component/organism/StopPoints";
 import { DiffCollapsible } from "./DiffCollapsible";
-import { csv, diff } from "./ImportSelection";
+import { CsvEnum, csv, csvType, diff } from "./ImportSelection";
 
 export enum DiffEnum {
   added = "added",
@@ -56,10 +57,21 @@ export function ImportDiff() {
     DialogUtils.closeDialog();
     enableSpinningWheel();
 
-    // ! Switch case schools, stops or students ?
-    const schools = await CsvUtils.importSchools(csv() as File, diffFiltered());
+    switch (csvType()) {
+      case CsvEnum.schools:
+        const schools = await CsvUtils.importSchools(
+          csv() as File,
+          diffFiltered()
+        );
+        setSchools(schools);
+        break;
 
-    setSchools(schools);
+      case CsvEnum.stops:
+        const stops = await CsvUtils.importStops(csv() as File, diffFiltered());
+        setStops(stops);
+        break;
+    }
+
     disableSpinningWheel();
   }
 

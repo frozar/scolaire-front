@@ -14,9 +14,9 @@ export enum CsvEnum {
 
 export const [csv, setCsv] = createSignal<File>();
 export const [diff, setDiff] = createSignal<CsvDiffType>();
+export const [csvType, setCsvType] = createSignal<CsvEnum>();
 
 export function ImportSelection() {
-  const [csvType, setCsvType] = createSignal<CsvEnum>();
   const [refButton, setRefButton] = createSignal<
     HTMLButtonElement | undefined
   >();

@@ -120,6 +120,7 @@ export type LeafletShoolType = SchoolType & {
   idPoint: number;
 };
 
+// TODO: Delete
 export type importSchoolsDBType = {
   schools_to_add: Pick<SchoolDBType, "name" | "location">[];
   schools_to_modify: Pick<SchoolDBType, "id" | "location">[];
