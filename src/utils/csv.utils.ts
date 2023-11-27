@@ -22,8 +22,8 @@ import {
 import { setStops } from "../views/content/map/component/organism/StopPoints";
 import { SchoolUtils } from "./school.utils";
 
-export type SchoolsCsvDiffType = {
-  added: string[]; // schoolNames
+export type CsvDiffType = {
+  added: string[]; // names
   modified: number[]; // ids
   deleted: number[]; // ids
 };
@@ -31,7 +31,7 @@ export type SchoolsCsvDiffType = {
 export namespace CsvUtils {
   export async function importSchools(
     file: File,
-    filteredDiffs: SchoolsCsvDiffType
+    filteredDiffs: CsvDiffType
   ): Promise<SchoolType[]> {
     const parsedFileData = (await parseCsvFileToSchoolData(file)) as Pick<
       SchoolDBType,
@@ -59,15 +59,13 @@ export namespace CsvUtils {
     });
     return await SchoolService.import(diffDBData);
   }
-  export async function getImportSchoolsCsvDiff(
-    file: File
-  ): Promise<SchoolsCsvDiffType> {
+  export async function getSchoolsDiff(file: File): Promise<CsvDiffType> {
     const schoolsFromCsv = (await parseCsvFileToSchoolData(file)) as Pick<
       SchoolDBType,
       "name" | "location"
     >[];
 
-    const diff: SchoolsCsvDiffType = { added: [], modified: [], deleted: [] };
+    const diff: CsvDiffType = { added: [], modified: [], deleted: [] };
 
     // in xano geographical point rounded as an absolute number with 12 after decimal point
     function roundLikeXano(lat: number, lng: number) {

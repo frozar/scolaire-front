@@ -4,13 +4,13 @@ import {
   disableSpinningWheel,
   enableSpinningWheel,
 } from "../../../../../signaux";
-import { CsvUtils, SchoolsCsvDiffType } from "../../../../../utils/csv.utils";
+import { CsvDiffType, CsvUtils } from "../../../../../utils/csv.utils";
 import { DialogUtils } from "../../../../../utils/dialog.utils";
 import { SchoolUtils } from "../../../../../utils/school.utils";
 import { getLines } from "../../../map/component/organism/BusLines";
 import { setSchools } from "../../../map/component/organism/SchoolPoints";
 import { DiffCollapsible } from "./DiffCollapsible";
-import { csv, schoolsDiff } from "./ImportSelection";
+import { csv, diff } from "./ImportSelection";
 
 export enum DiffEnum {
   added = "added",
@@ -38,15 +38,15 @@ export function ImportDiff() {
     refButton()?.focus();
   });
 
-  function schoolsDiffFiltered(): SchoolsCsvDiffType {
+  function diffFiltered(): CsvDiffType {
     return {
-      added: schoolsDiff()?.added.filter(
+      added: diff()?.added.filter(
         (added) => !uncheckedValues()[DiffEnum.added].includes(added)
       ) as string[],
-      modified: schoolsDiff()?.modified.filter(
+      modified: diff()?.modified.filter(
         (modified) => !uncheckedValues()[DiffEnum.modified].includes(modified)
       ) as number[],
-      deleted: schoolsDiff()?.deleted.filter(
+      deleted: diff()?.deleted.filter(
         (deleted) => !uncheckedValues()[DiffEnum.deleted].includes(deleted)
       ) as number[],
     };
@@ -56,10 +56,8 @@ export function ImportDiff() {
     DialogUtils.closeDialog();
     enableSpinningWheel();
 
-    const schools = await CsvUtils.importSchools(
-      csv() as File,
-      schoolsDiffFiltered()
-    );
+    // ! Switch case schools, stops or students ?
+    const schools = await CsvUtils.importSchools(csv() as File, diffFiltered());
 
     setSchools(schools);
     disableSpinningWheel();
@@ -67,9 +65,9 @@ export function ImportDiff() {
 
   function noElementChecked() {
     if (
-      schoolsDiffFiltered().added.length == 0 &&
-      schoolsDiffFiltered().modified.length == 0 &&
-      schoolsDiffFiltered().deleted.length == 0
+      diffFiltered().added.length == 0 &&
+      diffFiltered().modified.length == 0 &&
+      diffFiltered().deleted.length == 0
     ) {
       return true;
     }
@@ -89,7 +87,7 @@ export function ImportDiff() {
     return false;
   }
 
-  for (const schoolId of schoolsDiff()?.deleted as number[]) {
+  for (const schoolId of diff()?.deleted as number[]) {
     if (isSchoolUsed(schoolId)) {
       setUncheckedValues((prev) => {
         const uncheckedValues = { ...prev };
@@ -107,21 +105,21 @@ export function ImportDiff() {
         uncheckedValues={uncheckedValues}
         setter={setUncheckedValues}
         title="Ajouter"
-        schools={schoolsDiff()?.added as string[]}
+        schools={diff()?.added as string[]}
         diffType={DiffEnum.added}
       />
       <DiffCollapsible
         uncheckedValues={uncheckedValues}
         setter={setUncheckedValues}
         title="Modifier"
-        schools={schoolsDiff()?.modified as number[]}
+        schools={diff()?.modified as number[]}
         diffType={DiffEnum.modified}
       />
       <DiffCollapsible
         uncheckedValues={uncheckedValues}
         setter={setUncheckedValues}
         title="Supprimer"
-        schools={schoolsDiff()?.deleted as number[]}
+        schools={diff()?.deleted as number[]}
         diffType={DiffEnum.deleted}
       />
       {/* TODO: Refactor footer dialog content */}
