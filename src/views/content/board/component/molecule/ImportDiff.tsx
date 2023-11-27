@@ -77,9 +77,7 @@ export function ImportDiff() {
   }
 
   function isSchoolUsed(schoolId: number): boolean {
-    // Check grades
     if (SchoolUtils.get(schoolId).grades.length > 0) return true;
-    // Check lines
     if (
       getLines().some((line) =>
         line.schools.some((school) => school.id == schoolId)
