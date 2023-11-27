@@ -1,5 +1,6 @@
 import { SelectInput } from "../atom/SelectInput";
 import "./LabeledInputSelect.css";
+
 interface LabeledInputSelectProps {
   label: string;
   defaultValue: number;

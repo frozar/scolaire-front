@@ -51,7 +51,6 @@ export default function () {
 
   function onChangeCalendarSelect(value: number | string) {
     SchoolUtils.linkCalendarToSchool(value as number);
-    SchoolUtils.update(schoolDetailsItem() as SchoolType);
   }
 
   onCleanup(() => setSchoolDetailEditing(false));
