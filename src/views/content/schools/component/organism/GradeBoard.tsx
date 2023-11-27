@@ -50,7 +50,10 @@ export default function () {
   });
 
   function getHours(): HoursType {
-    const id = useSchoolSchedule() ? schoolDetailsItem()?.hours.id : 0;
+    const id = useSchoolSchedule()
+      ? schoolDetailsItem()?.hours.id
+      : selectedGrade()?.hours.id ?? 0;
+
     return {
       id: id as number,
       startHourComing: morningStart() as HourFormat,
