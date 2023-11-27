@@ -1,7 +1,9 @@
-import { Accessor, For, Setter } from "solid-js";
+import { Accessor, For, Setter, Show } from "solid-js";
 import { SchoolUtils } from "../../../../../utils/school.utils";
 import CollapsibleElement from "../organism/CollapsibleElement";
 import { DiffEnum, UncheckedElementType } from "./ImportDiff";
+
+import "./DiffCollapsible.css";
 
 function onChangeSchoolCheckbox(
   event: Event & {
@@ -47,28 +49,34 @@ export function DiffCollapsible(props: {
       <CollapsibleElement title={props.title}>
         <For each={props.schools}>
           {(elem) => {
+            const disable = isDisabled(elem);
             return (
               // TODO: Create a css for this file !
               <div class="input-checkbox">
-                <input
-                  type="checkbox"
-                  checked={isDisabled(elem) ? false : true}
-                  disabled={isDisabled(elem)}
-                  value={elem}
-                  onChange={(event) =>
-                    onChangeSchoolCheckbox(
-                      event,
-                      props.setter,
-                      elem,
-                      props.diffType
-                    )
-                  }
-                />
-                <label>
-                  {props.diffType == DiffEnum.added
-                    ? elem
-                    : SchoolUtils.getName(elem as number)}
-                </label>
+                <div class="flex">
+                  <input
+                    type="checkbox"
+                    checked={disable ? false : true}
+                    disabled={disable}
+                    value={elem}
+                    onChange={(event) =>
+                      onChangeSchoolCheckbox(
+                        event,
+                        props.setter,
+                        elem,
+                        props.diffType
+                      )
+                    }
+                  />
+                  <label classList={{ "input-label-disabled": disable }}>
+                    {props.diffType == DiffEnum.added
+                      ? elem
+                      : SchoolUtils.getName(elem as number)}
+                  </label>
+                  <Show when={disable}>
+                    <div class="ml-2">Établissement utilisé</div>
+                  </Show>
+                </div>
               </div>
             );
           }}

@@ -1,4 +1,4 @@
-import { createEffect, createSignal, onMount } from "solid-js";
+import { createEffect, createSignal } from "solid-js";
 import Button from "../../../../../component/atom/Button";
 import {
   disableSpinningWheel,
@@ -75,6 +75,7 @@ export function ImportDiff() {
     }
     return false;
   }
+
   function isSchoolUsed(schoolId: number): boolean {
     // Check grades
     if (SchoolUtils.get(schoolId).grades.length > 0) return true;
@@ -88,20 +89,17 @@ export function ImportDiff() {
 
     return false;
   }
-  onMount(() => {
-    // ! Pour les deleted vérif si école utilisé
-    for (const schoolId of schoolsDiff()?.deleted as number[]) {
-      if (isSchoolUsed(schoolId)) {
-        setUncheckedValues((prev) => {
-          const uncheckedValues = { ...prev };
-          uncheckedValues["deleted"].push(schoolId);
 
-          return uncheckedValues;
-        });
-      }
+  for (const schoolId of schoolsDiff()?.deleted as number[]) {
+    if (isSchoolUsed(schoolId)) {
+      setUncheckedValues((prev) => {
+        const uncheckedValues = { ...prev };
+        uncheckedValues["deleted"].push(schoolId);
+
+        return uncheckedValues;
+      });
     }
-    // ! Si c'est le cas griser et setUnchecked
-  });
+  }
 
   return (
     <>
