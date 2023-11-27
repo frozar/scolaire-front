@@ -1,4 +1,4 @@
-import { createSignal, onCleanup, onMount } from "solid-js";
+import { createEffect, createSignal, onCleanup, onMount } from "solid-js";
 import { HoursType } from "../../../../../_entities/_utils.entity";
 import {
   GradeEntity,
@@ -7,6 +7,7 @@ import {
 } from "../../../../../_entities/grade.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { GradeService } from "../../../../../_services/grade.service";
+import { LabeledCheckbox } from "../../../../../component/molecule/LabeledCheckbox";
 import BoardFooterActions from "../../../board/component/molecule/BoardFooterActions";
 import LabeledInputField from "../../../board/component/molecule/LabeledInputField";
 import {
@@ -27,6 +28,7 @@ export const [selectedGrade, setSelectedGrade] = createSignal<GradeType>();
 // TODO Refactor
 // eslint-disable-next-line solid/reactivity
 export default function () {
+  const [useSchoolSchedule, setUseSchoolSchedule] = createSignal<boolean>(true);
   const [gradeName, setGradeName] = createSignal(selectedGrade()?.name);
 
   const [morningStart, setMorningStart] = createSignal<HourFormat>();
@@ -34,21 +36,35 @@ export default function () {
   const [afternoonStart, setAfternoonStart] = createSignal<HourFormat>();
   const [afternoonEnd, setAfternoonEnd] = createSignal<HourFormat>();
 
+  createEffect(() => {
+    if (useSchoolSchedule()) setHours(schoolDetailsItem()?.hours);
+    else setHours(selectedGrade()?.hours);
+  });
+
   onMount(() => {
-    setMorningStart(selectedGrade()?.hours.startHourComing);
-    setMorningEnd(selectedGrade()?.hours.endHourComing);
-    setAfternoonEnd(selectedGrade()?.hours.endHourGoing);
-    setAfternoonStart(selectedGrade()?.hours.startHourGoing);
+    if (selectedGrade()?.hours.id == schoolDetailsItem()?.hours.id)
+      setUseSchoolSchedule(true);
+    else setUseSchoolSchedule(false);
+
+    setHours(selectedGrade()?.hours);
   });
 
   function getHours(): HoursType {
+    const id = useSchoolSchedule() ? schoolDetailsItem()?.hours.id : 0;
     return {
-      id: selectedGrade()?.hours.id ?? 0,
+      id: id as number,
       startHourComing: morningStart() as HourFormat,
       endHourComing: morningEnd() as HourFormat,
       startHourGoing: afternoonStart() as HourFormat,
       endHourGoing: afternoonEnd() as HourFormat,
     };
+  }
+
+  function setHours(hours?: HoursType) {
+    setMorningStart(hours?.startHourComing);
+    setMorningEnd(hours?.endHourComing);
+    setAfternoonEnd(hours?.endHourGoing);
+    setAfternoonStart(hours?.startHourGoing);
   }
 
   async function nextStep() {
@@ -111,18 +127,19 @@ export default function () {
     setAfternoonEnd(GradeEntity.getHourFormatFromString(value));
   }
 
-  onCleanup(() => setSelectedGrade());
+  function onChangeUseSchoolSchedule() {
+    setUseSchoolSchedule((prev) => !prev);
+  }
 
-  // TODO add checkbox to define if we use school schedule or not to define  grade schedule
+  const title =
+    onBoard() == "school-grade-add"
+      ? "Ajout d'une grade"
+      : "Modifier une grade";
+
+  onCleanup(() => setSelectedGrade());
   return (
     <section>
-      <GradeBoardHeader
-        title={
-          onBoard() == "school-grade-add"
-            ? "Ajout d'une grade"
-            : "Modifier une grade"
-        }
-      />
+      <GradeBoardHeader title={title} />
 
       <div class="content">
         <div class="line-height-1">
@@ -138,6 +155,11 @@ export default function () {
           placeholder="Nom de la grade"
         />
 
+        <LabeledCheckbox
+          label="Horaires école"
+          checked={useSchoolSchedule()}
+          onChange={onChangeUseSchoolSchedule}
+        />
         <TimesInputWrapper
           label="Horaires matin"
           startValue={GradeEntity.getStringFromHourFormat(morningStart())}
