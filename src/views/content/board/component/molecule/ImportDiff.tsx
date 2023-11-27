@@ -6,6 +6,8 @@ import {
 } from "../../../../../signaux";
 import { CsvUtils, SchoolsCsvDiffType } from "../../../../../utils/csv.utils";
 import { DialogUtils } from "../../../../../utils/dialog.utils";
+import { SchoolUtils } from "../../../../../utils/school.utils";
+import { getLines } from "../../../map/component/organism/BusLines";
 import { setSchools } from "../../../map/component/organism/SchoolPoints";
 import { DiffCollapsible } from "./DiffCollapsible";
 import { csv, schoolsDiff } from "./ImportSelection";
@@ -74,22 +76,49 @@ export function ImportDiff() {
     return false;
   }
 
+  function isSchoolUsed(schoolId: number): boolean {
+    if (SchoolUtils.get(schoolId).grades.length > 0) return true;
+    if (
+      getLines().some((line) =>
+        line.schools.some((school) => school.id == schoolId)
+      )
+    ) {
+      return true;
+    }
+
+    return false;
+  }
+
+  for (const schoolId of schoolsDiff()?.deleted as number[]) {
+    if (isSchoolUsed(schoolId)) {
+      setUncheckedValues((prev) => {
+        const uncheckedValues = { ...prev };
+        uncheckedValues["deleted"].push(schoolId);
+
+        return uncheckedValues;
+      });
+    }
+  }
+
   return (
     <>
       <div id="import-dialog-title">Modifications à appliquer :</div>
       <DiffCollapsible
+        uncheckedValues={uncheckedValues}
         setter={setUncheckedValues}
         title="Ajouter"
         schools={schoolsDiff()?.added as string[]}
         diffType={DiffEnum.added}
       />
       <DiffCollapsible
+        uncheckedValues={uncheckedValues}
         setter={setUncheckedValues}
         title="Modifier"
         schools={schoolsDiff()?.modified as number[]}
         diffType={DiffEnum.modified}
       />
       <DiffCollapsible
+        uncheckedValues={uncheckedValues}
         setter={setUncheckedValues}
         title="Supprimer"
         schools={schoolsDiff()?.deleted as number[]}

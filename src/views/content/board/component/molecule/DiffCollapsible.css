@@ -1,0 +1,7 @@
+.input-checkbox input {
+  @apply mr-2;
+}
+
+.input-label-disabled {
+  @apply text-gray-base;
+}
