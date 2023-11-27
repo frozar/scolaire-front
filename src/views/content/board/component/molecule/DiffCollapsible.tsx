@@ -1,4 +1,4 @@
-import { For, Setter } from "solid-js";
+import { Accessor, For, Setter } from "solid-js";
 import { SchoolUtils } from "../../../../../utils/school.utils";
 import CollapsibleElement from "../organism/CollapsibleElement";
 import { DiffEnum, UncheckedElementType } from "./ImportDiff";
@@ -28,11 +28,20 @@ function onChangeSchoolCheckbox(
 }
 
 export function DiffCollapsible(props: {
+  uncheckedValues: Accessor<UncheckedElementType>;
   setter: Setter<UncheckedElementType>;
   title: string;
   schools: (number | string)[];
   diffType: DiffEnum;
 }) {
+  function isDisabled(school: number | string) {
+    if (props.diffType != DiffEnum.deleted) return false;
+
+    if (props.uncheckedValues()["deleted"].includes(school)) return true;
+
+    return false;
+  }
+
   return (
     <>
       <CollapsibleElement title={props.title}>
@@ -43,7 +52,8 @@ export function DiffCollapsible(props: {
               <div class="input-checkbox">
                 <input
                   type="checkbox"
-                  checked={true}
+                  checked={isDisabled(elem) ? false : true}
+                  disabled={isDisabled(elem)}
                   value={elem}
                   onChange={(event) =>
                     onChangeSchoolCheckbox(
