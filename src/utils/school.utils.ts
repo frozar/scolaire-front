@@ -6,6 +6,7 @@ import { SchoolType } from "../_entities/school.entity";
 import { SchoolService } from "../_services/school.service";
 import { addNewUserInformation } from "../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
+import { calendars } from "../views/content/calendar/template/Calendar";
 import {
   getLines,
   setLines,
@@ -18,6 +19,7 @@ import {
   getStops,
   setStops,
 } from "../views/content/map/component/organism/StopPoints";
+import { setSchoolDetailsItem } from "../views/content/schools/component/organism/SchoolDetails";
 
 export namespace SchoolUtils {
   export function get(schoolId: number): SchoolType {
@@ -182,6 +184,14 @@ export namespace SchoolUtils {
       const schools = [...prev];
       schools[schoolIndex] = updatedSchool;
       return schools;
+    });
+  }
+
+  export function linkSchoolToCalendar(calendarId: number) {
+    const calendar = calendars()?.find((item) => item.id == calendarId);
+    setSchoolDetailsItem((prev) => {
+      if (!prev) return prev;
+      return { ...prev, calendar: calendar };
     });
   }
 }

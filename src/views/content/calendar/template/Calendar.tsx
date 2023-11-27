@@ -59,7 +59,7 @@ export function Calendar() {
   onMount(async () => {
     const today = new Date();
     setCurrentMonth(new Date(today.getFullYear(), today.getMonth()));
-    await InitService.loadCalendars();
+    if (calendars().length == 0) await InitService.loadCalendars();
     disableSpinningWheel();
   });
 
