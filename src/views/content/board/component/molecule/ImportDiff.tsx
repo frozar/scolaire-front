@@ -7,6 +7,7 @@ import {
 import { CsvDiffType, CsvUtils } from "../../../../../utils/csv.utils";
 import { DialogUtils } from "../../../../../utils/dialog.utils";
 import { SchoolUtils } from "../../../../../utils/school.utils";
+import { StopUtils } from "../../../../../utils/stop.utils";
 import { getLines } from "../../../map/component/organism/BusLines";
 import { setSchools } from "../../../map/component/organism/SchoolPoints";
 import { setStops } from "../../../map/component/organism/StopPoints";
@@ -87,7 +88,7 @@ export function ImportDiff() {
     }
     return false;
   }
-  // TODO: Adapt to stops
+
   function isSchoolUsed(schoolId: number): boolean {
     if (SchoolUtils.get(schoolId).grades.length > 0) return true;
     if (
@@ -101,11 +102,37 @@ export function ImportDiff() {
     return false;
   }
 
-  for (const schoolId of diff()?.deleted as number[]) {
-    if (isSchoolUsed(schoolId)) {
+  function isStopUsed(stopId: number): boolean {
+    if (
+      getLines().some((line) => line.stops.some((stop) => stop.id == stopId))
+    ) {
+      return true;
+    }
+    if (StopUtils.get(stopId).associated.length > 0) return true;
+
+    return false;
+  }
+
+  function isItemUsed(id: number): boolean {
+    return csvType() == CsvEnum.schools ? isSchoolUsed(id) : isStopUsed(id);
+  }
+
+  // // TODO: Adapt to stops
+  // for (const schoolId of diff()?.deleted as number[]) {
+  //   if (isSchoolUsed(schoolId)) {
+  //     setUncheckedValues((prev) => {
+  //       const uncheckedValues = { ...prev };
+  //       uncheckedValues["deleted"].push(schoolId);
+
+  //       return uncheckedValues;
+  //     });
+  //   }
+  // }
+  for (const id of diff()?.deleted as number[]) {
+    if (isItemUsed(id)) {
       setUncheckedValues((prev) => {
         const uncheckedValues = { ...prev };
-        uncheckedValues["deleted"].push(schoolId);
+        uncheckedValues["deleted"].push(id);
 
         return uncheckedValues;
       });

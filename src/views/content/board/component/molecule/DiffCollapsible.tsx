@@ -3,7 +3,9 @@ import { SchoolUtils } from "../../../../../utils/school.utils";
 import CollapsibleElement from "../organism/CollapsibleElement";
 import { DiffEnum, UncheckedElementType } from "./ImportDiff";
 
+import { StopUtils } from "../../../../../utils/stop.utils";
 import "./DiffCollapsible.css";
+import { CsvEnum, csvType } from "./ImportSelection";
 
 interface DiffCollapsibleProps {
   uncheckedValues: Accessor<UncheckedElementType>;
@@ -28,7 +30,15 @@ export function DiffCollapsible(props: DiffCollapsibleProps) {
         <For each={props.schools}>
           {(elem) => {
             const disable = isDisabled(elem);
+            // TODO: Rewrite
+            const label =
+              props.diffType == DiffEnum.added
+                ? elem
+                : csvType() == CsvEnum.schools
+                ? SchoolUtils.getName(elem as number)
+                : StopUtils.getName(elem as number);
             return (
+              // TODO: Externalise component
               <div class="input-checkbox">
                 <div class="flex">
                   <input
@@ -46,9 +56,7 @@ export function DiffCollapsible(props: DiffCollapsibleProps) {
                     }
                   />
                   <label classList={{ "input-label-disabled": disable }}>
-                    {props.diffType == DiffEnum.added
-                      ? elem
-                      : SchoolUtils.getName(elem as number)}
+                    {label}
                   </label>
                   <Show when={disable}>
                     <div class="ml-2">Établissement utilisé</div>

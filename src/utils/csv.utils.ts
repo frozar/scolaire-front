@@ -26,6 +26,7 @@ import {
   setStops,
 } from "../views/content/map/component/organism/StopPoints";
 import { SchoolUtils } from "./school.utils";
+import { StopUtils } from "./stop.utils";
 
 export type CsvDiffType = {
   added: string[]; // names
@@ -88,19 +89,19 @@ export namespace CsvUtils {
       items_to_delete: [],
     };
 
-    filteredDiffs.deleted.forEach((schoolIid) =>
-      diffDBData.items_to_delete.push(schoolIid)
+    filteredDiffs.deleted.forEach((stopId) =>
+      diffDBData.items_to_delete.push(stopId)
     );
     filteredDiffs.added.forEach((name) => {
-      const school = parsedFileData.filter((school) => school.name == name)[0];
-      diffDBData.items_to_add.push(school);
+      const stop = parsedFileData.filter((stop) => stop.name == name)[0];
+      diffDBData.items_to_add.push(stop);
     });
-    filteredDiffs.modified.forEach((schoolId) => {
-      const school = SchoolUtils.get(schoolId);
+    filteredDiffs.modified.forEach((stopId) => {
+      const stop = StopUtils.get(stopId);
       const location = parsedFileData.filter(
-        (data) => data.name == school.name
+        (data) => data.name == stop.name
       )[0].location;
-      diffDBData.items_to_modify.push({ id: school.id, location });
+      diffDBData.items_to_modify.push({ id: stop.id, location });
     });
     return await StopService.import(diffDBData);
   }
