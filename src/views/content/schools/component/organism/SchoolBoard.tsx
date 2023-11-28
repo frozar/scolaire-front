@@ -26,7 +26,7 @@ export default function () {
     <section>
       <header>
         <div class="school-board-header">
-          <p>Nombre total d'établissements : {getSchools().length}</p>
+          <p>{getSchools().length} Établissements</p>
           <ButtonIcon
             icon={<BiRegularExport class="fill-green-base" />}
             onClick={exportCsv}

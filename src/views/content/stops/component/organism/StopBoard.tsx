@@ -22,10 +22,9 @@ export default function () {
 
   return (
     <section class="stop-board">
-      <header class="stop-board-header">
-        {/* TODO: Put in css file */}
-        <div class="flex justify-between">
-          <p>{getStops().length + " "} arrêts enregistrer</p>
+      <header>
+        <div class="stop-board-header">
+          <p>{getStops().length + " "} Arrêts</p>
           <ButtonIcon
             icon={<BiRegularExport class="fill-green-base" />}
             onClick={exportCsv}
