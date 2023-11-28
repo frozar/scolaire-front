@@ -1,4 +1,3 @@
-/* eslint-disable solid/reactivity */
 import { createEffect, createSignal } from "solid-js";
 import {
   HourRuleType,
@@ -23,6 +22,7 @@ interface HourRuleProps {
 export function HourRuleItem(props: HourRuleProps) {
   const ruleIndex = () =>
     props.hours.rules.findIndex((item) => item.day == props.rule.day);
+  // eslint-disable-next-line solid/reactivity
   const [bufferRule, setBufferRule] = createSignal<HourRuleType>(props.rule);
 
   // * Update SchoolDetailsItem only if we are not in add mode
@@ -30,6 +30,7 @@ export function HourRuleItem(props: HourRuleProps) {
     if (bufferRule() && ruleIndex() != -1) {
       if (props.action != "add") {
         if (schoolDetailsItem()?.hours.rules[ruleIndex()] != bufferRule()) {
+          // eslint-disable-next-line solid/reactivity
           setSchoolDetailsItem((prev) => {
             if (!prev) return prev;
             const school = { ...prev };
@@ -72,6 +73,7 @@ export function HourRuleItem(props: HourRuleProps) {
   }
 
   function onClickAdd() {
+    // eslint-disable-next-line solid/reactivity
     setSchoolDetailsItem((prev) => {
       if (!prev) return prev;
       const school = { ...prev };
@@ -94,6 +96,7 @@ export function HourRuleItem(props: HourRuleProps) {
         rule={props.rule}
         onClickAdd={onClickAdd}
         onClickRemove={onClickRemove}
+        disabled={props.disabled}
       />
       <TimesInputWrapper
         label="Aller"

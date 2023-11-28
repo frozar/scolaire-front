@@ -16,9 +16,9 @@ export namespace SchoolDetailUtils {
         SchoolUtils.isValidSchool(schoolDetailsItem() as SchoolType) &&
         SchoolUtils.get(schoolDetailsItem()?.id ?? 0) != schoolDetailsItem()
       ) {
-        setSchoolDetailEditing(false);
         SchoolUtils.update(schoolDetailsItem() as SchoolType);
       }
+      setSchoolDetailEditing(false);
     }
   }
 

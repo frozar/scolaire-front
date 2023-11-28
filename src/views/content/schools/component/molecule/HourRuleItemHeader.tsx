@@ -1,11 +1,14 @@
-import { Show } from "solid-js";
+import { Match, Show, Switch } from "solid-js";
 import { HourRuleType } from "../../../../../_entities/_utils.entity";
 import { SelectInput } from "../../../../../component/atom/SelectInput";
 import PlusIcon from "../../../../../icons/PlusIcon";
 import TrashIcon from "../../../../../icons/TrashIcon";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { CalendarUtils } from "../../../calendar/calendar.utils";
-import { schoolDetailsItem } from "../organism/SchoolDetails";
+import {
+  schoolDetailEditing,
+  schoolDetailsItem,
+} from "../organism/SchoolDetails";
 
 import "./HourRuleItemHeader.css";
 
@@ -36,13 +39,15 @@ export function HourRuleItemHeader(props: HourRuleItemHeader) {
         defaultOptions="Jour"
       />
 
-      <Show
-        when={props.action == "add"}
-        fallback={
-          <ButtonIcon icon={<TrashIcon />} onClick={props.onClickRemove} />
-        }
-      >
-        <ButtonIcon icon={<PlusIcon />} onClick={props.onClickAdd} />
+      <Show when={schoolDetailEditing()}>
+        <Switch>
+          <Match when={props.action == "add"}>
+            <ButtonIcon icon={<PlusIcon />} onClick={props.onClickAdd} />
+          </Match>
+          <Match when={props.action == "remove"}>
+            <ButtonIcon icon={<TrashIcon />} onClick={props.onClickRemove} />
+          </Match>
+        </Switch>
       </Show>
     </div>
   );

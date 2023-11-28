@@ -1,4 +1,4 @@
-import { For } from "solid-js";
+import { For, Show } from "solid-js";
 import { HoursType } from "../../../../../_entities/_utils.entity";
 import { CalendarDayEnum } from "../../../../../_entities/calendar.entity";
 import { HourFormat } from "../../../../../_entities/grade.entity";
@@ -31,7 +31,9 @@ export function HourRuleList(props: { hours: HoursType }) {
           />
         )}
       </For>
-      <HourRuleItem rule={bufferRule} hours={props.hours} action="add" />
+      <Show when={schoolDetailEditing()}>
+        <HourRuleItem rule={bufferRule} hours={props.hours} action="add" />
+      </Show>
     </div>
   );
 }
