@@ -1,12 +1,8 @@
-.stop-board-header{
-  @apply my-4;
+.stop-board-header {
+  @apply flex justify-between my-5;
 }
 
-.stop-board-header > p {
-  @apply mt-3
-}
-
-.stop-board-content{
+.stop-board-content {
   @apply mt-3 overflow-auto pr-2;
   max-height: 80vh;
 }
