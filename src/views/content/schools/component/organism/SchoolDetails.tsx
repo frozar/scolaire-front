@@ -77,7 +77,14 @@ export default function () {
           variant="bold-title"
         >
           <SchoolHoursSlots school={schoolDetailsItem() as SchoolType} />
-          <p class="font-bold">Exception horaires</p>
+          <Show
+            when={
+              (schoolDetailsItem()?.hours.rules.length ?? 0) > 0 ||
+              schoolDetailEditing()
+            }
+          >
+            <p class="font-bold">Exception horaires</p>
+          </Show>
           <HourRuleList hours={schoolDetailsItem()?.hours as HoursType} />
         </CollapsibleElement>
       </div>
