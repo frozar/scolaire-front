@@ -42,8 +42,9 @@ export function ImportSelection() {
         return;
 
       case CsvEnum.students:
-        console.log("todo students");
-        break;
+        const studentDiff = await CsvUtils.getStudentsDiff(csv() as File);
+        console.log("csvItems =>", studentDiff);
+        return;
     }
 
     DialogUtils.closeDialog();
