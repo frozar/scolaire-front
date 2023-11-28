@@ -63,7 +63,7 @@ export function ImportDiff() {
 
     switch (csvType()) {
       case CsvEnum.schools:
-        const schools = await CsvUtils.importItem(
+        const schools = await CsvUtils.importItems(
           csv() as File,
           diffFiltered(),
           CsvEnum.schools
@@ -72,7 +72,7 @@ export function ImportDiff() {
         break;
 
       case CsvEnum.stops:
-        const stops = await CsvUtils.importItem(
+        const stops = await CsvUtils.importItems(
           csv() as File,
           diffFiltered(),
           CsvEnum.stops

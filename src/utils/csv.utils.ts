@@ -1,11 +1,7 @@
 import _ from "lodash";
 import Papa from "papaparse";
 import { LocationDBType } from "../_entities/_utils.entity";
-import {
-  SchoolDBType,
-  SchoolEntity,
-  SchoolType,
-} from "../_entities/school.entity";
+import { SchoolDBType, SchoolType } from "../_entities/school.entity";
 import { StopDBType, StopEntity, StopType } from "../_entities/stop.entity";
 import { SchoolService } from "../_services/school.service";
 import { StopService } from "../_services/stop.service";
@@ -40,16 +36,14 @@ export type importItemDBType = {
 };
 
 export namespace CsvUtils {
-  // TODO: Rename
-  export async function importItem(
+  export async function importItems(
     file: File,
     filteredDiffs: CsvDiffType,
     importType: CsvEnum
   ): Promise<(StopType | SchoolType)[]> {
-    // TODO: Rename parsedCsvFileToStopData => parseCsvSchoolOrStopData
-    const parsedFileData = (await parseCsvFileToSchoolData(file)) as Pick<
+    const parsedFileData = (await parseCsvItem(file)) as Omit<
       StopDBType,
-      "name" | "location"
+      "id" | "associated_grade"
     >[];
 
     const diffDBData: importItemDBType = {
@@ -70,6 +64,7 @@ export namespace CsvUtils {
       let item: StopType | SchoolType;
       if (importType == CsvEnum.schools) item = SchoolUtils.get(diffItem);
       else item = StopUtils.get(diffItem);
+
       const location = parsedFileData.filter(
         (data) => data.name == item.name
       )[0].location;
@@ -83,7 +78,7 @@ export namespace CsvUtils {
 
   export async function getDiff(file: File, csvType: CsvEnum) {
     // TODO: Rename parsedCsvFileToStopData => parseCsvSchoolOrStopData
-    const csvItems = (await parsedCsvFileToStopData(file)) as {
+    const csvItems = (await parseCsvItem(file)) as {
       name: string;
       location: LocationDBType;
     }[];
@@ -131,20 +126,6 @@ export namespace CsvUtils {
     }
     return true;
   }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async function importStopCSVFile(
-    parsedFileData: Pick<StopDBType, "name" | "location">[]
-  ) {
-    const stops: StopType[] = await StopService.import(
-      parsedFileData as Pick<StopDBType, "name" | "location">[]
-    );
-    if (stops) {
-      setStops(stops);
-      return true;
-    }
-    return false;
-  }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async function importStudentToGradeCSVFile(parsedFileData: StudentToGrade[]) {
     const { schools, stops } = await StudentToGradeService.import(
@@ -173,19 +154,6 @@ export namespace CsvUtils {
     return res as Promise<Papa.ParseResult<unknown>>;
   }
 
-  function fileNameIsCorrect(fileName: string, fileNameType: string) {
-    const strReg =
-      "[0-9]{4}-[0-9]{2}-[0-9]{2}_[0-9]{2}-[0-9]{2}-[0-9]{2}_" +
-      fileNameType +
-      ".csv";
-    const regex = new RegExp(strReg);
-
-    if (!regex.test(fileName)) {
-      return false;
-    }
-    return true;
-  }
-
   function isCorrectHeader(
     currentHeader: string[] | undefined,
     correctHeader: string[]
@@ -203,27 +171,7 @@ export namespace CsvUtils {
     return true;
   }
 
-  export async function parseCsvFileToSchoolData(
-    file: File
-  ): Promise<Pick<SchoolDBType, "name" | "location">[] | undefined> {
-    const parsedFile = await parseFile(file);
-
-    const correctHeader = ["name", "lat", "lon"];
-    if (!isCorrectHeader(parsedFile.meta.fields, correctHeader)) {
-      return;
-    }
-    let parsedData = parsedFile.data as Pick<
-      SchoolType,
-      "name" | "lon" | "lat" | "hours"
-    >[];
-    parsedData = parsedData.filter((data) => data.lat && data.lon && data.name);
-
-    return SchoolEntity.dataToDB(parsedData);
-  }
-
-  async function parsedCsvFileToStopData(
-    file: File
-  ): Promise<Pick<StopDBType, "name" | "location">[] | undefined> {
+  async function parseCsvItem(file: File) {
     const parsedFile = await parseFile(file);
 
     const correctHeader = ["name", "lat", "lon"];
@@ -238,7 +186,7 @@ export namespace CsvUtils {
 
     return StopEntity.dataToDB(parsedData);
   }
-
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async function parsedCsvFileToStudentToGradeData(
     file: File
   ): Promise<StudentToGrade[] | undefined> {
@@ -252,30 +200,6 @@ export namespace CsvUtils {
       (data) => data.school_name && data.stop_name && data.quantity
     );
     return parsedData;
-  }
-
-  function isSchoolFile(fileName: string) {
-    return fileNameIsCorrect(fileName, "etablissement");
-  }
-
-  function isStopFile(fileName: string) {
-    return fileNameIsCorrect(fileName, "ramassage");
-  }
-
-  function isStudentToGradeFile(fileName: string) {
-    return fileNameIsCorrect(fileName, "eleve_vers_etablissement");
-  }
-  // TODO: Delete ?
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async function parsedCsvFileData(file: File) {
-    const fileName = file.name;
-    if (isSchoolFile(fileName)) {
-      return await parseCsvFileToSchoolData(file);
-    } else if (isStopFile(fileName)) {
-      return await parsedCsvFileToStopData(file);
-    } else if (isStudentToGradeFile(fileName)) {
-      return await parsedCsvFileToStudentToGradeData(file);
-    } else return;
   }
 }
 
