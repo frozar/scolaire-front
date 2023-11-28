@@ -1,15 +1,17 @@
+import _ from "lodash";
 import { getSchoolWhereClassId } from "../views/content/map/component/organism/SchoolPoints";
 import { HourFormat } from "./grade.entity";
 import { SchoolType } from "./school.entity";
 import { DBAssociatedStop, StopType } from "./stop.entity";
 
 export class EntityUtils {
+  // xano only keep 12 numbers after decimal point
   static builLocationPoint(lng: number, lat: number): LocationDBType {
     return {
       type: LocationDBTypeEnum.point,
       data: {
-        lng: lng,
-        lat: lat,
+        lng: _.round(lng, 12),
+        lat: _.round(lat, 12),
       },
     };
   }

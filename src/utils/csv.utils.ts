@@ -59,7 +59,6 @@ export namespace CsvUtils {
       const item = parsedFileData.filter((item) => item.name == name)[0];
       diffDBData.items_to_add.push(item);
     });
-
     filteredDiffs.modified.forEach((diffItem) => {
       let item: StopType | SchoolType;
       if (importType == CsvEnum.schools) item = SchoolUtils.get(diffItem);
@@ -92,11 +91,10 @@ export namespace CsvUtils {
       for (const item of items) {
         // Case modified
         if (csvItem.name == item.name) {
-          const { lat: csvLat, lng: csvLng } = roundLikeXano(
-            csvItem.location.data.lat,
-            csvItem.location.data.lng
-          );
-          if (csvLat != item.lat || csvLng != item.lon) {
+          if (
+            _.round(csvItem.location.data.lat, 12) != item.lat ||
+            _.round(csvItem.location.data.lng, 12) != item.lon
+          ) {
             diff.modified.push(item.id);
             continue loop;
           }
@@ -200,15 +198,4 @@ export namespace CsvUtils {
     );
     return parsedData;
   }
-}
-
-// in xano geographical point rounded as an absolute number with 12 after decimal point
-function roundLikeXano(lat: number, lng: number) {
-  let _lat = _.round(Math.abs(lat), 12);
-  if (lat < 0) _lat = -_lat;
-
-  let _lng = _.round(Math.abs(lng), 12);
-  if (lng < 0) _lng = -lng;
-
-  return { lat: _lat, lng: _lng };
 }
