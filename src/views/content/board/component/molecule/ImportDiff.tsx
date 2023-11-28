@@ -124,17 +124,6 @@ export function ImportDiff() {
     return csvType() == CsvEnum.schools ? isSchoolUsed(id) : isStopUsed(id);
   }
 
-  // // TODO: Adapt to stops
-  // for (const schoolId of diff()?.deleted as number[]) {
-  //   if (isSchoolUsed(schoolId)) {
-  //     setUncheckedValues((prev) => {
-  //       const uncheckedValues = { ...prev };
-  //       uncheckedValues["deleted"].push(schoolId);
-
-  //       return uncheckedValues;
-  //     });
-  //   }
-  // }
   for (const id of diff()?.deleted as number[]) {
     if (isItemUsed(id)) {
       setUncheckedValues((prev) => {

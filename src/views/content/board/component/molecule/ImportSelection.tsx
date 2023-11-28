@@ -25,10 +25,6 @@ export function ImportSelection() {
     refButton()?.focus();
   });
 
-  createEffect(() => {
-    console.log("diff =>", diff());
-  });
-
   async function onClick() {
     let diff: CsvDiffType;
     switch (csvType()) {
@@ -43,7 +39,6 @@ export function ImportSelection() {
 
         setDiff(diff);
         setDialogToDisplay(DialogToDisplayEnum.diff);
-        // console.log("todo stops");
         return;
 
       case CsvEnum.students:
