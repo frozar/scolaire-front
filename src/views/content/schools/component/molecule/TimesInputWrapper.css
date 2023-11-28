@@ -1,0 +1,3 @@
+.schedules-input {
+  @apply flex justify-between;
+}

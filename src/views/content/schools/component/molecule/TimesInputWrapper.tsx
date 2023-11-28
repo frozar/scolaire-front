@@ -1,5 +1,7 @@
 import StartEndTimeSchedulesInput from "./StartEndTimeSchedulesInput";
 
+import "./TimesInputWrapper.css";
+
 interface TimesInputWrapper {
   onInputStart: (value: string) => void;
   onInputEnd: (value: string) => void;
@@ -11,7 +13,7 @@ interface TimesInputWrapper {
 
 export default function (props: TimesInputWrapper) {
   return (
-    <div class="schedules-input my-5">
+    <div class="schedules-input">
       <p>{props.label}</p>
       <StartEndTimeSchedulesInput
         onInputStart={props.onInputStart}

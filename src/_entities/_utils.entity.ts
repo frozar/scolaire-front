@@ -1,5 +1,6 @@
 import _ from "lodash";
 import { getSchoolWhereClassId } from "../views/content/map/component/organism/SchoolPoints";
+import { CalendarDayEnum } from "./calendar.entity";
 import { HourFormat } from "./grade.entity";
 import { SchoolType } from "./school.entity";
 import { DBAssociatedStop, StopType } from "./stop.entity";
@@ -110,6 +111,7 @@ export type HoursDBType = {
   end_hour_coming: string;
   start_hour_going: string;
   end_hour_going: string;
+  rules: HourRuleDBType[];
 };
 
 export type HoursType = {
@@ -118,4 +120,21 @@ export type HoursType = {
   endHourComing: HourFormat;
   startHourGoing: HourFormat;
   endHourGoing: HourFormat;
+  rules: HourRuleType[];
+};
+
+export type HourRuleDBType = {
+  day: CalendarDayEnum;
+  start_coming: string;
+  end_coming: string;
+  start_going: string;
+  end_going: string;
+};
+
+export type HourRuleType = {
+  day: CalendarDayEnum;
+  startComing: HourFormat;
+  endComing: HourFormat;
+  startGoing: HourFormat;
+  endGoing: HourFormat;
 };

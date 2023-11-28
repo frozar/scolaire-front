@@ -6,6 +6,7 @@ import {
   onCleanup,
   onMount,
 } from "solid-js";
+import { HoursType } from "../../../../../_entities/_utils.entity";
 import { GradeType } from "../../../../../_entities/grade.entity";
 import {
   SchoolEntity,
@@ -16,11 +17,13 @@ import PlusIcon from "../../../../../icons/PlusIcon";
 import { MapElementUtils } from "../../../../../utils/mapElement.utils";
 import { SchoolUtils } from "../../../../../utils/school.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
+import CollapsibleElement from "../../../board/component/organism/CollapsibleElement";
 import { changeBoard } from "../../../board/component/template/ContextManager";
 import { calendars } from "../../../calendar/template/Calendar";
 import SchoolDetailsHeader from "../molecule/SchoolDetailsHeader";
 import SchoolDetailsPanelsButton from "../molecule/SchoolDetailsPanelsButton";
 import GradeList from "./GradeList";
+import { HourRuleList } from "./HourRuleList";
 import "./SchoolDetails.css";
 import { SchoolHoursSlots } from "./SchoolHoursSlots";
 import { TripsList } from "./TripsList";
@@ -68,7 +71,13 @@ export default function () {
         disabled={!schoolDetailEditing()}
       />
 
-      <SchoolHoursSlots school={schoolDetailsItem() as SchoolType} />
+      <div class="time">
+        <CollapsibleElement title="Tranche horaires arriver/départ">
+          <SchoolHoursSlots school={schoolDetailsItem() as SchoolType} />
+          <p class="font-bold">Exception horaires</p>
+          <HourRuleList hours={schoolDetailsItem()?.hours as HoursType} />
+        </CollapsibleElement>
+      </div>
 
       <div class="panel-actions">
         <SchoolDetailsPanelsButton
