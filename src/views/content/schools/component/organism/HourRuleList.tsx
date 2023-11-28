@@ -1,39 +1,44 @@
 import { For, Show } from "solid-js";
 import { HoursType } from "../../../../../_entities/_utils.entity";
 import { CalendarDayEnum } from "../../../../../_entities/calendar.entity";
-import { HourFormat } from "../../../../../_entities/grade.entity";
 import { HourRuleItem } from "./HourRuleItem";
-import { schoolDetailEditing } from "./SchoolDetails";
+import { schoolDetailEditing, schoolDetailsItem } from "./SchoolDetails";
 
 export function HourRuleList(props: { hours: HoursType }) {
-  const defaultHourFormat: HourFormat = {
-    hour: 7,
-    minutes: 0,
-  };
+  const { startHourComing, endHourComing, startHourGoing, endHourGoing } =
+    schoolDetailsItem()?.hours as HoursType;
 
   const bufferRule = {
     day: CalendarDayEnum.monday,
-    startComing: defaultHourFormat,
-    endComing: defaultHourFormat,
-    startGoing: defaultHourFormat,
-    endGoing: defaultHourFormat,
+    startComing: startHourComing,
+    endComing: endHourComing,
+    startGoing: startHourGoing,
+    endGoing: endHourGoing,
   };
 
+  const showTitle = () =>
+    (schoolDetailsItem()?.hours.rules.length ?? 0) > 0 || schoolDetailEditing();
+
   return (
-    <div class="list-wrapper pr-3">
-      <For each={props.hours.rules}>
-        {(item) => (
-          <HourRuleItem
-            rule={item}
-            hours={props.hours}
-            disabled={!schoolDetailEditing()}
-            action="remove"
-          />
-        )}
-      </For>
-      <Show when={schoolDetailEditing()}>
-        <HourRuleItem rule={bufferRule} hours={props.hours} action="add" />
+    <>
+      <Show when={showTitle()}>
+        <p class="font-bold">Exception horaires</p>
       </Show>
-    </div>
+      <div class="list-wrapper pr-3">
+        <For each={props.hours.rules}>
+          {(item) => (
+            <HourRuleItem
+              rule={item}
+              hours={props.hours}
+              disabled={!schoolDetailEditing()}
+              action="remove"
+            />
+          )}
+        </For>
+        <Show when={schoolDetailEditing()}>
+          <HourRuleItem rule={bufferRule} hours={props.hours} action="add" />
+        </Show>
+      </div>
+    </>
   );
 }

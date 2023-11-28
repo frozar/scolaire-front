@@ -1,4 +1,4 @@
-import { createEffect, createSignal } from "solid-js";
+import { createEffect, createSignal, on } from "solid-js";
 import {
   HourRuleType,
   HoursType,
@@ -7,7 +7,10 @@ import { CalendarDayEnum } from "../../../../../_entities/calendar.entity";
 import { GradeEntity } from "../../../../../_entities/grade.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { TimeUtils } from "../../../../../_entities/time.utils";
+import { addNewUserInformation } from "../../../../../signaux";
+import { MessageLevelEnum, MessageTypeEnum } from "../../../../../type";
 import { SchoolUtils } from "../../../../../utils/school.utils";
+import { CalendarUtils } from "../../../calendar/calendar.utils";
 import { HourRuleItemHeader } from "../molecule/HourRuleItemHeader";
 import TimesInputWrapper from "../molecule/TimesInputWrapper";
 import { schoolDetailsItem, setSchoolDetailsItem } from "./SchoolDetails";
@@ -26,21 +29,24 @@ export function HourRuleItem(props: HourRuleProps) {
   const [bufferRule, setBufferRule] = createSignal<HourRuleType>(props.rule);
 
   // * Update SchoolDetailsItem only if we are not in add mode
-  createEffect(() => {
-    if (bufferRule() && ruleIndex() != -1) {
-      if (props.action != "add") {
-        if (schoolDetailsItem()?.hours.rules[ruleIndex()] != bufferRule()) {
-          // eslint-disable-next-line solid/reactivity
-          setSchoolDetailsItem((prev) => {
-            if (!prev) return prev;
-            const school = { ...prev };
-            school.hours.rules[ruleIndex()] = bufferRule();
-            return school;
-          });
+  createEffect(
+    on(
+      () => bufferRule,
+      () => {
+        if (bufferRule() && ruleIndex() != -1 && props.action != "add") {
+          if (schoolDetailsItem()?.hours.rules[ruleIndex()] != bufferRule()) {
+            // eslint-disable-next-line solid/reactivity
+            setSchoolDetailsItem((prev) => {
+              if (!prev) return prev;
+              const school = { ...prev };
+              school.hours.rules[ruleIndex()] = bufferRule();
+              return school;
+            });
+          }
         }
       }
-    }
-  });
+    )
+  );
 
   function onInputComingStart(value: string) {
     setBufferRule((prev) => {
@@ -67,12 +73,49 @@ export function HourRuleItem(props: HourRuleProps) {
   }
 
   function onChangeDay(value: string | number) {
+    if (!Object.values(CalendarDayEnum).includes(value as CalendarDayEnum)) {
+      return addNewUserInformation({
+        displayed: true,
+        level: MessageLevelEnum.info,
+        type: MessageTypeEnum.global,
+        content: "Veuillez sélectionner un jour.",
+      });
+    }
     setBufferRule((prev) => {
       return { ...prev, day: value as CalendarDayEnum };
     });
   }
 
+  function isValid(): boolean {
+    const hours = schoolDetailsItem()?.hours as HoursType;
+    const usedDays = hours.rules.map((item) => item.day);
+
+    if (!Object.values(CalendarDayEnum).includes(bufferRule().day)) {
+      addNewUserInformation({
+        displayed: true,
+        level: MessageLevelEnum.info,
+        type: MessageTypeEnum.global,
+        content: "Veuillez sélectionner un jour.",
+      });
+      return false;
+    }
+    if (usedDays.includes(bufferRule().day)) {
+      addNewUserInformation({
+        displayed: true,
+        level: MessageLevelEnum.info,
+        type: MessageTypeEnum.global,
+        content:
+          "Veuillez sélectionner un jour autre que " +
+          CalendarUtils.dayToFrench(bufferRule().day) +
+          ", ce jour est déjà utiliser comme exception.",
+      });
+      return false;
+    }
+    return true;
+  }
+
   function onClickAdd() {
+    if (!isValid()) return;
     // eslint-disable-next-line solid/reactivity
     setSchoolDetailsItem((prev) => {
       if (!prev) return prev;
@@ -85,7 +128,16 @@ export function HourRuleItem(props: HourRuleProps) {
 
   // TODO to finish
   function onClickRemove() {
-    console.log("remove");
+    // eslint-disable-next-line solid/reactivity
+    setSchoolDetailsItem((prev) => {
+      if (!prev) return prev;
+      const school = { ...prev };
+      school.hours.rules = school.hours.rules.filter(
+        (item) => item.day != props.rule.day
+      );
+      return school;
+    });
+    SchoolUtils.update(schoolDetailsItem() as SchoolType);
   }
 
   return (
