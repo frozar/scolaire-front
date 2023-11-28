@@ -44,4 +44,5 @@ export default function () {
 
 function exportCsv() {
   CsvUtils.exportCsv(CsvEnum.stops);
+  CsvUtils.exportStudentsCsv();
 }
