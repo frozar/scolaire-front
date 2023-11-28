@@ -1,4 +1,8 @@
+import { BiRegularExport } from "solid-icons/bi";
 import { For, createSignal } from "solid-js";
+import { CsvUtils } from "../../../../../utils/csv.utils";
+import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
+import { CsvEnum } from "../../../board/component/molecule/ImportSelection";
 import { getStops } from "../../../map/component/organism/StopPoints";
 import InputSearch from "../../../schools/component/molecule/InputSearch";
 import StopItem from "../molecul/StopItem";
@@ -19,9 +23,15 @@ export default function () {
   return (
     <section class="stop-board">
       <header class="stop-board-header">
+        {/* TODO: Put in css file */}
+        <div class="flex justify-between">
+          <p>{getStops().length + " "} arrêts enregistrer</p>
+          <ButtonIcon
+            icon={<BiRegularExport class="fill-green-base" />}
+            onClick={exportCsv}
+          />
+        </div>
         <InputSearch onInput={onInputSearch} />
-
-        <p>{getStops().length + " "} arrêts enregistrer</p>
       </header>
 
       <div class="stop-board-content">
@@ -31,4 +41,8 @@ export default function () {
       </div>
     </section>
   );
+}
+
+function exportCsv() {
+  CsvUtils.exportCsv(CsvEnum.stops);
 }

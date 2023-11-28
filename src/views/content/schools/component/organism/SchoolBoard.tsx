@@ -1,10 +1,10 @@
 import { BiRegularExport } from "solid-icons/bi";
 import { FaSolidPlus } from "solid-icons/fa";
 
-import Papa from "papaparse";
 import { For, createSignal } from "solid-js";
-import { download } from "../../../../../utils";
+import { CsvUtils } from "../../../../../utils/csv.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
+import { CsvEnum } from "../../../board/component/molecule/ImportSelection";
 import { getSchools } from "../../../map/component/organism/SchoolPoints";
 import InputSearch from "../molecule/InputSearch";
 import SchoolItem from "../molecule/SchoolItem";
@@ -20,23 +20,6 @@ export default function () {
   async function addSchool() {
     // TODO can really add school from here ? add school is disponible only with import no ?
     console.log("add school");
-  }
-
-  function exportCsv() {
-    type SchoolExportType = {
-      name: string;
-      lat: number;
-      lon: number;
-    };
-    const schools: SchoolExportType[] = [];
-    getSchools().forEach((school) =>
-      schools.push({ name: school.name, lat: school.lat, lon: school.lon })
-    );
-
-    const csv = Papa.unparse(schools);
-    const blob = new Blob([csv], { type: "text/csv;charset=utf-8," });
-
-    download("schools.csv", blob);
   }
 
   return (
@@ -69,4 +52,8 @@ export default function () {
       </div>
     </section>
   );
+}
+
+function exportCsv() {
+  CsvUtils.exportCsv(CsvEnum.schools);
 }

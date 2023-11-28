@@ -11,6 +11,7 @@ import {
 } from "../_services/student-to-grade.service";
 import { addNewUserInformation } from "../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
+import { download } from "../utils";
 import { CsvEnum } from "../views/content/board/component/molecule/ImportSelection";
 import {
   getSchools,
@@ -122,6 +123,28 @@ export namespace CsvUtils {
       return false;
     }
     return true;
+  }
+
+  export function exportCsv(type: CsvEnum) {
+    type ItemExportType = {
+      name: string;
+      lat: number;
+      lon: number;
+    };
+
+    let items: (SchoolType | StopType)[] = [];
+    if (type == CsvEnum.schools) items = getSchools();
+    if (type == CsvEnum.stops) items = getStops();
+
+    const csvItems: ItemExportType[] = [];
+    items.forEach((item) =>
+      csvItems.push({ name: item.name, lat: item.lat, lon: item.lon })
+    );
+
+    const csv = Papa.unparse(csvItems);
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8," });
+
+    download(`${type}.csv`, blob);
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async function importStudentToGradeCSVFile(parsedFileData: StudentToGrade[]) {
