@@ -1,15 +1,17 @@
-import { Accessor, For, Setter, Show } from "solid-js";
+import { Accessor, For, Setter } from "solid-js";
 import { SchoolUtils } from "../../../../../utils/school.utils";
 import CollapsibleElement from "../organism/CollapsibleElement";
 import { DiffEnum, UncheckedElementType } from "./ImportDiff";
 
-import "./DiffCollapsible.css";
+import { StopUtils } from "../../../../../utils/stop.utils";
+import { DiffCheckbox } from "../atom/DiffCheckbox";
+import { CsvEnum, csvType } from "./ImportSelection";
 
 interface DiffCollapsibleProps {
   uncheckedValues: Accessor<UncheckedElementType>;
   setter: Setter<UncheckedElementType>;
   title: string;
-  schools: (number | string)[];
+  items: (number | string)[];
   diffType: DiffEnum;
 }
 
@@ -25,64 +27,28 @@ export function DiffCollapsible(props: DiffCollapsibleProps) {
   return (
     <>
       <CollapsibleElement title={props.title}>
-        <For each={props.schools}>
-          {(elem) => {
-            const disable = isDisabled(elem);
+        <For each={props.items}>
+          {(item) => {
+            const disable = isDisabled(item);
+
+            let label: string;
+            if (props.diffType == DiffEnum.added) label = item as string;
+            else if (csvType() == CsvEnum.schools) {
+              label = SchoolUtils.getName(item as number);
+            } else label = StopUtils.getName(item as number);
+
             return (
-              <div class="input-checkbox">
-                <div class="flex">
-                  <input
-                    type="checkbox"
-                    checked={disable ? false : true}
-                    disabled={disable}
-                    value={elem}
-                    onChange={(event) =>
-                      onChangeSchoolCheckbox(
-                        event,
-                        props.setter,
-                        elem,
-                        props.diffType
-                      )
-                    }
-                  />
-                  <label classList={{ "input-label-disabled": disable }}>
-                    {props.diffType == DiffEnum.added
-                      ? elem
-                      : SchoolUtils.getName(elem as number)}
-                  </label>
-                  <Show when={disable}>
-                    <div class="ml-2">Établissement utilisé</div>
-                  </Show>
-                </div>
-              </div>
+              <DiffCheckbox
+                item={item}
+                label={label}
+                disable={disable}
+                diffType={props.diffType}
+                setter={props.setter}
+              />
             );
           }}
         </For>
       </CollapsibleElement>
     </>
   );
-}
-
-function onChangeSchoolCheckbox(
-  event: Event & {
-    currentTarget: HTMLInputElement;
-    target: HTMLInputElement;
-  },
-  setter: Setter<UncheckedElementType>,
-  elem: string | number,
-  diffMode: DiffEnum
-) {
-  if (event.currentTarget.checked) {
-    setter((prev) => {
-      const unchecked = { ...prev };
-      unchecked[diffMode] = unchecked[diffMode].filter((elt) => elt != elem);
-      return unchecked;
-    });
-  } else {
-    setter((prev) => {
-      const unchecked: UncheckedElementType = { ...prev };
-      unchecked[diffMode].push(elem as string);
-      return unchecked;
-    });
-  }
 }

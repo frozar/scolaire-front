@@ -1,16 +1,21 @@
 import { createEffect, createSignal } from "solid-js";
+import { SchoolType } from "../../../../../_entities/school.entity";
+import { StopType } from "../../../../../_entities/stop.entity";
 import Button from "../../../../../component/atom/Button";
 import {
   disableSpinningWheel,
   enableSpinningWheel,
 } from "../../../../../signaux";
-import { CsvUtils, SchoolsCsvDiffType } from "../../../../../utils/csv.utils";
+import { CsvDiffType, CsvUtils } from "../../../../../utils/csv.utils";
 import { DialogUtils } from "../../../../../utils/dialog.utils";
 import { SchoolUtils } from "../../../../../utils/school.utils";
+import { StopUtils } from "../../../../../utils/stop.utils";
 import { getLines } from "../../../map/component/organism/BusLines";
 import { setSchools } from "../../../map/component/organism/SchoolPoints";
+import { setStops } from "../../../map/component/organism/StopPoints";
+import { DialogToDisplayEnum, setDialogToDisplay } from "../organism/Dialogs";
 import { DiffCollapsible } from "./DiffCollapsible";
-import { csv, schoolsDiff } from "./ImportSelection";
+import { CsvEnum, csv, csvType, diff, setCsvType } from "./ImportSelection";
 
 export enum DiffEnum {
   added = "added",
@@ -38,38 +43,53 @@ export function ImportDiff() {
     refButton()?.focus();
   });
 
-  function schoolsDiffFiltered(): SchoolsCsvDiffType {
+  function diffFiltered(): CsvDiffType {
     return {
-      added: schoolsDiff()?.added.filter(
+      added: diff()?.added.filter(
         (added) => !uncheckedValues()[DiffEnum.added].includes(added)
       ) as string[],
-      modified: schoolsDiff()?.modified.filter(
+      modified: diff()?.modified.filter(
         (modified) => !uncheckedValues()[DiffEnum.modified].includes(modified)
       ) as number[],
-      deleted: schoolsDiff()?.deleted.filter(
+      deleted: diff()?.deleted.filter(
         (deleted) => !uncheckedValues()[DiffEnum.deleted].includes(deleted)
       ) as number[],
     };
   }
 
   async function onClick() {
-    DialogUtils.closeDialog();
+    setDialogToDisplay(DialogToDisplayEnum.none);
     enableSpinningWheel();
 
-    const schools = await CsvUtils.importSchools(
-      csv() as File,
-      schoolsDiffFiltered()
-    );
+    switch (csvType()) {
+      case CsvEnum.schools:
+        const schools = await CsvUtils.importItems(
+          csv() as File,
+          diffFiltered(),
+          CsvEnum.schools
+        );
+        setSchools(schools as SchoolType[]);
+        break;
 
-    setSchools(schools);
+      case CsvEnum.stops:
+        const stops = await CsvUtils.importItems(
+          csv() as File,
+          diffFiltered(),
+          CsvEnum.stops
+        );
+        setStops(stops as StopType[]);
+        break;
+    }
+
+    setCsvType();
     disableSpinningWheel();
   }
 
   function noElementChecked() {
     if (
-      schoolsDiffFiltered().added.length == 0 &&
-      schoolsDiffFiltered().modified.length == 0 &&
-      schoolsDiffFiltered().deleted.length == 0
+      diffFiltered().added.length == 0 &&
+      diffFiltered().modified.length == 0 &&
+      diffFiltered().deleted.length == 0
     ) {
       return true;
     }
@@ -89,11 +109,26 @@ export function ImportDiff() {
     return false;
   }
 
-  for (const schoolId of schoolsDiff()?.deleted as number[]) {
-    if (isSchoolUsed(schoolId)) {
+  function isStopUsed(stopId: number): boolean {
+    if (
+      getLines().some((line) => line.stops.some((stop) => stop.id == stopId))
+    ) {
+      return true;
+    }
+    if (StopUtils.get(stopId).associated.length > 0) return true;
+
+    return false;
+  }
+
+  function isItemUsed(id: number): boolean {
+    return csvType() == CsvEnum.schools ? isSchoolUsed(id) : isStopUsed(id);
+  }
+
+  for (const id of diff()?.deleted as number[]) {
+    if (isItemUsed(id)) {
       setUncheckedValues((prev) => {
         const uncheckedValues = { ...prev };
-        uncheckedValues["deleted"].push(schoolId);
+        uncheckedValues["deleted"].push(id);
 
         return uncheckedValues;
       });
@@ -107,21 +142,21 @@ export function ImportDiff() {
         uncheckedValues={uncheckedValues}
         setter={setUncheckedValues}
         title="Ajouter"
-        schools={schoolsDiff()?.added as string[]}
+        items={diff()?.added as string[]}
         diffType={DiffEnum.added}
       />
       <DiffCollapsible
         uncheckedValues={uncheckedValues}
         setter={setUncheckedValues}
         title="Modifier"
-        schools={schoolsDiff()?.modified as number[]}
+        items={diff()?.modified as number[]}
         diffType={DiffEnum.modified}
       />
       <DiffCollapsible
         uncheckedValues={uncheckedValues}
         setter={setUncheckedValues}
         title="Supprimer"
-        schools={schoolsDiff()?.deleted as number[]}
+        items={diff()?.deleted as number[]}
         diffType={DiffEnum.deleted}
       />
       {/* TODO: Refactor footer dialog content */}

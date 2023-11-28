@@ -2,12 +2,12 @@ import {
   SchoolDBType,
   SchoolEntity,
   SchoolType,
-  importSchoolsDBType,
 } from "../_entities/school.entity";
+import { importItemDBType } from "../utils/csv.utils";
 import { ServiceUtils } from "./_utils.service";
 
 export class SchoolService {
-  static async import(schools: importSchoolsDBType): Promise<SchoolType[]> {
+  static async import(schools: importItemDBType): Promise<SchoolType[]> {
     const xanoResult: { school: SchoolDBType[] } = await ServiceUtils.post(
       "/school/import",
       schools

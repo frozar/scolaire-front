@@ -1,5 +1,6 @@
 import { AssociatedSchoolType } from "../_entities/_utils.entity";
 import { GradeTripType } from "../_entities/grade.entity";
+import { StopType } from "../_entities/stop.entity";
 import { NatureEnum } from "../type";
 import { getLines } from "../views/content/map/component/organism/BusLines";
 import {
@@ -10,6 +11,14 @@ import { updateStopDetailsItem } from "../views/content/stops/component/organism
 import { GradeUtils } from "./grade.utils";
 
 export namespace StopUtils {
+  export function get(stopId: number): StopType {
+    return getStops().filter((stop) => stop.id == stopId)[0];
+  }
+
+  export function getName(stopId: number): string {
+    return get(stopId).name;
+  }
+
   export function addAssociated(
     gradeItem: AssociatedSchoolType,
     stopId: number

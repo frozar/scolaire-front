@@ -1,6 +1,6 @@
 import { createEffect, createSignal } from "solid-js";
 import Button from "../../../../../component/atom/Button";
-import { CsvUtils, SchoolsCsvDiffType } from "../../../../../utils/csv.utils";
+import { CsvDiffType, CsvUtils } from "../../../../../utils/csv.utils";
 import { DialogUtils } from "../../../../../utils/dialog.utils";
 import { DialogToDisplayEnum, setDialogToDisplay } from "../organism/Dialogs";
 import LabeledInputRadio from "./LabeledInputRadio";
@@ -13,10 +13,10 @@ export enum CsvEnum {
 }
 
 export const [csv, setCsv] = createSignal<File>();
-export const [schoolsDiff, setSchoolsDiff] = createSignal<SchoolsCsvDiffType>();
+export const [diff, setDiff] = createSignal<CsvDiffType>();
+export const [csvType, setCsvType] = createSignal<CsvEnum>();
 
 export function ImportSelection() {
-  const [CsvType, setCsvType] = createSignal<CsvEnum>();
   const [refButton, setRefButton] = createSignal<
     HTMLButtonElement | undefined
   >();
@@ -26,16 +26,20 @@ export function ImportSelection() {
   });
 
   async function onClick() {
-    switch (CsvType()) {
+    let diff: CsvDiffType;
+    switch (csvType()) {
       case CsvEnum.schools:
-        const diff = await CsvUtils.getImportSchoolsCsvDiff(csv() as File);
-        setSchoolsDiff(diff);
+        diff = await CsvUtils.getDiff(csv() as File, CsvEnum.schools);
+        setDiff(diff);
         setDialogToDisplay(DialogToDisplayEnum.diff);
         return;
 
       case CsvEnum.stops:
-        console.log("todo stops");
-        break;
+        diff = await CsvUtils.getDiff(csv() as File, CsvEnum.stops);
+
+        setDiff(diff);
+        setDialogToDisplay(DialogToDisplayEnum.diff);
+        return;
 
       case CsvEnum.students:
         console.log("todo students");
@@ -90,7 +94,7 @@ export function ImportSelection() {
           onClick={onClick}
           label={"Valider"}
           variant="primary"
-          isDisabled={CsvType() == undefined}
+          isDisabled={csvType() == undefined}
         />
       </div>
     </>

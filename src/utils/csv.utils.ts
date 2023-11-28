@@ -1,11 +1,7 @@
 import _ from "lodash";
 import Papa from "papaparse";
-import {
-  SchoolDBType,
-  SchoolEntity,
-  SchoolType,
-  importSchoolsDBType,
-} from "../_entities/school.entity";
+import { LocationDBType } from "../_entities/_utils.entity";
+import { SchoolDBType, SchoolType } from "../_entities/school.entity";
 import { StopDBType, StopEntity, StopType } from "../_entities/stop.entity";
 import { SchoolService } from "../_services/school.service";
 import { StopService } from "../_services/stop.service";
@@ -15,100 +11,106 @@ import {
 } from "../_services/student-to-grade.service";
 import { addNewUserInformation } from "../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
+import { CsvEnum } from "../views/content/board/component/molecule/ImportSelection";
 import {
   getSchools,
   setSchools,
 } from "../views/content/map/component/organism/SchoolPoints";
-import { setStops } from "../views/content/map/component/organism/StopPoints";
+import {
+  getStops,
+  setStops,
+} from "../views/content/map/component/organism/StopPoints";
 import { SchoolUtils } from "./school.utils";
+import { StopUtils } from "./stop.utils";
 
-export type SchoolsCsvDiffType = {
-  added: string[]; // schoolNames
+export type CsvDiffType = {
+  added: string[]; // names
   modified: number[]; // ids
   deleted: number[]; // ids
 };
 
+export type importItemDBType = {
+  items_to_add: Pick<SchoolDBType, "name" | "location">[];
+  items_to_modify: Pick<SchoolDBType, "id" | "location">[];
+  items_to_delete: number[];
+};
+
 export namespace CsvUtils {
-  export async function importSchools(
+  export async function importItems(
     file: File,
-    filteredDiffs: SchoolsCsvDiffType
-  ): Promise<SchoolType[]> {
-    const parsedFileData = (await parseCsvFileToSchoolData(file)) as Pick<
-      SchoolDBType,
-      "name" | "location"
+    filteredDiffs: CsvDiffType,
+    importType: CsvEnum
+  ): Promise<(StopType | SchoolType)[]> {
+    const parsedFileData = (await parseCsvItem(file)) as Omit<
+      StopDBType,
+      "id" | "associated_grade"
     >[];
 
-    const diffDBData: importSchoolsDBType = {
-      schools_to_add: [],
-      schools_to_modify: [],
-      schools_to_delete: [],
+    const diffDBData: importItemDBType = {
+      items_to_add: [],
+      items_to_modify: [],
+      items_to_delete: [],
     };
-    filteredDiffs.deleted.forEach((schoolIid) =>
-      diffDBData.schools_to_delete.push(schoolIid)
+
+    filteredDiffs.deleted.forEach((itemId) =>
+      diffDBData.items_to_delete.push(itemId)
     );
     filteredDiffs.added.forEach((name) => {
-      const school = parsedFileData.filter((school) => school.name == name)[0];
-      diffDBData.schools_to_add.push(school);
+      const item = parsedFileData.filter((item) => item.name == name)[0];
+      diffDBData.items_to_add.push(item);
     });
-    filteredDiffs.modified.forEach((schoolId) => {
-      const school = SchoolUtils.get(schoolId);
+    filteredDiffs.modified.forEach((diffItem) => {
+      let item: StopType | SchoolType;
+      if (importType == CsvEnum.schools) item = SchoolUtils.get(diffItem);
+      else item = StopUtils.get(diffItem);
+
       const location = parsedFileData.filter(
-        (data) => data.name == school.name
+        (data) => data.name == item.name
       )[0].location;
-      diffDBData.schools_to_modify.push({ id: school.id, location });
+      diffDBData.items_to_modify.push({ id: item.id, location });
     });
-    return await SchoolService.import(diffDBData);
+
+    if (importType == CsvEnum.schools) {
+      return await SchoolService.import(diffDBData);
+    } else return await StopService.import(diffDBData);
   }
-  export async function getImportSchoolsCsvDiff(
-    file: File
-  ): Promise<SchoolsCsvDiffType> {
-    const schoolsFromCsv = (await parseCsvFileToSchoolData(file)) as Pick<
-      SchoolDBType,
-      "name" | "location"
-    >[];
 
-    const diff: SchoolsCsvDiffType = { added: [], modified: [], deleted: [] };
+  export async function getDiff(file: File, csvType: CsvEnum) {
+    const csvItems = (await parseCsvItem(file)) as {
+      name: string;
+      location: LocationDBType;
+    }[];
 
-    // in xano geographical point rounded as an absolute number with 12 after decimal point
-    function roundLikeXano(lat: number, lng: number) {
-      let _lat = _.round(Math.abs(lat), 12);
-      if (lat < 0) _lat = -_lat;
+    const diff: CsvDiffType = { added: [], modified: [], deleted: [] };
 
-      let _lng = _.round(Math.abs(lng), 12);
-      if (lng < 0) _lng = -lng;
+    let items: (SchoolType | StopType)[];
+    if (csvType == CsvEnum.schools) items = getSchools();
+    else items = getStops();
 
-      return { lat: _lat, lng: _lng };
-    }
-
-    loop: for (const schoolFromCsv of schoolsFromCsv) {
-      for (const school of getSchools()) {
+    loop: for (const csvItem of csvItems) {
+      for (const item of items) {
         // Case modified
-        if (schoolFromCsv.name == school.name) {
-          const { lat, lng } = roundLikeXano(
-            schoolFromCsv.location.data.lat,
-            schoolFromCsv.location.data.lng
-          );
-          if (lat != school.lat || lng != school.lon) {
-            diff.modified.push(school.id);
+        if (csvItem.name == item.name) {
+          if (
+            _.round(csvItem.location.data.lat, 12) != item.lat ||
+            _.round(csvItem.location.data.lng, 12) != item.lon
+          ) {
+            diff.modified.push(item.id);
             continue loop;
           }
         }
       }
 
       // Case added
-      if (!getSchools().some((school) => school.name == schoolFromCsv.name)) {
-        diff.added.push(schoolFromCsv.name);
+      if (!items.some((item) => item.name == csvItem.name)) {
+        diff.added.push(csvItem.name);
       }
     }
 
     // Check if deleted
-    for (const school of getSchools()) {
-      if (
-        !schoolsFromCsv.some(
-          (schoolFromCsv) => schoolFromCsv.name == school.name
-        )
-      ) {
-        diff.deleted.push(school.id);
+    for (const item of items) {
+      if (!csvItems.some((csvItem) => csvItem.name == item.name)) {
+        diff.deleted.push(item.id);
       }
     }
     return diff;
@@ -120,20 +122,6 @@ export namespace CsvUtils {
       return false;
     }
     return true;
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async function importStopCSVFile(
-    parsedFileData: Pick<StopDBType, "name" | "location">[]
-  ) {
-    const stops: StopType[] = await StopService.import(
-      parsedFileData as Pick<StopDBType, "name" | "location">[]
-    );
-    if (stops) {
-      setStops(stops);
-      return true;
-    }
-    return false;
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async function importStudentToGradeCSVFile(parsedFileData: StudentToGrade[]) {
@@ -163,19 +151,6 @@ export namespace CsvUtils {
     return res as Promise<Papa.ParseResult<unknown>>;
   }
 
-  function fileNameIsCorrect(fileName: string, fileNameType: string) {
-    const strReg =
-      "[0-9]{4}-[0-9]{2}-[0-9]{2}_[0-9]{2}-[0-9]{2}-[0-9]{2}_" +
-      fileNameType +
-      ".csv";
-    const regex = new RegExp(strReg);
-
-    if (!regex.test(fileName)) {
-      return false;
-    }
-    return true;
-  }
-
   function isCorrectHeader(
     currentHeader: string[] | undefined,
     correctHeader: string[]
@@ -193,27 +168,7 @@ export namespace CsvUtils {
     return true;
   }
 
-  export async function parseCsvFileToSchoolData(
-    file: File
-  ): Promise<Pick<SchoolDBType, "name" | "location">[] | undefined> {
-    const parsedFile = await parseFile(file);
-
-    const correctHeader = ["name", "lat", "lon"];
-    if (!isCorrectHeader(parsedFile.meta.fields, correctHeader)) {
-      return;
-    }
-    let parsedData = parsedFile.data as Pick<
-      SchoolType,
-      "name" | "lon" | "lat" | "hours"
-    >[];
-    parsedData = parsedData.filter((data) => data.lat && data.lon && data.name);
-
-    return SchoolEntity.dataToDB(parsedData);
-  }
-
-  async function parsedCsvFileToStopData(
-    file: File
-  ): Promise<Pick<StopDBType, "name" | "location">[] | undefined> {
+  async function parseCsvItem(file: File) {
     const parsedFile = await parseFile(file);
 
     const correctHeader = ["name", "lat", "lon"];
@@ -228,7 +183,7 @@ export namespace CsvUtils {
 
     return StopEntity.dataToDB(parsedData);
   }
-
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async function parsedCsvFileToStudentToGradeData(
     file: File
   ): Promise<StudentToGrade[] | undefined> {
@@ -242,29 +197,5 @@ export namespace CsvUtils {
       (data) => data.school_name && data.stop_name && data.quantity
     );
     return parsedData;
-  }
-
-  function isSchoolFile(fileName: string) {
-    return fileNameIsCorrect(fileName, "etablissement");
-  }
-
-  function isStopFile(fileName: string) {
-    return fileNameIsCorrect(fileName, "ramassage");
-  }
-
-  function isStudentToGradeFile(fileName: string) {
-    return fileNameIsCorrect(fileName, "eleve_vers_etablissement");
-  }
-  // TODO: Delete ?
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async function parsedCsvFileData(file: File) {
-    const fileName = file.name;
-    if (isSchoolFile(fileName)) {
-      return await parseCsvFileToSchoolData(file);
-    } else if (isStopFile(fileName)) {
-      return await parsedCsvFileToStopData(file);
-    } else if (isStudentToGradeFile(fileName)) {
-      return await parsedCsvFileToStudentToGradeData(file);
-    } else return;
   }
 }
