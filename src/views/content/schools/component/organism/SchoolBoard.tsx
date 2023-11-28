@@ -1,5 +1,9 @@
+import { BiRegularExport } from "solid-icons/bi";
 import { FaSolidPlus } from "solid-icons/fa";
+
+import Papa from "papaparse";
 import { For, createSignal } from "solid-js";
+import { download } from "../../../../../utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { getSchools } from "../../../map/component/organism/SchoolPoints";
 import InputSearch from "../molecule/InputSearch";
@@ -18,11 +22,32 @@ export default function () {
     console.log("add school");
   }
 
+  function exportCsv() {
+    type SchoolExportType = {
+      name: string;
+      lat: number;
+      lon: number;
+    };
+    const schools: SchoolExportType[] = [];
+    getSchools().forEach((school) =>
+      schools.push({ name: school.name, lat: school.lat, lon: school.lon })
+    );
+
+    const csv = Papa.unparse(schools);
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8," });
+
+    download("schools.csv", blob);
+  }
+
   return (
     <section>
       <header>
         <div class="school-board-header">
           <p>Nombre total d'établissements : {getSchools().length}</p>
+          <ButtonIcon
+            icon={<BiRegularExport class="fill-green-base" />}
+            onClick={exportCsv}
+          />
           <ButtonIcon
             icon={<FaSolidPlus class="fill-green-base" />}
             onClick={addSchool}
