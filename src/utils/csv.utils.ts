@@ -21,6 +21,7 @@ import {
   getStops,
   setStops,
 } from "../views/content/map/component/organism/StopPoints";
+import { GradeUtils } from "./grade.utils";
 import { SchoolUtils } from "./school.utils";
 import { StopUtils } from "./stop.utils";
 
@@ -34,6 +35,19 @@ export type importItemDBType = {
   items_to_add: Pick<SchoolDBType, "name" | "location">[];
   items_to_modify: Pick<SchoolDBType, "id" | "location">[];
   items_to_delete: number[];
+};
+
+type studentExportType = {
+  school_name: string;
+  stop_name: string;
+  grade_name: string;
+  quantity: number;
+};
+
+type ItemExportType = {
+  name: string;
+  lat: number;
+  lon: number;
 };
 
 export namespace CsvUtils {
@@ -125,27 +139,48 @@ export namespace CsvUtils {
     return true;
   }
 
-  export function exportCsv(type: CsvEnum) {
-    type ItemExportType = {
-      name: string;
-      lat: number;
-      lon: number;
-    };
+  function getCsvBlobFromObject(
+    csvItems: (ItemExportType | studentExportType)[]
+  ): Blob {
+    const csv = Papa.unparse(csvItems);
+    return new Blob([csv], { type: "text/csv;charset=utf-8," });
+  }
 
+  export function exportCsv(type: CsvEnum.schools | CsvEnum.stops) {
     let items: (SchoolType | StopType)[] = [];
     if (type == CsvEnum.schools) items = getSchools();
-    if (type == CsvEnum.stops) items = getStops();
+    else if (type == CsvEnum.stops) items = getStops();
+    else return;
 
     const csvItems: ItemExportType[] = [];
     items.forEach((item) =>
       csvItems.push({ name: item.name, lat: item.lat, lon: item.lon })
     );
 
-    const csv = Papa.unparse(csvItems);
-    const blob = new Blob([csv], { type: "text/csv;charset=utf-8," });
+    const blob = getCsvBlobFromObject(csvItems);
 
     download(`${type}.csv`, blob);
   }
+
+  export function exportStudentsCsv(): void {
+    const studentsCsv: studentExportType[] = [];
+
+    getStops().forEach((stop) =>
+      stop.associated.forEach((assoc) => {
+        studentsCsv.push({
+          school_name: SchoolUtils.getName(assoc.schoolId),
+          stop_name: stop.name,
+          grade_name: GradeUtils.getName(assoc.gradeId),
+          quantity: assoc.quantity,
+        });
+      })
+    );
+
+    const blob = getCsvBlobFromObject(studentsCsv);
+
+    download("students.csv", blob);
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async function importStudentToGradeCSVFile(parsedFileData: StudentToGrade[]) {
     const { schools, stops } = await StudentToGradeService.import(
