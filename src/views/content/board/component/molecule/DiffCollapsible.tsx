@@ -31,8 +31,8 @@ export function DiffCollapsible(props: DiffCollapsibleProps) {
           {(item) => {
             const disable = isDisabled(item);
 
-            let label: string | number;
-            if (props.diffType == DiffEnum.added) label = item;
+            let label: string;
+            if (props.diffType == DiffEnum.added) label = item as string;
             else if (csvType() == CsvEnum.schools) {
               label = SchoolUtils.getName(item as number);
             } else label = StopUtils.getName(item as number);
@@ -40,7 +40,7 @@ export function DiffCollapsible(props: DiffCollapsibleProps) {
             return (
               <DiffCheckbox
                 item={item}
-                label={label as string}
+                label={label}
                 disable={disable}
                 diffType={props.diffType}
                 setter={props.setter}

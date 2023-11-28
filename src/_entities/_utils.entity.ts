@@ -5,7 +5,7 @@ import { SchoolType } from "./school.entity";
 import { DBAssociatedStop, StopType } from "./stop.entity";
 
 export class EntityUtils {
-  // xano only keep 12 numbers after decimal point
+  // xano only keep 12 numbers after decimal point and round strangely
   static builLocationPoint(lng: number, lat: number): LocationDBType {
     return {
       type: LocationDBTypeEnum.point,
