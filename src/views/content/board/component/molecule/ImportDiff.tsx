@@ -1,4 +1,6 @@
 import { createEffect, createSignal } from "solid-js";
+import { SchoolType } from "../../../../../_entities/school.entity";
+import { StopType } from "../../../../../_entities/stop.entity";
 import Button from "../../../../../component/atom/Button";
 import {
   disableSpinningWheel,
@@ -61,18 +63,21 @@ export function ImportDiff() {
 
     switch (csvType()) {
       case CsvEnum.schools:
-        console.log("school import");
-
-        const schools = await CsvUtils.importSchools(
+        const schools = await CsvUtils.importItem(
           csv() as File,
-          diffFiltered()
+          diffFiltered(),
+          CsvEnum.schools
         );
-        setSchools(schools);
+        setSchools(schools as SchoolType[]);
         break;
 
       case CsvEnum.stops:
-        const stops = await CsvUtils.importStops(csv() as File, diffFiltered());
-        setStops(stops);
+        const stops = await CsvUtils.importItem(
+          csv() as File,
+          diffFiltered(),
+          CsvEnum.stops
+        );
+        setStops(stops as StopType[]);
         break;
     }
 

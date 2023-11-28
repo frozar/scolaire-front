@@ -5,7 +5,6 @@ import {
   SchoolDBType,
   SchoolEntity,
   SchoolType,
-  importSchoolsDBType,
 } from "../_entities/school.entity";
 import { StopDBType, StopEntity, StopType } from "../_entities/stop.entity";
 import { SchoolService } from "../_services/school.service";
@@ -41,43 +40,13 @@ export type importItemDBType = {
 };
 
 export namespace CsvUtils {
-  // TODO: Move ?
-  // ! Refactor with importStops !?
-  export async function importSchools(
+  // TODO: Rename
+  export async function importItem(
     file: File,
-    filteredDiffs: CsvDiffType
-  ): Promise<SchoolType[]> {
-    const parsedFileData = (await parseCsvFileToSchoolData(file)) as Pick<
-      SchoolDBType,
-      "name" | "location"
-    >[];
-
-    const diffDBData: importSchoolsDBType = {
-      schools_to_add: [],
-      schools_to_modify: [],
-      schools_to_delete: [],
-    };
-    filteredDiffs.deleted.forEach((schoolIid) =>
-      diffDBData.schools_to_delete.push(schoolIid)
-    );
-    filteredDiffs.added.forEach((name) => {
-      const school = parsedFileData.filter((school) => school.name == name)[0];
-      diffDBData.schools_to_add.push(school);
-    });
-    filteredDiffs.modified.forEach((schoolId) => {
-      const school = SchoolUtils.get(schoolId);
-      const location = parsedFileData.filter(
-        (data) => data.name == school.name
-      )[0].location;
-      diffDBData.schools_to_modify.push({ id: school.id, location });
-    });
-    return await SchoolService.import(diffDBData);
-  }
-
-  export async function importStops(
-    file: File,
-    filteredDiffs: CsvDiffType
-  ): Promise<StopType[]> {
+    filteredDiffs: CsvDiffType,
+    importType: CsvEnum
+  ): Promise<(StopType | SchoolType)[]> {
+    // TODO: Rename parsedCsvFileToStopData => parseCsvSchoolOrStopData
     const parsedFileData = (await parseCsvFileToSchoolData(file)) as Pick<
       StopDBType,
       "name" | "location"
@@ -89,21 +58,27 @@ export namespace CsvUtils {
       items_to_delete: [],
     };
 
-    filteredDiffs.deleted.forEach((stopId) =>
-      diffDBData.items_to_delete.push(stopId)
+    filteredDiffs.deleted.forEach((itemId) =>
+      diffDBData.items_to_delete.push(itemId)
     );
     filteredDiffs.added.forEach((name) => {
-      const stop = parsedFileData.filter((stop) => stop.name == name)[0];
-      diffDBData.items_to_add.push(stop);
+      const item = parsedFileData.filter((item) => item.name == name)[0];
+      diffDBData.items_to_add.push(item);
     });
-    filteredDiffs.modified.forEach((stopId) => {
-      const stop = StopUtils.get(stopId);
+
+    filteredDiffs.modified.forEach((diffItem) => {
+      let item: StopType | SchoolType;
+      if (importType == CsvEnum.schools) item = SchoolUtils.get(diffItem);
+      else item = StopUtils.get(diffItem);
       const location = parsedFileData.filter(
-        (data) => data.name == stop.name
+        (data) => data.name == item.name
       )[0].location;
-      diffDBData.items_to_modify.push({ id: stop.id, location });
+      diffDBData.items_to_modify.push({ id: item.id, location });
     });
-    return await StopService.import(diffDBData);
+
+    if (importType == CsvEnum.schools) {
+      return await SchoolService.import(diffDBData);
+    } else return await StopService.import(diffDBData);
   }
 
   export async function getDiff(file: File, csvType: CsvEnum) {
