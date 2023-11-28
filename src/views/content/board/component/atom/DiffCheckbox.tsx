@@ -31,7 +31,7 @@ export function DiffCheckbox(props: DiffCheckboxProps) {
           {props.label}
         </label>
         <Show when={props.disable}>
-          <div class="ml-2">Établissement utilisé</div>
+          <div class="ml-2">Utilisé</div>
         </Show>
       </div>
     </div>
