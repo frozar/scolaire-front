@@ -153,21 +153,21 @@ export function ImportDiff() {
         uncheckedValues={uncheckedValues}
         setter={setUncheckedValues}
         title="Ajouter"
-        schools={diff()?.added as string[]}
+        items={diff()?.added as string[]}
         diffType={DiffEnum.added}
       />
       <DiffCollapsible
         uncheckedValues={uncheckedValues}
         setter={setUncheckedValues}
         title="Modifier"
-        schools={diff()?.modified as number[]}
+        items={diff()?.modified as number[]}
         diffType={DiffEnum.modified}
       />
       <DiffCollapsible
         uncheckedValues={uncheckedValues}
         setter={setUncheckedValues}
         title="Supprimer"
-        schools={diff()?.deleted as number[]}
+        items={diff()?.deleted as number[]}
         diffType={DiffEnum.deleted}
       />
       {/* TODO: Refactor footer dialog content */}

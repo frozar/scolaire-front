@@ -77,7 +77,6 @@ export namespace CsvUtils {
   }
 
   export async function getDiff(file: File, csvType: CsvEnum) {
-    // TODO: Rename parsedCsvFileToStopData => parseCsvSchoolOrStopData
     const csvItems = (await parseCsvItem(file)) as {
       name: string;
       location: LocationDBType;
