@@ -66,11 +66,8 @@ export function HourRuleItem(props: HourRuleProps) {
   }
 
   function onChangeDay(value: string | number) {
-    setSchoolDetailsItem((prev) => {
-      if (!prev) return prev;
-      const school = { ...prev };
-      school.hours.rules[ruleIndex()].day = value as CalendarDayEnum;
-      return school;
+    setBufferRule((prev) => {
+      return { ...prev, day: value as CalendarDayEnum };
     });
   }
 

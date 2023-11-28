@@ -105,6 +105,7 @@ export type LocationPathDBType = {
   }[];
 };
 
+// TODO replace these type onto time.utils.ts
 export type HoursDBType = {
   id: number;
   start_hour_coming: string;
