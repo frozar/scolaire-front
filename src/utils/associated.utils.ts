@@ -1,3 +1,4 @@
+import { AssociatedSchoolType } from "../_entities/_utils.entity";
 import { StudentToGradeService } from "../_services/student-to-grade.service";
 import { getStops } from "../views/content/map/component/organism/StopPoints";
 import { stopDetailsItem } from "../views/content/stops/component/organism/StopDetails";
@@ -7,6 +8,12 @@ import { StopUtils } from "./stop.utils";
 
 // Associated data is redundant. When changes both schools.associated and stop.associated must be updated.
 export namespace AssociatedUtils {
+  function get(studentToGradeId: number): AssociatedSchoolType {
+    return getStops()
+      .flatMap((stop) => stop.associated)
+      .filter((assoc) => assoc.idClassToSchool == studentToGradeId)[0];
+  }
+
   export function getStopName(studentToGradeId: number): string {
     return getStops().filter((stop) =>
       stop.associated.some((assoc) => assoc.idClassToSchool == studentToGradeId)
@@ -14,12 +21,15 @@ export namespace AssociatedUtils {
   }
 
   export function getGradeName(studentToGradeId: number): string {
-    const gradeId = getStops()
-      .flatMap((stop) => stop.associated)
-      .filter((assoc) => assoc.idClassToSchool == studentToGradeId)[0].gradeId;
+    const gradeId = get(studentToGradeId).gradeId;
 
     return GradeUtils.getName(gradeId);
   }
+
+  export function getQuantity(studentToGradeId: number) {
+    return get(studentToGradeId).quantity;
+  }
+
   export async function create(
     quantity: number,
     gradeId: number,

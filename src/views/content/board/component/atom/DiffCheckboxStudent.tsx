@@ -77,7 +77,7 @@ function onChangeStudentCheckbox(
 
     case DiffEnum.modified:
       const addItem = item as StudentModifiedDiff;
-      // TODO: Put in a function
+      // TODO: Put in a function / Refactor with deleted one ?
       if (event.currentTarget.checked) {
         setter((prev) => {
           let uncheckedModified = { ...prev }.modified;
@@ -91,6 +91,25 @@ function onChangeStudentCheckbox(
           const uncheckedModified = { ...prev }.modified;
           uncheckedModified.push(addItem);
           return { ...prev, modified: uncheckedModified };
+        });
+      }
+      break;
+
+    case DiffEnum.deleted:
+      const itemId = item as number;
+      if (event.currentTarget.checked) {
+        setter((prev) => {
+          let uncheckedDeletedIds = { ...prev }.deleted;
+          uncheckedDeletedIds = uncheckedDeletedIds.filter(
+            (deletedId) => deletedId != itemId
+          );
+          return { ...prev, deleted: uncheckedDeletedIds };
+        });
+      } else {
+        setter((prev) => {
+          const uncheckedDeletedIds = { ...prev }.deleted;
+          uncheckedDeletedIds.push(itemId);
+          return { ...prev, deleted: uncheckedDeletedIds };
         });
       }
       break;

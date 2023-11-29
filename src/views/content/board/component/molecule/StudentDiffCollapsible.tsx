@@ -71,7 +71,24 @@ export function StudentDiffCollapsible(
           </Match>
 
           <Match when={props.diffType == DiffEnum.deleted}>
-            <div>TEST deleted</div>
+            <For each={(studentDiff() as StudentDiffType).deleted}>
+              {(itemId) => {
+                return (
+                  <DiffCheckboxStudent
+                    item={itemId}
+                    label={
+                      AssociatedUtils.getStopName(itemId) +
+                      " | " +
+                      AssociatedUtils.getGradeName(itemId) +
+                      " | " +
+                      AssociatedUtils.getQuantity(itemId)
+                    }
+                    diffType={props.diffType}
+                    setter={props.setUncheckedValues}
+                  />
+                );
+              }}
+            </For>
           </Match>
         </Switch>
       </CollapsibleElement>
