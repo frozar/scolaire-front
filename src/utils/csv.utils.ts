@@ -3,6 +3,7 @@ import Papa from "papaparse";
 import { LocationDBType } from "../_entities/_utils.entity";
 import { SchoolDBType, SchoolType } from "../_entities/school.entity";
 import { StopDBType, StopEntity, StopType } from "../_entities/stop.entity";
+import { ServiceUtils } from "../_services/_utils.service";
 import { SchoolService } from "../_services/school.service";
 import { StopService } from "../_services/stop.service";
 import {
@@ -88,6 +89,24 @@ export namespace CsvUtils {
     if (importType == CsvEnum.schools) {
       return await SchoolService.import(diffDBData);
     } else return await StopService.import(diffDBData);
+  }
+  // ! Promise<{assoc, schools}>
+  export async function importStudents(
+    studentDiffFiltered: Omit<StudentDiffType, "nbOfLineIgnored">
+  ) {
+    console.log("dbdata:", studentDiffFiltered);
+    // ! Format like that =>
+    type studentDBType = {
+      added: { stop_id: number; grade_id: number; quantity: number };
+      modified: StudentModifiedDiff[];
+      deleted: number[];
+      new_grades: { name: string; school_id: number };
+    };
+
+    // TODO: Put in a service file
+    // ! Specify type of xanoResult
+    const xanoResult = await ServiceUtils.post("/student/import");
+    console.log("xano result", xanoResult);
   }
 
   export async function getDiff(file: File, csvType: CsvEnum) {

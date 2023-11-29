@@ -1,7 +1,14 @@
 import { JSXElement, Show, createEffect, createSignal } from "solid-js";
-import { StudentDiffType } from "../../../../../utils/csv.utils";
+import Button from "../../../../../component/atom/Button";
+import {
+  disableSpinningWheel,
+  enableSpinningWheel,
+} from "../../../../../signaux";
+import { CsvUtils, StudentDiffType } from "../../../../../utils/csv.utils";
+import { DialogUtils } from "../../../../../utils/dialog.utils";
+import { DialogToDisplayEnum, setDialogToDisplay } from "../organism/Dialogs";
 import { DiffEnum } from "./ImportDiff";
-import { studentDiff } from "./ImportSelection";
+import { setCsvType, studentDiff } from "./ImportSelection";
 import { StudentDiffCollapsible } from "./StudentDiffCollapsible";
 
 export type UncheckedStudents = Omit<
@@ -17,6 +24,10 @@ export function ImportDiffStudent(): JSXElement {
       deleted: [],
     }
   );
+
+  const [refButton, setRefButton] = createSignal<
+    HTMLButtonElement | undefined
+  >();
 
   function studentDiffFiltered(): Omit<StudentDiffType, "nbOfLineIgnored"> {
     const _studentDiff = studentDiff() as StudentDiffType;
@@ -56,6 +67,21 @@ export function ImportDiffStudent(): JSXElement {
     };
   }
 
+  function noElementChecked() {
+    if (
+      studentDiffFiltered().added.length == 0 &&
+      studentDiffFiltered().modified.length == 0 &&
+      studentDiffFiltered().deleted.length == 0
+    ) {
+      return true;
+    }
+    return false;
+  }
+
+  createEffect(() => {
+    refButton()?.focus();
+  });
+
   createEffect(() =>
     console.log("studentDiffFiltered()", studentDiffFiltered())
   );
@@ -89,6 +115,37 @@ export function ImportDiffStudent(): JSXElement {
         uncheckedValues={uncheckedValues}
         setUncheckedValues={setUncheckedValues}
       />
+
+      {/* TODO: Refactor footer dialog content */}
+      <div class="import-dialog-buttons">
+        <Button
+          // ! Signals to clean ?
+          onClick={DialogUtils.closeDialog}
+          label={"Annuler"}
+          variant="danger"
+          isDisabled={false}
+        />
+        <Button
+          ref={setRefButton}
+          onClick={() => onClick(studentDiffFiltered())}
+          label={"Valider"}
+          variant="primary"
+          isDisabled={noElementChecked()}
+        />
+      </div>
     </>
   );
+}
+
+async function onClick(
+  studentDiffFiltered: Omit<StudentDiffType, "nbOfLineIgnored">
+) {
+  setDialogToDisplay(DialogToDisplayEnum.none);
+  enableSpinningWheel();
+
+  // ! Ici
+  CsvUtils.importStudents(studentDiffFiltered);
+
+  setCsvType();
+  disableSpinningWheel();
 }
