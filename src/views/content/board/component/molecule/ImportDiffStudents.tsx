@@ -17,7 +17,6 @@ export function ImportDiffStudent(): JSXElement {
 
   function studentDiffFiltered(): StudentDiffType {
     const _studentDiff = studentDiff() as StudentDiffType;
-    console.log("uncheckedValues()", uncheckedValues());
 
     const added = _studentDiff.added.filter((student) => {
       for (const uncheckedValue of uncheckedValues().added) {
@@ -64,7 +63,7 @@ export function ImportDiffStudent(): JSXElement {
       <Show when={(studentDiff() as StudentDiffType).newGrades.length > 0}>
         <div>{"Classes à créer:" + studentDiff()?.newGrades}</div>
       </Show>
-      {/* TODO: Show numbers of line removed (school or stop not existing) */}
+      {/* TODO: Show numbers of line ignored (csv) because school or stop not existing */}
 
       <StudentDiffCollapsible
         diffType={DiffEnum.added}

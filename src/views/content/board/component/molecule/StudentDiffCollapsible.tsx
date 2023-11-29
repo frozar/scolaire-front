@@ -26,10 +26,10 @@ export function StudentDiffCollapsible(
 
   return (
     <>
+      {/* TODO: Enhance visual and refactor */}
       <CollapsibleElement title={getTitle(props.diffType)}>
         <Switch>
           <Match when={props.diffType == DiffEnum.added}>
-            {/* TODO: Refactor */}
             <For each={(studentDiff() as StudentDiffType).added}>
               {(item) => {
                 return (
@@ -57,9 +57,9 @@ export function StudentDiffCollapsible(
                   <DiffCheckboxStudent
                     item={item}
                     label={
-                      AssociatedUtils.getStopName(item.id) +
+                      AssociatedUtils.getStopName(item.id as number) +
                       " | " +
-                      AssociatedUtils.getGradeName(item.id) +
+                      AssociatedUtils.getGradeName(item.id as number) +
                       " | " +
                       item.quantity
                     }
