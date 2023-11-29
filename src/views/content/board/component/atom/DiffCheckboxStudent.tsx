@@ -35,12 +35,8 @@ export function DiffCheckboxStudent(props: DiffCheckboxProps) {
   );
 }
 
-// TODO: Rewrite / Refactor
 function onChangeStudentCheckbox(
-  event: Event & {
-    currentTarget: HTMLInputElement;
-    target: HTMLInputElement;
-  },
+  event: onChangeEvent,
   setter: Setter<UncheckedStudents>,
   item: number | StudentCsv | StudentModifiedDiff,
   diffType: DiffEnum
@@ -48,70 +44,94 @@ function onChangeStudentCheckbox(
   switch (diffType) {
     case DiffEnum.added:
       const addedItem = item as StudentCsv;
-      // TODO: Put in a function
-      if (event.currentTarget.checked) {
-        // ! quand je coche
-
-        setter((prev) => {
-          let addedList = { ...prev }.added;
-
-          addedList = addedList.filter(
-            (added) =>
-              !(
-                added.grade_name == addedItem.grade_name &&
-                added.stop_name == addedItem.stop_name
-              )
-          );
-
-          return { ...prev, added: addedList };
-        });
-        // ! Quand je décoche
-      } else {
-        setter((prev) => {
-          const added = { ...prev }.added;
-          added.push(addedItem);
-          return { ...prev, added: added };
-        });
-      }
+      uncheckAddedItem(event, addedItem, setter);
       break;
 
     case DiffEnum.modified:
-      const addItem = item as StudentModifiedDiff;
-      // TODO: Put in a function / Refactor with deleted one ?
-      if (event.currentTarget.checked) {
-        setter((prev) => {
-          let uncheckedModified = { ...prev }.modified;
-          uncheckedModified = uncheckedModified.filter(
-            (unchecked) => unchecked.id != addItem.id
-          );
-          return { ...prev, modified: uncheckedModified };
-        });
-      } else {
-        setter((prev) => {
-          const uncheckedModified = { ...prev }.modified;
-          uncheckedModified.push(addItem);
-          return { ...prev, modified: uncheckedModified };
-        });
-      }
+      const modifiedItem = item as StudentModifiedDiff;
+      uncheckModifiedItem(event, modifiedItem, setter);
       break;
 
     case DiffEnum.deleted:
       const itemId = item as number;
-      if (event.currentTarget.checked) {
-        setter((prev) => {
-          let uncheckedDeletedIds = { ...prev }.deleted;
-          uncheckedDeletedIds = uncheckedDeletedIds.filter(
-            (deletedId) => deletedId != itemId
-          );
-          return { ...prev, deleted: uncheckedDeletedIds };
-        });
-      } else {
-        setter((prev) => {
-          const uncheckedDeletedIds = { ...prev }.deleted;
-          uncheckedDeletedIds.push(itemId);
-          return { ...prev, deleted: uncheckedDeletedIds };
-        });
-      }
+      uncheckDeletedItem(event, itemId, setter);
       break;
   }
 }
+
+function uncheckDeletedItem(
+  event: onChangeEvent,
+  itemId: number,
+  setter: Setter<UncheckedStudents>
+): void {
+  if (event.currentTarget.checked) {
+    setter((prev) => {
+      let uncheckedDeletedIds = { ...prev }.deleted;
+      uncheckedDeletedIds = uncheckedDeletedIds.filter(
+        (deletedId) => deletedId != itemId
+      );
+      return { ...prev, deleted: uncheckedDeletedIds };
+    });
+  } else {
+    setter((prev) => {
+      const uncheckedDeletedIds = { ...prev }.deleted;
+      uncheckedDeletedIds.push(itemId);
+      return { ...prev, deleted: uncheckedDeletedIds };
+    });
+  }
+}
+
+function uncheckModifiedItem(
+  event: onChangeEvent,
+  modifiedItem: StudentModifiedDiff,
+  setter: Setter<UncheckedStudents>
+): void {
+  if (event.currentTarget.checked) {
+    setter((prev) => {
+      let uncheckedModified = { ...prev }.modified;
+      uncheckedModified = uncheckedModified.filter(
+        (unchecked) => unchecked.id != modifiedItem.id
+      );
+      return { ...prev, modified: uncheckedModified };
+    });
+  } else {
+    setter((prev) => {
+      const uncheckedModified = { ...prev }.modified;
+      uncheckedModified.push(modifiedItem);
+      return { ...prev, modified: uncheckedModified };
+    });
+  }
+}
+
+function uncheckAddedItem(
+  event: onChangeEvent,
+  addedItem: StudentCsv,
+  setter: Setter<UncheckedStudents>
+): void {
+  if (event.currentTarget.checked) {
+    setter((prev) => {
+      let addedList = { ...prev }.added;
+
+      addedList = addedList.filter(
+        (added) =>
+          !(
+            added.grade_name == addedItem.grade_name &&
+            added.stop_name == addedItem.stop_name
+          )
+      );
+
+      return { ...prev, added: addedList };
+    });
+  } else {
+    setter((prev) => {
+      const added = { ...prev }.added;
+      added.push(addedItem);
+      return { ...prev, added: added };
+    });
+  }
+}
+
+type onChangeEvent = Event & {
+  currentTarget: HTMLInputElement;
+  target: HTMLInputElement;
+};

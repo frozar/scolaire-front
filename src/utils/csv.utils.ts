@@ -137,7 +137,7 @@ export namespace CsvUtils {
       file
     )) as StudentCsv[];
 
-    // TODO: Vérifier que les school_names sont les bonnes destinations des grades !
+    // TODO: For existing grades, check that the school_name is corresponding
     // Check if schools and stops exists otherwise don't keep the line
     const csvItemsFiltered: StudentCsv[] = [];
     csvItems.forEach((csvItem) => {
@@ -162,7 +162,6 @@ export namespace CsvUtils {
     };
 
     // New grades
-    // TODO: Remove redundancy
     const gradeNames = getSchools()
       .flatMap((school) => school.grades)
       .map((grade) => grade.name);
@@ -356,7 +355,6 @@ export namespace CsvUtils {
   }
 }
 
-// TODO: Refactor with a type already existing ?
 export type StudentCsv = {
   id?: number;
   school_name: string;
@@ -365,15 +363,11 @@ export type StudentCsv = {
   quantity: number;
 };
 
-// TODO: Refactor with a type already existing ?
-export type StudentModifiedDiff = {
-  id: number;
-  quantity: number;
-};
+export type StudentModifiedDiff = Pick<StudentCsv, "id" | "quantity">;
 
 export type StudentDiffType = {
   added: StudentCsv[];
   modified: StudentModifiedDiff[];
   deleted: number[]; // studentToGrade ids
-  newGrades: string[]; // names
+  newGrades: string[]; // gradeNames
 };

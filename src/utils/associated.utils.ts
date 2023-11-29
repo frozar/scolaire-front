@@ -26,7 +26,7 @@ export namespace AssociatedUtils {
     return GradeUtils.getName(gradeId);
   }
 
-  export function getQuantity(studentToGradeId: number) {
+  export function getQuantity(studentToGradeId: number): number {
     return get(studentToGradeId).quantity;
   }
 
