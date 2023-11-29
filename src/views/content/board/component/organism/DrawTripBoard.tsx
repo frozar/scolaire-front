@@ -26,6 +26,7 @@ import {
   setLines,
 } from "../../../map/component/organism/BusLines";
 import { setselectedTrip } from "../../../map/component/organism/Trips";
+import { COLOR_GREEN_BASE } from "../../../map/constant";
 import { quitModeDrawTrip } from "../../../map/shortcut";
 import TimeInput from "../../../schools/component/atom/TimeInput";
 import BoardTitle from "../atom/BoardTitle";
@@ -65,8 +66,27 @@ export enum displayTripModeEnum {
 export const [displayTripMode, setDisplayTripMode] =
   createSignal<displayTripModeEnum>(displayTripModeEnum.straight);
 
+// TODO review this, when use TripEntity.defaultTrip in certain case it broke the app
+// * in grade.entity.ts when function build is called, CalendarEntity is called,
+// ** the error is generated afet call of file CalendarEntity in grade.entity
+// * reproduction:  uncomment the TripEntity.defaultTrip() just under to reproduct the error
 export const [currentDrawTrip, setCurrentDrawTrip] = createSignal<TripType>(
-  TripEntity.defaultTrip()
+  // TripEntity.defaultTrip()
+  {
+    schools: [],
+    name: "My Default Name",
+    color: COLOR_GREEN_BASE,
+    tripPoints: [],
+    waypoints: [],
+    grades: [],
+    latLngs: [],
+    selected: false,
+    metrics: {},
+    startTime: {
+      hour: 7,
+      minutes: 0,
+    },
+  }
 );
 
 export const [currentTripIndex, setCurrentTripIndex] = createSignal(0);

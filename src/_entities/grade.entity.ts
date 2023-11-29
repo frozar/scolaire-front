@@ -1,4 +1,9 @@
 import { AssociatedSchoolType, HoursDBType, HoursType } from "./_utils.entity";
+import {
+  CalendarDBType,
+  CalendarEntity,
+  CalendarType,
+} from "./calendar.entity";
 import { DBAssociatedStop } from "./stop.entity";
 import { TimeUtils } from "./time.utils";
 
@@ -8,6 +13,9 @@ export namespace GradeEntity {
       id: dbData.id,
       name: dbData.name,
       hours: TimeUtils.buildHours(dbData.hours),
+      calendar: dbData.calendar
+        ? CalendarEntity.build(dbData.calendar)
+        : undefined,
     };
   }
 
@@ -16,6 +24,7 @@ export namespace GradeEntity {
       school_id: grade.schoolId as number,
       name: grade.name,
       hours: TimeUtils.formatHours(grade.hours),
+      calendar_id: grade.calendar ? grade.calendar.id : 0,
     };
   }
 
@@ -59,6 +68,8 @@ export type GradeDBType = {
   name: string;
   hours?: HoursDBType;
   associated?: DBAssociatedStop[];
+  calendar_id?: number;
+  calendar?: CalendarDBType;
 };
 
 export type GradeType = {
@@ -67,6 +78,7 @@ export type GradeType = {
   name: string;
   hours: HoursType;
   associated?: AssociatedSchoolType[];
+  calendar?: CalendarType;
 };
 
 export type GradeTripType = {
