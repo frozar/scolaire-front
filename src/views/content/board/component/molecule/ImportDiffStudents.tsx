@@ -66,7 +66,7 @@ export function ImportDiffStudent(): JSXElement {
       <Show when={(studentDiff() as StudentDiffType).newGrades.length > 0}>
         <div>{"Nouvelles classes" + studentDiff()?.newGrades}</div>
       </Show>
-      {/* TODO: Show numbers of line ignored (csv) because school or stop not existing */}
+
       <Show when={(studentDiff() as StudentDiffType).nbOfLineIgnored > 0}>
         <div>
           {(studentDiff() as StudentDiffType).nbOfLineIgnored +
