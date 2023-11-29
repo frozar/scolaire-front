@@ -140,6 +140,7 @@ export namespace CsvUtils {
     // TODO: For existing grades, check that the school_name is corresponding
     // Check if schools and stops exists otherwise don't keep the line
     const csvItemsFiltered: StudentCsv[] = [];
+    let nbOfLineIgnored = 0;
     csvItems.forEach((csvItem) => {
       if (
         getSchools()
@@ -150,7 +151,7 @@ export namespace CsvUtils {
           .includes(csvItem.stop_name)
       ) {
         csvItemsFiltered.push(csvItem);
-      }
+      } else nbOfLineIgnored += 1;
     });
 
     // Create diff object
@@ -159,6 +160,7 @@ export namespace CsvUtils {
       modified: [],
       deleted: [],
       newGrades: [],
+      nbOfLineIgnored: 0,
     };
 
     // New grades
@@ -166,7 +168,7 @@ export namespace CsvUtils {
       .flatMap((school) => school.grades)
       .map((grade) => grade.name);
 
-    csvItems.forEach((csvItem) => {
+    csvItemsFiltered.forEach((csvItem) => {
       if (
         !gradeNames.includes(csvItem.grade_name) &&
         !diff.newGrades.includes(csvItem.grade_name)
@@ -220,6 +222,7 @@ export namespace CsvUtils {
           diff.deleted.push(associated.idClassToSchool);
       }
     }
+    diff.nbOfLineIgnored = nbOfLineIgnored;
     return diff;
   }
 
@@ -370,4 +373,5 @@ export type StudentDiffType = {
   modified: StudentModifiedDiff[];
   deleted: number[]; // studentToGrade ids
   newGrades: string[]; // gradeNames
+  nbOfLineIgnored: number;
 };

@@ -4,7 +4,10 @@ import { DiffEnum } from "./ImportDiff";
 import { studentDiff } from "./ImportSelection";
 import { StudentDiffCollapsible } from "./StudentDiffCollapsible";
 
-export type UncheckedStudents = Omit<StudentDiffType, "newGrades">;
+export type UncheckedStudents = Omit<
+  StudentDiffType,
+  "newGrades" | "nbOfLineIgnored"
+>;
 
 export function ImportDiffStudent(): JSXElement {
   const [uncheckedValues, setUncheckedValues] = createSignal<UncheckedStudents>(
@@ -15,7 +18,7 @@ export function ImportDiffStudent(): JSXElement {
     }
   );
 
-  function studentDiffFiltered(): StudentDiffType {
+  function studentDiffFiltered(): Omit<StudentDiffType, "nbOfLineIgnored"> {
     const _studentDiff = studentDiff() as StudentDiffType;
 
     const added = _studentDiff.added.filter((student) => {
@@ -61,9 +64,15 @@ export function ImportDiffStudent(): JSXElement {
       <div id="import-dialog-title">Modifications à appliquer :</div>
 
       <Show when={(studentDiff() as StudentDiffType).newGrades.length > 0}>
-        <div>{"Classes à créer:" + studentDiff()?.newGrades}</div>
+        <div>{"Nouvelles classes" + studentDiff()?.newGrades}</div>
       </Show>
       {/* TODO: Show numbers of line ignored (csv) because school or stop not existing */}
+      <Show when={(studentDiff() as StudentDiffType).nbOfLineIgnored > 0}>
+        <div>
+          {(studentDiff() as StudentDiffType).nbOfLineIgnored +
+            " lignes ignorées car établissement et/ou arrêt innexistant"}
+        </div>
+      </Show>
 
       <StudentDiffCollapsible
         diffType={DiffEnum.added}
