@@ -1,7 +1,11 @@
-.panel-actions{
+.panel-actions {
   @apply flex justify-between;
 }
 
-.board-content{
+.board-content {
   @apply mt-5;
+}
+
+.time {
+  @apply py-5;
 }

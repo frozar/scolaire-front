@@ -10,14 +10,12 @@ interface TimeSchedulesInputProps {
 
 export default function (props: TimeSchedulesInputProps) {
   return (
-    <div class="flex justify-between w-[70%]">
+    <div class="flex gap-2">
       <TimeInput
         onInput={props.onInputStart}
         value={props.startValue}
         disabled={props.disabled}
       />
-
-      <p>à</p>
       <TimeInput
         onInput={props.onInputEnd}
         value={props.endValue}

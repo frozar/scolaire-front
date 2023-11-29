@@ -8,6 +8,7 @@ export default function (props: {
   children: JSXElement;
   title: string;
   class?: string;
+  variant?: "bold-title";
 }) {
   const [accordion, setAccordion] = createSignal<HTMLElement | undefined>();
   const [child, setChild] = createSignal<HTMLElement | undefined>();
@@ -27,7 +28,13 @@ export default function (props: {
   return (
     <div class={"collapsible-element " + (props.class ?? "")}>
       <button ref={setAccordion} class="accordion">
-        {props.title}
+        <p
+          classList={{
+            "font-bold": props.variant == "bold-title",
+          }}
+        >
+          {props.title}
+        </p>
         <div class="button-icon">
           <Show when={activated()} fallback={<UncollapseLogo />}>
             {<CollapseLogo />}

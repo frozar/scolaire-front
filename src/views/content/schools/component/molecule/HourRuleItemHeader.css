@@ -1,0 +1,3 @@
+.rule-item-header {
+  @apply flex justify-between;
+}

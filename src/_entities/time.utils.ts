@@ -21,6 +21,7 @@ export namespace TimeUtils {
         hour: 7,
         minutes: 30,
       },
+      rules: [],
     };
   }
   export function buildHours(hours: HoursDBType | undefined): HoursType {
@@ -35,6 +36,15 @@ export namespace TimeUtils {
       ),
       endHourComing: GradeEntity.getHourFormatFromString(hours.end_hour_coming),
       endHourGoing: GradeEntity.getHourFormatFromString(hours.end_hour_going),
+      rules: hours.rules.map((item) => {
+        return {
+          day: item.day,
+          startComing: TimeUtils.getHourFormatFromString(item.start_coming),
+          endComing: TimeUtils.getHourFormatFromString(item.end_coming),
+          startGoing: TimeUtils.getHourFormatFromString(item.start_going),
+          endGoing: TimeUtils.getHourFormatFromString(item.end_going),
+        };
+      }),
     };
   }
 
@@ -50,6 +60,15 @@ export namespace TimeUtils {
         hours.startHourGoing
       ),
       end_hour_going: GradeEntity.getStringFromHourFormat(hours.endHourGoing),
+      rules: hours.rules.map((item) => {
+        return {
+          day: item.day,
+          start_coming: TimeUtils.getStringFromHourFormat(item.startComing),
+          end_coming: TimeUtils.getStringFromHourFormat(item.endComing),
+          start_going: TimeUtils.getStringFromHourFormat(item.startGoing),
+          end_going: TimeUtils.getStringFromHourFormat(item.endGoing),
+        };
+      }),
     };
   }
 
@@ -66,7 +85,7 @@ export namespace TimeUtils {
     return houre + ":" + minutes;
   }
 
-  export function GradeEntitygetHourFormatFromString(time: string): HourFormat {
+  export function getHourFormatFromString(time: string): HourFormat {
     const [houre, minute] = time.split(":");
     if (isNaN(Number(houre)) || isNaN(Number(minute)))
       return {
