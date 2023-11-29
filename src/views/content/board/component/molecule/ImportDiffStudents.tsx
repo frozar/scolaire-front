@@ -19,19 +19,21 @@ export function ImportDiffStudent(): JSXElement {
     const _studentDiff = studentDiff() as StudentDiffType;
     console.log("uncheckedValues()", uncheckedValues());
 
-    return {
-      added: _studentDiff.added.filter((student) => {
-        for (const uncheckedValue of uncheckedValues().added) {
-          if (
-            student.stop_name == uncheckedValue.stop_name &&
-            student.grade_name == uncheckedValue.grade_name &&
-            student.quantity == uncheckedValue.quantity
-          ) {
-            return false;
-          }
+    const added = _studentDiff.added.filter((student) => {
+      for (const uncheckedValue of uncheckedValues().added) {
+        if (
+          student.stop_name == uncheckedValue.stop_name &&
+          student.grade_name == uncheckedValue.grade_name &&
+          student.quantity == uncheckedValue.quantity
+        ) {
+          return false;
         }
-        return true;
-      }),
+      }
+      return true;
+    });
+
+    return {
+      added,
 
       modified: _studentDiff.modified.filter(
         (student) =>
@@ -45,8 +47,8 @@ export function ImportDiffStudent(): JSXElement {
       ),
 
       newGrades: _studentDiff.newGrades.filter((gradeName) =>
-        uncheckedValues()
-          .added.map((uncheckedValue) => uncheckedValue.grade_name)
+        added
+          .map((uncheckedValue) => uncheckedValue.grade_name)
           .includes(gradeName)
       ),
     };

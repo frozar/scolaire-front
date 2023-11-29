@@ -168,7 +168,10 @@ export namespace CsvUtils {
       .map((grade) => grade.name);
 
     csvItems.forEach((csvItem) => {
-      if (!gradeNames.includes(csvItem.grade_name))
+      if (
+        !gradeNames.includes(csvItem.grade_name) &&
+        !diff.newGrades.includes(csvItem.grade_name)
+      )
         diff.newGrades.push(csvItem.grade_name);
     });
 

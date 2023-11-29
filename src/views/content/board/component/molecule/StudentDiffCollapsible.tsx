@@ -29,6 +29,7 @@ export function StudentDiffCollapsible(
       <CollapsibleElement title={getTitle(props.diffType)}>
         <Switch>
           <Match when={props.diffType == DiffEnum.added}>
+            {/* TODO: Refactor */}
             <For each={(studentDiff() as StudentDiffType).added}>
               {(item) => {
                 return (
