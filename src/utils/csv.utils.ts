@@ -131,13 +131,13 @@ export namespace CsvUtils {
     return diff;
   }
 
-  // TODO: Rewrite / refactor
+  // TODO: Rewrite / Refactor
   export async function getStudentsDiff(file: File): Promise<StudentDiff> {
     const csvItems = (await parsedCsvFileToStudentToGradeData(
       file
     )) as StudentCsv[];
 
-    // TODO: Vérifier que les school_names sont les boones destinations des grades !
+    // TODO: Vérifier que les school_names sont les bonnes destinations des grades !
     // Check if schools and stops exists otherwise don't keep the line
     const csvItemsFiltered: StudentCsv[] = [];
     csvItems.forEach((csvItem) => {
