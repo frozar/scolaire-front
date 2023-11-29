@@ -126,7 +126,6 @@ export function HourRuleItem(props: HourRuleProps) {
     SchoolUtils.update(schoolDetailsItem() as SchoolType);
   }
 
-  // TODO to finish
   function onClickRemove() {
     // eslint-disable-next-line solid/reactivity
     setSchoolDetailsItem((prev) => {

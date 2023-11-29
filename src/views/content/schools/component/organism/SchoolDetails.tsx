@@ -73,7 +73,7 @@ export default function () {
 
       <div class="time">
         <CollapsibleElement
-          title="Tranche horaires aller/retour"
+          title="Tranches horaires aller/retour"
           variant="bold-title"
         >
           <SchoolHoursSlots school={schoolDetailsItem() as SchoolType} />
