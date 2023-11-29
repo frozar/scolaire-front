@@ -16,10 +16,10 @@ interface DiffCollapsibleProps {
 }
 
 export function DiffCollapsible(props: DiffCollapsibleProps) {
-  function isDisabled(school: number | string) {
+  function isDisabled(items: number | string) {
     if (props.diffType != DiffEnum.deleted) return false;
 
-    if (props.uncheckedValues()["deleted"].includes(school)) return true;
+    if (props.uncheckedValues()["deleted"].includes(items)) return true;
 
     return false;
   }

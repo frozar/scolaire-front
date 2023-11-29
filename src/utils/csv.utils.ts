@@ -131,6 +131,101 @@ export namespace CsvUtils {
     return diff;
   }
 
+  // TODO: Rewrite / Refactor
+  export async function getStudentsDiff(file: File): Promise<StudentDiffType> {
+    const csvItems = (await parsedCsvFileToStudentToGradeData(
+      file
+    )) as StudentCsv[];
+
+    // TODO: For existing grades, check that the school_name is corresponding
+    // Check if schools and stops exists otherwise don't keep the line
+    const csvItemsFiltered: StudentCsv[] = [];
+    let nbOfLineIgnored = 0;
+    csvItems.forEach((csvItem) => {
+      if (
+        getSchools()
+          .map((school) => school.name)
+          .includes(csvItem.school_name) &&
+        getStops()
+          .map((stop) => stop.name)
+          .includes(csvItem.stop_name)
+      ) {
+        csvItemsFiltered.push(csvItem);
+      } else nbOfLineIgnored += 1;
+    });
+
+    // Create diff object
+    const diff: StudentDiffType = {
+      added: [],
+      modified: [],
+      deleted: [],
+      newGrades: [],
+      nbOfLineIgnored: 0,
+    };
+
+    // New grades
+    const gradeNames = getSchools()
+      .flatMap((school) => school.grades)
+      .map((grade) => grade.name);
+
+    csvItemsFiltered.forEach((csvItem) => {
+      if (
+        !gradeNames.includes(csvItem.grade_name) &&
+        !diff.newGrades.includes(csvItem.grade_name)
+      )
+        diff.newGrades.push(csvItem.grade_name);
+    });
+
+    loop: for (const csvItem of csvItems) {
+      for (const stop of getStops()) {
+        for (const associated of stop.associated) {
+          if (
+            SchoolUtils.getName(associated.schoolId) == csvItem.school_name &&
+            stop.name == csvItem.stop_name &&
+            GradeUtils.getName(associated.gradeId) == csvItem.grade_name
+          ) {
+            // Case modified
+            if (associated.quantity != csvItem.quantity) {
+              diff.modified.push({
+                id: associated.idClassToSchool,
+                quantity: csvItem.quantity,
+              });
+              continue loop;
+              // Case nothing changed
+            } else continue loop;
+            // Case added with a new grade
+          } else if (
+            SchoolUtils.getName(associated.schoolId) == csvItem.school_name &&
+            stop.name == csvItem.stop_name &&
+            diff.newGrades.includes(csvItem.grade_name)
+          ) {
+            diff.added.push({ ...csvItem });
+            continue loop;
+          }
+        }
+      }
+      // Case added
+      diff.added.push({ ...csvItem });
+    }
+
+    // Case deleted
+    for (const stop of getStops()) {
+      for (const associated of stop.associated) {
+        if (
+          csvItems.filter(
+            (csvItem) =>
+              csvItem.school_name == SchoolUtils.getName(associated.schoolId) &&
+              csvItem.stop_name == stop.name &&
+              csvItem.grade_name == GradeUtils.getName(associated.gradeId)
+          ).length == 0
+        )
+          diff.deleted.push(associated.idClassToSchool);
+      }
+    }
+    diff.nbOfLineIgnored = nbOfLineIgnored;
+    return diff;
+  }
+
   export function fileExtensionIsCsv(fileName: string) {
     const regexExtention = new RegExp(".csv$");
     if (!regexExtention.test(fileName)) {
@@ -241,19 +336,42 @@ export namespace CsvUtils {
 
     return StopEntity.dataToDB(parsedData);
   }
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
   async function parsedCsvFileToStudentToGradeData(
     file: File
-  ): Promise<StudentToGrade[] | undefined> {
+  ): Promise<StudentCsv[] | undefined> {
     const parsedFile = await parseFile(file);
-    const correctHeader = ["school_name", "stop_name", "quantity"];
+    const correctHeader = [
+      "school_name",
+      "stop_name",
+      "grade_name",
+      "quantity",
+    ];
     if (!isCorrectHeader(parsedFile.meta.fields, correctHeader)) {
       return;
     }
-    let parsedData = parsedFile.data as StudentToGrade[];
+    let parsedData = parsedFile.data as StudentCsv[];
     parsedData = parsedData.filter(
       (data) => data.school_name && data.stop_name && data.quantity
     );
     return parsedData;
   }
 }
+
+export type StudentCsv = {
+  id?: number;
+  school_name: string;
+  stop_name: string;
+  grade_name: string;
+  quantity: number;
+};
+
+export type StudentModifiedDiff = Pick<StudentCsv, "id" | "quantity">;
+
+export type StudentDiffType = {
+  added: StudentCsv[];
+  modified: StudentModifiedDiff[];
+  deleted: number[]; // studentToGrade ids
+  newGrades: string[]; // gradeNames
+  nbOfLineIgnored: number;
+};
