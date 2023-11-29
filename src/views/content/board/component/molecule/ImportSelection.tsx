@@ -1,6 +1,10 @@
 import { createEffect, createSignal } from "solid-js";
 import Button from "../../../../../component/atom/Button";
-import { CsvDiffType, CsvUtils } from "../../../../../utils/csv.utils";
+import {
+  CsvDiffType,
+  CsvUtils,
+  StudentDiffType,
+} from "../../../../../utils/csv.utils";
 import { DialogUtils } from "../../../../../utils/dialog.utils";
 import { DialogToDisplayEnum, setDialogToDisplay } from "../organism/Dialogs";
 import LabeledInputRadio from "./LabeledInputRadio";
@@ -14,6 +18,7 @@ export enum CsvEnum {
 
 export const [csv, setCsv] = createSignal<File>();
 export const [diff, setDiff] = createSignal<CsvDiffType>();
+export const [studentDiff, setStudentDiff] = createSignal<StudentDiffType>();
 export const [csvType, setCsvType] = createSignal<CsvEnum>();
 
 export function ImportSelection() {
@@ -43,7 +48,9 @@ export function ImportSelection() {
 
       case CsvEnum.students:
         const studentDiff = await CsvUtils.getStudentsDiff(csv() as File);
-        console.log("csvItems =>", studentDiff);
+        setStudentDiff(studentDiff);
+        setDialogToDisplay(DialogToDisplayEnum.studentDiff);
+
         return;
     }
 

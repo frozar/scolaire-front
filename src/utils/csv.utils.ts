@@ -132,7 +132,7 @@ export namespace CsvUtils {
   }
 
   // TODO: Rewrite / Refactor
-  export async function getStudentsDiff(file: File): Promise<StudentDiff> {
+  export async function getStudentsDiff(file: File): Promise<StudentDiffType> {
     const csvItems = (await parsedCsvFileToStudentToGradeData(
       file
     )) as StudentCsv[];
@@ -154,7 +154,7 @@ export namespace CsvUtils {
     });
 
     // Create diff object
-    const diff: StudentDiff = {
+    const diff: StudentDiffType = {
       added: [],
       modified: [],
       deleted: [],
@@ -162,6 +162,7 @@ export namespace CsvUtils {
     };
 
     // New grades
+    // TODO: Remove redundancy
     const gradeNames = getSchools()
       .flatMap((school) => school.grades)
       .map((grade) => grade.name);
@@ -354,7 +355,7 @@ export namespace CsvUtils {
 }
 
 // TODO: Refactor with a type already existing ?
-type StudentCsv = {
+export type StudentCsv = {
   id?: number;
   school_name: string;
   stop_name: string;
@@ -363,14 +364,14 @@ type StudentCsv = {
 };
 
 // TODO: Refactor with a type already existing ?
-type StudentAddedDiff = {
+export type StudentModifiedDiff = {
   id: number;
   quantity: number;
 };
 
-type StudentDiff = {
+export type StudentDiffType = {
   added: StudentCsv[];
-  modified: StudentAddedDiff[];
+  modified: StudentModifiedDiff[];
   deleted: number[]; // studentToGrade ids
   newGrades: string[]; // names
 };
