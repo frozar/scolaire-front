@@ -212,8 +212,7 @@ export namespace CsvUtils {
             (csvItem) =>
               csvItem.school_name == SchoolUtils.getName(associated.schoolId) &&
               csvItem.stop_name == stop.name &&
-              csvItem.grade_name == GradeUtils.getName(associated.gradeId) &&
-              csvItem.quantity == associated.quantity
+              csvItem.grade_name == GradeUtils.getName(associated.gradeId)
           ).length == 0
         )
           diff.deleted.push(associated.idClassToSchool);

@@ -1,4 +1,5 @@
 import { Accessor, For, JSXElement, Match, Setter, Switch } from "solid-js";
+import { AssociatedUtils } from "../../../../../utils/associated.utils";
 import { StudentDiffType } from "../../../../../utils/csv.utils";
 import { DiffCheckboxStudent } from "../atom/DiffCheckboxStudent";
 import CollapsibleElement from "../organism/CollapsibleElement";
@@ -15,16 +16,17 @@ type StudentDiffCollapsibleProps = {
 export function StudentDiffCollapsible(
   props: StudentDiffCollapsibleProps
 ): JSXElement {
-  const title =
-    props.diffType == DiffEnum.added
+  function getTitle(diffType: DiffEnum): string {
+    return diffType == DiffEnum.added
       ? "Ajouter"
-      : props.diffType == DiffEnum.modified
+      : diffType == DiffEnum.modified
       ? "Modifier"
       : "Supprimer";
+  }
 
   return (
     <>
-      <CollapsibleElement title={title}>
+      <CollapsibleElement title={getTitle(props.diffType)}>
         <Switch>
           <Match when={props.diffType == DiffEnum.added}>
             <For each={(studentDiff() as StudentDiffType).added}>
@@ -48,7 +50,24 @@ export function StudentDiffCollapsible(
           </Match>
 
           <Match when={props.diffType == DiffEnum.modified}>
-            <div>TEST modified</div>
+            <For each={(studentDiff() as StudentDiffType).modified}>
+              {(item) => {
+                return (
+                  <DiffCheckboxStudent
+                    item={item}
+                    label={
+                      AssociatedUtils.getStopName(item.id) +
+                      " | " +
+                      AssociatedUtils.getGradeName(item.id) +
+                      " | " +
+                      item.quantity
+                    }
+                    diffType={props.diffType}
+                    setter={props.setUncheckedValues}
+                  />
+                );
+              }}
+            </For>
           </Match>
 
           <Match when={props.diffType == DiffEnum.deleted}>

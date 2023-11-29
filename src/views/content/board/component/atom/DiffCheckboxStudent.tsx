@@ -35,6 +35,7 @@ export function DiffCheckboxStudent(props: DiffCheckboxProps) {
   );
 }
 
+// TODO: Rewrite / Refactor
 function onChangeStudentCheckbox(
   event: Event & {
     currentTarget: HTMLInputElement;
@@ -47,6 +48,7 @@ function onChangeStudentCheckbox(
   switch (diffType) {
     case DiffEnum.added:
       const addedItem = item as StudentCsv;
+      // TODO: Put in a function
       if (event.currentTarget.checked) {
         // ! quand je coche
 
@@ -73,7 +75,24 @@ function onChangeStudentCheckbox(
       }
       break;
 
-    default:
+    case DiffEnum.modified:
+      const addItem = item as StudentModifiedDiff;
+      // TODO: Put in a function
+      if (event.currentTarget.checked) {
+        setter((prev) => {
+          let uncheckedModified = { ...prev }.modified;
+          uncheckedModified = uncheckedModified.filter(
+            (unchecked) => unchecked.id != addItem.id
+          );
+          return { ...prev, modified: uncheckedModified };
+        });
+      } else {
+        setter((prev) => {
+          const uncheckedModified = { ...prev }.modified;
+          uncheckedModified.push(addItem);
+          return { ...prev, modified: uncheckedModified };
+        });
+      }
       break;
   }
 }
