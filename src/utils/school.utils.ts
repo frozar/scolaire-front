@@ -19,7 +19,10 @@ import {
   getStops,
   setStops,
 } from "../views/content/map/component/organism/StopPoints";
-import { setSchoolDetailsItem } from "../views/content/schools/component/organism/SchoolDetails";
+import {
+  schoolDetailsItem,
+  setSchoolDetailsItem,
+} from "../views/content/schools/component/organism/SchoolDetails";
 
 export namespace SchoolUtils {
   export function get(schoolId: number): SchoolType {
@@ -185,6 +188,9 @@ export namespace SchoolUtils {
       schools[schoolIndex] = updatedSchool;
       return schools;
     });
+
+    if (schoolDetailsItem()?.id == updatedSchool.id)
+      setSchoolDetailsItem(updatedSchool);
   }
 
   export function linkSchoolToCalendar(calendarId: number) {

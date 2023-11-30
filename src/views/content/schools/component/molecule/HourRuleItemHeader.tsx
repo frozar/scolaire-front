@@ -5,11 +5,8 @@ import PlusIcon from "../../../../../icons/PlusIcon";
 import TrashIcon from "../../../../../icons/TrashIcon";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { CalendarUtils } from "../../../calendar/calendar.utils";
-import {
-  schoolDetailEditing,
-  schoolDetailsItem,
-} from "../organism/SchoolDetails";
 
+import { CalendarType } from "../../../../../_entities/calendar.entity";
 import "./HourRuleItemHeader.css";
 
 interface HourRuleItemHeader {
@@ -19,10 +16,12 @@ interface HourRuleItemHeader {
   disabled?: boolean;
   action: "add" | "remove";
   rule: HourRuleType;
+  calendar: CalendarType;
 }
 
 export function HourRuleItemHeader(props: HourRuleItemHeader) {
-  const selectOptions = schoolDetailsItem()?.calendar?.rules.map((item) => {
+  // eslint-disable-next-line solid/reactivity
+  const selectOptions = props.calendar?.rules.map((item) => {
     return {
       text: CalendarUtils.dayToFrench(item.day),
       value: item.day,
@@ -39,7 +38,7 @@ export function HourRuleItemHeader(props: HourRuleItemHeader) {
         defaultOptions="Jour"
       />
 
-      <Show when={schoolDetailEditing()}>
+      <Show when={!props.disabled}>
         <Switch>
           <Match when={props.action == "add"}>
             <ButtonIcon icon={<PlusIcon />} onClick={props.onClickAdd} />

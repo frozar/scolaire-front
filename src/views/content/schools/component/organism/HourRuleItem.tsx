@@ -1,51 +1,50 @@
-import { createEffect, createSignal, on } from "solid-js";
+import { Accessor, Setter, createEffect, createSignal, on } from "solid-js";
+import { HourRuleType } from "../../../../../_entities/_utils.entity";
 import {
-  HourRuleType,
-  HoursType,
-} from "../../../../../_entities/_utils.entity";
-import { CalendarDayEnum } from "../../../../../_entities/calendar.entity";
-import { GradeEntity } from "../../../../../_entities/grade.entity";
+  CalendarDayEnum,
+  CalendarType,
+} from "../../../../../_entities/calendar.entity";
+import { GradeEntity, GradeType } from "../../../../../_entities/grade.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { TimeUtils } from "../../../../../_entities/time.utils";
 import { addNewUserInformation } from "../../../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../../../type";
-import { SchoolUtils } from "../../../../../utils/school.utils";
 import { CalendarUtils } from "../../../calendar/calendar.utils";
 import { HourRuleItemHeader } from "../molecule/HourRuleItemHeader";
 import TimesInputWrapper from "../molecule/TimesInputWrapper";
-import { schoolDetailsItem, setSchoolDetailsItem } from "./SchoolDetails";
 
 interface HourRuleProps {
   rule: HourRuleType;
-  hours: HoursType;
   disabled?: boolean;
   action: "add" | "remove";
+  item: Accessor<SchoolType | GradeType | undefined>;
+  setItem: Setter<SchoolType | GradeType>;
 }
 
 export function HourRuleItem(props: HourRuleProps) {
   const ruleIndex = () =>
-    props.hours.rules.findIndex((item) => item.day == props.rule.day);
+    props
+      .item()
+      ?.hours.rules.findIndex((item) => item.day == props.rule.day) as number;
+
   // eslint-disable-next-line solid/reactivity
   const [bufferRule, setBufferRule] = createSignal<HourRuleType>(props.rule);
 
   // * Update SchoolDetailsItem only if we are not in add mode
   createEffect(
-    on(
-      () => bufferRule,
-      () => {
-        if (bufferRule() && ruleIndex() != -1 && props.action != "add") {
-          if (schoolDetailsItem()?.hours.rules[ruleIndex()] != bufferRule()) {
-            // eslint-disable-next-line solid/reactivity
-            setSchoolDetailsItem((prev) => {
-              if (!prev) return prev;
-              const school = { ...prev };
-              school.hours.rules[ruleIndex()] = bufferRule();
-              return school;
-            });
-          }
+    on(bufferRule, () => {
+      if (ruleIndex() != -1 && props.action != "add") {
+        if (props.item()?.hours.rules[ruleIndex()] != bufferRule()) {
+          // eslint-disable-next-line solid/reactivity
+          props.setItem((prev) => {
+            if (!prev) return prev;
+            const school = { ...prev };
+            school.hours.rules[ruleIndex()] = bufferRule();
+            return school;
+          });
         }
       }
-    )
+    })
   );
 
   function onInputComingStart(value: string) {
@@ -87,8 +86,9 @@ export function HourRuleItem(props: HourRuleProps) {
   }
 
   function isValid(): boolean {
-    const hours = schoolDetailsItem()?.hours as HoursType;
-    const usedDays = hours.rules.map((item) => item.day);
+    const usedDays = props
+      .item()
+      ?.hours.rules.map((item) => item.day) as string[];
 
     if (!Object.values(CalendarDayEnum).includes(bufferRule().day)) {
       addNewUserInformation({
@@ -117,18 +117,17 @@ export function HourRuleItem(props: HourRuleProps) {
   function onClickAdd() {
     if (!isValid()) return;
     // eslint-disable-next-line solid/reactivity
-    setSchoolDetailsItem((prev) => {
+    props.setItem((prev) => {
       if (!prev) return prev;
       const school = { ...prev };
       school.hours.rules.push(bufferRule());
       return school;
     });
-    SchoolUtils.update(schoolDetailsItem() as SchoolType);
   }
 
   function onClickRemove() {
     // eslint-disable-next-line solid/reactivity
-    setSchoolDetailsItem((prev) => {
+    props.setItem((prev) => {
       if (!prev) return prev;
       const school = { ...prev };
       school.hours.rules = school.hours.rules.filter(
@@ -136,7 +135,6 @@ export function HourRuleItem(props: HourRuleProps) {
       );
       return school;
     });
-    SchoolUtils.update(schoolDetailsItem() as SchoolType);
   }
 
   return (
@@ -147,7 +145,8 @@ export function HourRuleItem(props: HourRuleProps) {
         rule={props.rule}
         onClickAdd={onClickAdd}
         onClickRemove={onClickRemove}
-        disabled={props.disabled}
+        disabled={!props.disabled}
+        calendar={props.item()?.calendar as CalendarType}
       />
       <TimesInputWrapper
         label="Aller"
@@ -157,7 +156,7 @@ export function HourRuleItem(props: HourRuleProps) {
         endValue={GradeEntity.getStringFromHourFormat(bufferRule().endComing)}
         onInputStart={onInputComingStart}
         onInputEnd={onInputComingEnd}
-        disabled={props.disabled ?? false}
+        disabled={!props.disabled}
       />
       <TimesInputWrapper
         label="Retour"
@@ -167,7 +166,7 @@ export function HourRuleItem(props: HourRuleProps) {
         endValue={GradeEntity.getStringFromHourFormat(bufferRule().endGoing)}
         onInputStart={onInputGoingStart}
         onInputEnd={onInputGoingEnd}
-        disabled={props.disabled ?? false}
+        disabled={!props.disabled}
       />
     </div>
   );
