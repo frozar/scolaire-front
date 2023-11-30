@@ -21,17 +21,18 @@ interface HourRuleItemHeader {
 
 export function HourRuleItemHeader(props: HourRuleItemHeader) {
   // eslint-disable-next-line solid/reactivity
-  const selectOptions = props.calendar?.rules.map((item) => {
-    return {
-      text: CalendarUtils.dayToFrench(item.day),
-      value: item.day,
-    };
-  }) as [];
+  const selectOptions = () =>
+    props.calendar?.rules.map((item) => {
+      return {
+        text: CalendarUtils.dayToFrench(item.day),
+        value: item.day,
+      };
+    }) as [];
 
   return (
     <div class="rule-item-header">
       <SelectInput
-        options={selectOptions}
+        options={selectOptions()}
         onChange={props.onChangeDay}
         defaultValue={props.rule.day}
         disabled={props.disabled ?? false}
