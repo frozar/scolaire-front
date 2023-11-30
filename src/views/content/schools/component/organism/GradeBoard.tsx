@@ -99,7 +99,7 @@ export default function () {
           onInput={(event) => setGradeName(event.target.value)}
           value={gradeName() ?? ""}
           label="Nom de la grade"
-          placeholder="Nom de la grade"
+          placeholder="Nom de la classe"
         />
 
         <GradeCalendarSelectionWrapper />
