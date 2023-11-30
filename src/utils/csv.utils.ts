@@ -1,8 +1,13 @@
 import _ from "lodash";
 import Papa from "papaparse";
 import { LocationDBType } from "../_entities/_utils.entity";
-import { SchoolDBType, SchoolType } from "../_entities/school.entity";
+import {
+  SchoolDBType,
+  SchoolEntity,
+  SchoolType,
+} from "../_entities/school.entity";
 import { StopDBType, StopEntity, StopType } from "../_entities/stop.entity";
+import { ServiceUtils } from "../_services/_utils.service";
 import { SchoolService } from "../_services/school.service";
 import { StopService } from "../_services/stop.service";
 import {
@@ -90,6 +95,75 @@ export namespace CsvUtils {
     } else return await StopService.import(diffDBData);
   }
 
+  // TODO: Rewrite / refactor
+  export async function importStudents(
+    studentDiffFiltered: Omit<StudentDiffType, "nbOfLineIgnored">
+  ) {
+    // TODO: Clean
+    type studentDBType = {
+      added: { stop_id: number; grade_id: number; quantity: number }[];
+      added_with_grade: {
+        stop_id: number;
+        quantity: number;
+        grade_name: string;
+      }[];
+      modified: StudentModifiedDiff[];
+      deleted: number[];
+      new_grades: { name: string; school_id: number }[];
+    };
+
+    const added: { stop_id: number; grade_id: number; quantity: number }[] = [];
+    const added_with_grade: {
+      stop_id: number;
+      quantity: number;
+      grade_name: string;
+    }[] = [];
+    const existingGradeNames = GradeUtils.getAll().map((grade) => grade.name);
+
+    for (const _added of studentDiffFiltered.added) {
+      // Case grade already exist
+      if (existingGradeNames.includes(_added.grade_name)) {
+        added.push({
+          stop_id: StopUtils.getIdFromName(_added.stop_name),
+          grade_id: GradeUtils.getIdFromName(_added.grade_name),
+          quantity: _added.quantity,
+        });
+        // Case new grade
+      } else {
+        added_with_grade.push({
+          stop_id: StopUtils.getIdFromName(_added.stop_name),
+          quantity: _added.quantity,
+          grade_name: _added.grade_name,
+        });
+      }
+    }
+
+    const new_grades = studentDiffFiltered.newGrades.map((newGrade) => {
+      return {
+        name: newGrade.gradeName,
+        school_id: SchoolUtils.getIdFromName(newGrade.schoolName),
+      };
+    });
+
+    const studentDB: studentDBType = {
+      added,
+      modified: studentDiffFiltered.modified,
+      deleted: studentDiffFiltered.deleted,
+      new_grades,
+      added_with_grade,
+    };
+
+    // TODO: Put in a "student_to_grade" service file ?
+    const xanoResult: {
+      schools: { school: SchoolDBType[] };
+      stops: { stop: StopDBType[] };
+    } = await ServiceUtils.post("/student/import", studentDB);
+    setSchools(
+      xanoResult.schools.school.map((school) => SchoolEntity.build(school))
+    );
+    setStops(xanoResult.stops.stop.map((stop) => StopEntity.build(stop)));
+  }
+
   export async function getDiff(file: File, csvType: CsvEnum) {
     const csvItems = (await parseCsvItem(file)) as {
       name: string;
@@ -171,12 +245,17 @@ export namespace CsvUtils {
     csvItemsFiltered.forEach((csvItem) => {
       if (
         !gradeNames.includes(csvItem.grade_name) &&
-        !diff.newGrades.includes(csvItem.grade_name)
+        !diff.newGrades
+          .map((newGrade) => newGrade.gradeName)
+          .includes(csvItem.grade_name)
       )
-        diff.newGrades.push(csvItem.grade_name);
+        diff.newGrades.push({
+          gradeName: csvItem.grade_name,
+          schoolName: csvItem.school_name,
+        });
     });
 
-    loop: for (const csvItem of csvItems) {
+    loop: for (const csvItem of csvItemsFiltered) {
       for (const stop of getStops()) {
         for (const associated of stop.associated) {
           if (
@@ -197,7 +276,9 @@ export namespace CsvUtils {
           } else if (
             SchoolUtils.getName(associated.schoolId) == csvItem.school_name &&
             stop.name == csvItem.stop_name &&
-            diff.newGrades.includes(csvItem.grade_name)
+            diff.newGrades
+              .map((newGrade) => newGrade.gradeName)
+              .includes(csvItem.grade_name)
           ) {
             diff.added.push({ ...csvItem });
             continue loop;
@@ -212,7 +293,7 @@ export namespace CsvUtils {
     for (const stop of getStops()) {
       for (const associated of stop.associated) {
         if (
-          csvItems.filter(
+          csvItemsFiltered.filter(
             (csvItem) =>
               csvItem.school_name == SchoolUtils.getName(associated.schoolId) &&
               csvItem.stop_name == stop.name &&
@@ -372,6 +453,6 @@ export type StudentDiffType = {
   added: StudentCsv[];
   modified: StudentModifiedDiff[];
   deleted: number[]; // studentToGrade ids
-  newGrades: string[]; // gradeNames
+  newGrades: { gradeName: string; schoolName: string }[];
   nbOfLineIgnored: number;
 };

@@ -19,6 +19,11 @@ export namespace StopUtils {
     return get(stopId).name;
   }
 
+  // Carefull, here stop name is used as an identifier
+  export function getIdFromName(stopName: string): number {
+    return getStops().filter((stop) => stop.name == stopName)[0].id;
+  }
+
   export function addAssociated(
     gradeItem: AssociatedSchoolType,
     stopId: number

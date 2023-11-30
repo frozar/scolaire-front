@@ -10,6 +10,10 @@ export namespace GradeUtils {
       .filter((grade) => grade.id == gradeId)[0];
   }
 
+  export function getAll(): GradeType[] {
+    return getSchools().flatMap((school) => school.grades);
+  }
+
   export function getName(gradeId: number): string {
     return getGrade(gradeId).name;
   }
@@ -18,6 +22,11 @@ export namespace GradeUtils {
     return getSchools().filter((school) =>
       school.grades.some((grade) => grade.id == gradeId)
     )[0].id;
+  }
+
+  // Carefull, here grade name is used as an identifier
+  export function getIdFromName(gradeName: string): number {
+    return getAll().filter((grade) => grade.name == gradeName)[0].id as number;
   }
 
   export function getTotalQuantity(gradeId: number) {

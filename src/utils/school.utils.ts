@@ -33,6 +33,11 @@ export namespace SchoolUtils {
     return getSchools().filter((school) => school.id == schoolId)[0].name;
   }
 
+  // Carefull, here schoolName is used as an identitifer
+  export function getIdFromName(schoolName: string): number {
+    return getSchools().filter((school) => school.name == schoolName)[0].id;
+  }
+
   export async function DeleteSchool(schoolId: number) {
     const id_school: number = await SchoolService.delete(schoolId);
 
