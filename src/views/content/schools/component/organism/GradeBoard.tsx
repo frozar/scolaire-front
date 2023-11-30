@@ -31,23 +31,6 @@ export const [selectedGrade, setSelectedGrade] = createSignal<GradeType>();
 export default function () {
   const [gradeName, setGradeName] = createSignal(selectedGrade()?.name);
 
-  // createEffect(
-  //   on(selectedGrade, () => {
-  //     // eslint-disable-next-line solid/reactivity
-  //     setSchoolDetailsItem((prev) => {
-  //       if (!prev) return prev;
-  //       const school = { ...prev };
-  //       const gradeIndex = school.grades.findIndex(
-  //         (item) => item.id == selectedGrade()?.id
-  //       );
-  //       if (gradeIndex > 0) {
-  //         school.grades[gradeIndex] = selectedGrade() as GradeType;
-  //       }
-  //       return { ...prev };
-  //     });
-  //   })
-  // );
-
   async function nextStep() {
     let grade: GradeType;
     const schoolToUpdate = schoolDetailsItem() as SchoolType;
@@ -62,15 +45,12 @@ export default function () {
       });
       schoolToUpdate?.grades.push(grade);
     } else {
-      // * ------------ UPDATE --------------
       grade = await GradeService.update({
         ...selectedGrade(),
         name: gradeName() ?? "",
         hours: bufferHours(),
         calendar: bufferCalendar(),
       });
-
-      console.log("grade after remot update:", grade);
 
       const gradeIndex = schoolToUpdate.grades.findIndex(
         (item) => item.id == grade.id
