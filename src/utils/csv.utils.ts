@@ -21,7 +21,6 @@ import {
   getStops,
   setStops,
 } from "../views/content/map/component/organism/StopPoints";
-import { AssociatedUtils } from "./associated.utils";
 import { GradeUtils } from "./grade.utils";
 import { SchoolUtils } from "./school.utils";
 import { StopUtils } from "./stop.utils";
@@ -98,24 +97,49 @@ export namespace CsvUtils {
     // ! Format like that =>
     type studentDBType = {
       added: { stop_id: number; grade_id: number; quantity: number }[];
+      added_with_grade: {
+        stop_id: number;
+        quantity: number;
+        grade_name: string;
+      }[];
       modified: StudentModifiedDiff[];
       deleted: number[];
       new_grades: { name: string; school_id: number }[];
     };
 
-    const added = studentDiffFiltered.added.map((_added) => {
-      return {
-        stop_id: AssociatedUtils.getStop(_added.id as number).id,
-        grade_id: AssociatedUtils.get(_added.id as number).gradeId,
-        quantity: _added.quantity,
-      };
-    });
+    const added: { stop_id: number; grade_id: number; quantity: number }[] = [];
+    const added_with_grade: {
+      stop_id: number;
+      quantity: number;
+      grade_name: string;
+    }[] = [];
+    const existingGradeNames = GradeUtils.getAll().map((grade) => grade.name);
+
+    for (const _added of studentDiffFiltered.added) {
+      // TODO: Fix
+      // case grade already exist
+      if (existingGradeNames.includes(_added.grade_name)) {
+        added.push({
+          stop_id: StopUtils.getIdFromName(_added.stop_name),
+          grade_id: GradeUtils.getIdFromName(_added.grade_name),
+          quantity: _added.quantity,
+        });
+        // case new grade
+      } else {
+        added_with_grade.push({
+          stop_id: StopUtils.getIdFromName(_added.stop_name),
+          quantity: _added.quantity,
+          grade_name: _added.grade_name,
+        });
+      }
+    }
+    // const added_with_grade
 
     // TODO: Fix
-    const new_grades = studentDiffFiltered.newGrades.map((gradeName) => {
+    const new_grades = studentDiffFiltered.newGrades.map((newGrade) => {
       return {
-        name: gradeName,
-        school_id: AssociatedUtils.getSchoolIdByGradeName(gradeName),
+        name: newGrade.gradeName,
+        school_id: SchoolUtils.getIdFromName(newGrade.schoolName),
       };
     });
 
@@ -124,6 +148,7 @@ export namespace CsvUtils {
       modified: studentDiffFiltered.modified,
       deleted: studentDiffFiltered.deleted,
       new_grades,
+      added_with_grade,
     };
 
     // TODO: Put in a service file
@@ -214,12 +239,17 @@ export namespace CsvUtils {
     csvItemsFiltered.forEach((csvItem) => {
       if (
         !gradeNames.includes(csvItem.grade_name) &&
-        !diff.newGrades.includes(csvItem.grade_name)
+        !diff.newGrades
+          .map((newGrade) => newGrade.gradeName)
+          .includes(csvItem.grade_name)
       )
-        diff.newGrades.push(csvItem.grade_name);
+        diff.newGrades.push({
+          gradeName: csvItem.grade_name,
+          schoolName: csvItem.school_name,
+        });
     });
 
-    loop: for (const csvItem of csvItems) {
+    loop: for (const csvItem of csvItemsFiltered) {
       for (const stop of getStops()) {
         for (const associated of stop.associated) {
           if (
@@ -240,7 +270,9 @@ export namespace CsvUtils {
           } else if (
             SchoolUtils.getName(associated.schoolId) == csvItem.school_name &&
             stop.name == csvItem.stop_name &&
-            diff.newGrades.includes(csvItem.grade_name)
+            diff.newGrades
+              .map((newGrade) => newGrade.gradeName)
+              .includes(csvItem.grade_name)
           ) {
             diff.added.push({ ...csvItem });
             continue loop;
@@ -255,7 +287,7 @@ export namespace CsvUtils {
     for (const stop of getStops()) {
       for (const associated of stop.associated) {
         if (
-          csvItems.filter(
+          csvItemsFiltered.filter(
             (csvItem) =>
               csvItem.school_name == SchoolUtils.getName(associated.schoolId) &&
               csvItem.stop_name == stop.name &&
@@ -415,6 +447,7 @@ export type StudentDiffType = {
   added: StudentCsv[];
   modified: StudentModifiedDiff[];
   deleted: number[]; // studentToGrade ids
-  newGrades: string[]; // gradeNames
+  // newGrades: string[]; // gradeNames
+  newGrades: { gradeName: string; schoolName: string }[];
   nbOfLineIgnored: number;
 };

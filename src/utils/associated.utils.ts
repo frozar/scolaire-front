@@ -55,14 +55,6 @@ export namespace AssociatedUtils {
     SchoolUtils.addAssociated(gradeToSchool, stopDetailsItem()?.id as number);
   }
 
-  // Carreful here, grade name is used as an identifier
-  export function getSchoolIdByGradeName(gradeName: string): number {
-    return getStops()
-      .flatMap((stop) => stop.associated)
-      .filter((assoc) => GradeUtils.getName(assoc.gradeId) == gradeName)[0]
-      .schoolId;
-  }
-
   export async function update(
     studentToGradeId: number,
     gradeId: number,

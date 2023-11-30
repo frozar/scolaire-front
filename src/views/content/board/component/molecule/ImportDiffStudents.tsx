@@ -59,10 +59,10 @@ export function ImportDiffStudent(): JSXElement {
         (gradeId) => !uncheckedValues().deleted.includes(gradeId)
       ),
 
-      newGrades: _studentDiff.newGrades.filter((gradeName) =>
+      newGrades: _studentDiff.newGrades.filter((newGrade) =>
         added
           .map((uncheckedValue) => uncheckedValue.grade_name)
-          .includes(gradeName)
+          .includes(newGrade.gradeName)
       ),
     };
   }
