@@ -122,7 +122,6 @@ export function ImportDiffStudent(): JSXElement {
       {/* TODO: Refactor footer dialog content */}
       <div class="import-dialog-buttons">
         <Button
-          // ! Signals to clean ?
           onClick={DialogUtils.closeDialog}
           label={"Annuler"}
           variant="danger"
