@@ -90,7 +90,10 @@ export function ImportDiffStudent(): JSXElement {
       <div id="import-dialog-title">Modifications à appliquer :</div>
 
       <Show when={(studentDiff() as StudentDiffType).newGrades.length > 0}>
-        <div>{"Nouvelles classes" + studentDiff()?.newGrades}</div>
+        <div>
+          {"Nouvelles classes: " +
+            studentDiff()?.newGrades.map((grade) => grade.gradeName)}
+        </div>
       </Show>
 
       <Show when={(studentDiff() as StudentDiffType).nbOfLineIgnored > 0}>
