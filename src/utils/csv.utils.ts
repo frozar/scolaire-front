@@ -1,8 +1,13 @@
 import _ from "lodash";
 import Papa from "papaparse";
 import { LocationDBType } from "../_entities/_utils.entity";
-import { SchoolDBType, SchoolType } from "../_entities/school.entity";
+import {
+  SchoolDBType,
+  SchoolEntity,
+  SchoolType,
+} from "../_entities/school.entity";
 import { StopDBType, StopEntity, StopType } from "../_entities/stop.entity";
+import { ServiceUtils } from "../_services/_utils.service";
 import { SchoolService } from "../_services/school.service";
 import { StopService } from "../_services/stop.service";
 import {
@@ -149,8 +154,15 @@ export namespace CsvUtils {
 
     console.log("studentDB", studentDB);
     // TODO: Put in a "student_to_grade" service file ?
-    // const xanoResult = await ServiceUtils.post("/student/import", studentDB);
-    // console.log("xano result", xanoResult);
+    const xanoResult: {
+      schools: { school: SchoolDBType[] };
+      stops: { stop: StopDBType[] };
+    } = await ServiceUtils.post("/student/import", studentDB);
+    console.log("xano result", xanoResult);
+    setSchools(
+      xanoResult.schools.school.map((school) => SchoolEntity.build(school))
+    );
+    setStops(xanoResult.stops.stop.map((stop) => StopEntity.build(stop)));
   }
 
   export async function getDiff(file: File, csvType: CsvEnum) {

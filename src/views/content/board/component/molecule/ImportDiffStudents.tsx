@@ -146,7 +146,7 @@ async function onClick(
   setDialogToDisplay(DialogToDisplayEnum.none);
   enableSpinningWheel();
 
-  CsvUtils.importStudents(studentDiffFiltered);
+  await CsvUtils.importStudents(studentDiffFiltered);
 
   setCsvType();
   disableSpinningWheel();
