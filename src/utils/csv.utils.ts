@@ -89,12 +89,11 @@ export namespace CsvUtils {
       return await SchoolService.import(diffDBData);
     } else return await StopService.import(diffDBData);
   }
-  // ! Promise<{assoc, schools}>
+
   export async function importStudents(
     studentDiffFiltered: Omit<StudentDiffType, "nbOfLineIgnored">
   ) {
-    console.log("dbdata:", studentDiffFiltered);
-    // ! Format like that =>
+    // TODO: Clean
     type studentDBType = {
       added: { stop_id: number; grade_id: number; quantity: number }[];
       added_with_grade: {
@@ -116,15 +115,14 @@ export namespace CsvUtils {
     const existingGradeNames = GradeUtils.getAll().map((grade) => grade.name);
 
     for (const _added of studentDiffFiltered.added) {
-      // TODO: Fix
-      // case grade already exist
+      // Case grade already exist
       if (existingGradeNames.includes(_added.grade_name)) {
         added.push({
           stop_id: StopUtils.getIdFromName(_added.stop_name),
           grade_id: GradeUtils.getIdFromName(_added.grade_name),
           quantity: _added.quantity,
         });
-        // case new grade
+        // Case new grade
       } else {
         added_with_grade.push({
           stop_id: StopUtils.getIdFromName(_added.stop_name),
@@ -133,9 +131,7 @@ export namespace CsvUtils {
         });
       }
     }
-    // const added_with_grade
 
-    // TODO: Fix
     const new_grades = studentDiffFiltered.newGrades.map((newGrade) => {
       return {
         name: newGrade.gradeName,
@@ -151,9 +147,8 @@ export namespace CsvUtils {
       added_with_grade,
     };
 
-    // TODO: Put in a service file
-    // ! Specify type of xanoResult
     console.log("studentDB", studentDB);
+    // TODO: Put in a "student_to_grade" service file ?
     // const xanoResult = await ServiceUtils.post("/student/import", studentDB);
     // console.log("xano result", xanoResult);
   }
@@ -447,7 +442,6 @@ export type StudentDiffType = {
   added: StudentCsv[];
   modified: StudentModifiedDiff[];
   deleted: number[]; // studentToGrade ids
-  // newGrades: string[]; // gradeNames
   newGrades: { gradeName: string; schoolName: string }[];
   nbOfLineIgnored: number;
 };

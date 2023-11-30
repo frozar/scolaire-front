@@ -26,9 +26,6 @@ export namespace GradeUtils {
 
   // Carefull, here grade name is used as an identifier
   export function getIdFromName(gradeName: string): number {
-    console.log("gradeName", gradeName);
-    console.log("getGrades()", getAll());
-
     return getAll().filter((grade) => grade.name == gradeName)[0].id as number;
   }
 
