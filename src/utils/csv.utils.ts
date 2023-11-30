@@ -95,6 +95,7 @@ export namespace CsvUtils {
     } else return await StopService.import(diffDBData);
   }
 
+  // TODO: Rewrite / refactor
   export async function importStudents(
     studentDiffFiltered: Omit<StudentDiffType, "nbOfLineIgnored">
   ) {
@@ -152,13 +153,11 @@ export namespace CsvUtils {
       added_with_grade,
     };
 
-    console.log("studentDB", studentDB);
     // TODO: Put in a "student_to_grade" service file ?
     const xanoResult: {
       schools: { school: SchoolDBType[] };
       stops: { stop: StopDBType[] };
     } = await ServiceUtils.post("/student/import", studentDB);
-    console.log("xano result", xanoResult);
     setSchools(
       xanoResult.schools.school.map((school) => SchoolEntity.build(school))
     );
