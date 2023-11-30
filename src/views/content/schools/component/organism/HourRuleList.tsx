@@ -6,8 +6,6 @@ import { TimeUtils } from "../../../../../_entities/time.utils";
 import { HourRuleItem } from "./HourRuleItem";
 
 interface HourRuleListProps {
-  // calendar: CalendarType;
-  // hours: HoursType;
   disabled: boolean;
   item: Accessor<SchoolType | GradeType | undefined>;
   setItem: Setter<SchoolType | GradeType>;
