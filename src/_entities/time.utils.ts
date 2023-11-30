@@ -2,7 +2,7 @@ import { HoursDBType, HoursType } from "./_utils.entity";
 import { GradeEntity, HourFormat } from "./grade.entity";
 
 export namespace TimeUtils {
-  function defaultHours(): HoursType {
+  export function defaultHours(): HoursType {
     return {
       id: 0,
       startHourGoing: {
