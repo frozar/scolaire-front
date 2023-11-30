@@ -21,7 +21,9 @@ import {
 import {
   GradeTimesScheduleWrapper,
   bufferHours,
+  useSchoolSchedule,
 } from "./GradeTimesScheduleWrapper";
+import { HourRuleList } from "./HourRuleList";
 import { schoolDetailsItem, setSchoolDetailsItem } from "./SchoolDetails";
 
 export const [selectedGrade, setSelectedGrade] = createSignal<GradeType>();
@@ -101,10 +103,14 @@ export default function () {
           label="Nom de la grade"
           placeholder="Nom de la classe"
         />
-
         <GradeCalendarSelectionWrapper />
         <div class="my-4" />
         <GradeTimesScheduleWrapper />
+        <HourRuleList
+          item={selectedGrade}
+          setItem={setSelectedGrade}
+          disabled={!useSchoolSchedule()}
+        />
       </div>
 
       <BoardFooterActions

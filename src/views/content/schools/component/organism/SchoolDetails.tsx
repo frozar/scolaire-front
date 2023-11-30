@@ -22,6 +22,7 @@ import { changeBoard } from "../../../board/component/template/ContextManager";
 import { calendars } from "../../../calendar/template/Calendar";
 import SchoolDetailsHeader from "../molecule/SchoolDetailsHeader";
 import SchoolDetailsPanelsButton from "../molecule/SchoolDetailsPanelsButton";
+import { setSelectedGrade } from "./GradeBoard";
 import GradeList from "./GradeList";
 import { HourRuleList } from "./HourRuleList";
 import "./SchoolDetails.css";
@@ -49,6 +50,13 @@ export default function () {
   });
 
   function onClickAddGrade() {
+    const grade: GradeType = {
+      name: "Nom par défaut",
+      hours: schoolDetailsItem()?.hours as HoursType,
+      calendar: schoolDetailsItem()?.calendar,
+    };
+
+    setSelectedGrade(grade);
     changeBoard("school-grade-add");
   }
 
@@ -78,7 +86,11 @@ export default function () {
         >
           <SchoolHoursSlots school={schoolDetailsItem() as SchoolType} />
 
-          <HourRuleList hours={schoolDetailsItem()?.hours as HoursType} />
+          <HourRuleList
+            item={schoolDetailsItem}
+            setItem={setSchoolDetailsItem}
+            disabled={schoolDetailEditing()}
+          />
         </CollapsibleElement>
       </div>
 

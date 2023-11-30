@@ -5,11 +5,8 @@ import PlusIcon from "../../../../../icons/PlusIcon";
 import TrashIcon from "../../../../../icons/TrashIcon";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { CalendarUtils } from "../../../calendar/calendar.utils";
-import {
-  schoolDetailEditing,
-  schoolDetailsItem,
-} from "../organism/SchoolDetails";
 
+import { CalendarType } from "../../../../../_entities/calendar.entity";
 import "./HourRuleItemHeader.css";
 
 interface HourRuleItemHeader {
@@ -19,27 +16,30 @@ interface HourRuleItemHeader {
   disabled?: boolean;
   action: "add" | "remove";
   rule: HourRuleType;
+  calendar: CalendarType;
 }
 
 export function HourRuleItemHeader(props: HourRuleItemHeader) {
-  const selectOptions = schoolDetailsItem()?.calendar?.rules.map((item) => {
-    return {
-      text: CalendarUtils.dayToFrench(item.day),
-      value: item.day,
-    };
-  }) as [];
+  // eslint-disable-next-line solid/reactivity
+  const selectOptions = () =>
+    props.calendar?.rules.map((item) => {
+      return {
+        text: CalendarUtils.dayToFrench(item.day),
+        value: item.day,
+      };
+    }) as [];
 
   return (
     <div class="rule-item-header">
       <SelectInput
-        options={selectOptions}
+        options={selectOptions()}
         onChange={props.onChangeDay}
         defaultValue={props.rule.day}
         disabled={props.disabled ?? false}
         defaultOptions="Jour"
       />
 
-      <Show when={schoolDetailEditing()}>
+      <Show when={!props.disabled}>
         <Switch>
           <Match when={props.action == "add"}>
             <ButtonIcon icon={<PlusIcon />} onClick={props.onClickAdd} />

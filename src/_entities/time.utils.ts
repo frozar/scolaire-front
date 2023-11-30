@@ -6,20 +6,20 @@ export namespace TimeUtils {
     return {
       id: 0,
       startHourGoing: {
-        hour: 7,
+        hour: 0,
         minutes: 0,
       },
       startHourComing: {
-        hour: 7,
-        minutes: 30,
+        hour: 0,
+        minutes: 0,
       },
       endHourComing: {
-        hour: 7,
+        hour: 0,
         minutes: 0,
       },
       endHourGoing: {
-        hour: 7,
-        minutes: 30,
+        hour: 0,
+        minutes: 0,
       },
       rules: [],
     };

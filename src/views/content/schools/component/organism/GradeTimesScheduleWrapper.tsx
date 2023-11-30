@@ -10,13 +10,12 @@ import { schoolDetailsItem } from "./SchoolDetails";
 export const [bufferHours, setBufferHours] = createSignal<HoursType>(
   TimeUtils.defaultHours()
 );
+export const [useSchoolSchedule, setUseSchoolSchedule] =
+  createSignal<boolean>(true);
 
 export function GradeTimesScheduleWrapper(): JSXElement {
   const schoolHours = schoolDetailsItem()?.hours as HoursType;
-  const initalGradeHours = selectedGrade()?.hours;
-  const [useSchoolSchedule, setUseSchoolSchedule] = createSignal<boolean>(
-    schoolHours?.id == initalGradeHours?.id
-  );
+  const initalGradeHours = selectedGrade()?.hours ?? TimeUtils.defaultHours();
 
   onMount(() => {
     // * if no hour for the grade set hours of school to grade
@@ -91,7 +90,7 @@ export function GradeTimesScheduleWrapper(): JSXElement {
   return (
     <div>
       <LabeledCheckbox
-        label="Utilisé les horaires école"
+        label="Utiliser les horaires de l'école"
         checked={useSchoolSchedule()}
         onChange={onChangeUseSchoolSchedule}
       />
