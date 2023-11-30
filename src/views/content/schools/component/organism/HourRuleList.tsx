@@ -41,9 +41,7 @@ export function HourRuleList(props: HourRuleListProps) {
             <HourRuleItem
               item={props.item}
               setItem={props.setItem}
-              // calendar={props.calendar}
               rule={item}
-              // hours={props.hours}
               disabled={props.disabled}
               action="remove"
             />
@@ -53,9 +51,7 @@ export function HourRuleList(props: HourRuleListProps) {
           <HourRuleItem
             item={props.item}
             setItem={props.setItem}
-            // calendar={props.calendar}
             rule={bufferRule}
-            // hours={props.hours}
             action="add"
             disabled={props.disabled}
           />
