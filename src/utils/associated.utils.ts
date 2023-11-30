@@ -1,4 +1,5 @@
 import { AssociatedSchoolType } from "../_entities/_utils.entity";
+import { StopType } from "../_entities/stop.entity";
 import { StudentToGradeService } from "../_services/student-to-grade.service";
 import { getStops } from "../views/content/map/component/organism/StopPoints";
 import { stopDetailsItem } from "../views/content/stops/component/organism/StopDetails";
@@ -8,16 +9,20 @@ import { StopUtils } from "./stop.utils";
 
 // Associated data is redundant. When changes both schools.associated and stop.associated must be updated.
 export namespace AssociatedUtils {
-  function get(studentToGradeId: number): AssociatedSchoolType {
+  export function get(studentToGradeId: number): AssociatedSchoolType {
     return getStops()
       .flatMap((stop) => stop.associated)
       .filter((assoc) => assoc.idClassToSchool == studentToGradeId)[0];
   }
 
-  export function getStopName(studentToGradeId: number): string {
+  export function getStop(studentToGradeId: number): StopType {
     return getStops().filter((stop) =>
       stop.associated.some((assoc) => assoc.idClassToSchool == studentToGradeId)
-    )[0].name;
+    )[0];
+  }
+
+  export function getStopName(studentToGradeId: number): string {
+    return getStop(studentToGradeId).name;
   }
 
   export function getGradeName(studentToGradeId: number): string {
@@ -48,6 +53,14 @@ export namespace AssociatedUtils {
     StopUtils.addAssociated(gradeToSchool, stopDetailsItem()?.id as number);
 
     SchoolUtils.addAssociated(gradeToSchool, stopDetailsItem()?.id as number);
+  }
+
+  // Carreful here, grade name is used as an identifier
+  export function getSchoolIdByGradeName(gradeName: string): number {
+    return getStops()
+      .flatMap((stop) => stop.associated)
+      .filter((assoc) => GradeUtils.getName(assoc.gradeId) == gradeName)[0]
+      .schoolId;
   }
 
   export async function update(

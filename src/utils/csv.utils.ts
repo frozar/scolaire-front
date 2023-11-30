@@ -3,7 +3,6 @@ import Papa from "papaparse";
 import { LocationDBType } from "../_entities/_utils.entity";
 import { SchoolDBType, SchoolType } from "../_entities/school.entity";
 import { StopDBType, StopEntity, StopType } from "../_entities/stop.entity";
-import { ServiceUtils } from "../_services/_utils.service";
 import { SchoolService } from "../_services/school.service";
 import { StopService } from "../_services/stop.service";
 import {
@@ -22,6 +21,7 @@ import {
   getStops,
   setStops,
 } from "../views/content/map/component/organism/StopPoints";
+import { AssociatedUtils } from "./associated.utils";
 import { GradeUtils } from "./grade.utils";
 import { SchoolUtils } from "./school.utils";
 import { StopUtils } from "./stop.utils";
@@ -97,16 +97,40 @@ export namespace CsvUtils {
     console.log("dbdata:", studentDiffFiltered);
     // ! Format like that =>
     type studentDBType = {
-      added: { stop_id: number; grade_id: number; quantity: number };
+      added: { stop_id: number; grade_id: number; quantity: number }[];
       modified: StudentModifiedDiff[];
       deleted: number[];
-      new_grades: { name: string; school_id: number };
+      new_grades: { name: string; school_id: number }[];
+    };
+
+    const added = studentDiffFiltered.added.map((_added) => {
+      return {
+        stop_id: AssociatedUtils.getStop(_added.id as number).id,
+        grade_id: AssociatedUtils.get(_added.id as number).gradeId,
+        quantity: _added.quantity,
+      };
+    });
+
+    // TODO: Fix
+    const new_grades = studentDiffFiltered.newGrades.map((gradeName) => {
+      return {
+        name: gradeName,
+        school_id: AssociatedUtils.getSchoolIdByGradeName(gradeName),
+      };
+    });
+
+    const studentDB: studentDBType = {
+      added,
+      modified: studentDiffFiltered.modified,
+      deleted: studentDiffFiltered.deleted,
+      new_grades,
     };
 
     // TODO: Put in a service file
     // ! Specify type of xanoResult
-    const xanoResult = await ServiceUtils.post("/student/import");
-    console.log("xano result", xanoResult);
+    console.log("studentDB", studentDB);
+    // const xanoResult = await ServiceUtils.post("/student/import", studentDB);
+    // console.log("xano result", xanoResult);
   }
 
   export async function getDiff(file: File, csvType: CsvEnum) {
