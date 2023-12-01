@@ -37,6 +37,7 @@ import LabeledInputField from "../molecule/LabeledInputField";
 import SchoolsEnumeration from "../molecule/SchoolsEnumeration";
 import { TripColorPicker } from "../molecule/TripColorPicker";
 import { changeBoard } from "../template/ContextManager";
+import { AssignDaysToTrip } from "./AssignDaysToTrip";
 import { CheckableGradeListBySchool } from "./CheckableGradeListBySchool";
 import CollapsibleElement from "./CollapsibleElement";
 import "./DrawTripBoard.css";
@@ -135,6 +136,12 @@ export function DrawTripBoard() {
             );
           }}
         </For>
+
+        <Show
+          when={drawTripCheckableGrade().filter((item) => item.done).length > 0}
+        >
+          <AssignDaysToTrip />
+        </Show>
       </Show>
 
       <Show when={currentStep() == DrawTripStep.editTrip}>
