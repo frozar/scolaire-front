@@ -1,10 +1,7 @@
-import { BiRegularExport } from "solid-icons/bi";
 import { FaSolidPlus } from "solid-icons/fa";
 
 import { For, createSignal } from "solid-js";
-import { CsvUtils } from "../../../../../utils/csv.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
-import { CsvEnum } from "../../../board/component/molecule/ImportSelection";
 import { getSchools } from "../../../map/component/organism/SchoolPoints";
 import InputSearch from "../molecule/InputSearch";
 import SchoolItem from "../molecule/SchoolItem";
@@ -28,10 +25,6 @@ export default function () {
         <div class="school-board-header">
           <p>{getSchools().length} Établissements</p>
           <ButtonIcon
-            icon={<BiRegularExport class="fill-green-base" />}
-            onClick={exportCsv}
-          />
-          <ButtonIcon
             icon={<FaSolidPlus class="fill-green-base" />}
             onClick={addSchool}
             class="rounded-full"
@@ -52,8 +45,4 @@ export default function () {
       </div>
     </section>
   );
-}
-
-function exportCsv() {
-  CsvUtils.exportCsv(CsvEnum.schools);
 }

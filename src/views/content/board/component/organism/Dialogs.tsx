@@ -4,9 +4,11 @@ import { Dialog } from "../molecule/Dialog";
 import { ImportDiff } from "../molecule/ImportDiff";
 import { ImportDiffStudent } from "../molecule/ImportDiffStudents";
 import { ImportSelection } from "../molecule/ImportSelection";
+import { ExportSelection } from "../molecule/exportSelection";
 
 export enum DialogToDisplayEnum {
   none,
+  exportSelection,
   typeSelection,
   diff,
   studentDiff,
@@ -34,6 +36,12 @@ export function Dialogs() {
         <Match when={dialogToDisplay() == DialogToDisplayEnum.studentDiff}>
           <Dialog>
             <ImportDiffStudent />
+          </Dialog>
+        </Match>
+
+        <Match when={dialogToDisplay() == DialogToDisplayEnum.exportSelection}>
+          <Dialog>
+            <ExportSelection />
           </Dialog>
         </Match>
       </Switch>
