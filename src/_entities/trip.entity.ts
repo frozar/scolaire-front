@@ -52,7 +52,6 @@ export namespace TripEntity {
       selected: false,
       metrics: dbData.metrics,
       startTime: GradeEntity.getHourFormatFromString(dbData.start_time),
-      // daysAndDirection: []
       days: dbData.days,
       tripDirectionId: dbData.trip_direction_id,
     };
