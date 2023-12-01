@@ -1,0 +1,11 @@
+.custom-button {
+  @apply px-6 py-2 flex justify-center rounded-2xl text-xs;
+}
+
+.custom-button.primary.active {
+  @apply bg-green-base text-white;
+}
+
+.custom-button.primary {
+  @apply bg-green-light text-white;
+}

@@ -17,13 +17,15 @@ export type TripDirectionType = {
 };
 
 export namespace TripDirectionEntity {
-  export function findTripById(tripId: number): TripDirectionEnum {
+  export function findTripById(tripId: number): TripDirectionType {
     const index = tripDirections()?.findIndex((item) => item.id == tripId);
-    return tripDirections()[index].type;
+    return tripDirections()[index];
   }
 
-  export function findTripByDirection(direction: TripDirectionEnum): number {
+  export function findTripByDirection(
+    direction: TripDirectionEnum
+  ): TripDirectionType {
     const index = tripDirections().findIndex((item) => item.type == direction);
-    return tripDirections()[index].id;
+    return tripDirections()[index];
   }
 }

@@ -9,6 +9,7 @@ import {
 import {
   TripDirectionEntity,
   TripDirectionEnum,
+  TripDirectionType,
 } from "../../../_entities/trip-direction.entity";
 import { CalendarService } from "../../../_services/calendar.service";
 import { CalendarUtils } from "./calendar.utils";
@@ -29,7 +30,8 @@ export namespace CalendarManager {
   ) {
     const index = calendar.rules.findIndex((item) => item.day == day);
     if (index == -1) return false;
-    const tripDirectionId = TripDirectionEntity.findTripByDirection(direction);
+    const tripDirectionId =
+      TripDirectionEntity.findTripByDirection(direction).id;
 
     setCurrentCalendar((prev) => {
       if (!prev) return prev;
@@ -134,12 +136,16 @@ export namespace CalendarManager {
     const indexof = currentCalendar()?.rules.findIndex(
       (item) => item.day == day
     );
-
+    const item = currentCalendar()?.rules[indexof as number];
     setCurrentCalendar((prev) => {
       if (prev == undefined) return prev;
       const data = { ...prev };
 
-      if (indexof == -1) data.rules.push({ day: day });
+      if (indexof == -1)
+        data.rules.push({
+          day: day,
+          tripDirection: item?.tripDirection as TripDirectionType,
+        });
       else data.rules = data.rules.filter((item) => item.day != day);
       return data;
     });

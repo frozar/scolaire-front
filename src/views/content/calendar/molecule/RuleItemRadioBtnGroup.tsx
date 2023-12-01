@@ -25,7 +25,9 @@ export function RuleItemRadioBtnGroup(props: RuleItemRadioBtnGroupProps) {
     const rule = props.calendar.rules[index];
 
     if (rule && !!rule.tripTypeId) {
-      const tripDirection = TripDirectionEntity.findTripById(rule.tripTypeId);
+      const tripDirection = TripDirectionEntity.findTripById(
+        rule.tripTypeId
+      ).type;
 
       if (!tripDirection) return;
       setDirection(tripDirection);
