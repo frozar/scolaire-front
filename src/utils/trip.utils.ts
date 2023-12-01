@@ -1,4 +1,5 @@
 import { LineType } from "../_entities/line.entity";
+import { TripDirectionEnum } from "../_entities/trip-direction.entity";
 import { getLines } from "../views/content/map/component/organism/BusLines";
 
 export namespace TripUtils {
@@ -43,5 +44,17 @@ export namespace TripUtils {
       totalMinutes < 10 ? "0" + totalMinutes : totalMinutes.toString();
 
     return `${hourStr}:${minutesStr}`;
+  }
+
+  export function tripDirectionTypeTofrench(direction: TripDirectionEnum) {
+    switch (direction) {
+      case TripDirectionEnum.coming:
+        return "Retour";
+      case TripDirectionEnum.going:
+        return "Aller";
+      case TripDirectionEnum.roundTrip:
+        return "Aller/Retour";
+        break;
+    }
   }
 }
