@@ -12,10 +12,11 @@ export function ExportSelectionCheckbox(
     <div class="input-checkbox">
       <div class="flex">
         <input
+          id={"export-checkbox" + props.label}
           type="checkbox"
           onChange={(event) => onChange(props.setter, event.target.checked)}
         />
-        <label>{props.label}</label>
+        <label for={"export-checkbox" + props.label}>{props.label}</label>
       </div>
     </div>
   );
