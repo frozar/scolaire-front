@@ -36,10 +36,13 @@ export function StudentDiffCollapsible(
                   <DiffCheckboxStudent
                     item={item}
                     label={
+                      "De " +
                       item.stop_name +
-                      " | " +
+                      " à " +
+                      item.school_name +
+                      "(" +
                       item.grade_name +
-                      " | " +
+                      "): " +
                       item.quantity
                     }
                     diffType={props.diffType}
