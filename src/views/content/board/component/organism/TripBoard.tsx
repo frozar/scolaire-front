@@ -24,6 +24,7 @@ import {
 } from "./DrawTripBoard";
 import "./TripInformationBoardContent.css";
 import { TripTimeline } from "./TripTimeline";
+import { DisplayTripDaysAndDirection } from "./displayTripDaysAndDirection";
 const [, { setModeDrawTrip }] = useStateAction();
 
 // TODO revoir le code pour setter une const trip
@@ -58,7 +59,7 @@ export function TripBoard() {
       <CollapsibleElement title="Métriques">
         <Metrics trip={selectedTrip()} />
       </CollapsibleElement>
-
+      <DisplayTripDaysAndDirection />
       <CollapsibleElement title="TimeLine" class="timeline-collapsise">
         <TripTimeline
           trip={selectedTrip() ?? TripEntity.defaultTrip()}
