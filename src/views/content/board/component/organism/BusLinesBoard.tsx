@@ -1,5 +1,5 @@
+import { BiRegularExport } from "solid-icons/bi";
 import { createSignal } from "solid-js";
-import { GtfsService } from "../../../../../_services/gtfs.service";
 import PlusIcon from "../../../../../icons/PlusIcon";
 import { displayAddTripMessage } from "../../../../../userInformation/utils";
 import { getLines } from "../../../map/component/organism/BusLines";
@@ -15,6 +15,7 @@ import {
 } from "../template/ContextManager";
 import { AddLineStep, setAddLineCurrentStep } from "./AddLineBoardContent";
 import "./BusLines.css";
+import { DialogToDisplayEnum, setDialogToDisplay } from "./Dialogs";
 import { DrawTripStep, setCurrentStep } from "./DrawTripBoard";
 
 export default function () {
@@ -23,23 +24,6 @@ export default function () {
   // TODO corriger
   // const filteredLines = () =>
   //   getTrips.filter((trip) => trip.name?.includes(searchKeyword()));
-
-  function addLine() {
-    if (onBoard() == "line-add") {
-      toggleDrawMod();
-      setCurrentStep(DrawTripStep.initial);
-    } else {
-      deselectAllPoints();
-      deselectAllTrips();
-
-      // TODO corriger
-      // displayAddLineMessage();
-      changeBoard("line-add");
-      setAddLineCurrentStep(AddLineStep.schoolSelection);
-      toggleDrawMod();
-      displayAddTripMessage();
-    }
-  }
 
   function onInputSearch(key: string) {
     setSearchKeyword(key);
@@ -50,15 +34,19 @@ export default function () {
       <header class="line-board-header">
         <div class="line-board-header-infos">
           <p>Total des lignes: {getLines().length}</p>
-          {/* TODO: Enhance visual */}
-          <a
+          {/* TODO: Delete */}
+          {/* <a
             class="cursor-pointer underline"
             onClick={() => {
               GtfsService.get();
             }}
           >
             Exporter
-          </a>
+          </a> */}
+          <ButtonIcon
+            icon={<BiRegularExport class="fill-green-base" />}
+            onClick={displayExportDialog}
+          />
           <ButtonIcon icon={<PlusIcon />} onClick={addLine} />
         </div>
 
@@ -74,4 +62,25 @@ export default function () {
       />
     </section>
   );
+}
+
+function addLine() {
+  if (onBoard() == "line-add") {
+    toggleDrawMod();
+    setCurrentStep(DrawTripStep.initial);
+  } else {
+    deselectAllPoints();
+    deselectAllTrips();
+
+    // TODO corriger
+    // displayAddLineMessage();
+    changeBoard("line-add");
+    setAddLineCurrentStep(AddLineStep.schoolSelection);
+    toggleDrawMod();
+    displayAddTripMessage();
+  }
+}
+
+function displayExportDialog() {
+  setDialogToDisplay(DialogToDisplayEnum.exportSelection);
 }
