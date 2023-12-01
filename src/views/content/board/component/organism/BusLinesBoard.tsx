@@ -34,15 +34,6 @@ export default function () {
       <header class="line-board-header">
         <div class="line-board-header-infos">
           <p>Total des lignes: {getLines().length}</p>
-          {/* TODO: Delete */}
-          {/* <a
-            class="cursor-pointer underline"
-            onClick={() => {
-              GtfsService.get();
-            }}
-          >
-            Exporter
-          </a> */}
           <ButtonIcon
             icon={<BiRegularExport class="fill-green-base" />}
             onClick={displayExportDialog}

@@ -1,8 +1,9 @@
-import { JSXElement, Setter, createSignal } from "solid-js";
+import { JSXElement, createSignal } from "solid-js";
 import { GtfsService } from "../../../../../_services/gtfs.service";
 import Button from "../../../../../component/atom/Button";
 import { CsvUtils } from "../../../../../utils/csv.utils";
 import { DialogUtils } from "../../../../../utils/dialog.utils";
+import { ExportSelectionCheckbox } from "../atom/exportSelectionCheckbox";
 import { CsvEnum } from "./ImportSelection";
 
 export function ExportSelection(): JSXElement {
@@ -21,53 +22,15 @@ export function ExportSelection(): JSXElement {
   }
 
   return (
-    // TODO: Refactor checkbox component and use everywhere
     <>
       <div id="import-dialog-title">Séléctionner le type d'export :</div>
-
-      <div class="input-checkbox">
-        <div class="flex">
-          <input
-            type="checkbox"
-            onChange={(event) => onChange(setExportGtfs, event.target.checked)}
-          />
-          <label>GTFS</label>
-        </div>
-      </div>
-
-      <div class="input-checkbox">
-        <div class="flex">
-          <input
-            type="checkbox"
-            onChange={(event) =>
-              onChange(setExportSchools, event.target.checked)
-            }
-          />
-          <label>Établissements</label>
-        </div>
-      </div>
-
-      <div class="input-checkbox">
-        <div class="flex">
-          <input
-            type="checkbox"
-            onChange={(event) => onChange(setExportStops, event.target.checked)}
-          />
-          <label>Arrêts</label>
-        </div>
-      </div>
-
-      <div class="input-checkbox">
-        <div class="flex">
-          <input
-            type="checkbox"
-            onChange={(event) =>
-              onChange(setExportStudent, event.target.checked)
-            }
-          />
-          <label>Élèves</label>
-        </div>
-      </div>
+      <ExportSelectionCheckbox label="GTFS" setter={setExportGtfs} />
+      <ExportSelectionCheckbox
+        label="Établissements"
+        setter={setExportSchools}
+      />
+      <ExportSelectionCheckbox label="Arrêts" setter={setExportStops} />
+      <ExportSelectionCheckbox label="Élèves" setter={setExportStudent} />
 
       {/* TODO: Refactor footer dialog content */}
       <div class="import-dialog-buttons">
@@ -91,8 +54,4 @@ export function ExportSelection(): JSXElement {
       </div>
     </>
   );
-}
-
-function onChange(setter: Setter<boolean>, checked: boolean) {
-  setter(checked);
 }

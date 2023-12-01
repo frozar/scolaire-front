@@ -24,10 +24,6 @@ export default function () {
       <header>
         <div class="school-board-header">
           <p>{getSchools().length} Établissements</p>
-          {/* <ButtonIcon
-            icon={<BiRegularExport class="fill-green-base" />}
-            onClick={exportCsv}
-          /> */}
           <ButtonIcon
             icon={<FaSolidPlus class="fill-green-base" />}
             onClick={addSchool}
@@ -50,7 +46,3 @@ export default function () {
     </section>
   );
 }
-// TODO: Delete
-// function exportCsv() {
-//   CsvUtils.exportCsv(CsvEnum.schools);
-// }

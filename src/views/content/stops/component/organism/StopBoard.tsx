@@ -21,10 +21,6 @@ export default function () {
       <header>
         <div class="stop-board-header">
           <p>{getStops().length + " "} Arrêts</p>
-          {/* <ButtonIcon
-            icon={<BiRegularExport class="fill-green-base" />}
-            onClick={exportCsv}
-          /> */}
         </div>
         <InputSearch onInput={onInputSearch} />
       </header>
@@ -37,9 +33,3 @@ export default function () {
     </section>
   );
 }
-// TODO: Delte
-// function exportCsv() {
-//   CsvUtils.exportCsv(CsvEnum.stops);
-//   // TODO: Move
-//   CsvUtils.exportStudentsCsv();
-// }
