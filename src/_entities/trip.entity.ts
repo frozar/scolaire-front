@@ -5,6 +5,7 @@ import { getSchools } from "../views/content/map/component/organism/SchoolPoints
 import { getStops } from "../views/content/map/component/organism/StopPoints";
 import { COLOR_GREEN_BASE } from "../views/content/map/constant";
 import { EntityUtils, LocationPathDBType, PointType } from "./_utils.entity";
+import { CalendarDayEnum } from "./calendar.entity";
 import {
   GradeEntity,
   GradeTripDBType,
@@ -51,6 +52,9 @@ export namespace TripEntity {
       selected: false,
       metrics: dbData.metrics,
       startTime: GradeEntity.getHourFormatFromString(dbData.start_time),
+      // daysAndDirection: []
+      days: dbData.days,
+      tripDirectionId: dbData.trip_direction_id,
     };
   }
 
@@ -69,6 +73,8 @@ export namespace TripEntity {
         hour: 7,
         minutes: 0,
       },
+      days: [],
+      tripDirectionId: 0,
     };
   }
 
@@ -94,6 +100,8 @@ export namespace TripEntity {
         line.waypoints as WaypointType[]
       ),
       start_time: GradeEntity.getStringFromHourFormat(line.startTime),
+      days: line.days,
+      trip_direction_id: line.tripDirectionId,
     };
   }
 
@@ -181,6 +189,8 @@ export type TripType = {
   selected: boolean;
   metrics?: TripMetricType;
   startTime: HourFormat;
+  tripDirectionId: number;
+  days: CalendarDayEnum[];
 };
 
 export type TripPointType = {
@@ -205,6 +215,8 @@ export type TripDBType = {
   metrics: TripMetricType;
   waypoint: WaypointDBType[];
   start_time: string;
+  trip_direction_id: number;
+  days: CalendarDayEnum[];
 };
 
 export type TripPointDBType = {

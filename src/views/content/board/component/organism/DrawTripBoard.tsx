@@ -37,7 +37,10 @@ import LabeledInputField from "../molecule/LabeledInputField";
 import SchoolsEnumeration from "../molecule/SchoolsEnumeration";
 import { TripColorPicker } from "../molecule/TripColorPicker";
 import { changeBoard } from "../template/ContextManager";
-import { AssignDaysToTrip } from "./AssignDaysToTrip";
+import {
+  AssignDaysAndDirectionToTrip,
+  tripDaysAndDirection,
+} from "./AssignDaysAndDirectionToTrip";
 import { CheckableGradeListBySchool } from "./CheckableGradeListBySchool";
 import CollapsibleElement from "./CollapsibleElement";
 import "./DrawTripBoard.css";
@@ -87,6 +90,8 @@ export const [currentDrawTrip, setCurrentDrawTrip] = createSignal<TripType>(
       hour: 7,
       minutes: 0,
     },
+    days: [],
+    tripDirectionId: 0,
   }
 );
 
@@ -140,7 +145,7 @@ export function DrawTripBoard() {
         <Show
           when={drawTripCheckableGrade().filter((item) => item.done).length > 0}
         >
-          <AssignDaysToTrip />
+          <AssignDaysAndDirectionToTrip />
         </Show>
       </Show>
 
@@ -322,11 +327,16 @@ async function nextStep() {
         .filter((grade) => grade.done)
         .map((grade) => grade.item) as GradeType[];
 
+      const days = tripDaysAndDirection()
+        .filter((item) => item.keep)
+        .map((item) => item.day);
+
+      const tripDirectionId = tripDaysAndDirection()[0].tripDirection.id;
+
       setCurrentDrawTrip((trip) => {
         if (!trip) return trip;
-        return { ...trip, grades };
+        return { ...trip, grades, days, tripDirectionId };
       });
-
       setCurrentStep(DrawTripStep.editTrip);
       break;
 

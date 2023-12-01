@@ -178,7 +178,7 @@ export namespace CalendarUtils {
   ): TripDirectionEnum {
     const rule = calendar.rules.find((item) => item.day == day);
     if (!rule?.tripTypeId) return TripDirectionEnum.none;
-    return TripDirectionEntity.findTripById(rule.tripTypeId);
+    return TripDirectionEntity.findTripById(rule.tripTypeId).type;
   }
 
   export function isDateExistInAddedDate(date: Date) {

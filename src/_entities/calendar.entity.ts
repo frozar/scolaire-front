@@ -1,4 +1,5 @@
 import { CalendarUtils } from "../views/content/calendar/calendar.utils";
+import { TripDirectionEnum } from "./trip-direction.entity";
 
 export namespace CalendarEntity {
   export function build(dbCalendar: CalendarDBType): CalendarType {
@@ -19,7 +20,7 @@ export namespace CalendarEntity {
       rules: calendar.rules.map((item) => {
         return {
           day: item.day,
-          trip_type_id: item.tripTypeId,
+          trip_type_id: item.tripTypeId as number,
         };
       }),
       date_added: calendar.added.map((item) => {
@@ -87,6 +88,7 @@ export namespace CalendarEntity {
       return {
         day: item.day,
         tripTypeId: item.trip_type_id,
+        tripDirection: item.trip_direction as TripDirectionType,
       };
     });
   }
@@ -125,13 +127,21 @@ export enum CalendarDayEnum {
   sunday = "sunday",
 }
 
+export type TripDirectionType = {
+  id: number;
+  type: TripDirectionEnum;
+};
+
+// TODO remove tripTypeId repercussion on calendar page select a calendar to edit in the rule section need it.
 export type RulesType = {
   tripTypeId?: number;
+  tripDirection: TripDirectionType;
   day: CalendarDayEnum;
 };
 
 export type RulesDBType = {
-  trip_type_id?: number;
+  trip_type_id: number;
+  trip_direction?: TripDirectionType;
   day: CalendarDayEnum;
 };
 
