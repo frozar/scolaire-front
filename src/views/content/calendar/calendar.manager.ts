@@ -41,12 +41,14 @@ export namespace CalendarManager {
     });
   }
 
-  export function pushCalendar(calendar: CalendarType) {
+  export async function createCalendar(calendar: CalendarType) {
+    const newCalendar = await CalendarService.createCalendar(calendar);
     setCalendars((prev) => {
       if (prev == undefined) return prev;
-      prev = [...prev, calendar];
+      prev = [...prev, newCalendar];
       return prev;
     });
+    setCurrentCalendar(newCalendar);
   }
 
   export async function createCalendarPeriod(
@@ -77,6 +79,30 @@ export namespace CalendarManager {
       datas[index] = _calendarPeriod;
       return datas;
     });
+  }
+
+  export async function deleteCalendar(calendarId: number) {
+    const response = await CalendarService.deleteCalendar(calendarId);
+    if (response) {
+      console.log("before remove calendar of of calendars");
+
+      setCalendars((prev) => {
+        return [...prev.filter((item) => item.id != calendarId)];
+      });
+    }
+    return response;
+  }
+
+  export async function deleteCalendarPeriod(calendarPeriodId: number) {
+    const response = await CalendarService.deleteCalendarPerdio(
+      calendarPeriodId
+    );
+    if (response) {
+      setCalendarsPeriod((prev) => {
+        return [...prev.filter((item) => item.id != calendarPeriodId)];
+      });
+    }
+    return response;
   }
 
   export function appendAddedDate(date: DateAddedType): void {
@@ -145,6 +171,7 @@ export namespace CalendarManager {
         data.rules.push({
           day: day,
           tripDirection: item?.tripDirection as TripDirectionType,
+          tripTypeId: item?.tripTypeId,
         });
       else data.rules = data.rules.filter((item) => item.day != day);
       return data;

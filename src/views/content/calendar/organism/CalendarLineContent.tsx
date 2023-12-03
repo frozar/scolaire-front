@@ -2,6 +2,8 @@ import {
   CalendarPeriodType,
   CalendarType,
 } from "../../../../_entities/calendar.entity";
+import { setRemoveConfirmation } from "../../../../userInformation/RemoveConfirmation";
+import { CalendarManager } from "../calendar.manager";
 import { CalendarLineName } from "../molecule/CalendarLineName";
 import { CalendarMonthsDetails } from "../molecule/CalendarMonthsDetails";
 import {
@@ -22,11 +24,16 @@ interface CalendarLineContentProps {
 
 // * Why calendar? & calendarPeriod? is possible undefine ? to avoid to have multiple relatively same component
 export function CalendarLineContent(props: CalendarLineContentProps) {
-  const calendar = () => props.calendar;
+  const calendarName = () => props.calendar?.name ?? props.calendarPeriod?.name;
+  const isCalendarOrCalendarPeriod = (): "calendar" | "calendarPeriod" => {
+    if (props.calendar) return "calendar";
+    else return "calendarPeriod";
+  };
+
   const calendarPeriod = () => {
     if (props.calendar)
       return calendarsPeriod().find(
-        (item) => item.id == calendar()?.calendarPeriodId
+        (item) => item.id == props.calendar?.calendarPeriodId
       );
     else return props.calendarPeriod;
   };
@@ -41,10 +48,19 @@ export function CalendarLineContent(props: CalendarLineContentProps) {
     else return onCalendarsPeriod()?.id == calendarPeriod()?.id;
   }
 
-  function displayName(): string {
-    if (props.calendar) return props.calendar?.name;
-    else if (props.calendarPeriod) return calendarPeriod()?.name as string;
-    else return "No name";
+  function onClickDeleteCalendar() {
+    setRemoveConfirmation({
+      textToDisplay: "Êtes-vous sûr de vouloir supprimer le calendrier: ",
+      itemName: calendarName() as string,
+      validate: () => {
+        if (isCalendarOrCalendarPeriod() == "calendar")
+          return CalendarManager.deleteCalendar(props.calendar?.id as number);
+        else
+          return CalendarManager.deleteCalendarPeriod(
+            props.calendarPeriod?.id as number
+          );
+      },
+    });
   }
 
   return (
@@ -53,7 +69,10 @@ export function CalendarLineContent(props: CalendarLineContentProps) {
       onClick={onClick}
       classList={{ active: isActiveLine() }}
     >
-      <CalendarLineName name={displayName()} />
+      <CalendarLineName
+        calendarName={calendarName() as string}
+        onClickDeleteCalendar={onClickDeleteCalendar}
+      />
       <CalendarMonthsDetails
         month={props.month}
         calendar={props.calendar}

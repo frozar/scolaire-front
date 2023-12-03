@@ -12,6 +12,51 @@ import { MessageLevelEnum, MessageTypeEnum } from "../../../type";
 import { currentCalendar } from "./template/Calendar";
 
 export namespace CalendarUtils {
+  export function defaultCalendar(): CalendarType {
+    return {
+      id: 0,
+      name: "",
+      rules: [
+        {
+          day: CalendarDayEnum.monday,
+          tripDirection: TripDirectionEntity.findTripByDirection(
+            TripDirectionEnum.roundTrip
+          ),
+          tripTypeId: 1,
+        },
+        {
+          day: CalendarDayEnum.tuesday,
+          tripDirection: TripDirectionEntity.findTripByDirection(
+            TripDirectionEnum.roundTrip
+          ),
+          tripTypeId: 1,
+        },
+        {
+          day: CalendarDayEnum.wednesday,
+          tripDirection: TripDirectionEntity.findTripByDirection(
+            TripDirectionEnum.roundTrip
+          ),
+          tripTypeId: 1,
+        },
+        {
+          day: CalendarDayEnum.thursday,
+          tripDirection: TripDirectionEntity.findTripByDirection(
+            TripDirectionEnum.roundTrip
+          ),
+          tripTypeId: 1,
+        },
+        {
+          day: CalendarDayEnum.friday,
+          tripDirection: TripDirectionEntity.findTripByDirection(
+            TripDirectionEnum.roundTrip
+          ),
+          tripTypeId: 1,
+        },
+      ],
+      added: [],
+      calendarPeriodId: 0,
+    };
+  }
   export function getMonthName(date: Date): string {
     return date.toLocaleString("default", {
       month: "long",

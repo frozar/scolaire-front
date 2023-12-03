@@ -6,6 +6,7 @@ import {
 import { CalendarService } from "../../../../_services/calendar.service";
 import Button from "../../../../component/atom/Button";
 import { LabeledInputSelect } from "../../../../component/molecule/LabeledInputSelect";
+import { disableSpinningWheel, enableSpinningWheel } from "../../../../signaux";
 import { CalendarSectionTitle } from "../atom/CalendarSectionTitle";
 import { CalendarManager } from "../calendar.manager";
 import { CalendarRules } from "../molecule/CalendarRules";
@@ -37,9 +38,11 @@ export function CalendarEdition(props: CalendarEditionProps) {
   });
 
   async function updateCalendar() {
+    enableSpinningWheel();
     CalendarManager.updateCalendar(
       await CalendarService.updateCalendar(props.calendar)
     );
+    disableSpinningWheel();
   }
 
   function onChangeCalendarPeriodSelector(value: number | string) {

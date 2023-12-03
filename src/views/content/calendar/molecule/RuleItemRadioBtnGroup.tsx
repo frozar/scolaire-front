@@ -1,4 +1,4 @@
-import { createSignal, onMount } from "solid-js";
+import { createEffect, createSignal } from "solid-js";
 import {
   CalendarDayEnum,
   CalendarType,
@@ -7,6 +7,7 @@ import {
   TripDirectionEntity,
   TripDirectionEnum,
 } from "../../../../_entities/trip-direction.entity";
+import { RadioButton } from "../../../../component/atom/RadioButton";
 import { CalendarManager } from "../calendar.manager";
 
 interface RuleItemRadioBtnGroupProps {
@@ -16,22 +17,16 @@ interface RuleItemRadioBtnGroupProps {
 }
 
 export function RuleItemRadioBtnGroup(props: RuleItemRadioBtnGroupProps) {
-  const [direction, setDirection] = createSignal<TripDirectionEnum>();
+  const [direction, setDirection] = createSignal<TripDirectionEnum>(
+    TripDirectionEnum.roundTrip
+  );
 
-  onMount(() => {
-    const index = props.calendar.rules.findIndex(
-      (item) => item.day == props.day
-    );
-    const rule = props.calendar.rules[index];
-
-    if (rule && !!rule.tripTypeId) {
-      const tripDirection = TripDirectionEntity.findTripById(
-        rule.tripTypeId
-      ).type;
-
-      if (!tripDirection) return;
-      setDirection(tripDirection);
-    }
+  createEffect(() => {
+    const rule = props.calendar.rules.find((item) => item.day == props.day);
+    const tripDirection = TripDirectionEntity.findTripById(
+      rule?.tripTypeId ?? 1
+    ).type;
+    setDirection(tripDirection);
   });
 
   function onChangeDirectionTrip(event: Event & { target: HTMLInputElement }) {
@@ -45,32 +40,26 @@ export function RuleItemRadioBtnGroup(props: RuleItemRadioBtnGroupProps) {
 
   return (
     <fieldset class="flex flex-col justify-end align-bottom">
-      <input
+      <RadioButton
+        checked={direction() == TripDirectionEnum.roundTrip}
         name={"trip-type-" + props.day}
-        class="my-[5px]"
-        type="radio"
         disabled={!props.isDayChecked}
         onChange={onChangeDirectionTrip}
         value="roundTrip"
-        checked={direction() == TripDirectionEnum.roundTrip}
       />
-      <input
+      <RadioButton
+        checked={direction() == TripDirectionEnum.going}
         name={"trip-type-" + props.day}
-        class="my-[5px]"
-        type="radio"
         disabled={!props.isDayChecked}
         onChange={onChangeDirectionTrip}
         value="going"
-        checked={direction() == TripDirectionEnum.going}
       />
-      <input
+      <RadioButton
+        checked={direction() == TripDirectionEnum.coming}
         name={"trip-type-" + props.day}
-        class="my-[5px]"
-        type="radio"
         disabled={!props.isDayChecked}
         onChange={onChangeDirectionTrip}
         value="coming"
-        checked={direction() == TripDirectionEnum.coming}
       />
     </fieldset>
   );

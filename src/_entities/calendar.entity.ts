@@ -20,7 +20,7 @@ export namespace CalendarEntity {
       rules: calendar.rules.map((item) => {
         return {
           day: item.day,
-          trip_type_id: item.tripTypeId as number,
+          trip_type_id: item.tripTypeId ?? 1,
         };
       }),
       date_added: calendar.added.map((item) => {
