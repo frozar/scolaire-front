@@ -15,6 +15,13 @@ export type xanoUser = {
   email: string;
   picture: string;
   nickname: string;
+  organisation: OrganisationType[];
+};
+
+export type OrganisationType = {
+  organisation_id: number;
+  user_privilege: string;
+  name: string;
 };
 
 export async function logout() {
