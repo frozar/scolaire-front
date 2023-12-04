@@ -4,12 +4,12 @@ import {
   CalendarType,
   DateAddedType,
   PublicHolidayType,
+  RulesType,
   VacationPeriodType,
 } from "../../../_entities/calendar.entity";
 import {
   TripDirectionEntity,
   TripDirectionEnum,
-  TripDirectionType,
 } from "../../../_entities/trip-direction.entity";
 import { CalendarService } from "../../../_services/calendar.service";
 import { CalendarUtils } from "./calendar.utils";
@@ -84,8 +84,6 @@ export namespace CalendarManager {
   export async function deleteCalendar(calendarId: number) {
     const response = await CalendarService.deleteCalendar(calendarId);
     if (response) {
-      console.log("before remove calendar of of calendars");
-
       setCalendars((prev) => {
         return [...prev.filter((item) => item.id != calendarId)];
       });
@@ -158,22 +156,17 @@ export namespace CalendarManager {
     });
   }
 
-  export function updateCalendarRules(day: CalendarDayEnum) {
-    const indexof = currentCalendar()?.rules.findIndex(
-      (item) => item.day == day
+  export function updateCalendarRules(rule: RulesType) {
+    const checkedRule = currentCalendar()?.rules.findIndex(
+      (item) => item.day == rule.day
     );
-    const item = currentCalendar()?.rules[indexof as number];
+
     setCurrentCalendar((prev) => {
       if (prev == undefined) return prev;
       const data = { ...prev };
-
-      if (indexof == -1)
-        data.rules.push({
-          day: day,
-          tripDirection: item?.tripDirection as TripDirectionType,
-          tripTypeId: item?.tripTypeId,
-        });
-      else data.rules = data.rules.filter((item) => item.day != day);
+      // * if rule is not checked so push it else remove it
+      if (checkedRule == -1) data.rules.push(rule);
+      else data.rules = data.rules.filter((item) => item.day != rule.day);
       return data;
     });
   }

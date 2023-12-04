@@ -2,6 +2,7 @@ import { createEffect, createSignal } from "solid-js";
 import {
   CalendarDayEnum,
   CalendarType,
+  RulesType,
 } from "../../../../_entities/calendar.entity";
 import {
   TripDirectionEntity,
@@ -21,12 +22,15 @@ export function RuleItemRadioBtnGroup(props: RuleItemRadioBtnGroupProps) {
     TripDirectionEnum.roundTrip
   );
 
+  const defaultDirection = (rule?: RulesType) =>
+    rule
+      ? TripDirectionEntity.findTripById(rule.tripTypeId as number).type
+      : TripDirectionEntity.findTripByDirection(TripDirectionEnum.roundTrip)
+          .type;
+
   createEffect(() => {
     const rule = props.calendar.rules.find((item) => item.day == props.day);
-    const tripDirection = TripDirectionEntity.findTripById(
-      rule?.tripTypeId ?? 1
-    ).type;
-    setDirection(tripDirection);
+    setDirection(defaultDirection(rule));
   });
 
   function onChangeDirectionTrip(event: Event & { target: HTMLInputElement }) {

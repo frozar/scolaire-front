@@ -2,9 +2,14 @@ import {
   CalendarDayEnum,
   CalendarType,
 } from "../../../../_entities/calendar.entity";
+import {
+  TripDirectionEntity,
+  TripDirectionEnum,
+} from "../../../../_entities/trip-direction.entity";
 import { LabeledCheckbox } from "../../../../component/molecule/LabeledCheckbox";
 import { CalendarManager } from "../calendar.manager";
 import { CalendarUtils } from "../calendar.utils";
+import { calendars } from "../template/Calendar";
 import { RuleItemRadioBtnGroup } from "./RuleItemRadioBtnGroup";
 
 interface CalendarRuleItemProps {
@@ -13,6 +18,25 @@ interface CalendarRuleItemProps {
 }
 
 export function CalendarRuleItem(props: CalendarRuleItemProps) {
+  // eslint-disable-next-line solid/reactivity
+  const initialRule = calendars()
+    // eslint-disable-next-line solid/reactivity
+    .find((item) => item.id == props.calendar.id)
+    // eslint-disable-next-line solid/reactivity
+    ?.rules.find((item) => item.day == props.day);
+
+  const defaultTripdirection = TripDirectionEntity.findTripByDirection(
+    TripDirectionEnum.roundTrip
+  );
+
+  const rule = () =>
+    props.calendar.rules.find((item) => item.day == props.day) ??
+    initialRule ?? {
+      day: props.day,
+      tripDirection: defaultTripdirection,
+      tripTypeId: defaultTripdirection.id,
+    };
+
   const isDayChecked = () =>
     CalendarUtils.isDayInRules(props.day as CalendarDayEnum, props.calendar);
 
@@ -23,7 +47,7 @@ export function CalendarRuleItem(props: CalendarRuleItemProps) {
         label={CalendarUtils.dayToFrench(props.day as CalendarDayEnum)}
         checked={isDayChecked()}
         onChange={() => {
-          CalendarManager.updateCalendarRules(props.day as CalendarDayEnum);
+          CalendarManager.updateCalendarRules(rule());
         }}
       />
       <RuleItemRadioBtnGroup

@@ -13,44 +13,37 @@ import { currentCalendar } from "./template/Calendar";
 
 export namespace CalendarUtils {
   export function defaultCalendar(): CalendarType {
+    const defaultDirection = TripDirectionEntity.findTripByDirection(
+      TripDirectionEnum.roundTrip
+    );
     return {
       id: 0,
       name: "",
       rules: [
         {
           day: CalendarDayEnum.monday,
-          tripDirection: TripDirectionEntity.findTripByDirection(
-            TripDirectionEnum.roundTrip
-          ),
-          tripTypeId: 1,
+          tripDirection: defaultDirection,
+          tripTypeId: defaultDirection.id,
         },
         {
           day: CalendarDayEnum.tuesday,
-          tripDirection: TripDirectionEntity.findTripByDirection(
-            TripDirectionEnum.roundTrip
-          ),
-          tripTypeId: 1,
+          tripDirection: defaultDirection,
+          tripTypeId: defaultDirection.id,
         },
         {
           day: CalendarDayEnum.wednesday,
-          tripDirection: TripDirectionEntity.findTripByDirection(
-            TripDirectionEnum.roundTrip
-          ),
-          tripTypeId: 1,
+          tripDirection: defaultDirection,
+          tripTypeId: defaultDirection.id,
         },
         {
           day: CalendarDayEnum.thursday,
-          tripDirection: TripDirectionEntity.findTripByDirection(
-            TripDirectionEnum.roundTrip
-          ),
-          tripTypeId: 1,
+          tripDirection: defaultDirection,
+          tripTypeId: defaultDirection.id,
         },
         {
           day: CalendarDayEnum.friday,
-          tripDirection: TripDirectionEntity.findTripByDirection(
-            TripDirectionEnum.roundTrip
-          ),
-          tripTypeId: 1,
+          tripDirection: defaultDirection,
+          tripTypeId: defaultDirection.id,
         },
       ],
       added: [],
