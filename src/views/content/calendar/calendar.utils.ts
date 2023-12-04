@@ -15,7 +15,13 @@ export namespace CalendarUtils {
   export function defaultCalendar(): CalendarType {
     const defaultDirection = TripDirectionEntity.findTripByDirection(
       TripDirectionEnum.roundTrip
-    );
+    ) ?? {
+      // * for storybook
+      // TODO in storybook create fixture to get all tripDirection
+      id: 1,
+      type: TripDirectionEnum.roundTrip,
+    };
+
     return {
       id: 0,
       name: "",
