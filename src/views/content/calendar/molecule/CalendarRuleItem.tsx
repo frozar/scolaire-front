@@ -18,6 +18,7 @@ interface CalendarRuleItemProps {
 }
 
 export function CalendarRuleItem(props: CalendarRuleItemProps) {
+  //TODO refactor code
   // eslint-disable-next-line solid/reactivity
   const initialRule = calendars()
     // eslint-disable-next-line solid/reactivity
