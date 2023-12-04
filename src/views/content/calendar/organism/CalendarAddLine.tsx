@@ -1,15 +1,19 @@
 import { createSignal } from "solid-js";
 import { CalendarType } from "../../../../_entities/calendar.entity";
-import { CalendarService } from "../../../../_services/calendar.service";
 import PlusIcon from "../../../../icons/PlusIcon";
 import { CalendarInputText } from "../atom/CalendarInputText";
 import { CalendarMonthsDetails } from "../molecule/CalendarMonthsDetails";
-import { CalendarActionsEnum, setCurrentCalendar } from "../template/Calendar";
+import { CalendarActionsEnum } from "../template/Calendar";
 
-import { addNewUserInformation } from "../../../../signaux";
+import {
+  addNewUserInformation,
+  disableSpinningWheel,
+  enableSpinningWheel,
+} from "../../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../../type";
 import ButtonIcon from "../../board/component/molecule/ButtonIcon";
 import { CalendarManager } from "../calendar.manager";
+import { CalendarUtils } from "../calendar.utils";
 import "./CalendarAddLine.css";
 import "./CalendarLineContent.css";
 
@@ -18,19 +22,12 @@ interface CalendarAddLineProps {
 }
 
 export function CalendarAddLine(props: CalendarAddLineProps) {
+  const newCalendar: CalendarType = CalendarUtils.defaultCalendar();
   const [inputRef, setInputRef] = createSignal<HTMLInputElement>(
     document.createElement("input")
   );
 
-  const newCalendar: CalendarType = {
-    id: 0,
-    name: "",
-    rules: [],
-    added: [],
-    calendarPeriodId: 0,
-  };
-
-  async function createCalendar() {
+  function isValideCalendar() {
     if (newCalendar.name.length == 0) {
       addNewUserInformation({
         displayed: true,
@@ -39,19 +36,23 @@ export function CalendarAddLine(props: CalendarAddLineProps) {
         // eslint-disable-next-line quotes
         content: 'Le champs "nom du calendrier" est requis.',
       });
-      return;
-    }
-    const calendar = await CalendarService.createCalendar(newCalendar);
-    CalendarManager.pushCalendar(calendar);
+      return false;
+    } else return true;
+  }
+
+  async function onClickCreateCalendar() {
+    if (!isValideCalendar()) return;
+    enableSpinningWheel();
+
+    await CalendarManager.createCalendar(newCalendar);
     inputRef().value = "";
-    setCurrentCalendar(calendar);
+
+    disableSpinningWheel();
   }
 
   // TODO keypress
   function onKeyPress(key: string) {
-    if (key == "Enter") {
-      createCalendar();
-    }
+    if (key == "Enter") onClickCreateCalendar();
   }
 
   function onInput(value: string) {
@@ -68,7 +69,10 @@ export function CalendarAddLine(props: CalendarAddLineProps) {
             onInput={onInput}
             ref={setInputRef}
           />
-          <ButtonIcon icon={<PlusIcon size={12} />} onClick={createCalendar} />
+          <ButtonIcon
+            icon={<PlusIcon size={12} />}
+            onClick={onClickCreateCalendar}
+          />
         </div>
         <CalendarMonthsDetails
           action={CalendarActionsEnum.add}

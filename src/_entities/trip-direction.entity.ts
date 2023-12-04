@@ -1,15 +1,28 @@
 import { createSignal } from "solid-js";
 
-export const [tripDirections, setTripDirections] = createSignal<
-  TripDirectionType[]
->([]);
-
 export enum TripDirectionEnum {
   none,
   roundTrip = "roundTrip",
   going = "going",
   coming = "coming",
 }
+
+export const [tripDirections, setTripDirections] = createSignal<
+  TripDirectionType[]
+>([
+  {
+    id: 1,
+    type: TripDirectionEnum.roundTrip,
+  },
+  {
+    id: 2,
+    type: TripDirectionEnum.going,
+  },
+  {
+    id: 3,
+    type: TripDirectionEnum.coming,
+  },
+]);
 
 export type TripDirectionType = {
   id: number;

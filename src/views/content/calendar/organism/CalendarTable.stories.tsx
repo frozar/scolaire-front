@@ -21,7 +21,7 @@ export const CalendarTable: Story = {
       {
         id: 11,
         name: "Mon calendrier",
-        rules: ["monday", "tuesday", "thursday", "friday"],
+        rules: [],
         added: [
           1696104000000, 1696190400000, 1696276800000, 1696363200000,
           1696449600000, 1696536000000, 1696622400000, 1696708800000,

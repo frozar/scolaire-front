@@ -83,12 +83,7 @@ export function Calendar() {
             </Show>
           </Match>
 
-          <Match
-            when={
-              onCalendarPanel() == CalendarPanelEnum.schoolCalendar &&
-              onCalendarsPeriod()
-            }
-          >
+          <Match when={onCalendarPanel() == CalendarPanelEnum.schoolCalendar}>
             <CalendarPeriod
               date={currentMonth()}
               calendarPeriod={onCalendarsPeriod() as CalendarPeriodType}

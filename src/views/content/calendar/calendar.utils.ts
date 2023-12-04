@@ -12,6 +12,45 @@ import { MessageLevelEnum, MessageTypeEnum } from "../../../type";
 import { currentCalendar } from "./template/Calendar";
 
 export namespace CalendarUtils {
+  export function defaultCalendar(): CalendarType {
+    const defaultDirection = TripDirectionEntity.findTripByDirection(
+      TripDirectionEnum.roundTrip
+    );
+
+    return {
+      id: 0,
+      name: "",
+      rules: [
+        {
+          day: CalendarDayEnum.monday,
+          tripDirection: defaultDirection,
+          tripTypeId: defaultDirection.id,
+        },
+        {
+          day: CalendarDayEnum.tuesday,
+          tripDirection: defaultDirection,
+          tripTypeId: defaultDirection.id,
+        },
+        {
+          day: CalendarDayEnum.wednesday,
+          tripDirection: defaultDirection,
+          tripTypeId: defaultDirection.id,
+        },
+        {
+          day: CalendarDayEnum.thursday,
+          tripDirection: defaultDirection,
+          tripTypeId: defaultDirection.id,
+        },
+        {
+          day: CalendarDayEnum.friday,
+          tripDirection: defaultDirection,
+          tripTypeId: defaultDirection.id,
+        },
+      ],
+      added: [],
+      calendarPeriodId: 0,
+    };
+  }
   export function getMonthName(date: Date): string {
     return date.toLocaleString("default", {
       month: "long",

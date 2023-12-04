@@ -55,4 +55,11 @@ export namespace CalendarService {
 
     return CalendarEntity.buildCalendarPeriod(dbCalendarPeriod);
   }
+
+  export async function deleteCalendar(calendarId: number) {
+    return await ServiceUtils.delete("/calendar/" + calendarId);
+  }
+  export async function deleteCalendarPerdio(calendarId: number) {
+    return await ServiceUtils.delete("/calendar-period/" + calendarId);
+  }
 }

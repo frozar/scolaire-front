@@ -1,5 +1,8 @@
 import { CalendarUtils } from "../views/content/calendar/calendar.utils";
-import { TripDirectionEnum } from "./trip-direction.entity";
+import {
+  TripDirectionEntity,
+  TripDirectionEnum,
+} from "./trip-direction.entity";
 
 export namespace CalendarEntity {
   export function build(dbCalendar: CalendarDBType): CalendarType {
@@ -20,7 +23,10 @@ export namespace CalendarEntity {
       rules: calendar.rules.map((item) => {
         return {
           day: item.day,
-          trip_type_id: item.tripTypeId as number,
+          trip_type_id:
+            item.tripTypeId ??
+            TripDirectionEntity.findTripByDirection(TripDirectionEnum.roundTrip)
+              .id,
         };
       }),
       date_added: calendar.added.map((item) => {
