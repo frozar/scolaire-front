@@ -25,8 +25,7 @@ export function RuleItemRadioBtnGroup(props: RuleItemRadioBtnGroupProps) {
   const defaultDirection = (rule?: RulesType) =>
     rule
       ? TripDirectionEntity.findTripById(rule.tripTypeId as number).type
-      : TripDirectionEntity.findTripByDirection(TripDirectionEnum.roundTrip)
-          .type;
+      : TripDirectionEnum.roundTrip;
 
   createEffect(() => {
     const rule = props.calendar.rules.find((item) => item.day == props.day);
