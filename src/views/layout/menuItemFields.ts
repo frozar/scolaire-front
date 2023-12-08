@@ -11,7 +11,7 @@ import {
   onBoard,
 } from "../content/board/component/template/ContextManager";
 
-const [, { setSelectedMenu }] = useStateGui();
+export const [, { setSelectedMenu }] = useStateGui();
 
 const menuItems: MenuItemType[] = [
   {

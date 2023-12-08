@@ -1,44 +1,40 @@
 import { createEffect, createSignal } from "solid-js";
 import { getAuthenticatedUser } from "../../../../../signaux";
-import { OrganisationType } from "../../../../layout/authentication";
+import {
+  OrganisationType,
+  StoredDataTypeEnum,
+  getStoredData,
+  setStoredData,
+} from "../../../../layout/authentication";
+import { setSelectedMenu } from "../../../../layout/menuItemFields";
 import { Selector } from "../molecule/Selector";
+import { changeBoard } from "../template/ContextManager";
 
-const onChange = (
-  res: Event & {
-    currentTarget: HTMLSelectElement;
-    target: HTMLSelectElement;
-  }
-) => {
-  console.log(res);
-  console.log("Value", res.target.value);
-  const organisation = getAuthenticatedUser()!.organisation.filter(
-    (orga) => orga.organisation_id === Number(res.target.value)
-  )[0];
-  setOrganisation(organisation);
+export const DEFAULT_ORGANISATION = {
+  organisation_id: -1,
+  name: "Organisation not found",
+  user_privilege: "none",
 };
 
 export const [getSelectedOrganisation, setSelectedOrganisation] =
-  createSignal<OrganisationType>({
-    organisation_id: -1,
-    name: "Organisation not found",
-    user_privilege: "none",
-  });
+  createSignal<OrganisationType>(
+    getStoredData(StoredDataTypeEnum.organisation) ?? DEFAULT_ORGANISATION
+  );
 
-export function OrganisationSelector(props: any) {
-  //   onMount(() => console.log(getAuthenticatedUser()!.organisation));
-  console.log(getAuthenticatedUser());
+export function OrganisationSelector() {
   createEffect(() => {
-    if (getSelectedOrganisation().organisation_id == -1) {
-      let organisation = window.history.state?.organisation ?? undefined;
-      if (!organisation) {
-        organisation = getAuthenticatedUser()!.organisation[0];
+    if (
+      getSelectedOrganisation().organisation_id ==
+      DEFAULT_ORGANISATION.organisation_id
+    ) {
+      const organisation = getAuthenticatedUser()!.organisation[0];
+      if (organisation) {
+        setOrganisation(organisation);
       }
-      setOrganisation(organisation);
     }
   });
   return (
     <Selector
-      selectorTitle={"Titre"}
       content={getAuthenticatedUser()!.organisation.map((orga) => {
         return { value: orga.organisation_id, name: orga.name };
       })}
@@ -46,30 +42,24 @@ export function OrganisationSelector(props: any) {
       selectedValue={getSelectedOrganisation().organisation_id}
       onChange={onChange}
     />
-    // <select
-    //   name="school-select"
-    //   onChange={(e) => props.onChange(e.target)}
-    //   disabled={props.selector.disabled}
-    //   class="school-selection"
-    // >
-    //   <option value="default">Organisation</option>
-    //   <For each={getAuthenticatedUser()!.organisation}>
-    //     {(organisation) => (
-    //       <option
-    //         selected={
-    //           organisation.organisation_id == Number(props.selector.value)
-    //         }
-    //         value={organisation.organisation_id}
-    //       >
-    //         {organisation.name}
-    //       </option>
-    //     )}
-    //   </For>
-    // </select>
   );
 }
+
+const onChange = (
+  res: Event & {
+    currentTarget: HTMLSelectElement;
+    target: HTMLSelectElement;
+  }
+) => {
+  const organisation = getAuthenticatedUser()!.organisation.filter(
+    (orga) => orga.organisation_id === Number(res.target.value)
+  )[0];
+  setOrganisation(organisation);
+};
+
 function setOrganisation(organisation: OrganisationType) {
-  const user = window.history.state.user;
-  window.history.replaceState({ user, organisation }, document.title, "/");
+  setStoredData({ organisation });
+  changeBoard(undefined);
+  setSelectedMenu("dashboard");
   setSelectedOrganisation(organisation);
 }

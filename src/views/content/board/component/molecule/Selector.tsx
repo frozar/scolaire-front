@@ -1,9 +1,7 @@
-import { For, createSignal } from "solid-js";
-export const [currentOrganisation, setCurrentOrganisation] = createSignal<any>(
-  []
-);
+import { For } from "solid-js";
+import "./Selector.css";
+
 export type SelectorType = {
-  selectorTitle: string;
   content: { value: number; name: string }[];
   disabled: boolean;
   selectedValue: number;
@@ -21,7 +19,7 @@ export function Selector(props: SelectorType) {
       name="select"
       onChange={(e) => props.onChange(e)}
       disabled={props.disabled ?? false}
-      class="selection"
+      class="selector"
     >
       <For each={props.content}>
         {(elem) => (
