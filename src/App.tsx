@@ -28,6 +28,8 @@ const [, { getSelectedMenu }] = useStateGui();
 
 export default () => {
   onMount(async () => {
+    console.log(window.history);
+
     await tryConnection();
   });
 

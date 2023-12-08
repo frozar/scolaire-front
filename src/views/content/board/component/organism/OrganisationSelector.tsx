@@ -11,19 +11,30 @@ const onChange = (
 ) => {
   console.log(res);
   console.log("Value", res.target.value);
-  const selectedOrganisation = getAuthenticatedUser()!.organisation.filter(
+  const organisation = getAuthenticatedUser()!.organisation.filter(
     (orga) => orga.organisation_id === Number(res.target.value)
   )[0];
-  setSelectedOrganisation(selectedOrganisation);
+  setOrganisation(organisation);
 };
 
 export const [getSelectedOrganisation, setSelectedOrganisation] =
-  createSignal<OrganisationType>(getAuthenticatedUser()!.organisation[0]);
+  createSignal<OrganisationType>({
+    organisation_id: -1,
+    name: "Organisation not found",
+    user_privilege: "none",
+  });
 
 export function OrganisationSelector(props: any) {
   //   onMount(() => console.log(getAuthenticatedUser()!.organisation));
+  console.log(getAuthenticatedUser());
   createEffect(() => {
-    console.log(getAuthenticatedUser()!.organisation);
+    if (getSelectedOrganisation().organisation_id == -1) {
+      let organisation = window.history.state?.organisation ?? undefined;
+      if (!organisation) {
+        organisation = getAuthenticatedUser()!.organisation[0];
+      }
+      setOrganisation(organisation);
+    }
   });
   return (
     <Selector
@@ -56,4 +67,9 @@ export function OrganisationSelector(props: any) {
     //   </For>
     // </select>
   );
+}
+function setOrganisation(organisation: OrganisationType) {
+  const user = window.history.state.user;
+  window.history.replaceState({ user, organisation }, document.title, "/");
+  setSelectedOrganisation(organisation);
 }

@@ -1,9 +1,15 @@
 import { MapDBType, MapEntity, MapType } from "../_entities/map.entity";
+import { getSelectedOrganisation } from "../views/content/board/component/organism/OrganisationSelector";
 import { ServiceUtils } from "./_utils.service";
 
 export class MapService {
   static async getAll(): Promise<MapType[]> {
-    const dbMaps: MapDBType[] = await ServiceUtils.get("/map", false);
+    const organisationId = getSelectedOrganisation().organisation_id;
+    if (organisationId == -1) return [];
+    const dbMaps: MapDBType[] = await ServiceUtils.get(
+      "/organisation/" + organisationId + "/map",
+      false
+    );
     return dbMaps
       ? dbMaps.map((dbMap: MapDBType) => {
           return MapEntity.build(dbMap);
