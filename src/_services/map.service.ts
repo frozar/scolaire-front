@@ -18,7 +18,11 @@ export class MapService {
   }
 
   static async create(map: Omit<MapDBType, "id">) {
-    const dbMap: MapDBType = await ServiceUtils.post("/map", map, false);
+    const dbMap: MapDBType = await ServiceUtils.post(
+      "/map",
+      { ...map, organisation_id: getSelectedOrganisation().organisation_id },
+      false
+    );
     return MapEntity.build(dbMap);
   }
 
