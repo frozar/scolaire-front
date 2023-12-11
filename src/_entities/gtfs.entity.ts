@@ -1,4 +1,5 @@
 import { TripUtils } from "../utils/trip.utils";
+import { calendarsPeriod } from "../views/content/calendar/template/Calendar";
 import { getLines } from "../views/content/map/component/organism/BusLines";
 import { getSchools } from "../views/content/map/component/organism/SchoolPoints";
 import { getStops } from "../views/content/map/component/organism/StopPoints";
@@ -60,6 +61,8 @@ type ServiceWindowType = {
   service_window_id: string;
   start_time: string; // start time of the service
   end_time: string; // end time of the service
+  start_date: string;
+  end_date: string;
   monday: number;
   tuesday: number;
   wednesday: number;
@@ -97,25 +100,50 @@ export namespace GtfsEntity {
     // ! Boucler sur toutes les trips pour définir les 'calendriers gtfs' en commun
     const trips = TripUtils.getAll();
     const gtfsCalendars: CalendarDayEnum[][] = [];
+    const serviceWindows: ServiceWindowType[] = [];
     // TODO: Compare also scolar period
-    trips.forEach((trip) => {
+    trips.forEach((trip, i) => {
       if (
         !gtfsCalendars
           .map((_test) => _test.toString())
           .includes(trip.days.toString())
       ) {
         gtfsCalendars.push(trip.days);
+        // ! specify start and end type
+        // TODO: Use correct scolar period, scolar period to check when creating a trip
+        // ! Tester ajouter les valeurs !
+        // ! En cours ! fIX THIS
+        const period = calendarsPeriod().filter(
+          (calendarPeriod) =>
+            calendarPeriod.id == trip.grades[0].calendar?.calendarPeriodId
+        )[0];
+        console.log(calendarsPeriod());
+        console.log("startDate =>", period);
+        serviceWindows.push({
+          service_window_id: String(i),
+          start_time: "TODO",
+          end_time: "TODO",
+          start_date: period.startDate.toDateString(),
+          end_date: period.endDate.toDateString(),
+          monday: trip.days.includes(CalendarDayEnum.monday) ? 1 : 0,
+          tuesday: trip.days.includes(CalendarDayEnum.tuesday) ? 1 : 0,
+          wednesday: trip.days.includes(CalendarDayEnum.wednesday) ? 1 : 0,
+          thursday: trip.days.includes(CalendarDayEnum.thursday) ? 1 : 0,
+          friday: trip.days.includes(CalendarDayEnum.friday) ? 1 : 0,
+          saturday: trip.days.includes(CalendarDayEnum.saturday) ? 1 : 0,
+          sunday: trip.days.includes(CalendarDayEnum.sunday) ? 1 : 0,
+        });
       }
     });
     console.log("gtfsCalendars", gtfsCalendars);
-
-    // TODO: Use correct scolar period, scolar period to check when creating a trip
 
     return [
       {
         service_window_id: "weekday_peak_1",
         start_time: "07:00:00",
         end_time: "09:00:00",
+        start_date: "todo",
+        end_date: "todo",
         monday: 1,
         tuesday: 1,
         wednesday: 1,
@@ -128,6 +156,8 @@ export namespace GtfsEntity {
         service_window_id: "weekend_peak_2",
         start_time: "07:00:00",
         end_time: "09:00:00",
+        start_date: "todo",
+        end_date: "todo",
         monday: 0,
         tuesday: 0,
         wednesday: 0,
