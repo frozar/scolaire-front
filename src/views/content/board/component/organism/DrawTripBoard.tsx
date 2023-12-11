@@ -96,14 +96,11 @@ export const [currentDrawTrip, setCurrentDrawTrip] = createSignal<TripType>(
 );
 
 export const [currentTripIndex, setCurrentTripIndex] = createSignal(0);
-
 export const [isInUpdate, setIsInUpdate] = createSignal(false);
 
 export function DrawTripBoard() {
   onMount(() => {
-    setCurrentDrawTrip(TripEntity.defaultTrip());
-    if (isInUpdate()) {
-    } else {
+    if (!isInUpdate()) {
       setCurrentDrawTrip(TripEntity.defaultTrip());
     }
   });
@@ -225,7 +222,7 @@ export function DrawTripBoard() {
             }
           >
             <TripTimeline
-              trip={currentDrawTrip() as TripType}
+              trip={currentDrawTrip()}
               setTrip={setCurrentDrawTrip}
               inDraw={true}
             />
