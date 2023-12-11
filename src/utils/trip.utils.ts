@@ -1,5 +1,6 @@
 import { LineType } from "../_entities/line.entity";
 import { TripDirectionEnum } from "../_entities/trip-direction.entity";
+import { TripType } from "../_entities/trip.entity";
 import { getLines } from "../views/content/map/component/organism/BusLines";
 
 export namespace TripUtils {
@@ -7,6 +8,10 @@ export namespace TripUtils {
     return getLines()
       .flatMap((line) => line.trips)
       .filter((trip) => trip.id == tripId)[0];
+  }
+
+  export function getAll(): TripType[] {
+    return getLines().flatMap((line) => line.trips);
   }
 
   export function getLine(tripId: number): LineType {
@@ -54,7 +59,6 @@ export namespace TripUtils {
         return "Aller";
       case TripDirectionEnum.roundTrip:
         return "Aller/Retour";
-        break;
     }
   }
 }

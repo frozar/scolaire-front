@@ -2,6 +2,7 @@ import { TripUtils } from "../utils/trip.utils";
 import { getLines } from "../views/content/map/component/organism/BusLines";
 import { getSchools } from "../views/content/map/component/organism/SchoolPoints";
 import { getStops } from "../views/content/map/component/organism/StopPoints";
+import { CalendarDayEnum } from "./calendar.entity";
 
 // Precise GTFS files field definitions :
 // https://gtfs.org/en/schedule/reference/#field-definitions
@@ -91,7 +92,25 @@ export namespace GtfsEntity {
   }
 
   // TODO: Use real data
+  // TODO
   function getServiceWindows(): ServiceWindowType[] {
+    // ! Boucler sur toutes les trips pour définir les 'calendriers gtfs' en commun
+    const trips = TripUtils.getAll();
+    const gtfsCalendars: CalendarDayEnum[][] = [];
+    // TODO: Compare also scolar period
+    trips.forEach((trip) => {
+      if (
+        !gtfsCalendars
+          .map((_test) => _test.toString())
+          .includes(trip.days.toString())
+      ) {
+        gtfsCalendars.push(trip.days);
+      }
+    });
+    console.log("gtfsCalendars", gtfsCalendars);
+
+    // TODO: Use correct scolar period, scolar period to check when creating a trip
+
     return [
       {
         service_window_id: "weekday_peak_1",
@@ -106,7 +125,7 @@ export namespace GtfsEntity {
         sunday: 0,
       },
       {
-        service_window_id: "weekend_peak_1",
+        service_window_id: "weekend_peak_2",
         start_time: "07:00:00",
         end_time: "09:00:00",
         monday: 0,
