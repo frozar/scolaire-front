@@ -15,11 +15,18 @@ export type xanoUser = {
   email: string;
   picture: string;
   nickname: string;
+  organisation: OrganisationType[];
+};
+
+export type OrganisationType = {
+  organisation_id: number;
+  user_privilege: string;
+  name: string;
 };
 
 export async function logout() {
   setAuthenticatedUser(undefined);
-  window.history.replaceState({ user: undefined }, document.title, "/");
+  deleteStoredData();
 }
 
 async function handleAuthenticateUser(e: {
@@ -50,7 +57,7 @@ async function authenticateUser(code: string) {
   if (user) {
     setAuthenticatedUser(user);
     setAuthenticated(true);
-    window.history.replaceState({ user }, document.title, "/");
+    setStoredData({ user });
   }
 }
 
@@ -104,16 +111,29 @@ async function getAuthUrl() {
 export async function tryConnection() {
   let user: xanoUser | undefined = getAuthenticatedUser();
   if (!user) {
-    user = window.history.state?.user ?? undefined;
+    user = getStoredData(StoredDataTypeEnum.user) ?? undefined;
   }
 
   if (user) {
     setAuthenticatedUser(user);
-    setAuthenticated(true);
 
     const res = await ServiceUtils.get("/auth/me", false, true);
+    setAuthenticated(res.isAuthenticated);
 
-    if (!res.isAuthenticated) {
+    if (res.isAuthenticated) {
+      user = {
+        ...user,
+        email: res.user.email,
+        organisation: res.user.organisation,
+        role: res.user.role,
+        name: res.user.name,
+      } as xanoUser;
+      setStoredData({
+        user,
+      });
+      setAuthenticatedUser(user);
+    } else {
+      deleteStoredData();
       setAuthenticatedUser(undefined);
       setAuthenticated(false);
     }
@@ -164,4 +184,44 @@ export function authenticateWrap(
 
     return callback(headers);
   }
+}
+
+//TODO create storedData.utils.ts
+export type StoredDataType = {
+  user?: xanoUser;
+  organisation?: OrganisationType;
+};
+
+export enum StoredDataTypeEnum {
+  user = "User",
+  organisation = "Organisation",
+}
+
+export function setStoredData(history: StoredDataType) {
+  const newUser = history.user ?? getStoredData(StoredDataTypeEnum.user);
+  const newOrganisation =
+    history.organisation ?? getStoredData(StoredDataTypeEnum.organisation);
+  window.history.replaceState(
+    { user: newUser, organisation: newOrganisation },
+    document.title,
+    "/"
+  );
+}
+export function getStoredData(type: StoredDataTypeEnum) {
+  switch (type) {
+    case StoredDataTypeEnum.organisation:
+      return window.history.state?.organisation ?? undefined;
+    case StoredDataTypeEnum.user:
+      return window.history.state?.user ?? undefined;
+    default:
+      return undefined;
+  }
+}
+
+function deleteStoredData() {
+  window.history.replaceState(
+    { user: undefined, organisation: undefined },
+    document.title,
+    "/"
+  );
 }
