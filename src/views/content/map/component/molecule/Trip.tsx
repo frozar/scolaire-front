@@ -37,42 +37,21 @@ import {
 
 export const [draggingTrip, setDraggingTrip] = createSignal<boolean>(false);
 
-export function onClickBusTrip(trip: TripType) {
-  switch (onBoard()) {
-    case "line-details":
-    case "trip-draw":
-      return;
-
-    default:
-      deselectAllTrips();
-      deselectAllPoints();
-
-      // TODO: Factoriser
-      getLines().forEach((line) => line.setSelected(false));
-      getLines().forEach((line) => {
-        if (line.trips.some((_trip) => _trip.id == trip.id)) {
-          line.setSelected(true);
-        }
-      });
-
-      setselectedTrip(trip);
-
-      changeBoard("line-details");
-
-      updatePointColor();
-  }
-}
-
-export function Trip(props: { trip: TripType; map: L.Map }) {
+export function Trip(props: {
+  trip: TripType;
+  map: L.Map;
+  lineColor?: string;
+}) {
   const [localLatLngs, setLocalLatLngs] = createSignal<L.LatLng[]>([]);
   const [localOpacity, setLocalOpacity] = createSignal<number>(1);
+
   createEffect(() => {
     if (
       displayTripMode() == displayTripModeEnum.onRoad ||
       onBoard() != "trip-draw"
     ) {
       setLocalLatLngs(props.trip.latLngs);
-      setLocalOpacity(0.8);
+      setLocalOpacity(0.7);
     } else {
       setLocalLatLngs(getLatLngsFromPoint(props.trip.tripPoints));
       setLocalOpacity(1);
@@ -106,7 +85,7 @@ export function Trip(props: { trip: TripType; map: L.Map }) {
   const onMouseOver = (polyline: L.Polyline, arrows: L.Marker[]) => {
     setIsOverMapItem(true);
     if (onBoard() != "trip-draw") {
-      bustripSetBoldStyle(polyline, arrows, "white");
+      bustripSetBoldStyle(polyline, arrows, props.trip.color);
     }
   };
 
@@ -292,6 +271,32 @@ export function Trip(props: { trip: TripType; map: L.Map }) {
   );
 }
 
+export function onClickBusTrip(trip: TripType) {
+  switch (onBoard()) {
+    case "line-details":
+    case "trip-draw":
+      return;
+
+    default:
+      deselectAllTrips();
+      deselectAllPoints();
+
+      // TODO: Factoriser
+      getLines().forEach((line) => line.setSelected(false));
+      getLines().forEach((line) => {
+        if (line.trips.some((_trip) => _trip.id == trip.id)) {
+          line.setSelected(true);
+        }
+      });
+
+      setselectedTrip(trip);
+
+      changeBoard("line-details");
+
+      updatePointColor();
+  }
+}
+
 function getLatLngsFromPoint(points: TripPointType[]): L.LatLng[] {
   return points.map((point) => L.latLng(point.lat, point.lon));
 }
@@ -315,7 +320,7 @@ export function bustripSetBoldStyle(
 }
 
 function polylineSetBoldStyle(polyline: L.Polyline, color: string) {
-  polyline.setStyle({ color, weight: 8 });
+  polyline.setStyle({ color, weight: 5 });
 }
 
 function polylineSetNormalStyle(polyline: L.Polyline, color: string) {
@@ -323,7 +328,7 @@ function polylineSetNormalStyle(polyline: L.Polyline, color: string) {
 }
 
 function arrowsSetBoldStyle(arrows: L.Marker[], color: string) {
-  arrowApplyStyle(arrows, color, "scale(4,4) ");
+  arrowApplyStyle(arrows, color, "scale(3,3) ");
 }
 
 function arrowsSetNormalStyle(arrows: L.Marker[], color: string) {
