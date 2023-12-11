@@ -13,7 +13,7 @@ import { currentCalendar } from "./template/Calendar";
 
 export namespace CalendarUtils {
   export function defaultCalendar(): CalendarType {
-    const defaultDirection = TripDirectionEntity.findTripByDirection(
+    const defaultDirection = TripDirectionEntity.findDirectionByDirectionName(
       TripDirectionEnum.roundTrip
     );
 
@@ -217,7 +217,7 @@ export namespace CalendarUtils {
   ): TripDirectionEnum {
     const rule = calendar.rules.find((item) => item.day == day);
     if (!rule?.tripTypeId) return TripDirectionEnum.none;
-    return TripDirectionEntity.findTripById(rule.tripTypeId).type;
+    return TripDirectionEntity.FindDirectionById(rule.tripTypeId).type;
   }
 
   export function isDateExistInAddedDate(date: Date) {

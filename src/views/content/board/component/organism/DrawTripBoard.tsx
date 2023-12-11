@@ -7,6 +7,7 @@ import BoardFooterActions from "../molecule/BoardFooterActions";
 import "../../../../../css/timeline.css";
 
 import { GradeEntity, GradeType } from "../../../../../_entities/grade.entity";
+import { TripDirectionEntity } from "../../../../../_entities/trip-direction.entity";
 import { TripEntity, TripType } from "../../../../../_entities/trip.entity";
 import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
 import { TripService } from "../../../../../_services/trip.service";
@@ -39,6 +40,7 @@ import { TripColorPicker } from "../molecule/TripColorPicker";
 import { changeBoard } from "../template/ContextManager";
 import {
   AssignDaysAndDirectionToTrip,
+  onTripDirection,
   tripDaysAndDirection,
 } from "./AssignDaysAndDirectionToTrip";
 import { CheckableGradeListBySchool } from "./CheckableGradeListBySchool";
@@ -96,14 +98,11 @@ export const [currentDrawTrip, setCurrentDrawTrip] = createSignal<TripType>(
 );
 
 export const [currentTripIndex, setCurrentTripIndex] = createSignal(0);
-
 export const [isInUpdate, setIsInUpdate] = createSignal(false);
 
 export function DrawTripBoard() {
   onMount(() => {
-    setCurrentDrawTrip(TripEntity.defaultTrip());
-    if (isInUpdate()) {
-    } else {
+    if (!isInUpdate()) {
       setCurrentDrawTrip(TripEntity.defaultTrip());
     }
   });
@@ -225,7 +224,7 @@ export function DrawTripBoard() {
             }
           >
             <TripTimeline
-              trip={currentDrawTrip() as TripType}
+              trip={currentDrawTrip()}
               setTrip={setCurrentDrawTrip}
               inDraw={true}
             />
@@ -331,7 +330,9 @@ async function nextStep() {
         .filter((item) => item.keep)
         .map((item) => item.day);
 
-      const tripDirectionId = tripDaysAndDirection()[0].tripDirection.id;
+      const tripDirectionId = TripDirectionEntity.findDirectionByDirectionName(
+        onTripDirection()
+      ).id;
 
       setCurrentDrawTrip((trip) => {
         if (!trip) return trip;

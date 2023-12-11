@@ -26,7 +26,7 @@ export function CalendarRuleItem(props: CalendarRuleItemProps) {
     // eslint-disable-next-line solid/reactivity
     ?.rules.find((item) => item.day == props.day);
 
-  const defaultTripdirection = TripDirectionEntity.findTripByDirection(
+  const defaultTripdirection = TripDirectionEntity.findDirectionByDirectionName(
     TripDirectionEnum.roundTrip
   );
 

@@ -25,8 +25,9 @@ export namespace CalendarEntity {
           day: item.day,
           trip_type_id:
             item.tripTypeId ??
-            TripDirectionEntity.findTripByDirection(TripDirectionEnum.roundTrip)
-              .id,
+            TripDirectionEntity.findDirectionByDirectionName(
+              TripDirectionEnum.roundTrip
+            ).id,
         };
       }),
       date_added: calendar.added.map((item) => {

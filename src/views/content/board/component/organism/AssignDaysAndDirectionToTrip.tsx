@@ -22,11 +22,10 @@ export const [tripDaysAndDirection, setTripDaysAndDirection] = createSignal<
   tripDaysAndDirectionType[]
 >([]);
 
-export function AssignDaysAndDirectionToTrip() {
-  const [onDirection, setOnDirection] = createSignal<TripDirectionEnum>(
-    TripDirectionEnum.coming
-  );
+export const [onTripDirection, setOnTripDirection] =
+  createSignal<TripDirectionEnum>(TripDirectionEnum.coming);
 
+export function AssignDaysAndDirectionToTrip() {
   const [commonDay, setCommonDay] = createSignal<tripDaysAndDirectionType[]>(
     []
   );
@@ -52,15 +51,15 @@ export function AssignDaysAndDirectionToTrip() {
     const datas = commonDay()
       .filter((item) => {
         if (
-          item.tripDirection.type == onDirection() ||
+          item.tripDirection.type == onTripDirection() ||
           item.tripDirection.type == TripDirectionEnum.roundTrip
         )
           return item;
       })
       .map((item) => {
         if (item.tripDirection.type == TripDirectionEnum.roundTrip)
-          item.tripDirection = TripDirectionEntity.findTripByDirection(
-            onDirection()
+          item.tripDirection = TripDirectionEntity.findDirectionByDirectionName(
+            onTripDirection()
           );
         return { ...item };
       });
@@ -85,9 +84,9 @@ export function AssignDaysAndDirectionToTrip() {
       <p class="font-bold mb-3">Jours assignées à la course</p>
 
       <TripDirectionsButton
-        onClickComing={() => setOnDirection(TripDirectionEnum.coming)}
-        onClickGoing={() => setOnDirection(TripDirectionEnum.going)}
-        onDirection={onDirection()}
+        onClickComing={() => setOnTripDirection(TripDirectionEnum.coming)}
+        onClickGoing={() => setOnTripDirection(TripDirectionEnum.going)}
+        onDirection={onTripDirection()}
       />
 
       <For each={tripDaysAndDirection()}>

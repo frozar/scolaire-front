@@ -12,8 +12,8 @@ export function DisplayTripDaysAndDirection(): JSXElement {
         <p class="font-bold text-sm">Direction:</p>
         <p class="text-sm">
           {TripUtils.tripDirectionTypeTofrench(
-            TripDirectionEntity.findTripById(
-              selectedTrip()?.tripDirectionId as number
+            TripDirectionEntity.FindDirectionById(
+              selectedTrip()?.tripDirectionId
             ).type
           )}
         </p>
