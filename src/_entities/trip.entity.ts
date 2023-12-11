@@ -157,6 +157,11 @@ export namespace TripEntity {
         grades: line.grades.map((item) => item.id),
       };
     }
+    if (line.days)
+      output = {
+        ...output,
+        days: line.days,
+      };
 
     return output;
   }
