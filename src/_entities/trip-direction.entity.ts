@@ -30,14 +30,16 @@ export type TripDirectionType = {
 };
 
 export namespace TripDirectionEntity {
-  export function findTripById(tripId: number | undefined): TripDirectionType {
+  export function FindDirectionById(
+    tripId: number | undefined
+  ): TripDirectionType {
     const index = tripDirections()?.findIndex(
       (item) => item.id == (!tripId ? 1 : tripId)
     );
     return tripDirections()[index];
   }
 
-  export function findTripByDirection(
+  export function findDirectionByDirectionName(
     direction: TripDirectionEnum
   ): TripDirectionType {
     const index = tripDirections().findIndex((item) => item.type == direction);

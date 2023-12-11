@@ -24,7 +24,7 @@ export function RuleItemRadioBtnGroup(props: RuleItemRadioBtnGroupProps) {
 
   const defaultDirection = (rule?: RulesType) =>
     rule
-      ? TripDirectionEntity.findTripById(rule.tripTypeId as number).type
+      ? TripDirectionEntity.FindDirectionById(rule.tripTypeId as number).type
       : TripDirectionEnum.roundTrip;
 
   createEffect(() => {

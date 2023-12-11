@@ -58,7 +58,7 @@ export function AssignDaysAndDirectionToTrip() {
       })
       .map((item) => {
         if (item.tripDirection.type == TripDirectionEnum.roundTrip)
-          item.tripDirection = TripDirectionEntity.findTripByDirection(
+          item.tripDirection = TripDirectionEntity.findDirectionByDirectionName(
             onTripDirection()
           );
         return { ...item };

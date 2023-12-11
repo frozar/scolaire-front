@@ -31,7 +31,7 @@ export namespace CalendarManager {
     const index = calendar.rules.findIndex((item) => item.day == day);
     if (index == -1) return false;
     const tripDirectionId =
-      TripDirectionEntity.findTripByDirection(direction).id;
+      TripDirectionEntity.findDirectionByDirectionName(direction).id;
 
     setCurrentCalendar((prev) => {
       if (!prev) return prev;

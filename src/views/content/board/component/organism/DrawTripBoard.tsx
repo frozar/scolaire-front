@@ -330,7 +330,7 @@ async function nextStep() {
         .filter((item) => item.keep)
         .map((item) => item.day);
 
-      const tripDirectionId = TripDirectionEntity.findTripByDirection(
+      const tripDirectionId = TripDirectionEntity.findDirectionByDirectionName(
         onTripDirection()
       ).id;
 
