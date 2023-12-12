@@ -59,7 +59,7 @@ export function TripBoard() {
       <CollapsibleElement title="Métriques">
         <Metrics trip={selectedTrip()} />
       </CollapsibleElement>
-      <DisplayTripDaysAndDirection />
+      <DisplayTripDaysAndDirection trip={selectedTrip()} />
       <CollapsibleElement title="TimeLine" class="timeline-collapsise">
         <TripTimeline
           trip={selectedTrip() ?? TripEntity.defaultTrip()}
