@@ -11,11 +11,7 @@ import ConfirmStopAddTrip from "./ConfirmStopAddTripBox";
 
 import "leaflet/dist/leaflet.css";
 import { InitService, InitType } from "../../../_services/init.service";
-import {
-  addNewUserInformation,
-  getAuthenticatedUser,
-  getLeafletMap,
-} from "../../../signaux";
+import { addNewUserInformation, getLeafletMap } from "../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../type";
 import { onBoard } from "../board/component/template/ContextManager";
 import { BusLines } from "./component/organism/BusLines";
@@ -41,7 +37,7 @@ export default function () {
     createSignal(false);
   // eslint-disable-next-line solid/reactivity
   createEffect(async () => {
-    if (getAuthenticatedUser()) setinit(await InitService.getAll());
+    if (getActiveMapId()) setinit(await InitService.getAll());
   });
   onMount(() => {
     // Manage shortcut keyboard event

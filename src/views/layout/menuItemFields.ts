@@ -6,6 +6,7 @@ import EtablissementLogo from "../../icons/EtablissementLogo";
 import GraphicageLogo from "../../icons/GraphicageLogo";
 import { MenuItemType } from "../../type";
 import { MapElementUtils } from "../../utils/mapElement.utils";
+import SettingsIcon from "../content/board/component/atom/SettingsIcon";
 import {
   changeBoard,
   onBoard,
@@ -66,6 +67,7 @@ const menuItems: MenuItemType[] = [
       changeBoard(undefined);
     },
   },
+
   // {
   //   menuItem: "voirie",
   //   Logo: VoirieLogo,
@@ -93,6 +95,20 @@ const menuItems: MenuItemType[] = [
   //     console.log("Support");
   //   },
   // },
+];
+
+export const adminItems: MenuItemType[] = [
+  {
+    menuItem: "parametres",
+    Logo: SettingsIcon,
+    label: "Paramètres",
+    isDisabled: false,
+    onClick: () => {
+      console.log("parametres");
+      setSelectedMenu("parametres");
+      changeBoard(undefined);
+    },
+  },
 ];
 
 export default menuItems;

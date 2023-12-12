@@ -23,6 +23,7 @@ import "./App.css";
 import UnloggedUserInformation from "./component/molecule/UnloggedUserInformation";
 import UserInstruction from "./component/molecule/UserInstruction";
 import { Dialogs } from "./views/content/board/component/organism/Dialogs";
+import { Parameter } from "./views/content/calendar/template/Parameters";
 
 const [, { getSelectedMenu }] = useStateGui();
 
@@ -58,7 +59,16 @@ export default () => {
                 <Calendar />
               </Match>
 
-              <Match when={getSelectedMenu() != "dashboard"}>
+              <Match when={getSelectedMenu() == "parametres"}>
+                <Parameter />
+              </Match>
+
+              <Match
+                when={
+                  getSelectedMenu() != "dashboard" ||
+                  getSelectedMenu() != "parametres"
+                }
+              >
                 <Map />
                 <ContextManager />
               </Match>

@@ -4,8 +4,9 @@ import { useStateGui } from "../../../../StateGui";
 import { SelectedMenuType } from "../../../../type";
 
 import { getAuthenticatedUser } from "../../../../signaux";
+import { getSelectedOrganisation } from "../../../content/board/component/organism/OrganisationSelector";
 import { onBoard } from "../../../content/board/component/template/ContextManager";
-import menuItems from "../../menuItemFields";
+import menuItems, { adminItems } from "../../menuItemFields";
 import LeftMenuItem from "../molecule/LeftMenuItem";
 
 const [, { getActiveMapId, setSelectedMenu, getSelectedMenu }] = useStateGui();
@@ -58,7 +59,7 @@ export default function (props: LeftMenuItemProps) {
 
   return (
     <ul>
-      <For each={menuItems}>
+      <For each={getItems()}>
         {(menuItemArg) => {
           const { label, menuItem, Logo, isDisabled } = menuItemArg;
 
@@ -67,6 +68,7 @@ export default function (props: LeftMenuItemProps) {
               isDisabled ||
               (!isDisabled &&
                 menuItem != "dashboard" &&
+                menuItem != "parametres" &&
                 getAuthenticatedUser() != undefined &&
                 getActiveMapId() == null)
             );
@@ -90,4 +92,14 @@ export default function (props: LeftMenuItemProps) {
       </For>
     </ul>
   );
+}
+function getItems():
+  | false
+  | import("/home/flexible/wk/flaxib/scolaire/front/src/type").MenuItemType[]
+  | null
+  | undefined {
+  console.log("getSelectedOrganisation()", getSelectedOrganisation());
+  return getSelectedOrganisation().user_privilege === "member"
+    ? menuItems
+    : menuItems.concat(adminItems);
 }
