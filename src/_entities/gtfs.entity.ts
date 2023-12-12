@@ -103,7 +103,7 @@ export namespace GtfsEntity {
     trips.forEach((trip, i) => {
       if (
         !gtfsCalendars
-          .map((_test) => _test.toString())
+          .map((calendar) => calendar.toString())
           .includes(trip.days.toString())
       ) {
         gtfsCalendars.push(trip.days);
