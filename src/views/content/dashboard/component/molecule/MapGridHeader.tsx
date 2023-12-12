@@ -21,7 +21,6 @@ export default function (props: MapGridHeaderProps) {
   );
 }
 function testDisable(): boolean | undefined {
-  console.log("getSelectedOrganisation()", getSelectedOrganisation());
   return (
     getSelectedOrganisation().organisation_id === null ||
     getSelectedOrganisation().organisation_id < 1
