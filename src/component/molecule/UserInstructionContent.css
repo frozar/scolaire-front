@@ -3,13 +3,17 @@
 }
 
 #instruction-box {
-  @apply flex items-center justify-center bg-green-light rounded-lg;
+  @apply flex items-center justify-center  rounded-lg;
 
   outline: 1px solid;
   transition: all var(--animation-duration) cubic-bezier(0.19, 1, 0.22, 1);
   animation: draw-attention var(--animation-duration);
   animation-iteration-count: infinite;
 }
+
+.alerte{@apply bg-red-700}
+
+.information{@apply bg-green-light}
 
 @keyframes draw-attention {
   from {

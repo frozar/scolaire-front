@@ -2,7 +2,9 @@ import { useStateGui } from "../../StateGui";
 import { getAuthenticatedUser } from "../../signaux";
 import UserInstructionContainer from "./UserInstructionContainer";
 import "./UserInstructionContainer.css";
-import UserInstructionContent from "./UserInstructionContent";
+import UserInstructionContent, {
+  InstructionEnum,
+} from "./UserInstructionContent";
 
 const [, { getActiveMapId, getSelectedMenu }] = useStateGui();
 
@@ -17,7 +19,23 @@ export default function () {
 
   return (
     <UserInstructionContainer show={toShow()}>
-      <UserInstructionContent message="Veuillez sélectionner une carte par double clique svp" />
+      {messageToDisplay()}
     </UserInstructionContainer>
+  );
+}
+function messageToDisplay() {
+  if (getAuthenticatedUser()?.organisation.length === 0) {
+    return (
+      <UserInstructionContent
+        message="Aucune organisation associée à ce compte. "
+        type={InstructionEnum.alert}
+      />
+    );
+  }
+  return (
+    <UserInstructionContent
+      message="Veuillez sélectionner une carte par double clique svp"
+      type={InstructionEnum.information}
+    />
   );
 }

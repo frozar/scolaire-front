@@ -36,6 +36,8 @@ export function OrganisationSelector() {
       const organisation = getAuthenticatedUser()!.organisation[0];
       if (organisation) {
         setOrganisation(organisation);
+      } else {
+        setOrganisation(DEFAULT_ORGANISATION);
       }
     }
   });

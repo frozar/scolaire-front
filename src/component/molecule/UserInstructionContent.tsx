@@ -2,13 +2,19 @@ import "./UserInstructionContent.css";
 
 interface UserInstructionContentProps {
   message: string;
+  type: InstructionEnum;
+}
+
+export enum InstructionEnum {
+  information = "Information",
+  alert = "Alerte",
 }
 
 export default function (props: UserInstructionContentProps) {
   return (
     <div
       id="instruction-box"
-      class="flex items-center justify-center bg-green-light rounded-lg"
+      class={props.type === InstructionEnum.alert ? "alerte" : "information"}
     >
       <span class="text-xl p-4">{props.message}</span>
     </div>
