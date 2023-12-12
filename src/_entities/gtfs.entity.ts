@@ -1,5 +1,6 @@
 import { GtfsUtils } from "../utils/gtfs.utils";
 import { TripUtils } from "../utils/trip.utils";
+import { CalendarUtils } from "../views/content/calendar/calendar.utils";
 import { calendarsPeriod } from "../views/content/calendar/template/Calendar";
 import { getLines } from "../views/content/map/component/organism/BusLines";
 import { getSchools } from "../views/content/map/component/organism/SchoolPoints";
@@ -145,6 +146,7 @@ export namespace GtfsEntity {
         const period = calendarsPeriod().filter(
           (calendarPeriod) => calendarPeriod.id == calendarPeriodId
         )[0];
+
         // TODO: Use real values for start_time and end_time ?
         // TODO: Find a way to not use "weekday_peak_" ?
         // TODO: Gérer le service_id içi pour éviter la désynchro
@@ -164,18 +166,47 @@ export namespace GtfsEntity {
         });
 
         // ! Calendar dates
-        // ! Jours ajoutés AVANT AJOUT jours fériés et vacances !!!
-        const calendar = getSchools()
+        // ! Jours ajoutés AVANT ajout jours fériés et vacances !!!
+        const gradeIds = trip.grades.map((grade) => grade.id as number);
+        let calendarIds = getSchools()
           .flatMap((school) => school.grades)
-          .filter((grade) => grade.id == gradeId)[0].calendar as CalendarType;
-        const addedDates = calendar.added;
-        for (const addedDate of addedDates) {
-          calendarDates.push({
-            service_id: serviceId,
-            date: GtfsUtils.formatDate(new Date(addedDate.date)),
-            exception_type: 1,
-          });
+          .filter((_grade) => gradeIds.includes(_grade.id as number))
+          .map((grade) => grade.calendar)
+          .map((calendar) => (calendar as CalendarType).id);
+
+        calendarIds = Array.from(new Set(calendarIds));
+        console.log("calendarIds", calendarIds);
+        for (const calendarId of calendarIds) {
+          const calendar = CalendarUtils.getById(calendarId as number);
+          const addedDates = calendar.added;
+          for (const addedDate of addedDates) {
+            const newExceptionDate = {
+              service_id: serviceId,
+              date: GtfsUtils.formatDate(new Date(addedDate.date)),
+              exception_type: 1,
+            };
+            if (
+              !GtfsUtils.isDateExceptionAlreadyAdded(
+                newExceptionDate,
+                calendarDates
+              )
+            ) {
+              calendarDates.push(newExceptionDate);
+            }
+          }
         }
+        // const calendar = getSchools()
+        //   .flatMap((school) => school.grades)
+        //   .filter((grade) => grade.id == gradeId)[0].calendar as CalendarType;
+        // const addedDates = calendar.added;
+        // for (const addedDate of addedDates) {
+        //   calendarDates.push({
+        //     service_id: serviceId,
+        //     date: GtfsUtils.formatDate(new Date(addedDate.date)),
+        //     exception_type: 1,
+        //   });
+        // }
+        // TODO: Only add exception if it's common to all concerned calendars
         // ! Vacances
         for (const vacationPeriod of period.vacationsPeriod) {
           const diffDays =
@@ -197,6 +228,7 @@ export namespace GtfsEntity {
             }
           }
         }
+        // TODO: Only add exception if it's common to all concerned calendars
         // ! Jours fériés
         for (const publicHoliday of period.publicHolidays) {
           const newExceptionDate = {
