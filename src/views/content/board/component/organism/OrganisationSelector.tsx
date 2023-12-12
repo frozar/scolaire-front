@@ -1,4 +1,5 @@
 import { createEffect, createSignal } from "solid-js";
+import { useStateGui } from "../../../../../StateGui";
 import { getAuthenticatedUser } from "../../../../../signaux";
 import {
   OrganisationType,
@@ -9,6 +10,7 @@ import {
 import { setSelectedMenu } from "../../../../layout/menuItemFields";
 import { Selector } from "../molecule/Selector";
 import { changeBoard } from "../template/ContextManager";
+const [, { resetState }] = useStateGui();
 
 export const DEFAULT_ORGANISATION = {
   organisation_id: -1,
@@ -23,13 +25,19 @@ export const [getSelectedOrganisation, setSelectedOrganisation] =
 
 export function OrganisationSelector() {
   createEffect(() => {
+    const currentId = getSelectedOrganisation().organisation_id;
     if (
+      !getAuthenticatedUser()!
+        .organisation.flatMap((orga) => orga.organisation_id)
+        .includes(currentId) ||
       getSelectedOrganisation().organisation_id ==
-      DEFAULT_ORGANISATION.organisation_id
+        DEFAULT_ORGANISATION.organisation_id
     ) {
       const organisation = getAuthenticatedUser()!.organisation[0];
       if (organisation) {
         setOrganisation(organisation);
+      } else {
+        setOrganisation(DEFAULT_ORGANISATION);
       }
     }
   });
@@ -54,6 +62,7 @@ const onChange = (
   const organisation = getAuthenticatedUser()!.organisation.filter(
     (orga) => orga.organisation_id === Number(res.target.value)
   )[0];
+
   setOrganisation(organisation);
 };
 
@@ -62,4 +71,5 @@ function setOrganisation(organisation: OrganisationType) {
   changeBoard(undefined);
   setSelectedMenu("dashboard");
   setSelectedOrganisation(organisation);
+  resetState();
 }

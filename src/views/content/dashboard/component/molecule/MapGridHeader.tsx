@@ -1,5 +1,6 @@
 import Button from "../../../../../component/atom/Button";
 import PageTitle from "../../../../../component/atom/PageTitle";
+import { getSelectedOrganisation } from "../../../board/component/organism/OrganisationSelector";
 
 import "./MapGridHeader.css";
 
@@ -13,8 +14,15 @@ export default function (props: MapGridHeaderProps) {
       <PageTitle title="Tableau de bord" />
       <Button
         onClick={() => props.openCreateMapModal()}
+        isDisabled={testDisable()}
         label="Nouvelle carte"
       />
     </div>
+  );
+}
+function testDisable(): boolean | undefined {
+  return (
+    getSelectedOrganisation().organisation_id === null ||
+    getSelectedOrganisation().organisation_id < 1
   );
 }
