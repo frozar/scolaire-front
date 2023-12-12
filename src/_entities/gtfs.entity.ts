@@ -73,32 +73,50 @@ type ServiceWindowType = {
   sunday: number;
 };
 
+type CalendarDatesType = {
+  service_id: string;
+  date: string;
+  exception_type: number;
+};
+
 export type MgDataType = {
   stops: StopMgType[];
   shapes: ShapeType;
   frequencies: FrequencyType[];
   meta: MetaType[];
   service_windows: ServiceWindowType[];
+  calendar_dates: CalendarDatesType[];
 };
 
 export namespace GtfsEntity {
   export function formatData(): MgDataType {
     const shapes = formatShapes();
     const frequencies = formatFrequencies(shapes);
+    const { serviceWindows, calendarDates } =
+      getServiceWindowsAndCalendarDates();
 
     return {
       stops: formatStops(),
       shapes,
       frequencies,
       meta: getMetaData(),
-      service_windows: getServiceWindows(),
+      // service_windows: getServiceWindows(),
+      service_windows: serviceWindows,
+      // calendar_dates: calendarDates,
     };
   }
-
-  function getServiceWindows(): ServiceWindowType[] {
+  // TODO: Also return calendarDates
+  // TODO: Refactor
+  function getServiceWindowsAndCalendarDates(): {
+    serviceWindows: ServiceWindowType[];
+    calendarDates: CalendarDatesType[];
+  } {
     const trips = TripUtils.getAll();
     const gtfsCalendars: CalendarDayEnum[][] = [];
     const serviceWindows: ServiceWindowType[] = [];
+    const calendarDates: CalendarDatesType[] = [];
+
+    let serviceId = 0;
 
     trips.forEach((trip, i) => {
       if (
@@ -106,6 +124,7 @@ export namespace GtfsEntity {
           .map((calendar) => calendar.toString())
           .includes(trip.days.toString())
       ) {
+        serviceId += 1;
         gtfsCalendars.push(trip.days);
 
         // TODO: What to do if grades has different scolar period ?
@@ -118,8 +137,9 @@ export namespace GtfsEntity {
         )[0];
         // TODO: Use real values for start_time and end_time ?
         // TODO: Find a way to not use "weekday_peak_" ?
+        // TODO: Gérer le service_id içi pour éviter la désynchro
         serviceWindows.push({
-          service_window_id: "weekday_peak_" + String(i),
+          service_window_id: "weekday_peak_" + String(i), // ! do not use this i but serviceId
           start_time: "07:00:00",
           end_time: "09:00:00",
           start_date: GtfsUtils.formatDate(period.startDate),
@@ -132,9 +152,24 @@ export namespace GtfsEntity {
           saturday: trip.days.includes(CalendarDayEnum.saturday) ? 1 : 0,
           sunday: trip.days.includes(CalendarDayEnum.sunday) ? 1 : 0,
         });
+
+        // ! Calendar dates
+        // ! Vacance // ! pas oublier if (vacances)
+        for (const vacationPeriod of period.vacationsPeriod) {
+          const diffDays =
+            vacationPeriod.end.getDate() - vacationPeriod.start.getDate();
+          for (let dayToAdd = 0; dayToAdd < diffDays; dayToAdd++) {
+            calendarDates.push({
+              service_id: serviceId,
+              date: GtfsUtils.formatDate(),
+            });
+          }
+        }
+        // ! Jours fériés
+        // ! Jours ajoutés
       }
     });
-    return serviceWindows;
+    return { serviceWindows, calendarDates };
   }
 
   // TODO: Use the correct transit agency information
