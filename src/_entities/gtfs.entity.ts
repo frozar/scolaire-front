@@ -1,3 +1,4 @@
+import { GtfsUtils } from "../utils/gtfs.utils";
 import { TripUtils } from "../utils/trip.utils";
 import { calendarsPeriod } from "../views/content/calendar/template/Calendar";
 import { getLines } from "../views/content/map/component/organism/BusLines";
@@ -94,14 +95,11 @@ export namespace GtfsEntity {
     };
   }
 
-  // TODO: Use real data
-  // TODO
   function getServiceWindows(): ServiceWindowType[] {
-    // ! Boucler sur toutes les trips pour définir les 'calendriers gtfs' en commun
     const trips = TripUtils.getAll();
     const gtfsCalendars: CalendarDayEnum[][] = [];
     const serviceWindows: ServiceWindowType[] = [];
-    // TODO: Compare also scolar period
+
     trips.forEach((trip, i) => {
       if (
         !gtfsCalendars
@@ -109,9 +107,8 @@ export namespace GtfsEntity {
           .includes(trip.days.toString())
       ) {
         gtfsCalendars.push(trip.days);
-        // ! specify start and end type
-        // TODO: Use correct scolar period, scolar period to check when creating a trip
-        // ! Tester ajouter les valeurs !
+
+        // TODO: What to do if grades has different scolar period ?
         const gradeId = trip.grades[0].id;
         const calendarPeriodId = getSchools()
           .flatMap((school) => school.grades)
@@ -119,41 +116,14 @@ export namespace GtfsEntity {
         const period = calendarsPeriod().filter(
           (calendarPeriod) => calendarPeriod.id == calendarPeriodId
         )[0];
-        console.log("period", period);
-
-        // const period = calendarsPeriod().filter(
-        //   (calendarPeriod) =>
-        //     calendarPeriod.id == trip.grades[0].calendar?.calendarPeriodId
-        // )[0];
-        // console.log("trips", trips);
-        // console.log(calendarsPeriod());
-        // ! no grades has a calendar linked to it !
-        // console.log(trip.grades[0].calendar?.calendarPeriodId);
-        // console.log(getSchools());
-        // console.log("startDate =>", period);
-        function formatDate(date: Date): string {
-          const day = date.getDate();
-          const formatedDay =
-            String(day).length == 1 ? "0" + String(day) : String(day);
-
-          const month = date.getMonth() + 1;
-          const formatedMonth =
-            String(month).length == 1 ? "0" + String(month) : String(month);
-
-          const formatedDate =
-            String(date.getFullYear()) + formatedMonth + formatedDay;
-          console.log("formatedDate", formatedDate);
-          return formatedDate;
-        }
-        // TODO: Use real values for start_time and end_time
+        // TODO: Use real values for start_time and end_time ?
         // TODO: Find a way to not use "weekday_peak_" ?
-        // ! est-ce que un calendrier est "liée" à un seul horraire ?
         serviceWindows.push({
           service_window_id: "weekday_peak_" + String(i),
           start_time: "07:00:00",
           end_time: "09:00:00",
-          start_date: formatDate(period.startDate),
-          end_date: formatDate(period.endDate),
+          start_date: GtfsUtils.formatDate(period.startDate),
+          end_date: GtfsUtils.formatDate(period.endDate),
           monday: trip.days.includes(CalendarDayEnum.monday) ? 1 : 0,
           tuesday: trip.days.includes(CalendarDayEnum.tuesday) ? 1 : 0,
           wednesday: trip.days.includes(CalendarDayEnum.wednesday) ? 1 : 0,
@@ -164,69 +134,7 @@ export namespace GtfsEntity {
         });
       }
     });
-    console.log("gtfsCalendars", gtfsCalendars);
-    console.log("serviceWindows", serviceWindows);
-    // return [
-    //   {
-    //     service_window_id: "0",
-    //     start_time: "TODO",
-    //     end_time: "TODO",
-    //     start_date: "Sun Dec 03 2023",
-    //     end_date: "Sat Dec 30 2023",
-    //     monday: 1,
-    //     tuesday: 1,
-    //     wednesday: 0,
-    //     thursday: 0,
-    //     friday: 0,
-    //     saturday: 0,
-    //     sunday: 0,
-    //   },
-    //   {
-    //     service_window_id: "1",
-    //     start_time: "TODO",
-    //     end_time: "TODO",
-    //     start_date: "Sun Dec 03 2023",
-    //     end_date: "Sat Dec 30 2023",
-    //     monday: 0,
-    //     tuesday: 0,
-    //     wednesday: 0,
-    //     thursday: 0,
-    //     friday: 1,
-    //     saturday: 0,
-    //     sunday: 0,
-    //   },
-    // ];
     return serviceWindows;
-    // return [
-    //   {
-    //     service_window_id: "weekday_peak_1",
-    //     start_time: "07:00:00",
-    //     end_time: "09:00:00",
-    //     start_date: "todo",
-    //     end_date: "todo",
-    //     monday: 1,
-    //     tuesday: 1,
-    //     wednesday: 1,
-    //     thursday: 1,
-    //     friday: 1,
-    //     saturday: 0,
-    //     sunday: 0,
-    //   },
-    //   {
-    //     service_window_id: "weekend_peak_2",
-    //     start_time: "07:00:00",
-    //     end_time: "09:00:00",
-    //     start_date: "todo",
-    //     end_date: "todo",
-    //     monday: 0,
-    //     tuesday: 0,
-    //     wednesday: 0,
-    //     thursday: 0,
-    //     friday: 0,
-    //     saturday: 1,
-    //     sunday: 1,
-    //   },
-    // ];
   }
 
   // TODO: Use the correct transit agency information
