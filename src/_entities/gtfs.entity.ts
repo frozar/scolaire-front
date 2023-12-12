@@ -4,7 +4,7 @@ import { calendarsPeriod } from "../views/content/calendar/template/Calendar";
 import { getLines } from "../views/content/map/component/organism/BusLines";
 import { getSchools } from "../views/content/map/component/organism/SchoolPoints";
 import { getStops } from "../views/content/map/component/organism/StopPoints";
-import { CalendarDayEnum } from "./calendar.entity";
+import { CalendarDayEnum, CalendarType } from "./calendar.entity";
 
 // Precise GTFS files field definitions :
 // https://gtfs.org/en/schedule/reference/#field-definitions
@@ -73,8 +73,8 @@ type ServiceWindowType = {
   sunday: number;
 };
 
-type CalendarDatesType = {
-  service_id: string;
+export type CalendarDatesType = {
+  service_id: number;
   date: string;
   exception_type: number;
 };
@@ -102,7 +102,7 @@ export namespace GtfsEntity {
       meta: getMetaData(),
       // service_windows: getServiceWindows(),
       service_windows: serviceWindows,
-      // calendar_dates: calendarDates,
+      calendar_dates: calendarDates,
     };
   }
   // TODO: Also return calendarDates
@@ -117,7 +117,17 @@ export namespace GtfsEntity {
     const calendarDates: CalendarDatesType[] = [];
 
     let serviceId = 0;
+    // TODO: Specify => what to do when:
+    // ! - for the same trip, there is different calendar periods
+    // ! - for the same trip, there is different date exception
 
+    // TODO: Exception date is also to check because a gtfs calendar is directly linked with
+    // ! it's exception (calendar_dates) ?
+    // ! une course est liée à plusieurs calendriers donc potentiellement à pls exception
+    // ! hors le calendrier liée à une course n'a qu'une seule "liste" d'exception
+    // ! => pour calendar dates: faire un "merge" des exceptions
+    // ! ex: garder systematiquement les jours ajoutés
+    // ! et garder les jours enlevé que si enlevé pour tout les calendriers concerné
     trips.forEach((trip, i) => {
       if (
         !gtfsCalendars
@@ -154,21 +164,58 @@ export namespace GtfsEntity {
         });
 
         // ! Calendar dates
-        // ! Vacance // ! pas oublier if (vacances)
+        // ! Jours ajoutés AVANT AJOUT jours fériés et vacances !!!
+        const calendar = getSchools()
+          .flatMap((school) => school.grades)
+          .filter((grade) => grade.id == gradeId)[0].calendar as CalendarType;
+        const addedDates = calendar.added;
+        for (const addedDate of addedDates) {
+          calendarDates.push({
+            service_id: serviceId,
+            date: GtfsUtils.formatDate(new Date(addedDate.date)),
+            exception_type: 1,
+          });
+        }
+        // ! Vacances
         for (const vacationPeriod of period.vacationsPeriod) {
           const diffDays =
             vacationPeriod.end.getDate() - vacationPeriod.start.getDate();
-          for (let dayToAdd = 0; dayToAdd < diffDays; dayToAdd++) {
-            calendarDates.push({
+
+          for (let dayToAdd = 0; dayToAdd < diffDays + 1; dayToAdd++) {
+            const newExceptionDate = {
               service_id: serviceId,
-              date: GtfsUtils.formatDate(),
-            });
+              date: GtfsUtils.addDays(vacationPeriod.start, dayToAdd),
+              exception_type: 2,
+            };
+            if (
+              !GtfsUtils.isDateExceptionAlreadyAdded(
+                newExceptionDate,
+                calendarDates
+              )
+            ) {
+              calendarDates.push(newExceptionDate);
+            }
           }
         }
         // ! Jours fériés
-        // ! Jours ajoutés
+        for (const publicHoliday of period.publicHolidays) {
+          const newExceptionDate = {
+            service_id: serviceId,
+            date: GtfsUtils.formatDate(publicHoliday.date),
+            exception_type: 2,
+          };
+          if (
+            !GtfsUtils.isDateExceptionAlreadyAdded(
+              newExceptionDate,
+              calendarDates
+            )
+          ) {
+            calendarDates.push(newExceptionDate);
+          }
+        }
       }
     });
+    console.log("calendarDates", calendarDates);
     return { serviceWindows, calendarDates };
   }
 
