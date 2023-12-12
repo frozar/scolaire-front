@@ -86,23 +86,29 @@ export function TripTimelineItem(props: {
     else return SumQuantity(props.trip.tripPoints, props.indice - 1) * -1;
   }
 
-  function getToDropQuantity() {
-    const tripTotalQuantity = getTripTotalQuantities(props.trip.tripPoints);
-    let bufferTotal = tripTotalQuantity - getTotalDropped();
+  function getTotalDropped(points: TripPointType[], indice: number) {
+    let total = 0;
+    points.every((item, index) => {
+      if (index < indice) {
+        total += item.grades.reduce(
+          (total, grade) => total + grade.quantity,
+          0
+        );
+        return true;
+      } else return false;
+    });
+    return total;
+  }
 
-    function getTotalDropped() {
-      let total = 0;
-      props.trip.tripPoints.every((item, index) => {
-        if (index < props.indice) {
-          total += item.grades.reduce(
-            (total, grade) => total + grade.quantity,
-            0
-          );
-          return true;
-        } else return false;
-      });
-      return total;
-    }
+  function getToDropQuantity() {
+    const points = getSplitedTripPointsAtFirstSchoolPosition(
+      props.trip.tripPoints
+    );
+    const tripTotalQuantity = getTripTotalQuantities(points);
+    const indice = points.findIndex(
+      (item) => item.id == props.trip.tripPoints[props.indice].id
+    );
+    let bufferTotal = tripTotalQuantity - getTotalDropped(points, indice);
 
     if (props.tripPoint.nature === NatureEnum.stop) {
       const result = bufferTotal - quantity();
@@ -117,6 +123,16 @@ export function TripTimelineItem(props: {
     if (appendQuantity) {
       return getToAppendQuantity();
     } else {
+      if (!haveSchoolBefore(props.trip.tripPoints, props.indice)) {
+        if (props.tripPoint.nature == NatureEnum.school) {
+          const slicedTripPoint = getSplitedTripPointsAtFirstSchoolPosition(
+            props.trip.tripPoints
+          );
+          return "+" + getTripTotalQuantities(slicedTripPoint);
+        }
+        return "--";
+      }
+
       return getToDropQuantity();
     }
   }
@@ -218,23 +234,47 @@ function SumQuantity(tripPoints: TripPointType[], indice: number) {
   return sum;
 }
 
+/*
+ * Here first i check if the indexed points is after a school, if not exit & set his Quantity to 0
+ * then I recover the tripoint table cut so as to recover only the points which are after a school
+ * then i get the total quantity of the trip
+ * then if the point is school set his quantity to the total quantity
+ * else calcul the remaining quantity to drop for the indexed stop
+ **/
 function DropQuantity(
   tripPoints: TripPointType[],
   indice: number,
   setQuantity: Setter<number>
 ) {
-  let tripTotalQuantities = getTripTotalQuantities(tripPoints);
+  if (
+    !haveSchoolBefore(tripPoints, indice) &&
+    tripPoints[indice].nature != NatureEnum.school
+  ) {
+    return setQuantity(0);
+  }
 
-  switch (tripPoints[indice].nature) {
+  // * Get splitted array
+  const slicedTripPoint = getSplitedTripPointsAtFirstSchoolPosition(tripPoints);
+
+  // * Redefine the indice compared to the new table
+  indice = slicedTripPoint.findIndex(
+    (item) => item.id == tripPoints[indice].id
+  );
+
+  let tripTotalQuantities = getTripTotalQuantities(slicedTripPoint);
+
+  switch (slicedTripPoint[indice].nature) {
     case NatureEnum.school:
       setQuantity(tripTotalQuantities);
       break;
     case NatureEnum.stop:
-      const trippoints = [...tripPoints];
-      trippoints.every((item, index) => {
+      // * For each point before the current point add these quantities if they has a school before them
+      slicedTripPoint.every((item, index) => {
         if (index > indice) return false;
-        else {
-          tripTotalQuantities -= trippoints[index].grades.reduce(
+        if (!haveSchoolBefore(slicedTripPoint, indice)) {
+          return false;
+        } else {
+          tripTotalQuantities -= item.grades.reduce(
             (total, item) => total + item.quantity,
             0
           );
@@ -248,12 +288,20 @@ function DropQuantity(
   return tripTotalQuantities;
 }
 
+function haveSchoolBefore(tripPoints: TripPointType[], indice: number) {
+  if (indice == 0 && tripPoints[indice].nature == NatureEnum.stop) {
+    return false;
+  }
+  const sliced = tripPoints.slice(0, indice);
+  return sliced.some((item) => item.nature == NatureEnum.school);
+}
+
 function getTripTotalQuantities(tripPoints: TripPointType[]) {
   let tripTotalQuantities = 0;
 
   //* For each stops add each grade quantity to SchoolStartQuantity
-  tripPoints.forEach((points) => {
-    if (points.nature == NatureEnum.stop)
+  tripPoints.forEach((points, index) => {
+    if (points.nature == NatureEnum.stop && haveSchoolBefore(tripPoints, index))
       tripTotalQuantities += points.grades.reduce(
         (total, item) => total + item.quantity,
         0
@@ -261,4 +309,17 @@ function getTripTotalQuantities(tripPoints: TripPointType[]) {
   });
 
   return tripTotalQuantities;
+}
+
+function getIndexOfFirstSchool(tripPoints: TripPointType[]) {
+  return tripPoints.findIndex((item) => item.nature == NatureEnum.school);
+}
+
+function getSplitedTripPointsAtFirstSchoolPosition(
+  tripPoints: TripPointType[]
+) {
+  return [...tripPoints].slice(
+    getIndexOfFirstSchool(tripPoints),
+    tripPoints.length
+  );
 }
