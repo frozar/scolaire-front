@@ -174,6 +174,15 @@ const makeStateGuiContext = () => {
     setState("displayedInformationBoard", displayed);
   }
 
+  function resetState() {
+    localStorage.stateGui = JSON.stringify(state);
+    setState("activeMapId", null);
+    setState("displayedInformationBoard", false);
+    setState("displayedLeftMenu", false);
+    setState("nextLeafletPointId", 0);
+    setState("selectedMenu", "dashboard");
+  }
+
   return [
     state,
     {
@@ -195,6 +204,7 @@ const makeStateGuiContext = () => {
       toggleDisplayedInformationBoard,
       setDisplayedInformationBoard,
       nextLeafletPointId,
+      resetState,
     },
   ] as const;
 };
