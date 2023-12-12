@@ -14,7 +14,7 @@ export default function (props: UserInstructionContentProps) {
   return (
     <div
       id="instruction-box"
-      class={props.type === InstructionEnum.alert ? "alerte" : "information"}
+      class={props.type === InstructionEnum.alert ? "alert" : "information"}
     >
       <span class="text-xl p-4">{props.message}</span>
     </div>
