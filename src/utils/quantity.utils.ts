@@ -3,7 +3,39 @@ import { GradeTripType } from "../_entities/grade.entity";
 import { StopType } from "../_entities/stop.entity";
 import { getLines } from "../views/content/map/component/organism/BusLines";
 
+export type MatrixContentType = {
+  going: { quantity: number };
+  coming: { quantity: number };
+};
+
+export type QuantityMatrixType = {
+  monday: MatrixContentType;
+  tuesday: MatrixContentType;
+  wednesday: MatrixContentType;
+  thursday: MatrixContentType;
+  friday: MatrixContentType;
+  saturday: MatrixContentType;
+  sunday: MatrixContentType;
+};
+
 export namespace QuantityUtils {
+  export function baseQuantityMatrix(defaultQuantity = 0): QuantityMatrixType {
+    const content = {
+      going: { quantity: defaultQuantity },
+      coming: { quantity: defaultQuantity },
+    };
+
+    return {
+      monday: { ...content },
+      tuesday: { ...content },
+      wednesday: { ...content },
+      thursday: { ...content },
+      friday: { ...content },
+      saturday: { ...content },
+      sunday: { ...content },
+    };
+  }
+
   // TODO: Empêcher la création de plusieurs student to school ayant le même gradeId sur un même stop depuis le board "stop-details"
   export function remainingStudentToGradeQuantity(
     point: AssociatedSchoolType,

@@ -1,4 +1,5 @@
 import _ from "lodash";
+import { QuantityMatrixType, QuantityUtils } from "../utils/quantity.utils";
 import { getSchoolWhereClassId } from "../views/content/map/component/organism/SchoolPoints";
 import { CalendarDayEnum } from "./calendar.entity";
 import { HourFormat } from "./grade.entity";
@@ -49,6 +50,7 @@ export class EntityUtils {
         idClassToSchool: item.id,
         gradeId: item.grade_id,
         quantity: item.quantity,
+        quantityMatrix: QuantityUtils.baseQuantityMatrix(item.quantity),
       };
     });
   }
@@ -75,6 +77,8 @@ export type AssociatedSchoolType = {
   schoolId: number;
   quantity: number;
   gradeId: number;
+  // TODO lucas: remove maybe undefine "?"
+  quantityMatrix?: QuantityMatrixType;
 };
 
 export type AssociatedStopType = {

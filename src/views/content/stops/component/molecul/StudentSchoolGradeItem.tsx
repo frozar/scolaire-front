@@ -6,12 +6,14 @@ import PencilIcon from "../../../../../icons/PencilIcon";
 import TrashIcon from "../../../../../icons/TrashIcon";
 import { AssociatedUtils } from "../../../../../utils/associated.utils";
 import { GradeUtils } from "../../../../../utils/grade.utils";
-import { QuantityUtils } from "../../../../../utils/quantity.utils";
+import { QuantityMatrixType } from "../../../../../utils/quantity.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
-import { stopDetailsItem } from "../organism/StopDetails";
+import CollapsibleElement from "../../../board/component/organism/CollapsibleElement";
+import { QuantityTable } from "../organism/QuantityTable";
 import EditStudentSchoolGradeItem from "./EditStudentSchoolGradeItem";
 import "./StudentSchoolGradeItem.css";
 
+// TODO move to organism
 export default function (props: { school: AssociatedSchoolType }) {
   const [editingMode, setEditingMode] = createSignal(false);
 
@@ -38,13 +40,14 @@ export default function (props: { school: AssociatedSchoolType }) {
           <CardTitle title={GradeUtils.getName(props.school.gradeId)} />
           <p class="school-list-item-quantity">
             {/* TODO: Lucas fix remaining with new type */}
-            {QuantityUtils.remainingStudentToGradeQuantity(
-              props.school,
-              stopDetailsItem()?.id as number
-            ) +
-              " élèves restants sur " +
-              props.school.quantity}
+            {"Total d'élèves: " + props.school.quantity}
           </p>
+
+          <CollapsibleElement title="Quantités restantes">
+            <QuantityTable
+              matrix={props.school.quantityMatrix as QuantityMatrixType}
+            />
+          </CollapsibleElement>
         </div>
 
         <div class="school-list-item-actions">
