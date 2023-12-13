@@ -1,5 +1,6 @@
 import L from "leaflet";
 import { NatureEnum } from "../type";
+import { QuantityUtils } from "../utils/quantity.utils";
 import { getLines } from "../views/content/map/component/organism/BusLines";
 import { getSchools } from "../views/content/map/component/organism/SchoolPoints";
 import { getStops } from "../views/content/map/component/organism/StopPoints";
@@ -14,6 +15,10 @@ import {
   HourFormat,
 } from "./grade.entity";
 import { SchoolType } from "./school.entity";
+import {
+  TripDirectionEntity,
+  TripDirectionEnum,
+} from "./trip-direction.entity";
 import {
   WaypointDBType,
   WaypointEntity,
@@ -44,7 +49,11 @@ export namespace TripEntity {
         dbData.grades != undefined
           ? dbData.grades.map((grade) => GradeEntity.build(grade))
           : [],
-      tripPoints: formatTripPointType(dbData.trip_stop),
+      tripPoints: formatTripPointType(
+        dbData.trip_stop,
+        dbData.days,
+        TripDirectionEntity.FindDirectionById(dbData.trip_direction_id).type
+      ),
       waypoints: WaypointEntity.formatWaypointType(dbData.waypoint),
       latLngs: dbData.polyline
         ? dbData.polyline.data.map((item) => L.latLng(item.lat, item.lng))
@@ -264,7 +273,11 @@ function formatTripPointDBType(points: TripPointType[]): TripPointDBType[] {
  * @param points
  * @returns
  */
-function formatTripPointType(points: TripPointDBType[]): TripPointType[] {
+function formatTripPointType(
+  points: TripPointDBType[],
+  days: CalendarDayEnum[],
+  tripDirection: TripDirectionEnum
+): TripPointType[] {
   //TODO Investigate the problem during switching between map [old comment to investigate]
   return points
     .map((dbPoint) => {
@@ -279,7 +292,15 @@ function formatTripPointType(points: TripPointDBType[]): TripPointType[] {
           nature: associatedPoint.nature,
           passageTime: dbPoint.passage_time,
           grades: dbPoint.grades.map((grade) => {
-            return { gradeId: grade.grade_id, quantity: grade.quantity };
+            return {
+              gradeId: grade.grade_id,
+              quantity: grade.quantity,
+              matrix: QuantityUtils.buildQuantityMatrix(
+                days,
+                grade.quantity,
+                tripDirection
+              ),
+            };
           }),
         };
       } else {

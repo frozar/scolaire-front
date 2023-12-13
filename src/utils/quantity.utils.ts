@@ -1,11 +1,17 @@
 import { AssociatedSchoolType } from "../_entities/_utils.entity";
+import { CalendarDayEnum } from "../_entities/calendar.entity";
 import { GradeTripType } from "../_entities/grade.entity";
 import { StopType } from "../_entities/stop.entity";
+import {
+  TripDirectionEntity,
+  TripDirectionEnum,
+} from "../_entities/trip-direction.entity";
+import { NatureEnum } from "../type";
 import { getLines } from "../views/content/map/component/organism/BusLines";
 
 export type MatrixContentType = {
-  going: { quantity: number };
-  coming: { quantity: number };
+  goingQty: number;
+  comingQty: number;
 };
 
 export type QuantityMatrixType = {
@@ -21,8 +27,8 @@ export type QuantityMatrixType = {
 export namespace QuantityUtils {
   export function baseQuantityMatrix(defaultQuantity = 0): QuantityMatrixType {
     const content = {
-      going: { quantity: defaultQuantity },
-      coming: { quantity: defaultQuantity },
+      goingQty: defaultQuantity,
+      comingQty: defaultQuantity,
     };
 
     return {
@@ -34,6 +40,76 @@ export namespace QuantityUtils {
       saturday: { ...content },
       sunday: { ...content },
     };
+  }
+
+  export function buildQuantityMatrix(
+    days: CalendarDayEnum[],
+    quantity: number,
+    direction: TripDirectionEnum
+  ) {
+    const matrix: Partial<QuantityMatrixType> = {};
+    Object.values(CalendarDayEnum).map((item) => {
+      matrix[item] = { goingQty: 0, comingQty: 0 };
+    });
+
+    days.forEach((day) => {
+      let out: { comingQty: number; goingQty: number };
+
+      switch (direction) {
+        case TripDirectionEnum.roundTrip:
+          out = { comingQty: quantity, goingQty: quantity };
+          break;
+        case TripDirectionEnum.going:
+          out = { comingQty: 0, goingQty: quantity };
+          break;
+        case TripDirectionEnum.coming:
+          out = { comingQty: quantity, goingQty: 0 };
+          break;
+        default:
+          out = { comingQty: 0, goingQty: 0 };
+          break;
+      }
+      matrix[day] = out;
+    });
+
+    return matrix;
+  }
+
+  // * Possible inutile
+  export function getUsedQuantityInTripsToUpdateStopQtyMatrix() {
+    const gradeToUpdateOfStop: {
+      stopId: number;
+      gradeId: number;
+      direction: TripDirectionEnum;
+      quantity: number;
+      days: CalendarDayEnum[];
+    }[] = [];
+
+    const trips = getLines().flatMap((line) => line.trips);
+
+    trips.forEach((trip) => {
+      const direction = TripDirectionEntity.FindDirectionById(
+        trip.tripDirectionId
+      ).type;
+
+      const stops = trip.tripPoints.filter(
+        (item) => item.nature == NatureEnum.stop
+      );
+
+      stops.map((stop) => {
+        stop.grades.map((grade) => {
+          gradeToUpdateOfStop.push({
+            direction,
+            gradeId: grade.gradeId,
+            quantity: grade.quantity,
+            stopId: stop.id,
+            days: trip.days,
+          });
+        });
+      });
+    });
+
+    return gradeToUpdateOfStop;
   }
 
   // TODO: Empêcher la création de plusieurs student to school ayant le même gradeId sur un même stop depuis le board "stop-details"
