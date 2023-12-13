@@ -37,10 +37,6 @@ export const toggleDrawMod = () => setIsDrawMod((bool) => !bool);
 export const [onBoard, setOnBoard] = createSignal<BoardTags>(undefined);
 export const changeBoard = (boardName: BoardTags) => setOnBoard(boardName);
 
-// if (getActiveMapId()) {
-//   changeBoard("line");
-// }
-
 export default function () {
   createEffect(() => {
     if (isInDrawMod()) {

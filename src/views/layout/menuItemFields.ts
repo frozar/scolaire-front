@@ -31,11 +31,7 @@ const menuItems: MenuItemType[] = [
     isDisabled: false,
     onClick: () => {
       if (onBoard() != "trip-draw") {
-        console.log("in if bis");
-        console.log("onBoard before =>", onBoard());
-
         changeBoard("line");
-        console.log("onBoard =>", onBoard());
         MapElementUtils.deselectAllPointsAndBusTrips();
       }
     },

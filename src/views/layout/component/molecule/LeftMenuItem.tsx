@@ -28,10 +28,7 @@ export default function (props: LeftMenuItemProps) {
         disable: mergedProps.isDisabled,
       }}
       onClick={() => {
-        console.log("onClick out if");
-
         if (!mergedProps.isDisabled) {
-          console.log("onClick in if");
           mergedProps.onClick();
         }
       }}
