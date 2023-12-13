@@ -162,6 +162,12 @@ export namespace TripEntity {
         ...output,
         days: line.days,
       };
+    if (line.tripDirectionId) {
+      output = {
+        ...output,
+        trip_direction_id: line.tripDirectionId,
+      };
+    }
 
     return output;
   }
