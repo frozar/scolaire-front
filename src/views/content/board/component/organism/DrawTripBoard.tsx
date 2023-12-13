@@ -48,6 +48,7 @@ import CollapsibleElement from "./CollapsibleElement";
 import "./DrawTripBoard.css";
 import Metrics from "./Metrics";
 import { TripTimeline } from "./TripTimeline";
+import { DisplayTripDaysAndDirection } from "./displayTripDaysAndDirection";
 
 export enum DrawTripStep {
   initial,
@@ -162,6 +163,7 @@ export function DrawTripBoard() {
         <CollapsibleElement title="Métriques">
           <Metrics trip={currentDrawTrip()} />
         </CollapsibleElement>
+        <DisplayTripDaysAndDirection trip={currentDrawTrip()} />
         <LabeledInputField
           label="Nom de la course"
           value={currentDrawTrip()?.name ?? ""}
