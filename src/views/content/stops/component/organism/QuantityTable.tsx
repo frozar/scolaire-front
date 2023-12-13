@@ -1,16 +1,16 @@
 import { For } from "solid-js";
 import { CalendarDayEnum } from "../../../../../_entities/calendar.entity";
-import { QuantityMatriceType } from "../../../../../utils/quantity.utils";
+import { QuantityMatrixType } from "../../../../../utils/quantity.utils";
 import { CalendarUtils } from "../../../calendar/calendar.utils";
 
 // TODO refacto
-export function QuantityTable(props: { matrice: QuantityMatriceType }) {
+export function QuantityTable(props: { matrix: QuantityMatrixType }) {
   const goingQuantity = (day: CalendarDayEnum) => {
-    return props.matrice[day].going.quantity;
+    return props.matrix[day].going.quantity;
   };
 
   const comingQuantity = (day: CalendarDayEnum) => {
-    return props.matrice[day].coming.quantity;
+    return props.matrix[day].coming.quantity;
   };
 
   return (

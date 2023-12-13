@@ -3,25 +3,23 @@ import { GradeTripType } from "../_entities/grade.entity";
 import { StopType } from "../_entities/stop.entity";
 import { getLines } from "../views/content/map/component/organism/BusLines";
 
-export type MatriceContentType = {
+export type MatrixContentType = {
   going: { quantity: number };
   coming: { quantity: number };
 };
 
-export type QuantityMatriceType = {
-  monday: MatriceContentType;
-  tuesday: MatriceContentType;
-  wednesday: MatriceContentType;
-  thursday: MatriceContentType;
-  friday: MatriceContentType;
-  saturday: MatriceContentType;
-  sunday: MatriceContentType;
+export type QuantityMatrixType = {
+  monday: MatrixContentType;
+  tuesday: MatrixContentType;
+  wednesday: MatrixContentType;
+  thursday: MatrixContentType;
+  friday: MatrixContentType;
+  saturday: MatrixContentType;
+  sunday: MatrixContentType;
 };
 
 export namespace QuantityUtils {
-  export function baseQuantityMatrice(
-    defaultQuantity = 0
-  ): QuantityMatriceType {
+  export function baseQuantityMatrix(defaultQuantity = 0): QuantityMatrixType {
     const content = {
       going: { quantity: defaultQuantity },
       coming: { quantity: defaultQuantity },
