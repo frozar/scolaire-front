@@ -196,17 +196,6 @@ export namespace GtfsEntity {
             }
           }
         }
-        // const calendar = getSchools()
-        //   .flatMap((school) => school.grades)
-        //   .filter((grade) => grade.id == gradeId)[0].calendar as CalendarType;
-        // const addedDates = calendar.added;
-        // for (const addedDate of addedDates) {
-        //   calendarDates.push({
-        //     service_id: serviceId,
-        //     date: GtfsUtils.formatDate(new Date(addedDate.date)),
-        //     exception_type: 1,
-        //   });
-        // }
         // TODO: Only add exception if it's common to all concerned calendars
         // ! Vacances
         // ! Lister les periodes en lien avec le calendrier GTFS correspondant
@@ -219,19 +208,12 @@ export namespace GtfsEntity {
           );
 
         const numberOfPeriods = periodIds.length;
-        // console.log("periodIds", periodIds);
-        // console.log("period", calendarsPeriod());
-        // console.log(
-        //   "ici ==>",
-        //   periodIds.map((periodId) => CalendarPeriodUtils.getById(periodId))
-        // );
         const vacationPeriods = periodIds.flatMap(
           (periodId) => CalendarPeriodUtils.getById(periodId).vacationsPeriod
         );
 
         const tempVacationsDates: string[] = [];
 
-        console.log("vacationPeriods", vacationPeriods);
         // ! Ajouter les jours de chaque periode de vacances dans une liste, si elt présent n(nombre de calendar impliqué) fois
         for (const vacationPeriod of vacationPeriods) {
           const diffDays =
@@ -241,20 +223,6 @@ export namespace GtfsEntity {
             tempVacationsDates.push(
               GtfsUtils.addDays(vacationPeriod.start, dayToAdd)
             );
-            // const newExceptionDate = {
-            //   service_id: serviceId,
-            //   date: GtfsUtils.addDays(vacationPeriod.start, dayToAdd),
-            //   exception_type: 2,
-            // };
-
-            // if (
-            //   !GtfsUtils.isDateExceptionAlreadyAdded(
-            //     newExceptionDate,
-            //     calendarDates
-            //   )
-            // ) {
-            //   calendarDates.push(newExceptionDate);
-            // }
           }
         }
         // TODO: Rename
@@ -287,26 +255,6 @@ export namespace GtfsEntity {
             }
           }
         }
-        // for (const vacationPeriod of period.vacationsPeriod) {
-        //   const diffDays =
-        //     vacationPeriod.end.getDate() - vacationPeriod.start.getDate();
-
-        //   for (let dayToAdd = 0; dayToAdd < diffDays + 1; dayToAdd++) {
-        //     const newExceptionDate = {
-        //       service_id: serviceId,
-        //       date: GtfsUtils.addDays(vacationPeriod.start, dayToAdd),
-        //       exception_type: 2,
-        //     };
-        //     if (
-        //       !GtfsUtils.isDateExceptionAlreadyAdded(
-        //         newExceptionDate,
-        //         calendarDates
-        //       )
-        //     ) {
-        //       calendarDates.push(newExceptionDate);
-        //     }
-        //   }
-        // }
         // TODO: Only add exception if it's common to all concerned calendars
         // ! Jours fériés
         for (const publicHoliday of period.publicHolidays) {
