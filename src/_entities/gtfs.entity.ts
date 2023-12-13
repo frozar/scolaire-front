@@ -229,20 +229,31 @@ export namespace GtfsEntity {
             );
           }
         }
-        // TODO: Rename
-        const counter: { [id: string]: number } = {};
-        tempVacationsDates.forEach((ele) => {
-          if (counter[ele]) {
-            counter[ele] += 1;
-          } else {
-            counter[ele] = 1;
-            tempVacationsDates;
-          }
-        });
-        console.log("counter", counter);
+        function count(list: string[]): { [id: string]: number } {
+          const counter: { [id: string]: number } = {};
+          list.forEach((ele) => {
+            if (counter[ele]) {
+              counter[ele] += 1;
+            } else {
+              counter[ele] = 1;
+            }
+          });
 
-        for (const key of Object.keys(counter)) {
-          if (counter[key] == numberOfPeriods) {
+          return counter;
+        }
+        // const counter: { [id: string]: number } = {};
+        // tempVacationsDates.forEach((ele) => {
+        //   if (counter[ele]) {
+        //     counter[ele] += 1;
+        //   } else {
+        //     counter[ele] = 1;
+        //   }
+        // });
+        // console.log("counter", counter);
+        const countedDate = count(tempVacationsDates);
+
+        for (const key of Object.keys(countedDate)) {
+          if (countedDate[key] == numberOfPeriods) {
             const newExceptionDate = {
               service_id: serviceId,
               date: key,
@@ -265,13 +276,33 @@ export namespace GtfsEntity {
           (periodId) => CalendarPeriodUtils.getById(periodId).publicHolidays
         );
 
-        const tempPublicHolidays;
-        for (const publicHoliday of period.publicHolidays) {
+        const tempPublicHolidays: string[] = [];
+
+        for (const publicHoliday of publicHolidays) {
+          tempPublicHolidays.push(GtfsUtils.formatDate(publicHoliday.date));
+          // const newExceptionDate = {
+          //   service_id: serviceId,
+          //   date: GtfsUtils.formatDate(publicHoliday.date),
+          //   exception_type: 2,
+          // };
+          // if (
+          //   !GtfsUtils.isDateExceptionAlreadyAdded(
+          //     newExceptionDate,
+          //     calendarDates
+          //   )
+          // ) {
+          //   calendarDates.push(newExceptionDate);
+          // }
+        }
+
+        const countedPublicHolidays = count(tempPublicHolidays);
+        for (const formatedDate of Object.keys(countedPublicHolidays)) {
           const newExceptionDate = {
             service_id: serviceId,
-            date: GtfsUtils.formatDate(publicHoliday.date),
+            date: formatedDate,
             exception_type: 2,
           };
+
           if (
             !GtfsUtils.isDateExceptionAlreadyAdded(
               newExceptionDate,
