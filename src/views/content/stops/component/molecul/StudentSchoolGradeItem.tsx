@@ -6,12 +6,18 @@ import PencilIcon from "../../../../../icons/PencilIcon";
 import TrashIcon from "../../../../../icons/TrashIcon";
 import { AssociatedUtils } from "../../../../../utils/associated.utils";
 import { GradeUtils } from "../../../../../utils/grade.utils";
-import { QuantityUtils } from "../../../../../utils/quantity.utils";
+import {
+  QuantityMatriceType,
+  QuantityUtils,
+} from "../../../../../utils/quantity.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
+import CollapsibleElement from "../../../board/component/organism/CollapsibleElement";
+import { QuantityTable } from "../organism/QuantityTable";
 import { stopDetailsItem } from "../organism/StopDetails";
 import EditStudentSchoolGradeItem from "./EditStudentSchoolGradeItem";
 import "./StudentSchoolGradeItem.css";
 
+// TODO move to organism
 export default function (props: { school: AssociatedSchoolType }) {
   const [editingMode, setEditingMode] = createSignal(false);
 
@@ -45,6 +51,12 @@ export default function (props: { school: AssociatedSchoolType }) {
               " élèves restants sur " +
               props.school.quantity}
           </p>
+
+          <CollapsibleElement title="reste d'élève à récuperer">
+            <QuantityTable
+              matrice={props.school.quantityMatrice as QuantityMatriceType}
+            />
+          </CollapsibleElement>
         </div>
 
         <div class="school-list-item-actions">
