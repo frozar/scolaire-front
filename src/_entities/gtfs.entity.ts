@@ -6,7 +6,11 @@ import { calendarsPeriod } from "../views/content/calendar/template/Calendar";
 import { getLines } from "../views/content/map/component/organism/BusLines";
 import { getSchools } from "../views/content/map/component/organism/SchoolPoints";
 import { getStops } from "../views/content/map/component/organism/StopPoints";
-import { CalendarDayEnum, CalendarType } from "./calendar.entity";
+import {
+  CalendarDayEnum,
+  CalendarType,
+  PublicHolidayType,
+} from "./calendar.entity";
 
 // Precise GTFS files field definitions :
 // https://gtfs.org/en/schedule/reference/#field-definitions
@@ -257,6 +261,11 @@ export namespace GtfsEntity {
         }
         // TODO: Only add exception if it's common to all concerned calendars
         // ! Jours fériés
+        const publicHolidays: PublicHolidayType[] = periodIds.flatMap(
+          (periodId) => CalendarPeriodUtils.getById(periodId).publicHolidays
+        );
+
+        const tempPublicHolidays;
         for (const publicHoliday of period.publicHolidays) {
           const newExceptionDate = {
             service_id: serviceId,
