@@ -59,14 +59,6 @@ export namespace InitService {
       BusLineEntity.build(dbLine)
     );
 
-    console.log(
-      "trip grades matrix:",
-      busLines[0].trips[0].tripPoints[0].grades[0].matrix,
-      "stop:",
-      busLines[0].trips[0].tripPoints[0].nature,
-      busLines[0].trips[0].tripPoints[0].name
-    );
-
     setLines(busLines);
 
     InitService.loadCalendars();
