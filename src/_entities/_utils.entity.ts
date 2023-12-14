@@ -77,8 +77,7 @@ export type AssociatedSchoolType = {
   schoolId: number;
   quantity: number;
   gradeId: number;
-  // TODO lucas: remove maybe undefine "?"
-  quantityMatrix?: QuantityMatrixType;
+  quantityMatrix: QuantityMatrixType;
 };
 
 export type AssociatedStopType = {
