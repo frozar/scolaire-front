@@ -9,15 +9,11 @@ import {
 } from "../../../_entities/trip-direction.entity";
 import { addNewUserInformation } from "../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../type";
-import { getSchools } from "../map/component/organism/SchoolPoints";
-import { currentCalendar } from "./template/Calendar";
+import { calendars, currentCalendar } from "./template/Calendar";
 
 export namespace CalendarUtils {
   export function getById(calendarId: number): CalendarType {
-    return getSchools()
-      .flatMap((school) => school.grades)
-      .map((grade) => grade.calendar)
-      .filter((calendar) => calendar?.id == calendarId)[0] as CalendarType;
+    return calendars().filter((calendar) => calendar.id == calendarId)[0];
   }
 
   export function defaultCalendar(): CalendarType {
