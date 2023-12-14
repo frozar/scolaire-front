@@ -6,16 +6,31 @@ import PencilIcon from "../../../../../icons/PencilIcon";
 import TrashIcon from "../../../../../icons/TrashIcon";
 import { AssociatedUtils } from "../../../../../utils/associated.utils";
 import { GradeUtils } from "../../../../../utils/grade.utils";
-import { QuantityMatrixType } from "../../../../../utils/quantity.utils";
+import {
+  QuantityMatrixType,
+  QuantityUtils,
+} from "../../../../../utils/quantity.utils";
+import { StopUtils } from "../../../../../utils/stop.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import CollapsibleElement from "../../../board/component/organism/CollapsibleElement";
 import { QuantityTable } from "../organism/QuantityTable";
+import { stopDetailsItem } from "../organism/StopDetails";
 import EditStudentSchoolGradeItem from "./EditStudentSchoolGradeItem";
 import "./StudentSchoolGradeItem.css";
 
 // TODO move to organism
 export default function (props: { school: AssociatedSchoolType }) {
   const [editingMode, setEditingMode] = createSignal(false);
+  const orignalMatrix =
+    // eslint-disable-next-line solid/reactivity
+    props.school.quantityMatrix as QuantityMatrixType;
+
+  const tripMatrix: QuantityMatrixType[] = StopUtils.getGradeTrips(
+    stopDetailsItem()?.id as number
+  )
+    // eslint-disable-next-line solid/reactivity
+    .filter((item) => item.gradeId == props.school.gradeId)
+    .flatMap((item) => item.matrix) as QuantityMatrixType[];
 
   async function onClickDelete() {
     AssociatedUtils.deleteAssociated(props.school.idClassToSchool);
@@ -39,13 +54,15 @@ export default function (props: { school: AssociatedSchoolType }) {
         <div class="school-list-item-content">
           <CardTitle title={GradeUtils.getName(props.school.gradeId)} />
           <p class="school-list-item-quantity">
-            {/* TODO: Lucas fix remaining with new type */}
             {"Total d'élèves: " + props.school.quantity}
           </p>
 
           <CollapsibleElement title="Quantités restantes">
             <QuantityTable
-              matrix={props.school.quantityMatrix as QuantityMatrixType}
+              matrix={QuantityUtils.calculateMatrix(
+                orignalMatrix,
+                tripMatrix[0]
+              )}
             />
           </CollapsibleElement>
         </div>
