@@ -109,7 +109,7 @@ export namespace GtfsEntity {
     calendarDates: CalendarDatesType[];
   } {
     const trips = TripUtils.getAll();
-    const gtfsCalendars: CalendarDayEnum[][] = [];
+    const gtfsCalendars: string[] = [];
     const serviceWindows: ServiceWindowType[] = [];
     const calendarDates: CalendarDatesType[] = [];
 
@@ -117,20 +117,14 @@ export namespace GtfsEntity {
     // TODO: Specify => what to do when:
     // ! - for the same trip, there is different calendar periods
     trips.forEach((trip) => {
-      if (
-        // ! also verify the period start and end
-        !gtfsCalendars
-          .map((calendar) => calendar.toString())
-          .includes(trip.days.toString())
-      ) {
+      const { startDate, endDate } = GtfsUtils.getStartEndDates(trip);
+      if (!gtfsCalendars.includes(startDate + endDate + trip.days.toString())) {
         serviceId += 1;
-        gtfsCalendars.push(trip.days);
-
-        const { startDate, endDate } = GtfsUtils.getStartEndDates(trip);
+        gtfsCalendars.push(startDate + endDate + trip.days.toString());
 
         // TODO: Use real values for start_time and end_time ?
         // TODO: Find a way to not use "weekday_peak_" ?
-        // TODO: Gérer le service_id ici pour éviter la désynchro
+        // TODO: Manage service_id here to avoid desync
         serviceWindows.push({
           service_window_id: "weekday_peak_" + String(serviceId),
           start_time: "07:00:00",

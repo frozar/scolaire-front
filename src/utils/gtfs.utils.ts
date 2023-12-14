@@ -162,8 +162,6 @@ export namespace GtfsUtils {
     startDate: string;
     endDate: string;
   } {
-    // const gradeId = trip.grades[0].id;
-
     const gradeIds = trip.grades.map((grade) => grade.id as number);
     const calendarPeriodIds = getSchools()
       .flatMap((school) => school.grades)
@@ -174,7 +172,7 @@ export namespace GtfsUtils {
     const calendarPeriods = calendarsPeriod().filter((calendarPeriod) =>
       calendarPeriodIds.includes(calendarPeriod.id)
     );
-    // ! Vérifier que ça marche !
+    // TODO: Verify it works properly
     // Take the earlier start date and the latest endDate
     let startDate: string;
     let endDate: string;
@@ -182,41 +180,23 @@ export namespace GtfsUtils {
       startDate = GtfsUtils.formatDate(calendarPeriods[0].startDate);
       endDate = GtfsUtils.formatDate(calendarPeriods[0].endDate);
     } else {
-      let tempStartDate: Date | undefined = undefined;
-      let tempEndDate: Date | undefined = undefined;
+      let tempStartDate: Date = calendarPeriods[0].startDate;
+      let tempEndDate: Date = calendarPeriods[0].endDate;
 
       for (const calendarPeriod of calendarPeriods) {
-        if (!tempStartDate && !tempEndDate) {
+        if (calendarPeriod.startDate < tempStartDate) {
           tempStartDate = calendarPeriod.startDate;
+        }
+        if (calendarPeriod.endDate > tempEndDate) {
           tempEndDate = calendarPeriod.endDate;
-        } else {
-          if (calendarPeriod.startDate < (tempStartDate as Date)) {
-            tempStartDate = calendarPeriod.startDate;
-          }
-          if (calendarPeriod.endDate < (tempEndDate as Date)) {
-            tempEndDate = calendarPeriod.endDate;
-          }
         }
       }
 
-      startDate = GtfsUtils.formatDate(tempStartDate as Date);
-      endDate = GtfsUtils.formatDate(tempEndDate as Date);
+      startDate = GtfsUtils.formatDate(tempStartDate);
+      endDate = GtfsUtils.formatDate(tempEndDate);
     }
-    // const calendarPeriodId = getSchools()
-    //   .flatMap((school) => school.grades)
-    //   .filter((grade) => grade.id == gradeId)[0].calendar?.calendarPeriodId;
-    // const period = calendarsPeriod().filter(
-    //   (calendarPeriod) => calendarPeriod.id == calendarPeriodId
-    // )[0];
 
-    // return {
-    //   startDate: GtfsUtils.formatDate(period.startDate),
-    //   endDate: GtfsUtils.formatDate(period.endDate),
-    // };
-    return {
-      startDate,
-      endDate,
-    };
+    return { startDate, endDate };
   }
 
   export function formatDate(date: Date): string {
