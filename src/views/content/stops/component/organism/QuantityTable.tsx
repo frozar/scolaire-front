@@ -6,11 +6,11 @@ import { CalendarUtils } from "../../../calendar/calendar.utils";
 // TODO refacto
 export function QuantityTable(props: { matrix: QuantityMatrixType }) {
   const goingQuantity = (day: CalendarDayEnum) => {
-    return props.matrix[day].going.quantity;
+    return props.matrix[day].goingQty;
   };
 
   const comingQuantity = (day: CalendarDayEnum) => {
-    return props.matrix[day].coming.quantity;
+    return props.matrix[day].comingQty;
   };
 
   return (

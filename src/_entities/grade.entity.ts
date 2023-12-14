@@ -1,3 +1,4 @@
+import { QuantityMatrixType } from "../utils/quantity.utils";
 import { AssociatedSchoolType, HoursDBType, HoursType } from "./_utils.entity";
 import {
   CalendarDBType,
@@ -84,6 +85,7 @@ export type GradeType = {
 export type GradeTripType = {
   gradeId: number;
   quantity: number;
+  matrix?: QuantityMatrixType;
 };
 
 export type GradeTripDBType = {

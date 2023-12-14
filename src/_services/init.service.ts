@@ -58,6 +58,7 @@ export namespace InitService {
     const busLines = dbInit.bus_lines.map((dbLine: LineDBType) =>
       BusLineEntity.build(dbLine)
     );
+
     setLines(busLines);
 
     InitService.loadCalendars();
