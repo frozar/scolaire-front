@@ -112,4 +112,22 @@ export namespace QuantityUtils {
     });
     return grades;
   }
+
+  export function calculateMatrix(
+    orignal: QuantityMatrixType,
+    toCalcul: QuantityMatrixType
+  ): QuantityMatrixType {
+    if (!toCalcul && orignal) return orignal;
+
+    const matrix: QuantityMatrixType = QuantityUtils.baseQuantityMatrix();
+    Object.keys(CalendarDayEnum).forEach((day) => {
+      const day_ = day as CalendarDayEnum;
+
+      matrix[day_] = {
+        comingQty: orignal[day_].comingQty - toCalcul[day_].comingQty,
+        goingQty: orignal[day_].goingQty - toCalcul[day_].goingQty,
+      };
+    });
+    return matrix;
+  }
 }
