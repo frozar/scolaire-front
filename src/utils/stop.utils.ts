@@ -1,6 +1,8 @@
 import { AssociatedSchoolType } from "../_entities/_utils.entity";
+import { CalendarDayEnum } from "../_entities/calendar.entity";
 import { GradeTripType } from "../_entities/grade.entity";
 import { StopType } from "../_entities/stop.entity";
+import { TripDirectionEnum } from "../_entities/trip-direction.entity";
 import { NatureEnum } from "../type";
 import { getLines } from "../views/content/map/component/organism/BusLines";
 import {
@@ -9,6 +11,7 @@ import {
 } from "../views/content/map/component/organism/StopPoints";
 import { updateStopDetailsItem } from "../views/content/stops/component/organism/StopDetails";
 import { GradeUtils } from "./grade.utils";
+import { QuantityUtils } from "./quantity.utils";
 
 export namespace StopUtils {
   export function get(stopId: number): StopType {
@@ -117,17 +120,45 @@ export namespace StopUtils {
     return totalQuantity - usedQuantity;
   }
 
-  export function getRemainingQuantityFromGradeIds(
+  // * Here get the remaining quantity by direction & days
+  export function getRemainingQuantityFromMatrixOfGrades(
     stopId: number,
-    gradeIds: number[]
+    gradeIds: number[],
+    tripDirection: TripDirectionEnum,
+    days: CalendarDayEnum[]
   ) {
     const totalQuantity = getTotalQuantityFromGradeIds(stopId, gradeIds);
-
-    let usedQuantity = 0;
+    const stopGrades = StopUtils.get(stopId).associated;
     const grades = getGradeTrips(stopId);
+    let usedQuantity = 0;
+
     grades
       .filter((grade) => gradeIds.includes(grade.gradeId))
-      .forEach((_grade) => (usedQuantity += _grade.quantity));
+      .forEach((_grade) => {
+        const stopGradeMatrix = stopGrades.filter(
+          (item) => item.gradeId == _grade.gradeId
+        )[0].quantityMatrix;
+
+        const calculatedMatrix = QuantityUtils.calculateMatrix(
+          stopGradeMatrix,
+          _grade.matrix
+        );
+
+        days.forEach((item) => {
+          switch (tripDirection) {
+            // Todo lucas direction is inversed
+            case TripDirectionEnum.coming:
+              usedQuantity +=
+                calculatedMatrix[item as CalendarDayEnum].goingQty;
+              break;
+            // Todo lucas direction is inversed
+            case TripDirectionEnum.going:
+              usedQuantity +=
+                calculatedMatrix[item as CalendarDayEnum].comingQty;
+              break;
+          }
+        });
+      });
 
     return totalQuantity - usedQuantity;
   }

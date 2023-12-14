@@ -85,7 +85,7 @@ export type GradeType = {
 export type GradeTripType = {
   gradeId: number;
   quantity: number;
-  matrix?: QuantityMatrixType;
+  matrix: QuantityMatrixType;
 };
 
 export type GradeTripDBType = {

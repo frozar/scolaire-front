@@ -1,6 +1,11 @@
 import L from "leaflet";
 import { For, createEffect, createSignal } from "solid-js";
+import { CalendarDayEnum } from "../../../../../_entities/calendar.entity";
 import { StopType } from "../../../../../_entities/stop.entity";
+import {
+  TripDirectionEntity,
+  TripDirectionEnum,
+} from "../../../../../_entities/trip-direction.entity";
 import { FilterUtils } from "../../../../../utils/filter.utils";
 import { StopUtils } from "../../../../../utils/stop.utils";
 import { TripUtils } from "../../../../../utils/trip.utils";
@@ -83,7 +88,12 @@ function filterByGradesOfTrip(stops: StopType[], gradeIds: number[]) {
   );
 }
 
-function filterByQuantity(stops: StopType[], gradeIds: number[]) {
+function filterByDaysQuantitiesAndDirection(
+  stops: StopType[],
+  gradeIds: number[],
+  direction: TripDirectionEnum,
+  days: CalendarDayEnum[]
+) {
   function isInModifyingTripMode() {
     return currentDrawTrip().id ? true : false;
   }
@@ -100,7 +110,12 @@ function filterByQuantity(stops: StopType[], gradeIds: number[]) {
     case false:
       return stops.filter((stop) => {
         return (
-          StopUtils.getRemainingQuantityFromGradeIds(stop.id, gradeIds) > 0
+          StopUtils.getRemainingQuantityFromMatrixOfGrades(
+            stop.id,
+            gradeIds,
+            direction,
+            days
+          ) > 0
         );
       });
   }
@@ -152,7 +167,13 @@ export function leafletStopsFilter(): StopType[] {
 
       stops = filterBySelectedLine(stops);
       stops = filterByGradesOfTrip(stops, gradeIds);
-      stops = filterByQuantity(stops, gradeIds);
+      stops = filterByDaysQuantitiesAndDirection(
+        stops,
+        gradeIds,
+        TripDirectionEntity.FindDirectionById(currentDrawTrip().tripDirectionId)
+          .type,
+        currentDrawTrip().days
+      );
 
       switch (currentStep()) {
         case DrawTripStep.schoolSelection:
