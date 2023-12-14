@@ -162,7 +162,7 @@ export namespace GtfsUtils {
     startDate: string;
     endDate: string;
   } {
-    const gradeId = trip.grades[0].id;
+    // const gradeId = trip.grades[0].id;
 
     const gradeIds = trip.grades.map((grade) => grade.id as number);
     const calendarPeriodIds = getSchools()
@@ -174,9 +174,34 @@ export namespace GtfsUtils {
     const calendarPeriods = calendarsPeriod().filter((calendarPeriod) =>
       calendarPeriodIds.includes(calendarPeriod.id)
     );
+    // ! Vérifier que ça marche !
+    // Take the earlier start date and the latest endDate
+    let startDate: string;
+    let endDate: string;
+    if (calendarPeriods.length == 1) {
+      startDate = GtfsUtils.formatDate(calendarPeriods[0].startDate);
+      endDate = GtfsUtils.formatDate(calendarPeriods[0].endDate);
+    } else {
+      let tempStartDate: Date | undefined = undefined;
+      let tempEndDate: Date | undefined = undefined;
 
-    // !Take the earlier start date and the latest endDate
+      for (const calendarPeriod of calendarPeriods) {
+        if (!tempStartDate && !tempEndDate) {
+          tempStartDate = calendarPeriod.startDate;
+          tempEndDate = calendarPeriod.endDate;
+        } else {
+          if (calendarPeriod.startDate < (tempStartDate as Date)) {
+            tempStartDate = calendarPeriod.startDate;
+          }
+          if (calendarPeriod.endDate < (tempEndDate as Date)) {
+            tempEndDate = calendarPeriod.endDate;
+          }
+        }
+      }
 
+      startDate = GtfsUtils.formatDate(tempStartDate as Date);
+      endDate = GtfsUtils.formatDate(tempEndDate as Date);
+    }
     // const calendarPeriodId = getSchools()
     //   .flatMap((school) => school.grades)
     //   .filter((grade) => grade.id == gradeId)[0].calendar?.calendarPeriodId;
@@ -184,9 +209,13 @@ export namespace GtfsUtils {
     //   (calendarPeriod) => calendarPeriod.id == calendarPeriodId
     // )[0];
 
+    // return {
+    //   startDate: GtfsUtils.formatDate(period.startDate),
+    //   endDate: GtfsUtils.formatDate(period.endDate),
+    // };
     return {
-      startDate: GtfsUtils.formatDate(period.startDate),
-      endDate: GtfsUtils.formatDate(period.endDate),
+      startDate,
+      endDate,
     };
   }
 
