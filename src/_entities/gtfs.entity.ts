@@ -118,6 +118,7 @@ export namespace GtfsEntity {
     // ! - for the same trip, there is different calendar periods
     trips.forEach((trip) => {
       if (
+        // ! also verify the period start and end
         !gtfsCalendars
           .map((calendar) => calendar.toString())
           .includes(trip.days.toString())

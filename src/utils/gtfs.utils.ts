@@ -163,18 +163,33 @@ export namespace GtfsUtils {
     endDate: string;
   } {
     const gradeId = trip.grades[0].id;
-    const calendarPeriodId = getSchools()
+
+    const gradeIds = trip.grades.map((grade) => grade.id as number);
+    const calendarPeriodIds = getSchools()
       .flatMap((school) => school.grades)
-      .filter((grade) => grade.id == gradeId)[0].calendar?.calendarPeriodId;
-    const period = calendarsPeriod().filter(
-      (calendarPeriod) => calendarPeriod.id == calendarPeriodId
-    )[0];
+      .filter((grade) => gradeIds.includes(grade.id as number))
+      .map((_grade) => _grade.calendar as CalendarType)
+      .map((calendar) => calendar.calendarPeriodId as number);
+
+    const calendarPeriods = calendarsPeriod().filter((calendarPeriod) =>
+      calendarPeriodIds.includes(calendarPeriod.id)
+    );
+
+    // !Take the earlier start date and the latest endDate
+
+    // const calendarPeriodId = getSchools()
+    //   .flatMap((school) => school.grades)
+    //   .filter((grade) => grade.id == gradeId)[0].calendar?.calendarPeriodId;
+    // const period = calendarsPeriod().filter(
+    //   (calendarPeriod) => calendarPeriod.id == calendarPeriodId
+    // )[0];
 
     return {
       startDate: GtfsUtils.formatDate(period.startDate),
       endDate: GtfsUtils.formatDate(period.endDate),
     };
   }
+
   export function formatDate(date: Date): string {
     const day = date.getDate();
     const formatedDay =
