@@ -11,10 +11,6 @@
   animation-iteration-count: infinite;
 }
 
-.alert{@apply bg-red-700}
-
-.information{@apply bg-green-light}
-
 @keyframes draw-attention {
   from {
       outline-offset: 0px;
