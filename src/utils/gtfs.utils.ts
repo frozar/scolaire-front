@@ -13,6 +13,7 @@ import { TripUtils } from "./trip.utils";
 
 export namespace GtfsUtils {
   // TODO: Refactor
+  // Exceptionally calendar_dates.txt is computed front-side
   export function getServiceWindowsAndCalendarDates(): {
     serviceWindows: ServiceWindowType[];
     calendarDates: CalendarDatesType[];
