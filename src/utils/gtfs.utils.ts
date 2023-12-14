@@ -76,7 +76,6 @@ export namespace GtfsUtils {
 
     const tempVacationsDates: string[] = [];
 
-    // ! Ajouter les jours de chaque periode de vacances dans une liste, si elt présent n(nombre de calendar impliqué) fois
     for (const vacationPeriod of vacationPeriods) {
       const diffDays =
         vacationPeriod.end.getDate() - vacationPeriod.start.getDate();
@@ -87,18 +86,7 @@ export namespace GtfsUtils {
         );
       }
     }
-    // function count(list: string[]): { [id: string]: number } {
-    //   const counter: { [id: string]: number } = {};
-    //   list.forEach((ele) => {
-    //     if (counter[ele]) {
-    //       counter[ele] += 1;
-    //     } else {
-    //       counter[ele] = 1;
-    //     }
-    //   });
 
-    //   return counter;
-    // }
     const countedDate = count(tempVacationsDates);
 
     for (const key of Object.keys(countedDate)) {
@@ -141,7 +129,6 @@ export namespace GtfsUtils {
       .map((calendar) => (calendar as CalendarType).id);
 
     calendarIds = Array.from(new Set(calendarIds));
-    console.log("calendarIds", calendarIds);
     for (const calendarId of calendarIds) {
       const calendar = CalendarUtils.getById(calendarId as number);
       const addedDates = calendar.added;
@@ -151,6 +138,7 @@ export namespace GtfsUtils {
           date: GtfsUtils.formatDate(new Date(addedDate.date)),
           exception_type: 1,
         };
+
         if (
           !GtfsUtils.isDateExceptionAlreadyAdded(
             newExceptionDate,
@@ -168,6 +156,7 @@ export namespace GtfsUtils {
 
     return newCalendarDates;
   }
+
   // TODO: What to do if grades has different scolar period ? Take the earlier start date and the latest endDate
   export function getStartEndDates(trip: TripType): {
     startDate: string;

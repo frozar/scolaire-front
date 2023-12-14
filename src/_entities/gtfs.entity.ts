@@ -99,12 +99,10 @@ export namespace GtfsEntity {
       shapes,
       frequencies,
       meta: getMetaData(),
-      // service_windows: getServiceWindows(),
       service_windows: serviceWindows,
       calendar_dates: calendarDates,
     };
   }
-  // TODO: Also return calendarDates
   // TODO: Refactor
   function getServiceWindowsAndCalendarDates(): {
     serviceWindows: ServiceWindowType[];
@@ -118,15 +116,6 @@ export namespace GtfsEntity {
     let serviceId = 0;
     // TODO: Specify => what to do when:
     // ! - for the same trip, there is different calendar periods
-    // ! - for the same trip, there is different date exception
-
-    // TODO: Exception date is also to check because a gtfs calendar is directly linked with
-    // ! it's exception (calendar_dates) ?
-    // ! une course est liée à plusieurs calendriers donc potentiellement à pls exception
-    // ! hors le calendrier liée à une course n'a qu'une seule "liste" d'exception
-    // ! => pour calendar dates: faire un "merge" des exceptions
-    // ! ex: garder systematiquement les jours ajoutés
-    // ! et garder les jours enlevé que si enlevé pour tout les calendriers concerné
     trips.forEach((trip) => {
       if (
         !gtfsCalendars
@@ -137,13 +126,6 @@ export namespace GtfsEntity {
         gtfsCalendars.push(trip.days);
 
         const { startDate, endDate } = GtfsUtils.getStartEndDates(trip);
-        // const gradeId = trip.grades[0].id;
-        // const calendarPeriodId = getSchools()
-        //   .flatMap((school) => school.grades)
-        //   .filter((grade) => grade.id == gradeId)[0].calendar?.calendarPeriodId;
-        // const period = calendarsPeriod().filter(
-        //   (calendarPeriod) => calendarPeriod.id == calendarPeriodId
-        // )[0];
 
         // TODO: Use real values for start_time and end_time ?
         // TODO: Find a way to not use "weekday_peak_" ?
@@ -163,36 +145,7 @@ export namespace GtfsEntity {
           sunday: trip.days.includes(CalendarDayEnum.sunday) ? 1 : 0,
         });
 
-        // ! Calendar dates
-        // ! Jours ajoutés AVANT ajout jours fériés et vacances !!!
-        // const gradeIds = trip.grades.map((grade) => grade.id as number);
-        // let calendarIds = getSchools()
-        //   .flatMap((school) => school.grades)
-        //   .filter((_grade) => gradeIds.includes(_grade.id as number))
-        //   .map((grade) => grade.calendar)
-        //   .map((calendar) => (calendar as CalendarType).id);
-
-        // calendarIds = Array.from(new Set(calendarIds));
-        // console.log("calendarIds", calendarIds);
-        // for (const calendarId of calendarIds) {
-        //   const calendar = CalendarUtils.getById(calendarId as number);
-        //   const addedDates = calendar.added;
-        //   for (const addedDate of addedDates) {
-        //     const newExceptionDate = {
-        //       service_id: serviceId,
-        //       date: GtfsUtils.formatDate(new Date(addedDate.date)),
-        //       exception_type: 1,
-        //     };
-        //     if (
-        //       !GtfsUtils.isDateExceptionAlreadyAdded(
-        //         newExceptionDate,
-        //         calendarDates
-        //       )
-        //     ) {
-        //       calendarDates.push(newExceptionDate);
-        //     }
-        //   }
-        // }
+        // Add added date to exceptions
         const gradeIds = trip.grades.map((grade) => grade.id as number);
 
         const newExceptionDates = GtfsUtils.getAddedDateExceptions(
@@ -204,9 +157,8 @@ export namespace GtfsEntity {
         newExceptionDates.forEach((newExceptionDate) =>
           calendarDates.push(newExceptionDate)
         );
-        // TODO: Only add exception if it's common to all concerned calendars
-        // ! Vacances
-        // ! Lister les periodes en lien avec le calendrier GTFS correspondant
+
+        // Add vacations to exceptions
         const periodIds = getSchools()
           .flatMap((school) => school.grades)
           .filter((_grade) => gradeIds.includes(_grade.id as number))
@@ -224,66 +176,8 @@ export namespace GtfsEntity {
         newVacationsExceptionsDate.forEach((newExceptionDate) =>
           calendarDates.push(newExceptionDate)
         );
-        // const periodIds = getSchools()
-        //   .flatMap((school) => school.grades)
-        //   .filter((_grade) => gradeIds.includes(_grade.id as number))
-        //   .map(
-        //     (grade) =>
-        //       (grade.calendar as CalendarType).calendarPeriodId as number
-        //   );
 
-        // const numberOfPeriods = periodIds.length;
-        // const vacationPeriods = periodIds.flatMap(
-        //   (periodId) => CalendarPeriodUtils.getById(periodId).vacationsPeriod
-        // );
-
-        // const tempVacationsDates: string[] = [];
-
-        // // ! Ajouter les jours de chaque periode de vacances dans une liste, si elt présent n(nombre de calendar impliqué) fois
-        // for (const vacationPeriod of vacationPeriods) {
-        //   const diffDays =
-        //     vacationPeriod.end.getDate() - vacationPeriod.start.getDate();
-
-        //   for (let dayToAdd = 0; dayToAdd < diffDays + 1; dayToAdd++) {
-        //     tempVacationsDates.push(
-        //       GtfsUtils.addDays(vacationPeriod.start, dayToAdd)
-        //     );
-        //   }
-        // }
-        // function count(list: string[]): { [id: string]: number } {
-        //   const counter: { [id: string]: number } = {};
-        //   list.forEach((ele) => {
-        //     if (counter[ele]) {
-        //       counter[ele] += 1;
-        //     } else {
-        //       counter[ele] = 1;
-        //     }
-        //   });
-
-        //   return counter;
-        // }
-        // const countedDate = count(tempVacationsDates);
-
-        // for (const key of Object.keys(countedDate)) {
-        //   if (countedDate[key] == numberOfPeriods) {
-        //     const newExceptionDate = {
-        //       service_id: serviceId,
-        //       date: key,
-        //       exception_type: 2,
-        //     };
-
-        //     if (
-        //       !GtfsUtils.isDateExceptionAlreadyAdded(
-        //         newExceptionDate,
-        //         calendarDates
-        //       )
-        //     ) {
-        //       calendarDates.push(newExceptionDate);
-        //     }
-        //   }
-        // }
-        // TODO: Only add exception if it's common to all concerned calendars
-        // ! Jours fériés
+        // Add public holidays to exceptions
         const newPublicHolidayExceptionDates =
           GtfsUtils.getPublicHolidaysExceptions(
             periodIds,
@@ -294,33 +188,6 @@ export namespace GtfsEntity {
         newPublicHolidayExceptionDates.forEach((newExceptionDate) =>
           calendarDates.push(newExceptionDate)
         );
-        // const publicHolidays: PublicHolidayType[] = periodIds.flatMap(
-        //   (periodId) => CalendarPeriodUtils.getById(periodId).publicHolidays
-        // );
-
-        // const tempPublicHolidays: string[] = [];
-
-        // for (const publicHoliday of publicHolidays) {
-        //   tempPublicHolidays.push(GtfsUtils.formatDate(publicHoliday.date));
-        // }
-
-        // const countedPublicHolidays = GtfsUtils.count(tempPublicHolidays);
-        // for (const formatedDate of Object.keys(countedPublicHolidays)) {
-        //   const newExceptionDate = {
-        //     service_id: serviceId,
-        //     date: formatedDate,
-        //     exception_type: 2,
-        //   };
-
-        //   if (
-        //     !GtfsUtils.isDateExceptionAlreadyAdded(
-        //       newExceptionDate,
-        //       calendarDates
-        //     )
-        //   ) {
-        //     calendarDates.push(newExceptionDate);
-        //   }
-        // }
       }
     });
     console.log("calendarDates", calendarDates);
