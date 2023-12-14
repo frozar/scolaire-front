@@ -157,7 +157,6 @@ export namespace GtfsUtils {
     return newCalendarDates;
   }
 
-  // TODO: What to do if grades has different scolar period ? Take the earlier start date and the latest endDate
   export function getStartEndDates(trip: TripType): {
     startDate: string;
     endDate: string;
@@ -172,7 +171,7 @@ export namespace GtfsUtils {
     const calendarPeriods = calendarsPeriod().filter((calendarPeriod) =>
       calendarPeriodIds.includes(calendarPeriod.id)
     );
-    // TODO: Verify it works properly
+
     // Take the earlier start date and the latest endDate
     let startDate: string;
     let endDate: string;

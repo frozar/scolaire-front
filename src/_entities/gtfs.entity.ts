@@ -103,19 +103,17 @@ export namespace GtfsEntity {
       calendar_dates: calendarDates,
     };
   }
-  // TODO: Refactor
+  // TODO: Refactor and move to utils
   function getServiceWindowsAndCalendarDates(): {
     serviceWindows: ServiceWindowType[];
     calendarDates: CalendarDatesType[];
   } {
+    let serviceId = 0;
     const trips = TripUtils.getAll();
     const gtfsCalendars: string[] = [];
     const serviceWindows: ServiceWindowType[] = [];
     const calendarDates: CalendarDatesType[] = [];
 
-    let serviceId = 0;
-    // TODO: Specify => what to do when:
-    // ! - for the same trip, there is different calendar periods
     trips.forEach((trip) => {
       const { startDate, endDate } = GtfsUtils.getStartEndDates(trip);
       if (!gtfsCalendars.includes(startDate + endDate + trip.days.toString())) {
@@ -185,7 +183,7 @@ export namespace GtfsEntity {
         );
       }
     });
-    console.log("calendarDates", calendarDates);
+
     return { serviceWindows, calendarDates };
   }
 
