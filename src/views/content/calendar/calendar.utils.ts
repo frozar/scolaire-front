@@ -9,9 +9,13 @@ import {
 } from "../../../_entities/trip-direction.entity";
 import { addNewUserInformation } from "../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../type";
-import { currentCalendar } from "./template/Calendar";
+import { calendars, currentCalendar } from "./template/Calendar";
 
 export namespace CalendarUtils {
+  export function getById(calendarId: number): CalendarType {
+    return calendars().filter((calendar) => calendar.id == calendarId)[0];
+  }
+
   export function defaultCalendar(): CalendarType {
     const defaultDirection = TripDirectionEntity.findDirectionByDirectionName(
       TripDirectionEnum.roundTrip

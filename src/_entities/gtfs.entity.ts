@@ -1,10 +1,8 @@
 import { GtfsUtils } from "../utils/gtfs.utils";
 import { TripUtils } from "../utils/trip.utils";
-import { calendarsPeriod } from "../views/content/calendar/template/Calendar";
 import { getLines } from "../views/content/map/component/organism/BusLines";
 import { getSchools } from "../views/content/map/component/organism/SchoolPoints";
 import { getStops } from "../views/content/map/component/organism/StopPoints";
-import { CalendarDayEnum } from "./calendar.entity";
 
 // Precise GTFS files field definitions :
 // https://gtfs.org/en/schedule/reference/#field-definitions
@@ -58,7 +56,7 @@ type MetaType = {
 };
 
 // ServiceWindows is used to create calendar.txt
-type ServiceWindowType = {
+export type ServiceWindowType = {
   service_window_id: string;
   start_time: string; // start time of the service
   end_time: string; // end time of the service
@@ -73,68 +71,36 @@ type ServiceWindowType = {
   sunday: number;
 };
 
+export type CalendarDatesType = {
+  service_id: number;
+  date: string;
+  exception_type: number;
+};
+
 export type MgDataType = {
   stops: StopMgType[];
   shapes: ShapeType;
   frequencies: FrequencyType[];
   meta: MetaType[];
   service_windows: ServiceWindowType[];
+  calendar_dates: CalendarDatesType[];
 };
 
 export namespace GtfsEntity {
   export function formatData(): MgDataType {
     const shapes = formatShapes();
     const frequencies = formatFrequencies(shapes);
+    const { serviceWindows, calendarDates } =
+      GtfsUtils.getServiceWindowsAndCalendarDates();
 
     return {
       stops: formatStops(),
       shapes,
       frequencies,
       meta: getMetaData(),
-      service_windows: getServiceWindows(),
+      service_windows: serviceWindows,
+      calendar_dates: calendarDates,
     };
-  }
-
-  function getServiceWindows(): ServiceWindowType[] {
-    const trips = TripUtils.getAll();
-    const gtfsCalendars: CalendarDayEnum[][] = [];
-    const serviceWindows: ServiceWindowType[] = [];
-
-    trips.forEach((trip, i) => {
-      if (
-        !gtfsCalendars
-          .map((calendar) => calendar.toString())
-          .includes(trip.days.toString())
-      ) {
-        gtfsCalendars.push(trip.days);
-
-        // TODO: What to do if grades has different scolar period ?
-        const gradeId = trip.grades[0].id;
-        const calendarPeriodId = getSchools()
-          .flatMap((school) => school.grades)
-          .filter((grade) => grade.id == gradeId)[0].calendar?.calendarPeriodId;
-        const period = calendarsPeriod().filter(
-          (calendarPeriod) => calendarPeriod.id == calendarPeriodId
-        )[0];
-        // TODO: Use real values for start_time and end_time ?
-        // TODO: Find a way to not use "weekday_peak_" ?
-        serviceWindows.push({
-          service_window_id: "weekday_peak_" + String(i),
-          start_time: "07:00:00",
-          end_time: "09:00:00",
-          start_date: GtfsUtils.formatDate(period.startDate),
-          end_date: GtfsUtils.formatDate(period.endDate),
-          monday: trip.days.includes(CalendarDayEnum.monday) ? 1 : 0,
-          tuesday: trip.days.includes(CalendarDayEnum.tuesday) ? 1 : 0,
-          wednesday: trip.days.includes(CalendarDayEnum.wednesday) ? 1 : 0,
-          thursday: trip.days.includes(CalendarDayEnum.thursday) ? 1 : 0,
-          friday: trip.days.includes(CalendarDayEnum.friday) ? 1 : 0,
-          saturday: trip.days.includes(CalendarDayEnum.saturday) ? 1 : 0,
-          sunday: trip.days.includes(CalendarDayEnum.sunday) ? 1 : 0,
-        });
-      }
-    });
-    return serviceWindows;
   }
 
   // TODO: Use the correct transit agency information
