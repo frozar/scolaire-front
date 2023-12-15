@@ -31,15 +31,12 @@ export default function (props: { school: AssociatedSchoolType }) {
     .filter((item) => item.gradeId == props.school.gradeId)
     .flatMap((item) => item.matrix) as QuantityMatrixType[];
 
-  let displayMatrice = QuantityUtils.calculateMatrix(
+  let displayMatrix = QuantityUtils.calculateMatrix(
     orignalMatrix,
     tripMatrix[0]
   );
   if (tripMatrix.length > 1)
-    displayMatrice = QuantityUtils.calculateMatrix(
-      displayMatrice,
-      tripMatrix[1]
-    );
+    displayMatrix = QuantityUtils.calculateMatrix(displayMatrix, tripMatrix[1]);
 
   async function onClickDelete() {
     AssociatedUtils.deleteAssociated(props.school.idClassToSchool);
@@ -67,7 +64,7 @@ export default function (props: { school: AssociatedSchoolType }) {
           </p>
 
           <CollapsibleElement title="Quantités restantes">
-            <QuantityTable matrix={displayMatrice} />
+            <QuantityTable matrix={displayMatrix} />
           </CollapsibleElement>
         </div>
 
