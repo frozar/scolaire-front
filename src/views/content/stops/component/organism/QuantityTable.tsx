@@ -23,7 +23,7 @@ export function QuantityTable(props: { matrix: QuantityMatrixType }) {
         </tr>
       </thead>
       <tbody>
-        <For each={Object.values(CalendarDayEnum)}>
+        <For each={Object.keys(props.matrix) as CalendarDayEnum[]}>
           {(day) => (
             <tr>
               <td>{CalendarUtils.dayToFrench(day)}</td>
