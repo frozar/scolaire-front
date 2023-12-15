@@ -202,7 +202,15 @@ export namespace SchoolUtils {
     const calendar = calendars()?.find((item) => item.id == calendarId);
     setSchoolDetailsItem((prev) => {
       if (!prev) return prev;
+      // TODO: Fix: After import of new grades, it's calendar is undefined and not the school's one
+      // ! Fix
+      // const grades: GradeType[] = prev.grades.map((grade) => {
+      //   if (!grade.calendar) {
+      //     return { ...grade, calendar: calendar as CalendarType };
+      //   } else return grade;
+      // });
       return { ...prev, calendar: calendar };
+      // return { ...prev, calendar: calendar, grades: grades };
     });
   }
 }
