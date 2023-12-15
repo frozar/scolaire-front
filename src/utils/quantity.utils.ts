@@ -21,21 +21,21 @@ export type QuantityMatrixType = {
 };
 
 export namespace QuantityUtils {
-  export function baseQuantityMatrix(defaultQuantity = 0): QuantityMatrixType {
+  export function baseQuantityMatrix(
+    days: CalendarDayEnum[],
+    defaultQuantity = 0
+  ): QuantityMatrixType {
     const content = {
       goingQty: defaultQuantity,
       comingQty: defaultQuantity,
     };
 
-    return {
-      monday: { ...content },
-      tuesday: { ...content },
-      wednesday: { ...content },
-      thursday: { ...content },
-      friday: { ...content },
-      saturday: { ...content },
-      sunday: { ...content },
-    };
+    const matrix: QuantityMatrixType = {} as QuantityMatrixType;
+    days.forEach((day) => {
+      matrix[day] = { ...content };
+    });
+
+    return matrix;
   }
 
   export function buildQuantityMatrix(
@@ -117,15 +117,15 @@ export namespace QuantityUtils {
     orignal: QuantityMatrixType,
     toCalcul: QuantityMatrixType
   ): QuantityMatrixType {
+    const days = Object.keys(orignal) as CalendarDayEnum[];
     if (!toCalcul && orignal) return orignal;
 
-    const matrix: QuantityMatrixType = QuantityUtils.baseQuantityMatrix();
-    Object.keys(CalendarDayEnum).forEach((day) => {
-      const day_ = day as CalendarDayEnum;
+    const matrix: QuantityMatrixType = QuantityUtils.baseQuantityMatrix(days);
 
-      matrix[day_] = {
-        comingQty: orignal[day_].comingQty - toCalcul[day_].comingQty,
-        goingQty: orignal[day_].goingQty - toCalcul[day_].goingQty,
+    days.forEach((day) => {
+      matrix[day] = {
+        comingQty: orignal[day].comingQty - toCalcul[day].comingQty,
+        goingQty: orignal[day].goingQty - toCalcul[day].goingQty,
       };
     });
     return matrix;

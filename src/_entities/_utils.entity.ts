@@ -1,4 +1,5 @@
 import _ from "lodash";
+import { GradeUtils } from "../utils/grade.utils";
 import { QuantityMatrixType, QuantityUtils } from "../utils/quantity.utils";
 import { getSchoolWhereClassId } from "../views/content/map/component/organism/SchoolPoints";
 import { CalendarDayEnum } from "./calendar.entity";
@@ -44,13 +45,20 @@ export class EntityUtils {
   ): AssociatedSchoolType[] {
     return associatedDBPoint.map((item) => {
       const school = getSchoolWhereClassId(item.grade_id);
+      const gradeRules: CalendarDayEnum[] =
+        GradeUtils.getGrade(item.grade_id).calendar?.rules.map(
+          (rule) => rule.day
+        ) ?? [];
 
       return {
         schoolId: school?.id as number,
         idClassToSchool: item.id,
         gradeId: item.grade_id,
         quantity: item.quantity,
-        quantityMatrix: QuantityUtils.baseQuantityMatrix(item.quantity),
+        quantityMatrix: QuantityUtils.baseQuantityMatrix(
+          gradeRules,
+          item.quantity
+        ),
       };
     });
   }
