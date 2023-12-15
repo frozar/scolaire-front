@@ -27,10 +27,16 @@ export default function (props: { school: AssociatedSchoolType }) {
 
   const tripMatrix: QuantityMatrixType[] = StopUtils.getGradeTrips(
     stopDetailsItem()?.id as number
-  )
-    // eslint-disable-next-line solid/reactivity
+  ) // eslint-disable-next-line solid/reactivity
     .filter((item) => item.gradeId == props.school.gradeId)
     .flatMap((item) => item.matrix) as QuantityMatrixType[];
+
+  let displayMatrix = QuantityUtils.calculateMatrix(
+    orignalMatrix,
+    tripMatrix[0]
+  );
+  if (tripMatrix.length > 1)
+    displayMatrix = QuantityUtils.calculateMatrix(displayMatrix, tripMatrix[1]);
 
   async function onClickDelete() {
     AssociatedUtils.deleteAssociated(props.school.idClassToSchool);
@@ -58,12 +64,7 @@ export default function (props: { school: AssociatedSchoolType }) {
           </p>
 
           <CollapsibleElement title="Quantités restantes">
-            <QuantityTable
-              matrix={QuantityUtils.calculateMatrix(
-                orignalMatrix,
-                tripMatrix[0]
-              )}
-            />
+            <QuantityTable matrix={displayMatrix} />
           </CollapsibleElement>
         </div>
 

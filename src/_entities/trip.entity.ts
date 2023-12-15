@@ -1,6 +1,7 @@
 import L from "leaflet";
 import { NatureEnum } from "../type";
 import { QuantityUtils } from "../utils/quantity.utils";
+import { StopUtils } from "../utils/stop.utils";
 import { getLines } from "../views/content/map/component/organism/BusLines";
 import { getSchools } from "../views/content/map/component/organism/SchoolPoints";
 import { getStops } from "../views/content/map/component/organism/StopPoints";
@@ -292,12 +293,16 @@ function formatTripPointType(
           nature: associatedPoint.nature,
           passageTime: dbPoint.passage_time,
           grades: dbPoint.grades.map((grade) => {
+            const stopGradeQuantity = StopUtils.get(
+              dbPoint.stop_id
+            ).associated.filter((grade_) => grade_.gradeId == grade.grade_id)[0]
+              .quantity;
             return {
               gradeId: grade.grade_id,
-              quantity: grade.quantity,
+              quantity: stopGradeQuantity,
               matrix: QuantityUtils.buildQuantityMatrix(
                 days,
-                grade.quantity,
+                stopGradeQuantity,
                 tripDirection
               ),
             };
