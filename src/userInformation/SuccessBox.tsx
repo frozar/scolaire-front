@@ -1,6 +1,6 @@
-import { createSignal, createEffect, JSXElement } from "solid-js";
-import CrossButton from "./CrossButton";
+import { JSXElement, createEffect, createSignal } from "solid-js";
 import { removeUserInformation } from "../signaux";
+import CrossButton from "./CrossButton";
 
 function SuccessIcon() {
   return (
