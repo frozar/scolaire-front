@@ -9,8 +9,14 @@ import { COLOR_STOP_FOCUS, COLOR_WAYPOINT } from "../../constant";
 import Point from "../atom/Point";
 
 import { GradeTripType } from "../../../../../_entities/grade.entity";
+import {
+  TripDirectionEntity,
+  TripDirectionEnum,
+} from "../../../../../_entities/trip-direction.entity";
 import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
 import { updatePointColor } from "../../../../../leafletUtils";
+import { addNewUserInformation } from "../../../../../signaux";
+import { MessageLevelEnum, MessageTypeEnum } from "../../../../../type";
 import { CurrentDrawTripUtils } from "../../../../../utils/currentDrawTrip.utils";
 import {
   addLineCheckableStop,
@@ -115,6 +121,22 @@ function onClick(point: StopType) {
           return;
 
         case DrawTripStep.editTrip:
+          const tripDirection = TripDirectionEntity.FindDirectionById(
+            currentDrawTrip().tripDirectionId
+          ).type;
+
+          const firstPointOfTrip = currentDrawTrip().tripPoints.length == 0;
+
+          if (tripDirection == TripDirectionEnum.coming && firstPointOfTrip) {
+            return addNewUserInformation({
+              displayed: true,
+              level: MessageLevelEnum.error,
+              type: MessageTypeEnum.global,
+              content:
+                "Lors de la construction d'une course retour à la maison, veuillez d'abord sélectionner une école et finir sur un arrêt.",
+            });
+          }
+
           updateTripAndWaypoints(point);
           break;
       }

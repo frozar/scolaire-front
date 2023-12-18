@@ -1,8 +1,14 @@
 import L from "leaflet";
 import { createEffect } from "solid-js";
 import { SchoolType } from "../../../../../_entities/school.entity";
+import {
+  TripDirectionEntity,
+  TripDirectionEnum,
+} from "../../../../../_entities/trip-direction.entity";
 import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
 import { updatePointColor } from "../../../../../leafletUtils";
+import { addNewUserInformation } from "../../../../../signaux";
+import { MessageLevelEnum, MessageTypeEnum } from "../../../../../type";
 import { CurrentDrawTripUtils } from "../../../../../utils/currentDrawTrip.utils";
 import {
   AddLineStep,
@@ -80,6 +86,22 @@ const onClick = (point: SchoolType) => {
           return;
 
         case DrawTripStep.editTrip:
+          const tripDirection = TripDirectionEntity.FindDirectionById(
+            currentDrawTrip().tripDirectionId
+          ).type;
+
+          const firstPointOfTrip = currentDrawTrip().tripPoints.length == 0;
+
+          if (tripDirection == TripDirectionEnum.going && firstPointOfTrip) {
+            return addNewUserInformation({
+              displayed: true,
+              level: MessageLevelEnum.error,
+              type: MessageTypeEnum.global,
+              content:
+                "Lors de la construction d'une course aller vers l'école, veuillez d'abord sélectionner un arret et finir sur une école.",
+            });
+          }
+
           updateTripAndWaypoints(point);
           break;
       }
