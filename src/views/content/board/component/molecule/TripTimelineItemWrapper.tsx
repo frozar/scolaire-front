@@ -55,11 +55,7 @@ export function TripTimelineItemWrapper(props: TripTimelineItemWrapperProps) {
       );
     } else {
       setQuantity(
-        QuantityUtils.DropQuantity(
-          props.trip.tripPoints,
-          props.indice,
-          setQuantity
-        )
+        QuantityUtils.DropQuantity(props.trip.tripPoints, props.indice)
       );
     }
   }
@@ -82,10 +78,9 @@ export function TripTimelineItemWrapper(props: TripTimelineItemWrapperProps) {
     let total = 0;
     points.every((item, index) => {
       if (index < indice) {
-        total += item.grades.reduce(
-          (total, grade) => total + grade.quantity,
-          0
-        );
+        total += item.grades.reduce((total, grade) => {
+          return total + grade.quantity;
+        }, 0);
         return true;
       } else return false;
     });
@@ -105,7 +100,7 @@ export function TripTimelineItemWrapper(props: TripTimelineItemWrapperProps) {
     if (props.tripPoint.nature === NatureEnum.stop) {
       const result = bufferTotal - quantity();
       bufferTotal -= result;
-      return "- " + result;
+      return result;
     } else return "+ " + tripTotalQuantity;
   }
 
@@ -113,7 +108,7 @@ export function TripTimelineItemWrapper(props: TripTimelineItemWrapperProps) {
   function getToCalculQuantity(): string {
     const appendQuantity = tripDirection().type == TripDirectionEnum.going;
     if (appendQuantity) {
-      return String(getToAppendQuantity());
+      return getToAppendQuantity() + "";
     } else {
       if (
         !QuantityUtils.haveSchoolBefore(props.trip.tripPoints, props.indice)
@@ -128,7 +123,7 @@ export function TripTimelineItemWrapper(props: TripTimelineItemWrapperProps) {
         return "--";
       }
 
-      return String(getToDropQuantity());
+      return "-" + getToDropQuantity();
     }
   }
 
