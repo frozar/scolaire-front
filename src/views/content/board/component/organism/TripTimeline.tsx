@@ -1,7 +1,7 @@
 import { For, Setter, Show } from "solid-js";
 import { TripType } from "../../../../../_entities/trip.entity";
 import { TripTimelineAddPointButton } from "../atom/TripTimelineAddPointButton";
-import { TripTimelineItem } from "../atom/TripTimelineItem";
+import { TripTimelineItemWrapper } from "../molecule/TripTimelineItemWrapper";
 import { onBoard } from "../template/ContextManager";
 
 export function TripTimeline(props: {
@@ -22,7 +22,7 @@ export function TripTimeline(props: {
                 <TripTimelineAddPointButton indice={i()} />
               </Show>
 
-              <TripTimelineItem
+              <TripTimelineItemWrapper
                 tripPoint={point}
                 indice={i()}
                 trip={props.trip}
