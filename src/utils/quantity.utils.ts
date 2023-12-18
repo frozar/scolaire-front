@@ -215,8 +215,7 @@ export namespace QuantityUtils {
     return tripTotalQuantities;
   }
 
-  export // TODO: Simplify
-  function SumQuantity(tripPoints: TripPointType[], indice: number) {
+  export function SumQuantity(tripPoints: TripPointType[], indice: number) {
     let sum = 0;
     let grades: { gradeId: number; schoolId: number; quantity: number }[] = [];
     for (let i = 0; i < indice + 1; i++) {
