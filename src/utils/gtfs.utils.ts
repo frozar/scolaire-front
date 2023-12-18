@@ -37,8 +37,9 @@ export namespace GtfsUtils {
         // Add a calendar
         serviceWindows.push({
           service_window_id: "weekday_peak_" + String(serviceId),
+          // 1 Hour interval with service frequency 1 to don't have duplicate trips
           start_time: "07:00:00",
-          end_time: "09:00:00",
+          end_time: "08:00:00",
           start_date: startDate,
           end_date: endDate,
           monday: trip.days.includes(CalendarDayEnum.monday) ? 1 : 0,
