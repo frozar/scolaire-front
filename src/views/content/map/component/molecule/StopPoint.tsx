@@ -12,7 +12,6 @@ import { GradeTripType } from "../../../../../_entities/grade.entity";
 import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
 import { updatePointColor } from "../../../../../leafletUtils";
 import { CurrentDrawTripUtils } from "../../../../../utils/currentDrawTrip.utils";
-import { QuantityUtils } from "../../../../../utils/quantity.utils";
 import {
   addLineCheckableStop,
   setAddLineCheckableStop,
@@ -52,16 +51,6 @@ const minRadius = 5;
 const maxRadius = 10;
 const rangeRadius = maxRadius - minRadius;
 
-//TODO Ne doit pas être placé ici
-// TODO: FIX
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function getAssociatedQuantity(point: StopType) {
-  return point.associated.filter(
-    (associatedSchool) =>
-      associatedSchool.schoolId === currentDrawTrip().schools[0].id
-  )[0].quantity;
-}
-
 function updateTripAndWaypoints(point: StopType) {
   const lastPoint = currentDrawTrip().tripPoints.at(-1);
 
@@ -75,6 +64,7 @@ function updateTripAndWaypoints(point: StopType) {
       grades.push({
         quantity: associated.quantity,
         gradeId: associated.gradeId,
+        matrix: associated.quantityMatrix,
       });
     }
   });
@@ -86,7 +76,8 @@ function updateTripAndWaypoints(point: StopType) {
     lon: point.lon,
     lat: point.lat,
     nature: point.nature,
-    grades: QuantityUtils.updateGradeTripQuantity(grades, point),
+    grades: grades,
+    passageTime: 0,
   });
 
   if (!lastPoint || point.leafletId != lastPoint.leafletId) {

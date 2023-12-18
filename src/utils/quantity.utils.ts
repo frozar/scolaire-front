@@ -1,8 +1,5 @@
-import { Setter } from "solid-js";
 import { AssociatedSchoolType } from "../_entities/_utils.entity";
 import { CalendarDayEnum } from "../_entities/calendar.entity";
-import { GradeTripType } from "../_entities/grade.entity";
-import { StopType } from "../_entities/stop.entity";
 import { TripDirectionEnum } from "../_entities/trip-direction.entity";
 import { TripPointType } from "../_entities/trip.entity";
 import { NatureEnum } from "../type";
@@ -96,28 +93,6 @@ export namespace QuantityUtils {
     }
   }
 
-  export function updateGradeTripQuantity(
-    grades: GradeTripType[],
-    point: StopType
-  ): GradeTripType[] {
-    // Get all corresponding gradeTrip
-    const gradeTrips = getLines()
-      .flatMap((line) => line.trips)
-      .flatMap((trip) => trip.tripPoints)
-      .filter((tripPoint) => tripPoint.id == point.id)
-      .flatMap((_tripPoint) => _tripPoint.grades);
-
-    // Substract used quantity
-    grades.forEach((grade) => {
-      gradeTrips.forEach((_gradeTrip) => {
-        if (_gradeTrip.gradeId == grade.gradeId) {
-          grade.quantity -= _gradeTrip.quantity;
-        }
-      });
-    });
-    return grades;
-  }
-
   export function calculateMatrix(
     orignal: QuantityMatrixType,
     toCalcul: QuantityMatrixType
@@ -172,16 +147,12 @@ export namespace QuantityUtils {
    * then if the point is school set his quantity to the total quantity
    * else calcul the remaining quantity to drop for the indexed stop
    **/
-  export function DropQuantity(
-    tripPoints: TripPointType[],
-    indice: number,
-    setQuantity: Setter<number>
-  ) {
+  export function DropQuantity(tripPoints: TripPointType[], indice: number) {
     if (
       !QuantityUtils.haveSchoolBefore(tripPoints, indice) &&
       tripPoints[indice].nature != NatureEnum.school
     ) {
-      return setQuantity(0);
+      return 0;
     }
 
     // * Get splitted array
@@ -193,20 +164,25 @@ export namespace QuantityUtils {
       (item) => item.id == tripPoints[indice].id
     );
 
-    const tripTotalQuantities =
+    let tripTotalQuantities =
       QuantityUtils.getTripTotalQuantities(slicedTripPoint);
 
     switch (slicedTripPoint[indice].nature) {
       case NatureEnum.school:
-        setQuantity(tripTotalQuantities);
-        break;
+        return tripTotalQuantities;
       case NatureEnum.stop:
         // * For each point before the current point add these quantities if they has a school before them
         slicedTripPoint.every((item, index) => {
-          if (index > indice) return false;
-          if (!QuantityUtils.haveSchoolBefore(slicedTripPoint, indice)) {
+          if (
+            index > indice ||
+            !QuantityUtils.haveSchoolBefore(slicedTripPoint, indice)
+          ) {
             return false;
           } else {
+            return (tripTotalQuantities -= item.grades.reduce(
+              (total, grade) => total + grade.quantity,
+              0
+            ));
           }
         });
         break;
