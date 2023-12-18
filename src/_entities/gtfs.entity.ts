@@ -226,39 +226,7 @@ export namespace GtfsEntity {
         stop_name: school.name,
       });
     });
-    console.log("stops data =>", stops);
 
     return stops;
   }
-  // function formatStops(): StopMgType[] {
-  //   const test: StopMgType[] = getStops().map((stop) => {
-  //     return {
-  //       stop_lat: stop.lat,
-  //       stop_lon: stop.lon,
-  //       stop_id: stop.id + "-st",
-  //       stop_name: stop.name,
-  //       stop_code: "",
-  //       zone_id: "",
-  //       parent_station: "", // Not necessary because location_type = 0
-  //       stop_desc: "",
-  //       location_type: 0,
-  //     };
-  //   });
-
-  //   getSchools().forEach((school) => {
-  //     test.push({
-  //       stop_lat: school.lat,
-  //       stop_lon: school.lon,
-  //       stop_id: school.id + "-sc",
-  //       stop_name: school.name,
-  //       stop_code: "",
-  //       zone_id: "",
-  //       parent_station: "", // Not necessary because location_type = 0
-  //       stop_desc: "",
-  //       location_type: 0,
-  //     });
-  //   });
-
-  //   return test;
-  // }
 }
