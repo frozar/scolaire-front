@@ -1,8 +1,11 @@
-import { GtfsUtils } from "../utils/gtfs.utils";
 import { TripUtils } from "../utils/trip.utils";
 import { getLines } from "../views/content/map/component/organism/BusLines";
 import { getSchools } from "../views/content/map/component/organism/SchoolPoints";
 import { getStops } from "../views/content/map/component/organism/StopPoints";
+import {
+  TripDirectionEntity,
+  TripDirectionEnum,
+} from "./trip-direction.entity";
 
 // Precise GTFS files field definitions :
 // https://gtfs.org/en/schedule/reference/#field-definitions
@@ -86,27 +89,40 @@ export type MgDataType = {
   calendar_dates: CalendarDatesType[];
 };
 
+export type GtfsDataType = {
+  agency: AgencyDataType;
+};
+
+type AgencyDataType = {
+  agency_id: string;
+  agency_name: string;
+  agency_url: string;
+  agency_timezone: string;
+  agency_lang: string;
+  agency_phone: string;
+  agency_fare_url: string;
+  agency_email: string;
+};
+
 export namespace GtfsEntity {
-  export function formatData(): MgDataType {
-    const shapes = formatShapes();
-    const frequencies = formatFrequencies(shapes);
-    const { serviceWindows, calendarDates } =
-      GtfsUtils.getServiceWindowsAndCalendarDates();
+  // export function formatData(): MgDataType {
+  //   const shapes = formatShapes();
+  //   const frequencies = formatFrequencies(shapes);
+  //   const { serviceWindows, calendarDates } =
+  //     GtfsUtils.getServiceWindowsAndCalendarDates();
 
+  //   return {
+  //     stops: formatStops(),
+  //     shapes,
+  //     frequencies,
+  //     meta: getMetaData(),
+  //     service_windows: serviceWindows,
+  //     calendar_dates: calendarDates,
+  //   };
+  // }
+  export function formatData(): GtfsDataType {
     return {
-      stops: formatStops(),
-      shapes,
-      frequencies,
-      meta: getMetaData(),
-      service_windows: serviceWindows,
-      calendar_dates: calendarDates,
-    };
-  }
-
-  // TODO: Use the correct transit agency information
-  function getMetaData(): MetaType[] {
-    return [
-      {
+      agency: {
         agency_id: "AGENCE",
         agency_name: "AGENCE",
         agency_url: "https://agence.re",
@@ -115,13 +131,30 @@ export namespace GtfsEntity {
         agency_phone: "",
         agency_fare_url: "",
         agency_email: "",
-        start_date: "20200101",
-        end_date: "20201231",
       },
-    ];
+    };
   }
 
+  // TODO: Use the correct transit agency information
+  // function getMetaData(): MetaType[] {
+  //   return [
+  //     {
+  //       agency_id: "AGENCE",
+  //       agency_name: "AGENCE",
+  //       agency_url: "https://agence.re",
+  //       agency_timezone: "Indian/Reunion",
+  //       agency_lang: "fr",
+  //       agency_phone: "",
+  //       agency_fare_url: "",
+  //       agency_email: "",
+  //       start_date: "20200101",
+  //       end_date: "20201231",
+  //     },
+  //   ];
+  // }
+
   // TODO: Use real data for service_window_id, frequency, direction
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   function formatFrequencies(shapes: ShapeType): FrequencyType[] {
     const frequencies: FrequencyType[] = [];
 
@@ -134,13 +167,22 @@ export namespace GtfsEntity {
         shape_id: tripId,
         service_window_id: "weekday_peak_1",
         frequency: 1,
-        direction: 0,
+        // direction: 0,
+        // ! Direction ne correspond pas à aller / retour mais dans le sens de la shape ou non !
+        // ! Donc si diff shape pour aller/retour direction sera toujours 1
+        direction:
+          TripDirectionEntity.FindDirectionById(
+            TripUtils.get(Number(tripId)).tripDirectionId
+          ).type == TripDirectionEnum.going
+            ? 0
+            : 1,
       });
     }
 
     return frequencies;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   function formatShapes(): ShapeType {
     const shapes: ShapeType = {};
     const trips = getLines().flatMap((line) => line.trips);
@@ -156,7 +198,7 @@ export namespace GtfsEntity {
 
     return shapes;
   }
-
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   function formatStops(): StopMgType[] {
     const test: StopMgType[] = getStops().map((stop) => {
       return {
