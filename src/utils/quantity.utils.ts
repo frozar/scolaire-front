@@ -1,9 +1,14 @@
+import { Setter } from "solid-js";
 import { AssociatedSchoolType } from "../_entities/_utils.entity";
 import { CalendarDayEnum } from "../_entities/calendar.entity";
 import { GradeTripType } from "../_entities/grade.entity";
 import { StopType } from "../_entities/stop.entity";
 import { TripDirectionEnum } from "../_entities/trip-direction.entity";
+import { TripPointType } from "../_entities/trip.entity";
+import { NatureEnum } from "../type";
 import { getLines } from "../views/content/map/component/organism/BusLines";
+import { GradeUtils } from "./grade.utils";
+import { TripUtils } from "./trip.utils";
 
 export type MatrixContentType = {
   goingQty: number;
@@ -129,5 +134,119 @@ export namespace QuantityUtils {
       };
     });
     return matrix;
+  }
+
+  export function haveSchoolBefore(
+    tripPoints: TripPointType[],
+    indice: number
+  ) {
+    if (indice == 0 && tripPoints[indice].nature == NatureEnum.stop) {
+      return false;
+    }
+    const sliced = tripPoints.slice(0, indice);
+    return sliced.some((item) => item.nature == NatureEnum.school);
+  }
+
+  export function getTripTotalQuantities(tripPoints: TripPointType[]) {
+    let tripTotalQuantities = 0;
+
+    //* For each stops add each grade quantity to SchoolStartQuantity
+    tripPoints.forEach((points, index) => {
+      if (
+        points.nature == NatureEnum.stop &&
+        haveSchoolBefore(tripPoints, index)
+      )
+        tripTotalQuantities += points.grades.reduce(
+          (total, item) => total + item.quantity,
+          0
+        );
+    });
+
+    return tripTotalQuantities;
+  }
+
+  /*
+   * Here first i check if the indexed points is after a school, if not exit & set his Quantity to 0
+   * then I recover the tripoint table cut so as to recover only the points which are after a school
+   * then i get the total quantity of the trip
+   * then if the point is school set his quantity to the total quantity
+   * else calcul the remaining quantity to drop for the indexed stop
+   **/
+  export function DropQuantity(
+    tripPoints: TripPointType[],
+    indice: number,
+    setQuantity: Setter<number>
+  ) {
+    if (
+      !QuantityUtils.haveSchoolBefore(tripPoints, indice) &&
+      tripPoints[indice].nature != NatureEnum.school
+    ) {
+      return setQuantity(0);
+    }
+
+    // * Get splitted array
+    const slicedTripPoint =
+      TripUtils.getSplitedTripPointsAtFirstSchoolPosition(tripPoints);
+
+    // * Redefine the indice compared to the new table
+    indice = slicedTripPoint.findIndex(
+      (item) => item.id == tripPoints[indice].id
+    );
+
+    const tripTotalQuantities =
+      QuantityUtils.getTripTotalQuantities(slicedTripPoint);
+
+    switch (slicedTripPoint[indice].nature) {
+      case NatureEnum.school:
+        setQuantity(tripTotalQuantities);
+        break;
+      case NatureEnum.stop:
+        // * For each point before the current point add these quantities if they has a school before them
+        slicedTripPoint.every((item, index) => {
+          if (index > indice) return false;
+          if (!QuantityUtils.haveSchoolBefore(slicedTripPoint, indice)) {
+            return false;
+          } else {
+          }
+        });
+        break;
+    }
+
+    return tripTotalQuantities;
+  }
+
+  export function SumQuantity(tripPoints: TripPointType[], indice: number) {
+    let sum = 0;
+    let grades: { gradeId: number; schoolId: number; quantity: number }[] = [];
+    for (let i = 0; i < indice + 1; i++) {
+      const gradesOfCurrentPoint = tripPoints[i].grades.map((grade) => {
+        return {
+          gradeId: grade.gradeId,
+          schoolId: GradeUtils.getSchoolId(grade.gradeId),
+          quantity: grade.quantity,
+        };
+      });
+      grades.push(...gradesOfCurrentPoint);
+
+      switch (tripPoints[i].nature) {
+        case NatureEnum.stop:
+          gradesOfCurrentPoint.forEach((grade) => (sum += grade.quantity));
+          break;
+        case NatureEnum.school:
+          let quantityToSubstract = 0;
+          grades.forEach((grade) => {
+            if (GradeUtils.getSchoolId(grade.gradeId) == tripPoints[i].id) {
+              quantityToSubstract += grade.quantity;
+            }
+          });
+          grades = grades.filter(
+            (grade) => GradeUtils.getSchoolId(grade.gradeId) != tripPoints[i].id
+          );
+          sum -= quantityToSubstract;
+          break;
+      }
+    }
+
+    return sum;
   }
 }
