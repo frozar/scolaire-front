@@ -1,6 +1,7 @@
 import { LineType } from "../_entities/line.entity";
 import { TripDirectionEnum } from "../_entities/trip-direction.entity";
-import { TripType } from "../_entities/trip.entity";
+import { TripPointType, TripType } from "../_entities/trip.entity";
+import { NatureEnum } from "../type";
 import { getLines } from "../views/content/map/component/organism/BusLines";
 
 export namespace TripUtils {
@@ -60,5 +61,18 @@ export namespace TripUtils {
       case TripDirectionEnum.roundTrip:
         return "Aller/Retour";
     }
+  }
+
+  function getIndexOfFirstSchool(tripPoints: TripPointType[]) {
+    return tripPoints.findIndex((item) => item.nature == NatureEnum.school);
+  }
+
+  export function getSplitedTripPointsAtFirstSchoolPosition(
+    tripPoints: TripPointType[]
+  ) {
+    return [...tripPoints].slice(
+      getIndexOfFirstSchool(tripPoints),
+      tripPoints.length
+    );
   }
 }
