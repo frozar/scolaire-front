@@ -92,6 +92,12 @@ export type MgDataType = {
 export type GtfsDataType = {
   agency: AgencyDataType;
   stops: GtfsStopType[];
+  routes: GtfsRouteType[];
+};
+
+type GtfsRouteType = {
+  route_id: number;
+  route_long_name: string;
 };
 
 type GtfsStopType = {
@@ -141,6 +147,7 @@ export namespace GtfsEntity {
         agency_email: "",
       },
       stops: formatStops(),
+      routes: formatRoutes(),
     };
   }
 
@@ -161,7 +168,25 @@ export namespace GtfsEntity {
   //     },
   //   ];
   // }
+  function formatRoutes(): GtfsRouteType[] {
+    const routes: GtfsRouteType[] = [];
+    const tripIds = getLines()
+      .flatMap((line) => line.trips)
+      .map((trip) => trip.id as number);
 
+    for (const tripId of tripIds) {
+      const line = TripUtils.getLine(Number(tripId));
+
+      if (!routes.map((route) => route.route_id).includes(line.id as number)) {
+        routes.push({
+          route_id: line.id as number,
+          route_long_name: line.name as string,
+        });
+      }
+    }
+
+    return routes;
+  }
   // TODO: Use real data for service_window_id, frequency, direction
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   function formatFrequencies(shapes: ShapeType): FrequencyType[] {
