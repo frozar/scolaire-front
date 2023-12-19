@@ -96,6 +96,7 @@ export type GtfsDataType = {
   routes: GtfsRouteType[];
   calendars: GtfsCalendarType[];
   calendar_dates: GtfsCalendarDatesType[];
+  shapes: ShapeType;
 };
 
 type GtfsRouteType = {
@@ -167,6 +168,7 @@ export namespace GtfsEntity {
       routes: formatRoutes(),
       calendars,
       calendar_dates: calendarDates,
+      shapes: formatShapes(),
     };
   }
 
