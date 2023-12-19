@@ -10,6 +10,7 @@ import { updatePointColor } from "../../../../../leafletUtils";
 import { addNewUserInformation } from "../../../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../../../type";
 import { CurrentDrawTripUtils } from "../../../../../utils/currentDrawTrip.utils";
+import { TripUtils } from "../../../../../utils/trip.utils";
 import {
   AddLineStep,
   addLineCurrentStep,
@@ -98,7 +99,7 @@ const onClick = (point: SchoolType) => {
               level: MessageLevelEnum.error,
               type: MessageTypeEnum.global,
               content:
-                "Lors de la construction d'une course aller vers l'école, veuillez d'abord sélectionner un arret et finir sur une école.",
+                "Veuillez séléctionner un arrêt pour débuter votre course et finir sur une école.",
             });
           }
 
@@ -178,6 +179,7 @@ const onRightClick = (point: SchoolType) => {
   )[0];
 
   if (onBoard() == "trip-draw" && isInTripUnderConstruction != undefined) {
+    if (TripUtils.canRemoveSchoolPointFromTrip(point.leafletId)) return;
     CurrentDrawTripUtils.removePoint(point);
 
     const waypoints = currentDrawTrip().waypoints;
@@ -191,7 +193,6 @@ const onRightClick = (point: SchoolType) => {
     }
 
     circle?.setStyle({ fillColor: COLOR_SCHOOL_FOCUS });
-
     CurrentDrawTripUtils.removeTripPoint(point.id, point.nature);
   }
 };

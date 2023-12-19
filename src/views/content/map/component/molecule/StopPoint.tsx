@@ -18,6 +18,7 @@ import { updatePointColor } from "../../../../../leafletUtils";
 import { addNewUserInformation } from "../../../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../../../type";
 import { CurrentDrawTripUtils } from "../../../../../utils/currentDrawTrip.utils";
+import { TripUtils } from "../../../../../utils/trip.utils";
 import {
   addLineCheckableStop,
   setAddLineCheckableStop,
@@ -133,7 +134,7 @@ function onClick(point: StopType) {
               level: MessageLevelEnum.error,
               type: MessageTypeEnum.global,
               content:
-                "Lors de la construction d'une course retour à la maison, veuillez d'abord sélectionner une école et finir sur un arrêt.",
+                "Veuillez sélectionner une école pour débuter votre course et finir sur une arrêt.",
             });
           }
 
@@ -218,6 +219,10 @@ const onRightClick = (stop: StopType) => {
   )[0];
 
   if (onBoard() == "trip-draw" && isInTripUnderConstruction != undefined) {
+    if (TripUtils.canRemoveStopFromTrip(stop.leafletId)) return;
+
+    console.log("before removing stop");
+
     CurrentDrawTripUtils.removePoint(stop);
 
     // Update waypoints
