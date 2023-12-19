@@ -9,9 +9,16 @@ import { COLOR_STOP_FOCUS, COLOR_WAYPOINT } from "../../constant";
 import Point from "../atom/Point";
 
 import { GradeTripType } from "../../../../../_entities/grade.entity";
+import {
+  TripDirectionEntity,
+  TripDirectionEnum,
+} from "../../../../../_entities/trip-direction.entity";
 import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
 import { updatePointColor } from "../../../../../leafletUtils";
+import { addNewUserInformation } from "../../../../../signaux";
+import { MessageLevelEnum, MessageTypeEnum } from "../../../../../type";
 import { CurrentDrawTripUtils } from "../../../../../utils/currentDrawTrip.utils";
+import { TripUtils } from "../../../../../utils/trip.utils";
 import {
   addLineCheckableStop,
   setAddLineCheckableStop,
@@ -115,6 +122,22 @@ function onClick(point: StopType) {
           return;
 
         case DrawTripStep.editTrip:
+          const tripDirection = TripDirectionEntity.FindDirectionById(
+            currentDrawTrip().tripDirectionId
+          ).type;
+
+          const firstPointOfTrip = currentDrawTrip().tripPoints.length == 0;
+
+          if (tripDirection == TripDirectionEnum.coming && firstPointOfTrip) {
+            return addNewUserInformation({
+              displayed: true,
+              level: MessageLevelEnum.error,
+              type: MessageTypeEnum.global,
+              content:
+                "Veuillez sélectionner une école pour débuter votre course et finir sur une arrêt.",
+            });
+          }
+
           updateTripAndWaypoints(point);
           break;
       }
@@ -196,6 +219,10 @@ const onRightClick = (stop: StopType) => {
   )[0];
 
   if (onBoard() == "trip-draw" && isInTripUnderConstruction != undefined) {
+    if (TripUtils.canRemoveStopFromTrip(stop.leafletId)) return;
+
+    console.log("before removing stop");
+
     CurrentDrawTripUtils.removePoint(stop);
 
     // Update waypoints

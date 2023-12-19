@@ -133,6 +133,18 @@ export function TripTimelineItemWrapper(props: TripTimelineItemWrapperProps) {
       const pointId = points[indice].id;
       const pointNature = points[indice].nature;
 
+      if (
+        pointNature == NatureEnum.school &&
+        TripUtils.canRemoveSchoolPointFromTrip(points[indice].leafletId)
+      ) {
+        return;
+      }
+      if (
+        pointNature == NatureEnum.school &&
+        TripUtils.canRemoveSchoolPointFromTrip(points[indice].leafletId)
+      ) {
+        return;
+      }
       // TODO pas de l'ordre de la timeline !!
       const circle = linkMap.get(props.trip.tripPoints[indice].leafletId);
       pointNature == NatureEnum.stop

@@ -1,9 +1,16 @@
 import L from "leaflet";
 import { createEffect } from "solid-js";
 import { SchoolType } from "../../../../../_entities/school.entity";
+import {
+  TripDirectionEntity,
+  TripDirectionEnum,
+} from "../../../../../_entities/trip-direction.entity";
 import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
 import { updatePointColor } from "../../../../../leafletUtils";
+import { addNewUserInformation } from "../../../../../signaux";
+import { MessageLevelEnum, MessageTypeEnum } from "../../../../../type";
 import { CurrentDrawTripUtils } from "../../../../../utils/currentDrawTrip.utils";
+import { TripUtils } from "../../../../../utils/trip.utils";
 import {
   AddLineStep,
   addLineCurrentStep,
@@ -80,6 +87,22 @@ const onClick = (point: SchoolType) => {
           return;
 
         case DrawTripStep.editTrip:
+          const tripDirection = TripDirectionEntity.FindDirectionById(
+            currentDrawTrip().tripDirectionId
+          ).type;
+
+          const firstPointOfTrip = currentDrawTrip().tripPoints.length == 0;
+
+          if (tripDirection == TripDirectionEnum.going && firstPointOfTrip) {
+            return addNewUserInformation({
+              displayed: true,
+              level: MessageLevelEnum.error,
+              type: MessageTypeEnum.global,
+              content:
+                "Veuillez séléctionner un arrêt pour débuter votre course et finir sur une école.",
+            });
+          }
+
           updateTripAndWaypoints(point);
           break;
       }
@@ -156,6 +179,7 @@ const onRightClick = (point: SchoolType) => {
   )[0];
 
   if (onBoard() == "trip-draw" && isInTripUnderConstruction != undefined) {
+    if (TripUtils.canRemoveSchoolPointFromTrip(point.leafletId)) return;
     CurrentDrawTripUtils.removePoint(point);
 
     const waypoints = currentDrawTrip().waypoints;
@@ -169,7 +193,6 @@ const onRightClick = (point: SchoolType) => {
     }
 
     circle?.setStyle({ fillColor: COLOR_SCHOOL_FOCUS });
-
     CurrentDrawTripUtils.removeTripPoint(point.id, point.nature);
   }
 };
