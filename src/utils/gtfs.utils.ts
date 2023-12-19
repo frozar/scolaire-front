@@ -6,6 +6,7 @@ import {
 import {
   GtfsCalendarDatesType,
   GtfsCalendarType,
+  GtfsTripMappingCalendarType,
 } from "../_entities/gtfs.entity";
 import { TripType } from "../_entities/trip.entity";
 import { CalendarUtils } from "../views/content/calendar/calendar.utils";
@@ -108,17 +109,20 @@ export namespace GtfsUtils {
   export function getServiceWindowsAndCalendarDates(): {
     calendars: GtfsCalendarType[];
     calendarDates: GtfsCalendarDatesType[];
+    tripIdMappingCalendarId: GtfsTripMappingCalendarType;
   } {
     let serviceId = 0;
     const trips = TripUtils.getAll();
     const gtfsCalendars: string[] = [];
     const calendars: GtfsCalendarType[] = [];
     const calendarDates: GtfsCalendarDatesType[] = [];
+    const tripIdMappingCalendarId: GtfsTripMappingCalendarType = {};
 
     trips.forEach((trip) => {
       const { startDate, endDate } = GtfsUtils.getStartEndDates(trip);
       if (!gtfsCalendars.includes(startDate + endDate + trip.days.toString())) {
         serviceId += 1;
+        tripIdMappingCalendarId[trip.id as number] = serviceId;
         gtfsCalendars.push(startDate + endDate + trip.days.toString());
 
         // Add a calendar
@@ -181,7 +185,11 @@ export namespace GtfsUtils {
       }
     });
 
-    return { calendars, calendarDates };
+    return {
+      calendars,
+      calendarDates,
+      tripIdMappingCalendarId,
+    };
   }
 
   export function getPublicHolidaysExceptions(
