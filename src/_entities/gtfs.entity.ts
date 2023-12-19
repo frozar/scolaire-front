@@ -96,6 +96,7 @@ export type GtfsDataType = {
   routes: GtfsRouteType[];
   calendars: GtfsCalendarType[];
   calendar_dates: GtfsCalendarDatesType[];
+  shapes: ShapeType;
 };
 
 type GtfsRouteType = {
@@ -167,6 +168,7 @@ export namespace GtfsEntity {
       routes: formatRoutes(),
       calendars,
       calendar_dates: calendarDates,
+      shapes: formatShapes(),
     };
   }
 
@@ -245,7 +247,7 @@ export namespace GtfsEntity {
       shapes[tripId] = { shape_id: tripId, coords: [] };
 
       trip.latLngs.forEach((latLng) => {
-        shapes[tripId]["coords"].push([latLng.lat, latLng.lng]);
+        shapes[tripId]["coords"].push([latLng.lng, latLng.lat]);
       });
     });
 
