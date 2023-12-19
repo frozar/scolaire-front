@@ -247,7 +247,7 @@ export namespace GtfsEntity {
       shapes[tripId] = { shape_id: tripId, coords: [] };
 
       trip.latLngs.forEach((latLng) => {
-        shapes[tripId]["coords"].push([latLng.lat, latLng.lng]);
+        shapes[tripId]["coords"].push([latLng.lng, latLng.lat]);
       });
     });
 
