@@ -3,7 +3,10 @@ import {
   CalendarType,
   PublicHolidayType,
 } from "../_entities/calendar.entity";
-import { CalendarDatesType, ServiceWindowType } from "../_entities/gtfs.entity";
+import {
+  GtfsCalendarDatesType,
+  GtfsCalendarType,
+} from "../_entities/gtfs.entity";
 import { TripType } from "../_entities/trip.entity";
 import { CalendarUtils } from "../views/content/calendar/calendar.utils";
 import { calendarsPeriod } from "../views/content/calendar/template/Calendar";
@@ -12,17 +15,105 @@ import { CalendarPeriodUtils } from "./calendarPeriod.utils";
 import { TripUtils } from "./trip.utils";
 
 export namespace GtfsUtils {
+  // // TODO: Refactor
+  // // Exceptionally calendar_dates.txt is computed front-side
+  // export function getServiceWindowsAndCalendarDates(): {
+  //   serviceWindows: ServiceWindowType[];
+  //   calendarDates: CalendarDatesType[];
+  // } {
+  //   let serviceId = 0;
+  //   const trips = TripUtils.getAll();
+  //   const gtfsCalendars: string[] = [];
+  //   const serviceWindows: ServiceWindowType[] = [];
+  //   const calendarDates: CalendarDatesType[] = [];
+
+  //   trips.forEach((trip) => {
+  //     const { startDate, endDate } = GtfsUtils.getStartEndDates(trip);
+  //     if (!gtfsCalendars.includes(startDate + endDate + trip.days.toString())) {
+  //       serviceId += 1;
+  //       gtfsCalendars.push(startDate + endDate + trip.days.toString());
+
+  //       // TODO: Use real values for start_time and end_time ?
+  //       // TODO: Find a way to not use "weekday_peak_" ?
+  //       // TODO: Manage service_id here to avoid desync
+
+  //       // Add a calendar
+  //       serviceWindows.push({
+  //         service_window_id: "weekday_peak_" + String(serviceId),
+  //         // 1 Hour interval with service frequency 1 to don't have duplicate trips
+  //         start_time: "07:00:00",
+  //         end_time: "08:00:00",
+  //         start_date: startDate,
+  //         end_date: endDate,
+  //         monday: trip.days.includes(CalendarDayEnum.monday) ? 1 : 0,
+  //         tuesday: trip.days.includes(CalendarDayEnum.tuesday) ? 1 : 0,
+  //         wednesday: trip.days.includes(CalendarDayEnum.wednesday) ? 1 : 0,
+  //         thursday: trip.days.includes(CalendarDayEnum.thursday) ? 1 : 0,
+  //         friday: trip.days.includes(CalendarDayEnum.friday) ? 1 : 0,
+  //         saturday: trip.days.includes(CalendarDayEnum.saturday) ? 1 : 0,
+  //         sunday: trip.days.includes(CalendarDayEnum.sunday) ? 1 : 0,
+  //       });
+
+  //       // Add added date to exceptions
+  //       const gradeIds = trip.grades.map((grade) => grade.id as number);
+
+  //       const newExceptionDates = GtfsUtils.getAddedDateExceptions(
+  //         serviceId,
+  //         gradeIds,
+  //         calendarDates
+  //       );
+
+  //       newExceptionDates.forEach((newExceptionDate) =>
+  //         calendarDates.push(newExceptionDate)
+  //       );
+
+  //       // Add vacations to exceptions
+  //       const periodIds = getSchools()
+  //         .flatMap((school) => school.grades)
+  //         .filter((_grade) => gradeIds.includes(_grade.id as number))
+  //         .map(
+  //           (grade) =>
+  //             (grade.calendar as CalendarType).calendarPeriodId as number
+  //         );
+
+  //       const newVacationsExceptionsDate = GtfsUtils.getVacationsExceptions(
+  //         periodIds,
+  //         serviceId,
+  //         calendarDates
+  //       );
+
+  //       newVacationsExceptionsDate.forEach((newExceptionDate) =>
+  //         calendarDates.push(newExceptionDate)
+  //       );
+
+  //       // Add public holidays to exceptions
+  //       const newPublicHolidayExceptionDates =
+  //         GtfsUtils.getPublicHolidaysExceptions(
+  //           periodIds,
+  //           serviceId,
+  //           calendarDates
+  //         );
+
+  //       newPublicHolidayExceptionDates.forEach((newExceptionDate) =>
+  //         calendarDates.push(newExceptionDate)
+  //       );
+  //     }
+  //   });
+
+  //   return { serviceWindows, calendarDates };
+  // }
+
   // TODO: Refactor
   // Exceptionally calendar_dates.txt is computed front-side
   export function getServiceWindowsAndCalendarDates(): {
-    serviceWindows: ServiceWindowType[];
-    calendarDates: CalendarDatesType[];
+    calendars: GtfsCalendarType[];
+    calendarDates: GtfsCalendarDatesType[];
   } {
     let serviceId = 0;
     const trips = TripUtils.getAll();
     const gtfsCalendars: string[] = [];
-    const serviceWindows: ServiceWindowType[] = [];
-    const calendarDates: CalendarDatesType[] = [];
+    const calendars: GtfsCalendarType[] = [];
+    const calendarDates: GtfsCalendarDatesType[] = [];
 
     trips.forEach((trip) => {
       const { startDate, endDate } = GtfsUtils.getStartEndDates(trip);
@@ -30,16 +121,9 @@ export namespace GtfsUtils {
         serviceId += 1;
         gtfsCalendars.push(startDate + endDate + trip.days.toString());
 
-        // TODO: Use real values for start_time and end_time ?
-        // TODO: Find a way to not use "weekday_peak_" ?
-        // TODO: Manage service_id here to avoid desync
-
         // Add a calendar
-        serviceWindows.push({
-          service_window_id: "weekday_peak_" + String(serviceId),
-          // 1 Hour interval with service frequency 1 to don't have duplicate trips
-          start_time: "07:00:00",
-          end_time: "08:00:00",
+        calendars.push({
+          id: serviceId,
           start_date: startDate,
           end_date: endDate,
           monday: trip.days.includes(CalendarDayEnum.monday) ? 1 : 0,
@@ -97,15 +181,15 @@ export namespace GtfsUtils {
       }
     });
 
-    return { serviceWindows, calendarDates };
+    return { calendars, calendarDates };
   }
 
   export function getPublicHolidaysExceptions(
     periodIds: number[],
     serviceId: number,
-    calendarDates: CalendarDatesType[]
-  ): CalendarDatesType[] {
-    const newCalendarDates: CalendarDatesType[] = [];
+    calendarDates: GtfsCalendarDatesType[]
+  ): GtfsCalendarDatesType[] {
+    const newCalendarDates: GtfsCalendarDatesType[] = [];
 
     const publicHolidays: PublicHolidayType[] = periodIds.flatMap(
       (periodId) => CalendarPeriodUtils.getById(periodId).publicHolidays
@@ -158,9 +242,9 @@ export namespace GtfsUtils {
   export function getVacationsExceptions(
     periodIds: number[],
     serviceId: number,
-    calendarDates: CalendarDatesType[]
-  ): CalendarDatesType[] {
-    const newCalendarDates: CalendarDatesType[] = [];
+    calendarDates: GtfsCalendarDatesType[]
+  ): GtfsCalendarDatesType[] {
+    const newCalendarDates: GtfsCalendarDatesType[] = [];
 
     const numberOfPeriods = periodIds.length;
     const vacationPeriods = periodIds.flatMap(
@@ -211,9 +295,9 @@ export namespace GtfsUtils {
   export function getAddedDateExceptions(
     serviceId: number,
     gradeIds: number[],
-    calendarDates: CalendarDatesType[]
-  ): CalendarDatesType[] {
-    const newCalendarDates: CalendarDatesType[] = [];
+    calendarDates: GtfsCalendarDatesType[]
+  ): GtfsCalendarDatesType[] {
+    const newCalendarDates: GtfsCalendarDatesType[] = [];
 
     let calendarIds = getSchools()
       .flatMap((school) => school.grades)
@@ -313,8 +397,8 @@ export namespace GtfsUtils {
   }
 
   export function isDateExceptionAlreadyAdded(
-    calendarDate: CalendarDatesType,
-    calendarDates: CalendarDatesType[]
+    calendarDate: GtfsCalendarDatesType,
+    calendarDates: GtfsCalendarDatesType[]
   ): boolean {
     for (const exceptionDate of calendarDates) {
       if (

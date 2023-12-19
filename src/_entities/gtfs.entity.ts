@@ -1,3 +1,4 @@
+import { GtfsUtils } from "../utils/gtfs.utils";
 import { TripUtils } from "../utils/trip.utils";
 import { getLines } from "../views/content/map/component/organism/BusLines";
 import { getSchools } from "../views/content/map/component/organism/SchoolPoints";
@@ -74,7 +75,7 @@ export type ServiceWindowType = {
   sunday: number;
 };
 
-export type CalendarDatesType = {
+export type GtfsCalendarDatesType = {
   service_id: number;
   date: string;
   exception_type: number;
@@ -86,13 +87,15 @@ export type MgDataType = {
   frequencies: FrequencyType[];
   meta: MetaType[];
   service_windows: ServiceWindowType[];
-  calendar_dates: CalendarDatesType[];
+  calendar_dates: GtfsCalendarDatesType[];
 };
 
 export type GtfsDataType = {
   agency: AgencyDataType;
   stops: GtfsStopType[];
   routes: GtfsRouteType[];
+  calendars: GtfsCalendarType[];
+  calendar_dates: GtfsCalendarDatesType[];
 };
 
 type GtfsRouteType = {
@@ -100,6 +103,18 @@ type GtfsRouteType = {
   route_long_name: string;
 };
 
+export type GtfsCalendarType = {
+  id: number;
+  monday: number;
+  tuesday: number;
+  wednesday: number;
+  thursday: number;
+  friday: number;
+  saturday: number;
+  sunday: number;
+  start_date: string;
+  end_date: string;
+};
 type GtfsStopType = {
   stop_lat: number;
   stop_lon: number;
@@ -135,6 +150,8 @@ export namespace GtfsEntity {
   //   };
   // }
   export function formatData(): GtfsDataType {
+    const { calendars, calendarDates } =
+      GtfsUtils.getServiceWindowsAndCalendarDates();
     return {
       agency: {
         agency_id: "AGENCE",
@@ -148,6 +165,8 @@ export namespace GtfsEntity {
       },
       stops: formatStops(),
       routes: formatRoutes(),
+      calendars,
+      calendar_dates: calendarDates,
     };
   }
 
