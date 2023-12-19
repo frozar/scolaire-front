@@ -16,7 +16,6 @@ export function ExportSelection(): JSXElement {
   function onClick(): void {
     if (exportGtfs()) {
       const data = GtfsEntity.formatData();
-      console.log("data", data);
       // TODO: Verify data to send is valid
       // if (
       //   data.calendar_dates.length != 0 &&
