@@ -91,6 +91,14 @@ export type MgDataType = {
 
 export type GtfsDataType = {
   agency: AgencyDataType;
+  stops: GtfsStopType[];
+};
+
+type GtfsStopType = {
+  stop_lat: number;
+  stop_lon: number;
+  stop_id: string;
+  stop_name: string;
 };
 
 type AgencyDataType = {
@@ -132,6 +140,7 @@ export namespace GtfsEntity {
         agency_fare_url: "",
         agency_email: "",
       },
+      stops: formatStops(),
     };
   }
 
@@ -198,36 +207,26 @@ export namespace GtfsEntity {
 
     return shapes;
   }
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  function formatStops(): StopMgType[] {
-    const test: StopMgType[] = getStops().map((stop) => {
+
+  function formatStops(): GtfsStopType[] {
+    const stops: GtfsStopType[] = getStops().map((stop) => {
       return {
         stop_lat: stop.lat,
         stop_lon: stop.lon,
         stop_id: stop.id + "-st",
         stop_name: stop.name,
-        stop_code: "",
-        zone_id: "",
-        parent_station: "", // Not necessary because location_type = 0
-        stop_desc: "",
-        location_type: 0,
       };
     });
 
     getSchools().forEach((school) => {
-      test.push({
+      stops.push({
         stop_lat: school.lat,
         stop_lon: school.lon,
         stop_id: school.id + "-sc",
         stop_name: school.name,
-        stop_code: "",
-        zone_id: "",
-        parent_station: "", // Not necessary because location_type = 0
-        stop_desc: "",
-        location_type: 0,
       });
     });
 
-    return test;
+    return stops;
   }
 }
