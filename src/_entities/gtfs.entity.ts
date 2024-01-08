@@ -101,11 +101,11 @@ export type GtfsDataType = {
   shapes: ShapeType;
   trips: GtfsTripType[];
   trip_mapping_calendar: GtfsTripMappingCalendarType;
-  stop_times: GtfsStopTimesTypes;
+  stop_times: GtfsStopTimesType;
 };
 export type GtfsTripMappingCalendarType = { [tripId: number]: number };
 
-type GtfsStopTimesTypes = {
+type GtfsStopTimesType = {
   trip_ids: number[];
   arrival_times: string[];
   departure_times: string[];
@@ -236,7 +236,7 @@ export namespace GtfsEntity {
     return { drop_off_type, pickup_type };
   }
 
-  function formatStopTimes(): GtfsStopTimesTypes {
+  function formatStopTimes(): GtfsStopTimesType {
     const trip_ids: number[] = [];
     const arrival_times: string[] = [];
     const departure_times: string[] = [];
