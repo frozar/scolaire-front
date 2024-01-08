@@ -223,6 +223,7 @@ export type TripPointType = {
   grades: GradeTripType[];
   // TODO: Rename to timeToReach
   passageTime: number;
+  startToTripPointDistance: number;
 };
 
 export type TripDBType = {
