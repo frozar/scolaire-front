@@ -8,6 +8,7 @@ import {
   TripDirectionEntity,
   TripDirectionEnum,
 } from "./trip-direction.entity";
+import { TripPointType, TripType } from "./trip.entity";
 
 // Precise GTFS files field definitions :
 // https://gtfs.org/en/schedule/reference/#field-definitions
@@ -198,16 +199,52 @@ export namespace GtfsEntity {
     };
   }
 
-  // TODO: Clean and refactor
+  function getDropOffAndPickupValues(
+    trip: TripType,
+    tripPoint: TripPointType
+  ): { drop_off_type: number; pickup_type: number } {
+    let drop_off_type: number;
+    let pickup_type: number;
+
+    switch (TripDirectionEntity.FindDirectionById(trip.tripDirectionId).type) {
+      case TripDirectionEnum.going:
+        if (tripPoint.nature == NatureEnum.school) {
+          drop_off_type = 0;
+          pickup_type = 1;
+        } else {
+          drop_off_type = 1;
+          pickup_type = 0;
+        }
+        break;
+
+      case TripDirectionEnum.coming:
+        if (tripPoint.nature == NatureEnum.school) {
+          drop_off_type = 1;
+          pickup_type = 0;
+        } else {
+          drop_off_type = 0;
+          pickup_type = 1;
+        }
+        break;
+
+      default:
+        drop_off_type = 0;
+        pickup_type = 0;
+        break;
+    }
+
+    return { drop_off_type, pickup_type };
+  }
+
   function formatStopTimes(): GtfsStopTimesTypes {
-    const trip_ids = [];
-    const arrival_times = [];
-    const departure_times = [];
-    const stop_ids = [];
-    const stop_sequences = [];
+    const trip_ids: number[] = [];
+    const arrival_times: string[] = [];
+    const departure_times: string[] = [];
+    const stop_ids: string[] = [];
+    const stop_sequences: number[] = [];
     // TODO: shape_dist_traveled
-    const drop_off_types = [];
-    const pickup_types = [];
+    const drop_off_types: number[] = [];
+    const pickup_types: number[] = [];
 
     const trips = TripUtils.getAll();
     for (const trip of trips) {
@@ -217,7 +254,7 @@ export namespace GtfsEntity {
         trip_ids.push(trip.id as number);
 
         stop_ids.push(
-          tripPoint.id + tripPoint.nature == NatureEnum.school ? "-sc" : "-st"
+          tripPoint.id + (tripPoint.nature == NatureEnum.school ? "-sc" : "-st")
         );
 
         const timeOfPassage = TripUtils.getTimePassage(indice, trip, tripPoint);
@@ -227,32 +264,16 @@ export namespace GtfsEntity {
 
         stop_sequences.push(indice + 1);
 
-        // TODO: Refactor
-        switch (
-          TripDirectionEntity.FindDirectionById(trip.tripDirectionId).type
-        ) {
-          case TripDirectionEnum.going:
-            if (tripPoint.nature == NatureEnum.school) {
-              drop_off_types.push(0);
-              pickup_types.push(1);
-            } else {
-              drop_off_types.push(1);
-              pickup_types.push(0);
-            }
-            break;
+        const { drop_off_type, pickup_type } = getDropOffAndPickupValues(
+          trip,
+          tripPoint
+        );
 
-          case TripDirectionEnum.coming:
-            if (tripPoint.nature == NatureEnum.school) {
-              drop_off_types.push(1);
-              pickup_types.push(0);
-            } else {
-              drop_off_types.push(0);
-              pickup_types.push(1);
-            }
-            break;
-        }
+        drop_off_types.push(drop_off_type);
+        pickup_types.push(pickup_type);
       }
     }
+
     return {
       trip_ids,
       arrival_times,
