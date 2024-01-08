@@ -221,6 +221,7 @@ export type TripPointType = {
   lat: number;
   nature: NatureEnum;
   grades: GradeTripType[];
+  // TODO: Rename to timeToReach
   passageTime: number;
 };
 

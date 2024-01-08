@@ -1,3 +1,6 @@
+import { range } from "lodash";
+
+import { GradeEntity } from "../_entities/grade.entity";
 import { LineType } from "../_entities/line.entity";
 import {
   TripDirectionEntity,
@@ -38,6 +41,24 @@ export namespace TripUtils {
     return getLines().filter((line) =>
       line.trips.some((trip) => trip.id == tripId)
     )[0];
+  }
+
+  export function getTimePassage(
+    indice: number,
+    trip: TripType,
+    tripPoint: TripPointType
+  ): string {
+    const firstHour: string = GradeEntity.getStringFromHourFormat(
+      trip.startTime
+    );
+    if (indice == 0 || !tripPoint.passageTime) return firstHour;
+
+    let seconds = 0;
+    for (const i in range(indice + 1)) {
+      seconds += trip.tripPoints[i].passageTime ?? 0;
+    }
+    const hourMinute = TripUtils.convertSecondesToHourMinute(seconds);
+    return TripUtils.addHourTogether(firstHour, hourMinute);
   }
 
   export function convertSecondesToHourMinute(secondes: number): string {

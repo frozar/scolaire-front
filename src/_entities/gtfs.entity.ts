@@ -1,3 +1,4 @@
+import { NatureEnum } from "../type";
 import { GtfsUtils } from "../utils/gtfs.utils";
 import { TripUtils } from "../utils/trip.utils";
 import { getLines } from "../views/content/map/component/organism/BusLines";
@@ -7,6 +8,7 @@ import {
   TripDirectionEntity,
   TripDirectionEnum,
 } from "./trip-direction.entity";
+import { TripPointType, TripType } from "./trip.entity";
 
 // Precise GTFS files field definitions :
 // https://gtfs.org/en/schedule/reference/#field-definitions
@@ -99,9 +101,20 @@ export type GtfsDataType = {
   shapes: ShapeType;
   trips: GtfsTripType[];
   trip_mapping_calendar: GtfsTripMappingCalendarType;
+  stop_times: GtfsStopTimesType;
 };
 export type GtfsTripMappingCalendarType = { [tripId: number]: number };
 
+type GtfsStopTimesType = {
+  trip_ids: number[];
+  arrival_times: string[];
+  departure_times: string[];
+  stop_ids: string[];
+  stop_sequences: number[];
+  // TODO: shape_dist_traveled
+  pickup_types: number[];
+  drop_off_types: number[];
+};
 type GtfsTripType = {
   route_id: number;
   trip_id: number;
@@ -182,6 +195,93 @@ export namespace GtfsEntity {
       shapes: formatShapes(),
       trips: formatTrips(),
       trip_mapping_calendar: tripIdMappingCalendarId,
+      stop_times: formatStopTimes(),
+    };
+  }
+
+  function getDropOffAndPickupValues(
+    trip: TripType,
+    tripPoint: TripPointType
+  ): { drop_off_type: number; pickup_type: number } {
+    let drop_off_type: number;
+    let pickup_type: number;
+
+    switch (TripDirectionEntity.FindDirectionById(trip.tripDirectionId).type) {
+      case TripDirectionEnum.going:
+        if (tripPoint.nature == NatureEnum.school) {
+          drop_off_type = 0;
+          pickup_type = 1;
+        } else {
+          drop_off_type = 1;
+          pickup_type = 0;
+        }
+        break;
+
+      case TripDirectionEnum.coming:
+        if (tripPoint.nature == NatureEnum.school) {
+          drop_off_type = 1;
+          pickup_type = 0;
+        } else {
+          drop_off_type = 0;
+          pickup_type = 1;
+        }
+        break;
+
+      default:
+        drop_off_type = 0;
+        pickup_type = 0;
+        break;
+    }
+
+    return { drop_off_type, pickup_type };
+  }
+
+  function formatStopTimes(): GtfsStopTimesType {
+    const trip_ids: number[] = [];
+    const arrival_times: string[] = [];
+    const departure_times: string[] = [];
+    const stop_ids: string[] = [];
+    const stop_sequences: number[] = [];
+    // TODO: shape_dist_traveled
+    const drop_off_types: number[] = [];
+    const pickup_types: number[] = [];
+
+    const trips = TripUtils.getAll();
+    for (const trip of trips) {
+      let indice = -1;
+      for (const tripPoint of trip.tripPoints) {
+        indice += 1;
+        trip_ids.push(trip.id as number);
+
+        stop_ids.push(
+          tripPoint.id + (tripPoint.nature == NatureEnum.school ? "-sc" : "-st")
+        );
+
+        const timeOfPassage = TripUtils.getTimePassage(indice, trip, tripPoint);
+
+        arrival_times.push(timeOfPassage);
+        departure_times.push(timeOfPassage);
+
+        stop_sequences.push(indice + 1);
+
+        const { drop_off_type, pickup_type } = getDropOffAndPickupValues(
+          trip,
+          tripPoint
+        );
+
+        drop_off_types.push(drop_off_type);
+        pickup_types.push(pickup_type);
+      }
+    }
+
+    return {
+      trip_ids,
+      arrival_times,
+      departure_times,
+      stop_ids,
+      stop_sequences,
+      drop_off_types,
+      pickup_types,
     };
   }
 
