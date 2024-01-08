@@ -131,7 +131,7 @@ export namespace CurrentDrawTripUtils {
 
   export async function updatePolylineWithOsrm(trip: TripType) {
     enableSpinningWheel();
-    const { latlngs, projectedLatlngs, metrics, legsDurations } =
+    const { latlngs, projectedLatlngs, metrics, legsDurations, legsDistances } =
       await OsrmService.getRoadPolyline(trip);
 
     let someDuration = 0;
@@ -141,7 +141,19 @@ export namespace CurrentDrawTripUtils {
       return item ? !item.idSchool && !item.idStop : false;
     }
 
-    const size = trip.waypoints?.length;
+    let cumulativeDistance = 0;
+    const newLegsDistance: number[] = [0];
+
+    const size = trip.waypoints?.length as number;
+
+    for (let i = 0; i < size - 1; i++) {
+      if (!isWaypoint((trip.waypoints as WaypointType[])[i])) {
+        cumulativeDistance += legsDistances[i];
+        newLegsDistance.push(cumulativeDistance);
+      } else cumulativeDistance += legsDistances[i];
+    }
+
+    console.log("newLegsDistance", newLegsDistance);
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
@@ -158,18 +170,22 @@ export namespace CurrentDrawTripUtils {
 
     setCurrentDrawTrip((prev) => {
       if (!prev) return prev;
-      const datas = { ...prev };
+      const trip = { ...prev };
       // * One leg_duration is the travel time between the first & second point.
       // * first tripPoint.time_passage is based on trip.start_time so no need to define it.
       // * for each another tripPoint we define the time_passage to (index - 1) of legsDuration
-      datas.tripPoints.forEach((point, index) => {
+      trip.tripPoints.forEach((tripPoint, index) => {
         if (index > 0) {
-          point.passageTime = newLegsDuration[index - 1];
+          tripPoint.passageTime = newLegsDuration[index - 1];
         }
       });
-      datas.metrics = metrics;
-      datas.latLngs = latlngs;
-      return datas;
+      trip.tripPoints.forEach((tripPoint, i) => {
+        tripPoint.startToTripPointDistance = newLegsDistance[i];
+      });
+      trip.metrics = metrics;
+      trip.latLngs = latlngs;
+      console.log("trip", trip);
+      return trip;
     });
     setWaypoints(projectedLatlngs);
     disableSpinningWheel();

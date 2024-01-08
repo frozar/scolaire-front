@@ -26,6 +26,7 @@ export class OsrmService {
     projectedLatlngs: L.LatLng[];
     metrics: TripMetricType;
     legsDurations: number[];
+    legsDistances: number[];
   }> {
     const points: TripPointType[] = trip.tripPoints;
     let waypoints: WaypointType[] = trip.waypoints ?? points;
@@ -36,6 +37,7 @@ export class OsrmService {
         projectedLatlngs: [],
         metrics: {},
         legsDurations: [],
+        legsDistances: [],
       };
     }
     const response = await ServiceUtils.generic(
@@ -57,7 +59,9 @@ export class OsrmService {
         projectedLatlngs: [],
         metrics: {},
         legsDurations: [],
+        legsDistances: [],
       };
+    console.log("OSRM response=>", response);
     return this.formatResponse(
       response,
       response_direct,
@@ -80,15 +84,23 @@ export class OsrmService {
     projectedLatlngs: L.LatLng[];
     metrics: TripMetricType;
     legsDurations: number[];
+    legsDistances: number[];
   } {
     let latlngs: L.LatLng[] = [];
     let projectedLatlngs: L.LatLng[] = [];
     let metrics: TripMetricType = {};
     if (!response || response.routes[0] == undefined)
-      return { latlngs, projectedLatlngs, metrics, legsDurations: [] };
+      return {
+        latlngs,
+        projectedLatlngs,
+        metrics,
+        legsDurations: [],
+        legsDistances: [],
+      };
 
     const routes = response.routes;
     const legsDurations = routes[0].legs.map((item) => item.duration);
+    const legsDistances = routes[0].legs.map((item) => item.distance);
 
     const coordinates = routes[0].geometry.coordinates;
 
@@ -100,7 +112,7 @@ export class OsrmService {
 
     metrics = MetricsUtils.getAll(response, response_direct, points);
 
-    return { latlngs, projectedLatlngs, metrics, legsDurations };
+    return { latlngs, projectedLatlngs, metrics, legsDurations, legsDistances };
   }
 }
 
