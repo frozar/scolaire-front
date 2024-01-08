@@ -4,7 +4,9 @@ import { TripDirectionEnum } from "../_entities/trip-direction.entity";
 import { TripPointType } from "../_entities/trip.entity";
 import { NatureEnum } from "../type";
 import { getLines } from "../views/content/map/component/organism/BusLines";
+import { getStops } from "../views/content/map/component/organism/StopPoints";
 import { GradeUtils } from "./grade.utils";
+import { StopUtils } from "./stop.utils";
 import { TripUtils } from "./trip.utils";
 
 export type MatrixContentType = {
@@ -224,5 +226,58 @@ export namespace QuantityUtils {
     }
 
     return sum;
+  }
+
+  export function getRemainingQuantityMatrix(
+    stopId: number,
+    idClassToSchool: number
+  ): QuantityMatrixType {
+    const stop = getStops().filter((stop) => stop.id == stopId)[0];
+    const associated = stop.associated.filter(
+      (associated) => associated.idClassToSchool == idClassToSchool
+    )[0];
+
+    const orignalMatrix = associated.quantityMatrix as QuantityMatrixType;
+    const tripMatrix: QuantityMatrixType[] = StopUtils.getGradeTrips(stopId)
+      .filter((item) => item.gradeId == associated.gradeId)
+      .flatMap((item) => item.matrix) as QuantityMatrixType[];
+
+    let displayMatrix = QuantityUtils.calculateMatrix(
+      orignalMatrix,
+      tripMatrix[0]
+    );
+
+    if (tripMatrix.length > 1)
+      displayMatrix = QuantityUtils.calculateMatrix(
+        displayMatrix,
+        tripMatrix[1]
+      );
+
+    return displayMatrix;
+  }
+
+  export function hasRemainingStudentToGet(stopId: number): boolean {
+    let toReturn = false;
+
+    const matrixs: QuantityMatrixType[] = [];
+    const stop = getStops().filter((stop) => stop.id == stopId)[0];
+
+    // * Get matrix of all stop association
+    stop.associated.forEach((assoicated) => {
+      const quantityMatrix = QuantityUtils.getRemainingQuantityMatrix(
+        stop.id,
+        assoicated.idClassToSchool
+      );
+
+      matrixs.push(quantityMatrix);
+    });
+
+    matrixs.map((matrix) => {
+      Object.values(matrix).forEach((matrix) => {
+        if (matrix.comingQty || matrix.goingQty > 0) toReturn = true;
+      });
+    });
+
+    return toReturn;
   }
 }
