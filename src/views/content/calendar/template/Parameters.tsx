@@ -1,3 +1,4 @@
+import { getSelectedOrganisation } from "../../board/component/organism/OrganisationSelector";
 import { TableElement } from "./TableElement";
 
 export function Parameter() {
@@ -7,7 +8,7 @@ export function Parameter() {
         <div class="sm:flex sm:items-center">
           <div class="sm:flex-auto">
             <h1 class="text-base font-semibold leading-6 text-gray-900">
-              Membre de l'organisation
+              Membres de l'organisation : {getSelectedOrganisation().name}
             </h1>
           </div>
           <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">

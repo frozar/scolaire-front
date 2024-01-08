@@ -98,7 +98,7 @@ function getItems():
   | import("/home/flexible/wk/flaxib/scolaire/front/src/type").MenuItemType[]
   | null
   | undefined {
-  console.log("getSelectedOrganisation()", getSelectedOrganisation());
+  console.log("getSelectedOrganisation()", getSelectedOrganisation() );
   return getSelectedOrganisation().user_privilege === "member"
     ? menuItems
     : menuItems.concat(adminItems);
