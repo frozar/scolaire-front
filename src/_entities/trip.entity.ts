@@ -41,6 +41,9 @@ export namespace TripEntity {
     }
 
     const school: SchoolType = filteredShools[0];
+
+    console.log("DB data grades:", dbData.grades);
+
     return {
       id: dbData.id,
       schools: [school],

@@ -188,7 +188,9 @@ export namespace TripUtils {
         )
       );
     } else {
+      console.log("before update trip:", currentDrawTrip());
       updatedTrip = await TripService.update(currentDrawTrip() as TripType);
+      console.log("updated trip:", updatedTrip);
 
       setLines((prev) =>
         prev.map((line) => {
