@@ -44,6 +44,7 @@ export type InitDBCalendarType = {
 export namespace InitService {
   export async function getAll(): Promise<InitType> {
     const dbInit: InitDBType = await ServiceUtils.get("/init");
+    console.log("dbInit", dbInit);
 
     const schools = dbInit.school.map((dbSchool) =>
       SchoolEntity.build(dbSchool)
@@ -58,6 +59,8 @@ export namespace InitService {
     const busLines = dbInit.bus_lines.map((dbLine: LineDBType) =>
       BusLineEntity.build(dbLine)
     );
+
+    console.log("busLines", busLines);
 
     setLines(busLines);
 

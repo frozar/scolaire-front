@@ -115,67 +115,67 @@ export namespace TripEntity {
   }
 
   export function dbPartialFormat(
-    line: Partial<TripType>
+    trip: Partial<TripType>
   ): Partial<TripDBType> {
     let output = {};
 
-    if (line.startTime) {
+    if (trip.startTime) {
       output = {
         ...output,
-        start_time: GradeEntity.getStringFromHourFormat(line.startTime),
+        start_time: GradeEntity.getStringFromHourFormat(trip.startTime),
       };
     }
-    if (line.color) {
-      output = { ...output, color: EntityUtils.formatColorForDB(line.color) };
+    if (trip.color) {
+      output = { ...output, color: EntityUtils.formatColorForDB(trip.color) };
     }
-    if (line.schools) {
-      output = { ...output, school_id: line.schools[0].id };
+    if (trip.schools) {
+      output = { ...output, school_id: trip.schools[0].id };
     }
-    if (line.latLngs) {
+    if (trip.latLngs) {
       output = {
         ...output,
-        polyline: EntityUtils.buildLocationPath(line.latLngs),
+        polyline: EntityUtils.buildLocationPath(trip.latLngs),
       };
     }
-    if (line.name) {
+    if (trip.name) {
       output = {
         ...output,
-        name: line.name,
+        name: trip.name,
       };
     }
-    if (line.tripPoints) {
+    if (trip.tripPoints) {
       output = {
         ...output,
-        trip_stop: formatTripPointDBType(line.tripPoints),
+        trip_stop: formatTripPointDBType(trip.tripPoints),
       };
     }
-    if (line.waypoints) {
+    if (trip.waypoints) {
       output = {
         ...output,
-        waypoint: WaypointEntity.formatWaypointDBType(line.waypoints),
+        waypoint: WaypointEntity.formatWaypointDBType(trip.waypoints),
       };
     }
-    if (line.metrics) {
+    if (trip.metrics) {
       output = {
         ...output,
-        metrics: line.metrics,
+        metrics: trip.metrics,
       };
     }
-    if (line.grades) {
+    if (trip.grades) {
       output = {
         ...output,
-        grades: line.grades.map((item) => item.id),
+        grades: trip.grades.map((item) => item.id),
       };
     }
-    if (line.days)
+    if (trip.days)
       output = {
         ...output,
-        days: line.days,
+        days: trip.days,
       };
-    if (line.tripDirectionId) {
+    if (trip.tripDirectionId) {
       output = {
         ...output,
-        trip_direction_id: line.tripDirectionId,
+        trip_direction_id: trip.tripDirectionId,
       };
     }
 
@@ -246,6 +246,7 @@ export type TripPointDBType = {
   school_id: number;
   grades: GradeTripDBType[];
   passage_time: number;
+  start_to_trip_point_distance: number;
 };
 
 export type TripMetricType = {
@@ -267,6 +268,7 @@ function formatTripPointDBType(points: TripPointType[]): TripPointDBType[] {
         return { grade_id: grade.gradeId, quantity: grade.quantity };
       }),
       passage_time: point.passageTime,
+      start_to_trip_point_distance: point.startToTripPointDistance,
     };
   });
 }
@@ -294,6 +296,7 @@ function formatTripPointType(
           lat: associatedPoint.lat,
           nature: associatedPoint.nature,
           passageTime: dbPoint.passage_time,
+          startToTripPointDistance: dbPoint.start_to_trip_point_distance,
           grades: dbPoint.grades.map((grade) => {
             const stopGradeQuantity = StopUtils.get(
               dbPoint.stop_id
