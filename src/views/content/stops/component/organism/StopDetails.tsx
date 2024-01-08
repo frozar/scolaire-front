@@ -56,7 +56,7 @@ export default function () {
           stopDetailsItem()?.id as number
         )}
       >
-        des élèves restant sont à récuperer
+        des élèves restants sont à récuperés
       </Show>
 
       <div class="stop-details-actions">
