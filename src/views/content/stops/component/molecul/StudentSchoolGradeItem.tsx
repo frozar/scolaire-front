@@ -6,11 +6,7 @@ import PencilIcon from "../../../../../icons/PencilIcon";
 import TrashIcon from "../../../../../icons/TrashIcon";
 import { AssociatedUtils } from "../../../../../utils/associated.utils";
 import { GradeUtils } from "../../../../../utils/grade.utils";
-import {
-  QuantityMatrixType,
-  QuantityUtils,
-} from "../../../../../utils/quantity.utils";
-import { StopUtils } from "../../../../../utils/stop.utils";
+import { QuantityUtils } from "../../../../../utils/quantity.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import CollapsibleElement from "../../../board/component/organism/CollapsibleElement";
 import { QuantityTable } from "../organism/QuantityTable";
@@ -21,22 +17,6 @@ import "./StudentSchoolGradeItem.css";
 // TODO move to organism
 export default function (props: { school: AssociatedSchoolType }) {
   const [editingMode, setEditingMode] = createSignal(false);
-  const orignalMatrix =
-    // eslint-disable-next-line solid/reactivity
-    props.school.quantityMatrix as QuantityMatrixType;
-
-  const tripMatrix: QuantityMatrixType[] = StopUtils.getGradeTrips(
-    stopDetailsItem()?.id as number
-  ) // eslint-disable-next-line solid/reactivity
-    .filter((item) => item.gradeId == props.school.gradeId)
-    .flatMap((item) => item.matrix) as QuantityMatrixType[];
-
-  let displayMatrix = QuantityUtils.calculateMatrix(
-    orignalMatrix,
-    tripMatrix[0]
-  );
-  if (tripMatrix.length > 1)
-    displayMatrix = QuantityUtils.calculateMatrix(displayMatrix, tripMatrix[1]);
 
   async function onClickDelete() {
     AssociatedUtils.deleteAssociated(props.school.idClassToSchool);
@@ -64,7 +44,12 @@ export default function (props: { school: AssociatedSchoolType }) {
           </p>
 
           <CollapsibleElement title="Quantités restantes">
-            <QuantityTable matrix={displayMatrix} />
+            <QuantityTable
+              matrix={QuantityUtils.getRemainingQuantityMatrix(
+                stopDetailsItem()?.id as number,
+                props.school.idClassToSchool
+              )}
+            />
           </CollapsibleElement>
         </div>
 
