@@ -142,7 +142,7 @@ export namespace CurrentDrawTripUtils {
     }
 
     let cumulativeDistance = 0;
-    const newLegsDistance: number[] = [0];
+    const newLegsDistance: number[] = [0]; // 0 is the first value
 
     const size = trip.waypoints?.length as number;
 
