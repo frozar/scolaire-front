@@ -1,16 +1,13 @@
-import { range } from "lodash";
 import { NatureEnum } from "../type";
 import { GtfsUtils } from "../utils/gtfs.utils";
 import { TripUtils } from "../utils/trip.utils";
 import { getLines } from "../views/content/map/component/organism/BusLines";
 import { getSchools } from "../views/content/map/component/organism/SchoolPoints";
 import { getStops } from "../views/content/map/component/organism/StopPoints";
-import { GradeEntity } from "./grade.entity";
 import {
   TripDirectionEntity,
   TripDirectionEnum,
 } from "./trip-direction.entity";
-import { TripPointType, TripType } from "./trip.entity";
 
 // Precise GTFS files field definitions :
 // https://gtfs.org/en/schedule/reference/#field-definitions
@@ -201,26 +198,6 @@ export namespace GtfsEntity {
     };
   }
 
-  // TODO: Refactor timePassage() of TripTimelineItemWrapper.tsx
-  // and put in an utils ?
-  function getTimePassage(
-    indice: number,
-    trip: TripType,
-    tripPoint: TripPointType
-  ): string {
-    const firstHour: string = GradeEntity.getStringFromHourFormat(
-      trip.startTime
-    );
-    if (indice == 0 || !tripPoint.passageTime) return firstHour;
-
-    let seconds = 0;
-    for (const i in range(indice + 1)) {
-      seconds += trip.tripPoints[i].passageTime ?? 0;
-    }
-    const hourMinute = TripUtils.convertSecondesToHourMinute(seconds);
-    return TripUtils.addHourTogether(firstHour, hourMinute);
-  }
-
   // TODO: Clean and refactor
   function formatStopTimes(): GtfsStopTimesTypes {
     const trip_ids = [];
@@ -239,11 +216,11 @@ export namespace GtfsEntity {
         indice += 1;
         trip_ids.push(trip.id as number);
 
-        // Verify and put in a function
-        const endId = tripPoint.nature == NatureEnum.school ? "-sc" : "-st";
-        stop_ids.push(tripPoint.id + endId);
+        stop_ids.push(
+          tripPoint.id + tripPoint.nature == NatureEnum.school ? "-sc" : "-st"
+        );
 
-        const timeOfPassage = getTimePassage(indice, trip, tripPoint);
+        const timeOfPassage = TripUtils.getTimePassage(indice, trip, tripPoint);
 
         arrival_times.push(timeOfPassage);
         departure_times.push(timeOfPassage);

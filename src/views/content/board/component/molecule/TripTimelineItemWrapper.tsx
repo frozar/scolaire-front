@@ -1,6 +1,4 @@
-import { range } from "lodash";
 import { Setter, createEffect, createSignal, on } from "solid-js";
-import { GradeEntity } from "../../../../../_entities/grade.entity";
 import {
   TripDirectionEntity,
   TripDirectionEnum,
@@ -30,22 +28,6 @@ export function TripTimelineItemWrapper(props: TripTimelineItemWrapperProps) {
 
   const tripDirection = () =>
     TripDirectionEntity.FindDirectionById(props.trip.tripDirectionId);
-
-  function timePassage(): string {
-    if (props.indice == 0 || !props.tripPoint.passageTime)
-      return GradeEntity.getStringFromHourFormat(props.trip.startTime);
-
-    const firstHour: string = GradeEntity.getStringFromHourFormat(
-      props.trip.startTime
-    );
-
-    let seconds = 0;
-    for (const i in range(props.indice + 1)) {
-      seconds += props.trip.tripPoints[i].passageTime ?? 0;
-    }
-    const hourMinute = TripUtils.convertSecondesToHourMinute(seconds);
-    return TripUtils.addHourTogether(firstHour, hourMinute);
-  }
 
   function getQuantity() {
     const append = tripDirection().type == TripDirectionEnum.going;
@@ -178,7 +160,11 @@ export function TripTimelineItemWrapper(props: TripTimelineItemWrapperProps) {
       pointNature={props.tripPoint.nature}
       pointName={props.tripPoint.name}
       tripColor={props.trip.color}
-      timePassage={timePassage()}
+      timePassage={TripUtils.getTimePassage(
+        props.indice,
+        props.trip,
+        props.tripPoint
+      )}
       calculatedQuantity={quantity()}
       quantityToGetOrDrop={getToCalculQuantity()}
       onClickRemovePointFromTrip={() => deletePoint(props.indice)}
