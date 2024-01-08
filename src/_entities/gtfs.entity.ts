@@ -273,6 +273,7 @@ export namespace GtfsEntity {
     return frequencies;
   }
 
+  // TODO: Update when Way is added to the app (don't use trip_id as shape_id)
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   function formatShapes(): ShapeType {
     const shapes: ShapeType = {};
