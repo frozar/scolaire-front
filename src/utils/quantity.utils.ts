@@ -273,8 +273,6 @@ export namespace QuantityUtils {
     });
 
     matrixs.map((matrix) => {
-      console.log("MATRIX:", matrix);
-
       Object.values(matrix).forEach((matrix) => {
         if (matrix.comingQty || matrix.goingQty > 0) toReturn = true;
       });
