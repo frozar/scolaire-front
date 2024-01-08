@@ -158,22 +158,8 @@ type AgencyDataType = {
   agency_email: string;
 };
 
+// TODO: Use real agency informations
 export namespace GtfsEntity {
-  // export function formatData(): MgDataType {
-  //   const shapes = formatShapes();
-  //   const frequencies = formatFrequencies(shapes);
-  //   const { serviceWindows, calendarDates } =
-  //     GtfsUtils.getServiceWindowsAndCalendarDates();
-
-  //   return {
-  //     stops: formatStops(),
-  //     shapes,
-  //     frequencies,
-  //     meta: getMetaData(),
-  //     service_windows: serviceWindows,
-  //     calendar_dates: calendarDates,
-  //   };
-  // }
   export function formatData(): GtfsDataType {
     const { calendars, calendarDates, tripIdMappingCalendarId } =
       GtfsUtils.getServiceWindowsAndCalendarDates();
@@ -287,24 +273,6 @@ export namespace GtfsEntity {
     };
   }
 
-  // TODO: Use the correct transit agency information
-  // function getMetaData(): MetaType[] {
-  //   return [
-  //     {
-  //       agency_id: "AGENCE",
-  //       agency_name: "AGENCE",
-  //       agency_url: "https://agence.re",
-  //       agency_timezone: "Indian/Reunion",
-  //       agency_lang: "fr",
-  //       agency_phone: "",
-  //       agency_fare_url: "",
-  //       agency_email: "",
-  //       start_date: "20200101",
-  //       end_date: "20201231",
-  //     },
-  //   ];
-  // }
-
   function formatTrips(): GtfsTripType[] {
     const gtfsTrips: GtfsTripType[] = [];
     const trips = TripUtils.getAll();
@@ -342,31 +310,6 @@ export namespace GtfsEntity {
     }
 
     return routes;
-  }
-  // TODO: Use real data for service_window_id, frequency, direction
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  function formatFrequencies(shapes: ShapeType): FrequencyType[] {
-    const frequencies: FrequencyType[] = [];
-
-    for (const tripId of Object.keys(shapes)) {
-      const line = TripUtils.getLine(Number(tripId));
-      frequencies.push({
-        route_short_name: line.id as number,
-        route_long_name: line.name as string,
-        route_type: 3,
-        shape_id: tripId,
-        service_window_id: "weekday_peak_1",
-        frequency: 1,
-        direction:
-          TripDirectionEntity.FindDirectionById(
-            TripUtils.get(Number(tripId)).tripDirectionId
-          ).type == TripDirectionEnum.going
-            ? 0
-            : 1,
-      });
-    }
-
-    return frequencies;
   }
 
   // TODO: Update when Way is added to the app (don't use trip_id as shape_id)
