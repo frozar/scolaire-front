@@ -141,19 +141,23 @@ export namespace CurrentDrawTripUtils {
       return item ? !item.idSchool && !item.idStop : false;
     }
 
-    let cumulativeDistance = 0;
-    const newLegsDistance: number[] = [0]; // 0 is the first value
+    function getCumulativeLegsDistance(waypointLength: number): number[] {
+      let cumulativeDistance = 0;
+      const newLegsDistance: number[] = [0]; // 0 is the first value
+
+      for (let i = 0; i < waypointLength - 1; i++) {
+        if (!isWaypoint((trip.waypoints as WaypointType[])[i])) {
+          cumulativeDistance += legsDistances[i];
+          newLegsDistance.push(cumulativeDistance);
+        } else cumulativeDistance += legsDistances[i];
+      }
+
+      return newLegsDistance;
+    }
 
     const size = trip.waypoints?.length as number;
 
-    for (let i = 0; i < size - 1; i++) {
-      if (!isWaypoint((trip.waypoints as WaypointType[])[i])) {
-        cumulativeDistance += legsDistances[i];
-        newLegsDistance.push(cumulativeDistance);
-      } else cumulativeDistance += legsDistances[i];
-    }
-
-    console.log("newLegsDistance", newLegsDistance);
+    const newLegsDistance = getCumulativeLegsDistance(size);
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
@@ -184,7 +188,6 @@ export namespace CurrentDrawTripUtils {
       });
       trip.metrics = metrics;
       trip.latLngs = latlngs;
-      console.log("trip", trip);
       return trip;
     });
     setWaypoints(projectedLatlngs);

@@ -61,7 +61,6 @@ export class OsrmService {
         legsDurations: [],
         legsDistances: [],
       };
-    console.log("OSRM response=>", response);
     return this.formatResponse(
       response,
       response_direct,
