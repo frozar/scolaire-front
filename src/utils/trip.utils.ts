@@ -116,7 +116,7 @@ export namespace TripUtils {
     if (tripDirection == TripDirectionEnum.coming && !canRemove) {
       addNewUserInformation({
         displayed: true,
-        level: MessageLevelEnum.info,
+        level: MessageLevelEnum.error,
         type: MessageTypeEnum.global,
         content: "Votre course retour doit commencer par une école.",
       });
@@ -145,7 +145,7 @@ export namespace TripUtils {
     if (tripDirection == TripDirectionEnum.going && !canRemove)
       addNewUserInformation({
         displayed: true,
-        level: MessageLevelEnum.info,
+        level: MessageLevelEnum.error,
         type: MessageTypeEnum.global,
         content: "Votre course aller doit commencer par un arrêt.",
       });
