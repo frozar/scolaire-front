@@ -59,8 +59,6 @@ export namespace InitService {
       BusLineEntity.build(dbLine)
     );
 
-    console.log("busLines", busLines);
-
     setLines(busLines);
 
     InitService.loadCalendars();
