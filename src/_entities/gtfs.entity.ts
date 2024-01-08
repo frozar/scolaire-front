@@ -181,9 +181,6 @@ export namespace GtfsEntity {
       calendar_dates: calendarDates,
       shapes: formatShapes(),
       trips: formatTrips(),
-      // ! À partir de ce dict, au niveau du back, dans le dataframe
-      // ! ajouter une colonne clone de trip_ip sur le lequel .map(tripIdMappingCalendarId)
-      // ! Faire la même chose pour shape_id !
       trip_mapping_calendar: tripIdMappingCalendarId,
     };
   }
@@ -258,9 +255,6 @@ export namespace GtfsEntity {
         shape_id: tripId,
         service_window_id: "weekday_peak_1",
         frequency: 1,
-        // direction: 0,
-        // ! Direction ne correspond pas à aller / retour mais dans le sens de la shape ou non !
-        // ! Donc si diff shape pour aller/retour direction sera toujours 1
         direction:
           TripDirectionEntity.FindDirectionById(
             TripUtils.get(Number(tripId)).tripDirectionId
