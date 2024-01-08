@@ -6,29 +6,14 @@ import BoardFooterActions from "../molecule/BoardFooterActions";
 
 import "../../../../../css/timeline.css";
 
-import { GradeEntity, GradeType } from "../../../../../_entities/grade.entity";
-import { TripDirectionEntity } from "../../../../../_entities/trip-direction.entity";
+import { GradeEntity } from "../../../../../_entities/grade.entity";
 import { TripEntity, TripType } from "../../../../../_entities/trip.entity";
 import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
-import { TripService } from "../../../../../_services/trip.service";
 import CurvedLine from "../../../../../icons/CurvedLine";
 import SimpleTrip from "../../../../../icons/SimpleLine";
-import { updatePointColor } from "../../../../../leafletUtils";
-import {
-  disableSpinningWheel,
-  enableSpinningWheel,
-} from "../../../../../signaux";
+import { ContextUtils } from "../../../../../utils/contextManager.utils";
 import { CurrentDrawTripUtils } from "../../../../../utils/currentDrawTrip.utils";
-import { GradeUtils } from "../../../../../utils/grade.utils";
-import { MapElementUtils } from "../../../../../utils/mapElement.utils";
-import {
-  getLines,
-  getSelectedLine,
-  setLines,
-} from "../../../map/component/organism/BusLines";
-import { setselectedTrip } from "../../../map/component/organism/Trips";
 import { COLOR_GREEN_BASE } from "../../../map/constant";
-import { quitModeDrawTrip } from "../../../map/shortcut";
 import TimeInput from "../../../schools/component/atom/TimeInput";
 import BoardTitle from "../atom/BoardTitle";
 import { DrawHelperButton } from "../atom/DrawHelperButton";
@@ -37,12 +22,7 @@ import { AssociatedItem } from "../molecule/CheckableElementList";
 import LabeledInputField from "../molecule/LabeledInputField";
 import SchoolsEnumeration from "../molecule/SchoolsEnumeration";
 import { TripColorPicker } from "../molecule/TripColorPicker";
-import { changeBoard } from "../template/ContextManager";
-import {
-  AssignDaysAndDirectionToTrip,
-  onTripDirection,
-  tripDaysAndDirection,
-} from "./AssignDaysAndDirectionToTrip";
+import { AssignDaysAndDirectionToTrip } from "./AssignDaysAndDirectionToTrip";
 import { CheckableGradeListBySchool } from "./CheckableGradeListBySchool";
 import CollapsibleElement from "./CollapsibleElement";
 import "./DrawTripBoard.css";
@@ -236,11 +216,11 @@ export function DrawTripBoard() {
 
       <BoardFooterActions
         nextStep={{
-          callback: nextStep,
+          callback: ContextUtils.nextStep,
           label: currentStep() == DrawTripStep.editTrip ? "Valider" : "Suivant",
         }}
         previousStep={{
-          callback: prevStep,
+          callback: ContextUtils.prevStep,
           label:
             currentStep() === DrawTripStep.schoolSelection || isInUpdate()
               ? "Annuler"
@@ -248,175 +228,6 @@ export function DrawTripBoard() {
         }}
       />
     </div>
-  );
-}
-
-export async function createOrUpdateTrip() {
-  // eslint-disable-next-line solid/reactivity
-  let updatedTrip: TripType = currentDrawTrip() as TripType;
-  if (currentDrawTrip()?.id == undefined) {
-    updatedTrip = await TripService.create(currentDrawTrip() as TripType);
-    const selectedLineId = getSelectedLine()?.id as number;
-
-    setLines((lines) =>
-      lines.map((line) =>
-        line.id != selectedLineId
-          ? line
-          : { ...line, trips: [...line.trips, updatedTrip] }
-      )
-    );
-  } else {
-    updatedTrip = await TripService.update(currentDrawTrip() as TripType);
-
-    setLines((prev) =>
-      prev.map((line) => {
-        return {
-          ...line,
-          trips: line.trips.map((trip) =>
-            trip.id == updatedTrip.id ? updatedTrip : trip
-          ),
-        };
-      })
-    );
-  }
-  setselectedTrip(updatedTrip);
-
-  setDisplayTripMode((prev) =>
-    prev == displayTripModeEnum.straight ? prev : displayTripModeEnum.straight
-  );
-
-  setCurrentStep(DrawTripStep.initial);
-  quitModeDrawTrip();
-
-  changeBoard("line-details");
-}
-
-async function nextStep() {
-  enableSpinningWheel();
-  switch (currentStep()) {
-    case DrawTripStep.schoolSelection:
-      if ((currentDrawTrip()?.schools.length ?? 0) < 1) {
-        break;
-      }
-      const isValidable = (grade: GradeType) => {
-        if (GradeUtils.getRemainingQuantity(grade.id as number) == 0)
-          return false;
-
-        const selectedGradeId = currentDrawTrip()
-          ?.schools.map((school) =>
-            school.grades.map((gradeMap) => gradeMap.id)
-          )
-          .flat();
-
-        return selectedGradeId?.includes(grade.id);
-      };
-
-      setDrawTripCheckableGrade(
-        getSelectedLine()?.grades.map((grade) => {
-          return {
-            item: grade,
-            done: isValidable(grade),
-          };
-        }) as AssociatedItem[]
-      );
-
-      setCurrentStep(DrawTripStep.gradeSelection);
-      break;
-
-    case DrawTripStep.gradeSelection:
-      const grades = drawTripCheckableGrade()
-        .filter((grade) => grade.done)
-        .map((grade) => grade.item) as GradeType[];
-
-      const days = tripDaysAndDirection()
-        .filter((item) => item.keep)
-        .map((item) => item.day);
-
-      const tripDirectionId = TripDirectionEntity.findDirectionByDirectionName(
-        onTripDirection()
-      ).id;
-
-      setCurrentDrawTrip((trip) => {
-        if (!trip) return trip;
-        return { ...trip, grades, days, tripDirectionId };
-      });
-      setCurrentStep(DrawTripStep.editTrip);
-      break;
-
-    case DrawTripStep.editTrip:
-      if ((currentDrawTrip()?.tripPoints.length ?? 0) < 2) {
-        break;
-      }
-      if (!currentDrawTrip()?.waypoints) {
-        const waypoints = WaypointEntity.createWaypointsFromTrip(
-          currentDrawTrip() as TripType
-        );
-        setCurrentDrawTrip((trip) => {
-          if (!trip) return trip;
-          return { ...trip, waypoints };
-        });
-      }
-      if (displayTripMode() == displayTripModeEnum.straight) {
-        await CurrentDrawTripUtils.updatePolylineWithOsrm(
-          currentDrawTrip() as TripType
-        );
-      }
-      await createOrUpdateTrip();
-
-      setCurrentDrawTrip(TripEntity.defaultTrip());
-      setCurrentTripIndex(0);
-      setIsInUpdate(false);
-      // setCurrentDrawTrip(TripEntity.defaultTrip());
-
-      setCurrentStep(DrawTripStep.initial);
-      updatePointColor();
-  }
-  disableSpinningWheel();
-}
-
-function prevStep() {
-  switch (currentStep()) {
-    case DrawTripStep.schoolSelection:
-      setCurrentDrawTrip(TripEntity.defaultTrip());
-      quitModeDrawTrip();
-
-      setCurrentStep(DrawTripStep.initial);
-      changeBoard("line");
-      MapElementUtils.deselectAllPointsAndBusTrips();
-
-      break;
-
-    case DrawTripStep.gradeSelection:
-      setCurrentStep(DrawTripStep.schoolSelection);
-      break;
-
-    case DrawTripStep.editTrip:
-      if (isInUpdate()) {
-        quitModeDrawTrip();
-        // eslint-disable-next-line solid/reactivity
-        setselectedTrip(() => {
-          return getLines()
-            .map((line) => line.trips)
-            .flat()
-            .filter((trip) => trip.id == currentDrawTrip()?.id)[0];
-        });
-        setIsInUpdate(false);
-
-        setCurrentStep(DrawTripStep.initial);
-        changeBoard("line-details");
-      } else {
-        if (displayTripMode() == displayTripModeEnum.onRoad) {
-          setCurrentDrawTrip((trip) => {
-            if (!trip) return trip;
-            return { ...trip, latLngs: [] };
-          });
-        }
-        setCurrentStep(DrawTripStep.gradeSelection);
-      }
-      break;
-  }
-  setDisplayTripMode((prev) =>
-    prev == displayTripModeEnum.straight ? prev : displayTripModeEnum.straight
   );
 }
 
