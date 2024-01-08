@@ -16,65 +16,11 @@ import { TripPointType, TripType } from "./trip.entity";
 // Make_gtfs docs:
 // https://mrcagney.github.io/make_gtfs_docs/
 
-type StopMgType = {
-  stop_lat: number;
-  zone_id: string;
-  stop_lon: number;
-  stop_id: string;
-  stop_code: string;
-  parent_station: string;
-  stop_name: string;
-  stop_desc: string;
-  location_type: number;
-};
-
 type ShapeType = {
   [id: number]: {
     shape_id: number;
     coords: [number, number][];
   };
-};
-
-type FrequencyType = {
-  // "route" represent a line
-  route_short_name: number; // => line.id (mg library use that to create route_id)
-  route_long_name: string;
-  route_type: 3; // 3 = bus line
-  // shape represent an ordered list of latLngs
-  shape_id: string; // may be way.id
-  service_window_id: string;
-  frequency: number; // TODO: Specify what it is
-  direction: number; // onward or return
-};
-
-type MetaType = {
-  agency_id: string;
-  agency_name: string;
-  agency_url: string;
-  agency_timezone: string;
-  agency_lang: string;
-  agency_phone: string;
-  agency_fare_url: string;
-  agency_email: string;
-  // dates when datas is valid
-  start_date: string;
-  end_date: string;
-};
-
-// ServiceWindows is used to create calendar.txt
-export type ServiceWindowType = {
-  service_window_id: string;
-  start_time: string; // start time of the service
-  end_time: string; // end time of the service
-  start_date: string;
-  end_date: string;
-  monday: number;
-  tuesday: number;
-  wednesday: number;
-  thursday: number;
-  friday: number;
-  saturday: number;
-  sunday: number;
 };
 
 export type GtfsCalendarDatesType = {
@@ -83,17 +29,8 @@ export type GtfsCalendarDatesType = {
   exception_type: number;
 };
 
-export type MgDataType = {
-  stops: StopMgType[];
-  shapes: ShapeType;
-  frequencies: FrequencyType[];
-  meta: MetaType[];
-  service_windows: ServiceWindowType[];
-  calendar_dates: GtfsCalendarDatesType[];
-};
-
 export type GtfsDataType = {
-  agency: AgencyDataType;
+  agency: GtfsAgencyType;
   stops: GtfsStopType[];
   routes: GtfsRouteType[];
   calendars: GtfsCalendarType[];
@@ -147,7 +84,7 @@ type GtfsStopType = {
   stop_name: string;
 };
 
-type AgencyDataType = {
+type GtfsAgencyType = {
   agency_id: string;
   agency_name: string;
   agency_url: string;
