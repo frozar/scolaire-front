@@ -1,7 +1,19 @@
+import { For, Signal, createEffect, createSignal } from "solid-js";
+import {
+  ParameterService,
+  organisationMember,
+} from "../../../../_services/parameter.service";
 import { getSelectedOrganisation } from "../../board/component/organism/OrganisationSelector";
-import { TableElement } from "./TableElement";
+import { MemberElement } from "./MemberElement";
 
+const [member, setMember] = createSignal([]) as Signal<organisationMember[]>;
 export function Parameter() {
+  // eslint-disable-next-line solid/reactivity
+  createEffect(async () => {
+    const members = await ParameterService.getMember();
+    setMember(members);
+  });
+
   return (
     <section class="page-layout">
       <div class="px-4 sm:px-6 lg:px-8">
@@ -43,7 +55,7 @@ export function Parameter() {
                       scope="col"
                       class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                     >
-                      Role
+                      Privilège
                     </th>
                     <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-0">
                       <span class="sr-only">Edit</span>
@@ -51,11 +63,9 @@ export function Parameter() {
                   </tr>
                 </thead>
                 <tbody class="divide-y-2 divide-green-base">
-                  <TableElement
-                    name={"richard"}
-                    mail={"richard@flaxib.re"}
-                    role={"admin"}
-                  />
+                  <For each={member()}>
+                    {(item) => <MemberElement member={item} />}
+                  </For>
                 </tbody>
               </table>
             </div>
