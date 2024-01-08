@@ -6,6 +6,7 @@ export type organisationMember = {
   email: string;
   role: string;
   user_privilege: string;
+  user_id: number;
 };
 
 export class ParameterService {
@@ -24,6 +25,16 @@ export class ParameterService {
       false
     );
     return xanoResult;
+  }
+
+  static async delete(id: number): Promise<number> {
+    return await ServiceUtils.delete(
+      "/organisation/" +
+        getSelectedOrganisation().organisation_id +
+        "/member/" +
+        id,
+      false
+    );
   }
 
   // //TODO change Omit to Pick
