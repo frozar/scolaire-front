@@ -180,7 +180,8 @@ export namespace GtfsEntity {
           tripPoint.id + (tripPoint.nature == NatureEnum.school ? "-sc" : "-st")
         );
 
-        const timeOfPassage = TripUtils.getTimePassage(indice, trip, tripPoint);
+        const timeOfPassage =
+          TripUtils.getTimePassage(indice, trip, tripPoint) + ":00";
 
         arrival_times.push(timeOfPassage);
         departure_times.push(timeOfPassage);
