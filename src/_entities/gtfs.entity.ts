@@ -97,6 +97,16 @@ export type GtfsDataType = {
   calendars: GtfsCalendarType[];
   calendar_dates: GtfsCalendarDatesType[];
   shapes: ShapeType;
+  trips: GtfsTripType[];
+  trip_mapping_calendar: GtfsTripMappingCalendarType;
+};
+export type GtfsTripMappingCalendarType = { [tripId: number]: number };
+
+type GtfsTripType = {
+  route_id: number;
+  trip_id: number;
+  trip_name: string;
+  direction: number;
 };
 
 type GtfsRouteType = {
@@ -116,6 +126,7 @@ export type GtfsCalendarType = {
   start_date: string;
   end_date: string;
 };
+
 type GtfsStopType = {
   stop_lat: number;
   stop_lon: number;
@@ -151,7 +162,7 @@ export namespace GtfsEntity {
   //   };
   // }
   export function formatData(): GtfsDataType {
-    const { calendars, calendarDates } =
+    const { calendars, calendarDates, tripIdMappingCalendarId } =
       GtfsUtils.getServiceWindowsAndCalendarDates();
     return {
       agency: {
@@ -169,6 +180,8 @@ export namespace GtfsEntity {
       calendars,
       calendar_dates: calendarDates,
       shapes: formatShapes(),
+      trips: formatTrips(),
+      trip_mapping_calendar: tripIdMappingCalendarId,
     };
   }
 
@@ -189,6 +202,26 @@ export namespace GtfsEntity {
   //     },
   //   ];
   // }
+
+  function formatTrips(): GtfsTripType[] {
+    const gtfsTrips: GtfsTripType[] = [];
+    const trips = TripUtils.getAll();
+
+    trips.forEach((trip) => {
+      const directionEnum = TripDirectionEntity.FindDirectionById(
+        trip.tripDirectionId
+      ).type;
+      gtfsTrips.push({
+        route_id: TripUtils.getLine(trip.id as number).id as number,
+        trip_id: trip.id as number,
+        trip_name: trip.name,
+        direction: directionEnum == TripDirectionEnum.going ? 0 : 1,
+      });
+    });
+
+    return gtfsTrips;
+  }
+
   function formatRoutes(): GtfsRouteType[] {
     const routes: GtfsRouteType[] = [];
     const tripIds = getLines()
@@ -222,9 +255,6 @@ export namespace GtfsEntity {
         shape_id: tripId,
         service_window_id: "weekday_peak_1",
         frequency: 1,
-        // direction: 0,
-        // ! Direction ne correspond pas à aller / retour mais dans le sens de la shape ou non !
-        // ! Donc si diff shape pour aller/retour direction sera toujours 1
         direction:
           TripDirectionEntity.FindDirectionById(
             TripUtils.get(Number(tripId)).tripDirectionId
@@ -237,6 +267,7 @@ export namespace GtfsEntity {
     return frequencies;
   }
 
+  // TODO: Update when Way is added to the app (don't use trip_id as shape_id)
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   function formatShapes(): ShapeType {
     const shapes: ShapeType = {};
