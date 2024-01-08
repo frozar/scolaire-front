@@ -17,6 +17,15 @@ export class ParameterService {
     return xanoResult;
   }
 
+  static async addMember(memberMail: string): Promise<organisationMember> {
+    const xanoResult = await ServiceUtils.post(
+      "/organisation/" + getSelectedOrganisation().organisation_id + "/member",
+      { email: memberMail },
+      false
+    );
+    return xanoResult;
+  }
+
   // //TODO change Omit to Pick
   // static async create(
   //   school: Omit<

@@ -3,10 +3,16 @@ import {
   ParameterService,
   organisationMember,
 } from "../../../../_services/parameter.service";
+import {
+  DialogToDisplayEnum,
+  setDialogToDisplay,
+} from "../../board/component/organism/Dialogs";
 import { getSelectedOrganisation } from "../../board/component/organism/OrganisationSelector";
 import { MemberElement } from "./MemberElement";
 
-const [member, setMember] = createSignal([]) as Signal<organisationMember[]>;
+export const [member, setMember] = createSignal([]) as Signal<
+  organisationMember[]
+>;
 export function Parameter() {
   // eslint-disable-next-line solid/reactivity
   createEffect(async () => {
@@ -26,6 +32,7 @@ export function Parameter() {
           <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
             <button
               type="button"
+              onClick={() => setDialogToDisplay(DialogToDisplayEnum.addMember)}
               class="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
               Add user

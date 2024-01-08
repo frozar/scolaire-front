@@ -222,7 +222,7 @@ export function addNewGlobalWarningInformation(message: string) {
 export function addNewGlobalSuccessInformation(message: string) {
   addNewUserInformation({
     displayed: true,
-    level: MessageLevelEnum.error,
+    level: MessageLevelEnum.success,
     type: MessageTypeEnum.global,
     content: message,
   });
