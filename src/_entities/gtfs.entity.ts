@@ -122,6 +122,38 @@ export namespace GtfsEntity {
     };
   }
 
+  export function isDataValid(data: GtfsDataType): boolean {
+    const dataKeys = [
+      "agency",
+      "stops",
+      "routes",
+      "calendars",
+      "calendar_dates",
+      "shapes",
+      "trips",
+      "trip_mapping_calendar",
+      "stop_times",
+    ];
+
+    for (const dataKey of dataKeys) {
+      if (!Object.keys(data).includes(dataKey)) {
+        return false;
+      }
+    }
+
+    if (
+      data.stops.length == 0 ||
+      data.routes.length == 0 ||
+      data.calendars.length == 0 ||
+      data.calendar_dates.length == 0 ||
+      data.trips.length == 0
+    ) {
+      return false;
+    }
+
+    return true;
+  }
+
   function getDropOffAndPickupValues(
     trip: TripType,
     tripPoint: TripPointType

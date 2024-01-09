@@ -2,6 +2,8 @@ import { JSXElement, createSignal } from "solid-js";
 import { GtfsEntity } from "../../../../../_entities/gtfs.entity";
 import { GtfsService } from "../../../../../_services/gtfs.service";
 import Button from "../../../../../component/atom/Button";
+import { addNewUserInformation } from "../../../../../signaux";
+import { MessageLevelEnum, MessageTypeEnum } from "../../../../../type";
 import { CsvUtils } from "../../../../../utils/csv.utils";
 import { DialogUtils } from "../../../../../utils/dialog.utils";
 import { ExportSelectionCheckbox } from "../atom/exportSelectionCheckbox";
@@ -16,23 +18,16 @@ export function ExportSelection(): JSXElement {
   function onClick(): void {
     if (exportGtfs()) {
       const data = GtfsEntity.formatData();
-      // TODO: Verify data to send is valid
-      // if (
-      //   data.calendar_dates.length != 0 &&
-      //   data.frequencies.length != 0 &&
-      //   data.meta.length != 0 &&
-      //   data.service_windows.length != 0 &&
-      //   data.stops.length != 0 &&
-      //   Object.keys(data.shapes).length != 0
-      // ) {
-      GtfsService.get(data);
-      // } else
-      //   addNewUserInformation({
-      //     displayed: true,
-      //     level: MessageLevelEnum.error,
-      //     type: MessageTypeEnum.global,
-      //     content: "Des informations sont manquantes pour générer un GTFS",
-      //   });
+      if (!GtfsEntity.isDataValid(data)) {
+        addNewUserInformation({
+          displayed: true,
+          level: MessageLevelEnum.error,
+          type: MessageTypeEnum.global,
+          content: "Données manquantes pour produire un GTFS",
+        });
+      } else {
+        GtfsService.get(data);
+      }
     }
     if (exportSchools()) CsvUtils.exportCsv(CsvEnum.schools);
     if (exportStops()) CsvUtils.exportCsv(CsvEnum.stops);
