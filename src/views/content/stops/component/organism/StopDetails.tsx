@@ -53,7 +53,7 @@ export default function () {
       <StopDetailsHeader stop={stopDetailsItem() as StopType} />
 
       <Show
-        when={QuantityUtils.StopHasRemainingStudentToGet(
+        when={QuantityUtils.stopHasRemainingStudentToGet(
           stopDetailsItem()?.id as number
         )}
       >

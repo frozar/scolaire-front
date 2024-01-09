@@ -256,7 +256,7 @@ export namespace QuantityUtils {
     return displayMatrix;
   }
 
-  export function StopHasRemainingStudentToGet(stopId: number): boolean {
+  export function stopHasRemainingStudentToGet(stopId: number): boolean {
     let toReturn = false;
 
     const matrixs: QuantityMatrixType[] = [];

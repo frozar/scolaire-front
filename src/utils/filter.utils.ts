@@ -4,7 +4,7 @@ import { QuantityUtils } from "./quantity.utils";
 export namespace FilterUtils {
   export function filterEmptyStops(stops: StopType[]) {
     return stops.filter((stop) =>
-      QuantityUtils.StopHasRemainingStudentToGet(stop.id)
+      QuantityUtils.stopHasRemainingStudentToGet(stop.id)
     );
   }
 }
