@@ -99,6 +99,9 @@ export namespace QuantityUtils {
     orignal: QuantityMatrixType,
     toCalcul: QuantityMatrixType
   ): QuantityMatrixType {
+    console.log("orignal matrix =>", orignal);
+    console.log("toCalcul matrix =>", toCalcul);
+
     const days = Object.keys(orignal) as CalendarDayEnum[];
     if (!toCalcul && orignal) return orignal;
 
@@ -232,6 +235,7 @@ export namespace QuantityUtils {
     stopId: number,
     idClassToSchool: number
   ): QuantityMatrixType {
+    console.log("getRemainingQuantityMatrix");
     const stop = getStops().filter((stop) => stop.id == stopId)[0];
     const associated = stop.associated.filter(
       (associated) => associated.idClassToSchool == idClassToSchool

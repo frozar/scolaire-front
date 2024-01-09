@@ -8,6 +8,7 @@ import { addNewUserInformation } from "../../../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../../../type";
 import { AssociatedUtils } from "../../../../../utils/associated.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
+import { setLines } from "../../../map/component/organism/BusLines";
 import { getSchools } from "../../../map/component/organism/SchoolPoints";
 import GradeSelection from "../atom/GradeSelection";
 import InputNumber from "../atom/InputNumber";
@@ -128,6 +129,7 @@ export default function (props: EditStopProps) {
   }
 
   async function validate() {
+    console.log("validate function");
     if (checkAllInputsValue()) return;
     if (props.gradeStudentToGrade) {
       await AssociatedUtils.update(
@@ -136,6 +138,21 @@ export default function (props: EditStopProps) {
         parseInt(schoolSelector().value),
         quantitySelector().value
       );
+      // TODO: Clean, refactor and move
+      // ! Ici update les matrices des courses liées !
+      const gradeId = props.gradeStudentToGrade.gradeId;
+      // const stopId =
+      setLines((prev) => {
+        // ! Récup la liste des trip point concerné (stop et grade correspondant)
+        const lines = { ...prev };
+        const test = lines
+          .flatMap((line) => line.trips)
+          .flatMap((trip) => trip.tripPoints)
+          .flatMap((tripPoint) => tripPoint.grades)
+          .map((gradeTrip) => gradeTrip);
+        // ! Mettre à jour
+        return lines;
+      });
     } else {
       AssociatedUtils.create(
         quantitySelector().value,

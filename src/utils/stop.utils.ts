@@ -117,6 +117,7 @@ export namespace StopUtils {
     tripDirection: TripDirectionEnum,
     days: CalendarDayEnum[]
   ) {
+    console.log("getRemainingQuantityFromMatrixOfGrades");
     const totalQuantity = getTotalQuantityFromGradeIds(stopId, gradeIds);
     const stopGrades = StopUtils.get(stopId).associated;
     const grades = getGradeTrips(stopId);
