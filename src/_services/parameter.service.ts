@@ -37,6 +37,14 @@ export class ParameterService {
     );
   }
 
+  static async update(member: organisationMember): Promise<organisationMember> {
+    return await ServiceUtils.patch(
+      "/organisation/" + getSelectedOrganisation().organisation_id + "/member/",
+      { user_id: member.user_id, user_privilege: member.user_privilege },
+      false
+    );
+  }
+
   // //TODO change Omit to Pick
   // static async create(
   //   school: Omit<

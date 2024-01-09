@@ -8,7 +8,7 @@ import {
   setDialogToDisplay,
 } from "../../board/component/organism/Dialogs";
 import { getSelectedOrganisation } from "../../board/component/organism/OrganisationSelector";
-import { MemberElement } from "./MemberElement";
+import { MemberElement } from "../organism/MemberElement";
 
 export const [member, setMember] = createSignal([]) as Signal<
   organisationMember[]
