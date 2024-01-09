@@ -4,12 +4,29 @@ import {
 } from "../../../../_services/parameter.service";
 import TrashIcon from "../../../../icons/TrashIcon";
 import UpdatePen from "../../../../icons/UpdatePen";
+import {
+  addNewGlobalSuccessInformation,
+  addNewGlobalWarningInformation,
+} from "../../../../signaux";
+import { setRemoveConfirmation } from "../../../../userInformation/RemoveConfirmation";
 import ButtonIcon from "../../board/component/molecule/ButtonIcon";
+import { setMember } from "./Parameters";
 
 export function MemberElement(props: { member: organisationMember }) {
-  function removeMember() {
-    const xanoRes = ParameterService.delete(props.member.user_id);
-    console.log("xanores", xanoRes);
+  async function removeMember() {
+    const xanoRes = await ParameterService.delete(props.member.user_id);
+    if ("user_id" in xanoRes) {
+      setMember((oldMember) =>
+        oldMember.filter((member) => member.user_id != xanoRes.user_id)
+      );
+      addNewGlobalSuccessInformation("Utilisateur supprimé de l'organisation");
+      return true;
+    } else {
+      addNewGlobalWarningInformation(
+        "Utilisateur inexistant ou déjà supprimé de l'organisation"
+      );
+      return false;
+    }
   }
 
   return (
@@ -24,12 +41,22 @@ export function MemberElement(props: { member: organisationMember }) {
         {props.member.user_privilege}
       </td>
       <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
-        <ButtonIcon icon={<UpdatePen />} onClick={() => removeMember()} />
+        <ButtonIcon
+          icon={<UpdatePen />}
+          onClick={() => console.log("Update", props.member)}
+        />
       </td>
       <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
         <ButtonIcon
           icon={<TrashIcon />}
-          onClick={() => console.log("Delete", props.member)}
+          onClick={() =>
+            setRemoveConfirmation({
+              textToDisplay:
+                "Êtes-vous sûr de vouloir supprimer l'utilisateur : ",
+              itemName: props.member.name,
+              validate: removeMember,
+            })
+          }
         />
       </td>
     </tr>

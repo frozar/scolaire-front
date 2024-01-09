@@ -27,7 +27,7 @@ export class ParameterService {
     return xanoResult;
   }
 
-  static async delete(id: number): Promise<number> {
+  static async delete(id: number): Promise<organisationMember> {
     return await ServiceUtils.delete(
       "/organisation/" +
         getSelectedOrganisation().organisation_id +
