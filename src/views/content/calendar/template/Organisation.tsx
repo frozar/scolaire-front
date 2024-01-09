@@ -1,8 +1,8 @@
 import { For, Signal, createEffect, createSignal } from "solid-js";
 import {
-  ParameterService,
+  OrganisationService,
   organisationMember,
-} from "../../../../_services/parameter.service";
+} from "../../../../_services/organisation.service";
 import {
   DialogToDisplayEnum,
   setDialogToDisplay,
@@ -16,7 +16,7 @@ export const [member, setMember] = createSignal([]) as Signal<
 export function Parameter() {
   // eslint-disable-next-line solid/reactivity
   createEffect(async () => {
-    const members = await ParameterService.getMember();
+    const members = await OrganisationService.getMember();
     setMember(members);
   });
 

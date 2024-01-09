@@ -23,7 +23,7 @@ import "./App.css";
 import UnloggedUserInformation from "./component/molecule/UnloggedUserInformation";
 import UserInstruction from "./component/molecule/UserInstruction";
 import { Dialogs } from "./views/content/board/component/organism/Dialogs";
-import { Parameter } from "./views/content/calendar/template/Parameters";
+import { Parameter } from "./views/content/calendar/template/Organisation";
 
 const [, { getSelectedMenu }] = useStateGui();
 

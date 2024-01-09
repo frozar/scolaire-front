@@ -1,12 +1,12 @@
 import { JSXElement, createSignal } from "solid-js";
-import { ParameterService } from "../../../../../_services/parameter.service";
+import { OrganisationService } from "../../../../../_services/organisation.service";
 import Button from "../../../../../component/atom/Button";
 import {
   addNewGlobalSuccessInformation,
   addNewGlobalWarningInformation,
 } from "../../../../../signaux";
 import { DialogUtils } from "../../../../../utils/dialog.utils";
-import { setMember } from "../../../calendar/template/Parameters";
+import { setMember } from "../../../calendar/template/Organisation";
 import { DialogToDisplayEnum, setDialogToDisplay } from "../organism/Dialogs";
 import LabeledInputField from "./LabeledInputField";
 
@@ -14,7 +14,7 @@ export function AddMember(): JSXElement {
   async function onClick(): Promise<void> {
     console.log(validateEmail(memberMail()));
     if (validateEmail(memberMail())) {
-      const res = await ParameterService.addMember(memberMail());
+      const res = await OrganisationService.addMember(memberMail());
       if (res) {
         setMember((member) => [...member, res]);
 

@@ -10,7 +10,7 @@ export type organisationMember = {
   user_id: number;
 };
 
-export class ParameterService {
+export class OrganisationService {
   static async getMember(): Promise<organisationMember[]> {
     const xanoResult = await ServiceUtils.get(
       "/organisation/" + getSelectedOrganisation().organisation_id + "/member",
@@ -28,7 +28,7 @@ export class ParameterService {
     return xanoResult;
   }
 
-  static async delete(id: number): Promise<organisationMember> {
+  static async deleteMember(id: number): Promise<organisationMember> {
     return await ServiceUtils.delete(
       "/organisation/" +
         getSelectedOrganisation().organisation_id +
@@ -38,7 +38,9 @@ export class ParameterService {
     );
   }
 
-  static async update(member: organisationMember): Promise<organisationMember> {
+  static async updateMember(
+    member: organisationMember
+  ): Promise<organisationMember> {
     return await ServiceUtils.patch(
       "/organisation/" + getSelectedOrganisation().organisation_id + "/member",
       {
@@ -49,36 +51,4 @@ export class ParameterService {
       false
     );
   }
-
-  // //TODO change Omit to Pick
-  // static async create(
-  //   school: Omit<
-  //     SchoolType,
-  //     "id" | "selected" | "associated" | "setSelected" | "nature" | "leafletId"
-  //   >
-  // ): Promise<SchoolType> {
-  //   const data = SchoolEntity.dbFormat(school);
-  //   const dbSchool: SchoolDBType = await ServiceUtils.post("/school", data);
-  //   return SchoolEntity.build(dbSchool);
-  // }
-
-  // static async update(
-  //   school: Omit<
-  //     SchoolType,
-  //     "associated" | "selected" | "setSelected" | "nature" | "leafletId"
-  //   >
-  // ): Promise<SchoolType> {
-  //   const data = SchoolEntity.dbFormat(school);
-  //   const dbSchool: SchoolDBType = await ServiceUtils.patch(
-  //     "/school/" + school.id,
-  //     data
-  //   );
-  //   if (dbSchool == null) return dbSchool;
-  //   return SchoolEntity.build(dbSchool);
-  // }
-
-  // // TODO no tested : school supression process on stand by
-  // static async delete(id: number): Promise<number> {
-  //   return await ServiceUtils.delete("/school/" + id);
-  // }
 }
