@@ -18,6 +18,9 @@ import { setMember } from "../template/Parameters";
 
 export function MemberElement(props: { member: organisationMember }) {
   const [isInUpdateMode, setIsInUpdateMode] = createSignal<boolean>(true);
+  const [currentPrivilege, setCurrentPrivilege] = createSignal<string>(
+    props.member.user_privilege // eslint-disable-line
+  );
 
   async function removeMember() {
     const xanoRes = await ParameterService.delete(props.member.user_id);
@@ -69,12 +72,11 @@ export function MemberElement(props: { member: organisationMember }) {
       <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
         <RulesSelectorWrapper
           disabled={isInUpdateMode()}
-          onChange={(e) => {
-            if (!isInUpdateMode()) {
-              updateMember({ ...props.member, user_privilege: e });
-            }
+          // eslint-disable-next-line solid/reactivity
+          onChange={async (e) => {
+            setCurrentPrivilege(e);
           }}
-          defaultValue={props.member.user_privilege}
+          defaultValue={currentPrivilege()}
           list={["admin", "member"]}
         />
       </td>
@@ -82,7 +84,20 @@ export function MemberElement(props: { member: organisationMember }) {
         <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
           <ButtonIcon
             icon={isInUpdateMode() ? <UpdatePen /> : <CheckIcon />}
-            onClick={() => setIsInUpdateMode((prev) => !prev)}
+            /* eslint-disable-next-line solid/reactivity */
+            onClick={async () => {
+              if (!isInUpdateMode()) {
+                try {
+                  await updateMember({
+                    ...props.member,
+                    user_privilege: currentPrivilege(),
+                  });
+                } catch (e) {
+                  setCurrentPrivilege(props.member.user_privilege);
+                }
+              }
+              setIsInUpdateMode((prev) => !prev);
+            }}
           />
         </td>
         <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">

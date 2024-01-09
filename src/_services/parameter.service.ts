@@ -2,6 +2,7 @@ import { getSelectedOrganisation } from "../views/content/board/component/organi
 import { ServiceUtils } from "./_utils.service";
 
 export type organisationMember = {
+  id: number;
   name: string;
   email: string;
   role: string;
@@ -39,8 +40,12 @@ export class ParameterService {
 
   static async update(member: organisationMember): Promise<organisationMember> {
     return await ServiceUtils.patch(
-      "/organisation/" + getSelectedOrganisation().organisation_id + "/member/",
-      { user_id: member.user_id, user_privilege: member.user_privilege },
+      "/organisation/" + getSelectedOrganisation().organisation_id + "/member",
+      {
+        user_id: member.user_id,
+        user_privilege: member.user_privilege,
+        id: member.id,
+      },
       false
     );
   }
