@@ -1,6 +1,7 @@
 import { createEffect, createSignal, onMount } from "solid-js";
 import { AssociatedSchoolType } from "../../../../../_entities/_utils.entity";
 import { GradeType } from "../../../../../_entities/grade.entity";
+import { LineType } from "../../../../../_entities/line.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
 import CheckIcon from "../../../../../icons/CheckIcon";
@@ -10,6 +11,7 @@ import { AssociatedUtils } from "../../../../../utils/associated.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { setLines } from "../../../map/component/organism/BusLines";
 import { getSchools } from "../../../map/component/organism/SchoolPoints";
+import { getStops } from "../../../map/component/organism/StopPoints";
 import GradeSelection from "../atom/GradeSelection";
 import InputNumber from "../atom/InputNumber";
 import SchoolSelect from "../atom/SchoolSelection";
@@ -141,15 +143,25 @@ export default function (props: EditStopProps) {
       // TODO: Clean, refactor and move
       // ! Ici update les matrices des courses liées !
       const gradeId = props.gradeStudentToGrade.gradeId;
-      // const stopId =
+      // !!!!!!!!!! Récup le stopId
+      const stopId = getStops().forEach((stop) => stop.associated.)
       setLines((prev) => {
         // ! Récup la liste des trip point concerné (stop et grade correspondant)
-        const lines = { ...prev };
-        const test = lines
-          .flatMap((line) => line.trips)
-          .flatMap((trip) => trip.tripPoints)
-          .flatMap((tripPoint) => tripPoint.grades)
-          .map((gradeTrip) => gradeTrip);
+        const lines: LineType[] = { ...prev };
+        const linesBis: LineType[] = lines.flatMap((line) => {
+          return {
+            ...line,
+            trips: line.trips.flatMap((trip) => {
+              return {
+                ...trip,
+                tripPoints: trip.tripPoints.flatMap((tripPoint) => {
+                  return { ...tripPoint, grades: tripPoint.grades.map((gradeTrip) => {if(gradeTrip.gradeId == gradeId && )}) }; // stopId == stopId et faire le remplacer en conséquence 
+                }),
+              };
+            }),
+          };
+        });
+
         // ! Mettre à jour
         return lines;
       });
