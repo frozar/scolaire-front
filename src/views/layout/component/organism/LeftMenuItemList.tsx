@@ -59,7 +59,13 @@ export default function (props: LeftMenuItemProps) {
 
   return (
     <ul>
-      <For each={getItems()}>
+      <For
+        each={
+          getSelectedOrganisation().user_privilege === "admin"
+            ? menuItems.concat(adminItems)
+            : menuItems
+        }
+      >
         {(menuItemArg) => {
           const { label, menuItem, Logo, isDisabled } = menuItemArg;
 
@@ -92,13 +98,4 @@ export default function (props: LeftMenuItemProps) {
       </For>
     </ul>
   );
-}
-function getItems():
-  | false
-  | import("/home/flexible/wk/flaxib/scolaire/front/src/type").MenuItemType[]
-  | null
-  | undefined {
-  return getSelectedOrganisation().user_privilege === "member"
-    ? menuItems
-    : menuItems.concat(adminItems);
 }
