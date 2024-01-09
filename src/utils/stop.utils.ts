@@ -110,16 +110,6 @@ export namespace StopUtils {
       .flatMap((_tripPoint) => _tripPoint.grades);
   }
 
-  export function getRemainingQuantity(stopId: number) {
-    const totalQuantity = getTotalQuantity(stopId);
-
-    let usedQuantity = 0;
-    const grades = getGradeTrips(stopId);
-    grades.forEach((grade) => (usedQuantity += grade.quantity));
-
-    return totalQuantity - usedQuantity;
-  }
-
   // * Here get the remaining quantity by direction & days
   export function getRemainingQuantityFromMatrixOfGrades(
     stopId: number,
