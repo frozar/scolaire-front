@@ -165,11 +165,8 @@ export function leafletStopsFilter(): StopType[] {
         (grade) => grade.id as number
       );
 
-      console.log("leaflet stop filter:", "grades ids:", gradeIds);
       stops = filterBySelectedLine(stops);
-      console.log("stops first:", stops);
       stops = filterByGradesOfTrip(stops, gradeIds);
-      console.log("stops seconds:", stops, gradeIds);
       stops = filterByDaysQuantitiesAndDirection(
         stops,
         gradeIds,
@@ -177,7 +174,6 @@ export function leafletStopsFilter(): StopType[] {
           .type,
         currentDrawTrip().days
       );
-      console.log("stops three:", stops);
 
       switch (currentStep()) {
         case DrawTripStep.schoolSelection:
