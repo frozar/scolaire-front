@@ -15,6 +15,7 @@ import "./StopDetails.css";
 import StudentSchoolGradeList from "./StudentSchoolGradeList";
 
 export const [stopDetailsItem, setStopDetailsItem] = createSignal<StopType>();
+
 export function updateStopDetailsItem(stopId: number) {
   if (stopDetailsItem() != undefined && stopDetailsItem()?.id == stopId) {
     const stopIndex = getStops().findIndex((prev) => prev.id == stopId);
@@ -52,7 +53,7 @@ export default function () {
       <StopDetailsHeader stop={stopDetailsItem() as StopType} />
 
       <Show
-        when={QuantityUtils.hasRemainingStudentToGet(
+        when={QuantityUtils.stopHasRemainingStudentToGet(
           stopDetailsItem()?.id as number
         )}
       >

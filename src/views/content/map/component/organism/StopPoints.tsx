@@ -100,7 +100,7 @@ function filterByDaysQuantitiesAndDirection(
       return stops.filter(
         (stop) =>
           trip.tripPoints.some((tripPoint) => tripPoint.id == stop.id) ||
-          QuantityUtils.hasRemainingStudentToGet(stop.id)
+          QuantityUtils.stopHasRemainingStudentToGet(stop.id)
       );
 
     case false:
