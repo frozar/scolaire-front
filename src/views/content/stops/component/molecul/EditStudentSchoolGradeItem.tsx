@@ -8,6 +8,7 @@ import CheckIcon from "../../../../../icons/CheckIcon";
 import { addNewUserInformation } from "../../../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../../../type";
 import { AssociatedUtils } from "../../../../../utils/associated.utils";
+import { QuantityUtils } from "../../../../../utils/quantity.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { setLines } from "../../../map/component/organism/BusLines";
 import { getSchools } from "../../../map/component/organism/SchoolPoints";
@@ -144,10 +145,15 @@ export default function (props: EditStopProps) {
       // ! Ici update les matrices des courses liées !
       const gradeId = props.gradeStudentToGrade.gradeId;
       // !!!!!!!!!! Récup le stopId
-      const stopId = getStops().forEach((stop) => stop.associated.)
+      const stopId = getStops().filter((stop) =>
+        stop.associated.some(
+          (assoc) =>
+            assoc.idClassToSchool == props.gradeStudentToGrade?.idClassToSchool
+        )
+      )[0].id;
       setLines((prev) => {
         // ! Récup la liste des trip point concerné (stop et grade correspondant)
-        const lines: LineType[] = { ...prev };
+        const lines: LineType[] = [...prev];
         const linesBis: LineType[] = lines.flatMap((line) => {
           return {
             ...line,
@@ -155,15 +161,28 @@ export default function (props: EditStopProps) {
               return {
                 ...trip,
                 tripPoints: trip.tripPoints.flatMap((tripPoint) => {
-                  return { ...tripPoint, grades: tripPoint.grades.map((gradeTrip) => {if(gradeTrip.gradeId == gradeId && )}) }; // stopId == stopId et faire le remplacer en conséquence 
+                  return {
+                    ...tripPoint,
+                    grades: tripPoint.grades.map((gradeTrip) => {
+                      if (gradeTrip.gradeId == gradeId) {
+                        return {
+                          ...gradeTrip,
+                          matrix: QuantityUtils.getRemainingQuantityMatrix(
+                            stopId,
+                            props.gradeStudentToGrade?.idClassToSchool as number
+                          ),
+                        };
+                      } else return gradeTrip;
+                    }),
+                  };
                 }),
               };
             }),
           };
         });
-
+        console.log("lines", lines);
         // ! Mettre à jour
-        return lines;
+        return linesBis;
       });
     } else {
       AssociatedUtils.create(
