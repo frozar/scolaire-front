@@ -221,8 +221,6 @@ const onRightClick = (stop: StopType) => {
   if (onBoard() == "trip-draw" && isInTripUnderConstruction != undefined) {
     if (TripUtils.canRemoveStopFromTrip(stop.leafletId)) return;
 
-    console.log("before removing stop");
-
     CurrentDrawTripUtils.removePoint(stop);
 
     // Update waypoints
