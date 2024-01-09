@@ -75,7 +75,6 @@ function updateTripAndWaypoints(point: StopType) {
       });
     }
   });
-
   CurrentDrawTripUtils.addPointToTrip({
     id: point.id,
     leafletId: point.leafletId,
@@ -85,6 +84,7 @@ function updateTripAndWaypoints(point: StopType) {
     nature: point.nature,
     grades: grades,
     passageTime: 0,
+    startToTripPointDistance: 0,
   });
 
   if (!lastPoint || point.leafletId != lastPoint.leafletId) {

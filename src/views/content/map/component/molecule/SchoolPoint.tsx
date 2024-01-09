@@ -132,6 +132,7 @@ function updateTripAndWaypoints(school: SchoolType) {
     nature: school.nature,
     grades: [],
     passageTime: 0,
+    startToTripPointDistance: 0,
   });
 
   if (!lastPoint || school.leafletId != lastPoint.leafletId) {
