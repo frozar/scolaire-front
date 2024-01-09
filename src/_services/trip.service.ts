@@ -3,8 +3,8 @@ import { getSelectedLine } from "../views/content/map/component/organism/BusLine
 import { ServiceUtils } from "./_utils.service";
 
 export class TripService {
-  static async create(line: TripType): Promise<TripType> {
-    const data = TripEntity.dbFormat(line);
+  static async create(trip: TripType): Promise<TripType> {
+    const data = TripEntity.dbFormat(trip);
 
     const dbBusTrip: TripDBType = await ServiceUtils.post(
       "/busline/" + getSelectedLine()?.id + "/trip",

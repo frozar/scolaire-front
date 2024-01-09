@@ -111,7 +111,7 @@ type GtfsStopTimesType = {
   departure_times: string[];
   stop_ids: string[];
   stop_sequences: number[];
-  // TODO: shape_dist_traveled
+  shape_dist_traveled: number[];
   pickup_types: number[];
   drop_off_types: number[];
 };
@@ -242,7 +242,7 @@ export namespace GtfsEntity {
     const departure_times: string[] = [];
     const stop_ids: string[] = [];
     const stop_sequences: number[] = [];
-    // TODO: shape_dist_traveled
+    const shape_dist_traveled: number[] = [];
     const drop_off_types: number[] = [];
     const pickup_types: number[] = [];
 
@@ -264,6 +264,8 @@ export namespace GtfsEntity {
 
         stop_sequences.push(indice + 1);
 
+        shape_dist_traveled.push(tripPoint.startToTripPointDistance);
+
         const { drop_off_type, pickup_type } = getDropOffAndPickupValues(
           trip,
           tripPoint
@@ -273,13 +275,13 @@ export namespace GtfsEntity {
         pickup_types.push(pickup_type);
       }
     }
-
     return {
       trip_ids,
       arrival_times,
       departure_times,
       stop_ids,
       stop_sequences,
+      shape_dist_traveled,
       drop_off_types,
       pickup_types,
     };

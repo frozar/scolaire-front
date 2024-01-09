@@ -131,7 +131,7 @@ export namespace CurrentDrawTripUtils {
 
   export async function updatePolylineWithOsrm(trip: TripType) {
     enableSpinningWheel();
-    const { latlngs, projectedLatlngs, metrics, legsDurations } =
+    const { latlngs, projectedLatlngs, metrics, legsDurations, legsDistances } =
       await OsrmService.getRoadPolyline(trip);
 
     let someDuration = 0;
@@ -141,7 +141,23 @@ export namespace CurrentDrawTripUtils {
       return item ? !item.idSchool && !item.idStop : false;
     }
 
-    const size = trip.waypoints?.length;
+    function getCumulativeLegsDistance(waypointLength: number): number[] {
+      let cumulativeDistance = 0;
+      const newLegsDistance: number[] = [0]; // 0 is the first value
+
+      for (let i = 0; i < waypointLength - 1; i++) {
+        if (!isWaypoint((trip.waypoints as WaypointType[])[i])) {
+          cumulativeDistance += legsDistances[i];
+          newLegsDistance.push(cumulativeDistance);
+        } else cumulativeDistance += legsDistances[i];
+      }
+
+      return newLegsDistance;
+    }
+
+    const size = trip.waypoints?.length as number;
+
+    const newLegsDistance = getCumulativeLegsDistance(size);
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
@@ -158,18 +174,21 @@ export namespace CurrentDrawTripUtils {
 
     setCurrentDrawTrip((prev) => {
       if (!prev) return prev;
-      const datas = { ...prev };
+      const trip = { ...prev };
       // * One leg_duration is the travel time between the first & second point.
       // * first tripPoint.time_passage is based on trip.start_time so no need to define it.
       // * for each another tripPoint we define the time_passage to (index - 1) of legsDuration
-      datas.tripPoints.forEach((point, index) => {
+      trip.tripPoints.forEach((tripPoint, index) => {
         if (index > 0) {
-          point.passageTime = newLegsDuration[index - 1];
+          tripPoint.passageTime = newLegsDuration[index - 1];
         }
       });
-      datas.metrics = metrics;
-      datas.latLngs = latlngs;
-      return datas;
+      trip.tripPoints.forEach((tripPoint, i) => {
+        tripPoint.startToTripPointDistance = newLegsDistance[i];
+      });
+      trip.metrics = metrics;
+      trip.latLngs = latlngs;
+      return trip;
     });
     setWaypoints(projectedLatlngs);
     disableSpinningWheel();
