@@ -7,6 +7,7 @@ import {
   TripDirectionEnum,
 } from "../../../../../_entities/trip-direction.entity";
 import { FilterUtils } from "../../../../../utils/filter.utils";
+import { QuantityUtils } from "../../../../../utils/quantity.utils";
 import { StopUtils } from "../../../../../utils/stop.utils";
 import { TripUtils } from "../../../../../utils/trip.utils";
 import {
@@ -21,7 +22,6 @@ import {
 } from "../../../board/component/organism/DrawTripBoard";
 import { onBoard } from "../../../board/component/template/ContextManager";
 import { stopDetailsItem } from "../../../stops/component/organism/StopDetails";
-import { PointInterface } from "../atom/Point";
 import { StopPoint } from "../molecule/StopPoint";
 import { getSelectedLine } from "./BusLines";
 import { filterEmptyStops } from "./Filters";
@@ -35,11 +35,7 @@ export interface StopPointsProps {
 
 export const [getStops, setStops] = createSignal<StopType[]>([]);
 
-// TODO to delete and all reference
-export const [ramassages, setRamassages] = createSignal<PointInterface[]>([]);
-
 export function StopPoints(props: StopPointsProps) {
-  // eslint-disable-next-line solid/reactivity
   createEffect(() => setStops(props.stops));
 
   const quantities = () => {
@@ -104,7 +100,7 @@ function filterByDaysQuantitiesAndDirection(
       return stops.filter(
         (stop) =>
           trip.tripPoints.some((tripPoint) => tripPoint.id == stop.id) ||
-          StopUtils.getRemainingQuantity(stop.id) > 0
+          QuantityUtils.hasRemainingStudentToGet(stop.id)
       );
 
     case false:
@@ -186,16 +182,3 @@ export function leafletStopsFilter(): StopType[] {
       return stops;
   }
 }
-
-//TODO To delete ?
-// function buildStops(stops: StopType[]): StopType[] {
-//   return stops.map((stop) => {
-//     const [selected, setSelected] = createSignal(false);
-//     return {
-//       ...stop,
-//       setSelected,
-//       selected,
-//       leafletId: nextLeafletPointId(),
-//     };
-//   });
-// }
