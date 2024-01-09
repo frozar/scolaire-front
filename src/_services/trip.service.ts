@@ -20,6 +20,7 @@ export class TripService {
       "/busline/" + getSelectedLine()?.id + "/trip/" + trip.id,
       data
     );
+
     if (dbTrip == null) return dbTrip;
     return TripEntity.build(dbTrip);
   }
