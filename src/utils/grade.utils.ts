@@ -1,4 +1,8 @@
 import { GradeType } from "../_entities/grade.entity";
+import {
+  TripDirectionEntity,
+  TripDirectionEnum,
+} from "../_entities/trip-direction.entity";
 import { getLines } from "../views/content/map/component/organism/BusLines";
 import { getSchools } from "../views/content/map/component/organism/SchoolPoints";
 import { getStops } from "../views/content/map/component/organism/StopPoints";
@@ -46,6 +50,31 @@ export namespace GradeUtils {
 
     getLines()
       .flatMap((line) => line.trips.flatMap((trip) => trip.tripPoints))
+      .flatMap((tripPoint) => tripPoint.grades)
+      .forEach((gradeTrip) => {
+        if (gradeTrip.gradeId == gradeId) usedQuantity += gradeTrip.quantity;
+      });
+
+    return totalQuantity - usedQuantity;
+  }
+
+  export function getRemainingQuantityForDirection(
+    gradeId: number,
+    direction: TripDirectionEnum
+  ) {
+    const totalQuantity = getTotalQuantity(gradeId);
+    let usedQuantity = 0;
+
+    getLines()
+      .flatMap((line) =>
+        line.trips
+          .filter(
+            (item) =>
+              TripDirectionEntity.FindDirectionById(item.tripDirectionId)
+                .type == direction
+          )
+          .flatMap((trip) => trip.tripPoints)
+      )
       .flatMap((tripPoint) => tripPoint.grades)
       .forEach((gradeTrip) => {
         if (gradeTrip.gradeId == gradeId) usedQuantity += gradeTrip.quantity;
