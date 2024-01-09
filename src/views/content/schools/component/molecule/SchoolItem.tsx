@@ -6,6 +6,7 @@ import {
 } from "../../../../../_entities/school.entity";
 import CardTitle from "../../../../../component/atom/CardTitle";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
+import { PelletIcon } from "../../../../../icons/CirclePellet";
 import { updatePointColor } from "../../../../../leafletUtils";
 import { setRemoveConfirmation } from "../../../../../userInformation/RemoveConfirmation";
 import { SchoolUtils } from "../../../../../utils/school.utils";
@@ -36,6 +37,7 @@ export default function (props: SchoolItemProps) {
     updatePointColor(props.school);
   }
 
+  SchoolUtils.hasRemainingStudentToGet(props.school.id);
   return (
     <CardWrapper
       onClick={onClickEdit}
@@ -54,9 +56,14 @@ export default function (props: SchoolItemProps) {
         </div>
       </div>
       <div class="school-item-content">
-        <p>Trips: {SchoolEntity.getSchoolTrips(props.school.id).length}</p>
+        <div class="flex items-center gap-2">
+          <span class="w-[14px] ">
+            <PelletIcon />
+          </span>
+          <p>élèves: {SchoolUtils.getTotalQuantity(props.school.id)}</p>
+        </div>
         <p>classes: {props.school.grades.length ?? "-"}</p>
-        <p>élèves: {SchoolUtils.getTotalQuantity(props.school.id)}</p>
+        <p>Trips: {SchoolEntity.getSchoolTrips(props.school.id).length}</p>
       </div>
     </CardWrapper>
   );

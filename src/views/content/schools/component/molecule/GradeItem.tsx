@@ -66,9 +66,8 @@ export default function (props: GradeItemProps) {
       <div class="left">
         <CardTitle title={props.grade.name} />
         <p>
-          {GradeUtils.getRemainingQuantity(props.grade.id as number) +
-            " élèves restants sur " +
-            GradeUtils.getTotalQuantity(props.grade.id as number)}
+          {GradeUtils.getTotalQuantity(props.grade.id as number) +
+            " élèves au total "}
         </p>
       </div>
 

@@ -45,8 +45,9 @@ export default function (props: { school: SchoolType }) {
       </div>
 
       <p>
-        {SchoolUtils.getRemainingQuantity(props.school.id)} élèves restants sur{" "}
-        {SchoolUtils.getTotalQuantity(props.school.id)}
+        {"L'école compte " +
+          SchoolUtils.getTotalQuantity(props.school.id) +
+          " élèves"}
       </p>
 
       <InputSearch
