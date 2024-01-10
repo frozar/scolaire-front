@@ -5,6 +5,7 @@ export type organisationMember = {
   id: number;
   name: string;
   email: string;
+  // TODO: Use enum for role and user_privilege
   role: string;
   user_privilege: string;
   user_id: number;
