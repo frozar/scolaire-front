@@ -6,13 +6,13 @@ import {
 } from "../../../../../_entities/school.entity";
 import CardTitle from "../../../../../component/atom/CardTitle";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
-import { PelletIcon } from "../../../../../icons/CirclePellet";
 import { updatePointColor } from "../../../../../leafletUtils";
 import { setRemoveConfirmation } from "../../../../../userInformation/RemoveConfirmation";
 import { SchoolUtils } from "../../../../../utils/school.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { changeBoard } from "../../../board/component/template/ContextManager";
 import { setSchoolDetailsItem } from "../organism/SchoolDetails";
+import { QuantityStatusPellet } from "./QuantityStatusPellet";
 import "./SchoolItem.css";
 
 export interface SchoolItemProps {
@@ -37,7 +37,6 @@ export default function (props: SchoolItemProps) {
     updatePointColor(props.school);
   }
 
-  SchoolUtils.hasRemainingStudentToGet(props.school.id);
   return (
     <CardWrapper
       onClick={onClickEdit}
@@ -58,7 +57,7 @@ export default function (props: SchoolItemProps) {
       <div class="school-item-content">
         <div class="flex items-center gap-2">
           <span class="w-[14px] ">
-            <PelletIcon />
+            <QuantityStatusPellet schoolId={props.school.id} />
           </span>
           <p>élèves: {SchoolUtils.getTotalQuantity(props.school.id)}</p>
         </div>

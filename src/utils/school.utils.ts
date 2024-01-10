@@ -2,7 +2,6 @@ import {
   AssociatedSchoolType,
   AssociatedStopType,
 } from "../_entities/_utils.entity";
-import { CalendarDayEnum } from "../_entities/calendar.entity";
 import { SchoolType } from "../_entities/school.entity";
 import { SchoolService } from "../_services/school.service";
 import { addNewUserInformation } from "../signaux";
@@ -24,7 +23,7 @@ import {
   schoolDetailsItem,
   setSchoolDetailsItem,
 } from "../views/content/schools/component/organism/SchoolDetails";
-import { GradeUtils } from "./grade.utils";
+import { QuantityUtils } from "./quantity.utils";
 
 export namespace SchoolUtils {
   export function get(schoolId: number): SchoolType {
@@ -91,87 +90,37 @@ export namespace SchoolUtils {
     return quantity;
   }
 
-  // export function getRemainingQuantity(schoolId: number) {
-  //   let remainingQuantity = getTotalQuantity(schoolId);
-  //   const school = getSchools().filter((school) => school.id == schoolId)[0];
-  //   const gradeIds = school.grades.map((grade) => grade.id as number);
-
-  //   getLines()
-  //     .flatMap((line) => line.trips)
-  //     .flatMap((trip) => trip.tripPoints)
-  //     .flatMap((tripPoint) => tripPoint.grades)
-  //     .forEach((grade) => {
-  //       if (gradeIds.includes(grade.gradeId))
-  //         remainingQuantity -= grade.quantity;
-  //     });
-
-  //   return remainingQuantity;
-  // }
-  function getDayIndex(day: CalendarDayEnum): number {
-    switch (day) {
-      case "monday":
-        return 1;
-      case "tuesday":
-        return 2;
-      case "wednesday":
-        return 3;
-      case "thursday":
-        return 4;
-      case "friday":
-        return 5;
-      case "saturday":
-        return 6;
-      case "sunday":
-        return 7;
-      default:
-        return 0;
-    }
+  function removeDuplicateNumber(data: number[]) {
+    return [...new Set(data)];
   }
 
-  export function hasRemainingStudentToGet(schoolId: number) {
+  export function hasRemainingStudentToGet(
+    schoolId: number
+  ): [boolean, boolean] {
     const school = getSchools().filter((school) => school.id == schoolId)[0];
-    const gradeIds = school.grades.map((grade) => grade.id as number);
 
-    const comingRemaining = getTotalQuantity(schoolId);
-    const goingRemaining = getTotalQuantity(schoolId);
+    const stopIds = school.associated.map((associated) => associated.stopId);
+    let goingDirection = false;
+    let comingDirection = false;
 
-    const grades = gradeIds.map((id) => GradeUtils.getGrade(id));
-    const minMaxDay: CalendarDayEnum[] = [];
+    const tuples: [boolean, boolean][] = [];
 
-    grades.forEach((grade) => {
-      grade.calendar?.rules.forEach((rule) => {
-        const dayIndex = getDayIndex(rule.day);
-
-        if (minMaxDay.length == 0) minMaxDay.push(rule.day);
-        if (dayIndex > getDayIndex(minMaxDay[0]) && minMaxDay.length == 1)
-          minMaxDay.push(rule.day);
-
-        if (dayIndex < getDayIndex(minMaxDay[0])) minMaxDay[0] = rule.day;
-        if (dayIndex > getDayIndex(minMaxDay[1])) minMaxDay[1] = rule.day;
-      });
+    // * Here for each stop i get a tuple of the remaining quantity
+    removeDuplicateNumber(stopIds).forEach((id) => {
+      tuples.push(
+        QuantityUtils.stopHasRemainingStudentToGet(id, true) as [
+          boolean,
+          boolean
+        ]
+      );
     });
 
-    console.log("before run line");
-    getLines()
-      .flatMap((line) => line.trips)
-      .flatMap((trip) => trip.tripPoints)
-      .flatMap((tripPoint) => tripPoint.grades)
-      .forEach((grade) => {
-        if (gradeIds.includes(grade.gradeId)) console.log("okokokokokokko");
-      });
+    tuples.forEach((tuple) => {
+      if (tuple[0]) goingDirection = true;
+      if (tuple[1]) comingDirection = true;
+    });
 
-    getLines()
-      .flatMap((line) => line.trips)
-      .flatMap((trip) => trip.tripPoints)
-      .flatMap((tripPoint) => tripPoint.grades)
-      .forEach((grade) => {
-        console.log("grade matrix:", grade);
-        if (gradeIds.includes(grade.gradeId)) {
-          // remainingQuantity -= grade.quantity;
-
-          Object.values(grade.matrix).forEach((value) => console.log(value));
-        }
-      });
+    return [goingDirection, comingDirection];
   }
 
   export function addAssociated(

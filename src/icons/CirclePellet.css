@@ -1,0 +1,11 @@
+.quantity-status-pellet.green {
+  @apply fill-green-base;
+}
+
+.quantity-status-pellet.orange {
+  @apply fill-yellow-base;
+}
+
+.quantity-status-pellet.red {
+  @apply fill-red-base;
+}

@@ -256,8 +256,12 @@ export namespace QuantityUtils {
     return displayMatrix;
   }
 
-  export function stopHasRemainingStudentToGet(stopId: number): boolean {
-    let toReturn = false;
+  export function stopHasRemainingStudentToGet(
+    stopId: number,
+    returnByDirection = false
+  ): boolean | [boolean, boolean] {
+    let goingDirection = false;
+    let comingDirection = false;
 
     const matrixs: QuantityMatrixType[] = [];
     const stop = getStops().filter((stop) => stop.id == stopId)[0];
@@ -274,10 +278,15 @@ export namespace QuantityUtils {
 
     matrixs.map((matrix) => {
       Object.values(matrix).forEach((matrix) => {
-        if (matrix.comingQty || matrix.goingQty > 0) toReturn = true;
+        if (matrix.comingQty > 0) comingDirection = true;
+        if (matrix.goingQty > 0) goingDirection = true;
       });
     });
 
-    return toReturn;
+    if (!returnByDirection) {
+      if (goingDirection != comingDirection) return true;
+      else if (goingDirection && goingDirection) return true;
+      else return false;
+    } else return [goingDirection, comingDirection];
   }
 }
