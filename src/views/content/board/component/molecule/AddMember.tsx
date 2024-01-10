@@ -21,7 +21,7 @@ export function AddMember(): JSXElement {
         setDialogToDisplay(DialogToDisplayEnum.none);
       } else {
         addNewGlobalWarningInformation(
-          "Utilisateur inexistant ou déjà enregistrer dans l'organisation"
+          "Utilisateur inexistant ou déjà enregistré dans l'organisation"
         );
       }
     } else {

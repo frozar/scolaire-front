@@ -10,7 +10,7 @@ export function MemberElement(props: { member: organisationMember }) {
   const [currentPrivilege, setCurrentPrivilege] = createSignal<string>(
     props.member.user_privilege // eslint-disable-line
   );
-
+  //  TODO: Put CSS in a css file
   return (
     <tr>
       <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">
