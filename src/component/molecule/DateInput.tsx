@@ -14,13 +14,30 @@ interface DateInputProps {
 
 export function DateInput(props: DateInputProps) {
   const [dateInputRef, setDateInputRef] = createSignal<HTMLInputElement>();
-  const [defaultDate, setDefaultDate] = createSignal<string>();
+  const [defaultDate, setDefaultDate] = createSignal<Date>();
   const label = () => props.label ?? "Entrer une date";
 
   createEffect(() => {
-    if (props.defaultValue)
-      setDefaultDate(CalendarUtils.dateToString(props.defaultValue));
-    else setDefaultDate(label);
+    if (props.defaultValue) setDefaultDate(props.defaultValue);
+    // setDefaultDate(CalendarUtils.dateToString(props.defaultValue));
+  });
+
+  createEffect(() => {
+    if (props.minDate) {
+      if (defaultDate()! < props.minDate) {
+        props.onChange(props.minDate);
+        setDefaultDate(props.minDate);
+      }
+    }
+  });
+
+  createEffect(() => {
+    if (props.maxDate) {
+      if (defaultDate()! > props.maxDate) {
+        props.onChange(props.maxDate);
+        setDefaultDate(props.maxDate);
+      }
+    }
   });
 
   function openInputDateDialog() {
@@ -30,14 +47,16 @@ export function DateInput(props: DateInputProps) {
   function onChange() {
     const date = new Date(dateInputRef()?.value as string);
     props.onChange(date);
-    setDefaultDate(CalendarUtils.dateToString(date));
+    setDefaultDate(date);
   }
 
   return (
     <div class="date-input-container">
       <label>{label()}</label>
       <button onClick={openInputDateDialog} class="input-date-btn">
-        {defaultDate()}
+        {defaultDate()
+          ? CalendarUtils.dateToString(defaultDate())
+          : props.label}
         <div class="w-4">
           <CalendarIcon />
         </div>
