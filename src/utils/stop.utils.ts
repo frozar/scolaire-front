@@ -100,6 +100,7 @@ export namespace StopUtils {
   }
 
   export function getGradeTrips(stopId: number): GradeTripType[] {
+    console.log("getLines() after", getLines());
     return getLines()
       .flatMap((line) => line.trips)
       .flatMap((trip) => trip.tripPoints)

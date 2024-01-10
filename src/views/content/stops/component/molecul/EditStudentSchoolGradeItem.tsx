@@ -3,6 +3,10 @@ import { AssociatedSchoolType } from "../../../../../_entities/_utils.entity";
 import { GradeType } from "../../../../../_entities/grade.entity";
 import { LineType } from "../../../../../_entities/line.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
+import {
+  TripDirectionEntity,
+  TripDirectionEnum,
+} from "../../../../../_entities/trip-direction.entity";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
 import CheckIcon from "../../../../../icons/CheckIcon";
 import { addNewUserInformation } from "../../../../../signaux";
@@ -15,7 +19,7 @@ import { AssociatedUtils } from "../../../../../utils/associated.utils";
 import { QuantityMatrixType } from "../../../../../utils/quantity.utils";
 import { StopUtils } from "../../../../../utils/stop.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
-import { setLines } from "../../../map/component/organism/BusLines";
+import { getLines, setLines } from "../../../map/component/organism/BusLines";
 import { getSchools } from "../../../map/component/organism/SchoolPoints";
 import { getStops } from "../../../map/component/organism/StopPoints";
 import GradeSelection from "../atom/GradeSelection";
@@ -142,12 +146,12 @@ export default function (props: EditStopProps) {
 
     if (props.gradeStudentToGrade) {
       // ! That triggers quantity calcul (reload the component)
-      await AssociatedUtils.update(
-        props.gradeStudentToGrade.idClassToSchool,
-        parseInt(gradeSelector().value),
-        parseInt(schoolSelector().value),
-        quantitySelector().value
-      );
+      // await AssociatedUtils.update(
+      //   props.gradeStudentToGrade.idClassToSchool,
+      //   parseInt(gradeSelector().value),
+      //   parseInt(schoolSelector().value),
+      //   quantitySelector().value
+      // );
 
       // TODO: Clean, refactor and move
       // ! Ici update les matrices des courses liées !
@@ -253,9 +257,15 @@ export default function (props: EditStopProps) {
                         tripPoint.nature == NatureEnum.stop &&
                         tripPoint.id == stopId
                       ) {
+                        console.log("in");
                         return {
                           ...gradeTrip,
-                          tripMatrix: newMatrix,
+                          matrix:
+                            TripDirectionEntity.FindDirectionById(
+                              trip.tripDirectionId
+                            ).type == TripDirectionEnum.coming
+                              ? newMatrix[1]
+                              : newMatrix[0],
                         };
                       } else return gradeTrip;
                     }),
@@ -265,10 +275,20 @@ export default function (props: EditStopProps) {
             }),
           };
         });
-        console.log("lines", lines);
+        console.log("lines", linesBis);
         // ! Mettre à jour
         return linesBis;
       });
+
+      console.log("getLines avant !", getLines());
+
+      await AssociatedUtils.update(
+        props.gradeStudentToGrade.idClassToSchool,
+        parseInt(gradeSelector().value),
+        parseInt(schoolSelector().value),
+        quantitySelector().value
+      );
+      // console.log("getLines avant !", getLines());
     } else {
       AssociatedUtils.create(
         quantitySelector().value,
