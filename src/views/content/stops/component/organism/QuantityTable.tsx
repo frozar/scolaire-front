@@ -4,6 +4,7 @@ import { QuantityMatrixType } from "../../../../../utils/quantity.utils";
 import { CalendarUtils } from "../../../calendar/calendar.utils";
 
 // TODO refacto
+// ! Passer le resultat et non la réponse
 export function QuantityTable(props: { matrix: QuantityMatrixType }) {
   const goingQuantity = (day: CalendarDayEnum) => {
     return props.matrix[day].goingQty ?? undefined;
