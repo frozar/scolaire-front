@@ -256,6 +256,7 @@ export namespace QuantityUtils {
     return displayMatrix;
   }
 
+  // * TODO move it to stop utils
   export function stopHasRemainingStudentToGet(
     stopId: number,
     returnByDirection = false

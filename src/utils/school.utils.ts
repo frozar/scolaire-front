@@ -105,7 +105,7 @@ export namespace SchoolUtils {
 
     const tuples: [boolean, boolean][] = [];
 
-    // * Here for each stop i get a tuple of the remaining quantity
+    // * Here for each stop i get a tuple of the remaining quantity for going & coming direction
     removeDuplicateNumber(stopIds).forEach((id) => {
       tuples.push(
         QuantityUtils.stopHasRemainingStudentToGet(id, true) as [

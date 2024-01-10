@@ -26,6 +26,7 @@ export function QuantityStatusPellet(props: { schoolId: number }) {
       else setRemainingStatus(RemainingStatusEnum.allTaken);
     }
   });
+
   return (
     <Switch>
       <Match when={remainingStatus() == RemainingStatusEnum.NoOneTaken}>
