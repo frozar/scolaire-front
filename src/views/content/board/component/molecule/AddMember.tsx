@@ -12,7 +12,6 @@ import LabeledInputField from "./LabeledInputField";
 
 export function AddMember(): JSXElement {
   async function onClick(): Promise<void> {
-    console.log(validateEmail(memberMail()));
     if (validateEmail(memberMail())) {
       const res = await OrganisationService.addMember(memberMail());
       if (res) {
@@ -26,7 +25,6 @@ export function AddMember(): JSXElement {
         );
       }
     } else {
-      console.log("Adresse mail incorrect");
       addNewGlobalWarningInformation("Adresse mail incorrect");
     }
   }
@@ -50,7 +48,6 @@ export function AddMember(): JSXElement {
         name="mail"
         placeholder="exemple@mail.com"
       />
-      {/* TODO: Refactor footer dialog content */}
       <div class="import-dialog-buttons">
         <Button
           onClick={DialogUtils.closeDialog}
