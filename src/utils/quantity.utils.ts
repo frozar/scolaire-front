@@ -235,7 +235,7 @@ export namespace QuantityUtils {
     stopId: number,
     idClassToSchool: number
   ): QuantityMatrixType {
-    console.log("getRemainingQuantityMatrix");
+    console.log("getRemainingQuantityMatrix ", stopId);
     const stop = getStops().filter((stop) => stop.id == stopId)[0];
     const associated = stop.associated.filter(
       (associated) => associated.idClassToSchool == idClassToSchool
