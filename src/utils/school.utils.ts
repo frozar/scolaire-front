@@ -100,8 +100,6 @@ export namespace SchoolUtils {
     const school = getSchools().filter((school) => school.id == schoolId)[0];
 
     const stopIds = school.associated.map((associated) => associated.stopId);
-    let goingDirection = false;
-    let comingDirection = false;
 
     const tuples: [boolean, boolean][] = [];
 
@@ -115,12 +113,16 @@ export namespace SchoolUtils {
       );
     });
 
-    tuples.forEach((tuple) => {
-      if (tuple[0]) goingDirection = true;
-      if (tuple[1]) comingDirection = true;
-    });
+    // * Check if first item of the tuple have de same value of all the other tuples first item
+    const allEqual = (arr: [boolean, boolean][], tupleIndex: number) =>
+      arr.every((v) => v[tupleIndex] === arr[0][tupleIndex]);
 
-    return [goingDirection, comingDirection];
+    const allEqualGoing = allEqual(tuples, 0);
+    const allEqualComing = allEqual(tuples, 1);
+
+    if (allEqualGoing && allEqualComing)
+      return tuples[0][0] ? [true, true] : [false, false];
+    else return [true, false];
   }
 
   export function addAssociated(
