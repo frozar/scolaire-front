@@ -246,6 +246,9 @@ export namespace QuantityUtils {
       .filter((item) => item.gradeId == associated.gradeId)
       .flatMap((item) => item.matrix) as QuantityMatrixType[];
 
+    console.log("orignalMatrix", orignalMatrix);
+    console.log("tripMatrix", tripMatrix);
+
     let displayMatrix = QuantityUtils.calculateMatrix(
       orignalMatrix,
       tripMatrix[0]
