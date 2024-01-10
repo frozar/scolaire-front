@@ -67,12 +67,13 @@ export namespace AssociatedUtils {
         idClassToSchool: studentToGradeId,
         stopId,
         quantity,
+        // TODO: Add qty matrix here
         gradeId,
       },
       schoolId
     );
 
-    StopUtils.updateAssociated(gradeToSchool, stopId);
+    StopUtils.updateAssociated({ ...gradeToSchool }, stopId);
 
     SchoolUtils.updateAssociated(gradeToSchool, stopId);
   }

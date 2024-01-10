@@ -243,8 +243,8 @@ export namespace QuantityUtils {
 
     const orignalMatrix = associated.quantityMatrix as QuantityMatrixType;
     const tripMatrix: QuantityMatrixType[] = StopUtils.getGradeTrips(stopId)
-      .filter((item) => item.gradeId == associated.gradeId)
-      .flatMap((item) => item.matrix) as QuantityMatrixType[];
+      .filter((gradeTrip) => gradeTrip.gradeId == associated.gradeId)
+      .flatMap((_gradeTrip) => _gradeTrip.matrix) as QuantityMatrixType[];
 
     console.log("orignalMatrix", orignalMatrix);
     console.log("tripMatrix", tripMatrix);

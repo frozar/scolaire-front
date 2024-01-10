@@ -134,13 +134,16 @@ export default function (props: EditStopProps) {
   async function validate() {
     console.log("validate function");
     if (checkAllInputsValue()) return;
+
     if (props.gradeStudentToGrade) {
+      // ! That triggers quantity calcul (reload the component)
       await AssociatedUtils.update(
         props.gradeStudentToGrade.idClassToSchool,
         parseInt(gradeSelector().value),
         parseInt(schoolSelector().value),
         quantitySelector().value
       );
+
       // TODO: Clean, refactor and move
       // ! Ici update les matrices des courses liées !
       const gradeId = props.gradeStudentToGrade.gradeId;
@@ -151,6 +154,16 @@ export default function (props: EditStopProps) {
             assoc.idClassToSchool == props.gradeStudentToGrade?.idClassToSchool
         )
       )[0].id;
+      console.log(
+        "=========================",
+        getStops().filter((stop) =>
+          stop.associated.some(
+            (assoc) =>
+              assoc.idClassToSchool ==
+              props.gradeStudentToGrade?.idClassToSchool
+          )
+        )
+      );
       setLines((prev) => {
         // ! Récup la liste des trip point concerné (stop et grade correspondant)
         const lines: LineType[] = [...prev];
