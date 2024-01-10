@@ -117,12 +117,21 @@ export namespace SchoolUtils {
     const allEqual = (arr: [boolean, boolean][], tupleIndex: number) =>
       arr.every((v) => v[tupleIndex] === arr[0][tupleIndex]);
 
+    /**
+     ** Informations:
+     ** [[false, false], [true, false]] => false, true
+     ** [[true, false], [true, false]] => true, true
+     ** [[false, true], [true, false]] => false, false
+     ** the next code will teste the first col & second col of each tuple
+     */
     const allEqualGoing = allEqual(tuples, 0);
     const allEqualComing = allEqual(tuples, 1);
 
-    if (allEqualGoing && allEqualComing)
+    if (allEqualGoing && allEqualComing) {
+      // * If
+      if (tuples[0][0] != tuples[0][1]) return [tuples[0][0], tuples[0][1]];
       return tuples[0][0] ? [true, true] : [false, false];
-    else return [true, false];
+    } else return [true, false];
   }
 
   export function addAssociated(
