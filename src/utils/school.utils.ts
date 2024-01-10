@@ -98,9 +98,7 @@ export namespace SchoolUtils {
     schoolId: number
   ): [boolean, boolean] {
     const school = getSchools().filter((school) => school.id == schoolId)[0];
-
     const stopIds = school.associated.map((associated) => associated.stopId);
-
     const tuples: [boolean, boolean][] = [];
 
     // * Here for each stop i get a tuple of the remaining quantity for going & coming direction
@@ -128,7 +126,6 @@ export namespace SchoolUtils {
     const allEqualComing = allEqual(tuples, 1);
 
     if (allEqualGoing && allEqualComing) {
-      // * If
       if (tuples[0][0] != tuples[0][1]) return [tuples[0][0], tuples[0][1]];
       return tuples[0][0] ? [true, true] : [false, false];
     } else return [true, false];
