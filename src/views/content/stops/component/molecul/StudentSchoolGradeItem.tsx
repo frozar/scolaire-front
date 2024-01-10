@@ -25,7 +25,10 @@ export default function (props: { school: AssociatedSchoolType }) {
   function onClickEdit() {
     setEditingMode(true);
   }
-
+  // const matrix = QuantityUtils.getRemainingQuantityMatrix(
+  //   stopDetailsItem()?.id as number,
+  //   props.school.idClassToSchool
+  // );
   return (
     <Show
       when={!editingMode()}

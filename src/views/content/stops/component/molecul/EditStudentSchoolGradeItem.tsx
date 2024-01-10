@@ -6,9 +6,14 @@ import { SchoolType } from "../../../../../_entities/school.entity";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
 import CheckIcon from "../../../../../icons/CheckIcon";
 import { addNewUserInformation } from "../../../../../signaux";
-import { MessageLevelEnum, MessageTypeEnum } from "../../../../../type";
+import {
+  MessageLevelEnum,
+  MessageTypeEnum,
+  NatureEnum,
+} from "../../../../../type";
 import { AssociatedUtils } from "../../../../../utils/associated.utils";
-import { QuantityUtils } from "../../../../../utils/quantity.utils";
+import { QuantityMatrixType } from "../../../../../utils/quantity.utils";
+import { StopUtils } from "../../../../../utils/stop.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { setLines } from "../../../map/component/organism/BusLines";
 import { getSchools } from "../../../map/component/organism/SchoolPoints";
@@ -167,6 +172,72 @@ export default function (props: EditStopProps) {
       setLines((prev) => {
         // ! Récup la liste des trip point concerné (stop et grade correspondant)
         const lines: LineType[] = [...prev];
+        // const matrix = QuantityUtils.getRemainingQuantityMatrix(
+        //   stopId,
+        //   props.gradeStudentToGrade?.idClassToSchool as number
+        // );
+        // TODO: CLean
+        const stop = getStops().filter((stop) => stop.id == stopId)[0];
+        const associated = stop.associated.filter(
+          (associated) =>
+            associated.idClassToSchool ==
+            (props.gradeStudentToGrade?.idClassToSchool as number)
+        )[0];
+        const tripMatrix: QuantityMatrixType[] = StopUtils.getGradeTrips(stopId)
+          .filter((gradeTrip) => gradeTrip.gradeId == associated.gradeId)
+          .flatMap((_gradeTrip) => _gradeTrip.matrix) as QuantityMatrixType[];
+        const newMatrix: QuantityMatrixType[] = [];
+        for (const matrix of tripMatrix) {
+          // TODO: Use builQuantityMatrix instead
+          const actual_matrix: QuantityMatrixType = {
+            monday: {
+              goingQty:
+                matrix.monday.goingQty == 0 ? 0 : quantitySelector().value,
+              comingQty:
+                matrix.monday.comingQty == 0 ? 0 : quantitySelector().value,
+            },
+            tuesday: {
+              goingQty:
+                matrix.tuesday.goingQty == 0 ? 0 : quantitySelector().value,
+              comingQty:
+                matrix.tuesday.comingQty == 0 ? 0 : quantitySelector().value,
+            },
+            wednesday: {
+              goingQty:
+                matrix.wednesday.goingQty == 0 ? 0 : quantitySelector().value,
+              comingQty:
+                matrix.wednesday.comingQty == 0 ? 0 : quantitySelector().value,
+            },
+            thursday: {
+              goingQty:
+                matrix.thursday.goingQty == 0 ? 0 : quantitySelector().value,
+              comingQty:
+                matrix.thursday.comingQty == 0 ? 0 : quantitySelector().value,
+            },
+            friday: {
+              goingQty:
+                matrix.friday.goingQty == 0 ? 0 : quantitySelector().value,
+              comingQty:
+                matrix.friday.comingQty == 0 ? 0 : quantitySelector().value,
+            },
+            saturday: {
+              goingQty:
+                matrix.saturday.goingQty == 0 ? 0 : quantitySelector().value,
+              comingQty:
+                matrix.saturday.comingQty == 0 ? 0 : quantitySelector().value,
+            },
+            sunday: {
+              goingQty:
+                matrix.sunday.goingQty == 0 ? 0 : quantitySelector().value,
+              comingQty:
+                matrix.sunday.comingQty == 0 ? 0 : quantitySelector().value,
+            },
+          };
+          newMatrix.push(actual_matrix);
+        }
+        console.log("newMatrix", newMatrix);
+        console.log("tripMatrix", tripMatrix);
+
         const linesBis: LineType[] = lines.flatMap((line) => {
           return {
             ...line,
@@ -177,13 +248,14 @@ export default function (props: EditStopProps) {
                   return {
                     ...tripPoint,
                     grades: tripPoint.grades.map((gradeTrip) => {
-                      if (gradeTrip.gradeId == gradeId) {
+                      if (
+                        gradeTrip.gradeId == gradeId &&
+                        tripPoint.nature == NatureEnum.stop &&
+                        tripPoint.id == stopId
+                      ) {
                         return {
                           ...gradeTrip,
-                          matrix: QuantityUtils.getRemainingQuantityMatrix(
-                            stopId,
-                            props.gradeStudentToGrade?.idClassToSchool as number
-                          ),
+                          tripMatrix: newMatrix,
                         };
                       } else return gradeTrip;
                     }),
