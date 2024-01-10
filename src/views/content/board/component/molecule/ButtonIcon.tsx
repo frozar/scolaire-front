@@ -11,7 +11,6 @@ export interface ButtonIconProps {
 }
 
 export default function (props: ButtonIconProps) {
-  const Icon = () => props.icon;
   return (
     <button
       ref={props.refSetter}
@@ -24,7 +23,7 @@ export default function (props: ButtonIconProps) {
           : props.onClick()
       }
     >
-      <Icon />
+      {props.icon}
     </button>
   );
 }

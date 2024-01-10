@@ -5,6 +5,7 @@ import {
 } from "../../../../_entities/calendar.entity";
 import { DateInput } from "../../../../component/molecule/DateInput";
 import { CalendarManager } from "../calendar.manager";
+import { CalendarUtils } from "../calendar.utils";
 import { ItemActions, actionEnum } from "../organism/ItemActions";
 import { RulesSelectorWrapper } from "./RulesSelectorWrapper";
 
@@ -90,6 +91,9 @@ export function DateItem(props: DateItemProps) {
         }
         onChange={onChangeSelect}
         defaultValue={props.date?.reference}
+        list={[...Object.keys(CalendarDayEnum)].map((day) =>
+          CalendarUtils.dayToFrench(day as CalendarDayEnum)
+        )}
       />
 
       <ItemActions

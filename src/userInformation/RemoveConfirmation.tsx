@@ -37,7 +37,7 @@ export default function () {
         displayed: true,
         level: MessageLevelEnum.success,
         type: MessageTypeEnum.global,
-        content: removeConfirmationItem.itemName + " a bien été supprimée.",
+        content: removeConfirmationItem.itemName + " a bien été supprimé(e).",
       });
     } else {
       addNewUserInformation({

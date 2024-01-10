@@ -4,8 +4,9 @@ import { useStateGui } from "../../../../StateGui";
 import { SelectedMenuType } from "../../../../type";
 
 import { getAuthenticatedUser } from "../../../../signaux";
+import { getSelectedOrganisation } from "../../../content/board/component/organism/OrganisationSelector";
 import { onBoard } from "../../../content/board/component/template/ContextManager";
-import menuItems from "../../menuItemFields";
+import menuItems, { adminItems } from "../../menuItemFields";
 import LeftMenuItem from "../molecule/LeftMenuItem";
 
 const [, { getActiveMapId, setSelectedMenu, getSelectedMenu }] = useStateGui();
@@ -58,7 +59,13 @@ export default function (props: LeftMenuItemProps) {
 
   return (
     <ul>
-      <For each={menuItems}>
+      <For
+        each={
+          getSelectedOrganisation().user_privilege === "admin"
+            ? menuItems.concat(adminItems)
+            : menuItems
+        }
+      >
         {(menuItemArg) => {
           const { label, menuItem, Logo, isDisabled } = menuItemArg;
 
@@ -67,6 +74,7 @@ export default function (props: LeftMenuItemProps) {
               isDisabled ||
               (!isDisabled &&
                 menuItem != "dashboard" &&
+                menuItem != "parametres" &&
                 getAuthenticatedUser() != undefined &&
                 getActiveMapId() == null)
             );

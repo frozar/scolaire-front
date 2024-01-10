@@ -1,11 +1,10 @@
 import { For } from "solid-js";
-import { CalendarDayEnum } from "../../../../_entities/calendar.entity";
-import { CalendarUtils } from "../calendar.utils";
 
 interface RulesSelectorWrapperProps {
   onChange: (value: string) => void;
   defaultValue?: string;
   disabled?: boolean;
+  list: string[];
 }
 
 export function RulesSelectorWrapper(props: RulesSelectorWrapperProps) {
@@ -16,13 +15,13 @@ export function RulesSelectorWrapper(props: RulesSelectorWrapperProps) {
         onChange={(event) => props.onChange(event.target.value)}
         class="h-fit"
       >
-        <For each={Object.keys(CalendarDayEnum)}>
-          {(enumeredDay) => (
+        <For each={props.list}>
+          {(enumeredElem) => (
             <option
-              value={enumeredDay}
-              selected={enumeredDay == (props.defaultValue as CalendarDayEnum)}
+              value={enumeredElem}
+              selected={enumeredElem === props.defaultValue}
             >
-              {CalendarUtils.dayToFrench(enumeredDay as CalendarDayEnum)}
+              {enumeredElem}
             </option>
           )}
         </For>
