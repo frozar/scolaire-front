@@ -12,6 +12,7 @@ import { SchoolUtils } from "../../../../../utils/school.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { changeBoard } from "../../../board/component/template/ContextManager";
 import { setSchoolDetailsItem } from "../organism/SchoolDetails";
+import { QuantityStatusPellet } from "./QuantityStatusPellet";
 import "./SchoolItem.css";
 
 export interface SchoolItemProps {
@@ -54,9 +55,14 @@ export default function (props: SchoolItemProps) {
         </div>
       </div>
       <div class="school-item-content">
-        <p>Trips: {SchoolEntity.getSchoolTrips(props.school.id).length}</p>
+        <div class="flex items-center gap-2">
+          <span class="w-[14px] ">
+            <QuantityStatusPellet schoolId={props.school.id} />
+          </span>
+          <p>élèves: {SchoolUtils.getTotalQuantity(props.school.id)}</p>
+        </div>
         <p>classes: {props.school.grades.length ?? "-"}</p>
-        <p>élèves: {SchoolUtils.getTotalQuantity(props.school.id)}</p>
+        <p>Trips: {SchoolEntity.getSchoolTrips(props.school.id).length}</p>
       </div>
     </CardWrapper>
   );

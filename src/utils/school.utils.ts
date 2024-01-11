@@ -23,6 +23,7 @@ import {
   schoolDetailsItem,
   setSchoolDetailsItem,
 } from "../views/content/schools/component/organism/SchoolDetails";
+import { QuantityUtils } from "./quantity.utils";
 
 export namespace SchoolUtils {
   export function get(schoolId: number): SchoolType {
@@ -89,21 +90,45 @@ export namespace SchoolUtils {
     return quantity;
   }
 
-  export function getRemainingQuantity(schoolId: number) {
-    let remainingQuantity = getTotalQuantity(schoolId);
+  function removeDuplicateNumber(data: number[]) {
+    return [...new Set(data)];
+  }
+
+  export function hasRemainingStudentToGet(
+    schoolId: number
+  ): [boolean, boolean] {
     const school = getSchools().filter((school) => school.id == schoolId)[0];
-    const gradeIds = school.grades.map((grade) => grade.id as number);
+    const stopIds = school.associated.map((associated) => associated.stopId);
+    const tuples: [boolean, boolean][] = [];
 
-    getLines()
-      .flatMap((line) => line.trips)
-      .flatMap((trip) => trip.tripPoints)
-      .flatMap((tripPoint) => tripPoint.grades)
-      .forEach((grade) => {
-        if (gradeIds.includes(grade.gradeId))
-          remainingQuantity -= grade.quantity;
-      });
+    // * Here for each stop i get a tuple of the remaining quantity for going & coming direction
+    removeDuplicateNumber(stopIds).forEach((id) => {
+      tuples.push(
+        QuantityUtils.stopHasRemainingStudentToGet(id, true) as [
+          boolean,
+          boolean
+        ]
+      );
+    });
 
-    return remainingQuantity;
+    // * Check if first item of the tuple have de same value of all the other tuples first item
+    const allEqual = (arr: [boolean, boolean][], tupleIndex: number) =>
+      arr.every((v) => v[tupleIndex] === arr[0][tupleIndex]);
+
+    /**
+     ** Informations:
+     ** [[false, false], [true, false]] => false, true
+     ** [[true, false], [true, false]] => true, true
+     ** [[false, true], [true, false]] => false, false
+     ** the next code will teste the first col & second col of each tuple
+     */
+    const allEqualGoing = allEqual(tuples, 0);
+    const allEqualComing = allEqual(tuples, 1);
+
+    if (allEqualGoing && allEqualComing) {
+      if (tuples[0][0] != tuples[0][1]) return [tuples[0][0], tuples[0][1]];
+      return tuples[0][0] ? [true, true] : [false, false];
+    } else return [true, false];
   }
 
   export function addAssociated(
