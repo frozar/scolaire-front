@@ -4,36 +4,33 @@ import { LineType } from "../_entities/line.entity";
 import { NatureEnum } from "../type";
 import { QuantityMatrixType } from "./quantity.utils";
 
+enum GoingComingQtyEnum {
+  goingQty = "goingQty",
+  comingQty = "comingQty",
+}
+
 export namespace LineUtils {
+  function updateMatrixQuantityWithNewQty(
+    matrix: QuantityMatrixType,
+    qty: number
+  ) {
+    const days = Object.keys(CalendarDayEnum) as CalendarDayEnum[];
+    const directions = Object.keys(GoingComingQtyEnum) as GoingComingQtyEnum[];
+
+    for (const day of days) {
+      for (const direction of directions) {
+        matrix[day][direction] = matrix[day][direction] == 0 ? 0 : qty;
+      }
+    }
+
+    return matrix;
+  }
   export function updateLineWithNewGradeTripMatrix(
     lines: LineType[],
     qty: number,
     gradeId: number,
     stopId: number
   ): LineType[] {
-    enum GoingComingQtyEnum {
-      goingQty = "goingQty",
-      comingQty = "comingQty",
-    }
-
-    function updateMatrixQuantityWithNewQty(
-      matrix: QuantityMatrixType,
-      qty: number
-    ) {
-      const days = Object.keys(CalendarDayEnum) as CalendarDayEnum[];
-      const directions = Object.keys(
-        GoingComingQtyEnum
-      ) as GoingComingQtyEnum[];
-
-      for (const day of days) {
-        for (const direction of directions) {
-          matrix[day][direction] = matrix[day][direction] == 0 ? 0 : qty;
-        }
-      }
-
-      return matrix;
-    }
-
     return lines.flatMap((line) => {
       return {
         ...line,
