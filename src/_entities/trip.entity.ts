@@ -9,6 +9,7 @@ import { COLOR_GREEN_BASE } from "../views/content/map/constant";
 import { EntityUtils, LocationPathDBType, PointType } from "./_utils.entity";
 import { CalendarDayEnum } from "./calendar.entity";
 import {
+  GradeDBType,
   GradeEntity,
   GradeTripDBType,
   GradeTripType,
@@ -49,7 +50,9 @@ export namespace TripEntity {
       color: "#" + dbData.color,
       grades:
         dbData.grades != undefined
-          ? dbData.grades.map((grade) => GradeEntity.build(grade))
+          ? dbData.grades.map((grade) =>
+              GradeEntity.build(grade as GradeDBType)
+            )
           : [],
       tripPoints: formatTripPointType(
         dbData.trip_stop,
@@ -62,7 +65,9 @@ export namespace TripEntity {
         : [],
       selected: false,
       metrics: dbData.metrics,
-      startTime: GradeEntity.getHourFormatFromString(dbData.start_time),
+      startTime: dbData.start_time
+        ? GradeEntity.getHourFormatFromString(dbData.start_time)
+        : undefined,
       days: dbData.days,
       tripDirectionId: dbData.trip_direction_id,
     };
@@ -79,39 +84,38 @@ export namespace TripEntity {
       latLngs: [],
       selected: false,
       metrics: {},
-      startTime: {
-        hour: 7,
-        minutes: 0,
-      },
+      startTime: undefined,
       days: [],
       tripDirectionId: 0,
     };
   }
 
-  export function dbFormat(line: TripType): Partial<TripDBType> {
-    const name = line.name ? line.name : "";
+  export function dbFormat(trip: TripType): Partial<TripDBType> {
+    const name = trip.name ? trip.name : "";
     return {
-      color: EntityUtils.formatColorForDB(line.color),
+      color: EntityUtils.formatColorForDB(trip.color),
       name: name,
-      school_id: line.schools[0].id,
-      trip_stop: formatTripPointDBType(line.tripPoints),
-      polyline: EntityUtils.buildLocationPath(line.latLngs),
-      grades: line.grades.map((item) => item.id) as number[],
+      school_id: trip.schools[0].id,
+      trip_stop: formatTripPointDBType(trip.tripPoints),
+      polyline: EntityUtils.buildLocationPath(trip.latLngs),
+      grades: trip.grades.map((item) => item.id) as number[],
       metrics: {
-        distance: line.metrics?.distance,
-        duration: line.metrics?.duration,
-        distancePCC: line.metrics?.distancePCC,
-        deviation: line.metrics?.deviation,
-        kmPassager: line.metrics?.kmPassager,
-        txRemplissMoy: line.metrics?.txRemplissMoy,
-        CO2: line.metrics?.CO2,
+        distance: trip.metrics?.distance,
+        duration: trip.metrics?.duration,
+        distancePCC: trip.metrics?.distancePCC,
+        deviation: trip.metrics?.deviation,
+        kmPassager: trip.metrics?.kmPassager,
+        txRemplissMoy: trip.metrics?.txRemplissMoy,
+        CO2: trip.metrics?.CO2,
       },
       waypoint: WaypointEntity.formatWaypointDBType(
-        line.waypoints as WaypointType[]
+        trip.waypoints as WaypointType[]
       ),
-      start_time: GradeEntity.getStringFromHourFormat(line.startTime),
-      days: line.days,
-      trip_direction_id: line.tripDirectionId,
+      start_time: trip.startTime
+        ? GradeEntity.getStringFromHourFormat(trip.startTime)
+        : undefined,
+      days: trip.days,
+      trip_direction_id: trip.tripDirectionId,
     };
   }
 
@@ -209,7 +213,7 @@ export type TripType = {
   latLngs: L.LatLng[];
   selected: boolean;
   metrics?: TripMetricType;
-  startTime: HourFormat;
+  startTime?: HourFormat;
   tripDirectionId: number;
   days: CalendarDayEnum[];
 };
@@ -232,7 +236,7 @@ export type TripDBType = {
   school_id: number;
   name: string;
   color: string;
-  grades: number[];
+  grades: (number | GradeDBType)[]; //TODO Clarify using of grades type
   trip_stop: TripPointDBType[];
   polyline: LocationPathDBType;
   metrics: TripMetricType;

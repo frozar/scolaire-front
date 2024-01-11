@@ -6,7 +6,6 @@ import BoardFooterActions from "../molecule/BoardFooterActions";
 
 import "../../../../../css/timeline.css";
 
-import { GradeEntity } from "../../../../../_entities/grade.entity";
 import { TripEntity, TripType } from "../../../../../_entities/trip.entity";
 import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
 import CurvedLine from "../../../../../icons/CurvedLine";
@@ -14,7 +13,6 @@ import SimpleTrip from "../../../../../icons/SimpleLine";
 import { ContextUtils } from "../../../../../utils/contextManager.utils";
 import { CurrentDrawTripUtils } from "../../../../../utils/currentDrawTrip.utils";
 import { COLOR_GREEN_BASE } from "../../../map/constant";
-import TimeInput from "../../../schools/component/atom/TimeInput";
 import BoardTitle from "../atom/BoardTitle";
 import { DrawHelperButton } from "../atom/DrawHelperButton";
 import ButtonIcon from "../molecule/ButtonIcon";
@@ -69,10 +67,7 @@ export const [currentDrawTrip, setCurrentDrawTrip] = createSignal<TripType>(
     latLngs: [],
     selected: false,
     metrics: {},
-    startTime: {
-      hour: 7,
-      minutes: 0,
-    },
+    startTime: undefined,
     days: [],
     tripDirectionId: 0,
   }
@@ -90,15 +85,6 @@ export function DrawTripBoard() {
   onCleanup(() => {
     setIsInUpdate(false);
   });
-
-  function onInputStart(value: string) {
-    const formatedSchedule = GradeEntity.getHourFormatFromString(value);
-    if (!formatedSchedule) return;
-    setCurrentDrawTrip((prev) => {
-      if (!prev) return prev;
-      return { ...prev, startTime: formatedSchedule };
-    });
-  }
 
   return (
     <div class="add-line-information-board-content">
@@ -156,15 +142,7 @@ export function DrawTripBoard() {
           name="line-name"
           placeholder="Entrer le nom de la course"
         />
-        <div class="start-bus grid my-3">
-          <label>Horraire de départ:</label>
-          <TimeInput
-            onInput={onInputStart}
-            value={GradeEntity.getStringFromHourFormat(
-              currentDrawTrip()?.startTime
-            )}
-          />
-        </div>
+
         <div class="flex mt-4 justify-between">
           <TripColorPicker
             defaultColor={currentDrawTrip()?.color}
