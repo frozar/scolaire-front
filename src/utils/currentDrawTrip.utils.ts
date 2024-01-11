@@ -102,6 +102,19 @@ export namespace CurrentDrawTripUtils {
     updatePolylineWithOsrm(currentDrawTrip());
   }
 
+  export function updateTripPoints(points: TripPointType[]) {
+    setCurrentDrawTrip((trip) => {
+      return {
+        ...trip,
+        tripPoints: points.map((point) => {
+          return { ...point, grades: point.associated };
+        }),
+      };
+    });
+    setWaypointsFromPoints(points);
+    updatePolylineWithOsrm(currentDrawTrip());
+  }
+
   export function removeTripPoint(
     tripPointId: number,
     tripPointNature: NatureEnum

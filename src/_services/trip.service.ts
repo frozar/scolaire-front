@@ -10,12 +10,14 @@ export class TripService {
       "/busline/" + getSelectedLine()?.id + "/trip",
       data
     );
+    console.log("after request");
 
     return TripEntity.build(dbBusTrip);
   }
 
   static async update(trip: Partial<TripType>): Promise<TripType> {
     const data = TripEntity.dbPartialFormat(trip);
+
     const dbTrip: TripDBType = await ServiceUtils.patch(
       "/busline/" + getSelectedLine()?.id + "/trip/" + trip.id,
       data

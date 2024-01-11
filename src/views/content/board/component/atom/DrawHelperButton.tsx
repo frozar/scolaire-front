@@ -15,8 +15,11 @@ import DrawHelperDialog, {
   openDrawHelperDialog,
 } from "../molecule/DrawHelperDialog";
 
+import { CalendarDayEnum } from "../../../../../_entities/calendar.entity";
+import { GradeTripType } from "../../../../../_entities/grade.entity";
 import { TripPointType } from "../../../../../_entities/trip.entity";
 import { CurrentDrawTripUtils } from "../../../../../utils/currentDrawTrip.utils";
+import { QuantityUtils } from "../../../../../utils/quantity.utils";
 import { getSchools } from "../../../map/component/organism/SchoolPoints";
 import {
   getStops,
@@ -32,9 +35,13 @@ interface DrawHelperButtonProps {
 async function drawHelper(data: DrawHelperDataType) {
   enableSpinningWheel();
   const response = await GraphicageService.drawHelper(data);
+  console.log("response:", response);
+
   //TODO Resolve type problem and add quantity here ?
   const points: TripPointType[] = formatTripPoints(response);
-  CurrentDrawTripUtils.updatePoints(points);
+  console.log("formated points:", points);
+  // CurrentDrawTripUtils.updatePoints(points);
+  CurrentDrawTripUtils.updateTripPoints(points);
   disableSpinningWheel();
 }
 
@@ -65,6 +72,7 @@ export function DrawHelperButton(props: DrawHelperButtonProps) {
     };
 
     await drawHelper(data);
+    console.log("current draw trip:", currentDrawTrip());
   }
 
   async function onclick() {
@@ -83,14 +91,50 @@ export function DrawHelperButton(props: DrawHelperButtonProps) {
   );
 }
 
+// function formatTripPoints(
+// data: { leafletId: number; nature: string; quantity: number }[]
+// ): TripPointType[] {
+// const points = [...getSchools(), ...getStops()];
+// const output = [];
+// for (const item of data) {
+// const point = points.find((point) => item.leafletId == point.leafletId);
+// if (point) output.push({ ...point, quantity: item.quantity ?? 0 });
+// }
+// return output;
+// }
 function formatTripPoints(
-  data: { id: number; leafletId: number; nature: string; quantity: number }[]
+  data: { leafletId: number; nature: string; quantity: number }[]
 ): TripPointType[] {
   const points = [...getSchools(), ...getStops()];
   const output = [];
+
   for (const item of data) {
+    console.log("ITEM:", item);
     const point = points.find((point) => item.leafletId == point.leafletId);
-    if (point) output.push({ ...point, quantity: item.quantity ?? 0 });
+
+    const gradeTrip: GradeTripType[] =
+      point?.associated.map((item) => {
+        return {
+          gradeId: item.gradeId,
+          quantity: item.quantity,
+          matrix: QuantityUtils.baseQuantityMatrix(
+            Object.values(CalendarDayEnum),
+            item.quantity
+          ),
+        };
+      }) ?? [];
+
+    console.log(gradeTrip);
+
+    if (point) {
+      output.push({
+        ...point,
+        grades: gradeTrip,
+        passageTime: 0,
+        startToTripPointDistance: 0,
+      });
+    }
+    // if (point) output.push({ ...point, quantity: item.quantity ?? 0 });
   }
   return output;
 }

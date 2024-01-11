@@ -42,6 +42,12 @@ export namespace TripEntity {
     }
 
     const school: SchoolType = filteredShools[0];
+    console.log(
+      "before build:",
+      dbData.trip_stop,
+      dbData.days,
+      TripDirectionEntity.FindDirectionById(dbData.trip_direction_id).type
+    );
 
     return {
       id: dbData.id,
@@ -289,6 +295,9 @@ function formatTripPointType(
   tripDirection: TripDirectionEnum
 ): TripPointType[] {
   //TODO Investigate the problem during switching between map [old comment to investigate]
+
+  console.log("POINTS:", points);
+
   return points
     .map((dbPoint) => {
       const associatedPoint: PointType = getAssociatedTripPoint(dbPoint);
@@ -305,6 +314,7 @@ function formatTripPointType(
           grades: dbPoint.grades.map((grade) => {
             const stopGradeQuantity = StopUtils.get(
               dbPoint.stop_id
+              // ! HERE IS THE PROBLEM
             ).associated.filter((grade_) => grade_.gradeId == grade.grade_id)[0]
               .quantity;
             return {
