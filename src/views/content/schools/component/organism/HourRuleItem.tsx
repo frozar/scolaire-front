@@ -17,7 +17,7 @@ interface HourRuleProps {
   rule: HourRuleType;
   disabled?: boolean;
   action: "add" | "remove";
-  isNotFirst?: boolean;
+  isNotLast?: boolean;
   item: Accessor<SchoolType | GradeType | undefined>;
   setItem: Setter<SchoolType | GradeType>;
 }
@@ -140,8 +140,7 @@ export function HourRuleItem(props: HourRuleProps) {
 
   return (
     // TODO: Put css in external file
-    // TODO: FIx this
-    <div class={"mb-3" + (!props.isNotFirst ? " border-b-[1px]" : "")}>
+    <div class={"mb-3"} classList={{ "border-b-[1px]": props.isNotLast }}>
       <HourRuleItemHeader
         action={props.action}
         onChangeDay={onChangeDay}

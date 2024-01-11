@@ -44,7 +44,7 @@ export function HourRuleList(props: HourRuleListProps) {
               rule={hourRule}
               disabled={props.disabled}
               action="remove"
-              isNotFirst={i() != 0}
+              isNotLast={i() + 1 != item()?.hours.rules.length}
             />
           )}
         </For>
