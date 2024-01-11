@@ -62,6 +62,7 @@ export namespace StopUtils {
     associated: AssociatedSchoolType,
     stopId: number
   ) {
+    // ! Probleme ICI
     setStops((prev) => {
       const stops = [...prev].map((stop) => {
         return {
@@ -73,9 +74,9 @@ export namespace StopUtils {
           ),
         };
       });
-
       return stops;
     });
+    // ! Console.log getlines ici
     updateStopDetailsItem(stopId);
   }
 

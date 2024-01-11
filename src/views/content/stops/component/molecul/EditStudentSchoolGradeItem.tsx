@@ -257,7 +257,7 @@ export default function (props: EditStopProps) {
                         tripPoint.nature == NatureEnum.stop &&
                         tripPoint.id == stopId
                       ) {
-                        console.log("in");
+                        // console.log("in");
                         return {
                           ...gradeTrip,
                           matrix:
