@@ -236,7 +236,7 @@ export type TripDBType = {
   school_id: number;
   name: string;
   color: string;
-  grades: (number | GradeDBType)[];
+  grades: (number | GradeDBType)[]; //TODO Clarify using of grades type
   trip_stop: TripPointDBType[];
   polyline: LocationPathDBType;
   metrics: TripMetricType;
