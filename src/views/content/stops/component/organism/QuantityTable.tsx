@@ -6,13 +6,12 @@ import { CalendarUtils } from "../../../calendar/calendar.utils";
 // TODO refacto
 // ! Passer le resultat et non la réponse
 export function QuantityTable(props: { matrix: QuantityMatrixType }) {
-  const matrix = props.matrix;
   const goingQuantity = (day: CalendarDayEnum) => {
-    return matrix[day].goingQty ?? undefined;
+    return props.matrix[day].goingQty ?? undefined;
   };
 
   const comingQuantity = (day: CalendarDayEnum) => {
-    return matrix[day].comingQty ?? undefined;
+    return props.matrix[day].comingQty ?? undefined;
   };
 
   return (
@@ -25,7 +24,7 @@ export function QuantityTable(props: { matrix: QuantityMatrixType }) {
         </tr>
       </thead>
       <tbody>
-        <For each={Object.keys(matrix) as CalendarDayEnum[]}>
+        <For each={Object.keys(props.matrix) as CalendarDayEnum[]}>
           {(day) => (
             <tr>
               <td>{CalendarUtils.dayToFrench(day)}</td>

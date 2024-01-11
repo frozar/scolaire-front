@@ -1,6 +1,9 @@
 import { createEffect, createSignal, onMount } from "solid-js";
 import { AssociatedSchoolType } from "../../../../../_entities/_utils.entity";
-import { GradeType } from "../../../../../_entities/grade.entity";
+import {
+  GradeTripType,
+  GradeType,
+} from "../../../../../_entities/grade.entity";
 import { LineType } from "../../../../../_entities/line.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import {
@@ -145,6 +148,12 @@ export default function (props: EditStopProps) {
     if (checkAllInputsValue()) return;
 
     if (props.gradeStudentToGrade) {
+      await AssociatedUtils.update(
+        props.gradeStudentToGrade.idClassToSchool,
+        parseInt(gradeSelector().value),
+        parseInt(schoolSelector().value),
+        quantitySelector().value
+      );
       // ! That triggers quantity calcul (reload the component)
       // await AssociatedUtils.update(
       //   props.gradeStudentToGrade.idClassToSchool,
@@ -251,7 +260,7 @@ export default function (props: EditStopProps) {
                 tripPoints: trip.tripPoints.flatMap((tripPoint) => {
                   return {
                     ...tripPoint,
-                    grades: tripPoint.grades.map((gradeTrip) => {
+                    grades: tripPoint.grades.map((gradeTrip): GradeTripType => {
                       if (
                         gradeTrip.gradeId == gradeId &&
                         tripPoint.nature == NatureEnum.stop &&
@@ -260,6 +269,7 @@ export default function (props: EditStopProps) {
                         // console.log("in");
                         return {
                           ...gradeTrip,
+                          quantity: quantitySelector().value,
                           matrix:
                             TripDirectionEntity.FindDirectionById(
                               trip.tripDirectionId
@@ -282,12 +292,12 @@ export default function (props: EditStopProps) {
 
       console.log("getLines avant !", getLines());
 
-      await AssociatedUtils.update(
-        props.gradeStudentToGrade.idClassToSchool,
-        parseInt(gradeSelector().value),
-        parseInt(schoolSelector().value),
-        quantitySelector().value
-      );
+      // await AssociatedUtils.update(
+      //   props.gradeStudentToGrade.idClassToSchool,
+      //   parseInt(gradeSelector().value),
+      //   parseInt(schoolSelector().value),
+      //   quantitySelector().value
+      // );
       // console.log("getLines avant !", getLines());
     } else {
       AssociatedUtils.create(
