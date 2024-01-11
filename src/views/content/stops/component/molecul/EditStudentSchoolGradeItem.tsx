@@ -1,22 +1,14 @@
 import { createEffect, createSignal, onMount } from "solid-js";
 import { AssociatedSchoolType } from "../../../../../_entities/_utils.entity";
-import { CalendarDayEnum } from "../../../../../_entities/calendar.entity";
-import {
-  GradeTripType,
-  GradeType,
-} from "../../../../../_entities/grade.entity";
+import { GradeType } from "../../../../../_entities/grade.entity";
 import { LineType } from "../../../../../_entities/line.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
 import CheckIcon from "../../../../../icons/CheckIcon";
 import { addNewUserInformation } from "../../../../../signaux";
-import {
-  MessageLevelEnum,
-  MessageTypeEnum,
-  NatureEnum,
-} from "../../../../../type";
+import { MessageLevelEnum, MessageTypeEnum } from "../../../../../type";
 import { AssociatedUtils } from "../../../../../utils/associated.utils";
-import { QuantityMatrixType } from "../../../../../utils/quantity.utils";
+import { LineUtils } from "../../../../../utils/line.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { setLines } from "../../../map/component/organism/BusLines";
 import { getSchools } from "../../../map/component/organism/SchoolPoints";
@@ -159,59 +151,12 @@ export default function (props: EditStopProps) {
 
       setLines((prev) => {
         const lines: LineType[] = [...prev];
-
-        enum GoingComingQtyEnum {
-          goingQty = "goingQty",
-          comingQty = "comingQty",
-        }
-
-        function updateMatrixQuantityWithNewQty(
-          matrix: QuantityMatrixType,
-          qty: number
-        ) {
-          for (const day of Object.keys(CalendarDayEnum) as CalendarDayEnum[]) {
-            for (const direction of Object.keys(
-              GoingComingQtyEnum
-            ) as GoingComingQtyEnum[]) {
-              matrix[day][direction] = matrix[day][direction] == 0 ? 0 : qty;
-            }
-          }
-
-          return matrix;
-        }
-
-        const linesBis: LineType[] = lines.flatMap((line) => {
-          return {
-            ...line,
-            trips: line.trips.flatMap((trip) => {
-              return {
-                ...trip,
-                tripPoints: trip.tripPoints.flatMap((tripPoint) => {
-                  return {
-                    ...tripPoint,
-                    grades: tripPoint.grades.map((gradeTrip): GradeTripType => {
-                      if (
-                        gradeTrip.gradeId == gradeId &&
-                        tripPoint.nature == NatureEnum.stop &&
-                        tripPoint.id == stopId
-                      ) {
-                        return {
-                          ...gradeTrip,
-                          quantity: qty,
-                          matrix: updateMatrixQuantityWithNewQty(
-                            gradeTrip.matrix,
-                            qty
-                          ),
-                        };
-                      } else return gradeTrip;
-                    }),
-                  };
-                }),
-              };
-            }),
-          };
-        });
-        return linesBis;
+        return LineUtils.updateLineWithNewGradeTripMatrix(
+          lines,
+          qty,
+          gradeId,
+          stopId
+        );
       });
     } else {
       AssociatedUtils.create(
