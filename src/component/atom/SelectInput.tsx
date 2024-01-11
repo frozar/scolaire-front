@@ -1,4 +1,4 @@
-import { For, mergeProps } from "solid-js";
+import { For, Show, mergeProps } from "solid-js";
 import "./SelectInput.css";
 
 interface SelectInputProps {
@@ -16,19 +16,31 @@ export function SelectInput(props: SelectInputProps) {
   }
 
   return (
-    <select
-      onChange={onChange}
-      class="selector"
-      disabled={mergedProps.disabled}
+    <Show
+      when={!mergedProps.disabled}
+      fallback={
+        <div class="selector-disabled">
+          {
+            props.options.filter(
+              (option) => option.value == props.defaultValue
+            )[0].text
+          }
+        </div>
+      }
     >
-      <option value="default">{props.defaultOptions ?? "Options"}</option>
-      <For each={props.options}>
-        {(opt) => (
-          <option value={opt.value} selected={props.defaultValue == opt.value}>
-            {opt.text}
-          </option>
-        )}
-      </For>
-    </select>
+      <select onChange={onChange} class="selector">
+        <option value="default">{props.defaultOptions ?? "Options"}</option>
+        <For each={props.options}>
+          {(opt) => (
+            <option
+              value={opt.value}
+              selected={props.defaultValue == opt.value}
+            >
+              {opt.text}
+            </option>
+          )}
+        </For>
+      </select>
+    </Show>
   );
 }
