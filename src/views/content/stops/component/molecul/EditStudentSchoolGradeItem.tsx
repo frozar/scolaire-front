@@ -1,15 +1,12 @@
 import { createEffect, createSignal, onMount } from "solid-js";
 import { AssociatedSchoolType } from "../../../../../_entities/_utils.entity";
+import { CalendarDayEnum } from "../../../../../_entities/calendar.entity";
 import {
   GradeTripType,
   GradeType,
 } from "../../../../../_entities/grade.entity";
 import { LineType } from "../../../../../_entities/line.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
-import {
-  TripDirectionEntity,
-  TripDirectionEnum,
-} from "../../../../../_entities/trip-direction.entity";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
 import CheckIcon from "../../../../../icons/CheckIcon";
 import { addNewUserInformation } from "../../../../../signaux";
@@ -20,9 +17,8 @@ import {
 } from "../../../../../type";
 import { AssociatedUtils } from "../../../../../utils/associated.utils";
 import { QuantityMatrixType } from "../../../../../utils/quantity.utils";
-import { StopUtils } from "../../../../../utils/stop.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
-import { getLines, setLines } from "../../../map/component/organism/BusLines";
+import { setLines } from "../../../map/component/organism/BusLines";
 import { getSchools } from "../../../map/component/organism/SchoolPoints";
 import { getStops } from "../../../map/component/organism/StopPoints";
 import GradeSelection from "../atom/GradeSelection";
@@ -143,10 +139,8 @@ export default function (props: EditStopProps) {
     return validInputs;
   }
 
-  async function validate() {
-    console.log("validate function");
+  async function validate(qty: number) {
     if (checkAllInputsValue()) return;
-
     if (props.gradeStudentToGrade) {
       await AssociatedUtils.update(
         props.gradeStudentToGrade.idClassToSchool,
@@ -154,102 +148,37 @@ export default function (props: EditStopProps) {
         parseInt(schoolSelector().value),
         quantitySelector().value
       );
-      // ! That triggers quantity calcul (reload the component)
-      // await AssociatedUtils.update(
-      //   props.gradeStudentToGrade.idClassToSchool,
-      //   parseInt(gradeSelector().value),
-      //   parseInt(schoolSelector().value),
-      //   quantitySelector().value
-      // );
 
-      // TODO: Clean, refactor and move
-      // ! Ici update les matrices des courses liées !
       const gradeId = props.gradeStudentToGrade.gradeId;
-      // !!!!!!!!!! Récup le stopId
       const stopId = getStops().filter((stop) =>
         stop.associated.some(
           (assoc) =>
             assoc.idClassToSchool == props.gradeStudentToGrade?.idClassToSchool
         )
       )[0].id;
-      console.log(
-        "=========================",
-        getStops().filter((stop) =>
-          stop.associated.some(
-            (assoc) =>
-              assoc.idClassToSchool ==
-              props.gradeStudentToGrade?.idClassToSchool
-          )
-        )
-      );
+
       setLines((prev) => {
-        // ! Récup la liste des trip point concerné (stop et grade correspondant)
         const lines: LineType[] = [...prev];
-        // const matrix = QuantityUtils.getRemainingQuantityMatrix(
-        //   stopId,
-        //   props.gradeStudentToGrade?.idClassToSchool as number
-        // );
-        // TODO: CLean
-        const stop = getStops().filter((stop) => stop.id == stopId)[0];
-        const associated = stop.associated.filter(
-          (associated) =>
-            associated.idClassToSchool ==
-            (props.gradeStudentToGrade?.idClassToSchool as number)
-        )[0];
-        const tripMatrix: QuantityMatrixType[] = StopUtils.getGradeTrips(stopId)
-          .filter((gradeTrip) => gradeTrip.gradeId == associated.gradeId)
-          .flatMap((_gradeTrip) => _gradeTrip.matrix) as QuantityMatrixType[];
-        const newMatrix: QuantityMatrixType[] = [];
-        for (const matrix of tripMatrix) {
-          // TODO: Use builQuantityMatrix instead
-          const actual_matrix: QuantityMatrixType = {
-            monday: {
-              goingQty:
-                matrix.monday.goingQty == 0 ? 0 : quantitySelector().value,
-              comingQty:
-                matrix.monday.comingQty == 0 ? 0 : quantitySelector().value,
-            },
-            tuesday: {
-              goingQty:
-                matrix.tuesday.goingQty == 0 ? 0 : quantitySelector().value,
-              comingQty:
-                matrix.tuesday.comingQty == 0 ? 0 : quantitySelector().value,
-            },
-            wednesday: {
-              goingQty:
-                matrix.wednesday.goingQty == 0 ? 0 : quantitySelector().value,
-              comingQty:
-                matrix.wednesday.comingQty == 0 ? 0 : quantitySelector().value,
-            },
-            thursday: {
-              goingQty:
-                matrix.thursday.goingQty == 0 ? 0 : quantitySelector().value,
-              comingQty:
-                matrix.thursday.comingQty == 0 ? 0 : quantitySelector().value,
-            },
-            friday: {
-              goingQty:
-                matrix.friday.goingQty == 0 ? 0 : quantitySelector().value,
-              comingQty:
-                matrix.friday.comingQty == 0 ? 0 : quantitySelector().value,
-            },
-            saturday: {
-              goingQty:
-                matrix.saturday.goingQty == 0 ? 0 : quantitySelector().value,
-              comingQty:
-                matrix.saturday.comingQty == 0 ? 0 : quantitySelector().value,
-            },
-            sunday: {
-              goingQty:
-                matrix.sunday.goingQty == 0 ? 0 : quantitySelector().value,
-              comingQty:
-                matrix.sunday.comingQty == 0 ? 0 : quantitySelector().value,
-            },
-          };
-          newMatrix.push(actual_matrix);
+
+        enum GoingComingQtyEnum {
+          goingQty = "goingQty",
+          comingQty = "comingQty",
         }
-        console.log("newMatrix", newMatrix);
-        console.log("tripMatrix", tripMatrix);
+
+        function updateMatrixQuantityWithNewQty(
+          matrix: QuantityMatrixType,
+          qty: number
+        ) {
+          for (const day of Object.keys(CalendarDayEnum) as CalendarDayEnum[]) {
+            for (const direction of Object.keys(
+              GoingComingQtyEnum
+            ) as GoingComingQtyEnum[]) {
+              matrix[day][direction] = matrix[day][direction] == 0 ? 0 : qty;
+            }
+          }
+
+          return matrix;
+        }
 
         const linesBis: LineType[] = lines.flatMap((line) => {
           return {
@@ -266,16 +195,13 @@ export default function (props: EditStopProps) {
                         tripPoint.nature == NatureEnum.stop &&
                         tripPoint.id == stopId
                       ) {
-                        // console.log("in");
                         return {
                           ...gradeTrip,
-                          quantity: quantitySelector().value,
-                          matrix:
-                            TripDirectionEntity.FindDirectionById(
-                              trip.tripDirectionId
-                            ).type == TripDirectionEnum.coming
-                              ? newMatrix[1]
-                              : newMatrix[0],
+                          quantity: qty,
+                          matrix: updateMatrixQuantityWithNewQty(
+                            gradeTrip.matrix,
+                            qty
+                          ),
                         };
                       } else return gradeTrip;
                     }),
@@ -285,23 +211,11 @@ export default function (props: EditStopProps) {
             }),
           };
         });
-        console.log("lines", linesBis);
-        // ! Mettre à jour
         return linesBis;
       });
-
-      console.log("getLines avant !", getLines());
-
-      // await AssociatedUtils.update(
-      //   props.gradeStudentToGrade.idClassToSchool,
-      //   parseInt(gradeSelector().value),
-      //   parseInt(schoolSelector().value),
-      //   quantitySelector().value
-      // );
-      // console.log("getLines avant !", getLines());
     } else {
       AssociatedUtils.create(
-        quantitySelector().value,
+        qty,
         Number(gradeSelector().value),
         Number(schoolSelector().value)
       );
@@ -318,7 +232,10 @@ export default function (props: EditStopProps) {
           selector={schoolSelector()}
           schools={getSchools()}
         />
-        <ButtonIcon icon={<CheckIcon />} onClick={validate} />
+        <ButtonIcon
+          icon={<CheckIcon />}
+          onClick={() => validate(quantitySelector().value)}
+        />
       </div>
 
       <div class="edit-stop-bottom-line">

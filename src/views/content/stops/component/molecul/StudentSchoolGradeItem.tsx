@@ -25,6 +25,7 @@ export default function (props: { school: AssociatedSchoolType }) {
   function onClickEdit() {
     setEditingMode(true);
   }
+
   return (
     <Show
       when={!editingMode()}
