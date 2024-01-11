@@ -21,7 +21,7 @@ export function LabeledInputSelect(props: LabeledInputSelectProps) {
         onChange={props.onChange}
         defaultValue={props.defaultValue}
         disabled={props.disabled}
-        indented={true}
+        indented={props.indented}
       />
     </div>
   );

@@ -77,6 +77,7 @@ export default function () {
           return { value: item.id, text: item.name };
         })}
         disabled={!schoolDetailEditing()}
+        indented={true}
       />
 
       <div class="time">

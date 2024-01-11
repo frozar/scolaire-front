@@ -30,7 +30,6 @@ export default function (props: {
       <button ref={setAccordion} class="accordion">
         <p
           classList={{
-            // Change that and use class instead
             "font-bold": props.titleClass == "bold-title",
             "text-xl": props.titleClass == "text-xl",
           }}

@@ -21,10 +21,8 @@ export function SelectInput(props: SelectInputProps) {
       when={!mergedProps.disabled}
       fallback={
         <div
-          class={
-            "selector-disabled " +
-            (mergedProps.indented ? "selector-indented" : "")
-          }
+          class={"selector-disabled "}
+          classList={{ "selector-indented": mergedProps.indented }}
         >
           {
             props.options.filter(
