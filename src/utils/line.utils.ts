@@ -20,10 +20,13 @@ export namespace LineUtils {
       matrix: QuantityMatrixType,
       qty: number
     ) {
-      for (const day of Object.keys(CalendarDayEnum) as CalendarDayEnum[]) {
-        for (const direction of Object.keys(
-          GoingComingQtyEnum
-        ) as GoingComingQtyEnum[]) {
+      const days = Object.keys(CalendarDayEnum) as CalendarDayEnum[];
+      const directions = Object.keys(
+        GoingComingQtyEnum
+      ) as GoingComingQtyEnum[];
+
+      for (const day of days) {
+        for (const direction of directions) {
           matrix[day][direction] = matrix[day][direction] == 0 ? 0 : qty;
         }
       }
