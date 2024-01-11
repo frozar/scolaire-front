@@ -33,10 +33,8 @@ export function DateInput(props: DateInputProps) {
   });
 
   createEffect(() => {
-    console.log("La");
-
     if (props.maxDate) {
-      if (defaultDate()! > props.maxDate) {
+      if (defaultDate() > props.maxDate) {
         props.onChange(props.maxDate);
         setDefaultDate(props.maxDate);
       }
