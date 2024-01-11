@@ -4,5 +4,9 @@
 
 /* TODO: Use same padding values for all indented items  */
 .selector-disabled {
-  @apply pl-[18px] text-green-base
+  @apply text-green-base
+}
+
+.selector-indented {
+  @apply pl-[18px]
 }

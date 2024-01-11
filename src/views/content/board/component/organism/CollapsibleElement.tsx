@@ -8,7 +8,7 @@ export default function (props: {
   children: JSXElement;
   title: string;
   class?: string;
-  variant?: "bold-title";
+  titleClass?: "bold-title" | "text-xl";
 }) {
   const [accordion, setAccordion] = createSignal<HTMLElement | undefined>();
   const [child, setChild] = createSignal<HTMLElement | undefined>();
@@ -30,7 +30,9 @@ export default function (props: {
       <button ref={setAccordion} class="accordion">
         <p
           classList={{
-            "font-bold": props.variant == "bold-title",
+            // Change that and use class instead
+            "font-bold": props.titleClass == "bold-title",
+            "text-xl": props.titleClass == "text-xl",
           }}
         >
           {props.title}

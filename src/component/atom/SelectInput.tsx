@@ -7,10 +7,11 @@ interface SelectInputProps {
   options: { text: string; value: string | number }[];
   defaultOptions?: string;
   disabled?: boolean;
+  indented?: boolean;
 }
 
 export function SelectInput(props: SelectInputProps) {
-  const mergedProps = mergeProps({ disabled: false }, props);
+  const mergedProps = mergeProps({ disabled: false, indented: false }, props);
   function onChange(event: Event & { target: HTMLSelectElement }) {
     props.onChange(event.target.value);
   }
@@ -19,7 +20,12 @@ export function SelectInput(props: SelectInputProps) {
     <Show
       when={!mergedProps.disabled}
       fallback={
-        <div class="selector-disabled">
+        <div
+          class={
+            "selector-disabled " +
+            (mergedProps.indented ? "selector-indented" : "")
+          }
+        >
           {
             props.options.filter(
               (option) => option.value == props.defaultValue

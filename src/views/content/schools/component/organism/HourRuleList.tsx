@@ -32,18 +32,19 @@ export function HourRuleList(props: HourRuleListProps) {
   return (
     <>
       <Show when={showTitle()}>
-        <p class="font-bold">Exception horaires</p>
+        <p class="font-bold pt-1">Exception(s)</p>
       </Show>
 
       <div class="list-wrapper pr-3">
         <For each={item()?.hours.rules}>
-          {(item) => (
+          {(hourRule, i) => (
             <HourRuleItem
               item={props.item}
               setItem={props.setItem}
-              rule={item}
+              rule={hourRule}
               disabled={props.disabled}
               action="remove"
+              isNotFirst={i() != 0}
             />
           )}
         </For>
