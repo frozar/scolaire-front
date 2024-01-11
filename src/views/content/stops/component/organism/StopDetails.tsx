@@ -3,6 +3,7 @@ import { StopType } from "../../../../../_entities/stop.entity";
 import { TripEntity } from "../../../../../_entities/trip.entity";
 import PlusIcon from "../../../../../icons/PlusIcon";
 import { MapElementUtils } from "../../../../../utils/mapElement.utils";
+import { QuantityUtils } from "../../../../../utils/quantity.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { changeBoard } from "../../../board/component/template/ContextManager";
 import { getStops } from "../../../map/component/organism/StopPoints";
@@ -51,13 +52,13 @@ export default function () {
     <section>
       <StopDetailsHeader stop={stopDetailsItem() as StopType} />
 
-      {/* <Show
+      <Show
         when={QuantityUtils.hasRemainingStudentToGet(
           stopDetailsItem()?.id as number
         )}
       >
         Des élèves restants sont à récuperés
-      </Show> */}
+      </Show>
 
       <div class="stop-details-actions">
         <StopDetailsPanelsButton
