@@ -48,9 +48,9 @@ export namespace TripUtils {
     trip: TripType,
     tripPoint: TripPointType
   ): string {
-    const firstHour: string = GradeEntity.getStringFromHourFormat(
-      trip.startTime
-    );
+    const firstHour: string = trip.startTime
+      ? GradeEntity.getStringFromHourFormat(trip.startTime)
+      : "00:00";
     if (indice == 0 || !tripPoint.passageTime) return firstHour;
 
     let seconds = 0;
