@@ -50,13 +50,13 @@ export function QuantityStatusPellet(props: { schoolId: number }) {
         <div class={"absolute transform  "}>
           <Switch>
             <Match when={remainingStatus() == RemainingStatusEnum.NoOneTaken}>
-              <Tooltip tooltip="Aucun élèves ont été récupérées" />
+              <Tooltip tooltip="Aucun élèves récupérées" />
             </Match>
             <Match when={remainingStatus() == RemainingStatusEnum.partialTaken}>
-              <Tooltip tooltip="Une partie des élèves ont été récupérées" />
+              <Tooltip tooltip="Une partie des élèves récupérées" />
             </Match>
             <Match when={remainingStatus() == RemainingStatusEnum.allTaken}>
-              <Tooltip tooltip="Tous les élèves ont été récupérées" />
+              <Tooltip tooltip="Tous les élèves récupérées" />
             </Match>
           </Switch>
         </div>
