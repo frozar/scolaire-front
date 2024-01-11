@@ -283,7 +283,6 @@ function formatTripPointDBType(points: TripPointType[]): TripPointDBType[] {
     };
   });
 }
-
 /**
  * Format the bus line associated points
  * @param points
@@ -301,6 +300,7 @@ function formatTripPointType(
   return points
     .map((dbPoint) => {
       const associatedPoint: PointType = getAssociatedTripPoint(dbPoint);
+
       if (associatedPoint) {
         return {
           id: associatedPoint.id,
@@ -312,11 +312,26 @@ function formatTripPointType(
           passageTime: dbPoint.passage_time,
           startToTripPointDistance: dbPoint.start_to_trip_point_distance,
           grades: dbPoint.grades.map((grade) => {
-            const stopGradeQuantity = StopUtils.get(
-              dbPoint.stop_id
-              // ! HERE IS THE PROBLEM
-            ).associated.filter((grade_) => grade_.gradeId == grade.grade_id)[0]
-              .quantity;
+            console.log("GRADE:", grade);
+            console.log("all stops:", getStops());
+
+            console.log(
+              "stop =>",
+              dbPoint.stop_id,
+              StopUtils.get(
+                dbPoint.stop_id
+                // ! HERE IS THE PROBLEM
+              )
+            );
+
+            // * Maybe fixed
+            const stopGradeQuantity =
+              StopUtils.get(
+                dbPoint.stop_id
+                // ! HERE IS THE PROBLEM
+              )?.associated.filter(
+                (grade_) => grade_.gradeId == grade.grade_id
+              )[0].quantity ?? [];
             return {
               gradeId: grade.grade_id,
               quantity: stopGradeQuantity,
