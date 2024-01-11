@@ -29,8 +29,6 @@ export function QuantityStatusPellet(props: { schoolId: number }) {
     }
   });
 
-  createEffect(() => console.log(tooltipIsDisplayed()));
-
   return (
     <div
       onMouseOver={() => setTooltipIsDisplayed(true)}
