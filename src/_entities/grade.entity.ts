@@ -86,7 +86,6 @@ export type GradeTripType = {
   gradeId: number;
   quantity: number;
   matrix: QuantityMatrixType;
-  // ! tripMatrix missing
 };
 
 export type GradeTripDBType = {

@@ -99,9 +99,6 @@ export namespace QuantityUtils {
     orignal: QuantityMatrixType,
     toCalcul: QuantityMatrixType
   ): QuantityMatrixType {
-    // console.log("orignal matrix =>", orignal);
-    // console.log("toCalcul matrix =>", toCalcul);
-
     const days = Object.keys(orignal) as CalendarDayEnum[];
     if (!toCalcul && orignal) return orignal;
 
@@ -235,7 +232,6 @@ export namespace QuantityUtils {
     stopId: number,
     idClassToSchool: number
   ): QuantityMatrixType {
-    console.log("getRemainingQuantityMatrix ", stopId);
     const stop = getStops().filter((stop) => stop.id == stopId)[0];
     const associated = stop.associated.filter(
       (associated) => associated.idClassToSchool == idClassToSchool
@@ -245,9 +241,6 @@ export namespace QuantityUtils {
     const tripMatrix: QuantityMatrixType[] = StopUtils.getGradeTrips(stopId)
       .filter((gradeTrip) => gradeTrip.gradeId == associated.gradeId)
       .flatMap((_gradeTrip) => _gradeTrip.matrix) as QuantityMatrixType[];
-
-    // console.log("orignalMatrix", orignalMatrix);
-    // console.log("tripMatrix", tripMatrix);
 
     let displayMatrix = QuantityUtils.calculateMatrix(
       orignalMatrix,
@@ -259,10 +252,6 @@ export namespace QuantityUtils {
         displayMatrix,
         tripMatrix[1]
       );
-    console.log("orignalMatrix", orignalMatrix);
-    console.log("tripMatrix", tripMatrix);
-
-    console.log("displayMatrix", displayMatrix);
 
     return displayMatrix;
   }

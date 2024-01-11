@@ -62,7 +62,6 @@ export namespace StopUtils {
     associated: AssociatedSchoolType,
     stopId: number
   ) {
-    // ! Probleme ICI
     setStops((prev) => {
       const stops = [...prev].map((stop) => {
         return {
@@ -74,9 +73,9 @@ export namespace StopUtils {
           ),
         };
       });
+
       return stops;
     });
-    // ! Console.log getlines ici
     updateStopDetailsItem(stopId);
   }
 
@@ -101,7 +100,6 @@ export namespace StopUtils {
   }
 
   export function getGradeTrips(stopId: number): GradeTripType[] {
-    console.log("getLines() after", getLines());
     return getLines()
       .flatMap((line) => line.trips)
       .flatMap((trip) => trip.tripPoints)
@@ -119,7 +117,6 @@ export namespace StopUtils {
     tripDirection: TripDirectionEnum,
     days: CalendarDayEnum[]
   ) {
-    console.log("getRemainingQuantityFromMatrixOfGrades");
     const totalQuantity = getTotalQuantityFromGradeIds(stopId, gradeIds);
     const stopGrades = StopUtils.get(stopId).associated;
     const grades = getGradeTrips(stopId);
