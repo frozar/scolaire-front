@@ -1,14 +1,18 @@
 import { createEffect, createSignal, onMount } from "solid-js";
 import { AssociatedSchoolType } from "../../../../../_entities/_utils.entity";
 import { GradeType } from "../../../../../_entities/grade.entity";
+import { LineType } from "../../../../../_entities/line.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
 import CheckIcon from "../../../../../icons/CheckIcon";
 import { addNewUserInformation } from "../../../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../../../type";
 import { AssociatedUtils } from "../../../../../utils/associated.utils";
+import { LineUtils } from "../../../../../utils/line.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
+import { setLines } from "../../../map/component/organism/BusLines";
 import { getSchools } from "../../../map/component/organism/SchoolPoints";
+import { getStops } from "../../../map/component/organism/StopPoints";
 import GradeSelection from "../atom/GradeSelection";
 import InputNumber from "../atom/InputNumber";
 import SchoolSelect from "../atom/SchoolSelection";
@@ -127,7 +131,7 @@ export default function (props: EditStopProps) {
     return validInputs;
   }
 
-  async function validate() {
+  async function validate(qty: number) {
     if (checkAllInputsValue()) return;
     if (props.gradeStudentToGrade) {
       await AssociatedUtils.update(
@@ -136,9 +140,27 @@ export default function (props: EditStopProps) {
         parseInt(schoolSelector().value),
         quantitySelector().value
       );
+
+      const gradeId = props.gradeStudentToGrade.gradeId;
+      const stopId = getStops().filter((stop) =>
+        stop.associated.some(
+          (assoc) =>
+            assoc.idClassToSchool == props.gradeStudentToGrade?.idClassToSchool
+        )
+      )[0].id;
+
+      setLines((prev) => {
+        const lines: LineType[] = [...prev];
+        return LineUtils.updateLineWithNewGradeTripMatrix(
+          lines,
+          qty,
+          gradeId,
+          stopId
+        );
+      });
     } else {
       AssociatedUtils.create(
-        quantitySelector().value,
+        qty,
         Number(gradeSelector().value),
         Number(schoolSelector().value)
       );
@@ -155,7 +177,10 @@ export default function (props: EditStopProps) {
           selector={schoolSelector()}
           schools={getSchools()}
         />
-        <ButtonIcon icon={<CheckIcon />} onClick={validate} />
+        <ButtonIcon
+          icon={<CheckIcon />}
+          onClick={() => validate(quantitySelector().value)}
+        />
       </div>
 
       <div class="edit-stop-bottom-line">
