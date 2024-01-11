@@ -14,17 +14,18 @@ interface DateInputProps {
 
 export function DateInput(props: DateInputProps) {
   const [dateInputRef, setDateInputRef] = createSignal<HTMLInputElement>();
-  const [defaultDate, setDefaultDate] = createSignal<Date>();
+  const [defaultDate, setDefaultDate] = createSignal<Date>(
+    CalendarUtils.stringToDate(Date())
+  );
   const label = () => props.label ?? "Entrer une date";
 
   createEffect(() => {
     if (props.defaultValue) setDefaultDate(props.defaultValue);
-    // setDefaultDate(CalendarUtils.dateToString(props.defaultValue));
   });
 
   createEffect(() => {
-    if (props.minDate) {
-      if (defaultDate()! < props.minDate) {
+    if (props.minDate && defaultDate()) {
+      if (defaultDate() < props.minDate) {
         props.onChange(props.minDate);
         setDefaultDate(props.minDate);
       }
@@ -32,6 +33,8 @@ export function DateInput(props: DateInputProps) {
   });
 
   createEffect(() => {
+    console.log("La");
+
     if (props.maxDate) {
       if (defaultDate()! > props.maxDate) {
         props.onChange(props.maxDate);
@@ -64,8 +67,6 @@ export function DateInput(props: DateInputProps) {
       <input
         onChange={onChange}
         type="date"
-        min={props.minDate ? CalendarUtils.dateToString(props.minDate) : ""}
-        max={props.maxDate ? CalendarUtils.dateToString(props.maxDate) : ""}
         ref={setDateInputRef}
         value={CalendarUtils.dateToString(props.defaultValue)}
         class="input-date-btn-hidden-input"

@@ -101,7 +101,7 @@ export function VacationItem(props: VacationItemProps) {
       <DateInput
         label="Début"
         defaultValue={bufferVacation().start}
-        maxDate={bufferVacation().start}
+        maxDate={bufferVacation().end}
         disabled={
           actionMode() != actionEnum.isEditing &&
           actionMode() != actionEnum.append
