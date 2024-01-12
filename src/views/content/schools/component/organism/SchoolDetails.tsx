@@ -81,7 +81,11 @@ export default function () {
       />
 
       <div class="time">
-        <CollapsibleElement title="Tranches horaires" titleClass="text-xl">
+        <CollapsibleElement
+          title="Tranches horaires"
+          titleClass="text-xl"
+          closedByDefault={true}
+        >
           {/* <CollapsibleElement title="Tranches horaires" class="text-xl"> */}
           <SchoolHoursSlots school={schoolDetailsItem() as SchoolType} />
 
