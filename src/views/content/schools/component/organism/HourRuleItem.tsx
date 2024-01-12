@@ -140,7 +140,6 @@ export function HourRuleItem(props: HourRuleProps) {
   }
 
   return (
-    // TODO: Put css in external file
     <div
       class={"hour-rule-item"}
       classList={{ "hour-rule-item-bordered": props.isNotLast }}

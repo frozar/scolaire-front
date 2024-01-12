@@ -32,7 +32,7 @@ export function HourRuleList(props: HourRuleListProps) {
   return (
     <>
       <Show when={showTitle()}>
-        <p class="font-bold pt-1">Exception(s)</p>
+        <p class="hour-rule-list-title">Exception(s)</p>
       </Show>
 
       <div class="list-wrapper pr-3">
