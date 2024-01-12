@@ -19,11 +19,13 @@ export default function (props: {
   closedByDefault?: () => boolean;
 }) {
   const mergedProps = mergeProps({ closedByDefault: () => false }, props);
+  const toggleValue = () => mergedProps.closedByDefault();
+
   const [activated, setActivated] = createSignal<boolean>(
     // eslint-disable-next-line solid/reactivity
-    mergedProps.closedByDefault() ? false : true
+    toggleValue()
   );
-  const toggleValue = () => mergedProps.closedByDefault();
+
   createEffect(
     on(toggleValue, () => {
       setActivated(!toggleValue());
