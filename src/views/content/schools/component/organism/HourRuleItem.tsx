@@ -12,6 +12,7 @@ import { MessageLevelEnum, MessageTypeEnum } from "../../../../../type";
 import { CalendarUtils } from "../../../calendar/calendar.utils";
 import { HourRuleItemHeader } from "../molecule/HourRuleItemHeader";
 import TimesInputWrapper from "../molecule/TimesInputWrapper";
+import "./HourRuleItem.css";
 
 interface HourRuleProps {
   rule: HourRuleType;
@@ -140,7 +141,10 @@ export function HourRuleItem(props: HourRuleProps) {
 
   return (
     // TODO: Put css in external file
-    <div class={"mb-3"} classList={{ "border-b-[1px]": props.isNotLast }}>
+    <div
+      class={"hour-rule-item"}
+      classList={{ "hour-rule-item-bordered": props.isNotLast }}
+    >
       <HourRuleItemHeader
         action={props.action}
         onChangeDay={onChangeDay}
