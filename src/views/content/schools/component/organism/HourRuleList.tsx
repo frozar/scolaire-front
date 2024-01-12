@@ -4,6 +4,7 @@ import { GradeType } from "../../../../../_entities/grade.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { TimeUtils } from "../../../../../_entities/time.utils";
 import { HourRuleItem } from "./HourRuleItem";
+import "./HourRuleList.css";
 
 interface HourRuleListProps {
   disabled: boolean;
