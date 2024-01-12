@@ -293,27 +293,24 @@ function formatTripPointType(
     .map((dbPoint) => {
       const associatedPoint: PointType = getAssociatedTripPoint(dbPoint);
 
-      const grades = () => {
-        if (associatedPoint.nature == NatureEnum.stop) {
-          return dbPoint.grades.map((grade) => {
-            const stopGradeQuantity =
-              StopUtils.get(dbPoint.stop_id)?.associated.filter(
-                (grade_) => grade_.gradeId == grade.grade_id
-              )[0].quantity ?? [];
-            return {
-              gradeId: grade.grade_id,
-              quantity: stopGradeQuantity,
-              matrix: QuantityUtils.buildQuantityMatrix(
-                days,
-                stopGradeQuantity,
-                tripDirection
-              ),
-            };
-          });
-        } else {
-          return [];
-        }
-      };
+      const grades =
+        associatedPoint.nature == NatureEnum.stop
+          ? dbPoint.grades.map((grade) => {
+              const stopGradeQuantity =
+                StopUtils.get(dbPoint.stop_id)?.associated.filter(
+                  (grade_) => grade_.gradeId == grade.grade_id
+                )[0].quantity ?? [];
+              return {
+                gradeId: grade.grade_id,
+                quantity: stopGradeQuantity,
+                matrix: QuantityUtils.buildQuantityMatrix(
+                  days,
+                  stopGradeQuantity,
+                  tripDirection
+                ),
+              };
+            })
+          : [];
 
       if (associatedPoint) {
         return {
@@ -325,7 +322,7 @@ function formatTripPointType(
           nature: associatedPoint.nature,
           passageTime: dbPoint.passage_time,
           startToTripPointDistance: dbPoint.start_to_trip_point_distance,
-          grades: grades(),
+          grades: grades,
         };
       } else {
         //TODO Error log to improve
