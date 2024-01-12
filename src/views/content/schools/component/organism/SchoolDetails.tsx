@@ -77,12 +77,14 @@ export default function () {
           return { value: item.id, text: item.name };
         })}
         disabled={!schoolDetailEditing()}
+        indented={true}
       />
 
       <div class="time">
         <CollapsibleElement
-          title="Tranches horaires aller/retour"
-          variant="bold-title"
+          title="Tranches horaires"
+          titleClass="text-xl"
+          closedByDefault={true}
         >
           <SchoolHoursSlots school={schoolDetailsItem() as SchoolType} />
 

@@ -1,0 +1,7 @@
+.hour-rule-item {
+    @apply mb-3
+}
+
+.hour-rule-item-bordered {
+    @apply border-b-[1px]
+}

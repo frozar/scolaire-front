@@ -9,7 +9,6 @@ import {
   schoolDetailEditing,
   setSchoolDetailsItem,
 } from "../organism/SchoolDetails";
-import InputSearch from "./InputSearch";
 import "./SchoolDetailsHeader.css";
 
 export default function (props: { school: SchoolType }) {
@@ -49,12 +48,6 @@ export default function (props: { school: SchoolType }) {
           SchoolUtils.getTotalQuantity(props.school.id) +
           " élèves"}
       </p>
-
-      <InputSearch
-        onInput={() => {
-          console.log("search for school grades / lines");
-        }}
-      />
     </header>
   );
 }

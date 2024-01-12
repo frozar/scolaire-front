@@ -8,6 +8,7 @@ interface LabeledInputSelectProps {
   options: { text: string; value: string | number }[];
   defaultOptions?: string;
   disabled?: boolean;
+  indented?: boolean;
 }
 
 export function LabeledInputSelect(props: LabeledInputSelectProps) {
@@ -20,6 +21,7 @@ export function LabeledInputSelect(props: LabeledInputSelectProps) {
         onChange={props.onChange}
         defaultValue={props.defaultValue}
         disabled={props.disabled}
+        indented={props.indented}
       />
     </div>
   );
