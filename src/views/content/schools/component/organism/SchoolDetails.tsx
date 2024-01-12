@@ -4,6 +4,7 @@ import { MapElementUtils } from "../../../../../utils/mapElement.utils";
 import { SchoolDetailUtils } from "../../../../../utils/school-details.utils";
 import BoardFooterActions from "../../../board/component/molecule/BoardFooterActions";
 import { changeBoard } from "../../../board/component/template/ContextManager";
+import { getSchools } from "../../../map/component/organism/SchoolPoints";
 import SchoolDetailsHeader from "../molecule/SchoolDetailsHeader";
 import { SchoolDetailsContent } from "./SchoolDetailsContent";
 import { SchoolDetailsPanels } from "./SchoolDetailsPanels";
@@ -21,7 +22,14 @@ export default function () {
     }
   });
 
-  onCleanup(() => setSchoolDetailEditing(false));
+  onCleanup(() => cancel());
+
+  function cancel() {
+    setSchoolDetailsItem((prev) => {
+      return getSchools().filter((school) => school.id == prev?.id)[0];
+    });
+    setSchoolDetailEditing(false);
+  }
   return (
     <section>
       <SchoolDetailsHeader school={schoolDetailsItem() as SchoolType} />
@@ -37,7 +45,7 @@ export default function () {
               label: "Valider",
             }}
             previousStep={{
-              callback: () => setSchoolDetailEditing(false),
+              callback: () => cancel(),
               label: "Annuler",
             }}
           />

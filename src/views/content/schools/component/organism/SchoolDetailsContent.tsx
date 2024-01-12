@@ -34,7 +34,7 @@ export function SchoolDetailsContent() {
         <CollapsibleElement
           title="Tranches horaires"
           titleClass="text-xl"
-          closedByDefault={true}
+          closedByDefault={() => !schoolDetailEditing()}
         >
           <SchoolHoursSlots school={schoolDetailsItem() as SchoolType} />
 
