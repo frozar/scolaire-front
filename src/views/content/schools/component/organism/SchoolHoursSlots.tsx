@@ -9,9 +9,9 @@ interface SchoolHoursSlotsProps {
 }
 
 export function SchoolHoursSlots(props: SchoolHoursSlotsProps) {
-  const { startHourComing, endHourComing, endHourGoing, startHourGoing } =
-    // eslint-disable-next-line solid/reactivity
-    props.school.hours;
+  function schoolHours() {
+    return props.school.hours;
+  }
 
   function onInputComingStart(value: string) {
     SchoolDetailUtils.update({
@@ -53,16 +53,24 @@ export function SchoolHoursSlots(props: SchoolHoursSlotsProps) {
     <>
       <TimesInputWrapper
         label="Aller"
-        startValue={GradeEntity.getStringFromHourFormat(startHourComing)}
-        endValue={GradeEntity.getStringFromHourFormat(endHourComing)}
+        startValue={GradeEntity.getStringFromHourFormat(
+          schoolHours().startHourComing
+        )}
+        endValue={GradeEntity.getStringFromHourFormat(
+          schoolHours().endHourComing
+        )}
         onInputStart={onInputComingStart}
         onInputEnd={onInputComingEnd}
         disabled={!schoolDetailEditing()}
       />
       <TimesInputWrapper
         label="Retour"
-        startValue={GradeEntity.getStringFromHourFormat(startHourGoing)}
-        endValue={GradeEntity.getStringFromHourFormat(endHourGoing)}
+        startValue={GradeEntity.getStringFromHourFormat(
+          schoolHours().startHourGoing
+        )}
+        endValue={GradeEntity.getStringFromHourFormat(
+          schoolHours().endHourGoing
+        )}
         onInputStart={onInputGoingStart}
         onInputEnd={onInputGoingEnd}
         disabled={!schoolDetailEditing()}

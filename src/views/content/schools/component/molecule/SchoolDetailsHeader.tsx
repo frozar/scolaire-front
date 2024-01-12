@@ -1,6 +1,5 @@
 import { Show } from "solid-js";
 import { SchoolType } from "../../../../../_entities/school.entity";
-import CheckIcon from "../../../../../icons/CheckIcon";
 import PencilIcon from "../../../../../icons/PencilIcon";
 import { SchoolDetailUtils } from "../../../../../utils/school-details.utils";
 import { SchoolUtils } from "../../../../../utils/school.utils";
@@ -33,12 +32,7 @@ export default function (props: { school: SchoolType }) {
           disabled={!schoolDetailEditing()}
         />
 
-        <Show
-          when={!schoolDetailEditing()}
-          fallback={
-            <ButtonIcon icon={<CheckIcon />} onClick={SchoolDetailUtils.edit} />
-          }
-        >
+        <Show when={!schoolDetailEditing()}>
           <ButtonIcon icon={<PencilIcon />} onClick={SchoolDetailUtils.edit} />
         </Show>
       </div>
