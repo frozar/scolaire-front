@@ -1,6 +1,6 @@
 import { SchoolType } from "../_entities/school.entity";
 import { StopType } from "../_entities/stop.entity";
-import { PointType } from "../views/content/map/component/atom/Point";
+import { TripPointType } from "../_entities/trip.entity";
 import { ServiceUtils } from "./_utils.service";
 
 const host = import.meta.env.VITE_BACK_URL;
@@ -19,7 +19,7 @@ export class GraphicageService {
 
 export type DrawHelperDataType = {
   schools: SchoolType[];
-  selected: PointType[];
+  selected: TripPointType[];
   stops: StopType[];
   capacity: number;
   timeLimitSeconds: number;

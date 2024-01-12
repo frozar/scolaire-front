@@ -176,6 +176,7 @@ export namespace TripUtils {
   export async function createOrUpdateTrip() {
     // eslint-disable-next-line solid/reactivity
     let updatedTrip: TripType = currentDrawTrip() as TripType;
+
     if (currentDrawTrip()?.id == undefined) {
       updatedTrip = await TripService.create(currentDrawTrip() as TripType);
       const selectedLineId = getSelectedLine()?.id as number;

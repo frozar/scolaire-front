@@ -277,7 +277,6 @@ function formatTripPointDBType(points: TripPointType[]): TripPointDBType[] {
     };
   });
 }
-
 /**
  * Format the bus line associated points
  * @param points
@@ -289,9 +288,30 @@ function formatTripPointType(
   tripDirection: TripDirectionEnum
 ): TripPointType[] {
   //TODO Investigate the problem during switching between map [old comment to investigate]
+
   return points
     .map((dbPoint) => {
       const associatedPoint: PointType = getAssociatedTripPoint(dbPoint);
+
+      const grades =
+        associatedPoint.nature == NatureEnum.stop
+          ? dbPoint.grades.map((grade) => {
+              const stopGradeQuantity =
+                StopUtils.get(dbPoint.stop_id)?.associated.filter(
+                  (grade_) => grade_.gradeId == grade.grade_id
+                )[0].quantity ?? [];
+              return {
+                gradeId: grade.grade_id,
+                quantity: stopGradeQuantity,
+                matrix: QuantityUtils.buildQuantityMatrix(
+                  days,
+                  stopGradeQuantity,
+                  tripDirection
+                ),
+              };
+            })
+          : [];
+
       if (associatedPoint) {
         return {
           id: associatedPoint.id,
@@ -302,21 +322,7 @@ function formatTripPointType(
           nature: associatedPoint.nature,
           passageTime: dbPoint.passage_time,
           startToTripPointDistance: dbPoint.start_to_trip_point_distance,
-          grades: dbPoint.grades.map((grade) => {
-            const stopGradeQuantity = StopUtils.get(
-              dbPoint.stop_id
-            ).associated.filter((grade_) => grade_.gradeId == grade.grade_id)[0]
-              .quantity;
-            return {
-              gradeId: grade.grade_id,
-              quantity: stopGradeQuantity,
-              matrix: QuantityUtils.buildQuantityMatrix(
-                days,
-                stopGradeQuantity,
-                tripDirection
-              ),
-            };
-          }),
+          grades: grades,
         };
       } else {
         //TODO Error log to improve
