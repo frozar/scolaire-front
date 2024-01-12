@@ -1,7 +1,6 @@
 import { Match, Show, Switch } from "solid-js";
 import { HourRuleType } from "../../../../../_entities/_utils.entity";
 import { SelectInput } from "../../../../../component/atom/SelectInput";
-import PlusIcon from "../../../../../icons/PlusIcon";
 import TrashIcon from "../../../../../icons/TrashIcon";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { CalendarUtils } from "../../../calendar/calendar.utils";
@@ -41,9 +40,6 @@ export function HourRuleItemHeader(props: HourRuleItemHeader) {
 
       <Show when={!props.disabled}>
         <Switch>
-          <Match when={props.action == "add"}>
-            <ButtonIcon icon={<PlusIcon />} onClick={props.onClickAdd} />
-          </Match>
           <Match when={props.action == "remove"}>
             <ButtonIcon icon={<TrashIcon />} onClick={props.onClickRemove} />
           </Match>

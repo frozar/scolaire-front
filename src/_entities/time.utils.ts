@@ -1,4 +1,5 @@
-import { HoursDBType, HoursType } from "./_utils.entity";
+import { HourRuleType, HoursDBType, HoursType } from "./_utils.entity";
+import { CalendarDayEnum } from "./calendar.entity";
 import { GradeEntity, HourFormat } from "./grade.entity";
 
 export namespace TimeUtils {
@@ -22,6 +23,26 @@ export namespace TimeUtils {
         minutes: 0,
       },
       rules: [],
+    };
+  }
+  export function getRemainingDays(
+    calendarDays: CalendarDayEnum[],
+    alreadyUsedDays: CalendarDayEnum[]
+  ): CalendarDayEnum[] {
+    return calendarDays.filter((day) => !alreadyUsedDays.includes(day));
+  }
+  export function defaultRule(day: CalendarDayEnum): HourRuleType {
+    const defaultHourFormat: HourFormat = {
+      hour: 0,
+      minutes: 0,
+    };
+
+    return {
+      day,
+      startComing: defaultHourFormat,
+      endComing: defaultHourFormat,
+      startGoing: defaultHourFormat,
+      endGoing: defaultHourFormat,
     };
   }
   export function buildHours(hours: HoursDBType | undefined): HoursType {
