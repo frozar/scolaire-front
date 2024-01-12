@@ -6,7 +6,7 @@ import DrawHelperDialog, {
   openDrawHelperDialog,
 } from "../molecule/DrawHelperDialog";
 
-import { DrawHelperEntity } from "../../../../../_entities/graphicage.entity";
+import { DrawHelperEntity } from "../../../../../_entities/drawhelper.entity";
 import { DrawHelperUtils } from "../../../../../utils/drawHelper.utils";
 import { currentDrawTrip } from "../organism/DrawTripBoard";
 import "./DrawHelperButton.css";

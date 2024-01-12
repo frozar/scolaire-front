@@ -1,4 +1,4 @@
-import { DrawHelperEntity } from "../_entities/graphicage.entity";
+import { DrawHelperEntity } from "../_entities/drawhelper.entity";
 import { TripPointType } from "../_entities/trip.entity";
 import {
   DrawHelperDataType,
