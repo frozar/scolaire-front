@@ -86,7 +86,6 @@ export default function () {
           titleClass="text-xl"
           closedByDefault={true}
         >
-          {/* <CollapsibleElement title="Tranches horaires" class="text-xl"> */}
           <SchoolHoursSlots school={schoolDetailsItem() as SchoolType} />
 
           <HourRuleList
