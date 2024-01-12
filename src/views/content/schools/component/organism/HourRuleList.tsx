@@ -5,6 +5,7 @@ import { SchoolType } from "../../../../../_entities/school.entity";
 import { TimeUtils } from "../../../../../_entities/time.utils";
 import { HourRuleItem } from "./HourRuleItem";
 import "./HourRuleList.css";
+import { schoolDetailEditing } from "./SchoolDetails";
 
 interface HourRuleListProps {
   disabled: boolean;
@@ -36,7 +37,10 @@ export function HourRuleList(props: HourRuleListProps) {
         <p class="hour-rule-list-title">Exception(s)</p>
       </Show>
 
-      <div class="list-wrapper pr-3">
+      <div
+        class="list-wrapper pr-3"
+        classList={{ "!max-h-full": schoolDetailEditing() }}
+      >
         <For each={item()?.hours.rules}>
           {(hourRule, i) => (
             <HourRuleItem
