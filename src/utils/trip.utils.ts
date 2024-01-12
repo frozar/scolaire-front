@@ -179,7 +179,6 @@ export namespace TripUtils {
 
     if (currentDrawTrip()?.id == undefined) {
       updatedTrip = await TripService.create(currentDrawTrip() as TripType);
-      console.log("first if");
       const selectedLineId = getSelectedLine()?.id as number;
 
       setLines((lines) =>
@@ -189,7 +188,6 @@ export namespace TripUtils {
             : { ...line, trips: [...line.trips, updatedTrip] }
         )
       );
-      console.log("second if");
     } else {
       updatedTrip = await TripService.update(currentDrawTrip() as TripType);
 

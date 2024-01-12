@@ -113,12 +113,7 @@ export namespace ContextUtils {
           );
         }
 
-        console.log("current draw trip:", currentDrawTrip());
-        console.log("before update");
-
         await TripUtils.createOrUpdateTrip();
-
-        console.log("after update");
 
         setCurrentDrawTrip(TripEntity.defaultTrip());
         setCurrentTripIndex(0);

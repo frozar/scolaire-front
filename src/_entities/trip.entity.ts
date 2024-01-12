@@ -42,12 +42,6 @@ export namespace TripEntity {
     }
 
     const school: SchoolType = filteredShools[0];
-    console.log(
-      "before build:",
-      dbData.trip_stop,
-      dbData.days,
-      TripDirectionEntity.FindDirectionById(dbData.trip_direction_id).type
-    );
 
     return {
       id: dbData.id,
@@ -295,41 +289,15 @@ function formatTripPointType(
 ): TripPointType[] {
   //TODO Investigate the problem during switching between map [old comment to investigate]
 
-  console.log("POINTS:", points);
-
   return points
     .map((dbPoint) => {
       const associatedPoint: PointType = getAssociatedTripPoint(dbPoint);
 
-      if (associatedPoint) {
-        return {
-          id: associatedPoint.id,
-          leafletId: associatedPoint.leafletId,
-          name: associatedPoint.name,
-          lon: associatedPoint.lon,
-          lat: associatedPoint.lat,
-          nature: associatedPoint.nature,
-          passageTime: dbPoint.passage_time,
-          startToTripPointDistance: dbPoint.start_to_trip_point_distance,
-          grades: dbPoint.grades.map((grade) => {
-            console.log("GRADE:", grade);
-            console.log("all stops:", getStops());
-
-            console.log(
-              "stop =>",
-              dbPoint.stop_id,
-              StopUtils.get(
-                dbPoint.stop_id
-                // ! HERE IS THE PROBLEM
-              )
-            );
-
-            // * Maybe fixed
+      const grades = () => {
+        if (associatedPoint.nature == NatureEnum.stop) {
+          return dbPoint.grades.map((grade) => {
             const stopGradeQuantity =
-              StopUtils.get(
-                dbPoint.stop_id
-                // ! HERE IS THE PROBLEM
-              )?.associated.filter(
+              StopUtils.get(dbPoint.stop_id)?.associated.filter(
                 (grade_) => grade_.gradeId == grade.grade_id
               )[0].quantity ?? [];
             return {
@@ -341,7 +309,23 @@ function formatTripPointType(
                 tripDirection
               ),
             };
-          }),
+          });
+        } else {
+          return [];
+        }
+      };
+
+      if (associatedPoint) {
+        return {
+          id: associatedPoint.id,
+          leafletId: associatedPoint.leafletId,
+          name: associatedPoint.name,
+          lon: associatedPoint.lon,
+          lat: associatedPoint.lat,
+          nature: associatedPoint.nature,
+          passageTime: dbPoint.passage_time,
+          startToTripPointDistance: dbPoint.start_to_trip_point_distance,
+          grades: grades(),
         };
       } else {
         //TODO Error log to improve

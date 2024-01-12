@@ -10,7 +10,6 @@ export class TripService {
       "/busline/" + getSelectedLine()?.id + "/trip",
       data
     );
-    console.log("after request");
 
     return TripEntity.build(dbBusTrip);
   }
