@@ -1,5 +1,10 @@
 import { useStateGui } from "../StateGui";
-import { addNewUserInformation, getAuthenticatedUser } from "../signaux";
+import {
+  addNewUserInformation,
+  disableSpinningWheel,
+  displayedSpinningWheel,
+  getAuthenticatedUser,
+} from "../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { getToken } from "../views/layout/authentication";
 
@@ -27,6 +32,7 @@ export class ServiceUtils {
         return error;
       }
       connexionError();
+      if (displayedSpinningWheel()) disableSpinningWheel();
       return false;
     }
 
