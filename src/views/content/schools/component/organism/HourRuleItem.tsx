@@ -1,4 +1,11 @@
-import { Accessor, Setter, createEffect, createSignal, on } from "solid-js";
+import {
+  Accessor,
+  Setter,
+  Show,
+  createEffect,
+  createSignal,
+  on,
+} from "solid-js";
 import { HourRuleType } from "../../../../../_entities/_utils.entity";
 import { CalendarDayEnum } from "../../../../../_entities/calendar.entity";
 import { GradeEntity, GradeType } from "../../../../../_entities/grade.entity";
@@ -136,6 +143,13 @@ export function HourRuleItem(props: HourRuleProps) {
     });
   }
 
+  function tripType(): number {
+    return props
+      .item()
+      ?.calendar?.rules.filter((rule) => rule.day == props.rule.day)[0]
+      .tripTypeId as number;
+  }
+
   return (
     <div
       class={"hour-rule-item"}
@@ -149,26 +163,32 @@ export function HourRuleItem(props: HourRuleProps) {
         disabled={!props.disabled}
         remainingDays={props.remainingDays}
       />
-      <TimesInputWrapper
-        label="Aller"
-        startValue={GradeEntity.getStringFromHourFormat(
-          bufferRule().startComing
-        )}
-        endValue={GradeEntity.getStringFromHourFormat(bufferRule().endComing)}
-        onInputStart={onInputComingStart}
-        onInputEnd={onInputComingEnd}
-        disabled={!props.disabled}
-      />
-      <TimesInputWrapper
-        label="Retour"
-        startValue={GradeEntity.getStringFromHourFormat(
-          bufferRule().startGoing
-        )}
-        endValue={GradeEntity.getStringFromHourFormat(bufferRule().endGoing)}
-        onInputStart={onInputGoingStart}
-        onInputEnd={onInputGoingEnd}
-        disabled={!props.disabled}
-      />
+
+      <Show when={tripType() == 1 || tripType() == 2}>
+        <TimesInputWrapper
+          label="Aller"
+          startValue={GradeEntity.getStringFromHourFormat(
+            bufferRule().startComing
+          )}
+          endValue={GradeEntity.getStringFromHourFormat(bufferRule().endComing)}
+          onInputStart={onInputComingStart}
+          onInputEnd={onInputComingEnd}
+          disabled={!props.disabled}
+        />
+      </Show>
+
+      <Show when={tripType() == 1 || tripType() == 3}>
+        <TimesInputWrapper
+          label="Retour"
+          startValue={GradeEntity.getStringFromHourFormat(
+            bufferRule().startGoing
+          )}
+          endValue={GradeEntity.getStringFromHourFormat(bufferRule().endGoing)}
+          onInputStart={onInputGoingStart}
+          onInputEnd={onInputGoingEnd}
+          disabled={!props.disabled}
+        />
+      </Show>
     </div>
   );
 }
