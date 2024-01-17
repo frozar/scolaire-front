@@ -1,5 +1,6 @@
 import { SchoolType } from "../_entities/school.entity";
 import { StopType } from "../_entities/stop.entity";
+import { TripDirectionEnum } from "../_entities/trip-direction.entity";
 import { TripPointType } from "../_entities/trip.entity";
 import { ServiceUtils } from "./_utils.service";
 
@@ -24,4 +25,5 @@ export type DrawHelperDataType = {
   capacity: number;
   timeLimitSeconds: number;
   nbLimitSolution: number;
+  direction: TripDirectionEnum;
 };

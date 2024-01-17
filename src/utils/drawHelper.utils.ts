@@ -12,11 +12,14 @@ export namespace DrawHelperUtils {
     enableSpinningWheel();
     const response = await GraphicageService.drawHelper(data);
 
-    //TODO Resolve type problem and add quantity here ?
-    const points: TripPointType[] = DrawHelperEntity.formatTripPoints(response);
+    if (response) {
+      //TODO Resolve type problem and add quantity here ?
+      const points: TripPointType[] =
+        DrawHelperEntity.formatTripPoints(response);
 
-    CurrentDrawTripUtils.updatePoints(points);
-    CurrentDrawTripUtils.updateTripPoints(points);
+      CurrentDrawTripUtils.updatePoints(points);
+      CurrentDrawTripUtils.updateTripPoints(points);
+    }
 
     disableSpinningWheel();
   }

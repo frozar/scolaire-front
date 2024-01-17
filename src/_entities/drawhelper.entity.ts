@@ -9,6 +9,7 @@ import {
 import { CalendarDayEnum } from "./calendar.entity";
 import { GradeTripType } from "./grade.entity";
 import { SchoolType } from "./school.entity";
+import { TripDirectionEntity } from "./trip-direction.entity";
 import { TripPointType } from "./trip.entity";
 
 export namespace DrawHelperEntity {
@@ -25,6 +26,9 @@ export namespace DrawHelperEntity {
       capacity: capacity,
       timeLimitSeconds: timeLimitSeconds,
       nbLimitSolution: nbLimitSolution,
+      direction: TripDirectionEntity.FindDirectionById(
+        currentDrawTrip().tripDirectionId
+      ).type,
     };
   }
 
