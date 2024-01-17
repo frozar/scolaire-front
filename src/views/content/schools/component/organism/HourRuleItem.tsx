@@ -53,6 +53,15 @@ export function HourRuleItem(props: HourRuleProps) {
     })
   );
 
+  // function rule() {
+  //   return props.rule;
+  // }
+  // createEffect(
+  //   on(rule, () => {
+  //     setBufferRule(rule());
+  //   })
+  // );
+
   function onInputComingStart(value: string) {
     setBufferRule((prev) => {
       return { ...prev, startComing: TimeUtils.getHourFormatFromString(value) };
@@ -97,6 +106,7 @@ export function HourRuleItem(props: HourRuleProps) {
       ?.hours.rules.map((item) => item.day) as string[];
 
     if (!Object.values(CalendarDayEnum).includes(bufferRule().day)) {
+      // TODO: Delete
       addNewUserInformation({
         displayed: true,
         level: MessageLevelEnum.info,
@@ -105,6 +115,7 @@ export function HourRuleItem(props: HourRuleProps) {
       });
       return false;
     }
+    // TODO: Delete
     if (usedDays.includes(bufferRule().day)) {
       addNewUserInformation({
         displayed: true,

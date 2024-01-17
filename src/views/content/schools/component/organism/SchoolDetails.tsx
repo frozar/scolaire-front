@@ -22,9 +22,13 @@ export default function () {
     }
   });
 
+  console.log("schoolDetailsItem()", schoolDetailsItem());
+  console.log("getSchools()", getSchools());
+
   onCleanup(() => cancel());
 
   function cancel() {
+    // TODO: Enhance: reset all values (schedule)
     setSchoolDetailsItem((prev) => {
       return getSchools().filter((school) => school.id == prev?.id)[0];
     });
