@@ -33,7 +33,9 @@ export function SelectInput(props: SelectInputProps) {
       }
     >
       <select onChange={onChange} class="selector">
-        <option value="default">{props.defaultOptions ?? "Options"}</option>
+        <Show when={props.options.length == 0}>
+          <option value="default">{props.defaultOptions ?? "Options"}</option>
+        </Show>
         <For each={props.options}>
           {(opt) => (
             <option
