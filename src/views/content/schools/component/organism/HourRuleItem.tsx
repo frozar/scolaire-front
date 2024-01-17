@@ -1,18 +1,15 @@
+import { Accessor, Setter, Show, createSignal } from "solid-js";
 import {
-  Accessor,
-  Setter,
-  Show,
-  createEffect,
-  createSignal,
-  on,
-} from "solid-js";
-import { HourRuleType } from "../../../../../_entities/_utils.entity";
+  HourRuleType,
+  HoursType,
+} from "../../../../../_entities/_utils.entity";
 import { CalendarDayEnum } from "../../../../../_entities/calendar.entity";
 import { GradeEntity, GradeType } from "../../../../../_entities/grade.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { TimeUtils } from "../../../../../_entities/time.utils";
 import { addNewUserInformation } from "../../../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../../../type";
+import { SchoolDetailUtils } from "../../../../../utils/school-details.utils";
 import { CalendarUtils } from "../../../calendar/calendar.utils";
 import { HourRuleItemHeader } from "../molecule/HourRuleItemHeader";
 import TimesInputWrapper from "../molecule/TimesInputWrapper";
@@ -37,52 +34,110 @@ export function HourRuleItem(props: HourRuleProps) {
   const [bufferRule, setBufferRule] = createSignal<HourRuleType>(props.rule);
 
   // * Update SchoolDetailsItem only if we are not in add mode
-  createEffect(
-    on(bufferRule, () => {
-      if (ruleIndex() != -1) {
-        if (props.item()?.hours.rules[ruleIndex()] != bufferRule()) {
-          // eslint-disable-next-line solid/reactivity
-          props.setItem((prev) => {
-            if (!prev) return prev;
-            const school = { ...prev };
-            school.hours.rules[ruleIndex()] = bufferRule();
-            return school;
-          });
-        }
-      }
-    })
-  );
-
-  // function rule() {
-  //   return props.rule;
-  // }
   // createEffect(
-  //   on(rule, () => {
-  //     setBufferRule(rule());
+  //   on(bufferRule, () => {
+  //     if (ruleIndex() != -1) {
+  //       if (props.item()?.hours.rules[ruleIndex()] != bufferRule()) {
+  //         // eslint-disable-next-line solid/reactivity
+  //         props.setItem((prev) => {
+  //           if (!prev) return prev;
+  //           const school = { ...prev };
+  //           school.hours.rules[ruleIndex()] = bufferRule();
+  //           return school;
+  //         });
+  //         // ! Déclenche qq part un elet réactif qui met à jour setSchools() !
+  //         console.log(
+  //           "getSchools() just after details item is modified",
+  //           getSchools()
+  //         );
+  //       }
+  //     }
   //   })
   // );
 
+  // function onInputComingStart(value: string) {
+  //   setBufferRule((prev) => {
+  //     return { ...prev, startComing: TimeUtils.getHourFormatFromString(value) };
+  //   });
+  // }
+
+  // function onInputComingEnd(value: string) {
+  //   setBufferRule((prev) => {
+  //     return { ...prev, endComing: TimeUtils.getHourFormatFromString(value) };
+  //   });
+  // }
+
+  // function onInputGoingStart(value: string) {
+  //   setBufferRule((prev) => {
+  //     return { ...prev, startGoing: TimeUtils.getHourFormatFromString(value) };
+  //   });
+  // }
+
+  // function onInputGoingEnd(value: string) {
+  //   setBufferRule((prev) => {
+  //     return { ...prev, endGoing: TimeUtils.getHourFormatFromString(value) };
+  //   });
+  // }
+
+  // function onInputComingStart(value: string) {
+  //   SchoolDetailUtils.update({
+  //     hours: {
+  //       ...(props.item()?.hours as HoursType),
+  //       rules: [
+  //         ...(props.item()?.hours as HoursType).rules.filter(
+  //           (rule) => rule.day != props.rule.day
+  //         ),
+  //         {
+  //           ...props.rule,
+  //           startComing: TimeUtils.getHourFormatFromString(value),
+  //         },
+  //       ],
+  //     },
+  //   });
+  // }
+
   function onInputComingStart(value: string) {
-    setBufferRule((prev) => {
-      return { ...prev, startComing: TimeUtils.getHourFormatFromString(value) };
+    const newRules = [...(props.item()?.hours as HoursType).rules];
+    newRules[ruleIndex()].startComing =
+      TimeUtils.getHourFormatFromString(value);
+    SchoolDetailUtils.update({
+      hours: {
+        ...(props.item()?.hours as HoursType),
+        rules: newRules,
+      },
     });
   }
 
   function onInputComingEnd(value: string) {
-    setBufferRule((prev) => {
-      return { ...prev, endComing: TimeUtils.getHourFormatFromString(value) };
+    const newRules = [...(props.item()?.hours as HoursType).rules];
+    newRules[ruleIndex()].endComing = TimeUtils.getHourFormatFromString(value);
+    SchoolDetailUtils.update({
+      hours: {
+        ...(props.item()?.hours as HoursType),
+        rules: newRules,
+      },
     });
   }
 
   function onInputGoingStart(value: string) {
-    setBufferRule((prev) => {
-      return { ...prev, startGoing: TimeUtils.getHourFormatFromString(value) };
+    const newRules = [...(props.item()?.hours as HoursType).rules];
+    newRules[ruleIndex()].startGoing = TimeUtils.getHourFormatFromString(value);
+    SchoolDetailUtils.update({
+      hours: {
+        ...(props.item()?.hours as HoursType),
+        rules: newRules,
+      },
     });
   }
 
   function onInputGoingEnd(value: string) {
-    setBufferRule((prev) => {
-      return { ...prev, endGoing: TimeUtils.getHourFormatFromString(value) };
+    const newRules = [...(props.item()?.hours as HoursType).rules];
+    newRules[ruleIndex()].endGoing = TimeUtils.getHourFormatFromString(value);
+    SchoolDetailUtils.update({
+      hours: {
+        ...(props.item()?.hours as HoursType),
+        rules: newRules,
+      },
     });
   }
 
