@@ -1,9 +1,6 @@
 import { Accessor, Setter, createEffect, createSignal, on } from "solid-js";
 import { HourRuleType } from "../../../../../_entities/_utils.entity";
-import {
-  CalendarDayEnum,
-  CalendarType,
-} from "../../../../../_entities/calendar.entity";
+import { CalendarDayEnum } from "../../../../../_entities/calendar.entity";
 import { GradeEntity, GradeType } from "../../../../../_entities/grade.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { TimeUtils } from "../../../../../_entities/time.utils";
@@ -17,7 +14,7 @@ import "./HourRuleItem.css";
 interface HourRuleProps {
   rule: HourRuleType;
   disabled?: boolean;
-  action: "add" | "remove";
+  remainingDays: () => CalendarDayEnum[];
   isNotLast?: boolean;
   item: Accessor<SchoolType | GradeType | undefined>;
   setItem: Setter<SchoolType | GradeType>;
@@ -35,7 +32,7 @@ export function HourRuleItem(props: HourRuleProps) {
   // * Update SchoolDetailsItem only if we are not in add mode
   createEffect(
     on(bufferRule, () => {
-      if (ruleIndex() != -1 && props.action != "add") {
+      if (ruleIndex() != -1) {
         if (props.item()?.hours.rules[ruleIndex()] != bufferRule()) {
           // eslint-disable-next-line solid/reactivity
           props.setItem((prev) => {
@@ -145,13 +142,12 @@ export function HourRuleItem(props: HourRuleProps) {
       classList={{ "hour-rule-item-bordered": props.isNotLast }}
     >
       <HourRuleItemHeader
-        action={props.action}
         onChangeDay={onChangeDay}
         rule={props.rule}
         onClickAdd={onClickAdd}
         onClickRemove={onClickRemove}
         disabled={!props.disabled}
-        calendar={props.item()?.calendar as CalendarType}
+        remainingDays={props.remainingDays}
       />
       <TimesInputWrapper
         label="Aller"

@@ -1,6 +1,7 @@
 import { HourRuleType, HoursDBType, HoursType } from "./_utils.entity";
-import { CalendarDayEnum } from "./calendar.entity";
-import { GradeEntity, HourFormat } from "./grade.entity";
+import { CalendarDayEnum, CalendarType } from "./calendar.entity";
+import { GradeEntity, GradeType, HourFormat } from "./grade.entity";
+import { SchoolType } from "./school.entity";
 
 export namespace TimeUtils {
   export function defaultHours(): HoursType {
@@ -25,12 +26,20 @@ export namespace TimeUtils {
       rules: [],
     };
   }
+
   export function getRemainingDays(
-    calendarDays: CalendarDayEnum[],
-    alreadyUsedDays: CalendarDayEnum[]
+    item: SchoolType | GradeType | undefined
   ): CalendarDayEnum[] {
+    const calendarDays = (
+      (item as SchoolType).calendar as CalendarType
+    ).rules.map((rule) => rule.day);
+
+    const alreadyUsedDays = (item as SchoolType).hours.rules.map(
+      (rule) => rule.day
+    );
     return calendarDays.filter((day) => !alreadyUsedDays.includes(day));
   }
+
   export function defaultRule(day: CalendarDayEnum): HourRuleType {
     const defaultHourFormat: HourFormat = {
       hour: 0,

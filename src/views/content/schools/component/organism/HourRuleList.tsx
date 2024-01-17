@@ -1,8 +1,5 @@
 import { Accessor, For, Setter, Show } from "solid-js";
-import {
-  CalendarDayEnum,
-  CalendarType,
-} from "../../../../../_entities/calendar.entity";
+import { CalendarDayEnum } from "../../../../../_entities/calendar.entity";
 import { GradeType } from "../../../../../_entities/grade.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { TimeUtils } from "../../../../../_entities/time.utils";
@@ -22,50 +19,32 @@ interface HourRuleListProps {
 export function HourRuleList(props: HourRuleListProps) {
   const item = () => props.item();
 
-  const { startHourComing, endHourComing, startHourGoing, endHourGoing } =
-    // eslint-disable-next-line solid/reactivity
-    item()?.hours ?? TimeUtils.defaultHours();
-
-  const bufferRule = {
-    day: CalendarDayEnum.monday,
-    startComing: startHourComing,
-    endComing: endHourComing,
-    startGoing: startHourGoing,
-    endGoing: endHourGoing,
-  };
-
   const showTitle = () =>
     (item()?.hours.rules.length ?? 0) > 0 || props.disabled;
 
   function getRemainingDays(): CalendarDayEnum[] {
-    const calendarDays = (
-      (props.item() as SchoolType).calendar as CalendarType
-    ).rules.map((rule) => rule.day);
-
-    const alreadyUseDays = (props.item() as SchoolType).hours.rules.map(
-      (rule) => rule.day
-    );
-    return TimeUtils.getRemainingDays(calendarDays, alreadyUseDays);
+    return TimeUtils.getRemainingDays(props.item());
   }
+
   function addRule() {
+    // eslint-disable-next-line solid/reactivity
     props.setItem((prev) => {
       const school: SchoolType = { ...prev } as SchoolType;
 
       const defaultRule = TimeUtils.defaultRule(getRemainingDays()[0]);
-      const test = {
+      const rules = {
         ...school,
         hours: {
           ...school.hours,
           rules: [...school.hours.rules, defaultRule],
         },
       } as SchoolType;
-      return test;
+      return rules;
     });
   }
 
   return (
     <>
-      {/* TODO: CLEAN */}
       <div class="flex">
         <Show when={showTitle()}>
           <p class="hour-rule-list-title">Exception(s)</p>
@@ -84,9 +63,9 @@ export function HourRuleList(props: HourRuleListProps) {
             <HourRuleItem
               item={props.item}
               setItem={props.setItem}
+              remainingDays={getRemainingDays}
               rule={hourRule}
               disabled={props.disabled}
-              action="remove"
               isNotLast={i() + 1 != item()?.hours.rules.length}
             />
           )}

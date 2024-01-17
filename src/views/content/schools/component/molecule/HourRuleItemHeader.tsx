@@ -1,11 +1,12 @@
-import { Match, Show, Switch } from "solid-js";
+import { Show } from "solid-js";
 import { HourRuleType } from "../../../../../_entities/_utils.entity";
 import { SelectInput } from "../../../../../component/atom/SelectInput";
 import TrashIcon from "../../../../../icons/TrashIcon";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { CalendarUtils } from "../../../calendar/calendar.utils";
 
-import { CalendarType } from "../../../../../_entities/calendar.entity";
+import { CalendarDayEnum } from "../../../../../_entities/calendar.entity";
+
 import "./HourRuleItemHeader.css";
 
 interface HourRuleItemHeader {
@@ -13,20 +14,25 @@ interface HourRuleItemHeader {
   onClickAdd: () => void;
   onClickRemove: () => void;
   disabled?: boolean;
-  action: "add" | "remove";
+  remainingDays: () => CalendarDayEnum[];
   rule: HourRuleType;
-  calendar: CalendarType;
 }
 
 export function HourRuleItemHeader(props: HourRuleItemHeader) {
-  // eslint-disable-next-line solid/reactivity
-  const selectOptions = () =>
-    props.calendar?.rules.map((item) => {
+  const selectOptions = () => {
+    const remainingDays = props.remainingDays().map((remainingDay) => {
       return {
-        text: CalendarUtils.dayToFrench(item.day),
-        value: item.day,
+        text: CalendarUtils.dayToFrench(remainingDay),
+        value: remainingDay,
       };
-    }) as [];
+    });
+    // Add actually selected day
+    remainingDays.push({
+      text: CalendarUtils.dayToFrench(props.rule.day),
+      value: props.rule.day,
+    });
+    return remainingDays;
+  };
 
   return (
     <div class="rule-item-header">
@@ -35,15 +41,10 @@ export function HourRuleItemHeader(props: HourRuleItemHeader) {
         onChange={props.onChangeDay}
         defaultValue={props.rule.day}
         disabled={props.disabled ?? false}
-        defaultOptions="Jour"
       />
 
       <Show when={!props.disabled}>
-        <Switch>
-          <Match when={props.action == "remove"}>
-            <ButtonIcon icon={<TrashIcon />} onClick={props.onClickRemove} />
-          </Match>
-        </Switch>
+        <ButtonIcon icon={<TrashIcon />} onClick={props.onClickRemove} />
       </Show>
     </div>
   );
