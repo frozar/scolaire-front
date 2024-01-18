@@ -34,6 +34,12 @@ export namespace SchoolUtils {
     return getSchools().filter((school) => school.id == schoolId)[0].name;
   }
 
+  export function getFromGradeId(gradeId: number): SchoolType {
+    return getSchools().filter((school) =>
+      school.grades.some((grade) => grade.id == gradeId)
+    )[0];
+  }
+
   // Carefull, here schoolName is used as an identitifer
   export function getIdFromName(schoolName: string): number {
     return getSchools().filter((school) => school.name == schoolName)[0].id;
