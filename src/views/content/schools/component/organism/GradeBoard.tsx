@@ -34,6 +34,8 @@ export default function () {
 
   async function nextStep() {
     let grade: GradeType;
+    // TODO: Do not use schoolDetailsItem() It must be used only as a buffer value
+    // of a school being modified
     const schoolToUpdate = schoolDetailsItem() as SchoolType;
     if (!schoolDetailsItem()?.id) return;
 
