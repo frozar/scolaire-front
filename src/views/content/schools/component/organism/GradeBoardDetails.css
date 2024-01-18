@@ -1,0 +1,15 @@
+.grade-detail-header {
+  @apply my-4;
+}
+
+.grade-detail-header-title {
+  @apply flex justify-between text-2xl font-semibold;
+}
+
+.grade-detail-header-title .pencil-icon {
+  @apply h-4 w-4 mr-8;
+}
+
+.grade-detail-header-title .trash-icon {
+  @apply h-4 w-4;
+}

@@ -3,6 +3,7 @@ import { Match, Switch, createEffect, createSignal } from "solid-js";
 import { LineType } from "../../../../../_entities/line.entity";
 import { getSelectedLine } from "../../../map/component/organism/BusLines";
 import GradeBoard from "../../../schools/component/organism/GradeBoard";
+import { GradeBoardDetails } from "../../../schools/component/organism/GradeBoardDetails";
 import SchoolsBoard from "../../../schools/component/organism/SchoolBoard";
 import SchoolDetails from "../../../schools/component/organism/SchoolDetails";
 import StopBoard from "../../../stops/component/organism/StopBoard";
@@ -20,6 +21,7 @@ import InformationBoardLayout from "./InformationBoardLayout";
 export type BoardTags =
   | "schools"
   | "school-details"
+  | "school-grade-details"
   | "school-grade-add"
   | "school-grade-modify"
   | "stops"
@@ -92,6 +94,10 @@ export default function () {
             }
           >
             <GradeBoard />
+          </Match>
+
+          <Match when={onBoard() == "school-grade-details"}>
+            <GradeBoardDetails />
           </Match>
 
           {/* Stops */}

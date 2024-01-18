@@ -78,7 +78,7 @@ export default function () {
   }
 
   function onClickCancel() {
-    changeBoard("school-details");
+    changeBoard("school-grade-details");
   }
 
   const title =
@@ -86,7 +86,9 @@ export default function () {
       ? "Ajout d'une classe"
       : "Modifier une classe";
 
-  onCleanup(() => setSelectedGrade());
+  onCleanup(() => {
+    if (onBoard() != "school-grade-details") setSelectedGrade();
+  });
 
   return (
     <section>
