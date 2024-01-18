@@ -12,7 +12,6 @@ import {
   getSchools,
   setSchools,
 } from "../../../map/component/organism/SchoolPoints";
-import GradeLinkedSchool from "../atom/GradeLinkedSchool";
 import GradeBoardHeader from "../molecule/GradeBoardHeader";
 import {
   GradeCalendarSelectionWrapper,
@@ -35,6 +34,8 @@ export default function () {
 
   async function nextStep() {
     let grade: GradeType;
+    // TODO: Do not use schoolDetailsItem() It must be used only as a buffer value
+    // of a school being modified
     const schoolToUpdate = schoolDetailsItem() as SchoolType;
     if (!schoolDetailsItem()?.id) return;
 
@@ -82,8 +83,8 @@ export default function () {
 
   const title =
     onBoard() == "school-grade-add"
-      ? "Ajout d'une grade"
-      : "Modifier une grade";
+      ? "Ajout d'une classe"
+      : "Modifier une classe";
 
   onCleanup(() => setSelectedGrade());
 
@@ -92,15 +93,11 @@ export default function () {
       <GradeBoardHeader title={title} />
 
       <div class="content">
-        <div class="line-height-1">
-          <p>Ecole:</p>
-          <GradeLinkedSchool schools={[schoolDetailsItem()?.name as string]} />
-        </div>
         <LabeledInputField
           name="grade-name"
           onInput={(event) => setGradeName(event.target.value)}
           value={gradeName() ?? ""}
-          label="Nom de la grade"
+          label="Nom de la classe"
           placeholder="Nom de la classe"
         />
         <GradeCalendarSelectionWrapper />

@@ -1,48 +1,46 @@
-import { createEffect, createSignal, on, onMount } from "solid-js";
+import { createEffect, createSignal, on } from "solid-js";
 import { CalendarType } from "../../../../../_entities/calendar.entity";
 import { SelectInput } from "../../../../../component/atom/SelectInput";
 import { LabeledCheckbox } from "../../../../../component/molecule/LabeledCheckbox";
+import { SchoolUtils } from "../../../../../utils/school.utils";
 import { calendars } from "../../../calendar/template/Calendar";
-import { selectedGrade, setSelectedGrade } from "./GradeBoard";
+import { selectedGrade } from "./GradeBoard";
 import { schoolDetailsItem } from "./SchoolDetails";
 
 export const [bufferCalendar, setBufferCalendar] = createSignal<CalendarType>();
 
 export function GradeCalendarSelectionWrapper() {
-  const schoolCalendar = schoolDetailsItem()?.calendar;
-  const initialCalendar = selectedGrade()?.calendar;
-  const gradeCalendar = () => selectedGrade()?.calendar;
+  const schoolCalendar = SchoolUtils.get(schoolDetailsItem()?.id as number)
+    .calendar as CalendarType;
 
-  const [useSchoolCalendar, setUseSchoolCalendar] = createSignal<boolean>(
-    schoolCalendar?.id == gradeCalendar()?.id
+  const initialGradeCalendar = selectedGrade()?.calendar as CalendarType;
+
+  const calendarFiltered = calendars().filter(
+    (calendar) => calendar.id != schoolCalendar?.id
   );
 
-  createEffect(
-    on(bufferCalendar, () => {
-      // eslint-disable-next-line solid/reactivity
-      setSelectedGrade((prev) => {
-        if (!prev) return prev;
-        return { ...prev, calendar: bufferCalendar() };
-      });
-    })
+  setBufferCalendar(initialGradeCalendar);
+
+  const [useSchoolCalendar, setUseSchoolCalendar] = createSignal<boolean>(
+    schoolCalendar?.id == initialGradeCalendar.id
   );
 
   createEffect(
     on(useSchoolCalendar, () => {
       if (useSchoolCalendar()) setBufferCalendar(schoolCalendar);
-      else setBufferCalendar(initialCalendar);
+      else setBufferCalendar(calendarFiltered[0]);
     })
   );
 
-  onMount(() => {
-    if (!initialCalendar || initialCalendar.id == schoolCalendar?.id) {
-      setUseSchoolCalendar(true);
-    } else setUseSchoolCalendar(false);
-  });
-
-  const selectOptions = calendars().map((item) => {
-    return { text: item.name, value: item.id };
-  });
+  function selectOptions() {
+    return useSchoolCalendar()
+      ? calendars().map((item) => {
+          return { text: item.name, value: item.id };
+        })
+      : calendarFiltered.map((item) => {
+          return { text: item.name, value: item.id };
+        });
+  }
 
   function onChangeUseSchoolCalendar() {
     setUseSchoolCalendar((prev) => !prev);
@@ -52,6 +50,7 @@ export function GradeCalendarSelectionWrapper() {
     const calendar = calendars().find((item) => item.id == value);
     setBufferCalendar(calendar);
   }
+  console.log("bufferCalendar()?.id", bufferCalendar()?.id);
 
   return (
     <>
@@ -62,7 +61,7 @@ export function GradeCalendarSelectionWrapper() {
       />
 
       <SelectInput
-        options={selectOptions}
+        options={selectOptions()}
         onChange={onChangeSelectCalendar}
         defaultValue={bufferCalendar()?.id}
         defaultOptions="Calendrier"
