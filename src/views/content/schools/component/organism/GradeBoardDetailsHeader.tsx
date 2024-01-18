@@ -17,13 +17,13 @@ import "./GradeBoardDetailsHeader.css";
 
 export function GradeBoardDetailsHeader(): JSXElement {
   async function validate() {
-    // TODO: Check if grade is used in trip and/or qty > 0
     const success = await GradeUtils.deleteGrade(selectedGrade()?.id as number);
     if (success) {
       changeBoard("school-details");
       return true;
     } else return false;
   }
+
   function onClick() {
     const gradeId = selectedGrade()?.id as number;
 
@@ -37,6 +37,7 @@ export function GradeBoardDetailsHeader(): JSXElement {
           GradeUtils.getTotalQuantity(gradeId) +
           " élèves",
       });
+
       return;
     }
 
