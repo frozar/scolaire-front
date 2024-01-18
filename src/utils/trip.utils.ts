@@ -2,6 +2,7 @@ import { range } from "lodash";
 
 import { GradeEntity } from "../_entities/grade.entity";
 import { LineType } from "../_entities/line.entity";
+import { PathEntity } from "../_entities/path.entity";
 import {
   TripDirectionEntity,
   TripDirectionEnum,
@@ -14,6 +15,7 @@ import {
   DrawTripStep,
   currentDrawTrip,
   displayTripModeEnum,
+  setCurrentDrawTrip,
   setCurrentStep,
   setDisplayTripMode,
 } from "../views/content/board/component/organism/DrawTripBoard";
@@ -178,6 +180,15 @@ export namespace TripUtils {
     let updatedTrip: TripType = currentDrawTrip() as TripType;
 
     if (currentDrawTrip()?.id == undefined) {
+      if (!currentDrawTrip().path) {
+        setCurrentDrawTrip((prev) => {
+          if (!prev) return prev;
+          const trip = { ...prev };
+          trip.path = PathEntity.buildFromTrip(trip);
+          return trip;
+        });
+      }
+
       updatedTrip = await TripService.create(currentDrawTrip() as TripType);
       const selectedLineId = getSelectedLine()?.id as number;
 

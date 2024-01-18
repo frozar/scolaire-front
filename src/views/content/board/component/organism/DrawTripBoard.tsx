@@ -70,6 +70,12 @@ export const [currentDrawTrip, setCurrentDrawTrip] = createSignal<TripType>(
     startTime: undefined,
     days: [],
     tripDirectionId: 0,
+    path: {
+      color: COLOR_GREEN_BASE,
+      name: "Nom par defaut",
+      points: [],
+      grades: [],
+    },
   }
 );
 
