@@ -12,7 +12,7 @@ export const [bufferCalendar, setBufferCalendar] = createSignal<CalendarType>();
 export function GradeCalendarSelectionWrapper() {
   const schoolCalendar = SchoolUtils.getFromGradeId(
     selectedGrade()?.id as number
-  );
+  ).calendar;
 
   // TODO: Rename
   const initialCalendar = selectedGrade()?.calendar;
@@ -21,6 +21,8 @@ export function GradeCalendarSelectionWrapper() {
   // console.log("initialCalendar", initialCalendar);
   // ! Une grade déjà crée est sytematiquement lié à un calendar ?
   setBufferCalendar(initialCalendar);
+  console.log("schoolCalendar?.id", schoolCalendar?.id);
+  console.log("gradeCalendar()?.id", gradeCalendar()?.id);
 
   const [useSchoolCalendar, setUseSchoolCalendar] = createSignal<boolean>(
     schoolCalendar?.id == gradeCalendar()?.id
