@@ -10,11 +10,14 @@ import {
 import { selectedGrade } from "./GradeBoard";
 
 // TODO: Refactor all read board headers css (trip, stop, school, grade)
+import { addNewUserInformation } from "../../../../../signaux";
+import { MessageLevelEnum, MessageTypeEnum } from "../../../../../type";
 import { setRemoveConfirmation } from "../../../../../userInformation/RemoveConfirmation";
 import "./GradeBoardDetailsHeader.css";
 
 export function GradeBoardDetailsHeader(): JSXElement {
   async function validate() {
+    // TODO: Check if grade is used in trip and/or qty > 0
     const success = await GradeUtils.deleteGrade(selectedGrade()?.id as number);
     if (success) {
       changeBoard("school-details");
@@ -22,6 +25,21 @@ export function GradeBoardDetailsHeader(): JSXElement {
     } else return false;
   }
   function onClick() {
+    const gradeId = selectedGrade()?.id as number;
+
+    if (GradeUtils.checkIfIsUsed(gradeId)) {
+      addNewUserInformation({
+        displayed: true,
+        level: MessageLevelEnum.error,
+        type: MessageTypeEnum.global,
+        content:
+          "Cette classe ne peut pas être supprimée car elle est liée à " +
+          GradeUtils.getTotalQuantity(gradeId) +
+          " élèves",
+      });
+      return;
+    }
+
     setRemoveConfirmation({
       textToDisplay: "Êtes-vous sûr de vouloir supprimer la classe : ",
       itemName: selectedGrade()?.name as string,

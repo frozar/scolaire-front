@@ -36,6 +36,12 @@ export namespace GradeUtils {
     )[0].id;
   }
 
+  export function checkIfIsUsed(gradeId: number): boolean {
+    if (GradeUtils.getTotalQuantity(gradeId) > 0) {
+      return true;
+    } else return false;
+  }
+
   export async function deleteGrade(gradeId: number): Promise<boolean> {
     const deletedGradeId = await GradeService.delete(gradeId);
     if (!deletedGradeId) return false;

@@ -3,6 +3,8 @@ import { createSignal } from "solid-js";
 import { GradeType } from "../../../../../_entities/grade.entity";
 import CardTitle from "../../../../../component/atom/CardTitle";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
+import { addNewUserInformation } from "../../../../../signaux";
+import { MessageLevelEnum, MessageTypeEnum } from "../../../../../type";
 import { setRemoveConfirmation } from "../../../../../userInformation/RemoveConfirmation";
 import { GradeUtils } from "../../../../../utils/grade.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
@@ -20,7 +22,20 @@ export default function (props: GradeItemProps) {
 
   async function onClickDelete() {
     const gradeId = props.grade?.id;
-    if (!gradeId) return false;
+    if (!gradeId) return;
+
+    if (GradeUtils.checkIfIsUsed(gradeId)) {
+      addNewUserInformation({
+        displayed: true,
+        level: MessageLevelEnum.error,
+        type: MessageTypeEnum.global,
+        content:
+          "Cette classe ne peut pas être supprimée car elle est liée à " +
+          GradeUtils.getTotalQuantity(gradeId) +
+          " élèves",
+      });
+      return;
+    }
 
     setRemoveConfirmation({
       textToDisplay: "Êtes-vous sûr de vouloir supprimer la classe : ",
