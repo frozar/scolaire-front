@@ -16,6 +16,7 @@ import {
   GradeType,
   HourFormat,
 } from "./grade.entity";
+import { PathEntity, PathType } from "./path.entity";
 import { SchoolType } from "./school.entity";
 import {
   TripDirectionEntity,
@@ -70,6 +71,7 @@ export namespace TripEntity {
         : undefined,
       days: dbData.days,
       tripDirectionId: dbData.trip_direction_id,
+      path: PathEntity.build(dbData.path),
     };
   }
 
@@ -116,6 +118,7 @@ export namespace TripEntity {
         : undefined,
       days: trip.days,
       trip_direction_id: trip.tripDirectionId,
+      path: trip.path,
     };
   }
 
@@ -216,6 +219,7 @@ export type TripType = {
   startTime?: HourFormat;
   tripDirectionId: number;
   days: CalendarDayEnum[];
+  path?: PathType;
 };
 
 export type TripPointType = {
@@ -244,6 +248,7 @@ export type TripDBType = {
   start_time: string;
   trip_direction_id: number;
   days: CalendarDayEnum[];
+  path: PathType;
 };
 
 export type TripPointDBType = {
