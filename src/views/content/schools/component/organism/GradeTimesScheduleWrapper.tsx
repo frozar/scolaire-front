@@ -95,7 +95,7 @@ export function GradeTimesScheduleWrapper(): JSXElement {
         onChange={onChangeUseSchoolSchedule}
       />
       <TimesInputWrapper
-        label="Matin"
+        label="Aller"
         startValue={GradeEntity.getStringFromHourFormat(
           bufferHours().startHourComing
         )}
@@ -107,7 +107,7 @@ export function GradeTimesScheduleWrapper(): JSXElement {
         disabled={useSchoolSchedule()}
       />
       <TimesInputWrapper
-        label="Après-midi"
+        label="Retour"
         startValue={GradeEntity.getStringFromHourFormat(
           bufferHours().startHourGoing
         )}
