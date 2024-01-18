@@ -1,14 +1,16 @@
 import { JSXElement } from "solid-js";
+import { GradeEntity } from "../../../../../_entities/grade.entity";
 import PencilIcon from "../../../../../icons/PencilIcon";
 import TrashIcon from "../../../../../icons/TrashIcon";
 import { GradeUtils } from "../../../../../utils/grade.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
-import { selectedGrade } from "./GradeBoard";
-
-// TODO: Refactor all read views headers
-import { GradeEntity } from "../../../../../_entities/grade.entity";
+import CollapsibleElement from "../../../board/component/organism/CollapsibleElement";
 import { setOnBoard } from "../../../board/component/template/ContextManager";
 import TimesInputWrapper from "../molecule/TimesInputWrapper";
+import { selectedGrade, setSelectedGrade } from "./GradeBoard";
+import { HourRuleList } from "./HourRuleList";
+
+// TODO: Refactor all read board headers css (trip, stop, school, grade)
 import "./GradeBoardDetails.css";
 
 // TODO: Display more informations as linked stops, trips and quantity
@@ -46,8 +48,11 @@ export function GradeBoardDetails(): JSXElement {
       </div>
 
       <div>
-        <div class="text-xl">Tranches horaires:</div>
-        <div class="pl-[18px]">
+        <CollapsibleElement
+          title="Tranches horaires"
+          titleClass="text-xl"
+          closedByDefault={() => true}
+        >
           <TimesInputWrapper
             label="Matin"
             startValue={GradeEntity.getStringFromHourFormat(
@@ -72,7 +77,12 @@ export function GradeBoardDetails(): JSXElement {
             onInputStart={() => ""}
             onInputEnd={() => ""}
           />
-        </div>
+          <HourRuleList
+            item={selectedGrade}
+            setItem={setSelectedGrade}
+            enabled={false}
+          />
+        </CollapsibleElement>
       </div>
       {/* TODO: Display linked entity informations (stops, trips) and quantity infos */}
     </section>

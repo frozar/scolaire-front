@@ -23,7 +23,7 @@ import {
   useSchoolSchedule,
 } from "./GradeTimesScheduleWrapper";
 import { HourRuleList } from "./HourRuleList";
-import { schoolDetailsItem, setSchoolDetailsItem } from "./SchoolDetails";
+import { schoolDetailsItem } from "./SchoolDetails";
 
 export const [selectedGrade, setSelectedGrade] = createSignal<GradeType>();
 
@@ -73,8 +73,7 @@ export default function () {
       return schools;
     });
 
-    setSchoolDetailsItem(schoolToUpdate);
-    changeBoard("school-details");
+    changeBoard("school-grade-details");
   }
 
   function onClickCancel() {
@@ -108,7 +107,7 @@ export default function () {
         <HourRuleList
           item={selectedGrade}
           setItem={setSelectedGrade}
-          disabled={!useSchoolSchedule()}
+          enabled={!useSchoolSchedule()}
         />
       </div>
 

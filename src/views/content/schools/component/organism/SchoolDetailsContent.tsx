@@ -41,7 +41,7 @@ export function SchoolDetailsContent() {
           <HourRuleList
             item={schoolDetailsItem}
             setItem={setSchoolDetailsItem}
-            disabled={schoolDetailEditing()}
+            enabled={schoolDetailEditing()}
           />
         </CollapsibleElement>
       </div>

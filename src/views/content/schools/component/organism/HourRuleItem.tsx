@@ -36,6 +36,7 @@ export function HourRuleItem(props: HourRuleProps) {
   // eslint-disable-next-line solid/reactivity
   const [bufferRule, setBufferRule] = createSignal<HourRuleType>(props.rule);
 
+  // TODO: Adapt modification to work with grades
   // * Update SchoolDetailsItem only if we are not in add mode
   createEffect(
     on(bufferRule, () => {
@@ -120,6 +121,7 @@ export function HourRuleItem(props: HourRuleProps) {
     return true;
   }
 
+  // TODO: Adapt modification to work with grades
   function onClickAdd() {
     if (!isValid()) return;
     // eslint-disable-next-line solid/reactivity
@@ -131,6 +133,7 @@ export function HourRuleItem(props: HourRuleProps) {
     });
   }
 
+  // TODO: Adapt modification to work with grades
   function onClickRemove() {
     // eslint-disable-next-line solid/reactivity
     props.setItem((prev) => {
