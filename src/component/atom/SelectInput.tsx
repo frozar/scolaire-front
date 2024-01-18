@@ -15,8 +15,6 @@ export function SelectInput(props: SelectInputProps) {
   function onChange(event: Event & { target: HTMLSelectElement }) {
     props.onChange(event.target.value);
   }
-  console.log("props.options", props.options);
-  console.log("props.defaultValue", props.defaultValue);
 
   return (
     <Show

@@ -93,10 +93,6 @@ export default function () {
       <GradeBoardHeader title={title} />
 
       <div class="content">
-        {/* <div class="line-height-1">
-          <p>Ecole:</p>
-          <GradeLinkedSchool schools={[schoolDetailsItem()?.name as string]} />
-        </div> */}
         <LabeledInputField
           name="grade-name"
           onInput={(event) => setGradeName(event.target.value)}
