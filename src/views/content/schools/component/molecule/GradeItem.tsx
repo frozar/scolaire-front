@@ -1,4 +1,5 @@
 import { FaRegularTrashCan } from "solid-icons/fa";
+import { createEffect, createSignal } from "solid-js";
 import { GradeType } from "../../../../../_entities/grade.entity";
 import { GradeService } from "../../../../../_services/grade.service";
 import CardTitle from "../../../../../component/atom/CardTitle";
@@ -24,6 +25,10 @@ interface GradeItemProps {
 }
 
 export default function (props: GradeItemProps) {
+  const [isMouseOverTrashCan, setIsMouseOverTrashCan] = createSignal(false);
+
+  createEffect(() => console.log(isMouseOverTrashCan()));
+
   async function deleteGrade() {
     const gradeId = props.grade?.id;
     if (!gradeId) return false;
@@ -58,8 +63,10 @@ export default function (props: GradeItemProps) {
   }
 
   function onClick() {
-    setSelectedGrade(props.grade);
-    setOnBoard("school-grade-details");
+    if (!isMouseOverTrashCan()) {
+      setSelectedGrade(props.grade);
+      setOnBoard("school-grade-details");
+    }
   }
 
   return (
@@ -72,7 +79,11 @@ export default function (props: GradeItemProps) {
         </p>
       </div>
 
-      <div class="grade-item-actions">
+      <div
+        class="grade-item-actions"
+        onMouseEnter={() => setIsMouseOverTrashCan(true)}
+        onMouseLeave={() => setIsMouseOverTrashCan(false)}
+      >
         <ButtonIcon
           icon={<FaRegularTrashCan class="fill-red-base" />}
           onClick={onClickDelete}
