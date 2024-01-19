@@ -140,22 +140,10 @@ export namespace ContextUtils {
 
       case DrawTripStep.buildReverse:
       case DrawTripStep.editTrip:
-        if (drawTripCheckableGrade().length == 0) {
-          setDrawTripCheckableGrade(
-            getSelectedLine()?.grades.map((grade) => {
-              return {
-                item: grade,
-                done: isValidable(grade),
-              };
-            }) as AssociatedItem[]
-          );
-        }
+        if (drawTripCheckableGrade().length == 0) defineTripCheckableGrade();
         if (isInUpdate()) {
           quitModeDrawTrip();
-          // eslint-disable-next-line solid/reactivity
-          defineTripCheckableGrade();
           setIsInUpdate(false);
-
           setCurrentStep(DrawTripStep.initial);
           changeBoard("line-details");
         } else {

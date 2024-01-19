@@ -19,7 +19,10 @@ import {
   setCurrentStep,
   setDisplayTripMode,
 } from "../views/content/board/component/organism/DrawTripBoard";
-import { changeBoard } from "../views/content/board/component/template/ContextManager";
+import {
+  changeBoard,
+  toggleDrawMod,
+} from "../views/content/board/component/template/ContextManager";
 import {
   getLines,
   getSelectedLine,
@@ -312,6 +315,11 @@ export namespace TripUtils {
     inversedTrip.tripPoints = [...inversedTrip.tripPoints].reverse();
     inversedTrip.waypoints = undefined;
     inversedTrip.id = undefined;
+
+    setCurrentDrawTrip(inversedTrip);
+    setCurrentStep(DrawTripStep.buildReverse);
+    toggleDrawMod();
+    changeBoard("trip-draw");
     return inversedTrip;
   }
 }
