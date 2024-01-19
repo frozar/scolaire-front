@@ -73,7 +73,8 @@ export default function () {
       return schools;
     });
 
-    changeBoard("school-grade-details");
+    if (onBoard() == "school-grade-add") changeBoard("school-details");
+    else changeBoard("school-grade-details");
   }
 
   function onClickCancel() {

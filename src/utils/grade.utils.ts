@@ -3,9 +3,17 @@ import {
   TripDirectionEntity,
   TripDirectionEnum,
 } from "../_entities/trip-direction.entity";
+import { GradeService } from "../_services/grade.service";
 import { getLines } from "../views/content/map/component/organism/BusLines";
-import { getSchools } from "../views/content/map/component/organism/SchoolPoints";
+import {
+  getSchools,
+  setSchools,
+} from "../views/content/map/component/organism/SchoolPoints";
 import { getStops } from "../views/content/map/component/organism/StopPoints";
+import {
+  schoolDetailsItem,
+  setSchoolDetailsItem,
+} from "../views/content/schools/component/organism/SchoolDetails";
 
 export namespace GradeUtils {
   export function getGrade(gradeId: number): GradeType {
@@ -26,6 +34,34 @@ export namespace GradeUtils {
     return getSchools().filter((school) =>
       school.grades.some((grade) => grade.id == gradeId)
     )[0].id;
+  }
+
+  export function checkIfIsUsed(gradeId: number): boolean {
+    if (GradeUtils.getTotalQuantity(gradeId) > 0) {
+      return true;
+    } else return false;
+  }
+
+  export async function deleteGrade(gradeId: number): Promise<boolean> {
+    const deletedGradeId = await GradeService.delete(gradeId);
+    if (!deletedGradeId) return false;
+
+    if (deletedGradeId) {
+      // eslint-disable-next-line solid/reactivity
+      setSchools((prev) => {
+        return [...prev].map((school) => {
+          return {
+            ...school,
+            grades: school.grades.filter((grade) => grade.id != gradeId),
+          };
+        });
+      });
+      const schoolDetailsItemId = schoolDetailsItem()?.id as number;
+      setSchoolDetailsItem(
+        getSchools().filter((school) => school.id == schoolDetailsItemId)[0]
+      );
+    }
+    return true;
   }
 
   // Carefull, here grade name is used as an identifier

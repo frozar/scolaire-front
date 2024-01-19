@@ -1,21 +1,15 @@
 import { FaRegularTrashCan } from "solid-icons/fa";
+import { createSignal } from "solid-js";
 import { GradeType } from "../../../../../_entities/grade.entity";
-import { GradeService } from "../../../../../_services/grade.service";
 import CardTitle from "../../../../../component/atom/CardTitle";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
+import { addNewUserInformation } from "../../../../../signaux";
+import { MessageLevelEnum, MessageTypeEnum } from "../../../../../type";
 import { setRemoveConfirmation } from "../../../../../userInformation/RemoveConfirmation";
 import { GradeUtils } from "../../../../../utils/grade.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { setOnBoard } from "../../../board/component/template/ContextManager";
-import {
-  getSchools,
-  setSchools,
-} from "../../../map/component/organism/SchoolPoints";
 import { setSelectedGrade } from "../organism/GradeBoard";
-import {
-  schoolDetailsItem,
-  setSchoolDetailsItem,
-} from "../organism/SchoolDetails";
 import "./GradeItem.css";
 
 interface GradeItemProps {
@@ -24,42 +18,37 @@ interface GradeItemProps {
 }
 
 export default function (props: GradeItemProps) {
-  async function deleteGrade() {
-    const gradeId = props.grade?.id;
-    if (!gradeId) return false;
-
-    const deletedGradeId = await GradeService.delete(gradeId);
-    if (!deletedGradeId) return false;
-
-    if (deletedGradeId) {
-      // eslint-disable-next-line solid/reactivity
-      setSchools((prev) => {
-        return [...prev].map((school) => {
-          return {
-            ...school,
-            grades: school.grades.filter((grade) => grade.id != gradeId),
-          };
-        });
-      });
-      const schoolDetailsItemId = schoolDetailsItem()?.id as number;
-      setSchoolDetailsItem(
-        getSchools().filter((school) => school.id == schoolDetailsItemId)[0]
-      );
-    }
-    return true;
-  }
+  const [isMouseOverTrashCan, setIsMouseOverTrashCan] = createSignal(false);
 
   async function onClickDelete() {
+    const gradeId = props.grade?.id;
+    if (!gradeId) return;
+
+    if (GradeUtils.checkIfIsUsed(gradeId)) {
+      addNewUserInformation({
+        displayed: true,
+        level: MessageLevelEnum.error,
+        type: MessageTypeEnum.global,
+        content:
+          "Cette classe ne peut pas être supprimée car elle est liée à " +
+          GradeUtils.getTotalQuantity(gradeId) +
+          " élèves",
+      });
+      return;
+    }
+
     setRemoveConfirmation({
-      textToDisplay: "Êtes-vous sûr de vouloir supprimer la grade : ",
+      textToDisplay: "Êtes-vous sûr de vouloir supprimer la classe : ",
       itemName: props.grade.name,
-      validate: deleteGrade,
+      validate: () => GradeUtils.deleteGrade(gradeId),
     });
   }
 
   function onClick() {
-    setSelectedGrade(props.grade);
-    setOnBoard("school-grade-details");
+    if (!isMouseOverTrashCan()) {
+      setSelectedGrade(props.grade);
+      setOnBoard("school-grade-details");
+    }
   }
 
   return (
@@ -72,7 +61,11 @@ export default function (props: GradeItemProps) {
         </p>
       </div>
 
-      <div class="grade-item-actions">
+      <div
+        class="grade-item-actions"
+        onMouseEnter={() => setIsMouseOverTrashCan(true)}
+        onMouseLeave={() => setIsMouseOverTrashCan(false)}
+      >
         <ButtonIcon
           icon={<FaRegularTrashCan class="fill-red-base" />}
           onClick={onClickDelete}
