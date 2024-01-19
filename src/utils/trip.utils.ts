@@ -295,4 +295,23 @@ export namespace TripUtils {
     }
     return true;
   }
+
+  function reverseTripDirection(directionId: number) {
+    let direction = TripDirectionEntity.FindDirectionById(directionId).type;
+    if (direction == TripDirectionEnum.coming)
+      direction = TripDirectionEnum.going;
+    else direction = TripDirectionEnum.coming;
+    return TripDirectionEntity.findDirectionByDirectionName(direction);
+  }
+
+  export function buildReversedTrip(trip: TripType): TripType {
+    const inversedTrip = { ...trip };
+    inversedTrip.tripDirectionId = reverseTripDirection(
+      trip.tripDirectionId
+    ).id;
+    inversedTrip.tripPoints = [...inversedTrip.tripPoints].reverse();
+    inversedTrip.waypoints = undefined;
+    inversedTrip.id = undefined;
+    return inversedTrip;
+  }
 }

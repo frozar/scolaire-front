@@ -20,7 +20,7 @@ export type PathPointType = {
 export namespace PathEntity {
   export function build(path: PathType): PathType {
     // * If the path doesnt exist in the path list, add it
-    if (!paths().filter((path_) => path_.id == path.id)[0])
+    if (!paths().find((path_) => path_.id == path.id))
       setPaths((prev) => [...prev, path]);
 
     return path;
