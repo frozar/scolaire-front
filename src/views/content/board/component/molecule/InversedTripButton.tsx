@@ -25,9 +25,11 @@ export function InversedTripButton(props: InversedTripButton) {
 
   return (
     <Show when={!PathUtil.haveReversedTrip(props.trip)}>
-      <div class="mb-4">
-        <Button label="Construire la course inverse" onClick={onClick} />
-      </div>
+      <Button
+        label="Construire la course inverse"
+        onClick={onClick}
+        size="sm"
+      />
     </Show>
   );
 }

@@ -51,13 +51,13 @@ export function TripBoard() {
         <Metrics trip={selectedTrip()} />
       </CollapsibleElement>
       <DisplayTripDaysAndDirection trip={selectedTrip()} />
+      <InversedTripButton trip={selectedTrip() as TripType} />
       <CollapsibleElement title="TimeLine" class="timeline-collapsise">
         <TripTimeline
           trip={selectedTrip() ?? TripEntity.defaultTrip()}
           inDraw={false}
         />
       </CollapsibleElement>
-      <InversedTripButton trip={selectedTrip() as TripType} />
     </div>
   );
 }
