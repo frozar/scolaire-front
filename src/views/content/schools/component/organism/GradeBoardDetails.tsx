@@ -1,14 +1,14 @@
 import { JSXElement } from "solid-js";
 import { GradeBoardDetailsHeader } from "./GradeBoardDetailsHeader";
 import { GradeBoardDetailsSchedules } from "./GradeBoardDetailsSchedules";
+import { GradeDetailsPanels } from "./gradeDetailsPanels";
 
-// TODO: Display more informations as linked stops, trips and quantity
 export function GradeBoardDetails(): JSXElement {
   return (
     <section>
       <GradeBoardDetailsHeader />
       <GradeBoardDetailsSchedules />
-      {/* TODO: Display linked entity informations (stops, trips) and quantity infos */}
+      <GradeDetailsPanels />
     </section>
   );
 }
