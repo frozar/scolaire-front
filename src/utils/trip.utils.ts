@@ -19,7 +19,10 @@ import {
   setCurrentStep,
   setDisplayTripMode,
 } from "../views/content/board/component/organism/DrawTripBoard";
-import { changeBoard } from "../views/content/board/component/template/ContextManager";
+import {
+  changeBoard,
+  toggleDrawMod,
+} from "../views/content/board/component/template/ContextManager";
 import {
   getLines,
   getSelectedLine,
@@ -294,5 +297,29 @@ export namespace TripUtils {
         break;
     }
     return true;
+  }
+
+  function reverseTripDirection(directionId: number) {
+    let direction = TripDirectionEntity.FindDirectionById(directionId).type;
+    if (direction == TripDirectionEnum.coming)
+      direction = TripDirectionEnum.going;
+    else direction = TripDirectionEnum.coming;
+    return TripDirectionEntity.findDirectionByDirectionName(direction);
+  }
+
+  export function buildReversedTrip(trip: TripType): TripType {
+    const inversedTrip = { ...trip };
+    inversedTrip.tripDirectionId = reverseTripDirection(
+      trip.tripDirectionId
+    ).id;
+    inversedTrip.tripPoints = [...inversedTrip.tripPoints].reverse();
+    inversedTrip.waypoints = undefined;
+    inversedTrip.id = undefined;
+
+    setCurrentDrawTrip(inversedTrip);
+    setCurrentStep(DrawTripStep.buildReverse);
+    toggleDrawMod();
+    changeBoard("trip-draw");
+    return inversedTrip;
   }
 }

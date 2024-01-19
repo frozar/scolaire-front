@@ -6,6 +6,7 @@ import {
   TripDirectionEntity,
   TripDirectionEnum,
 } from "../../../../../_entities/trip-direction.entity";
+import { NatureEnum } from "../../../../../type";
 import { FilterUtils } from "../../../../../utils/filter.utils";
 import { QuantityUtils } from "../../../../../utils/quantity.utils";
 import { StopUtils } from "../../../../../utils/stop.utils";
@@ -174,6 +175,11 @@ export function leafletStopsFilter(): StopType[] {
       switch (currentStep()) {
         case DrawTripStep.schoolSelection:
           return [];
+        case DrawTripStep.buildReverse:
+          const stopsId = currentDrawTrip()
+            .path?.points.filter((stop) => stop.nature == NatureEnum.stop)
+            .map((stop) => stop.id);
+          return getStops().filter((stop) => stopsId?.includes(stop.id));
         case DrawTripStep.editTrip:
         case DrawTripStep.initial:
           return stops;

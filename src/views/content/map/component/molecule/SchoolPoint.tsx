@@ -86,6 +86,7 @@ const onClick = (point: SchoolType) => {
           CurrentDrawTripUtils.addSchoolToTrip(point);
           return;
 
+        case DrawTripStep.buildReverse:
         case DrawTripStep.editTrip:
           const tripDirection = TripDirectionEntity.FindDirectionById(
             currentDrawTrip().tripDirectionId

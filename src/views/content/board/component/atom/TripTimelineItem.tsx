@@ -50,7 +50,12 @@ export function TripTimelineItem(props: TripTimelineItemProps) {
         >
           <div class={"v-timeline-divider__inner-dot " + pointColor}>
             <i class="" aria-hidden="true" />
-            <Show when={currentStep() == DrawTripStep.editTrip}>
+            <Show
+              when={
+                currentStep() == DrawTripStep.editTrip ||
+                currentStep() == DrawTripStep.buildReverse
+              }
+            >
               <TripTimelineRemovePointButton
                 onClick={props.onClickRemovePointFromTrip}
               />

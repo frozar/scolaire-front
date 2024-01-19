@@ -12,6 +12,7 @@ import { setLines } from "../../../map/component/organism/BusLines";
 import { deselectAllPoints } from "../../../map/component/organism/Points";
 import { selectedTrip } from "../../../map/component/organism/Trips";
 import ButtonIcon from "../molecule/ButtonIcon";
+import { InversedTripButton } from "../molecule/InversedTripButton";
 import { changeBoard, toggleDrawMod } from "../template/ContextManager";
 import CollapsibleElement from "./CollapsibleElement";
 import {
@@ -50,6 +51,7 @@ export function TripBoard() {
         <Metrics trip={selectedTrip()} />
       </CollapsibleElement>
       <DisplayTripDaysAndDirection trip={selectedTrip()} />
+      <InversedTripButton trip={selectedTrip() as TripType} />
       <CollapsibleElement title="TimeLine" class="timeline-collapsise">
         <TripTimeline
           trip={selectedTrip() ?? TripEntity.defaultTrip()}

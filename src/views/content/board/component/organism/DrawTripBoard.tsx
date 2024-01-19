@@ -33,6 +33,7 @@ export enum DrawTripStep {
   schoolSelection,
   gradeSelection,
   editTrip,
+  buildReverse,
 }
 
 export const [currentStep, setCurrentStep] = createSignal<DrawTripStep>(
@@ -84,13 +85,11 @@ export const [isInUpdate, setIsInUpdate] = createSignal(false);
 
 export function DrawTripBoard() {
   onMount(() => {
-    if (!isInUpdate()) {
+    if (!isInUpdate() && currentStep() != DrawTripStep.buildReverse)
       setCurrentDrawTrip(TripEntity.defaultTrip());
-    }
   });
-  onCleanup(() => {
-    setIsInUpdate(false);
-  });
+
+  onCleanup(() => setIsInUpdate(false));
 
   return (
     <div class="add-line-information-board-content">
@@ -121,7 +120,12 @@ export function DrawTripBoard() {
         </Show>
       </Show>
 
-      <Show when={currentStep() == DrawTripStep.editTrip}>
+      <Show
+        when={
+          currentStep() == DrawTripStep.editTrip ||
+          currentStep() == DrawTripStep.buildReverse
+        }
+      >
         <div class="bus-trip-information-board-content-schools">
           <SchoolsEnumeration
             schoolsName={
@@ -179,7 +183,12 @@ export function DrawTripBoard() {
         </div>
       </Show>
 
-      <Show when={currentStep() == DrawTripStep.editTrip}>
+      <Show
+        when={
+          currentStep() == DrawTripStep.editTrip ||
+          currentStep() == DrawTripStep.buildReverse
+        }
+      >
         <div class="bus-trip-information-board-content">
           <Show
             when={(currentDrawTrip()?.tripPoints.length ?? 0) > 0}
@@ -201,7 +210,11 @@ export function DrawTripBoard() {
       <BoardFooterActions
         nextStep={{
           callback: ContextUtils.nextStep,
-          label: currentStep() == DrawTripStep.editTrip ? "Valider" : "Suivant",
+          label:
+            currentStep() == DrawTripStep.editTrip ||
+            currentStep() == DrawTripStep.buildReverse
+              ? "Valider"
+              : "Suivant",
         }}
         previousStep={{
           callback: ContextUtils.prevStep,

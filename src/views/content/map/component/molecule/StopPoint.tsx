@@ -121,6 +121,7 @@ function onClick(point: StopType) {
         case DrawTripStep.schoolSelection:
           return;
 
+        case DrawTripStep.buildReverse:
         case DrawTripStep.editTrip:
           const tripDirection = TripDirectionEntity.FindDirectionById(
             currentDrawTrip().tripDirectionId

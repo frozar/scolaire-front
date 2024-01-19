@@ -77,6 +77,7 @@ function schoolsFilter(): SchoolType[] {
               ?.schools.map((school) => school.id)
               .includes(schoolFilter.id)
           );
+        case DrawTripStep.buildReverse:
         case DrawTripStep.editTrip:
           return getSchools().filter((schoolTofilter) =>
             currentDrawTrip()

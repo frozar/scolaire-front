@@ -47,6 +47,7 @@ export function Trips(props: { map: L.Map }) {
           .flat();
       case "trip-draw":
         switch (currentStep()) {
+          case DrawTripStep.buildReverse:
           case DrawTripStep.editTrip:
             // delete all arrows
             arrowsMap.forEach((arrows) =>
