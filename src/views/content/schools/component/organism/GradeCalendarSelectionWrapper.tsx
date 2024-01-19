@@ -52,7 +52,7 @@ export function GradeCalendarSelectionWrapper() {
     const calendar = calendars().find((item) => item.id == value);
     setBufferCalendar(calendar);
   }
-  console.log("bufferCalendar()?.id", bufferCalendar()?.id);
+
   return (
     <>
       <div class="text-xl my-2">Calendrier:</div>

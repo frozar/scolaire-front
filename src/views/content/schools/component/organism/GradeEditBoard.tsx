@@ -105,7 +105,6 @@ export function GradeEditBoard() {
         <GradeCalendarSelectionWrapper />
         {/* TODO: Delete this */}
         <div class="my-4" />
-        {/* <Show when={selectedGrade()?.calendar != undefined}> */}
         <Show when={bufferCalendar() != undefined}>
           <GradeTimesScheduleWrapper />
         </Show>

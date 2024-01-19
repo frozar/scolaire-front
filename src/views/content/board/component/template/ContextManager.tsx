@@ -93,7 +93,6 @@ export default function () {
               onBoard() == "school-grade-modify"
             }
           >
-            {/* <GradeBoard /> */}
             <GradeEditBoard />
           </Match>
 
