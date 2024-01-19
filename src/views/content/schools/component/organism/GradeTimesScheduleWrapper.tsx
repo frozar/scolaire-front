@@ -89,6 +89,7 @@ export function GradeTimesScheduleWrapper(): JSXElement {
   }
   return (
     <div>
+      <div class="text-xl">Tranches horaires:</div>
       <LabeledCheckbox
         label="Utiliser les horaires de l'école"
         checked={useSchoolSchedule()}
