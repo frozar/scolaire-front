@@ -101,7 +101,8 @@ export function Trip(props: {
     // if (displayTripMode() == displayTripModeEnum.straight && !isInReadMode()) {
     if (
       displayTripMode() == displayTripModeEnum.straight &&
-      currentStep() == DrawTripStep.editTrip
+      (currentStep() == DrawTripStep.editTrip ||
+        currentStep() == DrawTripStep.buildReverse)
     ) {
       props.map.dragging.disable();
 

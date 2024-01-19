@@ -174,6 +174,7 @@ export function leafletStopsFilter(): StopType[] {
       switch (currentStep()) {
         case DrawTripStep.schoolSelection:
           return [];
+        case DrawTripStep.buildReverse:
         case DrawTripStep.editTrip:
         case DrawTripStep.initial:
           return stops;

@@ -94,6 +94,7 @@ export namespace ContextUtils {
         setCurrentStep(DrawTripStep.editTrip);
         break;
 
+      case DrawTripStep.buildReverse:
       case DrawTripStep.editTrip:
         if (!TripUtils.isValidTrip(currentDrawTrip())) break;
 
@@ -141,6 +142,7 @@ export namespace ContextUtils {
         setCurrentStep(DrawTripStep.schoolSelection);
         break;
 
+      case DrawTripStep.buildReverse:
       case DrawTripStep.editTrip:
         if (isInUpdate()) {
           quitModeDrawTrip();
