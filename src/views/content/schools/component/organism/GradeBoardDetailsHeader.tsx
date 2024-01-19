@@ -14,7 +14,7 @@ export function GradeBoardDetailsHeader(): JSXElement {
     <header class="grade-detail-header">
       <div class="grade-detail-header-title">
         <p>{selectedGrade()?.name as string}</p>
-        <div>
+        <div class="grade-detail-header-buttons">
           <ButtonIcon
             icon={<PencilIcon />}
             onClick={() => setOnBoard("school-grade-modify")}

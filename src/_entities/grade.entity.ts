@@ -75,6 +75,7 @@ export type GradeDBType = {
 
 export type GradeType = {
   id?: number;
+  // TODO: Delete if unused
   schoolId?: number;
   name: string;
   hours: HoursType;

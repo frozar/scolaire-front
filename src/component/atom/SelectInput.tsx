@@ -1,4 +1,4 @@
-import { For, Show, mergeProps } from "solid-js";
+import { For, Show, createEffect, mergeProps } from "solid-js";
 import "./SelectInput.css";
 
 interface SelectInputProps {
@@ -16,6 +16,18 @@ export function SelectInput(props: SelectInputProps) {
     props.onChange(event.target.value);
   }
 
+  // TODO: Fix: default value for scholar period of a calendar
+  createEffect(() => {
+    if (
+      !mergedProps.disabled &&
+      props.defaultValue == -1 &&
+      props.options.length > 0
+    ) {
+      props.onChange(props.options[0].value);
+    }
+  });
+
+  // TODO: Specify string to display when defaultValue == -1 within props
   return (
     <Show
       when={!mergedProps.disabled}
@@ -24,11 +36,11 @@ export function SelectInput(props: SelectInputProps) {
           class={"selector-disabled "}
           classList={{ "selector-indented": mergedProps.indented }}
         >
-          {
-            props.options.filter(
-              (option) => option.value == props.defaultValue
-            )[0].text
-          }
+          {props.defaultValue == -1
+            ? "Pas de calendrier séléctionné"
+            : props.options.filter(
+                (option) => option.value == props.defaultValue
+              )[0].text}
         </div>
       }
     >
