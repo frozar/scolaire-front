@@ -4,7 +4,7 @@ import { SelectInput } from "../../../../../component/atom/SelectInput";
 import { LabeledCheckbox } from "../../../../../component/molecule/LabeledCheckbox";
 import { SchoolUtils } from "../../../../../utils/school.utils";
 import { calendars } from "../../../calendar/template/Calendar";
-import { selectedGrade } from "./GradeBoard";
+import { selectedGrade } from "./GradeEditBoard";
 import { schoolDetailsItem } from "./SchoolDetails";
 
 export const [bufferCalendar, setBufferCalendar] = createSignal<CalendarType>();
@@ -52,9 +52,10 @@ export function GradeCalendarSelectionWrapper() {
     const calendar = calendars().find((item) => item.id == value);
     setBufferCalendar(calendar);
   }
-
+  console.log("bufferCalendar()?.id", bufferCalendar()?.id);
   return (
     <>
+      <div class="text-xl my-2">Calendrier:</div>
       <LabeledCheckbox
         label="Utiliser le calendrier de l'école"
         checked={useSchoolCalendar()}
@@ -64,7 +65,7 @@ export function GradeCalendarSelectionWrapper() {
       <SelectInput
         options={selectOptions()}
         onChange={onChangeSelectCalendar}
-        defaultValue={bufferCalendar()?.id}
+        defaultValue={bufferCalendar()?.id ?? -1}
         defaultOptions="Calendrier"
         disabled={useSchoolCalendar()}
       />

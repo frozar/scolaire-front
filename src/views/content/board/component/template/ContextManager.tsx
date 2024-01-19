@@ -2,8 +2,8 @@ import { Match, Switch, createEffect, createSignal } from "solid-js";
 
 import { LineType } from "../../../../../_entities/line.entity";
 import { getSelectedLine } from "../../../map/component/organism/BusLines";
-import GradeBoard from "../../../schools/component/organism/GradeBoard";
 import { GradeBoardDetails } from "../../../schools/component/organism/GradeBoardDetails";
+import { GradeEditBoard } from "../../../schools/component/organism/GradeEditBoard";
 import SchoolsBoard from "../../../schools/component/organism/SchoolBoard";
 import SchoolDetails from "../../../schools/component/organism/SchoolDetails";
 import StopBoard from "../../../stops/component/organism/StopBoard";
@@ -93,7 +93,8 @@ export default function () {
               onBoard() == "school-grade-modify"
             }
           >
-            <GradeBoard />
+            {/* <GradeBoard /> */}
+            <GradeEditBoard />
           </Match>
 
           <Match when={onBoard() == "school-grade-details"}>

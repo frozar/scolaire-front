@@ -7,7 +7,7 @@ import {
   changeBoard,
   setOnBoard,
 } from "../../../board/component/template/ContextManager";
-import { selectedGrade } from "./GradeBoard";
+import { selectedGrade } from "./GradeEditBoard";
 
 // TODO: Refactor all read board headers css (trip, stop, school, grade)
 import { addNewUserInformation } from "../../../../../signaux";

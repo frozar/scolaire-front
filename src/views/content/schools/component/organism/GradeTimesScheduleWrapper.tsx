@@ -4,7 +4,7 @@ import { GradeEntity } from "../../../../../_entities/grade.entity";
 import { TimeUtils } from "../../../../../_entities/time.utils";
 import { LabeledCheckbox } from "../../../../../component/molecule/LabeledCheckbox";
 import TimesInputWrapper from "../molecule/TimesInputWrapper";
-import { selectedGrade, setSelectedGrade } from "./GradeBoard";
+import { selectedGrade, setSelectedGrade } from "./GradeEditBoard";
 import { schoolDetailsItem } from "./SchoolDetails";
 
 export const [bufferHours, setBufferHours] = createSignal<HoursType>(

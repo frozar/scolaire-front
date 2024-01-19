@@ -1,4 +1,4 @@
-import { createSignal, onCleanup } from "solid-js";
+import { Show, createSignal, onCleanup } from "solid-js";
 import { GradeType } from "../../../../../_entities/grade.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { GradeService } from "../../../../../_services/grade.service";
@@ -29,7 +29,7 @@ export const [selectedGrade, setSelectedGrade] = createSignal<GradeType>();
 
 // TODO Refactor
 // eslint-disable-next-line solid/reactivity
-export default function () {
+export function GradeEditBoard() {
   const [gradeName, setGradeName] = createSignal(selectedGrade()?.name);
 
   async function nextStep() {
@@ -103,8 +103,12 @@ export default function () {
           placeholder="Nom de la classe"
         />
         <GradeCalendarSelectionWrapper />
+        {/* TODO: Delete this */}
         <div class="my-4" />
-        <GradeTimesScheduleWrapper />
+        {/* <Show when={selectedGrade()?.calendar != undefined}> */}
+        <Show when={bufferCalendar() != undefined}>
+          <GradeTimesScheduleWrapper />
+        </Show>
         <HourRuleList
           item={selectedGrade}
           setItem={setSelectedGrade}

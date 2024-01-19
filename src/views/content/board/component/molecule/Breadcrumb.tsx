@@ -7,7 +7,7 @@ import {
 } from "../../../map/component/organism/BusLines";
 import { getSchools } from "../../../map/component/organism/SchoolPoints";
 import { selectedTrip } from "../../../map/component/organism/Trips";
-import { selectedGrade } from "../../../schools/component/organism/GradeBoard";
+import { selectedGrade } from "../../../schools/component/organism/GradeEditBoard";
 import { schoolDetailsItem } from "../../../schools/component/organism/SchoolDetails";
 import { stopDetailsItem } from "../../../stops/component/organism/StopDetails";
 import BreadcrumbButton from "../atom/BreadcrumbButton";
