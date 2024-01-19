@@ -7,7 +7,6 @@ import {
   DrawTripStep,
   setCurrentDrawTrip,
   setCurrentStep,
-  setIsInUpdate,
 } from "../organism/DrawTripBoard";
 import { changeBoard, toggleDrawMod } from "../template/ContextManager";
 
@@ -21,7 +20,6 @@ export function InversedTripButton(props: InversedTripButton) {
     setCurrentDrawTrip(inversedTrip);
     setCurrentStep(DrawTripStep.buildReverse);
     toggleDrawMod();
-    setIsInUpdate(true);
     changeBoard("trip-draw");
   }
 

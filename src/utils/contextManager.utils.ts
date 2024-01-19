@@ -28,11 +28,7 @@ import {
   setIsInUpdate,
 } from "../views/content/board/component/organism/DrawTripBoard";
 import { changeBoard } from "../views/content/board/component/template/ContextManager";
-import {
-  getLines,
-  getSelectedLine,
-} from "../views/content/map/component/organism/BusLines";
-import { setselectedTrip } from "../views/content/map/component/organism/Trips";
+import { getSelectedLine } from "../views/content/map/component/organism/BusLines";
 import { quitModeDrawTrip } from "../views/content/map/shortcut";
 import { CurrentDrawTripUtils } from "./currentDrawTrip.utils";
 import { GradeUtils } from "./grade.utils";
@@ -40,6 +36,27 @@ import { MapElementUtils } from "./mapElement.utils";
 import { TripUtils } from "./trip.utils";
 
 export namespace ContextUtils {
+  function isValidable(grade: GradeType) {
+    if (GradeUtils.getRemainingQuantity(grade.id as number) == 0) return false;
+
+    const selectedGradeId = currentDrawTrip()
+      ?.schools.map((school) => school.grades.map((gradeMap) => gradeMap.id))
+      .flat();
+
+    return selectedGradeId?.includes(grade.id);
+  }
+
+  function defineTripCheckableGrade() {
+    setDrawTripCheckableGrade(
+      getSelectedLine()?.grades.map((grade) => {
+        return {
+          item: grade,
+          done: isValidable(grade),
+        };
+      }) as AssociatedItem[]
+    );
+  }
+
   export async function nextStep() {
     enableSpinningWheel();
     let tripDirection: TripDirectionType;
@@ -49,28 +66,7 @@ export namespace ContextUtils {
         if ((currentDrawTrip()?.schools.length ?? 0) < 1) {
           break;
         }
-        const isValidable = (grade: GradeType) => {
-          if (GradeUtils.getRemainingQuantity(grade.id as number) == 0)
-            return false;
-
-          const selectedGradeId = currentDrawTrip()
-            ?.schools.map((school) =>
-              school.grades.map((gradeMap) => gradeMap.id)
-            )
-            .flat();
-
-          return selectedGradeId?.includes(grade.id);
-        };
-
-        setDrawTripCheckableGrade(
-          getSelectedLine()?.grades.map((grade) => {
-            return {
-              item: grade,
-              done: isValidable(grade),
-            };
-          }) as AssociatedItem[]
-        );
-
+        defineTripCheckableGrade();
         setCurrentStep(DrawTripStep.gradeSelection);
         break;
 
@@ -144,15 +140,20 @@ export namespace ContextUtils {
 
       case DrawTripStep.buildReverse:
       case DrawTripStep.editTrip:
+        if (drawTripCheckableGrade().length == 0) {
+          setDrawTripCheckableGrade(
+            getSelectedLine()?.grades.map((grade) => {
+              return {
+                item: grade,
+                done: isValidable(grade),
+              };
+            }) as AssociatedItem[]
+          );
+        }
         if (isInUpdate()) {
           quitModeDrawTrip();
           // eslint-disable-next-line solid/reactivity
-          setselectedTrip(() => {
-            return getLines()
-              .map((line) => line.trips)
-              .flat()
-              .filter((trip) => trip.id == currentDrawTrip()?.id)[0];
-          });
+          defineTripCheckableGrade();
           setIsInUpdate(false);
 
           setCurrentStep(DrawTripStep.initial);

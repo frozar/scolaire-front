@@ -85,7 +85,8 @@ export const [isInUpdate, setIsInUpdate] = createSignal(false);
 
 export function DrawTripBoard() {
   onMount(() => {
-    if (!isInUpdate()) setCurrentDrawTrip(TripEntity.defaultTrip());
+    if (!isInUpdate() && currentStep() != DrawTripStep.buildReverse)
+      setCurrentDrawTrip(TripEntity.defaultTrip());
   });
 
   onCleanup(() => setIsInUpdate(false));
