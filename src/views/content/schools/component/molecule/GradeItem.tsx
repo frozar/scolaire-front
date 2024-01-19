@@ -9,7 +9,7 @@ import { setRemoveConfirmation } from "../../../../../userInformation/RemoveConf
 import { GradeUtils } from "../../../../../utils/grade.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { setOnBoard } from "../../../board/component/template/ContextManager";
-import { setSelectedGrade } from "../organism/GradeBoard";
+import { setSelectedGrade } from "../organism/GradeEditBoard";
 import "./GradeItem.css";
 
 interface GradeItemProps {

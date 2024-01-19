@@ -6,7 +6,7 @@ import PlusIcon from "../../../../../icons/PlusIcon";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { changeBoard } from "../../../board/component/template/ContextManager";
 import SchoolDetailsPanelsButton from "../molecule/SchoolDetailsPanelsButton";
-import { setSelectedGrade } from "./GradeBoard";
+import { setSelectedGrade } from "./GradeEditBoard";
 import GradeList from "./GradeList";
 import { schoolDetailsItem } from "./SchoolDetails";
 import { TripsList } from "./TripsList";

@@ -2,7 +2,7 @@ import { JSXElement } from "solid-js";
 import { GradeEntity } from "../../../../../_entities/grade.entity";
 import CollapsibleElement from "../../../board/component/organism/CollapsibleElement";
 import TimesInputWrapper from "../molecule/TimesInputWrapper";
-import { selectedGrade, setSelectedGrade } from "./GradeBoard";
+import { selectedGrade, setSelectedGrade } from "./GradeEditBoard";
 import { HourRuleList } from "./HourRuleList";
 
 export function GradeBoardDetailsSchedules(): JSXElement {

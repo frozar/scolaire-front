@@ -3,7 +3,7 @@ import { StopType } from "../../../../../_entities/stop.entity";
 import { TripType } from "../../../../../_entities/trip.entity";
 import { StopUtils } from "../../../../../utils/stop.utils";
 import { TripUtils } from "../../../../../utils/trip.utils";
-import { selectedGrade } from "./GradeBoard";
+import { selectedGrade } from "./GradeEditBoard";
 import { StopList } from "./StopList";
 import { TripsList } from "./TripsList";
 
