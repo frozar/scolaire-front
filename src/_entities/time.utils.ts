@@ -30,13 +30,13 @@ export namespace TimeUtils {
   export function getRemainingDays(
     item: SchoolType | GradeType | undefined
   ): CalendarDayEnum[] {
-    const calendarDays = (
-      (item as SchoolType).calendar as CalendarType
-    ).rules.map((rule) => rule.day);
+    if (!item) return [];
 
-    const alreadyUsedDays = (item as SchoolType).hours.rules.map(
+    const calendarDays = (item.calendar as CalendarType).rules.map(
       (rule) => rule.day
     );
+
+    const alreadyUsedDays = item.hours.rules.map((rule) => rule.day);
     return calendarDays.filter((day) => !alreadyUsedDays.includes(day));
   }
 

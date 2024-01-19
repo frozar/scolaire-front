@@ -22,7 +22,7 @@ export function SchoolDetailsContent() {
       <LabeledInputSelect
         defaultOptions="Sélectionner calendrier"
         defaultValue={schoolDetailsItem()?.calendar?.id ?? 0}
-        label="Calendrier lié"
+        label="Calendrier:"
         onChange={onChangeCalendarSelect}
         options={calendars().map((item) => {
           return { value: item.id, text: item.name };
@@ -41,7 +41,7 @@ export function SchoolDetailsContent() {
           <HourRuleList
             item={schoolDetailsItem}
             setItem={setSchoolDetailsItem}
-            disabled={schoolDetailEditing()}
+            enabled={schoolDetailEditing()}
           />
         </CollapsibleElement>
       </div>

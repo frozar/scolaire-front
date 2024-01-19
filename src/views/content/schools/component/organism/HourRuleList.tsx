@@ -6,26 +6,27 @@ import { TimeUtils } from "../../../../../_entities/time.utils";
 import PlusIcon from "../../../../../icons/PlusIcon";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { HourRuleItem } from "./HourRuleItem";
-import "./HourRuleList.css";
 import { schoolDetailEditing } from "./SchoolDetails";
 
+import "./HourRuleList.css";
+
 interface HourRuleListProps {
-  disabled: boolean;
+  enabled: boolean;
   item: Accessor<SchoolType | GradeType | undefined>;
   setItem: Setter<SchoolType | GradeType>;
 }
 
-// TODO: Adapt modification to work with grades
 export function HourRuleList(props: HourRuleListProps) {
   const item = () => props.item();
 
   const showTitle = () =>
-    (item()?.hours.rules.length ?? 0) > 0 || props.disabled;
+    (item()?.hours.rules.length ?? 0) > 0 || props.enabled;
 
   function getRemainingDays(): CalendarDayEnum[] {
     return TimeUtils.getRemainingDays(props.item());
   }
 
+  // TODO: Adapt modification to work with grades
   function addRule() {
     // eslint-disable-next-line solid/reactivity
     props.setItem((prev) => {
@@ -65,7 +66,7 @@ export function HourRuleList(props: HourRuleListProps) {
               setItem={props.setItem}
               remainingDays={getRemainingDays}
               rule={hourRule}
-              disabled={props.disabled}
+              disabled={props.enabled}
               isNotLast={i() + 1 != item()?.hours.rules.length}
             />
           )}

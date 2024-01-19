@@ -117,7 +117,17 @@ export default function () {
             text: "grade",
           },
         ];
-
+      case "school-grade-details":
+        return [
+          schoolsCrumb,
+          {
+            text: schoolDetailsItem()?.name.toLowerCase() as string,
+            onClick: () => changeBoard("school-details"),
+          },
+          {
+            text: (selectedGrade()?.name as string).toLowerCase(),
+          },
+        ];
       case "trip-draw":
         if (currentDrawTrip().schools.length > 0) {
           return [{ text: "Editer votre course" }];

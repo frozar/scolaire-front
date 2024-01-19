@@ -1,4 +1,4 @@
-import { FaRegularTrashCan, FaSolidPen } from "solid-icons/fa";
+import { FaRegularTrashCan } from "solid-icons/fa";
 import { GradeType } from "../../../../../_entities/grade.entity";
 import { GradeService } from "../../../../../_services/grade.service";
 import CardTitle from "../../../../../component/atom/CardTitle";
@@ -6,7 +6,7 @@ import CardWrapper from "../../../../../component/molecule/CardWrapper";
 import { setRemoveConfirmation } from "../../../../../userInformation/RemoveConfirmation";
 import { GradeUtils } from "../../../../../utils/grade.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
-import { changeBoard } from "../../../board/component/template/ContextManager";
+import { setOnBoard } from "../../../board/component/template/ContextManager";
 import {
   getSchools,
   setSchools,
@@ -24,11 +24,6 @@ interface GradeItemProps {
 }
 
 export default function (props: GradeItemProps) {
-  function onClickEdit() {
-    setSelectedGrade(props.grade);
-    changeBoard("school-grade-modify");
-  }
-
   async function deleteGrade() {
     const gradeId = props.grade?.id;
     if (!gradeId) return false;
@@ -61,8 +56,14 @@ export default function (props: GradeItemProps) {
       validate: deleteGrade,
     });
   }
+
+  function onClick() {
+    setSelectedGrade(props.grade);
+    setOnBoard("school-grade-details");
+  }
+
   return (
-    <CardWrapper class="grade-item">
+    <CardWrapper class="grade-item" onClick={onClick}>
       <div class="left">
         <CardTitle title={props.grade.name} />
         <p>
@@ -75,10 +76,6 @@ export default function (props: GradeItemProps) {
         <ButtonIcon
           icon={<FaRegularTrashCan class="fill-red-base" />}
           onClick={onClickDelete}
-        />
-        <ButtonIcon
-          icon={<FaSolidPen class="fill-green-base" />}
-          onClick={onClickEdit}
         />
       </div>
     </CardWrapper>
