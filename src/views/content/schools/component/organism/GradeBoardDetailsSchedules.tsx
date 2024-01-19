@@ -6,13 +6,17 @@ import { selectedGrade, setSelectedGrade } from "./GradeBoard";
 import { HourRuleList } from "./HourRuleList";
 
 export function GradeBoardDetailsSchedules(): JSXElement {
+  function gradeCalendarName(): string {
+    const gradeCalendar = selectedGrade()?.calendar;
+    if (gradeCalendar) return gradeCalendar.name;
+    else return "Pas de calendrier assigné";
+  }
+
   return (
     <>
       <div class="mb-4">
         <div class="text-xl">Calendrier:</div>
-        <div class="text-green-base pl-[18px]">
-          {selectedGrade()?.calendar?.name as string}
-        </div>
+        <div class="text-green-base pl-[18px]">{gradeCalendarName()}</div>
       </div>
 
       <div>

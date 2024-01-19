@@ -13,16 +13,18 @@ export function GradeCalendarSelectionWrapper() {
   const schoolCalendar = SchoolUtils.get(schoolDetailsItem()?.id as number)
     .calendar as CalendarType;
 
-  const initialGradeCalendar = selectedGrade()?.calendar as CalendarType;
-
-  const calendarFiltered = calendars().filter(
-    (calendar) => calendar.id != schoolCalendar?.id
-  );
+  const initialGradeCalendar = selectedGrade()?.calendar;
 
   setBufferCalendar(initialGradeCalendar);
 
   const [useSchoolCalendar, setUseSchoolCalendar] = createSignal<boolean>(
-    schoolCalendar?.id == initialGradeCalendar.id
+    initialGradeCalendar != undefined
+      ? schoolCalendar?.id == initialGradeCalendar?.id
+      : false
+  );
+
+  const calendarFiltered = calendars().filter(
+    (calendar) => calendar.id != schoolCalendar?.id
   );
 
   createEffect(

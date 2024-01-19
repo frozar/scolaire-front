@@ -102,7 +102,7 @@ export function CalendarEdition(props: CalendarEditionProps) {
           <CalendarSectionTitle title="Paramètrage calendrier" />
           <LabeledInputSelect
             defaultOptions="Choisir un calendrier scolaire"
-            defaultValue={props.calendar.calendarPeriodId ?? 0}
+            defaultValue={props.calendar.calendarPeriodId ?? -1}
             label="Calendrier scolaire"
             onChange={onChangeCalendarPeriodSelector}
             options={calendarsPeriod().map((item) => {

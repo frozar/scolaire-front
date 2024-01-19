@@ -6,6 +6,10 @@
   @apply flex justify-between text-2xl font-semibold;
 }
 
+.grade-detail-header-buttons {
+  @apply flex;
+}
+
 .grade-detail-header-title .pencil-icon {
   @apply h-4 w-4 mr-8;
 }

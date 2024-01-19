@@ -1,3 +1,4 @@
+import { Show } from "solid-js";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { LabeledInputSelect } from "../../../../../component/molecule/LabeledInputSelect";
 import { SchoolUtils } from "../../../../../utils/school.utils";
@@ -14,14 +15,15 @@ import { SchoolHoursSlots } from "./SchoolHoursSlots";
 import "./SchoolDetailsContent.css";
 
 export function SchoolDetailsContent() {
-  function onChangeCalendarSelect(value: number | string) {
-    SchoolUtils.linkSchoolToCalendar(value as number);
+  function onChangeCalendarSelect(calendarId: number | string) {
+    SchoolUtils.linkSchoolToCalendar(calendarId as number);
   }
+
   return (
     <>
       <LabeledInputSelect
         defaultOptions="Sélectionner calendrier"
-        defaultValue={schoolDetailsItem()?.calendar?.id ?? 0}
+        defaultValue={schoolDetailsItem()?.calendar?.id ?? -1}
         label="Calendrier:"
         onChange={onChangeCalendarSelect}
         options={calendars().map((item) => {
@@ -30,21 +32,24 @@ export function SchoolDetailsContent() {
         disabled={!schoolDetailEditing()}
         indented={true}
       />
-      <div class="time">
-        <CollapsibleElement
-          title="Tranches horaires"
-          titleClass="text-xl"
-          closedByDefault={() => !schoolDetailEditing()}
-        >
-          <SchoolHoursSlots school={schoolDetailsItem() as SchoolType} />
 
-          <HourRuleList
-            item={schoolDetailsItem}
-            setItem={setSchoolDetailsItem}
-            enabled={schoolDetailEditing()}
-          />
-        </CollapsibleElement>
-      </div>
+      <Show when={schoolDetailsItem()?.calendar}>
+        <div class="time">
+          <CollapsibleElement
+            title="Tranches horaires"
+            titleClass="text-xl"
+            closedByDefault={() => !schoolDetailEditing()}
+          >
+            <SchoolHoursSlots school={schoolDetailsItem() as SchoolType} />
+
+            <HourRuleList
+              item={schoolDetailsItem}
+              setItem={setSchoolDetailsItem}
+              enabled={schoolDetailEditing()}
+            />
+          </CollapsibleElement>
+        </div>
+      </Show>
     </>
   );
 }
