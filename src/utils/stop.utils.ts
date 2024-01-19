@@ -22,6 +22,12 @@ export namespace StopUtils {
     return get(stopId).name;
   }
 
+  export function getByLinkedGrade(gradeId: number): StopType[] {
+    return getStops().filter((stop) =>
+      stop.associated.some((assoc) => assoc.gradeId == gradeId)
+    );
+  }
+
   // Carefull, here stop name is used as an identifier
   export function getIdFromName(stopName: string): number {
     return getStops().filter((stop) => stop.name == stopName)[0].id;

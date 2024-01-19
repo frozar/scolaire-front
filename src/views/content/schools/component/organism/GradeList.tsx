@@ -6,7 +6,7 @@ export default function (props: { grades: GradeType[] }) {
   return (
     <div class="school-details-grade-list">
       <For each={props.grades}>
-        {(item) => <GradeItem NbStudents={0} grade={item} />}
+        {(grade) => <GradeItem NbStudents={0} grade={grade} />}
       </For>
     </div>
   );

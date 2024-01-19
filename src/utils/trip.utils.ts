@@ -45,6 +45,14 @@ export namespace TripUtils {
     )[0];
   }
 
+  export function getByLinkedGrade(gradeId: number): TripType[] {
+    const filteredTrips = getLines()
+      .flatMap((line) => line.trips)
+      .filter((trip) => trip.grades.some((grade) => grade.id == gradeId));
+
+    return filteredTrips;
+  }
+
   export function getTimePassage(
     indice: number,
     trip: TripType,
