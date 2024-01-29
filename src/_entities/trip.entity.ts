@@ -187,6 +187,12 @@ export namespace TripEntity {
       };
     }
 
+    if (trip.path?.id)
+      output = {
+        ...output,
+        path_id: trip.path.id,
+      };
+
     return output;
   }
 
