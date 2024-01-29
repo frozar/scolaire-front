@@ -137,7 +137,6 @@ export namespace GtfsEntity {
 
     for (const dataKey of dataKeys) {
       if (!Object.keys(data).includes(dataKey)) {
-        console.log("dict key missing");
         return false;
       }
     }
@@ -148,9 +147,6 @@ export namespace GtfsEntity {
       data.calendars.length == 0 ||
       data.trips.length == 0
     ) {
-      console.log("list length == 0");
-      console.log("data", data);
-
       return false;
     }
 
