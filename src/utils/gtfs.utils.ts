@@ -64,19 +64,23 @@ export namespace GtfsUtils {
         );
 
         // Add vacations to exceptions
-        const periodIds = getSchools()
+        let periodIds = getSchools()
           .flatMap((school) => school.grades)
           .filter((_grade) => gradeIds.includes(_grade.id as number))
           .map(
             (grade) =>
               (grade.calendar as CalendarType).calendarPeriodId as number
           );
+        periodIds = [...new Set(periodIds)];
+        // console.log("periodIds", periodIds);
 
         const newVacationsExceptionsDate = GtfsUtils.getVacationsExceptions(
           periodIds,
           serviceId,
           calendarDates
         );
+
+        console.log("newVacationsExceptionsDate", newVacationsExceptionsDate);
 
         newVacationsExceptionsDate.forEach((newExceptionDate) =>
           calendarDates.push(newExceptionDate)
@@ -163,12 +167,19 @@ export namespace GtfsUtils {
     serviceId: number,
     calendarDates: GtfsCalendarDatesType[]
   ): GtfsCalendarDatesType[] {
+    console.log("periodIds", periodIds);
+    console.log("serviceId", serviceId);
+    console.log("calendarDates", calendarDates);
+
     const newCalendarDates: GtfsCalendarDatesType[] = [];
 
     const numberOfPeriods = periodIds.length;
+    console.log("numberOfPeriods", numberOfPeriods);
+
     const vacationPeriods = periodIds.flatMap(
       (periodId) => CalendarPeriodUtils.getById(periodId).vacationsPeriod
     );
+    console.log("vacationPeriods", vacationPeriods);
 
     const tempVacationsDates: string[] = [];
 
@@ -183,10 +194,15 @@ export namespace GtfsUtils {
       }
     }
 
+    console.log("tempVacationsDates", tempVacationsDates);
+
     const countedDate = count(tempVacationsDates);
+    console.log("countedDate", countedDate);
 
     for (const key of Object.keys(countedDate)) {
       if (countedDate[key] == numberOfPeriods) {
+        console.log("in if");
+
         const newExceptionDate = {
           service_id: serviceId,
           date: key,
