@@ -20,7 +20,6 @@ export function SelectInput(props: SelectInputProps) {
     props.onChange(event.target.value);
   }
 
-  // TODO: Fix: default value for scholar period of a calendar
   function disabled() {
     return mergedProps.disabled;
   }
