@@ -162,6 +162,14 @@ export function leafletStopsFilter(): StopType[] {
         (grade) => grade.id as number
       );
 
+      // * If current drawTrip have path return only stop of the path
+      if (currentDrawTrip().path?.id) {
+        const pathPointStopIds = currentDrawTrip()
+          .path?.points.filter((point) => point.nature == NatureEnum.stop)
+          .map((stop) => stop.id);
+        return getStops().filter((stop) => pathPointStopIds?.includes(stop.id));
+      }
+
       stops = filterBySelectedLine(stops);
       stops = filterByGradesOfTrip(stops, gradeIds);
       stops = filterByDaysQuantitiesAndDirection(
