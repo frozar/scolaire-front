@@ -222,7 +222,7 @@ async function nextStep() {
             )
           )
           .map((stop) => {
-            return { done: false, item: stop };
+            return { done: true, item: stop };
           }),
       ]);
 

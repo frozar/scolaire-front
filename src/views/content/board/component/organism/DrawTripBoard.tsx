@@ -181,14 +181,6 @@ export function DrawTripBoard() {
             />
           </Show>
         </div>
-      </Show>
-
-      <Show
-        when={
-          currentStep() == DrawTripStep.editTrip ||
-          currentStep() == DrawTripStep.buildReverse
-        }
-      >
         <div class="bus-trip-information-board-content">
           <Show
             when={(currentDrawTrip()?.tripPoints.length ?? 0) > 0}
