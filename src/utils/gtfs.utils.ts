@@ -64,13 +64,14 @@ export namespace GtfsUtils {
         );
 
         // Add vacations to exceptions
-        const periodIds = getSchools()
+        let periodIds = getSchools()
           .flatMap((school) => school.grades)
           .filter((_grade) => gradeIds.includes(_grade.id as number))
           .map(
             (grade) =>
               (grade.calendar as CalendarType).calendarPeriodId as number
           );
+        periodIds = [...new Set(periodIds)];
 
         const newVacationsExceptionsDate = GtfsUtils.getVacationsExceptions(
           periodIds,
