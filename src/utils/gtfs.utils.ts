@@ -258,32 +258,19 @@ export namespace GtfsUtils {
     endDate: string;
   } {
     const gradeIds = trip.grades.map((grade) => grade.id as number);
-    // TODO: Fix this
     const calendarPeriodIds = getSchools()
       .flatMap((school) => school.grades)
       .filter((grade) => gradeIds.includes(grade.id as number))
       .map((_grade) => _grade.calendar as CalendarType)
       .map((calendar) => calendar.calendarPeriodId as number);
 
-    // calendarPeriodIds = [...new Set(calendarPeriodIds)];
-
     const calendarPeriods = calendarsPeriod().filter((calendarPeriod) =>
       calendarPeriodIds.includes(calendarPeriod.id)
     );
 
-    const calendarPeriodIdsTest = getSchools()
-      .flatMap((school) => school.grades)
-      .filter((grade) => gradeIds.includes(grade.id as number))
-      .map((_grade) => _grade.calendar as CalendarType);
-    // .map((calendar) => calendar.calendarPeriodId as number);
-
     // Take the earlier start date and the latest endDate
     let startDate: string;
     let endDate: string;
-    console.log("calendarsPeriod()", calendarsPeriod());
-    console.log("calendarPeriodIdsTest", calendarPeriodIdsTest);
-    console.log("calendarPeriodIds", calendarPeriodIds);
-    console.log("calendarPeriods", calendarPeriods);
     if (calendarPeriods.length == 1) {
       startDate = GtfsUtils.formatDate(calendarPeriods[0].startDate);
       endDate = GtfsUtils.formatDate(calendarPeriods[0].endDate);
