@@ -146,7 +146,6 @@ export namespace GtfsEntity {
       data.stops.length == 0 ||
       data.routes.length == 0 ||
       data.calendars.length == 0 ||
-      data.calendar_dates.length == 0 ||
       data.trips.length == 0
     ) {
       console.log("list length == 0");
