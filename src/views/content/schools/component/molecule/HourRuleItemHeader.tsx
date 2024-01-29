@@ -41,6 +41,7 @@ export function HourRuleItemHeader(props: HourRuleItemHeader) {
         onChange={props.onChangeDay}
         defaultValue={props.rule.day}
         disabled={props.disabled ?? false}
+        dontTriggerCreateEffect={false}
       />
 
       <Show when={!props.disabled}>
