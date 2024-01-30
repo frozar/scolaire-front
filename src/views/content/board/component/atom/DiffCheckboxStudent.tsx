@@ -5,6 +5,7 @@ import {
 } from "../../../../../utils/csv.utils";
 import { DiffEnum } from "../molecule/ImportDiff";
 import { UncheckedStudents } from "../molecule/ImportDiffStudents";
+import "./DiffCheckboxStudent.css";
 
 interface DiffCheckboxProps {
   item: number | StudentCsv | StudentModifiedDiff;
@@ -29,7 +30,7 @@ export function DiffCheckboxStudent(props: DiffCheckboxProps) {
             )
           }
         />
-        <label>{props.label}</label>
+        <label class="label-checkbox-student">{props.label}</label>
       </div>
     </div>
   );
