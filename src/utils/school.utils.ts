@@ -190,19 +190,6 @@ export namespace SchoolUtils {
   }
 
   export function isValidSchool(school: SchoolType): boolean {
-    // let valid = true;
-    console.log("school", school);
-    // if (!school.hours) {
-    //   // valid = false;
-    //   addNewUserInformation({
-    //     displayed: true,
-    //     level: MessageLevelEnum.error,
-    //     type: MessageTypeEnum.global,
-    //     content:
-    //       "Compléter touts les champs pour définir les plages horaire d'arrivé/départ",
-    //   });
-    //   return false;
-    // }
     if (
       !school.hours.startHourComing ||
       !school.hours.startHourGoing ||
@@ -222,7 +209,6 @@ export namespace SchoolUtils {
 
   export async function update(school: SchoolType) {
     const updatedSchool: SchoolType = await SchoolService.update(school);
-    console.log("updatedSchool", updatedSchool);
     const schoolIndex = getSchools().findIndex(
       (item) => item.id == updatedSchool.id
     );
