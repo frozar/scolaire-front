@@ -8,12 +8,10 @@ import "./MapInformationPanel.css";
 import { getSchools } from "./SchoolPoints";
 
 export function MapInformationPanel(): JSXElement {
-  // get schools that don't have calendar
   function schoolsWithoutCalendar() {
     return getSchools().filter((school) => !school.calendar);
   }
 
-  // TODO: Fetch again school from getSchools() ?
   function onClickSchoolName(school: SchoolType): void {
     setSchoolDetailsItem(school);
     changeBoard("school-details");
@@ -32,14 +30,14 @@ export function MapInformationPanel(): JSXElement {
           {/* Put definitive color chosen in tailwind config file */}
           <CollapsibleElement
             title={schoolsWithoutCalendar().length + " écoles sans calendriers"}
-            titleClass="text-orange-600"
+            titleClass="text-orange-base"
             closedByDefault={() => true}
           >
             <For each={schoolsWithoutCalendar()}>
               {(school) => {
                 return (
                   <div
-                    class="underline cursor-pointer"
+                    class="information-panel-school-link"
                     onClick={() => onClickSchoolName(school)}
                   >
                     {school.name}
