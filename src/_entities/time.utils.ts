@@ -69,15 +69,19 @@ export namespace TimeUtils {
   export function formatHours(hours: HoursType | undefined): HoursDBType {
     if (!hours) return formatHours(defaultHours());
     return {
-      id: hours.id,
+      id: hours.id as number,
       start_hour_coming: GradeEntity.getStringFromHourFormat(
-        hours.startHourComing
+        hours.startHourComing as HourFormat
       ),
-      end_hour_coming: GradeEntity.getStringFromHourFormat(hours.endHourComing),
+      end_hour_coming: GradeEntity.getStringFromHourFormat(
+        hours.endHourComing as HourFormat
+      ),
       start_hour_going: GradeEntity.getStringFromHourFormat(
-        hours.startHourGoing
+        hours.startHourGoing as HourFormat
       ),
-      end_hour_going: GradeEntity.getStringFromHourFormat(hours.endHourGoing),
+      end_hour_going: GradeEntity.getStringFromHourFormat(
+        hours.endHourGoing as HourFormat
+      ),
       rules: hours.rules.map((item) => {
         return {
           day: item.day,

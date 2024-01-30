@@ -23,7 +23,6 @@ const [, { nextLeafletPointId }] = useStateGui();
 export class SchoolEntity {
   static build(dbSchool: SchoolDBType): SchoolType {
     const [selected, setSelected] = createSignal<boolean>(false);
-    console.log("dbSchool", dbSchool);
     return {
       id: dbSchool.id,
       lon: dbSchool.location.data.lng,
