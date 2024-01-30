@@ -1,5 +1,5 @@
 import { JSXElement } from "solid-js";
-import { GradeEntity } from "../../../../../_entities/grade.entity";
+import { GradeEntity, HourFormat } from "../../../../../_entities/grade.entity";
 import CollapsibleElement from "../../../board/component/organism/CollapsibleElement";
 import TimesInputWrapper from "../molecule/TimesInputWrapper";
 import { selectedGrade, setSelectedGrade } from "./GradeEditBoard";
@@ -10,6 +10,10 @@ export function GradeBoardDetailsSchedules(): JSXElement {
     const gradeCalendar = selectedGrade()?.calendar;
     if (gradeCalendar) return gradeCalendar.name;
     else return "Pas de calendrier assigné";
+  }
+
+  function hourValue(value: HourFormat | null | undefined) {
+    return value ? GradeEntity.getStringFromHourFormat(value) : "--";
   }
 
   return (
@@ -27,24 +31,16 @@ export function GradeBoardDetailsSchedules(): JSXElement {
         >
           <TimesInputWrapper
             label="Matin"
-            startValue={GradeEntity.getStringFromHourFormat(
-              selectedGrade()?.hours.startHourComing
-            )}
-            endValue={GradeEntity.getStringFromHourFormat(
-              selectedGrade()?.hours.endHourComing
-            )}
+            startValue={hourValue(selectedGrade()?.hours.startHourComing)}
+            endValue={hourValue(selectedGrade()?.hours.endHourComing)}
             disabled={true}
             onInputStart={() => ""}
             onInputEnd={() => ""}
           />
           <TimesInputWrapper
             label="Après-midi"
-            startValue={GradeEntity.getStringFromHourFormat(
-              selectedGrade()?.hours.startHourGoing
-            )}
-            endValue={GradeEntity.getStringFromHourFormat(
-              selectedGrade()?.hours.endHourGoing
-            )}
+            startValue={hourValue(selectedGrade()?.hours.startHourGoing)}
+            endValue={hourValue(selectedGrade()?.hours.endHourGoing)}
             disabled={true}
             onInputStart={() => ""}
             onInputEnd={() => ""}
