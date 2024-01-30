@@ -64,6 +64,7 @@ export function ImportSelection() {
   return (
     <>
       <div id="import-dialog-title">Séléctionner le type d'import :</div>
+      <div id="import-file-name">{csv()?.name}</div>
 
       <LabeledInputRadio
         id="schools"
