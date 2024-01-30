@@ -18,16 +18,19 @@ export function StudentDiffCollapsible(
 ): JSXElement {
   function getTitle(diffType: DiffEnum): string {
     return diffType == DiffEnum.added
-      ? "Ajouter"
+      ? "Ajouter " + studentDiff()?.added.length
       : diffType == DiffEnum.modified
-      ? "Modifier"
-      : "Supprimer";
+      ? "Modifier " + studentDiff()?.modified.length
+      : "Supprimer " + studentDiff()?.deleted.length;
   }
 
   return (
     <>
       {/* TODO: Enhance visual and refactor */}
-      <CollapsibleElement title={getTitle(props.diffType)}>
+      <CollapsibleElement
+        title={getTitle(props.diffType)}
+        closedByDefault={() => true}
+      >
         <Switch>
           <Match when={props.diffType == DiffEnum.added}>
             <For each={(studentDiff() as StudentDiffType).added}>

@@ -26,7 +26,7 @@ export function DiffCollapsible(props: DiffCollapsibleProps) {
 
   return (
     <>
-      <CollapsibleElement title={props.title}>
+      <CollapsibleElement title={props.title} closedByDefault={() => true}>
         <For each={props.items}>
           {(item) => {
             const disable = isDisabled(item);

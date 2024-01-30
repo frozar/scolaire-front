@@ -8,6 +8,7 @@ import { CsvUtils, StudentDiffType } from "../../../../../utils/csv.utils";
 import { DialogUtils } from "../../../../../utils/dialog.utils";
 import { DialogToDisplayEnum, setDialogToDisplay } from "../organism/Dialogs";
 import { DiffEnum } from "./ImportDiff";
+import "./ImportDiffStudents.css";
 import { setCsvType, studentDiff } from "./ImportSelection";
 import { StudentDiffCollapsible } from "./StudentDiffCollapsible";
 
@@ -90,14 +91,14 @@ export function ImportDiffStudent(): JSXElement {
       <div id="import-dialog-title">Modifications à appliquer :</div>
 
       <Show when={(studentDiff() as StudentDiffType).newGrades.length > 0}>
-        <div>
+        <div class="import-diff-info">
           {"Nouvelles classes: " +
             studentDiff()?.newGrades.map((grade) => grade.gradeName)}
         </div>
       </Show>
 
       <Show when={(studentDiff() as StudentDiffType).nbOfLineIgnored > 0}>
-        <div>
+        <div class="import-diff-info">
           {(studentDiff() as StudentDiffType).nbOfLineIgnored +
             " lignes ignorées car établissement et/ou arrêt innexistant"}
         </div>
