@@ -11,6 +11,8 @@ interface TimesInputWrapper {
   disabled?: boolean;
 }
 
+// TODO: Doit prendre en props: (startValue:HourFormat | undefined)
+// et appliquer la fonction qui transforme en string pour être utilisé partout
 export default function (props: TimesInputWrapper) {
   return (
     <div class="schedules-input">
