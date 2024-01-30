@@ -6,23 +6,11 @@ import { SchoolType } from "./school.entity";
 export namespace TimeUtils {
   export function defaultHours(): HoursType {
     return {
-      id: 0,
-      startHourGoing: {
-        hour: 0,
-        minutes: 0,
-      },
-      startHourComing: {
-        hour: 0,
-        minutes: 0,
-      },
-      endHourComing: {
-        hour: 0,
-        minutes: 0,
-      },
-      endHourGoing: {
-        hour: 0,
-        minutes: 0,
-      },
+      id: null,
+      startHourGoing: null,
+      startHourComing: null,
+      endHourComing: null,
+      endHourGoing: null,
       rules: [],
     };
   }

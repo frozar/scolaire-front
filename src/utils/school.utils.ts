@@ -198,7 +198,7 @@ export namespace SchoolUtils {
         level: MessageLevelEnum.error,
         type: MessageTypeEnum.global,
         content:
-          "Compléter touts les champs pour définir les plages horraire d'arrivé/départ",
+          "Compléter touts les champs pour définir les plages horaire d'arrivé/départ",
       });
     }
 
