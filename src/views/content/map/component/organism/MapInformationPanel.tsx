@@ -27,9 +27,8 @@ export function MapInformationPanel(): JSXElement {
     <Show when={thereIsInformationToDisplay()}>
       <div id="map-information-panel">
         <Show when={schoolsWithoutCalendar().length > 0}>
-          {/* Put definitive color chosen in tailwind config file */}
           <CollapsibleElement
-            title={schoolsWithoutCalendar().length + " écoles sans calendriers"}
+            title={schoolsWithoutCalendar().length + " écoles sans calendrier"}
             titleClass="text-orange-base"
             closedByDefault={() => true}
           >
