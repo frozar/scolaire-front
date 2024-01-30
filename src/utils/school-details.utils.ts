@@ -12,6 +12,13 @@ export namespace SchoolDetailUtils {
     if (!schoolDetailEditing()) {
       setSchoolDetailEditing(true);
     } else {
+      console.log(
+        "SchoolUtils.get(schoolDetailsItem()?.id ?? 0)",
+        SchoolUtils.get(schoolDetailsItem()?.id ?? 0)
+      );
+
+      console.log("schoolDetailsItem()", schoolDetailsItem());
+
       if (
         SchoolUtils.isValidSchool(schoolDetailsItem() as SchoolType) &&
         SchoolUtils.get(schoolDetailsItem()?.id ?? 0) != schoolDetailsItem()

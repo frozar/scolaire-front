@@ -207,6 +207,7 @@ export namespace SchoolUtils {
 
   export async function update(school: SchoolType) {
     const updatedSchool: SchoolType = await SchoolService.update(school);
+    console.log("updatedSchool", updatedSchool);
     const schoolIndex = getSchools().findIndex(
       (item) => item.id == updatedSchool.id
     );

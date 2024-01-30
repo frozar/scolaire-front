@@ -9,14 +9,16 @@ export function MapInformationPanel(): JSXElement {
     return getSchools().filter((school) => !school.calendar);
   }
 
+  function schoolsWithoutHours(): SchoolType[] {
+    console.log("getSchools()", getSchools());
+
+    return getSchools().filter((school) => !school.hours.id);
+  }
+
   function thereIsInformationToDisplay(): boolean {
     if (schoolsWithoutCalendar().length > 0) return true;
     if (schoolsWithoutHours().length > 0) return true;
     return false;
-  }
-
-  function schoolsWithoutHours(): SchoolType[] {
-    return getSchools().filter((school) => !school.hours.id);
   }
 
   return (
