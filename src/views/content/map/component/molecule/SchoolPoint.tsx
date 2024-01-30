@@ -85,7 +85,7 @@ const onClick = (point: SchoolType) => {
               displayed: true,
               level: MessageLevelEnum.error,
               type: MessageTypeEnum.global,
-              content: "Cette école n'a pas de calendrier.",
+              content: "Cette école n'a pas de calendrier assigné",
             });
             return;
           }
