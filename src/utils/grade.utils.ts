@@ -17,9 +17,15 @@ import {
 
 export namespace GradeUtils {
   export function getGrade(gradeId: number): GradeType {
-    return getSchools()
-      .flatMap((school) => school.grades)
-      .filter((grade) => grade.id == gradeId)[0];
+    const grade: GradeType[] = [];
+    getSchools().forEach((school) => {
+      const grade_ = school.grades.filter((grade) => grade.id == gradeId)[0];
+      if (grade_) {
+        if (!grade_?.calendar) grade_.calendar = school.calendar;
+        grade.push(grade_);
+      }
+    });
+    return grade[0];
   }
 
   export function getAll(): GradeType[] {

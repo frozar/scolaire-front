@@ -2,6 +2,7 @@ import {
   AssociatedSchoolType,
   AssociatedStopType,
 } from "../_entities/_utils.entity";
+import { GradeType } from "../_entities/grade.entity";
 import { SchoolType } from "../_entities/school.entity";
 import { SchoolService } from "../_services/school.service";
 import { addNewUserInformation } from "../signaux";
@@ -32,6 +33,16 @@ export namespace SchoolUtils {
 
   export function getName(schoolId: number) {
     return getSchools().filter((school) => school.id == schoolId)[0].name;
+  }
+
+  export function getGrades(schoolId: number | undefined): GradeType[] {
+    const school = getSchools().find((school) => school.id == schoolId);
+    if (!school) return [];
+    school.grades.map((grade) => {
+      if (!grade.calendar) grade.calendar = school.calendar;
+      return grade;
+    });
+    return school.grades;
   }
 
   // Carefull, here schoolName is used as an identitifer

@@ -25,6 +25,7 @@ export const [tripDaysAndDirection, setTripDaysAndDirection] = createSignal<
 export const [onTripDirection, setOnTripDirection] =
   createSignal<TripDirectionEnum>(TripDirectionEnum.coming);
 
+// TODO review this entire file for facto and simplification
 export function AssignDaysAndDirectionToTrip() {
   const [commonDay, setCommonDay] = createSignal<tripDaysAndDirectionType[]>(
     []
@@ -43,13 +44,17 @@ export function AssignDaysAndDirectionToTrip() {
     weekDays.forEach((day) => {
       const occurance = everyDayRule.filter((item) => item.day == day);
       if (occurance.length == calendars.length)
-        commonDay().push({ ...occurance[0], keep: true });
+        setCommonDay((prev) => [...prev, { ...occurance[0], keep: true }]);
     });
   }
 
   function processTripDirection() {
     const datas = commonDay()
       .filter((item) => {
+        const direction = TripDirectionEntity.FindDirectionById(
+          item.tripTypeId
+        );
+        if (!item.tripDirection) item.tripDirection = direction;
         if (
           item.tripDirection.type == onTripDirection() ||
           item.tripDirection.type == TripDirectionEnum.roundTrip
