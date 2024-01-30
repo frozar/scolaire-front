@@ -1,5 +1,5 @@
 #import-dialog-title {
-  @apply text-2xl mb-6 ml-3;
+  @apply text-2xl mb-2 ml-3;
 }
 
 .import-dialog-buttons {
@@ -8,4 +8,8 @@
 
 .import-dialog-buttons button {
   @apply ml-3;
+}
+
+#import-file-name {
+  @apply text-green-base mb-4 ml-6 italic;
 }
