@@ -80,6 +80,16 @@ const onClick = (point: SchoolType) => {
     case "trip-draw":
       switch (currentStep()) {
         case DrawTripStep.schoolSelection:
+          if (!point.calendar) {
+            addNewUserInformation({
+              displayed: true,
+              level: MessageLevelEnum.error,
+              type: MessageTypeEnum.global,
+              content: "Cette école n'a pas de calendrier assigné",
+            });
+            return;
+          }
+
           if (schoolsSelected?.find((p) => p.id === point.id)) {
             return;
           }

@@ -15,7 +15,7 @@ export default function (props: {
   children: JSXElement;
   title: string;
   class?: string;
-  titleClass?: "bold-title" | "text-xl";
+  titleClass?: string;
   closedByDefault?: () => boolean;
 }) {
   const mergedProps = mergeProps({ closedByDefault: () => false }, props);
@@ -35,14 +35,7 @@ export default function (props: {
   return (
     <div class={"collapsible-element " + (props.class ?? "")}>
       <button class="accordion" onClick={() => setActivated((prev) => !prev)}>
-        <p
-          classList={{
-            "font-bold": props.titleClass == "bold-title",
-            "text-xl": props.titleClass == "text-xl",
-          }}
-        >
-          {props.title}
-        </p>
+        <p class={props.titleClass ?? ""}>{props.title}</p>
         <div class="button-icon">
           <Show when={activated()} fallback={<UncollapseLogo />}>
             {<CollapseLogo />}

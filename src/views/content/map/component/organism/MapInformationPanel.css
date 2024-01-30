@@ -1,0 +1,7 @@
+#map-information-panel {
+    @apply absolute z-layoutTop w-fit h-fit bottom-5 right-2 p-2 bg-white border-dark-shade-teal rounded-md border-2;
+}
+
+.information-panel-school-link {
+    @apply underline cursor-pointer
+}
