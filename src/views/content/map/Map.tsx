@@ -15,7 +15,7 @@ import { addNewUserInformation, getLeafletMap } from "../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../type";
 import { onBoard } from "../board/component/template/ContextManager";
 import { BusLines } from "./component/organism/BusLines";
-import { Filters } from "./component/organism/Filters";
+import { MapPanels } from "./component/organism/MapPanels";
 import { Points } from "./component/organism/Points";
 
 const [, { getActiveMapId }] = useStateGui();
@@ -66,7 +66,7 @@ export default function () {
   return (
     <Show when={getActiveMapId()}>
       <Show when={onBoard() == "line"}>
-        <Filters />
+        <MapPanels />
       </Show>
       <ImportCsvCanvas
         display={displayImportCsvCanvas()}
