@@ -1,0 +1,15 @@
+#service-left-board {
+  @apply flex w-1/4 border border-r-2 border-y-0 border-l-0 border-dark-shade-teal;
+}
+
+#service-left-board-header {
+  @apply w-full;
+}
+
+#service-left-board-header-title {
+  @apply text-green-base my-4 ml-4;
+}
+
+#service-left-board-searchbar {
+  @apply flex justify-center;
+}

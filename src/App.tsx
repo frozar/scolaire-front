@@ -30,6 +30,7 @@ import UnloggedUserInformation from "./component/molecule/UnloggedUserInformatio
 import UserInstruction from "./component/molecule/UserInstruction";
 import { Dialogs } from "./views/content/board/component/organism/Dialogs";
 import { Parameter } from "./views/content/calendar/template/Organisation";
+import { ServiceTemplate } from "./views/content/service/template/ServiceTemplate";
 
 const [, { getSelectedMenu, setSelectedMenu, getActiveMapId }] = useStateGui();
 
@@ -80,6 +81,17 @@ export default () => {
                 <Parameter />
               </Match>
 
+              <Match when={getSelectedMenu() == "service"}>
+                <ServiceTemplate />
+              </Match>
+
+              {/* <Match
+                when={
+                  !["dashboard", "parametres", "service"].includes(
+                    getSelectedMenu()
+                  )
+                }
+              > */}
               <Match when={inGraphicage()}>
                 <Map />
                 <ContextManager />
