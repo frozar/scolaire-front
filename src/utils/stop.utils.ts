@@ -11,7 +11,8 @@ import {
 } from "../views/content/map/component/organism/StopPoints";
 import { updateStopDetailsItem } from "../views/content/stops/component/organism/StopDetails";
 import { GradeUtils } from "./grade.utils";
-import { QuantityUtils } from "./quantity.utils";
+import { QuantityMatrixType, QuantityUtils } from "./quantity.utils";
+import { SchoolUtils } from "./school.utils";
 
 export namespace StopUtils {
   export function get(stopId: number): StopType {
@@ -194,5 +195,23 @@ export namespace StopUtils {
       .forEach((grade) => (usedQuantity += grade.quantity));
 
     return totalQuantity - usedQuantity;
+  }
+
+  export function reBuildGradeAssociationMatrix() {
+    setStops((prev) => {
+      return [...prev].map((stop) => {
+        stop.associated.map((association) => {
+          const school = SchoolUtils.get(association.schoolId);
+          if (!school.calendar) return association;
+          association.quantityMatrix = QuantityUtils.buildQuantityMatrix(
+            school.calendar?.rules.map((rule) => rule.day) as CalendarDayEnum[],
+            association.quantity,
+            TripDirectionEnum.roundTrip
+          ) as QuantityMatrixType;
+          return association;
+        });
+        return stop;
+      });
+    });
   }
 }

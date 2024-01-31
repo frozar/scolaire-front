@@ -11,6 +11,7 @@ import GradeList from "./GradeList";
 import { schoolDetailsItem } from "./SchoolDetails";
 import { TripsList } from "./TripsList";
 
+import { SchoolUtils } from "../../../../../utils/school.utils";
 import "./SchoolDetailsPanels.css";
 
 export enum PanelsEnum {
@@ -51,7 +52,11 @@ export function SchoolDetailsPanels() {
       <div class="board-content">
         <Switch>
           <Match when={onPanel() == PanelsEnum.grades}>
-            <GradeList grades={schoolDetailsItem()?.grades as GradeType[]} />
+            <GradeList
+              grades={
+                SchoolUtils.getGrades(schoolDetailsItem()?.id) as GradeType[]
+              }
+            />
           </Match>
           <Match when={onPanel() == PanelsEnum.lines}>
             <TripsList

@@ -45,10 +45,16 @@ export class EntityUtils {
   ): AssociatedSchoolType[] {
     return associatedDBPoint.map((item) => {
       const school = getSchoolWhereClassId(item.grade_id);
-      const gradeRules: CalendarDayEnum[] =
-        GradeUtils.getGrade(item.grade_id).calendar?.rules.map(
-          (rule) => rule.day
-        ) ?? [];
+      const grade = GradeUtils.getGrade(item.grade_id);
+
+      let gradeRules: CalendarDayEnum[];
+
+      if (grade.calendar)
+        gradeRules = grade.calendar?.rules.map((rule) => rule.day);
+      else
+        gradeRules = school?.calendar
+          ? school?.calendar.rules.map((rule) => rule.day)
+          : [];
 
       return {
         schoolId: school?.id as number,

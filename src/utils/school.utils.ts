@@ -2,6 +2,7 @@ import {
   AssociatedSchoolType,
   AssociatedStopType,
 } from "../_entities/_utils.entity";
+import { GradeType } from "../_entities/grade.entity";
 import { SchoolType } from "../_entities/school.entity";
 import { SchoolService } from "../_services/school.service";
 import { addNewUserInformation } from "../signaux";
@@ -24,6 +25,7 @@ import {
   setSchoolDetailsItem,
 } from "../views/content/schools/component/organism/SchoolDetails";
 import { QuantityUtils } from "./quantity.utils";
+import { StopUtils } from "./stop.utils";
 
 export namespace SchoolUtils {
   export function get(schoolId: number): SchoolType {
@@ -32,6 +34,16 @@ export namespace SchoolUtils {
 
   export function getName(schoolId: number) {
     return getSchools().filter((school) => school.id == schoolId)[0].name;
+  }
+
+  export function getGrades(schoolId: number | undefined): GradeType[] {
+    const school = getSchools().find((school) => school.id == schoolId);
+    if (!school) return [];
+    school.grades.map((grade) => {
+      if (!grade.calendar) grade.calendar = school.calendar;
+      return grade;
+    });
+    return school.grades;
   }
 
   // Carefull, here schoolName is used as an identitifer
@@ -209,17 +221,14 @@ export namespace SchoolUtils {
 
   export async function update(school: SchoolType) {
     const updatedSchool: SchoolType = await SchoolService.update(school);
-    const schoolIndex = getSchools().findIndex(
-      (item) => item.id == updatedSchool.id
-    );
-    if (schoolIndex == -1) return;
-
     setSchools((prev) => {
-      if (!prev) return prev;
-      const schools = [...prev];
-      schools[schoolIndex] = updatedSchool;
-      return schools;
+      return [...prev].map((school_) => {
+        if (school_.id == school.id) school_ = updatedSchool;
+        return school_;
+      });
     });
+
+    StopUtils.reBuildGradeAssociationMatrix();
 
     if (schoolDetailsItem()?.id == updatedSchool.id)
       setSchoolDetailsItem(updatedSchool);
