@@ -25,6 +25,7 @@ import {
   setSchoolDetailsItem,
 } from "../views/content/schools/component/organism/SchoolDetails";
 import { QuantityUtils } from "./quantity.utils";
+import { StopUtils } from "./stop.utils";
 
 export namespace SchoolUtils {
   export function get(schoolId: number): SchoolType {
@@ -220,17 +221,14 @@ export namespace SchoolUtils {
 
   export async function update(school: SchoolType) {
     const updatedSchool: SchoolType = await SchoolService.update(school);
-    const schoolIndex = getSchools().findIndex(
-      (item) => item.id == updatedSchool.id
-    );
-    if (schoolIndex == -1) return;
-
     setSchools((prev) => {
-      if (!prev) return prev;
-      const schools = [...prev];
-      schools[schoolIndex] = updatedSchool;
-      return schools;
+      return [...prev].map((school_) => {
+        if (school_.id == school.id) school_ = updatedSchool;
+        return school_;
+      });
     });
+
+    StopUtils.reBuildGradeAssociationMatrix();
 
     if (schoolDetailsItem()?.id == updatedSchool.id)
       setSchoolDetailsItem(updatedSchool);

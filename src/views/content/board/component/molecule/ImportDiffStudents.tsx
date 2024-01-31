@@ -1,10 +1,11 @@
 import { JSXElement, Show, createEffect, createSignal } from "solid-js";
+import { StudentToGradeService } from "../../../../../_services/student-to-grade.service";
 import Button from "../../../../../component/atom/Button";
 import {
   disableSpinningWheel,
   enableSpinningWheel,
 } from "../../../../../signaux";
-import { CsvUtils, StudentDiffType } from "../../../../../utils/csv.utils";
+import { StudentDiffType } from "../../../../../utils/csv.utils";
 import { DialogUtils } from "../../../../../utils/dialog.utils";
 import { DialogToDisplayEnum, setDialogToDisplay } from "../organism/Dialogs";
 import { DiffEnum } from "./ImportDiff";
@@ -146,7 +147,7 @@ async function onClick(
   setDialogToDisplay(DialogToDisplayEnum.none);
   enableSpinningWheel();
 
-  await CsvUtils.importStudents(studentDiffFiltered);
+  await StudentToGradeService.importStudents(studentDiffFiltered);
 
   setCsvType();
   disableSpinningWheel();
