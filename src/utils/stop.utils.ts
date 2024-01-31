@@ -199,18 +199,19 @@ export namespace StopUtils {
 
   export function reBuildGradeAssociationMatrix() {
     setStops((prev) => {
-      const stops = [...prev];
-      stops.forEach((stop) => {
-        stop.associated.forEach((association) => {
+      return [...prev].map((stop) => {
+        stop.associated.map((association) => {
           const school = SchoolUtils.get(association.schoolId);
+          if (!school.calendar) return association;
           association.quantityMatrix = QuantityUtils.buildQuantityMatrix(
             school.calendar?.rules.map((rule) => rule.day) as CalendarDayEnum[],
             association.quantity,
             TripDirectionEnum.roundTrip
           ) as QuantityMatrixType;
+          return association;
         });
+        return stop;
       });
-      return stops;
     });
   }
 }
