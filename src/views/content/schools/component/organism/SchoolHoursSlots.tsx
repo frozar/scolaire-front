@@ -53,24 +53,16 @@ export function SchoolHoursSlots(props: SchoolHoursSlotsProps) {
     <>
       <TimesInputWrapper
         label="Aller"
-        startValue={GradeEntity.getStringFromHourFormat(
-          schoolHours().startHourComing
-        )}
-        endValue={GradeEntity.getStringFromHourFormat(
-          schoolHours().endHourComing
-        )}
+        startValue={schoolHours().startHourComing}
+        endValue={schoolHours().endHourComing}
         onInputStart={onInputComingStart}
         onInputEnd={onInputComingEnd}
         disabled={!schoolDetailEditing()}
       />
       <TimesInputWrapper
         label="Retour"
-        startValue={GradeEntity.getStringFromHourFormat(
-          schoolHours().startHourGoing
-        )}
-        endValue={GradeEntity.getStringFromHourFormat(
-          schoolHours().endHourGoing
-        )}
+        startValue={schoolHours().startHourGoing}
+        endValue={schoolHours().endHourGoing}
         onInputStart={onInputGoingStart}
         onInputEnd={onInputGoingEnd}
         disabled={!schoolDetailEditing()}

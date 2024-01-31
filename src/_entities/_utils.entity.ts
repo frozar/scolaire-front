@@ -127,11 +127,11 @@ export type HoursDBType = {
 };
 
 export type HoursType = {
-  id: number;
-  startHourComing: HourFormat;
-  endHourComing: HourFormat;
-  startHourGoing: HourFormat;
-  endHourGoing: HourFormat;
+  id: number | null;
+  startHourComing: HourFormat | null;
+  endHourComing: HourFormat | null;
+  startHourGoing: HourFormat | null;
+  endHourGoing: HourFormat | null;
   rules: HourRuleType[];
 };
 

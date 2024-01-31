@@ -1,5 +1,4 @@
 import { JSXElement } from "solid-js";
-import { GradeEntity } from "../../../../../_entities/grade.entity";
 import CollapsibleElement from "../../../board/component/organism/CollapsibleElement";
 import TimesInputWrapper from "../molecule/TimesInputWrapper";
 import { selectedGrade, setSelectedGrade } from "./GradeEditBoard";
@@ -27,24 +26,16 @@ export function GradeBoardDetailsSchedules(): JSXElement {
         >
           <TimesInputWrapper
             label="Matin"
-            startValue={GradeEntity.getStringFromHourFormat(
-              selectedGrade()?.hours.startHourComing
-            )}
-            endValue={GradeEntity.getStringFromHourFormat(
-              selectedGrade()?.hours.endHourComing
-            )}
+            startValue={selectedGrade()?.hours.startHourComing}
+            endValue={selectedGrade()?.hours.endHourComing}
             disabled={true}
             onInputStart={() => ""}
             onInputEnd={() => ""}
           />
           <TimesInputWrapper
             label="Après-midi"
-            startValue={GradeEntity.getStringFromHourFormat(
-              selectedGrade()?.hours.startHourGoing
-            )}
-            endValue={GradeEntity.getStringFromHourFormat(
-              selectedGrade()?.hours.endHourGoing
-            )}
+            startValue={selectedGrade()?.hours.startHourGoing}
+            endValue={selectedGrade()?.hours.endHourGoing}
             disabled={true}
             onInputStart={() => ""}
             onInputEnd={() => ""}

@@ -189,20 +189,22 @@ export namespace SchoolUtils {
     });
   }
 
-  export function isValidSchool(school: SchoolType) {
-    let valid = true;
-    if (!school.hours) {
-      valid = false;
+  export function isValidSchool(school: SchoolType): boolean {
+    if (
+      !school.hours.startHourComing ||
+      !school.hours.startHourGoing ||
+      !school.hours.endHourComing ||
+      !school.hours.endHourGoing
+    ) {
       addNewUserInformation({
         displayed: true,
         level: MessageLevelEnum.error,
         type: MessageTypeEnum.global,
-        content:
-          "Compléter touts les champs pour définir les plages horraire d'arrivé/départ",
+        content: "Compléter touts les champs",
       });
+      return false;
     }
-
-    return valid;
+    return true;
   }
 
   export async function update(school: SchoolType) {
