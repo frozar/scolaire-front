@@ -1,5 +1,6 @@
 import { JSXElement } from "solid-js";
 import InputSearch from "../../schools/component/molecule/InputSearch";
+import { ServiceLeftBoardContent } from "../organism/ServiceLeftBoardContent";
 import "./ServiceTemplate.css";
 
 // TODO: Make components
@@ -16,6 +17,7 @@ export function ServiceTemplate(): JSXElement {
             <InputSearch onInput={() => console.log("todo")} />
           </div>
         </div>
+        <ServiceLeftBoardContent />
       </div>
     </div>
   );
