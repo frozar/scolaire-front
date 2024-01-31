@@ -1,11 +1,16 @@
-import { Match, Show, Switch, createEffect, on, onMount } from "solid-js";
+import { Match, Show, Switch, createEffect, onMount } from "solid-js";
 import { useStateGui } from "./StateGui";
 
 import Layout from "./views/layout/component/template/Layout";
 
 import SpinningWheel from "./component/SpinningWheel";
 import InnerModal from "./component/molecule/InnerModal";
-import { getAuthenticatedUser } from "./signaux";
+import {
+  authenticated,
+  disableSpinningWheel,
+  enableSpinningWheel,
+  getAuthenticatedUser,
+} from "./signaux";
 import ClearConfirmationDialogBox from "./userInformation/ClearConfirmationDialogBox";
 import DisplayUserInformation from "./userInformation/DisplayUserInformation";
 import DragAndDropSummary from "./userInformation/DragAndDropSummary";
@@ -24,7 +29,6 @@ import { InitService } from "./_services/init.service";
 import UnloggedUserInformation from "./component/molecule/UnloggedUserInformation";
 import UserInstruction from "./component/molecule/UserInstruction";
 import { Dialogs } from "./views/content/board/component/organism/Dialogs";
-import { calendars } from "./views/content/calendar/calendar.manager";
 import { Parameter } from "./views/content/calendar/template/Organisation";
 
 const [, { getSelectedMenu, setSelectedMenu, getActiveMapId }] = useStateGui();
@@ -38,16 +42,14 @@ export default () => {
     document.addEventListener("contextmenu", (e) => e.preventDefault())
   );
 
-  createEffect(
-    on(getSelectedMenu, async () => {
-      console.log("selected menu:", getSelectedMenu(), getActiveMapId());
-
-      if (getActiveMapId() && getSelectedMenu() != "dashboard") {
-        if (calendars().length > 0) return;
-        else await InitService.getAll();
-      }
-    })
-  );
+  // eslint-disable-next-line solid/reactivity
+  createEffect(async () => {
+    if (getActiveMapId() && authenticated()) {
+      enableSpinningWheel();
+      await InitService.getAll();
+      disableSpinningWheel();
+    }
+  });
 
   createEffect(() => {
     if (getSelectedMenu() != "graphicage") {
@@ -58,9 +60,7 @@ export default () => {
   const logged = () => (getAuthenticatedUser() ? true : false);
 
   const inGraphicage = () =>
-    getSelectedMenu() == "graphicage" ||
-    getSelectedMenu() == "schools" ||
-    getSelectedMenu() == "stops";
+    ["graphicage", "schools", "stops"].includes(getSelectedMenu());
 
   return (
     <div>
