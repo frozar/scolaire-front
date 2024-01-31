@@ -107,12 +107,12 @@ export function GradeEditBoard() {
         <div class="my-4" />
         <Show when={bufferCalendar() != undefined}>
           <GradeTimesScheduleWrapper />
+          <HourRuleList
+            item={selectedGrade}
+            setItem={setSelectedGrade}
+            enabled={!useSchoolSchedule()}
+          />
         </Show>
-        <HourRuleList
-          item={selectedGrade}
-          setItem={setSelectedGrade}
-          enabled={!useSchoolSchedule()}
-        />
       </div>
 
       <BoardFooterActions

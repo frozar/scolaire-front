@@ -1,4 +1,4 @@
-import { GradeEntity, HourFormat } from "../../../../../_entities/grade.entity";
+import { GradeEntity } from "../../../../../_entities/grade.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { SchoolDetailUtils } from "../../../../../utils/school-details.utils";
 import TimesInputWrapper from "../molecule/TimesInputWrapper";
@@ -49,24 +49,20 @@ export function SchoolHoursSlots(props: SchoolHoursSlotsProps) {
     });
   }
 
-  function hourValue(value: HourFormat | null) {
-    return value ? GradeEntity.getStringFromHourFormat(value) : "--";
-  }
-
   return (
     <>
       <TimesInputWrapper
         label="Aller"
-        startValue={hourValue(schoolHours().startHourComing)}
-        endValue={hourValue(schoolHours().endHourComing)}
+        startValue={schoolHours().startHourComing}
+        endValue={schoolHours().endHourComing}
         onInputStart={onInputComingStart}
         onInputEnd={onInputComingEnd}
         disabled={!schoolDetailEditing()}
       />
       <TimesInputWrapper
         label="Retour"
-        startValue={hourValue(schoolHours().startHourGoing)}
-        endValue={hourValue(schoolHours().endHourGoing)}
+        startValue={schoolHours().startHourGoing}
+        endValue={schoolHours().endHourGoing}
         onInputStart={onInputGoingStart}
         onInputEnd={onInputGoingEnd}
         disabled={!schoolDetailEditing()}

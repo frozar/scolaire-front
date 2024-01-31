@@ -1,5 +1,4 @@
 import { JSXElement } from "solid-js";
-import { GradeEntity, HourFormat } from "../../../../../_entities/grade.entity";
 import CollapsibleElement from "../../../board/component/organism/CollapsibleElement";
 import TimesInputWrapper from "../molecule/TimesInputWrapper";
 import { selectedGrade, setSelectedGrade } from "./GradeEditBoard";
@@ -10,10 +9,6 @@ export function GradeBoardDetailsSchedules(): JSXElement {
     const gradeCalendar = selectedGrade()?.calendar;
     if (gradeCalendar) return gradeCalendar.name;
     else return "Pas de calendrier assigné";
-  }
-
-  function hourValue(value: HourFormat | null | undefined) {
-    return value ? GradeEntity.getStringFromHourFormat(value) : "--";
   }
 
   return (
@@ -31,16 +26,16 @@ export function GradeBoardDetailsSchedules(): JSXElement {
         >
           <TimesInputWrapper
             label="Matin"
-            startValue={hourValue(selectedGrade()?.hours.startHourComing)}
-            endValue={hourValue(selectedGrade()?.hours.endHourComing)}
+            startValue={selectedGrade()?.hours.startHourComing}
+            endValue={selectedGrade()?.hours.endHourComing}
             disabled={true}
             onInputStart={() => ""}
             onInputEnd={() => ""}
           />
           <TimesInputWrapper
             label="Après-midi"
-            startValue={hourValue(selectedGrade()?.hours.startHourGoing)}
-            endValue={hourValue(selectedGrade()?.hours.endHourGoing)}
+            startValue={selectedGrade()?.hours.startHourGoing}
+            endValue={selectedGrade()?.hours.endHourGoing}
             disabled={true}
             onInputStart={() => ""}
             onInputEnd={() => ""}

@@ -87,6 +87,7 @@ export function GradeTimesScheduleWrapper(): JSXElement {
   function onChangeUseSchoolSchedule() {
     setUseSchoolSchedule((prev) => !prev);
   }
+
   return (
     <div>
       <div class="text-xl">Tranches horaires:</div>
@@ -97,24 +98,16 @@ export function GradeTimesScheduleWrapper(): JSXElement {
       />
       <TimesInputWrapper
         label="Aller"
-        startValue={GradeEntity.getStringFromHourFormat(
-          bufferHours().startHourComing
-        )}
-        endValue={GradeEntity.getStringFromHourFormat(
-          bufferHours().endHourComing
-        )}
+        startValue={bufferHours().startHourComing}
+        endValue={bufferHours().endHourComing}
         onInputStart={onInputComingStart}
         onInputEnd={onInputComingEnd}
         disabled={useSchoolSchedule()}
       />
       <TimesInputWrapper
         label="Retour"
-        startValue={GradeEntity.getStringFromHourFormat(
-          bufferHours().startHourGoing
-        )}
-        endValue={GradeEntity.getStringFromHourFormat(
-          bufferHours().endHourGoing
-        )}
+        startValue={bufferHours().startHourGoing}
+        endValue={bufferHours().endHourGoing}
         onInputStart={onInputGoingStart}
         onInputEnd={onInputGoingEnd}
         disabled={useSchoolSchedule()}

@@ -8,7 +8,7 @@ import {
 } from "solid-js";
 import { HourRuleType } from "../../../../../_entities/_utils.entity";
 import { CalendarDayEnum } from "../../../../../_entities/calendar.entity";
-import { GradeEntity, GradeType } from "../../../../../_entities/grade.entity";
+import { GradeType } from "../../../../../_entities/grade.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { TimeUtils } from "../../../../../_entities/time.utils";
 import { addNewUserInformation } from "../../../../../signaux";
@@ -170,10 +170,8 @@ export function HourRuleItem(props: HourRuleProps) {
       <Show when={tripType() == 1 || tripType() == 2}>
         <TimesInputWrapper
           label="Aller"
-          startValue={GradeEntity.getStringFromHourFormat(
-            bufferRule().startComing
-          )}
-          endValue={GradeEntity.getStringFromHourFormat(bufferRule().endComing)}
+          startValue={bufferRule().startComing}
+          endValue={bufferRule().endComing}
           onInputStart={onInputComingStart}
           onInputEnd={onInputComingEnd}
           disabled={!props.disabled}
@@ -183,10 +181,8 @@ export function HourRuleItem(props: HourRuleProps) {
       <Show when={tripType() == 1 || tripType() == 3}>
         <TimesInputWrapper
           label="Retour"
-          startValue={GradeEntity.getStringFromHourFormat(
-            bufferRule().startGoing
-          )}
-          endValue={GradeEntity.getStringFromHourFormat(bufferRule().endGoing)}
+          startValue={bufferRule().startGoing}
+          endValue={bufferRule().endGoing}
           onInputStart={onInputGoingStart}
           onInputEnd={onInputGoingEnd}
           disabled={!props.disabled}
