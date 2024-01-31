@@ -8,7 +8,7 @@ import {
 } from "@thisbeyond/solid-dnd";
 import { For, createSignal } from "solid-js";
 
-const Sortable = (props) => {
+const Sortable = (props: { item: number }) => {
   const sortable = createSortable(props.item);
   return (
     <div
@@ -22,7 +22,7 @@ const Sortable = (props) => {
 };
 
 export const ServiceLeftBoardContent = () => {
-  const [items, setItems] = createSignal([1, 2, 3]);
+  const [items, setItems] = createSignal([100, 200, 300]);
   const [activeItem, setActiveItem] = createSignal(null);
   const ids = () => items();
 
