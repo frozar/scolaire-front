@@ -1,6 +1,7 @@
-import { Show, createEffect, createSignal, onCleanup } from "solid-js";
+import { Show, createEffect, createSignal, on, onCleanup } from "solid-js";
 import { Transition } from "solid-transition-group";
 import Modal from "../../../component/molecule/Modal";
+import { authenticated } from "../../../signaux";
 import CreateMap from "./CreateMap";
 import DeleteMapConfirmation from "./DeleteMapConfirmation";
 import MapGrid from "./component/molecule/MapGrid";
@@ -32,13 +33,13 @@ export function closeCreateMapModal() {
 }
 
 export default function () {
-  createEffect(() => {
-    fetchUserMaps();
-  });
+  createEffect(
+    on(authenticated, () => {
+      if (authenticated()) fetchUserMaps();
+    })
+  );
 
-  onCleanup(() => {
-    setUserMaps([]);
-  });
+  onCleanup(() => setUserMaps([]));
 
   return (
     <div class="px-10 w-full bg-white">
@@ -57,9 +58,6 @@ export default function () {
         <CreateMap />
       </Modal>
 
-      {/* TODO: Use the Modal wrapper for the DeleteMapConfirmation component 
-                as it is the case for CreateMap
-      */}
       <Transition
         name="slide-fade"
         enterActiveClass="ease-out duration-300"

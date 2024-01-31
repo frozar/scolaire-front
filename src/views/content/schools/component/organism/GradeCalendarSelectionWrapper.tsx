@@ -3,7 +3,7 @@ import { CalendarType } from "../../../../../_entities/calendar.entity";
 import { SelectInput } from "../../../../../component/atom/SelectInput";
 import { LabeledCheckbox } from "../../../../../component/molecule/LabeledCheckbox";
 import { SchoolUtils } from "../../../../../utils/school.utils";
-import { calendars } from "../../../calendar/template/Calendar";
+import { calendars } from "../../../calendar/calendar.manager";
 import { selectedGrade } from "./GradeEditBoard";
 import { schoolDetailsItem } from "./SchoolDetails";
 

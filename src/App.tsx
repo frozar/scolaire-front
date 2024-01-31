@@ -5,7 +5,12 @@ import Layout from "./views/layout/component/template/Layout";
 
 import SpinningWheel from "./component/SpinningWheel";
 import InnerModal from "./component/molecule/InnerModal";
-import { getAuthenticatedUser } from "./signaux";
+import {
+  authenticated,
+  disableSpinningWheel,
+  enableSpinningWheel,
+  getAuthenticatedUser,
+} from "./signaux";
 import ClearConfirmationDialogBox from "./userInformation/ClearConfirmationDialogBox";
 import DisplayUserInformation from "./userInformation/DisplayUserInformation";
 import DragAndDropSummary from "./userInformation/DragAndDropSummary";
@@ -20,21 +25,30 @@ import ExportConfirmationDialogBox from "./views/content/map/rightMapMenu/export
 import { tryConnection } from "./views/layout/authentication";
 
 import "./App.css";
+import { InitService } from "./_services/init.service";
 import UnloggedUserInformation from "./component/molecule/UnloggedUserInformation";
 import UserInstruction from "./component/molecule/UserInstruction";
 import { Dialogs } from "./views/content/board/component/organism/Dialogs";
 import { Parameter } from "./views/content/calendar/template/Organisation";
 
-const [, { getSelectedMenu }] = useStateGui();
+const [, { getSelectedMenu, setSelectedMenu, getActiveMapId }] = useStateGui();
 
 export default () => {
-  onMount(async () => {
-    await tryConnection();
-  });
+  setSelectedMenu("dashboard");
+  onMount(async () => await tryConnection());
 
-  createEffect(() => {
-    // This line is to disable right click menu, necessary to remove point in line under construction with the right click
-    document.addEventListener("contextmenu", (e) => e.preventDefault());
+  // This line is to disable right click menu, necessary to remove point in line under construction with the right click
+  createEffect(() =>
+    document.addEventListener("contextmenu", (e) => e.preventDefault())
+  );
+
+  // eslint-disable-next-line solid/reactivity
+  createEffect(async () => {
+    if (getActiveMapId() && authenticated()) {
+      enableSpinningWheel();
+      await InitService.getAll();
+      disableSpinningWheel();
+    }
   });
 
   createEffect(() => {
@@ -44,6 +58,9 @@ export default () => {
   });
 
   const logged = () => (getAuthenticatedUser() ? true : false);
+
+  const inGraphicage = () =>
+    ["graphicage", "schools", "stops"].includes(getSelectedMenu());
 
   return (
     <div>
@@ -63,12 +80,7 @@ export default () => {
                 <Parameter />
               </Match>
 
-              <Match
-                when={
-                  getSelectedMenu() != "dashboard" ||
-                  getSelectedMenu() != "parametres"
-                }
-              >
+              <Match when={inGraphicage()}>
                 <Map />
                 <ContextManager />
               </Match>

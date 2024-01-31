@@ -1,4 +1,4 @@
-import { Show, createEffect, createSignal, onMount } from "solid-js";
+import { Show, createSignal, onMount } from "solid-js";
 
 import { useStateGui } from "../../../StateGui";
 
@@ -10,13 +10,14 @@ import { ImportCsvCanvas } from "../../../component/ImportCsvCanvas";
 import ConfirmStopAddTrip from "./ConfirmStopAddTripBox";
 
 import "leaflet/dist/leaflet.css";
-import { InitService, InitType } from "../../../_services/init.service";
 import { addNewUserInformation, getLeafletMap } from "../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../type";
 import { onBoard } from "../board/component/template/ContextManager";
-import { BusLines } from "./component/organism/BusLines";
+import { BusLines, getLines } from "./component/organism/BusLines";
 import { MapPanels } from "./component/organism/MapPanels";
 import { Points } from "./component/organism/Points";
+import { getSchools } from "./component/organism/SchoolPoints";
+import { getStops } from "./component/organism/StopPoints";
 
 const [, { getActiveMapId }] = useStateGui();
 function buildMap(div: HTMLDivElement) {
@@ -30,15 +31,11 @@ function buildMap(div: HTMLDivElement) {
 }
 
 let mapDiv: HTMLDivElement;
-const [init, setinit] = createSignal<InitType>();
 
 export default function () {
   const [displayImportCsvCanvas, setDisplayImportCsvCanvas] =
     createSignal(false);
-  // eslint-disable-next-line solid/reactivity
-  createEffect(async () => {
-    if (getActiveMapId()) setinit(await InitService.getAll());
-  });
+
   onMount(() => {
     // Manage shortcut keyboard event
     // for (const handler of listHandlerLMap) {
@@ -57,12 +54,6 @@ export default function () {
     }
   });
 
-  // onCleanup(() => {
-  //   // Manage shortcut keyboard event
-  //   for (const handler of listHandlerLMap) {
-  //     // document.body.removeEventListener("keydown", handler);
-  //   }
-  // });
   return (
     <Show when={getActiveMapId()}>
       <Show when={onBoard() == "line"}>
@@ -83,15 +74,11 @@ export default function () {
       <div ref={mapDiv} id="main-map" />
       <Points
         leafletMap={getLeafletMap() as L.Map}
-        stops={init()?.stops ?? []}
-        schools={init()?.schools ?? []}
+        stops={getStops()}
+        schools={getSchools()}
       />
-      <BusLines busLines={init()?.busLines ?? []} />
+      <BusLines busLines={getLines()} />
       <Trips map={getLeafletMap() as L.Map} />
-      {/* <div class="z-[1000] absolute top-[45%] right-[15px]">
-        <RightMapMenu />
-      </div> */}
-      {/* TODO Modify and re-activate export and generate functionalities */}
       <ConfirmStopAddTrip />
     </Show>
   );

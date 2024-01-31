@@ -1,3 +1,4 @@
+import { createSignal } from "solid-js";
 import {
   CalendarDayEnum,
   CalendarPeriodType,
@@ -15,11 +16,12 @@ import { CalendarService } from "../../../_services/calendar.service";
 import { CalendarUtils } from "./calendar.utils";
 import {
   currentCalendar,
-  setCalendars,
   setCalendarsPeriod,
   setCurrentCalendar,
   setOnCalendarsPeriod,
 } from "./template/Calendar";
+
+export const [calendars, setCalendars] = createSignal<CalendarType[]>([]);
 
 // * this namespace is to manage the editioning calendarPeriod
 export namespace CalendarManager {

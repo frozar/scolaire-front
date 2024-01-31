@@ -10,12 +10,8 @@ import {
   CalendarPeriodType,
   CalendarType,
 } from "../../../../_entities/calendar.entity";
-import { InitService } from "../../../../_services/init.service";
-import {
-  disableSpinningWheel,
-  displayedSpinningWheel,
-  enableSpinningWheel,
-} from "../../../../signaux";
+import { displayedSpinningWheel } from "../../../../signaux";
+import { calendars } from "../calendar.manager";
 import { CalendarPanelsActions } from "../molecule/CalendarPanelsActions";
 import { CalendarEdition } from "../organism/CalendarEdtion";
 import { CalendarPeriod } from "../organism/CalendarPeriod";
@@ -41,7 +37,6 @@ export const [calendarsPeriod, setCalendarsPeriod] = createSignal<
 >([]);
 
 export const [currentMonth, setCurrentMonth] = createSignal<Date>(new Date());
-export const [calendars, setCalendars] = createSignal<CalendarType[]>([]);
 export const [currentCalendar, setCurrentCalendar] =
   createSignal<CalendarType>();
 
@@ -49,8 +44,6 @@ export const [onCalendarPanel, setOnCalendarPanel] =
   createSignal<CalendarPanelEnum>(CalendarPanelEnum.calendarManager);
 
 export function Calendar() {
-  enableSpinningWheel();
-
   createEffect(() => {
     if (calendarsPeriod().length > 0)
       setOnCalendarsPeriod(calendarsPeriod()[0]);
@@ -59,8 +52,6 @@ export function Calendar() {
   onMount(async () => {
     const today = new Date();
     setCurrentMonth(new Date(today.getFullYear(), today.getMonth()));
-    if (calendars().length == 0) await InitService.loadCalendars();
-    disableSpinningWheel();
   });
 
   return (
