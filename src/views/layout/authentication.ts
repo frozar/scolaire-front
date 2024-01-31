@@ -110,9 +110,7 @@ async function getAuthUrl() {
 
 export async function tryConnection() {
   let user: xanoUser | undefined = getAuthenticatedUser();
-  if (!user) {
-    user = getStoredData(StoredDataTypeEnum.user) ?? undefined;
-  }
+  if (!user) user = getStoredData(StoredDataTypeEnum.user) ?? undefined;
 
   if (user) {
     setAuthenticatedUser(user);

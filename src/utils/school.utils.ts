@@ -7,7 +7,7 @@ import { SchoolType } from "../_entities/school.entity";
 import { SchoolService } from "../_services/school.service";
 import { addNewUserInformation } from "../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
-import { calendars } from "../views/content/calendar/template/Calendar";
+import { calendars } from "../views/content/calendar/calendar.manager";
 import {
   getLines,
   setLines,

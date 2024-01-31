@@ -9,7 +9,8 @@ import {
 } from "../../../_entities/trip-direction.entity";
 import { addNewUserInformation } from "../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../type";
-import { calendars, currentCalendar } from "./template/Calendar";
+import { calendars } from "./calendar.manager";
+import { currentCalendar } from "./template/Calendar";
 
 export namespace CalendarUtils {
   export function getById(calendarId: number): CalendarType {

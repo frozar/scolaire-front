@@ -1,4 +1,4 @@
-import { Match, Show, Switch, createEffect, onMount } from "solid-js";
+import { Match, Show, Switch, createEffect, on, onMount } from "solid-js";
 import { useStateGui } from "./StateGui";
 
 import Layout from "./views/layout/component/template/Layout";
@@ -20,22 +20,34 @@ import ExportConfirmationDialogBox from "./views/content/map/rightMapMenu/export
 import { tryConnection } from "./views/layout/authentication";
 
 import "./App.css";
+import { InitService } from "./_services/init.service";
 import UnloggedUserInformation from "./component/molecule/UnloggedUserInformation";
 import UserInstruction from "./component/molecule/UserInstruction";
 import { Dialogs } from "./views/content/board/component/organism/Dialogs";
+import { calendars } from "./views/content/calendar/calendar.manager";
 import { Parameter } from "./views/content/calendar/template/Organisation";
 
-const [, { getSelectedMenu }] = useStateGui();
+const [, { getSelectedMenu, setSelectedMenu, getActiveMapId }] = useStateGui();
 
 export default () => {
-  onMount(async () => {
-    await tryConnection();
-  });
+  setSelectedMenu("dashboard");
+  onMount(async () => await tryConnection());
 
-  createEffect(() => {
-    // This line is to disable right click menu, necessary to remove point in line under construction with the right click
-    document.addEventListener("contextmenu", (e) => e.preventDefault());
-  });
+  // This line is to disable right click menu, necessary to remove point in line under construction with the right click
+  createEffect(() =>
+    document.addEventListener("contextmenu", (e) => e.preventDefault())
+  );
+
+  createEffect(
+    on(getSelectedMenu, async () => {
+      console.log("selected menu:", getSelectedMenu(), getActiveMapId());
+
+      if (getActiveMapId() && getSelectedMenu() != "dashboard") {
+        if (calendars().length > 0) return;
+        else await InitService.getAll();
+      }
+    })
+  );
 
   createEffect(() => {
     if (getSelectedMenu() != "graphicage") {
@@ -44,6 +56,11 @@ export default () => {
   });
 
   const logged = () => (getAuthenticatedUser() ? true : false);
+
+  const inGraphicage = () =>
+    getSelectedMenu() == "graphicage" ||
+    getSelectedMenu() == "schools" ||
+    getSelectedMenu() == "stops";
 
   return (
     <div>
@@ -63,12 +80,7 @@ export default () => {
                 <Parameter />
               </Match>
 
-              <Match
-                when={
-                  getSelectedMenu() != "dashboard" ||
-                  getSelectedMenu() != "parametres"
-                }
-              >
+              <Match when={inGraphicage()}>
                 <Map />
                 <ContextManager />
               </Match>

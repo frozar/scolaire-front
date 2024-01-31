@@ -7,9 +7,8 @@ import {
   TripDirectionEnum,
 } from "../../../../_entities/trip-direction.entity";
 import { LabeledCheckbox } from "../../../../component/molecule/LabeledCheckbox";
-import { CalendarManager } from "../calendar.manager";
+import { CalendarManager, calendars } from "../calendar.manager";
 import { CalendarUtils } from "../calendar.utils";
-import { calendars } from "../template/Calendar";
 import { RuleItemRadioBtnGroup } from "./RuleItemRadioBtnGroup";
 
 interface CalendarRuleItemProps {

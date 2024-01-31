@@ -14,10 +14,8 @@ import {
   TripDirectionType,
   setTripDirections,
 } from "../_entities/trip-direction.entity";
-import {
-  setCalendars,
-  setCalendarsPeriod,
-} from "../views/content/calendar/template/Calendar";
+import { setCalendars } from "../views/content/calendar/calendar.manager";
+import { setCalendarsPeriod } from "../views/content/calendar/template/Calendar";
 import { setLines } from "../views/content/map/component/organism/BusLines";
 import { setSchools } from "../views/content/map/component/organism/SchoolPoints";
 import { setStops } from "../views/content/map/component/organism/StopPoints";
@@ -27,18 +25,15 @@ type InitDBType = {
   school: SchoolDBType[];
   stops: StopDBType[];
   bus_lines: LineDBType[];
+  calendars: CalendarDBType[];
+  calendars_periods: CalendarPeriodDBType[];
+  trip_directions: TripDirectionType[];
 };
 
 export type InitType = {
   schools: SchoolType[];
   stops: StopType[];
   busLines: LineType[];
-};
-
-export type InitDBCalendarType = {
-  calendars: CalendarDBType[];
-  calendars_period: CalendarPeriodDBType[];
-  trips_direction: TripDirectionType[];
 };
 
 export namespace InitService {
@@ -58,27 +53,20 @@ export namespace InitService {
     const busLines = dbInit.bus_lines.map((dbLine: LineDBType) =>
       BusLineEntity.build(dbLine)
     );
-
     setLines(busLines);
 
-    InitService.loadCalendars();
+    const calendars = dbInit.calendars.map((calendar) =>
+      CalendarEntity.build(calendar)
+    );
+    setCalendars(calendars);
+
+    const calendarPeriods = dbInit.calendars_periods.map((calendarPeriod) =>
+      CalendarEntity.buildCalendarPeriod(calendarPeriod)
+    );
+    setCalendarsPeriod(calendarPeriods);
+
+    setTripDirections(dbInit.trip_directions);
 
     return { schools, stops, busLines };
-  }
-
-  export async function loadCalendars(): Promise<void> {
-    const dbInit: InitDBCalendarType = await ServiceUtils.get("/calendars");
-
-    setCalendars(
-      dbInit.calendars.map((calendar) => CalendarEntity.build(calendar))
-    );
-
-    setCalendarsPeriod(
-      dbInit.calendars_period.map((calendarPeriod) =>
-        CalendarEntity.buildCalendarPeriod(calendarPeriod)
-      )
-    );
-
-    setTripDirections(dbInit.trips_direction);
   }
 }
