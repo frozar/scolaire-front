@@ -1,63 +1,65 @@
-import {
-  DragDropProvider,
-  DragDropSensors,
-  DragOverlay,
-  SortableProvider,
-  closestCenter,
-  createSortable,
-} from "@thisbeyond/solid-dnd";
-import { For, createSignal } from "solid-js";
+// import {
+//   DragDropProvider,
+//   DragDropSensors,
+//   DragOverlay,
+//   SortableProvider,
+//   closestCenter,
+//   createSortable,
+// } from "@thisbeyond/solid-dnd";
 
-const Sortable = (props: { item: number }) => {
-  const sortable = createSortable(props.item);
-  return (
-    <div
-      use:sortable
-      class="sortable"
-      classList={{ "opacity-25": sortable.isActiveDraggable }}
-    >
-      {props.item}
-    </div>
-  );
+import { For, createEffect, createSignal } from "solid-js";
+import { getLines } from "../../map/component/organism/BusLines";
+
+import { ServiceTripCard } from "../molecule/ServiceTripCard";
+import "./ServiceLeftBoardContent.css";
+
+// const Sortable = (props: { item: number }) => {
+//   const sortable = createSortable(props.item);
+//   return (
+//     <div
+//       use:sortable
+//       class="sortable"
+//       classList={{ "opacity-25": sortable.isActiveDraggable }}
+//     >
+//       {props.item}
+//     </div>
+//   );
+// };
+export type DraggableTripsType = {
+  tripName: string;
+  lineName: string;
+  duration: number;
+  hlp: number;
 };
-
 export const ServiceLeftBoardContent = () => {
-  const [items, setItems] = createSignal([100, 200, 300]);
-  const [activeItem, setActiveItem] = createSignal(null);
-  const ids = () => items();
+  const [tripsWithoutService, setTripsWithoutService] = createSignal<
+    DraggableTripsType[]
+  >([]);
 
-  const onDragStart = ({ draggable }) => setActiveItem(draggable.id);
+  setTripsWithoutService(() => {
+    return getLines().flatMap((line) =>
+      line.trips.map((trip) => {
+        return {
+          tripName: trip.name,
+          lineName: line.name,
+          duration: trip.metrics?.duration,
+          hlp: 10,
+        } as DraggableTripsType;
+      })
+    );
+  });
 
-  const onDragEnd = ({ draggable, droppable }) => {
-    if (draggable && droppable) {
-      const currentItems = ids();
-      const fromIndex = currentItems.indexOf(draggable.id);
-      const toIndex = currentItems.indexOf(droppable.id);
-      if (fromIndex !== toIndex) {
-        const updatedItems = currentItems.slice();
-        updatedItems.splice(toIndex, 0, ...updatedItems.splice(fromIndex, 1));
-        setItems(updatedItems);
-      }
-    }
-    setActiveItem(null);
-  };
+  createEffect(() =>
+    console.log("tripsWithoutService()", tripsWithoutService())
+  );
 
   return (
-    <DragDropProvider
-      onDragStart={onDragStart}
-      onDragEnd={onDragEnd}
-      collisionDetector={closestCenter}
-    >
-      <DragDropSensors />
-      <div class="column grid-flow-col self-stretch">
-        <SortableProvider ids={ids()}>
-          <For each={items()}>{(item) => <Sortable item={item} />}</For>
-        </SortableProvider>
-      </div>
-      <DragOverlay>
-        <div class="sortable">{activeItem()}</div>
-      </DragOverlay>
-    </DragDropProvider>
+    // TODO: Add filter component
+    <div id="trips-card-list">
+      <For each={tripsWithoutService()}>
+        {(tripWithoutService) => <ServiceTripCard trip={tripWithoutService} />}
+      </For>
+    </div>
   );
 };
 

@@ -85,13 +85,6 @@ export default () => {
                 <ServiceTemplate />
               </Match>
 
-              {/* <Match
-                when={
-                  !["dashboard", "parametres", "service"].includes(
-                    getSelectedMenu()
-                  )
-                }
-              > */}
               <Match when={inGraphicage()}>
                 <Map />
                 <ContextManager />
