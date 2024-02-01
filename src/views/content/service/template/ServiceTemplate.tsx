@@ -1,6 +1,7 @@
 import {
   DragDropProvider,
   DragDropSensors,
+  DragEvent,
   DragOverlay,
 } from "@thisbeyond/solid-dnd";
 import { JSXElement } from "solid-js";
@@ -13,14 +14,13 @@ import {
 } from "../organism/ServiceLeftBoardContent";
 import "./ServiceTemplate.css";
 
-// TODO: Make components
 export function ServiceTemplate(): JSXElement {
-  function onDragOver({ draggable, droppable }) {
-    console.log("TODO");
+  function onDragOver({ draggable, droppable }: DragEvent) {
+    console.log("TODO", draggable, droppable);
   }
 
-  function onDragEnd({ draggable, droppable }) {
-    console.log("TODO");
+  function onDragEnd({ draggable, droppable }: DragEvent) {
+    console.log("TODO", draggable, droppable);
   }
 
   function tripCardDragged(tripId: number): DraggableTripType {
@@ -38,7 +38,6 @@ export function ServiceTemplate(): JSXElement {
             <div id="service-left-board-header-title">
               Liste des courses à assigner
             </div>
-            {/* SearchBar */}
             <div id="service-left-board-searchbar">
               <InputSearch onInput={() => console.log("todo")} />
             </div>
@@ -46,7 +45,6 @@ export function ServiceTemplate(): JSXElement {
           <ServiceLeftBoardContent />
         </div>
         <DragOverlay>
-          {/* {(draggable) => <div class="sortable">{draggable.id}</div>} */}
           {(draggable) => (
             <ServiceTripCardDragged
               trip={tripCardDragged(draggable?.id as number)}

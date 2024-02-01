@@ -1,30 +1,11 @@
-import {
-  //   DragDropProvider,
-  //   DragDropSensors,
-  //   DragOverlay,
-  //   closestCenter,
-  //   createSortable,
-  SortableProvider,
-} from "@thisbeyond/solid-dnd";
+import { SortableProvider } from "@thisbeyond/solid-dnd";
 
-import { For, createEffect, createSignal } from "solid-js";
+import { For, createSignal } from "solid-js";
 import { getLines } from "../../map/component/organism/BusLines";
 
 import { ServiceTripCard } from "../molecule/ServiceTripCard";
 import "./ServiceLeftBoardContent.css";
 
-// const Sortable = (props: { item: number }) => {
-//   const sortable = createSortable(props.item);
-//   return (
-//     <div
-//       use:sortable
-//       class="sortable"
-//       classList={{ "opacity-25": sortable.isActiveDraggable }}
-//     >
-//       {props.item}
-//     </div>
-//   );
-// };
 export type DraggableTripType = {
   tripId: number;
   tripName: string;
@@ -51,10 +32,6 @@ export const ServiceLeftBoardContent = () => {
     );
   });
 
-  createEffect(() =>
-    console.log("tripsWithoutService()", tripsWithoutService())
-  );
-
   function ids(): number[] {
     return tripsWithoutService().map(
       (tripWithoutService) => tripWithoutService.tripId
@@ -74,7 +51,3 @@ export const ServiceLeftBoardContent = () => {
     </div>
   );
 };
-
-// export function ServiceLeftBoardContent(): JSXElement {
-//   return <div>A</div>;
-// }
