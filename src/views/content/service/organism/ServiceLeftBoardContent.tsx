@@ -1,11 +1,11 @@
-// import {
-//   DragDropProvider,
-//   DragDropSensors,
-//   DragOverlay,
-//   SortableProvider,
-//   closestCenter,
-//   createSortable,
-// } from "@thisbeyond/solid-dnd";
+import {
+  //   DragDropProvider,
+  //   DragDropSensors,
+  //   DragOverlay,
+  //   closestCenter,
+  //   createSortable,
+  SortableProvider,
+} from "@thisbeyond/solid-dnd";
 
 import { For, createEffect, createSignal } from "solid-js";
 import { getLines } from "../../map/component/organism/BusLines";
@@ -25,26 +25,28 @@ import "./ServiceLeftBoardContent.css";
 //     </div>
 //   );
 // };
-export type DraggableTripsType = {
+export type DraggableTripType = {
+  tripId: number;
   tripName: string;
   lineName: string;
   duration: number;
   hlp: number;
 };
-export const ServiceLeftBoardContent = () => {
-  const [tripsWithoutService, setTripsWithoutService] = createSignal<
-    DraggableTripsType[]
-  >([]);
+export const [tripsWithoutService, setTripsWithoutService] = createSignal<
+  DraggableTripType[]
+>([]);
 
+export const ServiceLeftBoardContent = () => {
   setTripsWithoutService(() => {
     return getLines().flatMap((line) =>
       line.trips.map((trip) => {
         return {
+          tripId: trip.id,
           tripName: trip.name,
           lineName: line.name,
           duration: trip.metrics?.duration,
           hlp: 10,
-        } as DraggableTripsType;
+        } as DraggableTripType;
       })
     );
   });
@@ -53,12 +55,22 @@ export const ServiceLeftBoardContent = () => {
     console.log("tripsWithoutService()", tripsWithoutService())
   );
 
+  function ids(): number[] {
+    return tripsWithoutService().map(
+      (tripWithoutService) => tripWithoutService.tripId
+    );
+  }
+
   return (
     // TODO: Add filter component
     <div id="trips-card-list">
-      <For each={tripsWithoutService()}>
-        {(tripWithoutService) => <ServiceTripCard trip={tripWithoutService} />}
-      </For>
+      <SortableProvider ids={ids()}>
+        <For each={tripsWithoutService()}>
+          {(tripWithoutService) => (
+            <ServiceTripCard trip={tripWithoutService} />
+          )}
+        </For>
+      </SortableProvider>
     </div>
   );
 };

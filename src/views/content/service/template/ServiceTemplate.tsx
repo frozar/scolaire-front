@@ -5,7 +5,12 @@ import {
 } from "@thisbeyond/solid-dnd";
 import { JSXElement } from "solid-js";
 import InputSearch from "../../schools/component/molecule/InputSearch";
-import { ServiceLeftBoardContent } from "../organism/ServiceLeftBoardContent";
+import { ServiceTripCardDragged } from "../molecule/ServiceTripCardDragged";
+import {
+  DraggableTripType,
+  ServiceLeftBoardContent,
+  tripsWithoutService,
+} from "../organism/ServiceLeftBoardContent";
 import "./ServiceTemplate.css";
 
 // TODO: Make components
@@ -16,6 +21,12 @@ export function ServiceTemplate(): JSXElement {
 
   function onDragEnd({ draggable, droppable }) {
     console.log("TODO");
+  }
+
+  function tripCardDragged(tripId: number): DraggableTripType {
+    return tripsWithoutService().filter(
+      (tripWithoutService) => tripWithoutService.tripId == tripId
+    )[0];
   }
   return (
     <div>
@@ -35,7 +46,12 @@ export function ServiceTemplate(): JSXElement {
           <ServiceLeftBoardContent />
         </div>
         <DragOverlay>
-          {(draggable) => <div class="sortable">{draggable.id}</div>}
+          {/* {(draggable) => <div class="sortable">{draggable.id}</div>} */}
+          {(draggable) => (
+            <ServiceTripCardDragged
+              trip={tripCardDragged(draggable?.id as number)}
+            />
+          )}
         </DragOverlay>
       </DragDropProvider>
     </div>
