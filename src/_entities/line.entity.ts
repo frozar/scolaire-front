@@ -3,6 +3,7 @@ import { getSchools } from "../views/content/map/component/organism/SchoolPoints
 import { getStops } from "../views/content/map/component/organism/StopPoints";
 import { COLOR_DEFAULT_LINE } from "../views/content/map/constant";
 import { GradeDBType, GradeEntity, GradeType } from "./grade.entity";
+import { PathType } from "./path.entity";
 import { SchoolType } from "./school.entity";
 import { StopType } from "./stop.entity";
 import { TripDBType, TripEntity, TripType } from "./trip.entity";
@@ -31,6 +32,7 @@ export class BusLineEntity {
       setColor: setColor,
       selected: selected,
       setSelected: setSelected,
+      paths: dbLine.paths,
     };
   }
 
@@ -64,6 +66,7 @@ export class BusLineEntity {
       name: "my default name",
       selected: selected,
       setSelected: setSelected,
+      paths: [],
     };
   }
 
@@ -135,6 +138,7 @@ export type LineType = {
   setColor: Setter<string>;
   selected: Accessor<boolean>;
   setSelected: Setter<boolean>;
+  paths: PathType[];
 };
 
 export type LineDBType = {
@@ -145,4 +149,5 @@ export type LineDBType = {
   stops: { stop_id: number }[];
   grades: GradeDBType[];
   trips: TripDBType[];
+  paths: PathType[];
 };

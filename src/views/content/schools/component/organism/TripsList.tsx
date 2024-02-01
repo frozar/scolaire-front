@@ -5,7 +5,7 @@ import "./TripsList.css";
 
 export function TripsList(props: { trips: TripType[] }) {
   return (
-    <div class="trips-list">
+    <div class="line-list-content">
       <For each={props.trips}>{(trip) => <TripItem trip={trip} />}</For>
     </div>
   );

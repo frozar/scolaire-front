@@ -1,5 +1,6 @@
 import { TripDirectionEntity } from "../_entities/trip-direction.entity";
 import { TripType } from "../_entities/trip.entity";
+import { getLines } from "../views/content/map/component/organism/BusLines";
 import { getTrips } from "../views/content/map/component/organism/Trips";
 
 export namespace PathUtil {
@@ -25,5 +26,10 @@ export namespace PathUtil {
     });
 
     return haveReversedTrip;
+  }
+
+  export function getTripUsingPath(pathId: number, lineId: number): number {
+    const line = getLines().filter((line) => line.id == lineId)[0];
+    return line.trips.filter((trip) => trip.path?.id == pathId).length;
   }
 }
