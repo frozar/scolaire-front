@@ -7,6 +7,7 @@ import {
 } from "../../../map/component/organism/BusLines";
 import { getSchools } from "../../../map/component/organism/SchoolPoints";
 import { selectedTrip } from "../../../map/component/organism/Trips";
+import { selectedPath } from "../../../path/component/organism/PathDetail";
 import { selectedGrade } from "../../../schools/component/organism/GradeEditBoard";
 import { schoolDetailsItem } from "../../../schools/component/organism/SchoolDetails";
 import { stopDetailsItem } from "../../../stops/component/organism/StopDetails";
@@ -134,6 +135,15 @@ export default function () {
         }
         return [{ text: "Création d'une course" }];
 
+      case "path-details":
+        return [
+          linesCrumb,
+          {
+            text: getSelectedLine()?.name ?? "",
+            onClick: () => changeBoard("trip"),
+          },
+          { text: selectedPath()?.name ?? "" },
+        ];
       default:
         return [];
     }

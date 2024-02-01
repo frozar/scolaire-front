@@ -5,6 +5,8 @@ import { IconToolTip } from "../../../../../component/molecule/IconTooltip";
 import ArretsLogo from "../../../../../icons/ArretsLogo";
 import VoirieLogo from "../../../../../icons/VoirieLogo";
 import { PathUtil } from "../../../../../utils/path.utils";
+import { changeBoard } from "../../../board/component/template/ContextManager";
+import { setSelectedPath } from "../organism/PathDetail";
 
 import "./PathItem.css";
 
@@ -14,8 +16,13 @@ interface PathItemListProps {
 }
 
 export function PathItem(props: PathItemListProps) {
+  function onClickCard() {
+    setSelectedPath(props.path);
+    changeBoard("path-details");
+  }
+
   return (
-    <CardWrapper class="path-item">
+    <CardWrapper class="path-item" onClick={onClickCard}>
       <Pellet color={props.path.color} />
 
       <p>{props.path.name}</p>

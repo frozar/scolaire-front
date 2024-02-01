@@ -7,9 +7,10 @@ interface PathsProps {
 }
 
 export function Paths(props: PathsProps) {
+  const paths = () => props.line?.paths ?? [];
   return (
     <div class="line-list-content">
-      <For each={props.line.paths}>
+      <For each={paths()}>
         {(path) => <PathItem path={path} lineId={props.line.id as number} />}
       </For>
     </div>
