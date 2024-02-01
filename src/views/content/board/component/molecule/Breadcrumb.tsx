@@ -139,10 +139,10 @@ export default function () {
         return [
           linesCrumb,
           {
-            text: getSelectedLine()?.name ?? "",
+            text: getSelectedLine()?.name?.toLowerCase() ?? "",
             onClick: () => changeBoard("trip"),
           },
-          { text: selectedPath()?.name ?? "" },
+          { text: selectedPath()?.name.toLowerCase() ?? "" },
         ];
       default:
         return [];
