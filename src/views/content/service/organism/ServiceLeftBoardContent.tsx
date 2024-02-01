@@ -1,8 +1,6 @@
 import { SortableProvider } from "@thisbeyond/solid-dnd";
-
 import { For, createSignal } from "solid-js";
 import { getLines } from "../../map/component/organism/BusLines";
-
 import { ServiceTripCard } from "../molecule/ServiceTripCard";
 import "./ServiceLeftBoardContent.css";
 
@@ -40,6 +38,7 @@ export const ServiceLeftBoardContent = () => {
 
   return (
     // TODO: Add filter component
+    // TODO: Create new component TripCardList
     <div id="trips-card-list">
       <SortableProvider ids={ids()}>
         <For each={tripsWithoutService()}>
