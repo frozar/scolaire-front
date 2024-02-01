@@ -1,15 +1,3 @@
 .service-trip-card {
   @apply flex justify-between m-1 p-2 border rounded border-gray-base;
 }
-
-.service-trip-card-dragged {
-  @apply bg-white;
-}
-
-.service-trip-card-left {
-  @apply ml-1;
-}
-
-.service-trip-card-right {
-  @apply mr-1;
-}

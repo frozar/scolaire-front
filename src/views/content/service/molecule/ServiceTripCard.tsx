@@ -2,13 +2,18 @@ import { JSXElement } from "solid-js";
 
 import { createSortable } from "@thisbeyond/solid-dnd";
 
+import { ServiceTripCardLeft } from "../atom/ServiceTripCardLeft";
+import { ServiceTripCardMiddle } from "../atom/ServiceTripCardMiddle";
+import { ServiceTripCardRight } from "../atom/ServiceTripCardRight";
 import { DraggableTripType } from "../organism/ServiceLeftBoardContent";
 import "./ServiceTripCard.css";
 
-export function ServiceTripCard(props: {
+type ServiceTripCardProps = {
   trip: DraggableTripType;
-}): JSXElement {
-  // TODO: Make more components
+};
+
+export function ServiceTripCard(props: ServiceTripCardProps): JSXElement {
+  // eslint-disable-next-line solid/reactivity
   const sortable = createSortable(props.trip.tripId);
   return (
     <div
@@ -16,18 +21,9 @@ export function ServiceTripCard(props: {
       class="service-trip-card"
       classList={{ "bg-gray-base": sortable.isActiveDraggable }}
     >
-      <div class="service-trip-card-left">
-        <div>{props.trip.tripName}</div>
-        <div>{props.trip.lineName}</div>
-      </div>
-      <div class="service-trip-card-middle">
-        <div>Plage de départ</div>
-        <div>--:-- | --:--</div>
-      </div>
-      <div class="service-trip-card-right">
-        <div>{props.trip.duration}</div>
-        <div>{props.trip.hlp}</div>
-      </div>
+      <ServiceTripCardLeft trip={props.trip} />
+      <ServiceTripCardMiddle />
+      <ServiceTripCardRight trip={props.trip} />
     </div>
   );
 }
