@@ -164,7 +164,8 @@ export type SelectedMenuType =
   | "schools"
   | "parametres"
   | "support"
-  | "service";
+  | "service"
+  | "weight";
 
 export type MenuItemType = {
   menuItem: SelectedMenuType;

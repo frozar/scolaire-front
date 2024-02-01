@@ -89,6 +89,11 @@ export default () => {
                 <Map />
                 <ContextManager />
               </Match>
+
+              <Match when={getSelectedMenu() == "voirie"}>
+                <Map />
+                <ContextManager />
+              </Match>
             </Switch>
           </Show>
 
