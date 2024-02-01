@@ -1,4 +1,5 @@
 import { Accessor, Setter } from "solid-js";
+import { ButtonPanel } from "../../../../../component/atom/ButtonPanel";
 import { StopPanels } from "../organism/StopDetails";
 import "./StopDetailsPanelsButton.css";
 
@@ -12,21 +13,17 @@ interface PanelsButtonProps {
 export default function (props: PanelsButtonProps) {
   return (
     <div class="stop-details-panels-buttons">
-      <button
-        class="panel-button"
-        classList={{ active: props.onPanel() == StopPanels.grades }}
+      <ButtonPanel
+        text={"écoles:" + props.NbSchool}
         onClick={() => props.setOnPanel(StopPanels.grades)}
-      >
-        écoles: {props.NbSchool}
-      </button>
+        active={props.onPanel() == StopPanels.grades}
+      />
 
-      <button
-        class="panel-button"
-        classList={{ active: props.onPanel() == StopPanels.trips }}
+      <ButtonPanel
+        text={"Courses:" + props.NbTrips}
         onClick={() => props.setOnPanel(StopPanels.trips)}
-      >
-        Courses: {props.NbTrips}
-      </button>
+        active={props.onPanel() == StopPanels.trips}
+      />
     </div>
   );
 }

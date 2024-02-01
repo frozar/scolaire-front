@@ -1,0 +1,7 @@
+.panel-button {
+  @apply px-4 py-2 bg-green-light flex justify-center rounded-2xl;
+}
+
+.panel-button.active {
+  @apply bg-green-base;
+}
