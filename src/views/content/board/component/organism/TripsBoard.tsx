@@ -116,7 +116,7 @@ export function TripsBoard(props: { line: LineType }) {
           <TripsList trips={filteredTrips()} />
         </Match>
         <Match when={onTripBoardPanel() == TripBoardPanels.paths}>
-          <Paths />
+          <Paths line={props.line} />
         </Match>
       </Switch>
     </section>

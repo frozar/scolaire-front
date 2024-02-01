@@ -1,6 +1,6 @@
-.trips-list{
+.line-list-content {
   @apply pl-4;
-  overflow-y:auto;
+  overflow-y: auto;
   padding-right: 0.5rem;
   max-height: 80vh;
 }

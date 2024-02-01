@@ -1,0 +1,7 @@
+.icon-tooltip > .icon {
+  @apply w-[15px];
+}
+
+.icon-tooltip > .icon > svg {
+  @apply fill-green-base;
+}
