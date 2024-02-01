@@ -53,9 +53,9 @@ export class OsrmService {
 
     const timecode = 420;
 
-    const response = await ServiceUtils.generic(
+    const responses = await ServiceUtils.generic(
       host +
-        "/osrm/osrm_utils?map_id=" +
+        "/osrm/road?map_id=" +
         getActiveMapId() +
         "&timecode=" +
         timecode +
@@ -68,26 +68,28 @@ export class OsrmService {
         },
       }
     );
+    const response = responses[0];
+    const response_direct = responses[1];
 
-    const directWaypointsStringified = this.buildPositionURL([
-      points[0],
-      points[points.length - 1],
-    ]);
-    const response_direct = await ServiceUtils.generic(
-      host +
-        "/osrm/osrm_utils?map_id=" +
-        getActiveMapId() +
-        "&timecode=" +
-        timecode +
-        "&waypoints=" +
-        directWaypointsStringified,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    // const directWaypointsStringified = this.buildPositionURL([
+    //   points[0],
+    //   points[points.length - 1],
+    // ]);
+    // const response_direct = await ServiceUtils.generic(
+    //   host +
+    //     "/osrm/osrm_utils?map_id=" +
+    //     getActiveMapId() +
+    //     "&timecode=" +
+    //     timecode +
+    //     "&waypoints=" +
+    //     directWaypointsStringified,
+    //   {
+    //     method: "GET",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //   }
+    // );
 
     // const response_direct = await ServiceUtils.generic(
     //   osrm +
