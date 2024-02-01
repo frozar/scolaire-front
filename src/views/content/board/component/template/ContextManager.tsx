@@ -1,4 +1,4 @@
-import { Match, Switch, createEffect, createSignal } from "solid-js";
+import { Match, Show, Switch, createEffect, createSignal } from "solid-js";
 
 import { LineType } from "../../../../../_entities/line.entity";
 import { getSelectedLine } from "../../../map/component/organism/BusLines";
@@ -65,58 +65,60 @@ export default function () {
 
   return (
     <section>
-      <InformationBoardLayout>
-        <Switch>
-          <Match when={onBoard() == "line"}>
-            {/* <TripsBoard /> */}
-            <BusLinesBoard />
-          </Match>
-          <Match when={onBoard() == "line-add"}>
-            {/* <TripsBoard /> */}
-            <AddLineBoardContent />
-          </Match>
-          <Match when={onBoard() == "trip"}>
-            <TripsBoard line={getSelectedLine() as LineType} />
-          </Match>
-          <Match when={onBoard() == "trip-draw"}>
-            <DrawTripBoard />
-          </Match>
+      <Show when={onBoard()}>
+        <InformationBoardLayout>
+          <Switch>
+            <Match when={onBoard() == "line"}>
+              {/* <TripsBoard /> */}
+              <BusLinesBoard />
+            </Match>
+            <Match when={onBoard() == "line-add"}>
+              {/* <TripsBoard /> */}
+              <AddLineBoardContent />
+            </Match>
+            <Match when={onBoard() == "trip"}>
+              <TripsBoard line={getSelectedLine() as LineType} />
+            </Match>
+            <Match when={onBoard() == "trip-draw"}>
+              <DrawTripBoard />
+            </Match>
 
-          {/* Schools */}
-          <Match when={onBoard() == "schools"}>
-            <SchoolsBoard />
-          </Match>
+            {/* Schools */}
+            <Match when={onBoard() == "schools"}>
+              <SchoolsBoard />
+            </Match>
 
-          <Match when={onBoard() == "school-details"}>
-            <SchoolDetails />
-          </Match>
+            <Match when={onBoard() == "school-details"}>
+              <SchoolDetails />
+            </Match>
 
-          <Match
-            when={
-              onBoard() == "school-grade-add" ||
-              onBoard() == "school-grade-modify"
-            }
-          >
-            <GradeEditBoard />
-          </Match>
+            <Match
+              when={
+                onBoard() == "school-grade-add" ||
+                onBoard() == "school-grade-modify"
+              }
+            >
+              <GradeEditBoard />
+            </Match>
 
-          <Match when={onBoard() == "school-grade-details"}>
-            <GradeBoardDetails />
-          </Match>
+            <Match when={onBoard() == "school-grade-details"}>
+              <GradeBoardDetails />
+            </Match>
 
-          {/* Stops */}
-          <Match when={onBoard() == "stops"}>
-            <StopBoard />
-          </Match>
+            {/* Stops */}
+            <Match when={onBoard() == "stops"}>
+              <StopBoard />
+            </Match>
 
-          <Match when={onBoard() == "stop-details"}>
-            <StopDetails />
-          </Match>
+            <Match when={onBoard() == "stop-details"}>
+              <StopDetails />
+            </Match>
 
-          <Match when={onBoard() == "line-details"}>
-            <TripBoard />
-          </Match>
+            <Match when={onBoard() == "line-details"}>
+              <TripBoard />
+            </Match>
 
+<<<<<<< HEAD
           <Match when={onBoard() == "path-details"}>
             <PathDetail />
           </Match>
@@ -126,6 +128,14 @@ export default function () {
           </Match>
         </Switch>
       </InformationBoardLayout>
+=======
+            <Match when={onBoard() == "path-details"}>
+              <PathDetail />
+            </Match>
+          </Switch>
+        </InformationBoardLayout>
+      </Show>
+>>>>>>> f895275c (wip)
     </section>
   );
 }

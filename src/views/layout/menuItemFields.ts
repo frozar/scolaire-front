@@ -6,6 +6,7 @@ import EtablissementLogo from "../../icons/EtablissementLogo";
 import GraphicageLogo from "../../icons/GraphicageLogo";
 import { MarketIcon } from "../../icons/MarketIcon";
 import ServiceIcon from "../../icons/ServiceIcon";
+import VoirieLogo from "../../icons/VoirieLogo";
 import { MenuItemType } from "../../type";
 import { MapElementUtils } from "../../utils/mapElement.utils";
 import SettingsIcon from "../content/board/component/atom/SettingsIcon";
@@ -99,15 +100,17 @@ const menuItems: MenuItemType[] = [
     },
   },
 
-  // {
-  //   menuItem: "voirie",
-  //   Logo: VoirieLogo,
-  //   label: "Voirie",
-  //   isDisabled: true,
-  //   onClick: () => {
-  //     console.log("Voirie");
-  //   },
-  // },
+  {
+    menuItem: "voirie",
+    Logo: VoirieLogo,
+    label: "Voirie",
+    isDisabled: false,
+    onClick: () => {
+      setSelectedMenu("voirie");
+      changeBoard(undefined);
+      console.log("Voirie");
+    },
+  },
   // {
   //   menuItem: "parametres",
   //   Logo: SettingsLogo,

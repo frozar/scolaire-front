@@ -57,6 +57,12 @@ export function Contents() {
           <Match when={getSelectedMenu() == "parametres"}>
             <Settings />
           </Match>
+
+          <Match when={getSelectedMenu() == "voirie"}>
+                <Map />
+                <ContextManager />
+              </Match>
+            
         </Switch>
       </Show>
 

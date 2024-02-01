@@ -167,7 +167,8 @@ export type SelectedMenuType =
   | "support"
   | "market"
   | "service"
-  | "maps";
+  | "maps"
+  | "weight";
 
 export type MenuItemType = {
   menuItem: SelectedMenuType;
