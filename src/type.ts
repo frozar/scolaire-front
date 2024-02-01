@@ -163,7 +163,8 @@ export type SelectedMenuType =
   | "voirie"
   | "schools"
   | "parametres"
-  | "support";
+  | "support"
+  | "service";
 
 export type MenuItemType = {
   menuItem: SelectedMenuType;

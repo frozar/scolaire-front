@@ -4,6 +4,7 @@ import CalendarIcon from "../../icons/CalendarIcon";
 import DashboardLogo from "../../icons/DashboardLogo";
 import EtablissementLogo from "../../icons/EtablissementLogo";
 import GraphicageLogo from "../../icons/GraphicageLogo";
+import ServiceIcon from "../../icons/ServiceIcon";
 import { MenuItemType } from "../../type";
 import { MapElementUtils } from "../../utils/mapElement.utils";
 import SettingsIcon from "../content/board/component/atom/SettingsIcon";
@@ -64,6 +65,16 @@ const menuItems: MenuItemType[] = [
     isDisabled: false,
     onClick: () => {
       setSelectedMenu("calendar");
+      changeBoard(undefined);
+    },
+  },
+  {
+    menuItem: "service",
+    Logo: ServiceIcon,
+    label: "Service",
+    isDisabled: false,
+    onClick: () => {
+      setSelectedMenu("service");
       changeBoard(undefined);
     },
   },
