@@ -1,11 +1,3 @@
-.stop-details-panels-buttons{
-  @apply flex gap-2 text-xs text-white;
-}
-
-.panel-button{
-  @apply px-4 py-2 bg-green-light flex justify-center rounded-2xl
-}
-
-.panel-button.active{
-  @apply bg-green-base;
+.stop-details-panels-buttons {
+  @apply flex gap-2;
 }
