@@ -1,5 +1,6 @@
 import { createSignal } from "solid-js";
 import { NatureEnum } from "../type";
+import { COLOR_GREEN_BASE } from "../views/content/map/constant";
 import { TripPointType, TripType } from "./trip.entity";
 
 const [paths, setPaths] = createSignal<PathType[]>([]);
@@ -46,5 +47,14 @@ export namespace PathEntity {
         nature: point.nature,
       };
     });
+  }
+
+  export function defaultPath(): PathType {
+    return {
+      name: "Nom par défaut",
+      color: COLOR_GREEN_BASE,
+      grades: [],
+      points: [],
+    };
   }
 }

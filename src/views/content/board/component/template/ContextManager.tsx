@@ -2,6 +2,7 @@ import { Match, Switch, createEffect, createSignal } from "solid-js";
 
 import { LineType } from "../../../../../_entities/line.entity";
 import { getSelectedLine } from "../../../map/component/organism/BusLines";
+import { PathDetail } from "../../../path/component/organism/PathDetail";
 import { GradeBoardDetails } from "../../../schools/component/organism/GradeBoardDetails";
 import { GradeEditBoard } from "../../../schools/component/organism/GradeEditBoard";
 import SchoolsBoard from "../../../schools/component/organism/SchoolBoard";
@@ -31,6 +32,7 @@ export type BoardTags =
   | "line"
   | "line-add"
   | "line-details"
+  | "path-details"
   | undefined;
 
 export const [isInDrawMod, setIsDrawMod] = createSignal<boolean>(false);
@@ -40,6 +42,8 @@ export const [onBoard, setOnBoard] = createSignal<BoardTags>(undefined);
 export const changeBoard = (boardName: BoardTags) => setOnBoard(boardName);
 
 export default function () {
+  createEffect(() => console.log("board:", onBoard()));
+
   createEffect(() => {
     if (isInDrawMod()) {
       switch (onBoard()) {
@@ -111,6 +115,10 @@ export default function () {
 
           <Match when={onBoard() == "line-details"}>
             <TripBoard />
+          </Match>
+
+          <Match when={onBoard() == "path-details"}>
+            <PathDetail />
           </Match>
         </Switch>
       </InformationBoardLayout>
