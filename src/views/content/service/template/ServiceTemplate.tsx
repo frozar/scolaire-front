@@ -11,7 +11,7 @@ import {
   DraggableTripType,
   tripsWithoutService,
 } from "../organism/ServiceLeftBoardContent";
-import "./ServiceTemplate.css";
+import { Services } from "../organism/Services";
 
 export function ServiceTemplate(): JSXElement {
   function onDragOver({ draggable, droppable }: DragEvent) {
@@ -20,6 +20,8 @@ export function ServiceTemplate(): JSXElement {
 
   function onDragEnd({ draggable, droppable }: DragEvent) {
     console.log("TODO", draggable, droppable);
+    // Ajouter à la nouvelle liste
+    // Enlever de l'ancienne
   }
 
   function tripCardDragged(tripId: number): DraggableTripType {
@@ -31,8 +33,10 @@ export function ServiceTemplate(): JSXElement {
     <div>
       <DragDropProvider onDragOver={onDragOver} onDragEnd={onDragEnd}>
         <DragDropSensors />
-
-        <ServiceLeftBoard />
+        <div class="flex">
+          <ServiceLeftBoard />
+          <Services />
+        </div>
 
         <DragOverlay>
           {(draggable) => (
