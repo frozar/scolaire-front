@@ -5,9 +5,13 @@ import { ServiceTripCardRight } from "../atom/ServiceTripCardRight";
 import { DraggableTripType } from "../organism/ServiceLeftBoardContent";
 import "./ServiceTripCardDragged.css";
 
-export function ServiceTripCardDragged(props: {
+interface ServiceTripCardDraggedProps {
   trip: DraggableTripType;
-}): JSXElement {
+}
+
+export function ServiceTripCardDragged(
+  props: ServiceTripCardDraggedProps
+): JSXElement {
   return (
     <div class="service-trip-card service-trip-card-dragged">
       <ServiceTripCardLeft trip={props.trip} />

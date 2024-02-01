@@ -3,9 +3,9 @@ import { DraggableTripType } from "../organism/ServiceLeftBoardContent";
 
 import "./ServiceTripCardRight.css";
 
-type ServiceTripCardRightProps = {
+interface ServiceTripCardRightProps {
   trip: DraggableTripType;
-};
+}
 
 export function ServiceTripCardRight(
   props: ServiceTripCardRightProps

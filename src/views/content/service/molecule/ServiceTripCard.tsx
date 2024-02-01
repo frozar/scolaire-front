@@ -8,15 +8,16 @@ import { ServiceTripCardRight } from "../atom/ServiceTripCardRight";
 import { DraggableTripType } from "../organism/ServiceLeftBoardContent";
 import "./ServiceTripCard.css";
 
-type ServiceTripCardProps = {
+interface ServiceTripCardProps {
   trip: DraggableTripType;
-};
+}
 
 export function ServiceTripCard(props: ServiceTripCardProps): JSXElement {
   // eslint-disable-next-line solid/reactivity
   const sortable = createSortable(props.trip.tripId);
   return (
     <div
+      // @ts-expect-errorts solid-dnd
       use:sortable
       class="service-trip-card"
       classList={{ "bg-gray-base": sortable.isActiveDraggable }}
