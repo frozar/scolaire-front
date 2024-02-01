@@ -1,4 +1,4 @@
-import { createSignal } from "solid-js";
+import { Match, Switch, createSignal } from "solid-js";
 import { LineType } from "../../../../../_entities/line.entity";
 import { BusLineService } from "../../../../../_services/line.service";
 import PencilIcon from "../../../../../icons/PencilIcon";
@@ -12,6 +12,7 @@ import {
   deselectAllTrips,
   getTrips,
 } from "../../../map/component/organism/Trips";
+import { Paths } from "../../../path/component/organism/Paths";
 import InputSearch from "../../../schools/component/molecule/InputSearch";
 import { TripsList } from "../../../schools/component/organism/TripsList";
 import BoardTitle from "../atom/BoardTitle";
@@ -22,7 +23,16 @@ import {
   toggleDrawMod,
 } from "../template/ContextManager";
 import { DrawTripStep, setCurrentStep } from "./DrawTripBoard";
+import { TripBoardPanelButtons } from "./TripBoardPanelButtons";
 import "./TripsBoard.css";
+
+export enum TripBoardPanels {
+  trips,
+  paths,
+}
+
+export const [onTripBoardPanel, setOnTripBoardPanel] =
+  createSignal<TripBoardPanels>(TripBoardPanels.trips);
 
 export function TripsBoard(props: { line: LineType }) {
   const [searchKeyword, setSearchKeyword] = createSignal<string>("");
@@ -99,7 +109,16 @@ export function TripsBoard(props: { line: LineType }) {
         <InputSearch onInput={onInputSearch} />
       </header>
 
-      <TripsList trips={filteredTrips()} />
+      <TripBoardPanelButtons />
+
+      <Switch>
+        <Match when={onTripBoardPanel() == TripBoardPanels.trips}>
+          <TripsList trips={filteredTrips()} />
+        </Match>
+        <Match when={onTripBoardPanel() == TripBoardPanels.paths}>
+          <Paths />
+        </Match>
+      </Switch>
     </section>
   );
 }
