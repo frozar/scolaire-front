@@ -1,4 +1,5 @@
 import L from "leaflet";
+import { useStateGui } from "../StateGui";
 import {
   TripMetricType,
   TripPointType,
@@ -8,7 +9,8 @@ import { WaypointType } from "../_entities/waypoint.entity";
 import { MetricsUtils } from "../utils/metrics.utils";
 import { ServiceUtils } from "./_utils.service";
 
-const osrm = import.meta.env.VITE_API_OSRM_URL;
+const host = import.meta.env.VITE_BACK_URL;
+const [, { getActiveMapId }] = useStateGui();
 
 export type osrmResponseType = {
   routes: routesType[];
@@ -40,18 +42,52 @@ export class OsrmService {
         legsDistances: [],
       };
     }
+    const waypointsStringified = this.buildPositionURL(waypoints);
+
+    const timecode = 420;
+
     const response = await ServiceUtils.generic(
-      osrm +
-        "/" +
-        this.buildPositionURL(waypoints) +
-        "?geometries=geojson&overview=full&steps=true"
+      host +
+        "/osrm/osrm_utils?map_id=" +
+        getActiveMapId() +
+        "&timecode=" +
+        timecode +
+        "&waypoints=" +
+        waypointsStringified,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
     );
+
+    const directWaypointsStringified = this.buildPositionURL([
+      points[0],
+      points[points.length - 1],
+    ]);
     const response_direct = await ServiceUtils.generic(
-      osrm +
-        "/" +
-        this.buildPositionURL([points[0], points[points.length - 1]]) +
-        "?geometries=geojson&overview=full"
+      host +
+        "/osrm/osrm_utils?map_id=" +
+        getActiveMapId() +
+        "&timecode=" +
+        timecode +
+        "&waypoints=" +
+        directWaypointsStringified,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
     );
+
+    // const response_direct = await ServiceUtils.generic(
+    //   osrm +
+    //     "/" +
+    //     directWaypointsStringified +
+    //     "?geometries=geojson&overview=full"
+    // );
 
     if (!response)
       return {
