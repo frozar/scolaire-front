@@ -4,8 +4,7 @@ import {
   setAuthenticated,
   setAuthenticatedUser,
 } from "../../signaux";
-const XANO_AUTH_URL =
-  "https://x8ki-letl-twmt.n7.xano.io/api:elCAJnQ5/oauth/auth0";
+const XANO_AUTH_URL = import.meta.env.VITE_XANO_URL_AUTH;
 const REDIRECT_URI =
   "https://demo.xano.com/xano-auth0-oauth/assets/oauth/auth0/index.html";
 
