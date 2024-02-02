@@ -1,13 +1,15 @@
 import { For, JSXElement } from "solid-js";
 import { ServiceType } from "./Services";
 
+import "./ServiceList.css";
+
 interface ServiceListProps {
   services: ServiceType[];
 }
 
 export function ServiceList(props: ServiceListProps): JSXElement {
   return (
-    <div class="w-52 border border-l-0 border-y-0 ">
+    <div id="service-list">
       <div />
       <For each={props.services}>{(service) => <div>{service.name}</div>}</For>
     </div>

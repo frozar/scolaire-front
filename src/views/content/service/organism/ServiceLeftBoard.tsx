@@ -1,7 +1,8 @@
 import { JSXElement } from "solid-js";
 import InputSearch from "../../schools/component/molecule/InputSearch";
-import "./ServiceLeftBoard.css";
 import { ServiceLeftBoardContent } from "./ServiceLeftBoardContent";
+
+import "./ServiceLeftBoard.css";
 
 export function ServiceLeftBoard(): JSXElement {
   return (
