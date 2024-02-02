@@ -3,11 +3,8 @@
 }
 
 #service-list-header {
-  @apply h-7;
+  @apply h-7 border border-black border-x-0 border-t-0;
 }
 #service-list-header-title {
   @apply text-green-base;
-}
-.service-list-item {
-  @apply h-20 border border-black border-x-0;
 }

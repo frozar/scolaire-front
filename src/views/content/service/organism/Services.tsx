@@ -13,7 +13,7 @@ export type ServiceType = {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const [services, setServices] = createSignal<ServiceType[]>([
   { id: 1, name: "service 1", tripsIds: [], totalDuration: 0 },
-  { id: 1, name: "service 2", tripsIds: [], totalDuration: 0 },
+  { id: 2, name: "service 2", tripsIds: [], totalDuration: 0 },
 ]);
 
 export function Services(): JSXElement {

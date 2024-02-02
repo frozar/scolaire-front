@@ -1,0 +1,11 @@
+.service-list-item {
+  @apply flex flex-col justify-between h-20 p-2 border border-black border-x-0 border-t-0;
+}
+
+.service-list-item-top {
+  @apply flex justify-between;
+}
+
+.service-list-item-top-name {
+  @apply text-green-base;
+}
