@@ -4,11 +4,13 @@ import { TripTimelineAddPointButton } from "../atom/TripTimelineAddPointButton";
 import { TripTimelineItemWrapper } from "../molecule/TripTimelineItemWrapper";
 import { onBoard } from "../template/ContextManager";
 
-export function TripTimeline(props: {
+interface TripTimelineProps {
   trip: TripType;
   setTrip?: Setter<TripType>;
   inDraw: boolean;
-}) {
+}
+
+export function TripTimeline(props: TripTimelineProps) {
   return (
     <div class="timeline">
       <div

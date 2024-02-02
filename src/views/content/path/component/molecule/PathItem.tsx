@@ -33,7 +33,10 @@ export function PathItem(props: PathItemListProps) {
             icon={<VoirieLogo />}
             tooltipText="Nombre de trip qui utilise le chemin"
           />
-          {PathUtil.getTripUsingPath(props.path.id as number, props.lineId)}
+          {PathUtil.getCountOfTripUsingPath(
+            props.path.id as number,
+            props.lineId
+          )}
         </div>
 
         <div class="info-item">
