@@ -20,18 +20,17 @@ export function ServiceTripCard(props: ServiceTripCardProps): JSXElement {
     }
     // Add trip to a service
     setServices((prev) => {
-      const servicesFiltered = [...prev].filter(
-        (service) => service.id != selectedService()
-      );
-      const updatedService = [...prev].filter(
+      const services = [...prev];
+
+      const serviceToChange = services.filter(
         (service) => service.id == selectedService()
       )[0];
-      updatedService.tripsIds.push(props.trip.tripId);
-      servicesFiltered.push(updatedService);
+      const index = services.indexOf(serviceToChange);
+      serviceToChange.tripsIds.push(props.trip.tripId);
+      services.splice(index, 1, serviceToChange);
 
-      return servicesFiltered;
+      return services;
     });
-    // Remove from list signal ? OR list signal is reactive filtered one ?
   }
 
   return (
