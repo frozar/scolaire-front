@@ -3,7 +3,7 @@ import { PathEntity, PathType } from "../../../../../_entities/path.entity";
 import { PathUtil } from "../../../../../utils/path.utils";
 import SchoolsEnumeration from "../../../board/component/molecule/SchoolsEnumeration";
 import { PathDetailHeader } from "../molecule/PathDetailHeader";
-import { PathTimeLine } from "./PathLine";
+import { PathTimeLine } from "./PathTimeLine";
 
 export const [selectedPath, setSelectedPath] = createSignal<PathType>();
 
