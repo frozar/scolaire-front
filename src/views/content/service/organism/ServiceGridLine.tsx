@@ -1,6 +1,7 @@
 import { For, JSXElement } from "solid-js";
 import { services } from "./Services";
 
+import { ServiceGridItem } from "../molecule/ServiceGridItem";
 import { selectedService } from "../template/ServiceTemplate";
 import "./ServiceGridLine.css";
 
@@ -16,7 +17,8 @@ export function ServiceGridLine(props: ServiceGridLineProps): JSXElement {
     >
       <div>
         <For each={services()[props.i].tripsIds}>
-          {(tripId) => <div>{tripId}</div>}
+          {/* {(tripId) => <div>{tripId}</div>} */}
+          {(tripId) => <ServiceGridItem />}
         </For>
       </div>
     </div>
