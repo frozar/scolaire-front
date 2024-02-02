@@ -11,6 +11,7 @@ export type PathType = {
   points: PathPointType[];
   color: string;
   grades: number[];
+  schools: number[];
 };
 
 export type PathPointType = {
@@ -36,6 +37,7 @@ export namespace PathEntity {
       color: trip.color,
       points: PathEntity.formatPoint(trip.tripPoints),
       grades: trip.grades.map((grade) => grade.id) as number[],
+      schools: trip.schools.map((school) => school.id),
     };
   }
 
@@ -55,6 +57,7 @@ export namespace PathEntity {
       color: COLOR_GREEN_BASE,
       grades: [],
       points: [],
+      schools: [],
     };
   }
 }
