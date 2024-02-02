@@ -1,7 +1,8 @@
-import { For, createSignal } from "solid-js";
+import { For } from "solid-js";
 import { getLines } from "../../map/component/organism/BusLines";
 import { ServiceTripCard } from "../molecule/ServiceTripCard";
 import "./ServiceLeftBoardContent.css";
+import { services } from "./Services";
 
 export type DraggableTripType = {
   tripId: number;
@@ -10,13 +11,15 @@ export type DraggableTripType = {
   duration: number;
   hlp: number;
 };
-export const [tripsWithoutService, setTripsWithoutService] = createSignal<
-  DraggableTripType[]
->([]);
 
-export const ServiceLeftBoardContent = () => {
-  setTripsWithoutService(() => {
-    return getLines().flatMap((line) =>
+// TODO: Use arg to specify filter !
+function tripsWithoutService(): DraggableTripType[] {
+  const alreadyAssignedTripIds = services().flatMap(
+    (service) => service.tripsIds
+  );
+
+  return getLines()
+    .flatMap((line) =>
       line.trips.map((trip) => {
         return {
           tripId: trip.id,
@@ -26,9 +29,11 @@ export const ServiceLeftBoardContent = () => {
           hlp: 10,
         } as DraggableTripType;
       })
-    );
-  });
+    )
+    .filter((_trip) => !alreadyAssignedTripIds.includes(_trip.tripId));
+}
 
+export const ServiceLeftBoardContent = () => {
   return (
     // TODO: Add filter component
     // TODO: Create new component TripCardList

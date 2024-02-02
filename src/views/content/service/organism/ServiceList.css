@@ -1,3 +1,10 @@
 #service-list {
-  @apply w-52 border border-l-0 border-y-0;
+  @apply w-52 border border-l-0 border-y-0 border-black;
+}
+
+#service-list-header {
+  @apply h-7 border border-black border-x-0 border-t-0;
+}
+#service-list-header-title {
+  @apply text-green-base;
 }
