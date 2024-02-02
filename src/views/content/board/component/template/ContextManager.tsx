@@ -2,6 +2,7 @@ import { Match, Switch, createEffect, createSignal } from "solid-js";
 
 import { LineType } from "../../../../../_entities/line.entity";
 import { getSelectedLine } from "../../../map/component/organism/BusLines";
+import { DrawPath } from "../../../path/component/organism/DrawPath";
 import { PathDetail } from "../../../path/component/organism/PathDetail";
 import { GradeBoardDetails } from "../../../schools/component/organism/GradeBoardDetails";
 import { GradeEditBoard } from "../../../schools/component/organism/GradeEditBoard";
@@ -33,6 +34,7 @@ export type BoardTags =
   | "line-add"
   | "line-details"
   | "path-details"
+  | "path-draw"
   | undefined;
 
 export const [isInDrawMod, setIsDrawMod] = createSignal<boolean>(false);
@@ -119,6 +121,10 @@ export default function () {
 
           <Match when={onBoard() == "path-details"}>
             <PathDetail />
+          </Match>
+
+          <Match when={onBoard() == "path-draw"}>
+            <DrawPath />
           </Match>
         </Switch>
       </InformationBoardLayout>

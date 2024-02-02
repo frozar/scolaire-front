@@ -144,6 +144,10 @@ export default function () {
           },
           { text: selectedPath()?.name.toLowerCase() ?? "" },
         ];
+
+      case "path-draw":
+        return [{ text: "Editer votre chemin" }];
+
       default:
         return [];
     }

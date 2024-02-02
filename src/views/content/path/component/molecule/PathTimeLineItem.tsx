@@ -16,6 +16,11 @@ export function PathTimeLineItem(props: PathLineItemProps): JSXElement {
 
   return (
     <>
+      {/* TODO: add mini + button to add point to path */}
+      {/* <Show when={onBoard() == "trip-draw"}>
+        <TripTimelineAddPointButton indice={i()} />
+      </Show> */}
+
       <div class="path-timeline-left">{props.timePassage}</div>
       <div class="path-timeline-line ">
         <div

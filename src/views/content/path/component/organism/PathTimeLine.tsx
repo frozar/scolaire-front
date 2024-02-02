@@ -10,12 +10,15 @@ import "./PathTimeLine.css";
 
 interface PathLineProps {
   path: PathType;
+  inEdition: boolean;
 }
 
 export function PathTimeLine(props: PathLineProps) {
   // * process each point to get neccessary informations like name, calculated quantity, time passage, quantity to get or drop
   // * then save each processed point in new array
   // ! reactivity is important
+
+  // * Add button "+" between each point, to add a new point into the path
 
   const points = () =>
     props.path.points.map((point) => {

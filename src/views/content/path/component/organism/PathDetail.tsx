@@ -17,7 +17,7 @@ export function PathDetail() {
     <div>
       <PathDetailHeader path={path} />
       <SchoolsEnumeration schoolsName={schoolsNames ?? []} />
-      <PathTimeLine path={path} />
+      <PathTimeLine path={path} inEdition={false} />
     </div>
   );
 }

@@ -2,7 +2,7 @@ import { FaSolidPlus } from "solid-icons/fa";
 import { setCurrentTripIndex } from "../organism/DrawTripBoard";
 import "./TripTimelineAddPointButton.css";
 
-// TODO Create stories and cypress
+// TODO Create stories and cypress-+
 export function TripTimelineAddPointButton(props: { indice: number }) {
   return (
     <div class="v-timeline-item-add">
