@@ -1,7 +1,5 @@
 import { JSXElement } from "solid-js";
 
-import { createSortable } from "@thisbeyond/solid-dnd";
-
 import { ServiceTripCardLeft } from "../atom/ServiceTripCardLeft";
 import { ServiceTripCardMiddle } from "../atom/ServiceTripCardMiddle";
 import { ServiceTripCardRight } from "../atom/ServiceTripCardRight";
@@ -13,15 +11,8 @@ interface ServiceTripCardProps {
 }
 
 export function ServiceTripCard(props: ServiceTripCardProps): JSXElement {
-  // eslint-disable-next-line solid/reactivity
-  const sortable = createSortable(props.trip.tripId);
   return (
-    <div
-      // @ts-expect-errorts solid-dnd
-      use:sortable
-      class="service-trip-card"
-      classList={{ "bg-gray-base": sortable.isActiveDraggable }}
-    >
+    <div class="service-trip-card">
       <ServiceTripCardLeft trip={props.trip} />
       <ServiceTripCardMiddle />
       <ServiceTripCardRight trip={props.trip} />

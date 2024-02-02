@@ -1,4 +1,3 @@
-import { SortableProvider } from "@thisbeyond/solid-dnd";
 import { For, createSignal } from "solid-js";
 import { getLines } from "../../map/component/organism/BusLines";
 import { ServiceTripCard } from "../molecule/ServiceTripCard";
@@ -30,23 +29,13 @@ export const ServiceLeftBoardContent = () => {
     );
   });
 
-  function ids(): number[] {
-    return tripsWithoutService().map(
-      (tripWithoutService) => tripWithoutService.tripId
-    );
-  }
-
   return (
     // TODO: Add filter component
     // TODO: Create new component TripCardList
     <div id="trips-card-list">
-      <SortableProvider ids={ids()}>
-        <For each={tripsWithoutService()}>
-          {(tripWithoutService) => (
-            <ServiceTripCard trip={tripWithoutService} />
-          )}
-        </For>
-      </SortableProvider>
+      <For each={tripsWithoutService()}>
+        {(tripWithoutService) => <ServiceTripCard trip={tripWithoutService} />}
+      </For>
     </div>
   );
 };
