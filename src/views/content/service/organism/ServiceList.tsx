@@ -10,7 +10,6 @@ interface ServiceListProps {
 export function ServiceList(props: ServiceListProps): JSXElement {
   return (
     <div id="service-list">
-      <div />
       <For each={props.services}>{(service) => <div>{service.name}</div>}</For>
     </div>
   );
