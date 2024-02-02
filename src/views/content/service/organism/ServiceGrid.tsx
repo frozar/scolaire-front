@@ -5,7 +5,7 @@ import { services } from "./Services";
 
 export function ServiceGrid(): JSXElement {
   return (
-    <div>
+    <div id="service-grid">
       <div id="service-grid-top" />
       <For each={services()}>
         {(service, i) => {

@@ -1,9 +1,9 @@
 #service-left-board {
-  @apply flex flex-col w-1/4 h-[93.5vh] border border-r-2 border-y-0 border-l-0 border-dark-shade-teal;
+  @apply flex flex-col h-[93.5vh] border border-r-2 border-y-0 border-l-0 border-dark-shade-teal;
 }
 
 #service-left-board-header {
-  @apply w-full;
+  @apply w-[300px];
 }
 
 #service-left-board-header-title {
