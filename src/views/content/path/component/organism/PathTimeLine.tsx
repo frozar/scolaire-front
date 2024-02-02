@@ -2,6 +2,7 @@ import { For } from "solid-js";
 import { PathType } from "../../../../../_entities/path.entity";
 import { PathTimeLineItem } from "../molecule/PathTimeLineItem";
 
+import { PathUtil } from "../../../../../utils/path.utils";
 import "./PathTimeLine.css";
 
 interface PathLineProps {
@@ -13,16 +14,19 @@ export function PathTimeLine(props: PathLineProps) {
   // * then save each processed point in new array
   // ! reactivity is important
 
+  const points = () =>
+    props.path.points.map((point) => PathUtil.getPathPoint(point));
+
   return (
     <div class="path-timeline">
-      <For each={props.path.points}>
+      <For each={points()}>
         {(point) => (
           <PathTimeLineItem
-            name="Lastic lamar"
+            name={point.name}
             calculated={5}
             quantity={5}
             timePassage="8:00"
-            lineColor="green"
+            lineColor={props.path.color}
             pointNature={point.nature}
           />
         )}

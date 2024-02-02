@@ -1,4 +1,4 @@
-import { JSXElement } from "solid-js";
+import { JSXElement, onMount } from "solid-js";
 import { NatureEnum } from "../../../../../type";
 
 interface PathLineItemProps {
@@ -11,10 +11,12 @@ interface PathLineItemProps {
 }
 
 export function PathTimeLineItem(props: PathLineItemProps): JSXElement {
+  onMount(() => setLineColor(props.lineColor));
+
   return (
     <>
       <div class="path-timeline-left">{props.timePassage}</div>
-      <div class={"path-timeline-line " + props.lineColor}>
+      <div class="path-timeline-line ">
         <div
           class="path-timeline-circle"
           classList={{
@@ -26,8 +28,13 @@ export function PathTimeLineItem(props: PathLineItemProps): JSXElement {
       <div class="path-timeline-component path-timeline-content">
         <p class="count-to-get">{props.quantity}</p>
         <p class="stop-name">{props.name}</p>
-        <p class="totalcount">{props.calculated}</p>
+        <p class="total-count">{props.calculated}</p>
       </div>
     </>
   );
+}
+
+function setLineColor(color: string) {
+  const lines = document.getElementsByClassName("path-timeline-line");
+  for (const line of lines) line.setAttribute("style", "background:" + color);
 }

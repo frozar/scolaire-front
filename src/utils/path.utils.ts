@@ -41,7 +41,10 @@ export namespace PathUtil {
       .map((school) => SchoolUtils.get(school.id));
   }
 
-  export function getTripUsingPath(pathId: number, lineId: number): number {
+  export function getCountOfTripUsingPath(
+    pathId: number,
+    lineId: number
+  ): number {
     const line = getLines().filter((line) => line.id == lineId)[0];
     return line.trips.filter((trip) => trip.path?.id == pathId).length;
   }

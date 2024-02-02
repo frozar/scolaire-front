@@ -1,10 +1,23 @@
 .path-timeline {
-  @apply w-full grid mt-5;
+  @apply w-full grid mt-5 overflow-y-auto max-h-[75vh];
   grid-template-columns: 50px 3px 1fr;
 }
 
+.path-timeline-left,
 .path-timeline-component {
-  @apply flex justify-between relative ml-4 mb-10 top-[-5px];
+  @apply relative mb-10 top-1 text-xs italic;
+}
+
+.path-timeline-component {
+  @apply flex justify-around ml-4;
+}
+
+.count-to-get {
+  @apply text-green-base;
+}
+
+.total-count {
+  @apply text-purple-400;
 }
 
 .path-timeline-line {
@@ -13,7 +26,7 @@
 }
 
 .path-timeline-circle {
-  @apply absolute top-0 left-1/2 w-[20px] h-[20px] rounded-2xl;
+  @apply absolute top-0 left-1/2 w-[27px] h-[27px] rounded-2xl;
   background-color: red;
   transform: translateX(-50%);
 }
