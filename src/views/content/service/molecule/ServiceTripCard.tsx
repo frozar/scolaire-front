@@ -15,10 +15,13 @@ interface ServiceTripCardProps {
 export function ServiceTripCard(props: ServiceTripCardProps): JSXElement {
   function onDblClick(): void {
     if (!selectedService()) {
+      // TODO: Display user message
       console.log("No service selected");
       return;
     }
     // Add trip to a service
+
+    // eslint-disable-next-line solid/reactivity
     setServices((prev) => {
       const services = [...prev];
 
