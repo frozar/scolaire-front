@@ -17,9 +17,9 @@ import BoardTitle from "../atom/BoardTitle";
 import { DrawHelperButton } from "../atom/DrawHelperButton";
 import ButtonIcon from "../molecule/ButtonIcon";
 import { AssociatedItem } from "../molecule/CheckableElementList";
+import { LabeledColorPicker } from "../molecule/LabeledColorPicker";
 import LabeledInputField from "../molecule/LabeledInputField";
 import SchoolsEnumeration from "../molecule/SchoolsEnumeration";
-import { TripColorPicker } from "../molecule/TripColorPicker";
 import { AssignDaysAndDirectionToTrip } from "./AssignDaysAndDirectionToTrip";
 import { CheckableGradeListBySchool } from "./CheckableGradeListBySchool";
 import CollapsibleElement from "./CollapsibleElement";
@@ -155,7 +155,8 @@ export function DrawTripBoard() {
         />
 
         <div class="flex mt-4 justify-between">
-          <TripColorPicker
+          <LabeledColorPicker
+            text="Couleur de la course"
             defaultColor={currentDrawTrip()?.color}
             onChange={(color) =>
               setCurrentDrawTrip((trip) => {
