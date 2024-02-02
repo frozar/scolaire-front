@@ -11,17 +11,13 @@ export type DraggableTripType = {
   duration: number;
   hlp: number;
 };
-// export const [tripsWithoutService, setTripsWithoutService] = createSignal<
-//   DraggableTripType[]
-// >([]);
 
 // TODO: Use arg to specify filter !
 function tripsWithoutService(): DraggableTripType[] {
-  // Get id of already assugned trips
   const alreadyAssignedTripIds = services().flatMap(
     (service) => service.tripsIds
   );
-  // Get all trips filtered
+
   return getLines()
     .flatMap((line) =>
       line.trips.map((trip) => {
@@ -38,20 +34,6 @@ function tripsWithoutService(): DraggableTripType[] {
 }
 
 export const ServiceLeftBoardContent = () => {
-  // setTripsWithoutService(() => {
-  //   return getLines().flatMap((line) =>
-  //     line.trips.map((trip) => {
-  //       return {
-  //         tripId: trip.id,
-  //         tripName: trip.name,
-  //         lineName: line.name,
-  //         duration: trip.metrics?.duration,
-  //         hlp: 10,
-  //       } as DraggableTripType;
-  //     })
-  //   );
-  // });
-
   return (
     // TODO: Add filter component
     // TODO: Create new component TripCardList

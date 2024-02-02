@@ -19,7 +19,7 @@ export const [services, setServices] = createSignal<ServiceType[]>([
 export function Services(): JSXElement {
   return (
     <div class="service">
-      <ServiceList services={services()} />
+      <ServiceList />
       <ServiceGrid />
     </div>
   );
