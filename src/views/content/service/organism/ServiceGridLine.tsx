@@ -1,23 +1,24 @@
 import { For, JSXElement } from "solid-js";
-import { ServiceTrip } from "../molecule/ServiceTrip";
-import { ServiceType } from "./Services";
+import { services } from "./Services";
 
 import { selectedService } from "../template/ServiceTemplate";
 import "./ServiceGridLine.css";
 
 interface ServiceGridLineProps {
-  service: ServiceType;
+  i: number;
 }
 
 export function ServiceGridLine(props: ServiceGridLineProps): JSXElement {
   return (
     <div
       class="service-grid-line"
-      classList={{ active: selectedService() == props.service.id }}
+      classList={{ active: selectedService() == services()[props.i].id }}
     >
-      <For each={props.service.tripsIds}>
-        {(tripId) => <ServiceTrip id={tripId} />}
-      </For>
+      <div>
+        <For each={services()[props.i].tripsIds}>
+          {(tripId) => <div>{tripId}</div>}
+        </For>
+      </div>
     </div>
   );
 }
