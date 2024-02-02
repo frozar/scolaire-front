@@ -2,6 +2,9 @@ import { For } from "solid-js";
 import { PathType } from "../../../../../_entities/path.entity";
 import { PathTimeLineItem } from "../molecule/PathTimeLineItem";
 
+import { SchoolType } from "../../../../../_entities/school.entity";
+import { StopType } from "../../../../../_entities/stop.entity";
+import { NatureEnum } from "../../../../../type";
 import { PathUtil } from "../../../../../utils/path.utils";
 import "./PathTimeLine.css";
 
@@ -15,7 +18,18 @@ export function PathTimeLine(props: PathLineProps) {
   // ! reactivity is important
 
   const points = () =>
-    props.path.points.map((point) => PathUtil.getPathPoint(point));
+    props.path.points.map((point) => {
+      const point_ = PathUtil.getPathPoint(point);
+      const quantity = getPointQuantity(point_, props.path.grades);
+
+      const pointInformations = {
+        name: point_.name,
+        nature: point_.nature,
+        quantity: quantity,
+      };
+
+      return pointInformations;
+    });
 
   return (
     <div class="path-timeline">
@@ -23,9 +37,7 @@ export function PathTimeLine(props: PathLineProps) {
         {(point) => (
           <PathTimeLineItem
             name={point.name}
-            calculated={5}
-            quantity={5}
-            timePassage="8:00"
+            quantity={point.quantity ?? 0}
             lineColor={props.path.color}
             pointNature={point.nature}
           />
@@ -33,4 +45,17 @@ export function PathTimeLine(props: PathLineProps) {
       </For>
     </div>
   );
+}
+
+function getPointQuantity(
+  point: StopType | SchoolType,
+  pathGradesIds: number[]
+) {
+  if (point.nature == NatureEnum.stop)
+    return point.associated.reduce((accumulator, association) => {
+      if (pathGradesIds.includes(association.gradeId))
+        return accumulator + association.quantity;
+      else return accumulator;
+    }, 0);
+  else return 0;
 }

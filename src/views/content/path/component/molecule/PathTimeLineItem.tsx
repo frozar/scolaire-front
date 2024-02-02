@@ -3,9 +3,10 @@ import { NatureEnum } from "../../../../../type";
 
 interface PathLineItemProps {
   timePassage?: string;
+  calculated?: number;
+
   name: string;
   quantity: number;
-  calculated: number;
   lineColor: string;
   pointNature: NatureEnum;
 }
