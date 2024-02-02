@@ -1,4 +1,4 @@
-import { JSXElement, onMount } from "solid-js";
+import { JSXElement, createEffect } from "solid-js";
 import { NatureEnum } from "../../../../../type";
 
 interface PathLineItemProps {
@@ -12,7 +12,7 @@ interface PathLineItemProps {
 }
 
 export function PathTimeLineItem(props: PathLineItemProps): JSXElement {
-  onMount(() => setLineColor(props.lineColor));
+  createEffect(() => setLineColor(props.lineColor));
 
   return (
     <>
