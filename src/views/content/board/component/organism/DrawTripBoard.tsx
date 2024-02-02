@@ -76,6 +76,7 @@ export const [currentDrawTrip, setCurrentDrawTrip] = createSignal<TripType>(
       name: "Nom par defaut",
       points: [],
       grades: [],
+      schools: [],
     },
   }
 );
