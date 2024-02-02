@@ -15,12 +15,9 @@ export function ServiceGridLine(props: ServiceGridLineProps): JSXElement {
       class="service-grid-line"
       classList={{ active: selectedService() == services()[props.i].id }}
     >
-      <div>
-        <For each={services()[props.i].tripsIds}>
-          {/* {(tripId) => <div>{tripId}</div>} */}
-          {(tripId) => <ServiceGridItem />}
-        </For>
-      </div>
+      <For each={services()[props.i].tripsIds}>
+        {(tripId) => <ServiceGridItem tripId={tripId} />}
+      </For>
     </div>
   );
 }
