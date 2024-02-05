@@ -28,7 +28,7 @@ export namespace PathEntity {
     return path;
   }
 
-  export function buildFromTrip(
+  export function formatFromTrip(
     trip: TripType,
     name = "Nom par défaut"
   ): PathType {

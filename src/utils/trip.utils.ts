@@ -195,7 +195,7 @@ export namespace TripUtils {
         setCurrentDrawTrip((prev) => {
           if (!prev) return prev;
           const trip = { ...prev };
-          trip.path = PathEntity.buildFromTrip(trip);
+          trip.path = PathEntity.formatFromTrip(trip);
           return trip;
         });
       }
