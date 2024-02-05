@@ -7,8 +7,13 @@ interface ServiceGridTopProps {
 }
 
 export function ServiceGridTop(props: ServiceGridTopProps): JSXElement {
-  function getWidth(): string {
+  function hourWidth(): string {
     const width = (1440 * zoom()) / 24;
+    return width + "px";
+  }
+
+  function minuteWidth(): string {
+    const width = (1440 * zoom()) / 24 / 6;
     return width + "px";
   }
   return (
@@ -16,10 +21,28 @@ export function ServiceGridTop(props: ServiceGridTopProps): JSXElement {
       <For each={[...Array(24).keys()]}>
         {(i) => (
           <div
-            class="bg-slate-400 border border-black border-y-0 border-l-0 border-x"
-            style={{ width: getWidth() }}
+            class="flex items-end bg-slate-400 border border-black border-y-0 border-l-0 border-x"
+            style={{ width: hourWidth() }}
           >
             {i}
+            {/* <div class="flex"> */}
+            <div class="flex justify-around" style={{ width: hourWidth() }}>
+              <For each={[...Array(5).keys()]}>
+                {(i) => {
+                  const test = i + 1;
+                  return <div>{test + "0"}</div>;
+                }}
+              </For>
+            </div>
+            <For each={[...Array(5).keys()]}>
+              {(i) => (
+                <div
+                  class="h-1 border border-black border-y-0 border-l-0 border-r-1"
+                  style={{ width: minuteWidth() }}
+                />
+              )}
+            </For>
+            {/* </div> */}
           </div>
         )}
       </For>
