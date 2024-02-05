@@ -3,7 +3,7 @@ import { addNewUserInformation } from "../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../type";
 import { assertIsNode } from "../../../utils";
 import { closeCreateMapModal } from "./Dashboard";
-import { createMap } from "./dashboard";
+import { createMap } from "./dashboardts";
 
 import ClickOutside from "../../../component/ClickOutside";
 

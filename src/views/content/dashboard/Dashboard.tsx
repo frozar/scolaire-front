@@ -6,7 +6,7 @@ import CreateMap from "./CreateMap";
 import DeleteMapConfirmation from "./DeleteMapConfirmation";
 import MapGrid from "./component/molecule/MapGrid";
 import MapGridHeader from "./component/molecule/MapGridHeader";
-import { fetchUserMaps, setUserMaps, userMaps } from "./dashboard";
+import { fetchUserMaps, setUserMaps, userMaps } from "./dashboardts";
 
 export type CarteToDeleteType =
   | {
