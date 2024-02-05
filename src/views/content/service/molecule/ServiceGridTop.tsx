@@ -20,29 +20,31 @@ export function ServiceGridTop(props: ServiceGridTopProps): JSXElement {
     <div id="service-grid-top" style={{ width: props.width }}>
       <For each={[...Array(24).keys()]}>
         {(i) => (
-          <div
-            class="flex items-end bg-slate-400 border border-black border-y-0 border-l-0 border-x"
-            style={{ width: hourWidth() }}
-          >
-            {i}
-            {/* <div class="flex"> */}
-            <div class="flex justify-around" style={{ width: hourWidth() }}>
-              <For each={[...Array(5).keys()]}>
-                {(i) => {
-                  const test = i + 1;
-                  return <div>{test + "0"}</div>;
-                }}
-              </For>
+          <div class="service-grid-top-hour" style={{ width: hourWidth() }}>
+            {/* {i} */}
+            <div class="flex flex-col">
+              <div
+                class="service-grid-top-minute-displayed"
+                style={{ width: hourWidth() }}
+              >
+                <For each={[...Array(5).keys()]}>
+                  {(i) => {
+                    const minuteToDisplay = i + 1;
+                    return <div>{minuteToDisplay + "0"}</div>;
+                  }}
+                </For>
+              </div>
+              <div class="flex">
+                <For each={[...Array(5).keys()]}>
+                  {() => (
+                    <div
+                      class="service-grid-top-minute-tick"
+                      style={{ width: minuteWidth() }}
+                    />
+                  )}
+                </For>
+              </div>
             </div>
-            <For each={[...Array(5).keys()]}>
-              {(i) => (
-                <div
-                  class="h-1 border border-black border-y-0 border-l-0 border-r-1"
-                  style={{ width: minuteWidth() }}
-                />
-              )}
-            </For>
-            {/* </div> */}
           </div>
         )}
       </For>

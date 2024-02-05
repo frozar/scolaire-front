@@ -1,3 +1,15 @@
 #service-grid-top {
     @apply flex h-7 border border-black border-x-0 border-t-0;
-  }
+}
+
+.service-grid-top-hour {
+    @apply flex bg-slate-400 border border-black border-y-0 border-l-0 border-x;
+}
+
+.service-grid-top-minute-displayed {
+    @apply flex justify-evenly;
+}
+
+.service-grid-top-minute-tick {
+    @apply h-1 border border-black border-y-0 border-l-0;
+}
