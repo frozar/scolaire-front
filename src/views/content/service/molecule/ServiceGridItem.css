@@ -3,7 +3,8 @@
 }
 
 .service-grid-item-trip {
-  @apply flex justify-center h-16 w-52 bg-green-base rounded-md;
+  @apply flex justify-center h-16 bg-green-base rounded-md;
+
 }
 
 .service-grid-item-trip-name {

@@ -1,5 +1,6 @@
 #service-list {
-  @apply w-[25vw] border border-l-0 border-y-0 border-black;
+  /* TODO: Fix width issue */
+  @apply w-[5000px] border border-l-0 border-y-0 border-black;
 }
 
 #service-list-header {
