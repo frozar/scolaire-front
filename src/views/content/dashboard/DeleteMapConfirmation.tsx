@@ -2,7 +2,7 @@ import { createEffect, createSignal } from "solid-js";
 import { Transition } from "solid-transition-group";
 import ClickOutside from "../../../component/ClickOutside";
 import { assertIsNode } from "../../../utils";
-import { deleteMap } from "./dashboard";
+import { deleteMap } from "./dashboardts";
 import { CarteToDeleteType, closeDeleteMapModal } from "./Dashboard";
 
 interface DeleteMapConfirmationProps {
