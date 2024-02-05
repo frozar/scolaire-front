@@ -1,0 +1,3 @@
+.service-grid-top-minute-tick {
+    @apply h-1 border border-black border-y-0 border-l-0;
+}

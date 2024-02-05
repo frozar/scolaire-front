@@ -4,7 +4,7 @@
 }
 
 #service-list-header {
-  @apply h-7 border border-black border-x-0 border-t-0;
+  @apply flex items-end h-[52px] border border-black border-x-0 border-t-0;
 }
 #service-list-header-title {
   @apply text-green-base;
