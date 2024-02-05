@@ -4,7 +4,7 @@ import "./ServiceGrid.css";
 import { ServiceGridLine } from "./ServiceGridLine";
 import { services } from "./Services";
 
-export const [zoom, setZoom] = createSignal(10);
+export const [zoom, setZoom] = createSignal(8);
 
 export function ServiceGrid(): JSXElement {
   function gridWidthValue(): string {

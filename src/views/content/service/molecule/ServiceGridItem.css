@@ -8,7 +8,7 @@
 }
 
 .service-grid-item-trip-name {
-  @apply flex items-center text-white;
+  @apply flex items-center text-white text-sm;
 }
 
 .service-grid-item-hlp {
