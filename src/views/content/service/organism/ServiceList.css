@@ -1,5 +1,4 @@
 #service-list {
-  /* TODO: Fix width issue */
   @apply w-[5000px] border border-l-0 border-y-0 border-black;
 }
 

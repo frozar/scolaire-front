@@ -4,7 +4,6 @@ import { TripUtils } from "../../../../utils/trip.utils";
 import { zoom } from "../organism/ServiceGrid";
 import "./ServiceGridItem.css";
 
-// TODO: Make components
 export function ServiceGridItem(props: { tripId: number }): JSXElement {
   function width() {
     return (
@@ -15,6 +14,7 @@ export function ServiceGridItem(props: { tripId: number }): JSXElement {
     );
   }
 
+  // TODO: Make itemTrip, itemHlp and itemHalt components
   return (
     <div class="service-grid-item">
       <div class="service-grid-item-trip" style={{ width: width() }}>

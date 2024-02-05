@@ -47,13 +47,14 @@ export function ServiceGridLine(props: ServiceGridLineProps): JSXElement {
     >
       <Show when={services()[props.i].tripsIds.length != 0}>
         <div
-          // TODO: When not necessary anymore
+          // TODO: TODO: Hide the div ("opacity-0")
           class="border border-dashed border-black"
           style={{ width: firstDivWidth() }}
         >
           blank space
         </div>
       </Show>
+
       <For each={services()[props.i].tripsIds}>
         {(tripId) => <ServiceGridItem tripId={tripId} />}
       </For>
