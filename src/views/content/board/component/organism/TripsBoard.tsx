@@ -12,7 +12,7 @@ import {
   deselectAllTrips,
   getTrips,
 } from "../../../map/component/organism/Trips";
-import { Paths } from "../../../path/component/organism/Paths";
+import { Paths } from "../../../path/component/organism/PathsList";
 import InputSearch from "../../../schools/component/molecule/InputSearch";
 import { TripsList } from "../../../schools/component/organism/TripsList";
 import BoardTitle from "../atom/BoardTitle";
