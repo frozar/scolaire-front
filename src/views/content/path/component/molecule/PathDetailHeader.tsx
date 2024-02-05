@@ -17,7 +17,6 @@ import {
 const [, { setModeDrawTrip }] = useStateAction();
 
 export function PathDetailHeader(props: { path: PathType }) {
-  // ! HERE TO
   function editPath() {
     toggleDrawMod();
     setModeDrawTrip();
