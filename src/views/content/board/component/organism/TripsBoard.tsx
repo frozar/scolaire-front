@@ -12,7 +12,7 @@ import {
   deselectAllTrips,
   getTrips,
 } from "../../../map/component/organism/Trips";
-import { Paths } from "../../../path/component/organism/PathsList";
+import { PathsList } from "../../../path/component/organism/PathsList";
 import InputSearch from "../../../schools/component/molecule/InputSearch";
 import { TripsList } from "../../../schools/component/organism/TripsList";
 import BoardTitle from "../atom/BoardTitle";
@@ -116,7 +116,7 @@ export function TripsBoard(props: { line: LineType }) {
           <TripsList trips={filteredTrips()} />
         </Match>
         <Match when={onTripBoardPanel() == TripBoardPanels.paths}>
-          <Paths line={props.line} />
+          <PathsList line={props.line} />
         </Match>
       </Switch>
     </section>

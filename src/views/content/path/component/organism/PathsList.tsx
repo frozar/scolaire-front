@@ -6,7 +6,7 @@ interface PathsProps {
   line: LineType;
 }
 
-export function Paths(props: PathsProps) {
+export function PathsList(props: PathsProps) {
   const paths = () => props.line?.paths ?? [];
   return (
     <div class="line-list-content">
