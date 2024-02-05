@@ -28,6 +28,7 @@ export type osrmResponseType = {
 type osrmTableResponseType = {
   durations: number[][];
 };
+export type step = { flaxib_way_id: number; flaxib_weight: number };
 
 export class OsrmService {
   static async getRoadPolyline(trip: TripType): Promise<{
@@ -36,6 +37,7 @@ export class OsrmService {
     metrics: TripMetricType;
     legsDurations: number[];
     legsDistances: number[];
+    stepsWeight: step[];
   }> {
     const points: TripPointType[] = trip.tripPoints;
     let waypoints: WaypointType[] = trip.waypoints ?? points;
@@ -47,6 +49,7 @@ export class OsrmService {
         metrics: {},
         legsDurations: [],
         legsDistances: [],
+        stepsWeight: [],
       };
     }
     const waypointsStringified = this.buildPositionURL(waypoints);
@@ -105,12 +108,25 @@ export class OsrmService {
         metrics: {},
         legsDurations: [],
         legsDistances: [],
+        stepsWeight: [],
       };
     return this.formatResponse(
       response,
       response_direct,
       points,
       response.waypoints
+    );
+  }
+
+  static async setWeight(steps: step[]): Promise<any> {
+    const responses = await ServiceUtils.generic(
+      host + "/osrm/weight?map_id=" + getActiveMapId(), //TODO
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
     );
   }
 
@@ -140,6 +156,7 @@ export class OsrmService {
     metrics: TripMetricType;
     legsDurations: number[];
     legsDistances: number[];
+    stepsWeight: step[];
   } {
     let latlngs: L.LatLng[] = [];
     let projectedLatlngs: L.LatLng[] = [];
@@ -151,11 +168,22 @@ export class OsrmService {
         metrics,
         legsDurations: [],
         legsDistances: [],
+        stepsWeight: [],
       };
 
     const routes = response.routes;
     const legsDurations = routes[0].legs.map((item) => item.duration);
     const legsDistances = routes[0].legs.map((item) => item.distance);
+    const stepsWeight = routes[0].legs.flatMap((leg) => {
+      return leg.steps.flatMap((step) => {
+        return {
+          flaxib_way_id: step.flaxib_way_id,
+          flaxib_weight: step.flaxib_weight,
+        };
+      });
+    });
+    console.log("legsWeight", stepsWeight);
+    console.log("legsWeight", routes[0]);
 
     const coordinates = routes[0].geometry.coordinates;
 
@@ -167,7 +195,14 @@ export class OsrmService {
 
     metrics = MetricsUtils.getAll(response, response_direct, points);
 
-    return { latlngs, projectedLatlngs, metrics, legsDurations, legsDistances };
+    return {
+      latlngs,
+      projectedLatlngs,
+      metrics,
+      legsDurations,
+      legsDistances,
+      stepsWeight,
+    };
   }
 }
 
@@ -185,5 +220,5 @@ type routesType = {
     coordinates: number[][];
     type: string;
   };
-  legs: { weight: number; duration: number; distance: number }[];
+  legs: { weight: number; duration: number; distance: number; steps: step[] }[];
 };

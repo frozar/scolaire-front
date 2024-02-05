@@ -140,6 +140,7 @@ export namespace ContextUtils {
         }
 
         await TripUtils.createOrUpdateTrip();
+        // TODO Query to update stepsWeight
 
         setCurrentDrawTrip(TripEntity.defaultTrip());
         setCurrentTripIndex(0);

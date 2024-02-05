@@ -8,6 +8,7 @@ import "../../../../../css/timeline.css";
 
 import { TripEntity, TripType } from "../../../../../_entities/trip.entity";
 import { WaypointEntity } from "../../../../../_entities/waypoint.entity";
+import { step } from "../../../../../_services/osrm.service";
 import CurvedLine from "../../../../../icons/CurvedLine";
 import SimpleTrip from "../../../../../icons/SimpleLine";
 import { ContextUtils } from "../../../../../utils/contextManager.utils";
@@ -88,6 +89,7 @@ export const [currentDrawTrip, setCurrentDrawTrip] = createSignal<TripType>(
 
 export const [currentTripIndex, setCurrentTripIndex] = createSignal(0);
 export const [isInUpdate, setIsInUpdate] = createSignal(false);
+export const [stepsWeight, setStepsWeight] = createSignal<step[]>([]);
 
 export function DrawTripBoard() {
   onMount(() => {
@@ -250,7 +252,6 @@ async function onClick() {
 
     setDisplayTripMode(displayTripModeEnum.onRoad);
   } else if (displayTripMode() == displayTripModeEnum.onRoad) {
-    // TODO me semble étrange
     setCurrentDrawTrip((trip) => {
       if (!trip) return trip;
       return { ...trip, latLngs: [] };
