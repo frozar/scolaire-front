@@ -1,21 +1,31 @@
+import { useStateAction } from "../../../../../StateAction";
 import { PathType } from "../../../../../_entities/path.entity";
 import TrashIcon from "../../../../../icons/TrashIcon";
 import UpdatePen from "../../../../../icons/UpdatePen";
+import { MapElementUtils } from "../../../../../utils/mapElement.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
-import { changeBoard } from "../../../board/component/template/ContextManager";
+import {
+  changeBoard,
+  toggleDrawMod,
+} from "../../../board/component/template/ContextManager";
 import {
   DrawPathStep,
   setCurrentDrawPath,
   setOnDrawPathStep,
 } from "../drawPath.utils";
 
+const [, { setModeDrawTrip }] = useStateAction();
+
 export function PathDetailHeader(props: { path: PathType }) {
+  // ! HERE TO
   function editPath() {
-    setCurrentDrawPath(props.path);
+    toggleDrawMod();
+    setModeDrawTrip();
     changeBoard("path-draw");
+    setCurrentDrawPath(props.path);
     setOnDrawPathStep(DrawPathStep.editPath);
 
-    console.log("TODO: update");
+    MapElementUtils.deselectAllPointsAndBusTrips();
   }
 
   function deletePath() {
