@@ -21,9 +21,9 @@ export function ServiceGridTop(props: ServiceGridTopProps): JSXElement {
     return width + "px";
   }
   const hourDisplayedWidth = 40;
-  function hourDisplayedMarginX(): string {
-    const value = (1440 * zoom() - 23 * hourDisplayedWidth) / 24;
-    return value + "px";
+  function hourDisplayedMarginX(): number {
+    const value = (1440 * zoom()) / 24;
+    return value;
   }
   // TODO: Make components
   return (
@@ -38,7 +38,12 @@ export function ServiceGridTop(props: ServiceGridTopProps): JSXElement {
               class="service-grid-hour-displayed"
               style={{
                 width: hourDisplayedWidth + "px",
-                "margin-left": hourDisplayedMarginX(),
+                "margin-left":
+                  i == 0
+                    ? String(hourDisplayedMarginX() - hourDisplayedWidth / 2) +
+                      "px"
+                    : String(hourDisplayedMarginX() - hourDisplayedWidth) +
+                      "px",
               }}
             >
               {i + 1}
