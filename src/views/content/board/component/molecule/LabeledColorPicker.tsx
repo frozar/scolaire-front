@@ -1,16 +1,17 @@
 import { ColorPicker } from "../atom/ColorPicker";
 
-export interface TripColorPickeProps {
+export interface LabeledColorPickerProps {
   defaultColor?: string;
   onChange: (color: string) => void;
+  text: string;
 }
 
-export function TripColorPicker(props: TripColorPickeProps) {
+export function LabeledColorPicker(props: LabeledColorPickerProps) {
   return (
     <div class="color-picker">
       <ColorPicker
         defaultColor={props.defaultColor}
-        title="Couleur de la course"
+        title={props.text}
         onInput={props.onChange}
         onChange={props.onChange}
       />

@@ -1,0 +1,3 @@
+.timeline-add-button {
+  @apply flex items-center justify-around relative top-1/2 left-[-6px] opacity-0 hover:opacity-100 focus-within:opacity-100;
+}

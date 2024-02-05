@@ -1,5 +1,9 @@
-import { JSXElement, createEffect } from "solid-js";
+import { JSXElement, Show, createEffect } from "solid-js";
 import { NatureEnum } from "../../../../../type";
+import { onBoard } from "../../../board/component/template/ContextManager";
+import { TimeLineAddPPointButton } from "../atom/TimeLineAddPPointButton";
+
+import "./PathTimeLineItem.css";
 
 interface PathLineItemProps {
   timePassage?: string;
@@ -9,6 +13,7 @@ interface PathLineItemProps {
   quantity: number;
   lineColor: string;
   pointNature: NatureEnum;
+  index: number;
 }
 
 export function PathTimeLineItem(props: PathLineItemProps): JSXElement {
@@ -16,8 +21,16 @@ export function PathTimeLineItem(props: PathLineItemProps): JSXElement {
 
   return (
     <>
+      {/* TODO: add mini + button to add point to path */}
+
       <div class="path-timeline-left">{props.timePassage}</div>
-      <div class="path-timeline-line ">
+      <div class="path-timeline-line">
+        <Show when={onBoard() == "path-draw"}>
+          <TimeLineAddPPointButton
+            onClick={() => console.log("ok")}
+            text="tyeste"
+          />
+        </Show>
         <div
           class="path-timeline-circle"
           classList={{

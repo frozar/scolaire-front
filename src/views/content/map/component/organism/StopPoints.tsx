@@ -22,9 +22,14 @@ import {
   currentStep,
 } from "../../../board/component/organism/DrawTripBoard";
 import { onBoard } from "../../../board/component/template/ContextManager";
+import {
+  DrawPathStep,
+  currentDrawPath,
+  onDrawPathStep,
+} from "../../../path/component/drawPath.utils";
 import { stopDetailsItem } from "../../../stops/component/organism/StopDetails";
 import { StopPoint } from "../molecule/StopPoint";
-import { getSelectedLine } from "./BusLines";
+import { getLines, getSelectedLine } from "./BusLines";
 import { filterEmptyStops } from "./Filters";
 
 // const [, { nextLeafletPointId }] = useStateGui();
@@ -192,7 +197,21 @@ export function leafletStopsFilter(): StopType[] {
         case DrawTripStep.initial:
           return stops;
       }
+    case "path-draw":
+      return pathEditionFilterByStep();
     default:
       return stops;
   }
+}
+
+function pathEditionFilterByStep(): StopType[] {
+  const linePoints =
+    getLines().find(
+      (line) =>
+        line.paths.find((path) => path.id == currentDrawPath()?.id)?.id ==
+        currentDrawPath()?.id
+    )?.stops ?? [];
+
+  if (onDrawPathStep() == DrawPathStep.editPath) return linePoints;
+  else return [];
 }

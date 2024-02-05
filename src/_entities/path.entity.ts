@@ -1,9 +1,10 @@
-import { createSignal } from "solid-js";
 import { NatureEnum } from "../type";
+import {
+  getSelectedLine,
+  setLines,
+} from "../views/content/map/component/organism/BusLines";
 import { COLOR_GREEN_BASE } from "../views/content/map/constant";
 import { TripPointType, TripType } from "./trip.entity";
-
-const [paths, setPaths] = createSignal<PathType[]>([]);
 
 export type PathType = {
   id?: number;
@@ -21,14 +22,24 @@ export type PathPointType = {
 
 export namespace PathEntity {
   export function build(path: PathType): PathType {
-    // * If the path doesnt exist in the path list, add it
-    if (!paths().find((path_) => path_.id == path.id))
-      setPaths((prev) => [...prev, path]);
+    // * When creating path from trip
+    if (getSelectedLine()) {
+      const line = getSelectedLine();
+      const pathIdsOfLine = line?.paths.map((path) => path.id);
 
+      if (!pathIdsOfLine?.includes(path.id)) {
+        setLines((prev) => {
+          return [...prev].map((line) => {
+            if (line.id == line.id) line.paths.push(path);
+            return line;
+          });
+        });
+      }
+    }
     return path;
   }
 
-  export function buildFromTrip(
+  export function formatFromTrip(
     trip: TripType,
     name = "Nom par défaut"
   ): PathType {
