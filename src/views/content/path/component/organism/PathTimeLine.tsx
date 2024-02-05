@@ -37,12 +37,13 @@ export function PathTimeLine(props: PathLineProps) {
   return (
     <div class="path-timeline">
       <For each={points()}>
-        {(point) => (
+        {(point, index) => (
           <PathTimeLineItem
             name={point.name}
             quantity={point.quantity ?? 0}
             lineColor={props.path.color}
             pointNature={point.nature}
+            index={index()}
           />
         )}
       </For>
