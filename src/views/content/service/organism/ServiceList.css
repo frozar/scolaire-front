@@ -1,5 +1,5 @@
 #service-list {
-  @apply w-52 border border-l-0 border-y-0 border-black;
+  @apply w-[5000px] border border-l-0 border-y-0 border-black;
 }
 
 #service-list-header {

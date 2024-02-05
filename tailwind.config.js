@@ -24,6 +24,7 @@ module.exports = {
         "gray-light": "#E8EFEC",
         "yellow-base": "#F9C932",
         "orange-base": "#ea5920",
+        "purple-base": "#5E64ED",
       },
     },
   },

@@ -1,3 +1,7 @@
+#service-grid {
+  @apply overflow-x-scroll;
+}
+
 #service-grid-top {
   @apply h-7 border border-black border-x-0 border-t-0;
 }
