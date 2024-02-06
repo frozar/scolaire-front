@@ -29,7 +29,7 @@ export function TableItems() {
     <For each={getBus()}>
       {(bus: BusType, i) => (
         <tr class="tableRow">
-          <th>{bus.name}</th>
+          <td>{bus.name}</td>
           <td class="text-center">{bus.capacity}</td>
           <td class="actionButtonContainer">
             <div class="actionButton" onClick={editRow}>
