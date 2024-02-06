@@ -18,22 +18,22 @@ export function GridTopMinutes(props: GridTopMinutesProps): JSXElement {
       <For each={[...Array(24).keys()]}>
         {() => (
           <div class="service-grid-top-hour" style={{ width: hourWidth() }}>
-            <div class="flex flex-col">
-              <div
-                class="service-grid-top-minute-displayed"
-                style={{ width: hourWidth() }}
-              >
-                <Show when={zoom() >= 3}>
+            <Show when={zoom() >= 3}>
+              <div class="flex flex-col">
+                <div
+                  class="service-grid-top-minute-displayed"
+                  style={{ width: hourWidth() }}
+                >
                   <For each={[...Array(5).keys()]}>
                     {(i) => {
                       const minuteToDisplay = i + 1;
                       return <div>{minuteToDisplay + "0"}</div>;
                     }}
                   </For>
-                </Show>
+                </div>
+                <GridTopMinuteTick />
               </div>
-              <GridTopMinuteTick />
-            </div>
+            </Show>
           </div>
         )}
       </For>

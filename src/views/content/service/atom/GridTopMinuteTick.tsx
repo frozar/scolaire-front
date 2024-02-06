@@ -1,7 +1,7 @@
 import { For } from "solid-js";
 import { zoom } from "../organism/ServiceGrid";
 
-import "./GridTopHour.css";
+import "./GridTopMinuteTick.css";
 
 export function GridTopMinuteTick() {
   function minuteWidth(): string {
