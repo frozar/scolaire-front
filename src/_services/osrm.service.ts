@@ -118,11 +118,23 @@ export class OsrmService {
     );
   }
 
-  static async setWeight(steps: step[]): Promise<any> {
+  static async setWeight(
+    steps: step[],
+    start: number,
+    end: number
+  ): Promise<any> {
+    const content = JSON.stringify({
+      map_id: getActiveMapId(),
+      steps,
+      start,
+      end,
+    });
+    console.log("content", content);
     const responses = await ServiceUtils.generic(
-      host + "/osrm/weight?map_id=" + getActiveMapId(), //TODO
+      host + "/osrm/weight", //TODO
       {
-        method: "GET",
+        method: "POST",
+        body: content,
         headers: {
           "Content-Type": "application/json",
         },
