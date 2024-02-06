@@ -8,7 +8,7 @@ type BusType = {
   capacity: number;
 };
 
-const [data, setData] = createSignal<BusType[]>([
+export const [getBus, setBus] = createSignal<BusType[]>([
   { name: "bus1", capacity: 10 },
   { name: "bus2", capacity: 12 },
   { name: "bus3", capacity: 14 },
@@ -26,7 +26,7 @@ function deleteRow() {
 
 export function TableItems() {
   return (
-    <For each={data()}>
+    <For each={getBus()}>
       {(bus: BusType, i) => (
         <tr class="tableRow">
           <th>{bus.name}</th>
