@@ -15,7 +15,7 @@ interface ServiceGridLineProps {
 // TODO: Fix and clean
 export function ServiceGridLine(props: ServiceGridLineProps): JSXElement {
   function firstDivWidth(): string {
-    const firstTrip = TripUtils.get(services()[props.i].tripsIds[0]);
+    const firstTrip = TripUtils.get(services()[props.i].serviceTrips[0].tripId);
     console.log("firstTrip", firstTrip);
     console.log(
       "firstTrip.schools[0].hours.startHourComing?.hour",
@@ -46,7 +46,7 @@ export function ServiceGridLine(props: ServiceGridLineProps): JSXElement {
       style={{ width: props.width }}
       classList={{ active: selectedService() == services()[props.i].id }}
     >
-      <Show when={services()[props.i].tripsIds.length != 0}>
+      <Show when={services()[props.i].serviceTrips.length != 0}>
         <div
           // TODO: TODO: Hide the div ("opacity-0")
           class="border border-dashed border-black"
@@ -56,8 +56,10 @@ export function ServiceGridLine(props: ServiceGridLineProps): JSXElement {
         </div>
       </Show>
 
-      <For each={services()[props.i].tripsIds}>
-        {(tripId, i) => <ServiceGridItem tripId={tripId} i={i()} />}
+      <For each={services()[props.i].serviceTrips}>
+        {(serviceTrip, i) => (
+          <ServiceGridItem serviceTrip={serviceTrip} i={i()} />
+        )}
       </For>
     </div>
   );

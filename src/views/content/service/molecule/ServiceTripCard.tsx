@@ -1,5 +1,6 @@
 import { JSXElement } from "solid-js";
 
+import { TripUtils } from "../../../../utils/trip.utils";
 import { ServiceTripCardLeft } from "../atom/ServiceTripCardLeft";
 import { ServiceTripCardMiddle } from "../atom/ServiceTripCardMiddle";
 import { ServiceTripCardRight } from "../atom/ServiceTripCardRight";
@@ -29,7 +30,26 @@ export function ServiceTripCard(props: ServiceTripCardProps): JSXElement {
         (service) => service.id == selectedService()
       )[0];
       const index = services.indexOf(serviceToChange);
-      serviceToChange.tripsIds.push(props.trip.tripId);
+      // serviceToChange.tripsIds.push(props.trip.tripId);
+      // TODO: Create getEarlyArrival() and put in TripUtils
+      // TODO: Only do that if first trip
+      // ! Laisser valeur undefined !!
+      // ! doit être calculé au niveau de gridItem => plus imple si modif (reactif !!!!)
+      let endHour;
+      if (serviceToChange.serviceTrips.length == 0) {
+        // get eraliest arrival and transform in seconds
+        const trip = TripUtils.get(props.trip.tripId);
+        endHour =
+          (trip.schools[0].hours.startHourComing?.hour as number) * 60 +
+          (trip.schools[0].hours.startHourComing?.minutes as number);
+        // TODO:
+      } else endHour = 0;
+      serviceToChange.serviceTrips.push({
+        tripId: props.trip.tripId,
+        hlp: 300,
+        endHour,
+      });
+
       services.splice(index, 1, serviceToChange);
 
       return services;
