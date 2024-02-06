@@ -1,3 +1,4 @@
 .service {
   @apply flex overflow-auto mt-11;
+  flex: 0 0 92%;
 }

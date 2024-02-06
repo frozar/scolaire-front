@@ -4,7 +4,7 @@ import "./ServiceGrid.css";
 import { ServiceGridLine } from "./ServiceGridLine";
 import { services } from "./Services";
 
-export const [zoom, setZoom] = createSignal(8);
+export const [zoom, setZoom] = createSignal(5);
 
 export function ServiceGrid(): JSXElement {
   function gridWidthValue(): string {
@@ -12,7 +12,8 @@ export function ServiceGrid(): JSXElement {
   }
 
   return (
-    <div id="service-grid" style={{ width: gridWidthValue() }}>
+    // <div id="service-grid" style={{ width: gridWidthValue() }}>
+    <div id="service-grid">
       <ServiceGridTop width={gridWidthValue()} />
       <For each={services()}>
         {(service, i) => {

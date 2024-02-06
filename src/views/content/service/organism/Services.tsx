@@ -18,9 +18,13 @@ export const [services, setServices] = createSignal<ServiceType[]>([
 
 export function Services(): JSXElement {
   return (
-    <div class="service">
-      <ServiceList />
-      <ServiceGrid />
+    <div class="flex flex-col overflow-auto">
+      {/* TODO: Make a component */}
+      <div>Btns bar</div>
+      <div class="service">
+        <ServiceList />
+        <ServiceGrid />
+      </div>
     </div>
   );
 }
