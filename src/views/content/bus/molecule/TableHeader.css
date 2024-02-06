@@ -1,0 +1,3 @@
+.tableHeader {
+    @apply flex justify-between pt-8
+}
