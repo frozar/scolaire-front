@@ -1,9 +1,10 @@
 import { For, JSXElement, createSignal } from "solid-js";
+import { ServiceGridTop } from "../molecule/ServiceGridTop";
 import "./ServiceGrid.css";
 import { ServiceGridLine } from "./ServiceGridLine";
 import { services } from "./Services";
 
-export const [zoom, setZoom] = createSignal(10);
+export const [zoom, setZoom] = createSignal(8);
 
 export function ServiceGrid(): JSXElement {
   function gridWidthValue(): string {
@@ -11,8 +12,8 @@ export function ServiceGrid(): JSXElement {
   }
 
   return (
-    <div id="service-grid" style={{ width: gridWidthValue() }}>
-      <div id="service-grid-top" style={{ width: gridWidthValue() }} />
+    <div id="service-grid">
+      <ServiceGridTop width={gridWidthValue()} />
       <For each={services()}>
         {(service, i) => {
           return <ServiceGridLine i={i()} width={gridWidthValue()} />;

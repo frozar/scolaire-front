@@ -1,9 +1,10 @@
 #service-list {
-  @apply w-[5000px] border border-l-0 border-y-0 border-black;
+  @apply border border-l-0 border-y-0 border-black;
+  flex: 0 0 210px
 }
 
 #service-list-header {
-  @apply h-7 border border-black border-x-0 border-t-0;
+  @apply flex items-end h-[52px] border border-black border-x-0 border-t-0;
 }
 #service-list-header-title {
   @apply text-green-base;

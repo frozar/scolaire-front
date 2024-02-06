@@ -8,11 +8,9 @@ export const [selectedService, setSelectedService] = createSignal<number>();
 
 export function ServiceTemplate(): JSXElement {
   return (
-    <div>
-      <div id="service-template">
-        <ServiceLeftBoard />
-        <Services />
-      </div>
+    <div id="service-template">
+      <ServiceLeftBoard />
+      <Services />
     </div>
   );
 }

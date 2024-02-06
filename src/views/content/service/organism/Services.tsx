@@ -2,6 +2,7 @@ import { JSXElement, createSignal } from "solid-js";
 import { ServiceGrid } from "./ServiceGrid";
 import { ServiceList } from "./ServiceList";
 
+import { ServiceGridZoomButtons } from "../molecule/ServiceGridZoomButtons";
 import "./Service.css";
 
 export type ServiceType = {
@@ -18,9 +19,15 @@ export const [services, setServices] = createSignal<ServiceType[]>([
 
 export function Services(): JSXElement {
   return (
-    <div class="service">
-      <ServiceList />
-      <ServiceGrid />
+    <div class="flex flex-col overflow-auto">
+      <div>
+        <ServiceGridZoomButtons />
+        {/* TODO: Make a component containing "validate" and "cancel" btns */}
+      </div>
+      <div class="service">
+        <ServiceList />
+        <ServiceGrid />
+      </div>
     </div>
   );
 }
