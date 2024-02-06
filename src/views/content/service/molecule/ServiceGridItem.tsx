@@ -4,7 +4,12 @@ import { TripUtils } from "../../../../utils/trip.utils";
 import { zoom } from "../organism/ServiceGrid";
 import "./ServiceGridItem.css";
 
-export function ServiceGridItem(props: { tripId: number }): JSXElement {
+interface ServiceGridItemProps {
+  tripId: number;
+  i: number;
+}
+
+export function ServiceGridItem(props: ServiceGridItemProps): JSXElement {
   function tripWidth(): string {
     return (
       Math.round(
@@ -18,6 +23,15 @@ export function ServiceGridItem(props: { tripId: number }): JSXElement {
     // ! Temporary value of 10 minutes used
     return String(5 * zoom()) + "px";
   }
+
+  // function startHour(): string {
+  //   if (props.i == 0) {
+  //   }
+  // }
+
+  // function endHour(): string {
+
+  // }
 
   // TODO: Make itemTrip, itemHlp and itemHalt components
   return (

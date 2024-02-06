@@ -39,6 +39,7 @@ export function ServiceGridLine(props: ServiceGridLineProps): JSXElement {
     );
     return (earliestArrival - tripDuration) * zoom() + "px";
   }
+
   return (
     <div
       class={"service-grid-line"}
@@ -56,7 +57,7 @@ export function ServiceGridLine(props: ServiceGridLineProps): JSXElement {
       </Show>
 
       <For each={services()[props.i].tripsIds}>
-        {(tripId) => <ServiceGridItem tripId={tripId} />}
+        {(tripId, i) => <ServiceGridItem tripId={tripId} i={i()} />}
       </For>
     </div>
   );
