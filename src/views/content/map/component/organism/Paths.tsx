@@ -10,6 +10,7 @@ import {
   currentDrawPath,
   onDrawPathStep,
 } from "../../../path/component/drawPath.utils";
+import { selectedPath } from "../../../path/component/organism/PathDetail";
 import { Trip } from "../molecule/Trip";
 import { getSelectedLine } from "./BusLines";
 
@@ -23,6 +24,8 @@ export function Paths(props: { map: L.Map }) {
     if (onBoard() == "trip" && onTripBoardPanel() == TripBoardPanels.paths)
       return getSelectedLine()?.paths ?? [];
 
+    if (onBoard() == "path-details") return [selectedPath()] as PathType[];
+    if (onBoard() == "path-draw") return [currentDrawPath()] as PathType[];
     return [];
   }
   return (
