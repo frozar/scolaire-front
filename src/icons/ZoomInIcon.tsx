@@ -1,6 +1,6 @@
 import { JSXElement } from "solid-js";
 
-export function ZoomPlusIcon(): JSXElement {
+export function ZoomInIcon(): JSXElement {
   return (
     <svg
       width="22"

@@ -1,4 +1,4 @@
-import { For, JSXElement } from "solid-js";
+import { For, JSXElement, Show } from "solid-js";
 import { GridTopMinuteTick } from "../atom/GridTopMinuteTick";
 import { zoom } from "../organism/ServiceGrid";
 
@@ -23,12 +23,14 @@ export function GridTopMinutes(props: GridTopMinutesProps): JSXElement {
                 class="service-grid-top-minute-displayed"
                 style={{ width: hourWidth() }}
               >
-                <For each={[...Array(5).keys()]}>
-                  {(i) => {
-                    const minuteToDisplay = i + 1;
-                    return <div>{minuteToDisplay + "0"}</div>;
-                  }}
-                </For>
+                <Show when={zoom() >= 3}>
+                  <For each={[...Array(5).keys()]}>
+                    {(i) => {
+                      const minuteToDisplay = i + 1;
+                      return <div>{minuteToDisplay + "0"}</div>;
+                    }}
+                  </For>
+                </Show>
               </div>
               <GridTopMinuteTick />
             </div>
