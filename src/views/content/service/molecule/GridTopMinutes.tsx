@@ -24,6 +24,7 @@ export function GridTopMinutes(props: GridTopMinutesProps): JSXElement {
                   class="service-grid-top-minute-displayed"
                   style={{ width: hourWidth() }}
                 >
+                  {/* 5 because tens of minutes from 10 to 50 displayed */}
                   <For each={[...Array(5).keys()]}>
                     {(i) => {
                       const minuteToDisplay = i + 1;

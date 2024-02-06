@@ -19,6 +19,7 @@ export function GridTopHour(): JSXElement {
       class="service-grid-list-hour-displayed"
       style={{ width: gridWidth() }}
     >
+      {/* 23 because hour 1 to 23 displayed */}
       <For each={[...Array(23).keys()]}>
         {(i) => (
           <div

@@ -10,6 +10,7 @@ export function GridTopMinuteTick() {
   }
   return (
     <div class="flex">
+      {/* 5 because 5 little lines displayed (from minute 10 to 50) */}
       <For each={[...Array(5).keys()]}>
         {() => (
           <div
