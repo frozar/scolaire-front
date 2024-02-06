@@ -1,4 +1,4 @@
-import { Show, createSignal, onMount } from "solid-js";
+import { For, Show, createEffect, createSignal, onMount } from "solid-js";
 
 import { useStateGui } from "../../../StateGui";
 
@@ -9,10 +9,13 @@ import { Trips } from "./component/organism/Trips";
 import { ImportCsvCanvas } from "../../../component/ImportCsvCanvas";
 import ConfirmStopAddTrip from "./ConfirmStopAddTripBox";
 
+import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import { OsrmService, step } from "../../../_services/osrm.service";
 import { addNewUserInformation, getLeafletMap } from "../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../type";
 import { onBoard } from "../board/component/template/ContextManager";
+import { LineWeight } from "./component/molecule/LineWeight";
 import { BusLines, getLines } from "./component/organism/BusLines";
 import { MapPanels } from "./component/organism/MapPanels";
 import { Paths } from "./component/organism/Paths";
@@ -38,11 +41,30 @@ export default function () {
   const [displayImportCsvCanvas, setDisplayImportCsvCanvas] =
     createSignal(false);
 
-  onMount(() => {
+  const [ways, setWays] = createSignal([]);
+
+  async function requestWays(): Promise<false | step[] | null | undefined> {
+    const result = await OsrmService.getWaysWithWeight(240);
+    const parsedResult = result.map((elem) => {
+      return {
+        flaxib_way_id: elem.id,
+        flaxib_weight: elem.weight,
+        coordinates: JSON.parse(elem.line).coordinates.map((coord) =>
+          L.latLng(coord[1], coord[0])
+        ),
+      };
+    });
+    // const parsedResult = JSON.parse(result);
+    // console.log("OsrmService", result[0]["line"]);
+    return parsedResult;
+  }
+
+  onMount(async () => {
     // Manage shortcut keyboard event
     // for (const handler of listHandlerLMap) {
     // document.body.addEventListener("keydown", handler);
     // }
+
     if (getActiveMapId()) {
       mapDiv.addEventListener(
         "dragenter",
@@ -53,6 +75,13 @@ export default function () {
         false
       );
       buildMap(mapDiv);
+    }
+  });
+
+  createEffect(async () => {
+    if (getLeafletMap()) {
+      const res = await requestWays();
+      setWays(res);
     }
   });
 
@@ -90,6 +119,14 @@ export default function () {
       <Paths map={getLeafletMap() as L.Map} />
 
         <ConfirmStopAddTrip />
+      </Show>
+      <Show when={getSelectedMenu() === "voirie"}>
+        <For each={ways()}>
+          {(way) => {
+            console.log("ici");
+            return <LineWeight way={way} map={getLeafletMap() as L.Map} />;
+          }}
+        </For>
       </Show>
     </Show>
   );

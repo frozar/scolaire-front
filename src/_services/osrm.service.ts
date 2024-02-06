@@ -28,7 +28,12 @@ export type osrmResponseType = {
 type osrmTableResponseType = {
   durations: number[][];
 };
-export type step = { flaxib_way_id: number; flaxib_weight: number };
+
+export type step = {
+  flaxib_way_id: number;
+  flaxib_weight: number;
+  coordinates?: L.LatLng[];
+};
 
 export class OsrmService {
   static async getRoadPolyline(trip: TripType): Promise<{
@@ -130,16 +135,26 @@ export class OsrmService {
       end,
     });
     console.log("content", content);
-    const responses = await ServiceUtils.generic(
-      host + "/osrm/weight", //TODO
+    const responses = await ServiceUtils.generic(host + "/osrm/weight", {
+      method: "POST",
+      body: content,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  }
+
+  static async getWaysWithWeight(timestamp: number): Promise<any> {
+    const res = await ServiceUtils.generic(
+      host + "/osrm/ways?map_id=" + getActiveMapId(),
       {
-        method: "POST",
-        body: content,
+        method: "GET",
         headers: {
           "Content-Type": "application/json",
         },
       }
     );
+    return res;
   }
 
   private static buildPositionURL(points: WaypointType[]): string {

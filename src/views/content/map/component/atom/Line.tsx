@@ -1,6 +1,7 @@
 import { LineString } from "geojson";
 import L, { LeafletMouseEvent } from "leaflet";
 import { createEffect, onCleanup } from "solid-js";
+import { COLOR_GREEN_BASE } from "../../constant";
 import { arrowsMap } from "../organism/Trips";
 
 interface LineProps {
@@ -74,7 +75,6 @@ export default function (props: LineProps) {
         );
       }
     }
-
     // Add Line & Arrows to the map
     tripPolyline.addTo(leafletMap);
     if (props.lineId) {
@@ -100,7 +100,7 @@ export default function (props: LineProps) {
 }
 
 function buildLeafletPolyline(
-  color: string,
+  color = COLOR_GREEN_BASE,
   latlngs: L.LatLng[],
   opacity = 1
 ): L.Polyline<LineString> {
