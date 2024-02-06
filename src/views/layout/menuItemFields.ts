@@ -1,5 +1,6 @@
 import { useStateGui } from "../../StateGui";
 import ArretsLogo from "../../icons/ArretsLogo";
+import { BusIcon } from "../../icons/BusIcon";
 import CalendarIcon from "../../icons/CalendarIcon";
 import DashboardLogo from "../../icons/DashboardLogo";
 import EtablissementLogo from "../../icons/EtablissementLogo";
@@ -75,6 +76,16 @@ const menuItems: MenuItemType[] = [
     isDisabled: false,
     onClick: () => {
       setSelectedMenu("service");
+      changeBoard(undefined);
+    },
+  },
+  {
+    menuItem: "bus",
+    Logo: BusIcon,
+    label: "Bus",
+    isDisabled: false,
+    onClick: () => {
+      setSelectedMenu("bus");
       changeBoard(undefined);
     },
   },
