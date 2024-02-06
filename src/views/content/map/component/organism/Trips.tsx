@@ -8,6 +8,10 @@ import {
   currentDrawTrip,
   currentStep,
 } from "../../../board/component/organism/DrawTripBoard";
+import {
+  TripBoardPanels,
+  onTripBoardPanel,
+} from "../../../board/component/organism/TripsBoard";
 import { onBoard } from "../../../board/component/template/ContextManager";
 import { stopDetailsItem } from "../../../stops/component/organism/StopDetails";
 import { getLines, getSelectedLine } from "./BusLines";
@@ -40,7 +44,9 @@ export function Trips(props: { map: L.Map }) {
       case "line-add":
         return [];
       case "trip":
-        return getSelectedLine()?.trips;
+        if (onTripBoardPanel() == TripBoardPanels.trips)
+          return getSelectedLine()?.trips;
+        else return [];
       case "line":
         return getLines()
           .map((line) => line.trips)

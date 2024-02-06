@@ -16,9 +16,11 @@ import PolylineDragMarker from "../atom/PolylineDragMarker";
 import WaypointMarker from "../atom/WaypointMarker";
 import { deselectAllTrips, setselectedTrip } from "../organism/Trips";
 
+import { PathType } from "../../../../../_entities/path.entity";
 import { TripPointType, TripType } from "../../../../../_entities/trip.entity";
 import { WaypointType } from "../../../../../_entities/waypoint.entity";
 import { updatePointColor } from "../../../../../leafletUtils";
+import { PathUtil } from "../../../../../utils/path.utils";
 import {
   DrawTripStep,
   currentDrawTrip,
@@ -38,22 +40,39 @@ import {
 export const [draggingTrip, setDraggingTrip] = createSignal<boolean>(false);
 
 export function Trip(props: {
-  trip: TripType;
+  trip?: TripType;
+  path?: PathType;
   map: L.Map;
   lineColor?: string;
 }) {
   const [localLatLngs, setLocalLatLngs] = createSignal<L.LatLng[]>([]);
   const [localOpacity, setLocalOpacity] = createSignal<number>(1);
 
+  const points = () =>
+    props.trip
+      ? props.trip.tripPoints
+      : props.path?.points.map((point) => PathUtil.getPathPoint(point));
+
+  const latlngs = () => {
+    if (props.trip) return props.trip.latLngs;
+    if (props.path)
+      return props.path.points
+        .map((point) => PathUtil.getPathPoint(point))
+        .map((point) => {
+          return { lat: point.lat, lng: point.lon } as L.LatLng;
+        });
+    else return [];
+  };
+
   createEffect(() => {
     if (
       displayTripMode() == displayTripModeEnum.onRoad ||
       onBoard() != "trip-draw"
     ) {
-      setLocalLatLngs(props.trip.latLngs);
+      setLocalLatLngs(latlngs());
       setLocalOpacity(0.7);
     } else {
-      setLocalLatLngs(getLatLngsFromPoint(props.trip.tripPoints));
+      setLocalLatLngs(getLatLngsFromPoint(points() as TripPointType[]));
       setLocalOpacity(1);
     }
   });
@@ -82,10 +101,13 @@ export function Trip(props: {
     }
   });
 
+  const color = () =>
+    (props.trip ? props.trip.color : props.path?.color) as string;
+
   const onMouseOver = (polyline: L.Polyline, arrows: L.Marker[]) => {
     setIsOverMapItem(true);
     if (onBoard() != "trip-draw") {
-      bustripSetBoldStyle(polyline, arrows, props.trip.color);
+      bustripSetBoldStyle(polyline, arrows, color());
     }
   };
 
@@ -93,7 +115,7 @@ export function Trip(props: {
     setIsOverMapItem(false);
     // if (!line.selected() && (isInRemoveTripMode() || isInReadMode())) {
     if (onBoard() != "trip-draw") {
-      bustripSetNormalStyle(polyline, arrows, props.trip.color);
+      bustripSetNormalStyle(polyline, arrows, color());
     }
   };
 
@@ -184,19 +206,22 @@ export function Trip(props: {
     }
   }
 
-  const latLngList = () => props.trip.latLngs;
+  // const latLngList = () => props.trip.latLngs;
+
+  const id = () => (props.trip ? props.trip.id : props?.path?.id) as number;
+  const waypoints = () => props.trip?.waypoints ?? [];
 
   return (
     <>
       <Line
         latlngs={localLatLngs()}
         leafletMap={props.map}
-        color={props.trip.color}
+        color={color()}
         opacity={localOpacity()}
-        lineId={props.trip.id}
+        lineId={id()}
         onMouseOver={onMouseOver}
         onMouseOut={onMouseOut}
-        onClick={() => onClickBusTrip(props.trip)}
+        onClick={() => onClickBusTrip(props.trip as TripType)}
         onMouseDown={onMouseDown}
       />
       <Show
@@ -205,18 +230,18 @@ export function Trip(props: {
           onBoard() == "trip-draw"
         }
       >
-        <For each={latLngList()}>
+        <For each={latlngs()}>
           {(coord: L.LatLng) => {
             let index = 0;
 
             const pointProjectedCoord: L.LatLng[] = [];
 
-            const waypoints = props.trip.waypoints;
-            if (!waypoints) {
+            // const waypoints = props.trip.waypoints;
+            if (!waypoints()) {
               return <></>;
             }
 
-            for (const waypoint of waypoints) {
+            for (const waypoint of waypoints()) {
               if (waypoint.onRoadLat && waypoint.onRoadLon) {
                 pointProjectedCoord.push(
                   L.latLng(waypoint.onRoadLat, waypoint.onRoadLon)
@@ -226,15 +251,15 @@ export function Trip(props: {
               }
             }
 
-            for (let i = 0; latLngList().length - 1; i++) {
+            for (let i = 0; latlngs().length - 1; i++) {
               if (
                 pointProjectedCoord[index] &&
-                pointProjectedCoord[index].lat == latLngList()[i].lat &&
-                pointProjectedCoord[index].lng == latLngList()[i].lng
+                pointProjectedCoord[index].lat == latlngs()[i].lat &&
+                pointProjectedCoord[index].lng == latlngs()[i].lng
               ) {
                 index += 1;
               }
-              if (coord.equals(latLngList()[i])) {
+              if (coord.equals(latlngs()[i])) {
                 break;
               }
             }

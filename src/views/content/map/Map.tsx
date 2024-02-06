@@ -15,6 +15,7 @@ import { MessageLevelEnum, MessageTypeEnum } from "../../../type";
 import { onBoard } from "../board/component/template/ContextManager";
 import { BusLines, getLines } from "./component/organism/BusLines";
 import { MapPanels } from "./component/organism/MapPanels";
+import { Paths } from "./component/organism/Paths";
 import { Points } from "./component/organism/Points";
 import { getSchools } from "./component/organism/SchoolPoints";
 import { getStops } from "./component/organism/StopPoints";
@@ -79,6 +80,7 @@ export default function () {
       />
       <BusLines busLines={getLines()} />
       <Trips map={getLeafletMap() as L.Map} />
+      <Paths map={getLeafletMap() as L.Map} />
       <ConfirmStopAddTrip />
     </Show>
   );
