@@ -206,8 +206,6 @@ export function Trip(props: {
     }
   }
 
-  // const latLngList = () => props.trip.latLngs;
-
   const id = () => (props.trip ? props.trip.id : props?.path?.id) as number;
   const waypoints = () => props.trip?.waypoints ?? [];
 
@@ -236,7 +234,6 @@ export function Trip(props: {
 
             const pointProjectedCoord: L.LatLng[] = [];
 
-            // const waypoints = props.trip.waypoints;
             if (!waypoints()) {
               return <></>;
             }
