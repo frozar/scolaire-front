@@ -26,6 +26,8 @@ export function ServiceGridItem(props: { tripId: number }): JSXElement {
         <div class="service-grid-item-trip-name">
           {TripUtils.get(props.tripId).name}
         </div>
+        <div class="absolute text-xs -rotate-45 -bottom-6 -left-4">05:00</div>
+        <div class="absolute text-xs -rotate-45 -bottom-6 -right-4">05:00</div>
       </div>
       <div class="service-grid-item-hlp" style={{ width: hlpWidth() }} />
     </div>
