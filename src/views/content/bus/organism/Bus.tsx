@@ -1,6 +1,6 @@
 import Button from "../../../../component/atom/Button";
 import PageTitle from "../../../../component/atom/PageTitle";
-import { BusTable } from "../molecule/BusTable";
+import { BusTable } from "./BusTable";
 
 export function Bus() {
   return (

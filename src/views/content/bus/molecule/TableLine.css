@@ -1,11 +1,11 @@
-.actionButton {
-    @apply cursor-pointer items-center
-}
-
 .tableRow {
     @apply flex justify-between border-b-2 h-10 items-center
 }
 
 .actionButtonContainer {
-    @apply flex justify-center gap-2
+    @apply flex justify-center gap-2 items-center
+}
+
+.tableEdit {
+    @apply text-center w-3.5
 }
