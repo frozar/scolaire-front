@@ -48,7 +48,11 @@ export function ServiceGridLine(props: ServiceGridLineProps): JSXElement {
 
       <For each={services()[props.i].serviceTrips}>
         {(serviceTrip, i) => (
-          <ServiceGridItem serviceTrip={serviceTrip} i={i()} />
+          <ServiceGridItem
+            serviceId={services()[props.i].id}
+            serviceTrip={serviceTrip}
+            i={i()}
+          />
         )}
       </For>
     </div>

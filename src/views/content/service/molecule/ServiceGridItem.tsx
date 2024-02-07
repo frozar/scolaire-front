@@ -7,6 +7,7 @@ import "./ServiceGridItem.css";
 
 interface ServiceGridItemProps {
   serviceTrip: ServiceTripType;
+  serviceId: number;
   i: number;
 }
 
@@ -17,7 +18,11 @@ export function ServiceGridItem(props: ServiceGridItemProps): JSXElement {
       <Show when={props.i != 0}>
         <ServiceGridHlp />
       </Show>
-      <ServiceGridTripItem serviceTrip={props.serviceTrip} i={props.i} />
+      <ServiceGridTripItem
+        serviceId={props.serviceId}
+        serviceTrip={props.serviceTrip}
+        i={props.i}
+      />
     </div>
   );
 }

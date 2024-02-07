@@ -3,12 +3,13 @@ import TrashIcon from "../../../../icons/TrashIcon";
 import { ServiceGridUtils } from "../../../../utils/serviceGrid.utils";
 import { TripUtils } from "../../../../utils/trip.utils";
 import ButtonIcon from "../../board/component/molecule/ButtonIcon";
-import { ServiceTripType, services, setServices } from "../organism/Services";
+import { ServiceTripType, setServices } from "../organism/Services";
 import { selectedService } from "../template/ServiceTemplate";
 import "./ServiceGridTripItem.css";
 
 interface ServiceGridTripItemProps {
   serviceTrip: ServiceTripType;
+  serviceId: number;
   i: number;
 }
 
@@ -40,17 +41,17 @@ export function ServiceGridTripItem(
       <div class="service-grid-item-trip-name">
         {TripUtils.get(props.serviceTrip.tripId).name}
       </div>
-      <div class="absolute text-xs -rotate-45 -bottom-6 -left-4">
+      <div class="service-grid-item-trip-start-hour">
         {ServiceGridUtils.getServiceTripStartHour(props.i, props.serviceTrip)}
       </div>
-      <div class="absolute text-xs -rotate-45 -bottom-6 -right-4">
+      <div class="service-grid-item-trip-end-hour">
         {ServiceGridUtils.getServiceEndHour(props.i, props.serviceTrip)}
       </div>
-      <Show when={selectedService() == services()[props.i].id}>
+      <Show when={selectedService() == props.serviceId}>
         <ButtonIcon
           icon={<TrashIcon />}
           onClick={() => removeTripFromService(props.serviceTrip.tripId)}
-          class="absolute bottom-0 right-0"
+          class="service-grid-item-trip-trash-button"
         />
       </Show>
     </div>

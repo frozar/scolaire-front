@@ -24,6 +24,12 @@ export function ServiceGrid(): JSXElement {
       const serviceGridElement = ref();
       if (!serviceGridElement) return;
 
+      const actualService = services().filter(
+        (service) => service.id == selectedService()
+      )[0];
+
+      if (actualService.serviceTrips.length == 0) return;
+
       ServiceGridUtils.scrollToServiceStart(ref());
     })
   );
