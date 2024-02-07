@@ -2,6 +2,7 @@ import { JSXElement, createSignal } from "solid-js";
 import { ServiceGrid } from "./ServiceGrid";
 import { ServiceList } from "./ServiceList";
 
+import { ServiceGridModificationButtons } from "../molecule/ServiceGridModificationButtons";
 import { ServiceGridZoomButtons } from "../molecule/ServiceGridZoomButtons";
 import "./Service.css";
 
@@ -28,7 +29,8 @@ export function Services(): JSXElement {
     <div class="flex flex-col overflow-auto">
       <div>
         <ServiceGridZoomButtons />
-        {/* TODO: Make a component containing "validate" and "cancel" btns */}
+        {/* TODO: Display only if there is a difference (initialValues != actualValues) */}
+        <ServiceGridModificationButtons />
       </div>
       <div class="service">
         <ServiceList />
