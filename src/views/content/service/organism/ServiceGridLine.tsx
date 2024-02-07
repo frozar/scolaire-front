@@ -16,15 +16,6 @@ interface ServiceGridLineProps {
 export function ServiceGridLine(props: ServiceGridLineProps): JSXElement {
   function firstDivWidth(): string {
     const firstTrip = TripUtils.get(services()[props.i].serviceTrips[0].tripId);
-    console.log("firstTrip", firstTrip);
-    console.log(
-      "firstTrip.schools[0].hours.startHourComing?.hour",
-      firstTrip.schools[0].hours.startHourComing?.hour
-    );
-    console.log(
-      "firstTrip.schools[0].hours.startHourComing?.minutes",
-      firstTrip.schools[0].hours.startHourComing?.minutes
-    );
 
     // TODO: Take which day it is into account
     // TODO: Take Going / Coming information into account
@@ -33,7 +24,6 @@ export function ServiceGridLine(props: ServiceGridLineProps): JSXElement {
       (firstTrip.schools[0].hours.startHourComing?.hour as number) * 60 +
       (firstTrip.schools[0].hours.startHourComing?.minutes as number);
 
-    console.log("earliestArrival", earliestArrival);
     const tripDuration = Math.round(
       (firstTrip.metrics?.duration as number) / 60
     );

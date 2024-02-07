@@ -18,11 +18,6 @@ export type ServiceTripType = {
   endHour: number; // in minutes
 };
 
-// export const [services, setServices] = createSignal<ServiceType[]>([
-//   { id: 1, name: "service 1", tripsIds: [], totalDuration: 0 },
-//   { id: 2, name: "service 2", tripsIds: [], totalDuration: 0 },
-// ]);
-
 export const [services, setServices] = createSignal<ServiceType[]>([
   { id: 1, name: "service 1", serviceTrips: [], totalDuration: 0 },
   { id: 2, name: "service 2", serviceTrips: [], totalDuration: 0 },
