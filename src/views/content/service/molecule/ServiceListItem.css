@@ -5,19 +5,3 @@
 .service-list-item.active {
   @apply bg-green-base;
 }
-
-.service-list-item-top {
-  @apply flex justify-between;
-}
-
-.service-list-item-top-name {
-  @apply text-green-base;
-}
-
-.service-list-item-top-name.active {
-  @apply text-white;
-}
-
-.service-list-item-bottom.active {
-  @apply text-white;
-}
