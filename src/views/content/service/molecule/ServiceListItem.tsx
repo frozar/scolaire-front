@@ -19,7 +19,10 @@ export function ServiceListItem(props: ServiceListItemProps): JSXElement {
     <div class="service-list-item" classList={{ active: isSelected() }}>
       <ServiceListItemTop isSelected={isSelected()} service={props.service} />
 
-      <ServiceListItemMiddle isSelected={isSelected()} />
+      <ServiceListItemMiddle
+        isSelected={isSelected()}
+        service={props.service}
+      />
 
       <ServiceListItemBottom
         isSelected={isSelected()}
