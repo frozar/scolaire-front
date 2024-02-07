@@ -15,12 +15,12 @@ interface ServiceListItemProps {
 }
 
 export function ServiceListItem(props: ServiceListItemProps): JSXElement {
+  function isSelected(): boolean {
+    return selectedService() == props.service.id;
+  }
+
   function displayIcon(): JSXElement {
-    return selectedService() == props.service.id ? (
-      <LockIconOpen />
-    ) : (
-      <LockIconClose />
-    );
+    return isSelected() ? <LockIconOpen /> : <LockIconClose />;
   }
 
   function onClick(): void {
@@ -31,12 +31,20 @@ export function ServiceListItem(props: ServiceListItemProps): JSXElement {
     }
   }
   return (
-    <div class="service-list-item">
+    <div class="service-list-item" classList={{ active: isSelected() }}>
       <div class="service-list-item-top">
-        <div class="service-list-item-top-name">{props.service.name}</div>
+        <div
+          class="service-list-item-top-name"
+          classList={{ active: isSelected() }}
+        >
+          {props.service.name}
+        </div>
         <ButtonIcon icon={displayIcon()} onClick={onClick} />
       </div>
-      <div class="service-list-item-bottom">
+      <div
+        class="service-list-item-bottom"
+        classList={{ active: isSelected() }}
+      >
         {"Temps de trajet global : " + props.service.totalDuration}
       </div>
     </div>

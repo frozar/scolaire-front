@@ -2,10 +2,22 @@
   @apply flex flex-col justify-between h-32 p-2 border border-black border-x-0 border-t-0;
 }
 
+.service-list-item.active {
+  @apply bg-green-base;
+}
+
 .service-list-item-top {
   @apply flex justify-between;
 }
 
 .service-list-item-top-name {
   @apply text-green-base;
+}
+
+.service-list-item-top-name.active {
+  @apply text-white;
+}
+
+.service-list-item-bottom.active {
+  @apply text-white;
 }
