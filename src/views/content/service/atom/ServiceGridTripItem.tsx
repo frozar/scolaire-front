@@ -19,15 +19,9 @@ export function ServiceGridTripItem(
   function removeTripFromService(tripId: number): void {
     setServices((prev) => {
       const services = [...prev];
-      const serviceToChange = services.filter(
-        (service) => service.id == selectedService()
-      )[0];
-      const index = services.indexOf(serviceToChange);
-      serviceToChange.serviceTrips = serviceToChange.serviceTrips.filter(
-        (serviceTrip) => serviceTrip.tripId != tripId
-      );
 
-      services.splice(index, 1, serviceToChange);
+      ServiceGridUtils.removeTrip(services, tripId);
+
       return services;
     });
   }

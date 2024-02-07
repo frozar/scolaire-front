@@ -25,7 +25,7 @@ export function ServiceTripCard(props: ServiceTripCardProps): JSXElement {
     setServices((prev) => {
       const services = [...prev];
 
-      return ServiceGridUtils.updateTrips(services, props.trip.tripId);
+      return ServiceGridUtils.addTrip(services, props.trip.tripId);
     });
   }
 

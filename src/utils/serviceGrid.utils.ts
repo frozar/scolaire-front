@@ -64,7 +64,7 @@ export namespace ServiceGridUtils {
     } else return "--:--";
   }
 
-  export function updateTrips(
+  export function addTrip(
     services: ServiceType[],
     tripId: number
   ): ServiceType[] {
@@ -90,6 +90,23 @@ export namespace ServiceGridUtils {
       hlp: 300,
       endHour,
     });
+
+    services.splice(index, 1, serviceToChange);
+
+    return services;
+  }
+
+  export function removeTrip(
+    services: ServiceType[],
+    tripId: number
+  ): ServiceType[] {
+    const serviceToChange = services.filter(
+      (service) => service.id == selectedService()
+    )[0];
+    const index = services.indexOf(serviceToChange);
+    serviceToChange.serviceTrips = serviceToChange.serviceTrips.filter(
+      (serviceTrip) => serviceTrip.tripId != tripId
+    );
 
     services.splice(index, 1, serviceToChange);
 
