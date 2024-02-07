@@ -1,0 +1,11 @@
+.service-list-item-top {
+  @apply flex justify-between;
+}
+
+.service-list-item-top-name {
+  @apply text-green-base;
+}
+
+.service-list-item-top-name.active {
+  @apply text-white;
+}
