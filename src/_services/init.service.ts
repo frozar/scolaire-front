@@ -9,16 +9,15 @@ import {
   SchoolEntity,
   SchoolType,
 } from "../_entities/school.entity";
+import { ServiceDBType, ServiceEntity } from "../_entities/service.entity";
 import { StopDBType, StopEntity, StopType } from "../_entities/stop.entity";
-import {
-  TripDirectionType,
-  setTripDirections,
-} from "../_entities/trip-direction.entity";
+import { TripDirectionType } from "../_entities/trip-direction.entity";
 import { setCalendars } from "../views/content/calendar/calendar.manager";
 import { setCalendarsPeriod } from "../views/content/calendar/template/Calendar";
 import { setLines } from "../views/content/map/component/organism/BusLines";
 import { setSchools } from "../views/content/map/component/organism/SchoolPoints";
 import { setStops } from "../views/content/map/component/organism/StopPoints";
+import { setServices } from "../views/content/service/organism/Services";
 import { ServiceUtils } from "./_utils.service";
 
 type InitDBType = {
@@ -28,6 +27,7 @@ type InitDBType = {
   calendars: CalendarDBType[];
   calendars_periods: CalendarPeriodDBType[];
   trip_directions: TripDirectionType[];
+  services: ServiceDBType[];
 };
 
 export type InitType = {
@@ -65,7 +65,11 @@ export namespace InitService {
     );
     setCalendarsPeriod(calendarPeriods);
 
-    setTripDirections(dbInit.trip_directions);
+    const services = dbInit.services.map((service) =>
+      ServiceEntity.build(service)
+    );
+
+    setServices(services);
 
     return { schools, stops, busLines };
   }

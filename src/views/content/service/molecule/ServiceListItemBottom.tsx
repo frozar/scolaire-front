@@ -15,7 +15,8 @@ export function ServiceListItemBottom(
       class="service-list-item-bottom"
       classList={{ active: props.isSelected }}
     >
-      {"Temps de trajet global : " + props.service.totalDuration}
+      {/* TODO: Do not use raw value */}
+      {"Temps de trajet global : 0"}
     </div>
   );
 }

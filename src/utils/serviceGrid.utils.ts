@@ -126,9 +126,10 @@ export namespace ServiceGridUtils {
 
     const newService: ServiceType = {
       id: (ids.at(-1) as number) + 1,
+      // TODO: Do not use raw value
+      serviceGroupId: 1,
       name: "default name",
       serviceTrips: [],
-      totalDuration: 0,
     };
 
     services.push(newService);
