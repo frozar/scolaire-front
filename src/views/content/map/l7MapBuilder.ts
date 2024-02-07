@@ -96,7 +96,8 @@ export function buildMapL7(div: HTMLDivElement) {
     if (
       !isOverMapItem() &&
       onBoard() != "trip-draw" &&
-      onBoard() != "line-add"
+      onBoard() != "line-add" &&
+      onBoard() != "path-draw"
     ) {
       changeBoard("line");
       MapElementUtils.deselectAllPointsAndBusTrips();

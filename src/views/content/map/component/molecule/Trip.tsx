@@ -2,10 +2,7 @@ import L, { LeafletMouseEvent } from "leaflet";
 import { For, Show, createEffect, createSignal } from "solid-js";
 
 import { NatureEnum } from "../../../../../type";
-import {
-  changeBoard,
-  onBoard,
-} from "../../../board/component/template/ContextManager";
+import { onBoard } from "../../../board/component/template/ContextManager";
 import {
   COLOR_SCHOOL_FOCUS,
   COLOR_STOP_EMPHASE,
@@ -14,12 +11,10 @@ import {
 import Line from "../atom/Line";
 import PolylineDragMarker from "../atom/PolylineDragMarker";
 import WaypointMarker from "../atom/WaypointMarker";
-import { deselectAllTrips, setselectedTrip } from "../organism/Trips";
 
 import { PathType } from "../../../../../_entities/path.entity";
 import { TripPointType, TripType } from "../../../../../_entities/trip.entity";
 import { WaypointType } from "../../../../../_entities/waypoint.entity";
-import { updatePointColor } from "../../../../../leafletUtils";
 import { PathUtil } from "../../../../../utils/path.utils";
 import {
   DrawTripStep,
@@ -29,13 +24,13 @@ import {
   displayTripModeEnum,
   setCurrentTripIndex,
 } from "../../../board/component/organism/DrawTripBoard";
-import { setIsOverMapItem } from "../../l7MapBuilder";
-import { getLines } from "../organism/BusLines";
 import {
-  cursorIsOverPoint,
-  deselectAllPoints,
-  linkMap,
-} from "../organism/Points";
+  DrawPathStep,
+  onDrawPathStep,
+} from "../../../path/component/drawPath.utils";
+import { setIsOverMapItem } from "../../l7MapBuilder";
+import { cursorIsOverPoint, linkMap } from "../organism/Points";
+import { TripMapUtils } from "./tripMap.utils";
 
 export const [draggingTrip, setDraggingTrip] = createSignal<boolean>(false);
 
@@ -72,12 +67,15 @@ export function Trip(props: {
       setLocalLatLngs(latlngs());
       setLocalOpacity(0.7);
     } else {
-      setLocalLatLngs(getLatLngsFromPoint(points() as TripPointType[]));
+      setLocalLatLngs(
+        TripMapUtils.getLatLngsFromPoint(points() as TripPointType[])
+      );
       setLocalOpacity(1);
     }
   });
 
   let pointFocus: { circle: L.CircleMarker; nature: NatureEnum }[] = [];
+
   createEffect(() => {
     // TODO passer en mode trip
     if (currentDrawTrip() === props.trip) {
@@ -107,66 +105,31 @@ export function Trip(props: {
   const onMouseOver = (polyline: L.Polyline, arrows: L.Marker[]) => {
     setIsOverMapItem(true);
     if (onBoard() != "trip-draw") {
-      bustripSetBoldStyle(polyline, arrows, color());
+      TripMapUtils.bustripSetBoldStyle(polyline, arrows, color());
     }
   };
 
   const onMouseOut = (polyline: L.Polyline, arrows: L.Marker[]) => {
     setIsOverMapItem(false);
-    // if (!line.selected() && (isInRemoveTripMode() || isInReadMode())) {
     if (onBoard() != "trip-draw") {
-      bustripSetNormalStyle(polyline, arrows, color());
+      TripMapUtils.bustripSetNormalStyle(polyline, arrows, color());
     }
   };
 
   function onMouseDown(e: LeafletMouseEvent) {
-    // if (displayTripMode() == displayTripModeEnum.straight && !isInReadMode()) {
+    const tripStepCondition =
+      currentStep() == DrawTripStep.editTrip ||
+      currentStep() == DrawTripStep.buildReverse;
+
+    const pathStepCondition = onDrawPathStep() == DrawPathStep.editPath;
     if (
       displayTripMode() == displayTripModeEnum.straight &&
-      (currentStep() == DrawTripStep.editTrip ||
-        currentStep() == DrawTripStep.buildReverse)
+      (tripStepCondition || pathStepCondition)
     ) {
       props.map.dragging.disable();
 
-      function pointToTripDistance(
-        clickCoordinate: L.LatLng,
-        point1: L.LatLng,
-        point2: L.LatLng
-      ): number {
-        const x1 = clickCoordinate.lng;
-        const y1 = clickCoordinate.lat;
-        const x2 = point1.lng;
-        const y2 = point1.lat;
-        const x3 = point2.lng;
-        const y3 = point2.lat;
+      const indice = TripMapUtils.getIndexBetween2PointGrabbed(e);
 
-        return (
-          Math.abs((y3 - y2) * x1 - (x3 - x2) * y1 + x3 * y2 - y3 * x2) /
-          Math.sqrt(
-            (point1.lat - point2.lat) ** 2 + (point1.lng - point2.lng) ** 2
-          )
-        );
-      }
-      const coordinates: L.LatLng[] = e.target._latlngs;
-
-      let distance = pointToTripDistance(
-        e.latlng,
-        coordinates[0],
-        coordinates[1]
-      );
-      let indice = 0;
-
-      for (let i = 1; i < coordinates.length - 1; i++) {
-        const actualDistance = pointToTripDistance(
-          e.latlng,
-          coordinates[i],
-          coordinates[i + 1]
-        );
-        if (actualDistance < distance) {
-          distance = actualDistance;
-          indice = i;
-        }
-      }
       setLocalLatLngs((prev) => {
         prev.splice(indice + 1, 0, e.latlng);
         return [...prev];
@@ -184,6 +147,7 @@ export function Trip(props: {
 
       setCurrentTripIndex(indice + 1);
 
+      // ! Keep it here !!
       function handleMouseUp() {
         props.map?.off("mousemove");
         if (props.map.hasEventListeners("mousemove")) {
@@ -209,6 +173,11 @@ export function Trip(props: {
   const id = () => (props.trip ? props.trip.id : props?.path?.id) as number;
   const waypoints = () => props.trip?.waypoints ?? [];
 
+  function onClickLine() {
+    if (props.trip) TripMapUtils.onClickBusTrip(props.trip);
+    if (props.path) TripMapUtils.onClickPath(props.path);
+  }
+
   return (
     <>
       <Line
@@ -219,7 +188,7 @@ export function Trip(props: {
         lineId={id()}
         onMouseOver={onMouseOver}
         onMouseOut={onMouseOut}
-        onClick={() => onClickBusTrip(props.trip as TripType)}
+        onClick={onClickLine}
         onMouseDown={onMouseDown}
       />
       <Show
@@ -292,112 +261,4 @@ export function Trip(props: {
       </Show>
     </>
   );
-}
-
-export function onClickBusTrip(trip: TripType) {
-  switch (onBoard()) {
-    case "line-details":
-    case "trip-draw":
-      return;
-
-    default:
-      deselectAllTrips();
-      deselectAllPoints();
-
-      // TODO: Factoriser
-      getLines().forEach((line) => line.setSelected(false));
-      getLines().forEach((line) => {
-        if (line.trips.some((_trip) => _trip.id == trip.id)) {
-          line.setSelected(true);
-        }
-      });
-
-      setselectedTrip(trip);
-
-      changeBoard("line-details");
-
-      updatePointColor();
-  }
-}
-
-function getLatLngsFromPoint(points: TripPointType[]): L.LatLng[] {
-  return points.map((point) => L.latLng(point.lat, point.lon));
-}
-
-export function bustripSetNormalStyle(
-  polyline: L.Polyline,
-  arrowsLinked: L.Marker[],
-  color: string
-) {
-  polylineSetNormalStyle(polyline, color);
-  arrowsSetNormalStyle(arrowsLinked, color);
-}
-
-export function bustripSetBoldStyle(
-  polyline: L.Polyline,
-  arrowsLinked: L.Marker[],
-  color: string
-) {
-  polylineSetBoldStyle(polyline, color);
-  arrowsSetBoldStyle(arrowsLinked, color);
-}
-
-function polylineSetBoldStyle(polyline: L.Polyline, color: string) {
-  polyline.setStyle({ color, weight: 5 });
-}
-
-function polylineSetNormalStyle(polyline: L.Polyline, color: string) {
-  polyline.setStyle({ color, weight: 3 });
-}
-
-function arrowsSetBoldStyle(arrows: L.Marker[], color: string) {
-  arrowApplyStyle(arrows, color, "scale(3,3) ");
-}
-
-function arrowsSetNormalStyle(arrows: L.Marker[], color: string) {
-  arrowApplyStyle(arrows, color, "scale(2,2) ");
-}
-
-function arrowApplyStyle(arrows: L.Marker[], color: string, transform: string) {
-  arrows.map((arrow) => {
-    const element = arrow.getElement();
-    if (!element) {
-      return;
-    }
-    const elementChild = element.firstElementChild;
-    if (!elementChild) {
-      return;
-    }
-    elementChild.setAttribute("fill", color);
-  });
-
-  // Change size
-  arrows.map((arrow) => {
-    const element = arrow.getElement();
-    if (!element) {
-      return;
-    }
-
-    const elementChild = element.firstElementChild;
-    if (!elementChild) {
-      return;
-    }
-
-    const subChild = elementChild.firstElementChild;
-    if (!subChild) {
-      return;
-    }
-
-    // Keep first transformation value which should be a rotation
-    const transformValue = subChild.getAttribute("transform");
-    const rotation = transformValue;
-    if (!rotation) {
-      return;
-    }
-
-    const rotationValue = rotation.split(" ").at(1);
-    const transformModifiedValue = transform + rotationValue;
-
-    subChild.setAttribute("transform", transformModifiedValue);
-  });
 }
