@@ -116,4 +116,23 @@ export namespace ServiceGridUtils {
 
     return services;
   }
+
+  export function addService(services: ServiceType[]): ServiceType[] {
+    const ids = services.map((service) => service.id);
+
+    ids.sort((a, b) => {
+      return a - b;
+    });
+
+    const newService: ServiceType = {
+      id: (ids.at(-1) as number) + 1,
+      name: "default name",
+      serviceTrips: [],
+      totalDuration: 0,
+    };
+
+    services.push(newService);
+
+    return services;
+  }
 }
