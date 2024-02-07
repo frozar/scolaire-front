@@ -1,0 +1,5 @@
+.path-timeline-circle {
+  @apply absolute top-[-15px] left-1/2 w-[35px] h-[35px] rounded-2xl;
+  background-color: red;
+  transform: translateX(-50%);
+}

@@ -1,15 +1,18 @@
 import L, { LeafletMouseEvent } from "leaflet";
-import { PathType } from "../../../../../_entities/path.entity";
-import { TripPointType, TripType } from "../../../../../_entities/trip.entity";
-import { updatePointColor } from "../../../../../leafletUtils";
+import { PathType } from "../_entities/path.entity";
+import { TripPointType, TripType } from "../_entities/trip.entity";
+import { updatePointColor } from "../leafletUtils";
 import {
   changeBoard,
   onBoard,
-} from "../../../board/component/template/ContextManager";
-import { setSelectedPath } from "../../../path/component/organism/PathDetail";
-import { getLines } from "../organism/BusLines";
-import { deselectAllPoints } from "../organism/Points";
-import { deselectAllTrips, setselectedTrip } from "../organism/Trips";
+} from "../views/content/board/component/template/ContextManager";
+import { getLines } from "../views/content/map/component/organism/BusLines";
+import { deselectAllPoints } from "../views/content/map/component/organism/Points";
+import {
+  deselectAllTrips,
+  setselectedTrip,
+} from "../views/content/map/component/organism/Trips";
+import { setSelectedPath } from "../views/content/path/component/organism/PathDetail";
 
 export namespace TripMapUtils {
   export function onClickPath(path: PathType) {

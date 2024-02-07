@@ -43,8 +43,10 @@ import {
 } from "../views/content/map/constant";
 import { setIsOverMapItem } from "../views/content/map/l7MapBuilder";
 import {
+  DrawPathStep,
   currentDrawPath,
   drawPathUtils,
+  onDrawPathStep,
 } from "../views/content/path/component/drawPath.utils";
 import { setStopDetailsItem } from "../views/content/stops/component/organism/StopDetails";
 import { CurrentDrawTripUtils } from "./currentDrawTrip.utils";
@@ -130,6 +132,10 @@ export namespace StopPointUtil {
             updateTripAndWaypoints(point);
             break;
         }
+        break;
+      case "path-draw":
+        if (onDrawPathStep() != DrawPathStep.editPath) return;
+        drawPathUtils.addPointToPath(point);
         break;
       default:
         // deselectAllTrips();

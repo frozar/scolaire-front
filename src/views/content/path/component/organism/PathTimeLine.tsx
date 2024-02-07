@@ -6,6 +6,8 @@ import { SchoolType } from "../../../../../_entities/school.entity";
 import { StopType } from "../../../../../_entities/stop.entity";
 import { NatureEnum } from "../../../../../type";
 import { PathUtil } from "../../../../../utils/path.utils";
+import { TimeLineNoPointLine } from "../molecule/TimeLineNoPointLine";
+
 import "./PathTimeLine.css";
 
 interface PathLineProps {
@@ -38,13 +40,16 @@ export function PathTimeLine(props: PathLineProps) {
     <div class="path-timeline">
       <For each={points()}>
         {(point, index) => (
-          <PathTimeLineItem
-            name={point.name}
-            quantity={point.quantity ?? 0}
-            lineColor={props.path.color}
-            pointNature={point.nature}
-            index={index()}
-          />
+          <>
+            <TimeLineNoPointLine index={index()} />
+            <PathTimeLineItem
+              name={point.name}
+              quantity={point.quantity ?? 0}
+              lineColor={props.path.color}
+              pointNature={point.nature}
+              index={index() + 1}
+            />
+          </>
         )}
       </For>
     </div>
