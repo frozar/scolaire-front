@@ -10,9 +10,13 @@ import { TripUtils } from "./trip.utils";
 
 export namespace ServiceGridUtils {
   export function scrollToServiceStart(ref: HTMLDivElement): void {
-    const endHour = services().filter(
+    const actualService = services().filter(
       (service) => service.id == selectedService()
-    )[0].serviceTrips[0].endHour;
+    )[0];
+
+    if (actualService.serviceTrips.length == 0) return;
+
+    const endHour = actualService.serviceTrips[0].endHour;
 
     ref.scrollTo((endHour - 25) * zoom(), 0);
   }
@@ -64,7 +68,7 @@ export namespace ServiceGridUtils {
     } else return "--:--";
   }
 
-  export function updateTrips(
+  export function addTrip(
     services: ServiceType[],
     tripId: number
   ): ServiceType[] {
@@ -90,6 +94,23 @@ export namespace ServiceGridUtils {
       hlp: 300,
       endHour,
     });
+
+    services.splice(index, 1, serviceToChange);
+
+    return services;
+  }
+
+  export function removeTrip(
+    services: ServiceType[],
+    tripId: number
+  ): ServiceType[] {
+    const serviceToChange = services.filter(
+      (service) => service.id == selectedService()
+    )[0];
+    const index = services.indexOf(serviceToChange);
+    serviceToChange.serviceTrips = serviceToChange.serviceTrips.filter(
+      (serviceTrip) => serviceTrip.tripId != tripId
+    );
 
     services.splice(index, 1, serviceToChange);
 

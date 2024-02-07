@@ -1,23 +1,3 @@
 .service-grid-item {
   @apply flex;
 }
-
-.service-grid-item-trip {
-  @apply flex relative justify-center h-16 bg-green-base rounded-md;
-}
-
-.service-grid-item-trip-name {
-  @apply flex items-center text-white text-sm;
-}
-
-.service-grid-item-hlp {
-  @apply bg-purple-base w-14 h-16 rounded-md;
-}
-
-.service-grid-item-halt {
-  @apply flex items-center;
-}
-
-.service-grid-item-halt-element {
-  @apply bg-dark-shade-teal w-10 h-2 rounded-md;
-}

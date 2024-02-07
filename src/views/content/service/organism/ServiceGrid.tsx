@@ -21,9 +21,6 @@ export function ServiceGrid(): JSXElement {
     on(services, () => {
       if (!selectedService()) return;
 
-      const serviceGridElement = ref();
-      if (!serviceGridElement) return;
-
       ServiceGridUtils.scrollToServiceStart(ref());
     })
   );

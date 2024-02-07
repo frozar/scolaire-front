@@ -1,0 +1,19 @@
+.service-grid-item-trip {
+  @apply flex relative justify-center h-16 bg-green-base rounded-md;
+}
+
+.service-grid-item-trip-name {
+  @apply flex items-center text-white text-sm;
+}
+
+.service-grid-item-trip-start-hour {
+  @apply absolute text-xs -rotate-45 -bottom-6 -left-4;
+}
+
+.service-grid-item-trip-end-hour {
+  @apply absolute text-xs -rotate-45 -bottom-6 -right-4;
+}
+
+.service-grid-item-trip-trash-button {
+  @apply absolute bottom-0 right-0;
+}

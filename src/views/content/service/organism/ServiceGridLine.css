@@ -3,5 +3,5 @@
 }
 
 .service-grid-line.active {
-  @apply bg-gray-base;
+  @apply bg-gray-light;
 }
