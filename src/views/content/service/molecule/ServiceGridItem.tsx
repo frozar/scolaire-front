@@ -1,31 +1,39 @@
 import { JSXElement } from "solid-js";
 import { TripUtils } from "../../../../utils/trip.utils";
 
-import { zoom } from "../organism/ServiceGrid";
+import { ServiceGridUtils } from "../../../../utils/serviceGrid.utils";
+import { ServiceTripType } from "../organism/Services";
 import "./ServiceGridItem.css";
 
-export function ServiceGridItem(props: { tripId: number }): JSXElement {
-  function width() {
-    return (
-      Math.round(
-        ((TripUtils.get(props.tripId).metrics?.duration as number) / 60) *
-          zoom()
-      ) + "px"
-    );
-  }
+interface ServiceGridItemProps {
+  serviceTrip: ServiceTripType;
+  i: number;
+}
 
-  // TODO: Make itemTrip, itemHlp and itemHalt components
+export function ServiceGridItem(props: ServiceGridItemProps): JSXElement {
+  // TODO: Make itemTrip, itemHlp
   return (
     <div class="service-grid-item">
-      <div class="service-grid-item-trip" style={{ width: width() }}>
+      <div
+        class="service-grid-item-trip"
+        style={{
+          width: ServiceGridUtils.getTripWidth(props.serviceTrip.tripId),
+        }}
+      >
         <div class="service-grid-item-trip-name">
-          {TripUtils.get(props.tripId).name}
+          {TripUtils.get(props.serviceTrip.tripId).name}
+        </div>
+        <div class="absolute text-xs -rotate-45 -bottom-6 -left-4">
+          {ServiceGridUtils.getServiceTripStartHour(props.i, props.serviceTrip)}
+        </div>
+        <div class="absolute text-xs -rotate-45 -bottom-6 -right-4">
+          {ServiceGridUtils.getServiceEndHour(props.i, props.serviceTrip)}
         </div>
       </div>
-      <div class="service-grid-item-hlp" />
-      <div class="service-grid-item-halt">
-        <div class="service-grid-item-halt-element" />
-      </div>
+      <div
+        class="service-grid-item-hlp"
+        style={{ width: ServiceGridUtils.getHlpWidth() }}
+      />
     </div>
   );
 }

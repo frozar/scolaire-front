@@ -15,16 +15,7 @@ interface ServiceGridLineProps {
 // TODO: Fix and clean
 export function ServiceGridLine(props: ServiceGridLineProps): JSXElement {
   function firstDivWidth(): string {
-    const firstTrip = TripUtils.get(services()[props.i].tripsIds[0]);
-    console.log("firstTrip", firstTrip);
-    console.log(
-      "firstTrip.schools[0].hours.startHourComing?.hour",
-      firstTrip.schools[0].hours.startHourComing?.hour
-    );
-    console.log(
-      "firstTrip.schools[0].hours.startHourComing?.minutes",
-      firstTrip.schools[0].hours.startHourComing?.minutes
-    );
+    const firstTrip = TripUtils.get(services()[props.i].serviceTrips[0].tripId);
 
     // TODO: Take which day it is into account
     // TODO: Take Going / Coming information into account
@@ -33,19 +24,19 @@ export function ServiceGridLine(props: ServiceGridLineProps): JSXElement {
       (firstTrip.schools[0].hours.startHourComing?.hour as number) * 60 +
       (firstTrip.schools[0].hours.startHourComing?.minutes as number);
 
-    console.log("earliestArrival", earliestArrival);
     const tripDuration = Math.round(
       (firstTrip.metrics?.duration as number) / 60
     );
     return (earliestArrival - tripDuration) * zoom() + "px";
   }
+
   return (
     <div
       class={"service-grid-line"}
       style={{ width: props.width }}
       classList={{ active: selectedService() == services()[props.i].id }}
     >
-      <Show when={services()[props.i].tripsIds.length != 0}>
+      <Show when={services()[props.i].serviceTrips.length != 0}>
         <div
           // TODO: TODO: Hide the div ("opacity-0")
           class="border border-dashed border-black"
@@ -55,8 +46,10 @@ export function ServiceGridLine(props: ServiceGridLineProps): JSXElement {
         </div>
       </Show>
 
-      <For each={services()[props.i].tripsIds}>
-        {(tripId) => <ServiceGridItem tripId={tripId} />}
+      <For each={services()[props.i].serviceTrips}>
+        {(serviceTrip, i) => (
+          <ServiceGridItem serviceTrip={serviceTrip} i={i()} />
+        )}
       </For>
     </div>
   );

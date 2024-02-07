@@ -14,9 +14,9 @@ export type DraggableTripType = {
 
 // TODO: Use arg to specify filter !
 function tripsWithoutService(): DraggableTripType[] {
-  const alreadyAssignedTripIds = services().flatMap(
-    (service) => service.tripsIds
-  );
+  const alreadyAssignedTripIds = services()
+    .flatMap((service) => service.serviceTrips)
+    .map((serviceTrip) => serviceTrip.tripId);
 
   return getLines()
     .flatMap((line) =>

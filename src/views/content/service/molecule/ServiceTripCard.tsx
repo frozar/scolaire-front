@@ -1,5 +1,6 @@
 import { JSXElement } from "solid-js";
 
+import { ServiceGridUtils } from "../../../../utils/serviceGrid.utils";
 import { ServiceTripCardLeft } from "../atom/ServiceTripCardLeft";
 import { ServiceTripCardMiddle } from "../atom/ServiceTripCardMiddle";
 import { ServiceTripCardRight } from "../atom/ServiceTripCardRight";
@@ -19,20 +20,12 @@ export function ServiceTripCard(props: ServiceTripCardProps): JSXElement {
       console.log("No service selected");
       return;
     }
-    // Add trip to a service
 
     // eslint-disable-next-line solid/reactivity
     setServices((prev) => {
       const services = [...prev];
 
-      const serviceToChange = services.filter(
-        (service) => service.id == selectedService()
-      )[0];
-      const index = services.indexOf(serviceToChange);
-      serviceToChange.tripsIds.push(props.trip.tripId);
-      services.splice(index, 1, serviceToChange);
-
-      return services;
+      return ServiceGridUtils.updateTrips(services, props.trip.tripId);
     });
   }
 
