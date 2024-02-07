@@ -29,6 +29,10 @@ import {
   currentStep,
   setCurrentTripIndex,
 } from "../../../board/component/organism/DrawTripBoard";
+import {
+  currentDrawPath,
+  drawPathUtils,
+} from "../../../path/component/drawPath.utils";
 import { setStopDetailsItem } from "../../../stops/component/organism/StopDetails";
 import { setIsOverMapItem } from "../../l7MapBuilder";
 import {
@@ -64,8 +68,8 @@ function updateTripAndWaypoints(point: StopType) {
   const gradeIds = currentDrawTrip().grades.map(
     (grade) => grade.id
   ) as number[];
-  const grades: GradeTripType[] = [];
 
+  const grades: GradeTripType[] = [];
   point.associated.map((associated) => {
     if (gradeIds.includes(associated.gradeId)) {
       grades.push({
@@ -76,12 +80,7 @@ function updateTripAndWaypoints(point: StopType) {
     }
   });
   CurrentDrawTripUtils.addPointToTrip({
-    id: point.id,
-    leafletId: point.leafletId,
-    name: point.name,
-    lon: point.lon,
-    lat: point.lat,
-    nature: point.nature,
+    ...point,
     grades: grades,
     passageTime: 0,
     startToTripPointDistance: 0,
@@ -184,31 +183,58 @@ const onMouseOut = (stop: StopType) => {
   }
 };
 
+function pointAlreadyExistInPathOrTrip(stop: StopType): boolean {
+  switch (onBoard()) {
+    case "trip-draw":
+      return currentDrawTrip()
+        .tripPoints.map((point) => point.id)
+        .includes(stop.id);
+    case "path-draw":
+      return (
+        currentDrawPath()
+          ?.points.map((point) => point.id)
+          .includes(stop.id) ?? false
+      );
+    default:
+      return false;
+  }
+}
+
+function updatePathOrTripPoints(stop: StopType) {
+  switch (onBoard()) {
+    case "trip-draw":
+      updateTripAndWaypoints(stop);
+      break;
+    case "path-draw":
+      drawPathUtils.addPointToPath(stop);
+    default:
+      return false;
+  }
+}
+
 const onMouseUp = (stop: StopType, map: L.Map) => {
   const nextIndex = draggingWaypointIndex();
   if (nextIndex) {
     // case mouseUp on a stop not already in the trip
-    if (
-      !currentDrawTrip()
-        .tripPoints.map((point) => point.id)
-        .includes(stop.id)
-    ) {
-      setDraggingWaypointIndex();
+    if (!pointAlreadyExistInPathOrTrip(stop)) {
       setCurrentTripIndex(nextIndex);
-
-      updateTripAndWaypoints(stop);
+      updatePathOrTripPoints(stop);
 
       const circle = linkMap.get(stop.leafletId);
       circle?.setStyle({ radius: 5, weight: 0 });
     } else {
-      setCurrentTripIndex(currentDrawTrip().tripPoints.length);
-      setDraggingWaypointIndex();
+      const lastIndex =
+        onBoard() == "trip-draw"
+          ? currentDrawTrip().tripPoints.length
+          : currentDrawPath()?.points.length ?? -1;
+
+      setCurrentTripIndex(lastIndex);
       map.off("mousemove");
     }
+    setDraggingWaypointIndex();
     map.dragging.enable();
   } else if (draggingTrip()) {
-    updateTripAndWaypoints(stop);
-
+    updatePathOrTripPoints(stop);
     setDraggingTrip(false);
   }
 };
