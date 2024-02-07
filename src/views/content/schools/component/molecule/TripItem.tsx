@@ -3,7 +3,7 @@ import CardTitle from "../../../../../component/atom/CardTitle";
 import Pellet from "../../../../../component/atom/Pellet";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
 import ArretsLogo from "../../../../../icons/ArretsLogo";
-import { TripMapUtils } from "../../../map/component/molecule/tripMap.utils";
+import { TripMapUtils } from "../../../../../utils/tripMap.utils";
 import GradeLinkedSchool from "../atom/GradeLinkedSchool";
 import "./TripItem.css";
 

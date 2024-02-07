@@ -16,6 +16,7 @@ import { PathType } from "../../../../../_entities/path.entity";
 import { TripPointType, TripType } from "../../../../../_entities/trip.entity";
 import { WaypointType } from "../../../../../_entities/waypoint.entity";
 import { PathUtil } from "../../../../../utils/path.utils";
+import { TripMapUtils } from "../../../../../utils/tripMap.utils";
 import {
   DrawTripStep,
   currentDrawTrip,
@@ -30,7 +31,6 @@ import {
 } from "../../../path/component/drawPath.utils";
 import { setIsOverMapItem } from "../../l7MapBuilder";
 import { cursorIsOverPoint, linkMap } from "../organism/Points";
-import { TripMapUtils } from "./tripMap.utils";
 
 export const [draggingTrip, setDraggingTrip] = createSignal<boolean>(false);
 
