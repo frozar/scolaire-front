@@ -1,4 +1,5 @@
-import { JSXElement, createSignal } from "solid-js";
+import _ from "lodash";
+import { JSXElement, Show, createSignal, onMount } from "solid-js";
 import { ServiceGrid } from "./ServiceGrid";
 import { ServiceList } from "./ServiceList";
 
@@ -20,15 +21,24 @@ export type ServiceTripType = {
 };
 
 export const [services, setServices] = createSignal<ServiceType[]>([]);
+export const [servicesBeforeModification, setServicesBeforeModification] =
+  createSignal<ServiceType[]>([]);
 
 export function Services(): JSXElement {
+  onMount(() => {
+    setServicesBeforeModification([...services()]);
+  });
+
   return (
     <div class="flex flex-col overflow-auto">
       <div>
         <ServiceGridZoomButtons />
-        {/* TODO: Display only if there is a difference (initialValues != actualValues) */}
-        <ServiceGridModificationButtons />
+
+        <Show when={!_.isEqual(servicesBeforeModification(), services())}>
+          <ServiceGridModificationButtons />
+        </Show>
       </div>
+
       <div class="service">
         <ServiceList />
         <ServiceGrid />
