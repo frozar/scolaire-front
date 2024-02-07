@@ -1,7 +1,11 @@
-import { JSXElement, Show, createEffect } from "solid-js";
+import { JSXElement, createEffect } from "solid-js";
 import { NatureEnum } from "../../../../../type";
-import { onBoard } from "../../../board/component/template/ContextManager";
-import { TimeLineAddPPointButton } from "../atom/TimeLineAddPPointButton";
+import { TimeLineAction } from "./TimeLineAction";
+
+import { setCurrentTripIndex } from "../../../board/component/organism/DrawTripBoard";
+import { LeftTimeLineContent } from "../atom/LeftTimeLineContent";
+import { TimeLineCircle } from "../atom/TimeLineCircle";
+import { RightTimeLineContent } from "./RightTimeLineContent";
 
 import "./PathTimeLineItem.css";
 
@@ -21,29 +25,19 @@ export function PathTimeLineItem(props: PathLineItemProps): JSXElement {
 
   return (
     <>
-      {/* TODO: add mini + button to add point to path */}
-
-      <div class="path-timeline-left">{props.timePassage}</div>
+      <LeftTimeLineContent text={props.timePassage?.toString() ?? ""} />
       <div class="path-timeline-line">
-        <Show when={onBoard() == "path-draw"}>
-          <TimeLineAddPPointButton
-            onClick={() => console.log("ok")}
-            text="tyeste"
-          />
-        </Show>
-        <div
-          class="path-timeline-circle"
-          classList={{
-            "!bg-dark-teal": props.pointNature == NatureEnum.stop,
-            "!bg-red-teal": props.pointNature == NatureEnum.school,
-          }}
+        <TimeLineAction
+          onClick={() => setCurrentTripIndex(props.index)}
+          text="Sélectionnez un point sur la carte"
         />
+        <TimeLineCircle nature={props.pointNature} />
       </div>
-      <div class="path-timeline-component path-timeline-content">
-        <p class="count-to-get">{props.quantity}</p>
-        <p class="stop-name">{props.name}</p>
-        <p class="total-count">{props.calculated}</p>
-      </div>
+      <RightTimeLineContent
+        countToGet={props.quantity.toString()}
+        name={props.name}
+        totalCount={props.calculated?.toString() ?? ""}
+      />
     </>
   );
 }

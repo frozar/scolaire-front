@@ -1,0 +1,11 @@
+.path-timeline-component {
+  @apply flex justify-around ml-4;
+}
+
+.count-to-get {
+  @apply text-green-base;
+}
+
+.total-count {
+  @apply text-purple-400;
+}
