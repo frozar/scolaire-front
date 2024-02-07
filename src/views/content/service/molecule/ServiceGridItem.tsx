@@ -12,7 +12,6 @@ interface ServiceGridItemProps {
 }
 
 export function ServiceGridItem(props: ServiceGridItemProps): JSXElement {
-  // TODO: Make itemTrip, itemHlp
   return (
     <div class="service-grid-item">
       <Show when={props.i != 0}>
