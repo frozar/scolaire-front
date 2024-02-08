@@ -1,10 +1,12 @@
 import _ from "lodash";
 import { JSXElement } from "solid-js";
+import { ServiceService } from "../../../../_services/service.service";
 import Button from "../../../../component/atom/Button";
 import {
   services,
   servicesBeforeModification,
   setServices,
+  setServicesBeforeModification,
 } from "../organism/Services";
 
 export function ServiceGridModificationButtons(): JSXElement {
@@ -20,7 +22,7 @@ function cancel() {
   setServices([...servicesBeforeModification()]);
 }
 
-function validate(): void {
+async function validate(): Promise<void> {
   // ! Demander confirmation !?
   const servicesId = services().map((service) => service.id);
   const servicesBeforeModificationId = servicesBeforeModification().map(
@@ -30,7 +32,6 @@ function validate(): void {
   const idsToDelete = servicesBeforeModificationId.filter(
     (id) => !servicesId.includes(id)
   );
-  console.log("idsToDelete", idsToDelete);
 
   // To add list
   const idsToAdd = servicesId.filter(
@@ -39,10 +40,9 @@ function validate(): void {
   const servicesToAdd = services().filter((service) =>
     idsToAdd.includes(service.id)
   );
-  console.log("servicesToAdd", servicesToAdd);
 
   // To modify list
-  const serviceToModify = services()
+  const servicesToModify = services()
     .filter((service) => !idsToAdd.includes(service.id))
     .filter(
       (service) =>
@@ -54,8 +54,12 @@ function validate(): void {
         )
     );
 
-  console.log("serviceToModify", serviceToModify);
+  const test = await ServiceService.update({
+    toAdd: servicesToAdd,
+    toModify: servicesToModify,
+    toDelete: idsToDelete,
+  });
 
-  // ! send in one request later processed by xano
-  // ! request response must erase services()
+  setServices(test);
+  setServicesBeforeModification(_.cloneDeep(test));
 }
