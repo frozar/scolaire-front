@@ -29,4 +29,11 @@ export namespace drawPathUtils {
       return { ...path, points };
     });
   }
+
+  export function removePoint(id: number) {
+    setCurrentDrawPath((prev) => {
+      if (!prev) return prev;
+      return { ...prev, points: prev.points.filter((point) => point.id != id) };
+    });
+  }
 }

@@ -8,6 +8,7 @@ import { NatureEnum } from "../../../../../type";
 import { PathUtil } from "../../../../../utils/path.utils";
 import { TimeLineNoPointLine } from "../molecule/TimeLineNoPointLine";
 
+import { drawPathUtils } from "../drawPath.utils";
 import "./PathTimeLine.css";
 
 interface PathLineProps {
@@ -28,6 +29,7 @@ export function PathTimeLine(props: PathLineProps) {
       const quantity = getPointQuantity(point_, props.path.grades);
 
       const pointInformations = {
+        id: point_.id,
         name: point_.name,
         nature: point_.nature,
         quantity: quantity,
@@ -48,6 +50,8 @@ export function PathTimeLine(props: PathLineProps) {
               lineColor={props.path.color}
               pointNature={point.nature}
               index={index() + 1}
+              onClickDelete={drawPathUtils.removePoint}
+              pointId={point.id}
             />
           </>
         )}

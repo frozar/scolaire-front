@@ -18,6 +18,9 @@ interface PathLineItemProps {
   lineColor: string;
   pointNature: NatureEnum;
   index: number;
+  pointId: number;
+
+  onClickDelete: (id: number) => void;
 }
 
 export function PathTimeLineItem(props: PathLineItemProps): JSXElement {
@@ -31,7 +34,11 @@ export function PathTimeLineItem(props: PathLineItemProps): JSXElement {
           onClick={() => setCurrentTripIndex(props.index)}
           text="Sélectionnez un point sur la carte"
         />
-        <TimeLineCircle nature={props.pointNature} />
+        <TimeLineCircle
+          onClickDelete={props.onClickDelete}
+          nature={props.pointNature}
+          pointId={props.pointId}
+        />
       </div>
       <RightTimeLineContent
         countToGet={props.quantity.toString()}
