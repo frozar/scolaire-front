@@ -260,5 +260,7 @@ export namespace StopPointUtil {
 
       CurrentDrawTripUtils.removeTripPoint(stop.id, stop.nature);
     }
+
+    if (onBoard() == "path-draw") drawPathUtils.removePoint(stop.id);
   }
 }
