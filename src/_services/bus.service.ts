@@ -1,5 +1,5 @@
 import { BusCategoryType } from "../_entities/bus.entity";
-import { setBus } from "../views/content/bus/organism/Bus";
+import { getBus, setBus } from "../views/content/bus/organism/Bus";
 import { ServiceUtils } from "./_utils.service";
 
 export namespace BusService {
@@ -8,19 +8,21 @@ export namespace BusService {
   }
 
   export async function update(bus: Partial<BusCategoryType>) {
-    const dbbus: BusCategoryType = await ServiceUtils.patch(
+    const dbBus: BusCategoryType = await ServiceUtils.patch(
       "/bus/" + bus.id,
       bus
     );
+    console.log("dbBus", dbBus);
     setBus((prev) => {
       if (!prev) return prev;
       return [...prev].map((bus) => {
-        if (bus.id == dbbus.id) {
-          bus = dbbus;
+        if (bus.id == dbBus.id) {
+          bus = dbBus;
         }
         return bus;
       });
     });
+    console.log("getBus()", getBus());
   }
 
   export async function deleteBus(id?: number): Promise<boolean> {

@@ -17,7 +17,12 @@ function isNewRowAdded(idx: number, newRowAdded: boolean) {
 export function TableRows(props: TableLineProps) {
   return (
     <For each={props.busList}>
-      {(bus: BusCategoryType, i) => <TableLine isEditMode={isNewRowAdded(i(), props.isEditMode)} busItem={bus} />}
+      {(bus: BusCategoryType, i) => (
+        <TableLine
+          isEditMode={isNewRowAdded(i(), props.isEditMode)}
+          busItem={bus}
+        />
+      )}
     </For>
   );
 }

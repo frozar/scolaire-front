@@ -6,7 +6,6 @@ import CheckIcon from "../../../../icons/CheckIcon";
 import TrashIcon from "../../../../icons/TrashIcon";
 import UpdatePen from "../../../../icons/UpdatePen";
 import ButtonIcon from "../../board/component/molecule/ButtonIcon";
-import InputNumber from "../../stops/component/atom/InputNumber";
 import { TableElement } from "../atom/TableElement";
 import "./TableLine.css";
 
@@ -16,43 +15,44 @@ interface TableLineProps {
 }
 
 export function TableLine(props: TableLineProps) {
+  // const bufferBus: BusCategoryType = props.busItem;
 
-  const bufferBus: BusCategoryType = props.busItem;
+  const [isInEditMode, setisInEditMode] = createSignal(props.isEditMode);
 
-  const [getEditMode, setEditMode] = createSignal(props.isEditMode);  
-  
-  const [getCapacity, setCapacity] = createSignal({
-    value: bufferBus.capacity,
-    disabled: false,
-  });
-  
+  const [getCategory, setCategory] = createSignal(props.busItem.category);
+
+  const [getCapacity, setCapacity] = createSignal(props.busItem.capacity);
+
   async function toggleEditMode() {
-    if (!props.isEditMode && getEditMode()) {
-      await BusService.update(bufferBus);
+    if (!props.isEditMode && isInEditMode()) {
+      await BusService.update({
+        id: props.busItem.id,
+        category: getCategory(),
+        capacity: getCapacity(),
+      });
     }
 
     if (props.isEditMode) {
-      await BusService.create(bufferBus);
+      await BusService.create({
+        category: getCategory(),
+        capacity: getCapacity(),
+      });
     }
 
-    setEditMode(!getEditMode());
+    setisInEditMode(!isInEditMode());
   }
 
   async function deleteButton() {
-    await BusService.deleteBus(bufferBus.id);
+    await BusService.deleteBus(props.busItem.id);
   }
 
   function onCategoryInputChanged(value: string) {
-    bufferBus.category = value;
-  };
-
-  function onCapacityInputChanged(element: HTMLInputElement) {
-    bufferBus.capacity = Number(element.value);
-  };
+    setCategory(value);
+  }
 
   return (
     <Show
-      when={getEditMode()}
+      when={isInEditMode()}
       fallback={
         <tr class="tableRow">
           <TableElement text={props.busItem.category} />
@@ -75,16 +75,22 @@ export function TableLine(props: TableLineProps) {
           />
         </td>
         <td class="tableEdit">
-          <InputNumber
-            selector={getCapacity()}
-            onChange={onCapacityInputChanged}
+          <input
+            type="Number"
+            value={getCapacity()}
+            disabled={false}
+            onChange={(e) => setCapacity(Number(e.target.value))}
           />
         </td>
         <TableElement text="-" />
         <TableElement text="-" />
         <td class="actionButtonContainer">
           <ButtonIcon icon={<CheckIcon />} onClick={toggleEditMode} />
-          <ButtonIcon icon={<TrashIcon />} disable onClick={() => console.log("Cannot delete while editing")} />
+          <ButtonIcon
+            icon={<TrashIcon />}
+            disable
+            onClick={() => console.log("Cannot delete while editing")}
+          />
         </td>
       </tr>
     </Show>

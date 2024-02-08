@@ -12,8 +12,8 @@ function addBus() {
   const obj: BusCategoryType = {
     category: "Nom par défaut",
     capacity: 15,
-    quantity: 0,
-    trip: 0,
+    // quantity: 0,
+    // trip: 0,
   };
   setAddButtonClicked(true);
   setBus((prev) => [obj, ...prev]);
