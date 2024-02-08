@@ -1,4 +1,6 @@
 import { createSignal, Show } from "solid-js";
+import { BusCategoryType } from "../../../../_entities/bus.entity";
+import { BusService } from "../../../../_services/bus.service";
 import { TextInput } from "../../../../component/atom/TextInput";
 import CheckIcon from "../../../../icons/CheckIcon";
 import TrashIcon from "../../../../icons/TrashIcon";
@@ -8,34 +10,44 @@ import InputNumber from "../../stops/component/atom/InputNumber";
 import { TableElement } from "../atom/TableElement";
 import "./TableLine.css";
 
-type BusType = {
-  name: string;
-  capacity: number;
-  trip: number;
-  quantity: number;
-};
-
-function deleteRow() {
-  console.log("deleteButton");
+interface TableLineProps {
+  busItem: BusCategoryType;
+  isEditMode: boolean;
 }
 
-export function TableLine(props: BusType) {
-  const [getEditMode, setEditMode] = createSignal(false);
-  const toggleEditMode = () => setEditMode(!getEditMode());
+export function TableLine(props: TableLineProps) {
 
+  const bufferBus: BusCategoryType = props.busItem;
+
+  const [getEditMode, setEditMode] = createSignal(props.isEditMode);  
+  
   const [getCapacity, setCapacity] = createSignal({
-    value: props.capacity,
+    value: bufferBus.capacity,
     disabled: false,
   });
+  
+  async function toggleEditMode() {
+    if (!props.isEditMode && getEditMode()) {
+      await BusService.update(bufferBus);
+    }
 
-  const onNameInputChanged = (value: string) => {
-    props.name = value;
-    console.log(props);
+    if (props.isEditMode) {
+      await BusService.create(bufferBus);
+    }
+
+    setEditMode(!getEditMode());
+  }
+
+  async function deleteButton() {
+    await BusService.deleteBus(bufferBus.id);
+  }
+
+  function onCategoryInputChanged(value: string) {
+    bufferBus.category = value;
   };
 
-  const onCapacityInputChanged = (element: HTMLInputElement) => {
-    props.capacity = Number(element.value);
-    console.log(props);
+  function onCapacityInputChanged(element: HTMLInputElement) {
+    bufferBus.capacity = Number(element.value);
   };
 
   return (
@@ -43,22 +55,22 @@ export function TableLine(props: BusType) {
       when={getEditMode()}
       fallback={
         <tr class="tableRow">
-          <TableElement text={props.name} />
-          <TableElement text={props.capacity.toString()} />
-          <TableElement text={props.trip.toString()} />
-          <TableElement text={props.quantity.toString()} />
+          <TableElement text={props.busItem.category} />
+          <TableElement text={props.busItem.capacity.toString()} />
+          <TableElement text="-" />
+          <TableElement text="-" />
           <td class="actionButtonContainer">
             <ButtonIcon icon={<UpdatePen />} onClick={toggleEditMode} />
-            <ButtonIcon disable icon={<TrashIcon />} onClick={deleteRow} />
+            <ButtonIcon icon={<TrashIcon />} onClick={deleteButton} />
           </td>
         </tr>
       }
     >
-      <tr class="tableRow">
+      <tr class="tableRowEditing">
         <td class="tableEdit">
           <TextInput
-            onInput={onNameInputChanged}
-            defaultValue={props.name}
+            onInput={onCategoryInputChanged}
+            defaultValue={props.busItem.category}
             placeholder="Entrer le type de bus"
           />
         </td>
@@ -68,11 +80,11 @@ export function TableLine(props: BusType) {
             onChange={onCapacityInputChanged}
           />
         </td>
-        <TableElement text={props.trip.toString()} />
-        <TableElement text={props.quantity.toString()} />
+        <TableElement text="-" />
+        <TableElement text="-" />
         <td class="actionButtonContainer">
           <ButtonIcon icon={<CheckIcon />} onClick={toggleEditMode} />
-          <ButtonIcon icon={<TrashIcon />} disable onClick={deleteRow} />
+          <ButtonIcon icon={<TrashIcon />} disable onClick={() => console.log("Cannot delete while editing")} />
         </td>
       </tr>
     </Show>

@@ -1,23 +1,23 @@
-import { For, createSignal } from "solid-js";
+import { For } from "solid-js";
+import { BusCategoryType } from "../../../../_entities/bus.entity";
 import { TableLine } from "./TableLine";
 
-type BusType = {
-  name: string;
-  capacity: number;
-  trip: number;
-  quantity: number;
-};
+interface TableLineProps {
+  busList: BusCategoryType[];
+  isEditMode: boolean;
+}
 
-export const [getBus, setBus] = createSignal<BusType[]>([
-  { name: "bus1", capacity: 10, trip: 0, quantity: 0 },
-  { name: "bus2", capacity: 12, trip: 0, quantity: 0 },
-  { name: "bus3", capacity: 14, trip: 0, quantity: 0 },
-  { name: "bus4", capacity: 16, trip: 0, quantity: 0 },
-  { name: "bus5", capacity: 18, trip: 0, quantity: 0 },
-]);
+function isNewRowAdded(idx: number, newRowAdded: boolean) {
+  if (idx == 0 && newRowAdded) {
+    return true;
+  }
+  return false;
+}
 
-export function TableRows() {
+export function TableRows(props: TableLineProps) {
   return (
-    <For each={getBus()}>{(bus: BusType, i) => <TableLine {...bus} />}</For>
+    <For each={props.busList}>
+      {(bus: BusCategoryType, i) => <TableLine isEditMode={isNewRowAdded(i(), props.isEditMode)} busItem={bus} />}
+    </For>
   );
 }
