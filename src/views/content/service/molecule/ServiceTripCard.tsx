@@ -14,26 +14,28 @@ interface ServiceTripCardProps {
 }
 
 export function ServiceTripCard(props: ServiceTripCardProps): JSXElement {
-  function onDblClick(): void {
-    if (!selectedService()) {
-      // TODO: Display user message
-      console.log("No service selected");
-      return;
-    }
-
-    // eslint-disable-next-line solid/reactivity
-    setServices((prev) => {
-      const services = [...prev];
-
-      return ServiceGridUtils.addTrip(services, props.trip.tripId);
-    });
-  }
-
   return (
-    <div class="service-trip-card" onDblClick={onDblClick}>
+    <div
+      class="service-trip-card"
+      onDblClick={() => onDblClick(props.trip.tripId)}
+    >
       <ServiceTripCardLeft trip={props.trip} />
       <ServiceTripCardMiddle />
       <ServiceTripCardRight trip={props.trip} />
     </div>
   );
+}
+
+function onDblClick(tripId: number): void {
+  if (!selectedService()) {
+    // TODO: Display user message
+    console.log("No service selected");
+    return;
+  }
+
+  setServices((prev) => {
+    const services = [...prev];
+
+    return ServiceGridUtils.addTrip(services, tripId);
+  });
 }

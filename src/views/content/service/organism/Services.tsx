@@ -26,7 +26,7 @@ export const [servicesBeforeModification, setServicesBeforeModification] =
 
 export function Services(): JSXElement {
   onMount(() => {
-    setServicesBeforeModification([...services()]);
+    setServicesBeforeModification(_.cloneDeep(services()));
   });
 
   return (
