@@ -1,0 +1,15 @@
+.tableRow {
+  @apply flex justify-between border-b-2 h-10 items-center hover:bg-gray-light;
+}
+
+.tableRowEditing {
+  @apply flex justify-between border-b-2 h-10 items-center bg-gray-light;
+}
+
+.actionButtonContainer {
+  @apply flex justify-center gap-2 items-center;
+}
+
+.tableEdit {
+  @apply text-center w-3.5;
+}

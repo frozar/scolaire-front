@@ -1,3 +1,4 @@
+import { BusCategoryType } from "../_entities/bus.entity";
 import {
   CalendarDBType,
   CalendarEntity,
@@ -15,6 +16,7 @@ import {
   TripDirectionType,
   setTripDirections,
 } from "../_entities/trip-direction.entity";
+import { setBus } from "../views/content/bus/organism/Bus";
 import { setCalendars } from "../views/content/calendar/calendar.manager";
 import { setCalendarsPeriod } from "../views/content/calendar/template/Calendar";
 import { setLines } from "../views/content/map/component/organism/BusLines";
@@ -31,6 +33,7 @@ type InitDBType = {
   calendars_periods: CalendarPeriodDBType[];
   trip_directions: TripDirectionType[];
   services: ServiceDBType[];
+  bus_categories: BusCategoryType[];
 };
 
 export type InitType = {
@@ -62,6 +65,9 @@ export namespace InitService {
       CalendarEntity.build(calendar)
     );
     setCalendars(calendars);
+
+    const bus = dbInit.bus_categories;
+    setBus(bus);
 
     const calendarPeriods = dbInit.calendars_periods.map((calendarPeriod) =>
       CalendarEntity.buildCalendarPeriod(calendarPeriod)
