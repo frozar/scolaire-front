@@ -240,27 +240,32 @@ export namespace StopPointUtil {
       (_point) => _point.id == stop.id
     )[0];
 
-    if (onBoard() == "trip-draw" && isInTripUnderConstruction != undefined) {
-      if (TripUtils.canRemoveStopFromTrip(stop.leafletId)) return;
+    switch (onBoard()) {
+      case "trip-draw":
+        const canRemovePoint =
+          TripUtils.canRemoveStopFromTrip(stop.leafletId) &&
+          isInTripUnderConstruction == undefined;
+        if (canRemovePoint) break;
 
-      CurrentDrawTripUtils.removePoint(stop);
+        CurrentDrawTripUtils.removePoint(stop);
 
-      // Update waypoints
-      const waypoints = currentDrawTrip().waypoints;
-      if (waypoints) {
-        const newWaypoints = WaypointEntity.deleteSchoolOrStopWaypoint(
-          waypoints,
-          stop.id,
-          stop.nature
-        );
-        CurrentDrawTripUtils.updateWaypoints(newWaypoints);
-      }
+        const waypoints = currentDrawTrip().waypoints;
+        if (waypoints) {
+          const newWaypoints = WaypointEntity.deleteSchoolOrStopWaypoint(
+            waypoints,
+            stop.id,
+            stop.nature
+          );
+          CurrentDrawTripUtils.updateWaypoints(newWaypoints);
+        }
 
-      circle?.setStyle({ fillColor: COLOR_STOP_FOCUS });
+        circle?.setStyle({ fillColor: COLOR_STOP_FOCUS });
+        CurrentDrawTripUtils.removeTripPoint(stop.id, stop.nature);
+        break;
 
-      CurrentDrawTripUtils.removeTripPoint(stop.id, stop.nature);
+      case "path-draw":
+        drawPathUtils.removePoint(stop.id);
+        break;
     }
-
-    if (onBoard() == "path-draw") drawPathUtils.removePoint(stop.id);
   }
 }

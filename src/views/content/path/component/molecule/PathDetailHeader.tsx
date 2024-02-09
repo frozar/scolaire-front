@@ -4,6 +4,7 @@ import TrashIcon from "../../../../../icons/TrashIcon";
 import UpdatePen from "../../../../../icons/UpdatePen";
 import { MapElementUtils } from "../../../../../utils/mapElement.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
+import { setCurrentTripIndex } from "../../../board/component/organism/DrawTripBoard";
 import {
   changeBoard,
   toggleDrawMod,
@@ -18,12 +19,12 @@ const [, { setModeDrawTrip }] = useStateAction();
 
 export function PathDetailHeader(props: { path: PathType }) {
   function editPath() {
+    setCurrentDrawPath(props.path);
+    setCurrentTripIndex(props.path.points.length);
     toggleDrawMod();
     setModeDrawTrip();
     changeBoard("path-draw");
-    setCurrentDrawPath(props.path);
     setOnDrawPathStep(DrawPathStep.editPath);
-
     MapElementUtils.deselectAllPointsAndBusTrips();
   }
 

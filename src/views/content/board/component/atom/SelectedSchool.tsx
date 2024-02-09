@@ -12,6 +12,7 @@ export default function (props: SelectedSchoolProps) {
 
   return (
     <div class="selected-school">
+      {/* TODO remove title here & use BoardTitle above the component call */}
       <div class="add-line-information-board-content-title">
         <h1>Sélection des écoles</h1>
       </div>

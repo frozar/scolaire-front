@@ -47,7 +47,7 @@ export namespace ContextUtils {
     return selectedGradeId?.includes(grade.id);
   }
 
-  function defineTripCheckableGrade() {
+  export function defineTripCheckableGrade() {
     setDrawTripCheckableGrade(
       getSelectedLine()?.grades.map((grade) => {
         return {
@@ -76,6 +76,7 @@ export namespace ContextUtils {
           .filter((grade) => grade.done)
           .map((grade) => grade.item) as GradeType[];
 
+        if (grades.length < 1) break;
         const days = tripDaysAndDirection()
           .filter((item) => item.keep)
           .map((item) => item.day);

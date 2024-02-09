@@ -44,8 +44,6 @@ export const [onBoard, setOnBoard] = createSignal<BoardTags>(undefined);
 export const changeBoard = (boardName: BoardTags) => setOnBoard(boardName);
 
 export default function () {
-  createEffect(() => console.log("board:", onBoard()));
-
   createEffect(() => {
     if (isInDrawMod()) {
       switch (onBoard()) {

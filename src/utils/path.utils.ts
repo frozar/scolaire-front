@@ -3,11 +3,25 @@ import { SchoolType } from "../_entities/school.entity";
 import { StopType } from "../_entities/stop.entity";
 import { TripDirectionEntity } from "../_entities/trip-direction.entity";
 import { TripType } from "../_entities/trip.entity";
+import { PathService } from "../_services/path.service";
+import { disableSpinningWheel, enableSpinningWheel } from "../signaux";
 import { NatureEnum } from "../type";
-import { getLines } from "../views/content/map/component/organism/BusLines";
+import {
+  getLines,
+  getSelectedLine,
+  setLines,
+} from "../views/content/map/component/organism/BusLines";
 import { getSchools } from "../views/content/map/component/organism/SchoolPoints";
 import { getStops } from "../views/content/map/component/organism/StopPoints";
 import { getTrips } from "../views/content/map/component/organism/Trips";
+import {
+  currentDrawPath,
+  setCurrentDrawPath,
+} from "../views/content/path/component/drawPath.utils";
+import {
+  selectedPath,
+  setSelectedPath,
+} from "../views/content/path/component/organism/PathDetail";
 import { SchoolUtils } from "./school.utils";
 
 export namespace PathUtil {
@@ -65,5 +79,32 @@ export namespace PathUtil {
         quantity += asso.quantity;
     });
     return quantity;
+  }
+
+  export function isValidPath(path: PathType | undefined) {
+    if (!path || path?.points.length < 2) return false;
+    else return true;
+  }
+
+  export async function update(path: PathType) {
+    enableSpinningWheel();
+    const lineId = getSelectedLine()?.id as number;
+    const updatedPath = await PathService.update(path, lineId);
+
+    setLines((line) => {
+      return [...line].map((line) => {
+        if (line.id == lineId)
+          line.paths = line.paths.map((path_) => {
+            if (path_.id == path.id) path_ = updatedPath;
+            return path_;
+          });
+        return line;
+      });
+    });
+
+    if (currentDrawPath()?.id == updatedPath.id)
+      setCurrentDrawPath(updatedPath);
+    if (selectedPath()?.id == updatedPath.id) setSelectedPath(updatedPath);
+    disableSpinningWheel();
   }
 }
