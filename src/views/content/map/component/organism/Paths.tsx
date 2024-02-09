@@ -16,17 +16,23 @@ import { getSelectedLine } from "./BusLines";
 
 export function Paths(props: { map: L.Map }) {
   function pathFilter(): PathType[] {
-    // * display only 1 path
-    if (onDrawPathStep() == DrawPathStep.editPath)
-      return [currentDrawPath() ?? PathEntity.defaultPath()];
+    switch (onBoard()) {
+      case "path-draw":
+        if (onDrawPathStep() == DrawPathStep.editPath)
+          return [currentDrawPath() ?? PathEntity.defaultPath()];
+        else return [];
 
-    // * display path list of the line
-    if (onBoard() == "trip" && onTripBoardPanel() == TripBoardPanels.paths)
-      return getSelectedLine()?.paths ?? [];
+      case "trip":
+        if (onTripBoardPanel() == TripBoardPanels.paths)
+          return getSelectedLine()?.paths ?? [];
+        else return [];
 
-    if (onBoard() == "path-details") return [selectedPath()] as PathType[];
-    if (onBoard() == "path-draw") return [currentDrawPath()] as PathType[];
-    return [];
+      case "path-details":
+        return [selectedPath()] as PathType[];
+
+      default:
+        return [];
+    }
   }
   return (
     <For each={pathFilter()}>

@@ -8,16 +8,15 @@ import { PathTimeLine } from "./PathTimeLine";
 export const [selectedPath, setSelectedPath] = createSignal<PathType>();
 
 export function PathDetail() {
-  const path = selectedPath() ?? PathEntity.defaultPath();
-  const schoolsNames = PathUtil.getSchoolsInPath(selectedPath())?.map(
-    (school) => school.name
-  );
+  const path = () => selectedPath() ?? PathEntity.defaultPath();
+  const schoolsNames = () =>
+    PathUtil.getSchoolsInPath(selectedPath())?.map((school) => school.name);
 
   return (
     <div>
-      <PathDetailHeader path={path} />
-      <SchoolsEnumeration schoolsName={schoolsNames ?? []} />
-      <PathTimeLine path={path} inEdition={false} />
+      <PathDetailHeader path={path()} />
+      <SchoolsEnumeration schoolsName={schoolsNames() ?? []} />
+      <PathTimeLine path={path()} inEdition={false} />
     </div>
   );
 }
