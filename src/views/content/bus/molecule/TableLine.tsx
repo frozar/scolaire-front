@@ -16,8 +16,10 @@ interface TableLineProps {
 export function TableLine(props: TableLineProps) {
   const [isInEditMode, setisInEditMode] = createSignal(false);
 
+  // eslint-disable-next-line solid/reactivity
   const [getCategory, setCategory] = createSignal(props.busItem.category);
 
+  // eslint-disable-next-line solid/reactivity
   const [getCapacity, setCapacity] = createSignal(props.busItem.capacity);
 
   async function toggleEditMode() {
