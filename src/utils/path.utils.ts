@@ -86,14 +86,13 @@ export namespace PathUtil {
   }
 
   export function isValidPath(path: PathType | undefined) {
-    // * (path?.points.length < 2) because path need minimun of 2 point to be created
-    if (!path || path?.points.length < 2) {
+    if (!path || path?.points.length > 1) {
       addNewUserInformation({
         displayed: true,
         level: MessageLevelEnum.error,
         type: MessageTypeEnum.global,
         content:
-          "Veuillez sélectionner au moin deux points pour créer un chemin.",
+          "Veuillez sélectionner au moins deux points pour créer un chemin.",
       });
       return false;
     } else return true;
