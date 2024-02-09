@@ -4,8 +4,12 @@ import { StopType } from "../_entities/stop.entity";
 import { TripDirectionEntity } from "../_entities/trip-direction.entity";
 import { TripType } from "../_entities/trip.entity";
 import { PathService } from "../_services/path.service";
-import { disableSpinningWheel, enableSpinningWheel } from "../signaux";
-import { NatureEnum } from "../type";
+import {
+  addNewUserInformation,
+  disableSpinningWheel,
+  enableSpinningWheel,
+} from "../signaux";
+import { MessageLevelEnum, MessageTypeEnum, NatureEnum } from "../type";
 import {
   getLines,
   getSelectedLine,
@@ -82,8 +86,17 @@ export namespace PathUtil {
   }
 
   export function isValidPath(path: PathType | undefined) {
-    if (!path || path?.points.length < 2) return false;
-    else return true;
+    // * (path?.points.length < 2) because path need minimun of 2 point to be created
+    if (!path || path?.points.length < 2) {
+      addNewUserInformation({
+        displayed: true,
+        level: MessageLevelEnum.error,
+        type: MessageTypeEnum.global,
+        content:
+          "Veuillez sélectionner au moin deux points pour créer un chemin.",
+      });
+      return false;
+    } else return true;
   }
 
   export async function update(path: PathType) {
