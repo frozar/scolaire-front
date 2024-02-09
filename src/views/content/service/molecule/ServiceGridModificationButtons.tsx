@@ -23,7 +23,7 @@ function cancel() {
 }
 
 async function validate(): Promise<void> {
-  // ! Demander confirmation !?
+  // TODO: Ask confirmation ?
   const servicesId = services().map((service) => service.id);
   const servicesBeforeModificationId = servicesBeforeModification().map(
     (service) => service.id
@@ -54,12 +54,12 @@ async function validate(): Promise<void> {
         )
     );
 
-  const test = await ServiceService.update({
+  const data = await ServiceService.update({
     toAdd: servicesToAdd,
     toModify: servicesToModify,
     toDelete: idsToDelete,
   });
 
-  setServices(test);
-  setServicesBeforeModification(_.cloneDeep(test));
+  setServices(data);
+  setServicesBeforeModification(_.cloneDeep(data));
 }
