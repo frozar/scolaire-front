@@ -1,0 +1,4 @@
+#service-grid-buttons {
+  @apply flex justify-between pl-[210px] pt-2 pr-2;
+  flex: 0 0 40px;
+}

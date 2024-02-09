@@ -19,7 +19,7 @@ export function ServiceGridModificationButtons(): JSXElement {
 }
 
 function cancel() {
-  setServices([...servicesBeforeModification()]);
+  setServices(_.cloneDeep(servicesBeforeModification()));
 }
 
 async function validate(): Promise<void> {

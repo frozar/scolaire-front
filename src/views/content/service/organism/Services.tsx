@@ -1,10 +1,9 @@
 import _ from "lodash";
-import { JSXElement, Show, createSignal, onMount } from "solid-js";
+import { JSXElement, createSignal, onMount } from "solid-js";
 import { ServiceGrid } from "./ServiceGrid";
 import { ServiceList } from "./ServiceList";
 
-import { ServiceGridModificationButtons } from "../molecule/ServiceGridModificationButtons";
-import { ServiceGridZoomButtons } from "../molecule/ServiceGridZoomButtons";
+import { ServiceGridButtons } from "../molecule/ServiceGridButtons";
 import "./Service.css";
 
 export type ServiceType = {
@@ -30,16 +29,10 @@ export function Services(): JSXElement {
   });
 
   return (
-    <div class="flex flex-col overflow-auto">
-      <div>
-        <ServiceGridZoomButtons />
+    <div id="services">
+      <ServiceGridButtons />
 
-        <Show when={!_.isEqual(servicesBeforeModification(), services())}>
-          <ServiceGridModificationButtons />
-        </Show>
-      </div>
-
-      <div class="service">
+      <div id="services-displayed">
         <ServiceList />
         <ServiceGrid />
       </div>
