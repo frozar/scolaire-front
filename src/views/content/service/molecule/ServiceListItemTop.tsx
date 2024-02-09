@@ -19,13 +19,6 @@ export function ServiceListItemTop(props: ServiceListItemTopProps): JSXElement {
     return props.isSelected ? <LockIconOpen /> : <LockIconClose />;
   }
 
-  function onClick(): void {
-    if (selectedService() != props.service.id) {
-      setSelectedService(props.service.id);
-    } else {
-      setSelectedService();
-    }
-  }
   return (
     <div class="service-list-item-top">
       <div
@@ -34,7 +27,18 @@ export function ServiceListItemTop(props: ServiceListItemTopProps): JSXElement {
       >
         {props.service.name}
       </div>
-      <ButtonIcon icon={displayIcon()} onClick={onClick} />
+      <ButtonIcon
+        icon={displayIcon()}
+        onClick={() => onClick(props.service.id)}
+      />
     </div>
   );
+}
+
+function onClick(serviceId: number): void {
+  if (selectedService() != serviceId) {
+    setSelectedService(serviceId);
+  } else {
+    setSelectedService();
+  }
 }
