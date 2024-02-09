@@ -1,4 +1,9 @@
-#service-list {
+/* #service-list {
   @apply border border-l-0 border-y-0 border-black;
+  flex: 0 0 210px;
+} */
+
+#service-list {
+  @apply border border-l-0 border-y-0 border-black overflow-y-hidden h-fit;
   flex: 0 0 210px;
 }

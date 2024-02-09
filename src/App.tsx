@@ -67,7 +67,10 @@ export default () => {
   return (
     <div>
       <Layout>
-        <div id="layout-content">
+        <div
+          id="layout-content"
+          classList={{ "!overflow-y-hidden": getSelectedMenu() == "service" }}
+        >
           <Show when={getAuthenticatedUser()}>
             <Switch>
               <Match when={getSelectedMenu() == "dashboard"}>

@@ -1,3 +1,5 @@
 #service-grid {
-  @apply overflow-x-scroll;
+  @apply h-[1000px] overflow-y-hidden overflow-x-scroll scroll-smooth;
 }
+
+/* Ici changer valuer de h- */
