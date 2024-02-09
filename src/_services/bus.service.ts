@@ -1,5 +1,4 @@
-import { BusCategoryType } from "../_entities/bus.entity";
-import { setBus } from "../views/content/bus/organism/Bus";
+import { BusCategoryType, setBus } from "../views/content/bus/organism/Bus";
 import { ServiceUtils } from "./_utils.service";
 
 export namespace BusService {

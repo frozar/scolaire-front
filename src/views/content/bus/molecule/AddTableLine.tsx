@@ -1,10 +1,13 @@
 import { createSignal } from "solid-js";
 import { BusService } from "../../../../_services/bus.service";
-import { TextInput } from "../../../../component/atom/TextInput";
 import CheckIcon from "../../../../icons/CheckIcon";
-import TrashIcon from "../../../../icons/TrashIcon";
+import { CircleCrossIcon } from "../../../../icons/CircleCrossIcon";
+import { addNewUserInformation } from "../../../../signaux";
+import { MessageLevelEnum, MessageTypeEnum } from "../../../../type";
 import ButtonIcon from "../../board/component/molecule/ButtonIcon";
 import { TableElement } from "../atom/TableElement";
+import { TableElementInput } from "../atom/TableElementInput";
+import { TableElementNumberInput } from "../atom/TableElementNumberInput";
 import { isAddLineHidden, setIsAddLineHidden } from "../organism/Bus";
 import "./TableLine.css";
 
@@ -22,6 +25,12 @@ export function AddTableLine() {
       capacity: getCapacity(),
     });
     setIsAddLineHidden(true);
+    addNewUserInformation({
+      displayed: true,
+      level: MessageLevelEnum.success,
+      type: MessageTypeEnum.global,
+      content: "Le bus " + getCategory() + " a bien été créé",
+    });
   }
 
   function cancelButton() {
@@ -35,25 +44,20 @@ export function AddTableLine() {
       classList={{ tableRowEditing: !isAddLineHidden() }}
       hidden={isAddLineHidden()}
     >
-      <td class="tableEdit">
-        <TextInput
-          onInput={onCategoryInputChanged}
-          defaultValue={getCategory()}
-          placeholder="Entrer le type de bus"
-        />
-      </td>
-      <td class="tableEdit">
-        <input
-          type="Number"
-          value={getCapacity()}
-          onChange={(e) => setCapacity(Number(e.target.value))}
-        />
-      </td>
+      <TableElementInput
+        placeholder="Entrer le type de bus"
+        onInputFunction={onCategoryInputChanged}
+        defaultValue={getCategory()}
+      />
+      <TableElementNumberInput
+        defaultValue={getCapacity()}
+        onChangeFunction={setCapacity}
+      />
       <TableElement text="-" />
       <TableElement text="-" />
       <td class="actionButtonContainer">
         <ButtonIcon icon={<CheckIcon />} onClick={createNewBus} />
-        <ButtonIcon icon={<TrashIcon />} onClick={cancelButton} />
+        <ButtonIcon icon={<CircleCrossIcon />} onClick={cancelButton} />
       </td>
     </tr>
   );

@@ -1,3 +1,7 @@
 .tableElement {
   @apply text-center w-24 max-w-xs;
 }
+
+.tableEdit {
+  @apply text-center w-3.5;
+}

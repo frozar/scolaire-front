@@ -1,5 +1,5 @@
 import { For } from "solid-js";
-import { BusCategoryType } from "../../../../_entities/bus.entity";
+import { BusCategoryType } from "../organism/Bus";
 import { TableLine } from "./TableLine";
 
 interface TableLineProps {

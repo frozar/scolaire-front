@@ -1,7 +1,7 @@
-import { BusCategoryType } from "../../../../_entities/bus.entity";
 import { AddTableLine } from "../molecule/AddTableLine";
 import { TableHeader } from "../molecule/TableHeader";
 import { TableRows } from "../molecule/TableRows";
+import { BusCategoryType } from "./Bus";
 import "./Bus.css";
 
 interface BusTableProps {

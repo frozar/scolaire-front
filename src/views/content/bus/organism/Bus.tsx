@@ -1,8 +1,13 @@
 import { createSignal } from "solid-js";
-import { BusCategoryType } from "../../../../_entities/bus.entity";
 import Button from "../../../../component/atom/Button";
 import PageTitle from "../../../../component/atom/PageTitle";
 import { BusTable } from "./BusTable";
+
+export type BusCategoryType = {
+  id?: number;
+  category: string;
+  capacity: number;
+};
 
 export const [getBus, setBus] = createSignal<BusCategoryType[]>([]);
 
