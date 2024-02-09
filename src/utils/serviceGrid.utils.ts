@@ -120,15 +120,16 @@ export namespace ServiceGridUtils {
   export function addService(services: ServiceType[]): ServiceType[] {
     const ids = services.map((service) => service.id);
 
-    ids.sort((a, b) => {
-      return a - b;
-    });
+    if (ids.length == 0) ids.push(0);
+    else ids.sort((a, b) => a - b);
 
     const newService: ServiceType = {
+      // Temporary serviceId only use locally during modification
       id: (ids.at(-1) as number) + 1,
+      // TODO: Do not use raw value
+      serviceGroupId: 1,
       name: "default name",
       serviceTrips: [],
-      totalDuration: 0,
     };
 
     services.push(newService);
