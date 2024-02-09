@@ -2,10 +2,7 @@ import _ from "lodash";
 import { createSignal } from "solid-js";
 import { PathPointType, PathType } from "../../../../_entities/path.entity";
 import { addNewUserInformation } from "../../../../signaux";
-import {
-  MessageLevelEnum,
-  MessageTypeEnum
-} from "../../../../type";
+import { MessageLevelEnum, MessageTypeEnum } from "../../../../type";
 import {
   currentTripIndex,
   setCurrentTripIndex,
