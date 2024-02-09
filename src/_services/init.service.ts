@@ -11,7 +11,10 @@ import {
 } from "../_entities/school.entity";
 import { ServiceDBType, ServiceEntity } from "../_entities/service.entity";
 import { StopDBType, StopEntity, StopType } from "../_entities/stop.entity";
-import { TripDirectionType } from "../_entities/trip-direction.entity";
+import {
+  TripDirectionType,
+  setTripDirections,
+} from "../_entities/trip-direction.entity";
 import { setCalendars } from "../views/content/calendar/calendar.manager";
 import { setCalendarsPeriod } from "../views/content/calendar/template/Calendar";
 import { setLines } from "../views/content/map/component/organism/BusLines";
@@ -64,6 +67,8 @@ export namespace InitService {
       CalendarEntity.buildCalendarPeriod(calendarPeriod)
     );
     setCalendarsPeriod(calendarPeriods);
+
+    setTripDirections(dbInit.trip_directions);
 
     const services = dbInit.services.map((service) =>
       ServiceEntity.build(service)
