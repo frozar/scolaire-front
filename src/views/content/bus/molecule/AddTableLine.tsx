@@ -19,6 +19,11 @@ export function AddTableLine() {
     setCategory(value);
   }
 
+  function resetDefaultValues(): void {
+    setCategory("defaultBus");
+    setCapacity(10);
+  }
+
   async function createNewBus() {
     await BusService.create({
       category: getCategory(),
@@ -31,11 +36,11 @@ export function AddTableLine() {
       type: MessageTypeEnum.global,
       content: "Le bus " + getCategory() + " a bien été créé",
     });
+    resetDefaultValues();
   }
 
   function cancelButton() {
-    setCategory("defaultBus");
-    setCapacity(10);
+    resetDefaultValues();
     setIsAddLineHidden(true);
   }
 
