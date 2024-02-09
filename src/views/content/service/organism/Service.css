@@ -4,4 +4,5 @@
 
 #services-displayed {
   @apply flex overflow-auto h-[500px];
+  flex: 0 0 850px;
 }
