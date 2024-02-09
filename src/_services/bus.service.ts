@@ -1,10 +1,11 @@
 import { BusCategoryType } from "../_entities/bus.entity";
-import { getBus, setBus } from "../views/content/bus/organism/Bus";
+import { setBus } from "../views/content/bus/organism/Bus";
 import { ServiceUtils } from "./_utils.service";
 
 export namespace BusService {
   export async function create(bus: Omit<BusCategoryType, "id">) {
-    await ServiceUtils.post("/bus", bus);
+    const dbBus: BusCategoryType[] = await ServiceUtils.post("/bus", bus);
+    setBus(dbBus);
   }
 
   export async function update(bus: Partial<BusCategoryType>) {
@@ -12,7 +13,6 @@ export namespace BusService {
       "/bus/" + bus.id,
       bus
     );
-    console.log("dbBus", dbBus);
     setBus((prev) => {
       if (!prev) return prev;
       return [...prev].map((bus) => {
@@ -22,7 +22,6 @@ export namespace BusService {
         return bus;
       });
     });
-    console.log("getBus()", getBus());
   }
 
   export async function deleteBus(id?: number): Promise<boolean> {

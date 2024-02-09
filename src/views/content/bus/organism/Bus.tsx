@@ -6,17 +6,13 @@ import { BusTable } from "./BusTable";
 
 export const [getBus, setBus] = createSignal<BusCategoryType[]>([]);
 
-export const [addButtonClicked, setAddButtonClicked] = createSignal(false);
+export const [isAddLineHidden, setIsAddLineHidden] = createSignal(true);
 
-function addBus() {
-  const obj: BusCategoryType = {
-    category: "Nom par défaut",
-    capacity: 15,
-    // quantity: 0,
-    // trip: 0,
-  };
-  setAddButtonClicked(true);
-  setBus((prev) => [obj, ...prev]);
+function showAddLine() {
+  if (!isAddLineHidden()) {
+    return;
+  }
+  setIsAddLineHidden(false);
 }
 
 export function Bus() {
@@ -24,9 +20,9 @@ export function Bus() {
     <div class="busPageLayout">
       <div class="busPageTopItems">
         <PageTitle title="Gestion des Bus" />
-        <Button label="Ajouter" onClick={addBus} />
+        <Button label="Ajouter" onClick={showAddLine} />
       </div>
-      <BusTable isEditMode={addButtonClicked()} busList={getBus()} />
+      <BusTable busList={getBus()} />
     </div>
   );
 }

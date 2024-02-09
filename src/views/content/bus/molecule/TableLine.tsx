@@ -11,35 +11,26 @@ import "./TableLine.css";
 
 interface TableLineProps {
   busItem: BusCategoryType;
-  isEditMode: boolean;
 }
 
 export function TableLine(props: TableLineProps) {
-  // const bufferBus: BusCategoryType = props.busItem;
-
-  const [isInEditMode, setisInEditMode] = createSignal(props.isEditMode);
+  const [isInEditMode, setisInEditMode] = createSignal(false);
 
   const [getCategory, setCategory] = createSignal(props.busItem.category);
 
   const [getCapacity, setCapacity] = createSignal(props.busItem.capacity);
 
   async function toggleEditMode() {
-    if (!props.isEditMode && isInEditMode()) {
-      await BusService.update({
-        id: props.busItem.id,
-        category: getCategory(),
-        capacity: getCapacity(),
-      });
-    }
-
-    if (props.isEditMode) {
-      await BusService.create({
-        category: getCategory(),
-        capacity: getCapacity(),
-      });
-    }
-
     setisInEditMode(!isInEditMode());
+  }
+
+  async function updateButton() {
+    await BusService.update({
+      id: props.busItem.id,
+      category: getCategory(),
+      capacity: getCapacity(),
+    });
+    toggleEditMode();
   }
 
   async function deleteButton() {
@@ -55,8 +46,8 @@ export function TableLine(props: TableLineProps) {
       when={isInEditMode()}
       fallback={
         <tr class="tableRow">
-          <TableElement text={props.busItem.category} />
-          <TableElement text={props.busItem.capacity.toString()} />
+          <TableElement text={getCategory()} />
+          <TableElement text={getCapacity().toString()} />
           <TableElement text="-" />
           <TableElement text="-" />
           <td class="actionButtonContainer">
@@ -70,7 +61,7 @@ export function TableLine(props: TableLineProps) {
         <td class="tableEdit">
           <TextInput
             onInput={onCategoryInputChanged}
-            defaultValue={props.busItem.category}
+            defaultValue={getCategory()}
             placeholder="Entrer le type de bus"
           />
         </td>
@@ -78,14 +69,13 @@ export function TableLine(props: TableLineProps) {
           <input
             type="Number"
             value={getCapacity()}
-            disabled={false}
             onChange={(e) => setCapacity(Number(e.target.value))}
           />
         </td>
         <TableElement text="-" />
         <TableElement text="-" />
         <td class="actionButtonContainer">
-          <ButtonIcon icon={<CheckIcon />} onClick={toggleEditMode} />
+          <ButtonIcon icon={<CheckIcon />} onClick={updateButton} />
           <ButtonIcon
             icon={<TrashIcon />}
             disable
