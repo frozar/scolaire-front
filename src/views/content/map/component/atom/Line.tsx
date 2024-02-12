@@ -11,7 +11,7 @@ interface LineProps {
   opacity: number;
 
   lineId?: number;
-  // withArrows?: boolean;
+  withArrows?: boolean;
   onMouseOver?: (polyline: L.Polyline, arrows: L.Marker[]) => void;
   onMouseOut?: (polyline: L.Polyline, arrows: L.Marker[]) => void;
   onClick?: () => void;
@@ -35,12 +35,13 @@ export default function (props: LineProps) {
     }
 
     tripPolyline = buildLeafletPolyline(color, latlngs, opacity);
+    if (props.withArrows == true || props.withArrows == undefined) {
+      if (arrows) {
+        arrows.map((arrow) => leafletMap.removeLayer(arrow));
+      }
 
-    if (arrows) {
-      arrows.map((arrow) => leafletMap.removeLayer(arrow));
+      arrows = buildArrows(props.latlngs, color);
     }
-
-    arrows = buildArrows(props.latlngs, color);
 
     // Add events to Line & Arrows
     if (props.onMouseOver || props.onMouseOut || props.onClick) {

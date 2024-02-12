@@ -31,8 +31,15 @@ type osrmTableResponseType = {
 
 export type step = {
   flaxib_way_id: number;
-  flaxib_weight: number;
+  flaxib_weight: weight[];
   coordinates?: L.LatLng[];
+  name?: string;
+};
+
+export type weight = {
+  weight: number;
+  start: number;
+  end: number;
 };
 
 export class OsrmService {
@@ -203,14 +210,15 @@ export class OsrmService {
     const legsDistances = routes[0].legs.map((item) => item.distance);
     const stepsWeight = routes[0].legs.flatMap((leg) => {
       return leg.steps.flatMap((step) => {
-        return {
-          flaxib_way_id: step.flaxib_way_id,
-          flaxib_weight: step.flaxib_weight,
-        };
+        console.log("step.flaxib_way_ids");
+        return step.flaxib_way_ids.map((elem, i) => {
+          return {
+            flaxib_way_id: elem,
+            flaxib_weight: step.current_way_weight[i],
+          };
+        });
       });
     });
-    console.log("legsWeight", stepsWeight);
-    console.log("legsWeight", routes[0]);
 
     const coordinates = routes[0].geometry.coordinates;
 

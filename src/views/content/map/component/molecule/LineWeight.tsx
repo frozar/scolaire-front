@@ -2,40 +2,49 @@ import L, { LeafletMouseEvent } from "leaflet";
 import { createEffect, createSignal } from "solid-js";
 
 import { step } from "../../../../../_services/osrm.service";
-import { COLOR_GREEN_BASE } from "../../constant";
+import { setSelectedWay } from "../../../stops/component/organism/WayDetails";
+import { COLOR_BLUE_BASE, COLOR_GREEN_BASE } from "../../constant";
 import Line from "../atom/Line";
 
 export function LineWeight(props: {
   way: step;
   map: L.Map;
   lineColor?: string;
+  opacity?: number;
 }) {
   const [localLatLngs, setLocalLatLngs] = createSignal<L.LatLng[]>([]);
   const [localOpacity, setLocalOpacity] = createSignal<number>(1);
-  createEffect(() => setLocalLatLngs(test()));
+  const [localColor, setLocalColor] = createSignal<string>(COLOR_GREEN_BASE);
+  createEffect(() => setLocalLatLngs(props.way.coordinates ?? []));
+  createEffect(() => setLocalOpacity(props.opacity ?? 1));
+  createEffect(() => setLocalColor(props.lineColor ?? COLOR_GREEN_BASE));
 
   const onMouseOver = (polyline: L.Polyline, arrows: L.Marker[]) => {
-    console.log("onMouseOver");
+    // console.log("onMouseOver " + props.way.flaxib_way_id);
+    setLocalColor(COLOR_BLUE_BASE);
   };
 
   const onMouseOut = (polyline: L.Polyline, arrows: L.Marker[]) => {
-    console.log("onMouseOut");
+    // console.log("onMouseOut");
+    setLocalColor(props.lineColor ?? COLOR_GREEN_BASE);
   };
   const onMouseDown = (e: LeafletMouseEvent) => {
-    console.log("onMouseDown");
+    // console.log("onMouseDown");
   };
 
   const onClick = () => {
-    console.log("onMouseOut");
+    setSelectedWay(props.way);
+    console.log("onClick", props.way);
   };
   return (
     <>
       <Line
         latlngs={localLatLngs() ?? []}
         leafletMap={props.map}
-        color={props.lineColor ?? COLOR_GREEN_BASE}
+        color={localColor()}
         opacity={localOpacity()}
         lineId={props.way.flaxib_way_id}
+        withArrows={false}
         onMouseOver={onMouseOver}
         onMouseOut={onMouseOut}
         onClick={onClick}
@@ -43,9 +52,4 @@ export function LineWeight(props: {
       />
     </>
   );
-
-  function test(): L.LatLng[] {
-    console.log(props.way.coordinates);
-    return props.way.coordinates ?? [];
-  }
 }

@@ -48,6 +48,7 @@ export default function () {
     const parsedResult = result.map((elem) => {
       return {
         flaxib_way_id: elem.id,
+        name: elem.name,
         flaxib_weight: elem.weight,
         coordinates: JSON.parse(elem.line).coordinates.map((coord) =>
           L.latLng(coord[1], coord[0])
@@ -87,11 +88,21 @@ export default function () {
 
   return (
     <Show when={getActiveMapId()}>
-      <Show when={onBoard() == "line" || onBoard() == "trip"}>
-        <MapPanels />
-      </Show>
+      <ImportCsvCanvas
+        display={displayImportCsvCanvas()}
+        setDisplay={setDisplayImportCsvCanvas}
+        callbackSuccess={() => {
+          addNewUserInformation({
+            displayed: true,
+            level: MessageLevelEnum.success,
+            type: MessageTypeEnum.global,
+            content: "Les données ont été mises à jour",
+          });
+        }}
+      />
 
-      <div ref={mapDiv} id="main-map" />
+
+
       <Show when={getSelectedMenu() != "voirie"}>
         <Show when={onBoard() == "line"}>
           <MapPanels />
@@ -128,6 +139,7 @@ export default function () {
           }}
         </For>
       </Show>
+      <div ref={mapDiv} id="main-map" />
     </Show>
   );
 }
