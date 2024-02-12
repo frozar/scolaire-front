@@ -46,7 +46,7 @@ export function PathDetailHeader(props: { path: PathType }) {
         textToDisplay:
           "Impossible de supprimer le chemin car il est utilisé au sein de plusieurs courses",
         itemName: "",
-        child: <TripUsingPath path={props.path} />,
+        child: <TripUsingPath path={props.path} openOnClick={false} />,
       });
     } else
       setRemoveConfirmation({

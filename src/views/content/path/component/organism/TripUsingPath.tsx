@@ -5,6 +5,7 @@ import { TripsList } from "../../../schools/component/organism/TripsList";
 
 interface TripUsingPathProps {
   path: PathType;
+  openOnClick?: boolean;
 }
 
 export function TripUsingPath(props: TripUsingPathProps) {
@@ -13,7 +14,10 @@ export function TripUsingPath(props: TripUsingPathProps) {
       title="Courses utilisant le chemin"
       closedByDefault={() => true}
     >
-      <TripsList trips={PathUtil.getTripsUsingPath(props.path?.id as number)} />
+      <TripsList
+        trips={PathUtil.getTripsUsingPath(props.path?.id as number)}
+        openOnClick={props.openOnClick}
+      />
     </CollapsibleElement>
   );
 }
