@@ -23,6 +23,7 @@ import {
   changeBoard,
   toggleDrawMod,
 } from "../views/content/board/component/template/ContextManager";
+import { getBus } from "../views/content/bus/organism/Bus";
 import {
   getLines,
   getSelectedLine,
@@ -321,5 +322,11 @@ export namespace TripUtils {
     toggleDrawMod();
     changeBoard("trip-draw");
     return inversedTrip;
+  }
+
+  export function tripBusIdToString(busId: number | undefined) {
+    const busItem = getBus().filter((bus) => bus.id == busId)[0];
+    if (!busItem) return "";
+    return busItem.category;
   }
 }

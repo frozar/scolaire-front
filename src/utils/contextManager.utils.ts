@@ -19,7 +19,6 @@ import {
   displayTripMode,
   displayTripModeEnum,
   drawTripCheckableGrade,
-  isInUpdate,
   setCurrentDrawTrip,
   setCurrentStep,
   setCurrentTripIndex,
@@ -29,7 +28,6 @@ import {
 } from "../views/content/board/component/organism/DrawTripBoard";
 import { changeBoard } from "../views/content/board/component/template/ContextManager";
 import { getSelectedLine } from "../views/content/map/component/organism/BusLines";
-import { setselectedTrip } from "../views/content/map/component/organism/Trips";
 import { quitModeDrawTrip } from "../views/content/map/shortcut";
 import { CurrentDrawTripUtils } from "./currentDrawTrip.utils";
 import { GradeUtils } from "./grade.utils";
@@ -143,21 +141,13 @@ export namespace ContextUtils {
       case DrawTripStep.buildReverse:
       case DrawTripStep.editTrip:
         if (drawTripCheckableGrade().length == 0) defineTripCheckableGrade();
-        if (isInUpdate()) {
-          setselectedTrip(currentDrawTrip());
-          quitModeDrawTrip();
-          setIsInUpdate(false);
-          setCurrentStep(DrawTripStep.initial);
-          changeBoard("line-details");
-        } else {
-          if (displayTripMode() == displayTripModeEnum.onRoad) {
-            setCurrentDrawTrip((trip) => {
-              if (!trip) return trip;
-              return { ...trip, latLngs: [] };
-            });
-          }
-          setCurrentStep(DrawTripStep.gradeSelection);
+        if (displayTripMode() == displayTripModeEnum.onRoad) {
+          setCurrentDrawTrip((trip) => {
+            if (!trip) return trip;
+            return { ...trip, latLngs: [] };
+          });
         }
+        setCurrentStep(DrawTripStep.gradeSelection);
         break;
     }
     setDisplayTripMode((prev) =>

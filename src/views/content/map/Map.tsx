@@ -57,7 +57,7 @@ export default function () {
 
   return (
     <Show when={getActiveMapId()}>
-      <Show when={onBoard() == "line"}>
+      <Show when={onBoard() == "line" || onBoard() == "trip"}>
         <MapPanels />
       </Show>
       <ImportCsvCanvas

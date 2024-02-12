@@ -4,7 +4,12 @@ import { BusLineService } from "../../../../../_services/line.service";
 import PencilIcon from "../../../../../icons/PencilIcon";
 import TrashIcon from "../../../../../icons/TrashIcon";
 import { setRemoveConfirmation } from "../../../../../userInformation/RemoveConfirmation";
+import { getBus } from "../../../bus/organism/Bus";
 import { getLines, setLines } from "../../../map/component/organism/BusLines";
+import {
+  setThereIsAnError,
+  setnoBusError,
+} from "../../../map/component/organism/MapErrorPanel";
 import { getTrips } from "../../../map/component/organism/Trips";
 import { PathsList } from "../../../path/component/organism/PathsList";
 import InputSearch from "../../../schools/component/molecule/InputSearch";
@@ -24,6 +29,15 @@ export const [onTripBoardPanel, setOnTripBoardPanel] =
   createSignal<TripBoardPanels>(TripBoardPanels.trips);
 
 export function TripsBoard(props: { line: LineType }) {
+  function checkIfCreationIsPossible() {
+    if (getBus().length <= 0) {
+      setThereIsAnError(true);
+      setnoBusError(true);
+      return true;
+    }
+    return false;
+  }
+
   const [searchKeyword, setSearchKeyword] = createSignal<string>("");
 
   const filteredTrips = () =>
