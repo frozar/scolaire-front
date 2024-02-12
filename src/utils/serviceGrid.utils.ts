@@ -22,7 +22,7 @@ export namespace ServiceGridUtils {
 
     const endHour = actualService.serviceTrips[0].endHour;
 
-    ref.scrollTo((endHour - 25) * zoom(), 0);
+    ref.scrollTo((endHour - 25) * zoom(), ref.scrollTop);
   }
 
   export function getTripWidth(tripId: number): string {
