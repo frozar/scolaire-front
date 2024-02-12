@@ -7,6 +7,7 @@ import {
   onMount,
 } from "solid-js";
 import { ServiceGridUtils } from "../../../../utils/serviceGrid.utils";
+import { ServiceGridTop } from "../molecule/ServiceGridTop";
 import { selectedService } from "../template/ServiceTemplate";
 import "./ServiceGrid.css";
 import { ServiceGridLine } from "./ServiceGridLine";
@@ -39,6 +40,7 @@ export function ServiceGrid(): JSXElement {
 
   return (
     <div id="service-grid" ref={setRef}>
+      <ServiceGridTop width={gridWidthValue()} />
       <For each={services()}>
         {(service, i) => {
           return <ServiceGridLine i={i()} width={gridWidthValue()} />;
