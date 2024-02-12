@@ -3,6 +3,6 @@
 }
 
 #services-displayed {
-  @apply flex overflow-auto;
+  @apply flex overflow-y-auto;
   flex: 0 0 850px;
 }

@@ -1,4 +1,6 @@
 #service-grid {
-  @apply overflow-y-auto scroll-smooth;
+  @apply scroll-smooth;
   flex: auto;
+  overflow-x: scroll;
+  overflow-y: visible;
 }

@@ -1,4 +1,11 @@
-import { For, JSXElement, createEffect, createSignal, on } from "solid-js";
+import {
+  For,
+  JSXElement,
+  createEffect,
+  createSignal,
+  on,
+  onMount,
+} from "solid-js";
 import { ServiceGridUtils } from "../../../../utils/serviceGrid.utils";
 import { ServiceGridTop } from "../molecule/ServiceGridTop";
 import { selectedService } from "../template/ServiceTemplate";
@@ -25,16 +32,22 @@ export function ServiceGrid(): JSXElement {
     })
   );
 
+  onMount(() => {
+    ref().addEventListener("scroll", (event): void => {
+      console.log("event", event);
+    });
+  });
+
   return (
-    <div class="flex flex-col overflow-x-hidden">
-      <div id="service-grid" ref={setRef}>
-        <ServiceGridTop width={gridWidthValue()} />
-        <For each={services()}>
-          {(service, i) => {
-            return <ServiceGridLine i={i()} width={gridWidthValue()} />;
-          }}
-        </For>
-      </div>
+    // <div class="flex flex-col overflow-x-hidden">
+    <div id="service-grid" ref={setRef}>
+      <ServiceGridTop width={gridWidthValue()} />
+      <For each={services()}>
+        {(service, i) => {
+          return <ServiceGridLine i={i()} width={gridWidthValue()} />;
+        }}
+      </For>
     </div>
+    // </div>
   );
 }
