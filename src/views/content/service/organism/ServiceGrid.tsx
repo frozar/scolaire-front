@@ -26,13 +26,15 @@ export function ServiceGrid(): JSXElement {
   );
 
   return (
-    <div id="service-grid" ref={setRef}>
-      <ServiceGridTop width={gridWidthValue()} />
-      <For each={services()}>
-        {(service, i) => {
-          return <ServiceGridLine i={i()} width={gridWidthValue()} />;
-        }}
-      </For>
+    <div class="flex flex-col overflow-x-hidden">
+      <div id="service-grid" ref={setRef}>
+        <ServiceGridTop width={gridWidthValue()} />
+        <For each={services()}>
+          {(service, i) => {
+            return <ServiceGridLine i={i()} width={gridWidthValue()} />;
+          }}
+        </For>
+      </div>
     </div>
   );
 }
