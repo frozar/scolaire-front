@@ -1,5 +1,5 @@
 #service-list-header {
-  @apply flex bg-white sticky top-0 items-end h-[52px] border border-black border-l-0 border-t-0;
+  @apply flex bg-white sticky top-0 items-end h-[52px] border border-black border-l-0 border-t-0 z-serviceListHeader;
 }
 
 #service-list-header-title {
