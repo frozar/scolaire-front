@@ -1,7 +1,7 @@
 #service-list-header {
-  @apply flex items-end h-[52px] border border-black border-x-0 border-t-0;
+  @apply flex bg-white sticky top-0 items-end h-[52px] border border-black border-l-0 border-t-0;
 }
 
 #service-list-header-title {
-  @apply text-green-base;
+  @apply text-green-base ml-2;
 }

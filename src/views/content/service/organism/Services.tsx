@@ -1,10 +1,11 @@
 import _ from "lodash";
-import { JSXElement, Show, createSignal, onMount } from "solid-js";
+import { JSXElement, createEffect, createSignal, on, onMount } from "solid-js";
 import { ServiceGrid } from "./ServiceGrid";
 import { ServiceList } from "./ServiceList";
 
-import { ServiceGridModificationButtons } from "../molecule/ServiceGridModificationButtons";
-import { ServiceGridZoomButtons } from "../molecule/ServiceGridZoomButtons";
+import { ServiceGridUtils } from "../../../../utils/serviceGrid.utils";
+import { ServiceGridButtons } from "../molecule/ServiceGridButtons";
+import { selectedService } from "../template/ServiceTemplate";
 import "./Service.css";
 
 export type ServiceType = {
@@ -25,21 +26,27 @@ export const [servicesBeforeModification, setServicesBeforeModification] =
   createSignal<ServiceType[]>([]);
 
 export function Services(): JSXElement {
+  const [ref, setRef] = createSignal<HTMLDivElement>(
+    document.createElement("div")
+  );
+
+  createEffect(
+    on(services, () => {
+      if (!selectedService()) return;
+
+      ServiceGridUtils.scrollToServiceStart(ref());
+    })
+  );
+
   onMount(() => {
     setServicesBeforeModification(_.cloneDeep(services()));
   });
 
   return (
-    <div class="flex flex-col overflow-auto">
-      <div>
-        <ServiceGridZoomButtons />
+    <div id="services">
+      <ServiceGridButtons />
 
-        <Show when={!_.isEqual(servicesBeforeModification(), services())}>
-          <ServiceGridModificationButtons />
-        </Show>
-      </div>
-
-      <div class="service">
+      <div id="services-displayed" ref={setRef}>
         <ServiceList />
         <ServiceGrid />
       </div>

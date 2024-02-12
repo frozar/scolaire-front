@@ -1,0 +1,7 @@
+#service-grid-zoom-buttons {
+  @apply flex items-end h-[36px];
+}
+
+.service-grid-zoom-button {
+  @apply mx-1;
+}

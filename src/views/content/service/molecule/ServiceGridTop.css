@@ -1,0 +1,3 @@
+#service-grid-top {
+  @apply flex flex-col bg-white sticky top-0;
+}

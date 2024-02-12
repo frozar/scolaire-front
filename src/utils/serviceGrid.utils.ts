@@ -10,6 +10,11 @@ import { TripUtils } from "./trip.utils";
 
 export namespace ServiceGridUtils {
   export function scrollToServiceStart(ref: HTMLDivElement): void {
+    /*
+    Scroll to the beginning of the selected service when modified
+    Only change position of scroll in axis x
+    */
+
     const actualService = services().filter(
       (service) => service.id == selectedService()
     )[0];
@@ -18,7 +23,7 @@ export namespace ServiceGridUtils {
 
     const endHour = actualService.serviceTrips[0].endHour;
 
-    ref.scrollTo((endHour - 25) * zoom(), 0);
+    ref.scrollTo((endHour - 25) * zoom(), ref.scrollTop);
   }
 
   export function getTripWidth(tripId: number): string {

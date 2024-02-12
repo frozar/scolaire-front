@@ -1,4 +1,7 @@
-.service {
-  @apply flex overflow-auto mt-11;
-  flex: 0 0 92%;
+#services {
+  @apply flex flex-col overflow-auto;
+}
+
+#services-displayed {
+  @apply flex overflow-y-auto flex-[0_0_850px];
 }

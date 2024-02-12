@@ -1,7 +1,7 @@
 .service-list-item {
-  @apply flex flex-col justify-between h-32 p-2 border border-black border-x-0 border-t-0;
+  @apply flex flex-col justify-between h-32 p-2 bg-white border border-black border-l-0 border-t-0;
 }
 
 .service-list-item.active {
-  @apply bg-green-base;
+  @apply !bg-green-base;
 }
