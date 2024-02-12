@@ -90,6 +90,7 @@ export namespace ServiceGridUtils {
       (service) => service.id == selectedService()
     )[0];
     const index = services.indexOf(serviceToChange);
+
     // TODO: Create getEarlyArrival() and put in TripUtils
     // TODO: Only do that if first trip
     // ! Laisser valeur undefined !!

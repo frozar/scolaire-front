@@ -1,6 +1,7 @@
 import { For, JSXElement, Show } from "solid-js";
 import { services } from "./Services";
 
+import { TripDirectionEntity } from "../../../../_entities/trip-direction.entity";
 import { TripUtils } from "../../../../utils/trip.utils";
 import { ServiceGridItem } from "../molecule/ServiceGridItem";
 import { selectedService } from "../template/ServiceTemplate";
@@ -18,8 +19,10 @@ export function ServiceGridLine(props: ServiceGridLineProps): JSXElement {
     const firstTrip = TripUtils.get(services()[props.i].serviceTrips[0].tripId);
 
     // TODO: Take which day it is into account
-    // TODO: Take Going / Coming information into account
     // TODO: Fix grade default hours and update this
+    // TODO: Take Going / Coming information into account
+    // ! check direction
+    TripDirectionEntity.FindDirectionById(firstTrip.tripDirectionId).type;
     const earliestArrival =
       (firstTrip.schools[0].hours.startHourComing?.hour as number) * 60 +
       (firstTrip.schools[0].hours.startHourComing?.minutes as number);
