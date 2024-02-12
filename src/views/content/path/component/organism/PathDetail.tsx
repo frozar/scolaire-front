@@ -4,6 +4,7 @@ import { PathUtil } from "../../../../../utils/path.utils";
 import SchoolsEnumeration from "../../../board/component/molecule/SchoolsEnumeration";
 import { PathDetailHeader } from "../molecule/PathDetailHeader";
 import { PathTimeLine } from "./PathTimeLine";
+import { TripUsingPath } from "./TripUsingPath";
 
 export const [selectedPath, setSelectedPath] = createSignal<PathType>();
 
@@ -17,6 +18,7 @@ export function PathDetail() {
       <PathDetailHeader path={path()} />
       <SchoolsEnumeration schoolsName={schoolsNames() ?? []} />
       <PathTimeLine path={path()} inEdition={false} />
+      <TripUsingPath path={path()} />
     </div>
   );
 }

@@ -140,7 +140,7 @@ export namespace PathUtil {
     disableSpinningWheel();
   }
 
-  export function getTripsUsingPath(pathId: number) {
+  export function getTripsUsingPath(pathId: number): TripType[] {
     const trips = getLines().flatMap((line) => line.trips);
     const tripUsingPath = trips.filter((trip) => trip.path?.id == pathId);
     return tripUsingPath;
