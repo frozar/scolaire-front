@@ -26,8 +26,10 @@ import {
   onBoard,
 } from "../../board/component/template/ContextManager";
 import {
+  DrawPathStep,
   currentDrawPath,
   drawPathUtils,
+  onDrawPathStep,
 } from "../../path/component/drawPath.utils";
 import { setSchoolDetailsItem } from "../../schools/component/organism/SchoolDetails";
 import { COLOR_SCHOOL_FOCUS, COLOR_SCHOOL_LIGHT } from "../constant";
@@ -43,12 +45,28 @@ import {
 
 export namespace SchoolPointUtils {
   export function onClick(point: SchoolType) {
-    const schoolsSelected = currentDrawTrip().schools;
+    const schoolsSelected = currentDrawPath()?.schools;
+
     switch (onBoard()) {
       case "path-draw":
-        setCurrentTripIndex(currentDrawPath()?.points.length as number);
-        drawPathUtils.addPointToPath({ id: point.id, nature: point.nature });
-        break;
+        switch (onDrawPathStep()) {
+          case DrawPathStep.schoolSelection:
+            if (schoolsSelected?.find((id) => id === point.id)) return;
+            drawPathUtils.addSchoolToPath(point);
+            return;
+
+          case DrawPathStep.editPath:
+            setCurrentTripIndex(currentDrawPath()?.points.length as number);
+            drawPathUtils.addPointToPath({
+              id: point.id,
+              nature: point.nature,
+            });
+            break;
+
+          default:
+            break;
+        }
+
       case "line-add":
         switch (addLineCurrentStep()) {
           case AddLineStep.schoolSelection:

@@ -1,10 +1,8 @@
 import { PathType } from "../_entities/path.entity";
-import { getSelectedLine } from "../views/content/map/component/organism/BusLines";
 import { ServiceUtils } from "./_utils.service";
 
 export namespace PathService {
-  export async function create(path: PathType) {
-    const lineId = getSelectedLine()?.id;
+  export async function create(path: PathType, lineId: number) {
     const createdPath: PathType = await ServiceUtils.post(
       "/busline/" + lineId + "/path",
       path

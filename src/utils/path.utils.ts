@@ -119,4 +119,24 @@ export namespace PathUtil {
     if (selectedPath()?.id == updatedPath.id) setSelectedPath(updatedPath);
     disableSpinningWheel();
   }
+
+  export async function create(path: PathType) {
+    enableSpinningWheel();
+    const lineId = getSelectedLine()?.id as number;
+    const created = await PathService.create(path, lineId);
+
+    setLines((line) => {
+      return [...line].map((line) => {
+        if (line.id == lineId) line.paths.push(created);
+        return line;
+      });
+    });
+
+    if (currentDrawPath()?.id == created.id || !currentDrawPath()?.id)
+      setCurrentDrawPath(created);
+    if (selectedPath()?.id == created.id || !selectedPath())
+      setSelectedPath(created);
+
+    disableSpinningWheel();
+  }
 }

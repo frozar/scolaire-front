@@ -1,6 +1,7 @@
 import _ from "lodash";
 import { createSignal } from "solid-js";
 import { PathPointType, PathType } from "../../../../_entities/path.entity";
+import { SchoolType } from "../../../../_entities/school.entity";
 import { addNewUserInformation } from "../../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../../type";
 import {
@@ -52,6 +53,14 @@ export namespace drawPathUtils {
     setCurrentDrawPath((prev) => {
       if (!prev) return prev;
       return { ...prev, points: prev.points.filter((point) => point.id != id) };
+    });
+  }
+
+  export function addSchoolToPath(point: SchoolType) {
+    setCurrentDrawPath((prev) => {
+      if (!prev) return prev;
+      prev.schools.push(point.id);
+      return { ...prev };
     });
   }
 }
