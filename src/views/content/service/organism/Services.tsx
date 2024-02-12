@@ -18,7 +18,7 @@ export type ServiceType = {
 export type ServiceTripType = {
   tripId: number;
   hlp: number; // in minutes
-  endHour: number; // in minutes
+  endHour?: number; // in minutes
 };
 
 export const [services, setServices] = createSignal<ServiceType[]>([]);

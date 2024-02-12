@@ -15,6 +15,7 @@ interface ServiceGridLineProps {
 
 // TODO: Fix and clean
 export function ServiceGridLine(props: ServiceGridLineProps): JSXElement {
+  // TODO: Refactor using a getStartHour ((earliestArrival - tripDuration))
   function firstDivWidth(): string {
     const firstTrip = TripUtils.get(services()[props.i].serviceTrips[0].tripId);
 
