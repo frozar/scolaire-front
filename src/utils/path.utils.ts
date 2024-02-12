@@ -86,7 +86,7 @@ export namespace PathUtil {
   }
 
   export function isValidPath(path: PathType | undefined) {
-    if (!path || path?.points.length > 1) {
+    if (!(path && path?.points.length > 1)) {
       addNewUserInformation({
         displayed: true,
         level: MessageLevelEnum.error,
