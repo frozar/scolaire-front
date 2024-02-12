@@ -70,7 +70,9 @@ export namespace PathContextManagerUtil {
       case DrawPathStep.schoolSelection:
         setCurrentDrawPath(PathEntity.defaultPath());
         quitModeDrawTrip();
-        changeBoard("path-details");
+
+        if (currentDrawPath()?.id) changeBoard("path-details");
+        else changeBoard("trip");
         break;
 
       case DrawPathStep.gradeSelection:

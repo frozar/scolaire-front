@@ -4,7 +4,11 @@ import PlusIcon from "../../../../../icons/PlusIcon";
 import { displayAddTripMessage } from "../../../../../userInformation/utils";
 import { deselectAllPoints } from "../../../map/component/organism/Points";
 import { deselectAllTrips } from "../../../map/component/organism/Trips";
-import { setCurrentDrawPath } from "../../../path/component/drawPath.utils";
+import {
+  DrawPathStep,
+  setCurrentDrawPath,
+  setOnDrawPathStep,
+} from "../../../path/component/drawPath.utils";
 import ButtonIcon from "../molecule/ButtonIcon";
 import {
   changeBoard,
@@ -37,7 +41,7 @@ export function TripBoardPanelButtons() {
     deselectAllPoints();
     deselectAllTrips();
     toggleDrawMod();
-
+    setOnDrawPathStep(DrawPathStep.schoolSelection);
     setCurrentDrawPath(PathEntity.defaultPath());
     changeBoard("path-draw");
   }
