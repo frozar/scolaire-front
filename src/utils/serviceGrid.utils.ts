@@ -1,4 +1,8 @@
 import { GradeEntity } from "../_entities/grade.entity";
+import {
+  TripDirectionEntity,
+  TripDirectionEnum,
+} from "../_entities/trip-direction.entity";
 import { TripPointType } from "../_entities/trip.entity";
 import { zoom } from "../views/content/service/organism/ServiceGrid";
 import {
@@ -53,13 +57,7 @@ export namespace ServiceGridUtils {
     serviceTrip: ServiceTripType
   ): string {
     if (i == 0) {
-      const endHour = serviceTrip.endHour;
-
-      const duration = Math.round(
-        (TripUtils.get(serviceTrip.tripId).metrics?.duration as number) / 60
-      );
-
-      const startHour = endHour - duration;
+      const startHour = ServiceGridUtils.getEarliestStart(serviceTrip.tripId);
 
       const hour = Math.trunc(startHour / 60);
       const minutes = startHour % 60;
@@ -82,40 +80,7 @@ export namespace ServiceGridUtils {
     } else return "--:--";
   }
 
-  // export function addTrip(
-  //   services: ServiceType[],
-  //   tripId: number
-  // ): ServiceType[] {
-  //   const serviceToChange = services.filter(
-  //     (service) => service.id == selectedService()
-  //   )[0];
-  //   const index = services.indexOf(serviceToChange);
-
-  //   // TODO: Create getEarlyArrival() and put in TripUtils
-  //   // TODO: Only do that if first trip
-  //   // ! Laisser valeur undefined !!
-  //   // ! doit être calculé au niveau de gridItem => plus imple si modif (reactif !!!!)
-  //   let endHour;
-  //   if (serviceToChange.serviceTrips.length == 0) {
-  //     // get eraliest arrival and transform in seconds
-  //     const trip = TripUtils.get(tripId);
-  //     endHour =
-  //       (trip.schools[0].hours.startHourComing?.hour as number) * 60 +
-  //       (trip.schools[0].hours.startHourComing?.minutes as number);
-  //     // TODO:
-  //   } else endHour = 0;
-  //   serviceToChange.serviceTrips.push({
-  //     tripId: tripId,
-  //     hlp: 300,
-  //     endHour,
-  //   });
-
-  //   services.splice(index, 1, serviceToChange);
-
-  //   return services;
-  // }
-
-  export function addTripBis(
+  export function addTrip(
     services: ServiceType[],
     tripId: number
   ): ServiceType[] {
@@ -126,18 +91,62 @@ export namespace ServiceGridUtils {
 
     // TODO: Create getEarlyArrival() and put in TripUtils
     // TODO: Only do that if first trip
-    // ! Laisser valeur undefined !!
-    // ! doit être calculé au niveau de gridItem => plus imple si modif (reactif !!!!)
-
+    let endHour;
+    if (serviceToChange.serviceTrips.length == 0) {
+      endHour = ServiceGridUtils.getEarliestArrival(tripId);
+      // TODO:
+    } else endHour = 0;
     serviceToChange.serviceTrips.push({
       tripId: tripId,
       hlp: 300,
-      endHour: undefined,
+      endHour,
     });
 
     services.splice(index, 1, serviceToChange);
 
     return services;
+  }
+
+  export function getEarliestStart(tripId: number): number {
+    /* 
+    return minutes
+    */
+
+    const firstTrip = TripUtils.get(tripId);
+
+    const earliestArrival = ServiceGridUtils.getEarliestArrival(tripId);
+
+    const tripDuration = Math.round(
+      (firstTrip.metrics?.duration as number) / 60
+    );
+
+    return earliestArrival - tripDuration;
+  }
+
+  export function getEarliestArrival(tripId: number): number {
+    /* 
+    return minutes
+    */
+    const firstTrip = TripUtils.get(tripId);
+
+    const direction = TripDirectionEntity.FindDirectionById(
+      firstTrip.tripDirectionId
+    ).type;
+
+    // TODO: Fix
+    // ! Carreful here TripDirectionEnum.coming correspond to
+    // ! startHourGoing
+    if (direction == TripDirectionEnum.coming) {
+      return (
+        (firstTrip.schools[0].hours.startHourGoing?.hour as number) * 60 +
+        (firstTrip.schools[0].hours.startHourGoing?.minutes as number)
+      );
+    } else {
+      return (
+        (firstTrip.schools[0].hours.startHourComing?.hour as number) * 60 +
+        (firstTrip.schools[0].hours.startHourComing?.minutes as number)
+      );
+    }
   }
 
   export function removeTrip(

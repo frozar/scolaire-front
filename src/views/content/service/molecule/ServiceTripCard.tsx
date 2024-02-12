@@ -36,6 +36,6 @@ function onDblClick(tripId: number): void {
   setServices((prev) => {
     const services = [...prev];
 
-    return ServiceGridUtils.addTripBis(services, tripId);
+    return ServiceGridUtils.addTrip(services, tripId);
   });
 }
