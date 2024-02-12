@@ -20,6 +20,7 @@ import {
   DrawTripStep,
   currentDrawTrip,
   currentStep,
+  drawTripCheckableGrade,
 } from "../../../board/component/organism/DrawTripBoard";
 import { onBoard } from "../../../board/component/template/ContextManager";
 import {
@@ -205,6 +206,10 @@ export function leafletStopsFilter(): StopType[] {
 }
 
 function pathEditionFilterByStep(): StopType[] {
+  const grades = drawTripCheckableGrade()
+    .filter((grade) => grade.done)
+    .map((item) => item.item.id);
+
   const linePoints =
     getLines().find(
       (line) =>
@@ -212,6 +217,9 @@ function pathEditionFilterByStep(): StopType[] {
         currentDrawPath()?.id
     )?.stops ?? [];
 
-  if (onDrawPathStep() == DrawPathStep.editPath) return linePoints;
-  else return [];
+  if (onDrawPathStep() == DrawPathStep.editPath) {
+    return linePoints.filter((stop) =>
+      stop.associated.some((item) => grades.includes(item.gradeId))
+    );
+  } else return [];
 }

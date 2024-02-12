@@ -44,7 +44,7 @@ export function TripBoardPanelButtons() {
 
   return (
     <div class="flex gap-4">
-      <div class="flex">
+      <div class="flex gap-2">
         <ButtonPanel
           text="courses"
           onClick={() => setOnTripBoardPanel(TripBoardPanels.trips)}
@@ -53,7 +53,7 @@ export function TripBoardPanelButtons() {
         <ButtonIcon icon={<PlusIcon />} onClick={addTrip} />
       </div>
 
-      <div class="flex">
+      <div class="flex gap-2">
         <ButtonPanel
           text="chemins"
           onClick={() => setOnTripBoardPanel(TripBoardPanels.paths)}
