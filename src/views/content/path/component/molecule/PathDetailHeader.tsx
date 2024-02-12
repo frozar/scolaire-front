@@ -3,6 +3,7 @@ import { PathType } from "../../../../../_entities/path.entity";
 import TrashIcon from "../../../../../icons/TrashIcon";
 import UpdatePen from "../../../../../icons/UpdatePen";
 import { MapElementUtils } from "../../../../../utils/mapElement.utils";
+import { PathUtil } from "../../../../../utils/path.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { setCurrentTripIndex } from "../../../board/component/organism/DrawTripBoard";
 import {
@@ -29,6 +30,7 @@ export function PathDetailHeader(props: { path: PathType }) {
   }
 
   function deletePath() {
+    PathUtil.deletePath(props.path?.id as number);
     console.log("TODO: delete");
   }
 

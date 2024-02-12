@@ -139,4 +139,22 @@ export namespace PathUtil {
 
     disableSpinningWheel();
   }
+
+  export function getTripUsingPath(pathId: number) {
+    const trips = getLines().flatMap((line) => line.trips);
+    const tripUsingPath = trips.filter((trip) => trip.path?.id == pathId);
+    return tripUsingPath;
+  }
+
+  export async function deletePath(pathId: number) {
+    if (getTripUsingPath(pathId).length > 0) {
+      addNewUserInformation({
+        displayed: true,
+        level: MessageLevelEnum.error,
+        type: MessageTypeEnum.global,
+        content:
+          "Le chemin ne peux être supprimer, il est utilisé au sein de certaines courses.",
+      });
+    }
+  }
 }
