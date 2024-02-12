@@ -33,7 +33,7 @@ import { setselectedTrip } from "../views/content/map/component/organism/Trips";
 import { quitModeDrawTrip } from "../views/content/map/shortcut";
 
 export namespace TripUtils {
-  export function get(tripId: number) {
+  export function get(tripId: number): TripType {
     return getLines()
       .flatMap((line) => line.trips)
       .filter((trip) => trip.id == tripId)[0];

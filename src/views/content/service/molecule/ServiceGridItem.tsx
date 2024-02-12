@@ -1,9 +1,9 @@
 import { JSXElement, Show } from "solid-js";
 
 import { ServiceGridHlp } from "../atom/ServiceGridHlp";
-import { ServiceGridTripItem } from "../atom/ServiceGridTripItem";
 import { ServiceTripType } from "../organism/Services";
 import "./ServiceGridItem.css";
+import { ServiceGridTripItem } from "./ServiceGridTripItem";
 
 interface ServiceGridItemProps {
   serviceTrip: ServiceTripType;
@@ -17,6 +17,7 @@ export function ServiceGridItem(props: ServiceGridItemProps): JSXElement {
       <Show when={props.i != 0}>
         <ServiceGridHlp />
       </Show>
+
       <ServiceGridTripItem
         serviceId={props.serviceId}
         serviceTrip={props.serviceTrip}

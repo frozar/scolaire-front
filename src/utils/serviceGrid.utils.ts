@@ -1,4 +1,5 @@
 import { GradeEntity } from "../_entities/grade.entity";
+import { TripPointType } from "../_entities/trip.entity";
 import { zoom } from "../views/content/service/organism/ServiceGrid";
 import {
   ServiceTripType,
@@ -37,6 +38,14 @@ export namespace ServiceGridUtils {
   export function getHlpWidth(): string {
     // TODO: Use real value
     return String(5 * zoom()) + "px";
+  }
+
+  export function getStartStopName(tripId: number): string {
+    return TripUtils.get(tripId).tripPoints[0].name;
+  }
+
+  export function getEndStopName(tripId: number): string {
+    return (TripUtils.get(tripId).tripPoints.at(-1) as TripPointType).name;
   }
 
   export function getServiceTripStartHour(

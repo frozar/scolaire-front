@@ -1,0 +1,7 @@
+.service-grid-item-start-stop-name {
+  @apply absolute text-center text-xs w-max -top-10;
+}
+
+.service-grid-item-end-stop-name {
+  @apply absolute text-center text-xs w-max -top-5;
+}
