@@ -10,6 +10,10 @@ import { TripUtils } from "./trip.utils";
 
 export namespace ServiceGridUtils {
   export function scrollToServiceStart(ref: HTMLDivElement): void {
+    /*
+    Scroll to the beginning of the selected service when modified
+    */
+
     const actualService = services().filter(
       (service) => service.id == selectedService()
     )[0];
