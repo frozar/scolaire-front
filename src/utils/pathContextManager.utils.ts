@@ -47,7 +47,7 @@ export namespace PathContextManagerUtil {
     }
   }
 
-  function setCheckableGradeForPath() {
+  export function setCheckableGradeForPath() {
     const pathSchools = currentDrawPath()?.schools.map((schoolId) =>
       SchoolUtils.get(schoolId)
     );

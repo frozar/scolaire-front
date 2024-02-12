@@ -8,6 +8,7 @@ import {
 } from "../../../../../_entities/trip-direction.entity";
 import { NatureEnum } from "../../../../../type";
 import { FilterUtils } from "../../../../../utils/filter.utils";
+import { PathContextManagerUtil } from "../../../../../utils/pathContextManager.utils";
 import { QuantityUtils } from "../../../../../utils/quantity.utils";
 import { StopUtils } from "../../../../../utils/stop.utils";
 import { TripUtils } from "../../../../../utils/trip.utils";
@@ -206,6 +207,7 @@ export function leafletStopsFilter(): StopType[] {
 }
 
 function pathEditionFilterByStep(): StopType[] {
+  PathContextManagerUtil.setCheckableGradeForPath();
   const grades = drawTripCheckableGrade()
     .filter((grade) => grade.done)
     .map((item) => item.item.id);
