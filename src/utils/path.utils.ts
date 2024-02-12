@@ -140,14 +140,14 @@ export namespace PathUtil {
     disableSpinningWheel();
   }
 
-  export function getTripUsingPath(pathId: number) {
+  export function getTripsUsingPath(pathId: number) {
     const trips = getLines().flatMap((line) => line.trips);
     const tripUsingPath = trips.filter((trip) => trip.path?.id == pathId);
     return tripUsingPath;
   }
 
   export async function deletePath(pathId: number) {
-    if (getTripUsingPath(pathId).length > 0) {
+    if (getTripsUsingPath(pathId).length > 0) {
       addNewUserInformation({
         displayed: true,
         level: MessageLevelEnum.error,
@@ -155,6 +155,24 @@ export namespace PathUtil {
         content:
           "Le chemin ne peux être supprimer, il est utilisé au sein de certaines courses.",
       });
+
+      return false;
     }
+    enableSpinningWheel();
+    const response = await PathService.deletePath(
+      pathId,
+      getSelectedLine()?.id as number
+    );
+
+    if (!response) return;
+
+    setLines((prev) => {
+      return [...prev].map((line) => {
+        line.paths = line.paths.filter((path) => path.id != pathId);
+        return line;
+      });
+    });
+    disableSpinningWheel();
+    return true;
   }
 }
