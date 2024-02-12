@@ -1,5 +1,4 @@
 import { PathEntity, PathType } from "../_entities/path.entity";
-import { PathService } from "../_services/path.service";
 import {
   drawTripCheckableGrade,
   setDrawTripCheckableGrade,
@@ -15,12 +14,14 @@ import {
 } from "../views/content/path/component/drawPath.utils";
 import { ContextUtils } from "./contextManager.utils";
 import { PathUtil } from "./path.utils";
+import { SchoolUtils } from "./school.utils";
 
 export namespace PathContextManagerUtil {
   export async function nextStep() {
     switch (onDrawPathStep()) {
       case DrawPathStep.schoolSelection:
         if ((currentDrawPath()?.schools.length ?? 0) < 1) break;
+        setCheckableGradeForPath();
         setOnDrawPathStep(DrawPathStep.gradeSelection);
         break;
 
@@ -38,12 +39,30 @@ export namespace PathContextManagerUtil {
         if (currentDrawPath()?.id) {
           await PathUtil.update(currentDrawPath() as PathType);
         } else if (!currentDrawPath()?.id)
-          await PathService.create(currentDrawPath() as PathType);
+          await PathUtil.create(currentDrawPath() as PathType);
 
         quitModeDrawTrip();
         changeBoard("path-details");
         break;
     }
+  }
+
+  function setCheckableGradeForPath() {
+    const pathSchools = currentDrawPath()?.schools.map((schoolId) =>
+      SchoolUtils.get(schoolId)
+    );
+
+    const grades = pathSchools
+      ?.flatMap((school) => school.grades)
+      .map((grade) => grade.id);
+
+    ContextUtils.defineTripCheckableGrade();
+    setDrawTripCheckableGrade((prev) => {
+      return [...prev].map((checkable) => {
+        if (grades?.includes(checkable.item.id)) checkable.done = true;
+        return checkable;
+      });
+    });
   }
 
   export function prevStep() {
