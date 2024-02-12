@@ -17,4 +17,11 @@ export namespace PathService {
     );
     return updatedPath;
   }
+
+  export async function deletePath(pathId: number, lineId: number) {
+    const deletedPath: PathType = await ServiceUtils.delete(
+      "/busline/" + lineId + "/path/" + pathId
+    );
+    return deletedPath;
+  }
 }

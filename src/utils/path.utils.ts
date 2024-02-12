@@ -139,4 +139,31 @@ export namespace PathUtil {
 
     disableSpinningWheel();
   }
+
+  export function getTripsUsingPath(pathId: number): TripType[] {
+    const trips = getLines().flatMap((line) => line.trips);
+    const tripUsingPath = trips.filter((trip) => trip.path?.id == pathId);
+    return tripUsingPath;
+  }
+
+  export async function deletePath(pathId: number) {
+    if (getTripsUsingPath(pathId).length > 0) return false;
+
+    enableSpinningWheel();
+    const response = await PathService.deletePath(
+      pathId,
+      getSelectedLine()?.id as number
+    );
+
+    if (!response) return;
+
+    setLines((prev) => {
+      return [...prev].map((line) => {
+        line.paths = line.paths.filter((path) => path.id != pathId);
+        return line;
+      });
+    });
+    disableSpinningWheel();
+    return true;
+  }
 }

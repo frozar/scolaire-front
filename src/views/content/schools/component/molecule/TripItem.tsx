@@ -1,3 +1,4 @@
+import { mergeProps } from "solid-js";
 import { TripType } from "../../../../../_entities/trip.entity";
 import CardTitle from "../../../../../component/atom/CardTitle";
 import Pellet from "../../../../../component/atom/Pellet";
@@ -7,16 +8,18 @@ import { TripMapUtils } from "../../../../../utils/tripMap.utils";
 import GradeLinkedSchool from "../atom/GradeLinkedSchool";
 import "./TripItem.css";
 
-export function TripItem(props: { trip: TripType }) {
+export function TripItem(props: { trip: TripType; openOnClick?: boolean }) {
+  const mergedProps = mergeProps({ openOnClick: true }, props);
   const schoolNames = () => {
     return props.trip.schools.map((school) => school.name ?? "");
   };
 
+  function cardOnclick() {
+    if (mergedProps.openOnClick) TripMapUtils.onClickBusTrip(props.trip);
+  }
+
   return (
-    <CardWrapper
-      class="trip-item"
-      onClick={() => TripMapUtils.onClickBusTrip(props.trip)}
-    >
+    <CardWrapper class="trip-item" onClick={cardOnclick}>
       <Pellet color={props.trip.color} />
       <div class="trip-content">
         <CardTitle title={props.trip.name ?? "Pas de nom de trip"} />

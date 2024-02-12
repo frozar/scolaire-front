@@ -1,4 +1,12 @@
-import { Show, createEffect, createSignal, onCleanup, onMount } from "solid-js";
+import {
+  JSXElement,
+  Show,
+  children,
+  createEffect,
+  createSignal,
+  onCleanup,
+  onMount,
+} from "solid-js";
 import { Transition } from "solid-transition-group";
 
 import ClickOutside from "../component/ClickOutside";
@@ -10,7 +18,8 @@ import { assertIsNode } from "../utils";
 type RemoveConfirmationType = {
   textToDisplay: string;
   itemName: string;
-  validate: () => Promise<boolean>;
+  validate?: () => Promise<boolean>;
+  child?: JSXElement;
 };
 
 export const [removeConfirmation, setRemoveConfirmation] =
@@ -21,6 +30,8 @@ export const [removeConfirmation, setRemoveConfirmation] =
 false && ClickOutside;
 
 export default function () {
+  const child = children(() => removeConfirmation()?.child);
+
   function closeConfirmationBox() {
     setRemoveConfirmation();
   }
@@ -29,7 +40,10 @@ export default function () {
     const removeConfirmationItem = removeConfirmation();
     if (!removeConfirmationItem) return false;
 
-    const isDeleted = await removeConfirmationItem.validate();
+    const isDeleted = removeConfirmationItem.validate
+      ? await removeConfirmationItem.validate()
+      : true;
+
     closeConfirmationBox();
 
     if (isDeleted) {
@@ -157,6 +171,7 @@ export default function () {
                       </svg>
                     </button>
                   </div>
+                  {/* Content */}
                   <div class="sm:flex sm:items-start">
                     <div class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
                       <svg
@@ -187,17 +202,21 @@ export default function () {
                           {removeConfirmation()?.itemName}
                         </p>
                       </div>
+                      {child()}
                     </div>
                   </div>
+                  {/* End Content */}
                   <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
-                    <button
-                      type="button"
-                      ref={setButtonRef}
-                      class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-                      onClick={handlerOnClickValider}
-                    >
-                      Valider
-                    </button>
+                    <Show when={removeConfirmation()?.validate}>
+                      <button
+                        type="button"
+                        ref={setButtonRef}
+                        class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
+                        onClick={handlerOnClickValider}
+                      >
+                        Valider
+                      </button>
+                    </Show>
                     <button
                       type="button"
                       class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
