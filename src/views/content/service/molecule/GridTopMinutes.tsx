@@ -13,8 +13,9 @@ export function GridTopMinutes(props: GridTopMinutesProps): JSXElement {
     const width = (1440 * zoom()) / 24;
     return width + "px";
   }
+
   return (
-    <div id="service-grid-top" style={{ width: props.width }}>
+    <div id="service-grid-top-minute" style={{ width: props.width }}>
       <For each={[...Array(24).keys()]}>
         {() => (
           <div class="service-grid-top-hour" style={{ width: hourWidth() }}>

@@ -4,6 +4,7 @@ import { ServiceGrid } from "./ServiceGrid";
 import { ServiceList } from "./ServiceList";
 
 import { ServiceGridButtons } from "../molecule/ServiceGridButtons";
+import { ServiceGridHeader } from "../molecule/ServiceGridHeader";
 import "./Service.css";
 
 export type ServiceType = {
@@ -31,6 +32,8 @@ export function Services(): JSXElement {
   return (
     <div id="services">
       <ServiceGridButtons />
+
+      <ServiceGridHeader />
 
       <div id="services-displayed">
         <ServiceList />

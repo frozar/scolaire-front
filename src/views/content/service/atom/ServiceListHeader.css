@@ -1,5 +1,6 @@
 #service-list-header {
   @apply flex items-end h-[52px] border border-black border-x-0 border-t-0;
+  flex: 0 0 210px;
 }
 
 #service-list-header-title {
