@@ -12,6 +12,7 @@ export namespace ServiceGridUtils {
   export function scrollToServiceStart(ref: HTMLDivElement): void {
     /*
     Scroll to the beginning of the selected service when modified
+    Only change position of scroll in axis x
     */
 
     const actualService = services().filter(

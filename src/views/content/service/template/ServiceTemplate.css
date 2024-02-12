@@ -1,7 +1,3 @@
 #service-template {
   @apply flex overflow-hidden;
 }
-
-#service-template #layout-content {
-  @apply overflow-hidden;
-}

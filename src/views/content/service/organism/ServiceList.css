@@ -1,4 +1,3 @@
 #service-list {
-  @apply sticky z-layoutTop left-0;
-  flex: 0 0 210px;
+  @apply sticky z-layoutTop left-0 flex-[0_0_210px];
 }

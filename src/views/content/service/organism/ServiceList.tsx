@@ -9,6 +9,7 @@ export function ServiceList(): JSXElement {
   return (
     <div id="service-list">
       <ServiceListHeader />
+
       <For each={services()}>
         {(service) => <ServiceListItem service={service} />}
       </For>
