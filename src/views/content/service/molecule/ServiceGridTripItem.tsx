@@ -41,7 +41,11 @@ export function ServiceGridTripItem(
 
       <ServiceGridItemStartEndStopNames tripId={props.serviceTrip.tripId} />
 
-      <ServiceGridTripItemHours i={props.i} serviceTrip={props.serviceTrip} />
+      <ServiceGridTripItemHours
+        i={props.i}
+        serviceTrip={props.serviceTrip}
+        serviceId={props.serviceId}
+      />
 
       <Show when={selectedService() == props.serviceId}>
         <ButtonIcon

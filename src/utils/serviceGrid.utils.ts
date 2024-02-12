@@ -54,17 +54,33 @@ export namespace ServiceGridUtils {
 
   export function getServiceTripStartHour(
     i: number,
-    serviceTrip: ServiceTripType
+    serviceTrip: ServiceTripType,
+    serviceId: number
   ): string {
     if (i == 0) {
       const startHour = ServiceGridUtils.getEarliestStart(serviceTrip.tripId);
 
+      // TODO: Refactor
       const hour = Math.trunc(startHour / 60);
       const minutes = startHour % 60;
 
       return GradeEntity.getStringFromHourFormat({ hour, minutes });
       // TODO
-    } else return "--:--";
+    } else {
+      // TODO: ServiceUtils.get()
+      const previousEndHour = services().filter(
+        (service) => service.id == serviceId
+      )[0].serviceTrips[i - 1].endHour;
+
+      // TODO: Use minutes as unit for hlp !
+      const startHour = previousEndHour + serviceTrip.hlp / 60;
+
+      // TODO: Refactor
+      const hour = Math.trunc(startHour / 60);
+      const minutes = startHour % 60;
+
+      return GradeEntity.getStringFromHourFormat({ hour, minutes });
+    }
   }
 
   export function getServiceEndHour(
