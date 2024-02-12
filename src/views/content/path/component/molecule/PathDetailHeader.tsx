@@ -17,6 +17,7 @@ import {
   setOnDrawPathStep,
 } from "../drawPath.utils";
 import { setSelectedPath } from "../organism/PathDetail";
+import { TripUsingPath } from "../organism/TripUsingPath";
 
 const [, { setModeDrawTrip }] = useStateAction();
 
@@ -39,11 +40,20 @@ export function PathDetailHeader(props: { path: PathType }) {
   }
 
   function onClickDelete() {
-    setRemoveConfirmation({
-      textToDisplay: "Êtes-vous sûr de vouloir supprimer la course : ",
-      itemName: props.path.name,
-      validate: deletePath,
-    });
+    const trips = PathUtil.getTripsUsingPath(props.path.id as number);
+    if (trips.length > 0) {
+      setRemoveConfirmation({
+        textToDisplay:
+          "Impossible de supprimer le chemin car il est utilisé au sein de plusieurs courses",
+        itemName: "",
+        child: <TripUsingPath path={props.path} />,
+      });
+    } else
+      setRemoveConfirmation({
+        textToDisplay: "Êtes-vous sûr de vouloir supprimer le chemin :",
+        itemName: props.path.name,
+        validate: deletePath,
+      });
   }
 
   return (

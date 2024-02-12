@@ -147,17 +147,8 @@ export namespace PathUtil {
   }
 
   export async function deletePath(pathId: number) {
-    if (getTripsUsingPath(pathId).length > 0) {
-      addNewUserInformation({
-        displayed: true,
-        level: MessageLevelEnum.error,
-        type: MessageTypeEnum.global,
-        content:
-          "Le chemin ne peux être supprimer, il est utilisé au sein de certaines courses.",
-      });
+    if (getTripsUsingPath(pathId).length > 0) return false;
 
-      return false;
-    }
     enableSpinningWheel();
     const response = await PathService.deletePath(
       pathId,
