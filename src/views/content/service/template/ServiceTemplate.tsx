@@ -6,19 +6,45 @@ import { OsrmService } from "../../../../_services/osrm.service";
 import { BusServiceUtils } from "../../../../utils/busService.utils";
 import "./ServiceTemplate.css";
 
-export const [selectedService, setSelectedService] = createSignal<number>();
-export const [hlpMatrix, setHlpMatrix] = createSignal<{
+// TODO: Explain
+type HlpMatrixType = {
   [sourceTripId: number]: { [targetTripId: number]: number };
-}>();
+};
+
+export const [selectedService, setSelectedService] = createSignal<number>();
+export const [hlpMatrix, setHlpMatrix] = createSignal<HlpMatrixType>({});
 
 export function ServiceTemplate(): JSXElement {
   onMount(async () => {
     // TODO: Afficher spinning wheel !
     const { latLngs, tripIds } = BusServiceUtils.getStartAndEndTripLatLongs();
     const durations = await OsrmService.getHlpMatrix(latLngs);
+
     console.log("durations", durations);
+    console.log("tripIds", tripIds);
 
     // Utiliser tripIds pour setHlpMatrix
+    setHlpMatrix(() => {
+      const finalDict: HlpMatrixType = {};
+
+      for (let i = 0; i < durations.length; i += 2) {
+        console.log("i", i);
+
+        const sourceTripId = tripIds[i / 2];
+        finalDict[sourceTripId] = {};
+
+        for (let j = 0; j < durations.length; j += 2) {
+          console.log("j", j);
+
+          const targetTripId = tripIds[j / 2];
+          if (sourceTripId == targetTripId) continue;
+
+          finalDict[sourceTripId][targetTripId] = durations[i][j + 1];
+        }
+      }
+      console.log("finalDict", finalDict);
+      return finalDict;
+    });
   });
   return (
     <div id="service-template">
