@@ -20,6 +20,7 @@ import ButtonIcon from "../molecule/ButtonIcon";
 import { AssociatedItem } from "../molecule/CheckableElementList";
 import { LabeledColorPicker } from "../molecule/LabeledColorPicker";
 import LabeledInputField from "../molecule/LabeledInputField";
+import { PathSelection } from "../molecule/PathSelection";
 import SchoolsEnumeration from "../molecule/SchoolsEnumeration";
 import { AssignDaysAndDirectionToTrip } from "./AssignDaysAndDirectionToTrip";
 import { CheckableGradeListBySchool } from "./CheckableGradeListBySchool";
@@ -120,6 +121,7 @@ export function DrawTripBoard() {
           when={drawTripCheckableGrade().filter((item) => item.done).length > 0}
         >
           <AssignDaysAndDirectionToTrip />
+          <PathSelection />
           <BusSelectionList />
         </Show>
       </Show>
