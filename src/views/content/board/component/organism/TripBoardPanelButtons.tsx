@@ -2,6 +2,11 @@ import { PathEntity } from "../../../../../_entities/path.entity";
 import { ButtonPanel } from "../../../../../component/atom/ButtonPanel";
 import PlusIcon from "../../../../../icons/PlusIcon";
 import { displayAddTripMessage } from "../../../../../userInformation/utils";
+import { getBus } from "../../../bus/organism/Bus";
+import {
+  setThereIsAnError,
+  setnoBusError,
+} from "../../../map/component/organism/MapErrorPanel";
 import { deselectAllPoints } from "../../../map/component/organism/Points";
 import { deselectAllTrips } from "../../../map/component/organism/Trips";
 import {
@@ -46,6 +51,15 @@ export function TripBoardPanelButtons() {
     changeBoard("path-draw");
   }
 
+  function checkIfCreationIsPossible() {
+    if (getBus().length <= 0) {
+      setThereIsAnError(true);
+      setnoBusError(true);
+      return true;
+    }
+    return false;
+  }
+
   return (
     <div class="flex gap-4">
       <div class="flex gap-2">
@@ -54,7 +68,11 @@ export function TripBoardPanelButtons() {
           onClick={() => setOnTripBoardPanel(TripBoardPanels.trips)}
           active={onTripBoardPanel() == TripBoardPanels.trips}
         />
-        <ButtonIcon icon={<PlusIcon />} onClick={addTrip} />
+        <ButtonIcon
+          icon={<PlusIcon />}
+          onClick={addTrip}
+          disable={checkIfCreationIsPossible()}
+        />
       </div>
 
       <div class="flex gap-2">
