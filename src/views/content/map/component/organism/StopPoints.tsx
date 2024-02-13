@@ -207,7 +207,8 @@ export function leafletStopsFilter(): StopType[] {
 }
 
 function pathEditionFilterByStep(): StopType[] {
-  PathContextManagerUtil.setCheckableGradeForPath();
+  if (onBoard() == "path-draw")
+    PathContextManagerUtil.setCheckableGradeForPath();
   const grades = drawTripCheckableGrade()
     .filter((grade) => grade.done)
     .map((item) => item.item.id);
