@@ -87,12 +87,20 @@ export namespace ServiceGridUtils {
     serviceTrip: ServiceTripType,
     serviceId: number
   ): string {
-    if (i == 0) {
-      /* endHour of first serviceTrip saved in services() on dblClick event */
+    /* Also save new endHour value in services() */
 
-      return ServiceGridUtils.getStringHourFormatFromMinutes(
-        serviceTrip.endHour
-      );
+    if (i == 0) {
+      const endHour = ServiceGridUtils.getEarliestArrival(serviceTrip.tripId);
+
+      const endHourToDisplay =
+        ServiceGridUtils.getStringHourFormatFromMinutes(endHour);
+
+      // To avoid infinite loop
+      if (endHour == serviceTrip.endHour) return endHourToDisplay;
+
+      // Save value in services()
+      BusServiceUtils.updateEndHour(serviceId, serviceTrip.tripId, endHour);
+      return endHourToDisplay;
     } else {
       const startHour = ServiceGridUtils.getServiceTripStartHourValue(
         i,
@@ -112,7 +120,7 @@ export namespace ServiceGridUtils {
       // To avoid infinite loop
       if (endHour == serviceTrip.endHour) return endHourToDisplay;
 
-      // Also save endHour value in services() if it's a new value
+      // Save value in services()
       BusServiceUtils.updateEndHour(serviceId, serviceTrip.tripId, endHour);
 
       return endHourToDisplay;
@@ -124,33 +132,6 @@ export namespace ServiceGridUtils {
     const minutes = totalMinutes % 60;
 
     return GradeEntity.getStringFromHourFormat({ hour, minutes });
-  }
-
-  export function addTrip(
-    services: ServiceType[],
-    tripId: number
-  ): ServiceType[] {
-    const serviceToChange = services.filter(
-      (service) => service.id == selectedService()
-    )[0];
-    const index = services.indexOf(serviceToChange);
-
-    // TODO: EndHour value must not be assigned here but the same
-    // place the other serviceTrips endHOur are assigned, at serviceGridItem
-    let endHour;
-    if (serviceToChange.serviceTrips.length == 0) {
-      endHour = ServiceGridUtils.getEarliestArrival(tripId);
-      // TODO: Do not assign value
-    } else endHour = 0;
-    serviceToChange.serviceTrips.push({
-      tripId: tripId,
-      hlp: 5,
-      endHour,
-    });
-
-    services.splice(index, 1, serviceToChange);
-
-    return services;
   }
 
   export function getEarliestStart(tripId: number): number {

@@ -3,5 +3,5 @@
 }
 
 #services-displayed {
-  @apply flex overflow-y-auto flex-[0_0_850px];
+  @apply flex overflow-y-auto flex-[0_0_850px] scroll-smooth;
 }
