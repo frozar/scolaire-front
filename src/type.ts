@@ -163,6 +163,7 @@ export type SelectedMenuType =
   | "voirie"
   | "schools"
   | "parametres"
+  | "users"
   | "support"
   | "bus"
   | "allotment"

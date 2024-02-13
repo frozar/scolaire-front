@@ -97,6 +97,15 @@ const menuItems: MenuItemType[] = [
     isDisabled: false,
     onClick: () => {
       setSelectedMenu("allotment");
+    },
+  },
+  {
+    menuItem: "parametres",
+    Logo: SettingsIcon,
+    label: "Paramètres",
+    isDisabled: false,
+    onClick: () => {
+      setSelectedMenu("users");
       changeBoard(undefined);
     },
   },
@@ -130,18 +139,6 @@ const menuItems: MenuItemType[] = [
   // },
 ];
 
-export const adminItems: MenuItemType[] = [
-  {
-    menuItem: "parametres",
-    Logo: SettingsIcon,
-    label: "Paramètres",
-    isDisabled: false,
-    onClick: () => {
-      console.log("parametres");
-      setSelectedMenu("parametres");
-      changeBoard(undefined);
-    },
-  },
-];
+export const adminItems: MenuItemType[] = [];
 
 export default menuItems;

@@ -49,7 +49,7 @@ export default function (props: LoginDropdownProps) {
     "translate-x-[" + String(props.xOffset ?? 0) + "rem]";
 
   function handleManagement() {
-    setSelectedMenu("parametres");
+    setSelectedMenu("users");
     changeBoard(undefined);
   }
 
@@ -81,13 +81,13 @@ export default function (props: LoginDropdownProps) {
       >
         <Show when={displayedSubComponent()}>
           <div id="login-menu-container" class={xOffsetClassName()}>
-            <LoginMenu
-              authenticated={getAuthenticatedUser() ? true : false}
-              onClick={handleLogin}
-            />
             <ManagementButton
               authenticated={getAuthenticatedUser() ? true : false}
               onClick={handleManagement}
+            />
+            <LoginMenu
+              authenticated={getAuthenticatedUser() ? true : false}
+              onClick={handleLogin}
             />
           </div>
         </Show>
