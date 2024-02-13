@@ -39,7 +39,9 @@ export function ServiceTemplate(): JSXElement {
           const targetTripId = tripIds[j / 2];
           if (sourceTripId == targetTripId) continue;
 
-          finalDict[sourceTripId][targetTripId] = durations[i][j + 1];
+          finalDict[sourceTripId][targetTripId] = Math.round(
+            durations[i][j + 1] / 60
+          );
         }
       }
       console.log("finalDict", finalDict);

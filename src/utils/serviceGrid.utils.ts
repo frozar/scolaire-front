@@ -10,7 +10,10 @@ import {
   ServiceType,
   services,
 } from "../views/content/service/organism/Services";
-import { selectedService } from "../views/content/service/template/ServiceTemplate";
+import {
+  hlpMatrix,
+  selectedService,
+} from "../views/content/service/template/ServiceTemplate";
 import { BusServiceUtils } from "./busService.utils";
 import { TripUtils } from "./trip.utils";
 
@@ -163,6 +166,26 @@ export namespace ServiceGridUtils {
         (firstTrip.schools[0].hours.startHourComing?.minutes as number)
       );
     }
+  }
+
+  // TODO: Also save value !
+  export function updateAndGetHlpWidth(
+    serviceTrip: ServiceTripType,
+    serviceId: number,
+    i: number
+  ): string {
+    const serviceTrips = BusServiceUtils.get(serviceId).serviceTrips;
+    const idPreviousTrip = serviceTrips[i - 1].tripId;
+    const idActualTrip = serviceTrips[i].tripId;
+
+    const hlpDuration = hlpMatrix()[idActualTrip][idPreviousTrip];
+    const hlpDurationWidth = String(hlpDuration * zoom()) + "px";
+
+    if (hlpDuration == serviceTrip.hlp) return hlpDurationWidth;
+
+    // Save in services()
+    BusServiceUtils.updateHlp(serviceId, idActualTrip, hlpDuration);
+    return hlpDurationWidth;
   }
 
   export function removeTrip(
