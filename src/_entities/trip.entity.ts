@@ -72,6 +72,7 @@ export namespace TripEntity {
       days: dbData.days,
       tripDirectionId: dbData.trip_direction_id,
       path: PathEntity.build(dbData.path),
+      busCategoriesId: dbData.bus_categories_id,
     };
   }
 
@@ -89,6 +90,7 @@ export namespace TripEntity {
       startTime: undefined,
       days: [],
       tripDirectionId: 0,
+      busCategoriesId: 0,
     };
   }
 
@@ -119,6 +121,7 @@ export namespace TripEntity {
       days: trip.days,
       trip_direction_id: trip.tripDirectionId,
       path: trip.path,
+      bus_categories_id: trip.busCategoriesId,
     };
   }
 
@@ -226,6 +229,7 @@ export type TripType = {
   tripDirectionId: number;
   days: CalendarDayEnum[];
   path?: PathType;
+  busCategoriesId?: number;
 };
 
 export type TripPointType = {
@@ -255,6 +259,7 @@ export type TripDBType = {
   trip_direction_id: number;
   days: CalendarDayEnum[];
   path: PathType;
+  bus_categories_id: number;
 };
 
 export type TripPointDBType = {

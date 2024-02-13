@@ -15,6 +15,7 @@ import { CurrentDrawTripUtils } from "../../../../../utils/currentDrawTrip.utils
 import { COLOR_GREEN_BASE } from "../../../map/constant";
 import BoardTitle from "../atom/BoardTitle";
 import { DrawHelperButton } from "../atom/DrawHelperButton";
+import { BusSelectionList } from "../molecule/BusSelectionList";
 import ButtonIcon from "../molecule/ButtonIcon";
 import { AssociatedItem } from "../molecule/CheckableElementList";
 import { LabeledColorPicker } from "../molecule/LabeledColorPicker";
@@ -78,6 +79,7 @@ export const [currentDrawTrip, setCurrentDrawTrip] = createSignal<TripType>(
       grades: [],
       schools: [],
     },
+    busCategoriesId: -1,
   }
 );
 
@@ -118,6 +120,7 @@ export function DrawTripBoard() {
           when={drawTripCheckableGrade().filter((item) => item.done).length > 0}
         >
           <AssignDaysAndDirectionToTrip />
+          <BusSelectionList />
         </Show>
       </Show>
 
@@ -213,9 +216,9 @@ export function DrawTripBoard() {
         previousStep={{
           callback: ContextUtils.prevStep,
           label:
-            currentStep() === DrawTripStep.schoolSelection || isInUpdate()
+            currentStep() === DrawTripStep.schoolSelection
               ? "Annuler"
-              : "Précédant",
+              : "Précédent",
         }}
       />
     </div>

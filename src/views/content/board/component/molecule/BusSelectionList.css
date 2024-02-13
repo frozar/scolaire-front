@@ -1,0 +1,7 @@
+.busSelectionTitle {
+  @apply font-bold mb-3;
+}
+
+.busSelectionList {
+  @apply w-full border-2 border-black;
+}

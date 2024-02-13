@@ -1,0 +1,3 @@
+.information-panel-link {
+  @apply underline cursor-pointer;
+}
