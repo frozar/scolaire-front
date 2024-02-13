@@ -58,16 +58,16 @@ export namespace ServiceGridUtils {
     serviceTrip: ServiceTripType,
     serviceId: number
   ): number {
+    /*
+    Return startHourValue in minutes
+    */
     if (i == 0) {
       return ServiceGridUtils.getEarliestStart(serviceTrip.tripId);
     } else {
       const previousEndHour =
         BusServiceUtils.get(serviceId).serviceTrips[i - 1].endHour;
 
-      // TODO: Use minutes as unit for hlp !
-      const startHour = previousEndHour + serviceTrip.hlp / 60;
-
-      return startHour;
+      return previousEndHour + serviceTrip.hlp;
     }
   }
 
@@ -82,28 +82,8 @@ export namespace ServiceGridUtils {
       serviceId
     );
 
-    // TODO: Refactor
-    const hour = Math.trunc(startHour / 60);
-    const minutes = startHour % 60;
-
-    return GradeEntity.getStringFromHourFormat({ hour, minutes });
+    return ServiceGridUtils.getStringHourFormatFromMinutes(startHour);
   }
-
-  // export function getServiceEndHour(
-  //   i: number,
-  //   serviceTrip: ServiceTripType
-  // ): string {
-  //   if (i == 0) {
-  //     const hour = Math.round(serviceTrip.endHour / 60);
-  //     const minutes = (serviceTrip.endHour % 60) * 60;
-
-  //     return GradeEntity.getStringFromHourFormat({ hour, minutes });
-  //     // TODO: Utiliser getServiceTripStartHour()
-  //     // ! Auquel ajouter le hlp et la duration
-  //     // ! mettre à jour le service
-  //     // ! retourner la bonne valeurs
-  //   } else return "--:--";
-  // }
 
   export function getServiceEndHour(
     i: number,
@@ -111,11 +91,10 @@ export namespace ServiceGridUtils {
     serviceId: number
   ): string {
     if (i == 0) {
-      // TODO: Refactor
-      const hour = Math.round(serviceTrip.endHour / 60);
-      const minutes = (serviceTrip.endHour % 60) * 60;
+      return ServiceGridUtils.getStringHourFormatFromMinutes(
+        serviceTrip.endHour
+      );
 
-      return GradeEntity.getStringFromHourFormat({ hour, minutes });
       // TODO: Utiliser getServiceTripStartHour()
       // ! Auquel ajouter le hlp et la duration
       // ! mettre à jour le service
@@ -131,14 +110,17 @@ export namespace ServiceGridUtils {
 
       const duration = Math.round((trip.metrics?.duration as number) / 60);
 
-      const endHour = startHour + serviceTrip.hlp / 60 + duration;
+      const endHour = startHour + serviceTrip.hlp + duration;
 
-      // TODO: Refactor
-      const hour = Math.round(endHour / 60);
-      const minutes = (endHour % 60) * 60;
-
-      return GradeEntity.getStringFromHourFormat({ hour, minutes });
+      return ServiceGridUtils.getStringHourFormatFromMinutes(endHour);
     }
+  }
+
+  export function getStringHourFormatFromMinutes(totalMinutes: number): string {
+    const hour = Math.trunc(totalMinutes / 60);
+    const minutes = totalMinutes % 60;
+
+    return GradeEntity.getStringFromHourFormat({ hour, minutes });
   }
 
   export function addTrip(
@@ -159,7 +141,7 @@ export namespace ServiceGridUtils {
     } else endHour = 0;
     serviceToChange.serviceTrips.push({
       tripId: tripId,
-      hlp: 300,
+      hlp: 5,
       endHour,
     });
 
