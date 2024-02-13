@@ -40,11 +40,6 @@ export namespace ServiceGridUtils {
     );
   }
 
-  export function getHlpWidth(): string {
-    // TODO: Use real value
-    return String(5 * zoom()) + "px";
-  }
-
   export function getStartStopName(tripId: number): string {
     return TripUtils.get(tripId).tripPoints[0].name;
   }

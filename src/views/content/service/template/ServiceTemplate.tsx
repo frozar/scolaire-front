@@ -23,7 +23,7 @@ export function ServiceTemplate(): JSXElement {
     console.log("durations", durations);
     console.log("tripIds", tripIds);
 
-    // Utiliser tripIds pour setHlpMatrix
+    // TODO: Clean
     setHlpMatrix(() => {
       const finalDict: HlpMatrixType = {};
 
