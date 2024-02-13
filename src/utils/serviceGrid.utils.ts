@@ -135,7 +135,8 @@ export namespace ServiceGridUtils {
     )[0];
     const index = services.indexOf(serviceToChange);
 
-    // TODO: Only do that if first trip
+    // TODO: EndHour value must not be assigned here but the same
+    // place the other serviceTrips endHOur are assigned, at serviceGridItem
     let endHour;
     if (serviceToChange.serviceTrips.length == 0) {
       endHour = ServiceGridUtils.getEarliestArrival(tripId);

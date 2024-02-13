@@ -32,7 +32,7 @@ function onDblClick(tripId: number): void {
     console.log("No service selected");
     return;
   }
-
+  // TODO: Put in busService.addTrip()
   setServices((prev) => {
     const services = [...prev];
 
