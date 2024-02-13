@@ -9,6 +9,9 @@ import LoginAvatar from "../molecule/LoginAvatar";
 
 import { login, logout } from "../../authentication";
 
+import { changeBoard } from "../../../content/board/component/template/ContextManager";
+import { setSelectedMenu } from "../../menuItemFields";
+import { ManagementButton } from "../atom/Management";
 import "./LoginDropdown.css";
 
 // HACK for the documentation to preserve the ClickOutside directive on save
@@ -45,6 +48,11 @@ export default function (props: LoginDropdownProps) {
   const xOffsetClassName = () =>
     "translate-x-[" + String(props.xOffset ?? 0) + "rem]";
 
+  function handleManagement() {
+    setSelectedMenu("users");
+    changeBoard(undefined);
+  }
+
   return (
     <button
       id="login-btn"
@@ -73,6 +81,10 @@ export default function (props: LoginDropdownProps) {
       >
         <Show when={displayedSubComponent()}>
           <div id="login-menu-container" class={xOffsetClassName()}>
+            <ManagementButton
+              authenticated={getAuthenticatedUser() ? true : false}
+              onClick={handleManagement}
+            />
             <LoginMenu
               authenticated={getAuthenticatedUser() ? true : false}
               onClick={handleLogin}

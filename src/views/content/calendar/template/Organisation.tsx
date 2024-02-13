@@ -13,7 +13,7 @@ import { MemberElement } from "../organism/MemberElement";
 export const [member, setMember] = createSignal([]) as Signal<
   organisationMember[]
 >;
-export function Parameter() {
+export function Users() {
   // eslint-disable-next-line solid/reactivity
   createEffect(async () => {
     const members = await OrganisationService.getMember();

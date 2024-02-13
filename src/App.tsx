@@ -31,7 +31,7 @@ import UserInstruction from "./component/molecule/UserInstruction";
 import { Allotment } from "./views/content/allotment/organism/Allotment";
 import { Dialogs } from "./views/content/board/component/organism/Dialogs";
 import { Bus } from "./views/content/bus/organism/Bus";
-import { Parameter } from "./views/content/calendar/template/Organisation";
+import { Users } from "./views/content/calendar/template/Organisation";
 import { ServiceTemplate } from "./views/content/service/template/ServiceTemplate";
 
 const [, { getSelectedMenu, setSelectedMenu, getActiveMapId }] = useStateGui();
@@ -79,8 +79,8 @@ export default () => {
                 <Calendar />
               </Match>
 
-              <Match when={getSelectedMenu() == "parametres"}>
-                <Parameter />
+              <Match when={getSelectedMenu() == "users"}>
+                <Users />
               </Match>
 
               <Match when={getSelectedMenu() == "service"}>
@@ -99,6 +99,8 @@ export default () => {
                 <Map />
                 <ContextManager />
               </Match>
+
+              <Match when={getSelectedMenu() == "parametres"}>parameters</Match>
             </Switch>
           </Show>
 
