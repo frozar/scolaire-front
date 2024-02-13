@@ -95,7 +95,20 @@ export namespace PathUtil {
           "Veuillez sélectionner au moins deux points pour créer un chemin.",
       });
       return false;
-    } else return true;
+    } else if (
+      path.points[path.points.length - 1].nature != NatureEnum.school
+    ) {
+      addNewUserInformation({
+        displayed: true,
+        level: MessageLevelEnum.error,
+        type: MessageTypeEnum.global,
+        content:
+          "Veuillez finir la construction de votre chemin par une école.",
+      });
+      return false;
+    }
+
+    return true;
   }
 
   export async function update(path: PathType) {
