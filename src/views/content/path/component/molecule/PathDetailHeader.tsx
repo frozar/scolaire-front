@@ -3,7 +3,6 @@ import { PathType } from "../../../../../_entities/path.entity";
 import TrashIcon from "../../../../../icons/TrashIcon";
 import UpdatePen from "../../../../../icons/UpdatePen";
 import { setRemoveConfirmation } from "../../../../../userInformation/RemoveConfirmation";
-import { MapElementUtils } from "../../../../../utils/mapElement.utils";
 import { PathUtil } from "../../../../../utils/path.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { setCurrentTripIndex } from "../../../board/component/organism/DrawTripBoard";
@@ -27,9 +26,8 @@ export function PathDetailHeader(props: { path: PathType }) {
     setCurrentTripIndex(props.path.points.length);
     toggleDrawMod();
     setModeDrawTrip();
-    changeBoard("path-draw");
     setOnDrawPathStep(DrawPathStep.editPath);
-    MapElementUtils.deselectAllPointsAndBusTrips();
+    changeBoard("path-draw");
   }
 
   async function deletePath(): Promise<boolean> {
