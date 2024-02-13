@@ -49,6 +49,11 @@ export function TableLine(props: TableLineProps) {
     toggleEditMode();
   }
 
+  function cancelButton() {
+    setName(props.allotmentItem.name);
+    toggleEditMode();
+  }
+
   function onNameInputChanged(value: string) {
     setName(value);
   }
@@ -74,7 +79,7 @@ export function TableLine(props: TableLineProps) {
         <TableElement text="-" />
         <td class="actionButtonContainer">
           <ButtonIcon icon={<CheckIcon />} onClick={updateButton} />
-          <ButtonIcon icon={<CircleCrossIcon />} onClick={deleteAllotment} />
+          <ButtonIcon icon={<CircleCrossIcon />} onClick={cancelButton} />
         </td>
       </tr>
     </Show>
