@@ -87,8 +87,6 @@ export namespace ServiceGridUtils {
     serviceTrip: ServiceTripType,
     serviceId: number
   ): string {
-    /* Also save new endHour value in services() */
-
     if (i == 0) {
       const endHour = ServiceGridUtils.getEarliestArrival(serviceTrip.tripId);
 
