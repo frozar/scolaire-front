@@ -11,7 +11,7 @@ import {
   services,
 } from "../views/content/service/organism/Services";
 import { selectedService } from "../views/content/service/template/ServiceTemplate";
-import { BusServiceUtils } from "./service.utils";
+import { BusServiceUtils } from "./busService.utils";
 import { TripUtils } from "./trip.utils";
 
 export namespace ServiceGridUtils {
@@ -91,15 +91,18 @@ export namespace ServiceGridUtils {
     serviceId: number
   ): string {
     if (i == 0) {
+      /*
+      endHour saved in services() on dblClick event
+      */
       return ServiceGridUtils.getStringHourFormatFromMinutes(
         serviceTrip.endHour
       );
-
-      // TODO: Utiliser getServiceTripStartHour()
-      // ! Auquel ajouter le hlp et la duration
-      // ! mettre à jour le service
-      // ! retourner la bonne valeurs
     } else {
+      /*
+      If it's not the first trip of the service
+      
+      endHour value displayed AND saved in services()
+      */
       const startHour = ServiceGridUtils.getServiceTripStartHourValue(
         i,
         serviceTrip,
@@ -112,7 +115,15 @@ export namespace ServiceGridUtils {
 
       const endHour = startHour + serviceTrip.hlp + duration;
 
-      return ServiceGridUtils.getStringHourFormatFromMinutes(endHour);
+      const endHourToDisplay =
+        ServiceGridUtils.getStringHourFormatFromMinutes(endHour);
+
+      // To avoid infinite loop
+      if (endHour == serviceTrip.endHour) return endHourToDisplay;
+
+      BusServiceUtils.updateEndHour(serviceId, serviceTrip.tripId, endHour);
+
+      return endHourToDisplay;
     }
   }
 
