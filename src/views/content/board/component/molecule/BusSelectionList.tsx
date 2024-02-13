@@ -1,4 +1,5 @@
-import { For, createSignal } from "solid-js";
+import { createSignal } from "solid-js";
+import { LabeledInputSelect } from "../../../../../component/molecule/LabeledInputSelect";
 import { getBus } from "../../../bus/organism/Bus";
 import { currentDrawTrip, setCurrentDrawTrip } from "../organism/DrawTripBoard";
 import "./BusSelectionList.css";
@@ -8,29 +9,22 @@ export function BusSelectionList() {
     currentDrawTrip().busCategoriesId
   );
 
-  function onInputChanged(value: number) {
-    setSelectedBus(value);
+  function onInputChanged(value: string | number) {
+    setSelectedBus(Number(value));
     setCurrentDrawTrip((prev) => {
       if (!prev) return prev;
-      return { ...prev, busCategoriesId: value };
+      return { ...prev, busCategoriesId: Number(value) };
     });
   }
 
   return (
-    <div class="mt-5">
-      <p class="busSelectionTitle">Catégorie de bus</p>
-      <select
-        class="busSelectionList"
-        value={selectedBus()}
-        onInput={(e) => onInputChanged(Number(e.currentTarget.value))}
-      >
-        <option value={-1} disabled selected hidden>
-          Choisir un bus
-        </option>
-        <For each={getBus()}>
-          {(bus) => <option value={bus.id}>{bus.category}</option>}
-        </For>
-      </select>
-    </div>
+    <LabeledInputSelect
+      defaultValue={Number(selectedBus())}
+      label="Catégorie de bus"
+      onChange={onInputChanged}
+      options={getBus().map((bus) => {
+        return { value: Number(bus.id), text: bus.category };
+      })}
+    />
   );
 }
