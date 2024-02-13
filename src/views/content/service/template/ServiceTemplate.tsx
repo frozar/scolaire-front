@@ -7,7 +7,9 @@ import { BusServiceUtils } from "../../../../utils/busService.utils";
 import "./ServiceTemplate.css";
 
 export const [selectedService, setSelectedService] = createSignal<number>();
-export const [hlpMatrix, setHlpMatrix] = createSignal();
+export const [hlpMatrix, setHlpMatrix] = createSignal<{
+  [sourceTripId: number]: { [targetTripId: number]: number };
+}>();
 
 export function ServiceTemplate(): JSXElement {
   onMount(async () => {
