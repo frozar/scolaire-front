@@ -16,6 +16,10 @@ import {
   TripDirectionType,
   setTripDirections,
 } from "../_entities/trip-direction.entity";
+import {
+  AllotmentType,
+  setAllotment,
+} from "../views/content/allotment/organism/Allotment";
 import { setBus } from "../views/content/bus/organism/Bus";
 import { setCalendars } from "../views/content/calendar/calendar.manager";
 import { setCalendarsPeriod } from "../views/content/calendar/template/Calendar";
@@ -34,6 +38,7 @@ type InitDBType = {
   trip_directions: TripDirectionType[];
   services: ServiceDBType[];
   bus_categories: BusCategoryType[];
+  allotment: AllotmentType[];
 };
 
 export type InitType = {
@@ -68,6 +73,9 @@ export namespace InitService {
 
     const bus = dbInit.bus_categories;
     setBus(bus);
+
+    const allotment = dbInit.allotment;
+    setAllotment(allotment);
 
     const calendarPeriods = dbInit.calendars_periods.map((calendarPeriod) =>
       CalendarEntity.buildCalendarPeriod(calendarPeriod)

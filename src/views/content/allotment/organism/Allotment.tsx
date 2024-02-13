@@ -9,14 +9,9 @@ export type AllotmentType = {
   name: string;
 };
 
-export const [isNewLineHidden, setIsNewLineHidden] = createSignal(true);
+export const [getAllotment, setAllotment] = createSignal<AllotmentType[]>([]);
 
-const [fakeData] = createSignal<AllotmentType[]>([
-  { id: 1, name: "Lot 1" },
-  { id: 2, name: "Lot 2" },
-  { id: 3, name: "Lot 3" },
-  { id: 4, name: "Lot 4" },
-]);
+export const [isNewLineHidden, setIsNewLineHidden] = createSignal(true);
 
 function showNewLine() {
   if (!isNewLineHidden()) {
@@ -32,7 +27,7 @@ export function Allotment() {
         <PageTitle title="Allotissement" />
         <Button label="Ajouter" onClick={showNewLine} />
       </div>
-      <AllotmentTable allotmentList={fakeData()} />
+      <AllotmentTable allotmentList={getAllotment()} />
     </div>
   );
 }
