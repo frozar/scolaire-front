@@ -40,6 +40,7 @@ export namespace BusServiceUtils {
 
       serviceToChange.serviceTrips.push({
         tripId: tripId,
+        // TODO: Do not setup these values ?
         hlp: 5,
         endHour: 0,
       });

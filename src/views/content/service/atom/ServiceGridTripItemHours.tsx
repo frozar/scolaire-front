@@ -22,7 +22,7 @@ export function ServiceGridTripItemHours(
         )}
       </div>
       <div class="service-grid-item-trip-end-hour">
-        {ServiceGridUtils.getServiceEndHour(
+        {ServiceGridUtils.updateAndGetServiceEndHour(
           props.i,
           props.serviceTrip,
           props.serviceId

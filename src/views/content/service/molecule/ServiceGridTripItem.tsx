@@ -15,7 +15,6 @@ interface ServiceGridTripItemProps {
   i: number;
 }
 
-// TODO: Move to molecule and create component
 export function ServiceGridTripItem(
   props: ServiceGridTripItemProps
 ): JSXElement {

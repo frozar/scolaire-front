@@ -82,7 +82,7 @@ export namespace ServiceGridUtils {
     return ServiceGridUtils.getStringHourFormatFromMinutes(startHour);
   }
 
-  export function getServiceEndHour(
+  export function updateAndGetServiceEndHour(
     i: number,
     serviceTrip: ServiceTripType,
     serviceId: number
