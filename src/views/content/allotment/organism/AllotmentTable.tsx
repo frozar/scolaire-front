@@ -1,6 +1,6 @@
 import { TableContent } from "../../../../component/table/molecule/TableContent";
 import { AddTableLine } from "../molecule/AddTableLine";
-import { TableHeaderAllotment } from "../molecule/TableHeader";
+import { TableHeaderAllotment } from "../molecule/TableHeaderAllotment";
 import { TableRows } from "../molecule/TableRows";
 import { AllotmentType } from "./Allotment";
 import "./Allotment.css";
