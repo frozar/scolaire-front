@@ -1,4 +1,5 @@
 import { createSignal } from "solid-js";
+import { AllotmentService } from "../../../../_services/allotment.service";
 import CheckIcon from "../../../../icons/CheckIcon";
 import { CircleCrossIcon } from "../../../../icons/CircleCrossIcon";
 import { addNewUserInformation } from "../../../../signaux";
@@ -12,7 +13,8 @@ import "./TableLine.css";
 export function AddTableLine() {
   const [getName, setName] = createSignal("defaultName");
 
-  function createNewAllotment() {
+  async function createNewAllotment() {
+    await AllotmentService.create({ name: getName() });
     setIsNewLineHidden(true);
     addNewUserInformation({
       displayed: true,
