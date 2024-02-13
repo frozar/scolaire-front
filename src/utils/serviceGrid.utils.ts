@@ -113,7 +113,7 @@ export namespace ServiceGridUtils {
 
       const duration = Math.round((trip.metrics?.duration as number) / 60);
 
-      const endHour = startHour + serviceTrip.hlp + duration;
+      const endHour = startHour + duration;
 
       const endHourToDisplay =
         ServiceGridUtils.getStringHourFormatFromMinutes(endHour);
