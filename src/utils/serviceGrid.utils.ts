@@ -58,17 +58,14 @@ export namespace ServiceGridUtils {
     serviceTrip: ServiceTripType,
     serviceId: number
   ): number {
-    /*
-    Return startHourValue in minutes
-    */
-    if (i == 0) {
-      return ServiceGridUtils.getEarliestStart(serviceTrip.tripId);
-    } else {
-      const previousEndHour =
-        BusServiceUtils.get(serviceId).serviceTrips[i - 1].endHour;
+    /* Return startHourValue in minutes */
 
-      return previousEndHour + serviceTrip.hlp;
-    }
+    if (i == 0) return ServiceGridUtils.getEarliestStart(serviceTrip.tripId);
+
+    const previousEndHour =
+      BusServiceUtils.get(serviceId).serviceTrips[i - 1].endHour;
+
+    return previousEndHour + serviceTrip.hlp;
   }
 
   export function getServiceTripStartHour(
@@ -91,18 +88,12 @@ export namespace ServiceGridUtils {
     serviceId: number
   ): string {
     if (i == 0) {
-      /*
-      endHour saved in services() on dblClick event
-      */
+      /* endHour of first serviceTrip saved in services() on dblClick event */
+
       return ServiceGridUtils.getStringHourFormatFromMinutes(
         serviceTrip.endHour
       );
     } else {
-      /*
-      If it's not the first trip of the service
-      
-      endHour value displayed AND saved in services()
-      */
       const startHour = ServiceGridUtils.getServiceTripStartHourValue(
         i,
         serviceTrip,
@@ -121,6 +112,7 @@ export namespace ServiceGridUtils {
       // To avoid infinite loop
       if (endHour == serviceTrip.endHour) return endHourToDisplay;
 
+      // Also save endHour value in services() if it's a new value
       BusServiceUtils.updateEndHour(serviceId, serviceTrip.tripId, endHour);
 
       return endHourToDisplay;
@@ -143,12 +135,11 @@ export namespace ServiceGridUtils {
     )[0];
     const index = services.indexOf(serviceToChange);
 
-    // TODO: Create getEarlyArrival() and put in TripUtils
     // TODO: Only do that if first trip
     let endHour;
     if (serviceToChange.serviceTrips.length == 0) {
       endHour = ServiceGridUtils.getEarliestArrival(tripId);
-      // TODO:
+      // TODO: Do not assign value
     } else endHour = 0;
     serviceToChange.serviceTrips.push({
       tripId: tripId,
@@ -162,25 +153,21 @@ export namespace ServiceGridUtils {
   }
 
   export function getEarliestStart(tripId: number): number {
-    /* 
-    return minutes
-    */
+    /* return minutes */
 
     const firstTrip = TripUtils.get(tripId);
-
-    const earliestArrival = ServiceGridUtils.getEarliestArrival(tripId);
-
     const tripDuration = Math.round(
       (firstTrip.metrics?.duration as number) / 60
     );
+
+    const earliestArrival = ServiceGridUtils.getEarliestArrival(tripId);
 
     return earliestArrival - tripDuration;
   }
 
   export function getEarliestArrival(tripId: number): number {
-    /* 
-    return minutes
-    */
+    /* return minutes */
+
     const firstTrip = TripUtils.get(tripId);
 
     const direction = TripDirectionEntity.FindDirectionById(
