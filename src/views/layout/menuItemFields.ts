@@ -105,7 +105,7 @@ const menuItems: MenuItemType[] = [
     label: "Paramètres",
     isDisabled: false,
     onClick: () => {
-      setSelectedMenu("users");
+      setSelectedMenu("parametres");
       changeBoard(undefined);
     },
   },
