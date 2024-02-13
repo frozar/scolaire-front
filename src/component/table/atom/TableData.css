@@ -1,0 +1,3 @@
+.table-data {
+  @apply text-center w-24 max-w-xs;
+}

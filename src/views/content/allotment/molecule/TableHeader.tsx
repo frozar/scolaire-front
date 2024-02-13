@@ -1,14 +1,14 @@
+import { TableHeaderCol } from "../../../../component/table/atom/TableHeaderCol";
+import { TableHeader } from "../../../../component/table/molecule/TableHeader";
 import "./TableHeader.css";
 
-export function TableHeader() {
+export function TableHeaderAllotment() {
   return (
-    <thead>
-      <tr class="tableHeader">
-        <th class="tableHeaderItem">Nom</th>
-        <th class="tableHeaderItem">Nombre Courses</th>
-        <th class="tableHeaderItem">Nombre Bus</th>
-        <th class="tableHeaderItem">Actions</th>
-      </tr>
-    </thead>
+    <TableHeader>
+      <TableHeaderCol text="Nom" />
+      <TableHeaderCol text="Nombre de course" />
+      <TableHeaderCol text="Nombre de bus" />
+      <TableHeaderCol text="Actions" />
+    </TableHeader>
   );
 }

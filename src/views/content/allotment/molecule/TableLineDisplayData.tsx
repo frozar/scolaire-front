@@ -1,7 +1,8 @@
+import { TableData } from "../../../../component/table/atom/TableData";
+import { TableDataChilds } from "../../../../component/table/molecule/TableDataChilds";
 import TrashIcon from "../../../../icons/TrashIcon";
 import UpdatePen from "../../../../icons/UpdatePen";
 import ButtonIcon from "../../board/component/molecule/ButtonIcon";
-import { TableElement } from "../../bus/atom/TableElement";
 import "./TableLine.css";
 
 interface TableLineDisplayDataProps {
@@ -13,13 +14,13 @@ interface TableLineDisplayDataProps {
 export function TableLineDisplayData(props: TableLineDisplayDataProps) {
   return (
     <tr class="tableRow">
-      <TableElement text={props.name} />
-      <TableElement text="-" />
-      <TableElement text="-" />
-      <td class="actionButtonContainer">
+      <TableData text={props.name} />
+      <TableData text="-" />
+      <TableData text="-" />
+      <TableDataChilds>
         <ButtonIcon icon={<UpdatePen />} onClick={props.toggleEditFunction} />
         <ButtonIcon icon={<TrashIcon />} onClick={props.deleteFunction} />
-      </td>
+      </TableDataChilds>
     </tr>
   );
 }
