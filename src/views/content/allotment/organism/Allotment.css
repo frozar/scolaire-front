@@ -1,0 +1,11 @@
+.allotmentPageLayout {
+  @apply px-6 py-6 sm:px-8 lg:px-10;
+}
+
+.allotmentPageTopItems {
+  @apply flex justify-between;
+}
+
+.allotmentTable {
+  @apply min-w-full divide-green-base divide-y-2;
+}

@@ -28,6 +28,7 @@ import "./App.css";
 import { InitService } from "./_services/init.service";
 import UnloggedUserInformation from "./component/molecule/UnloggedUserInformation";
 import UserInstruction from "./component/molecule/UserInstruction";
+import { Allotment } from "./views/content/allotment/organism/Allotment";
 import { Dialogs } from "./views/content/board/component/organism/Dialogs";
 import { Bus } from "./views/content/bus/organism/Bus";
 import { Parameter } from "./views/content/calendar/template/Organisation";
@@ -88,6 +89,10 @@ export default () => {
 
               <Match when={getSelectedMenu() == "bus"}>
                 <Bus />
+              </Match>
+
+              <Match when={getSelectedMenu() == "allotment"}>
+                <Allotment />
               </Match>
 
               <Match when={inGraphicage()}>
