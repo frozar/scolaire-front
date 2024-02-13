@@ -1,0 +1,3 @@
+.table-data-custom {
+  @apply flex items-center gap-2;
+}

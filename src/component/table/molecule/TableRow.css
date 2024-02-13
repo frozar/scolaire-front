@@ -1,0 +1,7 @@
+.table-row {
+  @apply flex justify-between h-10 items-center;
+}
+
+.table-row.active {
+  @apply bg-gray-light;
+}

@@ -1,11 +1,13 @@
 import { Show, createSignal } from "solid-js";
 import { AllotmentService } from "../../../../_services/allotment.service";
+import { TableData } from "../../../../component/table/atom/TableData";
+import { TableDataChilds } from "../../../../component/table/molecule/TableDataChilds";
+import { TableRow } from "../../../../component/table/molecule/TableRow";
 import CheckIcon from "../../../../icons/CheckIcon";
 import { CircleCrossIcon } from "../../../../icons/CircleCrossIcon";
 import { addNewUserInformation } from "../../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../../type";
 import ButtonIcon from "../../board/component/molecule/ButtonIcon";
-import { TableElement } from "../../bus/atom/TableElement";
 import { TableElementInput } from "../../bus/atom/TableElementInput";
 import { AllotmentType } from "../organism/Allotment";
 import { TableLineDisplayData } from "./TableLineDisplayData";
@@ -69,19 +71,19 @@ export function TableLine(props: TableLineProps) {
         />
       }
     >
-      <tr class="tableRowEditing">
+      <TableRow active={true}>
         <TableElementInput
           defaultValue={getName()}
           onInputFunction={onNameInputChanged}
           placeholder="Entrer un nom"
         />
-        <TableElement text="-" />
-        <TableElement text="-" />
-        <td class="actionButtonContainer">
+        <TableData text="-" />
+        <TableData text="-" />
+        <TableDataChilds>
           <ButtonIcon icon={<CheckIcon />} onClick={updateButton} />
           <ButtonIcon icon={<CircleCrossIcon />} onClick={cancelButton} />
-        </td>
-      </tr>
+        </TableDataChilds>
+      </TableRow>
     </Show>
   );
 }
