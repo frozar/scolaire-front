@@ -6,6 +6,8 @@ module.exports = {
 
   theme: {
     zIndex: {
+      serviceListHeader: "1398",
+      serviceGridTopBar: "1397",
       innerModal: "1399",
       layoutTop: "1400",
       layoutLeft: "1401",

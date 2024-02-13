@@ -1,4 +1,9 @@
 import { GradeEntity } from "../_entities/grade.entity";
+import {
+  TripDirectionEntity,
+  TripDirectionEnum,
+} from "../_entities/trip-direction.entity";
+import { TripPointType } from "../_entities/trip.entity";
 import { zoom } from "../views/content/service/organism/ServiceGrid";
 import {
   ServiceTripType,
@@ -6,6 +11,7 @@ import {
   services,
 } from "../views/content/service/organism/Services";
 import { selectedService } from "../views/content/service/template/ServiceTemplate";
+import { BusServiceUtils } from "./busService.utils";
 import { TripUtils } from "./trip.utils";
 
 export namespace ServiceGridUtils {
@@ -39,70 +45,129 @@ export namespace ServiceGridUtils {
     return String(5 * zoom()) + "px";
   }
 
+  export function getStartStopName(tripId: number): string {
+    return TripUtils.get(tripId).tripPoints[0].name;
+  }
+
+  export function getEndStopName(tripId: number): string {
+    return (TripUtils.get(tripId).tripPoints.at(-1) as TripPointType).name;
+  }
+
+  export function getServiceTripStartHourValue(
+    i: number,
+    serviceTrip: ServiceTripType,
+    serviceId: number
+  ): number {
+    /* Return startHourValue in minutes */
+
+    if (i == 0) return ServiceGridUtils.getEarliestStart(serviceTrip.tripId);
+
+    const previousEndHour =
+      BusServiceUtils.get(serviceId).serviceTrips[i - 1].endHour;
+
+    return previousEndHour + serviceTrip.hlp;
+  }
+
   export function getServiceTripStartHour(
     i: number,
-    serviceTrip: ServiceTripType
+    serviceTrip: ServiceTripType,
+    serviceId: number
+  ): string {
+    const startHour = ServiceGridUtils.getServiceTripStartHourValue(
+      i,
+      serviceTrip,
+      serviceId
+    );
+
+    return ServiceGridUtils.getStringHourFormatFromMinutes(startHour);
+  }
+
+  export function updateAndGetServiceEndHour(
+    i: number,
+    serviceTrip: ServiceTripType,
+    serviceId: number
   ): string {
     if (i == 0) {
-      const endHour = serviceTrip.endHour;
+      const endHour = ServiceGridUtils.getEarliestArrival(serviceTrip.tripId);
 
-      const duration = Math.round(
-        (TripUtils.get(serviceTrip.tripId).metrics?.duration as number) / 60
+      const endHourToDisplay =
+        ServiceGridUtils.getStringHourFormatFromMinutes(endHour);
+
+      // To avoid infinite loop
+      if (endHour == serviceTrip.endHour) return endHourToDisplay;
+
+      // Save value in services()
+      BusServiceUtils.updateEndHour(serviceId, serviceTrip.tripId, endHour);
+      return endHourToDisplay;
+    } else {
+      const startHour = ServiceGridUtils.getServiceTripStartHourValue(
+        i,
+        serviceTrip,
+        serviceId
       );
 
-      const startHour = endHour - duration;
+      const trip = TripUtils.get(serviceTrip.tripId);
 
-      const hour = Math.trunc(startHour / 60);
-      const minutes = startHour % 60;
+      const duration = Math.round((trip.metrics?.duration as number) / 60);
 
-      return GradeEntity.getStringFromHourFormat({ hour, minutes });
-      // TODO
-    } else return "--:--";
+      const endHour = startHour + duration;
+
+      const endHourToDisplay =
+        ServiceGridUtils.getStringHourFormatFromMinutes(endHour);
+
+      // To avoid infinite loop
+      if (endHour == serviceTrip.endHour) return endHourToDisplay;
+
+      // Save value in services()
+      BusServiceUtils.updateEndHour(serviceId, serviceTrip.tripId, endHour);
+
+      return endHourToDisplay;
+    }
   }
 
-  export function getServiceEndHour(
-    i: number,
-    serviceTrip: ServiceTripType
-  ): string {
-    if (i == 0) {
-      const hour = Math.round(serviceTrip.endHour / 60);
-      const minutes = (serviceTrip.endHour % 60) * 60;
+  export function getStringHourFormatFromMinutes(totalMinutes: number): string {
+    const hour = Math.trunc(totalMinutes / 60);
+    const minutes = totalMinutes % 60;
 
-      return GradeEntity.getStringFromHourFormat({ hour, minutes });
-      // TODO
-    } else return "--:--";
+    return GradeEntity.getStringFromHourFormat({ hour, minutes });
   }
 
-  export function addTrip(
-    services: ServiceType[],
-    tripId: number
-  ): ServiceType[] {
-    const serviceToChange = services.filter(
-      (service) => service.id == selectedService()
-    )[0];
-    const index = services.indexOf(serviceToChange);
-    // TODO: Create getEarlyArrival() and put in TripUtils
-    // TODO: Only do that if first trip
-    // ! Laisser valeur undefined !!
-    // ! doit être calculé au niveau de gridItem => plus imple si modif (reactif !!!!)
-    let endHour;
-    if (serviceToChange.serviceTrips.length == 0) {
-      // get eraliest arrival and transform in seconds
-      const trip = TripUtils.get(tripId);
-      endHour =
-        (trip.schools[0].hours.startHourComing?.hour as number) * 60 +
-        (trip.schools[0].hours.startHourComing?.minutes as number);
-      // TODO:
-    } else endHour = 0;
-    serviceToChange.serviceTrips.push({
-      tripId: tripId,
-      hlp: 300,
-      endHour,
-    });
+  export function getEarliestStart(tripId: number): number {
+    /* return minutes */
 
-    services.splice(index, 1, serviceToChange);
+    const firstTrip = TripUtils.get(tripId);
+    const tripDuration = Math.round(
+      (firstTrip.metrics?.duration as number) / 60
+    );
 
-    return services;
+    const earliestArrival = ServiceGridUtils.getEarliestArrival(tripId);
+
+    return earliestArrival - tripDuration;
+  }
+
+  export function getEarliestArrival(tripId: number): number {
+    /* return minutes */
+
+    const firstTrip = TripUtils.get(tripId);
+
+    const direction = TripDirectionEntity.FindDirectionById(
+      firstTrip.tripDirectionId
+    ).type;
+
+    // TODO: Fix
+    // ! Carreful here TripDirectionEnum.coming correspond to
+    // ! startHourGoing
+    if (direction == TripDirectionEnum.coming) {
+      return (
+        (firstTrip.schools[0].hours.startHourGoing?.hour as number) * 60 +
+        (firstTrip.schools[0].hours.startHourGoing?.minutes as number)
+      );
+    } else {
+      return (
+        (firstTrip.schools[0].hours.startHourComing?.hour as number) * 60 +
+        (firstTrip.schools[0].hours.startHourComing?.minutes as number)
+      );
+    }
   }
 
   export function removeTrip(

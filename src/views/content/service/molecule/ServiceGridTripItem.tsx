@@ -3,6 +3,8 @@ import TrashIcon from "../../../../icons/TrashIcon";
 import { ServiceGridUtils } from "../../../../utils/serviceGrid.utils";
 import { TripUtils } from "../../../../utils/trip.utils";
 import ButtonIcon from "../../board/component/molecule/ButtonIcon";
+import { ServiceGridItemStartEndStopNames } from "../atom/ServiceGridItemStartEndStopNames";
+import { ServiceGridTripItemHours } from "../atom/ServiceGridTripItemHours";
 import { ServiceTripType, setServices } from "../organism/Services";
 import { selectedService } from "../template/ServiceTemplate";
 import "./ServiceGridTripItem.css";
@@ -35,12 +37,15 @@ export function ServiceGridTripItem(
       <div class="service-grid-item-trip-name">
         {TripUtils.get(props.serviceTrip.tripId).name}
       </div>
-      <div class="service-grid-item-trip-start-hour">
-        {ServiceGridUtils.getServiceTripStartHour(props.i, props.serviceTrip)}
-      </div>
-      <div class="service-grid-item-trip-end-hour">
-        {ServiceGridUtils.getServiceEndHour(props.i, props.serviceTrip)}
-      </div>
+
+      <ServiceGridItemStartEndStopNames tripId={props.serviceTrip.tripId} />
+
+      <ServiceGridTripItemHours
+        i={props.i}
+        serviceTrip={props.serviceTrip}
+        serviceId={props.serviceId}
+      />
+
       <Show when={selectedService() == props.serviceId}>
         <ButtonIcon
           icon={<TrashIcon />}

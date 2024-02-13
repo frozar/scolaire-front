@@ -1,11 +1,10 @@
 import { JSXElement } from "solid-js";
 
-import { ServiceGridUtils } from "../../../../utils/serviceGrid.utils";
+import { BusServiceUtils } from "../../../../utils/busService.utils";
 import { ServiceTripCardLeft } from "../atom/ServiceTripCardLeft";
 import { ServiceTripCardMiddle } from "../atom/ServiceTripCardMiddle";
 import { ServiceTripCardRight } from "../atom/ServiceTripCardRight";
 import { DraggableTripType } from "../organism/ServiceLeftBoardContent";
-import { setServices } from "../organism/Services";
 import { selectedService } from "../template/ServiceTemplate";
 import "./ServiceTripCard.css";
 
@@ -33,9 +32,5 @@ function onDblClick(tripId: number): void {
     return;
   }
 
-  setServices((prev) => {
-    const services = [...prev];
-
-    return ServiceGridUtils.addTrip(services, tripId);
-  });
+  BusServiceUtils.addTrip(tripId, selectedService() as number);
 }

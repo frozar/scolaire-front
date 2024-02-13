@@ -1,7 +1,7 @@
 import { For, JSXElement, Show } from "solid-js";
 import { services } from "./Services";
 
-import { TripUtils } from "../../../../utils/trip.utils";
+import { ServiceGridUtils } from "../../../../utils/serviceGrid.utils";
 import { ServiceGridItem } from "../molecule/ServiceGridItem";
 import { selectedService } from "../template/ServiceTemplate";
 import { zoom } from "./ServiceGrid";
@@ -15,19 +15,13 @@ interface ServiceGridLineProps {
 // TODO: Fix and clean
 export function ServiceGridLine(props: ServiceGridLineProps): JSXElement {
   function firstDivWidth(): string {
-    const firstTrip = TripUtils.get(services()[props.i].serviceTrips[0].tripId);
-
-    // TODO: Take which day it is into account
-    // TODO: Take Going / Coming information into account
-    // TODO: Fix grade default hours and update this
-    const earliestArrival =
-      (firstTrip.schools[0].hours.startHourComing?.hour as number) * 60 +
-      (firstTrip.schools[0].hours.startHourComing?.minutes as number);
-
-    const tripDuration = Math.round(
-      (firstTrip.metrics?.duration as number) / 60
+    return (
+      ServiceGridUtils.getEarliestStart(
+        services()[props.i].serviceTrips[0].tripId
+      ) *
+        zoom() +
+      "px"
     );
-    return (earliestArrival - tripDuration) * zoom() + "px";
   }
 
   return (
