@@ -22,12 +22,10 @@ export function TableLine(props: TableLineProps) {
   }
 
   function updateButton() {
-    console.log("updateButton");
     toggleEditMode();
   }
 
   function deleteAllotment() {
-    console.log("deleteAllotment");
     toggleEditMode();
   }
 
