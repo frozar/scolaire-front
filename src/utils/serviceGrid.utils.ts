@@ -11,6 +11,7 @@ import {
   services,
 } from "../views/content/service/organism/Services";
 import { selectedService } from "../views/content/service/template/ServiceTemplate";
+import { BusServiceUtils } from "./service.utils";
 import { TripUtils } from "./trip.utils";
 
 export namespace ServiceGridUtils {
@@ -58,15 +59,10 @@ export namespace ServiceGridUtils {
     serviceId: number
   ): number {
     if (i == 0) {
-      const startHour = ServiceGridUtils.getEarliestStart(serviceTrip.tripId);
-
-      return startHour;
-      // TODO
+      return ServiceGridUtils.getEarliestStart(serviceTrip.tripId);
     } else {
-      // TODO: ServiceUtils.get()
-      const previousEndHour = services().filter(
-        (service) => service.id == serviceId
-      )[0].serviceTrips[i - 1].endHour;
+      const previousEndHour =
+        BusServiceUtils.get(serviceId).serviceTrips[i - 1].endHour;
 
       // TODO: Use minutes as unit for hlp !
       const startHour = previousEndHour + serviceTrip.hlp / 60;
