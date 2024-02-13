@@ -1,0 +1,7 @@
+.tableHeader {
+  @apply flex justify-between pt-8;
+}
+
+.tableHeaderItem {
+  @apply text-center w-32 max-w-xs;
+}

@@ -1,4 +1,5 @@
 import { useStateGui } from "../../StateGui";
+import { AllotmentIcon } from "../../icons/AllotmentIcon";
 import ArretsLogo from "../../icons/ArretsLogo";
 import { BusIcon } from "../../icons/BusIcon";
 import CalendarIcon from "../../icons/CalendarIcon";
@@ -86,6 +87,16 @@ const menuItems: MenuItemType[] = [
     isDisabled: false,
     onClick: () => {
       setSelectedMenu("bus");
+      changeBoard(undefined);
+    },
+  },
+  {
+    menuItem: "allotment",
+    Logo: AllotmentIcon,
+    label: "Allotissement",
+    isDisabled: false,
+    onClick: () => {
+      setSelectedMenu("allotment");
       changeBoard(undefined);
     },
   },
