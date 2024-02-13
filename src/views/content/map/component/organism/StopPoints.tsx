@@ -170,7 +170,11 @@ export function leafletStopsFilter(): StopType[] {
       );
 
       // * If current drawTrip have path return only stop of the path
-      if (currentDrawTrip().path?.id) {
+      if (
+        currentDrawTrip().path?.id &&
+        (currentStep() == DrawTripStep.editTrip ||
+          currentStep() == DrawTripStep.buildReverse)
+      ) {
         const pathPointStopIds = currentDrawTrip()
           .path?.points.filter((point) => point.nature == NatureEnum.stop)
           .map((stop) => stop.id);
@@ -198,6 +202,8 @@ export function leafletStopsFilter(): StopType[] {
         case DrawTripStep.editTrip:
         case DrawTripStep.initial:
           return stops;
+        case DrawTripStep.gradeSelection:
+          return [];
       }
     case "path-draw":
       return pathEditionFilterByStep();
