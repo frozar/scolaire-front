@@ -1,10 +1,12 @@
 import { For, createSignal } from "solid-js";
 import { getBus } from "../../../bus/organism/Bus";
-import { setCurrentDrawTrip } from "../organism/DrawTripBoard";
+import { currentDrawTrip, setCurrentDrawTrip } from "../organism/DrawTripBoard";
 import "./BusSelectionList.css";
 
 export function BusSelectionList() {
-  const [selectedBus, setSelectedBus] = createSignal<number | undefined>(-1);
+  const [selectedBus, setSelectedBus] = createSignal<number | undefined>(
+    currentDrawTrip().busCategoriesId
+  );
 
   function onInputChanged(value: number) {
     setSelectedBus(value);

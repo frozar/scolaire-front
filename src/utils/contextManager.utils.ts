@@ -6,7 +6,12 @@ import {
 import { TripEntity, TripType } from "../_entities/trip.entity";
 import { WaypointEntity } from "../_entities/waypoint.entity";
 import { updatePointColor } from "../leafletUtils";
-import { disableSpinningWheel, enableSpinningWheel } from "../signaux";
+import {
+  addNewUserInformation,
+  disableSpinningWheel,
+  enableSpinningWheel,
+} from "../signaux";
+import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { AssociatedItem } from "../views/content/board/component/molecule/CheckableElementList";
 import {
   onTripDirection,
@@ -63,6 +68,12 @@ export namespace ContextUtils {
     switch (currentStep()) {
       case DrawTripStep.schoolSelection:
         if ((currentDrawTrip()?.schools.length ?? 0) < 1) {
+          addNewUserInformation({
+            displayed: true,
+            level: MessageLevelEnum.error,
+            type: MessageTypeEnum.global,
+            content: "Veuillez choisir au moins une école",
+          });
           break;
         }
         defineTripCheckableGrade();
@@ -74,7 +85,15 @@ export namespace ContextUtils {
           .filter((grade) => grade.done)
           .map((grade) => grade.item) as GradeType[];
 
-        if (grades.length < 1) break;
+        if (grades.length < 1) {
+          addNewUserInformation({
+            displayed: true,
+            level: MessageLevelEnum.error,
+            type: MessageTypeEnum.global,
+            content: "Veuillez choisir au moins un niveau",
+          });
+          break;
+        }
         const days = tripDaysAndDirection()
           .filter((item) => item.keep)
           .map((item) => item.day);
@@ -82,6 +101,16 @@ export namespace ContextUtils {
         tripDirection = TripDirectionEntity.findDirectionByDirectionName(
           onTripDirection()
         );
+
+        if (currentDrawTrip().busCategoriesId == 0) {
+          addNewUserInformation({
+            displayed: true,
+            level: MessageLevelEnum.error,
+            type: MessageTypeEnum.global,
+            content: "Veuillez choisir une catégorie de bus",
+          });
+          break;
+        }
 
         setCurrentDrawTrip((trip) => {
           if (!trip) return trip;
