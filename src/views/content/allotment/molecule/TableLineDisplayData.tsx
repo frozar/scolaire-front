@@ -16,7 +16,7 @@ interface TableLineDisplayDataProps {
 
 export function TableLineDisplayData(props: TableLineDisplayDataProps) {
   return (
-    <TableRow>
+    <TableRow shown={true}>
       <TableData text={props.name} />
       <TableDataColor color={props.color} />
       <TableData text="-" />

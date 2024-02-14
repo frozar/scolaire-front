@@ -48,7 +48,7 @@ export function AddTableLine() {
   }
 
   return (
-    <TableRow hidden={isNewLineHidden()} active={true}>
+    <TableRow shown={!isNewLineHidden()} active={true}>
       <TableElementInput
         defaultValue={getName()}
         placeholder="Entrer un nom"

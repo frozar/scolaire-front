@@ -27,7 +27,9 @@ export function TableLine(props: TableLineProps) {
   const [getColor, setColor] = createSignal(props.allotmentItem.color);
 
   function toggleEditMode() {
+    console.log(isInEditMode());
     setisInEditMode(!isInEditMode());
+    console.log(isInEditMode());
   }
 
   async function updateButton() {
@@ -86,7 +88,7 @@ export function TableLine(props: TableLineProps) {
         />
       }
     >
-      <TableRow active={true}>
+      <TableRow shown={true} active={true}>
         <TableElementInput
           defaultValue={getName()}
           onInputFunction={onNameInputChanged}
