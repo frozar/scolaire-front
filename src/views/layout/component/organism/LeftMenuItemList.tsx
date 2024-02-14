@@ -74,7 +74,6 @@ export default function (props: LeftMenuItemProps) {
               isDisabled ||
               (!isDisabled &&
                 menuItem != "dashboard" &&
-                menuItem != "parametres" &&
                 getAuthenticatedUser() != undefined &&
                 getActiveMapId() == null)
             );

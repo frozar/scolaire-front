@@ -5,6 +5,7 @@ import {
   CalendarPeriodDBType,
 } from "../_entities/calendar.entity";
 import { BusLineEntity, LineDBType, LineType } from "../_entities/line.entity";
+import { SettingType } from "../_entities/parameter.entity";
 import {
   SchoolDBType,
   SchoolEntity,
@@ -26,6 +27,7 @@ import { setCalendarsPeriod } from "../views/content/calendar/template/Calendar"
 import { setLines } from "../views/content/map/component/organism/BusLines";
 import { setSchools } from "../views/content/map/component/organism/SchoolPoints";
 import { setStops } from "../views/content/map/component/organism/StopPoints";
+import { setSettings } from "../views/content/parameters/organism/Settings";
 import { setServices } from "../views/content/service/organism/Services";
 import { ServiceUtils } from "./_utils.service";
 
@@ -39,6 +41,7 @@ type InitDBType = {
   services: ServiceDBType[];
   bus_categories: BusCategoryType[];
   allotment: AllotmentType[];
+  settings: SettingType[];
 };
 
 export type InitType = {
@@ -90,6 +93,7 @@ export namespace InitService {
 
     setServices(services);
 
+    setSettings(dbInit.settings);
     return { schools, stops, busLines };
   }
 }

@@ -2,6 +2,7 @@ import { SettingsEnum } from "../../../../_entities/parameter.entity";
 import CollapsibleElement from "../../board/component/organism/CollapsibleElement";
 import InputNumber from "../../stops/component/atom/InputNumber";
 import { SettingUtils } from "../SettingUtils";
+import { isSettingEditing } from "../organism/Settings";
 
 interface SettingItemProps {
   settingName: SettingsEnum;
@@ -51,7 +52,7 @@ export function SettingItem(props: SettingItemProps) {
           }
           selector={{
             value: SettingUtils.getSetting(props.settingName)?.value as number,
-            disabled: false,
+            disabled: isSettingEditing(),
           }}
           onChange={(element) => getSettingCallback(props.settingName, element)}
         />

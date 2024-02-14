@@ -1,9 +1,9 @@
-import { createSignal, onMount } from "solid-js";
+import { createSignal } from "solid-js";
 import { SettingType } from "../../../../_entities/parameter.entity";
-import { SettingService } from "../../../../_services/setting.service";
 import PageTitle from "../../../../component/atom/PageTitle";
 import PencilIcon from "../../../../icons/PencilIcon";
 import ButtonIcon from "../../board/component/molecule/ButtonIcon";
+import { SettingEditActions } from "../molecule/SettingEditActions";
 import { SettingList } from "./SettingList";
 
 export const [getSettings, setSettings] = createSignal<SettingType[]>([]);
@@ -12,8 +12,6 @@ export const [isSettingEditing, setIsSettingEditing] = createSignal(false);
 // * To add a setting:
 // * append enum in SettingsEnum & got to SettingItem component
 export function Settings() {
-  onMount(async () => setSettings(await SettingService.all()));
-
   function onClickEditSettings() {
     setIsSettingEditing(true);
   }
@@ -29,6 +27,7 @@ export function Settings() {
         />
       </div>
       <SettingList />
+      <SettingEditActions />
     </div>
   );
 }

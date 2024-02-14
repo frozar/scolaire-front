@@ -7,12 +7,12 @@ import {
 import { SettingItem } from "../molecule/SettingItem";
 import { getSettings } from "./Settings";
 
-export const [bufferParameters, setBufferParameters] = createSignal<
-  SettingType[]
->([]);
+export const [bufferSettings, setBufferSettings] = createSignal<SettingType[]>(
+  []
+);
 
 export function SettingList() {
-  createEffect(() => setBufferParameters(_.cloneDeep(getSettings())));
+  createEffect(() => setBufferSettings(_.cloneDeep(getSettings())));
 
   return (
     <For each={Object.values(SettingsEnum)}>

@@ -3,6 +3,7 @@ export enum SettingsEnum {
 }
 
 export type SettingType = {
+  id?: number;
   setting: SettingsEnum;
   value: string | number;
 };

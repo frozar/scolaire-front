@@ -6,12 +6,14 @@ export namespace SettingService {
     return await ServiceUtils.get("/settings");
   }
 
-  export async function update(settings: SettingType[]) {
-    const updatedSettings = await ServiceUtils.patch("/settings", {
-      settings: settings,
-    });
+  export async function update(
+    settings: SettingType[]
+  ): Promise<SettingType[]> {
+    const updatedSettings: SettingType[] = await ServiceUtils.patch(
+      "/settings",
+      { settings: settings }
+    );
 
-    console.log("updated settings: ", updatedSettings);
     return updatedSettings;
   }
 }
