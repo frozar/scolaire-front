@@ -11,6 +11,7 @@ import { TripPointType, TripType } from "../_entities/trip.entity";
 import { TripService } from "../_services/trip.service";
 import { addNewUserInformation } from "../signaux";
 import { MessageLevelEnum, MessageTypeEnum, NatureEnum } from "../type";
+import { getAllotment } from "../views/content/allotment/organism/Allotment";
 import {
   DrawTripStep,
   currentDrawTrip,
@@ -328,5 +329,13 @@ export namespace TripUtils {
     const busItem = getBus().filter((bus) => bus.id == busId)[0];
     if (!busItem) return "";
     return busItem.category;
+  }
+
+  export function tripAllotmentIdToString(allotmentId: number | undefined) {
+    const allotmentItem = getAllotment().filter(
+      (allotment) => allotment.id == allotmentId
+    )[0];
+    if (!allotmentItem) return "";
+    return allotmentItem.name;
   }
 }

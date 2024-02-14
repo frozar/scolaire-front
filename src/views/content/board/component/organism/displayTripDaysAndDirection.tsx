@@ -13,7 +13,7 @@ export function DisplayTripDaysAndDirection(
   props: DisplayTripDaysAndDirectionProps
 ): JSXElement {
   return (
-    <CollapsibleElement title="Jours, direction et bus assignés à la course">
+    <CollapsibleElement title="Jours, direction, bus et lot assignés à la course">
       <div class="flex items-center gap-1">
         <p class="font-bold text-sm">Direction:</p>
         <p class="text-sm">
@@ -33,6 +33,12 @@ export function DisplayTripDaysAndDirection(
         <p class="font-bold text-sm">Bus:</p>
         <p class="text-sm">
           {TripUtils.tripBusIdToString(props?.trip?.busCategoriesId)}
+        </p>
+      </div>
+      <div class="flex items-center gap-1">
+        <p class="font-bold text-sm">Lot:</p>
+        <p class="text-sm">
+          {TripUtils.tripAllotmentIdToString(props?.trip?.allotmentId)}
         </p>
       </div>
     </CollapsibleElement>
