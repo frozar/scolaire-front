@@ -50,7 +50,7 @@ export namespace ServiceGridUtils {
     serviceId: number
   ): void {
     /*
-    Scroll to the beginning of the service
+    Scroll to the beginning service
     Only change position of scroll in axis x
     */
 

@@ -41,6 +41,9 @@ export function Services(): JSXElement {
 
   onMount(() => {
     setServicesBeforeModification(_.cloneDeep(services()));
+
+    const firstServiceId = services()[0].id;
+    ServiceGridUtils.scrollToServiceStart(ref(), firstServiceId);
   });
 
   return (
