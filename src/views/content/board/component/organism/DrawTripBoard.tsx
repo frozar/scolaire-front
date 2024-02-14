@@ -15,6 +15,7 @@ import { CurrentDrawTripUtils } from "../../../../../utils/currentDrawTrip.utils
 import { COLOR_GREEN_BASE } from "../../../map/constant";
 import BoardTitle from "../atom/BoardTitle";
 import { DrawHelperButton } from "../atom/DrawHelperButton";
+import { AllotmentSelectionList } from "../molecule/AllotmentSelectionList";
 import { BusSelectionList } from "../molecule/BusSelectionList";
 import ButtonIcon from "../molecule/ButtonIcon";
 import { AssociatedItem } from "../molecule/CheckableElementList";
@@ -81,6 +82,7 @@ export const [currentDrawTrip, setCurrentDrawTrip] = createSignal<TripType>(
       schools: [],
     },
     busCategoriesId: -1,
+    allotmentId: -1,
   }
 );
 
@@ -123,6 +125,7 @@ export function DrawTripBoard() {
           <AssignDaysAndDirectionToTrip />
           <PathSelection />
           <BusSelectionList />
+          <AllotmentSelectionList />
         </Show>
       </Show>
 
