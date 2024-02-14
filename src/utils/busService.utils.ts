@@ -10,7 +10,20 @@ export namespace BusServiceUtils {
   export function get(serviceId: number): ServiceType {
     return services().filter((service) => service.id == serviceId)[0];
   }
+  export function updateServiceName(serviceId: number, newName: string): void {
+    setServices((prev) => {
+      const services = [...prev];
 
+      const serviceToChange = BusServiceUtils.get(serviceId);
+      const index = services.indexOf(serviceToChange);
+
+      serviceToChange.name = newName;
+
+      services.splice(index, 1, serviceToChange);
+
+      return services;
+    });
+  }
   export function updateEndHour(
     serviceId: number,
     tripId: number,

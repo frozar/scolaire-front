@@ -18,7 +18,8 @@ import { BusServiceUtils } from "./busService.utils";
 import { TripUtils } from "./trip.utils";
 
 export type HlpMatrixType = {
-  /* 
+  /*
+  
   hlpMatrix contains hlp durations between 
     start of sourceTrip and end of targetTrip
   
@@ -47,10 +48,11 @@ export type HlpMatrixType = {
 export namespace ServiceGridUtils {
   export function scrollToServiceStart(
     ref: HTMLDivElement,
-    serviceId: number
+    serviceId: number,
+    scrollSmooth: boolean
   ): void {
     /*
-    Scroll to the beginning of the service
+    Scroll to the beginning service
     Only change position of scroll in axis x
     */
 
@@ -62,7 +64,30 @@ export namespace ServiceGridUtils {
 
     const endHour = actualService.serviceTrips[0].endHour;
 
+    if (!scrollSmooth) ref.style.scrollBehavior = "auto";
+
     ref.scrollTo((endHour - 25) * zoom(), ref.scrollTop);
+
+    if (!scrollSmooth) ref.style.scrollBehavior = "smooth";
+  }
+
+  // TODO: Refactor
+  export function adaptScrollPositionToZoomIn(ref: HTMLDivElement): void {
+    ref.style.scrollBehavior = "auto";
+
+    const scrollPositionInMinutes = ref.scrollLeft / (zoom() - 1);
+    ref.scrollTo(scrollPositionInMinutes * zoom(), ref.scrollTop);
+
+    ref.style.scrollBehavior = "smooth";
+  }
+
+  export function adaptScrollPositionToZoomOut(ref: HTMLDivElement): void {
+    ref.style.scrollBehavior = "auto";
+
+    const scrollPositionInMinutes = ref.scrollLeft / (zoom() + 1);
+    ref.scrollTo(scrollPositionInMinutes * zoom(), ref.scrollTop);
+
+    ref.style.scrollBehavior = "smooth";
   }
 
   export function getTripWidth(tripId: number): string {

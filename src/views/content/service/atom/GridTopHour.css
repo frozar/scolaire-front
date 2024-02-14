@@ -1,7 +1,7 @@
 .service-grid-list-hour-displayed {
-    @apply flex;
+  @apply flex;
 }
 
 .service-grid-hour-displayed {
-    @apply text-center;
+  @apply text-center;
 }

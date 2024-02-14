@@ -1,3 +1,7 @@
 .service-grid-top-minute-tick {
-    @apply h-1 border border-black border-y-0 border-l-0;
+  @apply h-1 border border-black border-y-0 border-l-0;
+}
+
+.service-grid-top-minute-ticks {
+  @apply flex;
 }

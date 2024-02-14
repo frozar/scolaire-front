@@ -1,8 +1,10 @@
 import { JSXElement } from "solid-js";
 import { ZoomInIcon } from "../../../../icons/ZoomInIcon";
 import { ZoomOutIcon } from "../../../../icons/ZoomOutIcon";
+import { ServiceGridUtils } from "../../../../utils/serviceGrid.utils";
 import ButtonIcon from "../../board/component/molecule/ButtonIcon";
 import { setZoom, zoom } from "../organism/ServiceGrid";
+import { refScroll } from "../organism/Services";
 import "./ServiceGridZoomButtons.css";
 
 export function ServiceGridZoomButtons(): JSXElement {
@@ -11,12 +13,16 @@ export function ServiceGridZoomButtons(): JSXElement {
     setZoom((prev) => {
       return prev + 1;
     });
+
+    ServiceGridUtils.adaptScrollPositionToZoomIn(refScroll());
   }
 
   function onClickZoomOut(): void {
     setZoom((prev) => {
       return prev - 1;
     });
+
+    ServiceGridUtils.adaptScrollPositionToZoomOut(refScroll());
   }
 
   return (

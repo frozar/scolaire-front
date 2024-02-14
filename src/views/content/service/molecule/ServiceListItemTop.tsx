@@ -2,6 +2,7 @@ import { JSXElement } from "solid-js";
 import { LockIconClose } from "../../../../icons/LockIconClosed";
 import { LockIconOpen } from "../../../../icons/LockIconOpen";
 import ButtonIcon from "../../board/component/molecule/ButtonIcon";
+import { ServiceListItemNameInput } from "../atom/ServiceListItemNameInput";
 import { ServiceType } from "../organism/Services";
 import {
   selectedService,
@@ -21,12 +22,11 @@ export function ServiceListItemTop(props: ServiceListItemTopProps): JSXElement {
 
   return (
     <div class="service-list-item-top">
-      <div
-        class="service-list-item-top-name"
-        classList={{ active: props.isSelected }}
-      >
-        {props.service.name}
-      </div>
+      <ServiceListItemNameInput
+        service={props.service}
+        isSelected={props.isSelected}
+      />
+
       <ButtonIcon
         icon={displayIcon()}
         onClick={() => onClick(props.service.id)}

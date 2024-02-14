@@ -1,0 +1,7 @@
+.service-list-item-top-name {
+  @apply text-green-base;
+}
+
+.service-list-item-top-name-input {
+  @apply text-white !border-b-white mr-4;
+}

@@ -33,7 +33,7 @@ export function ServiceGridLine(props: ServiceGridLineProps): JSXElement {
       <Show when={services()[props.i].serviceTrips.length != 0}>
         <div
           // TODO: TODO: Hide the div ("opacity-0")
-          class="border border-dashed border-black"
+          class="service-grid-line-first-div"
           style={{ width: firstDivWidth() }}
         >
           blank space
