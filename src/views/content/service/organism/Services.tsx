@@ -32,9 +32,10 @@ export function Services(): JSXElement {
 
   createEffect(
     on(services, () => {
-      if (!selectedService()) return;
+      const selectedServiceId = selectedService();
+      if (!selectedServiceId) return;
 
-      ServiceGridUtils.scrollToServiceStart(ref());
+      ServiceGridUtils.scrollToServiceStart(ref(), selectedServiceId);
     })
   );
 

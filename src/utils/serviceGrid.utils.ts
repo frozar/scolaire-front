@@ -45,16 +45,19 @@ export type HlpMatrixType = {
 };
 
 export namespace ServiceGridUtils {
-  export function scrollToServiceStart(ref: HTMLDivElement): void {
+  export function scrollToServiceStart(
+    ref: HTMLDivElement,
+    serviceId: number
+  ): void {
     /*
-    Scroll to the beginning of the selected service when modified
+    Scroll to the beginning of the service
     Only change position of scroll in axis x
     */
 
     const actualService = services().filter(
-      (service) => service.id == selectedService()
+      (service) => service.id == serviceId
     )[0];
-
+    if (!actualService) return;
     if (actualService.serviceTrips.length == 0) return;
 
     const endHour = actualService.serviceTrips[0].endHour;
