@@ -208,13 +208,12 @@ export namespace ServiceGridUtils {
     const idActualTrip = serviceTrips[i].tripId;
 
     const hlpDuration = hlpMatrix()[idActualTrip][idPreviousTrip];
-    const hlpDurationWidth = String(hlpDuration * zoom()) + "px";
-
-    if (hlpDuration == serviceTrip.hlp) return hlpDurationWidth;
 
     // Save in services()
-    BusServiceUtils.updateHlp(serviceId, idActualTrip, hlpDuration);
-    return hlpDurationWidth;
+    if (hlpDuration != serviceTrip.hlp)
+      BusServiceUtils.updateHlp(serviceId, idActualTrip, hlpDuration);
+
+    return String(hlpDuration * zoom()) + "px";
   }
 
   export function removeTrip(
