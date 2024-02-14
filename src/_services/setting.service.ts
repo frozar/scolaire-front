@@ -3,7 +3,15 @@ import { ServiceUtils } from "./_utils.service";
 
 export namespace SettingService {
   export async function all() {
-    const parameters: SettingType[] = await ServiceUtils.get("/settings");
-    return parameters;
+    return await ServiceUtils.get("/settings");
+  }
+
+  export async function update(settings: SettingType[]) {
+    const updatedSettings = await ServiceUtils.patch("/settings", {
+      settings: settings,
+    });
+
+    console.log("updated settings: ", updatedSettings);
+    return updatedSettings;
   }
 }

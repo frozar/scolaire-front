@@ -1,6 +1,5 @@
 export enum SettingsEnum {
   waintingTime = "waitingTime",
-  param1 = "param1",
 }
 
 export type SettingType = {

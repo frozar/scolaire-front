@@ -1,7 +1,7 @@
 import { SettingsEnum } from "../../../../_entities/parameter.entity";
 import CollapsibleElement from "../../board/component/organism/CollapsibleElement";
 import InputNumber from "../../stops/component/atom/InputNumber";
-import { ParameterUtils } from "../ParameterUtils";
+import { SettingUtils } from "../SettingUtils";
 
 interface SettingItemProps {
   settingName: SettingsEnum;
@@ -11,7 +11,7 @@ interface SettingItemProps {
 // * add switch matching into getSettingTitle & getSettingCallback for the new setting
 export function SettingItem(props: SettingItemProps) {
   function onChangeWaitingTime(element: HTMLInputElement) {
-    ParameterUtils.updateBufferParameters({
+    SettingUtils.updateBufferSettings({
       setting: SettingsEnum.waintingTime,
       value: Number(element.value),
     });
@@ -21,8 +21,6 @@ export function SettingItem(props: SettingItemProps) {
     switch (setting) {
       case SettingsEnum.waintingTime:
         return "Temps d'attente";
-      case SettingsEnum.param1:
-        return "Paramètre 1";
       default:
         return "";
     }
@@ -35,10 +33,6 @@ export function SettingItem(props: SettingItemProps) {
     switch (setting) {
       case SettingsEnum.waintingTime:
         return onChangeWaitingTime(htmlElement as HTMLInputElement);
-      case SettingsEnum.param1:
-        return (() => {
-          console.log("callback pour param 1");
-        })();
       default:
         return (() => {
           console.log("nothing to do");
@@ -51,13 +45,12 @@ export function SettingItem(props: SettingItemProps) {
       <CollapsibleElement title={getSettingTitle(props.settingName)}>
         <InputNumber
           placeholder={
-            ParameterUtils.getParameter(
+            SettingUtils.getSetting(
               props.settingName
             )?.setting.toString() as string
           }
           selector={{
-            value: ParameterUtils.getParameter(props.settingName)
-              ?.value as number,
+            value: SettingUtils.getSetting(props.settingName)?.value as number,
             disabled: false,
           }}
           onChange={(element) => getSettingCallback(props.settingName, element)}
