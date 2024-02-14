@@ -200,6 +200,9 @@ export namespace ServiceGridUtils {
     serviceId: number,
     i: number
   ): string {
+    // hlpMatrix() is setted asynchronously
+    if (Object.keys(hlpMatrix()).length == 0) return "0px";
+
     const serviceTrips = BusServiceUtils.get(serviceId).serviceTrips;
     const idPreviousTrip = serviceTrips[i - 1].tripId;
     const idActualTrip = serviceTrips[i].tripId;
