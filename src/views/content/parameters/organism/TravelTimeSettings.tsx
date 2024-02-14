@@ -1,21 +1,20 @@
-import _ from "lodash";
-import { createEffect, createSignal, For } from "solid-js";
+import { createSignal, For } from "solid-js";
 import {
   SettingsEnum,
   SettingType,
 } from "../../../../_entities/parameter.entity";
 import { SettingItem } from "../molecule/SettingItem";
-import { getSettings } from "./Settings";
 
 export const [bufferSettings, setBufferSettings] = createSignal<SettingType[]>(
   []
 );
 
-export function SettingList() {
-  createEffect(() => setBufferSettings(_.cloneDeep(getSettings())));
+export function TravelTimeSettings() {
+  // * To append settings in Travel Time section please add the setting from SettingsEnum into travedTime var
+  const travelTime = [SettingsEnum.waintingTime];
 
   return (
-    <For each={Object.values(SettingsEnum)}>
+    <For each={Object.values(travelTime)}>
       {(settingName) => <SettingItem settingName={settingName} />}
     </For>
   );
