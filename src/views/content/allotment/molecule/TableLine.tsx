@@ -9,6 +9,7 @@ import { addNewUserInformation } from "../../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../../type";
 import ButtonIcon from "../../board/component/molecule/ButtonIcon";
 import { TableElementInput } from "../../bus/atom/TableElementInput";
+import { TableElementColorPicker } from "../atom/TableElementColorPicker";
 import { AllotmentType } from "../organism/Allotment";
 import { TableLineDisplayData } from "./TableLineDisplayData";
 
@@ -22,6 +23,9 @@ export function TableLine(props: TableLineProps) {
   // eslint-disable-next-line solid/reactivity
   const [getName, setName] = createSignal(props.allotmentItem.name);
 
+  // eslint-disable-next-line solid/reactivity
+  const [getColor, setColor] = createSignal(props.allotmentItem.color);
+
   function toggleEditMode() {
     setisInEditMode(!isInEditMode());
   }
@@ -30,6 +34,7 @@ export function TableLine(props: TableLineProps) {
     await AllotmentService.update({
       id: props.allotmentItem.id,
       name: getName(),
+      color: getColor(),
     });
     toggleEditMode();
     addNewUserInformation({
@@ -38,6 +43,11 @@ export function TableLine(props: TableLineProps) {
       type: MessageTypeEnum.global,
       content: "Les modifications ont bien été apportées",
     });
+  }
+
+  function resetDefaultValues() {
+    setName(props.allotmentItem.name);
+    setColor(props.allotmentItem.color);
   }
 
   async function deleteAllotment() {
@@ -52,12 +62,16 @@ export function TableLine(props: TableLineProps) {
   }
 
   function cancelButton() {
-    setName(props.allotmentItem.name);
+    resetDefaultValues();
     toggleEditMode();
   }
 
   function onNameInputChanged(value: string) {
     setName(value);
+  }
+
+  function onColorInputChanged(value: string) {
+    setColor(value);
   }
 
   return (
@@ -66,20 +80,25 @@ export function TableLine(props: TableLineProps) {
       fallback={
         <TableLineDisplayData
           name={props.allotmentItem.name}
+          color={props.allotmentItem.color}
           toggleEditFunction={toggleEditMode}
           deleteFunction={deleteAllotment}
         />
       }
     >
-      <TableRow active={true}>
+      <TableRow shown={true} active={true}>
         <TableElementInput
           defaultValue={getName()}
           onInputFunction={onNameInputChanged}
           placeholder="Entrer un nom"
         />
+        <TableElementColorPicker
+          defaultColor={getColor()}
+          onInputFunction={onColorInputChanged}
+        />
         <TableData text="-" />
         <TableData text="-" />
-        <TableDataChilds>
+        <TableDataChilds end={true}>
           <ButtonIcon icon={<CheckIcon />} onClick={updateButton} />
           <ButtonIcon icon={<CircleCrossIcon />} onClick={cancelButton} />
         </TableDataChilds>

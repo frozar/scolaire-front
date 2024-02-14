@@ -1,3 +1,7 @@
-.table-data-custom {
-  @apply flex items-center gap-2;
+.table-data-child {
+  @apply w-full flex items-center gap-2;
+}
+
+.table-data-child.end {
+  @apply justify-end;
 }

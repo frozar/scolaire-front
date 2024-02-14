@@ -1,3 +1,7 @@
 .table-data {
   @apply w-24 max-w-xs;
 }
+
+.table-data.end {
+  @apply text-right;
+}

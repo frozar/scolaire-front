@@ -2,7 +2,24 @@ import { JSXElement, children } from "solid-js";
 
 import "./TableDataChilds.css";
 
-export function TableDataChilds(props: { children: JSXElement }) {
+interface TableDataChildsProps {
+  children: JSXElement;
+  end?: boolean;
+}
+
+export function TableDataChilds(props: TableDataChildsProps) {
   const child = children(() => props.children);
-  return <td class="table-data-custom"> {child()} </td>;
+
+  return (
+    <td>
+      <div
+        class="table-data-child"
+        classList={{
+          end: props.end ?? false,
+        }}
+      >
+        {child()}
+      </div>
+    </td>
+  );
 }

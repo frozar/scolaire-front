@@ -1,4 +1,5 @@
 import { TableContent } from "../../../../component/table/molecule/TableContent";
+import { Table } from "../../../../component/table/organism/Table";
 import { AddTableLine } from "../molecule/AddTableLine";
 import { TableHeaderAllotment } from "../molecule/TableHeaderAllotment";
 import { TableRows } from "../molecule/TableRows";
@@ -11,12 +12,12 @@ interface AllotmentTableProps {
 
 export function AllotmentTable(props: AllotmentTableProps) {
   return (
-    <table class="allotmentTable">
+    <Table>
       <TableHeaderAllotment />
       <TableContent>
         <AddTableLine />
         <TableRows allotmentList={props.allotmentList} />
       </TableContent>
-    </table>
+    </Table>
   );
 }

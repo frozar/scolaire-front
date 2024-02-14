@@ -1,3 +1,7 @@
 .table-header-item {
-  @apply text-center;
+  @apply text-left w-auto;
+}
+
+.table-header-item.end {
+  @apply text-right;
 }
