@@ -1,24 +1,29 @@
-import { Show } from "solid-js";
+import { Show, createEffect, createSignal, on } from "solid-js";
 import Button from "../../../../component/atom/Button";
-import { isSettingEditing, setIsSettingEditing } from "../organism/Settings";
 
+import _ from "lodash";
 import { SettingUtils } from "../SettingUtils";
+import { bufferSettings, getSettings } from "../organism/Settings";
 import "./SettingEditActions.css";
 
 export function SettingEditActions() {
-  function onClickCancelEdit() {
-    setIsSettingEditing(false);
-  }
+  const [isSettingEditing, setIsSettingEditing] = createSignal(false);
 
-  function onClickSaveEdit() {
-    setIsSettingEditing(false);
-    SettingUtils.updateSettings();
+  createEffect(
+    on(bufferSettings, () => {
+      if (!_.isEqual(bufferSettings(), getSettings()))
+        setIsSettingEditing(true);
+      else setIsSettingEditing(false);
+    })
+  );
+
+  async function onClickSaveEdit() {
+    await SettingUtils.updateSettings();
   }
 
   return (
     <Show when={isSettingEditing()}>
       <div class="edit-setting-actions-footer">
-        <Button label="Annuler" variant="danger" onClick={onClickCancelEdit} />
         <Button label="Valider" onClick={onClickSaveEdit} />
       </div>
     </Show>

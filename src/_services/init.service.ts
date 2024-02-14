@@ -5,13 +5,13 @@ import {
   CalendarPeriodDBType,
 } from "../_entities/calendar.entity";
 import { BusLineEntity, LineDBType, LineType } from "../_entities/line.entity";
-import { SettingType } from "../_entities/parameter.entity";
 import {
   SchoolDBType,
   SchoolEntity,
   SchoolType,
 } from "../_entities/school.entity";
 import { ServiceDBType, ServiceEntity } from "../_entities/service.entity";
+import { SettingType } from "../_entities/setting.entity";
 import { StopDBType, StopEntity, StopType } from "../_entities/stop.entity";
 import {
   TripDirectionType,
@@ -93,7 +93,15 @@ export namespace InitService {
 
     setServices(services);
 
-    setSettings(dbInit.settings);
+    const settings = dbInit.settings;
+    setSettings((prev) =>
+      [...prev].map((setting) => {
+        const retrievedSetting = settings.find(
+          (setting_) => setting_.setting == setting.setting
+        );
+        return retrievedSetting ?? setting;
+      })
+    );
     return { schools, stops, busLines };
   }
 }

@@ -1,4 +1,4 @@
-import { SettingType } from "../_entities/parameter.entity";
+import { SettingType } from "../_entities/setting.entity";
 import { ServiceUtils } from "./_utils.service";
 
 export namespace SettingService {

@@ -1,16 +1,15 @@
-import { SettingType, SettingsEnum } from "../../../_entities/parameter.entity";
+import { SettingType, SettingsEnum } from "../../../_entities/setting.entity";
 import { SettingService } from "../../../_services/setting.service";
 import { disableSpinningWheel, enableSpinningWheel } from "../../../signaux";
-import { getSettings, setSettings } from "./organism/Settings";
 import {
   bufferSettings,
+  getSettings,
   setBufferSettings,
-} from "./organism/TravelTimeSettings";
+  setSettings,
+} from "./organism/Settings";
 
 export namespace SettingUtils {
   export function getSetting(setting: SettingsEnum): SettingType {
-    console.log("settings:", getSettings());
-
     return getSettings().filter(
       (parameter_) => parameter_.setting == setting
     )[0];
@@ -18,12 +17,7 @@ export namespace SettingUtils {
 
   export async function updateSettings() {
     enableSpinningWheel();
-    console.log("inital settings:", getSettings());
-    console.log("buffer settings:", bufferSettings());
-
     setSettings(await SettingService.update(bufferSettings()));
-    console.log("inital settings:", getSettings());
-
     disableSpinningWheel();
   }
 
@@ -39,7 +33,7 @@ export namespace SettingUtils {
   export function onChangeWaitingTime(element: HTMLInputElement) {
     SettingUtils.updateBufferSettings({
       setting: SettingsEnum.waintingTime,
-      value: Number(element.value),
+      value: element.value,
     });
   }
 
@@ -56,6 +50,8 @@ export namespace SettingUtils {
     setting: SettingsEnum,
     htmlElement?: HTMLElement | HTMLInputElement
   ) {
+    console.log(setting, htmlElement);
+
     switch (setting) {
       case SettingsEnum.waintingTime:
         return onChangeWaitingTime(htmlElement as HTMLInputElement);

@@ -1,7 +1,6 @@
-import { SettingsEnum } from "../../../../_entities/parameter.entity";
+import { SettingsEnum } from "../../../../_entities/setting.entity";
 import InputNumber from "../../stops/component/atom/InputNumber";
 import { SettingUtils } from "../SettingUtils";
-import { isSettingEditing } from "../organism/Settings";
 
 import "./SettingItem.css";
 
@@ -24,7 +23,7 @@ export function SettingItem(props: SettingItemProps) {
         }
         selector={{
           value: SettingUtils.getSetting(props.settingName)?.value as number,
-          disabled: !isSettingEditing(),
+          disabled: false,
         }}
         onChange={(element) =>
           SettingUtils.getSettingCallback(props.settingName, element)

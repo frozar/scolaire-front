@@ -1,13 +1,6 @@
-import { createSignal, For } from "solid-js";
-import {
-  SettingsEnum,
-  SettingType,
-} from "../../../../_entities/parameter.entity";
+import { For } from "solid-js";
+import { SettingsEnum } from "../../../../_entities/setting.entity";
 import { SettingItem } from "../molecule/SettingItem";
-
-export const [bufferSettings, setBufferSettings] = createSignal<SettingType[]>(
-  []
-);
 
 export function TravelTimeSettings() {
   // * To append settings in Travel Time section please add the setting from SettingsEnum into travedTime var

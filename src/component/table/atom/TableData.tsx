@@ -9,12 +9,7 @@ interface TableDataProps {
 export function TableData(props: TableDataProps) {
   const mergedProps = mergeProps({ end: false }, props);
   return (
-    <td
-      class="table-data"
-      classList={{
-        end: mergedProps.end,
-      }}
-    >
+    <td class="table-data" classList={{ end: mergedProps.end }}>
       {props.text}
     </td>
   );
