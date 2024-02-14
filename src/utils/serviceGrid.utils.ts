@@ -71,6 +71,19 @@ export namespace ServiceGridUtils {
     if (!scrollSmooth) ref.style.scrollBehavior = "smooth";
   }
 
+  export function changeScrollingDirection(
+    divToScroll: HTMLDivElement,
+    eventListennerDiv: HTMLDivElement
+  ): void {
+    const scrollSpeed = 2;
+
+    eventListennerDiv.addEventListener("wheel", (event) => {
+      event.preventDefault();
+
+      divToScroll.scrollLeft += event.deltaY * scrollSpeed;
+    });
+  }
+
   // TODO: Refactor
   export function adaptScrollPositionToZoomIn(ref: HTMLDivElement): void {
     ref.style.scrollBehavior = "auto";
