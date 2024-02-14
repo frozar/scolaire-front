@@ -25,17 +25,17 @@ export const [services, setServices] = createSignal<ServiceType[]>([]);
 export const [servicesBeforeModification, setServicesBeforeModification] =
   createSignal<ServiceType[]>([]);
 
-export function Services(): JSXElement {
-  const [ref, setRef] = createSignal<HTMLDivElement>(
-    document.createElement("div")
-  );
+export const [refScroll, setRefScroll] = createSignal<HTMLDivElement>(
+  document.createElement("div")
+);
 
+export function Services(): JSXElement {
   createEffect(
     on(services, () => {
       const selectedServiceId = selectedService();
       if (!selectedServiceId) return;
 
-      ServiceGridUtils.scrollToServiceStart(ref(), selectedServiceId);
+      ServiceGridUtils.scrollToServiceStart(refScroll(), selectedServiceId);
     })
   );
 
@@ -43,14 +43,14 @@ export function Services(): JSXElement {
     setServicesBeforeModification(_.cloneDeep(services()));
 
     const firstServiceId = services()[0].id;
-    ServiceGridUtils.scrollToServiceStart(ref(), firstServiceId);
+    ServiceGridUtils.scrollToServiceStart(refScroll(), firstServiceId);
   });
 
   return (
     <div id="services">
       <ServiceGridButtons />
 
-      <div id="services-displayed" ref={setRef}>
+      <div id="services-displayed" ref={setRefScroll}>
         <ServiceList />
         <ServiceGrid />
       </div>

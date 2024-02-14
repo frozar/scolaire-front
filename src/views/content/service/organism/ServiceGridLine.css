@@ -5,3 +5,7 @@
 .service-grid-line.active {
   @apply bg-gray-light;
 }
+
+.service-grid-line-first-div {
+  @apply border border-dashed border-black;
+}

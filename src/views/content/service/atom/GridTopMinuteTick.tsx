@@ -9,7 +9,7 @@ export function GridTopMinuteTick() {
     return width + "px";
   }
   return (
-    <div class="flex">
+    <div class="service-grid-top-minute-ticks">
       {/* 5 because 5 little lines displayed (from minute 10 to 50) */}
       <For each={[...Array(5).keys()]}>
         {() => (

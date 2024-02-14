@@ -65,6 +65,25 @@ export namespace ServiceGridUtils {
     ref.scrollTo((endHour - 25) * zoom(), ref.scrollTop);
   }
 
+  // TODO: Refactor
+  export function adaptScrollPositionToZoomIn(ref: HTMLDivElement): void {
+    ref.style.scrollBehavior = "auto";
+
+    const scrollPositionInMinutes = ref.scrollLeft / (zoom() - 1);
+    ref.scrollTo(scrollPositionInMinutes * zoom(), ref.scrollTop);
+
+    ref.style.scrollBehavior = "smooth";
+  }
+
+  export function adaptScrollPositionToZoomOut(ref: HTMLDivElement): void {
+    ref.style.scrollBehavior = "auto";
+
+    const scrollPositionInMinutes = ref.scrollLeft / (zoom() + 1);
+    ref.scrollTo(scrollPositionInMinutes * zoom(), ref.scrollTop);
+
+    ref.style.scrollBehavior = "smooth";
+  }
+
   export function getTripWidth(tripId: number): string {
     return (
       Math.round(

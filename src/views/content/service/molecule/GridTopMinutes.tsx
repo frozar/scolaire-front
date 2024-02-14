@@ -22,7 +22,7 @@ export function GridTopMinutes(props: GridTopMinutesProps): JSXElement {
             <Show when={zoom() >= 3}>
               <div class="flex flex-col">
                 <div
-                  class="service-grid-top-minute-displayed"
+                  class="service-grid-top-minutes"
                   style={{ width: hourWidth() }}
                 >
                   {/* 5 because tens of minutes from 10 to 50 displayed */}

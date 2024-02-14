@@ -6,6 +6,6 @@
   @apply flex border border-black border-y-0 border-l-0 border-x;
 }
 
-.service-grid-top-minute-displayed {
+.service-grid-top-minutes {
   @apply flex justify-evenly;
 }
