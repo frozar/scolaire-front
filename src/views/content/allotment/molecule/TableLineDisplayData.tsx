@@ -21,7 +21,7 @@ export function TableLineDisplayData(props: TableLineDisplayDataProps) {
       <TableDataColor color={props.color} />
       <TableData text="-" />
       <TableData text="-" />
-      <TableDataChilds>
+      <TableDataChilds end={true}>
         <ButtonIcon icon={<UpdatePen />} onClick={props.toggleEditFunction} />
         <ButtonIcon icon={<TrashIcon />} onClick={props.deleteFunction} />
       </TableDataChilds>

@@ -1,5 +1,21 @@
+import { mergeProps } from "solid-js";
+
 import "./TableData.css";
 
-export function TableData(props: { text: string }) {
-  return <td class="table-data">{props.text}</td>;
+interface TableDataProps {
+  text: string;
+  end?: boolean;
+}
+export function TableData(props: TableDataProps) {
+  const mergedProps = mergeProps({ end: false }, props);
+  return (
+    <td
+      class="table-data"
+      classList={{
+        end: mergedProps.end,
+      }}
+    >
+      {props.text}
+    </td>
+  );
 }

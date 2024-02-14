@@ -60,7 +60,7 @@ export function AddTableLine() {
       />
       <TableData text="-" />
       <TableData text="-" />
-      <TableDataChilds>
+      <TableDataChilds end={true}>
         <ButtonIcon icon={<CheckIcon />} onClick={createNewAllotment} />
         <ButtonIcon icon={<CircleCrossIcon />} onClick={cancelButton} />
       </TableDataChilds>

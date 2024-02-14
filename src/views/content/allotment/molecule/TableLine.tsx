@@ -98,7 +98,7 @@ export function TableLine(props: TableLineProps) {
         />
         <TableData text="-" />
         <TableData text="-" />
-        <TableDataChilds>
+        <TableDataChilds end={true}>
           <ButtonIcon icon={<CheckIcon />} onClick={updateButton} />
           <ButtonIcon icon={<CircleCrossIcon />} onClick={cancelButton} />
         </TableDataChilds>
