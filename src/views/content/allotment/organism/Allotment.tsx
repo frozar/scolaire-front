@@ -7,6 +7,7 @@ import { AllotmentTable } from "./AllotmentTable";
 export type AllotmentType = {
   id?: number;
   name: string;
+  color: string;
 };
 
 export const [getAllotment, setAllotment] = createSignal<AllotmentType[]>([]);

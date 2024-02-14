@@ -7,14 +7,16 @@ import { MessageLevelEnum, MessageTypeEnum } from "../../../../type";
 import ButtonIcon from "../../board/component/molecule/ButtonIcon";
 import { TableElement } from "../../bus/atom/TableElement";
 import { TableElementInput } from "../../bus/atom/TableElementInput";
+import { TableElementColorPicker } from "../atom/TableElementColorPicker";
 import { isNewLineHidden, setIsNewLineHidden } from "../organism/Allotment";
 import "./TableLine.css";
 
 export function AddTableLine() {
   const [getName, setName] = createSignal("defaultName");
+  const [getColor, setColor] = createSignal("#ffffff");
 
   async function createNewAllotment() {
-    await AllotmentService.create({ name: getName() });
+    await AllotmentService.create({ name: getName(), color: getColor() });
     setIsNewLineHidden(true);
     addNewUserInformation({
       displayed: true,
@@ -22,17 +24,27 @@ export function AddTableLine() {
       type: MessageTypeEnum.global,
       content: "Allotissement créé",
     });
+    resetDefaultValues();
+  }
+
+  function resetDefaultValues() {
     setName("defaultName");
+    setColor("#ffffff");
   }
 
   function cancelButton() {
-    setName("defaultName");
+    resetDefaultValues();
     setIsNewLineHidden(true);
   }
 
   function onNameInputChanged(value: string) {
     setName(value);
   }
+
+  function onColorInputChanged(color: string) {
+    setColor(color);
+  }
+
   return (
     <tr
       classList={{ tableRowEditing: !isNewLineHidden() }}
@@ -42,6 +54,10 @@ export function AddTableLine() {
         defaultValue={getName()}
         placeholder="Entrer un nom"
         onInputFunction={onNameInputChanged}
+      />
+      <TableElementColorPicker
+        defaultColor={getColor()}
+        onInputFunction={onColorInputChanged}
       />
       <TableElement text="-" />
       <TableElement text="-" />

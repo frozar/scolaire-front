@@ -6,6 +6,7 @@ export function TableHeaderAllotment() {
   return (
     <TableHeader>
       <TableHeaderCol text="Nom" />
+      <TableHeaderCol text="Couleur" />
       <TableHeaderCol text="Nombre de course" />
       <TableHeaderCol text="Nombre de bus" />
       <TableHeaderCol text="Actions" />
