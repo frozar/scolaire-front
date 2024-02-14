@@ -18,7 +18,8 @@ import { BusServiceUtils } from "./busService.utils";
 import { TripUtils } from "./trip.utils";
 
 export type HlpMatrixType = {
-  /* 
+  /*
+  
   hlpMatrix contains hlp durations between 
     start of sourceTrip and end of targetTrip
   
