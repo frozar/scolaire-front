@@ -22,6 +22,10 @@ export type osrmResponseType = {
   }[];
 };
 
+type osrmTableResponseType = {
+  durations: number[][];
+};
+
 export class OsrmService {
   static async getRoadPolyline(trip: TripType): Promise<{
     latlngs: L.LatLng[];
@@ -79,9 +83,8 @@ export class OsrmService {
     return latlngs.map((latlng) => latlng.lng + "," + latlng.lat).join(";");
   }
 
-  // TODO: Specify type !
-  static async getHlpMatrix(latlngs: LatLng[]) {
-    const response = await ServiceUtils.generic(
+  static async getHlpMatrix(latlngs: LatLng[]): Promise<number[][]> {
+    const response: osrmTableResponseType = await ServiceUtils.generic(
       osrmTable + "/" + this.buildTableURL(latlngs)
     );
     return response["durations"];

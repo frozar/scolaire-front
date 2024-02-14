@@ -73,17 +73,19 @@ export namespace BusServiceUtils {
       return services;
     });
   }
-  // TODO: Type
-  export function getStartAndEndTripLatLongs(): {
+
+  export function getStartAndEndTripLatLngs(): {
     latLngs: LatLng[];
     tripIds: number[];
   } {
     const latLngs = getLines()
       .flatMap((line) => line.trips)
       .flatMap((trips) => [trips.latLngs[0], trips.latLngs.at(-1) as L.LatLng]);
+
     const tripIds = getLines()
       .flatMap((line) => line.trips)
       .map((trip) => trip.id as number);
+
     return { latLngs, tripIds };
   }
 }

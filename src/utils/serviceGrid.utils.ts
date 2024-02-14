@@ -168,7 +168,6 @@ export namespace ServiceGridUtils {
     }
   }
 
-  // TODO: Also save value !
   export function updateAndGetHlpWidth(
     serviceTrip: ServiceTripType,
     serviceId: number,

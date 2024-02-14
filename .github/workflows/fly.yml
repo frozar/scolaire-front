@@ -19,7 +19,7 @@ jobs:
         env:
           VITE_XANO_URL: https://xyvz-nn2l-tpz7.p7.xano.io/api:DL_gv4vw
           VITE_XANO_URL_AUTH: https://xyvz-nn2l-tpz7.p7.xano.io/api:elCAJnQ5/oauth/auth0
-          VITE_API_OSRM_URL: https://osrm.fly.dev/route/v1/car
+          VITE_API_OSRM_URL: https://osrm.fly.dev
           VITE_BACK_URL: https://scolaire-back.fly.dev
       - run: flyctl deploy --remote-only
         env:

@@ -17,7 +17,7 @@ export const [hlpMatrix, setHlpMatrix] = createSignal<HlpMatrixType>({});
 export function ServiceTemplate(): JSXElement {
   onMount(async () => {
     // TODO: Afficher spinning wheel !
-    const { latLngs, tripIds } = BusServiceUtils.getStartAndEndTripLatLongs();
+    const { latLngs, tripIds } = BusServiceUtils.getStartAndEndTripLatLngs();
     const durations = await OsrmService.getHlpMatrix(latLngs);
 
     console.log("durations", durations);
