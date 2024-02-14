@@ -17,6 +17,33 @@ import {
 import { BusServiceUtils } from "./busService.utils";
 import { TripUtils } from "./trip.utils";
 
+export type HlpMatrixType = {
+  /* 
+  hlpMatrix contains hlp durations between 
+    start of sourceTrip and end of targetTrip
+  
+  The keys of each dict correspond to the tripId
+
+  Exemple:
+  {
+    "715": {
+      "716": 12,
+      "721": 12,
+    },
+    "716": {
+      "715": 8,
+      "721": 8,
+    },
+    "721": {
+      "715": 18,
+      "716": 18,
+    },
+  };
+
+  */
+  [sourceTripId: number]: { [targetTripId: number]: number };
+};
+
 export namespace ServiceGridUtils {
   export function scrollToServiceStart(ref: HTMLDivElement): void {
     /*
