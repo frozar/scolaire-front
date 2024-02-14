@@ -2,6 +2,7 @@ import { createSignal } from "solid-js";
 import { AllotmentService } from "../../../../_services/allotment.service";
 import { TableData } from "../../../../component/table/atom/TableData";
 import { TableDataChilds } from "../../../../component/table/molecule/TableDataChilds";
+import { TableRow } from "../../../../component/table/molecule/TableRow";
 import CheckIcon from "../../../../icons/CheckIcon";
 import { CircleCrossIcon } from "../../../../icons/CircleCrossIcon";
 import { addNewUserInformation } from "../../../../signaux";
@@ -47,10 +48,7 @@ export function AddTableLine() {
   }
 
   return (
-    <tr
-      classList={{ tableRowEditing: !isNewLineHidden() }}
-      hidden={isNewLineHidden()}
-    >
+    <TableRow hidden={isNewLineHidden()} active={true}>
       <TableElementInput
         defaultValue={getName()}
         placeholder="Entrer un nom"
@@ -66,6 +64,6 @@ export function AddTableLine() {
         <ButtonIcon icon={<CheckIcon />} onClick={createNewAllotment} />
         <ButtonIcon icon={<CircleCrossIcon />} onClick={cancelButton} />
       </TableDataChilds>
-    </tr>
+    </TableRow>
   );
 }

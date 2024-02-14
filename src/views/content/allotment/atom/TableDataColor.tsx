@@ -1,10 +1,10 @@
-import { TableContent } from "../../../../component/table/molecule/TableContent";
+import { TableDataChilds } from "../../../../component/table/molecule/TableDataChilds";
 import "./TableDataColor.css";
 
 export function TableDataColor(props: { color: string }) {
   return (
-    <TableContent
-      children={<input type="color" disabled value={props.color} />}
-    />
+    <TableDataChilds>
+      <input type="color" disabled value={props.color} />
+    </TableDataChilds>
   );
 }

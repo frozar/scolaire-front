@@ -1,4 +1,5 @@
 import { TextInput } from "../../../../component/atom/TextInput";
+import { TableDataChilds } from "../../../../component/table/molecule/TableDataChilds";
 import "./TableElement.css";
 
 interface TableElementInputProps {
@@ -9,12 +10,12 @@ interface TableElementInputProps {
 
 export function TableElementInput(props: TableElementInputProps) {
   return (
-    <td class="tableEdit">
+    <TableDataChilds>
       <TextInput
         onInput={props.onInputFunction}
         defaultValue={props.defaultValue}
         placeholder={props.placeholder}
       />
-    </td>
+    </TableDataChilds>
   );
 }

@@ -1,4 +1,4 @@
-import { TableContent } from "../../../../component/table/molecule/TableContent";
+import { TableDataChilds } from "../../../../component/table/molecule/TableDataChilds";
 import { ColorPicker } from "../../board/component/atom/ColorPicker";
 import "./TableElementColorPicker.css";
 
@@ -9,15 +9,13 @@ interface TableElementColorPickerProps {
 
 export function TableElementColorPicker(props: TableElementColorPickerProps) {
   return (
-    <TableContent
-      children={
-        <ColorPicker
-          defaultColor={props.defaultColor}
-          title=""
-          onInput={props.onInputFunction}
-          onChange={props.onInputFunction}
-        />
-      }
-    />
+    <TableDataChilds>
+      <ColorPicker
+        defaultColor={props.defaultColor}
+        title=""
+        onInput={props.onInputFunction}
+        onChange={props.onInputFunction}
+      />
+    </TableDataChilds>
   );
 }

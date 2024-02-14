@@ -1,5 +1,6 @@
 import { TableData } from "../../../../component/table/atom/TableData";
 import { TableDataChilds } from "../../../../component/table/molecule/TableDataChilds";
+import { TableRow } from "../../../../component/table/molecule/TableRow";
 import TrashIcon from "../../../../icons/TrashIcon";
 import UpdatePen from "../../../../icons/UpdatePen";
 import ButtonIcon from "../../board/component/molecule/ButtonIcon";
@@ -15,7 +16,7 @@ interface TableLineDisplayDataProps {
 
 export function TableLineDisplayData(props: TableLineDisplayDataProps) {
   return (
-    <tr class="tableRow">
+    <TableRow>
       <TableData text={props.name} />
       <TableDataColor color={props.color} />
       <TableData text="-" />
@@ -24,6 +25,6 @@ export function TableLineDisplayData(props: TableLineDisplayDataProps) {
         <ButtonIcon icon={<UpdatePen />} onClick={props.toggleEditFunction} />
         <ButtonIcon icon={<TrashIcon />} onClick={props.deleteFunction} />
       </TableDataChilds>
-    </tr>
+    </TableRow>
   );
 }
