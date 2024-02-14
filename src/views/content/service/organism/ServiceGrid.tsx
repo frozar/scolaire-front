@@ -24,7 +24,9 @@ export function ServiceGrid(): JSXElement {
       <ServiceGridTop width={gridWidthValue()} />
       <For each={services()}>
         {(service, i) => {
-          return <ServiceGridLine i={i()} width={gridWidthValue()} />;
+          return (
+            <ServiceGridLine serviceIndex={i()} width={gridWidthValue()} />
+          );
         }}
       </For>
     </div>

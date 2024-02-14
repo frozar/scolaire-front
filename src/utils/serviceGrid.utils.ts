@@ -131,27 +131,28 @@ export namespace ServiceGridUtils {
   }
 
   export function getServiceTripStartHourValue(
-    i: number,
+    serviceTripIndex: number,
     serviceTrip: ServiceTripType,
     serviceId: number
   ): number {
     /* Return startHourValue in minutes */
 
-    if (i == 0) return ServiceGridUtils.getEarliestStart(serviceTrip.tripId);
+    if (serviceTripIndex == 0)
+      return ServiceGridUtils.getEarliestStart(serviceTrip.tripId);
 
     const previousEndHour =
-      BusServiceUtils.get(serviceId).serviceTrips[i - 1].endHour;
+      BusServiceUtils.get(serviceId).serviceTrips[serviceTripIndex - 1].endHour;
 
     return previousEndHour + serviceTrip.hlp;
   }
 
   export function getServiceTripStartHour(
-    i: number,
+    serviceTripIndex: number,
     serviceTrip: ServiceTripType,
     serviceId: number
   ): string {
     const startHour = ServiceGridUtils.getServiceTripStartHourValue(
-      i,
+      serviceTripIndex,
       serviceTrip,
       serviceId
     );
@@ -160,11 +161,11 @@ export namespace ServiceGridUtils {
   }
 
   export function updateAndGetServiceEndHour(
-    i: number,
+    serviceTripIndex: number,
     serviceTrip: ServiceTripType,
     serviceId: number
   ): string {
-    if (i == 0) {
+    if (serviceTripIndex == 0) {
       const endHour = ServiceGridUtils.getEarliestArrival(serviceTrip.tripId);
 
       const endHourToDisplay =
@@ -178,7 +179,7 @@ export namespace ServiceGridUtils {
       return endHourToDisplay;
     } else {
       const startHour = ServiceGridUtils.getServiceTripStartHourValue(
-        i,
+        serviceTripIndex,
         serviceTrip,
         serviceId
       );

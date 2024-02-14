@@ -12,7 +12,7 @@ import "./ServiceGridTripItem.css";
 interface ServiceGridTripItemProps {
   serviceTrip: ServiceTripType;
   serviceId: number;
-  i: number;
+  serviceTripIndex: number;
 }
 
 export function ServiceGridTripItem(
@@ -41,7 +41,7 @@ export function ServiceGridTripItem(
       <ServiceGridItemStartEndStopNames tripId={props.serviceTrip.tripId} />
 
       <ServiceGridTripItemHours
-        i={props.i}
+        serviceTripIndex={props.serviceTripIndex}
         serviceTrip={props.serviceTrip}
         serviceId={props.serviceId}
       />

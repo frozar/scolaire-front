@@ -4,7 +4,7 @@ import { ServiceTripType } from "../organism/Services";
 import "./ServiceGridHlp.css";
 
 interface ServiceGridHlpProps {
-  i: number;
+  serviceTripIndex: number;
   serviceTrip: ServiceTripType;
   serviceId: number;
 }
@@ -17,7 +17,7 @@ export function ServiceGridHlp(props: ServiceGridHlpProps): JSXElement {
         width: ServiceGridUtils.updateAndGetHlpWidth(
           props.serviceTrip,
           props.serviceId,
-          props.i
+          props.serviceTripIndex
         ),
       }}
     />
