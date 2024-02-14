@@ -8,6 +8,7 @@ import {
   setServices,
   setServicesBeforeModification,
 } from "../organism/Services";
+import { setSelectedService } from "../template/ServiceTemplate";
 
 export function ServiceGridModificationButtons(): JSXElement {
   return (
@@ -62,4 +63,5 @@ async function validate(): Promise<void> {
 
   setServices(data);
   setServicesBeforeModification(_.cloneDeep(data));
+  setSelectedService();
 }
