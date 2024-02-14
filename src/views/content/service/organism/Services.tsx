@@ -35,7 +35,11 @@ export function Services(): JSXElement {
       const selectedServiceId = selectedService();
       if (!selectedServiceId) return;
 
-      ServiceGridUtils.scrollToServiceStart(refScroll(), selectedServiceId);
+      ServiceGridUtils.scrollToServiceStart(
+        refScroll(),
+        selectedServiceId,
+        true
+      );
     })
   );
 
@@ -43,7 +47,7 @@ export function Services(): JSXElement {
     setServicesBeforeModification(_.cloneDeep(services()));
 
     const firstServiceId = services()[0].id;
-    ServiceGridUtils.scrollToServiceStart(refScroll(), firstServiceId);
+    ServiceGridUtils.scrollToServiceStart(refScroll(), firstServiceId, false);
   });
 
   return (

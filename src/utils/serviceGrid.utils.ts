@@ -47,7 +47,8 @@ export type HlpMatrixType = {
 export namespace ServiceGridUtils {
   export function scrollToServiceStart(
     ref: HTMLDivElement,
-    serviceId: number
+    serviceId: number,
+    scrollSmooth: boolean
   ): void {
     /*
     Scroll to the beginning service
@@ -62,7 +63,11 @@ export namespace ServiceGridUtils {
 
     const endHour = actualService.serviceTrips[0].endHour;
 
+    if (!scrollSmooth) ref.style.scrollBehavior = "auto";
+
     ref.scrollTo((endHour - 25) * zoom(), ref.scrollTop);
+
+    if (!scrollSmooth) ref.style.scrollBehavior = "smooth";
   }
 
   // TODO: Refactor
