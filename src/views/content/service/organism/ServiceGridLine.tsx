@@ -4,7 +4,6 @@ import { services } from "./Services";
 import { ServiceGridUtils } from "../../../../utils/serviceGrid.utils";
 import { ServiceGridItem } from "../molecule/ServiceGridItem";
 import { selectedService } from "../template/ServiceTemplate";
-import { zoom } from "./ServiceGrid";
 import "./ServiceGridLine.css";
 
 interface ServiceGridLineProps {
@@ -14,16 +13,6 @@ interface ServiceGridLineProps {
 
 // TODO: Fix and clean
 export function ServiceGridLine(props: ServiceGridLineProps): JSXElement {
-  function firstDivWidth(): string {
-    return (
-      ServiceGridUtils.getEarliestStart(
-        services()[props.i].serviceTrips[0].tripId
-      ) *
-        zoom() +
-      "px"
-    );
-  }
-
   return (
     <div
       class={"service-grid-line"}
@@ -34,7 +23,7 @@ export function ServiceGridLine(props: ServiceGridLineProps): JSXElement {
         <div
           // TODO: TODO: Hide the div ("opacity-0")
           class="service-grid-line-first-div"
-          style={{ width: firstDivWidth() }}
+          style={{ width: ServiceGridUtils.firstDivWidth(props.i) }}
         >
           blank space
         </div>

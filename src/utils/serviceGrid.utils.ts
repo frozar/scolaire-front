@@ -103,6 +103,17 @@ export namespace ServiceGridUtils {
     ref.style.scrollBehavior = "smooth";
   }
 
+  // TODO: Use serviceId instead of serviceIndex ?
+  export function firstDivWidth(serviceIndex: number): string {
+    return (
+      ServiceGridUtils.getEarliestStart(
+        services()[serviceIndex].serviceTrips[0].tripId
+      ) *
+        zoom() +
+      "px"
+    );
+  }
+
   export function getTripWidth(tripId: number): string {
     return (
       Math.round(
