@@ -2,8 +2,10 @@ import { PathEntity } from "../../../../../_entities/path.entity";
 import { ButtonPanel } from "../../../../../component/atom/ButtonPanel";
 import PlusIcon from "../../../../../icons/PlusIcon";
 import { displayAddTripMessage } from "../../../../../userInformation/utils";
+import { getAllotment } from "../../../allotment/organism/Allotment";
 import { getBus } from "../../../bus/organism/Bus";
 import {
+  setNoAllotmentError,
   setThereIsAnError,
   setnoBusError,
 } from "../../../map/component/organism/MapErrorPanel";
@@ -57,6 +59,13 @@ export function TripBoardPanelButtons() {
       setnoBusError(true);
       return true;
     }
+
+    if (getAllotment().length <= 0) {
+      setThereIsAnError(true);
+      setNoAllotmentError(true);
+      return true;
+    }
+
     return false;
   }
 
