@@ -32,6 +32,7 @@ import { Allotment } from "./views/content/allotment/organism/Allotment";
 import { Dialogs } from "./views/content/board/component/organism/Dialogs";
 import { Bus } from "./views/content/bus/organism/Bus";
 import { Users } from "./views/content/calendar/template/Organisation";
+import { Settings } from "./views/content/parameters/organism/Settings";
 import { ServiceTemplate } from "./views/content/service/template/ServiceTemplate";
 
 const [, { getSelectedMenu, setSelectedMenu, getActiveMapId }] = useStateGui();
@@ -100,7 +101,9 @@ export default () => {
                 <ContextManager />
               </Match>
 
-              <Match when={getSelectedMenu() == "parametres"}>parameters</Match>
+              <Match when={getSelectedMenu() == "parametres"}>
+                <Settings />
+              </Match>
             </Switch>
           </Show>
 
