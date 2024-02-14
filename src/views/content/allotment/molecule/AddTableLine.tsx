@@ -1,11 +1,12 @@
 import { createSignal } from "solid-js";
 import { AllotmentService } from "../../../../_services/allotment.service";
+import { TableData } from "../../../../component/table/atom/TableData";
+import { TableDataChilds } from "../../../../component/table/molecule/TableDataChilds";
 import CheckIcon from "../../../../icons/CheckIcon";
 import { CircleCrossIcon } from "../../../../icons/CircleCrossIcon";
 import { addNewUserInformation } from "../../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../../type";
 import ButtonIcon from "../../board/component/molecule/ButtonIcon";
-import { TableElement } from "../../bus/atom/TableElement";
 import { TableElementInput } from "../../bus/atom/TableElementInput";
 import { TableElementColorPicker } from "../atom/TableElementColorPicker";
 import { isNewLineHidden, setIsNewLineHidden } from "../organism/Allotment";
@@ -59,12 +60,12 @@ export function AddTableLine() {
         defaultColor={getColor()}
         onInputFunction={onColorInputChanged}
       />
-      <TableElement text="-" />
-      <TableElement text="-" />
-      <td class="actionButtonContainer">
+      <TableData text="-" />
+      <TableData text="-" />
+      <TableDataChilds>
         <ButtonIcon icon={<CheckIcon />} onClick={createNewAllotment} />
         <ButtonIcon icon={<CircleCrossIcon />} onClick={cancelButton} />
-      </td>
+      </TableDataChilds>
     </tr>
   );
 }

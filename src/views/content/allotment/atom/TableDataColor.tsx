@@ -1,9 +1,10 @@
+import { TableContent } from "../../../../component/table/molecule/TableContent";
 import "./TableDataColor.css";
 
 export function TableDataColor(props: { color: string }) {
   return (
-    <td class="table-data-color">
-      <input type="color" disabled value={props.color} />
-    </td>
+    <TableContent
+      children={<input type="color" disabled value={props.color} />}
+    />
   );
 }
