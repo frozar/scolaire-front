@@ -15,7 +15,11 @@ export function ServiceGridItem(props: ServiceGridItemProps): JSXElement {
   return (
     <div class="service-grid-item">
       <Show when={props.i != 0}>
-        <ServiceGridHlp />
+        <ServiceGridHlp
+          i={props.i}
+          serviceId={props.serviceId}
+          serviceTrip={props.serviceTrip}
+        />
       </Show>
 
       <ServiceGridTripItem

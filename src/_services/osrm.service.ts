@@ -1,4 +1,4 @@
-import L from "leaflet";
+import L, { LatLng } from "leaflet";
 import {
   TripMetricType,
   TripPointType,
@@ -9,6 +9,8 @@ import { MetricsUtils } from "../utils/metrics.utils";
 import { ServiceUtils } from "./_utils.service";
 
 const osrm = import.meta.env.VITE_API_OSRM_URL;
+const osrmRoute = osrm + "/route/v1/car";
+const osrmTable = osrm + "/table/v1/driving";
 
 export type osrmResponseType = {
   routes: routesType[];
@@ -18,6 +20,10 @@ export type osrmResponseType = {
     hint: string;
     locations: number[];
   }[];
+};
+
+type osrmTableResponseType = {
+  durations: number[][];
 };
 
 export class OsrmService {
@@ -41,13 +47,13 @@ export class OsrmService {
       };
     }
     const response = await ServiceUtils.generic(
-      osrm +
+      osrmRoute +
         "/" +
         this.buildPositionURL(waypoints) +
         "?geometries=geojson&overview=full&steps=true"
     );
     const response_direct = await ServiceUtils.generic(
-      osrm +
+      osrmRoute +
         "/" +
         this.buildPositionURL([points[0], points[points.length - 1]]) +
         "?geometries=geojson&overview=full"
@@ -71,6 +77,17 @@ export class OsrmService {
 
   private static buildPositionURL(points: WaypointType[]): string {
     return points.map((point) => point.lon + "," + point.lat).join(";");
+  }
+
+  private static buildTableURL(latlngs: LatLng[]): string {
+    return latlngs.map((latlng) => latlng.lng + "," + latlng.lat).join(";");
+  }
+
+  static async getHlpMatrix(latlngs: LatLng[]): Promise<number[][]> {
+    const response: osrmTableResponseType = await ServiceUtils.generic(
+      osrmTable + "/" + this.buildTableURL(latlngs)
+    );
+    return response["durations"];
   }
 
   private static formatResponse(

@@ -10,21 +10,54 @@ import {
   ServiceType,
   services,
 } from "../views/content/service/organism/Services";
-import { selectedService } from "../views/content/service/template/ServiceTemplate";
+import {
+  hlpMatrix,
+  selectedService,
+} from "../views/content/service/template/ServiceTemplate";
 import { BusServiceUtils } from "./busService.utils";
 import { TripUtils } from "./trip.utils";
 
+export type HlpMatrixType = {
+  /* 
+  hlpMatrix contains hlp durations between 
+    start of sourceTrip and end of targetTrip
+  
+  The keys of each dict correspond to the tripId
+
+  Exemple:
+  {
+    "715": {
+      "716": 12,
+      "721": 12,
+    },
+    "716": {
+      "715": 8,
+      "721": 8,
+    },
+    "721": {
+      "715": 18,
+      "716": 18,
+    },
+  };
+
+  */
+  [sourceTripId: number]: { [targetTripId: number]: number };
+};
+
 export namespace ServiceGridUtils {
-  export function scrollToServiceStart(ref: HTMLDivElement): void {
+  export function scrollToServiceStart(
+    ref: HTMLDivElement,
+    serviceId: number
+  ): void {
     /*
-    Scroll to the beginning of the selected service when modified
+    Scroll to the beginning of the service
     Only change position of scroll in axis x
     */
 
     const actualService = services().filter(
-      (service) => service.id == selectedService()
+      (service) => service.id == serviceId
     )[0];
-
+    if (!actualService) return;
     if (actualService.serviceTrips.length == 0) return;
 
     const endHour = actualService.serviceTrips[0].endHour;
@@ -38,11 +71,6 @@ export namespace ServiceGridUtils {
         ((TripUtils.get(tripId).metrics?.duration as number) / 60) * zoom()
       ) + "px"
     );
-  }
-
-  export function getHlpWidth(): string {
-    // TODO: Use real value
-    return String(5 * zoom()) + "px";
   }
 
   export function getStartStopName(tripId: number): string {
@@ -168,6 +196,27 @@ export namespace ServiceGridUtils {
         (firstTrip.schools[0].hours.startHourComing?.minutes as number)
       );
     }
+  }
+
+  export function updateAndGetHlpWidth(
+    serviceTrip: ServiceTripType,
+    serviceId: number,
+    i: number
+  ): string {
+    // hlpMatrix() is setted asynchronously
+    if (Object.keys(hlpMatrix()).length == 0) return "0px";
+
+    const serviceTrips = BusServiceUtils.get(serviceId).serviceTrips;
+    const idPreviousTrip = serviceTrips[i - 1].tripId;
+    const idActualTrip = serviceTrips[i].tripId;
+
+    const hlpDuration = hlpMatrix()[idActualTrip][idPreviousTrip];
+
+    // Save in services()
+    if (hlpDuration != serviceTrip.hlp)
+      BusServiceUtils.updateHlp(serviceId, idActualTrip, hlpDuration);
+
+    return String(hlpDuration * zoom()) + "px";
   }
 
   export function removeTrip(
