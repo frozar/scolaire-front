@@ -298,6 +298,7 @@ export namespace ServiceGridUtils {
       serviceGroupId: 1,
       name: "default name",
       serviceTrips: [],
+      serviceTripsOrdered: [],
     };
 
     services.push(newService);

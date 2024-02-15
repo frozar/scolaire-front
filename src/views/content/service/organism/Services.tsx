@@ -13,6 +13,7 @@ export type ServiceType = {
   name: string;
   serviceGroupId: number;
   serviceTrips: ServiceTripType[];
+  serviceTripsOrdered: ServiceTripType[];
 };
 
 export type ServiceTripType = {
