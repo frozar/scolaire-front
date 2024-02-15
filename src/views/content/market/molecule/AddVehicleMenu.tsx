@@ -31,7 +31,6 @@ export function AddVehicleMenu() {
   }
 
   async function createNewVehicle() {
-    // create vehicle
     if (vehicleName() == "" || vehicleCategory() == "") return;
     await BusService.create({
       category: vehicleCategory(),
