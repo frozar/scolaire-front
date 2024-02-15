@@ -2,11 +2,9 @@ import { createSignal } from "solid-js";
 import { BusService } from "../../../../_services/bus.service";
 import { addNewUserInformation } from "../../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../../type";
+import { VehicleMenuHeader } from "../atom/VehicleMenuHeader";
 import "./AddVehicleMenu.css";
-import { VehicleCapacityInput } from "./VehicleCapacityInput";
-import { VehicleCategoryInput } from "./VehicleCategoryInput";
-import { VehicleMenuButtons } from "./VehicleMenuButtons";
-import { VehicleNameInput } from "./VehicleNameInput";
+import { VehicleMenuContent } from "./VehicleMenuContent";
 import { setIsVehicleMenuOpened } from "./VehicleTab";
 
 export function AddVehicleMenu() {
@@ -33,9 +31,6 @@ export function AddVehicleMenu() {
   }
 
   async function createNewVehicle() {
-    console.log(vehicleName());
-    console.log(vehicleCapacity());
-    console.log(vehicleCategory());
     if (vehicleName() == "" || vehicleCategory() == "") return;
     await BusService.create({
       category: vehicleCategory(),
@@ -54,22 +49,16 @@ export function AddVehicleMenu() {
 
   return (
     <div class="vehicle-menu-container">
-      <div class="vehicle-menu-header">
-        <p>Ajouter un véhicule</p>
-      </div>
-      <div class="vehicle-menu-content">
-        <VehicleNameInput
-          defaultValue={vehicleName()}
-          onInputFunction={onChangeName}
-        />
-        <VehicleCapacityInput
-          defaultValue={vehicleCapacity()}
-          label="Capacité"
-          onChangeFunction={onChangeCapacity}
-        />
-        <VehicleCategoryInput onChangeFunction={onChangeCategory} />
-        <VehicleMenuButtons submitFunction={createNewVehicle} />
-      </div>
+      <VehicleMenuHeader />
+      <VehicleMenuContent
+        capacity={vehicleCapacity()}
+        category={vehicleCategory()}
+        name={vehicleName()}
+        submitFunction={createNewVehicle}
+        onCapacityChangeFunction={onChangeCapacity}
+        onCategoryChangeFunction={onChangeCategory}
+        onNameChangeFunction={onChangeName}
+      />
     </div>
   );
 }
