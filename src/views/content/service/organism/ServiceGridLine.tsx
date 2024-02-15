@@ -1,5 +1,5 @@
 import { For, JSXElement } from "solid-js";
-import { services } from "./Services";
+import { ServiceTripType, services } from "./Services";
 
 import { ServiceGridUtils } from "../../../../utils/serviceGrid.utils";
 import { ServiceGridLineFirstDiv } from "../atom/ServiceGridLineFirstDiv";
@@ -25,26 +25,27 @@ export function ServiceGridLine(props: ServiceGridLineProps): JSXElement {
       <ServiceGridLineFirstDiv serviceIndex={props.serviceIndex} />
 
       <For each={services()[props.serviceIndex].serviceTrips}>
-        {(serviceTrip, i) => {
-          // TODO: Pass directly service as arg
-          function hlpWidth() {
-            return ServiceGridUtils.updateAndGetHlpWidth(
-              serviceTrip,
-              services()[props.serviceIndex].id,
-              i()
-            );
-          }
-
-          return (
-            <ServiceGridItem
-              serviceId={services()[props.serviceIndex].id}
-              serviceTrip={serviceTrip}
-              serviceTripIndex={i()}
-              hlpWidth={hlpWidth()}
-            />
-          );
-        }}
+        {(serviceTrip, i) => (
+          <ServiceGridItem
+            serviceId={services()[props.serviceIndex].id}
+            serviceTrip={serviceTrip}
+            serviceTripIndex={i()}
+            hlpWidth={hlpWidth(serviceTrip, props.serviceIndex, i())}
+          />
+        )}
       </For>
     </div>
+  );
+}
+
+function hlpWidth(
+  serviceTrip: ServiceTripType,
+  serviceIndex: number,
+  serviceTripIndex: number
+) {
+  return ServiceGridUtils.updateAndGetHlpWidth(
+    serviceTrip,
+    services()[serviceIndex].id,
+    serviceTripIndex
   );
 }

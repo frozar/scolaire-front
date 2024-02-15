@@ -1,5 +1,5 @@
 import { JSXElement } from "solid-js";
-import { zoom } from "../organism/ServiceGrid";
+import { ServiceGridUtils } from "../../../../utils/serviceGrid.utils";
 import "./ServiceGridHlp.css";
 
 interface ServiceGridHlpProps {
@@ -11,12 +11,8 @@ export function ServiceGridHlp(props: ServiceGridHlpProps): JSXElement {
     <div
       class="service-grid-item-hlp"
       style={{
-        width: hlpWidth(props.width),
+        width: ServiceGridUtils.widthCssValue(props.width),
       }}
     />
   );
-}
-
-function hlpWidth(width: number): string {
-  return String(width * zoom()) + "px";
 }

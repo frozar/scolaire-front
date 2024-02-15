@@ -14,6 +14,7 @@ interface ServiceGridTripItemProps {
   serviceTrip: ServiceTripType;
   serviceId: number;
   serviceTripIndex: number;
+  serviceTripWidth: number;
 }
 
 export function ServiceGridTripItem(
@@ -23,15 +24,12 @@ export function ServiceGridTripItem(
     <div
       class="service-grid-item-trip"
       style={{
-        width: ServiceGridUtils.getTripWidth(props.serviceTrip.tripId),
+        width: ServiceGridUtils.widthCssValue(props.serviceTripWidth),
       }}
     >
       <ServiceGridItemTripName
         name={TripUtils.get(props.serviceTrip.tripId).name}
       />
-      {/* <div class="service-grid-item-trip-name">
-        {TripUtils.get(props.serviceTrip.tripId).name}
-      </div> */}
 
       <ServiceGridItemStartEndStopNames tripId={props.serviceTrip.tripId} />
 

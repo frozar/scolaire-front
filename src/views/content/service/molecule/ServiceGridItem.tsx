@@ -1,5 +1,6 @@
 import { JSXElement, Show } from "solid-js";
 
+import { ServiceGridUtils } from "../../../../utils/serviceGrid.utils";
 import { ServiceGridHlp } from "../atom/ServiceGridHlp";
 import { ServiceTripType } from "../organism/Services";
 import "./ServiceGridItem.css";
@@ -7,7 +8,6 @@ import { ServiceGridTripItem } from "./ServiceGridTripItem";
 
 interface ServiceGridItemProps {
   serviceTripIndex: number;
-  // TODO: Delete useless ones
   serviceTrip: ServiceTripType;
   serviceId: number;
   hlpWidth: number;
@@ -24,6 +24,9 @@ export function ServiceGridItem(props: ServiceGridItemProps): JSXElement {
         serviceId={props.serviceId}
         serviceTrip={props.serviceTrip}
         serviceTripIndex={props.serviceTripIndex}
+        serviceTripWidth={ServiceGridUtils.getTripWidth(
+          props.serviceTrip.tripId
+        )}
       />
     </div>
   );

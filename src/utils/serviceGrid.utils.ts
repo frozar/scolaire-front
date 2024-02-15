@@ -46,6 +46,10 @@ export type HlpMatrixType = {
 };
 
 export namespace ServiceGridUtils {
+  export function widthCssValue(width: number): string {
+    return String(width * zoom()) + "px";
+  }
+
   export function scrollToServiceStart(
     ref: HTMLDivElement,
     serviceId: number,
@@ -114,12 +118,8 @@ export namespace ServiceGridUtils {
     );
   }
 
-  export function getTripWidth(tripId: number): string {
-    return (
-      Math.round(
-        ((TripUtils.get(tripId).metrics?.duration as number) / 60) * zoom()
-      ) + "px"
-    );
+  export function getTripWidth(tripId: number): number {
+    return Math.round((TripUtils.get(tripId).metrics?.duration as number) / 60);
   }
 
   export function getStartStopName(tripId: number): string {
