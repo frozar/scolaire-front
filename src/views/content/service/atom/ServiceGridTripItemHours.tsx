@@ -4,7 +4,7 @@ import { ServiceTripType } from "../organism/Services";
 import "./ServiceGridTripItemHours.css";
 
 interface ServiceGridTripItemHoursProps {
-  i: number;
+  serviceTripIndex: number;
   serviceTrip: ServiceTripType;
   serviceId: number;
 }
@@ -16,14 +16,14 @@ export function ServiceGridTripItemHours(
     <>
       <div class="service-grid-item-trip-start-hour">
         {ServiceGridUtils.getServiceTripStartHour(
-          props.i,
+          props.serviceTripIndex,
           props.serviceTrip,
           props.serviceId
         )}
       </div>
       <div class="service-grid-item-trip-end-hour">
         {ServiceGridUtils.updateAndGetServiceEndHour(
-          props.i,
+          props.serviceTripIndex,
           props.serviceTrip,
           props.serviceId
         )}

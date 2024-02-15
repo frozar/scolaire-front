@@ -4,6 +4,7 @@ import { ServiceGridUtils } from "../../../../utils/serviceGrid.utils";
 import { TripUtils } from "../../../../utils/trip.utils";
 import ButtonIcon from "../../board/component/molecule/ButtonIcon";
 import { ServiceGridItemStartEndStopNames } from "../atom/ServiceGridItemStartEndStopNames";
+import { ServiceGridItemTripName } from "../atom/ServiceGridItemTripName";
 import { ServiceGridTripItemHours } from "../atom/ServiceGridTripItemHours";
 import { ServiceTripType, setServices } from "../organism/Services";
 import { selectedService } from "../template/ServiceTemplate";
@@ -12,36 +13,28 @@ import "./ServiceGridTripItem.css";
 interface ServiceGridTripItemProps {
   serviceTrip: ServiceTripType;
   serviceId: number;
-  i: number;
+  serviceTripIndex: number;
+  serviceTripWidth: number;
 }
 
 export function ServiceGridTripItem(
   props: ServiceGridTripItemProps
 ): JSXElement {
-  function removeTripFromService(tripId: number): void {
-    setServices((prev) => {
-      const services = [...prev];
-
-      ServiceGridUtils.removeTrip(services, tripId);
-
-      return services;
-    });
-  }
   return (
     <div
       class="service-grid-item-trip"
       style={{
-        width: ServiceGridUtils.getTripWidth(props.serviceTrip.tripId),
+        width: ServiceGridUtils.widthCssValue(props.serviceTripWidth),
       }}
     >
-      <div class="service-grid-item-trip-name">
-        {TripUtils.get(props.serviceTrip.tripId).name}
-      </div>
+      <ServiceGridItemTripName
+        name={TripUtils.get(props.serviceTrip.tripId).name}
+      />
 
       <ServiceGridItemStartEndStopNames tripId={props.serviceTrip.tripId} />
 
       <ServiceGridTripItemHours
-        i={props.i}
+        serviceTripIndex={props.serviceTripIndex}
         serviceTrip={props.serviceTrip}
         serviceId={props.serviceId}
       />
@@ -55,4 +48,14 @@ export function ServiceGridTripItem(
       </Show>
     </div>
   );
+}
+
+function removeTripFromService(tripId: number): void {
+  setServices((prev) => {
+    const services = [...prev];
+
+    ServiceGridUtils.removeTrip(services, tripId);
+
+    return services;
+  });
 }

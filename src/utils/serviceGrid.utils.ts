@@ -46,6 +46,10 @@ export type HlpMatrixType = {
 };
 
 export namespace ServiceGridUtils {
+  export function widthCssValue(width: number): string {
+    return String(width * zoom()) + "px";
+  }
+
   export function scrollToServiceStart(
     ref: HTMLDivElement,
     serviceId: number,
@@ -71,6 +75,19 @@ export namespace ServiceGridUtils {
     if (!scrollSmooth) ref.style.scrollBehavior = "smooth";
   }
 
+  export function changeScrollingDirection(
+    divToScroll: HTMLDivElement,
+    eventListennerDiv: HTMLDivElement
+  ): void {
+    const scrollSpeed = 2;
+
+    eventListennerDiv.addEventListener("wheel", (event) => {
+      event.preventDefault();
+
+      divToScroll.scrollLeft += event.deltaY * scrollSpeed;
+    });
+  }
+
   // TODO: Refactor
   export function adaptScrollPositionToZoomIn(ref: HTMLDivElement): void {
     ref.style.scrollBehavior = "auto";
@@ -90,12 +107,18 @@ export namespace ServiceGridUtils {
     ref.style.scrollBehavior = "smooth";
   }
 
-  export function getTripWidth(tripId: number): string {
+  export function firstDivWidth(serviceIndex: number): string {
     return (
-      Math.round(
-        ((TripUtils.get(tripId).metrics?.duration as number) / 60) * zoom()
-      ) + "px"
+      ServiceGridUtils.getEarliestStart(
+        services()[serviceIndex].serviceTrips[0].tripId
+      ) *
+        zoom() +
+      "px"
     );
+  }
+
+  export function getTripWidth(tripId: number): number {
+    return Math.round((TripUtils.get(tripId).metrics?.duration as number) / 60);
   }
 
   export function getStartStopName(tripId: number): string {
@@ -107,27 +130,28 @@ export namespace ServiceGridUtils {
   }
 
   export function getServiceTripStartHourValue(
-    i: number,
+    serviceTripIndex: number,
     serviceTrip: ServiceTripType,
     serviceId: number
   ): number {
     /* Return startHourValue in minutes */
 
-    if (i == 0) return ServiceGridUtils.getEarliestStart(serviceTrip.tripId);
+    if (serviceTripIndex == 0)
+      return ServiceGridUtils.getEarliestStart(serviceTrip.tripId);
 
     const previousEndHour =
-      BusServiceUtils.get(serviceId).serviceTrips[i - 1].endHour;
+      BusServiceUtils.get(serviceId).serviceTrips[serviceTripIndex - 1].endHour;
 
     return previousEndHour + serviceTrip.hlp;
   }
 
   export function getServiceTripStartHour(
-    i: number,
+    serviceTripIndex: number,
     serviceTrip: ServiceTripType,
     serviceId: number
   ): string {
     const startHour = ServiceGridUtils.getServiceTripStartHourValue(
-      i,
+      serviceTripIndex,
       serviceTrip,
       serviceId
     );
@@ -136,11 +160,11 @@ export namespace ServiceGridUtils {
   }
 
   export function updateAndGetServiceEndHour(
-    i: number,
+    serviceTripIndex: number,
     serviceTrip: ServiceTripType,
     serviceId: number
   ): string {
-    if (i == 0) {
+    if (serviceTripIndex == 0) {
       const endHour = ServiceGridUtils.getEarliestArrival(serviceTrip.tripId);
 
       const endHourToDisplay =
@@ -154,7 +178,7 @@ export namespace ServiceGridUtils {
       return endHourToDisplay;
     } else {
       const startHour = ServiceGridUtils.getServiceTripStartHourValue(
-        i,
+        serviceTripIndex,
         serviceTrip,
         serviceId
       );
@@ -227,9 +251,9 @@ export namespace ServiceGridUtils {
     serviceTrip: ServiceTripType,
     serviceId: number,
     i: number
-  ): string {
+  ): number {
     // hlpMatrix() is setted asynchronously
-    if (Object.keys(hlpMatrix()).length == 0) return "0px";
+    if (Object.keys(hlpMatrix()).length == 0) return 0;
 
     const serviceTrips = BusServiceUtils.get(serviceId).serviceTrips;
     const idPreviousTrip = serviceTrips[i - 1].tripId;
@@ -241,7 +265,7 @@ export namespace ServiceGridUtils {
     if (hlpDuration != serviceTrip.hlp)
       BusServiceUtils.updateHlp(serviceId, idActualTrip, hlpDuration);
 
-    return String(hlpDuration * zoom()) + "px";
+    return hlpDuration;
   }
 
   export function removeTrip(

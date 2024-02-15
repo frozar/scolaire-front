@@ -1,12 +1,9 @@
 import { JSXElement } from "solid-js";
 import { ServiceGridUtils } from "../../../../utils/serviceGrid.utils";
-import { ServiceTripType } from "../organism/Services";
 import "./ServiceGridHlp.css";
 
 interface ServiceGridHlpProps {
-  i: number;
-  serviceTrip: ServiceTripType;
-  serviceId: number;
+  width: number;
 }
 
 export function ServiceGridHlp(props: ServiceGridHlpProps): JSXElement {
@@ -14,11 +11,7 @@ export function ServiceGridHlp(props: ServiceGridHlpProps): JSXElement {
     <div
       class="service-grid-item-hlp"
       style={{
-        width: ServiceGridUtils.updateAndGetHlpWidth(
-          props.serviceTrip,
-          props.serviceId,
-          props.i
-        ),
+        width: ServiceGridUtils.widthCssValue(props.width),
       }}
     />
   );
