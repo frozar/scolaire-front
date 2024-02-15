@@ -30,8 +30,8 @@ import UnloggedUserInformation from "./component/molecule/UnloggedUserInformatio
 import UserInstruction from "./component/molecule/UserInstruction";
 import { Allotment } from "./views/content/allotment/organism/Allotment";
 import { Dialogs } from "./views/content/board/component/organism/Dialogs";
-import { Bus } from "./views/content/bus/organism/Bus";
 import { Users } from "./views/content/calendar/template/Organisation";
+import { Market } from "./views/content/market/organism/Market";
 import { Settings } from "./views/content/parameters/organism/Settings";
 import { ServiceTemplate } from "./views/content/service/template/ServiceTemplate";
 
@@ -88,12 +88,12 @@ export default () => {
                 <ServiceTemplate />
               </Match>
 
-              <Match when={getSelectedMenu() == "bus"}>
-                <Bus />
-              </Match>
-
               <Match when={getSelectedMenu() == "allotment"}>
                 <Allotment />
+              </Match>
+
+              <Match when={getSelectedMenu() == "market"}>
+                <Market />
               </Match>
 
               <Match when={inGraphicage()}>

@@ -1,11 +1,11 @@
 import { useStateGui } from "../../StateGui";
 import { AllotmentIcon } from "../../icons/AllotmentIcon";
 import ArretsLogo from "../../icons/ArretsLogo";
-import { BusIcon } from "../../icons/BusIcon";
 import CalendarIcon from "../../icons/CalendarIcon";
 import DashboardLogo from "../../icons/DashboardLogo";
 import EtablissementLogo from "../../icons/EtablissementLogo";
 import GraphicageLogo from "../../icons/GraphicageLogo";
+import { MarketIcon } from "../../icons/MarketIcon";
 import ServiceIcon from "../../icons/ServiceIcon";
 import { MenuItemType } from "../../type";
 import { MapElementUtils } from "../../utils/mapElement.utils";
@@ -81,22 +81,21 @@ const menuItems: MenuItemType[] = [
     },
   },
   {
-    menuItem: "bus",
-    Logo: BusIcon,
-    label: "Bus",
-    isDisabled: false,
-    onClick: () => {
-      setSelectedMenu("bus");
-      changeBoard(undefined);
-    },
-  },
-  {
     menuItem: "allotment",
     Logo: AllotmentIcon,
     label: "Allotissement",
     isDisabled: false,
     onClick: () => {
       setSelectedMenu("allotment");
+    },
+  },
+  {
+    menuItem: "market",
+    Logo: MarketIcon,
+    label: "Marché",
+    isDisabled: false,
+    onClick: () => {
+      setSelectedMenu("market");
     },
   },
   {
