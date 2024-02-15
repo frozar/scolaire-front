@@ -21,9 +21,16 @@ export namespace StopUtils {
   }
 
   export async function update(stop: StopType) {
-    const response = await StopService.update(stop);
-    console.log(response);
-    return response;
+    const updatedStop = await StopService.update(stop);
+    if (updatedStop) {
+      setStops((stops) =>
+        [...stops].map((stop_) => {
+          if (stop_.id == updatedStop.id) stop_ = updatedStop;
+          return stop_;
+        })
+      );
+    }
+    return updatedStop;
   }
 
   export function updateStopDetailsItem(stop: Partial<StopType>) {
