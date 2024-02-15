@@ -24,7 +24,7 @@ export function SettingEditActions() {
   return (
     <Show when={isSettingEditing()}>
       <div class="edit-setting-actions-footer">
-        <Button label="Valider" onClick={onClickSaveEdit} />
+        <Button label="Enregistrer" onClick={onClickSaveEdit} />
       </div>
     </Show>
   );

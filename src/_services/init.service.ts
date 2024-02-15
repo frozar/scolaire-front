@@ -94,14 +94,9 @@ export namespace InitService {
     setServices(services);
 
     const settings = dbInit.settings;
-    setSettings((prev) =>
-      [...prev].map((setting) => {
-        const retrievedSetting = settings.find(
-          (setting_) => setting_.setting == setting.setting
-        );
-        return retrievedSetting ?? setting;
-      })
-    );
+    setSettings(settings);
+    // setBufferSettings(settings);
+
     return { schools, stops, busLines };
   }
 }
