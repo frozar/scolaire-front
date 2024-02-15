@@ -8,8 +8,6 @@ interface SettingItemProps {
   settingName: SettingsEnum;
 }
 
-// * To add setting:
-// * add switch matching into getSettingTitle & getSettingCallback for the new setting
 export function SettingItem(props: SettingItemProps) {
   return (
     <div class="setting-item">
@@ -22,7 +20,7 @@ export function SettingItem(props: SettingItemProps) {
           )?.setting.toString() as string
         }
         selector={{
-          value: SettingUtils.getSetting(props.settingName)?.value as number,
+          value: Number(SettingUtils.getSetting(props.settingName)?.value),
           disabled: false,
         }}
         onChange={(element) =>

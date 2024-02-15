@@ -17,17 +17,18 @@ export namespace SettingUtils {
 
   export async function updateSettings() {
     enableSpinningWheel();
-    setSettings(await SettingService.update(bufferSettings()));
+    setSettings(await SettingService.update(bufferSettings() as SettingType[]));
     disableSpinningWheel();
   }
 
   export function updateBufferSettings(setting: SettingType) {
-    setBufferSettings((prev) =>
-      [...prev].map((setting_) => {
+    setBufferSettings((prev) => {
+      if (!prev) return prev;
+      return [...prev].map((setting_) => {
         if (setting_.setting == setting.setting) setting_.value = setting.value;
         return setting_;
-      })
-    );
+      });
+    });
   }
 
   export function onChangeWaitingTime(element: HTMLInputElement) {
@@ -50,8 +51,6 @@ export namespace SettingUtils {
     setting: SettingsEnum,
     htmlElement?: HTMLElement | HTMLInputElement
   ) {
-    console.log(setting, htmlElement);
-
     switch (setting) {
       case SettingsEnum.waintingTime:
         return onChangeWaitingTime(htmlElement as HTMLInputElement);

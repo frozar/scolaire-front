@@ -8,8 +8,9 @@ export const [getSettings, setSettings] = createSignal<SettingType[]>([]);
 export const [bufferSettings, setBufferSettings] =
   createSignal<SettingType[]>();
 
-// * To add a setting:
-// * append enum in SettingsEnum & got to SettingItem component
+// * To add a new setting:
+// * in xano on create map endpoint add the new setting with add record, then into the frontend
+// * add switch matching into getSettingTitle & getSettingCallback for the new setting
 export function Settings() {
   createEffect(
     on(getSettings, () => setBufferSettings(_.cloneDeep(getSettings())))

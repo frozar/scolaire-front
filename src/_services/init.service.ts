@@ -95,7 +95,6 @@ export namespace InitService {
 
     const settings = dbInit.settings;
     setSettings(settings);
-    // setBufferSettings(settings);
 
     return { schools, stops, busLines };
   }
