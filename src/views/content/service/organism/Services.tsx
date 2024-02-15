@@ -107,15 +107,28 @@ export function Services(): JSXElement {
             service.serviceTripsOrdered[serviceTripIndex - 1].endHour + hlp;
 
           // Case 2 : Earliest arrival in arrival time range
-          // TODO: Factoriser les conditions => cond1() ; cond2()
-          if (
-            (tripDirection == TripDirectionEnum.going &&
+          function case2ConditionComing(): boolean {
+            return (
+              tripDirection == TripDirectionEnum.going &&
               minTimeOfTimeRange <= earliestEndHour &&
-              earliestEndHour <= maxTimeOfTimeRange) ||
-            (tripDirection == TripDirectionEnum.coming &&
+              earliestEndHour <= maxTimeOfTimeRange
+            );
+          }
+
+          function case2ConditionGoing(): boolean {
+            return (
+              tripDirection == TripDirectionEnum.coming &&
               minTimeOfTimeRange <= earliestDepartureHour &&
-              earliestDepartureHour <= maxTimeOfTimeRange)
-          ) {
+              earliestDepartureHour <= maxTimeOfTimeRange
+            );
+          }
+
+          if (case2ConditionComing() || case2ConditionGoing()) {
+            service.serviceTripsOrdered.push({
+              tripId,
+              hlp,
+              endHour: earliestEndHour,
+            });
           }
           // if (minArrivalTime <= endHour && endHour <= maxArrivalTime) {
           //   service.serviceTripsOrdered.push({
