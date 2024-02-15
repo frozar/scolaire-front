@@ -252,9 +252,9 @@ export namespace ServiceGridUtils {
     serviceTrip: ServiceTripType,
     serviceId: number,
     i: number
-  ): string {
+  ): number {
     // hlpMatrix() is setted asynchronously
-    if (Object.keys(hlpMatrix()).length == 0) return "0px";
+    if (Object.keys(hlpMatrix()).length == 0) return 0;
 
     const serviceTrips = BusServiceUtils.get(serviceId).serviceTrips;
     const idPreviousTrip = serviceTrips[i - 1].tripId;
@@ -266,7 +266,7 @@ export namespace ServiceGridUtils {
     if (hlpDuration != serviceTrip.hlp)
       BusServiceUtils.updateHlp(serviceId, idActualTrip, hlpDuration);
 
-    return String(hlpDuration * zoom()) + "px";
+    return hlpDuration;
   }
 
   export function removeTrip(

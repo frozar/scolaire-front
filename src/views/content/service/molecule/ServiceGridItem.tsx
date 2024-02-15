@@ -6,20 +6,18 @@ import "./ServiceGridItem.css";
 import { ServiceGridTripItem } from "./ServiceGridTripItem";
 
 interface ServiceGridItemProps {
+  // TODO: Delete useless ones
   serviceTrip: ServiceTripType;
   serviceId: number;
   serviceTripIndex: number;
+  hlpWidth: number;
 }
 
 export function ServiceGridItem(props: ServiceGridItemProps): JSXElement {
   return (
     <div class="service-grid-item">
       <Show when={props.serviceTripIndex != 0}>
-        <ServiceGridHlp
-          serviceTripIndex={props.serviceTripIndex}
-          serviceId={props.serviceId}
-          serviceTrip={props.serviceTrip}
-        />
+        <ServiceGridHlp width={props.hlpWidth} />
       </Show>
 
       <ServiceGridTripItem
