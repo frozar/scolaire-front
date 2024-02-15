@@ -1,27 +1,30 @@
-import { createSignal } from "solid-js";
+import { Accessor, Show } from "solid-js";
 import { StopType } from "../../../../../_entities/stop.entity";
 import PencilIcon from "../../../../../icons/PencilIcon";
+import { StopUtils } from "../../../../../utils/stop.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import "./StopDetailsHeader.css";
 
-export default function (props: { stop: StopType }) {
-  const [inputRef, setInputRef] = createSignal<HTMLInputElement>();
-  const [editStopName, setEditStopName] = createSignal<boolean>(true);
-  const editName = () => {
-    setEditStopName((bool) => !bool);
-    inputRef()?.focus();
-  };
-
+interface StopDetailsHeaderProps {
+  stop: StopType;
+  editing: Accessor<boolean>;
+  toggleEditing: () => void;
+}
+export function StopDetailsHeader(props: StopDetailsHeaderProps) {
   return (
     <header class="stop-details-header">
       <input
         type="text"
         value={props.stop?.name}
-        ref={setInputRef}
-        disabled={editStopName()}
+        disabled={!props.editing()}
         class="input-title"
+        onChange={(element) =>
+          StopUtils.updateStopDetailsItem({ name: element.target.value })
+        }
       />
-      <ButtonIcon icon={<PencilIcon />} onClick={editName} />
+      <Show when={!props.editing()}>
+        <ButtonIcon icon={<PencilIcon />} onClick={props.toggleEditing} />
+      </Show>
     </header>
   );
 }

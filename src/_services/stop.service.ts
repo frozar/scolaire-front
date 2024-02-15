@@ -1,4 +1,5 @@
 import { StopDBType, StopEntity, StopType } from "../_entities/stop.entity";
+import { disableSpinningWheel, enableSpinningWheel } from "../signaux";
 import { importItemDBType } from "../utils/csv.utils";
 import { ServiceUtils } from "./_utils.service";
 
@@ -22,17 +23,14 @@ export class StopService {
     return StopEntity.build(dbStop);
   }
 
-  static async update(
-    stop: Omit<
-      StopType,
-      "associated" | "selected" | "setSelected" | "nature" | "leafletId"
-    >
-  ): Promise<StopType> {
+  static async update(stop: Partial<StopType>): Promise<StopType> {
+    enableSpinningWheel();
     const data = StopEntity.dbFormat(stop);
     const dbStop: StopDBType = await ServiceUtils.patch(
       "/stop/" + stop.id,
       data
     );
+    disableSpinningWheel();
     if (dbStop == null) return dbStop;
     return StopEntity.build(dbStop);
   }

@@ -1,18 +1,16 @@
-import { Match, Show, Switch, createSignal, onMount } from "solid-js";
+import { Show, createSignal, onMount } from "solid-js";
 import { StopType } from "../../../../../_entities/stop.entity";
-import { TripEntity } from "../../../../../_entities/trip.entity";
-import PlusIcon from "../../../../../icons/PlusIcon";
 import { MapElementUtils } from "../../../../../utils/mapElement.utils";
-import { QuantityUtils } from "../../../../../utils/quantity.utils";
-import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
+import { StopUtils } from "../../../../../utils/stop.utils";
+import BoardFooterActions from "../../../board/component/molecule/BoardFooterActions";
 import { changeBoard } from "../../../board/component/template/ContextManager";
 import { getStops } from "../../../map/component/organism/StopPoints";
-import { TripsList } from "../../../schools/component/organism/TripsList";
-import EditStudentSchoolGradeItem from "../molecul/EditStudentSchoolGradeItem";
-import StopDetailsHeader from "../molecul/StopDetailsHeader";
-import StopDetailsPanelsButton from "../molecul/StopDetailsPanelsButton";
+import { RemainingStudentInformation } from "../atom/RemainingStudentInformation";
+import { StopActionsPanelsButtons } from "../molecul/StopActionsPanelsButtons";
+import { StopDetailsHeader } from "../molecul/StopDetailsHeader";
+import { WaitingTimeInput } from "../molecul/WaitingTimeInput";
+import { StopContentPanels } from "./StopContentPanels";
 import "./StopDetails.css";
-import StudentSchoolGradeList from "./StudentSchoolGradeList";
 
 export const [stopDetailsItem, setStopDetailsItem] = createSignal<StopType>();
 
@@ -38,6 +36,7 @@ export enum StopPanels {
 export default function () {
   const [onPanel, setOnPanel] = createSignal<StopPanels>(StopPanels.grades);
   const [editItem, setEditItem] = createSignal<boolean>(false);
+  const [addQuantity, setAddQuantity] = createSignal<boolean>(false);
 
   onMount(() => {
     if (stopDetailsItem() == undefined) {
@@ -46,51 +45,64 @@ export default function () {
     }
   });
 
-  const toggleEditItem = () => setEditItem((bool) => !bool);
+  function toggleEditItem() {
+    setEditItem((bool) => !bool);
+  }
+  const toggleInAddQuantity = () => setAddQuantity((prev) => !prev);
+
+  function onChangeWaitingTime(element: HTMLInputElement) {
+    StopUtils.updateStopDetailsItem({ waitingTime: Number(element.value) });
+  }
 
   return (
     <section>
-      <StopDetailsHeader stop={stopDetailsItem() as StopType} />
+      <StopDetailsHeader
+        stop={stopDetailsItem() as StopType}
+        editing={editItem}
+        toggleEditing={toggleEditItem}
+      />
 
-      <Show
-        when={QuantityUtils.stopHasRemainingStudentToGet(
-          stopDetailsItem()?.id as number
-        )}
-      >
-        Des élèves restants sont à récuperés
-      </Show>
+      <WaitingTimeInput
+        onChange={onChangeWaitingTime}
+        selector={{
+          disabled: !editItem(),
+          value: stopDetailsItem()?.waitingTime as number,
+        }}
+      />
 
-      <div class="stop-details-actions">
-        <StopDetailsPanelsButton
+      <Show when={!editItem()}>
+        <RemainingStudentInformation />
+
+        <StopActionsPanelsButtons
           onPanel={onPanel}
           setOnPanel={setOnPanel}
-          NbSchool={stopDetailsItem()?.associated.length as number}
-          NbTrips={
-            TripEntity.getStopTrips(stopDetailsItem()?.id as number).length
-          }
+          toggleInAddQuantity={toggleInAddQuantity}
         />
 
-        <Show when={onPanel() == "grades"}>
-          <ButtonIcon icon={<PlusIcon />} onClick={toggleEditItem} />
-        </Show>
-      </div>
-
-      <div class="content mt-2">
-        <Switch>
-          <Match when={onPanel() == StopPanels.grades}>
-            <StudentSchoolGradeList stop={stopDetailsItem() as StopType} />
-
-            <Show when={editItem()}>
-              <EditStudentSchoolGradeItem close={toggleEditItem} />
-            </Show>
-          </Match>
-          <Match when={onPanel() == StopPanels.trips}>
-            <TripsList
-              trips={TripEntity.getStopTrips(stopDetailsItem()?.id as number)}
-            />
-          </Match>
-        </Switch>
-      </div>
+        <StopContentPanels
+          onPanel={onPanel}
+          setOnPanel={setOnPanel}
+          inAddQuantity={addQuantity}
+          toggleEditItem={toggleEditItem}
+        />
+      </Show>
+      <Show when={editItem()}>
+        <BoardFooterActions
+          previousStep={{
+            callback: () => toggleEditItem(),
+            label: "annuler",
+          }}
+          nextStep={{
+            callback: async () => {
+              const response = await StopUtils.update(
+                stopDetailsItem() as StopType
+              );
+              if (response) toggleEditItem();
+            },
+            label: "enregistrer",
+          }}
+        />
+      </Show>
     </section>
   );
 }
