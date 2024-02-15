@@ -1,5 +1,6 @@
-import { AddTableLine } from "../molecule/AddTableLine";
-import { TableHeader } from "../molecule/TableHeader";
+import { TableContent } from "../../../../component/table/molecule/TableContent";
+import { Table } from "../../../../component/table/organism/Table";
+import { TableHeaderBus } from "../molecule/TableHeaderBus";
 import { TableRows } from "../molecule/TableRows";
 import { BusCategoryType } from "./Bus";
 import "./Bus.css";
@@ -10,12 +11,11 @@ interface BusTableProps {
 
 export function BusTable(props: BusTableProps) {
   return (
-    <table class="busTable">
-      <TableHeader />
-      <tbody>
-        <AddTableLine />
+    <Table>
+      <TableHeaderBus />
+      <TableContent>
         <TableRows busList={props.busList} />
-      </tbody>
-    </table>
+      </TableContent>
+    </Table>
   );
 }

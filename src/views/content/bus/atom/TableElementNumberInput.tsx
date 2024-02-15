@@ -1,3 +1,4 @@
+import { TableDataChilds } from "../../../../component/table/molecule/TableDataChilds";
 import "./TableElement.css";
 
 interface TableElementNumberInputProps {
@@ -7,12 +8,12 @@ interface TableElementNumberInputProps {
 
 export function TableElementNumberInput(props: TableElementNumberInputProps) {
   return (
-    <td class="tableEdit">
+    <TableDataChilds>
       <input
         type="Number"
         value={props.defaultValue}
         onChange={(e) => props.onChangeFunction(Number(e.target.value))}
       />
-    </td>
+    </TableDataChilds>
   );
 }
