@@ -38,14 +38,14 @@ export namespace SettingUtils {
 
   export function onChangeWaitingTime(element: HTMLInputElement) {
     SettingUtils.updateBufferSettings({
-      setting: SettingsEnum.waintingTime,
+      setting: SettingsEnum.waitingTime,
       value: element.value ? element.value : "0",
     });
   }
 
   export function getSettingTitle(setting: SettingsEnum) {
     switch (setting) {
-      case SettingsEnum.waintingTime:
+      case SettingsEnum.waitingTime:
         return "Temps d'attente";
       default:
         return "";
@@ -57,7 +57,7 @@ export namespace SettingUtils {
     htmlElement?: HTMLElement | HTMLInputElement
   ) {
     switch (setting) {
-      case SettingsEnum.waintingTime:
+      case SettingsEnum.waitingTime:
         return onChangeWaitingTime(htmlElement as HTMLInputElement);
     }
   }

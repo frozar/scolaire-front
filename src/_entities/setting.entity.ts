@@ -1,5 +1,5 @@
 export enum SettingsEnum {
-  waintingTime = "waitingTime",
+  waitingTime = "waitingTime",
 }
 
 export type SettingType = {

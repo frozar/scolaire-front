@@ -4,7 +4,7 @@ import { SettingItem } from "../molecule/SettingItem";
 
 export function TravelTimeSettings() {
   // * To append settings in Travel Time section please add the setting from SettingsEnum into travedTime var
-  const travelTime = [SettingsEnum.waintingTime];
+  const travelTime = [SettingsEnum.waitingTime];
 
   return (
     <For each={Object.values(travelTime)}>
