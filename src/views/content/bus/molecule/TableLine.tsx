@@ -1,11 +1,13 @@
 import { createSignal, Show } from "solid-js";
 import { BusService } from "../../../../_services/bus.service";
+import { TableData } from "../../../../component/table/atom/TableData";
+import { TableDataChilds } from "../../../../component/table/molecule/TableDataChilds";
+import { TableRow } from "../../../../component/table/molecule/TableRow";
 import CheckIcon from "../../../../icons/CheckIcon";
 import { CircleCrossIcon } from "../../../../icons/CircleCrossIcon";
 import { addNewUserInformation } from "../../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../../type";
 import ButtonIcon from "../../board/component/molecule/ButtonIcon";
-import { TableElement } from "../atom/TableElement";
 import { TableElementInput } from "../atom/TableElementInput";
 import { TableElementNumberInput } from "../atom/TableElementNumberInput";
 import { BusCategoryType } from "../organism/Bus";
@@ -20,6 +22,9 @@ export function TableLine(props: TableLineProps) {
   const [isInEditMode, setisInEditMode] = createSignal(false);
 
   // eslint-disable-next-line solid/reactivity
+  const [getName, setName] = createSignal(props.busItem.name);
+
+  // eslint-disable-next-line solid/reactivity
   const [getCategory, setCategory] = createSignal(props.busItem.category);
 
   // eslint-disable-next-line solid/reactivity
@@ -32,6 +37,7 @@ export function TableLine(props: TableLineProps) {
   async function updateButton() {
     await BusService.update({
       id: props.busItem.id,
+      name: getName(),
       category: getCategory(),
       capacity: getCapacity(),
     });
@@ -64,11 +70,16 @@ export function TableLine(props: TableLineProps) {
     setCategory(value);
   }
 
+  function onNameInputChanged(value: string) {
+    setName(value);
+  }
+
   return (
     <Show
       when={isInEditMode()}
       fallback={
         <TableLineDisplayData
+          name={getName()}
           category={getCategory()}
           capacity={getCapacity()}
           toggleEditFunction={toggleEditMode}
@@ -76,7 +87,12 @@ export function TableLine(props: TableLineProps) {
         />
       }
     >
-      <tr class="tableRowEditing">
+      <TableRow active={true}>
+        <TableElementInput
+          defaultValue={getName()}
+          onInputFunction={onNameInputChanged}
+          placeholder="Entrer le nom du bus"
+        />
         <TableElementInput
           defaultValue={getCategory()}
           onInputFunction={onCategoryInputChanged}
@@ -86,13 +102,13 @@ export function TableLine(props: TableLineProps) {
           defaultValue={getCapacity()}
           onChangeFunction={setCapacity}
         />
-        <TableElement text="-" />
-        <TableElement text="-" />
-        <td class="actionButtonContainer">
+        <TableData text="-" />
+        <TableData text="-" />
+        <TableDataChilds end={true}>
           <ButtonIcon icon={<CheckIcon />} onClick={updateButton} />
           <ButtonIcon icon={<CircleCrossIcon />} onClick={cancelButton} />
-        </td>
-      </tr>
+        </TableDataChilds>
+      </TableRow>
     </Show>
   );
 }
