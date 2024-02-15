@@ -1,8 +1,8 @@
 import { Accessor, Show } from "solid-js";
 import { StopType } from "../../../../../_entities/stop.entity";
 import PencilIcon from "../../../../../icons/PencilIcon";
+import { StopUtils } from "../../../../../utils/stop.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
-import { setStopDetailsItem } from "../organism/StopDetails";
 import "./StopDetailsHeader.css";
 
 interface StopDetailsHeaderProps {
@@ -11,15 +11,6 @@ interface StopDetailsHeaderProps {
   toggleEditing: () => void;
 }
 export function StopDetailsHeader(props: StopDetailsHeaderProps) {
-  function updateStopDetailsItemName(
-    event: Event & { target: HTMLInputElement }
-  ) {
-    setStopDetailsItem((prev) => {
-      if (!prev) return prev;
-      return { ...prev, name: event.target.value };
-    });
-  }
-
   return (
     <header class="stop-details-header">
       <input
@@ -27,7 +18,9 @@ export function StopDetailsHeader(props: StopDetailsHeaderProps) {
         value={props.stop?.name}
         disabled={!props.editing()}
         class="input-title"
-        onChange={updateStopDetailsItemName}
+        onChange={(element) =>
+          StopUtils.updateStopDetailsItem({ name: element.target.value })
+        }
       />
       <Show when={!props.editing()}>
         <ButtonIcon icon={<PencilIcon />} onClick={props.toggleEditing} />
