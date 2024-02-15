@@ -1,0 +1,3 @@
+.settings-header {
+  @apply flex justify-between;
+}

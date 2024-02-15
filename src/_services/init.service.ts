@@ -11,6 +11,7 @@ import {
   SchoolType,
 } from "../_entities/school.entity";
 import { ServiceDBType, ServiceEntity } from "../_entities/service.entity";
+import { SettingType } from "../_entities/setting.entity";
 import { StopDBType, StopEntity, StopType } from "../_entities/stop.entity";
 import {
   TripDirectionType,
@@ -26,6 +27,7 @@ import { setCalendarsPeriod } from "../views/content/calendar/template/Calendar"
 import { setLines } from "../views/content/map/component/organism/BusLines";
 import { setSchools } from "../views/content/map/component/organism/SchoolPoints";
 import { setStops } from "../views/content/map/component/organism/StopPoints";
+import { setSettings } from "../views/content/parameters/organism/Settings";
 import { setServices } from "../views/content/service/organism/Services";
 import { ServiceUtils } from "./_utils.service";
 
@@ -39,6 +41,7 @@ type InitDBType = {
   services: ServiceDBType[];
   bus_categories: BusCategoryType[];
   allotment: AllotmentType[];
+  settings: SettingType[];
 };
 
 export type InitType = {
@@ -89,6 +92,9 @@ export namespace InitService {
     );
 
     setServices(services);
+
+    const settings = dbInit.settings;
+    setSettings(settings);
 
     return { schools, stops, busLines };
   }
