@@ -20,7 +20,7 @@ import { TripUtils } from "./trip.utils";
 export type HlpMatrixType = {
   /*
   
-  hlpMatrix contains hlp durations between 
+  hlpMatrix contains hlp durations between
     start of sourceTrip and end of targetTrip
   
   The keys of each dict correspond to the tripId
@@ -117,6 +117,7 @@ export namespace ServiceGridUtils {
     );
   }
 
+  // TODO: Rename getTripDuration and comment that it returns minutes
   export function getTripWidth(tripId: number): number {
     return Math.round((TripUtils.get(tripId).metrics?.duration as number) / 60);
   }
@@ -247,6 +248,32 @@ export namespace ServiceGridUtils {
     }
   }
 
+  export function getLatestArrival(tripId: number): number {
+    /* return minutes */
+
+    const firstTrip = TripUtils.get(tripId);
+
+    const direction = TripDirectionEntity.FindDirectionById(
+      firstTrip.tripDirectionId
+    ).type;
+
+    // TODO: Fix
+    // ! Carreful here TripDirectionEnum.coming correspond to
+    // ! startHourGoing
+    if (direction == TripDirectionEnum.coming) {
+      return (
+        (firstTrip.schools[0].hours.endHourGoing?.hour as number) * 60 +
+        (firstTrip.schools[0].hours.endHourGoing?.minutes as number)
+      );
+    } else {
+      return (
+        (firstTrip.schools[0].hours.endHourComing?.hour as number) * 60 +
+        (firstTrip.schools[0].hours.endHourComing?.minutes as number)
+      );
+    }
+  }
+
+  // TODO: Delete ?
   export function updateAndGetHlpWidth(
     serviceTrip: ServiceTripType,
     serviceId: number,
@@ -266,6 +293,21 @@ export namespace ServiceGridUtils {
       BusServiceUtils.updateHlp(serviceId, idActualTrip, hlpDuration);
 
     return hlpDuration;
+  }
+
+  export function getHlpDuration(
+    serviceTrips: ServiceTripType[],
+    serviceTripIndex: number
+  ): number {
+    /* Return minutes */
+
+    // hlpMatrix() is setted asynchronously
+    if (Object.keys(hlpMatrix()).length == 0) return 0;
+
+    const idPreviousTrip = serviceTrips[serviceTripIndex - 1].tripId;
+    const idActualTrip = serviceTrips[serviceTripIndex].tripId;
+
+    return hlpMatrix()[idActualTrip][idPreviousTrip];
   }
 
   export function removeTrip(

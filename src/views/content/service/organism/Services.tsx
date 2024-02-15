@@ -3,7 +3,12 @@ import { JSXElement, createEffect, createSignal, on, onMount } from "solid-js";
 import { ServiceGrid } from "./ServiceGrid";
 import { ServiceList } from "./ServiceList";
 
+import {
+  TripDirectionEntity,
+  TripDirectionEnum,
+} from "../../../../_entities/trip-direction.entity";
 import { ServiceGridUtils } from "../../../../utils/serviceGrid.utils";
+import { TripUtils } from "../../../../utils/trip.utils";
 import { ServiceGridButtons } from "../molecule/ServiceGridButtons";
 import { selectedService } from "../template/ServiceTemplate";
 import "./Service.css";
@@ -43,6 +48,91 @@ export function Services(): JSXElement {
       );
     })
   );
+
+  createEffect(() => {
+    /* React on services() and hlpMatrix() */
+
+    const _services = _.cloneDeep(services());
+
+    const serviceTripIds = _services
+      .flatMap((service) => service.serviceTrips)
+      .map((serviceTrip) => serviceTrip.tripId);
+
+    const serviceTripOrderedIds = _services
+      .flatMap((service) => service.serviceTripsOrdered)
+      .map((serviceTrip) => serviceTrip.tripId);
+
+    // Avoiding infinite loop
+    if (!_.isEqual(serviceTripIds, serviceTripOrderedIds)) {
+      for (const service of _services) {
+        service.serviceTripsOrdered = [];
+
+        for (const serviceTripIndex of [
+          ...Array(service.serviceTrips.length).keys(),
+        ]) {
+          const tripId = service.serviceTrips[serviceTripIndex].tripId;
+          const tripDuration = ServiceGridUtils.getTripWidth(tripId);
+          const tripDirection = TripDirectionEntity.FindDirectionById(
+            TripUtils.get(tripId).tripDirectionId
+          ).type;
+          const minTimeOfTimeRange =
+            ServiceGridUtils.getEarliestArrival(tripId);
+
+          // Case 1 : First serviceTrip
+          if (serviceTripIndex == 0) {
+            service.serviceTripsOrdered.push({
+              tripId: tripId,
+              hlp: 0,
+              endHour:
+                tripDirection == TripDirectionEnum.going
+                  ? minTimeOfTimeRange
+                  : minTimeOfTimeRange + tripDuration,
+            });
+            continue;
+          }
+
+          const hlp = ServiceGridUtils.getHlpDuration(
+            service.serviceTrips,
+            serviceTripIndex
+          );
+
+          const maxTimeOfTimeRange = ServiceGridUtils.getLatestArrival(tripId);
+
+          const earliestEndHour =
+            service.serviceTripsOrdered[serviceTripIndex - 1].endHour +
+            hlp +
+            tripDuration;
+
+          const earliestDepartureHour =
+            service.serviceTripsOrdered[serviceTripIndex - 1].endHour + hlp;
+
+          // Case 2 : Earliest arrival in arrival time range
+          // TODO: Factoriser les conditions => cond1() ; cond2()
+          if (
+            (tripDirection == TripDirectionEnum.going &&
+              minTimeOfTimeRange <= earliestEndHour &&
+              earliestEndHour <= maxTimeOfTimeRange) ||
+            (tripDirection == TripDirectionEnum.coming &&
+              minTimeOfTimeRange <= earliestDepartureHour &&
+              earliestDepartureHour <= maxTimeOfTimeRange)
+          ) {
+          }
+          // if (minArrivalTime <= endHour && endHour <= maxArrivalTime) {
+          //   service.serviceTripsOrdered.push({
+          //     tripId,
+          //     hlp,
+          //     endHour,
+          //   });
+          //   continue;
+          // }
+
+          // Case 3 : Earliest arrival before earliest time range arrival
+        }
+        console.log("service", service);
+      }
+      // * Save in services()
+    }
+  });
 
   onMount(() => {
     setServicesBeforeModification(_.cloneDeep(services()));
