@@ -6,10 +6,10 @@ import "./ServiceGridItem.css";
 import { ServiceGridTripItem } from "./ServiceGridTripItem";
 
 interface ServiceGridItemProps {
+  serviceTripIndex: number;
   // TODO: Delete useless ones
   serviceTrip: ServiceTripType;
   serviceId: number;
-  serviceTripIndex: number;
   hlpWidth: number;
 }
 

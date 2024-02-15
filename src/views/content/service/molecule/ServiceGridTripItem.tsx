@@ -18,15 +18,6 @@ interface ServiceGridTripItemProps {
 export function ServiceGridTripItem(
   props: ServiceGridTripItemProps
 ): JSXElement {
-  function removeTripFromService(tripId: number): void {
-    setServices((prev) => {
-      const services = [...prev];
-
-      ServiceGridUtils.removeTrip(services, tripId);
-
-      return services;
-    });
-  }
   return (
     <div
       class="service-grid-item-trip"
@@ -55,4 +46,14 @@ export function ServiceGridTripItem(
       </Show>
     </div>
   );
+}
+
+function removeTripFromService(tripId: number): void {
+  setServices((prev) => {
+    const services = [...prev];
+
+    ServiceGridUtils.removeTrip(services, tripId);
+
+    return services;
+  });
 }
