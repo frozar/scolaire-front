@@ -4,6 +4,7 @@ import { ServiceGridUtils } from "../../../../utils/serviceGrid.utils";
 import { TripUtils } from "../../../../utils/trip.utils";
 import ButtonIcon from "../../board/component/molecule/ButtonIcon";
 import { ServiceGridItemStartEndStopNames } from "../atom/ServiceGridItemStartEndStopNames";
+import { ServiceGridItemTripName } from "../atom/ServiceGridItemTripName";
 import { ServiceGridTripItemHours } from "../atom/ServiceGridTripItemHours";
 import { ServiceTripType, setServices } from "../organism/Services";
 import { selectedService } from "../template/ServiceTemplate";
@@ -25,9 +26,12 @@ export function ServiceGridTripItem(
         width: ServiceGridUtils.getTripWidth(props.serviceTrip.tripId),
       }}
     >
-      <div class="service-grid-item-trip-name">
+      <ServiceGridItemTripName
+        name={TripUtils.get(props.serviceTrip.tripId).name}
+      />
+      {/* <div class="service-grid-item-trip-name">
         {TripUtils.get(props.serviceTrip.tripId).name}
-      </div>
+      </div> */}
 
       <ServiceGridItemStartEndStopNames tripId={props.serviceTrip.tripId} />
 
