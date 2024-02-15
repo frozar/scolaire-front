@@ -11,7 +11,10 @@ export function SettingEditActions() {
 
   createEffect(
     on(bufferSettings, () => {
-      if (!_.isEqual(bufferSettings(), getSettings()))
+      if (
+        !_.isEqual(bufferSettings(), getSettings()) &&
+        SettingUtils.isValidSetting()
+      )
         setIsSettingEditing(true);
       else setIsSettingEditing(false);
     })

@@ -14,11 +14,7 @@ export function SettingItem(props: SettingItemProps) {
       <p>{SettingUtils.getSettingTitle(props.settingName)}</p>
 
       <InputNumber
-        placeholder={
-          SettingUtils.getSetting(
-            props.settingName
-          )?.setting.toString() as string
-        }
+        placeholder={SettingUtils.getSettingTitle(props.settingName)}
         selector={{
           value: Number(SettingUtils.getSetting(props.settingName)?.value),
           disabled: false,

@@ -17,7 +17,12 @@ export namespace SettingUtils {
 
   export async function updateSettings() {
     enableSpinningWheel();
-    setSettings(await SettingService.update(bufferSettings() as SettingType[]));
+    console.log("before update:", bufferSettings());
+
+    const data = await SettingService.update(bufferSettings() as SettingType[]);
+    console.log("data:", data);
+
+    setSettings(data);
     disableSpinningWheel();
   }
 
@@ -34,7 +39,7 @@ export namespace SettingUtils {
   export function onChangeWaitingTime(element: HTMLInputElement) {
     SettingUtils.updateBufferSettings({
       setting: SettingsEnum.waintingTime,
-      value: element.value,
+      value: element.value ? element.value : "0",
     });
   }
 
@@ -55,5 +60,13 @@ export namespace SettingUtils {
       case SettingsEnum.waintingTime:
         return onChangeWaitingTime(htmlElement as HTMLInputElement);
     }
+  }
+
+  export function isValidSetting() {
+    let isValid = true;
+    bufferSettings()?.map((setting) => {
+      if (!setting.value) isValid = false;
+    });
+    return isValid;
   }
 }
