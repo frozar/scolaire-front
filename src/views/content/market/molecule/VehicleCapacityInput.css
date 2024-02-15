@@ -1,0 +1,7 @@
+.vehicle-capacity-container {
+  @apply grid my-3;
+}
+
+.vehicle-capacity-input {
+  @apply max-w-xs border-2;
+}

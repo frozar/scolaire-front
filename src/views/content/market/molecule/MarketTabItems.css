@@ -1,0 +1,7 @@
+.market-tab-items {
+  @apply flex gap-4;
+}
+
+.vehicle-tab-container {
+  @apply pt-6 px-6;
+}

@@ -1,0 +1,3 @@
+.vehicle-name-input {
+  @apply max-w-xs;
+}
