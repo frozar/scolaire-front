@@ -1,5 +1,5 @@
 import { For, JSXElement } from "solid-js";
-import { ServiceTripType, services } from "./Services";
+import { services } from "./Services";
 
 import { ServiceGridUtils } from "../../../../utils/serviceGrid.utils";
 import { ServiceGridLineFirstDiv } from "../atom/ServiceGridLineFirstDiv";
@@ -30,22 +30,14 @@ export function ServiceGridLine(props: ServiceGridLineProps): JSXElement {
             serviceId={services()[props.serviceIndex].id}
             serviceTrip={serviceTrip}
             serviceTripIndex={i()}
-            hlpWidth={hlpWidth(serviceTrip, props.serviceIndex, i())}
+            hlpWidth={ServiceGridUtils.updateAndGetHlpWidth(
+              serviceTrip,
+              services()[props.serviceIndex].id,
+              i()
+            )}
           />
         )}
       </For>
     </div>
-  );
-}
-
-function hlpWidth(
-  serviceTrip: ServiceTripType,
-  serviceIndex: number,
-  serviceTripIndex: number
-) {
-  return ServiceGridUtils.updateAndGetHlpWidth(
-    serviceTrip,
-    services()[serviceIndex].id,
-    serviceTripIndex
   );
 }
