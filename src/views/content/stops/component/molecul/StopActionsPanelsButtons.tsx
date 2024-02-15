@@ -8,7 +8,7 @@ import StopDetailsPanelsButton from "./StopDetailsPanelsButton";
 interface StopActionsPanelsButtonsProps {
   onPanel: Accessor<StopPanels>;
   setOnPanel: Setter<StopPanels>;
-  toggleEditItem: () => void;
+  toggleInAddQuantity: () => void;
 }
 
 export function StopActionsPanelsButtons(props: StopActionsPanelsButtonsProps) {
@@ -24,7 +24,7 @@ export function StopActionsPanelsButtons(props: StopActionsPanelsButtonsProps) {
       />
 
       <Show when={props.onPanel() == "grades"}>
-        <ButtonIcon icon={<PlusIcon />} onClick={props.toggleEditItem} />
+        <ButtonIcon icon={<PlusIcon />} onClick={props.toggleInAddQuantity} />
       </Show>
     </div>
   );

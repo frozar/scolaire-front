@@ -9,7 +9,7 @@ import StudentSchoolGradeList from "./StudentSchoolGradeList";
 interface StopContentPanelsProps {
   onPanel: Accessor<StopPanels>;
   setOnPanel: Setter<StopPanels>;
-  editItem: Accessor<boolean>;
+  inAddQuantity: Accessor<boolean>;
   toggleEditItem: () => void;
 }
 
@@ -20,7 +20,7 @@ export function StopContentPanels(props: StopContentPanelsProps) {
         <Match when={props.onPanel() == StopPanels.grades}>
           <StudentSchoolGradeList stop={stopDetailsItem() as StopType} />
 
-          <Show when={props.editItem()}>
+          <Show when={props.inAddQuantity()}>
             <EditStudentSchoolGradeItem close={props.toggleEditItem} />
           </Show>
         </Match>
