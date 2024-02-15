@@ -11,7 +11,7 @@ export function ServiceGridLineFirstDiv(
 ): JSXElement {
   return (
     <Show when={services()[props.serviceIndex].serviceTrips.length != 0}>
-      // TODO: TODO: Hide the div and remove it's text content
+      {/* TODO: TODO: Hide the div and remove it's text content */}
       <div
         class="service-grid-line-first-div"
         style={{ width: ServiceGridUtils.firstDivWidth(props.serviceIndex) }}
