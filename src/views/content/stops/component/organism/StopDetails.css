@@ -1,7 +1,3 @@
-.stop-details-header{
-  @apply flex justify-between my-5;
-}
-
-.stop-details-actions{
+.stop-details-actions {
   @apply flex justify-between my-4;
 }
