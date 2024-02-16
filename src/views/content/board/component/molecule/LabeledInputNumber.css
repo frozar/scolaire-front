@@ -1,0 +1,12 @@
+.labeled-input-number {
+  @apply grid mt-3;
+}
+
+.labeled-input {
+  @apply px-2 py-2 text-green-base italic text-sm border-b-[0.5px];
+  font-family: "Mulish";
+}
+
+.labeled-input:focus {
+  outline: none;
+}
