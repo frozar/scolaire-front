@@ -24,7 +24,7 @@ export default function () {
   const [addQuantity, setAddQuantity] = createSignal<boolean>(false);
 
   onMount(() => {
-    if (stopDetailsItem() == undefined) {
+    if (!stopDetailsItem()) {
       changeBoard("schools");
       MapElementUtils.deselectAllPointsAndBusTrips();
     }
@@ -68,7 +68,7 @@ export default function () {
           onPanel={onPanel}
           setOnPanel={setOnPanel}
           inAddQuantity={addQuantity}
-          toggleEditItem={toggleEditItem}
+          toggleInAddQuantity={toggleInAddQuantity}
         />
       </Show>
 

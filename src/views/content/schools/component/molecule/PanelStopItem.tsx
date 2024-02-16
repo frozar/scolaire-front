@@ -1,3 +1,4 @@
+import _ from "lodash";
 import { JSXElement } from "solid-js";
 import { StopType } from "../../../../../_entities/stop.entity";
 import CardTitle from "../../../../../component/atom/CardTitle";
@@ -7,7 +8,7 @@ import { setStopDetailsItem } from "../../../stops/component/organism/StopDetail
 
 export function PanelStopItem(props: { stop: StopType }): JSXElement {
   function onClick() {
-    setStopDetailsItem(props.stop);
+    setStopDetailsItem(_.cloneDeep(props.stop));
     changeBoard("stop-details");
   }
   // TODO: Display qty ?

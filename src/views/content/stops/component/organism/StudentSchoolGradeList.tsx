@@ -1,20 +1,33 @@
 import _ from "lodash";
-import { For } from "solid-js";
-import { StopType } from "../../../../../_entities/stop.entity";
+import { For, createEffect, createSignal, on } from "solid-js";
+import { AssociatedSchoolType } from "../../../../../_entities/_utils.entity";
 import { SchoolUtils } from "../../../../../utils/school.utils";
 import CollapsibleElement from "../../../board/component/organism/CollapsibleElement";
 import StudentSchoolGradeItem from "../molecul/StudentSchoolGradeItem";
+import { stopDetailsItem } from "./StopDetails";
 
-export default function (props: { stop: StopType }) {
+type GroupedAssociations = {
+  [schoolId: string]: AssociatedSchoolType[];
+};
+
+export default function () {
+  const [groupedAssociations, setGroupedAssociations] =
+    createSignal<GroupedAssociations>();
+
+  createEffect(on(stopDetailsItem, () => associatedSchools()));
+
   function associatedSchools() {
-    return _.groupBy(props.stop.associated, "schoolId");
+    setGroupedAssociations(
+      _.groupBy(stopDetailsItem()?.associated, "schoolId")
+    );
   }
 
+  createEffect(() => console.log(groupedAssociations()));
   return (
-    <For each={_.keys(associatedSchools())}>
+    <For each={_.keys(groupedAssociations())}>
       {(schoolId) => (
         <CollapsibleElement title={SchoolUtils.getName(Number(schoolId))}>
-          <For each={associatedSchools()[schoolId]}>
+          <For each={groupedAssociations()?.[schoolId]}>
             {(associatedSchool) => (
               <StudentSchoolGradeItem school={associatedSchool} />
             )}
