@@ -1,0 +1,7 @@
+.input-title {
+  @apply text-2xl font-semibold;
+}
+
+.input-title.active {
+  @apply border-b-[1px];
+}
