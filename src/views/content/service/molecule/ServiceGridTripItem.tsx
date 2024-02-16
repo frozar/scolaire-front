@@ -6,12 +6,12 @@ import ButtonIcon from "../../board/component/molecule/ButtonIcon";
 import { ServiceGridItemStartEndStopNames } from "../atom/ServiceGridItemStartEndStopNames";
 import { ServiceGridItemTripName } from "../atom/ServiceGridItemTripName";
 import { ServiceGridTripItemHours } from "../atom/ServiceGridTripItemHours";
-import { ServiceTripType, setServices } from "../organism/Services";
+import { ServiceTripOrderedType, setServices } from "../organism/Services";
 import { selectedService } from "../template/ServiceTemplate";
 import "./ServiceGridTripItem.css";
 
 interface ServiceGridTripItemProps {
-  serviceTrip: ServiceTripType;
+  serviceTrip: ServiceTripOrderedType;
   serviceId: number;
   serviceTripIndex: number;
   serviceTripWidth: number;
@@ -31,12 +31,18 @@ export function ServiceGridTripItem(
         name={TripUtils.get(props.serviceTrip.tripId).name}
       />
 
-      <ServiceGridItemStartEndStopNames tripId={props.serviceTrip.tripId} />
+      <ServiceGridItemStartEndStopNames
+        startName={ServiceGridUtils.getStartStopName(props.serviceTrip.tripId)}
+        endName={ServiceGridUtils.getEndStopName(props.serviceTrip.tripId)}
+      />
 
       <ServiceGridTripItemHours
-        serviceTripIndex={props.serviceTripIndex}
-        serviceTrip={props.serviceTrip}
-        serviceId={props.serviceId}
+        startHour={ServiceGridUtils.getStringHourFormatFromMinutes(
+          props.serviceTrip.startHour
+        )}
+        endHour={ServiceGridUtils.getStringHourFormatFromMinutes(
+          props.serviceTrip.endHour
+        )}
       />
 
       <Show when={selectedService() == props.serviceId}>

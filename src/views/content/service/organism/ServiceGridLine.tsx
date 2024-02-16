@@ -1,4 +1,4 @@
-import { For, JSXElement } from "solid-js";
+import { For, JSXElement, Show } from "solid-js";
 import { services } from "./Services";
 
 import { ServiceGridUtils } from "../../../../utils/serviceGrid.utils";
@@ -12,7 +12,6 @@ interface ServiceGridLineProps {
   width: string;
 }
 
-// TODO: Fix and clean
 export function ServiceGridLine(props: ServiceGridLineProps): JSXElement {
   return (
     <div
@@ -22,21 +21,25 @@ export function ServiceGridLine(props: ServiceGridLineProps): JSXElement {
         active: selectedService() == services()[props.serviceIndex].id,
       }}
     >
-      <ServiceGridLineFirstDiv serviceIndex={props.serviceIndex} />
+      <Show
+        when={services()[props.serviceIndex].serviceTripsOrdered.length != 0}
+      >
+        <ServiceGridLineFirstDiv
+          width={ServiceGridUtils.firstDivWidth(props.serviceIndex)}
+        />
+      </Show>
 
-      <For each={services()[props.serviceIndex].serviceTrips}>
-        {(serviceTrip, i) => (
-          <ServiceGridItem
-            serviceId={services()[props.serviceIndex].id}
-            serviceTrip={serviceTrip}
-            serviceTripIndex={i()}
-            hlpWidth={ServiceGridUtils.updateAndGetHlpWidth(
-              serviceTrip,
-              services()[props.serviceIndex].id,
-              i()
-            )}
-          />
-        )}
+      <For each={services()[props.serviceIndex].serviceTripsOrdered}>
+        {(serviceTrip, i) => {
+          return (
+            <ServiceGridItem
+              serviceId={services()[props.serviceIndex].id}
+              serviceTrip={serviceTrip}
+              serviceTripIndex={i()}
+              hlpWidth={serviceTrip.hlp}
+            />
+          );
+        }}
       </For>
     </div>
   );

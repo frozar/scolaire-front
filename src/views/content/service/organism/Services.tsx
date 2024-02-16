@@ -12,13 +12,16 @@ export type ServiceType = {
   id: number;
   name: string;
   serviceGroupId: number;
-  serviceTrips: ServiceTripType[];
+  tripIds: number[];
+  serviceTripsOrdered: ServiceTripOrderedType[];
 };
 
-export type ServiceTripType = {
+export type ServiceTripOrderedType = {
   tripId: number;
   hlp: number; // in minutes
   endHour: number; // in minutes
+  startHour: number; // in minutes
+  waitingTime: number; // in minutes
 };
 
 export const [services, setServices] = createSignal<ServiceType[]>([]);
@@ -46,8 +49,10 @@ export function Services(): JSXElement {
   onMount(() => {
     setServicesBeforeModification(_.cloneDeep(services()));
 
-    const firstServiceId = services()[0].id;
-    ServiceGridUtils.scrollToServiceStart(refScroll(), firstServiceId, false);
+    if (services().length > 0) {
+      const firstServiceId = services()[0].id;
+      ServiceGridUtils.scrollToServiceStart(refScroll(), firstServiceId, false);
+    }
   });
 
   return (

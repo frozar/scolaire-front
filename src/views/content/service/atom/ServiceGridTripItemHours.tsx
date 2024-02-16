@@ -1,12 +1,9 @@
 import { JSXElement } from "solid-js";
-import { ServiceGridUtils } from "../../../../utils/serviceGrid.utils";
-import { ServiceTripType } from "../organism/Services";
 import "./ServiceGridTripItemHours.css";
 
 interface ServiceGridTripItemHoursProps {
-  serviceTripIndex: number;
-  serviceTrip: ServiceTripType;
-  serviceId: number;
+  startHour: string;
+  endHour: string;
 }
 
 export function ServiceGridTripItemHours(
@@ -14,20 +11,8 @@ export function ServiceGridTripItemHours(
 ): JSXElement {
   return (
     <>
-      <div class="service-grid-item-trip-start-hour">
-        {ServiceGridUtils.getServiceTripStartHour(
-          props.serviceTripIndex,
-          props.serviceTrip,
-          props.serviceId
-        )}
-      </div>
-      <div class="service-grid-item-trip-end-hour">
-        {ServiceGridUtils.updateAndGetServiceEndHour(
-          props.serviceTripIndex,
-          props.serviceTrip,
-          props.serviceId
-        )}
-      </div>
+      <div class="service-grid-item-trip-start-hour">{props.startHour}</div>
+      <div class="service-grid-item-trip-end-hour">{props.endHour}</div>
     </>
   );
 }

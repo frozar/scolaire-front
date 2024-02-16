@@ -3,7 +3,7 @@ import {
   ServiceUpdateType,
 } from "../_services/service.service";
 import {
-  ServiceTripType,
+  ServiceTripOrderedType,
   ServiceType,
 } from "../views/content/service/organism/Services";
 
@@ -11,6 +11,8 @@ type ServiceTripDBType = {
   trip_id: number;
   hlp: number;
   end_hour: number;
+  start_hour: number;
+  waiting_time: number;
 };
 
 export type ServiceDBType = {
@@ -23,12 +25,14 @@ export type ServiceDBType = {
 export namespace ServiceEntity {
   function buildServiceTrip(
     dbServiceTrips: ServiceTripDBType[]
-  ): ServiceTripType[] {
-    return dbServiceTrips.map((serviceTrip) => {
+  ): ServiceTripOrderedType[] {
+    return dbServiceTrips.map((dbServiceTrip) => {
       return {
-        tripId: serviceTrip.trip_id,
-        hlp: serviceTrip.hlp,
-        endHour: serviceTrip.end_hour,
+        tripId: dbServiceTrip.trip_id,
+        hlp: dbServiceTrip.hlp,
+        endHour: dbServiceTrip.end_hour,
+        startHour: dbServiceTrip.start_hour,
+        waitingTime: dbServiceTrip.waiting_time,
       };
     });
   }
@@ -38,7 +42,10 @@ export namespace ServiceEntity {
       id: dbService.id,
       name: dbService.name,
       serviceGroupId: dbService.service_group_id,
-      serviceTrips: buildServiceTrip(dbService.service_trips),
+      serviceTripsOrdered: buildServiceTrip(dbService.service_trips),
+      tripIds: dbService.service_trips.map(
+        (serviceTrip) => serviceTrip.trip_id
+      ),
     };
   }
 
@@ -47,19 +54,21 @@ export namespace ServiceEntity {
       id: service.id,
       name: service.name,
       service_group_id: service.serviceGroupId,
-      service_trips: service.serviceTrips.map((serviceTrip) =>
+      service_trips: service.serviceTripsOrdered.map((serviceTrip) =>
         dbFormatServiceTrip(serviceTrip)
       ),
     };
   }
 
   export function dbFormatServiceTrip(
-    serviceTrip: ServiceTripType
+    serviceTrip: ServiceTripOrderedType
   ): ServiceTripDBType {
     return {
       trip_id: serviceTrip.tripId,
       hlp: serviceTrip.hlp,
       end_hour: serviceTrip.endHour,
+      start_hour: serviceTrip.startHour,
+      waiting_time: serviceTrip.waitingTime,
     };
   }
 

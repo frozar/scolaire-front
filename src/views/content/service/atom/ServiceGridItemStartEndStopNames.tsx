@@ -1,9 +1,9 @@
 import { JSXElement } from "solid-js";
-import { ServiceGridUtils } from "../../../../utils/serviceGrid.utils";
 import "./ServiceGridItemStartEndStopNames.css";
 
 interface ServiceGridItemStartEndStopNamesProps {
-  tripId: number;
+  startName: string;
+  endName: string;
 }
 
 export function ServiceGridItemStartEndStopNames(
@@ -11,12 +11,8 @@ export function ServiceGridItemStartEndStopNames(
 ): JSXElement {
   return (
     <>
-      <div class="service-grid-item-start-stop-name">
-        {ServiceGridUtils.getStartStopName(props.tripId)}
-      </div>
-      <div class="service-grid-item-end-stop-name">
-        {ServiceGridUtils.getEndStopName(props.tripId)}
-      </div>
+      <div class="service-grid-item-start-stop-name">{props.startName}</div>
+      <div class="service-grid-item-end-stop-name">{props.endName}</div>
     </>
   );
 }

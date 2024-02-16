@@ -6,7 +6,7 @@ import {
 import { TripPointType } from "../_entities/trip.entity";
 import { zoom } from "../views/content/service/organism/ServiceGrid";
 import {
-  ServiceTripType,
+  ServiceTripOrderedType,
   ServiceType,
   services,
 } from "../views/content/service/organism/Services";
@@ -14,13 +14,12 @@ import {
   hlpMatrix,
   selectedService,
 } from "../views/content/service/template/ServiceTemplate";
-import { BusServiceUtils } from "./busService.utils";
 import { TripUtils } from "./trip.utils";
 
 export type HlpMatrixType = {
   /*
   
-  hlpMatrix contains hlp durations between 
+  hlpMatrix contains hlp durations between
     start of sourceTrip and end of targetTrip
   
   The keys of each dict correspond to the tripId
@@ -64,9 +63,9 @@ export namespace ServiceGridUtils {
       (service) => service.id == serviceId
     )[0];
     if (!actualService) return;
-    if (actualService.serviceTrips.length == 0) return;
+    if (actualService.serviceTripsOrdered.length == 0) return;
 
-    const endHour = actualService.serviceTrips[0].endHour;
+    const endHour = actualService.serviceTripsOrdered[0].endHour;
 
     if (!scrollSmooth) ref.style.scrollBehavior = "auto";
 
@@ -110,14 +109,15 @@ export namespace ServiceGridUtils {
   export function firstDivWidth(serviceIndex: number): string {
     return (
       ServiceGridUtils.getEarliestStart(
-        services()[serviceIndex].serviceTrips[0].tripId
+        services()[serviceIndex].serviceTripsOrdered[0].tripId
       ) *
         zoom() +
       "px"
     );
   }
 
-  export function getTripWidth(tripId: number): number {
+  export function getTripDuration(tripId: number): number {
+    /* Return minutes */
     return Math.round((TripUtils.get(tripId).metrics?.duration as number) / 60);
   }
 
@@ -127,79 +127,6 @@ export namespace ServiceGridUtils {
 
   export function getEndStopName(tripId: number): string {
     return (TripUtils.get(tripId).tripPoints.at(-1) as TripPointType).name;
-  }
-
-  export function getServiceTripStartHourValue(
-    serviceTripIndex: number,
-    serviceTrip: ServiceTripType,
-    serviceId: number
-  ): number {
-    /* Return startHourValue in minutes */
-
-    if (serviceTripIndex == 0)
-      return ServiceGridUtils.getEarliestStart(serviceTrip.tripId);
-
-    const previousEndHour =
-      BusServiceUtils.get(serviceId).serviceTrips[serviceTripIndex - 1].endHour;
-
-    return previousEndHour + serviceTrip.hlp;
-  }
-
-  export function getServiceTripStartHour(
-    serviceTripIndex: number,
-    serviceTrip: ServiceTripType,
-    serviceId: number
-  ): string {
-    const startHour = ServiceGridUtils.getServiceTripStartHourValue(
-      serviceTripIndex,
-      serviceTrip,
-      serviceId
-    );
-
-    return ServiceGridUtils.getStringHourFormatFromMinutes(startHour);
-  }
-
-  export function updateAndGetServiceEndHour(
-    serviceTripIndex: number,
-    serviceTrip: ServiceTripType,
-    serviceId: number
-  ): string {
-    if (serviceTripIndex == 0) {
-      const endHour = ServiceGridUtils.getEarliestArrival(serviceTrip.tripId);
-
-      const endHourToDisplay =
-        ServiceGridUtils.getStringHourFormatFromMinutes(endHour);
-
-      // To avoid infinite loop
-      if (endHour == serviceTrip.endHour) return endHourToDisplay;
-
-      // Save value in services()
-      BusServiceUtils.updateEndHour(serviceId, serviceTrip.tripId, endHour);
-      return endHourToDisplay;
-    } else {
-      const startHour = ServiceGridUtils.getServiceTripStartHourValue(
-        serviceTripIndex,
-        serviceTrip,
-        serviceId
-      );
-
-      const trip = TripUtils.get(serviceTrip.tripId);
-
-      const duration = Math.round((trip.metrics?.duration as number) / 60);
-
-      const endHour = startHour + duration;
-
-      const endHourToDisplay =
-        ServiceGridUtils.getStringHourFormatFromMinutes(endHour);
-
-      // To avoid infinite loop
-      if (endHour == serviceTrip.endHour) return endHourToDisplay;
-
-      // Save value in services()
-      BusServiceUtils.updateEndHour(serviceId, serviceTrip.tripId, endHour);
-
-      return endHourToDisplay;
-    }
   }
 
   export function getStringHourFormatFromMinutes(totalMinutes: number): string {
@@ -247,25 +174,50 @@ export namespace ServiceGridUtils {
     }
   }
 
-  export function updateAndGetHlpWidth(
-    serviceTrip: ServiceTripType,
-    serviceId: number,
-    i: number
+  export function getLatestArrival(tripId: number): number {
+    /* return minutes */
+
+    const firstTrip = TripUtils.get(tripId);
+
+    const direction = TripDirectionEntity.FindDirectionById(
+      firstTrip.tripDirectionId
+    ).type;
+
+    // TODO: Fix
+    // ! Carreful here TripDirectionEnum.coming correspond to
+    // ! startHourGoing
+    if (direction == TripDirectionEnum.coming) {
+      return (
+        (firstTrip.schools[0].hours.endHourGoing?.hour as number) * 60 +
+        (firstTrip.schools[0].hours.endHourGoing?.minutes as number)
+      );
+    } else {
+      return (
+        (firstTrip.schools[0].hours.endHourComing?.hour as number) * 60 +
+        (firstTrip.schools[0].hours.endHourComing?.minutes as number)
+      );
+    }
+  }
+
+  export function getHlpDuration(
+    serviceTripIds: number[],
+    serviceTripsOrdered: ServiceTripOrderedType[],
+    serviceTripIndex: number
   ): number {
-    // hlpMatrix() is setted asynchronously
-    if (Object.keys(hlpMatrix()).length == 0) return 0;
+    /*
+    Return duration between :
+    - start of source trip (in serviceTrips)
+    - end of target trip (in serviceTripsOrdered)
+    
+    Return minutes
+    */
 
-    const serviceTrips = BusServiceUtils.get(serviceId).serviceTrips;
-    const idPreviousTrip = serviceTrips[i - 1].tripId;
-    const idActualTrip = serviceTrips[i].tripId;
+    const idPreviousTrip = (
+      serviceTripsOrdered.at(-1) as ServiceTripOrderedType
+    ).tripId;
+    const idActualTrip = serviceTripIds[serviceTripIndex];
 
-    const hlpDuration = hlpMatrix()[idActualTrip][idPreviousTrip];
-
-    // Save in services()
-    if (hlpDuration != serviceTrip.hlp)
-      BusServiceUtils.updateHlp(serviceId, idActualTrip, hlpDuration);
-
-    return hlpDuration;
+    return hlpMatrix()[idActualTrip][idPreviousTrip];
   }
 
   export function removeTrip(
@@ -276,8 +228,8 @@ export namespace ServiceGridUtils {
       (service) => service.id == selectedService()
     )[0];
     const index = services.indexOf(serviceToChange);
-    serviceToChange.serviceTrips = serviceToChange.serviceTrips.filter(
-      (serviceTrip) => serviceTrip.tripId != tripId
+    serviceToChange.tripIds = serviceToChange.tripIds.filter(
+      (_tripId) => _tripId != tripId
     );
 
     services.splice(index, 1, serviceToChange);
@@ -297,10 +249,135 @@ export namespace ServiceGridUtils {
       // TODO: Do not use raw value
       serviceGroupId: 1,
       name: "default name",
-      serviceTrips: [],
+      tripIds: [],
+      serviceTripsOrdered: [],
     };
 
     services.push(newService);
+
+    return services;
+  }
+
+  // TODO: Refactor and clean
+  export function getUpdatedServices(services: ServiceType[]): ServiceType[] {
+    for (const service of services) {
+      service.serviceTripsOrdered = [];
+
+      for (const serviceTripIndex of [
+        ...Array(service.tripIds.length).keys(),
+      ]) {
+        const tripId = service.tripIds[serviceTripIndex];
+        const tripDuration = ServiceGridUtils.getTripDuration(tripId);
+        const tripDirection = TripDirectionEntity.FindDirectionById(
+          TripUtils.get(tripId).tripDirectionId
+        ).type;
+        const minTimeOfTimeRange = ServiceGridUtils.getEarliestArrival(tripId);
+
+        // Case 1 : First serviceTrip
+        if (serviceTripIndex == 0) {
+          const endHour =
+            tripDirection == TripDirectionEnum.going
+              ? minTimeOfTimeRange
+              : minTimeOfTimeRange + tripDuration;
+
+          service.serviceTripsOrdered.push({
+            tripId: tripId,
+            hlp: 0,
+            endHour,
+            waitingTime: 0,
+            startHour: endHour - tripDuration,
+          });
+          continue;
+        }
+        /*
+        Computation for hlp, earliestEndHour, earliestDepartureHour uses 
+        the last serviceTrips of serviceTripsOrdered as the previous serviceTrip
+        */
+        const hlp = ServiceGridUtils.getHlpDuration(
+          service.tripIds,
+          service.serviceTripsOrdered,
+          serviceTripIndex
+        );
+
+        const maxTimeOfTimeRange = ServiceGridUtils.getLatestArrival(tripId);
+
+        const earliestEndHour =
+          (service.serviceTripsOrdered.at(-1) as ServiceTripOrderedType)
+            .endHour +
+          hlp +
+          tripDuration;
+
+        const earliestDepartureHour =
+          (service.serviceTripsOrdered.at(-1) as ServiceTripOrderedType)
+            .endHour + hlp;
+
+        // Case 2 : Earliest arrival or departure in the time range
+        function case2ConditionComing(): boolean {
+          return (
+            // ! Aller
+            tripDirection == TripDirectionEnum.going &&
+            minTimeOfTimeRange <= earliestEndHour &&
+            earliestEndHour <= maxTimeOfTimeRange
+          );
+        }
+
+        function case2ConditionGoing(): boolean {
+          return (
+            // ! Retour
+            tripDirection == TripDirectionEnum.coming &&
+            minTimeOfTimeRange <= earliestDepartureHour &&
+            earliestDepartureHour <= maxTimeOfTimeRange
+          );
+        }
+
+        if (case2ConditionComing() || case2ConditionGoing()) {
+          service.serviceTripsOrdered.push({
+            tripId,
+            hlp,
+            endHour: earliestEndHour,
+            waitingTime: 0,
+            startHour: earliestEndHour - tripDuration,
+          });
+        }
+
+        // Case 3 : Earliest arrival or departure before time range
+        function case3ConditionComing(): boolean {
+          return (
+            // ! Aller
+            tripDirection == TripDirectionEnum.going &&
+            earliestEndHour < minTimeOfTimeRange
+          );
+        }
+
+        function case3ConditionGoing(): boolean {
+          return (
+            // ! Retour
+            tripDirection == TripDirectionEnum.coming &&
+            earliestDepartureHour < minTimeOfTimeRange
+          );
+        }
+
+        if (case3ConditionComing() || case3ConditionGoing()) {
+          const waitingTime =
+            tripDirection == TripDirectionEnum.going
+              ? minTimeOfTimeRange - earliestEndHour
+              : minTimeOfTimeRange - earliestDepartureHour;
+
+          const endHour = earliestEndHour + waitingTime;
+
+          service.serviceTripsOrdered.push({
+            tripId,
+            hlp,
+            endHour,
+            waitingTime,
+            startHour: endHour - tripDuration,
+          });
+        }
+
+        // Case 4 : Earliest arrival or departure after time range
+      }
+      console.log("service", service);
+    }
 
     return services;
   }
