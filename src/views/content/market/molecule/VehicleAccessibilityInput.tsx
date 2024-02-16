@@ -10,20 +10,22 @@ export function VehicleAccessibilityInput(
   return (
     <div>
       <p>Accessibilité</p>
-      <LabeledInputRadio
-        id="classic"
-        value="classic"
-        labelName="Classique"
-        name="vehicle-accessibility"
-        onChange={props.onChangeFunction}
-      />
-      <LabeledInputRadio
-        id="PMR"
-        value="PMR"
-        labelName="PMR"
-        name="vehicle-accessibility"
-        onChange={props.onChangeFunction}
-      />
+      <div class="flex">
+        <LabeledInputRadio
+          id="classic"
+          value="classic"
+          labelName="Classique"
+          name="vehicle-accessibility"
+          onChange={props.onChangeFunction}
+        />
+        <LabeledInputRadio
+          id="PMR"
+          value="PMR"
+          labelName="PMR"
+          name="vehicle-accessibility"
+          onChange={props.onChangeFunction}
+        />
+      </div>
     </div>
   );
 }

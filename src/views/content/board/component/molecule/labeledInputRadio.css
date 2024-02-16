@@ -1,7 +1,11 @@
 .input-radio {
-  @apply ml-6 mb-1;
+  @apply ml-6 mb-1 accent-green-base;
 }
 
 .input-radio label {
   @apply ml-4;
+}
+
+.input-radio input[type="radio"]:checked + label {
+  @apply text-green-base;
 }

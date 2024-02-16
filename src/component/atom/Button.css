@@ -21,11 +21,11 @@
 }
 
 .btn-outline {
-  @apply rounded-md border-2 border-green-base px-6 py-2 text-green-base duration-150;
+  @apply rounded-b-md border-x-2 border-b-2 border-green-base px-6 py-2 text-green-base duration-150;
 }
 
 .btn-outline.active {
-  @apply rounded-md bg-green-base px-6 py-2 text-white sm:w-auto;
+  @apply rounded-b-md bg-green-base px-6 py-2 text-white sm:w-auto;
 }
 
 .btn-danger {
