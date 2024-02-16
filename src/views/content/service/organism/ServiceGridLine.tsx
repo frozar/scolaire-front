@@ -32,7 +32,6 @@ export function ServiceGridLine(props: ServiceGridLineProps): JSXElement {
 
       <For each={services()[props.serviceIndex].serviceTripsOrdered}>
         {(serviceTrip, i) => {
-          console.log("serviceTripO", serviceTrip);
           return (
             <ServiceGridItem
               serviceId={services()[props.serviceIndex].id}

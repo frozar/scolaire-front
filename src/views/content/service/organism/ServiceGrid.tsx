@@ -27,7 +27,7 @@ export function ServiceGrid(): JSXElement {
     React on services() and hlpMatrix()
     
     It's purpose is to update serviceTripsOrdered when serviceTripIds is modified,
-    when a serviceTrip is added or deleted
+    (when a serviceTrip is added or deleted)
 
     */
 
