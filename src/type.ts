@@ -165,7 +165,6 @@ export type SelectedMenuType =
   | "parametres"
   | "users"
   | "support"
-  | "allotment"
   | "market"
   | "service";
 

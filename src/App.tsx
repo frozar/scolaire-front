@@ -28,7 +28,6 @@ import "./App.css";
 import { InitService } from "./_services/init.service";
 import UnloggedUserInformation from "./component/molecule/UnloggedUserInformation";
 import UserInstruction from "./component/molecule/UserInstruction";
-import { Allotment } from "./views/content/allotment/organism/Allotment";
 import { Dialogs } from "./views/content/board/component/organism/Dialogs";
 import { Users } from "./views/content/calendar/template/Organisation";
 import { Market } from "./views/content/market/organism/Market";
@@ -86,10 +85,6 @@ export default () => {
 
               <Match when={getSelectedMenu() == "service"}>
                 <ServiceTemplate />
-              </Match>
-
-              <Match when={getSelectedMenu() == "allotment"}>
-                <Allotment />
               </Match>
 
               <Match when={getSelectedMenu() == "market"}>

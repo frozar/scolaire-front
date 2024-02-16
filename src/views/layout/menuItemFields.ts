@@ -1,5 +1,4 @@
 import { useStateGui } from "../../StateGui";
-import { AllotmentIcon } from "../../icons/AllotmentIcon";
 import ArretsLogo from "../../icons/ArretsLogo";
 import CalendarIcon from "../../icons/CalendarIcon";
 import DashboardLogo from "../../icons/DashboardLogo";
@@ -78,15 +77,6 @@ const menuItems: MenuItemType[] = [
     onClick: () => {
       setSelectedMenu("service");
       changeBoard(undefined);
-    },
-  },
-  {
-    menuItem: "allotment",
-    Logo: AllotmentIcon,
-    label: "Allotissement",
-    isDisabled: false,
-    onClick: () => {
-      setSelectedMenu("allotment");
     },
   },
   {
