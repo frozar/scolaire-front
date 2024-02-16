@@ -10,9 +10,16 @@ interface VehicleMenuContentProps {
   name: string;
   capacity: number;
   category: string;
+  accessibility: string;
+  length: number;
+  width: number;
+  height: number;
   onNameChange: (value: string) => void;
   onCategoryChange: (value: string) => void;
   onCapacityChange: (value: number) => void;
+  onWidthChange: (value: number) => void;
+  onLengthChange: (value: number) => void;
+  onHeightChange: (value: number) => void;
   onAccessibilityChange: (value: string) => void;
   submit: () => void;
 }
@@ -35,12 +42,12 @@ export function VehicleMenuContent(props: VehicleMenuContentProps) {
           onChangeFunction={props.onAccessibilityChange}
         />
         <VehicleSizeInput
-          defaultHeight={3}
-          defaultLength={20}
-          defaultWidth={3}
-          onInputHeight={(e) => console.log(e)}
-          onInputLength={(e) => console.log(e)}
-          onInputWidth={(e) => console.log(e)}
+          defaultHeight={props.height}
+          defaultLength={props.length}
+          defaultWidth={props.width}
+          onInputHeight={props.onHeightChange}
+          onInputLength={props.onLengthChange}
+          onInputWidth={props.onWidthChange}
         />
       </div>
       <VehicleMenuButtons submitFunction={props.submit} />
