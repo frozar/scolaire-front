@@ -4,7 +4,7 @@ import "./Button.css";
 export interface ButtonProps {
   onClick: () => void;
   label: string;
-  variant?: "primary" | "borderless" | "danger";
+  variant?: "primary" | "borderless" | "danger" | "outline";
   size?: "sm" | "md" | "2xl" | "3xl";
   isDisabled?: boolean;
   active?: boolean;

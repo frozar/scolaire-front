@@ -20,6 +20,14 @@
   @apply text-green-base;
 }
 
+.btn-outline {
+  @apply rounded-md border-2 border-green-base px-6 py-2 text-green-base duration-150;
+}
+
+.btn-outline.active {
+  @apply rounded-md bg-green-base px-6 py-2 text-white sm:w-auto;
+}
+
 .btn-danger {
   @apply w-full bg-red-base justify-center rounded-md px-6 py-2 text-sm font-semibold text-white shadow-sm sm:w-auto duration-150;
 }
