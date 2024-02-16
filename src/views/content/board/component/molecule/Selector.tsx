@@ -2,6 +2,7 @@ import { For } from "solid-js";
 import "./Selector.css";
 
 export type SelectorType = {
+  id ?: string;
   content: { value: number; name: string }[];
   disabled: boolean;
   selectedValue: number;
@@ -16,10 +17,11 @@ export type SelectorType = {
 export function Selector(props: SelectorType) {
   return (
     <select
+      id={props.id ?? props.id}
+      class="selector"
       name="select"
       onChange={(e) => props.onChange(e)}
       disabled={props.disabled ?? false}
-      class="selector"
     >
       <For each={props.content}>
         {(elem) => (
