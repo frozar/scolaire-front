@@ -237,6 +237,8 @@ export namespace QuantityUtils {
       (associated) => associated.idClassToSchool == idClassToSchool
     )[0];
 
+    if (!stop || !associated) return baseQuantityMatrix([], 0);
+
     const orignalMatrix = associated.quantityMatrix as QuantityMatrixType;
     const tripMatrix: QuantityMatrixType[] = StopUtils.getGradeTrips(stopId)
       .filter((gradeTrip) => gradeTrip.gradeId == associated.gradeId)
