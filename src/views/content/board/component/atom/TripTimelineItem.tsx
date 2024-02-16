@@ -63,9 +63,6 @@ export function TripTimelineItem(props: TripTimelineItemProps) {
                 onClickWaitingTime={props.onClickWaitingTime}
                 waitingTime={props.waitingTime}
               />
-              {/* <TripTimelineRemovePointButton
-                onClick={props.onClickRemovePointFromTrip}
-              /> */}
             </Show>
           </div>
         </div>
