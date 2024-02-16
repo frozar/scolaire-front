@@ -1,20 +1,10 @@
 import _ from "lodash";
 import { For, JSXElement, createEffect, createSignal, onMount } from "solid-js";
-import {
-  TripDirectionEntity,
-  TripDirectionEnum,
-} from "../../../../_entities/trip-direction.entity";
 import { ServiceGridUtils } from "../../../../utils/serviceGrid.utils";
-import { TripUtils } from "../../../../utils/trip.utils";
 import { ServiceGridTop } from "../molecule/ServiceGridTop";
 import { hlpMatrix } from "../template/ServiceTemplate";
 import { ServiceGridLine } from "./ServiceGridLine";
-import {
-  ServiceTripOrderedType,
-  refScroll,
-  services,
-  setServices,
-} from "./Services";
+import { refScroll, services, setServices } from "./Services";
 
 export const [zoom, setZoom] = createSignal(8);
 
@@ -31,9 +21,15 @@ export function ServiceGrid(): JSXElement {
     ServiceGridUtils.changeScrollingDirection(refScroll(), ref());
   });
 
-  // TODO: Refactor and clean
   createEffect(() => {
-    /* React on services() and hlpMatrix() */
+    /*
+
+    React on services() and hlpMatrix()
+    
+    It's purpose is to update serviceTripsOrdered when serviceTripIds is modified,
+    when a serviceTrip is added or deleted
+
+    */
 
     const _services = _.cloneDeep(services());
 
@@ -47,132 +43,12 @@ export function ServiceGrid(): JSXElement {
       .sort((a, b) => a - b);
 
     // Avoiding infinite loop
-    console.log("in createEffect");
     if (
       !_.isEqual(serviceTripIds, serviceTripOrderedIds) &&
       Object.keys(hlpMatrix()).length > 0
     ) {
-      for (const service of _services) {
-        service.serviceTripsOrdered = [];
-
-        for (const serviceTripIndex of [
-          ...Array(service.tripIds.length).keys(),
-        ]) {
-          const tripId = service.tripIds[serviceTripIndex];
-          const tripDuration = ServiceGridUtils.getTripDuration(tripId);
-          const tripDirection = TripDirectionEntity.FindDirectionById(
-            TripUtils.get(tripId).tripDirectionId
-          ).type;
-          const minTimeOfTimeRange =
-            ServiceGridUtils.getEarliestArrival(tripId);
-
-          // Case 1 : First serviceTrip
-          if (serviceTripIndex == 0) {
-            const endHour =
-              tripDirection == TripDirectionEnum.going
-                ? minTimeOfTimeRange
-                : minTimeOfTimeRange + tripDuration;
-
-            service.serviceTripsOrdered.push({
-              tripId: tripId,
-              hlp: 0,
-              endHour,
-              waitingTime: 0,
-              startHour: endHour - tripDuration,
-            });
-            continue;
-          }
-          /*
-          Computation for hlp, earliestEndHour, earliestDepartureHour uses 
-          the last serviceTrips of serviceTripsOrdered as the previous serviceTrip
-          */
-          const hlp = ServiceGridUtils.getHlpDuration(
-            service.tripIds,
-            service.serviceTripsOrdered,
-            serviceTripIndex
-          );
-
-          const maxTimeOfTimeRange = ServiceGridUtils.getLatestArrival(tripId);
-
-          const earliestEndHour =
-            (service.serviceTripsOrdered.at(-1) as ServiceTripOrderedType)
-              .endHour +
-            hlp +
-            tripDuration;
-
-          const earliestDepartureHour =
-            (service.serviceTripsOrdered.at(-1) as ServiceTripOrderedType)
-              .endHour + hlp;
-
-          // Case 2 : Earliest arrival or departure in the time range
-          function case2ConditionComing(): boolean {
-            return (
-              // ! Aller
-              tripDirection == TripDirectionEnum.going &&
-              minTimeOfTimeRange <= earliestEndHour &&
-              earliestEndHour <= maxTimeOfTimeRange
-            );
-          }
-
-          function case2ConditionGoing(): boolean {
-            return (
-              // ! Retour
-              tripDirection == TripDirectionEnum.coming &&
-              minTimeOfTimeRange <= earliestDepartureHour &&
-              earliestDepartureHour <= maxTimeOfTimeRange
-            );
-          }
-
-          if (case2ConditionComing() || case2ConditionGoing()) {
-            service.serviceTripsOrdered.push({
-              tripId,
-              hlp,
-              endHour: earliestEndHour,
-              waitingTime: 0,
-              startHour: earliestEndHour - tripDuration,
-            });
-          }
-
-          // Case 3 : Earliest arrival or departure before time range
-          function case3ConditionComing(): boolean {
-            return (
-              // ! Aller
-              tripDirection == TripDirectionEnum.going &&
-              earliestEndHour < minTimeOfTimeRange
-            );
-          }
-
-          function case3ConditionGoing(): boolean {
-            return (
-              // ! Retour
-              tripDirection == TripDirectionEnum.coming &&
-              earliestDepartureHour < minTimeOfTimeRange
-            );
-          }
-
-          if (case3ConditionComing() || case3ConditionGoing()) {
-            const waitingTime =
-              tripDirection == TripDirectionEnum.going
-                ? minTimeOfTimeRange - earliestEndHour
-                : minTimeOfTimeRange - earliestDepartureHour;
-
-            const endHour = earliestEndHour + waitingTime;
-
-            service.serviceTripsOrdered.push({
-              tripId,
-              hlp,
-              endHour,
-              waitingTime,
-              startHour: endHour - tripDuration,
-            });
-          }
-
-          // Case 4 : Earliest arrival or departure after time range
-        }
-        console.log("service", service);
-      }
-      // * Save in services()
-      setServices(_services);
+      const updatedServices = ServiceGridUtils.getUpdatedServices(_services);
+      setServices(updatedServices);
     }
   });
 
