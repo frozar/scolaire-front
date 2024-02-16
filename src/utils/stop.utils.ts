@@ -66,7 +66,6 @@ export namespace StopUtils {
 
       return stops;
     });
-    updateStopDetailsItem(stopId);
   }
 
   export function removeAssociated(
@@ -74,16 +73,27 @@ export namespace StopUtils {
     stopId: number
   ) {
     setStops((prev) => {
-      const stops = [...prev];
-      const indexOfStop = stops.findIndex((prev) => prev.id == stopId);
-
-      stops[indexOfStop].associated = stops[indexOfStop].associated.filter(
-        (prev) => prev.idClassToSchool != gradeStudentToGradeID
-      );
-
-      return stops;
+      return [...prev].map((stop) => {
+        if (stop.id != stopId) return stop;
+        return {
+          ...stop,
+          associated: stop.associated.filter((associated) => {
+            if (associated.idClassToSchool == gradeStudentToGradeID) return;
+            return associated;
+          }),
+        };
+      });
     });
-    updateStopDetailsItem(stopId);
+
+    setStopDetailsItem((prev) => {
+      if (!prev) return prev;
+      return {
+        ...prev,
+        associated: prev.associated.filter(
+          (asso) => asso.idClassToSchool != gradeStudentToGradeID
+        ),
+      };
+    });
   }
 
   export function updateAssociated(
@@ -91,7 +101,8 @@ export namespace StopUtils {
     stopId: number
   ) {
     setStops((prev) => {
-      const stops = [...prev].map((stop) => {
+      return [...prev].map((stop) => {
+        if (stop.id != stopId) return stop;
         return {
           ...stop,
           associated: stop.associated.map((assoc) =>
@@ -101,10 +112,7 @@ export namespace StopUtils {
           ),
         };
       });
-
-      return stops;
     });
-    updateStopDetailsItem(stopId);
   }
 
   export function getTotalQuantity(stopId: number) {

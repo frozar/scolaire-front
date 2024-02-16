@@ -1,6 +1,7 @@
 import { AssociatedSchoolType } from "../_entities/_utils.entity";
 import { StopType } from "../_entities/stop.entity";
 import { StudentToGradeService } from "../_services/student-to-grade.service";
+import { disableSpinningWheel, enableSpinningWheel } from "../signaux";
 import { getStops } from "../views/content/map/component/organism/StopPoints";
 import { stopDetailsItem } from "../views/content/stops/component/organism/StopDetails";
 import { GradeUtils } from "./grade.utils";
@@ -78,10 +79,11 @@ export namespace AssociatedUtils {
   }
 
   export async function deleteAssociated(StudentToGradeId: number) {
+    enableSpinningWheel();
     const response = await StudentToGradeService.delete(StudentToGradeId);
+    disableSpinningWheel();
 
     StopUtils.removeAssociated(response, stopDetailsItem()?.id as number);
-
     SchoolUtils.removeAssociated(StudentToGradeId);
   }
 }
