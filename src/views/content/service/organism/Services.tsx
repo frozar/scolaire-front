@@ -83,7 +83,7 @@ export function Services(): JSXElement {
           ...Array(service.serviceTrips.length).keys(),
         ]) {
           const tripId = service.serviceTrips[serviceTripIndex].tripId;
-          const tripDuration = ServiceGridUtils.getTripWidth(tripId);
+          const tripDuration = ServiceGridUtils.getTripDuration(tripId);
           const tripDirection = TripDirectionEntity.FindDirectionById(
             TripUtils.get(tripId).tripDirectionId
           ).type;

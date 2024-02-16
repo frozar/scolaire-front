@@ -24,7 +24,7 @@ export function ServiceGridItem(props: ServiceGridItemProps): JSXElement {
         serviceId={props.serviceId}
         serviceTrip={props.serviceTrip}
         serviceTripIndex={props.serviceTripIndex}
-        serviceTripWidth={ServiceGridUtils.getTripWidth(
+        serviceTripWidth={ServiceGridUtils.getTripDuration(
           props.serviceTrip.tripId
         )}
       />

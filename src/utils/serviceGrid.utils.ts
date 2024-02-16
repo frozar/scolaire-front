@@ -117,8 +117,8 @@ export namespace ServiceGridUtils {
     );
   }
 
-  // TODO: Rename getTripDuration and comment that it returns minutes
-  export function getTripWidth(tripId: number): number {
+  export function getTripDuration(tripId: number): number {
+    /* Return minutes */
     return Math.round((TripUtils.get(tripId).metrics?.duration as number) / 60);
   }
 
