@@ -12,7 +12,6 @@ interface ServiceGridLineProps {
   width: string;
 }
 
-// TODO: Fix and clean
 export function ServiceGridLine(props: ServiceGridLineProps): JSXElement {
   return (
     <div
@@ -37,8 +36,7 @@ export function ServiceGridLine(props: ServiceGridLineProps): JSXElement {
               serviceId={services()[props.serviceIndex].id}
               serviceTrip={serviceTrip}
               serviceTripIndex={i()}
-              // TODO: Setup a specific componenent to display the waiting time
-              hlpWidth={serviceTrip.hlp + serviceTrip.waitingTime}
+              hlpWidth={serviceTrip.hlp}
             />
           );
         }}

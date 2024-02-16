@@ -16,7 +16,6 @@ export type ServiceType = {
   serviceTripsOrdered: ServiceTripOrderedType[];
 };
 
-// TODO: Rename ServiceTripType ?
 export type ServiceTripOrderedType = {
   tripId: number;
   hlp: number; // in minutes
