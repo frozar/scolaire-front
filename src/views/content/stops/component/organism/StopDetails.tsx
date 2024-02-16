@@ -53,7 +53,7 @@ export default function () {
           disabled: !editItem(),
           value: stopDetailsItem()?.waitingTime as number,
         }}
-        label="Temps d'attente sur l'arrêt en seconde"
+        label="Temps d'attente en seconde sur l'arrêt"
       />
 
       <Show when={!editItem()}>

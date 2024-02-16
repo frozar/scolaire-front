@@ -11,7 +11,7 @@ export function SchoolSettings() {
   return (
     <CollapsibleElement title="Paramètres">
       <LabeledInputNumber
-        label="Temps d'attente sur l'arrêt en seconde"
+        label="Temps d'attente en seconde sur l'école "
         onChange={onChangeWaitingTime}
         selector={{
           value: schoolDetailsItem()?.waitingTime as number,

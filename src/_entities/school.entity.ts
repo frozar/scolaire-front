@@ -74,21 +74,6 @@ export class SchoolEntity {
     };
   }
 
-  // ! unused
-  // static dataToDB(
-  //   datas: Pick<SchoolType, "name" | "lon" | "lat" | "hours" | "waitingTime">[]
-  // ) {
-  //   return datas.map((data) => {
-  //     return SchoolEntity.dbFormat({
-  //       name: data.name,
-  //       lat: +data.lat,
-  //       lon: +data.lon,
-  //       hours: data.hours,
-  //       waitingTime: data.waitingTime,
-  //     });
-  //   });
-  // }
-
   // TODO à place dans un SchoolUtils
   static getSchoolTrips(currentSchoolId: number) {
     const lines = [];
