@@ -3,7 +3,6 @@ import { BusService } from "../../../../_services/bus.service";
 import { addNewUserInformation } from "../../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../../type";
 import { VehicleMenuHeader } from "../atom/VehicleMenuHeader";
-import "./AddVehicleMenu.css";
 import { VehicleMenuContent } from "./VehicleMenuContent";
 import { setIsVehicleMenuOpened } from "./VehicleTab";
 
@@ -11,6 +10,7 @@ export function AddVehicleMenu() {
   const [vehicleName, setVehicleName] = createSignal("");
   const [vehicleCapacity, setVehicleCapacity] = createSignal(0);
   const [vehicleCategory, setVehicleCategory] = createSignal("");
+  const [vehicleAccessibility, setVehicleAccessibility] = createSignal("");
 
   function onChangeCapacity(value: number) {
     setVehicleCapacity(value);
@@ -24,10 +24,15 @@ export function AddVehicleMenu() {
     setVehicleName(value);
   }
 
+  function onChangeAccessibility(value: string) {
+    setVehicleAccessibility(value);
+  }
+
   function resetDefaultValues() {
     setVehicleCapacity(0);
     setVehicleCategory("");
     setVehicleName("");
+    setVehicleAccessibility("");
   }
 
   async function createNewVehicle() {
@@ -45,10 +50,11 @@ export function AddVehicleMenu() {
     });
     setIsVehicleMenuOpened(false);
     resetDefaultValues();
+    console.log(vehicleAccessibility());
   }
 
   return (
-    <div class="vehicle-menu-container">
+    <div>
       <VehicleMenuHeader />
       <VehicleMenuContent
         capacity={vehicleCapacity()}
@@ -58,6 +64,7 @@ export function AddVehicleMenu() {
         onCapacityChangeFunction={onChangeCapacity}
         onCategoryChangeFunction={onChangeCategory}
         onNameChangeFunction={onChangeName}
+        onAccessibilityChangeFunction={onChangeAccessibility}
       />
     </div>
   );

@@ -7,6 +7,7 @@ interface vehicleCategoryInputProps {
 export function VehicleCategoryInput(props: vehicleCategoryInputProps) {
   return (
     <div>
+      <p>Catégorie</p>
       <LabeledInputRadio
         id="autocar"
         value="autocar"
@@ -18,13 +19,6 @@ export function VehicleCategoryInput(props: vehicleCategoryInputProps) {
         id="bus"
         value="bus"
         labelName="Bus"
-        name="vehicle-category"
-        onChange={props.onChangeFunction}
-      />
-      <LabeledInputRadio
-        id="pmr"
-        value="pmr"
-        labelName="Véhicule PMR"
         name="vehicle-category"
         onChange={props.onChangeFunction}
       />
