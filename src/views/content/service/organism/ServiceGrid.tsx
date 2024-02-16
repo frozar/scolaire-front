@@ -7,8 +7,9 @@ import {
 import { ServiceGridUtils } from "../../../../utils/serviceGrid.utils";
 import { TripUtils } from "../../../../utils/trip.utils";
 import { ServiceGridTop } from "../molecule/ServiceGridTop";
+import { hlpMatrix } from "../template/ServiceTemplate";
 import { ServiceGridLine } from "./ServiceGridLine";
-import { ServiceTripType, refScroll, services } from "./Services";
+import { ServiceTripType, refScroll, services, setServices } from "./Services";
 
 export const [zoom, setZoom] = createSignal(8);
 
@@ -42,7 +43,11 @@ export function ServiceGrid(): JSXElement {
       .sort((a, b) => a - b);
 
     // Avoiding infinite loop
-    if (!_.isEqual(serviceTripIds, serviceTripOrderedIds)) {
+    console.log("in createEffect");
+    if (
+      !_.isEqual(serviceTripIds, serviceTripOrderedIds) &&
+      Object.keys(hlpMatrix()).length > 0
+    ) {
       for (const service of _services) {
         service.serviceTripsOrdered = [];
 
@@ -155,6 +160,7 @@ export function ServiceGrid(): JSXElement {
         console.log("service", service);
       }
       // * Save in services()
+      setServices(_services);
     }
   });
 

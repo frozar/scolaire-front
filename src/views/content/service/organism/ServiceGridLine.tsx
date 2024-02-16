@@ -1,4 +1,4 @@
-import { For, JSXElement } from "solid-js";
+import { For, JSXElement, Show } from "solid-js";
 import { services } from "./Services";
 
 import { ServiceGridUtils } from "../../../../utils/serviceGrid.utils";
@@ -22,24 +22,25 @@ export function ServiceGridLine(props: ServiceGridLineProps): JSXElement {
         active: selectedService() == services()[props.serviceIndex].id,
       }}
     >
-      <ServiceGridLineFirstDiv
-        show={services()[props.serviceIndex].serviceTrips.length != 0}
-        width={ServiceGridUtils.firstDivWidth(props.serviceIndex)}
-      />
+      <Show when={services()[props.serviceIndex].serviceTrips.length != 0}>
+        <ServiceGridLineFirstDiv
+          width={ServiceGridUtils.firstDivWidth(props.serviceIndex)}
+        />
+      </Show>
 
-      <For each={services()[props.serviceIndex].serviceTrips}>
-        {(serviceTrip, i) => (
-          <ServiceGridItem
-            serviceId={services()[props.serviceIndex].id}
-            serviceTrip={serviceTrip}
-            serviceTripIndex={i()}
-            hlpWidth={ServiceGridUtils.updateAndGetHlpWidth(
-              serviceTrip,
-              services()[props.serviceIndex].id,
-              i()
-            )}
-          />
-        )}
+      <For each={services()[props.serviceIndex].serviceTripsOrdered}>
+        {(serviceTrip, i) => {
+          console.log("serviceTripO", serviceTrip);
+          return (
+            <ServiceGridItem
+              serviceId={services()[props.serviceIndex].id}
+              serviceTrip={serviceTrip}
+              serviceTripIndex={i()}
+              // TODO: Setup a specific componenent to display the waiting time
+              hlpWidth={serviceTrip.hlp + serviceTrip.waitingTime}
+            />
+          );
+        }}
       </For>
     </div>
   );

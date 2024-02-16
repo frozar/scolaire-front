@@ -5,7 +5,6 @@ import { TripUtils } from "../../../../utils/trip.utils";
 import ButtonIcon from "../../board/component/molecule/ButtonIcon";
 import { ServiceGridItemStartEndStopNames } from "../atom/ServiceGridItemStartEndStopNames";
 import { ServiceGridItemTripName } from "../atom/ServiceGridItemTripName";
-import { ServiceGridTripItemHours } from "../atom/ServiceGridTripItemHours";
 import { ServiceTripType, setServices } from "../organism/Services";
 import { selectedService } from "../template/ServiceTemplate";
 import "./ServiceGridTripItem.css";
@@ -33,11 +32,12 @@ export function ServiceGridTripItem(
 
       <ServiceGridItemStartEndStopNames tripId={props.serviceTrip.tripId} />
 
-      <ServiceGridTripItemHours
+      {/* TODO: Hours must be set in the big createEffect*/}
+      {/* <ServiceGridTripItemHours
         serviceTripIndex={props.serviceTripIndex}
         serviceTrip={props.serviceTrip}
         serviceId={props.serviceId}
-      />
+      /> */}
 
       <Show when={selectedService() == props.serviceId}>
         <ButtonIcon

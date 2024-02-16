@@ -308,9 +308,6 @@ export namespace ServiceGridUtils {
     Return minutes
     */
 
-    // hlpMatrix() is setted asynchronously
-    if (Object.keys(hlpMatrix()).length == 0) return 0;
-
     const idPreviousTrip = (serviceTripsOrdered.at(-1) as ServiceTripType)
       .tripId;
     const idActualTrip = serviceTrips[serviceTripIndex].tripId;

@@ -1,7 +1,6 @@
-import { JSXElement, Show } from "solid-js";
+import { JSXElement } from "solid-js";
 
 interface ServiceGridLineFirstDivProps {
-  show: boolean;
   width: string;
 }
 
@@ -10,10 +9,8 @@ export function ServiceGridLineFirstDiv(
   props: ServiceGridLineFirstDivProps
 ): JSXElement {
   return (
-    <Show when={props.show}>
-      <div class="service-grid-line-first-div" style={{ width: props.width }}>
-        blank space
-      </div>
-    </Show>
+    <div class="service-grid-line-first-div" style={{ width: props.width }}>
+      blank space
+    </div>
   );
 }
