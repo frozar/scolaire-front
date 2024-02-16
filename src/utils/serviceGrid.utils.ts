@@ -6,7 +6,7 @@ import {
 import { TripPointType } from "../_entities/trip.entity";
 import { zoom } from "../views/content/service/organism/ServiceGrid";
 import {
-  ServiceTripType,
+  ServiceTripOrderedType,
   ServiceType,
   services,
 } from "../views/content/service/organism/Services";
@@ -14,7 +14,6 @@ import {
   hlpMatrix,
   selectedService,
 } from "../views/content/service/template/ServiceTemplate";
-import { BusServiceUtils } from "./busService.utils";
 import { TripUtils } from "./trip.utils";
 
 export type HlpMatrixType = {
@@ -64,9 +63,9 @@ export namespace ServiceGridUtils {
       (service) => service.id == serviceId
     )[0];
     if (!actualService) return;
-    if (actualService.serviceTrips.length == 0) return;
+    if (actualService.serviceTripsOrdered.length == 0) return;
 
-    const endHour = actualService.serviceTrips[0].endHour;
+    const endHour = actualService.serviceTripsOrdered[0].endHour;
 
     if (!scrollSmooth) ref.style.scrollBehavior = "auto";
 
@@ -110,7 +109,7 @@ export namespace ServiceGridUtils {
   export function firstDivWidth(serviceIndex: number): string {
     return (
       ServiceGridUtils.getEarliestStart(
-        services()[serviceIndex].serviceTrips[0].tripId
+        services()[serviceIndex].serviceTripsOrdered[0].tripId
       ) *
         zoom() +
       "px"
@@ -128,36 +127,6 @@ export namespace ServiceGridUtils {
 
   export function getEndStopName(tripId: number): string {
     return (TripUtils.get(tripId).tripPoints.at(-1) as TripPointType).name;
-  }
-
-  export function getServiceTripStartHourValue(
-    serviceTripIndex: number,
-    serviceTrip: ServiceTripType,
-    serviceId: number
-  ): number {
-    /* Return startHourValue in minutes */
-
-    if (serviceTripIndex == 0)
-      return ServiceGridUtils.getEarliestStart(serviceTrip.tripId);
-
-    const previousEndHour =
-      BusServiceUtils.get(serviceId).serviceTrips[serviceTripIndex - 1].endHour;
-
-    return previousEndHour + serviceTrip.hlp;
-  }
-
-  export function getServiceTripStartHour(
-    serviceTripIndex: number,
-    serviceTrip: ServiceTripType,
-    serviceId: number
-  ): string {
-    const startHour = ServiceGridUtils.getServiceTripStartHourValue(
-      serviceTripIndex,
-      serviceTrip,
-      serviceId
-    );
-
-    return ServiceGridUtils.getStringHourFormatFromMinutes(startHour);
   }
 
   export function getStringHourFormatFromMinutes(totalMinutes: number): string {
@@ -231,8 +200,8 @@ export namespace ServiceGridUtils {
   }
 
   export function getHlpDuration(
-    serviceTrips: ServiceTripType[],
-    serviceTripsOrdered: ServiceTripType[],
+    serviceTripIds: number[],
+    serviceTripsOrdered: ServiceTripOrderedType[],
     serviceTripIndex: number
   ): number {
     /*
@@ -243,9 +212,10 @@ export namespace ServiceGridUtils {
     Return minutes
     */
 
-    const idPreviousTrip = (serviceTripsOrdered.at(-1) as ServiceTripType)
-      .tripId;
-    const idActualTrip = serviceTrips[serviceTripIndex].tripId;
+    const idPreviousTrip = (
+      serviceTripsOrdered.at(-1) as ServiceTripOrderedType
+    ).tripId;
+    const idActualTrip = serviceTripIds[serviceTripIndex];
 
     return hlpMatrix()[idActualTrip][idPreviousTrip];
   }
@@ -258,8 +228,8 @@ export namespace ServiceGridUtils {
       (service) => service.id == selectedService()
     )[0];
     const index = services.indexOf(serviceToChange);
-    serviceToChange.serviceTrips = serviceToChange.serviceTrips.filter(
-      (serviceTrip) => serviceTrip.tripId != tripId
+    serviceToChange.tripIds = serviceToChange.tripIds.filter(
+      (_tripId) => _tripId != tripId
     );
 
     services.splice(index, 1, serviceToChange);
@@ -279,7 +249,7 @@ export namespace ServiceGridUtils {
       // TODO: Do not use raw value
       serviceGroupId: 1,
       name: "default name",
-      serviceTrips: [],
+      tripIds: [],
       serviceTripsOrdered: [],
     };
 

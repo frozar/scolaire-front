@@ -12,18 +12,11 @@ export type ServiceType = {
   id: number;
   name: string;
   serviceGroupId: number;
-  // TODO: replace serviceTrips with tripIds: number[]
-  serviceTrips: ServiceTripType[];
+  tripIds: number[];
   serviceTripsOrdered: ServiceTripOrderedType[];
 };
 
-// TODO: merge with
-export type ServiceTripType = {
-  tripId: number;
-  hlp: number; // in minutes
-  endHour: number; // in minutes
-};
-
+// TODO: Rename ServiceTripType ?
 export type ServiceTripOrderedType = {
   tripId: number;
   hlp: number; // in minutes
@@ -57,8 +50,10 @@ export function Services(): JSXElement {
   onMount(() => {
     setServicesBeforeModification(_.cloneDeep(services()));
 
-    const firstServiceId = services()[0].id;
-    ServiceGridUtils.scrollToServiceStart(refScroll(), firstServiceId, false);
+    if (services().length > 0) {
+      const firstServiceId = services()[0].id;
+      ServiceGridUtils.scrollToServiceStart(refScroll(), firstServiceId, false);
+    }
   });
 
   return (

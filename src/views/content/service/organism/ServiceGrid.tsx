@@ -9,7 +9,12 @@ import { TripUtils } from "../../../../utils/trip.utils";
 import { ServiceGridTop } from "../molecule/ServiceGridTop";
 import { hlpMatrix } from "../template/ServiceTemplate";
 import { ServiceGridLine } from "./ServiceGridLine";
-import { ServiceTripType, refScroll, services, setServices } from "./Services";
+import {
+  ServiceTripOrderedType,
+  refScroll,
+  services,
+  setServices,
+} from "./Services";
 
 export const [zoom, setZoom] = createSignal(8);
 
@@ -33,8 +38,7 @@ export function ServiceGrid(): JSXElement {
     const _services = _.cloneDeep(services());
 
     const serviceTripIds = _services
-      .flatMap((service) => service.serviceTrips)
-      .map((serviceTrip) => serviceTrip.tripId)
+      .flatMap((service) => service.tripIds)
       .sort((a, b) => a - b);
 
     const serviceTripOrderedIds = _services
@@ -52,9 +56,9 @@ export function ServiceGrid(): JSXElement {
         service.serviceTripsOrdered = [];
 
         for (const serviceTripIndex of [
-          ...Array(service.serviceTrips.length).keys(),
+          ...Array(service.tripIds.length).keys(),
         ]) {
-          const tripId = service.serviceTrips[serviceTripIndex].tripId;
+          const tripId = service.tripIds[serviceTripIndex];
           const tripDuration = ServiceGridUtils.getTripDuration(tripId);
           const tripDirection = TripDirectionEntity.FindDirectionById(
             TripUtils.get(tripId).tripDirectionId
@@ -83,7 +87,7 @@ export function ServiceGrid(): JSXElement {
           the last serviceTrips of serviceTripsOrdered as the previous serviceTrip
           */
           const hlp = ServiceGridUtils.getHlpDuration(
-            service.serviceTrips,
+            service.tripIds,
             service.serviceTripsOrdered,
             serviceTripIndex
           );
@@ -91,13 +95,14 @@ export function ServiceGrid(): JSXElement {
           const maxTimeOfTimeRange = ServiceGridUtils.getLatestArrival(tripId);
 
           const earliestEndHour =
-            (service.serviceTripsOrdered.at(-1) as ServiceTripType).endHour +
+            (service.serviceTripsOrdered.at(-1) as ServiceTripOrderedType)
+              .endHour +
             hlp +
             tripDuration;
 
           const earliestDepartureHour =
-            (service.serviceTripsOrdered.at(-1) as ServiceTripType).endHour +
-            hlp;
+            (service.serviceTripsOrdered.at(-1) as ServiceTripOrderedType)
+              .endHour + hlp;
 
           // Case 2 : Earliest arrival or departure in the time range
           function case2ConditionComing(): boolean {

@@ -22,7 +22,9 @@ export function ServiceGridLine(props: ServiceGridLineProps): JSXElement {
         active: selectedService() == services()[props.serviceIndex].id,
       }}
     >
-      <Show when={services()[props.serviceIndex].serviceTrips.length != 0}>
+      <Show
+        when={services()[props.serviceIndex].serviceTripsOrdered.length != 0}
+      >
         <ServiceGridLineFirstDiv
           width={ServiceGridUtils.firstDivWidth(props.serviceIndex)}
         />
