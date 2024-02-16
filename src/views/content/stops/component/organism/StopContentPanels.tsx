@@ -1,5 +1,4 @@
 import { Accessor, Match, Setter, Show, Switch } from "solid-js";
-import { StopType } from "../../../../../_entities/stop.entity";
 import { TripEntity } from "../../../../../_entities/trip.entity";
 import { TripsList } from "../../../schools/component/organism/TripsList";
 import EditStudentSchoolGradeItem from "../molecul/EditStudentSchoolGradeItem";
@@ -10,7 +9,7 @@ interface StopContentPanelsProps {
   onPanel: Accessor<StopPanels>;
   setOnPanel: Setter<StopPanels>;
   inAddQuantity: Accessor<boolean>;
-  toggleEditItem: () => void;
+  toggleInAddQuantity: () => void;
 }
 
 export function StopContentPanels(props: StopContentPanelsProps) {
@@ -18,10 +17,10 @@ export function StopContentPanels(props: StopContentPanelsProps) {
     <div class="content mt-2">
       <Switch>
         <Match when={props.onPanel() == StopPanels.grades}>
-          <StudentSchoolGradeList stop={stopDetailsItem() as StopType} />
+          <StudentSchoolGradeList />
 
           <Show when={props.inAddQuantity()}>
-            <EditStudentSchoolGradeItem close={props.toggleEditItem} />
+            <EditStudentSchoolGradeItem close={props.toggleInAddQuantity} />
           </Show>
         </Match>
         <Match when={props.onPanel() == StopPanels.trips}>

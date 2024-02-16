@@ -1,3 +1,4 @@
+import _ from "lodash";
 import { createSignal } from "solid-js";
 import { StopType } from "../../../../../_entities/stop.entity";
 import CardTitle from "../../../../../component/atom/CardTitle";
@@ -28,7 +29,7 @@ export default function (props: StopItemProps) {
   };
 
   const onClickEdit = () => {
-    setStopDetailsItem(props.stop);
+    setStopDetailsItem(_.cloneDeep(props.stop));
     changeBoard("stop-details");
     updatePointColor(props.stop);
   };

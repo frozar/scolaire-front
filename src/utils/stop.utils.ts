@@ -66,6 +66,13 @@ export namespace StopUtils {
 
       return stops;
     });
+    setStopDetailsItem((stop) => {
+      if (!stop) return stop;
+      return {
+        ...stop,
+        associated: [...stop.associated, gradeItem],
+      };
+    });
   }
 
   export function removeAssociated(
