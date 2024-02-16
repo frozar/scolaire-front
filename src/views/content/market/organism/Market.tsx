@@ -1,5 +1,5 @@
 import { Match, Switch, createSignal } from "solid-js";
-import { AllotmentTab } from "../molecule/Allotmenttab";
+import { AllotmentTab } from "../molecule/AllotmentTab";
 import { MarketTabitems } from "../molecule/MarketTabItems";
 import { VehicleTab } from "../molecule/VehicleTab";
 
