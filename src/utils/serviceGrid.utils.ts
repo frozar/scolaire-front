@@ -297,14 +297,22 @@ export namespace ServiceGridUtils {
 
   export function getHlpDuration(
     serviceTrips: ServiceTripType[],
+    serviceTripsOrdered: ServiceTripType[],
     serviceTripIndex: number
   ): number {
-    /* Return minutes */
+    /*
+    Return duration between :
+    - start of source trip (in serviceTrips)
+    - end of target trip (in serviceTripsOrdered)
+    
+    Return minutes
+    */
 
     // hlpMatrix() is setted asynchronously
     if (Object.keys(hlpMatrix()).length == 0) return 0;
 
-    const idPreviousTrip = serviceTrips[serviceTripIndex - 1].tripId;
+    const idPreviousTrip = (serviceTripsOrdered.at(-1) as ServiceTripType)
+      .tripId;
     const idActualTrip = serviceTrips[serviceTripIndex].tripId;
 
     return hlpMatrix()[idActualTrip][idPreviousTrip];
