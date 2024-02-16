@@ -60,11 +60,11 @@ export function AddVehicleMenu() {
         capacity={vehicleCapacity()}
         category={vehicleCategory()}
         name={vehicleName()}
-        submitFunction={createNewVehicle}
-        onCapacityChangeFunction={onChangeCapacity}
-        onCategoryChangeFunction={onChangeCategory}
-        onNameChangeFunction={onChangeName}
-        onAccessibilityChangeFunction={onChangeAccessibility}
+        submit={createNewVehicle}
+        onCapacityChange={onChangeCapacity}
+        onCategoryChange={onChangeCategory}
+        onNameChange={onChangeName}
+        onAccessibilityChange={onChangeAccessibility}
       />
     </div>
   );
