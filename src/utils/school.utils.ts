@@ -241,4 +241,11 @@ export namespace SchoolUtils {
       return { ...prev, calendar: calendar };
     });
   }
+
+  export function updateSchoolDetails(school: Partial<SchoolType>) {
+    setSchoolDetailsItem((prev) => {
+      if (!prev) return prev;
+      return { ...prev, ...school };
+    });
+  }
 }

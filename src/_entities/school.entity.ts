@@ -49,12 +49,19 @@ export class SchoolEntity {
       calendar: dbSchool.calendar
         ? CalendarEntity.build(dbSchool.calendar)
         : undefined,
+      waitingTime: dbSchool.waiting_time,
     };
   }
 
   static dbFormat(
-    school: Pick<SchoolType, "name" | "lon" | "lat" | "hours" | "calendar">
-  ): Pick<SchoolDBType, "name" | "location" | "hours" | "calendar_id"> {
+    school: Pick<
+      SchoolType,
+      "name" | "lon" | "lat" | "hours" | "calendar" | "waitingTime"
+    >
+  ): Pick<
+    SchoolDBType,
+    "name" | "location" | "hours" | "calendar_id" | "waiting_time"
+  > {
     return {
       name: school.name,
       location: EntityUtils.builLocationPoint(
@@ -63,18 +70,8 @@ export class SchoolEntity {
       ),
       hours: TimeUtils.formatHours(school.hours),
       calendar_id: school?.calendar?.id,
+      waiting_time: school.waitingTime,
     };
-  }
-
-  static dataToDB(datas: Pick<SchoolType, "name" | "lon" | "lat" | "hours">[]) {
-    return datas.map((data) => {
-      return SchoolEntity.dbFormat({
-        name: data.name,
-        lat: +data.lat,
-        lon: +data.lon,
-        hours: data.hours,
-      });
-    });
   }
 
   // TODO à place dans un SchoolUtils
@@ -103,6 +100,7 @@ export type SchoolType = {
   setSelected: Setter<boolean>;
   hours: HoursType;
   calendar?: CalendarType;
+  waitingTime: number;
 };
 
 export type SchoolDBType = {
@@ -114,6 +112,7 @@ export type SchoolDBType = {
   hours?: HoursDBType;
   calendar_id?: number;
   calendar?: CalendarDBType;
+  waiting_time: number;
 };
 
 export type LeafletShoolType = SchoolType & {
