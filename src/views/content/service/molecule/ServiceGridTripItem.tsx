@@ -31,7 +31,10 @@ export function ServiceGridTripItem(
         name={TripUtils.get(props.serviceTrip.tripId).name}
       />
 
-      <ServiceGridItemStartEndStopNames tripId={props.serviceTrip.tripId} />
+      <ServiceGridItemStartEndStopNames
+        startName={ServiceGridUtils.getStartStopName(props.serviceTrip.tripId)}
+        endName={ServiceGridUtils.getEndStopName(props.serviceTrip.tripId)}
+      />
 
       <ServiceGridTripItemHours
         startHour={ServiceGridUtils.getStringHourFormatFromMinutes(
