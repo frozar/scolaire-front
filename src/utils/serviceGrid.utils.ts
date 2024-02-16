@@ -160,49 +160,6 @@ export namespace ServiceGridUtils {
     return ServiceGridUtils.getStringHourFormatFromMinutes(startHour);
   }
 
-  export function updateAndGetServiceEndHour(
-    serviceTripIndex: number,
-    serviceTrip: ServiceTripType,
-    serviceId: number
-  ): string {
-    if (serviceTripIndex == 0) {
-      const endHour = ServiceGridUtils.getEarliestArrival(serviceTrip.tripId);
-
-      const endHourToDisplay =
-        ServiceGridUtils.getStringHourFormatFromMinutes(endHour);
-
-      // To avoid infinite loop
-      if (endHour == serviceTrip.endHour) return endHourToDisplay;
-
-      // Save value in services()
-      BusServiceUtils.updateEndHour(serviceId, serviceTrip.tripId, endHour);
-      return endHourToDisplay;
-    } else {
-      const startHour = ServiceGridUtils.getServiceTripStartHourValue(
-        serviceTripIndex,
-        serviceTrip,
-        serviceId
-      );
-
-      const trip = TripUtils.get(serviceTrip.tripId);
-
-      const duration = Math.round((trip.metrics?.duration as number) / 60);
-
-      const endHour = startHour + duration;
-
-      const endHourToDisplay =
-        ServiceGridUtils.getStringHourFormatFromMinutes(endHour);
-
-      // To avoid infinite loop
-      if (endHour == serviceTrip.endHour) return endHourToDisplay;
-
-      // Save value in services()
-      BusServiceUtils.updateEndHour(serviceId, serviceTrip.tripId, endHour);
-
-      return endHourToDisplay;
-    }
-  }
-
   export function getStringHourFormatFromMinutes(totalMinutes: number): string {
     const hour = Math.trunc(totalMinutes / 60);
     const minutes = totalMinutes % 60;
@@ -271,28 +228,6 @@ export namespace ServiceGridUtils {
         (firstTrip.schools[0].hours.endHourComing?.minutes as number)
       );
     }
-  }
-
-  // TODO: Delete ?
-  export function updateAndGetHlpWidth(
-    serviceTrip: ServiceTripType,
-    serviceId: number,
-    i: number
-  ): number {
-    // hlpMatrix() is setted asynchronously
-    if (Object.keys(hlpMatrix()).length == 0) return 0;
-
-    const serviceTrips = BusServiceUtils.get(serviceId).serviceTrips;
-    const idPreviousTrip = serviceTrips[i - 1].tripId;
-    const idActualTrip = serviceTrips[i].tripId;
-
-    const hlpDuration = hlpMatrix()[idActualTrip][idPreviousTrip];
-
-    // Save in services()
-    if (hlpDuration != serviceTrip.hlp)
-      BusServiceUtils.updateHlp(serviceId, idActualTrip, hlpDuration);
-
-    return hlpDuration;
   }
 
   export function getHlpDuration(

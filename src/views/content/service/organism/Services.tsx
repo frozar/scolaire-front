@@ -28,6 +28,7 @@ export type ServiceTripOrderedType = {
   tripId: number;
   hlp: number; // in minutes
   endHour: number; // in minutes
+  startHour: number; // in minutes
   waitingTime: number; // in minutes
 };
 

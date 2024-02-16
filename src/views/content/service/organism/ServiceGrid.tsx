@@ -64,14 +64,17 @@ export function ServiceGrid(): JSXElement {
 
           // Case 1 : First serviceTrip
           if (serviceTripIndex == 0) {
+            const endHour =
+              tripDirection == TripDirectionEnum.going
+                ? minTimeOfTimeRange
+                : minTimeOfTimeRange + tripDuration;
+
             service.serviceTripsOrdered.push({
               tripId: tripId,
               hlp: 0,
-              endHour:
-                tripDirection == TripDirectionEnum.going
-                  ? minTimeOfTimeRange
-                  : minTimeOfTimeRange + tripDuration,
+              endHour,
               waitingTime: 0,
+              startHour: endHour - tripDuration,
             });
             continue;
           }
@@ -121,6 +124,7 @@ export function ServiceGrid(): JSXElement {
               hlp,
               endHour: earliestEndHour,
               waitingTime: 0,
+              startHour: earliestEndHour - tripDuration,
             });
           }
 
@@ -147,11 +151,14 @@ export function ServiceGrid(): JSXElement {
                 ? minTimeOfTimeRange - earliestEndHour
                 : minTimeOfTimeRange - earliestDepartureHour;
 
+            const endHour = earliestEndHour + waitingTime;
+
             service.serviceTripsOrdered.push({
               tripId,
               hlp,
-              endHour: earliestEndHour + waitingTime,
+              endHour,
               waitingTime,
+              startHour: endHour - tripDuration,
             });
           }
 
