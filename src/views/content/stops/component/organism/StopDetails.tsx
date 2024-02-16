@@ -1,5 +1,6 @@
 import { Show, createSignal, onMount } from "solid-js";
 import { StopType } from "../../../../../_entities/stop.entity";
+import { LabeledInputNumber } from "../../../../../component/molecule/LabeledInputNumber";
 import { MapElementUtils } from "../../../../../utils/mapElement.utils";
 import { StopUtils } from "../../../../../utils/stop.utils";
 import { changeBoard } from "../../../board/component/template/ContextManager";
@@ -7,7 +8,6 @@ import { RemainingStudentInformation } from "../atom/RemainingStudentInformation
 import { StopActionsPanelsButtons } from "../molecul/StopActionsPanelsButtons";
 import { StopDetailsHeader } from "../molecul/StopDetailsHeader";
 import { StopFooter } from "../molecul/StopFooter";
-import { WaitingTimeInput } from "../molecul/WaitingTimeInput";
 import { StopContentPanels } from "./StopContentPanels";
 import "./StopDetails.css";
 
@@ -47,12 +47,13 @@ export default function () {
         toggleEditing={toggleEditItem}
       />
 
-      <WaitingTimeInput
+      <LabeledInputNumber
         onChange={onChangeWaitingTime}
         selector={{
           disabled: !editItem(),
           value: stopDetailsItem()?.waitingTime as number,
         }}
+        label="Temps d'attente sur l'arrêt en seconde"
       />
 
       <Show when={!editItem()}>

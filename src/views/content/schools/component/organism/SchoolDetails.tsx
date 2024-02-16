@@ -8,6 +8,7 @@ import { getSchools } from "../../../map/component/organism/SchoolPoints";
 import SchoolDetailsHeader from "../molecule/SchoolDetailsHeader";
 import { SchoolDetailsContent } from "./SchoolDetailsContent";
 import { SchoolDetailsPanels } from "./SchoolDetailsPanels";
+import { SchoolSettings } from "./SchoolSettings";
 
 export const [schoolDetailsItem, setSchoolDetailsItem] =
   createSignal<SchoolType>();
@@ -33,6 +34,7 @@ export default function () {
   return (
     <section>
       <SchoolDetailsHeader school={schoolDetailsItem() as SchoolType} />
+      <SchoolSettings />
 
       <SchoolDetailsContent />
 
