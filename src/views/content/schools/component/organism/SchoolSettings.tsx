@@ -5,6 +5,8 @@ import { schoolDetailEditing, schoolDetailsItem } from "./SchoolDetails";
 
 export function SchoolSettings() {
   function onChangeWaitingTime(element: HTMLInputElement) {
+    if (!element.value || element.value === "")
+      element.value = schoolDetailsItem()?.waitingTime.toString() as string;
     SchoolUtils.updateSchoolDetails({ waitingTime: Number(element.value) });
   }
 
