@@ -157,7 +157,7 @@ export function Services(): JSXElement {
             return (
               // ! Aller
               tripDirection == TripDirectionEnum.going &&
-              earliestEndHour <= minTimeOfTimeRange
+              earliestEndHour < minTimeOfTimeRange
             );
           }
 
@@ -165,7 +165,7 @@ export function Services(): JSXElement {
             return (
               // ! Retour
               tripDirection == TripDirectionEnum.coming &&
-              earliestDepartureHour <= minTimeOfTimeRange
+              earliestDepartureHour < minTimeOfTimeRange
             );
           }
 
