@@ -22,7 +22,10 @@ export function ServiceGridLine(props: ServiceGridLineProps): JSXElement {
         active: selectedService() == services()[props.serviceIndex].id,
       }}
     >
-      <ServiceGridLineFirstDiv serviceIndex={props.serviceIndex} />
+      <ServiceGridLineFirstDiv
+        show={services()[props.serviceIndex].serviceTrips.length != 0}
+        width={ServiceGridUtils.firstDivWidth(props.serviceIndex)}
+      />
 
       <For each={services()[props.serviceIndex].serviceTrips}>
         {(serviceTrip, i) => (
