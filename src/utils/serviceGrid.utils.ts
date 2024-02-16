@@ -9,6 +9,7 @@ import {
   ServiceTripOrderedType,
   ServiceType,
   services,
+  setServices,
 } from "../views/content/service/organism/Services";
 import {
   hlpMatrix,
@@ -259,8 +260,11 @@ export namespace ServiceGridUtils {
   }
 
   // TODO: Refactor and clean
-  export function getUpdatedServices(services: ServiceType[]): ServiceType[] {
-    for (const service of services) {
+  // TODO: Use this line back
+  // export function getUpdatedServices(_services: ServiceType[]): ServiceType[] {
+  // ! Temp line
+  export function getUpdatedServices(_services: ServiceType[]): void {
+    for (const service of _services) {
       service.serviceTripsOrdered = [];
 
       for (const serviceTripIndex of [
@@ -312,6 +316,7 @@ export namespace ServiceGridUtils {
             .endHour + hlp;
 
         // Case 2 : Earliest arrival or departure in the time range
+
         function case2ConditionComing(earliestEndHour: number): boolean {
           return (
             // ! Aller
@@ -341,6 +346,7 @@ export namespace ServiceGridUtils {
             waitingTime: 0,
             startHour: earliestEndHour - tripDuration,
           });
+          continue;
         }
 
         // Case 3 : Earliest arrival or departure before time range
@@ -375,7 +381,14 @@ export namespace ServiceGridUtils {
             waitingTime,
             startHour: endHour - tripDuration,
           });
+          continue;
         }
+
+        // TODO: Remove it and do the other cases
+        console.log(
+          "WIP: Cette course ne peut pas être ajouté a ce service pour le moment"
+        );
+        return;
 
         // // Case 4 : Earliest arrival or departure after time range
         // function case4ConditionComing(): boolean {
@@ -490,7 +503,9 @@ export namespace ServiceGridUtils {
       }
       console.log("service", service);
     }
+    // TODO: Use this line back
+    // return _services;
 
-    return services;
+    setServices(_services);
   }
 }
