@@ -1,0 +1,11 @@
+.vehicle-number-input {
+  @apply space-x-3;
+}
+
+.vehicle-number-input-field {
+  @apply border-b-2 border-b-gray-light;
+}
+
+.vehicle-number-input-field:focus {
+  @apply outline-none;
+}

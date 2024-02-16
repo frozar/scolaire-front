@@ -1,4 +1,5 @@
-import Label from "../../board/component/atom/Label";
+import { VehicleNumberInput } from "./VehicleNumberInput";
+import "./VehicleSizeInput.css";
 
 interface VehicleSizeInputProps {
   defaultLength: number;
@@ -13,40 +14,26 @@ export function VehicleSizeInput(props: VehicleSizeInputProps) {
   return (
     <div>
       <p>Gabarit</p>
-      <div class="grid grid-flow-row grid-cols-2 max-w-xs">
-        <Label label="Longueur" for="vLength" />
-        <input
-          type="number"
-          id="vLength"
-          placeholder={props.defaultLength.toString()}
+      <div class="vehicle-number-input-container">
+        <VehicleNumberInput
+          label="Longueur"
+          name="length"
+          onChange={props.onInputLength}
+          placeholder="Entrer la longueur"
         />
-        <Label label="Largeur" for="vWidth" />
-        <input type="number" id="vWidth" placeholder="3" />
-        <Label label="Hauteur" for="vHeight" />
-        <input type="number" id="vHeight" placeholder="3" />
+        <VehicleNumberInput
+          label="Largeur"
+          name="width"
+          onChange={props.onInputWidth}
+          placeholder="Entrer la largeur"
+        />
+        <VehicleNumberInput
+          label="Hauteur"
+          name="height"
+          onChange={props.onInputHeight}
+          placeholder="Entrer la hauteur"
+        />
       </div>
-
-      {/* <LabeledInputNumber
-        label="Longueur"
-        name="vLength"
-        onInput={(e) => props.onInputLength(Number(e.target.value))}
-        value={props.defaultLength}
-        placeholder="20"
-      />
-      <LabeledInputNumber
-        label="Largeur"
-        name="vWidth"
-        onInput={(e) => props.onInputWidth(Number(e.target.value))}
-        value={props.defaultWidth}
-        placeholder="3"
-      />
-      <LabeledInputNumber
-        label="Longueur"
-        name="vHeight"
-        onInput={(e) => props.onInputHeight(Number(e.target.value))}
-        value={props.defaultHeight}
-        placeholder="3"
-      /> */}
     </div>
   );
 }
