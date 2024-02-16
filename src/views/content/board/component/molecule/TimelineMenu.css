@@ -14,18 +14,3 @@
 .timeline-menu > .menu {
   @apply absolute left-[40px] top-[-15px] bg-dark-teal flex flex-col gap-2 px-3 rounded-md py-2 z-[1000] min-w-[150px] text-white;
 }
-
-.header-menu {
-  @apply flex justify-between;
-}
-
-.header-menu > .back-icon {
-  width: 15px;
-}
-.header-menu > .back-icon > svg {
-  @apply fill-red-base;
-}
-
-.header-menu > .save-icon > svg {
-  @apply fill-green-base;
-}

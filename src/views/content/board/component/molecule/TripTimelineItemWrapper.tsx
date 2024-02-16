@@ -12,7 +12,7 @@ import { TripUtils } from "../../../../../utils/trip.utils";
 import { linkMap } from "../../../map/component/organism/Points";
 import { COLOR_SCHOOL_FOCUS, COLOR_STOP_FOCUS } from "../../../map/constant";
 import { TripTimelineItem } from "../atom/TripTimelineItem";
-import { currentDrawTrip, setCurrentDrawTrip } from "../organism/DrawTripBoard";
+import { setCurrentDrawTrip } from "../organism/DrawTripBoard";
 
 interface TripTimelineItemWrapperProps {
   setTrip?: Setter<TripType>;
@@ -171,8 +171,6 @@ export function TripTimelineItemWrapper(props: TripTimelineItemWrapperProps) {
         }),
       };
     });
-    console.log("point:", point, newValue);
-    console.log("after update", currentDrawTrip());
   }
 
   return (

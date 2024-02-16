@@ -1,0 +1,14 @@
+.header-menu {
+  @apply flex justify-between mb-1;
+}
+
+.header-menu > .back-icon {
+  width: 15px;
+}
+
+.header-menu > .back-icon > svg {
+  @apply fill-red-base w-[11px] h-[11px];
+}
+.header-menu > .save-icon > svg {
+  @apply fill-green-base w-[11px] h-[11px];
+}

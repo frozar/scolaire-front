@@ -1,10 +1,9 @@
-import { JSXElement, Show, createSignal } from "solid-js";
+import { Show, createSignal } from "solid-js";
 import Button from "../../../../../component/atom/Button";
-import { LabeledInputNumber } from "../../../../../component/molecule/LabeledInputNumber";
-import { BackIcon } from "../../../../../icons/BackIcon";
-import CheckIcon from "../../../../../icons/CheckIcon";
 import { DotMenu } from "../../../../../icons/DotMenu";
+import { TimelineWaitingTimeSetting } from "./TimelineWaitingTimeSetting";
 
+import ButtonIcon from "./ButtonIcon";
 import "./TimelineMenu.css";
 
 interface TimelineMenuProps {
@@ -19,22 +18,18 @@ export function TimelineMenu(props: TimelineMenuProps) {
 
   return (
     <div class="timeline-menu">
-      <button
-        class="timeline-open-menu-button"
-        classList={{
-          active: isOpenMenu(),
-        }}
+      <ButtonIcon
+        class={"timeline-open-menu-button " + (isOpenMenu() ? "active" : "")}
+        icon={<DotMenu />}
         onClick={() => setIsOpenMenu((prev) => !prev)}
-      >
-        <DotMenu />
-      </button>
+      />
 
       <Show when={isOpenMenu()}>
         <div class="menu">
           <Show
             when={!isOpenSetting()}
             fallback={
-              <WaitingTimeSetting
+              <TimelineWaitingTimeSetting
                 closeSettings={() => setIsOpenSetting((prev) => !prev)}
                 waitingTime={props.waitingTime}
                 onClickWaitingTime={props.onClickWaitingTime}
@@ -53,49 +48,6 @@ export function TimelineMenu(props: TimelineMenuProps) {
           </Show>
         </div>
       </Show>
-    </div>
-  );
-}
-
-interface WaitingTimeSetting {
-  closeSettings: () => void;
-  onClickWaitingTime: (value: number) => void;
-  waitingTime: number;
-}
-
-function WaitingTimeSetting(props: WaitingTimeSetting): JSXElement {
-  // eslint-disable-next-line solid/reactivity
-  const [waitingTime, setWaitingTime] = createSignal(props.waitingTime);
-
-  function onChangeWaitingTime(value: number) {
-    setWaitingTime(value);
-  }
-
-  return (
-    <div class="settings-menu">
-      <div class="header-menu">
-        <button class="back-icon" onClick={() => props.closeSettings()}>
-          <BackIcon />
-        </button>
-
-        <button
-          class="save-icon"
-          onClick={() => props.onClickWaitingTime(waitingTime())}
-        >
-          <CheckIcon />
-        </button>
-      </div>
-
-      <div class="content">
-        <LabeledInputNumber
-          label="Temps d'attente"
-          onChange={(element) => onChangeWaitingTime(Number(element.value))}
-          selector={{
-            value: waitingTime(),
-            disabled: false,
-          }}
-        />
-      </div>
     </div>
   );
 }
