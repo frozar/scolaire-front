@@ -7,27 +7,23 @@ interface vehicleCategoryInputProps {
 export function VehicleCategoryInput(props: vehicleCategoryInputProps) {
   return (
     <div>
-      <LabeledInputRadio
-        id="autocar"
-        value="autocar"
-        labelName="Autocar"
-        name="vehicle-category"
-        onChange={props.onChangeFunction}
-      />
-      <LabeledInputRadio
-        id="bus"
-        value="bus"
-        labelName="Bus"
-        name="vehicle-category"
-        onChange={props.onChangeFunction}
-      />
-      <LabeledInputRadio
-        id="pmr"
-        value="pmr"
-        labelName="Véhicule PMR"
-        name="vehicle-category"
-        onChange={props.onChangeFunction}
-      />
+      <p>Catégorie</p>
+      <div class="flex">
+        <LabeledInputRadio
+          id="autocar"
+          value="autocar"
+          labelName="Autocar"
+          name="vehicle-category"
+          onChange={props.onChangeFunction}
+        />
+        <LabeledInputRadio
+          id="bus"
+          value="bus"
+          labelName="Bus"
+          name="vehicle-category"
+          onChange={props.onChangeFunction}
+        />
+      </div>
     </div>
   );
 }

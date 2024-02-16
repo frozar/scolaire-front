@@ -3,61 +3,92 @@ import { BusService } from "../../../../_services/bus.service";
 import { addNewUserInformation } from "../../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../../type";
 import { VehicleMenuHeader } from "../atom/VehicleMenuHeader";
-import "./AddVehicleMenu.css";
 import { VehicleMenuContent } from "./VehicleMenuContent";
 import { setIsVehicleMenuOpened } from "./VehicleTab";
 
 export function AddVehicleMenu() {
-  const [vehicleName, setVehicleName] = createSignal("");
-  const [vehicleCapacity, setVehicleCapacity] = createSignal(0);
-  const [vehicleCategory, setVehicleCategory] = createSignal("");
+  const [getName, setName] = createSignal("");
+  const [getCapacity, setCapacity] = createSignal(0);
+  const [getCategory, setCategory] = createSignal("");
+  const [getAccessibility, setAccessibility] = createSignal("");
+  const [getLength, setLength] = createSignal(0);
+  const [getWidth, setWidth] = createSignal(0);
+  const [getHeight, setHeight] = createSignal(0);
 
   function onChangeCapacity(value: number) {
-    setVehicleCapacity(value);
+    setCapacity(value);
+  }
+
+  function onChangeLength(value: number) {
+    setLength(value);
+  }
+
+  function onChangeWidth(value: number) {
+    setWidth(value);
+  }
+
+  function onChangeHeight(value: number) {
+    setHeight(value);
   }
 
   function onChangeCategory(value: string) {
-    setVehicleCategory(value);
+    setCategory(value);
   }
 
   function onChangeName(value: string) {
-    setVehicleName(value);
+    setName(value);
+  }
+
+  function onChangeAccessibility(value: string) {
+    setAccessibility(value);
   }
 
   function resetDefaultValues() {
-    setVehicleCapacity(0);
-    setVehicleCategory("");
-    setVehicleName("");
+    setCapacity(0);
+    setLength(0);
+    setWidth(0);
+    setHeight(0);
+    setCategory("");
+    setName("");
+    setAccessibility("");
   }
 
   async function createNewVehicle() {
-    if (vehicleName() == "" || vehicleCategory() == "") return;
+    if (getName() == "" || getCategory() == "") return;
     await BusService.create({
-      category: vehicleCategory(),
-      capacity: vehicleCapacity(),
-      name: vehicleName(),
+      category: getCategory(),
+      capacity: getCapacity(),
+      name: getName(),
     });
     addNewUserInformation({
       displayed: true,
       level: MessageLevelEnum.success,
       type: MessageTypeEnum.global,
-      content: "Le véhicule " + vehicleName() + " a bien été créé",
+      content: "Le véhicule " + getName() + " a bien été créé",
     });
     setIsVehicleMenuOpened(false);
     resetDefaultValues();
   }
 
   return (
-    <div class="vehicle-menu-container">
+    <div>
       <VehicleMenuHeader />
       <VehicleMenuContent
-        capacity={vehicleCapacity()}
-        category={vehicleCategory()}
-        name={vehicleName()}
-        submitFunction={createNewVehicle}
-        onCapacityChangeFunction={onChangeCapacity}
-        onCategoryChangeFunction={onChangeCategory}
-        onNameChangeFunction={onChangeName}
+        capacity={getCapacity()}
+        category={getCategory()}
+        name={getName()}
+        accessibility={getAccessibility()}
+        height={getHeight()}
+        length={getLength()}
+        width={getWidth()}
+        submit={createNewVehicle}
+        onCapacityChange={onChangeCapacity}
+        onCategoryChange={onChangeCategory}
+        onHeightChange={onChangeHeight}
+        onLengthChange={onChangeLength}
+        onWidthChange={onChangeWidth}
+        onNameChange={onChangeName}
+        onAccessibilityChange={onChangeAccessibility}
       />
     </div>
   );

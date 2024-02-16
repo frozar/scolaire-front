@@ -3,5 +3,8 @@
 }
 
 .vehicle-capacity-input {
-  @apply max-w-xs border-2;
+  @apply max-w-xs border-b-2 border-gray-light;
+}
+.vehicle-capacity-input:focus {
+  @apply outline-none;
 }

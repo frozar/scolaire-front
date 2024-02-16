@@ -13,7 +13,7 @@ export const [currentMarketTab, setCurrentMarketTab] =
 
 export function Market() {
   return (
-    <div class="page-layout">
+    <div>
       <MarketTabitems />
       <div class="market-tab-container">
         <Switch>

@@ -17,7 +17,7 @@ export function MarketTabitems() {
         label="Véhicules"
         onClick={() => setSelectedTab(MarketTabEnum.vehicles)}
         active={currentMarketTab() == MarketTabEnum.vehicles}
-        variant="borderless"
+        variant="outline"
         size="3xl"
       />
 
@@ -25,7 +25,7 @@ export function MarketTabitems() {
         label="Allotissement"
         onClick={() => setSelectedTab(MarketTabEnum.allotment)}
         active={currentMarketTab() == MarketTabEnum.allotment}
-        variant="borderless"
+        variant="outline"
         size="3xl"
       />
     </div>

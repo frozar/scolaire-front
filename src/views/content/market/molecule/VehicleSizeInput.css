@@ -1,0 +1,3 @@
+.vehicle-number-input-container {
+  @apply pl-4 flex-col;
+}
