@@ -12,6 +12,7 @@ import { TripUtils } from "../../../../../utils/trip.utils";
 import { linkMap } from "../../../map/component/organism/Points";
 import { COLOR_SCHOOL_FOCUS, COLOR_STOP_FOCUS } from "../../../map/constant";
 import { TripTimelineItem } from "../atom/TripTimelineItem";
+import { currentDrawTrip, setCurrentDrawTrip } from "../organism/DrawTripBoard";
 
 interface TripTimelineItemWrapperProps {
   setTrip?: Setter<TripType>;
@@ -155,6 +156,25 @@ export function TripTimelineItemWrapper(props: TripTimelineItemWrapperProps) {
       }
     }
   }
+
+  function onClickWaitingTime(indice: number, newValue: number) {
+    const points = [...props.trip.tripPoints];
+    const point = points[indice];
+    setCurrentDrawTrip((prev) => {
+      if (!prev) return prev;
+      return {
+        ...prev,
+        tripPoints: prev.tripPoints.map((point_) => {
+          if (point_.id == point.id) point_.waitingTime = newValue;
+
+          return point_;
+        }),
+      };
+    });
+    console.log("point:", point, newValue);
+    console.log("after update", currentDrawTrip());
+  }
+
   return (
     <TripTimelineItem
       pointNature={props.tripPoint.nature}
@@ -168,6 +188,10 @@ export function TripTimelineItemWrapper(props: TripTimelineItemWrapperProps) {
       calculatedQuantity={quantity()}
       quantityToGetOrDrop={getToCalculQuantity()}
       onClickRemovePointFromTrip={() => deletePoint(props.indice)}
+      waitingTime={props.tripPoint.waitingTime}
+      onClickWaitingTime={(value: number) =>
+        onClickWaitingTime(props.indice, value)
+      }
     />
   );
 }

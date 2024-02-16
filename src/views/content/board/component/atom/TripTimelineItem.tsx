@@ -1,8 +1,8 @@
 import { Show, createEffect } from "solid-js";
 
 import { NatureEnum } from "../../../../../type";
-import { TripTimelineRemovePointButton } from "./TripTimelineRemovePointButton";
 
+import { TimelineMenu } from "../molecule/TimelineMenu";
 import {
   DrawTripStep,
   currentStep,
@@ -18,7 +18,9 @@ interface TripTimelineItemProps {
   calculatedQuantity: number;
   timePassage: string;
   tripColor: string;
+  waitingTime: number;
   onClickRemovePointFromTrip: () => void;
+  onClickWaitingTime: (value: number) => void;
 }
 
 export function TripTimelineItem(props: TripTimelineItemProps) {
@@ -56,9 +58,14 @@ export function TripTimelineItem(props: TripTimelineItemProps) {
                 currentStep() == DrawTripStep.buildReverse
               }
             >
-              <TripTimelineRemovePointButton
-                onClick={props.onClickRemovePointFromTrip}
+              <TimelineMenu
+                onClickDeletePoint={props.onClickRemovePointFromTrip}
+                onClickWaitingTime={props.onClickWaitingTime}
+                waitingTime={props.waitingTime}
               />
+              {/* <TripTimelineRemovePointButton
+                onClick={props.onClickRemovePointFromTrip}
+              /> */}
             </Show>
           </div>
         </div>

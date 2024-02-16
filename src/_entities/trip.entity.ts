@@ -55,7 +55,7 @@ export namespace TripEntity {
               GradeEntity.build(grade as GradeDBType)
             )
           : [],
-      tripPoints: formatTripPointType(
+      tripPoints: buildTripPointType(
         dbData.trip_stop,
         dbData.days,
         TripDirectionEntity.FindDirectionById(dbData.trip_direction_id).type
@@ -247,6 +247,7 @@ export type TripPointType = {
   // TODO: Rename to timeToReach
   passageTime: number;
   startToTripPointDistance: number;
+  waitingTime: number;
 };
 
 export type TripDBType = {
@@ -273,6 +274,7 @@ export type TripPointDBType = {
   grades: GradeTripDBType[];
   passage_time: number;
   start_to_trip_point_distance: number;
+  waiting_time: number;
 };
 
 export type TripMetricType = {
@@ -295,6 +297,7 @@ function formatTripPointDBType(points: TripPointType[]): TripPointDBType[] {
       }),
       passage_time: point.passageTime,
       start_to_trip_point_distance: point.startToTripPointDistance,
+      waiting_time: point.waitingTime,
     };
   });
 }
@@ -303,7 +306,7 @@ function formatTripPointDBType(points: TripPointType[]): TripPointDBType[] {
  * @param points
  * @returns
  */
-function formatTripPointType(
+function buildTripPointType(
   points: TripPointDBType[],
   days: CalendarDayEnum[],
   tripDirection: TripDirectionEnum
@@ -313,7 +316,6 @@ function formatTripPointType(
   return points
     .map((dbPoint) => {
       const associatedPoint: PointType = getAssociatedTripPoint(dbPoint);
-
       const grades =
         associatedPoint.nature == NatureEnum.stop
           ? dbPoint.grades.map((grade) => {
@@ -344,6 +346,7 @@ function formatTripPointType(
           passageTime: dbPoint.passage_time,
           startToTripPointDistance: dbPoint.start_to_trip_point_distance,
           grades: grades,
+          waitingTime: dbPoint.waiting_time,
         };
       } else {
         //TODO Error log to improve
