@@ -7,6 +7,7 @@ export type BusCategoryType = {
   id?: number;
   category: string;
   capacity: number;
+  name: string;
 };
 
 export const [getBus, setBus] = createSignal<BusCategoryType[]>([]);
