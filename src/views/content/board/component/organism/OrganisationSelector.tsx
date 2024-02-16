@@ -12,6 +12,8 @@ import { Selector } from "../molecule/Selector";
 import { changeBoard } from "../template/ContextManager";
 const [, { resetState }] = useStateGui();
 
+import "./OrganisationSelector.css";
+
 export const DEFAULT_ORGANISATION = {
   organisation_id: -1,
   name: "Organisation not found",
@@ -42,14 +44,18 @@ export function OrganisationSelector() {
     }
   });
   return (
-    <Selector
-      content={getAuthenticatedUser()!.organisation.map((orga) => {
-        return { value: orga.organisation_id, name: orga.name };
-      })}
-      disabled={false}
-      selectedValue={getSelectedOrganisation().organisation_id}
-      onChange={onChange}
-    />
+    <div id="organisation-selector">
+      <label id="organisation-selector-label" for="organisation-selector-select">Organisation</label>
+      <Selector 
+        id="organisation-selector-select"
+        content={getAuthenticatedUser()!.organisation.map((orga) => {
+          return { value: orga.organisation_id, name: orga.name };
+        })}
+        disabled={false}
+        selectedValue={getSelectedOrganisation().organisation_id}
+        onChange={onChange}
+      />
+    </div>
   );
 }
 

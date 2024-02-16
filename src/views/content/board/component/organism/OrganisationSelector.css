@@ -1,0 +1,6 @@
+#organisation-selector label {
+  @apply text-white text-[12px] pl-[5px];
+}
+#organisation-selector .selector {
+  @apply h-[33px];
+}
