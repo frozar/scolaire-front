@@ -4,7 +4,7 @@ import { ServiceGridUtils } from "../../../../utils/serviceGrid.utils";
 import { ServiceGridTop } from "../molecule/ServiceGridTop";
 import { hlpMatrix } from "../template/ServiceTemplate";
 import { ServiceGridLine } from "./ServiceGridLine";
-import { refScroll, services, setServices } from "./Services";
+import { refScroll, services } from "./Services";
 
 export const [zoom, setZoom] = createSignal(8);
 
@@ -47,8 +47,13 @@ export function ServiceGrid(): JSXElement {
       !_.isEqual(serviceTripIds, serviceTripOrderedIds) &&
       Object.keys(hlpMatrix()).length > 0
     ) {
-      const updatedServices = ServiceGridUtils.getUpdatedServices(_services);
-      setServices(updatedServices);
+      // TODO: Use that back, getUpdatedServices must not setServices() but
+      // just get it
+
+      // const updatedServices = ServiceGridUtils.getUpdatedServices(_services);
+      // setServices(updatedServices);
+
+      ServiceGridUtils.getUpdatedServices(_services);
     }
   });
 
