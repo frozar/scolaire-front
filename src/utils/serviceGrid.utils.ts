@@ -501,7 +501,7 @@ export namespace ServiceGridUtils {
         // ! Then what to do ?
         // => userMessage OR add and display an orange color for the item
       }
-      console.log("service", service);
+      // console.log("service", service);
     }
     // TODO: Use this line back
     // return _services;
