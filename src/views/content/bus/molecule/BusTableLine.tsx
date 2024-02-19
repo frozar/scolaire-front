@@ -1,16 +1,9 @@
 import { createSignal, Show } from "solid-js";
 import { BusService } from "../../../../_services/bus.service";
-import { TableData } from "../../../../component/table/atom/TableData";
-import { TableDataChilds } from "../../../../component/table/molecule/TableDataChilds";
-import { TableRow } from "../../../../component/table/molecule/TableRow";
-import CheckIcon from "../../../../icons/CheckIcon";
-import { CircleCrossIcon } from "../../../../icons/CircleCrossIcon";
 import { addNewUserInformation } from "../../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../../type";
-import ButtonIcon from "../../board/component/molecule/ButtonIcon";
-import { TableElementInput } from "../atom/TableElementInput";
-import { TableElementNumberInput } from "../atom/TableElementNumberInput";
 import { BusCategoryType } from "../organism/Bus";
+import { BusEditMenu } from "./BusEditMenu";
 import "./BusTableLine.css";
 import { BusTableLineData } from "./BusTableLineData";
 
@@ -77,6 +70,14 @@ export function BusTableLine(props: BusTableLineProps) {
     setName(value);
   }
 
+  function onCapacityInputChanged(value: number) {
+    setCapacity(value);
+  }
+
+  function onAccessibilityInputChanged(value: string) {
+    setAccess(value);
+  }
+
   return (
     <Show
       when={isInEditMode()}
@@ -91,33 +92,21 @@ export function BusTableLine(props: BusTableLineProps) {
         />
       }
     >
-      <TableRow active={true}>
-        <TableElementInput
-          defaultValue={getName()}
-          onInputFunction={onNameInputChanged}
-          placeholder="Entrer le nom du bus"
+      <td colspan={7}>
+        <BusEditMenu
+          id={Number(props.busItem.id)}
+          access={getAccess()}
+          capacity={getCapacity()}
+          category={getCategory()}
+          name={getName()}
+          cancelFunction={cancelButton}
+          submitFunction={updateButton}
+          onAccessibilityChange={onAccessibilityInputChanged}
+          onCapacityChange={onCapacityInputChanged}
+          onCategoryChange={onCategoryInputChanged}
+          onNameChange={onNameInputChanged}
         />
-        <TableElementInput
-          defaultValue={getCategory()}
-          onInputFunction={onCategoryInputChanged}
-          placeholder="Entrer le type de bus"
-        />
-        <TableElementNumberInput
-          defaultValue={getCapacity()}
-          onChangeFunction={setCapacity}
-        />
-        <TableElementInput
-          defaultValue={getAccess()}
-          onInputFunction={setAccess}
-          placeholder="Entrer l'accessibilité"
-        />
-        <TableData text="-" />
-        <TableData text="-" />
-        <TableDataChilds end={true}>
-          <ButtonIcon icon={<CheckIcon />} onClick={updateButton} />
-          <ButtonIcon icon={<CircleCrossIcon />} onClick={cancelButton} />
-        </TableDataChilds>
-      </TableRow>
+      </td>
     </Show>
   );
 }

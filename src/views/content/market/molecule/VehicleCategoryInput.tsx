@@ -1,6 +1,7 @@
 import LabeledInputRadio from "../../board/component/molecule/LabeledInputRadio";
 
 interface vehicleCategoryInputProps {
+  defaultValue?: string;
   onChangeFunction: (value: string) => void;
 }
 

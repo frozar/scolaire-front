@@ -4,7 +4,7 @@ import { addNewUserInformation } from "../../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../../type";
 import { VehicleMenuHeader } from "../atom/VehicleMenuHeader";
 import { VehicleMenuContent } from "./VehicleMenuContent";
-import { setIsVehicleMenuOpened } from "./VehicleTab";
+import { setIsVehicleMenuOpened } from "./vehicle/VehicleTab";
 
 export function AddVehicleMenu() {
   const [getName, setName] = createSignal("");
