@@ -1,6 +1,10 @@
 import { createSignal, Show } from "solid-js";
 import { BusService } from "../../../../_services/bus.service";
-import { addNewUserInformation } from "../../../../signaux";
+import {
+  addNewUserInformation,
+  disableSpinningWheel,
+  enableSpinningWheel,
+} from "../../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../../type";
 import { BusCategoryType } from "../organism/Bus";
 import { BusEditMenu } from "./BusEditMenu";
@@ -31,12 +35,15 @@ export function BusTableLine(props: BusTableLineProps) {
   }
 
   async function updateButton() {
+    enableSpinningWheel();
     await BusService.update({
       id: props.busItem.id,
       name: getName(),
       category: getCategory(),
       capacity: getCapacity(),
+      accessibility: getAccess(),
     });
+    disableSpinningWheel();
     toggleEditMode();
     addNewUserInformation({
       displayed: true,
@@ -47,7 +54,9 @@ export function BusTableLine(props: BusTableLineProps) {
   }
 
   async function deleteButton() {
+    enableSpinningWheel();
     await BusService.deleteBus(props.busItem.id);
+    disableSpinningWheel();
     addNewUserInformation({
       displayed: true,
       level: MessageLevelEnum.success,
