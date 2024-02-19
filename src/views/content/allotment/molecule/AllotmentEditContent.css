@@ -1,0 +1,11 @@
+.allotment-edit-content {
+  @apply px-4 py-2 border-2 border-green-base grid grid-flow-col gap-4;
+}
+
+.allotment-edit-input {
+  @apply max-w-xs;
+}
+
+.allotment-edit-input-color {
+  @apply max-w-xs grid mt-3;
+}

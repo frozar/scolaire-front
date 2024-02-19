@@ -59,6 +59,7 @@ export function AddVehicleMenu() {
       category: getCategory(),
       capacity: getCapacity(),
       name: getName(),
+      accessibility: getAccessibility(),
     });
     addNewUserInformation({
       displayed: true,

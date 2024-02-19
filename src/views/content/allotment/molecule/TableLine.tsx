@@ -1,16 +1,13 @@
 import { Show, createSignal } from "solid-js";
 import { AllotmentService } from "../../../../_services/allotment.service";
-import { TableData } from "../../../../component/table/atom/TableData";
-import { TableDataChilds } from "../../../../component/table/molecule/TableDataChilds";
-import { TableRow } from "../../../../component/table/molecule/TableRow";
-import CheckIcon from "../../../../icons/CheckIcon";
-import { CircleCrossIcon } from "../../../../icons/CircleCrossIcon";
-import { addNewUserInformation } from "../../../../signaux";
+import {
+  addNewUserInformation,
+  disableSpinningWheel,
+  enableSpinningWheel,
+} from "../../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../../type";
-import ButtonIcon from "../../board/component/molecule/ButtonIcon";
-import { TableElementInput } from "../../bus/atom/TableElementInput";
-import { TableElementColorPicker } from "../atom/TableElementColorPicker";
 import { AllotmentType } from "../organism/Allotment";
+import { AllotmentEditMenu } from "./AllotmentEditMenu";
 import { TableLineDisplayData } from "./TableLineDisplayData";
 
 interface TableLineProps {
@@ -30,40 +27,16 @@ export function TableLine(props: TableLineProps) {
     setisInEditMode(!isInEditMode());
   }
 
-  async function updateButton() {
-    await AllotmentService.update({
-      id: props.allotmentItem.id,
-      name: getName(),
-      color: getColor(),
-    });
-    toggleEditMode();
-    addNewUserInformation({
-      displayed: true,
-      level: MessageLevelEnum.success,
-      type: MessageTypeEnum.global,
-      content: "Les modifications ont bien été apportées",
-    });
-  }
-
-  function resetDefaultValues() {
-    setName(props.allotmentItem.name);
-    setColor(props.allotmentItem.color);
-  }
-
   async function deleteAllotment() {
+    enableSpinningWheel();
     await AllotmentService.deleteAllotment(props.allotmentItem.id);
+    disableSpinningWheel();
     addNewUserInformation({
       displayed: true,
       level: MessageLevelEnum.success,
       type: MessageTypeEnum.global,
       content: "L'allotissement a bien été supprimé",
     });
-    toggleEditMode();
-  }
-
-  function cancelButton() {
-    resetDefaultValues();
-    toggleEditMode();
   }
 
   function onNameInputChanged(value: string) {
@@ -86,23 +59,16 @@ export function TableLine(props: TableLineProps) {
         />
       }
     >
-      <TableRow shown={true} active={true}>
-        <TableElementInput
-          defaultValue={getName()}
-          onInputFunction={onNameInputChanged}
-          placeholder="Entrer un nom"
+      <td colSpan={5}>
+        <AllotmentEditMenu
+          id={props.allotmentItem.id}
+          toggleEdit={toggleEditMode}
+          color={getColor()}
+          name={getName()}
+          onColorInput={onColorInputChanged}
+          onNameInput={onNameInputChanged}
         />
-        <TableElementColorPicker
-          defaultColor={getColor()}
-          onInputFunction={onColorInputChanged}
-        />
-        <TableData text="-" />
-        <TableData text="-" />
-        <TableDataChilds end={true}>
-          <ButtonIcon icon={<CheckIcon />} onClick={updateButton} />
-          <ButtonIcon icon={<CircleCrossIcon />} onClick={cancelButton} />
-        </TableDataChilds>
-      </TableRow>
+      </td>
     </Show>
   );
 }
