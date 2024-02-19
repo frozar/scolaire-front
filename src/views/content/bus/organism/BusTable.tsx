@@ -1,20 +1,19 @@
+import { For } from "solid-js";
 import { TableContent } from "../../../../component/table/molecule/TableContent";
 import { Table } from "../../../../component/table/organism/Table";
-import { TableHeaderBus } from "../molecule/TableHeaderBus";
-import { TableRows } from "../molecule/TableRows";
-import { BusCategoryType } from "./Bus";
+import { BusTableHeader } from "../molecule/BusTableHeader";
+import { BusTableLine } from "../molecule/BusTableLine";
+import { BusCategoryType, getBus } from "./Bus";
 import "./Bus.css";
 
-interface BusTableProps {
-  busList: BusCategoryType[];
-}
-
-export function BusTable(props: BusTableProps) {
+export function BusTable() {
   return (
     <Table>
-      <TableHeaderBus />
+      <BusTableHeader />
       <TableContent>
-        <TableRows busList={props.busList} />
+        <For each={getBus()}>
+          {(bus: BusCategoryType) => <BusTableLine busItem={bus} />}
+        </For>
       </TableContent>
     </Table>
   );

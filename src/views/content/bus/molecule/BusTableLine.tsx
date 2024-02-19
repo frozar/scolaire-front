@@ -11,14 +11,14 @@ import ButtonIcon from "../../board/component/molecule/ButtonIcon";
 import { TableElementInput } from "../atom/TableElementInput";
 import { TableElementNumberInput } from "../atom/TableElementNumberInput";
 import { BusCategoryType } from "../organism/Bus";
-import "./TableLine.css";
-import { TableLineDisplayData } from "./TableLineDisplayData";
+import "./BusTableLine.css";
+import { BusTableLineData } from "./BusTableLineData";
 
-interface TableLineProps {
+interface BusTableLineProps {
   busItem: BusCategoryType;
 }
 
-export function TableLine(props: TableLineProps) {
+export function BusTableLine(props: BusTableLineProps) {
   const [isInEditMode, setisInEditMode] = createSignal(false);
 
   // eslint-disable-next-line solid/reactivity
@@ -81,7 +81,7 @@ export function TableLine(props: TableLineProps) {
     <Show
       when={isInEditMode()}
       fallback={
-        <TableLineDisplayData
+        <BusTableLineData
           name={getName()}
           category={getCategory()}
           capacity={getCapacity()}

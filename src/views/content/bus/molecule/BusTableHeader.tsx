@@ -1,8 +1,8 @@
 import { TableHeaderCol } from "../../../../component/table/atom/TableHeaderCol";
 import { TableHeader } from "../../../../component/table/molecule/TableHeader";
-import "./TableHeader.css";
+import "./BusTableHeader.css";
 
-export function TableHeaderBus() {
+export function BusTableHeader() {
   return (
     <TableHeader>
       <TableHeaderCol text="Nom" />

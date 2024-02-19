@@ -4,7 +4,7 @@ import { TableRow } from "../../../../component/table/molecule/TableRow";
 import TrashIcon from "../../../../icons/TrashIcon";
 import UpdatePen from "../../../../icons/UpdatePen";
 import ButtonIcon from "../../board/component/molecule/ButtonIcon";
-import "./TableLine.css";
+import "./BusTableLine.css";
 
 interface TableLineDisplayDataProps {
   name: string;
@@ -15,7 +15,7 @@ interface TableLineDisplayDataProps {
   deleteFunction: () => void;
 }
 
-export function TableLineDisplayData(props: TableLineDisplayDataProps) {
+export function BusTableLineData(props: TableLineDisplayDataProps) {
   return (
     <TableRow>
       <TableData text={props.name} />
