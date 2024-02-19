@@ -30,6 +30,9 @@ export function TableLine(props: TableLineProps) {
   // eslint-disable-next-line solid/reactivity
   const [getCapacity, setCapacity] = createSignal(props.busItem.capacity);
 
+  // eslint-disable-next-line solid/reactivity
+  const [getAccess, setAccess] = createSignal(props.busItem.accessibility);
+
   async function toggleEditMode() {
     setisInEditMode(!isInEditMode());
   }
@@ -82,6 +85,7 @@ export function TableLine(props: TableLineProps) {
           name={getName()}
           category={getCategory()}
           capacity={getCapacity()}
+          access={getAccess()}
           toggleEditFunction={toggleEditMode}
           deleteFunction={deleteButton}
         />
@@ -101,6 +105,11 @@ export function TableLine(props: TableLineProps) {
         <TableElementNumberInput
           defaultValue={getCapacity()}
           onChangeFunction={setCapacity}
+        />
+        <TableElementInput
+          defaultValue={getAccess()}
+          onInputFunction={setAccess}
+          placeholder="Entrer l'accessibilité"
         />
         <TableData text="-" />
         <TableData text="-" />

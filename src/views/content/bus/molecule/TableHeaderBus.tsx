@@ -8,6 +8,7 @@ export function TableHeaderBus() {
       <TableHeaderCol text="Nom" />
       <TableHeaderCol text="Catégorie" />
       <TableHeaderCol text="Capacité" />
+      <TableHeaderCol text="Accessibilité" />
       <TableHeaderCol text="Courses" />
       <TableHeaderCol text="Nombre de bus" />
       <TableHeaderCol text="Actions" end={true} />
