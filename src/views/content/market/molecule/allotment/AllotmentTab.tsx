@@ -6,7 +6,6 @@ import {
   enableSpinningWheel,
 } from "../../../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../../../type";
-import { getAllotment } from "../../../allotment/organism/Allotment";
 import { AllotmentTable } from "../../../allotment/organism/AllotmentTable";
 import "./AllotmentTab.css";
 
@@ -26,7 +25,7 @@ export function AllotmentTab() {
   return (
     <div class="allotment-tab-container">
       <Button label="Ajouter" onClick={createAllotment} />
-      <AllotmentTable allotmentList={getAllotment()} />
+      <AllotmentTable />
     </div>
   );
 }

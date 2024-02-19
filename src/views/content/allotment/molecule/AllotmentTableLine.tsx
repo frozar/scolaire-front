@@ -10,11 +10,11 @@ import { AllotmentType } from "../organism/Allotment";
 import { AllotmentEditMenu } from "./AllotmentEditMenu";
 import { TableLineDisplayData } from "./TableLineDisplayData";
 
-interface TableLineProps {
+interface AllotmentTableLineProps {
   allotmentItem: AllotmentType;
 }
 
-export function TableLine(props: TableLineProps) {
+export function AllotmentTableLine(props: AllotmentTableLineProps) {
   const [isInEditMode, setisInEditMode] = createSignal(false);
 
   // eslint-disable-next-line solid/reactivity
