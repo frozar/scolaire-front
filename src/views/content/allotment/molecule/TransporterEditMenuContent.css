@@ -1,0 +1,11 @@
+.transporter-edit-border {
+  @apply border-2 border-green-base;
+}
+
+.transporter-edit-input-container {
+  @apply px-4 py-2 grid grid-flow-col gap-4;
+}
+
+.transporter-edit-input {
+  @apply max-w-xs;
+}

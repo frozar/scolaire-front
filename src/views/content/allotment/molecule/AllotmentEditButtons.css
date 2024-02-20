@@ -1,3 +1,3 @@
 .allotment-edit-buttons {
-  @apply flex h-9 align-bottom justify-end gap-4;
+  @apply flex h-9 align-bottom justify-end gap-4 pr-4;
 }

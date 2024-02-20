@@ -1,0 +1,15 @@
+.transporter-vehicles-content {
+  @apply px-4 py-2;
+}
+
+.transporter-vehicles-header {
+  @apply flex gap-4;
+}
+
+.transporter-vehicles-input-container {
+  @apply grid grid-flow-col grid-cols-2;
+}
+
+.transporter-vehicles-input {
+  @apply max-w-xs;
+}
