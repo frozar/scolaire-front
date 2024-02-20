@@ -11,10 +11,16 @@ interface BusEditContentProps {
   capacity: number;
   category: string;
   accessibility: string;
+  length: number;
+  width: number;
+  height: number;
   onNameChange: (value: string) => void;
   onCategoryChange: (value: string) => void;
   onCapacityChange: (value: number) => void;
   onAccessibilityChange: (value: string) => void;
+  onLengthChange: (value: number) => void;
+  onWidthChange: (value: number) => void;
+  onHeightChange: (value: number) => void;
   cancelFunction: () => void;
   submitFunction: () => void;
 }
@@ -29,7 +35,6 @@ export function BusEditContent(props: BusEditContentProps) {
         />
         <VehicleCapacityInput
           defaultValue={props.capacity}
-          label="Capacité"
           onChangeFunction={props.onCapacityChange}
         />
         <VehicleCategoryInput
@@ -41,12 +46,12 @@ export function BusEditContent(props: BusEditContentProps) {
           onChangeFunction={props.onAccessibilityChange}
         />
         <VehicleSizeInput
-          defaultHeight={0}
-          defaultLength={0}
-          defaultWidth={0}
-          onInputHeight={() => console.log("wip")}
-          onInputLength={() => console.log("wip")}
-          onInputWidth={() => console.log("wip")}
+          defaultLength={props.length}
+          defaultWidth={props.width}
+          defaultHeight={props.height}
+          onInputLength={props.onLengthChange}
+          onInputWidth={props.onWidthChange}
+          onInputHeight={props.onHeightChange}
         />
       </div>
       <BusEditButtons

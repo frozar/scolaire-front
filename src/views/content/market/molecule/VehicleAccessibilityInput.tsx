@@ -1,3 +1,4 @@
+import { createSignal, onMount } from "solid-js";
 import LabeledInputRadio from "../../board/component/molecule/LabeledInputRadio";
 
 interface VehicleAccessibilityInputProps {
@@ -8,6 +9,19 @@ interface VehicleAccessibilityInputProps {
 export function VehicleAccessibilityInput(
   props: VehicleAccessibilityInputProps
 ) {
+  const [isClassicChecked, setClassicChecked] = createSignal(false);
+  const [isPMRChecked, setPMRChecked] = createSignal(false);
+
+  onMount(() => {
+    if (props.defaultValue == "classic") {
+      setClassicChecked(true);
+      setPMRChecked(false);
+      return;
+    }
+    setPMRChecked(true);
+    setClassicChecked(false);
+  });
+
   return (
     <div>
       <p>Accessibilité</p>
@@ -18,6 +32,7 @@ export function VehicleAccessibilityInput(
           labelName="Classique"
           name="vehicle-accessibility"
           onChange={props.onChangeFunction}
+          checked={isClassicChecked()}
         />
         <LabeledInputRadio
           id="PMR"
@@ -25,6 +40,7 @@ export function VehicleAccessibilityInput(
           labelName="PMR"
           name="vehicle-accessibility"
           onChange={props.onChangeFunction}
+          checked={isPMRChecked()}
         />
       </div>
     </div>

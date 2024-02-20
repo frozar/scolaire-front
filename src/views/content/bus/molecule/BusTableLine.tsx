@@ -15,6 +15,12 @@ interface BusTableLineProps {
   busItem: BusCategoryType;
 }
 
+export interface BusSizeType {
+  length: number;
+  width: number;
+  height: number;
+}
+
 export function BusTableLine(props: BusTableLineProps) {
   const [isInEditMode, setisInEditMode] = createSignal(false);
 
@@ -30,11 +36,27 @@ export function BusTableLine(props: BusTableLineProps) {
   // eslint-disable-next-line solid/reactivity
   const [getAccess, setAccess] = createSignal(props.busItem.accessibility);
 
-  async function toggleEditMode() {
+  // eslint-disable-next-line solid/reactivity
+  const [getLength, setLength] = createSignal(props.busItem.length);
+
+  // eslint-disable-next-line solid/reactivity
+  const [getWidth, setWidth] = createSignal(props.busItem.width);
+
+  // eslint-disable-next-line solid/reactivity
+  const [getHeight, setHeight] = createSignal(props.busItem.height);
+
+  const [getSize] = createSignal<BusSizeType>({
+    height: props.busItem.height,
+    width: props.busItem.width,
+    length: props.busItem.length,
+  });
+
+  function toggleEditMode() {
     setisInEditMode(!isInEditMode());
   }
 
   async function updateButton() {
+    if (getName() == "" || getCategory() == "" || getAccess() == "") return;
     enableSpinningWheel();
     await BusService.update({
       id: props.busItem.id,
@@ -42,6 +64,9 @@ export function BusTableLine(props: BusTableLineProps) {
       category: getCategory(),
       capacity: getCapacity(),
       accessibility: getAccess(),
+      length: getLength(),
+      width: getWidth(),
+      height: getHeight(),
     });
     disableSpinningWheel();
     toggleEditMode();
@@ -87,6 +112,18 @@ export function BusTableLine(props: BusTableLineProps) {
     setAccess(value);
   }
 
+  function onLengthInputChanged(value: number) {
+    setLength(value);
+  }
+
+  function onWidthInputChanged(value: number) {
+    setWidth(value);
+  }
+
+  function onHeightInputChanged(value: number) {
+    setHeight(value);
+  }
+
   return (
     <Show
       when={isInEditMode()}
@@ -96,24 +133,31 @@ export function BusTableLine(props: BusTableLineProps) {
           category={getCategory()}
           capacity={getCapacity()}
           access={getAccess()}
+          size={getSize()}
           toggleEditFunction={toggleEditMode}
           deleteFunction={deleteButton}
         />
       }
     >
-      <td colspan={7}>
+      <td colspan={8}>
         <BusEditMenu
           id={Number(props.busItem.id)}
           access={getAccess()}
           capacity={getCapacity()}
           category={getCategory()}
           name={getName()}
+          length={getLength()}
+          width={getWidth()}
+          height={getHeight()}
           cancelFunction={cancelButton}
           submitFunction={updateButton}
           onAccessibilityChange={onAccessibilityInputChanged}
           onCapacityChange={onCapacityInputChanged}
           onCategoryChange={onCategoryInputChanged}
           onNameChange={onNameInputChanged}
+          onLengthChange={onLengthInputChanged}
+          onWidthChange={onWidthInputChanged}
+          onHeightChange={onHeightInputChanged}
         />
       </td>
     </Show>

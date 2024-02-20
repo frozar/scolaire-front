@@ -9,6 +9,9 @@ export type BusCategoryType = {
   capacity: number;
   name: string;
   accessibility: string;
+  length: number;
+  width: number;
+  height: number;
 };
 
 export const [getBus, setBus] = createSignal<BusCategoryType[]>([]);
@@ -29,7 +32,7 @@ export function Bus() {
         <PageTitle title="Gestion des Bus" />
         <Button label="Ajouter" onClick={showAddLine} />
       </div>
-      <BusTable busList={getBus()} />
+      <BusTable />
     </div>
   );
 }
