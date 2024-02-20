@@ -328,7 +328,7 @@ export namespace TripUtils {
   export function tripBusIdToString(busId: number | undefined) {
     const busItem = getBus().filter((bus) => bus.id == busId)[0];
     if (!busItem) return "";
-    return busItem.category;
+    return busItem.name;
   }
 
   export function tripAllotmentIdToString(allotmentId: number | undefined) {
