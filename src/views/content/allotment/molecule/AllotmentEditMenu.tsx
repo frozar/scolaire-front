@@ -5,8 +5,8 @@ import {
   enableSpinningWheel,
 } from "../../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../../type";
+import { AllotmentEditHeader } from "../atom/AllotmentEditHeader";
 import { AllotmentEditContent } from "./AllotmentEditContent";
-import { AllotmentEditHeader } from "./AllotmentEditHeader";
 
 interface AllotmentEditMenuProps {
   id?: number;

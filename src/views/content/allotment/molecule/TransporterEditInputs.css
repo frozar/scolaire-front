@@ -1,0 +1,7 @@
+.transporter-edit-input-container {
+  @apply px-4 py-2 grid grid-flow-col grid-cols-2 gap-4;
+}
+
+.transporter-edit-input {
+  @apply max-w-xs;
+}

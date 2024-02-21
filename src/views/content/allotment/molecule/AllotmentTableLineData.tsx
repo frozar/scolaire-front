@@ -14,7 +14,7 @@ interface TableLineDisplayDataProps {
   deleteFunction: () => void;
 }
 
-export function TableLineDisplayData(props: TableLineDisplayDataProps) {
+export function AllotmentTableLineData(props: TableLineDisplayDataProps) {
   return (
     <TableRow shown={true}>
       <TableData text={props.name} />

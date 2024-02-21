@@ -8,7 +8,7 @@ import {
 import { MessageLevelEnum, MessageTypeEnum } from "../../../../type";
 import { AllotmentType } from "../organism/Allotment";
 import { AllotmentEditMenu } from "./AllotmentEditMenu";
-import { TableLineDisplayData } from "./TableLineDisplayData";
+import { AllotmentTableLineData } from "./AllotmentTableLineData";
 
 interface AllotmentTableLineProps {
   allotmentItem: AllotmentType;
@@ -51,7 +51,7 @@ export function AllotmentTableLine(props: AllotmentTableLineProps) {
     <Show
       when={isInEditMode()}
       fallback={
-        <TableLineDisplayData
+        <AllotmentTableLineData
           name={props.allotmentItem.name}
           color={props.allotmentItem.color}
           toggleEditFunction={toggleEditMode}
