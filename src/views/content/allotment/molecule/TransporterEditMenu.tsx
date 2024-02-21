@@ -1,5 +1,5 @@
+import { TransporterEditMenuHeader } from "../atom/TransporterEditMenuHeader";
 import { TransporterEditMenuContent } from "./TransporterEditMenuContent";
-import { TransporterEditMenuHeader } from "./TransporterEditMenuHeader";
 
 interface TransporterEditMenuProps {
   name: string;
