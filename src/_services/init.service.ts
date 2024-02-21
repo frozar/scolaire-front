@@ -1,4 +1,3 @@
-import { BusCategoryType } from "../_entities/bus.entity";
 import {
   CalendarDBType,
   CalendarEntity,
@@ -13,15 +12,17 @@ import {
 import { ServiceDBType, ServiceEntity } from "../_entities/service.entity";
 import { SettingType } from "../_entities/setting.entity";
 import { StopDBType, StopEntity, StopType } from "../_entities/stop.entity";
+import { TransporterType } from "../_entities/transporter.entity";
 import {
   TripDirectionType,
   setTripDirections,
 } from "../_entities/trip-direction.entity";
+import { setAllTransporter } from "../views/content/allotment/molecule/TransporterTable";
 import {
   AllotmentType,
   setAllotment,
 } from "../views/content/allotment/organism/Allotment";
-import { setBus } from "../views/content/bus/organism/Bus";
+import { BusCategoryType, setBus } from "../views/content/bus/organism/Bus";
 import { setCalendars } from "../views/content/calendar/calendar.manager";
 import { setCalendarsPeriod } from "../views/content/calendar/template/Calendar";
 import { setLines } from "../views/content/map/component/organism/BusLines";
@@ -42,6 +43,7 @@ type InitDBType = {
   bus_categories: BusCategoryType[];
   allotment: AllotmentType[];
   settings: SettingType[];
+  transporter: TransporterType[];
 };
 
 export type InitType = {
@@ -79,6 +81,9 @@ export namespace InitService {
 
     const allotment = dbInit.allotment;
     setAllotment(allotment);
+
+    const transporter = dbInit.transporter;
+    setAllTransporter(transporter);
 
     const calendarPeriods = dbInit.calendars_periods.map((calendarPeriod) =>
       CalendarEntity.buildCalendarPeriod(calendarPeriod)

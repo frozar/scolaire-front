@@ -39,6 +39,7 @@ export function AllotmentEditMenu(props: AllotmentEditMenuProps) {
     <div>
       <AllotmentEditHeader title={props.name} />
       <AllotmentEditContent
+        allotment_id={props.id}
         color={props.color}
         name={props.name}
         onColorInput={props.onColorInput}

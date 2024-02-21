@@ -1,3 +1,4 @@
+import { createSignal, onMount } from "solid-js";
 import { LabeledInputSelect } from "../../../../component/molecule/LabeledInputSelect";
 import LabeledInputField from "../../board/component/molecule/LabeledInputField";
 import "./TransporterEditInputs.css";
@@ -10,6 +11,22 @@ interface TransporterEditInputsProps {
 }
 
 export function TransporterEditInputs(props: TransporterEditInputsProps) {
+  const [getSelected, setSelected] = createSignal(0);
+
+  onMount(() => {
+    switch (props.type) {
+      case "Titulaire":
+        setSelected(0);
+        break;
+      case "Co-traitant":
+        setSelected(1);
+        break;
+      case "Sous-traitant":
+        setSelected(2);
+        break;
+    }
+  });
+
   return (
     <div class="transporter-edit-input-container">
       <div class="transporter-edit-input">
@@ -23,7 +40,7 @@ export function TransporterEditInputs(props: TransporterEditInputsProps) {
       </div>
       <div class="transporter-edit-input">
         <LabeledInputSelect
-          defaultValue={0}
+          defaultValue={getSelected()}
           label="Type de prestataire"
           onChange={(e) => props.onTypeChange(e.toString())}
           options={[
