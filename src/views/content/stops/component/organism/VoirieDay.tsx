@@ -70,10 +70,7 @@ export default function Calendar() {
                   )}
                 </For>
                 <Show when={currentWeigth().start != -1}>
-                  {eventItem(
-                    currentWeigth().start,
-                    currentWeigth().end
-                  )}
+                  {eventItem(currentWeigth().start, currentWeigth().end)}
                 </Show>
               </ol>
             </div>
