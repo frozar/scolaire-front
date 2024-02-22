@@ -8,7 +8,6 @@ export namespace MapsUtils {
         map = _map;
       }
     }
-    console.log(map);
     return map;
   }
 }

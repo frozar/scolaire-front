@@ -1,6 +1,10 @@
 import { createEffect, createSignal } from "solid-js";
 import { useStateGui } from "../../../../../StateGui";
-import { getAuthenticatedUser } from "../../../../../signaux";
+import {
+  disableSpinningWheel,
+  enableSpinningWheel,
+  getAuthenticatedUser,
+} from "../../../../../signaux";
 import {
   OrganisationType,
   StoredDataTypeEnum,
@@ -79,10 +83,12 @@ const onChange = async (
 };
 
 async function setOrganisation(organisation: OrganisationType) {
+  enableSpinningWheel();
   setStoredData({ organisation });
   changeBoard(undefined);
+  setSelectedOrganisation(organisation);
   await MapStore.fetchUserMaps();
   setSelectedMenu("maps");
-  setSelectedOrganisation(organisation);
+  disableSpinningWheel();
   resetState();
 }

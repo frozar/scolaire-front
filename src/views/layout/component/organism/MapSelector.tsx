@@ -16,7 +16,6 @@ export function MapSelector() {
 
   createEffect(() => {
     setSelectedMap(MapsUtils.getSelectedMap(userMaps()));
-    console.log(userMaps());
   });
 
   return (

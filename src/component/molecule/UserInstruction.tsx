@@ -6,15 +6,11 @@ import UserInstructionContent, {
   InstructionEnum,
 } from "./UserInstructionContent";
 
-const [, { getActiveMapId, getSelectedMenu }] = useStateGui();
+const [, { getActiveMapId }] = useStateGui();
 
 export default function () {
   const toShow = () => {
-    return (
-      getAuthenticatedUser() != undefined &&
-      getSelectedMenu() == "dashboard" &&
-      getActiveMapId() == null
-    );
+    return getAuthenticatedUser() != undefined && getActiveMapId() == null;
   };
 
   return (
