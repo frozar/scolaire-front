@@ -49,7 +49,7 @@ export default function (props: LeftMenuItemProps) {
       previousAuthenticatedUser() == undefined &&
       previousAuthenticatedUser() != getAuthenticatedUser()
     ) {
-      setSelectedMenu("dashboard");
+      setSelectedMenu("maps");
     }
 
     if (previousAuthenticatedUser() != getAuthenticatedUser()) {
@@ -73,7 +73,6 @@ export default function (props: LeftMenuItemProps) {
             return (
               isDisabled ||
               (!isDisabled &&
-                menuItem != "dashboard" &&
                 getAuthenticatedUser() != undefined &&
                 getActiveMapId() == null)
             );

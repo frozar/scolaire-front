@@ -1,3 +1,8 @@
 #top-nav {
   @apply z-layoutTop w-full h-[60px] relative flex justify-end pr-5 bg-dark-teal;
 }
+
+#top-nav .top-nav-selectors{
+  @apply mr-4 grid gap-4 grid-cols-2;
+  
+}

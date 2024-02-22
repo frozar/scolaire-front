@@ -12,6 +12,7 @@ import { Selector } from "../molecule/Selector";
 import { changeBoard } from "../template/ContextManager";
 const [, { resetState }] = useStateGui();
 
+import { MapStore } from "../../../../../_stores/map.store";
 import "./OrganisationSelector.css";
 
 export const DEFAULT_ORGANISATION = {
@@ -45,8 +46,13 @@ export function OrganisationSelector() {
   });
   return (
     <div id="organisation-selector">
-      <label id="organisation-selector-label" for="organisation-selector-select">Organisation</label>
-      <Selector 
+      <label
+        id="organisation-selector-label"
+        for="organisation-selector-select"
+      >
+        Organisation
+      </label>
+      <Selector
         id="organisation-selector-select"
         content={getAuthenticatedUser()!.organisation.map((orga) => {
           return { value: orga.organisation_id, name: orga.name };
@@ -59,7 +65,7 @@ export function OrganisationSelector() {
   );
 }
 
-const onChange = (
+const onChange = async (
   res: Event & {
     currentTarget: HTMLSelectElement;
     target: HTMLSelectElement;
@@ -69,13 +75,14 @@ const onChange = (
     (orga) => orga.organisation_id === Number(res.target.value)
   )[0];
 
-  setOrganisation(organisation);
+  await setOrganisation(organisation);
 };
 
-function setOrganisation(organisation: OrganisationType) {
+async function setOrganisation(organisation: OrganisationType) {
   setStoredData({ organisation });
   changeBoard(undefined);
-  setSelectedMenu("dashboard");
+  await MapStore.fetchUserMaps();
+  setSelectedMenu("maps");
   setSelectedOrganisation(organisation);
   resetState();
 }
