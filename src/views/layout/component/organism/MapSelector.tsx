@@ -24,7 +24,7 @@ export function MapSelector() {
       <label class="map-selector-label">Carte</label>
       <button
         class="map-selector-btn selector"
-        onclick={() => {
+        onClick={() => {
           onclick();
         }}
       >

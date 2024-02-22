@@ -11,7 +11,7 @@ export default function () {
       <Show when={getAuthenticatedUser()}>
         <div class="top-nav-selectors">
           <OrganisationSelector />
-          <MapSelector/>
+          <MapSelector />
         </div>
       </Show>
       <LoginDropdown xOffset={-7} />

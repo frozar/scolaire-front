@@ -23,7 +23,7 @@ import { InitService } from "./_services/init.service";
 import { Contents } from "./views/content/Contents";
 import { Dialogs } from "./views/content/board/component/organism/Dialogs";
 
-const [, { getSelectedMenu, setSelectedMenu, getActiveMapId }] = useStateGui();
+const [, { getSelectedMenu, getActiveMapId }] = useStateGui();
 
 export default () => {
   onMount(async () => await tryConnection());
