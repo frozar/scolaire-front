@@ -2,7 +2,7 @@ import { createSignal } from "solid-js";
 import { step } from "../../../../../_services/osrm.service";
 import PageTitle from "../../../../../component/atom/PageTitle";
 import "./StopDetails.css";
-import Calendar from "./VoirieDay";
+import VoirieDay from "./VoirieDay";
 
 export const [getSelectedWay, setSelectedWay] = createSignal<step>();
 export default function WayDetails() {
@@ -12,7 +12,7 @@ export default function WayDetails() {
       <div>Nom : {getSelectedWay()?.name}</div>
       <div>ID : {getSelectedWay()?.flaxib_way_id}</div>
 
-      <Calendar />
+      <VoirieDay />
     </section>
   );
 }
