@@ -1,7 +1,8 @@
-import L, { LeafletMouseEvent } from "leaflet";
+import L from "leaflet";
 import { createEffect, createSignal } from "solid-js";
 
 import { step } from "../../../../../_services/osrm.service";
+import { resetCurrentWeight } from "../../../stops/component/organism/VoirieDay";
 import { setSelectedWay } from "../../../stops/component/organism/WayDetails";
 import { COLOR_BLUE_BASE, COLOR_GREEN_BASE } from "../../constant";
 import Line from "../atom/Line";
@@ -19,21 +20,22 @@ export function LineWeight(props: {
   createEffect(() => setLocalOpacity(props.opacity ?? 1));
   createEffect(() => setLocalColor(props.lineColor ?? COLOR_GREEN_BASE));
 
-  const onMouseOver = (polyline: L.Polyline, arrows: L.Marker[]) => {
+  const onMouseOver = () => {
     // console.log("onMouseOver " + props.way.flaxib_way_id);
     setLocalColor(COLOR_BLUE_BASE);
   };
 
-  const onMouseOut = (polyline: L.Polyline, arrows: L.Marker[]) => {
+  const onMouseOut = () => {
     // console.log("onMouseOut");
     setLocalColor(props.lineColor ?? COLOR_GREEN_BASE);
   };
-  const onMouseDown = (e: LeafletMouseEvent) => {
+  const onMouseDown = () => {
     // console.log("onMouseDown");
   };
 
   const onClick = () => {
     setSelectedWay(props.way);
+    resetCurrentWeight();
     console.log("onClick", props.way);
   };
   return (

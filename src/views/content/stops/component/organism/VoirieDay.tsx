@@ -1,15 +1,22 @@
 import { For, Show, createSignal } from "solid-js";
 import { weight } from "../../../../../_services/osrm.service";
+import CheckIcon from "../../../../../icons/CheckIcon";
+import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import "./VoirieDay.css";
 import { getSelectedWay } from "./WayDetails";
 
-const [currentWeigth, setCurrentWeigth] = createSignal<weight>({
-  weight: 10,
-  start: 10,
-  end: 110,
-});
+const [currentWeigth, setCurrentWeigth] = createSignal<weight>(defaultValue());
 
 const [isInMove, setisInMove] = createSignal<boolean>(false);
+
+function defaultValue(): weight {
+  return {
+    weight: 100,
+    start: -1,
+    end: -1,
+  };
+}
+export const resetCurrentWeight = () => setCurrentWeigth(defaultValue());
 
 export default function Calendar() {
   return (
@@ -58,16 +65,16 @@ export default function Calendar() {
                 <For each={getSelectedWay()?.flaxib_weight}>
                   {(weight) => (
                     <Show when={weight.weight != 100}>
-                      {eventItem(weight.start, weight.end, weight.weight)}
+                      {eventItem(weight.start, weight.end)}
                     </Show>
                   )}
                 </For>
-
-                {eventItem(
-                  currentWeigth().start,
-                  currentWeigth().end,
-                  currentWeigth().weight
-                )}
+                <Show when={currentWeigth().start != -1}>
+                  {eventItem(
+                    currentWeigth().start,
+                    currentWeigth().end
+                  )}
+                </Show>
               </ol>
             </div>
           </div>
@@ -83,12 +90,12 @@ function yToHourInMinutes(offsetY: number) {
   return yToHour;
 }
 
-function getClickInformation(e: { offsetY: number }) {
-  const yToHour = yToHourInMinutes(e.offsetY);
-  setCurrentWeigth({ weight: 10, start: yToHour * 60, end: 30 + yToHour * 60 });
-  return;
-}
-
+// function getClickInformation(e: { offsetY: number }) {
+//   const yToHour = yToHourInMinutes(e.offsetY);
+//   setCurrentWeigth({ weight: 10, start: yToHour * 60, end: 30 + yToHour * 60 });
+//   return;
+// }
+// eslint-disable-next-line  @typescript-eslint/no-explicit-any
 function mouseMoveInformation(e: { [x: string]: any; offsetY: number }) {
   e.preventDefault();
   if (isInMove()) {
@@ -105,7 +112,7 @@ function mouseMoveInformation(e: { [x: string]: any; offsetY: number }) {
   }
   return;
 }
-
+// eslint-disable-next-line  @typescript-eslint/no-explicit-any
 function mouseUpInformation(e: { [x: string]: any; offsetY: number }) {
   e.preventDefault();
 
@@ -113,14 +120,18 @@ function mouseUpInformation(e: { [x: string]: any; offsetY: number }) {
 
   return;
 }
-
+// eslint-disable-next-line  @typescript-eslint/no-explicit-any
 function mouseDownInformation(e: { [x: string]: any; offsetY: number }) {
   e.preventDefault();
 
   const yToHour = yToHourInMinutes(e.offsetY);
   console.log("mouse down");
   setisInMove(true);
-  setCurrentWeigth({ weight: 10, start: yToHour * 60, end: 30 + yToHour * 60 });
+  setCurrentWeigth({
+    weight: 100,
+    start: yToHour * 60,
+    end: 30 + yToHour * 60,
+  });
   return;
 }
 
@@ -128,7 +139,7 @@ function CalendarItem(opt: number) {
   return (
     <>
       <div>
-        <div class="-ml-14 -mt-2.5 w-14 pr-2 text-right text-xs leading-5 text-gray-400">
+        <div class="-ml-16 -mt-2.5 w-12 pr-2 text-right text-xs leading-5 text-gray-400">
           {minuteToTime(opt * 60, true)}
         </div>
       </div>
@@ -137,36 +148,69 @@ function CalendarItem(opt: number) {
   );
 }
 
-function eventItem(h1: number, h2: number, ponderation = 100) {
+function eventItem(h1: number, h2: number) {
   const h1ToTime = minuteToTime(h1);
   const h2ToTime = minuteToTime(h2);
 
-  const val = h1 / 5 + 2; // explication du calcul (h/60)*12+2 => (h/60)*pas+init => factoriser
+  const val = h1 / 5 + 2; // explication du calcul (h/60)*12+2 => (h/60)*pas+init => simplifier
   const displayBlock = (h2 - h1) / 5;
   const style = "grid-row: " + val + " / span " + Math.min(displayBlock, 287);
   const classe = "relative mt-px flex " + (isInMove() ? "disabled" : "");
-  console.log("classe", classe);
+
+  const [dragVal, setdragVal] = createSignal<number>(100);
   return (
-    <li class={classe} style={style}>
+    <li
+      onMouseDown={(e) => {
+        e.preventDefault;
+        e.stopPropagation();
+      }}
+      onMouseMove={(e) => {
+        e.preventDefault;
+        e.stopPropagation();
+      }}
+      onMouseUp={(e) => {
+        e.preventDefault;
+      }}
+      class={classe}
+      style={style}
+    >
       <a
+        draggable={false}
         href="#"
-        class="group absolute inset-0 flex flex-col rounded-lg bg-blue-50 p-2 text-xs leading-5 "
+        class="group absolute inset-0 flex rounded-lg bg-blue-100 p-1 leading-5 text-blue-700"
+        style={{ "font-size": "xx-small", width: "15.5rem" }}
       >
-        <p class="order-1 font-semibold text-blue-700">
-          {h1ToTime}-{h2ToTime} ={">"} pondération : {ponderation}
+        <p class="mr-1  pt-0">
+          {h1ToTime}-{h2ToTime}
         </p>
-        <div>
+        <div style={{ width: "50%" }} draggable={false}>
           <input
+            onInput={(e) => setdragVal(parseInt(e.target.value) ?? 100)}
+            onDragStart={(e) => {
+              e.preventDefault();
+              e.stopImmediatePropagation();
+              console.log("drag");
+            }}
+            onMouseUp={(e) => {
+              e.preventDefault();
+              e.stopImmediatePropagation();
+              console.log("dragend");
+            }}
             type="range"
-            id="cowbell"
-            name="cowbell"
             min="0"
             max="100"
-            value="90"
+            value={dragVal()}
             step="10"
+            draggable={true}
+            style={{ width: "80%" }}
           />
-          <label for="cowbell">Pondération</label>
+          <label for="cowbell">{dragVal()}</label>
         </div>
+        <ButtonIcon
+          icon={<CheckIcon />}
+          onClick={() => console.log("onClick")}
+          class="text-blue-700 text-sm ml-2 mt-0 h-5"
+        />
       </a>
     </li>
   );

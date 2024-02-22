@@ -118,24 +118,16 @@ export default function () {
               <TripBoard />
             </Match>
 
-<<<<<<< HEAD
-          <Match when={onBoard() == "path-details"}>
-            <PathDetail />
-          </Match>
-
-          <Match when={onBoard() == "path-draw"}>
-            <DrawPath />
-          </Match>
-        </Switch>
-      </InformationBoardLayout>
-=======
             <Match when={onBoard() == "path-details"}>
               <PathDetail />
+            </Match>
+
+            <Match when={onBoard() == "path-draw"}>
+              <DrawPath />
             </Match>
           </Switch>
         </InformationBoardLayout>
       </Show>
->>>>>>> f895275c (wip)
     </section>
   );
 }
