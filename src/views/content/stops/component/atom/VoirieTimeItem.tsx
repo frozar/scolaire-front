@@ -5,7 +5,7 @@ interface VoirieTimeItem {
   opt: number;
 }
 
-export function VoirieTimeItem(props:VoirieTimeItem) {
+export function VoirieTimeItem(props: VoirieTimeItem) {
   return (
     <>
       <div>
@@ -17,8 +17,6 @@ export function VoirieTimeItem(props:VoirieTimeItem) {
     </>
   );
 }
-
-
 
 // export default function (props: GradeSelectProps) {
 //   return (

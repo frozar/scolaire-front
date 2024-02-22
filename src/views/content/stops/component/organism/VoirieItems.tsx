@@ -20,29 +20,37 @@ export const resetCurrentWeight = () => setCurrentWeigth(defaultValue());
 
 export default function VoirieItems() {
   return (
-              <ol
-                onMouseDown={mouseDownInformation}
-                onMouseMove={mouseMoveInformation}
-                onMouseUp={mouseUpInformation}
-                class="col-start-1 col-end-2 row-start-1 grid grid-cols-1"
-                style={{
-                  "grid-template-rows":
-                    "1.75rem repeat(288,  [col-start] minmax(0, 1fr) [col-end]) auto",
-                }}
-              >
-                <For each={getSelectedWay()?.flaxib_weight}>
-                  {(weight) => (
-                    <Show when={weight.weight != 100}>
-                  <VoirieItem h1={weight.start} h2={weight.end} ponderation={weight.weight} isInMove={isInMove}/>
-
-                    </Show>
-                  )}
-                </For>
-                <Show when={currentWeigth().start != -1}>
-                  <VoirieItem h1={currentWeigth().start} h2={currentWeigth().end} ponderation={currentWeigth().weight} isInMove={isInMove}/>
-                </Show>
-              </ol>
-           
+    <ol
+      onMouseDown={mouseDownInformation}
+      onMouseMove={mouseMoveInformation}
+      onMouseUp={mouseUpInformation}
+      class="col-start-1 col-end-2 row-start-1 grid grid-cols-1"
+      style={{
+        "grid-template-rows":
+          "1.75rem repeat(288,  [col-start] minmax(0, 1fr) [col-end]) auto",
+      }}
+    >
+      <For each={getSelectedWay()?.flaxib_weight}>
+        {(weight) => (
+          <Show when={weight.weight != 100}>
+            <VoirieItem
+              h1={weight.start}
+              h2={weight.end}
+              ponderation={weight.weight}
+              isInMove={isInMove}
+            />
+          </Show>
+        )}
+      </For>
+      <Show when={currentWeigth().start != -1}>
+        <VoirieItem
+          h1={currentWeigth().start}
+          h2={currentWeigth().end}
+          ponderation={currentWeigth().weight}
+          isInMove={isInMove}
+        />
+      </Show>
+    </ol>
   );
 }
 

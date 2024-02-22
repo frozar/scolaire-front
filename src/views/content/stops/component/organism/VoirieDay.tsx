@@ -3,8 +3,6 @@ import { VoirieTimeItem } from "../atom/VoirieTimeItem";
 import "./VoirieDay.css";
 import CalendarItems from "./VoirieItems";
 
-
-
 export default function VoirieDay() {
   return (
     <div class="flex h-full flex-col">
@@ -35,7 +33,7 @@ export default function VoirieDay() {
                 {/* <!-- Hours --> */}
                 <div class="row-end-1 h-7" />
                 <For each={[...Array(24).keys()]}>
-                {(opt) => (<VoirieTimeItem opt={opt}/>) }
+                  {(opt) => <VoirieTimeItem opt={opt} />}
                 </For>
               </div>
 
@@ -60,7 +58,6 @@ export function yToHourInMinutes(offsetY: number) {
 //   setCurrentWeigth({ weight: 10, start: yToHour * 60, end: 30 + yToHour * 60 });
 //   return;
 // }
-
 
 export function minuteToTime(h: number, isForPoderationListe = false) {
   if (h == 0) {

@@ -4,22 +4,23 @@ import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { minuteToTime } from "../organism/VoirieDay";
 
 interface CalendarItem {
-  h1: number; h2: number;ponderation:number;isInMove: Accessor<boolean>;
+  h1: number;
+  h2: number;
+  ponderation: number;
+  isInMove: Accessor<boolean>;
 }
 
-export function VoirieItem(props:CalendarItem) {
+export function VoirieItem(props: CalendarItem) {
   const [dragVal, setdragVal] = createSignal<number>(100);
   const [style, setstyle] = createSignal<string>("");
   const [classe, setclasse] = createSignal<string>("");
 
-  createEffect(() =>{
-  
-  const val = props.h1 / 5 + 2; // explication du calcul (h/60)*12+2 => (h/60)*pas+init => simplifier
-  const displayBlock = (props.h2 - props.h1) / 5;
-  setstyle("grid-row: " + val + " / span " + Math.min(displayBlock, 287));
-  setclasse("relative mt-px flex " + (props.isInMove() ? "disabled" : ""));}
-  )
-
+  createEffect(() => {
+    const val = props.h1 / 5 + 2; // explication du calcul (h/60)*12+2 => (h/60)*pas+init => simplifier
+    const displayBlock = (props.h2 - props.h1) / 5;
+    setstyle("grid-row: " + val + " / span " + Math.min(displayBlock, 287));
+    setclasse("relative mt-px flex " + (props.isInMove() ? "disabled" : ""));
+  });
 
   return (
     <li
