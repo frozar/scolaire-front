@@ -4,7 +4,7 @@ import "./TransporterEditVehicles.css";
 
 interface TransporterEditVehiclesInputsProps {
   license: string;
-  type: string;
+  bus_id?: number;
   onLicenseChange: (license: string) => void;
   onTypeChange: (type: string) => void;
 }

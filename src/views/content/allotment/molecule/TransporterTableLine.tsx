@@ -15,16 +15,15 @@ export function TransporterTableLine(props: TransporterTableLineProps) {
       when={isInEditMode()}
       fallback={
         <TransporterTableData
-          name={props.transporterItem.name}
-          type={props.transporterItem.type}
+          transporterItem={props.transporterItem}
           toggleFunction={() => setIsInEditMode(!isInEditMode())}
         />
       }
     >
       <td colspan={4}>
         <TransporterEditMenu
-          name={props.transporterItem.name}
-          type={props.transporterItem.type}
+          toggleFunction={() => setIsInEditMode(!isInEditMode())}
+          transporterItem={props.transporterItem}
         />
       </td>
     </Show>

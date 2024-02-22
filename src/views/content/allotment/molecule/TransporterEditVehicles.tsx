@@ -1,22 +1,23 @@
-import { For, createSignal } from "solid-js";
+import { For } from "solid-js";
+import { TransporterVehicleType } from "../../../../_entities/transporter.entity";
 import "./TransporterEditVehicles.css";
 import { TransporterEditVehiclesHeader } from "./TransporterEditVehiclesHeader";
 import { TransporterEditVehiclesInputs } from "./TransporterEditVehiclesInputs";
 
-export function TransporterEditVehicles() {
-  const [fakeData] = createSignal([
-    { licence: "a", type: "autocar" },
-    { licence: "b", type: "bus" },
-  ]);
+interface TransporterEditVehiclesProps {
+  add: () => void;
+  vehicles: TransporterVehicleType[];
+}
 
+export function TransporterEditVehicles(props: TransporterEditVehiclesProps) {
   return (
     <div class="transporter-vehicles-content">
-      <TransporterEditVehiclesHeader />
-      <For each={fakeData()}>
+      <TransporterEditVehiclesHeader add={props.add} />
+      <For each={props.vehicles}>
         {(item) => (
           <TransporterEditVehiclesInputs
-            license={item.licence}
-            type={item.type}
+            license={item.license}
+            bus_id={item.bus_category_id}
             onLicenseChange={() => console.log("license changed")}
             onTypeChange={() => console.log("type changed")}
           />
