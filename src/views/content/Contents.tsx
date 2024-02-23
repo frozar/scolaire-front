@@ -61,14 +61,13 @@ export function Contents() {
           </Match>
 
           <Match when={getSelectedMenu() == "voirie"}>
-                <Map />
-                
-                <InformationBoardLayout>
-                  <WayDetails />
-                </InformationBoardLayout>
-                {/* <ContextManager /> */}
-              </Match>
-            
+            <Map />
+
+            <InformationBoardLayout>
+              <WayDetails />
+            </InformationBoardLayout>
+            {/* <ContextManager /> */}
+          </Match>
         </Switch>
       </Show>
 
