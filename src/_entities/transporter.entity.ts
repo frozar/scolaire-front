@@ -8,5 +8,5 @@ export type TransporterType = {
 
 export type TransporterVehicleType = {
   license: string;
-  bus_category_id?: number;
+  bus_categories_id?: number;
 };

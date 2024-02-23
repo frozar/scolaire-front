@@ -1,12 +1,14 @@
 import { LabeledInputSelect } from "../../../../component/molecule/LabeledInputSelect";
 import LabeledInputField from "../../board/component/molecule/LabeledInputField";
+import { getBus } from "../../bus/organism/Bus";
 import "./TransporterEditVehicles.css";
 
 interface TransporterEditVehiclesInputsProps {
   license: string;
   bus_id?: number;
-  onLicenseChange: (license: string) => void;
-  onTypeChange: (type: string) => void;
+  index: number;
+  onLicenseChange: (idx: number, value: string) => void;
+  onTypeChange: (idx: number, value: number) => void;
 }
 
 export function TransporterEditVehiclesInputs(
@@ -19,19 +21,18 @@ export function TransporterEditVehiclesInputs(
           label="Immatriculation"
           name="license"
           value={props.license}
-          onInput={(e) => props.onLicenseChange(e.target.value)}
+          onInput={(e) => props.onLicenseChange(props.index, e.target.value)}
           placeholder="Immatriculation"
         />
       </div>
       <div class="transporter-vehicles-input">
         <LabeledInputSelect
-          defaultValue={0}
-          label="Type de vehicule"
-          onChange={(e) => props.onTypeChange(e.toString())}
-          options={[
-            { value: 0, text: "Autocar" },
-            { value: 1, text: "Bus" },
-          ]}
+          defaultValue={Number(props.bus_id)}
+          label="Véhicule associé"
+          onChange={(e) => props.onTypeChange(props.index, Number(e))}
+          options={getBus().map((bus) => {
+            return { value: Number(bus.id), text: bus.name };
+          })}
         />
       </div>
     </div>

@@ -8,6 +8,7 @@ import { addNewUserInformation } from "../../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../../type";
 import { TransporterEditMenuHeader } from "../atom/TransporterEditMenuHeader";
 import { TransporterEditMenuContent } from "./TransporterEditMenuContent";
+import { VehicleList } from "./TransporterEditVehicles";
 
 interface TransporterEditMenuProps {
   transporterItem: TransporterType;
@@ -65,15 +66,12 @@ export function TransporterEditMenu(props: TransporterEditMenuProps) {
   }
 
   async function editTransporter() {
-    console.log(getName());
-    console.log(getType());
-    console.log(getVehicles());
     await TransporterService.update({
       id: props.transporterItem.id,
       name: getName(),
       type: idToType(Number(getType())),
       allotment_id: props.transporterItem.allotment_id,
-      vehicles: getVehicles(),
+      vehicles: VehicleList(),
     });
     addNewUserInformation({
       displayed: true,
@@ -81,6 +79,7 @@ export function TransporterEditMenu(props: TransporterEditMenuProps) {
       type: MessageTypeEnum.global,
       content: "Les modifications ont bien été apportées",
     });
+    setVehicles(VehicleList());
   }
 
   return (
