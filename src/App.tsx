@@ -23,15 +23,6 @@ import { InitService } from "./_services/init.service";
 import { inDuplication } from "./utils/duplicate.utils";
 import { Contents } from "./views/content/Contents";
 import { Dialogs } from "./views/content/board/component/organism/Dialogs";
-<<<<<<< HEAD
-=======
-import InformationBoardLayout from "./views/content/board/component/template/InformationBoardLayout";
-import { Users } from "./views/content/calendar/template/Organisation";
-import { Market } from "./views/content/market/organism/Market";
-import { Settings } from "./views/content/parameters/organism/Settings";
-import { ServiceTemplate } from "./views/content/service/template/ServiceTemplate";
-import WayDetails from "./views/content/stops/component/organism/WayDetails";
->>>>>>> b15966e9 (Add current weight)
 
 const [, { getSelectedMenu, getActiveMapId }] = useStateGui();
 
