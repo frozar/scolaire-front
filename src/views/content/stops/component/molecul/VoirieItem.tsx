@@ -8,7 +8,13 @@ import {
 import { useStateGui } from "../../../../../StateGui";
 import { OsrmService, weight } from "../../../../../_services/osrm.service";
 import CheckIcon from "../../../../../icons/CheckIcon";
+import TrashIcon from "../../../../../icons/TrashIcon";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
+import { setWays } from "../../../map/Map";
+import {
+  getSelectedWay,
+  setSelectedWay,
+} from "../../../map/component/molecule/LineWeight";
 import { minuteToTime } from "../organism/VoirieDay";
 import { newWeigth } from "../organism/VoirieItems";
 const [, { getActiveMapId }] = useStateGui();
@@ -51,20 +57,56 @@ export function VoirieItem(props: CalendarItem) {
     console.log(newWeigth());
   }
 
-  function itemClick(): void {
-    console.log(props.weight.start);
-    console.log(props.weight.end);
-    console.log(props.weight.weight);
-    console.log(props.way_id);
-    console.log(getActiveMapId());
-
+  function itemAddOrUpdate(): void {
     OsrmService.setWeight(
       props.way_id,
       props.weight.weight,
       props.weight.start,
       props.weight.end
     );
+    console.log("la");
+    setSelectedWay((step) => {
+      if (step) {
+        return {
+          ...step,
+          flaxib_weight: step.flaxib_weight.map((elem) => {
+            if (
+              elem.end == props.weight.end &&
+              props.weight.start == elem.start
+            ) {
+              return { ...elem, weight: props.weight.weight };
+            }
+            return elem;
+          }),
+        };
+      }
+    });
+    const newval = getSelectedWay();
+    console.log(getSelectedWay());
+    if (newval) {
+      setWays((ways) => {
+        return [
+          ...ways.filter((step) => step.flaxib_way_id != props.way_id),
+          newval,
+        ];
+      });
+    }
     return console.log("onClick");
+  }
+
+  function itemDelete(): void {
+    OsrmService.deleteWeight(
+      props.way_id,
+      props.weight.start,
+      props.weight.end
+    );
+
+    setWays((ways) => {
+      return ways.filter((step) => step.flaxib_way_id != props.way_id);
+    });
+    console.log("ici");
+
+    setSelectedWay();
   }
 
   return (
@@ -92,7 +134,7 @@ export function VoirieItem(props: CalendarItem) {
         <p class="mr-1  pt-0">
           {minuteToTime(props.weight.start)}-{minuteToTime(props.weight.end)}
         </p>
-        <div style={{ width: "50%" }} draggable={false}>
+        <div style={{ width: "45%" }} draggable={false}>
           <input
             onInput={(e) => onRangeChange(e)}
             onDragStart={(e) => {
@@ -115,7 +157,12 @@ export function VoirieItem(props: CalendarItem) {
         </div>
         <ButtonIcon
           icon={<CheckIcon />}
-          onClick={() => itemClick()}
+          onClick={() => itemAddOrUpdate()}
+          class="text-blue-700 text-sm ml-2 mt-0 h-5"
+        />
+        <ButtonIcon
+          icon={<TrashIcon />}
+          onClick={() => itemDelete()}
           class="text-blue-700 text-sm ml-2 mt-0 h-5"
         />
       </a>

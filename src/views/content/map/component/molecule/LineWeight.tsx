@@ -35,7 +35,12 @@ export function LineWeight(props: {
   };
 
   const onClick = () => {
-    setSelectedWay(props.way);
+    setSelectedWay(
+      //TODO Modify onclick to use ways() signal
+      // ways().filter((elem) => elem.flaxib_way_id === props.way.flaxib_way_id)[0]
+      props.way
+    );
+    console.log("select here", getSelectedWay());
     resetCurrentWeight();
   };
   return (

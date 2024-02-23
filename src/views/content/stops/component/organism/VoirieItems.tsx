@@ -36,7 +36,13 @@ export default function VoirieItems(props: VoirieItems) {
     >
       <For each={props.flaxib_weight}>
         {(weight) => (
-          <Show when={weight.weight != 100}>{existingWeight(weight)}</Show>
+          <Show
+            when={
+              !(weight.weight == 100 && weight.start == 0 && weight.end == 1439) //Default value return by database when none weight associated
+            }
+          >
+            {existingWeight(weight)}
+          </Show>
         )}
       </For>
       <Show when={newWeigth().start != -1}>
@@ -100,5 +106,4 @@ function mouseDownInformation(e: { [x: string]: any; offsetY: number }) {
     start: yToHour * 60,
     end: 30 + yToHour * 60,
   });
-  return;
 }

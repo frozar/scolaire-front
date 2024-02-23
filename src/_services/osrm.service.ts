@@ -166,6 +166,31 @@ export class OsrmService {
     return res;
   }
 
+  static async deleteWeight(
+    wayID: number,
+    start: number,
+    end: number
+  ): Promise<any> {
+    const res = await ServiceUtils.generic(
+      host +
+        "/osrm/weight?map_id=" +
+        getActiveMapId() +
+        "&way_id=" +
+        wayID +
+        "&start=" +
+        start +
+        "&end=" +
+        end,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return res;
+  }
+
   private static buildPositionURL(points: WaypointType[]): string {
     return points.map((point) => point.lon + "," + point.lat).join(";");
   }

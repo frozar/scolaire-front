@@ -41,7 +41,7 @@ export default function VoirieDay() {
               {/* <!-- Ponderation --> */}
               <CalendarItems
                 flaxib_weight={getSelectedWay()?.flaxib_weight ?? []}
-                flaxib_way_id={getSelectedWay()?.flaxib_way_id ?? 0}
+                flaxib_way_id={getSelectedWay()?.flaxib_way_id}
               />
             </div>
           </div>

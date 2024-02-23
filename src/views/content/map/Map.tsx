@@ -37,13 +37,12 @@ function buildMap(div: HTMLDivElement) {
 
 let mapDiv: HTMLDivElement;
 
+export const [ways, setWays] = createSignal<step[]>([]);
 export default function () {
   const [displayImportCsvCanvas, setDisplayImportCsvCanvas] =
     createSignal(false);
 
-  const [ways, setWays] = createSignal([]);
-
-  async function requestWays(): Promise<false | step[] | null | undefined> {
+  async function requestWays(): Promise<step[]> {
     const result = await OsrmService.getWaysWithWeight(240);
     const parsedResult = result.map((elem) => {
       return {
