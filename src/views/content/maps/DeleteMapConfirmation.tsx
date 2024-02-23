@@ -1,9 +1,8 @@
 import { createEffect, createSignal } from "solid-js";
 import { Transition } from "solid-transition-group";
-import ClickOutside from "../../../component/ClickOutside";
+import { MapStore } from "../../../_stores/map.store";
 import { assertIsNode } from "../../../utils";
-import { deleteMap } from "./dashboardts";
-import { CarteToDeleteType, closeDeleteMapModal } from "./Dashboard";
+import { CarteToDeleteType, closeDeleteMapModal } from "./Maps";
 
 interface DeleteMapConfirmationProps {
   carteToDelete: CarteToDeleteType;
@@ -124,7 +123,7 @@ export default function (props: DeleteMapConfirmationProps) {
                     if (!props.carteToDelete) {
                       return;
                     }
-                    deleteMap(props.carteToDelete.id);
+                    MapStore.deleteMap(props.carteToDelete.id);
                   }}
                 >
                   Valider

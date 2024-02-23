@@ -1,6 +1,6 @@
 import { For, onCleanup, onMount } from "solid-js";
 import { UserMapType } from "../../../../../type";
-import { CarteToDeleteType } from "../../Dashboard";
+import { CarteToDeleteType } from "../../Maps";
 import MapCard from "./MapCard";
 
 import { useStateGui } from "../../../../../StateGui";
@@ -43,6 +43,7 @@ function keyboardHandler({ ctrlKey, shiftKey }: KeyboardEvent) {
 
 const shortcuts = [keyboardHandler];
 
+//TODO function MapGrid
 export default function (props: MapGridProps) {
   onMount(() => {
     for (const handler of shortcuts) {

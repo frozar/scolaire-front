@@ -11,7 +11,7 @@ interface MapGridHeaderProps {
 export default function (props: MapGridHeaderProps) {
   return (
     <div class="justify-between flex items-center text-3xl">
-      <PageTitle title="Tableau de bord" />
+      <PageTitle title="Liste de vos cartes" />
       <Button
         onClick={() => props.openCreateMapModal()}
         isDisabled={testDisable()}

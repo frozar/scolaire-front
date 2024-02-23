@@ -1,6 +1,9 @@
-#organisation-selector label {
-  @apply text-white text-[12px] pl-[5px];
-}
-#organisation-selector .selector {
-  @apply h-[33px];
+#organisation-selector {
+  @apply flex flex-col text-left text-white;
+  label {
+    @apply text-white text-[12px] pl-[5px] mt-auto;
+  }
+  .selector {
+    @apply h-[33px] mb-auto;
+  }
 }

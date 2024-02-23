@@ -180,7 +180,7 @@ const makeStateGuiContext = () => {
     setState("displayedInformationBoard", false);
     setState("displayedLeftMenu", false);
     setState("nextLeafletPointId", 0);
-    setState("selectedMenu", "dashboard");
+    setState("selectedMenu", "maps");
   }
 
   return [

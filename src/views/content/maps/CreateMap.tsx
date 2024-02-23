@@ -2,9 +2,9 @@ import { createEffect, createSignal } from "solid-js";
 import { addNewUserInformation } from "../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../type";
 import { assertIsNode } from "../../../utils";
-import { closeCreateMapModal } from "./Dashboard";
-import { createMap } from "./dashboardts";
+import { closeCreateMapModal } from "./Maps";
 
+import { MapStore } from "../../../_stores/map.store";
 import ClickOutside from "../../../component/ClickOutside";
 
 false && ClickOutside;
@@ -100,7 +100,7 @@ export default function () {
             closeCreateMapModal();
             const mapName = refInput.value;
             if (mapName) {
-              createMap(mapName);
+              MapStore.createMap(mapName);
             } else {
               addNewUserInformation({
                 type: MessageTypeEnum.global,
