@@ -131,13 +131,15 @@ export class OsrmService {
   }
 
   static async setWeight(
-    steps: step[],
+    wayId: number,
+    flaxibWeight: number,
     start: number,
     end: number
   ): Promise<any> {
     const content = JSON.stringify({
       map_id: getActiveMapId(),
-      steps,
+      way_id: wayId,
+      flaxib_weight: flaxibWeight,
       start,
       end,
     });

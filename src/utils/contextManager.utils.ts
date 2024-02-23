@@ -5,7 +5,7 @@ import {
 } from "../_entities/trip-direction.entity";
 import { TripEntity, TripType } from "../_entities/trip.entity";
 import { WaypointEntity } from "../_entities/waypoint.entity";
-import { OsrmService, step } from "../_services/osrm.service";
+import { step } from "../_services/osrm.service";
 import { updatePointColor } from "../leafletUtils";
 import {
   addNewUserInformation,
@@ -142,16 +142,16 @@ export namespace ContextUtils {
         }
 
         await TripUtils.createOrUpdateTrip();
-        const start = 420;
-        const end = 480;
-        // TODO Query to update stepsWeight
-        OsrmService.setWeight(
-          stepsWeight()
-            .flat()
-            .filter((step, index) => removeDouble(step, index)),
-          start,
-          end
-        );
+        // const start = 420;
+        // const end = 480;
+        // // TODO Query to update stepsWeight
+        // OsrmService.setWeight(
+        //   stepsWeight()
+        //     .flat()
+        //     .filter((step, index) => removeDouble(step, index)),
+        //   start,
+        //   end
+        // );
 
         setCurrentDrawTrip(TripEntity.defaultTrip());
         setCurrentTripIndex(0);

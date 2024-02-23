@@ -1,26 +1,71 @@
-import { Accessor, createEffect, createSignal } from "solid-js";
+import {
+  Accessor,
+  Setter,
+  createEffect,
+  createSignal,
+  onMount,
+} from "solid-js";
+import { useStateGui } from "../../../../../StateGui";
+import { OsrmService, weight } from "../../../../../_services/osrm.service";
 import CheckIcon from "../../../../../icons/CheckIcon";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { minuteToTime } from "../organism/VoirieDay";
-
+import { newWeigth } from "../organism/VoirieItems";
+const [, { getActiveMapId }] = useStateGui();
 interface CalendarItem {
-  h1: number;
-  h2: number;
-  ponderation: number;
-  isInMove: Accessor<boolean>;
+  weight: weight;
+  way_id: number;
+  setNewWeigth?: Setter<weight>;
+  isInMove?: Accessor<boolean>;
 }
 
 export function VoirieItem(props: CalendarItem) {
-  const [dragVal, setdragVal] = createSignal<number>(100);
   const [style, setstyle] = createSignal<string>("");
   const [classe, setclasse] = createSignal<string>("");
 
-  createEffect(() => {
-    const val = props.h1 / 5 + 2; // explication du calcul (h/60)*12+2 => (h/60)*pas+init => simplifier
-    const displayBlock = (props.h2 - props.h1) / 5;
-    setstyle("grid-row: " + val + " / span " + Math.min(displayBlock, 287));
-    setclasse("relative mt-px flex " + (props.isInMove() ? "disabled" : ""));
+  onMount(() => {
+    console.log("props", props);
   });
+
+  createEffect(() => {
+    const val = props.weight.start / 5 + 2; // explication du calcul (h/60)*12+2 => (h/60)*pas+init => simplification
+    const displayBlock = (props.weight.end - props.weight.start) / 5;
+    setstyle("grid-row: " + val + " / span " + Math.min(displayBlock, 287));
+    props.isInMove
+      ? setclasse("relative mt-px flex " + (props.isInMove() ?? "disabled"))
+      : console.log("Impossible to modify item size");
+  });
+
+  function onRangeChange(
+    e: InputEvent & {
+      currentTarget: HTMLInputElement;
+      target: HTMLInputElement;
+    }
+  ): void {
+    props.setNewWeigth
+      ? props.setNewWeigth((current) => {
+          return { ...current, weight: parseInt(e.target.value) };
+        })
+      : console.log("Impossible to set current weight");
+
+    console.log(newWeigth());
+  }
+
+  function itemClick(): void {
+    console.log(props.weight.start);
+    console.log(props.weight.end);
+    console.log(props.weight.weight);
+    console.log(props.way_id);
+    console.log(getActiveMapId());
+
+    OsrmService.setWeight(
+      props.way_id,
+      props.weight.weight,
+      props.weight.start,
+      props.weight.end
+    );
+    return console.log("onClick");
+  }
 
   return (
     <li
@@ -45,34 +90,32 @@ export function VoirieItem(props: CalendarItem) {
         style={{ "font-size": "xx-small", width: "15.5rem" }}
       >
         <p class="mr-1  pt-0">
-          {minuteToTime(props.h1)}-{minuteToTime(props.h2)}
+          {minuteToTime(props.weight.start)}-{minuteToTime(props.weight.end)}
         </p>
         <div style={{ width: "50%" }} draggable={false}>
           <input
-            onInput={(e) => setdragVal(parseInt(e.target.value) ?? 100)}
+            onInput={(e) => onRangeChange(e)}
             onDragStart={(e) => {
               e.preventDefault();
               e.stopImmediatePropagation();
-              console.log("drag");
             }}
             onMouseUp={(e) => {
               e.preventDefault();
               e.stopImmediatePropagation();
-              console.log("dragend");
             }}
             type="range"
             min="0"
             max="100"
-            value={dragVal()}
+            value={props.weight.weight}
             step="10"
             draggable={true}
             style={{ width: "80%" }}
           />
-          <label for="cowbell">{props.ponderation}</label>
+          <label for="cowbell">{props.weight.weight}</label>
         </div>
         <ButtonIcon
           icon={<CheckIcon />}
-          onClick={() => console.log("onClick")}
+          onClick={() => itemClick()}
           class="text-blue-700 text-sm ml-2 mt-0 h-5"
         />
       </a>

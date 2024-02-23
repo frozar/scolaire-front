@@ -1,4 +1,5 @@
 import { For } from "solid-js";
+import { getSelectedWay } from "../../../map/component/molecule/LineWeight";
 import { VoirieTimeItem } from "../atom/VoirieTimeItem";
 import "./VoirieDay.css";
 import CalendarItems from "./VoirieItems";
@@ -38,7 +39,10 @@ export default function VoirieDay() {
               </div>
 
               {/* <!-- Ponderation --> */}
-              <CalendarItems />
+              <CalendarItems
+                flaxib_weight={getSelectedWay()?.flaxib_weight ?? []}
+                flaxib_way_id={getSelectedWay()?.flaxib_way_id ?? 0}
+              />
             </div>
           </div>
         </div>

@@ -1,10 +1,8 @@
-import { createSignal } from "solid-js";
-import { step } from "../../../../../_services/osrm.service";
 import PageTitle from "../../../../../component/atom/PageTitle";
+import { getSelectedWay } from "../../../map/component/molecule/LineWeight";
 import "./StopDetails.css";
 import VoirieDay from "./VoirieDay";
 
-export const [getSelectedWay, setSelectedWay] = createSignal<step>();
 export default function WayDetails() {
   return (
     <section>

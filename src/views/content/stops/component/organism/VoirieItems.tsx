@@ -3,9 +3,8 @@ import { weight } from "../../../../../_services/osrm.service";
 import { VoirieItem } from "../molecul/VoirieItem";
 import { yToHourInMinutes } from "./VoirieDay";
 import "./VoirieDay.css";
-import { getSelectedWay } from "./WayDetails";
 
-const [currentWeigth, setCurrentWeigth] = createSignal<weight>(defaultValue());
+export const [newWeigth, setnewWeigth] = createSignal<weight>(defaultValue());
 
 const [isInMove, setisInMove] = createSignal<boolean>(false);
 
@@ -16,9 +15,14 @@ function defaultValue(): weight {
     end: -1,
   };
 }
-export const resetCurrentWeight = () => setCurrentWeigth(defaultValue());
+export const resetCurrentWeight = () => setnewWeigth(defaultValue());
 
-export default function VoirieItems() {
+interface VoirieItems {
+  flaxib_weight: weight[];
+  flaxib_way_id: number;
+}
+
+export default function VoirieItems(props: VoirieItems) {
   return (
     <ol
       onMouseDown={mouseDownInformation}
@@ -30,28 +34,34 @@ export default function VoirieItems() {
           "1.75rem repeat(288,  [col-start] minmax(0, 1fr) [col-end]) auto",
       }}
     >
-      <For each={getSelectedWay()?.flaxib_weight}>
+      <For each={props.flaxib_weight}>
         {(weight) => (
-          <Show when={weight.weight != 100}>
-            <VoirieItem
-              h1={weight.start}
-              h2={weight.end}
-              ponderation={weight.weight}
-              isInMove={isInMove}
-            />
-          </Show>
+          <Show when={weight.weight != 100}>{existingWeight(weight)}</Show>
         )}
       </For>
-      <Show when={currentWeigth().start != -1}>
+      <Show when={newWeigth().start != -1}>
         <VoirieItem
-          h1={currentWeigth().start}
-          h2={currentWeigth().end}
-          ponderation={currentWeigth().weight}
+          weight={newWeigth()}
+          way_id={props.flaxib_way_id}
           isInMove={isInMove}
+          setNewWeigth={setnewWeigth}
         />
       </Show>
     </ol>
   );
+
+  function existingWeight(weightValue: weight) {
+    const [weigth, setWeigth] = createSignal<weight>(weightValue);
+
+    return (
+      <VoirieItem
+        weight={weigth()}
+        setNewWeigth={setWeigth}
+        way_id={props.flaxib_way_id}
+        isInMove={isInMove}
+      />
+    );
+  }
 }
 
 // eslint-disable-next-line  @typescript-eslint/no-explicit-any
@@ -60,16 +70,15 @@ function mouseMoveInformation(e: { [x: string]: any; offsetY: number }) {
   if (isInMove()) {
     const yToHour = yToHourInMinutes(e.offsetY);
     if (
-      yToHour * 60 > currentWeigth().end - 60 &&
-      yToHour * 60 < currentWeigth().end + 60
+      yToHour * 60 > newWeigth().end - 60 &&
+      yToHour * 60 < newWeigth().end + 60
     ) {
-      setCurrentWeigth((weight) => {
+      setnewWeigth((weight) => {
         const valEnd = Math.max(yToHour * 60, weight.start + 30);
         return { ...weight, end: valEnd };
       });
     }
   }
-  return;
 }
 // eslint-disable-next-line  @typescript-eslint/no-explicit-any
 function mouseUpInformation(e: { [x: string]: any; offsetY: number }) {
@@ -86,7 +95,7 @@ function mouseDownInformation(e: { [x: string]: any; offsetY: number }) {
   const yToHour = yToHourInMinutes(e.offsetY);
   console.log("mouse down");
   setisInMove(true);
-  setCurrentWeigth({
+  setnewWeigth({
     weight: 100,
     start: yToHour * 60,
     end: 30 + yToHour * 60,

@@ -101,8 +101,6 @@ export default function () {
         }}
       />
 
-
-
       <Show when={getSelectedMenu() != "voirie"}>
         <Show when={onBoard() == "line"}>
           <MapPanels />
@@ -127,14 +125,13 @@ export default function () {
         />
         <BusLines busLines={getLines()} />
         <Trips map={getLeafletMap() as L.Map} />
-      <Paths map={getLeafletMap() as L.Map} />
+        <Paths map={getLeafletMap() as L.Map} />
 
         <ConfirmStopAddTrip />
       </Show>
       <Show when={getSelectedMenu() === "voirie"}>
         <For each={ways()}>
           {(way) => {
-            console.log("ici");
             return <LineWeight way={way} map={getLeafletMap() as L.Map} />;
           }}
         </For>
