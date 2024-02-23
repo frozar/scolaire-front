@@ -40,6 +40,7 @@ export function TransporterEditInputs(props: TransporterEditInputsProps) {
       </div>
       <div class="transporter-edit-input">
         <LabeledInputSelect
+          variant="borderless"
           defaultValue={getSelected()}
           label="Type de prestataire"
           onChange={(e) => props.onTypeChange(e.toString())}

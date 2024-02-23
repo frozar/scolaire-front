@@ -26,7 +26,6 @@ export function AllotmentEditContent(props: AllotmentEditContentProps) {
         cancelFunction={props.cancelFunction}
         submitFunction={props.submitFunction}
       />
-      <br />
       <TransporterTable allotment_id={props.allotment_id} />
     </div>
   );

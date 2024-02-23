@@ -8,12 +8,18 @@ interface SelectInputProps {
   defaultOptions?: string;
   disabled?: boolean;
   indented?: boolean;
+  variant?: string;
   dontTriggerCreateEffect?: boolean;
 }
 // TODO: Redo dirtyless
 export function SelectInput(props: SelectInputProps) {
   const mergedProps = mergeProps(
-    { disabled: false, indented: false, dontTriggerCreateEffect: true },
+    {
+      disabled: false,
+      indented: false,
+      dontTriggerCreateEffect: true,
+      variant: "default",
+    },
     props
   );
   function onChange(event: Event & { target: HTMLSelectElement }) {
@@ -36,6 +42,11 @@ export function SelectInput(props: SelectInputProps) {
     })
   );
 
+  function className() {
+    if (mergedProps.variant == "default") return "selector";
+    return `selector-${mergedProps.variant}`;
+  }
+
   // TODO: Specify string to display when defaultValue == -1 within props
   return (
     <Show
@@ -53,7 +64,7 @@ export function SelectInput(props: SelectInputProps) {
         </div>
       }
     >
-      <select onChange={onChange} class="selector">
+      <select onChange={onChange} class={className()}>
         <Show when={props.options.length == 0}>
           <option value="default">{props.defaultOptions ?? "Options"}</option>
         </Show>

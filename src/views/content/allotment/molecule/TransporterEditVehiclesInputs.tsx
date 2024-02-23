@@ -27,6 +27,7 @@ export function TransporterEditVehiclesInputs(
       </div>
       <div class="transporter-vehicles-input">
         <LabeledInputSelect
+          variant="borderless"
           defaultValue={Number(props.bus_id)}
           label="Véhicule associé"
           onChange={(e) => props.onTypeChange(props.index, Number(e))}
