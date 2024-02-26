@@ -1,5 +1,4 @@
 import { TransporterVehicleType } from "../../../../_entities/transporter.entity";
-import { TransporterEditButtons } from "./TransporterEditButtons";
 import { TransporterEditInputs } from "./TransporterEditInputs";
 import "./TransporterEditMenuContent.css";
 import { TransporterEditVehicles } from "./TransporterEditVehicles";
@@ -10,9 +9,7 @@ interface TransporterEditMenuContentProps {
   vehicles: TransporterVehicleType[];
   onNameChange: (value: string) => void;
   onTypeChange: (value: string) => void;
-  toggle: () => void;
   add: () => void;
-  submit: () => void;
 }
 
 export function TransporterEditMenuContent(
@@ -27,7 +24,6 @@ export function TransporterEditMenuContent(
         onTypeChange={props.onTypeChange}
       />
       <TransporterEditVehicles add={props.add} vehicles={props.vehicles} />
-      <TransporterEditButtons toggle={props.toggle} submit={props.submit} />
     </div>
   );
 }

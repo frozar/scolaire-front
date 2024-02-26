@@ -1,5 +1,6 @@
 import { For, createEffect, createSignal } from "solid-js";
 import { TransporterVehicleType } from "../../../../_entities/transporter.entity";
+import { setIsAllotmentEdited } from "../../market/molecule/allotment/AllotmentTab";
 import "./TransporterEditVehicles.css";
 import { TransporterEditVehiclesHeader } from "./TransporterEditVehiclesHeader";
 import { TransporterEditVehiclesInputs } from "./TransporterEditVehiclesInputs";
@@ -28,6 +29,7 @@ export function TransporterEditVehicles(props: TransporterEditVehiclesProps) {
         return item;
       });
     });
+    setIsAllotmentEdited(true);
   }
 
   function setBusId(idx: number, value: number) {
@@ -41,6 +43,7 @@ export function TransporterEditVehicles(props: TransporterEditVehiclesProps) {
         return item;
       });
     });
+    setIsAllotmentEdited(true);
   }
 
   return (

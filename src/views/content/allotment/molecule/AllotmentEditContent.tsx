@@ -1,4 +1,3 @@
-import { AllotmentEditButtons } from "./AllotmentEditButtons";
 import "./AllotmentEditContent.css";
 import { AllotmentEditInputs } from "./AllotmentEditInputs";
 import { TransporterTable } from "./TransporterTable";
@@ -9,8 +8,6 @@ interface AllotmentEditContentProps {
   color: string;
   onNameInput: (value: string) => void;
   onColorInput: (value: string) => void;
-  cancelFunction: () => void;
-  submitFunction: () => void;
 }
 
 export function AllotmentEditContent(props: AllotmentEditContentProps) {
@@ -21,10 +18,6 @@ export function AllotmentEditContent(props: AllotmentEditContentProps) {
         name={props.name}
         onColorInput={props.onColorInput}
         onNameInput={props.onNameInput}
-      />
-      <AllotmentEditButtons
-        cancelFunction={props.cancelFunction}
-        submitFunction={props.submitFunction}
       />
       <TransporterTable allotment_id={props.allotment_id} />
     </div>

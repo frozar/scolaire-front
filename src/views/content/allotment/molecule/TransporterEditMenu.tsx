@@ -6,9 +6,10 @@ import {
 import { TransporterService } from "../../../../_services/transporter.service";
 import { addNewUserInformation } from "../../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../../type";
+import { setIsAllotmentEdited } from "../../market/molecule/allotment/AllotmentTab";
 import { TransporterEditMenuHeader } from "../atom/TransporterEditMenuHeader";
 import { TransporterEditMenuContent } from "./TransporterEditMenuContent";
-import { VehicleList } from "./TransporterEditVehicles";
+import { setAllTransporter } from "./TransporterTable";
 
 interface TransporterEditMenuProps {
   transporterItem: TransporterType;
@@ -28,10 +29,30 @@ export function TransporterEditMenu(props: TransporterEditMenuProps) {
 
   function onNameChange(value: string) {
     setName(value);
+    // eslint-disable-next-line solid/reactivity
+    setAllTransporter((prev) => {
+      return [...prev].map((item) => {
+        if (item.id == props.transporterItem.id) {
+          item.name = value;
+        }
+        return item;
+      });
+    });
+    setIsAllotmentEdited(true);
   }
 
   function onTypeChange(value: string) {
     setType(value);
+    // eslint-disable-next-line solid/reactivity
+    setAllTransporter((prev) => {
+      return [...prev].map((item) => {
+        if (item.id == props.transporterItem.id) {
+          item.type = idToType(Number(value));
+        }
+        return item;
+      });
+    });
+    setIsAllotmentEdited(true);
   }
 
   function idToType(id: number) {
@@ -42,6 +63,8 @@ export function TransporterEditMenu(props: TransporterEditMenuProps) {
         return "Co-traitant";
       case 2:
         return "Sous-traitant";
+      default:
+        return "";
     }
   }
 
@@ -65,23 +88,6 @@ export function TransporterEditMenu(props: TransporterEditMenuProps) {
     });
   }
 
-  async function editTransporter() {
-    await TransporterService.update({
-      id: props.transporterItem.id,
-      name: getName(),
-      type: idToType(Number(getType())),
-      allotment_id: props.transporterItem.allotment_id,
-      vehicles: VehicleList(),
-    });
-    addNewUserInformation({
-      displayed: true,
-      level: MessageLevelEnum.success,
-      type: MessageTypeEnum.global,
-      content: "Les modifications ont bien été apportées",
-    });
-    setVehicles(VehicleList());
-  }
-
   return (
     <div>
       <TransporterEditMenuHeader title={props.transporterItem.name} />
@@ -92,8 +98,6 @@ export function TransporterEditMenu(props: TransporterEditMenuProps) {
         vehicles={getVehicles()}
         onNameChange={onNameChange}
         onTypeChange={onTypeChange}
-        submit={editTransporter}
-        toggle={props.toggleFunction}
       />
     </div>
   );

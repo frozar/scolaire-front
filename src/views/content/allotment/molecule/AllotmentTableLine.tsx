@@ -1,4 +1,4 @@
-import { Show, createSignal } from "solid-js";
+import { Show, createEffect, createSignal } from "solid-js";
 import { AllotmentService } from "../../../../_services/allotment.service";
 import {
   addNewUserInformation,
@@ -6,7 +6,8 @@ import {
   enableSpinningWheel,
 } from "../../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../../type";
-import { AllotmentType } from "../organism/Allotment";
+import { setIsAllotmentEdited } from "../../market/molecule/allotment/AllotmentTab";
+import { AllotmentType, setAllotment } from "../organism/Allotment";
 import { AllotmentEditMenu } from "./AllotmentEditMenu";
 import { AllotmentTableLineData } from "./AllotmentTableLineData";
 
@@ -16,16 +17,17 @@ interface AllotmentTableLineProps {
 
 export function AllotmentTableLine(props: AllotmentTableLineProps) {
   const [isInEditMode, setisInEditMode] = createSignal(false);
-
-  // eslint-disable-next-line solid/reactivity
-  const [getName, setName] = createSignal(props.allotmentItem.name);
-
-  // eslint-disable-next-line solid/reactivity
-  const [getColor, setColor] = createSignal(props.allotmentItem.color);
+  const [getName, setName] = createSignal("");
+  const [getColor, setColor] = createSignal("");
 
   function toggleEditMode() {
     setisInEditMode(!isInEditMode());
   }
+
+  createEffect(() => {
+    setName(props.allotmentItem.name);
+    setColor(props.allotmentItem.color);
+  });
 
   async function deleteAllotment() {
     enableSpinningWheel();
@@ -41,10 +43,30 @@ export function AllotmentTableLine(props: AllotmentTableLineProps) {
 
   function onNameInputChanged(value: string) {
     setName(value);
+    // eslint-disable-next-line solid/reactivity
+    setAllotment((prev) => {
+      return [...prev].map((item) => {
+        if (item.id == props.allotmentItem.id) {
+          item.name = value;
+        }
+        return item;
+      });
+    });
+    setIsAllotmentEdited(true);
   }
 
   function onColorInputChanged(value: string) {
     setColor(value);
+    // eslint-disable-next-line solid/reactivity
+    setAllotment((prev) => {
+      return [...prev].map((item) => {
+        if (item.id == props.allotmentItem.id) {
+          item.color = value;
+        }
+        return item;
+      });
+    });
+    setIsAllotmentEdited(true);
   }
 
   return (
@@ -62,7 +84,6 @@ export function AllotmentTableLine(props: AllotmentTableLineProps) {
       <td colSpan={5}>
         <AllotmentEditMenu
           id={props.allotmentItem.id}
-          toggleEdit={toggleEditMode}
           color={getColor()}
           name={getName()}
           onColorInput={onColorInputChanged}
