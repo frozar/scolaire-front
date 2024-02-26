@@ -1,3 +1,7 @@
 .duplicate-icon > svg {
   @apply w-4;
 }
+
+.close-icon > svg {
+  @apply w-3;
+}

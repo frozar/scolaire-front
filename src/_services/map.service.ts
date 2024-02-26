@@ -17,7 +17,7 @@ export class MapService {
       : [];
   }
 
-  static async create(map: Omit<MapDBType, "id">) {
+  static async create(map: Omit<MapDBType, "id" | "created_at">) {
     const dbMap: MapDBType = await ServiceUtils.post(
       "/map",
       { ...map, organisation_id: getSelectedOrganisation().organisation_id },
@@ -28,5 +28,17 @@ export class MapService {
 
   static async delete(id: number): Promise<boolean> {
     return await ServiceUtils.delete("/map/" + id, false);
+  }
+
+  static async update(map: Pick<MapType, "id" | "name">) {
+    const dbMap: MapDBType = await ServiceUtils.patch(
+      "/map/" + map.id,
+      {
+        ...map,
+        organisation_id: getSelectedOrganisation().organisation_id,
+      },
+      false
+    );
+    return MapEntity.build(dbMap);
   }
 }

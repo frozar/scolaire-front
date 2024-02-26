@@ -1,26 +1,18 @@
-import { For } from "solid-js";
-import { useStateGui } from "../../../../../StateGui";
+import { For, Show } from "solid-js";
+import { userMaps } from "../../../../../_stores/map.store";
 import { TableHeaderCol } from "../../../../../component/table/atom/TableHeaderCol";
 import { TableContent } from "../../../../../component/table/molecule/TableContent";
 import { TableHeader } from "../../../../../component/table/molecule/TableHeader";
 import { Table } from "../../../../../component/table/organism/Table";
-import { UserMapType } from "../../../../../type";
-import { CarteToDeleteType } from "../../Maps";
+import { CarteToDeleteType, isDisplayedCreateMap } from "../../Maps";
 import { MapTableItem } from "./MapTableItem";
-
-const [, { setActiveMapId }] = useStateGui();
+import { MapTableItemAdd } from "./MapTableItemAdd";
 
 interface MapTablesProps {
-  mapList: UserMapType[];
   handleClickDelete: (mapToDelete: CarteToDeleteType) => void;
 }
 
 export function MapTables(props: MapTablesProps) {
-  function setActiveMap(mapId: number) {
-    props.mapList.map((map) => map.setIsActive(map.id === mapId));
-    setActiveMapId(mapId);
-  }
-
   return (
     <Table>
       <TableHeader>
@@ -30,15 +22,18 @@ export function MapTables(props: MapTablesProps) {
       </TableHeader>
 
       <TableContent>
-        <For each={props.mapList}>
+        <For each={userMaps()}>
           {(map) => (
             <MapTableItem
               handleClickDelete={props.handleClickDelete}
-              setActiveMap={setActiveMap}
               map={map}
             />
           )}
         </For>
+
+        <Show when={isDisplayedCreateMap()}>
+          <MapTableItemAdd />
+        </Show>
       </TableContent>
     </Table>
   );
