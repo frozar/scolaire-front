@@ -588,6 +588,7 @@ export namespace ServiceGridUtils {
 
             // * Si pas de waitingTime => ajouter à la fin en orange
             if (!waitingTimes.some((waitingTime) => waitingTime > 0)) {
+              // TODO: Refactor
               service.serviceTripsOrdered.push({
                 tripId,
                 hlp,
@@ -597,29 +598,60 @@ export namespace ServiceGridUtils {
               });
               continue;
             }
-            // ! Si pls waitingTime ?
             // * Si waiting time pas dans la range => ajouter à la fin en orange
-            const indexOfWaitingTime = waitingTimes.indexOf(
-              waitingTimes.filter((waitingTime) => waitingTime > 0)[0]
-            );
+            // ! Si pls waitingTime ?
+            const waitingTimeDuration = waitingTimes.filter(
+              (waitingTime) => waitingTime > 0
+            )[0];
+
+            const indexOfWaitingTime =
+              waitingTimes.indexOf(waitingTimeDuration);
+
             const waitingTimeStart =
               service.serviceTripsOrdered[indexOfWaitingTime - 1].endHour;
-            const waitingTimeEnd =
-              waitingTimeStart +
-              waitingTimes.filter((waitingTime) => waitingTime > 0)[0];
+
+            const newHlp =
+              hlpMatrix()[tripId][
+                service.serviceTripsOrdered[indexOfWaitingTime].tripId
+              ];
+
+            const _earliestDepartureHour = waitingTimeStart + hlp;
+            const _earliestArrivalHour = waitingTimeStart + hlp + tripDuration;
+
             if (
               !isCase2(
-                waitingTimeStart,
-                waitingTimeEnd,
+                _earliestDepartureHour,
+                _earliestArrivalHour,
                 tripDirection,
                 minTimeOfTimeRange,
                 maxTimeOfTimeRange
               )
-            )
-              // * Si waitingTime < hlp + trip duration => ajouter à la fin en orange
-              // * Sinon placer dans la waitingTime au plus proche de la timeRange
-              // * Si pas dans la time range => Afficher en orange
+            ) {
+              // TODO: Refactor
+              service.serviceTripsOrdered.push({
+                tripId,
+                hlp,
+                endHour: earliestEndHour,
+                waitingTime: 0,
+                startHour: earliestEndHour - tripDuration,
+              });
               continue;
+            }
+            // * Si waitingTimeDuration < hlp + trip duration => ajouter à la fin en orange
+            if (waitingTimeDuration < newHlp + tripDuration) {
+              // TODO: Refactor
+              service.serviceTripsOrdered.push({
+                tripId,
+                hlp,
+                endHour: earliestEndHour,
+                waitingTime: 0,
+                startHour: earliestEndHour - tripDuration,
+              });
+              continue;
+            }
+            // * Sinon placer dans la waitingTime au plus proche de la timeRange
+
+            continue;
 
           default:
             console.log(
