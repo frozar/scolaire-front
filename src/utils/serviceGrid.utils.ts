@@ -581,12 +581,12 @@ export namespace ServiceGridUtils {
             continue;
 
           case CaseEnum.case4:
-            // ! TODO
-            // * Si pas de waitingTime => ajouter à la fin en orange
+            // TODO: Clean and refactor
             const waitingTimes = service.serviceTripsOrdered.map(
               (serviceTrip) => serviceTrip.waitingTime
             );
 
+            // * Si pas de waitingTime => ajouter à la fin en orange
             if (!waitingTimes.some((waitingTime) => waitingTime > 0)) {
               service.serviceTripsOrdered.push({
                 tripId,
@@ -595,12 +595,31 @@ export namespace ServiceGridUtils {
                 waitingTime: 0,
                 startHour: earliestEndHour - tripDuration,
               });
+              continue;
             }
             // ! Si pls waitingTime ?
-            // * Si waitingTime < hlp + trip duration => ajouter à la fin en orange
-            // * Sinon placer dans la waitingTime au plus proche de la timeRange
-            // * Si pas dans la time range => Afficher en orange
-            continue;
+            // * Si waiting time pas dans la range => ajouter à la fin en orange
+            const indexOfWaitingTime = waitingTimes.indexOf(
+              waitingTimes.filter((waitingTime) => waitingTime > 0)[0]
+            );
+            const waitingTimeStart =
+              service.serviceTripsOrdered[indexOfWaitingTime - 1].endHour;
+            const waitingTimeEnd =
+              waitingTimeStart +
+              waitingTimes.filter((waitingTime) => waitingTime > 0)[0];
+            if (
+              !isCase2(
+                waitingTimeStart,
+                waitingTimeEnd,
+                tripDirection,
+                minTimeOfTimeRange,
+                maxTimeOfTimeRange
+              )
+            )
+              // * Si waitingTime < hlp + trip duration => ajouter à la fin en orange
+              // * Sinon placer dans la waitingTime au plus proche de la timeRange
+              // * Si pas dans la time range => Afficher en orange
+              continue;
 
           default:
             console.log(
