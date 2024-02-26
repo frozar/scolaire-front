@@ -12,6 +12,7 @@ interface ServiceGridItemProps {
   serviceTrip: ServiceTripOrderedType;
   serviceId: number;
   hlpWidth: number;
+  outsideScheduleRange: boolean;
 }
 
 export function ServiceGridItem(props: ServiceGridItemProps): JSXElement {
@@ -34,6 +35,7 @@ export function ServiceGridItem(props: ServiceGridItemProps): JSXElement {
         serviceTripWidth={ServiceGridUtils.getTripDuration(
           props.serviceTrip.tripId
         )}
+        outsideScheduleRange={props.outsideScheduleRange}
       />
     </div>
   );

@@ -9,3 +9,8 @@
 .service-grid-item-trip-trash-button {
   @apply absolute bottom-0 right-0;
 }
+
+/* Clean */
+.outside-schedule-range {
+  @apply border border-red-600;
+}

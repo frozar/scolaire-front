@@ -15,6 +15,7 @@ interface ServiceGridTripItemProps {
   serviceId: number;
   serviceTripIndex: number;
   serviceTripWidth: number;
+  outsideScheduleRange: boolean;
 }
 
 export function ServiceGridTripItem(
@@ -23,6 +24,7 @@ export function ServiceGridTripItem(
   return (
     <div
       class="service-grid-item-trip"
+      classList={{ "outside-schedule-range": props.outsideScheduleRange }}
       style={{
         width: ServiceGridUtils.widthCssValue(props.serviceTripWidth),
       }}

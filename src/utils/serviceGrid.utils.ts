@@ -352,11 +352,58 @@ export namespace ServiceGridUtils {
       )
     );
   }
+
+  function isCase4ConditionComing(
+    tripDirection: TripDirectionEnum,
+    earliestEndHour: number,
+    maxTimeOfTimeRange: number
+  ): boolean {
+    return (
+      // Aller
+      tripDirection == TripDirectionEnum.going &&
+      earliestEndHour > maxTimeOfTimeRange
+    );
+  }
+
+  function isCase4ConditionGoing(
+    tripDirection: TripDirectionEnum,
+    earliestDepartureHour: number,
+    maxTimeOfTimeRange: number
+  ): boolean {
+    return (
+      // Retour
+      tripDirection == TripDirectionEnum.coming &&
+      earliestDepartureHour > maxTimeOfTimeRange
+    );
+  }
+
+  function isCase4(
+    earliestDepartureHour: number,
+    earliestEndHour: number,
+    tripDirection: TripDirectionEnum,
+    maxTimeOfTimeRange: number
+  ): boolean {
+    return (
+      isCase4ConditionComing(
+        tripDirection,
+        earliestEndHour,
+        maxTimeOfTimeRange
+      ) ||
+      isCase4ConditionGoing(
+        tripDirection,
+        earliestDepartureHour,
+        maxTimeOfTimeRange
+      )
+    );
+  }
+
   enum CaseEnum {
     case1,
     case2,
     case3,
+    case4,
   }
+
   function getCaseNumber(
     earliestDepartureHour: number,
     earliestEndHour: number,
@@ -383,6 +430,15 @@ export namespace ServiceGridUtils {
       )
     )
       return CaseEnum.case3;
+    else if (
+      isCase4(
+        earliestDepartureHour,
+        earliestEndHour,
+        tripDirection,
+        maxTimeOfTimeRange
+      )
+    )
+      return CaseEnum.case4;
     return;
   }
 
@@ -498,6 +554,28 @@ export namespace ServiceGridUtils {
             });
             continue;
 
+          case CaseEnum.case4:
+            // ! TODO
+            // * Si pas de waitingTime => ajouter à la fin en orange
+            const waitingTimes = service.serviceTripsOrdered.map(
+              (serviceTrip) => serviceTrip.waitingTime
+            );
+
+            if (!waitingTimes.some((waitingTime) => waitingTime > 0)) {
+              service.serviceTripsOrdered.push({
+                tripId,
+                hlp,
+                endHour: earliestEndHour,
+                waitingTime: 0,
+                startHour: earliestEndHour - tripDuration,
+              });
+            }
+            // ! Si pls waitingTime ?
+            // * Si waitingTime < hlp + trip duration => ajouter à la fin en orange
+            // * Sinon placer dans la waitingTime au plus proche de la timeRange
+            // * Si pas dans la time range => Afficher en orange
+            continue;
+
           default:
             console.log(
               "WIP: Cette course ne peut pas être ajouté a ce service pour le moment"
@@ -506,32 +584,17 @@ export namespace ServiceGridUtils {
             return;
         }
 
-        // // Case 4 : Earliest arrival or departure after time range
-        // function case4ConditionComing(): boolean {
-        //   return (
-        //     // ! Aller
-        //     tripDirection == TripDirectionEnum.going &&
-        //     earliestEndHour > maxTimeOfTimeRange
-        //   );
-        // }
-
-        // function case4ConditionGoing(): boolean {
-        //   return (
-        //     // ! Retour
-        //     tripDirection == TripDirectionEnum.coming &&
-        //     earliestDepartureHour > maxTimeOfTimeRange
-        //   );
-        // }
-        // // TODO: Remove useless condition, it's the "else" case !?
+        // Case 4 : Earliest arrival or departure after time range
+        // TODO: Remove useless condition, it's the "else" case !?
         // if (case4ConditionComing() || case4ConditionGoing()) {
-        //   // Décaler d'un cran et voir si ça passe
-        //   // si ça passe (dans la range) voir si l'elt(s) décalé passe aussi
-        //   // si oui c'est bon sinon continuer
-        //   //
-        //   // décaler de 2 crans
-        //   // ...
-        //   //
-        //   // SI plus de décalage possible passer au cas 4'
+        // Décaler d'un cran et voir si ça passe
+        // si ça passe (dans la range) voir si l'elt(s) décalé passe aussi
+        // si oui c'est bon sinon continuer
+        //
+        // décaler de 2 crans
+        // ...
+        //
+        // SI plus de décalage possible passer au cas 4'
 
         //   for (const serviceTripIndex of [
         //     ...Array(service.serviceTripsOrdered.length).keys(),
