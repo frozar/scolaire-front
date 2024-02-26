@@ -7,12 +7,13 @@ interface AllotmentEditMenuProps {
   color: string;
   onNameInput: (name: string) => void;
   onColorInput: (color: string) => void;
+  toggleEdit: () => void;
 }
 
 export function AllotmentEditMenu(props: AllotmentEditMenuProps) {
   return (
     <div>
-      <AllotmentEditHeader title={props.name} />
+      <AllotmentEditHeader toggle={props.toggleEdit} title={props.name} />
       <AllotmentEditContent
         allotment_id={props.id}
         color={props.color}

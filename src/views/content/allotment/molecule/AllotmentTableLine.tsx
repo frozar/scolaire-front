@@ -88,6 +88,7 @@ export function AllotmentTableLine(props: AllotmentTableLineProps) {
           name={getName()}
           onColorInput={onColorInputChanged}
           onNameInput={onNameInputChanged}
+          toggleEdit={toggleEditMode}
         />
       </td>
     </Show>
