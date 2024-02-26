@@ -264,8 +264,8 @@ export namespace ServiceGridUtils {
     minTimeOfTimeRange: number,
     maxTimeOfTimeRange: number
   ): boolean {
+    /* Aller */
     return (
-      // Aller
       tripDirection == TripDirectionEnum.going &&
       minTimeOfTimeRange <= earliestEndHour &&
       earliestEndHour <= maxTimeOfTimeRange
@@ -278,8 +278,8 @@ export namespace ServiceGridUtils {
     minTimeOfTimeRange: number,
     maxTimeOfTimeRange: number
   ): boolean {
+    /* Retour */
     return (
-      // Retour
       tripDirection == TripDirectionEnum.coming &&
       minTimeOfTimeRange <= earliestDepartureHour &&
       earliestDepartureHour <= maxTimeOfTimeRange
@@ -313,8 +313,6 @@ export namespace ServiceGridUtils {
     service: ServiceType,
     serviceTripIndex: number
   ): boolean {
-    // TODO: Refactor ?
-
     const tripId = service.serviceTripsOrdered[serviceTripIndex].tripId;
     const departureHour =
       service.serviceTripsOrdered[serviceTripIndex].startHour;
@@ -340,8 +338,8 @@ export namespace ServiceGridUtils {
     tripDirection: TripDirectionEnum,
     minTimeOfTimeRange: number
   ): boolean {
+    /* Aller */
     return (
-      // Aller
       tripDirection == TripDirectionEnum.going &&
       earliestEndHour < minTimeOfTimeRange
     );
@@ -352,8 +350,8 @@ export namespace ServiceGridUtils {
     tripDirection: TripDirectionEnum,
     minTimeOfTimeRange: number
   ): boolean {
+    /* Retour */
     return (
-      // Retour
       tripDirection == TripDirectionEnum.coming &&
       earliestDepartureHour < minTimeOfTimeRange
     );
@@ -384,8 +382,8 @@ export namespace ServiceGridUtils {
     earliestEndHour: number,
     maxTimeOfTimeRange: number
   ): boolean {
+    /* Aller */
     return (
-      // Aller
       tripDirection == TripDirectionEnum.going &&
       earliestEndHour > maxTimeOfTimeRange
     );
@@ -396,8 +394,8 @@ export namespace ServiceGridUtils {
     earliestDepartureHour: number,
     maxTimeOfTimeRange: number
   ): boolean {
+    /* Retour */
     return (
-      // Retour
       tripDirection == TripDirectionEnum.coming &&
       earliestDepartureHour > maxTimeOfTimeRange
     );
