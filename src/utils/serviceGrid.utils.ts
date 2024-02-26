@@ -9,7 +9,6 @@ import {
   ServiceTripOrderedType,
   ServiceType,
   services,
-  setServices,
 } from "../views/content/service/organism/Services";
 import {
   hlpMatrix,
@@ -260,10 +259,9 @@ export namespace ServiceGridUtils {
   }
 
   // TODO: Refactor and clean
-  // TODO: Use this line back
-  // export function getUpdatedServices(_services: ServiceType[]): ServiceType[] {
-  // ! Temp line
-  export function getUpdatedServices(_services: ServiceType[]): void {
+  export function getUpdatedServices(
+    _services: ServiceType[]
+  ): ServiceType[] | void {
     for (const service of _services) {
       service.serviceTripsOrdered = [];
 
@@ -503,9 +501,6 @@ export namespace ServiceGridUtils {
       }
       // console.log("service", service);
     }
-    // TODO: Use this line back
-    // return _services;
-
-    setServices(_services);
+    return _services;
   }
 }
