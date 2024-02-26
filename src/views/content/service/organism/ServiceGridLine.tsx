@@ -37,8 +37,10 @@ export function ServiceGridLine(props: ServiceGridLineProps): JSXElement {
               serviceTrip={serviceTrip}
               serviceTripIndex={i()}
               hlpWidth={serviceTrip.hlp}
-              // TODO
-              outsideScheduleRange={ServiceGridUtils.checkIfOutsideRange}
+              outsideScheduleRange={ServiceGridUtils.checkIfOutsideRange(
+                services()[props.serviceIndex],
+                i()
+              )}
             />
           );
         }}

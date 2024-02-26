@@ -309,6 +309,32 @@ export namespace ServiceGridUtils {
     );
   }
 
+  export function checkIfOutsideRange(
+    service: ServiceType,
+    serviceTripIndex: number
+  ): boolean {
+    // TODO: Refactor ?
+
+    const tripId = service.serviceTripsOrdered[serviceTripIndex].tripId;
+    const departureHour =
+      service.serviceTripsOrdered[serviceTripIndex].startHour;
+    const endHour = service.serviceTripsOrdered[serviceTripIndex].endHour;
+
+    const tripDirection = TripDirectionEntity.FindDirectionById(
+      TripUtils.get(tripId).tripDirectionId
+    ).type;
+    const minTimeOfTimeRange = ServiceGridUtils.getEarliestArrival(tripId);
+    const maxTimeOfTimeRange = ServiceGridUtils.getLatestArrival(tripId);
+
+    return !isCase2(
+      departureHour,
+      endHour,
+      tripDirection,
+      minTimeOfTimeRange,
+      maxTimeOfTimeRange
+    );
+  }
+
   function isCase3ConditionComing(
     earliestEndHour: number,
     tripDirection: TripDirectionEnum,
