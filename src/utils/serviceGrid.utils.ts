@@ -309,6 +309,50 @@ export namespace ServiceGridUtils {
     );
   }
 
+  function isCase3ConditionComing(
+    earliestEndHour: number,
+    tripDirection: TripDirectionEnum,
+    minTimeOfTimeRange: number
+  ): boolean {
+    return (
+      // Aller
+      tripDirection == TripDirectionEnum.going &&
+      earliestEndHour < minTimeOfTimeRange
+    );
+  }
+
+  function isCase3ConditionGoing(
+    earliestDepartureHour: number,
+    tripDirection: TripDirectionEnum,
+    minTimeOfTimeRange: number
+  ): boolean {
+    return (
+      // Retour
+      tripDirection == TripDirectionEnum.coming &&
+      earliestDepartureHour < minTimeOfTimeRange
+    );
+  }
+
+  function isCase3(
+    earliestDepartureHour: number,
+    earliestEndHour: number,
+    tripDirection: TripDirectionEnum,
+    minTimeOfTimeRange: number
+  ): boolean {
+    return (
+      isCase3ConditionComing(
+        earliestEndHour,
+        tripDirection,
+        minTimeOfTimeRange
+      ) ||
+      isCase3ConditionGoing(
+        earliestDepartureHour,
+        tripDirection,
+        minTimeOfTimeRange
+      )
+    );
+  }
+
   function updateServiceCase1(
     service: ServiceType,
     tripId: number,
@@ -381,11 +425,6 @@ export namespace ServiceGridUtils {
             .endHour + hlp;
 
         // Case 2 : Earliest arrival or departure in the time range
-
-        // if (
-        //   case2ConditionComing(earliestEndHour) ||
-        //   case2ConditionGoing(earliestDepartureHour)
-        // ) {
         if (
           isCase2(
             earliestDepartureHour,
@@ -406,23 +445,14 @@ export namespace ServiceGridUtils {
         }
 
         // Case 3 : Earliest arrival or departure before time range
-        function case3ConditionComing(): boolean {
-          return (
-            // ! Aller
-            tripDirection == TripDirectionEnum.going &&
-            earliestEndHour < minTimeOfTimeRange
-          );
-        }
-
-        function case3ConditionGoing(): boolean {
-          return (
-            // ! Retour
-            tripDirection == TripDirectionEnum.coming &&
-            earliestDepartureHour < minTimeOfTimeRange
-          );
-        }
-
-        if (case3ConditionComing() || case3ConditionGoing()) {
+        if (
+          isCase3(
+            earliestDepartureHour,
+            earliestEndHour,
+            tripDirection,
+            minTimeOfTimeRange
+          )
+        ) {
           const waitingTime =
             tripDirection == TripDirectionEnum.going
               ? minTimeOfTimeRange - earliestEndHour
