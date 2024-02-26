@@ -10,7 +10,7 @@ interface MapGridHeaderProps {
 
 export default function (props: MapGridHeaderProps) {
   return (
-    <div class="justify-between flex items-center text-3xl">
+    <div class="map-grid-header ">
       <PageTitle title="Liste de vos cartes" />
       <Button
         onClick={() => props.openCreateMapModal()}
