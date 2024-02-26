@@ -5,8 +5,8 @@ import Modal from "../../../component/molecule/Modal";
 import { authenticated } from "../../../signaux";
 import CreateMap from "./CreateMap";
 import DeleteMapConfirmation from "./DeleteMapConfirmation";
-import MapGrid from "./component/molecule/MapGrid";
 import MapGridHeader from "./component/molecule/MapGridHeader";
+import { MapTables } from "./component/organism/MapTables";
 
 export type CarteToDeleteType =
   | {
@@ -28,16 +28,17 @@ export function Maps() {
   );
 
   return (
-    <div class="px-10 w-full bg-white">
+    <div class="px-10 w-full bg-white pt-4">
       <div class="h-[calc(100vh-60px)]">
-        <div class="pt-5 mb-3">
-          <MapGridHeader openCreateMapModal={openCreateMapModal} />
-        </div>
-
-        <MapGrid
+        <MapGridHeader openCreateMapModal={openCreateMapModal} />
+        <MapTables
           mapList={userMaps()}
           handleClickDelete={setDisplayedDeleteMapConfirmation}
         />
+        {/* <MapGrid
+          mapList={userMaps()}
+          handleClickDelete={setDisplayedDeleteMapConfirmation}
+        /> */}
       </div>
 
       <Modal show={isDisplayedCreateMap()}>
