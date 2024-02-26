@@ -27,7 +27,7 @@ export function TransporterEditMenuContent(
         onTypeChange={props.onTypeChange}
       />
       <TransporterEditVehicles add={props.add} vehicles={props.vehicles} />
-      <TransporterEditButtons edit={props.toggle} submit={props.submit} />
+      <TransporterEditButtons toggle={props.toggle} submit={props.submit} />
     </div>
   );
 }

@@ -4,6 +4,7 @@ import { TransporterService } from "../../../../_services/transporter.service";
 import Button from "../../../../component/atom/Button";
 import { TableContent } from "../../../../component/table/molecule/TableContent";
 import { Table } from "../../../../component/table/organism/Table";
+import { disableSpinningWheel, enableSpinningWheel } from "../../../../signaux";
 import { TransporterTableHeader } from "./TransporterTableHeader";
 import { TransporterTableLine } from "./TransporterTableLine";
 
@@ -21,12 +22,14 @@ export function TransporterTable(props: { allotment_id?: number }) {
   });
 
   async function addTransporter() {
+    enableSpinningWheel();
     await TransporterService.create({
       name: "newTransporter",
       type: "Titulaire",
       allotment_id: Number(props.allotment_id),
       vehicles: [],
     });
+    disableSpinningWheel();
   }
 
   return (

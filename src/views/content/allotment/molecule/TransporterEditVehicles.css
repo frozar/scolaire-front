@@ -7,9 +7,13 @@
 }
 
 .transporter-vehicles-input-container {
-  @apply flex gap-12;
+  @apply flex gap-8;
 }
 
 .transporter-vehicles-input {
   @apply max-w-xs;
+}
+
+.transporter-vehicles-list {
+  @apply flex flex-wrap gap-8;
 }

@@ -46,17 +46,19 @@ export function TransporterEditVehicles(props: TransporterEditVehiclesProps) {
   return (
     <div class="transporter-vehicles-content">
       <TransporterEditVehiclesHeader add={props.add} />
-      <For each={VehicleList()}>
-        {(item, i) => (
-          <TransporterEditVehiclesInputs
-            license={item.license}
-            bus_id={item.bus_categories_id}
-            index={i()}
-            onLicenseChange={setLicense}
-            onTypeChange={setBusId}
-          />
-        )}
-      </For>
+      <div class="transporter-vehicles-list">
+        <For each={VehicleList()}>
+          {(item, i) => (
+            <TransporterEditVehiclesInputs
+              license={item.license}
+              bus_id={item.bus_categories_id}
+              index={i()}
+              onLicenseChange={setLicense}
+              onTypeChange={setBusId}
+            />
+          )}
+        </For>
+      </div>
     </div>
   );
 }
