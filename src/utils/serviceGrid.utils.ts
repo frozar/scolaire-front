@@ -650,14 +650,25 @@ export namespace ServiceGridUtils {
               continue;
             }
             // * Sinon placer dans la waitingTime au plus proche de la timeRange
+            // TODO: => Vérifier que tout les autre cas déjà tester avant !
 
+            service.serviceTripsOrdered.splice(indexOfWaitingTime, 0, {
+              tripId,
+              hlp: newHlp,
+              endHour: _earliestArrivalHour,
+              waitingTime:
+                _earliestArrivalHour - tripDuration - newHlp - waitingTimeStart,
+              startHour: _earliestArrivalHour - tripDuration,
+            });
+            service.serviceTripsOrdered[indexOfWaitingTime + 1].waitingTime -=
+              tripDuration + newHlp;
             continue;
 
+          // TODO: Delete
           default:
             console.log(
               "WIP: Cette course ne peut pas être ajouté a ce service pour le moment"
             );
-            // ! return temp => cause bug : comme pas de modif => boucle infinie
             return;
         }
 
@@ -671,91 +682,7 @@ export namespace ServiceGridUtils {
         // décaler de 2 crans
         // ...
         //
-        // SI plus de décalage possible passer au cas 4'
-
-        //   for (const serviceTripIndex of [
-        //     ...Array(service.serviceTripsOrdered.length).keys(),
-        //   ]) {
-        //     // !FIX: HLP à recalculer !
-        //     // TODO: Refactor with get newEarliestEndHour()
-        //     const newEarliestEndHour =
-        //       (
-        //         service.serviceTripsOrdered.at(
-        //           // ! Magic numbers
-        //           -2 - serviceTripIndex
-        //         ) as ServiceTripOrderedType
-        //       ).endHour +
-        //       hlp +
-        //       tripDuration;
-
-        //     // TODO: Refactor with get newEarliestDepartureHour()
-        //     const newEarliestDepartureHour =
-        //       (
-        //         service.serviceTripsOrdered.at(
-        //           -2 - serviceTripIndex
-        //         ) as ServiceTripOrderedType
-        //       ).endHour + hlp;
-
-        //     // Check si dans la range
-        //     if (
-        //       case2ConditionComing(newEarliestEndHour) ||
-        //       case2ConditionGoing(newEarliestDepartureHour)
-        //     ) {
-        //       // const bufferServices = _.cloneDeep(services);
-        //       // const actualService = bufferServices.filter(
-        //       //   (_service) => _service.id == service.id
-        //       // )[0];
-
-        //       // actualService.serviceTripsOrdered.splice(
-        //       //   -2 - serviceTripIndex,
-        //       //   actualService.serviceTripsOrdered.length - 2 - serviceTripIndex, {
-        //       //     tripId,
-        //       //     hlp: number; // in minutes
-        //       //     endHour: number; // in minutes
-        //       //     startHour: number; // in minutes
-        //       //     waitingTime: number; // in minutes
-        //       //   }
-        //       // );
-
-        //       // check si le ou les décalé(s) dans la range
-        //       for (const testI of [...Array(serviceTripIndex + 1).keys()]) {
-        //         const newEarliestEndHour =
-        //           (
-        //             service.serviceTripsOrdered.at(
-        //               // ! Magic numbers
-        //               -2 - testI
-        //             ) as ServiceTripOrderedType
-        //           ).endHour +
-        //           hlp +
-        //           tripDuration;
-
-        //         const newEarliestDepartureHour =
-        //           (
-        //             service.serviceTripsOrdered.at(
-        //               -2 - testI
-        //             ) as ServiceTripOrderedType
-        //           ).endHour + hlp;
-
-        //         if (
-        //           !(
-        //             case2ConditionComing(newEarliestEndHour) ||
-        //             case2ConditionGoing(newEarliestDepartureHour)
-        //           )
-        //         ) {
-        //           break;
-        //         }
-
-        //         if (testI == [...Array(serviceTripIndex + 1).keys()].at(-1)) {
-        //           // Save les modifs
-        //         }
-        //       }
-        //     }
-        //   }
-        // }
-
-        // Case 4' : Not possible to fit in range time
-        // ! Then what to do ?
-        // => userMessage OR add and display an orange color for the item
+        // SI plus de décalage possible ajouter en fin de service
       }
       // console.log("service", service);
     }
