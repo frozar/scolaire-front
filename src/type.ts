@@ -201,6 +201,7 @@ export type EtablissementItemType = {
 export type UserMapType = {
   id: number;
   name: string;
+  createdAt: Date;
   isSelected: Accessor<boolean>;
   isActive: Accessor<boolean>;
   setIsSelected: Setter<boolean>;

@@ -23,6 +23,7 @@ export class MapEntity {
       isSelected,
       setIsSelected,
       setIsActive,
+      createAt: new Date(dbMap.created_at),
     };
   }
 }
@@ -30,11 +31,13 @@ export class MapEntity {
 export type MapDBType = {
   id: number;
   name: string;
+  created_at: Date;
 };
 
 export type MapType = {
   id: number;
   name: string;
+  createAt: Date;
   //TODO revoir la pertinence de mettre les Acessor et Setter ici
   isSelected: Accessor<boolean>;
   isActive: Accessor<boolean>;

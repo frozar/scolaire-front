@@ -15,6 +15,7 @@ export const [userMaps, setUserMaps] = createSignal<MapType[]>([]);
 export namespace MapStore {
   export async function fetchUserMaps() {
     const maps: MapType[] = await MapService.getAll();
+
     if (
       maps.length === 0 ||
       !maps.flatMap((map) => map.id).includes(getActiveMapId() ?? -1)
