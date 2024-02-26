@@ -352,6 +352,39 @@ export namespace ServiceGridUtils {
       )
     );
   }
+  enum CaseEnum {
+    case1,
+    case2,
+    case3,
+  }
+  function getCaseNumber(
+    earliestDepartureHour: number,
+    earliestEndHour: number,
+    tripDirection: TripDirectionEnum,
+    minTimeOfTimeRange: number,
+    maxTimeOfTimeRange: number
+  ): CaseEnum | void {
+    if (
+      isCase2(
+        earliestDepartureHour,
+        earliestEndHour,
+        tripDirection,
+        minTimeOfTimeRange,
+        maxTimeOfTimeRange
+      )
+    )
+      return CaseEnum.case2;
+    else if (
+      isCase3(
+        earliestDepartureHour,
+        earliestEndHour,
+        tripDirection,
+        minTimeOfTimeRange
+      )
+    )
+      return CaseEnum.case3;
+    return;
+  }
 
   function updateServiceCase1(
     service: ServiceType,
@@ -402,6 +435,7 @@ export namespace ServiceGridUtils {
           );
           continue;
         }
+
         /*
         Computation for hlp, earliestEndHour, earliestDepartureHour uses 
         the last serviceTrips of serviceTripsOrdered as the previous serviceTrip
@@ -424,9 +458,8 @@ export namespace ServiceGridUtils {
           (service.serviceTripsOrdered.at(-1) as ServiceTripOrderedType)
             .endHour + hlp;
 
-        // Case 2 : Earliest arrival or departure in the time range
-        if (
-          isCase2(
+        switch (
+          getCaseNumber(
             earliestDepartureHour,
             earliestEndHour,
             tripDirection,
@@ -434,47 +467,44 @@ export namespace ServiceGridUtils {
             maxTimeOfTimeRange
           )
         ) {
-          service.serviceTripsOrdered.push({
-            tripId,
-            hlp,
-            endHour: earliestEndHour,
-            waitingTime: 0,
-            startHour: earliestEndHour - tripDuration,
-          });
-          continue;
+          /* Case1 already done */
+
+          case CaseEnum.case2:
+            // Earliest arrival or departure in the time range
+            service.serviceTripsOrdered.push({
+              tripId,
+              hlp,
+              endHour: earliestEndHour,
+              waitingTime: 0,
+              startHour: earliestEndHour - tripDuration,
+            });
+            continue;
+
+          case CaseEnum.case3:
+            // Earliest arrival or departure before time range
+            const waitingTime =
+              tripDirection == TripDirectionEnum.going
+                ? minTimeOfTimeRange - earliestEndHour
+                : minTimeOfTimeRange - earliestDepartureHour;
+
+            const endHour = earliestEndHour + waitingTime;
+
+            service.serviceTripsOrdered.push({
+              tripId,
+              hlp,
+              endHour,
+              waitingTime,
+              startHour: endHour - tripDuration,
+            });
+            continue;
+
+          default:
+            console.log(
+              "WIP: Cette course ne peut pas être ajouté a ce service pour le moment"
+            );
+            // ! return temp => cause bug : comme pas de modif => boucle infinie
+            return;
         }
-
-        // Case 3 : Earliest arrival or departure before time range
-        if (
-          isCase3(
-            earliestDepartureHour,
-            earliestEndHour,
-            tripDirection,
-            minTimeOfTimeRange
-          )
-        ) {
-          const waitingTime =
-            tripDirection == TripDirectionEnum.going
-              ? minTimeOfTimeRange - earliestEndHour
-              : minTimeOfTimeRange - earliestDepartureHour;
-
-          const endHour = earliestEndHour + waitingTime;
-
-          service.serviceTripsOrdered.push({
-            tripId,
-            hlp,
-            endHour,
-            waitingTime,
-            startHour: endHour - tripDuration,
-          });
-          continue;
-        }
-
-        // TODO: Remove it and do the other cases
-        console.log(
-          "WIP: Cette course ne peut pas être ajouté a ce service pour le moment"
-        );
-        return;
 
         // // Case 4 : Earliest arrival or departure after time range
         // function case4ConditionComing(): boolean {
