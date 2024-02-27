@@ -1,6 +1,7 @@
 import _ from "lodash";
 import { For, JSXElement, createEffect, createSignal, onMount } from "solid-js";
 import { ServiceGridUtils } from "../../../../utils/serviceGrid.utils";
+import { ServiceTripPlacementUtils } from "../../../../utils/serviceTripPlacement.utils";
 import { ServiceGridTop } from "../molecule/ServiceGridTop";
 import { hlpMatrix } from "../template/ServiceTemplate";
 import { ServiceGridLine } from "./ServiceGridLine";
@@ -49,7 +50,8 @@ export function ServiceGrid(): JSXElement {
       !_.isEqual(serviceTripIds, serviceTripOrderedIds) &&
       Object.keys(hlpMatrix()).length > 0
     ) {
-      const updatedServices = ServiceGridUtils.getUpdatedServices(_services);
+      const updatedServices =
+        ServiceTripPlacementUtils.getUpdatedServices(_services);
       if (updatedServices) setServices(updatedServices);
     }
   });
