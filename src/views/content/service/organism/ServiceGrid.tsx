@@ -1,10 +1,11 @@
 import _ from "lodash";
 import { For, JSXElement, createEffect, createSignal, onMount } from "solid-js";
 import { ServiceGridUtils } from "../../../../utils/serviceGrid.utils";
+import { ServiceTripOrderedUtils } from "../../../../utils/serviceTripPlacement.utils";
 import { ServiceGridTop } from "../molecule/ServiceGridTop";
 import { hlpMatrix } from "../template/ServiceTemplate";
 import { ServiceGridLine } from "./ServiceGridLine";
-import { refScroll, services } from "./Services";
+import { refScroll, services, setServices } from "./Services";
 
 export const [zoom, setZoom] = createSignal(8);
 
@@ -21,6 +22,8 @@ export function ServiceGrid(): JSXElement {
     ServiceGridUtils.changeScrollingDirection(refScroll(), ref());
   });
 
+  // TODO: Simplify, make it only reactive to services()
+  // => Make another createEffect for hlpMatrix ?
   createEffect(() => {
     /*
 
@@ -47,13 +50,9 @@ export function ServiceGrid(): JSXElement {
       !_.isEqual(serviceTripIds, serviceTripOrderedIds) &&
       Object.keys(hlpMatrix()).length > 0
     ) {
-      // TODO: Use that back, getUpdatedServices must not setServices() but
-      // just get it
-
-      // const updatedServices = ServiceGridUtils.getUpdatedServices(_services);
-      // setServices(updatedServices);
-
-      ServiceGridUtils.getUpdatedServices(_services);
+      const updatedServices =
+        ServiceTripOrderedUtils.getUpdatedServices(_services);
+      if (updatedServices) setServices(updatedServices);
     }
   });
 
