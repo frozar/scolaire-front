@@ -17,7 +17,7 @@ export enum CaseEnum {
   case4,
 }
 
-export namespace ServiceTripPlacementUtils {
+export namespace ServiceTripOrderedUtils {
   export function isCase2(
     earliestDepartureHour: number,
     earliestEndHour: number,
@@ -74,7 +74,7 @@ export namespace ServiceTripPlacementUtils {
     maxTimeOfTimeRange: number
   ): CaseEnum | void {
     if (
-      ServiceTripPlacementUtils.isCase2(
+      ServiceTripOrderedUtils.isCase2(
         earliestDepartureHour,
         earliestEndHour,
         tripDirection,
@@ -147,7 +147,7 @@ export namespace ServiceTripPlacementUtils {
       // If no waiting time
       !waitingTimes.some((waitingTime) => waitingTime > 0) ||
       // If waiting time out of the time range
-      !ServiceTripPlacementUtils.isCase2(
+      !ServiceTripOrderedUtils.isCase2(
         _earliestDepartureHour,
         _earliestArrivalHour,
         tripDirection,
@@ -283,7 +283,6 @@ export namespace ServiceTripPlacementUtils {
     return { hlp, maxTimeOfTimeRange, earliestEndHour, earliestDepartureHour };
   }
 
-  // TODO: Refactor and clean
   export function getUpdatedServices(_services: ServiceType[]): ServiceType[] {
     /* Update each services serviceTripsOrdered property depending on the case number */
 

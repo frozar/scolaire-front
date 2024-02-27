@@ -14,7 +14,7 @@ import {
   hlpMatrix,
   selectedService,
 } from "../views/content/service/template/ServiceTemplate";
-import { ServiceTripPlacementUtils } from "./serviceTripPlacement.utils";
+import { ServiceTripOrderedUtils } from "./serviceTripPlacement.utils";
 import { TripUtils } from "./trip.utils";
 
 export type HlpMatrixType = {
@@ -175,7 +175,6 @@ export namespace ServiceGridUtils {
     }
   }
 
-  // TODO: Move to new utils file
   export function getLatestArrival(tripId: number): number {
     /* return minutes */
 
@@ -275,7 +274,7 @@ export namespace ServiceGridUtils {
     const minTimeOfTimeRange = ServiceGridUtils.getEarliestArrival(tripId);
     const maxTimeOfTimeRange = ServiceGridUtils.getLatestArrival(tripId);
 
-    return !ServiceTripPlacementUtils.isCase2(
+    return !ServiceTripOrderedUtils.isCase2(
       departureHour,
       endHour,
       tripDirection,
