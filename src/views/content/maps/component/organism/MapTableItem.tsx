@@ -67,7 +67,8 @@ export function MapTableItem(props: MapTableItemProps) {
         text={props.map.createAt.toLocaleDateString("fr-FR")}
         end={false}
       />
-      <TableDataChilds end={true}>
+
+      <TableDataChilds end={true} class="pr-2">
         <ButtonIcon
           class="close-icon"
           icon={<DuplicateIcon />}
