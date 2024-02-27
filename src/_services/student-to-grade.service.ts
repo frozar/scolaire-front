@@ -20,10 +20,7 @@ import { GradeUtils } from "../utils/grade.utils";
 import { SchoolUtils } from "../utils/school.utils";
 import { StopUtils } from "../utils/stop.utils";
 import { setSchools } from "../views/content/map/component/organism/SchoolPoints";
-import {
-  getStops,
-  setStops,
-} from "../views/content/map/component/organism/StopPoints";
+import { setStops } from "../views/content/map/component/organism/StopPoints";
 import { ServiceUtils } from "./_utils.service";
 
 export type StudentToGrade = {
@@ -80,7 +77,6 @@ export class StudentToGradeService {
     const existingGradeNames = GradeUtils.getAll().map((grade) => grade.name);
 
     for (const _added of studentDiffFiltered.added) {
-      console.log("stops before getting id from name:", getStops());
       // Case grade already exist
       if (existingGradeNames.includes(_added.grade_name)) {
         added.push({
