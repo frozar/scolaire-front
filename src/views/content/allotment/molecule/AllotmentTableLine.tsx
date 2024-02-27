@@ -15,6 +15,9 @@ interface AllotmentTableLineProps {
   allotmentItem: AllotmentType;
 }
 
+export const [isAllotmentMenuOpen, setIsAllotmentMenuOpen] =
+  createSignal(false);
+
 export function AllotmentTableLine(props: AllotmentTableLineProps) {
   const [isInEditMode, setisInEditMode] = createSignal(false);
   const [getName, setName] = createSignal("");

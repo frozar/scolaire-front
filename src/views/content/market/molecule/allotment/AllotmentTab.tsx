@@ -8,19 +8,20 @@ import {
   enableSpinningWheel,
 } from "../../../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../../../type";
-import { getAllTransporter } from "../../../allotment/molecule/TransporterTable";
+import { setIsAllotmentMenuOpen } from "../../../allotment/molecule/AllotmentTableLine";
 import {
-  AllotmentType,
+  getAllTransporter,
+  setAllTransporter,
+} from "../../../allotment/molecule/TransporterTable";
+import {
   getAllotment,
+  setAllotment,
 } from "../../../allotment/organism/Allotment";
 import { AllotmentTable } from "../../../allotment/organism/AllotmentTable";
 import "./AllotmentTab.css";
 import { AllotmentTabTopButtons } from "./AllotmentTabTopButtons";
 
 export const [isAllotmentEdited, setIsAllotmentEdited] = createSignal(false);
-export const [initialAllotment, setInitialAllotment] = createSignal<
-  AllotmentType[]
->([]);
 
 export function AllotmentTab() {
   async function createAllotment() {
@@ -36,6 +37,8 @@ export function AllotmentTab() {
   }
 
   function cancelChanges() {
+    setAllotment(getAllotment());
+    setAllTransporter(getAllTransporter());
     setIsAllotmentEdited(false);
   }
 
@@ -58,6 +61,8 @@ export function AllotmentTab() {
       });
     }
     disableSpinningWheel();
+    setIsAllotmentEdited(false);
+    setIsAllotmentMenuOpen(false);
     addNewUserInformation({
       displayed: true,
       level: MessageLevelEnum.success,
