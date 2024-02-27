@@ -1,8 +1,7 @@
 import { TableHeaderCol } from "../../../../component/table/atom/TableHeaderCol";
 import { TableHeader } from "../../../../component/table/molecule/TableHeader";
-import "./TableHeader.css";
 
-export function TableHeaderAllotment() {
+export function AllotmentTableHeader() {
   return (
     <TableHeader>
       <TableHeaderCol text="Nom" />

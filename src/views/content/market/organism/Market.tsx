@@ -1,7 +1,7 @@
 import { Match, Switch, createSignal } from "solid-js";
-import { AllotmentTab } from "../molecule/AllotmentTab";
 import { MarketTabitems } from "../molecule/MarketTabItems";
-import { VehicleTab } from "../molecule/VehicleTab";
+import { AllotmentTab } from "../molecule/allotment/AllotmentTab";
+import { VehicleTab } from "../molecule/vehicle/VehicleTab";
 
 export enum MarketTabEnum {
   vehicles,

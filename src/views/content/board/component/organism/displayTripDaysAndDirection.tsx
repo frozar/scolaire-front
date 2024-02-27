@@ -30,7 +30,7 @@ export function DisplayTripDaysAndDirection(
         </For>
       </div>
       <div class="flex items-center gap-1">
-        <p class="font-bold text-sm">Bus:</p>
+        <p class="font-bold text-sm">Véhicule:</p>
         <p class="text-sm">
           {TripUtils.tripBusIdToString(props?.trip?.busCategoriesId)}
         </p>

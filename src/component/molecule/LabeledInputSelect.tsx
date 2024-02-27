@@ -9,6 +9,7 @@ interface LabeledInputSelectProps {
   defaultOptions?: string;
   disabled?: boolean;
   indented?: boolean;
+  variant?: string;
 }
 // TODO: Redo dirtyless
 export function LabeledInputSelect(props: LabeledInputSelectProps) {
@@ -22,6 +23,7 @@ export function LabeledInputSelect(props: LabeledInputSelectProps) {
         defaultValue={props.defaultValue}
         disabled={props.disabled}
         indented={props.indented}
+        variant={props.variant}
       />
     </div>
   );

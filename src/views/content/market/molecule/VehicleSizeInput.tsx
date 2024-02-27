@@ -16,18 +16,21 @@ export function VehicleSizeInput(props: VehicleSizeInputProps) {
       <p>Gabarit</p>
       <div class="vehicle-number-input-container">
         <VehicleNumberInput
+          defaultValue={props.defaultLength}
           label="Longueur"
           name="length"
           onChange={props.onInputLength}
           placeholder="Entrer la longueur"
         />
         <VehicleNumberInput
+          defaultValue={props.defaultWidth}
           label="Largeur"
           name="width"
           onChange={props.onInputWidth}
           placeholder="Entrer la largeur"
         />
         <VehicleNumberInput
+          defaultValue={props.defaultHeight}
           label="Hauteur"
           name="height"
           onChange={props.onInputHeight}

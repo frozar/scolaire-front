@@ -20,10 +20,10 @@ export function BusSelectionList() {
   return (
     <LabeledInputSelect
       defaultValue={Number(selectedBus())}
-      label="Catégorie de bus"
+      label="Choisir un véhicule"
       onChange={onInputChanged}
       options={getBus().map((bus) => {
-        return { value: Number(bus.id), text: bus.category };
+        return { value: Number(bus.id), text: bus.name };
       })}
     />
   );

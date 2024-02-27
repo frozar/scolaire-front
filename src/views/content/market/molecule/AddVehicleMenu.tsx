@@ -1,10 +1,14 @@
 import { createSignal } from "solid-js";
 import { BusService } from "../../../../_services/bus.service";
-import { addNewUserInformation } from "../../../../signaux";
+import {
+  addNewUserInformation,
+  disableSpinningWheel,
+  enableSpinningWheel,
+} from "../../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../../type";
 import { VehicleMenuHeader } from "../atom/VehicleMenuHeader";
 import { VehicleMenuContent } from "./VehicleMenuContent";
-import { setIsVehicleMenuOpened } from "./VehicleTab";
+import { setIsVehicleMenuOpened } from "./vehicle/VehicleTab";
 
 export function AddVehicleMenu() {
   const [getName, setName] = createSignal("");
@@ -55,11 +59,17 @@ export function AddVehicleMenu() {
 
   async function createNewVehicle() {
     if (getName() == "" || getCategory() == "") return;
+    enableSpinningWheel();
     await BusService.create({
       category: getCategory(),
       capacity: getCapacity(),
       name: getName(),
+      accessibility: getAccessibility(),
+      length: getLength(),
+      width: getWidth(),
+      height: getHeight(),
     });
+    disableSpinningWheel();
     addNewUserInformation({
       displayed: true,
       level: MessageLevelEnum.success,

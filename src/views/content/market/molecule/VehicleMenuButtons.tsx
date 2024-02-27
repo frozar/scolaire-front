@@ -1,6 +1,6 @@
 import Button from "../../../../component/atom/Button";
 import "./VehicleMenuButtons.css";
-import { setIsVehicleMenuOpened } from "./VehicleTab";
+import { setIsVehicleMenuOpened } from "./vehicle/VehicleTab";
 
 interface VehicleMenuButtonsProps {
   submitFunction: () => void;

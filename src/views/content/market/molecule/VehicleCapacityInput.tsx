@@ -2,7 +2,6 @@ import Label from "../../board/component/atom/Label";
 import "./VehicleCapacityInput.css";
 
 interface VehicleCapacityInputProps {
-  label: string;
   defaultValue: number;
   onChangeFunction: (value: number) => void;
 }
@@ -10,7 +9,7 @@ interface VehicleCapacityInputProps {
 export function VehicleCapacityInput(props: VehicleCapacityInputProps) {
   return (
     <div class="vehicle-capacity-container">
-      <Label label={props.label} for="vCapacity" />
+      <Label label="Capacité" for="vCapacity" />
       <input
         class="vehicle-capacity-input"
         id="vCapacity"

@@ -1,0 +1,7 @@
+.transporter-edit-border {
+  @apply border-2 border-green-base;
+}
+
+.transporter-edit-input {
+  @apply max-w-xs;
+}
