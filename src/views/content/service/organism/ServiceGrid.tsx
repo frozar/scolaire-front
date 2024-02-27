@@ -1,5 +1,12 @@
 import _ from "lodash";
-import { For, JSXElement, createEffect, createSignal, onMount } from "solid-js";
+import {
+  For,
+  JSXElement,
+  createEffect,
+  createSignal,
+  on,
+  onMount,
+} from "solid-js";
 import { ServiceGridUtils } from "../../../../utils/serviceGrid.utils";
 import { ServiceTripOrderedUtils } from "../../../../utils/serviceTripPlacement.utils";
 import { ServiceGridTop } from "../molecule/ServiceGridTop";
@@ -24,8 +31,11 @@ export function ServiceGrid(): JSXElement {
 
   // TODO: Simplify, make it only reactive to services()
   // => Make another createEffect for hlpMatrix ?
-  createEffect(() => {
-    /*
+  // createEffect(() => {
+  // ! TEMPORAIRE
+  createEffect(
+    on(hlpMatrix, () => {
+      /*
 
     React on services() and hlpMatrix()
     
@@ -34,27 +44,28 @@ export function ServiceGrid(): JSXElement {
 
     */
 
-    const _services = _.cloneDeep(services());
+      const _services = _.cloneDeep(services());
 
-    const serviceTripIds = _services
-      .flatMap((service) => service.tripIds)
-      .sort((a, b) => a - b);
+      const serviceTripIds = _services
+        .flatMap((service) => service.tripIds)
+        .sort((a, b) => a - b);
 
-    const serviceTripOrderedIds = _services
-      .flatMap((service) => service.serviceTripsOrdered)
-      .map((serviceTrip) => serviceTrip.tripId)
-      .sort((a, b) => a - b);
+      const serviceTripOrderedIds = _services
+        .flatMap((service) => service.serviceTripsOrdered)
+        .map((serviceTrip) => serviceTrip.tripId)
+        .sort((a, b) => a - b);
 
-    // Avoiding infinite loop
-    if (
-      !_.isEqual(serviceTripIds, serviceTripOrderedIds) &&
-      Object.keys(hlpMatrix()).length > 0
-    ) {
-      const updatedServices =
-        ServiceTripOrderedUtils.getUpdatedServices(_services);
-      if (updatedServices) setServices(updatedServices);
-    }
-  });
+      // Avoiding infinite loop
+      if (
+        !_.isEqual(serviceTripIds, serviceTripOrderedIds) &&
+        Object.keys(hlpMatrix()).length > 0
+      ) {
+        const updatedServices =
+          ServiceTripOrderedUtils.getUpdatedServices(_services);
+        if (updatedServices) setServices(updatedServices);
+      }
+    })
+  );
 
   return (
     <div ref={setRef}>
