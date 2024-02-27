@@ -14,7 +14,10 @@ import {
   hlpMatrix,
   selectedService,
 } from "../views/content/service/template/ServiceTemplate";
-import { ServiceTripPlacementUtils } from "./serviceTripPlacement.utils";
+import {
+  CaseEnum,
+  ServiceTripPlacementUtils,
+} from "./serviceTripPlacement.utils";
 import { TripUtils } from "./trip.utils";
 
 export type HlpMatrixType = {
@@ -335,270 +338,270 @@ export namespace ServiceGridUtils {
     );
   }
 
-  function isCase3ConditionComing(
-    earliestEndHour: number,
-    tripDirection: TripDirectionEnum,
-    minTimeOfTimeRange: number
-  ): boolean {
-    /* Aller */
-    return (
-      tripDirection == TripDirectionEnum.going &&
-      earliestEndHour < minTimeOfTimeRange
-    );
-  }
+  // function isCase3ConditionComing(
+  //   earliestEndHour: number,
+  //   tripDirection: TripDirectionEnum,
+  //   minTimeOfTimeRange: number
+  // ): boolean {
+  //   /* Aller */
+  //   return (
+  //     tripDirection == TripDirectionEnum.going &&
+  //     earliestEndHour < minTimeOfTimeRange
+  //   );
+  // }
 
-  function isCase3ConditionGoing(
-    earliestDepartureHour: number,
-    tripDirection: TripDirectionEnum,
-    minTimeOfTimeRange: number
-  ): boolean {
-    /* Retour */
-    return (
-      tripDirection == TripDirectionEnum.coming &&
-      earliestDepartureHour < minTimeOfTimeRange
-    );
-  }
+  // function isCase3ConditionGoing(
+  //   earliestDepartureHour: number,
+  //   tripDirection: TripDirectionEnum,
+  //   minTimeOfTimeRange: number
+  // ): boolean {
+  //   /* Retour */
+  //   return (
+  //     tripDirection == TripDirectionEnum.coming &&
+  //     earliestDepartureHour < minTimeOfTimeRange
+  //   );
+  // }
 
-  function isCase3(
-    earliestDepartureHour: number,
-    earliestEndHour: number,
-    tripDirection: TripDirectionEnum,
-    minTimeOfTimeRange: number
-  ): boolean {
-    return (
-      isCase3ConditionComing(
-        earliestEndHour,
-        tripDirection,
-        minTimeOfTimeRange
-      ) ||
-      isCase3ConditionGoing(
-        earliestDepartureHour,
-        tripDirection,
-        minTimeOfTimeRange
-      )
-    );
-  }
+  // function isCase3(
+  //   earliestDepartureHour: number,
+  //   earliestEndHour: number,
+  //   tripDirection: TripDirectionEnum,
+  //   minTimeOfTimeRange: number
+  // ): boolean {
+  //   return (
+  //     isCase3ConditionComing(
+  //       earliestEndHour,
+  //       tripDirection,
+  //       minTimeOfTimeRange
+  //     ) ||
+  //     isCase3ConditionGoing(
+  //       earliestDepartureHour,
+  //       tripDirection,
+  //       minTimeOfTimeRange
+  //     )
+  //   );
+  // }
 
-  function isCase4ConditionComing(
-    tripDirection: TripDirectionEnum,
-    earliestEndHour: number,
-    maxTimeOfTimeRange: number
-  ): boolean {
-    /* Aller */
-    return (
-      tripDirection == TripDirectionEnum.going &&
-      earliestEndHour > maxTimeOfTimeRange
-    );
-  }
+  // function isCase4ConditionComing(
+  //   tripDirection: TripDirectionEnum,
+  //   earliestEndHour: number,
+  //   maxTimeOfTimeRange: number
+  // ): boolean {
+  //   /* Aller */
+  //   return (
+  //     tripDirection == TripDirectionEnum.going &&
+  //     earliestEndHour > maxTimeOfTimeRange
+  //   );
+  // }
 
-  function isCase4ConditionGoing(
-    tripDirection: TripDirectionEnum,
-    earliestDepartureHour: number,
-    maxTimeOfTimeRange: number
-  ): boolean {
-    /* Retour */
-    return (
-      tripDirection == TripDirectionEnum.coming &&
-      earliestDepartureHour > maxTimeOfTimeRange
-    );
-  }
+  // function isCase4ConditionGoing(
+  //   tripDirection: TripDirectionEnum,
+  //   earliestDepartureHour: number,
+  //   maxTimeOfTimeRange: number
+  // ): boolean {
+  //   /* Retour */
+  //   return (
+  //     tripDirection == TripDirectionEnum.coming &&
+  //     earliestDepartureHour > maxTimeOfTimeRange
+  //   );
+  // }
 
-  function isCase4(
-    earliestDepartureHour: number,
-    earliestEndHour: number,
-    tripDirection: TripDirectionEnum,
-    maxTimeOfTimeRange: number
-  ): boolean {
-    return (
-      isCase4ConditionComing(
-        tripDirection,
-        earliestEndHour,
-        maxTimeOfTimeRange
-      ) ||
-      isCase4ConditionGoing(
-        tripDirection,
-        earliestDepartureHour,
-        maxTimeOfTimeRange
-      )
-    );
-  }
+  // function isCase4(
+  //   earliestDepartureHour: number,
+  //   earliestEndHour: number,
+  //   tripDirection: TripDirectionEnum,
+  //   maxTimeOfTimeRange: number
+  // ): boolean {
+  //   return (
+  //     isCase4ConditionComing(
+  //       tripDirection,
+  //       earliestEndHour,
+  //       maxTimeOfTimeRange
+  //     ) ||
+  //     isCase4ConditionGoing(
+  //       tripDirection,
+  //       earliestDepartureHour,
+  //       maxTimeOfTimeRange
+  //     )
+  //   );
+  // }
 
-  enum CaseEnum {
-    case1,
-    case2,
-    case3,
-    case4,
-  }
+  // enum CaseEnum {
+  //   case1,
+  //   case2,
+  //   case3,
+  //   case4,
+  // }
 
-  function getCaseNumber(
-    earliestDepartureHour: number,
-    earliestEndHour: number,
-    tripDirection: TripDirectionEnum,
-    minTimeOfTimeRange: number,
-    maxTimeOfTimeRange: number
-  ): CaseEnum | void {
-    if (
-      ServiceTripPlacementUtils.isCase2(
-        earliestDepartureHour,
-        earliestEndHour,
-        tripDirection,
-        minTimeOfTimeRange,
-        maxTimeOfTimeRange
-      )
-    )
-      return CaseEnum.case2;
-    else if (
-      isCase3(
-        earliestDepartureHour,
-        earliestEndHour,
-        tripDirection,
-        minTimeOfTimeRange
-      )
-    )
-      return CaseEnum.case3;
-    else if (
-      isCase4(
-        earliestDepartureHour,
-        earliestEndHour,
-        tripDirection,
-        maxTimeOfTimeRange
-      )
-    )
-      return CaseEnum.case4;
-    return;
-  }
+  // function getCaseNumber(
+  //   earliestDepartureHour: number,
+  //   earliestEndHour: number,
+  //   tripDirection: TripDirectionEnum,
+  //   minTimeOfTimeRange: number,
+  //   maxTimeOfTimeRange: number
+  // ): CaseEnum | void {
+  //   if (
+  //     ServiceTripPlacementUtils.isCase2(
+  //       earliestDepartureHour,
+  //       earliestEndHour,
+  //       tripDirection,
+  //       minTimeOfTimeRange,
+  //       maxTimeOfTimeRange
+  //     )
+  //   )
+  //     return CaseEnum.case2;
+  //   else if (
+  //     ServiceTripPlacementUtils.isCase3(
+  //       earliestDepartureHour,
+  //       earliestEndHour,
+  //       tripDirection,
+  //       minTimeOfTimeRange
+  //     )
+  //   )
+  //     return CaseEnum.case3;
+  //   else if (
+  //     ServiceTripPlacementUtils.isCase4(
+  //       earliestDepartureHour,
+  //       earliestEndHour,
+  //       tripDirection,
+  //       maxTimeOfTimeRange
+  //     )
+  //   )
+  //     return CaseEnum.case4;
+  //   return;
+  // }
 
-  function updateServiceCase1(
-    service: ServiceType,
-    tripId: number,
-    tripDirection: TripDirectionEnum,
-    minTimeOfTimeRange: number,
-    tripDuration: number
-  ) {
-    const endHour =
-      tripDirection == TripDirectionEnum.going
-        ? minTimeOfTimeRange
-        : minTimeOfTimeRange + tripDuration;
+  // function updateServiceCase1(
+  //   service: ServiceType,
+  //   tripId: number,
+  //   tripDirection: TripDirectionEnum,
+  //   minTimeOfTimeRange: number,
+  //   tripDuration: number
+  // ) {
+  //   const endHour =
+  //     tripDirection == TripDirectionEnum.going
+  //       ? minTimeOfTimeRange
+  //       : minTimeOfTimeRange + tripDuration;
 
-    service.serviceTripsOrdered.push({
-      tripId: tripId,
-      hlp: 0,
-      endHour,
-      waitingTime: 0,
-      startHour: endHour - tripDuration,
-    });
-  }
-  function isToPutToTheEnd(
-    waitingTimes: number[],
-    _earliestDepartureHour: number,
-    _earliestArrivalHour: number,
-    tripDirection: TripDirectionEnum,
-    minTimeOfTimeRange: number,
-    maxTimeOfTimeRange: number,
-    waitingTimeDuration: number,
-    newHlp: number,
-    tripDuration: number
-  ): boolean {
-    /* Used only in case4 */
+  //   service.serviceTripsOrdered.push({
+  //     tripId: tripId,
+  //     hlp: 0,
+  //     endHour,
+  //     waitingTime: 0,
+  //     startHour: endHour - tripDuration,
+  //   });
+  // }
+  // function isToPutToTheEnd(
+  //   waitingTimes: number[],
+  //   _earliestDepartureHour: number,
+  //   _earliestArrivalHour: number,
+  //   tripDirection: TripDirectionEnum,
+  //   minTimeOfTimeRange: number,
+  //   maxTimeOfTimeRange: number,
+  //   waitingTimeDuration: number,
+  //   newHlp: number,
+  //   tripDuration: number
+  // ): boolean {
+  //   /* Used only in case4 */
 
-    return (
-      // * Si pas de waitingTime => ajouter à la fin en orange
-      !waitingTimes.some((waitingTime) => waitingTime > 0) ||
-      // * Si waiting time pas dans la range => ajouter à la fin en orange
-      // ! Si pls waitingTime ?
-      !ServiceTripPlacementUtils.isCase2(
-        _earliestDepartureHour,
-        _earliestArrivalHour,
-        tripDirection,
-        minTimeOfTimeRange,
-        maxTimeOfTimeRange
-      ) ||
-      // * Si waitingTimeDuration < hlp + trip duration => ajouter à la fin en orange
-      waitingTimeDuration < newHlp + tripDuration
-    );
-  }
+  //   return (
+  //     // * Si pas de waitingTime => ajouter à la fin en orange
+  //     !waitingTimes.some((waitingTime) => waitingTime > 0) ||
+  //     // * Si waiting time pas dans la range => ajouter à la fin en orange
+  //     // ! Si pls waitingTime ?
+  //     !ServiceTripPlacementUtils.isCase2(
+  //       _earliestDepartureHour,
+  //       _earliestArrivalHour,
+  //       tripDirection,
+  //       minTimeOfTimeRange,
+  //       maxTimeOfTimeRange
+  //     ) ||
+  //     // * Si waitingTimeDuration < hlp + trip duration => ajouter à la fin en orange
+  //     waitingTimeDuration < newHlp + tripDuration
+  //   );
+  // }
 
-  // TODO: Clean and refactorserviceTripsOrdered
-  function case4UpdateService(
-    service: ServiceType,
-    tripId: number,
-    hlp: number,
-    earliestEndHour: number,
-    tripDuration: number,
-    tripDirection: TripDirectionEnum,
-    minTimeOfTimeRange: number,
-    maxTimeOfTimeRange: number
-  ): void {
-    // TODO: Enhance function to deal with multiple waitingTimes in one serviceTripsOrdered
-    const waitingTimes = service.serviceTripsOrdered.map(
-      (serviceTrip) => serviceTrip.waitingTime
-    );
-    const waitingTimeDuration = waitingTimes.filter(
-      (waitingTime) => waitingTime > 0
-    )[0];
+  // // TODO: Clean and refactorserviceTripsOrdered
+  // function updateServiceCase4(
+  //   service: ServiceType,
+  //   tripId: number,
+  //   hlp: number,
+  //   earliestEndHour: number,
+  //   tripDuration: number,
+  //   tripDirection: TripDirectionEnum,
+  //   minTimeOfTimeRange: number,
+  //   maxTimeOfTimeRange: number
+  // ): void {
+  //   // TODO: Enhance function to deal with multiple waitingTimes in one serviceTripsOrdered
+  //   const waitingTimes = service.serviceTripsOrdered.map(
+  //     (serviceTrip) => serviceTrip.waitingTime
+  //   );
+  //   const waitingTimeDuration = waitingTimes.filter(
+  //     (waitingTime) => waitingTime > 0
+  //   )[0];
 
-    if (!waitingTimeDuration) {
-      // TODO: Refactor
-      service.serviceTripsOrdered.push({
-        tripId,
-        hlp,
-        endHour: earliestEndHour,
-        waitingTime: 0,
-        startHour: earliestEndHour - tripDuration,
-      });
-      return;
-    }
+  //   if (!waitingTimeDuration) {
+  //     // TODO: Refactor
+  //     service.serviceTripsOrdered.push({
+  //       tripId,
+  //       hlp,
+  //       endHour: earliestEndHour,
+  //       waitingTime: 0,
+  //       startHour: earliestEndHour - tripDuration,
+  //     });
+  //     return;
+  //   }
 
-    const indexOfWaitingTime = waitingTimes.indexOf(waitingTimeDuration);
+  //   const indexOfWaitingTime = waitingTimes.indexOf(waitingTimeDuration);
 
-    const waitingTimeStart =
-      service.serviceTripsOrdered[indexOfWaitingTime - 1].endHour;
+  //   const waitingTimeStart =
+  //     service.serviceTripsOrdered[indexOfWaitingTime - 1].endHour;
 
-    const newHlp =
-      hlpMatrix()[tripId][
-        service.serviceTripsOrdered[indexOfWaitingTime].tripId
-      ];
+  //   const newHlp =
+  //     hlpMatrix()[tripId][
+  //       service.serviceTripsOrdered[indexOfWaitingTime].tripId
+  //     ];
 
-    const _earliestDepartureHour = waitingTimeStart + hlp;
-    const _earliestArrivalHour = waitingTimeStart + hlp + tripDuration;
+  //   const _earliestDepartureHour = waitingTimeStart + hlp;
+  //   const _earliestArrivalHour = waitingTimeStart + hlp + tripDuration;
 
-    if (
-      isToPutToTheEnd(
-        waitingTimes,
-        _earliestDepartureHour,
-        _earliestArrivalHour,
-        tripDirection,
-        minTimeOfTimeRange,
-        maxTimeOfTimeRange,
-        waitingTimeDuration,
-        newHlp,
-        tripDuration
-      )
-    ) {
-      // TODO: Refactor
-      service.serviceTripsOrdered.push({
-        tripId,
-        hlp,
-        endHour: earliestEndHour,
-        waitingTime: 0,
-        startHour: earliestEndHour - tripDuration,
-      });
-      return;
-    }
+  //   if (
+  //     ServiceTripPlacementUtils.isToPutToTheEnd(
+  //       waitingTimes,
+  //       _earliestDepartureHour,
+  //       _earliestArrivalHour,
+  //       tripDirection,
+  //       minTimeOfTimeRange,
+  //       maxTimeOfTimeRange,
+  //       waitingTimeDuration,
+  //       newHlp,
+  //       tripDuration
+  //     )
+  //   ) {
+  //     // TODO: Refactor
+  //     service.serviceTripsOrdered.push({
+  //       tripId,
+  //       hlp,
+  //       endHour: earliestEndHour,
+  //       waitingTime: 0,
+  //       startHour: earliestEndHour - tripDuration,
+  //     });
+  //     return;
+  //   }
 
-    // TODO: => Vérifier que tout les autre cas déjà tester avant !
-    service.serviceTripsOrdered.splice(indexOfWaitingTime, 0, {
-      tripId,
-      hlp: newHlp,
-      endHour: _earliestArrivalHour,
-      waitingTime:
-        _earliestArrivalHour - tripDuration - newHlp - waitingTimeStart,
-      startHour: _earliestArrivalHour - tripDuration,
-    });
-    service.serviceTripsOrdered[indexOfWaitingTime + 1].waitingTime -=
-      tripDuration + newHlp;
-    return;
-  }
+  //   // TODO: => Vérifier que tout les autre cas déjà tester avant !
+  //   service.serviceTripsOrdered.splice(indexOfWaitingTime, 0, {
+  //     tripId,
+  //     hlp: newHlp,
+  //     endHour: _earliestArrivalHour,
+  //     waitingTime:
+  //       _earliestArrivalHour - tripDuration - newHlp - waitingTimeStart,
+  //     startHour: _earliestArrivalHour - tripDuration,
+  //   });
+  //   service.serviceTripsOrdered[indexOfWaitingTime + 1].waitingTime -=
+  //     tripDuration + newHlp;
+  //   return;
+  // }
 
   // TODO: Refactor and clean
   export function getUpdatedServices(
@@ -619,7 +622,7 @@ export namespace ServiceGridUtils {
 
         // Case 1 : First serviceTrip
         if (serviceTripIndex == 0) {
-          updateServiceCase1(
+          ServiceTripPlacementUtils.updateServiceCase1(
             service,
             tripId,
             tripDirection,
@@ -652,7 +655,7 @@ export namespace ServiceGridUtils {
             .endHour + hlp;
 
         switch (
-          getCaseNumber(
+          ServiceTripPlacementUtils.getCaseNumber(
             earliestDepartureHour,
             earliestEndHour,
             tripDirection,
@@ -692,7 +695,7 @@ export namespace ServiceGridUtils {
             continue;
 
           case CaseEnum.case4:
-            case4UpdateService(
+            ServiceTripPlacementUtils.updateServiceCase4(
               service,
               tripId,
               hlp,
@@ -711,20 +714,7 @@ export namespace ServiceGridUtils {
             );
             return;
         }
-
-        // Case 4 : Earliest arrival or departure after time range
-        // TODO: Remove useless condition, it's the "else" case !?
-        // if (case4ConditionComing() || case4ConditionGoing()) {
-        // Décaler d'un cran et voir si ça passe
-        // si ça passe (dans la range) voir si l'elt(s) décalé passe aussi
-        // si oui c'est bon sinon continuer
-        //
-        // décaler de 2 crans
-        // ...
-        //
-        // SI plus de décalage possible ajouter en fin de service
       }
-      // console.log("service", service);
     }
     return _services;
   }
