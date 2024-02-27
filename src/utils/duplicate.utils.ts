@@ -1,14 +1,18 @@
 import { createSignal } from "solid-js";
+import { useStateGui } from "../StateGui";
 import { LocationDBTypeEnum } from "../_entities/_utils.entity";
 import { SchoolService } from "../_services/school.service";
 import { StopService } from "../_services/stop.service";
 import { StudentToGradeService } from "../_services/student-to-grade.service";
+import { userMaps } from "../_stores/map.store";
 import { disableSpinningWheel, enableSpinningWheel } from "../signaux";
 import { CsvEnum } from "../views/content/board/component/molecule/ImportSelection";
 import { setSchools } from "../views/content/map/component/organism/SchoolPoints";
 import { setStops } from "../views/content/map/component/organism/StopPoints";
 import { CsvUtils } from "./csv.utils";
 import { MapsUtils } from "./maps.utils";
+
+const [, { getActiveMapId }] = useStateGui();
 
 export const [inDuplication, setInDucplication] = createSignal(false);
 export namespace DuplicateUtils {
@@ -19,7 +23,10 @@ export namespace DuplicateUtils {
     const stopsCSV = CsvUtils.getPointAsCSVFormat(CsvEnum.stops);
     const studentToGradeCSV = CsvUtils.getStudentToGradeAsCSVFormat();
 
-    await MapsUtils.createMap({ name: "Duplicated" });
+    const currentMap = userMaps().filter(
+      (map) => map.id === getActiveMapId()
+    )[0];
+    await MapsUtils.createMap({ name: currentMap.name + " (copie)" });
 
     const newSchools = await SchoolService.import({
       items_to_add: schoolCSV.map((school) => {

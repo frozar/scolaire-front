@@ -13,7 +13,10 @@ import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { CarteToDeleteType } from "../../Maps";
 import { MapNameDisplay } from "../molecule/MapNameDisplay";
 
+import { useStateGui } from "../../../../../StateGui";
 import "./MapTableItem.css";
+
+const [, { getActiveMapId }] = useStateGui();
 
 interface MapTableItemProps {
   map: MapType;
@@ -72,6 +75,7 @@ export function MapTableItem(props: MapTableItemProps) {
         <ButtonIcon
           class="close-icon"
           icon={<DuplicateIcon />}
+          disable={props.map.id != getActiveMapId()}
           onClick={duplicateMap}
         />
         <Show
