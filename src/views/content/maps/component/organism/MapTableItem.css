@@ -1,7 +1,22 @@
-.duplicate-icon > svg {
-  @apply w-4;
-}
-
+.close-icon > svg,
+.pencil-icon > svg,
 .close-icon > svg {
   @apply w-3;
+}
+
+.pencil-icon > svg,
+.check-icon > svg {
+  @apply fill-black;
+}
+
+.close-icon > svg > path {
+  @apply stroke-black;
+}
+
+.map-row-item {
+  @apply cursor-pointer hover:bg-green-100;
+}
+
+.map-row-item.active {
+  @apply bg-green-base;
 }

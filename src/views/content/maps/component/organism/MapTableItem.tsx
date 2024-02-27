@@ -54,7 +54,7 @@ export function MapTableItem(props: MapTableItemProps) {
     <TableRow
       active={props.map.isActive()}
       onDBClick={onDblClick}
-      class="cursor-pointer"
+      class="map-row-item"
     >
       <MapNameDisplay
         onInput={updateName}
@@ -69,7 +69,7 @@ export function MapTableItem(props: MapTableItemProps) {
       />
       <TableDataChilds end={true}>
         <ButtonIcon
-          class="duplicate-icon"
+          class="close-icon"
           icon={<DuplicateIcon />}
           onClick={duplicateMap}
         />
@@ -77,13 +77,17 @@ export function MapTableItem(props: MapTableItemProps) {
           when={!inEditMode()}
           fallback={
             <ButtonIcon
-              class="duplicate-icon"
+              class="check-icon"
               icon={<CheckIcon />}
               onClick={editMap}
             />
           }
         >
-          <ButtonIcon icon={<PencilIcon />} onClick={editMap} />
+          <ButtonIcon
+            class="pencil-icon"
+            icon={<PencilIcon />}
+            onClick={editMap}
+          />
         </Show>
         <ButtonIcon icon={<TrashIcon />} onClick={deleteMap} />
       </TableDataChilds>
