@@ -35,7 +35,7 @@ export function TransporterTable(props: { allotment_id?: number }) {
   return (
     <div class="p-10">
       <div>
-        <Button label="Ajouter" onClick={addTransporter} />
+        <Button label="Ajouter Transporteur" onClick={addTransporter} />
       </div>
       <Table>
         <TransporterTableHeader />

@@ -6,6 +6,7 @@ import {
 import { TransporterService } from "../../../../_services/transporter.service";
 import { addNewUserInformation } from "../../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../../type";
+import { getBus } from "../../bus/organism/Bus";
 import { setIsAllotmentEdited } from "../../market/molecule/allotment/AllotmentTab";
 import { TransporterEditMenuHeader } from "../atom/TransporterEditMenuHeader";
 import { TransporterEditMenuContent } from "./TransporterEditMenuContent";
@@ -16,10 +17,13 @@ interface TransporterEditMenuProps {
   toggleFunction: () => void;
 }
 
+export const [getVehicles, setVehicles] = createSignal<
+  TransporterVehicleType[]
+>([]);
+
 export function TransporterEditMenu(props: TransporterEditMenuProps) {
   const [getName, setName] = createSignal("");
   const [getType, setType] = createSignal("");
-  const [getVehicles, setVehicles] = createSignal<TransporterVehicleType[]>([]);
 
   createEffect(() => {
     setName(props.transporterItem.name);
@@ -69,7 +73,10 @@ export function TransporterEditMenu(props: TransporterEditMenuProps) {
   }
 
   async function addVehicle() {
-    const newVehicle = { license: "default", bus_category_id: 1 };
+    const newVehicle = {
+      license: "AA-000-BB",
+      bus_category_id: getBus()[0].id,
+    };
     await TransporterService.update({
       id: props.transporterItem.id,
       name: getName(),
@@ -90,7 +97,10 @@ export function TransporterEditMenu(props: TransporterEditMenuProps) {
 
   return (
     <div>
-      <TransporterEditMenuHeader title={props.transporterItem.name} />
+      <TransporterEditMenuHeader
+        toggle={props.toggleFunction}
+        title={props.transporterItem.name}
+      />
       <TransporterEditMenuContent
         add={addVehicle}
         name={getName()}

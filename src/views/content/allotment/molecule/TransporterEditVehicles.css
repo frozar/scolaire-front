@@ -12,6 +12,9 @@
 
 .transporter-vehicles-input {
   @apply max-w-xs;
+  label {
+    @apply text-sm;
+  }
 }
 
 .transporter-vehicles-list {

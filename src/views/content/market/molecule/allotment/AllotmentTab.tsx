@@ -44,22 +44,22 @@ export function AllotmentTab() {
 
   async function updateAllAllotment() {
     enableSpinningWheel();
-    for (let i = 0; i < getAllotment().length; i++) {
+    getAllotment().forEach(async (element) => {
       await AllotmentService.update({
-        id: getAllotment()[i].id,
-        color: getAllotment()[i].color,
-        name: getAllotment()[i].name,
+        id: element.id,
+        color: element.color,
+        name: element.name,
       });
-    }
-    for (let i = 0; i < getAllTransporter().length; i++) {
+    });
+    getAllTransporter().forEach(async (element) => {
       await TransporterService.update({
-        id: getAllTransporter()[i].id,
-        allotment_id: getAllTransporter()[i].allotment_id,
-        name: getAllTransporter()[i].name,
-        type: getAllTransporter()[i].type,
-        vehicles: getAllTransporter()[i].vehicles,
+        id: element.id,
+        allotment_id: element.allotment_id,
+        name: element.name,
+        type: element.type,
+        vehicles: element.vehicles,
       });
-    }
+    });
     disableSpinningWheel();
     setIsAllotmentEdited(false);
     setIsAllotmentMenuOpen(false);
@@ -73,7 +73,7 @@ export function AllotmentTab() {
 
   return (
     <div class="allotment-tab-container">
-      <Button label="Ajouter" onClick={createAllotment} />
+      <Button label="Ajouter Allotissement" onClick={createAllotment} />
       <Show when={isAllotmentEdited()}>
         <AllotmentTabTopButtons
           cancel={cancelChanges}
