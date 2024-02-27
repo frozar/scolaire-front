@@ -7,6 +7,7 @@ interface TableRowProps {
   active?: boolean;
   shown?: boolean;
   onDBClick?: () => void;
+  class?: string;
 }
 
 export function TableRow(props: TableRowProps) {
@@ -15,7 +16,7 @@ export function TableRow(props: TableRowProps) {
   return (
     <Show when={mergedProps.shown}>
       <tr
-        class="table-row"
+        class={"table-row " + props.class ?? ""}
         classList={{ active: props.active ?? false }}
         // eslint-disable-next-line solid/reactivity
         onDblClick={props.onDBClick}
