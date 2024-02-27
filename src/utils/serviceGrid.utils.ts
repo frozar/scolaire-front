@@ -14,6 +14,7 @@ import {
   hlpMatrix,
   selectedService,
 } from "../views/content/service/template/ServiceTemplate";
+import { ServiceTripPlacementUtils } from "./serviceTripPlacement.utils";
 import { TripUtils } from "./trip.utils";
 
 export type HlpMatrixType = {
@@ -174,6 +175,7 @@ export namespace ServiceGridUtils {
     }
   }
 
+  // TODO: Move to new utils file
   export function getLatestArrival(tripId: number): number {
     /* return minutes */
 
@@ -258,58 +260,58 @@ export namespace ServiceGridUtils {
     return services;
   }
 
-  function isCase2ConditionComing(
-    earliestEndHour: number,
-    tripDirection: TripDirectionEnum,
-    minTimeOfTimeRange: number,
-    maxTimeOfTimeRange: number
-  ): boolean {
-    /* Aller */
-    return (
-      tripDirection == TripDirectionEnum.going &&
-      minTimeOfTimeRange <= earliestEndHour &&
-      earliestEndHour <= maxTimeOfTimeRange
-    );
-  }
+  // function isCase2ConditionComing(
+  //   earliestEndHour: number,
+  //   tripDirection: TripDirectionEnum,
+  //   minTimeOfTimeRange: number,
+  //   maxTimeOfTimeRange: number
+  // ): boolean {
+  //   /* Aller */
+  //   return (
+  //     tripDirection == TripDirectionEnum.going &&
+  //     minTimeOfTimeRange <= earliestEndHour &&
+  //     earliestEndHour <= maxTimeOfTimeRange
+  //   );
+  // }
 
-  function isCase2ConditionGoing(
-    earliestDepartureHour: number,
-    tripDirection: TripDirectionEnum,
-    minTimeOfTimeRange: number,
-    maxTimeOfTimeRange: number
-  ): boolean {
-    /* Retour */
-    return (
-      tripDirection == TripDirectionEnum.coming &&
-      minTimeOfTimeRange <= earliestDepartureHour &&
-      earliestDepartureHour <= maxTimeOfTimeRange
-    );
-  }
+  // function isCase2ConditionGoing(
+  //   earliestDepartureHour: number,
+  //   tripDirection: TripDirectionEnum,
+  //   minTimeOfTimeRange: number,
+  //   maxTimeOfTimeRange: number
+  // ): boolean {
+  //   /* Retour */
+  //   return (
+  //     tripDirection == TripDirectionEnum.coming &&
+  //     minTimeOfTimeRange <= earliestDepartureHour &&
+  //     earliestDepartureHour <= maxTimeOfTimeRange
+  //   );
+  // }
 
-  function isCase2(
-    earliestDepartureHour: number,
-    earliestEndHour: number,
-    tripDirection: TripDirectionEnum,
-    minTimeOfTimeRange: number,
-    maxTimeOfTimeRange: number
-  ): boolean {
-    return (
-      isCase2ConditionComing(
-        earliestEndHour,
-        tripDirection,
-        minTimeOfTimeRange,
-        maxTimeOfTimeRange
-      ) ||
-      isCase2ConditionGoing(
-        earliestDepartureHour,
-        tripDirection,
-        minTimeOfTimeRange,
-        maxTimeOfTimeRange
-      )
-    );
-  }
+  // function isCase2(
+  //   earliestDepartureHour: number,
+  //   earliestEndHour: number,
+  //   tripDirection: TripDirectionEnum,
+  //   minTimeOfTimeRange: number,
+  //   maxTimeOfTimeRange: number
+  // ): boolean {
+  //   return (
+  //     isCase2ConditionComing(
+  //       earliestEndHour,
+  //       tripDirection,
+  //       minTimeOfTimeRange,
+  //       maxTimeOfTimeRange
+  //     ) ||
+  //     isCase2ConditionGoing(
+  //       earliestDepartureHour,
+  //       tripDirection,
+  //       minTimeOfTimeRange,
+  //       maxTimeOfTimeRange
+  //     )
+  //   );
+  // }
 
-  export function checkIfOutsideRange(
+  export function isOutsideRange(
     service: ServiceType,
     serviceTripIndex: number
   ): boolean {
@@ -324,7 +326,7 @@ export namespace ServiceGridUtils {
     const minTimeOfTimeRange = ServiceGridUtils.getEarliestArrival(tripId);
     const maxTimeOfTimeRange = ServiceGridUtils.getLatestArrival(tripId);
 
-    return !isCase2(
+    return !ServiceTripPlacementUtils.isCase2(
       departureHour,
       endHour,
       tripDirection,
@@ -436,7 +438,7 @@ export namespace ServiceGridUtils {
     maxTimeOfTimeRange: number
   ): CaseEnum | void {
     if (
-      isCase2(
+      ServiceTripPlacementUtils.isCase2(
         earliestDepartureHour,
         earliestEndHour,
         tripDirection,
@@ -504,7 +506,7 @@ export namespace ServiceGridUtils {
       !waitingTimes.some((waitingTime) => waitingTime > 0) ||
       // * Si waiting time pas dans la range => ajouter à la fin en orange
       // ! Si pls waitingTime ?
-      !isCase2(
+      !ServiceTripPlacementUtils.isCase2(
         _earliestDepartureHour,
         _earliestArrivalHour,
         tripDirection,
