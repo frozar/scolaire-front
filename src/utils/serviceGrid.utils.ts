@@ -486,7 +486,35 @@ export namespace ServiceGridUtils {
       startHour: endHour - tripDuration,
     });
   }
+  function isToPutToTheEnd(
+    waitingTimes: number[],
+    _earliestDepartureHour: number,
+    _earliestArrivalHour: number,
+    tripDirection: TripDirectionEnum,
+    minTimeOfTimeRange: number,
+    maxTimeOfTimeRange: number,
+    waitingTimeDuration: number,
+    newHlp: number,
+    tripDuration: number
+  ): boolean {
+    /* Used only in case4 */
 
+    return (
+      // * Si pas de waitingTime => ajouter à la fin en orange
+      !waitingTimes.some((waitingTime) => waitingTime > 0) ||
+      // * Si waiting time pas dans la range => ajouter à la fin en orange
+      // ! Si pls waitingTime ?
+      !isCase2(
+        _earliestDepartureHour,
+        _earliestArrivalHour,
+        tripDirection,
+        minTimeOfTimeRange,
+        maxTimeOfTimeRange
+      ) ||
+      // * Si waitingTimeDuration < hlp + trip duration => ajouter à la fin en orange
+      waitingTimeDuration < newHlp + tripDuration
+    );
+  }
   // TODO: Refactor and clean
   export function getUpdatedServices(
     _services: ServiceType[]
@@ -583,9 +611,11 @@ export namespace ServiceGridUtils {
             const waitingTimes = service.serviceTripsOrdered.map(
               (serviceTrip) => serviceTrip.waitingTime
             );
-
-            // * Si pas de waitingTime => ajouter à la fin en orange
-            if (!waitingTimes.some((waitingTime) => waitingTime > 0)) {
+            const waitingTimeDuration = waitingTimes.filter(
+              (waitingTime) => waitingTime > 0
+            )[0];
+            console.log("waitingTimeDuration", waitingTimeDuration);
+            if (!waitingTimeDuration) {
               // TODO: Refactor
               service.serviceTripsOrdered.push({
                 tripId,
@@ -596,11 +626,6 @@ export namespace ServiceGridUtils {
               });
               continue;
             }
-            // * Si waiting time pas dans la range => ajouter à la fin en orange
-            // ! Si pls waitingTime ?
-            const waitingTimeDuration = waitingTimes.filter(
-              (waitingTime) => waitingTime > 0
-            )[0];
 
             const indexOfWaitingTime =
               waitingTimes.indexOf(waitingTimeDuration);
@@ -616,13 +641,32 @@ export namespace ServiceGridUtils {
             const _earliestDepartureHour = waitingTimeStart + hlp;
             const _earliestArrivalHour = waitingTimeStart + hlp + tripDuration;
 
+            // if (
+            //   // * Si pas de waitingTime => ajouter à la fin en orange
+            //   !waitingTimes.some((waitingTime) => waitingTime > 0) ||
+            //   // * Si waiting time pas dans la range => ajouter à la fin en orange
+            //   // ! Si pls waitingTime ?
+            //   !isCase2(
+            //     _earliestDepartureHour,
+            //     _earliestArrivalHour,
+            //     tripDirection,
+            //     minTimeOfTimeRange,
+            //     maxTimeOfTimeRange
+            //   ) ||
+            //   // * Si waitingTimeDuration < hlp + trip duration => ajouter à la fin en orange
+            //   waitingTimeDuration < newHlp + tripDuration
+            // ) {
             if (
-              !isCase2(
+              isToPutToTheEnd(
+                waitingTimes,
                 _earliestDepartureHour,
                 _earliestArrivalHour,
                 tripDirection,
                 minTimeOfTimeRange,
-                maxTimeOfTimeRange
+                maxTimeOfTimeRange,
+                waitingTimeDuration,
+                newHlp,
+                tripDuration
               )
             ) {
               // TODO: Refactor
@@ -635,18 +679,38 @@ export namespace ServiceGridUtils {
               });
               continue;
             }
+
+            // if (
+            //   !isCase2(
+            //     _earliestDepartureHour,
+            //     _earliestArrivalHour,
+            //     tripDirection,
+            //     minTimeOfTimeRange,
+            //     maxTimeOfTimeRange
+            //   )
+            // ) {
+            //   // TODO: Refactor
+            //   service.serviceTripsOrdered.push({
+            //     tripId,
+            //     hlp,
+            //     endHour: earliestEndHour,
+            //     waitingTime: 0,
+            //     startHour: earliestEndHour - tripDuration,
+            //   });
+            //   continue;
+            // }
             // * Si waitingTimeDuration < hlp + trip duration => ajouter à la fin en orange
-            if (waitingTimeDuration < newHlp + tripDuration) {
-              // TODO: Refactor
-              service.serviceTripsOrdered.push({
-                tripId,
-                hlp,
-                endHour: earliestEndHour,
-                waitingTime: 0,
-                startHour: earliestEndHour - tripDuration,
-              });
-              continue;
-            }
+            // if (waitingTimeDuration < newHlp + tripDuration) {
+            //   // TODO: Refactor
+            //   service.serviceTripsOrdered.push({
+            //     tripId,
+            //     hlp,
+            //     endHour: earliestEndHour,
+            //     waitingTime: 0,
+            //     startHour: earliestEndHour - tripDuration,
+            //   });
+            //   continue;
+            // }
             // * Sinon placer dans la waitingTime au plus proche de la timeRange
             // TODO: => Vérifier que tout les autre cas déjà tester avant !
 
