@@ -284,7 +284,11 @@ export namespace ServiceTripOrderedUtils {
   }
 
   export function getUpdatedServices(_services: ServiceType[]): ServiceType[] {
-    /* Update each services serviceTripsOrdered property depending on the case number */
+    /*
+    Create service.serviceTripsOrdered depending on service.tripIds
+    - Specify hlp, endHour, startHour, waitingTime
+    - Order the trips (case 4)
+    */
 
     for (const service of _services) {
       service.serviceTripsOrdered = [];
