@@ -515,6 +515,89 @@ export namespace ServiceGridUtils {
       waitingTimeDuration < newHlp + tripDuration
     );
   }
+
+  // TODO: Clean and refactorserviceTripsOrdered
+  function case4UpdateService(
+    service: ServiceType,
+    tripId: number,
+    hlp: number,
+    earliestEndHour: number,
+    tripDuration: number,
+    tripDirection: TripDirectionEnum,
+    minTimeOfTimeRange: number,
+    maxTimeOfTimeRange: number
+  ): void {
+    // TODO: Enhance function to deal with multiple waitingTimes in one serviceTripsOrdered
+    const waitingTimes = service.serviceTripsOrdered.map(
+      (serviceTrip) => serviceTrip.waitingTime
+    );
+    const waitingTimeDuration = waitingTimes.filter(
+      (waitingTime) => waitingTime > 0
+    )[0];
+
+    if (!waitingTimeDuration) {
+      // TODO: Refactor
+      service.serviceTripsOrdered.push({
+        tripId,
+        hlp,
+        endHour: earliestEndHour,
+        waitingTime: 0,
+        startHour: earliestEndHour - tripDuration,
+      });
+      return;
+    }
+
+    const indexOfWaitingTime = waitingTimes.indexOf(waitingTimeDuration);
+
+    const waitingTimeStart =
+      service.serviceTripsOrdered[indexOfWaitingTime - 1].endHour;
+
+    const newHlp =
+      hlpMatrix()[tripId][
+        service.serviceTripsOrdered[indexOfWaitingTime].tripId
+      ];
+
+    const _earliestDepartureHour = waitingTimeStart + hlp;
+    const _earliestArrivalHour = waitingTimeStart + hlp + tripDuration;
+
+    if (
+      isToPutToTheEnd(
+        waitingTimes,
+        _earliestDepartureHour,
+        _earliestArrivalHour,
+        tripDirection,
+        minTimeOfTimeRange,
+        maxTimeOfTimeRange,
+        waitingTimeDuration,
+        newHlp,
+        tripDuration
+      )
+    ) {
+      // TODO: Refactor
+      service.serviceTripsOrdered.push({
+        tripId,
+        hlp,
+        endHour: earliestEndHour,
+        waitingTime: 0,
+        startHour: earliestEndHour - tripDuration,
+      });
+      return;
+    }
+
+    // TODO: => Vérifier que tout les autre cas déjà tester avant !
+    service.serviceTripsOrdered.splice(indexOfWaitingTime, 0, {
+      tripId,
+      hlp: newHlp,
+      endHour: _earliestArrivalHour,
+      waitingTime:
+        _earliestArrivalHour - tripDuration - newHlp - waitingTimeStart,
+      startHour: _earliestArrivalHour - tripDuration,
+    });
+    service.serviceTripsOrdered[indexOfWaitingTime + 1].waitingTime -=
+      tripDuration + newHlp;
+    return;
+  }
+
   // TODO: Refactor and clean
   export function getUpdatedServices(
     _services: ServiceType[]
@@ -607,123 +690,16 @@ export namespace ServiceGridUtils {
             continue;
 
           case CaseEnum.case4:
-            // TODO: Clean and refactor
-            const waitingTimes = service.serviceTripsOrdered.map(
-              (serviceTrip) => serviceTrip.waitingTime
-            );
-            const waitingTimeDuration = waitingTimes.filter(
-              (waitingTime) => waitingTime > 0
-            )[0];
-            console.log("waitingTimeDuration", waitingTimeDuration);
-            if (!waitingTimeDuration) {
-              // TODO: Refactor
-              service.serviceTripsOrdered.push({
-                tripId,
-                hlp,
-                endHour: earliestEndHour,
-                waitingTime: 0,
-                startHour: earliestEndHour - tripDuration,
-              });
-              continue;
-            }
-
-            const indexOfWaitingTime =
-              waitingTimes.indexOf(waitingTimeDuration);
-
-            const waitingTimeStart =
-              service.serviceTripsOrdered[indexOfWaitingTime - 1].endHour;
-
-            const newHlp =
-              hlpMatrix()[tripId][
-                service.serviceTripsOrdered[indexOfWaitingTime].tripId
-              ];
-
-            const _earliestDepartureHour = waitingTimeStart + hlp;
-            const _earliestArrivalHour = waitingTimeStart + hlp + tripDuration;
-
-            // if (
-            //   // * Si pas de waitingTime => ajouter à la fin en orange
-            //   !waitingTimes.some((waitingTime) => waitingTime > 0) ||
-            //   // * Si waiting time pas dans la range => ajouter à la fin en orange
-            //   // ! Si pls waitingTime ?
-            //   !isCase2(
-            //     _earliestDepartureHour,
-            //     _earliestArrivalHour,
-            //     tripDirection,
-            //     minTimeOfTimeRange,
-            //     maxTimeOfTimeRange
-            //   ) ||
-            //   // * Si waitingTimeDuration < hlp + trip duration => ajouter à la fin en orange
-            //   waitingTimeDuration < newHlp + tripDuration
-            // ) {
-            if (
-              isToPutToTheEnd(
-                waitingTimes,
-                _earliestDepartureHour,
-                _earliestArrivalHour,
-                tripDirection,
-                minTimeOfTimeRange,
-                maxTimeOfTimeRange,
-                waitingTimeDuration,
-                newHlp,
-                tripDuration
-              )
-            ) {
-              // TODO: Refactor
-              service.serviceTripsOrdered.push({
-                tripId,
-                hlp,
-                endHour: earliestEndHour,
-                waitingTime: 0,
-                startHour: earliestEndHour - tripDuration,
-              });
-              continue;
-            }
-
-            // if (
-            //   !isCase2(
-            //     _earliestDepartureHour,
-            //     _earliestArrivalHour,
-            //     tripDirection,
-            //     minTimeOfTimeRange,
-            //     maxTimeOfTimeRange
-            //   )
-            // ) {
-            //   // TODO: Refactor
-            //   service.serviceTripsOrdered.push({
-            //     tripId,
-            //     hlp,
-            //     endHour: earliestEndHour,
-            //     waitingTime: 0,
-            //     startHour: earliestEndHour - tripDuration,
-            //   });
-            //   continue;
-            // }
-            // * Si waitingTimeDuration < hlp + trip duration => ajouter à la fin en orange
-            // if (waitingTimeDuration < newHlp + tripDuration) {
-            //   // TODO: Refactor
-            //   service.serviceTripsOrdered.push({
-            //     tripId,
-            //     hlp,
-            //     endHour: earliestEndHour,
-            //     waitingTime: 0,
-            //     startHour: earliestEndHour - tripDuration,
-            //   });
-            //   continue;
-            // }
-            // * Sinon placer dans la waitingTime au plus proche de la timeRange
-            // TODO: => Vérifier que tout les autre cas déjà tester avant !
-
-            service.serviceTripsOrdered.splice(indexOfWaitingTime, 0, {
+            case4UpdateService(
+              service,
               tripId,
-              hlp: newHlp,
-              endHour: _earliestArrivalHour,
-              waitingTime:
-                _earliestArrivalHour - tripDuration - newHlp - waitingTimeStart,
-              startHour: _earliestArrivalHour - tripDuration,
-            });
-            service.serviceTripsOrdered[indexOfWaitingTime + 1].waitingTime -=
-              tripDuration + newHlp;
+              hlp,
+              earliestEndHour,
+              tripDuration,
+              tripDirection,
+              minTimeOfTimeRange,
+              maxTimeOfTimeRange
+            );
             continue;
 
           // TODO: Delete
