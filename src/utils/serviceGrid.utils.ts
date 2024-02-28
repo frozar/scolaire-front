@@ -14,7 +14,7 @@ import {
   hlpMatrix,
   selectedService,
 } from "../views/content/service/template/ServiceTemplate";
-import { ServiceTripOrderedUtils } from "./serviceTripPlacement.utils";
+import { ServiceTripOrderedUtils } from "./serviceTripOrdered.utils";
 import { TripUtils } from "./trip.utils";
 
 export type HlpMatrixType = {
