@@ -1,6 +1,7 @@
 import { animations, dragAndDrop } from "@formkit/drag-and-drop";
 import { For, JSXElement, Show, createSignal, onMount } from "solid-js";
 import { ServiceGridUtils } from "../../../../utils/serviceGrid.utils";
+import { ServiceTripOrderedUtils } from "../../../../utils/serviceTripOrdered.utils";
 import { ServiceGridLineFirstDiv } from "../atom/ServiceGridLineFirstDiv";
 import { ServiceGridItem } from "../molecule/ServiceGridItem";
 import { selectedService } from "../template/ServiceTemplate";
@@ -74,15 +75,22 @@ function dragAndDropGetter(serviceIndex: number): number[] {
   );
 }
 
+// TODO: Try to replace usage of serviceIndex by serviceId
 function dragAndDropSetter(serviceIndex: number, newTripIds: number[]): void {
+  console.log("newTripIds", newTripIds);
+
   setServices((prev) => {
     const _services = [...prev];
     const service = _services[serviceIndex];
-    service.serviceTripsOrdered = newTripIds.map(
-      (newTripId) =>
-        service.serviceTripsOrdered.filter(
-          (serviceTrip) => serviceTrip.tripId == newTripId
-        )[0]
+    console.log(
+      "unchanged service =>",
+      JSON.stringify(service.serviceTripsOrdered)
+    );
+    // ! FIX
+    ServiceTripOrderedUtils.updateServiceTripsInformations(service, newTripIds);
+    console.log(
+      "changed service =>",
+      JSON.stringify(service.serviceTripsOrdered)
     );
     return _services;
   });

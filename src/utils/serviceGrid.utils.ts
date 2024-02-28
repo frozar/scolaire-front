@@ -6,7 +6,6 @@ import {
 import { TripPointType } from "../_entities/trip.entity";
 import { zoom } from "../views/content/service/organism/ServiceGrid";
 import {
-  ServiceTripOrderedType,
   ServiceType,
   services,
 } from "../views/content/service/organism/Services";
@@ -202,7 +201,6 @@ export namespace ServiceGridUtils {
 
   export function getHlpDuration(
     serviceTripIds: number[],
-    serviceTripsOrdered: ServiceTripOrderedType[],
     serviceTripIndex: number
   ): number {
     /*
@@ -213,9 +211,7 @@ export namespace ServiceGridUtils {
     Return minutes
     */
 
-    const idPreviousTrip = (
-      serviceTripsOrdered.at(-1) as ServiceTripOrderedType
-    ).tripId;
+    const idPreviousTrip = serviceTripIds[serviceTripIndex - 1];
     const idActualTrip = serviceTripIds[serviceTripIndex];
 
     return hlpMatrix()[idActualTrip][idPreviousTrip];
