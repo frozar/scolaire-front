@@ -18,15 +18,28 @@ import {
   setAllotment,
 } from "../../../allotment/organism/Allotment";
 import { AllotmentTable } from "../../../allotment/organism/AllotmentTable";
+import { AllotmentAddMenu } from "./AllotmentAddMenu";
 import "./AllotmentTab.css";
 import { AllotmentTabTopButtons } from "./AllotmentTabTopButtons";
 
 export const [isAllotmentEdited, setIsAllotmentEdited] = createSignal(false);
 
 export function AllotmentTab() {
+  const [isAddMenuOpen, setIsAddMenuOpen] = createSignal(false);
+  const [newName, setNewName] = createSignal("");
+  const [newColor, setNewColor] = createSignal("#ffffff");
+
+  function nameChanged(name: string) {
+    setNewName(name);
+  }
+
+  function colorChanged(color: string) {
+    setNewColor(color);
+  }
+
   async function createAllotment() {
     enableSpinningWheel();
-    await AllotmentService.create({ name: "newAllotment", color: "#ffffff" });
+    await AllotmentService.create({ name: newName(), color: newColor() });
     disableSpinningWheel();
     addNewUserInformation({
       displayed: true,
@@ -34,6 +47,7 @@ export function AllotmentTab() {
       type: MessageTypeEnum.global,
       content: "Allotissement créé",
     });
+    setIsAddMenuOpen(false);
   }
 
   function cancelChanges() {
@@ -73,7 +87,10 @@ export function AllotmentTab() {
 
   return (
     <div class="allotment-tab-container">
-      <Button label="Ajouter Allotissement" onClick={createAllotment} />
+      <Button
+        label="Ajouter Allotissement"
+        onClick={() => setIsAddMenuOpen(true)}
+      />
       <Show when={isAllotmentEdited()}>
         <AllotmentTabTopButtons
           cancel={cancelChanges}
@@ -81,6 +98,16 @@ export function AllotmentTab() {
         />
       </Show>
       <AllotmentTable />
+      <Show when={isAddMenuOpen()}>
+        <AllotmentAddMenu
+          defaultColor={newColor()}
+          defaultName={newName()}
+          colorChange={colorChanged}
+          nameChange={nameChanged}
+          submit={createAllotment}
+          cancel={() => setIsAddMenuOpen(false)}
+        />
+      </Show>
     </div>
   );
 }
