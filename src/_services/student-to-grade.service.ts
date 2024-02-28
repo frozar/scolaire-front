@@ -33,7 +33,7 @@ export type StudentToGrade = {
 
 export class StudentToGradeService {
   static async import(
-    students_to_grades: StudentToGrade[]
+    students_to_grades: Omit<StudentToGrade, "id">[]
   ): Promise<{ schools: SchoolType[]; stops: StopType[] }> {
     const xanoResult: { schools: SchoolDBType[]; stops: StopDBType[] } =
       await ServiceUtils.post("/student-to-grade/import", {
@@ -114,11 +114,13 @@ export class StudentToGradeService {
       schools: { school: SchoolDBType[] };
       stops: { stop: StopDBType[] };
     } = await ServiceUtils.post("/student/import", studentDB);
+
     setSchools(
       xanoResult.schools.school.map((school) => SchoolEntity.build(school))
     );
     setStops(xanoResult.stops.stop.map((stop) => StopEntity.build(stop)));
   }
+
   static async create(
     gradeToSchool: Omit<AssociatedStopType, "idClassToSchool">,
     schoolId: number

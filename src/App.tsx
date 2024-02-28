@@ -20,6 +20,7 @@ import { tryConnection } from "./views/layout/authentication";
 
 import "./App.css";
 import { InitService } from "./_services/init.service";
+import { inDuplication } from "./utils/duplicate.utils";
 import { Contents } from "./views/content/Contents";
 import { Dialogs } from "./views/content/board/component/organism/Dialogs";
 
@@ -35,7 +36,7 @@ export default () => {
 
   // eslint-disable-next-line solid/reactivity
   createEffect(async () => {
-    if (getActiveMapId() && authenticated()) {
+    if (getActiveMapId() && authenticated() && !inDuplication()) {
       enableSpinningWheel();
       await InitService.getAll();
       disableSpinningWheel();

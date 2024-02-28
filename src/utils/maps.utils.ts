@@ -51,5 +51,6 @@ export namespace MapsUtils {
     if (!newMap) return false;
 
     setUserMaps((prev) => [...prev, newMap]);
+    MapsUtils.setActiveMap(newMap.id);
   }
 }

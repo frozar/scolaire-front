@@ -1,18 +1,22 @@
 import { Show, createSignal } from "solid-js";
+import { MapType } from "../../../../../_entities/map.entity";
 import { TableData } from "../../../../../component/table/atom/TableData";
 import { TableDataChilds } from "../../../../../component/table/molecule/TableDataChilds";
 import { TableRow } from "../../../../../component/table/molecule/TableRow";
+import CheckIcon from "../../../../../icons/CheckIcon";
 import { DuplicateIcon } from "../../../../../icons/DuplicateIcon";
 import PencilIcon from "../../../../../icons/PencilIcon";
 import TrashIcon from "../../../../../icons/TrashIcon";
+import { DuplicateUtils } from "../../../../../utils/duplicate.utils";
+import { MapsUtils } from "../../../../../utils/maps.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { CarteToDeleteType } from "../../Maps";
-
-import { MapType } from "../../../../../_entities/map.entity";
-import CheckIcon from "../../../../../icons/CheckIcon";
-import { MapsUtils } from "../../../../../utils/maps.utils";
 import { MapNameDisplay } from "../molecule/MapNameDisplay";
+
+import { useStateGui } from "../../../../../StateGui";
 import "./MapTableItem.css";
+
+const [, { getActiveMapId }] = useStateGui();
 
 interface MapTableItemProps {
   map: MapType;
@@ -25,7 +29,7 @@ export function MapTableItem(props: MapTableItemProps) {
   const [inEditMode, setInEditMode] = createSignal(false);
 
   function duplicateMap() {
-    console.log("ok");
+    DuplicateUtils.duplicate();
   }
 
   async function editMap() {
@@ -50,7 +54,11 @@ export function MapTableItem(props: MapTableItemProps) {
   }
 
   return (
-    <TableRow active={props.map.isActive()} onDBClick={onDblClick}>
+    <TableRow
+      active={props.map.isActive()}
+      onDBClick={onDblClick}
+      class="map-row-item"
+    >
       <MapNameDisplay
         onInput={updateName}
         inEditMode={inEditMode()}
@@ -59,26 +67,33 @@ export function MapTableItem(props: MapTableItemProps) {
       />
 
       <TableData
+        class="select-none"
         text={props.map.createAt.toLocaleDateString("fr-FR")}
         end={false}
       />
-      <TableDataChilds end={true}>
+
+      <TableDataChilds end={true} class="pr-2">
         <ButtonIcon
-          class="duplicate-icon"
+          class="close-icon"
           icon={<DuplicateIcon />}
+          disable={props.map.id != getActiveMapId()}
           onClick={duplicateMap}
         />
         <Show
           when={!inEditMode()}
           fallback={
             <ButtonIcon
-              class="duplicate-icon"
+              class="check-icon"
               icon={<CheckIcon />}
               onClick={editMap}
             />
           }
         >
-          <ButtonIcon icon={<PencilIcon />} onClick={editMap} />
+          <ButtonIcon
+            class="pencil-icon"
+            icon={<PencilIcon />}
+            onClick={editMap}
+          />
         </Show>
         <ButtonIcon icon={<TrashIcon />} onClick={deleteMap} />
       </TableDataChilds>

@@ -248,23 +248,29 @@ export namespace CsvUtils {
     return new Blob([csv], { type: "text/csv;charset=utf-8," });
   }
 
-  export function exportCsv(type: CsvEnum.schools | CsvEnum.stops) {
+  export function getPointAsCSVFormat(
+    type: CsvEnum.schools | CsvEnum.stops
+  ): ItemExportType[] {
     let items: (SchoolType | StopType)[] = [];
     if (type == CsvEnum.schools) items = getSchools();
     else if (type == CsvEnum.stops) items = getStops();
-    else return;
+    else return [];
 
     const csvItems: ItemExportType[] = [];
     items.forEach((item) =>
       csvItems.push({ name: item.name, lat: item.lat, lon: item.lon })
     );
 
-    const blob = getCsvBlobFromObject(csvItems);
+    return csvItems;
+  }
 
+  export function exportCsv(type: CsvEnum.schools | CsvEnum.stops) {
+    const csvItems: ItemExportType[] = getPointAsCSVFormat(type);
+    const blob = getCsvBlobFromObject(csvItems);
     download(`${type}.csv`, blob);
   }
 
-  export function exportStudentsCsv(): void {
+  export function getStudentToGradeAsCSVFormat() {
     const studentsCsv: studentExportType[] = [];
 
     getStops().forEach((stop) =>
@@ -278,8 +284,12 @@ export namespace CsvUtils {
       })
     );
 
-    const blob = getCsvBlobFromObject(studentsCsv);
+    return studentsCsv;
+  }
 
+  export function exportStudentsCsv(): void {
+    const studentsCsv: studentExportType[] = getStudentToGradeAsCSVFormat();
+    const blob = getCsvBlobFromObject(studentsCsv);
     download("students.csv", blob);
   }
 
