@@ -38,6 +38,11 @@ function buildMap(div: HTMLDivElement) {
 let mapDiv: HTMLDivElement;
 
 export const [ways, setWays] = createSignal<step[]>([]);
+
+export function getWayById(way_id: number): step {
+  return ways().filter((way) => way.flaxib_way_id == way_id)[0];
+}
+
 export default function () {
   const [displayImportCsvCanvas, setDisplayImportCsvCanvas] =
     createSignal(false);
@@ -78,6 +83,7 @@ export default function () {
     }
   });
 
+  // eslint-disable-next-line solid/reactivity
   createEffect(async () => {
     if (getLeafletMap()) {
       const res = await requestWays();

@@ -2,7 +2,7 @@ import L from "leaflet";
 import { createEffect, createSignal } from "solid-js";
 
 import { step } from "../../../../../_services/osrm.service";
-import { resetCurrentWeight } from "../../../stops/component/organism/VoirieItems";
+import { resetNewWeight } from "../../../stops/component/organism/VoirieItems";
 import { COLOR_BLUE_BASE, COLOR_GREEN_BASE } from "../../constant";
 import Line from "../atom/Line";
 
@@ -41,7 +41,7 @@ export function LineWeight(props: {
       props.way
     );
     console.log("select here", getSelectedWay());
-    resetCurrentWeight();
+    resetNewWeight();
   };
   return (
     <>
