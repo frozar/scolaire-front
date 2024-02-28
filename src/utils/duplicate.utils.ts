@@ -5,7 +5,6 @@ import { SchoolService } from "../_services/school.service";
 import { StopService } from "../_services/stop.service";
 import { StudentToGradeService } from "../_services/student-to-grade.service";
 import { userMaps } from "../_stores/map.store";
-import { disableSpinningWheel, enableSpinningWheel } from "../signaux";
 import { CsvEnum } from "../views/content/board/component/molecule/ImportSelection";
 import { setSchools } from "../views/content/map/component/organism/SchoolPoints";
 import { setStops } from "../views/content/map/component/organism/StopPoints";
@@ -16,9 +15,7 @@ const [, { getActiveMapId }] = useStateGui();
 
 export const [inDuplication, setInDucplication] = createSignal(false);
 export namespace DuplicateUtils {
-  export async function duplicate() {
-    enableSpinningWheel();
-    setInDucplication(true);
+  async function duplicateStopsAndSchoolsWithGradesQuantity() {
     const schoolCSV = CsvUtils.getPointAsCSVFormat(CsvEnum.schools);
     const stopsCSV = CsvUtils.getPointAsCSVFormat(CsvEnum.stops);
     const studentToGradeCSV = CsvUtils.getStudentToGradeAsCSVFormat();
@@ -83,7 +80,11 @@ export namespace DuplicateUtils {
       modified: [],
       newGrades: grades,
     });
+  }
+
+  export async function duplicate() {
+    setInDucplication(true);
+    await duplicateStopsAndSchoolsWithGradesQuantity();
     setInDucplication(false);
-    disableSpinningWheel();
   }
 }

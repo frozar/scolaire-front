@@ -1,22 +1,13 @@
-import { Show, createSignal } from "solid-js";
+import { createSignal } from "solid-js";
 import { MapType } from "../../../../../_entities/map.entity";
 import { TableData } from "../../../../../component/table/atom/TableData";
-import { TableDataChilds } from "../../../../../component/table/molecule/TableDataChilds";
 import { TableRow } from "../../../../../component/table/molecule/TableRow";
-import CheckIcon from "../../../../../icons/CheckIcon";
-import { DuplicateIcon } from "../../../../../icons/DuplicateIcon";
-import PencilIcon from "../../../../../icons/PencilIcon";
-import TrashIcon from "../../../../../icons/TrashIcon";
-import { DuplicateUtils } from "../../../../../utils/duplicate.utils";
 import { MapsUtils } from "../../../../../utils/maps.utils";
-import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { CarteToDeleteType } from "../../Maps";
 import { MapNameDisplay } from "../molecule/MapNameDisplay";
+import { MapTableItemActions } from "../molecule/MapTableItemActions";
 
-import { useStateGui } from "../../../../../StateGui";
 import "./MapTableItem.css";
-
-const [, { getActiveMapId }] = useStateGui();
 
 interface MapTableItemProps {
   map: MapType;
@@ -28,21 +19,10 @@ export function MapTableItem(props: MapTableItemProps) {
   const [mapName, setMapName] = createSignal<string>(props.map.name);
   const [inEditMode, setInEditMode] = createSignal(false);
 
-  function duplicateMap() {
-    DuplicateUtils.duplicate();
-  }
-
   async function editMap() {
     if (inEditMode())
       await MapsUtils.updateMap({ ...props.map, name: mapName() });
     setInEditMode((prev) => !prev);
-  }
-
-  function deleteMap() {
-    props.handleClickDelete({
-      id: props.map.id,
-      title: props.map.name,
-    });
   }
 
   function onDblClick() {
@@ -72,31 +52,12 @@ export function MapTableItem(props: MapTableItemProps) {
         end={false}
       />
 
-      <TableDataChilds end={true} class="pr-2">
-        <ButtonIcon
-          class="close-icon"
-          icon={<DuplicateIcon />}
-          disable={props.map.id != getActiveMapId()}
-          onClick={duplicateMap}
-        />
-        <Show
-          when={!inEditMode()}
-          fallback={
-            <ButtonIcon
-              class="check-icon"
-              icon={<CheckIcon />}
-              onClick={editMap}
-            />
-          }
-        >
-          <ButtonIcon
-            class="pencil-icon"
-            icon={<PencilIcon />}
-            onClick={editMap}
-          />
-        </Show>
-        <ButtonIcon icon={<TrashIcon />} onClick={deleteMap} />
-      </TableDataChilds>
+      <MapTableItemActions
+        editMap={editMap}
+        inEditMode={inEditMode()}
+        handleClickDelete={props.handleClickDelete}
+        map={props.map}
+      />
     </TableRow>
   );
 }

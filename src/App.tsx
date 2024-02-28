@@ -1,4 +1,4 @@
-import { createEffect, onMount } from "solid-js";
+import { createEffect, on, onMount } from "solid-js";
 import { useStateGui } from "./StateGui";
 
 import Layout from "./views/layout/component/template/Layout";
@@ -34,14 +34,15 @@ export default () => {
     document.addEventListener("contextmenu", (e) => e.preventDefault())
   );
 
-  // eslint-disable-next-line solid/reactivity
-  createEffect(async () => {
-    if (getActiveMapId() && authenticated() && !inDuplication()) {
-      enableSpinningWheel();
-      await InitService.getAll();
-      disableSpinningWheel();
-    }
-  });
+  createEffect(
+    on(getActiveMapId, async () => {
+      if (getActiveMapId() && authenticated() && !inDuplication()) {
+        enableSpinningWheel();
+        await InitService.getAll();
+        disableSpinningWheel();
+      }
+    })
+  );
 
   createEffect(() => {
     if (getSelectedMenu() != "graphicage") {

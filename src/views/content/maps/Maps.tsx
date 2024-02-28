@@ -4,6 +4,7 @@ import { MapStore } from "../../../_stores/map.store";
 import { authenticated } from "../../../signaux";
 import DeleteMapConfirmation from "./DeleteMapConfirmation";
 import MapGridHeader from "./component/molecule/MapGridHeader";
+import { DuplicateDialog } from "./component/organism/DuplicateDialog";
 import { MapTables } from "./component/organism/MapTables";
 
 export type CarteToDeleteType =
@@ -31,6 +32,7 @@ export function Maps() {
       <div class="h-[calc(100vh-60px)]">
         <MapGridHeader openCreateMapModal={openCreateMapModal} />
         <MapTables handleClickDelete={setDisplayedDeleteMapConfirmation} />
+        <DuplicateDialog />
       </div>
 
       <Transition
