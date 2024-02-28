@@ -1,5 +1,8 @@
 import { For, Show, createEffect, createSignal } from "solid-js";
-import { TransporterType } from "../../../../_entities/transporter.entity";
+import {
+  TransporterType,
+  TransporterVehicleType,
+} from "../../../../_entities/transporter.entity";
 import { TransporterService } from "../../../../_services/transporter.service";
 import Button from "../../../../component/atom/Button";
 import { TableContent } from "../../../../component/table/molecule/TableContent";
@@ -10,7 +13,11 @@ import {
   enableSpinningWheel,
 } from "../../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../../type";
-import { TransporterAddMenu } from "./TransporterAddMenu";
+import {
+  TransporterAddMenu,
+  getNewVehicles,
+  setNewVehicles,
+} from "./TransporterAddMenu";
 import { TransporterTableHeader } from "./TransporterTableHeader";
 import { TransporterTableLine } from "./TransporterTableLine";
 
@@ -43,8 +50,19 @@ export function TransporterTable(props: { allotment_id?: number }) {
     }
   }
 
+  function setTransporterVehicles() {
+    const vehiclelist: TransporterVehicleType[] = [];
+    getNewVehicles().forEach((vehicle) => {
+      vehiclelist.push({
+        license: vehicle.license,
+        bus_categories_id: vehicle.bus_categories_id,
+      });
+    });
+    return vehiclelist;
+  }
+
   async function addTransporter() {
-    if (newName() == "" || newType() == "") {
+    if (newName() == "") {
       addNewUserInformation({
         displayed: true,
         level: MessageLevelEnum.error,
@@ -53,12 +71,21 @@ export function TransporterTable(props: { allotment_id?: number }) {
       });
       return;
     }
+    if (getNewVehicles().length <= 0) {
+      addNewUserInformation({
+        displayed: true,
+        level: MessageLevelEnum.error,
+        type: MessageTypeEnum.global,
+        content: "Veuillez ajouter au moins un véhicule",
+      });
+      return;
+    }
     enableSpinningWheel();
     await TransporterService.create({
       name: newName(),
       type: idToType(Number(newType())),
       allotment_id: Number(props.allotment_id),
-      vehicles: [],
+      vehicles: setTransporterVehicles(),
     });
     disableSpinningWheel();
     addNewUserInformation({
@@ -81,6 +108,7 @@ export function TransporterTable(props: { allotment_id?: number }) {
   function resetChanges() {
     setNewName("");
     setNewType("");
+    setNewVehicles([]);
     setIsTransporterAddOpen(false);
   }
 

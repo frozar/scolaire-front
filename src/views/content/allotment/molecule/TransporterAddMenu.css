@@ -20,3 +20,18 @@
     @apply text-sm;
   }
 }
+
+.transporter-add-vehicle {
+  @apply pl-4 pt-2 flex gap-4;
+}
+
+.transporter-add-vehicle-input {
+  @apply flex flex-wrap gap-4 pl-4;
+}
+
+.transporter-add-vehicle-input-field {
+  @apply max-w-xs;
+  label {
+    @apply text-sm;
+  }
+}
