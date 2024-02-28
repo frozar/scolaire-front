@@ -2,6 +2,7 @@ import { Show, createEffect, createSignal, on } from "solid-js";
 import { Transition } from "solid-transition-group";
 import { MapStore } from "../../../_stores/map.store";
 import { authenticated } from "../../../signaux";
+import { inDuplication } from "../../../utils/duplicate.utils";
 import DeleteMapConfirmation from "./DeleteMapConfirmation";
 import MapGridHeader from "./component/molecule/MapGridHeader";
 import { DuplicateDialog } from "./component/organism/DuplicateDialog";
@@ -32,7 +33,9 @@ export function Maps() {
       <div class="h-[calc(100vh-60px)]">
         <MapGridHeader openCreateMapModal={openCreateMapModal} />
         <MapTables handleClickDelete={setDisplayedDeleteMapConfirmation} />
-        <DuplicateDialog />
+        <Show when={inDuplication()}>
+          <DuplicateDialog />
+        </Show>
       </div>
 
       <Transition

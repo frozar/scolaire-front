@@ -1,4 +1,4 @@
-import { Show, createSignal } from "solid-js";
+import { createSignal } from "solid-js";
 import { useStateGui } from "../../../../../StateGui";
 import { userMaps } from "../../../../../_stores/map.store";
 import Button from "../../../../../component/atom/Button";
@@ -6,7 +6,6 @@ import CardTitle from "../../../../../component/atom/CardTitle";
 import { LabeledCheckbox } from "../../../../../component/molecule/LabeledCheckbox";
 import {
   DuplicateUtils,
-  inDuplication,
   setInDucplication,
 } from "../../../../../utils/duplicate.utils";
 import { Dialog } from "../../../board/component/molecule/Dialog";
@@ -29,12 +28,13 @@ type DuplicateField = {
   lines: boolean;
 };
 
-const [fieldToDuplicate, setFieldToDuplciate] = createSignal<DuplicateField>({
-  trips: false,
-  paths: false,
-  calendar: false,
-  lines: false,
-});
+export const [fieldToDuplicate, setFieldToDuplciate] =
+  createSignal<DuplicateField>({
+    trips: false,
+    paths: false,
+    calendar: false,
+    lines: false,
+  });
 
 function updateFieldToDuplicate(field: FieldToDuplicateEnum) {
   setFieldToDuplciate((prev) => {
@@ -70,51 +70,48 @@ function updateFieldToDuplicate(field: FieldToDuplicateEnum) {
 }
 
 export function DuplicateDialog() {
-  const mapToDuplicate = () =>
-    userMaps().filter((map) => map.id === getActiveMapId())[0];
+  const mapToDuplicate = userMaps().filter(
+    (map) => map.id === getActiveMapId()
+  )[0];
 
   return (
-    <Show when={inDuplication()}>
-      <Dialog>
-        <CardTitle title={"Duplication de la carte " + mapToDuplicate().name} />
+    <Dialog>
+      <CardTitle title={"Duplication de la carte " + mapToDuplicate.name} />
 
-        <p>Sélectionner ce qui dois être dupliquer:</p>
+      <p>Sélectionner ce qui dois être dupliquer:</p>
 
-        <LabeledCheckbox
-          checked={fieldToDuplicate().lines}
-          label="Lignes"
-          onChange={() => updateFieldToDuplicate(FieldToDuplicateEnum.lines)}
-        />
-        <LabeledCheckbox
-          disabled={!fieldToDuplicate().lines}
-          checked={fieldToDuplicate().trips}
-          label="Courses"
-          onChange={() => updateFieldToDuplicate(FieldToDuplicateEnum.trips)}
-        />
-        <LabeledCheckbox
-          disabled={!fieldToDuplicate().lines}
-          checked={fieldToDuplicate().paths}
-          label="Chemins"
-          onChange={() => updateFieldToDuplicate(FieldToDuplicateEnum.paths)}
-        />
+      <LabeledCheckbox
+        checked={fieldToDuplicate().lines}
+        label="Lignes"
+        onChange={() => updateFieldToDuplicate(FieldToDuplicateEnum.lines)}
+      />
+      <LabeledCheckbox
+        disabled={!fieldToDuplicate().lines}
+        checked={fieldToDuplicate().trips}
+        label="Courses"
+        onChange={() => updateFieldToDuplicate(FieldToDuplicateEnum.trips)}
+      />
+      <LabeledCheckbox
+        disabled={!fieldToDuplicate().lines}
+        checked={fieldToDuplicate().paths}
+        label="Chemins"
+        onChange={() => updateFieldToDuplicate(FieldToDuplicateEnum.paths)}
+      />
 
-        <LabeledCheckbox
-          checked={fieldToDuplicate().paths}
-          label="Calendriers"
-          onChange={() =>
-            updateFieldToDuplicate(FieldToDuplicateEnum.calendars)
-          }
-        />
+      <LabeledCheckbox
+        checked={fieldToDuplicate().paths}
+        label="Calendriers"
+        onChange={() => updateFieldToDuplicate(FieldToDuplicateEnum.calendars)}
+      />
 
-        <div class="flex justify-end gap-2">
-          <Button
-            variant="danger"
-            label="Annuler"
-            onClick={() => setInDucplication(false)}
-          />
-          <Button label="Valider" onClick={() => DuplicateUtils.duplicate()} />
-        </div>
-      </Dialog>
-    </Show>
+      <div class="flex justify-end gap-2">
+        <Button
+          variant="danger"
+          label="Annuler"
+          onClick={() => setInDucplication(false)}
+        />
+        <Button label="Valider" onClick={() => DuplicateUtils.duplicate()} />
+      </div>
+    </Dialog>
   );
 }
