@@ -3,13 +3,11 @@ import { OsrmService, weight } from "../../../../../_services/osrm.service";
 import CheckIcon from "../../../../../icons/CheckIcon";
 import TrashIcon from "../../../../../icons/TrashIcon";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
-import { setWays, ways } from "../../../map/Map";
-import {
-  getSelectedWay,
-  setSelectedWay,
-} from "../../../map/component/molecule/LineWeight";
+import { getWayById, setWays } from "../../../map/Map";
+import { setSelectedWay } from "../../../map/component/molecule/LineWeight";
 import { VoirieItemRangeElem } from "../atom/VoirieItemRangeElem";
 import { minuteToTime } from "../organism/VoirieDay";
+import { resetNewWeight } from "../organism/VoirieItems";
 interface VoirieItem {
   weight: weight;
   way_id: number;
@@ -76,25 +74,26 @@ export function VoirieItem(props: VoirieItem) {
 
 function AddOrUpdate(way_id: number, weight: weight): void {
   OsrmService.setWeight(way_id, weight.weight, weight.start, weight.end);
-  setSelectedWay((step) => {
-    if (step) {
-      return {
-        ...step,
-        flaxib_weight: step.flaxib_weight.map((elem) => {
-          if (elem.end == weight.end && weight.start == elem.start) {
-            return { ...elem, weight: weight.weight };
-          }
-          return elem;
-        }),
-      };
-    }
-  });
-  const newval = getSelectedWay();
-  if (newval) {
-    setWays((ways) => {
-      return [...ways.filter((step) => step.flaxib_way_id != way_id), newval];
+  setWays((ways) => {
+    return ways.map((way) => {
+      if (way.flaxib_way_id == way_id) {
+        return {
+          ...way,
+          flaxib_weight: [
+            ...way.flaxib_weight.filter(
+              (currentWeight) =>
+                currentWeight.end != weight.end ||
+                currentWeight.start != weight.start
+            ),
+            weight,
+          ],
+        };
+      }
+      return way;
     });
-  }
+  });
+  setSelectedWay(getWayById(way_id));
+  resetNewWeight();
 }
 
 function Delete(way_id: number, weight: weight): void {
@@ -116,5 +115,5 @@ function Delete(way_id: number, weight: weight): void {
     });
   });
 
-  setSelectedWay(ways().filter((way) => way.flaxib_way_id == way_id)[0]);
+  setSelectedWay(getWayById(way_id));
 }

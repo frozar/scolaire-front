@@ -15,7 +15,7 @@ function defaultValue(): weight {
     end: -1,
   };
 }
-export const resetCurrentWeight = () => setnewWeigth(defaultValue());
+export const resetNewWeight = () => setnewWeigth(defaultValue());
 
 interface VoirieItems {
   flaxib_weight: weight[];
@@ -41,7 +41,7 @@ export default function VoirieItems(props: VoirieItems) {
               !(weight.weight == 100 && weight.start == 0 && weight.end == 1439) //Default value return by database when none weight associated
             }
           >
-            {existingWeight(weight)}
+            {existingWeight(weight, props.flaxib_way_id)}
           </Show>
         )}
       </For>
@@ -55,19 +55,19 @@ export default function VoirieItems(props: VoirieItems) {
       </Show>
     </ol>
   );
+}
 
-  function existingWeight(weightValue: weight) {
-    const [weigth, setWeigth] = createSignal<weight>(weightValue);
+function existingWeight(weightValue: weight, flaxib_way_id: number) {
+  const [weigth, setWeigth] = createSignal<weight>(weightValue);
 
-    return (
-      <VoirieItem
-        weight={weigth()}
-        setNewWeigth={setWeigth}
-        way_id={props.flaxib_way_id}
-        isInMove={isInMove}
-      />
-    );
-  }
+  return (
+    <VoirieItem
+      weight={weigth()}
+      setNewWeigth={setWeigth}
+      way_id={flaxib_way_id}
+      isInMove={isInMove}
+    />
+  );
 }
 
 // eslint-disable-next-line  @typescript-eslint/no-explicit-any
