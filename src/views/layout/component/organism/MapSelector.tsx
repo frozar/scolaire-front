@@ -1,5 +1,6 @@
 import { createEffect, createSignal, onMount } from "solid-js";
 
+import { useStateGui } from "../../../../StateGui";
 import { MapType } from "../../../../_entities/map.entity";
 import { MapStore, userMaps } from "../../../../_stores/map.store";
 import { MapsUtils } from "../../../../utils/maps.utils";
@@ -13,6 +14,7 @@ import { setSelectedMenu } from "../../menuItemFields";
 import "./MapSelector.css";
 
 const [selectedMap, setSelectedMap] = createSignal<MapType | null>();
+const [, { setActiveMapId }] = useStateGui();
 
 export function MapSelector() {
   onMount(async () => {
@@ -22,7 +24,10 @@ export function MapSelector() {
 
   createEffect(() => {
     setSelectedMap(MapsUtils.getSelectedMap(userMaps()));
+    console.log(selectedMap());
+
     if (!selectedMap()) {
+      setActiveMapId(null);
       setSchools([]);
       setStops([]);
       setCalendars([]);

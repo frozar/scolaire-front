@@ -67,6 +67,7 @@ export function MapTableItem(props: MapTableItemProps) {
       />
 
       <TableData
+        class="select-none"
         text={props.map.createAt.toLocaleDateString("fr-FR")}
         end={false}
       />

@@ -14,7 +14,9 @@ export function MapNameDisplay(props: MapNameDisplayProps) {
   return (
     <Show
       when={props.inEditMode}
-      fallback={<TableData class="pl-2" text={props.name} end={false} />}
+      fallback={
+        <TableData class="pl-2 select-none" text={props.name} end={false} />
+      }
     >
       <TableDataChilds class="pl-2">
         <TextInput defaultValue={props.mapName()} onInput={props.onInput} />

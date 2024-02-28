@@ -119,7 +119,7 @@ const makeStateGuiContext = () => {
     return state.activeMapId;
   }
 
-  function setActiveMapId(id: number) {
+  function setActiveMapId(id: number | null) {
     setState("activeMapId", id);
   }
 
