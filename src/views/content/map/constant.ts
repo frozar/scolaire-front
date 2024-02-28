@@ -1,7 +1,7 @@
 // eslint-disable-next-line
 const COLOR_GREEN_LIGHT = "#8FE2BA";
 export const COLOR_GREEN_BASE = "#0CC683";
-const COLOR_BLUE_BASE = "#062F3F";
+export const COLOR_BLUE_BASE = "#062F3F";
 const COLOR_RED_BASE = "#F44434";
 const COLOR_RED_LIGHT = "#F7A19F";
 const COLOR_YELLOW_BASE = "#F9C932";

@@ -13,6 +13,7 @@ import {
   displayTripModeEnum,
   setCurrentDrawTrip,
   setCurrentTripIndex,
+  setStepsWeight,
 } from "../views/content/board/component/organism/DrawTripBoard";
 
 export namespace CurrentDrawTripUtils {
@@ -144,8 +145,15 @@ export namespace CurrentDrawTripUtils {
 
   export async function updatePolylineWithOsrm(trip: TripType) {
     enableSpinningWheel();
-    const { latlngs, projectedLatlngs, metrics, legsDurations, legsDistances } =
-      await OsrmService.getRoadPolyline(trip);
+    const {
+      latlngs,
+      projectedLatlngs,
+      metrics,
+      legsDurations,
+      legsDistances,
+      stepsWeight,
+    } = await OsrmService.getRoadPolyline(trip);
+    setStepsWeight(stepsWeight);
 
     let someDuration = 0;
     const newLegsDuration: number[] = [];

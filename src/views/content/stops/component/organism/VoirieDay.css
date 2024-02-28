@@ -1,0 +1,12 @@
+.voirie-day-header {
+  @apply flex justify-between my-5;
+}
+
+.voirie-day-content {
+  @apply mt-3 overflow-auto pr-2;
+  max-height: 60vh;
+}
+
+.disabled {
+  pointer-events: none;
+}

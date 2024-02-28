@@ -26,6 +26,7 @@ const [
     getSelectedEditModeTile,
     setSelectedEditModeTile,
     setSelectedReadModeTile,
+    getSelectedMenu,
   },
 ] = useStateGui();
 
@@ -99,7 +100,9 @@ export function buildMapL7(div: HTMLDivElement) {
       onBoard() != "line-add" &&
       onBoard() != "path-draw"
     ) {
-      changeBoard("line");
+      if (getSelectedMenu() != "voirie") {
+        changeBoard("line");
+      }
       MapElementUtils.deselectAllPointsAndBusTrips();
     }
   });

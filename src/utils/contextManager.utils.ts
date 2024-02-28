@@ -5,6 +5,7 @@ import {
 } from "../_entities/trip-direction.entity";
 import { TripEntity, TripType } from "../_entities/trip.entity";
 import { WaypointEntity } from "../_entities/waypoint.entity";
+import { step } from "../_services/osrm.service";
 import { updatePointColor } from "../leafletUtils";
 import {
   addNewUserInformation,
@@ -30,6 +31,7 @@ import {
   setDisplayTripMode,
   setDrawTripCheckableGrade,
   setIsInUpdate,
+  stepsWeight,
 } from "../views/content/board/component/organism/DrawTripBoard";
 import { changeBoard } from "../views/content/board/component/template/ContextManager";
 import { getSelectedLine } from "../views/content/map/component/organism/BusLines";
@@ -140,6 +142,16 @@ export namespace ContextUtils {
         }
 
         await TripUtils.createOrUpdateTrip();
+        // const start = 420;
+        // const end = 480;
+        // // TODO Query to update stepsWeight
+        // OsrmService.setWeight(
+        //   stepsWeight()
+        //     .flat()
+        //     .filter((step, index) => removeDouble(step, index)),
+        //   start,
+        //   end
+        // );
 
         setCurrentDrawTrip(TripEntity.defaultTrip());
         setCurrentTripIndex(0);
@@ -149,6 +161,14 @@ export namespace ContextUtils {
         updatePointColor();
     }
     disableSpinningWheel();
+
+    function removeDouble(step: step, index: number): unknown {
+      const res =
+        stepsWeight()
+          .map((stepTest) => stepTest.flaxib_way_id)
+          .indexOf(step.flaxib_way_id) === index;
+      return res;
+    }
   }
 
   export function prevStep() {

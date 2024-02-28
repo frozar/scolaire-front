@@ -5,6 +5,7 @@ import UnloggedUserInformation from "../../component/molecule/UnloggedUserInform
 import UserInstruction from "../../component/molecule/UserInstruction";
 import { getAuthenticatedUser } from "../../signaux";
 import ContextManager from "./board/component/template/ContextManager";
+import InformationBoardLayout from "./board/component/template/InformationBoardLayout";
 import { Calendar } from "./calendar/template/Calendar";
 import { Users } from "./calendar/template/Organisation";
 import Dashboard from "./dashboard/Dashboard";
@@ -13,6 +14,7 @@ import { Maps } from "./maps/Maps";
 import { Market } from "./market/organism/Market";
 import { Settings } from "./parameters/organism/Settings";
 import { ServiceTemplate } from "./service/template/ServiceTemplate";
+import WayDetails from "./stops/component/organism/WayDetails";
 
 const [, { getSelectedMenu }] = useStateGui();
 
@@ -56,6 +58,15 @@ export function Contents() {
 
           <Match when={getSelectedMenu() == "parametres"}>
             <Settings />
+          </Match>
+
+          <Match when={getSelectedMenu() == "voirie"}>
+            <Map />
+
+            <InformationBoardLayout>
+              <WayDetails />
+            </InformationBoardLayout>
+            {/* <ContextManager /> */}
           </Match>
         </Switch>
       </Show>

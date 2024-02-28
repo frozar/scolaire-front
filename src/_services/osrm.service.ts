@@ -1,4 +1,5 @@
 import L, { LatLng } from "leaflet";
+import { useStateGui } from "../StateGui";
 import {
   TripMetricType,
   TripPointType,
@@ -11,6 +12,8 @@ import { ServiceUtils } from "./_utils.service";
 const osrm = import.meta.env.VITE_API_OSRM_URL;
 const osrmRoute = osrm + "/route/v1/car";
 const osrmTable = osrm + "/table/v1/driving";
+const host = import.meta.env.VITE_BACK_URL;
+const [, { getActiveMapId }] = useStateGui();
 
 export type osrmResponseType = {
   routes: routesType[];
@@ -26,6 +29,19 @@ type osrmTableResponseType = {
   durations: number[][];
 };
 
+export type step = {
+  flaxib_way_id: number;
+  flaxib_weight: weight[];
+  coordinates?: L.LatLng[];
+  name?: string;
+};
+
+export type weight = {
+  weight: number;
+  start: number;
+  end: number;
+};
+
 export class OsrmService {
   static async getRoadPolyline(trip: TripType): Promise<{
     latlngs: L.LatLng[];
@@ -33,6 +49,7 @@ export class OsrmService {
     metrics: TripMetricType;
     legsDurations: number[];
     legsDistances: number[];
+    stepsWeight: step[];
   }> {
     const points: TripPointType[] = trip.tripPoints;
     let waypoints: WaypointType[] = trip.waypoints ?? points;
@@ -44,20 +61,57 @@ export class OsrmService {
         metrics: {},
         legsDurations: [],
         legsDistances: [],
+        stepsWeight: [],
       };
     }
-    const response = await ServiceUtils.generic(
-      osrmRoute +
-        "/" +
-        this.buildPositionURL(waypoints) +
-        "?geometries=geojson&overview=full&steps=true"
+    const waypointsStringified = this.buildPositionURL(waypoints);
+
+    const timecode = 420;
+
+    const responses = await ServiceUtils.generic(
+      host +
+        "/osrm/road?map_id=" +
+        getActiveMapId() +
+        "&timecode=" +
+        timecode +
+        "&waypoints=" +
+        waypointsStringified,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
     );
-    const response_direct = await ServiceUtils.generic(
-      osrmRoute +
-        "/" +
-        this.buildPositionURL([points[0], points[points.length - 1]]) +
-        "?geometries=geojson&overview=full"
-    );
+    const response = responses[0];
+    const response_direct = responses[1];
+
+    // const directWaypointsStringified = this.buildPositionURL([
+    //   points[0],
+    //   points[points.length - 1],
+    // ]);
+    // const response_direct = await ServiceUtils.generic(
+    //   host +
+    //     "/osrm/osrm_utils?map_id=" +
+    //     getActiveMapId() +
+    //     "&timecode=" +
+    //     timecode +
+    //     "&waypoints=" +
+    //     directWaypointsStringified,
+    //   {
+    //     method: "GET",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //   }
+    // );
+
+    // const response_direct = await ServiceUtils.generic(
+    //   osrm +
+    //     "/" +
+    //     directWaypointsStringified +
+    //     "?geometries=geojson&overview=full"
+    // );
 
     if (!response)
       return {
@@ -66,6 +120,7 @@ export class OsrmService {
         metrics: {},
         legsDurations: [],
         legsDistances: [],
+        stepsWeight: [],
       };
     return this.formatResponse(
       response,
@@ -73,6 +128,67 @@ export class OsrmService {
       points,
       response.waypoints
     );
+  }
+
+  static async setWeight(
+    wayId: number,
+    flaxibWeight: number,
+    start: number,
+    end: number
+  ): Promise<any> {
+    const content = JSON.stringify({
+      map_id: getActiveMapId(),
+      way_id: wayId,
+      flaxib_weight: flaxibWeight,
+      start,
+      end,
+    });
+    console.log("content", content);
+    const responses = await ServiceUtils.generic(host + "/osrm/weight", {
+      method: "POST",
+      body: content,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  }
+
+  static async getWaysWithWeight(timestamp: number): Promise<any> {
+    const res = await ServiceUtils.generic(
+      host + "/osrm/ways?map_id=" + getActiveMapId(),
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return res;
+  }
+
+  static async deleteWeight(
+    wayID: number,
+    start: number,
+    end: number
+  ): Promise<any> {
+    const res = await ServiceUtils.generic(
+      host +
+        "/osrm/weight?map_id=" +
+        getActiveMapId() +
+        "&way_id=" +
+        wayID +
+        "&start=" +
+        start +
+        "&end=" +
+        end,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return res;
   }
 
   private static buildPositionURL(points: WaypointType[]): string {
@@ -101,6 +217,7 @@ export class OsrmService {
     metrics: TripMetricType;
     legsDurations: number[];
     legsDistances: number[];
+    stepsWeight: step[];
   } {
     let latlngs: L.LatLng[] = [];
     let projectedLatlngs: L.LatLng[] = [];
@@ -112,11 +229,23 @@ export class OsrmService {
         metrics,
         legsDurations: [],
         legsDistances: [],
+        stepsWeight: [],
       };
 
     const routes = response.routes;
     const legsDurations = routes[0].legs.map((item) => item.duration);
     const legsDistances = routes[0].legs.map((item) => item.distance);
+    const stepsWeight = routes[0].legs.flatMap((leg) => {
+      return leg.steps.flatMap((step) => {
+        console.log("step.flaxib_way_ids");
+        return step.flaxib_way_ids.map((elem, i) => {
+          return {
+            flaxib_way_id: elem,
+            flaxib_weight: step.current_way_weight[i],
+          };
+        });
+      });
+    });
 
     const coordinates = routes[0].geometry.coordinates;
 
@@ -128,7 +257,14 @@ export class OsrmService {
 
     metrics = MetricsUtils.getAll(response, response_direct, points);
 
-    return { latlngs, projectedLatlngs, metrics, legsDurations, legsDistances };
+    return {
+      latlngs,
+      projectedLatlngs,
+      metrics,
+      legsDurations,
+      legsDistances,
+      stepsWeight,
+    };
   }
 }
 
@@ -146,5 +282,5 @@ type routesType = {
     coordinates: number[][];
     type: string;
   };
-  legs: { weight: number; duration: number; distance: number }[];
+  legs: { weight: number; duration: number; distance: number; steps: step[] }[];
 };
