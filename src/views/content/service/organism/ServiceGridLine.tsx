@@ -81,17 +81,13 @@ function dragAndDropSetter(serviceIndex: number, newTripIds: number[]): void {
 
   setServices((prev) => {
     const _services = [...prev];
-    const service = _services[serviceIndex];
-    console.log(
-      "unchanged service =>",
-      JSON.stringify(service.serviceTripsOrdered)
+    const serviceTrips = ServiceTripOrderedUtils.getUpdatedService(
+      _services[serviceIndex],
+      newTripIds,
+      false
     );
-    // ! FIX
-    ServiceTripOrderedUtils.updateServiceTripsInformations(service, newTripIds);
-    console.log(
-      "changed service =>",
-      JSON.stringify(service.serviceTripsOrdered)
-    );
+
+    _services[serviceIndex].serviceTripsOrdered = serviceTrips;
     return _services;
   });
 }

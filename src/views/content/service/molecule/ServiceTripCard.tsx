@@ -6,7 +6,7 @@ import { ServiceTripCardLeft } from "../atom/ServiceTripCardLeft";
 import { ServiceTripCardMiddle } from "../atom/ServiceTripCardMiddle";
 import { ServiceTripCardRight } from "../atom/ServiceTripCardRight";
 import { DraggableTripType } from "../organism/ServiceLeftBoardContent";
-import { services } from "../organism/Services";
+import { setServices } from "../organism/Services";
 import { selectedService } from "../template/ServiceTemplate";
 import "./ServiceTripCard.css";
 
@@ -33,19 +33,29 @@ function onDblClick(tripId: number): void {
     return;
   }
 
-  // const service = BusServiceUtils.get(selectedService() as number);
-  const _services = [...services()];
-  const service = _services.filter(
-    (service) => service.id == (selectedService() as number)
-  )[0];
-  const tripIds = service.serviceTripsOrdered.map(
-    (serviceTrip) => serviceTrip.tripId
-  );
-  tripIds.push(tripId);
+  // TODO: Put in a function and move !
+  setServices((prev) => {
+    const _services = [...prev];
+    const serviceIndex = _services.indexOf(
+      _services.filter(
+        (service) => service.id == (selectedService() as number)
+      )[0]
+    );
 
-  ServiceTripOrderedUtils.addServiceTrip(service, tripIds);
+    const tripIds = _services[serviceIndex].serviceTripsOrdered.map(
+      (serviceTrip) => serviceTrip.tripId
+    );
 
-  // setServices(_services);
+    tripIds.push(tripId);
 
-  // BusServiceUtils.addTrip(tripId, selectedService() as number);
+    const serviceTrips = ServiceTripOrderedUtils.getUpdatedService(
+      _services[serviceIndex],
+      tripIds,
+      true
+    );
+
+    _services[serviceIndex].serviceTripsOrdered = serviceTrips;
+
+    return _services;
+  });
 }
