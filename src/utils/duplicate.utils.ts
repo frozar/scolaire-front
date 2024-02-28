@@ -83,6 +83,7 @@ export namespace DuplicateUtils {
       modified: [],
       newGrades: grades,
     });
+    setInDucplication(false);
     disableSpinningWheel();
   }
 }
