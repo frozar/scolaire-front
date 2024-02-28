@@ -20,7 +20,7 @@ export function AllotmentAddMenu(props: AllotmentAddMenuProps) {
           defaultColor={props.defaultColor}
           defaultName={props.defaultName}
           colorChange={props.colorChange}
-          nameChange={props.colorChange}
+          nameChange={props.nameChange}
         />
         <AllotmentAddButtons cancel={props.cancel} submit={props.submit} />
       </div>
