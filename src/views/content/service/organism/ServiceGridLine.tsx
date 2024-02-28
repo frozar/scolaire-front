@@ -1,4 +1,4 @@
-import { dragAndDrop } from "@formkit/drag-and-drop";
+import { animations, dragAndDrop } from "@formkit/drag-and-drop";
 import { For, JSXElement, Show, createSignal, onMount } from "solid-js";
 import { ServiceGridUtils } from "../../../../utils/serviceGrid.utils";
 import { ServiceGridLineFirstDiv } from "../atom/ServiceGridLineFirstDiv";
@@ -23,6 +23,10 @@ export function ServiceGridLine(props: ServiceGridLineProps): JSXElement {
       getValues: () => dragAndDropGetter(props.serviceIndex),
       setValues: (newTripIds) =>
         dragAndDropSetter(props.serviceIndex, newTripIds),
+      config: {
+        plugins: [animations({ duration: 500 })],
+        // TODO: use draggingClass to specify dragging elt style
+      },
     });
   });
 
