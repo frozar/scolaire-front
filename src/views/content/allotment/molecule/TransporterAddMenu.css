@@ -1,0 +1,22 @@
+.transporter-add-header {
+  @apply flex bg-green-base text-white py-2 px-4;
+}
+
+.transporter-add-border {
+  @apply border-2 border-green-base;
+}
+
+.transporter-add-buttons {
+  @apply flex justify-end gap-4 p-4;
+}
+
+.transporter-add-input-container {
+  @apply px-4 py-2 flex gap-x-16;
+}
+
+.transporter-add-input {
+  @apply max-w-xs;
+  label {
+    @apply text-sm;
+  }
+}
