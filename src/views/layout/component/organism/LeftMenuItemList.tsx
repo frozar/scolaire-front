@@ -70,12 +70,15 @@ export default function (props: LeftMenuItemProps) {
           const { label, menuItem, Logo, isDisabled } = menuItemArg;
 
           const effectiveIsDisabled = () => {
-            return (
-              isDisabled ||
-              (!isDisabled &&
-                getAuthenticatedUser() != undefined &&
-                getActiveMapId() == null)
-            );
+            if (getAuthenticatedUser() == undefined) {
+              return true;
+            }
+
+            if (getActiveMapId() == null) {
+              return true;
+            }
+
+            return isDisabled;
           };
 
           function isSelected() {
