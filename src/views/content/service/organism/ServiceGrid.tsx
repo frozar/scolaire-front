@@ -1,18 +1,8 @@
-import _ from "lodash";
-import {
-  For,
-  JSXElement,
-  createEffect,
-  createSignal,
-  on,
-  onMount,
-} from "solid-js";
+import { For, JSXElement, createEffect, createSignal, onMount } from "solid-js";
 import { ServiceGridUtils } from "../../../../utils/serviceGrid.utils";
-import { ServiceTripOrderedUtils } from "../../../../utils/serviceTripPlacement.utils";
 import { ServiceGridTop } from "../molecule/ServiceGridTop";
-import { hlpMatrix } from "../template/ServiceTemplate";
 import { ServiceGridLine } from "./ServiceGridLine";
-import { refScroll, services, setServices } from "./Services";
+import { refScroll, services } from "./Services";
 
 export const [zoom, setZoom] = createSignal(8);
 
@@ -32,40 +22,45 @@ export function ServiceGrid(): JSXElement {
   // TODO: Simplify, make it only reactive to services()
   // => Make another createEffect for hlpMatrix ?
   // createEffect(() => {
+
   // ! TEMPORAIRE
-  createEffect(
-    on(hlpMatrix, () => {
-      /*
+  // createEffect(
+  //   on(hlpMatrix, () => {
+  //     /*
 
-    React on services() and hlpMatrix()
-    
-    It's purpose is to update serviceTripsOrdered when serviceTripIds is modified,
-    (when a serviceTrip is added or deleted)
+  //   React on services() and hlpMatrix()
 
-    */
+  //   It's purpose is to update serviceTripsOrdered when serviceTripIds is modified,
+  //   (when a serviceTrip is added or deleted)
 
-      const _services = _.cloneDeep(services());
+  //   */
 
-      const serviceTripIds = _services
-        .flatMap((service) => service.tripIds)
-        .sort((a, b) => a - b);
+  //     const _services = _.cloneDeep(services());
 
-      const serviceTripOrderedIds = _services
-        .flatMap((service) => service.serviceTripsOrdered)
-        .map((serviceTrip) => serviceTrip.tripId)
-        .sort((a, b) => a - b);
+  //     const serviceTripIds = _services
+  //       .flatMap((service) => service.tripIds)
+  //       .sort((a, b) => a - b);
 
-      // Avoiding infinite loop
-      if (
-        !_.isEqual(serviceTripIds, serviceTripOrderedIds) &&
-        Object.keys(hlpMatrix()).length > 0
-      ) {
-        const updatedServices =
-          ServiceTripOrderedUtils.getUpdatedServices(_services);
-        if (updatedServices) setServices(updatedServices);
-      }
-    })
-  );
+  //     const serviceTripOrderedIds = _services
+  //       .flatMap((service) => service.serviceTripsOrdered)
+  //       .map((serviceTrip) => serviceTrip.tripId)
+  //       .sort((a, b) => a - b);
+
+  //     // Avoiding infinite loop
+  //     if (
+  //       !_.isEqual(serviceTripIds, serviceTripOrderedIds) &&
+  //       Object.keys(hlpMatrix()).length > 0
+  //     ) {
+  //       const updatedServices =
+  //         ServiceTripOrderedUtils.getUpdatedServices(_services);
+  //       if (updatedServices) setServices(updatedServices);
+  //     }
+  //   })
+  // );
+
+  createEffect(() => {
+    console.log("services()", services());
+  });
 
   return (
     <div ref={setRef}>

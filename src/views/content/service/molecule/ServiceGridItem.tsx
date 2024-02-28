@@ -23,7 +23,11 @@ export function ServiceGridItem(props: ServiceGridItemProps): JSXElement {
           width={ServiceGridUtils.widthCssValue(props.serviceTrip.waitingTime)}
         />
       </Show>
-
+      {/*
+      TODO: Enlever la condition `props.serviceTripIndex != 0` 
+          car agit en doublons avec le fait que de toute façcon le hlp
+          correspondant doit être à 0
+      */}
       <Show when={props.serviceTripIndex != 0 && props.hlpWidth > 0}>
         <ServiceGridHlp width={props.hlpWidth} />
       </Show>
