@@ -20,30 +20,9 @@ export function ServiceGridLine(props: ServiceGridLineProps): JSXElement {
   onMount(() => {
     dragAndDrop<number>({
       parent: ref(),
-      getValues: () => {
-        console.log("calledGetter");
-
-        return services()[props.serviceIndex].serviceTripsOrdered.map(
-          (serviceTrip) => serviceTrip.tripId
-        );
-      },
-      // Faire comme dans le labo
-      setValues: (newTripIds) => {
-        console.log("called-Setter");
-
-        setServices((prev) => {
-          const _services = [...prev];
-          const service = _services[props.serviceIndex];
-          // !
-          service.serviceTripsOrdered = newTripIds.map(
-            (newTripId) =>
-              service.serviceTripsOrdered.filter(
-                (serviceTrip) => serviceTrip.tripId == newTripId
-              )[0]
-          );
-          return _services;
-        });
-      },
+      getValues: () => dragAndDropGetter(props.serviceIndex),
+      setValues: (newTripIds) =>
+        dragAndDropSetter(props.serviceIndex, newTripIds),
     });
   });
 
@@ -83,4 +62,24 @@ export function ServiceGridLine(props: ServiceGridLineProps): JSXElement {
       </div>
     </div>
   );
+}
+
+function dragAndDropGetter(serviceIndex: number): number[] {
+  return services()[serviceIndex].serviceTripsOrdered.map(
+    (serviceTrip) => serviceTrip.tripId
+  );
+}
+
+function dragAndDropSetter(serviceIndex: number, newTripIds: number[]): void {
+  setServices((prev) => {
+    const _services = [...prev];
+    const service = _services[serviceIndex];
+    service.serviceTripsOrdered = newTripIds.map(
+      (newTripId) =>
+        service.serviceTripsOrdered.filter(
+          (serviceTrip) => serviceTrip.tripId == newTripId
+        )[0]
+    );
+    return _services;
+  });
 }
