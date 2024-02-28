@@ -5,7 +5,7 @@ import { ServiceGridLineFirstDiv } from "../atom/ServiceGridLineFirstDiv";
 import { ServiceGridItem } from "../molecule/ServiceGridItem";
 import { selectedService } from "../template/ServiceTemplate";
 import "./ServiceGridLine.css";
-import { services } from "./Services";
+import { services, setServices } from "./Services";
 
 interface ServiceGridLineProps {
   serviceIndex: number;
@@ -16,14 +16,37 @@ export function ServiceGridLine(props: ServiceGridLineProps): JSXElement {
   const [ref, setRef] = createSignal<HTMLDivElement>(
     document.createElement("div")
   );
-  // TODO: Specify type
+
   onMount(() => {
-    dragAndDrop({
+    dragAndDrop<number>({
       parent: ref(),
-      getValues: services()[props.serviceIndex].serviceTripsOrdered,
-      setValues: 
+      getValues: () => {
+        console.log("calledGetter");
+
+        return services()[props.serviceIndex].serviceTripsOrdered.map(
+          (serviceTrip) => serviceTrip.tripId
+        );
+      },
+      // Faire comme dans le labo
+      setValues: (newTripIds) => {
+        console.log("called-Setter");
+
+        setServices((prev) => {
+          const _services = [...prev];
+          const service = _services[props.serviceIndex];
+          // !
+          service.serviceTripsOrdered = newTripIds.map(
+            (newTripId) =>
+              service.serviceTripsOrdered.filter(
+                (serviceTrip) => serviceTrip.tripId == newTripId
+              )[0]
+          );
+          return _services;
+        });
+      },
     });
   });
+
   return (
     <div
       ref={setRef}
@@ -40,23 +63,24 @@ export function ServiceGridLine(props: ServiceGridLineProps): JSXElement {
           width={ServiceGridUtils.firstDivWidth(props.serviceIndex)}
         />
       </Show>
-
-      <For each={services()[props.serviceIndex].serviceTripsOrdered}>
-        {(serviceTrip, i) => {
-          return (
-            <ServiceGridItem
-              serviceId={services()[props.serviceIndex].id}
-              serviceTrip={serviceTrip}
-              serviceTripIndex={i()}
-              hlpWidth={serviceTrip.hlp}
-              outsideScheduleRange={ServiceGridUtils.isOutsideRange(
-                services()[props.serviceIndex],
-                i()
-              )}
-            />
-          );
-        }}
-      </For>
+      <div class="service-grid-line" ref={setRef}>
+        <For each={services()[props.serviceIndex].serviceTripsOrdered}>
+          {(serviceTrip, i) => {
+            return (
+              <ServiceGridItem
+                serviceId={services()[props.serviceIndex].id}
+                serviceTrip={serviceTrip}
+                serviceTripIndex={i()}
+                hlpWidth={serviceTrip.hlp}
+                outsideScheduleRange={ServiceGridUtils.isOutsideRange(
+                  services()[props.serviceIndex],
+                  i()
+                )}
+              />
+            );
+          }}
+        </For>
+      </div>
     </div>
   );
 }
