@@ -17,7 +17,6 @@ import { COLOR_GREEN_BASE } from "../../../map/constant";
 import BoardTitle from "../atom/BoardTitle";
 import { DrawHelperButton } from "../atom/DrawHelperButton";
 import { AllotmentSelectionList } from "../molecule/AllotmentSelectionList";
-import { BusSelectionList } from "../molecule/BusSelectionList";
 import ButtonIcon from "../molecule/ButtonIcon";
 import { AssociatedItem } from "../molecule/CheckableElementList";
 import { LabeledColorPicker } from "../molecule/LabeledColorPicker";
@@ -27,6 +26,7 @@ import SchoolsEnumeration from "../molecule/SchoolsEnumeration";
 import { AssignDaysAndDirectionToTrip } from "./AssignDaysAndDirectionToTrip";
 import { CheckableGradeListBySchool } from "./CheckableGradeListBySchool";
 import CollapsibleElement from "./CollapsibleElement";
+import { DisplayBestVehicle } from "./DisplayBestVehicle";
 import "./DrawTripBoard.css";
 import Metrics from "./Metrics";
 import { TripTimeline } from "./TripTimeline";
@@ -126,7 +126,6 @@ export function DrawTripBoard() {
         >
           <AssignDaysAndDirectionToTrip />
           <PathSelection />
-          <BusSelectionList />
           <AllotmentSelectionList />
         </Show>
       </Show>
@@ -151,6 +150,9 @@ export function DrawTripBoard() {
           <Metrics trip={currentDrawTrip()} />
         </CollapsibleElement>
         <DisplayTripDaysAndDirection trip={currentDrawTrip()} />
+        <DisplayBestVehicle
+          allotment_id={Number(currentDrawTrip().allotmentId)}
+        />
         <LabeledInputField
           label="Nom de la course"
           value={currentDrawTrip()?.name ?? ""}

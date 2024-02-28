@@ -151,7 +151,7 @@ export default function () {
           label:
             addLineCurrentStep() === AddLineStep.schoolSelection
               ? "Annuler"
-              : "Précédant",
+              : "Précédent",
         }}
       />
     </div>

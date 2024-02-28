@@ -13,7 +13,7 @@ export function DisplayTripDaysAndDirection(
   props: DisplayTripDaysAndDirectionProps
 ): JSXElement {
   return (
-    <CollapsibleElement title="Jours, direction, bus et lot assignés à la course">
+    <CollapsibleElement title="Jours et direction assignés à la course">
       <div class="flex items-center gap-1">
         <p class="font-bold text-sm">Direction:</p>
         <p class="text-sm">
@@ -28,12 +28,6 @@ export function DisplayTripDaysAndDirection(
         <For each={props?.trip?.days}>
           {(day) => <p class="text-sm">{CalendarUtils.dayToFrench(day)}</p>}
         </For>
-      </div>
-      <div class="flex items-center gap-1">
-        <p class="font-bold text-sm">Véhicule:</p>
-        <p class="text-sm">
-          {TripUtils.tripBusIdToString(props?.trip?.busCategoriesId)}
-        </p>
       </div>
       <div class="flex items-center gap-1">
         <p class="font-bold text-sm">Lot:</p>

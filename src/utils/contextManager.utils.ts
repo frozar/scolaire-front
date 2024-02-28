@@ -5,7 +5,6 @@ import {
 } from "../_entities/trip-direction.entity";
 import { TripEntity, TripType } from "../_entities/trip.entity";
 import { WaypointEntity } from "../_entities/waypoint.entity";
-import { step } from "../_services/osrm.service";
 import { updatePointColor } from "../leafletUtils";
 import {
   addNewUserInformation,
@@ -31,7 +30,6 @@ import {
   setDisplayTripMode,
   setDrawTripCheckableGrade,
   setIsInUpdate,
-  stepsWeight,
 } from "../views/content/board/component/organism/DrawTripBoard";
 import { changeBoard } from "../views/content/board/component/template/ContextManager";
 import { getSelectedLine } from "../views/content/map/component/organism/BusLines";
@@ -104,16 +102,6 @@ export namespace ContextUtils {
           onTripDirection()
         );
 
-        if (currentDrawTrip().busCategoriesId == 0) {
-          addNewUserInformation({
-            displayed: true,
-            level: MessageLevelEnum.error,
-            type: MessageTypeEnum.global,
-            content: "Veuillez choisir une catégorie de bus",
-          });
-          break;
-        }
-
         setCurrentDrawTrip((trip) => {
           if (!trip) return trip;
           return { ...trip, grades, days, tripDirectionId: tripDirection.id };
@@ -162,13 +150,13 @@ export namespace ContextUtils {
     }
     disableSpinningWheel();
 
-    function removeDouble(step: step, index: number): unknown {
-      const res =
-        stepsWeight()
-          .map((stepTest) => stepTest.flaxib_way_id)
-          .indexOf(step.flaxib_way_id) === index;
-      return res;
-    }
+    // function removeDouble(step: step, index: number): unknown {
+    //   const res =
+    //     stepsWeight()
+    //       .map((stepTest) => stepTest.flaxib_way_id)
+    //       .indexOf(step.flaxib_way_id) === index;
+    //   return res;
+    // }
   }
 
   export function prevStep() {
