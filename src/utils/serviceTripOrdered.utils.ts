@@ -283,6 +283,10 @@ export namespace ServiceTripOrderedUtils {
     return { hlp, maxTimeOfTimeRange, earliestEndHour, earliestDepartureHour };
   }
 
+  export function updateServiceTripsInformations(): void {
+    /* Update values : hlp, startHour, endHour, waitingTime */
+  }
+
   export function getUpdatedServices(_services: ServiceType[]): ServiceType[] {
     /*
     Create service.serviceTripsOrdered depending on service.tripIds
