@@ -17,25 +17,3 @@ export function VoirieTimeItem(props: VoirieTimeItem) {
     </>
   );
 }
-
-// export default function (props: GradeSelectProps) {
-//   return (
-//     <select
-//       class="grade-selection"
-//       onChange={(e) => props.onChange(e.target)}
-//       disabled={props.selector.disabled}
-//     >
-//       <option value="default">Sélectionner une grade</option>
-//       <For each={props.grades}>
-//         {(grade) => (
-//           <option
-//             selected={grade.id == Number(props.selector.value)}
-//             value={grade.id}
-//           >
-//             {grade.name}
-//           </option>
-//         )}
-//       </For>
-//     </select>
-//   );
-// }
