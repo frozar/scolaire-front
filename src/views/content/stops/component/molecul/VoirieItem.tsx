@@ -3,7 +3,7 @@ import { OsrmService, weight } from "../../../../../_services/osrm.service";
 import CheckIcon from "../../../../../icons/CheckIcon";
 import TrashIcon from "../../../../../icons/TrashIcon";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
-import { setWays } from "../../../map/Map";
+import { setWays, ways } from "../../../map/Map";
 import {
   getSelectedWay,
   setSelectedWay,
@@ -101,8 +101,20 @@ function Delete(way_id: number, weight: weight): void {
   OsrmService.deleteWeight(way_id, weight.start, weight.end);
 
   setWays((ways) => {
-    return ways.filter((step) => step.flaxib_way_id != way_id);
+    return ways.map((way) => {
+      if (way.flaxib_way_id == way_id) {
+        return {
+          ...way,
+          flaxib_weight: way.flaxib_weight.filter(
+            (currentWeight) =>
+              currentWeight.end != weight.end ||
+              currentWeight.start != weight.start
+          ),
+        };
+      }
+      return way;
+    });
   });
 
-  setSelectedWay();
+  setSelectedWay(ways().filter((way) => way.flaxib_way_id == way_id)[0]);
 }
