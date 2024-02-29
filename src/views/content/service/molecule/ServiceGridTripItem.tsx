@@ -52,7 +52,7 @@ export function ServiceGridTripItem(
         <ButtonIcon
           icon={<TrashIcon />}
           onClick={() =>
-            removeTripFromService(props.serviceTrip.tripId, props.serviceId)
+            removeServiceTrip(props.serviceTrip.tripId, props.serviceId)
           }
           class="service-grid-item-trip-trash-button"
         />
@@ -61,7 +61,7 @@ export function ServiceGridTripItem(
   );
 }
 
-function removeTripFromService(tripId: number, serviceId: number): void {
+function removeServiceTrip(tripId: number, serviceId: number): void {
   setServices((prev) => {
     const services = [...prev];
 

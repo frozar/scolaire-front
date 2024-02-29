@@ -33,29 +33,28 @@ function onDblClick(tripId: number): void {
     return;
   }
 
-  // TODO: Put in a function and move !
   setServices((prev) => {
-    const _services = [...prev];
-    const serviceIndex = _services.indexOf(
-      _services.filter(
-        (service) => service.id == (selectedService() as number)
-      )[0]
-    );
+    const services = [...prev];
+    const service = services.filter(
+      (service) => service.id == selectedService()
+    )[0];
 
-    const tripIds = _services[serviceIndex].serviceTripsOrdered.map(
+    const tripIds = service.serviceTripsOrdered.map(
       (serviceTrip) => serviceTrip.tripId
     );
-
     tripIds.push(tripId);
 
     const serviceTrips = ServiceTripOrderedUtils.getUpdatedService(
-      _services[serviceIndex],
+      service,
       tripIds,
       true
     );
 
-    _services[serviceIndex].serviceTripsOrdered = serviceTrips;
-
-    return _services;
+    for (const _service of services) {
+      if (_service.id == selectedService()) {
+        _service.serviceTripsOrdered = serviceTrips;
+      }
+    }
+    return services;
   });
 }

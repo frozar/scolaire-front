@@ -9,10 +9,7 @@ import {
   ServiceType,
   services,
 } from "../views/content/service/organism/Services";
-import {
-  hlpMatrix,
-  selectedService,
-} from "../views/content/service/template/ServiceTemplate";
+import { hlpMatrix } from "../views/content/service/template/ServiceTemplate";
 import { ServiceTripOrderedUtils } from "./serviceTripOrdered.utils";
 import { TripUtils } from "./trip.utils";
 
@@ -106,11 +103,22 @@ export namespace ServiceGridUtils {
     ref.style.scrollBehavior = "smooth";
   }
 
+  function getEarliestStart(tripId: number): number {
+    /* return minutes */
+
+    const firstTrip = TripUtils.get(tripId);
+    const tripDuration = Math.round(
+      (firstTrip.metrics?.duration as number) / 60
+    );
+
+    const earliestArrival = ServiceGridUtils.getEarliestArrival(tripId);
+
+    return earliestArrival - tripDuration;
+  }
+
   export function firstDivWidth(serviceIndex: number): string {
     return (
-      ServiceGridUtils.getEarliestStart(
-        services()[serviceIndex].serviceTripsOrdered[0].tripId
-      ) *
+      getEarliestStart(services()[serviceIndex].serviceTripsOrdered[0].tripId) *
         zoom() +
       "px"
     );
@@ -136,19 +144,7 @@ export namespace ServiceGridUtils {
     return GradeEntity.getStringFromHourFormat({ hour, minutes });
   }
 
-  export function getEarliestStart(tripId: number): number {
-    /* return minutes */
-
-    const firstTrip = TripUtils.get(tripId);
-    const tripDuration = Math.round(
-      (firstTrip.metrics?.duration as number) / 60
-    );
-
-    const earliestArrival = ServiceGridUtils.getEarliestArrival(tripId);
-
-    return earliestArrival - tripDuration;
-  }
-
+  // TODO: Refactor with getLatestArrival()
   export function getEarliestArrival(tripId: number): number {
     /* return minutes */
 
@@ -215,23 +211,6 @@ export namespace ServiceGridUtils {
     const idActualTrip = serviceTripIds[serviceTripIndex];
 
     return hlpMatrix()[idActualTrip][idPreviousTrip];
-  }
-
-  export function removeTrip(
-    services: ServiceType[],
-    tripId: number
-  ): ServiceType[] {
-    const serviceToChange = services.filter(
-      (service) => service.id == selectedService()
-    )[0];
-    const index = services.indexOf(serviceToChange);
-    serviceToChange.tripIds = serviceToChange.tripIds.filter(
-      (_tripId) => _tripId != tripId
-    );
-
-    services.splice(index, 1, serviceToChange);
-
-    return services;
   }
 
   export function addService(services: ServiceType[]): ServiceType[] {

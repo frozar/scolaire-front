@@ -75,10 +75,7 @@ function dragAndDropGetter(serviceIndex: number): number[] {
   );
 }
 
-// TODO: Try to replace usage of serviceIndex by serviceId
 function dragAndDropSetter(serviceIndex: number, newTripIds: number[]): void {
-  console.log("newTripIds", newTripIds);
-
   setServices((prev) => {
     const _services = [...prev];
     const serviceTrips = ServiceTripOrderedUtils.getUpdatedService(
