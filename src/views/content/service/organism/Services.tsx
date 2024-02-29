@@ -13,11 +13,11 @@ export type ServiceType = {
   name: string;
   serviceGroupId: number;
   // TODO: Rename to serviceTrips
-  serviceTripsOrdered: ServiceTripOrderedType[];
+  serviceTrips: ServiceTrip[];
 };
 
 // TODO: Rename to serviceTripOrdered
-export type ServiceTripOrderedType = {
+export type ServiceTrip = {
   tripId: number;
   hlp: number; // in minutes
   endHour: number; // in minutes

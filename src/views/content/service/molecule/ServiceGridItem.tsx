@@ -3,13 +3,13 @@ import { JSXElement, Show } from "solid-js";
 import { ServiceGridUtils } from "../../../../utils/serviceGrid.utils";
 import { ServiceGridHlp } from "../atom/ServiceGridHlp";
 import { ServiceGridWaitingItem } from "../atom/ServiceGridWaitingItem";
-import { ServiceTripOrderedType } from "../organism/Services";
+import { ServiceTrip } from "../organism/Services";
 import "./ServiceGridItem.css";
 import { ServiceGridTripItem } from "./ServiceGridTripItem";
 
 interface ServiceGridItemProps {
   serviceTripIndex: number;
-  serviceTrip: ServiceTripOrderedType;
+  serviceTrip: ServiceTrip;
   serviceId: number;
   hlpWidth: number;
   outsideScheduleRange: boolean;

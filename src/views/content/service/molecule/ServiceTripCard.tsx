@@ -1,7 +1,7 @@
 import { JSXElement } from "solid-js";
 
 import { addNewGlobalWarningInformation } from "../../../../signaux";
-import { ServiceTripOrderedUtils } from "../../../../utils/serviceTripOrdered.utils";
+import { ServiceTripsUtils } from "../../../../utils/serviceTrips.utils";
 import { ServiceTripCardLeft } from "../atom/ServiceTripCardLeft";
 import { ServiceTripCardMiddle } from "../atom/ServiceTripCardMiddle";
 import { ServiceTripCardRight } from "../atom/ServiceTripCardRight";
@@ -39,12 +39,12 @@ function onDblClick(tripId: number): void {
       (service) => service.id == selectedService()
     )[0];
 
-    const tripIds = service.serviceTripsOrdered.map(
+    const tripIds = service.serviceTrips.map(
       (serviceTrip) => serviceTrip.tripId
     );
     tripIds.push(tripId);
 
-    const serviceTrips = ServiceTripOrderedUtils.getUpdatedService(
+    const serviceTrips = ServiceTripsUtils.getUpdatedService(
       service,
       tripIds,
       true
@@ -52,7 +52,7 @@ function onDblClick(tripId: number): void {
 
     for (const _service of services) {
       if (_service.id == selectedService()) {
-        _service.serviceTripsOrdered = serviceTrips;
+        _service.serviceTrips = serviceTrips;
       }
     }
     return services;

@@ -1,7 +1,7 @@
 import { animations, dragAndDrop } from "@formkit/drag-and-drop";
 import { For, JSXElement, Show, createSignal, onMount } from "solid-js";
 import { ServiceGridUtils } from "../../../../utils/serviceGrid.utils";
-import { ServiceTripOrderedUtils } from "../../../../utils/serviceTripOrdered.utils";
+import { ServiceTripsUtils } from "../../../../utils/serviceTrips.utils";
 import { ServiceGridLineFirstDiv } from "../atom/ServiceGridLineFirstDiv";
 import { ServiceGridItem } from "../molecule/ServiceGridItem";
 import { selectedService } from "../template/ServiceTemplate";
@@ -40,15 +40,13 @@ export function ServiceGridLine(props: ServiceGridLineProps): JSXElement {
         active: selectedService() == services()[props.serviceIndex].id,
       }}
     >
-      <Show
-        when={services()[props.serviceIndex].serviceTripsOrdered.length != 0}
-      >
+      <Show when={services()[props.serviceIndex].serviceTrips.length != 0}>
         <ServiceGridLineFirstDiv
           width={ServiceGridUtils.firstDivWidth(props.serviceIndex)}
         />
       </Show>
       <div class="service-grid-line" ref={setRef}>
-        <For each={services()[props.serviceIndex].serviceTripsOrdered}>
+        <For each={services()[props.serviceIndex].serviceTrips}>
           {(serviceTrip, i) => {
             return (
               <ServiceGridItem
@@ -70,7 +68,7 @@ export function ServiceGridLine(props: ServiceGridLineProps): JSXElement {
 }
 
 function dragAndDropGetter(serviceIndex: number): number[] {
-  return services()[serviceIndex].serviceTripsOrdered.map(
+  return services()[serviceIndex].serviceTrips.map(
     (serviceTrip) => serviceTrip.tripId
   );
 }
@@ -78,13 +76,13 @@ function dragAndDropGetter(serviceIndex: number): number[] {
 function dragAndDropSetter(serviceIndex: number, newTripIds: number[]): void {
   setServices((prev) => {
     const _services = [...prev];
-    const serviceTrips = ServiceTripOrderedUtils.getUpdatedService(
+    const serviceTrips = ServiceTripsUtils.getUpdatedService(
       _services[serviceIndex],
       newTripIds,
       false
     );
 
-    _services[serviceIndex].serviceTripsOrdered = serviceTrips;
+    _services[serviceIndex].serviceTrips = serviceTrips;
     return _services;
   });
 }

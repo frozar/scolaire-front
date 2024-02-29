@@ -1,18 +1,18 @@
 import { JSXElement, Show } from "solid-js";
 import TrashIcon from "../../../../icons/TrashIcon";
 import { ServiceGridUtils } from "../../../../utils/serviceGrid.utils";
-import { ServiceTripOrderedUtils } from "../../../../utils/serviceTripOrdered.utils";
+import { ServiceTripsUtils } from "../../../../utils/serviceTrips.utils";
 import { TripUtils } from "../../../../utils/trip.utils";
 import ButtonIcon from "../../board/component/molecule/ButtonIcon";
 import { ServiceGridItemStartEndStopNames } from "../atom/ServiceGridItemStartEndStopNames";
 import { ServiceGridItemTripName } from "../atom/ServiceGridItemTripName";
 import { ServiceGridTripItemHours } from "../atom/ServiceGridTripItemHours";
-import { ServiceTripOrderedType, setServices } from "../organism/Services";
+import { ServiceTrip, setServices } from "../organism/Services";
 import { selectedService } from "../template/ServiceTemplate";
 import "./ServiceGridTripItem.css";
 
 interface ServiceGridTripItemProps {
-  serviceTrip: ServiceTripOrderedType;
+  serviceTrip: ServiceTrip;
   serviceId: number;
   serviceTripIndex: number;
   serviceTripWidth: number;
@@ -66,11 +66,11 @@ function removeServiceTrip(tripId: number, serviceId: number): void {
     const services = [...prev];
 
     const service = services.filter((_service) => _service.id == serviceId)[0];
-    const newTripIds = service.serviceTripsOrdered
+    const newTripIds = service.serviceTrips
       .map((serviceTrip) => serviceTrip.tripId)
       .filter((_tripId) => _tripId != tripId);
 
-    const serviceTrips = ServiceTripOrderedUtils.getUpdatedService(
+    const serviceTrips = ServiceTripsUtils.getUpdatedService(
       service,
       newTripIds,
       false
@@ -78,7 +78,7 @@ function removeServiceTrip(tripId: number, serviceId: number): void {
 
     for (const _service of services) {
       if (_service.id == serviceId) {
-        _service.serviceTripsOrdered = serviceTrips;
+        _service.serviceTrips = serviceTrips;
       }
     }
     return services;

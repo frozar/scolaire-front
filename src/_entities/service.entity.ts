@@ -3,7 +3,7 @@ import {
   ServiceUpdateType,
 } from "../_services/service.service";
 import {
-  ServiceTripOrderedType,
+  ServiceTrip,
   ServiceType,
 } from "../views/content/service/organism/Services";
 
@@ -25,7 +25,7 @@ export type ServiceDBType = {
 export namespace ServiceEntity {
   function buildServiceTrip(
     dbServiceTrips: ServiceTripDBType[]
-  ): ServiceTripOrderedType[] {
+  ): ServiceTrip[] {
     return dbServiceTrips.map((dbServiceTrip) => {
       return {
         tripId: dbServiceTrip.trip_id,
@@ -42,7 +42,7 @@ export namespace ServiceEntity {
       id: dbService.id,
       name: dbService.name,
       serviceGroupId: dbService.service_group_id,
-      serviceTripsOrdered: buildServiceTrip(dbService.service_trips),
+      serviceTrips: buildServiceTrip(dbService.service_trips),
     };
   }
 
@@ -51,14 +51,14 @@ export namespace ServiceEntity {
       id: service.id,
       name: service.name,
       service_group_id: service.serviceGroupId,
-      service_trips: service.serviceTripsOrdered.map((serviceTrip) =>
+      service_trips: service.serviceTrips.map((serviceTrip) =>
         dbFormatServiceTrip(serviceTrip)
       ),
     };
   }
 
   export function dbFormatServiceTrip(
-    serviceTrip: ServiceTripOrderedType
+    serviceTrip: ServiceTrip
   ): ServiceTripDBType {
     return {
       trip_id: serviceTrip.tripId,
