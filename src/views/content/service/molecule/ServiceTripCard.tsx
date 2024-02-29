@@ -1,10 +1,12 @@
 import { JSXElement } from "solid-js";
 
-import { BusServiceUtils } from "../../../../utils/busService.utils";
+import { addNewGlobalWarningInformation } from "../../../../signaux";
+import { ServiceTripsUtils } from "../../../../utils/serviceTrips.utils";
 import { ServiceTripCardLeft } from "../atom/ServiceTripCardLeft";
 import { ServiceTripCardMiddle } from "../atom/ServiceTripCardMiddle";
 import { ServiceTripCardRight } from "../atom/ServiceTripCardRight";
 import { DraggableTripType } from "../organism/ServiceLeftBoardContent";
+import { setServices } from "../organism/Services";
 import { selectedService } from "../template/ServiceTemplate";
 import "./ServiceTripCard.css";
 
@@ -27,10 +29,32 @@ export function ServiceTripCard(props: ServiceTripCardProps): JSXElement {
 
 function onDblClick(tripId: number): void {
   if (!selectedService()) {
-    // TODO: Display user message
-    console.log("No service selected");
+    addNewGlobalWarningInformation("Veuillez d'abord sélectionner un service");
     return;
   }
 
-  BusServiceUtils.addTrip(tripId, selectedService() as number);
+  setServices((prev) => {
+    const services = [...prev];
+    const service = services.filter(
+      (service) => service.id == selectedService()
+    )[0];
+
+    const tripIds = service.serviceTrips.map(
+      (serviceTrip) => serviceTrip.tripId
+    );
+    tripIds.push(tripId);
+
+    const serviceTrips = ServiceTripsUtils.getUpdatedService(
+      service,
+      tripIds,
+      true
+    );
+
+    for (const _service of services) {
+      if (_service.id == selectedService()) {
+        _service.serviceTrips = serviceTrips;
+      }
+    }
+    return services;
+  });
 }

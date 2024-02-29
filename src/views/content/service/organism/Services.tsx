@@ -12,11 +12,10 @@ export type ServiceType = {
   id: number;
   name: string;
   serviceGroupId: number;
-  tripIds: number[];
-  serviceTripsOrdered: ServiceTripOrderedType[];
+  serviceTrips: ServiceTrip[];
 };
 
-export type ServiceTripOrderedType = {
+export type ServiceTrip = {
   tripId: number;
   hlp: number; // in minutes
   endHour: number; // in minutes

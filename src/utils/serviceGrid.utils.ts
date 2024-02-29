@@ -6,15 +6,11 @@ import {
 import { TripPointType } from "../_entities/trip.entity";
 import { zoom } from "../views/content/service/organism/ServiceGrid";
 import {
-  ServiceTripOrderedType,
   ServiceType,
   services,
 } from "../views/content/service/organism/Services";
-import {
-  hlpMatrix,
-  selectedService,
-} from "../views/content/service/template/ServiceTemplate";
-import { ServiceTripOrderedUtils } from "./serviceTripPlacement.utils";
+import { hlpMatrix } from "../views/content/service/template/ServiceTemplate";
+import { ServiceTripsUtils } from "./serviceTrips.utils";
 import { TripUtils } from "./trip.utils";
 
 export type HlpMatrixType = {
@@ -64,9 +60,9 @@ export namespace ServiceGridUtils {
       (service) => service.id == serviceId
     )[0];
     if (!actualService) return;
-    if (actualService.serviceTripsOrdered.length == 0) return;
+    if (actualService.serviceTrips.length == 0) return;
 
-    const endHour = actualService.serviceTripsOrdered[0].endHour;
+    const endHour = actualService.serviceTrips[0].endHour;
 
     if (!scrollSmooth) ref.style.scrollBehavior = "auto";
 
@@ -107,11 +103,22 @@ export namespace ServiceGridUtils {
     ref.style.scrollBehavior = "smooth";
   }
 
+  function getEarliestStart(tripId: number): number {
+    /* return minutes */
+
+    const firstTrip = TripUtils.get(tripId);
+    const tripDuration = Math.round(
+      (firstTrip.metrics?.duration as number) / 60
+    );
+
+    const earliestArrival = ServiceGridUtils.getEarliestArrival(tripId);
+
+    return earliestArrival - tripDuration;
+  }
+
   export function firstDivWidth(serviceIndex: number): string {
     return (
-      ServiceGridUtils.getEarliestStart(
-        services()[serviceIndex].serviceTripsOrdered[0].tripId
-      ) *
+      getEarliestStart(services()[serviceIndex].serviceTrips[0].tripId) *
         zoom() +
       "px"
     );
@@ -137,19 +144,7 @@ export namespace ServiceGridUtils {
     return GradeEntity.getStringFromHourFormat({ hour, minutes });
   }
 
-  export function getEarliestStart(tripId: number): number {
-    /* return minutes */
-
-    const firstTrip = TripUtils.get(tripId);
-    const tripDuration = Math.round(
-      (firstTrip.metrics?.duration as number) / 60
-    );
-
-    const earliestArrival = ServiceGridUtils.getEarliestArrival(tripId);
-
-    return earliestArrival - tripDuration;
-  }
-
+  // TODO: Refactor with getLatestArrival()
   export function getEarliestArrival(tripId: number): number {
     /* return minutes */
 
@@ -202,40 +197,20 @@ export namespace ServiceGridUtils {
 
   export function getHlpDuration(
     serviceTripIds: number[],
-    serviceTripsOrdered: ServiceTripOrderedType[],
     serviceTripIndex: number
   ): number {
     /*
     Return duration between :
-    - start of source trip (in serviceTrips)
-    - end of target trip (in serviceTripsOrdered)
+    - start of source trip
+    - end of target trip
     
     Return minutes
     */
 
-    const idPreviousTrip = (
-      serviceTripsOrdered.at(-1) as ServiceTripOrderedType
-    ).tripId;
+    const idPreviousTrip = serviceTripIds[serviceTripIndex - 1];
     const idActualTrip = serviceTripIds[serviceTripIndex];
 
     return hlpMatrix()[idActualTrip][idPreviousTrip];
-  }
-
-  export function removeTrip(
-    services: ServiceType[],
-    tripId: number
-  ): ServiceType[] {
-    const serviceToChange = services.filter(
-      (service) => service.id == selectedService()
-    )[0];
-    const index = services.indexOf(serviceToChange);
-    serviceToChange.tripIds = serviceToChange.tripIds.filter(
-      (_tripId) => _tripId != tripId
-    );
-
-    services.splice(index, 1, serviceToChange);
-
-    return services;
   }
 
   export function addService(services: ServiceType[]): ServiceType[] {
@@ -250,8 +225,7 @@ export namespace ServiceGridUtils {
       // TODO: Do not use raw value
       serviceGroupId: 1,
       name: "default name",
-      tripIds: [],
-      serviceTripsOrdered: [],
+      serviceTrips: [],
     };
 
     services.push(newService);
@@ -263,10 +237,9 @@ export namespace ServiceGridUtils {
     service: ServiceType,
     serviceTripIndex: number
   ): boolean {
-    const tripId = service.serviceTripsOrdered[serviceTripIndex].tripId;
-    const departureHour =
-      service.serviceTripsOrdered[serviceTripIndex].startHour;
-    const endHour = service.serviceTripsOrdered[serviceTripIndex].endHour;
+    const tripId = service.serviceTrips[serviceTripIndex].tripId;
+    const departureHour = service.serviceTrips[serviceTripIndex].startHour;
+    const endHour = service.serviceTrips[serviceTripIndex].endHour;
 
     const tripDirection = TripDirectionEntity.FindDirectionById(
       TripUtils.get(tripId).tripDirectionId
@@ -274,7 +247,7 @@ export namespace ServiceGridUtils {
     const minTimeOfTimeRange = ServiceGridUtils.getEarliestArrival(tripId);
     const maxTimeOfTimeRange = ServiceGridUtils.getLatestArrival(tripId);
 
-    return !ServiceTripOrderedUtils.isCase2(
+    return !ServiceTripsUtils.isCase2(
       departureHour,
       endHour,
       tripDirection,

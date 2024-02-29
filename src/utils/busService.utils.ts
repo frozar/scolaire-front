@@ -25,22 +25,6 @@ export namespace BusServiceUtils {
     });
   }
 
-  export function addTrip(tripId: number, serviceId: number): void {
-    setServices((prev) => {
-      const services = [...prev];
-
-      const serviceToChange = BusServiceUtils.get(serviceId);
-
-      const index = services.indexOf(serviceToChange);
-
-      serviceToChange.tripIds.push(tripId);
-
-      services.splice(index, 1, serviceToChange);
-
-      return services;
-    });
-  }
-
   export function getStartAndEndTripLatLngs(): {
     latLngs: LatLng[];
     tripIds: number[];

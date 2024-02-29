@@ -3,7 +3,7 @@ import {
   TripDirectionEnum,
 } from "../_entities/trip-direction.entity";
 import {
-  ServiceTripOrderedType,
+  ServiceTrip,
   ServiceType,
 } from "../views/content/service/organism/Services";
 import { hlpMatrix } from "../views/content/service/template/ServiceTemplate";
@@ -17,7 +17,7 @@ export enum CaseEnum {
   case4,
 }
 
-export namespace ServiceTripOrderedUtils {
+export namespace ServiceTripsUtils {
   export function isCase2(
     earliestDepartureHour: number,
     earliestEndHour: number,
@@ -74,7 +74,7 @@ export namespace ServiceTripOrderedUtils {
     maxTimeOfTimeRange: number
   ): CaseEnum | void {
     if (
-      ServiceTripOrderedUtils.isCase2(
+      ServiceTripsUtils.isCase2(
         earliestDepartureHour,
         earliestEndHour,
         tripDirection,
@@ -104,28 +104,33 @@ export namespace ServiceTripOrderedUtils {
     return;
   }
 
-  function updateServiceCase1(
-    service: ServiceType,
+  function updateServiceTripsCase1(
+    newServiceTrips: ServiceTrip[],
     tripId: number,
     tripDirection: TripDirectionEnum,
     minTimeOfTimeRange: number,
     tripDuration: number
-  ) {
+  ): ServiceTrip[] {
+    /* Case 1 : First serviceTrip of the service */
+
     const endHour =
       tripDirection == TripDirectionEnum.going
         ? minTimeOfTimeRange
         : minTimeOfTimeRange + tripDuration;
 
-    service.serviceTripsOrdered.push({
+    newServiceTrips.push({
       tripId: tripId,
       hlp: 0,
       endHour,
       waitingTime: 0,
       startHour: endHour - tripDuration,
     });
+
+    return newServiceTrips;
   }
 
   // TODO: Deal with multiple waiting times
+  // TODO: Rename
   function isToPutToTheEnd(
     waitingTimes: number[],
     _earliestDepartureHour: number,
@@ -140,14 +145,14 @@ export namespace ServiceTripOrderedUtils {
     /*
     Used only in case 4 
     conditions to put the serviceTrip
-    at the end of serviceTripsOrdered
+    at the end of serviceTrips
     */
 
     return (
       // If no waiting time
       !waitingTimes.some((waitingTime) => waitingTime > 0) ||
       // If waiting time out of the time range
-      !ServiceTripOrderedUtils.isCase2(
+      !ServiceTripsUtils.isCase2(
         _earliestDepartureHour,
         _earliestArrivalHour,
         tripDirection,
@@ -159,8 +164,8 @@ export namespace ServiceTripOrderedUtils {
     );
   }
 
-  // TODO: Enhance function to deal with multiple waitingTimes in one serviceTripsOrdered
-  function updateServiceCase4(
+  // TODO: Enhance function to deal with multiple waitingTimes in one serviceTrips
+  function updateServiceTripsCase4(
     service: ServiceType,
     tripId: number,
     hlp: number,
@@ -168,16 +173,17 @@ export namespace ServiceTripOrderedUtils {
     tripDuration: number,
     tripDirection: TripDirectionEnum,
     minTimeOfTimeRange: number,
-    maxTimeOfTimeRange: number
-  ): void {
+    maxTimeOfTimeRange: number,
+    newServiceTrips: ServiceTrip[]
+  ): ServiceTrip[] {
     /*
     Case 4 : Earliest arrival or departure after time range
 
     If right waiting time existing => serviceTrip put in this place
-    Else => serviceTrip puted at the end of serviceTripsOrdered
+    Else => serviceTrip puted at the end of serviceTrips
     */
 
-    const waitingTimes = service.serviceTripsOrdered.map(
+    const waitingTimes = service.serviceTrips.map(
       (serviceTrip) => serviceTrip.waitingTime
     );
     const waitingTimeDuration = waitingTimes.filter(
@@ -185,23 +191,21 @@ export namespace ServiceTripOrderedUtils {
     )[0];
 
     if (!waitingTimeDuration) {
-      service.serviceTripsOrdered.push({
+      newServiceTrips.push({
         tripId,
         hlp,
         endHour: earliestEndHour,
         waitingTime: 0,
         startHour: earliestEndHour - tripDuration,
       });
-      return;
+      return newServiceTrips;
     }
 
     const indexOfWaitingTime = waitingTimes.indexOf(waitingTimeDuration);
     const waitingTimeStart =
-      service.serviceTripsOrdered[indexOfWaitingTime - 1].endHour;
+      service.serviceTrips[indexOfWaitingTime - 1].endHour;
     const newHlp =
-      hlpMatrix()[tripId][
-        service.serviceTripsOrdered[indexOfWaitingTime].tripId
-      ];
+      hlpMatrix()[tripId][service.serviceTrips[indexOfWaitingTime].tripId];
     const _earliestDepartureHour = waitingTimeStart + hlp;
     const _earliestArrivalHour = waitingTimeStart + hlp + tripDuration;
 
@@ -218,18 +222,18 @@ export namespace ServiceTripOrderedUtils {
         tripDuration
       )
     ) {
-      service.serviceTripsOrdered.push({
+      newServiceTrips.push({
         tripId,
         hlp,
         endHour: earliestEndHour,
         waitingTime: 0,
         startHour: earliestEndHour - tripDuration,
       });
-      return;
+      return newServiceTrips;
     }
 
     // serviceTrip put in place of the waiting time
-    service.serviceTripsOrdered.splice(indexOfWaitingTime, 0, {
+    newServiceTrips.splice(indexOfWaitingTime, 0, {
       tripId,
       hlp: newHlp,
       endHour: _earliestArrivalHour,
@@ -237,13 +241,16 @@ export namespace ServiceTripOrderedUtils {
         _earliestArrivalHour - tripDuration - newHlp - waitingTimeStart,
       startHour: _earliestArrivalHour - tripDuration,
     });
-    service.serviceTripsOrdered[indexOfWaitingTime + 1].waitingTime -=
+    newServiceTrips[indexOfWaitingTime + 1].waitingTime -=
       tripDuration + newHlp;
-    return;
+    return newServiceTrips;
   }
 
-  function getNeededVariables(service: ServiceType, serviceTripIndex: number) {
-    const tripId = service.tripIds[serviceTripIndex];
+  function getNeededVariables(
+    serviceTripIndex: number,
+    serviceTripIds: number[]
+  ) {
+    const tripId = serviceTripIds[serviceTripIndex];
     const tripDuration = ServiceGridUtils.getTripDuration(tripId);
     const tripDirection = TripDirectionEntity.FindDirectionById(
       TripUtils.get(tripId).tripDirectionId
@@ -254,113 +261,118 @@ export namespace ServiceTripOrderedUtils {
   }
 
   function getNeededVariablesBis(
-    service: ServiceType,
+    newServiceTrips: ServiceTrip[],
     serviceTripIndex: number,
     tripId: number,
-    tripDuration: number
+    tripDuration: number,
+    tripIds: number[]
   ) {
     /*
     Computation for hlp, earliestEndHour, earliestDepartureHour use
-    the last serviceTrip of serviceTripsOrdered as the previous serviceTrip
+    the last serviceTrip of serviceTrips as the previous serviceTrip
     */
-    const hlp = ServiceGridUtils.getHlpDuration(
-      service.tripIds,
-      service.serviceTripsOrdered,
-      serviceTripIndex
-    );
+    const hlp = ServiceGridUtils.getHlpDuration(tripIds, serviceTripIndex);
 
     const maxTimeOfTimeRange = ServiceGridUtils.getLatestArrival(tripId);
 
     const earliestEndHour =
-      (service.serviceTripsOrdered.at(-1) as ServiceTripOrderedType).endHour +
-      hlp +
-      tripDuration;
+      (newServiceTrips.at(-1) as ServiceTrip).endHour + hlp + tripDuration;
 
     const earliestDepartureHour =
-      (service.serviceTripsOrdered.at(-1) as ServiceTripOrderedType).endHour +
-      hlp;
+      (newServiceTrips.at(-1) as ServiceTrip).endHour + hlp;
 
     return { hlp, maxTimeOfTimeRange, earliestEndHour, earliestDepartureHour };
   }
 
-  export function getUpdatedServices(_services: ServiceType[]): ServiceType[] {
-    /* Update each services serviceTripsOrdered property depending on the case number */
+  export function getUpdatedService(
+    service: ServiceType,
+    tripIds: number[],
+    allowCase4: boolean
+  ): ServiceTrip[] {
+    /*
+    Compute new values : hlp, startHour, endHour, waitingTime
+    
+    Change positions of serviceTrips (only in case 4)
+      => allowCase4 must be set to true only when adding a new serviceTrips
+         to a service
+    */
 
-    for (const service of _services) {
-      service.serviceTripsOrdered = [];
+    let newServiceTrips: ServiceTrip[] = [];
 
-      for (const serviceTripIndex of [
-        ...Array(service.tripIds.length).keys(),
-      ]) {
-        const { tripId, tripDuration, tripDirection, minTimeOfTimeRange } =
-          getNeededVariables(service, serviceTripIndex);
+    for (const serviceTripIndex of [...Array(tripIds.length).keys()]) {
+      const { tripId, tripDuration, tripDirection, minTimeOfTimeRange } =
+        getNeededVariables(serviceTripIndex, tripIds);
 
-        // Case 1 : First serviceTrip
-        if (serviceTripIndex == 0) {
-          updateServiceCase1(
-            service,
-            tripId,
-            tripDirection,
-            minTimeOfTimeRange,
-            tripDuration
-          );
-          continue;
-        }
-
-        const {
-          hlp,
-          maxTimeOfTimeRange,
-          earliestEndHour,
-          earliestDepartureHour,
-        } = getNeededVariablesBis(
-          service,
-          serviceTripIndex,
+      // Case 1 : First serviceTrip
+      if (serviceTripIndex == 0) {
+        newServiceTrips = updateServiceTripsCase1(
+          newServiceTrips,
           tripId,
+          tripDirection,
+          minTimeOfTimeRange,
           tripDuration
         );
+        continue;
+      }
 
-        switch (
-          getCaseNumber(
-            earliestDepartureHour,
-            earliestEndHour,
-            tripDirection,
-            minTimeOfTimeRange,
-            maxTimeOfTimeRange
-          )
-        ) {
-          /* Case1 already done */
+      const {
+        hlp,
+        maxTimeOfTimeRange,
+        earliestEndHour,
+        earliestDepartureHour,
+      } = getNeededVariablesBis(
+        newServiceTrips,
+        serviceTripIndex,
+        tripId,
+        tripDuration,
+        tripIds
+      );
 
-          case CaseEnum.case2:
-            // Earliest arrival or departure in the time range
-            service.serviceTripsOrdered.push({
-              tripId,
-              hlp,
-              endHour: earliestEndHour,
-              waitingTime: 0,
-              startHour: earliestEndHour - tripDuration,
-            });
-            continue;
+      switch (
+        getCaseNumber(
+          earliestDepartureHour,
+          earliestEndHour,
+          tripDirection,
+          minTimeOfTimeRange,
+          maxTimeOfTimeRange
+        )
+      ) {
+        /* Case1 already done */
 
-          case CaseEnum.case3:
-            // Earliest arrival or departure before time range
-            const waitingTime =
-              tripDirection == TripDirectionEnum.going
-                ? minTimeOfTimeRange - earliestEndHour
-                : minTimeOfTimeRange - earliestDepartureHour;
+        case CaseEnum.case2:
+          // Earliest arrival or departure in the time range
 
-            const endHour = earliestEndHour + waitingTime;
+          newServiceTrips.push({
+            tripId,
+            hlp,
+            endHour: earliestEndHour,
+            waitingTime: 0,
+            startHour: earliestEndHour - tripDuration,
+          });
+          continue;
 
-            service.serviceTripsOrdered.push({
-              tripId,
-              hlp,
-              endHour,
-              waitingTime,
-              startHour: endHour - tripDuration,
-            });
-            continue;
+        case CaseEnum.case3:
+          // Earliest arrival or departure before time range
 
-          case CaseEnum.case4:
-            updateServiceCase4(
+          const waitingTime =
+            tripDirection == TripDirectionEnum.going
+              ? minTimeOfTimeRange - earliestEndHour
+              : minTimeOfTimeRange - earliestDepartureHour;
+
+          const endHour = earliestEndHour + waitingTime;
+
+          newServiceTrips.push({
+            tripId,
+            hlp,
+            endHour,
+            waitingTime,
+            startHour: endHour - tripDuration,
+          });
+          continue;
+
+        case CaseEnum.case4:
+          if (allowCase4) {
+            newServiceTrips = updateServiceTripsCase4(
               service,
               tripId,
               hlp,
@@ -368,12 +380,22 @@ export namespace ServiceTripOrderedUtils {
               tripDuration,
               tripDirection,
               minTimeOfTimeRange,
-              maxTimeOfTimeRange
+              maxTimeOfTimeRange,
+              newServiceTrips
             );
-            continue;
-        }
+          } else {
+            newServiceTrips.push({
+              tripId,
+              hlp,
+              endHour: earliestEndHour,
+              waitingTime: 0,
+              startHour: earliestEndHour - tripDuration,
+            });
+          }
+          continue;
       }
     }
-    return _services;
+
+    return newServiceTrips;
   }
 }
