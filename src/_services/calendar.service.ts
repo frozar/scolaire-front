@@ -8,6 +8,31 @@ import {
 import { ServiceUtils } from "./_utils.service";
 
 export namespace CalendarService {
+  export async function importCalendar(calendars: CalendarType[]) {
+    const calendars_ = await ServiceUtils.post("/import/calendars", {
+      calendars: calendars.map((calendar) => CalendarEntity.format(calendar)),
+    });
+    return calendars_.map((calendar: CalendarDBType) =>
+      CalendarEntity.build(calendar)
+    );
+  }
+
+  export async function importCalendarPeriod(
+    calendarPeriod: CalendarPeriodType[]
+  ) {
+    const calendarsPeriods = await ServiceUtils.post(
+      "/import/calendars_period",
+      {
+        calendars_periods: calendarPeriod.map((calendar) =>
+          CalendarEntity.formatCalendarPeriod(calendar)
+        ),
+      }
+    );
+    return calendarsPeriods.map((calendar: CalendarPeriodDBType) =>
+      CalendarEntity.buildCalendarPeriod(calendar)
+    );
+  }
+
   export async function updateCalendar(
     calendar: CalendarType
   ): Promise<CalendarType> {
@@ -59,6 +84,7 @@ export namespace CalendarService {
   export async function deleteCalendar(calendarId: number) {
     return await ServiceUtils.delete("/calendar/" + calendarId);
   }
+
   export async function deleteCalendarPerdio(calendarId: number) {
     return await ServiceUtils.delete("/calendar-period/" + calendarId);
   }

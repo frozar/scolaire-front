@@ -5,6 +5,16 @@ import {
 import { ServiceUtils } from "./_utils.service";
 
 export namespace AllotmentService {
+  export async function importAllotments(allotments: AllotmentType[]) {
+    const dbAllotment: AllotmentType[] = await ServiceUtils.post(
+      "/import/allotments",
+      {
+        allotments,
+      }
+    );
+    return dbAllotment;
+  }
+
   export async function create(allotment: Omit<AllotmentType, "id">) {
     const dbAllotment: AllotmentType[] = await ServiceUtils.post(
       "/allotment",

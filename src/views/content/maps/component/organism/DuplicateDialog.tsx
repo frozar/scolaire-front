@@ -19,13 +19,20 @@ enum FieldToDuplicateEnum {
   lines,
   calendarPeriod,
   hours,
+  allotments,
+  busCategories,
+  transporters,
 }
 
 type DuplicateField = {
   trips: boolean;
   paths: boolean;
   calendar: boolean;
+  calendarPeriod: boolean;
   lines: boolean;
+  allotments: boolean;
+  busCategories: boolean;
+  transporters: boolean;
 };
 
 export const [fieldToDuplicate, setFieldToDuplciate] =
@@ -33,7 +40,11 @@ export const [fieldToDuplicate, setFieldToDuplciate] =
     trips: false,
     paths: false,
     calendar: false,
+    calendarPeriod: false,
     lines: false,
+    allotments: false,
+    busCategories: false,
+    transporters: false,
   });
 
 function updateFieldToDuplicate(field: FieldToDuplicateEnum) {
@@ -46,6 +57,8 @@ function updateFieldToDuplicate(field: FieldToDuplicateEnum) {
           console.log("select line");
           fields_.trips = true;
           fields_.paths = true;
+          fields_.allotments = true;
+          fields_.busCategories = true;
         } else {
           console.log("deselect lione");
           fields_.trips = false;
@@ -54,14 +67,33 @@ function updateFieldToDuplicate(field: FieldToDuplicateEnum) {
 
         fields_.lines = !fields_.lines;
         break;
+
       case FieldToDuplicateEnum.trips:
         fields_.trips = !fields_.trips;
         break;
+
       case FieldToDuplicateEnum.paths:
         fields_.paths = !fields_.paths;
         break;
+
       case FieldToDuplicateEnum.calendars:
         fields_.calendar = !fields_.calendar;
+        break;
+
+      case FieldToDuplicateEnum.calendarPeriod:
+        fields_.calendarPeriod = !fields_.calendarPeriod;
+        break;
+
+      case FieldToDuplicateEnum.allotments:
+        fields_.allotments = !fields_.allotments;
+        break;
+
+      case FieldToDuplicateEnum.busCategories:
+        fields_.busCategories = !fields_.busCategories;
+        break;
+
+      case FieldToDuplicateEnum.transporters:
+        fields_.transporters = !fields_.transporters;
         break;
     }
 
@@ -99,9 +131,41 @@ export function DuplicateDialog() {
       />
 
       <LabeledCheckbox
-        checked={fieldToDuplicate().paths}
+        checked={fieldToDuplicate().calendarPeriod}
+        label="Calendriers des périodes"
+        onChange={() =>
+          updateFieldToDuplicate(FieldToDuplicateEnum.calendarPeriod)
+        }
+      />
+
+      <LabeledCheckbox
+        disabled={!fieldToDuplicate().calendarPeriod}
+        checked={fieldToDuplicate().calendar}
         label="Calendriers"
         onChange={() => updateFieldToDuplicate(FieldToDuplicateEnum.calendars)}
+      />
+
+      <LabeledCheckbox
+        checked={fieldToDuplicate().allotments}
+        label="Allotissements"
+        onChange={() => updateFieldToDuplicate(FieldToDuplicateEnum.allotments)}
+      />
+
+      <LabeledCheckbox
+        disabled={!fieldToDuplicate().allotments}
+        checked={fieldToDuplicate().transporters}
+        label="Transporteurs"
+        onChange={() =>
+          updateFieldToDuplicate(FieldToDuplicateEnum.transporters)
+        }
+      />
+
+      <LabeledCheckbox
+        checked={fieldToDuplicate().busCategories}
+        label="Categories de bus"
+        onChange={() =>
+          updateFieldToDuplicate(FieldToDuplicateEnum.busCategories)
+        }
       />
 
       <div class="flex justify-end gap-2">

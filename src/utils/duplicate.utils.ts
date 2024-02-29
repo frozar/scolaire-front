@@ -1,16 +1,35 @@
 import { createSignal } from "solid-js";
 import { useStateGui } from "../StateGui";
 import { LocationDBTypeEnum } from "../_entities/_utils.entity";
+import { CalendarPeriodType, CalendarType } from "../_entities/calendar.entity";
 import { GradeDBType, GradeType } from "../_entities/grade.entity";
 import { LineType } from "../_entities/line.entity";
 import { TimeUtils } from "../_entities/time.utils";
+import { TransporterType } from "../_entities/transporter.entity";
+import { TripDBType, TripEntity } from "../_entities/trip.entity";
+import { AllotmentService } from "../_services/allotment.service";
+import { CalendarService } from "../_services/calendar.service";
 import { BusLineService } from "../_services/line.service";
 import { SchoolService } from "../_services/school.service";
 import { StopService } from "../_services/stop.service";
 import { StudentToGradeService } from "../_services/student-to-grade.service";
 import { userMaps } from "../_stores/map.store";
 import { disableSpinningWheel, enableSpinningWheel } from "../signaux";
+import { getAllTransporter } from "../views/content/allotment/molecule/TransporterTable";
+import {
+  AllotmentType,
+  getAllotment,
+  setAllotment,
+} from "../views/content/allotment/organism/Allotment";
 import { CsvEnum } from "../views/content/board/component/molecule/ImportSelection";
+import {
+  calendars,
+  setCalendars,
+} from "../views/content/calendar/calendar.manager";
+import {
+  calendarsPeriod,
+  setCalendarsPeriod,
+} from "../views/content/calendar/template/Calendar";
 import {
   getLines,
   setLines,
@@ -36,6 +55,7 @@ export type BusLineImportFormat = {
   grades: number[];
   schools: number[];
   stops: number[];
+  trips: TripDBType[];
 };
 export namespace DuplicateUtils {
   async function newMap() {
@@ -120,7 +140,7 @@ export namespace DuplicateUtils {
     console.log("old buslines:", lines);
 
     // * build interface between last an new grades
-    // * {"old": [ {gradeId: 1, name: "grade1"}] }
+    // * {"school_name": [ {gradeId: 1, name: "grade1"}] }
     // * Like that when i need to retrieve the new ID of the new grade for school i can refer to this interface
     const newGrades: { [school: string]: GradeType[] } = {};
     getSchools().forEach((school) => {
@@ -163,6 +183,14 @@ export namespace DuplicateUtils {
         });
       });
 
+      // const trips = line.trips;
+      // ! TODO process trips stop to redefine all stops id
+      // ! same for school id
+
+      // trips.forEach(trip => {
+      //   trip.
+      // })
+
       const newLine: BusLineImportFormat = {
         color: line.color().substring(1),
         grades: newLineGrades.map((grade) => grade.id),
@@ -173,7 +201,13 @@ export namespace DuplicateUtils {
         schools: line.schools.map((school) =>
           SchoolUtils.getIdFromName(school.name)
         ),
+        trips: line.trips.map(
+          (trip) => TripEntity.dbPartialFormat(trip) as TripDBType
+        ),
       };
+
+      console.log("new line:", newLine);
+
       newLines.push(newLine);
     });
 
@@ -181,19 +215,71 @@ export namespace DuplicateUtils {
     setLines(lines_);
   }
 
+  export async function duplicateCalendarPeriod(
+    calendars: CalendarPeriodType[]
+  ) {
+    const calendarPeriods = await CalendarService.importCalendarPeriod(
+      calendars
+    );
+    setCalendarsPeriod(calendarPeriods);
+  }
+
+  export async function duplicateCalendar(
+    calendars: CalendarType[],
+    oldCalendarPeriods: CalendarPeriodType[]
+  ) {
+    calendars.forEach((calendar) => {
+      const calendarPeriodIndex = oldCalendarPeriods.findIndex(
+        (calendarPeriod) => calendarPeriod.id == calendar.calendarPeriodId
+      );
+
+      const newCalendarPeriod = calendarsPeriod()[calendarPeriodIndex];
+      calendar.calendarPeriodId = newCalendarPeriod.id;
+    });
+
+    const calendars_ = await CalendarService.importCalendar(calendars);
+    setCalendars(calendars_);
+  }
+
+  export async function duplicateAllotment(oldAllotments: AllotmentType[]) {
+    const allotments = await AllotmentService.importAllotments(oldAllotments);
+    setAllotment(allotments);
+  }
+
+  export function duplicateTransporters(oldTransporters: TransporterType[]) {
+    console.log("old transporter: ", oldTransporters);
+
+    // const transporter = await TransporterService;.
+  }
+
   export async function duplicate() {
     enableSpinningWheel();
     // * Get current map data
     const oldBuslines = getLines();
+    const oldCalendars = calendars();
+    const oldCalendarPeriod = calendarsPeriod();
+    const oldAllotments = getAllotment();
+    const oldTransporters = getAllTransporter();
 
     // * Load new school
     await duplicateStopsAndSchoolsWithGradesQuantity();
 
-    console.log("new data loaded");
+    // ! TODO before duplicate line trips
+    // ! need to duplicate:
+    // ! - paths
+    // ! - allotments
+    // ! - calendar OK
+    // ! - bus categories
 
-    if (fieldToDuplicate().lines) {
-      duplicateBusLines(oldBuslines);
-    }
+    duplicateTransporters(oldTransporters);
+    if (fieldToDuplicate().allotments) await duplicateAllotment(oldAllotments);
+
+    if (fieldToDuplicate().calendarPeriod)
+      await duplicateCalendarPeriod(oldCalendarPeriod);
+    if (fieldToDuplicate().calendar)
+      await duplicateCalendar(oldCalendars, oldCalendarPeriod);
+
+    if (fieldToDuplicate().lines) duplicateBusLines(oldBuslines);
 
     setInDucplication(false);
     disableSpinningWheel();
