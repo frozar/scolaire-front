@@ -225,7 +225,6 @@ export namespace ServiceGridUtils {
       // TODO: Do not use raw value
       serviceGroupId: 1,
       name: "default name",
-      tripIds: [],
       serviceTripsOrdered: [],
     };
 

@@ -12,8 +12,6 @@ export type ServiceType = {
   id: number;
   name: string;
   serviceGroupId: number;
-  // TODO: Delete when unused
-  tripIds: number[];
   // TODO: Rename to serviceTrips
   serviceTripsOrdered: ServiceTripOrderedType[];
 };

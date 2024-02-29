@@ -43,9 +43,6 @@ export namespace ServiceEntity {
       name: dbService.name,
       serviceGroupId: dbService.service_group_id,
       serviceTripsOrdered: buildServiceTrip(dbService.service_trips),
-      tripIds: dbService.service_trips.map(
-        (serviceTrip) => serviceTrip.trip_id
-      ),
     };
   }
 
