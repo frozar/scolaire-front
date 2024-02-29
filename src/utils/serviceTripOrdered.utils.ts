@@ -103,28 +103,8 @@ export namespace ServiceTripOrderedUtils {
       return CaseEnum.case4;
     return;
   }
-  // TODO: Delete
-  function updateServiceCase1(
-    service: ServiceType,
-    tripId: number,
-    tripDirection: TripDirectionEnum,
-    minTimeOfTimeRange: number,
-    tripDuration: number
-  ) {
-    const endHour =
-      tripDirection == TripDirectionEnum.going
-        ? minTimeOfTimeRange
-        : minTimeOfTimeRange + tripDuration;
 
-    service.serviceTripsOrdered.push({
-      tripId: tripId,
-      hlp: 0,
-      endHour,
-      waitingTime: 0,
-      startHour: endHour - tripDuration,
-    });
-  }
-
+  // TODO: Rename
   function updateServiceCase1Enhanced(
     newServiceTripsOrdered: ServiceTripOrderedType[],
     tripId: number,
@@ -262,7 +242,7 @@ export namespace ServiceTripOrderedUtils {
         _earliestArrivalHour - tripDuration - newHlp - waitingTimeStart,
       startHour: _earliestArrivalHour - tripDuration,
     });
-    service.serviceTripsOrdered[indexOfWaitingTime + 1].waitingTime -=
+    newServiceTrips[indexOfWaitingTime + 1].waitingTime -=
       tripDuration + newHlp;
     return newServiceTrips;
   }

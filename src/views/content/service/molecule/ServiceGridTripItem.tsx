@@ -1,6 +1,7 @@
 import { JSXElement, Show } from "solid-js";
 import TrashIcon from "../../../../icons/TrashIcon";
 import { ServiceGridUtils } from "../../../../utils/serviceGrid.utils";
+import { ServiceTripOrderedUtils } from "../../../../utils/serviceTripOrdered.utils";
 import { TripUtils } from "../../../../utils/trip.utils";
 import ButtonIcon from "../../board/component/molecule/ButtonIcon";
 import { ServiceGridItemStartEndStopNames } from "../atom/ServiceGridItemStartEndStopNames";
@@ -50,7 +51,9 @@ export function ServiceGridTripItem(
       <Show when={selectedService() == props.serviceId}>
         <ButtonIcon
           icon={<TrashIcon />}
-          onClick={() => removeTripFromService(props.serviceTrip.tripId)}
+          onClick={() =>
+            removeTripFromService(props.serviceTrip.tripId, props.serviceId)
+          }
           class="service-grid-item-trip-trash-button"
         />
       </Show>
@@ -58,12 +61,26 @@ export function ServiceGridTripItem(
   );
 }
 
-function removeTripFromService(tripId: number): void {
+function removeTripFromService(tripId: number, serviceId: number): void {
   setServices((prev) => {
     const services = [...prev];
 
-    ServiceGridUtils.removeTrip(services, tripId);
+    const service = services.filter((_service) => _service.id == serviceId)[0];
+    const newTripIds = service.serviceTripsOrdered
+      .map((serviceTrip) => serviceTrip.tripId)
+      .filter((_tripId) => _tripId != tripId);
 
+    const serviceTrips = ServiceTripOrderedUtils.getUpdatedService(
+      service,
+      newTripIds,
+      false
+    );
+
+    for (const _service of services) {
+      if (_service.id == serviceId) {
+        _service.serviceTripsOrdered = serviceTrips;
+      }
+    }
     return services;
   });
 }
