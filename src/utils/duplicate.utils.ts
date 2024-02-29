@@ -13,9 +13,13 @@ import { BusLineService } from "../_services/line.service";
 import { SchoolService } from "../_services/school.service";
 import { StopService } from "../_services/stop.service";
 import { StudentToGradeService } from "../_services/student-to-grade.service";
+import { TransporterService } from "../_services/transporter.service";
 import { userMaps } from "../_stores/map.store";
 import { disableSpinningWheel, enableSpinningWheel } from "../signaux";
-import { getAllTransporter } from "../views/content/allotment/molecule/TransporterTable";
+import {
+  getAllTransporter,
+  setAllTransporter,
+} from "../views/content/allotment/molecule/TransporterTable";
 import {
   AllotmentType,
   getAllotment,
@@ -246,10 +250,22 @@ export namespace DuplicateUtils {
     setAllotment(allotments);
   }
 
-  export function duplicateTransporters(oldTransporters: TransporterType[]) {
-    console.log("old transporter: ", oldTransporters);
+  export async function duplicateTransporters(
+    oldTransporters: TransporterType[],
+    oldAllotments: AllotmentType[]
+  ) {
+    oldTransporters.forEach((transporter) => {
+      const allotmentIndex = oldAllotments.findIndex(
+        (allotment) => allotment.id == transporter.allotment_id
+      );
+      transporter.allotment_id = getAllotment()[allotmentIndex].id;
+    });
 
-    // const transporter = await TransporterService;.
+    const transporter = await TransporterService.importTransporters(
+      oldTransporters
+    );
+
+    setAllTransporter(transporter);
   }
 
   export async function duplicate() {
@@ -271,8 +287,9 @@ export namespace DuplicateUtils {
     // ! - calendar OK
     // ! - bus categories
 
-    duplicateTransporters(oldTransporters);
     if (fieldToDuplicate().allotments) await duplicateAllotment(oldAllotments);
+    if (fieldToDuplicate().transporters)
+      await duplicateTransporters(oldTransporters, oldAllotments);
 
     if (fieldToDuplicate().calendarPeriod)
       await duplicateCalendarPeriod(oldCalendarPeriod);

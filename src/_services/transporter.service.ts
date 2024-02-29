@@ -3,6 +3,16 @@ import { setAllTransporter } from "../views/content/allotment/molecule/Transport
 import { ServiceUtils } from "./_utils.service";
 
 export namespace TransporterService {
+  export async function importTransporters(transporters: TransporterType[]) {
+    const dbTransporter: TransporterType[] = await ServiceUtils.post(
+      "/import/transporters",
+      {
+        transporters: transporters,
+      }
+    );
+    return dbTransporter;
+  }
+
   export async function create(transporter: Omit<TransporterType, "id">) {
     const dbTransporter: TransporterType[] = await ServiceUtils.post(
       "/transporter",
