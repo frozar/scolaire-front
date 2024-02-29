@@ -2,15 +2,19 @@ import { createSignal } from "solid-js";
 import { useStateGui } from "../StateGui";
 import { LocationDBTypeEnum } from "../_entities/_utils.entity";
 import { GradeDBType, GradeType } from "../_entities/grade.entity";
-import { LineDBType, LineType } from "../_entities/line.entity";
+import { LineType } from "../_entities/line.entity";
 import { TimeUtils } from "../_entities/time.utils";
+import { BusLineService } from "../_services/line.service";
 import { SchoolService } from "../_services/school.service";
 import { StopService } from "../_services/stop.service";
 import { StudentToGradeService } from "../_services/student-to-grade.service";
 import { userMaps } from "../_stores/map.store";
 import { disableSpinningWheel, enableSpinningWheel } from "../signaux";
 import { CsvEnum } from "../views/content/board/component/molecule/ImportSelection";
-import { getLines } from "../views/content/map/component/organism/BusLines";
+import {
+  getLines,
+  setLines,
+} from "../views/content/map/component/organism/BusLines";
 import {
   getSchools,
   setSchools,
@@ -20,10 +24,19 @@ import { fieldToDuplicate } from "../views/content/maps/component/organism/Dupli
 import { CsvUtils } from "./csv.utils";
 import { MapsUtils } from "./maps.utils";
 import { SchoolUtils } from "./school.utils";
+import { StopUtils } from "./stop.utils";
 
 const [, { getActiveMapId }] = useStateGui();
 
 export const [inDuplication, setInDucplication] = createSignal(false);
+
+export type BusLineImportFormat = {
+  name: string;
+  color: string;
+  grades: number[];
+  schools: number[];
+  stops: number[];
+};
 export namespace DuplicateUtils {
   async function newMap() {
     const currentMap = userMaps().filter(
@@ -96,13 +109,13 @@ export namespace DuplicateUtils {
     });
   }
 
-  function duplicateBusLines(lines: LineType[]) {
+  async function duplicateBusLines(lines: LineType[]) {
     // * to duplicate line we need:
     // * - grades
     // * - color
     // * - associated schools
     // * - associated stops
-    const newLines: Partial<LineDBType>[] = [];
+    const newLines: BusLineImportFormat[] = [];
 
     console.log("old buslines:", lines);
 
@@ -136,8 +149,6 @@ export namespace DuplicateUtils {
       return grade;
     }
 
-    console.log("new grades:", newGrades);
-
     lines.forEach((line) => {
       const lineGradeNames = line.grades;
       const newLineGrades: GradeDBType[] = [];
@@ -152,19 +163,22 @@ export namespace DuplicateUtils {
         });
       });
 
-      const newLine: Partial<LineDBType> = {
-        color: line.color(),
-        grades: newLineGrades,
-        // name: line.name(),
-        // schools: line.schools.map((school) => school.name),
-        // stops: line.stops.map((stop) => stop.name),
-        // trips: line.trips.map((trip) => trip.name),
+      const newLine: BusLineImportFormat = {
+        color: line.color().substring(1),
+        grades: newLineGrades.map((grade) => grade.id),
+        name: line.name as string,
+        stops: line.stops.map(
+          (stop) => StopUtils.getStopFromName(stop.name).id
+        ),
+        schools: line.schools.map((school) =>
+          SchoolUtils.getIdFromName(school.name)
+        ),
       };
       newLines.push(newLine);
     });
-    console.log("grades of new map:", newGrades);
 
-    console.log("new lines:", newLines);
+    const lines_ = await BusLineService.import(newLines);
+    setLines(lines_);
   }
 
   export async function duplicate() {

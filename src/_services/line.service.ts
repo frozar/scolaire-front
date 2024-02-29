@@ -1,4 +1,5 @@
 import { BusLineEntity, LineDBType, LineType } from "../_entities/line.entity";
+import { BusLineImportFormat } from "../utils/duplicate.utils";
 import { ServiceUtils } from "./_utils.service";
 
 export class BusLineService {
@@ -24,5 +25,10 @@ export class BusLineService {
 
   static async delete(id: number): Promise<number> {
     return await ServiceUtils.delete("/bus_line/" + id);
+  }
+
+  static async import(lines: BusLineImportFormat[]): Promise<LineType[]> {
+    const dbLines = await ServiceUtils.post("/import/lines", { lines });
+    return dbLines.map((line: LineDBType) => BusLineEntity.build(line));
   }
 }

@@ -20,6 +20,10 @@ export namespace StopUtils {
     return getStops().filter((stop) => stop.id == stopId)[0];
   }
 
+  export function getStopFromName(name: string): StopType {
+    return getStops().filter((stop) => stop.name == name)[0];
+  }
+
   export async function update(stop: StopType) {
     const updatedStop = await StopService.update(stop);
     if (updatedStop) {
