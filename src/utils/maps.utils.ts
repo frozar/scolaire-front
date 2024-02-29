@@ -33,10 +33,7 @@ export namespace MapsUtils {
     setUserMaps((prev) =>
       [...prev].map((map_) => {
         if (map_.id == map.id) {
-          map_ = {
-            ...map_,
-            ...updatedMap,
-          };
+          return updatedMap;
         }
         return map_;
       })

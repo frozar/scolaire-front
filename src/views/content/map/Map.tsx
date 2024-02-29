@@ -48,6 +48,7 @@ export default function () {
     createSignal(false);
 
   async function requestWays(): Promise<step[]> {
+    // enableSpinningWheel();
     const result = await OsrmService.getWaysWithWeight(240);
     const parsedResult = result.map((elem) => {
       return {
@@ -59,6 +60,7 @@ export default function () {
         ),
       };
     });
+    // disableSpinningWheel();
     // const parsedResult = JSON.parse(result);
     // console.log("OsrmService", result[0]["line"]);
     return parsedResult;

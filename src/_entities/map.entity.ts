@@ -19,6 +19,8 @@ export class MapEntity {
     return {
       id: dbMap.id,
       name: dbMap.name,
+      organisation_id: dbMap.organisation_id,
+      bounding_box: dbMap.bounding_box,
       isActive,
       isSelected,
       setIsSelected,
@@ -32,12 +34,25 @@ export type MapDBType = {
   id: number;
   name: string;
   created_at: Date;
+  organisation_id: number;
+  bounding_box: BoundingBox;
+};
+
+export type BoundingBox = {
+  min_X: number;
+  min_Y: number;
+  max_X: number;
+  max_Y: number;
+  srid: number;
 };
 
 export type MapType = {
   id: number;
   name: string;
   createAt: Date;
+  organisation_id: number;
+  bounding_box: BoundingBox;
+
   //TODO revoir la pertinence de mettre les Acessor et Setter ici
   isSelected: Accessor<boolean>;
   isActive: Accessor<boolean>;

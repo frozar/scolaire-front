@@ -1,5 +1,5 @@
 .collapsible-element{
-  @apply mb-1
+  @apply mb-4
 }
 .accordion {
   display:flex;

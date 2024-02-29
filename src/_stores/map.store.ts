@@ -1,6 +1,6 @@
 import { createSignal } from "solid-js";
 import { useStateGui } from "../StateGui";
-import { MapType } from "../_entities/map.entity";
+import { BoundingBox, MapType } from "../_entities/map.entity";
 import { MapService } from "../_services/map.service";
 import {
   closeCreateMapModal,
@@ -9,7 +9,13 @@ import {
 
 //TODO refacto
 const [, { getActiveMapId, resetState }] = useStateGui();
-
+export const defaultBoundingBox: BoundingBox = {
+  min_X: 55.499153,
+  min_Y: -20.986765,
+  max_X: 55.595627,
+  max_Y: -20.877418,
+  srid: 4326,
+};
 export const [userMaps, setUserMaps] = createSignal<MapType[]>([]);
 
 export namespace MapStore {
@@ -28,7 +34,9 @@ export namespace MapStore {
 
   export async function createMap(mapName: string) {
     closeCreateMapModal();
-    const map: MapType = await MapService.create({ name: mapName });
+    const map: MapType = await MapService.create({
+      name: mapName,
+    });
     setUserMaps([...userMaps(), map]);
   }
 

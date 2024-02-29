@@ -13,7 +13,7 @@ import { setTrips } from "../../../content/map/component/organism/Trips";
 import { setSelectedMenu } from "../../menuItemFields";
 import "./MapSelector.css";
 
-const [selectedMap, setSelectedMap] = createSignal<MapType | null>();
+export const [selectedMap, setSelectedMap] = createSignal<MapType | null>();
 const [, { setActiveMapId }] = useStateGui();
 
 export function MapSelector() {
