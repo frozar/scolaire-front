@@ -20,9 +20,10 @@ interface TripTimelineItemWrapperProps {
   trip: TripType;
   indice: number;
 }
+export const [quantity, setQuantity] = createSignal<number>(0);
+export const [totalToDrop, setTotalToDrop] = createSignal(0);
 
 export function TripTimelineItemWrapper(props: TripTimelineItemWrapperProps) {
-  const [quantity, setQuantity] = createSignal<number>(0);
   const trippoints = () => props.trip.tripPoints;
 
   createEffect(on(trippoints, () => getQuantity()));
@@ -80,6 +81,7 @@ export function TripTimelineItemWrapper(props: TripTimelineItemWrapperProps) {
     );
     let bufferTotal = tripTotalQuantity - getTotalDropped(points, indice);
 
+    setTotalToDrop(bufferTotal);
     if (props.tripPoint.nature === NatureEnum.stop) {
       const result = bufferTotal - quantity();
       bufferTotal -= result;

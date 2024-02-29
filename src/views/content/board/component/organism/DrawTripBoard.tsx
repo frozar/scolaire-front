@@ -26,10 +26,10 @@ import SchoolsEnumeration from "../molecule/SchoolsEnumeration";
 import { AssignDaysAndDirectionToTrip } from "./AssignDaysAndDirectionToTrip";
 import { CheckableGradeListBySchool } from "./CheckableGradeListBySchool";
 import CollapsibleElement from "./CollapsibleElement";
-import { DisplayBestVehicle } from "./DisplayBestVehicle";
 import "./DrawTripBoard.css";
 import Metrics from "./Metrics";
 import { TripTimeline } from "./TripTimeline";
+import { VehicleSelect } from "./VehicleSelect";
 import { DisplayTripDaysAndDirection } from "./displayTripDaysAndDirection";
 
 export enum DrawTripStep {
@@ -150,8 +150,9 @@ export function DrawTripBoard() {
           <Metrics trip={currentDrawTrip()} />
         </CollapsibleElement>
         <DisplayTripDaysAndDirection trip={currentDrawTrip()} />
-        <DisplayBestVehicle
+        <VehicleSelect
           allotment_id={Number(currentDrawTrip().allotmentId)}
+          direction_id={currentDrawTrip().tripDirectionId}
         />
         <LabeledInputField
           label="Nom de la course"
