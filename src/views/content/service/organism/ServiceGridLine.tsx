@@ -1,12 +1,11 @@
-import { animations, dragAndDrop } from "@formkit/drag-and-drop";
+// import { animations, dragAndDrop } from "@formkit/drag-and-drop";
 import { For, JSXElement, Show, createSignal, onMount } from "solid-js";
 import { ServiceGridUtils } from "../../../../utils/serviceGrid.utils";
-import { ServiceTripsUtils } from "../../../../utils/serviceTrips.utils";
 import { ServiceGridLineFirstDiv } from "../atom/ServiceGridLineFirstDiv";
 import { ServiceGridItem } from "../molecule/ServiceGridItem";
 import { selectedService } from "../template/ServiceTemplate";
 import "./ServiceGridLine.css";
-import { services, setServices } from "./Services";
+import { services } from "./Services";
 
 interface ServiceGridLineProps {
   serviceIndex: number;
@@ -19,17 +18,17 @@ export function ServiceGridLine(props: ServiceGridLineProps): JSXElement {
   );
 
   onMount(() => {
-    dragAndDrop<number>({
-      parent: ref(),
-      getValues: () => dragAndDropGetter(props.serviceIndex),
-      setValues: (newTripIds) =>
-        dragAndDropSetter(props.serviceIndex, newTripIds),
-      config: {
-        plugins: [animations({ duration: 250 })],
-        draggingClass: "dragged",
-        dragHandle: ".drag-handle",
-      },
-    });
+    // dragAndDrop<number>({
+    //   parent: ref(),
+    //   getValues: () => dragAndDropGetter(props.serviceIndex),
+    //   setValues: (newTripIds) =>
+    //     dragAndDropSetter(props.serviceIndex, newTripIds),
+    //   config: {
+    //     plugins: [animations({ duration: 250 })],
+    //     draggingClass: "dragged",
+    //     dragHandle: ".drag-handle",
+    //   },
+    // });
   });
 
   return (
@@ -68,22 +67,22 @@ export function ServiceGridLine(props: ServiceGridLineProps): JSXElement {
   );
 }
 
-function dragAndDropGetter(serviceIndex: number): number[] {
-  return services()[serviceIndex].serviceTrips.map(
-    (serviceTrip) => serviceTrip.tripId
-  );
-}
+// function dragAndDropGetter(serviceIndex: number): number[] {
+//   return services()[serviceIndex].serviceTrips.map(
+//     (serviceTrip) => serviceTrip.tripId
+//   );
+// }
 
-function dragAndDropSetter(serviceIndex: number, newTripIds: number[]): void {
-  setServices((prev) => {
-    const _services = [...prev];
-    const serviceTrips = ServiceTripsUtils.getUpdatedService(
-      _services[serviceIndex],
-      newTripIds,
-      false
-    );
+// function dragAndDropSetter(serviceIndex: number, newTripIds: number[]): void {
+//   setServices((prev) => {
+//     const _services = [...prev];
+//     const serviceTrips = ServiceTripsUtils.getUpdatedService(
+//       _services[serviceIndex],
+//       newTripIds,
+//       false
+//     );
 
-    _services[serviceIndex].serviceTrips = serviceTrips;
-    return _services;
-  });
-}
+//     _services[serviceIndex].serviceTrips = serviceTrips;
+//     return _services;
+//   });
+// }

@@ -71,7 +71,6 @@
     "vitest": "^0.26.3"
   },
   "dependencies": {
-    "@formkit/drag-and-drop": "^0.0.22",
     "@lmiller1990/cypress-ct-solid-js": "^0.1.0",
     "cypress": "^12.16.0",
     "cypress-image-diff-js": "^1.25.0",
