@@ -12,6 +12,7 @@ import {
   enableSpinningWheel,
 } from "../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
+import { getAllTransporter } from "../views/content/allotment/molecule/TransporterTable";
 import { AssociatedItem } from "../views/content/board/component/molecule/CheckableElementList";
 import {
   onTripDirection,
@@ -101,6 +102,20 @@ export namespace ContextUtils {
         tripDirection = TripDirectionEntity.findDirectionByDirectionName(
           onTripDirection()
         );
+
+        if (
+          getAllTransporter().filter(
+            (item) => item.allotment_id == currentDrawTrip().allotmentId
+          ).length <= 0
+        ) {
+          addNewUserInformation({
+            displayed: true,
+            level: MessageLevelEnum.error,
+            type: MessageTypeEnum.global,
+            content: "Aucun transporteur dans l'allotissement",
+          });
+          break;
+        }
 
         setCurrentDrawTrip((trip) => {
           if (!trip) return trip;

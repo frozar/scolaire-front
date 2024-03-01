@@ -6,8 +6,6 @@ import {
   TripDirectionType,
 } from "../../../../../_entities/trip-direction.entity";
 import { LabeledInputSelect } from "../../../../../component/molecule/LabeledInputSelect";
-import { addNewUserInformation } from "../../../../../signaux";
-import { MessageLevelEnum, MessageTypeEnum } from "../../../../../type";
 import { getAllTransporter } from "../../../allotment/molecule/TransporterTable";
 import { BusCategoryType, getBus } from "../../../bus/organism/Bus";
 import { quantity, totalToDrop } from "../molecule/TripTimelineItemWrapper";
@@ -51,6 +49,7 @@ export function VehicleSelect(props: DisplayBestVehicleProps) {
     direction()?.type == TripDirectionEnum.going
       ? (neededPlaces = quantity())
       : (neededPlaces = totalToDrop());
+    if (neededPlaces == 0) return;
     for (let i = 0; i < vehicleOptions().length; i++) {
       if (vehicleOptions()[i].capacity >= neededPlaces) {
         setDefaultVehicle(Number(vehicleOptions()[i].id));
@@ -59,34 +58,36 @@ export function VehicleSelect(props: DisplayBestVehicleProps) {
     }
   }
 
+  function onSelect(value: string | number) {
+    setDefaultVehicle(Number(value));
+  }
+
   onMount(() => {
     setTransporters(
       getAllTransporter().filter(
         (item) => item.allotment_id == props.allotment_id
       )
     );
-    if (transporters().length <= 0) {
-      console.log("No transporter available");
-      addNewUserInformation({
-        displayed: true,
-        level: MessageLevelEnum.error,
-        type: MessageTypeEnum.global,
-        content: "Aucun transporteur dans l'allotissement",
-      });
-      return;
-    }
     setSelectOptions();
     setDirection(TripDirectionEntity.FindDirectionById(props.direction_id));
   });
 
   createEffect(on(quantity, () => getBestVehicle()));
 
+  // onCleanup(() => {
+  //   setCurrentDrawTrip((prev) => {
+  //     if (!prev) return prev;
+  //     return { ...prev, busCategoriesId: defaultVehicle() };
+  //   });
+  //   console.log(currentDrawTrip());
+  // });
+
   return (
     <div>
       <LabeledInputSelect
         label="Véhicule"
         defaultValue={defaultVehicle()}
-        onChange={() => console.log()}
+        onChange={onSelect}
         options={vehicleOptions().map((vehicle) => {
           const textToDisplay =
             vehicle.name + " (" + vehicle.capacity.toString() + " places)";
