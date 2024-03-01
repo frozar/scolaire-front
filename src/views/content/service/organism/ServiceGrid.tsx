@@ -7,10 +7,6 @@ import { refScroll, services } from "./Services";
 export const zoomLevels = [1, 3, 5, 8];
 
 export const [zoom, setZoom] = createSignal(5);
-// 1
-// 3 afficher que horraire (et tripname ?)
-// 5 tout afficher
-// 8
 
 export function ServiceGrid(): JSXElement {
   const [ref, setRef] = createSignal<HTMLDivElement>(
