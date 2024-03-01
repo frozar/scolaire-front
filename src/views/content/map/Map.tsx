@@ -12,7 +12,12 @@ import ConfirmStopAddTrip from "./ConfirmStopAddTripBox";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { OsrmService, step } from "../../../_services/osrm.service";
-import { addNewUserInformation, getLeafletMap } from "../../../signaux";
+import {
+  addNewUserInformation,
+  disableSpinningWheel,
+  enableSpinningWheel,
+  getLeafletMap,
+} from "../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../type";
 import { onBoard } from "../board/component/template/ContextManager";
 import { LineWeight } from "./component/molecule/LineWeight";
@@ -48,8 +53,8 @@ export default function () {
     createSignal(false);
 
   async function requestWays(): Promise<step[]> {
-    // enableSpinningWheel();
-    const result = await OsrmService.getWaysWithWeight(240);
+    enableSpinningWheel();
+    const result = await OsrmService.getWaysWithWeight();
     const parsedResult = result.map((elem) => {
       return {
         flaxib_way_id: elem.id,
@@ -60,7 +65,7 @@ export default function () {
         ),
       };
     });
-    // disableSpinningWheel();
+    disableSpinningWheel();
     // const parsedResult = JSON.parse(result);
     // console.log("OsrmService", result[0]["line"]);
     return parsedResult;
@@ -87,7 +92,7 @@ export default function () {
 
   // eslint-disable-next-line solid/reactivity
   createEffect(async () => {
-    if (getLeafletMap()) {
+    if (getLeafletMap() && ways().length === 0) {
       const res = await requestWays();
       setWays(res);
     }
