@@ -1,7 +1,14 @@
-import { Accessor, Setter, createEffect, createSignal } from "solid-js";
+import {
+  Accessor,
+  Setter,
+  createEffect,
+  createSignal,
+  onMount,
+} from "solid-js";
 import { OsrmService, weight } from "../../../../../_services/osrm.service";
 import CheckIcon from "../../../../../icons/CheckIcon";
 import TrashIcon from "../../../../../icons/TrashIcon";
+import { addNewGlobalSuccessInformation } from "../../../../../signaux";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { getWayById, setWays } from "../../../map/Map";
 import { setSelectedWay } from "../../../map/component/molecule/LineWeight";
@@ -13,11 +20,17 @@ interface VoirieItem {
   way_id: number;
   setNewWeigth: Setter<weight>;
   isInMove: Accessor<boolean>;
+  isOnDrawMode: boolean;
 }
 
 export function VoirieItem(props: VoirieItem) {
   const [style, setstyle] = createSignal<string>("");
   const [classe, setclasse] = createSignal<string>("");
+  const [prevWeight, setprevWeight] = createSignal<number>();
+
+  onMount(() =>
+    props.isOnDrawMode ? setprevWeight(-1) : setprevWeight(props.weight.weight)
+  );
 
   createEffect(() => {
     const val = props.weight.start / 5 + 2; // explication du calcul (h/60)*12+2 => (h/60)*pas+init => simplification
@@ -33,6 +46,9 @@ export function VoirieItem(props: VoirieItem) {
       onMouseDown={(e) => {
         e.preventDefault;
         e.stopPropagation();
+        if (prevWeight() == undefined) {
+          setprevWeight(props.weight.weight);
+        }
       }}
       onMouseMove={(e) => {
         e.preventDefault;
@@ -59,20 +75,24 @@ export function VoirieItem(props: VoirieItem) {
         />
         <ButtonIcon
           icon={<CheckIcon />}
-          onClick={() => AddOrUpdate(props.way_id, props.weight)}
+          onClick={() => AddOrUpdate(props.way_id, props.weight, setprevWeight)}
           class="text-blue-700 text-sm ml-2 mt-0 h-5"
+          disable={prevWeight() == props.weight.weight}
         />
         <ButtonIcon
           icon={<TrashIcon />}
-          onClick={() => Delete(props.way_id, props.weight)}
+          onClick={() => Delete(props.way_id, props.weight, props.isOnDrawMode)}
           class="text-blue-700 text-sm ml-2 mt-0 h-5"
         />
       </a>
     </li>
   );
 }
-
-function AddOrUpdate(way_id: number, weight: weight): void {
+function AddOrUpdate(
+  way_id: number,
+  weight: weight,
+  setprevWeight: Setter<number | undefined>
+): void {
   OsrmService.setWeight(way_id, weight.weight, weight.start, weight.end);
   setWays((ways) => {
     return ways.map((way) => {
@@ -93,27 +113,35 @@ function AddOrUpdate(way_id: number, weight: weight): void {
     });
   });
   setSelectedWay(getWayById(way_id));
+  addNewGlobalSuccessInformation("La pondération a été modifiée");
+
   resetNewWeight();
+  setprevWeight(weight.weight);
 }
 
-function Delete(way_id: number, weight: weight): void {
-  OsrmService.deleteWeight(way_id, weight.start, weight.end);
+function Delete(way_id: number, weight: weight, isOnDrawMode: boolean): void {
+  if (!isOnDrawMode) {
+    OsrmService.deleteWeight(way_id, weight.start, weight.end);
 
-  setWays((ways) => {
-    return ways.map((way) => {
-      if (way.flaxib_way_id == way_id) {
-        return {
-          ...way,
-          flaxib_weight: way.flaxib_weight.filter(
-            (currentWeight) =>
-              currentWeight.end != weight.end ||
-              currentWeight.start != weight.start
-          ),
-        };
-      }
-      return way;
+    setWays((ways) => {
+      return ways.map((way) => {
+        if (way.flaxib_way_id == way_id) {
+          return {
+            ...way,
+            flaxib_weight: way.flaxib_weight.filter(
+              (currentWeight) =>
+                currentWeight.end != weight.end ||
+                currentWeight.start != weight.start
+            ),
+          };
+        }
+        return way;
+      });
     });
-  });
 
-  setSelectedWay(getWayById(way_id));
+    setSelectedWay(getWayById(way_id));
+    addNewGlobalSuccessInformation("La pondération a été supprimée");
+  } else {
+    resetNewWeight();
+  }
 }

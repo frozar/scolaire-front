@@ -45,12 +45,13 @@ export default function VoirieItems(props: VoirieItems) {
           </Show>
         )}
       </For>
-      <Show when={newWeigth().start != -1}>
+      <Show when={newWeigth().start != -1 && props.flaxib_way_id > 0}>
         <VoirieItem
           weight={newWeigth()}
           way_id={props.flaxib_way_id}
           isInMove={isInMove}
           setNewWeigth={setnewWeigth}
+          isOnDrawMode={true}
         />
       </Show>
     </ol>
@@ -66,6 +67,7 @@ function existingWeight(weightValue: weight, flaxib_way_id: number) {
       setNewWeigth={setWeigth}
       way_id={flaxib_way_id}
       isInMove={isInMove}
+      isOnDrawMode={false}
     />
   );
 }

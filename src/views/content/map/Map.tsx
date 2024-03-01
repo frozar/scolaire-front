@@ -20,13 +20,14 @@ import {
 } from "../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../type";
 import { onBoard } from "../board/component/template/ContextManager";
-import { LineWeight } from "./component/molecule/LineWeight";
+import { LineWeight, getSelectedWay } from "./component/molecule/LineWeight";
 import { BusLines, getLines } from "./component/organism/BusLines";
 import { MapPanels } from "./component/organism/MapPanels";
 import { Paths } from "./component/organism/Paths";
 import { Points } from "./component/organism/Points";
 import { getSchools } from "./component/organism/SchoolPoints";
 import { getStops } from "./component/organism/StopPoints";
+import { COLOR_BLUE_BASE, COLOR_GREEN_BASE } from "./constant";
 
 const [, { getActiveMapId, getSelectedMenu }] = useStateGui();
 
@@ -155,7 +156,17 @@ export default function () {
       <Show when={getSelectedMenu() === "voirie"}>
         <For each={ways()}>
           {(way) => {
-            return <LineWeight way={way} map={getLeafletMap() as L.Map} />;
+            return (
+              <LineWeight
+                way={way}
+                map={getLeafletMap() as L.Map}
+                lineColor={
+                  getSelectedWay()?.flaxib_way_id == way.flaxib_way_id
+                    ? COLOR_BLUE_BASE
+                    : COLOR_GREEN_BASE
+                }
+              />
+            );
           }}
         </For>
       </Show>
