@@ -1,11 +1,11 @@
 import Button from "../../../../../component/atom/Button";
 import "./BoardFooterActions.css";
 
-export type addTripButtonType = { callback: () => void; label: string };
+export type callbackButtonType = { callback: () => void; label: string };
 
 export default function (props: {
-  nextStep: addTripButtonType;
-  previousStep: addTripButtonType;
+  nextStep: callbackButtonType;
+  previousStep: callbackButtonType;
 }) {
   return (
     <div class="board-footer-actions">

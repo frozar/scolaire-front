@@ -6,11 +6,12 @@ import {
   TripType,
 } from "../_entities/trip.entity";
 import { WaypointType } from "../_entities/waypoint.entity";
+import { userMaps } from "../_stores/map.store";
+import { MapsUtils } from "../utils/maps.utils";
 import { MetricsUtils } from "../utils/metrics.utils";
 import { ServiceUtils } from "./_utils.service";
 
 const osrm = import.meta.env.VITE_API_OSRM_URL;
-const osrmRoute = osrm + "/route/v1/car";
 const osrmTable = osrm + "/table/v1/driving";
 const host = import.meta.env.VITE_BACK_URL;
 const [, { getActiveMapId }] = useStateGui();
@@ -143,8 +144,7 @@ export class OsrmService {
       start,
       end,
     });
-    console.log("content", content);
-    const responses = await ServiceUtils.generic(host + "/osrm/weight", {
+    return await ServiceUtils.generic(host + "/osrm/weight", {
       method: "POST",
       body: content,
       headers: {
@@ -153,17 +153,32 @@ export class OsrmService {
     });
   }
 
-  static async getWaysWithWeight(timestamp: number): Promise<any> {
-    const res = await ServiceUtils.generic(
-      host + "/osrm/ways?map_id=" + getActiveMapId(),
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    return res;
+  static async getWaysWithWeight(): Promise<any> {
+    const curMap = MapsUtils.getSelectedMap(userMaps());
+    if (curMap) {
+      const res = await ServiceUtils.generic(
+        host +
+          "/osrm/ways?map_id=" +
+          getActiveMapId() +
+          "&min_X=" +
+          curMap.bounding_box.min_X +
+          "&min_Y=" +
+          curMap.bounding_box.min_Y +
+          "&max_X=" +
+          curMap.bounding_box.max_X +
+          "&max_Y=" +
+          curMap.bounding_box.max_Y +
+          "&srid=" +
+          curMap.bounding_box.srid,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      return res;
+    }
   }
 
   static async deleteWeight(

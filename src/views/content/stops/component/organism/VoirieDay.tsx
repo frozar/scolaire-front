@@ -1,10 +1,12 @@
-import { For } from "solid-js";
+import { For, onMount } from "solid-js";
+import { selectedMap } from "../../../../layout/component/organism/MapSelector";
 import { getSelectedWay } from "../../../map/component/molecule/LineWeight";
 import { VoirieTimeItem } from "../atom/VoirieTimeItem";
 import "./VoirieDay.css";
 import VoirieItems from "./VoirieItems";
 
 export default function VoirieDay() {
+  onMount(() => console.log("selectedMap", selectedMap()));
   return (
     <div class="flex h-full flex-col">
       <header class="flex flex-none items-center justify-between border-b border-gray-200 px-6 py-4">

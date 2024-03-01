@@ -1,4 +1,5 @@
 import { MapDBType, MapEntity, MapType } from "../_entities/map.entity";
+import { defaultBoundingBox } from "../_stores/map.store";
 import { getSelectedOrganisation } from "../views/content/board/component/organism/OrganisationSelector";
 import { ServiceUtils } from "./_utils.service";
 
@@ -17,7 +18,11 @@ export class MapService {
       : [];
   }
 
-  static async create(map: Omit<MapDBType, "id" | "created_at">) {
+  static async create(map: Partial<MapDBType>) {
+    if (!map.bounding_box) {
+      map.bounding_box = defaultBoundingBox;
+    }
+
     const dbMap: MapDBType = await ServiceUtils.post(
       "/map",
       { ...map, organisation_id: getSelectedOrganisation().organisation_id },
@@ -30,7 +35,7 @@ export class MapService {
     return await ServiceUtils.delete("/map/" + id, false);
   }
 
-  static async update(map: Pick<MapType, "id" | "name">) {
+  static async update(map: Partial<MapType>) {
     const dbMap: MapDBType = await ServiceUtils.patch(
       "/map/" + map.id,
       {
