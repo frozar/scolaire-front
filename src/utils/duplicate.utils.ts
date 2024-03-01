@@ -1,3 +1,4 @@
+import _ from "lodash";
 import { createSignal } from "solid-js";
 import { useStateGui } from "../StateGui";
 import { LocationDBTypeEnum } from "../_entities/_utils.entity";
@@ -5,6 +6,8 @@ import { CalendarPeriodType, CalendarType } from "../_entities/calendar.entity";
 import { GradeDBType, GradeType } from "../_entities/grade.entity";
 import { LineType } from "../_entities/line.entity";
 import { PathType } from "../_entities/path.entity";
+import { SchoolType } from "../_entities/school.entity";
+import { StopType } from "../_entities/stop.entity";
 import { TimeUtils } from "../_entities/time.utils";
 import { TransporterType } from "../_entities/transporter.entity";
 import { TripDBType, TripEntity } from "../_entities/trip.entity";
@@ -19,6 +22,7 @@ import { StudentToGradeService } from "../_services/student-to-grade.service";
 import { TransporterService } from "../_services/transporter.service";
 import { userMaps } from "../_stores/map.store";
 import { disableSpinningWheel, enableSpinningWheel } from "../signaux";
+import { NatureEnum } from "../type";
 import {
   getAllTransporter,
   setAllTransporter,
@@ -50,7 +54,10 @@ import {
   getSchools,
   setSchools,
 } from "../views/content/map/component/organism/SchoolPoints";
-import { setStops } from "../views/content/map/component/organism/StopPoints";
+import {
+  getStops,
+  setStops,
+} from "../views/content/map/component/organism/StopPoints";
 import { fieldToDuplicate } from "../views/content/maps/component/organism/DuplicateDialog";
 import { CsvUtils } from "./csv.utils";
 import { MapsUtils } from "./maps.utils";
@@ -68,13 +75,17 @@ export type BusLineImportFormat = {
   schools: number[];
   stops: number[];
   trips: TripDBType[];
+  paths: PathType[];
 };
 export namespace DuplicateUtils {
   async function newMap() {
     const currentMap = userMaps().filter(
       (map) => map.id === getActiveMapId()
     )[0];
-    await MapsUtils.createMap({ name: currentMap.name + " (copie)" });
+    await MapsUtils.createMap({
+      name: currentMap.name + " (copie)",
+      bounding_box: currentMap.bounding_box,
+    });
   }
 
   async function duplicateStopsAndSchoolsWithGradesQuantity() {
@@ -141,20 +152,14 @@ export namespace DuplicateUtils {
     });
   }
 
-  async function duplicateBusLines(lines: LineType[]) {
-    // * to duplicate line we need:
-    // * - grades
-    // * - color
-    // * - associated schools
-    // * - associated stops
-    const newLines: BusLineImportFormat[] = [];
+  const newGradesInterface: { [school: string]: GradeType[] } = {};
 
-    console.log("old buslines:", lines);
-
-    // * build interface between last an new grades
-    // * {"school_name": [ {gradeId: 1, name: "grade1"}] }
-    // * Like that when i need to retrieve the new ID of the new grade for school i can refer to this interface
-    const newGrades: { [school: string]: GradeType[] } = {};
+  /**
+   * * build interface between last an new grades
+   * * {"school_name": [ {gradeId: 1, name: "grade1"}] }
+   * * Like that when i need to retrieve the new ID of the new grade for school i can refer to this interface
+   */
+  function createOldAndNewGradesInterface() {
     getSchools().forEach((school) => {
       const grades = school.grades.map((grade) => {
         return {
@@ -162,16 +167,40 @@ export namespace DuplicateUtils {
           schoolId: SchoolUtils.getIdFromName(school.name),
         };
       });
-      newGrades[school.name] = grades;
+      newGradesInterface[school.name] = grades;
     });
+  }
 
-    function searchGradeByNameInInterface(name: string) {
+  function searchGradeByNameInInterface(name: string) {
+    let grade: GradeType = {} as GradeType;
+
+    for (const school in newGradesInterface) {
+      const grade_ = newGradesInterface[school].filter(
+        (grade) => grade.name == name
+      )[0];
+      if (grade_) {
+        grade = grade_;
+        break;
+      }
+    }
+
+    return grade;
+  }
+
+  async function duplicateBusLines(
+    lines: LineType[],
+    oldSchools: SchoolType[],
+    oldStops: StopType[],
+    oldAllotments: AllotmentType[],
+    oldBusCategories: BusCategoryType[]
+  ) {
+    const newLines: BusLineImportFormat[] = [];
+
+    function searchGradeByIdInOldSchools(id: number) {
       let grade: GradeType = {} as GradeType;
 
-      for (const school in newGrades) {
-        const grade_ = newGrades[school].filter(
-          (grade) => grade.name == name
-        )[0];
+      for (const school of oldSchools) {
+        const grade_ = school.grades.filter((grade) => grade.id == id)[0];
         if (grade_) {
           grade = grade_;
           break;
@@ -180,12 +209,14 @@ export namespace DuplicateUtils {
 
       return grade;
     }
+    createOldAndNewGradesInterface();
 
     // * new grades attributions to line
     lines.forEach((line) => {
       const lineGradeNames = line.grades;
       const newLineGrades: GradeDBType[] = [];
 
+      // * Define grade with new grade ids
       lineGradeNames.forEach((grade) => {
         const grade_ = searchGradeByNameInInterface(grade.name);
         newLineGrades.push({
@@ -196,13 +227,119 @@ export namespace DuplicateUtils {
         });
       });
 
+      // * duplicate path
+      if (fieldToDuplicate().paths) {
+        line.paths.forEach((path) => {
+          const schoolNames: string[] = [];
+
+          path.schools = path.schools.map((school) => {
+            const school_ = oldSchools.filter(
+              (oldSchool) => oldSchool.id === school
+            )[0];
+
+            schoolNames.push(school_.name);
+            return SchoolUtils.getIdFromName(school_.name);
+          });
+
+          path.grades = path.grades.map((grade) => {
+            const grade_ = searchGradeByIdInOldSchools(grade);
+            return searchGradeByNameInInterface(grade_.name).id as number;
+          });
+
+          path.points = path.points.map((point) => {
+            if (point.nature == NatureEnum.stop) {
+              const oldPoint = oldStops.filter(
+                (oldStop) => oldStop.id === point.id
+              )[0];
+
+              const currentStop = getStops().filter(
+                (stop) => stop.name === oldPoint.name
+              )[0];
+
+              return currentStop;
+            } else {
+              const oldSchool = oldSchools.filter(
+                (oldSchool) => oldSchool.id === point.id
+              )[0];
+              const currentSchool = getSchools().filter(
+                (stop) => stop.name === oldSchool.name
+              )[0];
+
+              return currentSchool;
+            }
+          });
+        });
+      }
+
+      // * duplicate trips
+      if (fieldToDuplicate().trips) {
+        console.log("trips before process:", line.trips);
+
+        line.trips.forEach((trip) => {
+          const allotmentIndex = oldAllotments.findIndex(
+            (allo) => allo.id === trip.allotmentId
+          );
+          const busCategoryIndex = oldBusCategories.findIndex(
+            (category) => category.id === trip.busCategoriesId
+          );
+
+          trip.allotmentId = getAllotment()[allotmentIndex].id;
+          trip.busCategoriesId = getBus()[busCategoryIndex].id;
+
+          // ! TODO: schools, waypoints, tripPoints
+          trip.busCategoriesId;
+          trip.schools = trip.schools.map((school) => {
+            school.id = SchoolUtils.getIdFromName(school.name);
+            return school;
+          });
+
+          trip.tripPoints = trip.tripPoints.map((point) => {
+            if (point.nature == NatureEnum.school)
+              point.id = SchoolUtils.getIdFromName(point.name);
+            else point.id = StopUtils.getStopFromName(point.name).id;
+            return point;
+          });
+
+          trip.waypoints = trip.waypoints?.map((point) => {
+            console.log("waypoint process:", point.idSchool, point.idStop);
+
+            if (point.idSchool && point.idSchool != 0) {
+              console.log("old school:", oldSchools);
+              console.log("new school:", getSchools());
+
+              console.log("school waypoint process:", point.idSchool);
+
+              const schoolIndex = oldSchools.findIndex(
+                (school) => school.id == point.idSchool
+              );
+
+              console.log("school index:", schoolIndex);
+
+              point.idSchool = getSchools()[schoolIndex].id;
+            }
+
+            if (point.idStop && point.idStop != 0) {
+              const stopIndex = oldStops.findIndex(
+                (stop) => stop.id == point.idStop
+              );
+              point.idStop = getStops()[stopIndex].id;
+            }
+            return point;
+          });
+
+          // * for the bug, potentially here to look (not sure)
+          trip.grades = trip.grades.map((grade) => {
+            const grade_ = searchGradeByIdInOldSchools(grade.id as number);
+            return searchGradeByNameInInterface(grade_.name);
+          });
+        });
+
+        console.log("trips after process:", line.trips);
+      }
+
       // const trips = line.trips;
       // ! TODO process trips stop to redefine all stops id
       // ! same for school id
-
-      // trips.forEach(trip => {
-      //   trip.
-      // })
 
       const newLine: BusLineImportFormat = {
         color: line.color().substring(1),
@@ -217,6 +354,7 @@ export namespace DuplicateUtils {
         trips: line.trips.map(
           (trip) => TripEntity.dbPartialFormat(trip) as TripDBType
         ),
+        paths: line.paths,
       };
 
       console.log("new line:", newLine);
@@ -300,12 +438,16 @@ export namespace DuplicateUtils {
   export async function duplicate() {
     enableSpinningWheel();
     // * Get current map data
-    const oldBuslines = getLines();
-    const oldCalendars = calendars();
-    const oldCalendarPeriod = calendarsPeriod();
-    const oldAllotments = getAllotment();
-    const oldTransporters = getAllTransporter();
-    const oldBusCategories = getBus();
+    const oldSchools = _.cloneDeep(getSchools());
+    const oldStops = _.cloneDeep(getStops());
+    const oldBuslines = _.cloneDeep(getLines());
+    const oldCalendars = _.cloneDeep(calendars());
+    const oldCalendarPeriod = _.cloneDeep(calendarsPeriod());
+    const oldAllotments = _.cloneDeep(getAllotment());
+    const oldTransporters = _.cloneDeep(getAllTransporter());
+    const oldBusCategories = _.cloneDeep(getBus());
+
+    console.log("first old school:", oldSchools);
 
     // * Load new school
     await duplicateStopsAndSchoolsWithGradesQuantity();
@@ -331,7 +473,18 @@ export namespace DuplicateUtils {
     if (fieldToDuplicate().calendar)
       await duplicateCalendar(oldCalendars, oldCalendarPeriod);
 
-    if (fieldToDuplicate().lines) await duplicateBusLines(oldBuslines);
+    console.log("secoind old school:", oldSchools);
+
+    if (fieldToDuplicate().lines)
+      await duplicateBusLines(
+        oldBuslines,
+        oldSchools,
+        oldStops,
+        oldAllotments,
+        oldBusCategories
+      );
+
+    console.log("disablez spenning wheel");
 
     setInDucplication(false);
     disableSpinningWheel();

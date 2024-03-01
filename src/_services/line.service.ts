@@ -28,7 +28,7 @@ export class BusLineService {
   }
 
   static async import(lines: BusLineImportFormat[]): Promise<LineType[]> {
-    const dbLines = await ServiceUtils.post("/import/lines", { lines });
+    const dbLines = await ServiceUtils.post("/import/lines", { lines: lines });
     return dbLines.map((line: LineDBType) => BusLineEntity.build(line));
   }
 }

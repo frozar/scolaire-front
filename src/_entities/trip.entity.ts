@@ -197,6 +197,9 @@ export namespace TripEntity {
       output = {
         ...output,
         path_id: trip.path.id,
+        path: {
+          name: trip.path.name,
+        },
       };
 
     return output;
@@ -316,9 +319,12 @@ function buildTripPointType(
   return points
     .map((dbPoint) => {
       const associatedPoint: PointType = getAssociatedTripPoint(dbPoint);
+      console.log("stop getted for grade:", StopUtils.get(dbPoint.stop_id));
+
       const grades =
         associatedPoint.nature == NatureEnum.stop
           ? dbPoint.grades.map((grade) => {
+              console.log("grade id to search:", grade.grade_id);
               const stopGradeQuantity =
                 StopUtils.get(dbPoint.stop_id)?.associated.filter(
                   (grade_) => grade_.gradeId == grade.grade_id
