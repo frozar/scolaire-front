@@ -24,7 +24,6 @@ export function MapSelector() {
 
   createEffect(() => {
     setSelectedMap(MapsUtils.getSelectedMap(userMaps()));
-    console.log(selectedMap());
 
     if (!selectedMap()) {
       setActiveMapId(null);
