@@ -59,7 +59,7 @@ export function DrawPath() {
           label:
             onDrawPathStep() === DrawPathStep.schoolSelection
               ? "Annuler"
-              : "Précédant",
+              : "Précédent",
         }}
       />
     </>
