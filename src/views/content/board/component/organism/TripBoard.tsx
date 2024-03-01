@@ -15,6 +15,7 @@ import ButtonIcon from "../molecule/ButtonIcon";
 import { InversedTripButton } from "../molecule/InversedTripButton";
 import { changeBoard, toggleDrawMod } from "../template/ContextManager";
 import CollapsibleElement from "./CollapsibleElement";
+import { DisplayAllotmentAndVehicle } from "./DisplayAllotmentAndVehicle";
 import {
   DrawTripStep,
   setCurrentDrawTrip,
@@ -51,6 +52,7 @@ export function TripBoard() {
         <Metrics trip={selectedTrip()} />
       </CollapsibleElement>
       <DisplayTripDaysAndDirection trip={selectedTrip()} />
+      <DisplayAllotmentAndVehicle trip={selectedTrip()} />
       <InversedTripButton trip={selectedTrip() as TripType} />
       <CollapsibleElement title="TimeLine" class="timeline-collapsise">
         <TripTimeline

@@ -9,19 +9,21 @@ import { LabeledInputSelect } from "../../../../../component/molecule/LabeledInp
 import { getAllTransporter } from "../../../allotment/molecule/TransporterTable";
 import { BusCategoryType, getBus } from "../../../bus/organism/Bus";
 import { quantity, totalToDrop } from "../molecule/TripTimelineItemWrapper";
+import { currentDrawTrip, setCurrentDrawTrip } from "./DrawTripBoard";
 
-interface DisplayBestVehicleProps {
+interface VehicleSelectProps {
   allotment_id: number;
   direction_id: number;
 }
 
-export function VehicleSelect(props: DisplayBestVehicleProps) {
+export const [bestVehicle, setBestVehicle] = createSignal(0);
+
+export function VehicleSelect(props: VehicleSelectProps) {
   const [transporters, setTransporters] = createSignal<TransporterType[]>([]);
   const [vehicleOptions, setVehiclesOptions] = createSignal<BusCategoryType[]>(
     []
   );
   const [direction, setDirection] = createSignal<TripDirectionType>();
-  const [defaultVehicle, setDefaultVehicle] = createSignal(0);
 
   function setSelectOptions() {
     const tmp: number[] = [];
@@ -41,7 +43,7 @@ export function VehicleSelect(props: DisplayBestVehicleProps) {
     vehicleOptions().sort((a, b) => {
       return a.capacity - b.capacity;
     });
-    setDefaultVehicle(Number(vehicleOptions()[0].id));
+    setBestVehicle(Number(vehicleOptions()[0].id));
   }
 
   function getBestVehicle() {
@@ -50,16 +52,22 @@ export function VehicleSelect(props: DisplayBestVehicleProps) {
       ? (neededPlaces = quantity())
       : (neededPlaces = totalToDrop());
     if (neededPlaces == 0) return;
-    for (let i = 0; i < vehicleOptions().length; i++) {
-      if (vehicleOptions()[i].capacity >= neededPlaces) {
-        setDefaultVehicle(Number(vehicleOptions()[i].id));
-        break;
+    vehicleOptions().every((item) => {
+      if (item.capacity >= neededPlaces) {
+        setBestVehicle(Number(item.id));
+        return false;
       }
-    }
+      return true;
+    });
   }
 
   function onSelect(value: string | number) {
-    setDefaultVehicle(Number(value));
+    setCurrentDrawTrip((prev) => {
+      if (!prev) return prev;
+      return { ...prev, busCategoriesId: Number(value) };
+    });
+    setBestVehicle(Number(value));
+    console.log(currentDrawTrip());
   }
 
   onMount(() => {
@@ -74,19 +82,11 @@ export function VehicleSelect(props: DisplayBestVehicleProps) {
 
   createEffect(on(quantity, () => getBestVehicle()));
 
-  // onCleanup(() => {
-  //   setCurrentDrawTrip((prev) => {
-  //     if (!prev) return prev;
-  //     return { ...prev, busCategoriesId: defaultVehicle() };
-  //   });
-  //   console.log(currentDrawTrip());
-  // });
-
   return (
     <div>
       <LabeledInputSelect
         label="Véhicule"
-        defaultValue={defaultVehicle()}
+        defaultValue={bestVehicle()}
         onChange={onSelect}
         options={vehicleOptions().map((vehicle) => {
           const textToDisplay =
