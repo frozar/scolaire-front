@@ -1,4 +1,4 @@
-import { For, JSXElement, createEffect, createSignal, onMount } from "solid-js";
+import { For, JSXElement, createSignal, onMount } from "solid-js";
 import { ServiceGridUtils } from "../../../../utils/serviceGrid.utils";
 import { ServiceGridTop } from "../molecule/ServiceGridTop";
 import { ServiceGridLine } from "./ServiceGridLine";
@@ -19,10 +19,6 @@ export function ServiceGrid(): JSXElement {
 
   onMount(() => {
     ServiceGridUtils.changeScrollingDirection(refScroll(), ref());
-  });
-
-  createEffect(() => {
-    console.log("zoom =>", zoom());
   });
 
   return (
