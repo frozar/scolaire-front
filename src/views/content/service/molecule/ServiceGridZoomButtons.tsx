@@ -11,37 +11,28 @@ import { refScroll } from "../organism/Services";
 import "./ServiceGridZoomButtons.css";
 
 export function ServiceGridZoomButtons(): JSXElement {
-  // TODO: Define specific zoom levels
-  function onClickZoomIn(): void {
+  function onClickZoom(zoomType: ZoomTypeEnum): void {
     setZoom((prev) => {
       const zoomLevelIndex = zoomLevels.indexOf(prev);
-      return zoomLevels[zoomLevelIndex + 1];
+      return zoomType == ZoomTypeEnum.in
+        ? zoomLevels[zoomLevelIndex + 1]
+        : zoomLevels[zoomLevelIndex - 1];
     });
 
-    ServiceGridUtils.adaptScrollPositionToZoom(refScroll(), ZoomTypeEnum.in);
-  }
-
-  function onClickZoomOut(): void {
-    setZoom((prev) => {
-      const zoomLevelIndex = zoomLevels.indexOf(prev);
-      return zoomLevels[zoomLevelIndex - 1];
-    });
-
-    ServiceGridUtils.adaptScrollPositionToZoom(refScroll(), ZoomTypeEnum.out);
+    ServiceGridUtils.adaptScrollPositionToZoom(refScroll(), zoomType);
   }
 
   return (
     <div id="service-grid-zoom-buttons">
       <ButtonIcon
         icon={<ZoomOutIcon />}
-        onClick={onClickZoomOut}
+        onClick={() => onClickZoom(ZoomTypeEnum.out)}
         disable={zoom() == zoomLevels[0]}
         class="service-grid-zoom-button"
       />
-      {/* TODO: Define max level of zoom and put condition in `disable` */}
       <ButtonIcon
         icon={<ZoomInIcon />}
-        onClick={onClickZoomIn}
+        onClick={() => onClickZoom(ZoomTypeEnum.in)}
         disable={zoom() == zoomLevels.at(-1)}
         class="service-grid-zoom-button"
       />

@@ -100,13 +100,10 @@ export namespace ServiceGridUtils {
 
     const zoomIndex = zoomLevels.indexOf(zoom());
 
-    let scrollPositionInMinutes: number;
-
-    if (zoomType == ZoomTypeEnum.in) {
-      scrollPositionInMinutes = ref.scrollLeft / zoomLevels[zoomIndex - 1];
-    } else {
-      scrollPositionInMinutes = ref.scrollLeft / zoomLevels[zoomIndex + 1];
-    }
+    const scrollPositionInMinutes =
+      zoomType == ZoomTypeEnum.in
+        ? ref.scrollLeft / zoomLevels[zoomIndex - 1]
+        : ref.scrollLeft / zoomLevels[zoomIndex + 1];
 
     ref.scrollTo(scrollPositionInMinutes * zoom(), ref.scrollTop);
 
