@@ -14,21 +14,10 @@ interface ServiceGridLineProps {
   width: string;
 }
 
-function onMoveSortable(
-  sortable: Sortable,
-  serviceIndex: number
-  // e: Sortable.SortableEvent
-): void {
-  // console.log("e", e);
+function onMoveSortable(sortable: Sortable, serviceIndex: number): void {
   const newTripIds = sortable.toArray().map((tripId) => Number(tripId));
-  // newTripIds.pop();
-  // e.item.remove();
+
   dragAndDropSetter(serviceIndex, newTripIds);
-
-  console.log("sortable", sortable);
-
-  // console.log(sortable.toArray());
-  // return false;
 }
 
 export function ServiceGridLine(props: ServiceGridLineProps): JSXElement {
@@ -36,9 +25,17 @@ export function ServiceGridLine(props: ServiceGridLineProps): JSXElement {
     document.createElement("div")
   );
 
-  // const [trips, setTrips] = createSignal();
   function trips() {
     const serviceTRips = [...services()[props.serviceIndex].serviceTrips];
+
+    /*
+    Drag and drop fix
+      => adding a fake last trip that will not be showed nor dragged
+    
+    Aim is to prevent :
+      "solidjs" Failed to execute 'insertBefore' on 'Node': 
+      The node before which the new node is to be inserted is not a child of this node.
+    */
     serviceTRips.push({
       tripId: -1,
       hlp: 0,
@@ -55,43 +52,12 @@ export function ServiceGridLine(props: ServiceGridLineProps): JSXElement {
     sortable = new Sortable(ref(), {
       animation: 150,
       dataIdAttr: "data-id",
-      // onMove: (e, eBis) => {
-      //   // console.log("onMove => e, eBis", e, eBis);
-      //   console.log("toarray =>", sortable.toArray());
-
-      //   // return false;
-      // },
-      // onMove: () => onMoveSortable(sortable, props.serviceIndex),
-      // onChange: (e) => onMoveSortable(sortable, props.serviceIndex, e),
-
       onEnd: () => onMoveSortable(sortable, props.serviceIndex),
-
-      // onUpdate: (e) => console.log("onUpdate =>", e),
-      // onChoose: (event) => console.log("onCHoose => event", event),
-      // onUnchoose: (event) => console.log("unchoose event", event),
-      // onAdd: (event) => console.log("onAdd => event", event),
-      // onSort: (event) => console.log("onSort => event", event),
-      // onChange: (event) => console.log("onChange => event", event),
-      setData: (data, dragged) =>
-        console.log("setData => data, dragged", data, dragged),
       dragClass: "dragged",
       handle: ".drag-handle",
       direction: "horizontal",
     });
-    // dragAndDrop<number>({
-    //   parent: ref(),
-    //   getValues: () => dragAndDropGetter(props.serviceIndex),
-    //   setValues: (newTripIds) =>
-    //     dragAndDropSetter(props.serviceIndex, newTripIds),
-    //   config: {
-    //     plugins: [animations({ duration: 250 })],
-    //     draggingClass: "dragged",
-    //     dragHandle: ".drag-handle",
-    //   },
-    // });
   });
-
-  // createEffect(() => console.log("services()", services()));
 
   return (
     <div
@@ -131,18 +97,19 @@ export function ServiceGridLine(props: ServiceGridLineProps): JSXElement {
   );
 }
 
-// function dragAndDropGetter(serviceIndex: number): number[] {
-//   return services()[serviceIndex].serviceTrips.map(
-//     (serviceTrip) => serviceTrip.tripId
-//   );
-// }
-
 function dragAndDropSetter(serviceIndex: number, newTripIds: number[]): void {
-  console.log("newTripIds", newTripIds);
-  console.log("serviceIndex", serviceIndex);
   const _services = services();
-  // newTripIds.pop();
+
+  /*
+    Drag and drop fix
+      => do not take into account fake tripId
+    
+    Aim is to prevent :
+      "solidjs" Failed to execute 'insertBefore' on 'Node': 
+      The node before which the new node is to be inserted is not a child of this node.
+    */
   newTripIds = newTripIds.filter((newTripId) => newTripId != -1);
+
   const serviceTrips = ServiceTripsUtils.getUpdatedService(
     _services[serviceIndex],
     newTripIds,
@@ -152,21 +119,4 @@ function dragAndDropSetter(serviceIndex: number, newTripIds: number[]): void {
   _services[serviceIndex].serviceTrips = serviceTrips;
 
   setServices([..._services]);
-
-  // setServices((prev) => {
-  //   const _services = [...prev];
-  //   console.log("1");
-
-  //   const serviceTrips = ServiceTripsUtils.getUpdatedService(
-  //     _services[serviceIndex],
-  //     newTripIds,
-  //     false
-  //   );
-  //   console.log("2");
-
-  //   _services[serviceIndex].serviceTrips = serviceTrips;
-  //   console.log("3");
-
-  //   return _services;
-  // });
 }

@@ -27,6 +27,14 @@ export function ServiceGridItem(props: ServiceGridItemProps): JSXElement {
       <Show when={props.hlpWidth > 0}>
         <ServiceGridHlp width={props.hlpWidth} />
       </Show>
+      {/*
+    Drag and drop fix
+      => do not show last fake trip
+    
+    Aim is to prevent :
+      "solidjs" Failed to execute 'insertBefore' on 'Node': 
+      The node before which the new node is to be inserted is not a child of this node.
+    */}
       <Show when={props.serviceTrip.tripId != -1}>
         <ServiceGridTripItem
           serviceId={props.serviceId}
