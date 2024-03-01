@@ -44,6 +44,8 @@ let mapDiv: HTMLDivElement;
 
 export const [ways, setWays] = createSignal<step[]>([]);
 
+const [waysIsFetch, setWaysIsFetch] = createSignal<boolean>();
+
 export function getWayById(way_id: number): step {
   return ways().filter((way) => way.flaxib_way_id == way_id)[0];
 }
@@ -53,7 +55,6 @@ export default function () {
     createSignal(false);
 
   async function requestWays(): Promise<step[]> {
-    enableSpinningWheel();
     const result = await OsrmService.getWaysWithWeight();
     const parsedResult = result.map((elem) => {
       return {
@@ -65,7 +66,6 @@ export default function () {
         ),
       };
     });
-    disableSpinningWheel();
     // const parsedResult = JSON.parse(result);
     // console.log("OsrmService", result[0]["line"]);
     return parsedResult;
@@ -92,9 +92,20 @@ export default function () {
 
   // eslint-disable-next-line solid/reactivity
   createEffect(async () => {
-    if (getLeafletMap() && ways().length === 0) {
+    if (getLeafletMap() && ways().length === 0 && waysIsFetch() == undefined) {
+      setWaysIsFetch(false);
       const res = await requestWays();
       setWays(res);
+      setWaysIsFetch(true);
+    }
+  });
+
+  // eslint-disable-next-line solid/reactivity
+  createEffect(async () => {
+    if (!waysIsFetch() && getSelectedMenu() === "voirie") {
+      enableSpinningWheel();
+    } else {
+      disableSpinningWheel();
     }
   });
 
