@@ -4,7 +4,10 @@ import {
   TripDirectionEnum,
 } from "../_entities/trip-direction.entity";
 import { TripPointType } from "../_entities/trip.entity";
-import { zoom } from "../views/content/service/organism/ServiceGrid";
+import {
+  zoom,
+  zoomLevels,
+} from "../views/content/service/organism/ServiceGrid";
 import {
   ServiceType,
   services,
@@ -12,6 +15,11 @@ import {
 import { hlpMatrix } from "../views/content/service/template/ServiceTemplate";
 import { ServiceTripsUtils } from "./serviceTrips.utils";
 import { TripUtils } from "./trip.utils";
+
+export enum ZoomTypeEnum {
+  in,
+  out,
+}
 
 export type HlpMatrixType = {
   /*
@@ -84,20 +92,22 @@ export namespace ServiceGridUtils {
     });
   }
 
-  // TODO: Refactor
-  export function adaptScrollPositionToZoomIn(ref: HTMLDivElement): void {
+  export function adaptScrollPositionToZoom(
+    ref: HTMLDivElement,
+    zoomType: ZoomTypeEnum
+  ): void {
     ref.style.scrollBehavior = "auto";
 
-    const scrollPositionInMinutes = ref.scrollLeft / (zoom() - 1);
-    ref.scrollTo(scrollPositionInMinutes * zoom(), ref.scrollTop);
+    const zoomIndex = zoomLevels.indexOf(zoom());
 
-    ref.style.scrollBehavior = "smooth";
-  }
+    let scrollPositionInMinutes: number;
 
-  export function adaptScrollPositionToZoomOut(ref: HTMLDivElement): void {
-    ref.style.scrollBehavior = "auto";
+    if (zoomType == ZoomTypeEnum.in) {
+      scrollPositionInMinutes = ref.scrollLeft / zoomLevels[zoomIndex - 1];
+    } else {
+      scrollPositionInMinutes = ref.scrollLeft / zoomLevels[zoomIndex + 1];
+    }
 
-    const scrollPositionInMinutes = ref.scrollLeft / (zoom() + 1);
     ref.scrollTo(scrollPositionInMinutes * zoom(), ref.scrollTop);
 
     ref.style.scrollBehavior = "smooth";
