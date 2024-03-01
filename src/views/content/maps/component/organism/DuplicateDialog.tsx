@@ -118,7 +118,11 @@ export function DuplicateDialog() {
         onChange={() => updateFieldToDuplicate(FieldToDuplicateEnum.lines)}
       />
       <LabeledCheckbox
-        disabled={!fieldToDuplicate().lines}
+        disabled={
+          !fieldToDuplicate().lines ||
+          !fieldToDuplicate().busCategories ||
+          !fieldToDuplicate().allotments
+        }
         checked={fieldToDuplicate().trips}
         label="Courses"
         onChange={() => updateFieldToDuplicate(FieldToDuplicateEnum.trips)}
@@ -152,19 +156,21 @@ export function DuplicateDialog() {
       />
 
       <LabeledCheckbox
-        disabled={!fieldToDuplicate().allotments}
-        checked={fieldToDuplicate().transporters}
-        label="Transporteurs"
-        onChange={() =>
-          updateFieldToDuplicate(FieldToDuplicateEnum.transporters)
-        }
-      />
-
-      <LabeledCheckbox
         checked={fieldToDuplicate().busCategories}
         label="Categories de bus"
         onChange={() =>
           updateFieldToDuplicate(FieldToDuplicateEnum.busCategories)
+        }
+      />
+
+      <LabeledCheckbox
+        disabled={
+          !fieldToDuplicate().allotments || !fieldToDuplicate().busCategories
+        }
+        checked={fieldToDuplicate().transporters}
+        label="Transporteurs"
+        onChange={() =>
+          updateFieldToDuplicate(FieldToDuplicateEnum.transporters)
         }
       />
 

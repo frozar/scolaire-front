@@ -4,12 +4,15 @@ import { LocationDBTypeEnum } from "../_entities/_utils.entity";
 import { CalendarPeriodType, CalendarType } from "../_entities/calendar.entity";
 import { GradeDBType, GradeType } from "../_entities/grade.entity";
 import { LineType } from "../_entities/line.entity";
+import { PathType } from "../_entities/path.entity";
 import { TimeUtils } from "../_entities/time.utils";
 import { TransporterType } from "../_entities/transporter.entity";
 import { TripDBType, TripEntity } from "../_entities/trip.entity";
 import { AllotmentService } from "../_services/allotment.service";
+import { BusService } from "../_services/bus.service";
 import { CalendarService } from "../_services/calendar.service";
 import { BusLineService } from "../_services/line.service";
+import { PathService } from "../_services/path.service";
 import { SchoolService } from "../_services/school.service";
 import { StopService } from "../_services/stop.service";
 import { StudentToGradeService } from "../_services/student-to-grade.service";
@@ -26,6 +29,11 @@ import {
   setAllotment,
 } from "../views/content/allotment/organism/Allotment";
 import { CsvEnum } from "../views/content/board/component/molecule/ImportSelection";
+import {
+  BusCategoryType,
+  getBus,
+  setBus,
+} from "../views/content/bus/organism/Bus";
 import {
   calendars,
   setCalendars,
@@ -173,6 +181,7 @@ export namespace DuplicateUtils {
       return grade;
     }
 
+    // * new grades attributions to line
     lines.forEach((line) => {
       const lineGradeNames = line.grades;
       const newLineGrades: GradeDBType[] = [];
@@ -250,15 +259,30 @@ export namespace DuplicateUtils {
     setAllotment(allotments);
   }
 
+  export async function duplicateBusCategories(
+    oldBusCategory: BusCategoryType[]
+  ) {
+    const busCategories = await BusService.importBus(oldBusCategory);
+    setBus(busCategories);
+  }
+
   export async function duplicateTransporters(
     oldTransporters: TransporterType[],
-    oldAllotments: AllotmentType[]
+    oldAllotments: AllotmentType[],
+    oldBusCategories: BusCategoryType[]
   ) {
     oldTransporters.forEach((transporter) => {
       const allotmentIndex = oldAllotments.findIndex(
         (allotment) => allotment.id == transporter.allotment_id
       );
       transporter.allotment_id = getAllotment()[allotmentIndex].id;
+
+      transporter.vehicles.forEach((vehicle) => {
+        const vehicleIndex = oldBusCategories.findIndex(
+          (category) => category.id == vehicle.bus_categories_id
+        );
+        vehicle.bus_categories_id = getBus()[vehicleIndex].id;
+      });
     });
 
     const transporter = await TransporterService.importTransporters(
@@ -266,6 +290,11 @@ export namespace DuplicateUtils {
     );
 
     setAllTransporter(transporter);
+  }
+
+  export function duplcatePaths(paths: PathType[]) {
+    const importedPaths = PathService.importPaths(paths);
+    console.log("imported paths: ", importedPaths);
   }
 
   export async function duplicate() {
@@ -276,6 +305,7 @@ export namespace DuplicateUtils {
     const oldCalendarPeriod = calendarsPeriod();
     const oldAllotments = getAllotment();
     const oldTransporters = getAllTransporter();
+    const oldBusCategories = getBus();
 
     // * Load new school
     await duplicateStopsAndSchoolsWithGradesQuantity();
@@ -283,20 +313,25 @@ export namespace DuplicateUtils {
     // ! TODO before duplicate line trips
     // ! need to duplicate:
     // ! - paths
-    // ! - allotments
-    // ! - calendar OK
+    // ! - allotments ~OK
     // ! - bus categories
-
+    // ! - calendar OK
+    if (fieldToDuplicate().busCategories)
+      await duplicateBusCategories(oldBusCategories);
     if (fieldToDuplicate().allotments) await duplicateAllotment(oldAllotments);
     if (fieldToDuplicate().transporters)
-      await duplicateTransporters(oldTransporters, oldAllotments);
+      await duplicateTransporters(
+        oldTransporters,
+        oldAllotments,
+        oldBusCategories
+      );
 
     if (fieldToDuplicate().calendarPeriod)
       await duplicateCalendarPeriod(oldCalendarPeriod);
     if (fieldToDuplicate().calendar)
       await duplicateCalendar(oldCalendars, oldCalendarPeriod);
 
-    if (fieldToDuplicate().lines) duplicateBusLines(oldBuslines);
+    if (fieldToDuplicate().lines) await duplicateBusLines(oldBuslines);
 
     setInDucplication(false);
     disableSpinningWheel();

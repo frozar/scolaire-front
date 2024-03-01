@@ -7,6 +7,12 @@ export namespace BusService {
     setBus(dbBus);
   }
 
+  export async function importBus(busCategories: BusCategoryType[]) {
+    return await ServiceUtils.post("/import/bus", {
+      bus_categories: busCategories,
+    });
+  }
+
   export async function update(bus: Partial<BusCategoryType>) {
     const dbBus: BusCategoryType = await ServiceUtils.patch(
       "/bus/" + bus.id,
