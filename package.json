@@ -37,6 +37,7 @@
     "@types/lodash": "^4.14.191",
     "@types/object-hash": "^3.0.2",
     "@types/papaparse": "^5.3.8",
+    "@types/sortablejs": "^1.15.8",
     "@typescript-eslint/eslint-plugin": "^5.59.1",
     "autoprefixer": "^10.4.13",
     "eslint": "^8.39.0",
@@ -71,11 +72,11 @@
     "vitest": "^0.26.3"
   },
   "dependencies": {
-    "@formkit/drag-and-drop": "^0.0.22",
     "@lmiller1990/cypress-ct-solid-js": "^0.1.0",
     "cypress": "^12.16.0",
     "cypress-image-diff-js": "^1.25.0",
-    "nodemon": "^2.0.22"
+    "nodemon": "^2.0.22",
+    "sortablejs": "^1.15.2"
   },
   "msw": {
     "workerDirectory": "./.storybook/public"
