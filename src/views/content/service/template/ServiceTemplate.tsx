@@ -16,6 +16,12 @@ export function ServiceTemplate(): JSXElement {
     enableSpinningWheel();
 
     const { latLngs, tripIds } = BusServiceUtils.getStartAndEndTripLatLngs();
+
+    if (tripIds.length == 0) {
+      disableSpinningWheel();
+      return;
+    }
+
     const durations = await OsrmService.getHlpMatrix(latLngs);
 
     setHlpMatrix(() => {

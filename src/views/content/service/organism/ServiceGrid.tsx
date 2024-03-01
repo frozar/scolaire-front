@@ -4,7 +4,9 @@ import { ServiceGridTop } from "../molecule/ServiceGridTop";
 import { ServiceGridLine } from "./ServiceGridLine";
 import { refScroll, services } from "./Services";
 
-export const [zoom, setZoom] = createSignal(8);
+export const zoomLevels = [1, 3, 5, 8];
+
+export const [zoom, setZoom] = createSignal(5);
 
 export function ServiceGrid(): JSXElement {
   const [ref, setRef] = createSignal<HTMLDivElement>(
