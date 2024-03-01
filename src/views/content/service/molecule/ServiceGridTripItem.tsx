@@ -24,7 +24,7 @@ export function ServiceGridTripItem(
 ): JSXElement {
   return (
     <div
-      class="service-grid-item-trip"
+      class="service-grid-item-trip drag-handle"
       classList={{ "outside-schedule-range": props.outsideScheduleRange }}
       style={{
         width: ServiceGridUtils.widthCssValue(props.serviceTripWidth),

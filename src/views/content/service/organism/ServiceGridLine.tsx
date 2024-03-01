@@ -26,7 +26,8 @@ export function ServiceGridLine(props: ServiceGridLineProps): JSXElement {
         dragAndDropSetter(props.serviceIndex, newTripIds),
       config: {
         plugins: [animations({ duration: 250 })],
-        // TODO: use draggingClass to specify dragging elt style
+        draggingClass: "dragged",
+        dragHandle: ".drag-handle",
       },
     });
   });

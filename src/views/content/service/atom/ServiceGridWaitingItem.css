@@ -1,0 +1,7 @@
+.service-grid-item-trip-waiting {
+  @apply flex items-center;
+}
+
+.service-grid-item.dragged .service-grid-item-trip-waiting {
+  @apply opacity-0;
+}

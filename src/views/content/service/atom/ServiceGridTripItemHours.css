@@ -5,3 +5,11 @@
 .service-grid-item-trip-end-hour {
   @apply absolute text-xs -rotate-45 -bottom-6 -right-4;
 }
+
+.service-grid-item.dragged .service-grid-item-trip-start-hour {
+  @apply opacity-0;
+}
+
+.service-grid-item.dragged .service-grid-item-trip-end-hour {
+  @apply opacity-0;
+}
