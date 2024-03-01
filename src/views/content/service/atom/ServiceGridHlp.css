@@ -1,3 +1,7 @@
 .service-grid-item-hlp {
   @apply bg-purple-base w-14 h-16 rounded-md;
 }
+
+.service-grid-item.dragged > .service-grid-item-hlp {
+  @apply opacity-0;
+}
