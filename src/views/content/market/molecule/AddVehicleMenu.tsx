@@ -1,11 +1,11 @@
 import { createSignal } from "solid-js";
 import { BusService } from "../../../../_services/bus.service";
 import {
-  addNewUserInformation,
+  addNewGlobalSuccessInformation,
+  addNewGlobalWarningInformation,
   disableSpinningWheel,
   enableSpinningWheel,
 } from "../../../../signaux";
-import { MessageLevelEnum, MessageTypeEnum } from "../../../../type";
 import { VehicleMenuHeader } from "../atom/VehicleMenuHeader";
 import { VehicleMenuContent } from "./VehicleMenuContent";
 import { setIsVehicleMenuOpened } from "./vehicle/VehicleTab";
@@ -58,7 +58,21 @@ export function AddVehicleMenu() {
   }
 
   async function createNewVehicle() {
-    if (getName() == "" || getCategory() == "") return;
+    console.log(getAccessibility());
+    if (getName() == "") {
+      addNewGlobalWarningInformation("Veuillez entrer un nom");
+      return;
+    }
+    if (getCapacity() == 0) {
+      addNewGlobalWarningInformation("Veuillez entrer la capacité du véhicule");
+      return;
+    }
+    if (getWidth() == 0 || getHeight() == 0 || getLength() == 0) {
+      addNewGlobalWarningInformation("Veuillez entrer le gabarit du véhicule");
+      return;
+    }
+    if (getCategory() == "") setCategory("bus");
+    if (getAccessibility() == "") setAccessibility("PMR");
     enableSpinningWheel();
     await BusService.create({
       category: getCategory(),
@@ -70,12 +84,9 @@ export function AddVehicleMenu() {
       height: getHeight(),
     });
     disableSpinningWheel();
-    addNewUserInformation({
-      displayed: true,
-      level: MessageLevelEnum.success,
-      type: MessageTypeEnum.global,
-      content: "Le véhicule " + getName() + " a bien été créé",
-    });
+    addNewGlobalSuccessInformation(
+      "Le véhicule " + getName() + " a bien été créé"
+    );
     setIsVehicleMenuOpened(false);
     resetDefaultValues();
   }

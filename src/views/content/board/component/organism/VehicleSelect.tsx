@@ -9,7 +9,7 @@ import { LabeledInputSelect } from "../../../../../component/molecule/LabeledInp
 import { getAllTransporter } from "../../../allotment/molecule/TransporterTable";
 import { BusCategoryType, getBus } from "../../../bus/organism/Bus";
 import { quantity, totalToDrop } from "../molecule/TripTimelineItemWrapper";
-import { currentDrawTrip, setCurrentDrawTrip } from "./DrawTripBoard";
+import { setCurrentDrawTrip } from "./DrawTripBoard";
 
 interface VehicleSelectProps {
   allotment_id: number;
@@ -67,7 +67,6 @@ export function VehicleSelect(props: VehicleSelectProps) {
       return { ...prev, busCategoriesId: Number(value) };
     });
     setBestVehicle(Number(value));
-    console.log(currentDrawTrip());
   }
 
   onMount(() => {

@@ -8,11 +8,11 @@ import Button from "../../../../component/atom/Button";
 import { TableContent } from "../../../../component/table/molecule/TableContent";
 import { Table } from "../../../../component/table/organism/Table";
 import {
-  addNewUserInformation,
+  addNewGlobalSuccessInformation,
+  addNewGlobalWarningInformation,
   disableSpinningWheel,
   enableSpinningWheel,
 } from "../../../../signaux";
-import { MessageLevelEnum, MessageTypeEnum } from "../../../../type";
 import {
   TransporterAddMenu,
   getNewVehicles,
@@ -61,25 +61,31 @@ export function TransporterTable(props: { allotment_id?: number }) {
     return vehiclelist;
   }
 
+  function checkVehicleLicence() {
+    let returnValue = true;
+    getNewVehicles().every((vehicle) => {
+      if (vehicle.license == "") {
+        addNewGlobalWarningInformation(
+          "Veuillez entrer l'immatriculation du véhicule"
+        );
+        returnValue = false;
+        return false;
+      }
+      return true;
+    });
+    return returnValue;
+  }
+
   async function addTransporter() {
     if (newName() == "") {
-      addNewUserInformation({
-        displayed: true,
-        level: MessageLevelEnum.error,
-        type: MessageTypeEnum.global,
-        content: "Veuillez entrer un nom",
-      });
+      addNewGlobalWarningInformation("Veuillez entrer un nom");
       return;
     }
     if (getNewVehicles().length <= 0) {
-      addNewUserInformation({
-        displayed: true,
-        level: MessageLevelEnum.error,
-        type: MessageTypeEnum.global,
-        content: "Veuillez ajouter au moins un véhicule",
-      });
+      addNewGlobalWarningInformation("Veuillez ajouter au moins un véhicule");
       return;
     }
+    if (!checkVehicleLicence()) return;
     enableSpinningWheel();
     await TransporterService.create({
       name: newName(),
@@ -88,12 +94,7 @@ export function TransporterTable(props: { allotment_id?: number }) {
       vehicles: setTransporterVehicles(),
     });
     disableSpinningWheel();
-    addNewUserInformation({
-      displayed: true,
-      level: MessageLevelEnum.success,
-      type: MessageTypeEnum.global,
-      content: "Transporteur créé",
-    });
+    addNewGlobalSuccessInformation("Transporteur créé");
     resetChanges();
   }
 
