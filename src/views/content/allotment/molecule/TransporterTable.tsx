@@ -10,11 +10,9 @@ import { Table } from "../../../../component/table/organism/Table";
 import {
   addNewGlobalSuccessInformation,
   addNewGlobalWarningInformation,
-  addNewUserInformation,
   disableSpinningWheel,
   enableSpinningWheel,
 } from "../../../../signaux";
-import { MessageLevelEnum, MessageTypeEnum } from "../../../../type";
 import {
   TransporterAddMenu,
   getNewVehicles,
@@ -67,12 +65,9 @@ export function TransporterTable(props: { allotment_id?: number }) {
     let returnValue = true;
     getNewVehicles().every((vehicle) => {
       if (vehicle.license == "") {
-        addNewUserInformation({
-          displayed: true,
-          level: MessageLevelEnum.error,
-          type: MessageTypeEnum.global,
-          content: "Veuillez entrer l'immatriculation du véhicule",
-        });
+        addNewGlobalWarningInformation(
+          "Veuillez entrer l'immatriculation du véhicule"
+        );
         returnValue = false;
         return false;
       }
