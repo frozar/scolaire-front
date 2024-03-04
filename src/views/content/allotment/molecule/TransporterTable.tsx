@@ -8,6 +8,8 @@ import Button from "../../../../component/atom/Button";
 import { TableContent } from "../../../../component/table/molecule/TableContent";
 import { Table } from "../../../../component/table/organism/Table";
 import {
+  addNewGlobalSuccessInformation,
+  addNewGlobalWarningInformation,
   addNewUserInformation,
   disableSpinningWheel,
   enableSpinningWheel,
@@ -81,21 +83,11 @@ export function TransporterTable(props: { allotment_id?: number }) {
 
   async function addTransporter() {
     if (newName() == "") {
-      addNewUserInformation({
-        displayed: true,
-        level: MessageLevelEnum.error,
-        type: MessageTypeEnum.global,
-        content: "Veuillez entrer un nom",
-      });
+      addNewGlobalWarningInformation("Veuillez entrer un nom");
       return;
     }
     if (getNewVehicles().length <= 0) {
-      addNewUserInformation({
-        displayed: true,
-        level: MessageLevelEnum.error,
-        type: MessageTypeEnum.global,
-        content: "Veuillez ajouter au moins un véhicule",
-      });
+      addNewGlobalWarningInformation("Veuillez ajouter au moins un véhicule");
       return;
     }
     if (!checkVehicleLicence()) return;
@@ -107,12 +99,7 @@ export function TransporterTable(props: { allotment_id?: number }) {
       vehicles: setTransporterVehicles(),
     });
     disableSpinningWheel();
-    addNewUserInformation({
-      displayed: true,
-      level: MessageLevelEnum.success,
-      type: MessageTypeEnum.global,
-      content: "Transporteur créé",
-    });
+    addNewGlobalSuccessInformation("Transporteur créé");
     resetChanges();
   }
 

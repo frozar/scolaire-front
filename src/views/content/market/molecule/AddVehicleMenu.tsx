@@ -1,11 +1,11 @@
 import { createSignal } from "solid-js";
 import { BusService } from "../../../../_services/bus.service";
 import {
-  addNewUserInformation,
+  addNewGlobalSuccessInformation,
+  addNewGlobalWarningInformation,
   disableSpinningWheel,
   enableSpinningWheel,
 } from "../../../../signaux";
-import { MessageLevelEnum, MessageTypeEnum } from "../../../../type";
 import { VehicleMenuHeader } from "../atom/VehicleMenuHeader";
 import { VehicleMenuContent } from "./VehicleMenuContent";
 import { setIsVehicleMenuOpened } from "./vehicle/VehicleTab";
@@ -60,30 +60,15 @@ export function AddVehicleMenu() {
   async function createNewVehicle() {
     console.log(getAccessibility());
     if (getName() == "") {
-      addNewUserInformation({
-        displayed: true,
-        level: MessageLevelEnum.error,
-        type: MessageTypeEnum.global,
-        content: "Veuillez entrer un nom",
-      });
+      addNewGlobalWarningInformation("Veuillez entrer un nom");
       return;
     }
     if (getCapacity() == 0) {
-      addNewUserInformation({
-        displayed: true,
-        level: MessageLevelEnum.error,
-        type: MessageTypeEnum.global,
-        content: "Veuillez entrer la capacité du véhicule",
-      });
+      addNewGlobalWarningInformation("Veuillez entrer la capacité du véhicule");
       return;
     }
     if (getWidth() == 0 || getHeight() == 0 || getLength() == 0) {
-      addNewUserInformation({
-        displayed: true,
-        level: MessageLevelEnum.error,
-        type: MessageTypeEnum.global,
-        content: "Veuillez entrer le gabarit du véhicule",
-      });
+      addNewGlobalWarningInformation("Veuillez entrer le gabarit du véhicule");
       return;
     }
     if (getCategory() == "") setCategory("bus");
@@ -99,12 +84,9 @@ export function AddVehicleMenu() {
       height: getHeight(),
     });
     disableSpinningWheel();
-    addNewUserInformation({
-      displayed: true,
-      level: MessageLevelEnum.success,
-      type: MessageTypeEnum.global,
-      content: "Le véhicule " + getName() + " a bien été créé",
-    });
+    addNewGlobalSuccessInformation(
+      "Le véhicule " + getName() + " a bien été créé"
+    );
     setIsVehicleMenuOpened(false);
     resetDefaultValues();
   }
