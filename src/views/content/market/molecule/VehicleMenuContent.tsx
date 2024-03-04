@@ -34,7 +34,6 @@ export function VehicleMenuContent(props: VehicleMenuContentProps) {
         />
         <VehicleCapacityInput
           defaultValue={props.capacity}
-          label="Capacité"
           onChangeFunction={props.onCapacityChange}
         />
         <VehicleCategoryInput onChangeFunction={props.onCategoryChange} />

@@ -58,7 +58,36 @@ export function AddVehicleMenu() {
   }
 
   async function createNewVehicle() {
-    if (getName() == "" || getCategory() == "") return;
+    console.log(getAccessibility());
+    if (getName() == "") {
+      addNewUserInformation({
+        displayed: true,
+        level: MessageLevelEnum.error,
+        type: MessageTypeEnum.global,
+        content: "Veuillez entrer un nom",
+      });
+      return;
+    }
+    if (getCapacity() == 0) {
+      addNewUserInformation({
+        displayed: true,
+        level: MessageLevelEnum.error,
+        type: MessageTypeEnum.global,
+        content: "Veuillez entrer la capacité du véhicule",
+      });
+      return;
+    }
+    if (getWidth() == 0 || getHeight() == 0 || getLength() == 0) {
+      addNewUserInformation({
+        displayed: true,
+        level: MessageLevelEnum.error,
+        type: MessageTypeEnum.global,
+        content: "Veuillez entrer le gabarit du véhicule",
+      });
+      return;
+    }
+    if (getCategory() == "") setCategory("bus");
+    if (getAccessibility() == "") setAccessibility("PMR");
     enableSpinningWheel();
     await BusService.create({
       category: getCategory(),

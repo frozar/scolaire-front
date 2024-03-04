@@ -61,6 +61,24 @@ export function TransporterTable(props: { allotment_id?: number }) {
     return vehiclelist;
   }
 
+  function checkVehicleLicence() {
+    let returnValue = true;
+    getNewVehicles().every((vehicle) => {
+      if (vehicle.license == "") {
+        addNewUserInformation({
+          displayed: true,
+          level: MessageLevelEnum.error,
+          type: MessageTypeEnum.global,
+          content: "Veuillez entrer l'immatriculation du véhicule",
+        });
+        returnValue = false;
+        return false;
+      }
+      return true;
+    });
+    return returnValue;
+  }
+
   async function addTransporter() {
     if (newName() == "") {
       addNewUserInformation({
@@ -80,6 +98,7 @@ export function TransporterTable(props: { allotment_id?: number }) {
       });
       return;
     }
+    if (!checkVehicleLicence()) return;
     enableSpinningWheel();
     await TransporterService.create({
       name: newName(),

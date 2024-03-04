@@ -1,4 +1,6 @@
 import { For, createSignal } from "solid-js";
+import { addNewUserInformation } from "../../../../signaux";
+import { MessageLevelEnum, MessageTypeEnum } from "../../../../type";
 import { getBus } from "../../bus/organism/Bus";
 import { TransporterAddButtons } from "./TransporterAddButtons";
 import { TransporterAddHeader } from "./TransporterAddHeader";
@@ -28,6 +30,15 @@ export function TransporterAddMenu(props: TransporterAddMenuProps) {
   let newVehicleId = 0;
 
   function addVehicle() {
+    if (getBus().length <= 0) {
+      addNewUserInformation({
+        displayed: true,
+        level: MessageLevelEnum.error,
+        type: MessageTypeEnum.global,
+        content: "Aucun véhicule n'a encore été créé.",
+      });
+      return;
+    }
     setNewVehicles((prev) => {
       return [
         ...prev,
