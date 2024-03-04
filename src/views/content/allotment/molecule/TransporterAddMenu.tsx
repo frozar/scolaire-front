@@ -30,7 +30,7 @@ export function TransporterAddMenu(props: TransporterAddMenuProps) {
 
   function addVehicle() {
     if (getBus().length <= 0) {
-      addNewGlobalWarningInformation("Aucun véhicule n'a encore été créé.");
+      addNewGlobalWarningInformation("Aucun véhicule n'a encore été créé");
       return;
     }
     setNewVehicles((prev) => {
