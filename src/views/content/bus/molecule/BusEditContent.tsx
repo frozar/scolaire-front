@@ -9,6 +9,7 @@ import "./BusEditContent.css";
 interface BusEditContentProps {
   name: string;
   capacity: number;
+  capacityStand: number;
   category: string;
   accessibility: string;
   length: number;
@@ -17,6 +18,7 @@ interface BusEditContentProps {
   onNameChange: (value: string) => void;
   onCategoryChange: (value: string) => void;
   onCapacityChange: (value: number) => void;
+  onCapacityStandChange: (value: number) => void;
   onAccessibilityChange: (value: string) => void;
   onLengthChange: (value: number) => void;
   onWidthChange: (value: number) => void;
@@ -34,8 +36,16 @@ export function BusEditContent(props: BusEditContentProps) {
           onInputFunction={props.onNameChange}
         />
         <VehicleCapacityInput
+          label="Capacité assis"
+          name="capacitySit"
           defaultValue={props.capacity}
           onChangeFunction={props.onCapacityChange}
+        />
+        <VehicleCapacityInput
+          label="Capacité debout"
+          name="capacityStand"
+          defaultValue={props.capacityStand}
+          onChangeFunction={props.onCapacityStandChange}
         />
         <VehicleCategoryInput
           defaultValue={props.category}

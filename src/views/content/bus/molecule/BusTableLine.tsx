@@ -1,11 +1,10 @@
 import { createSignal, Show } from "solid-js";
 import { BusService } from "../../../../_services/bus.service";
 import {
-  addNewUserInformation,
+  addNewGlobalSuccessInformation,
   disableSpinningWheel,
   enableSpinningWheel,
 } from "../../../../signaux";
-import { MessageLevelEnum, MessageTypeEnum } from "../../../../type";
 import { BusCategoryType } from "../organism/Bus";
 import { BusEditMenu } from "./BusEditMenu";
 import "./BusTableLine.css";
@@ -32,6 +31,9 @@ export function BusTableLine(props: BusTableLineProps) {
 
   // eslint-disable-next-line solid/reactivity
   const [getCapacity, setCapacity] = createSignal(props.busItem.capacity);
+
+  // eslint-disable-next-line solid/reactivity
+  const [getStand, setStand] = createSignal(props.busItem.capacity_standing);
 
   // eslint-disable-next-line solid/reactivity
   const [getAccess, setAccess] = createSignal(props.busItem.accessibility);
@@ -63,6 +65,7 @@ export function BusTableLine(props: BusTableLineProps) {
       name: getName(),
       category: getCategory(),
       capacity: getCapacity(),
+      capacity_standing: getStand(),
       accessibility: getAccess(),
       length: getLength(),
       width: getWidth(),
@@ -70,24 +73,14 @@ export function BusTableLine(props: BusTableLineProps) {
     });
     disableSpinningWheel();
     toggleEditMode();
-    addNewUserInformation({
-      displayed: true,
-      level: MessageLevelEnum.success,
-      type: MessageTypeEnum.global,
-      content: "Les modifications ont bien été apportées",
-    });
+    addNewGlobalSuccessInformation("Les modifications ont bien été apportées");
   }
 
   async function deleteButton() {
     enableSpinningWheel();
     await BusService.deleteBus(props.busItem.id);
     disableSpinningWheel();
-    addNewUserInformation({
-      displayed: true,
-      level: MessageLevelEnum.success,
-      type: MessageTypeEnum.global,
-      content: "Le bus a bien été supprimé",
-    });
+    addNewGlobalSuccessInformation("Le bus a bien été supprimé");
   }
 
   function cancelButton() {
@@ -106,6 +99,10 @@ export function BusTableLine(props: BusTableLineProps) {
 
   function onCapacityInputChanged(value: number) {
     setCapacity(value);
+  }
+
+  function onCapacityStandInputChanged(value: number) {
+    setStand(value);
   }
 
   function onAccessibilityInputChanged(value: string) {
@@ -132,6 +129,7 @@ export function BusTableLine(props: BusTableLineProps) {
           name={getName()}
           category={getCategory()}
           capacity={getCapacity()}
+          capacityStand={getStand()}
           access={getAccess()}
           size={getSize()}
           toggleEditFunction={toggleEditMode}
@@ -144,6 +142,7 @@ export function BusTableLine(props: BusTableLineProps) {
           id={Number(props.busItem.id)}
           access={getAccess()}
           capacity={getCapacity()}
+          capacityStand={getStand()}
           category={getCategory()}
           name={getName()}
           length={getLength()}
@@ -153,6 +152,7 @@ export function BusTableLine(props: BusTableLineProps) {
           submitFunction={updateButton}
           onAccessibilityChange={onAccessibilityInputChanged}
           onCapacityChange={onCapacityInputChanged}
+          onCapacityStandChange={onCapacityStandInputChanged}
           onCategoryChange={onCategoryInputChanged}
           onNameChange={onNameInputChanged}
           onLengthChange={onLengthInputChanged}

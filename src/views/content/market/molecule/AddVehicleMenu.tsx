@@ -13,14 +13,20 @@ import { setIsVehicleMenuOpened } from "./vehicle/VehicleTab";
 export function AddVehicleMenu() {
   const [getName, setName] = createSignal("");
   const [getCapacity, setCapacity] = createSignal(0);
+  const [getCapacityStanding, setCapacityStanding] = createSignal(0);
   const [getCategory, setCategory] = createSignal("");
   const [getAccessibility, setAccessibility] = createSignal("");
   const [getLength, setLength] = createSignal(0);
   const [getWidth, setWidth] = createSignal(0);
   const [getHeight, setHeight] = createSignal(0);
+  const [isPMRSelected, setIsPMRSelected] = createSignal(false);
 
   function onChangeCapacity(value: number) {
     setCapacity(value);
+  }
+
+  function onChangeCapacityStanding(value: number) {
+    setCapacityStanding(value);
   }
 
   function onChangeLength(value: number) {
@@ -45,6 +51,8 @@ export function AddVehicleMenu() {
 
   function onChangeAccessibility(value: string) {
     setAccessibility(value);
+    if (getAccessibility() == "PMR") setIsPMRSelected(true);
+    else setIsPMRSelected(false);
   }
 
   function resetDefaultValues() {
@@ -58,7 +66,6 @@ export function AddVehicleMenu() {
   }
 
   async function createNewVehicle() {
-    console.log(getAccessibility());
     if (getName() == "") {
       addNewGlobalWarningInformation("Veuillez entrer un nom");
       return;
@@ -77,6 +84,7 @@ export function AddVehicleMenu() {
     await BusService.create({
       category: getCategory(),
       capacity: getCapacity(),
+      capacity_standing: getCapacityStanding(),
       name: getName(),
       accessibility: getAccessibility(),
       length: getLength(),
@@ -95,7 +103,9 @@ export function AddVehicleMenu() {
     <div>
       <VehicleMenuHeader />
       <VehicleMenuContent
+        isPMROn={isPMRSelected()}
         capacity={getCapacity()}
+        capacityStanding={getCapacityStanding()}
         category={getCategory()}
         name={getName()}
         accessibility={getAccessibility()}
@@ -110,6 +120,7 @@ export function AddVehicleMenu() {
         onWidthChange={onChangeWidth}
         onNameChange={onChangeName}
         onAccessibilityChange={onChangeAccessibility}
+        onCapacityStandingChange={onChangeCapacityStanding}
       />
     </div>
   );

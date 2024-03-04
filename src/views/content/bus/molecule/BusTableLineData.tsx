@@ -11,6 +11,7 @@ interface TableLineDisplayDataProps {
   name: string;
   category: string;
   capacity: number;
+  capacityStand: number;
   access: string;
   toggleEditFunction: () => void;
   deleteFunction: () => void;
@@ -22,7 +23,11 @@ export function BusTableLineData(props: TableLineDisplayDataProps) {
     <TableRow>
       <TableData text={props.name} />
       <TableData text={props.category} />
-      <TableData text={props.capacity.toString()} />
+      <TableData
+        text={
+          props.capacity.toString() + " | " + props.capacityStand.toString()
+        }
+      />
       <TableData text={props.access} />
       <TableData
         text={

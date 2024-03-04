@@ -14,9 +14,12 @@ interface VehicleMenuContentProps {
   length: number;
   width: number;
   height: number;
+  capacityStanding: number;
+  isPMROn: boolean;
   onNameChange: (value: string) => void;
   onCategoryChange: (value: string) => void;
   onCapacityChange: (value: number) => void;
+  onCapacityStandingChange: (value: number) => void;
   onWidthChange: (value: number) => void;
   onLengthChange: (value: number) => void;
   onHeightChange: (value: number) => void;
@@ -33,8 +36,16 @@ export function VehicleMenuContent(props: VehicleMenuContentProps) {
           onInputFunction={props.onNameChange}
         />
         <VehicleCapacityInput
+          label="Capacité assis"
+          name="capacitySit"
           defaultValue={props.capacity}
           onChangeFunction={props.onCapacityChange}
+        />
+        <VehicleCapacityInput
+          label="Capacité debout"
+          name="capacityStand"
+          defaultValue={props.capacityStanding}
+          onChangeFunction={props.onCapacityStandingChange}
         />
         <VehicleCategoryInput onChangeFunction={props.onCategoryChange} />
         <VehicleAccessibilityInput

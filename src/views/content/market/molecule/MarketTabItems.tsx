@@ -14,7 +14,7 @@ export function MarketTabitems() {
   return (
     <div class="market-tab-items">
       <Button
-        label="Véhicules"
+        label="Types de véhicule"
         onClick={() => setSelectedTab(MarketTabEnum.vehicles)}
         active={currentMarketTab() == MarketTabEnum.vehicles}
         variant="outline"
