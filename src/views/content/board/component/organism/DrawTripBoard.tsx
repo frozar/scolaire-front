@@ -150,10 +150,6 @@ export function DrawTripBoard() {
           <Metrics trip={currentDrawTrip()} />
         </CollapsibleElement>
         <DisplayTripDaysAndDirection trip={currentDrawTrip()} />
-        <VehicleSelect
-          allotment_id={Number(currentDrawTrip().allotmentId)}
-          direction_id={currentDrawTrip().tripDirectionId}
-        />
         <LabeledInputField
           label="Nom de la course"
           value={currentDrawTrip()?.name ?? ""}
@@ -165,6 +161,10 @@ export function DrawTripBoard() {
           }
           name="line-name"
           placeholder="Entrer le nom de la course"
+        />
+        <VehicleSelect
+          allotment_id={Number(currentDrawTrip().allotmentId)}
+          direction_id={currentDrawTrip().tripDirectionId}
         />
 
         <div class="flex mt-4 justify-between">

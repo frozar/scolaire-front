@@ -29,12 +29,6 @@ export function DisplayTripDaysAndDirection(
           {(day) => <p class="text-sm">{CalendarUtils.dayToFrench(day)}</p>}
         </For>
       </div>
-      <div class="flex items-center gap-1">
-        <p class="font-bold text-sm">Lot:</p>
-        <p class="text-sm">
-          {TripUtils.tripAllotmentIdToString(props?.trip?.allotmentId)}
-        </p>
-      </div>
     </CollapsibleElement>
   );
 }

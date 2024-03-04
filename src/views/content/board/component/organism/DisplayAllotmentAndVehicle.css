@@ -1,0 +1,11 @@
+.text-container {
+  @apply flex items-center gap-1;
+}
+
+.text-bold {
+  @apply font-bold text-sm;
+}
+
+.text-standard {
+  @apply text-sm;
+}

@@ -32,6 +32,7 @@ import {
   setDrawTripCheckableGrade,
   setIsInUpdate,
 } from "../views/content/board/component/organism/DrawTripBoard";
+import { bestVehicle } from "../views/content/board/component/organism/VehicleSelect";
 import { changeBoard } from "../views/content/board/component/template/ContextManager";
 import { getSelectedLine } from "../views/content/map/component/organism/BusLines";
 import { quitModeDrawTrip } from "../views/content/map/shortcut";
@@ -137,6 +138,11 @@ export namespace ContextUtils {
             return { ...trip, waypoints };
           });
         }
+
+        setCurrentDrawTrip((trip) => {
+          if (!trip) return trip;
+          return { ...trip, busCategoriesId: bestVehicle() };
+        });
 
         if (displayTripMode() == displayTripModeEnum.straight) {
           await CurrentDrawTripUtils.updatePolylineWithOsrm(
