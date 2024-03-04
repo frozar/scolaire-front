@@ -14,12 +14,13 @@ export function AddVehicleMenu() {
   const [getName, setName] = createSignal("");
   const [getCapacity, setCapacity] = createSignal(0);
   const [getCapacityStanding, setCapacityStanding] = createSignal(0);
+  const [getCapacityPMR, setCapacityPMR] = createSignal(0);
   const [getCategory, setCategory] = createSignal("");
   const [getAccessibility, setAccessibility] = createSignal("");
   const [getLength, setLength] = createSignal(0);
   const [getWidth, setWidth] = createSignal(0);
   const [getHeight, setHeight] = createSignal(0);
-  const [isPMRSelected, setIsPMRSelected] = createSignal(false);
+  const [isPMRSelected, setIsPMRSelected] = createSignal(true);
 
   function onChangeCapacity(value: number) {
     setCapacity(value);
@@ -27,6 +28,10 @@ export function AddVehicleMenu() {
 
   function onChangeCapacityStanding(value: number) {
     setCapacityStanding(value);
+  }
+
+  function onChangeCapacityPMR(value: number) {
+    setCapacityPMR(value);
   }
 
   function onChangeLength(value: number) {
@@ -85,6 +90,7 @@ export function AddVehicleMenu() {
       category: getCategory(),
       capacity: getCapacity(),
       capacity_standing: getCapacityStanding(),
+      capacity_pmr: getCapacityPMR(),
       name: getName(),
       accessibility: getAccessibility(),
       length: getLength(),
@@ -106,6 +112,7 @@ export function AddVehicleMenu() {
         isPMROn={isPMRSelected()}
         capacity={getCapacity()}
         capacityStanding={getCapacityStanding()}
+        capacityPMR={getCapacityPMR()}
         category={getCategory()}
         name={getName()}
         accessibility={getAccessibility()}
@@ -121,6 +128,7 @@ export function AddVehicleMenu() {
         onNameChange={onChangeName}
         onAccessibilityChange={onChangeAccessibility}
         onCapacityStandingChange={onChangeCapacityStanding}
+        onCapacityPMRChange={onChangeCapacityPMR}
       />
     </div>
   );

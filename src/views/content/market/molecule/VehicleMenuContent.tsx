@@ -1,3 +1,4 @@
+import { Show } from "solid-js";
 import { VehicleAccessibilityInput } from "./VehicleAccessibilityInput";
 import { VehicleCapacityInput } from "./VehicleCapacityInput";
 import { VehicleCategoryInput } from "./VehicleCategoryInput";
@@ -15,11 +16,13 @@ interface VehicleMenuContentProps {
   width: number;
   height: number;
   capacityStanding: number;
+  capacityPMR: number;
   isPMROn: boolean;
   onNameChange: (value: string) => void;
   onCategoryChange: (value: string) => void;
   onCapacityChange: (value: number) => void;
   onCapacityStandingChange: (value: number) => void;
+  onCapacityPMRChange: (value: number) => void;
   onWidthChange: (value: number) => void;
   onLengthChange: (value: number) => void;
   onHeightChange: (value: number) => void;
@@ -51,6 +54,14 @@ export function VehicleMenuContent(props: VehicleMenuContentProps) {
         <VehicleAccessibilityInput
           onChangeFunction={props.onAccessibilityChange}
         />
+        <Show when={props.isPMROn} fallback={<div />}>
+          <VehicleCapacityInput
+            label="Capacité PMR"
+            name="capacityPMR"
+            defaultValue={props.capacityPMR}
+            onChangeFunction={props.onCapacityPMRChange}
+          />
+        </Show>
         <VehicleSizeInput
           defaultHeight={props.height}
           defaultLength={props.length}

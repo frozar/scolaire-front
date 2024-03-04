@@ -36,6 +36,9 @@ export function BusTableLine(props: BusTableLineProps) {
   const [getStand, setStand] = createSignal(props.busItem.capacity_standing);
 
   // eslint-disable-next-line solid/reactivity
+  const [getPMR, setPMR] = createSignal(props.busItem.capacity_pmr);
+
+  // eslint-disable-next-line solid/reactivity
   const [getAccess, setAccess] = createSignal(props.busItem.accessibility);
 
   // eslint-disable-next-line solid/reactivity
@@ -66,6 +69,7 @@ export function BusTableLine(props: BusTableLineProps) {
       category: getCategory(),
       capacity: getCapacity(),
       capacity_standing: getStand(),
+      capacity_pmr: getPMR(),
       accessibility: getAccess(),
       length: getLength(),
       width: getWidth(),
@@ -105,6 +109,10 @@ export function BusTableLine(props: BusTableLineProps) {
     setStand(value);
   }
 
+  function onCapacityPMRInputChanged(value: number) {
+    setPMR(value);
+  }
+
   function onAccessibilityInputChanged(value: string) {
     setAccess(value);
   }
@@ -130,6 +138,7 @@ export function BusTableLine(props: BusTableLineProps) {
           category={getCategory()}
           capacity={getCapacity()}
           capacityStand={getStand()}
+          capacityPMR={getPMR()}
           access={getAccess()}
           size={getSize()}
           toggleEditFunction={toggleEditMode}
@@ -143,6 +152,7 @@ export function BusTableLine(props: BusTableLineProps) {
           access={getAccess()}
           capacity={getCapacity()}
           capacityStand={getStand()}
+          capacityPMR={getPMR()}
           category={getCategory()}
           name={getName()}
           length={getLength()}
@@ -153,6 +163,7 @@ export function BusTableLine(props: BusTableLineProps) {
           onAccessibilityChange={onAccessibilityInputChanged}
           onCapacityChange={onCapacityInputChanged}
           onCapacityStandChange={onCapacityStandInputChanged}
+          onCapacityPMRChange={onCapacityPMRInputChanged}
           onCategoryChange={onCategoryInputChanged}
           onNameChange={onNameInputChanged}
           onLengthChange={onLengthInputChanged}

@@ -1,3 +1,4 @@
+import { Show } from "solid-js";
 import { VehicleAccessibilityInput } from "../../market/molecule/VehicleAccessibilityInput";
 import { VehicleCapacityInput } from "../../market/molecule/VehicleCapacityInput";
 import { VehicleCategoryInput } from "../../market/molecule/VehicleCategoryInput";
@@ -10,15 +11,18 @@ interface BusEditContentProps {
   name: string;
   capacity: number;
   capacityStand: number;
+  capacityPMR: number;
   category: string;
   accessibility: string;
   length: number;
   width: number;
   height: number;
+  isPMROn: boolean;
   onNameChange: (value: string) => void;
   onCategoryChange: (value: string) => void;
   onCapacityChange: (value: number) => void;
   onCapacityStandChange: (value: number) => void;
+  onCapacityPMRChange: (value: number) => void;
   onAccessibilityChange: (value: string) => void;
   onLengthChange: (value: number) => void;
   onWidthChange: (value: number) => void;
@@ -55,6 +59,14 @@ export function BusEditContent(props: BusEditContentProps) {
           defaultValue={props.accessibility}
           onChangeFunction={props.onAccessibilityChange}
         />
+        <Show when={props.isPMROn} fallback={<div />}>
+          <VehicleCapacityInput
+            label="Capacité PMR"
+            name="capacityPMR"
+            defaultValue={props.capacityPMR}
+            onChangeFunction={props.onCapacityPMRChange}
+          />
+        </Show>
         <VehicleSizeInput
           defaultLength={props.length}
           defaultWidth={props.width}

@@ -12,6 +12,7 @@ interface TableLineDisplayDataProps {
   category: string;
   capacity: number;
   capacityStand: number;
+  capacityPMR: number;
   access: string;
   toggleEditFunction: () => void;
   deleteFunction: () => void;
@@ -19,6 +20,12 @@ interface TableLineDisplayDataProps {
 }
 
 export function BusTableLineData(props: TableLineDisplayDataProps) {
+  function ShowAccess() {
+    if (props.access == "PMR")
+      return "PMR (" + props.capacityPMR.toString() + ")";
+    return "Classique";
+  }
+
   return (
     <TableRow>
       <TableData text={props.name} />
@@ -28,7 +35,7 @@ export function BusTableLineData(props: TableLineDisplayDataProps) {
           props.capacity.toString() + " | " + props.capacityStand.toString()
         }
       />
-      <TableData text={props.access} />
+      <TableData text={ShowAccess()} />
       <TableData
         text={
           props.size.length +
