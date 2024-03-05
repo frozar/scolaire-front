@@ -72,9 +72,11 @@
     "vitest": "^0.26.3"
   },
   "dependencies": {
+     "leaflet": "^1.9.3",
     "@lmiller1990/cypress-ct-solid-js": "^0.1.0",
     "cypress": "^12.16.0",
     "cypress-image-diff-js": "^1.25.0",
+    "leaflet-area-select": "^1.0.5",
     "nodemon": "^2.0.22",
     "sortablejs": "^1.15.2"
   },

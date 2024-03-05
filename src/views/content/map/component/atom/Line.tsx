@@ -34,7 +34,7 @@ export default function (props: LineProps) {
       tripPolyline.remove();
     }
 
-    tripPolyline = buildLeafletPolyline(color, latlngs, opacity);
+    tripPolyline = buildLeafletPolyline(color, latlngs, opacity, props.lineId);
     if (props.withArrows == true || props.withArrows == undefined) {
       if (arrows) {
         arrows.map((arrow) => leafletMap.removeLayer(arrow));
@@ -103,12 +103,16 @@ export default function (props: LineProps) {
 function buildLeafletPolyline(
   color = COLOR_GREEN_BASE,
   latlngs: L.LatLng[],
-  opacity = 1
+  opacity = 1,
+  lineId?: number
 ): L.Polyline<LineString> {
-  return L.polyline(latlngs, {
+  const res = L.polyline(latlngs, {
     color: color,
     opacity: opacity,
   }) as L.Polyline<LineString>;
+
+  res["lineId"] = lineId;
+  return res;
 }
 
 /**

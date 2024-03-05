@@ -23,7 +23,7 @@ import {
 } from "../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../type";
 import { onBoard } from "../board/component/template/ContextManager";
-import { LineWeight, getSelectedWay } from "./component/molecule/LineWeight";
+import { LineWeight, getSelectedWays } from "./component/molecule/LineWeight";
 import { BusLines } from "./component/organism/BusLines";
 import { MapPanels } from "./component/organism/MapPanels";
 import { Paths } from "./component/organism/Paths";
@@ -41,7 +41,6 @@ function buildMap(div: HTMLDivElement) {
     }
   }
 }
-
 let mapDiv: HTMLDivElement;
 
 export const [ways, setWays] = createSignal<step[]>([]);
@@ -94,6 +93,7 @@ export default function () {
 
   // eslint-disable-next-line solid/reactivity
   createEffect(async () => {
+    console.log("ici", getLeafletMap());
     if (getLeafletMap() && ways().length === 0 && waysIsFetch() == undefined) {
       setWaysIsFetch(false);
       const res = await requestWays();
@@ -162,7 +162,7 @@ export default function () {
                 way={way}
                 map={getLeafletMap() as L.Map}
                 lineColor={
-                  getSelectedWay()?.flaxib_way_id == way.flaxib_way_id
+                  getSelectedWays()[0]?.flaxib_way_id == way.flaxib_way_id
                     ? COLOR_BLUE_BASE
                     : COLOR_GREEN_BASE
                 }

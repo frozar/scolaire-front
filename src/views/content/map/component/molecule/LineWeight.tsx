@@ -5,7 +5,7 @@ import { step } from "../../../../../_services/osrm.service";
 import { resetNewWeight } from "../../../stops/component/organism/VoirieItems";
 import Line from "../atom/Line";
 
-export const [getSelectedWay, setSelectedWay] = createSignal<step>();
+export const [getSelectedWays, setSelectedWays] = createSignal<step[]>([]);
 
 export function LineWeight(props: {
   way: step;
@@ -32,12 +32,12 @@ export function LineWeight(props: {
   };
 
   const onClick = () => {
-    setSelectedWay(
+    setSelectedWays(
       //TODO Modify onclick to use ways() signal
       // ways().filter((elem) => elem.flaxib_way_id === props.way.flaxib_way_id)[0]
       props.way
     );
-    console.log("select here", getSelectedWay());
+    console.log("select here", getSelectedWays()[0]);
     resetNewWeight();
   };
   return (

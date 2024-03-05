@@ -11,7 +11,7 @@ import TrashIcon from "../../../../../icons/TrashIcon";
 import { addNewGlobalSuccessInformation } from "../../../../../signaux";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { getWayById, setWays } from "../../../map/Map";
-import { setSelectedWay } from "../../../map/component/molecule/LineWeight";
+import { setSelectedWays } from "../../../map/component/molecule/LineWeight";
 import { VoirieItemRangeElem } from "../atom/VoirieItemRangeElem";
 import { minuteToTime } from "../organism/VoirieDay";
 import { resetNewWeight } from "../organism/VoirieItems";
@@ -112,7 +112,7 @@ function AddOrUpdate(
       return way;
     });
   });
-  setSelectedWay(getWayById(way_id));
+  setSelectedWays(getWayById(way_id));
   addNewGlobalSuccessInformation("La pondération a été modifiée");
 
   resetNewWeight();
@@ -139,7 +139,7 @@ function Delete(way_id: number, weight: weight, isOnDrawMode: boolean): void {
       });
     });
 
-    setSelectedWay(getWayById(way_id));
+    setSelectedWays(getWayById(way_id));
     addNewGlobalSuccessInformation("La pondération a été supprimée");
   } else {
     resetNewWeight();
