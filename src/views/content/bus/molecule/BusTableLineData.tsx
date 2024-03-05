@@ -4,45 +4,37 @@ import { TableRow } from "../../../../component/table/molecule/TableRow";
 import TrashIcon from "../../../../icons/TrashIcon";
 import UpdatePen from "../../../../icons/UpdatePen";
 import ButtonIcon from "../../board/component/molecule/ButtonIcon";
-import { BusSizeType } from "./BusTableLine";
+import { BusCategoryType } from "../organism/Bus";
 import "./BusTableLine.css";
 
 interface TableLineDisplayDataProps {
-  name: string;
-  category: string;
-  capacity: number;
-  capacityStand: number;
-  capacityPMR: number;
-  access: string;
+  busItem: BusCategoryType;
   toggleEditFunction: () => void;
   deleteFunction: () => void;
-  size: BusSizeType;
 }
 
 export function BusTableLineData(props: TableLineDisplayDataProps) {
   function ShowAccess() {
-    if (props.access == "PMR")
-      return "PMR (" + props.capacityPMR.toString() + ")";
+    if (props.busItem.accessibility == "PMR")
+      return "PMR (" + props.busItem.capacity_pmr + ")";
     return "Classique";
   }
 
   return (
     <TableRow>
-      <TableData text={props.name} />
-      <TableData text={props.category} />
+      <TableData text={props.busItem.name} />
+      <TableData text={props.busItem.category} />
       <TableData
-        text={
-          props.capacity.toString() + " | " + props.capacityStand.toString()
-        }
+        text={props.busItem.capacity + " | " + props.busItem.capacity_standing}
       />
       <TableData text={ShowAccess()} />
       <TableData
         text={
-          props.size.length +
+          props.busItem.length +
           " | " +
-          props.size.width +
+          props.busItem.width +
           " | " +
-          props.size.height
+          props.busItem.height
         }
       />
       <TableData text="-" />
