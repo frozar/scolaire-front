@@ -20,6 +20,7 @@ export interface SchoolPointsProps {
   schools: SchoolType[];
 }
 
+// TODO à placer dans SchoolStore
 export const [getSchools, setSchools] = createSignal<SchoolType[]>([]);
 
 export function getSchoolWhereClassId(gradeId: number): SchoolType | undefined {
