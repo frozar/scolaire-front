@@ -30,13 +30,8 @@ export function BusEditMenu(props: BusEditMenuProps) {
   const [isPMROn, setIsPMROn] = createSignal(true);
 
   onMount(() => {
-    if (props.access == "PMR") setIsPMROn(true);
-    else setIsPMROn(false);
+    if (!(props.access == "PMR")) setIsPMROn(false);
   });
-
-  function onPMRChanged(value: boolean) {
-    setIsPMROn(value);
-  }
 
   return (
     <div>
@@ -52,7 +47,7 @@ export function BusEditMenu(props: BusEditMenuProps) {
         length={props.length}
         width={props.width}
         isPMROn={isPMROn()}
-        onPMRChange={onPMRChanged}
+        onPMRChange={setIsPMROn}
         cancelFunction={props.cancelFunction}
         onAccessibilityChange={props.onAccessibilityChange}
         onCapacityChange={props.onCapacityChange}
