@@ -18,6 +18,7 @@ interface BusEditContentProps {
   width: number;
   height: number;
   isPMROn: boolean;
+  onPMRChange: (value: boolean) => void;
   onNameChange: (value: string) => void;
   onCategoryChange: (value: string) => void;
   onCapacityChange: (value: number) => void;
@@ -32,6 +33,12 @@ interface BusEditContentProps {
 }
 
 export function BusEditContent(props: BusEditContentProps) {
+  function AccessChanged(value: string) {
+    if (value == "PMR") props.onPMRChange(true);
+    else props.onPMRChange(false);
+    props.onAccessibilityChange(value);
+  }
+
   return (
     <div class="bus-edit-content">
       <div class="bus-edit-input">
@@ -57,7 +64,7 @@ export function BusEditContent(props: BusEditContentProps) {
         />
         <VehicleAccessibilityInput
           defaultValue={props.accessibility}
-          onChangeFunction={props.onAccessibilityChange}
+          onChangeFunction={AccessChanged}
         />
         <Show when={props.isPMROn} fallback={<div />}>
           <VehicleCapacityInput

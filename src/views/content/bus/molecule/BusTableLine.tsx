@@ -88,8 +88,15 @@ export function BusTableLine(props: BusTableLineProps) {
   }
 
   function cancelButton() {
+    setName(props.busItem.name);
     setCategory(props.busItem.category);
     setCapacity(props.busItem.capacity);
+    setStand(props.busItem.capacity_standing);
+    setPMR(props.busItem.capacity_pmr);
+    setAccess(props.busItem.accessibility);
+    setLength(props.busItem.length);
+    setWidth(props.busItem.width);
+    setHeight(props.busItem.height);
     toggleEditMode();
   }
 

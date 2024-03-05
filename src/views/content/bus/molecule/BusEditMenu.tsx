@@ -34,6 +34,10 @@ export function BusEditMenu(props: BusEditMenuProps) {
     else setIsPMROn(false);
   });
 
+  function onPMRChanged(value: boolean) {
+    setIsPMROn(value);
+  }
+
   return (
     <div>
       <BusEditHeader title={props.name} />
@@ -48,6 +52,7 @@ export function BusEditMenu(props: BusEditMenuProps) {
         length={props.length}
         width={props.width}
         isPMROn={isPMROn()}
+        onPMRChange={onPMRChanged}
         cancelFunction={props.cancelFunction}
         onAccessibilityChange={props.onAccessibilityChange}
         onCapacityChange={props.onCapacityChange}
