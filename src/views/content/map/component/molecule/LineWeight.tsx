@@ -32,12 +32,28 @@ export function LineWeight(props: {
   };
 
   const onClick = () => {
-    setSelectedWays(
-      //TODO Modify onclick to use ways() signal
-      // ways().filter((elem) => elem.flaxib_way_id === props.way.flaxib_way_id)[0]
-      props.way
-    );
-    console.log("select here", getSelectedWays()[0]);
+    if (window.event?.ctrlKey) {
+      console.log("je controle");
+      if (
+        getSelectedWays().filter(
+          (way) => way.flaxib_way_id === props.way.flaxib_way_id
+        ).length > 0
+      ) {
+        setSelectedWays((prev) =>
+          prev.filter((way) => way.flaxib_way_id != props.way.flaxib_way_id)
+        );
+      } else {
+        setSelectedWays((prev) => [...prev, props.way]);
+      }
+      //ctrl was held down during the click
+    } else {
+      setSelectedWays(
+        //TODO Modify onclick to use ways() signal
+        // ways().filter((elem) => elem.flaxib_way_id === props.way.flaxib_way_id)[0]
+        [props.way]
+      );
+      console.log("select here", getSelectedWays()[0]);
+    }
     resetNewWeight();
   };
   return (

@@ -162,7 +162,9 @@ export default function () {
                 way={way}
                 map={getLeafletMap() as L.Map}
                 lineColor={
-                  getSelectedWays()[0]?.flaxib_way_id == way.flaxib_way_id
+                  getSelectedWays()
+                    .map((way) => way.flaxib_way_id)
+                    .includes(way.flaxib_way_id)
                     ? COLOR_BLUE_BASE
                     : COLOR_GREEN_BASE
                 }
