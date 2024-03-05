@@ -24,8 +24,8 @@ const menuItems: MenuItemType[] = [
     label: "Dashboard",
     isDisabled: false,
     onClick: () => {
-      changeBoard(undefined);
-      setSelectedMenu("dashboard");
+      changeBoard("dashboard");
+      MapElementUtils.deselectAllPointsAndBusTrips();
     },
   },
   {

@@ -8,7 +8,6 @@ import ContextManager from "./board/component/template/ContextManager";
 import InformationBoardLayout from "./board/component/template/InformationBoardLayout";
 import { Calendar } from "./calendar/template/Calendar";
 import { Users } from "./calendar/template/Organisation";
-import Dashboard from "./dashboard/Dashboard";
 import Map from "./map/Map";
 import { Maps } from "./maps/Maps";
 import { Market } from "./market/organism/Market";
@@ -19,8 +18,8 @@ import WayDetails from "./stops/component/organism/WayDetails";
 const [, { getSelectedMenu }] = useStateGui();
 
 export function Contents() {
-  const inGraphicage = () =>
-    ["graphicage", "schools", "stops"].includes(getSelectedMenu());
+  const isMapView = () =>
+    ["graphicage", "schools", "stops", "dashboard"].includes(getSelectedMenu());
 
   const logged = () => (getAuthenticatedUser() ? true : false);
 
@@ -30,9 +29,6 @@ export function Contents() {
         <Switch>
           <Match when={getSelectedMenu() == "maps"}>
             <Maps />
-          </Match>
-          <Match when={getSelectedMenu() == "dashboard"}>
-            <Dashboard />
           </Match>
 
           <Match when={getSelectedMenu() == "calendar"}>
@@ -51,7 +47,7 @@ export function Contents() {
             <Market />
           </Match>
 
-          <Match when={inGraphicage()}>
+          <Match when={isMapView()}>
             <Map />
             <ContextManager />
           </Match>

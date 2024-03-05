@@ -1,8 +1,8 @@
 import { Match, Show, Switch, createEffect, createSignal } from "solid-js";
 
 import { LineType } from "../../../../../_entities/line.entity";
+import { DashboardContextManager } from "../../../dashboard/template/DashboardContextManager";
 import { getSelectedLine } from "../../../map/component/organism/BusLines";
-import { DrawPath } from "../../../path/component/organism/DrawPath";
 import { PathDetail } from "../../../path/component/organism/PathDetail";
 import { GradeBoardDetails } from "../../../schools/component/organism/GradeBoardDetails";
 import { GradeEditBoard } from "../../../schools/component/organism/GradeEditBoard";
@@ -35,6 +35,7 @@ export type BoardTags =
   | "line-details"
   | "path-details"
   | "path-draw"
+  | "dashboard"
   | undefined;
 
 export const [isInDrawMod, setIsDrawMod] = createSignal<boolean>(false);
@@ -72,10 +73,16 @@ export default function () {
               {/* <TripsBoard /> */}
               <BusLinesBoard />
             </Match>
+
+            <Match when={onBoard() == "line-details"}>
+              <TripBoard />
+            </Match>
+
             <Match when={onBoard() == "line-add"}>
               {/* <TripsBoard /> */}
               <AddLineBoardContent />
             </Match>
+
             <Match when={onBoard() == "trip"}>
               <TripsBoard line={getSelectedLine() as LineType} />
             </Match>
@@ -114,18 +121,11 @@ export default function () {
               <StopDetails />
             </Match>
 
-            <Match when={onBoard() == "line-details"}>
-              <TripBoard />
-            </Match>
-
             <Match when={onBoard() == "path-details"}>
               <PathDetail />
             </Match>
-
-            <Match when={onBoard() == "path-draw"}>
-              <DrawPath />
-            </Match>
           </Switch>
+          <DashboardContextManager />
         </InformationBoardLayout>
       </Show>
     </section>

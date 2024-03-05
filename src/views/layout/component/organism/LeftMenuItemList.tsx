@@ -20,6 +20,7 @@ export interface LeftMenuItemProps {
 export default function (props: LeftMenuItemProps) {
   const mergedProps = mergeProps({ getSelectedMenu, setSelectedMenu }, props);
 
+  // TODO mettre cette logique dans le context manager
   createEffect(() => {
     const onBoardMode = onBoard();
 
@@ -38,6 +39,8 @@ export default function (props: LeftMenuItemProps) {
       setSelectedMenu("schools");
     } else if (["stops", "stop-details"].includes(onBoardMode)) {
       setSelectedMenu("stops");
+    } else if (["dashboard"].includes(onBoardMode)) {
+      setSelectedMenu("dashboard");
     }
   });
 

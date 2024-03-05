@@ -41,6 +41,7 @@ export interface StopPointsProps {
   stops: StopType[];
 }
 
+// TODO à placer dans StopStore
 export const [getStops, setStops] = createSignal<StopType[]>([]);
 
 export function StopPoints(props: StopPointsProps) {
