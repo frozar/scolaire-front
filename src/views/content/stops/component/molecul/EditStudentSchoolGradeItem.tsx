@@ -12,11 +12,11 @@ import { LineUtils } from "../../../../../utils/line.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { setLines } from "../../../map/component/organism/BusLines";
 import { getSchools } from "../../../map/component/organism/SchoolPoints";
-import { getStops } from "../../../map/component/organism/StopPoints";
 import GradeSelection from "../atom/GradeSelection";
 import InputNumber from "../atom/InputNumber";
 import SchoolSelect from "../atom/SchoolSelection";
 import "./EditStudentSchoolGradeItem.css";
+import { getStops } from "../../../../../_stores/stop.store";
 
 interface EditStopProps {
   gradeStudentToGrade?: AssociatedSchoolType;

@@ -17,7 +17,6 @@ import {
   enableSpinningWheel,
 } from "../../../../../signaux";
 import { getSchools } from "../../../map/component/organism/SchoolPoints";
-import { getStops } from "../../../map/component/organism/StopPoints";
 import { displayBusLine } from "../../../schools/component/molecule/BusLineItem";
 import SelectedSchool from "../atom/SelectedSchool";
 import LabeledInputField from "../molecule/LabeledInputField";
@@ -27,6 +26,7 @@ import { CheckableStopListBySchool } from "./CheckableStopListBySchool";
 // TODO to fix -> doit importer un AddLineBoardContent ou similaire
 import { GradeType } from "../../../../../_entities/grade.entity";
 import { StopType } from "../../../../../_entities/stop.entity";
+import { getStops } from "../../../../../_stores/stop.store";
 import { getLines, setLines } from "../../../map/component/organism/BusLines";
 import BoardTitle from "../atom/BoardTitle";
 import { AssociatedItem } from "../molecule/CheckableElementList";

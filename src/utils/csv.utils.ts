@@ -9,6 +9,7 @@ import {
   StudentToGrade,
   StudentToGradeService,
 } from "../_services/student-to-grade.service";
+import { StopStore, getStops } from "../_stores/stop.store";
 import { addNewUserInformation } from "../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { download } from "../utils";
@@ -17,10 +18,6 @@ import {
   getSchools,
   setSchools,
 } from "../views/content/map/component/organism/SchoolPoints";
-import {
-  getStops,
-  setStops,
-} from "../views/content/map/component/organism/StopPoints";
 import { GradeUtils } from "./grade.utils";
 import { SchoolUtils } from "./school.utils";
 import { StopUtils } from "./stop.utils";
@@ -300,7 +297,7 @@ export namespace CsvUtils {
     );
     if (stops && schools) {
       setSchools(schools);
-      setStops(stops);
+      StopStore.set(stops);
       return true;
     }
     return false;

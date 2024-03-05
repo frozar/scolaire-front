@@ -1,11 +1,12 @@
 import L from "leaflet";
-import { For, createEffect, createSignal } from "solid-js";
+import { For, createEffect } from "solid-js";
 import { CalendarDayEnum } from "../../../../../_entities/calendar.entity";
 import { StopType } from "../../../../../_entities/stop.entity";
 import {
   TripDirectionEntity,
   TripDirectionEnum,
 } from "../../../../../_entities/trip-direction.entity";
+import { StopStore, getStops } from "../../../../../_stores/stop.store";
 import { NatureEnum } from "../../../../../type";
 import { FilterUtils } from "../../../../../utils/filter.utils";
 import { PathContextManagerUtil } from "../../../../../utils/pathContextManager.utils";
@@ -34,18 +35,13 @@ import { StopPoint } from "../molecule/StopPoint";
 import { getLines, getSelectedLine } from "./BusLines";
 import { filterEmptyStops } from "./Filters";
 
-// const [, { nextLeafletPointId }] = useStateGui();
-
 export interface StopPointsProps {
   leafletMap: L.Map;
   stops: StopType[];
 }
 
-// TODO à placer dans StopStore
-export const [getStops, setStops] = createSignal<StopType[]>([]);
-
 export function StopPoints(props: StopPointsProps) {
-  createEffect(() => setStops(props.stops));
+  createEffect(() => StopStore.set(props.stops));
 
   const quantities = () => {
     return getStops().map((stop) => {

@@ -5,10 +5,10 @@ import { SchoolService } from "../_services/school.service";
 import { StopService } from "../_services/stop.service";
 import { StudentToGradeService } from "../_services/student-to-grade.service";
 import { userMaps } from "../_stores/map.store";
+import { StopStore } from "../_stores/stop.store";
 import { disableSpinningWheel, enableSpinningWheel } from "../signaux";
 import { CsvEnum } from "../views/content/board/component/molecule/ImportSelection";
 import { setSchools } from "../views/content/map/component/organism/SchoolPoints";
-import { setStops } from "../views/content/map/component/organism/StopPoints";
 import { CsvUtils } from "./csv.utils";
 import { MapsUtils } from "./maps.utils";
 
@@ -63,7 +63,7 @@ export namespace DuplicateUtils {
       items_to_delete: [],
       items_to_modify: [],
     });
-    setStops(newStops);
+    StopStore.set(newStops);
 
     const grades: { gradeName: string; schoolName: string }[] = [];
 

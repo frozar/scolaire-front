@@ -1,8 +1,8 @@
 import { AssociatedSchoolType } from "../_entities/_utils.entity";
 import { StopType } from "../_entities/stop.entity";
 import { StudentToGradeService } from "../_services/student-to-grade.service";
+import { getStops } from "../_stores/stop.store";
 import { disableSpinningWheel, enableSpinningWheel } from "../signaux";
-import { getStops } from "../views/content/map/component/organism/StopPoints";
 import { stopDetailsItem } from "../views/content/stops/component/organism/StopDetails";
 import { GradeUtils } from "./grade.utils";
 import { SchoolUtils } from "./school.utils";

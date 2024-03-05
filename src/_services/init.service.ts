@@ -17,6 +17,7 @@ import {
   TripDirectionType,
   setTripDirections,
 } from "../_entities/trip-direction.entity";
+import { StopStore } from "../_stores/stop.store";
 import { setAllTransporter } from "../views/content/allotment/molecule/TransporterTable";
 import {
   AllotmentType,
@@ -27,7 +28,6 @@ import { setCalendars } from "../views/content/calendar/calendar.manager";
 import { setCalendarsPeriod } from "../views/content/calendar/template/Calendar";
 import { setLines } from "../views/content/map/component/organism/BusLines";
 import { setSchools } from "../views/content/map/component/organism/SchoolPoints";
-import { setStops } from "../views/content/map/component/organism/StopPoints";
 import { setSettings } from "../views/content/parameters/organism/Settings";
 import { setServices } from "../views/content/service/organism/Services";
 import { ServiceUtils } from "./_utils.service";
@@ -64,7 +64,7 @@ export namespace InitService {
     const stops = dbInit.stops.map((dbStop: StopDBType) =>
       StopEntity.build(dbStop)
     );
-    setStops(stops);
+    StopStore.set(stops);
 
     const busLines = dbInit.bus_lines.map((dbLine: LineDBType) =>
       BusLineEntity.build(dbLine)

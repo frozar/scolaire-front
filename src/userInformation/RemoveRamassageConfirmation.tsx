@@ -10,12 +10,9 @@ import {
 
 // import { deleteRamassage } from "../request";
 import { StopService } from "../_services/stop.service";
+import { StopStore } from "../_stores/stop.store";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { assertIsNode } from "../utils";
-import {
-  getStops,
-  setStops,
-} from "../views/content/map/component/organism/StopPoints";
 // import { getStops, setStops } from "../views/content/stops/StopsBoard";
 
 // HACK for the documentation to preserve the ClickOutside directive on save
@@ -38,7 +35,8 @@ export default function () {
     const isDeleted: boolean = await StopService.delete(idToRemove);
     if (isDeleted) {
       closeRemoveRamassageConfirmationBox();
-      setStops(getStops().filter((stop) => stop.id != idToRemove));
+
+      StopStore.remove(idToRemove);
       addNewUserInformation({
         displayed: true,
         level: MessageLevelEnum.success,

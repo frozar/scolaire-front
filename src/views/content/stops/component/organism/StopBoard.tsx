@@ -1,5 +1,5 @@
 import { For, createSignal } from "solid-js";
-import { getStops } from "../../../map/component/organism/StopPoints";
+import { getStops } from "../../../../../_stores/stop.store";
 import InputSearch from "../../../schools/component/molecule/InputSearch";
 import StopItem from "../molecul/StopItem";
 import "./StopBoard.css";

@@ -3,13 +3,9 @@ import { CalendarDayEnum } from "../_entities/calendar.entity";
 import { GradeTripType } from "../_entities/grade.entity";
 import { StopType } from "../_entities/stop.entity";
 import { TripDirectionEnum } from "../_entities/trip-direction.entity";
-import { StopService } from "../_services/stop.service";
+import { getStops, setStops } from "../_stores/stop.store";
 import { NatureEnum } from "../type";
 import { getLines } from "../views/content/map/component/organism/BusLines";
-import {
-  getStops,
-  setStops,
-} from "../views/content/map/component/organism/StopPoints";
 import { setStopDetailsItem } from "../views/content/stops/component/organism/StopDetails";
 import { GradeUtils } from "./grade.utils";
 import { QuantityMatrixType, QuantityUtils } from "./quantity.utils";
@@ -18,19 +14,6 @@ import { SchoolUtils } from "./school.utils";
 export namespace StopUtils {
   export function get(stopId: number): StopType {
     return getStops().filter((stop) => stop.id == stopId)[0];
-  }
-
-  export async function update(stop: StopType) {
-    const updatedStop = await StopService.update(stop);
-    if (updatedStop) {
-      setStops((stops) =>
-        [...stops].map((stop_) => {
-          if (stop_.id == updatedStop.id) stop_ = updatedStop;
-          return stop_;
-        })
-      );
-    }
-    return updatedStop;
   }
 
   export function updateStopDetailsItem(stop: Partial<StopType>) {

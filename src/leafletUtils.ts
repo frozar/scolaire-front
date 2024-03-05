@@ -1,8 +1,8 @@
 import { PointType } from "./_entities/_utils.entity";
+import { getStops } from "./_stores/stop.store";
 import { NatureEnum } from "./type";
 import { linkMap } from "./views/content/map/component/organism/Points";
 import { getSchools } from "./views/content/map/component/organism/SchoolPoints";
-import { getStops } from "./views/content/map/component/organism/StopPoints";
 import { selectedTrip } from "./views/content/map/component/organism/Trips";
 import {
   COLOR_SCHOOL_FOCUS,
