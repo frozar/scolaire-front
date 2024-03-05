@@ -2,7 +2,10 @@ import { createSignal } from "solid-js";
 import { SchoolType } from "../_entities/school.entity";
 import { SchoolService } from "../_services/school.service";
 import { StopUtils } from "../utils/stop.utils";
-import { schoolDetailsItem, setSchoolDetailsItem } from "../views/content/schools/component/organism/SchoolDetails";
+import {
+  schoolDetailsItem,
+  setSchoolDetailsItem,
+} from "../views/content/schools/component/organism/SchoolDetails";
 
 export const [getSchools, setSchools] = createSignal<SchoolType[]>([]);
 
