@@ -12,6 +12,7 @@ import ConfirmStopAddTrip from "./ConfirmStopAddTripBox";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { OsrmService, step } from "../../../_services/osrm.service";
+import { getStops } from "../../../_stores/stop.store";
 import {
   addNewUserInformation,
   disableSpinningWheel,
@@ -26,7 +27,6 @@ import { MapPanels } from "./component/organism/MapPanels";
 import { Paths } from "./component/organism/Paths";
 import { Points } from "./component/organism/Points";
 import { getSchools } from "./component/organism/SchoolPoints";
-import { getStops } from "./component/organism/StopPoints";
 import { COLOR_BLUE_BASE, COLOR_GREEN_BASE } from "./constant";
 
 const [, { getActiveMapId, getSelectedMenu }] = useStateGui();

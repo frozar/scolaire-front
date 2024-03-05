@@ -1,6 +1,6 @@
 import { Show } from "solid-js";
 import { StopType } from "../../../../../_entities/stop.entity";
-import { StopUtils } from "../../../../../utils/stop.utils";
+import { StopStore } from "../../../../../_stores/stop.store";
 import BoardFooterActions from "../../../board/component/molecule/BoardFooterActions";
 import { stopDetailsItem } from "../organism/StopDetails";
 interface StopFooterProps {
@@ -18,7 +18,7 @@ export function StopFooter(props: StopFooterProps) {
         }}
         nextStep={{
           callback: async () => {
-            const response = await StopUtils.update(
+            const response = await StopStore.update(
               stopDetailsItem() as StopType
             );
             if (response) props.toggleEdit();

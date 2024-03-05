@@ -3,7 +3,8 @@ import { createEffect, createSignal } from "solid-js";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { StopType } from "../../../../../_entities/stop.entity";
 import { SchoolPoints, getSchools } from "./SchoolPoints";
-import { StopPoints, getStops } from "./StopPoints";
+import { StopPoints } from "./StopPoints";
+import { getStops } from "../../../../../_stores/stop.store";
 
 export const linkMap = new Map<number, L.CircleMarker>();
 

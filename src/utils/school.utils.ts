@@ -5,6 +5,7 @@ import {
 import { GradeType } from "../_entities/grade.entity";
 import { SchoolType } from "../_entities/school.entity";
 import { SchoolService } from "../_services/school.service";
+import { StopStore, getStops } from "../_stores/stop.store";
 import { addNewUserInformation } from "../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { calendars } from "../views/content/calendar/calendar.manager";
@@ -16,10 +17,6 @@ import {
   getSchools,
   setSchools,
 } from "../views/content/map/component/organism/SchoolPoints";
-import {
-  getStops,
-  setStops,
-} from "../views/content/map/component/organism/StopPoints";
 import {
   schoolDetailsItem,
   setSchoolDetailsItem,
@@ -62,6 +59,7 @@ export namespace SchoolUtils {
       .map((school) => school.grades.flatMap((grade) => grade.id as number))
       .flat();
 
+    //TODO déplacer dans store ?
     const newStops = getStops().map((stop) => {
       return {
         ...stop,
@@ -71,7 +69,7 @@ export namespace SchoolUtils {
       };
     });
 
-    setStops(newStops);
+    StopStore.set(newStops);
 
     const newLines = getLines().map((line) => {
       return {

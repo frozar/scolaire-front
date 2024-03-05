@@ -16,8 +16,8 @@ import { assertIsNode } from "../utils";
 
 import ClickOutside from "../component/ClickOutside";
 import { getSchools } from "../views/content/map/component/organism/SchoolPoints";
-import { getStops } from "../views/content/map/component/organism/StopPoints";
 import { getTrips } from "../views/content/map/component/organism/Trips";
+import { getStops } from "../_stores/stop.store";
 
 // HACK for the documentation to preserve the ClickOutside directive on save
 // https://www.solidjs.com/guides/typescript#use___
