@@ -1,6 +1,7 @@
 import { createEffect, createSignal } from "solid-js";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { StopType } from "../../../../../_entities/stop.entity";
+import { SchoolStore } from "../../../../../_stores/school.store";
 import { StopStore } from "../../../../../_stores/stop.store";
 import Button from "../../../../../component/atom/Button";
 import {
@@ -12,7 +13,6 @@ import { DialogUtils } from "../../../../../utils/dialog.utils";
 import { SchoolUtils } from "../../../../../utils/school.utils";
 import { StopUtils } from "../../../../../utils/stop.utils";
 import { getLines } from "../../../map/component/organism/BusLines";
-import { setSchools } from "../../../map/component/organism/SchoolPoints";
 import { DialogToDisplayEnum, setDialogToDisplay } from "../organism/Dialogs";
 import { DiffCollapsible } from "./DiffCollapsible";
 import { CsvEnum, csv, csvType, diff, setCsvType } from "./ImportSelection";
@@ -68,7 +68,7 @@ export function ImportDiff() {
           diffFiltered(),
           CsvEnum.schools
         );
-        setSchools(schools as SchoolType[]);
+        SchoolStore.set(schools as SchoolType[]);
         break;
 
       case CsvEnum.stops:

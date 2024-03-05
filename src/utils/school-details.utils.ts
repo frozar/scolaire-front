@@ -1,4 +1,5 @@
 import { SchoolType } from "../_entities/school.entity";
+import { SchoolStore } from "../_stores/school.store";
 import {
   schoolDetailEditing,
   schoolDetailsItem,
@@ -16,7 +17,7 @@ export namespace SchoolDetailUtils {
         SchoolUtils.isValidSchool(schoolDetailsItem() as SchoolType) &&
         SchoolUtils.get(schoolDetailsItem()?.id ?? 0) != schoolDetailsItem()
       ) {
-        SchoolUtils.update(schoolDetailsItem() as SchoolType);
+        SchoolStore.update(schoolDetailsItem() as SchoolType);
         setSchoolDetailEditing(false);
       }
     }

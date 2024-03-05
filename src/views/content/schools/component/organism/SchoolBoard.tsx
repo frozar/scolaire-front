@@ -1,8 +1,8 @@
 import { FaSolidPlus } from "solid-icons/fa";
 
 import { For, createSignal } from "solid-js";
+import { getSchools } from "../../../../../_stores/school.store";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
-import { getSchools } from "../../../map/component/organism/SchoolPoints";
 import InputSearch from "../molecule/InputSearch";
 import SchoolItem from "../molecule/SchoolItem";
 import "./SchoolBoard.css";

@@ -4,12 +4,9 @@ import {
   TripDirectionEnum,
 } from "../_entities/trip-direction.entity";
 import { GradeService } from "../_services/grade.service";
+import { getSchools, setSchools } from "../_stores/school.store";
 import { getStops } from "../_stores/stop.store";
 import { getLines } from "../views/content/map/component/organism/BusLines";
-import {
-  getSchools,
-  setSchools,
-} from "../views/content/map/component/organism/SchoolPoints";
 import {
   schoolDetailsItem,
   setSchoolDetailsItem,

@@ -1,10 +1,10 @@
 import { Show, createSignal, onCleanup, onMount } from "solid-js";
 import { SchoolType } from "../../../../../_entities/school.entity";
+import { getSchools } from "../../../../../_stores/school.store";
 import { MapElementUtils } from "../../../../../utils/mapElement.utils";
 import { SchoolDetailUtils } from "../../../../../utils/school-details.utils";
 import BoardFooterActions from "../../../board/component/molecule/BoardFooterActions";
 import { changeBoard } from "../../../board/component/template/ContextManager";
-import { getSchools } from "../../../map/component/organism/SchoolPoints";
 import SchoolDetailsHeader from "../molecule/SchoolDetailsHeader";
 import { SchoolDetailsContent } from "./SchoolDetailsContent";
 import { SchoolDetailsPanels } from "./SchoolDetailsPanels";

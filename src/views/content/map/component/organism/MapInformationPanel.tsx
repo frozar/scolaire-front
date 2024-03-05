@@ -1,7 +1,7 @@
 import { JSXElement, Show } from "solid-js";
+import { getSchools } from "../../../../../_stores/school.store";
 import { MapInformationPanelItem } from "../molecule/MapInformationPanelItem";
 import "./MapInformationPanel.css";
-import { getSchools } from "./SchoolPoints";
 
 export function MapInformationPanel(): JSXElement {
   function schoolsWithoutCalendar() {

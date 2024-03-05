@@ -1,6 +1,7 @@
 import L from "leaflet";
-import { For, createEffect, createSignal } from "solid-js";
+import { For, createEffect } from "solid-js";
 import { SchoolType } from "../../../../../_entities/school.entity";
+import { SchoolStore, getSchools } from "../../../../../_stores/school.store";
 import {
   AddLineStep,
   addLineCurrentStep,
@@ -20,9 +21,6 @@ export interface SchoolPointsProps {
   schools: SchoolType[];
 }
 
-// TODO à placer dans SchoolStore
-export const [getSchools, setSchools] = createSignal<SchoolType[]>([]);
-
 export function getSchoolWhereClassId(gradeId: number): SchoolType | undefined {
   return getSchools().filter((school) =>
     school.grades.map((grade) => grade.id).includes(gradeId)
@@ -31,7 +29,7 @@ export function getSchoolWhereClassId(gradeId: number): SchoolType | undefined {
 
 export function SchoolPoints(props: SchoolPointsProps) {
   // eslint-disable-next-line solid/reactivity
-  createEffect(() => setSchools(props.schools));
+  createEffect(() => SchoolStore.set(props.schools));
 
   return (
     <For each={schoolsFilter()}>

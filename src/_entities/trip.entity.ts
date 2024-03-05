@@ -4,7 +4,6 @@ import { NatureEnum } from "../type";
 import { QuantityUtils } from "../utils/quantity.utils";
 import { StopUtils } from "../utils/stop.utils";
 import { getLines } from "../views/content/map/component/organism/BusLines";
-import { getSchools } from "../views/content/map/component/organism/SchoolPoints";
 import { COLOR_GREEN_BASE } from "../views/content/map/constant";
 import { EntityUtils, LocationPathDBType, PointType } from "./_utils.entity";
 import { CalendarDayEnum } from "./calendar.entity";
@@ -27,6 +26,7 @@ import {
   WaypointEntity,
   WaypointType,
 } from "./waypoint.entity";
+import { getSchools } from "../_stores/school.store";
 
 export namespace TripEntity {
   export function build(dbData: TripDBType): TripType {

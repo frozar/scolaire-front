@@ -1,12 +1,12 @@
 import { Accessor, Setter, createSignal } from "solid-js";
-import { getSchools } from "../views/content/map/component/organism/SchoolPoints";
+import { getSchools } from "../_stores/school.store";
+import { getStops } from "../_stores/stop.store";
 import { COLOR_DEFAULT_LINE } from "../views/content/map/constant";
 import { GradeDBType, GradeEntity, GradeType } from "./grade.entity";
 import { PathType } from "./path.entity";
 import { SchoolType } from "./school.entity";
 import { StopType } from "./stop.entity";
 import { TripDBType, TripEntity, TripType } from "./trip.entity";
-import { getStops } from "../_stores/stop.store";
 
 export class BusLineEntity {
   static build(dbLine: LineDBType): LineType {

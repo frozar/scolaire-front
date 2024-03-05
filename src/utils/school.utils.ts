@@ -5,6 +5,7 @@ import {
 import { GradeType } from "../_entities/grade.entity";
 import { SchoolType } from "../_entities/school.entity";
 import { SchoolService } from "../_services/school.service";
+import { getSchools, setSchools } from "../_stores/school.store";
 import { StopStore, getStops } from "../_stores/stop.store";
 import { addNewUserInformation } from "../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
@@ -13,16 +14,8 @@ import {
   getLines,
   setLines,
 } from "../views/content/map/component/organism/BusLines";
-import {
-  getSchools,
-  setSchools,
-} from "../views/content/map/component/organism/SchoolPoints";
-import {
-  schoolDetailsItem,
-  setSchoolDetailsItem,
-} from "../views/content/schools/component/organism/SchoolDetails";
+import { setSchoolDetailsItem } from "../views/content/schools/component/organism/SchoolDetails";
 import { QuantityUtils } from "./quantity.utils";
-import { StopUtils } from "./stop.utils";
 
 export namespace SchoolUtils {
   export function get(schoolId: number): SchoolType {
@@ -215,21 +208,6 @@ export namespace SchoolUtils {
       return false;
     }
     return true;
-  }
-
-  export async function update(school: SchoolType) {
-    const updatedSchool: SchoolType = await SchoolService.update(school);
-    setSchools((prev) => {
-      return [...prev].map((school_) => {
-        if (school_.id == school.id) school_ = updatedSchool;
-        return school_;
-      });
-    });
-
-    StopUtils.reBuildGradeAssociationMatrix();
-
-    if (schoolDetailsItem()?.id == updatedSchool.id)
-      setSchoolDetailsItem(updatedSchool);
   }
 
   export function linkSchoolToCalendar(calendarId: number) {

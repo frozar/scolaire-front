@@ -4,6 +4,7 @@ import { StopType } from "../_entities/stop.entity";
 import { TripDirectionEntity } from "../_entities/trip-direction.entity";
 import { TripType } from "../_entities/trip.entity";
 import { PathService } from "../_services/path.service";
+import { getSchools } from "../_stores/school.store";
 import { getStops } from "../_stores/stop.store";
 import {
   addNewUserInformation,
@@ -16,7 +17,6 @@ import {
   getSelectedLine,
   setLines,
 } from "../views/content/map/component/organism/BusLines";
-import { getSchools } from "../views/content/map/component/organism/SchoolPoints";
 import { getTrips } from "../views/content/map/component/organism/Trips";
 import {
   currentDrawPath,
