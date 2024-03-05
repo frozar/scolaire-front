@@ -2,9 +2,10 @@ import L from "leaflet";
 import { createEffect, createSignal } from "solid-js";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { StopType } from "../../../../../_entities/stop.entity";
-import { SchoolPoints, getSchools } from "./SchoolPoints";
-import { StopPoints } from "./StopPoints";
+import { getSchools } from "../../../../../_stores/school.store";
 import { getStops } from "../../../../../_stores/stop.store";
+import { SchoolPoints } from "./SchoolPoints";
+import { StopPoints } from "./StopPoints";
 
 export const linkMap = new Map<number, L.CircleMarker>();
 

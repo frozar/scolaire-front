@@ -1,8 +1,8 @@
 import { DrawHelperDataType } from "../_services/graphicage.service";
+import { getSchools } from "../_stores/school.store";
 import { getStops } from "../_stores/stop.store";
 import { QuantityUtils } from "../utils/quantity.utils";
 import { currentDrawTrip } from "../views/content/board/component/organism/DrawTripBoard";
-import { getSchools } from "../views/content/map/component/organism/SchoolPoints";
 import { leafletStopsFilter } from "../views/content/map/component/organism/StopPoints";
 import { CalendarDayEnum } from "./calendar.entity";
 import { GradeTripType } from "./grade.entity";

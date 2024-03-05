@@ -14,10 +14,10 @@ import { clear } from "../request";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { assertIsNode } from "../utils";
 
-import ClickOutside from "../component/ClickOutside";
-import { getSchools } from "../views/content/map/component/organism/SchoolPoints";
-import { getTrips } from "../views/content/map/component/organism/Trips";
+import { getSchools } from "../_stores/school.store";
 import { getStops } from "../_stores/stop.store";
+import ClickOutside from "../component/ClickOutside";
+import { getTrips } from "../views/content/map/component/organism/Trips";
 
 // HACK for the documentation to preserve the ClickOutside directive on save
 // https://www.solidjs.com/guides/typescript#use___

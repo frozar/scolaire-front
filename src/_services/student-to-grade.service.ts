@@ -15,12 +15,12 @@ import {
   StopType,
 } from "../_entities/stop.entity";
 import { StudentToGradeEntity } from "../_entities/student-to-grade.entity";
+import { SchoolStore } from "../_stores/school.store";
 import { StopStore } from "../_stores/stop.store";
 import { StudentDiffType, StudentModifiedDiff } from "../utils/csv.utils";
 import { GradeUtils } from "../utils/grade.utils";
 import { SchoolUtils } from "../utils/school.utils";
 import { StopUtils } from "../utils/stop.utils";
-import { setSchools } from "../views/content/map/component/organism/SchoolPoints";
 import { ServiceUtils } from "./_utils.service";
 
 export type StudentToGrade = {
@@ -115,7 +115,7 @@ export class StudentToGradeService {
       stops: { stop: StopDBType[] };
     } = await ServiceUtils.post("/student/import", studentDB);
 
-    setSchools(
+    SchoolStore.set(
       xanoResult.schools.school.map((school) => SchoolEntity.build(school))
     );
     StopStore.set(xanoResult.stops.stop.map((stop) => StopEntity.build(stop)));

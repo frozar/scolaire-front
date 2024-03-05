@@ -1,9 +1,9 @@
+import { getSchools } from "../_stores/school.store";
 import { getStops } from "../_stores/stop.store";
 import { NatureEnum } from "../type";
 import { GtfsUtils } from "../utils/gtfs.utils";
 import { TripUtils } from "../utils/trip.utils";
 import { getLines } from "../views/content/map/component/organism/BusLines";
-import { getSchools } from "../views/content/map/component/organism/SchoolPoints";
 import {
   TripDirectionEntity,
   TripDirectionEnum,

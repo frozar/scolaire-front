@@ -2,16 +2,13 @@ import { Show, createSignal, onCleanup } from "solid-js";
 import { GradeType } from "../../../../../_entities/grade.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { GradeService } from "../../../../../_services/grade.service";
+import { getSchools, setSchools } from "../../../../../_stores/school.store";
 import BoardFooterActions from "../../../board/component/molecule/BoardFooterActions";
 import LabeledInputField from "../../../board/component/molecule/LabeledInputField";
 import {
   changeBoard,
   onBoard,
 } from "../../../board/component/template/ContextManager";
-import {
-  getSchools,
-  setSchools,
-} from "../../../map/component/organism/SchoolPoints";
 import GradeBoardHeader from "../molecule/GradeBoardHeader";
 import {
   GradeCalendarSelectionWrapper,

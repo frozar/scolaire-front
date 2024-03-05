@@ -1,11 +1,11 @@
 import { For, Show } from "solid-js";
+import { getSchools } from "../../../../../_stores/school.store";
 import { MapElementUtils } from "../../../../../utils/mapElement.utils";
 import {
   deselectAllLines,
   getLines,
   getSelectedLine,
 } from "../../../map/component/organism/BusLines";
-import { getSchools } from "../../../map/component/organism/SchoolPoints";
 import { selectedTrip } from "../../../map/component/organism/Trips";
 import { selectedPath } from "../../../path/component/organism/PathDetail";
 import { selectedGrade } from "../../../schools/component/organism/GradeEditBoard";
