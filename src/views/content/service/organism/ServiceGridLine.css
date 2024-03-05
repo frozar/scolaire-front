@@ -1,5 +1,5 @@
 .service-grid-line {
-  @apply flex items-center h-44 border border-x-0 border-t-0 border-black;
+  @apply flex items-center h-36 border border-x-0 border-t-0 border-black;
 }
 
 .service-grid-line.active {

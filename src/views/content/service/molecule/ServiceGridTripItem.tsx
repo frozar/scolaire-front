@@ -31,12 +31,12 @@ export function ServiceGridTripItem(
       }}
     >
       <ServiceGridItemTripName
-        name={TripUtils.get(props.serviceTrip.tripId).name}
+        name={TripUtils.get(props.serviceTrip?.tripId)?.name}
       />
 
       <ServiceGridItemStartEndStopNames
-        startName={ServiceGridUtils.getStartStopName(props.serviceTrip.tripId)}
-        endName={ServiceGridUtils.getEndStopName(props.serviceTrip.tripId)}
+        startName={ServiceGridUtils.getStartStopName(props.serviceTrip?.tripId)}
+        endName={ServiceGridUtils.getEndStopName(props.serviceTrip?.tripId)}
       />
 
       <ServiceGridTripItemHours

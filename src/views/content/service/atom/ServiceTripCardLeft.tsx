@@ -11,8 +11,8 @@ export function ServiceTripCardLeft(
 ): JSXElement {
   return (
     <div class="service-trip-card-left">
-      <div>{props.trip.tripName}</div>
-      <div>{props.trip.lineName}</div>
+      <p class="font-medium">{props.trip.tripName}</p>
+      <p class="text-sm">{props.trip.lineName}</p>
     </div>
   );
 }

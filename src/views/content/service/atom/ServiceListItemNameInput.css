@@ -1,7 +1,7 @@
 .service-list-item-top-name {
-  @apply text-green-base;
+  @apply text-green-base text-xl;
 }
 
 .service-list-item-top-name-input {
-  @apply text-white !border-b-white mr-4;
+  @apply text-white text-xl !border-b-white mr-4;
 }
