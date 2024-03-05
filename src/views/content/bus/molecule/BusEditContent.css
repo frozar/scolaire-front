@@ -3,5 +3,5 @@
 }
 
 .bus-edit-input {
-  @apply grid grid-flow-col grid-rows-2;
+  @apply grid grid-flow-col grid-rows-3;
 }

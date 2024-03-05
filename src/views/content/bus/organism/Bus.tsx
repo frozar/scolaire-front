@@ -12,6 +12,8 @@ export type BusCategoryType = {
   length: number;
   width: number;
   height: number;
+  capacity_standing: number;
+  capacity_pmr: number;
 };
 
 export const [getBus, setBus] = createSignal<BusCategoryType[]>([]);
