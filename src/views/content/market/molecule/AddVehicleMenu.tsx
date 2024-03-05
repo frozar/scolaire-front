@@ -6,100 +6,62 @@ import {
   disableSpinningWheel,
   enableSpinningWheel,
 } from "../../../../signaux";
+import { BusCategoryType } from "../../bus/organism/Bus";
 import { VehicleMenuHeader } from "../atom/VehicleMenuHeader";
 import { VehicleMenuContent } from "./VehicleMenuContent";
 import { setIsVehicleMenuOpened } from "./vehicle/VehicleTab";
 
 export function AddVehicleMenu() {
-  const [getName, setName] = createSignal("");
-  const [getCapacity, setCapacity] = createSignal(0);
-  const [getCapacityStanding, setCapacityStanding] = createSignal(0);
-  const [getCapacityPMR, setCapacityPMR] = createSignal(0);
-  const [getCategory, setCategory] = createSignal("");
-  const [getAccessibility, setAccessibility] = createSignal("");
-  const [getLength, setLength] = createSignal(0);
-  const [getWidth, setWidth] = createSignal(0);
-  const [getHeight, setHeight] = createSignal(0);
   const [isPMRSelected, setIsPMRSelected] = createSignal(true);
 
-  function onChangeCapacity(value: number) {
-    setCapacity(value);
-  }
-
-  function onChangeCapacityStanding(value: number) {
-    setCapacityStanding(value);
-  }
-
-  function onChangeCapacityPMR(value: number) {
-    setCapacityPMR(value);
-  }
-
-  function onChangeLength(value: number) {
-    setLength(value);
-  }
-
-  function onChangeWidth(value: number) {
-    setWidth(value);
-  }
-
-  function onChangeHeight(value: number) {
-    setHeight(value);
-  }
-
-  function onChangeCategory(value: string) {
-    setCategory(value);
-  }
-
-  function onChangeName(value: string) {
-    setName(value);
-  }
-
-  function onChangeAccessibility(value: string) {
-    setAccessibility(value);
-    if (getAccessibility() == "PMR") setIsPMRSelected(true);
-    else setIsPMRSelected(false);
-  }
+  const [getNewBus, setNewBus] = createSignal<BusCategoryType>({
+    name: "",
+    capacity: 0,
+    capacity_standing: 0,
+    capacity_pmr: 0,
+    category: "bus",
+    accessibility: "PMR",
+    height: 0,
+    length: 0,
+    width: 0,
+  });
 
   function resetDefaultValues() {
-    setCapacity(0);
-    setLength(0);
-    setWidth(0);
-    setHeight(0);
-    setCategory("");
-    setName("");
-    setAccessibility("");
+    setNewBus({
+      name: "",
+      capacity: 0,
+      capacity_standing: 0,
+      capacity_pmr: 0,
+      category: "bus",
+      accessibility: "PMR",
+      height: 0,
+      length: 0,
+      width: 0,
+    });
   }
 
   async function createNewVehicle() {
-    if (getName() == "") {
+    if (getNewBus().name == "") {
       addNewGlobalWarningInformation("Veuillez entrer un nom");
       return;
     }
-    if (getCapacity() == 0) {
+    if (getNewBus().capacity == 0) {
       addNewGlobalWarningInformation("Veuillez entrer la capacité du véhicule");
       return;
     }
-    if (getWidth() == 0 || getHeight() == 0 || getLength() == 0) {
+    if (
+      getNewBus().length == 0 ||
+      getNewBus().width == 0 ||
+      getNewBus().height == 0
+    ) {
       addNewGlobalWarningInformation("Veuillez entrer le gabarit du véhicule");
       return;
     }
-    if (getCategory() == "") setCategory("bus");
-    if (getAccessibility() == "") setAccessibility("PMR");
     enableSpinningWheel();
-    await BusService.create({
-      category: getCategory(),
-      capacity: getCapacity(),
-      capacity_standing: getCapacityStanding(),
-      capacity_pmr: getCapacityPMR(),
-      name: getName(),
-      accessibility: getAccessibility(),
-      length: getLength(),
-      width: getWidth(),
-      height: getHeight(),
-    });
+    await BusService.create(getNewBus());
     disableSpinningWheel();
     addNewGlobalSuccessInformation(
-      "Le véhicule " + getName() + " a bien été créé"
+      "Le véhicule " + getNewBus().name + " a bien été créé"
     );
     setIsVehicleMenuOpened(false);
     resetDefaultValues();
@@ -109,26 +71,11 @@ export function AddVehicleMenu() {
     <div>
       <VehicleMenuHeader />
       <VehicleMenuContent
+        busItem={getNewBus()}
         isPMROn={isPMRSelected()}
-        capacity={getCapacity()}
-        capacityStanding={getCapacityStanding()}
-        capacityPMR={getCapacityPMR()}
-        category={getCategory()}
-        name={getName()}
-        accessibility={getAccessibility()}
-        height={getHeight()}
-        length={getLength()}
-        width={getWidth()}
+        setBusItem={setNewBus}
+        setIsPMROn={setIsPMRSelected}
         submit={createNewVehicle}
-        onCapacityChange={onChangeCapacity}
-        onCategoryChange={onChangeCategory}
-        onHeightChange={onChangeHeight}
-        onLengthChange={onChangeLength}
-        onWidthChange={onChangeWidth}
-        onNameChange={onChangeName}
-        onAccessibilityChange={onChangeAccessibility}
-        onCapacityStandingChange={onChangeCapacityStanding}
-        onCapacityPMRChange={onChangeCapacityPMR}
       />
     </div>
   );

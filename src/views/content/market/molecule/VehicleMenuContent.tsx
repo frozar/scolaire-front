@@ -1,4 +1,5 @@
-import { Show } from "solid-js";
+import { Setter, Show } from "solid-js";
+import { BusCategoryType } from "../../bus/organism/Bus";
 import { VehicleAccessibilityInput } from "./VehicleAccessibilityInput";
 import { VehicleCapacityInput } from "./VehicleCapacityInput";
 import { VehicleCategoryInput } from "./VehicleCategoryInput";
@@ -8,67 +9,105 @@ import { VehicleNameInput } from "./VehicleNameInput";
 import { VehicleSizeInput } from "./VehicleSizeInput";
 
 interface VehicleMenuContentProps {
-  name: string;
-  capacity: number;
-  category: string;
-  accessibility: string;
-  length: number;
-  width: number;
-  height: number;
-  capacityStanding: number;
-  capacityPMR: number;
+  busItem: BusCategoryType;
+  setBusItem: Setter<BusCategoryType>;
   isPMROn: boolean;
-  onNameChange: (value: string) => void;
-  onCategoryChange: (value: string) => void;
-  onCapacityChange: (value: number) => void;
-  onCapacityStandingChange: (value: number) => void;
-  onCapacityPMRChange: (value: number) => void;
-  onWidthChange: (value: number) => void;
-  onLengthChange: (value: number) => void;
-  onHeightChange: (value: number) => void;
-  onAccessibilityChange: (value: string) => void;
+  setIsPMROn: Setter<boolean>;
   submit: () => void;
 }
 
 export function VehicleMenuContent(props: VehicleMenuContentProps) {
+  function setName(value: string) {
+    props.setBusItem((prev: BusCategoryType) => {
+      return { ...prev, name: value };
+    });
+  }
+
+  function setCapacity(value: number) {
+    props.setBusItem((prev: BusCategoryType) => {
+      return { ...prev, capacity: value };
+    });
+  }
+
+  function setCapacityStanding(value: number) {
+    props.setBusItem((prev: BusCategoryType) => {
+      return { ...prev, capacity_standing: value };
+    });
+  }
+
+  function setCapacityPMR(value: number) {
+    props.setBusItem((prev: BusCategoryType) => {
+      return { ...prev, capacity_pmr: value };
+    });
+  }
+
+  function setCategory(value: string) {
+    props.setBusItem((prev: BusCategoryType) => {
+      return { ...prev, category: value };
+    });
+  }
+
+  function setAccess(value: string) {
+    if (value == "PMR") props.setIsPMROn(true);
+    else props.setIsPMROn(false);
+    props.setBusItem((prev: BusCategoryType) => {
+      return { ...prev, accessibility: value };
+    });
+  }
+
+  function setLength(value: number) {
+    props.setBusItem((prev: BusCategoryType) => {
+      return { ...prev, length: value };
+    });
+  }
+
+  function setWidth(value: number) {
+    props.setBusItem((prev: BusCategoryType) => {
+      return { ...prev, width: value };
+    });
+  }
+
+  function setHeight(value: number) {
+    props.setBusItem((prev: BusCategoryType) => {
+      return { ...prev, height: value };
+    });
+  }
   return (
     <div class="vehicle-menu-content-container">
       <div class="vehicle-menu-content">
         <VehicleNameInput
-          defaultValue={props.name}
-          onInputFunction={props.onNameChange}
+          defaultValue={props.busItem.name}
+          onInputFunction={setName}
         />
         <VehicleCapacityInput
           label="Capacité assis"
           name="capacitySit"
-          defaultValue={props.capacity}
-          onChangeFunction={props.onCapacityChange}
+          defaultValue={props.busItem.capacity}
+          onChangeFunction={setCapacity}
         />
         <VehicleCapacityInput
           label="Capacité debout"
           name="capacityStand"
-          defaultValue={props.capacityStanding}
-          onChangeFunction={props.onCapacityStandingChange}
+          defaultValue={props.busItem.capacity_standing}
+          onChangeFunction={setCapacityStanding}
         />
-        <VehicleCategoryInput onChangeFunction={props.onCategoryChange} />
-        <VehicleAccessibilityInput
-          onChangeFunction={props.onAccessibilityChange}
-        />
+        <VehicleCategoryInput onChangeFunction={setCategory} />
+        <VehicleAccessibilityInput onChangeFunction={setAccess} />
         <Show when={props.isPMROn} fallback={<div />}>
           <VehicleCapacityInput
             label="Capacité PMR"
             name="capacityPMR"
-            defaultValue={props.capacityPMR}
-            onChangeFunction={props.onCapacityPMRChange}
+            defaultValue={props.busItem.capacity_pmr}
+            onChangeFunction={setCapacityPMR}
           />
         </Show>
         <VehicleSizeInput
-          defaultHeight={props.height}
-          defaultLength={props.length}
-          defaultWidth={props.width}
-          onInputHeight={props.onHeightChange}
-          onInputLength={props.onLengthChange}
-          onInputWidth={props.onWidthChange}
+          defaultHeight={props.busItem.height}
+          defaultLength={props.busItem.length}
+          defaultWidth={props.busItem.width}
+          onInputLength={setLength}
+          onInputWidth={setWidth}
+          onInputHeight={setHeight}
         />
       </div>
       <VehicleMenuButtons submitFunction={props.submit} />
