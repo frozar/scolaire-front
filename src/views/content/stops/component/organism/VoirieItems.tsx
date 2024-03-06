@@ -1,5 +1,6 @@
 import { For, Show, createSignal } from "solid-js";
 import { weight } from "../../../../../_services/osrm.service";
+import { getSelectedWays } from "../../../map/component/molecule/LineWeight";
 import { VoirieItem } from "../molecul/VoirieItem";
 import { yToHourInMinutes } from "./VoirieDay";
 import "./VoirieDay.css";
@@ -101,11 +102,25 @@ function mouseDownInformation(e: { [x: string]: any; offsetY: number }) {
   e.preventDefault();
 
   const yToHour = yToHourInMinutes(e.offsetY);
-  console.log("mouse down");
   setisInMove(true);
   setnewWeigth({
     weight: 100,
     start: yToHour * 60,
     end: 30 + yToHour * 60,
   });
+
+  console.log(
+    "weight",
+    getSelectedWays()
+      .flatMap((way) => way.flaxib_weight)
+      .filter(
+        (elem) =>
+          (newWeigth().end > elem.start &&
+            newWeigth().end < elem.end &&
+            elem.weight != 1439) ||
+          (newWeigth().start > elem.start &&
+            newWeigth().start < elem.end &&
+            elem.weight != 1439)
+      )
+  );
 }
