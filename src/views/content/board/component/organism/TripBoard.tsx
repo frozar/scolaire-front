@@ -8,7 +8,6 @@ import TrashIcon from "../../../../../icons/TrashIcon";
 import UpdatePen from "../../../../../icons/UpdatePen";
 import { setRemoveConfirmation } from "../../../../../userInformation/RemoveConfirmation";
 import { MapElementUtils } from "../../../../../utils/mapElement.utils";
-import { setLines } from "../../../map/component/organism/BusLines";
 import { deselectAllPoints } from "../../../map/component/organism/Points";
 import { selectedTrip } from "../../../map/component/organism/Trips";
 import ButtonIcon from "../molecule/ButtonIcon";
@@ -26,6 +25,7 @@ import {
 import "./TripInformationBoardContent.css";
 import { TripTimeline } from "./TripTimeline";
 import { DisplayTripDaysAndDirection } from "./displayTripDaysAndDirection";
+import { setLines } from "../../../../../_stores/line.store";
 const [, { setModeDrawTrip }] = useStateAction();
 
 // TODO revoir le code pour setter une const trip

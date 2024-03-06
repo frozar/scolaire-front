@@ -4,6 +4,7 @@ import { StopType } from "../_entities/stop.entity";
 import { TripDirectionEntity } from "../_entities/trip-direction.entity";
 import { TripType } from "../_entities/trip.entity";
 import { PathService } from "../_services/path.service";
+import { getLines, setLines } from "../_stores/line.store";
 import { getSchools } from "../_stores/school.store";
 import { getStops } from "../_stores/stop.store";
 import {
@@ -12,11 +13,7 @@ import {
   enableSpinningWheel,
 } from "../signaux";
 import { MessageLevelEnum, MessageTypeEnum, NatureEnum } from "../type";
-import {
-  getLines,
-  getSelectedLine,
-  setLines,
-} from "../views/content/map/component/organism/BusLines";
+import { getSelectedLine } from "../views/content/map/component/organism/BusLines";
 import { getTrips } from "../views/content/map/component/organism/Trips";
 import {
   currentDrawPath,

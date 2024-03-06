@@ -1,7 +1,7 @@
 import { Match, Show, Switch, createEffect, createSignal } from "solid-js";
+import { getLines } from "../../../../../_stores/line.store";
 import { PelletIcon } from "../../../../../icons/CirclePellet";
 import { SchoolUtils } from "../../../../../utils/school.utils";
-import { getLines } from "../../../map/component/organism/BusLines";
 import Tooltip from "../../../map/rightMapMenu/component/atom/Tooltip";
 
 enum RemainingStatusEnum {

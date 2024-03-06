@@ -1,8 +1,6 @@
+import { setLines } from "../_stores/line.store";
 import { NatureEnum } from "../type";
-import {
-  getSelectedLine,
-  setLines,
-} from "../views/content/map/component/organism/BusLines";
+import { getSelectedLine } from "../views/content/map/component/organism/BusLines";
 import { COLOR_GREEN_BASE } from "../views/content/map/constant";
 import { TripPointType, TripType } from "./trip.entity";
 

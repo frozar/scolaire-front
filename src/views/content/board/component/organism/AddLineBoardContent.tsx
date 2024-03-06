@@ -25,9 +25,9 @@ import { CheckableStopListBySchool } from "./CheckableStopListBySchool";
 // TODO to fix -> doit importer un AddLineBoardContent ou similaire
 import { GradeType } from "../../../../../_entities/grade.entity";
 import { StopType } from "../../../../../_entities/stop.entity";
+import { getLines, setLines } from "../../../../../_stores/line.store";
 import { getSchools } from "../../../../../_stores/school.store";
 import { getStops } from "../../../../../_stores/stop.store";
-import { getLines, setLines } from "../../../map/component/organism/BusLines";
 import BoardTitle from "../atom/BoardTitle";
 import { AssociatedItem } from "../molecule/CheckableElementList";
 import { CheckableGradeListBySchool } from "./CheckableGradeListBySchool";

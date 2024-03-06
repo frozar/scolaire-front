@@ -1,4 +1,5 @@
 import { LineType } from "../../../../../_entities/line.entity";
+import { getLines } from "../../../../../_stores/line.store";
 import CardTitle from "../../../../../component/atom/CardTitle";
 import Pellet from "../../../../../component/atom/Pellet";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
@@ -6,10 +7,7 @@ import ArretsLogo from "../../../../../icons/ArretsLogo";
 import EtablissementLogo from "../../../../../icons/EtablissementLogo";
 import VoirieLogo from "../../../../../icons/VoirieLogo";
 import { setOnBoard } from "../../../board/component/template/ContextManager";
-import {
-  deselectAllLines,
-  getLines,
-} from "../../../map/component/organism/BusLines";
+import { deselectAllLines } from "../../../map/component/organism/BusLines";
 import "./BusLineItem.css";
 
 export function displayBusLine(line: LineType): void {

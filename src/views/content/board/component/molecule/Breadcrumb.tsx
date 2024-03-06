@@ -3,7 +3,6 @@ import { getSchools } from "../../../../../_stores/school.store";
 import { MapElementUtils } from "../../../../../utils/mapElement.utils";
 import {
   deselectAllLines,
-  getLines,
   getSelectedLine,
 } from "../../../map/component/organism/BusLines";
 import { selectedTrip } from "../../../map/component/organism/Trips";

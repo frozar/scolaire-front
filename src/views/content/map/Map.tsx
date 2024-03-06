@@ -12,6 +12,7 @@ import ConfirmStopAddTrip from "./ConfirmStopAddTripBox";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { OsrmService, step } from "../../../_services/osrm.service";
+import { getLines } from "../../../_stores/line.store";
 import { getSchools } from "../../../_stores/school.store";
 import { getStops } from "../../../_stores/stop.store";
 import {
@@ -23,7 +24,7 @@ import {
 import { MessageLevelEnum, MessageTypeEnum } from "../../../type";
 import { onBoard } from "../board/component/template/ContextManager";
 import { LineWeight, getSelectedWay } from "./component/molecule/LineWeight";
-import { BusLines, getLines } from "./component/organism/BusLines";
+import { BusLines } from "./component/organism/BusLines";
 import { MapPanels } from "./component/organism/MapPanels";
 import { Paths } from "./component/organism/Paths";
 import { Points } from "./component/organism/Points";

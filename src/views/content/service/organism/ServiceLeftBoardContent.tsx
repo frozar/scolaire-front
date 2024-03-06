@@ -1,5 +1,5 @@
 import { For } from "solid-js";
-import { getLines } from "../../map/component/organism/BusLines";
+import { getLines } from "../../../../_stores/line.store";
 import { ServiceTripCard } from "../molecule/ServiceTripCard";
 import "./ServiceLeftBoardContent.css";
 import { services } from "./Services";

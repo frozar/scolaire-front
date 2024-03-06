@@ -1,10 +1,10 @@
 import { LatLng } from "leaflet";
-import { getLines } from "../views/content/map/component/organism/BusLines";
 import {
   ServiceType,
   services,
   setServices,
 } from "../views/content/service/organism/Services";
+import { getLines } from "../_stores/line.store";
 
 export namespace BusServiceUtils {
   export function get(serviceId: number): ServiceType {

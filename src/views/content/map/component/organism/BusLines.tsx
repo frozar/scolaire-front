@@ -1,13 +1,14 @@
 import L from "leaflet";
-import { createEffect, createSignal, onCleanup } from "solid-js";
+import { createEffect, onCleanup } from "solid-js";
 import { LineType } from "../../../../../_entities/line.entity";
 
 import { deselectAllPoints, pointsReady } from "./Points";
 import { setTrips } from "./Trips";
+import { getLines, setLines } from "../../../../../_stores/line.store";
 
 export const arrowsMap = new Map<number, L.Marker[]>();
 
-export const [getLines, setLines] = createSignal<LineType[]>([]);
+// export const [getLines, setLines] = createSignal<LineType[]>([]);
 
 export function BusLines(props: { busLines: LineType[] }) {
   // eslint-disable-next-line solid/reactivity

@@ -1,8 +1,8 @@
 import { BiRegularExport } from "solid-icons/bi";
 import { createSignal } from "solid-js";
+import { getLines } from "../../../../../_stores/line.store";
 import PlusIcon from "../../../../../icons/PlusIcon";
 import { displayAddTripMessage } from "../../../../../userInformation/utils";
-import { getLines } from "../../../map/component/organism/BusLines";
 import { deselectAllPoints } from "../../../map/component/organism/Points";
 import { deselectAllTrips } from "../../../map/component/organism/Trips";
 import InputSearch from "../../../schools/component/molecule/InputSearch";

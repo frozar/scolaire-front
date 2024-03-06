@@ -3,6 +3,7 @@ import { For, createEffect, createSignal, onCleanup } from "solid-js";
 import { Trip } from "../molecule/Trip";
 
 import { TripEntity, TripType } from "../../../../../_entities/trip.entity";
+import { getLines } from "../../../../../_stores/line.store";
 import {
   DrawTripStep,
   currentDrawTrip,
@@ -14,7 +15,7 @@ import {
 } from "../../../board/component/organism/TripsBoard";
 import { onBoard } from "../../../board/component/template/ContextManager";
 import { stopDetailsItem } from "../../../stops/component/organism/StopDetails";
-import { getLines, getSelectedLine } from "./BusLines";
+import { getSelectedLine } from "./BusLines";
 
 export const arrowsMap = new Map<number, L.Marker[]>();
 

@@ -27,6 +27,7 @@ function buildMap(div: HTMLDivElement) {
 let mapDiv: HTMLDivElement;
 
 export function MapContainer() {
+  
   const [displayImportCsvCanvas, setDisplayImportCsvCanvas] =
     createSignal(false);
 
@@ -36,6 +37,7 @@ export function MapContainer() {
     // document.body.addEventListener("keydown", handler);
     // }
 
+    //TODO utilité ?
     if (getActiveMapId()) {
       mapDiv.addEventListener(
         "dragenter",
