@@ -10,8 +10,11 @@ import CheckIcon from "../../../../../icons/CheckIcon";
 import TrashIcon from "../../../../../icons/TrashIcon";
 import { addNewGlobalSuccessInformation } from "../../../../../signaux";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
-import { getWayById, setWays } from "../../../map/Map";
-import { setSelectedWays } from "../../../map/component/molecule/LineWeight";
+import { getWaysById, setWays } from "../../../map/Map";
+import {
+  getSelectedWays,
+  setSelectedWays,
+} from "../../../map/component/molecule/LineWeight";
 import { VoirieItemRangeElem } from "../atom/VoirieItemRangeElem";
 import { minuteToTime } from "../organism/VoirieDay";
 import { resetNewWeight } from "../organism/VoirieItems";
@@ -75,13 +78,13 @@ export function VoirieItem(props: VoirieItem) {
         />
         <ButtonIcon
           icon={<CheckIcon />}
-          onClick={() => AddOrUpdate(props.way_id, props.weight, setprevWeight)}
+          onClick={() => AddOrUpdate(props.weight, setprevWeight)}
           class="text-blue-700 text-sm ml-2 mt-0 h-5"
           disable={prevWeight() == props.weight.weight}
         />
         <ButtonIcon
           icon={<TrashIcon />}
-          onClick={() => Delete(props.way_id, props.weight, props.isOnDrawMode)}
+          onClick={() => Delete(props.weight, props.isOnDrawMode)}
           class="text-blue-700 text-sm ml-2 mt-0 h-5"
         />
       </a>
@@ -89,14 +92,18 @@ export function VoirieItem(props: VoirieItem) {
   );
 }
 function AddOrUpdate(
-  way_id: number,
   weight: weight,
   setprevWeight: Setter<number | undefined>
 ): void {
-  OsrmService.setWeight(way_id, weight.weight, weight.start, weight.end);
+  OsrmService.setWeights(weight.weight, weight.start, weight.end);
+
   setWays((ways) => {
     return ways.map((way) => {
-      if (way.flaxib_way_id == way_id) {
+      if (
+        getSelectedWays()
+          .map((Selectedway) => Selectedway.flaxib_way_id)
+          .includes(way.flaxib_way_id)
+      ) {
         return {
           ...way,
           flaxib_weight: [
@@ -112,20 +119,23 @@ function AddOrUpdate(
       return way;
     });
   });
-  setSelectedWays(getWayById(way_id));
+  setSelectedWays(
+    getWaysById(getSelectedWays().map((selected) => selected.flaxib_way_id))
+  );
   addNewGlobalSuccessInformation("La pondération a été modifiée");
 
   resetNewWeight();
   setprevWeight(weight.weight);
 }
 
-function Delete(way_id: number, weight: weight, isOnDrawMode: boolean): void {
+function Delete(weight: weight, isOnDrawMode: boolean): void {
   if (!isOnDrawMode) {
-    OsrmService.deleteWeight(way_id, weight.start, weight.end);
+    const selectedIds = getSelectedWays().map((way) => way.flaxib_way_id);
+    OsrmService.deleteWeights(selectedIds, weight.start, weight.end);
 
     setWays((ways) => {
       return ways.map((way) => {
-        if (way.flaxib_way_id == way_id) {
+        if (selectedIds.includes(way.flaxib_way_id)) {
           return {
             ...way,
             flaxib_weight: way.flaxib_weight.filter(
@@ -139,7 +149,9 @@ function Delete(way_id: number, weight: weight, isOnDrawMode: boolean): void {
       });
     });
 
-    setSelectedWays(getWayById(way_id));
+    setSelectedWays(
+      getWaysById(getSelectedWays().map((selected) => selected.flaxib_way_id))
+    );
     addNewGlobalSuccessInformation("La pondération a été supprimée");
   } else {
     resetNewWeight();

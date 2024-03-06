@@ -51,6 +51,10 @@ export function getWayById(way_id: number): step {
   return ways().filter((way) => way.flaxib_way_id == way_id)[0];
 }
 
+export function getWaysById(way_ids: number[]): step[] {
+  return ways().filter((way) => way_ids.includes(way.flaxib_way_id));
+}
+
 export default function () {
   const [displayImportCsvCanvas, setDisplayImportCsvCanvas] =
     createSignal(false);

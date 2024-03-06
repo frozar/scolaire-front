@@ -9,6 +9,7 @@ import { WaypointType } from "../_entities/waypoint.entity";
 import { userMaps } from "../_stores/map.store";
 import { MapsUtils } from "../utils/maps.utils";
 import { MetricsUtils } from "../utils/metrics.utils";
+import { getSelectedWays } from "../views/content/map/component/molecule/LineWeight";
 import { ServiceUtils } from "./_utils.service";
 
 const osrm = import.meta.env.VITE_API_OSRM_URL;
@@ -153,6 +154,31 @@ export class OsrmService {
     });
   }
 
+  static async setWeights(
+    flaxibWeight: number,
+    start: number,
+    end: number
+  ): Promise<any> {
+    const content = JSON.stringify(
+      getSelectedWays().map((way) => {
+        return {
+          map_id: getActiveMapId(),
+          way_id: way.flaxib_way_id,
+          flaxib_weight: flaxibWeight,
+          start,
+          end,
+        };
+      })
+    );
+    return await ServiceUtils.generic(host + "/osrm/weights", {
+      method: "POST",
+      body: content,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  }
+
   static async getWaysWithWeight(): Promise<any> {
     const curMap = MapsUtils.getSelectedMap(userMaps());
     if (curMap) {
@@ -198,6 +224,30 @@ export class OsrmService {
         end,
       {
         method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return res;
+  }
+
+  static async deleteWeights(
+    waysID: number[],
+    start: number,
+    end: number
+  ): Promise<any> {
+    const res = await ServiceUtils.generic(
+      host +
+        "/osrm/weights?map_id=" +
+        getActiveMapId() +
+        "&start=" +
+        start +
+        "&end=" +
+        end,
+      {
+        method: "DELETE",
+        body: JSON.stringify(waysID),
         headers: {
           "Content-Type": "application/json",
         },
