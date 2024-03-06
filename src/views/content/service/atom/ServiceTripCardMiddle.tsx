@@ -1,10 +1,11 @@
 import { JSXElement } from "solid-js";
+import "./ServiceTripCardMiddle.css";
 
 export function ServiceTripCardMiddle(): JSXElement {
   return (
     <div>
-      <div class="text-green-base text-sm">Plage de départ</div>
-      <div class="text-xs">--:-- | --:--</div>
+      <div class="service-trip-card-middle-text-header">Plage de départ</div>
+      <div class="service-trip-card-middle-text">--:-- | --:--</div>
     </div>
   );
 }

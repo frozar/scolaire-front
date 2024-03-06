@@ -1,3 +1,11 @@
 .service-trip-card-left {
   @apply ml-1;
 }
+
+.service-trip-card-left-trip {
+  @apply font-medium;
+}
+
+.service-trip-card-left-line {
+  @apply text-sm;
+}

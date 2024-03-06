@@ -1,3 +1,11 @@
 .service-trip-card-right {
   @apply mr-1;
 }
+
+.service-trip-card-right-item {
+  @apply flex gap-x-2;
+}
+
+.service-trip-card-right-hlp {
+  @apply text-green-base w-5;
+}

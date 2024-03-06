@@ -20,12 +20,12 @@ export function ServiceTripCardRight(
 
   return (
     <div class="service-trip-card-right">
-      <div class="flex gap-x-2">
+      <div class="service-trip-card-right-item">
         <ClockIcon />
         {secondsToMinutes(props.trip.duration)}
       </div>
-      <div class="flex gap-x-2">
-        <p class="text-green-base w-5">hlp</p>
+      <div class="service-trip-card-right-item">
+        <p class="service-trip-card-right-hlp">hlp</p>
         {secondsToMinutes(600)}
       </div>
     </div>
