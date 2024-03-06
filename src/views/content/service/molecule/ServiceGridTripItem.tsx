@@ -37,6 +37,7 @@ export function ServiceGridTripItem(
       <ServiceGridItemStartEndStopNames
         startName={ServiceGridUtils.getStartStopName(props.serviceTrip?.tripId)}
         endName={ServiceGridUtils.getEndStopName(props.serviceTrip?.tripId)}
+        width={ServiceGridUtils.widthCssValue(props.serviceTripWidth)}
       />
 
       <ServiceGridTripItemHours

@@ -17,7 +17,10 @@ interface ServiceGridItemProps {
 
 export function ServiceGridItem(props: ServiceGridItemProps): JSXElement {
   return (
-    <div data-id={props.serviceTrip.tripId} class="service-grid-item">
+    <div
+      data-id={props.serviceTrip.tripId}
+      class="service-grid-item items-center"
+    >
       <Show when={props.serviceTrip.waitingTime > 0}>
         <ServiceGridWaitingItem
           width={ServiceGridUtils.widthCssValue(props.serviceTrip.waitingTime)}
