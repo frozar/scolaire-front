@@ -33,7 +33,6 @@ export function LineWeight(props: {
 
   const onClick = () => {
     if (window.event?.ctrlKey) {
-      console.log("je controle");
       if (
         getSelectedWays().filter(
           (way) => way.flaxib_way_id === props.way.flaxib_way_id
@@ -52,7 +51,6 @@ export function LineWeight(props: {
         // ways().filter((elem) => elem.flaxib_way_id === props.way.flaxib_way_id)[0]
         [props.way]
       );
-      console.log("select here", getSelectedWays()[0]);
     }
     resetNewWeight();
   };

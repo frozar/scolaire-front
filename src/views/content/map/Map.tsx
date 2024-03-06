@@ -97,7 +97,6 @@ export default function () {
 
   // eslint-disable-next-line solid/reactivity
   createEffect(async () => {
-    console.log("ici", getLeafletMap());
     if (getLeafletMap() && ways().length === 0 && waysIsFetch() == undefined) {
       setWaysIsFetch(false);
       const res = await requestWays();

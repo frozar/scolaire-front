@@ -66,7 +66,11 @@ export default function (props: LineProps) {
       if (props.onClick) {
         leafletLineElems.map((elem) =>
           // eslint-disable-next-line solid/reactivity
-          elem.on("click", () => props.onClick?.())
+          elem.on("click", (e) => {
+            L.DomEvent.stopPropagation(e);
+
+            props.onClick?.();
+          })
         );
       }
       if (props.onMouseDown) {

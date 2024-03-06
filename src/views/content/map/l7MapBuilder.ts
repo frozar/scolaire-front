@@ -14,6 +14,10 @@ import {
   onBoard,
 } from "../board/component/template/ContextManager";
 import FlaxibMapLogo from "./FlaxibMapLogo";
+import {
+  getSelectedWays,
+  setSelectedWays,
+} from "./component/molecule/LineWeight";
 import { getTileById } from "./tileUtils";
 const [
   ,
@@ -92,6 +96,8 @@ export function buildMapL7(div: HTMLDivElement) {
   });
 
   leafletMap.addEventListener("click", (e) => {
+    e.originalEvent.preventDefault();
+    e.originalEvent.stopPropagation();
     if (
       !isOverMapItem() &&
       onBoard() != "trip-draw" &&
@@ -102,6 +108,12 @@ export function buildMapL7(div: HTMLDivElement) {
         changeBoard("line");
       }
       MapElementUtils.deselectAllPointsAndBusTrips();
+    }
+
+    if (getSelectedMenu() == "voirie" && getSelectedWays().length > 0) {
+      if (!window.event?.ctrlKey) {
+        setSelectedWays([]);
+      }
     }
   });
 
