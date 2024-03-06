@@ -1,7 +1,6 @@
 import { Match, Show, Switch, createEffect, createSignal } from "solid-js";
 
 import { LineType } from "../../../../../_entities/line.entity";
-import { DashboardContextManager } from "../../../dashboard/template/DashboardContextManager";
 import { getSelectedLine } from "../../../map/component/organism/BusLines";
 import { PathDetail } from "../../../path/component/organism/PathDetail";
 import { GradeBoardDetails } from "../../../schools/component/organism/GradeBoardDetails";
@@ -44,6 +43,7 @@ export const toggleDrawMod = () => setIsDrawMod((bool) => !bool);
 export const [onBoard, setOnBoard] = createSignal<BoardTags>(undefined);
 export const changeBoard = (boardName: BoardTags) => setOnBoard(boardName);
 
+//TODO rebaptiser MapBoardManager à placer dans content/_component
 export default function () {
   createEffect(() => {
     if (isInDrawMod()) {
@@ -125,7 +125,6 @@ export default function () {
               <PathDetail />
             </Match>
           </Switch>
-          <DashboardContextManager />
         </InformationBoardLayout>
       </Show>
     </section>

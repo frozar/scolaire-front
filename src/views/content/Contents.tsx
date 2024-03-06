@@ -4,6 +4,8 @@ import InnerModal from "../../component/molecule/InnerModal";
 import UnloggedUserInformation from "../../component/molecule/UnloggedUserInformation";
 import UserInstruction from "../../component/molecule/UserInstruction";
 import { getAuthenticatedUser } from "../../signaux";
+import { MapBoardManager } from "./_component/template/MapBoardManager";
+import { MapContainer } from "./_component/template/MapContainer";
 import ContextManager from "./board/component/template/ContextManager";
 import InformationBoardLayout from "./board/component/template/InformationBoardLayout";
 import { Calendar } from "./calendar/template/Calendar";
@@ -18,8 +20,11 @@ import WayDetails from "./stops/component/organism/WayDetails";
 const [, { getSelectedMenu }] = useStateGui();
 
 export function Contents() {
+  //TODO to refacto -> refacto ContextManager
   const isMapView = () =>
-    ["graphicage", "schools", "stops", "dashboard"].includes(getSelectedMenu());
+    ["graphicage", "schools", "stops"].includes(getSelectedMenu());
+
+  const mapView = () => ["dashboard"].includes(getSelectedMenu());
 
   const logged = () => (getAuthenticatedUser() ? true : false);
 
@@ -45,6 +50,11 @@ export function Contents() {
 
           <Match when={getSelectedMenu() == "market"}>
             <Market />
+          </Match>
+
+          <Match when={mapView()}>
+            <MapContainer />
+            <MapBoardManager />
           </Match>
 
           <Match when={isMapView()}>

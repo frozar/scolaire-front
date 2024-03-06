@@ -9,6 +9,7 @@ import ServiceIcon from "../../icons/ServiceIcon";
 import VoirieLogo from "../../icons/VoirieLogo";
 import { MenuItemType } from "../../type";
 import { MapElementUtils } from "../../utils/mapElement.utils";
+import { ViewManager } from "../content/ViewManager";
 import SettingsIcon from "../content/board/component/atom/SettingsIcon";
 import {
   changeBoard,
@@ -24,8 +25,7 @@ const menuItems: MenuItemType[] = [
     label: "Dashboard",
     isDisabled: false,
     onClick: () => {
-      changeBoard("dashboard");
-      MapElementUtils.deselectAllPointsAndBusTrips();
+      ViewManager.dashboard();
     },
   },
   {
