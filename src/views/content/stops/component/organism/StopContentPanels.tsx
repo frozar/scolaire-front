@@ -14,6 +14,7 @@ interface StopContentPanelsProps {
   toggleInAddQuantity: () => void;
 }
 
+// TODO retravailler ce composant et sous-composant (probable spaghetti)
 export function StopContentPanels(props: StopContentPanelsProps) {
   return (
     <div class="content mt-2">
