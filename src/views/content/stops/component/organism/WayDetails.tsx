@@ -1,8 +1,10 @@
 import PageTitle from "../../../../../component/atom/PageTitle";
 import { getSelectedWay } from "../../../map/component/molecule/LineWeight";
-import "./StopDetails.css";
+//TODO pas le bon CSS ...
+import "../template/StopDetails.css";
 import VoirieDay from "./VoirieDay";
 
+// TODO WayDetails... pas le bon endroit ?
 export default function WayDetails() {
   return (
     <section>

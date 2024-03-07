@@ -10,7 +10,7 @@ import { QuantityUtils } from "../../../../../utils/quantity.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import CollapsibleElement from "../../../board/component/organism/CollapsibleElement";
 import { QuantityTable } from "../organism/QuantityTable";
-import { stopDetailsItem } from "../organism/StopDetails";
+import { stopDetails } from "../template/StopDetails";
 import EditStudentSchoolGradeItem from "./EditStudentSchoolGradeItem";
 import "./StudentSchoolGradeItem.css";
 
@@ -46,7 +46,7 @@ export default function (props: { school: AssociatedSchoolType }) {
           <CollapsibleElement title="Quantités restantes">
             <QuantityTable
               matrix={QuantityUtils.getRemainingQuantityMatrix(
-                stopDetailsItem()?.id as number,
+                stopDetails()?.id as number,
                 props.school.idClassToSchool
               )}
             />

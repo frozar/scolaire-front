@@ -25,7 +25,7 @@ import { CheckableStopListBySchool } from "./CheckableStopListBySchool";
 // TODO to fix -> doit importer un AddLineBoardContent ou similaire
 import { GradeType } from "../../../../../_entities/grade.entity";
 import { StopType } from "../../../../../_entities/stop.entity";
-import { getLines, setLines } from "../../../../../_stores/line.store";
+import { LineStore, getLines } from "../../../../../_stores/line.store";
 import { getSchools } from "../../../../../_stores/school.store";
 import { getStops } from "../../../../../_stores/stop.store";
 import BoardTitle from "../atom/BoardTitle";
@@ -265,14 +265,15 @@ async function nextStep() {
             creating_line
           );
 
-          setLines((oldLines) => [...oldLines, newBusLine]);
+          //TODO voir l'utilisation
+          LineStore.set((oldLines) => [...oldLines, newBusLine]);
           setAddLineCurrentStep(AddLineStep.start);
 
           toggleDrawMod();
           displayBusLine(newBusLine);
           console.log("getLines", getLines());
 
-          //TODO faire updateBusLines(newBusLine);
+          //TODO faire LineStore.update(newBusLine);
         }
       } catch (error) {
         console.log("error", error);
@@ -302,32 +303,3 @@ async function previousStep() {
   }
   disableSpinningWheel();
 }
-
-// async function createBusLine(line: LineType | undefined) {
-//   if (line) {
-//     const newBusLine: LineType = await BusLineService.create(line);
-//     return
-//     displayBusLine(newBusLine);
-//   }
-
-// }
-
-// async function updateBusLine(line: LineType) {
-//   const updatedBusLine: LineType = await BusLineService.update(line);
-//   updateBusLines(updatedBusLine);
-// }
-
-// async function createOrUpdateBusLine(line: LineType) {
-//   line.setSelected(true);
-//   if (line.id == undefined) {
-//     await createBusLine(line);
-//   } else {
-//     await updateBusLine(line);
-//   }
-//   quitModeAddLine();
-//   setCurrentStep(AddLineStep.start);
-//   setDisplayLineMode((prev) =>
-//     prev == displayLineModeEnum.straight ? prev : displayLineModeEnum.straight
-//   );
-//   selectedUpdatedBusLine(getLines().at(-1) as LineType);
-// }

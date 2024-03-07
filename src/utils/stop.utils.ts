@@ -6,7 +6,7 @@ import { TripDirectionEnum } from "../_entities/trip-direction.entity";
 import { getLines } from "../_stores/line.store";
 import { getStops, setStops } from "../_stores/stop.store";
 import { NatureEnum } from "../type";
-import { setStopDetailsItem } from "../views/content/stops/component/organism/StopDetails";
+import { setStopDetails } from "../views/content/stops/component/template/StopDetails";
 import { GradeUtils } from "./grade.utils";
 import { QuantityMatrixType, QuantityUtils } from "./quantity.utils";
 import { SchoolUtils } from "./school.utils";
@@ -17,7 +17,7 @@ export namespace StopUtils {
   }
 
   export function updateStopDetailsItem(stop: Partial<StopType>) {
-    setStopDetailsItem((prev) => {
+    setStopDetails((prev) => {
       if (!prev) return prev;
       return { ...prev, ...stop };
     });
@@ -49,7 +49,7 @@ export namespace StopUtils {
 
       return stops;
     });
-    setStopDetailsItem((stop) => {
+    setStopDetails((stop) => {
       if (!stop) return stop;
       return {
         ...stop,
@@ -75,7 +75,7 @@ export namespace StopUtils {
       });
     });
 
-    setStopDetailsItem((prev) => {
+    setStopDetails((prev) => {
       if (!prev) return prev;
       return {
         ...prev,

@@ -56,8 +56,7 @@ const menuItems: MenuItemType[] = [
     label: "Arrêts",
     isDisabled: false,
     onClick: () => {
-      changeBoard("stops");
-      MapElementUtils.deselectAllPointsAndBusTrips();
+      ViewManager.stops();
     },
   },
   {

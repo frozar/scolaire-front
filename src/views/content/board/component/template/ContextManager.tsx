@@ -7,8 +7,6 @@ import { GradeBoardDetails } from "../../../schools/component/organism/GradeBoar
 import { GradeEditBoard } from "../../../schools/component/organism/GradeEditBoard";
 import SchoolsBoard from "../../../schools/component/organism/SchoolBoard";
 import SchoolDetails from "../../../schools/component/organism/SchoolDetails";
-import StopBoard from "../../../stops/component/organism/StopBoard";
-import StopDetails from "../../../stops/component/organism/StopDetails";
 import AddLineBoardContent from "../organism/AddLineBoardContent";
 import BusLinesBoard from "../organism/BusLinesBoard";
 import { DrawTripBoard } from "../organism/DrawTripBoard";
@@ -110,15 +108,6 @@ export default function () {
 
             <Match when={onBoard() == "school-grade-details"}>
               <GradeBoardDetails />
-            </Match>
-
-            {/* Stops */}
-            <Match when={onBoard() == "stops"}>
-              <StopBoard />
-            </Match>
-
-            <Match when={onBoard() == "stop-details"}>
-              <StopDetails />
             </Match>
 
             <Match when={onBoard() == "path-details"}>

@@ -1,4 +1,4 @@
-import { setLines } from "../_stores/line.store";
+import { LineStore } from "../_stores/line.store";
 import { NatureEnum } from "../type";
 import { getSelectedLine } from "../views/content/map/component/organism/BusLines";
 import { COLOR_GREEN_BASE } from "../views/content/map/constant";
@@ -26,7 +26,7 @@ export namespace PathEntity {
       const pathIdsOfLine = line?.paths.map((path) => path.id);
 
       if (!pathIdsOfLine?.includes(path.id)) {
-        setLines((prev) => {
+        LineStore.set((prev) => {
           return [...prev].map((line) => {
             if (line.id == line.id) line.paths.push(path);
             return line;

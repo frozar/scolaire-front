@@ -1,4 +1,5 @@
 import { For, Show } from "solid-js";
+import { getLines } from "../../../../../_stores/line.store";
 import { getSchools } from "../../../../../_stores/school.store";
 import { MapElementUtils } from "../../../../../utils/mapElement.utils";
 import {
@@ -9,7 +10,7 @@ import { selectedTrip } from "../../../map/component/organism/Trips";
 import { selectedPath } from "../../../path/component/organism/PathDetail";
 import { selectedGrade } from "../../../schools/component/organism/GradeEditBoard";
 import { schoolDetailsItem } from "../../../schools/component/organism/SchoolDetails";
-import { stopDetailsItem } from "../../../stops/component/organism/StopDetails";
+import { stopDetails } from "../../../stops/component/template/StopDetails";
 import BreadcrumbButton from "../atom/BreadcrumbButton";
 import DisplayBreadcrumbText from "../atom/DisplayBreadcrumbText";
 import { currentDrawTrip } from "../organism/DrawTripBoard";
@@ -73,7 +74,7 @@ export default function () {
             onClick: () => changeBoard("stops"),
           },
           {
-            text: stopDetailsItem()?.name.toLowerCase() as string,
+            text: stopDetails()?.name.toLowerCase() as string,
           },
         ];
       case "school-details":

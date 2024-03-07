@@ -5,7 +5,7 @@ import {
 import { GradeType } from "../_entities/grade.entity";
 import { SchoolType } from "../_entities/school.entity";
 import { SchoolService } from "../_services/school.service";
-import { getLines, setLines } from "../_stores/line.store";
+import { LineStore, getLines } from "../_stores/line.store";
 import { getSchools, setSchools } from "../_stores/school.store";
 import { StopStore, getStops } from "../_stores/stop.store";
 import { addNewUserInformation } from "../signaux";
@@ -71,7 +71,7 @@ export namespace SchoolUtils {
       };
     });
 
-    setLines(newLines);
+    LineStore.set(newLines);
 
     setSchools(getSchools().filter((school) => school.id != id_school));
 

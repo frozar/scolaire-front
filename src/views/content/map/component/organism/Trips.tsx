@@ -14,7 +14,7 @@ import {
   onTripBoardPanel,
 } from "../../../board/component/organism/TripsBoard";
 import { onBoard } from "../../../board/component/template/ContextManager";
-import { stopDetailsItem } from "../../../stops/component/organism/StopDetails";
+import { stopDetails } from "../../../stops/component/template/StopDetails";
 import { getSelectedLine } from "./BusLines";
 
 export const arrowsMap = new Map<number, L.Marker[]>();
@@ -40,6 +40,7 @@ export function Trips(props: { map: L.Map }) {
     setTrips([]);
   });
 
+  //TODO to refacto dans les board
   const tripsFilter = () => {
     switch (onBoard()) {
       case "line-add":
@@ -67,7 +68,7 @@ export function Trips(props: { map: L.Map }) {
         break;
 
       case "stop-details":
-        const stopId = stopDetailsItem()?.id;
+        const stopId = stopDetails()?.id;
         if (!stopId) return [];
         return TripEntity.getStopTrips(stopId);
 

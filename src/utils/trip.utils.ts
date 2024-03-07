@@ -9,7 +9,7 @@ import {
 } from "../_entities/trip-direction.entity";
 import { TripPointType, TripType } from "../_entities/trip.entity";
 import { TripService } from "../_services/trip.service";
-import { getLines, setLines } from "../_stores/line.store";
+import { LineStore, getLines } from "../_stores/line.store";
 import { addNewUserInformation } from "../signaux";
 import { MessageLevelEnum, MessageTypeEnum, NatureEnum } from "../type";
 import { getAllotment } from "../views/content/allotment/organism/Allotment";
@@ -202,7 +202,8 @@ export namespace TripUtils {
       updatedTrip = await TripService.create(currentDrawTrip() as TripType);
       const selectedLineId = getSelectedLine()?.id as number;
 
-      setLines((lines) =>
+      //TODO voir l'utilisation
+      LineStore.set((lines) =>
         lines.map((line) =>
           line.id != selectedLineId
             ? line
@@ -212,7 +213,8 @@ export namespace TripUtils {
     } else {
       updatedTrip = await TripService.update(currentDrawTrip() as TripType);
 
-      setLines((prev) =>
+      //TODO voir l'utilisation
+      LineStore.set((prev) =>
         prev.map((line) => {
           return {
             ...line,

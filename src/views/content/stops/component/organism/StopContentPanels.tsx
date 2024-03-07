@@ -1,11 +1,13 @@
 import { Accessor, Match, Setter, Show, Switch } from "solid-js";
+import { StopType } from "../../../../../_entities/stop.entity";
 import { TripEntity } from "../../../../../_entities/trip.entity";
 import { TripsList } from "../../../schools/component/organism/TripsList";
 import EditStudentSchoolGradeItem from "../molecul/EditStudentSchoolGradeItem";
-import { StopPanels, stopDetailsItem } from "./StopDetails";
-import StudentSchoolGradeList from "./StudentSchoolGradeList";
+import { StopPanels } from "../template/StopDetails";
+import { StudentSchoolGradeList } from "./StudentSchoolGradeList";
 
 interface StopContentPanelsProps {
+  stop: StopType;
   onPanel: Accessor<StopPanels>;
   setOnPanel: Setter<StopPanels>;
   inAddQuantity: Accessor<boolean>;
@@ -24,9 +26,7 @@ export function StopContentPanels(props: StopContentPanelsProps) {
           </Show>
         </Match>
         <Match when={props.onPanel() == StopPanels.trips}>
-          <TripsList
-            trips={TripEntity.getStopTrips(stopDetailsItem()?.id as number)}
-          />
+          <TripsList trips={TripEntity.getStopTrips(props.stop.id as number)} />
         </Match>
       </Switch>
     </div>

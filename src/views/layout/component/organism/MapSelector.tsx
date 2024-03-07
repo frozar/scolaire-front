@@ -2,7 +2,7 @@ import { createEffect, createSignal, onMount } from "solid-js";
 
 import { useStateGui } from "../../../../StateGui";
 import { MapType } from "../../../../_entities/map.entity";
-import { setLines } from "../../../../_stores/line.store";
+import { LineStore } from "../../../../_stores/line.store";
 import { MapStore, userMaps } from "../../../../_stores/map.store";
 import { SchoolStore } from "../../../../_stores/school.store";
 import { StopStore } from "../../../../_stores/stop.store";
@@ -25,6 +25,7 @@ export function MapSelector() {
   createEffect(() => {
     setSelectedMap(MapsUtils.getSelectedMap(userMaps()));
 
+    //TODO placer le refresh ailleur (avant le reload des data dans init)
     if (!selectedMap()) {
       setActiveMapId(null);
       SchoolStore.set([]);
@@ -32,7 +33,7 @@ export function MapSelector() {
       setCalendars([]);
       setCalendarsPeriod([]);
       setTrips([]);
-      setLines([]);
+      LineStore.set([]);
     }
   });
 

@@ -4,6 +4,7 @@ import Metrics from "./Metrics";
 import { useStateAction } from "../../../../../StateAction";
 import { TripEntity, TripType } from "../../../../../_entities/trip.entity";
 import { TripService } from "../../../../../_services/trip.service";
+import { LineStore } from "../../../../../_stores/line.store";
 import TrashIcon from "../../../../../icons/TrashIcon";
 import UpdatePen from "../../../../../icons/UpdatePen";
 import { setRemoveConfirmation } from "../../../../../userInformation/RemoveConfirmation";
@@ -25,7 +26,6 @@ import {
 import "./TripInformationBoardContent.css";
 import { TripTimeline } from "./TripTimeline";
 import { DisplayTripDaysAndDirection } from "./displayTripDaysAndDirection";
-import { setLines } from "../../../../../_stores/line.store";
 const [, { setModeDrawTrip }] = useStateAction();
 
 // TODO revoir le code pour setter une const trip
@@ -91,7 +91,8 @@ function displayRemoveConfirmation() {
       changeBoard("trip");
       MapElementUtils.deselectAllPointsAndBusTrips();
 
-      setLines((prev) =>
+      //TODO voir l'utilisation
+      LineStore.set((prev) =>
         prev.map((line) => {
           return {
             ...line,

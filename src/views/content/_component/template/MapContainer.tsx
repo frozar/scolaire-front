@@ -11,6 +11,7 @@ import { MapPanels } from "../../map/component/organism/MapPanels";
 import { buildMapL7 } from "../../map/l7MapBuilder";
 import { SchoolPoints } from "../organisme/SchoolPoints";
 import { StopPoints } from "../organisme/StopPoints";
+import { Trips } from "../organisme/Trips";
 
 const [, { getActiveMapId }] = useStateGui();
 
@@ -27,7 +28,6 @@ function buildMap(div: HTMLDivElement) {
 let mapDiv: HTMLDivElement;
 
 export function MapContainer() {
-  
   const [displayImportCsvCanvas, setDisplayImportCsvCanvas] =
     createSignal(false);
 
@@ -88,6 +88,8 @@ export function MapContainer() {
 
       <SchoolPoints map={getLeafletMap() as L.Map} />
       <StopPoints map={getLeafletMap() as L.Map} />
+      <Trips map={getLeafletMap() as L.Map} />
+
       {/* 
       <BusLines busLines={getLines()} />
       <Trips map={getLeafletMap() as L.Map} />

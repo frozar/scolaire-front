@@ -1,7 +1,9 @@
 import { createSignal } from "solid-js";
+import { StopType } from "../../_entities/stop.entity";
 import { setSelectedMenu } from "../layout/menuItemFields";
 import { setMapBoard } from "./_component/template/MapBoardManager";
 import { changeBoard } from "./board/component/template/ContextManager";
+import { setStopDetails } from "./stops/component/template/StopDetails";
 
 export type ContentTags =
   | "dashboard"
@@ -10,8 +12,8 @@ export type ContentTags =
   // | "school-grade-details"
   // | "school-grade-add"
   // | "school-grade-modify"
-  // | "stops"
-  // | "stop-details"
+  | "stops"
+  | "stop-details"
   // | "trip"
   // | "trip-draw"
   // | "line"
@@ -29,6 +31,19 @@ export namespace ViewManager {
     setMapBoard("dashboard");
     //TODO to delete post refacto
     changeBoard(undefined);
-    // MapElementUtils.deselectAllPointsAndBusTrips();
+  }
+
+  export function stops() {
+    setSelectedMenu("stops");
+    setMapBoard("stops");
+    //TODO to delete post refacto
+    changeBoard(undefined);
+  }
+  export function stopDetails(stop: StopType) {
+    setStopDetails(stop);
+    setSelectedMenu("stops");
+    setMapBoard("stop-details");
+    //TODO to delete post refacto
+    changeBoard(undefined);
   }
 }
