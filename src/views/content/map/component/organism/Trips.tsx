@@ -2,7 +2,7 @@ import L from "leaflet";
 import { For, createEffect, createSignal, onCleanup } from "solid-js";
 import { Trip } from "../molecule/Trip";
 
-import { TripEntity, TripType } from "../../../../../_entities/trip.entity";
+import { TripType } from "../../../../../_entities/trip.entity";
 import { getLines } from "../../../../../_stores/line.store";
 import {
   DrawTripStep,
@@ -14,7 +14,6 @@ import {
   onTripBoardPanel,
 } from "../../../board/component/organism/TripsBoard";
 import { onBoard } from "../../../board/component/template/ContextManager";
-import { stopDetails } from "../../../stops/component/template/StopDetails";
 import { getSelectedLine } from "./BusLines";
 
 export const arrowsMap = new Map<number, L.Marker[]>();
@@ -67,10 +66,10 @@ export function Trips(props: { map: L.Map }) {
         }
         break;
 
-      case "stop-details":
-        const stopId = stopDetails()?.id;
-        if (!stopId) return [];
-        return TripEntity.getStopTrips(stopId);
+      // case "stop-details":
+      //   const stopId = stopDetails()?.id;
+      //   if (!stopId) return [];
+      //   return TripEntity.getStopTrips(stopId);
 
       case "line-details":
         return [selectedTrip() as TripType];
