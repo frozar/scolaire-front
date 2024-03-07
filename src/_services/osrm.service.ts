@@ -10,6 +10,7 @@ import { userMaps } from "../_stores/map.store";
 import { MapsUtils } from "../utils/maps.utils";
 import { MetricsUtils } from "../utils/metrics.utils";
 import { getSelectedWays } from "../views/content/map/component/molecule/LineWeight";
+import { getConflictWays } from "../views/content/stops/component/organism/VoirieItems";
 import { ServiceUtils } from "./_utils.service";
 
 const osrm = import.meta.env.VITE_API_OSRM_URL;
@@ -159,8 +160,8 @@ export class OsrmService {
     start: number,
     end: number
   ): Promise<any> {
-    const content = JSON.stringify(
-      getSelectedWays().map((way) => {
+    const update = getSelectedWays()
+      .map((way) => {
         return {
           map_id: getActiveMapId(),
           way_id: way.flaxib_way_id,
@@ -169,7 +170,26 @@ export class OsrmService {
           end,
         };
       })
-    );
+      .filter(
+        (value, index, self) =>
+          index ===
+          self.findIndex(
+            (t) =>
+              t.end === value.end &&
+              t.start === value.start &&
+              t.way_id === value.way_id
+          )
+      );
+    const conflict = getConflictWays().map((conflict) => {
+      return {
+        way_id: conflict.flaxib_way_id,
+        map_id: getActiveMapId(),
+        flaxibWeight: conflict.weight.weight,
+        start: conflict.weight.start,
+        end: conflict.weight.end,
+      };
+    });
+    const content = JSON.stringify({ update: update, conflict: conflict });
     return await ServiceUtils.generic(host + "/osrm/weights", {
       method: "POST",
       body: content,

@@ -13,6 +13,7 @@ import {
   isInDrawMod,
   onBoard,
 } from "../board/component/template/ContextManager";
+import { setmultipleWeight } from "../stops/component/organism/VoirieItems";
 import FlaxibMapLogo from "./FlaxibMapLogo";
 import {
   getSelectedWays,
@@ -113,6 +114,8 @@ export function buildMapL7(div: HTMLDivElement) {
     if (getSelectedMenu() == "voirie" && getSelectedWays().length > 0) {
       if (!window.event?.ctrlKey) {
         setSelectedWays([]);
+        setmultipleWeight([]);
+        [];
       }
     }
   });

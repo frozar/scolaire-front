@@ -1,7 +1,12 @@
+import { createSignal } from "solid-js";
 import PageTitle from "../../../../../component/atom/PageTitle";
 import { getSelectedWays } from "../../../map/component/molecule/LineWeight";
 import "./StopDetails.css";
 import VoirieDay from "./VoirieDay";
+export const [
+  displayedUpdateVoirieConfirmation,
+  setdisplayedUpdateVoirieConfirmation,
+] = createSignal<boolean>(false);
 
 // TODO WayDetails... pas le bon endroit ?
 export default function WayDetails() {

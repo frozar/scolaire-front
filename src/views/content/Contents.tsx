@@ -15,7 +15,10 @@ import { Maps } from "./maps/Maps";
 import { Market } from "./market/organism/Market";
 import { Settings } from "./parameters/organism/Settings";
 import { ServiceTemplate } from "./service/template/ServiceTemplate";
-import WayDetails from "./stops/component/organism/WayDetails";
+import AddPonderationWithConflictConfirmation from "./stops/component/organism/AddPonderationWithConflictConfirmation";
+import WayDetails, {
+  displayedUpdateVoirieConfirmation,
+} from "./stops/component/organism/WayDetails";
 
 const [, { getSelectedMenu }] = useStateGui();
 
@@ -70,6 +73,11 @@ export function Contents() {
             <Map />
 
             <InformationBoardLayout>
+              <Show when={displayedUpdateVoirieConfirmation()}>
+                <AddPonderationWithConflictConfirmation
+                // carteToDelete={displayedDeleteMapConfirmation()}
+                />
+              </Show>
               <WayDetails />
             </InformationBoardLayout>
             {/* <ContextManager /> */}

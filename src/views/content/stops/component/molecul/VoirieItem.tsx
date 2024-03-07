@@ -8,7 +8,10 @@ import {
 import { OsrmService, weight } from "../../../../../_services/osrm.service";
 import CheckIcon from "../../../../../icons/CheckIcon";
 import TrashIcon from "../../../../../icons/TrashIcon";
-import { addNewGlobalSuccessInformation } from "../../../../../signaux";
+import {
+  addNewGlobalSuccessInformation,
+  addNewGlobalWarningInformation,
+} from "../../../../../signaux";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { getWaysById, setWays } from "../../../map/Map";
 import {
@@ -17,10 +20,14 @@ import {
 } from "../../../map/component/molecule/LineWeight";
 import { VoirieItemRangeElem } from "../atom/VoirieItemRangeElem";
 import { minuteToTime } from "../organism/VoirieDay";
-import { resetNewWeight } from "../organism/VoirieItems";
+import {
+  getConflictWays,
+  resetNewWeight,
+  setmultipleWeight,
+} from "../organism/VoirieItems";
+import { setdisplayedUpdateVoirieConfirmation } from "../organism/WayDetails";
 interface VoirieItem {
   weight: weight;
-  way_id: number;
   setNewWeigth: Setter<weight>;
   isInMove: Accessor<boolean>;
   isOnDrawMode: boolean;
@@ -78,7 +85,7 @@ export function VoirieItem(props: VoirieItem) {
         />
         <ButtonIcon
           icon={<CheckIcon />}
-          onClick={() => AddOrUpdate(props.weight, setprevWeight)}
+          onClick={() => AddOrUpdateAction(props.weight, setprevWeight)}
           class="text-blue-700 text-sm ml-2 mt-0 h-5"
           disable={prevWeight() == props.weight.weight}
         />
@@ -91,7 +98,22 @@ export function VoirieItem(props: VoirieItem) {
     </li>
   );
 }
-function AddOrUpdate(
+function AddOrUpdateAction(
+  weight: weight,
+  setprevWeight: Setter<number | undefined>
+): void {
+  const conflictWays = getConflictWays();
+
+  if (conflictWays.length > 0) {
+    addNewGlobalWarningInformation("Il existe des conflits");
+    setdisplayedUpdateVoirieConfirmation(true);
+    return;
+  }
+
+  AddOrUpdate(weight, setprevWeight);
+}
+
+export function AddOrUpdate(
   weight: weight,
   setprevWeight: Setter<number | undefined>
 ): void {
@@ -119,11 +141,14 @@ function AddOrUpdate(
       return way;
     });
   });
+
   setSelectedWays(
     getWaysById(getSelectedWays().map((selected) => selected.flaxib_way_id))
   );
   addNewGlobalSuccessInformation("La pondération a été modifiée");
-
+  getSelectedWays().length > 1
+    ? setmultipleWeight((listWeight) => [...listWeight, weight])
+    : "";
   resetNewWeight();
   setprevWeight(weight.weight);
 }
@@ -152,6 +177,14 @@ function Delete(weight: weight, isOnDrawMode: boolean): void {
     setSelectedWays(
       getWaysById(getSelectedWays().map((selected) => selected.flaxib_way_id))
     );
+    getSelectedWays().length > 1
+      ? setmultipleWeight((listWeight) =>
+          listWeight.filter(
+            (curWeight) =>
+              curWeight.start != weight.start && curWeight.end != weight.end
+          )
+        )
+      : "";
     addNewGlobalSuccessInformation("La pondération a été supprimée");
   } else {
     resetNewWeight();

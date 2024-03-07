@@ -2,7 +2,10 @@ import L from "leaflet";
 import { createEffect, createSignal } from "solid-js";
 
 import { step } from "../../../../../_services/osrm.service";
-import { resetNewWeight } from "../../../stops/component/organism/VoirieItems";
+import {
+  resetNewWeight,
+  setmultipleWeight,
+} from "../../../stops/component/organism/VoirieItems";
 import Line from "../atom/Line";
 
 export const [getSelectedWays, setSelectedWays] = createSignal<step[]>([]);
@@ -53,6 +56,7 @@ export function LineWeight(props: {
       );
     }
     resetNewWeight();
+    setmultipleWeight([]);
   };
   return (
     <>
