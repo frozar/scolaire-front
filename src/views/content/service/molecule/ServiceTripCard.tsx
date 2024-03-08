@@ -1,10 +1,10 @@
 import { JSXElement, Show, createSignal, onMount } from "solid-js";
 
 import { TripType } from "../../../../_entities/trip.entity";
+import { getLines } from "../../../../_stores/line.store";
 import { addNewGlobalWarningInformation } from "../../../../signaux";
 import { ServiceTripsUtils } from "../../../../utils/serviceTrips.utils";
 import { TripTimeline } from "../../board/component/organism/TripTimeline";
-import { getLines } from "../../map/component/organism/BusLines";
 import { ServiceTripCardLeft } from "../atom/ServiceTripCardLeft";
 import { ServiceTripCardMiddle } from "../atom/ServiceTripCardMiddle";
 import { ServiceTripCardRight } from "../atom/ServiceTripCardRight";
