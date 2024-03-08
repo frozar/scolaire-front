@@ -5,7 +5,7 @@ import { TripType } from "../../../../_entities/trip.entity";
 import { getSchools } from "../../../../_stores/school.store";
 import { getStops } from "../../../../_stores/stop.store";
 import { getTrips } from "../../../../_stores/trip.store";
-import { setDisplaySchool } from "../../_component/organisme/SchoolPoints";
+import { setDisplaySchools } from "../../_component/organisme/SchoolPoints";
 import { setDisplayStops } from "../../_component/organisme/StopPoints";
 import { setDisplayTrips } from "../../_component/organisme/Trips";
 
@@ -32,6 +32,6 @@ function setMapData(
   trips: TripType[]
 ) {
   setDisplayStops(stops);
-  setDisplaySchool(schools);
+  setDisplaySchools(schools);
   setDisplayTrips(trips);
 }

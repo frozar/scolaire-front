@@ -46,8 +46,7 @@ const menuItems: MenuItemType[] = [
     label: "Établissements",
     isDisabled: false,
     onClick: () => {
-      changeBoard("schools");
-      MapElementUtils.deselectAllPointsAndBusTrips();
+      ViewManager.schools();
     },
   },
   {

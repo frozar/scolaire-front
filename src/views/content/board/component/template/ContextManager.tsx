@@ -3,10 +3,6 @@ import { Match, Show, Switch, createEffect, createSignal } from "solid-js";
 import { LineType } from "../../../../../_entities/line.entity";
 import { getSelectedLine } from "../../../map/component/organism/BusLines";
 import { PathDetail } from "../../../path/component/organism/PathDetail";
-import { GradeBoardDetails } from "../../../schools/component/organism/GradeBoardDetails";
-import { GradeEditBoard } from "../../../schools/component/organism/GradeEditBoard";
-import SchoolsBoard from "../../../schools/component/organism/SchoolBoard";
-import SchoolDetails from "../../../schools/component/organism/SchoolDetails";
 import AddLineBoardContent from "../organism/AddLineBoardContent";
 import BusLinesBoard from "../organism/BusLinesBoard";
 import { DrawTripBoard } from "../organism/DrawTripBoard";
@@ -86,28 +82,6 @@ export default function () {
             </Match>
             <Match when={onBoard() == "trip-draw"}>
               <DrawTripBoard />
-            </Match>
-
-            {/* Schools */}
-            <Match when={onBoard() == "schools"}>
-              <SchoolsBoard />
-            </Match>
-
-            <Match when={onBoard() == "school-details"}>
-              <SchoolDetails />
-            </Match>
-
-            <Match
-              when={
-                onBoard() == "school-grade-add" ||
-                onBoard() == "school-grade-modify"
-              }
-            >
-              <GradeEditBoard />
-            </Match>
-
-            <Match when={onBoard() == "school-grade-details"}>
-              <GradeBoardDetails />
             </Match>
 
             <Match when={onBoard() == "path-details"}>

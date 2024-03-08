@@ -1,7 +1,7 @@
 import { Match, Switch } from "solid-js";
 import { MapBoardTags } from "../../../_component/template/MapBoardManager";
-import { Stops } from "./Stops";
 import { StopDetails } from "./StopDetails";
+import { Stops } from "./Stops";
 
 export function StopsBoardManager(props: { board: MapBoardTags }) {
   return (

@@ -21,9 +21,10 @@ const [, { getSelectedMenu }] = useStateGui();
 
 export function Contents() {
   //TODO to refacto -> refacto ContextManager
-  const isMapView = () => ["graphicage", "schools"].includes(getSelectedMenu());
+  const isMapView = () => ["graphicage"].includes(getSelectedMenu());
 
-  const mapView = () => ["dashboard", "stops"].includes(getSelectedMenu());
+  const mapView = () =>
+    ["dashboard", "stops", "schools"].includes(getSelectedMenu());
 
   const logged = () => (getAuthenticatedUser() ? true : false);
 

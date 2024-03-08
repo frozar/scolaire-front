@@ -3,7 +3,7 @@ import { For, createSignal } from "solid-js";
 import { SchoolType } from "../../../../_entities/school.entity";
 import { SchoolPoint } from "../../map/component/molecule/SchoolPoint";
 
-export const [displaySchools, setDisplaySchool] = createSignal<SchoolType[]>(
+export const [displaySchools, setDisplaySchools] = createSignal<SchoolType[]>(
   []
 );
 export function SchoolPoints(props: { map: L.Map }) {

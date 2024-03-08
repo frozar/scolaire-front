@@ -11,7 +11,7 @@ import { StopStore, getStops } from "../_stores/stop.store";
 import { addNewUserInformation } from "../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { calendars } from "../views/content/calendar/calendar.manager";
-import { setSchoolDetailsItem } from "../views/content/schools/component/organism/SchoolDetails";
+import { setSchoolDetails } from "../views/content/schools/component/template/SchoolDetails";
 import { QuantityUtils } from "./quantity.utils";
 
 export namespace SchoolUtils {
@@ -209,14 +209,14 @@ export namespace SchoolUtils {
 
   export function linkSchoolToCalendar(calendarId: number) {
     const calendar = calendars()?.find((item) => item.id == calendarId);
-    setSchoolDetailsItem((prev) => {
+    setSchoolDetails((prev) => {
       if (!prev) return prev;
       return { ...prev, calendar: calendar };
     });
   }
 
   export function updateSchoolDetails(school: Partial<SchoolType>) {
-    setSchoolDetailsItem((prev) => {
+    setSchoolDetails((prev) => {
       if (!prev) return prev;
       return { ...prev, ...school };
     });

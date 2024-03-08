@@ -5,7 +5,7 @@ import { TimeUtils } from "../../../../../_entities/time.utils";
 import { LabeledCheckbox } from "../../../../../component/molecule/LabeledCheckbox";
 import TimesInputWrapper from "../molecule/TimesInputWrapper";
 import { selectedGrade, setSelectedGrade } from "./GradeEditBoard";
-import { schoolDetailsItem } from "./SchoolDetails";
+import { schoolDetails } from "../template/SchoolDetails";
 
 export const [bufferHours, setBufferHours] = createSignal<HoursType>(
   TimeUtils.defaultHours()
@@ -14,7 +14,7 @@ export const [useSchoolSchedule, setUseSchoolSchedule] =
   createSignal<boolean>(true);
 
 export function GradeTimesScheduleWrapper(): JSXElement {
-  const schoolHours = schoolDetailsItem()?.hours as HoursType;
+  const schoolHours = schoolDetails()?.hours as HoursType;
   const initalGradeHours = selectedGrade()?.hours ?? TimeUtils.defaultHours();
 
   onMount(() => {

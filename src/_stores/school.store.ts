@@ -3,9 +3,9 @@ import { SchoolType } from "../_entities/school.entity";
 import { SchoolService } from "../_services/school.service";
 import { StopUtils } from "../utils/stop.utils";
 import {
-  schoolDetailsItem,
-  setSchoolDetailsItem,
-} from "../views/content/schools/component/organism/SchoolDetails";
+  schoolDetails,
+  setSchoolDetails,
+} from "../views/content/schools/component/template/SchoolDetails";
 
 export const [getSchools, setSchools] = createSignal<SchoolType[]>([]);
 
@@ -25,7 +25,7 @@ export namespace SchoolStore {
 
     StopUtils.reBuildGradeAssociationMatrix();
 
-    if (schoolDetailsItem()?.id == updatedSchool.id)
-      setSchoolDetailsItem(updatedSchool);
+    if (schoolDetails()?.id == updatedSchool.id)
+      setSchoolDetails(updatedSchool);
   }
 }

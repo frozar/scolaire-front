@@ -3,7 +3,7 @@ import { SchoolType } from "../../../../../_entities/school.entity";
 import { StopType } from "../../../../../_entities/stop.entity";
 import { getSchools } from "../../../../../_stores/school.store";
 import { getStops } from "../../../../../_stores/stop.store";
-import { setDisplaySchool } from "../../../_component/organisme/SchoolPoints";
+import { setDisplaySchools } from "../../../_component/organisme/SchoolPoints";
 import { setDisplayStops } from "../../../_component/organisme/StopPoints";
 import InputSearch from "../../../schools/component/molecule/InputSearch";
 import StopItem from "../molecul/StopItem";
@@ -22,6 +22,11 @@ export function Stops() {
   });
 
   createEffect(() => {
+    setMapData(getStops(), getSchools());
+    setLocalStops(getStops());
+  });
+
+  createEffect(() => {
     if (keywordSearch().length != 0) {
       setLocalStops(filterStops(keywordSearch()));
     } else {
@@ -34,7 +39,10 @@ export function Stops() {
       <header>
         <InputSearch onInput={setKeyWordSearch} />
         <div class="stop-board-number">
-          <p>{localStops().length + " "} Arrêts</p>
+          <p>
+            {localStops().length + " "}
+            {localStops().length > 1 ? "Arrêts" : "Arrêt"}
+          </p>
         </div>
       </header>
 
@@ -47,7 +55,7 @@ export function Stops() {
 
 function setMapData(stops: StopType[], schools: SchoolType[]) {
   setDisplayStops(stops);
-  setDisplaySchool(schools);
+  setDisplaySchools(schools);
 }
 
 const filterStops = (filter: string) =>

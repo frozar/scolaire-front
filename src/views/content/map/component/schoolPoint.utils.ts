@@ -9,6 +9,7 @@ import { addNewUserInformation } from "../../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../../type";
 import { CurrentDrawTripUtils } from "../../../../utils/currentDrawTrip.utils";
 import { TripUtils } from "../../../../utils/trip.utils";
+import { ViewManager } from "../../ViewManager";
 import {
   AddLineStep,
   addLineCurrentStep,
@@ -21,17 +22,13 @@ import {
   currentStep,
   setCurrentTripIndex,
 } from "../../board/component/organism/DrawTripBoard";
-import {
-  changeBoard,
-  onBoard,
-} from "../../board/component/template/ContextManager";
+import { onBoard } from "../../board/component/template/ContextManager";
 import {
   DrawPathStep,
   currentDrawPath,
   drawPathUtils,
   onDrawPathStep,
 } from "../../path/component/drawPath.utils";
-import { setSchoolDetailsItem } from "../../schools/component/organism/SchoolDetails";
 import { COLOR_SCHOOL_FOCUS, COLOR_SCHOOL_LIGHT } from "../constant";
 import { setIsOverMapItem } from "../l7MapBuilder";
 import { draggingTrip, setDraggingTrip } from "./molecule/Trip";
@@ -142,8 +139,7 @@ export namespace SchoolPointUtils {
         // deselectAllTrips();
         deselectAllPoints();
         point.setSelected(true);
-        setSchoolDetailsItem(point);
-        changeBoard("school-details");
+        ViewManager.schoolDetails(point);
         updatePointColor(point);
     }
   }

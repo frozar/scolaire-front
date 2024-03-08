@@ -1,17 +1,15 @@
 import { For, JSXElement } from "solid-js";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { updatePointColor } from "../../../../../leafletUtils";
+import { ViewManager } from "../../../ViewManager";
 import CollapsibleElement from "../../../board/component/organism/CollapsibleElement";
-import { changeBoard } from "../../../board/component/template/ContextManager";
-import { setSchoolDetailsItem } from "../../../schools/component/organism/SchoolDetails";
 
 export function MapInformationPanelItem(props: {
   schoolsToDisplay: SchoolType[];
   titleText: string;
 }): JSXElement {
   function onClick(school: SchoolType): void {
-    setSchoolDetailsItem(school);
-    changeBoard("school-details");
+    ViewManager.schoolDetails(school);
     updatePointColor(school);
   }
   return (

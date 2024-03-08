@@ -5,7 +5,7 @@ import { getTrips } from "../../../../../_stores/trip.store";
 import { LabeledInputNumber } from "../../../../../component/molecule/LabeledInputNumber";
 import { NatureEnum } from "../../../../../type";
 import { StopUtils } from "../../../../../utils/stop.utils";
-import { setDisplaySchool } from "../../../_component/organisme/SchoolPoints";
+import { setDisplaySchools } from "../../../_component/organisme/SchoolPoints";
 import { setDisplayStops } from "../../../_component/organisme/StopPoints";
 import { setDisplayTrips } from "../../../_component/organisme/Trips";
 import { RemainingStudentInformation } from "../atom/RemainingStudentInformation";
@@ -22,7 +22,7 @@ export enum StopPanels {
   trips = "trips",
 }
 
-// TODO revoir l'utilisation du signal stopDetails et revoir les setStopDetails
+// TODO revoir les utilisations du signal stopDetails et revoir les setStopDetails
 export const [stopDetails, setStopDetails] = createSignal<StopType>();
 
 export function StopDetails() {
@@ -92,11 +92,11 @@ export function StopDetails() {
 function setMapData(stop: StopType | undefined) {
   if (stop) {
     setDisplayStops([stop]);
-    setDisplaySchool(filterSchools(stop));
+    setDisplaySchools(filterSchools(stop));
     setDisplayTrips(filterTrips(stop));
   } else {
     setDisplayStops([]);
-    setDisplaySchool([]);
+    setDisplaySchools([]);
     setDisplayTrips([]);
   }
 }
