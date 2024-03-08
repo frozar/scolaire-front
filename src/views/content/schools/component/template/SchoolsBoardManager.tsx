@@ -1,8 +1,8 @@
 import { Match, Switch } from "solid-js";
 import { MapBoardTags } from "../../../_component/template/MapBoardManager";
-import { GradeBoardDetails } from "../organism/GradeBoardDetails";
 import { GradeEditBoard } from "../organism/GradeEditBoard";
 import { SchoolDetails } from "./SchoolDetails";
+import { SchoolGradeDetails } from "./SchoolGradeDetails";
 import Schools from "./Schools";
 
 export function SchoolsBoardManager(props: { board: MapBoardTags }) {
@@ -16,6 +16,10 @@ export function SchoolsBoardManager(props: { board: MapBoardTags }) {
         <SchoolDetails />
       </Match>
 
+      <Match when={props.board == "school-grade-details"}>
+        <SchoolGradeDetails />
+      </Match>
+
       <Match
         when={
           props.board == "school-grade-add" ||
@@ -23,10 +27,6 @@ export function SchoolsBoardManager(props: { board: MapBoardTags }) {
         }
       >
         <GradeEditBoard />
-      </Match>
-
-      <Match when={props.board == "school-grade-details"}>
-        <GradeBoardDetails />
       </Match>
     </Switch>
   );

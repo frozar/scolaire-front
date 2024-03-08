@@ -13,6 +13,7 @@ export namespace GradeEntity {
     return {
       id: dbData.id,
       name: dbData.name,
+      schoolId: dbData.school_id,
       hours: TimeUtils.buildHours(dbData.hours),
       calendar: dbData.calendar
         ? CalendarEntity.build(dbData.calendar)
@@ -75,7 +76,6 @@ export type GradeDBType = {
 
 export type GradeType = {
   id?: number;
-  // TODO: Delete if unused
   schoolId?: number;
   name: string;
   hours: HoursType;

@@ -14,6 +14,10 @@ export namespace SchoolStore {
     setSchools(schools);
   }
 
+  export function get(schoolId: number): SchoolType {
+    return getSchools().find((school) => school.id == schoolId) as SchoolType;
+  }
+
   export async function update(school: SchoolType) {
     const updatedSchool: SchoolType = await SchoolService.update(school);
     setSchools((prev) => {

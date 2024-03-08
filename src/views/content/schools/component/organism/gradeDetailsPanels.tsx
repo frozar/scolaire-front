@@ -1,9 +1,9 @@
 import { JSXElement, Match, Switch, createSignal } from "solid-js";
+import { GradeType } from "../../../../../_entities/grade.entity";
 import { StopType } from "../../../../../_entities/stop.entity";
 import { TripType } from "../../../../../_entities/trip.entity";
 import { StopUtils } from "../../../../../utils/stop.utils";
 import { TripUtils } from "../../../../../utils/trip.utils";
-import { selectedGrade } from "./GradeEditBoard";
 import { StopList } from "./StopList";
 import { TripsList } from "./TripsList";
 
@@ -13,17 +13,17 @@ enum GradeDetailsPanelEnum {
   trips = "trips",
 }
 
-export function GradeDetailsPanels(): JSXElement {
+export function GradeDetailsPanels(props: { grade: GradeType }): JSXElement {
   const [onPanel, setOnPanel] = createSignal<GradeDetailsPanelEnum>(
     GradeDetailsPanelEnum.stops
   );
 
   function linkedTrips(): TripType[] {
-    return TripUtils.getByLinkedGrade(selectedGrade()?.id as number);
+    return TripUtils.getByLinkedGrade(props.grade.id as number);
   }
 
   function linkedStops(): StopType[] {
-    return StopUtils.getByLinkedGrade(selectedGrade()?.id as number);
+    return StopUtils.getByLinkedGrade(props.grade.id as number);
   }
 
   return (

@@ -1,4 +1,5 @@
 import { JSXElement } from "solid-js";
+import { GradeType } from "../../../../../_entities/grade.entity";
 import PencilIcon from "../../../../../icons/PencilIcon";
 import TrashIcon from "../../../../../icons/TrashIcon";
 import { GradeUtils } from "../../../../../utils/grade.utils";
@@ -7,7 +8,6 @@ import {
   changeBoard,
   setOnBoard,
 } from "../../../board/component/template/ContextManager";
-import { selectedGrade } from "./GradeEditBoard";
 
 // TODO: Refactor all read board headers css (trip, stop, school, grade)
 import { addNewUserInformation } from "../../../../../signaux";
@@ -15,9 +15,11 @@ import { MessageLevelEnum, MessageTypeEnum } from "../../../../../type";
 import { setRemoveConfirmation } from "../../../../../userInformation/RemoveConfirmation";
 import "./GradeBoardDetailsHeader.css";
 
-export function GradeBoardDetailsHeader(): JSXElement {
+export function GradeBoardDetailsHeader(props: {
+  grade: GradeType;
+}): JSXElement {
   async function validate() {
-    const success = await GradeUtils.deleteGrade(selectedGrade()?.id as number);
+    const success = await GradeUtils.deleteGrade(props.grade.id as number);
     if (success) {
       // TODO refacto with ViewManager.schoolDetails(school);
       changeBoard("school-details");
@@ -26,7 +28,7 @@ export function GradeBoardDetailsHeader(): JSXElement {
   }
 
   function onClick() {
-    const gradeId = selectedGrade()?.id as number;
+    const gradeId = props.grade.id as number;
 
     if (GradeUtils.checkIfIsUsed(gradeId)) {
       addNewUserInformation({
@@ -44,7 +46,7 @@ export function GradeBoardDetailsHeader(): JSXElement {
 
     setRemoveConfirmation({
       textToDisplay: "Êtes-vous sûr de vouloir supprimer la classe : ",
-      itemName: selectedGrade()?.name as string,
+      itemName: props.grade.name as string,
       validate,
     });
   }
@@ -52,7 +54,7 @@ export function GradeBoardDetailsHeader(): JSXElement {
   return (
     <header class="grade-detail-header">
       <div class="grade-detail-header-title">
-        <p>{selectedGrade()?.name as string}</p>
+        <p>{props.grade.name as string}</p>
         <div class="grade-detail-header-buttons">
           <ButtonIcon
             icon={<PencilIcon />}
@@ -62,9 +64,7 @@ export function GradeBoardDetailsHeader(): JSXElement {
         </div>
       </div>
 
-      <p>
-        {GradeUtils.getTotalQuantity(selectedGrade()?.id as number) + " élèves"}
-      </p>
+      <p>{GradeUtils.getTotalQuantity(props.grade.id as number) + " élèves"}</p>
     </header>
   );
 }
