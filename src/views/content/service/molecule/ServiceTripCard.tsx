@@ -1,7 +1,11 @@
-import { JSXElement } from "solid-js";
+import { JSXElement, createSignal, onMount } from "solid-js";
 
+import { TripType } from "../../../../_entities/trip.entity";
+import { getLines } from "../../../../_stores/line.store";
 import { addNewGlobalWarningInformation } from "../../../../signaux";
 import { ServiceTripsUtils } from "../../../../utils/serviceTrips.utils";
+import CollapsibleElement from "../../board/component/organism/CollapsibleElement";
+import { TripTimeline } from "../../board/component/organism/TripTimeline";
 import { ServiceTripCardLeft } from "../atom/ServiceTripCardLeft";
 import { ServiceTripCardMiddle } from "../atom/ServiceTripCardMiddle";
 import { ServiceTripCardRight } from "../atom/ServiceTripCardRight";
@@ -9,20 +13,41 @@ import { DraggableTripType } from "../organism/ServiceLeftBoardContent";
 import { setServices } from "../organism/Services";
 import { selectedService } from "../template/ServiceTemplate";
 import "./ServiceTripCard.css";
+import { ServiceTripCardDetails } from "./ServiceTripCardDetails";
 
 interface ServiceTripCardProps {
-  trip: DraggableTripType;
+  draggableTrip: DraggableTripType;
 }
 
 export function ServiceTripCard(props: ServiceTripCardProps): JSXElement {
+  const [isInfoOpen, setIsInfoOpen] = createSignal(false);
+  const [currentTrip, setCurrentTrip] = createSignal<TripType>({} as TripType);
+
+  onMount(() => {
+    getLines().flatMap((line) =>
+      line.trips.map((item) => {
+        if (item.id == props.draggableTrip.tripId) {
+          setCurrentTrip(item);
+        }
+      })
+    );
+  });
+
   return (
-    <div
-      class="service-trip-card"
-      onDblClick={() => onDblClick(props.trip.tripId)}
-    >
-      <ServiceTripCardLeft trip={props.trip} />
-      <ServiceTripCardMiddle />
-      <ServiceTripCardRight trip={props.trip} />
+    <div class="service-trip-card-container">
+      <div
+        class="service-trip-card"
+        onDblClick={() => onDblClick(props.draggableTrip.tripId)}
+        onClick={() => setIsInfoOpen(!isInfoOpen())}
+      >
+        <ServiceTripCardLeft trip={props.draggableTrip} />
+        <ServiceTripCardMiddle />
+        <ServiceTripCardRight trip={props.draggableTrip} />
+      </div>
+      <CollapsibleElement title="Détails" closedByDefault={() => true}>
+        <ServiceTripCardDetails trip={currentTrip()} />
+        <TripTimeline inDraw={false} trip={currentTrip()} />
+      </CollapsibleElement>
     </div>
   );
 }

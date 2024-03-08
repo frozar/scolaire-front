@@ -39,7 +39,9 @@ export const ServiceLeftBoardContent = () => {
     // TODO: Create new component TripCardList
     <div id="trips-card-list">
       <For each={tripsWithoutService()}>
-        {(tripWithoutService) => <ServiceTripCard trip={tripWithoutService} />}
+        {(tripWithoutService) => (
+          <ServiceTripCard draggableTrip={tripWithoutService} />
+        )}
       </For>
     </div>
   );

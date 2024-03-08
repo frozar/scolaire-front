@@ -1,0 +1,7 @@
+.service-trip-card-details-days-container {
+  @apply flex gap-3;
+}
+
+.service-trip-card-details-days {
+  @apply text-sm;
+}
