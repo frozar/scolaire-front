@@ -98,6 +98,7 @@ export function VoirieItem(props: VoirieItem) {
     </li>
   );
 }
+
 function AddOrUpdateAction(
   weight: weight,
   setprevWeight: Setter<number | undefined>
@@ -106,19 +107,49 @@ function AddOrUpdateAction(
 
   if (conflictWays.length > 0) {
     addNewGlobalWarningInformation("Il existe des conflits");
-    setdisplayedUpdateVoirieConfirmation(true);
+    setdisplayedUpdateVoirieConfirmation({
+      display: true,
+      weight,
+      setprevWeight,
+    });
     return;
   }
 
   AddOrUpdate(weight, setprevWeight);
 }
 
-export function AddOrUpdate(
+export async function AddOrUpdate(
   weight: weight,
   setprevWeight: Setter<number | undefined>
-): void {
-  OsrmService.setWeights(weight.weight, weight.start, weight.end);
+): Promise<void> {
+  await OsrmService.setWeights(weight.weight, weight.start, weight.end);
 
+  setWays((ways) => {
+    //Remove conflict weight
+    return ways.map((way) => {
+      const conflict = getConflictWays().filter(
+        (conflict) => conflict.flaxib_way_id == way.flaxib_way_id
+      );
+      let res = { ...way };
+      if (conflict.length > 0) {
+        for (let i = 0; i < conflict.length; i++) {
+          const conflictItem = conflict[i];
+          res = {
+            ...res,
+            flaxib_weight: way.flaxib_weight.filter(
+              (currentWeight) =>
+                currentWeight.end != conflictItem.weight.end ||
+                currentWeight.start != conflictItem.weight.start
+            ),
+          };
+        }
+      }
+
+      return res;
+    });
+  });
+
+  //update with new weight
   setWays((ways) => {
     return ways.map((way) => {
       if (

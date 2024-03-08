@@ -6,19 +6,21 @@ import { VoirieItem } from "../molecul/VoirieItem";
 import { yToHourInMinutes } from "./VoirieDay";
 import "./VoirieDay.css";
 
-export const [newWeigth, setnewWeigth] = createSignal<weight>(defaultValue());
+export const [newWeigth, setnewWeigth] = createSignal<weight>(
+  defaultWeightValue()
+);
 export const [multipleWeight, setmultipleWeight] = createSignal<weight[]>([]);
 
 const [isInMove, setisInMove] = createSignal<boolean>(false);
 
-function defaultValue(): weight {
+export function defaultWeightValue(): weight {
   return {
     weight: 100,
     start: -1,
     end: -1,
   };
 }
-export const resetNewWeight = () => setnewWeigth(defaultValue());
+export const resetNewWeight = () => setnewWeigth(defaultWeightValue());
 
 interface VoirieItems {
   // flaxib_weight: weight[];

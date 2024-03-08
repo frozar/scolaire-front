@@ -184,7 +184,7 @@ export class OsrmService {
       return {
         way_id: conflict.flaxib_way_id,
         map_id: getActiveMapId(),
-        flaxibWeight: conflict.weight.weight,
+        flaxib_weight: conflict.weight.weight,
         start: conflict.weight.start,
         end: conflict.weight.end,
       };

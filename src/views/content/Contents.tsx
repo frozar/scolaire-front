@@ -73,7 +73,7 @@ export function Contents() {
             <Map />
 
             <InformationBoardLayout>
-              <Show when={displayedUpdateVoirieConfirmation()}>
+              <Show when={displayedUpdateVoirieConfirmation().display}>
                 <AddPonderationWithConflictConfirmation
                 // carteToDelete={displayedDeleteMapConfirmation()}
                 />
