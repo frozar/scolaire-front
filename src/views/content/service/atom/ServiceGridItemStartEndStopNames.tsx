@@ -17,6 +17,7 @@ export function ServiceGridItemStartEndStopNames(
         class="service-grid-item-start-stop-name"
         classList={{ "opacity-0": zoom() < 5 }}
         style={{ width: props.width }}
+        title={props.startName}
       >
         {props.startName}
       </div>
@@ -24,6 +25,7 @@ export function ServiceGridItemStartEndStopNames(
         class="service-grid-item-end-stop-name"
         classList={{ "opacity-0": zoom() < 5 }}
         style={{ width: props.width }}
+        title={props.endName}
       >
         {props.endName}
       </div>
