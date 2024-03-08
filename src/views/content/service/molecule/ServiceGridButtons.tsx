@@ -8,11 +8,10 @@ import { ServiceGridZoomButtons } from "./ServiceGridZoomButtons";
 export function ServiceGridButtons(): JSXElement {
   return (
     <div id="service-grid-buttons">
-      <ServiceGridZoomButtons />
-
       <Show when={!_.isEqual(servicesBeforeModification(), services())}>
         <ServiceGridModificationButtons />
       </Show>
+      <ServiceGridZoomButtons />
     </div>
   );
 }

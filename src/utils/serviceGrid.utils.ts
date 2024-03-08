@@ -115,7 +115,7 @@ export namespace ServiceGridUtils {
 
     const firstTrip = TripUtils.get(tripId);
     const tripDuration = Math.round(
-      (firstTrip.metrics?.duration as number) / 60
+      (firstTrip?.metrics?.duration as number) / 60
     );
 
     const earliestArrival = ServiceGridUtils.getEarliestArrival(tripId);
@@ -125,7 +125,7 @@ export namespace ServiceGridUtils {
 
   export function firstDivWidth(serviceIndex: number): string {
     return (
-      getEarliestStart(services()[serviceIndex].serviceTrips[0].tripId) *
+      getEarliestStart(services()[serviceIndex].serviceTrips[0]?.tripId) *
         zoom() +
       "px"
     );
@@ -133,15 +133,17 @@ export namespace ServiceGridUtils {
 
   export function getTripDuration(tripId: number): number {
     /* Return minutes */
-    return Math.round((TripUtils.get(tripId).metrics?.duration as number) / 60);
+    return Math.round(
+      (TripUtils.get(tripId)?.metrics?.duration as number) / 60
+    );
   }
 
   export function getStartStopName(tripId: number): string {
-    return TripUtils.get(tripId).tripPoints[0].name;
+    return TripUtils.get(tripId)?.tripPoints[0].name;
   }
 
   export function getEndStopName(tripId: number): string {
-    return (TripUtils.get(tripId).tripPoints.at(-1) as TripPointType).name;
+    return (TripUtils.get(tripId)?.tripPoints.at(-1) as TripPointType)?.name;
   }
 
   export function getStringHourFormatFromMinutes(totalMinutes: number): string {
@@ -158,7 +160,7 @@ export namespace ServiceGridUtils {
     const firstTrip = TripUtils.get(tripId);
 
     const direction = TripDirectionEntity.FindDirectionById(
-      firstTrip.tripDirectionId
+      firstTrip?.tripDirectionId
     ).type;
 
     // TODO: Fix
@@ -166,13 +168,13 @@ export namespace ServiceGridUtils {
     // ! startHourGoing
     if (direction == TripDirectionEnum.coming) {
       return (
-        (firstTrip.schools[0].hours.startHourGoing?.hour as number) * 60 +
-        (firstTrip.schools[0].hours.startHourGoing?.minutes as number)
+        (firstTrip?.schools[0].hours.startHourGoing?.hour as number) * 60 +
+        (firstTrip?.schools[0].hours.startHourGoing?.minutes as number)
       );
     } else {
       return (
-        (firstTrip.schools[0].hours.startHourComing?.hour as number) * 60 +
-        (firstTrip.schools[0].hours.startHourComing?.minutes as number)
+        (firstTrip?.schools[0].hours.startHourComing?.hour as number) * 60 +
+        (firstTrip?.schools[0].hours.startHourComing?.minutes as number)
       );
     }
   }
@@ -183,7 +185,7 @@ export namespace ServiceGridUtils {
     const firstTrip = TripUtils.get(tripId);
 
     const direction = TripDirectionEntity.FindDirectionById(
-      firstTrip.tripDirectionId
+      firstTrip?.tripDirectionId
     ).type;
 
     // TODO: Fix
@@ -191,13 +193,13 @@ export namespace ServiceGridUtils {
     // ! startHourGoing
     if (direction == TripDirectionEnum.coming) {
       return (
-        (firstTrip.schools[0].hours.endHourGoing?.hour as number) * 60 +
-        (firstTrip.schools[0].hours.endHourGoing?.minutes as number)
+        (firstTrip?.schools[0].hours.endHourGoing?.hour as number) * 60 +
+        (firstTrip?.schools[0].hours.endHourGoing?.minutes as number)
       );
     } else {
       return (
-        (firstTrip.schools[0].hours.endHourComing?.hour as number) * 60 +
-        (firstTrip.schools[0].hours.endHourComing?.minutes as number)
+        (firstTrip?.schools[0].hours.endHourComing?.hour as number) * 60 +
+        (firstTrip?.schools[0].hours.endHourComing?.minutes as number)
       );
     }
   }
@@ -249,7 +251,7 @@ export namespace ServiceGridUtils {
     const endHour = service.serviceTrips[serviceTripIndex].endHour;
 
     const tripDirection = TripDirectionEntity.FindDirectionById(
-      TripUtils.get(tripId).tripDirectionId
+      TripUtils.get(tripId)?.tripDirectionId
     ).type;
     const minTimeOfTimeRange = ServiceGridUtils.getEarliestArrival(tripId);
     const maxTimeOfTimeRange = ServiceGridUtils.getLatestArrival(tripId);

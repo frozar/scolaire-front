@@ -1,9 +1,9 @@
 .service-grid-item-start-stop-name {
-  @apply absolute text-center text-xs w-max -top-10;
+  @apply absolute text-center text-xs w-max -top-10 truncate cursor-default;
 }
 
 .service-grid-item-end-stop-name {
-  @apply absolute text-center text-xs w-max -top-5;
+  @apply absolute text-center text-xs w-max -top-5 truncate cursor-default;
 }
 
 .service-grid-item.dragged .service-grid-item-start-stop-name {

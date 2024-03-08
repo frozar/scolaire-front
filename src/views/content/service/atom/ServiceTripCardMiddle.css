@@ -1,0 +1,7 @@
+.service-trip-card-middle-text-header {
+  @apply text-green-base text-sm;
+}
+
+.service-trip-card-middle-text {
+  @apply text-xs;
+}

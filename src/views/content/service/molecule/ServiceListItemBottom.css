@@ -1,3 +1,7 @@
+.service-list-item-bottom {
+  @apply text-sm;
+}
+
 .service-list-item-bottom.active {
-  @apply text-white;
+  @apply text-white text-sm;
 }
