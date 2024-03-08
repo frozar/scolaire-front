@@ -6,8 +6,8 @@ import { TimeUtils } from "../../../../../_entities/time.utils";
 import PlusIcon from "../../../../../icons/PlusIcon";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { HourRuleItem } from "./HourRuleItem";
-import { schoolDetailEditing } from "./SchoolDetails";
 
+import { schoolDetailEditing } from "../template/SchoolDetails";
 import "./HourRuleList.css";
 
 interface HourRuleListProps {

@@ -1,6 +1,6 @@
 import { Accessor, Setter } from "solid-js";
 import { ButtonPanel } from "../../../../../component/atom/ButtonPanel";
-import { StopPanels } from "../organism/StopDetails";
+import { StopPanels } from "../template/StopDetails";
 import "./StopDetailsPanelsButton.css";
 
 interface PanelsButtonProps {

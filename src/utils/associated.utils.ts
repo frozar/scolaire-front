@@ -3,7 +3,7 @@ import { StopType } from "../_entities/stop.entity";
 import { StudentToGradeService } from "../_services/student-to-grade.service";
 import { getStops } from "../_stores/stop.store";
 import { disableSpinningWheel, enableSpinningWheel } from "../signaux";
-import { stopDetailsItem } from "../views/content/stops/component/organism/StopDetails";
+import { stopDetails } from "../views/content/stops/component/template/StopDetails";
 import { GradeUtils } from "./grade.utils";
 import { SchoolUtils } from "./school.utils";
 import { StopUtils } from "./stop.utils";
@@ -42,7 +42,7 @@ export namespace AssociatedUtils {
     schoolId: number
   ) {
     const associatedStopT = {
-      stopId: Number(stopDetailsItem()?.id),
+      stopId: Number(stopDetails()?.id),
       quantity,
       gradeId,
     };
@@ -51,9 +51,9 @@ export namespace AssociatedUtils {
       associatedStopT,
       schoolId
     );
-    StopUtils.addAssociated(gradeToSchool, stopDetailsItem()?.id as number);
+    StopUtils.addAssociated(gradeToSchool, stopDetails()?.id as number);
 
-    SchoolUtils.addAssociated(gradeToSchool, stopDetailsItem()?.id as number);
+    SchoolUtils.addAssociated(gradeToSchool, stopDetails()?.id as number);
   }
 
   export async function update(
@@ -62,7 +62,7 @@ export namespace AssociatedUtils {
     schoolId: number,
     quantity: number
   ) {
-    const stopId = Number(stopDetailsItem()?.id);
+    const stopId = Number(stopDetails()?.id);
     const gradeToSchool = await StudentToGradeService.update(
       {
         idClassToSchool: studentToGradeId,
@@ -83,7 +83,7 @@ export namespace AssociatedUtils {
     const response = await StudentToGradeService.delete(StudentToGradeId);
     disableSpinningWheel();
 
-    StopUtils.removeAssociated(response, stopDetailsItem()?.id as number);
+    StopUtils.removeAssociated(response, stopDetails()?.id as number);
     SchoolUtils.removeAssociated(StudentToGradeId);
   }
 }

@@ -1,12 +1,12 @@
 import { LabeledInputNumber } from "../../../../../component/molecule/LabeledInputNumber";
 import { SchoolUtils } from "../../../../../utils/school.utils";
 import CollapsibleElement from "../../../board/component/organism/CollapsibleElement";
-import { schoolDetailEditing, schoolDetailsItem } from "./SchoolDetails";
+import { schoolDetailEditing, schoolDetails } from "../template/SchoolDetails";
 
 export function SchoolSettings() {
   function onChangeWaitingTime(element: HTMLInputElement) {
     if (!element.value || element.value === "")
-      element.value = schoolDetailsItem()?.waitingTime.toString() as string;
+      element.value = schoolDetails()?.waitingTime.toString() as string;
     SchoolUtils.updateSchoolDetails({ waitingTime: Number(element.value) });
   }
 
@@ -16,7 +16,7 @@ export function SchoolSettings() {
         label="Temps d'attente en seconde sur l'école "
         onChange={onChangeWaitingTime}
         selector={{
-          value: schoolDetailsItem()?.waitingTime as number,
+          value: schoolDetails()?.waitingTime as number,
           disabled: !schoolDetailEditing(),
         }}
       />

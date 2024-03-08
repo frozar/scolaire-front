@@ -2,7 +2,7 @@ import { GradeEntity } from "../../../../../_entities/grade.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { SchoolDetailUtils } from "../../../../../utils/school-details.utils";
 import TimesInputWrapper from "../molecule/TimesInputWrapper";
-import { schoolDetailEditing } from "./SchoolDetails";
+import { schoolDetailEditing } from "../template/SchoolDetails";
 
 interface SchoolHoursSlotsProps {
   school: SchoolType;

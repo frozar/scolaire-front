@@ -6,6 +6,7 @@ import {
   TripDirectionEntity,
   TripDirectionEnum,
 } from "../../../../../_entities/trip-direction.entity";
+import { getLines } from "../../../../../_stores/line.store";
 import { StopStore, getStops } from "../../../../../_stores/stop.store";
 import { NatureEnum } from "../../../../../type";
 import { FilterUtils } from "../../../../../utils/filter.utils";
@@ -30,9 +31,8 @@ import {
   currentDrawPath,
   onDrawPathStep,
 } from "../../../path/component/drawPath.utils";
-import { stopDetailsItem } from "../../../stops/component/organism/StopDetails";
 import { StopPoint } from "../molecule/StopPoint";
-import { getLines, getSelectedLine } from "./BusLines";
+import { getSelectedLine } from "./BusLines";
 import { filterEmptyStops } from "./Filters";
 
 export interface StopPointsProps {
@@ -132,8 +132,8 @@ export function leafletStopsFilter(): StopType[] {
     case "stops":
       return stops;
 
-    case "stop-details":
-      return [stopDetailsItem() as StopType];
+    // case "stop-details":
+    //   return [stopDetails() as StopType];
 
     case "line":
       if (filterEmptyStops()) {

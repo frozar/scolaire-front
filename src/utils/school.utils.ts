@@ -5,16 +5,13 @@ import {
 import { GradeType } from "../_entities/grade.entity";
 import { SchoolType } from "../_entities/school.entity";
 import { SchoolService } from "../_services/school.service";
+import { LineStore, getLines } from "../_stores/line.store";
 import { getSchools, setSchools } from "../_stores/school.store";
 import { StopStore, getStops } from "../_stores/stop.store";
 import { addNewUserInformation } from "../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { calendars } from "../views/content/calendar/calendar.manager";
-import {
-  getLines,
-  setLines,
-} from "../views/content/map/component/organism/BusLines";
-import { setSchoolDetailsItem } from "../views/content/schools/component/organism/SchoolDetails";
+import { setSchoolDetails } from "../views/content/schools/component/template/SchoolDetails";
 import { QuantityUtils } from "./quantity.utils";
 
 export namespace SchoolUtils {
@@ -74,7 +71,7 @@ export namespace SchoolUtils {
       };
     });
 
-    setLines(newLines);
+    LineStore.set(newLines);
 
     setSchools(getSchools().filter((school) => school.id != id_school));
 
@@ -212,14 +209,14 @@ export namespace SchoolUtils {
 
   export function linkSchoolToCalendar(calendarId: number) {
     const calendar = calendars()?.find((item) => item.id == calendarId);
-    setSchoolDetailsItem((prev) => {
+    setSchoolDetails((prev) => {
       if (!prev) return prev;
       return { ...prev, calendar: calendar };
     });
   }
 
   export function updateSchoolDetails(school: Partial<SchoolType>) {
-    setSchoolDetailsItem((prev) => {
+    setSchoolDetails((prev) => {
       if (!prev) return prev;
       return { ...prev, ...school };
     });

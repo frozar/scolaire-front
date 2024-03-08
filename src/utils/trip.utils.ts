@@ -9,6 +9,7 @@ import {
 } from "../_entities/trip-direction.entity";
 import { TripPointType, TripType } from "../_entities/trip.entity";
 import { TripService } from "../_services/trip.service";
+import { LineStore, getLines } from "../_stores/line.store";
 import { addNewUserInformation } from "../signaux";
 import { MessageLevelEnum, MessageTypeEnum, NatureEnum } from "../type";
 import { getAllotment } from "../views/content/allotment/organism/Allotment";
@@ -25,11 +26,7 @@ import {
   toggleDrawMod,
 } from "../views/content/board/component/template/ContextManager";
 import { getBus } from "../views/content/bus/organism/Bus";
-import {
-  getLines,
-  getSelectedLine,
-  setLines,
-} from "../views/content/map/component/organism/BusLines";
+import { getSelectedLine } from "../views/content/map/component/organism/BusLines";
 import { setselectedTrip } from "../views/content/map/component/organism/Trips";
 import { quitModeDrawTrip } from "../views/content/map/shortcut";
 
@@ -205,7 +202,8 @@ export namespace TripUtils {
       updatedTrip = await TripService.create(currentDrawTrip() as TripType);
       const selectedLineId = getSelectedLine()?.id as number;
 
-      setLines((lines) =>
+      //TODO voir l'utilisation
+      LineStore.set((lines) =>
         lines.map((line) =>
           line.id != selectedLineId
             ? line
@@ -215,7 +213,8 @@ export namespace TripUtils {
     } else {
       updatedTrip = await TripService.update(currentDrawTrip() as TripType);
 
-      setLines((prev) =>
+      //TODO voir l'utilisation
+      LineStore.set((prev) =>
         prev.map((line) => {
           return {
             ...line,

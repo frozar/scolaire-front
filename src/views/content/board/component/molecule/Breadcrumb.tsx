@@ -1,16 +1,17 @@
 import { For, Show } from "solid-js";
+import { getLines } from "../../../../../_stores/line.store";
 import { getSchools } from "../../../../../_stores/school.store";
 import { MapElementUtils } from "../../../../../utils/mapElement.utils";
+import { ViewManager } from "../../../ViewManager";
 import {
   deselectAllLines,
-  getLines,
   getSelectedLine,
 } from "../../../map/component/organism/BusLines";
 import { selectedTrip } from "../../../map/component/organism/Trips";
 import { selectedPath } from "../../../path/component/organism/PathDetail";
 import { selectedGrade } from "../../../schools/component/organism/GradeEditBoard";
-import { schoolDetailsItem } from "../../../schools/component/organism/SchoolDetails";
-import { stopDetailsItem } from "../../../stops/component/organism/StopDetails";
+import { schoolDetails } from "../../../schools/component/template/SchoolDetails";
+import { stopDetails } from "../../../stops/component/template/StopDetails";
 import BreadcrumbButton from "../atom/BreadcrumbButton";
 import DisplayBreadcrumbText from "../atom/DisplayBreadcrumbText";
 import { currentDrawTrip } from "../organism/DrawTripBoard";
@@ -35,7 +36,7 @@ export default function () {
 
     const schoolsCrumb: CrumbType = {
       text: "Ecoles",
-      onClick: () => changeBoard("schools"),
+      onClick: () => ViewManager.schools(),
     };
 
     function tripsCrumb(): CrumbType {
@@ -74,14 +75,14 @@ export default function () {
             onClick: () => changeBoard("stops"),
           },
           {
-            text: stopDetailsItem()?.name.toLowerCase() as string,
+            text: stopDetails()?.name.toLowerCase() as string,
           },
         ];
       case "school-details":
         return [
           schoolsCrumb,
           {
-            text: schoolDetailsItem()?.name.toLowerCase() as string,
+            text: schoolDetails()?.name.toLowerCase() as string,
           },
         ];
       case "line-details":
@@ -111,7 +112,7 @@ export default function () {
         return [
           schoolsCrumb,
           {
-            text: schoolDetailsItem()?.name.toLowerCase() as string,
+            text: schoolDetails()?.name.toLowerCase() as string,
             onClick: () => changeBoard("school-details"),
           },
           {
@@ -122,7 +123,7 @@ export default function () {
         return [
           schoolsCrumb,
           {
-            text: schoolDetailsItem()?.name.toLowerCase() as string,
+            text: schoolDetails()?.name.toLowerCase() as string,
             onClick: () => changeBoard("school-details"),
           },
           {

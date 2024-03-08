@@ -1,0 +1,9 @@
+.stop-board-number {
+  @apply flex justify-between my-2 text-sm italic text-green-base;
+}
+
+.stop-board-content {
+  @apply overflow-auto pr-2;
+  /* TODO à revoir pour prendre l'entièreté du reste d'un parent flex */
+  max-height: 80vh;
+}

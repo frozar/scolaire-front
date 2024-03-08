@@ -4,13 +4,13 @@ import { SelectInput } from "../../../../../component/atom/SelectInput";
 import { LabeledCheckbox } from "../../../../../component/molecule/LabeledCheckbox";
 import { SchoolUtils } from "../../../../../utils/school.utils";
 import { calendars } from "../../../calendar/calendar.manager";
+import { schoolDetails } from "../template/SchoolDetails";
 import { selectedGrade } from "./GradeEditBoard";
-import { schoolDetailsItem } from "./SchoolDetails";
 
 export const [bufferCalendar, setBufferCalendar] = createSignal<CalendarType>();
 
 export function GradeCalendarSelectionWrapper() {
-  const schoolCalendar = SchoolUtils.get(schoolDetailsItem()?.id as number)
+  const schoolCalendar = SchoolUtils.get(schoolDetails()?.id as number)
     .calendar as CalendarType;
 
   const initialGradeCalendar = selectedGrade()?.calendar;

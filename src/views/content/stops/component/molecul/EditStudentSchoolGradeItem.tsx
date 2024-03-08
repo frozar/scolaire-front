@@ -3,6 +3,7 @@ import { AssociatedSchoolType } from "../../../../../_entities/_utils.entity";
 import { GradeType } from "../../../../../_entities/grade.entity";
 import { LineType } from "../../../../../_entities/line.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
+import { LineStore } from "../../../../../_stores/line.store";
 import { getSchools } from "../../../../../_stores/school.store";
 import { getStops } from "../../../../../_stores/stop.store";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
@@ -12,7 +13,6 @@ import { MessageLevelEnum, MessageTypeEnum } from "../../../../../type";
 import { AssociatedUtils } from "../../../../../utils/associated.utils";
 import { LineUtils } from "../../../../../utils/line.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
-import { setLines } from "../../../map/component/organism/BusLines";
 import GradeSelection from "../atom/GradeSelection";
 import InputNumber from "../atom/InputNumber";
 import SchoolSelect from "../atom/SchoolSelection";
@@ -149,7 +149,8 @@ export default function (props: EditStopProps) {
         )
       )[0].id;
 
-      setLines((prev) => {
+      //TODO voir l'utilisation
+      LineStore.set((prev) => {
         const lines: LineType[] = [...prev];
         return LineUtils.updateLineWithNewGradeTripMatrix(
           lines,

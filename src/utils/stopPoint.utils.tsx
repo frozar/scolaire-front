@@ -8,6 +8,7 @@ import { WaypointEntity } from "../_entities/waypoint.entity";
 import { updatePointColor } from "../leafletUtils";
 import { addNewUserInformation } from "../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
+import { ViewManager } from "../views/content/ViewManager";
 import {
   addLineCheckableStop,
   setAddLineCheckableStop,
@@ -18,10 +19,7 @@ import {
   currentStep,
   setCurrentTripIndex,
 } from "../views/content/board/component/organism/DrawTripBoard";
-import {
-  changeBoard,
-  onBoard,
-} from "../views/content/board/component/template/ContextManager";
+import { onBoard } from "../views/content/board/component/template/ContextManager";
 import {
   draggingWaypointIndex,
   setDraggingWaypointIndex,
@@ -48,7 +46,6 @@ import {
   drawPathUtils,
   onDrawPathStep,
 } from "../views/content/path/component/drawPath.utils";
-import { setStopDetailsItem } from "../views/content/stops/component/organism/StopDetails";
 import { CurrentDrawTripUtils } from "./currentDrawTrip.utils";
 import { TripUtils } from "./trip.utils";
 
@@ -141,8 +138,7 @@ export namespace StopPointUtil {
         // deselectAllTrips();
         deselectAllPoints();
         point.setSelected(true);
-        setStopDetailsItem(point);
-        changeBoard("stop-details");
+        ViewManager.stopDetails(point);
         updatePointColor(point);
     }
   }

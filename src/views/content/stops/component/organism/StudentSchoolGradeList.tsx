@@ -4,22 +4,20 @@ import { AssociatedSchoolType } from "../../../../../_entities/_utils.entity";
 import { SchoolUtils } from "../../../../../utils/school.utils";
 import CollapsibleElement from "../../../board/component/organism/CollapsibleElement";
 import StudentSchoolGradeItem from "../molecul/StudentSchoolGradeItem";
-import { stopDetailsItem } from "./StopDetails";
+import { stopDetails } from "../template/StopDetails";
 
 type GroupedAssociations = {
   [schoolId: string]: AssociatedSchoolType[];
 };
 
-export default function () {
+export function StudentSchoolGradeList() {
   const [groupedAssociations, setGroupedAssociations] =
     createSignal<GroupedAssociations>();
 
-  createEffect(on(stopDetailsItem, () => associatedSchools()));
+  createEffect(on(stopDetails, () => associatedSchools()));
 
   function associatedSchools() {
-    setGroupedAssociations(
-      _.groupBy(stopDetailsItem()?.associated, "schoolId")
-    );
+    setGroupedAssociations(_.groupBy(stopDetails()?.associated, "schoolId"));
   }
 
   createEffect(() => console.log(groupedAssociations()));

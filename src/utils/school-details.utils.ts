@@ -2,10 +2,10 @@ import { SchoolType } from "../_entities/school.entity";
 import { SchoolStore } from "../_stores/school.store";
 import {
   schoolDetailEditing,
-  schoolDetailsItem,
+  schoolDetails,
   setSchoolDetailEditing,
-  setSchoolDetailsItem,
-} from "../views/content/schools/component/organism/SchoolDetails";
+  setSchoolDetails,
+} from "../views/content/schools/component/template/SchoolDetails";
 import { SchoolUtils } from "./school.utils";
 
 export namespace SchoolDetailUtils {
@@ -14,17 +14,17 @@ export namespace SchoolDetailUtils {
       setSchoolDetailEditing(true);
     } else {
       if (
-        SchoolUtils.isValidSchool(schoolDetailsItem() as SchoolType) &&
-        SchoolUtils.get(schoolDetailsItem()?.id ?? 0) != schoolDetailsItem()
+        SchoolUtils.isValidSchool(schoolDetails() as SchoolType) &&
+        SchoolUtils.get(schoolDetails()?.id ?? 0) != schoolDetails()
       ) {
-        SchoolStore.update(schoolDetailsItem() as SchoolType);
+        SchoolStore.update(schoolDetails() as SchoolType);
         setSchoolDetailEditing(false);
       }
     }
   }
 
   export function update(schoolDetails: Partial<SchoolType>) {
-    setSchoolDetailsItem((prev) => {
+    setSchoolDetails((prev) => {
       if (!prev) return prev;
       return { ...prev, ...schoolDetails };
     });

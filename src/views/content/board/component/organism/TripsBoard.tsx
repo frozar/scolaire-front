@@ -1,10 +1,10 @@
 import { Match, Switch, createSignal } from "solid-js";
 import { LineType } from "../../../../../_entities/line.entity";
 import { BusLineService } from "../../../../../_services/line.service";
+import { LineStore } from "../../../../../_stores/line.store";
 import PencilIcon from "../../../../../icons/PencilIcon";
 import TrashIcon from "../../../../../icons/TrashIcon";
 import { setRemoveConfirmation } from "../../../../../userInformation/RemoveConfirmation";
-import { getLines, setLines } from "../../../map/component/organism/BusLines";
 import { getTrips } from "../../../map/component/organism/Trips";
 import { PathsList } from "../../../path/component/organism/PathsList";
 import InputSearch from "../../../schools/component/molecule/InputSearch";
@@ -50,7 +50,7 @@ export function TripsBoard(props: { line: LineType }) {
       props.line.id as number
     );
     if (!responseId) return false;
-    setLines(getLines().filter((line) => line.id != responseId));
+    LineStore.remove(responseId);
     changeBoard("line");
     return true;
   }

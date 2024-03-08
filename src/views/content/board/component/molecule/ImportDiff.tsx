@@ -12,10 +12,10 @@ import { CsvDiffType, CsvUtils } from "../../../../../utils/csv.utils";
 import { DialogUtils } from "../../../../../utils/dialog.utils";
 import { SchoolUtils } from "../../../../../utils/school.utils";
 import { StopUtils } from "../../../../../utils/stop.utils";
-import { getLines } from "../../../map/component/organism/BusLines";
 import { DialogToDisplayEnum, setDialogToDisplay } from "../organism/Dialogs";
 import { DiffCollapsible } from "./DiffCollapsible";
 import { CsvEnum, csv, csvType, diff, setCsvType } from "./ImportSelection";
+import { getLines } from "../../../../../_stores/line.store";
 
 export enum DiffEnum {
   added = "added",

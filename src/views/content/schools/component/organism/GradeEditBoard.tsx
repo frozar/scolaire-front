@@ -10,6 +10,7 @@ import {
   onBoard,
 } from "../../../board/component/template/ContextManager";
 import GradeBoardHeader from "../molecule/GradeBoardHeader";
+import { schoolDetails } from "../template/SchoolDetails";
 import {
   GradeCalendarSelectionWrapper,
   bufferCalendar,
@@ -20,7 +21,6 @@ import {
   useSchoolSchedule,
 } from "./GradeTimesScheduleWrapper";
 import { HourRuleList } from "./HourRuleList";
-import { schoolDetailsItem } from "./SchoolDetails";
 
 export const [selectedGrade, setSelectedGrade] = createSignal<GradeType>();
 
@@ -33,12 +33,12 @@ export function GradeEditBoard() {
     let grade: GradeType;
     // TODO: Do not use schoolDetailsItem() It must be used only as a buffer value
     // of a school being modified
-    const schoolToUpdate = schoolDetailsItem() as SchoolType;
-    if (!schoolDetailsItem()?.id) return;
+    const schoolToUpdate = schoolDetails() as SchoolType;
+    if (!schoolDetails()?.id) return;
 
     if (onBoard() == "school-grade-add") {
       grade = await GradeService.create({
-        schoolId: schoolDetailsItem()?.id as number,
+        schoolId: schoolDetails()?.id as number,
         name: gradeName() ?? "",
         hours: bufferHours(),
         calendar: bufferCalendar(),
@@ -59,7 +59,7 @@ export function GradeEditBoard() {
     }
 
     const schoolIndex = getSchools().findIndex(
-      (item) => item.id == schoolDetailsItem()?.id
+      (item) => item.id == schoolDetails()?.id
     );
 
     setSchools((prev) => {
@@ -70,6 +70,8 @@ export function GradeEditBoard() {
       return schools;
     });
 
+    // TODO refacto with ViewManager.schoolDetails(school);
+    // or delete
     if (onBoard() == "school-grade-add") changeBoard("school-details");
     else changeBoard("school-grade-details");
   }

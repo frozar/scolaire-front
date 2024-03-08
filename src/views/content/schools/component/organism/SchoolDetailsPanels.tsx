@@ -8,10 +8,10 @@ import { changeBoard } from "../../../board/component/template/ContextManager";
 import SchoolDetailsPanelsButton from "../molecule/SchoolDetailsPanelsButton";
 import { setSelectedGrade } from "./GradeEditBoard";
 import GradeList from "./GradeList";
-import { schoolDetailsItem } from "./SchoolDetails";
 import { TripsList } from "./TripsList";
 
 import { SchoolUtils } from "../../../../../utils/school.utils";
+import { schoolDetails } from "../template/SchoolDetails";
 import "./SchoolDetailsPanels.css";
 
 export enum PanelsEnum {
@@ -25,8 +25,8 @@ export function SchoolDetailsPanels() {
   function onClickAddGrade() {
     const grade: GradeType = {
       name: "Nom par défaut",
-      hours: schoolDetailsItem()?.hours as HoursType,
-      calendar: schoolDetailsItem()?.calendar,
+      hours: schoolDetails()?.hours as HoursType,
+      calendar: schoolDetails()?.calendar,
     };
 
     setSelectedGrade(grade);
@@ -40,8 +40,7 @@ export function SchoolDetailsPanels() {
           setOnPanel={setOnPanel}
           onPanel={onPanel}
           NbTrips={
-            SchoolEntity.getSchoolTrips(schoolDetailsItem()?.id as number)
-              .length
+            SchoolEntity.getSchoolTrips(schoolDetails()?.id as number).length
           }
         />
         <Show when={onPanel() == PanelsEnum.grades}>
@@ -53,16 +52,12 @@ export function SchoolDetailsPanels() {
         <Switch>
           <Match when={onPanel() == PanelsEnum.grades}>
             <GradeList
-              grades={
-                SchoolUtils.getGrades(schoolDetailsItem()?.id) as GradeType[]
-              }
+              grades={SchoolUtils.getGrades(schoolDetails()?.id) as GradeType[]}
             />
           </Match>
           <Match when={onPanel() == PanelsEnum.lines}>
             <TripsList
-              trips={SchoolEntity.getSchoolTrips(
-                schoolDetailsItem()?.id as number
-              )}
+              trips={SchoolEntity.getSchoolTrips(schoolDetails()?.id as number)}
             />
           </Match>
         </Switch>

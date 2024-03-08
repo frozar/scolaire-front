@@ -4,14 +4,14 @@ import { LabeledInputSelect } from "../../../../../component/molecule/LabeledInp
 import { SchoolUtils } from "../../../../../utils/school.utils";
 import CollapsibleElement from "../../../board/component/organism/CollapsibleElement";
 import { HourRuleList } from "./HourRuleList";
-import {
-  schoolDetailEditing,
-  schoolDetailsItem,
-  setSchoolDetailsItem,
-} from "./SchoolDetails";
 import { SchoolHoursSlots } from "./SchoolHoursSlots";
 
 import { calendars } from "../../../calendar/calendar.manager";
+import {
+  schoolDetailEditing,
+  schoolDetails,
+  setSchoolDetails,
+} from "../template/SchoolDetails";
 import "./SchoolDetailsContent.css";
 
 export function SchoolDetailsContent() {
@@ -23,7 +23,7 @@ export function SchoolDetailsContent() {
     <>
       <LabeledInputSelect
         defaultOptions="Sélectionner calendrier"
-        defaultValue={schoolDetailsItem()?.calendar?.id ?? -1}
+        defaultValue={schoolDetails()?.calendar?.id ?? -1}
         label="Calendrier:"
         onChange={onChangeCalendarSelect}
         options={calendars().map((item) => {
@@ -33,18 +33,18 @@ export function SchoolDetailsContent() {
         indented={true}
       />
 
-      <Show when={schoolDetailsItem()?.calendar}>
+      <Show when={schoolDetails()?.calendar}>
         <div class="time">
           <CollapsibleElement
             title="Tranches horaires"
             titleClass="text-xl"
             closedByDefault={() => !schoolDetailEditing()}
           >
-            <SchoolHoursSlots school={schoolDetailsItem() as SchoolType} />
+            <SchoolHoursSlots school={schoolDetails() as SchoolType} />
 
             <HourRuleList
-              item={schoolDetailsItem}
-              setItem={setSchoolDetailsItem}
+              item={schoolDetails}
+              setItem={setSchoolDetails}
               enabled={schoolDetailEditing()}
             />
           </CollapsibleElement>

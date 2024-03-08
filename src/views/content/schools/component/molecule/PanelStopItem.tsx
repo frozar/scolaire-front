@@ -1,15 +1,12 @@
-import _ from "lodash";
 import { JSXElement } from "solid-js";
 import { StopType } from "../../../../../_entities/stop.entity";
 import CardTitle from "../../../../../component/atom/CardTitle";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
-import { changeBoard } from "../../../board/component/template/ContextManager";
-import { setStopDetailsItem } from "../../../stops/component/organism/StopDetails";
+import { ViewManager } from "../../../ViewManager";
 
 export function PanelStopItem(props: { stop: StopType }): JSXElement {
   function onClick() {
-    setStopDetailsItem(_.cloneDeep(props.stop));
-    changeBoard("stop-details");
+    ViewManager.stopDetails(props.stop);
   }
   // TODO: Display qty ?
   return (

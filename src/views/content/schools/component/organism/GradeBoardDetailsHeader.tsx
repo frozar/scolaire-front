@@ -19,6 +19,7 @@ export function GradeBoardDetailsHeader(): JSXElement {
   async function validate() {
     const success = await GradeUtils.deleteGrade(selectedGrade()?.id as number);
     if (success) {
+      // TODO refacto with ViewManager.schoolDetails(school);
       changeBoard("school-details");
       return true;
     } else return false;

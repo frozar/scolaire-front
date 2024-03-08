@@ -4,13 +4,13 @@ import {
   TripDirectionEnum,
 } from "../_entities/trip-direction.entity";
 import { GradeService } from "../_services/grade.service";
+import { getLines } from "../_stores/line.store";
 import { getSchools, setSchools } from "../_stores/school.store";
 import { getStops } from "../_stores/stop.store";
-import { getLines } from "../views/content/map/component/organism/BusLines";
 import {
-  schoolDetailsItem,
-  setSchoolDetailsItem,
-} from "../views/content/schools/component/organism/SchoolDetails";
+  schoolDetails,
+  setSchoolDetails,
+} from "../views/content/schools/component/template/SchoolDetails";
 
 export namespace GradeUtils {
   export function getGrade(gradeId: number): GradeType {
@@ -59,8 +59,8 @@ export namespace GradeUtils {
           };
         });
       });
-      const schoolDetailsItemId = schoolDetailsItem()?.id as number;
-      setSchoolDetailsItem(
+      const schoolDetailsItemId = schoolDetails()?.id as number;
+      setSchoolDetails(
         getSchools().filter((school) => school.id == schoolDetailsItemId)[0]
       );
     }

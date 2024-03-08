@@ -1,19 +1,18 @@
 import L from "leaflet";
-import { createEffect, createSignal, onCleanup } from "solid-js";
+import { createEffect, onCleanup } from "solid-js";
 import { LineType } from "../../../../../_entities/line.entity";
 
+import { LineStore, getLines } from "../../../../../_stores/line.store";
 import { deselectAllPoints, pointsReady } from "./Points";
 import { setTrips } from "./Trips";
 
 export const arrowsMap = new Map<number, L.Marker[]>();
 
-export const [getLines, setLines] = createSignal<LineType[]>([]);
-
 export function BusLines(props: { busLines: LineType[] }) {
   // eslint-disable-next-line solid/reactivity
   createEffect(async () => {
     if (pointsReady()) {
-      setLines(props.busLines);
+      LineStore.set(props.busLines);
     }
   });
 
@@ -22,8 +21,9 @@ export function BusLines(props: { busLines: LineType[] }) {
     setDisplayedTrips();
   });
 
+  // TODO delete replace by displayedLines
   onCleanup(() => {
-    setLines([]);
+    // LineStore.set([]);
   });
 
   return <></>;
@@ -41,7 +41,7 @@ function setDisplayedTrips() {
 export function deselectAllLines() {
   const deselectedLines = [...getLines()];
   deselectedLines.forEach((line) => line.setSelected(false));
-  setLines(deselectedLines);
+  LineStore.set(deselectedLines);
 
   // TODO to fix trip
   // deselectAllTrips();
@@ -57,16 +57,3 @@ export const getSelectedLine = (): LineType | undefined => {
 
   return selectedLine;
 };
-
-// export const setSelectedLine = (newBusLine: LineType) => {
-//   deselectAllLines();
-//   newBusLine.setSelected(true);
-// };
-
-export function updateBusLines(line: LineType) {
-  let newBusLines = getLines();
-  if (line.id) {
-    newBusLines = getLines().filter((busline) => busline.id != line.id);
-  }
-  setLines([...newBusLines, line]);
-}

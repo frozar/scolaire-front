@@ -1,15 +1,16 @@
 import { Show } from "solid-js";
 import { QuantityUtils } from "../../../../../utils/quantity.utils";
-import { stopDetailsItem } from "../organism/StopDetails";
+import { stopDetails } from "../template/StopDetails";
 
 export function RemainingStudentInformation() {
   return (
+    //TODO passer le stop en paramètre
     <Show
       when={QuantityUtils.stopHasRemainingStudentToGet(
-        stopDetailsItem()?.id as number
+        stopDetails()?.id as number
       )}
     >
-      Des élèves restants sont à récuperés
+      Des élèves restent à transporter
     </Show>
   );
 }

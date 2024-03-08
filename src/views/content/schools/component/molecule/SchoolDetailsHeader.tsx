@@ -6,13 +6,13 @@ import { SchoolUtils } from "../../../../../utils/school.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import {
   schoolDetailEditing,
-  setSchoolDetailsItem,
-} from "../organism/SchoolDetails";
+  setSchoolDetails,
+} from "../template/SchoolDetails";
 import "./SchoolDetailsHeader.css";
 
 export default function (props: { school: SchoolType }) {
   function onInput(value: string) {
-    setSchoolDetailsItem((prev) => {
+    setSchoolDetails((prev) => {
       if (!prev) return prev;
       return { ...prev, name: value };
     });
