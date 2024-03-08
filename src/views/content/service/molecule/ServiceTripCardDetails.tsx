@@ -7,7 +7,7 @@ import "./ServiceTripCardDetails.css";
 
 export function ServiceTripCardDetails(props: { trip: TripType }) {
   return (
-    <div class="service-trip-card-details-border">
+    <div>
       <p>
         Direction :{" "}
         {TripUtils.tripDirectionTypeTofrench(

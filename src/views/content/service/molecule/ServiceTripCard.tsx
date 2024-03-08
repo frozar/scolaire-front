@@ -1,9 +1,10 @@
-import { JSXElement, Show, createSignal, onMount } from "solid-js";
+import { JSXElement, createSignal, onMount } from "solid-js";
 
 import { TripType } from "../../../../_entities/trip.entity";
 import { getLines } from "../../../../_stores/line.store";
 import { addNewGlobalWarningInformation } from "../../../../signaux";
 import { ServiceTripsUtils } from "../../../../utils/serviceTrips.utils";
+import CollapsibleElement from "../../board/component/organism/CollapsibleElement";
 import { TripTimeline } from "../../board/component/organism/TripTimeline";
 import { ServiceTripCardLeft } from "../atom/ServiceTripCardLeft";
 import { ServiceTripCardMiddle } from "../atom/ServiceTripCardMiddle";
@@ -43,10 +44,10 @@ export function ServiceTripCard(props: ServiceTripCardProps): JSXElement {
         <ServiceTripCardMiddle />
         <ServiceTripCardRight trip={props.draggableTrip} />
       </div>
-      <Show when={isInfoOpen()}>
+      <CollapsibleElement title="Détails" closedByDefault={() => true}>
         <ServiceTripCardDetails trip={currentTrip()} />
         <TripTimeline inDraw={false} trip={currentTrip()} />
-      </Show>
+      </CollapsibleElement>
     </div>
   );
 }
