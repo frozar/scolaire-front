@@ -2,12 +2,12 @@ import { Setter, createSignal } from "solid-js";
 import { weight } from "../../../../../_services/osrm.service";
 import PageTitle from "../../../../../component/atom/PageTitle";
 import { getSelectedWays } from "../../../map/component/molecule/LineWeight";
+import RoadwaysDay from "./RoadwaysDay";
+import { defaultWeightValue } from "./RoadwaysItems";
 import "./StopDetails.css";
-import VoirieDay from "./VoirieDay";
-import { defaultWeightValue } from "./VoirieItems";
 export const [
-  displayedUpdateVoirieConfirmation,
-  setdisplayedUpdateVoirieConfirmation,
+  displayedUpdateRoadwaysConfirmation,
+  setdisplayedUpdateRoadwaysConfirmation,
 ] = createSignal<{
   display: boolean;
   weight: weight;
@@ -34,7 +34,7 @@ export default function WayDetails() {
           : ""}
       </div>
 
-      <VoirieDay />
+      <RoadwaysDay />
     </section>
   );
 }

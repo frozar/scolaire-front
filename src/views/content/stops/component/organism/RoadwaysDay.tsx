@@ -1,9 +1,9 @@
 import { For } from "solid-js";
-import { VoirieTimeItem } from "../atom/VoirieTimeItem";
-import "./VoirieDay.css";
-import VoirieItems from "./VoirieItems";
+import { RoadwaysTimeItem } from "../atom/RoadwaysTimeItem";
+import "./RoadwaysDay.css";
+import RoadwaysItems from "./RoadwaysItems";
 
-export default function VoirieDay() {
+export default function RoadwaysDay() {
   return (
     <div class="flex h-full flex-col">
       <header class="flex flex-none items-center justify-between border-b border-gray-200 px-6 py-4">
@@ -16,7 +16,7 @@ export default function VoirieDay() {
       </header>
       {/* FIN DU HEADER */}
 
-      <div class="isolate flex flex-auto overflow-hidden bg-white voirie-day-content">
+      <div class="isolate flex flex-auto overflow-hidden bg-white roadways-day-content">
         <div class="flex flex-auto flex-col overflow-auto">
           <div class="flex w-full flex-auto">
             <div class="w-14 flex-none bg-white ring-1 ring-gray-100" />
@@ -33,15 +33,12 @@ export default function VoirieDay() {
                 {/* <!-- Hours --> */}
                 <div class="row-end-1 h-7" />
                 <For each={[...Array(24).keys()]}>
-                  {(opt) => <VoirieTimeItem opt={opt} />}
+                  {(opt) => <RoadwaysTimeItem opt={opt} />}
                 </For>
               </div>
 
               {/* <!-- Ponderation --> */}
-              <VoirieItems
-              // flaxib_weight={getSelectedWays()[0]?.flaxib_weight ?? []}
-              // flaxib_way_id={getSelectedWays()[0]?.flaxib_way_id ?? -1}
-              />
+              <RoadwaysItems />
             </div>
           </div>
         </div>

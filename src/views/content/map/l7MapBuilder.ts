@@ -13,7 +13,7 @@ import {
   isInDrawMod,
   onBoard,
 } from "../board/component/template/ContextManager";
-import { setmultipleWeight } from "../stops/component/organism/VoirieItems";
+import { setmultipleWeight } from "../stops/component/organism/RoadwaysItems";
 import FlaxibMapLogo from "./FlaxibMapLogo";
 import {
   getSelectedWays,
@@ -105,13 +105,13 @@ export function buildMapL7(div: HTMLDivElement) {
       onBoard() != "line-add" &&
       onBoard() != "path-draw"
     ) {
-      if (getSelectedMenu() != "voirie") {
+      if (getSelectedMenu() != "roadways") {
         changeBoard("line");
       }
       MapElementUtils.deselectAllPointsAndBusTrips();
     }
 
-    if (getSelectedMenu() == "voirie" && getSelectedWays().length > 0) {
+    if (getSelectedMenu() == "roadways" && getSelectedWays().length > 0) {
       if (!window.event?.ctrlKey) {
         setSelectedWays([]);
         setmultipleWeight([]);

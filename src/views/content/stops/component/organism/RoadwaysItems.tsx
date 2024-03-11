@@ -2,9 +2,9 @@ import { min } from "lodash";
 import { For, Show, createSignal } from "solid-js";
 import { weight } from "../../../../../_services/osrm.service";
 import { getSelectedWays } from "../../../map/component/molecule/LineWeight";
-import { VoirieItem } from "../molecul/VoirieItem";
-import { yToHourInMinutes } from "./VoirieDay";
-import "./VoirieDay.css";
+import { RoadwaysItem } from "../molecul/RoadwaysItem";
+import { yToHourInMinutes } from "./RoadwaysDay";
+import "./RoadwaysDay.css";
 
 export const [newWeigth, setnewWeigth] = createSignal<weight>(
   defaultWeightValue()
@@ -22,12 +22,7 @@ export function defaultWeightValue(): weight {
 }
 export const resetNewWeight = () => setnewWeigth(defaultWeightValue());
 
-interface VoirieItems {
-  // flaxib_weight: weight[];
-  // flaxib_way_id: number;
-}
-
-export default function VoirieItems(props: VoirieItems) {
+export default function RoadwaysItems() {
   return (
     <ol
       onMouseDown={mouseDownInformation}
@@ -51,7 +46,7 @@ export default function VoirieItems(props: VoirieItems) {
                 ) //Default value return by database when none weight associated
               }
             >
-              {existingWeight(weight, getSelectedWays()[0].flaxib_way_id)}
+              {existingWeight(weight)}
             </Show>
           )}
         </For>
@@ -69,14 +64,14 @@ export default function VoirieItems(props: VoirieItems) {
                 ) //Default value return by database when none weight associated
               }
             >
-              {existingWeight(weight, -1)}
+              {existingWeight(weight)}
             </Show>
           )}
         </For>
       </Show>
 
       <Show when={newWeigth().start != -1 && getSelectedWays().length > 0}>
-        <VoirieItem
+        <RoadwaysItem
           weight={newWeigth()}
           isInMove={isInMove}
           setNewWeigth={setnewWeigth}
@@ -87,11 +82,11 @@ export default function VoirieItems(props: VoirieItems) {
   );
 }
 
-function existingWeight(weightValue: weight, flaxib_way_id: number) {
+function existingWeight(weightValue: weight) {
   const [weigth, setWeigth] = createSignal<weight>(weightValue);
 
   return (
-    <VoirieItem
+    <RoadwaysItem
       weight={weigth()}
       setNewWeigth={setWeigth}
       isInMove={isInMove}

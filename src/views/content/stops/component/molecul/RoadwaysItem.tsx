@@ -18,22 +18,22 @@ import {
   getSelectedWays,
   setSelectedWays,
 } from "../../../map/component/molecule/LineWeight";
-import { VoirieItemRangeElem } from "../atom/VoirieItemRangeElem";
-import { minuteToTime } from "../organism/VoirieDay";
+import { RoadwaysItemRangeElem } from "../atom/RoadwaysItemRangeElem";
+import { minuteToTime } from "../organism/RoadwaysDay";
+import { setdisplayedUpdateRoadwaysConfirmation } from "../organism/RoadwaysDetails";
 import {
   getConflictWays,
   resetNewWeight,
   setmultipleWeight,
-} from "../organism/VoirieItems";
-import { setdisplayedUpdateVoirieConfirmation } from "../organism/WayDetails";
-interface VoirieItem {
+} from "../organism/RoadwaysItems";
+interface RoadwaysItem {
   weight: weight;
   setNewWeigth: Setter<weight>;
   isInMove: Accessor<boolean>;
   isOnDrawMode: boolean;
 }
 
-export function VoirieItem(props: VoirieItem) {
+export function RoadwaysItem(props: RoadwaysItem) {
   const [style, setstyle] = createSignal<string>("");
   const [classe, setclasse] = createSignal<string>("");
   const [prevWeight, setprevWeight] = createSignal<number>();
@@ -79,7 +79,7 @@ export function VoirieItem(props: VoirieItem) {
         <p class="mr-1  pt-0">
           {minuteToTime(props.weight.start)}-{minuteToTime(props.weight.end)}
         </p>
-        <VoirieItemRangeElem
+        <RoadwaysItemRangeElem
           weight={props.weight}
           setNewWeigth={props.setNewWeigth}
         />
@@ -107,7 +107,7 @@ function AddOrUpdateAction(
 
   if (conflictWays.length > 0) {
     addNewGlobalWarningInformation("Il existe des conflits");
-    setdisplayedUpdateVoirieConfirmation({
+    setdisplayedUpdateRoadwaysConfirmation({
       display: true,
       weight,
       setprevWeight,

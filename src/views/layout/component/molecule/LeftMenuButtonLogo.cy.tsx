@@ -2,9 +2,9 @@ import ArretsLogo from "../../../../icons/ArretsLogo";
 import DashboardLogo from "../atom/DashboardLogo";
 import EtablissementLogo from "../atom/EtablissementLogo";
 import GraphicageLogo from "../atom/GraphicageLogo";
+import RoadwaysLogo from "../atom/RoadwaysLogo";
 import SettingsLogo from "../atom/SettingsLogo";
 import SupportLogo from "../atom/SupportLogo";
-import VoirieLogo from "../atom/VoirieLogo";
 
 import LeftMenuButtonLogo from "./LeftMenuButtonLogo";
 
@@ -61,8 +61,8 @@ describe("LeftMenuButtonLogo component", () => {
     cy.get("span").compareSnapshot("logo-graphicage", 0.01);
   });
 
-  it("LeftMenuButtonLogo check logo voirie", () => {
-    props.children = <VoirieLogo />;
+  it("LeftMenuButtonLogo check logo roadways", () => {
+    props.children = <RoadwaysLogo />;
 
     cy.mount(() => (
       <LeftMenuButtonLogo
@@ -73,7 +73,7 @@ describe("LeftMenuButtonLogo component", () => {
     ));
 
     cy.get("svg").should("be.visible");
-    cy.get("span").compareSnapshot("logo-voirie", 0.01);
+    cy.get("span").compareSnapshot("logo-roadways", 0.01);
   });
 
   it("LeftMenuButtonLogo check logo etablissement", () => {

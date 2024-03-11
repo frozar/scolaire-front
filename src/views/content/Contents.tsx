@@ -17,8 +17,8 @@ import { Settings } from "./parameters/organism/Settings";
 import { ServiceTemplate } from "./service/template/ServiceTemplate";
 import AddPonderationWithConflictConfirmation from "./stops/component/organism/AddPonderationWithConflictConfirmation";
 import WayDetails, {
-  displayedUpdateVoirieConfirmation,
-} from "./stops/component/organism/WayDetails";
+  displayedUpdateRoadwaysConfirmation,
+} from "./stops/component/organism/RoadwaysDetails";
 
 const [, { getSelectedMenu }] = useStateGui();
 
@@ -69,11 +69,11 @@ export function Contents() {
             <Settings />
           </Match>
 
-          <Match when={getSelectedMenu() == "voirie"}>
+          <Match when={getSelectedMenu() == "roadways"}>
             <Map />
 
             <InformationBoardLayout>
-              <Show when={displayedUpdateVoirieConfirmation().display}>
+              <Show when={displayedUpdateRoadwaysConfirmation().display}>
                 <AddPonderationWithConflictConfirmation
                 // carteToDelete={displayedDeleteMapConfirmation()}
                 />

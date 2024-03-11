@@ -5,8 +5,8 @@ import DashboardLogo from "../../icons/DashboardLogo";
 import EtablissementLogo from "../../icons/EtablissementLogo";
 import GraphicageLogo from "../../icons/GraphicageLogo";
 import { MarketIcon } from "../../icons/MarketIcon";
+import RoadwaysLogo from "../../icons/RoadwaysLogo";
 import ServiceIcon from "../../icons/ServiceIcon";
-import VoirieLogo from "../../icons/VoirieLogo";
 import { MenuItemType } from "../../type";
 import { MapElementUtils } from "../../utils/mapElement.utils";
 import { ViewManager } from "../content/ViewManager";
@@ -99,14 +99,13 @@ const menuItems: MenuItemType[] = [
   },
 
   {
-    menuItem: "voirie",
-    Logo: VoirieLogo,
-    label: "Voirie",
+    menuItem: "roadways",
+    Logo: RoadwaysLogo,
+    label: "Roadways",
     isDisabled: false,
     onClick: () => {
-      setSelectedMenu("voirie");
+      setSelectedMenu("roadways");
       changeBoard(undefined);
-      console.log("Voirie");
     },
   },
   // {

@@ -5,7 +5,7 @@ import Pellet from "../../../../../component/atom/Pellet";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
 import ArretsLogo from "../../../../../icons/ArretsLogo";
 import EtablissementLogo from "../../../../../icons/EtablissementLogo";
-import VoirieLogo from "../../../../../icons/VoirieLogo";
+import RoadwaysLogo from "../../../../../icons/RoadwaysLogo";
 import { setOnBoard } from "../../../board/component/template/ContextManager";
 import { deselectAllLines } from "../../../map/component/organism/BusLines";
 import "./BusLineItem.css";
@@ -43,7 +43,7 @@ export default function (props: { line: LineType }) {
 
           <div class="line-stops-count">
             <div class="stop-logo">
-              <VoirieLogo />
+              <RoadwaysLogo />
             </div>
             <p>{props.line.trips.length}</p>
           </div>

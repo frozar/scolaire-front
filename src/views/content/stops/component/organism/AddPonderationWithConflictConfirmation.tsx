@@ -2,20 +2,16 @@ import { Setter, Show, createEffect, createSignal } from "solid-js";
 import { Transition } from "solid-transition-group";
 import ClickOutside from "../../../../../component/ClickOutside";
 import { assertIsNode } from "../../../../../utils";
-import { AddOrUpdate } from "../molecul/VoirieItem";
-import { defaultWeightValue, getConflictWays } from "./VoirieItems";
+import { AddOrUpdate } from "../molecul/RoadwaysItem";
 import {
-  displayedUpdateVoirieConfirmation,
-  setdisplayedUpdateVoirieConfirmation,
-} from "./WayDetails";
+  displayedUpdateRoadwaysConfirmation,
+  setdisplayedUpdateRoadwaysConfirmation,
+} from "./RoadwaysDetails";
+import { defaultWeightValue, getConflictWays } from "./RoadwaysItems";
 
 ClickOutside;
 
-interface DeleteMapConfirmationProps {
-  // carteToDelete: CarteToDeleteType;
-}
-
-export default function (props: DeleteMapConfirmationProps) {
+export default function () {
   let refDialogueBox: HTMLDivElement | undefined;
 
   const [buttonRef, setButtonRef] = createSignal<
@@ -62,7 +58,7 @@ export default function (props: DeleteMapConfirmationProps) {
 
                 assertIsNode(e.target);
                 if (!refDialogueBox.contains(e.target)) {
-                  setdisplayedUpdateVoirieConfirmation({
+                  setdisplayedUpdateRoadwaysConfirmation({
                     display: false,
                     weight: defaultWeightValue(),
                     setprevWeight: undefined,
@@ -75,7 +71,7 @@ export default function (props: DeleteMapConfirmationProps) {
                   type="button"
                   class="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                   onClick={() =>
-                    setdisplayedUpdateVoirieConfirmation({
+                    setdisplayedUpdateRoadwaysConfirmation({
                       display: false,
                       weight: defaultWeightValue(),
                       setprevWeight: undefined,
@@ -150,11 +146,11 @@ export default function (props: DeleteMapConfirmationProps) {
                   class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
                   onClick={() => {
                     AddOrUpdate(
-                      displayedUpdateVoirieConfirmation().weight,
-                      displayedUpdateVoirieConfirmation()
+                      displayedUpdateRoadwaysConfirmation().weight,
+                      displayedUpdateRoadwaysConfirmation()
                         .setprevWeight as Setter<number | undefined>
                     );
-                    setdisplayedUpdateVoirieConfirmation({
+                    setdisplayedUpdateRoadwaysConfirmation({
                       display: false,
                       weight: defaultWeightValue(),
                       setprevWeight: undefined,
@@ -167,7 +163,7 @@ export default function (props: DeleteMapConfirmationProps) {
                   type="button"
                   class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
                   onClick={() =>
-                    setdisplayedUpdateVoirieConfirmation({
+                    setdisplayedUpdateRoadwaysConfirmation({
                       display: false,
                       weight: defaultWeightValue(),
                       setprevWeight: undefined,

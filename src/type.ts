@@ -160,7 +160,7 @@ export type SelectedMenuType =
   | "calendar"
   | "dashboard"
   | "stops"
-  | "voirie"
+  | "roadways"
   | "schools"
   | "parametres"
   | "users"

@@ -5,7 +5,7 @@ import { step } from "../../../../../_services/osrm.service";
 import {
   resetNewWeight,
   setmultipleWeight,
-} from "../../../stops/component/organism/VoirieItems";
+} from "../../../stops/component/organism/RoadwaysItems";
 import Line from "../atom/Line";
 
 export const [getSelectedWays, setSelectedWays] = createSignal<step[]>([]);

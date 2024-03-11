@@ -60,20 +60,23 @@ export default function () {
     createSignal(false);
 
   async function requestWays(): Promise<step[]> {
-    const result = await OsrmService.getWaysWithWeight();
-    const parsedResult = result.map((elem) => {
-      return {
-        flaxib_way_id: elem.id,
-        name: elem.name,
-        flaxib_weight: elem.weight,
-        coordinates: JSON.parse(elem.line).coordinates.map((coord) =>
-          L.latLng(coord[1], coord[0])
-        ),
-      };
-    });
-    // const parsedResult = JSON.parse(result);
-    // console.log("OsrmService", result[0]["line"]);
-    return parsedResult;
+    const DBResult = await OsrmService.getWaysWithWeight();
+    if (DBResult) {
+      const parsedResult = DBResult.map((elem) => {
+        return {
+          flaxib_way_id: elem.id,
+          name: elem.name,
+          flaxib_weight: elem.weight,
+          coordinates: JSON.parse(elem.line).coordinates.map(
+            (coord: number[]) => L.latLng(coord[1], coord[0])
+          ),
+        };
+      });
+      // const parsedResult = JSON.parse(result);
+      // console.log("OsrmService", result[0]["line"]);
+      return parsedResult;
+    }
+    return [];
   }
 
   onMount(async () => {
@@ -107,7 +110,7 @@ export default function () {
 
   // eslint-disable-next-line solid/reactivity
   createEffect(async () => {
-    if (!waysIsFetch() && getSelectedMenu() === "voirie") {
+    if (!waysIsFetch() && getSelectedMenu() === "roadways") {
       enableSpinningWheel();
     } else {
       disableSpinningWheel();
@@ -129,7 +132,7 @@ export default function () {
         }}
       />
 
-      <Show when={getSelectedMenu() != "voirie"}>
+      <Show when={getSelectedMenu() != "roadways"}>
         <Show when={onBoard() == "line"}>
           <MapPanels />
         </Show>
@@ -157,7 +160,7 @@ export default function () {
 
         <ConfirmStopAddTrip />
       </Show>
-      <Show when={getSelectedMenu() === "voirie"}>
+      <Show when={getSelectedMenu() === "roadways"}>
         <For each={ways()}>
           {(way) => {
             return (
