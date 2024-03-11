@@ -2,8 +2,8 @@ import { Setter, createSignal } from "solid-js";
 import { weight } from "../../../../../_services/osrm.service";
 import PageTitle from "../../../../../component/atom/PageTitle";
 import { getSelectedWays } from "../../../map/component/molecule/LineWeight";
+import { defaultWeightValue } from "./Roadways";
 import RoadwaysDay from "./RoadwaysDay";
-import { defaultWeightValue } from "./RoadwaysItems";
 import "./StopDetails.css";
 export const [
   displayedUpdateRoadwaysConfirmation,

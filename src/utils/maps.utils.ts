@@ -369,7 +369,7 @@ export namespace MapsUtils {
           map.layerPointToLatLng(this._startLayerPoint),
           map.layerPointToLatLng(layerPoint)
         );
-        console.log(bounds);
+
         const ways_id: number[] = [];
         map.eachLayer(function (layer: { lineId: number }) {
           if (layer instanceof L.Polyline) {

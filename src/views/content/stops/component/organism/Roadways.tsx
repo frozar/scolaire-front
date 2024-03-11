@@ -3,7 +3,6 @@ import { weight } from "../../../../../_services/osrm.service";
 import PageTitle from "../../../../../component/atom/PageTitle";
 import { getSelectedWays } from "../../../map/component/molecule/LineWeight";
 import RoadwaysDay from "./RoadwaysDay";
-import "./StopDetails.css";
 export const [
   displayedUpdateRoadwaysConfirmation,
   setdisplayedUpdateRoadwaysConfirmation,
