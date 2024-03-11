@@ -10,10 +10,19 @@ import { setDisplaySchools } from "../../_component/organisme/SchoolPoints";
 import { setDisplayStops } from "../../_component/organisme/StopPoints";
 import { setDisplayTrips } from "../../_component/organisme/Trips";
 import { DashboardAllotment } from "../molecule/DashboardAllotment";
+import { DashboardGlobal } from "../molecule/DashboardGlobal";
 import { DashboardSchool } from "../molecule/DashboardSchool";
 
+enum DashboardViewEnum {
+  global,
+  allotment,
+  school,
+}
+
 export function Dashboard() {
-  const [selectedFilter, setSelectedFilter] = createSignal(0);
+  const [selectedFilter, setSelectedFilter] = createSignal(
+    DashboardViewEnum.global
+  );
 
   onMount(() => {
     setMapData(getStops(), getSchools(), getTrips());
@@ -31,19 +40,19 @@ export function Dashboard() {
           label="Vue"
           onChange={setSelectedFilter}
           options={[
-            { text: "Vue Globale", value: 0 },
-            { text: "Par Lot", value: 1 },
-            { text: "Par Etablissement", value: 2 },
+            { text: "Vue Globale", value: DashboardViewEnum.global },
+            { text: "Vue par Lot", value: DashboardViewEnum.allotment },
+            { text: "Vue par Etablissement", value: DashboardViewEnum.school },
           ]}
         />
         <Switch>
-          <Match when={selectedFilter() == 0}>
-            <div>wot</div>
+          <Match when={selectedFilter() == DashboardViewEnum.global}>
+            <DashboardGlobal />
           </Match>
-          <Match when={selectedFilter() == 1}>
+          <Match when={selectedFilter() == DashboardViewEnum.allotment}>
             <DashboardAllotment />
           </Match>
-          <Match when={selectedFilter() == 2}>
+          <Match when={selectedFilter() == DashboardViewEnum.school}>
             <DashboardSchool />
           </Match>
         </Switch>

@@ -1,9 +1,10 @@
-import { createSignal } from "solid-js";
+import { createSignal, onCleanup } from "solid-js";
 import { SchoolType } from "../../../../_entities/school.entity";
 import { TripType } from "../../../../_entities/trip.entity";
 import { getTrips } from "../../../../_stores/trip.store";
 import { LabeledInputSelect } from "../../../../component/molecule/LabeledInputSelect";
 import { setDisplaySchools } from "../../_component/organisme/SchoolPoints";
+import { setDisplayStops } from "../../_component/organisme/StopPoints";
 import { setDisplayTrips } from "../../_component/organisme/Trips";
 import { getAllotment } from "../../allotment/organism/Allotment";
 
@@ -28,6 +29,12 @@ export function DashboardAllotment() {
     setDisplaySchools(schoolList);
     setDisplayTrips(currentTrips());
   }
+
+  onCleanup(() => {
+    setDisplayStops([]);
+    setDisplaySchools([]);
+    setDisplayTrips([]);
+  });
 
   return (
     <div>
