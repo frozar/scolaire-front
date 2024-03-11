@@ -6,6 +6,7 @@ import { LabeledInputSelect } from "../../../../component/molecule/LabeledInputS
 import { setDisplaySchools } from "../../_component/organisme/SchoolPoints";
 import { setDisplayStops } from "../../_component/organisme/StopPoints";
 import { setDisplayTrips } from "../../_component/organisme/Trips";
+import { DashboardMetrics } from "./DashboardMetrics";
 
 export function DashboardSchool() {
   const [selectedSchool, setSelectedSchool] = createSignal(0);
@@ -31,13 +32,16 @@ export function DashboardSchool() {
   });
 
   return (
-    <LabeledInputSelect
-      defaultValue={selectedSchool()}
-      label="Etablissement"
-      onChange={onSelectChange}
-      options={getSchools().map((item) => {
-        return { value: Number(item.id), text: item.name };
-      })}
-    />
+    <div>
+      <LabeledInputSelect
+        defaultValue={selectedSchool()}
+        label="Etablissement"
+        onChange={onSelectChange}
+        options={getSchools().map((item) => {
+          return { value: Number(item.id), text: item.name };
+        })}
+      />
+      <DashboardMetrics distance={0} kmPassager={0} students={0} />
+    </div>
   );
 }
