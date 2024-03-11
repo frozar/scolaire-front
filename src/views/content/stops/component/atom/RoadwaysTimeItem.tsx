@@ -1,11 +1,11 @@
-import { minuteToTime } from "../organism/VoirieDay";
+import { minuteToTime } from "../organism/RoadwaysDay";
 import "./GradeSelection.css";
 
-interface VoirieTimeItem {
+interface RoadwaysTimeItem {
   opt: number;
 }
 
-export function VoirieTimeItem(props: VoirieTimeItem) {
+export function RoadwaysTimeItem(props: RoadwaysTimeItem) {
   return (
     <>
       <div>

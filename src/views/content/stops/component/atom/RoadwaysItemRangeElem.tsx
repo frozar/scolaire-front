@@ -1,11 +1,11 @@
 import { Setter } from "solid-js";
 import { weight } from "../../../../../_services/osrm.service";
-interface VoirieItemRangeElem {
+interface RoadwaysItemRangeElem {
   weight: weight;
   setNewWeigth: Setter<weight>;
 }
 
-export function VoirieItemRangeElem(props: VoirieItemRangeElem) {
+export function RoadwaysItemRangeElem(props: RoadwaysItemRangeElem) {
   return (
     <div style={{ width: "45%" }} draggable={false}>
       <input

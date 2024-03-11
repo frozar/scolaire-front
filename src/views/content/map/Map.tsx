@@ -23,7 +23,7 @@ import {
 } from "../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../type";
 import { onBoard } from "../board/component/template/ContextManager";
-import { LineWeight, getSelectedWay } from "./component/molecule/LineWeight";
+import { LineWeight, getSelectedWays } from "./component/molecule/LineWeight";
 import { BusLines } from "./component/organism/BusLines";
 import { MapPanels } from "./component/organism/MapPanels";
 import { Paths } from "./component/organism/Paths";
@@ -41,7 +41,6 @@ function buildMap(div: HTMLDivElement) {
     }
   }
 }
-
 let mapDiv: HTMLDivElement;
 
 export const [ways, setWays] = createSignal<step[]>([]);
@@ -52,25 +51,32 @@ export function getWayById(way_id: number): step {
   return ways().filter((way) => way.flaxib_way_id == way_id)[0];
 }
 
+export function getWaysById(way_ids: number[]): step[] {
+  return ways().filter((way) => way_ids.includes(way.flaxib_way_id));
+}
+
 export default function () {
   const [displayImportCsvCanvas, setDisplayImportCsvCanvas] =
     createSignal(false);
 
   async function requestWays(): Promise<step[]> {
-    const result = await OsrmService.getWaysWithWeight();
-    const parsedResult = result.map((elem) => {
-      return {
-        flaxib_way_id: elem.id,
-        name: elem.name,
-        flaxib_weight: elem.weight,
-        coordinates: JSON.parse(elem.line).coordinates.map((coord) =>
-          L.latLng(coord[1], coord[0])
-        ),
-      };
-    });
-    // const parsedResult = JSON.parse(result);
-    // console.log("OsrmService", result[0]["line"]);
-    return parsedResult;
+    const DBResult = await OsrmService.getWaysWithWeight();
+    if (DBResult) {
+      const parsedResult = DBResult.map((elem) => {
+        return {
+          flaxib_way_id: elem.id,
+          name: elem.name,
+          flaxib_weight: elem.weight,
+          coordinates: JSON.parse(elem.line).coordinates.map(
+            (coord: number[]) => L.latLng(coord[1], coord[0])
+          ),
+        };
+      });
+      // const parsedResult = JSON.parse(result);
+      // console.log("OsrmService", result[0]["line"]);
+      return parsedResult;
+    }
+    return [];
   }
 
   onMount(async () => {
@@ -104,7 +110,7 @@ export default function () {
 
   // eslint-disable-next-line solid/reactivity
   createEffect(async () => {
-    if (!waysIsFetch() && getSelectedMenu() === "voirie") {
+    if (!waysIsFetch() && getSelectedMenu() === "roadways") {
       enableSpinningWheel();
     } else {
       disableSpinningWheel();
@@ -126,7 +132,7 @@ export default function () {
         }}
       />
 
-      <Show when={getSelectedMenu() != "voirie"}>
+      <Show when={getSelectedMenu() != "roadways"}>
         <Show when={onBoard() == "line"}>
           <MapPanels />
         </Show>
@@ -154,7 +160,7 @@ export default function () {
 
         <ConfirmStopAddTrip />
       </Show>
-      <Show when={getSelectedMenu() === "voirie"}>
+      <Show when={getSelectedMenu() === "roadways"}>
         <For each={ways()}>
           {(way) => {
             return (
@@ -162,7 +168,9 @@ export default function () {
                 way={way}
                 map={getLeafletMap() as L.Map}
                 lineColor={
-                  getSelectedWay()?.flaxib_way_id == way.flaxib_way_id
+                  getSelectedWays()
+                    .map((way) => way.flaxib_way_id)
+                    .includes(way.flaxib_way_id)
                     ? COLOR_BLUE_BASE
                     : COLOR_GREEN_BASE
                 }

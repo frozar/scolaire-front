@@ -2,10 +2,14 @@ import L from "leaflet";
 import { createEffect, createSignal } from "solid-js";
 
 import { step } from "../../../../../_services/osrm.service";
-import { resetNewWeight } from "../../../stops/component/organism/VoirieItems";
+
+import {
+  resetNewWeight,
+  setmultipleWeight,
+} from "../../../stops/component/organism/Roadways";
 import Line from "../atom/Line";
 
-export const [getSelectedWay, setSelectedWay] = createSignal<step>();
+export const [getSelectedWays, setSelectedWays] = createSignal<step[]>([]);
 
 export function LineWeight(props: {
   way: step;
@@ -32,13 +36,28 @@ export function LineWeight(props: {
   };
 
   const onClick = () => {
-    setSelectedWay(
-      //TODO Modify onclick to use ways() signal
-      // ways().filter((elem) => elem.flaxib_way_id === props.way.flaxib_way_id)[0]
-      props.way
-    );
-    console.log("select here", getSelectedWay());
+    if (window.event?.ctrlKey) {
+      if (
+        getSelectedWays().filter(
+          (way) => way.flaxib_way_id === props.way.flaxib_way_id
+        ).length > 0
+      ) {
+        setSelectedWays((prev) =>
+          prev.filter((way) => way.flaxib_way_id != props.way.flaxib_way_id)
+        );
+      } else {
+        setSelectedWays((prev) => [...prev, props.way]);
+      }
+      //ctrl was held down during the click
+    } else {
+      setSelectedWays(
+        //TODO Modify onclick to use ways() signal
+        // ways().filter((elem) => elem.flaxib_way_id === props.way.flaxib_way_id)[0]
+        [props.way]
+      );
+    }
     resetNewWeight();
+    setmultipleWeight([]);
   };
   return (
     <>

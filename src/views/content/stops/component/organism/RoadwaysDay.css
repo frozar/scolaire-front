@@ -1,8 +1,8 @@
-.voirie-day-header {
+.roadways-day-header {
   @apply flex justify-between my-5;
 }
 
-.voirie-day-content {
+.roadways-day-content {
   @apply mt-3 overflow-auto pr-2;
   max-height: 60vh;
 }

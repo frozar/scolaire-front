@@ -5,15 +5,15 @@ import ArretsLogo from "../../../../icons/ArretsLogo";
 import DashboardLogo from "../../../../icons/DashboardLogo";
 import EtablissementLogo from "../../../../icons/EtablissementLogo";
 import GraphicageLogo from "../../../../icons/GraphicageLogo";
+import RoadwaysLogo from "../../../../icons/RoadwaysLogo";
 import SettingsLogo from "../../../../icons/SettingsLogo";
 import SupportLogo from "../../../../icons/SupportLogo";
-import VoirieLogo from "../../../../icons/VoirieLogo";
 import LeftMenuButtonLogoComponent from "./LeftMenuButtonLogo";
 
 const logos = {
   DashboardLogo,
   GraphicageLogo,
-  VoirieLogo,
+  RoadwaysLogo,
   EtablissementLogo,
   ArretsLogo,
   SettingsLogo,
@@ -41,7 +41,7 @@ export const LeftMenuButtonLogo: Story = {
         labels: {
           DashboardLogo: "dashboard",
           GraphicageLogo: "graphicage",
-          VoirieLogo: "voirie",
+          RoadwaysLogo: "roadways",
           EtablissementLogo: "etablissement",
           ArretsLogo: "stop",
           SettingsLogo: "parametres",

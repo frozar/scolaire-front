@@ -3,7 +3,7 @@ import Pellet from "../../../../../component/atom/Pellet";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
 import { IconToolTip } from "../../../../../component/molecule/IconTooltip";
 import ArretsLogo from "../../../../../icons/ArretsLogo";
-import VoirieLogo from "../../../../../icons/VoirieLogo";
+import RoadwaysLogo from "../../../../../icons/RoadwaysLogo";
 import { PathUtil } from "../../../../../utils/path.utils";
 import { changeBoard } from "../../../board/component/template/ContextManager";
 import { setSelectedPath } from "../organism/PathDetail";
@@ -30,7 +30,7 @@ export function PathItem(props: PathItemListProps) {
       <div class="informations">
         <div class="info-item ">
           <IconToolTip
-            icon={<VoirieLogo />}
+            icon={<RoadwaysLogo />}
             tooltipText="Nombre de trip qui utilise le chemin"
           />
           {PathUtil.getCountOfTripUsingPath(

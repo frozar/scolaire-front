@@ -1,24 +1,25 @@
-import { createEffect, createSignal } from "solid-js";
-
-import { L7Layer } from "@antv/l7-leaflet";
 import L from "leaflet";
+import { createEffect, createSignal } from "solid-js";
+import { useStateGui } from "../../../StateGui";
 import {
   disableSpinningWheel,
   enableSpinningWheel,
   setLeafletMap,
 } from "../../../signaux";
-
-import { useStateGui } from "../../../StateGui";
 import { MapElementUtils } from "../../../utils/mapElement.utils";
+import { MapsUtils } from "../../../utils/maps.utils";
 import {
   changeBoard,
   isInDrawMod,
   onBoard,
 } from "../board/component/template/ContextManager";
+import { setmultipleWeight } from "../stops/component/organism/Roadways";
 import FlaxibMapLogo from "./FlaxibMapLogo";
-import { initScreenshoter } from "./rightMapMenu/export/screenShoter";
+import {
+  getSelectedWays,
+  setSelectedWays,
+} from "./component/molecule/LineWeight";
 import { getTileById } from "./tileUtils";
-
 const [
   ,
   {
@@ -46,12 +47,14 @@ function addLogoFlaxib(map: L.Map) {
 
 export function buildMapL7(div: HTMLDivElement) {
   enableSpinningWheel();
+  MapsUtils.initLmap();
 
-  const leafletMap = L.map(div, {
+  const leafletMap = new L.Map(div, {
     zoomControl: false,
     zoomSnap: 0.1,
     zoomDelta: 0.1,
     wheelPxPerZoomLevel: 200,
+    tap: false,
   }).setView([-20.930746, 55.527503], 13);
 
   setLeafletMap(leafletMap);
@@ -93,34 +96,44 @@ export function buildMapL7(div: HTMLDivElement) {
     currentTileLayer()?.addTo(leafletMap);
   });
 
-  leafletMap.addEventListener("click", () => {
+  leafletMap.addEventListener("click", (e) => {
+    e.originalEvent.preventDefault();
+    e.originalEvent.stopPropagation();
     if (
       !isOverMapItem() &&
       onBoard() != "trip-draw" &&
       onBoard() != "line-add" &&
       onBoard() != "path-draw"
     ) {
-      if (getSelectedMenu() != "voirie") {
+      if (getSelectedMenu() != "roadways") {
         changeBoard("line");
       }
       MapElementUtils.deselectAllPointsAndBusTrips();
     }
+
+    if (getSelectedMenu() == "roadways" && getSelectedWays().length > 0) {
+      if (!window.event?.ctrlKey) {
+        setSelectedWays([]);
+        setmultipleWeight([]);
+        [];
+      }
+    }
   });
 
   addLogoFlaxib(leafletMap);
-  initScreenshoter();
+  // initScreenshoter();
 
   // The argument in the constructor of the 'L7Layer' is simply pass to
   // Leaflet Layer as options for the constructor
-  const l7layer = new L7Layer({});
-  l7layer.addTo(leafletMap);
+  // const l7layer = new L7Layer({});
+  // l7layer.addTo(leafletMap);
 
-  const scene = l7layer.getScene();
+  // const scene = l7layer.getScene();
 
-  // Remove the L7 logo
-  scene.removeControl(scene.getControlByName("logo"));
+  // // Remove the L7 logo
+  // scene.removeControl(scene.getControlByName("logo"));
 
-  // To retrieve control over the cursor, remove the 'l7-interactive' class
-  scene.getMapCanvasContainer().classList.remove("l7-interactive");
+  // // To retrieve control over the cursor, remove the 'l7-interactive' class
+  // scene.getMapCanvasContainer().classList.remove("l7-interactive");
   disableSpinningWheel();
 }

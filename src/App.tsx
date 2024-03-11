@@ -30,9 +30,9 @@ export default () => {
   onMount(async () => await tryConnection());
 
   // This line is to disable right click menu, necessary to remove point in line under construction with the right click
-  createEffect(() =>
-    document.addEventListener("contextmenu", (e) => e.preventDefault())
-  );
+  createEffect(() => {
+    document.addEventListener("contextmenu", (e) => e.preventDefault());
+  });
 
   // eslint-disable-next-line solid/reactivity
   createEffect(async () => {

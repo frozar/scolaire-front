@@ -8,22 +8,33 @@ import {
 import { OsrmService, weight } from "../../../../../_services/osrm.service";
 import CheckIcon from "../../../../../icons/CheckIcon";
 import TrashIcon from "../../../../../icons/TrashIcon";
-import { addNewGlobalSuccessInformation } from "../../../../../signaux";
+import {
+  addNewGlobalSuccessInformation,
+  addNewGlobalWarningInformation,
+} from "../../../../../signaux";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
-import { getWayById, setWays } from "../../../map/Map";
-import { setSelectedWay } from "../../../map/component/molecule/LineWeight";
-import { VoirieItemRangeElem } from "../atom/VoirieItemRangeElem";
-import { minuteToTime } from "../organism/VoirieDay";
-import { resetNewWeight } from "../organism/VoirieItems";
-interface VoirieItem {
+import { getWaysById, setWays } from "../../../map/Map";
+import {
+  getSelectedWays,
+  setSelectedWays,
+} from "../../../map/component/molecule/LineWeight";
+import { RoadwaysItemRangeElem } from "../atom/RoadwaysItemRangeElem";
+import {
+  resetNewWeight,
+  setdisplayedUpdateRoadwaysConfirmation,
+  setmultipleWeight,
+} from "../organism/Roadways";
+import { minuteToTime } from "../organism/RoadwaysDay";
+import { getConflictWays } from "../organism/RoadwaysItems";
+
+interface RoadwaysItem {
   weight: weight;
-  way_id: number;
   setNewWeigth: Setter<weight>;
   isInMove: Accessor<boolean>;
   isOnDrawMode: boolean;
 }
 
-export function VoirieItem(props: VoirieItem) {
+export function RoadwaysItem(props: RoadwaysItem) {
   const [style, setstyle] = createSignal<string>("");
   const [classe, setclasse] = createSignal<string>("");
   const [prevWeight, setprevWeight] = createSignal<number>();
@@ -69,34 +80,84 @@ export function VoirieItem(props: VoirieItem) {
         <p class="mr-1  pt-0">
           {minuteToTime(props.weight.start)}-{minuteToTime(props.weight.end)}
         </p>
-        <VoirieItemRangeElem
+        <RoadwaysItemRangeElem
           weight={props.weight}
           setNewWeigth={props.setNewWeigth}
         />
         <ButtonIcon
           icon={<CheckIcon />}
-          onClick={() => AddOrUpdate(props.way_id, props.weight, setprevWeight)}
+          onClick={() => AddOrUpdateAction(props.weight, setprevWeight)}
           class="text-blue-700 text-sm ml-2 mt-0 h-5"
           disable={prevWeight() == props.weight.weight}
         />
         <ButtonIcon
           icon={<TrashIcon />}
-          onClick={() => Delete(props.way_id, props.weight, props.isOnDrawMode)}
+          onClick={() => Delete(props.weight, props.isOnDrawMode)}
           class="text-blue-700 text-sm ml-2 mt-0 h-5"
         />
       </a>
     </li>
   );
 }
-function AddOrUpdate(
-  way_id: number,
+
+function AddOrUpdateAction(
   weight: weight,
   setprevWeight: Setter<number | undefined>
 ): void {
-  OsrmService.setWeight(way_id, weight.weight, weight.start, weight.end);
+  const conflictWays = getConflictWays();
+
+  if (conflictWays.length > 0) {
+    addNewGlobalWarningInformation("Il existe des conflits");
+    setdisplayedUpdateRoadwaysConfirmation({
+      display: true,
+      weight,
+      setprevWeight,
+    });
+    return;
+  }
+
+  AddOrUpdate(weight, setprevWeight);
+}
+
+export async function AddOrUpdate(
+  weight: weight,
+  setprevWeight: Setter<number | undefined>
+): Promise<void> {
+  await OsrmService.setWeights(weight.weight, weight.start, weight.end);
+
+  setWays((ways) => {
+    //Remove conflict weight
+    return ways.map((way) => {
+      const conflict = getConflictWays().filter(
+        (conflict) => conflict.flaxib_way_id == way.flaxib_way_id
+      );
+      let res = { ...way };
+      if (conflict.length > 0) {
+        for (let i = 0; i < conflict.length; i++) {
+          const conflictItem = conflict[i];
+          res = {
+            ...res,
+            flaxib_weight: way.flaxib_weight.filter(
+              (currentWeight) =>
+                currentWeight.end != conflictItem.weight.end ||
+                currentWeight.start != conflictItem.weight.start
+            ),
+          };
+        }
+      }
+
+      return res;
+    });
+  });
+
+  //update with new weight
   setWays((ways) => {
     return ways.map((way) => {
-      if (way.flaxib_way_id == way_id) {
+      if (
+        getSelectedWays()
+          .map((Selectedway) => Selectedway.flaxib_way_id)
+          .includes(way.flaxib_way_id)
+      ) {
         return {
           ...way,
           flaxib_weight: [
@@ -112,20 +173,26 @@ function AddOrUpdate(
       return way;
     });
   });
-  setSelectedWay(getWayById(way_id));
-  addNewGlobalSuccessInformation("La pondération a été modifiée");
 
+  setSelectedWays(
+    getWaysById(getSelectedWays().map((selected) => selected.flaxib_way_id))
+  );
+  addNewGlobalSuccessInformation("La pondération a été modifiée");
+  getSelectedWays().length > 1
+    ? setmultipleWeight((listWeight) => [...listWeight, weight])
+    : "";
   resetNewWeight();
   setprevWeight(weight.weight);
 }
 
-function Delete(way_id: number, weight: weight, isOnDrawMode: boolean): void {
+function Delete(weight: weight, isOnDrawMode: boolean): void {
   if (!isOnDrawMode) {
-    OsrmService.deleteWeight(way_id, weight.start, weight.end);
+    const selectedIds = getSelectedWays().map((way) => way.flaxib_way_id);
+    OsrmService.deleteWeights(selectedIds, weight.start, weight.end);
 
     setWays((ways) => {
       return ways.map((way) => {
-        if (way.flaxib_way_id == way_id) {
+        if (selectedIds.includes(way.flaxib_way_id)) {
           return {
             ...way,
             flaxib_weight: way.flaxib_weight.filter(
@@ -139,7 +206,17 @@ function Delete(way_id: number, weight: weight, isOnDrawMode: boolean): void {
       });
     });
 
-    setSelectedWay(getWayById(way_id));
+    setSelectedWays(
+      getWaysById(getSelectedWays().map((selected) => selected.flaxib_way_id))
+    );
+    getSelectedWays().length > 1
+      ? setmultipleWeight((listWeight) =>
+          listWeight.filter(
+            (curWeight) =>
+              curWeight.start != weight.start && curWeight.end != weight.end
+          )
+        )
+      : "";
     addNewGlobalSuccessInformation("La pondération a été supprimée");
   } else {
     resetNewWeight();

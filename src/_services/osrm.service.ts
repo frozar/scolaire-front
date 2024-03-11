@@ -9,6 +9,8 @@ import { WaypointType } from "../_entities/waypoint.entity";
 import { userMaps } from "../_stores/map.store";
 import { MapsUtils } from "../utils/maps.utils";
 import { MetricsUtils } from "../utils/metrics.utils";
+import { getSelectedWays } from "../views/content/map/component/molecule/LineWeight";
+import { getConflictWays } from "../views/content/stops/component/organism/RoadwaysItems";
 import { ServiceUtils } from "./_utils.service";
 
 const osrm = import.meta.env.VITE_API_OSRM_URL;
@@ -41,6 +43,13 @@ export type weight = {
   weight: number;
   start: number;
   end: number;
+};
+
+export type DBway = {
+  id: number;
+  line: string;
+  name: string;
+  weight: weight[];
 };
 
 export class OsrmService {
@@ -87,33 +96,6 @@ export class OsrmService {
     const response = responses[0];
     const response_direct = responses[1];
 
-    // const directWaypointsStringified = this.buildPositionURL([
-    //   points[0],
-    //   points[points.length - 1],
-    // ]);
-    // const response_direct = await ServiceUtils.generic(
-    //   host +
-    //     "/osrm/osrm_utils?map_id=" +
-    //     getActiveMapId() +
-    //     "&timecode=" +
-    //     timecode +
-    //     "&waypoints=" +
-    //     directWaypointsStringified,
-    //   {
-    //     method: "GET",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //   }
-    // );
-
-    // const response_direct = await ServiceUtils.generic(
-    //   osrm +
-    //     "/" +
-    //     directWaypointsStringified +
-    //     "?geometries=geojson&overview=full"
-    // );
-
     if (!response)
       return {
         latlngs: [],
@@ -131,20 +113,42 @@ export class OsrmService {
     );
   }
 
-  static async setWeight(
-    wayId: number,
+  static async setWeights(
     flaxibWeight: number,
     start: number,
     end: number
-  ): Promise<any> {
-    const content = JSON.stringify({
-      map_id: getActiveMapId(),
-      way_id: wayId,
-      flaxib_weight: flaxibWeight,
-      start,
-      end,
+  ): Promise<string> {
+    const update = getSelectedWays()
+      .map((way) => {
+        return {
+          map_id: getActiveMapId(),
+          way_id: way.flaxib_way_id,
+          flaxib_weight: flaxibWeight,
+          start,
+          end,
+        };
+      })
+      .filter(
+        (value, index, self) =>
+          index ===
+          self.findIndex(
+            (t) =>
+              t.end === value.end &&
+              t.start === value.start &&
+              t.way_id === value.way_id
+          )
+      );
+    const conflict = getConflictWays().map((conflict) => {
+      return {
+        way_id: conflict.flaxib_way_id,
+        map_id: getActiveMapId(),
+        flaxib_weight: conflict.weight.weight,
+        start: conflict.weight.start,
+        end: conflict.weight.end,
+      };
     });
-    return await ServiceUtils.generic(host + "/osrm/weight", {
+    const content = JSON.stringify({ update: update, conflict: conflict });
+    return await ServiceUtils.generic(host + "/osrm/weights", {
       method: "POST",
       body: content,
       headers: {
@@ -153,7 +157,7 @@ export class OsrmService {
     });
   }
 
-  static async getWaysWithWeight(): Promise<any> {
+  static async getWaysWithWeight(): Promise<DBway[] | undefined> {
     const curMap = MapsUtils.getSelectedMap(userMaps());
     if (curMap) {
       const res = await ServiceUtils.generic(
@@ -177,15 +181,16 @@ export class OsrmService {
           },
         }
       );
-      return res;
+      return res as Promise<DBway[]>;
     }
+    return;
   }
 
   static async deleteWeight(
     wayID: number,
     start: number,
     end: number
-  ): Promise<any> {
+  ): Promise<string> {
     const res = await ServiceUtils.generic(
       host +
         "/osrm/weight?map_id=" +
@@ -198,6 +203,30 @@ export class OsrmService {
         end,
       {
         method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return res;
+  }
+
+  static async deleteWeights(
+    waysID: number[],
+    start: number,
+    end: number
+  ): Promise<string> {
+    const res = await ServiceUtils.generic(
+      host +
+        "/osrm/weights?map_id=" +
+        getActiveMapId() +
+        "&start=" +
+        start +
+        "&end=" +
+        end,
+      {
+        method: "DELETE",
+        body: JSON.stringify(waysID),
         headers: {
           "Content-Type": "application/json",
         },
