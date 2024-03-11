@@ -3,24 +3,15 @@ import { For, Show, createSignal } from "solid-js";
 import { weight } from "../../../../../_services/osrm.service";
 import { getSelectedWays } from "../../../map/component/molecule/LineWeight";
 import { RoadwaysItem } from "../molecul/RoadwaysItem";
+import {
+  isInMove,
+  multipleWeight,
+  newWeigth,
+  setisInMove,
+  setnewWeigth,
+} from "./Roadways";
 import { yToHourInMinutes } from "./RoadwaysDay";
 import "./RoadwaysDay.css";
-
-export const [newWeigth, setnewWeigth] = createSignal<weight>(
-  defaultWeightValue()
-);
-export const [multipleWeight, setmultipleWeight] = createSignal<weight[]>([]);
-
-const [isInMove, setisInMove] = createSignal<boolean>(false);
-
-export function defaultWeightValue(): weight {
-  return {
-    weight: 100,
-    start: -1,
-    end: -1,
-  };
-}
-export const resetNewWeight = () => setnewWeigth(defaultWeightValue());
 
 export default function RoadwaysItems() {
   return (

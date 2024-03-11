@@ -16,9 +16,9 @@ import { Market } from "./market/organism/Market";
 import { Settings } from "./parameters/organism/Settings";
 import { ServiceTemplate } from "./service/template/ServiceTemplate";
 import AddPonderationWithConflictConfirmation from "./stops/component/organism/AddPonderationWithConflictConfirmation";
-import WayDetails, {
+import Roadways, {
   displayedUpdateRoadwaysConfirmation,
-} from "./stops/component/organism/RoadwaysDetails";
+} from "./stops/component/organism/Roadways";
 
 const [, { getSelectedMenu }] = useStateGui();
 
@@ -78,7 +78,7 @@ export function Contents() {
                 // carteToDelete={displayedDeleteMapConfirmation()}
                 />
               </Show>
-              <WayDetails />
+              <Roadways />
             </InformationBoardLayout>
             {/* <ContextManager /> */}
           </Match>

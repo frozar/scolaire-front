@@ -19,13 +19,14 @@ import {
   setSelectedWays,
 } from "../../../map/component/molecule/LineWeight";
 import { RoadwaysItemRangeElem } from "../atom/RoadwaysItemRangeElem";
-import { minuteToTime } from "../organism/RoadwaysDay";
-import { setdisplayedUpdateRoadwaysConfirmation } from "../organism/RoadwaysDetails";
 import {
-  getConflictWays,
   resetNewWeight,
+  setdisplayedUpdateRoadwaysConfirmation,
   setmultipleWeight,
-} from "../organism/RoadwaysItems";
+} from "../organism/Roadways";
+import { minuteToTime } from "../organism/RoadwaysDay";
+import { getConflictWays } from "../organism/RoadwaysItems";
+
 interface RoadwaysItem {
   weight: weight;
   setNewWeigth: Setter<weight>;

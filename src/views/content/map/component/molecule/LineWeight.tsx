@@ -2,10 +2,11 @@ import L from "leaflet";
 import { createEffect, createSignal } from "solid-js";
 
 import { step } from "../../../../../_services/osrm.service";
+
 import {
   resetNewWeight,
   setmultipleWeight,
-} from "../../../stops/component/organism/RoadwaysItems";
+} from "../../../stops/component/organism/Roadways";
 import Line from "../atom/Line";
 
 export const [getSelectedWays, setSelectedWays] = createSignal<step[]>([]);

@@ -13,7 +13,7 @@ import {
   isInDrawMod,
   onBoard,
 } from "../board/component/template/ContextManager";
-import { setmultipleWeight } from "../stops/component/organism/RoadwaysItems";
+import { setmultipleWeight } from "../stops/component/organism/Roadways";
 import FlaxibMapLogo from "./FlaxibMapLogo";
 import {
   getSelectedWays,

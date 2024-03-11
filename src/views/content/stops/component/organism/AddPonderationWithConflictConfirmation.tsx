@@ -4,10 +4,11 @@ import ClickOutside from "../../../../../component/ClickOutside";
 import { assertIsNode } from "../../../../../utils";
 import { AddOrUpdate } from "../molecul/RoadwaysItem";
 import {
+  defaultWeightValue,
   displayedUpdateRoadwaysConfirmation,
   setdisplayedUpdateRoadwaysConfirmation,
-} from "./RoadwaysDetails";
-import { defaultWeightValue, getConflictWays } from "./RoadwaysItems";
+} from "./Roadways";
+import { getConflictWays } from "./RoadwaysItems";
 
 ClickOutside;
 

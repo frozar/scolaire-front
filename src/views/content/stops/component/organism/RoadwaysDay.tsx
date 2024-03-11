@@ -53,12 +53,6 @@ export function yToHourInMinutes(offsetY: number) {
   return yToHour;
 }
 
-// function getClickInformation(e: { offsetY: number }) {
-//   const yToHour = yToHourInMinutes(e.offsetY);
-//   setCurrentWeigth({ weight: 10, start: yToHour * 60, end: 30 + yToHour * 60 });
-//   return;
-// }
-
 export function minuteToTime(h: number, isForPoderationListe = false) {
   if (h == 0) {
     return isForPoderationListe ? "12AM" : "12:00AM";

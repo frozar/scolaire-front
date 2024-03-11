@@ -5,10 +5,7 @@ import { MapService } from "../_services/map.service";
 import { setUserMaps } from "../_stores/map.store";
 import { disableSpinningWheel, enableSpinningWheel } from "../signaux";
 import { ways } from "../views/content/map/Map";
-import {
-  getSelectedWays,
-  setSelectedWays,
-} from "../views/content/map/component/molecule/LineWeight";
+import { setSelectedWays } from "../views/content/map/component/molecule/LineWeight";
 
 const [, { setActiveMapId }] = useStateGui();
 
@@ -335,7 +332,7 @@ export namespace MapsUtils {
        * Window blur listener to restore state
        * @param  {Event} e
        */
-      _onBlur: function (e) {
+      _onBlur: function () {
         this._restoreCursor();
         this._map.dragging.enable();
       },
@@ -374,10 +371,9 @@ export namespace MapsUtils {
         );
         console.log(bounds);
         const ways_id: number[] = [];
-        map.eachLayer(function (layer) {
+        map.eachLayer(function (layer: { lineId: number }) {
           if (layer instanceof L.Polyline) {
             if (bounds.intersects(layer.getBounds())) {
-              // console.log(layer);
               ways_id.push(layer.lineId);
             }
           }
@@ -385,7 +381,6 @@ export namespace MapsUtils {
         setSelectedWays(
           ways().filter((elem) => ways_id.includes(elem.flaxib_way_id))
         );
-        console.log("selected ways", getSelectedWays());
 
         //map.fitBounds(bounds);
         if (this._autoDisable) {
