@@ -1,6 +1,7 @@
 import { createSignal, onCleanup } from "solid-js";
 import { SchoolType } from "../../../../_entities/school.entity";
 import { TripType } from "../../../../_entities/trip.entity";
+import { getStops } from "../../../../_stores/stop.store";
 import { getTrips } from "../../../../_stores/trip.store";
 import { LabeledInputSelect } from "../../../../component/molecule/LabeledInputSelect";
 import { setDisplaySchools } from "../../_component/organisme/SchoolPoints";
@@ -44,9 +45,15 @@ export function DashboardAllotment() {
         }
       });
     });
-    // TODO find a way to display only currenttrip stops
+    const stopsId: number[] = [];
     setDisplaySchools(schoolList);
     setDisplayTrips(currentTrips());
+    currentTrips().forEach((trip) => {
+      trip.tripPoints.forEach((point) => {
+        if (!stopsId.includes(point.id)) stopsId.push(point.id);
+      });
+    });
+    setDisplayStops(getStops().filter((stop) => stopsId.includes(stop.id)));
     calcTotalDistance();
     calcTotalKmPassager();
   }
