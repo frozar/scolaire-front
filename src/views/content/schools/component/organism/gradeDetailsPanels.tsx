@@ -18,13 +18,12 @@ export function GradeDetailsPanels(props: { grade: GradeType }): JSXElement {
     GradeDetailsPanelEnum.stops
   );
 
-  function linkedTrips(): TripType[] {
-    return TripUtils.getByLinkedGrade(props.grade.id as number);
-  }
-
-  function linkedStops(): StopType[] {
-    return StopUtils.getByLinkedGrade(props.grade.id as number);
-  }
+  const stops: StopType[] = StopUtils.getByLinkedGrade(
+    props.grade.id as number
+  );
+  const trips: TripType[] = TripUtils.getByLinkedGrade(
+    props.grade.id as number
+  );
 
   return (
     <>
@@ -35,7 +34,7 @@ export function GradeDetailsPanels(props: { grade: GradeType }): JSXElement {
             classList={{ active: onPanel() == GradeDetailsPanelEnum.stops }}
             onClick={() => setOnPanel(GradeDetailsPanelEnum.stops)}
           >
-            {`Arrếts (${linkedStops().length})`}
+            {`Arrêts (${stops.length})`}
           </button>
 
           <button
@@ -43,17 +42,17 @@ export function GradeDetailsPanels(props: { grade: GradeType }): JSXElement {
             classList={{ active: onPanel() == GradeDetailsPanelEnum.trips }}
             onClick={() => setOnPanel(GradeDetailsPanelEnum.trips)}
           >
-            {`Courses (${linkedTrips().length})`}
+            {`Courses (${trips.length})`}
           </button>
         </div>
       </div>
       <div class="board-content">
         <Switch>
           <Match when={onPanel() == GradeDetailsPanelEnum.stops}>
-            <StopList stops={linkedStops()} />
+            <StopList stops={stops} />
           </Match>
           <Match when={onPanel() == GradeDetailsPanelEnum.trips}>
-            <TripsList trips={linkedTrips()} />
+            <TripsList trips={trips} />
           </Match>
         </Switch>
       </div>

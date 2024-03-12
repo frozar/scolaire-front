@@ -10,7 +10,9 @@ import {
 export const [getSchools, setSchools] = createSignal<SchoolType[]>([]);
 
 export namespace SchoolStore {
-  export function set(schools: SchoolType[]) {
+  export function set(
+    schools: SchoolType[] | ((prev: SchoolType[]) => SchoolType[])
+  ) {
     setSchools(schools);
   }
 

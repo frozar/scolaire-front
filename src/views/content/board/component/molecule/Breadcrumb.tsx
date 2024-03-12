@@ -9,8 +9,9 @@ import {
 } from "../../../map/component/organism/BusLines";
 import { selectedTrip } from "../../../map/component/organism/Trips";
 import { selectedPath } from "../../../path/component/organism/PathDetail";
-import { selectedGrade } from "../../../schools/component/organism/GradeEditBoard";
 import { schoolDetails } from "../../../schools/component/template/SchoolDetails";
+import { schoolGradeDetails } from "../../../schools/component/template/SchoolGradeDetails";
+import { schoolGradeEdit } from "../../../schools/component/template/SchoolGradeEdit";
 import { stopDetails } from "../../../stops/component/template/StopDetails";
 import BreadcrumbButton from "../atom/BreadcrumbButton";
 import DisplayBreadcrumbText from "../atom/DisplayBreadcrumbText";
@@ -94,9 +95,9 @@ export default function () {
           },
         ];
 
-      case "school-grade-modify":
+      case "school-grade-edit":
         const school = getSchools().filter((school) =>
-          school.grades.find((grade) => grade.id == selectedGrade()?.id)
+          school.grades.find((grade) => grade.id == schoolGradeEdit()?.id)
         )[0];
         return [
           schoolsCrumb,
@@ -105,7 +106,7 @@ export default function () {
             onClick: () => changeBoard("school-details"),
           },
           {
-            text: selectedGrade()?.name.toLowerCase() as string,
+            text: schoolGradeEdit()?.name.toLowerCase() as string,
           },
         ];
       case "school-grade-add":
@@ -127,7 +128,7 @@ export default function () {
             onClick: () => changeBoard("school-details"),
           },
           {
-            text: (selectedGrade()?.name as string).toLowerCase(),
+            text: (schoolGradeDetails()?.name as string).toLowerCase(),
           },
         ];
       case "trip-draw":

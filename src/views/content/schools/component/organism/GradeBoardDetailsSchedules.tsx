@@ -2,7 +2,10 @@ import { JSXElement } from "solid-js";
 import { GradeType } from "../../../../../_entities/grade.entity";
 import CollapsibleElement from "../../../board/component/organism/CollapsibleElement";
 import TimesInputWrapper from "../molecule/TimesInputWrapper";
-import { selectedGrade, setSelectedGrade } from "./GradeEditBoard";
+import {
+  schoolGradeDetails,
+  setSchoolGradeDetails,
+} from "../template/SchoolGradeDetails";
 import { GradeHourRuleList } from "./GradeHourRuleList";
 
 export function GradeBoardDetailsSchedules(props: {
@@ -43,9 +46,10 @@ export function GradeBoardDetailsSchedules(props: {
             onInputStart={() => ""}
             onInputEnd={() => ""}
           />
+          {/* TODO refacto the props */}
           <GradeHourRuleList
-            item={selectedGrade}
-            setItem={setSelectedGrade}
+            item={schoolGradeDetails}
+            setItem={setSchoolGradeDetails}
             enabled={false}
           />
         </CollapsibleElement>

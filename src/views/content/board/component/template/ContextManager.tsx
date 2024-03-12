@@ -18,7 +18,7 @@ export type BoardTags =
   | "school-details"
   | "school-grade-details"
   | "school-grade-add"
-  | "school-grade-modify"
+  | "school-grade-edit"
   | "stops"
   | "stop-details"
   | "trip"

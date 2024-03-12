@@ -7,19 +7,19 @@ import { StopUtils } from "../../../../../utils/stop.utils";
 import { setDisplaySchools } from "../../../_component/organisme/SchoolPoints";
 import { setDisplayStops } from "../../../_component/organisme/StopPoints";
 import { GradeBoardDetailsHeader } from "../organism/GradeBoardDetailsHeader";
-import { GradeDetailsPanels } from "../organism/gradeDetailsPanels";
 import { GradeBoardDetailsSchedules } from "../organism/GradeBoardDetailsSchedules";
+import { GradeDetailsPanels } from "../organism/gradeDetailsPanels";
 
 export const [schoolGradeDetails, setSchoolGradeDetails] =
   createSignal<GradeType>();
 
 export function SchoolGradeDetails() {
   onMount(() => {
-    setMapData(schoolGradeDetails());
+    setMapDataGradeDetail(schoolGradeDetails());
   });
   onCleanup(() => {
     setSchoolGradeDetails();
-    setMapData(schoolGradeDetails());
+    setMapDataGradeDetail(schoolGradeDetails());
   });
 
   return (
@@ -31,7 +31,7 @@ export function SchoolGradeDetails() {
   );
 }
 
-function setMapData(grade: GradeType | undefined) {
+export function setMapDataGradeDetail(grade: GradeType | undefined) {
   if (grade && grade.schoolId) {
     const school: SchoolType = SchoolStore.get(grade.schoolId);
     setDisplaySchools([school]);

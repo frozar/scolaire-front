@@ -1,21 +1,28 @@
 import { JSXElement, createEffect, createSignal, on, onMount } from "solid-js";
 import { HoursType } from "../../../../../_entities/_utils.entity";
-import { GradeEntity } from "../../../../../_entities/grade.entity";
+import { GradeEntity, GradeType } from "../../../../../_entities/grade.entity";
 import { TimeUtils } from "../../../../../_entities/time.utils";
+import { SchoolStore } from "../../../../../_stores/school.store";
 import { LabeledCheckbox } from "../../../../../component/molecule/LabeledCheckbox";
 import TimesInputWrapper from "../molecule/TimesInputWrapper";
-import { selectedGrade, setSelectedGrade } from "./GradeEditBoard";
-import { schoolDetails } from "../template/SchoolDetails";
+import {
+  schoolGradeEdit,
+  setSchoolGradeEdit,
+} from "../template/SchoolGradeEdit";
+import { GradeHourRuleList } from "./GradeHourRuleList";
 
-export const [bufferHours, setBufferHours] = createSignal<HoursType>(
-  TimeUtils.defaultHours()
-);
-export const [useSchoolSchedule, setUseSchoolSchedule] =
-  createSignal<boolean>(true);
+export function GradeTimesScheduleWrapper(props: {
+  grade: GradeType;
+  onUpdate: (hours: HoursType) => void;
+}): JSXElement {
+  const [bufferHours, setBufferHours] = createSignal<HoursType>(
+    TimeUtils.defaultHours()
+  );
+  const [useSchoolSchedule, setUseSchoolSchedule] = createSignal<boolean>(true);
 
-export function GradeTimesScheduleWrapper(): JSXElement {
-  const schoolHours = schoolDetails()?.hours as HoursType;
-  const initalGradeHours = selectedGrade()?.hours ?? TimeUtils.defaultHours();
+  const school = SchoolStore.get(props.grade.schoolId as number);
+  const schoolHours = school.hours as HoursType;
+  const initalGradeHours = props.grade.hours ?? TimeUtils.defaultHours();
 
   onMount(() => {
     // * if no hour for the grade set hours of school to grade
@@ -40,11 +47,7 @@ export function GradeTimesScheduleWrapper(): JSXElement {
 
   createEffect(() => {
     if (bufferHours() != initalGradeHours) {
-      // eslint-disable-next-line solid/reactivity
-      setSelectedGrade((prev) => {
-        if (!prev) return prev;
-        return { ...prev, hours: bufferHours() };
-      });
+      props.onUpdate(bufferHours());
     }
   });
 
@@ -111,6 +114,11 @@ export function GradeTimesScheduleWrapper(): JSXElement {
         onInputStart={onInputGoingStart}
         onInputEnd={onInputGoingEnd}
         disabled={useSchoolSchedule()}
+      />
+      <GradeHourRuleList
+        item={schoolGradeEdit}
+        setItem={setSchoolGradeEdit}
+        enabled={!useSchoolSchedule()}
       />
     </div>
   );

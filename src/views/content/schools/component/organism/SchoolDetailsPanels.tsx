@@ -4,9 +4,7 @@ import { GradeType } from "../../../../../_entities/grade.entity";
 import { SchoolEntity } from "../../../../../_entities/school.entity";
 import PlusIcon from "../../../../../icons/PlusIcon";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
-import { changeBoard } from "../../../board/component/template/ContextManager";
 import SchoolDetailsPanelsButton from "../molecule/SchoolDetailsPanelsButton";
-import { setSelectedGrade } from "./GradeEditBoard";
 import GradeList from "./GradeList";
 import { TripsList } from "./TripsList";
 
@@ -29,8 +27,9 @@ export function SchoolDetailsPanels() {
       calendar: schoolDetails()?.calendar,
     };
 
-    setSelectedGrade(grade);
-    changeBoard("school-grade-add");
+    // TODO on add grade use ViewManager.schoolAddGrade(schoolDetails())
+    // setSelectedGrade(grade);
+    // changeBoard("school-grade-add");
   }
 
   return (

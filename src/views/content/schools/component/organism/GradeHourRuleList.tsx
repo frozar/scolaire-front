@@ -13,6 +13,7 @@ interface GradeHourRuleListProps {
   setItem: Setter<GradeType>;
 }
 
+/* TODO refacto the props */
 export function GradeHourRuleList(props: GradeHourRuleListProps) {
   const item = () => props.item();
 

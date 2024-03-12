@@ -4,15 +4,13 @@ import PencilIcon from "../../../../../icons/PencilIcon";
 import TrashIcon from "../../../../../icons/TrashIcon";
 import { GradeUtils } from "../../../../../utils/grade.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
-import {
-  changeBoard,
-  setOnBoard,
-} from "../../../board/component/template/ContextManager";
+import { changeBoard } from "../../../board/component/template/ContextManager";
 
 // TODO: Refactor all read board headers css (trip, stop, school, grade)
 import { addNewUserInformation } from "../../../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../../../type";
 import { setRemoveConfirmation } from "../../../../../userInformation/RemoveConfirmation";
+import { ViewManager } from "../../../ViewManager";
 import "./GradeBoardDetailsHeader.css";
 
 export function GradeBoardDetailsHeader(props: {
@@ -27,7 +25,7 @@ export function GradeBoardDetailsHeader(props: {
     } else return false;
   }
 
-  function onClick() {
+  function onRemove() {
     const gradeId = props.grade.id as number;
 
     if (GradeUtils.checkIfIsUsed(gradeId)) {
@@ -58,9 +56,9 @@ export function GradeBoardDetailsHeader(props: {
         <div class="grade-detail-header-buttons">
           <ButtonIcon
             icon={<PencilIcon />}
-            onClick={() => setOnBoard("school-grade-modify")}
+            onClick={() => ViewManager.schoolGradeEdit(props.grade)}
           />
-          <ButtonIcon icon={<TrashIcon />} onClick={onClick} />
+          <ButtonIcon icon={<TrashIcon />} onClick={onRemove} />
         </div>
       </div>
 
