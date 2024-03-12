@@ -18,6 +18,7 @@ export function DashboardSchool() {
   const [schoolTrips, setSchoolTrips] = createSignal<TripType[]>([]);
   const [totalDistance, setTotalDistance] = createSignal(0);
   const [totalKmPassager, setTotalKmPassager] = createSignal(0);
+  const [totalStudents, setTotalStudents] = createSignal(0);
 
   function calcTotalKmPassager() {
     setTotalKmPassager(0);
@@ -55,6 +56,13 @@ export function DashboardSchool() {
     setDisplaySchools([currentSchool()]);
     setDisplayTrips(schoolTrips());
     setDisplayStops(getStops().filter((stop) => stopsId.includes(stop.id)));
+    const allStops = getStops().filter((stop) => stopsId.includes(stop.id));
+    setTotalStudents(0);
+    allStops.forEach((stop) => {
+      stop.associated.forEach((item) => {
+        setTotalStudents(totalStudents() + item.quantity);
+      });
+    });
   }
 
   onCleanup(() => {
@@ -76,7 +84,7 @@ export function DashboardSchool() {
       <DashboardMetrics
         distance={totalDistance()}
         kmPassager={totalKmPassager()}
-        students={0}
+        students={totalStudents()}
       />
     </div>
   );
