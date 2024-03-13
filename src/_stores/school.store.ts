@@ -1,4 +1,5 @@
 import { createSignal } from "solid-js";
+import { GradeType } from "../_entities/grade.entity";
 import { SchoolType } from "../_entities/school.entity";
 import { SchoolService } from "../_services/school.service";
 import { StopUtils } from "../utils/stop.utils";
@@ -33,5 +34,17 @@ export namespace SchoolStore {
 
     if (schoolDetails()?.id == updatedSchool.id)
       setSchoolDetails(updatedSchool);
+  }
+
+  export function addGrade(grade: GradeType) {
+    set((prev) => {
+      const output = prev.map((school) => {
+        if (school.id == grade.schoolId) {
+          school.grades.push(grade);
+        }
+        return school;
+      });
+      return output;
+    });
   }
 }

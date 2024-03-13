@@ -19,6 +19,17 @@ export class EntityUtils {
     };
   }
 
+  static defaultHours(): HoursType {
+    return {
+      id: null,
+      startHourComing: null,
+      endHourComing: null,
+      startHourGoing: null,
+      endHourGoing: null,
+      rules: [],
+    };
+  }
+
   static formatColorForDB(color: string) {
     if (color.startsWith("#")) {
       return color.replace("#", "");

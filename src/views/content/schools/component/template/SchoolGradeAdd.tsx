@@ -1,39 +1,38 @@
 import { Show, createSignal, onCleanup, onMount } from "solid-js";
 import { HoursType } from "../../../../../_entities/_utils.entity";
 import { CalendarType } from "../../../../../_entities/calendar.entity";
-import { GradeType } from "../../../../../_entities/grade.entity";
+import { GradeEntity, GradeType } from "../../../../../_entities/grade.entity";
+import { SchoolType } from "../../../../../_entities/school.entity";
 import { GradeService } from "../../../../../_services/grade.service";
-import {
-  SchoolStore,
-  getSchools,
-  setSchools,
-} from "../../../../../_stores/school.store";
+import { SchoolStore } from "../../../../../_stores/school.store";
 import { ViewManager } from "../../../ViewManager";
+import { setDisplaySchools } from "../../../_component/organisme/SchoolPoints";
 import BoardFooterActions from "../../../board/component/molecule/BoardFooterActions";
 import LabeledInputField from "../../../board/component/molecule/LabeledInputField";
 import { onBoard } from "../../../board/component/template/ContextManager";
 import GradeBoardHeader from "../molecule/GradeBoardHeader";
 import { GradeCalendarSelectionWrapper } from "../organism/GradeCalendarSelectionWrapper";
 import { GradeTimesScheduleWrapper } from "../organism/GradeTimesScheduleWrapper";
-import { setMapDataGradeDetail } from "./SchoolGradeDetails";
 
-export const [schoolGradeEdit, setSchoolGradeEdit] = createSignal<GradeType>();
+export const [schoolOfAddGrade, setSchoolOfAddGrade] =
+  createSignal<SchoolType>();
 
-// TODO Refactor
-// eslint-disable-next-line solid/reactivity
-export function SchoolGradeEdit() {
+export function SchoolGradeAdd() {
+  const school: SchoolType = schoolOfAddGrade() as SchoolType;
+  console.log("toto");
+
   const [localGrade, setLocalGrade] = createSignal<GradeType>();
-  setLocalGrade(schoolGradeEdit() as GradeType);
+  setLocalGrade(GradeEntity.initEntity(school));
 
   const [gradeName, setGradeName] = createSignal(localGrade()?.name);
 
   onMount(() => {
-    setMapDataGradeDetail(localGrade());
+    setMapData(localGrade());
   });
 
   onCleanup(() => {
     setLocalGrade();
-    setMapDataGradeDetail(localGrade());
+    setMapData(localGrade());
   });
 
   function updateName(name: string) {
@@ -59,33 +58,14 @@ export function SchoolGradeEdit() {
   }
 
   function onClickCancel() {
-    ViewManager.schoolGrade(schoolGradeEdit() as GradeType);
+    ViewManager.schoolDetails(schoolOfAddGrade() as SchoolType);
   }
   //TODO revoir tout le code du register -> surtout partie Service + "store"
   async function register() {
-    const initialGrade = schoolGradeEdit() as GradeType;
-    const schoolToUpdate = SchoolStore.get(initialGrade.schoolId as number);
+    const schoolToUpdate = SchoolStore.get(localGrade()?.schoolId as number);
     if (!schoolToUpdate) return;
-
-    const grade = await GradeService.update(localGrade() as GradeType);
-
-    const gradeIndex = schoolToUpdate.grades.findIndex(
-      (item) => item.id == grade.schoolId
-    );
-    schoolToUpdate.grades[gradeIndex] = grade;
-
-    const schoolIndex = getSchools().findIndex(
-      (item) => item.id == grade.schoolId
-    );
-
-    setSchools((prev) => {
-      if (!prev) return prev;
-      const schools = [...prev];
-      schools[schoolIndex] = schoolToUpdate;
-
-      return schools;
-    });
-
+    const grade = await GradeService.create(localGrade() as GradeType);
+    SchoolStore.addGrade(grade);
     ViewManager.schoolGrade(grade);
   }
 
@@ -96,7 +76,7 @@ export function SchoolGradeEdit() {
 
   return (
     <section>
-      <Show when={schoolGradeEdit()}>
+      <Show when={localGrade()}>
         <GradeBoardHeader title={title} />
 
         <div class="content">
@@ -109,13 +89,13 @@ export function SchoolGradeEdit() {
           />
 
           <GradeCalendarSelectionWrapper
-            grade={schoolGradeEdit() as GradeType}
+            grade={localGrade() as GradeType}
             onUpdate={updateCalendar}
           />
 
-          <Show when={schoolGradeEdit()?.calendar}>
+          <Show when={localGrade()?.calendar}>
             <GradeTimesScheduleWrapper
-              grade={schoolGradeEdit() as GradeType}
+              grade={localGrade() as GradeType}
               onUpdate={updateHours}
             />
           </Show>
@@ -134,4 +114,14 @@ export function SchoolGradeEdit() {
       </Show>
     </section>
   );
+}
+
+function setMapData(grade: GradeType | undefined) {
+  if (grade && grade.schoolId) {
+    const school: SchoolType = SchoolStore.get(grade.schoolId);
+    setDisplaySchools([school]);
+  } else {
+    setDisplaySchools([]);
+    // setDisplayTrips([]);
+  }
 }

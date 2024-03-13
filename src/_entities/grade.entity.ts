@@ -1,10 +1,16 @@
 import { QuantityMatrixType } from "../utils/quantity.utils";
-import { AssociatedSchoolType, HoursDBType, HoursType } from "./_utils.entity";
+import {
+  AssociatedSchoolType,
+  EntityUtils,
+  HoursDBType,
+  HoursType,
+} from "./_utils.entity";
 import {
   CalendarDBType,
   CalendarEntity,
   CalendarType,
 } from "./calendar.entity";
+import { SchoolType } from "./school.entity";
 import { DBAssociatedStop } from "./stop.entity";
 import { TimeUtils } from "./time.utils";
 
@@ -18,6 +24,14 @@ export namespace GradeEntity {
       calendar: dbData.calendar
         ? CalendarEntity.build(dbData.calendar)
         : undefined,
+    };
+  }
+
+  export function initEntity(school: SchoolType): GradeType {
+    return {
+      schoolId: school.id,
+      name: "",
+      hours: EntityUtils.defaultHours(),
     };
   }
 

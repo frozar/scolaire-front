@@ -1,7 +1,9 @@
 import { Match, Show, Switch, createSignal } from "solid-js";
-import { HoursType } from "../../../../../_entities/_utils.entity";
 import { GradeType } from "../../../../../_entities/grade.entity";
-import { SchoolEntity } from "../../../../../_entities/school.entity";
+import {
+  SchoolEntity,
+  SchoolType,
+} from "../../../../../_entities/school.entity";
 import PlusIcon from "../../../../../icons/PlusIcon";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import SchoolDetailsPanelsButton from "../molecule/SchoolDetailsPanelsButton";
@@ -9,6 +11,7 @@ import GradeList from "./GradeList";
 import { TripsList } from "./TripsList";
 
 import { SchoolUtils } from "../../../../../utils/school.utils";
+import { ViewManager } from "../../../ViewManager";
 import { schoolDetails } from "../template/SchoolDetails";
 import "./SchoolDetailsPanels.css";
 
@@ -21,15 +24,7 @@ export function SchoolDetailsPanels() {
   const [onPanel, setOnPanel] = createSignal<PanelsEnum>(PanelsEnum.grades);
 
   function onClickAddGrade() {
-    const grade: GradeType = {
-      name: "Nom par défaut",
-      hours: schoolDetails()?.hours as HoursType,
-      calendar: schoolDetails()?.calendar,
-    };
-
-    // TODO on add grade use ViewManager.schoolAddGrade(schoolDetails())
-    // setSelectedGrade(grade);
-    // changeBoard("school-grade-add");
+    ViewManager.schoolGradeAdd(schoolDetails() as SchoolType);
   }
 
   return (

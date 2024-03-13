@@ -5,6 +5,7 @@ import { setSelectedMenu } from "../layout/menuItemFields";
 import { setMapBoard } from "./_component/template/MapBoardManager";
 import { changeBoard } from "./board/component/template/ContextManager";
 import { setSchoolDetails } from "./schools/component/template/SchoolDetails";
+import { setSchoolOfAddGrade } from "./schools/component/template/SchoolGradeAdd";
 import { setSchoolGradeDetails } from "./schools/component/template/SchoolGradeDetails";
 import { setSchoolGradeEdit } from "./schools/component/template/SchoolGradeEdit";
 import { setStopDetails } from "./stops/component/template/StopDetails";
@@ -52,9 +53,15 @@ export namespace ViewManager {
     changeBoard(undefined);
   }
   export function schoolGradeEdit(grade: GradeType) {
-    console.log("schoolGradeEdit", grade);
     setSchoolGradeEdit(grade);
     setMapBoard("school-grade-edit");
+    setSelectedMenu("schools");
+    //TODO to delete post refacto
+    changeBoard(undefined);
+  }
+  export function schoolGradeAdd(school: SchoolType) {
+    setSchoolOfAddGrade(school);
+    setMapBoard("school-grade-add");
     setSelectedMenu("schools");
     //TODO to delete post refacto
     changeBoard(undefined);
