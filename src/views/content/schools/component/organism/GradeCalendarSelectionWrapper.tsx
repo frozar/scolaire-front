@@ -1,11 +1,11 @@
 import { createEffect, createSignal, on } from "solid-js";
 import { CalendarType } from "../../../../../_entities/calendar.entity";
 import { GradeType } from "../../../../../_entities/grade.entity";
+import { calendars } from "../../../../../_stores/calendar.store";
 import { SchoolStore } from "../../../../../_stores/school.store";
 import { SelectInput } from "../../../../../component/atom/SelectInput";
 import { LabeledCheckbox } from "../../../../../component/molecule/LabeledCheckbox";
 import { SchoolUtils } from "../../../../../utils/school.utils";
-import { calendars } from "../../../calendar/calendar.manager";
 
 export function GradeCalendarSelectionWrapper(props: {
   grade: GradeType;

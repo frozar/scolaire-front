@@ -1,4 +1,3 @@
-import { createSignal } from "solid-js";
 import {
   CalendarDayEnum,
   CalendarPeriodType,
@@ -13,15 +12,14 @@ import {
   TripDirectionEnum,
 } from "../../../_entities/trip-direction.entity";
 import { CalendarService } from "../../../_services/calendar.service";
+import { CalendarPeriodStore } from "../../../_stores/calendar-period.store";
+import { CalendarStore } from "../../../_stores/calendar.store";
 import { CalendarUtils } from "./calendar.utils";
 import {
   currentCalendar,
-  setCalendarsPeriod,
   setCurrentCalendar,
   setOnCalendarsPeriod,
 } from "./template/Calendar";
-
-export const [calendars, setCalendars] = createSignal<CalendarType[]>([]);
 
 // * this namespace is to manage the editioning calendarPeriod
 export namespace CalendarManager {
@@ -43,37 +41,13 @@ export namespace CalendarManager {
     });
   }
 
-  export async function createCalendar(calendar: CalendarType) {
-    const newCalendar = await CalendarService.createCalendar(calendar);
-    setCalendars((prev) => {
-      if (prev == undefined) return prev;
-      prev = [...prev, newCalendar];
-      return prev;
-    });
-    setCurrentCalendar(newCalendar);
-  }
-
-  export async function createCalendarPeriod(
-    calendarPeriod: Omit<CalendarPeriodType, "id">
-  ) {
-    const _calendarPeriod = await CalendarService.createCalendarPeriod(
-      calendarPeriod
-    );
-    setCalendarsPeriod((prev) => {
-      if (prev == undefined) return prev;
-      prev = [...prev, _calendarPeriod];
-      return prev;
-    });
-    setOnCalendarsPeriod(_calendarPeriod);
-  }
-
   export async function updateCalendarPeriod(
     calendarPeriod: CalendarPeriodType
   ) {
     const _calendarPeriod = await CalendarService.updateCalendarPeriod(
       calendarPeriod
     );
-    setCalendarsPeriod((prev) => {
+    CalendarPeriodStore.set((prev) => {
       if (prev == undefined) return prev;
       const datas = [...prev];
       const index = datas.findIndex((item) => item.id == calendarPeriod.id);
@@ -83,22 +57,13 @@ export namespace CalendarManager {
     });
   }
 
-  export async function deleteCalendar(calendarId: number) {
-    const response = await CalendarService.deleteCalendar(calendarId);
-    if (response) {
-      setCalendars((prev) => {
-        return [...prev.filter((item) => item.id != calendarId)];
-      });
-    }
-    return response;
-  }
-
+  // TODO move to calendar-period.store
   export async function deleteCalendarPeriod(calendarPeriodId: number) {
     const response = await CalendarService.deleteCalendarPerdio(
       calendarPeriodId
     );
     if (response) {
-      setCalendarsPeriod((prev) => {
+      CalendarPeriodStore.set((prev) => {
         return [...prev.filter((item) => item.id != calendarPeriodId)];
       });
     }
@@ -173,8 +138,9 @@ export namespace CalendarManager {
     });
   }
 
+  // TODO move to calendar.store
   export function updateCalendar(calendar: CalendarType) {
-    setCalendars((prev) => {
+    CalendarStore.set((prev) => {
       if (prev == undefined) return prev;
       const calendars = [...prev];
       const indexOfCalendar = calendars.findIndex(

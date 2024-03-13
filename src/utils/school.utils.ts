@@ -5,12 +5,12 @@ import {
 import { GradeType } from "../_entities/grade.entity";
 import { SchoolType } from "../_entities/school.entity";
 import { SchoolService } from "../_services/school.service";
+import { calendars } from "../_stores/calendar.store";
 import { LineStore, getLines } from "../_stores/line.store";
 import { getSchools, setSchools } from "../_stores/school.store";
 import { StopStore, getStops } from "../_stores/stop.store";
 import { addNewUserInformation } from "../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
-import { calendars } from "../views/content/calendar/calendar.manager";
 import { setSchoolDetails } from "../views/content/schools/component/template/SchoolDetails";
 import { QuantityUtils } from "./quantity.utils";
 

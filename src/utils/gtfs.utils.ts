@@ -9,9 +9,9 @@ import {
   GtfsTripMappingCalendarType,
 } from "../_entities/gtfs.entity";
 import { TripType } from "../_entities/trip.entity";
+import { calendarsPeriod } from "../_stores/calendar-period.store";
 import { getSchools } from "../_stores/school.store";
 import { CalendarUtils } from "../views/content/calendar/calendar.utils";
-import { calendarsPeriod } from "../views/content/calendar/template/Calendar";
 import { CalendarPeriodUtils } from "./calendarPeriod.utils";
 import { TripUtils } from "./trip.utils";
 

@@ -2,12 +2,13 @@ import {
   CalendarPeriodType,
   CalendarType,
 } from "../../../../_entities/calendar.entity";
+import { calendarsPeriod } from "../../../../_stores/calendar-period.store";
+import { CalendarStore } from "../../../../_stores/calendar.store";
 import { setRemoveConfirmation } from "../../../../userInformation/RemoveConfirmation";
 import { CalendarManager } from "../calendar.manager";
 import { CalendarLineName } from "../molecule/CalendarLineName";
 import { CalendarMonthsDetails } from "../molecule/CalendarMonthsDetails";
 import {
-  calendarsPeriod,
   currentCalendar,
   onCalendarsPeriod,
   setCurrentCalendar,
@@ -54,7 +55,7 @@ export function CalendarLineContent(props: CalendarLineContentProps) {
       itemName: calendarName() as string,
       validate: () => {
         if (isCalendarOrCalendarPeriod() == "calendar")
-          return CalendarManager.deleteCalendar(props.calendar?.id as number);
+          return CalendarStore.remove(props.calendar?.id as number);
         else
           return CalendarManager.deleteCalendarPeriod(
             props.calendarPeriod?.id as number

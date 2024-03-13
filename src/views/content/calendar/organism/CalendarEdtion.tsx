@@ -4,17 +4,14 @@ import {
   CalendarType,
 } from "../../../../_entities/calendar.entity";
 import { CalendarService } from "../../../../_services/calendar.service";
+import { calendarsPeriod } from "../../../../_stores/calendar-period.store";
 import Button from "../../../../component/atom/Button";
 import { LabeledInputSelect } from "../../../../component/molecule/LabeledInputSelect";
 import { disableSpinningWheel, enableSpinningWheel } from "../../../../signaux";
 import { CalendarSectionTitle } from "../atom/CalendarSectionTitle";
 import { CalendarManager } from "../calendar.manager";
 import { CalendarRules } from "../molecule/CalendarRules";
-import {
-  CalendarActionsEnum,
-  calendarsPeriod,
-  setCurrentCalendar,
-} from "../template/Calendar";
+import { CalendarActionsEnum, setCurrentCalendar } from "../template/Calendar";
 import { CalendarEditionAddedDateWrapper } from "./CalendarEditionAddedDateWrapper";
 import "./CalendarEdtion.css";
 import { CalendarHeader } from "./CalendarHeader";

@@ -10,8 +10,9 @@ import {
   CalendarPeriodType,
   CalendarType,
 } from "../../../../_entities/calendar.entity";
+import { calendarsPeriod } from "../../../../_stores/calendar-period.store";
+import { calendars } from "../../../../_stores/calendar.store";
 import { displayedSpinningWheel } from "../../../../signaux";
-import { calendars } from "../calendar.manager";
 import { CalendarPanelsActions } from "../molecule/CalendarPanelsActions";
 import { CalendarEdition } from "../organism/CalendarEdtion";
 import { CalendarPeriod } from "../organism/CalendarPeriod";
@@ -32,9 +33,6 @@ export enum CalendarPanelEnum {
 
 export const [onCalendarsPeriod, setOnCalendarsPeriod] =
   createSignal<CalendarPeriodType>();
-export const [calendarsPeriod, setCalendarsPeriod] = createSignal<
-  CalendarPeriodType[]
->([]);
 
 export const [currentMonth, setCurrentMonth] = createSignal<Date>(new Date());
 export const [currentCalendar, setCurrentCalendar] =
