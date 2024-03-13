@@ -6,7 +6,7 @@ import CollapsibleElement from "../../../board/component/organism/CollapsibleEle
 import { HourRuleList } from "./HourRuleList";
 import { SchoolHoursSlots } from "./SchoolHoursSlots";
 
-import { calendars } from "../../../calendar/calendar.manager";
+import { calendars } from "../../../../../_stores/calendar.store";
 import {
   schoolDetailEditing,
   schoolDetails,

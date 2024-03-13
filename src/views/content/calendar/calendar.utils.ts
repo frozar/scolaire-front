@@ -7,9 +7,9 @@ import {
   TripDirectionEntity,
   TripDirectionEnum,
 } from "../../../_entities/trip-direction.entity";
+import { calendars } from "../../../_stores/calendar.store";
 import { addNewUserInformation } from "../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../type";
-import { calendars } from "./calendar.manager";
 import { currentCalendar } from "./template/Calendar";
 
 export namespace CalendarUtils {

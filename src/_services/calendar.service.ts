@@ -7,6 +7,7 @@ import {
 } from "../_entities/calendar.entity";
 import { ServiceUtils } from "./_utils.service";
 
+//TODO Slit this Service to CalendarService and CalendarPeriodService. This is 2 differents data. Same for CalendarEntity
 export namespace CalendarService {
   export async function updateCalendar(
     calendar: CalendarType

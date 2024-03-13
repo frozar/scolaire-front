@@ -5,10 +5,10 @@ import { CalendarInputText } from "../atom/CalendarInputText";
 import { CalendarMonthsDetails } from "../molecule/CalendarMonthsDetails";
 import { CalendarActionsEnum } from "../template/Calendar";
 
+import { CalendarPeriodStore } from "../../../../_stores/calendar-period.store";
 import { addNewUserInformation } from "../../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../../type";
 import ButtonIcon from "../../board/component/molecule/ButtonIcon";
-import { CalendarManager } from "../calendar.manager";
 import "./CalendarAddLine.css";
 import "./CalendarLineContent.css";
 
@@ -43,7 +43,7 @@ export function CalendarPeriodAddLine(props: CalendarAddLineProps) {
 
   async function createCalendarPeriod() {
     if (!isValidCalendarPeriod()) return;
-    CalendarManager.createCalendarPeriod(bufferCalendarPeriod);
+    CalendarPeriodStore.create(bufferCalendarPeriod);
     inputRef().value = "";
   }
 

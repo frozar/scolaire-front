@@ -5,6 +5,7 @@ import { CalendarInputText } from "../atom/CalendarInputText";
 import { CalendarMonthsDetails } from "../molecule/CalendarMonthsDetails";
 import { CalendarActionsEnum } from "../template/Calendar";
 
+import { CalendarStore } from "../../../../_stores/calendar.store";
 import {
   addNewUserInformation,
   disableSpinningWheel,
@@ -12,7 +13,6 @@ import {
 } from "../../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../../type";
 import ButtonIcon from "../../board/component/molecule/ButtonIcon";
-import { CalendarManager } from "../calendar.manager";
 import { CalendarUtils } from "../calendar.utils";
 import "./CalendarAddLine.css";
 import "./CalendarLineContent.css";
@@ -44,7 +44,7 @@ export function CalendarAddLine(props: CalendarAddLineProps) {
     if (!isValideCalendar()) return;
     enableSpinningWheel();
 
-    await CalendarManager.createCalendar(newCalendar);
+    await CalendarStore.create(newCalendar);
     inputRef().value = "";
 
     disableSpinningWheel();

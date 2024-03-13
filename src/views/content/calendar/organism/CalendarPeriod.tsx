@@ -3,7 +3,6 @@ import Button from "../../../../component/atom/Button";
 import { CalendarSectionTitle } from "../atom/CalendarSectionTitle";
 import { CalendarManager } from "../calendar.manager";
 import { SchoolPeriodDateInput } from "../molecule/SchoolPeriodDateInput";
-import { calendarsPeriod } from "../template/Calendar";
 import { CalendarPeriodTable } from "./CalendarPeriodTable";
 import { PublicHolidayItem } from "./PublicHolidayItem";
 import { PublicHolidayList } from "./PublicHolidayList";
@@ -11,6 +10,7 @@ import { VacationItem } from "./VacationItem";
 import { VacationList } from "./VacationList";
 
 import { Show } from "solid-js";
+import { calendarsPeriod } from "../../../../_stores/calendar-period.store";
 import { disableSpinningWheel, enableSpinningWheel } from "../../../../signaux";
 import "./CalendarPeriod.css";
 
