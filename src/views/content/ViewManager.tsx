@@ -25,6 +25,12 @@ export namespace ViewManager {
     //TODO to delete post refacto
     changeBoard(undefined);
   }
+  export function pathAdd() {
+    setMapBoard("path-add");
+    setSelectedMenu("paths");
+    //TODO to delete post refacto
+    changeBoard(undefined);
+  }
   export function stops() {
     setMapBoard("stops");
     setSelectedMenu("stops");

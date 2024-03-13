@@ -15,6 +15,7 @@ export type MapBoardTags =
   | "school-grade-add"
   | "school-grade-edit"
   | "paths"
+  | "path-add"
   //   | "trip"
   //   | "trip-draw"
   //   | "line"
