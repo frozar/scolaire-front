@@ -27,7 +27,7 @@ export function Contents() {
   const isMapView = () => ["graphicage"].includes(getSelectedMenu());
 
   const mapView = () =>
-    ["dashboard", "stops", "schools"].includes(getSelectedMenu());
+    ["dashboard", "stops", "schools", "paths"].includes(getSelectedMenu());
 
   const logged = () => (getAuthenticatedUser() ? true : false);
 
