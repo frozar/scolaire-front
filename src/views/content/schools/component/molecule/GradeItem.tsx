@@ -7,9 +7,8 @@ import { addNewUserInformation } from "../../../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../../../../../type";
 import { setRemoveConfirmation } from "../../../../../userInformation/RemoveConfirmation";
 import { GradeUtils } from "../../../../../utils/grade.utils";
+import { ViewManager } from "../../../ViewManager";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
-import { setOnBoard } from "../../../board/component/template/ContextManager";
-import { setSelectedGrade } from "../organism/GradeEditBoard";
 import "./GradeItem.css";
 
 interface GradeItemProps {
@@ -46,8 +45,7 @@ export default function (props: GradeItemProps) {
 
   function onClick() {
     if (!isMouseOverTrashCan()) {
-      setSelectedGrade(props.grade);
-      setOnBoard("school-grade-details");
+      ViewManager.schoolGrade(props.grade);
     }
   }
 

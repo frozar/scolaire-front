@@ -1,12 +1,18 @@
 import { JSXElement } from "solid-js";
+import { GradeType } from "../../../../../_entities/grade.entity";
 import CollapsibleElement from "../../../board/component/organism/CollapsibleElement";
 import TimesInputWrapper from "../molecule/TimesInputWrapper";
-import { selectedGrade, setSelectedGrade } from "./GradeEditBoard";
-import { HourRuleList } from "./HourRuleList";
+import {
+  schoolGradeDetails,
+  setSchoolGradeDetails,
+} from "../template/SchoolGradeDetails";
+import { GradeHourRuleList } from "./GradeHourRuleList";
 
-export function GradeBoardDetailsSchedules(): JSXElement {
+export function GradeBoardDetailsSchedules(props: {
+  grade: GradeType;
+}): JSXElement {
   function gradeCalendarName(): string {
-    const gradeCalendar = selectedGrade()?.calendar;
+    const gradeCalendar = props.grade.calendar;
     if (gradeCalendar) return gradeCalendar.name;
     else return "Pas de calendrier assigné";
   }
@@ -26,23 +32,24 @@ export function GradeBoardDetailsSchedules(): JSXElement {
         >
           <TimesInputWrapper
             label="Matin"
-            startValue={selectedGrade()?.hours.startHourComing}
-            endValue={selectedGrade()?.hours.endHourComing}
+            startValue={props.grade.hours.startHourComing}
+            endValue={props.grade.hours.endHourComing}
             disabled={true}
             onInputStart={() => ""}
             onInputEnd={() => ""}
           />
           <TimesInputWrapper
             label="Après-midi"
-            startValue={selectedGrade()?.hours.startHourGoing}
-            endValue={selectedGrade()?.hours.endHourGoing}
+            startValue={props.grade.hours.startHourGoing}
+            endValue={props.grade.hours.endHourGoing}
             disabled={true}
             onInputStart={() => ""}
             onInputEnd={() => ""}
           />
-          <HourRuleList
-            item={selectedGrade}
-            setItem={setSelectedGrade}
+          {/* TODO refacto the props */}
+          <GradeHourRuleList
+            item={schoolGradeDetails}
+            setItem={setSchoolGradeDetails}
             enabled={false}
           />
         </CollapsibleElement>

@@ -1,19 +1,24 @@
 import { createEffect, createSignal, on } from "solid-js";
 import { CalendarType } from "../../../../../_entities/calendar.entity";
+import { GradeType } from "../../../../../_entities/grade.entity";
+import { SchoolStore } from "../../../../../_stores/school.store";
 import { SelectInput } from "../../../../../component/atom/SelectInput";
 import { LabeledCheckbox } from "../../../../../component/molecule/LabeledCheckbox";
 import { SchoolUtils } from "../../../../../utils/school.utils";
 import { calendars } from "../../../calendar/calendar.manager";
-import { schoolDetails } from "../template/SchoolDetails";
-import { selectedGrade } from "./GradeEditBoard";
 
-export const [bufferCalendar, setBufferCalendar] = createSignal<CalendarType>();
+export function GradeCalendarSelectionWrapper(props: {
+  grade: GradeType;
+  onUpdate: (calendar: CalendarType) => void;
+}) {
+  const [bufferCalendar, setBufferCalendar] = createSignal<CalendarType>();
 
-export function GradeCalendarSelectionWrapper() {
-  const schoolCalendar = SchoolUtils.get(schoolDetails()?.id as number)
+  const school = SchoolStore.get(props.grade.schoolId as number);
+
+  const schoolCalendar = SchoolUtils.get(school.id as number)
     .calendar as CalendarType;
 
-  const initialGradeCalendar = selectedGrade()?.calendar;
+  const initialGradeCalendar = props.grade.calendar as CalendarType;
 
   setBufferCalendar(initialGradeCalendar);
 
@@ -29,8 +34,8 @@ export function GradeCalendarSelectionWrapper() {
 
   createEffect(
     on(useSchoolCalendar, () => {
-      if (useSchoolCalendar()) setBufferCalendar(schoolCalendar);
-      else setBufferCalendar(calendarFiltered[0]);
+      if (useSchoolCalendar()) props.onUpdate(schoolCalendar);
+      else props.onUpdate(calendarFiltered[0]);
     })
   );
 
