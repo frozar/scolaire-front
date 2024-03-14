@@ -1,4 +1,4 @@
-import { createSignal, onCleanup } from "solid-js";
+import { createSignal, onCleanup, onMount } from "solid-js";
 import { SchoolType } from "../../../../_entities/school.entity";
 import { TripType } from "../../../../_entities/trip.entity";
 import { getSchools } from "../../../../_stores/school.store";
@@ -8,7 +8,7 @@ import { LabeledInputSelect } from "../../../../component/molecule/LabeledInputS
 import { setDisplaySchools } from "../../_component/organisme/SchoolPoints";
 import { setDisplayStops } from "../../_component/organisme/StopPoints";
 import { setDisplayTrips } from "../../_component/organisme/Trips";
-import { DashboardMetrics } from "./DashboardMetrics";
+import { DashboardMetrics } from "../molecule/DashboardMetrics";
 
 export function DashboardSchool() {
   const [selectedSchool, setSelectedSchool] = createSignal(0);
@@ -19,6 +19,18 @@ export function DashboardSchool() {
   const [totalDistance, setTotalDistance] = createSignal(0);
   const [totalKmPassager, setTotalKmPassager] = createSignal(0);
   const [totalStudents, setTotalStudents] = createSignal(0);
+
+  onMount(() => {
+    setDisplayStops([]);
+    setDisplaySchools([]);
+    setDisplayTrips([]);
+  });
+
+  onCleanup(() => {
+    setDisplayStops([]);
+    setDisplaySchools([]);
+    setDisplayTrips([]);
+  });
 
   function calcTotalKmPassager() {
     setTotalKmPassager(0);
@@ -65,20 +77,14 @@ export function DashboardSchool() {
     });
   }
 
-  onCleanup(() => {
-    setDisplayStops([]);
-    setDisplaySchools([]);
-    setDisplayTrips([]);
-  });
-
   return (
     <div>
       <LabeledInputSelect
         defaultValue={selectedSchool()}
         label="Etablissement"
         onChange={onSelectChange}
-        options={getSchools().map((item) => {
-          return { value: Number(item.id), text: item.name };
+        options={getSchools().map((school) => {
+          return { value: Number(school.id), text: school.name };
         })}
       />
       <DashboardMetrics
