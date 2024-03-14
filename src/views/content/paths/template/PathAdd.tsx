@@ -16,6 +16,7 @@ export function PathAdd() {
   onCleanup(() => {
     setDisplaySchools([]);
     setDisplayStops([]);
+    setDisplayWays([]);
   });
   return <section>Add</section>;
 }

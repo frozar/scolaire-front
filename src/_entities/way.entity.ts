@@ -9,7 +9,7 @@ export namespace wayEntity {
       name: dbway.name,
       coordinates: dbway.line
         ? obj.coordinates.map((item) => {
-            return L.latLng(Number(item[0]), Number(item[1]));
+            return L.latLng(Number(item[1]), Number(item[0]));
           })
         : [],
     };

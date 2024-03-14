@@ -6,7 +6,6 @@ import { ServiceUtils } from "./_utils.service";
 
 const host = import.meta.env.VITE_BACK_URL;
 const [, { getActiveMapId }] = useStateGui();
-
 export namespace WayService {
   //TODO refacto
   export async function getAll(): Promise<WayType[] | undefined> {
