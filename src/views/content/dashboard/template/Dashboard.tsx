@@ -1,17 +1,8 @@
-import { Match, Switch, createSignal, onCleanup, onMount } from "solid-js";
-import { SchoolType } from "../../../../_entities/school.entity";
-import { StopType } from "../../../../_entities/stop.entity";
-import { TripType } from "../../../../_entities/trip.entity";
-import { getSchools } from "../../../../_stores/school.store";
-import { getStops } from "../../../../_stores/stop.store";
-import { getTrips } from "../../../../_stores/trip.store";
+import { Match, Switch, createSignal } from "solid-js";
 import { LabeledInputSelect } from "../../../../component/molecule/LabeledInputSelect";
-import { setDisplaySchools } from "../../_component/organisme/SchoolPoints";
-import { setDisplayStops } from "../../_component/organisme/StopPoints";
-import { setDisplayTrips } from "../../_component/organisme/Trips";
-import { DashboardAllotment } from "../molecule/DashboardAllotment";
-import { DashboardGlobal } from "../molecule/DashboardGlobal";
-import { DashboardSchool } from "../molecule/DashboardSchool";
+import { DashboardAllotment } from "../organisme/DashboardAllotment";
+import { DashboardGlobal } from "../organisme/DashboardGlobal";
+import { DashboardSchool } from "../organisme/DashboardSchool";
 
 enum DashboardViewEnum {
   global,
@@ -23,13 +14,6 @@ export function Dashboard() {
   const [selectedFilter, setSelectedFilter] = createSignal(
     DashboardViewEnum.global
   );
-
-  onMount(() => {
-    setMapData(getStops(), getSchools(), getTrips());
-  });
-  onCleanup(() => {
-    setMapData([], [], []);
-  });
 
   return (
     <div class="px-10 w-full bg-white">
@@ -59,14 +43,4 @@ export function Dashboard() {
       </div>
     </div>
   );
-}
-
-function setMapData(
-  stops: StopType[],
-  schools: SchoolType[],
-  trips: TripType[]
-) {
-  setDisplayStops(stops);
-  setDisplaySchools(schools);
-  setDisplayTrips(trips);
 }

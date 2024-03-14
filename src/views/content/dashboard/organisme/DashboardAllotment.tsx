@@ -1,5 +1,6 @@
-import { createSignal, onCleanup } from "solid-js";
+import { createEffect, createSignal, onCleanup, onMount } from "solid-js";
 import { SchoolType } from "../../../../_entities/school.entity";
+import { StopType } from "../../../../_entities/stop.entity";
 import { TripType } from "../../../../_entities/trip.entity";
 import { getStops } from "../../../../_stores/stop.store";
 import { getTrips } from "../../../../_stores/trip.store";
@@ -8,37 +9,40 @@ import { setDisplaySchools } from "../../_component/organisme/SchoolPoints";
 import { setDisplayStops } from "../../_component/organisme/StopPoints";
 import { setDisplayTrips } from "../../_component/organisme/Trips";
 import { getAllotment } from "../../allotment/organism/Allotment";
-import { DashboardMetrics } from "./DashboardMetrics";
+import { DashboardMetrics } from "../molecule/DashboardMetrics";
 
 export function DashboardAllotment() {
   const [currentAllotment, setCurrentAllotment] = createSignal(0);
+
   const [currentTrips, setCurrentTrips] = createSignal<TripType[]>([]);
-  const [totalDistance, setTotalDistance] = createSignal(0);
-  const [totalKmPassager, setTotalKmPassager] = createSignal(0);
-  const [totalStudents, setTotalStudents] = createSignal(0);
+  const [currentStops, setCurrentStops] = createSignal<StopType[]>([]);
+  const [currentSchools, setCurrentSchools] = createSignal<SchoolType[]>([]);
 
-  function calcTotalKmPassager() {
-    setTotalKmPassager(0);
-    currentTrips().forEach((trip) => {
-      setTotalKmPassager(totalKmPassager() + Number(trip.metrics?.kmPassager));
-    });
-    setTotalKmPassager(roundDecimal(totalKmPassager(), 2));
-  }
+  onMount(() => {
+    setDisplayStops(currentStops());
+    setDisplaySchools(currentSchools());
+    setDisplayTrips(currentTrips());
+  });
 
-  function calcTotalDistance() {
-    setTotalDistance(0);
-    currentTrips().forEach((trip) => {
-      setTotalDistance(totalDistance() + Number(trip.metrics?.distance));
-    });
-    setTotalDistance(roundDecimal(totalDistance() / 1000, 2));
-  }
+  createEffect(() => {
+    setDisplayStops(currentStops());
+    setDisplaySchools(currentSchools());
+    setDisplayTrips(currentTrips());
+  });
+
+  onCleanup(() => {
+    setDisplayStops([]);
+    setDisplaySchools([]);
+    setDisplayTrips([]);
+  });
 
   function onSelectChange(value: string | number) {
-    const schoolList: SchoolType[] = [];
     setCurrentAllotment(Number(value));
     setCurrentTrips(
       getTrips().filter((item) => item.allotmentId == currentAllotment())
     );
+
+    const schoolList: SchoolType[] = [];
     currentTrips().forEach((trip) => {
       trip.schools.forEach((school) => {
         if (!schoolList.includes(school)) {
@@ -46,35 +50,17 @@ export function DashboardAllotment() {
         }
       });
     });
+    setCurrentSchools(schoolList);
+
     const stopsId: number[] = [];
-    setDisplaySchools(schoolList);
-    setDisplayTrips(currentTrips());
     currentTrips().forEach((trip) => {
       trip.tripPoints.forEach((point) => {
         if (!stopsId.includes(point.id)) stopsId.push(point.id);
       });
     });
-    setDisplayStops(getStops().filter((stop) => stopsId.includes(stop.id)));
-    calcTotalDistance();
-    calcTotalKmPassager();
-
     const allStops = getStops().filter((stop) => stopsId.includes(stop.id));
-    setTotalStudents(0);
-    allStops.forEach((stop) => {
-      stop.associated.forEach((item) => {
-        setTotalStudents(totalStudents() + item.quantity);
-      });
-    });
+    setCurrentStops(allStops);
   }
-
-  onCleanup(() => {
-    setDisplayStops([]);
-    setDisplaySchools([]);
-    setDisplayTrips([]);
-    setTotalDistance(0);
-    setTotalKmPassager(0);
-    setTotalStudents(0);
-  });
 
   return (
     <div>
@@ -86,16 +72,7 @@ export function DashboardAllotment() {
           return { value: Number(item.id), text: item.name };
         })}
       />
-      <DashboardMetrics
-        distance={totalDistance()}
-        kmPassager={totalKmPassager()}
-        students={totalStudents()}
-      />
+      <DashboardMetrics trips={currentTrips()} stops={currentStops()} />
     </div>
   );
-}
-
-function roundDecimal(value: number, precision: number) {
-  const tmp = Math.pow(10, precision);
-  return Math.round(value * tmp) / tmp;
 }
