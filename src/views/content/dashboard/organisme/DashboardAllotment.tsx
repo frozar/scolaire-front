@@ -51,7 +51,6 @@ export function DashboardAllotment() {
       });
     });
     setCurrentSchools(schoolList);
-    console.log("selec scol", currentSchools());
 
     const stopsId: number[] = [];
     currentTrips().forEach((trip) => {
@@ -61,7 +60,6 @@ export function DashboardAllotment() {
     });
     const allStops = getStops().filter((stop) => stopsId.includes(stop.id));
     setCurrentStops(allStops);
-    console.log("selec stop", currentStops());
   }
 
   return (

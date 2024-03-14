@@ -2,6 +2,7 @@ import { Match, Switch, createSignal } from "solid-js";
 import { LabeledInputSelect } from "../../../../component/molecule/LabeledInputSelect";
 import { DashboardAllotment } from "../organisme/DashboardAllotment";
 import { DashboardGlobal } from "../organisme/DashboardGlobal";
+import { DashboardSchool } from "../organisme/DashboardSchool";
 
 enum DashboardViewEnum {
   global,
@@ -35,9 +36,9 @@ export function Dashboard() {
           <Match when={selectedFilter() == DashboardViewEnum.allotment}>
             <DashboardAllotment />
           </Match>
-          {/* <Match when={selectedFilter() == DashboardViewEnum.school}>
+          <Match when={selectedFilter() == DashboardViewEnum.school}>
             <DashboardSchool />
-          </Match> */}
+          </Match>
         </Switch>
       </div>
     </div>
