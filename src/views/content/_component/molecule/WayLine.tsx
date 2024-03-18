@@ -2,7 +2,11 @@ import { LatLng } from "leaflet";
 import { createEffect, createSignal } from "solid-js";
 import { WayType } from "../../../../_entities/way.entity";
 import Line from "../../map/component/atom/Line";
-import { COLOR_BLUE_BASE, COLOR_GREEN_BASE } from "../../map/constant";
+import {
+  COLOR_BLUE_BASE,
+  COLOR_GREEN_BASE,
+  COLOR_RED_BASE,
+} from "../../map/constant";
 import { selectedWays, setSelectedWays } from "../../paths/template/PathAdd";
 
 export const [wayLineColor, setWayLineColor] =
@@ -17,7 +21,6 @@ export function WayLine(props: { way: WayType; map: L.Map }) {
   createEffect(() => setLocalOpacity(wayLineOpacity()));
 
   function addWay() {
-    console.log(props.way);
     // eslint-disable-next-line solid/reactivity
     setSelectedWays((prev) => {
       return [...prev, props.way];
@@ -26,6 +29,10 @@ export function WayLine(props: { way: WayType; map: L.Map }) {
   }
 
   function mouseOver() {
+    if (props.way.selected) {
+      setLocalColor(COLOR_RED_BASE);
+      return;
+    }
     if (selectedWays().includes(props.way)) {
       setLocalColor(COLOR_BLUE_BASE);
       return;
@@ -35,6 +42,10 @@ export function WayLine(props: { way: WayType; map: L.Map }) {
   }
 
   function mouseOut() {
+    if (props.way.selected) {
+      setLocalColor(COLOR_RED_BASE);
+      return;
+    }
     if (selectedWays().includes(props.way)) {
       setLocalColor(COLOR_BLUE_BASE);
       return;

@@ -1,4 +1,4 @@
-import { createSignal, onCleanup, onMount } from "solid-js";
+import { createEffect, createSignal, onCleanup, onMount } from "solid-js";
 import { WayType } from "../../../../_entities/way.entity";
 import { getSchools } from "../../../../_stores/school.store";
 import { getStops } from "../../../../_stores/stop.store";
@@ -10,6 +10,7 @@ import {
 import { setDisplaySchools } from "../../_component/organisme/SchoolPoints";
 import { setDisplayStops } from "../../_component/organisme/StopPoints";
 import { setDisplayWays } from "../../_component/organisme/Ways";
+import LabeledInputField from "../../board/component/molecule/LabeledInputField";
 import { COLOR_GRAY_BASE } from "../../map/constant";
 import { WayList } from "../organism/WayList";
 import { WayListButtons } from "../organism/WayListButtons";
@@ -18,6 +19,9 @@ import "./PathAdd.css";
 export const [selectedWays, setSelectedWays] = createSignal<WayType[]>([]);
 
 export function PathAdd() {
+  const [canSave, setCanSave] = createSignal(false);
+  const [pathName, setPathName] = createSignal("");
+
   onMount(() => {
     setDisplaySchools(getSchools());
     setDisplayStops(getStops());
@@ -31,6 +35,7 @@ export function PathAdd() {
     setDisplayStops([]);
     setDisplayWays([]);
     setSelectedWays([]);
+    setPathName("");
   });
 
   function removeWay(way: WayType) {
@@ -38,12 +43,31 @@ export function PathAdd() {
     setSelectedWays(newList);
   }
 
+  function submitPath() {
+    console.log(pathName());
+    console.log(selectedWays());
+  }
+
+  createEffect(() => {
+    if (selectedWays().length > 0) {
+      setCanSave(true);
+    } else {
+      setCanSave(false);
+    }
+  });
+
   return (
     <section>
       <div class="path-add-padding">
         <div class="path-add-content">
           <div class="path-add-title">Ajouter un chemin</div>
-          <WayListButtons />
+          <WayListButtons canSave={canSave()} submit={submitPath} />
+          <LabeledInputField
+            label="Nom du chemin"
+            name="path-name"
+            value={pathName()}
+            onInput={(e) => setPathName(e.target.value)}
+          />
           <WayList ways={selectedWays()} deleteFunction={removeWay} />
         </div>
       </div>

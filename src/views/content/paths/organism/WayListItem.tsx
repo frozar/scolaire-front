@@ -2,6 +2,7 @@ import { Show, createSignal } from "solid-js";
 import { WayType } from "../../../../_entities/way.entity";
 import { CircleCrossIcon } from "../../../../icons/CircleCrossIcon";
 import TrashIcon from "../../../../icons/TrashIcon";
+import { displayWays, setDisplayWays } from "../../_component/organisme/Ways";
 import ButtonIcon from "../../board/component/molecule/ButtonIcon";
 import { setIsWayListEdit } from "./WayList";
 import "./WayListItem.css";
@@ -18,11 +19,22 @@ export function WayListItem(props: WayListItemProps) {
     if (isEditMode()) {
       setIsEditMode(false);
       setIsWayListEdit(false);
+      setWaySelected(false);
       return;
     }
-    // if (isPathListEdit()) return;
+    setWaySelected(true);
     setIsEditMode(true);
     setIsWayListEdit(true);
+  }
+
+  function setWaySelected(value: boolean) {
+    const tmpWays = displayWays();
+    tmpWays.forEach((way) => {
+      if (way.id == props.way.id) {
+        way.selected = value;
+      }
+    });
+    setDisplayWays(tmpWays);
   }
 
   return (
@@ -37,11 +49,11 @@ export function WayListItem(props: WayListItemProps) {
         }
       >
         <div class="way-list-item-selected">
-          <div class="flex gap-2">
+          <div class="way-list-item-content">
             <p>{props.way.name}</p>
             <p>{props.way.id}</p>
           </div>
-          <div class="flex gap-2">
+          <div class="way-list-item-content justify-end">
             <ButtonIcon icon={<CircleCrossIcon />} onClick={toggleEdit} />
             <ButtonIcon
               icon={<TrashIcon />}
