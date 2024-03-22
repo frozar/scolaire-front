@@ -9,6 +9,7 @@ import "./WayListItem.css";
 
 interface WayListItemProps {
   way: WayType;
+  canDelete: boolean;
   delete: (way: WayType) => void;
 }
 
@@ -44,21 +45,21 @@ export function WayListItem(props: WayListItemProps) {
         fallback={
           <div class="way-list-item" onClick={toggleEdit}>
             <p>{props.way.name}</p>
-            <p>{props.way.id}</p>
           </div>
         }
       >
         <div class="way-list-item-selected">
           <div class="way-list-item-content">
             <p>{props.way.name}</p>
-            <p>{props.way.id}</p>
           </div>
           <div class="way-list-item-content justify-end">
             <ButtonIcon icon={<CircleCrossIcon />} onClick={toggleEdit} />
-            <ButtonIcon
-              icon={<TrashIcon />}
-              onClick={() => props.delete(props.way)}
-            />
+            <Show when={props.canDelete}>
+              <ButtonIcon
+                icon={<TrashIcon />}
+                onClick={() => props.delete(props.way)}
+              />
+            </Show>
           </div>
         </div>
       </Show>

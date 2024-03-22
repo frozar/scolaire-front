@@ -19,6 +19,6 @@ export namespace wayEntity {
 export type WayType = {
   id: number;
   coordinates?: L.LatLng[];
-  name?: string;
+  name: string;
   selected?: boolean;
 };

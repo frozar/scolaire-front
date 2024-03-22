@@ -1,0 +1,3 @@
+.path-details-top-buttons {
+  @apply flex justify-end gap-2;
+}

@@ -3,6 +3,7 @@ import { WayType } from "../../../../_entities/way.entity";
 import { WayListItem } from "./WayListItem";
 
 interface WayListProps {
+  canDelete: boolean;
   ways: WayType[];
   deleteFunction: (way: WayType) => void;
 }
@@ -15,7 +16,13 @@ export function WayList(props: WayListProps) {
       <p>Chemins sélectionnés</p>
       <For each={props.ways}>
         {(item) => {
-          return <WayListItem way={item} delete={props.deleteFunction} />;
+          return (
+            <WayListItem
+              canDelete={props.canDelete}
+              way={item}
+              delete={props.deleteFunction}
+            />
+          );
         }}
       </For>
     </div>

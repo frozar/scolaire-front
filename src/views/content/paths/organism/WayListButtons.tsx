@@ -9,7 +9,7 @@ interface WayListButtonsProps {
 
 export function WayListButtons(props: WayListButtonsProps) {
   return (
-    <div class="flex justify-between ">
+    <div class="absolute bottom-8">
       <Button label="Annuler" variant="danger" onClick={ViewManager.paths} />
       <Show when={props.canSave}>
         <Button label="Valider" onClick={props.submit} />

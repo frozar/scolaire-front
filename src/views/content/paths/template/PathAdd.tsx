@@ -1,8 +1,16 @@
 import { createEffect, createSignal, onCleanup, onMount } from "solid-js";
 import { WayType } from "../../../../_entities/way.entity";
+import { RoadService } from "../../../../_services/road.service";
 import { getSchools } from "../../../../_stores/school.store";
 import { getStops } from "../../../../_stores/stop.store";
 import { getWays } from "../../../../_stores/way.store";
+import {
+  addNewGlobalSuccessInformation,
+  addNewGlobalWarningInformation,
+  disableSpinningWheel,
+  enableSpinningWheel,
+} from "../../../../signaux";
+import { ViewManager } from "../../ViewManager";
 import {
   setWayLineColor,
   setWaylineOpacity,
@@ -10,6 +18,7 @@ import {
 import { setDisplaySchools } from "../../_component/organisme/SchoolPoints";
 import { setDisplayStops } from "../../_component/organisme/StopPoints";
 import { setDisplayWays } from "../../_component/organisme/Ways";
+import { LabeledColorPicker } from "../../board/component/molecule/LabeledColorPicker";
 import LabeledInputField from "../../board/component/molecule/LabeledInputField";
 import { COLOR_GRAY_BASE } from "../../map/constant";
 import { WayList } from "../organism/WayList";
@@ -20,7 +29,8 @@ export const [selectedWays, setSelectedWays] = createSignal<WayType[]>([]);
 
 export function PathAdd() {
   const [canSave, setCanSave] = createSignal(false);
-  const [pathName, setPathName] = createSignal("");
+  const [roadName, setRoadName] = createSignal("");
+  const [roadColor, setRoadColor] = createSignal("#ffffff");
 
   onMount(() => {
     setDisplaySchools(getSchools());
@@ -35,7 +45,8 @@ export function PathAdd() {
     setDisplayStops([]);
     setDisplayWays([]);
     setSelectedWays([]);
-    setPathName("");
+    setRoadName("");
+    setRoadColor("#ffffff");
   });
 
   function removeWay(way: WayType) {
@@ -43,9 +54,20 @@ export function PathAdd() {
     setSelectedWays(newList);
   }
 
-  function submitPath() {
-    console.log(pathName());
-    console.log(selectedWays());
+  async function submitPath() {
+    if (roadName() == "")
+      return addNewGlobalWarningInformation("Veuillez choisir un nom");
+    enableSpinningWheel();
+    await RoadService.create({
+      color: roadColor(),
+      name: roadName(),
+      ways: selectedWays().map((way) => {
+        return { name: way.name, osm_id: way.id };
+      }),
+    });
+    addNewGlobalSuccessInformation("Création de chemin");
+    disableSpinningWheel();
+    ViewManager.paths();
   }
 
   createEffect(() => {
@@ -61,14 +83,23 @@ export function PathAdd() {
       <div class="path-add-padding">
         <div class="path-add-content">
           <div class="path-add-title">Ajouter un chemin</div>
-          <WayListButtons canSave={canSave()} submit={submitPath} />
           <LabeledInputField
             label="Nom du chemin"
             name="path-name"
-            value={pathName()}
-            onInput={(e) => setPathName(e.target.value)}
+            value={roadName()}
+            onInput={(e) => setRoadName(e.target.value)}
           />
-          <WayList ways={selectedWays()} deleteFunction={removeWay} />
+          <LabeledColorPicker
+            onChange={(e) => setRoadColor(e)}
+            defaultColor={roadColor()}
+            text="Couleur"
+          />
+          <WayList
+            canDelete={true}
+            ways={selectedWays()}
+            deleteFunction={removeWay}
+          />
+          <WayListButtons canSave={canSave()} submit={submitPath} />
         </div>
       </div>
     </section>
