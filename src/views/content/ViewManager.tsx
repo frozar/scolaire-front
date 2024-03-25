@@ -6,6 +6,7 @@ import { setSelectedMenu } from "../layout/menuItemFields";
 import { setMapBoard } from "./_component/template/MapBoardManager";
 import { changeBoard } from "./board/component/template/ContextManager";
 import { setSelectedRoad } from "./paths/template/PathDetails";
+import { setEditRoad } from "./paths/template/PathEdit";
 import { setSchoolDetails } from "./schools/component/template/SchoolDetails";
 import { setSchoolOfAddGrade } from "./schools/component/template/SchoolGradeAdd";
 import { setSchoolGradeDetails } from "./schools/component/template/SchoolGradeDetails";
@@ -36,6 +37,13 @@ export namespace ViewManager {
   export function pathDetails(road: RoadType) {
     setSelectedRoad(road);
     setMapBoard("path-details");
+    setSelectedMenu("paths");
+    //TODO to delete post refacto
+    changeBoard(undefined);
+  }
+  export function pathEdit(road: RoadType) {
+    setEditRoad(road);
+    setMapBoard("path-edit");
     setSelectedMenu("paths");
     //TODO to delete post refacto
     changeBoard(undefined);

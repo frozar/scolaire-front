@@ -8,6 +8,8 @@ import {
   COLOR_RED_BASE,
 } from "../../map/constant";
 import { selectedWays, setSelectedWays } from "../../paths/template/PathAdd";
+import { editways, setEditWays } from "../../paths/template/PathEdit";
+import { mapBoard } from "../template/MapBoardManager";
 
 export const [wayLineColor, setWayLineColor] =
   createSignal<string>(COLOR_GREEN_BASE);
@@ -21,10 +23,20 @@ export function WayLine(props: { way: WayType; map: L.Map }) {
   createEffect(() => setLocalOpacity(wayLineOpacity()));
 
   function addWay() {
-    // eslint-disable-next-line solid/reactivity
-    setSelectedWays((prev) => {
-      return [...prev, props.way];
-    });
+    if (mapBoard() == "path-edit") {
+      console.log("aaah");
+      // eslint-disable-next-line solid/reactivity
+      setEditWays((prev) => {
+        return [...prev, props.way];
+      });
+      console.log(editways());
+    }
+    if (mapBoard() == "path-add") {
+      // eslint-disable-next-line solid/reactivity
+      setSelectedWays((prev) => {
+        return [...prev, props.way];
+      });
+    }
     setLocalColor(COLOR_BLUE_BASE);
   }
 
