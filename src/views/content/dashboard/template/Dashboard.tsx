@@ -21,12 +21,12 @@ export function Dashboard() {
         <div class="pt-5 mb-3">Dashboard</div>
         <LabeledInputSelect
           defaultValue={selectedFilter()}
-          label="Vue"
+          label="Tri"
           onChange={setSelectedFilter}
           options={[
-            { text: "Vue Globale", value: DashboardViewEnum.global },
-            { text: "Vue par Lot", value: DashboardViewEnum.allotment },
-            { text: "Vue par Etablissement", value: DashboardViewEnum.school },
+            { text: "Global", value: DashboardViewEnum.global },
+            { text: "Par Lot", value: DashboardViewEnum.allotment },
+            { text: "Par Etablissement", value: DashboardViewEnum.school },
           ]}
         />
         <Switch>

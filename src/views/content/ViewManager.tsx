@@ -1,9 +1,11 @@
 import { GradeType } from "../../_entities/grade.entity";
+import { RoadType } from "../../_entities/road.entity";
 import { SchoolType } from "../../_entities/school.entity";
 import { StopType } from "../../_entities/stop.entity";
 import { setSelectedMenu } from "../layout/menuItemFields";
 import { setMapBoard } from "./_component/template/MapBoardManager";
 import { changeBoard } from "./board/component/template/ContextManager";
+import { setSelectedRoad } from "./paths/template/PathDetails";
 import { setSchoolDetails } from "./schools/component/template/SchoolDetails";
 import { setSchoolOfAddGrade } from "./schools/component/template/SchoolGradeAdd";
 import { setSchoolGradeDetails } from "./schools/component/template/SchoolGradeDetails";
@@ -19,6 +21,25 @@ export namespace ViewManager {
     changeBoard(undefined);
   }
 
+  export function paths() {
+    setMapBoard("paths");
+    setSelectedMenu("paths");
+    //TODO to delete post refacto
+    changeBoard(undefined);
+  }
+  export function pathAdd() {
+    setMapBoard("path-add");
+    setSelectedMenu("paths");
+    //TODO to delete post refacto
+    changeBoard(undefined);
+  }
+  export function pathDetails(road: RoadType) {
+    setSelectedRoad(road);
+    setMapBoard("path-details");
+    setSelectedMenu("paths");
+    //TODO to delete post refacto
+    changeBoard(undefined);
+  }
   export function stops() {
     setMapBoard("stops");
     setSelectedMenu("stops");

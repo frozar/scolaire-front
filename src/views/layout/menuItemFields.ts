@@ -29,6 +29,15 @@ const menuItems: MenuItemType[] = [
     },
   },
   {
+    menuItem: "paths",
+    Logo: RoadwaysLogo,
+    label: "Chemins",
+    isDisabled: false,
+    onClick: () => {
+      ViewManager.paths();
+    },
+  },
+  {
     menuItem: "graphicage",
     Logo: GraphicageLogo,
     label: "Graphicage",

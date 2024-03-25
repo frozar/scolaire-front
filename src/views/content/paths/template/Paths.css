@@ -1,0 +1,11 @@
+.paths-padding {
+  @apply px-10 w-full bg-white;
+}
+
+.paths-content {
+  @apply h-[calc(100vh-60px)] relative;
+}
+
+.paths-title {
+  @apply pt-5 mb-3 font-bold;
+}

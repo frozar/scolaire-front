@@ -1,0 +1,11 @@
+.path-add-padding {
+  @apply px-10 w-full bg-white;
+}
+
+.path-add-content {
+  @apply h-[calc(100vh-60px)] relative;
+}
+
+.path-add-title {
+  @apply pt-5 mb-3 font-bold;
+}

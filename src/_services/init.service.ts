@@ -4,6 +4,7 @@ import {
   CalendarPeriodDBType,
 } from "../_entities/calendar.entity";
 import { BusLineEntity, LineDBType, LineType } from "../_entities/line.entity";
+import { RoadDBType, RoadEntity } from "../_entities/road.entity";
 import {
   SchoolDBType,
   SchoolEntity,
@@ -29,6 +30,7 @@ import {
 } from "../views/content/allotment/organism/Allotment";
 import { BusCategoryType, setBus } from "../views/content/bus/organism/Bus";
 import { setSettings } from "../views/content/parameters/organism/Settings";
+import { setRoads } from "../views/content/paths/template/Paths";
 import { setServices } from "../views/content/service/organism/Services";
 import { ServiceUtils } from "./_utils.service";
 
@@ -44,6 +46,7 @@ type InitDBType = {
   allotment: AllotmentType[];
   settings: SettingType[];
   transporter: TransporterType[];
+  roads: RoadDBType[];
 };
 
 export type InitType = {
@@ -84,6 +87,9 @@ export namespace InitService {
 
     const transporter = dbInit.transporter;
     setAllTransporter(transporter);
+
+    const roaads = dbInit.roads.map((road) => RoadEntity.build(road));
+    setRoads(roaads);
 
     const calendarPeriods = dbInit.calendars_periods.map((calendarPeriod) =>
       CalendarEntity.buildCalendarPeriod(calendarPeriod)

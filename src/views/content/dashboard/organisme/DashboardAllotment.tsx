@@ -66,7 +66,7 @@ export function DashboardAllotment() {
     <div>
       <LabeledInputSelect
         defaultValue={currentAllotment()}
-        label="Allotissement"
+        label="Lot"
         onChange={onSelectChange}
         options={getAllotment().map((item) => {
           return { value: Number(item.id), text: item.name };

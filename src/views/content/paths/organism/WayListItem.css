@@ -1,0 +1,15 @@
+.way-list-item-container {
+  @apply py-2;
+}
+
+.way-list-item {
+  @apply flex gap-2 border border-black p-2 rounded-lg cursor-pointer;
+}
+
+.way-list-item-selected {
+  @apply bg-gray-200 border border-black rounded-lg p-2;
+}
+
+.way-list-item-content {
+  @apply flex gap-2;
+}

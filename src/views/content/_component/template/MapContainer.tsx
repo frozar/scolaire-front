@@ -12,6 +12,7 @@ import { buildMapL7 } from "../../map/l7MapBuilder";
 import { SchoolPoints } from "../organisme/SchoolPoints";
 import { StopPoints } from "../organisme/StopPoints";
 import { Trips } from "../organisme/Trips";
+import { Ways } from "../organisme/Ways";
 
 const [, { getActiveMapId }] = useStateGui();
 
@@ -89,6 +90,7 @@ export function MapContainer() {
       <SchoolPoints map={getLeafletMap() as L.Map} />
       <StopPoints map={getLeafletMap() as L.Map} />
       <Trips map={getLeafletMap() as L.Map} />
+      <Ways map={getLeafletMap() as L.Map} />
 
       {/* 
       <BusLines busLines={getLines()} />

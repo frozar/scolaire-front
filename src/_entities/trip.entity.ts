@@ -1,4 +1,6 @@
 import L from "leaflet";
+import { getLines } from "../_stores/line.store";
+import { getSchools } from "../_stores/school.store";
 import { getStops } from "../_stores/stop.store";
 import { NatureEnum } from "../type";
 import { QuantityUtils } from "../utils/quantity.utils";
@@ -25,8 +27,6 @@ import {
   WaypointEntity,
   WaypointType,
 } from "./waypoint.entity";
-import { getSchools } from "../_stores/school.store";
-import { getLines } from "../_stores/line.store";
 
 export namespace TripEntity {
   export function build(dbData: TripDBType): TripType {
