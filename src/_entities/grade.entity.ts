@@ -1,10 +1,5 @@
 import { QuantityMatrixType } from "../utils/quantity.utils";
-import {
-  AssociatedSchoolType,
-  EntityUtils,
-  HoursDBType,
-  HoursType,
-} from "./_utils.entity";
+import { AssociatedSchoolType, HoursDBType, HoursType } from "./_utils.entity";
 import {
   CalendarDBType,
   CalendarEntity,
@@ -27,11 +22,12 @@ export namespace GradeEntity {
     };
   }
 
-  export function initEntity(school: SchoolType): GradeType {
+  export function initFromSchool(school: SchoolType): GradeType {
     return {
       schoolId: school.id,
       name: "",
-      hours: EntityUtils.defaultHours(),
+      hours: school.hours,
+      calendar: school.calendar,
     };
   }
 

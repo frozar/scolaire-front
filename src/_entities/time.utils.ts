@@ -15,6 +15,16 @@ export namespace TimeUtils {
     };
   }
 
+  export function getRemainingRuleDays(
+    rules: HourRuleType[],
+    calendar: CalendarType
+  ): CalendarDayEnum[] {
+    const calendarDays = calendar.rules.map((rule) => rule.day);
+    const alreadyUsedDays = rules.map((rule) => rule.day);
+    return calendarDays.filter((day) => !alreadyUsedDays.includes(day));
+  }
+
+  // TODO to replace by getRemainingRuleDays
   export function getRemainingDays(
     item: SchoolType | GradeType | undefined
   ): CalendarDayEnum[] {

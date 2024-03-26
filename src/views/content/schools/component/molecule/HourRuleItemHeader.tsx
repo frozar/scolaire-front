@@ -11,7 +11,6 @@ import "./HourRuleItemHeader.css";
 
 interface HourRuleItemHeader {
   onChangeDay: (value: string | number) => void;
-  onClickAdd: () => void;
   onClickRemove: () => void;
   disabled?: boolean;
   remainingDays: () => CalendarDayEnum[];
