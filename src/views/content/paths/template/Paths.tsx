@@ -35,7 +35,7 @@ export function Paths() {
     <section>
       <div class="paths-padding">
         <div class="paths-content">
-          <div class="paths-title">Chemins</div>
+          <div class="paths-title">Routes</div>
           <Button label="Ajouter" onClick={addPath} />
           <RoadList roads={getRoads()} />
         </div>

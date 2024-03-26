@@ -1,6 +1,6 @@
 import { For, createSignal } from "solid-js";
 import { WayType } from "../../../../_entities/way.entity";
-import { WayListItem } from "./WayListItem";
+import { WayListItem } from "../molecule/WayListItem";
 
 interface WayListProps {
   canDelete: boolean;

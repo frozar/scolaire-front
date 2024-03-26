@@ -1,6 +1,6 @@
 import { For } from "solid-js";
 import { RoadType } from "../../../../_entities/road.entity";
-import { RoadListItem } from "./RoadListItem";
+import { RoadListItem } from "../molecule/RoadListItem";
 
 interface RoadListProps {
   roads: RoadType[];

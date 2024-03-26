@@ -21,8 +21,8 @@ import { setDisplayWays } from "../../_component/organisme/Ways";
 import { LabeledColorPicker } from "../../board/component/molecule/LabeledColorPicker";
 import LabeledInputField from "../../board/component/molecule/LabeledInputField";
 import { COLOR_GRAY_BASE } from "../../map/constant";
+import { WayListButtons } from "../molecule/WayListButtons";
 import { WayList } from "../organism/WayList";
-import { WayListButtons } from "../organism/WayListButtons";
 import "./PathAdd.css";
 
 export const [selectedWays, setSelectedWays] = createSignal<WayType[]>([]);
@@ -99,7 +99,11 @@ export function PathAdd() {
             ways={selectedWays()}
             deleteFunction={removeWay}
           />
-          <WayListButtons canSave={canSave()} submit={submitPath} />
+          <WayListButtons
+            cancel={() => ViewManager.paths()}
+            canSave={canSave()}
+            submit={submitPath}
+          />
         </div>
       </div>
     </section>

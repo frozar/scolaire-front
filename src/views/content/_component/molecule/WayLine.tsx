@@ -1,5 +1,5 @@
 import { LatLng } from "leaflet";
-import { createEffect, createSignal } from "solid-js";
+import { createEffect, createSignal, onMount } from "solid-js";
 import { WayType } from "../../../../_entities/way.entity";
 import Line from "../../map/component/atom/Line";
 import {
@@ -22,14 +22,25 @@ export function WayLine(props: { way: WayType; map: L.Map }) {
   createEffect(() => setLocalColor(wayLineColor()));
   createEffect(() => setLocalOpacity(wayLineOpacity()));
 
+  onMount(() => {
+    if (selectedWays().includes(props.way) || editways().includes(props.way)) {
+      if (props.way.selected) {
+        setLocalColor(COLOR_RED_BASE);
+        return;
+      }
+      setLocalColor(COLOR_BLUE_BASE);
+      return;
+    }
+    setLocalOpacity(wayLineOpacity());
+    setLocalColor(wayLineColor());
+  });
+
   function addWay() {
     if (mapBoard() == "path-edit") {
-      console.log("aaah");
       // eslint-disable-next-line solid/reactivity
       setEditWays((prev) => {
         return [...prev, props.way];
       });
-      console.log(editways());
     }
     if (mapBoard() == "path-add") {
       // eslint-disable-next-line solid/reactivity
@@ -41,11 +52,11 @@ export function WayLine(props: { way: WayType; map: L.Map }) {
   }
 
   function mouseOver() {
-    if (props.way.selected) {
-      setLocalColor(COLOR_RED_BASE);
-      return;
-    }
-    if (selectedWays().includes(props.way)) {
+    if (selectedWays().includes(props.way) || editways().includes(props.way)) {
+      if (props.way.selected) {
+        setLocalColor(COLOR_RED_BASE);
+        return;
+      }
       setLocalColor(COLOR_BLUE_BASE);
       return;
     }
@@ -54,11 +65,11 @@ export function WayLine(props: { way: WayType; map: L.Map }) {
   }
 
   function mouseOut() {
-    if (props.way.selected) {
-      setLocalColor(COLOR_RED_BASE);
-      return;
-    }
-    if (selectedWays().includes(props.way)) {
+    if (selectedWays().includes(props.way) || editways().includes(props.way)) {
+      if (props.way.selected) {
+        setLocalColor(COLOR_RED_BASE);
+        return;
+      }
       setLocalColor(COLOR_BLUE_BASE);
       return;
     }

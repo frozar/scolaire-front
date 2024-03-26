@@ -3,8 +3,8 @@ import { RoadType } from "../../../../_entities/road.entity";
 import { WayType } from "../../../../_entities/way.entity";
 import { RoadService } from "../../../../_services/road.service";
 import { getWays } from "../../../../_stores/way.store";
-import PencilIcon from "../../../../icons/PencilIcon";
 import TrashIcon from "../../../../icons/TrashIcon";
+import UpdatePen from "../../../../icons/UpdatePen";
 import {
   addNewGlobalSuccessInformation,
   disableSpinningWheel,
@@ -59,7 +59,7 @@ export function PathDetails() {
           <div class="paths-title">{selectedRoad().name}</div>
           <div class="path-details-top-buttons">
             <ButtonIcon
-              icon={<PencilIcon />}
+              icon={<UpdatePen />}
               onClick={() => ViewManager.pathEdit(selectedRoad())}
             />
             <ButtonIcon icon={<TrashIcon />} onClick={deleteRoad} />
