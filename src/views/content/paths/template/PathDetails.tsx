@@ -25,7 +25,7 @@ export const [selectedRoad, setSelectedRoad] = createSignal<RoadType>(
 export function PathDetails() {
   const [currentWays, setCurrentWays] = createSignal<WayType[]>([]);
 
-  function setroadways() {
+  function setRoadWays() {
     const osmIdList: number[] = [];
     selectedRoad().ways.forEach((item) => {
       osmIdList.push(item.osm_id);
@@ -43,7 +43,7 @@ export function PathDetails() {
   }
 
   onMount(() => {
-    setroadways();
+    setRoadWays();
     setWayLineColor(selectedRoad().color);
   });
 

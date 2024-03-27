@@ -10,6 +10,7 @@ import { disableSpinningWheel, enableSpinningWheel } from "../../../../signaux";
 import { ViewManager } from "../../ViewManager";
 import { setDisplaySchools } from "../../_component/organisme/SchoolPoints";
 import { setDisplayStops } from "../../_component/organisme/StopPoints";
+import { setDisplayWays } from "../../_component/organisme/Ways";
 import { RoadList } from "../organism/RoadList";
 import "./Paths.css";
 
@@ -20,15 +21,35 @@ export function Paths() {
     await loadWays();
     setDisplaySchools(getSchools());
     setDisplayStops(getStops());
+    setRoadWays();
   });
 
   onCleanup(() => {
     setDisplaySchools([]);
     setDisplayStops([]);
+    setDisplayWays([]);
   });
 
-  function addPath() {
-    ViewManager.pathAdd();
+  function setRoadWays() {
+    const osmIdList: number[] = [];
+    const wayColorList: { id: number; color: string }[] = [];
+    getRoads().forEach((road) => {
+      road.ways.forEach((way) => {
+        osmIdList.push(way.osm_id);
+        wayColorList.push({ id: way.osm_id, color: road.color });
+      });
+    });
+
+    const roadWays = getWays().filter((item) => osmIdList.includes(item.id));
+    const output = roadWays.map((item) => {
+      wayColorList.forEach((obj) => {
+        if (item.id == obj.id) {
+          item.color = obj.color;
+        }
+      });
+      return item;
+    });
+    setDisplayWays(output);
   }
 
   return (
@@ -36,7 +57,7 @@ export function Paths() {
       <div class="paths-padding">
         <div class="paths-content">
           <div class="paths-title">Routes</div>
-          <Button label="Ajouter" onClick={addPath} />
+          <Button label="Ajouter" onClick={() => ViewManager.pathAdd()} />
           <RoadList roads={getRoads()} />
         </div>
       </div>
