@@ -25,12 +25,7 @@ export function GradeHourRuleList(props: GradeHourRuleListProps) {
   ]);
 
   createEffect(() => {
-    console.log("setLocalRules(props.rules);");
     setLocalRules([...props.rules]);
-  });
-
-  createEffect(() => {
-    console.log("lelel", localRules());
   });
 
   const showTitle = () => (localRules()?.length ?? 0) > 0 || props.enabled;
@@ -55,9 +50,11 @@ export function GradeHourRuleList(props: GradeHourRuleListProps) {
 
   function onRuleUpdate(rule: HourRuleType, index: number) {
     setLocalRules((prev) => {
-      prev[index] = rule;
+      prev[index] = { ...rule };
       return prev;
     });
+    console.log("rulelist upadte", localRules());
+
     props.onUpdate(localRules());
   }
 

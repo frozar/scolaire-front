@@ -25,30 +25,36 @@ export function HourRuleItem(props: HourRuleProps) {
   // eslint-disable-next-line solid/reactivity
   const [localRule, setLocalRule] = createSignal<HourRuleType>(props.rule);
 
-  createEffect(() => {});
+  createEffect(() => {
+    setLocalRule({ ...props.rule });
+  });
 
   function onInputComingStart(value: string) {
     setLocalRule((prev) => {
       return { ...prev, startComing: TimeUtils.getHourFormatFromString(value) };
     });
+    props.onUpdate(localRule());
   }
 
   function onInputComingEnd(value: string) {
     setLocalRule((prev) => {
       return { ...prev, endComing: TimeUtils.getHourFormatFromString(value) };
     });
+    props.onUpdate(localRule());
   }
 
   function onInputGoingStart(value: string) {
     setLocalRule((prev) => {
       return { ...prev, startGoing: TimeUtils.getHourFormatFromString(value) };
     });
+    props.onUpdate(localRule());
   }
 
   function onInputGoingEnd(value: string) {
     setLocalRule((prev) => {
       return { ...prev, endGoing: TimeUtils.getHourFormatFromString(value) };
     });
+    props.onUpdate(localRule());
   }
 
   function onChangeDay(value: string | number) {
@@ -63,6 +69,8 @@ export function HourRuleItem(props: HourRuleProps) {
     setLocalRule((prev) => {
       return { ...prev, day: value as CalendarDayEnum };
     });
+
+    props.onUpdate(localRule());
   }
 
   function onClickRemove() {
