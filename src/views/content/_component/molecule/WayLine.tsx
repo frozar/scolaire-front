@@ -31,6 +31,10 @@ export function WayLine(props: { way: WayType; map: L.Map }) {
       setLocalColor(COLOR_BLUE_BASE);
       return;
     }
+    if (props.way.color != undefined) {
+      setLocalColor(props.way.color);
+      return;
+    }
     setLocalOpacity(wayLineOpacity());
     setLocalColor(wayLineColor());
   });
@@ -60,6 +64,10 @@ export function WayLine(props: { way: WayType; map: L.Map }) {
       setLocalColor(COLOR_BLUE_BASE);
       return;
     }
+    if (props.way.color != undefined) {
+      setLocalColor(props.way.color);
+      return;
+    }
     setLocalOpacity(1);
     setLocalColor(COLOR_GREEN_BASE);
   }
@@ -71,6 +79,10 @@ export function WayLine(props: { way: WayType; map: L.Map }) {
         return;
       }
       setLocalColor(COLOR_BLUE_BASE);
+      return;
+    }
+    if (props.way.color != undefined) {
+      setLocalColor(props.way.color);
       return;
     }
     setLocalOpacity(wayLineOpacity());

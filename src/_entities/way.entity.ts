@@ -21,4 +21,5 @@ export type WayType = {
   coordinates?: L.LatLng[];
   name: string;
   selected?: boolean;
+  color?: string;
 };
