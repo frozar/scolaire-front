@@ -2,13 +2,15 @@ import { createSignal, onCleanup, onMount } from "solid-js";
 import { RoadType } from "../../../../_entities/road.entity";
 import { WayType } from "../../../../_entities/way.entity";
 import { WayService } from "../../../../_services/ways.service";
+import { getSchools } from "../../../../_stores/school.store";
+import { getStops } from "../../../../_stores/stop.store";
 import { WayStore, getWays } from "../../../../_stores/way.store";
 import Button from "../../../../component/atom/Button";
 import { disableSpinningWheel, enableSpinningWheel } from "../../../../signaux";
 import { ViewManager } from "../../ViewManager";
 import { setDisplaySchools } from "../../_component/organisme/SchoolPoints";
 import { setDisplayStops } from "../../_component/organisme/StopPoints";
-import { displayWays, setDisplayWays } from "../../_component/organisme/Ways";
+import { setDisplayWays } from "../../_component/organisme/Ways";
 import { RoadList } from "../organism/RoadList";
 import "./Paths.css";
 
@@ -17,15 +19,14 @@ export const [getRoads, setRoads] = createSignal<RoadType[]>([]);
 export function Paths() {
   onMount(async () => {
     await loadWays();
-    // setDisplaySchools(getSchools());
-    // setDisplayStops(getStops());
+    setDisplaySchools(getSchools());
+    setDisplayStops(getStops());
     setRoadWays();
   });
 
   onCleanup(() => {
     setDisplaySchools([]);
     setDisplayStops([]);
-    unsetRoadWays();
     setDisplayWays([]);
   });
 
@@ -40,24 +41,15 @@ export function Paths() {
     });
 
     const roadWays = getWays().filter((item) => osmIdList.includes(item.id));
-    // const output = roadWays.map((item) => {
-    //   wayColorList.forEach((obj) => {
-    //     if (item.id == obj.id) {
-    //       item.color = obj.color;
-    //     }
-    //   });
-    //   return item;
-    // });
-    setDisplayWays([]);
-    setDisplayWays(roadWays);
-  }
-
-  function unsetRoadWays() {
-    const a = displayWays().map((item) => {
-      return { ...item, color: undefined };
+    const output = roadWays.map((item) => {
+      wayColorList.forEach((obj) => {
+        if (item.id == obj.id) {
+          item.color = obj.color;
+        }
+      });
+      return item;
     });
-    setDisplayWays([]);
-    setDisplayWays(a);
+    setDisplayWays(output);
   }
 
   return (

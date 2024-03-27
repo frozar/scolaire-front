@@ -22,22 +22,48 @@ export function WayLine(props: { way: WayType; map: L.Map }) {
   createEffect(() => setLocalColor(wayLineColor()));
   createEffect(() => setLocalOpacity(wayLineOpacity()));
 
-  onMount(() => {
-    if (selectedWays().includes(props.way) || editways().includes(props.way)) {
+  function checkCorrectColor() {
+    if (
+      selectedWays().includes(props.way) ||
+      editways().includes(props.way) ||
+      mapBoard() == "path-details"
+    ) {
       if (props.way.selected) {
         setLocalColor(COLOR_RED_BASE);
-        return;
+        return true;
       }
-      setLocalColor(COLOR_BLUE_BASE);
-      return;
+      if (mapBoard() != "path-details") {
+        setLocalColor(COLOR_BLUE_BASE);
+        return true;
+      }
     }
-    if (props.way.color != undefined) {
+    if (props.way.color != undefined && mapBoard() == "paths") {
       setLocalColor(props.way.color);
-      return;
+      return true;
     }
-    setLocalOpacity(wayLineOpacity());
-    setLocalColor(wayLineColor());
+    return false;
+  }
+
+  onMount(() => {
+    if (!checkCorrectColor()) {
+      setLocalOpacity(wayLineOpacity());
+      setLocalColor(wayLineColor());
+    }
   });
+
+  function mouseOver() {
+    if (!checkCorrectColor()) {
+      setLocalOpacity(1);
+      setLocalColor(COLOR_GREEN_BASE);
+    }
+  }
+
+  function mouseOut() {
+    if (!checkCorrectColor()) {
+      setLocalOpacity(wayLineOpacity());
+      setLocalColor(wayLineColor());
+    }
+  }
 
   function addWay() {
     if (mapBoard() == "path-edit") {
@@ -53,40 +79,6 @@ export function WayLine(props: { way: WayType; map: L.Map }) {
       });
     }
     setLocalColor(COLOR_BLUE_BASE);
-  }
-
-  function mouseOver() {
-    if (selectedWays().includes(props.way) || editways().includes(props.way)) {
-      if (props.way.selected) {
-        setLocalColor(COLOR_RED_BASE);
-        return;
-      }
-      setLocalColor(COLOR_BLUE_BASE);
-      return;
-    }
-    if (props.way.color != undefined) {
-      setLocalColor(props.way.color);
-      return;
-    }
-    setLocalOpacity(1);
-    setLocalColor(COLOR_GREEN_BASE);
-  }
-
-  function mouseOut() {
-    if (selectedWays().includes(props.way) || editways().includes(props.way)) {
-      if (props.way.selected) {
-        setLocalColor(COLOR_RED_BASE);
-        return;
-      }
-      setLocalColor(COLOR_BLUE_BASE);
-      return;
-    }
-    if (props.way.color != undefined) {
-      setLocalColor(props.way.color);
-      return;
-    }
-    setLocalOpacity(wayLineOpacity());
-    setLocalColor(wayLineColor());
   }
 
   return (
