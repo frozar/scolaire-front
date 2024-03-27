@@ -8,6 +8,14 @@ export namespace RoadService {
     setRoads(dbRoads);
   }
 
+  export async function update(road: Partial<RoadType>) {
+    const dbRoads: RoadType[] = await ServiceUtils.patch(
+      "/road/" + road.id,
+      road
+    );
+    setRoads(dbRoads);
+  }
+
   export async function deleteRoad(id?: number): Promise<boolean> {
     const returnValue: boolean = await ServiceUtils.delete("/road/" + id);
     setRoads((prev) => {

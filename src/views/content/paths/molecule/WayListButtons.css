@@ -1,0 +1,7 @@
+.way-list-buttons-container {
+  @apply absolute bottom-8;
+}
+
+.way-list-buttons {
+  @apply flex gap-8;
+}

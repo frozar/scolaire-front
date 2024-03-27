@@ -4,7 +4,7 @@ import { CircleCrossIcon } from "../../../../icons/CircleCrossIcon";
 import TrashIcon from "../../../../icons/TrashIcon";
 import { displayWays, setDisplayWays } from "../../_component/organisme/Ways";
 import ButtonIcon from "../../board/component/molecule/ButtonIcon";
-import { setIsWayListEdit } from "./WayList";
+import { setIsWayListEdit } from "../organism/WayList";
 import "./WayListItem.css";
 
 interface WayListItemProps {
@@ -35,6 +35,7 @@ export function WayListItem(props: WayListItemProps) {
         way.selected = value;
       }
     });
+    setDisplayWays([]);
     setDisplayWays(tmpWays);
   }
 

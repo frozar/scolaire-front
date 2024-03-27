@@ -15,7 +15,7 @@ export function RoadListItem(props: RoadListItemProps) {
     >
       <Pellet color={props.road.color} />
       <p>{props.road.name}</p>
-      <div>{props.road.ways.length} ways</div>
+      <div>{props.road.ways.length} chemins</div>
     </CardWrapper>
   );
 }
