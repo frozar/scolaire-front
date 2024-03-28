@@ -92,8 +92,7 @@ export function SchoolGradeAdd() {
       disableSpinningWheel();
       addNewGlobalSuccessInformation(grade.name + " créé");
       SchoolStore.addGrade(grade);
-      ViewManager.schoolDetails(school);
-      // ViewManager.schoolGrade(grade);
+      ViewManager.schoolGrade(grade);
     }
     return;
   }

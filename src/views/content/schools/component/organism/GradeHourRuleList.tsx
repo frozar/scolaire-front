@@ -1,4 +1,4 @@
-import { For, Show, createEffect, createSignal } from "solid-js";
+import { For, Show, createEffect, createSignal, onMount } from "solid-js";
 import {
   CalendarDayEnum,
   CalendarType,
@@ -20,12 +20,16 @@ interface GradeHourRuleListProps {
 
 //TODO passer de bout à bout le Grade
 export function GradeHourRuleList(props: GradeHourRuleListProps) {
-  const [localRules, setLocalRules] = createSignal<HourRuleType[]>([
-    ...props.rules,
-  ]);
+  const [localRules, setLocalRules] = createSignal<HourRuleType[]>([]);
 
   createEffect(() => {
     setLocalRules([...props.rules]);
+  });
+
+  onMount(() => {
+    if (props.rules.length > 0) {
+      setLocalRules(props.rules);
+    }
   });
 
   const showTitle = () => (localRules()?.length ?? 0) > 0 || props.enabled;
