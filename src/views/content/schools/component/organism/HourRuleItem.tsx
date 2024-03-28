@@ -21,6 +21,13 @@ interface HourRuleProps {
   isNotLast?: boolean;
 }
 
+enum RuleTimeVariableEnum {
+  startGoing = "startGoing",
+  endGoing = "endGoing",
+  startComing = "startComing",
+  endComing = "endComing",
+}
+
 export function HourRuleItem(props: HourRuleProps) {
   // eslint-disable-next-line solid/reactivity
   const [localRule, setLocalRule] = createSignal<HourRuleType>(props.rule);
@@ -30,29 +37,27 @@ export function HourRuleItem(props: HourRuleProps) {
   });
 
   function onInputComingStart(value: string) {
-    setLocalRule((prev) => {
-      return { ...prev, startComing: TimeUtils.getHourFormatFromString(value) };
-    });
-    props.onUpdate(localRule());
+    ruleUpdateTime(value, RuleTimeVariableEnum.startComing);
   }
 
   function onInputComingEnd(value: string) {
-    setLocalRule((prev) => {
-      return { ...prev, endComing: TimeUtils.getHourFormatFromString(value) };
-    });
-    props.onUpdate(localRule());
+    ruleUpdateTime(value, RuleTimeVariableEnum.endComing);
   }
 
   function onInputGoingStart(value: string) {
-    setLocalRule((prev) => {
-      return { ...prev, startGoing: TimeUtils.getHourFormatFromString(value) };
-    });
-    props.onUpdate(localRule());
+    ruleUpdateTime(value, RuleTimeVariableEnum.startGoing);
   }
 
   function onInputGoingEnd(value: string) {
+    ruleUpdateTime(value, RuleTimeVariableEnum.endGoing);
+  }
+
+  function ruleUpdateTime(value: string, key: RuleTimeVariableEnum) {
     setLocalRule((prev) => {
-      return { ...prev, endGoing: TimeUtils.getHourFormatFromString(value) };
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      prev[key] = TimeUtils.getHourFormatFromString(value);
+      return prev;
     });
     props.onUpdate(localRule());
   }

@@ -53,7 +53,6 @@ export function GradeHourRuleList(props: GradeHourRuleListProps) {
       prev[index] = { ...rule };
       return prev;
     });
-    console.log("rulelist upadte", localRules());
 
     props.onUpdate(localRules());
   }
