@@ -86,8 +86,6 @@ export function SchoolGradeAdd() {
       locGrade.hours = computedHours(locGrade, school);
 
       enableSpinningWheel();
-      //TODO revoir le code partie -> Service + "store"
-      //TODO fix Xano ... Xano ne crée pas de nouveau "hours"
       const grade = await GradeService.create(locGrade);
       disableSpinningWheel();
       addNewGlobalSuccessInformation(grade.name + " créé");
