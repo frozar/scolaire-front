@@ -6,7 +6,7 @@ import { SchoolType } from "./school.entity";
 export namespace TimeUtils {
   export function defaultHours(): HoursType {
     return {
-      id: null,
+      id: 0,
       startHourGoing: null,
       startHourComing: null,
       endHourComing: null,

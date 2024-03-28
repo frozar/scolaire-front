@@ -6,6 +6,11 @@ import { SchoolType } from "../../../../../_entities/school.entity";
 import { TimeUtils } from "../../../../../_entities/time.utils";
 import { GradeService } from "../../../../../_services/grade.service";
 import { SchoolStore } from "../../../../../_stores/school.store";
+import {
+  addNewGlobalSuccessInformation,
+  disableSpinningWheel,
+  enableSpinningWheel,
+} from "../../../../../signaux";
 import { ViewManager } from "../../../ViewManager";
 import { setDisplaySchools } from "../../../_component/organisme/SchoolPoints";
 import BoardFooterActions from "../../../board/component/molecule/BoardFooterActions";
@@ -25,9 +30,11 @@ export function SchoolGradeAdd() {
   );
 
   const [localCalendar, setLocalCalendar] = createSignal<CalendarType>(
+    // eslint-disable-next-line solid/reactivity
     localGrade().calendar as CalendarType
   );
 
+  // eslint-disable-next-line solid/reactivity
   const [gradeName, setGradeName] = createSignal(localGrade()?.name);
 
   onMount(() => {
@@ -79,10 +86,14 @@ export function SchoolGradeAdd() {
       locGrade.calendar = computedCalendar(locGrade, school);
       locGrade.hours = computedHours(locGrade, school);
 
+      enableSpinningWheel();
       //TODO revoir le code partie -> Service + "store"
       const grade = await GradeService.create(locGrade);
+      disableSpinningWheel();
+      addNewGlobalSuccessInformation(grade.name + " créé");
       SchoolStore.addGrade(grade);
-      ViewManager.schoolGrade(grade);
+      ViewManager.schoolDetails(school);
+      // ViewManager.schoolGrade(grade);
     }
     return;
   }
