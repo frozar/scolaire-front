@@ -82,12 +82,12 @@ export function SchoolGradeAdd() {
     const locGrade = localGrade();
     const school = schoolOfAddGrade();
     if (locGrade && school) {
-      // TODO push dans le service.create ??
       locGrade.calendar = computedCalendar(locGrade, school);
       locGrade.hours = computedHours(locGrade, school);
 
       enableSpinningWheel();
       //TODO revoir le code partie -> Service + "store"
+      //TODO fix Xano ... Xano ne crée pas de nouveau "hours"
       const grade = await GradeService.create(locGrade);
       disableSpinningWheel();
       addNewGlobalSuccessInformation(grade.name + " créé");
