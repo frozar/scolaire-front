@@ -12,6 +12,7 @@ export namespace wayEntity {
             return L.latLng(Number(item[1]), Number(item[0]));
           })
         : [],
+      selected: false,
     };
   }
 }
@@ -20,5 +21,6 @@ export type WayType = {
   id: number;
   coordinates?: L.LatLng[];
   name: string;
-  selected?: boolean;
+  selected: boolean;
+  color?: string;
 };
