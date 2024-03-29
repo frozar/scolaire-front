@@ -4,7 +4,10 @@ import { ServiceUtils } from "./_utils.service";
 export class GradeService {
   static async create(grade: GradeType): Promise<GradeType> {
     const data = GradeEntity.dbFormat(grade);
-    const dbGrade: GradeDBType = await ServiceUtils.post("/grade", data);
+    const dbGrade: GradeDBType = await ServiceUtils.post(
+      "/school/" + grade.schoolId + "/grade",
+      data
+    );
     return GradeEntity.build(dbGrade);
   }
 

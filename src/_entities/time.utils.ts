@@ -6,7 +6,7 @@ import { SchoolType } from "./school.entity";
 export namespace TimeUtils {
   export function defaultHours(): HoursType {
     return {
-      id: null,
+      id: 0,
       startHourGoing: null,
       startHourComing: null,
       endHourComing: null,
@@ -15,6 +15,16 @@ export namespace TimeUtils {
     };
   }
 
+  export function getRemainingRuleDays(
+    rules: HourRuleType[],
+    calendar: CalendarType
+  ): CalendarDayEnum[] {
+    const calendarDays = calendar.rules.map((rule) => rule.day);
+    const alreadyUsedDays = rules.map((rule) => rule.day);
+    return calendarDays.filter((day) => !alreadyUsedDays.includes(day));
+  }
+
+  // TODO to replace by getRemainingRuleDays
   export function getRemainingDays(
     item: SchoolType | GradeType | undefined
   ): CalendarDayEnum[] {

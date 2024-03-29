@@ -5,43 +5,39 @@ import {
 } from "../../../../../_entities/_utils.entity";
 import { CalendarType } from "../../../../../_entities/calendar.entity";
 import { GradeEntity, GradeType } from "../../../../../_entities/grade.entity";
-import { TimeUtils } from "../../../../../_entities/time.utils";
 import { SchoolStore } from "../../../../../_stores/school.store";
 import { LabeledCheckbox } from "../../../../../component/molecule/LabeledCheckbox";
 import TimesInputWrapper from "../molecule/TimesInputWrapper";
 import { GradeHourRuleList } from "./GradeHourRuleList";
 
-export function GradeTimesScheduleWrapper(props: {
+export function GradeHoursWrapper(props: {
   grade: GradeType;
+  calendar: CalendarType;
   onUpdate: (hours: HoursType) => void;
 }): JSXElement {
-  const [localHours, setLocalHours] = createSignal<HoursType>(
-    TimeUtils.defaultHours()
-  );
-
   const school = SchoolStore.get(props.grade.schoolId as number);
-  const schoolHours = school.hours as HoursType;
+  const schoolHours = school.hours;
 
   const initalGradeHours = props.grade.hours;
-  setLocalHours(initalGradeHours ? initalGradeHours : schoolHours);
+
+  const [localHours, setLocalHours] = createSignal<HoursType>(
+    props.grade.hours
+  );
 
   const [useSchoolSchedule, setUseSchoolSchedule] = createSignal<boolean>(
-    initalGradeHours?.id ? schoolHours?.id == initalGradeHours?.id : true
+    schoolHours.id == localHours().id
   );
+  const [disableUseSchoolCheckbox, setDisableUseSchoolCheckbox] =
+    createSignal<boolean>(false);
 
-  createEffect(
-    on(useSchoolSchedule, () => {
-      if (useSchoolSchedule()) {
-        setLocalHours(schoolHours);
-      } else {
-        if (initalGradeHours?.id == schoolHours.id) {
-          setLocalHours({ ...(schoolHours as HoursType), id: 0 });
-        } else {
-          setLocalHours({ ...(initalGradeHours as HoursType) });
-        }
-      }
-    })
-  );
+  createEffect(() => {
+    setLocalHours(props.grade.hours);
+  });
+
+  createEffect(() => {
+    setUseSchoolSchedule(props.calendar?.id == school.calendar?.id);
+    setDisableUseSchoolCheckbox(props.calendar?.id != school.calendar?.id);
+  });
 
   createEffect(() => {
     props.onUpdate(localHours());
@@ -87,20 +83,32 @@ export function GradeTimesScheduleWrapper(props: {
     setLocalHours((prev) => {
       return {
         ...prev,
-        rules: rules,
+        rules: [...rules],
       };
     });
   }
 
-  function usedCalendar(): CalendarType {
-    return props.grade.calendar
-      ? props.grade.calendar
-      : (school.calendar as CalendarType);
+  function onChangeUseSchoolSchedule() {
+    setUseSchoolSchedule((prev) => {
+      return !prev;
+    });
   }
 
-  function onChangeUseSchoolSchedule() {
-    setUseSchoolSchedule((prev) => !prev);
-  }
+  createEffect(
+    on(useSchoolSchedule, () => {
+      if (useSchoolSchedule()) {
+        setLocalHours(schoolHours);
+      } else {
+        if (initalGradeHours?.id == schoolHours.id) {
+          setLocalHours((prev) => {
+            return { ...prev, id: 0 };
+          });
+        } else {
+          setLocalHours({ ...(initalGradeHours as HoursType) });
+        }
+      }
+    })
+  );
 
   return (
     <div>
@@ -109,6 +117,7 @@ export function GradeTimesScheduleWrapper(props: {
         label="Utiliser les horaires de l'école"
         checked={useSchoolSchedule()}
         onChange={onChangeUseSchoolSchedule}
+        disabled={disableUseSchoolCheckbox()}
       />
       <TimesInputWrapper
         label="Aller"
@@ -127,8 +136,8 @@ export function GradeTimesScheduleWrapper(props: {
         disabled={useSchoolSchedule()}
       />
       <GradeHourRuleList
-        rules={props.grade.hours.rules}
-        calendar={usedCalendar()}
+        rules={localHours().rules}
+        calendar={props.calendar}
         onUpdate={onUpdateHourRules}
         enabled={!useSchoolSchedule()}
       />

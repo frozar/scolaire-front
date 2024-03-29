@@ -1,27 +1,68 @@
-import { Accessor, For, Setter, Show } from "solid-js";
-import { CalendarDayEnum } from "../../../../../_entities/calendar.entity";
-import { GradeType } from "../../../../../_entities/grade.entity";
+import { For, Show, createEffect, createSignal } from "solid-js";
+import {
+  CalendarDayEnum,
+  CalendarType,
+} from "../../../../../_entities/calendar.entity";
 import { TimeUtils } from "../../../../../_entities/time.utils";
-import { HourRuleItem } from "./HourRuleItem";
 
-import { schoolDetailEditing } from "../template/SchoolDetails";
+import { HourRuleType } from "../../../../../_entities/_utils.entity";
+import PlusIcon from "../../../../../icons/PlusIcon";
+import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
+import { HourRuleItem } from "./HourRuleItem";
 import "./HourRuleList.css";
 
 interface GradeHourRuleListProps {
+  rules: HourRuleType[];
+  calendar: CalendarType;
+  onUpdate: (rules: HourRuleType[]) => void;
   enabled: boolean;
-  item: Accessor<GradeType | undefined>;
-  setItem: Setter<GradeType>;
 }
 
-/* TODO refacto the props */
+//TODO passer de bout à bout le Grade
 export function GradeHourRuleList(props: GradeHourRuleListProps) {
-  const item = () => props.item();
+  const [localRules, setLocalRules] = createSignal<HourRuleType[]>([
+    ...props.rules,
+  ]);
 
-  const showTitle = () =>
-    (item()?.hours.rules.length ?? 0) > 0 || props.enabled;
+  createEffect(() => {
+    setLocalRules([...props.rules]);
+  });
+
+  const showTitle = () => (localRules()?.length ?? 0) > 0 || props.enabled;
 
   function getRemainingDays(): CalendarDayEnum[] {
-    return TimeUtils.getRemainingDays(props.item());
+    return TimeUtils.getRemainingRuleDays(localRules(), props.calendar);
+  }
+
+  function addRule() {
+    setLocalRules((prev) => {
+      const remainingDays = TimeUtils.getRemainingRuleDays(
+        prev,
+        props.calendar
+      );
+      if (remainingDays.length > 0) {
+        prev.push(TimeUtils.defaultRule(remainingDays[0]));
+      }
+      return prev;
+    });
+    props.onUpdate(localRules());
+  }
+
+  function onRuleUpdate(rule: HourRuleType, index: number) {
+    setLocalRules((prev) => {
+      prev[index] = { ...rule };
+      return prev;
+    });
+
+    props.onUpdate(localRules());
+  }
+
+  function onRuleRemove(index: number) {
+    setLocalRules((prev) => {
+      prev.splice(index, 1);
+      return prev;
+    });
+    props.onUpdate(localRules());
   }
 
   return (
@@ -30,24 +71,26 @@ export function GradeHourRuleList(props: GradeHourRuleListProps) {
         <Show when={showTitle()}>
           <p class="hour-rule-list-title">Exception(s)</p>
         </Show>
-        {/* <Show when={schoolDetailEditing() && getRemainingDays().length > 0}>
+        <Show when={props.enabled && getRemainingDays().length > 0}>
           <ButtonIcon icon={<PlusIcon />} onClick={addRule} class="pl-3 pt-1" />
-        </Show> */}
+        </Show>
       </div>
-
       <div
         class="list-wrapper pr-3"
-        classList={{ "!max-h-full": schoolDetailEditing() }}
+        classList={{ "!max-h-full": props.enabled }}
       >
-        <For each={item()?.hours.rules}>
+        <For each={localRules()}>
           {(hourRule, i) => (
             <HourRuleItem
-              item={props.item}
-              setItem={props.setItem}
-              remainingDays={getRemainingDays}
               rule={hourRule}
+              calendar={props.calendar}
+              onUpdate={(rule) => {
+                onRuleUpdate(rule, i());
+              }}
+              onRemove={() => onRuleRemove(i())}
+              remainingDays={getRemainingDays}
               disabled={props.enabled}
-              isNotLast={i() + 1 != item()?.hours.rules.length}
+              isNotLast={i() + 1 != localRules().length}
             />
           )}
         </For>

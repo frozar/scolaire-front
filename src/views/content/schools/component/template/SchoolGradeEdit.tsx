@@ -19,8 +19,6 @@ import { setMapDataGradeDetail } from "./SchoolGradeDetails";
 
 export const [schoolGradeEdit, setSchoolGradeEdit] = createSignal<GradeType>();
 
-// TODO Refactor
-// eslint-disable-next-line solid/reactivity
 export function SchoolGradeEdit() {
   const [localGrade, setLocalGrade] = createSignal<GradeType>();
   setLocalGrade(schoolGradeEdit() as GradeType);

@@ -1,61 +1,50 @@
-import { createEffect, createSignal, on } from "solid-js";
+import { createEffect, createSignal } from "solid-js";
 import { CalendarType } from "../../../../../_entities/calendar.entity";
 import { GradeType } from "../../../../../_entities/grade.entity";
 import { calendars } from "../../../../../_stores/calendar.store";
 import { SchoolStore } from "../../../../../_stores/school.store";
 import { SelectInput } from "../../../../../component/atom/SelectInput";
 import { LabeledCheckbox } from "../../../../../component/molecule/LabeledCheckbox";
-import { SchoolUtils } from "../../../../../utils/school.utils";
 
 export function GradeCalendarSelectionWrapper(props: {
   grade: GradeType;
   onUpdate: (calendar: CalendarType) => void;
 }) {
-  const [bufferCalendar, setBufferCalendar] = createSignal<CalendarType>();
-
   const school = SchoolStore.get(props.grade.schoolId as number);
 
-  const schoolCalendar = SchoolUtils.get(school.id as number)
-    .calendar as CalendarType;
+  const schoolCalendar = school.calendar as CalendarType;
 
-  const initialGradeCalendar = props.grade.calendar as CalendarType;
+  const initialGradeCalendar = props.grade.calendar;
 
-  setBufferCalendar(initialGradeCalendar);
+  const [localCalendar, setLocalCalendar] = createSignal<CalendarType>(
+    initialGradeCalendar ? initialGradeCalendar : schoolCalendar
+  );
 
   const [useSchoolCalendar, setUseSchoolCalendar] = createSignal<boolean>(
     initialGradeCalendar != undefined
       ? schoolCalendar?.id == initialGradeCalendar?.id
-      : false
+      : true
   );
 
-  const calendarFiltered = calendars().filter(
-    (calendar) => calendar.id != schoolCalendar?.id
-  );
-
-  createEffect(
-    on(useSchoolCalendar, () => {
-      if (useSchoolCalendar()) props.onUpdate(schoolCalendar);
-      else props.onUpdate(calendarFiltered[0]);
-    })
-  );
-
-  function selectOptions() {
-    return useSchoolCalendar()
-      ? calendars().map((item) => {
-          return { text: item.name, value: item.id };
-        })
-      : calendarFiltered.map((item) => {
-          return { text: item.name, value: item.id };
-        });
-  }
+  createEffect(() => {
+    props.onUpdate(localCalendar() as CalendarType);
+  });
 
   function onChangeUseSchoolCalendar() {
-    setUseSchoolCalendar((prev) => !prev);
+    setUseSchoolCalendar((prev) => {
+      const output = !prev;
+      if (output) {
+        setLocalCalendar(schoolCalendar);
+      }
+      return output;
+    });
   }
 
   function onChangeSelectCalendar(value: string | number) {
     const calendar = calendars().find((item) => item.id == value);
-    setBufferCalendar(calendar);
+    if (calendar) {
+      setLocalCalendar(calendar);
+    }
   }
 
   return (
@@ -68,9 +57,12 @@ export function GradeCalendarSelectionWrapper(props: {
       />
 
       <SelectInput
-        options={selectOptions()}
+        options={calendars().map((item) => {
+          return { value: item.id, text: item.name };
+        })}
         onChange={onChangeSelectCalendar}
-        defaultValue={bufferCalendar()?.id ?? -1}
+        defaultValue={localCalendar()?.id ?? -1}
+        // TODO FDEFAULT OPTION ???
         defaultOptions="Calendrier"
         disabled={useSchoolCalendar()}
       />

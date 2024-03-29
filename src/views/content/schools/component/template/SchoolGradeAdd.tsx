@@ -1,83 +1,104 @@
 import { Show, createSignal, onCleanup, onMount } from "solid-js";
-import { HoursType } from "../../../../../_entities/_utils.entity";
+import { EntityUtils, HoursType } from "../../../../../_entities/_utils.entity";
 import { CalendarType } from "../../../../../_entities/calendar.entity";
 import { GradeEntity, GradeType } from "../../../../../_entities/grade.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
+import { TimeUtils } from "../../../../../_entities/time.utils";
 import { GradeService } from "../../../../../_services/grade.service";
 import { SchoolStore } from "../../../../../_stores/school.store";
+import {
+  addNewGlobalSuccessInformation,
+  disableSpinningWheel,
+  enableSpinningWheel,
+} from "../../../../../signaux";
 import { ViewManager } from "../../../ViewManager";
 import { setDisplaySchools } from "../../../_component/organisme/SchoolPoints";
 import BoardFooterActions from "../../../board/component/molecule/BoardFooterActions";
 import LabeledInputField from "../../../board/component/molecule/LabeledInputField";
-import { onBoard } from "../../../board/component/template/ContextManager";
 import GradeBoardHeader from "../molecule/GradeBoardHeader";
 import { GradeCalendarSelectionWrapper } from "../organism/GradeCalendarSelectionWrapper";
-import { GradeTimesScheduleWrapper } from "../organism/GradeTimesScheduleWrapper";
+import { GradeHoursWrapper } from "../organism/GradeHoursWrapper ";
 
 export const [schoolOfAddGrade, setSchoolOfAddGrade] =
   createSignal<SchoolType>();
 
 export function SchoolGradeAdd() {
-  const school: SchoolType = schoolOfAddGrade() as SchoolType;
-  console.log("toto");
+  const school = schoolOfAddGrade() as SchoolType;
 
-  const [localGrade, setLocalGrade] = createSignal<GradeType>();
-  setLocalGrade(GradeEntity.initEntity(school));
+  const [localGrade, setLocalGrade] = createSignal<GradeType>(
+    GradeEntity.initFromSchool(school)
+  );
 
+  const [localCalendar, setLocalCalendar] = createSignal<CalendarType>(
+    // eslint-disable-next-line solid/reactivity
+    localGrade().calendar as CalendarType
+  );
+
+  // eslint-disable-next-line solid/reactivity
   const [gradeName, setGradeName] = createSignal(localGrade()?.name);
 
   onMount(() => {
-    setMapData(localGrade());
+    setLocalGrade(GradeEntity.initFromSchool(school));
+    setDisplaySchools([school]);
   });
 
   onCleanup(() => {
-    setLocalGrade();
-    setMapData(localGrade());
+    setDisplaySchools([]);
   });
 
   function updateName(name: string) {
     setGradeName(name);
     setLocalGrade((grade) => {
-      if (grade) return { ...grade, name: name };
-      else return undefined;
+      return { ...grade, name: name };
     });
   }
 
   function updateCalendar(calendar: CalendarType) {
+    setLocalCalendar(calendar);
     setLocalGrade((grade) => {
-      if (grade) return { ...grade, calendar: calendar };
-      else return undefined;
+      const hours =
+        calendar.id == school.calendar?.id
+          ? school.hours
+          : EntityUtils.defaultHours();
+      return {
+        ...grade,
+        calendar: calendar,
+        hours: hours,
+      };
     });
   }
 
   function updateHours(hours: HoursType) {
     setLocalGrade((grade) => {
-      if (grade) return { ...grade, hours: hours };
-      else return undefined;
+      return { ...grade, hours: hours };
     });
   }
 
   function onClickCancel() {
-    ViewManager.schoolDetails(schoolOfAddGrade() as SchoolType);
-  }
-  //TODO revoir tout le code du register -> surtout partie Service + "store"
-  async function register() {
-    const schoolToUpdate = SchoolStore.get(localGrade()?.schoolId as number);
-    if (!schoolToUpdate) return;
-    const grade = await GradeService.create(localGrade() as GradeType);
-    SchoolStore.addGrade(grade);
-    ViewManager.schoolGrade(grade);
+    ViewManager.schoolDetails(school);
   }
 
-  const title =
-    onBoard() == "school-grade-add"
-      ? "Ajout d'une classe"
-      : "Modifier une classe";
+  async function register() {
+    const locGrade = localGrade();
+    const school = schoolOfAddGrade();
+    if (locGrade && school) {
+      locGrade.calendar = computedCalendar(locGrade, school);
+      locGrade.hours = computedHours(locGrade, school);
+
+      enableSpinningWheel();
+      const grade = await GradeService.create(locGrade);
+      disableSpinningWheel();
+      addNewGlobalSuccessInformation(grade.name + " créé");
+      SchoolStore.addGrade(grade);
+      ViewManager.schoolGrade(grade);
+    }
+    return;
+  }
 
   return (
     <section>
       <Show when={localGrade()}>
-        <GradeBoardHeader title={title} />
+        <GradeBoardHeader title="Ajout d'une classe" />
 
         <div class="content">
           <LabeledInputField
@@ -93,12 +114,11 @@ export function SchoolGradeAdd() {
             onUpdate={updateCalendar}
           />
 
-          <Show when={localGrade()?.calendar}>
-            <GradeTimesScheduleWrapper
-              grade={localGrade() as GradeType}
-              onUpdate={updateHours}
-            />
-          </Show>
+          <GradeHoursWrapper
+            grade={localGrade() as GradeType}
+            calendar={localCalendar()}
+            onUpdate={updateHours}
+          />
         </div>
 
         <BoardFooterActions
@@ -116,12 +136,20 @@ export function SchoolGradeAdd() {
   );
 }
 
-function setMapData(grade: GradeType | undefined) {
-  if (grade && grade.schoolId) {
-    const school: SchoolType = SchoolStore.get(grade.schoolId);
-    setDisplaySchools([school]);
-  } else {
-    setDisplaySchools([]);
-    // setDisplayTrips([]);
+function computedHours(grade: GradeType, school: SchoolType): HoursType {
+  if (grade.hours.id != school.hours.id) {
+    return grade.hours;
   }
+  return TimeUtils.defaultHours();
+}
+
+function computedCalendar(
+  grade: GradeType,
+  school: SchoolType
+): CalendarType | undefined {
+  let output: CalendarType | undefined = undefined;
+  if (grade.calendar && grade.calendar.id != school.calendar?.id) {
+    output = grade.calendar;
+  }
+  return output;
 }
