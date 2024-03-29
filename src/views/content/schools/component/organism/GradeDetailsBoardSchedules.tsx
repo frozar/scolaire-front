@@ -1,16 +1,14 @@
 import { JSXElement } from "solid-js";
+import { CalendarType } from "../../../../../_entities/calendar.entity";
 import { GradeType } from "../../../../../_entities/grade.entity";
 import CollapsibleElement from "../../../board/component/organism/CollapsibleElement";
 import TimesInputWrapper from "../molecule/TimesInputWrapper";
-import {
-  schoolGradeDetails,
-  setSchoolGradeDetails,
-} from "../template/SchoolGradeDetails";
 import { GradeHourRuleList } from "./GradeHourRuleList";
 
-export function GradeBoardDetailsSchedules(props: {
+export function GradeDetailsBoardSchedules(props: {
   grade: GradeType;
 }): JSXElement {
+  //TODO à revoir
   function gradeCalendarName(): string {
     const gradeCalendar = props.grade.calendar;
     if (gradeCalendar) return gradeCalendar.name;
@@ -46,10 +44,9 @@ export function GradeBoardDetailsSchedules(props: {
             onInputStart={() => ""}
             onInputEnd={() => ""}
           />
-          {/* TODO refacto the props */}
           <GradeHourRuleList
-            item={schoolGradeDetails}
-            setItem={setSchoolGradeDetails}
+            rules={props.grade.hours.rules}
+            calendar={props.grade.calendar as CalendarType}
             enabled={false}
           />
         </CollapsibleElement>

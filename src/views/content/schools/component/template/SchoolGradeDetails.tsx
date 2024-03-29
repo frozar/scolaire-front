@@ -7,7 +7,7 @@ import { StopUtils } from "../../../../../utils/stop.utils";
 import { setDisplaySchools } from "../../../_component/organisme/SchoolPoints";
 import { setDisplayStops } from "../../../_component/organisme/StopPoints";
 import { GradeBoardDetailsHeader } from "../organism/GradeBoardDetailsHeader";
-import { GradeBoardDetailsSchedules } from "../organism/GradeBoardDetailsSchedules";
+import { GradeDetailsBoardSchedules } from "../organism/GradeDetailsBoardSchedules";
 import { GradeDetailsPanels } from "../organism/gradeDetailsPanels";
 
 export const [schoolGradeDetails, setSchoolGradeDetails] =
@@ -25,7 +25,7 @@ export function SchoolGradeDetails() {
   return (
     <section>
       <GradeBoardDetailsHeader grade={schoolGradeDetails() as GradeType} />
-      <GradeBoardDetailsSchedules grade={schoolGradeDetails() as GradeType} />
+      <GradeDetailsBoardSchedules grade={schoolGradeDetails() as GradeType} />
       <GradeDetailsPanels grade={schoolGradeDetails() as GradeType} />
     </section>
   );
