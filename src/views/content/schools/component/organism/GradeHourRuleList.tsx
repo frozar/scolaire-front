@@ -14,11 +14,11 @@ import "./HourRuleList.css";
 interface GradeHourRuleListProps {
   rules: HourRuleType[];
   calendar: CalendarType;
-  onUpdate: (rules: HourRuleType[]) => void;
+  onUpdate?: (rules: HourRuleType[]) => void;
+  //TODO rebaptiser disabled car terme utilisé en avale
   enabled: boolean;
 }
 
-//TODO passer de bout à bout le Grade
 export function GradeHourRuleList(props: GradeHourRuleListProps) {
   const [localRules, setLocalRules] = createSignal<HourRuleType[]>([
     ...props.rules,
@@ -35,34 +35,40 @@ export function GradeHourRuleList(props: GradeHourRuleListProps) {
   }
 
   function addRule() {
-    setLocalRules((prev) => {
-      const remainingDays = TimeUtils.getRemainingRuleDays(
-        prev,
-        props.calendar
-      );
-      if (remainingDays.length > 0) {
-        prev.push(TimeUtils.defaultRule(remainingDays[0]));
-      }
-      return prev;
-    });
-    props.onUpdate(localRules());
+    if (props.enabled && props.onUpdate) {
+      setLocalRules((prev) => {
+        const remainingDays = TimeUtils.getRemainingRuleDays(
+          prev,
+          props.calendar
+        );
+        if (remainingDays.length > 0) {
+          prev.push(TimeUtils.defaultRule(remainingDays[0]));
+        }
+        return prev;
+      });
+      props.onUpdate(localRules());
+    }
   }
 
   function onRuleUpdate(rule: HourRuleType, index: number) {
-    setLocalRules((prev) => {
-      prev[index] = { ...rule };
-      return prev;
-    });
+    if (props.enabled && props.onUpdate) {
+      setLocalRules((prev) => {
+        prev[index] = { ...rule };
+        return prev;
+      });
 
-    props.onUpdate(localRules());
+      props.onUpdate(localRules());
+    }
   }
 
   function onRuleRemove(index: number) {
-    setLocalRules((prev) => {
-      prev.splice(index, 1);
-      return prev;
-    });
-    props.onUpdate(localRules());
+    if (props.enabled && props.onUpdate) {
+      setLocalRules((prev) => {
+        prev.splice(index, 1);
+        return prev;
+      });
+      props.onUpdate(localRules());
+    }
   }
 
   return (
