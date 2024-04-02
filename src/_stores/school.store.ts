@@ -47,4 +47,25 @@ export namespace SchoolStore {
       return output;
     });
   }
+
+  export function editGrade(grade: GradeType) {
+    const schoolToUpdate = get(grade.schoolId as number);
+
+    const gradeIndex = schoolToUpdate.grades.findIndex(
+      (item) => item.id == grade.schoolId
+    );
+    schoolToUpdate.grades[gradeIndex] = grade;
+
+    const schoolIndex = getSchools().findIndex(
+      (item) => item.id == grade.schoolId
+    );
+
+    set((prev) => {
+      if (!prev) return prev;
+      const schools = [...prev];
+      schools[schoolIndex] = schoolToUpdate;
+
+      return schools;
+    });
+  }
 }
