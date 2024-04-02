@@ -147,10 +147,12 @@ const makeStateGuiContext = () => {
     return state.displayedRightMenu;
   }
 
+  //TODO passer toute la logique du menu dans menuItemFields
   function setSelectedMenu(itemMenu: SelectedMenuType) {
     setState("selectedMenu", itemMenu);
   }
 
+  //TODO passer toute la logique du menu dans menuItemFields
   function getSelectedMenu() {
     return state.selectedMenu;
   }
@@ -196,7 +198,10 @@ const makeStateGuiContext = () => {
       getSelectedEditModeTile,
       toggleDisplayedRightMenu,
       getDisplayedRightMenu,
+
+      //TODO passer toute la logique du menu dans menuItemFields
       setSelectedMenu,
+      //TODO passer toute la logique du menu dans menuItemFields
       getSelectedMenu,
       getDisplayedLeftMenu,
       toggleDisplayedLeftMenu,

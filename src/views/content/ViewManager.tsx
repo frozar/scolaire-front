@@ -22,6 +22,20 @@ export namespace ViewManager {
     changeBoard(undefined);
   }
 
+  /**
+   * Lines
+   */
+  export function lines() {
+    setMapBoard("lines");
+    //TODO change lines to graphicage post board refacto
+    setSelectedMenu("lines");
+    //TODO to delete post refacto
+    changeBoard(undefined);
+  }
+
+  /**
+   * Paths
+   */
   export function paths() {
     setMapBoard("paths");
     setSelectedMenu("paths");
@@ -48,6 +62,10 @@ export namespace ViewManager {
     //TODO to delete post refacto
     changeBoard(undefined);
   }
+
+  /**
+   * Stops
+   */
   export function stops() {
     setMapBoard("stops");
     setSelectedMenu("stops");
@@ -61,6 +79,10 @@ export namespace ViewManager {
     //TODO to delete post refacto
     changeBoard(undefined);
   }
+
+  /**
+   * Schools
+   */
   export function schools() {
     setMapBoard("schools");
     setSelectedMenu("schools");
@@ -74,6 +96,9 @@ export namespace ViewManager {
     //TODO to delete post refacto
     changeBoard(undefined);
   }
+  /**
+   * School Grades
+   */
   export function schoolGrade(grade: GradeType) {
     setSchoolGradeDetails(grade);
     setMapBoard("school-grade-details");

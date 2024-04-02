@@ -1,5 +1,6 @@
 import { Show, createSignal } from "solid-js";
 import { DashboardBoardManager } from "../../dashboard/template/DashboardBoardManager";
+import { LinesBoardManager } from "../../line/template/LinesBoardManager";
 import { PathsBoardManager } from "../../paths/template/PathsBoardManager";
 import { SchoolsBoardManager } from "../../schools/component/template/SchoolsBoardManager";
 import { StopsBoardManager } from "../../stops/component/template/StopsBoardManager";
@@ -7,6 +8,7 @@ import { BoardLayout } from "./BoardLayout";
 
 export type MapBoardTags =
   | "dashboard"
+  | "lines"
   | "stops"
   | "stop-details"
   | "schools"
@@ -20,11 +22,8 @@ export type MapBoardTags =
   | "path-edit"
   //   | "trip"
   //   | "trip-draw"
-  //   | "line"
   //   | "line-add"
   //   | "line-details"
-  //   | "path-details"
-  //   | "path-draw"
   | undefined;
 
 export const [mapBoard, setMapBoard] = createSignal<MapBoardTags>(undefined);
@@ -38,6 +37,8 @@ export function MapBoardManager() {
           <StopsBoardManager board={mapBoard()} />
           <SchoolsBoardManager board={mapBoard()} />
           <PathsBoardManager board={mapBoard()} />
+          <LinesBoardManager board={mapBoard()} />
+          {/* TODO create TripesBoardManager */}
         </BoardLayout>
       </Show>
     </section>

@@ -68,6 +68,12 @@ export default function () {
               <BusLinesBoard />
             </Match>
 
+            {/* TODO représente le LineDetail */}
+            <Match when={onBoard() == "trip"}>
+              <TripsBoard line={getSelectedLine() as LineType} />
+            </Match>
+
+            {/* TODO représente le TripDetail */}
             <Match when={onBoard() == "line-details"}>
               <TripBoard />
             </Match>
@@ -77,9 +83,6 @@ export default function () {
               <AddLineBoardContent />
             </Match>
 
-            <Match when={onBoard() == "trip"}>
-              <TripsBoard line={getSelectedLine() as LineType} />
-            </Match>
             <Match when={onBoard() == "trip-draw"}>
               <DrawTripBoard />
             </Match>
