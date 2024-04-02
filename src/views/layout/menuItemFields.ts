@@ -8,13 +8,9 @@ import { MarketIcon } from "../../icons/MarketIcon";
 import RoadwaysLogo from "../../icons/RoadwaysLogo";
 import ServiceIcon from "../../icons/ServiceIcon";
 import { MenuItemType } from "../../type";
-import { MapElementUtils } from "../../utils/mapElement.utils";
 import { ViewManager } from "../content/ViewManager";
 import SettingsIcon from "../content/board/component/atom/SettingsIcon";
-import {
-  changeBoard,
-  onBoard,
-} from "../content/board/component/template/ContextManager";
+import { changeBoard } from "../content/board/component/template/ContextManager";
 
 export const [, { setSelectedMenu }] = useStateGui();
 
@@ -43,10 +39,7 @@ const menuItems: MenuItemType[] = [
     label: "Graphicage",
     isDisabled: false,
     onClick: () => {
-      if (onBoard() != "trip-draw") {
-        changeBoard("line");
-        MapElementUtils.deselectAllPointsAndBusTrips();
-      }
+      ViewManager.lines();
     },
   },
   {

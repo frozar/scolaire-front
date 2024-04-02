@@ -155,6 +155,7 @@ export type ReturnMessageType = {
   };
 };
 
+//TODO passer toute la logique du menu dans menuItemFields
 export type SelectedMenuType =
   | "graphicage"
   | "calendar"
@@ -169,7 +170,8 @@ export type SelectedMenuType =
   | "service"
   | "maps"
   | "weight"
-  | "paths";
+  | "paths"
+  | "lines";
 
 export type MenuItemType = {
   menuItem: SelectedMenuType;

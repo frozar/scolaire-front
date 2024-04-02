@@ -6,19 +6,9 @@ import {
   enableSpinningWheel,
   setLeafletMap,
 } from "../../../signaux";
-import { MapElementUtils } from "../../../utils/mapElement.utils";
 import { MapsUtils } from "../../../utils/maps.utils";
-import {
-  changeBoard,
-  isInDrawMod,
-  onBoard,
-} from "../board/component/template/ContextManager";
-import { setmultipleWeight } from "../stops/component/organism/Roadways";
+import { isInDrawMod } from "../board/component/template/ContextManager";
 import FlaxibMapLogo from "./FlaxibMapLogo";
-import {
-  getSelectedWays,
-  setSelectedWays,
-} from "./component/molecule/LineWeight";
 import { getTileById } from "./tileUtils";
 const [
   ,
@@ -99,25 +89,27 @@ export function buildMapL7(div: HTMLDivElement) {
   leafletMap.addEventListener("click", (e) => {
     e.originalEvent.preventDefault();
     e.originalEvent.stopPropagation();
-    if (
-      !isOverMapItem() &&
-      onBoard() != "trip-draw" &&
-      onBoard() != "line-add" &&
-      onBoard() != "path-draw"
-    ) {
-      if (getSelectedMenu() != "roadways") {
-        changeBoard("line");
-      }
-      MapElementUtils.deselectAllPointsAndBusTrips();
-    }
 
-    if (getSelectedMenu() == "roadways" && getSelectedWays().length > 0) {
-      if (!window.event?.ctrlKey) {
-        setSelectedWays([]);
-        setmultipleWeight([]);
-        [];
-      }
-    }
+    // TODO supprimer cette logique d'affichage de la liste des lignes sur click de la carte
+    // if (
+    //   !isOverMapItem() &&
+    //   onBoard() != "trip-draw" &&
+    //   onBoard() != "line-add" &&
+    //   onBoard() != "path-draw"
+    // ) {
+    //   if (getSelectedMenu() != "roadways") {
+    //     changeBoard("line");
+    //   }
+    //   MapElementUtils.deselectAllPointsAndBusTrips();
+    // }
+
+    // if (getSelectedMenu() == "roadways" && getSelectedWays().length > 0) {
+    //   if (!window.event?.ctrlKey) {
+    //     setSelectedWays([]);
+    //     setmultipleWeight([]);
+    //     [];
+    //   }
+    // }
   });
 
   addLogoFlaxib(leafletMap);
