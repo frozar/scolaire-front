@@ -40,6 +40,16 @@ export namespace GradeEntity {
     };
   }
 
+  export function dbFormatForEdit(grade: GradeType): GradeDBType {
+    return {
+      id: grade.id as number,
+      school_id: grade.schoolId as number,
+      name: grade.name,
+      hours: TimeUtils.formatHours(grade.hours),
+      calendar_id: grade.calendar ? grade.calendar.id : 0,
+    };
+  }
+
   // TODO Maybe replace these functions into another file ? time.utils.ts
   export function getStringFromHourFormat(time: HourFormat | undefined) {
     if (time == undefined) return "00:00";

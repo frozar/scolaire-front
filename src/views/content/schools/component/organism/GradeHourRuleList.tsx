@@ -31,7 +31,9 @@ export function GradeHourRuleList(props: GradeHourRuleListProps) {
   const showTitle = () => (localRules()?.length ?? 0) > 0 || props.enabled;
 
   function getRemainingDays(): CalendarDayEnum[] {
-    return TimeUtils.getRemainingRuleDays(localRules(), props.calendar);
+    if (localRules() && props.calendar)
+      return TimeUtils.getRemainingRuleDays(localRules(), props.calendar);
+    else return [];
   }
 
   function addRule() {
