@@ -1,10 +1,12 @@
 import { GradeType } from "../../_entities/grade.entity";
+import { LineType } from "../../_entities/line.entity";
 import { RoadType } from "../../_entities/road.entity";
 import { SchoolType } from "../../_entities/school.entity";
 import { StopType } from "../../_entities/stop.entity";
 import { setSelectedMenu } from "../layout/menuItemFields";
 import { setMapBoard } from "./_component/template/MapBoardManager";
 import { changeBoard } from "./board/component/template/ContextManager";
+import { setSelectedLine } from "./line/template/LineDetails";
 import { setSelectedRoad } from "./paths/template/PathDetails";
 import { setEditRoad } from "./paths/template/PathEdit";
 import { setSchoolDetails } from "./schools/component/template/SchoolDetails";
@@ -27,6 +29,14 @@ export namespace ViewManager {
    */
   export function lines() {
     setMapBoard("lines");
+    //TODO change lines to graphicage post board refacto
+    setSelectedMenu("lines");
+    //TODO to delete post refacto
+    changeBoard(undefined);
+  }
+  export function lineDetails(line: LineType) {
+    setSelectedLine(line);
+    setMapBoard("line-details");
     //TODO change lines to graphicage post board refacto
     setSelectedMenu("lines");
     //TODO to delete post refacto

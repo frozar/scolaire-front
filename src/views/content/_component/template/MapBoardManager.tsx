@@ -9,6 +9,7 @@ import { BoardLayout } from "./BoardLayout";
 export type MapBoardTags =
   | "dashboard"
   | "lines"
+  | "line-details"
   | "stops"
   | "stop-details"
   | "schools"

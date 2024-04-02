@@ -1,9 +1,5 @@
 import { For } from "solid-js";
 import { PathEntity, PathType } from "../../../../../_entities/path.entity";
-import {
-  TripBoardPanels,
-  onTripBoardPanel,
-} from "../../../board/component/organism/TripsBoard";
 import { onBoard } from "../../../board/component/template/ContextManager";
 import {
   DrawPathStep,
@@ -12,8 +8,8 @@ import {
 } from "../../../path/component/drawPath.utils";
 import { selectedPath } from "../../../path/component/organism/PathDetail";
 import { Trip } from "../molecule/Trip";
-import { getSelectedLine } from "./BusLines";
 
+//TODO toDelete
 export function Paths(props: { map: L.Map }) {
   function pathFilter(): PathType[] {
     switch (onBoard()) {
@@ -22,10 +18,10 @@ export function Paths(props: { map: L.Map }) {
           return [currentDrawPath() ?? PathEntity.defaultPath()];
         else return [];
 
-      case "trip":
-        if (onTripBoardPanel() == TripBoardPanels.paths)
-          return getSelectedLine()?.paths ?? [];
-        else return [];
+      // case "trip":
+      //   if (onTripBoardPanel() == TripBoardPanels.paths)
+      //     return getSelectedLine()?.paths ?? [];
+      //   else return [];
 
       case "path-details":
         return [selectedPath()] as PathType[];
