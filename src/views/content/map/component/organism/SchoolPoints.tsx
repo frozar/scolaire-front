@@ -3,16 +3,16 @@ import { For, createEffect } from "solid-js";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { SchoolStore, getSchools } from "../../../../../_stores/school.store";
 import {
-  AddLineStep,
-  addLineCurrentStep,
-  addLineSelectedSchool,
-} from "../../../board/component/organism/AddLineBoardContent";
-import {
   DrawTripStep,
   currentDrawTrip,
   currentStep,
 } from "../../../board/component/organism/DrawTripBoard";
 import { onBoard } from "../../../board/component/template/ContextManager";
+import {
+  AddLineStep,
+  addLineCurrentStep,
+  addLineSelectedSchool,
+} from "../../../line/template/LineAdd";
 import { SchoolPoint } from "../molecule/SchoolPoint";
 import { getSelectedLine } from "./BusLines";
 

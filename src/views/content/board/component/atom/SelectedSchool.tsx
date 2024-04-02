@@ -6,7 +6,7 @@ import SelectedSchoolItem from "./SelectedSchoolItem";
 interface SelectedSchoolProps {
   schoolSelected: SchoolType[];
 }
-
+//TODO toDelete
 export default function (props: SelectedSchoolProps) {
   const schoolSelected = () => props.schoolSelected;
 

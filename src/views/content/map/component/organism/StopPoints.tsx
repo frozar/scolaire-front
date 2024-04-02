@@ -15,17 +15,17 @@ import { QuantityUtils } from "../../../../../utils/quantity.utils";
 import { StopUtils } from "../../../../../utils/stop.utils";
 import { TripUtils } from "../../../../../utils/trip.utils";
 import {
-  AddLineStep,
-  addLineCheckableStop,
-  addLineCurrentStep,
-} from "../../../board/component/organism/AddLineBoardContent";
-import {
   DrawTripStep,
   currentDrawTrip,
   currentStep,
   drawTripCheckableGrade,
 } from "../../../board/component/organism/DrawTripBoard";
 import { onBoard } from "../../../board/component/template/ContextManager";
+import {
+  AddLineStep,
+  addLineCheckableStop,
+  addLineCurrentStep,
+} from "../../../line/template/LineAdd";
 import {
   DrawPathStep,
   currentDrawPath,

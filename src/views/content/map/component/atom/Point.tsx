@@ -8,7 +8,7 @@ import {
   AddLineStep,
   addLineCheckableStop,
   addLineCurrentStep,
-} from "../../../board/component/organism/AddLineBoardContent";
+} from "../../../line/template/LineAdd";
 import { COLOR_STOP_FOCUS, COLOR_STOP_LIGHT } from "../../constant";
 import { linkMap } from "../organism/Points";
 import "./Point.css";

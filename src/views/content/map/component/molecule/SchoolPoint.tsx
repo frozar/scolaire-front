@@ -5,7 +5,7 @@ import {
   AddLineStep,
   addLineCurrentStep,
   addLineSelectedSchool,
-} from "../../../board/component/organism/AddLineBoardContent";
+} from "../../../line/template/LineAdd";
 import { COLOR_SCHOOL_FOCUS, COLOR_SCHOOL_LIGHT } from "../../constant";
 import Point from "../atom/Point";
 import { blinkingSchools, linkMap } from "../organism/Points";

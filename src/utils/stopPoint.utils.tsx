@@ -10,16 +10,16 @@ import { addNewUserInformation } from "../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { ViewManager } from "../views/content/ViewManager";
 import {
-  addLineCheckableStop,
-  setAddLineCheckableStop,
-} from "../views/content/board/component/organism/AddLineBoardContent";
-import {
   DrawTripStep,
   currentDrawTrip,
   currentStep,
   setCurrentTripIndex,
 } from "../views/content/board/component/organism/DrawTripBoard";
 import { onBoard } from "../views/content/board/component/template/ContextManager";
+import {
+  addLineCheckableStop,
+  setAddLineCheckableStop,
+} from "../views/content/line/template/LineAdd";
 import {
   draggingWaypointIndex,
   setDraggingWaypointIndex,

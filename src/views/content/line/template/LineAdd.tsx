@@ -1,38 +1,33 @@
-import { For, Show, createEffect, createSignal } from "solid-js";
+import { Match, Switch, createSignal, onMount } from "solid-js";
 
-import { BusLineEntity, LineType } from "../../../../../_entities/line.entity";
+import { BusLineEntity, LineType } from "../../../../_entities/line.entity";
 
-import BoardFooterActions from "../molecule/BoardFooterActions";
-
-import "../../../../../css/timeline.css";
-import { ColorPicker } from "../atom/ColorPicker";
-
-import { AssociatedStopType } from "../../../../../_entities/_utils.entity";
-import { SchoolType } from "../../../../../_entities/school.entity";
-import { manageStatusCode } from "../../../../../_services/_utils.service";
-import { BusLineService } from "../../../../../_services/line.service";
-import { updatePointColor } from "../../../../../leafletUtils";
+import { SchoolType } from "../../../../_entities/school.entity";
+import { manageStatusCode } from "../../../../_services/_utils.service";
+import { BusLineService } from "../../../../_services/line.service";
+import { updatePointColor } from "../../../../leafletUtils";
+import { disableSpinningWheel, enableSpinningWheel } from "../../../../signaux";
 import {
-  disableSpinningWheel,
-  enableSpinningWheel,
-} from "../../../../../signaux";
-import { displayBusLine } from "../../../line/molecule/LineItem";
-import SelectedSchool from "../atom/SelectedSchool";
-import LabeledInputField from "../molecule/LabeledInputField";
-import { setOnBoard, toggleDrawMod } from "../template/ContextManager";
-import "./AddLineBoardContent.css";
-import { CheckableStopListBySchool } from "./CheckableStopListBySchool";
+  setOnBoard,
+  toggleDrawMod,
+} from "../../board/component/template/ContextManager";
+import { displayBusLine } from "../molecule/LineItem";
 // TODO to fix -> doit importer un AddLineBoardContent ou similaire
-import { GradeType } from "../../../../../_entities/grade.entity";
-import { StopType } from "../../../../../_entities/stop.entity";
-import { LineStore, getLines } from "../../../../../_stores/line.store";
-import { getSchools } from "../../../../../_stores/school.store";
-import { getStops } from "../../../../../_stores/stop.store";
-import BoardTitle from "../atom/BoardTitle";
-import { AssociatedItem } from "../molecule/CheckableElementList";
-import { CheckableGradeListBySchool } from "./CheckableGradeListBySchool";
-import "./DrawTripBoard.css";
+import { GradeType } from "../../../../_entities/grade.entity";
+import { StopType } from "../../../../_entities/stop.entity";
+import { LineStore, getLines } from "../../../../_stores/line.store";
+import { getSchools } from "../../../../_stores/school.store";
+import { getStops } from "../../../../_stores/stop.store";
+import { AssociatedItem } from "../../board/component/molecule/CheckableElementList";
+// import "./DrawTripBoard.css";
+// import "../../../../../css/timeline.css";
+// import "./AddLineBoardContent.css";
+import { ViewManager } from "../../ViewManager";
+import { SelectGradesStep } from "../organism/SelectGradesStep";
+import { SelectSchoolsStep } from "../organism/SelectSchoolsStep";
+import "./LineAdd.css";
 
+//TODO enlever la partie export
 export enum AddLineStep {
   start,
   schoolSelection,
@@ -40,65 +35,79 @@ export enum AddLineStep {
   stopSelection,
 }
 
+//TODO toDelete
 export const [addLineSelectedSchool, setaddLineSelectedSchool] = createSignal<
   SchoolType[]
 >([]);
 
+//TODO toDelete
 // TODO: Fix type issue => addLineCheckableStop.item has stopType properties
 export const [addLineCheckableStop, setAddLineCheckableStop] = createSignal<
   AssociatedItem[]
 >([]);
 
+//TODO toDelete
 export const [addLineCheckableGrade, setAddLineCheckableGrade] = createSignal<
   AssociatedItem[]
 >([]);
 
+//TODO toDelete
 export const [addLineCurrentStep, setAddLineCurrentStep] =
   createSignal<AddLineStep>(AddLineStep.start);
 
-// eslint-disable-next-line solid/reactivity
-export default function () {
-  createEffect(() => {
-    const selectedAssociated: AssociatedStopType[] = [];
-    addLineSelectedSchool().forEach((elem) => {
-      elem.associated.forEach((associatedValue) =>
-        selectedAssociated.includes(associatedValue)
-          ? ""
-          : selectedAssociated.push(associatedValue)
-      );
-    });
-  });
+/**
+ * TODO Good code
+ */
+const [currentStep, setCurrentStep] = createSignal<AddLineStep>(
+  AddLineStep.schoolSelection
+);
+const [selectedSchools, setSelectedSchools] = createSignal<SchoolType[]>([]);
+const [selectedGrades, setSelectedGrades] = createSignal<GradeType[]>([]);
 
-  createEffect(() => {
-    setaddLineSelectedSchool(getSchools()); // TODO to delete (use for primary test) rendre les écoles clickables
+export function LineAdd() {
+  onMount(() => {
+    setSelectedSchools([]);
+    setSelectedGrades([]);
+    setCurrentStep(AddLineStep.schoolSelection);
   });
+  // createEffect(() => {
+  //   const selectedAssociated: AssociatedStopType[] = [];
+  //   addLineSelectedSchool().forEach((elem) => {
+  //     elem.associated.forEach((associatedValue) =>
+  //       selectedAssociated.includes(associatedValue)
+  //         ? ""
+  //         : selectedAssociated.push(associatedValue)
+  //     );
+  //   });
+  // });
 
-  if (currentLine() == undefined) {
-    setCurrentLine(BusLineEntity.defaultBusLine());
-  }
+  // if (currentLine() == undefined) {
+  //   setCurrentLine(BusLineEntity.defaultBusLine());
+  // }
 
   return (
     <div class="add-line-information-board-content">
-      <Show when={addLineCurrentStep() == AddLineStep.schoolSelection}>
-        <SelectedSchool schoolSelected={addLineSelectedSchool()} />
-      </Show>
+      <Switch>
+        <Match when={currentStep() == AddLineStep.schoolSelection}>
+          <SelectSchoolsStep
+            schools={selectedSchools()}
+            nextStep={() => nextStep(AddLineStep.schoolSelection)}
+            previousStep={() => previousStep(AddLineStep.schoolSelection)}
+            onUpdate={onSchoolUpdate}
+          />
+        </Match>
+        <Match when={currentStep() == AddLineStep.gradeSelection}>
+          <SelectGradesStep
+            schools={selectedSchools()}
+            grades={selectedGrades()}
+            nextStep={() => nextStep(AddLineStep.gradeSelection)}
+            previousStep={() => previousStep(AddLineStep.gradeSelection)}
+            onUpdate={onGradeUpdate}
+          />
+        </Match>
+      </Switch>
 
-      <Show when={addLineCurrentStep() == AddLineStep.gradeSelection}>
-        <BoardTitle title={"Sélection des niveaux"} />
-
-        <For each={addLineSelectedSchool()}>
-          {(school_elem) => {
-            return (
-              <CheckableGradeListBySchool
-                school={school_elem}
-                displayQuantity={false}
-                checkableGrade={addLineCheckableGrade}
-                setCheckableGrade={setAddLineCheckableGrade}
-              />
-            );
-          }}
-        </For>
-      </Show>
+      {/* 
 
       <Show when={addLineCurrentStep() == AddLineStep.stopSelection}>
         <LabeledInputField
@@ -153,13 +162,62 @@ export default function () {
               ? "Annuler"
               : "Précédent",
         }}
-      />
+      /> */}
     </div>
   );
 }
+function onGradeUpdate(grades: GradeType[]) {
+  setSelectedGrades(grades);
+}
+function onSchoolUpdate(schools: SchoolType[]) {
+  setSelectedSchools(schools);
+}
+
+function nextStep(currentStep: AddLineStep) {
+  enableSpinningWheel();
+  switch (currentStep) {
+    case AddLineStep.schoolSelection:
+      setAddLineCheckableGrade(
+        selectedSchools()
+          .map((school) =>
+            school.grades.map((grade) => {
+              return { item: grade, done: false };
+            })
+          )
+          .flat() as AssociatedItem[]
+      );
+      setCurrentStep(AddLineStep.gradeSelection);
+      break;
+    case AddLineStep.gradeSelection:
+      break;
+    case AddLineStep.stopSelection:
+      //TODO previos passer en param quand code passera en LineCreateOrUpdateStepper
+      break;
+  }
+  disableSpinningWheel();
+}
+
+function previousStep(currentStep: AddLineStep) {
+  enableSpinningWheel();
+  switch (currentStep) {
+    case AddLineStep.schoolSelection:
+      //TODO previos passer en param quand code passera en LineCreateOrUpdateStepper
+      ViewManager.lines();
+      // ViewManager.lineDetails(Line)
+      break;
+    case AddLineStep.gradeSelection:
+      break;
+    case AddLineStep.stopSelection:
+      break;
+  }
+  disableSpinningWheel();
+}
+
+/**
+ * TODO fonctions suivantes à analyser
+ */
 
 //TODO Externaliser les fonctions ci dessous
-
 const setColorOnLine = (color: string): LineType | undefined => {
   const line: LineType | undefined = currentLine();
 
@@ -184,7 +242,7 @@ const onChange = async (color: string) => {
 
 export const [currentLine, setCurrentLine] = createSignal<LineType>();
 
-async function nextStep() {
+async function _nextStep() {
   enableSpinningWheel();
   switch (addLineCurrentStep()) {
     case AddLineStep.schoolSelection:
@@ -284,7 +342,7 @@ async function nextStep() {
   disableSpinningWheel();
 }
 
-async function previousStep() {
+async function _previousStep() {
   enableSpinningWheel();
   switch (addLineCurrentStep()) {
     case AddLineStep.schoolSelection:

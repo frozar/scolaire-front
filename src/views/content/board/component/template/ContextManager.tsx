@@ -1,7 +1,6 @@
 import { Match, Show, Switch, createEffect, createSignal } from "solid-js";
 
 import { PathDetail } from "../../../path/component/organism/PathDetail";
-import AddLineBoardContent from "../organism/AddLineBoardContent";
 import { DrawTripBoard } from "../organism/DrawTripBoard";
 import { TripBoard } from "../organism/TripBoard";
 import InformationBoardLayout from "./InformationBoardLayout";
@@ -62,10 +61,6 @@ export default function () {
             {/* TODO représente le TripDetail */}
             <Match when={onBoard() == "line-details"}>
               <TripBoard />
-            </Match>
-
-            <Match when={onBoard() == "line-add"}>
-              <AddLineBoardContent />
             </Match>
 
             <Match when={onBoard() == "trip-draw"}>

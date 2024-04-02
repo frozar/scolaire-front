@@ -11,18 +11,18 @@ import { CurrentDrawTripUtils } from "../../../../utils/currentDrawTrip.utils";
 import { TripUtils } from "../../../../utils/trip.utils";
 import { ViewManager } from "../../ViewManager";
 import {
-  AddLineStep,
-  addLineCurrentStep,
-  addLineSelectedSchool,
-  setaddLineSelectedSchool,
-} from "../../board/component/organism/AddLineBoardContent";
-import {
   DrawTripStep,
   currentDrawTrip,
   currentStep,
   setCurrentTripIndex,
 } from "../../board/component/organism/DrawTripBoard";
 import { onBoard } from "../../board/component/template/ContextManager";
+import {
+  AddLineStep,
+  addLineCurrentStep,
+  addLineSelectedSchool,
+  setaddLineSelectedSchool,
+} from "../../line/template/LineAdd";
 import {
   DrawPathStep,
   currentDrawPath,
@@ -41,10 +41,12 @@ import {
 } from "./organism/Points";
 
 export namespace SchoolPointUtils {
+  //TODO reprendre les logique dans la refacto
   export function onClick(point: SchoolType) {
     const schoolsSelected = currentDrawPath()?.schools;
 
     switch (onBoard()) {
+      //TODO toDelete
       case "path-draw":
         switch (onDrawPathStep()) {
           case DrawPathStep.schoolSelection:
