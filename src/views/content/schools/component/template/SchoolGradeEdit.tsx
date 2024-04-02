@@ -3,11 +3,7 @@ import { HoursType } from "../../../../../_entities/_utils.entity";
 import { CalendarType } from "../../../../../_entities/calendar.entity";
 import { GradeType } from "../../../../../_entities/grade.entity";
 import { GradeService } from "../../../../../_services/grade.service";
-import {
-  SchoolStore,
-  getSchools,
-  setSchools,
-} from "../../../../../_stores/school.store";
+import { SchoolStore } from "../../../../../_stores/school.store";
 import {
   addNewGlobalSuccessInformation,
   disableSpinningWheel,
@@ -69,7 +65,7 @@ export function SchoolGradeEdit() {
   function onClickCancel() {
     ViewManager.schoolGrade(schoolGradeEdit() as GradeType);
   }
-  //TODO revoir tout le code du register -> surtout partie Service + "store"
+
   async function register() {
     const initialGrade = schoolGradeEdit() as GradeType;
     const schoolToUpdate = SchoolStore.get(initialGrade.schoolId as number);
@@ -77,25 +73,9 @@ export function SchoolGradeEdit() {
 
     enableSpinningWheel();
     const grade = await GradeService.update(localGrade() as GradeType);
-
-    const gradeIndex = schoolToUpdate.grades.findIndex(
-      (item) => item.id == grade.schoolId
-    );
-    schoolToUpdate.grades[gradeIndex] = grade;
-
-    const schoolIndex = getSchools().findIndex(
-      (item) => item.id == grade.schoolId
-    );
-
-    setSchools((prev) => {
-      if (!prev) return prev;
-      const schools = [...prev];
-      schools[schoolIndex] = schoolToUpdate;
-
-      return schools;
-    });
-
+    SchoolStore.editGrade(grade);
     disableSpinningWheel();
+
     addNewGlobalSuccessInformation("Les modifications ont étés apportées");
     ViewManager.schoolGrade(grade);
   }

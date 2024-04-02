@@ -12,7 +12,7 @@ export class GradeService {
   }
 
   static async update(grade: GradeType): Promise<GradeType> {
-    const data = GradeEntity.dbFormatForEdit(grade);
+    const data = GradeEntity.dbFormat(grade);
     const dbGrade: GradeDBType = await ServiceUtils.patch(
       "/school/" + grade.schoolId + "/grade/" + grade.id,
       data
