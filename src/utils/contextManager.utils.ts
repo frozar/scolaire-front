@@ -33,7 +33,6 @@ import {
   setIsInUpdate,
 } from "../views/content/board/component/organism/DrawTripBoard";
 import { bestVehicle } from "../views/content/board/component/organism/VehicleSelect";
-import { changeBoard } from "../views/content/board/component/template/ContextManager";
 import { getSelectedLine } from "../views/content/map/component/organism/BusLines";
 import { quitModeDrawTrip } from "../views/content/map/shortcut";
 import { CurrentDrawTripUtils } from "./currentDrawTrip.utils";
@@ -187,7 +186,8 @@ export namespace ContextUtils {
         quitModeDrawTrip();
 
         setCurrentStep(DrawTripStep.initial);
-        changeBoard("line");
+        // TODO voir la redirection à faire
+        // changeBoard("line");
         MapElementUtils.deselectAllPointsAndBusTrips();
 
         break;

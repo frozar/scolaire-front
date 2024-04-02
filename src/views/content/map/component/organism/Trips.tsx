@@ -9,10 +9,6 @@ import {
   currentDrawTrip,
   currentStep,
 } from "../../../board/component/organism/DrawTripBoard";
-import {
-  TripBoardPanels,
-  onTripBoardPanel,
-} from "../../../board/component/organism/TripsBoard";
 import { onBoard } from "../../../board/component/template/ContextManager";
 import { getSelectedLine } from "./BusLines";
 
@@ -23,7 +19,7 @@ export type leafletBusTripType = {
   arrows: L.Marker[];
 };
 
-// TODO: Rename
+// TODO: To Delete
 export const [getTrips, setTrips] = createSignal<TripType[]>([]);
 
 export const [selectedTrip, setselectedTrip] = createSignal<TripType>();
@@ -44,10 +40,10 @@ export function Trips(props: { map: L.Map }) {
     switch (onBoard()) {
       case "line-add":
         return [];
-      case "trip":
-        if (onTripBoardPanel() == TripBoardPanels.trips)
-          return getSelectedLine()?.trips;
-        else return [];
+      // case "trip":
+      //   if (onTripBoardPanel() == TripBoardPanels.trips)
+      //     return getSelectedLine()?.trips;
+      //   else return [];
       case "line":
         return getLines()
           .map((line) => line.trips)

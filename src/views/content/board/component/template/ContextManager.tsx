@@ -1,13 +1,9 @@
 import { Match, Show, Switch, createEffect, createSignal } from "solid-js";
 
-import { LineType } from "../../../../../_entities/line.entity";
-import { getSelectedLine } from "../../../map/component/organism/BusLines";
 import { PathDetail } from "../../../path/component/organism/PathDetail";
 import AddLineBoardContent from "../organism/AddLineBoardContent";
-import BusLinesBoard from "../organism/BusLinesBoard";
 import { DrawTripBoard } from "../organism/DrawTripBoard";
 import { TripBoard } from "../organism/TripBoard";
-import { TripsBoard } from "../organism/TripsBoard";
 import InformationBoardLayout from "./InformationBoardLayout";
 
 // TODO retirer le type "undefined" du type "BoardTags" : c'est une erreur de conception
@@ -37,7 +33,7 @@ export const toggleDrawMod = () => setIsDrawMod((bool) => !bool);
 export const [onBoard, setOnBoard] = createSignal<BoardTags>(undefined);
 export const changeBoard = (boardName: BoardTags) => setOnBoard(boardName);
 
-//TODO rebaptiser MapBoardManager à placer dans content/_component
+//TODO toDelete
 export default function () {
   createEffect(() => {
     if (isInDrawMod()) {
@@ -63,23 +59,12 @@ export default function () {
       <Show when={onBoard()}>
         <InformationBoardLayout>
           <Switch>
-            <Match when={onBoard() == "line"}>
-              {/* <TripsBoard /> */}
-              <BusLinesBoard />
-            </Match>
-
-            {/* TODO représente le LineDetail */}
-            <Match when={onBoard() == "trip"}>
-              <TripsBoard line={getSelectedLine() as LineType} />
-            </Match>
-
             {/* TODO représente le TripDetail */}
             <Match when={onBoard() == "line-details"}>
               <TripBoard />
             </Match>
 
             <Match when={onBoard() == "line-add"}>
-              {/* <TripsBoard /> */}
               <AddLineBoardContent />
             </Match>
 

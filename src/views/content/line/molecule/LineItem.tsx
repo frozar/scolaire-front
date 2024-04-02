@@ -1,15 +1,17 @@
-import { LineType } from "../../../../../_entities/line.entity";
-import { getLines } from "../../../../../_stores/line.store";
-import CardTitle from "../../../../../component/atom/CardTitle";
-import Pellet from "../../../../../component/atom/Pellet";
-import CardWrapper from "../../../../../component/molecule/CardWrapper";
-import ArretsLogo from "../../../../../icons/ArretsLogo";
-import EtablissementLogo from "../../../../../icons/EtablissementLogo";
-import RoadwaysLogo from "../../../../../icons/RoadwaysLogo";
-import { setOnBoard } from "../../../board/component/template/ContextManager";
-import { deselectAllLines } from "../../../map/component/organism/BusLines";
-import "./BusLineItem.css";
+import { LineType } from "../../../../_entities/line.entity";
+import { getLines } from "../../../../_stores/line.store";
+import CardTitle from "../../../../component/atom/CardTitle";
+import Pellet from "../../../../component/atom/Pellet";
+import CardWrapper from "../../../../component/molecule/CardWrapper";
+import ArretsLogo from "../../../../icons/ArretsLogo";
+import EtablissementLogo from "../../../../icons/EtablissementLogo";
+import RoadwaysLogo from "../../../../icons/RoadwaysLogo";
+import { ViewManager } from "../../ViewManager";
+import { setOnBoard } from "../../board/component/template/ContextManager";
+import { deselectAllLines } from "../../map/component/organism/BusLines";
+import "./LineItem.css";
 
+// TODO toDelete
 export function displayBusLine(line: LineType): void {
   setOnBoard("trip");
   deselectAllLines();
@@ -20,9 +22,12 @@ export function displayBusLine(line: LineType): void {
   // setTrips(line.trips.length > 0 ? line.trips : []);
 }
 
-export default function (props: { line: LineType }) {
+export function LineItem(props: { line: LineType }) {
   return (
-    <CardWrapper class="line-item" onClick={() => displayBusLine(props.line)}>
+    <CardWrapper
+      class="line-item"
+      onClick={() => ViewManager.lineDetails(props.line)}
+    >
       <Pellet color={props.line.color()} />
       <div class="line-content">
         <CardTitle title={props.line.name ?? "Pas de nom de trip"} />

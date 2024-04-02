@@ -17,7 +17,9 @@ import {
   setDialogToDisplay,
 } from "../../board/component/organism/Dialogs";
 import InputSearch from "../../schools/component/molecule/InputSearch";
-import BusLinesList from "../../schools/component/organism/BusLinesList";
+import { LinesList } from "../organism/LinesList";
+
+import "./Lines.css";
 
 export function Lines() {
   const [filteredLines, setFilteredLines] = createSignal<LineType[]>(
@@ -65,7 +67,7 @@ export function Lines() {
 
         <InputSearch onInput={onInputSearch} />
       </header>
-      <BusLinesList lines={filteredLines()} />
+      <LinesList lines={filteredLines()} />
     </section>
   );
 }

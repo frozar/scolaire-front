@@ -16,7 +16,7 @@ import {
   disableSpinningWheel,
   enableSpinningWheel,
 } from "../../../../../signaux";
-import { displayBusLine } from "../../../schools/component/molecule/BusLineItem";
+import { displayBusLine } from "../../../line/molecule/LineItem";
 import SelectedSchool from "../atom/SelectedSchool";
 import LabeledInputField from "../molecule/LabeledInputField";
 import { setOnBoard, toggleDrawMod } from "../template/ContextManager";
