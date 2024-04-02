@@ -17,10 +17,6 @@ import {
 } from "../views/content/board/component/organism/DrawTripBoard";
 import { onBoard } from "../views/content/board/component/template/ContextManager";
 import {
-  addLineCheckableStop,
-  setAddLineCheckableStop,
-} from "../views/content/line/template/LineAdd";
-import {
   draggingWaypointIndex,
   setDraggingWaypointIndex,
 } from "../views/content/map/component/atom/PolylineDragMarker";
@@ -89,16 +85,16 @@ export namespace StopPointUtil {
 
   export function onClick(point: StopType) {
     switch (onBoard()) {
-      case "line-add":
-        setAddLineCheckableStop([
-          ...addLineCheckableStop().map((stop) => {
-            if (stop.item.id == point.id) {
-              return { ...stop, done: !stop.done };
-            }
-            return stop;
-          }),
-        ]);
-        break;
+      // case "line-add":
+      //   setAddLineCheckableStop([
+      //     ...addLineCheckableStop().map((stop) => {
+      //       if (stop.item.id == point.id) {
+      //         return { ...stop, done: !stop.done };
+      //       }
+      //       return stop;
+      //     }),
+      //   ]);
+      //   break;
       case "line-details":
         //TODO display stop informations
         console.log("TODO display stop informations");

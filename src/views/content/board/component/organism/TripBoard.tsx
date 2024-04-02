@@ -9,12 +9,12 @@ import TrashIcon from "../../../../../icons/TrashIcon";
 import UpdatePen from "../../../../../icons/UpdatePen";
 import { setRemoveConfirmation } from "../../../../../userInformation/RemoveConfirmation";
 import { MapElementUtils } from "../../../../../utils/mapElement.utils";
+import CollapsibleElement from "../../../line/atom/CollapsibleElement";
 import { deselectAllPoints } from "../../../map/component/organism/Points";
 import { selectedTrip } from "../../../map/component/organism/Trips";
 import ButtonIcon from "../molecule/ButtonIcon";
 import { InversedTripButton } from "../molecule/InversedTripButton";
 import { changeBoard, toggleDrawMod } from "../template/ContextManager";
-import CollapsibleElement from "./CollapsibleElement";
 import { DisplayAllotmentAndVehicle } from "./DisplayAllotmentAndVehicle";
 import {
   DrawTripStep,

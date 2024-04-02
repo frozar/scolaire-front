@@ -1,6 +1,6 @@
 import { For } from "solid-js";
-import CollapsibleElement from "../../board/component/organism/CollapsibleElement";
 import { CheckableElement } from "../atom/CheckableElement";
+import CollapsibleElement from "../atom/CollapsibleElement";
 
 type CollapsibleCheckableListType = {
   title: string;

@@ -3,7 +3,7 @@ import { TripDirectionEntity } from "../../../../../_entities/trip-direction.ent
 import { TripType } from "../../../../../_entities/trip.entity";
 import { TripUtils } from "../../../../../utils/trip.utils";
 import { CalendarUtils } from "../../../calendar/calendar.utils";
-import CollapsibleElement from "./CollapsibleElement";
+import CollapsibleElement from "../../../line/atom/CollapsibleElement";
 
 interface DisplayTripDaysAndDirectionProps {
   trip?: TripType;

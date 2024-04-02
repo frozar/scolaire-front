@@ -1,6 +1,6 @@
 import { PathType } from "../../../../../_entities/path.entity";
 import { PathUtil } from "../../../../../utils/path.utils";
-import CollapsibleElement from "../../../board/component/organism/CollapsibleElement";
+import CollapsibleElement from "../../../line/atom/CollapsibleElement";
 import { TripsList } from "../../../schools/component/organism/TripsList";
 
 interface TripUsingPathProps {

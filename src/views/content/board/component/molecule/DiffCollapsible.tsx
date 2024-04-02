@@ -1,6 +1,6 @@
 import { Accessor, For, Setter } from "solid-js";
 import { SchoolUtils } from "../../../../../utils/school.utils";
-import CollapsibleElement from "../organism/CollapsibleElement";
+import CollapsibleElement from "../../../line/atom/CollapsibleElement";
 import { DiffEnum, UncheckedElementType } from "./ImportDiff";
 
 import { StopUtils } from "../../../../../utils/stop.utils";

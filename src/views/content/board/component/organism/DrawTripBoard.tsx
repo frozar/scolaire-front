@@ -1,4 +1,4 @@
-import { For, Show, createSignal, onCleanup, onMount } from "solid-js";
+import { Show, createSignal, onCleanup, onMount } from "solid-js";
 
 import SelectedSchool from "../atom/SelectedSchool";
 
@@ -13,19 +13,17 @@ import CurvedLine from "../../../../../icons/CurvedLine";
 import SimpleTrip from "../../../../../icons/SimpleLine";
 import { ContextUtils } from "../../../../../utils/contextManager.utils";
 import { CurrentDrawTripUtils } from "../../../../../utils/currentDrawTrip.utils";
+import CollapsibleElement from "../../../line/atom/CollapsibleElement";
 import { COLOR_GREEN_BASE } from "../../../map/constant";
 import BoardTitle from "../atom/BoardTitle";
 import { DrawHelperButton } from "../atom/DrawHelperButton";
 import { AllotmentSelectionList } from "../molecule/AllotmentSelectionList";
 import ButtonIcon from "../molecule/ButtonIcon";
-import { AssociatedItem } from "../molecule/CheckableElementList";
 import { LabeledColorPicker } from "../molecule/LabeledColorPicker";
 import LabeledInputField from "../molecule/LabeledInputField";
 import { PathSelection } from "../molecule/PathSelection";
 import SchoolsEnumeration from "../molecule/SchoolsEnumeration";
 import { AssignDaysAndDirectionToTrip } from "./AssignDaysAndDirectionToTrip";
-import { CheckableGradeListBySchool } from "./CheckableGradeListBySchool";
-import CollapsibleElement from "./CollapsibleElement";
 import "./DrawTripBoard.css";
 import Metrics from "./Metrics";
 import { TripTimeline } from "./TripTimeline";
@@ -44,9 +42,10 @@ export const [currentStep, setCurrentStep] = createSignal<DrawTripStep>(
   DrawTripStep.initial
 );
 
-export const [drawTripCheckableGrade, setDrawTripCheckableGrade] = createSignal<
-  AssociatedItem[]
->([]);
+export const [drawTripCheckableGrade, setDrawTripCheckableGrade] = createSignal(
+  // <AssociatedItem[]>
+  []
+);
 
 export enum displayTripModeEnum {
   straight = "straight",
@@ -108,7 +107,8 @@ export function DrawTripBoard() {
       <Show when={currentStep() == DrawTripStep.gradeSelection}>
         <BoardTitle title={"Sélection des niveaux"} />
 
-        <For each={currentDrawTrip()?.schools}>
+        {/* TODO TO fix */}
+        {/* <For each={currentDrawTrip()?.schools}>
           {(school_elem) => {
             return (
               <CheckableGradeListBySchool
@@ -119,7 +119,7 @@ export function DrawTripBoard() {
               />
             );
           }}
-        </For>
+        </For> */}
 
         <Show
           when={drawTripCheckableGrade().filter((item) => item.done).length > 0}

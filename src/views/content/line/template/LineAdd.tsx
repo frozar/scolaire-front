@@ -3,28 +3,20 @@ import { Match, Switch, createSignal, onMount } from "solid-js";
 import { BusLineEntity, LineType } from "../../../../_entities/line.entity";
 
 import { SchoolType } from "../../../../_entities/school.entity";
-import { manageStatusCode } from "../../../../_services/_utils.service";
-import { BusLineService } from "../../../../_services/line.service";
-import { updatePointColor } from "../../../../leafletUtils";
 import { disableSpinningWheel, enableSpinningWheel } from "../../../../signaux";
-import {
-  setOnBoard,
-  toggleDrawMod,
-} from "../../board/component/template/ContextManager";
-import { displayBusLine } from "../molecule/LineItem";
 // TODO to fix -> doit importer un AddLineBoardContent ou similaire
 import { GradeType } from "../../../../_entities/grade.entity";
 import { StopType } from "../../../../_entities/stop.entity";
-import { LineStore, getLines } from "../../../../_stores/line.store";
-import { getSchools } from "../../../../_stores/school.store";
 import { getStops } from "../../../../_stores/stop.store";
-import { AssociatedItem } from "../../board/component/molecule/CheckableElementList";
 // import "./DrawTripBoard.css";
 // import "../../../../../css/timeline.css";
 // import "./AddLineBoardContent.css";
 import { ViewManager } from "../../ViewManager";
+import { ColorPicker } from "../../board/component/atom/ColorPicker";
+import LabeledInputField from "../../board/component/molecule/LabeledInputField";
 import { SelectGradesStep } from "../organism/SelectGradesStep";
 import { SelectSchoolsStep } from "../organism/SelectSchoolsStep";
+import { SelectStopsStep } from "../organism/SelectStopsStep";
 import "./LineAdd.css";
 
 //TODO enlever la partie export
@@ -35,29 +27,9 @@ export enum AddLineStep {
   stopSelection,
 }
 
-//TODO toDelete
-export const [addLineSelectedSchool, setaddLineSelectedSchool] = createSignal<
-  SchoolType[]
->([]);
-
-//TODO toDelete
-// TODO: Fix type issue => addLineCheckableStop.item has stopType properties
-export const [addLineCheckableStop, setAddLineCheckableStop] = createSignal<
-  AssociatedItem[]
->([]);
-
-//TODO toDelete
-export const [addLineCheckableGrade, setAddLineCheckableGrade] = createSignal<
-  AssociatedItem[]
->([]);
-
-//TODO toDelete
-export const [addLineCurrentStep, setAddLineCurrentStep] =
-  createSignal<AddLineStep>(AddLineStep.start);
-
-/**
- * TODO Good code
- */
+export const [currentLine, setCurrentLine] = createSignal<LineType>(
+  BusLineEntity.defaultBusLine()
+);
 const [currentStep, setCurrentStep] = createSignal<AddLineStep>(
   AddLineStep.schoolSelection
 );
@@ -66,8 +38,7 @@ const [selectedGrades, setSelectedGrades] = createSignal<GradeType[]>([]);
 
 export function LineAdd() {
   onMount(() => {
-    setSelectedSchools([]);
-    setSelectedGrades([]);
+    setCurrentLine(BusLineEntity.defaultBusLine());
     setCurrentStep(AddLineStep.schoolSelection);
   });
   // createEffect(() => {
@@ -90,7 +61,7 @@ export function LineAdd() {
       <Switch>
         <Match when={currentStep() == AddLineStep.schoolSelection}>
           <SelectSchoolsStep
-            schools={selectedSchools()}
+            schools={currentLine().schools}
             nextStep={() => nextStep(AddLineStep.schoolSelection)}
             previousStep={() => previousStep(AddLineStep.schoolSelection)}
             onUpdate={onSchoolUpdate}
@@ -98,97 +69,88 @@ export function LineAdd() {
         </Match>
         <Match when={currentStep() == AddLineStep.gradeSelection}>
           <SelectGradesStep
-            schools={selectedSchools()}
-            grades={selectedGrades()}
+            schools={currentLine().schools}
+            grades={currentLine().grades}
             nextStep={() => nextStep(AddLineStep.gradeSelection)}
             previousStep={() => previousStep(AddLineStep.gradeSelection)}
             onUpdate={onGradeUpdate}
           />
         </Match>
-      </Switch>
-
-      {/* 
-
-      <Show when={addLineCurrentStep() == AddLineStep.stopSelection}>
-        <LabeledInputField
-          label="Nom de la line"
-          value={currentLine()?.name ?? " default name"}
-          onInput={(e) =>
-            setCurrentLine({
-              ...(currentLine() ?? BusLineEntity.defaultBusLine()),
-              name: e.target.value,
-            })
-          }
-          name="line-name"
-          placeholder="Entrer le nom de la line"
-        />
-
-        <div class="flex mt-4 justify-between">
-          <ColorPicker
-            defaultColor={currentLine()?.color()}
-            title="Couleur de la ligne"
-            onInput={onInput}
-            onChange={onChange}
+        <Match when={currentStep() == AddLineStep.stopSelection}>
+          <LabeledInputField
+            label="Nom de la ligne"
+            value={currentLine()?.name ?? "default name"}
+            onInput={(e) =>
+              setCurrentLine((line) => {
+                return { ...line, name: e.target.value };
+              })
+            }
+            name="line-name"
+            placeholder="Entrer le nom de la line"
           />
-        </div>
 
-        <fieldset class="line-stop-selection">
-          <For each={addLineSelectedSchool()}>
-            {(school_elem) => {
-              return (
-                <CheckableStopListBySchool
-                  school={school_elem}
-                  checkableStop={addLineCheckableStop}
-                  setCheckableStop={setAddLineCheckableStop}
-                />
-              );
-            }}
-          </For>
-        </fieldset>
-      </Show>
+          <div class="flex mt-4 justify-between">
+            <ColorPicker
+              defaultColor={currentLine()?.color()}
+              title="Couleur de la ligne"
+              onInput={onColorUpdate}
+              onChange={onColorUpdate}
+            />
+          </div>
 
-      <BoardFooterActions
-        nextStep={{
-          callback: nextStep,
-          label:
-            addLineCurrentStep() == AddLineStep.stopSelection
-              ? "Valider"
-              : "Suivant",
-        }}
-        previousStep={{
-          callback: previousStep,
-          label:
-            addLineCurrentStep() === AddLineStep.schoolSelection
-              ? "Annuler"
-              : "Précédent",
-        }}
-      /> */}
+          <SelectStopsStep
+            grades={currentLine().grades}
+            stops={currentLine().stops}
+            nextStep={() => nextStep(AddLineStep.stopSelection)}
+            previousStep={() => previousStep(AddLineStep.stopSelection)}
+            onUpdate={onStopsUpdate}
+          />
+        </Match>
+      </Switch>
     </div>
   );
 }
+function onColorUpdate(color: string) {
+  currentLine().setColor(color);
+}
 function onGradeUpdate(grades: GradeType[]) {
-  setSelectedGrades(grades);
+  setCurrentLine((line) => {
+    return { ...line, grades: grades };
+  });
 }
 function onSchoolUpdate(schools: SchoolType[]) {
-  setSelectedSchools(schools);
+  setCurrentLine((line) => {
+    return { ...line, schools: schools };
+  });
+}
+function onStopsUpdate(stops: StopType[]) {
+  setCurrentLine((line) => {
+    return { ...line, stops: stops };
+  });
+}
+
+function setStopsFromGradeSelection() {
+  const selectedGradesId = currentLine().grades.map((grade) => grade.id);
+
+  const stops = [
+    ...getStops().filter((stop) =>
+      stop.associated.some((associatedschool) =>
+        selectedGradesId.includes(associatedschool.gradeId)
+      )
+    ),
+  ];
+  onStopsUpdate(stops);
 }
 
 function nextStep(currentStep: AddLineStep) {
   enableSpinningWheel();
   switch (currentStep) {
     case AddLineStep.schoolSelection:
-      setAddLineCheckableGrade(
-        selectedSchools()
-          .map((school) =>
-            school.grades.map((grade) => {
-              return { item: grade, done: false };
-            })
-          )
-          .flat() as AssociatedItem[]
-      );
       setCurrentStep(AddLineStep.gradeSelection);
       break;
     case AddLineStep.gradeSelection:
+      setStopsFromGradeSelection();
+      setCurrentStep(AddLineStep.stopSelection);
       break;
     case AddLineStep.stopSelection:
       //TODO previos passer en param quand code passera en LineCreateOrUpdateStepper
@@ -206,6 +168,7 @@ function previousStep(currentStep: AddLineStep) {
       // ViewManager.lineDetails(Line)
       break;
     case AddLineStep.gradeSelection:
+      setCurrentStep(AddLineStep.schoolSelection);
       break;
     case AddLineStep.stopSelection:
       break;
@@ -217,147 +180,69 @@ function previousStep(currentStep: AddLineStep) {
  * TODO fonctions suivantes à analyser
  */
 
-//TODO Externaliser les fonctions ci dessous
-const setColorOnLine = (color: string): LineType | undefined => {
-  const line: LineType | undefined = currentLine();
-
-  if (!line) return;
-
-  line.setColor(color);
-
-  return line;
-};
-
-const onInput = (color: string) => {
-  const line: LineType | undefined = setColorOnLine(color);
-
-  if (!line) return;
-};
-
-const onChange = async (color: string) => {
-  const line: LineType | undefined = setColorOnLine(color);
-
-  if (!line) return;
-};
-
-export const [currentLine, setCurrentLine] = createSignal<LineType>();
-
 async function _nextStep() {
   enableSpinningWheel();
-  switch (addLineCurrentStep()) {
-    case AddLineStep.schoolSelection:
-      if (addLineSelectedSchool().length < 1) {
-        break;
-      }
+  // switch (addLineCurrentStep()) {
 
-      setAddLineCheckableGrade(
-        getSchools()
-          .map((school) =>
-            school.grades.map((grade) => {
-              return { item: grade, done: false };
-            })
-          )
-          .flat() as AssociatedItem[]
-      );
+  // case AddLineStep.stopSelection:
+  // if (addLineCheckableStop().length < 2) {
+  //   // TODO: Display user message ?
+  //   console.log("line must have at least 2 stops");
+  //   break;
+  // }
 
-      setAddLineCurrentStep(AddLineStep.gradeSelection);
-      break;
+  // updatePointColor();
 
-    case AddLineStep.gradeSelection:
-      if (addLineCheckableGrade().filter((grade) => grade.done).length === 0) {
-        break;
-      }
+  // const stops = addLineCheckableStop()
+  //   .filter((stop) => stop.done)
+  //   .map((stop) => stop.item) as StopType[];
 
-      const selectedGradesId = addLineCheckableGrade()
-        .filter((grade) => grade.done)
-        .map((grade) => grade.item.id);
+  // const grades = addLineCheckableGrade()
+  //   .filter((grade) => grade.done)
+  //   .map((grade) => grade.item) as GradeType[];
 
-      setAddLineCheckableStop([
-        ...getStops()
-          .filter((stop) =>
-            stop.associated.some((associatedschool) =>
-              selectedGradesId.includes(associatedschool.gradeId)
-            )
-          )
-          .map((stop) => {
-            return { done: true, item: stop };
-          }),
-      ]);
+  // setCurrentLine({
+  //   ...(currentLine() ?? BusLineEntity.defaultBusLine()),
+  //   stops,
+  //   grades,
+  // });
 
-      setCurrentLine({
-        ...(currentLine() ?? BusLineEntity.defaultBusLine()),
-        schools: addLineSelectedSchool(),
-      });
+  // try {
+  //   const creating_line = currentLine();
 
-      setAddLineCurrentStep(AddLineStep.stopSelection);
-      break;
+  //   if (creating_line) {
+  //     const newBusLine: LineType = await BusLineService.create(
+  //       creating_line
+  //     );
 
-    case AddLineStep.stopSelection:
-      if (addLineCheckableStop().length < 2) {
-        // TODO: Display user message ?
-        console.log("line must have at least 2 stops");
-        break;
-      }
+  //     //TODO voir l'utilisation
+  //     LineStore.set((oldLines) => [...oldLines, newBusLine]);
+  //     setAddLineCurrentStep(AddLineStep.start);
 
-      updatePointColor();
+  //     toggleDrawMod();
+  //     displayBusLine(newBusLine);
+  //     console.log("getLines", getLines());
 
-      const stops = addLineCheckableStop()
-        .filter((stop) => stop.done)
-        .map((stop) => stop.item) as StopType[];
-
-      const grades = addLineCheckableGrade()
-        .filter((grade) => grade.done)
-        .map((grade) => grade.item) as GradeType[];
-
-      setCurrentLine({
-        ...(currentLine() ?? BusLineEntity.defaultBusLine()),
-        stops,
-        grades,
-      });
-
-      try {
-        const creating_line = currentLine();
-
-        if (creating_line) {
-          const newBusLine: LineType = await BusLineService.create(
-            creating_line
-          );
-
-          //TODO voir l'utilisation
-          LineStore.set((oldLines) => [...oldLines, newBusLine]);
-          setAddLineCurrentStep(AddLineStep.start);
-
-          toggleDrawMod();
-          displayBusLine(newBusLine);
-          console.log("getLines", getLines());
-
-          //TODO faire LineStore.update(newBusLine);
-        }
-      } catch (error) {
-        console.log("error", error);
-        manageStatusCode(error as Response);
-      }
-      setAddLineCurrentStep(AddLineStep.start);
-  }
+  //     //TODO faire LineStore.update(newBusLine);
+  //   }
+  // } catch (error) {
+  //   console.log("error", error);
+  //   manageStatusCode(error as Response);
+  // }
+  // setAddLineCurrentStep(AddLineStep.start);
+  // }
   disableSpinningWheel();
 }
 
 async function _previousStep() {
   enableSpinningWheel();
-  switch (addLineCurrentStep()) {
-    case AddLineStep.schoolSelection:
-      setAddLineCurrentStep(AddLineStep.start);
-      setaddLineSelectedSchool([]);
-      setAddLineCheckableStop([]);
-      toggleDrawMod();
-      setOnBoard("line");
-      break;
-    case AddLineStep.gradeSelection:
-      setAddLineCurrentStep(AddLineStep.schoolSelection);
-      break;
-    case AddLineStep.stopSelection:
-      setAddLineCurrentStep(AddLineStep.gradeSelection);
-      setAddLineCheckableStop([]);
-  }
+  // switch (addLineCurrentStep()) {
+  //   case AddLineStep.gradeSelection:
+  //     setAddLineCurrentStep(AddLineStep.schoolSelection);
+  //     break;
+  //   case AddLineStep.stopSelection:
+  //     setAddLineCurrentStep(AddLineStep.gradeSelection);
+  //     setAddLineCheckableStop([]);
+  // }
   disableSpinningWheel();
 }

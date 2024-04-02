@@ -4,12 +4,6 @@ import { Accessor, Setter, createEffect, onCleanup, onMount } from "solid-js";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { StopType } from "../../../../../_entities/stop.entity";
 import { NatureEnum } from "../../../../../type";
-import {
-  AddLineStep,
-  addLineCheckableStop,
-  addLineCurrentStep,
-} from "../../../line/template/LineAdd";
-import { COLOR_STOP_FOCUS, COLOR_STOP_LIGHT } from "../../constant";
 import { linkMap } from "../organism/Points";
 import "./Point.css";
 
@@ -119,22 +113,22 @@ export default function (props: PointProps) {
     }
   });
 
-  createEffect(() => {
-    if (props.point.nature == NatureEnum.stop) {
-      if (addLineCurrentStep() === AddLineStep.stopSelection) {
-        circle?.setStyle({ fillColor: COLOR_STOP_LIGHT });
-        if (
-          addLineCheckableStop()
-            .map((stop) => stop.item.id)
-            .includes(props.point.id)
-        ) {
-          circle?.setStyle({ fillColor: COLOR_STOP_FOCUS });
-        } else {
-          circle?.setStyle({ fillColor: COLOR_STOP_LIGHT });
-        }
-      }
-    }
-  });
+  // createEffect(() => {
+  //   if (props.point.nature == NatureEnum.stop) {
+  //     if (addLineCurrentStep() === AddLineStep.stopSelection) {
+  //       circle?.setStyle({ fillColor: COLOR_STOP_LIGHT });
+  //       if (
+  //         addLineCheckableStop()
+  //           .map((stop) => stop.item.id)
+  //           .includes(props.point.id)
+  //       ) {
+  //         circle?.setStyle({ fillColor: COLOR_STOP_FOCUS });
+  //       } else {
+  //         circle?.setStyle({ fillColor: COLOR_STOP_LIGHT });
+  //       }
+  //     }
+  //   }
+  // });
 
   onCleanup(() => {
     if (props.point) {

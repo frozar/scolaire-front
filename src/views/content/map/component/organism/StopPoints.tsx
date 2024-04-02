@@ -22,11 +22,6 @@ import {
 } from "../../../board/component/organism/DrawTripBoard";
 import { onBoard } from "../../../board/component/template/ContextManager";
 import {
-  AddLineStep,
-  addLineCheckableStop,
-  addLineCurrentStep,
-} from "../../../line/template/LineAdd";
-import {
   DrawPathStep,
   currentDrawPath,
   onDrawPathStep,
@@ -144,22 +139,22 @@ export function leafletStopsFilter(): StopType[] {
     case "trip":
       return filterBySelectedLine(stops);
 
-    case "line-add":
-      switch (addLineCurrentStep()) {
-        case AddLineStep.schoolSelection:
-        case AddLineStep.gradeSelection:
-          return [];
-        case AddLineStep.stopSelection:
-          const selectedLineStop = addLineCheckableStop().map(
-            (associated) => associated.item
-          ) as StopType[];
+    // case "line-add":
+    //   switch (addLineCurrentStep()) {
+    //     case AddLineStep.schoolSelection:
+    //     case AddLineStep.gradeSelection:
+    //       return [];
+    //     case AddLineStep.stopSelection:
+    //       const selectedLineStop = addLineCheckableStop().map(
+    //         (associated) => associated.item
+    //       ) as StopType[];
 
-          const associatedIdSelected = selectedLineStop.map((stop) => stop.id);
+    //       const associatedIdSelected = selectedLineStop.map((stop) => stop.id);
 
-          return stops.filter((stopToFilter) =>
-            associatedIdSelected.includes(stopToFilter.id)
-          );
-      }
+    //       return stops.filter((stopToFilter) =>
+    //         associatedIdSelected.includes(stopToFilter.id)
+    //       );
+    //   }
 
     case "trip-draw":
       const gradeIds = currentDrawTrip().grades.map(

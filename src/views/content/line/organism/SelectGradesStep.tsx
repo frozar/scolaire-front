@@ -1,6 +1,8 @@
-import { For, createEffect, createSignal, onMount } from "solid-js";
+import { For, createEffect, createSignal, onCleanup, onMount } from "solid-js";
 import { GradeType } from "../../../../_entities/grade.entity";
 import { SchoolType } from "../../../../_entities/school.entity";
+import { setDisplaySchools } from "../../_component/organisme/SchoolPoints";
+import BoardTitle from "../../board/component/atom/BoardTitle";
 import BoardFooterActions from "../../board/component/molecule/BoardFooterActions";
 import { CheckableElementList } from "../molecule/CheckableElementList";
 
@@ -14,9 +16,15 @@ export function SelectGradesStep(props: {
   const [localGradesId, setLocalGradesId] = createSignal<number[]>([]);
   onMount(() => {
     setGradesId(props.grades);
+    setDisplaySchools(props.schools);
   });
+
   createEffect(() => {
     setGradesId(props.grades);
+  });
+
+  onCleanup(() => {
+    setDisplaySchools([]);
   });
 
   function setGradesId(grades: GradeType[]) {
@@ -41,6 +49,7 @@ export function SelectGradesStep(props: {
 
   return (
     <>
+      <BoardTitle title="Sélection des classes" />
       <div class="select-grades">
         <For each={props.schools}>
           {(school) => {
