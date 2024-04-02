@@ -1,11 +1,10 @@
 import { Show } from "solid-js";
-import { SchoolType } from "../../../../../_entities/school.entity";
 import { LabeledInputSelect } from "../../../../../component/molecule/LabeledInputSelect";
 import { SchoolUtils } from "../../../../../utils/school.utils";
 import CollapsibleElement from "../../../board/component/organism/CollapsibleElement";
-import { HourRuleList } from "./HourRuleList";
-import { SchoolHoursSlots } from "./SchoolHoursSlots";
 
+import { HoursType } from "../../../../../_entities/_utils.entity";
+import { SchoolType } from "../../../../../_entities/school.entity";
 import { calendars } from "../../../../../_stores/calendar.store";
 import {
   schoolDetailEditing,
@@ -13,10 +12,17 @@ import {
   setSchoolDetails,
 } from "../template/SchoolDetails";
 import "./SchoolDetailsContent.css";
+import { SchoolHoursWrapper } from "./SchoolHoursWrapper";
 
 export function SchoolDetailsContent() {
   function onChangeCalendarSelect(calendarId: number | string) {
     SchoolUtils.linkSchoolToCalendar(calendarId as number);
+  }
+
+  function updateHours(hours: HoursType) {
+    setSchoolDetails((prev) => {
+      return { ...prev, hours: hours } as SchoolType;
+    });
   }
 
   return (
@@ -40,12 +46,10 @@ export function SchoolDetailsContent() {
             titleClass="text-xl"
             closedByDefault={() => !schoolDetailEditing()}
           >
-            <SchoolHoursSlots school={schoolDetails() as SchoolType} />
-
-            <HourRuleList
-              item={schoolDetails}
-              setItem={setSchoolDetails}
+            <SchoolHoursWrapper
+              school={schoolDetails() as SchoolType}
               enabled={schoolDetailEditing()}
+              onUpdate={updateHours}
             />
           </CollapsibleElement>
         </div>
