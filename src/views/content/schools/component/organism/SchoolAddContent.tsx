@@ -40,18 +40,6 @@ export function SchoolAddContent(props: SchoolAddContentProps) {
     });
   }
 
-  function onInputLat(value: number) {
-    props.schoolSetter((prev) => {
-      return { ...prev, lat: value };
-    });
-  }
-
-  function onInputLng(value: number) {
-    props.schoolSetter((prev) => {
-      return { ...prev, lon: value };
-    });
-  }
-
   function onInputComingStart(value: string) {
     props.hoursSetter((prev) => {
       return {
@@ -136,27 +124,17 @@ export function SchoolAddContent(props: SchoolAddContentProps) {
           enabled={true}
         />
       </div>
-      <div>
-        <div class="text-xl">Coordonnées</div>
-        <LabeledInputNumber
-          label="Latitude"
-          name="lat"
-          value={props.school.lat}
-          onInput={(e) => onInputLat(Number(e.target.value))}
-        />
-        <LabeledInputNumber
-          label="Longitude"
-          name="lng"
-          value={props.school.lon}
-          onInput={(e) => onInputLng(Number(e.target.value))}
-        />
-      </div>
       <LabeledInputNumber
         label="Temps d'attente"
         name="waitTime"
         onInput={(e) => onInputWaitingTime(Number(e.target.value))}
         value={props.school.waitingTime}
       />
+      <div>
+        <div class="text-xl">Coordonnées</div>
+        <p>Latitude : {props.school.lat ? props.school.lat : 0}</p>
+        <p>Longitude : {props.school.lon ? props.school.lon : 0}</p>
+      </div>
     </div>
   );
 }

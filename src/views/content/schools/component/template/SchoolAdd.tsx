@@ -1,4 +1,4 @@
-import { createSignal } from "solid-js";
+import { createSignal, onCleanup, onMount } from "solid-js";
 import { HoursType } from "../../../../../_entities/_utils.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { TimeUtils } from "../../../../../_entities/time.utils";
@@ -12,6 +12,7 @@ import {
 } from "../../../../../signaux";
 import { SchoolUtils } from "../../../../../utils/school.utils";
 import { ViewManager } from "../../../ViewManager";
+import { setMapOnClick } from "../../../_component/template/MapContainer";
 import BoardTitle from "../../../board/component/atom/BoardTitle";
 import BoardFooterActions from "../../../board/component/molecule/BoardFooterActions";
 import { SchoolAddContent } from "../organism/SchoolAddContent";
@@ -21,6 +22,20 @@ export function SchoolAdd() {
   const [newHours, setNewHours] = createSignal<HoursType>(
     TimeUtils.defaultHours()
   );
+
+  onMount(() => {
+    setMapOnClick(() => setLocation);
+  });
+
+  onCleanup(() => {
+    setMapOnClick(undefined);
+  });
+
+  function setLocation(e: L.LeafletMouseEvent) {
+    setNewSchool((prev) => {
+      return { ...prev, lat: e.latlng.lat, lon: e.latlng.lng };
+    });
+  }
 
   async function submitSchool() {
     setNewSchool((prev) => {
