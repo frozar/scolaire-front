@@ -12,6 +12,13 @@ export namespace LineStore {
     setTrips();
   }
 
+  export function add(line: LineType) {
+    set((prev) => {
+      prev.push(line);
+      return [...prev];
+    });
+  }
+
   export function remove(lineId: number) {
     set(getLines().filter((line) => line.id != lineId));
   }

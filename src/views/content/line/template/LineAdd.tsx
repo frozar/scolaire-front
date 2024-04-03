@@ -11,6 +11,8 @@ import { getStops } from "../../../../_stores/stop.store";
 // import "./DrawTripBoard.css";
 // import "../../../../../css/timeline.css";
 // import "./AddLineBoardContent.css";
+import { BusLineService } from "../../../../_services/line.service";
+import { LineStore } from "../../../../_stores/line.store";
 import { ViewManager } from "../../ViewManager";
 import { ColorPicker } from "../../board/component/atom/ColorPicker";
 import LabeledInputField from "../../board/component/molecule/LabeledInputField";
@@ -19,42 +21,24 @@ import { SelectSchoolsStep } from "../organism/SelectSchoolsStep";
 import { SelectStopsStep } from "../organism/SelectStopsStep";
 import "./LineAdd.css";
 
-//TODO enlever la partie export
-export enum AddLineStep {
-  start,
+enum AddLineStep {
   schoolSelection,
   gradeSelection,
   stopSelection,
 }
 
-export const [currentLine, setCurrentLine] = createSignal<LineType>(
+const [currentLine, setCurrentLine] = createSignal<LineType>(
   BusLineEntity.defaultBusLine()
 );
 const [currentStep, setCurrentStep] = createSignal<AddLineStep>(
   AddLineStep.schoolSelection
 );
-const [selectedSchools, setSelectedSchools] = createSignal<SchoolType[]>([]);
-const [selectedGrades, setSelectedGrades] = createSignal<GradeType[]>([]);
 
 export function LineAdd() {
   onMount(() => {
     setCurrentLine(BusLineEntity.defaultBusLine());
     setCurrentStep(AddLineStep.schoolSelection);
   });
-  // createEffect(() => {
-  //   const selectedAssociated: AssociatedStopType[] = [];
-  //   addLineSelectedSchool().forEach((elem) => {
-  //     elem.associated.forEach((associatedValue) =>
-  //       selectedAssociated.includes(associatedValue)
-  //         ? ""
-  //         : selectedAssociated.push(associatedValue)
-  //     );
-  //   });
-  // });
-
-  // if (currentLine() == undefined) {
-  //   setCurrentLine(BusLineEntity.defaultBusLine());
-  // }
 
   return (
     <div class="add-line-information-board-content">
@@ -142,8 +126,17 @@ function setStopsFromGradeSelection() {
   onStopsUpdate(stops);
 }
 
-function nextStep(currentStep: AddLineStep) {
+async function register() {
   enableSpinningWheel();
+  const newBusLine: LineType = await BusLineService.create(currentLine());
+
+  LineStore.add(newBusLine);
+
+  disableSpinningWheel();
+  ViewManager.lines();
+}
+
+function nextStep(currentStep: AddLineStep) {
   switch (currentStep) {
     case AddLineStep.schoolSelection:
       setCurrentStep(AddLineStep.gradeSelection);
@@ -154,9 +147,10 @@ function nextStep(currentStep: AddLineStep) {
       break;
     case AddLineStep.stopSelection:
       //TODO previos passer en param quand code passera en LineCreateOrUpdateStepper
+      register();
+      //TODO props.register(currentLine())
       break;
   }
-  disableSpinningWheel();
 }
 
 function previousStep(currentStep: AddLineStep) {
@@ -171,78 +165,8 @@ function previousStep(currentStep: AddLineStep) {
       setCurrentStep(AddLineStep.schoolSelection);
       break;
     case AddLineStep.stopSelection:
+      setCurrentStep(AddLineStep.gradeSelection);
       break;
   }
-  disableSpinningWheel();
-}
-
-/**
- * TODO fonctions suivantes à analyser
- */
-
-async function _nextStep() {
-  enableSpinningWheel();
-  // switch (addLineCurrentStep()) {
-
-  // case AddLineStep.stopSelection:
-  // if (addLineCheckableStop().length < 2) {
-  //   // TODO: Display user message ?
-  //   console.log("line must have at least 2 stops");
-  //   break;
-  // }
-
-  // updatePointColor();
-
-  // const stops = addLineCheckableStop()
-  //   .filter((stop) => stop.done)
-  //   .map((stop) => stop.item) as StopType[];
-
-  // const grades = addLineCheckableGrade()
-  //   .filter((grade) => grade.done)
-  //   .map((grade) => grade.item) as GradeType[];
-
-  // setCurrentLine({
-  //   ...(currentLine() ?? BusLineEntity.defaultBusLine()),
-  //   stops,
-  //   grades,
-  // });
-
-  // try {
-  //   const creating_line = currentLine();
-
-  //   if (creating_line) {
-  //     const newBusLine: LineType = await BusLineService.create(
-  //       creating_line
-  //     );
-
-  //     //TODO voir l'utilisation
-  //     LineStore.set((oldLines) => [...oldLines, newBusLine]);
-  //     setAddLineCurrentStep(AddLineStep.start);
-
-  //     toggleDrawMod();
-  //     displayBusLine(newBusLine);
-  //     console.log("getLines", getLines());
-
-  //     //TODO faire LineStore.update(newBusLine);
-  //   }
-  // } catch (error) {
-  //   console.log("error", error);
-  //   manageStatusCode(error as Response);
-  // }
-  // setAddLineCurrentStep(AddLineStep.start);
-  // }
-  disableSpinningWheel();
-}
-
-async function _previousStep() {
-  enableSpinningWheel();
-  // switch (addLineCurrentStep()) {
-  //   case AddLineStep.gradeSelection:
-  //     setAddLineCurrentStep(AddLineStep.schoolSelection);
-  //     break;
-  //   case AddLineStep.stopSelection:
-  //     setAddLineCurrentStep(AddLineStep.gradeSelection);
-  //     setAddLineCheckableStop([]);
-  // }
   disableSpinningWheel();
 }
