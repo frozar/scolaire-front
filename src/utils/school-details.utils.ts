@@ -1,6 +1,11 @@
 import { SchoolType } from "../_entities/school.entity";
 import { SchoolStore } from "../_stores/school.store";
 import {
+  addNewGlobalSuccessInformation,
+  disableSpinningWheel,
+  enableSpinningWheel,
+} from "../signaux";
+import {
   schoolDetailEditing,
   schoolDetails,
   setSchoolDetailEditing,
@@ -17,7 +22,10 @@ export namespace SchoolDetailUtils {
         SchoolUtils.isValidSchool(schoolDetails() as SchoolType) &&
         SchoolUtils.get(schoolDetails()?.id ?? 0) != schoolDetails()
       ) {
-        SchoolStore.update(schoolDetails() as SchoolType);
+        enableSpinningWheel();
+        await SchoolStore.update(schoolDetails() as SchoolType);
+        disableSpinningWheel();
+        addNewGlobalSuccessInformation("Modifications apportées");
         setSchoolDetailEditing(false);
       }
     }

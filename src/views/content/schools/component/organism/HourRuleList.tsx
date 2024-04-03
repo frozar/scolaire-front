@@ -1,5 +1,8 @@
 import { Accessor, For, Setter, Show } from "solid-js";
-import { CalendarDayEnum } from "../../../../../_entities/calendar.entity";
+import {
+  CalendarDayEnum,
+  CalendarType,
+} from "../../../../../_entities/calendar.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { TimeUtils } from "../../../../../_entities/time.utils";
 import PlusIcon from "../../../../../icons/PlusIcon";
@@ -55,8 +58,9 @@ export function HourRuleList(props: HourRuleListProps) {
         <For each={item()?.hours.rules}>
           {(hourRule, i) => (
             <HourRuleItem
-              item={props.item}
-              setItem={props.setItem}
+              calendar={item()?.calendar as CalendarType}
+              onRemove={() => console.log()}
+              onUpdate={() => console.log()}
               remainingDays={getRemainingDays}
               rule={hourRule}
               disabled={props.enabled}
