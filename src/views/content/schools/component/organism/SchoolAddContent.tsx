@@ -1,5 +1,9 @@
 import { Setter } from "solid-js";
-import { HoursType } from "../../../../../_entities/_utils.entity";
+import {
+  HourRuleType,
+  HoursType,
+} from "../../../../../_entities/_utils.entity";
+import { CalendarType } from "../../../../../_entities/calendar.entity";
 import { GradeEntity } from "../../../../../_entities/grade.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { calendars } from "../../../../../_stores/calendar.store";
@@ -7,6 +11,7 @@ import { LabeledInputSelect } from "../../../../../component/molecule/LabeledInp
 import LabeledInputField from "../../../board/component/molecule/LabeledInputField";
 import { LabeledInputNumber } from "../../../board/component/molecule/LabeledInputNumber";
 import TimesInputWrapper from "../molecule/TimesInputWrapper";
+import { GradeHourRuleList } from "./GradeHourRuleList";
 
 interface SchoolAddContentProps {
   school: SchoolType;
@@ -83,6 +88,15 @@ export function SchoolAddContent(props: SchoolAddContentProps) {
     });
   }
 
+  function onUpdateHourRules(rules: HourRuleType[]) {
+    props.hoursSetter((prev) => {
+      return {
+        ...prev,
+        rules: [...rules],
+      };
+    });
+  }
+
   return (
     <div>
       <LabeledInputField
@@ -114,6 +128,12 @@ export function SchoolAddContent(props: SchoolAddContentProps) {
           endValue={props.hours.endHourGoing}
           onInputStart={onInputGoingStart}
           onInputEnd={onInputGoingEnd}
+        />
+        <GradeHourRuleList
+          rules={props.hours.rules}
+          calendar={props.school.calendar as CalendarType}
+          onUpdate={onUpdateHourRules}
+          enabled={true}
         />
       </div>
       <div>

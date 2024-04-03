@@ -27,7 +27,6 @@ export function SchoolHoursWrapper(props: {
   });
 
   function onUpdateHourRules(rules: HourRuleType[]) {
-    console.log(rules);
     setLocalHours((prev) => {
       return {
         ...prev,
