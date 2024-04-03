@@ -15,11 +15,6 @@ import { QuantityUtils } from "../../../../../utils/quantity.utils";
 import { StopUtils } from "../../../../../utils/stop.utils";
 import { TripUtils } from "../../../../../utils/trip.utils";
 import {
-  AddLineStep,
-  addLineCheckableStop,
-  addLineCurrentStep,
-} from "../../../board/component/organism/AddLineBoardContent";
-import {
   DrawTripStep,
   currentDrawTrip,
   currentStep,
@@ -144,22 +139,22 @@ export function leafletStopsFilter(): StopType[] {
     case "trip":
       return filterBySelectedLine(stops);
 
-    case "line-add":
-      switch (addLineCurrentStep()) {
-        case AddLineStep.schoolSelection:
-        case AddLineStep.gradeSelection:
-          return [];
-        case AddLineStep.stopSelection:
-          const selectedLineStop = addLineCheckableStop().map(
-            (associated) => associated.item
-          ) as StopType[];
+    // case "line-add":
+    //   switch (addLineCurrentStep()) {
+    //     case AddLineStep.schoolSelection:
+    //     case AddLineStep.gradeSelection:
+    //       return [];
+    //     case AddLineStep.stopSelection:
+    //       const selectedLineStop = addLineCheckableStop().map(
+    //         (associated) => associated.item
+    //       ) as StopType[];
 
-          const associatedIdSelected = selectedLineStop.map((stop) => stop.id);
+    //       const associatedIdSelected = selectedLineStop.map((stop) => stop.id);
 
-          return stops.filter((stopToFilter) =>
-            associatedIdSelected.includes(stopToFilter.id)
-          );
-      }
+    //       return stops.filter((stopToFilter) =>
+    //         associatedIdSelected.includes(stopToFilter.id)
+    //       );
+    //   }
 
     case "trip-draw":
       const gradeIds = currentDrawTrip().grades.map(

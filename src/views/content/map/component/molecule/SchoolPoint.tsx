@@ -1,14 +1,9 @@
 import L from "leaflet";
 import { createEffect } from "solid-js";
 import { SchoolType } from "../../../../../_entities/school.entity";
-import {
-  AddLineStep,
-  addLineCurrentStep,
-  addLineSelectedSchool,
-} from "../../../board/component/organism/AddLineBoardContent";
-import { COLOR_SCHOOL_FOCUS, COLOR_SCHOOL_LIGHT } from "../../constant";
+import { COLOR_SCHOOL_FOCUS } from "../../constant";
 import Point from "../atom/Point";
-import { blinkingSchools, linkMap } from "../organism/Points";
+import { blinkingSchools } from "../organism/Points";
 import { SchoolPointUtils } from "../schoolPoint.utils";
 
 export interface SchoolPointProps {
@@ -19,18 +14,17 @@ export interface SchoolPointProps {
 export function SchoolPoint(props: SchoolPointProps) {
   createEffect(() => {
     //TODO dont Work
-
-    if (addLineCurrentStep() === AddLineStep.schoolSelection) {
-      const stopFiltering = addLineSelectedSchool().filter(
-        (school) => school.id == props.school.id
-      );
-      const circle = linkMap.get(props.school.leafletId);
-      if (stopFiltering.length > 0) {
-        circle?.setStyle({ fillColor: COLOR_SCHOOL_FOCUS });
-      } else {
-        circle?.setStyle({ fillColor: COLOR_SCHOOL_LIGHT });
-      }
-    }
+    // if (addLineCurrentStep() === AddLineStep.schoolSelection) {
+    //   const stopFiltering = addLineSelectedSchool().filter(
+    //     (school) => school.id == props.school.id
+    //   );
+    //   const circle = linkMap.get(props.school.leafletId);
+    //   if (stopFiltering.length > 0) {
+    //     circle?.setStyle({ fillColor: COLOR_SCHOOL_FOCUS });
+    //   } else {
+    //     circle?.setStyle({ fillColor: COLOR_SCHOOL_LIGHT });
+    //   }
+    // }
   });
 
   return (

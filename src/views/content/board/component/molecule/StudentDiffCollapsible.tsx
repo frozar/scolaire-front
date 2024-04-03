@@ -1,8 +1,8 @@
 import { Accessor, For, JSXElement, Match, Setter, Switch } from "solid-js";
 import { AssociatedUtils } from "../../../../../utils/associated.utils";
 import { StudentDiffType } from "../../../../../utils/csv.utils";
+import CollapsibleElement from "../../../line/atom/CollapsibleElement";
 import { DiffCheckboxStudent } from "../atom/DiffCheckboxStudent";
-import CollapsibleElement from "../organism/CollapsibleElement";
 import { DiffEnum } from "./ImportDiff";
 import { UncheckedStudents } from "./ImportDiffStudents";
 import { studentDiff } from "./ImportSelection";

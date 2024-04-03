@@ -1,7 +1,7 @@
 import L from "leaflet";
 import { For, createSignal } from "solid-js";
 import { StopType } from "../../../../_entities/stop.entity";
-import { StopPoint } from "../../map/component/molecule/StopPoint";
+import { StopPoint } from "../molecule/StopPoint";
 
 export const [displayStops, setDisplayStops] = createSignal<StopType[]>([]);
 export function StopPoints(props: { map: L.Map }) {

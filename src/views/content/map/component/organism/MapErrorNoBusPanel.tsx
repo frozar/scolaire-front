@@ -1,5 +1,5 @@
 import { setSelectedMenu } from "../../../../layout/menuItemFields";
-import CollapsibleElement from "../../../board/component/organism/CollapsibleElement";
+import CollapsibleElement from "../../../line/atom/CollapsibleElement";
 import "./MapErrorNoBusPanel.css";
 
 export function MapErrorNoBusPanel() {

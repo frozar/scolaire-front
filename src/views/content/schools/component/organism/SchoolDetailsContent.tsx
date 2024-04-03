@@ -1,7 +1,9 @@
 import { Show } from "solid-js";
 import { LabeledInputSelect } from "../../../../../component/molecule/LabeledInputSelect";
 import { SchoolUtils } from "../../../../../utils/school.utils";
-import CollapsibleElement from "../../../board/component/organism/CollapsibleElement";
+import CollapsibleElement from "../../../line/atom/CollapsibleElement";
+import { HourRuleList } from "./HourRuleList";
+import { SchoolHoursSlots } from "./SchoolHoursSlots";
 
 import { HoursType } from "../../../../../_entities/_utils.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";

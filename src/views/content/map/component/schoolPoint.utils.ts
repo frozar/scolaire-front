@@ -11,12 +11,6 @@ import { CurrentDrawTripUtils } from "../../../../utils/currentDrawTrip.utils";
 import { TripUtils } from "../../../../utils/trip.utils";
 import { ViewManager } from "../../ViewManager";
 import {
-  AddLineStep,
-  addLineCurrentStep,
-  addLineSelectedSchool,
-  setaddLineSelectedSchool,
-} from "../../board/component/organism/AddLineBoardContent";
-import {
   DrawTripStep,
   currentDrawTrip,
   currentStep,
@@ -29,7 +23,7 @@ import {
   drawPathUtils,
   onDrawPathStep,
 } from "../../path/component/drawPath.utils";
-import { COLOR_SCHOOL_FOCUS, COLOR_SCHOOL_LIGHT } from "../constant";
+import { COLOR_SCHOOL_FOCUS } from "../constant";
 import { setIsOverMapItem } from "../l7MapBuilder";
 import { draggingTrip, setDraggingTrip } from "./molecule/Trip";
 import {
@@ -41,10 +35,12 @@ import {
 } from "./organism/Points";
 
 export namespace SchoolPointUtils {
+  //TODO reprendre les logique dans la refacto
   export function onClick(point: SchoolType) {
     const schoolsSelected = currentDrawPath()?.schools;
 
     switch (onBoard()) {
+      //TODO toDelete
       case "path-draw":
         switch (onDrawPathStep()) {
           case DrawPathStep.schoolSelection:
@@ -64,29 +60,29 @@ export namespace SchoolPointUtils {
             break;
         }
 
-      case "line-add":
-        switch (addLineCurrentStep()) {
-          case AddLineStep.schoolSelection:
-            const currentSelectedSchools = [...addLineSelectedSchool()];
+      // case "line-add":
+      //   switch (addLineCurrentStep()) {
+      //     case AddLineStep.schoolSelection:
+      //       const currentSelectedSchools = [...addLineSelectedSchool()];
 
-            const index = currentSelectedSchools.indexOf(point, 0);
+      //       const index = currentSelectedSchools.indexOf(point, 0);
 
-            const circle = linkMap.get(point.leafletId);
+      //       const circle = linkMap.get(point.leafletId);
 
-            if (index > -1) {
-              currentSelectedSchools.splice(index, 1);
-              setaddLineSelectedSchool(currentSelectedSchools);
-              circle?.setStyle({ fillColor: COLOR_SCHOOL_LIGHT });
-            } else {
-              setaddLineSelectedSchool([...currentSelectedSchools, point]);
-              circle?.setStyle({ fillColor: COLOR_SCHOOL_FOCUS });
-            }
-            break;
+      //       if (index > -1) {
+      //         currentSelectedSchools.splice(index, 1);
+      //         setaddLineSelectedSchool(currentSelectedSchools);
+      //         circle?.setStyle({ fillColor: COLOR_SCHOOL_LIGHT });
+      //       } else {
+      //         setaddLineSelectedSchool([...currentSelectedSchools, point]);
+      //         circle?.setStyle({ fillColor: COLOR_SCHOOL_FOCUS });
+      //       }
+      //       break;
 
-          case AddLineStep.schoolSelection:
-            return;
-        }
-        break;
+      //     case AddLineStep.schoolSelection:
+      //       return;
+      //   }
+      //   break;
 
       case "line-details":
         //TODO display school informations
@@ -149,17 +145,17 @@ export namespace SchoolPointUtils {
     const lastPoint = currentDrawTrip().tripPoints.at(-1);
 
     // TODO add quantity pour school ?!
-    CurrentDrawTripUtils.addPointToTrip({
-      id: school.id,
-      leafletId: school.leafletId,
-      name: school.name,
-      lon: school.lon,
-      lat: school.lat,
-      nature: school.nature,
-      grades: [],
-      passageTime: 0,
-      startToTripPointDistance: 0,
-    });
+    // CurrentDrawTripUtils.addPointToTrip({
+    //   id: school.id,
+    //   leafletId: school.leafletId,
+    //   name: school.name,
+    //   lon: school.lon,
+    //   lat: school.lat,
+    //   nature: school.nature,
+    //   grades: [],
+    //   passageTime: 0,
+    //   startToTripPointDistance: 0,
+    // });
 
     if (!lastPoint || school.leafletId != lastPoint.leafletId) {
       const waypoints = currentDrawTrip().waypoints;

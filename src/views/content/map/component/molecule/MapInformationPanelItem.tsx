@@ -2,7 +2,7 @@ import { For, JSXElement } from "solid-js";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { updatePointColor } from "../../../../../leafletUtils";
 import { ViewManager } from "../../../ViewManager";
-import CollapsibleElement from "../../../board/component/organism/CollapsibleElement";
+import CollapsibleElement from "../../../line/atom/CollapsibleElement";
 
 export function MapInformationPanelItem(props: {
   schoolsToDisplay: SchoolType[];

@@ -19,6 +19,7 @@ import {
 import InputSearch from "../../schools/component/molecule/InputSearch";
 import { LinesList } from "../organism/LinesList";
 
+import { ViewManager } from "../../ViewManager";
 import "./Lines.css";
 
 export function Lines() {
@@ -89,20 +90,7 @@ function setMapData(
 }
 
 function addLine() {
-  //TODO pointer sur la bonne vue
-  //   if (onBoard() == "line-add") {
-  //     toggleDrawMod();
-  //     setCurrentStep(DrawTripStep.initial);
-  //   } else {
-  //     deselectAllPoints();
-  //     deselectAllTrips();
-  //     // TODO corriger
-  //     // displayAddLineMessage();
-  //     changeBoard("line-add");
-  //     setAddLineCurrentStep(AddLineStep.schoolSelection);
-  //     toggleDrawMod();
-  //     displayAddTripMessage();
-  //   }
+  ViewManager.lineAdd();
 }
 
 function displayExportDialog() {

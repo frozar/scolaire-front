@@ -42,6 +42,13 @@ export namespace ViewManager {
     //TODO to delete post refacto
     changeBoard(undefined);
   }
+  export function lineAdd() {
+    setMapBoard("line-add");
+    //TODO change lines to graphicage post board refacto
+    setSelectedMenu("lines");
+    //TODO to delete post refacto
+    changeBoard(undefined);
+  }
 
   /**
    * Paths

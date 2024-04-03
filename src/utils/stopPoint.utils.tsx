@@ -10,10 +10,6 @@ import { addNewUserInformation } from "../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { ViewManager } from "../views/content/ViewManager";
 import {
-  addLineCheckableStop,
-  setAddLineCheckableStop,
-} from "../views/content/board/component/organism/AddLineBoardContent";
-import {
   DrawTripStep,
   currentDrawTrip,
   currentStep,
@@ -89,16 +85,16 @@ export namespace StopPointUtil {
 
   export function onClick(point: StopType) {
     switch (onBoard()) {
-      case "line-add":
-        setAddLineCheckableStop([
-          ...addLineCheckableStop().map((stop) => {
-            if (stop.item.id == point.id) {
-              return { ...stop, done: !stop.done };
-            }
-            return stop;
-          }),
-        ]);
-        break;
+      // case "line-add":
+      //   setAddLineCheckableStop([
+      //     ...addLineCheckableStop().map((stop) => {
+      //       if (stop.item.id == point.id) {
+      //         return { ...stop, done: !stop.done };
+      //       }
+      //       return stop;
+      //     }),
+      //   ]);
+      //   break;
       case "line-details":
         //TODO display stop informations
         console.log("TODO display stop informations");

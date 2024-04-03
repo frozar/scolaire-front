@@ -1,6 +1,6 @@
 import { LabeledInputNumber } from "../../../../../component/molecule/LabeledInputNumber";
 import { SchoolUtils } from "../../../../../utils/school.utils";
-import CollapsibleElement from "../../../board/component/organism/CollapsibleElement";
+import CollapsibleElement from "../../../line/atom/CollapsibleElement";
 import { schoolDetailEditing, schoolDetails } from "../template/SchoolDetails";
 
 export function SchoolSettings() {

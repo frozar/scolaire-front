@@ -8,7 +8,7 @@ import { AssociatedUtils } from "../../../../../utils/associated.utils";
 import { GradeUtils } from "../../../../../utils/grade.utils";
 import { QuantityUtils } from "../../../../../utils/quantity.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
-import CollapsibleElement from "../../../board/component/organism/CollapsibleElement";
+import CollapsibleElement from "../../../line/atom/CollapsibleElement";
 import { QuantityTable } from "../organism/QuantityTable";
 import { stopDetails } from "../template/StopDetails";
 import EditStudentSchoolGradeItem from "./EditStudentSchoolGradeItem";

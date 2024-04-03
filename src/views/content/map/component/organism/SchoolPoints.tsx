@@ -3,11 +3,6 @@ import { For, createEffect } from "solid-js";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { SchoolStore, getSchools } from "../../../../../_stores/school.store";
 import {
-  AddLineStep,
-  addLineCurrentStep,
-  addLineSelectedSchool,
-} from "../../../board/component/organism/AddLineBoardContent";
-import {
   DrawTripStep,
   currentDrawTrip,
   currentStep,
@@ -43,18 +38,18 @@ export function SchoolPoints(props: SchoolPointsProps) {
 //TODO Delete and replace with displayedSchool signal
 function schoolsFilter(): SchoolType[] {
   switch (onBoard()) {
-    case "line-add":
-      switch (addLineCurrentStep()) {
-        case AddLineStep.gradeSelection:
+    // case "line-add":
+    //   switch (addLineCurrentStep()) {
+    //     case AddLineStep.gradeSelection:
 
-        case AddLineStep.stopSelection:
-          return getSchools().filter((schoolToFilter) =>
-            addLineSelectedSchool()
-              .map((school) => school.id)
-              .includes(schoolToFilter.id)
-          );
-      }
-      break;
+    //     case AddLineStep.stopSelection:
+    //       return getSchools().filter((schoolToFilter) =>
+    //         addLineSelectedSchool()
+    //           .map((school) => school.id)
+    //           .includes(schoolToFilter.id)
+    //       );
+    //   }
+    //   break;
 
     case "trip":
       return getSchools().filter((schoolFilter) =>

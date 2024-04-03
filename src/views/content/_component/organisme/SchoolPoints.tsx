@@ -1,7 +1,7 @@
 import L from "leaflet";
 import { For, createSignal } from "solid-js";
 import { SchoolType } from "../../../../_entities/school.entity";
-import { SchoolPoint } from "../../map/component/molecule/SchoolPoint";
+import { SchoolPoint } from "../molecule/SchoolPoint";
 
 export const [displaySchools, setDisplaySchools] = createSignal<SchoolType[]>(
   []

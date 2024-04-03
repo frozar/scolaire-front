@@ -1,7 +1,7 @@
 import { JSXElement } from "solid-js";
 import { CalendarType } from "../../../../../_entities/calendar.entity";
 import { GradeType } from "../../../../../_entities/grade.entity";
-import CollapsibleElement from "../../../board/component/organism/CollapsibleElement";
+import CollapsibleElement from "../../../line/atom/CollapsibleElement";
 import TimesInputWrapper from "../molecule/TimesInputWrapper";
 import { GradeHourRuleList } from "./GradeHourRuleList";
 

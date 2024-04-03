@@ -1,6 +1,6 @@
 import { TripType } from "../../../../../_entities/trip.entity";
 import { TripUtils } from "../../../../../utils/trip.utils";
-import CollapsibleElement from "./CollapsibleElement";
+import CollapsibleElement from "../../../line/atom/CollapsibleElement";
 import "./DisplayAllotmentAndVehicle.css";
 
 export function DisplayAllotmentAndVehicle(props: { trip?: TripType }) {

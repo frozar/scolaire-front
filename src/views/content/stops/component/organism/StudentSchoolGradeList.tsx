@@ -2,7 +2,7 @@ import _ from "lodash";
 import { For, createEffect, createSignal, on } from "solid-js";
 import { AssociatedSchoolType } from "../../../../../_entities/_utils.entity";
 import { SchoolUtils } from "../../../../../utils/school.utils";
-import CollapsibleElement from "../../../board/component/organism/CollapsibleElement";
+import CollapsibleElement from "../../../line/atom/CollapsibleElement";
 import StudentSchoolGradeItem from "../molecul/StudentSchoolGradeItem";
 import { stopDetails } from "../template/StopDetails";
 

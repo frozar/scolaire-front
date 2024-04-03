@@ -1,5 +1,5 @@
 import { Show, createEffect } from "solid-js";
-import CollapsibleElement from "../../board/component/organism/CollapsibleElement";
+import CollapsibleElement from "../../line/atom/CollapsibleElement";
 import { NoSettingsDefined } from "../atom/NoSettingsDefined";
 import { getSettings } from "./Settings";
 import { TravelTimeSettings } from "./TravelTimeSettings";

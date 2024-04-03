@@ -7,8 +7,8 @@ import {
   on,
 } from "solid-js";
 
-import CollapseLogo from "../../../../../icons/CollapseLogo";
-import UncollapseLogo from "../../../../../icons/UncollapseLogo";
+import CollapseLogo from "../../../../icons/CollapseLogo";
+import UncollapseLogo from "../../../../icons/UncollapseLogo";
 import "./CollapsibleElement.css";
 
 export default function (props: {
