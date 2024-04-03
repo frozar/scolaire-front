@@ -17,7 +17,6 @@ const [
     getSelectedEditModeTile,
     setSelectedEditModeTile,
     setSelectedReadModeTile,
-    getSelectedMenu,
   },
 ] = useStateGui();
 
