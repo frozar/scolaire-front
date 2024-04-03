@@ -3,6 +3,7 @@ import { MapBoardTags } from "../../_component/template/MapBoardManager";
 import { LineAdd } from "./LineAdd";
 import { LineDetails } from "./LineDetails";
 import { Lines } from "./Lines";
+import { LineEdit } from "./LineEdit";
 
 export function LinesBoardManager(props: { board: MapBoardTags }) {
   return (
@@ -15,6 +16,9 @@ export function LinesBoardManager(props: { board: MapBoardTags }) {
       </Match>
       <Match when={props.board == "line-add"}>
         <LineAdd />
+      </Match>
+      <Match when={props.board == "line-edit"}>
+        <LineEdit />
       </Match>
     </Switch>
   );

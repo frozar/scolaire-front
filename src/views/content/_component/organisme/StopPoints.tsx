@@ -4,6 +4,7 @@ import { StopType } from "../../../../_entities/stop.entity";
 import { StopPoint } from "../molecule/StopPoint";
 
 export const [displayStops, setDisplayStops] = createSignal<StopType[]>([]);
+
 export function StopPoints(props: { map: L.Map }) {
   const quantities = () => {
     return displayStops().map((stop) => {

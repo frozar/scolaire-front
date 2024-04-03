@@ -16,6 +16,10 @@ export const [schoolPointOnClick, setSchoolPointOnClick] = createSignal<
   ((school: SchoolType) => void) | undefined
 >();
 
+export const [schoolPointColor, setSchoolPointColor] = createSignal<
+  ((school: SchoolType) => string) | string
+>(COLOR_SCHOOL_FOCUS);
+
 export function SchoolPoint(props: SchoolPointProps) {
   // createEffect(() => {
   //   //TODO dont Work

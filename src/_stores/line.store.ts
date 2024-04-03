@@ -18,6 +18,16 @@ export namespace LineStore {
       return [...prev];
     });
   }
+  export function update(line: LineType) {
+    set((lines) => {
+      for (const index in lines) {
+        if (lines[index].id == line.id) {
+          lines[index] = line;
+        }
+      }
+      return [...lines];
+    });
+  }
 
   export function remove(lineId: number) {
     set(getLines().filter((line) => line.id != lineId));

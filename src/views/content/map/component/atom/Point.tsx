@@ -85,23 +85,23 @@ export default function (props: PointProps) {
       if (element) {
         linkMap.set(props.point.leafletId, circle);
       }
-
-      createEffect(() => {
-        const element = linkMap
-          .get(props.point.leafletId)
-          ?.getElement() as HTMLElement;
-
-        if (element) {
-          element.style.setProperty("--stroke-color", props.borderColor);
-        }
-
-        if (element && props.isBlinking) {
-          element.classList.add("circle-animation");
-        } else if (element && !props.isBlinking) {
-          element.classList.remove("circle-animation");
-        } else return;
-      });
     }
+  });
+
+  createEffect(() => {
+    const element = linkMap
+      .get(props.point.leafletId)
+      ?.getElement() as HTMLElement;
+
+    if (element) {
+      element.style.setProperty("--stroke-color", props.borderColor);
+    }
+
+    if (element && props.isBlinking) {
+      element.classList.add("circle-animation");
+    } else if (element && !props.isBlinking) {
+      element.classList.remove("circle-animation");
+    } else return;
   });
 
   createEffect(() => {
@@ -113,22 +113,9 @@ export default function (props: PointProps) {
     }
   });
 
-  // createEffect(() => {
-  //   if (props.point.nature == NatureEnum.stop) {
-  //     if (addLineCurrentStep() === AddLineStep.stopSelection) {
-  //       circle?.setStyle({ fillColor: COLOR_STOP_LIGHT });
-  //       if (
-  //         addLineCheckableStop()
-  //           .map((stop) => stop.item.id)
-  //           .includes(props.point.id)
-  //       ) {
-  //         circle?.setStyle({ fillColor: COLOR_STOP_FOCUS });
-  //       } else {
-  //         circle?.setStyle({ fillColor: COLOR_STOP_LIGHT });
-  //       }
-  //     }
-  //   }
-  // });
+  createEffect(() => {
+    circle?.setStyle({ fillColor: props.fillColor });
+  });
 
   onCleanup(() => {
     if (props.point) {

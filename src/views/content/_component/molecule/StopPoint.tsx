@@ -1,5 +1,5 @@
 import L from "leaflet";
-import { createSignal } from "solid-js";
+import { createEffect, createSignal } from "solid-js";
 import { useStateAction } from "../../../../StateAction";
 import { StopType } from "../../../../_entities/stop.entity";
 import { StopPointUtil } from "../../../../utils/stopPoint.utils";
@@ -14,6 +14,10 @@ export const [stopPointOnClick, setStopPointOnClick] = createSignal<
   ((stop: StopType) => void) | undefined
 >();
 
+export const [stopPointColor, setStopPointColor] = createSignal<
+  ((stop: StopType) => string) | undefined
+>();
+
 export interface StopPointProps {
   point: StopType;
   map: L.Map;
@@ -21,11 +25,27 @@ export interface StopPointProps {
   minQuantity: number;
   maxQuantity: number;
 }
+
 const minRadius = 5;
 const maxRadius = 10;
 const rangeRadius = maxRadius - minRadius;
 
 export function StopPoint(props: StopPointProps) {
+  const localColor = () => COLOR_STOP_FOCUS;
+
+  const [localStopPointColor, setLocalStopPointColor] =
+    createSignal<(stop: StopType) => string>(localColor);
+
+  /**
+   * Change attribute color function
+   */
+  createEffect(() => {
+    let callBack: (stop: StopType) => string = localColor;
+    if (typeof stopPointColor() == "function") {
+      callBack = stopPointColor() as (stop: StopType) => string;
+    }
+    setLocalStopPointColor(() => callBack);
+  });
   const rad = (): number => {
     if (isInReadMode()) return 5;
     let radiusValue = minRadius;
@@ -60,8 +80,8 @@ export function StopPoint(props: StopPointProps) {
       point={props.point}
       map={props.map}
       isBlinking={blinkingStops().includes(props.point.id)}
-      borderColor={COLOR_STOP_FOCUS}
-      fillColor={COLOR_STOP_FOCUS}
+      borderColor={localStopPointColor()(props.point)}
+      fillColor={localStopPointColor()(props.point)}
       radius={rad()}
       weight={0}
       onClick={() => onClick(props.point)}

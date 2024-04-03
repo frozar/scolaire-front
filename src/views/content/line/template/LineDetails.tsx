@@ -61,6 +61,8 @@ export function LineDetails() {
   });
 
   function onClickUpdateLine() {
+    ViewManager.lineEdit(localLine);
+
     //TODO faire la logique update line
     console.log("update line");
   }
@@ -91,11 +93,7 @@ export function LineDetails() {
 
           <div class="actions flex gap-5 items-center">
             <ButtonIcon icon={<TrashIcon />} onClick={onClickDeleteLine} />
-            <ButtonIcon
-              icon={<PencilIcon />}
-              onClick={onClickUpdateLine}
-              disable={true}
-            />
+            <ButtonIcon icon={<PencilIcon />} onClick={onClickUpdateLine} />
           </div>
         </div>
         <div class="trips-board-header-infos">

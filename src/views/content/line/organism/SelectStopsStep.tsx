@@ -2,11 +2,14 @@ import { For, createEffect, createSignal, onCleanup, onMount } from "solid-js";
 import { GradeType } from "../../../../_entities/grade.entity";
 import { StopType } from "../../../../_entities/stop.entity";
 import { getStops } from "../../../../_stores/stop.store";
-import { setStopPointOnClick } from "../../_component/molecule/StopPoint";
-import { setDisplaySchools } from "../../_component/organisme/SchoolPoints";
+import {
+  setStopPointColor,
+  setStopPointOnClick,
+} from "../../_component/molecule/StopPoint";
 import { setDisplayStops } from "../../_component/organisme/StopPoints";
 import BoardTitle from "../../board/component/atom/BoardTitle";
 import BoardFooterActions from "../../board/component/molecule/BoardFooterActions";
+import { COLOR_STOP_FOCUS, COLOR_STOP_LIGHT } from "../../map/constant";
 import { CheckableElementList } from "../molecule/CheckableElementList";
 
 export function SelectStopsStep(props: {
@@ -18,12 +21,21 @@ export function SelectStopsStep(props: {
 }) {
   const [localStopsId, setLocalStopsId] = createSignal<number[]>([]);
 
+  //eslint-disable-next-line
   const selectedGradesId = props.grades.map((grade) => grade.id);
+  const possibleStops = [
+    ...getStops().filter((stop) =>
+      stop.associated.some((associatedschool) =>
+        selectedGradesId.includes(associatedschool.gradeId)
+      )
+    ),
+  ];
 
   onMount(() => {
     setStopsId(props.stops);
-    setDisplayStops(props.stops);
+    setDisplayStops(possibleStops);
     setStopPointOnClick(() => onUpdateStop);
+    setStopPointColor(() => mapStopPointColor);
   });
 
   createEffect(() => {
@@ -31,11 +43,21 @@ export function SelectStopsStep(props: {
   });
 
   onCleanup(() => {
-    setDisplaySchools([]);
+    setDisplayStops([]);
+    setStopPointOnClick();
+    setStopPointColor();
   });
 
   function setStopsId(stops: StopType[]) {
     setLocalStopsId(stops.map((stop) => stop.id ?? -1));
+  }
+
+  function mapStopPointColor(stop: StopType): string {
+    if (props.stops.map((stop) => stop.id).includes(stop.id)) {
+      return COLOR_STOP_FOCUS;
+    } else {
+      return COLOR_STOP_LIGHT;
+    }
   }
 
   function onUpdateStop(stop: StopType): void {
