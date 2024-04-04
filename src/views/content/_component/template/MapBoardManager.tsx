@@ -12,6 +12,7 @@ export type MapBoardTags =
   | "line-details"
   | "line-add"
   | "stops"
+  | "stop-add"
   | "stop-details"
   | "schools"
   | "school-add"
