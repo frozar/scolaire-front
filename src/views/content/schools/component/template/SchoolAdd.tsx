@@ -1,4 +1,4 @@
-import { createSignal, onCleanup, onMount } from "solid-js";
+import { createEffect, createSignal, onCleanup, onMount } from "solid-js";
 import { HoursType } from "../../../../../_entities/_utils.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { TimeUtils } from "../../../../../_entities/time.utils";
@@ -6,12 +6,11 @@ import { SchoolService } from "../../../../../_services/school.service";
 import { SchoolStore } from "../../../../../_stores/school.store";
 import {
   addNewGlobalSuccessInformation,
-  addNewGlobalWarningInformation,
   disableSpinningWheel,
   enableSpinningWheel,
 } from "../../../../../signaux";
-import { SchoolUtils } from "../../../../../utils/school.utils";
 import { ViewManager } from "../../../ViewManager";
+import { setDisplaySchools } from "../../../_component/organisme/SchoolPoints";
 import { setMapOnClick } from "../../../_component/template/MapContainer";
 import BoardTitle from "../../../board/component/atom/BoardTitle";
 import BoardFooterActions from "../../../board/component/molecule/BoardFooterActions";
@@ -22,6 +21,7 @@ export function SchoolAdd() {
   const [newHours, setNewHours] = createSignal<HoursType>(
     TimeUtils.defaultHours()
   );
+  const [canSubmit, setCanSubmit] = createSignal(false);
 
   onMount(() => {
     setMapOnClick(() => setLocation);
@@ -35,24 +35,28 @@ export function SchoolAdd() {
     setNewSchool((prev) => {
       return { ...prev, lat: e.latlng.lat, lon: e.latlng.lng };
     });
+    setDisplaySchools([newSchool()]);
   }
+
+  createEffect(() => {
+    if (
+      !newSchool().calendar ||
+      !newSchool().name ||
+      !newSchool().lat ||
+      !newSchool().waitingTime ||
+      !newHours().endHourComing ||
+      !newHours().endHourGoing ||
+      !newHours().startHourComing ||
+      !newHours().startHourGoing
+    )
+      return setCanSubmit(false);
+    setCanSubmit(true);
+  });
 
   async function submitSchool() {
     setNewSchool((prev) => {
       return { ...prev, hours: newHours() };
     });
-    if (!newSchool().calendar)
-      return addNewGlobalWarningInformation("Choisir un calendrier");
-    if (!newSchool().name)
-      return addNewGlobalWarningInformation("Entrer un nom");
-    if (!newSchool().lat)
-      return addNewGlobalWarningInformation("Entrer les coordonnées");
-    if (!newSchool().lon)
-      return addNewGlobalWarningInformation("Entrer les coordonnées");
-    if (!newSchool().waitingTime)
-      return addNewGlobalWarningInformation("Entrer un temps d'attente");
-    if (!SchoolUtils.isValidSchool(newSchool())) return;
-
     enableSpinningWheel();
     const createdSchool: SchoolType = await SchoolService.create(newSchool());
     disableSpinningWheel();
@@ -76,6 +80,7 @@ export function SchoolAdd() {
         <BoardFooterActions
           nextStep={{
             callback: submitSchool,
+            disable: !canSubmit(),
             label: "Valider",
           }}
           previousStep={{
