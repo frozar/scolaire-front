@@ -1,6 +1,13 @@
 import { createSignal } from "solid-js";
 import { LineType } from "../../../../_entities/line.entity";
 
+import { BusLineService } from "../../../../_services/line.service";
+import { LineStore } from "../../../../_stores/line.store";
+import {
+  addNewGlobalSuccessInformation,
+  disableSpinningWheel,
+  enableSpinningWheel,
+} from "../../../../signaux";
 import { ViewManager } from "../../ViewManager";
 import { LineCreateOrUpdateStepper } from "../organism/LineCreateOrUpdateStepper";
 
@@ -17,12 +24,10 @@ export function LineEdit() {
 }
 
 async function register(line: LineType) {
-  console.log(line);
-
-  //TODO have to fix the Xano endpoint -> do like create endpoint
-  // enableSpinningWheel();
-  // const editedLine: LineType = await BusLineService.update(line);
-  // LineStore.update(editedLine);
-  // disableSpinningWheel();
-  // ViewManager.lines();
+  enableSpinningWheel();
+  const editedLine: LineType = await BusLineService.update(line);
+  LineStore.update(editedLine);
+  disableSpinningWheel();
+  ViewManager.lines();
+  addNewGlobalSuccessInformation(line.name + " a été modifié");
 }

@@ -4,15 +4,13 @@ import { ServiceUtils } from "./_utils.service";
 export class BusLineService {
   static async create(line: LineType): Promise<LineType> {
     const data = BusLineEntity.dbFormat(line);
-
     const dbLine: LineDBType = await ServiceUtils.post("/bus_line", data);
 
     return BusLineEntity.build(dbLine);
   }
 
-  //TODO faire l'update
-  static async update(line: Partial<LineType>): Promise<LineType> {
-    const data = BusLineEntity.dbPartialFormat(line);
+  static async update(line: LineType): Promise<LineType> {
+    const data = BusLineEntity.dbFormat(line);
     const dbBusLine: LineDBType = await ServiceUtils.patch(
       "/bus_line/" + line.id,
       data
