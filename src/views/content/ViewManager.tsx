@@ -113,6 +113,12 @@ export namespace ViewManager {
     //TODO to delete post refacto
     changeBoard(undefined);
   }
+  export function schoolAdd() {
+    setMapBoard("school-add");
+    setSelectedMenu("schools");
+    //TODO to delete post refacto
+    changeBoard(undefined);
+  }
   /**
    * School Grades
    */

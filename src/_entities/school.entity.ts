@@ -30,14 +30,17 @@ export class SchoolEntity {
       name: dbSchool.name,
       nature: NatureEnum.school,
       //TODO Delete associated
-      associated: dbSchool.grades
-        .map((grade) =>
-          EntityUtils.formatAssociatedClassToSchoolForSchool(
-            grade.associated as DBAssociatedStop[],
-            grade.id
-          )
-        )
-        .flat(),
+      associated:
+        dbSchool.grades != undefined
+          ? dbSchool.grades
+              .map((grade) =>
+                EntityUtils.formatAssociatedClassToSchoolForSchool(
+                  grade.associated as DBAssociatedStop[],
+                  grade.id
+                )
+              )
+              .flat()
+          : [],
       grades:
         dbSchool.grades != undefined
           ? dbSchool.grades.map((grade) => GradeEntity.build(grade))

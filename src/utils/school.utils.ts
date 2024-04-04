@@ -98,6 +98,7 @@ export namespace SchoolUtils {
     schoolId: number
   ): [boolean, boolean] {
     const school = getSchools().filter((school) => school.id == schoolId)[0];
+    if (school.associated.length <= 0) return [false, false];
     const stopIds = school.associated.map((associated) => associated.stopId);
     const tuples: [boolean, boolean][] = [];
 

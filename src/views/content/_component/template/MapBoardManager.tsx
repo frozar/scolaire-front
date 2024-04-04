@@ -14,6 +14,7 @@ export type MapBoardTags =
   | "stops"
   | "stop-details"
   | "schools"
+  | "school-add"
   | "school-details"
   | "school-grade-details"
   | "school-grade-add"

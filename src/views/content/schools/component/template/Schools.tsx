@@ -1,6 +1,8 @@
 import { For, createEffect, createSignal, onCleanup, onMount } from "solid-js";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { getSchools } from "../../../../../_stores/school.store";
+import Button from "../../../../../component/atom/Button";
+import { ViewManager } from "../../../ViewManager";
 import { setDisplaySchools } from "../../../_component/organisme/SchoolPoints";
 import InputSearch from "../molecule/InputSearch";
 import SchoolItem from "../molecule/SchoolItem";
@@ -34,6 +36,12 @@ export default function () {
             setKeyWordSearch(key);
           }}
         />
+        <div class="py-4">
+          <Button
+            label="Ajouter une école"
+            onClick={() => ViewManager.schoolAdd()}
+          />
+        </div>
         <div class="school-board-number">
           <p>
             {localSchools().length + " "}

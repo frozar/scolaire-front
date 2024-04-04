@@ -21,6 +21,12 @@ export namespace SchoolStore {
     return getSchools().find((school) => school.id == schoolId) as SchoolType;
   }
 
+  export function add(school: SchoolType) {
+    set((prev) => {
+      return [...prev, school];
+    });
+  }
+
   export async function update(school: SchoolType) {
     const updatedSchool: SchoolType = await SchoolService.update(school);
     setSchools((prev) => {
