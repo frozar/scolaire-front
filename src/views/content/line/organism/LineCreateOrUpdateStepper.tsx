@@ -149,16 +149,31 @@ function onStopsUpdate(stops: StopType[]) {
 
 function setStopsFromGradeSelection() {
   const selectedGradesId = currentLine().grades.map((grade) => grade.id);
-  const stops = [
+  const availableStops = [
     ...getStops().filter((stop) =>
       stop.associated.some((associatedschool) =>
         selectedGradesId.includes(associatedschool.gradeId)
       )
     ),
   ];
+  const availableStopsId = availableStops.map((stop) => stop.id);
+
   if (currentLine().stops.length == 0) {
     setCurrentLine((line) => {
-      return { ...line, stops: stops };
+      return { ...line, stops: availableStops };
+    });
+  }
+
+  if (currentLine().stops.length > 0) {
+    const filteredStops: StopType[] = [];
+
+    currentLine().stops.forEach((stop) => {
+      if (availableStopsId.includes(stop.id)) {
+        filteredStops.push(stop);
+      }
+    });
+    setCurrentLine((prev) => {
+      return { ...prev, stops: filteredStops };
     });
   }
 }

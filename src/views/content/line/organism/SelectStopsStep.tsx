@@ -11,6 +11,7 @@ import BoardTitle from "../../board/component/atom/BoardTitle";
 import BoardFooterActions from "../../board/component/molecule/BoardFooterActions";
 import { COLOR_STOP_FOCUS, COLOR_STOP_LIGHT } from "../../map/constant";
 import { CheckableElementList } from "../molecule/CheckableElementList";
+import "./SelectStopsStep.css";
 
 export function SelectStopsStep(props: {
   grades: GradeType[];
