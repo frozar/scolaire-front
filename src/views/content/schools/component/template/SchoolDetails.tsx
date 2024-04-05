@@ -5,6 +5,7 @@ import { getStops } from "../../../../../_stores/stop.store";
 import { SchoolDetailUtils } from "../../../../../utils/school-details.utils";
 import { setDisplaySchools } from "../../../_component/organisme/SchoolPoints";
 import { setDisplayStops } from "../../../_component/organisme/StopPoints";
+import { setMapOnClick } from "../../../_component/template/MapContainer";
 import BoardFooterActions from "../../../board/component/molecule/BoardFooterActions";
 import SchoolDetailsHeader from "../molecule/SchoolDetailsHeader";
 import { SchoolDetailsContent } from "../organism/SchoolDetailsContent";
@@ -20,12 +21,14 @@ export const [schoolDetails, setSchoolDetails] = createSignal<SchoolType>();
 export function SchoolDetails() {
   onMount(() => {
     setMapData(schoolDetails());
+    setMapOnClick(() => setLocation);
   });
 
   onCleanup(() => {
     setSchoolDetails();
     setSchoolDetailEditing(false);
     setMapData(schoolDetails());
+    setMapOnClick(undefined);
   });
 
   function cancel() {
@@ -34,6 +37,15 @@ export function SchoolDetails() {
     });
     setSchoolDetailEditing(false);
   }
+
+  function setLocation(e: L.LeafletMouseEvent) {
+    if (!setSchoolDetailEditing) return;
+    setSchoolDetails((prev) => {
+      return { ...prev, lat: e.latlng.lat, lon: e.latlng.lng } as SchoolType;
+    });
+    setMapData(schoolDetails());
+  }
+
   return (
     <section>
       <SchoolDetailsHeader school={schoolDetails() as SchoolType} />
@@ -44,16 +56,23 @@ export function SchoolDetails() {
       <Show
         when={!schoolDetailEditing()}
         fallback={
-          <BoardFooterActions
-            nextStep={{
-              callback: SchoolDetailUtils.edit,
-              label: "Valider",
-            }}
-            previousStep={{
-              callback: () => cancel(),
-              label: "Annuler",
-            }}
-          />
+          <div>
+            <div>
+              <div class="text-xl">Coordonnées</div>
+              <p>Latitude : {schoolDetails()?.lat} </p>
+              <p>Latitude : {schoolDetails()?.lon} </p>
+            </div>
+            <BoardFooterActions
+              nextStep={{
+                callback: SchoolDetailUtils.edit,
+                label: "Valider",
+              }}
+              previousStep={{
+                callback: () => cancel(),
+                label: "Annuler",
+              }}
+            />
+          </div>
         }
       >
         <SchoolDetailsPanels />
