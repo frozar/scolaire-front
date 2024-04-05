@@ -20,9 +20,11 @@ export class StopEntity {
       name: dbStop.name,
       nature: NatureEnum.stop,
       waitingTime: dbStop.waiting_time,
-      associated: EntityUtils.formatAssociatedGradeToSchoolForStop(
-        dbStop.associated_grade
-      ),
+      associated: dbStop.associated_grade
+        ? EntityUtils.formatAssociatedGradeToSchoolForStop(
+            dbStop.associated_grade
+          )
+        : [],
       leafletId: nextLeafletPointId(),
       selected: selected,
       setSelected: setSelected,

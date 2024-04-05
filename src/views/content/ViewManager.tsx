@@ -96,7 +96,12 @@ export namespace ViewManager {
     //TODO to delete post refacto
     changeBoard(undefined);
   }
-
+  export function stopAdd() {
+    setMapBoard("stop-add");
+    setSelectedMenu("stops");
+    //TODO to delete post refacto
+    changeBoard(undefined);
+  }
   /**
    * Schools
    */

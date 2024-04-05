@@ -3,6 +3,8 @@ import { SchoolType } from "../../../../../_entities/school.entity";
 import { StopType } from "../../../../../_entities/stop.entity";
 import { getSchools } from "../../../../../_stores/school.store";
 import { getStops } from "../../../../../_stores/stop.store";
+import Button from "../../../../../component/atom/Button";
+import { ViewManager } from "../../../ViewManager";
 import { setDisplaySchools } from "../../../_component/organisme/SchoolPoints";
 import { setDisplayStops } from "../../../_component/organisme/StopPoints";
 import InputSearch from "../../../schools/component/molecule/InputSearch";
@@ -45,7 +47,12 @@ export function Stops() {
           </p>
         </div>
       </header>
-
+      <div class="py-4">
+        <Button
+          label="Ajouter un arrêt"
+          onClick={() => ViewManager.stopAdd()}
+        />
+      </div>
       <div class="stop-board-content">
         <For each={localStops()}>{(fields) => <StopItem stop={fields} />}</For>
       </div>

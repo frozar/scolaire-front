@@ -13,6 +13,12 @@ export namespace StopStore {
     setStops(getStops().filter((stop) => stop.id != stopId));
   }
 
+  export function add(school: StopType) {
+    setStops((prev) => {
+      return [...prev, school];
+    });
+  }
+
   export async function update(stop: StopType) {
     const updatedStop = await StopService.update(stop);
     if (updatedStop) {
