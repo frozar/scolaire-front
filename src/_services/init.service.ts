@@ -1,4 +1,9 @@
 import {
+  BusStopDBType,
+  BusStopEntity,
+  setBusStops,
+} from "../_entities/busStops.entity";
+import {
   CalendarDBType,
   CalendarEntity,
   CalendarPeriodDBType,
@@ -47,6 +52,7 @@ type InitDBType = {
   settings: SettingType[];
   transporter: TransporterType[];
   roads: RoadDBType[];
+  bus_stops: BusStopDBType[];
 };
 
 export type InitType = {
@@ -90,6 +96,11 @@ export namespace InitService {
 
     const roaads = dbInit.roads.map((road) => RoadEntity.build(road));
     setRoads(roaads);
+
+    const busStops = dbInit.bus_stops.map((busStop) =>
+      BusStopEntity.build(busStop)
+    );
+    setBusStops(busStops);
 
     const calendarPeriods = dbInit.calendars_periods.map((calendarPeriod) =>
       CalendarEntity.buildCalendarPeriod(calendarPeriod)
