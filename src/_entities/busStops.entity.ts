@@ -1,7 +1,7 @@
-import { createSignal } from "solid-js";
+import { useStateGui } from "../StateGui";
 import { LocationDBType } from "./_utils.entity";
 
-export const [getBusStops, setBusStops] = createSignal<BusStopType[]>([]);
+const [, { nextLeafletPointId }] = useStateGui();
 
 export namespace BusStopEntity {
   export function build(dbBusStop: BusStopDBType) {
@@ -12,6 +12,7 @@ export namespace BusStopEntity {
       lon: dbBusStop.geo_loc.data.lng,
       lat: dbBusStop.geo_loc.data.lat,
       direction: dbBusStop.direction,
+      leafletId: nextLeafletPointId(),
     };
   }
 }
@@ -31,6 +32,7 @@ export type BusStopType = {
   lat: number;
   way: number;
   direction: BusStopDirectionEnum;
+  leafletId: number;
 };
 
 export enum BusStopDirectionEnum {

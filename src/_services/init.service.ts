@@ -1,8 +1,4 @@
-import {
-  BusStopDBType,
-  BusStopEntity,
-  setBusStops,
-} from "../_entities/busStops.entity";
+import { BusStopDBType, BusStopEntity } from "../_entities/busStops.entity";
 import {
   CalendarDBType,
   CalendarEntity,
@@ -23,6 +19,7 @@ import {
   TripDirectionType,
   setTripDirections,
 } from "../_entities/trip-direction.entity";
+import { BusStopStore } from "../_stores/busStop.store";
 import { CalendarPeriodStore } from "../_stores/calendar-period.store";
 import { CalendarStore } from "../_stores/calendar.store";
 import { LineStore } from "../_stores/line.store";
@@ -100,7 +97,7 @@ export namespace InitService {
     const busStops = dbInit.bus_stops.map((busStop) =>
       BusStopEntity.build(busStop)
     );
-    setBusStops(busStops);
+    BusStopStore.set(busStops);
 
     const calendarPeriods = dbInit.calendars_periods.map((calendarPeriod) =>
       CalendarEntity.buildCalendarPeriod(calendarPeriod)
