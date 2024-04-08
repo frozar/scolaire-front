@@ -28,7 +28,7 @@ export function BusStopPoint(props: BusStopPointProps) {
       map={props.map}
       isBlinking={false}
       borderColor={COLOR_STOP_FOCUS}
-      fillColor={"#000000"}
+      fillColor={"#0000aa"}
       radius={10}
       weight={0}
       onClick={() => console.log()}

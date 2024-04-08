@@ -53,6 +53,7 @@ export class SchoolEntity {
         ? CalendarEntity.build(dbSchool.calendar)
         : undefined,
       waitingTime: dbSchool.waiting_time,
+      busStops: dbSchool.bus_stops,
     };
   }
 
@@ -104,6 +105,7 @@ export type SchoolType = {
   hours: HoursType;
   calendar?: CalendarType;
   waitingTime: number;
+  busStops: number[];
 };
 
 export type SchoolDBType = {
@@ -116,6 +118,7 @@ export type SchoolDBType = {
   calendar_id?: number;
   calendar?: CalendarDBType;
   waiting_time: number;
+  bus_stops: number[];
 };
 
 export type LeafletShoolType = SchoolType & {

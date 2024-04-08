@@ -1,13 +1,16 @@
 import { Show, createSignal, onCleanup, onMount } from "solid-js";
 import { SchoolType } from "../../../../../_entities/school.entity";
+import { getBusStops } from "../../../../../_stores/busStop.store";
 import { getSchools } from "../../../../../_stores/school.store";
 import { getStops } from "../../../../../_stores/stop.store";
 import { SchoolDetailUtils } from "../../../../../utils/school-details.utils";
+import { setDisplayBusStops } from "../../../_component/organisme/BusStopPoints";
 import { setDisplaySchools } from "../../../_component/organisme/SchoolPoints";
 import { setDisplayStops } from "../../../_component/organisme/StopPoints";
 import { setMapOnClick } from "../../../_component/template/MapContainer";
 import BoardFooterActions from "../../../board/component/molecule/BoardFooterActions";
 import SchoolDetailsHeader from "../molecule/SchoolDetailsHeader";
+import { SchoolBusStops } from "../organism/SchoolBusStops";
 import { SchoolDetailsContent } from "../organism/SchoolDetailsContent";
 import { SchoolDetailsPanels } from "../organism/SchoolDetailsPanels";
 import { SchoolSettings } from "../organism/SchoolSettings";
@@ -36,10 +39,11 @@ export function SchoolDetails() {
       return getSchools().filter((school) => school.id == prev?.id)[0];
     });
     setSchoolDetailEditing(false);
+    setMapData(schoolDetails());
   }
 
   function setLocation(e: L.LeafletMouseEvent) {
-    if (!setSchoolDetailEditing) return;
+    if (!schoolDetailEditing()) return;
     setSchoolDetails((prev) => {
       return { ...prev, lat: e.latlng.lat, lon: e.latlng.lng } as SchoolType;
     });
@@ -75,6 +79,7 @@ export function SchoolDetails() {
           </div>
         }
       >
+        <SchoolBusStops school={schoolDetails() as SchoolType} />
         <SchoolDetailsPanels />
       </Show>
     </section>
@@ -85,10 +90,12 @@ function setMapData(school: SchoolType | undefined) {
   if (school) {
     setDisplaySchools([school]);
     setDisplayStops(filterStops(school));
+    setDisplayBusStops(filterBusStops(school));
     // setDisplayTrips(filterTrips(school));
   } else {
     setDisplayStops([]);
     setDisplaySchools([]);
+    setDisplayBusStops([]);
     // setDisplayTrips([]);
   }
 }
@@ -103,6 +110,12 @@ function filterStops(school: SchoolType) {
       }
     }
     return isAssociated;
+  });
+}
+
+function filterBusStops(school: SchoolType) {
+  return getBusStops().filter((item) => {
+    if (school.busStops.includes(item.id as number)) return item;
   });
 }
 
