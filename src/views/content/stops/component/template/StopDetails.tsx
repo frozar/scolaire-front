@@ -87,7 +87,6 @@ export function StopDetails() {
           }
         >
           <RemainingStudentInformation />
-
           <StopActionsPanelsButtons
             stop={stopDetails() as StopType}
             onPanel={onPanel}

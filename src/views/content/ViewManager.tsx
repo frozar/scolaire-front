@@ -102,6 +102,17 @@ export namespace ViewManager {
     //TODO to delete post refacto
     changeBoard(undefined);
   }
+
+  /**
+   * Bus Stops
+   */
+  export function busStopAdd() {
+    setMapBoard("bus-stop-add");
+    setSelectedMenu("stops");
+    //TODO to delete post refacto
+    changeBoard(undefined);
+  }
+
   /**
    * Schools
    */
