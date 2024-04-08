@@ -8,6 +8,7 @@ import { StopUtils } from "../../../../../utils/stop.utils";
 import { setDisplaySchools } from "../../../_component/organisme/SchoolPoints";
 import { setDisplayStops } from "../../../_component/organisme/StopPoints";
 import { setDisplayTrips } from "../../../_component/organisme/Trips";
+import { setMapOnClick } from "../../../_component/template/MapContainer";
 import { RemainingStudentInformation } from "../atom/RemainingStudentInformation";
 import { StopActionsPanelsButtons } from "../molecul/StopActionsPanelsButtons";
 import { StopDetailsHeader } from "../molecul/StopDetailsHeader";
@@ -33,11 +34,13 @@ export function StopDetails() {
 
   onMount(() => {
     setMapData(stopDetails());
+    setMapOnClick(() => setLocation);
   });
 
   onCleanup(() => {
     setStopDetails();
     setMapData(stopDetails());
+    setMapOnClick(undefined);
   });
 
   function toggleEditItem() {
@@ -47,6 +50,14 @@ export function StopDetails() {
 
   function onChangeWaitingTime(element: HTMLInputElement) {
     StopUtils.updateStopDetailsItem({ waitingTime: Number(element.value) });
+  }
+
+  function setLocation(e: L.LeafletMouseEvent) {
+    if (!editItem) return;
+    setStopDetails((prev) => {
+      return { ...prev, lat: e.latlng.lat, lon: e.latlng.lng } as StopType;
+    });
+    setMapData(stopDetails());
   }
 
   return (
@@ -65,7 +76,16 @@ export function StopDetails() {
           }}
           label="Temps d'attente en seconde sur l'arrêt"
         />
-        <Show when={!editItem()}>
+        <Show
+          when={!editItem()}
+          fallback={
+            <div>
+              <div class="text-xl">Coordonnées</div>
+              <p>Latitude : {stopDetails()?.lat} </p>
+              <p>Latitude : {stopDetails()?.lon} </p>
+            </div>
+          }
+        >
           <RemainingStudentInformation />
 
           <StopActionsPanelsButtons

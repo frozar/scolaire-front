@@ -1,6 +1,7 @@
 import { Show } from "solid-js";
 import { StopType } from "../../../../../_entities/stop.entity";
 import { StopStore } from "../../../../../_stores/stop.store";
+import { addNewGlobalSuccessInformation } from "../../../../../signaux";
 import BoardFooterActions from "../../../board/component/molecule/BoardFooterActions";
 import { stopDetails } from "../template/StopDetails";
 interface StopFooterProps {
@@ -14,14 +15,19 @@ export function StopFooter(props: StopFooterProps) {
       <BoardFooterActions
         previousStep={{
           callback: () => props.toggleEdit(),
-          label: "annuler",
+          label: "Annuler",
         }}
         nextStep={{
           callback: async () => {
             const response = await StopStore.update(stopDetails() as StopType);
-            if (response) props.toggleEdit();
+            if (response) {
+              props.toggleEdit();
+              addNewGlobalSuccessInformation(
+                response.name + " a bien été modifié"
+              );
+            }
           },
-          label: "enregistrer",
+          label: "Valider",
         }}
       />
     </Show>
