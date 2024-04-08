@@ -1,5 +1,4 @@
 import { Show, createSignal } from "solid-js";
-import { BusStopBoardManager } from "../../busStops/organism/BusStopBoardManager";
 import { DashboardBoardManager } from "../../dashboard/template/DashboardBoardManager";
 import { LinesBoardManager } from "../../line/template/LinesBoardManager";
 import { PathsBoardManager } from "../../paths/template/PathsBoardManager";
@@ -44,7 +43,6 @@ export function MapBoardManager() {
           <SchoolsBoardManager board={mapBoard()} />
           <PathsBoardManager board={mapBoard()} />
           <LinesBoardManager board={mapBoard()} />
-          <BusStopBoardManager board={mapBoard()} />
           {/* TODO create TripesBoardManager */}
         </BoardLayout>
       </Show>

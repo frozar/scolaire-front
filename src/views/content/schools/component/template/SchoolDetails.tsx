@@ -9,8 +9,8 @@ import { setDisplaySchools } from "../../../_component/organisme/SchoolPoints";
 import { setDisplayStops } from "../../../_component/organisme/StopPoints";
 import { setMapOnClick } from "../../../_component/template/MapContainer";
 import BoardFooterActions from "../../../board/component/molecule/BoardFooterActions";
+import { BusStopsMenu } from "../../../busStops/organism/BusStopsMenu";
 import SchoolDetailsHeader from "../molecule/SchoolDetailsHeader";
-import { SchoolBusStops } from "../organism/SchoolBusStops";
 import { SchoolDetailsContent } from "../organism/SchoolDetailsContent";
 import { SchoolDetailsPanels } from "../organism/SchoolDetailsPanels";
 import { SchoolSettings } from "../organism/SchoolSettings";
@@ -61,6 +61,10 @@ export function SchoolDetails() {
         when={!schoolDetailEditing()}
         fallback={
           <div>
+            <BusStopsMenu
+              school={schoolDetails() as SchoolType}
+              schoolSetter={setSchoolDetails}
+            />
             <div>
               <div class="text-xl">Coordonnées</div>
               <p>Latitude : {schoolDetails()?.lat} </p>
@@ -79,7 +83,6 @@ export function SchoolDetails() {
           </div>
         }
       >
-        <SchoolBusStops school={schoolDetails() as SchoolType} />
         <SchoolDetailsPanels />
       </Show>
     </section>

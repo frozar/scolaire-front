@@ -1,5 +1,5 @@
 import { useStateGui } from "../StateGui";
-import { LocationDBType } from "./_utils.entity";
+import { EntityUtils, LocationDBType } from "./_utils.entity";
 
 const [, { nextLeafletPointId }] = useStateGui();
 
@@ -13,6 +13,15 @@ export namespace BusStopEntity {
       lat: dbBusStop.geo_loc.data.lat,
       direction: dbBusStop.direction,
       leafletId: nextLeafletPointId(),
+    };
+  }
+  export function DbFormat(busStop: BusStopType) {
+    return {
+      name: busStop.name,
+      way_id: busStop.way,
+      direction: busStop.direction,
+      location: EntityUtils.builLocationPoint(busStop.lon, busStop.lat),
+      school_id: busStop.schoolId,
     };
   }
 }
@@ -33,6 +42,7 @@ export type BusStopType = {
   way: number;
   direction: BusStopDirectionEnum;
   leafletId: number;
+  schoolId?: number;
 };
 
 export enum BusStopDirectionEnum {
