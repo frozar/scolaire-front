@@ -22,6 +22,7 @@ export namespace BusStopEntity {
       direction: busStop.direction,
       location: EntityUtils.builLocationPoint(busStop.lon, busStop.lat),
       school_id: busStop.schoolId,
+      stop_id: busStop.stopId,
     };
   }
 }
@@ -43,6 +44,7 @@ export type BusStopType = {
   direction: BusStopDirectionEnum;
   leafletId: number;
   schoolId?: number;
+  stopId?: number;
 };
 
 export enum BusStopDirectionEnum {

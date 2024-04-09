@@ -83,8 +83,9 @@ export function SchoolDetails() {
         fallback={
           <div>
             <BusStopsMenu
-              school={schoolDetails() as SchoolType}
-              schoolSetter={setSchoolDetails}
+              item={schoolDetails() as SchoolType}
+              itemSetter={setSchoolDetails}
+              isSchool={true}
             />
             <div>
               <div class="text-xl">Coordonnées</div>

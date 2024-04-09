@@ -11,6 +11,7 @@ import {
   BusStopType,
 } from "../../../../_entities/busStops.entity";
 import { SchoolType } from "../../../../_entities/school.entity";
+import { StopType } from "../../../../_entities/stop.entity";
 import { BusStopService } from "../../../../_services/busStop.service";
 import { getBusStops } from "../../../../_stores/busStop.store";
 import { getWays } from "../../../../_stores/way.store";
@@ -31,12 +32,13 @@ import "./BusStopsMenu.css";
 export const [selectedWayId, setSelectedWayId] = createSignal(0);
 
 interface BusStopsMenuProps {
-  school: SchoolType;
-  schoolSetter: Setter<SchoolType>;
+  item: SchoolType | StopType;
+  itemSetter: Setter<SchoolType> | Setter<StopType>;
+  isSchool: boolean;
 }
 
 export function BusStopsMenu(props: BusStopsMenuProps) {
-  const [schoolBusStops, setSchoolBusStops] = createSignal<BusStopType[]>([]);
+  const [currentBusStops, setCurrentBusStops] = createSignal<BusStopType[]>([]);
   const [isChoosingLocal, setIsChoosingLocal] = createSignal(false);
   const [isChoosingWay, setIsChoosingWay] = createSignal(false);
   const [isAdding, setIsAdding] = createSignal(false);
@@ -45,10 +47,11 @@ export function BusStopsMenu(props: BusStopsMenuProps) {
   );
 
   onMount(() => {
-    const busStops = getBusStops().filter((item) => {
-      if (props.school.busStops.includes(item.id as number)) return item;
+    const busStops = getBusStops().filter((busStopItem) => {
+      if (props.item.busStops.includes(busStopItem.id as number))
+        return busStopItem;
     });
-    setSchoolBusStops(busStops);
+    setCurrentBusStops(busStops);
   });
 
   createEffect((prev) => {
@@ -60,8 +63,8 @@ export function BusStopsMenu(props: BusStopsMenuProps) {
         return { ...prev, way: updatedWayId };
       });
       ids[0] = updatedWayId;
-      schoolBusStops().forEach((item) => ids.push(item.way));
-      setDisplayWays(getWays().filter((item) => ids.includes(item.id)));
+      currentBusStops().forEach((busStop) => ids.push(busStop.way));
+      setDisplayWays(getWays().filter((way) => ids.includes(way.id)));
       setIsChoosingWay(false);
     }
   }, selectedWayId());
@@ -117,13 +120,19 @@ export function BusStopsMenu(props: BusStopsMenuProps) {
 
   async function submit() {
     if (!newBusStop().name || !newBusStop().lat) return;
-    setNewBusStop((prev) => {
-      return { ...prev, schoolId: props.school.id };
-    });
-
     enableSpinningWheel();
+    if (props.isSchool) {
+      setNewBusStop((prev) => {
+        return { ...prev, schoolId: props.item.id };
+      });
+    } else {
+      setNewBusStop((prev) => {
+        return { ...prev, stopId: props.item.id };
+      });
+    }
     const createdBusStop = await BusStopService.create(newBusStop());
-    setSchoolBusStops((prev) => {
+
+    setCurrentBusStops((prev) => {
       return [...prev, createdBusStop];
     });
     disableSpinningWheel();
@@ -175,7 +184,7 @@ export function BusStopsMenu(props: BusStopsMenuProps) {
         }
         when={!isAdding()}
       >
-        <For each={schoolBusStops()}>
+        <For each={currentBusStops()}>
           {(stopItem) => <div>{stopItem.name}</div>}
         </For>
         <Button label="Ajouter" onClick={toggleEdit} />

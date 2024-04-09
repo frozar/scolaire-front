@@ -13,11 +13,13 @@ export function BusStopsDisplay(props: BusStopsDisplayProps) {
   const [busStopsItems, setBusStopsItems] = createSignal<BusStopType[]>([]);
 
   onMount(() => {
-    setBusStopsItems(
-      getBusStops().filter((busstop) =>
-        props.item.busStops.includes(busstop.id as number)
-      )
-    );
+    if (props.item.busStops) {
+      setBusStopsItems(
+        getBusStops().filter((busstop) =>
+          props.item.busStops.includes(busstop.id as number)
+        )
+      );
+    }
   });
 
   return (
