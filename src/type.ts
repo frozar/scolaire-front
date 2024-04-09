@@ -172,7 +172,8 @@ export type SelectedMenuType =
   | "paths"
   | "lines"
   | "organization-users"
-  | "organizations";
+  | "organizations"
+  | "organization-add";
 
 export type MenuItemType = {
   menuItem: SelectedMenuType;

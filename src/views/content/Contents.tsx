@@ -12,14 +12,15 @@ import { Calendar } from "./calendar/template/Calendar";
 import Map from "./map/Map";
 import { Maps } from "./maps/Maps";
 import { Market } from "./market/organism/Market";
+import { OrganizationAdd } from "./organization/template/OrganizationAdd";
 import { OrganizationMembers } from "./organization/template/OrganizationMembers";
+import { Organizations } from "./organization/template/Organizations";
 import { Settings } from "./parameters/organism/Settings";
 import { ServiceTemplate } from "./service/template/ServiceTemplate";
 import AddPonderationWithConflictConfirmation from "./stops/component/organism/AddPonderationWithConflictConfirmation";
 import Roadways, {
   displayedUpdateRoadwaysConfirmation,
 } from "./stops/component/organism/Roadways";
-import { Organizations } from "./organization/template/Organizations";
 
 const [, { getSelectedMenu }] = useStateGui();
 
@@ -46,6 +47,10 @@ export function Contents() {
 
           <Match when={getSelectedMenu() == "organizations"}>
             <Organizations />
+          </Match>
+
+          <Match when={getSelectedMenu() == "organization-add"}>
+            <OrganizationAdd />
           </Match>
 
           <Match when={getSelectedMenu() == "organization-users"}>

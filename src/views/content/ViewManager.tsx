@@ -163,4 +163,10 @@ export namespace ViewManager {
     //TODO to delete post refacto
     changeBoard(undefined);
   }
+
+  export function organizationAdd() {
+    setSelectedMenu("organization-add");
+    //TODO to delete post refacto
+    changeBoard(undefined);
+  }
 }
