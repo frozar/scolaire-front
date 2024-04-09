@@ -19,6 +19,7 @@ import AddPonderationWithConflictConfirmation from "./stops/component/organism/A
 import Roadways, {
   displayedUpdateRoadwaysConfirmation,
 } from "./stops/component/organism/Roadways";
+import { Organizations } from "./organization/template/Organizations";
 
 const [, { getSelectedMenu }] = useStateGui();
 
@@ -41,6 +42,10 @@ export function Contents() {
 
           <Match when={getSelectedMenu() == "calendar"}>
             <Calendar />
+          </Match>
+
+          <Match when={getSelectedMenu() == "organizations"}>
+            <Organizations />
           </Match>
 
           <Match when={getSelectedMenu() == "organization-users"}>

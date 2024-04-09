@@ -16,7 +16,7 @@ export function OrganizationMembersTableItem(props: {
   return (
     <tr>
       <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">
-        {!AuthenticatedUserStore.isUser(props.member.email)
+        {!AuthenticatedUserStore.isTheUser(props.member.email)
           ? props.member.name
           : props.member.name + " (moi)"}
       </td>
@@ -34,7 +34,7 @@ export function OrganizationMembersTableItem(props: {
           list={["admin", "member"]}
         />
       </td>
-      <Show when={!AuthenticatedUserStore.isUser(props.member.email)}>
+      <Show when={!AuthenticatedUserStore.isTheUser(props.member.email)}>
         <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
           <ButtonUpdateMember
             member={props.member}

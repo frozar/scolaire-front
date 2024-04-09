@@ -171,7 +171,8 @@ export type SelectedMenuType =
   | "weight"
   | "paths"
   | "lines"
-  | "organization-users";
+  | "organization-users"
+  | "organizations";
 
 export type MenuItemType = {
   menuItem: SelectedMenuType;

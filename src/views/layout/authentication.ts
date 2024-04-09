@@ -15,6 +15,7 @@ export type xanoUser = {
   email: string;
   picture: string;
   nickname: string;
+  role: string;
   //TODO rebaptiser "organizations"
   organisation: OrganisationType[];
 };

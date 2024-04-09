@@ -12,9 +12,9 @@ import {
   AuthenticatedUserStore,
   authenticated,
 } from "../../../../_stores/authenticated-user.store";
-import { ViewManager } from "../../../content/ViewManager";
-import { ManagementButton } from "../atom/Management";
+import { MenuButtonOrganizationMembers } from "../atom/MenuButtonOrganizationMembers";
 import "./LoginDropdown.css";
+import { MenuButtonOrganizations } from "../atom/MenuButtonOrganizations";
 
 // HACK for the documentation to preserve the ClickOutside directive on save
 // https://www.solidjs.com/guides/typescript#use___
@@ -50,10 +50,6 @@ export default function (props: LoginDropdownProps) {
   const xOffsetClassName = () =>
     "translate-x-[" + String(props.xOffset ?? 0) + "rem]";
 
-  function handleManagement() {
-    ViewManager.organizationUsers();
-  }
-
   return (
     <button
       id="login-btn"
@@ -83,10 +79,13 @@ export default function (props: LoginDropdownProps) {
         <Show when={displayedSubComponent()}>
           <div id="login-menu-container" class={xOffsetClassName()}>
             {/* TODO ne doit être accessible que si utilisateur est admin */}
-            <ManagementButton
-              authenticated={authenticated()}
-              onClick={handleManagement}
-            />
+
+            <Show when={AuthenticatedUserStore.isFlaxib()}>
+              <MenuButtonOrganizations />
+            </Show>
+            <Show when={AuthenticatedUserStore.isAdmin()}>
+              <MenuButtonOrganizationMembers />
+            </Show>
             <LoginMenu authenticated={authenticated()} onClick={handleLogin} />
           </div>
         </Show>

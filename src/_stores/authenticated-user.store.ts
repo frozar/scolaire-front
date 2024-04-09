@@ -1,4 +1,5 @@
 import { createSignal } from "solid-js";
+import { getSelectedOrganisation } from "../views/content/board/component/organism/OrganisationSelector";
 import { setStoredData, xanoUser } from "../views/layout/authentication";
 import { UserOrganizationStore } from "./user-organization.store";
 
@@ -15,8 +16,18 @@ export namespace AuthenticatedUserStore {
     return get()?.token;
   }
 
-  export function isUser(email: string) {
+  export function isTheUser(email: string) {
     return getUser()?.email == email;
+  }
+
+  export function isAdmin() {
+    return (
+      authenticated() && getSelectedOrganisation().user_privilege === "admin"
+    );
+  }
+
+  export function isFlaxib() {
+    return authenticated() && getUser()?.role === "staff";
   }
 
   export function set(user: xanoUser) {
