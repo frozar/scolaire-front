@@ -1,8 +1,14 @@
 import { JSXElement, createSignal } from "solid-js";
 import { OrganisationService } from "../../../../_services/organisation.service";
 import { setOrganizationMembers } from "../template/OrganizationMembers";
-import { addNewGlobalSuccessInformation, addNewGlobalWarningInformation } from "../../../../signaux";
-import { DialogToDisplayEnum, setDialogToDisplay } from "../../board/component/organism/Dialogs";
+import {
+  addNewGlobalSuccessInformation,
+  addNewGlobalWarningInformation,
+} from "../../../../signaux";
+import {
+  DialogToDisplayEnum,
+  setDialogToDisplay,
+} from "../../board/component/organism/Dialogs";
 import LabeledInputField from "../../board/component/molecule/LabeledInputField";
 import Button from "../../../../component/atom/Button";
 import { DialogUtils } from "../../../../utils/dialog.utils";
