@@ -21,6 +21,7 @@ export type xanoUser = {
 };
 
 // TODO créer un UserService et un UserEntity...
+//TODO représente the AuthenticatedUserOrganizationsType
 export type OrganisationType = {
   organisation_id: number;
   user_privilege: string;

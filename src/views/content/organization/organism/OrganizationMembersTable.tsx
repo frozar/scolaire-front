@@ -1,5 +1,5 @@
 import { For } from "solid-js";
-import { organisationMember } from "../../../../_services/organisation.service";
+import { OrganizationMemberType } from "../../../../_services/organisation.service";
 import { OrganisationType } from "../../../layout/authentication";
 import {
   DialogToDisplayEnum,
@@ -8,7 +8,7 @@ import {
 import { OrganizationMembersTableItem } from "../molecule/OrganizationMembersTableItem";
 
 export function OrganizationMembersTable(props: {
-  members: organisationMember[];
+  members: OrganizationMemberType[];
   organization: OrganisationType;
 }) {
   return (

@@ -1,12 +1,12 @@
 import { Show, createSignal } from "solid-js";
-import { organisationMember } from "../../../../_services/organisation.service";
+import { OrganizationMemberType } from "../../../../_services/organisation.service";
 import { AuthenticatedUserStore } from "../../../../_stores/authenticated-user.store";
 import { RulesSelectorWrapper } from "../../calendar/molecule/RulesSelectorWrapper";
 import { ButtonDeleteMember } from "../atom/ButtonDeleteMember";
 import { ButtonUpdateMember } from "../atom/ButtonUpdateMember";
 
 export function OrganizationMembersTableItem(props: {
-  member: organisationMember;
+  member: OrganizationMemberType;
 }) {
   const [isInUpdateMode, setIsInUpdateMode] = createSignal<boolean>(true);
   const [currentPrivilege, setCurrentPrivilege] = createSignal<string>(

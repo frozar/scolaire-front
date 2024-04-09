@@ -1,6 +1,6 @@
 import {
-  organisationMember,
   OrganisationService,
+  OrganizationMemberType,
 } from "../../../../_services/organisation.service";
 import TrashIcon from "../../../../icons/TrashIcon";
 import {
@@ -11,7 +11,7 @@ import { setRemoveConfirmation } from "../../../../userInformation/RemoveConfirm
 import ButtonIcon from "../../board/component/molecule/ButtonIcon";
 import { setOrganizationMembers } from "../template/OrganizationMembers";
 
-export function ButtonDeleteMember(props: { member: organisationMember }) {
+export function ButtonDeleteMember(props: { member: OrganizationMemberType }) {
   async function removeMember() {
     const xanoRes = await OrganisationService.deleteMember(
       props.member.user_id

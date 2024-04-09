@@ -1,7 +1,12 @@
+import {
+  OrganizationDbType,
+  OrganizationEntity,
+  OrganizationType,
+} from "../_entities/organization.entity";
 import { getSelectedOrganisation } from "../views/content/board/component/organism/OrganisationSelector";
 import { ServiceUtils } from "./_utils.service";
 
-export type organisationMember = {
+export type OrganizationMemberType = {
   id: number;
   name: string;
   email: string;
@@ -12,7 +17,15 @@ export type organisationMember = {
 };
 
 export class OrganisationService {
-  static async getMembers(): Promise<organisationMember[]> {
+  static async getAll(): Promise<OrganizationType[]> {
+    const xanoResult: OrganizationDbType[] = await ServiceUtils.get(
+      "/organization",
+      false
+    );
+    return xanoResult.map((dbOrga) => OrganizationEntity.build(dbOrga));
+  }
+
+  static async getMembers(): Promise<OrganizationMemberType[]> {
     const xanoResult = await ServiceUtils.get(
       "/organisation/" + getSelectedOrganisation().organisation_id + "/member",
       false
@@ -20,7 +33,7 @@ export class OrganisationService {
     return xanoResult;
   }
 
-  static async addMember(memberMail: string): Promise<organisationMember> {
+  static async addMember(memberMail: string): Promise<OrganizationMemberType> {
     const xanoResult = await ServiceUtils.post(
       "/organisation/" + getSelectedOrganisation().organisation_id + "/member",
       { email: memberMail },
@@ -29,7 +42,7 @@ export class OrganisationService {
     return xanoResult;
   }
 
-  static async deleteMember(id: number): Promise<organisationMember> {
+  static async deleteMember(id: number): Promise<OrganizationMemberType> {
     return await ServiceUtils.delete(
       "/organisation/" +
         getSelectedOrganisation().organisation_id +
@@ -40,8 +53,8 @@ export class OrganisationService {
   }
 
   static async updateMember(
-    member: organisationMember
-  ): Promise<organisationMember> {
+    member: OrganizationMemberType
+  ): Promise<OrganizationMemberType> {
     return await ServiceUtils.patch(
       "/organisation/" + getSelectedOrganisation().organisation_id + "/member",
       {

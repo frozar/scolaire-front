@@ -1,7 +1,7 @@
 import { Accessor, Setter } from "solid-js";
 import {
   OrganisationService,
-  organisationMember,
+  OrganizationMemberType,
 } from "../../../../_services/organisation.service";
 import CheckIcon from "../../../../icons/CheckIcon";
 import UpdatePen from "../../../../icons/UpdatePen";
@@ -13,13 +13,13 @@ import ButtonIcon from "../../board/component/molecule/ButtonIcon";
 import { setOrganizationMembers } from "../template/OrganizationMembers";
 
 export function ButtonUpdateMember(props: {
-  member: organisationMember;
+  member: OrganizationMemberType;
   isInUpdateMode: Accessor<boolean>;
   currentPrivilege: Accessor<string>;
   setCurrentPrivilege: Setter<string>;
   setIsInUpdateMode: Setter<boolean>;
 }) {
-  async function updateMember(updatedMember: organisationMember) {
+  async function updateMember(updatedMember: OrganizationMemberType) {
     const xanoRes = await OrganisationService.updateMember(updatedMember);
     if ("user_id" in xanoRes) {
       setOrganizationMembers((oldMembers) =>
