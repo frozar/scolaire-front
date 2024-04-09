@@ -1,5 +1,6 @@
 import { Match, Show, Switch } from "solid-js";
 import { useStateGui } from "../../StateGui";
+import { authenticated } from "../../_stores/authenticated-user.store";
 import InnerModal from "../../component/molecule/InnerModal";
 import UnloggedUserInformation from "../../component/molecule/UnloggedUserInformation";
 import UserInstruction from "../../component/molecule/UserInstruction";
@@ -8,17 +9,16 @@ import { MapContainer } from "./_component/template/MapContainer";
 import ContextManager from "./board/component/template/ContextManager";
 import InformationBoardLayout from "./board/component/template/InformationBoardLayout";
 import { Calendar } from "./calendar/template/Calendar";
-import { Users } from "./calendar/template/Organisation";
 import Map from "./map/Map";
 import { Maps } from "./maps/Maps";
 import { Market } from "./market/organism/Market";
+import { OrganizationMembers } from "./organization/template/OrganizationMembers";
 import { Settings } from "./parameters/organism/Settings";
 import { ServiceTemplate } from "./service/template/ServiceTemplate";
 import AddPonderationWithConflictConfirmation from "./stops/component/organism/AddPonderationWithConflictConfirmation";
 import Roadways, {
   displayedUpdateRoadwaysConfirmation,
 } from "./stops/component/organism/Roadways";
-import { authenticated } from "../../_stores/authenticated-user.store";
 
 const [, { getSelectedMenu }] = useStateGui();
 
@@ -44,7 +44,7 @@ export function Contents() {
           </Match>
 
           <Match when={getSelectedMenu() == "organization-users"}>
-            <Users />
+            <OrganizationMembers />
           </Match>
 
           <Match when={getSelectedMenu() == "service"}>

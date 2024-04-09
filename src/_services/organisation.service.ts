@@ -12,7 +12,7 @@ export type organisationMember = {
 };
 
 export class OrganisationService {
-  static async getMember(): Promise<organisationMember[]> {
+  static async getMembers(): Promise<organisationMember[]> {
     const xanoResult = await ServiceUtils.get(
       "/organisation/" + getSelectedOrganisation().organisation_id + "/member",
       false

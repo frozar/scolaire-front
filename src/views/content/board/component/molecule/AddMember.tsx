@@ -6,7 +6,7 @@ import {
   addNewGlobalWarningInformation,
 } from "../../../../../signaux";
 import { DialogUtils } from "../../../../../utils/dialog.utils";
-import { setMember } from "../../../calendar/template/Organisation";
+import { setMember } from "../../../organization/template/OrganizationMembers";
 import { DialogToDisplayEnum, setDialogToDisplay } from "../organism/Dialogs";
 import LabeledInputField from "./LabeledInputField";
 
