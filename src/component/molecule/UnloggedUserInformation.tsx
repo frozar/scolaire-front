@@ -1,7 +1,7 @@
 import { createEffect, createSignal } from "solid-js";
 import { useStateGui } from "../../StateGui";
-import { getAuthenticatedUser } from "../../signaux";
 import DialogueBox from "./DialogueBox";
+import { authenticated } from "../../_stores/authenticated-user.store";
 
 const [, { getSelectedMenu }] = useStateGui();
 
@@ -14,7 +14,7 @@ export default function (props: DialogueBoxProps) {
   const [incMessage, setIncMessage] = createSignal(0);
 
   createEffect(() => {
-    if (getAuthenticatedUser()) {
+    if (authenticated()) {
       return;
     }
 

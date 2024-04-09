@@ -1,6 +1,6 @@
 import { Show, createSignal } from "solid-js";
 import { organisationMember } from "../../../../_services/organisation.service";
-import { getAuthenticatedUser } from "../../../../signaux";
+import { AuthenticatedUserStore } from "../../../../_stores/authenticated-user.store";
 import { MemberDeleter } from "../molecule/MemberDeleter";
 import { MemberUpdater } from "../molecule/MemberUpdater";
 import { RulesSelectorWrapper } from "../molecule/RulesSelectorWrapper";
@@ -14,7 +14,7 @@ export function MemberElement(props: { member: organisationMember }) {
   return (
     <tr>
       <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">
-        {getAuthenticatedUser()?.email != props.member.email
+        {!AuthenticatedUserStore.isUser(props.member.email)
           ? props.member.name
           : props.member.name + " (moi)"}
       </td>
@@ -32,7 +32,7 @@ export function MemberElement(props: { member: organisationMember }) {
           list={["admin", "member"]}
         />
       </td>
-      <Show when={getAuthenticatedUser()?.email != props.member.email}>
+      <Show when={!AuthenticatedUserStore.isUser(props.member.email)}>
         <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
           <MemberUpdater
             member={props.member}

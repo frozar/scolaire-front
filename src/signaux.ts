@@ -14,7 +14,6 @@ import {
   removeRamassageConfirmationType,
   userInformationType,
 } from "./type";
-import { xanoUser } from "./views/layout/authentication";
 
 const [getDisplayedSpinningWheel, setDisplayedSpinningWheel] =
   createSignal(false);
@@ -52,12 +51,6 @@ export const [points, setPoints] = createSignal<
 export const [getUserInformations, setUserInformations] = createSignal(
   []
 ) as Signal<userInformationType[]>;
-
-export const [getAuthenticatedUser, setAuthenticatedUser] = createSignal<
-  xanoUser | undefined
->();
-
-export const [authenticated, setAuthenticated] = createSignal(false);
 
 export const [getImportCsvBox, setImportCsvBox] =
   createSignal<ImportCsvBoxType>({

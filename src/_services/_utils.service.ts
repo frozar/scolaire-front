@@ -1,9 +1,9 @@
 import { useStateGui } from "../StateGui";
+import { authenticated } from "../_stores/authenticated-user.store";
 import {
   addNewUserInformation,
   disableSpinningWheel,
   displayedSpinningWheel,
-  getAuthenticatedUser,
 } from "../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
 import { getToken } from "../views/layout/authentication";
@@ -44,7 +44,7 @@ export class ServiceUtils {
   }
 
   static async get(url: string, urlNeedMap = true, returnError = false) {
-    if (getAuthenticatedUser()) {
+    if (authenticated()) {
       const headers = await createXanoAuthenticateHeader();
       return await this.generic(
         this.buildXanoUrl(url, urlNeedMap),

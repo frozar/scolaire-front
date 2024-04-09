@@ -3,7 +3,6 @@ import { useStateGui } from "../../StateGui";
 import InnerModal from "../../component/molecule/InnerModal";
 import UnloggedUserInformation from "../../component/molecule/UnloggedUserInformation";
 import UserInstruction from "../../component/molecule/UserInstruction";
-import { getAuthenticatedUser } from "../../signaux";
 import { MapBoardManager } from "./_component/template/MapBoardManager";
 import { MapContainer } from "./_component/template/MapContainer";
 import ContextManager from "./board/component/template/ContextManager";
@@ -19,6 +18,7 @@ import AddPonderationWithConflictConfirmation from "./stops/component/organism/A
 import Roadways, {
   displayedUpdateRoadwaysConfirmation,
 } from "./stops/component/organism/Roadways";
+import { authenticated } from "../../_stores/authenticated-user.store";
 
 const [, { getSelectedMenu }] = useStateGui();
 
@@ -31,11 +31,9 @@ export function Contents() {
       getSelectedMenu()
     );
 
-  const logged = () => (getAuthenticatedUser() ? true : false);
-
   return (
     <div id="layout-content">
-      <Show when={getAuthenticatedUser()}>
+      <Show when={authenticated()}>
         <Switch>
           <Match when={getSelectedMenu() == "maps"}>
             <Maps />
@@ -45,7 +43,7 @@ export function Contents() {
             <Calendar />
           </Match>
 
-          <Match when={getSelectedMenu() == "users"}>
+          <Match when={getSelectedMenu() == "organization-users"}>
             <Users />
           </Match>
 
@@ -87,7 +85,7 @@ export function Contents() {
         </Switch>
       </Show>
 
-      <InnerModal show={!logged()}>
+      <InnerModal show={!authenticated()}>
         <div class="flex h-full w-full items-center justify-center">
           <UnloggedUserInformation />
         </div>

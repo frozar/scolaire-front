@@ -2,15 +2,17 @@ import { Show, createSignal } from "solid-js";
 import { Transition } from "solid-transition-group";
 
 import ClickOutside from "../../../../component/ClickOutside";
-import { getAuthenticatedUser } from "../../../../signaux";
 
 import LoginMenu from "../atom/LoginMenu";
 import LoginAvatar from "../molecule/LoginAvatar";
 
 import { login, logout } from "../../authentication";
 
-import { changeBoard } from "../../../content/board/component/template/ContextManager";
-import { setSelectedMenu } from "../../menuItemFields";
+import {
+  AuthenticatedUserStore,
+  authenticated,
+} from "../../../../_stores/authenticated-user.store";
+import { ViewManager } from "../../../content/ViewManager";
 import { ManagementButton } from "../atom/Management";
 import "./LoginDropdown.css";
 
@@ -29,7 +31,7 @@ export interface LoginDropdownProps {
 
 export default function (props: LoginDropdownProps) {
   const handleLogin = async () => {
-    if (!getAuthenticatedUser()) {
+    if (!authenticated()) {
       await login();
     } else {
       await logout();
@@ -49,8 +51,7 @@ export default function (props: LoginDropdownProps) {
     "translate-x-[" + String(props.xOffset ?? 0) + "rem]";
 
   function handleManagement() {
-    setSelectedMenu("users");
-    changeBoard(undefined);
+    ViewManager.organizationUsers();
   }
 
   return (
@@ -67,7 +68,7 @@ export default function (props: LoginDropdownProps) {
       }}
     >
       <LoginAvatar
-        profilePicture={getAuthenticatedUser()?.picture}
+        profilePicture={AuthenticatedUserStore.get()?.picture}
         drawAttention={!displayedSubComponent()}
       />
 
@@ -81,14 +82,12 @@ export default function (props: LoginDropdownProps) {
       >
         <Show when={displayedSubComponent()}>
           <div id="login-menu-container" class={xOffsetClassName()}>
+            {/* TODO ne doit être accessible que si utilisateur est admin */}
             <ManagementButton
-              authenticated={getAuthenticatedUser() ? true : false}
+              authenticated={authenticated()}
               onClick={handleManagement}
             />
-            <LoginMenu
-              authenticated={getAuthenticatedUser() ? true : false}
-              onClick={handleLogin}
-            />
+            <LoginMenu authenticated={authenticated()} onClick={handleLogin} />
           </div>
         </Show>
       </Transition>

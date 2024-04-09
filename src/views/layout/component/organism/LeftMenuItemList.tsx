@@ -3,11 +3,14 @@ import { For, createEffect, createSignal, mergeProps } from "solid-js";
 import { useStateGui } from "../../../../StateGui";
 import { SelectedMenuType } from "../../../../type";
 
-import { getAuthenticatedUser } from "../../../../signaux";
 import { getSelectedOrganisation } from "../../../content/board/component/organism/OrganisationSelector";
 import { onBoard } from "../../../content/board/component/template/ContextManager";
 import menuItems, { adminItems } from "../../menuItemFields";
 import LeftMenuItem from "../molecule/LeftMenuItem";
+import {
+  AuthenticatedUserStore,
+  authenticated,
+} from "../../../../_stores/authenticated-user.store";
 
 const [, { getActiveMapId, setSelectedMenu, getSelectedMenu }] = useStateGui();
 
@@ -45,18 +48,18 @@ export default function (props: LeftMenuItemProps) {
   });
 
   const [previousAuthenticatedUser, setPreviousAuthenticatedUser] =
-    createSignal(getAuthenticatedUser());
+    createSignal(AuthenticatedUserStore.get());
 
   createEffect(() => {
     if (
       previousAuthenticatedUser() == undefined &&
-      previousAuthenticatedUser() != getAuthenticatedUser()
+      previousAuthenticatedUser() != AuthenticatedUserStore.get()
     ) {
       setSelectedMenu("maps");
     }
 
-    if (previousAuthenticatedUser() != getAuthenticatedUser()) {
-      setPreviousAuthenticatedUser(getAuthenticatedUser());
+    if (previousAuthenticatedUser() != AuthenticatedUserStore.get()) {
+      setPreviousAuthenticatedUser(AuthenticatedUserStore.get());
     }
   });
 
@@ -73,7 +76,7 @@ export default function (props: LeftMenuItemProps) {
           const { label, menuItem, Logo, isDisabled } = menuItemArg;
 
           const effectiveIsDisabled = () => {
-            if (getAuthenticatedUser() == undefined) {
+            if (!authenticated()) {
               return true;
             }
 

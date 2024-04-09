@@ -1,5 +1,6 @@
 import { useStateGui } from "../../StateGui";
-import { getAuthenticatedUser } from "../../signaux";
+import { authenticated } from "../../_stores/authenticated-user.store";
+import { UserOrganizationStore } from "../../_stores/user-organization.store";
 import UserInstructionContainer from "./UserInstructionContainer";
 import "./UserInstructionContainer.css";
 import UserInstructionContent, {
@@ -10,7 +11,7 @@ const [, { getActiveMapId }] = useStateGui();
 
 export default function () {
   const toShow = () => {
-    return getAuthenticatedUser() != undefined && getActiveMapId() == null;
+    return authenticated() && getActiveMapId() == null;
   };
 
   return (
@@ -20,7 +21,7 @@ export default function () {
   );
 }
 function messageToDisplay() {
-  if (getAuthenticatedUser()?.organisation.length === 0) {
+  if (UserOrganizationStore.hasNoOrganization()) {
     return (
       <UserInstructionContent
         message="Aucune organisation associée à ce compte. "

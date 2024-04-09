@@ -164,14 +164,14 @@ export type SelectedMenuType =
   | "roadways"
   | "schools"
   | "parametres"
-  | "users"
   | "support"
   | "market"
   | "service"
   | "maps"
   | "weight"
   | "paths"
-  | "lines";
+  | "lines"
+  | "organization-users";
 
 export type MenuItemType = {
   menuItem: SelectedMenuType;
