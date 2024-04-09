@@ -1,21 +1,18 @@
 import { JSXElement, createSignal } from "solid-js";
-import { OrganisationService } from "../../../../../_services/organisation.service";
-import Button from "../../../../../component/atom/Button";
-import {
-  addNewGlobalSuccessInformation,
-  addNewGlobalWarningInformation,
-} from "../../../../../signaux";
-import { DialogUtils } from "../../../../../utils/dialog.utils";
-import { setMember } from "../../../organization/template/OrganizationMembers";
-import { DialogToDisplayEnum, setDialogToDisplay } from "../organism/Dialogs";
-import LabeledInputField from "./LabeledInputField";
+import { OrganisationService } from "../../../../_services/organisation.service";
+import { setOrganizationMembers } from "../template/OrganizationMembers";
+import { addNewGlobalSuccessInformation, addNewGlobalWarningInformation } from "../../../../signaux";
+import { DialogToDisplayEnum, setDialogToDisplay } from "../../board/component/organism/Dialogs";
+import LabeledInputField from "../../board/component/molecule/LabeledInputField";
+import Button from "../../../../component/atom/Button";
+import { DialogUtils } from "../../../../utils/dialog.utils";
 
-export function AddMember(): JSXElement {
+export function AddOrganizationMember(): JSXElement {
   async function onClick(): Promise<void> {
     if (validateEmail(memberMail())) {
       const res = await OrganisationService.addMember(memberMail());
       if (res) {
-        setMember((member) => [...member, res]);
+        setOrganizationMembers((member) => [...member, res]);
 
         addNewGlobalSuccessInformation("Utilisateur ajouté");
         setDialogToDisplay(DialogToDisplayEnum.none);

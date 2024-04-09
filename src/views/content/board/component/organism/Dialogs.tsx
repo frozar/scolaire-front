@@ -1,6 +1,6 @@
 import { Match, Switch, createSignal } from "solid-js";
 
-import { AddMember } from "../molecule/AddMember";
+import { AddOrganizationMember } from "../../../organization/molecule/AddOrganizationMember";
 import { Dialog } from "../molecule/Dialog";
 import { ImportDiff } from "../molecule/ImportDiff";
 import { ImportDiffStudent } from "../molecule/ImportDiffStudents";
@@ -49,7 +49,7 @@ export function Dialogs() {
 
         <Match when={dialogToDisplay() == DialogToDisplayEnum.addMember}>
           <Dialog>
-            <AddMember />
+            <AddOrganizationMember />
           </Dialog>
         </Match>
       </Switch>

@@ -114,7 +114,7 @@ export async function tryConnection() {
   if (user) {
     const res = await ServiceUtils.get("/auth/me", false, true);
 
-    if (res.isAuthenticated) {
+    if (res && res.isAuthenticated) {
       user = {
         ...user,
         email: res.user.email,
