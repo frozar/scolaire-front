@@ -28,6 +28,7 @@ export class StopEntity {
       leafletId: nextLeafletPointId(),
       selected: selected,
       setSelected: setSelected,
+      busStops: dbStop.bus_stops,
     };
   }
 
@@ -41,6 +42,7 @@ export class StopEntity {
         stop.lat as number
       ),
       waiting_time: stop.waitingTime as number,
+      bus_stops: stop.busStops as number[],
     };
   }
 
@@ -69,6 +71,7 @@ export type StopType = {
   leafletId: number;
   selected: Accessor<boolean>;
   setSelected: Setter<boolean>;
+  busStops: number[];
 };
 
 export type DBAssociatedStop = {
@@ -84,4 +87,5 @@ export type StopDBType = {
   location: LocationDBType;
   associated_grade: DBAssociatedStop[];
   waiting_time: number;
+  bus_stops: number[];
 };

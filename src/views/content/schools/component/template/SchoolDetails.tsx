@@ -3,12 +3,14 @@ import { SchoolType } from "../../../../../_entities/school.entity";
 import { getBusStops } from "../../../../../_stores/busStop.store";
 import { getSchools } from "../../../../../_stores/school.store";
 import { getStops } from "../../../../../_stores/stop.store";
+import Button from "../../../../../component/atom/Button";
 import { SchoolDetailUtils } from "../../../../../utils/school-details.utils";
 import { setDisplayBusStops } from "../../../_component/organisme/BusStopPoints";
 import { setDisplaySchools } from "../../../_component/organisme/SchoolPoints";
 import { setDisplayStops } from "../../../_component/organisme/StopPoints";
 import { setMapOnClick } from "../../../_component/template/MapContainer";
 import BoardFooterActions from "../../../board/component/molecule/BoardFooterActions";
+import { BusStopsDisplay } from "../../../busStops/organism/BusStopsDisplay";
 import { BusStopsMenu } from "../../../busStops/organism/BusStopsMenu";
 import SchoolDetailsHeader from "../molecule/SchoolDetailsHeader";
 import { SchoolDetailsContent } from "../organism/SchoolDetailsContent";
@@ -22,9 +24,10 @@ export const [schoolDetailEditing, setSchoolDetailEditing] =
 export const [schoolDetails, setSchoolDetails] = createSignal<SchoolType>();
 
 export function SchoolDetails() {
+  const [isChoosingLocal, setIsChoosingLocal] = createSignal(false);
+
   onMount(() => {
     setMapData(schoolDetails());
-    setMapOnClick(() => setLocation);
   });
 
   onCleanup(() => {
@@ -33,6 +36,13 @@ export function SchoolDetails() {
     setMapData(schoolDetails());
     setMapOnClick(undefined);
   });
+
+  function toggleChoosingLocal() {
+    if (isChoosingLocal()) return;
+    setIsChoosingLocal(true);
+    setMapOnClick(() => setLocation);
+    setDisplayBusStops([]);
+  }
 
   function cancel() {
     setSchoolDetails((prev) => {
@@ -44,10 +54,13 @@ export function SchoolDetails() {
 
   function setLocation(e: L.LeafletMouseEvent) {
     if (!schoolDetailEditing()) return;
+    if (!isChoosingLocal()) return;
     setSchoolDetails((prev) => {
       return { ...prev, lat: e.latlng.lat, lon: e.latlng.lng } as SchoolType;
     });
     setMapData(schoolDetails());
+    setIsChoosingLocal(false);
+    setMapOnClick(undefined);
   }
 
   return (
@@ -67,8 +80,14 @@ export function SchoolDetails() {
             />
             <div>
               <div class="text-xl">Coordonnées</div>
+              <Button
+                label="Modifier l'emplacement"
+                onClick={toggleChoosingLocal}
+                isDisabled={isChoosingLocal()}
+              />
               <p>Latitude : {schoolDetails()?.lat} </p>
               <p>Latitude : {schoolDetails()?.lon} </p>
+              <div />
             </div>
             <BoardFooterActions
               nextStep={{
@@ -83,6 +102,7 @@ export function SchoolDetails() {
           </div>
         }
       >
+        <BusStopsDisplay item={schoolDetails() as SchoolType} />
         <SchoolDetailsPanels />
       </Show>
     </section>

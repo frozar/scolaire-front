@@ -74,6 +74,13 @@ export function BusStopsMenu(props: BusStopsMenuProps) {
     });
   }
 
+  function cancel() {
+    setIsChoosingLocal(false);
+    setMapOnClick(undefined);
+    setNewBusStop({} as BusStopType);
+    toggleEdit();
+  }
+
   async function submit() {
     if (!newBusStop().name || !newBusStop().lat) return;
     setNewBusStop((prev) => {
@@ -122,7 +129,10 @@ export function BusStopsMenu(props: BusStopsMenuProps) {
               />
               <Button onClick={() => console.log()} label="Choisir un chemin" />
             </div>
-            <Button label="Valider" onClick={submit} />
+            <div class=" flex justify-between">
+              <Button label="Annuler" variant="danger" onClick={cancel} />
+              <Button label="Valider" onClick={submit} />
+            </div>
           </div>
         }
         when={!isAdding()}
