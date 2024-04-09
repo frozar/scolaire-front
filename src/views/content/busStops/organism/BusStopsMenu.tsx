@@ -1,4 +1,11 @@
-import { For, Setter, Show, createSignal, onMount } from "solid-js";
+import {
+  For,
+  Setter,
+  Show,
+  createEffect,
+  createSignal,
+  onMount,
+} from "solid-js";
 import {
   BusStopDirectionEnum,
   BusStopType,
@@ -6,6 +13,7 @@ import {
 import { SchoolType } from "../../../../_entities/school.entity";
 import { BusStopService } from "../../../../_services/busStop.service";
 import { getBusStops } from "../../../../_stores/busStop.store";
+import { getWays } from "../../../../_stores/way.store";
 import Button from "../../../../component/atom/Button";
 import { LabeledInputSelect } from "../../../../component/molecule/LabeledInputSelect";
 import {
@@ -14,9 +22,13 @@ import {
   enableSpinningWheel,
 } from "../../../../signaux";
 import { setDisplayBusStops } from "../../_component/organisme/BusStopPoints";
+import { setDisplayWays } from "../../_component/organisme/Ways";
 import { setMapOnClick } from "../../_component/template/MapContainer";
 import LabeledInputField from "../../board/component/molecule/LabeledInputField";
 import CollapsibleElement from "../../line/atom/CollapsibleElement";
+import "./BusStopsMenu.css";
+
+export const [selectedWayId, setSelectedWayId] = createSignal(0);
 
 interface BusStopsMenuProps {
   school: SchoolType;
@@ -26,6 +38,7 @@ interface BusStopsMenuProps {
 export function BusStopsMenu(props: BusStopsMenuProps) {
   const [schoolBusStops, setSchoolBusStops] = createSignal<BusStopType[]>([]);
   const [isChoosingLocal, setIsChoosingLocal] = createSignal(false);
+  const [isChoosingWay, setIsChoosingWay] = createSignal(false);
   const [isAdding, setIsAdding] = createSignal(false);
   const [newBusStop, setNewBusStop] = createSignal<BusStopType>(
     {} as BusStopType
@@ -38,11 +51,32 @@ export function BusStopsMenu(props: BusStopsMenuProps) {
     setSchoolBusStops(busStops);
   });
 
+  createEffect((prev) => {
+    const ids: number[] = [];
+    const updatedWayId = selectedWayId();
+
+    if (prev != updatedWayId) {
+      setNewBusStop((prev) => {
+        return { ...prev, way: updatedWayId };
+      });
+      ids[0] = updatedWayId;
+      schoolBusStops().forEach((item) => ids.push(item.way));
+      setDisplayWays(getWays().filter((item) => ids.includes(item.id)));
+      setIsChoosingWay(false);
+    }
+  }, selectedWayId());
+
   function toggleChoosingLocal() {
     if (isChoosingLocal()) return;
     setIsChoosingLocal(true);
     setMapOnClick(() => pickLocation);
     setDisplayBusStops([]);
+  }
+
+  function toggleChoosingWay() {
+    if (isChoosingWay()) return;
+    setIsChoosingWay(true);
+    setDisplayWays(getWays());
   }
 
   function pickLocation(e: L.LeafletMouseEvent) {
@@ -84,7 +118,7 @@ export function BusStopsMenu(props: BusStopsMenuProps) {
   async function submit() {
     if (!newBusStop().name || !newBusStop().lat) return;
     setNewBusStop((prev) => {
-      return { ...prev, schoolId: props.school.id, way: 0 };
+      return { ...prev, schoolId: props.school.id };
     });
 
     enableSpinningWheel();
@@ -121,15 +155,19 @@ export function BusStopsMenu(props: BusStopsMenuProps) {
                 { value: "antiscan", text: "antiscan" },
               ]}
             />
-            <div class="flex py-2 gap-2">
+            <div class="bus-stop-menu-map-buttons">
               <Button
                 onClick={toggleChoosingLocal}
                 isDisabled={isChoosingLocal()}
                 label="Modfier l'emplacement"
               />
-              <Button onClick={() => console.log()} label="Choisir un chemin" />
+              <Button
+                onClick={toggleChoosingWay}
+                isDisabled={isChoosingWay()}
+                label="Choisir un chemin"
+              />
             </div>
-            <div class=" flex justify-between">
+            <div class="bus-stop-menu-nav-buttons">
               <Button label="Annuler" variant="danger" onClick={cancel} />
               <Button label="Valider" onClick={submit} />
             </div>

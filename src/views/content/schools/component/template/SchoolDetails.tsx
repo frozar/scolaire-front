@@ -3,15 +3,20 @@ import { SchoolType } from "../../../../../_entities/school.entity";
 import { getBusStops } from "../../../../../_stores/busStop.store";
 import { getSchools } from "../../../../../_stores/school.store";
 import { getStops } from "../../../../../_stores/stop.store";
+import { getWays } from "../../../../../_stores/way.store";
 import Button from "../../../../../component/atom/Button";
 import { SchoolDetailUtils } from "../../../../../utils/school-details.utils";
+import { setWayLineColor } from "../../../_component/molecule/WayLine";
 import { setDisplayBusStops } from "../../../_component/organisme/BusStopPoints";
 import { setDisplaySchools } from "../../../_component/organisme/SchoolPoints";
 import { setDisplayStops } from "../../../_component/organisme/StopPoints";
+import { setDisplayWays } from "../../../_component/organisme/Ways";
 import { setMapOnClick } from "../../../_component/template/MapContainer";
 import BoardFooterActions from "../../../board/component/molecule/BoardFooterActions";
 import { BusStopsDisplay } from "../../../busStops/organism/BusStopsDisplay";
 import { BusStopsMenu } from "../../../busStops/organism/BusStopsMenu";
+import { COLOR_BLUE_BASE } from "../../../map/constant";
+import { loadWays } from "../../../paths/template/Paths";
 import SchoolDetailsHeader from "../molecule/SchoolDetailsHeader";
 import { SchoolDetailsContent } from "../organism/SchoolDetailsContent";
 import { SchoolDetailsPanels } from "../organism/SchoolDetailsPanels";
@@ -26,7 +31,9 @@ export const [schoolDetails, setSchoolDetails] = createSignal<SchoolType>();
 export function SchoolDetails() {
   const [isChoosingLocal, setIsChoosingLocal] = createSignal(false);
 
-  onMount(() => {
+  onMount(async () => {
+    await loadWays();
+    setWayLineColor(COLOR_BLUE_BASE);
     setMapData(schoolDetails());
   });
 
@@ -35,6 +42,7 @@ export function SchoolDetails() {
     setSchoolDetailEditing(false);
     setMapData(schoolDetails());
     setMapOnClick(undefined);
+    setDisplayWays([]);
   });
 
   function toggleChoosingLocal() {
@@ -137,9 +145,15 @@ function filterStops(school: SchoolType) {
 }
 
 function filterBusStops(school: SchoolType) {
-  return getBusStops().filter((item) => {
+  const output = getBusStops().filter((item) => {
     if (school.busStops.includes(item.id as number)) return item;
   });
+
+  const ids: number[] = [];
+  output.forEach((item) => ids.push(item.way));
+  setDisplayWays(getWays().filter((item) => ids.includes(item.id)));
+
+  return output;
 }
 
 // function filterTrips(school: SchoolType) {
