@@ -1,9 +1,0 @@
-.path-timeline-left,
-.path-timeline-component {
-  @apply relative mb-10 top-[-5px] text-xs italic;
-}
-
-.path-timeline-line {
-  @apply relative w-[3px] h-[80px];
-  background-color: green;
-}

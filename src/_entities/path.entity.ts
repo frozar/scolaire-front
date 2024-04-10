@@ -4,6 +4,7 @@ import { getSelectedLine } from "../views/content/map/component/organism/BusLine
 import { COLOR_GREEN_BASE } from "../views/content/map/constant";
 import { TripPointType, TripType } from "./trip.entity";
 
+//TODO to delete after refacto
 export type PathType = {
   id?: number;
   name: string;

@@ -36,12 +36,6 @@ import {
   COLOR_WAYPOINT,
 } from "../views/content/map/constant";
 import { setIsOverMapItem } from "../views/content/map/l7MapBuilder";
-import {
-  DrawPathStep,
-  currentDrawPath,
-  drawPathUtils,
-  onDrawPathStep,
-} from "../views/content/path/component/drawPath.utils";
 import { CurrentDrawTripUtils } from "./currentDrawTrip.utils";
 import { TripUtils } from "./trip.utils";
 
@@ -126,10 +120,6 @@ export namespace StopPointUtil {
             break;
         }
         break;
-      case "path-draw":
-        if (onDrawPathStep() != DrawPathStep.editPath) return;
-        drawPathUtils.addPointToPath(point);
-        break;
       default:
         // deselectAllTrips();
         deselectAllPoints();
@@ -176,12 +166,6 @@ export namespace StopPointUtil {
         return currentDrawTrip()
           .tripPoints.map((point) => point.id)
           .includes(stop.id);
-      case "path-draw":
-        return (
-          currentDrawPath()
-            ?.points.map((point) => point.id)
-            .includes(stop.id) ?? false
-        );
       default:
         return false;
     }
@@ -192,8 +176,6 @@ export namespace StopPointUtil {
       case "trip-draw":
         updateTripAndWaypoints(stop);
         break;
-      case "path-draw":
-        drawPathUtils.addPointToPath(stop);
       default:
         return false;
     }
@@ -210,13 +192,13 @@ export namespace StopPointUtil {
         const circle = linkMap.get(stop.leafletId);
         circle?.setStyle({ radius: 5, weight: 0 });
       } else {
-        const lastIndex =
-          onBoard() == "trip-draw"
-            ? currentDrawTrip().tripPoints.length
-            : currentDrawPath()?.points.length ?? -1;
-
-        setCurrentTripIndex(lastIndex);
-        map.off("mousemove");
+        // TODO reprendre logique ?
+        // const lastIndex =
+        //   onBoard() == "trip-draw"
+        //     ? currentDrawTrip().tripPoints.length
+        //     : currentDrawPath()?.points.length ?? -1;
+        // setCurrentTripIndex(lastIndex);
+        // map.off("mousemove");
       }
       setDraggingWaypointIndex();
       map.dragging.enable();
@@ -253,10 +235,6 @@ export namespace StopPointUtil {
 
         circle?.setStyle({ fillColor: COLOR_STOP_FOCUS });
         CurrentDrawTripUtils.removeTripPoint(stop.id, stop.nature);
-        break;
-
-      case "path-draw":
-        drawPathUtils.removePoint(stop.id);
         break;
     }
   }

@@ -51,6 +51,7 @@ export function SchoolPoint(props: SchoolPointProps) {
       radius={12}
       weight={0}
       onClick={() => onClick(props.school)}
+      //TODO supprimer les dépenses à SchoolPointUtils
       onMouseOver={() => SchoolPointUtils.onMouseOver(props.school)}
       onMouseOut={() => SchoolPointUtils.onMouseOut()}
       onMouseUp={() => SchoolPointUtils.onMouseUp(props.school)}
