@@ -1,10 +1,10 @@
 import { Show, createEffect, createSignal, on } from "solid-js";
 import { Transition } from "solid-transition-group";
 import { MapStore } from "../../../_stores/map.store";
-import { authenticated } from "../../../signaux";
 import DeleteMapConfirmation from "./DeleteMapConfirmation";
 import MapGridHeader from "./component/molecule/MapGridHeader";
 import { MapTables } from "./component/organism/MapTables";
+import { authenticated } from "../../../_stores/authenticated-user.store";
 
 export type CarteToDeleteType =
   | {

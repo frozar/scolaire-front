@@ -148,4 +148,25 @@ export namespace ViewManager {
     //TODO to delete post refacto
     changeBoard(undefined);
   }
+
+  /**
+   * Organization
+   */
+  export function organizationUsers() {
+    setSelectedMenu("organization-users");
+    //TODO to delete post refacto
+    changeBoard(undefined);
+  }
+
+  export function organizations() {
+    setSelectedMenu("organizations");
+    //TODO to delete post refacto
+    changeBoard(undefined);
+  }
+
+  export function organizationAdd() {
+    setSelectedMenu("organization-add");
+    //TODO to delete post refacto
+    changeBoard(undefined);
+  }
 }

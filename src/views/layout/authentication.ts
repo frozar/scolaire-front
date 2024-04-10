@@ -1,10 +1,11 @@
 import { ServiceUtils } from "../../_services/_utils.service";
 import {
-  getAuthenticatedUser,
-  setAuthenticated,
-  setAuthenticatedUser,
-} from "../../signaux";
+  AuthenticatedUserStore,
+  authenticated,
+} from "../../_stores/authenticated-user.store";
+
 const XANO_AUTH_URL = import.meta.env.VITE_XANO_URL_AUTH;
+// TODO l'url ne doit pas être bonne.... pensez à mettre dans le .env
 const REDIRECT_URI =
   "https://demo.xano.com/xano-auth0-oauth/assets/oauth/auth0/index.html";
 
@@ -14,9 +15,13 @@ export type xanoUser = {
   email: string;
   picture: string;
   nickname: string;
+  role: string;
+  //TODO rebaptiser "organizations"
   organisation: OrganisationType[];
 };
 
+// TODO créer un UserService et un UserEntity...
+//TODO représente the AuthenticatedUserOrganizationsType
 export type OrganisationType = {
   organisation_id: number;
   user_privilege: string;
@@ -24,8 +29,7 @@ export type OrganisationType = {
 };
 
 export async function logout() {
-  setAuthenticatedUser(undefined);
-  deleteStoredData();
+  AuthenticatedUserStore.unset();
 }
 
 async function handleAuthenticateUser(e: {
@@ -54,9 +58,7 @@ async function authenticateUser(code: string) {
     closeOauthWindow();
   });
   if (user) {
-    setAuthenticatedUser(user);
-    setAuthenticated(true);
-    setStoredData({ user });
+    AuthenticatedUserStore.set(user);
   }
 }
 
@@ -108,16 +110,13 @@ async function getAuthUrl() {
 }
 
 export async function tryConnection() {
-  let user: xanoUser | undefined = getAuthenticatedUser();
+  let user: xanoUser | undefined = AuthenticatedUserStore.get();
   if (!user) user = getStoredData(StoredDataTypeEnum.user) ?? undefined;
 
   if (user) {
-    setAuthenticatedUser(user);
-
     const res = await ServiceUtils.get("/auth/me", false, true);
-    setAuthenticated(res.isAuthenticated);
 
-    if (res.isAuthenticated) {
+    if (res && res.isAuthenticated) {
       user = {
         ...user,
         email: res.user.email,
@@ -128,18 +127,18 @@ export async function tryConnection() {
       setStoredData({
         user,
       });
-      setAuthenticatedUser(user);
+      AuthenticatedUserStore.set(user);
     } else {
-      deleteStoredData();
-      setAuthenticatedUser(undefined);
-      setAuthenticated(false);
+      AuthenticatedUserStore.unset();
     }
+  } else {
+    AuthenticatedUserStore.unset();
   }
 }
 
 export async function isAuthenticated() {
   await tryConnection();
-  const user = getAuthenticatedUser();
+  const user = AuthenticatedUserStore.get();
   if (!user) {
     return false;
   }
@@ -147,8 +146,9 @@ export async function isAuthenticated() {
 }
 
 export function getToken() {
-  if (getAuthenticatedUser()) return getAuthenticatedUser()?.token;
+  if (authenticated()) return AuthenticatedUserStore.getToken();
 
+  //TODO to delete ?
   if (import.meta.env.VITE_AUTH0_DEV_MODE === "true") {
     return "fakeToken";
   }
@@ -213,12 +213,4 @@ export function getStoredData(type: StoredDataTypeEnum) {
     default:
       return undefined;
   }
-}
-
-function deleteStoredData() {
-  window.history.replaceState(
-    { user: undefined, organisation: undefined },
-    document.title,
-    "/"
-  );
 }

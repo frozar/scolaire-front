@@ -1,32 +1,24 @@
-import { For, Signal, createEffect, createSignal } from "solid-js";
-import {
-  OrganisationService,
-  organisationMember,
-} from "../../../../_services/organisation.service";
+import { For } from "solid-js";
+import { OrganizationMemberType } from "../../../../_services/organisation.service";
+import { OrganisationType } from "../../../layout/authentication";
 import {
   DialogToDisplayEnum,
   setDialogToDisplay,
 } from "../../board/component/organism/Dialogs";
-import { getSelectedOrganisation } from "../../board/component/organism/OrganisationSelector";
-import { MemberElement } from "../organism/MemberElement";
+import { OrganizationMembersTableItem } from "../molecule/OrganizationMembersTableItem";
 
-export const [member, setMember] = createSignal([]) as Signal<
-  organisationMember[]
->;
-export function Users() {
-  // eslint-disable-next-line solid/reactivity
-  createEffect(async () => {
-    const members = await OrganisationService.getMember();
-    setMember(members);
-  });
-  //  TODO: Put CSS in a css file
+export function OrganizationMembersTable(props: {
+  members: OrganizationMemberType[];
+  organization: OrganisationType;
+}) {
   return (
+    // TODO refacto the table to be reused... also the CSS
     <section class="page-layout">
       <div class="px-4 sm:px-6 lg:px-8">
         <div class="sm:flex sm:items-center">
           <div class="sm:flex-auto">
             <h1 class="text-base font-semibold leading-6 text-gray-900">
-              Membres de l'organisation : {getSelectedOrganisation().name}
+              Membres de l'organisation : {props.organization.name}
             </h1>
           </div>
           <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
@@ -70,8 +62,10 @@ export function Users() {
                   </tr>
                 </thead>
                 <tbody class="divide-y-2 divide-green-base">
-                  <For each={member()}>
-                    {(item) => <MemberElement member={item} />}
+                  <For each={props.members}>
+                    {(member) => (
+                      <OrganizationMembersTableItem member={member} />
+                    )}
                   </For>
                 </tbody>
               </table>

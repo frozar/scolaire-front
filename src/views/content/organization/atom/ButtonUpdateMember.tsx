@@ -1,7 +1,7 @@
 import { Accessor, Setter } from "solid-js";
 import {
   OrganisationService,
-  organisationMember,
+  OrganizationMemberType,
 } from "../../../../_services/organisation.service";
 import CheckIcon from "../../../../icons/CheckIcon";
 import UpdatePen from "../../../../icons/UpdatePen";
@@ -10,20 +10,20 @@ import {
   addNewGlobalWarningInformation,
 } from "../../../../signaux";
 import ButtonIcon from "../../board/component/molecule/ButtonIcon";
-import { setMember } from "../template/Organisation";
+import { setOrganizationMembers } from "../template/OrganizationMembers";
 
-export function MemberUpdater(props: {
-  member: organisationMember;
+export function ButtonUpdateMember(props: {
+  member: OrganizationMemberType;
   isInUpdateMode: Accessor<boolean>;
   currentPrivilege: Accessor<string>;
   setCurrentPrivilege: Setter<string>;
   setIsInUpdateMode: Setter<boolean>;
 }) {
-  async function updateMember(updatedMember: organisationMember) {
+  async function updateMember(updatedMember: OrganizationMemberType) {
     const xanoRes = await OrganisationService.updateMember(updatedMember);
     if ("user_id" in xanoRes) {
-      setMember((oldMember) =>
-        oldMember.map((member) => {
+      setOrganizationMembers((oldMembers) =>
+        oldMembers.map((member) => {
           if (member.user_id === xanoRes.user_id) {
             member.user_privilege = xanoRes.user_privilege;
           }

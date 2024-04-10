@@ -1,11 +1,13 @@
 import { Show, createSignal } from "solid-js";
-import { organisationMember } from "../../../../_services/organisation.service";
-import { getAuthenticatedUser } from "../../../../signaux";
-import { MemberDeleter } from "../molecule/MemberDeleter";
-import { MemberUpdater } from "../molecule/MemberUpdater";
-import { RulesSelectorWrapper } from "../molecule/RulesSelectorWrapper";
+import { OrganizationMemberType } from "../../../../_services/organisation.service";
+import { AuthenticatedUserStore } from "../../../../_stores/authenticated-user.store";
+import { RulesSelectorWrapper } from "../../calendar/molecule/RulesSelectorWrapper";
+import { ButtonDeleteMember } from "../atom/ButtonDeleteMember";
+import { ButtonUpdateMember } from "../atom/ButtonUpdateMember";
 
-export function MemberElement(props: { member: organisationMember }) {
+export function OrganizationMembersTableItem(props: {
+  member: OrganizationMemberType;
+}) {
   const [isInUpdateMode, setIsInUpdateMode] = createSignal<boolean>(true);
   const [currentPrivilege, setCurrentPrivilege] = createSignal<string>(
     props.member.user_privilege // eslint-disable-line
@@ -14,7 +16,7 @@ export function MemberElement(props: { member: organisationMember }) {
   return (
     <tr>
       <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">
-        {getAuthenticatedUser()?.email != props.member.email
+        {!AuthenticatedUserStore.isTheUser(props.member.email)
           ? props.member.name
           : props.member.name + " (moi)"}
       </td>
@@ -32,9 +34,9 @@ export function MemberElement(props: { member: organisationMember }) {
           list={["admin", "member"]}
         />
       </td>
-      <Show when={getAuthenticatedUser()?.email != props.member.email}>
+      <Show when={!AuthenticatedUserStore.isTheUser(props.member.email)}>
         <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
-          <MemberUpdater
+          <ButtonUpdateMember
             member={props.member}
             isInUpdateMode={isInUpdateMode}
             currentPrivilege={currentPrivilege}
@@ -44,7 +46,7 @@ export function MemberElement(props: { member: organisationMember }) {
         </td>
 
         <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
-          <MemberDeleter member={props.member} />
+          <ButtonDeleteMember member={props.member} />
         </td>
       </Show>
     </tr>

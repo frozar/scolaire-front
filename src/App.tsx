@@ -4,11 +4,7 @@ import { useStateGui } from "./StateGui";
 import Layout from "./views/layout/component/template/Layout";
 
 import SpinningWheel from "./component/SpinningWheel";
-import {
-  authenticated,
-  disableSpinningWheel,
-  enableSpinningWheel,
-} from "./signaux";
+import { disableSpinningWheel, enableSpinningWheel } from "./signaux";
 import ClearConfirmationDialogBox from "./userInformation/ClearConfirmationDialogBox";
 import DisplayUserInformation from "./userInformation/DisplayUserInformation";
 import DragAndDropSummary from "./userInformation/DragAndDropSummary";
@@ -23,6 +19,7 @@ import { InitService } from "./_services/init.service";
 import { inDuplication } from "./utils/duplicate.utils";
 import { Contents } from "./views/content/Contents";
 import { Dialogs } from "./views/content/board/component/organism/Dialogs";
+import { authenticated } from "./_stores/authenticated-user.store";
 
 const [, { getSelectedMenu, getActiveMapId }] = useStateGui();
 

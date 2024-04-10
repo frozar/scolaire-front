@@ -1,0 +1,6 @@
+.organizations{
+    @apply px-10 w-full bg-white pt-8;
+    > header{
+        @apply justify-between flex items-center text-3xl pb-5;
+    }
+}

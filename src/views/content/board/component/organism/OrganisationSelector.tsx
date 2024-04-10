@@ -3,7 +3,6 @@ import { useStateGui } from "../../../../../StateGui";
 import {
   disableSpinningWheel,
   enableSpinningWheel,
-  getAuthenticatedUser,
 } from "../../../../../signaux";
 import {
   OrganisationType,
@@ -17,6 +16,7 @@ import { changeBoard } from "../template/ContextManager";
 const [, { resetState }] = useStateGui();
 
 import { MapStore } from "../../../../../_stores/map.store";
+import { UserOrganizationStore } from "../../../../../_stores/user-organization.store";
 import "./OrganisationSelector.css";
 
 export const DEFAULT_ORGANISATION = {
@@ -34,13 +34,13 @@ export function OrganisationSelector() {
   createEffect(() => {
     const currentId = getSelectedOrganisation().organisation_id;
     if (
-      !getAuthenticatedUser()!
-        .organisation.flatMap((orga) => orga.organisation_id)
-        .includes(currentId) ||
-      getSelectedOrganisation().organisation_id ==
-        DEFAULT_ORGANISATION.organisation_id
+      !UserOrganizationStore.isOrganization(currentId)
+      // TODO utilité ?
+      // ||
+      // getSelectedOrganisation().organisation_id ==
+      //   DEFAULT_ORGANISATION.organisation_id
     ) {
-      const organisation = getAuthenticatedUser()!.organisation[0];
+      const organisation = UserOrganizationStore.get()[0];
       if (organisation) {
         setOrganisation(organisation);
       } else {
@@ -58,7 +58,7 @@ export function OrganisationSelector() {
       </label>
       <Selector
         id="organisation-selector-select"
-        content={getAuthenticatedUser()!.organisation.map((orga) => {
+        content={UserOrganizationStore.get().map((orga) => {
           return { value: orga.organisation_id, name: orga.name };
         })}
         disabled={false}
@@ -75,13 +75,14 @@ const onChange = async (
     target: HTMLSelectElement;
   }
 ) => {
-  const organisation = getAuthenticatedUser()!.organisation.filter(
+  const organisation = UserOrganizationStore.get().filter(
     (orga) => orga.organisation_id === Number(res.target.value)
   )[0];
 
   await setOrganisation(organisation);
 };
 
+// TODO revoir cette function
 async function setOrganisation(organisation: OrganisationType) {
   enableSpinningWheel();
   setStoredData({ organisation });

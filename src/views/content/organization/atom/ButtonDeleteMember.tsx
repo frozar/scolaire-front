@@ -1,6 +1,6 @@
 import {
-  organisationMember,
   OrganisationService,
+  OrganizationMemberType,
 } from "../../../../_services/organisation.service";
 import TrashIcon from "../../../../icons/TrashIcon";
 import {
@@ -9,18 +9,17 @@ import {
 } from "../../../../signaux";
 import { setRemoveConfirmation } from "../../../../userInformation/RemoveConfirmation";
 import ButtonIcon from "../../board/component/molecule/ButtonIcon";
-import { setMember } from "../template/Organisation";
-import "./MonthItem.css";
+import { setOrganizationMembers } from "../template/OrganizationMembers";
 
-export function MemberDeleter(props: { member: organisationMember }) {
+export function ButtonDeleteMember(props: { member: OrganizationMemberType }) {
   async function removeMember() {
     const xanoRes = await OrganisationService.deleteMember(
       props.member.user_id
     );
 
     if ("user_id" in xanoRes) {
-      setMember((oldMember) =>
-        oldMember.filter((member) => member.user_id != xanoRes.user_id)
+      setOrganizationMembers((oldMembers) =>
+        oldMembers.filter((member) => member.user_id != xanoRes.user_id)
       );
       addNewGlobalSuccessInformation("Utilisateur supprimé de l'organisation");
       return true;
