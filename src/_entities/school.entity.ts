@@ -60,11 +60,11 @@ export class SchoolEntity {
   static dbFormat(
     school: Pick<
       SchoolType,
-      "name" | "lon" | "lat" | "hours" | "calendar" | "waitingTime"
+      "name" | "lon" | "lat" | "hours" | "calendar" | "waitingTime" | "busStops"
     >
   ): Pick<
     SchoolDBType,
-    "name" | "location" | "hours" | "calendar_id" | "waiting_time"
+    "name" | "location" | "hours" | "calendar_id" | "waiting_time" | "bus_stops"
   > {
     return {
       name: school.name,
@@ -75,6 +75,7 @@ export class SchoolEntity {
       hours: TimeUtils.formatHours(school.hours),
       calendar_id: school?.calendar?.id,
       waiting_time: school.waitingTime,
+      bus_stops: school.busStops,
     };
   }
 

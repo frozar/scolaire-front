@@ -32,6 +32,8 @@ interface BusStopsMenuProps {
   item: SchoolType | StopType;
   itemSetter: Setter<SchoolType> | Setter<StopType>;
   isSchool: boolean;
+  setAddBusStop?: Setter<BusStopType[]>;
+  isAdding?: boolean;
 }
 
 export function BusStopsMenu(props: BusStopsMenuProps) {
@@ -44,11 +46,13 @@ export function BusStopsMenu(props: BusStopsMenuProps) {
   );
 
   onMount(() => {
-    const busStops = getBusStops().filter((busStopItem) => {
-      if (props.item.busStops.includes(busStopItem.id as number))
-        return busStopItem;
-    });
-    setCurrentBusStops(busStops);
+    if (props.item.busStops) {
+      const busStops = getBusStops().filter((busStopItem) => {
+        if (props.item.busStops.includes(busStopItem.id as number))
+          return busStopItem;
+      });
+      setCurrentBusStops(busStops);
+    }
   });
 
   createEffect((prev) => {
@@ -103,7 +107,7 @@ export function BusStopsMenu(props: BusStopsMenuProps) {
 
   async function submit() {
     if (!newBusStop().name || !newBusStop().lat) return;
-    enableSpinningWheel();
+
     if (props.isSchool) {
       setNewBusStop((prev) => {
         return { ...prev, schoolId: props.item.id };
@@ -113,7 +117,21 @@ export function BusStopsMenu(props: BusStopsMenuProps) {
         return { ...prev, stopId: props.item.id };
       });
     }
-    const createdBusStop = await BusStopService.create(newBusStop());
+
+    if (props.isAdding && props.setAddBusStop) {
+      // eslint-disable-next-line solid/reactivity
+      props.setAddBusStop((prev) => {
+        return [...prev, newBusStop()];
+      });
+      setCurrentBusStops((prev) => {
+        return [...prev, newBusStop()];
+      });
+      toggleEdit();
+      return;
+    }
+
+    enableSpinningWheel();
+    const createdBusStop = await BusStopService.add(newBusStop());
 
     setCurrentBusStops((prev) => {
       return [...prev, createdBusStop];

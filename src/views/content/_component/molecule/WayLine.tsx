@@ -79,7 +79,11 @@ export function WayLine(props: { way: WayType; map: L.Map }) {
         return [...prev, props.way];
       });
     }
-    if (mapBoard() == "school-details" || mapBoard() == "stop-details") {
+    if (
+      mapBoard() == "school-details" ||
+      mapBoard() == "stop-details" ||
+      mapBoard() == "school-add"
+    ) {
       setSelectedWayId(props.way.id);
       return;
     }

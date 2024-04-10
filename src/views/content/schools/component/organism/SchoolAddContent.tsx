@@ -1,4 +1,4 @@
-import { Setter } from "solid-js";
+import { Setter, createSignal } from "solid-js";
 import {
   HourRuleType,
   HoursType,
@@ -7,7 +7,11 @@ import { CalendarType } from "../../../../../_entities/calendar.entity";
 import { GradeEntity } from "../../../../../_entities/grade.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { calendars } from "../../../../../_stores/calendar.store";
+import Button from "../../../../../component/atom/Button";
 import { LabeledInputSelect } from "../../../../../component/molecule/LabeledInputSelect";
+import { setDisplayBusStops } from "../../../_component/organisme/BusStopPoints";
+import { setDisplaySchools } from "../../../_component/organisme/SchoolPoints";
+import { setMapOnClick } from "../../../_component/template/MapContainer";
 import LabeledInputField from "../../../board/component/molecule/LabeledInputField";
 import { LabeledInputNumber } from "../../../board/component/molecule/LabeledInputNumber";
 import TimesInputWrapper from "../molecule/TimesInputWrapper";
@@ -21,6 +25,25 @@ interface SchoolAddContentProps {
 }
 
 export function SchoolAddContent(props: SchoolAddContentProps) {
+  const [isChoosingLocal, setIsChoosingLocal] = createSignal(false);
+
+  function toggleChoosingLocal() {
+    if (isChoosingLocal()) return;
+    setIsChoosingLocal(true);
+    setMapOnClick(() => setLocation);
+    setDisplayBusStops([]);
+  }
+
+  function setLocation(e: L.LeafletMouseEvent) {
+    if (!isChoosingLocal()) return;
+    props.schoolSetter((prev) => {
+      return { ...prev, lat: e.latlng.lat, lon: e.latlng.lng } as SchoolType;
+    });
+    setDisplaySchools([props.school]);
+    setIsChoosingLocal(false);
+    setMapOnClick(undefined);
+  }
+
   function onInputName(value: string) {
     props.schoolSetter((prev) => {
       return { ...prev, name: value };
@@ -132,6 +155,11 @@ export function SchoolAddContent(props: SchoolAddContentProps) {
       />
       <div>
         <div class="text-xl">Coordonnées</div>
+        <Button
+          label="Modifier l'emplacement"
+          onClick={toggleChoosingLocal}
+          isDisabled={isChoosingLocal()}
+        />
         <p>Latitude : {props.school.lat ? props.school.lat : 0}</p>
         <p>Longitude : {props.school.lon ? props.school.lon : 0}</p>
       </div>
