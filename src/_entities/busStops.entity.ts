@@ -5,13 +5,14 @@ const [, { nextLeafletPointId }] = useStateGui();
 
 export namespace BusStopEntity {
   export function build(dbBusStop: BusStopDBType) {
+    if (!dbBusStop) return;
     return {
-      id: dbBusStop.id,
-      name: dbBusStop.name,
-      way: dbBusStop.way_id,
-      lon: dbBusStop.geo_loc.data.lng,
-      lat: dbBusStop.geo_loc.data.lat,
-      direction: dbBusStop.direction,
+      id: dbBusStop.bus_stop_item.id,
+      name: dbBusStop.bus_stop_item.name,
+      way: dbBusStop.bus_stop_item.way_id,
+      lon: dbBusStop.bus_stop_item.geo_loc.data.lng,
+      lat: dbBusStop.bus_stop_item.geo_loc.data.lat,
+      direction: dbBusStop.bus_stop_item.direction,
       leafletId: nextLeafletPointId(),
     };
   }
@@ -28,6 +29,10 @@ export namespace BusStopEntity {
 }
 
 export type BusStopDBType = {
+  bus_stop_item: BusStopDbAddonType;
+};
+
+type BusStopDbAddonType = {
   id?: number;
   name: string;
   geo_loc: LocationDBType;

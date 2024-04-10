@@ -2,7 +2,6 @@ import { For, Show, createSignal, onMount } from "solid-js";
 import { BusStopType } from "../../../../_entities/busStops.entity";
 import { SchoolType } from "../../../../_entities/school.entity";
 import { StopType } from "../../../../_entities/stop.entity";
-import { getBusStops } from "../../../../_stores/busStop.store";
 import CollapsibleElement from "../../line/atom/CollapsibleElement";
 
 interface BusStopsDisplayProps {
@@ -14,11 +13,7 @@ export function BusStopsDisplay(props: BusStopsDisplayProps) {
 
   onMount(() => {
     if (props.item.busStops) {
-      setBusStopsItems(
-        getBusStops().filter((busstop) =>
-          props.item.busStops.includes(busstop.id as number)
-        )
-      );
+      setBusStopsItems(props.item.busStops);
     }
   });
 

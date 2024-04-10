@@ -6,6 +6,7 @@ import {
   EntityUtils,
   LocationDBType,
 } from "./_utils.entity";
+import { BusStopDBType, BusStopEntity, BusStopType } from "./busStops.entity";
 
 const [, { nextLeafletPointId }] = useStateGui();
 
@@ -28,7 +29,11 @@ export class StopEntity {
       leafletId: nextLeafletPointId(),
       selected: selected,
       setSelected: setSelected,
-      busStops: dbStop.bus_stops,
+      busStops: dbStop.bus_stops
+        ? dbStop.bus_stops.map(
+            (busStop) => BusStopEntity.build(busStop) as BusStopType
+          )
+        : [],
     };
   }
 
@@ -42,7 +47,10 @@ export class StopEntity {
         stop.lat as number
       ),
       waiting_time: stop.waitingTime as number,
-      bus_stops: stop.busStops as number[],
+      // bus_stops: stop.busStops.map((busStop) =>
+      //   BusStopEntity.DbFormat(busStop)
+      // ),
+      bus_stops: [],
     };
   }
 
@@ -71,7 +79,7 @@ export type StopType = {
   leafletId: number;
   selected: Accessor<boolean>;
   setSelected: Setter<boolean>;
-  busStops: number[];
+  busStops: BusStopType[];
 };
 
 export type DBAssociatedStop = {
@@ -87,5 +95,5 @@ export type StopDBType = {
   location: LocationDBType;
   associated_grade: DBAssociatedStop[];
   waiting_time: number;
-  bus_stops: number[];
+  bus_stops: BusStopDBType[];
 };

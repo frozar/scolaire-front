@@ -1,9 +1,7 @@
 import { Show, createSignal, onCleanup, onMount } from "solid-js";
 import { SchoolType } from "../../../../../_entities/school.entity";
-import { getBusStops } from "../../../../../_stores/busStop.store";
 import { getSchools } from "../../../../../_stores/school.store";
 import { getStops } from "../../../../../_stores/stop.store";
-import { getWays } from "../../../../../_stores/way.store";
 import Button from "../../../../../component/atom/Button";
 import { SchoolDetailUtils } from "../../../../../utils/school-details.utils";
 import { setWayLineColor } from "../../../_component/molecule/WayLine";
@@ -122,7 +120,8 @@ function setMapData(school: SchoolType | undefined) {
   if (school) {
     setDisplaySchools([school]);
     setDisplayStops(filterStops(school));
-    setDisplayBusStops(filterBusStops(school));
+    setDisplayBusStops(school.busStops);
+    // setDisplayBusStops(filterBusStops(school));
     // setDisplayTrips(filterTrips(school));
   } else {
     setDisplayStops([]);
@@ -145,17 +144,11 @@ function filterStops(school: SchoolType) {
   });
 }
 
-function filterBusStops(school: SchoolType) {
-  const output = getBusStops().filter((item) => {
-    if (school.busStops.includes(item.id as number)) return item;
-  });
-
-  const ids: number[] = [];
-  output.forEach((item) => ids.push(item.way));
-  setDisplayWays(getWays().filter((item) => ids.includes(item.id)));
-
-  return output;
-}
+// function showWays(school: SchoolType) {
+//   const ids: number[] = [];
+//   school.busStops.forEach((item) => ids.push(item.way));
+//   setDisplayWays(getWays().filter((item) => ids.includes(item.id)));
+// }
 
 // function filterTrips(school: SchoolType) {
 //   return getTrips().filter((trip) => {
