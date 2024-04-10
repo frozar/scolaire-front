@@ -1,9 +1,7 @@
 import { createEffect, createSignal, onCleanup, onMount } from "solid-js";
 import { HoursType } from "../../../../../_entities/_utils.entity";
-import { BusStopType } from "../../../../../_entities/busStops.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { TimeUtils } from "../../../../../_entities/time.utils";
-import { BusStopService } from "../../../../../_services/busStop.service";
 import { SchoolService } from "../../../../../_services/school.service";
 import { SchoolStore } from "../../../../../_stores/school.store";
 import {
@@ -27,7 +25,6 @@ export function SchoolAdd() {
     TimeUtils.defaultHours()
   );
   const [canSubmit, setCanSubmit] = createSignal(false);
-  const [busStopList, setBusStopList] = createSignal<BusStopType[]>([]);
 
   onMount(async () => {
     await loadWays();
@@ -45,36 +42,21 @@ export function SchoolAdd() {
       !newSchool().name ||
       !newSchool().lat ||
       !newSchool().waitingTime ||
+      !newSchool().busStops ||
       !newHours().endHourComing ||
       !newHours().endHourGoing ||
       !newHours().startHourComing ||
-      !newHours().startHourGoing ||
-      busStopList().length <= 0
+      !newHours().startHourGoing
     )
       return setCanSubmit(false);
     setCanSubmit(true);
   });
-
-  async function createBusStops() {
-    const busStopsId: number[] = [];
-    busStopList().forEach(async (stop) => {
-      const createdBusStop = await BusStopService.create(stop);
-      busStopsId.push(createdBusStop.id as number);
-    });
-    return busStopsId;
-  }
 
   async function submitSchool() {
     setNewSchool((prev) => {
       return { ...prev, hours: newHours() };
     });
     enableSpinningWheel();
-
-    const b = await createBusStops();
-
-    setNewSchool((prev) => {
-      return { ...prev, busStops: b };
-    });
 
     const createdSchool: SchoolType = await SchoolService.create(newSchool());
     disableSpinningWheel();
@@ -95,13 +77,7 @@ export function SchoolAdd() {
           school={newSchool()}
           schoolSetter={setNewSchool}
         />
-        <BusStopsMenu
-          isAdding
-          setAddBusStop={setBusStopList}
-          isSchool
-          item={newSchool()}
-          itemSetter={setNewSchool}
-        />
+        <BusStopsMenu schoolSetter={setNewSchool} isSchool item={newSchool()} />
         <BoardFooterActions
           nextStep={{
             callback: submitSchool,

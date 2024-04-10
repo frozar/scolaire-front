@@ -24,7 +24,6 @@ const [, { nextLeafletPointId }] = useStateGui();
 export class SchoolEntity {
   static build(dbSchool: SchoolDBType): SchoolType {
     const [selected, setSelected] = createSignal<boolean>(false);
-    console.log(dbSchool);
     return {
       id: dbSchool.id,
       lon: dbSchool.location.data.lng,
@@ -81,10 +80,9 @@ export class SchoolEntity {
       hours: TimeUtils.formatHours(school.hours),
       calendar_id: school?.calendar?.id,
       waiting_time: school.waitingTime,
-      // bus_stops: school.busStops.map((busStop) =>
-      //   BusStopEntity.DbFormat(busStop)
-      // ),
-      bus_stops: [],
+      bus_stops: school.busStops.map((busStop) =>
+        BusStopEntity.DbFormat(busStop)
+      ),
     };
   }
 

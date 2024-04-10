@@ -82,8 +82,8 @@ export function SchoolDetails() {
           <div>
             <BusStopsMenu
               item={schoolDetails() as SchoolType}
-              itemSetter={setSchoolDetails}
-              isSchool={true}
+              schoolSetter={setSchoolDetails}
+              isSchool
             />
             <div>
               <div class="text-xl">Coordonnées</div>

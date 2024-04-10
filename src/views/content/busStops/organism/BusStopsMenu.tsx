@@ -9,15 +9,8 @@ import {
 import { BusStopType } from "../../../../_entities/busStops.entity";
 import { SchoolType } from "../../../../_entities/school.entity";
 import { StopType } from "../../../../_entities/stop.entity";
-import { BusStopService } from "../../../../_services/busStop.service";
-import { getBusStops } from "../../../../_stores/busStop.store";
 import { getWays } from "../../../../_stores/way.store";
 import Button from "../../../../component/atom/Button";
-import {
-  addNewGlobalSuccessInformation,
-  disableSpinningWheel,
-  enableSpinningWheel,
-} from "../../../../signaux";
 import { setDisplayBusStops } from "../../_component/organisme/BusStopPoints";
 import { setDisplayWays } from "../../_component/organisme/Ways";
 import { setMapOnClick } from "../../_component/template/MapContainer";
@@ -30,10 +23,9 @@ export const [selectedWayId, setSelectedWayId] = createSignal(0);
 
 interface BusStopsMenuProps {
   item: SchoolType | StopType;
-  itemSetter: Setter<SchoolType> | Setter<StopType>;
+  schoolSetter?: Setter<SchoolType>;
+  stopSetter?: Setter<StopType>;
   isSchool: boolean;
-  setAddBusStop?: Setter<BusStopType[]>;
-  isAdding?: boolean;
 }
 
 export function BusStopsMenu(props: BusStopsMenuProps) {
@@ -47,11 +39,7 @@ export function BusStopsMenu(props: BusStopsMenuProps) {
 
   onMount(() => {
     if (props.item.busStops) {
-      const busStops = getBusStops().filter((busStopItem) => {
-        if (props.item.busStops.includes(busStopItem.id as number))
-          return busStopItem;
-      });
-      setCurrentBusStops(busStops);
+      setCurrentBusStops(props.item.busStops);
     }
   });
 
@@ -118,28 +106,24 @@ export function BusStopsMenu(props: BusStopsMenuProps) {
       });
     }
 
-    if (props.isAdding && props.setAddBusStop) {
+    setCurrentBusStops((prev) => {
+      return [...prev, newBusStop()];
+    });
+
+    if (props.schoolSetter) {
       // eslint-disable-next-line solid/reactivity
-      props.setAddBusStop((prev) => {
-        return [...prev, newBusStop()];
+      props.schoolSetter((prev) => {
+        return { ...prev, busStops: currentBusStops() };
       });
-      setCurrentBusStops((prev) => {
-        return [...prev, newBusStop()];
-      });
-      toggleEdit();
-      return;
     }
 
-    enableSpinningWheel();
-    const createdBusStop = await BusStopService.add(newBusStop());
+    if (props.stopSetter) {
+      // eslint-disable-next-line solid/reactivity
+      props.stopSetter((prev) => {
+        return { ...prev, busStops: currentBusStops() };
+      });
+    }
 
-    setCurrentBusStops((prev) => {
-      return [...prev, createdBusStop];
-    });
-    disableSpinningWheel();
-    addNewGlobalSuccessInformation(
-      "L'arrêt de bus : " + createdBusStop.name + " a été créé"
-    );
     toggleEdit();
   }
 
