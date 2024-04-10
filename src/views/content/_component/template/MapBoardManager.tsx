@@ -24,7 +24,6 @@ export type MapBoardTags =
   | "path-add"
   | "path-details"
   | "path-edit"
-  | "bus-stop-add"
   //   | "trip"
   //   | "trip-draw"
   //   | "line-add"
