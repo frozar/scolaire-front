@@ -6,17 +6,13 @@ import {
   createSignal,
   onMount,
 } from "solid-js";
-import {
-  BusStopDirectionEnum,
-  BusStopType,
-} from "../../../../_entities/busStops.entity";
+import { BusStopType } from "../../../../_entities/busStops.entity";
 import { SchoolType } from "../../../../_entities/school.entity";
 import { StopType } from "../../../../_entities/stop.entity";
 import { BusStopService } from "../../../../_services/busStop.service";
 import { getBusStops } from "../../../../_stores/busStop.store";
 import { getWays } from "../../../../_stores/way.store";
 import Button from "../../../../component/atom/Button";
-import { LabeledInputSelect } from "../../../../component/molecule/LabeledInputSelect";
 import {
   addNewGlobalSuccessInformation,
   disableSpinningWheel,
@@ -25,9 +21,10 @@ import {
 import { setDisplayBusStops } from "../../_component/organisme/BusStopPoints";
 import { setDisplayWays } from "../../_component/organisme/Ways";
 import { setMapOnClick } from "../../_component/template/MapContainer";
-import LabeledInputField from "../../board/component/molecule/LabeledInputField";
 import CollapsibleElement from "../../line/atom/CollapsibleElement";
-import "./BusStopsMenu.css";
+import { BusStopsMenuButtons } from "../molecule/BusStopsMenuButtons";
+import { BusStopsMenuInput } from "../molecule/BusStopsMenuInput";
+import { BusStopsMenuMapButtons } from "../molecule/BusStopsMenuMapButtons";
 
 export const [selectedWayId, setSelectedWayId] = createSignal(0);
 
@@ -97,20 +94,6 @@ export function BusStopsMenu(props: BusStopsMenuProps) {
     else setIsAdding(true);
   }
 
-  function onInputName(value: string) {
-    setNewBusStop((prev) => {
-      return { ...prev, name: value };
-    });
-  }
-
-  function onChangeDirection(value: string) {
-    let dir = BusStopDirectionEnum.scan;
-    if (value == "antiscan") dir = BusStopDirectionEnum.antiscan;
-    setNewBusStop((prev) => {
-      return { ...prev, direction: dir };
-    });
-  }
-
   function cancel() {
     setIsChoosingLocal(false);
     setMapOnClick(undefined);
@@ -147,39 +130,17 @@ export function BusStopsMenu(props: BusStopsMenuProps) {
       <Show
         fallback={
           <div>
-            <LabeledInputField
-              label="Nom"
-              name="name"
-              value={""}
-              placeholder="Entrer un nom"
-              onInput={(e) => onInputName(e.target.value)}
+            <BusStopsMenuInput setter={setNewBusStop} />
+            <BusStopsMenuMapButtons
+              choosingLocal={isChoosingLocal()}
+              choosingWay={isChoosingWay()}
+              toggleChoosingLocal={toggleChoosingLocal}
+              toggleChoosingWay={toggleChoosingWay}
             />
-            <LabeledInputSelect
-              variant="borderless"
-              defaultValue={0}
-              label="Direction"
-              onChange={(e) => onChangeDirection(e as string)}
-              options={[
-                { value: "scan", text: "scan" },
-                { value: "antiscan", text: "antiscan" },
-              ]}
+            <BusStopsMenuButtons
+              cancelFunction={cancel}
+              submitFunction={submit}
             />
-            <div class="bus-stop-menu-map-buttons">
-              <Button
-                onClick={toggleChoosingLocal}
-                isDisabled={isChoosingLocal()}
-                label="Modfier l'emplacement"
-              />
-              <Button
-                onClick={toggleChoosingWay}
-                isDisabled={isChoosingWay()}
-                label="Choisir un chemin"
-              />
-            </div>
-            <div class="bus-stop-menu-nav-buttons">
-              <Button label="Annuler" variant="danger" onClick={cancel} />
-              <Button label="Valider" onClick={submit} />
-            </div>
           </div>
         }
         when={!isAdding()}
