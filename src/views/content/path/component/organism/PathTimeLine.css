@@ -1,4 +1,0 @@
-.path-timeline {
-  @apply w-full grid pt-10 overflow-y-auto max-h-[75vh];
-  grid-template-columns: 50px 3px 1fr;
-}

@@ -14,15 +14,8 @@ import {
   DrawTripStep,
   currentDrawTrip,
   currentStep,
-  setCurrentTripIndex,
 } from "../../board/component/organism/DrawTripBoard";
 import { onBoard } from "../../board/component/template/ContextManager";
-import {
-  DrawPathStep,
-  currentDrawPath,
-  drawPathUtils,
-  onDrawPathStep,
-} from "../../path/component/drawPath.utils";
 import { COLOR_SCHOOL_FOCUS } from "../constant";
 import { setIsOverMapItem } from "../l7MapBuilder";
 import { draggingTrip, setDraggingTrip } from "./molecule/Trip";
@@ -37,29 +30,11 @@ import {
 export namespace SchoolPointUtils {
   //TODO reprendre les logique dans la refacto
   export function onClick(point: SchoolType) {
-    const schoolsSelected = currentDrawPath()?.schools;
+    // TODO reprendre logique
+    // const schoolsSelected = currentDrawPath()?.schools;
+    const schoolsSelected: SchoolType[] = [];
 
     switch (onBoard()) {
-      //TODO toDelete
-      case "path-draw":
-        switch (onDrawPathStep()) {
-          case DrawPathStep.schoolSelection:
-            if (schoolsSelected?.find((id) => id === point.id)) return;
-            drawPathUtils.addSchoolToPath(point);
-            return;
-
-          case DrawPathStep.editPath:
-            setCurrentTripIndex(currentDrawPath()?.points.length as number);
-            drawPathUtils.addPointToPath({
-              id: point.id,
-              nature: point.nature,
-            });
-            break;
-
-          default:
-            break;
-        }
-
       // case "line-add":
       //   switch (addLineCurrentStep()) {
       //     case AddLineStep.schoolSelection:
@@ -178,8 +153,11 @@ export namespace SchoolPointUtils {
   }
 
   export function onMouseOver(school: SchoolType) {
+    console.log(school);
+
     setIsOverMapItem(true);
-    setBlinkingStops(school.associated.map((stop) => stop.schoolId));
+    // TODO to fix ?
+    // setBlinkingStops(school.associated.map((stop) => stop.schoolId));
 
     if (draggingTrip()) {
       setCursorIsOverPoint(true);
@@ -219,9 +197,6 @@ export namespace SchoolPointUtils {
 
         circle?.setStyle({ fillColor: COLOR_SCHOOL_FOCUS });
         CurrentDrawTripUtils.removeTripPoint(point.id, point.nature);
-        break;
-      case "path-draw":
-        drawPathUtils.removePoint(point.id);
         break;
     }
   }

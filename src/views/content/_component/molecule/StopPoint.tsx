@@ -65,6 +65,7 @@ export function StopPoint(props: StopPointProps) {
       radius={rad()}
       weight={0}
       onClick={() => onClick(props.point)}
+      //TODO supprimer les dépenses à StopPointUtil
       onMouseOver={() => StopPointUtil.onMouseOver(props.point)}
       onMouseOut={() => StopPointUtil.onMouseOut(props.point)}
       onRightClick={() => StopPointUtil.onRightClick(props.point)}

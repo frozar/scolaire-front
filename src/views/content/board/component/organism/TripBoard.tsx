@@ -53,6 +53,7 @@ export function TripBoard() {
       </CollapsibleElement>
       <DisplayTripDaysAndDirection trip={selectedTrip()} />
       <DisplayAllotmentAndVehicle trip={selectedTrip()} />
+      {/* TODO voir à quoi ça correspond */}
       <InversedTripButton trip={selectedTrip() as TripType} />
       <CollapsibleElement title="TimeLine" class="timeline-collapsise">
         <TripTimeline

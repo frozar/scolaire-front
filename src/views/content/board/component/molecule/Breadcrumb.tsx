@@ -8,7 +8,6 @@ import {
   getSelectedLine,
 } from "../../../map/component/organism/BusLines";
 import { selectedTrip } from "../../../map/component/organism/Trips";
-import { selectedPath } from "../../../path/component/organism/PathDetail";
 import { schoolDetails } from "../../../schools/component/template/SchoolDetails";
 import { schoolGradeDetails } from "../../../schools/component/template/SchoolGradeDetails";
 import { schoolGradeEdit } from "../../../schools/component/template/SchoolGradeEdit";
@@ -137,18 +136,18 @@ export default function () {
         }
         return [{ text: "Création d'une course" }];
 
-      case "path-details":
-        return [
-          linesCrumb,
-          {
-            text: getSelectedLine()?.name?.toLowerCase() ?? "",
-            onClick: () => changeBoard("trip"),
-          },
-          { text: selectedPath()?.name.toLowerCase() ?? "" },
-        ];
+      // case "path-details":
+      //   return [
+      //     linesCrumb,
+      //     {
+      //       text: getSelectedLine()?.name?.toLowerCase() ?? "",
+      //       onClick: () => changeBoard("trip"),
+      //     },
+      //     { text: selectedPath()?.name.toLowerCase() ?? "" },
+      //   ];
 
-      case "path-draw":
-        return [{ text: "Editer votre chemin" }];
+      // case "path-draw":
+      //   return [{ text: "Editer votre chemin" }];
 
       default:
         return [];

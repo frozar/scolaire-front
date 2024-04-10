@@ -6,11 +6,9 @@ import {
   TripDirectionEntity,
   TripDirectionEnum,
 } from "../../../../../_entities/trip-direction.entity";
-import { getLines } from "../../../../../_stores/line.store";
 import { StopStore, getStops } from "../../../../../_stores/stop.store";
 import { NatureEnum } from "../../../../../type";
 import { FilterUtils } from "../../../../../utils/filter.utils";
-import { PathContextManagerUtil } from "../../../../../utils/pathContextManager.utils";
 import { QuantityUtils } from "../../../../../utils/quantity.utils";
 import { StopUtils } from "../../../../../utils/stop.utils";
 import { TripUtils } from "../../../../../utils/trip.utils";
@@ -18,14 +16,8 @@ import {
   DrawTripStep,
   currentDrawTrip,
   currentStep,
-  drawTripCheckableGrade,
 } from "../../../board/component/organism/DrawTripBoard";
 import { onBoard } from "../../../board/component/template/ContextManager";
-import {
-  DrawPathStep,
-  currentDrawPath,
-  onDrawPathStep,
-} from "../../../path/component/drawPath.utils";
 import { StopPoint } from "../molecule/StopPoint";
 import { getSelectedLine } from "./BusLines";
 import { filterEmptyStops } from "./Filters";
@@ -205,22 +197,41 @@ export function leafletStopsFilter(): StopType[] {
 }
 
 function pathEditionFilterByStep(): StopType[] {
-  if (onBoard() == "path-draw")
-    PathContextManagerUtil.setCheckableGradeForPath();
-  const grades = drawTripCheckableGrade()
-    .filter((grade) => grade.done)
-    .map((item) => item.item.id);
+  // if (onBoard() == "path-draw")
+  //   PathContextManagerUtil.setCheckableGradeForPath();
+  // const grades = drawTripCheckableGrade()
+  //   .filter((grade) => grade.done)
+  //   .map((item) => item.item.id);
 
-  const linePoints =
-    getLines().find(
-      (line) =>
-        line.paths.find((path) => path.id == currentDrawPath()?.id)?.id ==
-        currentDrawPath()?.id
-    )?.stops ?? [];
+  // const linePoints =
+  //   getLines().find(
+  //     (line) =>
+  //       line.paths.find((path) => path.id == currentDrawPath()?.id)?.id ==
+  //       currentDrawPath()?.id
+  //   )?.stops ?? [];
 
-  if (onDrawPathStep() == DrawPathStep.editPath) {
-    return linePoints.filter((stop) =>
-      stop.associated.some((item) => grades.includes(item.gradeId))
-    );
-  } else return [];
+  // if (onDrawPathStep() == DrawPathStep.editPath) {
+  //   return linePoints.filter((stop) =>
+  //     stop.associated.some((item) => grades.includes(item.gradeId))
+  //   );
+  // } else
+  return [];
 }
+
+// export function setCheckableGradeForPath() {
+//   const pathSchools = currentDrawPath()?.schools.map((schoolId) =>
+//     SchoolUtils.get(schoolId)
+//   );
+
+//   const grades = pathSchools
+//     ?.flatMap((school) => school.grades)
+//     .map((grade) => grade.id);
+
+//   ContextUtils.defineTripCheckableGrade();
+//   setDrawTripCheckableGrade((prev) => {
+//     return [...prev].map((checkable) => {
+//       if (grades?.includes(checkable.item.id)) checkable.done = true;
+//       return checkable;
+//     });
+//   });
+// }

@@ -1,6 +1,5 @@
 import { Match, Show, Switch, createEffect, createSignal } from "solid-js";
 
-import { PathDetail } from "../../../path/component/organism/PathDetail";
 import { DrawTripBoard } from "../organism/DrawTripBoard";
 import { TripBoard } from "../organism/TripBoard";
 import InformationBoardLayout from "./InformationBoardLayout";
@@ -65,10 +64,6 @@ export default function () {
 
             <Match when={onBoard() == "trip-draw"}>
               <DrawTripBoard />
-            </Match>
-
-            <Match when={onBoard() == "path-details"}>
-              <PathDetail />
             </Match>
           </Switch>
         </InformationBoardLayout>

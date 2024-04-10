@@ -26,7 +26,6 @@ import { onBoard } from "../board/component/template/ContextManager";
 import { LineWeight, getSelectedWays } from "./component/molecule/LineWeight";
 import { BusLines } from "./component/organism/BusLines";
 import { MapPanels } from "./component/organism/MapPanels";
-import { Paths } from "./component/organism/Paths";
 import { Points } from "./component/organism/Points";
 import { COLOR_BLUE_BASE, COLOR_GREEN_BASE } from "./constant";
 
@@ -156,7 +155,7 @@ export default function () {
         />
         <BusLines busLines={getLines()} />
         <Trips map={getLeafletMap() as L.Map} />
-        <Paths map={getLeafletMap() as L.Map} />
+        {/* <Paths map={getLeafletMap() as L.Map} /> */}
 
         <ConfirmStopAddTrip />
       </Show>
