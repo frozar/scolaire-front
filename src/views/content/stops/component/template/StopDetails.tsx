@@ -190,15 +190,3 @@ function showWays(stop: StopType) {
   stop.busStops.forEach((item) => ids.push(item.way));
   setDisplayWays(getWays().filter((item) => ids.includes(item.id)));
 }
-
-// function filterBusStops(stop: StopType) {
-//   const output = getBusStops().filter((item) => {
-//     if (stop.busStops.includes(item.id as number)) return item;
-//   });
-
-//   const ids: number[] = [];
-//   output.forEach((item) => ids.push(item.way));
-//   setDisplayWays(getWays().filter((item) => ids.includes(item.id)));
-
-//   return output;
-// }
