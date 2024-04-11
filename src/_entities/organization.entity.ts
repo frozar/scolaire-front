@@ -2,8 +2,12 @@ import { OrganizationMemberType } from "../_services/organisation.service";
 
 export namespace OrganizationEntity {
   export function build(dbOrganization: OrganizationDbType): OrganizationType {
-    //TODO to improve
-    return dbOrganization;
+    return {
+      id: dbOrganization.id,
+      name: dbOrganization.name,
+      status: dbOrganization.status,
+      referent: dbOrganization.referent,
+    };
   }
 
   export function dbFormat(organization: OrganizationType) {
@@ -27,4 +31,9 @@ export type OrganizationType = {
   name: string;
   referent: OrganizationMemberType;
   status: string;
+};
+
+export type OrganizationMapBoundType = {
+  corner1: { lat: number; lon: number };
+  corner2: { lat: number; lon: number };
 };
