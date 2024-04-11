@@ -9,6 +9,7 @@ import {
   HoursType,
   LocationDBType,
 } from "./_utils.entity";
+import { BusStopDBType, BusStopEntity, BusStopType } from "./busStops.entity";
 import {
   CalendarDBType,
   CalendarEntity,
@@ -53,17 +54,22 @@ export class SchoolEntity {
         ? CalendarEntity.build(dbSchool.calendar)
         : undefined,
       waitingTime: dbSchool.waiting_time,
+      busStops: dbSchool.bus_stops
+        ? dbSchool.bus_stops.map(
+            (busStop) => BusStopEntity.build(busStop) as BusStopType
+          )
+        : [],
     };
   }
 
   static dbFormat(
     school: Pick<
       SchoolType,
-      "name" | "lon" | "lat" | "hours" | "calendar" | "waitingTime"
+      "name" | "lon" | "lat" | "hours" | "calendar" | "waitingTime" | "busStops"
     >
   ): Pick<
     SchoolDBType,
-    "name" | "location" | "hours" | "calendar_id" | "waiting_time"
+    "name" | "location" | "hours" | "calendar_id" | "waiting_time" | "bus_stops"
   > {
     return {
       name: school.name,
@@ -74,6 +80,9 @@ export class SchoolEntity {
       hours: TimeUtils.formatHours(school.hours),
       calendar_id: school?.calendar?.id,
       waiting_time: school.waitingTime,
+      bus_stops: school.busStops.map((busStop) =>
+        BusStopEntity.DbFormat(busStop)
+      ),
     };
   }
 
@@ -104,6 +113,7 @@ export type SchoolType = {
   hours: HoursType;
   calendar?: CalendarType;
   waitingTime: number;
+  busStops: BusStopType[];
 };
 
 export type SchoolDBType = {
@@ -116,6 +126,7 @@ export type SchoolDBType = {
   calendar_id?: number;
   calendar?: CalendarDBType;
   waiting_time: number;
+  bus_stops: BusStopDBType[];
 };
 
 export type LeafletShoolType = SchoolType & {

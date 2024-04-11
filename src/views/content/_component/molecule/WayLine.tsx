@@ -1,6 +1,7 @@
 import { LatLng } from "leaflet";
 import { createEffect, createSignal, onMount } from "solid-js";
 import { WayType } from "../../../../_entities/way.entity";
+import { setSelectedWayId } from "../../busStops/organism/BusStopsMenu";
 import Line from "../../map/component/atom/Line";
 import {
   COLOR_BLUE_BASE,
@@ -77,6 +78,15 @@ export function WayLine(props: { way: WayType; map: L.Map }) {
       setSelectedWays((prev) => {
         return [...prev, props.way];
       });
+    }
+    if (
+      mapBoard() == "school-details" ||
+      mapBoard() == "stop-details" ||
+      mapBoard() == "school-add" ||
+      mapBoard() == "stop-add"
+    ) {
+      setSelectedWayId(props.way.id);
+      return;
     }
     setLocalColor(COLOR_BLUE_BASE);
   }

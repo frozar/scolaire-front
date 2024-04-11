@@ -10,10 +10,15 @@ import {
   enableSpinningWheel,
 } from "../../../../../signaux";
 import { ViewManager } from "../../../ViewManager";
-import { setDisplaySchools } from "../../../_component/organisme/SchoolPoints";
+import { setWayLineColor } from "../../../_component/molecule/WayLine";
+import { setDisplayBusStops } from "../../../_component/organisme/BusStopPoints";
+import { setDisplayWays } from "../../../_component/organisme/Ways";
 import { setMapOnClick } from "../../../_component/template/MapContainer";
 import BoardTitle from "../../../board/component/atom/BoardTitle";
 import BoardFooterActions from "../../../board/component/molecule/BoardFooterActions";
+import { BusStopsMenu } from "../../../busStops/organism/BusStopsMenu";
+import { COLOR_BLUE_BASE } from "../../../map/constant";
+import { loadWays } from "../../../paths/template/Paths";
 import { SchoolAddContent } from "../organism/SchoolAddContent";
 
 export function SchoolAdd() {
@@ -23,20 +28,16 @@ export function SchoolAdd() {
   );
   const [canSubmit, setCanSubmit] = createSignal(false);
 
-  onMount(() => {
-    setMapOnClick(() => setLocation);
+  onMount(async () => {
+    await loadWays();
+    setWayLineColor(COLOR_BLUE_BASE);
   });
 
   onCleanup(() => {
+    setDisplayBusStops([]);
+    setDisplayWays([]);
     setMapOnClick(undefined);
   });
-
-  function setLocation(e: L.LeafletMouseEvent) {
-    setNewSchool((prev) => {
-      return { ...prev, lat: e.latlng.lat, lon: e.latlng.lng };
-    });
-    setDisplaySchools([newSchool()]);
-  }
 
   createEffect(() => {
     if (
@@ -44,6 +45,7 @@ export function SchoolAdd() {
       !newSchool().name ||
       !newSchool().lat ||
       !newSchool().waitingTime ||
+      !newSchool().busStops ||
       !newHours().endHourComing ||
       !newHours().endHourGoing ||
       !newHours().startHourComing ||
@@ -58,6 +60,7 @@ export function SchoolAdd() {
       return { ...prev, hours: newHours() };
     });
     enableSpinningWheel();
+
     const createdSchool: SchoolType = await SchoolService.create(newSchool());
     disableSpinningWheel();
     SchoolStore.add(createdSchool);
@@ -77,6 +80,7 @@ export function SchoolAdd() {
           school={newSchool()}
           schoolSetter={setNewSchool}
         />
+        <BusStopsMenu schoolSetter={setNewSchool} isSchool item={newSchool()} />
         <BoardFooterActions
           nextStep={{
             callback: submitSchool,

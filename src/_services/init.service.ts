@@ -1,3 +1,4 @@
+import { BusStopDBType } from "../_entities/busStops.entity";
 import {
   CalendarDBType,
   CalendarEntity,
@@ -47,6 +48,7 @@ type InitDBType = {
   settings: SettingType[];
   transporter: TransporterType[];
   roads: RoadDBType[];
+  bus_stops: BusStopDBType[];
 };
 
 export type InitType = {

@@ -9,6 +9,7 @@ import { MessageLevelEnum, MessageTypeEnum, TileId } from "../../../../type";
 import { onBoard } from "../../board/component/template/ContextManager";
 import { MapPanels } from "../../map/component/organism/MapPanels";
 import { getTileById } from "../../map/tileUtils";
+import { BusStopPoints } from "../organisme/BusStopPoints";
 import { SchoolPoints } from "../organisme/SchoolPoints";
 import { StopPoints } from "../organisme/StopPoints";
 import { Trips } from "../organisme/Trips";
@@ -60,7 +61,9 @@ export function MapContainer() {
    * Change map click
    */
   createEffect(() => {
-    let callBack: (e: L.LeafletMouseEvent) => void = (e) => {};
+    let callBack: (e: L.LeafletMouseEvent) => void = (e) => {
+      e;
+    };
     if (typeof mapOnClick() == "function") {
       callBack = mapOnClick() as (e: L.LeafletMouseEvent) => void;
     }
@@ -131,6 +134,7 @@ export function MapContainer() {
 
       <SchoolPoints map={leafletMap() as L.Map} />
       <StopPoints map={leafletMap() as L.Map} />
+      <BusStopPoints map={leafletMap() as L.Map} />
       <Trips map={leafletMap() as L.Map} />
       <Ways map={leafletMap() as L.Map} />
 

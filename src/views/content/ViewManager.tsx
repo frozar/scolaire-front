@@ -102,6 +102,7 @@ export namespace ViewManager {
     //TODO to delete post refacto
     changeBoard(undefined);
   }
+
   /**
    * Schools
    */

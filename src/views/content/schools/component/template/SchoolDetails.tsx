@@ -2,11 +2,20 @@ import { Show, createSignal, onCleanup, onMount } from "solid-js";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { getSchools } from "../../../../../_stores/school.store";
 import { getStops } from "../../../../../_stores/stop.store";
+import { getWays } from "../../../../../_stores/way.store";
+import Button from "../../../../../component/atom/Button";
 import { SchoolDetailUtils } from "../../../../../utils/school-details.utils";
+import { setWayLineColor } from "../../../_component/molecule/WayLine";
+import { setDisplayBusStops } from "../../../_component/organisme/BusStopPoints";
 import { setDisplaySchools } from "../../../_component/organisme/SchoolPoints";
 import { setDisplayStops } from "../../../_component/organisme/StopPoints";
+import { setDisplayWays } from "../../../_component/organisme/Ways";
 import { setMapOnClick } from "../../../_component/template/MapContainer";
 import BoardFooterActions from "../../../board/component/molecule/BoardFooterActions";
+import { BusStopsDisplay } from "../../../busStops/organism/BusStopsDisplay";
+import { BusStopsMenu } from "../../../busStops/organism/BusStopsMenu";
+import { COLOR_BLUE_BASE } from "../../../map/constant";
+import { loadWays } from "../../../paths/template/Paths";
 import SchoolDetailsHeader from "../molecule/SchoolDetailsHeader";
 import { SchoolDetailsContent } from "../organism/SchoolDetailsContent";
 import { SchoolDetailsPanels } from "../organism/SchoolDetailsPanels";
@@ -19,9 +28,12 @@ export const [schoolDetailEditing, setSchoolDetailEditing] =
 export const [schoolDetails, setSchoolDetails] = createSignal<SchoolType>();
 
 export function SchoolDetails() {
-  onMount(() => {
+  const [isChoosingLocal, setIsChoosingLocal] = createSignal(false);
+
+  onMount(async () => {
+    await loadWays();
+    setWayLineColor(COLOR_BLUE_BASE);
     setMapData(schoolDetails());
-    setMapOnClick(() => setLocation);
   });
 
   onCleanup(() => {
@@ -31,19 +43,30 @@ export function SchoolDetails() {
     setMapOnClick(undefined);
   });
 
+  function toggleChoosingLocal() {
+    if (isChoosingLocal()) return;
+    setIsChoosingLocal(true);
+    setMapOnClick(() => setLocation);
+    setDisplayBusStops([]);
+  }
+
   function cancel() {
     setSchoolDetails((prev) => {
       return getSchools().filter((school) => school.id == prev?.id)[0];
     });
     setSchoolDetailEditing(false);
+    setMapData(schoolDetails());
   }
 
   function setLocation(e: L.LeafletMouseEvent) {
-    if (!setSchoolDetailEditing) return;
+    if (!schoolDetailEditing()) return;
+    if (!isChoosingLocal()) return;
     setSchoolDetails((prev) => {
       return { ...prev, lat: e.latlng.lat, lon: e.latlng.lng } as SchoolType;
     });
     setMapData(schoolDetails());
+    setIsChoosingLocal(false);
+    setMapOnClick(undefined);
   }
 
   return (
@@ -57,10 +80,21 @@ export function SchoolDetails() {
         when={!schoolDetailEditing()}
         fallback={
           <div>
+            <BusStopsMenu
+              item={schoolDetails() as SchoolType}
+              schoolSetter={setSchoolDetails}
+              isSchool
+            />
             <div>
               <div class="text-xl">Coordonnées</div>
+              <Button
+                label="Modifier l'emplacement"
+                onClick={toggleChoosingLocal}
+                isDisabled={isChoosingLocal()}
+              />
               <p>Latitude : {schoolDetails()?.lat} </p>
               <p>Latitude : {schoolDetails()?.lon} </p>
+              <div />
             </div>
             <BoardFooterActions
               nextStep={{
@@ -75,6 +109,7 @@ export function SchoolDetails() {
           </div>
         }
       >
+        <BusStopsDisplay item={schoolDetails() as SchoolType} />
         <SchoolDetailsPanels />
       </Show>
     </section>
@@ -85,10 +120,15 @@ function setMapData(school: SchoolType | undefined) {
   if (school) {
     setDisplaySchools([school]);
     setDisplayStops(filterStops(school));
+    setDisplayBusStops(school.busStops);
+    showWays(school);
+    // setDisplayBusStops(filterBusStops(school));
     // setDisplayTrips(filterTrips(school));
   } else {
     setDisplayStops([]);
     setDisplaySchools([]);
+    setDisplayBusStops([]);
+    setDisplayWays([]);
     // setDisplayTrips([]);
   }
 }
@@ -104,6 +144,12 @@ function filterStops(school: SchoolType) {
     }
     return isAssociated;
   });
+}
+
+function showWays(school: SchoolType) {
+  const ids: number[] = [];
+  school.busStops.forEach((item) => ids.push(item.way));
+  setDisplayWays(getWays().filter((item) => ids.includes(item.id)));
 }
 
 // function filterTrips(school: SchoolType) {
