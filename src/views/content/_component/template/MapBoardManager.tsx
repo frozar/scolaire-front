@@ -4,6 +4,7 @@ import { LinesBoardManager } from "../../line/template/LinesBoardManager";
 import { PathsBoardManager } from "../../paths/template/PathsBoardManager";
 import { SchoolsBoardManager } from "../../schools/component/template/SchoolsBoardManager";
 import { StopsBoardManager } from "../../stops/component/template/StopsBoardManager";
+import { TripsBoardManager } from "../../trips/template/TripsBoardManager";
 import { BoardLayout } from "./BoardLayout";
 
 export type MapBoardTags =
@@ -11,6 +12,7 @@ export type MapBoardTags =
   | "lines"
   | "line-details"
   | "line-add"
+  | "trip-details"
   | "stops"
   | "stop-add"
   | "stop-details"
@@ -24,10 +26,6 @@ export type MapBoardTags =
   | "path-add"
   | "path-details"
   | "path-edit"
-  //   | "trip"
-  //   | "trip-draw"
-  //   | "line-add"
-  //   | "line-details"
   | undefined;
 
 export const [mapBoard, setMapBoard] = createSignal<MapBoardTags>(undefined);
@@ -42,7 +40,7 @@ export function MapBoardManager() {
           <SchoolsBoardManager board={mapBoard()} />
           <PathsBoardManager board={mapBoard()} />
           <LinesBoardManager board={mapBoard()} />
-          {/* TODO create TripesBoardManager */}
+          <TripsBoardManager board={mapBoard()} />
         </BoardLayout>
       </Show>
     </section>

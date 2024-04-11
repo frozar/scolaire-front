@@ -29,6 +29,7 @@ import { getBus } from "../views/content/bus/organism/Bus";
 import { getSelectedLine } from "../views/content/map/component/organism/BusLines";
 import { setselectedTrip } from "../views/content/map/component/organism/Trips";
 import { quitModeDrawTrip } from "../views/content/map/shortcut";
+import { ViewManager } from "../views/content/ViewManager";
 
 export namespace TripUtils {
   export function get(tripId: number): TripType {
@@ -234,7 +235,7 @@ export namespace TripUtils {
     setCurrentStep(DrawTripStep.initial);
     quitModeDrawTrip();
 
-    changeBoard("line-details");
+    ViewManager.tripDetails(updatedTrip);
   }
 
   export function isValidTrip(trip: TripType): boolean {
