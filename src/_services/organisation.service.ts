@@ -25,6 +25,16 @@ export class OrganisationService {
     return xanoResult.map((dbOrga) => OrganizationEntity.build(dbOrga));
   }
 
+  static async edit(organisation: OrganizationType): Promise<OrganizationType> {
+    const data = OrganizationEntity.dbFormat(organisation);
+    const xanoResult: OrganizationDbType = await ServiceUtils.patch(
+      "/organisation/" + organisation.id,
+      data,
+      false
+    );
+    return OrganizationEntity.build(xanoResult);
+  }
+
   static async getMembers(): Promise<OrganizationMemberType[]> {
     const xanoResult = await ServiceUtils.get(
       "/organisation/" + getSelectedOrganisation().organisation_id + "/member",
