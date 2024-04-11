@@ -13,7 +13,9 @@ export function OrganizationsTable(props: {
     <Table>
       <TableHeader>
         <TableHeaderCol text="Nom" end={false} />
-        <TableHeaderCol text="Référent" end={true} />
+        <TableHeaderCol text="Référent" end={false} />
+        <TableHeaderCol text="Statut" end={false} />
+        <TableHeaderCol text="Actions" end={true} />
       </TableHeader>
 
       <TableContent>

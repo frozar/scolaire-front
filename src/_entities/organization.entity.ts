@@ -10,8 +10,10 @@ export namespace OrganizationEntity {
 export type OrganizationDbType = {
   name: string;
   referent: OrganizationMemberType;
+  status: string;
 };
 export type OrganizationType = {
   name: string;
   referent: OrganizationMemberType;
+  status: string;
 };
