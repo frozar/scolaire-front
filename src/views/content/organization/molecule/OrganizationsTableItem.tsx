@@ -20,11 +20,10 @@ export function OrganizationsTableItem(props: {
     if (props.organization.status == "active") newStatus = "suspended";
     else newStatus = "active";
     const obj: OrganizationType = {
-      id: props.organization.id,
-      name: props.organization.name,
-      referent: props.organization.referent,
+      ...props.organization,
       status: newStatus,
     };
+    console.log(obj);
     enableSpinningWheel();
     await OrganisationService.edit(obj);
     disableSpinningWheel();
