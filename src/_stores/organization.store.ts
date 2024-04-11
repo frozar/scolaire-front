@@ -6,7 +6,11 @@ const [getOrganizations, setOrganizations] = createSignal<OrganizationType[]>(
 );
 
 export namespace OrganizationStore {
-  export function set(organizations: OrganizationType[]) {
+  export function set(
+    organizations:
+      | OrganizationType[]
+      | ((prev: OrganizationType[]) => OrganizationType[])
+  ) {
     setOrganizations(organizations);
   }
 
