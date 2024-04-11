@@ -2,6 +2,7 @@ import { Show, createSignal, onCleanup, onMount } from "solid-js";
 import { StopType } from "../../../../../_entities/stop.entity";
 import { getSchools } from "../../../../../_stores/school.store";
 import { getTrips } from "../../../../../_stores/trip.store";
+import { getWays } from "../../../../../_stores/way.store";
 import Button from "../../../../../component/atom/Button";
 import { LabeledInputNumber } from "../../../../../component/molecule/LabeledInputNumber";
 import { NatureEnum } from "../../../../../type";
@@ -146,11 +147,13 @@ function setMapData(stop: StopType | undefined) {
     setDisplaySchools(filterSchools(stop));
     setDisplayTrips(filterTrips(stop));
     setDisplayBusStops(stop.busStops);
+    showWays(stop);
   } else {
     setDisplayStops([]);
     setDisplaySchools([]);
     setDisplayBusStops([]);
     setDisplayTrips([]);
+    setDisplayWays([]);
   }
 }
 
@@ -180,6 +183,12 @@ function filterTrips(stop: StopType) {
     }
     return isTrip;
   });
+}
+
+function showWays(stop: StopType) {
+  const ids: number[] = [];
+  stop.busStops.forEach((item) => ids.push(item.way));
+  setDisplayWays(getWays().filter((item) => ids.includes(item.id)));
 }
 
 // function filterBusStops(stop: StopType) {

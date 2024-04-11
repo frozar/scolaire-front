@@ -2,6 +2,7 @@ import { Show, createSignal, onCleanup, onMount } from "solid-js";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { getSchools } from "../../../../../_stores/school.store";
 import { getStops } from "../../../../../_stores/stop.store";
+import { getWays } from "../../../../../_stores/way.store";
 import Button from "../../../../../component/atom/Button";
 import { SchoolDetailUtils } from "../../../../../utils/school-details.utils";
 import { setWayLineColor } from "../../../_component/molecule/WayLine";
@@ -40,7 +41,6 @@ export function SchoolDetails() {
     setSchoolDetailEditing(false);
     setMapData(schoolDetails());
     setMapOnClick(undefined);
-    setDisplayWays([]);
   });
 
   function toggleChoosingLocal() {
@@ -121,12 +121,14 @@ function setMapData(school: SchoolType | undefined) {
     setDisplaySchools([school]);
     setDisplayStops(filterStops(school));
     setDisplayBusStops(school.busStops);
+    showWays(school);
     // setDisplayBusStops(filterBusStops(school));
     // setDisplayTrips(filterTrips(school));
   } else {
     setDisplayStops([]);
     setDisplaySchools([]);
     setDisplayBusStops([]);
+    setDisplayWays([]);
     // setDisplayTrips([]);
   }
 }
@@ -144,11 +146,11 @@ function filterStops(school: SchoolType) {
   });
 }
 
-// function showWays(school: SchoolType) {
-//   const ids: number[] = [];
-//   school.busStops.forEach((item) => ids.push(item.way));
-//   setDisplayWays(getWays().filter((item) => ids.includes(item.id)));
-// }
+function showWays(school: SchoolType) {
+  const ids: number[] = [];
+  school.busStops.forEach((item) => ids.push(item.way));
+  setDisplayWays(getWays().filter((item) => ids.includes(item.id)));
+}
 
 // function filterTrips(school: SchoolType) {
 //   return getTrips().filter((trip) => {

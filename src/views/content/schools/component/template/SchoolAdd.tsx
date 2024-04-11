@@ -10,12 +10,14 @@ import {
   enableSpinningWheel,
 } from "../../../../../signaux";
 import { ViewManager } from "../../../ViewManager";
+import { setWayLineColor } from "../../../_component/molecule/WayLine";
 import { setDisplayBusStops } from "../../../_component/organisme/BusStopPoints";
 import { setDisplayWays } from "../../../_component/organisme/Ways";
 import { setMapOnClick } from "../../../_component/template/MapContainer";
 import BoardTitle from "../../../board/component/atom/BoardTitle";
 import BoardFooterActions from "../../../board/component/molecule/BoardFooterActions";
 import { BusStopsMenu } from "../../../busStops/organism/BusStopsMenu";
+import { COLOR_BLUE_BASE } from "../../../map/constant";
 import { loadWays } from "../../../paths/template/Paths";
 import { SchoolAddContent } from "../organism/SchoolAddContent";
 
@@ -28,6 +30,7 @@ export function SchoolAdd() {
 
   onMount(async () => {
     await loadWays();
+    setWayLineColor(COLOR_BLUE_BASE);
   });
 
   onCleanup(() => {
