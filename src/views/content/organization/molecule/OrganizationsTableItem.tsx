@@ -23,6 +23,11 @@ export function OrganizationsTableItem(props: {
       />
       <TableData
         class="select-none"
+        text={props.organization.referent.name}
+        end={false}
+      />
+      <TableData
+        class="select-none"
         text={props.organization.status}
         end={false}
       />

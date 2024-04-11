@@ -8,11 +8,13 @@ export namespace OrganizationEntity {
 }
 
 export type OrganizationDbType = {
+  id?: number;
   name: string;
   referent: OrganizationMemberType;
   status: string;
 };
 export type OrganizationType = {
+  id?: number;
   name: string;
   referent: OrganizationMemberType;
   status: string;
