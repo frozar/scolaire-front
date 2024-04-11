@@ -82,7 +82,8 @@ export function WayLine(props: { way: WayType; map: L.Map }) {
     if (
       mapBoard() == "school-details" ||
       mapBoard() == "stop-details" ||
-      mapBoard() == "school-add"
+      mapBoard() == "school-add" ||
+      mapBoard() == "stop-add"
     ) {
       setSelectedWayId(props.way.id);
       return;

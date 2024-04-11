@@ -1,9 +1,7 @@
 import { Show, createSignal, onCleanup, onMount } from "solid-js";
 import { StopType } from "../../../../../_entities/stop.entity";
-import { getBusStops } from "../../../../../_stores/busStop.store";
 import { getSchools } from "../../../../../_stores/school.store";
 import { getTrips } from "../../../../../_stores/trip.store";
-import { getWays } from "../../../../../_stores/way.store";
 import Button from "../../../../../component/atom/Button";
 import { LabeledInputNumber } from "../../../../../component/molecule/LabeledInputNumber";
 import { NatureEnum } from "../../../../../type";
@@ -99,7 +97,6 @@ export function StopDetails() {
           }}
           label="Temps d'attente en seconde sur l'arrêt"
         />
-        <BusStopsDisplay item={stopDetails() as StopType} />
         <Show
           when={!editItem()}
           fallback={
@@ -114,13 +111,14 @@ export function StopDetails() {
               <p>Latitude : {stopDetails()?.lon} </p>
               <BusStopsMenu
                 item={stopDetails() as StopType}
-                itemSetter={setStopDetails}
+                stopSetter={setStopDetails}
                 isSchool={false}
               />
             </div>
           }
         >
           <RemainingStudentInformation />
+          <BusStopsDisplay item={stopDetails() as StopType} />
           <StopActionsPanelsButtons
             stop={stopDetails() as StopType}
             onPanel={onPanel}
@@ -147,7 +145,7 @@ function setMapData(stop: StopType | undefined) {
     setDisplayStops([stop]);
     setDisplaySchools(filterSchools(stop));
     setDisplayTrips(filterTrips(stop));
-    setDisplayBusStops(filterBusStops(stop));
+    setDisplayBusStops(stop.busStops);
   } else {
     setDisplayStops([]);
     setDisplaySchools([]);
@@ -184,14 +182,14 @@ function filterTrips(stop: StopType) {
   });
 }
 
-function filterBusStops(stop: StopType) {
-  const output = getBusStops().filter((item) => {
-    if (stop.busStops.includes(item.id as number)) return item;
-  });
+// function filterBusStops(stop: StopType) {
+//   const output = getBusStops().filter((item) => {
+//     if (stop.busStops.includes(item.id as number)) return item;
+//   });
 
-  const ids: number[] = [];
-  output.forEach((item) => ids.push(item.way));
-  setDisplayWays(getWays().filter((item) => ids.includes(item.id)));
+//   const ids: number[] = [];
+//   output.forEach((item) => ids.push(item.way));
+//   setDisplayWays(getWays().filter((item) => ids.includes(item.id)));
 
-  return output;
-}
+//   return output;
+// }

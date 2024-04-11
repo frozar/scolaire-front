@@ -47,10 +47,9 @@ export class StopEntity {
         stop.lat as number
       ),
       waiting_time: stop.waitingTime as number,
-      // bus_stops: stop.busStops.map((busStop) =>
-      //   BusStopEntity.DbFormat(busStop)
-      // ),
-      bus_stops: [],
+      bus_stops: stop.busStops?.map((busStop) =>
+        BusStopEntity.DbFormat(busStop)
+      ),
     };
   }
 

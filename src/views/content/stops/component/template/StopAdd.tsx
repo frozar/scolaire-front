@@ -8,30 +8,24 @@ import {
   enableSpinningWheel,
 } from "../../../../../signaux";
 import { ViewManager } from "../../../ViewManager";
-import { setDisplayStops } from "../../../_component/organisme/StopPoints";
 import { setMapOnClick } from "../../../_component/template/MapContainer";
 import BoardTitle from "../../../board/component/atom/BoardTitle";
 import BoardFooterActions from "../../../board/component/molecule/BoardFooterActions";
+import { BusStopsMenu } from "../../../busStops/organism/BusStopsMenu";
+import { loadWays } from "../../../paths/template/Paths";
 import { StopAddContent } from "../organism/StopAddContent";
 
 export function StopAdd() {
   const [newStop, setNewStop] = createSignal<StopType>({} as StopType);
   const [canSubmit, setCanSubmit] = createSignal(false);
 
-  onMount(() => {
-    setMapOnClick(() => onMapInput);
+  onMount(async () => {
+    await loadWays();
   });
 
   onCleanup(() => {
     setMapOnClick(undefined);
   });
-
-  function onMapInput(e: L.LeafletMouseEvent) {
-    setNewStop((prev) => {
-      return { ...prev, lat: e.latlng.lat, lon: e.latlng.lng };
-    });
-    setDisplayStops([newStop()]);
-  }
 
   createEffect(() => {
     if (!newStop().name || !newStop().lat || !newStop().waitingTime)
@@ -55,6 +49,11 @@ export function StopAdd() {
       </header>
       <div>
         <StopAddContent stop={newStop()} stopSetter={setNewStop} />
+        <BusStopsMenu
+          isSchool={false}
+          item={newStop()}
+          stopSetter={setNewStop}
+        />
         <BoardFooterActions
           nextStep={{
             callback: submitStop,
