@@ -1,0 +1,7 @@
+.organization-add-buttons {
+  @apply flex gap-3;
+}
+
+.organization-add-input-container {
+  @apply flex flex-col gap-6;
+}

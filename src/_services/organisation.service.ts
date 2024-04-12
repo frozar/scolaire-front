@@ -17,6 +17,12 @@ export type OrganizationMemberType = {
 };
 
 export class OrganisationService {
+  static async create(org: Omit<OrganizationType, "id">) {
+    const data = OrganizationEntity.dbFormat(org);
+    const xanoResult = await ServiceUtils.post("/organisation", data, false);
+    return OrganizationEntity.build(xanoResult);
+  }
+
   static async getAll(): Promise<OrganizationType[]> {
     const xanoResult: OrganizationDbType[] = await ServiceUtils.get(
       "/organization",

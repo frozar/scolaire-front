@@ -1,0 +1,7 @@
+.map-bounds-inputs {
+  @apply flex gap-3;
+}
+
+.map-bounds-header {
+  @apply font-bold;
+}
