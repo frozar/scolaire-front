@@ -1,4 +1,4 @@
-import { For, Show, createEffect, createSignal, onMount } from "solid-js";
+import { Show, createEffect, createSignal, onMount } from "solid-js";
 import {
   OrganizationMapBoundType,
   OrganizationType,
@@ -9,14 +9,19 @@ import {
 } from "../../../../_services/organisation.service";
 import { OrganizationStore } from "../../../../_stores/organization.store";
 import Button from "../../../../component/atom/Button";
-import { disableSpinningWheel, enableSpinningWheel } from "../../../../signaux";
+import {
+  addNewGlobalSuccessInformation,
+  disableSpinningWheel,
+  enableSpinningWheel,
+} from "../../../../signaux";
 import { ViewManager } from "../../ViewManager";
 import LabeledInputField from "../../board/component/molecule/LabeledInputField";
-import InputSearch from "../../schools/component/molecule/InputSearch";
 import { OrganizationAddMapBound } from "../organism/OrganizationAddMapBound";
+import "./OrganizationAdd.css";
 
 export function OrganizationAdd() {
   const [canSubmit, setCanSubmit] = createSignal(false);
+  const [foundUser, setFoundUser] = createSignal<OrganizationMemberType>();
   const [userSearch, setUserSearch] = createSignal("");
   const [localUsers, setLocalUsers] = createSignal<OrganizationMemberType[]>(
     []
@@ -28,26 +33,26 @@ export function OrganizationAdd() {
     {} as OrganizationMapBoundType
   );
 
-  // createEffect(() => {
-  //   if (userSearch() != "" && localUsers().length > 0) {
-  //     console.log("in");
-  //     setLocalUsers(filterUsers(userSearch()));
-  //     return;
-  //   }
-  //   // if (OrganizationStore.getMembers().length <= 0) {
-  //   //   setLocalUsers(OrganizationStore.getMembers());
-  //   // }
-
-  // });
+  function searchForUser(value: string) {
+    setUserSearch(value);
+    localUsers().every((user) => {
+      if (userSearch() == user.email) {
+        setFoundUser(user);
+        return false;
+      }
+      setFoundUser(undefined);
+      return true;
+    });
+  }
 
   createEffect(() => {
     if (
       !newOrg().name ||
-      !newOrg().referent ||
       !newMapBound().corner1.lat ||
-      !newMapBound().corner1.lon ||
+      !newMapBound().corner1.lng ||
       !newMapBound().corner2.lat ||
-      !newMapBound().corner2.lon
+      !newMapBound().corner2.lng ||
+      !foundUser()
     )
       return setCanSubmit(false);
     setCanSubmit(true);
@@ -59,12 +64,23 @@ export function OrganizationAdd() {
     });
   }
 
-  function submit() {
+  async function submit() {
     setNewOrg((prev) => {
-      return { ...prev, mapBounds: newMapBound(), status: "active" };
+      return {
+        ...prev,
+        mapBounds: newMapBound(),
+        status: "active",
+        referent: foundUser() as OrganizationMemberType,
+      };
     });
-    console.log(newOrg());
-    console.log(newMapBound());
+    enableSpinningWheel();
+    const created = await OrganisationService.create(newOrg());
+    disableSpinningWheel();
+    OrganizationStore.set((prev) => {
+      return [...prev, created];
+    });
+    addNewGlobalSuccessInformation("Organisation créée");
+    ViewManager.organizations();
   }
 
   onMount(async () => {
@@ -81,7 +97,7 @@ export function OrganizationAdd() {
       <header>
         <h1>Ajout d'organisation</h1>
       </header>
-      <div class="flex gap-3">
+      <div class="organization-add-buttons">
         <Button
           label="Annuler"
           variant="danger"
@@ -89,32 +105,32 @@ export function OrganizationAdd() {
         />
         <Button label="Valider" isDisabled={!canSubmit()} onClick={submit} />
       </div>
-      <LabeledInputField
-        label="Nom de l'organisation"
-        name="name"
-        onInput={(e) => onNameInput(e.target.value)}
-        value={""}
-      />
-      <div>
-        <InputSearch onInput={setUserSearch} />
-        <Show when={userSearch() != ""}>
-          <div>
-            <For each={localUsers()}>
-              {(user) => (
-                <div>
-                  <p>{user.email}</p>
-                </div>
-              )}
-            </For>
-          </div>
-        </Show>
+      <div class="organization-add-input-container">
+        <LabeledInputField
+          label="Nom de l'organisation"
+          name="name"
+          placeholder="Entrer un nom"
+          onInput={(e) => onNameInput(e.target.value)}
+          value={""}
+        />
+        <div>
+          <LabeledInputField
+            label="Référent"
+            name="ref"
+            onInput={(e) => searchForUser(e.target.value)}
+            placeholder="Recherche par mail"
+            value={""}
+          />
+          <Show fallback={<div>Aucun référent trouvé</div>} when={foundUser()}>
+            <div>
+              <p>Nom : {foundUser()?.name}</p>
+              <p>Email : {foundUser()?.email}</p>
+              <p>Rôle : {foundUser()?.role}</p>
+            </div>
+          </Show>
+        </div>
+        <OrganizationAddMapBound setter={setNewMapBounds} />
       </div>
-      <OrganizationAddMapBound setter={setNewMapBounds} />
     </div>
   );
 }
-
-// const filterUsers = (filter: string) =>
-//   OrganizationStore.getMembers().filter((member) =>
-//     member.email.toLowerCase().includes(filter.toLowerCase())
-//   );

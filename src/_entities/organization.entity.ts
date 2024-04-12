@@ -7,6 +7,7 @@ export namespace OrganizationEntity {
       name: dbOrganization.name,
       status: dbOrganization.status,
       referent: dbOrganization.referent,
+      mapBounds: dbOrganization.map_bounds,
     };
   }
 
@@ -15,7 +16,8 @@ export namespace OrganizationEntity {
       id: organization.id,
       name: organization.name,
       status: organization.status,
-      referent_id: organization.referent.id,
+      referent_id: organization.referent.user_id,
+      map_bounds: organization.mapBounds,
     };
   }
 }
@@ -25,15 +27,17 @@ export type OrganizationDbType = {
   name: string;
   referent: OrganizationMemberType;
   status: string;
+  map_bounds: OrganizationMapBoundType;
 };
 export type OrganizationType = {
   id?: number;
   name: string;
   referent: OrganizationMemberType;
   status: string;
+  mapBounds: OrganizationMapBoundType;
 };
 
 export type OrganizationMapBoundType = {
-  corner1: { lat: number; lon: number };
-  corner2: { lat: number; lon: number };
+  corner1: { lat: number; lng: number };
+  corner2: { lat: number; lng: number };
 };
