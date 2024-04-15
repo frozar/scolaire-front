@@ -27,6 +27,16 @@ export namespace SchoolStore {
     });
   }
 
+  export function getAllOfGradeId(gradesId: number[]): SchoolType[] {
+    return getSchools().map((school) => {
+      if (
+        school.grades.some((grade) => gradesId.includes(grade.id as number))
+      ) {
+        return school;
+      }
+    }) as SchoolType[];
+  }
+
   export async function update(school: SchoolType) {
     const updatedSchool: SchoolType = await SchoolService.update(school);
     setSchools((prev) => {

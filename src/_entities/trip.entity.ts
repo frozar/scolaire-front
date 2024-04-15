@@ -16,8 +16,6 @@ import {
   GradeType,
   HourFormat,
 } from "./grade.entity";
-import { PathEntity, PathType } from "./path.entity";
-import { SchoolType } from "./school.entity";
 import {
   TripDirectionEntity,
   TripDirectionEnum,
@@ -30,31 +28,24 @@ import {
 
 export namespace TripEntity {
   export function build(dbData: TripDBType): TripType {
-    const filteredShools: SchoolType[] = getSchools().filter(
-      (item) => item.id == dbData.school_id
-    );
-
-    if (filteredShools.length == 0) {
-      //TODO Error log to improve
-      console.log(
-        "Error : impossible de retrouver l'établissement avec l'id " +
-          dbData.school_id
-      );
-    }
-
-    const school: SchoolType = filteredShools[0];
-
     return {
       id: dbData.id,
-      schools: [school],
       name: dbData.name,
       color: "#" + dbData.color,
       grades:
         dbData.grades != undefined
           ? dbData.grades.map((grade) =>
+              //TODO à revoir
               GradeEntity.build(grade as GradeDBType)
             )
           : [],
+      startTime: dbData.start_time
+        ? GradeEntity.getHourFormatFromString(dbData.start_time)
+        : undefined,
+      days: dbData.days,
+      tripDirectionId: dbData.trip_direction_id,
+      busCategoriesId: dbData.bus_categories_id,
+      allotmentId: dbData.allotment_id,
       tripPoints: buildTripPointType(
         dbData.trip_stop,
         dbData.days,
@@ -64,22 +55,14 @@ export namespace TripEntity {
       latLngs: dbData.polyline
         ? dbData.polyline.data.map((item) => L.latLng(item.lat, item.lng))
         : [],
-      selected: false,
       metrics: dbData.metrics,
-      startTime: dbData.start_time
-        ? GradeEntity.getHourFormatFromString(dbData.start_time)
-        : undefined,
-      days: dbData.days,
-      tripDirectionId: dbData.trip_direction_id,
-      path: PathEntity.build(dbData.path),
-      busCategoriesId: dbData.bus_categories_id,
-      allotmentId: dbData.allotment_id,
+      //TODO to delete
+      selected: false,
     };
   }
 
   export function defaultTrip(): TripType {
     return {
-      schools: [],
       name: "My Default Name",
       color: COLOR_GREEN_BASE,
       tripPoints: [],
@@ -101,7 +84,6 @@ export namespace TripEntity {
     return {
       color: EntityUtils.formatColorForDB(trip.color),
       name: name,
-      school_id: trip.schools[0].id,
       trip_stop: formatTripPointDBType(trip.tripPoints),
       polyline: EntityUtils.buildLocationPath(trip.latLngs),
       grades: trip.grades.map((item) => item.id) as number[],
@@ -122,7 +104,6 @@ export namespace TripEntity {
         : undefined,
       days: trip.days,
       trip_direction_id: trip.tripDirectionId,
-      path: trip.path,
       bus_categories_id: trip.busCategoriesId,
       allotment_id: trip.allotmentId,
     };
@@ -141,9 +122,6 @@ export namespace TripEntity {
     }
     if (trip.color) {
       output = { ...output, color: EntityUtils.formatColorForDB(trip.color) };
-    }
-    if (trip.schools) {
-      output = { ...output, school_id: trip.schools[0].id };
     }
     if (trip.latLngs) {
       output = {
@@ -193,12 +171,6 @@ export namespace TripEntity {
       };
     }
 
-    if (trip.path?.id)
-      output = {
-        ...output,
-        path_id: trip.path.id,
-      };
-
     return output;
   }
 
@@ -217,23 +189,37 @@ export namespace TripEntity {
   }
 }
 
+export type TripDBType = {
+  id: number;
+  name: string;
+  color: string;
+  grades: (number | GradeDBType)[]; //TODO Clarify using of grades type
+  start_time: string;
+  days: CalendarDayEnum[];
+  trip_direction_id: number;
+  bus_categories_id: number;
+  allotment_id: number;
+  trip_stop: TripPointDBType[];
+  waypoint: WaypointDBType[];
+  polyline: LocationPathDBType;
+  metrics: TripMetricType;
+};
 export type TripType = {
   id?: number;
-  schools: SchoolType[];
   name: string;
   color: string;
   grades: GradeType[];
+  startTime?: HourFormat;
+  days: CalendarDayEnum[];
+  tripDirectionId: number;
+  busCategoriesId?: number;
+  allotmentId?: number;
   tripPoints: TripPointType[];
   waypoints?: WaypointType[];
   latLngs: L.LatLng[];
-  selected: boolean;
   metrics?: TripMetricType;
-  startTime?: HourFormat;
-  tripDirectionId: number;
-  days: CalendarDayEnum[];
-  path?: PathType;
-  busCategoriesId?: number;
-  allotmentId?: number;
+  //TODO to delete
+  selected: boolean;
 };
 
 export type TripPointType = {
@@ -250,31 +236,13 @@ export type TripPointType = {
   waitingTime: number;
 };
 
-export type TripDBType = {
-  id: number;
-  school_id: number;
-  name: string;
-  color: string;
-  grades: (number | GradeDBType)[]; //TODO Clarify using of grades type
-  trip_stop: TripPointDBType[];
-  polyline: LocationPathDBType;
-  metrics: TripMetricType;
-  waypoint: WaypointDBType[];
-  start_time: string;
-  trip_direction_id: number;
-  days: CalendarDayEnum[];
-  path: PathType;
-  bus_categories_id: number;
-  allotment_id: number;
-};
-
 export type TripPointDBType = {
   stop_id: number;
   school_id: number;
-  grades: GradeTripDBType[];
   passage_time: number;
   start_to_trip_point_distance: number;
   waiting_time: number;
+  grades: GradeTripDBType[];
 };
 
 export type TripMetricType = {
@@ -311,8 +279,7 @@ function buildTripPointType(
   days: CalendarDayEnum[],
   tripDirection: TripDirectionEnum
 ): TripPointType[] {
-  //TODO Investigate the problem during switching between map [old comment to investigate]
-
+  //TODO revoir la fonction
   return points
     .map((dbPoint) => {
       const associatedPoint: PointType = getAssociatedTripPoint(dbPoint);
@@ -360,7 +327,7 @@ function buildTripPointType(
 
 function getAssociatedTripPoint(dbPoint: TripPointDBType): PointType {
   if (dbPoint.stop_id != 0) {
-    return getStops().filter((item) => item.id == dbPoint.stop_id)[0];
+    return getStops().find((item) => item.id == dbPoint.stop_id) as PointType;
   }
-  return getSchools().filter((item) => item.id == dbPoint.school_id)[0];
+  return getSchools().find((item) => item.id == dbPoint.school_id) as PointType;
 }
