@@ -1,10 +1,12 @@
 import L from "leaflet";
-import { Show, onMount } from "solid-js";
-import { OrganizationType } from "../../../../_entities/organization.entity";
+import { Setter, Show, onMount } from "solid-js";
+import { OrganizationMapBoundType } from "../../../../_entities/organization.entity";
+import { OrganizationMapEdit } from "../molecule/OrganizationMapEdit";
 import "./OrganizationMapWrapper.css";
 
 interface OrganizationMapWrapperProps {
-  org: OrganizationType;
+  mapBounds: OrganizationMapBoundType;
+  mapBoundssetter?: Setter<OrganizationMapBoundType>;
   editing?: boolean;
 }
 
@@ -27,12 +29,12 @@ export function OrganizationMapWrapper(props: OrganizationMapWrapperProps) {
     }).addTo(tmpleafletMap);
 
     const corner1 = L.latLng(
-      props.org.mapBounds.corner1.lat as number,
-      props.org.mapBounds.corner1.lng as number
+      props.mapBounds.corner1.lat as number,
+      props.mapBounds.corner1.lng as number
     );
     const corner2 = L.latLng(
-      props.org.mapBounds.corner2.lat as number,
-      props.org.mapBounds.corner2.lng as number
+      props.mapBounds.corner2.lat as number,
+      props.mapBounds.corner2.lng as number
     );
     const bounds = L.latLngBounds(corner1, corner2);
     tmpleafletMap.fitBounds(bounds);
@@ -44,30 +46,40 @@ export function OrganizationMapWrapper(props: OrganizationMapWrapperProps) {
       tmpleafletMap.keyboard.disable();
     }
 
-    tmpleafletMap.on("move", function () {
-      // TODO onMapMove function
-      console.log(tmpleafletMap.getBounds());
-      console.log(tmpleafletMap.getZoom());
+    // eslint-disable-next-line solid/reactivity
+    tmpleafletMap.on("move", () => {
+      const corner1 = tmpleafletMap.getBounds().getNorthEast();
+      const corner2 = tmpleafletMap.getBounds().getSouthWest();
+      const newBounds = { corner1, corner2 };
+      if (props.mapBoundssetter) props.mapBoundssetter(newBounds);
     });
   }
 
   return (
     <div class="flex gap-6">
       <div>
-        <Show when={!props.editing}>
+        <Show
+          when={!props.editing}
+          fallback={
+            <OrganizationMapEdit
+              mapBounds={props.mapBounds}
+              setter={props.mapBoundssetter as Setter<OrganizationMapBoundType>}
+            />
+          }
+        >
           <p class="font-bold">Map Bounds</p>
           <p class="pl-4">
-            Lattitude coin Nord-Est : {props.org.mapBounds.corner1.lat}
+            Lattitude coin Nord-Est : {props.mapBounds.corner1.lat}
           </p>
           <p class="pl-4">
-            Longitude coin Nord-Est : {props.org.mapBounds.corner1.lng}
+            Longitude coin Nord-Est : {props.mapBounds.corner1.lng}
           </p>
           <br />
           <p class="pl-4">
-            Lattitude coin Sud-Ouest : {props.org.mapBounds.corner2.lat}
+            Lattitude coin Sud-Ouest : {props.mapBounds.corner2.lat}
           </p>
           <p class="pl-4">
-            Longitude coin Sud-Ouest : {props.org.mapBounds.corner2.lng}
+            Longitude coin Sud-Ouest : {props.mapBounds.corner2.lng}
           </p>
         </Show>
       </div>

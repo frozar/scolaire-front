@@ -1,6 +1,9 @@
 import "leaflet/dist/leaflet.css";
 import { createSignal } from "solid-js";
-import { OrganizationType } from "../../../../_entities/organization.entity";
+import {
+  OrganizationMapBoundType,
+  OrganizationType,
+} from "../../../../_entities/organization.entity";
 import Button from "../../../../component/atom/Button";
 import { OrganizationMapWrapper } from "../organism/OrganizationMapWrapper";
 import "./OrganizationDetails.css";
@@ -27,13 +30,12 @@ export function OrganizationDetails() {
         <p class="organization-details-referent-info">
           Mail : {detailsOrganization()?.referent.email}
         </p>
-        <p class="organization-details-referent-info">
-          Rôle : {detailsOrganization()?.referent.role}
-        </p>
       </div>
       <div>
         <OrganizationMapWrapper
-          org={detailsOrganization() as OrganizationType}
+          mapBounds={
+            detailsOrganization()?.mapBounds as OrganizationMapBoundType
+          }
         />
       </div>
     </div>

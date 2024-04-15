@@ -20,6 +20,28 @@ export namespace OrganizationEntity {
       map_bounds: organization.mapBounds,
     };
   }
+
+  export function defaultOrganization(): OrganizationType {
+    return {
+      name: "",
+      referent: {} as OrganizationMemberType,
+      status: "active",
+      mapBounds: defaultOrganizationMapBounds(),
+    };
+  }
+
+  export function defaultOrganizationMapBounds(): OrganizationMapBoundType {
+    return {
+      corner1: {
+        lat: -20.85449703579938,
+        lng: 55.528209081343114,
+      },
+      corner2: {
+        lat: -20.965017690196024,
+        lng: 55.40989679654955,
+      },
+    };
+  }
 }
 
 export type OrganizationDbType = {

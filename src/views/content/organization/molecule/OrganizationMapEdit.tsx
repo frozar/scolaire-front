@@ -1,38 +1,35 @@
 import { Setter } from "solid-js";
 import { OrganizationMapBoundType } from "../../../../_entities/organization.entity";
 import { LabeledInputNumber } from "../../board/component/molecule/LabeledInputNumber";
-import "./OrganizationAddMapBound.css";
+import "./OrganizationMapEdit.css";
 
 interface OrganizationAddMapBoundProps {
+  mapBounds: OrganizationMapBoundType;
   setter: Setter<OrganizationMapBoundType>;
 }
 
-export function OrganizationAddMapBound(props: OrganizationAddMapBoundProps) {
+export function OrganizationMapEdit(props: OrganizationAddMapBoundProps) {
   function onTopLat(value: number) {
     props.setter((prev) => {
-      const prevLng = prev.corner1 ? prev.corner1.lng : 0;
-      return { ...prev, corner1: { lat: value, lng: prevLng } };
+      return { ...prev, corner1: { lat: value, lng: prev.corner1.lng } };
     });
   }
 
   function onTopLng(value: number) {
     props.setter((prev) => {
-      const prevLat = prev.corner1 ? prev.corner1.lat : 0;
-      return { ...prev, corner1: { lat: prevLat, lng: value } };
+      return { ...prev, corner1: { lat: prev.corner1.lat, lng: value } };
     });
   }
 
   function onBotLat(value: number) {
     props.setter((prev) => {
-      const prevLng = prev.corner2 ? prev.corner1.lng : 0;
-      return { ...prev, corner2: { lat: value, lng: prevLng } };
+      return { ...prev, corner2: { lat: value, lng: prev.corner1.lng } };
     });
   }
 
   function onBotLng(value: number) {
     props.setter((prev) => {
-      const prevLat = prev.corner1 ? prev.corner2.lat : 0;
-      return { ...prev, corner2: { lat: prevLat, lng: value } };
+      return { ...prev, corner2: { lat: prev.corner2.lat, lng: value } };
     });
   }
 
@@ -45,14 +42,14 @@ export function OrganizationAddMapBound(props: OrganizationAddMapBoundProps) {
           <LabeledInputNumber
             label="Lattitude"
             name="lat1"
-            value={0}
+            value={props.mapBounds.corner1.lat}
             onInput={(e) => onTopLat(Number(e.target.value))}
           />
           <LabeledInputNumber
             label="Longitude"
             name="lng1"
             onInput={(e) => onTopLng(Number(e.target.value))}
-            value={0}
+            value={props.mapBounds.corner1.lng}
           />
         </div>
         <div>
@@ -60,14 +57,14 @@ export function OrganizationAddMapBound(props: OrganizationAddMapBoundProps) {
           <LabeledInputNumber
             label="Lattitude"
             name="lat2"
-            value={0}
+            value={props.mapBounds.corner2.lat}
             onInput={(e) => onBotLat(Number(e.target.value))}
           />
           <LabeledInputNumber
             label="Longitude"
             name="lng2"
             onInput={(e) => onBotLng(Number(e.target.value))}
-            value={0}
+            value={props.mapBounds.corner2.lng}
           />
         </div>
       </div>
