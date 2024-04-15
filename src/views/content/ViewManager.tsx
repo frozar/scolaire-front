@@ -1,5 +1,6 @@
 import { GradeType } from "../../_entities/grade.entity";
 import { LineType } from "../../_entities/line.entity";
+import { OrganizationType } from "../../_entities/organization.entity";
 import { RoadType } from "../../_entities/road.entity";
 import { SchoolType } from "../../_entities/school.entity";
 import { StopType } from "../../_entities/stop.entity";
@@ -7,6 +8,7 @@ import { setSelectedMenu } from "../layout/menuItemFields";
 import { setMapBoard } from "./_component/template/MapBoardManager";
 import { changeBoard } from "./board/component/template/ContextManager";
 import { setSelectedLine } from "./line/template/LineDetails";
+import { setDetailsOrganization } from "./organization/template/OrganizationDetails";
 import { setSelectedRoad } from "./paths/template/PathDetails";
 import { setEditRoad } from "./paths/template/PathEdit";
 import { setSchoolDetails } from "./schools/component/template/SchoolDetails";
@@ -167,6 +169,13 @@ export namespace ViewManager {
 
   export function organizationAdd() {
     setSelectedMenu("organization-add");
+    //TODO to delete post refacto
+    changeBoard(undefined);
+  }
+
+  export function organizationDetails(org: OrganizationType) {
+    setDetailsOrganization(org);
+    setSelectedMenu("organization-details");
     //TODO to delete post refacto
     changeBoard(undefined);
   }

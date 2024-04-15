@@ -41,7 +41,7 @@ export function OrganizationAddMapBound(props: OrganizationAddMapBoundProps) {
       <p class="map-bounds-header">Map Bounds</p>
       <div class="map-bounds-inputs">
         <div>
-          <p>Coin supérieur</p>
+          <p>Coin Nord-Est</p>
           <LabeledInputNumber
             label="Lattitude"
             name="lat1"
@@ -56,7 +56,7 @@ export function OrganizationAddMapBound(props: OrganizationAddMapBoundProps) {
           />
         </div>
         <div>
-          <p>Coin inférieur</p>
+          <p>Coin Sud-Ouest</p>
           <LabeledInputNumber
             label="Lattitude"
             name="lat2"

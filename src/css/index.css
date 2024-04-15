@@ -1,21 +1,21 @@
 @import "./tailwind.css";
 @import "./menu.css";
-@import url('https://fonts.googleapis.com/css2?family=Chivo:wght@100&family=Mulish:wght@200;300;400;500;600;700;800&family=Nunito:wght@300&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Chivo:wght@100&family=Mulish:wght@200;300;400;500;600;700;800&family=Nunito:wght@300&display=swap");
 
-*{
+* {
   font-family: "Mulish";
 }
 
 *::-webkit-scrollbar {
   @apply rounded-md w-[0.4em];
 }
- 
+
 *::-webkit-scrollbar-track {
   @apply rounded-md shadow-inner bg-gray-200;
 }
- 
+
 *::-webkit-scrollbar-thumb {
-  @apply outline-dark-teal bg-dark-teal rounded-md
+  @apply outline-dark-teal bg-dark-teal rounded-md;
 }
 
 body,
@@ -265,7 +265,7 @@ code {
 }
 
 .child {
-  @apply flex-col rounded-lg border-dashed border-green-base pl-12 pr-12 pb-12 pt-3 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 text-green-base ;
+  @apply flex-col rounded-lg border-dashed border-green-base pl-12 pr-12 pb-12 pt-3 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 text-green-base;
   justify-content: center;
   border-width: 6px;
   background: white;
@@ -279,8 +279,10 @@ code {
   font-family: "Mulish";
 }
 
-.dropzone{@apply mt-2 block text-2xl font-semibold ;
-margin-left: 5%;}
+.dropzone {
+  @apply mt-2 block text-2xl font-semibold;
+  margin-left: 5%;
+}
 
 .invisible_child {
   display: none;

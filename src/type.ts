@@ -173,6 +173,7 @@ export type SelectedMenuType =
   | "lines"
   | "organization-users"
   | "organizations"
+  | "organization-details"
   | "organization-add";
 
 export type MenuItemType = {
