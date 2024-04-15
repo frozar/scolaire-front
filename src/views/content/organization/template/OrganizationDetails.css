@@ -1,0 +1,7 @@
+.organization-details-referent-title {
+  @apply font-bold;
+}
+
+.organization-details-referent-info {
+  @apply pl-4;
+}

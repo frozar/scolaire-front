@@ -7,6 +7,7 @@ interface TableRowProps {
   active?: boolean;
   shown?: boolean;
   onDBClick?: () => void;
+  onClick?: () => void;
   class?: string;
 }
 
@@ -20,6 +21,8 @@ export function TableRow(props: TableRowProps) {
         classList={{ active: props.active ?? false }}
         // eslint-disable-next-line solid/reactivity
         onDblClick={props.onDBClick}
+        // eslint-disable-next-line solid/reactivity
+        onClick={props.onClick}
       >
         {child()}
       </tr>

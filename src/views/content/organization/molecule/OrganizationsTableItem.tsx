@@ -10,6 +10,7 @@ import {
   disableSpinningWheel,
   enableSpinningWheel,
 } from "../../../../signaux";
+import { ViewManager } from "../../ViewManager";
 import ButtonIcon from "../../board/component/molecule/ButtonIcon";
 
 export function OrganizationsTableItem(props: {
@@ -33,7 +34,10 @@ export function OrganizationsTableItem(props: {
   }
 
   return (
-    <TableRow class="map-row-item">
+    <TableRow
+      onClick={() => ViewManager.organizationDetails(props.organization)}
+      class="map-row-item"
+    >
       <TableData
         class="select-none"
         text={props.organization.name}
