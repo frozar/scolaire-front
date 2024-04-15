@@ -10,7 +10,6 @@ import { COLOR_STOP_EMPHASE } from "../../map/constant";
 export const [draggingTrip, setDraggingTrip] = createSignal<boolean>(false);
 
 export function Trip(props: { trip: TripType; map: L.Map; onRoad: boolean }) {
-  // eslint-disable-next-line solid/reactivity
   const [localLatLngs, setLocalLatLngs] = createSignal<L.LatLng[]>([]);
   const [localOpacity, setLocalOpacity] = createSignal<number>(1);
 
