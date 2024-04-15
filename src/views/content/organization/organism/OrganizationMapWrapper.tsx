@@ -1,6 +1,7 @@
 import L from "leaflet";
 import { Show, onMount } from "solid-js";
 import { OrganizationType } from "../../../../_entities/organization.entity";
+import "./OrganizationMapWrapper.css";
 
 interface OrganizationMapWrapperProps {
   org: OrganizationType;

@@ -52,11 +52,6 @@ code {
   height: calc(100vh - 60px);
 }
 
-#sub-map {
-  width: 350px;
-  height: 350px;
-}
-
 .legend {
   padding: 6px 8px;
   font: 14px Arial, Helvetica, sans-serif;
