@@ -174,6 +174,7 @@ export type SelectedMenuType =
   | "organization-users"
   | "organizations"
   | "organization-details"
+  | "organization-edit"
   | "organization-add";
 
 export type MenuItemType = {

@@ -31,10 +31,10 @@ export class OrganisationService {
     return xanoResult.map((dbOrga) => OrganizationEntity.build(dbOrga));
   }
 
-  static async edit(organisation: OrganizationType): Promise<OrganizationType> {
-    const data = OrganizationEntity.dbFormat(organisation);
+  static async edit(organization: OrganizationType): Promise<OrganizationType> {
+    const data = OrganizationEntity.dbFormat(organization);
     const xanoResult: OrganizationDbType = await ServiceUtils.patch(
-      "/organisation/" + organisation.id,
+      "/organization/" + organization.id,
       data,
       false
     );
