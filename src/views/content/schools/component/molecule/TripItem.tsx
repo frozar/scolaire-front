@@ -10,6 +10,7 @@ import "./TripItem.css";
 
 export function TripItem(props: { trip: TripType; openOnClick?: boolean }) {
   const mergedProps = mergeProps({ openOnClick: true }, props);
+
   const schoolNames = () => {
     return props.trip.schools.map((school) => school.name ?? "");
   };

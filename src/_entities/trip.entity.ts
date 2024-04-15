@@ -1,6 +1,6 @@
 import L from "leaflet";
 import { getLines } from "../_stores/line.store";
-import { getSchools } from "../_stores/school.store";
+import { SchoolStore, getSchools } from "../_stores/school.store";
 import { getStops } from "../_stores/stop.store";
 import { NatureEnum } from "../type";
 import { QuantityUtils } from "../utils/quantity.utils";
@@ -9,13 +9,13 @@ import { COLOR_GREEN_BASE } from "../views/content/map/constant";
 import { EntityUtils, LocationPathDBType, PointType } from "./_utils.entity";
 import { CalendarDayEnum } from "./calendar.entity";
 import {
-  GradeDBType,
   GradeEntity,
   GradeTripDBType,
   GradeTripType,
   GradeType,
   HourFormat,
 } from "./grade.entity";
+import { SchoolType } from "./school.entity";
 import {
   TripDirectionEntity,
   TripDirectionEnum,
@@ -28,17 +28,20 @@ import {
 
 export namespace TripEntity {
   export function build(dbData: TripDBType): TripType {
+    const grades: GradeType[] = dbData.grades.map((gradeId) => {
+      const grade: GradeType | undefined = SchoolStore.getGradeFromId(gradeId);
+      if (grade) {
+        return grade;
+      }
+    }) as GradeType[];
+    const schools: SchoolType[] = SchoolStore.getAllOfGrades(grades);
+
     return {
       id: dbData.id,
       name: dbData.name,
       color: "#" + dbData.color,
-      grades:
-        dbData.grades != undefined
-          ? dbData.grades.map((grade) =>
-              //TODO à revoir
-              GradeEntity.build(grade as GradeDBType)
-            )
-          : [],
+      schools,
+      grades,
       startTime: dbData.start_time
         ? GradeEntity.getHourFormatFromString(dbData.start_time)
         : undefined,
@@ -67,6 +70,7 @@ export namespace TripEntity {
       color: COLOR_GREEN_BASE,
       tripPoints: [],
       waypoints: [],
+      schools: [],
       grades: [],
       latLngs: [],
       selected: false,
@@ -193,7 +197,7 @@ export type TripDBType = {
   id: number;
   name: string;
   color: string;
-  grades: (number | GradeDBType)[]; //TODO Clarify using of grades type
+  grades: number[]; //TODO Clarify using of grades type
   start_time: string;
   days: CalendarDayEnum[];
   trip_direction_id: number;
@@ -209,6 +213,7 @@ export type TripType = {
   name: string;
   color: string;
   grades: GradeType[];
+  schools: SchoolType[];
   startTime?: HourFormat;
   days: CalendarDayEnum[];
   tripDirectionId: number;

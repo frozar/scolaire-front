@@ -1,7 +1,7 @@
 import L from "leaflet";
-import { For, createEffect, createSignal } from "solid-js";
+import { For, createSignal } from "solid-js";
 import { TripType } from "../../../../_entities/trip.entity";
-import { Trip } from "../../map/component/molecule/Trip";
+import { Trip } from "../molecule/Trip";
 
 export const arrowsMap = new Map<number, L.Marker[]>();
 
@@ -13,14 +13,10 @@ export type leafletBusTripType = {
 export const [displayTrips, setDisplayTrips] = createSignal<TripType[]>([]);
 
 export function Trips(props: { map: L.Map }) {
-  createEffect(() => {
-    console.log(displayTrips());
-  });
-
   return (
     <For each={displayTrips()}>
       {(trip) => {
-        return <Trip trip={trip} map={props.map} />;
+        return <Trip trip={trip} map={props.map} onRoad={true} />;
       }}
     </For>
   );

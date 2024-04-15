@@ -27,14 +27,19 @@ export namespace SchoolStore {
     });
   }
 
-  export function getAllOfGradeId(gradesId: number[]): SchoolType[] {
-    return getSchools().map((school) => {
+  export function getAllOfGrades(grades: GradeType[]): SchoolType[] {
+    const gradesId: number[] = grades.map((grade) => grade.id) as number[];
+
+    const output: SchoolType[] = [];
+    for (const school of getSchools()) {
       if (
-        school.grades.some((grade) => gradesId.includes(grade.id as number))
+        school.grades.some((grade) => grade.id && gradesId.includes(grade.id))
       ) {
-        return school;
+        output.push(school);
       }
-    }) as SchoolType[];
+    }
+
+    return output;
   }
 
   export async function update(school: SchoolType) {
@@ -62,6 +67,16 @@ export namespace SchoolStore {
       });
       return output;
     });
+  }
+
+  export function getGradeFromId(id: number) {
+    for (const school of getSchools()) {
+      for (const grade of school.grades) {
+        if (grade.id && id == grade.id) {
+          return grade;
+        }
+      }
+    }
   }
 
   export function editGrade(grade: GradeType) {

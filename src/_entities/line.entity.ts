@@ -15,9 +15,7 @@ export class BusLineEntity {
       dbLine.grades != undefined
         ? dbLine.grades.map((grade) => GradeEntity.build(grade))
         : [];
-
-    const gradesId: number[] = dbLine.grades.map((grade) => grade.id);
-    const schools: SchoolType[] = SchoolStore.getAllOfGradeId(gradesId);
+    const schools: SchoolType[] = SchoolStore.getAllOfGrades(grades);
 
     const [selected, setSelected] = createSignal<boolean>(false);
     const [color, setColor] = createSignal<string>("#" + dbLine.color);
