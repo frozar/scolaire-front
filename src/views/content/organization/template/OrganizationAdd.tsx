@@ -1,5 +1,6 @@
 import { Show, createEffect, createSignal, onMount } from "solid-js";
 import {
+  OrganizationEntity,
   OrganizationMapBoundType,
   OrganizationType,
 } from "../../../../_entities/organization.entity";
@@ -16,21 +17,24 @@ import {
 } from "../../../../signaux";
 import { ViewManager } from "../../ViewManager";
 import LabeledInputField from "../../board/component/molecule/LabeledInputField";
-import { OrganizationAddMapBound } from "../organism/OrganizationAddMapBound";
+import { OrganizationMapWrapper } from "../organism/OrganizationMapWrapper";
 import "./OrganizationAdd.css";
 
 export function OrganizationAdd() {
   const [canSubmit, setCanSubmit] = createSignal(false);
   const [foundUser, setFoundUser] = createSignal<OrganizationMemberType>();
   const [userSearch, setUserSearch] = createSignal("");
+
   const [localUsers, setLocalUsers] = createSignal<OrganizationMemberType[]>(
     []
   );
+
   const [newOrg, setNewOrg] = createSignal<OrganizationType>(
-    {} as OrganizationType
+    OrganizationEntity.defaultOrganization()
   );
+
   const [newMapBound, setNewMapBounds] = createSignal<OrganizationMapBoundType>(
-    {} as OrganizationMapBoundType
+    OrganizationEntity.defaultOrganizationMapBounds()
   );
 
   function searchForUser(value: string) {
@@ -129,7 +133,11 @@ export function OrganizationAdd() {
             </div>
           </Show>
         </div>
-        <OrganizationAddMapBound setter={setNewMapBounds} />
+        <OrganizationMapWrapper
+          mapBounds={newMapBound()}
+          mapBoundssetter={setNewMapBounds}
+          editing
+        />
       </div>
     </div>
   );
