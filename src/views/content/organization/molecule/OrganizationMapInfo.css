@@ -1,0 +1,15 @@
+.map-info-title {
+  @apply font-bold;
+}
+
+.map-info-container {
+  @apply py-2;
+}
+
+.map-info-subtitle {
+  @apply font-semibold;
+}
+
+.map-info-item {
+  @apply pl-4;
+}
