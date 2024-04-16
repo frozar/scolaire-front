@@ -16,6 +16,7 @@ import { setSchoolGradeDetails } from "./schools/component/template/SchoolGradeD
 import { setSchoolGradeEdit } from "./schools/component/template/SchoolGradeEdit";
 import { setStopDetails } from "./stops/component/template/StopDetails";
 import { setSelectedTrip } from "./trips/template/TripDetails";
+import { setSelectedEditTrip } from "./trips/template/TripEdit";
 
 // You have to set the MapBoard before the SelectMenu
 export namespace ViewManager {
@@ -58,6 +59,14 @@ export namespace ViewManager {
   export function tripDetails(trip: TripType) {
     setSelectedTrip(trip);
     setMapBoard("trip-details");
+    //TODO change lines to graphicage post board refacto
+    setSelectedMenu("lines");
+    //TODO to delete post refacto
+    changeBoard(undefined);
+  }
+  export function tripEdit(trip: TripType) {
+    setSelectedEditTrip(trip);
+    setMapBoard("trip-edit");
     //TODO change lines to graphicage post board refacto
     setSelectedMenu("lines");
     //TODO to delete post refacto
