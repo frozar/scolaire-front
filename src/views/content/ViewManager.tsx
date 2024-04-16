@@ -9,6 +9,7 @@ import { setMapBoard } from "./_component/template/MapBoardManager";
 import { changeBoard } from "./board/component/template/ContextManager";
 import { setSelectedLine } from "./line/template/LineDetails";
 import { setDetailsOrganization } from "./organization/template/OrganizationDetails";
+import { setEditOrganization } from "./organization/template/OrganizationEdit";
 import { setSelectedRoad } from "./paths/template/PathDetails";
 import { setEditRoad } from "./paths/template/PathEdit";
 import { setSchoolDetails } from "./schools/component/template/SchoolDetails";
@@ -176,6 +177,13 @@ export namespace ViewManager {
   export function organizationDetails(org: OrganizationType) {
     setDetailsOrganization(org);
     setSelectedMenu("organization-details");
+    //TODO to delete post refacto
+    changeBoard(undefined);
+  }
+
+  export function organizationEdit(org: OrganizationType) {
+    setEditOrganization(org);
+    setSelectedMenu("organization-edit");
     //TODO to delete post refacto
     changeBoard(undefined);
   }

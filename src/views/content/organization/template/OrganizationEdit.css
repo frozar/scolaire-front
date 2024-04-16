@@ -1,0 +1,7 @@
+.organization-edit-buttons {
+  @apply flex gap-3;
+}
+
+.organization-edit-input-container {
+  @apply flex flex-col gap-6;
+}

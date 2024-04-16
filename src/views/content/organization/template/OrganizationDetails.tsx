@@ -5,6 +5,7 @@ import {
   OrganizationType,
 } from "../../../../_entities/organization.entity";
 import Button from "../../../../component/atom/Button";
+import { ViewManager } from "../../ViewManager";
 import { OrganizationMapWrapper } from "../organism/OrganizationMapWrapper";
 import "./OrganizationDetails.css";
 
@@ -16,7 +17,14 @@ export function OrganizationDetails() {
     <div class="organizations">
       <header>
         <h1>Details de l'organisation</h1>
-        <Button onClick={() => console.log()} label="Editer l'organisation" />
+        <Button
+          onClick={() =>
+            ViewManager.organizationEdit(
+              detailsOrganization() as OrganizationType
+            )
+          }
+          label="Editer l'organisation"
+        />
       </header>
       <div>
         <p>Nom : {detailsOrganization()?.name} </p>

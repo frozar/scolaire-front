@@ -14,6 +14,7 @@ import { Maps } from "./maps/Maps";
 import { Market } from "./market/organism/Market";
 import { OrganizationAdd } from "./organization/template/OrganizationAdd";
 import { OrganizationDetails } from "./organization/template/OrganizationDetails";
+import { OrganizationEdit } from "./organization/template/OrganizationEdit";
 import { OrganizationMembers } from "./organization/template/OrganizationMembers";
 import { Organizations } from "./organization/template/Organizations";
 import { Settings } from "./parameters/organism/Settings";
@@ -60,6 +61,10 @@ export function Contents() {
 
           <Match when={getSelectedMenu() == "organization-details"}>
             <OrganizationDetails />
+          </Match>
+
+          <Match when={getSelectedMenu() == "organization-edit"}>
+            <OrganizationEdit />
           </Match>
 
           <Match when={getSelectedMenu() == "service"}>

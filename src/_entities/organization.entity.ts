@@ -16,7 +16,7 @@ export namespace OrganizationEntity {
       id: organization.id,
       name: organization.name,
       status: organization.status,
-      referent_id: organization.referent.user_id,
+      referent_id: organization.referent.id,
       map_bounds: organization.mapBounds,
     };
   }

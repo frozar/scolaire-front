@@ -1,6 +1,5 @@
 import { Show, createEffect, createSignal, onMount } from "solid-js";
 import {
-  OrganizationEntity,
   OrganizationMapBoundType,
   OrganizationType,
 } from "../../../../_entities/organization.entity";
@@ -18,10 +17,17 @@ import {
 import { ViewManager } from "../../ViewManager";
 import LabeledInputField from "../../board/component/molecule/LabeledInputField";
 import { OrganizationMapWrapper } from "../organism/OrganizationMapWrapper";
-import "./OrganizationAdd.css";
+import "./OrganizationEdit.css";
 
-export function OrganizationAdd() {
+export const [editOrganization, setEditOrganization] =
+  createSignal<OrganizationType>({} as OrganizationType);
+
+export function OrganizationEdit() {
   const [canSubmit, setCanSubmit] = createSignal(false);
+  const [editMapBounds, setEditMapBounds] =
+    createSignal<OrganizationMapBoundType>(
+      editOrganization()?.mapBounds as OrganizationMapBoundType
+    );
   const [foundUser, setFoundUser] = createSignal<OrganizationMemberType>();
   const [userSearch, setUserSearch] = createSignal("");
 
@@ -29,13 +35,47 @@ export function OrganizationAdd() {
     []
   );
 
-  const [newOrg, setNewOrg] = createSignal<OrganizationType>(
-    OrganizationEntity.defaultOrganization()
-  );
+  createEffect(() => {
+    if (!editOrganization().name || !foundUser()) return setCanSubmit(false);
+    setCanSubmit(true);
+  });
 
-  const [newMapBound, setNewMapBounds] = createSignal<OrganizationMapBoundType>(
-    OrganizationEntity.defaultOrganizationMapBounds()
-  );
+  onMount(async () => {
+    if (OrganizationStore.getMembers().length <= 0) {
+      enableSpinningWheel();
+      const allUsers = await OrganisationService.getMembers();
+      setLocalUsers(allUsers);
+      disableSpinningWheel();
+    } else setLocalUsers(OrganizationStore.getMembers());
+    setFoundUser(editOrganization()?.referent);
+  });
+
+  async function submit() {
+    setEditOrganization((prev) => {
+      return {
+        ...prev,
+        mapBounds: editMapBounds(),
+        referent: foundUser() as OrganizationMemberType,
+      } as OrganizationType;
+    });
+    enableSpinningWheel();
+    const edited = await OrganisationService.edit(editOrganization());
+
+    const newList = OrganizationStore.get().map((item) => {
+      if (item.id == edited.id) return edited;
+      return item;
+    });
+    OrganizationStore.set(newList);
+    disableSpinningWheel();
+    addNewGlobalSuccessInformation(edited.name + " a bien été édité");
+    ViewManager.organizationDetails(edited);
+  }
+
+  function onNameInput(value: string) {
+    setEditOrganization((prev) => {
+      return { ...prev, name: value } as OrganizationType;
+    });
+  }
 
   function searchForUser(value: string) {
     setUserSearch(value);
@@ -49,59 +89,12 @@ export function OrganizationAdd() {
     });
   }
 
-  createEffect(() => {
-    if (
-      !newOrg().name ||
-      !newMapBound().corner1.lat ||
-      !newMapBound().corner1.lng ||
-      !newMapBound().corner2.lat ||
-      !newMapBound().corner2.lng ||
-      !foundUser()
-    )
-      return setCanSubmit(false);
-    setCanSubmit(true);
-  });
-
-  function onNameInput(value: string) {
-    setNewOrg((prev) => {
-      return { ...prev, name: value };
-    });
-  }
-
-  async function submit() {
-    setNewOrg((prev) => {
-      return {
-        ...prev,
-        mapBounds: newMapBound(),
-        status: "active",
-        referent: foundUser() as OrganizationMemberType,
-      };
-    });
-    enableSpinningWheel();
-    const created = await OrganisationService.create(newOrg());
-    disableSpinningWheel();
-    OrganizationStore.set((prev) => {
-      return [...prev, created];
-    });
-    addNewGlobalSuccessInformation("Organisation créée");
-    ViewManager.organizations();
-  }
-
-  onMount(async () => {
-    if (OrganizationStore.getMembers().length <= 0) {
-      enableSpinningWheel();
-      const allUsers = await OrganisationService.getMembers();
-      setLocalUsers(allUsers);
-      disableSpinningWheel();
-    } else setLocalUsers(OrganizationStore.getMembers());
-  });
-
   return (
     <div class="organizations">
       <header>
-        <h1>Ajout d'organisation</h1>
+        <h1>Edition d'organisation</h1>
       </header>
-      <div class="organization-add-buttons">
+      <div class="organization-edit-buttons">
         <Button
           label="Annuler"
           variant="danger"
@@ -109,13 +102,13 @@ export function OrganizationAdd() {
         />
         <Button label="Valider" isDisabled={!canSubmit()} onClick={submit} />
       </div>
-      <div class="organization-add-input-container">
+      <div class="organization-edit-input-container">
         <LabeledInputField
           label="Nom de l'organisation"
           name="name"
           placeholder="Entrer un nom"
           onInput={(e) => onNameInput(e.target.value)}
-          value={""}
+          value={editOrganization()?.name as string}
         />
         <div>
           <LabeledInputField
@@ -123,7 +116,7 @@ export function OrganizationAdd() {
             name="ref"
             onInput={(e) => searchForUser(e.target.value)}
             placeholder="Recherche par mail"
-            value={""}
+            value={editOrganization()?.referent.email as string}
           />
           <Show fallback={<div>Aucun référent trouvé</div>} when={foundUser()}>
             <div>
@@ -131,12 +124,12 @@ export function OrganizationAdd() {
               <p>Email : {foundUser()?.email}</p>
             </div>
           </Show>
+          <OrganizationMapWrapper
+            mapBounds={editMapBounds()}
+            mapBoundssetter={setEditMapBounds}
+            editing
+          />
         </div>
-        <OrganizationMapWrapper
-          mapBounds={newMapBound()}
-          mapBoundssetter={setNewMapBounds}
-          editing
-        />
       </div>
     </div>
   );
