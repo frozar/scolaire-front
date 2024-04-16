@@ -3,7 +3,11 @@ import { Match, Switch, createSignal, onMount } from "solid-js";
 import { BusLineEntity, LineType } from "../../../../_entities/line.entity";
 
 import { SchoolType } from "../../../../_entities/school.entity";
-import { disableSpinningWheel, enableSpinningWheel } from "../../../../signaux";
+import {
+  addNewGlobalSuccessInformation,
+  disableSpinningWheel,
+  enableSpinningWheel,
+} from "../../../../signaux";
 // TODO to fix -> doit importer un AddLineBoardContent ou similaire
 import { GradeType } from "../../../../_entities/grade.entity";
 import { StopType } from "../../../../_entities/stop.entity";
@@ -133,6 +137,7 @@ async function register() {
   LineStore.add(newBusLine);
 
   disableSpinningWheel();
+  addNewGlobalSuccessInformation(newBusLine.name + " a été créé");
   ViewManager.lines();
 }
 

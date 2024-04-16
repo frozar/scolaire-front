@@ -11,12 +11,14 @@ export namespace OrganizationEntity {
     };
   }
 
-  export function dbFormat(organization: OrganizationType) {
+  export function dbFormat(organization: OrganizationType, inCreate: boolean) {
+    let goodId = organization.referent.id;
+    if (inCreate) goodId = organization.referent.user_id;
     return {
       id: organization.id,
       name: organization.name,
       status: organization.status,
-      referent_id: organization.referent.id,
+      referent_id: goodId,
       map_bounds: organization.mapBounds,
     };
   }
