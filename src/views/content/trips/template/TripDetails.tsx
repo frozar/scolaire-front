@@ -19,8 +19,6 @@ import "./TripDetails.css";
 export const [selectedTrip, setSelectedTrip] = createSignal<TripType>();
 
 export function TripDetails() {
-  console.log(selectedTrip());
-
   onMount(() => {
     const trip = selectedTrip() as TripType;
     const stops: StopType[] = [];

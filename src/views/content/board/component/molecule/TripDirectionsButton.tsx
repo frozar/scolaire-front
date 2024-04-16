@@ -1,3 +1,4 @@
+import { createEffect } from "solid-js";
 import { TripDirectionEnum } from "../../../../../_entities/trip-direction.entity";
 import { CustomButton } from "../../../../../component/atom/CustomButton";
 
@@ -8,6 +9,9 @@ interface TripDirectionsButtonProps {
 }
 
 export function TripDirectionsButton(props: TripDirectionsButtonProps) {
+  createEffect(() => {
+    console.log(props.onDirection);
+  });
   return (
     <div class="flex gap-5">
       <CustomButton

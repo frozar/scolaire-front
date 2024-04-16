@@ -61,6 +61,8 @@ export namespace InitService {
   export async function getAll(): Promise<InitType> {
     const dbInit: InitDBType = await ServiceUtils.get("/init");
 
+    setTripDirections(dbInit.trip_directions);
+
     const schools = dbInit.school.map((dbSchool) =>
       SchoolEntity.build(dbSchool)
     );
@@ -97,8 +99,6 @@ export namespace InitService {
       CalendarEntity.buildCalendarPeriod(calendarPeriod)
     );
     CalendarPeriodStore.set(calendarPeriods);
-
-    setTripDirections(dbInit.trip_directions);
 
     const services = dbInit.services.map((service) =>
       ServiceEntity.build(service)

@@ -1,5 +1,6 @@
 import { createSignal } from "solid-js";
 import { LineType } from "../_entities/line.entity";
+import { TripType } from "../_entities/trip.entity";
 import { TripStore } from "./trip.store";
 
 export const [getLines, setLines] = createSignal<LineType[]>([]);
@@ -21,6 +22,12 @@ export namespace LineStore {
 
   export function remove(lineId: number) {
     set(getLines().filter((line) => line.id != lineId));
+  }
+
+  export function getFromTrip(trip: TripType) {
+    return getLines().find((line) => {
+      return line.trips.some((_trip) => _trip.id == trip.id);
+    });
   }
 }
 

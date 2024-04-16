@@ -45,4 +45,14 @@ export namespace TripDirectionEntity {
     const index = tripDirections().findIndex((item) => item.type == direction);
     return tripDirections()[index];
   }
+
+  export function findEnumById(id: number) {
+    let output = TripDirectionEnum.none;
+    for (const direction of tripDirections()) {
+      if (direction.id == id) {
+        output = direction.type;
+      }
+    }
+    return output;
+  }
 }
