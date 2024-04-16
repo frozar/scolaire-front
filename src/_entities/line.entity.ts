@@ -62,6 +62,7 @@ export class BusLineEntity {
   static dbFormat(line: LineType): {
     color: string;
     name: string;
+    schools: number[];
     stops: number[];
     grades: number[];
     trips: TripType[];
@@ -70,6 +71,7 @@ export class BusLineEntity {
     return {
       color: formatColorForDB(line.color()),
       name: name,
+      schools: line.schools.map((school) => school.id),
       stops: line.stops.map((stop) => stop.id),
       trips: line.trips,
       grades: line.grades.map((grade) => grade.id as number),

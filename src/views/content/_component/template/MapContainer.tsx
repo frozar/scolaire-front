@@ -3,9 +3,20 @@ import { Show, createEffect, createSignal, onMount } from "solid-js";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { useStateGui } from "../../../../StateGui";
+import {
+  OrganizationEntity,
+  OrganizationType,
+} from "../../../../_entities/organization.entity";
+import { OrganisationService } from "../../../../_services/organisation.service";
+import { OrganizationStore } from "../../../../_stores/organization.store";
 import { ImportCsvCanvas } from "../../../../component/ImportCsvCanvas";
-import { addNewUserInformation } from "../../../../signaux";
+import {
+  addNewUserInformation,
+  disableSpinningWheel,
+  enableSpinningWheel,
+} from "../../../../signaux";
 import { MessageLevelEnum, MessageTypeEnum, TileId } from "../../../../type";
+import { getSelectedOrganisation } from "../../board/component/organism/OrganisationSelector";
 import { onBoard } from "../../board/component/template/ContextManager";
 import { MapPanels } from "../../map/component/organism/MapPanels";
 import { getTileById } from "../../map/tileUtils";
@@ -92,9 +103,44 @@ export function MapContainer() {
       zoomDelta: 0.1,
       wheelPxPerZoomLevel: 200,
       tap: false,
-    }).setView([-20.930746, 55.527503], 13);
-
+    });
+    setMapBounds(leafletMap);
     setLeafletMap(leafletMap);
+  }
+
+  async function setMapBounds(map: L.Map) {
+    if (OrganizationStore.get().length <= 0) {
+      enableSpinningWheel();
+      const organizations = await OrganisationService.getAll();
+      disableSpinningWheel();
+      OrganizationStore.set(organizations);
+    }
+
+    const goodOrganization = OrganizationStore.get().find(
+      (org) => org.id == getSelectedOrganisation().organisation_id
+    ) as OrganizationType;
+
+    if (
+      goodOrganization.mapBounds.corner1.lat == 0 &&
+      goodOrganization.mapBounds.corner2.lat == 0 &&
+      goodOrganization.mapBounds.corner1.lng == 0 &&
+      goodOrganization.mapBounds.corner2.lng == 0
+    )
+      goodOrganization.mapBounds =
+        OrganizationEntity.defaultOrganizationMapBounds();
+
+    const corner1 = L.latLng(
+      goodOrganization.mapBounds.corner1.lat,
+      goodOrganization.mapBounds.corner1.lng
+    );
+
+    const corner2 = L.latLng(
+      goodOrganization.mapBounds.corner2.lat,
+      goodOrganization.mapBounds.corner2.lng
+    );
+
+    const bounds = L.latLngBounds(corner1, corner2);
+    map.fitBounds(bounds);
   }
 
   return (

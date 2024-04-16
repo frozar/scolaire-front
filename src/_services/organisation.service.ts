@@ -18,7 +18,7 @@ export type OrganizationMemberType = {
 
 export class OrganisationService {
   static async create(org: Omit<OrganizationType, "id">) {
-    const data = OrganizationEntity.dbFormat(org);
+    const data = OrganizationEntity.dbFormat(org, true);
     const xanoResult = await ServiceUtils.post("/organization", data, false);
     return OrganizationEntity.build(xanoResult);
   }
@@ -31,10 +31,10 @@ export class OrganisationService {
     return xanoResult.map((dbOrga) => OrganizationEntity.build(dbOrga));
   }
 
-  static async edit(organization: OrganizationType): Promise<OrganizationType> {
-    const data = OrganizationEntity.dbFormat(organization);
+  static async edit(org: OrganizationType): Promise<OrganizationType> {
+    const data = OrganizationEntity.dbFormat(org, false);
     const xanoResult: OrganizationDbType = await ServiceUtils.patch(
-      "/organization/" + organization.id,
+      "/organization/" + org.id,
       data,
       false
     );
