@@ -1,7 +1,6 @@
 import { Match, Show, Switch, createEffect, createSignal } from "solid-js";
 
 import { DrawTripBoard } from "../organism/DrawTripBoard";
-import { TripBoard } from "../organism/TripBoard";
 import InformationBoardLayout from "./InformationBoardLayout";
 
 // TODO retirer le type "undefined" du type "BoardTags" : c'est une erreur de conception
@@ -57,11 +56,6 @@ export default function () {
       <Show when={onBoard()}>
         <InformationBoardLayout>
           <Switch>
-            {/* TODO représente le TripDetail */}
-            <Match when={onBoard() == "line-details"}>
-              <TripBoard />
-            </Match>
-
             <Match when={onBoard() == "trip-draw"}>
               <DrawTripBoard />
             </Match>

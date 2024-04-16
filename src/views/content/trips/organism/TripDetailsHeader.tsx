@@ -30,3 +30,40 @@ export function TripDetailsHeader(props: { trip: TripType }) {
     </header>
   );
 }
+
+//TODO ancien btn delete
+// function displayRemoveConfirmation() {
+//     async function deleteTrip() {
+//       const idToCheck = (selectedTrip() as TripType).id;
+//       if (!idToCheck) return false;
+
+//       const idToRemove: number = idToCheck;
+//       const deletedTripId: number = await TripService.delete(idToRemove);
+
+//       if (deletedTripId) {
+//         changeBoard("trip");
+//         MapElementUtils.deselectAllPointsAndBusTrips();
+
+//         //TODO voir l'utilisation
+//         LineStore.set((prev) =>
+//           prev.map((line) => {
+//             return {
+//               ...line,
+//               trips: line.trips.filter((trip) => trip.id != deletedTripId),
+//             };
+//           })
+//         );
+//         return true;
+//       } else {
+//         return false;
+//       }
+//     }
+//     deselectAllPoints();
+//     if ((selectedTrip() as TripType).id) {
+//       setRemoveConfirmation({
+//         textToDisplay: "Êtes-vous sûr de vouloir supprimer la course : ",
+//         itemName: (selectedTrip() as TripType).name as string,
+//         validate: deleteTrip,
+//       });
+//     }
+//   }
