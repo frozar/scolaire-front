@@ -7,6 +7,8 @@ import { DisplayTripDaysAndDirection } from "../../board/component/organism/disp
 import CollapsibleElement from "../../line/atom/CollapsibleElement";
 import { TripDetailsHeader } from "../organism/TripDetailsHeader";
 
+import "./TripDetails.css";
+
 export const [selectedTrip, setSelectedTrip] = createSignal<TripType>();
 
 export function TripDetails() {

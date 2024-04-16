@@ -5,7 +5,7 @@ export const [selectedEditTrip, setSelectedEditTrip] = createSignal<TripType>();
 
 export function TripEdit() {
   return (
-    <div>
+    <div class="add-line-information-board-content">
       <div>TODO</div>
     </div>
   );

@@ -1,8 +1,8 @@
-.timeline-collapsise{
+.timeline-collapsise {
   @apply flex-[0.95] overflow-y-hidden flex flex-col;
 }
 
-.bus-trip-information-board-content{
+.bus-trip-information-board-content {
   @apply flex flex-col h-full;
 }
 
@@ -10,6 +10,6 @@
   @apply flex justify-between;
 }
 
-.bus-trip-information-board-content-name{
+.bus-trip-information-board-content-name {
   @apply text-2xl mb-4 mt-4 text-dark-teal;
 }
