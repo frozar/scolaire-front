@@ -13,6 +13,10 @@ export namespace StopStore {
     setStops(getStops().filter((stop) => stop.id != stopId));
   }
 
+  export function get(stopId:number){
+    return getStops().find((stop)=>stop.id == stopId)
+  }
+
   export function add(school: StopType) {
     setStops((prev) => {
       return [...prev, school];
