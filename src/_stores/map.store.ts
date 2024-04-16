@@ -19,6 +19,19 @@ export const defaultBoundingBox: BoundingBox = {
 export const [userMaps, setUserMaps] = createSignal<MapType[]>([]);
 
 export namespace MapStore {
+  export function getById(id: number | null) {
+    let output = null;
+    if (id != null && userMaps().length > 0) {
+      for (const map of userMaps()) {
+        if (map.id == id) {
+          output = map;
+          break;
+        }
+      }
+    }
+    return output;
+  }
+
   export async function fetchUserMaps() {
     const maps: MapType[] = await MapService.getAll();
 

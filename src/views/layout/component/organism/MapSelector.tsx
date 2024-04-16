@@ -13,9 +13,9 @@ import { setTrips } from "../../../content/map/component/organism/Trips";
 import { setSelectedMenu } from "../../menuItemFields";
 import "./MapSelector.css";
 
-export const [selectedMap, setSelectedMap] = createSignal<MapType | null>();
 const [, { setActiveMapId }] = useStateGui();
 
+export const [selectedMap, setSelectedMap] = createSignal<MapType | null>();
 export function MapSelector() {
   onMount(async () => {
     await MapStore.fetchUserMaps();
@@ -26,7 +26,7 @@ export function MapSelector() {
     setSelectedMap(MapsUtils.getSelectedMap(userMaps()));
 
     //TODO placer le refresh ailleur (avant le reload des data dans init)
-    if (!selectedMap()) {
+    if (!selectedMap() && selectedMap() != null) {
       setActiveMapId(null);
       SchoolStore.set([]);
       StopStore.set([]);

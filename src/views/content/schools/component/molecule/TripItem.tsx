@@ -4,18 +4,22 @@ import CardTitle from "../../../../../component/atom/CardTitle";
 import Pellet from "../../../../../component/atom/Pellet";
 import CardWrapper from "../../../../../component/molecule/CardWrapper";
 import ArretsLogo from "../../../../../icons/ArretsLogo";
-import { TripMapUtils } from "../../../../../utils/tripMap.utils";
+import { ViewManager } from "../../../ViewManager";
 import GradeLinkedSchool from "../atom/GradeLinkedSchool";
 import "./TripItem.css";
 
 export function TripItem(props: { trip: TripType; openOnClick?: boolean }) {
   const mergedProps = mergeProps({ openOnClick: true }, props);
+
   const schoolNames = () => {
     return props.trip.schools.map((school) => school.name ?? "");
   };
 
   function cardOnclick() {
-    if (mergedProps.openOnClick) TripMapUtils.onClickBusTrip(props.trip);
+    if (mergedProps.openOnClick) {
+      ViewManager.tripDetails(props.trip);
+      // TripMapUtils.onClickBusTrip(props.trip);
+    }
   }
 
   return (

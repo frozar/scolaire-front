@@ -4,6 +4,7 @@ import { OrganizationType } from "../../_entities/organization.entity";
 import { RoadType } from "../../_entities/road.entity";
 import { SchoolType } from "../../_entities/school.entity";
 import { StopType } from "../../_entities/stop.entity";
+import { TripType } from "../../_entities/trip.entity";
 import { setSelectedMenu } from "../layout/menuItemFields";
 import { setMapBoard } from "./_component/template/MapBoardManager";
 import { changeBoard } from "./board/component/template/ContextManager";
@@ -17,6 +18,8 @@ import { setSchoolOfAddGrade } from "./schools/component/template/SchoolGradeAdd
 import { setSchoolGradeDetails } from "./schools/component/template/SchoolGradeDetails";
 import { setSchoolGradeEdit } from "./schools/component/template/SchoolGradeEdit";
 import { setStopDetails } from "./stops/component/template/StopDetails";
+import { setSelectedTrip } from "./trips/template/TripDetails";
+import { setSelectedEditTrip } from "./trips/template/TripEdit";
 
 // You have to set the MapBoard before the SelectMenu
 export namespace ViewManager {
@@ -47,6 +50,26 @@ export namespace ViewManager {
   }
   export function lineAdd() {
     setMapBoard("line-add");
+    //TODO change lines to graphicage post board refacto
+    setSelectedMenu("lines");
+    //TODO to delete post refacto
+    changeBoard(undefined);
+  }
+
+  /**
+   * Trips
+   */
+  export function tripDetails(trip: TripType) {
+    setSelectedTrip(trip);
+    setMapBoard("trip-details");
+    //TODO change lines to graphicage post board refacto
+    setSelectedMenu("lines");
+    //TODO to delete post refacto
+    changeBoard(undefined);
+  }
+  export function tripEdit(trip: TripType) {
+    setSelectedEditTrip(trip);
+    setMapBoard("trip-edit");
     //TODO change lines to graphicage post board refacto
     setSelectedMenu("lines");
     //TODO to delete post refacto

@@ -16,15 +16,31 @@ import { tryConnection } from "./views/layout/authentication";
 
 import "./App.css";
 import { InitService } from "./_services/init.service";
+import { authenticated } from "./_stores/authenticated-user.store";
+import { CalendarPeriodStore } from "./_stores/calendar-period.store";
+import { CalendarStore } from "./_stores/calendar.store";
+import { LineStore } from "./_stores/line.store";
+import { SchoolStore } from "./_stores/school.store";
+import { StopStore } from "./_stores/stop.store";
+import { setTrips } from "./_stores/trip.store";
 import { inDuplication } from "./utils/duplicate.utils";
 import { Contents } from "./views/content/Contents";
 import { Dialogs } from "./views/content/board/component/organism/Dialogs";
-import { authenticated } from "./_stores/authenticated-user.store";
 
-const [, { getSelectedMenu, getActiveMapId }] = useStateGui();
+const [, { getSelectedMenu, getActiveMapId, setActiveMapId }] = useStateGui();
 
 export default () => {
-  onMount(async () => await tryConnection());
+  onMount(async () => {
+    await tryConnection();
+
+    setActiveMapId(null);
+    SchoolStore.set([]);
+    StopStore.set([]);
+    CalendarStore.set([]);
+    CalendarPeriodStore.set([]);
+    setTrips([]);
+    LineStore.set([]);
+  });
 
   // This line is to disable right click menu, necessary to remove point in line under construction with the right click
   createEffect(() => {

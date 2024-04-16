@@ -3,16 +3,12 @@ import { PathType } from "../_entities/path.entity";
 import { TripPointType, TripType } from "../_entities/trip.entity";
 import { getLines } from "../_stores/line.store";
 import { updatePointColor } from "../leafletUtils";
-import {
-  changeBoard,
-  onBoard,
-} from "../views/content/board/component/template/ContextManager";
+import { ViewManager } from "../views/content/ViewManager";
+import { onBoard } from "../views/content/board/component/template/ContextManager";
 import { deselectAllPoints } from "../views/content/map/component/organism/Points";
-import {
-  deselectAllTrips,
-  setselectedTrip,
-} from "../views/content/map/component/organism/Trips";
+import { deselectAllTrips } from "../views/content/map/component/organism/Trips";
 
+//TODO delete tout ou partie
 export namespace TripMapUtils {
   export function onClickPath(path: PathType) {
     if (onBoard() == "path-draw" || onBoard() == "path-details") return;
@@ -44,9 +40,7 @@ export namespace TripMapUtils {
           }
         });
 
-        setselectedTrip(trip);
-
-        changeBoard("line-details");
+        ViewManager.tripDetails(trip);
 
         updatePointColor();
     }
