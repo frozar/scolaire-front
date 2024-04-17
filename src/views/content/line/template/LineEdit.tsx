@@ -1,3 +1,4 @@
+import { createSignal } from "solid-js";
 import { BusLineEntity, LineType } from "../../../../_entities/line.entity";
 import { BusLineService } from "../../../../_services/line.service";
 import { LineStore } from "../../../../_stores/line.store";
@@ -9,22 +10,28 @@ import {
 import { ViewManager } from "../../ViewManager";
 import { LineAddOrUpdate } from "./LineAddOrUpdate";
 
-export function LineAdd() {
+export const [editLine, setEditLine] = createSignal<LineType>(
+  BusLineEntity.defaultBusLine()
+);
+
+export function LineEdit() {
   async function submit(line: LineType) {
     enableSpinningWheel();
-    const newBusLine: LineType = await BusLineService.create(line);
-    LineStore.add(newBusLine);
+    const updated = await BusLineService.update(line);
+    LineStore.set((prev) => {
+      return prev.map((line) => {
+        if (line.id == updated.id) return updated;
+        return line;
+      });
+    });
     disableSpinningWheel();
-    addNewGlobalSuccessInformation(newBusLine.name + " a été créé");
-    ViewManager.lines();
+    ViewManager.lineDetails(updated);
+    addNewGlobalSuccessInformation(updated.name + " a bien édité");
   }
 
   return (
     <div>
-      <LineAddOrUpdate
-        line={BusLineEntity.defaultBusLine()}
-        submitFunction={submit}
-      />
+      <LineAddOrUpdate line={editLine()} submitFunction={submit} />
     </div>
   );
 }

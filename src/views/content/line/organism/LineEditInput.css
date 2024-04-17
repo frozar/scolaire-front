@@ -1,0 +1,3 @@
+.color-picker-offset {
+  @apply flex mt-4 justify-between;
+}
