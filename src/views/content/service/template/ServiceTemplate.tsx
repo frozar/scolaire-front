@@ -50,6 +50,7 @@ export function ServiceTemplate(): JSXElement {
   return (
     <div id="service-template">
       <ServiceLeftBoard />
+      {/* TODO créer le composant FlatGraphic qui englobera une liste de <Services>*/}
       <Services />
     </div>
   );
