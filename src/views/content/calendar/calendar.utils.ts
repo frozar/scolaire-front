@@ -2,7 +2,9 @@ import {
   CalendarDayEnum,
   CalendarPeriodType,
   CalendarType,
+  OrderedDaysList,
 } from "../../../_entities/calendar.entity";
+import { GradeType } from "../../../_entities/grade.entity";
 import {
   TripDirectionEntity,
   TripDirectionEnum,
@@ -105,6 +107,52 @@ export namespace CalendarUtils {
       );
 
     return day >= startDate() && day <= calendarPeriod.endDate;
+  }
+
+  export function orderedDays(days: CalendarDayEnum[]): CalendarDayEnum[] {
+    const output: CalendarDayEnum[] = [];
+    for (const day of OrderedDaysList) {
+      if (days.length == output.length) {
+        break;
+      }
+      for (const _day of days) {
+        if (_day == day) {
+          output.push(day);
+          break;
+        }
+      }
+    }
+    return output;
+  }
+
+  export function commonDaysBetweenGrades(
+    grades: GradeType[],
+    direction: TripDirectionEnum
+  ) {
+    const unusedDays: CalendarDayEnum[] = [];
+    for (const genericDay of OrderedDaysList) {
+      for (const grade of grades) {
+        if (grade.calendar) {
+          if (
+            !grade.calendar.rules.some(
+              (rule) =>
+                rule.day == genericDay &&
+                rule.tripTypeId &&
+                (TripDirectionEntity.findEnumById(rule.tripTypeId) ==
+                  direction ||
+                  TripDirectionEntity.findEnumById(rule.tripTypeId) ==
+                    TripDirectionEnum.roundTrip)
+            )
+          ) {
+            unusedDays.push(genericDay);
+          }
+        }
+      }
+    }
+
+    return CalendarUtils.orderedDays(
+      OrderedDaysList.filter((day) => !unusedDays.includes(day))
+    );
   }
 
   export function dayToFrench(day: CalendarDayEnum): string {

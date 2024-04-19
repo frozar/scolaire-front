@@ -9,14 +9,22 @@ import { SelectSchoolItem } from "../molecule/SelectSchoolItem";
 
 export function SelectSchoolsStep(props: {
   schools: SchoolType[];
+  availableSchools?: SchoolType[];
   previousStep: () => void;
   nextStep: () => void;
   onUpdate: (schools: SchoolType[]) => void;
 }) {
   onMount(() => {
-    setDisplaySchools(getSchools());
+    if (props.availableSchools) {
+      setDisplaySchools(props.availableSchools);
+    } else {
+      setDisplaySchools(getSchools());
+    }
     setSchoolPointOnClick(() => schoolOnClick);
   });
+
+  //TODO permettre la modification des couleur en fonction du schools if selected
+
   onCleanup(() => {
     setDisplaySchools([]);
     setSchoolPointOnClick();
