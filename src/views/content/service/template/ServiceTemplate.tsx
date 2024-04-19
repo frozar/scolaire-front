@@ -1,11 +1,10 @@
 import { JSXElement, createSignal, onMount } from "solid-js";
-import { ServiceLeftBoard } from "../organism/ServiceLeftBoard";
-import { Services } from "../organism/Services";
 
 import { OsrmService } from "../../../../_services/osrm.service";
 import { disableSpinningWheel, enableSpinningWheel } from "../../../../signaux";
 import { BusServiceUtils } from "../../../../utils/busService.utils";
 import { HlpMatrixType } from "../../../../utils/serviceGrid.utils";
+import { FlatGraphics } from "../organism/FlatGraphics";
 import "./ServiceTemplate.css";
 
 export const [selectedService, setSelectedService] = createSignal<number>();
@@ -49,9 +48,10 @@ export function ServiceTemplate(): JSXElement {
 
   return (
     <div id="service-template">
-      <ServiceLeftBoard />
+      <FlatGraphics />
+      {/* <ServiceLeftBoard /> */}
       {/* TODO créer le composant FlatGraphic qui englobera une liste de <Services>*/}
-      <Services />
+      {/* <Services /> */}
     </div>
   );
 }

@@ -4,6 +4,10 @@ import {
   CalendarEntity,
   CalendarPeriodDBType,
 } from "../_entities/calendar.entity";
+import {
+  FlatGraphicDBType,
+  FlatGraphicEntity,
+} from "../_entities/flatGraphic.entity";
 import { BusLineEntity, LineDBType, LineType } from "../_entities/line.entity";
 import { RoadDBType, RoadEntity } from "../_entities/road.entity";
 import {
@@ -21,6 +25,7 @@ import {
 } from "../_entities/trip-direction.entity";
 import { CalendarPeriodStore } from "../_stores/calendar-period.store";
 import { CalendarStore } from "../_stores/calendar.store";
+import { FlatGraphicStore } from "../_stores/flatGraphics.store";
 import { LineStore } from "../_stores/line.store";
 import { SchoolStore } from "../_stores/school.store";
 import { StopStore } from "../_stores/stop.store";
@@ -49,6 +54,7 @@ type InitDBType = {
   transporter: TransporterType[];
   roads: RoadDBType[];
   bus_stops: BusStopDBType[];
+  flat_graphics: FlatGraphicDBType[];
 };
 
 export type InitType = {
@@ -108,6 +114,11 @@ export namespace InitService {
 
     const settings = dbInit.settings;
     setSettings(settings);
+
+    const FlatGraphics = dbInit.flat_graphics.map((graph) =>
+      FlatGraphicEntity.build(graph)
+    );
+    FlatGraphicStore.set(FlatGraphics);
 
     return { schools, stops, busLines };
   }

@@ -28,7 +28,7 @@ import {
 
 export namespace TripEntity {
   export function build(dbData: TripDBType): TripType {
-    const grades: GradeType[] = dbData.trip.grades.map((gradeId) => {
+    const grades: GradeType[] = dbData.grades.map((gradeId) => {
       const grade: GradeType | undefined = SchoolStore.getGradeFromId(gradeId);
       if (grade) {
         return grade;
@@ -37,29 +37,28 @@ export namespace TripEntity {
     const schools: SchoolType[] = SchoolStore.getAllOfGrades(grades);
 
     return {
-      id: dbData.trip.id,
-      name: dbData.trip.name,
-      color: "#" + dbData.trip.color,
+      id: dbData.id,
+      name: dbData.name,
+      color: "#" + dbData.color,
       schools,
       grades,
-      startTime: dbData.trip.start_time
-        ? GradeEntity.getHourFormatFromString(dbData.trip.start_time)
+      startTime: dbData.start_time
+        ? GradeEntity.getHourFormatFromString(dbData.start_time)
         : undefined,
-      days: dbData.trip.days,
-      tripDirectionId: dbData.trip.trip_direction_id,
-      busCategoriesId: dbData.trip.bus_categories_id,
-      allotmentId: dbData.trip.allotment_id,
+      days: dbData.days,
+      tripDirectionId: dbData.trip_direction_id,
+      busCategoriesId: dbData.bus_categories_id,
+      allotmentId: dbData.allotment_id,
       tripPoints: buildTripPointType(
-        dbData.trip.trip_stop,
-        dbData.trip.days,
-        TripDirectionEntity.FindDirectionById(dbData.trip.trip_direction_id)
-          .type
+        dbData.trip_stop,
+        dbData.days,
+        TripDirectionEntity.FindDirectionById(dbData.trip_direction_id).type
       ),
-      waypoints: WaypointEntity.formatWaypointType(dbData.trip.waypoint),
-      latLngs: dbData.trip.polyline
-        ? dbData.trip.polyline.data.map((item) => L.latLng(item.lat, item.lng))
+      waypoints: WaypointEntity.formatWaypointType(dbData.waypoint),
+      latLngs: dbData.polyline
+        ? dbData.polyline.data.map((item) => L.latLng(item.lat, item.lng))
         : [],
-      metrics: dbData.trip.metrics,
+      metrics: dbData.metrics,
       //TODO to delete
       selected: false,
     };
@@ -195,22 +194,21 @@ export namespace TripEntity {
 }
 
 export type TripDBType = {
-  trip: {
-    id: number;
-    name: string;
-    color: string;
-    grades: number[]; //TODO Clarify using of grades type
-    start_time: string;
-    days: CalendarDayEnum[];
-    trip_direction_id: number;
-    bus_categories_id: number;
-    allotment_id: number;
-    trip_stop: TripPointDBType[];
-    waypoint: WaypointDBType[];
-    polyline: LocationPathDBType;
-    metrics: TripMetricType;
-  };
+  id: number;
+  name: string;
+  color: string;
+  grades: number[]; //TODO Clarify using of grades type
+  start_time: string;
+  days: CalendarDayEnum[];
+  trip_direction_id: number;
+  bus_categories_id: number;
+  allotment_id: number;
+  trip_stop: TripPointDBType[];
+  waypoint: WaypointDBType[];
+  polyline: LocationPathDBType;
+  metrics: TripMetricType;
 };
+
 export type TripType = {
   id?: number;
   name: string;
