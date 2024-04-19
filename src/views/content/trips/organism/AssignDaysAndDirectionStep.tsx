@@ -1,52 +1,63 @@
-import { createEffect, createSignal, onMount } from "solid-js";
-import { RulesType } from "../../../../_entities/calendar.entity";
+import { For, createEffect, createSignal, onMount } from "solid-js";
+import { CalendarDayEnum } from "../../../../_entities/calendar.entity";
 import { GradeType } from "../../../../_entities/grade.entity";
 import {
   TripDirectionEntity,
   TripDirectionEnum,
 } from "../../../../_entities/trip-direction.entity";
-import { TripType } from "../../../../_entities/trip.entity";
+import { LabeledCheckbox } from "../../../../component/molecule/LabeledCheckbox";
 import { TripDirectionsButton } from "../../board/component/molecule/TripDirectionsButton";
-
-type tripDaysAndDirectionType = {
-  keep: boolean;
-} & RulesType;
-
-const [tripDaysAndDirection, setTripDaysAndDirection] = createSignal<
-  tripDaysAndDirectionType[]
->([]);
-
-const [onTripDirection, setOnTripDirection] = createSignal<TripDirectionEnum>(
-  TripDirectionEnum.coming
-);
+import { CalendarUtils } from "../../calendar/calendar.utils";
 
 // TODO review this entire file for facto and simplification
 export function AssignDaysAndDirectionStep(props: {
   grades: GradeType[];
-  trip: TripType;
+  days: CalendarDayEnum[];
+  directionId: number;
   onUpdateDirection: (direction: TripDirectionEnum) => void;
+  onUpdateDays: (days: CalendarDayEnum[]) => void;
 }) {
-  const checked: GradeType[] = [];
-  const rulesList: RulesType[][] = [];
+  const [commonDays, setCommonDays] = createSignal<CalendarDayEnum[]>([]);
 
+  const [selectedDays, setSelectedDays] = createSignal<CalendarDayEnum[]>([]);
+
+  const [onTripDirection, setOnTripDirection] = createSignal<TripDirectionEnum>(
+    TripDirectionEnum.coming
+  );
   onMount(() => {
-    setOnTripDirection(
-      TripDirectionEntity.findEnumById(props.trip.tripDirectionId)
-    );
+    setOnTripDirection(TripDirectionEntity.findEnumById(props.directionId));
+    setSelectedDays(props.days);
   });
 
   createEffect(() => {
     props.onUpdateDirection(onTripDirection());
   });
 
-  // createEffect(() => { console.log(trip)
-  //   setCommonDay([]);
-  //   checked = [];
-  //   rulesList = [];
+  createEffect(() => {
+    console.log("setCommonDays(");
+    setCommonDays(
+      CalendarUtils.commonDaysBetweenGrades(props.grades, onTripDirection())
+    );
+  });
 
-  //   getCommonDay();
-  //   processTripDirection();
-  // });
+  createEffect(() => {
+    setSelectedDays((prevDays) => {
+      const selectedDays: CalendarDayEnum[] = [];
+      for (const prevDay of prevDays) {
+        if (
+          CalendarUtils.commonDaysBetweenGrades(
+            props.grades,
+            onTripDirection()
+          ).includes(prevDay)
+        ) {
+          selectedDays.push(prevDay);
+        }
+      }
+      //TODO retravailler le composant global
+      // props.onUpdateDays(selectedDays);
+      return selectedDays;
+    });
+  });
 
   return (
     <div class="mt-5">
@@ -58,62 +69,27 @@ export function AssignDaysAndDirectionStep(props: {
         onDirection={onTripDirection()}
       />
 
-      {/* <For each={tripDaysAndDirection()}>
+      <For each={commonDays()}>
         {(day) => (
           <LabeledCheckbox
-            checked={day.keep}
-            label={CalendarUtils.dayToFrench(day.day)}
-            for={day.day}
+            checked={selectedDays().includes(day)}
+            label={CalendarUtils.dayToFrench(day)}
+            for={day}
             onChange={() => {
-              setTripDaysAndDirection((prev) => {
-                const datas = [...prev];
-                datas.map((item) => {
-                  if (item.day == day.day) {
-                    item.keep = !item.keep;
-                  }
-                });
-                return datas;
+              setSelectedDays((prev) => {
+                let datas = [...prev];
+                if (datas.includes(day)) {
+                  datas = datas.filter((_day) => _day != day);
+                } else {
+                  datas.push(day);
+                }
+                return CalendarUtils.orderedDays(datas);
               });
+              props.onUpdateDays(selectedDays());
             }}
           />
         )}
-      </For> */}
+      </For>
     </div>
   );
 }
-
-// function getCommonDay() {
-//   const calendars = checked.flatMap((item) => item.calendar);
-//   for (const calendar of calendars)
-//     rulesList.push(calendar?.rules.map((item) => item) ?? []);
-
-//   const everyDayRule = rulesList.flatMap((item) => item.map((item) => item));
-//   const weekDays = Object.values(CalendarDayEnum);
-
-//   weekDays.forEach((day) => {
-//     const occurance = everyDayRule.filter((item) => item.day == day);
-//     if (occurance.length == calendars.length)
-//       setCommonDay((prev) => [...prev, { ...occurance[0], keep: true }]);
-//   });
-// }
-
-// function processTripDirection() {
-//   const datas = commonDay()
-//     .filter((item) => {
-//       const direction = TripDirectionEntity.FindDirectionById(item.tripTypeId);
-//       if (!item.tripDirection) item.tripDirection = direction;
-//       if (
-//         item.tripDirection.type == onTripDirection() ||
-//         item.tripDirection.type == TripDirectionEnum.roundTrip
-//       )
-//         return item;
-//     })
-//     .map((item) => {
-//       if (item.tripDirection.type == TripDirectionEnum.roundTrip)
-//         item.tripDirection = TripDirectionEntity.findDirectionByDirectionName(
-//           onTripDirection()
-//         );
-//       return { ...item };
-//     });
-//   setTripDaysAndDirection(datas);
-// }

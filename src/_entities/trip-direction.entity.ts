@@ -46,6 +46,16 @@ export namespace TripDirectionEntity {
     return tripDirections()[index];
   }
 
+  export function findIdByEnum(tripDirection: TripDirectionEnum) {
+    let output = 0;
+    for (const direction of tripDirections()) {
+      if (direction.type == tripDirection) {
+        output = direction.id;
+      }
+    }
+    return output;
+  }
+
   export function findEnumById(id: number) {
     let output = TripDirectionEnum.none;
     for (const direction of tripDirections()) {

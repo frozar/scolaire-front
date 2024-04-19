@@ -25,7 +25,7 @@ export const [tripDaysAndDirection, setTripDaysAndDirection] = createSignal<
 export const [onTripDirection, setOnTripDirection] =
   createSignal<TripDirectionEnum>(TripDirectionEnum.coming);
 
-// TODO review this entire file for facto and simplification
+// TODO to delete
 export function AssignDaysAndDirectionToTrip() {
   const [commonDay, setCommonDay] = createSignal<tripDaysAndDirectionType[]>(
     []

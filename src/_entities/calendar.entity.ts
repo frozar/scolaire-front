@@ -134,6 +134,16 @@ export enum CalendarDayEnum {
   sunday = "sunday",
 }
 
+export const OrderedDaysList = [
+  CalendarDayEnum.monday,
+  CalendarDayEnum.tuesday,
+  CalendarDayEnum.wednesday,
+  CalendarDayEnum.thursday,
+  CalendarDayEnum.friday,
+  CalendarDayEnum.saturday,
+  CalendarDayEnum.sunday,
+];
+
 export type TripDirectionType = {
   id: number;
   type: TripDirectionEnum;

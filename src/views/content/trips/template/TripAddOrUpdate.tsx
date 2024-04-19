@@ -1,7 +1,12 @@
 import { Match, Switch, createSignal, onMount } from "solid-js";
+import { CalendarDayEnum } from "../../../../_entities/calendar.entity";
 import { GradeType } from "../../../../_entities/grade.entity";
 import { LineType } from "../../../../_entities/line.entity";
 import { SchoolType } from "../../../../_entities/school.entity";
+import {
+  TripDirectionEntity,
+  TripDirectionEnum,
+} from "../../../../_entities/trip-direction.entity";
 import { TripType } from "../../../../_entities/trip.entity";
 import { disableSpinningWheel, enableSpinningWheel } from "../../../../signaux";
 import { SelectGradesStep } from "../../line/organism/SelectGradesStep";
@@ -68,6 +73,23 @@ export function TripAddOrUpdate(props: {
       return { ...trip, grades: grades };
     });
   }
+  function onTripDirectionUpdate(direction: TripDirectionEnum) {
+    setCurrentTrip((trip) => {
+      return {
+        ...trip,
+        tripDirectionId: TripDirectionEntity.findIdByEnum(direction),
+      };
+    });
+  }
+  function onDaysUpdate(days: CalendarDayEnum[]) {
+    setCurrentTrip((trip) => {
+      return {
+        ...trip,
+        days: days,
+      };
+    });
+    console.log("trip post days update", currentTrip().days);
+  }
 
   return (
     <div class="add-line-information-board-content">
@@ -91,8 +113,10 @@ export function TripAddOrUpdate(props: {
           />
           <AssignDaysAndDirectionStep
             grades={currentTrip().grades}
-            trip={currentTrip()}
-            onUpdateDirection={(dir) => console.log(dir)}
+            directionId={currentTrip().tripDirectionId}
+            days={currentTrip().days}
+            onUpdateDirection={onTripDirectionUpdate}
+            onUpdateDays={onDaysUpdate}
           />
         </Match>
       </Switch>
