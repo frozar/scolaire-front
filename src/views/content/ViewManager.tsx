@@ -9,6 +9,7 @@ import { setSelectedMenu } from "../layout/menuItemFields";
 import { setMapBoard } from "./_component/template/MapBoardManager";
 import { changeBoard } from "./board/component/template/ContextManager";
 import { setSelectedLine } from "./line/template/LineDetails";
+import { setEditLine } from "./line/template/LineEdit";
 import { setDetailsOrganization } from "./organization/template/OrganizationDetails";
 import { setEditOrganization } from "./organization/template/OrganizationEdit";
 import { setSelectedRoad } from "./paths/template/PathDetails";
@@ -50,6 +51,15 @@ export namespace ViewManager {
   }
   export function lineAdd() {
     setMapBoard("line-add");
+    //TODO change lines to graphicage post board refacto
+    setSelectedMenu("lines");
+    //TODO to delete post refacto
+    changeBoard(undefined);
+  }
+
+  export function LineEdit(line: LineType) {
+    setEditLine(line);
+    setMapBoard("line-edit");
     //TODO change lines to graphicage post board refacto
     setSelectedMenu("lines");
     //TODO to delete post refacto

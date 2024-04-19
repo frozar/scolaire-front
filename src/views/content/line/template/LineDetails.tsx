@@ -60,11 +60,6 @@ export function LineDetails() {
     }
   });
 
-  function onClickUpdateLine() {
-    //TODO faire la logique update line
-    console.log("update line");
-  }
-
   function onClickDeleteLine() {
     setRemoveConfirmation({
       textToDisplay: "Êtes-vous sûr de vouloir supprimer la line : ",
@@ -91,7 +86,10 @@ export function LineDetails() {
 
           <div class="actions flex gap-5 items-center">
             <ButtonIcon icon={<TrashIcon />} onClick={onClickDeleteLine} />
-            <ButtonIcon icon={<PencilIcon />} onClick={onClickUpdateLine} />
+            <ButtonIcon
+              icon={<PencilIcon />}
+              onClick={() => ViewManager.LineEdit(localLine)}
+            />
           </div>
         </div>
         <div class="trips-board-header-infos">

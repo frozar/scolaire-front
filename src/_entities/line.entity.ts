@@ -60,6 +60,7 @@ export class BusLineEntity {
   }
 
   static dbFormat(line: LineType): {
+    bus_line_id: number;
     color: string;
     name: string;
     schools: number[];
@@ -67,8 +68,10 @@ export class BusLineEntity {
     grades: number[];
     trips: TripType[];
   } {
+    const id = line.id ? line.id : 0;
     const name = line.name ? line.name : "";
     return {
+      bus_line_id: id,
       color: formatColorForDB(line.color()),
       name: name,
       schools: line.schools.map((school) => school.id),
@@ -76,30 +79,6 @@ export class BusLineEntity {
       trips: line.trips,
       grades: line.grades.map((grade) => grade.id as number),
     };
-  }
-
-  static dbPartialFormat(line: Partial<LineType>): Partial<LineDBType> {
-    let output = {};
-
-    if (line.color) {
-      output = { ...output, color: formatColorForDB(line.color()) };
-    }
-
-    if (line.name) {
-      output = {
-        ...output,
-        name: line.name,
-      };
-    }
-    // TODO
-    // if (line.points) {
-    //   output = {
-    //     ...output,
-    //     bus_line_stop: formatBusLinePointDBType(line.points),
-    //   };
-    // }
-
-    return output;
   }
 }
 
