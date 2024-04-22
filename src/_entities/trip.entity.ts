@@ -83,7 +83,7 @@ export namespace TripEntity {
     };
   }
 
-  export function dbFormat(trip: TripType): Partial<TripDBType> {
+  export function dbFormat(trip: TripType) {
     const name = trip.name ? trip.name : "";
     return {
       color: EntityUtils.formatColorForDB(trip.color),
@@ -208,6 +208,7 @@ export type TripDBType = {
   polyline: LocationPathDBType;
   metrics: TripMetricType;
 };
+
 export type TripType = {
   id?: number;
   name: string;

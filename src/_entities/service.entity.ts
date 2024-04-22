@@ -20,6 +20,7 @@ export type ServiceDBType = {
   name: string;
   service_group_id: number;
   service_trips: ServiceTripDBType[];
+  flat_graphic_id: number;
 };
 
 export namespace ServiceEntity {
@@ -41,6 +42,7 @@ export namespace ServiceEntity {
     return {
       id: dbService.id,
       name: dbService.name,
+      flatGraphicId: dbService.flat_graphic_id,
       serviceGroupId: dbService.service_group_id,
       serviceTrips: buildServiceTrip(dbService.service_trips),
     };
@@ -50,6 +52,7 @@ export namespace ServiceEntity {
     return {
       id: service.id,
       name: service.name,
+      flat_graphic_id: service.flatGraphicId,
       service_group_id: service.serviceGroupId,
       service_trips: service.serviceTrips.map((serviceTrip) =>
         dbFormatServiceTrip(serviceTrip)

@@ -1,11 +1,11 @@
 import { JSXElement, createSignal, onMount } from "solid-js";
-import { ServiceLeftBoard } from "../organism/ServiceLeftBoard";
-import { Services } from "../organism/Services";
 
 import { OsrmService } from "../../../../_services/osrm.service";
 import { disableSpinningWheel, enableSpinningWheel } from "../../../../signaux";
 import { BusServiceUtils } from "../../../../utils/busService.utils";
 import { HlpMatrixType } from "../../../../utils/serviceGrid.utils";
+import { ServiceLeftBoard } from "../organism/ServiceLeftBoard";
+import { Services } from "../organism/Services";
 import "./ServiceTemplate.css";
 
 export const [selectedService, setSelectedService] = createSignal<number>();

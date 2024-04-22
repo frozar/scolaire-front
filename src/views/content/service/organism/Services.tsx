@@ -3,15 +3,18 @@ import { JSXElement, createEffect, createSignal, on, onMount } from "solid-js";
 import { ServiceGrid } from "./ServiceGrid";
 import { ServiceList } from "./ServiceList";
 
+import { ServiceStore } from "../../../../_stores/service.store";
 import { ServiceGridUtils } from "../../../../utils/serviceGrid.utils";
 import { ServiceGridButtons } from "../molecule/ServiceGridButtons";
 import { selectedService } from "../template/ServiceTemplate";
+import { currentGraphic } from "./FlatGraphics";
 import "./Service.css";
 
 export type ServiceType = {
   id: number;
   name: string;
   serviceGroupId: number;
+  flatGraphicId: number;
   serviceTrips: ServiceTrip[];
 };
 
@@ -32,6 +35,14 @@ export const [refScroll, setRefScroll] = createSignal<HTMLDivElement>(
 );
 
 export function Services(): JSXElement {
+  createEffect(() => {
+    setServices(
+      ServiceStore.get().filter(
+        (service) => service.flatGraphicId == currentGraphic()
+      )
+    );
+  });
+
   createEffect(
     on(services, () => {
       const selectedServiceId = selectedService();

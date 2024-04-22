@@ -1,0 +1,7 @@
+.flat-graphic-list {
+  @apply align-middle;
+}
+
+.flat-graphic-list-add {
+  @apply pl-4 align-middle;
+}
