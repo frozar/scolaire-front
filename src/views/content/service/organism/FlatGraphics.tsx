@@ -14,7 +14,7 @@ export function FlatGraphics() {
 
   return (
     <div>
-      <div class="flat-graphics-list">
+      <div class="flat-graphic-list">
         <For each={FlatGraphicStore.get()}>
           {(item) => (
             <FlatGraphicItem
@@ -25,7 +25,7 @@ export function FlatGraphics() {
           )}
         </For>
         <ButtonIcon
-          class="flat-graphics-list-add"
+          class="flat-graphic-list-add"
           icon={<SurroundedPlusIcon />}
           onClick={() => console.log("add")}
         />

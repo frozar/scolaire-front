@@ -1,7 +1,7 @@
-.flat-graphics-list {
+.flat-graphic-list {
   @apply align-middle;
 }
 
-.flat-graphics-list-add {
+.flat-graphic-list-add {
   @apply pl-4 align-middle;
 }
