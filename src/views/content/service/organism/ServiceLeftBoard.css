@@ -1,5 +1,5 @@
 #service-left-board {
-  @apply flex flex-col h-[93.5vh] border border-r-2 border-y-2 border-l-0 border-dark-shade-teal;
+  @apply flex flex-col h-[93.5vh] border border-r-2 border-y-0 border-l-0 border-dark-shade-teal px-4;
 }
 
 #service-left-board-header {

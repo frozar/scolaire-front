@@ -1,20 +1,19 @@
 import { For, createSignal, onMount } from "solid-js";
 import { FlatGraphicStore } from "../../../../_stores/flatGraphics.store";
-import Button from "../../../../component/atom/Button";
+import { SurroundedPlusIcon } from "../../../../icons/SurroundedPlusIcon";
+import ButtonIcon from "../../board/component/molecule/ButtonIcon";
 import { FlatGraphicItem } from "./FlatGraphicItem";
-import { ServiceLeftBoard } from "./ServiceLeftBoard";
-import { Services } from "./Services";
+
+export const [currentGraphic, setCurrentGraphic] = createSignal(0);
 
 export function FlatGraphics() {
-  const [currentGraphic, setCurrentGraphic] = createSignal(0);
-
   onMount(() => {
     setCurrentGraphic(FlatGraphicStore.get()[0].id as number);
   });
 
   return (
     <div>
-      <div>
+      <div class="align-middle">
         <For each={FlatGraphicStore.get()}>
           {(item) => (
             <FlatGraphicItem
@@ -24,18 +23,11 @@ export function FlatGraphics() {
             />
           )}
         </For>
-        <Button
-          label={"+"}
+        <ButtonIcon
+          class="pl-4 align-middle"
+          icon={<SurroundedPlusIcon />}
           onClick={() => console.log("add")}
-          active={true}
-          variant="outline"
-          size="3xl"
         />
-      </div>
-      <div class="service-template">
-        {/* <ServiceList /> */}
-        <ServiceLeftBoard />
-        <Services />
       </div>
     </div>
   );

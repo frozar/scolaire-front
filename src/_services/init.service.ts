@@ -28,6 +28,7 @@ import { CalendarStore } from "../_stores/calendar.store";
 import { FlatGraphicStore } from "../_stores/flatGraphics.store";
 import { LineStore } from "../_stores/line.store";
 import { SchoolStore } from "../_stores/school.store";
+import { ServiceStore } from "../_stores/service.store";
 import { StopStore } from "../_stores/stop.store";
 import { setAllTransporter } from "../views/content/allotment/molecule/TransporterTable";
 import {
@@ -37,7 +38,6 @@ import {
 import { BusCategoryType, setBus } from "../views/content/bus/organism/Bus";
 import { setSettings } from "../views/content/parameters/organism/Settings";
 import { setRoads } from "../views/content/paths/template/Paths";
-import { setServices } from "../views/content/service/organism/Services";
 import { ServiceUtils } from "./_utils.service";
 
 type InitDBType = {
@@ -109,8 +109,7 @@ export namespace InitService {
     const services = dbInit.services.map((service) =>
       ServiceEntity.build(service)
     );
-
-    setServices(services);
+    ServiceStore.set(services);
 
     const settings = dbInit.settings;
     setSettings(settings);
