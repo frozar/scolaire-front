@@ -3,6 +3,7 @@ import { FlatGraphicStore } from "../../../../_stores/flatGraphics.store";
 import { SurroundedPlusIcon } from "../../../../icons/SurroundedPlusIcon";
 import ButtonIcon from "../../board/component/molecule/ButtonIcon";
 import { FlatGraphicItem } from "./FlatGraphicItem";
+import "./FlatGraphics.css";
 
 export const [currentGraphic, setCurrentGraphic] = createSignal(0);
 
@@ -13,7 +14,7 @@ export function FlatGraphics() {
 
   return (
     <div>
-      <div class="align-middle">
+      <div class="flat-graphics-list">
         <For each={FlatGraphicStore.get()}>
           {(item) => (
             <FlatGraphicItem
@@ -24,7 +25,7 @@ export function FlatGraphics() {
           )}
         </For>
         <ButtonIcon
-          class="pl-4 align-middle"
+          class="flat-graphics-list-add"
           icon={<SurroundedPlusIcon />}
           onClick={() => console.log("add")}
         />
