@@ -1,10 +1,10 @@
 import { createSignal, onMount } from "solid-js";
 import { CalendarDayEnum } from "../../../../_entities/calendar.entity";
 import { FlatGraphicType } from "../../../../_entities/flatGraphic.entity";
-import { FlatGraphicAddMenuInputs } from "./FlatGraohicAddMenuInputs";
-import "./FlatGraphicAddMenu.css";
-import { FlatGraohicAddMenuButtons } from "./FlatGraphicAddMenuButtons";
-import { FlatGraphicAddMenuDays } from "./FlatGraphicAddMenuDays";
+import "./FlatGraphicMenu.css";
+import { FlatGraphicMenuButtons } from "./FlatGraphicMenuButtons";
+import { FlatGraphicMenuDays } from "./FlatGraphicMenuDays";
+import { FlatGraphicMenuInputs } from "./FlatGraphicMenuInputs";
 
 interface FlatGraphicAddMenuProps {
   graphic?: FlatGraphicType;
@@ -12,7 +12,7 @@ interface FlatGraphicAddMenuProps {
   submit: (graphic: FlatGraphicType) => void;
 }
 
-export function FlatGraphicAddMenu(props: FlatGraphicAddMenuProps) {
+export function FlatGraphicMenu(props: FlatGraphicAddMenuProps) {
   let checkedDays: number[] = [];
 
   const [newFlatGraphic, setNewFlatGraphic] = createSignal<FlatGraphicType>(
@@ -70,19 +70,13 @@ export function FlatGraphicAddMenu(props: FlatGraphicAddMenuProps) {
 
   return (
     <div class="flat-graphic-menu">
-      <FlatGraphicAddMenuInputs
+      <FlatGraphicMenuInputs
         graphic={newFlatGraphic()}
         onColorChange={onColorInput}
         onNameChange={onNameInput}
       />
-      <FlatGraphicAddMenuDays
-        graphic={newFlatGraphic()}
-        onChange={onDayChanged}
-      />
-      <FlatGraohicAddMenuButtons
-        cancel={props.cancel}
-        submit={submitFunction}
-      />
+      <FlatGraphicMenuDays graphic={newFlatGraphic()} onChange={onDayChanged} />
+      <FlatGraphicMenuButtons cancel={props.cancel} submit={submitFunction} />
     </div>
   );
 }

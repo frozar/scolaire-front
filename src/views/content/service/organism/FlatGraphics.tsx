@@ -9,7 +9,7 @@ import {
   enableSpinningWheel,
 } from "../../../../signaux";
 import ButtonIcon from "../../board/component/molecule/ButtonIcon";
-import { FlatGraphicAddMenu } from "../molecule/FlatGraphicAddMenu";
+import { FlatGraphicMenu } from "../molecule/FlatGraphicMenu";
 import { FlatGraphicItem } from "./FlatGraphicItem";
 import "./FlatGraphics.css";
 
@@ -75,13 +75,13 @@ export function FlatGraphics() {
         />
       </div>
       <Show when={isAddMenuOpened() && !isEditMenuOpened()}>
-        <FlatGraphicAddMenu
+        <FlatGraphicMenu
           cancel={() => setIsAddMenuOpened(false)}
           submit={submitAdd}
         />
       </Show>
       <Show when={!isAddMenuOpened() && isEditMenuOpened()}>
-        <FlatGraphicAddMenu
+        <FlatGraphicMenu
           graphic={
             FlatGraphicStore.get().filter((a) => a.id == currentGraphic())[0]
           }

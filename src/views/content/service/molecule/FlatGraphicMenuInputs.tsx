@@ -1,14 +1,14 @@
 import { FlatGraphicType } from "../../../../_entities/flatGraphic.entity";
 import Label from "../../board/component/atom/Label";
-import "./FlatGraohicAddMenuInputs.css";
+import "./FlatGraphicMenuInputs.css";
 
-interface FlatGraphicAddMenuInputsProps {
+interface FlatGraphicMenuInputsProps {
   graphic: FlatGraphicType;
   onNameChange: (value: string) => void;
   onColorChange: (value: string) => void;
 }
 
-export function FlatGraphicAddMenuInputs(props: FlatGraphicAddMenuInputsProps) {
+export function FlatGraphicMenuInputs(props: FlatGraphicMenuInputsProps) {
   return (
     <div class="flat-graphic-input">
       <Label label="Nom" for="name" />

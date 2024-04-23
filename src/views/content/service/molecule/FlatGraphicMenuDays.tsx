@@ -1,13 +1,13 @@
 import { CalendarDayEnum } from "../../../../_entities/calendar.entity";
 import { FlatGraphicType } from "../../../../_entities/flatGraphic.entity";
-import "./FlatGraphicAddMenuDays.css";
+import "./FlatGraphicMenuDays.css";
 
-interface FlatGraphicAddMenuDaysProps {
+interface FlatGraphicMenuDaysProps {
   graphic?: FlatGraphicType;
   onChange: (number: number) => void;
 }
 
-export function FlatGraphicAddMenuDays(props: FlatGraphicAddMenuDaysProps) {
+export function FlatGraphicMenuDays(props: FlatGraphicMenuDaysProps) {
   function isChecked(day: CalendarDayEnum) {
     if (props.graphic?.days) {
       if (props.graphic.days.includes(day)) return true;
