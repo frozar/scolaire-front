@@ -1,7 +1,9 @@
+import { FlatGraphicType } from "../../../../_entities/flatGraphic.entity";
 import Label from "../../board/component/atom/Label";
 import "./FlatGraohicAddMenuInputs.css";
 
 interface FlatGraphicAddMenuInputsProps {
+  graphic: FlatGraphicType;
   onNameChange: (value: string) => void;
   onColorChange: (value: string) => void;
 }
@@ -14,13 +16,14 @@ export function FlatGraphicAddMenuInputs(props: FlatGraphicAddMenuInputsProps) {
         id={"name"}
         type="text"
         placeholder={"Entrer un nom"}
-        value={""}
+        value={props.graphic.name}
         onInput={(e) => props.onNameChange(e.target.value)}
       />
       <Label label="Couleur" for="color" />
       <input
-        id={"color"}
+        id="color"
         type="color"
+        value={props.graphic.color}
         onInput={(e) => props.onColorChange(e.target.value)}
       />
     </div>
