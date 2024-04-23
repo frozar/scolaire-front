@@ -1,0 +1,7 @@
+.days-container {
+  @apply flex pt-2 gap-4;
+}
+
+.days-item {
+  @apply flex align-middle gap-1;
+}

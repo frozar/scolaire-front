@@ -1,12 +1,10 @@
 import { createSignal } from "solid-js";
 import { CalendarDayEnum } from "../../../../_entities/calendar.entity";
 import { FlatGraphicType } from "../../../../_entities/flatGraphic.entity";
-import { CircleCrossIcon } from "../../../../icons/CircleCrossIcon";
-import UpdatePen from "../../../../icons/UpdatePen";
-import ButtonIcon from "../../board/component/molecule/ButtonIcon";
-import { LabeledColorPicker } from "../../board/component/molecule/LabeledColorPicker";
-import LabeledInputField from "../../board/component/molecule/LabeledInputField";
-import { CheckableElementList } from "../../line/molecule/CheckableElementList";
+import { FlatGraphicAddMenuInputs } from "./FlatGraohicAddMenuInputs";
+import "./FlatGraphicAddMenu.css";
+import { FlatGraohicAddMenuButtons } from "./FlatGraphicAddMenuButtons";
+import { FlatGraphicAddMenuDays } from "./FlatGraphicAddMenuDays";
 
 interface FlatGraphicAddMenuProps {
   cancel: () => void;
@@ -51,69 +49,21 @@ export function FlatGraphicAddMenu(props: FlatGraphicAddMenuProps) {
     });
   }
 
+  function submitFunction() {
+    props.submit(newFlatGraphic());
+  }
+
   return (
-    <div class="flex align-middle gap-4">
-      <LabeledInputField
-        label="Nom"
-        value={""}
-        placeholder="Entrer un nom"
-        name="name"
-        onInput={(e) => onNameInput(e.target.value)}
+    <div class="flat-graphic-menu">
+      <FlatGraphicAddMenuInputs
+        onColorChange={onColorInput}
+        onNameChange={onNameInput}
       />
-      <LabeledColorPicker
-        text="Couleur"
-        onChange={(e) => onColorInput(e)}
-        defaultColor="#000000"
+      <FlatGraphicAddMenuDays onChange={onDayChanged} />
+      <FlatGraohicAddMenuButtons
+        cancel={props.cancel}
+        submit={submitFunction}
       />
-      <CheckableElementList
-        displayQuantity={false}
-        title="Jours"
-        elements={[
-          {
-            name: "Lundi",
-            id: 0,
-            checked: false,
-            onChange: () => onDayChanged(0),
-          },
-          {
-            name: "Mardi",
-            id: 1,
-            checked: false,
-            onChange: () => onDayChanged(1),
-          },
-          {
-            name: "Mercredi",
-            id: 2,
-            checked: false,
-            onChange: () => onDayChanged(2),
-          },
-          {
-            name: "Jeudi",
-            id: 3,
-            checked: false,
-            onChange: () => onDayChanged(3),
-          },
-          {
-            name: "Vendredi",
-            id: 4,
-            checked: false,
-            onChange: () => onDayChanged(4),
-          },
-          {
-            name: "Samedi",
-            id: 5,
-            checked: false,
-            onChange: () => onDayChanged(5),
-          },
-        ]}
-      />
-      <div class="flex align-top gap-4">
-        <ButtonIcon icon={<CircleCrossIcon />} onClick={props.cancel} />
-        <ButtonIcon
-          icon={<UpdatePen />}
-          onClick={() => props.submit(newFlatGraphic())}
-        />
-      </div>
     </div>
   );
 }

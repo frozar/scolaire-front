@@ -1,0 +1,11 @@
+.flat-graphic-buttons {
+  @apply flex pt-2 gap-4;
+}
+
+.flat-graphic-cancel {
+  @apply fill-red-base w-6 h-6;
+}
+
+.flat-graphic-submit {
+  @apply fill-green-base w-6 h-6;
+}
