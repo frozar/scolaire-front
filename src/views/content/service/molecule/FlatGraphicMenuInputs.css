@@ -1,0 +1,3 @@
+.flat-graphic-input {
+  @apply flex align-middle gap-4;
+}

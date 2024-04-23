@@ -1,0 +1,3 @@
+.flat-graphic-item {
+  @apply grid gap-2;
+}

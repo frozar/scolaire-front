@@ -1,5 +1,5 @@
 .flat-graphic-list {
-  @apply align-middle;
+  @apply flex align-middle;
 }
 
 .flat-graphic-list-add {
