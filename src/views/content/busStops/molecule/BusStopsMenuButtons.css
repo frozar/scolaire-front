@@ -2,6 +2,6 @@
   @apply flex py-2 gap-2;
 }
 
-.bus-stop-menu-nav-buttons {
-  @apply flex justify-between;
+.bus-stop-menu-tootip {
+  @apply absolute transform;
 }

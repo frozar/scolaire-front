@@ -1,3 +1,4 @@
+import L from "leaflet";
 import { Show, createSignal, onCleanup, onMount } from "solid-js";
 import { StopType } from "../../../../../_entities/stop.entity";
 import { getSchools } from "../../../../../_stores/school.store";
@@ -13,11 +14,13 @@ import { setDisplaySchools } from "../../../_component/organisme/SchoolPoints";
 import { setDisplayStops } from "../../../_component/organisme/StopPoints";
 import { setDisplayTrips } from "../../../_component/organisme/Trips";
 import { setDisplayWays } from "../../../_component/organisme/Ways";
-import { setMapOnClick } from "../../../_component/template/MapContainer";
+import {
+  leafletMap,
+  setMapOnClick,
+} from "../../../_component/template/MapContainer";
 import { BusStopsDisplay } from "../../../busStops/organism/BusStopsDisplay";
 import { BusStopsMenu } from "../../../busStops/organism/BusStopsMenu";
 import { COLOR_BLUE_BASE } from "../../../map/constant";
-import { loadWays } from "../../../paths/template/Paths";
 import { RemainingStudentInformation } from "../atom/RemainingStudentInformation";
 import { StopActionsPanelsButtons } from "../molecul/StopActionsPanelsButtons";
 import { StopDetailsHeader } from "../molecul/StopDetailsHeader";
@@ -43,7 +46,12 @@ export function StopDetails() {
   const [addQuantity, setAddQuantity] = createSignal<boolean>(false);
 
   onMount(async () => {
-    await loadWays();
+    const centerView = L.latLng(
+      stopDetails()?.lat as number,
+      (stopDetails()?.lon as number) - 0.05
+    );
+    leafletMap()?.setView(centerView);
+
     setWayLineColor(COLOR_BLUE_BASE);
     setMapData(stopDetails());
   });
@@ -62,7 +70,8 @@ export function StopDetails() {
     setDisplayBusStops([]);
   }
 
-  function toggleEditItem() {
+  async function toggleEditItem() {
+    // await loadWays();
     setEditItem((bool) => !bool);
   }
   const toggleInAddQuantity = () => setAddQuantity((prev) => !prev);

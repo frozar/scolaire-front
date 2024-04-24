@@ -10,11 +10,13 @@ import { BusStopType } from "../../../../_entities/busStops.entity";
 import { SchoolType } from "../../../../_entities/school.entity";
 import { StopType } from "../../../../_entities/stop.entity";
 import { getWays } from "../../../../_stores/way.store";
-import Button from "../../../../component/atom/Button";
+import { CirclePlusIcon } from "../../../../icons/CirclePlusIcon";
 import { setDisplayBusStops } from "../../_component/organisme/BusStopPoints";
 import { setDisplayWays } from "../../_component/organisme/Ways";
 import { setMapOnClick } from "../../_component/template/MapContainer";
+import ButtonIcon from "../../board/component/molecule/ButtonIcon";
 import CollapsibleElement from "../../line/atom/CollapsibleElement";
+import { loadWays } from "../../paths/template/Paths";
 import { BusStopsMenuButtons } from "../molecule/BusStopsMenuButtons";
 import { BusStopsMenuInput } from "../molecule/BusStopsMenuInput";
 import { BusStopsMenuMapButtons } from "../molecule/BusStopsMenuMapButtons";
@@ -65,8 +67,9 @@ export function BusStopsMenu(props: BusStopsMenuProps) {
     setDisplayBusStops([]);
   }
 
-  function toggleChoosingWay() {
+  async function toggleChoosingWay() {
     if (isChoosingWay()) return;
+    await loadWays();
     setIsChoosingWay(true);
     setDisplayWays(getWays());
   }
@@ -138,6 +141,7 @@ export function BusStopsMenu(props: BusStopsMenuProps) {
               choosingWay={isChoosingWay()}
               toggleChoosingLocal={toggleChoosingLocal}
               toggleChoosingWay={toggleChoosingWay}
+              setter={setNewBusStop}
             />
             <BusStopsMenuButtons
               cancelFunction={cancel}
@@ -150,7 +154,7 @@ export function BusStopsMenu(props: BusStopsMenuProps) {
         <For each={currentBusStops()}>
           {(stopItem) => <div>{stopItem.name}</div>}
         </For>
-        <Button label="Ajouter" onClick={toggleEdit} />
+        <ButtonIcon icon={<CirclePlusIcon />} onClick={toggleEdit} />
       </Show>
     </CollapsibleElement>
   );

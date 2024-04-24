@@ -1,4 +1,6 @@
-import Button from "../../../../component/atom/Button";
+import { CircleCheckIcon } from "../../../../icons/CircleCheckIcon";
+import { CircleXMarkIcon } from "../../../../icons/CircleXMarkIcon";
+import ButtonIcon from "../../board/component/molecule/ButtonIcon";
 import "./BusStopsMenuButtons.css";
 
 interface BusStopsMenuButtons {
@@ -8,9 +10,9 @@ interface BusStopsMenuButtons {
 
 export function BusStopsMenuButtons(props: BusStopsMenuButtons) {
   return (
-    <div class="bus-stop-menu-nav-buttons">
-      <Button label="Annuler" variant="danger" onClick={props.cancelFunction} />
-      <Button label="Valider" onClick={props.submitFunction} />
+    <div class="bus-stop-menu-map-buttons">
+      <ButtonIcon icon={<CircleXMarkIcon />} onClick={props.cancelFunction} />
+      <ButtonIcon icon={<CircleCheckIcon />} onClick={props.submitFunction} />
     </div>
   );
 }

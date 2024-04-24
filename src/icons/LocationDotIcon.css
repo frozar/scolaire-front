@@ -1,0 +1,3 @@
+.location-dot {
+  @apply h-6 w-6 fill-green-base;
+}

@@ -1,3 +1,4 @@
+import L from "leaflet";
 import { Show, createSignal, onCleanup, onMount } from "solid-js";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { getSchools } from "../../../../../_stores/school.store";
@@ -10,12 +11,14 @@ import { setDisplayBusStops } from "../../../_component/organisme/BusStopPoints"
 import { setDisplaySchools } from "../../../_component/organisme/SchoolPoints";
 import { setDisplayStops } from "../../../_component/organisme/StopPoints";
 import { setDisplayWays } from "../../../_component/organisme/Ways";
-import { setMapOnClick } from "../../../_component/template/MapContainer";
+import {
+  leafletMap,
+  setMapOnClick,
+} from "../../../_component/template/MapContainer";
 import BoardFooterActions from "../../../board/component/molecule/BoardFooterActions";
 import { BusStopsDisplay } from "../../../busStops/organism/BusStopsDisplay";
 import { BusStopsMenu } from "../../../busStops/organism/BusStopsMenu";
 import { COLOR_BLUE_BASE } from "../../../map/constant";
-import { loadWays } from "../../../paths/template/Paths";
 import SchoolDetailsHeader from "../molecule/SchoolDetailsHeader";
 import { SchoolDetailsContent } from "../organism/SchoolDetailsContent";
 import { SchoolDetailsPanels } from "../organism/SchoolDetailsPanels";
@@ -31,7 +34,12 @@ export function SchoolDetails() {
   const [isChoosingLocal, setIsChoosingLocal] = createSignal(false);
 
   onMount(async () => {
-    await loadWays();
+    const centerView = L.latLng(
+      schoolDetails()?.lat as number,
+      (schoolDetails()?.lon as number) - 0.05
+    );
+    leafletMap()?.setView(centerView);
+
     setWayLineColor(COLOR_BLUE_BASE);
     setMapData(schoolDetails());
   });
