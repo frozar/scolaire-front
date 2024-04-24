@@ -48,7 +48,7 @@ export function StopDetails() {
   onMount(async () => {
     const centerView = L.latLng(
       stopDetails()?.lat as number,
-      (stopDetails()?.lon as number) - 0.05
+      (stopDetails()?.lon as number) - 0.025
     );
     leafletMap()?.setView(centerView);
 

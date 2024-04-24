@@ -36,7 +36,7 @@ export function SchoolDetails() {
   onMount(async () => {
     const centerView = L.latLng(
       schoolDetails()?.lat as number,
-      (schoolDetails()?.lon as number) - 0.05
+      (schoolDetails()?.lon as number) - 0.025
     );
     leafletMap()?.setView(centerView);
 
