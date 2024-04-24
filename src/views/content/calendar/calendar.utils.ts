@@ -125,6 +125,7 @@ export namespace CalendarUtils {
     return output;
   }
 
+  //TODO potentiel problème avec le trip direction ?? exemple Segpa depuis TripEdit
   export function commonDaysBetweenGrades(
     grades: GradeType[],
     direction: TripDirectionEnum

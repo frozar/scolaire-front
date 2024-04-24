@@ -1,4 +1,4 @@
-import { Match, Switch, createSignal, onMount } from "solid-js";
+import { Match, Show, Switch, createSignal, onMount } from "solid-js";
 import { CalendarDayEnum } from "../../../../_entities/calendar.entity";
 import { GradeType } from "../../../../_entities/grade.entity";
 import { LineType } from "../../../../_entities/line.entity";
@@ -11,7 +11,9 @@ import { TripType } from "../../../../_entities/trip.entity";
 import { disableSpinningWheel, enableSpinningWheel } from "../../../../signaux";
 import { SelectGradesStep } from "../../line/organism/SelectGradesStep";
 import { SelectSchoolsStep } from "../../line/organism/SelectSchoolsStep";
-import { AssignDaysAndDirectionStep } from "../organism/AssignDaysAndDirectionStep";
+import { AssignallotmentStep } from "../organism/AssignAllotmentStep";
+import { AssignDaysStep } from "../organism/AssignDaysStep";
+import { AssignTripDirectionStep } from "../organism/AssignTripDirectionStep";
 
 enum EditTripStep {
   schoolSelection,
@@ -44,7 +46,8 @@ export function TripAddOrUpdate(props: {
         setCurrentStep(EditTripStep.gradeSelection);
         break;
       case EditTripStep.gradeSelection:
-        setCurrentStep(EditTripStep.editTrip);
+        // setCurrentStep(EditTripStep.editTrip);
+        console.log(currentTrip());
         break;
     }
   }
@@ -83,12 +86,17 @@ export function TripAddOrUpdate(props: {
   }
   function onDaysUpdate(days: CalendarDayEnum[]) {
     setCurrentTrip((trip) => {
-      return {
-        ...trip,
-        days: days,
-      };
+      trip.days = days;
+      return trip;
     });
-    console.log("trip post days update", currentTrip().days);
+  }
+
+  function onUpdateAllotment(allotmentId: number) {
+    setCurrentTrip((trip) => {
+      trip.allotmentId = allotmentId;
+      return trip;
+    });
+    console.log("toto", currentTrip());
   }
 
   return (
@@ -111,13 +119,24 @@ export function TripAddOrUpdate(props: {
             previousStep={() => previousStep(EditTripStep.gradeSelection)}
             onUpdate={onGradeUpdate}
           />
-          <AssignDaysAndDirectionStep
-            grades={currentTrip().grades}
-            directionId={currentTrip().tripDirectionId}
-            days={currentTrip().days}
-            onUpdateDirection={onTripDirectionUpdate}
-            onUpdateDays={onDaysUpdate}
-          />
+
+          <Show when={currentTrip().grades.length > 0}>
+            {/* TODO doit filtrer si grade sélectionné n'ont pas aller ou retour */}
+            <AssignTripDirectionStep
+              directionId={currentTrip().tripDirectionId}
+              onUpdateDirection={onTripDirectionUpdate}
+            />
+            <AssignDaysStep
+              grades={currentTrip().grades}
+              tripDirection={currentTrip().tripDirectionId}
+              days={currentTrip().days}
+              onUpdateDays={onDaysUpdate}
+            />
+            <AssignallotmentStep
+              allotment={currentTrip().allotmentId as number}
+              onUpdateAllotment={onUpdateAllotment}
+            />
+          </Show>
         </Match>
       </Switch>
     </div>
