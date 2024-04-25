@@ -71,7 +71,6 @@ export function BusStopsMenu(props: BusStopsMenuProps) {
     if (isChoosingLocal()) return;
     setIsChoosingLocal(true);
     setMapOnClick(() => pickLocation);
-    setDisplayBusStops([]);
   }
 
   async function toggleChoosingWay() {
