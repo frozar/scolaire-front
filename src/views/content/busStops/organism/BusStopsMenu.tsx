@@ -88,7 +88,10 @@ export function BusStopsMenu(props: BusStopsMenuProps) {
     setNewBusStop((prev) => {
       return { ...prev, lat: e.latlng.lat, lon: e.latlng.lng };
     });
-    setDisplayBusStops([newBusStop()]);
+    // eslint-disable-next-line solid/reactivity
+    setDisplayBusStops((prev) => {
+      return [...prev, newBusStop()];
+    });
   }
 
   function toggleEdit() {
@@ -97,6 +100,16 @@ export function BusStopsMenu(props: BusStopsMenuProps) {
   }
 
   function cancel() {
+    // eslint-disable-next-line solid/reactivity
+    setDisplayBusStops((prev) => {
+      return prev.filter(
+        (stop) => stop.lat != newBusStop().lat && stop.lon != newBusStop().lon
+      );
+    });
+    // eslint-disable-next-line solid/reactivity
+    setDisplayWays((prev) => {
+      return prev.filter((way) => way.id != newBusStop().way);
+    });
     setIsChoosingLocal(false);
     setMapOnClick(undefined);
     setNewBusStop({} as BusStopType);
