@@ -1,4 +1,11 @@
-import { Match, Show, Switch, createSignal, onMount } from "solid-js";
+import {
+  Match,
+  Show,
+  Switch,
+  createEffect,
+  createSignal,
+  onMount,
+} from "solid-js";
 import { CalendarDayEnum } from "../../../../_entities/calendar.entity";
 import { GradeType } from "../../../../_entities/grade.entity";
 import { LineType } from "../../../../_entities/line.entity";
@@ -14,6 +21,7 @@ import { SelectSchoolsStep } from "../../line/organism/SelectSchoolsStep";
 import { AssignallotmentStep } from "../organism/AssignAllotmentStep";
 import { AssignDaysStep } from "../organism/AssignDaysStep";
 import { AssignTripDirectionStep } from "../organism/AssignTripDirectionStep";
+import { TripDesignStep } from "../organism/TripDesignStep";
 
 enum EditTripStep {
   schoolSelection,
@@ -30,14 +38,17 @@ export function TripAddOrUpdate(props: {
   trip: TripType;
   line: LineType;
   previous: () => void;
-  next: () => void;
+  next: (trip: TripType) => void;
 }) {
   const [currentTrip, setCurrentTrip] = createSignal<TripType>(props.trip);
 
   onMount(() => {
-    setCurrentStep(EditTripStep.schoolSelection);
-
+    setCurrentStep(EditTripStep.editTrip);
     setAvailableSchools(props.line.schools);
+  });
+
+  createEffect(() => {
+    console.log(currentTrip());
   });
 
   function nextStep(currentStep: EditTripStep) {
@@ -46,8 +57,10 @@ export function TripAddOrUpdate(props: {
         setCurrentStep(EditTripStep.gradeSelection);
         break;
       case EditTripStep.gradeSelection:
-        // setCurrentStep(EditTripStep.editTrip);
-        console.log(currentTrip());
+        setCurrentStep(EditTripStep.editTrip);
+        break;
+      case EditTripStep.editTrip:
+        props.next(currentTrip());
         break;
     }
   }
@@ -60,6 +73,9 @@ export function TripAddOrUpdate(props: {
         break;
       case EditTripStep.gradeSelection:
         setCurrentStep(EditTripStep.schoolSelection);
+        break;
+      case EditTripStep.editTrip:
+        setCurrentStep(EditTripStep.gradeSelection);
         break;
     }
     disableSpinningWheel();
@@ -96,11 +112,10 @@ export function TripAddOrUpdate(props: {
       trip.allotmentId = allotmentId;
       return trip;
     });
-    console.log("toto", currentTrip());
   }
 
   return (
-    <div class="add-line-information-board-content">
+    <div>
       <Switch>
         <Match when={currentStep() == EditTripStep.schoolSelection}>
           <SelectSchoolsStep
@@ -137,6 +152,16 @@ export function TripAddOrUpdate(props: {
               onUpdateAllotment={onUpdateAllotment}
             />
           </Show>
+        </Match>
+        <Match when={currentStep() == EditTripStep.editTrip}>
+          <TripDesignStep
+            trip={currentTrip()}
+            onUpdate={(trip) => {
+              setCurrentTrip(trip);
+            }}
+            nextStep={() => nextStep(EditTripStep.editTrip)}
+            previousStep={() => previousStep(EditTripStep.editTrip)}
+          />
         </Match>
       </Switch>
     </div>

@@ -15,12 +15,10 @@ export function Trip(props: { trip: TripType; map: L.Map; onRoad: boolean }) {
 
   onMount(() => {
     setTrip(props.onRoad);
-    setLocalLatLngs(props.trip.latLngs);
   });
 
   createEffect(() => {
     setTrip(props.onRoad);
-    setLocalLatLngs(props.trip.latLngs);
   });
 
   function setTrip(onroad: boolean) {

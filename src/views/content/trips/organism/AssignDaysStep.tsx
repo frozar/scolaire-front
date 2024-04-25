@@ -24,25 +24,15 @@ export function AssignDaysStep(props: {
       CalendarUtils.commonDaysBetweenGrades(props.grades, props.tripDirection)
     );
   });
-  createEffect(() => {
-    console.log(commonDays());
-  });
 
   createEffect(() => {
     setSelectedDays((prevDays) => {
       const selectedDays: CalendarDayEnum[] = [];
       for (const prevDay of prevDays) {
-        if (
-          //   CalendarUtils.commonDaysBetweenGrades(
-          //     props.grades,
-          //     props.tripDirection
-          //   ).includes(prevDay)
-          commonDays().includes(prevDay)
-        ) {
+        if (commonDays().includes(prevDay)) {
           selectedDays.push(prevDay);
         }
       }
-      //TODO potentiel pb
       props.onUpdateDays(selectedDays);
       return selectedDays;
     });
