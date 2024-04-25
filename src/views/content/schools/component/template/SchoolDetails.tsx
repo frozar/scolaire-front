@@ -18,7 +18,6 @@ import {
 import BoardFooterActions from "../../../board/component/molecule/BoardFooterActions";
 import { BusStopsDisplay } from "../../../busStops/organism/BusStopsDisplay";
 import { BusStopsMenu } from "../../../busStops/organism/BusStopsMenu";
-import { COLOR_GRAY_BASE } from "../../../map/constant";
 import SchoolDetailsHeader from "../molecule/SchoolDetailsHeader";
 import { SchoolDetailsContent } from "../organism/SchoolDetailsContent";
 import { SchoolDetailsPanels } from "../organism/SchoolDetailsPanels";
@@ -40,7 +39,7 @@ export function SchoolDetails() {
     );
     leafletMap()?.setView(centerView);
 
-    setWayLineColor(COLOR_GRAY_BASE);
+    setWayLineColor("#888888");
     setMapData(schoolDetails());
   });
 

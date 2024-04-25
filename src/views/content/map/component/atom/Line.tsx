@@ -41,7 +41,7 @@ export default function (props: LineProps) {
         arrows.map((arrow) => leafletMap.removeLayer(arrow));
       }
 
-      arrows = buildArrows(props.latlngs, "#000000");
+      arrows = buildArrows(props.latlngs, color);
     }
 
     // Add events to Line & Arrows
@@ -94,8 +94,10 @@ export default function (props: LineProps) {
 
   createEffect(
     on(reversedArrows, () => {
-      arrows.map((arrow) => props.leafletMap.removeLayer(arrow));
-      arrows = buildArrows(props.latlngs, "#000000");
+      if (props.withArrows) {
+        arrows.map((arrow) => props.leafletMap.removeLayer(arrow));
+        arrows = buildArrows(props.latlngs, props.color);
+      }
     })
   );
 
