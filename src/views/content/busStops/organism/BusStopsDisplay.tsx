@@ -2,7 +2,8 @@ import { For, Show, createSignal, onMount } from "solid-js";
 import { BusStopType } from "../../../../_entities/busStops.entity";
 import { SchoolType } from "../../../../_entities/school.entity";
 import { StopType } from "../../../../_entities/stop.entity";
-import CollapsibleElement from "../../line/atom/CollapsibleElement";
+import { BusStopCard } from "../molecule/BusStopCard";
+import "./BusStopsDisplay.css";
 
 interface BusStopsDisplayProps {
   item: SchoolType | StopType;
@@ -18,15 +19,16 @@ export function BusStopsDisplay(props: BusStopsDisplayProps) {
   });
 
   return (
-    <CollapsibleElement title="Arrêts de bus">
+    <div>
+      <p>Arrêts de bus</p>
       <Show
         when={busStopsItems().length > 0}
-        fallback={<div>Aucun arrêt de bus</div>}
+        fallback={<div class="bus-stop-display-offset">Aucun arrêt de bus</div>}
       >
         <For each={busStopsItems()}>
-          {(stopItem) => <div>{stopItem.name}</div>}
+          {(stopItem) => <BusStopCard busStop={stopItem} />}
         </For>
       </Show>
-    </CollapsibleElement>
+    </div>
   );
 }

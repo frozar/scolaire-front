@@ -5,3 +5,7 @@
 .bus-stop-menu-tootip {
   @apply absolute transform;
 }
+
+.bus-stop-menu-button-offset {
+  @apply mr-auto;
+}

@@ -17,11 +17,11 @@ import { setDisplayBusStops } from "../../_component/organisme/BusStopPoints";
 import { setDisplayWays } from "../../_component/organisme/Ways";
 import { setMapOnClick } from "../../_component/template/MapContainer";
 import ButtonIcon from "../../board/component/molecule/ButtonIcon";
-import CollapsibleElement from "../../line/atom/CollapsibleElement";
 import { loadWays } from "../../paths/template/Paths";
-import { BusStopsMenuButtons } from "../molecule/BusStopsMenuButtons";
+import { BusStopCard } from "../molecule/BusStopCard";
 import { BusStopsMenuInput } from "../molecule/BusStopsMenuInput";
 import { BusStopsMenuMapButtons } from "../molecule/BusStopsMenuMapButtons";
+import "./BusStopsMenu.css";
 
 export const [selectedWayId, setSelectedWayId] = createSignal(0);
 
@@ -138,19 +138,22 @@ export function BusStopsMenu(props: BusStopsMenuProps) {
   }
 
   return (
-    <CollapsibleElement title="Arrêts de bus">
+    <div>
+      <div class="bus-stop-menu-header">
+        <p>Arrêts de bus</p>
+        <ButtonIcon icon={<CirclePlusIcon />} onClick={toggleEdit} />
+      </div>
       <Show
         fallback={
-          <div>
+          <div class="bus-stop-menu">
             <BusStopsMenuInput setter={setNewBusStop} />
             <BusStopsMenuMapButtons
+              busStop={newBusStop()}
               choosingLocal={isChoosingLocal()}
               choosingWay={isChoosingWay()}
               toggleChoosingLocal={toggleChoosingLocal}
               toggleChoosingWay={toggleChoosingWay}
               setter={setNewBusStop}
-            />
-            <BusStopsMenuButtons
               cancelFunction={cancel}
               submitFunction={submit}
             />
@@ -159,10 +162,9 @@ export function BusStopsMenu(props: BusStopsMenuProps) {
         when={!isAdding()}
       >
         <For each={currentBusStops()}>
-          {(stopItem) => <div>{stopItem.name}</div>}
+          {(stopItem) => <BusStopCard busStop={stopItem} />}
         </For>
-        <ButtonIcon icon={<CirclePlusIcon />} onClick={toggleEdit} />
       </Show>
-    </CollapsibleElement>
+    </div>
   );
 }

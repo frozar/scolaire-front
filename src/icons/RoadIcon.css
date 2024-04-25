@@ -1,3 +1,11 @@
 .road {
+  @apply w-6 h-6;
+}
+
+.road.green {
   @apply w-6 h-6 fill-green-base;
+}
+
+.road.yellow {
+  @apply w-6 h-6 fill-yellow-base;
 }

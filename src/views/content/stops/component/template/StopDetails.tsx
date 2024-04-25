@@ -23,7 +23,7 @@ import {
 } from "../../../_component/template/MapContainer";
 import { BusStopsDisplay } from "../../../busStops/organism/BusStopsDisplay";
 import { BusStopsMenu } from "../../../busStops/organism/BusStopsMenu";
-import { COLOR_BLUE_BASE } from "../../../map/constant";
+import { COLOR_GRAY_BASE } from "../../../map/constant";
 import { RemainingStudentInformation } from "../atom/RemainingStudentInformation";
 import { StopActionsPanelsButtons } from "../molecul/StopActionsPanelsButtons";
 import { StopDetailsHeader } from "../molecul/StopDetailsHeader";
@@ -55,7 +55,7 @@ export function StopDetails() {
     );
     leafletMap()?.setView(centerView);
 
-    setWayLineColor(COLOR_BLUE_BASE);
+    setWayLineColor(COLOR_GRAY_BASE);
     setWayLineArrows(true);
     setMapData(stopDetails());
   });
