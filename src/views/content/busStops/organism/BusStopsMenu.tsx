@@ -4,6 +4,7 @@ import {
   Show,
   createEffect,
   createSignal,
+  onCleanup,
   onMount,
 } from "solid-js";
 import { BusStopType } from "../../../../_entities/busStops.entity";
@@ -11,6 +12,7 @@ import { SchoolType } from "../../../../_entities/school.entity";
 import { StopType } from "../../../../_entities/stop.entity";
 import { getWays } from "../../../../_stores/way.store";
 import { CirclePlusIcon } from "../../../../icons/CirclePlusIcon";
+import { setWayLineArrows } from "../../_component/molecule/WayLine";
 import { setDisplayBusStops } from "../../_component/organisme/BusStopPoints";
 import { setDisplayWays } from "../../_component/organisme/Ways";
 import { setMapOnClick } from "../../_component/template/MapContainer";
@@ -43,6 +45,11 @@ export function BusStopsMenu(props: BusStopsMenuProps) {
     if (props.item.busStops) {
       setCurrentBusStops(props.item.busStops);
     }
+    setWayLineArrows(true);
+  });
+
+  onCleanup(() => {
+    setWayLineArrows(false);
   });
 
   createEffect((prev) => {

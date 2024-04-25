@@ -17,6 +17,8 @@ export const [wayLineColor, setWayLineColor] =
 
 export const [wayLineOpacity, setWaylineOpacity] = createSignal<number>(1);
 
+export const [wayLineArrows, setWayLineArrows] = createSignal(false);
+
 export function WayLine(props: { way: WayType; map: L.Map }) {
   const [localColor, setLocalColor] = createSignal("");
   const [localOpacity, setLocalOpacity] = createSignal(0);
@@ -98,7 +100,7 @@ export function WayLine(props: { way: WayType; map: L.Map }) {
       color={localColor()}
       opacity={localOpacity()}
       lineId={props.way.id}
-      withArrows={false}
+      withArrows={wayLineArrows()}
       onMouseOver={mouseOver}
       onMouseOut={mouseOut}
       onClick={addWay}

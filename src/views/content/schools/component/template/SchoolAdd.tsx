@@ -18,7 +18,6 @@ import BoardTitle from "../../../board/component/atom/BoardTitle";
 import BoardFooterActions from "../../../board/component/molecule/BoardFooterActions";
 import { BusStopsMenu } from "../../../busStops/organism/BusStopsMenu";
 import { COLOR_BLUE_BASE } from "../../../map/constant";
-import { loadWays } from "../../../paths/template/Paths";
 import { SchoolAddContent } from "../organism/SchoolAddContent";
 
 export function SchoolAdd() {
@@ -28,8 +27,7 @@ export function SchoolAdd() {
   );
   const [canSubmit, setCanSubmit] = createSignal(false);
 
-  onMount(async () => {
-    await loadWays();
+  onMount(() => {
     setWayLineColor(COLOR_BLUE_BASE);
   });
 

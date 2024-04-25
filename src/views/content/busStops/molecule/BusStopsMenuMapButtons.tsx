@@ -1,12 +1,16 @@
-import { FaSolidArrowsLeftRight } from "solid-icons/fa";
 import { createSignal, onMount, Setter, Show } from "solid-js";
 import {
   BusStopDirectionEnum,
   BusStopType,
 } from "../../../../_entities/busStops.entity";
+import { ArrowLeftRightIcon } from "../../../../icons/ArrowLeftRightIcon";
 import { LocationDotIcon } from "../../../../icons/LocationDotIcon";
 import { RoadIcon } from "../../../../icons/RoadIcon";
 import ButtonIcon from "../../board/component/molecule/ButtonIcon";
+import {
+  reversedArrows,
+  setReversedArrows,
+} from "../../map/component/atom/Line";
 import Tooltip from "../../map/rightMapMenu/component/atom/Tooltip";
 import "./BusStopsMenuButtons.css";
 
@@ -36,12 +40,13 @@ export function BusStopsMenuMapButtons(props: BusStopsMenuMapButtonsProps) {
   function onChangeDirection() {
     if (selectedDirection() == BusStopDirectionEnum.scan)
       setSelectedDirection(BusStopDirectionEnum.antiscan);
-    if (selectedDirection() == BusStopDirectionEnum.antiscan)
-      setSelectedDirection(BusStopDirectionEnum.scan);
+    else setSelectedDirection(BusStopDirectionEnum.scan);
     // eslint-disable-next-line solid/reactivity
     props.setter((prev) => {
       return { ...prev, direction: selectedDirection() };
     });
+    if (reversedArrows()) setReversedArrows(false);
+    else setReversedArrows(true);
   }
 
   return (
@@ -50,10 +55,7 @@ export function BusStopsMenuMapButtons(props: BusStopsMenuMapButtonsProps) {
         onMouseOver={() => setDirectionTooltip(true)}
         onMouseLeave={() => setDirectionTooltip(false)}
       >
-        <ButtonIcon
-          icon={<FaSolidArrowsLeftRight class="fill-green-base h-6 w-6" />}
-          onClick={onChangeDirection}
-        />
+        <ButtonIcon icon={<ArrowLeftRightIcon />} onClick={onChangeDirection} />
         <Show when={directionTooltip()}>
           <div class="bus-stop-menu-tootip">
             <Tooltip tooltip="Choisir le sens" />

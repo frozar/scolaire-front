@@ -8,7 +8,10 @@ import Button from "../../../../../component/atom/Button";
 import { LabeledInputNumber } from "../../../../../component/molecule/LabeledInputNumber";
 import { NatureEnum } from "../../../../../type";
 import { StopUtils } from "../../../../../utils/stop.utils";
-import { setWayLineColor } from "../../../_component/molecule/WayLine";
+import {
+  setWayLineArrows,
+  setWayLineColor,
+} from "../../../_component/molecule/WayLine";
 import { setDisplayBusStops } from "../../../_component/organisme/BusStopPoints";
 import { setDisplaySchools } from "../../../_component/organisme/SchoolPoints";
 import { setDisplayStops } from "../../../_component/organisme/StopPoints";
@@ -53,6 +56,7 @@ export function StopDetails() {
     leafletMap()?.setView(centerView);
 
     setWayLineColor(COLOR_BLUE_BASE);
+    setWayLineArrows(true);
     setMapData(stopDetails());
   });
 
@@ -61,6 +65,7 @@ export function StopDetails() {
     setMapData(stopDetails());
     setMapOnClick(undefined);
     setDisplayWays([]);
+    setWayLineArrows(false);
   });
 
   function toggleChoosingLocal() {
@@ -71,7 +76,6 @@ export function StopDetails() {
   }
 
   async function toggleEditItem() {
-    // await loadWays();
     setEditItem((bool) => !bool);
   }
   const toggleInAddQuantity = () => setAddQuantity((prev) => !prev);
