@@ -5,6 +5,7 @@ import { RoadService } from "../../../../_services/road.service";
 import { getSchools } from "../../../../_stores/school.store";
 import { getStops } from "../../../../_stores/stop.store";
 import { getWays } from "../../../../_stores/way.store";
+import { LabeledColorPicker } from "../../../../component/molecule/LabeledColorPicker";
 import {
   addNewGlobalSuccessInformation,
   addNewGlobalWarningInformation,
@@ -19,7 +20,6 @@ import {
 import { setDisplaySchools } from "../../_component/organisme/SchoolPoints";
 import { setDisplayStops } from "../../_component/organisme/StopPoints";
 import { setDisplayWays } from "../../_component/organisme/Ways";
-import { LabeledColorPicker } from "../../board/component/molecule/LabeledColorPicker";
 import LabeledInputField from "../../board/component/molecule/LabeledInputField";
 import { COLOR_GRAY_BASE } from "../../map/constant";
 import { WayListButtons } from "../molecule/WayListButtons";

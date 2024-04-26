@@ -1,5 +1,5 @@
 import { LineType } from "../../../../_entities/line.entity";
-import { ColorPicker } from "../../board/component/atom/ColorPicker";
+import { ColorPicker } from "../../../../component/atom/ColorPicker";
 import LabeledInputField from "../../board/component/molecule/LabeledInputField";
 import "./LineEditInput.css";
 

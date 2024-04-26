@@ -6,11 +6,11 @@ import SchoolsEnumeration from "../../board/component/molecule/SchoolsEnumeratio
 import { DrawHelperButton } from "../atom/DrawHelperButton";
 
 import { GradeUtils } from "../../../../_utils/grade.utils";
+import { LabeledColorPicker } from "../../../../component/molecule/LabeledColorPicker";
 import { setDisplaySchools } from "../../_component/organisme/SchoolPoints";
 import { setDisplayStops } from "../../_component/organisme/StopPoints";
 import { setDisplayTrips } from "../../_component/organisme/Trips";
 import BoardFooterActions from "../../board/component/molecule/BoardFooterActions";
-import { LabeledColorPicker } from "../../board/component/molecule/LabeledColorPicker";
 import LabeledInputField from "../../board/component/molecule/LabeledInputField";
 import Metrics from "../../board/component/organism/Metrics";
 import CollapsibleElement from "../../line/atom/CollapsibleElement";
@@ -18,6 +18,7 @@ import { DisplayTripDaysAndDirection } from "../molecule/DisplayTripDaysAndDirec
 import { TripLineDisplaySwitcher } from "../molecule/TripLineDisplaySwitcher";
 import { VehicleSelect } from "../molecule/VehicleSelect";
 import "./TripDesignStep.css";
+import { TripTimeline } from "./TripTimeline";
 
 export function TripDesignStep(props: {
   trip: TripType;
@@ -58,6 +59,13 @@ export function TripDesignStep(props: {
     props.onUpdate(localTrip());
   }
 
+  function onUpdateColor(color: string) {
+    setLocalTrip((trip) => {
+      return { ...trip, color: color };
+    });
+    props.onUpdate(localTrip());
+  }
+
   return (
     <>
       <div class="trip-edit-design-step">
@@ -92,45 +100,37 @@ export function TripDesignStep(props: {
           busCategoryId={localTrip().busCategoriesId ?? 0}
           onUpdateVehicule={onUpdateVehicule}
         />
-        <div class="flex mt-4 justify-between">
+        <section class="flex mt-4 justify-between">
           <LabeledColorPicker
             text="Couleur de la course"
             defaultColor={localTrip().color}
-            onChange={
-              (color) => console.log(color)
-              // setCurrentDrawTrip((trip) => {
-              //   if (!trip) return trip;
-              //   return { ...trip, color: color };
-              // })
-            }
+            onChange={onUpdateColor}
           />
 
           <TripLineDisplaySwitcher />
-        </div>
+        </section>
 
-        <div class="bus-trip-information-board-content">
-          <Show
-            when={(localTrip().tripPoints.length ?? 0) > 0}
-            fallback={
-              <div class="flex w-4/5 text-xs justify-center">
-                Veuillez sélectionner des points sur la carte
-              </div>
-            }
-          >
-            léla timeline
-            {/* <TripTimeline
-              trip={localTrip()}
-              setTrip={setCurrentDrawTrip}
-              inDraw={true}
-            /> */}
-          </Show>
-        </div>
+        <Show
+          when={(localTrip().tripPoints.length ?? 0) > 0}
+          fallback={
+            <div class="flex w-4/5 text-xs justify-center">
+              Veuillez sélectionner des points sur la carte
+            </div>
+          }
+        >
+          <TripTimeline
+            trip={localTrip()}
+            setTrip={setLocalTrip}
+            inDraw={true}
+          />
+        </Show>
       </div>
 
       <BoardFooterActions
         nextStep={{
           callback: props.nextStep,
           label: "Enregistrer",
+          //TODO ajouter un validateur [nom, tripPoints.lenght, ...??]
           //   disable: props.schools.length == 0,
         }}
         previousStep={{

@@ -1,0 +1,44 @@
+.time-passage {
+  @apply relative top-2 w-[60px];
+  font-size: 0.63rem;
+  line-height: 1rem;
+}
+:root {
+  --timeline-point-height: 30px;
+}
+
+.timeline-point {
+  @apply flex leading-9 w-full;
+  > .timeline-time {
+    @apply flex-none content-center;
+  }
+
+  > .timeline-dot {
+    @apply flex leading-9 content-center mx-3 relative;
+    .dot {
+      @apply h-9 w-9 rounded-full flex-none m-auto;
+      content: "";
+      z-index: 3;
+    }
+    .timeline-point-divider {
+      @apply w-1 h-full absolute top-0 left-4;
+      content: "";
+      z-index: 0;
+    }
+  }
+
+  > section.content {
+    @apply flex leading-9 flex-1;
+    .quantity,
+    .cumulate-quantity {
+      @apply flex-none w-8 my-auto px-1;
+    }
+    .name {
+      @apply flex-1 text-sm my-auto;
+    }
+    .quantity {
+    }
+    .cumulate-quantity {
+    }
+  }
+}
