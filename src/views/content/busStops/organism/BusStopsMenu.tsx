@@ -158,6 +158,7 @@ export function BusStopsMenu(props: BusStopsMenuProps) {
         return { ...prev, busStops: currentBusStops() };
       });
     }
+    setDisplayBusStops(currentBusStops());
     setNewBusStop({} as BusStopType);
     setisEditing(false);
     toggleEdit();
