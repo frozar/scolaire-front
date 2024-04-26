@@ -1,4 +1,4 @@
-import { createEffect, onMount } from "solid-js";
+import { JSXElement, children, createEffect, onMount } from "solid-js";
 import { TripPointType } from "../../../../_entities/trip.entity";
 import { NatureEnum } from "../../../../type";
 import { TripUtils } from "../../../../utils/trip.utils";
@@ -10,6 +10,8 @@ interface TripTimelineItemProps {
   passageTime: number;
   quantity: string;
   accumulateQuantity: number;
+
+  children: JSXElement;
   // quantityToGetOrDrop: string;
   // calculatedQuantity: number;
   // timePassage: string;
@@ -21,6 +23,7 @@ interface TripTimelineItemProps {
 }
 
 export function TripTimelinePoint(props: TripTimelineItemProps) {
+  const childs = children(() => props.children);
   const pointColor =
     // eslint-disable-next-line solid/reactivity
     props.point.nature == NatureEnum.stop ? " !bg-dark-teal" : " !bg-red-base";
@@ -37,7 +40,7 @@ export function TripTimelinePoint(props: TripTimelineItemProps) {
       </p>
       {/* {props.timePassage} */}
       <div class="timeline-dot">
-        <div class={"dot " + pointColor} />
+        <div class={"dot " + pointColor}>{childs()}</div>
         <div class="timeline-point-divider" />
       </div>
       <section class="content">

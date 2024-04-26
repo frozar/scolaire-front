@@ -1,9 +1,9 @@
 import { JSXElement, createSignal } from "solid-js";
-import { LabeledInputNumber } from "../../../../../component/molecule/LabeledInputNumber";
-import CheckIcon from "../../../../../icons/CheckIcon";
-import LeftChevronIcon from "../../../../../icons/LeftChevronIcon";
-import ButtonIcon from "./ButtonIcon";
 
+import { LabeledInputNumber } from "../../../../component/molecule/LabeledInputNumber";
+import CheckIcon from "../../../../icons/CheckIcon";
+import LeftChevronIcon from "../../../../icons/LeftChevronIcon";
+import ButtonIcon from "../../board/component/molecule/ButtonIcon";
 import "./TimelineWaitingTimeSetting.css";
 
 export function TimelineWaitingTimeSetting(props: {

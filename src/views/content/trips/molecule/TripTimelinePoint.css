@@ -16,7 +16,7 @@
   > .timeline-dot {
     @apply flex leading-9 content-center mx-3 relative;
     .dot {
-      @apply h-9 w-9 rounded-full flex-none m-auto;
+      @apply h-9 w-9 rounded-full flex-none m-auto flex content-center justify-center;
       content: "";
       z-index: 3;
     }

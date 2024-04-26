@@ -119,7 +119,8 @@ export function TripDesignStep(props: {
           }
         >
           <TripTimeline
-            trip={localTrip()}
+            tripPoints={localTrip().tripPoints}
+            trip={localTrip}
             setTrip={setLocalTrip}
             inDraw={true}
           />

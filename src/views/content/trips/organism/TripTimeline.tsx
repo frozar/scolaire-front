@@ -1,17 +1,17 @@
-import { For, Setter, Show, onMount } from "solid-js";
-import { SchoolType } from "../../../../_entities/school.entity";
+import { Accessor, For, Setter, Show, createEffect, onMount } from "solid-js";
 import {
   TripDirectionEntity,
   TripDirectionEnum,
 } from "../../../../_entities/trip-direction.entity";
 import { TripPointType, TripType } from "../../../../_entities/trip.entity";
-import { SchoolStore } from "../../../../_stores/school.store";
 import { NatureEnum } from "../../../../type";
 import { TripTimelineAddPointButton } from "../../board/component/atom/TripTimelineAddPointButton";
+import { TimelineMenu } from "../molecule/TimelineMenu";
 import { TripTimelinePoint } from "../molecule/TripTimelinePoint";
 
 interface TripTimelineProps {
-  trip: TripType;
+  tripPoints: TripPointType[];
+  trip: Accessor<TripType>;
   setTrip: Setter<TripType>;
   inDraw: boolean;
 }
@@ -24,6 +24,20 @@ export function TripTimeline(props: TripTimelineProps) {
     //TODO
     // currentPassageTime = props.trip.startTime ?? 0;
   });
+  createEffect(() => {
+    console.log(props.trip());
+  });
+  function updateWaitingTime(point: TripPointType, waitingTime: number) {
+    props.setTrip((prev) => {
+      const tripPoints = [...prev.tripPoints];
+      for (const tripPoint of tripPoints) {
+        if (tripPoint.leafletId == point.leafletId) {
+          tripPoint.waitingTime = waitingTime;
+        }
+      }
+      return { ...prev, tripPoints: tripPoints };
+    });
+  }
 
   return (
     <div class="timeline">
@@ -31,20 +45,18 @@ export function TripTimeline(props: TripTimelineProps) {
         class="timeline-items "
         // style={{ "--v-timeline-line-thickness": "2px" }}
       >
-        <For each={props.trip.tripPoints}>
+        <For each={props.tripPoints}>
           {(point, i) => {
-            /**
-             * Define the trip time
-             */
             if (i() == 0) {
               currentPassageTime = 0;
               accumulateQuantity = 0;
             } else {
-              currentPassageTime += props.trip.tripPoints[i() - 1].waitingTime;
+              currentPassageTime += props.tripPoints[i() - 1].waitingTime;
             }
-            currentPassageTime += props.trip.tripPoints[i()].passageTime;
+            currentPassageTime += props.tripPoints[i()].passageTime;
+            console.log(props.tripPoints[i()].waitingTime);
 
-            const quantity = getSignedPointQuantity(point, props.trip);
+            const quantity = getSignedPointQuantity(point, props.trip());
             accumulateQuantity += calcAccumulateQuantity(quantity);
 
             return (
@@ -55,11 +67,22 @@ export function TripTimeline(props: TripTimelineProps) {
 
                 <TripTimelinePoint
                   point={point}
-                  tripColor={props.trip.color}
+                  tripColor={props.trip().color}
                   passageTime={currentPassageTime}
                   quantity={quantity}
                   accumulateQuantity={accumulateQuantity}
-                />
+                >
+                  <TimelineMenu
+                    onClickDeletePoint={() => {}}
+                    onClickWaitingTime={(waitingTime) =>
+                      updateWaitingTime(point, waitingTime)
+                    }
+                    waitingTime={point.waitingTime}
+                    // onClickDeletePoint={props.onClickRemovePointFromTrip}
+                    // onClickWaitingTime={props.onClickWaitingTime}
+                    // waitingTime={props.waitingTime}
+                  />
+                </TripTimelinePoint>
               </div>
             );
           }}
@@ -110,18 +133,18 @@ function getPointQuantity(point: TripPointType, trip: TripType) {
 
 function getSchoolQuantity(point: TripPointType, trip: TripType) {
   let output = 0;
-  const school = SchoolStore.get(point.id) as SchoolType;
-  const schoolGradesId: number[] = school.grades.map(
-    (grade) => grade.id as number
-  );
+  // const school = SchoolStore.get(point.id) as SchoolType;
+  // const schoolGradesId: number[] = school.grades.map(
+  //   (grade) => grade.id as number
+  // );
 
-  for (const tripPoint of trip.tripPoints) {
-    for (const grade of tripPoint.grades) {
-      if (schoolGradesId.includes(grade.gradeId)) {
-        output += grade.quantity;
-      }
-    }
-  }
+  // for (const tripPoint of trip.tripPoints) {
+  //   for (const grade of tripPoint.grades) {
+  //     if (schoolGradesId.includes(grade.gradeId)) {
+  //       output += grade.quantity;
+  //     }
+  //   }
+  // }
 
   return output;
 }
