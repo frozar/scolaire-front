@@ -1,0 +1,11 @@
+.location-dot {
+  @apply h-6 w-6;
+}
+
+.location-dot.green {
+  @apply h-6 w-6 fill-green-base;
+}
+
+.location-dot.yellow {
+  @apply h-6 w-6 fill-yellow-base;
+}

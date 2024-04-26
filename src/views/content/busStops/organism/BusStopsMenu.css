@@ -1,0 +1,7 @@
+.bus-stop-menu-header {
+  @apply flex gap-2;
+}
+
+.bus-stop-menu {
+  @apply border-gray-light border-2 rounded-xl bg-gray-200 px-2 pt-2;
+}

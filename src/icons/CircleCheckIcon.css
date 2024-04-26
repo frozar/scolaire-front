@@ -1,0 +1,3 @@
+.circle-check {
+  @apply h-6 w-6 fill-green-base;
+}

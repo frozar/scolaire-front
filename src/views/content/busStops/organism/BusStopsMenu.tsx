@@ -4,20 +4,24 @@ import {
   Show,
   createEffect,
   createSignal,
+  onCleanup,
   onMount,
 } from "solid-js";
 import { BusStopType } from "../../../../_entities/busStops.entity";
 import { SchoolType } from "../../../../_entities/school.entity";
 import { StopType } from "../../../../_entities/stop.entity";
 import { getWays } from "../../../../_stores/way.store";
-import Button from "../../../../component/atom/Button";
+import { CirclePlusIcon } from "../../../../icons/CirclePlusIcon";
+import { setWayLineArrows } from "../../_component/molecule/WayLine";
 import { setDisplayBusStops } from "../../_component/organisme/BusStopPoints";
 import { setDisplayWays } from "../../_component/organisme/Ways";
 import { setMapOnClick } from "../../_component/template/MapContainer";
-import CollapsibleElement from "../../line/atom/CollapsibleElement";
-import { BusStopsMenuButtons } from "../molecule/BusStopsMenuButtons";
+import ButtonIcon from "../../board/component/molecule/ButtonIcon";
+import { loadWays } from "../../paths/template/Paths";
+import { BusStopCard } from "../molecule/BusStopCard";
 import { BusStopsMenuInput } from "../molecule/BusStopsMenuInput";
 import { BusStopsMenuMapButtons } from "../molecule/BusStopsMenuMapButtons";
+import "./BusStopsMenu.css";
 
 export const [selectedWayId, setSelectedWayId] = createSignal(0);
 
@@ -41,6 +45,11 @@ export function BusStopsMenu(props: BusStopsMenuProps) {
     if (props.item.busStops) {
       setCurrentBusStops(props.item.busStops);
     }
+    setWayLineArrows(true);
+  });
+
+  onCleanup(() => {
+    setWayLineArrows(false);
   });
 
   createEffect((prev) => {
@@ -62,11 +71,11 @@ export function BusStopsMenu(props: BusStopsMenuProps) {
     if (isChoosingLocal()) return;
     setIsChoosingLocal(true);
     setMapOnClick(() => pickLocation);
-    setDisplayBusStops([]);
   }
 
-  function toggleChoosingWay() {
+  async function toggleChoosingWay() {
     if (isChoosingWay()) return;
+    await loadWays();
     setIsChoosingWay(true);
     setDisplayWays(getWays());
   }
@@ -78,7 +87,10 @@ export function BusStopsMenu(props: BusStopsMenuProps) {
     setNewBusStop((prev) => {
       return { ...prev, lat: e.latlng.lat, lon: e.latlng.lng };
     });
-    setDisplayBusStops([newBusStop()]);
+    // eslint-disable-next-line solid/reactivity
+    setDisplayBusStops((prev) => {
+      return [...prev, newBusStop()];
+    });
   }
 
   function toggleEdit() {
@@ -87,6 +99,16 @@ export function BusStopsMenu(props: BusStopsMenuProps) {
   }
 
   function cancel() {
+    // eslint-disable-next-line solid/reactivity
+    setDisplayBusStops((prev) => {
+      return prev.filter(
+        (stop) => stop.lat != newBusStop().lat && stop.lon != newBusStop().lon
+      );
+    });
+    // eslint-disable-next-line solid/reactivity
+    setDisplayWays((prev) => {
+      return prev.filter((way) => way.id != newBusStop().way);
+    });
     setIsChoosingLocal(false);
     setMapOnClick(undefined);
     setNewBusStop({} as BusStopType);
@@ -128,18 +150,22 @@ export function BusStopsMenu(props: BusStopsMenuProps) {
   }
 
   return (
-    <CollapsibleElement title="Arrêts de bus">
+    <div>
+      <div class="bus-stop-menu-header">
+        <p>Arrêts de bus</p>
+        <ButtonIcon icon={<CirclePlusIcon />} onClick={toggleEdit} />
+      </div>
       <Show
         fallback={
-          <div>
+          <div class="bus-stop-menu">
             <BusStopsMenuInput setter={setNewBusStop} />
             <BusStopsMenuMapButtons
+              busStop={newBusStop()}
               choosingLocal={isChoosingLocal()}
               choosingWay={isChoosingWay()}
               toggleChoosingLocal={toggleChoosingLocal}
               toggleChoosingWay={toggleChoosingWay}
-            />
-            <BusStopsMenuButtons
+              setter={setNewBusStop}
               cancelFunction={cancel}
               submitFunction={submit}
             />
@@ -148,10 +174,9 @@ export function BusStopsMenu(props: BusStopsMenuProps) {
         when={!isAdding()}
       >
         <For each={currentBusStops()}>
-          {(stopItem) => <div>{stopItem.name}</div>}
+          {(stopItem) => <BusStopCard busStop={stopItem} />}
         </For>
-        <Button label="Ajouter" onClick={toggleEdit} />
       </Show>
-    </CollapsibleElement>
+    </div>
   );
 }

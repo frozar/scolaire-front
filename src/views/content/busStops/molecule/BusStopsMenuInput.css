@@ -1,0 +1,7 @@
+.bus-stop-input {
+  @apply flex gap-2 align-middle;
+}
+
+.bus-stop-input-size {
+  @apply w-32;
+}

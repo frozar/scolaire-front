@@ -1,6 +1,6 @@
 import { LineString } from "geojson";
 import L, { LeafletMouseEvent } from "leaflet";
-import { createEffect, onCleanup } from "solid-js";
+import { createEffect, createSignal, on, onCleanup } from "solid-js";
 import { COLOR_GREEN_BASE } from "../../constant";
 import { arrowsMap } from "../organism/Trips";
 
@@ -17,6 +17,7 @@ interface LineProps {
   onClick?: () => void;
   onMouseDown?: (e: LeafletMouseEvent) => void;
 }
+export const [reversedArrows, setReversedArrows] = createSignal(false);
 
 export default function (props: LineProps) {
   let tripPolyline: L.Polyline;
@@ -91,6 +92,15 @@ export default function (props: LineProps) {
     }
   });
 
+  createEffect(
+    on(reversedArrows, () => {
+      if (props.withArrows) {
+        arrows.map((arrow) => props.leafletMap.removeLayer(arrow));
+        arrows = buildArrows(props.latlngs, props.color);
+      }
+    })
+  );
+
   onCleanup(() => {
     if (tripPolyline) {
       props.leafletMap.removeLayer(tripPolyline);
@@ -139,7 +149,8 @@ function buildArrows(latLngs: L.LatLng[], color: string): L.Marker[] {
     const diffX = latLngs[i + 1].lng - latLngs[i - 1].lng;
     const diffY = latLngs[i + 1].lat - latLngs[i - 1].lat;
 
-    const arrowAngle = (Math.atan2(diffX, diffY) * 180) / Math.PI + 180;
+    let arrowAngle = (Math.atan2(diffX, diffY) * 180) / Math.PI + 180;
+    if (reversedArrows()) arrowAngle -= 180;
 
     const arrowIcon = L.divIcon({
       className: "bus-trip-arrow",

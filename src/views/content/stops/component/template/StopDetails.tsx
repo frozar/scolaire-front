@@ -1,3 +1,4 @@
+import L from "leaflet";
 import { Show, createSignal, onCleanup, onMount } from "solid-js";
 import { StopType } from "../../../../../_entities/stop.entity";
 import { getSchools } from "../../../../../_stores/school.store";
@@ -7,17 +8,21 @@ import Button from "../../../../../component/atom/Button";
 import { LabeledInputNumber } from "../../../../../component/molecule/LabeledInputNumber";
 import { NatureEnum } from "../../../../../type";
 import { StopUtils } from "../../../../../utils/stop.utils";
-import { setWayLineColor } from "../../../_component/molecule/WayLine";
+import {
+  setWayLineArrows,
+  setWayLineColor,
+} from "../../../_component/molecule/WayLine";
 import { setDisplayBusStops } from "../../../_component/organisme/BusStopPoints";
 import { setDisplaySchools } from "../../../_component/organisme/SchoolPoints";
 import { setDisplayStops } from "../../../_component/organisme/StopPoints";
 import { setDisplayTrips } from "../../../_component/organisme/Trips";
 import { setDisplayWays } from "../../../_component/organisme/Ways";
-import { setMapOnClick } from "../../../_component/template/MapContainer";
+import {
+  leafletMap,
+  setMapOnClick,
+} from "../../../_component/template/MapContainer";
 import { BusStopsDisplay } from "../../../busStops/organism/BusStopsDisplay";
 import { BusStopsMenu } from "../../../busStops/organism/BusStopsMenu";
-import { COLOR_BLUE_BASE } from "../../../map/constant";
-import { loadWays } from "../../../paths/template/Paths";
 import { RemainingStudentInformation } from "../atom/RemainingStudentInformation";
 import { StopActionsPanelsButtons } from "../molecul/StopActionsPanelsButtons";
 import { StopDetailsHeader } from "../molecul/StopDetailsHeader";
@@ -43,8 +48,14 @@ export function StopDetails() {
   const [addQuantity, setAddQuantity] = createSignal<boolean>(false);
 
   onMount(async () => {
-    await loadWays();
-    setWayLineColor(COLOR_BLUE_BASE);
+    const centerView = L.latLng(
+      stopDetails()?.lat as number,
+      (stopDetails()?.lon as number) - 0.025
+    );
+    leafletMap()?.setView(centerView);
+
+    setWayLineColor("#888888");
+    setWayLineArrows(true);
     setMapData(stopDetails());
   });
 
@@ -53,6 +64,7 @@ export function StopDetails() {
     setMapData(stopDetails());
     setMapOnClick(undefined);
     setDisplayWays([]);
+    setWayLineArrows(false);
   });
 
   function toggleChoosingLocal() {
@@ -62,7 +74,7 @@ export function StopDetails() {
     setDisplayBusStops([]);
   }
 
-  function toggleEditItem() {
+  async function toggleEditItem() {
     setEditItem((bool) => !bool);
   }
   const toggleInAddQuantity = () => setAddQuantity((prev) => !prev);
