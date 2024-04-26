@@ -33,11 +33,21 @@ export function SchoolDetails() {
   const [isChoosingLocal, setIsChoosingLocal] = createSignal(false);
 
   onMount(async () => {
-    const centerView = L.latLng(
-      schoolDetails()?.lat as number,
-      (schoolDetails()?.lon as number) - 0.025
-    );
-    leafletMap()?.setView(centerView);
+    if (filterStops(schoolDetails() as SchoolType).length > 0) {
+      const locations: L.LatLng[] = [];
+      filterStops(schoolDetails() as SchoolType).forEach((stop) => {
+        const latlong = L.latLng(stop.lat, stop.lon);
+        locations.push(latlong);
+      });
+      const polygon = L.polygon(locations);
+      leafletMap()?.fitBounds(polygon.getBounds(), { maxZoom: 13 });
+    } else {
+      const centerView = L.latLng(
+        schoolDetails()?.lat as number,
+        (schoolDetails()?.lon as number) - 0.025
+      );
+      leafletMap()?.setView(centerView, 14);
+    }
 
     setWayLineColor("#888888");
     setMapData(schoolDetails());
