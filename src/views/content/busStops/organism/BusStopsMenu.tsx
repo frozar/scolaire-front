@@ -40,6 +40,7 @@ export function BusStopsMenu(props: BusStopsMenuProps) {
   const [newBusStop, setNewBusStop] = createSignal<BusStopType>(
     {} as BusStopType
   );
+  const [isEditing, setisEditing] = createSignal(false);
 
   onMount(() => {
     if (props.item.busStops) {
@@ -87,10 +88,7 @@ export function BusStopsMenu(props: BusStopsMenuProps) {
     setNewBusStop((prev) => {
       return { ...prev, lat: e.latlng.lat, lon: e.latlng.lng };
     });
-    // eslint-disable-next-line solid/reactivity
-    setDisplayBusStops((prev) => {
-      return [...prev, newBusStop()];
-    });
+    setDisplayBusStops([newBusStop()]);
   }
 
   function toggleEdit() {
@@ -112,25 +110,40 @@ export function BusStopsMenu(props: BusStopsMenuProps) {
     setIsChoosingLocal(false);
     setMapOnClick(undefined);
     setNewBusStop({} as BusStopType);
+    setisEditing(false);
     toggleEdit();
   }
 
   async function submit() {
+    let Id = 0;
+    if (newBusStop().id) Id = newBusStop().id as number;
     if (!newBusStop().name || !newBusStop().lat) return;
 
     if (props.isSchool) {
       setNewBusStop((prev) => {
-        return { ...prev, schoolId: props.item.id };
+        return { ...prev, schoolId: props.item.id, id: Id };
       });
     } else {
       setNewBusStop((prev) => {
-        return { ...prev, stopId: props.item.id };
+        return { ...prev, stopId: props.item.id, id: Id };
       });
     }
 
-    setCurrentBusStops((prev) => {
-      return [...prev, newBusStop()];
-    });
+    if (isEditing()) {
+      setCurrentBusStops((prev) => {
+        return prev.map((stop) => {
+          if (stop.id == newBusStop().id) {
+            return newBusStop();
+          }
+          return stop;
+        });
+      });
+    } else {
+      setCurrentBusStops((prev) => {
+        return [...prev, newBusStop()];
+      });
+      setisEditing(false);
+    }
 
     if (props.schoolSetter) {
       // eslint-disable-next-line solid/reactivity
@@ -145,8 +158,35 @@ export function BusStopsMenu(props: BusStopsMenuProps) {
         return { ...prev, busStops: currentBusStops() };
       });
     }
-
+    setNewBusStop({} as BusStopType);
+    setisEditing(false);
     toggleEdit();
+  }
+
+  async function editBusStop(busstop: BusStopType) {
+    setisEditing(true);
+    setNewBusStop(busstop);
+    await loadWays();
+    toggleEdit();
+  }
+
+  function deleteBusStop(busstop: BusStopType) {
+    const newList = currentBusStops().filter((stop) => stop.id != busstop.id);
+    setCurrentBusStops(newList);
+    if (props.schoolSetter) {
+      // eslint-disable-next-line solid/reactivity
+      props.schoolSetter((prev) => {
+        return { ...prev, busStops: currentBusStops() };
+      });
+    }
+
+    if (props.stopSetter) {
+      // eslint-disable-next-line solid/reactivity
+      props.stopSetter((prev) => {
+        return { ...prev, busStops: currentBusStops() };
+      });
+    }
+    setDisplayBusStops(props.item.busStops);
   }
 
   return (
@@ -158,7 +198,7 @@ export function BusStopsMenu(props: BusStopsMenuProps) {
       <Show
         fallback={
           <div class="bus-stop-menu">
-            <BusStopsMenuInput setter={setNewBusStop} />
+            <BusStopsMenuInput item={newBusStop()} setter={setNewBusStop} />
             <BusStopsMenuMapButtons
               busStop={newBusStop()}
               choosingLocal={isChoosingLocal()}
@@ -174,7 +214,14 @@ export function BusStopsMenu(props: BusStopsMenuProps) {
         when={!isAdding()}
       >
         <For each={currentBusStops()}>
-          {(stopItem) => <BusStopCard busStop={stopItem} />}
+          {(stopItem) => (
+            <BusStopCard
+              showButtons
+              editFunction={editBusStop}
+              deleteFunction={deleteBusStop}
+              busStop={stopItem}
+            />
+          )}
         </For>
       </Show>
     </div>

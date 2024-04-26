@@ -1,0 +1,7 @@
+.bus-stop-card-title {
+  @apply flex justify-between align-middle;
+}
+
+.bus-stop-card-buttons {
+  @apply flex gap-2;
+}
