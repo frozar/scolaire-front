@@ -1,6 +1,7 @@
 import { createSignal } from "solid-js";
 import { LineType } from "../../../../_entities/line.entity";
 import { TripType } from "../../../../_entities/trip.entity";
+import { TripService } from "../../../../_services/trip.service";
 import { LineStore } from "../../../../_stores/line.store";
 import { ViewManager } from "../../ViewManager";
 import { TripAddOrUpdate } from "./TripAddOrUpdate";
@@ -11,8 +12,10 @@ export function TripEdit() {
   function previous() {
     ViewManager.tripDetails(selectedEditTrip() as TripType);
   }
-  function next(trip: TripType) {
-    console.log(trip);
+  async function next(trip: TripType) {
+    const newTrip = await TripService.update(trip);
+    LineStore.updateTrip(newTrip);
+    ViewManager.tripDetails(newTrip);
   }
 
   return (

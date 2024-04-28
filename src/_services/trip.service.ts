@@ -1,5 +1,4 @@
 import { TripDBType, TripEntity, TripType } from "../_entities/trip.entity";
-import { getSelectedLine } from "../views/content/map/component/organism/BusLines";
 import { ServiceUtils } from "./_utils.service";
 
 export class TripService {
@@ -7,28 +6,28 @@ export class TripService {
     const data = TripEntity.dbFormat(trip);
 
     const dbBusTrip: TripDBType = await ServiceUtils.post(
-      "/busline/" + getSelectedLine()?.id + "/trip",
+      "/busline/" + trip.lineId + "/trip",
       data
     );
 
-    return TripEntity.build(dbBusTrip);
+    return TripEntity.build(dbBusTrip, trip.lineId);
   }
 
   static async update(trip: TripType): Promise<TripType> {
-    const data = TripEntity.dbPartialFormat(trip);
+    const data = TripEntity.dbFormat(trip);
 
     const dbTrip: TripDBType = await ServiceUtils.patch(
-      "/busline/" + getSelectedLine()?.id + "/trip/" + trip.id,
+      "/busline/" + trip.lineId + "/trip/" + trip.id,
       data
     );
 
     if (dbTrip == null) return dbTrip;
-    return TripEntity.build(dbTrip);
+    return TripEntity.build(dbTrip, trip.lineId);
   }
 
-  static async delete(id: number): Promise<number> {
+  static async delete(trip: TripType): Promise<number> {
     return await ServiceUtils.delete(
-      "/busline/" + getSelectedLine()?.id + "/trip/" + id
+      "/busline/" + trip.lineId + "/trip/" + trip.id
     );
   }
 }

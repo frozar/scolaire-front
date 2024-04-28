@@ -4,7 +4,7 @@ import { TripType } from "../_entities/trip.entity";
 export const [getTrips, setTrips] = createSignal<TripType[]>([]);
 
 export namespace TripStore {
-  export function set(trips: TripType[]) {
+  export function set(trips: TripType[] | ((prev: TripType[]) => TripType[])) {
     setTrips(trips);
   }
 }

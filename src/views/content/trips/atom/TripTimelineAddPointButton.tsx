@@ -1,5 +1,4 @@
 import { FaSolidPlus } from "solid-icons/fa";
-import { createEffect } from "solid-js";
 import "./TripTimelineAddPointButton.css";
 
 export function TripTimelineAddPointButton(props: {
@@ -9,9 +8,6 @@ export function TripTimelineAddPointButton(props: {
   function onClick() {
     props.onClickAdd();
   }
-  createEffect(() => {
-    console.log("enable", props.enable);
-  });
 
   return (
     <div class={"timeline-add-item " + (props.enable ? "enable" : "")}>

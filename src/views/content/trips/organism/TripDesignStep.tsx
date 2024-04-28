@@ -36,9 +36,6 @@ export function TripDesignStep(props: {
   createEffect(() => {
     setDisplayOnMap(props.trip);
   });
-  createEffect(() => {
-    console.log(localTrip());
-  });
 
   onCleanup(() => {
     setDisplaySchools([]);

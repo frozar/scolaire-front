@@ -42,11 +42,6 @@ export function TripTimeline(props: {
   const [indexOfAddPoint, setIndexOfAddPoint] = createSignal<number>(-1);
 
   onMount(() => {
-    //TODO
-    // currentPassageTime = props.trip.startTime ?? 0;
-    // set trip to display
-    // setStopPointOnClick(() => onUpdateStop);
-
     setDisplayTrips([props.trip]);
     setStopPointOnClick(() => onUpdateStopFromMap);
     setSchoolPointOnClick(() => onUpdateStopFromMap);
@@ -82,7 +77,6 @@ export function TripTimeline(props: {
 
   function onClickAddFromTimeline(index: number) {
     setIndexOfAddPoint(index);
-    console.log("indexOfAddPoint()", indexOfAddPoint());
   }
 
   function deletePointFromTimeline(tripPoint: TripPointType) {
@@ -111,8 +105,6 @@ export function TripTimeline(props: {
             }
             // eslint-disable-next-line solid/reactivity
             currentPassageTime += props.tripPoints[i()].passageTime;
-            // eslint-disable-next-line solid/reactivity
-            console.log(props.tripPoints[i()].waitingTime);
 
             const quantity = getSignedPointQuantity(point, props.trip);
             accumulateQuantity += calcAccumulateQuantity(quantity);
@@ -166,10 +158,8 @@ function updateTripOnMapInteraction(
       (tripPoint) => tripPoint.leafletId == pointToOperate.leafletId
     );
     if (tripPointIndex != -1) {
-      console.log("deletePoint", pointToOperate);
       prev.tripPoints.splice(tripPointIndex, 1);
     } else {
-      console.log("addPoint", pointToOperate);
       const tripPoint: TripPointType | undefined = createNewTripPoint(
         prev,
         pointToOperate
@@ -234,8 +224,8 @@ function updateWaypoints(
     newWaypoints.splice(firstWaypointIndex, quantityToReplace);
   } else {
     newWaypoints.splice(
-      firstWaypointIndex,
-      quantityToReplace,
+      firstWaypointIndex + 1,
+      quantityToReplace - 1,
       point.nature == NatureEnum.stop
         ? {
             idStop: point.id,
@@ -348,7 +338,6 @@ async function updatePolylineWithOsrm(
   setTrip: Setter<TripType>
 ) {
   enableSpinningWheel();
-  console.log("updatePolylineWithOsrm : trip", trip);
   const {
     latlngs,
     projectedLatlngs,
@@ -478,7 +467,6 @@ function getPointQuantity(point: TripPointType, trip: TripType) {
 
 function getSchoolQuantity(point: TripPointType, trip: TripType) {
   let output = 0;
-  //TODO à décommenter
   const school = SchoolStore.get(point.id) as SchoolType;
   const schoolGradesId: number[] = school.grades.map(
     (grade) => grade.id as number

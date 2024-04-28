@@ -148,7 +148,7 @@ export namespace ContextUtils {
           );
         }
 
-        await TripUtils.createOrUpdateTrip();
+        // await TripUtils.createOrUpdateTrip();
         // const start = 420;
         // const end = 480;
         // // TODO Query to update stepsWeight

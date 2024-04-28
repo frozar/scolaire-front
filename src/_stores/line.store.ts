@@ -13,6 +13,19 @@ export namespace LineStore {
     setTrips();
   }
 
+  export function updateTrip(newTrip: TripType) {
+    set((lines) => {
+      for (const line of lines) {
+        const tripIndex = line.trips.findIndex((trip) => trip.id == newTrip.id);
+        if (tripIndex != -1) {
+          line.trips[tripIndex] = newTrip;
+          break;
+        }
+      }
+      return [...lines];
+    });
+  }
+
   export function add(line: LineType) {
     set((prev) => {
       prev.push(line);
