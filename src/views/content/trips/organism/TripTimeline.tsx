@@ -57,10 +57,16 @@ export function TripTimeline(props: {
     setSchoolPointOnClick();
   });
 
-  function onUpdateStopFromMap(stop: StopType | SchoolType): void {
-    updateTripOnMapInteraction(stop, props.setTrip, indexOfAddPoint());
-    updatePolylineWithOsrm(props.trip, props.setTrip);
+  async function onUpdateStopFromMap(stop: StopType | SchoolType) {
+    let newTrip = updateTripOnMapInteraction(
+      stop,
+      props.trip,
+      indexOfAddPoint()
+    );
+    let afterPoly = await updatePolylineWithOsrm(newTrip);
+
     setIndexOfAddPoint(-1);
+    props.setTrip(afterPoly);
   }
 
   function updateWaitingTime(point: TripPointType, waitingTime: number) {
@@ -150,44 +156,44 @@ export function TripTimeline(props: {
 
 function updateTripOnMapInteraction(
   pointToOperate: StopType | SchoolType,
-  setTrip: Setter<TripType>,
+  trip: TripType,
   index = -1
 ) {
-  setTrip((prev) => {
-    const tripPointIndex = prev.tripPoints.findIndex(
-      (tripPoint) => tripPoint.leafletId == pointToOperate.leafletId
-    );
-    if (tripPointIndex != -1) {
-      prev.tripPoints.splice(tripPointIndex, 1);
-    } else {
-      const tripPoint: TripPointType | undefined = createNewTripPoint(
-        prev,
-        pointToOperate
-      );
-      if (tripPoint) {
-        if (index == -1) {
-          prev.tripPoints.push(tripPoint);
-        } else {
-          // ajouter tripPoint à un index précis
-          prev.tripPoints.splice(index, 0, tripPoint);
-        }
-      } else {
-        //TODO create exception : contact admin sys
-      }
-    }
-    /**
-     * Update WayPoint
-     */
-    if (prev.waypoints) {
-      prev.waypoints = updateWaypoints(
-        pointToOperate,
-        prev.waypoints,
-        prev.tripPoints
-      );
-    }
+  let prev = { ...trip };
 
-    return { ...prev };
-  });
+  const tripPointIndex = prev.tripPoints.findIndex(
+    (tripPoint) => tripPoint.leafletId == pointToOperate.leafletId
+  );
+  if (tripPointIndex != -1) {
+    prev.tripPoints.splice(tripPointIndex, 1);
+  } else {
+    const tripPoint: TripPointType | undefined = createNewTripPoint(
+      prev,
+      pointToOperate
+    );
+    if (tripPoint) {
+      if (index == -1) {
+        prev.tripPoints.push(tripPoint);
+      } else {
+        // ajouter tripPoint à un index précis
+        prev.tripPoints.splice(index, 0, tripPoint);
+      }
+    } else {
+      //TODO create exception : contact admin sys
+    }
+  }
+  /**
+   * Update WayPoint
+   */
+  if (prev.waypoints) {
+    prev.waypoints = updateWaypoints(
+      pointToOperate,
+      prev.waypoints,
+      prev.tripPoints
+    );
+  }
+
+  return { ...prev };
 }
 
 function updateWaypoints(
@@ -333,10 +339,7 @@ function createNewTripPoint(
 }
 
 // TODO fonction à réécrire... function dans function !!! + complexité
-async function updatePolylineWithOsrm(
-  trip: TripType,
-  setTrip: Setter<TripType>
-) {
+async function updatePolylineWithOsrm(trip: TripType) {
   enableSpinningWheel();
   const {
     latlngs,
@@ -386,40 +389,35 @@ async function updatePolylineWithOsrm(
     } else someDuration += duration;
   }
 
-  setTrip((prev) => {
-    if (!prev) return prev;
-    const trip = { ...prev };
-    // * One leg_duration is the travel time between the first & second point.
-    // * first tripPoint.time_passage is based on trip.start_time so no need to define it.
-    // * for each another tripPoint we define the time_passage to (index - 1) of legsDuration
-    trip.tripPoints.forEach((tripPoint, index) => {
-      if (index > 0) {
-        tripPoint.passageTime = newLegsDuration[index - 1];
-      }
-    });
-    trip.tripPoints.forEach((tripPoint, i) => {
-      tripPoint.startToTripPointDistance = newLegsDistance[i];
-    });
-    trip.metrics = metrics;
-
-    trip.latLngs = latlngs;
-
-    let waypoints = trip.waypoints;
-    if (waypoints) {
-      waypoints = waypoints.map((waypoint, i) => {
-        return {
-          ...waypoint,
-          onRoadLat: projectedLatlngs[i].lat,
-          onRoadLon: projectedLatlngs[i].lng,
-        };
-      });
-      trip.waypoints = waypoints;
+  // * One leg_duration is the travel time between the first & second point.
+  // * first tripPoint.time_passage is based on trip.start_time so no need to define it.
+  // * for each another tripPoint we define the time_passage to (index - 1) of legsDuration
+  trip.tripPoints.forEach((tripPoint, index) => {
+    if (index > 0) {
+      tripPoint.passageTime = newLegsDuration[index - 1];
     }
-
-    return trip;
   });
+  trip.tripPoints.forEach((tripPoint, i) => {
+    tripPoint.startToTripPointDistance = newLegsDistance[i];
+  });
+  trip.metrics = metrics;
+
+  trip.latLngs = latlngs;
+
+  let waypoints = trip.waypoints;
+  if (waypoints) {
+    waypoints = waypoints.map((waypoint, i) => {
+      return {
+        ...waypoint,
+        onRoadLat: projectedLatlngs[i].lat,
+        onRoadLon: projectedLatlngs[i].lng,
+      };
+    });
+    trip.waypoints = waypoints;
+  }
 
   disableSpinningWheel();
+  return { ...trip };
 }
 
 /**
