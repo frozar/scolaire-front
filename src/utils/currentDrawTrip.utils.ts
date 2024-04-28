@@ -153,6 +153,8 @@ export namespace CurrentDrawTripUtils {
       legsDistances,
       stepsWeight,
     } = await OsrmService.getRoadPolyline(trip);
+
+    //TODO signal non utilisé
     setStepsWeight(stepsWeight);
 
     let someDuration = 0;

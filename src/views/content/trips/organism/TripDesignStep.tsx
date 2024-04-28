@@ -9,7 +9,6 @@ import { GradeUtils } from "../../../../_utils/grade.utils";
 import { LabeledColorPicker } from "../../../../component/molecule/LabeledColorPicker";
 import { setDisplaySchools } from "../../_component/organisme/SchoolPoints";
 import { setDisplayStops } from "../../_component/organisme/StopPoints";
-import { setDisplayTrips } from "../../_component/organisme/Trips";
 import BoardFooterActions from "../../board/component/molecule/BoardFooterActions";
 import LabeledInputField from "../../board/component/molecule/LabeledInputField";
 import Metrics from "../../board/component/organism/Metrics";
@@ -26,6 +25,7 @@ export function TripDesignStep(props: {
   nextStep: () => void;
   previousStep: () => void;
 }) {
+  // eslint-disable-next-line solid/reactivity
   const [localTrip, setLocalTrip] = createSignal<TripType>(props.trip);
 
   onMount(() => {
@@ -36,11 +36,13 @@ export function TripDesignStep(props: {
   createEffect(() => {
     setDisplayOnMap(props.trip);
   });
+  createEffect(() => {
+    console.log(localTrip());
+  });
 
   onCleanup(() => {
     setDisplaySchools([]);
     setDisplayStops([]);
-    setDisplayTrips([]);
   });
 
   function onUpdateName(name: string) {
@@ -120,7 +122,7 @@ export function TripDesignStep(props: {
         >
           <TripTimeline
             tripPoints={localTrip().tripPoints}
-            trip={localTrip}
+            trip={localTrip()}
             setTrip={setLocalTrip}
             inDraw={true}
           />
@@ -146,5 +148,4 @@ export function TripDesignStep(props: {
 function setDisplayOnMap(trip: TripType) {
   setDisplaySchools(trip.schools);
   GradeUtils.displayStopsOfGrades(trip.grades);
-  setDisplayTrips([trip]);
 }

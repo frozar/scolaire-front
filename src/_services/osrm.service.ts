@@ -281,7 +281,6 @@ export class OsrmService {
     const legsDistances = routes[0].legs.map((item) => item.distance);
     const stepsWeight = routes[0].legs.flatMap((leg) => {
       return leg.steps.flatMap((step) => {
-        console.log("step.flaxib_way_ids");
         return step.flaxib_way_ids.map((elem, i) => {
           return {
             flaxib_way_id: elem,

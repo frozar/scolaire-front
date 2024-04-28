@@ -1,11 +1,16 @@
 import L from "leaflet";
 import { createEffect, createSignal, onMount } from "solid-js";
 import { TripType } from "../../../../_entities/trip.entity";
-import { NatureEnum } from "../../../../type";
 import { TripMapUtils } from "../../../../utils/tripMap.utils";
 import Line from "../../map/component/atom/Line";
 import { linkMap } from "../../map/component/organism/Points";
-import { COLOR_STOP_EMPHASE } from "../../map/constant";
+import {
+  COLOR_SCHOOL_FOCUS,
+  COLOR_STOP_EMPHASE,
+  COLOR_STOP_FOCUS,
+} from "../../map/constant";
+import { displaySchools } from "../organisme/SchoolPoints";
+import { displayStops } from "../organisme/StopPoints";
 
 export const [draggingTrip, setDraggingTrip] = createSignal<boolean>(false);
 
@@ -24,27 +29,27 @@ export function Trip(props: { trip: TripType; map: L.Map; onRoad: boolean }) {
   function setTrip(onroad: boolean) {
     if (onroad) {
       setLocalLatLngs(props.trip.latLngs);
-      setLocalOpacity(0.7);
+      setLocalOpacity(1);
     } else {
       setLocalLatLngs(TripMapUtils.getLatLngsFromPoint(props.trip.tripPoints));
       setLocalOpacity(1);
     }
   }
 
-  let pointFocus: { circle: L.CircleMarker; nature: NatureEnum }[] = [];
-
   createEffect(() => {
-    if (props.onRoad) {
-      pointFocus = [];
-      props.trip.tripPoints.map((point) => {
-        const circle = linkMap.get(point.leafletId);
-        circle?.setStyle({ fillColor: COLOR_STOP_EMPHASE });
-        pointFocus.push({
-          circle: circle as L.CircleMarker,
-          nature: point.nature,
-        });
-      });
-    }
+    displayStops().map((stop) => {
+      const circle = linkMap.get(stop.leafletId);
+      circle?.setStyle({ fillColor: COLOR_STOP_FOCUS });
+    });
+    displaySchools().map((school) => {
+      const circle = linkMap.get(school.leafletId);
+      circle?.setStyle({ fillColor: COLOR_SCHOOL_FOCUS });
+    });
+
+    props.trip.tripPoints.map((point) => {
+      const circle = linkMap.get(point.leafletId);
+      circle?.setStyle({ fillColor: COLOR_STOP_EMPHASE });
+    });
   });
 
   //TODO revoir le code avec l'ancienne version
