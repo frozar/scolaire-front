@@ -218,6 +218,8 @@ function updateWaypoints(
   const { firstWaypointIndex, quantityToReplace } =
     calculateStartAndQuantityWaypointToReplace(point, waypoints);
 
+  console.log("quantity", { firstWaypointIndex, quantityToReplace });
+
   if (tripPointIndex == -1) {
     newWaypoints.splice(firstWaypointIndex, quantityToReplace);
   } else {
@@ -271,9 +273,23 @@ function calculateStartAndQuantityWaypointToReplace(
 
   const indexDifference = nextWaypointIndex - previousWaypointIndex;
 
+  console.log("point waypoint", point);
+  console.log(
+    "calculateStartAndQuantityWaypointToReplace prev",
+    previousWaypointIndex
+  );
+  console.log(
+    "calculateStartAndQuantityWaypointToReplace next",
+    nextWaypointIndex
+  );
+  console.log(
+    "calculateStartAndQuantityWaypointToReplace waypointIndex",
+    waypointIndex
+  );
   return {
-    firstWaypointIndex: previousWaypointIndex + 1,
-    quantityToReplace: indexDifference,
+    firstWaypointIndex: waypointIndex == 0 ? 0 : previousWaypointIndex + 1,
+    quantityToReplace:
+      indexDifference == 1 ? indexDifference : indexDifference - 1,
   };
 }
 
