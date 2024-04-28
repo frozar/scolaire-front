@@ -399,10 +399,8 @@ async function updatePolylineWithOsrm(
       tripPoint.startToTripPointDistance = newLegsDistance[i];
     });
     trip.metrics = metrics;
-    console.log("prev latlong", trip.latLngs);
 
     trip.latLngs = latlngs;
-    console.log("next latlong", trip.latLngs);
 
     let waypoints = trip.waypoints;
     if (waypoints) {
