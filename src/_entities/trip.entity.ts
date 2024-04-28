@@ -65,7 +65,7 @@ export namespace TripEntity {
     };
   }
 
-  export function defaultTrip(lineId: number = -1): TripType {
+  export function defaultTrip(lineId = -1): TripType {
     return {
       name: "My Default Name",
       lineId: lineId,
