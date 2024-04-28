@@ -113,9 +113,7 @@ export namespace TripEntity {
     };
   }
 
-  export function dbPartialFormat(
-    trip: Partial<TripType>
-  ): Partial<TripDBType> {
+  export function dbPartialFormat(trip: TripType): Partial<TripDBType> {
     let output = {};
 
     if (trip.startTime) {

@@ -16,13 +16,13 @@ export function TripEdit() {
   }
 
   return (
-    <div>
+    <>
       <TripAddOrUpdate
         trip={selectedEditTrip() as TripType}
         line={LineStore.getFromTrip(selectedEditTrip() as TripType) as LineType}
         previous={previous}
         next={next}
       />
-    </div>
+    </>
   );
 }

@@ -23,9 +23,12 @@ import { NatureEnum } from "../../../../type";
 import { setSchoolPointOnClick } from "../../_component/molecule/SchoolPoint";
 import { setStopPointOnClick } from "../../_component/molecule/StopPoint";
 import { setDisplayTrips } from "../../_component/organisme/Trips";
-import { TripTimelineAddPointButton } from "../../board/component/atom/TripTimelineAddPointButton";
 import { TimelineMenu } from "../molecule/TimelineMenu";
 import { TripTimelinePoint } from "../molecule/TripTimelinePoint";
+
+import { StopStore } from "../../../../_stores/stop.store";
+import { TripTimelineAddPointButton } from "../atom/TripTimelineAddPointButton";
+import "./TripTimeline.css";
 
 export function TripTimeline(props: {
   tripPoints: TripPointType[];
@@ -79,14 +82,25 @@ export function TripTimeline(props: {
 
   function onClickAddFromTimeline(index: number) {
     setIndexOfAddPoint(index);
+    console.log("indexOfAddPoint()", indexOfAddPoint());
+  }
+
+  function deletePointFromTimeline(tripPoint: TripPointType) {
+    let point;
+    if (tripPoint.nature == NatureEnum.stop) {
+      point = StopStore.get(tripPoint.id) as StopType;
+    } else {
+      point = SchoolStore.get(tripPoint.id) as SchoolType;
+    }
+    onUpdateStopFromMap(point);
   }
 
   return (
-    <div class="timeline">
-      <div class="timeline-items ">
+    <div class="triptimeline">
+      <div class="triptimeline-items ">
         <For each={props.tripPoints}>
+          {/* TODO revoir ce code pour reactivity */}
           {(point, i) => {
-            //TODO revoir ce code pour reactivity
             // eslint-disable-next-line solid/reactivity
             if (i() == 0) {
               currentPassageTime = 0;
@@ -104,10 +118,11 @@ export function TripTimeline(props: {
             accumulateQuantity += calcAccumulateQuantity(quantity);
 
             return (
-              <div class="timeline-block">
+              <div class="triptimeline-item">
                 <Show when={props.inDraw}>
                   <TripTimelineAddPointButton
                     onClickAdd={() => onClickAddFromTimeline(i())}
+                    enable={indexOfAddPoint() == i()}
                   />
                 </Show>
 
@@ -120,15 +135,12 @@ export function TripTimeline(props: {
                 >
                   <TimelineMenu
                     onClickDeletePoint={() => {
-                      console.log("todo delete point from timeline");
+                      deletePointFromTimeline(point);
                     }}
                     onClickWaitingTime={(waitingTime) =>
                       updateWaitingTime(point, waitingTime)
                     }
                     waitingTime={point.waitingTime}
-                    // onClickDeletePoint={props.onClickRemovePointFromTrip}
-                    // onClickWaitingTime={props.onClickWaitingTime}
-                    // waitingTime={props.waitingTime}
                   />
                 </TripTimelinePoint>
               </div>

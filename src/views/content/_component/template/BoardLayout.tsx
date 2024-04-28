@@ -7,7 +7,7 @@ export function BoardLayout(props: { children: JSXElement }) {
   const child = children(() => props.children);
 
   return (
-    <section id="information-board-layout">
+    <section id="board-layout">
       <Breadcrumb />
       {child()}
     </section>

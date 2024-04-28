@@ -1,11 +1,4 @@
-import {
-  Match,
-  Show,
-  Switch,
-  createEffect,
-  createSignal,
-  onMount,
-} from "solid-js";
+import { Match, Show, Switch, createSignal, onMount } from "solid-js";
 import { CalendarDayEnum } from "../../../../_entities/calendar.entity";
 import { GradeType } from "../../../../_entities/grade.entity";
 import { LineType } from "../../../../_entities/line.entity";
@@ -29,10 +22,6 @@ enum EditTripStep {
   editTrip,
   buildReverse,
 }
-const [currentStep, setCurrentStep] = createSignal<EditTripStep>(
-  EditTripStep.schoolSelection
-);
-const [availableSchools, setAvailableSchools] = createSignal<SchoolType[]>([]);
 
 export function TripAddOrUpdate(props: {
   trip: TripType;
@@ -42,13 +31,15 @@ export function TripAddOrUpdate(props: {
 }) {
   const [currentTrip, setCurrentTrip] = createSignal<TripType>(props.trip);
 
+  const [currentStep, setCurrentStep] = createSignal<EditTripStep>(
+    EditTripStep.schoolSelection
+  );
+  const [availableSchools, setAvailableSchools] = createSignal<SchoolType[]>(
+    []
+  );
   onMount(() => {
     setCurrentStep(EditTripStep.editTrip);
     setAvailableSchools(props.line.schools);
-  });
-
-  createEffect(() => {
-    console.log(currentTrip());
   });
 
   function nextStep(currentStep: EditTripStep) {
@@ -115,7 +106,7 @@ export function TripAddOrUpdate(props: {
   }
 
   return (
-    <div>
+    <>
       <Switch>
         <Match when={currentStep() == EditTripStep.schoolSelection}>
           <SelectSchoolsStep
@@ -164,6 +155,6 @@ export function TripAddOrUpdate(props: {
           />
         </Match>
       </Switch>
-    </div>
+    </>
   );
 }

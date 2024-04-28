@@ -1,0 +1,12 @@
+
+.triptimeline{
+    /* display: grid;
+    grid-auto-flow: dense;
+    position: relative; */
+}
+.triptimeline-items{
+
+}
+.triptimeline-item{
+    @apply flex flex-col;
+}

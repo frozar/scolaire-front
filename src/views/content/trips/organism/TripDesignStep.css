@@ -1,8 +1,13 @@
 .trip-edit-design-step {
-  @apply flex flex-col;
+  @apply flex flex-col h-[calc(100%_-_50px)];
 
   .display-trip-direction-and-days {
     @apply mb-2;
+  }
+
+  .triptimeline{
+    @apply flex-1;
+    overflow: scroll;
   }
 }
 
