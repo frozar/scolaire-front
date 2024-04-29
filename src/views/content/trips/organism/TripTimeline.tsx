@@ -58,12 +58,12 @@ export function TripTimeline(props: {
   });
 
   async function onUpdateStopFromMap(stop: StopType | SchoolType) {
-    let newTrip = updateTripOnMapInteraction(
+    const newTrip = updateTripOnMapInteraction(
       stop,
       props.trip,
       indexOfAddPoint()
     );
-    let afterPoly = await updatePolylineWithOsrm(newTrip);
+    const afterPoly = await updatePolylineWithOsrm(newTrip);
 
     setIndexOfAddPoint(-1);
     props.setTrip(afterPoly);
@@ -159,7 +159,7 @@ function updateTripOnMapInteraction(
   trip: TripType,
   index = -1
 ) {
-  let prev = { ...trip };
+  const prev = { ...trip };
 
   const tripPointIndex = prev.tripPoints.findIndex(
     (tripPoint) => tripPoint.leafletId == pointToOperate.leafletId
