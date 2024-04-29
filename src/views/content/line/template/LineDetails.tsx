@@ -5,6 +5,7 @@ import { TripType } from "../../../../_entities/trip.entity";
 import { BusLineService } from "../../../../_services/line.service";
 import { LineStore } from "../../../../_stores/line.store";
 import PencilIcon from "../../../../icons/PencilIcon";
+import PlusIcon from "../../../../icons/PlusIcon";
 import TrashIcon from "../../../../icons/TrashIcon";
 import { setRemoveConfirmation } from "../../../../userInformation/RemoveConfirmation";
 import { ViewManager } from "../../ViewManager";
@@ -103,6 +104,10 @@ export function LineDetails() {
             <ButtonIcon
               icon={<PencilIcon />}
               onClick={() => ViewManager.LineEdit(localLine)}
+            />
+            <ButtonIcon
+              icon={<PlusIcon />}
+              onClick={() => ViewManager.tripAdd(selectedLine() as LineType)}
             />
           </div>
         </div>

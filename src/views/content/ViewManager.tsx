@@ -19,6 +19,7 @@ import { setSchoolOfAddGrade } from "./schools/component/template/SchoolGradeAdd
 import { setSchoolGradeDetails } from "./schools/component/template/SchoolGradeDetails";
 import { setSchoolGradeEdit } from "./schools/component/template/SchoolGradeEdit";
 import { setStopDetails } from "./stops/component/template/StopDetails";
+import { setSelectedTripAddLine } from "./trips/template/TripAdd";
 import { setSelectedTrip } from "./trips/template/TripDetails";
 import { setSelectedEditTrip } from "./trips/template/TripEdit";
 
@@ -80,6 +81,15 @@ export namespace ViewManager {
   export function tripEdit(trip: TripType) {
     setSelectedEditTrip(trip);
     setMapBoard("trip-edit");
+    //TODO change lines to graphicage post board refacto
+    setSelectedMenu("lines");
+    //TODO to delete post refacto
+    changeBoard(undefined);
+  }
+
+  export function tripAdd(line: LineType) {
+    setSelectedTripAddLine(line);
+    setMapBoard("trip-add");
     //TODO change lines to graphicage post board refacto
     setSelectedMenu("lines");
     //TODO to delete post refacto

@@ -13,6 +13,17 @@ export namespace LineStore {
     setTrips();
   }
 
+  export function addTrip(newTrip: TripType) {
+    set((lines) => {
+      return lines.map((line) => {
+        if (line.id == newTrip.lineId) {
+          line.trips.push(newTrip);
+        }
+        return line;
+      });
+    });
+  }
+
   export function updateTrip(newTrip: TripType) {
     set((lines) => {
       for (const line of lines) {

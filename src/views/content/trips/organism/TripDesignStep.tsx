@@ -113,21 +113,12 @@ export function TripDesignStep(props: {
           <TripLineDisplaySwitcher />
         </section>
 
-        <Show
-          when={(localTrip().tripPoints.length ?? 0) > 0}
-          fallback={
-            <div class="flex w-4/5 text-xs justify-center">
-              Veuillez sélectionner des points sur la carte
-            </div>
-          }
-        >
-          <TripTimeline
-            tripPoints={localTrip().tripPoints}
-            trip={localTrip()}
-            setTrip={setLocalTrip}
-            inDraw={true}
-          />
-        </Show>
+        <TripTimeline
+          tripPoints={localTrip().tripPoints}
+          trip={localTrip()}
+          setTrip={setLocalTrip}
+          inDraw={true}
+        />
       </div>
 
       <BoardFooterActions
