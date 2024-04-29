@@ -109,6 +109,7 @@ export type AssociatedStopType = {
   idClassToSchool: number; // TODO: Rename
   stopId: number;
   quantity: number;
+  //TODO potentiellement inutile... un AssociatedStopType est forcément lié à un grade en amont
   gradeId: number;
 };
 

@@ -12,11 +12,14 @@ export type leafletBusTripType = {
 
 export const [displayTrips, setDisplayTrips] = createSignal<TripType[]>([]);
 
+export const [isOnRoadDisplay, setIsOnRoadDisplay] =
+  createSignal<boolean>(true);
+
 export function Trips(props: { map: L.Map }) {
   return (
     <For each={displayTrips()}>
       {(trip) => {
-        return <Trip trip={trip} map={props.map} onRoad={true} />;
+        return <Trip trip={trip} map={props.map} onRoad={isOnRoadDisplay()} />;
       }}
     </For>
   );

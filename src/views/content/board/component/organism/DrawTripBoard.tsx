@@ -19,14 +19,12 @@ import BoardTitle from "../atom/BoardTitle";
 import { DrawHelperButton } from "../atom/DrawHelperButton";
 import { AllotmentSelectionList } from "../molecule/AllotmentSelectionList";
 import ButtonIcon from "../molecule/ButtonIcon";
-import { LabeledColorPicker } from "../molecule/LabeledColorPicker";
 import LabeledInputField from "../molecule/LabeledInputField";
 import SchoolsEnumeration from "../molecule/SchoolsEnumeration";
 import { AssignDaysAndDirectionToTrip } from "./AssignDaysAndDirectionToTrip";
 import "./DrawTripBoard.css";
 import Metrics from "./Metrics";
 import { TripTimeline } from "./TripTimeline";
-import { VehicleSelect } from "./VehicleSelect";
 import { DisplayTripDaysAndDirection } from "./displayTripDaysAndDirection";
 
 export enum DrawTripStep {
@@ -163,13 +161,13 @@ export function DrawTripBoard() {
           name="line-name"
           placeholder="Entrer le nom de la course"
         />
-        <VehicleSelect
+        {/* <VehicleSelect
           allotment_id={Number(currentDrawTrip().allotmentId)}
           direction_id={currentDrawTrip().tripDirectionId}
-        />
+        /> */}
 
         <div class="flex mt-4 justify-between">
-          <LabeledColorPicker
+          {/* <LabeledColorPicker
             text="Couleur de la course"
             defaultColor={currentDrawTrip()?.color}
             onChange={(color) =>
@@ -178,7 +176,7 @@ export function DrawTripBoard() {
                 return { ...trip, color: color };
               })
             }
-          />
+          /> */}
 
           <Show
             when={displayTripMode() == displayTripModeEnum.straight}

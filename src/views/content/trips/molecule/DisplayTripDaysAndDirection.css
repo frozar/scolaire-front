@@ -1,0 +1,18 @@
+.display-trip-direction-and-days {
+  > section {
+    @apply flex items-center gap-1;
+
+    > .title {
+      @apply font-bold text-sm;
+    }
+
+    > .content {
+      @apply text-sm flex gap-1;
+      > .day:not(:last-child) {
+        &::after {
+          content: " / ";
+        }
+      }
+    }
+  }
+}

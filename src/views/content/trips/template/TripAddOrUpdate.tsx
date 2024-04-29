@@ -1,4 +1,4 @@
-import { Match, Switch, createSignal, onMount } from "solid-js";
+import { Match, Show, Switch, createSignal, onMount } from "solid-js";
 import { CalendarDayEnum } from "../../../../_entities/calendar.entity";
 import { GradeType } from "../../../../_entities/grade.entity";
 import { LineType } from "../../../../_entities/line.entity";
@@ -11,7 +11,10 @@ import { TripType } from "../../../../_entities/trip.entity";
 import { disableSpinningWheel, enableSpinningWheel } from "../../../../signaux";
 import { SelectGradesStep } from "../../line/organism/SelectGradesStep";
 import { SelectSchoolsStep } from "../../line/organism/SelectSchoolsStep";
-import { AssignDaysAndDirectionStep } from "../organism/AssignDaysAndDirectionStep";
+import { AssignallotmentStep } from "../organism/AssignAllotmentStep";
+import { AssignDaysStep } from "../organism/AssignDaysStep";
+import { AssignTripDirectionStep } from "../organism/AssignTripDirectionStep";
+import { TripDesignStep } from "../organism/TripDesignStep";
 
 enum EditTripStep {
   schoolSelection,
@@ -19,22 +22,23 @@ enum EditTripStep {
   editTrip,
   buildReverse,
 }
-const [currentStep, setCurrentStep] = createSignal<EditTripStep>(
-  EditTripStep.schoolSelection
-);
-const [availableSchools, setAvailableSchools] = createSignal<SchoolType[]>([]);
 
 export function TripAddOrUpdate(props: {
   trip: TripType;
   line: LineType;
   previous: () => void;
-  next: () => void;
+  next: (trip: TripType) => void;
 }) {
   const [currentTrip, setCurrentTrip] = createSignal<TripType>(props.trip);
 
+  const [currentStep, setCurrentStep] = createSignal<EditTripStep>(
+    EditTripStep.schoolSelection
+  );
+  const [availableSchools, setAvailableSchools] = createSignal<SchoolType[]>(
+    []
+  );
   onMount(() => {
-    setCurrentStep(EditTripStep.schoolSelection);
-
+    setCurrentStep(EditTripStep.editTrip);
     setAvailableSchools(props.line.schools);
   });
 
@@ -45,6 +49,9 @@ export function TripAddOrUpdate(props: {
         break;
       case EditTripStep.gradeSelection:
         setCurrentStep(EditTripStep.editTrip);
+        break;
+      case EditTripStep.editTrip:
+        props.next(currentTrip());
         break;
     }
   }
@@ -57,6 +64,9 @@ export function TripAddOrUpdate(props: {
         break;
       case EditTripStep.gradeSelection:
         setCurrentStep(EditTripStep.schoolSelection);
+        break;
+      case EditTripStep.editTrip:
+        setCurrentStep(EditTripStep.gradeSelection);
         break;
     }
     disableSpinningWheel();
@@ -83,16 +93,20 @@ export function TripAddOrUpdate(props: {
   }
   function onDaysUpdate(days: CalendarDayEnum[]) {
     setCurrentTrip((trip) => {
-      return {
-        ...trip,
-        days: days,
-      };
+      trip.days = days;
+      return trip;
     });
-    console.log("trip post days update", currentTrip().days);
+  }
+
+  function onUpdateAllotment(allotmentId: number) {
+    setCurrentTrip((trip) => {
+      trip.allotmentId = allotmentId;
+      return trip;
+    });
   }
 
   return (
-    <div class="add-line-information-board-content">
+    <>
       <Switch>
         <Match when={currentStep() == EditTripStep.schoolSelection}>
           <SelectSchoolsStep
@@ -111,15 +125,36 @@ export function TripAddOrUpdate(props: {
             previousStep={() => previousStep(EditTripStep.gradeSelection)}
             onUpdate={onGradeUpdate}
           />
-          <AssignDaysAndDirectionStep
-            grades={currentTrip().grades}
-            directionId={currentTrip().tripDirectionId}
-            days={currentTrip().days}
-            onUpdateDirection={onTripDirectionUpdate}
-            onUpdateDays={onDaysUpdate}
+
+          <Show when={currentTrip().grades.length > 0}>
+            {/* TODO doit filtrer si grade sélectionné n'ont pas aller ou retour */}
+            <AssignTripDirectionStep
+              directionId={currentTrip().tripDirectionId}
+              onUpdateDirection={onTripDirectionUpdate}
+            />
+            <AssignDaysStep
+              grades={currentTrip().grades}
+              tripDirection={currentTrip().tripDirectionId}
+              days={currentTrip().days}
+              onUpdateDays={onDaysUpdate}
+            />
+            <AssignallotmentStep
+              allotment={currentTrip().allotmentId as number}
+              onUpdateAllotment={onUpdateAllotment}
+            />
+          </Show>
+        </Match>
+        <Match when={currentStep() == EditTripStep.editTrip}>
+          <TripDesignStep
+            trip={currentTrip()}
+            onUpdate={(trip) => {
+              setCurrentTrip(trip);
+            }}
+            nextStep={() => nextStep(EditTripStep.editTrip)}
+            previousStep={() => previousStep(EditTripStep.editTrip)}
           />
         </Match>
       </Switch>
-    </div>
+    </>
   );
 }

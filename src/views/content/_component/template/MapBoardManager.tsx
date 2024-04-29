@@ -34,7 +34,7 @@ export const [mapBoard, setMapBoard] = createSignal<MapBoardTags>(undefined);
 
 export function MapBoardManager() {
   return (
-    <section>
+    <>
       <Show when={mapBoard()}>
         <BoardLayout>
           <DashboardBoardManager board={mapBoard()} />
@@ -45,6 +45,6 @@ export function MapBoardManager() {
           <TripsBoardManager board={mapBoard()} />
         </BoardLayout>
       </Show>
-    </section>
+    </>
   );
 }

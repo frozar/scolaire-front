@@ -1,0 +1,20 @@
+.timeline-add-item{
+  @apply flex ml-[53px] h-6 ; 
+
+  &.enable{
+    button{
+      @apply opacity-100;
+    }
+  }
+
+  button{
+    @apply bg-green-base px-1 rounded-full h-[24px] w-[24px] opacity-50 hover:opacity-100;
+    svg{
+      @apply fill-white;
+
+    }
+  }
+  p{
+    @apply ml-2 text-xs leading-5 italic text-green-base;
+  }
+}

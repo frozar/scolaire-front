@@ -124,6 +124,20 @@ export namespace QuantityUtils {
     return sliced.some((item) => item.nature == NatureEnum.school);
   }
 
+  export function getQuantityUsedInTrip(tripPoints: TripPointType[]) {
+    let tripTotalQuantities = 0;
+
+    tripPoints.forEach((points, index) => {
+      if (points.nature == NatureEnum.stop)
+        tripTotalQuantities += points.grades.reduce(
+          (total, item) => total + item.quantity,
+          0
+        );
+    });
+
+    return tripTotalQuantities;
+  }
+
   export function getTripTotalQuantities(tripPoints: TripPointType[]) {
     let tripTotalQuantities = 0;
 

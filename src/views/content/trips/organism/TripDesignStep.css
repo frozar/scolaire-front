@@ -1,0 +1,29 @@
+.trip-edit-design-step {
+  @apply flex flex-col h-[calc(100%_-_50px)];
+
+  .display-trip-direction-and-days {
+    @apply mb-2;
+  }
+
+  .triptimeline{
+    @apply flex-1;
+    overflow: scroll;
+  }
+}
+
+/* .bus-trip-information-board-content {
+  @apply flex flex-col h-full;
+}
+
+.bus-trip-information-board-content-schools {
+  @apply flex;
+  width: 100%;
+  flex-direction: space-between;
+}
+
+.confirm-etablissement-selection {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+} */

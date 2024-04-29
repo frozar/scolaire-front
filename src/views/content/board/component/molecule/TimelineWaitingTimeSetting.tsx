@@ -6,15 +6,11 @@ import ButtonIcon from "./ButtonIcon";
 
 import "./TimelineWaitingTimeSetting.css";
 
-interface TimelineWaitingTimeSettingProps {
+export function TimelineWaitingTimeSetting(props: {
   closeSettings: () => void;
   onClickWaitingTime: (value: number) => void;
   waitingTime: number;
-}
-
-export function TimelineWaitingTimeSetting(
-  props: TimelineWaitingTimeSettingProps
-): JSXElement {
+}): JSXElement {
   // eslint-disable-next-line solid/reactivity
   const [waitingTime, setWaitingTime] = createSignal(props.waitingTime);
 

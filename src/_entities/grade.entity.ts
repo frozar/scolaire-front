@@ -1,5 +1,5 @@
 import { QuantityMatrixType } from "../utils/quantity.utils";
-import { AssociatedSchoolType, HoursDBType, HoursType } from "./_utils.entity";
+import { AssociatedStopType, HoursDBType, HoursType } from "./_utils.entity";
 import {
   CalendarDBType,
   CalendarEntity,
@@ -7,6 +7,7 @@ import {
 } from "./calendar.entity";
 import { SchoolType } from "./school.entity";
 import { DBAssociatedStop } from "./stop.entity";
+import { StudentToGradeEntity } from "./student-to-grade.entity";
 import { TimeUtils } from "./time.utils";
 
 export namespace GradeEntity {
@@ -19,6 +20,11 @@ export namespace GradeEntity {
       calendar: dbData.calendar
         ? CalendarEntity.build(dbData.calendar)
         : undefined,
+      associatedStops: dbData.associated
+        ? dbData.associated.map((dbAssociateStop) =>
+            StudentToGradeEntity.build(dbAssociateStop)
+          )
+        : [],
     };
   }
 
@@ -28,6 +34,7 @@ export namespace GradeEntity {
       name: "",
       hours: school.hours,
       calendar: school.calendar,
+      associatedStops: [],
     };
   }
 
@@ -89,7 +96,7 @@ export type GradeType = {
   schoolId?: number;
   name: string;
   hours: HoursType;
-  associated?: AssociatedSchoolType[];
+  associatedStops: AssociatedStopType[];
   calendar?: CalendarType;
 };
 

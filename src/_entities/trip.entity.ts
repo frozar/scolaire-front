@@ -27,7 +27,7 @@ import {
 } from "./waypoint.entity";
 
 export namespace TripEntity {
-  export function build(dbData: TripDBType): TripType {
+  export function build(dbData: TripDBType, lineId: number): TripType {
     const grades: GradeType[] = dbData.grades.map((gradeId) => {
       const grade: GradeType | undefined = SchoolStore.getGradeFromId(gradeId);
       if (grade) {
@@ -38,6 +38,7 @@ export namespace TripEntity {
 
     return {
       id: dbData.id,
+      lineId: lineId,
       name: dbData.name,
       color: "#" + dbData.color,
       schools,
@@ -64,9 +65,10 @@ export namespace TripEntity {
     };
   }
 
-  export function defaultTrip(): TripType {
+  export function defaultTrip(lineId = -1): TripType {
     return {
       name: "My Default Name",
+      lineId: lineId,
       color: COLOR_GREEN_BASE,
       tripPoints: [],
       waypoints: [],
@@ -89,8 +91,10 @@ export namespace TripEntity {
       color: EntityUtils.formatColorForDB(trip.color),
       name: name,
       trip_stop: formatTripPointDBType(trip.tripPoints),
+      // trip_stop: [],
       polyline: EntityUtils.buildLocationPath(trip.latLngs),
       grades: trip.grades.map((item) => item.id) as number[],
+      // grades: [],
       metrics: {
         distance: trip.metrics?.distance,
         duration: trip.metrics?.duration,
@@ -103,19 +107,19 @@ export namespace TripEntity {
       waypoint: WaypointEntity.formatWaypointDBType(
         trip.waypoints as WaypointType[]
       ),
+      // waypoint: [],
       start_time: trip.startTime
         ? GradeEntity.getStringFromHourFormat(trip.startTime)
-        : undefined,
+        : "",
       days: trip.days,
+      // days: [],
       trip_direction_id: trip.tripDirectionId,
       bus_categories_id: trip.busCategoriesId,
       allotment_id: trip.allotmentId,
     };
   }
 
-  export function dbPartialFormat(
-    trip: Partial<TripType>
-  ): Partial<TripDBType> {
+  export function dbPartialFormat(trip: TripType): Partial<TripDBType> {
     let output = {};
 
     if (trip.startTime) {
@@ -211,6 +215,7 @@ export type TripDBType = {
 
 export type TripType = {
   id?: number;
+  lineId: number;
   name: string;
   color: string;
   grades: GradeType[];

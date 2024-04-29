@@ -32,7 +32,6 @@ import {
   setDrawTripCheckableGrade,
   setIsInUpdate,
 } from "../views/content/board/component/organism/DrawTripBoard";
-import { bestVehicle } from "../views/content/board/component/organism/VehicleSelect";
 import { getSelectedLine } from "../views/content/map/component/organism/BusLines";
 import { quitModeDrawTrip } from "../views/content/map/shortcut";
 import { CurrentDrawTripUtils } from "./currentDrawTrip.utils";
@@ -149,7 +148,7 @@ export namespace ContextUtils {
           );
         }
 
-        await TripUtils.createOrUpdateTrip();
+        // await TripUtils.createOrUpdateTrip();
         // const start = 420;
         // const end = 480;
         // // TODO Query to update stepsWeight

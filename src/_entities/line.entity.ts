@@ -10,7 +10,9 @@ import { TripDBType, TripEntity, TripType } from "./trip.entity";
 export class BusLineEntity {
   static build(dbLine: LineDBType): LineType {
     const stops: StopType[] = BusLineEntity.dbStopsToStopsType(dbLine);
-    const trips = dbLine.trips.map((dbTrip) => TripEntity.build(dbTrip));
+    const trips = dbLine.trips.map((dbTrip) =>
+      TripEntity.build(dbTrip, dbLine.id)
+    );
     const grades =
       dbLine.grades != undefined
         ? dbLine.grades.map((grade) => GradeEntity.build(grade))

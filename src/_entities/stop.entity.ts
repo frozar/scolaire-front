@@ -83,7 +83,7 @@ export type StopType = {
 
 export type DBAssociatedStop = {
   id: number; // TODO id of the association v2_student_to_grade -> to delete
-  stop_id?: number;
+  stop_id: number;
   quantity: number;
   grade_id: number;
 };

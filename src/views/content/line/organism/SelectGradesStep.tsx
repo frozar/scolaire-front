@@ -1,7 +1,9 @@
 import { For, createEffect, createSignal, onCleanup, onMount } from "solid-js";
 import { GradeType } from "../../../../_entities/grade.entity";
 import { SchoolType } from "../../../../_entities/school.entity";
+import { GradeUtils } from "../../../../_utils/grade.utils";
 import { setDisplaySchools } from "../../_component/organisme/SchoolPoints";
+import { setDisplayStops } from "../../_component/organisme/StopPoints";
 import BoardTitle from "../../board/component/atom/BoardTitle";
 import BoardFooterActions from "../../board/component/molecule/BoardFooterActions";
 import { CheckableElementList } from "../molecule/CheckableElementList";
@@ -17,14 +19,17 @@ export function SelectGradesStep(props: {
   onMount(() => {
     setGradesId(props.grades);
     setDisplaySchools(props.schools);
+    GradeUtils.displayStopsOfGrades(props.grades);
   });
 
   createEffect(() => {
     setGradesId(props.grades);
+    GradeUtils.displayStopsOfGrades(props.grades);
   });
 
   onCleanup(() => {
     setDisplaySchools([]);
+    setDisplayStops([]);
   });
 
   function setGradesId(grades: GradeType[]) {
