@@ -24,6 +24,8 @@ export function AddVehicleMenu() {
     height: 0,
     length: 0,
     width: 0,
+    cost: 0,
+    cost_hlp: 0,
   });
 
   function resetDefaultValues() {
@@ -37,6 +39,8 @@ export function AddVehicleMenu() {
       height: 0,
       length: 0,
       width: 0,
+      cost: 0,
+      cost_hlp: 0,
     });
   }
 

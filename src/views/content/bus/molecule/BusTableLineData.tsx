@@ -28,6 +28,8 @@ export function BusTableLineData(props: TableLineDisplayDataProps) {
         text={props.busItem.capacity + " | " + props.busItem.capacity_standing}
       />
       <TableData text={ShowAccess()} />
+      <TableData text={props.busItem.cost + "€"} />
+      <TableData text={props.busItem.cost_hlp + "€"} />
       <TableData
         text={
           props.busItem.length +

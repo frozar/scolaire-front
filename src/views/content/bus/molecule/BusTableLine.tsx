@@ -66,7 +66,7 @@ export function BusTableLine(props: BusTableLineProps) {
         />
       }
     >
-      <td colspan={8}>
+      <td colspan={10}>
         <BusEditMenu
           busItem={getCurrentBus()}
           setBusItem={setCurrentBus}
