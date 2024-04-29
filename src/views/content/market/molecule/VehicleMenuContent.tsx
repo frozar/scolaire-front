@@ -6,6 +6,7 @@ import { VehicleCategoryInput } from "./VehicleCategoryInput";
 import { VehicleMenuButtons } from "./VehicleMenuButtons";
 import "./VehicleMenuContent.css";
 import { VehicleNameInput } from "./VehicleNameInput";
+import { VehicleNumberInput } from "./VehicleNumberInput";
 import { VehicleSizeInput } from "./VehicleSizeInput";
 
 interface VehicleMenuContentProps {
@@ -26,6 +27,18 @@ export function VehicleMenuContent(props: VehicleMenuContentProps) {
   function setCapacity(value: number) {
     props.setBusItem((prev: BusCategoryType) => {
       return { ...prev, capacity: value };
+    });
+  }
+
+  function setCost(value: number) {
+    props.setBusItem((prev: BusCategoryType) => {
+      return { ...prev, cost: value };
+    });
+  }
+
+  function setCostHlp(value: number) {
+    props.setBusItem((prev: BusCategoryType) => {
+      return { ...prev, cost_hlp: value };
     });
   }
 
@@ -101,6 +114,22 @@ export function VehicleMenuContent(props: VehicleMenuContentProps) {
             onChangeFunction={setCapacityPMR}
           />
         </Show>
+        <div>
+          <VehicleNumberInput
+            defaultValue={0}
+            label="Coût/km service"
+            name="cost"
+            placeholder="1"
+            onChange={setCost}
+          />
+          <VehicleNumberInput
+            defaultValue={0}
+            label="Coût/km hlp"
+            name="costhlp"
+            placeholder="1"
+            onChange={setCostHlp}
+          />
+        </div>
         <VehicleSizeInput
           defaultHeight={props.busItem.height}
           defaultLength={props.busItem.length}
