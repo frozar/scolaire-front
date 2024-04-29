@@ -39,6 +39,25 @@ export const [mapOnClick, setMapOnClick] =
 
 let mapDiv: HTMLDivElement;
 
+export function resetMapPosition() {
+  const goodOrganization = OrganizationStore.get().find(
+    (org) => org.id == getSelectedOrganisation().organisation_id
+  ) as OrganizationType;
+
+  const corner1 = L.latLng(
+    goodOrganization.mapBounds.corner1.lat,
+    goodOrganization.mapBounds.corner1.lng
+  );
+
+  const corner2 = L.latLng(
+    goodOrganization.mapBounds.corner2.lat,
+    goodOrganization.mapBounds.corner2.lng
+  );
+
+  const bounds = L.latLngBounds(corner1, corner2);
+  leafletMap()?.fitBounds(bounds);
+}
+
 export function MapContainer() {
   const [displayImportCsvCanvas, setDisplayImportCsvCanvas] =
     createSignal(false);

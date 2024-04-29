@@ -1,5 +1,6 @@
+import L from "leaflet";
 import { BiRegularExport } from "solid-icons/bi";
-import { createEffect, createSignal, onCleanup } from "solid-js";
+import { createEffect, createSignal, onCleanup, onMount } from "solid-js";
 import { LineType } from "../../../../_entities/line.entity";
 import { SchoolType } from "../../../../_entities/school.entity";
 import { StopType } from "../../../../_entities/stop.entity";
@@ -20,13 +21,30 @@ import InputSearch from "../../schools/component/molecule/InputSearch";
 import { LinesList } from "../organism/LinesList";
 
 import { ViewManager } from "../../ViewManager";
+import { leafletMap } from "../../_component/template/MapContainer";
 import "./Lines.css";
 
 export function Lines() {
   const [filteredLines, setFilteredLines] = createSignal<LineType[]>(
     getLines()
   );
-  setMapData(getStops(), getSchools(), filteredLines());
+
+  onMount(() => {
+    setMapData(getStops(), getSchools(), filteredLines());
+    const locations: L.LatLng[] = [];
+    filteredLines().forEach((line) => {
+      line.stops.forEach((stop) => {
+        const latlong = L.latLng(stop.lat, stop.lon);
+        if (!locations.includes(latlong)) locations.push(latlong);
+      });
+      line.schools.forEach((school) => {
+        const latlong = L.latLng(school.lat, school.lon);
+        if (!locations.includes(latlong)) locations.push(latlong);
+      });
+    });
+    const polygon = L.polygon(locations);
+    leafletMap()?.fitBounds(polygon.getBounds(), { maxZoom: 13 });
+  });
 
   onCleanup(() => {
     setMapData([], [], []);

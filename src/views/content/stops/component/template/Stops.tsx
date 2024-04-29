@@ -1,3 +1,4 @@
+import L from "leaflet";
 import { For, createEffect, createSignal, onCleanup, onMount } from "solid-js";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { StopType } from "../../../../../_entities/stop.entity";
@@ -7,6 +8,7 @@ import Button from "../../../../../component/atom/Button";
 import { ViewManager } from "../../../ViewManager";
 import { setDisplaySchools } from "../../../_component/organisme/SchoolPoints";
 import { setDisplayStops } from "../../../_component/organisme/StopPoints";
+import { leafletMap } from "../../../_component/template/MapContainer";
 import InputSearch from "../../../schools/component/molecule/InputSearch";
 import StopItem from "../molecul/StopItem";
 import "./Stops.css";
@@ -18,6 +20,13 @@ export function Stops() {
   onMount(() => {
     setMapData(getStops(), getSchools());
     setLocalStops(getStops());
+    const locations: L.LatLng[] = [];
+    getStops().forEach((stop) => {
+      const latlong = L.latLng(stop.lat, stop.lon);
+      locations.push(latlong);
+    });
+    const polygon = L.polygon(locations);
+    leafletMap()?.fitBounds(polygon.getBounds(), { maxZoom: 14 });
   });
   onCleanup(() => {
     setMapData([], []);

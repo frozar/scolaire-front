@@ -17,8 +17,8 @@ interface BusStopCardProps {
 
 export function BusStopCard(props: BusStopCardProps) {
   function zoomBusStop() {
-    const centerView = L.latLng(props.busStop.lat, props.busStop.lon - 0.025);
-    leafletMap()?.setView(centerView);
+    const centerView = L.latLng(props.busStop.lat, props.busStop.lon);
+    leafletMap()?.setView(centerView, 16);
   }
 
   function editBusStop() {

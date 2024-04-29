@@ -48,11 +48,22 @@ export function StopDetails() {
   const [addQuantity, setAddQuantity] = createSignal<boolean>(false);
 
   onMount(async () => {
-    const centerView = L.latLng(
-      stopDetails()?.lat as number,
-      (stopDetails()?.lon as number) - 0.025
-    );
-    leafletMap()?.setView(centerView);
+    const busStopList = stopDetails()?.busStops;
+    if (busStopList && busStopList.length > 0) {
+      const locations: L.LatLng[] = [];
+      stopDetails()?.busStops.forEach((stop) => {
+        const latlong = L.latLng(stop.lat, stop.lon);
+        locations.push(latlong);
+      });
+      const polygon = L.polygon(locations);
+      leafletMap()?.fitBounds(polygon.getBounds(), { maxZoom: 14 });
+    } else {
+      const centerView = L.latLng(
+        stopDetails()?.lat as number,
+        (stopDetails()?.lon as number) - 0.025
+      );
+      leafletMap()?.setView(centerView, 14);
+    }
 
     setWayLineColor("#888888");
     setWayLineArrows(true);
