@@ -97,55 +97,64 @@ export function TripTimeline(props: {
 
   return (
     <div class="triptimeline">
-      <div class="triptimeline-items ">
-        <For each={props.tripPoints}>
-          {/* TODO revoir ce code pour reactivity */}
-          {(point, i) => {
-            // eslint-disable-next-line solid/reactivity
-            if (i() == 0) {
-              currentPassageTime = 0;
-              accumulateQuantity = 0;
-            } else {
+      <Show
+        fallback={
+          <div class="triptimeline-info">
+            Veuillez sélectionner des points sur la carte
+          </div>
+        }
+        when={(props.tripPoints.length ?? 0) > 0}
+      >
+        <div class="triptimeline-items ">
+          <For each={props.tripPoints}>
+            {/* TODO revoir ce code pour reactivity */}
+            {(point, i) => {
               // eslint-disable-next-line solid/reactivity
-              currentPassageTime += props.tripPoints[i() - 1].waitingTime;
-            }
-            // eslint-disable-next-line solid/reactivity
-            currentPassageTime += props.tripPoints[i()].passageTime;
+              if (i() == 0) {
+                currentPassageTime = 0;
+                accumulateQuantity = 0;
+              } else {
+                // eslint-disable-next-line solid/reactivity
+                currentPassageTime += props.tripPoints[i() - 1].waitingTime;
+              }
+              // eslint-disable-next-line solid/reactivity
+              currentPassageTime += props.tripPoints[i()].passageTime;
 
-            const quantity = getSignedPointQuantity(point, props.trip);
-            accumulateQuantity += calcAccumulateQuantity(quantity);
+              const quantity = getSignedPointQuantity(point, props.trip);
+              accumulateQuantity += calcAccumulateQuantity(quantity);
 
-            return (
-              <div class="triptimeline-item">
-                <Show when={props.inDraw}>
-                  <TripTimelineAddPointButton
-                    onClickAdd={() => onClickAddFromTimeline(i())}
-                    enable={indexOfAddPoint() == i()}
-                  />
-                </Show>
+              return (
+                <div class="triptimeline-item">
+                  <Show when={props.inDraw}>
+                    <TripTimelineAddPointButton
+                      onClickAdd={() => onClickAddFromTimeline(i())}
+                      enable={indexOfAddPoint() == i()}
+                    />
+                  </Show>
 
-                <TripTimelinePoint
-                  point={point}
-                  tripColor={props.trip.color}
-                  passageTime={currentPassageTime}
-                  quantity={quantity}
-                  accumulateQuantity={accumulateQuantity}
-                >
-                  <TimelineMenu
-                    onClickDeletePoint={() => {
-                      deletePointFromTimeline(point);
-                    }}
-                    onClickWaitingTime={(waitingTime) =>
-                      updateWaitingTime(point, waitingTime)
-                    }
-                    waitingTime={point.waitingTime}
-                  />
-                </TripTimelinePoint>
-              </div>
-            );
-          }}
-        </For>
-      </div>
+                  <TripTimelinePoint
+                    point={point}
+                    tripColor={props.trip.color}
+                    passageTime={currentPassageTime}
+                    quantity={quantity}
+                    accumulateQuantity={accumulateQuantity}
+                  >
+                    <TimelineMenu
+                      onClickDeletePoint={() => {
+                        deletePointFromTimeline(point);
+                      }}
+                      onClickWaitingTime={(waitingTime) =>
+                        updateWaitingTime(point, waitingTime)
+                      }
+                      waitingTime={point.waitingTime}
+                    />
+                  </TripTimelinePoint>
+                </div>
+              );
+            }}
+          </For>
+        </div>
+      </Show>
     </div>
   );
 }
@@ -407,6 +416,12 @@ async function updatePolylineWithOsrm(trip: TripType) {
   let waypoints = trip.waypoints;
   if (waypoints) {
     waypoints = waypoints.map((waypoint, i) => {
+      if (!waypoint.onRoadLat || !waypoint.onRoadLon)
+        return {
+          ...waypoint,
+          onRoadLat: waypoint.lat,
+          onRoadLon: waypoint.lon,
+        };
       return {
         ...waypoint,
         onRoadLat: projectedLatlngs[i].lat,

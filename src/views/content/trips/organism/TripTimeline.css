@@ -10,3 +10,7 @@
 .triptimeline-item{
     @apply flex flex-col;
 }
+
+.triptimeline-info {
+    @apply flex w-4/5 text-xs justify-center
+}

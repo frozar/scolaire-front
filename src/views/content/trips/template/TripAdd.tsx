@@ -1,32 +1,33 @@
 import { createSignal } from "solid-js";
 import { LineType } from "../../../../_entities/line.entity";
-import { TripType } from "../../../../_entities/trip.entity";
+import { TripEntity, TripType } from "../../../../_entities/trip.entity";
 import { TripService } from "../../../../_services/trip.service";
 import { LineStore } from "../../../../_stores/line.store";
 import { addNewGlobalSuccessInformation } from "../../../../signaux";
 import { ViewManager } from "../../ViewManager";
 import { TripAddOrUpdate } from "./TripAddOrUpdate";
 
-export const [selectedEditTrip, setSelectedEditTrip] = createSignal<TripType>();
+export const [selectedTripAddLine, setSelectedTripAddLine] =
+  createSignal<LineType>({} as LineType);
 
-export function TripEdit() {
+export function TripAdd() {
   function previous() {
-    ViewManager.tripDetails(selectedEditTrip() as TripType);
+    ViewManager.lines();
   }
   async function next(trip: TripType) {
-    const newTrip = await TripService.update(trip);
-    LineStore.updateTrip(newTrip);
+    const newTrip = await TripService.create(trip);
+    LineStore.addTrip(newTrip);
     ViewManager.tripDetails(newTrip);
-    addNewGlobalSuccessInformation(newTrip.name + " a bien été édité");
+    addNewGlobalSuccessInformation(newTrip.name + " a été créé");
   }
 
   return (
     <>
       <TripAddOrUpdate
-        trip={selectedEditTrip() as TripType}
-        line={LineStore.getFromTrip(selectedEditTrip() as TripType) as LineType}
-        previous={previous}
         next={next}
+        previous={previous}
+        trip={TripEntity.defaultTrip(selectedTripAddLine()?.id)}
+        line={selectedTripAddLine()}
       />
     </>
   );
