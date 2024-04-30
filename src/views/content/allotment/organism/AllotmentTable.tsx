@@ -15,11 +15,19 @@ export function AllotmentTable(props: AllotmentTableProps) {
   function editAllotmentList(allotment: AllotmentType) {
     props.allotmentsSetter((prev) => {
       return prev.map((item) => {
-        if (item.id == allotment.id) return allotment;
+        if (item.id == allotment.id) {
+          if (item != allotment) setIsAllotmentEdited(true);
+          return allotment;
+        }
         return item;
       });
     });
-    setIsAllotmentEdited(true);
+  }
+
+  function removeFromAllotmentList(id: number) {
+    props.allotmentsSetter((prev) => {
+      return prev.filter((item) => item.id != id);
+    });
   }
 
   return (
@@ -29,7 +37,8 @@ export function AllotmentTable(props: AllotmentTableProps) {
         <For each={props.allotments}>
           {(allotment: AllotmentType) => (
             <AllotmentTableLine
-              editList={editAllotmentList}
+              deleteListItem={removeFromAllotmentList}
+              editListItem={editAllotmentList}
               allotmentItem={allotment}
             />
           )}

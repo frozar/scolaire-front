@@ -14,7 +14,8 @@ import { AllotmentTableLineData } from "./AllotmentTableLineData";
 
 interface AllotmentTableLineProps {
   allotmentItem: AllotmentType;
-  editList: (allotment: AllotmentType) => void;
+  editListItem: (allotment: AllotmentType) => void;
+  deleteListItem: (id: number) => void;
 }
 
 export const [isAllotmentMenuOpen, setIsAllotmentMenuOpen] =
@@ -33,7 +34,7 @@ export function AllotmentTableLine(props: AllotmentTableLineProps) {
   function toggleEditMode() {
     if (isInEditMode()) {
       setisInEditMode(false);
-      props.editList(localAllotment());
+      props.editListItem(localAllotment());
     } else setisInEditMode(true);
   }
 
@@ -42,6 +43,7 @@ export function AllotmentTableLine(props: AllotmentTableLineProps) {
     await AllotmentService.deleteAllotment(props.allotmentItem.id);
     disableSpinningWheel();
     AllotmentStore.remove(props.allotmentItem.id as number);
+    props.deleteListItem(props.allotmentItem.id as number);
     addNewGlobalSuccessInformation("L'allotissement a bien été supprimé");
   }
 

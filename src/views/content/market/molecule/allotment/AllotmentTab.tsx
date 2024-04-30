@@ -65,10 +65,11 @@ export function AllotmentTab() {
   async function updateAllAllotment() {
     enableSpinningWheel();
     const output: AllotmentType[] = [];
-    allotments().forEach(async (item) => {
+    const tmpList = allotments();
+    for (const item of tmpList) {
       const updated = await AllotmentService.update(item);
       output.push(updated);
-    });
+    }
     AllotmentStore.set(output);
     // getAllTransporter().forEach(async (element) => {
     //   await TransporterService.update({
