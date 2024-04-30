@@ -1,3 +1,7 @@
+import {
+  AllotmentDBType,
+  AllotmentEntity,
+} from "../_entities/allotment.entity";
 import { BusStopDBType } from "../_entities/busStops.entity";
 import {
   CalendarDBType,
@@ -23,7 +27,7 @@ import {
   TripDirectionType,
   setTripDirections,
 } from "../_entities/trip-direction.entity";
-import { AllotmentStore, AllotmentType } from "../_stores/allotment.store";
+import { AllotmentStore } from "../_stores/allotment.store";
 import { CalendarPeriodStore } from "../_stores/calendar-period.store";
 import { CalendarStore } from "../_stores/calendar.store";
 import { FlatGraphicStore } from "../_stores/flatGraphics.store";
@@ -46,7 +50,7 @@ type InitDBType = {
   trip_directions: TripDirectionType[];
   services: ServiceDBType[];
   bus_categories: BusCategoryType[];
-  allotment: AllotmentType[];
+  allotment: AllotmentDBType[];
   settings: SettingType[];
   transporter: TransporterType[];
   roads: RoadDBType[];
@@ -89,7 +93,9 @@ export namespace InitService {
     const bus = dbInit.bus_categories;
     setBus(bus);
 
-    const allotment = dbInit.allotment;
+    const allotment = dbInit.allotment.map((allotment) =>
+      AllotmentEntity.build(allotment)
+    );
     AllotmentStore.set(allotment);
 
     const transporter = dbInit.transporter;

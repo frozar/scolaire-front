@@ -1,4 +1,4 @@
-import { AllotmentType } from "../../../../_stores/allotment.store";
+import { AllotmentType } from "../../../../_entities/allotment.entity";
 import { TableData } from "../../../../component/table/atom/TableData";
 import { TableDataChilds } from "../../../../component/table/molecule/TableDataChilds";
 import { TableRow } from "../../../../component/table/molecule/TableRow";

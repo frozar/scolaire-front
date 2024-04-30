@@ -1,5 +1,5 @@
 import { Setter } from "solid-js";
-import { AllotmentType } from "../../../../_stores/allotment.store";
+import { AllotmentType } from "../../../../_entities/allotment.entity";
 import { CircleCheckIcon } from "../../../../icons/CircleCheckIcon";
 import ButtonIcon from "../../board/component/molecule/ButtonIcon";
 import "./AllotmentEditContent.css";

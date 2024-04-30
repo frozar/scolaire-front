@@ -1,9 +1,7 @@
 import { Show, createSignal, onMount } from "solid-js";
+import { AllotmentType } from "../../../../../_entities/allotment.entity";
 import { AllotmentService } from "../../../../../_services/allotment.service";
-import {
-  AllotmentStore,
-  AllotmentType,
-} from "../../../../../_stores/allotment.store";
+import { AllotmentStore } from "../../../../../_stores/allotment.store";
 import Button from "../../../../../component/atom/Button";
 import {
   addNewGlobalSuccessInformation,
@@ -47,6 +45,7 @@ export function AllotmentTab() {
     const newAllotment = await AllotmentService.create({
       name: newName(),
       color: newColor(),
+      vehicleCost: [],
     });
     AllotmentStore.add(newAllotment);
     setAllotments(AllotmentStore.get());

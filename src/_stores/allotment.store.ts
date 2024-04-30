@@ -1,12 +1,7 @@
 import { createSignal } from "solid-js";
+import { AllotmentType } from "../_entities/allotment.entity";
 
 const [getAllotment, setAllotment] = createSignal<AllotmentType[]>([]);
-
-export type AllotmentType = {
-  id?: number;
-  name: string;
-  color: string;
-};
 
 export namespace AllotmentStore {
   export function set(

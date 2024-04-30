@@ -24,7 +24,7 @@ export namespace AllotmentEntity {
 
 function buildVehicleCost(cost: AllotmentCostDBType): AllotmentCostType {
   return {
-    busCategoryId: cost.bus_category_id,
+    busCategoryId: cost.bus_categories_id,
     cost: cost.cost,
     costHlp: cost.cost_hlp,
   };
@@ -32,7 +32,7 @@ function buildVehicleCost(cost: AllotmentCostDBType): AllotmentCostType {
 
 function formatVehicleCost(cost: AllotmentCostType): AllotmentCostDBType {
   return {
-    bus_category_id: cost.busCategoryId,
+    bus_categories_id: cost.busCategoryId,
     cost: cost.cost,
     cost_hlp: cost.costHlp,
   };
@@ -59,7 +59,7 @@ export type AllotmentDBType = {
 };
 
 export type AllotmentCostDBType = {
-  bus_category_id: number;
+  bus_categories_id: number;
   cost: number;
   cost_hlp: number;
 };

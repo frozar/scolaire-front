@@ -1,5 +1,5 @@
 import { For, Setter } from "solid-js";
-import { AllotmentType } from "../../../../_stores/allotment.store";
+import { AllotmentType } from "../../../../_entities/allotment.entity";
 import { TableContent } from "../../../../component/table/molecule/TableContent";
 import { Table } from "../../../../component/table/organism/Table";
 import { setIsAllotmentEdited } from "../../market/molecule/allotment/AllotmentTab";

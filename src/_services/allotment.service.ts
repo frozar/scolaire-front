@@ -1,4 +1,4 @@
-import { AllotmentType } from "../_stores/allotment.store";
+import { AllotmentType } from "../_entities/allotment.entity";
 import { ServiceUtils } from "./_utils.service";
 
 export namespace AllotmentService {
