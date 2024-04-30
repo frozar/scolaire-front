@@ -18,5 +18,5 @@
 }
 
 .transporter-vehicles-list {
-  @apply flex flex-wrap gap-8;
+  @apply flex w-auto;
 }

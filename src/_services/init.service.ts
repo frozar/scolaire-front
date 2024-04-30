@@ -23,6 +23,7 @@ import {
   TripDirectionType,
   setTripDirections,
 } from "../_entities/trip-direction.entity";
+import { AllotmentStore, AllotmentType } from "../_stores/allotment.store";
 import { CalendarPeriodStore } from "../_stores/calendar-period.store";
 import { CalendarStore } from "../_stores/calendar.store";
 import { FlatGraphicStore } from "../_stores/flatGraphics.store";
@@ -31,10 +32,6 @@ import { SchoolStore } from "../_stores/school.store";
 import { ServiceStore } from "../_stores/service.store";
 import { StopStore } from "../_stores/stop.store";
 import { setAllTransporter } from "../views/content/allotment/molecule/TransporterTable";
-import {
-  AllotmentType,
-  setAllotment,
-} from "../views/content/allotment/organism/Allotment";
 import { BusCategoryType, setBus } from "../views/content/bus/organism/Bus";
 import { setSettings } from "../views/content/parameters/organism/Settings";
 import { setRoads } from "../views/content/paths/template/Paths";
@@ -93,7 +90,7 @@ export namespace InitService {
     setBus(bus);
 
     const allotment = dbInit.allotment;
-    setAllotment(allotment);
+    AllotmentStore.set(allotment);
 
     const transporter = dbInit.transporter;
     setAllTransporter(transporter);

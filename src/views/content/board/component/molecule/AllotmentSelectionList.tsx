@@ -1,6 +1,6 @@
 import { createSignal } from "solid-js";
+import { AllotmentStore } from "../../../../../_stores/allotment.store";
 import { LabeledInputSelect } from "../../../../../component/molecule/LabeledInputSelect";
-import { getAllotment } from "../../../allotment/organism/Allotment";
 import { currentDrawTrip, setCurrentDrawTrip } from "../organism/DrawTripBoard";
 
 export function AllotmentSelectionList() {
@@ -21,7 +21,7 @@ export function AllotmentSelectionList() {
       defaultValue={Number(selectedAllotment())}
       label="Allotissement"
       onChange={onInputChanged}
-      options={getAllotment().map((allotment) => {
+      options={AllotmentStore.get().map((allotment) => {
         return { value: Number(allotment.id), text: allotment.name };
       })}
     />

@@ -59,6 +59,7 @@ export function TransporterEditVehicles(props: TransporterEditVehiclesProps) {
               onLicenseChange={setLicense}
               onTypeChange={setBusId}
             />
+            // <TransporterVehicleCard item={item} />
           )}
         </For>
       </div>

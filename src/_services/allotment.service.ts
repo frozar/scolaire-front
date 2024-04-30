@@ -1,16 +1,13 @@
-import {
-  AllotmentType,
-  setAllotment,
-} from "../views/content/allotment/organism/Allotment";
+import { AllotmentType } from "../_stores/allotment.store";
 import { ServiceUtils } from "./_utils.service";
 
 export namespace AllotmentService {
   export async function create(allotment: Omit<AllotmentType, "id">) {
-    const dbAllotment: AllotmentType[] = await ServiceUtils.post(
+    const dbAllotment: AllotmentType = await ServiceUtils.post(
       "/allotment",
       allotment
     );
-    setAllotment(dbAllotment);
+    return dbAllotment;
   }
 
   export async function update(allotment: Partial<AllotmentType>) {
@@ -18,28 +15,11 @@ export namespace AllotmentService {
       "/allotment/" + allotment.id,
       allotment
     );
-    setAllotment((prev) => {
-      if (!prev) return prev;
-      return [...prev].map((allotment) => {
-        if (allotment.id == dbAllotment.id) {
-          allotment = dbAllotment;
-        }
-        return allotment;
-      });
-    });
+    return dbAllotment;
   }
 
   export async function deleteAllotment(id?: number): Promise<boolean> {
     const returnValue: boolean = await ServiceUtils.delete("/allotment/" + id);
-    setAllotment((prev) => {
-      if (!prev) return prev;
-      return [...prev].filter((allotment) => {
-        if (allotment.id == id) {
-          return;
-        }
-        return allotment;
-      });
-    });
     return returnValue;
   }
 }

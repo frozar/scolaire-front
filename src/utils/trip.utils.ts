@@ -9,10 +9,11 @@ import {
 } from "../_entities/trip-direction.entity";
 import { TripPointType, TripType } from "../_entities/trip.entity";
 import { TripService } from "../_services/trip.service";
+import { AllotmentStore } from "../_stores/allotment.store";
 import { LineStore, getLines } from "../_stores/line.store";
 import { addNewUserInformation } from "../signaux";
 import { MessageLevelEnum, MessageTypeEnum, NatureEnum } from "../type";
-import { getAllotment } from "../views/content/allotment/organism/Allotment";
+import { ViewManager } from "../views/content/ViewManager";
 import {
   DrawTripStep,
   currentDrawTrip,
@@ -29,7 +30,6 @@ import { getBus } from "../views/content/bus/organism/Bus";
 import { getSelectedLine } from "../views/content/map/component/organism/BusLines";
 import { setselectedTrip } from "../views/content/map/component/organism/Trips";
 import { quitModeDrawTrip } from "../views/content/map/shortcut";
-import { ViewManager } from "../views/content/ViewManager";
 
 export namespace TripUtils {
   export function get(tripId: number): TripType {
@@ -332,7 +332,7 @@ export namespace TripUtils {
   }
 
   export function tripAllotmentIdToString(allotmentId: number | undefined) {
-    const allotmentItem = getAllotment().filter(
+    const allotmentItem = AllotmentStore.get().filter(
       (allotment) => allotment.id == allotmentId
     )[0];
     if (!allotmentItem) return "";

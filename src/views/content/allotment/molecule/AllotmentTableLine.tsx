@@ -1,18 +1,20 @@
-import { Show, createEffect, createSignal } from "solid-js";
+import { Show, createSignal, onMount } from "solid-js";
 import { AllotmentService } from "../../../../_services/allotment.service";
 import {
-  addNewUserInformation,
+  AllotmentStore,
+  AllotmentType,
+} from "../../../../_stores/allotment.store";
+import {
+  addNewGlobalSuccessInformation,
   disableSpinningWheel,
   enableSpinningWheel,
 } from "../../../../signaux";
-import { MessageLevelEnum, MessageTypeEnum } from "../../../../type";
-import { setIsAllotmentEdited } from "../../market/molecule/allotment/AllotmentTab";
-import { AllotmentType, setAllotment } from "../organism/Allotment";
 import { AllotmentEditMenu } from "./AllotmentEditMenu";
 import { AllotmentTableLineData } from "./AllotmentTableLineData";
 
 interface AllotmentTableLineProps {
   allotmentItem: AllotmentType;
+  editList: (allotment: AllotmentType) => void;
 }
 
 export const [isAllotmentMenuOpen, setIsAllotmentMenuOpen] =
@@ -20,56 +22,27 @@ export const [isAllotmentMenuOpen, setIsAllotmentMenuOpen] =
 
 export function AllotmentTableLine(props: AllotmentTableLineProps) {
   const [isInEditMode, setisInEditMode] = createSignal(false);
-  const [getName, setName] = createSignal("");
-  const [getColor, setColor] = createSignal("");
+  const [localAllotment, setlocalAllotment] = createSignal<AllotmentType>(
+    {} as AllotmentType
+  );
+
+  onMount(() => {
+    setlocalAllotment(props.allotmentItem);
+  });
 
   function toggleEditMode() {
-    setisInEditMode(!isInEditMode());
+    if (isInEditMode()) {
+      setisInEditMode(false);
+      props.editList(localAllotment());
+    } else setisInEditMode(true);
   }
-
-  createEffect(() => {
-    setName(props.allotmentItem.name);
-    setColor(props.allotmentItem.color);
-  });
 
   async function deleteAllotment() {
     enableSpinningWheel();
     await AllotmentService.deleteAllotment(props.allotmentItem.id);
     disableSpinningWheel();
-    addNewUserInformation({
-      displayed: true,
-      level: MessageLevelEnum.success,
-      type: MessageTypeEnum.global,
-      content: "L'allotissement a bien été supprimé",
-    });
-  }
-
-  function onNameInputChanged(value: string) {
-    setName(value);
-    // eslint-disable-next-line solid/reactivity
-    setAllotment((prev) => {
-      return [...prev].map((item) => {
-        if (item.id == props.allotmentItem.id) {
-          item.name = value;
-        }
-        return item;
-      });
-    });
-    setIsAllotmentEdited(true);
-  }
-
-  function onColorInputChanged(value: string) {
-    setColor(value);
-    // eslint-disable-next-line solid/reactivity
-    setAllotment((prev) => {
-      return [...prev].map((item) => {
-        if (item.id == props.allotmentItem.id) {
-          item.color = value;
-        }
-        return item;
-      });
-    });
-    setIsAllotmentEdited(true);
+    AllotmentStore.remove(props.allotmentItem.id as number);
+    addNewGlobalSuccessInformation("L'allotissement a bien été supprimé");
   }
 
   return (
@@ -77,8 +50,7 @@ export function AllotmentTableLine(props: AllotmentTableLineProps) {
       when={isInEditMode()}
       fallback={
         <AllotmentTableLineData
-          name={props.allotmentItem.name}
-          color={props.allotmentItem.color}
+          allotment={localAllotment()}
           toggleEditFunction={toggleEditMode}
           deleteFunction={deleteAllotment}
         />
@@ -86,11 +58,8 @@ export function AllotmentTableLine(props: AllotmentTableLineProps) {
     >
       <td colSpan={5}>
         <AllotmentEditMenu
-          id={props.allotmentItem.id}
-          color={getColor()}
-          name={getName()}
-          onColorInput={onColorInputChanged}
-          onNameInput={onNameInputChanged}
+          allotment={localAllotment()}
+          allotmentSetter={setlocalAllotment}
           toggleEdit={toggleEditMode}
         />
       </td>

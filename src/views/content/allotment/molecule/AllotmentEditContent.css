@@ -1,3 +1,7 @@
 .allotment-edit-border {
   @apply border-2 border-green-base;
 }
+
+.allotment-edit-buttons {
+  @apply flex justify-end p-4;
+}

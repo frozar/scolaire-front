@@ -1,25 +1,41 @@
+import { Setter } from "solid-js";
+import { AllotmentType } from "../../../../_stores/allotment.store";
+import { CircleCheckIcon } from "../../../../icons/CircleCheckIcon";
+import ButtonIcon from "../../board/component/molecule/ButtonIcon";
 import "./AllotmentEditContent.css";
 import { AllotmentEditInputs } from "./AllotmentEditInputs";
-import { TransporterTable } from "./TransporterTable";
 
 interface AllotmentEditContentProps {
-  allotment_id?: number;
-  name: string;
-  color: string;
-  onNameInput: (value: string) => void;
-  onColorInput: (value: string) => void;
+  allotment: AllotmentType;
+  allotmentSetter: Setter<AllotmentType>;
+  toggleMenu: () => void;
 }
 
 export function AllotmentEditContent(props: AllotmentEditContentProps) {
+  function onNameChange(value: string) {
+    props.allotmentSetter((prev) => {
+      return { ...prev, name: value };
+    });
+  }
+
+  function onColorChange(value: string) {
+    props.allotmentSetter((prev) => {
+      return { ...prev, color: value };
+    });
+  }
+
   return (
     <div class="allotment-edit-border">
       <AllotmentEditInputs
-        color={props.color}
-        name={props.name}
-        onColorInput={props.onColorInput}
-        onNameInput={props.onNameInput}
+        color={props.allotment.color}
+        name={props.allotment.name}
+        onColorInput={onColorChange}
+        onNameInput={onNameChange}
       />
-      <TransporterTable allotment_id={props.allotment_id} />
+      <div class="allotment-edit-buttons">
+        <ButtonIcon icon={<CircleCheckIcon />} onClick={props.toggleMenu} />
+      </div>
+      {/* <TransporterTable allotment_id={props.allotment.id} /> */}
     </div>
   );
 }
