@@ -6,6 +6,10 @@
   @apply pl-4;
 }
 
+.allotment-edit-transporter {
+  @apply pl-4;
+}
+
 .allotment-edit-buttons {
   @apply flex justify-end p-4;
 }

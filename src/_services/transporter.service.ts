@@ -16,30 +16,31 @@ export namespace TransporterService {
       "/transporter/" + transporter.id,
       transporter
     );
-    setAllTransporter((prev) => {
-      if (!prev) return prev;
-      return [...prev].map((transporter) => {
-        if (transporter.id == dbTransporter.id) {
-          transporter = dbTransporter;
-        }
-        return transporter;
-      });
-    });
+    // setAllTransporter((prev) => {
+    //   if (!prev) return prev;
+    //   return [...prev].map((transporter) => {
+    //     if (transporter.id == dbTransporter.id) {
+    //       transporter = dbTransporter;
+    //     }
+    //     return transporter;
+    //   });
+    // });
+    return dbTransporter;
   }
 
   export async function deleteTransporter(id?: number): Promise<boolean> {
     const returnValue: boolean = await ServiceUtils.delete(
       "/transporter/" + id
     );
-    setAllTransporter((prev) => {
-      if (!prev) return prev;
-      return [...prev].filter((transporter) => {
-        if (transporter.id == id) {
-          return;
-        }
-        return transporter;
-      });
-    });
+    // setAllTransporter((prev) => {
+    //   if (!prev) return prev;
+    //   return [...prev].filter((transporter) => {
+    //     if (transporter.id == id) {
+    //       return;
+    //     }
+    //     return transporter;
+    //   });
+    // });
     return returnValue;
   }
 }

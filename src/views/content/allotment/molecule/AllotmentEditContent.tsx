@@ -6,6 +6,7 @@ import {
 import { CircleCheckIcon } from "../../../../icons/CircleCheckIcon";
 import ButtonIcon from "../../board/component/molecule/ButtonIcon";
 import { AllotmentCostList } from "../../market/molecule/allotment/AllotmentCostList";
+import { AllotmentTransporterList } from "../../market/molecule/allotment/AllotmentTransporterList";
 import "./AllotmentEditContent.css";
 import { AllotmentEditInputs } from "./AllotmentEditInputs";
 
@@ -52,6 +53,9 @@ export function AllotmentEditContent(props: AllotmentEditContentProps) {
       />
       <div class="allotment-edit-cost">
         <AllotmentCostList costList={costs()} costSetter={setCosts} />
+      </div>
+      <div class="allotment-edit-transporter">
+        <AllotmentTransporterList allotmentId={props.allotment.id as number} />
       </div>
       <div class="allotment-edit-buttons">
         <ButtonIcon icon={<CircleCheckIcon />} onClick={confirm} />
