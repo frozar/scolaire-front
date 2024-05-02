@@ -2,6 +2,10 @@
   @apply border-2 border-green-base;
 }
 
+.allotment-edit-cost {
+  @apply pl-4;
+}
+
 .allotment-edit-buttons {
   @apply flex justify-end p-4;
 }

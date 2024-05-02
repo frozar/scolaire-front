@@ -15,12 +15,13 @@ export namespace AllotmentService {
     return AllotmentEntity.build(dbAllotment);
   }
 
-  export async function update(allotment: Partial<AllotmentType>) {
-    const dbAllotment: AllotmentType = await ServiceUtils.patch(
+  export async function update(allotment: AllotmentType) {
+    const data = AllotmentEntity.DbFormat(allotment);
+    const dbAllotment: AllotmentDBType = await ServiceUtils.patch(
       "/allotment/" + allotment.id,
-      allotment
+      data
     );
-    return dbAllotment;
+    return AllotmentEntity.build(dbAllotment);
   }
 
   export async function deleteAllotment(id?: number): Promise<boolean> {

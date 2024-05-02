@@ -54,8 +54,8 @@ export function AllotmentCostItem(props: AllotmentCostItemProps) {
                 {"Bus : " +
                   TripUtils.tripBusIdToString(props.item.busCategoryId)}
               </p>
-              <p>{"Coût : " + props.item.cost}</p>
-              <p>{"Coût HLP : " + props.item.costHlp}</p>
+              <p>{"Coût : " + props.item.cost + "€ / km"}</p>
+              <p>{"Coût HLP : " + props.item.costHlp + "€ / km"}</p>
             </div>
             <div class="allotment-cost-buttons">
               <ButtonIcon

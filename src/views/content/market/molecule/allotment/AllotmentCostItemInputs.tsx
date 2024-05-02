@@ -37,7 +37,7 @@ export function AllotmentCostItemInputs(props: AllotmentCostItemInputsProps) {
     <div class="inputs-container">
       <div>
         <div>
-          <label>Bus :</label>
+          <label class="inputs-label-offset">Bus :</label>
           <SelectInput
             options={getBus().map((bus) => {
               return { value: Number(bus.id), text: bus.name };
@@ -48,8 +48,11 @@ export function AllotmentCostItemInputs(props: AllotmentCostItemInputsProps) {
           />
         </div>
         <div>
-          <label for="cost">Coût :</label>
+          <label class="inputs-label-offset" for="cost">
+            Coût :
+          </label>
           <input
+            class="inputs-number"
             value={props.item.cost}
             type="number"
             id="cost"
@@ -57,8 +60,11 @@ export function AllotmentCostItemInputs(props: AllotmentCostItemInputsProps) {
           />
         </div>
         <div>
-          <label for="costhlp">Coût HLP :</label>
+          <label class="inputs-label-offset" for="costhlp">
+            Coût HLP :
+          </label>
           <input
+            class="inputs-number"
             value={props.item.costHlp}
             type="number"
             id="costhlp"

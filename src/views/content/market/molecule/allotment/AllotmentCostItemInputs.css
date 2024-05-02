@@ -2,6 +2,13 @@
   @apply flex justify-between;
 }
 
+.inputs-label-offset {
+  @apply pr-1;
+}
+
+.inputs-number {
+  @apply w-16 focus:outline-none text-green-base;
+}
 .inputs-buttons {
   @apply flex gap-2;
 }
