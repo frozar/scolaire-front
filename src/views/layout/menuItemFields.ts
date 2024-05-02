@@ -25,24 +25,6 @@ const menuItems: MenuItemType[] = [
     },
   },
   {
-    menuItem: "paths",
-    Logo: RoadwaysLogo,
-    label: "Chemins",
-    isDisabled: false,
-    onClick: () => {
-      ViewManager.paths();
-    },
-  },
-  {
-    menuItem: "graphicage",
-    Logo: GraphicageLogo,
-    label: "Graphicage",
-    isDisabled: false,
-    onClick: () => {
-      ViewManager.lines();
-    },
-  },
-  {
     menuItem: "schools",
     Logo: EtablissementLogo,
     label: "Établissements",
@@ -61,22 +43,21 @@ const menuItems: MenuItemType[] = [
     },
   },
   {
+    menuItem: "paths",
+    Logo: RoadwaysLogo,
+    label: "Chemins",
+    isDisabled: false,
+    onClick: () => {
+      ViewManager.paths();
+    },
+  },
+  {
     menuItem: "calendar",
     Logo: CalendarIcon,
     label: "Calendrier",
     isDisabled: false,
     onClick: () => {
       setSelectedMenu("calendar");
-      changeBoard(undefined);
-    },
-  },
-  {
-    menuItem: "service",
-    Logo: ServiceIcon,
-    label: "Service",
-    isDisabled: false,
-    onClick: () => {
-      setSelectedMenu("service");
       changeBoard(undefined);
     },
   },
@@ -90,6 +71,25 @@ const menuItems: MenuItemType[] = [
     },
   },
   {
+    menuItem: "graphicage",
+    Logo: GraphicageLogo,
+    label: "Graphicage",
+    isDisabled: false,
+    onClick: () => {
+      ViewManager.lines();
+    },
+  },
+  {
+    menuItem: "service",
+    Logo: ServiceIcon,
+    label: "Services",
+    isDisabled: false,
+    onClick: () => {
+      setSelectedMenu("service");
+      changeBoard(undefined);
+    },
+  },
+  {
     menuItem: "parametres",
     Logo: SettingsIcon,
     label: "Paramètres",
@@ -100,16 +100,17 @@ const menuItems: MenuItemType[] = [
     },
   },
 
-  {
-    menuItem: "roadways",
-    Logo: RoadwaysLogo,
-    label: "Roadways",
-    isDisabled: false,
-    onClick: () => {
-      setSelectedMenu("roadways");
-      changeBoard(undefined);
-    },
-  },
+  //TODO mutualiser the "RoadWays" view (ponderation) with the path view
+  // {
+  //   menuItem: "roadways",
+  //   Logo: RoadwaysLogo,
+  //   label: "Roadways",
+  //   isDisabled: false,
+  //   onClick: () => {
+  //     setSelectedMenu("roadways");
+  //     changeBoard(undefined);
+  //   },
+  // },
   // {
   //   menuItem: "parametres",
   //   Logo: SettingsLogo,

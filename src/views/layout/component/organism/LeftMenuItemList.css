@@ -1,0 +1,9 @@
+.left-menu-list {
+  .separator {
+    @apply w-full h-[2px] bg-white;
+    content: "";
+  }
+  .separator.disable {
+    @apply bg-opacity-50;
+  }
+}
