@@ -1,5 +1,8 @@
 import { Show, createSignal, onMount } from "solid-js";
-import { AllotmentType } from "../../../../../_entities/allotment.entity";
+import {
+  AllotmentCostType,
+  AllotmentType,
+} from "../../../../../_entities/allotment.entity";
 import { AllotmentService } from "../../../../../_services/allotment.service";
 import { AllotmentStore } from "../../../../../_stores/allotment.store";
 import Button from "../../../../../component/atom/Button";
@@ -21,6 +24,7 @@ export function AllotmentTab() {
   const [allotments, setAllotments] = createSignal<AllotmentType[]>([]);
   const [newName, setNewName] = createSignal("");
   const [newColor, setNewColor] = createSignal("#ffffff");
+  const [newCosts, setNewCosts] = createSignal<AllotmentCostType[]>([]);
 
   function nameChanged(name: string) {
     setNewName(name);
@@ -28,6 +32,10 @@ export function AllotmentTab() {
 
   function colorChanged(color: string) {
     setNewColor(color);
+  }
+
+  function costChanged(cost: AllotmentCostType[]) {
+    setNewCosts(cost);
   }
 
   onMount(() => {
@@ -45,7 +53,7 @@ export function AllotmentTab() {
     const newAllotment = await AllotmentService.create({
       name: newName(),
       color: newColor(),
-      vehicleCost: [],
+      vehicleCost: newCosts(),
     });
     AllotmentStore.add(newAllotment);
     setAllotments(AllotmentStore.get());
@@ -106,6 +114,7 @@ export function AllotmentTab() {
           defaultColor={newColor()}
           defaultName={newName()}
           colorChange={colorChanged}
+          costchange={costChanged}
           nameChange={nameChanged}
           submit={createAllotment}
           cancel={cancelCreate}

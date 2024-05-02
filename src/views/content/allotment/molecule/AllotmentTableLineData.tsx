@@ -15,12 +15,19 @@ interface TableLineDisplayDataProps {
 }
 
 export function AllotmentTableLineData(props: TableLineDisplayDataProps) {
+  function checkCosts() {
+    const tmp = props.allotment.vehicleCost;
+    if (!tmp || tmp.length <= 0) return "Sans";
+    return "Avec (" + tmp.length + ")";
+  }
+
   return (
     <TableRow shown={true}>
       <TableData text={props.allotment.name} />
       <TableDataColor color={props.allotment.color} />
       <TableData text="-" />
       <TableData text="-" />
+      <TableData text={checkCosts()} />
       <TableDataChilds end={true}>
         <ButtonIcon icon={<UpdatePen />} onClick={props.toggleEditFunction} />
         <ButtonIcon icon={<TrashIcon />} onClick={props.deleteFunction} />

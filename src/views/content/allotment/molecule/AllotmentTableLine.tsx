@@ -56,7 +56,7 @@ export function AllotmentTableLine(props: AllotmentTableLineProps) {
         />
       }
     >
-      <td colSpan={5}>
+      <td colSpan={6}>
         <AllotmentEditMenu
           allotment={localAllotment()}
           allotmentSetter={setlocalAllotment}

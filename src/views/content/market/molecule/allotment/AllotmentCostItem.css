@@ -1,0 +1,7 @@
+.allotment-cost-item {
+  @apply flex justify-between;
+}
+
+.allotment-cost-buttons {
+  @apply flex gap-2;
+}

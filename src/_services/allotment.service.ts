@@ -1,13 +1,18 @@
-import { AllotmentType } from "../_entities/allotment.entity";
+import {
+  AllotmentDBType,
+  AllotmentEntity,
+  AllotmentType,
+} from "../_entities/allotment.entity";
 import { ServiceUtils } from "./_utils.service";
 
 export namespace AllotmentService {
   export async function create(allotment: Omit<AllotmentType, "id">) {
-    const dbAllotment: AllotmentType = await ServiceUtils.post(
+    const data = AllotmentEntity.DbFormat(allotment);
+    const dbAllotment: AllotmentDBType = await ServiceUtils.post(
       "/allotment",
-      allotment
+      data
     );
-    return dbAllotment;
+    return AllotmentEntity.build(dbAllotment);
   }
 
   export async function update(allotment: Partial<AllotmentType>) {
