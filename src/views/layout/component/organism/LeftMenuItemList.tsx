@@ -102,7 +102,7 @@ export default function (props: {
                   classList={{
                     disable: effectiveIsDisabled(),
                   }}
-                ></div>
+                />
               </Show>
 
               <LeftMenuItem
