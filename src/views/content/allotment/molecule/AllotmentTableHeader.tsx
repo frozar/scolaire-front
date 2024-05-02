@@ -8,6 +8,7 @@ export function AllotmentTableHeader() {
       <TableHeaderCol text="Couleur" />
       <TableHeaderCol text="Nombre de course" />
       <TableHeaderCol text="Nombre de bus" />
+      <TableHeaderCol text="Coûts spécifiques" />
       <TableHeaderCol text="Actions" end={true} />
     </TableHeader>
   );

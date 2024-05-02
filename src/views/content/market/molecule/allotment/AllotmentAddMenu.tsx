@@ -1,6 +1,10 @@
+import { createSignal } from "solid-js";
+import { AllotmentCostType } from "../../../../../_entities/allotment.entity";
 import { AllotmentAddButtons } from "./AllotmentAddButtons";
 import { AllotmentAddHeader } from "./AllotmentAddHeader";
 import { AllotmentAddInputs } from "./AllotmentAddInputs";
+import "./AllotmentAddMenu.css";
+import { AllotmentCostList } from "./AllotmentCostList";
 
 interface AllotmentAddMenuProps {
   defaultName: string;
@@ -9,9 +13,17 @@ interface AllotmentAddMenuProps {
   submit: () => void;
   nameChange: (name: string) => void;
   colorChange: (color: string) => void;
+  costchange: (cost: AllotmentCostType[]) => void;
 }
 
 export function AllotmentAddMenu(props: AllotmentAddMenuProps) {
+  const [costs, setCosts] = createSignal<AllotmentCostType[]>([]);
+
+  function submit() {
+    props.costchange(costs());
+    props.submit();
+  }
+
   return (
     <div>
       <AllotmentAddHeader />
@@ -22,7 +34,8 @@ export function AllotmentAddMenu(props: AllotmentAddMenuProps) {
           colorChange={props.colorChange}
           nameChange={props.nameChange}
         />
-        <AllotmentAddButtons cancel={props.cancel} submit={props.submit} />
+        <AllotmentCostList costList={costs()} costSetter={setCosts} />
+        <AllotmentAddButtons cancel={props.cancel} submit={submit} />
       </div>
     </div>
   );

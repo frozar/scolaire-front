@@ -21,3 +21,11 @@
 .allotment-add-input-color {
   @apply max-w-xs grid mt-3;
 }
+
+.allotment-cost-header {
+  @apply flex gap-4 pt-2;
+}
+
+.allotment-cost-list {
+  @apply grid grid-cols-4 gap-2;
+}

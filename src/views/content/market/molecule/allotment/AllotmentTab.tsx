@@ -1,22 +1,17 @@
-import { Show, createSignal } from "solid-js";
+import { Show, createSignal, onMount } from "solid-js";
+import {
+  AllotmentCostType,
+  AllotmentType,
+} from "../../../../../_entities/allotment.entity";
 import { AllotmentService } from "../../../../../_services/allotment.service";
-import { TransporterService } from "../../../../../_services/transporter.service";
+import { AllotmentStore } from "../../../../../_stores/allotment.store";
 import Button from "../../../../../component/atom/Button";
 import {
-  addNewUserInformation,
+  addNewGlobalSuccessInformation,
   disableSpinningWheel,
   enableSpinningWheel,
 } from "../../../../../signaux";
-import { MessageLevelEnum, MessageTypeEnum } from "../../../../../type";
 import { setIsAllotmentMenuOpen } from "../../../allotment/molecule/AllotmentTableLine";
-import {
-  getAllTransporter,
-  setAllTransporter,
-} from "../../../allotment/molecule/TransporterTable";
-import {
-  getAllotment,
-  setAllotment,
-} from "../../../allotment/organism/Allotment";
 import { AllotmentTable } from "../../../allotment/organism/AllotmentTable";
 import { AllotmentAddMenu } from "./AllotmentAddMenu";
 import "./AllotmentTab.css";
@@ -26,8 +21,10 @@ export const [isAllotmentEdited, setIsAllotmentEdited] = createSignal(false);
 
 export function AllotmentTab() {
   const [isAddMenuOpen, setIsAddMenuOpen] = createSignal(false);
+  const [allotments, setAllotments] = createSignal<AllotmentType[]>([]);
   const [newName, setNewName] = createSignal("");
   const [newColor, setNewColor] = createSignal("#ffffff");
+  const [newCosts, setNewCosts] = createSignal<AllotmentCostType[]>([]);
 
   function nameChanged(name: string) {
     setNewName(name);
@@ -37,52 +34,63 @@ export function AllotmentTab() {
     setNewColor(color);
   }
 
+  function costChanged(cost: AllotmentCostType[]) {
+    setNewCosts(cost);
+  }
+
+  onMount(() => {
+    setAllotments(AllotmentStore.get());
+  });
+
+  function cancelCreate() {
+    setIsAddMenuOpen(false);
+    setNewName("");
+    setNewColor("#ffffff");
+  }
+
   async function createAllotment() {
     enableSpinningWheel();
-    await AllotmentService.create({ name: newName(), color: newColor() });
-    disableSpinningWheel();
-    addNewUserInformation({
-      displayed: true,
-      level: MessageLevelEnum.success,
-      type: MessageTypeEnum.global,
-      content: "Allotissement créé",
+    const newAllotment = await AllotmentService.create({
+      name: newName(),
+      color: newColor(),
+      vehicleCost: newCosts(),
     });
+    AllotmentStore.add(newAllotment);
+    setAllotments(AllotmentStore.get());
+    disableSpinningWheel();
+    addNewGlobalSuccessInformation("Allotissement créé");
     setIsAddMenuOpen(false);
   }
 
   function cancelChanges() {
-    setAllotment(getAllotment());
-    setAllTransporter(getAllTransporter());
+    setAllotments([]);
+    setAllotments(AllotmentStore.get());
+    setIsAddMenuOpen(false);
     setIsAllotmentEdited(false);
   }
 
   async function updateAllAllotment() {
     enableSpinningWheel();
-    getAllotment().forEach(async (element) => {
-      await AllotmentService.update({
-        id: element.id,
-        color: element.color,
-        name: element.name,
-      });
-    });
-    getAllTransporter().forEach(async (element) => {
-      await TransporterService.update({
-        id: element.id,
-        allotment_id: element.allotment_id,
-        name: element.name,
-        type: element.type,
-        vehicles: element.vehicles,
-      });
-    });
-    disableSpinningWheel();
+    const output: AllotmentType[] = [];
+    const tmpList = allotments();
+    for (const item of tmpList) {
+      const updated = await AllotmentService.update(item);
+      output.push(updated);
+    }
+    AllotmentStore.set(output);
+    // getAllTransporter().forEach(async (element) => {
+    //   await TransporterService.update({
+    //     id: element.id,
+    //     allotment_id: element.allotment_id,
+    //     name: element.name,
+    //     type: element.type,
+    //     vehicles: element.vehicles,
+    //   });
+    // });
     setIsAllotmentEdited(false);
     setIsAllotmentMenuOpen(false);
-    addNewUserInformation({
-      displayed: true,
-      level: MessageLevelEnum.success,
-      type: MessageTypeEnum.global,
-      content: "Modifications appliquées",
-    });
+    addNewGlobalSuccessInformation("Modifications appliquées");
+    disableSpinningWheel();
   }
 
   return (
@@ -97,15 +105,19 @@ export function AllotmentTab() {
           submit={updateAllAllotment}
         />
       </Show>
-      <AllotmentTable />
+      <AllotmentTable
+        allotments={allotments()}
+        allotmentsSetter={setAllotments}
+      />
       <Show when={isAddMenuOpen()}>
         <AllotmentAddMenu
           defaultColor={newColor()}
           defaultName={newName()}
           colorChange={colorChanged}
+          costchange={costChanged}
           nameChange={nameChanged}
           submit={createAllotment}
-          cancel={() => setIsAddMenuOpen(false)}
+          cancel={cancelCreate}
         />
       </Show>
     </div>

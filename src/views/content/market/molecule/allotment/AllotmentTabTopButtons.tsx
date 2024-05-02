@@ -9,6 +9,11 @@ interface AllotmentTabTopButtonsProps {
 export function AllotmentTabTopButtons(props: AllotmentTabTopButtonsProps) {
   return (
     <div class="confirmation-buttons">
+      <Button
+        label="Annuler changements"
+        variant="danger"
+        onClick={props.cancel}
+      />
       <Button label="Valider changements" onClick={props.submit} />
     </div>
   );

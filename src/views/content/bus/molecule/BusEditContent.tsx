@@ -3,6 +3,7 @@ import { VehicleAccessibilityInput } from "../../market/molecule/VehicleAccessib
 import { VehicleCapacityInput } from "../../market/molecule/VehicleCapacityInput";
 import { VehicleCategoryInput } from "../../market/molecule/VehicleCategoryInput";
 import { VehicleNameInput } from "../../market/molecule/VehicleNameInput";
+import { VehicleNumberInput } from "../../market/molecule/VehicleNumberInput";
 import { VehicleSizeInput } from "../../market/molecule/VehicleSizeInput";
 import { BusCategoryType } from "../organism/Bus";
 import { BusEditButtons } from "./BusEditButtons";
@@ -21,6 +22,18 @@ export function BusEditContent(props: BusEditContentProps) {
   function setName(value: string) {
     props.setBusItem((prev: BusCategoryType) => {
       return { ...prev, name: value };
+    });
+  }
+
+  function setCost(value: number) {
+    props.setBusItem((prev: BusCategoryType) => {
+      return { ...prev, cost: value };
+    });
+  }
+
+  function setCostHlp(value: number) {
+    props.setBusItem((prev: BusCategoryType) => {
+      return { ...prev, cost_hlp: value };
     });
   }
 
@@ -109,6 +122,22 @@ export function BusEditContent(props: BusEditContentProps) {
             onChangeFunction={setCapacityPMR}
           />
         </Show>
+        <div>
+          <VehicleNumberInput
+            defaultValue={props.busItem.cost}
+            label="Coût/km service"
+            name="cost"
+            placeholder="1"
+            onChange={setCost}
+          />
+          <VehicleNumberInput
+            defaultValue={props.busItem.cost_hlp}
+            label="Coût/km hlp"
+            name="costhlp"
+            placeholder="1"
+            onChange={setCostHlp}
+          />
+        </div>
         <VehicleSizeInput
           defaultLength={props.busItem.length}
           defaultWidth={props.busItem.width}

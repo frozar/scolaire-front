@@ -1,5 +1,5 @@
+import { AllotmentStore } from "../../../../_stores/allotment.store";
 import { LabeledInputSelect } from "../../../../component/molecule/LabeledInputSelect";
-import { getAllotment } from "../../allotment/organism/Allotment";
 
 export function AssignallotmentStep(props: {
   allotment: number;
@@ -12,7 +12,7 @@ export function AssignallotmentStep(props: {
       onChange={(value: string | number) =>
         props.onUpdateAllotment(Number(value))
       }
-      options={getAllotment().map((allotment) => {
+      options={AllotmentStore.get().map((allotment) => {
         return { value: Number(allotment.id), text: allotment.name };
       })}
     />
