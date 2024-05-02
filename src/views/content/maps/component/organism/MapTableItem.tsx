@@ -13,10 +13,12 @@ import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { CarteToDeleteType } from "../../Maps";
 import { MapNameDisplay } from "../molecule/MapNameDisplay";
 
-import { useStateGui } from "../../../../../StateGui";
+// TODO disable temporaire
+// import { useStateGui } from "../../../../../StateGui";
 import "./MapTableItem.css";
 
-const [, { getActiveMapId }] = useStateGui();
+// TODO disable temporaire
+// const [, { getActiveMapId }] = useStateGui();
 
 interface MapTableItemProps {
   map: MapType;
@@ -76,7 +78,10 @@ export function MapTableItem(props: MapTableItemProps) {
         <ButtonIcon
           class="close-icon"
           icon={<DuplicateIcon />}
-          disable={props.map.id != getActiveMapId()}
+          // TODO disable temporaire
+          disable={true}
+          // TODO à la remise en marche revoir le fonctionnement du disable
+          // disable={props.map.id != getActiveMapId()}
           onClick={duplicateMap}
         />
         <Show
@@ -86,6 +91,8 @@ export function MapTableItem(props: MapTableItemProps) {
               class="check-icon"
               icon={<CheckIcon />}
               onClick={editMap}
+              // TODO disable temporaire
+              disable={true}
             />
           }
         >
