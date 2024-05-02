@@ -1,10 +1,10 @@
-import { RoadType } from "../../../../_entities/road.entity";
+import { PathType } from "../../../../_entities/road.entity";
 import Pellet from "../../../../component/atom/Pellet";
 import CardWrapper from "../../../../component/molecule/CardWrapper";
 import { ViewManager } from "../../ViewManager";
 
 interface RoadListItemProps {
-  road: RoadType;
+  road: PathType;
 }
 
 export function RoadListItem(props: RoadListItemProps) {

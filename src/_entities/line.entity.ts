@@ -118,5 +118,4 @@ export type LineDBType = {
   stops: { stop_id: number }[];
   grades: GradeDBType[];
   trips: TripDBType[];
-  // paths: PathType[];
 };

@@ -1,6 +1,6 @@
-export namespace RoadEntity {
-  export function build(dbRoad: RoadDBType) {
-    const list: RoadWayType[] = [];
+export namespace PathEntity {
+  export function build(dbRoad: PathDBType) {
+    const list: PathWayType[] = [];
     dbRoad.ways.forEach((item) => {
       list.push({
         id: item.way[0].id,
@@ -17,28 +17,30 @@ export namespace RoadEntity {
   }
 }
 
-export type RoadType = {
+export type PathType = {
   id?: number;
   color: string;
   name: string;
-  ways: RoadWayType[];
+  ways: PathWayType[];
 };
 
-export type RoadWayType = {
+export type PathWayType = {
   id?: number;
   name: string;
   osm_id: number;
+  //TODO charger les nodes ?
 };
 
-export type RoadDBType = {
+export type PathDBType = {
   id?: number;
   color: string;
   name: string;
-  ways: RoadWayDBType[];
+  ways: PathWayDBType[];
 };
 
-type RoadWayDBType = {
+type PathWayDBType = {
   way_id: number;
+  //TODO renommer en "ways" et changer dans xano
   way: DBWayType[];
 };
 

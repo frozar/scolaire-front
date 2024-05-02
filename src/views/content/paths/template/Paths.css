@@ -1,11 +1,7 @@
-.paths-padding {
-  @apply px-10 w-full bg-white;
+.paths-number-of {
+  @apply my-2 text-sm italic text-green-base;
 }
 
-.paths-content {
-  @apply h-[calc(100vh-60px)] relative;
-}
-
-.paths-title {
-  @apply pt-5 mb-3 font-bold;
+.input-field {
+  @apply my-2;
 }

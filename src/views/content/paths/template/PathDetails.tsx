@@ -1,7 +1,7 @@
 import { createSignal, onCleanup, onMount } from "solid-js";
-import { RoadType } from "../../../../_entities/road.entity";
+import { PathType } from "../../../../_entities/road.entity";
 import { WayType } from "../../../../_entities/way.entity";
-import { RoadService } from "../../../../_services/road.service";
+import { PathService } from "../../../../_services/path.service";
 import { getWays } from "../../../../_stores/way.store";
 import TrashIcon from "../../../../icons/TrashIcon";
 import UpdatePen from "../../../../icons/UpdatePen";
@@ -18,8 +18,8 @@ import { WayList } from "../organism/WayList";
 import "./PathDetails.css";
 import "./Paths.css";
 
-export const [selectedRoad, setSelectedRoad] = createSignal<RoadType>(
-  {} as RoadType
+export const [selectedRoad, setSelectedRoad] = createSignal<PathType>(
+  {} as PathType
 );
 
 export function PathDetails() {
@@ -36,7 +36,7 @@ export function PathDetails() {
 
   async function deleteRoad() {
     enableSpinningWheel();
-    await RoadService.deleteRoad(selectedRoad().id);
+    await PathService.deleteRoad(selectedRoad().id);
     addNewGlobalSuccessInformation("Chemin supprimé");
     disableSpinningWheel();
     ViewManager.paths();
@@ -48,7 +48,7 @@ export function PathDetails() {
   });
 
   onCleanup(() => {
-    setSelectedRoad({} as RoadType);
+    setSelectedRoad({} as PathType);
     setDisplayWays([]);
   });
 

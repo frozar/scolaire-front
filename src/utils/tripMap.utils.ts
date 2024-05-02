@@ -1,5 +1,4 @@
 import L, { LeafletMouseEvent } from "leaflet";
-import { PathType } from "../_entities/path.entity";
 import { TripPointType, TripType } from "../_entities/trip.entity";
 import { getLines } from "../_stores/line.store";
 import { updatePointColor } from "../leafletUtils";
@@ -10,18 +9,6 @@ import { deselectAllTrips } from "../views/content/map/component/organism/Trips"
 
 //TODO delete tout ou partie
 export namespace TripMapUtils {
-  export function onClickPath(path: PathType) {
-    if (onBoard() == "path-draw" || onBoard() == "path-details") return;
-    console.log(path);
-
-    // setSelectedPath();
-    deselectAllPoints();
-    deselectAllTrips();
-
-    // setSelectedPath(path);
-    // changeBoard("path-details");
-  }
-
   export function onClickBusTrip(trip: TripType) {
     switch (onBoard()) {
       case "line-details":

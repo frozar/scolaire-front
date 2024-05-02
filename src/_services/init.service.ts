@@ -13,7 +13,7 @@ import {
   FlatGraphicEntity,
 } from "../_entities/flatGraphic.entity";
 import { BusLineEntity, LineDBType, LineType } from "../_entities/line.entity";
-import { RoadDBType, RoadEntity } from "../_entities/road.entity";
+import { PathDBType, PathEntity } from "../_entities/road.entity";
 import {
   SchoolDBType,
   SchoolEntity,
@@ -32,13 +32,13 @@ import { CalendarPeriodStore } from "../_stores/calendar-period.store";
 import { CalendarStore } from "../_stores/calendar.store";
 import { FlatGraphicStore } from "../_stores/flatGraphics.store";
 import { LineStore } from "../_stores/line.store";
+import { PathStore } from "../_stores/path.store";
 import { SchoolStore } from "../_stores/school.store";
 import { ServiceStore } from "../_stores/service.store";
 import { StopStore } from "../_stores/stop.store";
 import { setAllTransporter } from "../views/content/allotment/molecule/TransporterTable";
 import { BusCategoryType, setBus } from "../views/content/bus/organism/Bus";
 import { setSettings } from "../views/content/parameters/organism/Settings";
-import { setRoads } from "../views/content/paths/template/Paths";
 import { ServiceUtils } from "./_utils.service";
 
 type InitDBType = {
@@ -53,7 +53,7 @@ type InitDBType = {
   allotment: AllotmentDBType[];
   settings: SettingType[];
   transporter: TransporterType[];
-  roads: RoadDBType[];
+  paths: PathDBType[];
   bus_stops: BusStopDBType[];
   flat_graphics: FlatGraphicDBType[];
 };
@@ -101,8 +101,8 @@ export namespace InitService {
     const transporter = dbInit.transporter;
     setAllTransporter(transporter);
 
-    const roaads = dbInit.roads.map((road) => RoadEntity.build(road));
-    setRoads(roaads);
+    const paths = dbInit.paths.map((path) => PathEntity.build(path));
+    PathStore.set(paths);
 
     const calendarPeriods = dbInit.calendars_periods.map((calendarPeriod) =>
       CalendarEntity.buildCalendarPeriod(calendarPeriod)
