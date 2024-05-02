@@ -1,29 +1,29 @@
-import { For, createEffect, createSignal, mergeProps } from "solid-js";
+import { For, Show, createEffect, createSignal, mergeProps } from "solid-js";
 
 import { useStateGui } from "../../../../StateGui";
 import { SelectedMenuType } from "../../../../type";
 
-import { getSelectedOrganisation } from "../../../content/board/component/organism/OrganisationSelector";
-import { onBoard } from "../../../content/board/component/template/ContextManager";
-import menuItems, { adminItems } from "../../menuItemFields";
-import LeftMenuItem from "../molecule/LeftMenuItem";
 import {
   AuthenticatedUserStore,
   authenticated,
 } from "../../../../_stores/authenticated-user.store";
+import { getSelectedOrganisation } from "../../../content/board/component/organism/OrganisationSelector";
+import { onBoard } from "../../../content/board/component/template/ContextManager";
+import menuItems, { adminItems } from "../../menuItemFields";
+import LeftMenuItem from "../molecule/LeftMenuItem";
+
+import "./LeftMenuItemList.css";
 
 const [, { getActiveMapId, setSelectedMenu, getSelectedMenu }] = useStateGui();
 
-export interface LeftMenuItemProps {
+export default function (props: {
   getSelectedMenu?: () => SelectedMenuType;
   setSelectedMenu?: (itemMenu: SelectedMenuType) => void;
   displayedLabel: boolean;
-}
-
-export default function (props: LeftMenuItemProps) {
+}) {
   const mergedProps = mergeProps({ getSelectedMenu, setSelectedMenu }, props);
 
-  // TODO mettre cette logique dans le context manager
+  // TODO toDelete
   createEffect(() => {
     const onBoardMode = onBoard();
 
@@ -64,7 +64,7 @@ export default function (props: LeftMenuItemProps) {
   });
 
   return (
-    <ul>
+    <ul class="left-menu-list">
       <For
         each={
           getSelectedOrganisation().user_privilege === "admin"
@@ -90,16 +90,30 @@ export default function (props: LeftMenuItemProps) {
           function isSelected() {
             return menuItem == mergedProps.getSelectedMenu() ? true : false;
           }
+          function needSeparator() {
+            return ["schools", "graphicage", "parametres"].includes(menuItem);
+          }
 
           return (
-            <LeftMenuItem
-              displayedLabel={mergedProps.displayedLabel}
-              isDisabled={effectiveIsDisabled()}
-              Logo={Logo}
-              label={label}
-              isSelected={isSelected()}
-              onClick={menuItemArg.onClick}
-            />
+            <>
+              <Show when={needSeparator()}>
+                <div
+                  class="separator"
+                  classList={{
+                    disable: effectiveIsDisabled(),
+                  }}
+                ></div>
+              </Show>
+
+              <LeftMenuItem
+                displayedLabel={mergedProps.displayedLabel}
+                isDisabled={effectiveIsDisabled()}
+                Logo={Logo}
+                label={label}
+                isSelected={isSelected()}
+                onClick={menuItemArg.onClick}
+              />
+            </>
           );
         }}
       </For>
