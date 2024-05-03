@@ -7,4 +7,8 @@ export namespace WayStore {
   export function set(ways: WayType[]) {
     setWays(ways);
   }
+
+  export function isSetted() {
+    return getWays().length > 0;
+  }
 }

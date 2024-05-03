@@ -1,7 +1,8 @@
-import { createSignal, onCleanup, onMount } from "solid-js";
-import { RoadType } from "../../../../_entities/road.entity";
+import { For, createEffect, createSignal, onCleanup, onMount } from "solid-js";
+import { PathType } from "../../../../_entities/road.entity";
 import { WayType } from "../../../../_entities/way.entity";
 import { WayService } from "../../../../_services/ways.service";
+import { getPaths } from "../../../../_stores/path.store";
 import { getSchools } from "../../../../_stores/school.store";
 import { getStops } from "../../../../_stores/stop.store";
 import { WayStore, getWays } from "../../../../_stores/way.store";
@@ -11,13 +12,16 @@ import { ViewManager } from "../../ViewManager";
 import { setDisplaySchools } from "../../_component/organisme/SchoolPoints";
 import { setDisplayStops } from "../../_component/organisme/StopPoints";
 import { setDisplayWays } from "../../_component/organisme/Ways";
-import { RoadList } from "../organism/RoadList";
+import InputSearch from "../../schools/component/molecule/InputSearch";
+import { RoadListItem } from "../molecule/RoadListItem";
 import "./Paths.css";
 
-export const [getRoads, setRoads] = createSignal<RoadType[]>([]);
-
 export function Paths() {
+  const [keywordSearch, setKeyWordSearch] = createSignal<string>("");
+  const [filteredPaths, setFilteredRoads] = createSignal<PathType[]>([]);
+
   onMount(async () => {
+    setFilteredRoads(getPaths());
     await loadWays();
     setDisplaySchools(getSchools());
     setDisplayStops(getStops());
@@ -30,10 +34,18 @@ export function Paths() {
     setDisplayWays([]);
   });
 
+  createEffect(() => {
+    if (keywordSearch().length != 0) {
+      setFilteredRoads(filterPaths(keywordSearch()));
+    } else {
+      setFilteredRoads(getPaths());
+    }
+  });
+
   function setRoadWays() {
     const osmIdList: number[] = [];
     const wayColorList: { id: number; color: string }[] = [];
-    getRoads().forEach((road) => {
+    filteredPaths().forEach((road) => {
       road.ways.forEach((way) => {
         osmIdList.push(way.osm_id);
         wayColorList.push({ id: way.osm_id, color: road.color });
@@ -53,17 +65,32 @@ export function Paths() {
   }
 
   return (
-    <section>
-      <div class="paths-padding">
-        <div class="paths-content">
-          <div class="paths-title">Routes</div>
-          <Button label="Ajouter" onClick={() => ViewManager.pathAdd()} />
-          <RoadList roads={getRoads()} />
-        </div>
-      </div>
-    </section>
+    <>
+      <InputSearch
+        onInput={(key: string) => {
+          setKeyWordSearch(key);
+        }}
+      />
+      <Button label="Ajouter un chemin" onClick={() => ViewManager.pathAdd()} />
+      <p class="paths-number-of">
+        {filteredPaths().length + " chemin"}
+        {filteredPaths().length > 1 ? "s" : ""}
+      </p>
+      <section class="paths-list">
+        <For each={filteredPaths()}>
+          {(path) => {
+            return <RoadListItem road={path} />;
+          }}
+        </For>
+      </section>
+    </>
   );
 }
+
+const filterPaths = (filter: string) =>
+  getPaths().filter((path) =>
+    path.name.toLowerCase().includes(filter.toLowerCase())
+  );
 
 export async function loadWays() {
   if (getWays().length == 0) {

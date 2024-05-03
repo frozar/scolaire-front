@@ -1,6 +1,6 @@
 import { createEffect, createSignal, onCleanup, onMount } from "solid-js";
 import { WayType } from "../../../../_entities/way.entity";
-import { RoadService } from "../../../../_services/road.service";
+import { PathService } from "../../../../_services/path.service";
 import { getSchools } from "../../../../_stores/school.store";
 import { getStops } from "../../../../_stores/stop.store";
 import { getWays } from "../../../../_stores/way.store";
@@ -58,7 +58,7 @@ export function PathAdd() {
     if (roadName() == "")
       return addNewGlobalWarningInformation("Veuillez choisir un nom");
     enableSpinningWheel();
-    await RoadService.create({
+    await PathService.create({
       color: roadColor(),
       name: roadName(),
       ways: selectedWays().map((way) => {

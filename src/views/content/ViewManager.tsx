@@ -1,7 +1,7 @@
 import { GradeType } from "../../_entities/grade.entity";
 import { LineType } from "../../_entities/line.entity";
 import { OrganizationType } from "../../_entities/organization.entity";
-import { RoadType } from "../../_entities/road.entity";
+import { PathType } from "../../_entities/road.entity";
 import { SchoolType } from "../../_entities/school.entity";
 import { StopType } from "../../_entities/stop.entity";
 import { TripType } from "../../_entities/trip.entity";
@@ -111,14 +111,14 @@ export namespace ViewManager {
     //TODO to delete post refacto
     changeBoard(undefined);
   }
-  export function pathDetails(road: RoadType) {
+  export function pathDetails(road: PathType) {
     setSelectedRoad(road);
     setMapBoard("path-details");
     setSelectedMenu("paths");
     //TODO to delete post refacto
     changeBoard(undefined);
   }
-  export function pathEdit(road: RoadType) {
+  export function pathEdit(road: PathType) {
     setEditRoad(road);
     setMapBoard("path-edit");
     setSelectedMenu("paths");

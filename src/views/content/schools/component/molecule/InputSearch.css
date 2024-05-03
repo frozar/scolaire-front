@@ -1,5 +1,5 @@
 .input-field {
-  @apply flex h-full relative rounded-[0.375rem];
+  @apply flex  relative rounded-[0.375rem];
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
     var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }

@@ -1,7 +1,7 @@
 import { createEffect, createSignal, onCleanup, onMount } from "solid-js";
-import { RoadType } from "../../../../_entities/road.entity";
+import { PathType } from "../../../../_entities/road.entity";
 import { WayType } from "../../../../_entities/way.entity";
-import { RoadService } from "../../../../_services/road.service";
+import { PathService } from "../../../../_services/path.service";
 import { getSchools } from "../../../../_stores/school.store";
 import { getStops } from "../../../../_stores/stop.store";
 import { getWays } from "../../../../_stores/way.store";
@@ -26,7 +26,7 @@ import { WayListButtons } from "../molecule/WayListButtons";
 import { WayList } from "../organism/WayList";
 import "./Paths.css";
 
-export const [editRoad, setEditRoad] = createSignal<RoadType>({} as RoadType);
+export const [editRoad, setEditRoad] = createSignal<PathType>({} as PathType);
 export const [editways, setEditWays] = createSignal<WayType[]>([]);
 
 export function PathEdit() {
@@ -51,7 +51,7 @@ export function PathEdit() {
     if (roadName() == "")
       return addNewGlobalWarningInformation("Veuillez choisir un nom");
     enableSpinningWheel();
-    await RoadService.update({
+    await PathService.update({
       id: editRoad().id,
       color: roadColor(),
       name: roadName(),
@@ -81,7 +81,7 @@ export function PathEdit() {
     setDisplayWays([]);
     setRoadName("");
     setRoadColor("");
-    setEditRoad({} as RoadType);
+    setEditRoad({} as PathType);
     setEditWays([]);
   });
 

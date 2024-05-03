@@ -2,34 +2,26 @@ import { range } from "lodash";
 
 import { GradeEntity } from "../_entities/grade.entity";
 import { LineType } from "../_entities/line.entity";
-import { PathEntity } from "../_entities/path.entity";
 import {
   TripDirectionEntity,
   TripDirectionEnum,
 } from "../_entities/trip-direction.entity";
 import { TripPointType, TripType } from "../_entities/trip.entity";
-import { TripService } from "../_services/trip.service";
 import { AllotmentStore } from "../_stores/allotment.store";
-import { LineStore, getLines } from "../_stores/line.store";
+import { getLines } from "../_stores/line.store";
 import { addNewUserInformation } from "../signaux";
 import { MessageLevelEnum, MessageTypeEnum, NatureEnum } from "../type";
-import { ViewManager } from "../views/content/ViewManager";
 import {
   DrawTripStep,
   currentDrawTrip,
-  displayTripModeEnum,
   setCurrentDrawTrip,
   setCurrentStep,
-  setDisplayTripMode,
 } from "../views/content/board/component/organism/DrawTripBoard";
 import {
   changeBoard,
   toggleDrawMod,
 } from "../views/content/board/component/template/ContextManager";
 import { getBus } from "../views/content/bus/organism/Bus";
-import { getSelectedLine } from "../views/content/map/component/organism/BusLines";
-import { setselectedTrip } from "../views/content/map/component/organism/Trips";
-import { quitModeDrawTrip } from "../views/content/map/shortcut";
 
 export namespace TripUtils {
   export function get(tripId: number): TripType {
@@ -184,58 +176,6 @@ export namespace TripUtils {
         content: "Votre course aller doit commencer par un arrêt.",
       });
     return tripDirection == TripDirectionEnum.going && !canRemove;
-  }
-
-  export async function createOrUpdateTrip() {
-    // eslint-disable-next-line solid/reactivity
-    let updatedTrip: TripType = currentDrawTrip() as TripType;
-
-    if (currentDrawTrip()?.id == undefined) {
-      if (!currentDrawTrip().path) {
-        setCurrentDrawTrip((prev) => {
-          if (!prev) return prev;
-          const trip = { ...prev };
-          trip.path = PathEntity.formatFromTrip(trip);
-          return trip;
-        });
-      }
-
-      updatedTrip = await TripService.create(currentDrawTrip() as TripType);
-      const selectedLineId = getSelectedLine()?.id as number;
-
-      //TODO voir l'utilisation
-      LineStore.set((lines) =>
-        lines.map((line) =>
-          line.id != selectedLineId
-            ? line
-            : { ...line, trips: [...line.trips, updatedTrip] }
-        )
-      );
-    } else {
-      updatedTrip = await TripService.update(currentDrawTrip() as TripType);
-
-      //TODO voir l'utilisation
-      LineStore.set((prev) =>
-        prev.map((line) => {
-          return {
-            ...line,
-            trips: line.trips.map((trip) =>
-              trip.id == updatedTrip.id ? updatedTrip : trip
-            ),
-          };
-        })
-      );
-    }
-    setselectedTrip(updatedTrip);
-
-    setDisplayTripMode((prev) =>
-      prev == displayTripModeEnum.straight ? prev : displayTripModeEnum.straight
-    );
-
-    setCurrentStep(DrawTripStep.initial);
-    quitModeDrawTrip();
-
-    ViewManager.tripDetails(updatedTrip);
   }
 
   export function isValidTrip(trip: TripType): boolean {
