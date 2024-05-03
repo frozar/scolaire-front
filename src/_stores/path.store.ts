@@ -10,7 +10,6 @@ export namespace PathStore {
 
   export function add(path: PathType) {
     console.log(path);
-
     // TODO
   }
   export function update(path: PathType) {
