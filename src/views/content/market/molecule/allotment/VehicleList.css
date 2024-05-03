@@ -1,0 +1,7 @@
+.vehicle-headers {
+  @apply flex gap-2;
+}
+
+.vehicle-list {
+  @apply grid grid-cols-2 gap-1;
+}

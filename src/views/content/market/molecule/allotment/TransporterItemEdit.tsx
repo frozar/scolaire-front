@@ -4,6 +4,7 @@ import { SelectInput } from "../../../../../component/atom/SelectInput";
 import { CircleCheckIcon } from "../../../../../icons/CircleCheckIcon";
 import { CircleXMarkIcon } from "../../../../../icons/CircleXMarkIcon";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
+import { VehicleList } from "./VehicleList";
 
 interface TransporterItemEditProps {
   item: TransporterType;
@@ -52,6 +53,10 @@ export function TransporterItemEdit(props: TransporterItemEditProps) {
             variant="borderless"
           />
         </div>
+        <VehicleList
+          transporter={props.item}
+          transporterSetter={props.itemSetter}
+        />
       </div>
       <div class="flex gap-2">
         <ButtonIcon icon={<CircleXMarkIcon />} onClick={props.cancel} />

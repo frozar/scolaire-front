@@ -50,6 +50,8 @@ export function TransporterItem(props: TransporterItemProps) {
             <div>
               <p>{"Nom : " + props.item.name}</p>
               <p>{"Type : " + props.item.type}</p>
+              <p>{"Véhicules : " + props.item.vehicles.length}</p>
+              <p>{"Coût spécifique : Sans"}</p>
             </div>
             <div class="flex gap-2">
               <ButtonIcon

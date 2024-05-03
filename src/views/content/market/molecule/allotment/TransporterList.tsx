@@ -6,6 +6,7 @@ import { TransporterStore } from "../../../../../_stores/transporter.store";
 import { CirclePlusIcon } from "../../../../../icons/CirclePlusIcon";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { TransporterItem } from "./TransporterItem";
+import "./TransporterList.css";
 
 interface AllotmentTransporterListProps {
   allotment: AllotmentType;
@@ -73,11 +74,11 @@ export function TransporterList(props: AllotmentTransporterListProps) {
 
   return (
     <div>
-      <div class="flex gap-4 pt-2">
+      <div class="transporter-list-header">
         <p>Ajouter un transporteur</p>
         <ButtonIcon icon={<CirclePlusIcon />} onClick={addtransporter} />
       </div>
-      <div class="allotment-cost-list">
+      <div class="transporter-list-items">
         <For each={transporters()}>
           {(item) => (
             <TransporterItem

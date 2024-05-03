@@ -1,0 +1,7 @@
+.transporter-list-header {
+  @apply flex gap-4 pt-2;
+}
+
+.transporter-list-items {
+  @apply grid grid-cols-3 gap-2;
+}
