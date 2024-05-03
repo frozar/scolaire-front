@@ -4,7 +4,9 @@ import {
   AllotmentType,
 } from "../../../../../_entities/allotment.entity";
 import { AllotmentService } from "../../../../../_services/allotment.service";
+import { TransporterService } from "../../../../../_services/transporter.service";
 import { AllotmentStore } from "../../../../../_stores/allotment.store";
+import { TransporterStore } from "../../../../../_stores/transporter.store";
 import Button from "../../../../../component/atom/Button";
 import {
   addNewGlobalSuccessInformation,
@@ -74,23 +76,35 @@ export function AllotmentTab() {
     const output: AllotmentType[] = [];
     const tmpList = allotments();
     for (const item of tmpList) {
+      if (item.transporters) await updateTransporter(item);
       const updated = await AllotmentService.update(item);
       output.push(updated);
     }
     AllotmentStore.set(output);
-    // getAllTransporter().forEach(async (element) => {
-    //   await TransporterService.update({
-    //     id: element.id,
-    //     allotment_id: element.allotment_id,
-    //     name: element.name,
-    //     type: element.type,
-    //     vehicles: element.vehicles,
-    //   });
-    // });
     setIsAllotmentEdited(false);
     setIsAllotmentMenuOpen(false);
     addNewGlobalSuccessInformation("Modifications appliquées");
     disableSpinningWheel();
+  }
+
+  async function updateTransporter(allotment: AllotmentType) {
+    const tmpList = allotment.transporters;
+    if (!tmpList) return;
+    for (const item of tmpList) {
+      if (item.name == "" || item.type == "") return;
+      if (item.id == 0) {
+        const created = await TransporterService.create(item);
+        TransporterStore.add(created);
+        return;
+      }
+      const updated = await TransporterService.update(item);
+      TransporterStore.set((prev) => {
+        return prev.map((item) => {
+          if (item.id == updated.id) return updated;
+          return item;
+        });
+      });
+    }
   }
 
   return (

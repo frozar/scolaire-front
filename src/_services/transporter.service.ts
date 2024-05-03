@@ -1,46 +1,33 @@
-import { TransporterType } from "../_entities/transporter.entity";
-import { setAllTransporter } from "../views/content/allotment/molecule/TransporterTable";
+import {
+  TransporterDbType,
+  TransporterEntity,
+  TransporterType,
+} from "../_entities/transporter.entity";
 import { ServiceUtils } from "./_utils.service";
 
 export namespace TransporterService {
   export async function create(transporter: Omit<TransporterType, "id">) {
-    const dbTransporter: TransporterType[] = await ServiceUtils.post(
+    const data = TransporterEntity.dbFormat(transporter);
+    const dbTransporter: TransporterDbType = await ServiceUtils.post(
       "/transporter",
-      transporter
+      data
     );
-    setAllTransporter(dbTransporter);
+    return TransporterEntity.build(dbTransporter);
   }
 
-  export async function update(transporter: Partial<TransporterType>) {
-    const dbTransporter: TransporterType = await ServiceUtils.patch(
+  export async function update(transporter: TransporterType) {
+    const data = TransporterEntity.dbFormat(transporter);
+    const dbTransporter: TransporterDbType = await ServiceUtils.patch(
       "/transporter/" + transporter.id,
-      transporter
+      data
     );
-    // setAllTransporter((prev) => {
-    //   if (!prev) return prev;
-    //   return [...prev].map((transporter) => {
-    //     if (transporter.id == dbTransporter.id) {
-    //       transporter = dbTransporter;
-    //     }
-    //     return transporter;
-    //   });
-    // });
-    return dbTransporter;
+    return TransporterEntity.build(dbTransporter);
   }
 
   export async function deleteTransporter(id?: number): Promise<boolean> {
     const returnValue: boolean = await ServiceUtils.delete(
       "/transporter/" + id
     );
-    // setAllTransporter((prev) => {
-    //   if (!prev) return prev;
-    //   return [...prev].filter((transporter) => {
-    //     if (transporter.id == id) {
-    //       return;
-    //     }
-    //     return transporter;
-    //   });
-    // });
     return returnValue;
   }
 }

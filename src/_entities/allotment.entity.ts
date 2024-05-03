@@ -1,3 +1,5 @@
+import { TransporterType } from "./transporter.entity";
+
 export namespace AllotmentEntity {
   export function build(dbAllotment: AllotmentDBType): AllotmentType {
     return {
@@ -43,6 +45,7 @@ export type AllotmentType = {
   name: string;
   color: string;
   vehicleCost: AllotmentCostType[];
+  transporters?: TransporterType[];
 };
 
 export type AllotmentCostType = {

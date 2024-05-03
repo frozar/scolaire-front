@@ -1,12 +1,15 @@
-import { For, createSignal, onMount } from "solid-js";
+import { For, Setter, createSignal, onMount } from "solid-js";
+import { AllotmentType } from "../../../../../_entities/allotment.entity";
 import { TransporterType } from "../../../../../_entities/transporter.entity";
+import { TransporterService } from "../../../../../_services/transporter.service";
 import { TransporterStore } from "../../../../../_stores/transporter.store";
 import { CirclePlusIcon } from "../../../../../icons/CirclePlusIcon";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { TransporterItem } from "./TransporterItem";
 
 interface AllotmentTransporterListProps {
-  allotmentId: number;
+  allotment: AllotmentType;
+  allotmentSetter: Setter<AllotmentType>;
 }
 
 export function TransporterList(props: AllotmentTransporterListProps) {
@@ -14,19 +17,58 @@ export function TransporterList(props: AllotmentTransporterListProps) {
 
   onMount(() => {
     setTransporters(
-      TransporterStore.get().filter((t) => t.allotmentId == props.allotmentId)
+      TransporterStore.get().filter((t) => t.allotmentId == props.allotment.id)
     );
+    // eslint-disable-next-line solid/reactivity
+    props.allotmentSetter((prev) => {
+      return { ...prev, transporters: transporters() };
+    });
   });
 
-  function deleteTransporter(transport: TransporterType) {
+  function editTransporter(
+    oldTransport: TransporterType,
+    newTransport: TransporterType
+  ) {
+    setTransporters((prev) => {
+      return prev.map((item) => {
+        if (item == oldTransport) return newTransport;
+        return item;
+      });
+    });
+
+    // eslint-disable-next-line solid/reactivity
+    props.allotmentSetter((prev) => {
+      return { ...prev, transporters: transporters() };
+    });
+  }
+
+  async function deleteTransporter(transport: TransporterType) {
+    if (transport.id) await TransporterService.deleteTransporter(transport.id);
+
     setTransporters((prev) => {
       return prev.filter((cost) => cost != transport);
+    });
+    // eslint-disable-next-line solid/reactivity
+    props.allotmentSetter((prev) => {
+      return { ...prev, transporters: transporters() };
     });
   }
 
   function addtransporter() {
-    console.log(props.allotmentId);
-    console.log(transporters());
+    const newObj: TransporterType = {
+      id: 0,
+      name: "",
+      type: "",
+      allotmentId: props.allotment.id,
+      vehicles: [],
+    };
+    setTransporters((prev) => {
+      return [...prev, newObj];
+    });
+    // eslint-disable-next-line solid/reactivity
+    props.allotmentSetter((prev) => {
+      return { ...prev, transporters: transporters() };
+    });
   }
 
   return (
@@ -37,7 +79,13 @@ export function TransporterList(props: AllotmentTransporterListProps) {
       </div>
       <div class="allotment-cost-list">
         <For each={transporters()}>
-          {(item) => <TransporterItem delete={deleteTransporter} item={item} />}
+          {(item) => (
+            <TransporterItem
+              edit={editTransporter}
+              delete={deleteTransporter}
+              item={item}
+            />
+          )}
         </For>
       </div>
     </div>

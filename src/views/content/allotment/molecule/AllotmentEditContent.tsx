@@ -55,12 +55,14 @@ export function AllotmentEditContent(props: AllotmentEditContentProps) {
         <AllotmentCostList costList={costs()} costSetter={setCosts} />
       </div>
       <div class="allotment-edit-transporter">
-        <TransporterList allotmentId={props.allotment.id as number} />
+        <TransporterList
+          allotment={props.allotment}
+          allotmentSetter={props.allotmentSetter}
+        />
       </div>
       <div class="allotment-edit-buttons">
         <ButtonIcon icon={<CircleCheckIcon />} onClick={confirm} />
       </div>
-      {/* <TransporterTable allotment_id={props.allotment.id} /> */}
     </div>
   );
 }

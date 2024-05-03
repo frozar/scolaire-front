@@ -14,6 +14,7 @@ export namespace TransporterEntity {
       id: transporter.id,
       name: transporter.name,
       type: transporter.type,
+      allotment_id: transporter.allotmentId,
       vehicles: transporter.vehicles.map((vehicle) => formatVehicle(vehicle)),
     };
   }
