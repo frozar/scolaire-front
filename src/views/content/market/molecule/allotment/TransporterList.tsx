@@ -1,10 +1,9 @@
 import { For, Setter, createSignal, onMount } from "solid-js";
 import { AllotmentType } from "../../../../../_entities/allotment.entity";
 import { TransporterType } from "../../../../../_entities/transporter.entity";
-import { TransporterService } from "../../../../../_services/transporter.service";
-import { TransporterStore } from "../../../../../_stores/transporter.store";
 import { CirclePlusIcon } from "../../../../../icons/CirclePlusIcon";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
+import { setTranspoterToDelete } from "./AllotmentTab";
 import { TransporterItem } from "./TransporterItem";
 import "./TransporterList.css";
 
@@ -17,9 +16,7 @@ export function TransporterList(props: AllotmentTransporterListProps) {
   const [transporters, setTransporters] = createSignal<TransporterType[]>([]);
 
   onMount(() => {
-    setTransporters(
-      TransporterStore.get().filter((t) => t.allotmentId == props.allotment.id)
-    );
+    setTransporters(props.allotment.transporters);
     // eslint-disable-next-line solid/reactivity
     props.allotmentSetter((prev) => {
       return { ...prev, transporters: transporters() };
@@ -44,7 +41,10 @@ export function TransporterList(props: AllotmentTransporterListProps) {
   }
 
   async function deleteTransporter(transport: TransporterType) {
-    if (transport.id) await TransporterService.deleteTransporter(transport.id);
+    if (transport.id)
+      setTranspoterToDelete((prev) => {
+        return [...prev, transport.id as number];
+      });
 
     setTransporters((prev) => {
       return prev.filter((cost) => cost != transport);
