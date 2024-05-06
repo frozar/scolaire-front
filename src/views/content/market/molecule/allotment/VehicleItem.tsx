@@ -1,13 +1,11 @@
 import { Show, createSignal, onMount } from "solid-js";
 import { TransporterVehicleType } from "../../../../../_entities/transporter.entity";
-import { SelectInput } from "../../../../../component/atom/SelectInput";
-import CheckIcon from "../../../../../icons/CheckIcon";
 import TrashIcon from "../../../../../icons/TrashIcon";
 import UpdatePen from "../../../../../icons/UpdatePen";
 import { TripUtils } from "../../../../../utils/trip.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
-import { getBus } from "../../../bus/organism/Bus";
 import "./VehicleItem.css";
+import { VehicleItemEdit } from "./VehicleItemEdit";
 
 interface VehicleItemProps {
   item: TransporterVehicleType;
@@ -29,18 +27,6 @@ export function VehicleItem(props: VehicleItemProps) {
     if (props.item.license == "" && props.item.busCategoryId == 0)
       setInEdit(true);
   });
-
-  function onNamechange(value: string) {
-    setEditVehicle((prev) => {
-      return { ...prev, license: value };
-    });
-  }
-
-  function onVehicleChange(value: number) {
-    setEditVehicle((prev) => {
-      return { ...prev, busCategoryId: value };
-    });
-  }
 
   function submit() {
     props.edit(props.item, editVehicle());
@@ -66,29 +52,11 @@ export function VehicleItem(props: VehicleItemProps) {
       }
       when={inEdit()}
     >
-      <div>
-        <div>
-          <label for="license">Immatriculation :</label>
-          <input
-            value={props.item.license}
-            type="text"
-            id="license"
-            onInput={(e) => onNamechange(e.target.value)}
-          />
-        </div>
-        <div>
-          <label>Bus :</label>
-          <SelectInput
-            options={getBus().map((bus) => {
-              return { value: Number(bus.id), text: bus.name };
-            })}
-            onChange={(e) => onVehicleChange(Number(e))}
-            defaultValue={props.item.busCategoryId}
-            variant="borderless"
-          />
-        </div>
-        <ButtonIcon icon={<CheckIcon />} onClick={submit} />
-      </div>
+      <VehicleItemEdit
+        submit={submit}
+        vehicleItem={editVehicle()}
+        vehicleSetter={setEditVehicle}
+      />
     </Show>
   );
 }
