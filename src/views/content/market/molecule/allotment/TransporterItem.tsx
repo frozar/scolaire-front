@@ -4,6 +4,7 @@ import CardWrapper from "../../../../../component/molecule/CardWrapper";
 import TrashIcon from "../../../../../icons/TrashIcon";
 import UpdatePen from "../../../../../icons/UpdatePen";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
+import "./TransporterItem.css";
 import { TransporterItemEdit } from "./TransporterItemEdit";
 
 interface TransporterItemProps {
@@ -20,6 +21,8 @@ export function TransporterItem(props: TransporterItemProps) {
 
   onMount(() => {
     setLocalTransporter(props.item);
+    if (props.item.id == 0 && props.item.type == "" && props.item.name == "")
+      setInEdit(true);
   });
 
   function cancel() {
@@ -30,6 +33,12 @@ export function TransporterItem(props: TransporterItemProps) {
   function submit() {
     props.edit(props.item, localTransporter());
     setInEdit(false);
+  }
+
+  function hasCost() {
+    if (localTransporter().costs)
+      if (localTransporter().costs.length > 0) return "Avec";
+    return "Sans";
   }
 
   return (
@@ -46,14 +55,14 @@ export function TransporterItem(props: TransporterItemProps) {
             />
           }
         >
-          <div class="flex justify-between">
+          <div class="transporter-item-container">
             <div>
               <p>{"Nom : " + props.item.name}</p>
               <p>{"Type : " + props.item.type}</p>
               <p>{"Véhicules : " + props.item.vehicles.length}</p>
-              <p>{"Coût spécifique : Sans"}</p>
+              <p>{"Coût spécifique : " + hasCost()}</p>
             </div>
-            <div class="flex gap-2">
+            <div class="transporter-item-buttons">
               <ButtonIcon
                 icon={<UpdatePen />}
                 onClick={() => setInEdit(true)}

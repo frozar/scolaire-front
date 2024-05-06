@@ -6,6 +6,7 @@ export namespace TransporterEntity {
       type: dbTransporter.type,
       allotmentId: dbTransporter.allotment_id,
       vehicles: dbTransporter.vehicles.map((vehicle) => buildVehicle(vehicle)),
+      costs: dbTransporter.vehicle_cost.map((cost) => buildCost(cost)),
     };
   }
 
@@ -16,6 +17,7 @@ export namespace TransporterEntity {
       type: transporter.type,
       allotment_id: transporter.allotmentId,
       vehicles: transporter.vehicles.map((vehicle) => formatVehicle(vehicle)),
+      vehicle_cost: transporter.costs.map((cost) => formatCost(cost)),
     };
   }
 }
@@ -38,12 +40,29 @@ function formatVehicle(
   };
 }
 
+function buildCost(dbCost: TransporterCostDbType): TransporterCostType {
+  return {
+    busCategoryId: dbCost.bus_categories_id,
+    cost: dbCost.cost,
+    costHlp: dbCost.cost_hlp,
+  };
+}
+
+function formatCost(cost: TransporterCostType): TransporterCostDbType {
+  return {
+    bus_categories_id: cost.busCategoryId,
+    cost: cost.cost,
+    cost_hlp: cost.costHlp,
+  };
+}
+
 export type TransporterType = {
   id?: number;
   name: string;
   type: string;
   allotmentId?: number;
   vehicles: TransporterVehicleType[];
+  costs: TransporterCostType[];
 };
 
 export type TransporterVehicleType = {
@@ -63,6 +82,7 @@ export type TransporterDbType = {
   type: string;
   allotment_id?: number;
   vehicles: TransporterVehicleType[];
+  vehicle_cost: TransporterCostDbType[];
 };
 
 export type TransporterVehicleDbType = {

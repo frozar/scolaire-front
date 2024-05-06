@@ -4,6 +4,8 @@ import { SelectInput } from "../../../../../component/atom/SelectInput";
 import { CircleCheckIcon } from "../../../../../icons/CircleCheckIcon";
 import { CircleXMarkIcon } from "../../../../../icons/CircleXMarkIcon";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
+import { CostList } from "./CostList";
+import "./TransporterItem.css";
 import { VehicleList } from "./VehicleList";
 
 interface TransporterItemEditProps {
@@ -27,7 +29,7 @@ export function TransporterItemEdit(props: TransporterItemEditProps) {
   }
 
   return (
-    <div class="flex justify-between">
+    <div class="transporter-item-container">
       <div>
         <div>
           <label class="inputs-label-offset" for="name">
@@ -57,8 +59,12 @@ export function TransporterItemEdit(props: TransporterItemEditProps) {
           transporter={props.item}
           transporterSetter={props.itemSetter}
         />
+        <CostList
+          transporter={props.item}
+          transporterSetter={props.itemSetter}
+        />
       </div>
-      <div class="flex gap-2">
+      <div class="transporter-item-buttons">
         <ButtonIcon icon={<CircleXMarkIcon />} onClick={props.cancel} />
         <ButtonIcon icon={<CircleCheckIcon />} onClick={props.submit} />
       </div>

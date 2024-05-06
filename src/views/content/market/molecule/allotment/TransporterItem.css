@@ -1,0 +1,11 @@
+.transporter-item-container {
+  @apply flex justify-between;
+}
+
+.transporter-item-buttons {
+  @apply flex gap-2;
+}
+
+.inputs-label-offset {
+  @apply pr-1;
+}

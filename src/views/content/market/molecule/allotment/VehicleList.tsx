@@ -6,6 +6,7 @@ import {
 import PlusIcon from "../../../../../icons/PlusIcon";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { VehicleItem } from "./VehicleItem";
+import "./VehicleList.css";
 
 interface VehicleListProps {
   transporter: TransporterType;
@@ -48,15 +49,31 @@ export function VehicleList(props: VehicleListProps) {
     });
   }
 
+  function deleteVehicle(vehicle: TransporterVehicleType) {
+    setLocalVehicles((prev) => {
+      return prev.filter((v) => v != vehicle);
+    });
+    // eslint-disable-next-line solid/reactivity
+    props.transporterSetter((prev) => {
+      return { ...prev, vehicles: localVehicles() };
+    });
+  }
+
   return (
     <div>
       <div class="vehicle-headers">
         <p>Véhicules :</p>
         <ButtonIcon icon={<PlusIcon />} onClick={addVehicle} />
       </div>
-      <div class="vehicle-list">
+      <div>
         <For each={localVehicles()}>
-          {(item) => <VehicleItem edit={editVehicle} item={item} />}
+          {(item) => (
+            <VehicleItem
+              delete={deleteVehicle}
+              edit={editVehicle}
+              item={item}
+            />
+          )}
         </For>
       </div>
     </div>

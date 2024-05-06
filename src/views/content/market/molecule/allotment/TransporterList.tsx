@@ -62,6 +62,7 @@ export function TransporterList(props: AllotmentTransporterListProps) {
       type: "",
       allotmentId: props.allotment.id,
       vehicles: [],
+      costs: [],
     };
     setTransporters((prev) => {
       return [...prev, newObj];

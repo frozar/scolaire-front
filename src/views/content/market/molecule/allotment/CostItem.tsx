@@ -1,5 +1,5 @@
 import { Show, createSignal, onMount } from "solid-js";
-import { TransporterVehicleType } from "../../../../../_entities/transporter.entity";
+import { TransporterCostType } from "../../../../../_entities/transporter.entity";
 import { SelectInput } from "../../../../../component/atom/SelectInput";
 import CheckIcon from "../../../../../icons/CheckIcon";
 import TrashIcon from "../../../../../icons/TrashIcon";
@@ -7,55 +7,64 @@ import UpdatePen from "../../../../../icons/UpdatePen";
 import { TripUtils } from "../../../../../utils/trip.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { getBus } from "../../../bus/organism/Bus";
-import "./VehicleItem.css";
+import "./CostItem.css";
 
-interface VehicleItemProps {
-  item: TransporterVehicleType;
-  edit: (
-    oldvehicle: TransporterVehicleType,
-    newvehicle: TransporterVehicleType
-  ) => void;
-  delete: (vehicle: TransporterVehicleType) => void;
+interface CostItemProps {
+  item: TransporterCostType;
+  edit: (oldCost: TransporterCostType, newCost: TransporterCostType) => void;
+  delete: (cost: TransporterCostType) => void;
 }
 
-export function VehicleItem(props: VehicleItemProps) {
+export function CostItem(props: CostItemProps) {
   const [inEdit, setInEdit] = createSignal(false);
-  const [editVehicle, setEditVehicle] = createSignal<TransporterVehicleType>(
-    {} as TransporterVehicleType
+  const [localCost, setLocalCost] = createSignal<TransporterCostType>(
+    {} as TransporterCostType
   );
 
   onMount(() => {
-    setEditVehicle(props.item);
-    if (props.item.license == "" && props.item.busCategoryId == 0)
+    setLocalCost(props.item);
+    if (
+      props.item.busCategoryId == 0 &&
+      props.item.cost == 0 &&
+      props.item.costHlp == 0
+    )
       setInEdit(true);
   });
 
-  function onNamechange(value: string) {
-    setEditVehicle((prev) => {
-      return { ...prev, license: value };
+  function onCostChange(value: number) {
+    setLocalCost((prev) => {
+      return { ...prev, cost: value };
+    });
+  }
+
+  function onCostHLPChange(value: number) {
+    setLocalCost((prev) => {
+      return { ...prev, costHlp: value };
     });
   }
 
   function onVehicleChange(value: number) {
-    setEditVehicle((prev) => {
+    setLocalCost((prev) => {
       return { ...prev, busCategoryId: value };
     });
   }
 
   function submit() {
-    props.edit(props.item, editVehicle());
+    props.edit(props.item, localCost());
     setInEdit(false);
   }
 
   return (
     <Show
+      when={inEdit()}
       fallback={
         <div>
-          <p>{"Immatriculation : " + editVehicle().license}</p>
           <p>
             {"Bus : " + TripUtils.tripBusIdToString(props.item.busCategoryId)}
           </p>
-          <div class="vehicle-item-buttons">
+          <p>{"Coût : " + localCost().cost + "€ / km"}</p>
+          <p>{"Coût HLP : " + localCost().costHlp + "€ / km"}</p>
+          <div class="cost-item-buttons">
             <ButtonIcon icon={<UpdatePen />} onClick={() => setInEdit(true)} />
             <ButtonIcon
               icon={<TrashIcon />}
@@ -64,18 +73,8 @@ export function VehicleItem(props: VehicleItemProps) {
           </div>
         </div>
       }
-      when={inEdit()}
     >
       <div>
-        <div>
-          <label for="license">Immatriculation :</label>
-          <input
-            value={props.item.license}
-            type="text"
-            id="license"
-            onInput={(e) => onNamechange(e.target.value)}
-          />
-        </div>
         <div>
           <label>Bus :</label>
           <SelectInput
@@ -85,6 +84,24 @@ export function VehicleItem(props: VehicleItemProps) {
             onChange={(e) => onVehicleChange(Number(e))}
             defaultValue={props.item.busCategoryId}
             variant="borderless"
+          />
+        </div>
+        <div>
+          <label for="cost">Coût :</label>
+          <input
+            value={props.item.cost}
+            type="number"
+            id="cost"
+            onInput={(e) => onCostChange(Number(e.target.value))}
+          />
+        </div>
+        <div>
+          <label for="costHlp">Coût HLP :</label>
+          <input
+            value={props.item.costHlp}
+            type="number"
+            id="costHlp"
+            onInput={(e) => onCostHLPChange(Number(e.target.value))}
           />
         </div>
         <ButtonIcon icon={<CheckIcon />} onClick={submit} />
