@@ -1,7 +1,0 @@
-.transporter-edit-input-container {
-  @apply px-4 py-2 flex gap-x-16;
-}
-
-.transporter-edit-input {
-  @apply max-w-xs;
-}

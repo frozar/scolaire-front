@@ -23,10 +23,6 @@ import { ServiceDBType, ServiceEntity } from "../_entities/service.entity";
 import { SettingType } from "../_entities/setting.entity";
 import { StopDBType, StopEntity, StopType } from "../_entities/stop.entity";
 import {
-  TransporterDbType,
-  TransporterEntity,
-} from "../_entities/transporter.entity";
-import {
   TripDirectionType,
   setTripDirections,
 } from "../_entities/trip-direction.entity";
@@ -39,7 +35,6 @@ import { PathStore } from "../_stores/path.store";
 import { SchoolStore } from "../_stores/school.store";
 import { ServiceStore } from "../_stores/service.store";
 import { StopStore } from "../_stores/stop.store";
-import { TransporterStore } from "../_stores/transporter.store";
 import { BusCategoryType, setBus } from "../views/content/bus/organism/Bus";
 import { setSettings } from "../views/content/parameters/organism/Settings";
 import { ServiceUtils } from "./_utils.service";
@@ -55,7 +50,6 @@ type InitDBType = {
   bus_categories: BusCategoryType[];
   allotment: AllotmentDBType[];
   settings: SettingType[];
-  transporter: TransporterDbType[];
   paths: PathDBType[];
   bus_stops: BusStopDBType[];
   flat_graphics: FlatGraphicDBType[];
@@ -100,11 +94,6 @@ export namespace InitService {
       AllotmentEntity.build(allotment)
     );
     AllotmentStore.set(allotment);
-
-    const transporter = dbInit.transporter.map((transporter) =>
-      TransporterEntity.build(transporter)
-    );
-    TransporterStore.set(transporter);
 
     const paths = dbInit.paths.map((path) => PathEntity.build(path));
     PathStore.set(paths);
