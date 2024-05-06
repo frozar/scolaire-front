@@ -9,6 +9,7 @@ export namespace AllotmentEntity {
       vehicleCost: dbAllotment.vehicle_cost.map((item) => {
         return buildVehicleCost(item);
       }),
+      transporters: [],
     };
   }
 
@@ -45,7 +46,7 @@ export type AllotmentType = {
   name: string;
   color: string;
   vehicleCost: AllotmentCostType[];
-  transporters?: TransporterType[];
+  transporters: TransporterType[];
 };
 
 export type AllotmentCostType = {

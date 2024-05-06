@@ -56,6 +56,7 @@ export function AllotmentTab() {
       name: newName(),
       color: newColor(),
       vehicleCost: newCosts(),
+      transporters: [],
     });
     AllotmentStore.add(newAllotment);
     setAllotments(AllotmentStore.get());
@@ -76,7 +77,7 @@ export function AllotmentTab() {
     const output: AllotmentType[] = [];
     const tmpList = allotments();
     for (const item of tmpList) {
-      if (item.transporters) await updateTransporter(item);
+      if (item.transporters.length > 0) await updateTransporter(item);
       const updated = await AllotmentService.update(item);
       output.push(updated);
     }
@@ -89,7 +90,6 @@ export function AllotmentTab() {
 
   async function updateTransporter(allotment: AllotmentType) {
     const tmpList = allotment.transporters;
-    if (!tmpList) return;
     for (const item of tmpList) {
       if (item.name == "" || item.type == "") return;
       if (item.id == 0) {
