@@ -4,6 +4,7 @@ import { SelectInput } from "../../../../../component/atom/SelectInput";
 import CheckIcon from "../../../../../icons/CheckIcon";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { getBus } from "../../../bus/organism/Bus";
+import "./VehicleItem.css";
 
 interface VehicleItemEditProps {
   vehicleItem: TransporterVehicleType;
@@ -30,6 +31,7 @@ export function VehicleItemEdit(props: VehicleItemEditProps) {
         <label for="license">Immatriculation :</label>
         <input
           value={props.vehicleItem.license}
+          class="vehicle-item-licence"
           type="text"
           id="license"
           onInput={(e) => onNamechange(e.target.value)}

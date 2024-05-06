@@ -46,6 +46,7 @@ export function CostItemEdit(props: CostItemEditProps) {
       <div>
         <label for="cost">Coût :</label>
         <input
+          class="cost-input"
           value={props.costItem.cost}
           type="number"
           id="cost"
@@ -55,6 +56,7 @@ export function CostItemEdit(props: CostItemEditProps) {
       <div>
         <label for="costHlp">Coût HLP :</label>
         <input
+          class="cost-input"
           value={props.costItem.costHlp}
           type="number"
           id="costHlp"

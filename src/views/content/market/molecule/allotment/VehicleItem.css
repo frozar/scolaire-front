@@ -1,3 +1,7 @@
 .vehicle-item-buttons {
   @apply flex gap-2;
 }
+
+.vehicle-item-licence {
+  @apply focus:outline-none text-green-base;
+}

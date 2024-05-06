@@ -36,6 +36,7 @@ export function TransporterItemEdit(props: TransporterItemEditProps) {
             Nom :
           </label>
           <input
+            class="transporter-name-input"
             value={props.item.name}
             type="text"
             id="name"
