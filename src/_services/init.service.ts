@@ -22,7 +22,10 @@ import {
 import { ServiceDBType, ServiceEntity } from "../_entities/service.entity";
 import { SettingType } from "../_entities/setting.entity";
 import { StopDBType, StopEntity, StopType } from "../_entities/stop.entity";
-import { TransporterEntity } from "../_entities/transporter.entity";
+import {
+  TransporterDbType,
+  TransporterEntity,
+} from "../_entities/transporter.entity";
 import {
   TripDirectionType,
   setTripDirections,
@@ -52,7 +55,7 @@ type InitDBType = {
   bus_categories: BusCategoryType[];
   allotment: AllotmentDBType[];
   settings: SettingType[];
-  transporter: TransporterType[];
+  transporter: TransporterDbType[];
   paths: PathDBType[];
   bus_stops: BusStopDBType[];
   flat_graphics: FlatGraphicDBType[];
