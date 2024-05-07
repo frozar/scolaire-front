@@ -2,7 +2,6 @@ import { For, Setter } from "solid-js";
 import { AllotmentCostType } from "../../../../../_entities/allotment.entity";
 import { CirclePlusIcon } from "../../../../../icons/CirclePlusIcon";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
-import { getBus } from "../../../bus/organism/Bus";
 import { AllotmentCostItem } from "./AllotmentCostItem";
 
 interface AllotmentCostItemProps {
@@ -13,7 +12,7 @@ interface AllotmentCostItemProps {
 export function AllotmentCostList(props: AllotmentCostItemProps) {
   function addNewCost() {
     const newObj: AllotmentCostType = {
-      busCategoryId: getBus()[0].id as number,
+      busCategoryId: 0,
       cost: 0,
       costHlp: 0,
     };

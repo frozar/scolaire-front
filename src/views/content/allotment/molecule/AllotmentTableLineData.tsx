@@ -6,7 +6,6 @@ import TrashIcon from "../../../../icons/TrashIcon";
 import UpdatePen from "../../../../icons/UpdatePen";
 import ButtonIcon from "../../board/component/molecule/ButtonIcon";
 import { TableDataColor } from "../atom/TableDataColor";
-import "./TableLine.css";
 
 interface TableLineDisplayDataProps {
   allotment: AllotmentType;

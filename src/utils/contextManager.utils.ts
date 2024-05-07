@@ -5,6 +5,7 @@ import {
 } from "../_entities/trip-direction.entity";
 import { TripEntity, TripType } from "../_entities/trip.entity";
 import { WaypointEntity } from "../_entities/waypoint.entity";
+import { AllotmentStore } from "../_stores/allotment.store";
 import { updatePointColor } from "../leafletUtils";
 import {
   addNewUserInformation,
@@ -12,7 +13,6 @@ import {
   enableSpinningWheel,
 } from "../signaux";
 import { MessageLevelEnum, MessageTypeEnum } from "../type";
-import { getAllTransporter } from "../views/content/allotment/molecule/TransporterTable";
 import { AssociatedItem } from "../views/content/board/component/molecule/CheckableElementList";
 import {
   onTripDirection,
@@ -103,8 +103,8 @@ export namespace ContextUtils {
         );
 
         if (
-          getAllTransporter().filter(
-            (item) => item.allotment_id == currentDrawTrip().allotmentId
+          AllotmentStore.get().filter(
+            (item) => item.id == currentDrawTrip().allotmentId
           ).length <= 0
         ) {
           addNewUserInformation({

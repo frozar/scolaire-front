@@ -4,6 +4,7 @@ import {
   AllotmentType,
 } from "../../../../../_entities/allotment.entity";
 import { AllotmentService } from "../../../../../_services/allotment.service";
+import { TransporterService } from "../../../../../_services/transporter.service";
 import { AllotmentStore } from "../../../../../_stores/allotment.store";
 import Button from "../../../../../component/atom/Button";
 import {
@@ -18,6 +19,9 @@ import "./AllotmentTab.css";
 import { AllotmentTabTopButtons } from "./AllotmentTabTopButtons";
 
 export const [isAllotmentEdited, setIsAllotmentEdited] = createSignal(false);
+export const [transporterToDelete, setTranspoterToDelete] = createSignal<
+  number[]
+>([]);
 
 export function AllotmentTab() {
   const [isAddMenuOpen, setIsAddMenuOpen] = createSignal(false);
@@ -40,6 +44,7 @@ export function AllotmentTab() {
 
   onMount(() => {
     setAllotments(AllotmentStore.get());
+    setTranspoterToDelete([]);
   });
 
   function cancelCreate() {
@@ -54,6 +59,7 @@ export function AllotmentTab() {
       name: newName(),
       color: newColor(),
       vehicleCost: newCosts(),
+      transporters: [],
     });
     AllotmentStore.add(newAllotment);
     setAllotments(AllotmentStore.get());
@@ -67,30 +73,41 @@ export function AllotmentTab() {
     setAllotments(AllotmentStore.get());
     setIsAddMenuOpen(false);
     setIsAllotmentEdited(false);
+    setTranspoterToDelete([]);
   }
 
   async function updateAllAllotment() {
     enableSpinningWheel();
     const output: AllotmentType[] = [];
     const tmpList = allotments();
+    if (transporterToDelete().length > 0) await deleteTransporter();
     for (const item of tmpList) {
+      if (item.transporters.length > 0) await updateTransporter(item);
       const updated = await AllotmentService.update(item);
       output.push(updated);
     }
     AllotmentStore.set(output);
-    // getAllTransporter().forEach(async (element) => {
-    //   await TransporterService.update({
-    //     id: element.id,
-    //     allotment_id: element.allotment_id,
-    //     name: element.name,
-    //     type: element.type,
-    //     vehicles: element.vehicles,
-    //   });
-    // });
     setIsAllotmentEdited(false);
     setIsAllotmentMenuOpen(false);
+    setTranspoterToDelete([]);
     addNewGlobalSuccessInformation("Modifications appliquées");
     disableSpinningWheel();
+  }
+
+  async function updateTransporter(allotment: AllotmentType) {
+    const tmpList = allotment.transporters;
+    for (const item of tmpList) {
+      if (item.name == "" || item.type == "") return;
+      if (item.id == 0) return await TransporterService.create(item);
+      await TransporterService.update(item);
+    }
+  }
+
+  async function deleteTransporter() {
+    const tmpList = transporterToDelete();
+    for (const id of tmpList) {
+      await TransporterService.deleteTransporter(id);
+    }
   }
 
   return (

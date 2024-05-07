@@ -1,10 +1,10 @@
 import { createEffect, createSignal, onMount } from "solid-js";
 import { TransporterType } from "../../../../_entities/transporter.entity";
 import { TripPointType } from "../../../../_entities/trip.entity";
+import { AllotmentStore } from "../../../../_stores/allotment.store";
 import { BusStore } from "../../../../_stores/bus.store";
 import { LabeledInputSelect } from "../../../../component/molecule/LabeledInputSelect";
 import { QuantityUtils } from "../../../../utils/quantity.utils";
-import { getAllTransporter } from "../../allotment/molecule/TransporterTable";
 import { BusCategoryType } from "../../bus/organism/Bus";
 
 export function VehicleSelect(props: {
@@ -13,6 +13,7 @@ export function VehicleSelect(props: {
   busCategoryId: number;
   onUpdateVehicule: (id: number) => void;
 }) {
+  // eslint-disable-next-line solid/reactivity
   const allotmentBus: BusCategoryType[] = getAllotmentBus(props.allotment_id);
 
   const [localCategoryId, setLocalCategoryId] = createSignal<number>(0);
@@ -82,5 +83,6 @@ function getAllotmentBus(allotmentId: number): BusCategoryType[] {
   return output;
 }
 function setTransporters(allotmentId: number) {
-  return getAllTransporter().filter((item) => item.allotment_id == allotmentId);
+  const allotment = AllotmentStore.get().filter((a) => a.id == allotmentId)[0];
+  return allotment.transporters;
 }

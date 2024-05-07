@@ -1,0 +1,15 @@
+.transporter-item-container {
+  @apply flex justify-between;
+}
+
+.transporter-item-buttons {
+  @apply flex gap-2;
+}
+
+.transporter-name-input {
+  @apply focus:outline-none text-green-base;
+}
+
+.inputs-label-offset {
+  @apply pr-1;
+}

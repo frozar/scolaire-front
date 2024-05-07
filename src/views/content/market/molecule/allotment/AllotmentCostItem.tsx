@@ -22,6 +22,12 @@ export function AllotmentCostItem(props: AllotmentCostItemProps) {
 
   onMount(() => {
     setLocalCost(props.item);
+    if (
+      props.item.busCategoryId == 0 &&
+      props.item.cost == 0 &&
+      props.item.costHlp == 0
+    )
+      setInEdit(true);
   });
 
   function cancel() {

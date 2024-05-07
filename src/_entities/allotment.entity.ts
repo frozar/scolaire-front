@@ -1,3 +1,9 @@
+import {
+  TransporterDbType,
+  TransporterEntity,
+  TransporterType,
+} from "./transporter.entity";
+
 export namespace AllotmentEntity {
   export function build(dbAllotment: AllotmentDBType): AllotmentType {
     return {
@@ -6,6 +12,9 @@ export namespace AllotmentEntity {
       name: dbAllotment.name,
       vehicleCost: dbAllotment.vehicle_cost.map((item) => {
         return buildVehicleCost(item);
+      }),
+      transporters: dbAllotment.transporters.map((transporter) => {
+        return TransporterEntity.build(transporter);
       }),
     };
   }
@@ -18,6 +27,7 @@ export namespace AllotmentEntity {
       vehicle_cost: allotment.vehicleCost.map((item) => {
         return formatVehicleCost(item);
       }),
+      transporters: [],
     };
   }
 }
@@ -43,6 +53,7 @@ export type AllotmentType = {
   name: string;
   color: string;
   vehicleCost: AllotmentCostType[];
+  transporters: TransporterType[];
 };
 
 export type AllotmentCostType = {
@@ -56,6 +67,7 @@ export type AllotmentDBType = {
   name: string;
   color: string;
   vehicle_cost: AllotmentCostDBType[];
+  transporters: TransporterDbType[];
 };
 
 export type AllotmentCostDBType = {

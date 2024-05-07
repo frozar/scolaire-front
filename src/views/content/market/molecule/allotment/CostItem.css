@@ -1,0 +1,11 @@
+.cost-item-buttons {
+  @apply flex gap-2;
+}
+
+.cost-input {
+  @apply w-16 focus:outline-none text-green-base;
+}
+
+.cost-item-container {
+  @apply pl-2 border-gray-200 border-2;
+}
