@@ -1,3 +1,7 @@
 .cost-list-header {
   @apply flex gap-2;
 }
+
+.cost-list {
+  @apply grid grid-flow-row grid-cols-2 gap-2;
+}

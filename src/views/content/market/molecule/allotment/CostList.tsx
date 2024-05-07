@@ -67,7 +67,7 @@ export function CostList(props: CostListProps) {
         <p>Coûts :</p>
         <ButtonIcon icon={<PlusIcon />} onClick={addVehicle} />
       </div>
-      <div>
+      <div class="cost-list">
         <For each={costs()}>
           {(item) => (
             <CostItem delete={deleteCost} edit={editCost} item={item} />

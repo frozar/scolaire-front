@@ -38,7 +38,7 @@ export function CostItem(props: CostItemProps) {
     <Show
       when={inEdit()}
       fallback={
-        <div>
+        <div class="cost-item-container">
           <p>
             {"Bus : " + TripUtils.tripBusIdToString(props.item.busCategoryId)}
           </p>

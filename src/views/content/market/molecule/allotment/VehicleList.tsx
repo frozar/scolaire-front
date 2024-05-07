@@ -65,7 +65,7 @@ export function VehicleList(props: VehicleListProps) {
         <p>Véhicules :</p>
         <ButtonIcon icon={<PlusIcon />} onClick={addVehicle} />
       </div>
-      <div>
+      <div class="vehicle-list">
         <For each={localVehicles()}>
           {(item) => (
             <VehicleItem

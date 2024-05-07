@@ -26,7 +26,7 @@ export function VehicleItemEdit(props: VehicleItemEditProps) {
   }
 
   return (
-    <div>
+    <div class="vehicle-item-container">
       <div>
         <label for="license">Immatriculation :</label>
         <input

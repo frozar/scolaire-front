@@ -36,7 +36,7 @@ export function VehicleItem(props: VehicleItemProps) {
   return (
     <Show
       fallback={
-        <div>
+        <div class="vehicle-item-container">
           <p>{"Immatriculation : " + editVehicle().license}</p>
           <p>
             {"Bus : " + TripUtils.tripBusIdToString(props.item.busCategoryId)}

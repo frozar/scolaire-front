@@ -5,3 +5,7 @@
 .vehicle-item-licence {
   @apply focus:outline-none text-green-base;
 }
+
+.vehicle-item-container {
+  @apply pl-2 border-gray-200 border-2;
+}

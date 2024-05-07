@@ -4,6 +4,7 @@ import { SelectInput } from "../../../../../component/atom/SelectInput";
 import CheckIcon from "../../../../../icons/CheckIcon";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { getBus } from "../../../bus/organism/Bus";
+import "./CostItem.css";
 
 interface CostItemEditProps {
   costItem: TransporterCostType;
@@ -31,7 +32,7 @@ export function CostItemEdit(props: CostItemEditProps) {
   }
 
   return (
-    <div>
+    <div class="cost-item-container">
       <div>
         <label>Bus :</label>
         <SelectInput
