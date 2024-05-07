@@ -17,6 +17,7 @@ export const VehicleItemBusCategoryIdUndefined: Story = {
     },
     editCb: () => {},
     deleteCb: () => {},
+    vehicleName: "",
   },
 };
 
@@ -28,6 +29,7 @@ export const VehicleItemWithBusCategoryId: Story = {
     },
     editCb: () => {},
     deleteCb: () => {},
+    vehicleName: "",
   },
 };
 
@@ -43,5 +45,22 @@ export const VehicleItemWithEdit: Story = {
     deleteCb: () => {
       console.log("in deleteCb");
     },
+    vehicleName: "",
+  },
+};
+
+export const VehicleItemWithBus: Story = {
+  args: {
+    item: {
+      license: "Ma plaque d'immatriculation",
+      busCategoryId: 0,
+    },
+    editCb: () => {
+      console.log("in editCb");
+    },
+    deleteCb: () => {
+      console.log("in deleteCb");
+    },
+    vehicleName: "Nom de bus",
   },
 };

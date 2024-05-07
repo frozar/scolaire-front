@@ -2,7 +2,6 @@ import { Show, createSignal, onMount } from "solid-js";
 import { TransporterVehicleType } from "../../../../../_entities/transporter.entity";
 import TrashIcon from "../../../../../icons/TrashIcon";
 import UpdatePen from "../../../../../icons/UpdatePen";
-import { TripUtils } from "../../../../../utils/trip.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import "./VehicleItem.css";
 import { VehicleItemEdit } from "./VehicleItemEdit";
@@ -14,6 +13,7 @@ interface VehicleItemProps {
     newvehicle: TransporterVehicleType
   ) => void;
   deleteCb: (vehicle: TransporterVehicleType) => void;
+  vehicleName: string;
 }
 
 export default function VehicleItem(props: VehicleItemProps) {
@@ -46,9 +46,7 @@ export default function VehicleItem(props: VehicleItemProps) {
     >
       <div class="vehicle-item-container">
         <p>{"Immatriculation : " + editVehicle().license}</p>
-        <p>
-          {"Bus : " + TripUtils.tripBusIdToString(props.item.busCategoryId)}
-        </p>
+        <p>{"Bus : " + props.vehicleName}</p>
         <div class="vehicle-item-buttons">
           <ButtonIcon icon={<UpdatePen />} onClick={() => setInEdit(true)} />
           <ButtonIcon

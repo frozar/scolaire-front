@@ -16,7 +16,9 @@ export function DisplayAllotmentAndVehicle(props: { trip?: TripType }) {
         <div class="text-container">
           <p class="text-bold">Type de véhicule:</p>
           <p class="text-standard">
-            {TripUtils.tripBusIdToString(props?.trip?.busCategoriesId)}
+            {TripUtils.tripBusIdToString(
+              props?.trip?.busCategoriesId as number
+            )}
           </p>
         </div>
       </div>

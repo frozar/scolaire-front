@@ -4,6 +4,7 @@ import {
   TransporterVehicleType,
 } from "../../../../../_entities/transporter.entity";
 import PlusIcon from "../../../../../icons/PlusIcon";
+import { TripUtils } from "../../../../../utils/trip.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import VehicleItem from "./VehicleItem";
 import "./VehicleList.css";
@@ -72,6 +73,9 @@ export function VehicleList(props: VehicleListProps) {
               deleteCb={deleteVehicle}
               editCb={editVehicle}
               item={item}
+              vehicleName={TripUtils.tripBusIdToString(
+                item.busCategoryId as number
+              )}
             />
           )}
         </For>
