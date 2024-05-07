@@ -30,7 +30,7 @@ export function VehicleItemEdit(props: VehicleItemEditProps) {
       <div class="vehicle-item-field-container">
         <label for="license">Immatriculation :</label>
         <input
-          value={props.vehicleItem.license}
+          value={props.vehicleItem.licensePlate}
           class="vehicle-item-licence"
           type="text"
           id="license"

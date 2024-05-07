@@ -75,9 +75,7 @@ export function CostList(props: CostListProps) {
               delete={deleteCost}
               edit={editCost}
               item={item}
-              vehicleName={TripUtils.tripBusIdToString(
-                item.busCategoryId as number
-              )}
+              vehicleName={TripUtils.tripBusIdToString(item.busCategoryId)}
             />
           )}
         </For>

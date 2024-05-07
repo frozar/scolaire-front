@@ -24,7 +24,7 @@ export default function VehicleItem(props: VehicleItemProps) {
 
   onMount(() => {
     setEditVehicle(props.item);
-    if (props.item.license == "" && props.item.busCategoryId == 0)
+    if (props.item.licensePlate == "" && props.item.busCategoryId == 0)
       setInEdit(true);
   });
 
@@ -45,7 +45,7 @@ export default function VehicleItem(props: VehicleItemProps) {
       when={!inEdit()}
     >
       <div class="vehicle-item-container">
-        <p>{"Immatriculation : " + editVehicle().license}</p>
+        <p>{"Immatriculation : " + editVehicle().licensePlate}</p>
         <p>{"Bus : " + props.vehicleName}</p>
         <div class="vehicle-item-buttons">
           <ButtonIcon icon={<UpdatePen />} onClick={() => setInEdit(true)} />

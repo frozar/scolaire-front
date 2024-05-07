@@ -24,7 +24,10 @@ export function VehicleList(props: VehicleListProps) {
   });
 
   function addVehicle() {
-    const newObj: TransporterVehicleType = { license: "", busCategoryId: 0 };
+    const newObj: TransporterVehicleType = {
+      licensePlate: "",
+      busCategoryId: 0,
+    };
     setLocalVehicles((prev) => {
       return [...prev, newObj];
     });
@@ -73,9 +76,7 @@ export function VehicleList(props: VehicleListProps) {
               deleteCb={deleteVehicle}
               editCb={editVehicle}
               item={item}
-              vehicleName={TripUtils.tripBusIdToString(
-                item.busCategoryId as number
-              )}
+              vehicleName={TripUtils.tripBusIdToString(item.busCategoryId)}
             />
           )}
         </For>
