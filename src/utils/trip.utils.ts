@@ -265,9 +265,15 @@ export namespace TripUtils {
     return inversedTrip;
   }
 
+  // TODO: check every place where 'tripBusIdToString' is called
+  // => 'busId' must be a number, not a number | undefined
   export function tripBusIdToString(busId: number | undefined) {
+    if (busId === undefined) {
+      return `<busId: '${busId}'>`;
+    }
+
     const busItem = getBus().filter((bus) => bus.id == busId)[0];
-    if (!busItem) return "";
+    if (!busItem) return `<bus non trouvé pour busId: '${busId}'>`;
     return busItem.name;
   }
 

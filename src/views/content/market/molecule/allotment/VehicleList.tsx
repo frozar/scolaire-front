@@ -5,7 +5,7 @@ import {
 } from "../../../../../_entities/transporter.entity";
 import PlusIcon from "../../../../../icons/PlusIcon";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
-import { VehicleItem } from "./VehicleItem";
+import VehicleItem from "./VehicleItem";
 import "./VehicleList.css";
 
 interface VehicleListProps {
@@ -69,8 +69,8 @@ export function VehicleList(props: VehicleListProps) {
         <For each={localVehicles()}>
           {(item) => (
             <VehicleItem
-              delete={deleteVehicle}
-              edit={editVehicle}
+              deleteCb={deleteVehicle}
+              editCb={editVehicle}
               item={item}
             />
           )}

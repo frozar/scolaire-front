@@ -26,5 +26,7 @@ module.exports = {
     "@typescript-eslint/no-namespace": "off",
     quotes: "error",
     "@typescript-eslint/no-explicit-any": "error",
+    "no-empty-function": "off",
+    "@typescript-eslint/no-empty-function": "off"
   },
 };

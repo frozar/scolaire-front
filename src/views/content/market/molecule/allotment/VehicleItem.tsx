@@ -9,14 +9,14 @@ import { VehicleItemEdit } from "./VehicleItemEdit";
 
 interface VehicleItemProps {
   item: TransporterVehicleType;
-  edit: (
+  editCb: (
     oldvehicle: TransporterVehicleType,
     newvehicle: TransporterVehicleType
   ) => void;
-  delete: (vehicle: TransporterVehicleType) => void;
+  deleteCb: (vehicle: TransporterVehicleType) => void;
 }
 
-export function VehicleItem(props: VehicleItemProps) {
+export default function VehicleItem(props: VehicleItemProps) {
   const [inEdit, setInEdit] = createSignal(false);
   const [editVehicle, setEditVehicle] = createSignal<TransporterVehicleType>(
     {} as TransporterVehicleType
@@ -29,34 +29,34 @@ export function VehicleItem(props: VehicleItemProps) {
   });
 
   function submit() {
-    props.edit(props.item, editVehicle());
+    props.editCb(props.item, editVehicle());
     setInEdit(false);
   }
 
   return (
     <Show
       fallback={
-        <div class="vehicle-item-container">
-          <p>{"Immatriculation : " + editVehicle().license}</p>
-          <p>
-            {"Bus : " + TripUtils.tripBusIdToString(props.item.busCategoryId)}
-          </p>
-          <div class="vehicle-item-buttons">
-            <ButtonIcon icon={<UpdatePen />} onClick={() => setInEdit(true)} />
-            <ButtonIcon
-              icon={<TrashIcon />}
-              onClick={() => props.delete(props.item)}
-            />
-          </div>
-        </div>
+        <VehicleItemEdit
+          submit={submit}
+          vehicleItem={editVehicle()}
+          vehicleSetter={setEditVehicle}
+        />
       }
-      when={inEdit()}
+      when={!inEdit()}
     >
-      <VehicleItemEdit
-        submit={submit}
-        vehicleItem={editVehicle()}
-        vehicleSetter={setEditVehicle}
-      />
+      <div class="vehicle-item-container">
+        <p>{"Immatriculation : " + editVehicle().license}</p>
+        <p>
+          {"Bus : " + TripUtils.tripBusIdToString(props.item.busCategoryId)}
+        </p>
+        <div class="vehicle-item-buttons">
+          <ButtonIcon icon={<UpdatePen />} onClick={() => setInEdit(true)} />
+          <ButtonIcon
+            icon={<TrashIcon />}
+            onClick={() => props.deleteCb(props.item)}
+          />
+        </div>
+      </div>
     </Show>
   );
 }
