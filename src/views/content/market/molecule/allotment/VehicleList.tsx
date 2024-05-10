@@ -43,7 +43,11 @@ export function VehicleList(props: VehicleListProps) {
   ) {
     setLocalVehicles((prev) => {
       return prev.map((v) => {
-        if (v == oldvehicle) return newvehicle;
+        if (
+          v.busCategoryId === oldvehicle.busCategoryId &&
+          v.licensePlate === oldvehicle.licensePlate
+        )
+          return newvehicle;
         return v;
       });
     });
@@ -75,8 +79,9 @@ export function VehicleList(props: VehicleListProps) {
             <VehicleItem
               deleteCb={deleteVehicle}
               editCb={editVehicle}
-              item={item}
               vehicleName={TripUtils.tripBusIdToString(item.busCategoryId)}
+              busCategoryId={item.busCategoryId}
+              licensePlate={item.licensePlate}
             />
           )}
         </For>

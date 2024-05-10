@@ -26,7 +26,7 @@ function buildVehicle(
   dbVehicle: TransporterVehicleDbType
 ): TransporterVehicleType {
   return {
-    licensePlate: dbVehicle.license,
+    licensePlate: dbVehicle.license_plate,
     busCategoryId: dbVehicle.bus_categories_id,
   };
 }
@@ -35,7 +35,7 @@ function formatVehicle(
   vehicle: TransporterVehicleType
 ): TransporterVehicleDbType {
   return {
-    license: vehicle.licensePlate,
+    license_plate: vehicle.licensePlate,
     bus_categories_id: vehicle.busCategoryId,
   };
 }
@@ -86,7 +86,7 @@ export type TransporterDbType = {
 };
 
 export type TransporterVehicleDbType = {
-  license: string;
+  license_plate: string;
   bus_categories_id: number;
 };
 

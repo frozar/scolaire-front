@@ -12,9 +12,7 @@ type Story = StoryObj<typeof meta>;
 
 export const VehicleItemBusCategoryIdUndefined: Story = {
   args: {
-    item: {
-      license: "Ma plaque d'immatriculation",
-    },
+    licensePlate: "Ma plaque d'immatriculation",
     editCb: () => {},
     deleteCb: () => {},
     vehicleName: "",
@@ -23,10 +21,8 @@ export const VehicleItemBusCategoryIdUndefined: Story = {
 
 export const VehicleItemWithBusCategoryId: Story = {
   args: {
-    item: {
-      license: "Ma plaque d'immatriculation",
-      busCategoryId: 0,
-    },
+    licensePlate: "Ma plaque d'immatriculation",
+    busCategoryId: 0,
     editCb: () => {},
     deleteCb: () => {},
     vehicleName: "",
@@ -35,10 +31,8 @@ export const VehicleItemWithBusCategoryId: Story = {
 
 export const VehicleItemWithEdit: Story = {
   args: {
-    item: {
-      license: "Ma plaque d'immatriculation",
-      busCategoryId: 0,
-    },
+    licensePlate: "Ma plaque d'immatriculation",
+    busCategoryId: 0,
     editCb: () => {
       console.log("in editCb");
     },
@@ -51,10 +45,8 @@ export const VehicleItemWithEdit: Story = {
 
 export const VehicleItemWithBus: Story = {
   args: {
-    item: {
-      license: "Ma plaque d'immatriculation",
-      busCategoryId: 0,
-    },
+    licensePlate: "Ma plaque d'immatriculation",
+    busCategoryId: 12,
     editCb: () => {
       console.log("in editCb");
     },

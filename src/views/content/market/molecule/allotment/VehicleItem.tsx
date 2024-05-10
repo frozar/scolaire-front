@@ -7,29 +7,32 @@ import "./VehicleItem.css";
 import { VehicleItemEdit } from "./VehicleItemEdit";
 
 interface VehicleItemProps {
-  item: TransporterVehicleType;
   editCb: (
     oldvehicle: TransporterVehicleType,
     newvehicle: TransporterVehicleType
   ) => void;
   deleteCb: (vehicle: TransporterVehicleType) => void;
+  licensePlate: string;
+  busCategoryId: number;
   vehicleName: string;
 }
 
 export default function VehicleItem(props: VehicleItemProps) {
+  const initialVehicle: TransporterVehicleType = {} as TransporterVehicleType;
   const [inEdit, setInEdit] = createSignal(false);
   const [editVehicle, setEditVehicle] = createSignal<TransporterVehicleType>(
     {} as TransporterVehicleType
   );
 
   onMount(() => {
-    setEditVehicle(props.item);
-    if (props.item.licensePlate == "" && props.item.busCategoryId == 0)
-      setInEdit(true);
+    initialVehicle.busCategoryId = props.busCategoryId;
+    initialVehicle.licensePlate = props.licensePlate;
+    setEditVehicle(initialVehicle);
+    if (props.licensePlate == "" && props.busCategoryId == 0) setInEdit(true);
   });
 
   function submit() {
-    props.editCb(props.item, editVehicle());
+    props.editCb(initialVehicle, editVehicle());
     setInEdit(false);
   }
 
@@ -45,13 +48,13 @@ export default function VehicleItem(props: VehicleItemProps) {
       when={!inEdit()}
     >
       <div class="vehicle-item-container">
-        <p>{"Immatriculation : " + editVehicle().licensePlate}</p>
+        <p>{"Immatriculation : " + props.licensePlate}</p>
         <p>{"Bus : " + props.vehicleName}</p>
         <div class="vehicle-item-buttons">
           <ButtonIcon icon={<UpdatePen />} onClick={() => setInEdit(true)} />
           <ButtonIcon
             icon={<TrashIcon />}
-            onClick={() => props.deleteCb(props.item)}
+            onClick={() => props.deleteCb(initialVehicle)}
           />
         </div>
       </div>

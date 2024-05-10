@@ -15,7 +15,7 @@ interface VehicleItemEditProps {
 export function VehicleItemEdit(props: VehicleItemEditProps) {
   function onNamechange(value: string) {
     props.vehicleSetter((prev) => {
-      return { ...prev, license: value };
+      return { ...prev, licensePlate: value };
     });
   }
 
