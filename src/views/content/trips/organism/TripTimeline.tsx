@@ -356,8 +356,9 @@ async function updatePolylineWithOsrm(trip: TripType) {
     metrics,
     legsDurations,
     legsDistances,
+    //TODO ponderation
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    stepsWeight,
+    // stepsWeight,
   } = await OsrmService.getRoadPolyline(trip);
 
   let someDuration = 0;

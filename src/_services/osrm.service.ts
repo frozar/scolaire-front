@@ -59,7 +59,8 @@ export class OsrmService {
     metrics: TripMetricType;
     legsDurations: number[];
     legsDistances: number[];
-    stepsWeight: step[];
+    //TODO ponderation
+    // stepsWeight: step[];
   }> {
     const points: TripPointType[] = trip.tripPoints;
     let waypoints: WaypointType[] = trip.waypoints ?? points;
@@ -71,7 +72,8 @@ export class OsrmService {
         metrics: {},
         legsDurations: [],
         legsDistances: [],
-        stepsWeight: [],
+        //TODO ponderation
+        // stepsWeight: [],
       };
     }
     const waypointsStringified = this.buildPositionURL(waypoints);
@@ -94,7 +96,7 @@ export class OsrmService {
       }
     );
     const response = responses[0];
-    const response_direct = responses[1];
+    // const response_direct = responses[1];
 
     if (!response)
       return {
@@ -103,11 +105,12 @@ export class OsrmService {
         metrics: {},
         legsDurations: [],
         legsDistances: [],
-        stepsWeight: [],
+        //TODO ponderation
+        // stepsWeight: [],
       };
     return this.formatResponse(
       response,
-      response_direct,
+      // response_direct,
       points,
       response.waypoints
     );
@@ -252,7 +255,8 @@ export class OsrmService {
 
   private static formatResponse(
     response: osrmResponseType,
-    response_direct: osrmResponseType,
+    // TODO direct_road deviation
+    // response_direct: osrmResponseType,
     points: TripPointType[],
     waypoints: waypointsType[]
   ): {
@@ -261,7 +265,8 @@ export class OsrmService {
     metrics: TripMetricType;
     legsDurations: number[];
     legsDistances: number[];
-    stepsWeight: step[];
+    //TODO ponderation
+    // stepsWeight: step[];
   } {
     let latlngs: L.LatLng[] = [];
     let projectedLatlngs: L.LatLng[] = [];
@@ -273,22 +278,24 @@ export class OsrmService {
         metrics,
         legsDurations: [],
         legsDistances: [],
-        stepsWeight: [],
+        //TODO ponderation
+        // stepsWeight: [],
       };
 
     const routes = response.routes;
     const legsDurations = routes[0].legs.map((item) => item.duration);
     const legsDistances = routes[0].legs.map((item) => item.distance);
-    const stepsWeight = routes[0].legs.flatMap((leg) => {
-      return leg.steps.flatMap((step) => {
-        return step.flaxib_way_ids.map((elem, i) => {
-          return {
-            flaxib_way_id: elem,
-            flaxib_weight: step.current_way_weight[i],
-          };
-        });
-      });
-    });
+    //TODO ponderation
+    // const stepsWeight = routes[0].legs.flatMap((leg) => {
+    //   return leg.steps.flatMap((step) => {
+    //     return step.flaxib_way_ids.map((elem, i) => {
+    //       return {
+    //         flaxib_way_id: elem,
+    //         flaxib_weight: step.current_way_weight[i],
+    //       };
+    //     });
+    //   });
+    // });
 
     const coordinates = routes[0].geometry.coordinates;
 
@@ -298,7 +305,7 @@ export class OsrmService {
       L.latLng(waypoint.location[1], waypoint.location[0])
     );
 
-    metrics = MetricsUtils.getAll(response, response_direct, points);
+    metrics = MetricsUtils.getAll(response, points);
 
     return {
       latlngs,
@@ -306,7 +313,8 @@ export class OsrmService {
       metrics,
       legsDurations,
       legsDistances,
-      stepsWeight,
+      //TODO ponderation
+      // stepsWeight,
     };
   }
 }
