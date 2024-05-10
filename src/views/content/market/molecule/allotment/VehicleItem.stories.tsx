@@ -10,43 +10,20 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const VehicleItemBusCategoryIdUndefined: Story = {
-  args: {
-    licensePlate: "Ma plaque d'immatriculation",
-    editCb: () => {},
-    deleteCb: () => {},
-    vehicleName: "",
-  },
-};
-
-export const VehicleItemWithBusCategoryId: Story = {
-  args: {
-    licensePlate: "Ma plaque d'immatriculation",
-    busCategoryId: 0,
-    editCb: () => {},
-    deleteCb: () => {},
-    vehicleName: "",
-  },
-};
-
-export const VehicleItemWithEdit: Story = {
-  args: {
-    licensePlate: "Ma plaque d'immatriculation",
-    busCategoryId: 0,
-    editCb: () => {
-      console.log("in editCb");
-    },
-    deleteCb: () => {
-      console.log("in deleteCb");
-    },
-    vehicleName: "",
-  },
-};
-
-export const VehicleItemWithBus: Story = {
+export const VehicleItem: Story = {
   args: {
     licensePlate: "Ma plaque d'immatriculation",
     busCategoryId: 12,
+    editCb: () => {},
+    deleteCb: () => {},
+    vehicleName: "Nom de bus",
+  },
+};
+
+export const VehicleItemWithEditAndDelete: Story = {
+  args: {
+    licensePlate: "Ma plaque d'immatriculation",
+    busCategoryId: 0,
     editCb: () => {
       console.log("in editCb");
     },
