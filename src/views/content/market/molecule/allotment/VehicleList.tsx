@@ -4,8 +4,9 @@ import {
   TransporterVehicleType,
 } from "../../../../../_entities/transporter.entity";
 import PlusIcon from "../../../../../icons/PlusIcon";
+import { TripUtils } from "../../../../../utils/trip.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
-import { VehicleItem } from "./VehicleItem";
+import VehicleItem from "./VehicleItem";
 import "./VehicleList.css";
 
 interface VehicleListProps {
@@ -23,7 +24,10 @@ export function VehicleList(props: VehicleListProps) {
   });
 
   function addVehicle() {
-    const newObj: TransporterVehicleType = { license: "", busCategoryId: 0 };
+    const newObj: TransporterVehicleType = {
+      licensePlate: "",
+      busCategoryId: 0,
+    };
     setLocalVehicles((prev) => {
       return [...prev, newObj];
     });
@@ -39,7 +43,11 @@ export function VehicleList(props: VehicleListProps) {
   ) {
     setLocalVehicles((prev) => {
       return prev.map((v) => {
-        if (v == oldvehicle) return newvehicle;
+        if (
+          v.busCategoryId === oldvehicle.busCategoryId &&
+          v.licensePlate === oldvehicle.licensePlate
+        )
+          return newvehicle;
         return v;
       });
     });
@@ -69,9 +77,11 @@ export function VehicleList(props: VehicleListProps) {
         <For each={localVehicles()}>
           {(item) => (
             <VehicleItem
-              delete={deleteVehicle}
-              edit={editVehicle}
-              item={item}
+              deleteCb={deleteVehicle}
+              editCb={editVehicle}
+              vehicleName={TripUtils.tripBusIdToString(item.busCategoryId)}
+              busCategoryId={item.busCategoryId}
+              licensePlate={item.licensePlate}
             />
           )}
         </For>

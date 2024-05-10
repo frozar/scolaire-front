@@ -9,3 +9,11 @@
 .vehicle-item-container {
   @apply pl-2 border-gray-200 border-2;
 }
+
+.vehicle-item-field-container {
+  @apply flex gap-1;
+}
+
+.vehicle-item-field-container input {
+  width: calc(100% - 119px - 0.25rem);
+}

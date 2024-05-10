@@ -15,7 +15,7 @@ interface VehicleItemEditProps {
 export function VehicleItemEdit(props: VehicleItemEditProps) {
   function onNamechange(value: string) {
     props.vehicleSetter((prev) => {
-      return { ...prev, license: value };
+      return { ...prev, licensePlate: value };
     });
   }
 
@@ -27,10 +27,10 @@ export function VehicleItemEdit(props: VehicleItemEditProps) {
 
   return (
     <div class="vehicle-item-container">
-      <div>
+      <div class="vehicle-item-field-container">
         <label for="license">Immatriculation :</label>
         <input
-          value={props.vehicleItem.license}
+          value={props.vehicleItem.licensePlate}
           class="vehicle-item-licence"
           type="text"
           id="license"

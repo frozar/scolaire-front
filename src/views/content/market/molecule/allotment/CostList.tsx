@@ -4,6 +4,7 @@ import {
   TransporterType,
 } from "../../../../../_entities/transporter.entity";
 import PlusIcon from "../../../../../icons/PlusIcon";
+import { TripUtils } from "../../../../../utils/trip.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { CostItem } from "./CostItem";
 import "./CostList.css";
@@ -70,7 +71,12 @@ export function CostList(props: CostListProps) {
       <div class="cost-list">
         <For each={costs()}>
           {(item) => (
-            <CostItem delete={deleteCost} edit={editCost} item={item} />
+            <CostItem
+              delete={deleteCost}
+              edit={editCost}
+              item={item}
+              vehicleName={TripUtils.tripBusIdToString(item.busCategoryId)}
+            />
           )}
         </For>
       </div>
