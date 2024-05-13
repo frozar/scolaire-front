@@ -1,5 +1,8 @@
 import { Accessor, For, Setter, Show, createSignal, onMount } from "solid-js";
-import { TransporterType } from "../../../../../_entities/transporter.entity";
+import {
+  TransporterType,
+  TransporterVehicleType,
+} from "../../../../../_entities/transporter.entity";
 import PlusIcon from "../../../../../icons/PlusIcon";
 import { TripUtils } from "../../../../../utils/trip.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
@@ -13,10 +16,15 @@ interface VehicleListProps {
 }
 
 type LocalVehicleType = {
-  licensePlate: string;
-  busCategoryId: number;
+  content: Accessor<LocalVehicleContentType>;
+  setContent: Setter<LocalVehicleContentType>;
   inEdit: Accessor<boolean>;
   setInEdit: Setter<boolean>;
+};
+
+type LocalVehicleContentType = {
+  licensePlate: string;
+  busCategoryId: number;
 };
 
 export function VehicleList(props: VehicleListProps) {
@@ -26,10 +34,14 @@ export function VehicleList(props: VehicleListProps) {
 
   onMount(() => {
     props.transporter.vehicles.forEach((v) => {
+      const [content, setContent] = createSignal<LocalVehicleContentType>({
+        busCategoryId: v.busCategoryId,
+        licensePlate: v.licensePlate,
+      });
       const [inEdit, setInEdit] = createSignal(false);
       const obj = {
-        licensePlate: v.licensePlate,
-        busCategoryId: v.busCategoryId,
+        content,
+        setContent,
         inEdit,
         setInEdit,
       };
@@ -40,72 +52,70 @@ export function VehicleList(props: VehicleListProps) {
   });
 
   function addVehicle() {
-    const [inEdit, setInEdit] = createSignal(false);
-    setLocalVehicles((prev) => {
-      return [
-        ...prev,
-        { busCategoryId: 0, licensePlate: "", inEdit, setInEdit },
-      ];
+    const [content, setContent] = createSignal<LocalVehicleContentType>({
+      busCategoryId: 0,
+      licensePlate: "",
     });
-    // eslint-disable-next-line solid/reactivity
+    const [inEdit, setInEdit] = createSignal(true);
+    setLocalVehicles((prev) => {
+      return [...prev, { content, setContent, inEdit, setInEdit }];
+    });
     props.transporterSetter((prev) => {
-      return { ...prev, vehicles: localVehicles() };
+      return { ...prev, vehicles: localVehiclesToTransporterVehicles() };
     });
   }
 
   function enableEdit(vehicle: LocalVehicleType) {
     const vehicleToEdit = localVehicles().find(
-      (v) =>
-        v.busCategoryId === vehicle.busCategoryId &&
-        v.licensePlate === vehicle.licensePlate
+      (v) => v.content() == vehicle.content()
     );
     if (vehicleToEdit) vehicleToEdit.setInEdit(true);
   }
 
   function deleteVehicle(vehicle: LocalVehicleType) {
     const vehicleToDelete = localVehicles().find(
-      (v) =>
-        v.busCategoryId === vehicle.busCategoryId &&
-        v.licensePlate === vehicle.licensePlate
+      (v) => v.content() == vehicle.content()
     );
+
     if (vehicleToDelete) {
       setLocalVehicles((prev) => {
         return prev.filter((v) => v != vehicleToDelete);
       });
-
-      // eslint-disable-next-line solid/reactivity
       props.transporterSetter((prev) => {
-        return { ...prev, vehicles: localVehicles() };
+        return { ...prev, vehicles: localVehiclesToTransporterVehicles() };
       });
     }
   }
 
-  function submitVehicle(toEdit: LocalVehicleType, edited: LocalVehicleType) {
+  function updateVehicle(
+    toEdit: LocalVehicleContentType,
+    edited: LocalVehicleContentType
+  ) {
     const vehicleToEdit = localVehicles().find(
       (v) =>
-        v.busCategoryId === toEdit.busCategoryId &&
-        v.licensePlate === toEdit.licensePlate
+        v.content().busCategoryId === toEdit.busCategoryId &&
+        v.content().licensePlate === toEdit.licensePlate
     );
+
     if (vehicleToEdit) {
-      setLocalVehicles((prev) => {
-        return prev.map((v) => {
-          if (v == vehicleToEdit) {
-            const [inEdit, setInEdit] = createSignal(false);
-            return {
-              busCategoryId: edited.busCategoryId,
-              licensePlate: edited.licensePlate,
-              inEdit,
-              setInEdit,
-            };
-          }
-          return v;
-        });
-      });
+      vehicleToEdit.setContent(edited);
+      vehicleToEdit.setInEdit(false);
     }
-    // eslint-disable-next-line solid/reactivity
+
     props.transporterSetter((prev) => {
-      return { ...prev, vehicles: localVehicles() };
+      return { ...prev, vehicles: localVehiclesToTransporterVehicles() };
     });
+  }
+
+  function localVehiclesToTransporterVehicles() {
+    const list: TransporterVehicleType[] = [];
+    localVehicles().forEach((v) =>
+      list.push({
+        busCategoryId: v.content().busCategoryId,
+        licensePlate: v.content().licensePlate,
+      })
+    );
+    return list;
   }
 
   return (
@@ -121,18 +131,20 @@ export function VehicleList(props: VehicleListProps) {
               when={!item.inEdit()}
               fallback={
                 <VehicleItemEdit
-                  busCategoryId={item.busCategoryId}
-                  licensePlate={item.licensePlate}
-                  submitCb={submitVehicle}
+                  busCategoryId={item.content().busCategoryId}
+                  licensePlate={item.content().licensePlate}
+                  submitCb={updateVehicle}
                 />
               }
             >
               <VehicleItem
                 deleteCb={() => deleteVehicle(item)}
                 enableEditCb={() => enableEdit(item)}
-                vehicleName={TripUtils.tripBusIdToString(item.busCategoryId)}
-                busCategoryId={item.busCategoryId}
-                licensePlate={item.licensePlate}
+                vehicleName={TripUtils.tripBusIdToString(
+                  item.content().busCategoryId
+                )}
+                busCategoryId={item.content().busCategoryId}
+                licensePlate={item.content().licensePlate}
               />
             </Show>
           )}

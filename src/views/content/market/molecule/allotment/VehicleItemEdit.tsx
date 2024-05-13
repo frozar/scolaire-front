@@ -1,4 +1,4 @@
-import { Accessor, Setter, onMount } from "solid-js";
+import { onMount } from "solid-js";
 import { SelectInput } from "../../../../../component/atom/SelectInput";
 import CheckIcon from "../../../../../icons/CheckIcon";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
@@ -6,21 +6,22 @@ import { getBus } from "../../../bus/organism/Bus";
 import "./VehicleItem.css";
 
 interface VehicleItemEditProps {
-  submitCb: (toEdit: LocalVehicleType, edited: LocalVehicleType) => void;
+  submitCb: (
+    toEdit: LocalVehicleContentType,
+    edited: LocalVehicleContentType
+  ) => void;
   licensePlate: string;
   busCategoryId: number;
 }
 
-type LocalVehicleType = {
+type LocalVehicleContentType = {
   licensePlate: string;
   busCategoryId: number;
-  inEdit: Accessor<boolean>;
-  setInEdit: Setter<boolean>;
 };
 
 export function VehicleItemEdit(props: VehicleItemEditProps) {
-  const initialVehicle: LocalVehicleType = {} as LocalVehicleType;
-  const editedVehicle: LocalVehicleType = {} as LocalVehicleType;
+  const initialVehicle: LocalVehicleContentType = {} as LocalVehicleContentType;
+  const editedVehicle: LocalVehicleContentType = {} as LocalVehicleContentType;
 
   function onNamechange(value: string) {
     editedVehicle.licensePlate = value;
