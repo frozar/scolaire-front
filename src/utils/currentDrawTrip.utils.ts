@@ -16,6 +16,7 @@ import {
   setStepsWeight,
 } from "../views/content/board/component/organism/DrawTripBoard";
 
+//TODO to delete
 export namespace CurrentDrawTripUtils {
   // TODO MAYBE_ERROR
   function setWaypoints(projectedLatlngs: L.LatLng[]) {
@@ -151,7 +152,8 @@ export namespace CurrentDrawTripUtils {
       metrics,
       legsDurations,
       legsDistances,
-      stepsWeight,
+      //TODO ponderation
+      // stepsWeight,
     } = await OsrmService.getRoadPolyline(trip);
 
     //TODO signal non utilisé

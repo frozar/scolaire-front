@@ -6,16 +6,21 @@ import { GradeUtils } from "./grade.utils";
 export namespace MetricsUtils {
   export function getAll(
     response: osrmResponseType,
-    response_direct: osrmResponseType,
+    // TODO direct_road
+    // response_direct: osrmResponseType,
     points: TripPointType[]
   ): TripMetricType {
     const distance = response.routes[0].distance;
 
     const duration = response.routes[0].duration;
 
-    const distanceDirect = response_direct.routes[0].distance;
+    // TODO direct_road deviation
+    // const distanceDirect = response_direct.routes[0].distance;
+    const distanceDirect = "-";
 
-    const deviation = distance / distanceDirect - 1;
+    // TODO direct_road deviation
+    // const deviation = distance / distanceDirect - 1;
+    const deviation = 0;
 
     const kmPassager = getKmPassagers(response, points);
 
