@@ -72,8 +72,8 @@ function getAllotmentBus(allotmentId: number): BusCategoryType[] {
   const output: BusCategoryType[] = [];
   transporters.forEach((item) => {
     item.vehicles.forEach((item) => {
-      if (!output.some((cat) => cat.id == item.bus_categories_id)) {
-        output.push(BusStore.getById(item.bus_categories_id as number));
+      if (!output.some((cat) => cat.id == item.busCategoryId)) {
+        output.push(BusStore.getById(item.busCategoryId as number));
       }
     });
   });

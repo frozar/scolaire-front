@@ -153,7 +153,7 @@ export namespace SchoolPointUtils {
   }
 
   export function onMouseOver(school: SchoolType) {
-    console.log(school);
+    // console.log(school);
 
     setIsOverMapItem(true);
     // TODO to fix ?

@@ -80,7 +80,7 @@ export class OsrmService {
 
     const timecode = 420;
 
-    const responses = await ServiceUtils.generic(
+    const response = await ServiceUtils.generic(
       host +
         "/osrm/road?map_id=" +
         getActiveMapId() +
@@ -95,8 +95,6 @@ export class OsrmService {
         },
       }
     );
-    const response = responses[0];
-    // const response_direct = responses[1];
 
     if (!response)
       return {
@@ -108,12 +106,7 @@ export class OsrmService {
         //TODO ponderation
         // stepsWeight: [],
       };
-    return this.formatResponse(
-      response,
-      // response_direct,
-      points,
-      response.waypoints
-    );
+    return this.formatResponse(response, points, response.waypoints);
   }
 
   static async setWeights(
@@ -255,8 +248,6 @@ export class OsrmService {
 
   private static formatResponse(
     response: osrmResponseType,
-    // TODO direct_road deviation
-    // response_direct: osrmResponseType,
     points: TripPointType[],
     waypoints: waypointsType[]
   ): {
