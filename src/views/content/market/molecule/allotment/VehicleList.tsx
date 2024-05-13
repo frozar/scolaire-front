@@ -39,7 +39,7 @@ export function VehicleList(props: VehicleListProps) {
     });
   });
 
-  function newAddVehicle() {
+  function addVehicle() {
     const [inEdit, setInEdit] = createSignal(false);
     setLocalVehicles((prev) => {
       return [
@@ -112,7 +112,7 @@ export function VehicleList(props: VehicleListProps) {
     <div>
       <div class="vehicle-headers">
         <p>Véhicules :</p>
-        <ButtonIcon icon={<PlusIcon />} onClick={newAddVehicle} />
+        <ButtonIcon icon={<PlusIcon />} onClick={addVehicle} />
       </div>
       <div class="vehicle-list">
         <For each={localVehicles()}>
