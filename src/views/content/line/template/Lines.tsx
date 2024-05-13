@@ -32,18 +32,20 @@ export function Lines() {
   onMount(() => {
     setMapData(getStops(), getSchools(), filteredLines());
     const locations: L.LatLng[] = [];
-    filteredLines().forEach((line) => {
-      line.stops.forEach((stop) => {
-        const latlong = L.latLng(stop.lat, stop.lon);
-        if (!locations.includes(latlong)) locations.push(latlong);
+    if (filteredLines().length > 0) {
+      filteredLines().forEach((line) => {
+        line.stops.forEach((stop) => {
+          const latlong = L.latLng(stop.lat, stop.lon);
+          if (!locations.includes(latlong)) locations.push(latlong);
+        });
+        line.schools.forEach((school) => {
+          const latlong = L.latLng(school.lat, school.lon);
+          if (!locations.includes(latlong)) locations.push(latlong);
+        });
       });
-      line.schools.forEach((school) => {
-        const latlong = L.latLng(school.lat, school.lon);
-        if (!locations.includes(latlong)) locations.push(latlong);
-      });
-    });
-    const polygon = L.polygon(locations);
-    leafletMap()?.fitBounds(polygon.getBounds(), { maxZoom: 13 });
+      const polygon = L.polygon(locations);
+      leafletMap()?.fitBounds(polygon.getBounds(), { maxZoom: 13 });
+    }
   });
 
   onCleanup(() => {
