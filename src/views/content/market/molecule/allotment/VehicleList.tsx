@@ -1,4 +1,11 @@
-import { Accessor, For, Setter, Show, createSignal, onMount } from "solid-js";
+import {
+  Accessor,
+  For,
+  Setter,
+  Show,
+  createEffect,
+  createSignal,
+} from "solid-js";
 import {
   TransporterType,
   TransporterVehicleType,
@@ -16,15 +23,10 @@ interface VehicleListProps {
 }
 
 type LocalVehicleType = {
-  content: Accessor<LocalVehicleContentType>;
-  setContent: Setter<LocalVehicleContentType>;
+  content: Accessor<TransporterVehicleType>;
+  setContent: Setter<TransporterVehicleType>;
   inEdit: Accessor<boolean>;
   setInEdit: Setter<boolean>;
-};
-
-type LocalVehicleContentType = {
-  licensePlate: string;
-  busCategoryId: number;
 };
 
 export function VehicleList(props: VehicleListProps) {
@@ -32,34 +34,51 @@ export function VehicleList(props: VehicleListProps) {
     []
   );
 
-  onMount(() => {
-    props.transporter.vehicles.forEach((v) => {
-      const [content, setContent] = createSignal<LocalVehicleContentType>({
-        busCategoryId: v.busCategoryId,
-        licensePlate: v.licensePlate,
-      });
-      const [inEdit, setInEdit] = createSignal(false);
-      const obj = {
-        content,
-        setContent,
-        inEdit,
-        setInEdit,
-      };
-      setLocalVehicles((prev) => {
-        return [...prev, obj];
-      });
-    });
-  });
+  createEffect(() => {
+    setLocalVehicles(
+      props.transporter.vehicles.map((v) => {
+        const [content, setContent] = createSignal<TransporterVehicleType>({
+          busCategoryId: v.busCategoryId,
+          licensePlate: v.licensePlate,
+        });
+        const [inEdit, setInEdit] = createSignal(false);
+
+        const localVehicle = {
+          content,
+          setContent,
+          inEdit,
+          setInEdit,
+        };
+
+        return localVehicle;
+      })
+    );
+    // eslint-disable-next-line solid/reactivity
+  }, props.transporter.vehicles);
+
+  function localVehiclesToTransporterVehicles() {
+    const list: TransporterVehicleType[] = [];
+    localVehicles().forEach((v) =>
+      list.push({
+        busCategoryId: v.content().busCategoryId,
+        licensePlate: v.content().licensePlate,
+      })
+    );
+    return list;
+  }
 
   function addVehicle() {
-    const [content, setContent] = createSignal<LocalVehicleContentType>({
+    const [content, setContent] = createSignal<TransporterVehicleType>({
       busCategoryId: 0,
       licensePlate: "",
     });
     const [inEdit, setInEdit] = createSignal(true);
+
     setLocalVehicles((prev) => {
       return [...prev, { content, setContent, inEdit, setInEdit }];
     });
+
+    // eslint-disable-next-line solid/reactivity
     props.transporterSetter((prev) => {
       return { ...prev, vehicles: localVehiclesToTransporterVehicles() };
     });
@@ -81,6 +100,8 @@ export function VehicleList(props: VehicleListProps) {
       setLocalVehicles((prev) => {
         return prev.filter((v) => v != vehicleToDelete);
       });
+
+      // eslint-disable-next-line solid/reactivity
       props.transporterSetter((prev) => {
         return { ...prev, vehicles: localVehiclesToTransporterVehicles() };
       });
@@ -88,8 +109,8 @@ export function VehicleList(props: VehicleListProps) {
   }
 
   function updateVehicle(
-    toEdit: LocalVehicleContentType,
-    edited: LocalVehicleContentType
+    toEdit: TransporterVehicleType,
+    edited: TransporterVehicleType
   ) {
     const vehicleToEdit = localVehicles().find(
       (v) =>
@@ -102,20 +123,10 @@ export function VehicleList(props: VehicleListProps) {
       vehicleToEdit.setInEdit(false);
     }
 
+    // eslint-disable-next-line solid/reactivity
     props.transporterSetter((prev) => {
       return { ...prev, vehicles: localVehiclesToTransporterVehicles() };
     });
-  }
-
-  function localVehiclesToTransporterVehicles() {
-    const list: TransporterVehicleType[] = [];
-    localVehicles().forEach((v) =>
-      list.push({
-        busCategoryId: v.content().busCategoryId,
-        licensePlate: v.content().licensePlate,
-      })
-    );
-    return list;
   }
 
   return (

@@ -1,4 +1,5 @@
 import { onMount } from "solid-js";
+import { TransporterVehicleType } from "../../../../../_entities/transporter.entity";
 import { SelectInput } from "../../../../../component/atom/SelectInput";
 import CheckIcon from "../../../../../icons/CheckIcon";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
@@ -7,21 +8,16 @@ import "./VehicleItem.css";
 
 interface VehicleItemEditProps {
   submitCb: (
-    toEdit: LocalVehicleContentType,
-    edited: LocalVehicleContentType
+    toEdit: TransporterVehicleType,
+    edited: TransporterVehicleType
   ) => void;
   licensePlate: string;
   busCategoryId: number;
 }
 
-type LocalVehicleContentType = {
-  licensePlate: string;
-  busCategoryId: number;
-};
-
 export function VehicleItemEdit(props: VehicleItemEditProps) {
-  const initialVehicle: LocalVehicleContentType = {} as LocalVehicleContentType;
-  const editedVehicle: LocalVehicleContentType = {} as LocalVehicleContentType;
+  const initialVehicle: TransporterVehicleType = {} as TransporterVehicleType;
+  const editedVehicle: TransporterVehicleType = {} as TransporterVehicleType;
 
   function onNamechange(value: string) {
     editedVehicle.licensePlate = value;
