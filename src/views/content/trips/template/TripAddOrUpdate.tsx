@@ -49,6 +49,8 @@ export function TripAddOrUpdate(props: {
         setCurrentStep(EditTripStep.gradeSelection);
         break;
       case EditTripStep.gradeSelection:
+        console.log("lalal");
+
         setCurrentStep(EditTripStep.editTrip);
         break;
       case EditTripStep.editTrip:
