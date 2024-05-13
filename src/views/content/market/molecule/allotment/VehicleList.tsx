@@ -1,4 +1,11 @@
-import { For, Setter, createSignal, onMount } from "solid-js";
+import {
+  Accessor,
+  For,
+  Setter,
+  Show,
+  createEffect,
+  createSignal,
+} from "solid-js";
 import {
   TransporterType,
   TransporterVehicleType,
@@ -7,6 +14,7 @@ import PlusIcon from "../../../../../icons/PlusIcon";
 import { TripUtils } from "../../../../../utils/trip.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import VehicleItem from "./VehicleItem";
+import { VehicleItemEdit } from "./VehicleItemEdit";
 import "./VehicleList.css";
 
 interface VehicleListProps {
@@ -14,56 +22,110 @@ interface VehicleListProps {
   transporterSetter: Setter<TransporterType>;
 }
 
-export function VehicleList(props: VehicleListProps) {
-  const [localVehicles, setLocalVehicles] = createSignal<
-    TransporterVehicleType[]
-  >([]);
+type LocalVehicleType = {
+  content: Accessor<TransporterVehicleType>;
+  setContent: Setter<TransporterVehicleType>;
+  inEdit: Accessor<boolean>;
+  setInEdit: Setter<boolean>;
+};
 
-  onMount(() => {
-    setLocalVehicles(props.transporter.vehicles);
-  });
+export function VehicleList(props: VehicleListProps) {
+  const [localVehicles, setLocalVehicles] = createSignal<LocalVehicleType[]>(
+    []
+  );
+
+  createEffect(() => {
+    setLocalVehicles(
+      props.transporter.vehicles.map((v) => {
+        const [content, setContent] = createSignal<TransporterVehicleType>({
+          busCategoryId: v.busCategoryId,
+          licensePlate: v.licensePlate,
+        });
+        const [inEdit, setInEdit] = createSignal(false);
+
+        const localVehicle = {
+          content,
+          setContent,
+          inEdit,
+          setInEdit,
+        };
+
+        return localVehicle;
+      })
+    );
+    // eslint-disable-next-line solid/reactivity
+  }, props.transporter.vehicles);
+
+  function localVehiclesToTransporterVehicles() {
+    const list: TransporterVehicleType[] = [];
+    localVehicles().forEach((v) =>
+      list.push({
+        busCategoryId: v.content().busCategoryId,
+        licensePlate: v.content().licensePlate,
+      })
+    );
+    return list;
+  }
 
   function addVehicle() {
-    const newObj: TransporterVehicleType = {
-      licensePlate: "",
+    const [content, setContent] = createSignal<TransporterVehicleType>({
       busCategoryId: 0,
-    };
-    setLocalVehicles((prev) => {
-      return [...prev, newObj];
+      licensePlate: "",
     });
+    const [inEdit, setInEdit] = createSignal(true);
+
+    setLocalVehicles((prev) => {
+      return [...prev, { content, setContent, inEdit, setInEdit }];
+    });
+
     // eslint-disable-next-line solid/reactivity
     props.transporterSetter((prev) => {
-      return { ...prev, vehicles: localVehicles() };
+      return { ...prev, vehicles: localVehiclesToTransporterVehicles() };
     });
   }
 
-  function editVehicle(
-    oldvehicle: TransporterVehicleType,
-    newvehicle: TransporterVehicleType
-  ) {
-    setLocalVehicles((prev) => {
-      return prev.map((v) => {
-        if (
-          v.busCategoryId === oldvehicle.busCategoryId &&
-          v.licensePlate === oldvehicle.licensePlate
-        )
-          return newvehicle;
-        return v;
+  function enableEdit(vehicle: LocalVehicleType) {
+    const vehicleToEdit = localVehicles().find(
+      (v) => v.content() == vehicle.content()
+    );
+    if (vehicleToEdit) vehicleToEdit.setInEdit(true);
+  }
+
+  function deleteVehicle(vehicle: LocalVehicleType) {
+    const vehicleToDelete = localVehicles().find(
+      (v) => v.content() == vehicle.content()
+    );
+
+    if (vehicleToDelete) {
+      setLocalVehicles((prev) => {
+        return prev.filter((v) => v != vehicleToDelete);
       });
-    });
-    // eslint-disable-next-line solid/reactivity
-    props.transporterSetter((prev) => {
-      return { ...prev, vehicles: localVehicles() };
-    });
+
+      // eslint-disable-next-line solid/reactivity
+      props.transporterSetter((prev) => {
+        return { ...prev, vehicles: localVehiclesToTransporterVehicles() };
+      });
+    }
   }
 
-  function deleteVehicle(vehicle: TransporterVehicleType) {
-    setLocalVehicles((prev) => {
-      return prev.filter((v) => v != vehicle);
-    });
+  function updateVehicle(
+    toEdit: TransporterVehicleType,
+    edited: TransporterVehicleType
+  ) {
+    const vehicleToEdit = localVehicles().find(
+      (v) =>
+        v.content().busCategoryId === toEdit.busCategoryId &&
+        v.content().licensePlate === toEdit.licensePlate
+    );
+
+    if (vehicleToEdit) {
+      vehicleToEdit.setContent(edited);
+      vehicleToEdit.setInEdit(false);
+    }
+
     // eslint-disable-next-line solid/reactivity
     props.transporterSetter((prev) => {
-      return { ...prev, vehicles: localVehicles() };
+      return { ...prev, vehicles: localVehiclesToTransporterVehicles() };
     });
   }
 
@@ -76,13 +138,26 @@ export function VehicleList(props: VehicleListProps) {
       <div class="vehicle-list">
         <For each={localVehicles()}>
           {(item) => (
-            <VehicleItem
-              deleteCb={deleteVehicle}
-              editCb={editVehicle}
-              vehicleName={TripUtils.tripBusIdToString(item.busCategoryId)}
-              busCategoryId={item.busCategoryId}
-              licensePlate={item.licensePlate}
-            />
+            <Show
+              when={!item.inEdit()}
+              fallback={
+                <VehicleItemEdit
+                  busCategoryId={item.content().busCategoryId}
+                  licensePlate={item.content().licensePlate}
+                  submitCb={updateVehicle}
+                />
+              }
+            >
+              <VehicleItem
+                deleteCb={() => deleteVehicle(item)}
+                enableEditCb={() => enableEdit(item)}
+                vehicleName={TripUtils.tripBusIdToString(
+                  item.content().busCategoryId
+                )}
+                busCategoryId={item.content().busCategoryId}
+                licensePlate={item.content().licensePlate}
+              />
+            </Show>
           )}
         </For>
       </div>

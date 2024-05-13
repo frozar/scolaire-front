@@ -1,63 +1,25 @@
-import { Show, createSignal, onMount } from "solid-js";
-import { TransporterVehicleType } from "../../../../../_entities/transporter.entity";
 import TrashIcon from "../../../../../icons/TrashIcon";
 import UpdatePen from "../../../../../icons/UpdatePen";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import "./VehicleItem.css";
-import { VehicleItemEdit } from "./VehicleItemEdit";
 
 interface VehicleItemProps {
-  editCb: (
-    oldvehicle: TransporterVehicleType,
-    newvehicle: TransporterVehicleType
-  ) => void;
-  deleteCb: (vehicle: TransporterVehicleType) => void;
+  enableEditCb: () => void;
+  deleteCb: () => void;
   licensePlate: string;
   busCategoryId: number;
   vehicleName: string;
 }
 
 export default function VehicleItem(props: VehicleItemProps) {
-  const initialVehicle: TransporterVehicleType = {} as TransporterVehicleType;
-  const [inEdit, setInEdit] = createSignal(false);
-  const [editVehicle, setEditVehicle] = createSignal<TransporterVehicleType>(
-    {} as TransporterVehicleType
-  );
-
-  onMount(() => {
-    initialVehicle.busCategoryId = props.busCategoryId;
-    initialVehicle.licensePlate = props.licensePlate;
-    setEditVehicle(initialVehicle);
-    if (props.licensePlate == "" && props.busCategoryId == 0) setInEdit(true);
-  });
-
-  function submit() {
-    props.editCb(initialVehicle, editVehicle());
-    setInEdit(false);
-  }
-
   return (
-    <Show
-      fallback={
-        <VehicleItemEdit
-          submit={submit}
-          vehicleItem={editVehicle()}
-          vehicleSetter={setEditVehicle}
-        />
-      }
-      when={!inEdit()}
-    >
-      <div class="vehicle-item-container">
-        <p>{"Immatriculation : " + props.licensePlate}</p>
-        <p>{"Bus : " + props.vehicleName}</p>
-        <div class="vehicle-item-buttons">
-          <ButtonIcon icon={<UpdatePen />} onClick={() => setInEdit(true)} />
-          <ButtonIcon
-            icon={<TrashIcon />}
-            onClick={() => props.deleteCb(initialVehicle)}
-          />
-        </div>
+    <div class="vehicle-item-container">
+      <p>{"Immatriculation : " + props.licensePlate}</p>
+      <p>{"Bus : " + props.vehicleName}</p>
+      <div class="vehicle-item-buttons">
+        <ButtonIcon icon={<UpdatePen />} onClick={() => props.enableEditCb()} />
+        <ButtonIcon icon={<TrashIcon />} onClick={() => props.deleteCb()} />
       </div>
-    </Show>
+    </div>
   );
 }
