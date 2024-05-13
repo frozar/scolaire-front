@@ -17,13 +17,15 @@ export default function () {
   onMount(() => {
     setDisplaySchools(getSchools());
     setLocalSchools(getSchools());
-    const locations: L.LatLng[] = [];
-    getSchools().forEach((stop) => {
-      const latlong = L.latLng(stop.lat, stop.lon);
-      locations.push(latlong);
-    });
-    const polygon = L.polygon(locations);
-    leafletMap()?.fitBounds(polygon.getBounds(), { maxZoom: 13 });
+    if (getSchools().length > 0) {
+      const locations: L.LatLng[] = [];
+      getSchools().forEach((stop) => {
+        const latlong = L.latLng(stop.lat, stop.lon);
+        locations.push(latlong);
+      });
+      const polygon = L.polygon(locations);
+      leafletMap()?.fitBounds(polygon.getBounds(), { maxZoom: 13 });
+    }
   });
   onCleanup(() => {
     setDisplaySchools([]);
