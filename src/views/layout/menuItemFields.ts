@@ -36,7 +36,7 @@ const menuItems: MenuItemType[] = [
   {
     menuItem: "stops",
     Logo: ArretsLogo,
-    label: "Arrêts",
+    label: "Stations de bus",
     isDisabled: false,
     onClick: () => {
       ViewManager.stops();
@@ -45,7 +45,7 @@ const menuItems: MenuItemType[] = [
   {
     menuItem: "paths",
     Logo: RoadwaysLogo,
-    label: "Chemins",
+    label: "Sous-réseau",
     isDisabled: false,
     onClick: () => {
       ViewManager.paths();
@@ -73,7 +73,7 @@ const menuItems: MenuItemType[] = [
   {
     menuItem: "graphicage",
     Logo: GraphicageLogo,
-    label: "Graphicage",
+    label: "Courses",
     isDisabled: false,
     onClick: () => {
       ViewManager.lines();
@@ -82,7 +82,7 @@ const menuItems: MenuItemType[] = [
   {
     menuItem: "service",
     Logo: ServiceIcon,
-    label: "Services",
+    label: "Graphicage",
     isDisabled: false,
     onClick: () => {
       setSelectedMenu("service");
