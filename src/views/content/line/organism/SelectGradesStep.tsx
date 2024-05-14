@@ -5,7 +5,6 @@ import { GradeUtils } from "../../../../_utils/grade.utils";
 import { setDisplaySchools } from "../../_component/organisme/SchoolPoints";
 import { setDisplayStops } from "../../_component/organisme/StopPoints";
 import BoardTitle from "../../board/component/atom/BoardTitle";
-import BoardFooterActions from "../../board/component/molecule/BoardFooterActions";
 import { CheckableElementList } from "../molecule/CheckableElementList";
 
 export function SelectGradesStep(props: {
@@ -77,7 +76,11 @@ export function SelectGradesStep(props: {
           }}
         </For>
       </div>
-      <BoardFooterActions
+
+      {/* TODO Revoir le placement de ce composant  */}
+      {/* Après avoir changé le css (absolute -> sticky) les boutons se placent entre les gradesSelection et les autres élements dans TripAddOrUpdate  */}
+
+      {/* <BoardFooterActions
         nextStep={{
           callback: props.nextStep,
           label: "Suivant",
@@ -87,7 +90,7 @@ export function SelectGradesStep(props: {
           callback: props.previousStep,
           label: "Précédent",
         }}
-      />
+      /> */}
     </>
   );
 }
