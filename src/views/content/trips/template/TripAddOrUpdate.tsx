@@ -9,6 +9,7 @@ import {
 } from "../../../../_entities/trip-direction.entity";
 import { TripType } from "../../../../_entities/trip.entity";
 import { disableSpinningWheel, enableSpinningWheel } from "../../../../signaux";
+import BoardFooterActions from "../../board/component/molecule/BoardFooterActions";
 import { SelectGradesStep } from "../../line/organism/SelectGradesStep";
 import { SelectSchoolsStep } from "../../line/organism/SelectSchoolsStep";
 import { AssignallotmentStep } from "../organism/AssignAllotmentStep";
@@ -144,6 +145,18 @@ export function TripAddOrUpdate(props: {
             <AssignallotmentStep
               allotment={currentTrip().allotmentId as number}
               onUpdateAllotment={onUpdateAllotment}
+            />
+            {/* TODO Revoir le placement de ce composant  */}
+            <BoardFooterActions
+              nextStep={{
+                callback: () => nextStep(EditTripStep.gradeSelection),
+                label: "Suivant",
+                disable: false,
+              }}
+              previousStep={{
+                callback: () => previousStep(EditTripStep.gradeSelection),
+                label: "Précédent",
+              }}
             />
           </Show>
         </Match>

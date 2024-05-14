@@ -5,6 +5,7 @@ import { SchoolType } from "../../../../_entities/school.entity";
 import { StopType } from "../../../../_entities/stop.entity";
 import { getStops } from "../../../../_stores/stop.store";
 import { ViewManager } from "../../ViewManager";
+import BoardFooterActions from "../../board/component/molecule/BoardFooterActions";
 import { LineEditInput } from "../organism/LineEditInput";
 import { SelectGradesStep } from "../organism/SelectGradesStep";
 import { SelectSchoolsStep } from "../organism/SelectSchoolsStep";
@@ -123,6 +124,19 @@ export function LineAddOrUpdate(props: LineAddOrUpdateProps) {
             nextStep={() => nextStep(LineStep.gradeSelection)}
             previousStep={() => previousStep(LineStep.gradeSelection)}
             onUpdate={onGradeUpdate}
+          />
+
+          {/* TODO Revoir le placement de ce composant  */}
+          <BoardFooterActions
+            nextStep={{
+              callback: () => nextStep(LineStep.gradeSelection),
+              label: "Suivant",
+              disable: localLine().grades.length <= 0,
+            }}
+            previousStep={{
+              callback: () => previousStep(LineStep.gradeSelection),
+              label: "Précédent",
+            }}
           />
         </Match>
         <Match when={currentStep() == LineStep.stopSelection}>
