@@ -13,3 +13,7 @@
 .addline-mode .map-point {
   cursor: url("/pencil.png"), auto;
 }
+
+.point-tooltip {
+  @apply bg-gray-base border-black border-2 p-2 text-white mb-2;
+}

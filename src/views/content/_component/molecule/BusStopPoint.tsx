@@ -1,11 +1,8 @@
 import L from "leaflet";
-import { createSignal, onMount } from "solid-js";
+import { createSignal } from "solid-js";
 import { BusStopType } from "../../../../_entities/busStops.entity";
 import Point from "../../map/component/atom/Point";
-import { displayStopName } from "../../map/component/organism/MapOptionsPanel";
 import { COLOR_BLUE_BASE } from "../../map/constant";
-import { leafletMap } from "../template/MapContainer";
-import "./MapPoint.css";
 
 export const [busStopPointOnClick, setBusStopPointOnClick] = createSignal<
   ((stop: BusStopType) => void) | undefined
@@ -24,25 +21,17 @@ export function BusStopPoint(props: BusStopPointProps) {
   //     ViewManager.stopDetails(stop);
   //   }
   // }
-
-  const tooltip = L.tooltip({
-    className: "point-tooltip",
-    opacity: 1,
-    direction: "top",
-  });
-
-  onMount(() => {
+  function tooltip() {
+    if (!props.point.name) return undefined;
+    const tooltip = L.tooltip({
+      className: "point-tooltip",
+      opacity: 1,
+      direction: "top",
+    });
     const pos = L.latLng(props.point.lat, props.point.lon);
     tooltip.setLatLng(pos);
     tooltip.setContent(props.point.name);
-  });
-
-  function mouseOver() {
-    if (displayStopName()) tooltip.addTo(leafletMap() as L.Map);
-  }
-
-  function mouseOut() {
-    if (displayStopName()) tooltip.removeFrom(leafletMap() as L.Map);
+    return tooltip;
   }
 
   return (
@@ -54,9 +43,10 @@ export function BusStopPoint(props: BusStopPointProps) {
       fillColor={"#0000aa"}
       radius={10}
       weight={2}
+      tootlip={tooltip()}
       onClick={() => console.log()}
-      onMouseOver={mouseOver}
-      onMouseOut={mouseOut}
+      onMouseOver={() => console.log()}
+      onMouseOut={() => console.log()}
       onRightClick={() => console.log()}
       onMouseUp={() => console.log()}
     />

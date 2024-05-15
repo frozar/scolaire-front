@@ -5,6 +5,7 @@ import { BusStopType } from "../../../../../_entities/busStops.entity";
 import { SchoolType } from "../../../../../_entities/school.entity";
 import { StopType } from "../../../../../_entities/stop.entity";
 import { NatureEnum } from "../../../../../type";
+import { displayPointsName } from "../organism/MapOptionsPanel";
 import { linkMap } from "../organism/Points";
 import "./Point.css";
 
@@ -36,6 +37,7 @@ export interface PointProps {
 
   map: L.Map;
   isBlinking?: boolean;
+  tootlip?: L.Tooltip;
 
   borderColor: string;
   fillColor: string;
@@ -82,6 +84,8 @@ export default function (props: PointProps) {
         .on("contextmenu", onRightClick)
         .addTo(props.map);
 
+      if (props.tootlip) circle.bindTooltip(props.tootlip);
+
       const element = circle.getElement();
       if (element) {
         linkMap.set(props.point.leafletId, circle);
@@ -102,6 +106,16 @@ export default function (props: PointProps) {
           element.classList.remove("circle-animation");
         } else return;
       });
+    }
+  });
+
+  createEffect(() => {
+    if (props.tootlip) {
+      if (displayPointsName()) {
+        circle.openTooltip();
+      } else {
+        circle.closeTooltip();
+      }
     }
   });
 

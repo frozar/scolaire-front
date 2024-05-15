@@ -1,15 +1,12 @@
 import L from "leaflet";
-import { createSignal, onMount } from "solid-js";
+import { createSignal } from "solid-js";
 import { useStateAction } from "../../../../StateAction";
 import { StopType } from "../../../../_entities/stop.entity";
 import { StopPointUtil } from "../../../../utils/stopPoint.utils";
 import { ViewManager } from "../../ViewManager";
 import Point from "../../map/component/atom/Point";
-import { displayStopName } from "../../map/component/organism/MapOptionsPanel";
 import { blinkingStops } from "../../map/component/organism/Points";
 import { COLOR_BLUE_BASE, COLOR_STOP_FOCUS } from "../../map/constant";
-import { leafletMap } from "../template/MapContainer";
-import "./MapPoint.css";
 
 const [, { isInReadMode }] = useStateAction();
 
@@ -29,17 +26,18 @@ const maxRadius = 10;
 const rangeRadius = maxRadius - minRadius;
 
 export function StopPoint(props: StopPointProps) {
-  const tooltip = L.tooltip({
-    className: "point-tooltip",
-    opacity: 1,
-    direction: "top",
-  });
-
-  onMount(() => {
+  function tooltip() {
+    if (!props.point.name) return undefined;
+    const tooltip = L.tooltip({
+      className: "point-tooltip",
+      opacity: 1,
+      direction: "top",
+    });
     const pos = L.latLng(props.point.lat, props.point.lon);
     tooltip.setLatLng(pos);
     tooltip.setContent(props.point.name);
-  });
+    return tooltip;
+  }
 
   const rad = (): number => {
     if (isInReadMode()) return 5;
@@ -70,16 +68,6 @@ export function StopPoint(props: StopPointProps) {
     }
   }
 
-  function mouseOver() {
-    StopPointUtil.onMouseOver(props.point);
-    if (displayStopName()) tooltip.addTo(leafletMap() as L.Map);
-  }
-
-  function mouseOut() {
-    StopPointUtil.onMouseOut(props.point);
-    if (displayStopName()) tooltip.removeFrom(leafletMap() as L.Map);
-  }
-
   return (
     <Point
       point={props.point}
@@ -90,9 +78,10 @@ export function StopPoint(props: StopPointProps) {
       radius={rad()}
       weight={2}
       onClick={() => onClick(props.point)}
+      tootlip={tooltip()}
       //TODO supprimer les dépenses à StopPointUtil
-      onMouseOver={mouseOver}
-      onMouseOut={mouseOut}
+      onMouseOver={() => StopPointUtil.onMouseOver(props.point)}
+      onMouseOut={() => StopPointUtil.onMouseOut(props.point)}
       onRightClick={() => StopPointUtil.onRightClick(props.point)}
       onMouseUp={() => StopPointUtil.onMouseUp(props.point, props.map)}
     />
