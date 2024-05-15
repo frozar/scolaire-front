@@ -4,9 +4,9 @@ import { useStateAction } from "../../../../StateAction";
 import { StopType } from "../../../../_entities/stop.entity";
 import { StopPointUtil } from "../../../../utils/stopPoint.utils";
 import { ViewManager } from "../../ViewManager";
-import Point from "../../map/component/atom/Point";
 import { blinkingStops } from "../../map/component/organism/Points";
 import { COLOR_BLUE_BASE, COLOR_STOP_FOCUS } from "../../map/constant";
+import Point from "../atom/Point";
 
 const [, { isInReadMode }] = useStateAction();
 

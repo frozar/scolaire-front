@@ -2,10 +2,10 @@ import L from "leaflet";
 import { createSignal } from "solid-js";
 import { SchoolType } from "../../../../_entities/school.entity";
 import { ViewManager } from "../../ViewManager";
-import Point from "../../map/component/atom/Point";
 import { blinkingSchools } from "../../map/component/organism/Points";
 import { SchoolPointUtils } from "../../map/component/schoolPoint.utils";
 import { COLOR_BLUE_BASE, COLOR_SCHOOL_FOCUS } from "../../map/constant";
+import Point from "../atom/Point";
 
 export interface SchoolPointProps {
   school: SchoolType;

@@ -1,8 +1,8 @@
 import L from "leaflet";
 import { createSignal } from "solid-js";
 import { BusStopType } from "../../../../_entities/busStops.entity";
-import Point from "../../map/component/atom/Point";
 import { COLOR_BLUE_BASE } from "../../map/constant";
+import Point from "../atom/Point";
 
 export const [busStopPointOnClick, setBusStopPointOnClick] = createSignal<
   ((stop: BusStopType) => void) | undefined
