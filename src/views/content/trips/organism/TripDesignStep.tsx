@@ -5,7 +5,7 @@ import BoardTitle from "../../board/component/atom/BoardTitle";
 import SchoolsEnumeration from "../../board/component/molecule/SchoolsEnumeration";
 import { DrawHelperButton } from "../atom/DrawHelperButton";
 
-import { GradeUtils } from "../../../../_utils/grade.utils";
+import { StopUtils } from "../../../../_utils/stop.utils";
 import { LabeledColorPicker } from "../../../../component/molecule/LabeledColorPicker";
 import { setDisplaySchools } from "../../_component/organisme/SchoolPoints";
 import { setDisplayStops } from "../../_component/organisme/StopPoints";
@@ -139,5 +139,7 @@ export function TripDesignStep(props: {
 
 function setDisplayOnMap(trip: TripType) {
   setDisplaySchools(trip.schools);
-  GradeUtils.displayStopsOfGrades(trip.grades);
+  setDisplayStops(
+    StopUtils.stopsWithQuantityByGrades(trip.grades, trip.tripDirectionId)
+  );
 }
