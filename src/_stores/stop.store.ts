@@ -6,6 +6,8 @@ export const [getStops, setStops] = createSignal<StopType[]>([]);
 
 export namespace StopStore {
   export function set(stops: StopType[]) {
+    //TODO: Find a way to sort data so storybook tests doesn't fail anymore
+    // stops.sort((a, b) => a.name.localeCompare(b.name));
     setStops(stops);
   }
 

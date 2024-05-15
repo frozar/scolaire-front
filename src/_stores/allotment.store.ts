@@ -8,6 +8,7 @@ export namespace AllotmentStore {
     allotment: AllotmentType[] | ((prev: AllotmentType[]) => AllotmentType[])
   ) {
     setAllotment(allotment);
+    getAllotment().sort((a, b) => a.name.localeCompare(b.name));
   }
 
   export function get() {

@@ -7,9 +7,10 @@ export const [calendars, setCalendars] = createSignal<CalendarType[]>([]);
 
 export namespace CalendarStore {
   export function set(
-    calendars: CalendarType[] | ((calendars: CalendarType[]) => CalendarType[])
+    _calendars: CalendarType[] | ((calendars: CalendarType[]) => CalendarType[])
   ) {
-    setCalendars(calendars);
+    setCalendars(_calendars);
+    calendars().sort((a, b) => a.name.localeCompare(b.name));
   }
 
   export async function create(calendar: CalendarType) {

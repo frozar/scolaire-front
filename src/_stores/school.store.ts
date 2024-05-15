@@ -15,6 +15,8 @@ export namespace SchoolStore {
     schools: SchoolType[] | ((prev: SchoolType[]) => SchoolType[])
   ) {
     setSchools(schools);
+    //TODO: Find a way to sort data so storybook tests doesn't fail anymore
+    // getSchools().sort((a, b) => a.name.localeCompare(b.name));
   }
 
   export function get(schoolId: number): SchoolType {

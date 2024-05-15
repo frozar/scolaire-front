@@ -17,6 +17,7 @@ export namespace OrganizationStore {
       | ((prev: OrganizationType[]) => OrganizationType[])
   ) {
     setOrganizations(organizations);
+    getOrganizations().sort((a, b) => a.name.localeCompare(b.name));
   }
 
   export function get() {

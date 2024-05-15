@@ -11,6 +11,11 @@ export namespace LineStore {
   export function set(lines: LineType[] | ((prev: LineType[]) => LineType[])) {
     setLines(lines);
     setTrips();
+    getLines().sort((a, b) => {
+      if (a.name && b.name) {
+        return a.name.localeCompare(b.name);
+      } else return 0;
+    });
   }
 
   export function addTrip(newTrip: TripType) {
