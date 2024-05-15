@@ -57,6 +57,7 @@ const onDBLClick = (event: LeafletMouseEvent) => {
 
 export default function (props: PointProps) {
   let circle: L.CircleMarker;
+  let permanentTooltip: L.Tooltip;
 
   const onRightClick = () => {
     if (props.onRightClick != undefined) {
@@ -83,7 +84,10 @@ export default function (props: PointProps) {
         .on("contextmenu", onRightClick)
         .addTo(props.map);
 
-      if (props.tootlip) circle.bindTooltip(props.tootlip);
+      if (props.tootlip) {
+        circle.bindTooltip(props.tootlip);
+        permanentTooltip = props.tootlip;
+      }
 
       const element = circle.getElement();
       if (element) {
@@ -111,9 +115,9 @@ export default function (props: PointProps) {
   createEffect(() => {
     if (props.tootlip) {
       if (displayPointsName()) {
-        circle.openTooltip();
+        props.map.openTooltip(permanentTooltip);
       } else {
-        circle.closeTooltip();
+        props.map.closeTooltip(permanentTooltip);
       }
     }
   });
@@ -149,6 +153,7 @@ export default function (props: PointProps) {
       linkMap.delete(props.point.leafletId);
     }
     if (circle) circle.remove();
+    if (permanentTooltip) permanentTooltip.remove();
   });
 
   return <></>;
