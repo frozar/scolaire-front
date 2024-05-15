@@ -14,6 +14,7 @@ export namespace CalendarPeriodStore {
       | ((calendars: CalendarPeriodType[]) => CalendarPeriodType[])
   ) {
     setCalendarsPeriod(calendars);
+    calendarsPeriod().sort((a, b) => a.name.localeCompare(b.name));
   }
 
   export async function create(calendarPeriod: Omit<CalendarPeriodType, "id">) {

@@ -12,6 +12,7 @@ export namespace FlatGraphicStore {
       | ((prev: FlatGraphicType[]) => FlatGraphicType[])
   ) {
     setFlatGraphics(graphics);
+    getFlatGraphics().sort((a, b) => a.name.localeCompare(b.name));
   }
 
   export function get() {

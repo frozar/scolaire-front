@@ -6,6 +6,7 @@ export const [getPaths, setPaths] = createSignal<PathType[]>([]);
 export namespace PathStore {
   export function set(paths: PathType[]) {
     setPaths(paths);
+    getPaths().sort((a, b) => a.name.localeCompare(b.name));
   }
 
   export function add(path: PathType) {

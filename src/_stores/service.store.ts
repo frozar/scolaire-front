@@ -8,6 +8,7 @@ export namespace ServiceStore {
     services: ServiceType[] | ((prev: ServiceType[]) => ServiceType[])
   ) {
     setServices(services);
+    getServices().sort((a, b) => a.name.localeCompare(b.name));
   }
 
   export function get() {
