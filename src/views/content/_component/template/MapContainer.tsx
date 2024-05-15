@@ -18,6 +18,7 @@ import {
 import { MessageLevelEnum, MessageTypeEnum, TileId } from "../../../../type";
 import { getSelectedOrganisation } from "../../board/component/organism/OrganisationSelector";
 import { onBoard } from "../../board/component/template/ContextManager";
+import { MapOptionsPanel } from "../../map/component/organism/MapOptionsPanel";
 import { MapPanels } from "../../map/component/organism/MapPanels";
 import { getTileById } from "../../map/tileUtils";
 import { BusStopPoints } from "../organisme/BusStopPoints";
@@ -197,6 +198,7 @@ export function MapContainer() {
         }}
       />
 
+      <MapOptionsPanel />
       <SchoolPoints map={leafletMap() as L.Map} />
       <StopPoints map={leafletMap() as L.Map} />
       <BusStopPoints map={leafletMap() as L.Map} />

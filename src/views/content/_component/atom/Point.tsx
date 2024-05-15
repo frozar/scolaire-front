@@ -1,12 +1,11 @@
 import L, { LeafletMouseEvent } from "leaflet";
 import { Accessor, Setter, createEffect, onCleanup, onMount } from "solid-js";
-
-import { BusStopType } from "../../../../../_entities/busStops.entity";
-import { SchoolType } from "../../../../../_entities/school.entity";
-import { StopType } from "../../../../../_entities/stop.entity";
-import { NatureEnum } from "../../../../../type";
-import { displayPointsName } from "../organism/MapOptionsPanel";
-import { linkMap } from "../organism/Points";
+import { BusStopType } from "../../../../_entities/busStops.entity";
+import { SchoolType } from "../../../../_entities/school.entity";
+import { StopType } from "../../../../_entities/stop.entity";
+import { NatureEnum } from "../../../../type";
+import { displayPointsName } from "../../map/component/organism/MapOptionsPanel";
+import { linkMap } from "../../map/component/organism/Points";
 import "./Point.css";
 
 export type PointIdentityType = {

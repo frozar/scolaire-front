@@ -1,8 +1,8 @@
 import L from "leaflet";
 import { createSignal } from "solid-js";
 import { BusStopType } from "../../../../_entities/busStops.entity";
-import Point from "../../map/component/atom/Point";
-import { COLOR_STOP_FOCUS } from "../../map/constant";
+import { COLOR_BLUE_BASE } from "../../map/constant";
+import Point from "../atom/Point";
 
 export const [busStopPointOnClick, setBusStopPointOnClick] = createSignal<
   ((stop: BusStopType) => void) | undefined
@@ -21,16 +21,29 @@ export function BusStopPoint(props: BusStopPointProps) {
   //     ViewManager.stopDetails(stop);
   //   }
   // }
+  function tooltip() {
+    if (!props.point.name) return undefined;
+    const tooltip = L.tooltip({
+      className: "point-tooltip",
+      opacity: 1,
+      direction: "top",
+    });
+    const pos = L.latLng(props.point.lat, props.point.lon);
+    tooltip.setLatLng(pos);
+    tooltip.setContent(props.point.name);
+    return tooltip;
+  }
 
   return (
     <Point
       point={props.point}
       map={props.map}
       isBlinking={false}
-      borderColor={COLOR_STOP_FOCUS}
+      borderColor={COLOR_BLUE_BASE}
       fillColor={"#0000aa"}
       radius={10}
-      weight={0}
+      weight={2}
+      tootlip={tooltip()}
       onClick={() => console.log()}
       onMouseOver={() => console.log()}
       onMouseOut={() => console.log()}

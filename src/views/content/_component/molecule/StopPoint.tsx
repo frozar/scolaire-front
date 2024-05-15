@@ -4,9 +4,9 @@ import { useStateAction } from "../../../../StateAction";
 import { StopType } from "../../../../_entities/stop.entity";
 import { StopPointUtil } from "../../../../utils/stopPoint.utils";
 import { ViewManager } from "../../ViewManager";
-import Point from "../../map/component/atom/Point";
 import { blinkingStops } from "../../map/component/organism/Points";
-import { COLOR_STOP_FOCUS } from "../../map/constant";
+import { COLOR_BLUE_BASE, COLOR_STOP_FOCUS } from "../../map/constant";
+import Point from "../atom/Point";
 
 const [, { isInReadMode }] = useStateAction();
 
@@ -26,6 +26,19 @@ const maxRadius = 10;
 const rangeRadius = maxRadius - minRadius;
 
 export function StopPoint(props: StopPointProps) {
+  function tooltip() {
+    if (!props.point.name) return undefined;
+    const tooltip = L.tooltip({
+      className: "point-tooltip",
+      opacity: 1,
+      direction: "top",
+    });
+    const pos = L.latLng(props.point.lat, props.point.lon);
+    tooltip.setLatLng(pos);
+    tooltip.setContent(props.point.name);
+    return tooltip;
+  }
+
   const rad = (): number => {
     if (isInReadMode()) return 5;
     let radiusValue = minRadius;
@@ -60,11 +73,12 @@ export function StopPoint(props: StopPointProps) {
       point={props.point}
       map={props.map}
       isBlinking={blinkingStops().includes(props.point.id)}
-      borderColor={COLOR_STOP_FOCUS}
+      borderColor={COLOR_BLUE_BASE}
       fillColor={COLOR_STOP_FOCUS}
       radius={rad()}
-      weight={0}
+      weight={2}
       onClick={() => onClick(props.point)}
+      tootlip={tooltip()}
       //TODO supprimer les dépenses à StopPointUtil
       onMouseOver={() => StopPointUtil.onMouseOver(props.point)}
       onMouseOut={() => StopPointUtil.onMouseOut(props.point)}
