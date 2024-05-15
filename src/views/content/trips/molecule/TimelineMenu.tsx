@@ -1,14 +1,15 @@
 import { Show, createSignal } from "solid-js";
-import "./TimelineMenu.css";
-import ButtonIcon from "../../board/component/molecule/ButtonIcon";
-import { DotMenu } from "../../../../icons/DotMenu";
-import { TimelineWaitingTimeSetting } from "../../board/component/molecule/TimelineWaitingTimeSetting";
+import { TripPointType } from "../../../../_entities/trip.entity";
 import Button from "../../../../component/atom/Button";
+import { DotMenu } from "../../../../icons/DotMenu";
+import ButtonIcon from "../../board/component/molecule/ButtonIcon";
+import "./TimelineMenu.css";
+import { TimelineWaitingTimeSetting } from "./TimelineWaitingTimeSetting";
 
 interface TimelineMenuProps {
   onClickDeletePoint: () => void;
   onClickWaitingTime: (value: number) => void;
-  waitingTime: number;
+  point: TripPointType;
 }
 
 export function TimelineMenu(props: TimelineMenuProps) {
@@ -30,7 +31,7 @@ export function TimelineMenu(props: TimelineMenuProps) {
             fallback={
               <TimelineWaitingTimeSetting
                 closeSettings={() => setIsOpenSetting((prev) => !prev)}
-                waitingTime={props.waitingTime}
+                waitingTime={props.point.waitingTime}
                 onClickWaitingTime={props.onClickWaitingTime}
               />
             }
@@ -39,6 +40,10 @@ export function TimelineMenu(props: TimelineMenuProps) {
               label="Supprimer"
               variant="danger"
               onClick={props.onClickDeletePoint}
+            />
+            <Button
+              label={"Quantité : " + props.point.name}
+              onClick={() => setIsOpenSetting((prev) => !prev)}
             />
             <Button
               label="Temps d'attente"
