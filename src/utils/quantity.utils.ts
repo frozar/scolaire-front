@@ -127,7 +127,7 @@ export namespace QuantityUtils {
   export function getQuantityUsedInTrip(tripPoints: TripPointType[]) {
     let tripTotalQuantities = 0;
 
-    tripPoints.forEach((points, index) => {
+    tripPoints.forEach((points) => {
       if (points.nature == NatureEnum.stop)
         tripTotalQuantities += points.grades.reduce(
           (total, item) => total + item.quantity,
@@ -272,7 +272,7 @@ export namespace QuantityUtils {
     return displayMatrix;
   }
 
-  // * TODO move it to stop utils
+  //TODO to delete (wip) -> logic move to stop.utils
   export function stopHasRemainingStudentToGet(
     stopId: number,
     returnByDirection = false

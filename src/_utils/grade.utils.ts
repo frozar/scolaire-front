@@ -5,6 +5,9 @@ import { setDisplayStops } from "../views/content/_component/organisme/StopPoint
 
 export namespace GradeUtils {
   export function displayStopsOfGrades(grades: GradeType[]) {
+    setDisplayStops(getStopsOfGrades(grades));
+  }
+  export function getStopsOfGrades(grades: GradeType[]) {
     const stops: StopType[] = [];
     for (const grade of grades) {
       for (const associatedStop of grade.associatedStops) {
@@ -13,6 +16,6 @@ export namespace GradeUtils {
         }
       }
     }
-    setDisplayStops(stops);
+    return stops;
   }
 }
