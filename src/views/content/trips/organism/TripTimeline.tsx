@@ -41,6 +41,19 @@ export function TripTimeline(props: {
 
   const [indexOfAddPoint, setIndexOfAddPoint] = createSignal<number>(-1);
 
+  const _ = props.trip;
+
+  _.tripPoints[0].grades[0].quantity;
+  _.tripPoints[0].grades[0].gradeId;
+  _.tripPoints[0].nature;
+  _.tripPoints[0].id;
+
+  _.tripPoints[0].grades;
+
+  _.tripPoints[0].grades;
+
+  // qt = some de qt des grades
+
   onMount(() => {
     setDisplayTrips([props.trip]);
     setStopPointOnClick(() => onUpdateStopFromMap);
@@ -146,7 +159,7 @@ export function TripTimeline(props: {
                       onClickWaitingTime={(waitingTime) =>
                         updateWaitingTime(point, waitingTime)
                       }
-                      waitingTime={point.waitingTime}
+                      point={point}
                     />
                   </TripTimelinePoint>
                 </div>
