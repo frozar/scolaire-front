@@ -5,9 +5,9 @@ import { StopType } from "../_entities/stop.entity";
 import { TripDirectionEnum } from "../_entities/trip-direction.entity";
 import { getLines } from "../_stores/line.store";
 import { getStops, setStops } from "../_stores/stop.store";
-import { GradeUtils } from "../_utils/grade.utils";
 import { NatureEnum } from "../type";
 import { setStopDetails } from "../views/content/stops/component/template/StopDetails";
+import { GradeUtils } from "./grade.utils";
 import { QuantityMatrixType, QuantityUtils } from "./quantity.utils";
 import { SchoolUtils } from "./school.utils";
 
