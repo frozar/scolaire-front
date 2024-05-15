@@ -1,0 +1,3 @@
+.point-tooltip {
+  @apply bg-gray-base border-black border-2 p-2 text-white mb-2;
+}
