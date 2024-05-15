@@ -6,8 +6,8 @@ export const [getStops, setStops] = createSignal<StopType[]>([]);
 
 export namespace StopStore {
   export function set(stops: StopType[]) {
+    stops.sort((a, b) => a.name.localeCompare(b.name));
     setStops(stops);
-    // getStops().sort((a, b) => a.name.localeCompare(b.name));
   }
 
   export function remove(stopId: number) {

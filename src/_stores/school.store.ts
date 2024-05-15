@@ -15,7 +15,7 @@ export namespace SchoolStore {
     schools: SchoolType[] | ((prev: SchoolType[]) => SchoolType[])
   ) {
     setSchools(schools);
-    getSchools().sort((a, b) => a.name.localeCompare(b.name));
+    // getSchools().sort((a, b) => a.name.localeCompare(b.name));
   }
 
   export function get(schoolId: number): SchoolType {
