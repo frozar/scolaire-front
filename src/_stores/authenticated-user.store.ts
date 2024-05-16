@@ -46,9 +46,5 @@ export namespace AuthenticatedUserStore {
 }
 
 function deleteStoredData() {
-  window.history.replaceState(
-    { user: undefined, organisation: undefined },
-    document.title,
-    "/"
-  );
+  setStoredData({ user: undefined });
 }

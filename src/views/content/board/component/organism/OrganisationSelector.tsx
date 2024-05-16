@@ -1,4 +1,4 @@
-import { createEffect, createSignal } from "solid-js";
+import { createSignal } from "solid-js";
 import { useStateGui } from "../../../../../StateGui";
 import {
   disableSpinningWheel,
@@ -31,23 +31,6 @@ export const [getSelectedOrganisation, setSelectedOrganisation] =
   );
 
 export function OrganisationSelector() {
-  createEffect(() => {
-    const currentId = getSelectedOrganisation().organisation_id;
-    if (
-      !UserOrganizationStore.isOrganization(currentId)
-      // TODO utilité ?
-      // ||
-      // getSelectedOrganisation().organisation_id ==
-      //   DEFAULT_ORGANISATION.organisation_id
-    ) {
-      const organisation = UserOrganizationStore.get()[0];
-      if (organisation) {
-        setOrganisation(organisation);
-      } else {
-        setOrganisation(DEFAULT_ORGANISATION);
-      }
-    }
-  });
   return (
     <div id="organisation-selector">
       <label
