@@ -1,7 +1,10 @@
 import { createSignal } from "solid-js";
+import { useStateGui } from "../StateGui";
 import { getSelectedOrganisation } from "../views/content/board/component/organism/OrganisationSelector";
-import { setStoredData, xanoUser } from "../views/layout/authentication";
+import { xanoUser } from "../views/layout/authentication";
 import { UserOrganizationStore } from "./user-organization.store";
+
+const [, { setActiveMapId, setLoggedUser }] = useStateGui();
 
 export const [getUser, setUser] = createSignal<xanoUser | undefined>();
 
@@ -34,17 +37,14 @@ export namespace AuthenticatedUserStore {
     setUser(user);
     setAuthenticated(true);
     UserOrganizationStore.set(user.organisation);
-    setStoredData({ user });
+    setLoggedUser(user);
   }
 
   export function unset() {
-    setUser(undefined);
     setAuthenticated(false);
+    setUser(undefined);
     UserOrganizationStore.unset();
-    deleteStoredData();
+    setLoggedUser(undefined);
+    setActiveMapId(null);
   }
-}
-
-function deleteStoredData() {
-  setStoredData({ user: undefined });
 }

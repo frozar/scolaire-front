@@ -27,13 +27,12 @@ import { inDuplication } from "./utils/duplicate.utils";
 import { Contents } from "./views/content/Contents";
 import { Dialogs } from "./views/content/board/component/organism/Dialogs";
 
-const [, { getSelectedMenu, getActiveMapId, setActiveMapId }] = useStateGui();
+const [, { getSelectedMenu, getActiveMapId }] = useStateGui();
 
 export default () => {
   onMount(async () => {
     await tryConnection();
 
-    setActiveMapId(null);
     SchoolStore.set([]);
     StopStore.set([]);
     CalendarStore.set([]);
