@@ -1,19 +1,14 @@
-import { createEffect, createSignal } from "solid-js";
+import { createSignal } from "solid-js";
 import { useStateGui } from "../../../../../StateGui";
 import {
   disableSpinningWheel,
   enableSpinningWheel,
 } from "../../../../../signaux";
-import {
-  OrganisationType,
-  StoredDataTypeEnum,
-  getStoredData,
-  setStoredData,
-} from "../../../../layout/authentication";
+import { OrganisationType } from "../../../../layout/authentication";
 import { setSelectedMenu } from "../../../../layout/menuItemFields";
 import { Selector } from "../molecule/Selector";
 import { changeBoard } from "../template/ContextManager";
-const [, { resetState }] = useStateGui();
+const [, { setActiveOrganizationId, resetState }] = useStateGui();
 
 import { MapStore } from "../../../../../_stores/map.store";
 import { UserOrganizationStore } from "../../../../../_stores/user-organization.store";
@@ -26,28 +21,9 @@ export const DEFAULT_ORGANISATION = {
 };
 
 export const [getSelectedOrganisation, setSelectedOrganisation] =
-  createSignal<OrganisationType>(
-    getStoredData(StoredDataTypeEnum.organisation) ?? DEFAULT_ORGANISATION
-  );
+  createSignal<OrganisationType>(DEFAULT_ORGANISATION);
 
 export function OrganisationSelector() {
-  createEffect(() => {
-    const currentId = getSelectedOrganisation().organisation_id;
-    if (
-      !UserOrganizationStore.isOrganization(currentId)
-      // TODO utilité ?
-      // ||
-      // getSelectedOrganisation().organisation_id ==
-      //   DEFAULT_ORGANISATION.organisation_id
-    ) {
-      const organisation = UserOrganizationStore.get()[0];
-      if (organisation) {
-        setOrganisation(organisation);
-      } else {
-        setOrganisation(DEFAULT_ORGANISATION);
-      }
-    }
-  });
   return (
     <div id="organisation-selector">
       <label
@@ -85,7 +61,7 @@ const onChange = async (
 // TODO revoir cette function
 async function setOrganisation(organisation: OrganisationType) {
   enableSpinningWheel();
-  setStoredData({ organisation });
+  setActiveOrganizationId(organisation.organisation_id);
   changeBoard(undefined);
   setSelectedOrganisation(organisation);
   await MapStore.fetchUserMaps();

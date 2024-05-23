@@ -14,6 +14,7 @@ type StateGuiType = {
   selectedEditModeTile: TileId;
   displayedInformationBoard: boolean;
   nextLeafletPointId: number;
+  activeOrganizationId: number;
 };
 
 const defaultStateGui: StateGuiType = {
@@ -26,6 +27,7 @@ const defaultStateGui: StateGuiType = {
   selectedEditModeTile: "Stadia_AlidadeSmoothDark",
   displayedInformationBoard: false,
   nextLeafletPointId: 0,
+  activeOrganizationId: 0,
 };
 
 // Check if the local storage has the correct keys
@@ -123,6 +125,14 @@ const makeStateGuiContext = () => {
     setState("activeMapId", id);
   }
 
+  function getActiveOrganizationId() {
+    return state.activeOrganizationId;
+  }
+
+  function setActiveOrganizationId(id: number) {
+    setState("activeOrganizationId", id);
+  }
+
   function setSelectedReadModeTile(tileId: TileId) {
     setState("selectedReadModeTile", tileId);
   }
@@ -192,6 +202,8 @@ const makeStateGuiContext = () => {
       setInformationBoardSelectedTab,
       getActiveMapId,
       setActiveMapId,
+      getActiveOrganizationId,
+      setActiveOrganizationId,
       setSelectedReadModeTile,
       getSelectedReadModeTile,
       setSelectedEditModeTile,

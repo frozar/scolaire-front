@@ -1,7 +1,10 @@
 import { createSignal } from "solid-js";
+import { useStateGui } from "../StateGui";
 import { getSelectedOrganisation } from "../views/content/board/component/organism/OrganisationSelector";
-import { setStoredData, xanoUser } from "../views/layout/authentication";
+import { xanoUser } from "../views/layout/authentication";
 import { UserOrganizationStore } from "./user-organization.store";
+
+const [, { setActiveMapId }] = useStateGui();
 
 export const [getUser, setUser] = createSignal<xanoUser | undefined>();
 
@@ -9,11 +12,21 @@ export const [authenticated, setAuthenticated] = createSignal(false);
 
 export namespace AuthenticatedUserStore {
   export function get(): xanoUser | undefined {
-    return getUser();
+    const output = getUser();
+    if (!output) {
+      const authenticatedString = localStorage.getItem("authenticated");
+      if (authenticatedString) {
+        return JSON.parse(authenticatedString);
+      }
+    }
+    return output;
   }
 
   export function getToken() {
-    return get()?.token;
+    const user = getUser();
+    if (!user) return undefined;
+
+    return user.token;
   }
 
   export function isTheUser(email: string) {
@@ -33,22 +46,14 @@ export namespace AuthenticatedUserStore {
   export function set(user: xanoUser) {
     setUser(user);
     setAuthenticated(true);
+    localStorage.setItem("authenticated", JSON.stringify(user));
     UserOrganizationStore.set(user.organisation);
-    setStoredData({ user });
   }
 
   export function unset() {
-    setUser(undefined);
     setAuthenticated(false);
     UserOrganizationStore.unset();
-    deleteStoredData();
+    localStorage.removeItem("authenticated");
+    setActiveMapId(null);
   }
-}
-
-function deleteStoredData() {
-  window.history.replaceState(
-    { user: undefined, organisation: undefined },
-    document.title,
-    "/"
-  );
 }

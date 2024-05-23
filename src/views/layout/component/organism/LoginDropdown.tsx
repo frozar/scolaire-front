@@ -13,8 +13,8 @@ import {
   authenticated,
 } from "../../../../_stores/authenticated-user.store";
 import { MenuButtonOrganizationMembers } from "../atom/MenuButtonOrganizationMembers";
-import "./LoginDropdown.css";
 import { MenuButtonOrganizations } from "../atom/MenuButtonOrganizations";
+import "./LoginDropdown.css";
 
 // HACK for the documentation to preserve the ClickOutside directive on save
 // https://www.solidjs.com/guides/typescript#use___

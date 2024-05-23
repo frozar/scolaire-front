@@ -1,8 +1,14 @@
+import { useStateGui } from "../../StateGui";
 import { ServiceUtils } from "../../_services/_utils.service";
 import {
   AuthenticatedUserStore,
   authenticated,
 } from "../../_stores/authenticated-user.store";
+import { MapStore } from "../../_stores/map.store";
+import { UserOrganizationStore } from "../../_stores/user-organization.store";
+import { setSelectedOrganisation } from "../content/board/component/organism/OrganisationSelector";
+
+const [, { getActiveOrganizationId }] = useStateGui();
 
 const XANO_AUTH_URL = import.meta.env.VITE_XANO_URL_AUTH;
 // TODO l'url ne doit pas être bonne.... pensez à mettre dans le .env
@@ -59,6 +65,13 @@ async function authenticateUser(code: string) {
   });
   if (user) {
     AuthenticatedUserStore.set(user);
+    const org = UserOrganizationStore.get().find(
+      (item) => item.organisation_id == getActiveOrganizationId()
+    );
+    if (org) {
+      setSelectedOrganisation(org);
+      MapStore.fetchUserMaps();
+    }
   }
 }
 
@@ -110,24 +123,19 @@ async function getAuthUrl() {
 }
 
 export async function tryConnection() {
-  let user: xanoUser | undefined = AuthenticatedUserStore.get();
-  if (!user) user = getStoredData(StoredDataTypeEnum.user) ?? undefined;
+  const user: xanoUser | undefined = AuthenticatedUserStore.get();
 
   if (user) {
+    AuthenticatedUserStore.set(user);
     const res = await ServiceUtils.get("/auth/me", false, true);
 
     if (res && res.isAuthenticated) {
-      user = {
-        ...user,
-        email: res.user.email,
-        organisation: res.user.organisation,
-        role: res.user.role,
-        name: res.user.name,
-      } as xanoUser;
-      setStoredData({
-        user,
-      });
-      AuthenticatedUserStore.set(user);
+      const org = UserOrganizationStore.get().find(
+        (item) => item.organisation_id == getActiveOrganizationId()
+      );
+
+      if (org) setSelectedOrganisation(org);
+      MapStore.fetchUserMaps();
     } else {
       AuthenticatedUserStore.unset();
     }
@@ -136,24 +144,8 @@ export async function tryConnection() {
   }
 }
 
-export async function isAuthenticated() {
-  await tryConnection();
-  const user = AuthenticatedUserStore.get();
-  if (!user) {
-    return false;
-  }
-  return true;
-}
-
 export function getToken() {
-  if (authenticated()) return AuthenticatedUserStore.getToken();
-
-  //TODO to delete ?
-  if (import.meta.env.VITE_AUTH0_DEV_MODE === "true") {
-    return "fakeToken";
-  }
-
-  return "";
+  return authenticated() ? AuthenticatedUserStore.getToken() : "";
 }
 
 function headerJson(token: string): HeadersInit {
@@ -180,37 +172,5 @@ export function authenticateWrap(
       : headerJson(token);
 
     return callback(headers);
-  }
-}
-
-//TODO create storedData.utils.ts
-export type StoredDataType = {
-  user?: xanoUser;
-  organisation?: OrganisationType;
-};
-
-export enum StoredDataTypeEnum {
-  user = "User",
-  organisation = "Organisation",
-}
-
-export function setStoredData(history: StoredDataType) {
-  const newUser = history.user ?? getStoredData(StoredDataTypeEnum.user);
-  const newOrganisation =
-    history.organisation ?? getStoredData(StoredDataTypeEnum.organisation);
-  window.history.replaceState(
-    { user: newUser, organisation: newOrganisation },
-    document.title,
-    "/"
-  );
-}
-export function getStoredData(type: StoredDataTypeEnum) {
-  switch (type) {
-    case StoredDataTypeEnum.organisation:
-      return window.history.state?.organisation ?? undefined;
-    case StoredDataTypeEnum.user:
-      return window.history.state?.user ?? undefined;
-    default:
-      return undefined;
   }
 }

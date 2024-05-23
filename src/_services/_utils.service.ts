@@ -43,9 +43,14 @@ export class ServiceUtils {
       return await response.blob();
   }
 
-  static async get(url: string, urlNeedMap = true, returnError = false) {
+  static async get(
+    url: string,
+    urlNeedMap = true,
+    returnError = false,
+    authToken = getToken()
+  ) {
     if (authenticated()) {
-      const headers = await createXanoAuthenticateHeader();
+      const headers = createXanoAuthenticateHeader(authToken);
       return await this.generic(
         this.buildXanoUrl(url, urlNeedMap),
         {
@@ -57,9 +62,14 @@ export class ServiceUtils {
     }
   }
 
-  static async post(url: string, data: object, urlNeedMap = true) {
+  static async post(
+    url: string,
+    data: object,
+    urlNeedMap = true,
+    authToken = getToken()
+  ) {
     const headers = {
-      ...(await createXanoAuthenticateHeader()),
+      ...createXanoAuthenticateHeader(authToken),
       "Content-Type": "application/json",
     };
 
@@ -70,9 +80,14 @@ export class ServiceUtils {
     });
   }
 
-  static async patch(url: string, data: object, urlNeedMap = true) {
+  static async patch(
+    url: string,
+    data: object,
+    urlNeedMap = true,
+    authToken = getToken()
+  ) {
     const headers = {
-      ...(await createXanoAuthenticateHeader()),
+      ...createXanoAuthenticateHeader(authToken),
       "Content-Type": "application/json",
     };
     return await this.generic(this.buildXanoUrl(url, urlNeedMap), {
@@ -82,8 +97,8 @@ export class ServiceUtils {
     });
   }
 
-  static async delete(url: string, urlNeedMap = true) {
-    const headers = await createXanoAuthenticateHeader();
+  static async delete(url: string, urlNeedMap = true, authToken = getToken()) {
+    const headers = createXanoAuthenticateHeader(authToken);
     return await this.generic(this.buildXanoUrl(url, urlNeedMap), {
       method: "DELETE",
       headers,
@@ -141,11 +156,11 @@ export const manageStatusCode = async (response: Response) => {
   return true;
 };
 
-const createXanoAuthenticateHeader = async () => {
-  return getToken()
+const createXanoAuthenticateHeader = (authToken: string | undefined) => {
+  return authToken
     ? {
         "X-Xano-Authorization-Only": true,
-        "X-Xano-Authorization": await getToken(),
+        "X-Xano-Authorization": authToken,
       }
     : {};
 };
