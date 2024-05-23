@@ -145,14 +145,7 @@ export async function tryConnection() {
 }
 
 export function getToken() {
-  if (authenticated()) return AuthenticatedUserStore.getToken();
-
-  //TODO to delete ?
-  if (import.meta.env.VITE_AUTH0_DEV_MODE === "true") {
-    return "fakeToken";
-  }
-
-  return "";
+  return authenticated() ? AuthenticatedUserStore.getToken() : "";
 }
 
 function headerJson(token: string): HeadersInit {
