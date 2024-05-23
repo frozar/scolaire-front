@@ -3,7 +3,6 @@ import { JSX, createContext, createEffect, useContext } from "solid-js";
 import { SetStoreFunction, Store, createStore } from "solid-js/store";
 import { SelectedMenuType, TileId } from "./type";
 import { informationBoardTabIdType } from "./views/content/board/component/organism/InformationBoardTabs";
-import { xanoUser } from "./views/layout/authentication";
 
 type StateGuiType = {
   selectedMenu: SelectedMenuType;
@@ -16,7 +15,6 @@ type StateGuiType = {
   displayedInformationBoard: boolean;
   nextLeafletPointId: number;
   activeOrganizationId: number;
-  loggedUser: string;
 };
 
 const defaultStateGui: StateGuiType = {
@@ -30,7 +28,6 @@ const defaultStateGui: StateGuiType = {
   displayedInformationBoard: false,
   nextLeafletPointId: 0,
   activeOrganizationId: 0,
-  loggedUser: "",
 };
 
 // Check if the local storage has the correct keys
@@ -136,16 +133,6 @@ const makeStateGuiContext = () => {
     setState("activeOrganizationId", id);
   }
 
-  function getLoggedUser() {
-    if (state.loggedUser != "") return JSON.parse(state.loggedUser);
-    return undefined;
-  }
-
-  function setLoggedUser(user: xanoUser | undefined) {
-    if (user) setState("loggedUser", JSON.stringify(user));
-    else setState("loggedUser", "");
-  }
-
   function setSelectedReadModeTile(tileId: TileId) {
     setState("selectedReadModeTile", tileId);
   }
@@ -217,8 +204,6 @@ const makeStateGuiContext = () => {
       setActiveMapId,
       getActiveOrganizationId,
       setActiveOrganizationId,
-      getLoggedUser,
-      setLoggedUser,
       setSelectedReadModeTile,
       getSelectedReadModeTile,
       setSelectedEditModeTile,

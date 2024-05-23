@@ -4,7 +4,7 @@ import { getSelectedOrganisation } from "../views/content/board/component/organi
 import { xanoUser } from "../views/layout/authentication";
 import { UserOrganizationStore } from "./user-organization.store";
 
-const [, { setActiveMapId, setLoggedUser }] = useStateGui();
+const [, { setActiveMapId }] = useStateGui();
 
 export const [getUser, setUser] = createSignal<xanoUser | undefined>();
 
@@ -12,11 +12,21 @@ export const [authenticated, setAuthenticated] = createSignal(false);
 
 export namespace AuthenticatedUserStore {
   export function get(): xanoUser | undefined {
-    return getUser();
+    const output = getUser();
+    if (!output) {
+      const authenticatedString = localStorage.getItem("authenticated");
+      if (authenticatedString) {
+        return JSON.parse(authenticatedString);
+      }
+    }
+    return output;
   }
 
   export function getToken() {
-    return get()?.token;
+    const user = getUser();
+    if (!user) return undefined;
+
+    return user.token;
   }
 
   export function isTheUser(email: string) {
@@ -36,15 +46,14 @@ export namespace AuthenticatedUserStore {
   export function set(user: xanoUser) {
     setUser(user);
     setAuthenticated(true);
+    localStorage.setItem("authenticated", JSON.stringify(user));
     UserOrganizationStore.set(user.organisation);
-    setLoggedUser(user);
   }
 
   export function unset() {
     setAuthenticated(false);
-    setUser(undefined);
     UserOrganizationStore.unset();
-    setLoggedUser(undefined);
+    localStorage.removeItem("authenticated");
     setActiveMapId(null);
   }
 }

@@ -1,4 +1,5 @@
 import { useStateGui } from "../../StateGui";
+import { ServiceUtils } from "../../_services/_utils.service";
 import {
   AuthenticatedUserStore,
   authenticated,
@@ -7,8 +8,7 @@ import { MapStore } from "../../_stores/map.store";
 import { UserOrganizationStore } from "../../_stores/user-organization.store";
 import { setSelectedOrganisation } from "../content/board/component/organism/OrganisationSelector";
 
-const [, { getLoggedUser, setLoggedUser, getActiveOrganizationId }] =
-  useStateGui();
+const [, { getActiveOrganizationId }] = useStateGui();
 
 const XANO_AUTH_URL = import.meta.env.VITE_XANO_URL_AUTH;
 // TODO l'url ne doit pas être bonne.... pensez à mettre dans le .env
@@ -123,47 +123,25 @@ async function getAuthUrl() {
 }
 
 export async function tryConnection() {
-  let user: xanoUser | undefined = AuthenticatedUserStore.get();
-  if (!user) user = getLoggedUser();
+  const user: xanoUser | undefined = AuthenticatedUserStore.get();
 
   if (user) {
-    // const res = await ServiceUtils.get("/auth/me", false, true);
-    // if (res && res.isAuthenticated) {
-    //   user = {
-    //     ...user,
-    //     email: res.user.email,
-    //     organisation: res.user.organisation,
-    //     role: res.user.role,
-    //     name: res.user.name,
-    //   } as xanoUser;
-    //   setStoredData({
-    //     user,
-    //   });
-    //   AuthenticatedUserStore.set(user);
-    // } else {
-    //   AuthenticatedUserStore.unset();
-    // }
-
     AuthenticatedUserStore.set(user);
-    setLoggedUser(user);
-    const org = UserOrganizationStore.get().find(
-      (item) => item.organisation_id == getActiveOrganizationId()
-    );
-    if (org) setSelectedOrganisation(org);
-    MapStore.fetchUserMaps();
+    const res = await ServiceUtils.get("/auth/me", false, true);
+
+    if (res && res.isAuthenticated) {
+      const org = UserOrganizationStore.get().find(
+        (item) => item.organisation_id == getActiveOrganizationId()
+      );
+
+      if (org) setSelectedOrganisation(org);
+      MapStore.fetchUserMaps();
+    } else {
+      AuthenticatedUserStore.unset();
+    }
   } else {
     AuthenticatedUserStore.unset();
   }
-}
-
-//TODO function never used
-export async function isAuthenticated() {
-  await tryConnection();
-  const user = AuthenticatedUserStore.get();
-  if (!user) {
-    return false;
-  }
-  return true;
 }
 
 export function getToken() {
