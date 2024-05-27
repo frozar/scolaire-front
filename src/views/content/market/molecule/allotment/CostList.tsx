@@ -1,4 +1,11 @@
-import { For, Setter, createSignal, onMount } from "solid-js";
+import {
+  Accessor,
+  For,
+  Setter,
+  Show,
+  createEffect,
+  createSignal,
+} from "solid-js";
 import {
   TransporterCostType,
   TransporterType,
@@ -7,6 +14,7 @@ import PlusIcon from "../../../../../icons/PlusIcon";
 import { TripUtils } from "../../../../../utils/trip.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { CostItem } from "./CostItem";
+import { CostItemEdit } from "./CostItemEdit";
 import "./CostList.css";
 
 interface CostListProps {
@@ -14,51 +22,110 @@ interface CostListProps {
   transporterSetter: Setter<TransporterType>;
 }
 
+type LocalCostType = {
+  content: Accessor<TransporterCostType>;
+  setContent: Setter<TransporterCostType>;
+  inEdit: Accessor<boolean>;
+  setInEdit: Setter<boolean>;
+};
+
 export function CostList(props: CostListProps) {
-  const [costs, setCosts] = createSignal<TransporterCostType[]>([]);
+  const [localCosts, setLocalCosts] = createSignal<LocalCostType[]>([]);
 
-  onMount(() => {
-    setCosts(props.transporter.costs);
-  });
+  createEffect(() => {
+    setLocalCosts(
+      props.transporter.costs.map((c) => {
+        const [content, setContent] = createSignal<TransporterCostType>({
+          busCategoryId: c.busCategoryId,
+          cost: c.cost,
+          costHlp: c.costHlp,
+        });
+        const [inEdit, setInEdit] = createSignal(false);
 
-  function addVehicle() {
-    const newObj: TransporterCostType = {
+        const localCost = {
+          content,
+          setContent,
+          inEdit,
+          setInEdit,
+        };
+
+        return localCost;
+      })
+    );
+    // eslint-disable-next-line solid/reactivity
+  }, props.transporter.costs);
+
+  function localCostToTransporterCost() {
+    const list: TransporterCostType[] = [];
+    localCosts().forEach((c) =>
+      list.push({
+        busCategoryId: c.content().busCategoryId,
+        cost: c.content().cost,
+        costHlp: c.content().costHlp,
+      })
+    );
+    return list;
+  }
+
+  function addCost() {
+    const [content, setContent] = createSignal<TransporterCostType>({
       busCategoryId: 0,
       cost: 0,
       costHlp: 0,
-    };
-    setCosts((prev) => {
-      return [...prev, newObj];
     });
+    const [inEdit, setInEdit] = createSignal(true);
+
+    setLocalCosts((prev) => {
+      return [...prev, { content, setContent, inEdit, setInEdit }];
+    });
+
     // eslint-disable-next-line solid/reactivity
     props.transporterSetter((prev) => {
-      return { ...prev, costs: costs() };
+      return { ...prev, costs: localCostToTransporterCost() };
     });
   }
 
-  function editCost(
-    oldCost: TransporterCostType,
-    newCost: TransporterCostType
-  ) {
-    setCosts((prev) => {
-      return prev.map((cost) => {
-        if (cost == oldCost) return newCost;
-        return cost;
+  function enableEdit(cost: LocalCostType) {
+    const costToEdit = localCosts().find((c) => c.content() == cost.content());
+    if (costToEdit) costToEdit.setInEdit(true);
+  }
+
+  function deleteCost(cost: LocalCostType) {
+    const costToDelete = localCosts().find(
+      (c) => c.content() == cost.content()
+    );
+
+    if (costToDelete) {
+      setLocalCosts((prev) => {
+        return prev.filter((c) => c != costToDelete);
       });
-    });
-    // eslint-disable-next-line solid/reactivity
-    props.transporterSetter((prev) => {
-      return { ...prev, costs: costs() };
-    });
+
+      // eslint-disable-next-line solid/reactivity
+      props.transporterSetter((prev) => {
+        return { ...prev, costs: localCostToTransporterCost() };
+      });
+    }
   }
 
-  function deleteCost(cost: TransporterCostType) {
-    setCosts((prev) => {
-      return prev.filter((c) => c != cost);
-    });
+  function updateCost(
+    toEdit: TransporterCostType,
+    edited: TransporterCostType
+  ) {
+    const costToEdit = localCosts().find(
+      (c) =>
+        c.content().busCategoryId === toEdit.busCategoryId &&
+        c.content().cost === toEdit.cost &&
+        c.content().costHlp === toEdit.costHlp
+    );
+
+    if (costToEdit) {
+      costToEdit.setContent(edited);
+      costToEdit.setInEdit(false);
+    }
+
     // eslint-disable-next-line solid/reactivity
     props.transporterSetter((prev) => {
-      return { ...prev, costs: costs() };
+      return { ...prev, costs: localCostToTransporterCost() };
     });
   }
 
@@ -66,17 +133,33 @@ export function CostList(props: CostListProps) {
     <div>
       <div class="cost-list-header">
         <p>Coûts :</p>
-        <ButtonIcon icon={<PlusIcon />} onClick={addVehicle} />
+        <ButtonIcon icon={<PlusIcon />} onClick={addCost} />
       </div>
       <div class="cost-list">
-        <For each={costs()}>
+        <For each={localCosts()}>
           {(item) => (
-            <CostItem
-              delete={deleteCost}
-              edit={editCost}
-              item={item}
-              vehicleName={TripUtils.tripBusIdToString(item.busCategoryId)}
-            />
+            <Show
+              when={!item.inEdit()}
+              fallback={
+                <CostItemEdit
+                  busCategoryId={item.content().busCategoryId}
+                  cost={item.content().cost}
+                  costHlp={item.content().costHlp}
+                  submitCb={updateCost}
+                />
+              }
+            >
+              <CostItem
+                busCategoryId={item.content().busCategoryId}
+                cost={item.content().cost}
+                costHlp={item.content().costHlp}
+                deleteCb={() => deleteCost(item)}
+                enableEditCb={() => enableEdit(item)}
+                vehicleName={TripUtils.tripBusIdToString(
+                  item.content().busCategoryId
+                )}
+              />
+            </Show>
           )}
         </For>
       </div>
