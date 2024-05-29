@@ -1,11 +1,10 @@
 import { Accessor, For, Setter, Show, createSignal, onMount } from "solid-js";
 import { AllotmentType } from "../../../../../_entities/allotment.entity";
 import { TransporterType } from "../../../../../_entities/transporter.entity";
-import CardWrapper from "../../../../../component/molecule/CardWrapper";
 import { CirclePlusIcon } from "../../../../../icons/CirclePlusIcon";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import { setTranspoterToDelete } from "./AllotmentTab";
-import { TransporterItem } from "./TransporterItem";
+import TransporterItem from "./TransporterItem";
 import { TransporterItemEdit } from "./TransporterItemEdit";
 import "./TransporterList.css";
 
@@ -150,32 +149,30 @@ export function TransporterList(props: AllotmentTransporterListProps) {
       <div class="transporter-list-items">
         <For each={localTransporters()}>
           {(item) => (
-            <CardWrapper>
-              <Show
-                when={!item.inEdit()}
-                fallback={
-                  <TransporterItemEdit
-                    cancel={() => disableEdit(item)}
-                    costs={item.content().costs}
-                    id={item.content().id as number}
-                    allotmentId={item.content().allotmentId as number}
-                    name={item.content().name}
-                    submitCb={updateTransporter}
-                    type={item.content().type}
-                    vehicles={item.content().vehicles}
-                  />
-                }
-              >
-                <TransporterItem
-                  costLenght={item.content().costs.length}
-                  deleteCb={() => deleteTransporter(item)}
-                  enableEditCb={() => enableEdit(item)}
+            <Show
+              when={!item.inEdit()}
+              fallback={
+                <TransporterItemEdit
+                  cancel={() => disableEdit(item)}
+                  costs={item.content().costs}
+                  id={item.content().id as number}
+                  allotmentId={item.content().allotmentId as number}
                   name={item.content().name}
+                  submitCb={updateTransporter}
                   type={item.content().type}
-                  vehicleLenght={item.content().vehicles.length}
+                  vehicles={item.content().vehicles}
                 />
-              </Show>
-            </CardWrapper>
+              }
+            >
+              <TransporterItem
+                costLenght={item.content().costs.length}
+                deleteCb={() => deleteTransporter(item)}
+                enableEditCb={() => enableEdit(item)}
+                name={item.content().name}
+                type={item.content().type}
+                vehicleLenght={item.content().vehicles.length}
+              />
+            </Show>
           )}
         </For>
       </div>

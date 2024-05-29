@@ -5,6 +5,7 @@ import {
   TransporterVehicleType,
 } from "../../../../../_entities/transporter.entity";
 import { SelectInput } from "../../../../../component/atom/SelectInput";
+import CardWrapper from "../../../../../component/molecule/CardWrapper";
 import { CircleCheckIcon } from "../../../../../icons/CircleCheckIcon";
 import { CircleXMarkIcon } from "../../../../../icons/CircleXMarkIcon";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
@@ -60,47 +61,51 @@ export function TransporterItemEdit(props: TransporterItemEditProps) {
   });
 
   return (
-    <div class="transporter-item-container">
-      <div>
+    <CardWrapper>
+      <div class="transporter-item-container">
         <div>
-          <label class="inputs-label-offset" for="name">
-            Nom :
-          </label>
-          <input
-            class="transporter-name-input"
-            value={props.name}
-            type="text"
-            id="name"
-            onInput={(e) => onNamechange(e.target.value)}
+          <div>
+            <label class="inputs-label-offset" for="name">
+              Nom :
+            </label>
+            <input
+              class="transporter-name-input"
+              value={props.name}
+              type="text"
+              id="name"
+              onInput={(e) => onNamechange(e.target.value)}
+            />
+          </div>
+          <div>
+            <label class="inputs-label-offset">Type :</label>
+            <SelectInput
+              options={[
+                { value: 0, text: "Titulaire" },
+                { value: 1, text: "Co-traitant" },
+                { value: 2, text: "Sous-traitant" },
+              ]}
+              onChange={(e) => onTypeChange(Number(e))}
+              defaultValue={typeToId(props.type)}
+              variant="borderless"
+            />
+          </div>
+          <VehicleList
+            vehicles={props.vehicles}
+            vehicleUpdateCb={onVehicleChange}
+          />
+          <CostList costs={props.costs} costUpdateCb={onCostChange} />
+        </div>
+        <div class="transporter-item-buttons">
+          <ButtonIcon icon={<CircleXMarkIcon />} onClick={props.cancel} />
+          <ButtonIcon
+            icon={<CircleCheckIcon />}
+            onClick={() =>
+              props.submitCb(initialTransporter, editedTransporter)
+            }
           />
         </div>
-        <div>
-          <label class="inputs-label-offset">Type :</label>
-          <SelectInput
-            options={[
-              { value: 0, text: "Titulaire" },
-              { value: 1, text: "Co-traitant" },
-              { value: 2, text: "Sous-traitant" },
-            ]}
-            onChange={(e) => onTypeChange(Number(e))}
-            defaultValue={typeToId(props.type)}
-            variant="borderless"
-          />
-        </div>
-        <VehicleList
-          vehicles={props.vehicles}
-          vehicleUpdateCb={onVehicleChange}
-        />
-        <CostList costs={props.costs} costUpdateCb={onCostChange} />
       </div>
-      <div class="transporter-item-buttons">
-        <ButtonIcon icon={<CircleXMarkIcon />} onClick={props.cancel} />
-        <ButtonIcon
-          icon={<CircleCheckIcon />}
-          onClick={() => props.submitCb(initialTransporter, editedTransporter)}
-        />
-      </div>
-    </div>
+    </CardWrapper>
   );
 }
 
