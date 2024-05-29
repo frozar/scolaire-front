@@ -6,10 +6,7 @@ import {
   createEffect,
   createSignal,
 } from "solid-js";
-import {
-  TransporterType,
-  TransporterVehicleType,
-} from "../../../../../_entities/transporter.entity";
+import { TransporterVehicleType } from "../../../../../_entities/transporter.entity";
 import PlusIcon from "../../../../../icons/PlusIcon";
 import { TripUtils } from "../../../../../utils/trip.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
@@ -18,8 +15,8 @@ import { VehicleItemEdit } from "./VehicleItemEdit";
 import "./VehicleList.css";
 
 interface VehicleListProps {
-  transporter: TransporterType;
-  transporterSetter: Setter<TransporterType>;
+  vehicles: TransporterVehicleType[];
+  vehicleUpdateCb: (vehicles: TransporterVehicleType[]) => void;
 }
 
 type LocalVehicleType = {
@@ -36,7 +33,7 @@ export function VehicleList(props: VehicleListProps) {
 
   createEffect(() => {
     setLocalVehicles(
-      props.transporter.vehicles.map((v) => {
+      props.vehicles.map((v) => {
         const [content, setContent] = createSignal<TransporterVehicleType>({
           busCategoryId: v.busCategoryId,
           licensePlate: v.licensePlate,
@@ -54,7 +51,7 @@ export function VehicleList(props: VehicleListProps) {
       })
     );
     // eslint-disable-next-line solid/reactivity
-  }, props.transporter.vehicles);
+  }, props.vehicles);
 
   function localVehiclesToTransporterVehicles() {
     const list: TransporterVehicleType[] = [];
@@ -78,10 +75,7 @@ export function VehicleList(props: VehicleListProps) {
       return [...prev, { content, setContent, inEdit, setInEdit }];
     });
 
-    // eslint-disable-next-line solid/reactivity
-    props.transporterSetter((prev) => {
-      return { ...prev, vehicles: localVehiclesToTransporterVehicles() };
-    });
+    props.vehicleUpdateCb(localVehiclesToTransporterVehicles());
   }
 
   function enableEdit(vehicle: LocalVehicleType) {
@@ -101,10 +95,7 @@ export function VehicleList(props: VehicleListProps) {
         return prev.filter((v) => v != vehicleToDelete);
       });
 
-      // eslint-disable-next-line solid/reactivity
-      props.transporterSetter((prev) => {
-        return { ...prev, vehicles: localVehiclesToTransporterVehicles() };
-      });
+      props.vehicleUpdateCb(localVehiclesToTransporterVehicles());
     }
   }
 
@@ -123,10 +114,7 @@ export function VehicleList(props: VehicleListProps) {
       vehicleToEdit.setInEdit(false);
     }
 
-    // eslint-disable-next-line solid/reactivity
-    props.transporterSetter((prev) => {
-      return { ...prev, vehicles: localVehiclesToTransporterVehicles() };
-    });
+    props.vehicleUpdateCb(localVehiclesToTransporterVehicles());
   }
 
   return (

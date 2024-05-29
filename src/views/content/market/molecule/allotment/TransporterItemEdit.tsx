@@ -1,5 +1,9 @@
-import { Setter } from "solid-js";
-import { TransporterType } from "../../../../../_entities/transporter.entity";
+import { onMount } from "solid-js";
+import {
+  TransporterCostType,
+  TransporterType,
+  TransporterVehicleType,
+} from "../../../../../_entities/transporter.entity";
 import { SelectInput } from "../../../../../component/atom/SelectInput";
 import { CircleCheckIcon } from "../../../../../icons/CircleCheckIcon";
 import { CircleXMarkIcon } from "../../../../../icons/CircleXMarkIcon";
@@ -9,24 +13,51 @@ import "./TransporterItem.css";
 import { VehicleList } from "./VehicleList";
 
 interface TransporterItemEditProps {
-  item: TransporterType;
-  itemSetter: Setter<TransporterType>;
   cancel: () => void;
-  submit: () => void;
+  submitCb: (toEdit: TransporterType, edited: TransporterType) => void;
+  id: number;
+  name: string;
+  type: string;
+  vehicles: TransporterVehicleType[];
+  costs: TransporterCostType[];
+  allotmentId: number;
 }
 
 export function TransporterItemEdit(props: TransporterItemEditProps) {
+  const initialTransporter = {} as TransporterType;
+  const editedTransporter = {} as TransporterType;
+
   function onTypeChange(value: number) {
-    props.itemSetter((prev) => {
-      return { ...prev, type: idToType(value) };
-    });
+    editedTransporter.type = idToType(value);
   }
 
   function onNamechange(value: string) {
-    props.itemSetter((prev) => {
-      return { ...prev, name: value };
-    });
+    editedTransporter.name = value;
   }
+
+  function onVehicleChange(value: TransporterVehicleType[]) {
+    editedTransporter.vehicles = value;
+  }
+
+  function onCostChange(value: TransporterCostType[]) {
+    editedTransporter.costs = value;
+  }
+
+  onMount(() => {
+    initialTransporter.name = props.name;
+    initialTransporter.type = props.type;
+    initialTransporter.vehicles = props.vehicles;
+    initialTransporter.costs = props.costs;
+    initialTransporter.id = props.id;
+    initialTransporter.allotmentId = props.allotmentId;
+
+    editedTransporter.name = props.name;
+    editedTransporter.type = props.type;
+    editedTransporter.vehicles = props.vehicles;
+    editedTransporter.costs = props.costs;
+    editedTransporter.id = props.id;
+    editedTransporter.allotmentId = props.allotmentId;
+  });
 
   return (
     <div class="transporter-item-container">
@@ -37,7 +68,7 @@ export function TransporterItemEdit(props: TransporterItemEditProps) {
           </label>
           <input
             class="transporter-name-input"
-            value={props.item.name}
+            value={props.name}
             type="text"
             id="name"
             onInput={(e) => onNamechange(e.target.value)}
@@ -52,22 +83,22 @@ export function TransporterItemEdit(props: TransporterItemEditProps) {
               { value: 2, text: "Sous-traitant" },
             ]}
             onChange={(e) => onTypeChange(Number(e))}
-            defaultValue={typeToId(props.item.type)}
+            defaultValue={typeToId(props.type)}
             variant="borderless"
           />
         </div>
         <VehicleList
-          transporter={props.item}
-          transporterSetter={props.itemSetter}
+          vehicles={props.vehicles}
+          vehicleUpdateCb={onVehicleChange}
         />
-        <CostList
-          transporter={props.item}
-          transporterSetter={props.itemSetter}
-        />
+        <CostList costs={props.costs} costUpdateCb={onCostChange} />
       </div>
       <div class="transporter-item-buttons">
         <ButtonIcon icon={<CircleXMarkIcon />} onClick={props.cancel} />
-        <ButtonIcon icon={<CircleCheckIcon />} onClick={props.submit} />
+        <ButtonIcon
+          icon={<CircleCheckIcon />}
+          onClick={() => props.submitCb(initialTransporter, editedTransporter)}
+        />
       </div>
     </div>
   );

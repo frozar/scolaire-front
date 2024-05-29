@@ -56,8 +56,9 @@ export function AllotmentEditContent(props: AllotmentEditContentProps) {
       </div>
       <div class="allotment-edit-transporter">
         <TransporterList
-          allotment={props.allotment}
+          allotmentId={props.allotment.id as number}
           allotmentSetter={props.allotmentSetter}
+          transporters={props.allotment.transporters}
         />
       </div>
       <div class="allotment-edit-buttons">
