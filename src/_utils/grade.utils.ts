@@ -1,4 +1,5 @@
-import { GradeType } from "../_entities/grade.entity";
+import { GradeTripType, GradeType } from "../_entities/grade.entity";
+import { SchoolType } from "../_entities/school.entity";
 import { StopType } from "../_entities/stop.entity";
 import { StopStore } from "../_stores/stop.store";
 import { setDisplayStops } from "../views/content/_component/organisme/StopPoints";
@@ -7,6 +8,7 @@ export namespace GradeUtils {
   export function displayStopsOfGrades(grades: GradeType[]) {
     setDisplayStops(getStopsOfGrades(grades));
   }
+
   export function getStopsOfGrades(grades: GradeType[]) {
     const stops: StopType[] = [];
     for (const grade of grades) {
@@ -17,5 +19,15 @@ export namespace GradeUtils {
       }
     }
     return stops;
+  }
+
+  export function gradesOfSchools(schools: SchoolType[]): GradeType[] {
+    return schools.map((school) => school.grades).flat();
+  }
+
+  export function getQuantityFromGradesTrip(gradesTrip: GradeTripType[]) {
+    return gradesTrip
+      .map((gradeTrip) => gradeTrip.quantity)
+      .reduce((accumulator, quantity) => accumulator + quantity);
   }
 }

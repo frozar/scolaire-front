@@ -6,9 +6,38 @@ import { getTrips } from "../_stores/trip.store";
 import { NatureEnum } from "../type";
 
 export namespace StopUtils {
+  export function getAvalaibleTripGrade(
+    stopId: number,
+    gradesAvailableOnTrip: GradeType[],
+    tripDirection: number
+    //TODO ajouter les jours
+  ) {
+    const stop = StopStore.get(stopId) as StopType;
+
+    for (const grade of gradesAvailableOnTrip) {
+      if (
+        grade.associatedStops.some(
+          (associatedStop) => associatedStop.stopId == stopId
+        )
+      ) {
+        const associatedStop: AssociatedStopType = grade.associatedStops.find(
+          (associatedStop) => associatedStop.stopId == stopId
+        ) as AssociatedStopType;
+      }
+    }
+
+    // depuis le stop -> retrouver la liste des classe+qt encore à distribuer
+
+    // renvoyer des GradeTripType[]
+
+    stop.associated[0].idClassToSchool;
+    //from trips()
+  }
+
   export function stopsWithQuantityByGrades(
     grades: GradeType[],
     tripDirection: number
+    //TODO ajouter les jours
   ): StopType[] {
     const gradesID: number[] = grades.map((grade) => grade.id as number);
 
@@ -26,11 +55,7 @@ export namespace StopUtils {
      * get the quantity of student on the trips (corresponding to
      * the trip direction and the grades)
      */
-    const associatedStopsFromTrips: {
-      stopId: number;
-      gradeId: number;
-      quantity: number;
-    }[] = [];
+    const associatedStopsFromTrips: AssociatedGradeAndStopType[] = [];
 
     for (const trip of getTrips()) {
       if (
@@ -75,4 +100,41 @@ export namespace StopUtils {
 
     return stops;
   }
+}
+
+type AssociatedGradeAndStopType = {
+  stopId: number;
+  gradeId: number;
+  quantity: number;
+};
+
+function getAssociatedGradesOfStopFromTrips(
+  tripDirection: number,
+  stopId: number
+): AssociatedGradeAndStopType[] {
+  const output: AssociatedGradeAndStopType[] = [];
+
+  for (const trip of getTrips()) {
+    if (
+      trip.tripDirectionId == tripDirection &&
+      trip.tripPoints.some(
+        (tripPoint) =>
+          tripPoint.nature == NatureEnum.stop && tripPoint.id == stopId
+      )
+      //TODO ajouter le check des days applicable
+    ) {
+      for (const tripPoint of trip.tripPoints) {
+        if (tripPoint.id == stopId) {
+          for (const tripPointGrade of tripPoint.grades) {
+            output.push({
+              stopId: stopId,
+              gradeId: tripPointGrade.gradeId,
+              quantity: tripPointGrade.quantity,
+            });
+          }
+        }
+      }
+    }
+  }
+  return output;
 }
