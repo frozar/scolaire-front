@@ -12,51 +12,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const TransporterList: Story = {
-  args: {
-    transporters: [],
-    addCb: () => {},
-    deleteCb: () => {},
-    updateCb: () => {},
-    enableEditCb: () => {},
-    disableEditCb: () => {},
-  },
-};
-
-export const TransporterListWithItem: Story = {
-  args: {
-    transporters: [newItem(false)],
-    addCb: () => {},
-    deleteCb: () => {},
-    updateCb: () => {},
-    enableEditCb: () => {},
-    disableEditCb: () => {},
-  },
-};
-
-export const TransporterListWithMultipleItems: Story = {
-  args: {
-    transporters: [newItem(false), newItem(false), newItem(false)],
-    addCb: () => {},
-    deleteCb: () => {},
-    updateCb: () => {},
-    enableEditCb: () => {},
-    disableEditCb: () => {},
-  },
-};
-
-export const TransporterListWithItemInEdit: Story = {
-  args: {
-    transporters: [newItem(true)],
-    addCb: () => {},
-    deleteCb: () => {},
-    updateCb: () => {},
-    enableEditCb: () => {},
-    disableEditCb: () => {},
-  },
-};
-
-function newItem(edited: boolean) {
+function newTransporter(edited: boolean) {
   const [content, setContent] = createSignal<TransporterType>({
     id: 0,
     name: "Transporteur",
@@ -75,3 +31,51 @@ function newItem(edited: boolean) {
   };
   return newTransporter;
 }
+
+export const TransporterEmptyList: Story = {
+  args: {
+    transporters: [],
+    addCb: () => {},
+    deleteCb: () => {},
+    updateCb: () => {},
+    enableEditCb: () => {},
+    disableEditCb: () => {},
+  },
+};
+
+export const TransporterListWithItem: Story = {
+  args: {
+    transporters: [newTransporter(false)],
+    addCb: () => {},
+    deleteCb: () => {},
+    updateCb: () => {},
+    enableEditCb: () => {},
+    disableEditCb: () => {},
+  },
+};
+
+export const TransporterListWithMultipleItems: Story = {
+  args: {
+    transporters: [
+      newTransporter(false),
+      newTransporter(false),
+      newTransporter(false),
+    ],
+    addCb: () => {},
+    deleteCb: () => {},
+    updateCb: () => {},
+    enableEditCb: () => {},
+    disableEditCb: () => {},
+  },
+};
+
+export const TransporterListWithItemInEdit: Story = {
+  args: {
+    transporters: [newTransporter(true)],
+    addCb: () => {},
+    deleteCb: () => {},
+    updateCb: () => {},
+    enableEditCb: () => {},
+    disableEditCb: () => {},
+  },
+};

@@ -88,7 +88,7 @@ export function AllotmentEditContent(props: AllotmentEditContentProps) {
     const [content, setContent] = createSignal<TransporterType>({
       id: 0,
       name: "",
-      type: "",
+      type: "Titulaire",
       allotmentId: props.allotment.id,
       vehicles: [],
       costs: [],
@@ -123,9 +123,14 @@ export function AllotmentEditContent(props: AllotmentEditContentProps) {
     });
   }
 
-  function updateTransporter(toEdit: TransporterType, edited: TransporterType) {
+  function updateTransporter(
+    originalTransporter: TransporterType,
+    edited: TransporterType
+  ) {
     const transporterToEdit = localTransporters().find(
-      (v) => v.content().id === toEdit.id && v.content().name === toEdit.name
+      (v) =>
+        v.content().id === originalTransporter.id &&
+        v.content().name === originalTransporter.name
     );
 
     if (transporterToEdit) {

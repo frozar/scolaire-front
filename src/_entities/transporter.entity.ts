@@ -1,3 +1,25 @@
+export type TransporterTypeType = "Titulaire" | "Co-traitant" | "Sous-traitant";
+
+export type TransporterType = {
+  // TODO: add readonly  before id
+  id: number;
+  name: string;
+  type: TransporterTypeType;
+  allotmentId?: number;
+  vehicles: TransporterVehicleType[];
+  costs: TransporterCostType[];
+};
+
+export type TransporterDbType = {
+  // TODO: add readonly  before id
+  id: number;
+  name: string;
+  type: TransporterTypeType;
+  allotment_id?: number;
+  vehicles: TransporterVehicleDbType[];
+  vehicle_cost: TransporterCostDbType[];
+};
+
 export namespace TransporterEntity {
   export function build(dbTransporter: TransporterDbType): TransporterType {
     return {
@@ -10,14 +32,24 @@ export namespace TransporterEntity {
     };
   }
 
-  export function dbFormat(transporter: TransporterType): TransporterDbType {
+  export function dbFormat(
+    transporter: Omit<TransporterType, "id"> & {
+      id?: number;
+    }
+  ): Omit<TransporterDbType, "id"> & {
+    id?: number;
+  } {
+    const objectIdOrNot = transporter.id ? { id: transporter.id } : {};
+
     return {
-      id: transporter.id,
-      name: transporter.name,
-      type: transporter.type,
-      allotment_id: transporter.allotmentId,
-      vehicles: transporter.vehicles.map((vehicle) => formatVehicle(vehicle)),
-      vehicle_cost: transporter.costs.map((cost) => formatCost(cost)),
+      ...objectIdOrNot,
+      ...{
+        name: transporter.name,
+        type: transporter.type,
+        allotment_id: transporter.allotmentId,
+        vehicles: transporter.vehicles.map((vehicle) => formatVehicle(vehicle)),
+        vehicle_cost: transporter.costs.map((cost) => formatCost(cost)),
+      },
     };
   }
 }
@@ -56,15 +88,6 @@ function formatCost(cost: TransporterCostType): TransporterCostDbType {
   };
 }
 
-export type TransporterType = {
-  id?: number;
-  name: string;
-  type: string;
-  allotmentId?: number;
-  vehicles: TransporterVehicleType[];
-  costs: TransporterCostType[];
-};
-
 export type TransporterVehicleType = {
   licensePlate: string;
   busCategoryId: number;
@@ -74,15 +97,6 @@ export type TransporterCostType = {
   busCategoryId: number;
   cost: number;
   costHlp: number;
-};
-
-export type TransporterDbType = {
-  id?: number;
-  name: string;
-  type: string;
-  allotment_id?: number;
-  vehicles: TransporterVehicleDbType[];
-  vehicle_cost: TransporterCostDbType[];
 };
 
 export type TransporterVehicleDbType = {

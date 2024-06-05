@@ -2,6 +2,7 @@ import { onMount } from "solid-js";
 import {
   TransporterCostType,
   TransporterType,
+  TransporterTypeType,
   TransporterVehicleType,
 } from "../../../../../_entities/transporter.entity";
 import { SelectInput } from "../../../../../component/atom/SelectInput";
@@ -13,12 +14,36 @@ import { CostList } from "./CostList";
 import "./TransporterItem.css";
 import { VehicleList } from "./VehicleList";
 
+function idToType(id: number): TransporterTypeType {
+  switch (id) {
+    case 0:
+      return "Titulaire";
+    case 1:
+      return "Co-traitant";
+    case 2:
+      return "Sous-traitant";
+    default:
+      return "Titulaire";
+  }
+}
+
+function typeToId(type: TransporterTypeType) {
+  switch (type) {
+    case "Titulaire":
+      return 0;
+    case "Co-traitant":
+      return 1;
+    case "Sous-traitant":
+      return 2;
+  }
+}
+
 interface TransporterItemEditProps {
   cancel: () => void;
   submitCb: (toEdit: TransporterType, edited: TransporterType) => void;
   id: number;
   name: string;
-  type: string;
+  type: TransporterTypeType;
   vehicles: TransporterVehicleType[];
   costs: TransporterCostType[];
   allotmentId: number;
@@ -107,30 +132,4 @@ export function TransporterItemEdit(props: TransporterItemEditProps) {
       </div>
     </CardWrapper>
   );
-}
-
-function idToType(id: number) {
-  switch (id) {
-    case 0:
-      return "Titulaire";
-    case 1:
-      return "Co-traitant";
-    case 2:
-      return "Sous-traitant";
-    default:
-      return "";
-  }
-}
-
-function typeToId(type: string) {
-  switch (type) {
-    case "Titulaire":
-      return 0;
-    case "Co-traitant":
-      return 1;
-    case "Sous-traitant":
-      return 2;
-    default:
-      return "";
-  }
 }
