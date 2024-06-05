@@ -8,7 +8,7 @@ import { CircleCheckIcon } from "../../../../icons/CircleCheckIcon";
 import ButtonIcon from "../../board/component/molecule/ButtonIcon";
 import { AllotmentCostList } from "../../market/molecule/allotment/AllotmentCostList";
 import { setTranspoterToDelete } from "../../market/molecule/allotment/AllotmentTab";
-import { TransporterList } from "../../market/molecule/allotment/TransporterList";
+import TransporterList from "../../market/molecule/allotment/TransporterList";
 import "./AllotmentEditContent.css";
 import { AllotmentEditInputs } from "./AllotmentEditInputs";
 

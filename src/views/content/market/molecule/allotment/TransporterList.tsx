@@ -22,7 +22,7 @@ type LocalTransporterType = {
   setInEdit: Setter<boolean>;
 };
 
-export function TransporterList(props: AllotmentTransporterListProps) {
+export default function TransporterList(props: AllotmentTransporterListProps) {
   return (
     <div>
       <div class="transporter-list-header">
