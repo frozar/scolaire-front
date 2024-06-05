@@ -1,92 +1,61 @@
-import { For, Setter, createSignal, onMount } from "solid-js";
-import { AllotmentType } from "../../../../../_entities/allotment.entity";
+import { Accessor, For, Setter, Show } from "solid-js";
 import { TransporterType } from "../../../../../_entities/transporter.entity";
 import { CirclePlusIcon } from "../../../../../icons/CirclePlusIcon";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
-import { setTranspoterToDelete } from "./AllotmentTab";
-import { TransporterItem } from "./TransporterItem";
+import TransporterItem from "./TransporterItem";
+import { TransporterItemEdit } from "./TransporterItemEdit";
 import "./TransporterList.css";
 
 interface AllotmentTransporterListProps {
-  allotment: AllotmentType;
-  allotmentSetter: Setter<AllotmentType>;
+  transporters: LocalTransporterType[];
+  addCb: () => void;
+  deleteCb: (item: LocalTransporterType) => void;
+  updateCb: (toEdit: TransporterType, edited: TransporterType) => void;
+  enableEditCb: (item: LocalTransporterType) => void;
+  disableEditCb: (item: LocalTransporterType) => void;
 }
 
-export function TransporterList(props: AllotmentTransporterListProps) {
-  const [transporters, setTransporters] = createSignal<TransporterType[]>([]);
+type LocalTransporterType = {
+  content: Accessor<TransporterType>;
+  setContent: Setter<TransporterType>;
+  inEdit: Accessor<boolean>;
+  setInEdit: Setter<boolean>;
+};
 
-  onMount(() => {
-    setTransporters(props.allotment.transporters);
-    // eslint-disable-next-line solid/reactivity
-    props.allotmentSetter((prev) => {
-      return { ...prev, transporters: transporters() };
-    });
-  });
-
-  function editTransporter(
-    oldTransport: TransporterType,
-    newTransport: TransporterType
-  ) {
-    setTransporters((prev) => {
-      return prev.map((item) => {
-        if (item == oldTransport) return newTransport;
-        return item;
-      });
-    });
-
-    // eslint-disable-next-line solid/reactivity
-    props.allotmentSetter((prev) => {
-      return { ...prev, transporters: transporters() };
-    });
-  }
-
-  async function deleteTransporter(transport: TransporterType) {
-    if (transport.id)
-      setTranspoterToDelete((prev) => {
-        return [...prev, transport.id as number];
-      });
-
-    setTransporters((prev) => {
-      return prev.filter((cost) => cost != transport);
-    });
-    // eslint-disable-next-line solid/reactivity
-    props.allotmentSetter((prev) => {
-      return { ...prev, transporters: transporters() };
-    });
-  }
-
-  function addtransporter() {
-    const newObj: TransporterType = {
-      id: 0,
-      name: "",
-      type: "",
-      allotmentId: props.allotment.id,
-      vehicles: [],
-      costs: [],
-    };
-    setTransporters((prev) => {
-      return [...prev, newObj];
-    });
-    // eslint-disable-next-line solid/reactivity
-    props.allotmentSetter((prev) => {
-      return { ...prev, transporters: transporters() };
-    });
-  }
-
+export default function TransporterList(props: AllotmentTransporterListProps) {
   return (
     <div>
       <div class="transporter-list-header">
         <p>Ajouter un transporteur</p>
-        <ButtonIcon icon={<CirclePlusIcon />} onClick={addtransporter} />
+        <ButtonIcon icon={<CirclePlusIcon />} onClick={props.addCb} />
       </div>
       <div class="transporter-list-items">
-        <For each={transporters()}>
+        <For each={props.transporters}>
           {(item) => (
-            <TransporterItem
-              edit={editTransporter}
-              delete={deleteTransporter}
-              item={item}
-            />
+            <Show
+              when={!item.inEdit()}
+              fallback={
+                <TransporterItemEdit
+                  cancel={() => props.disableEditCb(item)}
+                  costs={item.content().costs}
+                  id={item.content().id as number}
+                  allotmentId={item.content().allotmentId as number}
+                  name={item.content().name}
+                  submitCb={props.updateCb}
+                  type={item.content().type}
+                  vehicles={item.content().vehicles}
+                />
+              }
+            >
+              <TransporterItem
+                costLenght={item.content().costs.length}
+                deleteCb={() => props.deleteCb(item)}
+                enableEditCb={() => props.enableEditCb(item)}
+                name={item.content().name}
+                type={item.content().type}
+                vehicleLenght={item.content().vehicles.length}
+              />
+            </Show>
           )}
         </For>
       </div>

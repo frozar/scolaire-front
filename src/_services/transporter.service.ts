@@ -24,7 +24,7 @@ export namespace TransporterService {
     return TransporterEntity.build(dbTransporter);
   }
 
-  export async function deleteTransporter(id?: number): Promise<boolean> {
+  export async function deleteTransporter(id: number): Promise<boolean> {
     const returnValue: boolean = await ServiceUtils.delete(
       "/transporter/" + id
     );

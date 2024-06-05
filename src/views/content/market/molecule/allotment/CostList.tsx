@@ -6,10 +6,7 @@ import {
   createEffect,
   createSignal,
 } from "solid-js";
-import {
-  TransporterCostType,
-  TransporterType,
-} from "../../../../../_entities/transporter.entity";
+import { TransporterCostType } from "../../../../../_entities/transporter.entity";
 import PlusIcon from "../../../../../icons/PlusIcon";
 import { TripUtils } from "../../../../../utils/trip.utils";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
@@ -18,8 +15,8 @@ import { CostItemEdit } from "./CostItemEdit";
 import "./CostList.css";
 
 interface CostListProps {
-  transporter: TransporterType;
-  transporterSetter: Setter<TransporterType>;
+  costs: TransporterCostType[];
+  costUpdateCb: (costs: TransporterCostType[]) => void;
 }
 
 type LocalCostType = {
@@ -34,7 +31,7 @@ export function CostList(props: CostListProps) {
 
   createEffect(() => {
     setLocalCosts(
-      props.transporter.costs.map((c) => {
+      props.costs.map((c) => {
         const [content, setContent] = createSignal<TransporterCostType>({
           busCategoryId: c.busCategoryId,
           cost: c.cost,
@@ -53,7 +50,7 @@ export function CostList(props: CostListProps) {
       })
     );
     // eslint-disable-next-line solid/reactivity
-  }, props.transporter.costs);
+  }, props.costs);
 
   function localCostToTransporterCost() {
     const list: TransporterCostType[] = [];
@@ -79,10 +76,7 @@ export function CostList(props: CostListProps) {
       return [...prev, { content, setContent, inEdit, setInEdit }];
     });
 
-    // eslint-disable-next-line solid/reactivity
-    props.transporterSetter((prev) => {
-      return { ...prev, costs: localCostToTransporterCost() };
-    });
+    props.costUpdateCb(localCostToTransporterCost());
   }
 
   function enableEdit(cost: LocalCostType) {
@@ -100,10 +94,7 @@ export function CostList(props: CostListProps) {
         return prev.filter((c) => c != costToDelete);
       });
 
-      // eslint-disable-next-line solid/reactivity
-      props.transporterSetter((prev) => {
-        return { ...prev, costs: localCostToTransporterCost() };
-      });
+      props.costUpdateCb(localCostToTransporterCost());
     }
   }
 
@@ -123,10 +114,7 @@ export function CostList(props: CostListProps) {
       costToEdit.setInEdit(false);
     }
 
-    // eslint-disable-next-line solid/reactivity
-    props.transporterSetter((prev) => {
-      return { ...prev, costs: localCostToTransporterCost() };
-    });
+    props.costUpdateCb(localCostToTransporterCost());
   }
 
   return (
