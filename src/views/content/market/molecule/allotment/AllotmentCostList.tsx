@@ -1,4 +1,4 @@
-import { For, Setter } from "solid-js";
+import { For } from "solid-js";
 import { AllotmentCostType } from "../../../../../_entities/allotment.entity";
 import { CirclePlusIcon } from "../../../../../icons/CirclePlusIcon";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
@@ -6,7 +6,7 @@ import { AllotmentCostItem } from "./AllotmentCostItem";
 
 interface AllotmentCostItemProps {
   costList: AllotmentCostType[];
-  costSetter: Setter<AllotmentCostType[]>;
+  costSetter: (cb: (prev: AllotmentCostType[]) => AllotmentCostType[]) => void;
 }
 
 export function AllotmentCostList(props: AllotmentCostItemProps) {
