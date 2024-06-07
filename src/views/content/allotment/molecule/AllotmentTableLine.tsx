@@ -7,7 +7,7 @@ import {
   disableSpinningWheel,
   enableSpinningWheel,
 } from "../../../../signaux";
-import { AllotmentEditMenu } from "./AllotmentEditMenu";
+import AllotmentEditMenu from "./AllotmentEditMenu";
 import { AllotmentTableLineData } from "./AllotmentTableLineData";
 
 interface AllotmentTableLineProps {
