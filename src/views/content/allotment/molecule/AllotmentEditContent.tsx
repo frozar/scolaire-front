@@ -1,9 +1,12 @@
-import { Accessor, Setter } from "solid-js";
+import { Setter } from "solid-js";
 import {
   AllotmentCostType,
   AllotmentType,
 } from "../../../../_entities/allotment.entity";
-import { TransporterType } from "../../../../_entities/transporter.entity";
+import {
+  LocalTransporterType,
+  TransporterType,
+} from "../../../../_entities/transporter.entity";
 import { CircleCheckIcon } from "../../../../icons/CircleCheckIcon";
 import ButtonIcon from "../../board/component/molecule/ButtonIcon";
 import { AllotmentCostList } from "../../market/molecule/allotment/AllotmentCostList";
@@ -16,7 +19,7 @@ interface AllotmentEditContentProps {
   name: string;
   transporters: LocalTransporterType[];
   costs: AllotmentCostType[];
-  costSetter: Setter<AllotmentCostType[]>;
+  costSetter: (cb: (prev: AllotmentCostType[]) => AllotmentCostType[]) => void;
   allotmentSetter: Setter<AllotmentType>;
   addCb: () => void;
   deleteCb: (item: LocalTransporterType) => void;
@@ -25,13 +28,6 @@ interface AllotmentEditContentProps {
   updateCb: (toEdit: TransporterType, edited: TransporterType) => void;
   confirmCb: () => void;
 }
-
-type LocalTransporterType = {
-  content: Accessor<TransporterType>;
-  setContent: Setter<TransporterType>;
-  inEdit: Accessor<boolean>;
-  setInEdit: Setter<boolean>;
-};
 
 export default function AllotmentEditContent(props: AllotmentEditContentProps) {
   function onNameChange(value: string) {

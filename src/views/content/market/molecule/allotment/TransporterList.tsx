@@ -1,5 +1,8 @@
-import { Accessor, For, Setter, Show } from "solid-js";
-import { TransporterType } from "../../../../../_entities/transporter.entity";
+import { For, Show } from "solid-js";
+import {
+  LocalTransporterType,
+  TransporterType,
+} from "../../../../../_entities/transporter.entity";
 import { CirclePlusIcon } from "../../../../../icons/CirclePlusIcon";
 import ButtonIcon from "../../../board/component/molecule/ButtonIcon";
 import TransporterItem from "./TransporterItem";
@@ -14,13 +17,6 @@ interface AllotmentTransporterListProps {
   enableEditCb: (item: LocalTransporterType) => void;
   disableEditCb: (item: LocalTransporterType) => void;
 }
-
-type LocalTransporterType = {
-  content: Accessor<TransporterType>;
-  setContent: Setter<TransporterType>;
-  inEdit: Accessor<boolean>;
-  setInEdit: Setter<boolean>;
-};
 
 export default function TransporterList(props: AllotmentTransporterListProps) {
   return (

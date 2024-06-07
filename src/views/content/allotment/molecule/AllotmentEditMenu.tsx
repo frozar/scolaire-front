@@ -1,9 +1,12 @@
-import { Accessor, Setter, createSignal, onMount } from "solid-js";
+import { Setter, createSignal, onMount } from "solid-js";
 import {
   AllotmentCostType,
   AllotmentType,
 } from "../../../../_entities/allotment.entity";
-import { TransporterType } from "../../../../_entities/transporter.entity";
+import {
+  LocalTransporterType,
+  TransporterType,
+} from "../../../../_entities/transporter.entity";
 import { setTranspoterToDelete } from "../../market/molecule/allotment/AllotmentTab";
 import { AllotmentEditHeader } from "../atom/AllotmentEditHeader";
 import AllotmentEditContent from "./AllotmentEditContent";
@@ -14,21 +17,12 @@ interface AllotmentEditMenuProps {
   toggleEdit: () => void;
 }
 
-type LocalTransporterType = {
-  content: Accessor<TransporterType>;
-  setContent: Setter<TransporterType>;
-  inEdit: Accessor<boolean>;
-  setInEdit: Setter<boolean>;
-};
-
 export default function AllotmentEditMenu(props: AllotmentEditMenuProps) {
-  const [costs, setCosts] = createSignal<AllotmentCostType[]>([]);
   const [localTransporters, setLocalTransporters] = createSignal<
     LocalTransporterType[]
   >([]);
 
   onMount(() => {
-    setCosts(props.allotment.vehicleCost);
     setLocalTransporters(
       props.allotment.transporters.map((t) => {
         const [content, setContent] = createSignal<TransporterType>({
@@ -143,10 +137,23 @@ export default function AllotmentEditMenu(props: AllotmentEditMenuProps) {
       return {
         ...prev,
         transporters: localTransporterToTransporter(),
-        vehicleCost: costs(),
       };
     });
     props.toggleEdit();
+  }
+
+  function myCostSetter(
+    cb: (prev: AllotmentCostType[]) => AllotmentCostType[]
+  ) {
+    const newVehicleCost = cb(props.allotment.vehicleCost);
+
+    // eslint-disable-next-line solid/reactivity
+    props.allotmentSetter((prev) => {
+      return {
+        ...prev,
+        vehicleCost: newVehicleCost,
+      };
+    });
   }
 
   return (
@@ -156,8 +163,8 @@ export default function AllotmentEditMenu(props: AllotmentEditMenuProps) {
         color={props.allotment.color}
         name={props.allotment.name}
         allotmentSetter={props.allotmentSetter}
-        costs={costs()}
-        costSetter={setCosts}
+        costs={props.allotment.vehicleCost}
+        costSetter={myCostSetter}
         addCb={addTransporter}
         deleteCb={deleteTransporter}
         disableEditCb={disableEdit}

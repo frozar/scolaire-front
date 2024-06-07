@@ -1,3 +1,5 @@
+import { Accessor, Setter } from "solid-js";
+
 export type TransporterTypeType = "Titulaire" | "Co-traitant" | "Sous-traitant";
 
 export type TransporterType = {
@@ -8,6 +10,13 @@ export type TransporterType = {
   allotmentId?: number;
   vehicles: TransporterVehicleType[];
   costs: TransporterCostType[];
+};
+
+export type LocalTransporterType = {
+  content: Accessor<TransporterType>;
+  setContent: Setter<TransporterType>;
+  inEdit: Accessor<boolean>;
+  setInEdit: Setter<boolean>;
 };
 
 export type TransporterDbType = {
