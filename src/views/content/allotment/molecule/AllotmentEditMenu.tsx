@@ -6,7 +6,7 @@ import {
 import { TransporterType } from "../../../../_entities/transporter.entity";
 import { setTranspoterToDelete } from "../../market/molecule/allotment/AllotmentTab";
 import { AllotmentEditHeader } from "../atom/AllotmentEditHeader";
-import { AllotmentEditContent } from "./AllotmentEditContent";
+import AllotmentEditContent from "./AllotmentEditContent";
 
 interface AllotmentEditMenuProps {
   allotment: AllotmentType;
@@ -22,11 +22,13 @@ type LocalTransporterType = {
 };
 
 export default function AllotmentEditMenu(props: AllotmentEditMenuProps) {
+  const [costs, setCosts] = createSignal<AllotmentCostType[]>([]);
   const [localTransporters, setLocalTransporters] = createSignal<
     LocalTransporterType[]
   >([]);
 
   onMount(() => {
+    setCosts(props.allotment.vehicleCost);
     setLocalTransporters(
       props.allotment.transporters.map((t) => {
         const [content, setContent] = createSignal<TransporterType>({
@@ -135,13 +137,13 @@ export default function AllotmentEditMenu(props: AllotmentEditMenuProps) {
     if (transporterToEdit) transporterToEdit.setInEdit(false);
   }
 
-  function confirm(costs: AllotmentCostType[]) {
+  function confirm() {
     // eslint-disable-next-line solid/reactivity
     props.allotmentSetter((prev) => {
       return {
         ...prev,
         transporters: localTransporterToTransporter(),
-        vehicleCost: costs,
+        vehicleCost: costs(),
       };
     });
     props.toggleEdit();
@@ -154,7 +156,8 @@ export default function AllotmentEditMenu(props: AllotmentEditMenuProps) {
         color={props.allotment.color}
         name={props.allotment.name}
         allotmentSetter={props.allotmentSetter}
-        costs={props.allotment.vehicleCost}
+        costs={costs()}
+        costSetter={setCosts}
         addCb={addTransporter}
         deleteCb={deleteTransporter}
         disableEditCb={disableEdit}

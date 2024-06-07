@@ -1,4 +1,4 @@
-import { Accessor, Setter, createSignal, onMount } from "solid-js";
+import { Accessor, Setter } from "solid-js";
 import {
   AllotmentCostType,
   AllotmentType,
@@ -16,13 +16,14 @@ interface AllotmentEditContentProps {
   name: string;
   transporters: LocalTransporterType[];
   costs: AllotmentCostType[];
+  costSetter: Setter<AllotmentCostType[]>;
   allotmentSetter: Setter<AllotmentType>;
   addCb: () => void;
   deleteCb: (item: LocalTransporterType) => void;
   enableEditCb: (item: LocalTransporterType) => void;
   disableEditCb: (item: LocalTransporterType) => void;
   updateCb: (toEdit: TransporterType, edited: TransporterType) => void;
-  confirmCb: (costs: AllotmentCostType[]) => void;
+  confirmCb: () => void;
 }
 
 type LocalTransporterType = {
@@ -32,13 +33,7 @@ type LocalTransporterType = {
   setInEdit: Setter<boolean>;
 };
 
-export function AllotmentEditContent(props: AllotmentEditContentProps) {
-  const [costs, setCosts] = createSignal<AllotmentCostType[]>([]);
-
-  onMount(() => {
-    setCosts(props.costs);
-  });
-
+export default function AllotmentEditContent(props: AllotmentEditContentProps) {
   function onNameChange(value: string) {
     props.allotmentSetter((prev) => {
       return { ...prev, name: value };
@@ -60,7 +55,10 @@ export function AllotmentEditContent(props: AllotmentEditContentProps) {
         onNameInput={onNameChange}
       />
       <div class="allotment-edit-cost">
-        <AllotmentCostList costList={costs()} costSetter={setCosts} />
+        <AllotmentCostList
+          costList={props.costs}
+          costSetter={props.costSetter}
+        />
       </div>
       <div class="allotment-edit-transporter">
         <TransporterList
@@ -75,7 +73,7 @@ export function AllotmentEditContent(props: AllotmentEditContentProps) {
       <div class="allotment-edit-buttons">
         <ButtonIcon
           icon={<CircleCheckIcon />}
-          onClick={() => props.confirmCb(costs())}
+          onClick={() => props.confirmCb()}
         />
       </div>
     </div>

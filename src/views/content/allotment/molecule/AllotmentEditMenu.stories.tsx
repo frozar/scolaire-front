@@ -35,7 +35,7 @@ const allotmentWithCostAndTransporter = {
   ],
 };
 
-export const NewAllotmentEditContent: Story = {
+export const NewAllotmentEditMenu: Story = {
   args: {
     allotment: defaultAllotment,
     allotmentSetter: undefined,
