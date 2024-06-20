@@ -18,20 +18,31 @@ export function TimelineQuantitySetting(props: {
   const previousTripGrades = [...props.point.grades];
 
   function updateGradesTrip(askQuantity: number) {
-    const gradesAvalaibleOnTrip = GradeUtils.gradesOfSchools(
-      props.trip.schools
-    );
-    const stopGrades = gradesAvalaibleOnTrip.filter((grade) => {
-      return grade.associatedStops.some(
-        (stop) => stop.stopId == props.point.id
+    const gradesTrip: GradeTripType[] = [];
+    const associatedStopGradeAvalaibleForStop =
+      GradeUtils.associatedStopGradeAvalaibleForStop(
+        props.trip.grades,
+        props.point
       );
-    });
-    const associatedGradeStopOfPoint = stopGrades
-      .map((grade) => grade.associatedStops)
-      .flat()
-      .filter(
-        (associatedStopGrade) => associatedStopGrade.stopId == props.point.id
-      );
+
+    for (const associatedStopGradeAvailable of associatedStopGradeAvalaibleForStop) {
+      if (askQuantity > associatedStopGradeAvailable.quantity) {
+        gradesTrip.push({
+          gradeId: associatedStopGradeAvailable.gradeId,
+          quantity: associatedStopGradeAvailable.quantity,
+        });
+        askQuantity -= associatedStopGradeAvailable.quantity;
+      } else {
+        gradesTrip.push({
+          gradeId: associatedStopGradeAvailable.gradeId,
+          quantity: askQuantity,
+        });
+        break;
+      }
+    }
+    console.log("askQuantity, output : ", askQuantity, gradesTrip);
+
+    // props.point.grades[0].
 
     //TODO continuer - recupération des GradeTripType[] disponible (sup^à 0) en fonction de la direction et des jours
 
