@@ -41,20 +41,10 @@ export function TimelineQuantitySetting(props: {
         break;
       }
     }
-    // console.log("askQuantity, output : ", askQuantity, gradesTrip);
-
     props.setPoint((prev) => {
       prev.grades = gradesTrip;
       return { ...prev };
     });
-
-    // props.point.grades[0].
-
-    //TODO continuer - recupération des GradeTripType[] disponible (sup^à 0) en fonction de la direction et des jours
-
-    // je prend la quantité
-    // je prend les grade + quantité dispo
-    // je filtre pour avoir que des GradeTripType[] correspondant à la quantité
   }
 
   function retrievePreviousQuantity() {
