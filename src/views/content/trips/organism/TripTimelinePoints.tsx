@@ -1,11 +1,15 @@
-import { For, Setter, Show, createSignal, onCleanup, onMount } from "solid-js";
+import {
+  For,
+  Setter,
+  Show,
+  createEffect,
+  createSignal,
+  onCleanup,
+  onMount,
+} from "solid-js";
 import { GradeTripType } from "../../../../_entities/grade.entity";
 import { SchoolType } from "../../../../_entities/school.entity";
 import { StopType } from "../../../../_entities/stop.entity";
-import {
-  TripDirectionEntity,
-  TripDirectionEnum,
-} from "../../../../_entities/trip-direction.entity";
 import { TripPointType, TripType } from "../../../../_entities/trip.entity";
 import { WaypointType } from "../../../../_entities/waypoint.entity";
 import { OsrmService } from "../../../../_services/osrm.service";
@@ -16,6 +20,7 @@ import { TimelineMenu } from "../molecule/TimelineMenu";
 import { TripTimelinePoint } from "../molecule/TripTimelinePoint";
 
 import { StopStore } from "../../../../_stores/stop.store";
+import { TripPointUtils } from "../../../../_utils/trip-point.utils";
 import { setSchoolPointOnClick } from "../../_component/molecule/SchoolPoint";
 import { setStopPointOnClick } from "../../_component/molecule/StopPoint";
 import { TripTimelineAddPointButton } from "../atom/TripTimelineAddPointButton";
@@ -36,6 +41,9 @@ export function TripTimelinePoints(props: {
   onCleanup(() => {
     setStopPointOnClick();
     setSchoolPointOnClick();
+  });
+  createEffect(() => {
+    console.log("On est là  : props.trip", props.trip);
   });
 
   async function onUpdateStopFromMap(stop: StopType | SchoolType) {
@@ -64,26 +72,21 @@ export function TripTimelinePoints(props: {
     onUpdateStopFromMap(point);
   }
 
-  function updateTripGrades(point: TripPointType, gradesTrip: GradeTripType[]) {
-    // TODO
-  }
-
-  function updateWaitingTime(point: TripPointType, waitingTime: number) {
-    props.setTrip((prev) => {
-      const tripPoints = [...prev.tripPoints];
-      for (const tripPoint of tripPoints) {
-        if (tripPoint.leafletId == point.leafletId) {
-          tripPoint.waitingTime = waitingTime;
-        }
-      }
-      return { ...prev, tripPoints: tripPoints };
-    });
-  }
-
   return (
     <div class="triptimeline-items ">
       <For each={props.trip.tripPoints}>
-        {(point, i) => {
+        {(currentPoint, i) => {
+          const [point, setPoint] = createSignal<TripPointType>(currentPoint);
+
+          createEffect(() => {
+            const index = i();
+            const _point = point();
+            props.setTrip((prev) => {
+              prev.tripPoints[index] = _point;
+              return { ...prev };
+            });
+          });
+
           return (
             <div class="triptimeline-item">
               <Show when={props.inDraw}>
@@ -94,25 +97,32 @@ export function TripTimelinePoints(props: {
               </Show>
 
               <TripTimelinePoint
-                point={point}
+                point={point()}
                 tripColor={props.trip.color}
-                passageTime={getCurrentPassageTime(props.trip.tripPoints, i())}
-                quantity={getSignedPointQuantity(point, props.trip)}
-                accumulateQuantity={getAccumulateQuantity(props.trip, i())}
+                passageTime={TripPointUtils.getCurrentPassageTime(
+                  props.trip.tripPoints,
+                  i()
+                )}
+                quantity={TripPointUtils.getSignedPointQuantity(
+                  point(),
+                  props.trip
+                )}
+                accumulateQuantity={TripPointUtils.getAccumulateQuantity(
+                  props.trip,
+                  i()
+                )}
               >
-                <TimelineMenu
-                  onClickDeletePoint={() => {
-                    deletePointFromTimeline(point);
-                  }}
-                  onClickWaitingTime={(waitingTime) =>
-                    updateWaitingTime(point, waitingTime)
-                  }
-                  updateQuantity={(gradesTrip) =>
-                    updateTripGrades(point, gradesTrip)
-                  }
-                  point={point}
-                  trip={props.trip}
-                />
+                <Show when={props.inDraw}>
+                  <TimelineMenu
+                    //TODO keep
+                    onClickDeletePoint={() => {
+                      deletePointFromTimeline(point());
+                    }}
+                    point={point()}
+                    setPoint={setPoint}
+                    trip={props.trip}
+                  />
+                </Show>
               </TripTimelinePoint>
             </div>
           );
@@ -123,9 +133,8 @@ export function TripTimelinePoints(props: {
 }
 
 /**
- * Add or Delete Trip
+ * Add or Delete Point in Trip
  */
-
 function updateTripOnMapInteraction(
   pointToOperate: StopType | SchoolType,
   trip: TripType,
@@ -397,103 +406,4 @@ async function updatePolylineWithOsrm(trip: TripType) {
 
   disableSpinningWheel();
   return { ...trip };
-}
-
-/**
- * Quantity
- */
-
-function getCurrentPassageTime(
-  tripPoints: TripPointType[],
-  index: number
-): number {
-  let output = 0;
-  for (const key in tripPoints) {
-    // TODO Ajouter le Waiting time de Number(key)-1 si Number(key)!=0
-    // TODO Aller chercher le WaitingTime selon les règles
-    output += tripPoints[key].passageTime;
-    if (Number(key) == index) {
-      break;
-    }
-  }
-  return output;
-}
-
-function getAccumulateQuantity(trip: TripType, index: number) {
-  let output = 0;
-
-  for (const key in trip.tripPoints) {
-    const signedQuantity: string = getSignedPointQuantity(
-      trip.tripPoints[key],
-      trip
-    );
-    output += parseInt(signedQuantity);
-    if (Number(key) == index) {
-      break;
-    }
-  }
-
-  return output;
-}
-
-function getSignedPointQuantity(point: TripPointType, trip: TripType): string {
-  return getQuantitySign(point, trip) + getPointQuantity(point, trip);
-}
-
-function getQuantitySign(point: TripPointType, trip: TripType) {
-  if (
-    (TripDirectionEntity.findEnumById(trip.tripDirectionId) ==
-      TripDirectionEnum.going &&
-      point.nature == NatureEnum.stop) ||
-    (TripDirectionEntity.findEnumById(trip.tripDirectionId) ==
-      TripDirectionEnum.coming &&
-      point.nature == NatureEnum.school)
-  ) {
-    return "+";
-  } else if (
-    (TripDirectionEntity.findEnumById(trip.tripDirectionId) ==
-      TripDirectionEnum.going &&
-      point.nature == NatureEnum.school) ||
-    (TripDirectionEntity.findEnumById(trip.tripDirectionId) ==
-      TripDirectionEnum.coming &&
-      point.nature == NatureEnum.stop)
-  ) {
-    return "-";
-  }
-
-  return "";
-}
-
-function getPointQuantity(point: TripPointType, trip: TripType) {
-  if (point.nature == NatureEnum.school) {
-    return getSchoolQuantity(point, trip);
-  } else {
-    return getStopQuantity(point);
-  }
-}
-
-function getSchoolQuantity(point: TripPointType, trip: TripType) {
-  let output = 0;
-  console.log(point, trip);
-
-  const school = SchoolStore.get(point.id) as SchoolType;
-  const schoolGradesId: number[] = school.grades.map(
-    (grade) => grade.id as number
-  );
-
-  for (const tripPoint of trip.tripPoints) {
-    for (const grade of tripPoint.grades) {
-      if (schoolGradesId.includes(grade.gradeId)) {
-        output += grade.quantity;
-      }
-    }
-  }
-
-  return output;
-}
-
-function getStopQuantity(point: TripPointType) {
-  return point.grades
-    .map((grade) => grade.quantity)
-    .reduce((total, quantity) => total + quantity, 0);
 }

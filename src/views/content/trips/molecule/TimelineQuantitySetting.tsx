@@ -1,4 +1,4 @@
-import { JSXElement } from "solid-js";
+import { JSXElement, Setter } from "solid-js";
 
 import { GradeTripType } from "../../../../_entities/grade.entity";
 import { TripPointType, TripType } from "../../../../_entities/trip.entity";
@@ -11,10 +11,11 @@ import "./TimelineQuantitySetting.css";
 
 export function TimelineQuantitySetting(props: {
   closeSettings: () => void;
-  updateQuantity: (value: GradeTripType[]) => void;
   point: TripPointType;
+  setPoint: Setter<TripPointType>;
   trip: TripType;
 }): JSXElement {
+  // eslint-disable-next-line solid/reactivity
   const previousTripGrades = [...props.point.grades];
 
   function updateGradesTrip(askQuantity: number) {
@@ -40,7 +41,12 @@ export function TimelineQuantitySetting(props: {
         break;
       }
     }
-    console.log("askQuantity, output : ", askQuantity, gradesTrip);
+    // console.log("askQuantity, output : ", askQuantity, gradesTrip);
+
+    props.setPoint((prev) => {
+      prev.grades = gradesTrip;
+      return { ...prev };
+    });
 
     // props.point.grades[0].
 
@@ -51,12 +57,20 @@ export function TimelineQuantitySetting(props: {
     // je filtre pour avoir que des GradeTripType[] correspondant à la quantité
   }
 
+  function retrievePreviousQuantity() {
+    props.setPoint((prev) => {
+      prev.grades = previousTripGrades;
+      return { ...prev };
+    });
+    props.closeSettings();
+  }
+
   return (
     <div class="settings-menu">
       <div class="header-menu">
         <ButtonIcon
           icon={<LeftChevronIcon />}
-          onClick={() => props.updateQuantity(previousTripGrades)}
+          onClick={() => retrievePreviousQuantity()}
           class="back-icon"
         />
         <ButtonIcon
@@ -79,7 +93,7 @@ export function TimelineQuantitySetting(props: {
             disabled: false,
           }}
           min={1}
-          // max quantity - quantity allowable max ??
+          // max quantity : quantity allowable max ??
         />
       </div>
     </div>

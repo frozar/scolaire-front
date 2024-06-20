@@ -1,5 +1,4 @@
-import { Match, Show, Switch, createSignal } from "solid-js";
-import { GradeTripType } from "../../../../_entities/grade.entity";
+import { Match, Setter, Show, Switch, createSignal } from "solid-js";
 import { TripPointType, TripType } from "../../../../_entities/trip.entity";
 import Button from "../../../../component/atom/Button";
 import { DotMenu } from "../../../../icons/DotMenu";
@@ -16,15 +15,21 @@ enum TimelineMenuSettingView {
 
 export function TimelineMenu(props: {
   onClickDeletePoint: () => void;
-  onClickWaitingTime: (value: number) => void;
-  updateQuantity: (value: GradeTripType[]) => void;
   point: TripPointType;
+  setPoint: Setter<TripPointType>;
   trip: TripType;
 }) {
   const [isOpenMenu, setIsOpenMenu] = createSignal(false);
   const [isOpenSetting, setIsOpenSetting] = createSignal<
     TimelineMenuSettingView | boolean
   >(false);
+
+  function onClickWaitingTime(value: number) {
+    props.setPoint((prev) => {
+      prev.waitingTime = value;
+      return { ...prev };
+    });
+  }
 
   return (
     <div class="timeline-menu">
@@ -46,7 +51,7 @@ export function TimelineMenu(props: {
                   <TimelineWaitingTimeSetting
                     closeSettings={() => setIsOpenSetting(false)}
                     waitingTime={props.point.waitingTime}
-                    onClickWaitingTime={props.onClickWaitingTime}
+                    onClickWaitingTime={onClickWaitingTime}
                   />
                 </Match>
                 <Match
@@ -54,8 +59,8 @@ export function TimelineMenu(props: {
                 >
                   <TimelineQuantitySetting
                     closeSettings={() => setIsOpenSetting(false)}
-                    updateQuantity={props.updateQuantity}
                     point={props.point}
+                    setPoint={props.setPoint}
                     trip={props.trip}
                   />
                 </Match>
