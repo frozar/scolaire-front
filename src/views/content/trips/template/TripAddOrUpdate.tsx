@@ -31,7 +31,9 @@ export function TripAddOrUpdate(props: {
   next: (trip: TripType) => void;
 }) {
   // eslint-disable-next-line solid/reactivity
-  const [currentTrip, setCurrentTrip] = createSignal<TripType>(props.trip);
+  const [currentTrip, setCurrentTrip] = createSignal<TripType>({
+    ...props.trip,
+  });
 
   const [currentStep, setCurrentStep] = createSignal<EditTripStep>(
     EditTripStep.schoolSelection
@@ -40,6 +42,7 @@ export function TripAddOrUpdate(props: {
     []
   );
   onMount(() => {
+    setCurrentTrip({ ...props.trip });
     setCurrentStep(EditTripStep.schoolSelection);
     setAvailableSchools(props.line.schools);
   });
@@ -50,8 +53,6 @@ export function TripAddOrUpdate(props: {
         setCurrentStep(EditTripStep.gradeSelection);
         break;
       case EditTripStep.gradeSelection:
-        console.log("lalal");
-
         setCurrentStep(EditTripStep.editTrip);
         break;
       case EditTripStep.editTrip:

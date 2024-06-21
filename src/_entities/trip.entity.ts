@@ -245,6 +245,7 @@ export type TripPointType = {
   passageTime: number;
   startToTripPointDistance: number;
   waitingTime: number;
+  // nestedQuantit: number;
 };
 
 export type TripPointDBType = {

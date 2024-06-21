@@ -12,14 +12,6 @@ interface TripTimelineItemProps {
   accumulateQuantity: number;
 
   children: JSXElement;
-  // quantityToGetOrDrop: string;
-  // calculatedQuantity: number;
-  // timePassage: string;
-  // tripColor: string;
-  // waitingTime: number;
-  // editMode: boolean;
-  // onClickRemovePointFromTrip: () => void;
-  // onClickWaitingTime: (value: number) => void;
 }
 
 export function TripTimelinePoint(props: TripTimelineItemProps) {
@@ -38,7 +30,6 @@ export function TripTimelinePoint(props: TripTimelineItemProps) {
       <p class="timeline-time">
         {TripUtils.convertSecondesToHourMinute(props.passageTime)}
       </p>
-      {/* {props.timePassage} */}
       <div class="timeline-dot">
         <div class={"dot " + pointColor}>{childs()}</div>
         <div class="timeline-point-divider" />
