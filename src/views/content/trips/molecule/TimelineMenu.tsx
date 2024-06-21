@@ -9,8 +9,8 @@ import { TimelineQuantitySetting } from "./TimelineQuantitySetting";
 import { TimelineWaitingTimeSetting } from "./TimelineWaitingTimeSetting";
 
 enum TimelineMenuSettingView {
-  timeWaiting,
-  quantity,
+  timeWaiting = "timeWaiting",
+  quantity = "quantity",
 }
 
 export function TimelineMenu(props: {
@@ -23,13 +23,6 @@ export function TimelineMenu(props: {
   const [isOpenSetting, setIsOpenSetting] = createSignal<
     TimelineMenuSettingView | boolean
   >(false);
-
-  function onClickWaitingTime(value: number) {
-    props.setPoint((prev) => {
-      prev.waitingTime = value;
-      return { ...prev };
-    });
-  }
 
   return (
     <div class="timeline-menu">
@@ -50,8 +43,8 @@ export function TimelineMenu(props: {
                 >
                   <TimelineWaitingTimeSetting
                     closeSettings={() => setIsOpenSetting(false)}
-                    waitingTime={props.point.waitingTime}
-                    onClickWaitingTime={onClickWaitingTime}
+                    point={props.point}
+                    setPoint={props.setPoint}
                   />
                 </Match>
                 <Match

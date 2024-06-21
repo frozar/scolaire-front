@@ -100,7 +100,7 @@ export function TripTimelinePoints(props: {
                 point={point()}
                 tripColor={props.trip.color}
                 passageTime={TripPointUtils.getCurrentPassageTime(
-                  props.trip.tripPoints,
+                  props.trip,
                   i()
                 )}
                 quantity={TripPointUtils.getSignedPointQuantity(

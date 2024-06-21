@@ -14,17 +14,25 @@ export namespace TripPointUtils {
    * @param index
    * @returns
    */
-  export function getCurrentPassageTime(
-    tripPoints: TripPointType[],
-    index: number
-  ): number {
+  export function getCurrentPassageTime(trip: TripType, index: number): number {
     let output = 0;
+    const tripPoints = trip.tripPoints;
     for (const key in tripPoints) {
-      // TODO Ajouter le Waiting time de Number(key)-1 si Number(key)!=0
-      // TODO Aller chercher le WaitingTime selon les règles
+      output += getWaitingTime(Number(key), tripPoints);
       output += tripPoints[key].passageTime;
       if (Number(key) == index) {
         break;
+      }
+    }
+    return output;
+  }
+  function getWaitingTime(index: number, tripPoints: TripPointType[]) {
+    let output = 0;
+    if (index > 0) {
+      const prevIndex = index - 1;
+      if (tripPoints[prevIndex].waitingTime) {
+        // TODO Aller chercher le WaitingTime selon les règles
+        output = tripPoints[prevIndex].waitingTime * 60;
       }
     }
     return output;

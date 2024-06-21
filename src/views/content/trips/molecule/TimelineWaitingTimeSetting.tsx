@@ -1,21 +1,22 @@
-import { JSXElement, createSignal } from "solid-js";
+import { JSXElement, Setter } from "solid-js";
 
+import { TripPointType } from "../../../../_entities/trip.entity";
 import { LabeledInputNumber } from "../../../../component/molecule/LabeledInputNumber";
-import CheckIcon from "../../../../icons/CheckIcon";
 import LeftChevronIcon from "../../../../icons/LeftChevronIcon";
 import ButtonIcon from "../../board/component/molecule/ButtonIcon";
 import "./TimelineWaitingTimeSetting.css";
 
 export function TimelineWaitingTimeSetting(props: {
   closeSettings: () => void;
-  onClickWaitingTime: (value: number) => void;
-  waitingTime: number;
+  point: TripPointType;
+  setPoint: Setter<TripPointType>;
 }): JSXElement {
-  // eslint-disable-next-line solid/reactivity
-  const [waitingTime, setWaitingTime] = createSignal(props.waitingTime);
-
-  function onChangeWaitingTime(value: number) {
-    setWaitingTime(value);
+  function updateWaitingTime(value: number) {
+    props.setPoint((prev) => {
+      prev.waitingTime = value;
+      return { ...prev };
+    });
+    props.closeSettings();
   }
 
   return (
@@ -26,22 +27,13 @@ export function TimelineWaitingTimeSetting(props: {
           onClick={() => props.closeSettings()}
           class="back-icon"
         />
-        <ButtonIcon
-          icon={<CheckIcon />}
-          onClick={() => {
-            props.onClickWaitingTime(waitingTime());
-            props.closeSettings();
-          }}
-          class="save-icon"
-        />
       </div>
-
       <div class="content">
         <LabeledInputNumber
           label="Temps d'attente"
-          onChange={(element) => onChangeWaitingTime(Number(element.value))}
+          onChange={(element) => updateWaitingTime(Number(element.value))}
           selector={{
-            value: waitingTime(),
+            value: props.point.waitingTime,
             disabled: false,
           }}
         />

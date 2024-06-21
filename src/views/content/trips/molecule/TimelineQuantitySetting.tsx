@@ -4,7 +4,6 @@ import { GradeTripType } from "../../../../_entities/grade.entity";
 import { TripPointType, TripType } from "../../../../_entities/trip.entity";
 import { GradeUtils } from "../../../../_utils/grade.utils";
 import { LabeledInputNumber } from "../../../../component/molecule/LabeledInputNumber";
-import CheckIcon from "../../../../icons/CheckIcon";
 import LeftChevronIcon from "../../../../icons/LeftChevronIcon";
 import ButtonIcon from "../../board/component/molecule/ButtonIcon";
 import "./TimelineQuantitySetting.css";
@@ -15,9 +14,6 @@ export function TimelineQuantitySetting(props: {
   setPoint: Setter<TripPointType>;
   trip: TripType;
 }): JSXElement {
-  // eslint-disable-next-line solid/reactivity
-  const previousTripGrades = [...props.point.grades];
-
   function updateGradesTrip(askQuantity: number) {
     const gradesTrip: GradeTripType[] = [];
     const associatedStopGradeAvalaibleForStop =
@@ -47,28 +43,13 @@ export function TimelineQuantitySetting(props: {
     });
   }
 
-  function retrievePreviousQuantity() {
-    props.setPoint((prev) => {
-      prev.grades = previousTripGrades;
-      return { ...prev };
-    });
-    props.closeSettings();
-  }
-
   return (
     <div class="settings-menu">
       <div class="header-menu">
         <ButtonIcon
           icon={<LeftChevronIcon />}
-          onClick={() => retrievePreviousQuantity()}
+          onClick={() => props.closeSettings()}
           class="back-icon"
-        />
-        <ButtonIcon
-          icon={<CheckIcon />}
-          onClick={() => {
-            props.closeSettings();
-          }}
-          class="save-icon"
         />
       </div>
 
@@ -79,7 +60,7 @@ export function TimelineQuantitySetting(props: {
           label="Quantité"
           onChange={(element) => updateGradesTrip(Number(element.value))}
           selector={{
-            value: GradeUtils.getQuantityFromGradesTrip(previousTripGrades),
+            value: GradeUtils.getQuantityFromGradesTrip(props.point.grades),
             disabled: false,
           }}
           min={1}
